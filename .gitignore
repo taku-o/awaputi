@@ -5,3 +5,5 @@ CLAUDE.local.md
 # Kiro IDE settings (exclude personal settings, include specs)
 .kiro/settings/
 !.kiro/specs/
+
+.vscode

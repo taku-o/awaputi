@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BubblePop Test - 特殊泡テスト</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        
+        #gameCanvas {
+            border: 2px solid #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+        
+        #gameUI {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-size: 18px;
+            z-index: 10;
+        }
+        
+        #testControls {
+            margin-top: 20px;
+            color: white;
+            text-align: center;
+        }
+        
+        button {
+            margin: 5px;
+            padding: 10px 15px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <div id="gameUI">
+        <div>スコア: <span id="score">0</span></div>
+        <div>HP: <span id="hp">100</span></div>
+        <div>時間: <span id="time">5:00</span></div>
+    </div>
+    
+    <div id="testControls">
+        <h3>特殊泡テスト</h3>
+        <button onclick="spawnTestBubble('electric')">ビリビリの泡</button>
+        <button onclick="spawnTestBubble('escaping')">逃げる泡</button>
+        <button onclick="spawnTestBubble('cracked')">ひび割れの泡</button>
+        <button onclick="spawnTestBubble('boss')">ボス泡</button>
+        <button onclick="clearBubbles()">泡をクリア</button>
+    </div>
+    
+    <script type="module">
+        import { GameEngine } from './src/core/GameEngine.js';
+
+        let gameEngine;
+
+        function initGame() {
+            const canvas = document.getElementById('gameCanvas');
+            if (!canvas) {
+                console.error('Canvas element not found');
+                return;
+            }
+            
+            gameEngine = new GameEngine(canvas);
+            gameEngine.playerData.load();
+            gameEngine.start();
+            
+            // グローバルに公開
+            window.gameEngine = gameEngine;
+        }
+
+        // テスト用関数をグローバルに公開
+        window.spawnTestBubble = function(type) {
+            if (gameEngine) {
+                const position = {
+                    x: 200 + Math.random() * 400,
+                    y: 200 + Math.random() * 200
+                };
+                gameEngine.bubbleManager.spawnBubble(type, position);
+                console.log(`${type} bubble spawned at`, position);
+            }
+        };
+
+        window.clearBubbles = function() {
+            if (gameEngine) {
+                gameEngine.bubbleManager.clearAllBubbles();
+                console.log('All bubbles cleared');
+            }
+        };
+
+        // DOM読み込み完了後に初期化
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initGame);
+        } else {
+            initGame();
+        }
+    </script>
+</body>
+</html>
