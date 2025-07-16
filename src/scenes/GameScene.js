@@ -1,4 +1,5 @@
 import { Scene } from '../core/SceneManager.js';
+import { InputManager } from '../core/InputManager.js';
 
 /**
  * ゲームシーン
@@ -7,6 +8,7 @@ export class GameScene extends Scene {
     constructor(gameEngine) {
         super(gameEngine);
         this.isPaused = false;
+        this.inputManager = new GameInputManager(gameEngine.canvas, this);
     }
     
     /**
@@ -369,5 +371,76 @@ export class GameScene extends Scene {
         this.gameEngine.stageManager.completeStage(this.gameEngine.playerData.currentScore);
         
         console.log('Game Over');
+    }
+}
+
+/**
+ * ゲーム用入力管理クラス
+ */
+class GameInputManager extends InputManager {
+    constructor(canvas, gameScene) {
+        super(canvas);
+        this.gameScene = gameScene;
+        this.gameEngine = gameScene.gameEngine;
+    }
+    
+    /**
+     * クリック処理
+     */
+    notifyClick(position) {
+        if (this.gameScene.isPaused || this.gameEngine.isGameOver || this.gameEngine.inputDisabled) {
+            return;
+        }
+        
+        // 泡のクリック処理
+        this.gameEngine.bubbleManager.handleClick(position.x, position.y);
+    }
+    
+    /**
+     * ポインター移動処理
+     */
+    notifyPointerMove(position) {
+        if (this.gameScene.isPaused || this.gameEngine.isGameOver) {
+            return;
+        }
+        
+        // マウス位置の更新
+        this.gameEngine.bubbleManager.updateMousePosition(position.x, position.y);
+    }
+    
+    /**
+     * ドラッグ開始処理
+     */
+    notifyDragStart(startPosition) {
+        if (this.gameScene.isPaused || this.gameEngine.isGameOver || this.gameEngine.inputDisabled) {
+            return;
+        }
+        
+        // ドラッグ対象の泡を検索
+        this.gameEngine.bubbleManager.handleDragStart(startPosition.x, startPosition.y);
+    }
+    
+    /**
+     * ドラッグ移動処理
+     */
+    notifyDragMove(currentPosition) {
+        if (this.gameScene.isPaused || this.gameEngine.isGameOver || this.gameEngine.inputDisabled) {
+            return;
+        }
+        
+        // ドラッグ中の視覚的フィードバック（将来実装）
+        // 現在は特に処理なし
+    }
+    
+    /**
+     * ドラッグ終了処理
+     */
+    notifyDragEnd(startPosition, endPosition, dragVector) {
+        if (this.gameScene.isPaused || this.gameEngine.isGameOver || this.gameEngine.inputDisabled) {
+            return;
+        }
+        
+        // 泡を吹き飛ばす処理
+        this.gameEngine.bubbleManager.handleDragEnd(startPosition.x, startPosition.y, endPosition.x, endPosition.y);
     }
 }

@@ -4,6 +4,7 @@ import { ScoreManager } from '../managers/ScoreManager.js';
 import { StageManager } from './StageManager.js';
 import { SceneManager } from './SceneManager.js';
 import { ItemManager } from './ItemSystem.js';
+import { MainMenuScene } from '../scenes/MainMenuScene.js';
 import { StageSelectScene } from '../scenes/StageSelectScene.js';
 import { GameScene } from '../scenes/GameScene.js';
 import { ShopScene } from '../scenes/ShopScene.js';
@@ -49,11 +50,13 @@ export class GameEngine {
      */
     initializeScenes() {
         // シーンを作成
+        const mainMenuScene = new MainMenuScene(this);
         const stageSelectScene = new StageSelectScene(this);
         const gameScene = new GameScene(this);
         const shopScene = new ShopScene(this);
         
         // シーンを登録
+        this.sceneManager.addScene('menu', mainMenuScene);
         this.sceneManager.addScene('stageSelect', stageSelectScene);
         this.sceneManager.addScene('game', gameScene);
         this.sceneManager.addScene('shop', shopScene);
@@ -62,8 +65,8 @@ export class GameEngine {
         this.playerData.load();
         this.itemManager.initialize();
         
-        // 初期シーンをステージ選択に設定
-        this.sceneManager.switchScene('stageSelect');
+        // 初期シーンをメインメニューに設定
+        this.sceneManager.switchScene('menu');
     }
     
     /**

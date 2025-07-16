@@ -13,6 +13,11 @@ export class BubbleManager {
         this.mousePosition = { x: 0, y: 0 };
         this.stageConfig = null; // ステージ設定
         this.baseSpawnRate = 1.0; // 基本生成レート
+        
+        // ドラッグ関連
+        this.draggedBubble = null;
+        this.isDragging = false;
+        this.dragStartPosition = { x: 0, y: 0 };
     }
     
     /**
@@ -158,6 +163,9 @@ export class BubbleManager {
                 this.bubbles.splice(i, 1);
             }
         }
+        
+        // 画面外に出た特定の泡をチェック
+        this.checkOffScreenBubbles();
     }
     
     /**
@@ -314,5 +322,108 @@ export class BubbleManager {
      */
     getBubbleCount() {
         return this.bubbles.length;
+    }
+    
+    /**
+     * ドラッグ開始処理
+     */
+    handleDragStart(x, y) {
+        // ドラッグ対象の泡を検索
+        for (let i = this.bubbles.length - 1; i >= 0; i--) {
+            const bubble = this.bubbles[i];
+            
+            if (bubble.containsPoint(x, y)) {
+                this.draggedBubble = bubble;
+                this.isDragging = true;
+                this.dragStartPosition = { x, y };
+                
+                console.log(`Drag started on ${bubble.type} bubble`);
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * ドラッグ終了処理 - 泡を吹き飛ばす
+     */
+    handleDragEnd(startX, startY, endX, endY) {
+        if (!this.isDragging || !this.draggedBubble) {
+            return false;
+        }
+        
+        // ドラッグベクトルを計算
+        const dragVector = {
+            x: endX - startX,
+            y: endY - startY
+        };
+        
+        // ドラッグ距離を計算
+        const dragDistance = Math.sqrt(dragVector.x * dragVector.x + dragVector.y * dragVector.y);
+        
+        // 最小ドラッグ距離をチェック
+        if (dragDistance < 20) {
+            this.resetDrag();
+            return false;
+        }
+        
+        // 力の強さを計算（距離に基づく）
+        const forceMultiplier = Math.min(dragDistance / 50, 10); // 最大10倍
+        const baseForce = 300; // 基本の力
+        const force = baseForce * forceMultiplier;
+        
+        // 正規化されたベクトルを計算
+        const normalizedVector = {
+            x: dragVector.x / dragDistance,
+            y: dragVector.y / dragDistance
+        };
+        
+        // 泡に速度を適用
+        this.draggedBubble.velocity.x = normalizedVector.x * force;
+        this.draggedBubble.velocity.y = normalizedVector.y * force;
+        
+        console.log(`Bubble blown away with force: ${force.toFixed(1)}, vector: (${normalizedVector.x.toFixed(2)}, ${normalizedVector.y.toFixed(2)})`);
+        
+        this.resetDrag();
+        return true;
+    }
+    
+    /**
+     * ドラッグ状態をリセット
+     */
+    resetDrag() {
+        this.isDragging = false;
+        this.draggedBubble = null;
+        this.dragStartPosition = { x: 0, y: 0 };
+    }
+    
+    /**
+     * 画面外に出た泡をチェックして処理
+     */
+    checkOffScreenBubbles() {
+        const canvasWidth = 800;
+        const canvasHeight = 600;
+        const margin = 100; // 画面外判定のマージン
+        
+        // 特定の泡タイプは画面外で消滅
+        const disappearingTypes = ['rainbow', 'pink', 'clock', 'score', 'electric', 'poison'];
+        
+        for (let i = this.bubbles.length - 1; i >= 0; i--) {
+            const bubble = this.bubbles[i];
+            
+            // 画面外判定
+            const isOffScreen = (
+                bubble.position.x < -margin ||
+                bubble.position.x > canvasWidth + margin ||
+                bubble.position.y < -margin ||
+                bubble.position.y > canvasHeight + margin
+            );
+            
+            if (isOffScreen && disappearingTypes.includes(bubble.type)) {
+                console.log(`${bubble.type} bubble disappeared off-screen`);
+                this.bubbles.splice(i, 1);
+            }
+        }
     }
 }

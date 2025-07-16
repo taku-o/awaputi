@@ -200,27 +200,65 @@ export class Bubble {
     }
     
     /**
-     * 画面境界での衝突処理
+     * 画面境界での衝突処理（強化版）
      */
     handleBoundaryCollision() {
-        const margin = this.size;
+        const margin = this.size / 2; // 泡の半径を使用
+        const canvasWidth = 800;
+        const canvasHeight = 600;
+        const dampening = 0.7; // 跳ね返り時の減衰率
+        const minVelocity = 10; // 最小速度（これ以下は停止）
+        
+        let bounced = false;
         
         // 左右の境界
-        if (this.position.x - margin < 0) {
+        if (this.position.x - margin <= 0) {
             this.position.x = margin;
-            this.velocity.x = Math.abs(this.velocity.x) * 0.8; // 跳ね返り
-        } else if (this.position.x + margin > 800) {
-            this.position.x = 800 - margin;
-            this.velocity.x = -Math.abs(this.velocity.x) * 0.8; // 跳ね返り
+            if (this.velocity.x < 0) {
+                this.velocity.x = -this.velocity.x * dampening;
+                bounced = true;
+            }
+        } else if (this.position.x + margin >= canvasWidth) {
+            this.position.x = canvasWidth - margin;
+            if (this.velocity.x > 0) {
+                this.velocity.x = -this.velocity.x * dampening;
+                bounced = true;
+            }
         }
         
         // 上下の境界
-        if (this.position.y - margin < 0) {
+        if (this.position.y - margin <= 0) {
             this.position.y = margin;
-            this.velocity.y = Math.abs(this.velocity.y) * 0.8; // 跳ね返り
-        } else if (this.position.y + margin > 600) {
-            this.position.y = 600 - margin;
-            this.velocity.y = -Math.abs(this.velocity.y) * 0.8; // 跳ね返り
+            if (this.velocity.y < 0) {
+                this.velocity.y = -this.velocity.y * dampening;
+                bounced = true;
+            }
+        } else if (this.position.y + margin >= canvasHeight) {
+            this.position.y = canvasHeight - margin;
+            if (this.velocity.y > 0) {
+                this.velocity.y = -this.velocity.y * dampening;
+                bounced = true;
+            }
+        }
+        
+        // 跳ね返り後の速度が小さすぎる場合は停止
+        if (bounced) {
+            const speed = Math.sqrt(this.velocity.x * this.velocity.x + this.velocity.y * this.velocity.y);
+            if (speed < minVelocity) {
+                this.velocity.x = 0;
+                this.velocity.y = 0;
+            }
+        }
+        
+        // 自然な減速（摩擦効果）
+        if (Math.abs(this.velocity.x) > 0 || Math.abs(this.velocity.y) > 0) {
+            const friction = 0.98; // 摩擦係数
+            this.velocity.x *= friction;
+            this.velocity.y *= friction;
+            
+            // 非常に小さい速度は0にする
+            if (Math.abs(this.velocity.x) < 1) this.velocity.x = 0;
+            if (Math.abs(this.velocity.y) < 1) this.velocity.y = 0;
         }
     }
     
