@@ -1,3 +1,7 @@
 CLAUDE.local.md
 .claude/settings.local.json
 .*.swp
+
+# Kiro IDE settings (exclude personal settings, include specs)
+.kiro/settings/
+!.kiro/specs/
