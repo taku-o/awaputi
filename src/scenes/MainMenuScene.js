@@ -15,6 +15,8 @@ export class MainMenuScene extends Scene {
         this.showingUsernameInput = false;
         this.showingSettings = false;
         this.showingUserInfo = false;
+        this.showingDataClearConfirmation = false;
+        this.showingControlsHelp = false;
         this.usernameInput = '';
         this.isEditingUsername = false;
     }
@@ -27,6 +29,8 @@ export class MainMenuScene extends Scene {
         this.showingUsernameInput = false;
         this.showingSettings = false;
         this.showingUserInfo = false;
+        this.showingDataClearConfirmation = false;
+        this.showingControlsHelp = false;
         this.isEditingUsername = false;
         
         // 初回起動時にユーザー名が未設定の場合、ユーザー名入力を表示
@@ -54,6 +58,10 @@ export class MainMenuScene extends Scene {
         
         if (this.showingUsernameInput) {
             this.renderUsernameInput(context);
+        } else if (this.showingDataClearConfirmation) {
+            this.renderDataClearConfirmation(context);
+        } else if (this.showingControlsHelp) {
+            this.renderControlsHelp(context);
         } else if (this.showingSettings) {
             this.renderSettings(context);
         } else if (this.showingUserInfo) {
@@ -247,48 +255,59 @@ export class MainMenuScene extends Scene {
         context.font = 'bold 32px Arial';
         context.textAlign = 'center';
         context.textBaseline = 'middle';
-        context.fillText('設定', canvas.width / 2, 150);
+        context.fillText('設定', canvas.width / 2, 100);
         
-        // 設定項目（将来実装予定）
-        context.font = '18px Arial';
-        context.fillStyle = '#CCCCCC';
-        context.fillText('音量設定やその他のオプションは今後実装予定です', canvas.width / 2, 250);
+        // 設定項目
+        const buttonWidth = 250;
+        const buttonHeight = 45;
+        const buttonX = (canvas.width - buttonWidth) / 2;
+        let currentY = 160;
+        const buttonSpacing = 15;
         
         // ユーザー名変更ボタン
-        const buttonWidth = 200;
-        const buttonHeight = 50;
-        const buttonX = (canvas.width - buttonWidth) / 2;
-        const buttonY = 300;
+        this.renderSettingsButton(context, buttonX, currentY, buttonWidth, buttonHeight, 'ユーザー名変更', '#0066CC');
+        currentY += buttonHeight + buttonSpacing;
         
-        context.fillStyle = '#0066CC';
-        context.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
+        // データクリアボタン
+        this.renderSettingsButton(context, buttonX, currentY, buttonWidth, buttonHeight, 'データクリア', '#CC6600');
+        currentY += buttonHeight + buttonSpacing;
         
-        context.strokeStyle = '#FFFFFF';
-        context.lineWidth = 2;
-        context.strokeRect(buttonX, buttonY, buttonWidth, buttonHeight);
-        
-        context.fillStyle = '#FFFFFF';
-        context.font = 'bold 18px Arial';
-        context.fillText('ユーザー名変更', buttonX + buttonWidth / 2, buttonY + buttonHeight / 2);
+        // 操作説明ボタン
+        this.renderSettingsButton(context, buttonX, currentY, buttonWidth, buttonHeight, '操作説明', '#006600');
+        currentY += buttonHeight + buttonSpacing;
         
         // 戻るボタン
-        const backButtonY = 380;
-        context.fillStyle = '#666666';
-        context.fillRect(buttonX, backButtonY, buttonWidth, buttonHeight);
-        
-        context.strokeStyle = '#FFFFFF';
-        context.lineWidth = 2;
-        context.strokeRect(buttonX, backButtonY, buttonWidth, buttonHeight);
-        
-        context.fillStyle = '#FFFFFF';
-        context.fillText('戻る', buttonX + buttonWidth / 2, backButtonY + buttonHeight / 2);
+        currentY += 20; // 少し間隔を空ける
+        this.renderSettingsButton(context, buttonX, currentY, buttonWidth, buttonHeight, '戻る', '#666666');
         
         // 操作説明
         context.fillStyle = '#AAAAAA';
         context.font = '14px Arial';
-        context.fillText('クリックまたはESCで戻る', canvas.width / 2, 480);
+        context.textAlign = 'center';
+        context.fillText('クリックまたはESCで戻る', canvas.width / 2, canvas.height - 40);
         
         context.restore();
+    }
+    
+    /**
+     * 設定ボタンを描画
+     */
+    renderSettingsButton(context, x, y, width, height, text, color) {
+        // ボタン背景
+        context.fillStyle = color;
+        context.fillRect(x, y, width, height);
+        
+        // ボタン枠線
+        context.strokeStyle = '#FFFFFF';
+        context.lineWidth = 2;
+        context.strokeRect(x, y, width, height);
+        
+        // ボタンテキスト
+        context.fillStyle = '#FFFFFF';
+        context.font = 'bold 18px Arial';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        context.fillText(text, x + width / 2, y + height / 2);
     }
     
     /**
@@ -403,6 +422,10 @@ export class MainMenuScene extends Scene {
     handleInput(event) {
         if (this.showingUsernameInput) {
             this.handleUsernameInput(event);
+        } else if (this.showingDataClearConfirmation) {
+            this.handleDataClearConfirmationInput(event);
+        } else if (this.showingControlsHelp) {
+            this.handleControlsHelpInput(event);
         } else if (this.showingSettings) {
             this.handleSettingsInput(event);
         } else if (this.showingUserInfo) {
@@ -542,20 +565,37 @@ export class MainMenuScene extends Scene {
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
         
-        const buttonWidth = 200;
-        const buttonHeight = 50;
+        const buttonWidth = 250;
+        const buttonHeight = 45;
         const buttonX = (canvas.width - buttonWidth) / 2;
+        const buttonSpacing = 15;
+        
+        let currentY = 160;
         
         // ユーザー名変更ボタン
-        const changeUsernameButtonY = 300;
-        if (x >= buttonX && x <= buttonX + buttonWidth && y >= changeUsernameButtonY && y <= changeUsernameButtonY + buttonHeight) {
+        if (x >= buttonX && x <= buttonX + buttonWidth && y >= currentY && y <= currentY + buttonHeight) {
             this.changeUsername();
             return;
         }
+        currentY += buttonHeight + buttonSpacing;
+        
+        // データクリアボタン
+        if (x >= buttonX && x <= buttonX + buttonWidth && y >= currentY && y <= currentY + buttonHeight) {
+            this.showDataClearConfirmation();
+            return;
+        }
+        currentY += buttonHeight + buttonSpacing;
+        
+        // 操作説明ボタン
+        if (x >= buttonX && x <= buttonX + buttonWidth && y >= currentY && y <= currentY + buttonHeight) {
+            this.showControlsHelp();
+            return;
+        }
+        currentY += buttonHeight + buttonSpacing;
         
         // 戻るボタン
-        const backButtonY = 380;
-        if (x >= buttonX && x <= buttonX + buttonWidth && y >= backButtonY && y <= backButtonY + buttonHeight) {
+        currentY += 20; // 少し間隔を空ける
+        if (x >= buttonX && x <= buttonX + buttonWidth && y >= currentY && y <= currentY + buttonHeight) {
             this.closeSettings();
             return;
         }
@@ -706,5 +746,328 @@ export class MainMenuScene extends Scene {
         if (this.showingSettings) {
             this.showingSettings = true;
         }
+    }
+    
+    /**
+     * データクリア確認画面を表示
+     */
+    showDataClearConfirmation() {
+        this.showingSettings = false;
+        this.showingDataClearConfirmation = true;
+    }
+    
+    /**
+     * データクリア確認画面を描画
+     */
+    renderDataClearConfirmation(context) {
+        const canvas = this.gameEngine.canvas;
+        
+        // 半透明オーバーレイ
+        context.save();
+        context.fillStyle = 'rgba(0,0,0,0.9)';
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // 警告アイコン
+        context.fillStyle = '#FF6666';
+        context.font = 'bold 48px Arial';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        context.fillText('⚠️', canvas.width / 2, 150);
+        
+        // タイトル
+        context.fillStyle = '#FFFFFF';
+        context.font = 'bold 28px Arial';
+        context.fillText('データクリア確認', canvas.width / 2, 200);
+        
+        // 警告メッセージ
+        context.font = '18px Arial';
+        context.fillStyle = '#FFCCCC';
+        context.fillText('すべてのデータが削除されます。', canvas.width / 2, 250);
+        context.fillText('この操作は取り消せません。', canvas.width / 2, 280);
+        
+        // 削除されるデータの詳細
+        context.font = '16px Arial';
+        context.fillStyle = '#CCCCCC';
+        context.textAlign = 'left';
+        const detailX = 200;
+        let detailY = 320;
+        const lineHeight = 25;
+        
+        context.fillText('• ユーザー名', detailX, detailY);
+        detailY += lineHeight;
+        context.fillText('• 所持AP・TAP', detailX, detailY);
+        detailY += lineHeight;
+        context.fillText('• ハイスコア記録', detailX, detailY);
+        detailY += lineHeight;
+        context.fillText('• 開放済みステージ', detailX, detailY);
+        detailY += lineHeight;
+        context.fillText('• 所持アイテム', detailX, detailY);
+        
+        // ボタン
+        const buttonWidth = 120;
+        const buttonHeight = 45;
+        const buttonY = 450;
+        
+        // 削除実行ボタン
+        const deleteButtonX = canvas.width / 2 - buttonWidth - 15;
+        context.fillStyle = '#CC0000';
+        context.fillRect(deleteButtonX, buttonY, buttonWidth, buttonHeight);
+        
+        context.strokeStyle = '#FFFFFF';
+        context.lineWidth = 2;
+        context.strokeRect(deleteButtonX, buttonY, buttonWidth, buttonHeight);
+        
+        context.fillStyle = '#FFFFFF';
+        context.font = 'bold 16px Arial';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        context.fillText('削除実行', deleteButtonX + buttonWidth / 2, buttonY + buttonHeight / 2);
+        
+        // キャンセルボタン
+        const cancelButtonX = canvas.width / 2 + 15;
+        context.fillStyle = '#666666';
+        context.fillRect(cancelButtonX, buttonY, buttonWidth, buttonHeight);
+        
+        context.strokeStyle = '#FFFFFF';
+        context.lineWidth = 2;
+        context.strokeRect(cancelButtonX, buttonY, buttonWidth, buttonHeight);
+        
+        context.fillStyle = '#FFFFFF';
+        context.fillText('キャンセル', cancelButtonX + buttonWidth / 2, buttonY + buttonHeight / 2);
+        
+        // 操作説明
+        context.fillStyle = '#AAAAAA';
+        context.font = '14px Arial';
+        context.textAlign = 'center';
+        context.fillText('ESCでキャンセル', canvas.width / 2, canvas.height - 40);
+        
+        context.restore();
+    }
+    
+    /**
+     * 操作説明画面を表示
+     */
+    showControlsHelp() {
+        this.showingSettings = false;
+        this.showingControlsHelp = true;
+    }
+    
+    /**
+     * 操作説明画面を描画
+     */
+    renderControlsHelp(context) {
+        const canvas = this.gameEngine.canvas;
+        
+        // 半透明オーバーレイ
+        context.save();
+        context.fillStyle = 'rgba(0,0,0,0.8)';
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // タイトル
+        context.fillStyle = '#FFFFFF';
+        context.font = 'bold 32px Arial';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        context.fillText('操作説明', canvas.width / 2, 80);
+        
+        // 操作説明内容
+        context.font = '18px Arial';
+        context.textAlign = 'left';
+        context.textBaseline = 'top';
+        
+        const leftX = 100;
+        const rightX = 450;
+        let leftY = 130;
+        let rightY = 130;
+        const lineHeight = 30;
+        
+        // 左列：基本操作
+        context.fillStyle = '#FFFF99';
+        context.font = 'bold 20px Arial';
+        context.fillText('基本操作', leftX, leftY);
+        leftY += 35;
+        
+        context.fillStyle = '#CCCCCC';
+        context.font = '16px Arial';
+        context.fillText('• クリック/タップ: 泡を割る', leftX, leftY);
+        leftY += lineHeight;
+        context.fillText('• ドラッグ: 泡を吹き飛ばす', leftX, leftY);
+        leftY += lineHeight;
+        context.fillText('• ↑↓キー: メニュー選択', leftX, leftY);
+        leftY += lineHeight;
+        context.fillText('• Enter: 決定', leftX, leftY);
+        leftY += lineHeight;
+        context.fillText('• ESC: 戻る/終了', leftX, leftY);
+        leftY += lineHeight;
+        context.fillText('• S: ショップ（ステージ選択時）', leftX, leftY);
+        
+        // 右列：ゲームのコツ
+        context.fillStyle = '#99FFFF';
+        context.font = 'bold 20px Arial';
+        context.fillText('ゲームのコツ', rightX, rightY);
+        rightY += 35;
+        
+        context.fillStyle = '#CCCCCC';
+        context.font = '16px Arial';
+        context.fillText('• 泡は時間が経つと危険になる', rightX, rightY);
+        rightY += lineHeight;
+        context.fillText('• 連続で割るとコンボボーナス', rightX, rightY);
+        rightY += lineHeight;
+        context.fillText('• ピンクの泡でHP回復', rightX, rightY);
+        rightY += lineHeight;
+        context.fillText('• 毒の泡は避けよう', rightX, rightY);
+        rightY += lineHeight;
+        context.fillText('• 硬い泡は複数回クリック', rightX, rightY);
+        rightY += lineHeight;
+        context.fillText('• 特殊泡は画面外に逃がせる', rightX, rightY);
+        
+        // 泡の種類説明
+        context.fillStyle = '#FFCC99';
+        context.font = 'bold 20px Arial';
+        context.textAlign = 'center';
+        context.fillText('泡の種類', canvas.width / 2, 380);
+        
+        context.font = '14px Arial';
+        context.textAlign = 'left';
+        const bubbleInfoY = 410;
+        const bubbleLineHeight = 20;
+        
+        context.fillStyle = '#CCCCCC';
+        context.fillText('普通(青) 石(灰) 鉄(茶) ダイヤ(白) ピンク(回復) 毒(緑) とげとげ(連鎖) 虹色(ボーナス) 時計(時停) S字(得点) ビリビリ(妨害) 逃げる(移動)', leftX, bubbleInfoY);
+        
+        // 戻るボタン
+        const buttonWidth = 150;
+        const buttonHeight = 40;
+        const buttonX = (canvas.width - buttonWidth) / 2;
+        const buttonY = canvas.height - 80;
+        
+        context.fillStyle = '#666666';
+        context.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
+        
+        context.strokeStyle = '#FFFFFF';
+        context.lineWidth = 2;
+        context.strokeRect(buttonX, buttonY, buttonWidth, buttonHeight);
+        
+        context.fillStyle = '#FFFFFF';
+        context.font = 'bold 16px Arial';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        context.fillText('戻る', buttonX + buttonWidth / 2, buttonY + buttonHeight / 2);
+        
+        context.restore();
+    }
+    
+    /**
+     * データクリア確認画面の入力処理
+     */
+    handleDataClearConfirmationInput(event) {
+        if (event.type === 'keydown') {
+            if (event.code === 'Escape') {
+                this.cancelDataClear();
+            }
+        } else if (event.type === 'click') {
+            this.handleDataClearConfirmationClick(event);
+        }
+    }
+    
+    /**
+     * データクリア確認画面のクリック処理
+     */
+    handleDataClearConfirmationClick(event) {
+        const canvas = this.gameEngine.canvas;
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        
+        const buttonWidth = 120;
+        const buttonHeight = 45;
+        const buttonY = 450;
+        
+        // 削除実行ボタン
+        const deleteButtonX = canvas.width / 2 - buttonWidth - 15;
+        if (x >= deleteButtonX && x <= deleteButtonX + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight) {
+            this.executeDataClear();
+            return;
+        }
+        
+        // キャンセルボタン
+        const cancelButtonX = canvas.width / 2 + 15;
+        if (x >= cancelButtonX && x <= cancelButtonX + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight) {
+            this.cancelDataClear();
+            return;
+        }
+    }
+    
+    /**
+     * 操作説明画面の入力処理
+     */
+    handleControlsHelpInput(event) {
+        if (event.type === 'keydown') {
+            if (event.code === 'Escape') {
+                this.closeControlsHelp();
+            }
+        } else if (event.type === 'click') {
+            this.handleControlsHelpClick(event);
+        }
+    }
+    
+    /**
+     * 操作説明画面のクリック処理
+     */
+    handleControlsHelpClick(event) {
+        const canvas = this.gameEngine.canvas;
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        
+        const buttonWidth = 150;
+        const buttonHeight = 40;
+        const buttonX = (canvas.width - buttonWidth) / 2;
+        const buttonY = canvas.height - 80;
+        
+        // 戻るボタン
+        if (x >= buttonX && x <= buttonX + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight) {
+            this.closeControlsHelp();
+        }
+    }
+    
+    /**
+     * データクリアを実行
+     */
+    executeDataClear() {
+        // プレイヤーデータをリセット
+        this.gameEngine.playerData.username = '';
+        this.gameEngine.playerData.ap = 0;
+        this.gameEngine.playerData.tap = 0;
+        this.gameEngine.playerData.highScores = {};
+        this.gameEngine.playerData.unlockedStages = ['tutorial', 'normal'];
+        this.gameEngine.playerData.ownedItems = [];
+        
+        // ローカルストレージからも削除
+        localStorage.removeItem('bubblePop_playerData');
+        
+        console.log('All player data has been cleared');
+        
+        // 確認画面を閉じてメインメニューに戻る
+        this.showingDataClearConfirmation = false;
+        
+        // ユーザー名が削除されたので、ユーザー名入力画面を表示
+        this.showUsernameInput();
+    }
+    
+    /**
+     * データクリアをキャンセル
+     */
+    cancelDataClear() {
+        this.showingDataClearConfirmation = false;
+        this.showingSettings = true;
+    }
+    
+    /**
+     * 操作説明画面を閉じる
+     */
+    closeControlsHelp() {
+        this.showingControlsHelp = false;
+        this.showingSettings = true;
     }
 }
