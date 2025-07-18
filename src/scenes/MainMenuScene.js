@@ -688,7 +688,7 @@ export class MainMenuScene extends Scene {
      * ユーザー情報画面を開く
      */
     openUserInfo() {
-        this.showingUserInfo = true;
+        this.sceneManager.switchScene("userInfo");
     }
     
     /**
