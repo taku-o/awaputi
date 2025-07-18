@@ -1,3 +1,5 @@
+import { errorHandler } from '../utils/ErrorHandler.js';
+
 /**
  * 音響管理クラス - Web Audio API を使用した高度な音響システム
  */
@@ -38,7 +40,16 @@ export class AudioManager {
     async initialize() {
         try {
             // AudioContextの作成
+            if (!window.AudioContext && !window.webkitAudioContext) {
+                throw new Error('Web Audio API is not supported');
+            }
+            
             this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // AudioContextの状態を確認
+            if (this.audioContext.state === 'suspended') {
+                console.warn('AudioContext is suspended, will need user interaction to resume');
+            }
             
             // マスターゲインノード
             this.masterGainNode = this.audioContext.createGain();
@@ -65,14 +76,34 @@ export class AudioManager {
             this.bgmGainNode.connect(this.compressor);
             
             // リバーブエフェクトの初期化
-            await this.initializeReverb();
+            try {
+                await this.initializeReverb();
+            } catch (reverbError) {
+                errorHandler.handleError(reverbError, 'AUDIO_ERROR', { 
+                    component: 'reverb',
+                    operation: 'initialize'
+                });
+                // リバーブなしで続行
+            }
             
             // プロシージャル効果音の生成
-            this.generateProceduralSounds();
+            try {
+                this.generateProceduralSounds();
+            } catch (soundError) {
+                errorHandler.handleError(soundError, 'AUDIO_ERROR', { 
+                    component: 'proceduralSounds',
+                    operation: 'generate'
+                });
+                // 効果音なしで続行
+            }
             
             console.log('AudioManager initialized successfully');
         } catch (error) {
-            console.warn('AudioManager initialization failed:', error);
+            errorHandler.handleError(error, 'AUDIO_ERROR', { 
+                operation: 'initialize',
+                userAgent: navigator.userAgent,
+                audioContextSupport: !!(window.AudioContext || window.webkitAudioContext)
+            });
             this.isEnabled = false;
         }
     }
@@ -475,6 +506,40 @@ export class AudioManager {
         }
         
         try {
+            // 入力値を検証
+            const nameValidation = errorHandler.validateInput(soundName, 'string', {
+                maxLength: 50,
+                pattern: /^[a-zA-Z_]+$/
+            });
+            
+            if (!nameValidation.isValid) {
+                errorHandler.handleError(new Error(`Invalid sound name: ${nameValidation.errors.join(', ')}`), 'VALIDATION_ERROR', {
+                    input: soundName,
+                    errors: nameValidation.errors
+                });
+                return null;
+            }
+            
+            // オプションを検証
+            const optionsValidation = errorHandler.validateInput(options, 'object', {
+                properties: {
+                    volume: { type: 'number', min: 0, max: 2 },
+                    pitch: { type: 'number', min: 0.1, max: 4 },
+                    pan: { type: 'number', min: -1, max: 1 },
+                    reverb: { type: 'number', min: 0, max: 1 },
+                    delay: { type: 'number', min: 0, max: 10 }
+                }
+            });
+            
+            if (!optionsValidation.isValid) {
+                errorHandler.handleError(new Error(`Invalid sound options: ${optionsValidation.errors.join(', ')}`), 'VALIDATION_ERROR', {
+                    input: options,
+                    errors: optionsValidation.errors
+                });
+                // サニタイズされたオプションを使用
+                options = optionsValidation.sanitizedValue;
+            }
+            
             const buffer = this.soundBuffers.get(soundName);
             const source = this.audioContext.createBufferSource();
             source.buffer = buffer;
@@ -521,7 +586,12 @@ export class AudioManager {
             
             return source;
         } catch (error) {
-            console.warn(`Failed to play sound ${soundName}:`, error);
+            errorHandler.handleError(error, 'AUDIO_ERROR', { 
+                operation: 'playSound',
+                soundName: soundName,
+                options: options,
+                contextState: this.audioContext ? this.audioContext.state : 'none'
+            });
             return null;
         }
     }

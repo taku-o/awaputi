@@ -1,5 +1,6 @@
 import { Bubble } from '../bubbles/Bubble.js';
 import { performanceOptimizer } from '../utils/PerformanceOptimizer.js';
+import { errorHandler } from '../utils/ErrorHandler.js';
 
 /**
  * 泡管理クラス - パフォーマンス最適化対応 + 高度なドラッグシステム
@@ -43,51 +44,94 @@ export class BubbleManager {
      * 泡を生成
      */
     spawnBubble(type = null, position = null) {
-        // パフォーマンス最適化による制限
-        const maxBubbles = Math.min(this.maxBubbles, performanceOptimizer.getMaxBubbles());
-        
-        if (this.bubbles.length >= maxBubbles) {
+        try {
+            // パフォーマンス最適化による制限
+            const maxBubbles = Math.min(this.maxBubbles, performanceOptimizer.getMaxBubbles());
+            
+            if (this.bubbles.length >= maxBubbles) {
+                return null;
+            }
+            
+            // 入力値を検証
+            if (type !== null) {
+                const typeValidation = errorHandler.validateInput(type, 'string', {
+                    maxLength: 20,
+                    pattern: /^[a-zA-Z_]+$/
+                });
+                
+                if (!typeValidation.isValid) {
+                    errorHandler.handleError(new Error(`Invalid bubble type: ${typeValidation.errors.join(', ')}`), 'VALIDATION_ERROR', {
+                        input: type,
+                        errors: typeValidation.errors
+                    });
+                    type = 'normal'; // フォールバック
+                }
+            }
+            
+            if (position !== null) {
+                const positionValidation = errorHandler.validateInput(position, 'object', {
+                    properties: {
+                        x: { type: 'number', min: -100, max: 1000 },
+                        y: { type: 'number', min: -100, max: 800 }
+                    }
+                });
+                
+                if (!positionValidation.isValid) {
+                    errorHandler.handleError(new Error(`Invalid bubble position: ${positionValidation.errors.join(', ')}`), 'VALIDATION_ERROR', {
+                        input: position,
+                        errors: positionValidation.errors
+                    });
+                    position = null; // ランダム位置にフォールバック
+                }
+            }
+            
+            // ランダムな種類を選択（指定がない場合）
+            if (!type) {
+                type = this.getRandomBubbleType();
+            }
+            
+            // ランダムな位置を選択（指定がない場合）
+            if (!position) {
+                position = this.getRandomPosition();
+            }
+            
+            // プールから泡を取得するか新規作成
+            let bubble;
+            const pooledBubble = this.gameEngine.getBubbleFromPool();
+            if (pooledBubble) {
+                // プールされた泡を再初期化
+                Object.assign(pooledBubble, {
+                    type: type,
+                    position: { ...position },
+                    velocity: { x: 0, y: 0 },
+                    size: 50,
+                    health: this.getBubbleHealthByType(type),
+                    maxHealth: this.getBubbleHealthByType(type),
+                    age: 0,
+                    maxAge: 10000,
+                    isAlive: true,
+                    effects: [],
+                    clickCount: 0,
+                    isEscaping: false,
+                    escapeSpeed: 0,
+                    lastMouseDistance: Infinity
+                });
+                bubble = pooledBubble;
+            } else {
+                bubble = new Bubble(type, position);
+            }
+            
+            this.bubbles.push(bubble);
+            return bubble;
+            
+        } catch (error) {
+            errorHandler.handleError(error, 'BUBBLE_CREATION_ERROR', {
+                type: type,
+                position: position,
+                bubbleCount: this.bubbles.length
+            });
             return null;
         }
-        
-        // ランダムな種類を選択（指定がない場合）
-        if (!type) {
-            type = this.getRandomBubbleType();
-        }
-        
-        // ランダムな位置を選択（指定がない場合）
-        if (!position) {
-            position = this.getRandomPosition();
-        }
-        
-        // プールから泡を取得するか新規作成
-        let bubble;
-        const pooledBubble = this.gameEngine.getBubbleFromPool();
-        if (pooledBubble) {
-            // プールされた泡を再初期化
-            Object.assign(pooledBubble, {
-                type: type,
-                position: { ...position },
-                velocity: { x: 0, y: 0 },
-                size: 50,
-                health: this.getBubbleHealthByType(type),
-                maxHealth: this.getBubbleHealthByType(type),
-                age: 0,
-                maxAge: 10000,
-                isAlive: true,
-                effects: [],
-                clickCount: 0,
-                isEscaping: false,
-                escapeSpeed: 0,
-                lastMouseDistance: Infinity
-            });
-            bubble = pooledBubble;
-        } else {
-            bubble = new Bubble(type, position);
-        }
-        
-        this.bubbles.push(bubble);
-        return bubble;
     }
     
     /**

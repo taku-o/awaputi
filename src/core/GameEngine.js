@@ -18,19 +18,33 @@ import { memoryManager } from '../utils/MemoryManager.js';
 import { performanceOptimizer } from '../utils/PerformanceOptimizer.js';
 import { browserCompatibility } from '../utils/BrowserCompatibility.js';
 import { ResponsiveCanvasManager } from '../utils/ResponsiveCanvasManager.js';
+import { errorHandler } from '../utils/ErrorHandler.js';
 
 /**
  * ゲームエンジンクラス - 統合版（パフォーマンス最適化 + 音響・視覚効果）
  */
 export class GameEngine {
     constructor(canvas) {
-        this.canvas = canvas;
-        this.context = canvas.getContext('2d');
-        this.isRunning = false;
-        this.lastTime = 0;
-        
-        // ブラウザ互換性チェック
-        this.checkBrowserCompatibility();
+        try {
+            this.canvas = canvas;
+            this.context = canvas.getContext('2d');
+            this.isRunning = false;
+            this.lastTime = 0;
+            
+            // Canvas コンテキストの検証
+            if (!this.context) {
+                throw new Error('Failed to get 2D rendering context');
+            }
+            
+            // ブラウザ互換性チェック
+            this.checkBrowserCompatibility();
+        } catch (error) {
+            errorHandler.handleError(error, 'CANVAS_ERROR', { 
+                canvasElement: canvas,
+                contextType: '2d'
+            });
+            throw error;
+        }
         
         // レスポンシブCanvas管理
         this.responsiveCanvasManager = new ResponsiveCanvasManager(canvas, this);
@@ -133,26 +147,44 @@ export class GameEngine {
      * シーンを初期化
      */
     initializeScenes() {
-        // シーンを作成
-        const mainMenuScene = new MainMenuScene(this);
-        const stageSelectScene = new StageSelectScene(this);
-        const gameScene = new GameScene(this);
-        const shopScene = new ShopScene(this);
-        const userInfoScene = new UserInfoScene(this);
-        
-        // シーンを登録
-        this.sceneManager.addScene('menu', mainMenuScene);
-        this.sceneManager.addScene('stageSelect', stageSelectScene);
-        this.sceneManager.addScene('game', gameScene);
-        this.sceneManager.addScene('shop', shopScene);
-        this.sceneManager.addScene('userInfo', userInfoScene);
-        
-        // データを読み込み
-        this.playerData.load();
-        this.itemManager.initialize();
-        
-        // 初期シーンをメインメニューに設定
-        this.sceneManager.switchScene('menu');
+        try {
+            // シーンを作成
+            const mainMenuScene = new MainMenuScene(this);
+            const stageSelectScene = new StageSelectScene(this);
+            const gameScene = new GameScene(this);
+            const shopScene = new ShopScene(this);
+            const userInfoScene = new UserInfoScene(this);
+            
+            // シーンを登録
+            this.sceneManager.addScene('menu', mainMenuScene);
+            this.sceneManager.addScene('stageSelect', stageSelectScene);
+            this.sceneManager.addScene('game', gameScene);
+            this.sceneManager.addScene('shop', shopScene);
+            this.sceneManager.addScene('userInfo', userInfoScene);
+            
+            // データを読み込み
+            try {
+                this.playerData.load();
+            } catch (error) {
+                errorHandler.handleError(error, 'STORAGE_ERROR', { operation: 'load', data: 'playerData' });
+                // フォールバック: デフォルトデータで続行
+                this.playerData.reset();
+            }
+            
+            try {
+                this.itemManager.initialize();
+            } catch (error) {
+                errorHandler.handleError(error, 'INITIALIZATION_ERROR', { component: 'itemManager' });
+                // フォールバック: アイテムシステムなしで続行
+            }
+            
+            // 初期シーンをメインメニューに設定
+            this.sceneManager.switchScene('menu');
+            
+        } catch (error) {
+            errorHandler.handleError(error, 'INITIALIZATION_ERROR', { component: 'scenes' });
+            throw error;
+        }
     }
     
     /**
@@ -214,30 +246,48 @@ export class GameEngine {
     gameLoop() {
         if (!this.isRunning) return;
         
-        const currentTime = performance.now();
-        const deltaTime = currentTime - this.lastTime;
-        this.lastTime = currentTime;
-        
-        // パフォーマンス監視開始
-        this.performanceMonitor.startFrame(currentTime);
-        performanceOptimizer.startFrame(currentTime);
-        
-        const updateStartTime = performance.now();
-        this.update(deltaTime);
-        this.performanceStats.updateTime = performance.now() - updateStartTime;
-        
-        const renderStartTime = performance.now();
-        this.render();
-        this.performanceStats.renderTime = performance.now() - renderStartTime;
-        
-        this.frameCount++;
-        
-        // 統計更新
-        if (this.frameCount % 60 === 0) {
-            this.updatePerformanceStats();
+        try {
+            const currentTime = performance.now();
+            const deltaTime = currentTime - this.lastTime;
+            this.lastTime = currentTime;
+            
+            // パフォーマンス監視開始
+            this.performanceMonitor.startFrame(currentTime);
+            performanceOptimizer.startFrame(currentTime);
+            
+            const updateStartTime = performance.now();
+            this.update(deltaTime);
+            this.performanceStats.updateTime = performance.now() - updateStartTime;
+            
+            const renderStartTime = performance.now();
+            this.render();
+            this.performanceStats.renderTime = performance.now() - renderStartTime;
+            
+            this.frameCount++;
+            
+            // 統計更新
+            if (this.frameCount % 60 === 0) {
+                this.updatePerformanceStats();
+            }
+            
+            requestAnimationFrame(() => this.gameLoop());
+            
+        } catch (error) {
+            errorHandler.handleError(error, 'GAME_LOOP_ERROR', {
+                frameCount: this.frameCount,
+                isRunning: this.isRunning,
+                deltaTime: this.lastTime ? performance.now() - this.lastTime : 0
+            });
+            
+            // 重要なエラーの場合はゲームを停止
+            if (error.name === 'ReferenceError' || error.message.includes('Canvas')) {
+                this.stop();
+                return;
+            }
+            
+            // 軽微なエラーの場合は続行
+            requestAnimationFrame(() => this.gameLoop());
         }
-        
-        requestAnimationFrame(() => this.gameLoop());
     }
     
     /**

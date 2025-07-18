@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ErrorHandler Test - BubblePop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f0f0f0;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+        .error-button {
+            background: #dc3545;
+        }
+        .error-button:hover {
+            background: #c82333;
+        }
+        .success-button {
+            background: #28a745;
+        }
+        .success-button:hover {
+            background: #218838;
+        }
+        .log-area {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .stats-display {
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .validation-test {
+            border-left: 4px solid #17a2b8;
+            padding-left: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h1>ErrorHandler テスト</h1>
+    <p>このページはBubblePopゲームのErrorHandlerクラスの機能をテストします。</p>
+
+    <div class="test-section">
+        <h2>1. 基本エラーハンドリングテスト</h2>
+        <button class="test-button error-button" onclick="testBasicError()">基本エラーを発生</button>
+        <button class="test-button error-button" onclick="testCanvasError()">Canvasエラーを発生</button>
+        <button class="test-button error-button" onclick="testAudioError()">Audioエラーを発生</button>
+        <button class="test-button error-button" onclick="testStorageError()">Storageエラーを発生</button>
+        <button class="test-button error-button" onclick="testMemoryWarning()">メモリ警告を発生</button>
+    </div>
+
+    <div class="test-section validation-test">
+        <h2>2. 入力値検証テスト</h2>
+        <button class="test-button" onclick="testStringValidation()">文字列検証</button>
+        <button class="test-button" onclick="testNumberValidation()">数値検証</button>
+        <button class="test-button" onclick="testObjectValidation()">オブジェクト検証</button>
+        <button class="test-button" onclick="testArrayValidation()">配列検証</button>
+        <button class="test-button success-button" onclick="testValidInput()">正常な入力</button>
+    </div>
+
+    <div class="test-section">
+        <h2>3. 復旧機能テスト</h2>
+        <button class="test-button" onclick="testRecoveryMechanism()">復旧メカニズム</button>
+        <button class="test-button" onclick="testFallbackMode()">フォールバックモード</button>
+        <button class="test-button" onclick="testGracefulDegradation()">グレースフルデグラデーション</button>
+    </div>
+
+    <div class="test-section">
+        <h2>4. パフォーマンス監視テスト</h2>
+        <button class="test-button" onclick="simulateHighMemoryUsage()">高メモリ使用量をシミュレート</button>
+        <button class="test-button" onclick="simulateLowFPS()">低FPSをシミュレート</button>
+        <button class="test-button" onclick="testPerformanceOptimization()">パフォーマンス最適化</button>
+    </div>
+
+    <div class="test-section">
+        <h2>5. エラー統計とログ</h2>
+        <button class="test-button success-button" onclick="showErrorStats()">エラー統計を表示</button>
+        <button class="test-button success-button" onclick="showErrorLog()">エラーログを表示</button>
+        <button class="test-button" onclick="clearErrorLog()">ログをクリア</button>
+        <div class="stats-display" id="statsDisplay">統計情報がここに表示されます</div>
+    </div>
+
+    <div class="test-section">
+        <h2>6. ログ表示</h2>
+        <div class="log-area" id="logArea">テストログがここに表示されます...</div>
+        <button class="test-button" onclick="clearLog()">ログをクリア</button>
+    </div>
+
+    <script type="module">
+        import { errorHandler } from './src/utils/ErrorHandler.js';
+
+        // グローバルに公開（テスト用）
+        window.errorHandler = errorHandler;
+        window.testLog = [];
+
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logMessage = `[${timestamp}] ${message}`;
+            window.testLog.push(logMessage);
+            
+            const logArea = document.getElementById('logArea');
+            logArea.innerHTML = window.testLog.slice(-50).join('\n');
+            logArea.scrollTop = logArea.scrollHeight;
+            
+            console.log(logMessage);
+        }
+
+        // 1. 基本エラーハンドリングテスト
+        window.testBasicError = function() {
+            log('基本エラーテストを開始...');
+            try {
+                throw new Error('これはテスト用の基本エラーです');
+            } catch (error) {
+                errorHandler.handleError(error, 'TEST_ERROR', { testType: 'basic' });
+                log('基本エラーが正常に処理されました');
+            }
+        };
+
+        window.testCanvasError = function() {
+            log('Canvasエラーテストを開始...');
+            const error = new Error('Canvas context could not be created');
+            errorHandler.handleError(error, 'CANVAS_ERROR', { 
+                element: 'testCanvas',
+                contextType: '2d'
+            });
+            log('Canvasエラーが処理されました（復旧メカニズムが動作するはずです）');
+        };
+
+        window.testAudioError = function() {
+            log('Audioエラーテストを開始...');
+            const error = new Error('Web Audio API is not supported');
+            errorHandler.handleError(error, 'AUDIO_ERROR', { 
+                feature: 'webAudio',
+                userAgent: navigator.userAgent
+            });
+            log('Audioエラーが処理されました（音声が無効化されるはずです）');
+        };
+
+        window.testStorageError = function() {
+            log('Storageエラーテストを開始...');
+            const error = new Error('LocalStorage quota exceeded');
+            errorHandler.handleError(error, 'STORAGE_ERROR', { 
+                operation: 'setItem',
+                key: 'testData'
+            });
+            log('Storageエラーが処理されました（メモリストレージにフォールバックするはずです）');
+        };
+
+        window.testMemoryWarning = function() {
+            log('メモリ警告テストを開始...');
+            const error = new Error('High memory usage detected: 150MB / 200MB');
+            errorHandler.handleError(error, 'MEMORY_WARNING', { 
+                usedMB: 150,
+                limitMB: 200,
+                percentage: 75
+            });
+            log('メモリ警告が処理されました（エフェクトが削減されるはずです）');
+        };
+
+        // 2. 入力値検証テスト
+        window.testStringValidation = function() {
+            log('文字列検証テストを開始...');
+            
+            // 無効な文字列をテスト
+            const invalidInputs = [
+                { value: 'a'.repeat(100), desc: '長すぎる文字列' },
+                { value: '<script>alert("xss")</script>', desc: 'HTMLタグを含む文字列' },
+                { value: 123, desc: '数値（文字列に変換されるべき）' },
+                { value: null, desc: 'null値' }
+            ];
+
+            invalidInputs.forEach(input => {
+                const result = errorHandler.validateInput(input.value, 'string', {
+                    maxLength: 50,
+                    escapeHtml: true,
+                    required: input.value !== null
+                });
+                
+                log(`${input.desc}: ${result.isValid ? '有効' : '無効'} - エラー: ${result.errors.join(', ')}`);
+                if (result.sanitizedValue !== input.value) {
+                    log(`  サニタイズ後: "${result.sanitizedValue}"`);
+                }
+            });
+        };
+
+        window.testNumberValidation = function() {
+            log('数値検証テストを開始...');
+            
+            const invalidInputs = [
+                { value: 'not a number', desc: '文字列' },
+                { value: -10, desc: '負の数値（最小値0）' },
+                { value: 1000, desc: '大きすぎる数値（最大値100）' },
+                { value: 3.14, desc: '小数（整数が必要）' },
+                { value: NaN, desc: 'NaN' },
+                { value: Infinity, desc: 'Infinity' }
+            ];
+
+            invalidInputs.forEach(input => {
+                const result = errorHandler.validateInput(input.value, 'number', {
+                    min: 0,
+                    max: 100,
+                    integer: true
+                });
+                
+                log(`${input.desc}: ${result.isValid ? '有効' : '無効'} - 値: ${result.sanitizedValue}`);
+                if (result.errors.length > 0) {
+                    log(`  エラー: ${result.errors.join(', ')}`);
+                }
+            });
+        };
+
+        window.testObjectValidation = function() {
+            log('オブジェクト検証テストを開始...');
+            
+            const testObject = {
+                name: 'TestUser',
+                age: 25,
+                email: 'test@example.com',
+                score: 'invalid_score'
+            };
+
+            const result = errorHandler.validateInput(testObject, 'object', {
+                properties: {
+                    name: { type: 'string', maxLength: 20 },
+                    age: { type: 'number', min: 0, max: 120, integer: true },
+                    email: { type: 'string', pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
+                    score: { type: 'number', min: 0 }
+                }
+            });
+
+            log(`オブジェクト検証: ${result.isValid ? '有効' : '無効'}`);
+            if (result.errors.length > 0) {
+                log(`エラー: ${result.errors.join(', ')}`);
+            }
+            log(`検証後オブジェクト: ${JSON.stringify(result.sanitizedValue, null, 2)}`);
+        };
+
+        window.testArrayValidation = function() {
+            log('配列検証テストを開始...');
+            
+            const testArray = ['valid', 123, 'another_valid', 'toolongstringthatshouldbetruncated'];
+
+            const result = errorHandler.validateInput(testArray, 'array', {
+                maxLength: 3,
+                itemType: 'string',
+                itemConstraints: { maxLength: 10 }
+            });
+
+            log(`配列検証: ${result.isValid ? '有効' : '無効'}`);
+            if (result.errors.length > 0) {
+                log(`エラー: ${result.errors.join(', ')}`);
+            }
+            log(`検証後配列: ${JSON.stringify(result.sanitizedValue)}`);
+        };
+
+        window.testValidInput = function() {
+            log('正常な入力テストを開始...');
+            
+            const validInputs = [
+                { value: 'ValidString', type: 'string', constraints: { maxLength: 20 } },
+                { value: 42, type: 'number', constraints: { min: 0, max: 100 } },
+                { value: true, type: 'boolean', constraints: {} },
+                { value: [1, 2, 3], type: 'array', constraints: { maxLength: 5 } }
+            ];
+
+            validInputs.forEach(input => {
+                const result = errorHandler.validateInput(input.value, input.type, input.constraints);
+                log(`${input.type}(${JSON.stringify(input.value)}): ${result.isValid ? '✓ 有効' : '✗ 無効'}`);
+            });
+        };
+
+        // 3. 復旧機能テスト
+        window.testRecoveryMechanism = function() {
+            log('復旧メカニズムテストを開始...');
+            
+            // Canvas復旧テスト
+            const canvasError = new Error('Canvas rendering failed');
+            errorHandler.handleError(canvasError, 'CANVAS_ERROR', { testRecovery: true });
+            
+            // Audio復旧テスト
+            const audioError = new Error('Audio playback failed');
+            errorHandler.handleError(audioError, 'AUDIO_ERROR', { testRecovery: true });
+            
+            log('復旧メカニズムが実行されました');
+        };
+
+        window.testFallbackMode = function() {
+            log('フォールバックモードテストを開始...');
+            
+            // 重要なエラーを複数回発生させて最大試行回数に達する
+            for (let i = 0; i < 3; i++) {
+                const error = new Error(`Canvas error attempt ${i + 1}`);
+                errorHandler.handleError(error, 'CANVAS_ERROR', { attempt: i + 1 });
+            }
+            
+            log('フォールバックモードがアクティブになったはずです');
+            
+            // フォールバック状態を確認
+            const fallbackState = errorHandler.getFallbackState();
+            log(`フォールバック状態: ${JSON.stringify(fallbackState, null, 2)}`);
+        };
+
+        window.testGracefulDegradation = function() {
+            log('グレースフルデグラデーションテストを開始...');
+            
+            // 段階的に機能を無効化
+            errorHandler.handleError(new Error('Audio not supported'), 'AUDIO_ERROR');
+            errorHandler.handleError(new Error('Storage quota exceeded'), 'STORAGE_ERROR');
+            errorHandler.handleError(new Error('High memory usage'), 'MEMORY_WARNING');
+            
+            log('グレースフルデグラデーションが実行されました');
+            
+            const fallbackState = errorHandler.getFallbackState();
+            log(`現在の状態: ${JSON.stringify(fallbackState, null, 2)}`);
+        };
+
+        // 4. パフォーマンス監視テスト
+        window.simulateHighMemoryUsage = function() {
+            log('高メモリ使用量シミュレーションを開始...');
+            
+            // メモリ使用量警告をシミュレート
+            const memoryError = new Error('High memory usage: 180MB / 200MB');
+            errorHandler.handleError(memoryError, 'MEMORY_WARNING', {
+                usedMB: 180,
+                limitMB: 200,
+                percentage: 90
+            });
+            
+            log('高メモリ使用量が検出され、最適化が実行されました');
+        };
+
+        window.simulateLowFPS = function() {
+            log('低FPSシミュレーションを開始...');
+            
+            const performanceError = new Error('Low FPS detected: 15');
+            errorHandler.handleError(performanceError, 'PERFORMANCE_WARNING', {
+                fps: 15,
+                timestamp: performance.now()
+            });
+            
+            log('低FPSが検出され、パフォーマンス最適化が実行されました');
+        };
+
+        window.testPerformanceOptimization = function() {
+            log('パフォーマンス最適化テストを開始...');
+            
+            // 複数のパフォーマンス問題を同時に発生
+            errorHandler.handleError(new Error('Memory usage: 160MB'), 'MEMORY_WARNING', { usedMB: 160 });
+            errorHandler.handleError(new Error('Low FPS: 20'), 'PERFORMANCE_WARNING', { fps: 20 });
+            
+            log('パフォーマンス最適化が実行されました');
+        };
+
+        // 5. エラー統計とログ
+        window.showErrorStats = function() {
+            log('エラー統計を取得中...');
+            
+            const stats = errorHandler.getErrorStats();
+            const statsDisplay = document.getElementById('statsDisplay');
+            
+            statsDisplay.innerHTML = `
+                <h4>エラー統計</h4>
+                <p><strong>総エラー数:</strong> ${stats.total}</p>
+                <p><strong>復旧成功数:</strong> ${stats.recovered}</p>
+                <p><strong>重要エラー数:</strong> ${stats.critical}</p>
+                <h5>エラータイプ別:</h5>
+                <ul>
+                    ${Object.entries(stats.byType).map(([type, count]) => 
+                        `<li>${type}: ${count}回</li>`
+                    ).join('')}
+                </ul>
+                <h5>コンテキスト別:</h5>
+                <ul>
+                    ${Object.entries(stats.byContext).map(([context, count]) => 
+                        `<li>${context}: ${count}回</li>`
+                    ).join('')}
+                </ul>
+            `;
+            
+            log('エラー統計を表示しました');
+        };
+
+        window.showErrorLog = function() {
+            log('エラーログを取得中...');
+            
+            const errorLog = errorHandler.getErrorLog();
+            const logArea = document.getElementById('logArea');
+            
+            const logContent = errorLog.slice(-20).map(entry => 
+                `[${entry.timestamp}] ${entry.context}: ${entry.message}`
+            ).join('\n');
+            
+            logArea.innerHTML = logContent || 'エラーログは空です';
+            
+            log(`${errorLog.length}件のエラーログを表示しました`);
+        };
+
+        window.clearErrorLog = function() {
+            errorHandler.reset();
+            log('エラーログと統計がクリアされました');
+            
+            const statsDisplay = document.getElementById('statsDisplay');
+            statsDisplay.innerHTML = '統計情報がクリアされました';
+        };
+
+        window.clearLog = function() {
+            window.testLog = [];
+            document.getElementById('logArea').innerHTML = 'ログがクリアされました';
+        };
+
+        // 初期化
+        log('ErrorHandler テストページが読み込まれました');
+        log('各ボタンをクリックしてテストを実行してください');
+        
+        // ErrorHandlerの状態を確認
+        const fallbackState = errorHandler.getFallbackState();
+        log(`初期フォールバック状態: ${JSON.stringify(fallbackState)}`);
+    </script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 import { GameEngine } from './core/GameEngine.js';
 import { browserCompatibility } from './utils/BrowserCompatibility.js';
+import { errorHandler } from './utils/ErrorHandler.js';
 
 /**
  * ローディング画面を管理
@@ -76,13 +77,17 @@ async function initGame() {
         
         // 重要な機能が利用できない場合はエラー
         if (!compatibilityReport.features.canvas) {
-            throw new Error('お使いのブラウザはCanvas APIに対応していません。モダンブラウザでお試しください。');
+            const error = new Error('お使いのブラウザはCanvas APIに対応していません。モダンブラウザでお試しください。');
+            errorHandler.handleError(error, 'CANVAS_ERROR', { feature: 'canvas', compatibility: compatibilityReport });
+            throw error;
         }
         
         // Canvas要素を取得
         const canvas = document.getElementById('gameCanvas');
         if (!canvas) {
-            throw new Error('Canvas要素が見つかりません。');
+            const error = new Error('Canvas要素が見つかりません。');
+            errorHandler.handleError(error, 'CANVAS_ERROR', { element: 'gameCanvas' });
+            throw error;
         }
         
         // ステップ2: ゲームエンジン初期化
@@ -100,7 +105,7 @@ async function initGame() {
             try {
                 await gameEngine.audioManager.initialize();
             } catch (error) {
-                console.warn('Audio initialization failed:', error);
+                errorHandler.handleError(error, 'AUDIO_ERROR', { feature: 'webAudio' });
             }
         }
         
@@ -142,44 +147,23 @@ async function initGame() {
  * エラーハンドリング
  */
 function setupErrorHandling() {
-    // 未処理のエラーをキャッチ
-    window.addEventListener('error', (event) => {
-        console.error('Unhandled error:', event.error);
-        
-        // 重要なエラーの場合はユーザーに通知
-        if (event.error && event.error.message) {
-            const errorMessage = event.error.message;
-            if (errorMessage.includes('Canvas') || 
-                errorMessage.includes('WebGL') || 
-                errorMessage.includes('AudioContext')) {
-                
-                const errorDiv = document.createElement('div');
-                errorDiv.className = 'error-message';
-                errorDiv.innerHTML = `
-                    <h3>技術的なエラーが発生しました</h3>
-                    <p>${errorMessage}</p>
-                    <p>ブラウザを更新するか、別のブラウザでお試しください。</p>
-                    <button onclick="location.reload()" style="
-                        margin-top: 10px;
-                        padding: 10px 20px;
-                        background: white;
-                        color: red;
-                        border: none;
-                        border-radius: 5px;
-                        cursor: pointer;
-                        font-size: 16px;
-                    ">再読み込み</button>
-                `;
-                document.body.appendChild(errorDiv);
-            }
-        }
-    });
+    // ErrorHandlerは自動的にグローバルエラーハンドラーを設定するため、
+    // ここでは追加の設定のみ行う
     
-    // 未処理のPromise拒否をキャッチ
-    window.addEventListener('unhandledrejection', (event) => {
-        console.error('Unhandled promise rejection:', event.reason);
-        event.preventDefault();
-    });
+    // LoadingManagerのエラー表示を ErrorHandler と統合
+    const originalShowError = LoadingManager.prototype.showError;
+    LoadingManager.prototype.showError = function(message) {
+        // ErrorHandlerにエラーを報告
+        errorHandler.handleError(new Error(message), 'INITIALIZATION_ERROR', {
+            context: 'LoadingManager',
+            step: this.currentStep
+        });
+        
+        // 元の処理を実行
+        originalShowError.call(this, message);
+    };
+    
+    console.log('Enhanced error handling setup completed');
 }
 
 /**
