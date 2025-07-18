@@ -1,1 +1,0 @@
-BubblePopゲームプロジェクトの開発環境。Python3とNode.jsがインストール済み。

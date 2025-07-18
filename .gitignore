@@ -2,6 +2,7 @@
 CLAUDE.local.md
 .claude/settings.local.json
 .*.swp
+.container-use/
 
 # Kiro IDE settings (exclude personal settings, include specs)
 .kiro/settings/
