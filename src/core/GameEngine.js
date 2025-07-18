@@ -8,13 +8,17 @@ import { MainMenuScene } from '../scenes/MainMenuScene.js';
 import { StageSelectScene } from '../scenes/StageSelectScene.js';
 import { GameScene } from '../scenes/GameScene.js';
 import { ShopScene } from '../scenes/ShopScene.js';
+import { UserInfoScene } from '../scenes/UserInfoScene.js';
+import { AudioManager } from '../audio/AudioManager.js';
+import { ParticleManager } from '../effects/ParticleManager.js';
+import { EffectManager } from '../effects/EffectManager.js';
 import { poolManager } from '../utils/ObjectPool.js';
 import { RenderOptimizer, PerformanceMonitor } from '../utils/RenderOptimizer.js';
 import { memoryManager } from '../utils/MemoryManager.js';
 import { performanceOptimizer } from '../utils/PerformanceOptimizer.js';
 
 /**
- * ゲームエンジンクラス
+ * ゲームエンジンクラス - 統合版（パフォーマンス最適化 + 音響・視覚効果）
  */
 export class GameEngine {
     constructor(canvas) {
@@ -30,6 +34,11 @@ export class GameEngine {
         this.renderOptimizer.addLayer('bubbles', 1);
         this.renderOptimizer.addLayer('effects', 2);
         this.renderOptimizer.addLayer('ui', 3);
+        
+        // 新しいシステム（音響・視覚効果）
+        this.audioManager = new AudioManager();
+        this.particleManager = new ParticleManager();
+        this.effectManager = new EffectManager();
         
         // コアシステム
         this.playerData = new PlayerData(this);
@@ -121,12 +130,14 @@ export class GameEngine {
         const stageSelectScene = new StageSelectScene(this);
         const gameScene = new GameScene(this);
         const shopScene = new ShopScene(this);
+        const userInfoScene = new UserInfoScene(this);
         
         // シーンを登録
         this.sceneManager.addScene('menu', mainMenuScene);
         this.sceneManager.addScene('stageSelect', stageSelectScene);
         this.sceneManager.addScene('game', gameScene);
         this.sceneManager.addScene('shop', shopScene);
+        this.sceneManager.addScene('userInfo', userInfoScene);
         
         // データを読み込み
         this.playerData.load();
@@ -247,6 +258,12 @@ export class GameEngine {
         // 特殊効果の更新
         this.updateSpecialEffects(adjustedDeltaTime);
         
+        // エフェクトマネージャーの更新
+        this.effectManager.update(adjustedDeltaTime);
+        
+        // パーティクルマネージャーの更新
+        this.particleManager.update(adjustedDeltaTime);
+        
         // シーンマネージャーに更新を委譲
         this.sceneManager.update(adjustedDeltaTime);
     }
@@ -263,8 +280,17 @@ export class GameEngine {
             this.applyScreenShake();
         }
         
+        // エフェクトマネージャーの前処理エフェクト
+        this.effectManager.renderPreEffects(this.context);
+        
         // シーンマネージャーに描画を委譲
         this.sceneManager.render(this.context);
+        
+        // パーティクルエフェクトを描画
+        this.particleManager.render(this.context);
+        
+        // エフェクトマネージャーの後処理エフェクト
+        this.effectManager.renderPostEffects(this.context);
         
         // レンダリング最適化終了
         this.renderOptimizer.render();
@@ -382,6 +408,72 @@ export class GameEngine {
      */
     addRenderObject(obj, layer = 'default') {
         this.renderOptimizer.addObject(obj, layer);
+    }
+    
+    /**
+     * 爆発エフェクトを作成（統合）
+     */
+    createExplosion(x, y, bubbleType, bubbleSize, intensity = 1) {
+        // パーティクルエフェクト
+        this.particleManager.createBubblePopEffect(x, y, bubbleType, bubbleSize);
+        
+        // 音響エフェクト
+        this.audioManager.playPopSound(false, bubbleType);
+        
+        // 視覚エフェクト
+        if (intensity > 0.5) {
+            this.effectManager.addScreenFlash(0.1, 100, '#FFFFFF');
+        }
+    }
+    
+    /**
+     * ボーナスタイムを開始
+     */
+    startBonusTime(duration, multiplier = 2) {
+        this.bonusTimeRemaining = Math.max(this.bonusTimeRemaining, duration);
+        this.scoreMultiplier = multiplier;
+        
+        // 音響・視覚エフェクト
+        this.audioManager.playBonusSound();
+        this.effectManager.addScreenFlash(0.2, 300, '#FF69B4');
+        this.effectManager.addScreenTint(0.1, duration, '#FF69B4');
+        
+        console.log(`ボーナスタイム開始: ${duration}ms, 倍率: ${multiplier}x`);
+    }
+    
+    /**
+     * 時間停止を開始
+     */
+    startTimeStop(duration) {
+        this.timeStopRemaining = Math.max(this.timeStopRemaining, duration);
+        
+        // 音響・視覚エフェクト
+        this.audioManager.playTimeStopSound();
+        this.effectManager.addScreenFlash(0.3, 500, '#FFD700');
+        this.effectManager.addScreenTint(0.15, duration, '#FFD700');
+        
+        console.log(`時間停止開始: ${duration}ms`);
+    }
+    
+    /**
+     * 画面揺れを開始
+     */
+    startScreenShake(duration, intensity = 10) {
+        if (!performanceOptimizer.shouldRunEffect('shake')) {
+            return; // 低品質モードでは画面揺れをスキップ
+        }
+        
+        this.screenShakeIntensity = intensity * performanceOptimizer.getEffectQuality();
+        this.screenShakeRemaining = duration;
+        this.inputDisabled = true;
+        
+        // 音響エフェクト
+        this.audioManager.playElectricSound();
+        
+        // 画面揺れエフェクト
+        this.effectManager.addScreenShake(intensity, duration, 'random');
+        
+        console.log(`画面揺れ開始: 強度${this.screenShakeIntensity}, 時間${duration}ms`);
     }
     
     /**
@@ -536,7 +628,6 @@ export class GameEngine {
         // ボーナスタイムの更新
         if (this.bonusTimeRemaining > 0) {
             this.bonusTimeRemaining -= deltaTime;
-            this.scoreMultiplier = 2; // ボーナスタイム中はスコア2倍
             
             if (this.bonusTimeRemaining <= 0) {
                 this.scoreMultiplier = 1;
@@ -572,16 +663,14 @@ export class GameEngine {
      * ボーナスタイムを発動
      */
     activateBonusTime(duration) {
-        this.bonusTimeRemaining = Math.max(this.bonusTimeRemaining, duration);
-        console.log(`ボーナスタイム発動: ${duration}ms`);
+        this.startBonusTime(duration, 2);
     }
     
     /**
      * 時間停止効果を発動
      */
     activateTimeStop(duration) {
-        this.timeStopRemaining = Math.max(this.timeStopRemaining, duration);
-        console.log(`時間停止発動: ${duration}ms`);
+        this.startTimeStop(duration);
     }
     
     /**
@@ -609,14 +698,7 @@ export class GameEngine {
      * 画面揺れ効果を発動
      */
     activateScreenShake(intensity, duration) {
-        if (!performanceOptimizer.shouldRunEffect('shake')) {
-            return; // 低品質モードでは画面揺れをスキップ
-        }
-        
-        this.screenShakeIntensity = intensity * performanceOptimizer.getEffectQuality();
-        this.screenShakeRemaining = duration;
-        this.inputDisabled = true;
-        console.log(`画面揺れ発動: 強度${this.screenShakeIntensity}, 時間${duration}ms`);
+        this.startScreenShake(duration, intensity);
     }
     
     /**
@@ -631,6 +713,9 @@ export class GameEngine {
      */
     gameOver() {
         this.isGameOver = true;
+        
+        // 音響エフェクト
+        this.audioManager.playGameOverSound();
         
         // クリーンアップ処理
         this.cleanup();
@@ -654,6 +739,12 @@ export class GameEngine {
         // レンダリング最適化をクリーンアップ
         this.renderOptimizer.cleanup();
         
+        // エフェクトマネージャーをクリア
+        this.effectManager.clearAllEffects();
+        
+        // パーティクルマネージャーをクリア
+        this.particleManager.clearAllParticles();
+        
         // メモリ最適化を実行
         memoryManager.performCleanup();
         
@@ -672,5 +763,8 @@ export class GameEngine {
         
         // パフォーマンス最適化システムをリセット
         performanceOptimizer.reset();
+        
+        // 音響システムを停止
+        this.audioManager.stopAll();
     }
 }
