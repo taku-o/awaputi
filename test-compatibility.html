@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>BubblePop - 互換性テスト</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f0f0f0;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 5px 0;
+        }
+        .status.supported {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.not-supported {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .status.warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+        #testCanvas {
+            border: 1px solid #ccc;
+            margin: 10px 0;
+        }
+        .device-info {
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>BubblePop - ブラウザ互換性テスト</h1>
+    
+    <div class="test-section">
+        <h2>ブラウザ情報</h2>
+        <div id="browserInfo"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>デバイス情報</h2>
+        <div id="deviceInfo"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>機能サポート状況</h2>
+        <div id="featureSupport"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Canvas テスト</h2>
+        <canvas id="testCanvas" width="400" height="200"></canvas>
+        <div id="canvasTest"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>タッチ・入力テスト</h2>
+        <div id="inputTest">
+            <p>Canvas をクリック・タッチして入力をテストしてください</p>
+            <div id="inputLog"></div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>推奨事項・警告</h2>
+        <div id="recommendations"></div>
+    </div>
+    
+    <script type="module">
+        import { browserCompatibility } from './src/utils/BrowserCompatibility.js';
+        import { ResponsiveCanvasManager } from './src/utils/ResponsiveCanvasManager.js';
+        import { InputManager } from './src/core/InputManager.js';
+        
+        // ブラウザ情報を表示
+        function displayBrowserInfo() {
+            const browserInfo = browserCompatibility.browserInfo;
+            document.getElementById('browserInfo').innerHTML = `
+                <div class="device-info">
+                    <strong>ブラウザ:</strong> ${browserInfo.name} ${browserInfo.version}<br>
+                    <strong>エンジン:</strong> ${browserInfo.engine}<br>
+                    <strong>User Agent:</strong> ${navigator.userAgent}
+                </div>
+            `;
+        }
+        
+        // デバイス情報を表示
+        function displayDeviceInfo() {
+            const deviceInfo = browserCompatibility.deviceInfo;
+            document.getElementById('deviceInfo').innerHTML = `
+                <div class="device-info">
+                    <strong>デバイスタイプ:</strong> ${deviceInfo.isMobile ? 'モバイル' : deviceInfo.isTablet ? 'タブレット' : 'デスクトップ'}<br>
+                    <strong>タッチデバイス:</strong> ${deviceInfo.isTouchDevice ? 'はい' : 'いいえ'}<br>
+                    <strong>画面サイズ:</strong> ${deviceInfo.screenInfo.width} x ${deviceInfo.screenInfo.height}<br>
+                    <strong>ピクセル比:</strong> ${deviceInfo.screenInfo.pixelRatio}<br>
+                    <strong>画面の向き:</strong> ${deviceInfo.orientation}
+                </div>
+            `;
+        }
+        
+        // 機能サポート状況を表示
+        function displayFeatureSupport() {
+            const features = browserCompatibility.features;
+            const featureList = [
+                { name: 'Canvas API', key: 'canvas' },
+                { name: 'Web Audio API', key: 'webAudio' },
+                { name: 'LocalStorage', key: 'localStorage' },
+                { name: 'requestAnimationFrame', key: 'requestAnimationFrame' },
+                { name: 'タッチイベント', key: 'touchEvents' },
+                { name: 'ポインターイベント', key: 'pointerEvents' },
+                { name: 'WebGL', key: 'webGL' },
+                { name: 'OffscreenCanvas', key: 'offscreenCanvas' }
+            ];
+            
+            const html = featureList.map(feature => {
+                const supported = features[feature.key];
+                const statusClass = supported ? 'supported' : 'not-supported';
+                const statusText = supported ? 'サポート' : '非サポート';
+                return `<div class="status ${statusClass}">${feature.name}: ${statusText}</div>`;
+            }).join('');
+            
+            document.getElementById('featureSupport').innerHTML = html;
+        }
+        
+        // Canvas テスト
+        function testCanvas() {
+            const canvas = document.getElementById('testCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            try {
+                // 基本的な描画テスト
+                ctx.fillStyle = '#667eea';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '20px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('Canvas 描画テスト成功!', canvas.width / 2, canvas.height / 2);
+                
+                // 円を描画
+                ctx.beginPath();
+                ctx.arc(100, 50, 30, 0, Math.PI * 2);
+                ctx.fillStyle = '#ff6b6b';
+                ctx.fill();
+                
+                // グラデーション
+                const gradient = ctx.createLinearGradient(200, 0, 400, 0);
+                gradient.addColorStop(0, '#ff6b6b');
+                gradient.addColorStop(1, '#4ecdc4');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(200, 20, 200, 60);
+                
+                document.getElementById('canvasTest').innerHTML = 
+                    '<div class="status supported">Canvas 描画テスト: 成功</div>';
+                    
+            } catch (error) {
+                document.getElementById('canvasTest').innerHTML = 
+                    `<div class="status not-supported">Canvas 描画テスト: 失敗 - ${error.message}</div>`;
+            }
+        }
+        
+        // 入力テスト
+        function setupInputTest() {
+            const canvas = document.getElementById('testCanvas');
+            const inputLog = document.getElementById('inputLog');
+            
+            class TestInputManager extends InputManager {
+                notifyClick(position) {
+                    this.logInput('クリック', position);
+                }
+                
+                notifyDragStart(startPosition) {
+                    this.logInput('ドラッグ開始', startPosition);
+                }
+                
+                notifyDragEnd(startPosition, endPosition, dragVector) {
+                    this.logInput('ドラッグ終了', endPosition, `距離: ${Math.round(Math.sqrt(dragVector.x * dragVector.x + dragVector.y * dragVector.y))}`);
+                }
+                
+                notifyDoubleTap(position) {
+                    this.logInput('ダブルタップ', position);
+                }
+                
+                notifyPinchGesture(scale, scaleDelta) {
+                    this.logInput('ピンチジェスチャー', null, `スケール: ${scale.toFixed(2)}`);
+                }
+                
+                logInput(type, position, extra = '') {
+                    const time = new Date().toLocaleTimeString();
+                    const posStr = position ? `(${Math.round(position.x)}, ${Math.round(position.y)})` : '';
+                    const logEntry = `[${time}] ${type} ${posStr} ${extra}`;
+                    
+                    const logDiv = document.createElement('div');
+                    logDiv.textContent = logEntry;
+                    logDiv.style.padding = '2px 0';
+                    logDiv.style.borderBottom = '1px solid #eee';
+                    
+                    inputLog.insertBefore(logDiv, inputLog.firstChild);
+                    
+                    // 最新10件のみ表示
+                    while (inputLog.children.length > 10) {
+                        inputLog.removeChild(inputLog.lastChild);
+                    }
+                }
+            }
+            
+            new TestInputManager(canvas);
+        }
+        
+        // 推奨事項・警告を表示
+        function displayRecommendations() {
+            const report = browserCompatibility.generateCompatibilityReport();
+            const container = document.getElementById('recommendations');
+            
+            let html = '';
+            
+            if (report.recommendations.length > 0) {
+                html += '<h4>推奨事項:</h4>';
+                report.recommendations.forEach(rec => {
+                    html += `<div class="status warning">⚠️ ${rec}</div>`;
+                });
+            }
+            
+            if (report.warnings.length > 0) {
+                html += '<h4>警告:</h4>';
+                report.warnings.forEach(warning => {
+                    html += `<div class="status warning">⚠️ ${warning}</div>`;
+                });
+            }
+            
+            if (report.recommendations.length === 0 && report.warnings.length === 0) {
+                html = '<div class="status supported">✅ 問題は検出されませんでした</div>';
+            }
+            
+            container.innerHTML = html;
+        }
+        
+        // レスポンシブCanvas テスト
+        function testResponsiveCanvas() {
+            const canvas = document.getElementById('testCanvas');
+            const responsiveManager = new ResponsiveCanvasManager(canvas);
+            
+            // ウィンドウリサイズ時の動作をテスト
+            window.addEventListener('resize', () => {
+                console.log('Canvas resized:', responsiveManager.getCanvasInfo());
+            });
+        }
+        
+        // 初期化
+        function init() {
+            displayBrowserInfo();
+            displayDeviceInfo();
+            displayFeatureSupport();
+            testCanvas();
+            setupInputTest();
+            displayRecommendations();
+            testResponsiveCanvas();
+            
+            // デバッグ情報をコンソールに出力
+            browserCompatibility.logDebugInfo();
+        }
+        
+        // DOM読み込み完了後に実行
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>

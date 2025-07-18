@@ -16,6 +16,8 @@ import { poolManager } from '../utils/ObjectPool.js';
 import { RenderOptimizer, PerformanceMonitor } from '../utils/RenderOptimizer.js';
 import { memoryManager } from '../utils/MemoryManager.js';
 import { performanceOptimizer } from '../utils/PerformanceOptimizer.js';
+import { browserCompatibility } from '../utils/BrowserCompatibility.js';
+import { ResponsiveCanvasManager } from '../utils/ResponsiveCanvasManager.js';
 
 /**
  * ゲームエンジンクラス - 統合版（パフォーマンス最適化 + 音響・視覚効果）
@@ -26,6 +28,12 @@ export class GameEngine {
         this.context = canvas.getContext('2d');
         this.isRunning = false;
         this.lastTime = 0;
+        
+        // ブラウザ互換性チェック
+        this.checkBrowserCompatibility();
+        
+        // レスポンシブCanvas管理
+        this.responsiveCanvasManager = new ResponsiveCanvasManager(canvas, this);
         
         // パフォーマンス最適化システム
         this.renderOptimizer = new RenderOptimizer(canvas);
@@ -752,11 +760,193 @@ export class GameEngine {
     }
     
     /**
+     * ブラウザ互換性をチェック
+     */
+    checkBrowserCompatibility() {
+        const report = browserCompatibility.generateCompatibilityReport();
+        
+        // 重要な機能が利用できない場合は警告
+        if (!report.features.canvas) {
+            console.error('Canvas API is not supported');
+            browserCompatibility.showFallbackUI();
+            return false;
+        }
+        
+        if (!report.features.requestAnimationFrame) {
+            console.warn('requestAnimationFrame is not supported, using fallback');
+        }
+        
+        if (!report.features.webAudio) {
+            console.warn('Web Audio API is not supported, audio will be disabled');
+        }
+        
+        if (!report.features.localStorage) {
+            console.warn('LocalStorage is not supported, progress will not be saved');
+        }
+        
+        // デバッグ情報を出力
+        if (this.isDebugMode()) {
+            browserCompatibility.logDebugInfo();
+        }
+        
+        // 推奨事項と警告を表示
+        if (report.recommendations.length > 0) {
+            console.warn('Browser compatibility recommendations:', report.recommendations);
+        }
+        
+        if (report.warnings.length > 0) {
+            console.warn('Browser compatibility warnings:', report.warnings);
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Canvas リサイズ時のコールバック
+     */
+    onCanvasResize(canvasInfo) {
+        console.log('Canvas resized:', canvasInfo);
+        
+        // レンダリング最適化システムを更新
+        this.renderOptimizer.setViewport(0, 0, canvasInfo.actualWidth, canvasInfo.actualHeight);
+        
+        // パフォーマンス最適化システムに通知
+        performanceOptimizer.onCanvasResize(canvasInfo);
+        
+        // シーンマネージャーに通知
+        if (this.sceneManager) {
+            this.sceneManager.onCanvasResize?.(canvasInfo);
+        }
+        
+        // UI要素の位置を調整
+        this.adjustUIForCanvasSize(canvasInfo);
+    }
+    
+    /**
+     * Canvas サイズに応じてUIを調整
+     */
+    adjustUIForCanvasSize(canvasInfo) {
+        // UI要素のスケールを調整
+        const uiScale = Math.min(canvasInfo.scale, 1.5); // 最大1.5倍まで
+        
+        // フォントサイズを調整
+        const baseFontSize = 18;
+        const adjustedFontSize = Math.max(12, baseFontSize * uiScale);
+        
+        // UI要素のサイズ情報を保存
+        this.uiInfo = {
+            scale: uiScale,
+            fontSize: adjustedFontSize,
+            canvasInfo: canvasInfo
+        };
+        
+        // HTML UI要素も調整
+        this.adjustHTMLUI(canvasInfo);
+    }
+    
+    /**
+     * HTML UI要素を調整
+     */
+    adjustHTMLUI(canvasInfo) {
+        const gameUI = document.getElementById('gameUI');
+        if (gameUI) {
+            // UI要素のスケールを調整
+            const scale = Math.min(canvasInfo.scale, 1.2);
+            gameUI.style.transform = `scale(${scale})`;
+            gameUI.style.transformOrigin = 'top left';
+            
+            // モバイルデバイスでの調整
+            if (browserCompatibility.deviceInfo.isMobile) {
+                gameUI.style.fontSize = `${14 * scale}px`;
+                
+                // 縦向きの場合は位置を調整
+                const orientation = browserCompatibility.getOrientation();
+                if (orientation.includes('portrait')) {
+                    gameUI.style.top = '5px';
+                    gameUI.style.left = '5px';
+                } else {
+                    gameUI.style.top = '10px';
+                    gameUI.style.left = '10px';
+                }
+            }
+        }
+    }
+    
+    /**
+     * デバイス固有の最適化を取得
+     */
+    getDeviceOptimizations() {
+        const deviceInfo = browserCompatibility.deviceInfo;
+        const browserInfo = browserCompatibility.browserInfo;
+        
+        return {
+            // タッチデバイス用の調整
+            touchOptimizations: deviceInfo.isTouchDevice ? {
+                largerHitboxes: true,
+                reducedParticles: deviceInfo.isMobile,
+                simplifiedEffects: deviceInfo.isMobile
+            } : null,
+            
+            // ブラウザ固有の調整
+            browserOptimizations: {
+                safari: browserInfo.name === 'safari' ? {
+                    disableImageSmoothing: deviceInfo.isMobile,
+                    reduceAnimationFrameRate: deviceInfo.isMobile
+                } : null,
+                
+                firefox: browserInfo.name === 'firefox' ? {
+                    enableHardwareAcceleration: true
+                } : null,
+                
+                chrome: browserInfo.name === 'chrome' ? {
+                    enableOffscreenCanvas: browserCompatibility.features.offscreenCanvas
+                } : null
+            },
+            
+            // パフォーマンス調整
+            performanceOptimizations: {
+                lowEndDevice: deviceInfo.screenInfo.pixelRatio < 1.5,
+                highEndDevice: deviceInfo.screenInfo.pixelRatio > 2,
+                limitParticles: deviceInfo.isMobile,
+                reduceEffects: deviceInfo.isMobile && deviceInfo.screenInfo.width < 400
+            }
+        };
+    }
+    
+    /**
+     * レスポンシブCanvas情報を取得
+     */
+    getCanvasInfo() {
+        return this.responsiveCanvasManager?.getCanvasInfo() || {
+            displayWidth: this.canvas.width,
+            displayHeight: this.canvas.height,
+            actualWidth: this.canvas.width,
+            actualHeight: this.canvas.height,
+            scale: 1,
+            pixelRatio: 1
+        };
+    }
+    
+    /**
+     * フルスクリーンモードを切り替え
+     */
+    toggleFullscreen() {
+        if (this.responsiveCanvasManager) {
+            this.responsiveCanvasManager.toggleFullscreen();
+        }
+    }
+    
+    /**
      * ゲームエンジンを破棄
      */
     destroy() {
         this.stop();
         this.cleanup();
+        
+        // レスポンシブCanvas管理をクリーンアップ
+        if (this.responsiveCanvasManager) {
+            this.responsiveCanvasManager.cleanup();
+        }
         
         // イベントリスナーを削除
         memoryManager.removeAllEventListeners();

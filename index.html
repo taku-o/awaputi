@@ -2,26 +2,78 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#667eea">
     <title>BubblePop - 泡割りゲーム</title>
     <style>
-        body {
+        /* リセットCSS */
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html, body {
             margin: 0;
             padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        body {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            font-family: Arial, sans-serif;
+            min-height: -webkit-fill-available; /* iOS Safari対応 */
+            position: relative;
         }
         
+        /* ゲームコンテナ */
+        #gameContainer {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            max-width: 100vw;
+            max-height: 100vh;
+        }
+        
+        /* Canvas スタイル */
         #gameCanvas {
             border: 2px solid #fff;
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            background: #000;
+            display: block;
+            max-width: 100%;
+            max-height: 100%;
+            
+            /* タッチ操作の最適化 */
+            touch-action: none;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            
+            /* ハードウェアアクセラレーション */
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            will-change: transform;
         }
         
+        /* UI オーバーレイ */
         #gameUI {
             position: absolute;
             top: 10px;
@@ -29,15 +81,196 @@
             color: white;
             font-size: 18px;
             z-index: 10;
+            pointer-events: none;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            font-weight: bold;
+            line-height: 1.4;
+        }
+        
+        #gameUI > div {
+            margin-bottom: 5px;
+            background: rgba(0,0,0,0.3);
+            padding: 4px 8px;
+            border-radius: 4px;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+        
+        /* レスポンシブ対応 */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+            
+            #gameCanvas {
+                border-radius: 5px;
+                border-width: 1px;
+            }
+            
+            #gameUI {
+                font-size: 14px;
+                top: 5px;
+                left: 5px;
+            }
+        }
+        
+        @media screen and (max-width: 480px) {
+            #gameUI {
+                font-size: 12px;
+                top: 2px;
+                left: 2px;
+            }
+            
+            #gameUI > div {
+                padding: 2px 6px;
+                margin-bottom: 3px;
+            }
+        }
+        
+        /* 横向き対応 */
+        @media screen and (orientation: landscape) and (max-height: 500px) {
+            #gameUI {
+                font-size: 12px;
+                top: 2px;
+                left: 2px;
+            }
+        }
+        
+        /* 高DPI対応 */
+        @media screen and (-webkit-min-device-pixel-ratio: 2),
+               screen and (min-resolution: 192dpi) {
+            #gameCanvas {
+                image-rendering: -webkit-optimize-contrast;
+                image-rendering: crisp-edges;
+            }
+        }
+        
+        /* ダークモード対応 */
+        @media (prefers-color-scheme: dark) {
+            #gameUI {
+                color: #f0f0f0;
+            }
+        }
+        
+        /* フルスクリーン対応 */
+        #gameCanvas:fullscreen {
+            border: none;
+            border-radius: 0;
+        }
+        
+        #gameCanvas:-webkit-full-screen {
+            border: none;
+            border-radius: 0;
+        }
+        
+        #gameCanvas:-moz-full-screen {
+            border: none;
+            border-radius: 0;
+        }
+        
+        /* ローディング画面 */
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            color: white;
+            font-size: 24px;
+            text-align: center;
+        }
+        
+        #loadingScreen.hidden {
+            display: none;
+        }
+        
+        /* エラー画面 */
+        .error-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 0, 0, 0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            z-index: 2000;
+            max-width: 90%;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        
+        /* ブラウザ固有の調整 */
+        
+        /* Safari 固有 */
+        @supports (-webkit-appearance: none) {
+            body {
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            #gameCanvas {
+                -webkit-backface-visibility: hidden;
+                backface-visibility: hidden;
+            }
+        }
+        
+        /* Firefox 固有 */
+        @-moz-document url-prefix() {
+            #gameCanvas {
+                image-rendering: -moz-crisp-edges;
+            }
+        }
+        
+        /* Edge/IE 固有 */
+        @supports (-ms-ime-align: auto) {
+            #gameCanvas {
+                -ms-interpolation-mode: nearest-neighbor;
+            }
+        }
+        
+        /* アクセシビリティ */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* 印刷対応 */
+        @media print {
+            body {
+                background: white;
+            }
+            
+            #gameCanvas {
+                border: 1px solid black;
+            }
         }
     </style>
 </head>
 <body>
-    <canvas id="gameCanvas" width="800" height="600"></canvas>
-    <div id="gameUI">
-        <div>スコア: <span id="score">0</span></div>
-        <div>HP: <span id="hp">100</span></div>
-        <div>時間: <span id="time">5:00</span></div>
+    <!-- ローディング画面 -->
+    <div id="loadingScreen">
+        <div>
+            <div>BubblePop</div>
+            <div style="font-size: 16px; margin-top: 10px;">読み込み中...</div>
+        </div>
+    </div>
+    
+    <!-- ゲームコンテナ -->
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <div id="gameUI">
+            <div>スコア: <span id="score">0</span></div>
+            <div>HP: <span id="hp">100</span></div>
+            <div>時間: <span id="time">5:00</span></div>
+        </div>
     </div>
     
     <script type="module" src="src/main.js"></script>
