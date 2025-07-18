@@ -289,6 +289,9 @@ export class GameScene extends Scene {
             damage
         );
         
+        // 新しいダメージエフェクト
+        this.gameEngine.createDamageEffect(damage, source);
+        
         // HPフラッシュ効果
         this.uiState.hpFlashTimer = 1000;
         
@@ -313,6 +316,9 @@ export class GameScene extends Scene {
             canvas.height / 2,
             heal
         );
+        
+        // 新しい回復エフェクト
+        this.gameEngine.createHealEffect(heal);
     }
     
     /**
@@ -328,26 +334,16 @@ export class GameScene extends Scene {
             pink: 'HEALED!'
         };
         
-        const message = effectMessages[effectType] || 'SPECIAL EFFECT!';
+        const message = effectMessages[effectType] || 'SPECIAL EFFECT!';;
         const type = effectType === 'rainbow' ? 'bonus' : 
                     effectType === 'clock' ? 'timeStop' :
                     effectType === 'electric' ? 'shock' :
                     effectType === 'spiky' ? 'chain' : 'normal';
         
         this.floatingTextManager.addEffectText(x, y, message, type);
+        
+        // 追加の視覚・音響効果は既にGameEngineの各start*メソッドで処理済み
     }
-    
-    /**
-     * ドラッグビジュアライゼーションの更新
-     */
-    updateDragVisualization(deltaTime) {
-        // パーティクルの更新
-        this.dragVisualization.particles = this.dragVisualization.particles.filter(particle => {
-            particle.life -= deltaTime;
-            particle.x += particle.vx * deltaTime * 0.001;
-            particle.y += particle.vy * deltaTime * 0.001;
-            particle.alpha = particle.life / particle.maxLife;
-            return particle.life > 0;
         });
         
         // フォースインジケーターの更新
