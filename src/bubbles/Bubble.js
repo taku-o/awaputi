@@ -142,6 +142,55 @@ export class Bubble {
                 maxAge: 35000, // 30000 -> 35000 (少し長く)
                 color: '#8B0000',
                 score: 800
+            },
+            // 新しい泡タイプ
+            golden: {
+                health: 1,
+                size: 55,
+                maxAge: 8000,
+                color: '#FFD700',
+                score: 500,
+                multiplier: 2.0 // スコア倍率
+            },
+            frozen: {
+                health: 2,
+                size: 50,
+                maxAge: 25000, // 長時間持続
+                color: '#87CEEB',
+                score: 100,
+                slowEffect: 0.5 // 周囲の泡の動きを遅くする
+            },
+            magnetic: {
+                health: 1,
+                size: 48,
+                maxAge: 15000,
+                color: '#FF1493',
+                score: 150,
+                magnetRadius: 100 // 他の泡を引き寄せる
+            },
+            explosive: {
+                health: 1,
+                size: 52,
+                maxAge: 10000,
+                color: '#FF4500',
+                score: 200,
+                explosionRadius: 150 // 爆発範囲
+            },
+            phantom: {
+                health: 1,
+                size: 45,
+                maxAge: 12000,
+                color: '#9370DB',
+                score: 300,
+                phaseChance: 0.3 // クリックをすり抜ける確率
+            },
+            multiplier: {
+                health: 1,
+                size: 50,
+                maxAge: 18000,
+                color: '#32CD32',
+                score: 100,
+                scoreMultiplier: 3.0 // 次の泡のスコアを3倍
             }
         };
         
@@ -386,6 +435,26 @@ export class Bubble {
                 context.font = 'bold 16px Arial';
                 context.fillText(this.health.toString(), centerX, centerY + 15);
                 break;
+            // 新しい泡タイプのアイコン
+            case 'golden':
+                context.fillText('★', centerX, centerY - 5);
+                break;
+            case 'frozen':
+                context.fillText('❄', centerX, centerY - 5);
+                break;
+            case 'magnetic':
+                context.fillText('🧲', centerX, centerY - 5);
+                break;
+            case 'explosive':
+                context.fillText('💣', centerX, centerY - 5);
+                break;
+            case 'phantom':
+                context.fillStyle = 'rgba(255,255,255,0.7)'; // 半透明
+                context.fillText('👻', centerX, centerY - 5);
+                break;
+            case 'multiplier':
+                context.fillText('×', centerX, centerY - 5);
+                break;
         }
     }
     
@@ -502,6 +571,60 @@ export class Bubble {
                 
             case 'boss':
                 // ボス泡：通常の効果なし（高スコア・高耐久は設定済み）
+                break;
+                
+            // 新しい泡タイプの特殊効果
+            case 'golden':
+                // 黄金の泡：スコア倍率効果
+                this.effects.push({
+                    type: 'score_multiplier',
+                    multiplier: config.multiplier,
+                    duration: 5000 // 5秒間
+                });
+                break;
+                
+            case 'frozen':
+                // 氷の泡：周囲の泡を遅くする効果
+                this.effects.push({
+                    type: 'slow_area',
+                    position: { ...this.position },
+                    radius: 120,
+                    slowFactor: config.slowEffect,
+                    duration: 8000 // 8秒間
+                });
+                break;
+                
+            case 'magnetic':
+                // 磁石の泡：他の泡を引き寄せる効果
+                this.effects.push({
+                    type: 'magnetic_pull',
+                    position: { ...this.position },
+                    radius: config.magnetRadius,
+                    strength: 150
+                });
+                break;
+                
+            case 'explosive':
+                // 爆発の泡：大きな爆発効果
+                this.effects.push({
+                    type: 'big_explosion',
+                    position: { ...this.position },
+                    radius: config.explosionRadius,
+                    damage: 15
+                });
+                break;
+                
+            case 'phantom':
+                // 幻の泡：特殊効果なし（すり抜け効果は別途処理）
+                break;
+                
+            case 'multiplier':
+                // 倍率の泡：次の泡のスコアを倍増
+                this.effects.push({
+                    type: 'next_score_multiplier',
+                    multiplier: config.scoreMultiplier,
+                    duration: 10000 // 10秒間
+                });
                 break;
         }
     }

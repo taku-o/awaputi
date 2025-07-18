@@ -57,7 +57,7 @@ export class StageManager {
                 name: '特殊なアワアワ',
                 description: '特殊効果を持つ泡が多く出現',
                 duration: 300000,
-                bubbleTypes: ['normal', 'stone', 'rainbow', 'pink', 'clock', 'score', 'poison', 'spike', 'electric', 'escape'],
+                bubbleTypes: ['normal', 'stone', 'rainbow', 'pink', 'clock', 'score', 'poison', 'spike', 'electric', 'escape', 'golden', 'frozen'],
                 spawnRate: 2.0, // 2.2 -> 2.0 (少し緩和)
                 maxBubbles: 32, // 35 -> 32 (少し緩和)
                 unlockCondition: { type: 'tap', value: 5000 }, // 10000 -> 5000 (大幅緩和)
@@ -67,7 +67,7 @@ export class StageManager {
                 name: '悪夢のアワアワ',
                 description: '危険な泡が多数出現する高難易度ステージ',
                 duration: 300000,
-                bubbleTypes: ['normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink', 'clock', 'score', 'poison', 'spike', 'electric', 'escape', 'crack'],
+                bubbleTypes: ['normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink', 'clock', 'score', 'poison', 'spike', 'electric', 'escape', 'crack', 'magnetic', 'explosive'],
                 spawnRate: 2.3, // 2.5 -> 2.3 (少し緩和)
                 maxBubbles: 38, // 40 -> 38 (少し緩和)
                 unlockCondition: { type: 'tap', value: 12000 }, // 25000 -> 12000 (大幅緩和)
@@ -77,7 +77,7 @@ export class StageManager {
                 name: 'カオスなアワアワ',
                 description: 'あらゆる種類の泡が出現する混沌ステージ',
                 duration: 300000,
-                bubbleTypes: ['normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink', 'clock', 'score', 'poison', 'spike', 'electric', 'escape', 'crack', 'boss'],
+                bubbleTypes: ['normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink', 'clock', 'score', 'poison', 'spike', 'electric', 'escape', 'crack', 'boss', 'phantom', 'multiplier'],
                 spawnRate: 2.7, // 3.0 -> 2.7 (少し緩和)
                 maxBubbles: 42, // 45 -> 42 (少し緩和)
                 unlockCondition: { type: 'tap', value: 25000 }, // 50000 -> 25000 (大幅緩和)
@@ -87,7 +87,7 @@ export class StageManager {
                 name: '究極のアワアワ',
                 description: '最高難易度の究極ステージ',
                 duration: 300000,
-                bubbleTypes: ['normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink', 'clock', 'score', 'poison', 'spike', 'electric', 'escape', 'crack', 'boss'],
+                bubbleTypes: ['normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink', 'clock', 'score', 'poison', 'spike', 'electric', 'escape', 'crack', 'boss', 'golden', 'frozen', 'magnetic', 'explosive', 'phantom', 'multiplier'],
                 spawnRate: 3.2, // 3.5 -> 3.2 (少し緩和)
                 maxBubbles: 48, // 50 -> 48 (少し緩和)
                 unlockCondition: { type: 'tap', value: 50000 }, // 100000 -> 50000 (大幅緩和)
@@ -97,7 +97,7 @@ export class StageManager {
                 name: '全部入りアワアワ',
                 description: '全ての要素が詰まった最終ステージ',
                 duration: 300000,
-                bubbleTypes: ['normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink', 'clock', 'score', 'poison', 'spike', 'electric', 'escape', 'crack', 'boss'],
+                bubbleTypes: ['normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink', 'clock', 'score', 'poison', 'spike', 'electric', 'escape', 'crack', 'boss', 'golden', 'frozen', 'magnetic', 'explosive', 'phantom', 'multiplier'],
                 spawnRate: 3.6, // 4.0 -> 3.6 (少し緩和)
                 maxBubbles: 55, // 60 -> 55 (少し緩和)
                 unlockCondition: { type: 'tap', value: 100000 }, // 200000 -> 100000 (大幅緩和)

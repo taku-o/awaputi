@@ -7,6 +7,9 @@ import { ItemManager } from './ItemSystem.js';
 import { SettingsManager } from './SettingsManager.js';
 import { LocalizationManager } from './LocalizationManager.js';
 import { KeyboardShortcutManager } from './KeyboardShortcutManager.js';
+import { AchievementManager } from './AchievementManager.js';
+import { StatisticsManager } from './StatisticsManager.js';
+import { EventStageManager } from './EventStageManager.js';
 import { MainMenuScene } from '../scenes/MainMenuScene.js';
 import { StageSelectScene } from '../scenes/StageSelectScene.js';
 import { GameScene } from '../scenes/GameScene.js';
@@ -77,6 +80,11 @@ export class GameEngine {
         this.settingsManager = new SettingsManager(this);
         this.localizationManager = new LocalizationManager();
         this.keyboardShortcutManager = new KeyboardShortcutManager(this);
+        
+        // 追加コンテンツシステム
+        this.achievementManager = new AchievementManager(this);
+        this.statisticsManager = new StatisticsManager(this);
+        this.eventStageManager = new EventStageManager(this);
         
         // ゲーム状態
         this.timeRemaining = 300000; // 5分
@@ -184,6 +192,16 @@ export class GameEngine {
             } catch (error) {
                 errorHandler.handleError(error, 'INITIALIZATION_ERROR', { component: 'itemManager' });
                 // フォールバック: アイテムシステムなしで続行
+            }
+            
+            // 新しいシステムの初期化
+            try {
+                this.achievementManager.load();
+                this.statisticsManager.load();
+                this.eventStageManager.load();
+            } catch (error) {
+                errorHandler.handleError(error, 'INITIALIZATION_ERROR', { component: 'additionalSystems' });
+                // フォールバック: 新システムなしで続行
             }
             
             // 初期シーンをメインメニューに設定
@@ -772,6 +790,51 @@ export class GameEngine {
      */
     isScreenShakeActive() {
         return this.screenShakeRemaining > 0;
+    }
+    
+    /**
+     * スコア倍率効果を発動
+     */
+    activateScoreMultiplier(multiplier, duration) {
+        this.scoreMultiplier = Math.max(this.scoreMultiplier, multiplier);
+        
+        // 一定時間後に元に戻す
+        setTimeout(() => {
+            this.scoreMultiplier = 1;
+            console.log('スコア倍率効果終了');
+        }, duration);
+        
+        console.log(`スコア倍率効果開始: ${multiplier}x, ${duration}ms`);
+    }
+    
+    /**
+     * 次の泡のスコア倍率効果を発動
+     */
+    activateNextScoreMultiplier(multiplier, duration) {
+        // ScoreManagerに次の泡のスコア倍率を設定
+        if (this.scoreManager.setNextBubbleMultiplier) {
+            this.scoreManager.setNextBubbleMultiplier(multiplier, duration);
+        }
+        
+        console.log(`次の泡スコア倍率効果開始: ${multiplier}x, ${duration}ms`);
+    }
+    
+    /**
+     * ナイトモードを発動
+     */
+    activateNightMode() {
+        // 背景を暗くする効果
+        this.effectManager.addScreenTint(0.3, 300000, '#000033');
+        console.log('ナイトモード発動');
+    }
+    
+    /**
+     * 視界制限効果を発動
+     */
+    activateReducedVisibility() {
+        // 視界を制限する効果
+        this.effectManager.addVignette(0.4, 300000);
+        console.log('視界制限効果発動');
     }
 
     /**

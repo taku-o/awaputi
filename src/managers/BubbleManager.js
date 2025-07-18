@@ -87,7 +87,7 @@ export class BubbleManager {
             
             // ランダムな種類を選択（指定がない場合）
             if (!type) {
-                type = this.getRandomBubbleType();
+                type = this.getRandomBubbleTypeWithSpecialRates();
             }
             
             // ランダムな位置を選択（指定がない場合）
@@ -632,6 +632,15 @@ export class BubbleManager {
     popBubble(bubble, x, y) {
         console.log(`${bubble.type} bubble popped`);
         
+        // 幻の泡のすり抜け判定
+        if (bubble.type === 'phantom') {
+            const config = bubble.getTypeConfig();
+            if (Math.random() < config.phaseChance) {
+                console.log('Phantom bubble phased through click!');
+                return false; // すり抜けた
+            }
+        }
+        
         // 泡の効果を処理
         this.processBubbleEffect(bubble, x, y);
         
@@ -650,6 +659,7 @@ export class BubbleManager {
         // プールに戻す
         this.gameEngine.returnBubbleToPool(bubble);
         this.bubbles.splice(this.bubbles.indexOf(bubble), 1);
+        return true; // 正常に割れた
     }
     
     /**
@@ -702,6 +712,42 @@ export class BubbleManager {
                 // 周囲の泡を割る
                 this.chainReaction(bubble.position.x, bubble.position.y, 80);
                 this.notifySpecialEffect('spiky', x, y);
+                break;
+                
+            // 新しい泡タイプの効果処理
+            case 'golden':
+                // 黄金の泡：スコア倍率効果
+                this.gameEngine.activateScoreMultiplier(2.0, 5000);
+                this.notifySpecialEffect('golden', x, y);
+                break;
+                
+            case 'frozen':
+                // 氷の泡：周囲の泡を遅くする
+                this.applySlowEffect(bubble.position.x, bubble.position.y, 120, 0.5, 8000);
+                this.notifySpecialEffect('frozen', x, y);
+                break;
+                
+            case 'magnetic':
+                // 磁石の泡：他の泡を引き寄せる
+                this.applyMagneticPull(bubble.position.x, bubble.position.y, 100, 150);
+                this.notifySpecialEffect('magnetic', x, y);
+                break;
+                
+            case 'explosive':
+                // 爆発の泡：大きな爆発
+                this.bigExplosion(bubble.position.x, bubble.position.y, 150, 15);
+                this.notifySpecialEffect('explosive', x, y);
+                break;
+                
+            case 'phantom':
+                // 幻の泡：特殊効果なし（すり抜け効果は別途処理済み）
+                this.notifySpecialEffect('phantom', x, y);
+                break;
+                
+            case 'multiplier':
+                // 倍率の泡：次の泡のスコアを倍増
+                this.gameEngine.activateNextScoreMultiplier(3.0, 10000);
+                this.notifySpecialEffect('multiplier', x, y);
                 break;
         }
     }
@@ -947,6 +993,89 @@ export class BubbleManager {
     }
     
     /**
+     * スロー効果を適用（氷の泡用）
+     */
+    applySlowEffect(centerX, centerY, radius, slowFactor, duration) {
+        const affectedBubbles = [];
+        
+        this.bubbles.forEach(bubble => {
+            const dx = bubble.position.x - centerX;
+            const dy = bubble.position.y - centerY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance <= radius && bubble.isAlive) {
+                affectedBubbles.push(bubble);
+            }
+        });
+        
+        // 影響を受けた泡にスロー効果を適用
+        affectedBubbles.forEach(bubble => {
+            bubble.slowEffect = {
+                factor: slowFactor,
+                endTime: Date.now() + duration
+            };
+        });
+        
+        console.log(`Slow effect applied to ${affectedBubbles.length} bubbles`);
+    }
+    
+    /**
+     * 磁力効果を適用（磁石の泡用）
+     */
+    applyMagneticPull(centerX, centerY, radius, strength) {
+        this.bubbles.forEach(bubble => {
+            const dx = bubble.position.x - centerX;
+            const dy = bubble.position.y - centerY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance <= radius && distance > 0 && bubble.isAlive) {
+                // 中心に向かう力を計算
+                const pullForce = strength * (1 - distance / radius);
+                const direction = {
+                    x: -dx / distance,
+                    y: -dy / distance
+                };
+                
+                // 速度に力を加算
+                bubble.velocity.x += direction.x * pullForce * 0.016; // 60FPS想定
+                bubble.velocity.y += direction.y * pullForce * 0.016;
+            }
+        });
+    }
+    
+    /**
+     * 大爆発効果（爆発の泡用）
+     */
+    bigExplosion(centerX, centerY, radius, damage) {
+        const affectedBubbles = [];
+        
+        this.bubbles.forEach(bubble => {
+            const dx = bubble.position.x - centerX;
+            const dy = bubble.position.y - centerY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance <= radius && bubble.isAlive) {
+                affectedBubbles.push({ bubble, distance });
+            }
+        });
+        
+        // 距離に応じて遅延爆発
+        affectedBubbles.forEach(({ bubble, distance }, index) => {
+            const delay = (distance / radius) * 500; // 最大0.5秒の遅延
+            setTimeout(() => {
+                if (bubble.isAlive) {
+                    this.popBubble(bubble, bubble.position.x, bubble.position.y);
+                }
+            }, delay);
+        });
+        
+        // プレイヤーにもダメージ
+        this.gameEngine.playerData.takeDamage(damage);
+        
+        console.log(`Big explosion affected ${affectedBubbles.length} bubbles`);
+    }
+    
+    /**
      * 全ての泡をクリア
      */
     clearAllBubbles() {
@@ -974,5 +1103,118 @@ export class BubbleManager {
      */
     getActiveBubbles() {
         return this.bubbles.filter(bubble => bubble.isAlive);
+    }
+    
+    /**
+     * スロー効果を適用（氷の泡用）
+     */
+    applySlowEffect(centerX, centerY, radius, slowFactor, duration) {
+        const affectedBubbles = [];
+        
+        this.bubbles.forEach(bubble => {
+            const dx = bubble.position.x - centerX;
+            const dy = bubble.position.y - centerY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance <= radius && bubble.isAlive) {
+                affectedBubbles.push(bubble);
+            }
+        });
+        
+        // 影響を受けた泡にスロー効果を適用
+        affectedBubbles.forEach(bubble => {
+            bubble.slowEffect = {
+                factor: slowFactor,
+                endTime: Date.now() + duration
+            };
+        });
+        
+        console.log(`Slow effect applied to ${affectedBubbles.length} bubbles`);
+    }
+    
+    /**
+     * 磁力効果を適用（磁石の泡用）
+     */
+    applyMagneticPull(centerX, centerY, radius, strength) {
+        this.bubbles.forEach(bubble => {
+            const dx = bubble.position.x - centerX;
+            const dy = bubble.position.y - centerY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance <= radius && distance > 0 && bubble.isAlive) {
+                // 中心に向かう力を計算
+                const pullForce = strength * (1 - distance / radius);
+                const direction = {
+                    x: -dx / distance,
+                    y: -dy / distance
+                };
+                
+                // 速度に力を加算
+                bubble.velocity.x += direction.x * pullForce * 0.016; // 60FPS想定
+                bubble.velocity.y += direction.y * pullForce * 0.016;
+            }
+        });
+    }
+    
+    /**
+     * 大爆発効果（爆発の泡用）
+     */
+    bigExplosion(centerX, centerY, radius, damage) {
+        const affectedBubbles = [];
+        
+        this.bubbles.forEach(bubble => {
+            const dx = bubble.position.x - centerX;
+            const dy = bubble.position.y - centerY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance <= radius && bubble.isAlive) {
+                affectedBubbles.push({ bubble, distance });
+            }
+        });
+        
+        // 距離に応じて遅延爆発
+        affectedBubbles.forEach(({ bubble, distance }, index) => {
+            const delay = (distance / radius) * 500; // 最大0.5秒の遅延
+            setTimeout(() => {
+                if (bubble.isAlive) {
+                    this.popBubble(bubble, bubble.position.x, bubble.position.y);
+                }
+            }, delay);
+        });
+        
+        // プレイヤーにもダメージ
+        this.gameEngine.playerData.takeDamage(damage);
+        
+        console.log(`Big explosion affected ${affectedBubbles.length} bubbles`);
+    }
+    
+    /**
+     * 特殊な泡の生成率を設定
+     */
+    setSpecialSpawnRate(bubbleType, rate) {
+        if (!this.specialSpawnRates) {
+            this.specialSpawnRates = {};
+        }
+        this.specialSpawnRates[bubbleType] = rate;
+        console.log(`Special spawn rate set for ${bubbleType}: ${rate}`);
+    }
+    
+    /**
+     * 特殊生成率を考慮したランダム泡タイプを取得
+     */
+    getRandomBubbleTypeWithSpecialRates() {
+        if (!this.specialSpawnRates) {
+            return this.getRandomBubbleType();
+        }
+        
+        // 特殊生成率をチェック
+        for (const [bubbleType, rate] of Object.entries(this.specialSpawnRates)) {
+            if (Math.random() < rate) {
+                return bubbleType;
+            }
+        }
+        
+        // 通常の生成
+        return this.getRandomBubbleType();
     }
 }
