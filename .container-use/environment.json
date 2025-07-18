@@ -1,4 +1,8 @@
 {
   "workdir": "/workdir",
-  "base_image": "ubuntu:24.04"
+  "base_image": "ubuntu:24.04",
+  "setup_commands": [
+    "apt-get update",
+    "apt-get install -y python3 nodejs npm"
+  ]
 }

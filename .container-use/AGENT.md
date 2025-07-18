@@ -1,1 +1,1 @@
-No instructions found. Please look around the filesystem and update me
+BubblePopゲームプロジェクトの開発環境。Python3とNode.jsがインストール済み。
