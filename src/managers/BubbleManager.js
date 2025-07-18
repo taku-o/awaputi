@@ -484,6 +484,9 @@ export class BubbleManager {
         const damage = this.calculateBurstDamage(bubble);
         this.gameEngine.playerData.takeDamage(damage);
         
+        // 新しいエフェクトシステムで爆発エフェクトを作成
+        this.gameEngine.createExplosion(x, y, bubble.type, bubble.size, 1);
+        
         // 泡を削除
         bubble.destroy();
     }
@@ -546,6 +549,9 @@ export class BubbleManager {
         
         // スコアを加算
         this.gameEngine.scoreManager.addScore(bubble, x, y);
+        
+        // 新しいエフェクトシステムで爆発エフェクトを作成
+        this.gameEngine.createExplosion(x, y, bubble.type, bubble.size, 1);
         
         // 泡を削除
         bubble.destroy();
