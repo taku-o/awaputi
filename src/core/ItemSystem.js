@@ -9,20 +9,20 @@ export const ITEM_DEFINITIONS = {
     scoreMultiplier: {
         id: 'scoreMultiplier',
         name: 'スコア倍率アップ',
-        description: '獲得スコアが1.5倍になります',
-        cost: 100,
+        description: '獲得スコアが1.3倍になります（レベルごとに+0.2倍）',
+        cost: 75, // 100 -> 75 (安く)
         maxLevel: 5,
         effect: {
             type: 'scoreMultiplier',
-            value: 1.5
+            value: 1.3 // 1.5 -> 1.3 (少し弱く、でもレベルアップで強化)
         }
     },
     revival: {
         id: 'revival',
         name: '復活',
         description: 'HP全損時に一度だけ満タンで復活します',
-        cost: 200,
-        maxLevel: 1,
+        cost: 150, // 200 -> 150 (少し安く)
+        maxLevel: 2, // 1 -> 2 (2回まで購入可能に)
         effect: {
             type: 'revival',
             value: 1
@@ -31,41 +31,52 @@ export const ITEM_DEFINITIONS = {
     rareRate: {
         id: 'rareRate',
         name: 'レア率アップ',
-        description: 'レア泡の出現率が上昇します',
-        cost: 150,
-        maxLevel: 3,
+        description: 'レア泡の出現率が上昇します（レベルごとに+30%）',
+        cost: 100, // 150 -> 100 (安く)
+        maxLevel: 4, // 3 -> 4 (レベル上限増加)
         effect: {
             type: 'rareRate',
-            value: 1.5
+            value: 1.3 // 1.5 -> 1.3 (少し弱く、でもレベルアップで強化)
         }
     },
     hpBoost: {
         id: 'hpBoost',
         name: 'HP増加',
-        description: '最大HPが20増加します',
-        cost: 80,
-        maxLevel: 5,
+        description: '最大HPが25増加します',
+        cost: 60, // 80 -> 60 (安く)
+        maxLevel: 6, // 5 -> 6 (レベル上限増加)
         effect: {
             type: 'hpBoost',
-            value: 20
+            value: 25 // 20 -> 25 (少し強く)
         }
     },
     timeExtension: {
         id: 'timeExtension',
         name: '時間延長',
-        description: 'ゲーム時間が30秒延長されます',
-        cost: 120,
-        maxLevel: 3,
+        description: 'ゲーム時間が45秒延長されます',
+        cost: 90, // 120 -> 90 (安く)
+        maxLevel: 4, // 3 -> 4 (レベル上限増加)
         effect: {
             type: 'timeExtension',
-            value: 30000 // 30秒をミリ秒で
+            value: 45000 // 30000 -> 45000 (30秒 -> 45秒に強化)
+        }
+    },
+    comboBoost: {
+        id: 'comboBoost',
+        name: 'コンボ強化',
+        description: 'コンボ継続時間が1.5倍になります',
+        cost: 80,
+        maxLevel: 3,
+        effect: {
+            type: 'comboBoost',
+            value: 1.5
         }
     },
     reset: {
         id: 'reset',
         name: 'アイテム効果リセット',
         description: '全アイテム効果をリセットし、再購入可能にします',
-        cost: 50,
+        cost: 30, // 50 -> 30 (安く)
         maxLevel: 1,
         effect: {
             type: 'reset',
@@ -136,8 +147,8 @@ export class ItemManager {
             return false;
         }
         
-        // コスト計算（レベルが上がるごとに1.5倍）
-        const cost = Math.floor(itemDef.cost * Math.pow(1.5, currentLevel));
+        // コスト計算（レベルが上がるごとに1.3倍に緩和）
+        const cost = Math.floor(itemDef.cost * Math.pow(1.3, currentLevel));
         
         // AP不足チェック
         if (this.gameEngine.playerData.ap < cost) {
@@ -217,6 +228,13 @@ export class ItemManager {
                 const timeExtension = effect.value * level;
                 this.activeEffects.set('timeExtension', timeExtension);
                 break;
+                
+            case 'comboBoost':
+                // コンボ強化は累積
+                const currentComboBoost = this.activeEffects.get('comboBoost') || 1;
+                const newComboBoost = currentComboBoost + (effect.value - 1) * level;
+                this.activeEffects.set('comboBoost', newComboBoost);
+                break;
         }
     }
     
@@ -232,6 +250,7 @@ export class ItemManager {
         this.activeEffects.set('hpBoost', 0);
         this.activeEffects.set('timeExtension', 0);
         this.activeEffects.set('revival', 0);
+        this.activeEffects.set('comboBoost', 1);
         
         // 各アイテムの効果を適用
         for (const [itemId] of this.ownedItems) {
@@ -261,7 +280,7 @@ export class ItemManager {
         if (!itemDef) return 0;
         
         const currentLevel = this.getItemLevel(itemId);
-        return Math.floor(itemDef.cost * Math.pow(1.5, currentLevel));
+        return Math.floor(itemDef.cost * Math.pow(1.3, currentLevel));
     }
     
     /**

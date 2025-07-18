@@ -38,84 +38,84 @@ export class StageManager {
                 description: '硬い泡が多く出現するステージ',
                 duration: 300000,
                 bubbleTypes: ['normal', 'stone', 'iron', 'rainbow', 'pink', 'clock', 'score', 'poison'],
-                spawnRate: 1.8,
-                maxBubbles: 25,
-                unlockCondition: { type: 'tap', value: 1000 },
-                unlockMessage: 'TAP 1000以上で開放'
+                spawnRate: 1.6, // 1.8 -> 1.6 (少し緩和)
+                maxBubbles: 22, // 25 -> 22 (少し緩和)
+                unlockCondition: { type: 'tap', value: 500 }, // 1000 -> 500 (大幅緩和)
+                unlockMessage: 'TAP 500以上で開放'
             },
             veryHard: {
                 name: 'かなり硬いアワアワ',
                 description: 'より硬い泡が出現するステージ',
                 duration: 300000,
                 bubbleTypes: ['normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink', 'clock', 'score', 'poison', 'spike'],
-                spawnRate: 2.0,
-                maxBubbles: 30,
-                unlockCondition: { type: 'tap', value: 5000 },
-                unlockMessage: 'TAP 5000以上で開放'
+                spawnRate: 1.8, // 2.0 -> 1.8 (少し緩和)
+                maxBubbles: 28, // 30 -> 28 (少し緩和)
+                unlockCondition: { type: 'tap', value: 2000 }, // 5000 -> 2000 (大幅緩和)
+                unlockMessage: 'TAP 2000以上で開放'
             },
             special: {
                 name: '特殊なアワアワ',
                 description: '特殊効果を持つ泡が多く出現',
                 duration: 300000,
                 bubbleTypes: ['normal', 'stone', 'rainbow', 'pink', 'clock', 'score', 'poison', 'spike', 'electric', 'escape'],
-                spawnRate: 2.2,
-                maxBubbles: 35,
-                unlockCondition: { type: 'tap', value: 10000 },
-                unlockMessage: 'TAP 10000以上で開放'
+                spawnRate: 2.0, // 2.2 -> 2.0 (少し緩和)
+                maxBubbles: 32, // 35 -> 32 (少し緩和)
+                unlockCondition: { type: 'tap', value: 5000 }, // 10000 -> 5000 (大幅緩和)
+                unlockMessage: 'TAP 5000以上で開放'
             },
             nightmare: {
                 name: '悪夢のアワアワ',
                 description: '危険な泡が多数出現する高難易度ステージ',
                 duration: 300000,
                 bubbleTypes: ['normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink', 'clock', 'score', 'poison', 'spike', 'electric', 'escape', 'crack'],
-                spawnRate: 2.5,
-                maxBubbles: 40,
-                unlockCondition: { type: 'tap', value: 25000 },
-                unlockMessage: 'TAP 25000以上で開放'
+                spawnRate: 2.3, // 2.5 -> 2.3 (少し緩和)
+                maxBubbles: 38, // 40 -> 38 (少し緩和)
+                unlockCondition: { type: 'tap', value: 12000 }, // 25000 -> 12000 (大幅緩和)
+                unlockMessage: 'TAP 12000以上で開放'
             },
             chaos: {
                 name: 'カオスなアワアワ',
                 description: 'あらゆる種類の泡が出現する混沌ステージ',
                 duration: 300000,
                 bubbleTypes: ['normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink', 'clock', 'score', 'poison', 'spike', 'electric', 'escape', 'crack', 'boss'],
-                spawnRate: 3.0,
-                maxBubbles: 45,
-                unlockCondition: { type: 'tap', value: 50000 },
-                unlockMessage: 'TAP 50000以上で開放'
+                spawnRate: 2.7, // 3.0 -> 2.7 (少し緩和)
+                maxBubbles: 42, // 45 -> 42 (少し緩和)
+                unlockCondition: { type: 'tap', value: 25000 }, // 50000 -> 25000 (大幅緩和)
+                unlockMessage: 'TAP 25000以上で開放'
             },
             ultimate: {
                 name: '究極のアワアワ',
                 description: '最高難易度の究極ステージ',
                 duration: 300000,
                 bubbleTypes: ['normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink', 'clock', 'score', 'poison', 'spike', 'electric', 'escape', 'crack', 'boss'],
-                spawnRate: 3.5,
-                maxBubbles: 50,
-                unlockCondition: { type: 'tap', value: 100000 },
-                unlockMessage: 'TAP 100000以上で開放'
+                spawnRate: 3.2, // 3.5 -> 3.2 (少し緩和)
+                maxBubbles: 48, // 50 -> 48 (少し緩和)
+                unlockCondition: { type: 'tap', value: 50000 }, // 100000 -> 50000 (大幅緩和)
+                unlockMessage: 'TAP 50000以上で開放'
             },
             allIn: {
                 name: '全部入りアワアワ',
                 description: '全ての要素が詰まった最終ステージ',
                 duration: 300000,
                 bubbleTypes: ['normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink', 'clock', 'score', 'poison', 'spike', 'electric', 'escape', 'crack', 'boss'],
-                spawnRate: 4.0,
-                maxBubbles: 60,
-                unlockCondition: { type: 'tap', value: 200000 },
-                unlockMessage: 'TAP 200000以上で開放'
+                spawnRate: 3.6, // 4.0 -> 3.6 (少し緩和)
+                maxBubbles: 55, // 60 -> 55 (少し緩和)
+                unlockCondition: { type: 'tap', value: 100000 }, // 200000 -> 100000 (大幅緩和)
+                unlockMessage: 'TAP 100000以上で開放'
             },
             boss: {
                 name: 'ボスアワアワ',
                 description: '中盤と最後にボス泡が出現する特別ステージ',
                 duration: 300000,
                 bubbleTypes: ['normal', 'stone', 'iron', 'rainbow', 'pink', 'clock', 'score', 'boss'],
-                spawnRate: 2.0,
-                maxBubbles: 30,
+                spawnRate: 1.8, // 2.0 -> 1.8 (少し緩和)
+                maxBubbles: 28, // 30 -> 28 (少し緩和)
                 bossEvents: [
                     { time: 150000, type: 'boss', count: 1 }, // 中盤
                     { time: 30000, type: 'boss', count: 2 }   // 最後
                 ],
-                unlockCondition: { type: 'tap', value: 75000 },
-                unlockMessage: 'TAP 75000以上で開放'
+                unlockCondition: { type: 'tap', value: 35000 }, // 75000 -> 35000 (大幅緩和)
+                unlockMessage: 'TAP 35000以上で開放'
             }
         };
     }

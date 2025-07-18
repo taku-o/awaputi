@@ -38,110 +38,110 @@ export class Bubble {
             normal: {
                 health: 1,
                 size: 50,
-                maxAge: 10000,
+                maxAge: 12000, // 10000 -> 12000 (少し長く)
                 color: '#87CEEB',
-                score: 10
+                score: 15
             },
             stone: {
                 health: 2,
                 size: 55,
-                maxAge: 15000,
+                maxAge: 16000, // 15000 -> 16000 (少し長く)
                 color: '#696969',
-                score: 30
+                score: 35
             },
             iron: {
                 health: 3,
                 size: 60,
-                maxAge: 20000,
+                maxAge: 20000, // 変更なし
                 color: '#708090',
-                score: 50
+                score: 65
             },
             diamond: {
-                health: 5,
+                health: 4, // 5 -> 4 (少し弱く)
                 size: 65,
-                maxAge: 25000,
+                maxAge: 22000, // 25000 -> 22000 (少し短く)
                 color: '#B0E0E6',
-                score: 100
+                score: 120
             },
             pink: {
                 health: 1,
                 size: 45,
-                maxAge: 8000,
+                maxAge: 10000, // 8000 -> 10000 (少し長く)
                 color: '#FFB6C1',
-                score: 20,
-                healAmount: 20
+                score: 25,
+                healAmount: 25 // 20 -> 25 (回復量増加)
             },
             poison: {
                 health: 1,
                 size: 48,
-                maxAge: 12000,
+                maxAge: 14000, // 12000 -> 14000 (少し長く)
                 color: '#9370DB',
-                score: 15,
-                damageAmount: 10
+                score: 8,
+                damageAmount: 8 // 10 -> 8 (ダメージ軽減)
             },
             spiky: {
                 health: 1,
                 size: 52,
-                maxAge: 12000,
+                maxAge: 13000, // 12000 -> 13000 (少し長く)
                 color: '#FF6347',
-                score: 25,
-                chainRadius: 150
+                score: 85,
+                chainRadius: 120 // 150 -> 120 (連鎖範囲を少し狭く)
             },
             rainbow: {
                 health: 1,
                 size: 55,
-                maxAge: 15000,
+                maxAge: 16000, // 15000 -> 16000 (少し長く)
                 color: '#FF69B4',
-                score: 50,
-                bonusTimeMs: 10000
+                score: 400,
+                bonusTimeMs: 8000 // 10000 -> 8000 (ボーナス時間短縮)
             },
             clock: {
                 health: 1,
                 size: 50,
-                maxAge: 18000,
+                maxAge: 20000, // 18000 -> 20000 (少し長く)
                 color: '#FFD700',
-                score: 30,
-                timeStopMs: 3000
+                score: 180,
+                timeStopMs: 2500 // 3000 -> 2500 (時間停止短縮)
             },
             score: {
                 health: 1,
                 size: 48,
-                maxAge: 8000,
+                maxAge: 9000, // 8000 -> 9000 (少し長く)
                 color: '#32CD32',
-                score: 15,
-                bonusScore: 100
+                score: 250,
+                bonusScore: 80 // 100 -> 80 (ボーナス軽減)
             },
             electric: {
                 health: 1,
                 size: 50,
-                maxAge: 12000,
+                maxAge: 13000, // 12000 -> 13000 (少し長く)
                 color: '#FFFF00',
-                score: 40,
-                shakeIntensity: 20,
-                disableDuration: 2000
+                score: 20,
+                shakeIntensity: 15, // 20 -> 15 (揺れ軽減)
+                disableDuration: 1500 // 2000 -> 1500 (操作不能時間短縮)
             },
             escaping: {
                 health: 1,
                 size: 45,
-                maxAge: 15000,
+                maxAge: 16000, // 15000 -> 16000 (少し長く)
                 color: '#FF8C00',
-                score: 60,
-                escapeSpeed: 200,
-                escapeRadius: 100
+                score: 50,
+                escapeSpeed: 180, // 200 -> 180 (逃げる速度軽減)
+                escapeRadius: 90 // 100 -> 90 (逃げる範囲縮小)
             },
             cracked: {
                 health: 1,
                 size: 52,
-                maxAge: 5000, // 早期破裂
+                maxAge: 6000, // 5000 -> 6000 (少し長く)
                 color: '#8B4513',
-                score: 35
+                score: 30
             },
             boss: {
-                health: 10,
-                size: 100, // 大型
-                maxAge: 30000,
+                health: 8, // 10 -> 8 (少し弱く)
+                size: 90, // 100 -> 90 (少し小さく)
+                maxAge: 35000, // 30000 -> 35000 (少し長く)
                 color: '#8B0000',
-                score: 200
+                score: 800
             }
         };
         

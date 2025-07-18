@@ -11,6 +11,23 @@ export class ScoreManager {
     }
     
     /**
+     * コンボタイムアウト時間を取得（アイテム効果を考慮）
+     */
+    getComboTimeout() {
+        let timeout = this.comboTimeout;
+        
+        // アイテム効果でコンボ継続時間を延長
+        if (this.gameEngine.itemManager) {
+            const comboBoost = this.gameEngine.itemManager.getEffectValue('comboBoost');
+            if (comboBoost > 1) {
+                timeout = Math.floor(timeout * comboBoost);
+            }
+        }
+        
+        return timeout;
+    }
+    
+    /**
      * スコアを追加（泡をクリック/ポップした時）
      */
     addScore(bubble, x, y) {
@@ -21,7 +38,8 @@ export class ScoreManager {
         // コンボボーナス
         let comboMultiplier = 1;
         if (this.combo > 1) {
-            comboMultiplier = Math.min(1 + (this.combo - 1) * 0.1, 3.0); // 最大3倍
+            // より緩やかな成長カーブで最大倍率を2.5倍に調整
+            comboMultiplier = Math.min(1 + (this.combo - 1) * 0.08, 2.5);
             finalScore = Math.floor(finalScore * comboMultiplier);
             totalMultiplier *= comboMultiplier;
         }
@@ -61,23 +79,23 @@ export class ScoreManager {
      */
     calculateBaseScore(bubble) {
         const baseScores = {
-            'normal': 10,
-            'stone': 25,
-            'iron': 50,
-            'diamond': 100,
-            'rainbow': 500,
-            'pink': 30,
-            'clock': 200,
-            'electric': 15,
-            'poison': 5,
-            'spiky': 75,
-            'cracked': 20,
-            'escaping': 40,
-            'boss': 1000,
-            'score': 300
+            'normal': 15,    // 10 -> 15 (基本スコア向上)
+            'stone': 35,     // 25 -> 35 (硬い泡の価値向上)
+            'iron': 65,      // 50 -> 65 (硬い泡の価値向上)
+            'diamond': 120,  // 100 -> 120 (硬い泡の価値向上)
+            'rainbow': 400,  // 500 -> 400 (少し下げてバランス調整)
+            'pink': 25,      // 30 -> 25 (回復効果があるので少し下げる)
+            'clock': 180,    // 200 -> 180 (時間停止効果があるので少し下げる)
+            'electric': 20,  // 15 -> 20 (デメリットがあるので少し上げる)
+            'poison': 8,     // 5 -> 8 (ダメージがあるが少し上げる)
+            'spiky': 85,     // 75 -> 85 (連鎖効果があるので価値向上)
+            'cracked': 30,   // 20 -> 30 (早期破裂リスクがあるので価値向上)
+            'escaping': 50,  // 40 -> 50 (捕まえにくいので価値向上)
+            'boss': 800,     // 1000 -> 800 (少し下げてバランス調整)
+            'score': 250     // 300 -> 250 (少し下げてバランス調整)
         };
         
-        return baseScores[bubble.type] || 10;
+        return baseScores[bubble.type] || 15;
     }
     
     /**
@@ -136,9 +154,9 @@ export class ScoreManager {
         this.combo++;
         this.comboTimer = 0;
         
-        // 一定のコンボ数でボーナス
-        if (this.combo % 10 === 0) {
-            const bonusScore = this.combo * 10;
+        // より頻繁なコンボボーナス（5コンボごと）
+        if (this.combo % 5 === 0) {
+            const bonusScore = this.combo * 8; // 10 -> 8 (少し下げてバランス調整)
             this.gameEngine.playerData.addScore(bonusScore);
             
             // ボーナス通知
@@ -185,7 +203,8 @@ export class ScoreManager {
         if (this.combo > 0) {
             this.comboTimer += deltaTime;
             
-            if (this.comboTimer >= this.comboTimeout) {
+            // アイテム効果を考慮したタイムアウト時間を使用
+            if (this.comboTimer >= this.getComboTimeout()) {
                 this.resetCombo();
             }
         }
