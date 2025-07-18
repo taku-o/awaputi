@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-07-18T17:14:48.086Z",
+  "version": "1.0.0",
+  "environment": "development",
+  "buildTime": 1752858888087,
+  "git": {
+    "branch": "master",
+    "commit": "3bd0765ff8dce8df631ff26c7516d5647ae60678",
+    "shortCommit": "3bd0765"
+  },
+  "performance": {
+    "error": "require is not defined"
+  }
+}
