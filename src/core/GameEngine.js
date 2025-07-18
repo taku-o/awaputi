@@ -4,6 +4,9 @@ import { ScoreManager } from '../managers/ScoreManager.js';
 import { StageManager } from './StageManager.js';
 import { SceneManager } from './SceneManager.js';
 import { ItemManager } from './ItemSystem.js';
+import { SettingsManager } from './SettingsManager.js';
+import { LocalizationManager } from './LocalizationManager.js';
+import { KeyboardShortcutManager } from './KeyboardShortcutManager.js';
 import { MainMenuScene } from '../scenes/MainMenuScene.js';
 import { StageSelectScene } from '../scenes/StageSelectScene.js';
 import { GameScene } from '../scenes/GameScene.js';
@@ -69,6 +72,11 @@ export class GameEngine {
         this.bubbleManager = new BubbleManager(this);
         this.stageManager = new StageManager(this);
         this.sceneManager = new SceneManager(this);
+        
+        // 新しいUI改善システム
+        this.settingsManager = new SettingsManager(this);
+        this.localizationManager = new LocalizationManager();
+        this.keyboardShortcutManager = new KeyboardShortcutManager(this);
         
         // ゲーム状態
         this.timeRemaining = 300000; // 5分

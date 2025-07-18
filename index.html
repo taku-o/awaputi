@@ -7,7 +7,10 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#667eea">
+    <meta name="description" content="BubblePop - 泡を割って高スコアを目指すアクションゲーム">
+    <meta name="keywords" content="ゲーム,泡,アクション,HTML5,Canvas">
     <title>BubblePop - 泡割りゲーム</title>
+    <link rel="stylesheet" href="src/styles/accessibility.css">
     <style>
         /* リセットCSS */
         * {
@@ -256,22 +259,48 @@
 </head>
 <body>
     <!-- ローディング画面 -->
-    <div id="loadingScreen">
+    <div id="loadingScreen" role="status" aria-live="polite" aria-label="ゲーム読み込み中">
         <div>
             <div>BubblePop</div>
             <div style="font-size: 16px; margin-top: 10px;">読み込み中...</div>
+            <div class="loading-spinner" aria-hidden="true"></div>
         </div>
     </div>
     
+    <!-- スクリーンリーダー用の説明 -->
+    <div class="screen-reader-only">
+        <h1>BubblePop - 泡割りゲーム</h1>
+        <p>画面に現れる泡をクリックまたはタップして割り、高スコアを目指すアクションゲームです。</p>
+        <p>キーボードショートカット: スペースキーで一時停止、Escキーでメニュー、Fキーでフルスクリーン</p>
+    </div>
+    
     <!-- ゲームコンテナ -->
-    <div id="gameContainer">
-        <canvas id="gameCanvas" width="800" height="600"></canvas>
-        <div id="gameUI">
-            <div>スコア: <span id="score">0</span></div>
-            <div>HP: <span id="hp">100</span></div>
-            <div>時間: <span id="time">5:00</span></div>
+    <div id="gameContainer" role="main">
+        <canvas id="gameCanvas" 
+                width="800" 
+                height="600" 
+                role="img" 
+                aria-label="ゲーム画面"
+                tabindex="0"
+                aria-describedby="gameInstructions"></canvas>
+        
+        <!-- ゲーム状態表示 -->
+        <div id="gameUI" role="status" aria-live="polite" aria-label="ゲーム状態">
+            <div aria-label="現在のスコア">スコア: <span id="score">0</span></div>
+            <div aria-label="残りHP">HP: <span id="hp">100</span></div>
+            <div aria-label="残り時間">時間: <span id="time">5:00</span></div>
+        </div>
+        
+        <!-- ゲーム説明（スクリーンリーダー用） -->
+        <div id="gameInstructions" class="screen-reader-only">
+            <p>泡をクリックまたはタップして割ってください。ドラッグで泡を吹き飛ばすこともできます。</p>
+            <p>ピンクの泡はHPを回復し、毒の泡はダメージを与えます。</p>
+            <p>時間内にできるだけ多くの泡を割って高スコアを目指しましょう。</p>
         </div>
     </div>
+    
+    <!-- キーボードナビゲーション用のフォーカス表示 -->
+    <div id="focusIndicator" class="screen-reader-only" aria-live="polite"></div>
     
     <script type="module" src="src/main.js"></script>
 </body>

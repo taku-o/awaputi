@@ -244,6 +244,7 @@ export class MainMenuScene extends Scene {
      */
     renderSettings(context) {
         const canvas = this.gameEngine.canvas;
+        const t = this.gameEngine.localizationManager.t.bind(this.gameEngine.localizationManager);
         
         // 半透明オーバーレイ
         context.save();
@@ -255,38 +256,304 @@ export class MainMenuScene extends Scene {
         context.font = 'bold 32px Arial';
         context.textAlign = 'center';
         context.textBaseline = 'middle';
-        context.fillText('設定', canvas.width / 2, 100);
+        context.fillText(t('settings.title'), canvas.width / 2, 80);
         
-        // 設定項目
-        const buttonWidth = 250;
-        const buttonHeight = 45;
-        const buttonX = (canvas.width - buttonWidth) / 2;
-        let currentY = 160;
-        const buttonSpacing = 15;
+        // 設定セクション
+        this.renderAudioSettings(context, t);
+        this.renderLanguageSettings(context, t);
+        this.renderQualitySettings(context, t);
+        this.renderAccessibilitySettings(context, t);
         
-        // ユーザー名変更ボタン
-        this.renderSettingsButton(context, buttonX, currentY, buttonWidth, buttonHeight, 'ユーザー名変更', '#0066CC');
-        currentY += buttonHeight + buttonSpacing;
-        
-        // データクリアボタン
-        this.renderSettingsButton(context, buttonX, currentY, buttonWidth, buttonHeight, 'データクリア', '#CC6600');
-        currentY += buttonHeight + buttonSpacing;
-        
-        // 操作説明ボタン
-        this.renderSettingsButton(context, buttonX, currentY, buttonWidth, buttonHeight, '操作説明', '#006600');
-        currentY += buttonHeight + buttonSpacing;
-        
-        // 戻るボタン
-        currentY += 20; // 少し間隔を空ける
-        this.renderSettingsButton(context, buttonX, currentY, buttonWidth, buttonHeight, '戻る', '#666666');
+        // アクションボタン
+        this.renderSettingsActions(context, t);
         
         // 操作説明
         context.fillStyle = '#AAAAAA';
         context.font = '14px Arial';
         context.textAlign = 'center';
-        context.fillText('クリックまたはESCで戻る', canvas.width / 2, canvas.height - 40);
+        context.fillText(t('menu.controls'), canvas.width / 2, canvas.height - 40);
         
         context.restore();
+    }
+    
+    /**
+     * 音響設定を描画
+     */
+    renderAudioSettings(context, t) {
+        const canvas = this.gameEngine.canvas;
+        const settings = this.gameEngine.settingsManager;
+        
+        // セクションタイトル
+        context.fillStyle = '#FFFF99';
+        context.font = 'bold 20px Arial';
+        context.textAlign = 'left';
+        context.fillText(t('settings.audio'), 50, 130);
+        
+        let y = 160;
+        const lineHeight = 30;
+        
+        // マスター音量
+        this.renderVolumeSlider(context, 50, y, 300, 20, 
+            t('settings.masterVolume'), 
+            settings.get('masterVolume'), 
+            'masterVolume');
+        y += lineHeight;
+        
+        // 効果音音量
+        this.renderVolumeSlider(context, 50, y, 300, 20, 
+            t('settings.sfxVolume'), 
+            settings.get('sfxVolume'), 
+            'sfxVolume');
+        y += lineHeight;
+        
+        // BGM音量
+        this.renderVolumeSlider(context, 50, y, 300, 20, 
+            t('settings.bgmVolume'), 
+            settings.get('bgmVolume'), 
+            'bgmVolume');
+        y += lineHeight;
+        
+        // ミュートボタン
+        this.renderToggleButton(context, 50, y, 100, 25, 
+            t('settings.mute'), 
+            settings.get('isMuted'), 
+            'isMuted');
+    }
+    
+    /**
+     * 言語設定を描画
+     */
+    renderLanguageSettings(context, t) {
+        const canvas = this.gameEngine.canvas;
+        const settings = this.gameEngine.settingsManager;
+        const currentLang = settings.get('language');
+        
+        // セクションタイトル
+        context.fillStyle = '#99FFFF';
+        context.font = 'bold 20px Arial';
+        context.textAlign = 'left';
+        context.fillText(t('settings.language'), 400, 130);
+        
+        // 言語選択ボタン
+        const languages = [
+            { code: 'ja', name: '日本語' },
+            { code: 'en', name: 'English' }
+        ];
+        
+        let y = 160;
+        languages.forEach(lang => {
+            const isSelected = currentLang === lang.code;
+            this.renderLanguageButton(context, 400, y, 150, 25, 
+                lang.name, lang.code, isSelected);
+            y += 30;
+        });
+    }
+    
+    /**
+     * 品質設定を描画
+     */
+    renderQualitySettings(context, t) {
+        const canvas = this.gameEngine.canvas;
+        const settings = this.gameEngine.settingsManager;
+        const currentQuality = settings.get('quality');
+        
+        // セクションタイトル
+        context.fillStyle = '#FFCC99';
+        context.font = 'bold 20px Arial';
+        context.textAlign = 'left';
+        context.fillText(t('settings.quality'), 50, 280);
+        
+        // 品質選択ボタン
+        const qualities = [
+            { code: 'auto', name: t('quality.auto') },
+            { code: 'high', name: t('quality.high') },
+            { code: 'medium', name: t('quality.medium') },
+            { code: 'low', name: t('quality.low') }
+        ];
+        
+        let x = 50;
+        qualities.forEach(quality => {
+            const isSelected = currentQuality === quality.code;
+            this.renderQualityButton(context, x, 310, 80, 25, 
+                quality.name, quality.code, isSelected);
+            x += 90;
+        });
+    }
+    
+    /**
+     * アクセシビリティ設定を描画
+     */
+    renderAccessibilitySettings(context, t) {
+        const canvas = this.gameEngine.canvas;
+        const settings = this.gameEngine.settingsManager;
+        
+        // セクションタイトル
+        context.fillStyle = '#CCFFCC';
+        context.font = 'bold 20px Arial';
+        context.textAlign = 'left';
+        context.fillText(t('settings.accessibility'), 400, 280);
+        
+        let y = 310;
+        const lineHeight = 30;
+        
+        // アクセシビリティオプション
+        const accessibilityOptions = [
+            { key: 'accessibility.highContrast', label: t('accessibility.highContrast') },
+            { key: 'accessibility.reducedMotion', label: t('accessibility.reducedMotion') },
+            { key: 'accessibility.largeText', label: t('accessibility.largeText') }
+        ];
+        
+        accessibilityOptions.forEach(option => {
+            this.renderToggleButton(context, 400, y, 200, 25, 
+                option.label, 
+                settings.get(option.key), 
+                option.key);
+            y += lineHeight;
+        });
+    }
+    
+    /**
+     * 設定アクションボタンを描画
+     */
+    renderSettingsActions(context, t) {
+        const canvas = this.gameEngine.canvas;
+        const buttonWidth = 120;
+        const buttonHeight = 35;
+        const buttonY = canvas.height - 120;
+        
+        // ユーザー名変更ボタン
+        this.renderSettingsButton(context, 50, buttonY, buttonWidth, buttonHeight, 
+            t('username.change'), '#0066CC');
+        
+        // データクリアボタン
+        this.renderSettingsButton(context, 180, buttonY, buttonWidth, buttonHeight, 
+            t('dataClear.title'), '#CC6600');
+        
+        // 操作説明ボタン
+        this.renderSettingsButton(context, 310, buttonY, buttonWidth, buttonHeight, 
+            t('help.title'), '#006600');
+        
+        // 戻るボタン
+        this.renderSettingsButton(context, canvas.width - buttonWidth - 50, buttonY, 
+            buttonWidth, buttonHeight, t('settings.back'), '#666666');
+    }
+    
+    /**
+     * 音量スライダーを描画
+     */
+    renderVolumeSlider(context, x, y, width, height, label, value, settingKey) {
+        // ラベル
+        context.fillStyle = '#FFFFFF';
+        context.font = '16px Arial';
+        context.textAlign = 'left';
+        context.fillText(label, x, y - 5);
+        
+        // スライダー背景
+        context.fillStyle = '#333333';
+        context.fillRect(x, y, width, height);
+        
+        // スライダー枠線
+        context.strokeStyle = '#666666';
+        context.lineWidth = 1;
+        context.strokeRect(x, y, width, height);
+        
+        // スライダー値
+        const fillWidth = width * value;
+        context.fillStyle = '#0066CC';
+        context.fillRect(x, y, fillWidth, height);
+        
+        // 値表示
+        context.fillStyle = '#FFFFFF';
+        context.font = '14px Arial';
+        context.textAlign = 'right';
+        context.fillText(`${Math.round(value * 100)}%`, x + width + 30, y + height - 3);
+        
+        // クリック領域を記録
+        this.volumeSliders = this.volumeSliders || [];
+        this.volumeSliders.push({
+            x, y, width, height, settingKey, value
+        });
+    }
+    
+    /**
+     * トグルボタンを描画
+     */
+    renderToggleButton(context, x, y, width, height, label, isEnabled, settingKey) {
+        // ボタン背景
+        context.fillStyle = isEnabled ? '#00AA00' : '#666666';
+        context.fillRect(x, y, width, height);
+        
+        // ボタン枠線
+        context.strokeStyle = '#FFFFFF';
+        context.lineWidth = 2;
+        context.strokeRect(x, y, width, height);
+        
+        // ラベル
+        context.fillStyle = '#FFFFFF';
+        context.font = '14px Arial';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        context.fillText(label, x + width / 2, y + height / 2);
+        
+        // クリック領域を記録
+        this.toggleButtons = this.toggleButtons || [];
+        this.toggleButtons.push({
+            x, y, width, height, settingKey, isEnabled
+        });
+    }
+    
+    /**
+     * 言語ボタンを描画
+     */
+    renderLanguageButton(context, x, y, width, height, label, langCode, isSelected) {
+        // ボタン背景
+        context.fillStyle = isSelected ? '#0066CC' : '#333333';
+        context.fillRect(x, y, width, height);
+        
+        // ボタン枠線
+        context.strokeStyle = isSelected ? '#FFFFFF' : '#666666';
+        context.lineWidth = 2;
+        context.strokeRect(x, y, width, height);
+        
+        // ラベル
+        context.fillStyle = '#FFFFFF';
+        context.font = '14px Arial';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        context.fillText(label, x + width / 2, y + height / 2);
+        
+        // クリック領域を記録
+        this.languageButtons = this.languageButtons || [];
+        this.languageButtons.push({
+            x, y, width, height, langCode, isSelected
+        });
+    }
+    
+    /**
+     * 品質ボタンを描画
+     */
+    renderQualityButton(context, x, y, width, height, label, qualityCode, isSelected) {
+        // ボタン背景
+        context.fillStyle = isSelected ? '#CC6600' : '#333333';
+        context.fillRect(x, y, width, height);
+        
+        // ボタン枠線
+        context.strokeStyle = isSelected ? '#FFFFFF' : '#666666';
+        context.lineWidth = 2;
+        context.strokeRect(x, y, width, height);
+        
+        // ラベル
+        context.fillStyle = '#FFFFFF';
+        context.font = '12px Arial';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        context.fillText(label, x + width / 2, y + height / 2);
+        
+        // クリック領域を記録
+        this.qualityButtons = this.qualityButtons || [];
+        this.qualityButtons.push({
+            x, y, width, height, qualityCode, isSelected
+        });
     }
     
     /**
@@ -565,37 +832,77 @@ export class MainMenuScene extends Scene {
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
         
-        const buttonWidth = 250;
-        const buttonHeight = 45;
-        const buttonX = (canvas.width - buttonWidth) / 2;
-        const buttonSpacing = 15;
+        // 音量スライダーのクリック処理
+        if (this.volumeSliders) {
+            for (const slider of this.volumeSliders) {
+                if (x >= slider.x && x <= slider.x + slider.width && 
+                    y >= slider.y && y <= slider.y + slider.height) {
+                    const newValue = Math.max(0, Math.min(1, (x - slider.x) / slider.width));
+                    this.gameEngine.settingsManager.set(slider.settingKey, newValue);
+                    return;
+                }
+            }
+        }
         
-        let currentY = 160;
+        // トグルボタンのクリック処理
+        if (this.toggleButtons) {
+            for (const button of this.toggleButtons) {
+                if (x >= button.x && x <= button.x + button.width && 
+                    y >= button.y && y <= button.y + button.height) {
+                    this.gameEngine.settingsManager.set(button.settingKey, !button.isEnabled);
+                    return;
+                }
+            }
+        }
+        
+        // 言語ボタンのクリック処理
+        if (this.languageButtons) {
+            for (const button of this.languageButtons) {
+                if (x >= button.x && x <= button.x + button.width && 
+                    y >= button.y && y <= button.y + button.height) {
+                    this.gameEngine.settingsManager.set('language', button.langCode);
+                    return;
+                }
+            }
+        }
+        
+        // 品質ボタンのクリック処理
+        if (this.qualityButtons) {
+            for (const button of this.qualityButtons) {
+                if (x >= button.x && x <= button.x + button.width && 
+                    y >= button.y && y <= button.y + button.height) {
+                    this.gameEngine.settingsManager.set('quality', button.qualityCode);
+                    return;
+                }
+            }
+        }
+        
+        // アクションボタンのクリック処理
+        const buttonWidth = 120;
+        const buttonHeight = 35;
+        const buttonY = canvas.height - 120;
         
         // ユーザー名変更ボタン
-        if (x >= buttonX && x <= buttonX + buttonWidth && y >= currentY && y <= currentY + buttonHeight) {
+        if (x >= 50 && x <= 50 + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight) {
             this.changeUsername();
             return;
         }
-        currentY += buttonHeight + buttonSpacing;
         
         // データクリアボタン
-        if (x >= buttonX && x <= buttonX + buttonWidth && y >= currentY && y <= currentY + buttonHeight) {
+        if (x >= 180 && x <= 180 + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight) {
             this.showDataClearConfirmation();
             return;
         }
-        currentY += buttonHeight + buttonSpacing;
         
         // 操作説明ボタン
-        if (x >= buttonX && x <= buttonX + buttonWidth && y >= currentY && y <= currentY + buttonHeight) {
+        if (x >= 310 && x <= 310 + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight) {
             this.showControlsHelp();
             return;
         }
-        currentY += buttonHeight + buttonSpacing;
         
         // 戻るボタン
-        currentY += 20; // 少し間隔を空ける
-        if (x >= buttonX && x <= buttonX + buttonWidth && y >= currentY && y <= currentY + buttonHeight) {
+        const backButtonX = canvas.width - buttonWidth - 50;
+        if (x >= backButtonX && x <= backButtonX + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight) {
             this.closeSettings();
             return;
         }
@@ -675,6 +982,12 @@ export class MainMenuScene extends Scene {
      */
     openSettings() {
         this.showingSettings = true;
+        
+        // クリック領域配列をクリア
+        this.volumeSliders = [];
+        this.toggleButtons = [];
+        this.languageButtons = [];
+        this.qualityButtons = [];
     }
     
     /**
