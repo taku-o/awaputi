@@ -1,7 +1,8 @@
 import { Bubble } from '../bubbles/Bubble.js';
+import { performanceOptimizer } from '../utils/PerformanceOptimizer.js';
 
 /**
- * 泡管理クラス
+ * 泡管理クラス - パフォーマンス最適化対応
  */
 export class BubbleManager {
     constructor(gameEngine) {
@@ -18,13 +19,22 @@ export class BubbleManager {
         this.draggedBubble = null;
         this.isDragging = false;
         this.dragStartPosition = { x: 0, y: 0 };
+        this.dragHistory = []; // ドラッグ履歴（速度計算用）
+        
+        // パフォーマンス最適化
+        this.lastCullTime = 0;
+        this.cullInterval = 500; // 0.5秒ごとにカリング
+        this.offscreenTimeout = new Map(); // 画面外タイムアウト管理
     }
     
     /**
      * 泡を生成
      */
     spawnBubble(type = null, position = null) {
-        if (this.bubbles.length >= this.maxBubbles) {
+        // パフォーマンス最適化による制限
+        const maxBubbles = Math.min(this.maxBubbles, performanceOptimizer.getMaxBubbles());
+        
+        if (this.bubbles.length >= maxBubbles) {
             return null;
         }
         
@@ -38,10 +48,48 @@ export class BubbleManager {
             position = this.getRandomPosition();
         }
         
-        const bubble = new Bubble(type, position);
-        this.bubbles.push(bubble);
+        // プールから泡を取得するか新規作成
+        let bubble;
+        const pooledBubble = this.gameEngine.getBubbleFromPool();
+        if (pooledBubble) {
+            // プールされた泡を再初期化
+            Object.assign(pooledBubble, {
+                type: type,
+                position: { ...position },
+                velocity: { x: 0, y: 0 },
+                size: 50,
+                health: this.getBubbleHealthByType(type),
+                maxHealth: this.getBubbleHealthByType(type),
+                age: 0,
+                maxAge: 10000,
+                isAlive: true,
+                effects: [],
+                clickCount: 0,
+                isEscaping: false,
+                escapeSpeed: 0,
+                lastMouseDistance: Infinity
+            });
+            bubble = pooledBubble;
+        } else {
+            bubble = new Bubble(type, position);
+        }
         
+        this.bubbles.push(bubble);
         return bubble;
+    }
+    
+    /**
+     * 泡の種類による初期体力を取得
+     */
+    getBubbleHealthByType(type) {
+        const healthMap = {
+            'normal': 1,
+            'stone': 2,
+            'iron': 3,
+            'diamond': 5,
+            'boss': 10
+        };
+        return healthMap[type] || 1;
     }
     
     /**
@@ -66,10 +114,10 @@ export class BubbleManager {
             position = this.getRandomPosition();
         }
         
-        const bubble = new Bubble(type, position);
-        this.bubbles.push(bubble);
-        
-        console.log(`Spawned specific bubble: ${type}`);
+        const bubble = this.spawnBubble(type, position);
+        if (bubble) {
+            console.log(`Spawned specific bubble: ${type}`);
+        }
         return bubble;
     }
     
@@ -141,17 +189,27 @@ export class BubbleManager {
      * 泡を更新
      */
     update(deltaTime) {
-        // 自動生成
-        this.spawnTimer += deltaTime;
-        if (this.spawnTimer >= this.spawnInterval) {
+        // パフォーマンス調整されたデルタタイムを使用
+        const adjustedDeltaTime = performanceOptimizer.adjustUpdateFrequency(deltaTime);
+        
+        // 自動生成（パフォーマンスレベルに応じて調整）
+        this.spawnTimer += adjustedDeltaTime;
+        const adjustedSpawnInterval = this.spawnInterval * (2 - performanceOptimizer.getEffectQuality());
+        
+        if (this.spawnTimer >= adjustedSpawnInterval) {
             this.spawnBubble();
             this.spawnTimer = 0;
         }
         
-        // 全ての泡を更新
+        // 全ての泡を更新（フラスタムカリング適用）
         for (let i = this.bubbles.length - 1; i >= 0; i--) {
             const bubble = this.bubbles[i];
-            bubble.update(deltaTime, this.mousePosition);
+            
+            // パフォーマンス最適化: 画面外の泡は更新頻度を下げる
+            const isVisible = this.isBubbleVisible(bubble);
+            const updateDelta = isVisible ? adjustedDeltaTime : adjustedDeltaTime * 2;
+            
+            bubble.update(updateDelta, this.mousePosition);
             
             // 死んだ泡を削除
             if (!bubble.isAlive) {
@@ -160,12 +218,94 @@ export class BubbleManager {
                     this.gameEngine.playerData.takeDamage(5);
                 }
                 
+                // プールに戻す
+                this.gameEngine.returnBubbleToPool(bubble);
                 this.bubbles.splice(i, 1);
             }
         }
         
+        // 定期的なカリング処理
+        if (Date.now() - this.lastCullTime > this.cullInterval) {
+            this.performCulling();
+            this.lastCullTime = Date.now();
+        }
+        
         // 画面外に出た特定の泡をチェック
         this.checkOffScreenBubbles();
+    }
+    
+    /**
+     * 泡が画面内にあるかチェック
+     */
+    isBubbleVisible(bubble) {
+        const margin = 100;
+        return (
+            bubble.position.x > -margin &&
+            bubble.position.x < 800 + margin &&
+            bubble.position.y > -margin &&
+            bubble.position.y < 600 + margin
+        );
+    }
+    
+    /**
+     * パフォーマンス向上のためのカリング処理
+     */
+    performCulling() {
+        if (this.bubbles.length <= performanceOptimizer.getMaxBubbles()) {
+            return; // 制限内なのでカリング不要
+        }
+        
+        // 優先度の低い泡を削除
+        const bubblesWithPriority = this.bubbles.map((bubble, index) => ({
+            bubble,
+            index,
+            priority: this.calculateBubblePriority(bubble)
+        }));
+        
+        // 優先度順にソート（低い順）
+        bubblesWithPriority.sort((a, b) => a.priority - b.priority);
+        
+        // 下位の泡を削除
+        const targetCount = performanceOptimizer.getMaxBubbles();
+        const toRemove = this.bubbles.length - targetCount;
+        
+        for (let i = 0; i < toRemove; i++) {
+            const item = bubblesWithPriority[i];
+            this.gameEngine.returnBubbleToPool(item.bubble);
+            this.bubbles.splice(item.index, 1);
+        }
+        
+        console.log(`Culled ${toRemove} bubbles for performance`);
+    }
+    
+    /**
+     * 泡の優先度を計算（低いほど削除対象）
+     */
+    calculateBubblePriority(bubble) {
+        let priority = 0;
+        
+        // 画面内の泡は高優先度
+        if (this.isBubbleVisible(bubble)) {
+            priority += 100;
+        }
+        
+        // レア泡は高優先度
+        const rareTypes = ['rainbow', 'pink', 'clock', 'score', 'diamond', 'boss'];
+        if (rareTypes.includes(bubble.type)) {
+            priority += 50;
+        }
+        
+        // 新しい泡は高優先度
+        priority += Math.max(0, 50 - bubble.age / 200);
+        
+        // マウスに近い泡は高優先度
+        const distance = Math.sqrt(
+            Math.pow(bubble.position.x - this.mousePosition.x, 2) +
+            Math.pow(bubble.position.y - this.mousePosition.y, 2)
+        );
+        priority += Math.max(0, 50 - distance / 10);
+        
+        return priority;
     }
     
     /**
@@ -180,9 +320,25 @@ export class BubbleManager {
      * 泡を描画
      */
     render(context) {
-        this.bubbles.forEach(bubble => {
-            bubble.render(context);
-        });
+        // レンダリング品質に応じて処理を調整
+        const renderQuality = performanceOptimizer.getRenderQuality();
+        
+        // 低品質モードでは一部の泡のみレンダリング
+        if (renderQuality < 0.8) {
+            const step = Math.ceil(1 / renderQuality);
+            this.bubbles.forEach((bubble, index) => {
+                if (index % step === 0 && this.isBubbleVisible(bubble)) {
+                    bubble.render(context);
+                }
+            });
+        } else {
+            // 高品質モードでは全ての可視泡をレンダリング
+            this.bubbles.forEach(bubble => {
+                if (this.isBubbleVisible(bubble)) {
+                    bubble.render(context);
+                }
+            });
+        }
     }
     
     /**
@@ -202,12 +358,13 @@ export class BubbleManager {
                     
                     // 特殊効果を適用
                     const effects = bubble.getAndClearEffects();
-                    this.applyEffects(effects);
+                    this.applyEffects(effects, bubble.position);
                     
                     // コンボ更新
                     this.gameEngine.scoreManager.updateCombo();
                     
-                    // 泡を削除
+                    // プールに戻す
+                    this.gameEngine.returnBubbleToPool(bubble);
                     this.bubbles.splice(i, 1);
                 }
                 
@@ -223,42 +380,47 @@ export class BubbleManager {
     /**
      * 特殊効果を適用
      */
-    applyEffects(effects) {
+    applyEffects(effects, position) {
         effects.forEach(effect => {
+            // パフォーマンス最適化: エフェクトの実行可否を判定
+            if (!performanceOptimizer.shouldRunEffect(effect.type)) {
+                return;
+            }
+            
             switch (effect.type) {
                 case 'heal':
                     this.gameEngine.playerData.heal(effect.amount);
-                    this.showFloatingText(`+${effect.amount} HP`, '#00FF00');
+                    this.showFloatingText(`+${effect.amount} HP`, '#00FF00', position);
                     break;
                     
                 case 'damage':
                     this.gameEngine.playerData.takeDamage(effect.amount);
-                    this.showFloatingText(`-${effect.amount} HP`, '#FF0000');
+                    this.showFloatingText(`-${effect.amount} HP`, '#FF0000', position);
                     break;
                     
                 case 'chain_destroy':
                     this.handleChainDestroy(effect.position, effect.radius);
-                    this.showFloatingText('連鎖破壊!', '#FF6347');
+                    this.showFloatingText('連鎖破壊!', '#FF6347', position);
                     break;
                     
                 case 'bonus_time':
                     this.gameEngine.activateBonusTime(effect.duration);
-                    this.showFloatingText('ボーナスタイム!', '#FF69B4');
+                    this.showFloatingText('ボーナスタイム!', '#FF69B4', position);
                     break;
                     
                 case 'time_stop':
                     this.gameEngine.activateTimeStop(effect.duration);
-                    this.showFloatingText('時間停止!', '#FFD700');
+                    this.showFloatingText('時間停止!', '#FFD700', position);
                     break;
                     
                 case 'bonus_score':
                     this.gameEngine.scoreManager.addScore(effect.amount);
-                    this.showFloatingText(`+${effect.amount} ボーナス!`, '#32CD32');
+                    this.showFloatingText(`+${effect.amount} ボーナス!`, '#32CD32', position);
                     break;
                     
                 case 'screen_shake':
                     this.gameEngine.activateScreenShake(effect.intensity, effect.duration);
-                    this.showFloatingText('ビリビリ!', '#FFFF00');
+                    this.showFloatingText('ビリビリ!', '#FFFF00', position);
                     break;
             }
         });
@@ -287,9 +449,10 @@ export class BubbleManager {
                 const filteredEffects = effects.filter(effect => 
                     effect.type !== 'chain_destroy' // 連鎖の連鎖は防ぐ
                 );
-                this.applyEffects(filteredEffects);
+                this.applyEffects(filteredEffects, bubble.position);
                 
                 bubblesDestroyed.push(bubble);
+                this.gameEngine.returnBubbleToPool(bubble);
                 this.bubbles.splice(i, 1);
             }
         }
@@ -305,16 +468,28 @@ export class BubbleManager {
     /**
      * フローティングテキストを表示
      */
-    showFloatingText(text, color) {
-        // 簡単な実装（後で改善）
-        console.log(`Effect: ${text}`);
+    showFloatingText(text, color, position) {
+        // FloatingTextManagerが利用可能な場合は使用
+        if (this.gameEngine.floatingTextManager) {
+            this.gameEngine.floatingTextManager.addText(
+                position.x, position.y, text, { color: color }
+            );
+        } else {
+            // フォールバック
+            console.log(`Effect: ${text} at (${Math.round(position.x)}, ${Math.round(position.y)})`);
+        }
     }
     
     /**
      * 全ての泡をクリア
      */
     clearAllBubbles() {
+        // すべての泡をプールに戻す
+        this.bubbles.forEach(bubble => {
+            this.gameEngine.returnBubbleToPool(bubble);
+        });
         this.bubbles = [];
+        this.offscreenTimeout.clear();
     }
     
     /**
@@ -336,6 +511,7 @@ export class BubbleManager {
                 this.draggedBubble = bubble;
                 this.isDragging = true;
                 this.dragStartPosition = { x, y };
+                this.dragHistory = [{ x, y, time: Date.now() }];
                 
                 console.log(`Drag started on ${bubble.type} bubble`);
                 return true;
@@ -343,6 +519,41 @@ export class BubbleManager {
         }
         
         return false;
+    }
+    
+    /**
+     * ドラッグ移動処理
+     */
+    handleDragMove(x, y) {
+        if (!this.isDragging) return false;
+        
+        // ドラッグ履歴を記録（速度計算用）
+        this.dragHistory.push({ x, y, time: Date.now() });
+        
+        // 履歴サイズを制限
+        if (this.dragHistory.length > 10) {
+            this.dragHistory.shift();
+        }
+        
+        return true;
+    }
+    
+    /**
+     * ドラッグ履歴から速度を計算
+     */
+    calculateVelocityFromHistory() {
+        if (this.dragHistory.length < 2) return { x: 0, y: 0 };
+        
+        const recent = this.dragHistory[this.dragHistory.length - 1];
+        const previous = this.dragHistory[this.dragHistory.length - 2];
+        
+        const timeDiff = Math.max(recent.time - previous.time, 1);
+        const velocity = {
+            x: (recent.x - previous.x) / timeDiff * 1000, // px/s
+            y: (recent.y - previous.y) / timeDiff * 1000
+        };
+        
+        return velocity;
     }
     
     /**
@@ -368,25 +579,49 @@ export class BubbleManager {
             return false;
         }
         
-        // 力の強さを計算（距離に基づく）
-        const forceMultiplier = Math.min(dragDistance / 50, 10); // 最大10倍
-        const baseForce = 300; // 基本の力
-        const force = baseForce * forceMultiplier;
+        // 履歴から計算した速度を使用（より自然な物理挙動）
+        const velocity = this.calculateVelocityFromHistory();
         
-        // 正規化されたベクトルを計算
-        const normalizedVector = {
-            x: dragVector.x / dragDistance,
-            y: dragVector.y / dragDistance
-        };
+        // 泡の種類による重量調整
+        const weightMultiplier = this.getBubbleWeightMultiplier(this.draggedBubble.type);
         
-        // 泡に速度を適用
-        this.draggedBubble.velocity.x = normalizedVector.x * force;
-        this.draggedBubble.velocity.y = normalizedVector.y * force;
+        // 速度に重量を適用
+        this.draggedBubble.velocity.x = velocity.x / weightMultiplier;
+        this.draggedBubble.velocity.y = velocity.y / weightMultiplier;
         
-        console.log(`Bubble blown away with force: ${force.toFixed(1)}, vector: (${normalizedVector.x.toFixed(2)}, ${normalizedVector.y.toFixed(2)})`);
+        // 最大速度制限
+        const maxVelocity = 1000;
+        const currentSpeed = Math.sqrt(
+            this.draggedBubble.velocity.x ** 2 + this.draggedBubble.velocity.y ** 2
+        );
+        
+        if (currentSpeed > maxVelocity) {
+            const scale = maxVelocity / currentSpeed;
+            this.draggedBubble.velocity.x *= scale;
+            this.draggedBubble.velocity.y *= scale;
+        }
+        
+        console.log(`Bubble blown away with velocity: (${Math.round(this.draggedBubble.velocity.x)}, ${Math.round(this.draggedBubble.velocity.y)}), weight: ${weightMultiplier}`);
         
         this.resetDrag();
         return true;
+    }
+    
+    /**
+     * 泡の種類による重量倍率を取得
+     */
+    getBubbleWeightMultiplier(type) {
+        const weightMap = {
+            'normal': 1.0,
+            'stone': 1.5,
+            'iron': 2.0,
+            'diamond': 3.0,
+            'boss': 5.0,
+            'pink': 0.8,
+            'rainbow': 0.7,
+            'electric': 1.2
+        };
+        return weightMap[type] || 1.0;
     }
     
     /**
@@ -396,6 +631,7 @@ export class BubbleManager {
         this.isDragging = false;
         this.draggedBubble = null;
         this.dragStartPosition = { x: 0, y: 0 };
+        this.dragHistory = [];
     }
     
     /**
@@ -421,8 +657,24 @@ export class BubbleManager {
             );
             
             if (isOffScreen && disappearingTypes.includes(bubble.type)) {
-                console.log(`${bubble.type} bubble disappeared off-screen`);
-                this.bubbles.splice(i, 1);
+                // タイムアウト管理で即座に削除せず少し待つ
+                const bubbleId = `${bubble.position.x}_${bubble.position.y}_${bubble.type}`;
+                
+                if (!this.offscreenTimeout.has(bubbleId)) {
+                    this.offscreenTimeout.set(bubbleId, Date.now());
+                } else {
+                    const timeoutStart = this.offscreenTimeout.get(bubbleId);
+                    if (Date.now() - timeoutStart > 2000) { // 2秒後に削除
+                        console.log(`${bubble.type} bubble disappeared off-screen`);
+                        this.gameEngine.returnBubbleToPool(bubble);
+                        this.bubbles.splice(i, 1);
+                        this.offscreenTimeout.delete(bubbleId);
+                    }
+                }
+            } else {
+                // 画面内に戻った場合はタイムアウトをクリア
+                const bubbleId = `${bubble.position.x}_${bubble.position.y}_${bubble.type}`;
+                this.offscreenTimeout.delete(bubbleId);
             }
         }
     }
