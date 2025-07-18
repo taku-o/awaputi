@@ -538,8 +538,11 @@ export class BubbleManager {
     popBubble(bubble, x, y) {
         console.log(`${bubble.type} bubble popped`);
         
-        // 泡の効果を処理
-        this.processBubbleEffect(bubble);
+        // 泡の効果を処理（GameSceneへの通知を含む）
+        this.processBubbleEffect(bubble, x, y);
+        
+        // コンボを更新
+        this.gameEngine.scoreManager.updateCombo(x, y);
         
         // スコアを加算
         this.gameEngine.scoreManager.addScore(bubble, x, y);
@@ -551,38 +554,81 @@ export class BubbleManager {
     /**
      * 泡の効果を処理
      */
-    processBubbleEffect(bubble) {
+    processBubbleEffect(bubble, x, y) {
+        const gameScene = this.gameEngine.sceneManager.getCurrentScene();
+        
         switch (bubble.type) {
             case 'rainbow':
                 // ボーナスタイム開始
                 this.gameEngine.startBonusTime(10000, 2);
+                this.notifySpecialEffect('rainbow', x, y);
                 break;
                 
             case 'pink':
                 // HP回復
-                this.gameEngine.playerData.heal(15);
+                const healAmount = 15;
+                this.gameEngine.playerData.heal(healAmount);
+                this.notifyHeal(healAmount);
+                this.notifySpecialEffect('pink', x, y);
                 break;
                 
             case 'clock':
                 // 時間停止
                 this.gameEngine.startTimeStop(3000);
+                this.notifySpecialEffect('clock', x, y);
                 break;
                 
             case 'electric':
                 // 画面震動
                 this.gameEngine.startScreenShake(2000, 15);
+                this.notifySpecialEffect('electric', x, y);
                 break;
                 
             case 'poison':
                 // ダメージ
-                this.gameEngine.playerData.takeDamage(10);
+                const damage = 10;
+                this.gameEngine.playerData.takeDamage(damage);
+                this.notifyDamage(damage, 'poison');
+                this.notifySpecialEffect('poison', x, y);
                 break;
                 
             case 'spiky':
                 // 周囲の泡を割る
                 this.chainReaction(bubble.x, bubble.y, 80);
+                this.notifySpecialEffect('spiky', x, y);
                 break;
         }
+    }
+    
+    /**
+     * 特殊効果通知
+     */
+    notifySpecialEffect(effectType, x, y) {
+        const gameScene = this.gameEngine.sceneManager.getCurrentScene();
+        if (gameScene && typeof gameScene.onSpecialEffect === 'function') {
+            gameScene.onSpecialEffect(effectType, x, y);
+        }
+    }
+    
+    /**
+     * ダメージ通知
+     */
+    notifyDamage(damage, source) {
+        const gameScene = this.gameEngine.sceneManager.getCurrentScene();
+        if (gameScene && typeof gameScene.onDamageTaken === 'function') {
+            gameScene.onDamageTaken(damage, source);
+        }
+    }
+    
+    /**
+     * 回復通知
+     */
+    notifyHeal(healAmount) {
+        const gameScene = this.gameEngine.sceneManager.getCurrentScene();
+        if (gameScene && typeof gameScene.onHealed === 'function') {
+            gameScene.onHealed(healAmount);
+        }
+    }
     }
     
     /**
