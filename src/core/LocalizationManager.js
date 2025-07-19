@@ -468,7 +468,7 @@ export class LocalizationManager {
             console.log(`Added translations for language: ${language}`);
             return true;
         } catch (error) {
-            errorHandler.handleError(error, 'LOCALIZATION_ERROR', {
+            getErrorHandler().handleError(error, 'LOCALIZATION_ERROR', {
                 operation: 'addTranslations',
                 language: language,
                 translationsCount: Object.keys(translations).length

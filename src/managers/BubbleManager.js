@@ -125,7 +125,7 @@ export class BubbleManager {
             return bubble;
             
         } catch (error) {
-            errorHandler.handleError(error, 'BUBBLE_CREATION_ERROR', {
+            getErrorHandler().handleError(error, 'BUBBLE_CREATION_ERROR', {
                 type: type,
                 position: position,
                 bubbleCount: this.bubbles.length

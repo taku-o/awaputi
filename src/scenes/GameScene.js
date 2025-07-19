@@ -1,4 +1,4 @@
-import { Scene } from '../core/SceneManager.js';
+import { Scene } from '../core/Scene.js';
 import { GameInputManager } from './GameInputManager.js';
 import { FloatingTextManager } from '../ui/FloatingTextManager.js';
 

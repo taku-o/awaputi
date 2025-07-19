@@ -1,4 +1,4 @@
-import { Scene } from '../core/SceneManager.js';
+import { Scene } from '../core/Scene.js';
 import { ITEM_DEFINITIONS } from '../core/ItemSystem.js';
 
 /**

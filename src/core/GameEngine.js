@@ -182,7 +182,7 @@ export class GameEngine {
             try {
                 this.playerData.load();
             } catch (error) {
-                errorHandler.handleError(error, 'STORAGE_ERROR', { operation: 'load', data: 'playerData' });
+                getErrorHandler().handleError(error, 'STORAGE_ERROR', { operation: 'load', data: 'playerData' });
                 // フォールバック: デフォルトデータで続行
                 this.playerData.reset();
             }
@@ -190,7 +190,7 @@ export class GameEngine {
             try {
                 this.itemManager.initialize();
             } catch (error) {
-                errorHandler.handleError(error, 'INITIALIZATION_ERROR', { component: 'itemManager' });
+                getErrorHandler().handleError(error, 'INITIALIZATION_ERROR', { component: 'itemManager' });
                 // フォールバック: アイテムシステムなしで続行
             }
             
@@ -200,7 +200,7 @@ export class GameEngine {
                 this.statisticsManager.load();
                 this.eventStageManager.load();
             } catch (error) {
-                errorHandler.handleError(error, 'INITIALIZATION_ERROR', { component: 'additionalSystems' });
+                getErrorHandler().handleError(error, 'INITIALIZATION_ERROR', { component: 'additionalSystems' });
                 // フォールバック: 新システムなしで続行
             }
             
@@ -208,7 +208,7 @@ export class GameEngine {
             this.sceneManager.switchScene('menu');
             
         } catch (error) {
-            errorHandler.handleError(error, 'INITIALIZATION_ERROR', { component: 'scenes' });
+            getErrorHandler().handleError(error, 'INITIALIZATION_ERROR', { component: 'scenes' });
             throw error;
         }
     }
@@ -299,7 +299,7 @@ export class GameEngine {
             requestAnimationFrame(() => this.gameLoop());
             
         } catch (error) {
-            errorHandler.handleError(error, 'GAME_LOOP_ERROR', {
+            getErrorHandler().handleError(error, 'GAME_LOOP_ERROR', {
                 frameCount: this.frameCount,
                 isRunning: this.isRunning,
                 deltaTime: this.lastTime ? performance.now() - this.lastTime : 0
@@ -978,6 +978,7 @@ export class GameEngine {
             gameUI.style.transformOrigin = 'top left';
             
             // モバイルデバイスでの調整
+            const browserCompatibility = getBrowserCompatibility();
             if (browserCompatibility.deviceInfo.isMobile) {
                 gameUI.style.fontSize = `${14 * scale}px`;
                 
@@ -998,6 +999,7 @@ export class GameEngine {
      * デバイス固有の最適化を取得
      */
     getDeviceOptimizations() {
+        const browserCompatibility = getBrowserCompatibility();
         const deviceInfo = browserCompatibility.deviceInfo;
         const browserInfo = browserCompatibility.browserInfo;
         

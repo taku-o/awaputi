@@ -69,8 +69,8 @@ export class InputManager {
      * イベントリスナーを設定
      */
     setupEventListeners() {
-        const deviceInfo = browserCompatibility.deviceInfo;
-        const features = browserCompatibility.features;
+        const deviceInfo = getBrowserCompatibility().deviceInfo;
+        const features = getBrowserCompatibility().features;
         
         // ポインターイベントが利用可能な場合は優先的に使用
         if (features.pointerEvents) {
@@ -160,7 +160,7 @@ export class InputManager {
      */
     setupGestureEvents() {
         // iOS Safari のジェスチャーイベント
-        if (browserCompatibility.browserInfo.name === 'safari') {
+        if (getBrowserCompatibility().browserInfo.name === 'safari') {
             this.canvas.addEventListener('gesturestart', (event) => {
                 event.preventDefault();
                 this.handleGestureStart(event);
@@ -264,13 +264,25 @@ export class InputManager {
         const rect = this.canvas.getBoundingClientRect();
         let x, y;
         
-        if (event.type.startsWith('mouse')) {
+        if (event.type.startsWith('mouse') || event.type.startsWith('pointer')) {
             x = event.clientX - rect.left;
             y = event.clientY - rect.top;
+        } else if (event.type.startsWith('touch')) {
+            // タッチイベントの安全な処理
+            const touches = event.touches || event.changedTouches || [];
+            if (touches.length > 0) {
+                const touch = touches[0];
+                x = touch.clientX - rect.left;
+                y = touch.clientY - rect.top;
+            } else {
+                // フォールバック: マウスイベントとして処理
+                x = event.clientX - rect.left;
+                y = event.clientY - rect.top;
+            }
         } else {
-            const touch = event.touches[0] || event.changedTouches[0];
-            x = touch.clientX - rect.left;
-            y = touch.clientY - rect.top;
+            // その他のイベントはマウスイベントとして処理
+            x = event.clientX - rect.left;
+            y = event.clientY - rect.top;
         }
         
         return { x, y };
@@ -514,7 +526,7 @@ export class InputManager {
                 this.notifyKeyAction('menu');
                 break;
             case 'KeyF':
-                if (browserCompatibility.deviceInfo.isDesktop) {
+                if (getBrowserCompatibility().deviceInfo.isDesktop) {
                     this.notifyKeyAction('fullscreen');
                 }
                 break;
@@ -668,7 +680,7 @@ export class InputManager {
      */
     getDeviceInfo() {
         return {
-            ...browserCompatibility.deviceInfo,
+            ...getBrowserCompatibility().deviceInfo,
             activeTouches: this.activeTouches.size,
             maxTouches: this.maxTouches,
             dragThreshold: this.dragThreshold,

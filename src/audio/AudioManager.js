@@ -507,13 +507,13 @@ export class AudioManager {
         
         try {
             // 入力値を検証
-            const nameValidation = errorHandler.validateInput(soundName, 'string', {
+            const nameValidation = getErrorHandler().validateInput(soundName, 'string', {
                 maxLength: 50,
                 pattern: /^[a-zA-Z_]+$/
             });
             
             if (!nameValidation.isValid) {
-                errorHandler.handleError(new Error(`Invalid sound name: ${nameValidation.errors.join(', ')}`), 'VALIDATION_ERROR', {
+                getErrorHandler().handleError(new Error(`Invalid sound name: ${nameValidation.errors.join(', ')}`), 'VALIDATION_ERROR', {
                     input: soundName,
                     errors: nameValidation.errors
                 });
@@ -521,7 +521,7 @@ export class AudioManager {
             }
             
             // オプションを検証
-            const optionsValidation = errorHandler.validateInput(options, 'object', {
+            const optionsValidation = getErrorHandler().validateInput(options, 'object', {
                 properties: {
                     volume: { type: 'number', min: 0, max: 2 },
                     pitch: { type: 'number', min: 0.1, max: 4 },
@@ -532,7 +532,7 @@ export class AudioManager {
             });
             
             if (!optionsValidation.isValid) {
-                errorHandler.handleError(new Error(`Invalid sound options: ${optionsValidation.errors.join(', ')}`), 'VALIDATION_ERROR', {
+                getErrorHandler().handleError(new Error(`Invalid sound options: ${optionsValidation.errors.join(', ')}`), 'VALIDATION_ERROR', {
                     input: options,
                     errors: optionsValidation.errors
                 });
@@ -586,7 +586,7 @@ export class AudioManager {
             
             return source;
         } catch (error) {
-            errorHandler.handleError(error, 'AUDIO_ERROR', { 
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', { 
                 operation: 'playSound',
                 soundName: soundName,
                 options: options,

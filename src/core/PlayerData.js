@@ -185,7 +185,7 @@ export class PlayerData {
             }
             
         } catch (error) {
-            errorHandler.handleError(error, 'STORAGE_ERROR', { 
+            getErrorHandler().handleError(error, 'STORAGE_ERROR', { 
                 operation: 'save',
                 data: 'playerData',
                 username: this.username,
@@ -219,7 +219,7 @@ export class PlayerData {
                 try {
                     data = JSON.parse(savedData);
                 } catch (parseError) {
-                    errorHandler.handleError(parseError, 'STORAGE_ERROR', { 
+                    getErrorHandler().handleError(parseError, 'STORAGE_ERROR', { 
                         operation: 'parse',
                         data: 'playerData',
                         savedData: savedData.substring(0, 100) // 最初の100文字のみログ
@@ -232,7 +232,7 @@ export class PlayerData {
             }
             
         } catch (error) {
-            errorHandler.handleError(error, 'STORAGE_ERROR', { 
+            getErrorHandler().handleError(error, 'STORAGE_ERROR', { 
                 operation: 'load',
                 data: 'playerData'
             });
@@ -246,14 +246,14 @@ export class PlayerData {
     loadValidatedData(data) {
         try {
             // ユーザー名を検証
-            const usernameValidation = errorHandler.validateInput(data.username, 'string', {
+            const usernameValidation = getErrorHandler().validateInput(data.username, 'string', {
                 maxLength: 50,
                 escapeHtml: true
             });
             this.username = usernameValidation.isValid ? usernameValidation.sanitizedValue : '';
             
             // APを検証
-            const apValidation = errorHandler.validateInput(data.ap, 'number', {
+            const apValidation = getErrorHandler().validateInput(data.ap, 'number', {
                 min: 0,
                 max: 999999999,
                 integer: true
@@ -261,7 +261,7 @@ export class PlayerData {
             this.ap = apValidation.isValid ? apValidation.sanitizedValue : 0;
             
             // TAPを検証
-            const tapValidation = errorHandler.validateInput(data.tap, 'number', {
+            const tapValidation = getErrorHandler().validateInput(data.tap, 'number', {
                 min: 0,
                 max: 999999999,
                 integer: true
@@ -269,11 +269,11 @@ export class PlayerData {
             this.tap = tapValidation.isValid ? tapValidation.sanitizedValue : 0;
             
             // ハイスコアを検証
-            const highScoresValidation = errorHandler.validateInput(data.highScores, 'object', {});
+            const highScoresValidation = getErrorHandler().validateInput(data.highScores, 'object', {});
             this.highScores = highScoresValidation.isValid ? highScoresValidation.sanitizedValue : {};
             
             // 開放済みステージを検証
-            const stagesValidation = errorHandler.validateInput(data.unlockedStages, 'array', {
+            const stagesValidation = getErrorHandler().validateInput(data.unlockedStages, 'array', {
                 itemType: 'string',
                 itemConstraints: { maxLength: 20 }
             });
@@ -281,14 +281,14 @@ export class PlayerData {
                 stagesValidation.sanitizedValue : ['tutorial', 'normal'];
             
             // 所持アイテムを検証
-            const itemsValidation = errorHandler.validateInput(data.ownedItems, 'array', {
+            const itemsValidation = getErrorHandler().validateInput(data.ownedItems, 'array', {
                 itemType: 'string',
                 itemConstraints: { maxLength: 30 }
             });
             this.ownedItems = itemsValidation.isValid ? itemsValidation.sanitizedValue : [];
             
         } catch (error) {
-            errorHandler.handleError(error, 'VALIDATION_ERROR', { 
+            getErrorHandler().handleError(error, 'VALIDATION_ERROR', { 
                 operation: 'loadValidatedData',
                 data: data
             });

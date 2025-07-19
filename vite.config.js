@@ -64,7 +64,17 @@ export default defineConfig(({ command, mode }) => {
               return 'vendor';
             }
             
-            // Game core systems
+            // Scene base class goes with UI components to avoid circular deps
+            if (id.includes('/src/core/Scene.js')) {
+              return 'game-ui';
+            }
+            
+            // InputManager base class goes with UI components to avoid circular deps
+            if (id.includes('/src/core/InputManager.js')) {
+              return 'game-ui';
+            }
+            
+            // Game core systems (excluding Scene.js)
             if (id.includes('/src/core/')) {
               return 'game-core';
             }
@@ -100,9 +110,7 @@ export default defineConfig(({ command, mode }) => {
           pure_funcs: isProduction ? ['console.log', 'console.info', 'console.debug'] : [],
           passes: 2
         },
-        mangle: {
-          safari10: true
-        },
+        mangle: false, // クラス名短縮を無効化（デバッグ用）
         format: {
           comments: false
         }

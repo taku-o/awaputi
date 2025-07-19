@@ -1,7 +1,7 @@
 /**
  * ユーザー情報画面シーン
  */
-import { Scene } from '../core/SceneManager.js';
+import { Scene } from '../core/Scene.js';
 
 export class UserInfoScene extends Scene {
     constructor(gameEngine) {

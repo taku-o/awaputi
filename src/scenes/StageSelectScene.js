@@ -1,4 +1,4 @@
-import { Scene } from '../core/SceneManager.js';
+import { Scene } from '../core/Scene.js';
 
 /**
  * ステージ選択シーン
