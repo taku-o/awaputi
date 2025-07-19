@@ -753,4 +753,11 @@ export class ParticleManager {
     getActiveParticles() {
         return this.particles.filter(p => p.isActive);
     }
+    
+    /**
+     * 全パーティクルをクリア（clearAllParticlesエイリアス）
+     */
+    clearAllParticles() {
+        this.clear();
+    }
 }

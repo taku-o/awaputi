@@ -583,4 +583,52 @@ export class EffectManager {
     getActiveEffectCount() {
         return this.effects.length;
     }
+    
+    /**
+     * 前処理エフェクトを描画（変換適用）
+     */
+    renderPreEffects(context) {
+        context.save();
+        // 一時的に変換を無効化してテスト
+        // this.applyTransform(context);
+    }
+    
+    /**
+     * 後処理エフェクトを描画（オーバーレイ）
+     */
+    renderPostEffects(context) {
+        // 一時的にオーバーレイも無効化してテスト
+        // this.resetTransform(context);
+        // this.renderOverlays(context);
+        context.restore();
+    }
+    
+    /**
+     * 全ての効果をクリア（clearAllEffectsエイリアス）
+     */
+    clearAllEffects() {
+        this.clearEffects();
+    }
+    
+    /**
+     * 画面フラッシュ効果を追加（GameEngineとの互換性）
+     */
+    addScreenFlash(intensity, duration, color = '#FFFFFF') {
+        return this.addFlash(color, intensity, duration, 'out');
+    }
+    
+    /**
+     * 画面色調効果を追加（GameEngineとの互換性）
+     */
+    addScreenTint(intensity, duration, color = '#FFFFFF') {
+        return this.addTint(color, intensity, duration);
+    }
+    
+    /**
+     * ビネット効果を追加
+     */
+    addVignette(intensity, duration) {
+        // ビネット効果は色調効果として実装
+        return this.addTint('#000000', intensity, duration);
+    }
 }

@@ -974,7 +974,7 @@ export class MainMenuScene extends Scene {
         }
         
         // ステージ選択画面に遷移
-        this.sceneManager.switchScene('stageSelect');
+        this.gameEngine.sceneManager.switchScene('stageSelect');
     }
     
     /**

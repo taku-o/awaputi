@@ -66,7 +66,7 @@ export class GameEngine {
         // 新しいシステム（音響・視覚効果）
         this.audioManager = new AudioManager();
         this.particleManager = new ParticleManager();
-        this.effectManager = new EffectManager();
+        this.effectManager = new EffectManager(canvas);
         
         // コアシステム
         this.playerData = new PlayerData(this);

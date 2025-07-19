@@ -495,6 +495,31 @@ export class PerformanceOptimizer {
     }
     
     /**
+     * Canvas リサイズ時の処理
+     * @param {object} canvasInfo - Canvas情報
+     */
+    onCanvasResize(canvasInfo) {
+        console.log('PerformanceOptimizer: Canvas resized to', canvasInfo.actualWidth, 'x', canvasInfo.actualHeight);
+        
+        // Canvas サイズに基づいてパフォーマンス設定を調整
+        const totalPixels = canvasInfo.actualWidth * canvasInfo.actualHeight;
+        const basePixels = 800 * 600; // 基準解像度
+        
+        // 解像度に基づいてパフォーマンスレベルを自動調整
+        if (totalPixels > basePixels * 2) {
+            // 高解像度の場合はパフォーマンスを少し下げる
+            if (this.performanceLevel === 'high') {
+                this.degradePerformance();
+            }
+        } else if (totalPixels < basePixels * 0.5) {
+            // 低解像度の場合はパフォーマンスを上げる
+            if (this.performanceLevel === 'low') {
+                this.improvePerformance();
+            }
+        }
+    }
+
+    /**
      * 最適化システムをリセット
      */
     reset() {
