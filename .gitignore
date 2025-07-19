@@ -40,6 +40,9 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+preview.log
+server.log
+*.log
 
 # Runtime data
 pids

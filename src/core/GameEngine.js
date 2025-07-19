@@ -884,6 +884,7 @@ export class GameEngine {
      * ブラウザ互換性をチェック
      */
     checkBrowserCompatibility() {
+        const browserCompatibility = getBrowserCompatibility();
         const report = browserCompatibility.generateCompatibilityReport();
         
         // 重要な機能が利用できない場合は警告
