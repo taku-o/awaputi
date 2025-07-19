@@ -1,6 +1,6 @@
 import { GameEngine } from './core/GameEngine.js';
-import { browserCompatibility } from './utils/BrowserCompatibility.js';
-import { errorHandler } from './utils/ErrorHandler.js';
+import { getBrowserCompatibility } from './utils/BrowserCompatibility.js';
+import { getErrorHandler } from './utils/ErrorHandler.js';
 
 /**
  * ローディング画面を管理
@@ -73,12 +73,12 @@ async function initGame() {
         loadingManager.nextStep();
         await new Promise(resolve => setTimeout(resolve, 500));
         
-        const compatibilityReport = browserCompatibility.generateCompatibilityReport();
+        const compatibilityReport = getBrowserCompatibility().generateCompatibilityReport();
         
         // 重要な機能が利用できない場合はエラー
         if (!compatibilityReport.features.canvas) {
             const error = new Error('お使いのブラウザはCanvas APIに対応していません。モダンブラウザでお試しください。');
-            errorHandler.handleError(error, 'CANVAS_ERROR', { feature: 'canvas', compatibility: compatibilityReport });
+            getErrorHandler().handleError(error, 'CANVAS_ERROR', { feature: 'canvas', compatibility: compatibilityReport });
             throw error;
         }
         
@@ -86,7 +86,7 @@ async function initGame() {
         const canvas = document.getElementById('gameCanvas');
         if (!canvas) {
             const error = new Error('Canvas要素が見つかりません。');
-            errorHandler.handleError(error, 'CANVAS_ERROR', { element: 'gameCanvas' });
+            getErrorHandler().handleError(error, 'CANVAS_ERROR', { element: 'gameCanvas' });
             throw error;
         }
         
@@ -105,7 +105,7 @@ async function initGame() {
             try {
                 await gameEngine.audioManager.initialize();
             } catch (error) {
-                errorHandler.handleError(error, 'AUDIO_ERROR', { feature: 'webAudio' });
+                getErrorHandler().handleError(error, 'AUDIO_ERROR', { feature: 'webAudio' });
             }
         }
         
@@ -124,7 +124,7 @@ async function initGame() {
         
         // 互換性情報をコンソールに出力
         if (localStorage.getItem('debug') === 'true') {
-            browserCompatibility.logDebugInfo();
+            getBrowserCompatibility().logDebugInfo();
         }
         
         // 推奨事項があれば表示
@@ -154,7 +154,7 @@ function setupErrorHandling() {
     const originalShowError = LoadingManager.prototype.showError;
     LoadingManager.prototype.showError = function(message) {
         // ErrorHandlerにエラーを報告
-        errorHandler.handleError(new Error(message), 'INITIALIZATION_ERROR', {
+        getErrorHandler().handleError(new Error(message), 'INITIALIZATION_ERROR', {
             context: 'LoadingManager',
             step: this.currentStep
         });

@@ -1,4 +1,4 @@
-import { errorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler } from '../utils/ErrorHandler.js';
 
 /**
  * キーボードショートカット管理クラス
@@ -69,7 +69,7 @@ export class KeyboardShortcutManager {
     addShortcut(name, keys, callback, options = {}) {
         try {
             // 入力値を検証
-            const nameValidation = errorHandler.validateInput(name, 'string', {
+            const nameValidation = getErrorHandler().validateInput(name, 'string', {
                 maxLength: 50,
                 pattern: /^[a-zA-Z_][a-zA-Z0-9_]*$/
             });
@@ -102,7 +102,7 @@ export class KeyboardShortcutManager {
             console.log(`Added keyboard shortcut: ${name} (${keys.join(', ')})`);
             return true;
         } catch (error) {
-            errorHandler.handleError(error, 'KEYBOARD_ERROR', {
+            getErrorHandler().handleError(error, 'KEYBOARD_ERROR', {
                 operation: 'addShortcut',
                 name: name,
                 keys: keys
@@ -179,7 +179,7 @@ export class KeyboardShortcutManager {
                     
                     break; // 最初にマッチしたショートカットのみ実行
                 } catch (error) {
-                    errorHandler.handleError(error, 'KEYBOARD_ERROR', {
+                    getErrorHandler().handleError(error, 'KEYBOARD_ERROR', {
                         operation: 'executeShortcut',
                         shortcut: name,
                         keyCombo: currentCombo
@@ -244,7 +244,7 @@ export class KeyboardShortcutManager {
                 try {
                     callback(name, keyCombo);
                 } catch (error) {
-                    errorHandler.handleError(error, 'KEYBOARD_ERROR', {
+                    getErrorHandler().handleError(error, 'KEYBOARD_ERROR', {
                         operation: 'notifyShortcutTriggered',
                         shortcut: name,
                         keyCombo: keyCombo

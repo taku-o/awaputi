@@ -1,4 +1,4 @@
-import { errorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler } from '../utils/ErrorHandler.js';
 
 /**
  * 音響管理クラス - Web Audio API を使用した高度な音響システム
@@ -79,7 +79,7 @@ export class AudioManager {
             try {
                 await this.initializeReverb();
             } catch (reverbError) {
-                errorHandler.handleError(reverbError, 'AUDIO_ERROR', { 
+                getErrorHandler().handleError(reverbError, 'AUDIO_ERROR', { 
                     component: 'reverb',
                     operation: 'initialize'
                 });
@@ -90,7 +90,7 @@ export class AudioManager {
             try {
                 this.generateProceduralSounds();
             } catch (soundError) {
-                errorHandler.handleError(soundError, 'AUDIO_ERROR', { 
+                getErrorHandler().handleError(soundError, 'AUDIO_ERROR', { 
                     component: 'proceduralSounds',
                     operation: 'generate'
                 });
@@ -99,7 +99,7 @@ export class AudioManager {
             
             console.log('AudioManager initialized successfully');
         } catch (error) {
-            errorHandler.handleError(error, 'AUDIO_ERROR', { 
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', { 
                 operation: 'initialize',
                 userAgent: navigator.userAgent,
                 audioContextSupport: !!(window.AudioContext || window.webkitAudioContext)

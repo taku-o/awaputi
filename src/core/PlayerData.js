@@ -1,4 +1,4 @@
-import { errorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler } from '../utils/ErrorHandler.js';
 
 /**
  * プレイヤーデータクラス
@@ -24,14 +24,14 @@ export class PlayerData {
     addScore(points) {
         try {
             // 入力値を検証
-            const validation = errorHandler.validateInput(points, 'number', {
+            const validation = getErrorHandler().validateInput(points, 'number', {
                 min: 0,
                 max: 1000000,
                 integer: true
             });
             
             if (!validation.isValid) {
-                errorHandler.handleError(new Error(`Invalid score points: ${validation.errors.join(', ')}`), 'VALIDATION_ERROR', {
+                getErrorHandler().handleError(new Error(`Invalid score points: ${validation.errors.join(', ')}`), 'VALIDATION_ERROR', {
                     input: points,
                     errors: validation.errors
                 });
@@ -42,7 +42,7 @@ export class PlayerData {
             this.updateUI();
             
         } catch (error) {
-            errorHandler.handleError(error, 'PLAYER_DATA_ERROR', { operation: 'addScore', points });
+            getErrorHandler().handleError(error, 'PLAYER_DATA_ERROR', { operation: 'addScore', points });
         }
     }
     
@@ -52,14 +52,14 @@ export class PlayerData {
     takeDamage(amount) {
         try {
             // 入力値を検証
-            const validation = errorHandler.validateInput(amount, 'number', {
+            const validation = getErrorHandler().validateInput(amount, 'number', {
                 min: 0,
                 max: this.maxHP,
                 integer: true
             });
             
             if (!validation.isValid) {
-                errorHandler.handleError(new Error(`Invalid damage amount: ${validation.errors.join(', ')}`), 'VALIDATION_ERROR', {
+                getErrorHandler().handleError(new Error(`Invalid damage amount: ${validation.errors.join(', ')}`), 'VALIDATION_ERROR', {
                     input: amount,
                     errors: validation.errors
                 });
@@ -77,14 +77,14 @@ export class PlayerData {
                         return false; // 復活したのでゲームオーバーではない
                     }
                 } catch (error) {
-                    errorHandler.handleError(error, 'ITEM_SYSTEM_ERROR', { operation: 'useRevival' });
+                    getErrorHandler().handleError(error, 'ITEM_SYSTEM_ERROR', { operation: 'useRevival' });
                 }
                 return true; // ゲームオーバー
             }
             return false;
             
         } catch (error) {
-            errorHandler.handleError(error, 'PLAYER_DATA_ERROR', { operation: 'takeDamage', amount });
+            getErrorHandler().handleError(error, 'PLAYER_DATA_ERROR', { operation: 'takeDamage', amount });
             return false;
         }
     }
@@ -95,14 +95,14 @@ export class PlayerData {
     heal(amount) {
         try {
             // 入力値を検証
-            const validation = errorHandler.validateInput(amount, 'number', {
+            const validation = getErrorHandler().validateInput(amount, 'number', {
                 min: 0,
                 max: this.maxHP,
                 integer: true
             });
             
             if (!validation.isValid) {
-                errorHandler.handleError(new Error(`Invalid heal amount: ${validation.errors.join(', ')}`), 'VALIDATION_ERROR', {
+                getErrorHandler().handleError(new Error(`Invalid heal amount: ${validation.errors.join(', ')}`), 'VALIDATION_ERROR', {
                     input: amount,
                     errors: validation.errors
                 });
@@ -113,7 +113,7 @@ export class PlayerData {
             this.updateUI();
             
         } catch (error) {
-            errorHandler.handleError(error, 'PLAYER_DATA_ERROR', { operation: 'heal', amount });
+            getErrorHandler().handleError(error, 'PLAYER_DATA_ERROR', { operation: 'heal', amount });
         }
     }
     
@@ -149,13 +149,13 @@ export class PlayerData {
     save() {
         try {
             // データを検証
-            const validation = errorHandler.validateInput(this.username, 'string', {
+            const validation = getErrorHandler().validateInput(this.username, 'string', {
                 maxLength: 50,
                 escapeHtml: true
             });
             
             if (!validation.isValid) {
-                errorHandler.handleError(new Error(`Invalid username: ${validation.errors.join(', ')}`), 'VALIDATION_ERROR', {
+                getErrorHandler().handleError(new Error(`Invalid username: ${validation.errors.join(', ')}`), 'VALIDATION_ERROR', {
                     input: this.username,
                     errors: validation.errors
                 });

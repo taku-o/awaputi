@@ -317,5 +317,15 @@ export class PoolManager {
     }
 }
 
-// グローバルインスタンス
-export const poolManager = new PoolManager();
+// グローバルインスタンス（遅延初期化）
+let _poolManager = null;
+
+export function getPoolManager() {
+    if (!_poolManager) {
+        _poolManager = new PoolManager();
+    }
+    return _poolManager;
+}
+
+// 後方互換性のため
+export const poolManager = getPoolManager;

@@ -1,4 +1,4 @@
-import { errorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler } from '../utils/ErrorHandler.js';
 
 /**
  * 設定管理クラス - ゲーム設定の統合管理
@@ -160,7 +160,7 @@ export class SettingsManager {
             
             return true;
         } catch (error) {
-            errorHandler.handleError(error, 'SETTINGS_ERROR', {
+            getErrorHandler().handleError(error, 'SETTINGS_ERROR', {
                 operation: 'set',
                 key: key,
                 value: value
@@ -180,7 +180,7 @@ export class SettingsManager {
             return { isValid: true, sanitizedValue: value };
         }
         
-        return errorHandler.validateInput(value, rule.type, rule);
+        return getErrorHandler().validateInput(value, rule.type, rule);
     }
     
     /**
@@ -261,7 +261,7 @@ export class SettingsManager {
                 try {
                     callback(newValue, oldValue, key);
                 } catch (error) {
-                    errorHandler.handleError(error, 'SETTINGS_ERROR', {
+                    getErrorHandler().handleError(error, 'SETTINGS_ERROR', {
                         operation: 'notifyChange',
                         key: key,
                         callback: callback.name
@@ -276,7 +276,7 @@ export class SettingsManager {
                 try {
                     callback(newValue, oldValue, key);
                 } catch (error) {
-                    errorHandler.handleError(error, 'SETTINGS_ERROR', {
+                    getErrorHandler().handleError(error, 'SETTINGS_ERROR', {
                         operation: 'notifyChange',
                         key: '*',
                         callback: callback.name
@@ -339,7 +339,7 @@ export class SettingsManager {
                     break;
             }
         } catch (error) {
-            errorHandler.handleError(error, 'SETTINGS_ERROR', {
+            getErrorHandler().handleError(error, 'SETTINGS_ERROR', {
                 operation: 'applySettingChange',
                 key: key,
                 newValue: newValue
@@ -454,7 +454,7 @@ export class SettingsManager {
             const settingsData = JSON.stringify(this.settings);
             localStorage.setItem('bubblePop_settings', settingsData);
         } catch (error) {
-            errorHandler.handleError(error, 'STORAGE_ERROR', {
+            getErrorHandler().handleError(error, 'STORAGE_ERROR', {
                 operation: 'save',
                 data: 'settings'
             });
@@ -477,7 +477,7 @@ export class SettingsManager {
                 this.applyAllSettings();
             }
         } catch (error) {
-            errorHandler.handleError(error, 'STORAGE_ERROR', {
+            getErrorHandler().handleError(error, 'STORAGE_ERROR', {
                 operation: 'load',
                 data: 'settings'
             });
@@ -549,7 +549,7 @@ export class SettingsManager {
             this.notifyChange('*', this.settings, null);
             return true;
         } catch (error) {
-            errorHandler.handleError(error, 'SETTINGS_ERROR', {
+            getErrorHandler().handleError(error, 'SETTINGS_ERROR', {
                 operation: 'import',
                 data: settingsJson
             });

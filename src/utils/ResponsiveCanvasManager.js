@@ -1,4 +1,4 @@
-import { browserCompatibility } from './BrowserCompatibility.js';
+import { getBrowserCompatibility } from './BrowserCompatibility.js';
 
 /**
  * レスポンシブCanvas管理クラス
@@ -71,7 +71,7 @@ export class ResponsiveCanvasManager {
      * Canvas サイズを更新
      */
     updateCanvasSize() {
-        const optimalSize = browserCompatibility.calculateOptimalCanvasSize();
+        const optimalSize = getBrowserCompatibility().calculateOptimalCanvasSize();
         
         // 表示サイズを設定
         this.canvas.style.width = optimalSize.displayWidth + 'px';
@@ -162,7 +162,7 @@ export class ResponsiveCanvasManager {
      * ビューポート変更処理（モバイル）
      */
     handleViewportChange() {
-        if (browserCompatibility.deviceInfo.isMobile) {
+        if (getBrowserCompatibility().deviceInfo.isMobile) {
             // モバイルブラウザのアドレスバー表示/非表示に対応
             this.handleResize();
         }
@@ -234,7 +234,7 @@ export class ResponsiveCanvasManager {
             baseWidth: this.baseWidth,
             baseHeight: this.baseHeight,
             aspectRatio: this.aspectRatio,
-            deviceInfo: browserCompatibility.deviceInfo
+            deviceInfo: getBrowserCompatibility().deviceInfo
         };
     }
     
@@ -242,9 +242,9 @@ export class ResponsiveCanvasManager {
      * 向き変更メッセージを表示
      */
     showOrientationMessage() {
-        if (!browserCompatibility.deviceInfo.isMobile) return;
+        if (!getBrowserCompatibility().deviceInfo.isMobile) return;
         
-        const orientation = browserCompatibility.getOrientation();
+        const orientation = getBrowserCompatibility().getOrientation();
         const isLandscape = orientation.includes('landscape');
         
         // 縦向きの場合は横向きを推奨
@@ -324,10 +324,10 @@ export class ResponsiveCanvasManager {
      * デバイス固有の最適化を適用
      */
     applyDeviceOptimizations() {
-        const deviceInfo = browserCompatibility.deviceInfo;
+        const deviceInfo = getBrowserCompatibility().deviceInfo;
         
         // iOS Safari 固有の最適化
-        if (browserCompatibility.browserInfo.name === 'safari' && deviceInfo.isMobile) {
+        if (getBrowserCompatibility().browserInfo.name === 'safari' && deviceInfo.isMobile) {
             // タッチ操作の最適化
             this.canvas.style.touchAction = 'none';
             this.canvas.style.webkitTouchCallout = 'none';
@@ -335,7 +335,7 @@ export class ResponsiveCanvasManager {
         }
         
         // Android Chrome 固有の最適化
-        if (browserCompatibility.browserInfo.name === 'chrome' && deviceInfo.isMobile) {
+        if (getBrowserCompatibility().browserInfo.name === 'chrome' && deviceInfo.isMobile) {
             // ハードウェアアクセラレーションの有効化
             this.canvas.style.willChange = 'transform';
             this.canvas.style.transform = 'translateZ(0)';

@@ -49,7 +49,7 @@ export class MemoryManager {
      * ラップされたsetTimeout
      */
     wrappedSetTimeout(callback, delay, ...args) {
-        const timerId = this.originalSetTimeout(() => {
+        const timerId = this.originalSetTimeout.call(window, () => {
             this.timers.delete(timerId);
             callback(...args);
         }, delay);
@@ -63,7 +63,7 @@ export class MemoryManager {
      * ラップされたsetInterval
      */
     wrappedSetInterval(callback, delay, ...args) {
-        const timerId = this.originalSetInterval(callback, delay, ...args);
+        const timerId = this.originalSetInterval.call(window, callback, delay, ...args);
         this.timers.add(timerId);
         this.stats.timersCreated++;
         return timerId;
@@ -75,7 +75,7 @@ export class MemoryManager {
     wrappedClearTimeout(timerId) {
         this.timers.delete(timerId);
         this.stats.timersCleared++;
-        return this.originalClearTimeout(timerId);
+        return this.originalClearTimeout.call(window, timerId);
     }
     
     /**
@@ -84,7 +84,7 @@ export class MemoryManager {
     wrappedClearInterval(timerId) {
         this.timers.delete(timerId);
         this.stats.timersCleared++;
-        return this.originalClearInterval(timerId);
+        return this.originalClearInterval.call(window, timerId);
     }
     
     /**
@@ -498,5 +498,15 @@ export class WeakResourceManager {
     }
 }
 
-// グローバルインスタンス
-export const memoryManager = new MemoryManager();
+// グローバルインスタンス（遅延初期化）
+let _memoryManager = null;
+
+export function getMemoryManager() {
+    if (!_memoryManager) {
+        _memoryManager = new MemoryManager();
+    }
+    return _memoryManager;
+}
+
+// 後方互換性のため
+export const memoryManager = getMemoryManager;

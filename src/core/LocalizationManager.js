@@ -1,4 +1,4 @@
-import { errorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler } from '../utils/ErrorHandler.js';
 
 /**
  * ローカライゼーション管理クラス - 多言語対応
@@ -330,7 +330,7 @@ export class LocalizationManager {
             // パラメータ置換
             return this.interpolate(translation, params);
         } catch (error) {
-            errorHandler.handleError(error, 'LOCALIZATION_ERROR', {
+            getErrorHandler().handleError(error, 'LOCALIZATION_ERROR', {
                 operation: 'translate',
                 key: key,
                 language: this.currentLanguage,
@@ -415,7 +415,7 @@ export class LocalizationManager {
             
             return Array.isArray(value) ? value : [];
         } catch (error) {
-            errorHandler.handleError(error, 'LOCALIZATION_ERROR', {
+            getErrorHandler().handleError(error, 'LOCALIZATION_ERROR', {
                 operation: 'translateArray',
                 key: key,
                 language: this.currentLanguage

@@ -2,7 +2,7 @@
  * Jest setup file for BubblePop game tests
  */
 
-import 'jest-canvas-mock';
+require('jest-canvas-mock');
 
 // Mock Web Audio API
 global.AudioContext = jest.fn().mockImplementation(() => ({

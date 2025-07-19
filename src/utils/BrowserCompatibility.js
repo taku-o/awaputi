@@ -525,5 +525,15 @@ export class BrowserCompatibility {
     }
 }
 
-// シングルトンインスタンス
-export const browserCompatibility = new BrowserCompatibility();
+// シングルトンインスタンス（遅延初期化）
+let _browserCompatibility = null;
+
+export function getBrowserCompatibility() {
+    if (!_browserCompatibility) {
+        _browserCompatibility = new BrowserCompatibility();
+    }
+    return _browserCompatibility;
+}
+
+// 後方互換性のため
+export const browserCompatibility = getBrowserCompatibility;

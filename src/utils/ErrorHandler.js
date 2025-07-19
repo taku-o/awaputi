@@ -1067,8 +1067,18 @@ export class ErrorHandler {
     }
 }
 
-// シングルトンインスタンスを作成
-export const errorHandler = new ErrorHandler();
+// シングルトンインスタンス（遅延初期化）
+let _errorHandler = null;
+
+export function getErrorHandler() {
+    if (!_errorHandler) {
+        _errorHandler = new ErrorHandler();
+    }
+    return _errorHandler;
+}
+
+// 後方互換性のため
+export const errorHandler = getErrorHandler;
 
 // グローバルに公開（デバッグ用）
 if (typeof window !== 'undefined') {

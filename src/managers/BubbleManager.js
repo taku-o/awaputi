@@ -1,6 +1,6 @@
 import { Bubble } from '../bubbles/Bubble.js';
-import { performanceOptimizer } from '../utils/PerformanceOptimizer.js';
-import { errorHandler } from '../utils/ErrorHandler.js';
+import { getPerformanceOptimizer } from '../utils/PerformanceOptimizer.js';
+import { getErrorHandler } from '../utils/ErrorHandler.js';
 
 /**
  * 泡管理クラス - パフォーマンス最適化対応 + 高度なドラッグシステム
@@ -46,7 +46,7 @@ export class BubbleManager {
     spawnBubble(type = null, position = null) {
         try {
             // パフォーマンス最適化による制限
-            const maxBubbles = Math.min(this.maxBubbles, performanceOptimizer.getMaxBubbles());
+            const maxBubbles = Math.min(this.maxBubbles, getPerformanceOptimizer().getMaxBubbles());
             
             if (this.bubbles.length >= maxBubbles) {
                 return null;
@@ -54,13 +54,13 @@ export class BubbleManager {
             
             // 入力値を検証
             if (type !== null) {
-                const typeValidation = errorHandler.validateInput(type, 'string', {
+                const typeValidation = getErrorHandler().validateInput(type, 'string', {
                     maxLength: 20,
                     pattern: /^[a-zA-Z_]+$/
                 });
                 
                 if (!typeValidation.isValid) {
-                    errorHandler.handleError(new Error(`Invalid bubble type: ${typeValidation.errors.join(', ')}`), 'VALIDATION_ERROR', {
+                    getErrorHandler().handleError(new Error(`Invalid bubble type: ${typeValidation.errors.join(', ')}`), 'VALIDATION_ERROR', {
                         input: type,
                         errors: typeValidation.errors
                     });
@@ -69,7 +69,7 @@ export class BubbleManager {
             }
             
             if (position !== null) {
-                const positionValidation = errorHandler.validateInput(position, 'object', {
+                const positionValidation = getErrorHandler().validateInput(position, 'object', {
                     properties: {
                         x: { type: 'number', min: -100, max: 1000 },
                         y: { type: 'number', min: -100, max: 800 }
@@ -77,7 +77,7 @@ export class BubbleManager {
                 });
                 
                 if (!positionValidation.isValid) {
-                    errorHandler.handleError(new Error(`Invalid bubble position: ${positionValidation.errors.join(', ')}`), 'VALIDATION_ERROR', {
+                    getErrorHandler().handleError(new Error(`Invalid bubble position: ${positionValidation.errors.join(', ')}`), 'VALIDATION_ERROR', {
                         input: position,
                         errors: positionValidation.errors
                     });
@@ -212,11 +212,11 @@ export class BubbleManager {
         }
         
         // パフォーマンス調整されたデルタタイムを使用
-        const adjustedDeltaTime = performanceOptimizer.adjustUpdateFrequency(deltaTime);
+        const adjustedDeltaTime = getPerformanceOptimizer().adjustUpdateFrequency(deltaTime);
         
         // 自動生成（パフォーマンスレベルに応じて調整）
         this.spawnTimer += adjustedDeltaTime;
-        const adjustedSpawnInterval = this.spawnInterval * (2 - performanceOptimizer.getEffectQuality());
+        const adjustedSpawnInterval = this.spawnInterval * (2 - getPerformanceOptimizer().getEffectQuality());
         
         if (this.spawnTimer >= adjustedSpawnInterval) {
             this.spawnBubble();
@@ -380,7 +380,7 @@ export class BubbleManager {
      * パフォーマンス向上のためのカリング処理
      */
     performCulling() {
-        if (this.bubbles.length <= performanceOptimizer.getMaxBubbles()) {
+        if (this.bubbles.length <= getPerformanceOptimizer().getMaxBubbles()) {
             return; // 制限内なのでカリング不要
         }
         

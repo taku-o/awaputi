@@ -1,4 +1,4 @@
-import { browserCompatibility } from '../utils/BrowserCompatibility.js';
+import { getBrowserCompatibility } from '../utils/BrowserCompatibility.js';
 
 /**
  * 入力管理クラス - ドラッグ操作を含む統一的な入力処理（クロスブラウザ・デバイス対応強化版）
@@ -37,8 +37,8 @@ export class InputManager {
      * デバイス固有の設定を行う
      */
     setupDeviceSpecificSettings() {
-        const deviceInfo = browserCompatibility.deviceInfo;
-        const browserInfo = browserCompatibility.browserInfo;
+        const deviceInfo = getBrowserCompatibility().deviceInfo;
+        const browserInfo = getBrowserCompatibility().browserInfo;
         
         // タッチデバイスの設定
         if (deviceInfo.isTouchDevice) {

@@ -506,5 +506,15 @@ export class PerformanceOptimizer {
     }
 }
 
-// グローバルインスタンス
-export const performanceOptimizer = new PerformanceOptimizer();
+// グローバルインスタンス（遅延初期化）
+let _performanceOptimizer = null;
+
+export function getPerformanceOptimizer() {
+    if (!_performanceOptimizer) {
+        _performanceOptimizer = new PerformanceOptimizer();
+    }
+    return _performanceOptimizer;
+}
+
+// 後方互換性のため
+export const performanceOptimizer = getPerformanceOptimizer;

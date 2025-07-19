@@ -18,13 +18,13 @@ import { UserInfoScene } from '../scenes/UserInfoScene.js';
 import { AudioManager } from '../audio/AudioManager.js';
 import { ParticleManager } from '../effects/ParticleManager.js';
 import { EffectManager } from '../effects/EffectManager.js';
-import { poolManager } from '../utils/ObjectPool.js';
+import { getPoolManager } from '../utils/ObjectPool.js';
 import { RenderOptimizer, PerformanceMonitor } from '../utils/RenderOptimizer.js';
-import { memoryManager } from '../utils/MemoryManager.js';
-import { performanceOptimizer } from '../utils/PerformanceOptimizer.js';
-import { browserCompatibility } from '../utils/BrowserCompatibility.js';
+import { getMemoryManager } from '../utils/MemoryManager.js';
+import { getPerformanceOptimizer } from '../utils/PerformanceOptimizer.js';
+import { getBrowserCompatibility } from '../utils/BrowserCompatibility.js';
 import { ResponsiveCanvasManager } from '../utils/ResponsiveCanvasManager.js';
-import { errorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler } from '../utils/ErrorHandler.js';
 
 /**
  * ゲームエンジンクラス - 統合版（パフォーマンス最適化 + 音響・視覚効果）
@@ -45,7 +45,7 @@ export class GameEngine {
             // ブラウザ互換性チェック
             this.checkBrowserCompatibility();
         } catch (error) {
-            errorHandler.handleError(error, 'CANVAS_ERROR', { 
+            getErrorHandler().handleError(error, 'CANVAS_ERROR', { 
                 canvasElement: canvas,
                 contextType: '2d'
             });
@@ -119,10 +119,10 @@ export class GameEngine {
      */
     initializePerformanceOptimization() {
         // レンダリングコンテキストを最適化
-        performanceOptimizer.optimizeRenderingContext(this.context);
+        getPerformanceOptimizer().optimizeRenderingContext(this.context);
         
         // メモリマネージャーでCanvasコンテキストを追跡
-        memoryManager.trackCanvasContext(this.context);
+        getMemoryManager().trackCanvasContext(this.context);
         
         // 定期的な最適化処理
         setInterval(() => {
@@ -135,23 +135,23 @@ export class GameEngine {
      */
     performOptimization() {
         // オブジェクトプールの最適化
-        poolManager.optimize();
+        getPoolManager().optimize();
         
         // メモリ使用量チェック
-        const memoryStats = memoryManager.getStats();
-        const performanceStats = performanceOptimizer.getStats();
+        const memoryStats = getMemoryManager().getStats();
+        const performanceStats = getPerformanceOptimizer().getStats();
         
         console.log('Performance Stats:', {
             fps: Math.round(performanceStats.averageFPS),
             level: performanceStats.performanceLevel,
             memory: memoryStats.memoryUsage,
-            pools: poolManager.getAllStats()
+            pools: getPoolManager().getAllStats()
         });
         
         // 警告チェック
         const warnings = [
-            ...performanceOptimizer.getWarnings(),
-            ...memoryManager.getStats().detectedIssues
+            ...getPerformanceOptimizer().getWarnings(),
+            ...getMemoryManager().getStats().detectedIssues
         ];
         
         if (warnings.length > 0) {
@@ -221,33 +221,33 @@ export class GameEngine {
         const clickHandler = (event) => {
             this.sceneManager.handleInput(event);
         };
-        memoryManager.addEventListener(this.canvas, 'click', clickHandler);
+        getMemoryManager().addEventListener(this.canvas, 'click', clickHandler);
         
         // マウス移動
         const mouseMoveHandler = (event) => {
             this.sceneManager.handleInput(event);
         };
-        memoryManager.addEventListener(this.canvas, 'mousemove', mouseMoveHandler);
+        getMemoryManager().addEventListener(this.canvas, 'mousemove', mouseMoveHandler);
         
         // タッチイベント
         const touchStartHandler = (event) => {
             event.preventDefault();
             this.sceneManager.handleInput(event);
         };
-        memoryManager.addEventListener(this.canvas, 'touchstart', touchStartHandler);
+        getMemoryManager().addEventListener(this.canvas, 'touchstart', touchStartHandler);
         
         // タッチ移動
         const touchMoveHandler = (event) => {
             event.preventDefault();
             this.sceneManager.handleInput(event);
         };
-        memoryManager.addEventListener(this.canvas, 'touchmove', touchMoveHandler);
+        getMemoryManager().addEventListener(this.canvas, 'touchmove', touchMoveHandler);
         
         // キーボードイベント
         const keyDownHandler = (event) => {
             this.sceneManager.handleInput(event);
         };
-        memoryManager.addEventListener(document, 'keydown', keyDownHandler);
+        getMemoryManager().addEventListener(document, 'keydown', keyDownHandler);
     }
     
     /**
@@ -279,7 +279,7 @@ export class GameEngine {
             
             // パフォーマンス監視開始
             this.performanceMonitor.startFrame(currentTime);
-            performanceOptimizer.startFrame(currentTime);
+            getPerformanceOptimizer().startFrame(currentTime);
             
             const updateStartTime = performance.now();
             this.update(deltaTime);
@@ -321,7 +321,7 @@ export class GameEngine {
      */
     updatePerformanceStats() {
         const perfStats = this.performanceMonitor.getStats();
-        const optimizerStats = performanceOptimizer.getStats();
+        const optimizerStats = getPerformanceOptimizer().getStats();
         
         this.performanceStats = {
             fps: perfStats.fps,
@@ -337,7 +337,7 @@ export class GameEngine {
      */
     update(deltaTime) {
         // パフォーマンス調整されたデルタタイムを使用
-        const adjustedDeltaTime = performanceOptimizer.adjustUpdateFrequency(deltaTime);
+        const adjustedDeltaTime = getPerformanceOptimizer().adjustUpdateFrequency(deltaTime);
         
         // 特殊効果の更新
         this.updateSpecialEffects(adjustedDeltaTime);
@@ -389,11 +389,11 @@ export class GameEngine {
      * 画面揺れ効果を適用
      */
     applyScreenShake() {
-        if (!performanceOptimizer.shouldRunEffect('shake')) {
+        if (!getPerformanceOptimizer().shouldRunEffect('shake')) {
             return; // 低品質モードでは画面揺れをスキップ
         }
         
-        const intensity = this.screenShakeIntensity * performanceOptimizer.getEffectQuality();
+        const intensity = this.screenShakeIntensity * getPerformanceOptimizer().getEffectQuality();
         const shakeX = (Math.random() - 0.5) * intensity;
         const shakeY = (Math.random() - 0.5) * intensity;
         
@@ -428,7 +428,7 @@ export class GameEngine {
         }
         
         // プール統計
-        const poolStats = poolManager.getAllStats();
+        const poolStats = getPoolManager().getAllStats();
         let line = 6;
         Object.entries(poolStats).forEach(([name, stat]) => {
             this.context.fillText(`${name}: ${stat.activeCount}/${stat.poolSize}`, this.canvas.width - 190, y + lineHeight * line);
@@ -449,42 +449,42 @@ export class GameEngine {
      * バブルをプールから取得
      */
     getBubbleFromPool() {
-        return poolManager.get('bubbles');
+        return getPoolManager().get('bubbles');
     }
     
     /**
      * バブルをプールに返却
      */
     returnBubbleToPool(bubble) {
-        poolManager.return('bubbles', bubble);
+        getPoolManager().return('bubbles', bubble);
     }
     
     /**
      * パーティクルをプールから取得
      */
     getParticleFromPool() {
-        return poolManager.get('particles');
+        return getPoolManager().get('particles');
     }
     
     /**
      * パーティクルをプールに返却
      */
     returnParticleToPool(particle) {
-        poolManager.return('particles', particle);
+        getPoolManager().return('particles', particle);
     }
     
     /**
      * フローティングテキストをプールから取得
      */
     getFloatingTextFromPool() {
-        return poolManager.get('floatingText');
+        return getPoolManager().get('floatingText');
     }
     
     /**
      * フローティングテキストをプールに返却
      */
     returnFloatingTextToPool(text) {
-        poolManager.return('floatingText', text);
+        getPoolManager().return('floatingText', text);
     }
     
     /**
@@ -543,11 +543,11 @@ export class GameEngine {
      * 画面揺れを開始
      */
     startScreenShake(duration, intensity = 10) {
-        if (!performanceOptimizer.shouldRunEffect('shake')) {
+        if (!getPerformanceOptimizer().shouldRunEffect('shake')) {
             return; // 低品質モードでは画面揺れをスキップ
         }
         
-        this.screenShakeIntensity = intensity * performanceOptimizer.getEffectQuality();
+        this.screenShakeIntensity = intensity * getPerformanceOptimizer().getEffectQuality();
         this.screenShakeRemaining = duration;
         this.inputDisabled = true;
         
@@ -851,11 +851,11 @@ export class GameEngine {
         
         // クリックで再開
         const restartHandler = () => {
-            memoryManager.removeEventListener(this.canvas, 'click', restartHandler);
+            getMemoryManager().removeEventListener(this.canvas, 'click', restartHandler);
             this.start();
         };
         
-        memoryManager.addEventListener(this.canvas, 'click', restartHandler);
+        getMemoryManager().addEventListener(this.canvas, 'click', restartHandler);
     }
     
     /**
@@ -863,7 +863,7 @@ export class GameEngine {
      */
     cleanup() {
         // すべてのプールをクリア
-        poolManager.clearAll();
+        getPoolManager().clearAll();
         
         // レンダリング最適化をクリーンアップ
         this.renderOptimizer.cleanup();
@@ -875,7 +875,7 @@ export class GameEngine {
         this.particleManager.clearAllParticles();
         
         // メモリ最適化を実行
-        memoryManager.performCleanup();
+        getMemoryManager().performCleanup();
         
         console.log('Game cleanup completed');
     }
@@ -932,7 +932,7 @@ export class GameEngine {
         this.renderOptimizer.setViewport(0, 0, canvasInfo.actualWidth, canvasInfo.actualHeight);
         
         // パフォーマンス最適化システムに通知
-        performanceOptimizer.onCanvasResize(canvasInfo);
+        getPerformanceOptimizer().onCanvasResize(canvasInfo);
         
         // シーンマネージャーに通知
         if (this.sceneManager) {

@@ -4,9 +4,9 @@
   "description": "A web-based bubble popping game with various bubble types and special effects",
   "type": "module",
   "scripts": {
-    "test": "jest --run",
+    "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage --run",
+    "test:coverage": "jest --coverage",
     "test:e2e": "playwright test --reporter=list",
     "test:performance": "node tests/performance/performance-test.js",
     "test:all": "npm run test && npm run test:e2e && npm run test:performance",
@@ -52,31 +52,6 @@
       "compression": "gzip"
     }
   ],
-  "jest": {
-    "testEnvironment": "jsdom",
-    "setupFilesAfterEnv": [
-      "<rootDir>/tests/setup.js"
-    ],
-    "moduleNameMapping": {
-      "^@/(.*)$": "<rootDir>/src/$1"
-    },
-    "collectCoverageFrom": [
-      "src/**/*.js",
-      "!src/main.js",
-      "!src/**/*.test.js"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "branches": 80,
-        "functions": 80,
-        "lines": 80,
-        "statements": 80
-      }
-    },
-    "testMatch": [
-      "<rootDir>/tests/**/*.test.js"
-    ]
-  },
   "keywords": [
     "game",
     "bubble",
