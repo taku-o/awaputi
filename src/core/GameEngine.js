@@ -356,6 +356,16 @@ export class GameEngine {
      * 描画処理
      */
     render() {
+        // Canvas の状態を確認
+        if (!this.context) {
+            console.error('Context が存在しません');
+            return;
+        }
+        
+        // Canvas をクリア
+        this.context.save();
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        
         // レンダリング最適化開始
         this.renderOptimizer.optimize();
         
@@ -376,13 +386,15 @@ export class GameEngine {
         // エフェクトマネージャーの後処理エフェクト
         this.effectManager.renderPostEffects(this.context);
         
-        // レンダリング最適化終了
-        this.renderOptimizer.render();
+        // レンダリング最適化終了 - 問題のある可能性があるため一時的にコメントアウト
+        // this.renderOptimizer.render();
         
         // パフォーマンス情報表示（デバッグモード時）
         if (this.isDebugMode()) {
             this.renderPerformanceInfo();
         }
+        
+        this.context.restore();
     }
     
     /**

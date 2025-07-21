@@ -64,38 +64,117 @@ class LoadingManager {
 }
 
 /**
+ * デバッグログ機能
+ */
+function createDebugLogger() {
+    const logs = [];
+    
+    return {
+        log: (message, data = null) => {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = { timestamp, message, data };
+            logs.push(logEntry);
+            console.log(`[DEBUG ${timestamp}] ${message}`, data);
+            
+            // DOM にログを表示（デバッグ用）
+            const logElement = document.getElementById('debug-log');
+            if (logElement) {
+                logElement.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+                logElement.scrollTop = logElement.scrollHeight;
+            }
+        },
+        getLogs: () => logs,
+        showLogs: () => {
+            // デバッグモード時のみ表示
+            if (localStorage.getItem('debug') !== 'true') return;
+            
+            // デバッグログを画面に表示する要素を作成
+            let logElement = document.getElementById('debug-log');
+            if (!logElement) {
+                logElement = document.createElement('div');
+                logElement.id = 'debug-log';
+                logElement.style.cssText = `
+                    position: fixed;
+                    top: 10px;
+                    right: 10px;
+                    width: 400px;
+                    height: 300px;
+                    background: rgba(0,0,0,0.9);
+                    color: #00ff00;
+                    font-family: monospace;
+                    font-size: 10px;
+                    padding: 10px;
+                    overflow-y: auto;
+                    z-index: 10000;
+                    border: 1px solid #00ff00;
+                    border-radius: 5px;
+                `;
+                document.body.appendChild(logElement);
+            }
+            
+            logElement.innerHTML = logs.map(log => 
+                `<div>[${log.timestamp}] ${log.message}</div>`
+            ).join('');
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+    };
+}
+
+const debugLogger = createDebugLogger();
+
+/**
  * ゲーム初期化（非同期版）
  */
 async function initGame() {
     const loadingManager = new LoadingManager();
     
+    debugLogger.log('🚀 ゲーム初期化開始');
+    debugLogger.showLogs();
+    
     try {
         // ステップ1: ブラウザ互換性チェック
+        debugLogger.log('📋 ステップ1: ブラウザ互換性チェック開始');
         loadingManager.nextStep();
         await new Promise(resolve => setTimeout(resolve, 500));
         
+        debugLogger.log('🔍 互換性レポート生成中...');
         const compatibilityReport = getBrowserCompatibility().generateCompatibilityReport();
+        debugLogger.log('📊 互換性レポート', compatibilityReport);
         
         // 重要な機能が利用できない場合はエラー
         if (!compatibilityReport.features.canvas) {
+            debugLogger.log('❌ Canvas APIサポートなし');
             const error = new Error('お使いのブラウザはCanvas APIに対応していません。モダンブラウザでお試しください。');
             getErrorHandler().handleError(error, 'CANVAS_ERROR', { feature: 'canvas', compatibility: compatibilityReport });
             throw error;
         }
+        debugLogger.log('✅ Canvas API サポート確認');
         
         // Canvas要素を取得
+        debugLogger.log('🎯 Canvas要素取得中...');
         const canvas = document.getElementById('gameCanvas');
+        debugLogger.log('🎯 Canvas要素', canvas);
+        
         if (!canvas) {
+            debugLogger.log('❌ Canvas要素が見つかりません');
             const error = new Error('Canvas要素が見つかりません。');
             getErrorHandler().handleError(error, 'CANVAS_ERROR', { element: 'gameCanvas' });
             throw error;
         }
+        debugLogger.log('✅ Canvas要素取得成功', { 
+            width: canvas.width, 
+            height: canvas.height,
+            style: canvas.style.cssText 
+        });
         
         // ステップ2: ゲームエンジン初期化
+        debugLogger.log('⚙️ ステップ2: ゲームエンジン初期化開始');
         loadingManager.nextStep();
         await new Promise(resolve => setTimeout(resolve, 300));
         
+        debugLogger.log('🎮 GameEngine インスタンス作成中...');
         const gameEngine = new GameEngine(canvas);
+        debugLogger.log('✅ GameEngine インスタンス作成成功', gameEngine);
         
         // ステップ3: リソース読み込み
         loadingManager.nextStep();
@@ -111,17 +190,23 @@ async function initGame() {
         }
         
         // ステップ4: ゲーム開始準備
+        debugLogger.log('🚀 ステップ4: ゲーム開始準備');
         loadingManager.nextStep();
         await new Promise(resolve => setTimeout(resolve, 300));
         
         // ゲーム開始
+        debugLogger.log('🎮 ゲームエンジン開始中...');
         gameEngine.start();
+        debugLogger.log('✅ ゲームエンジン開始成功');
         
         // デバッグ用：グローバルに公開
         window.gameEngine = gameEngine;
+        debugLogger.log('🌍 グローバルに gameEngine を公開');
         
         // ローディング画面を非表示
+        debugLogger.log('📱 ローディング画面非表示中...');
         loadingManager.hide();
+        debugLogger.log('✅ ローディング画面非表示完了');
         
         // 互換性情報をコンソールに出力
         if (localStorage.getItem('debug') === 'true') {
@@ -138,7 +223,14 @@ async function initGame() {
             console.warn('警告:', compatibilityReport.warnings);
         }
         
+        debugLogger.log('🎉 ゲーム初期化完了');
+        
     } catch (error) {
+        debugLogger.log('💥 エラー発生', { 
+            message: error.message, 
+            stack: error.stack,
+            name: error.name 
+        });
         console.error('Game initialization failed:', error);
         loadingManager.showError(error.message || 'ゲームの初期化に失敗しました。');
     }
@@ -220,9 +312,18 @@ function setupPerformanceMonitoring() {
  * アプリケーション初期化
  */
 function initApp() {
+    debugLogger.log('📱 アプリケーション初期化開始');
+    
+    debugLogger.log('🛡️ エラーハンドリング設定中...');
     setupErrorHandling();
+    
+    debugLogger.log('🔧 デバッグ機能設定中...');
     setupDebugFeatures();
+    
+    debugLogger.log('📊 パフォーマンス監視設定中...');
     setupPerformanceMonitoring();
+    
+    debugLogger.log('✅ アプリケーション設定完了');
     
     // ゲーム初期化
     initGame();

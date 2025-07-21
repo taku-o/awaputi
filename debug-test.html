@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Debug Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #333;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        #gameCanvas {
+            border: 2px solid #fff;
+            background: #000;
+            display: block;
+            margin: 20px auto;
+        }
+        #log {
+            background: #111;
+            padding: 10px;
+            margin: 20px;
+            border: 1px solid #555;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Canvas Debug Test</h1>
+    <div id="log">初期化中...\n</div>
+    
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    
+    <script>
+        const log = document.getElementById('log');
+        
+        function addLog(message) {
+            console.log(message);
+            log.textContent += new Date().toLocaleTimeString() + ': ' + message + '\n';
+            log.scrollTop = log.scrollHeight;
+        }
+        
+        try {
+            addLog('Canvas debug test 開始');
+            
+            // Canvas要素を取得
+            const canvas = document.getElementById('gameCanvas');
+            addLog('Canvas要素取得: ' + (canvas ? 'OK' : 'FAILED'));
+            
+            if (!canvas) {
+                throw new Error('Canvas要素が見つかりません');
+            }
+            
+            // Canvas 2D コンテキストを取得
+            const ctx = canvas.getContext('2d');
+            addLog('Canvas 2D コンテキスト取得: ' + (ctx ? 'OK' : 'FAILED'));
+            
+            if (!ctx) {
+                throw new Error('Canvas 2D コンテキストを取得できません');
+            }
+            
+            // 背景を描画
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            addLog('背景描画: OK');
+            
+            // テスト図形を描画
+            ctx.fillStyle = '#ff0000';
+            ctx.fillRect(100, 100, 100, 100);
+            addLog('赤い四角描画: OK');
+            
+            ctx.fillStyle = '#00ff00';
+            ctx.beginPath();
+            ctx.arc(300, 200, 50, 0, Math.PI * 2);
+            ctx.fill();
+            addLog('緑い円描画: OK');
+            
+            ctx.fillStyle = '#0000ff';
+            ctx.fillRect(500, 300, 150, 75);
+            addLog('青い長方形描画: OK');
+            
+            // テキスト描画
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '24px Arial';
+            ctx.fillText('Canvas テスト成功!', 250, 450);
+            addLog('テキスト描画: OK');
+            
+            addLog('すべてのテスト完了 - Canvas は正常に動作しています');
+            
+        } catch (error) {
+            addLog('エラー: ' + error.message);
+            addLog('Canvas テスト失敗');
+        }
+        
+        // 追加のブラウザ情報
+        addLog('ブラウザ情報:');
+        addLog('- User Agent: ' + navigator.userAgent.substring(0, 100) + '...');
+        addLog('- Canvas サポート: ' + (!!document.createElement('canvas').getContext));
+        addLog('- 2D Context サポート: ' + (!!document.createElement('canvas').getContext('2d')));
+        
+        // エラーハンドリング
+        window.addEventListener('error', (event) => {
+            addLog('グローバルエラー: ' + event.error.message);
+        });
+        
+        window.addEventListener('unhandledrejection', (event) => {
+            addLog('未処理のPromise拒否: ' + event.reason);
+        });
+    </script>
+</body>
+</html>
