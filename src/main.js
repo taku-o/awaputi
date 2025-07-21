@@ -1,6 +1,7 @@
 import { GameEngine } from './core/GameEngine.js';
 import { getBrowserCompatibility } from './utils/BrowserCompatibility.js';
 import { getErrorHandler } from './utils/ErrorHandler.js';
+import './styles/accessibility.css';
 
 /**
  * ローディング画面を管理
