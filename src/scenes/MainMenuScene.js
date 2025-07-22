@@ -113,10 +113,13 @@ export class MainMenuScene extends Scene {
      */
     renderMenuItems(context) {
         const canvas = this.gameEngine.canvas;
+        
+        // ベース座標系（800x600）を使用
+        const baseWidth = 800;
         const startY = 280;
         const itemHeight = 50;
         const itemWidth = 300;
-        const itemX = (canvas.width - itemWidth) / 2;
+        const itemX = (baseWidth - itemWidth) / 2;
         
         this.menuItems.forEach((item, index) => {
             const y = startY + index * (itemHeight + 20);
@@ -150,10 +153,14 @@ export class MainMenuScene extends Scene {
     renderUsernameInput(context) {
         const canvas = this.gameEngine.canvas;
         
+        // ベース座標系（800x600）を使用
+        const baseWidth = 800;
+        const baseHeight = 600;
+        
         // 半透明オーバーレイ
         context.save();
         context.fillStyle = 'rgba(0,0,0,0.8)';
-        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.fillRect(0, 0, baseWidth, baseHeight);
         
         // タイトル
         context.fillStyle = '#FFFFFF';
@@ -162,17 +169,17 @@ export class MainMenuScene extends Scene {
         context.textBaseline = 'middle';
         
         const title = this.isEditingUsername ? 'ユーザー名変更' : 'ユーザー名登録';
-        context.fillText(title, canvas.width / 2, 200);
+        context.fillText(title, baseWidth / 2, 200);
         
         // 説明文
         context.font = '18px Arial';
         context.fillStyle = '#CCCCCC';
-        context.fillText('ユーザー名を入力してください（最大10文字）', canvas.width / 2, 240);
+        context.fillText('ユーザー名を入力してください（最大10文字）', baseWidth / 2, 240);
         
         // 入力ボックス
         const inputWidth = 400;
         const inputHeight = 50;
-        const inputX = (canvas.width - inputWidth) / 2;
+        const inputX = (baseWidth - inputWidth) / 2;
         const inputY = 280;
         
         context.fillStyle = '#FFFFFF';
@@ -207,12 +214,15 @@ export class MainMenuScene extends Scene {
      */
     renderUsernameInputButtons(context) {
         const canvas = this.gameEngine.canvas;
+        
+        // ベース座標系（800x600）を使用
+        const baseWidth = 800;
         const buttonWidth = 100;
         const buttonHeight = 40;
         const buttonY = 360;
         
         // OKボタン
-        const okButtonX = canvas.width / 2 - buttonWidth - 10;
+        const okButtonX = baseWidth / 2 - buttonWidth - 10;
         context.fillStyle = this.usernameInput.length > 0 ? '#00AA00' : '#666666';
         context.fillRect(okButtonX, buttonY, buttonWidth, buttonHeight);
         
@@ -227,7 +237,7 @@ export class MainMenuScene extends Scene {
         context.fillText('OK', okButtonX + buttonWidth / 2, buttonY + buttonHeight / 2);
         
         // キャンセルボタン
-        const cancelButtonX = canvas.width / 2 + 10;
+        const cancelButtonX = baseWidth / 2 + 10;
         context.fillStyle = '#AA0000';
         context.fillRect(cancelButtonX, buttonY, buttonWidth, buttonHeight);
         
@@ -749,10 +759,12 @@ export class MainMenuScene extends Scene {
         const x = coords.x;
         const y = coords.y;
         
+        // ベース座標系（800x600）を使用
+        const baseWidth = 800;
         const startY = 280;
         const itemHeight = 50;
         const itemWidth = 300;
-        const itemX = (canvas.width - itemWidth) / 2;
+        const itemX = (baseWidth - itemWidth) / 2;
         
         // メニュー項目のクリック判定
         this.menuItems.forEach((item, index) => {
@@ -817,19 +829,21 @@ export class MainMenuScene extends Scene {
         const x = coords.x;
         const y = coords.y;
         
+        // ベース座標系（800x600）を使用
+        const baseWidth = 800;
         const buttonWidth = 100;
         const buttonHeight = 40;
         const buttonY = 360;
         
         // OKボタン
-        const okButtonX = canvas.width / 2 - buttonWidth - 10;
+        const okButtonX = baseWidth / 2 - buttonWidth - 10;
         if (x >= okButtonX && x <= okButtonX + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight) {
             this.confirmUsername();
             return;
         }
         
         // キャンセルボタン
-        const cancelButtonX = canvas.width / 2 + 10;
+        const cancelButtonX = baseWidth / 2 + 10;
         if (x >= cancelButtonX && x <= cancelButtonX + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight) {
             this.cancelUsernameInput();
             return;
