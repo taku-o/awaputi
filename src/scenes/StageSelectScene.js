@@ -316,11 +316,24 @@ export class StageSelectScene extends Scene {
         if (this.selectedStageIndex < this.unlockedStages.length) {
             // 開放済みステージを選択
             const selectedStage = this.unlockedStages[this.selectedStageIndex];
-            console.log(`Selected stage: ${selectedStage.name}`);
+            console.log(`Selected stage: ${selectedStage.name} (ID: ${selectedStage.id})`);
+            
+            // BubbleManagerの存在確認
+            if (!this.gameEngine.bubbleManager) {
+                console.error('BubbleManager not initialized');
+                return;
+            }
             
             // ゲームシーンに切り替えてステージ開始
-            if (this.gameEngine.stageManager.startStage(selectedStage.id)) {
+            console.log('Attempting to start stage...');
+            const success = this.gameEngine.stageManager.startStage(selectedStage.id);
+            console.log(`Stage start result: ${success}`);
+            
+            if (success) {
+                console.log('Switching to game scene...');
                 this.sceneManager.switchScene('game');
+            } else {
+                console.error('Failed to start stage');
             }
         } else {
             // ロック済みステージを選択（何もしない）

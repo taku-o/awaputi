@@ -142,7 +142,7 @@ export class GameScene extends Scene {
         }
         
         // 時間経過（時間停止中は除く）
-        if (!this.gameEngine.isTimeStopped()) {
+        if (!this.gameEngine.isTimeStopActive()) {
             this.gameEngine.timeRemaining -= deltaTime;
             
             if (this.gameEngine.timeRemaining <= 0) {
