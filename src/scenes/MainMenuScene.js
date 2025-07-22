@@ -732,9 +732,22 @@ export class MainMenuScene extends Scene {
      */
     handleMainMenuClick(event) {
         const canvas = this.gameEngine.canvas;
-        const rect = canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
+        
+        // レスポンシブCanvasマネージャーの座標変換を使用
+        let coords;
+        if (this.gameEngine.responsiveCanvasManager) {
+            coords = this.gameEngine.responsiveCanvasManager.screenToCanvas(event.clientX, event.clientY);
+        } else {
+            // フォールバック: 従来の方法
+            const rect = canvas.getBoundingClientRect();
+            coords = {
+                x: event.clientX - rect.left,
+                y: event.clientY - rect.top
+            };
+        }
+        
+        const x = coords.x;
+        const y = coords.y;
         
         const startY = 280;
         const itemHeight = 50;
@@ -787,9 +800,22 @@ export class MainMenuScene extends Scene {
      */
     handleUsernameInputClick(event) {
         const canvas = this.gameEngine.canvas;
-        const rect = canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
+        
+        // レスポンシブCanvasマネージャーの座標変換を使用
+        let coords;
+        if (this.gameEngine.responsiveCanvasManager) {
+            coords = this.gameEngine.responsiveCanvasManager.screenToCanvas(event.clientX, event.clientY);
+        } else {
+            // フォールバック: 従来の方法
+            const rect = canvas.getBoundingClientRect();
+            coords = {
+                x: event.clientX - rect.left,
+                y: event.clientY - rect.top
+            };
+        }
+        
+        const x = coords.x;
+        const y = coords.y;
         
         const buttonWidth = 100;
         const buttonHeight = 40;
