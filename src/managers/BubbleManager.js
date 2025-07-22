@@ -95,31 +95,8 @@ export class BubbleManager {
                 position = this.getRandomPosition();
             }
             
-            // プールから泡を取得するか新規作成
-            let bubble;
-            const pooledBubble = this.gameEngine.getBubbleFromPool();
-            if (pooledBubble) {
-                // プールされた泡を再初期化
-                Object.assign(pooledBubble, {
-                    type: type,
-                    position: { ...position },
-                    velocity: { x: 0, y: 0 },
-                    size: 50,
-                    health: this.getBubbleHealthByType(type),
-                    maxHealth: this.getBubbleHealthByType(type),
-                    age: 0,
-                    maxAge: 10000,
-                    isAlive: true,
-                    effects: [],
-                    clickCount: 0,
-                    isEscaping: false,
-                    escapeSpeed: 0,
-                    lastMouseDistance: Infinity
-                });
-                bubble = pooledBubble;
-            } else {
-                bubble = new Bubble(type, position);
-            }
+            // 新しいBubbleインスタンスを作成（オブジェクトプール一時無効化）
+            const bubble = new Bubble(type, position);
             
             this.bubbles.push(bubble);
             return bubble;

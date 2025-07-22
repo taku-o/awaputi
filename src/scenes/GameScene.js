@@ -19,7 +19,9 @@ export class GameScene extends Scene {
             currentPosition: { x: 0, y: 0 },
             targetBubble: null,
             forceIndicator: 0,
-            particles: []
+            particles: [],
+            duration: 0,
+            intensity: 1
         };
         
         // UI状態管理
@@ -810,6 +812,8 @@ export class GameScene extends Scene {
         this.dragVisualization.targetBubble = null;
         this.dragVisualization.particles = [];
         this.dragVisualization.forceIndicator = 0;
+        this.dragVisualization.duration = 0;
+        this.dragVisualization.intensity = 1;
     }
     
     /**
@@ -820,6 +824,23 @@ export class GameScene extends Scene {
         this.dragVisualization.startPosition = { ...startPos };
         this.dragVisualization.currentPosition = { ...startPos };
         this.dragVisualization.targetBubble = targetBubble;
+    }
+    
+    /**
+     * ドラッグビジュアライゼーションを更新（時間経過）
+     */
+    updateDragVisualization(deltaTime) {
+        if (!this.dragVisualization.isActive) {
+            return;
+        }
+        
+        // ドラッグの持続時間による視覚効果の調整
+        this.dragVisualization.duration += deltaTime;
+        
+        // 長時間ドラッグしている場合の視覚的なフィードバック
+        if (this.dragVisualization.duration > 2000) { // 2秒以上
+            this.dragVisualization.intensity = Math.min(2, this.dragVisualization.intensity + deltaTime / 1000);
+        }
     }
     
     /**
