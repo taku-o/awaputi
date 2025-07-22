@@ -759,18 +759,32 @@ export class MainMenuScene extends Scene {
         const x = coords.x;
         const y = coords.y;
         
-        // ベース座標系（800x600）を使用
+        // Canvas実際の解像度を取得
+        const canvasWidth = canvas.width;
+        const canvasHeight = canvas.height;
+        
+        // ベース座標系（800x600）からCanvas座標系への変換比率
+        const scaleX = canvasWidth / 800;
+        const scaleY = canvasHeight / 600;
+        
+        // ベース座標系でのメニュー項目位置
         const baseWidth = 800;
         const startY = 280;
         const itemHeight = 50;
         const itemWidth = 300;
         const itemX = (baseWidth - itemWidth) / 2;
         
+        // Canvas座標系でのメニュー項目位置
+        const scaledItemX = itemX * scaleX;
+        const scaledItemWidth = itemWidth * scaleX;
+        const scaledItemHeight = itemHeight * scaleY;
+        const scaledStartY = startY * scaleY;
+        
         // メニュー項目のクリック判定
         this.menuItems.forEach((item, index) => {
-            const itemY = startY + index * (itemHeight + 20);
+            const itemY = scaledStartY + index * (scaledItemHeight + 20 * scaleY);
             
-            if (x >= itemX && x <= itemX + itemWidth && y >= itemY && y <= itemY + itemHeight) {
+            if (x >= scaledItemX && x <= scaledItemX + scaledItemWidth && y >= itemY && y <= itemY + scaledItemHeight) {
                 this.selectedMenuIndex = index;
                 this.selectMenuItem();
             }
@@ -829,22 +843,35 @@ export class MainMenuScene extends Scene {
         const x = coords.x;
         const y = coords.y;
         
-        // ベース座標系（800x600）を使用
+        // Canvas実際の解像度を取得
+        const canvasWidth = canvas.width;
+        const canvasHeight = canvas.height;
+        
+        // ベース座標系（800x600）からCanvas座標系への変換比率
+        const scaleX = canvasWidth / 800;
+        const scaleY = canvasHeight / 600;
+        
+        // ベース座標系でのボタン位置
         const baseWidth = 800;
         const buttonWidth = 100;
         const buttonHeight = 40;
         const buttonY = 360;
         
-        // OKボタン
-        const okButtonX = baseWidth / 2 - buttonWidth - 10;
-        if (x >= okButtonX && x <= okButtonX + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight) {
+        // Canvas座標系でのボタン位置
+        const scaledButtonWidth = buttonWidth * scaleX;
+        const scaledButtonHeight = buttonHeight * scaleY;
+        const scaledButtonY = buttonY * scaleY;
+        
+        // OKボタン（Canvas座標系）
+        const okButtonX = (baseWidth / 2 - buttonWidth - 10) * scaleX;
+        if (x >= okButtonX && x <= okButtonX + scaledButtonWidth && y >= scaledButtonY && y <= scaledButtonY + scaledButtonHeight) {
             this.confirmUsername();
             return;
         }
         
-        // キャンセルボタン
-        const cancelButtonX = baseWidth / 2 + 10;
-        if (x >= cancelButtonX && x <= cancelButtonX + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight) {
+        // キャンセルボタン（Canvas座標系）
+        const cancelButtonX = (baseWidth / 2 + 10) * scaleX;
+        if (x >= cancelButtonX && x <= cancelButtonX + scaledButtonWidth && y >= scaledButtonY && y <= scaledButtonY + scaledButtonHeight) {
             this.cancelUsernameInput();
             return;
         }
