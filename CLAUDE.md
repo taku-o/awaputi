@@ -30,6 +30,10 @@ npx serve .
 - **外部依存なし**: package.json は存在せず、Vanilla JavaScript のみ使用
 - **テスト環境**: `test.html` でバブルタイプの個別テストが可能
 
+### 利用可能ツール
+- **GitHub CLI (gh)**: GitHubリポジトリ操作、プルリクエスト管理、Issue管理
+- **Playwright MCP**: ブラウザ自動化、E2Eテスト、ウェブUI操作
+
 ## アーキテクチャ構造
 
 ### コアシステム (`src/core/`)
