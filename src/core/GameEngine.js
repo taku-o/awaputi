@@ -791,6 +791,13 @@ export class GameEngine {
     }
     
     /**
+     * 時間停止中かどうか（互換性のためのエイリアス）
+     */
+    isTimeStopped() {
+        return this.isTimeStopActive();
+    }
+    
+    /**
      * 画面揺れ効果を発動
      */
     activateScreenShake(intensity, duration) {
