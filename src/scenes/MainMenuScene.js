@@ -153,28 +153,36 @@ export class MainMenuScene extends Scene {
     renderUsernameInput(context) {
         const canvas = this.gameEngine.canvas;
         
-        // ベース座標系（800x600）を使用
+        // Canvas実際の解像度を取得
+        const canvasWidth = canvas.width;
+        const canvasHeight = canvas.height;
+        
+        // ベース座標系（800x600）からCanvas座標系への変換比率
+        const scaleX = canvasWidth / 800;
+        const scaleY = canvasHeight / 600;
+        
+        // ベース座標系でのレイアウト
         const baseWidth = 800;
         const baseHeight = 600;
         
         // 半透明オーバーレイ
         context.save();
         context.fillStyle = 'rgba(0,0,0,0.8)';
-        context.fillRect(0, 0, baseWidth, baseHeight);
+        context.fillRect(0, 0, canvasWidth, canvasHeight);
         
         // タイトル
         context.fillStyle = '#FFFFFF';
-        context.font = 'bold 32px Arial';
+        context.font = `bold ${32 * Math.min(scaleX, scaleY)}px Arial`;
         context.textAlign = 'center';
         context.textBaseline = 'middle';
         
         const title = this.isEditingUsername ? 'ユーザー名変更' : 'ユーザー名登録';
-        context.fillText(title, baseWidth / 2, 200);
+        context.fillText(title, (baseWidth / 2) * scaleX, 200 * scaleY);
         
         // 説明文
-        context.font = '18px Arial';
+        context.font = `${18 * Math.min(scaleX, scaleY)}px Arial`;
         context.fillStyle = '#CCCCCC';
-        context.fillText('ユーザー名を入力してください（最大10文字）', baseWidth / 2, 240);
+        context.fillText('ユーザー名を入力してください（最大10文字）', (baseWidth / 2) * scaleX, 240 * scaleY);
         
         // 入力ボックス
         const inputWidth = 400;
@@ -182,29 +190,35 @@ export class MainMenuScene extends Scene {
         const inputX = (baseWidth - inputWidth) / 2;
         const inputY = 280;
         
+        // Canvas座標系での入力ボックス
+        const scaledInputX = inputX * scaleX;
+        const scaledInputY = inputY * scaleY;
+        const scaledInputWidth = inputWidth * scaleX;
+        const scaledInputHeight = inputHeight * scaleY;
+        
         context.fillStyle = '#FFFFFF';
-        context.fillRect(inputX, inputY, inputWidth, inputHeight);
+        context.fillRect(scaledInputX, scaledInputY, scaledInputWidth, scaledInputHeight);
         
         context.strokeStyle = '#0066CC';
-        context.lineWidth = 3;
-        context.strokeRect(inputX, inputY, inputWidth, inputHeight);
+        context.lineWidth = 3 * Math.min(scaleX, scaleY);
+        context.strokeRect(scaledInputX, scaledInputY, scaledInputWidth, scaledInputHeight);
         
         // 入力テキスト
         context.fillStyle = '#000000';
-        context.font = '20px Arial';
+        context.font = `${20 * Math.min(scaleX, scaleY)}px Arial`;
         context.textAlign = 'left';
         context.textBaseline = 'middle';
         const displayText = this.usernameInput + (Date.now() % 1000 < 500 ? '|' : ''); // カーソル点滅
-        context.fillText(displayText, inputX + 10, inputY + inputHeight / 2);
+        context.fillText(displayText, scaledInputX + 10 * scaleX, scaledInputY + scaledInputHeight / 2);
         
         // ボタン
         this.renderUsernameInputButtons(context);
         
         // 操作説明
         context.fillStyle = '#AAAAAA';
-        context.font = '14px Arial';
+        context.font = `${14 * Math.min(scaleX, scaleY)}px Arial`;
         context.textAlign = 'center';
-        context.fillText('文字を入力してEnterで決定、ESCでキャンセル', canvas.width / 2, 450);
+        context.fillText('文字を入力してEnterで決定、ESCでキャンセル', (baseWidth / 2) * scaleX, 450 * scaleY);
         
         context.restore();
     }
@@ -215,38 +229,51 @@ export class MainMenuScene extends Scene {
     renderUsernameInputButtons(context) {
         const canvas = this.gameEngine.canvas;
         
-        // ベース座標系（800x600）を使用
+        // Canvas実際の解像度を取得
+        const canvasWidth = canvas.width;
+        const canvasHeight = canvas.height;
+        
+        // ベース座標系（800x600）からCanvas座標系への変換比率
+        const scaleX = canvasWidth / 800;
+        const scaleY = canvasHeight / 600;
+        
+        // ベース座標系でのボタン位置・サイズ
         const baseWidth = 800;
         const buttonWidth = 100;
         const buttonHeight = 40;
         const buttonY = 360;
         
-        // OKボタン
-        const okButtonX = baseWidth / 2 - buttonWidth - 10;
+        // Canvas座標系でのボタン位置・サイズ
+        const scaledButtonWidth = buttonWidth * scaleX;
+        const scaledButtonHeight = buttonHeight * scaleY;
+        const scaledButtonY = buttonY * scaleY;
+        
+        // OKボタン（Canvas座標系）
+        const okButtonX = (baseWidth / 2 - buttonWidth - 10) * scaleX;
         context.fillStyle = this.usernameInput.length > 0 ? '#00AA00' : '#666666';
-        context.fillRect(okButtonX, buttonY, buttonWidth, buttonHeight);
+        context.fillRect(okButtonX, scaledButtonY, scaledButtonWidth, scaledButtonHeight);
         
         context.strokeStyle = '#FFFFFF';
-        context.lineWidth = 2;
-        context.strokeRect(okButtonX, buttonY, buttonWidth, buttonHeight);
+        context.lineWidth = 2 * Math.min(scaleX, scaleY);
+        context.strokeRect(okButtonX, scaledButtonY, scaledButtonWidth, scaledButtonHeight);
         
         context.fillStyle = '#FFFFFF';
-        context.font = 'bold 16px Arial';
+        context.font = `bold ${16 * Math.min(scaleX, scaleY)}px Arial`;
         context.textAlign = 'center';
         context.textBaseline = 'middle';
-        context.fillText('OK', okButtonX + buttonWidth / 2, buttonY + buttonHeight / 2);
+        context.fillText('OK', okButtonX + scaledButtonWidth / 2, scaledButtonY + scaledButtonHeight / 2);
         
-        // キャンセルボタン
-        const cancelButtonX = baseWidth / 2 + 10;
+        // キャンセルボタン（Canvas座標系）
+        const cancelButtonX = (baseWidth / 2 + 10) * scaleX;
         context.fillStyle = '#AA0000';
-        context.fillRect(cancelButtonX, buttonY, buttonWidth, buttonHeight);
+        context.fillRect(cancelButtonX, scaledButtonY, scaledButtonWidth, scaledButtonHeight);
         
         context.strokeStyle = '#FFFFFF';
-        context.lineWidth = 2;
-        context.strokeRect(cancelButtonX, buttonY, buttonWidth, buttonHeight);
+        context.lineWidth = 2 * Math.min(scaleX, scaleY);
+        context.strokeRect(cancelButtonX, scaledButtonY, scaledButtonWidth, scaledButtonHeight);
         
         context.fillStyle = '#FFFFFF';
-        context.fillText('キャンセル', cancelButtonX + buttonWidth / 2, buttonY + buttonHeight / 2);
+        context.fillText('キャンセル', cancelButtonX + scaledButtonWidth / 2, scaledButtonY + scaledButtonHeight / 2);
     }
     
     /**
