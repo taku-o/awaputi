@@ -77,27 +77,35 @@ export class MainMenuScene extends Scene {
     renderMainMenu(context) {
         const canvas = this.gameEngine.canvas;
         
+        // ベース座標系（800x600）を使用してタイトルを中央に配置
+        const baseWidth = 800;
+        const baseHeight = 600;
+        
+        // Canvas実際の解像度からベース座標系への変換比率
+        const scaleX = canvas.width / baseWidth;
+        const scaleY = canvas.height / baseHeight;
+        
         // タイトル
         context.save();
         context.fillStyle = '#FFFFFF';
-        context.font = 'bold 48px Arial';
+        context.font = `bold ${48 * scaleY}px Arial`;
         context.textAlign = 'center';
         context.textBaseline = 'middle';
-        context.fillText('BubblePop', canvas.width / 2, 150);
+        context.fillText('BubblePop', (baseWidth / 2) * scaleX, 150 * scaleY);
         
         // サブタイトル
-        context.font = '20px Arial';
+        context.font = `${20 * scaleY}px Arial`;
         context.fillStyle = '#CCCCCC';
-        context.fillText('泡割りゲーム', canvas.width / 2, 190);
+        context.fillText('泡割りゲーム', (baseWidth / 2) * scaleX, 190 * scaleY);
         context.restore();
         
         // プレイヤー情報表示
         if (this.gameEngine.playerData.username) {
             context.save();
             context.fillStyle = '#AAAAAA';
-            context.font = '16px Arial';
+            context.font = `${16 * scaleY}px Arial`;
             context.textAlign = 'center';
-            context.fillText(`プレイヤー: ${this.gameEngine.playerData.username}`, canvas.width / 2, 230);
+            context.fillText(`プレイヤー: ${this.gameEngine.playerData.username}`, (baseWidth / 2) * scaleX, 230 * scaleY);
             context.restore();
         }
         
