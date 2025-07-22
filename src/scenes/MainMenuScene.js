@@ -795,8 +795,8 @@ export class MainMenuScene extends Scene {
                 default:
                     // 文字入力
                     if (event.key.length === 1 && this.usernameInput.length < 10) {
-                        // 英数字、ひらがな、カタカナ、漢字のみ許可
-                        if (/[a-zA-Z0-9ぁ-んァ-ヶ一-龯]/.test(event.key)) {
+                        // 英数字、ひらがな、カタカナ、漢字、ハイフン、アンダースコア、ピリオドを許可
+                        if (/[a-zA-Z0-9ぁ-んァ-ヶ一-龯\-_.　]/.test(event.key)) {
                             this.usernameInput += event.key;
                         }
                     }
