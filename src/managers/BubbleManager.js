@@ -152,6 +152,13 @@ export class BubbleManager {
      * ステージ設定を適用
      */
     setStageConfig(config) {
+        console.log('BubbleManager.setStageConfig called with:', config);
+        
+        if (!config) {
+            console.error('Stage config is null or undefined');
+            return false;
+        }
+        
         this.stageConfig = config;
         this.maxBubbles = config.maxBubbles || 20;
         this.baseSpawnRate = config.spawnRate || 1.0;
@@ -160,6 +167,7 @@ export class BubbleManager {
         this.spawnInterval = Math.max(500, 2000 / this.baseSpawnRate);
         
         console.log(`Stage config applied: ${config.name}, max bubbles: ${this.maxBubbles}, spawn rate: ${this.baseSpawnRate}`);
+        return true;
     }
     
     /**

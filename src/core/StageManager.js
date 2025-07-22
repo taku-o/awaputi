@@ -124,16 +124,30 @@ export class StageManager {
      * ステージを開始
      */
     startStage(stageId) {
+        console.log(`Starting stage: ${stageId}`);
+        
         const config = this.stageConfigs[stageId];
         if (!config) {
             console.error(`Stage ${stageId} not found`);
             return false;
         }
         
+        console.log(`Stage config found: ${config.name}`);
+        
         if (!this.isStageUnlocked(stageId)) {
             console.error(`Stage ${stageId} is locked`);
             return false;
         }
+        
+        console.log(`Stage ${stageId} is unlocked`);
+        
+        // BubbleManagerの存在確認
+        if (!this.gameEngine.bubbleManager) {
+            console.error('BubbleManager not found in gameEngine');
+            return false;
+        }
+        
+        console.log('BubbleManager exists, setting stage config...');
         
         this.currentStage = {
             id: stageId,
@@ -144,7 +158,19 @@ export class StageManager {
         
         // ゲームエンジンにステージ情報を設定
         this.gameEngine.timeRemaining = config.duration;
-        this.gameEngine.bubbleManager.setStageConfig(config);
+        
+        try {
+            const configResult = this.gameEngine.bubbleManager.setStageConfig(config);
+            if (configResult) {
+                console.log(`Stage config set successfully`);
+            } else {
+                console.error('Stage config setting failed');
+                return false;
+            }
+        } catch (error) {
+            console.error('Error setting stage config:', error);
+            return false;
+        }
         
         console.log(`Stage started: ${config.name}`);
         return true;
