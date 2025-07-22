@@ -660,6 +660,64 @@ export class Bubble {
     }
     
     /**
+     * 更新処理
+     */
+    update(deltaTime, mousePosition) {
+        // 年齢を更新
+        this.age += deltaTime;
+        
+        // 寿命チェック
+        if (this.age >= this.maxAge) {
+            this.isAlive = false;
+        }
+        
+        // 特殊タイプの更新処理
+        this.updateSpecialBehavior(deltaTime, mousePosition);
+        
+        // 位置更新（速度がある場合）
+        if (this.velocity.x !== 0 || this.velocity.y !== 0) {
+            this.position.x += this.velocity.x * (deltaTime / 1000);
+            this.position.y += this.velocity.y * (deltaTime / 1000);
+            
+            // 摩擦による減速
+            this.velocity.x *= 0.98;
+            this.velocity.y *= 0.98;
+        }
+    }
+    
+    /**
+     * 特殊タイプの振る舞い更新
+     */
+    updateSpecialBehavior(deltaTime, mousePosition) {
+        switch (this.type) {
+            case 'escaping':
+                // 逃げる泡：マウスから離れる動き
+                if (mousePosition) {
+                    const dx = this.position.x - mousePosition.x;
+                    const dy = this.position.y - mousePosition.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 100 && distance > 0) {
+                        const escapeForce = 50 / distance;
+                        this.velocity.x += (dx / distance) * escapeForce;
+                        this.velocity.y += (dy / distance) * escapeForce;
+                    }
+                }
+                break;
+                
+            case 'magnetic':
+                // 磁力の泡：他の泡を引き寄せる効果（ここでは位置のみ更新）
+                break;
+                
+            case 'frozen':
+                // 凍った泡：動きを制限
+                this.velocity.x *= 0.5;
+                this.velocity.y *= 0.5;
+                break;
+        }
+    }
+    
+    /**
      * 効果を取得してクリア
      */
     getAndClearEffects() {
