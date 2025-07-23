@@ -13,19 +13,19 @@
   - GameConfigの単体テストを作成
   - _要件: 1.1, 6.1_
 
-- [ ] 2.2 AudioConfigクラスの実装
+- [x] 2.2 AudioConfigクラスの実装
   - 音量、音質、音響効果設定を統合
   - AudioManagerとの連携インターフェースを実装
   - AudioConfigの単体テストを作成
   - _要件: 1.1, 2.1_
 
-- [ ] 2.3 EffectsConfigクラスの実装
+- [x] 2.3 EffectsConfigクラスの実装
   - パーティクル、画面効果、アニメーション設定を統合
   - ParticleManagerとEffectManagerとの連携を実装
   - EffectsConfigの単体テストを作成
   - _要件: 1.1, 2.1_
 
-- [ ] 2.4 PerformanceConfigクラスの実装
+- [x] 2.4 PerformanceConfigクラスの実装
   - 最適化、リソース制限、品質設定を統合
   - PerformanceOptimizerとの連携を実装
   - PerformanceConfigの単体テストを作成
