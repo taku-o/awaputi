@@ -5,9 +5,9 @@
  * 設定の取得、設定、検証、監視機能を実装します。
  */
 
-import { ErrorHandler } from '../utils/ErrorHandler.js';
+const { ErrorHandler } = require('../utils/ErrorHandler.js');
 
-export class ConfigurationManager {
+class ConfigurationManager {
     constructor() {
         // 設定データストレージ
         this.configurations = new Map();
@@ -438,9 +438,14 @@ let instance = null;
  * ConfigurationManagerのシングルトンインスタンスを取得
  * @returns {ConfigurationManager} インスタンス
  */
-export function getConfigurationManager() {
+function getConfigurationManager() {
     if (!instance) {
         instance = new ConfigurationManager();
     }
     return instance;
 }
+
+module.exports = {
+    ConfigurationManager,
+    getConfigurationManager
+};

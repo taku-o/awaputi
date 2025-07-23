@@ -5,7 +5,7 @@
  * プレイヤーフィードバックに基づいて調整を行う際は、このファイルを参照してください。
  */
 
-export const BALANCE_CONFIG = {
+const BALANCE_CONFIG = {
     // スコアシステム
     scoring: {
         // 基本スコア（泡の種類別）
@@ -185,7 +185,7 @@ export const BALANCE_CONFIG = {
 /**
  * バランス設定を適用するヘルパー関数
  */
-export class BalanceHelper {
+class BalanceHelper {
     /**
      * スコア計算にバランス設定を適用
      */
@@ -235,3 +235,8 @@ export class BalanceHelper {
         return !requirement || playerTAP >= requirement;
     }
 }
+
+module.exports = {
+    BALANCE_CONFIG,
+    BalanceHelper
+};
