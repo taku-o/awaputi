@@ -129,6 +129,11 @@ src/
 - Use build optimization scripts
 - Monitor bundle size with bundlesize tool
 
+### Development Environment
+- GitHub CLI (gh) is available for issue management and repository operations
+- Use GitHub CLI for creating issues, pull requests, and repository management
+- Environment supports macOS with zsh shell
+
 ## Security Considerations
 
 ### Data Handling
