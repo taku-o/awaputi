@@ -845,21 +845,39 @@ export class AudioManager {
      * @param {number} volume - 音量 (0-1)
      */
     setVolume(type, volume) {
-        volume = Math.max(0, Math.min(1, volume));
-        
-        switch (type) {
-            case 'master':
-                this.audioConfig.setMasterVolume(volume);
-                // 設定変更の監視により自動的に適用される
-                break;
-            case 'sfx':
-                this.audioConfig.setSfxVolume(volume);
-                // 設定変更の監視により自動的に適用される
-                break;
-            case 'bgm':
-                this.audioConfig.setBgmVolume(volume);
-                // 設定変更の監視により自動的に適用される
-                break;
+        try {
+            // 入力値の検証
+            if (typeof volume !== 'number' || isNaN(volume)) {
+                throw new Error(`Invalid volume value: ${volume}`);
+            }
+            
+            volume = Math.max(0, Math.min(1, volume));
+            
+            switch (type) {
+                case 'master':
+                    if (this.audioConfig.setMasterVolume(volume)) {
+                        console.log(`[AudioManager] Master volume set to ${volume}`);
+                    }
+                    break;
+                case 'sfx':
+                    if (this.audioConfig.setSfxVolume(volume)) {
+                        console.log(`[AudioManager] SFX volume set to ${volume}`);
+                    }
+                    break;
+                case 'bgm':
+                    if (this.audioConfig.setBgmVolume(volume)) {
+                        console.log(`[AudioManager] BGM volume set to ${volume}`);
+                    }
+                    break;
+                default:
+                    throw new Error(`Unknown volume type: ${type}`);
+            }
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                operation: 'setVolume',
+                type: type,
+                volume: volume
+            });
         }
     }
     
@@ -886,9 +904,16 @@ export class AudioManager {
      * @returns {boolean} 新しいミュート状態
      */
     toggleMute() {
-        const newMutedState = this.audioConfig.toggleMute();
-        // 設定変更の監視により自動的に適用される
-        return newMutedState;
+        try {
+            const newMutedState = this.audioConfig.toggleMute();
+            console.log(`[AudioManager] Mute toggled to ${newMutedState}`);
+            return newMutedState;
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                operation: 'toggleMute'
+            });
+            return this.isMuted;
+        }
     }
     
     /**
@@ -896,8 +921,20 @@ export class AudioManager {
      * @param {boolean} muted - ミュート状態
      */
     setMuted(muted) {
-        this.audioConfig.setMuted(muted);
-        // 設定変更の監視により自動的に適用される
+        try {
+            if (typeof muted !== 'boolean') {
+                throw new Error(`Invalid muted value: ${muted}`);
+            }
+            
+            if (this.audioConfig.setMuted(muted)) {
+                console.log(`[AudioManager] Mute state set to ${muted}`);
+            }
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                operation: 'setMuted',
+                muted: muted
+            });
+        }
     }
     
     /**
@@ -938,6 +975,113 @@ export class AudioManager {
     }
     
     /**
+     * 音響効果設定を動的に更新
+     * @param {string} effectType - 効果タイプ ('reverb', 'compression')
+     * @param {boolean} enabled - 有効状態
+     */
+    setAudioEffect(effectType, enabled) {
+        try {
+            if (typeof enabled !== 'boolean') {
+                throw new Error(`Invalid enabled value: ${enabled}`);
+            }
+            
+            switch (effectType) {
+                case 'reverb':
+                    if (this.audioConfig.setReverbEnabled(enabled)) {
+                        console.log(`[AudioManager] Reverb effect ${enabled ? 'enabled' : 'disabled'}`);
+                    }
+                    break;
+                case 'compression':
+                    if (this.audioConfig.setCompressionEnabled(enabled)) {
+                        console.log(`[AudioManager] Compression effect ${enabled ? 'enabled' : 'disabled'}`);
+                    }
+                    break;
+                default:
+                    throw new Error(`Unknown effect type: ${effectType}`);
+            }
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                operation: 'setAudioEffect',
+                effectType: effectType,
+                enabled: enabled
+            });
+        }
+    }
+    
+    /**
+     * 音質設定を動的に更新
+     * @param {Object} qualityConfig - 音質設定
+     */
+    updateQualitySettings(qualityConfig) {
+        try {
+            if (!qualityConfig || typeof qualityConfig !== 'object') {
+                throw new Error('Invalid quality config');
+            }
+            
+            let updated = false;
+            
+            if (qualityConfig.sampleRate !== undefined) {
+                if (this.audioConfig.setSampleRate(qualityConfig.sampleRate)) {
+                    updated = true;
+                }
+            }
+            
+            if (qualityConfig.bufferSize !== undefined) {
+                if (this.audioConfig.setBufferSize(qualityConfig.bufferSize)) {
+                    updated = true;
+                }
+            }
+            
+            if (updated) {
+                console.log('[AudioManager] Quality settings updated, restart may be required');
+            }
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                operation: 'updateQualitySettings',
+                qualityConfig: qualityConfig
+            });
+        }
+    }
+    
+    /**
+     * 設定システムとの同期を強制実行
+     */
+    syncWithConfig() {
+        try {
+            // 現在の設定を取得して適用
+            const volumeConfig = this.audioConfig.getVolumeConfig();
+            
+            // 内部状態を更新
+            this.masterVolume = volumeConfig.master;
+            this.sfxVolume = volumeConfig.sfx;
+            this.bgmVolume = volumeConfig.bgm;
+            this.isMuted = volumeConfig.muted;
+            
+            // オーディオノードに適用
+            if (this.masterGainNode) {
+                this.masterGainNode.gain.value = this.masterVolume;
+            }
+            if (this.sfxGainNode) {
+                this.sfxGainNode.gain.value = this.sfxVolume;
+            }
+            if (this.bgmGainNode) {
+                this.bgmGainNode.gain.value = this.bgmVolume;
+            }
+            
+            // ミュート状態の処理
+            if (this.isMuted) {
+                this.stopAllSounds();
+            }
+            
+            console.log('[AudioManager] Synchronized with configuration system');
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                operation: 'syncWithConfig'
+            });
+        }
+    }
+    
+    /**
      * 状態情報を取得
      */
     getStatus() {
@@ -949,7 +1093,12 @@ export class AudioManager {
             bgmVolume: this.bgmVolume,
             contextState: this.audioContext ? this.audioContext.state : 'none',
             activeSources: this.activeSources.size,
-            soundBuffers: this.soundBuffers.size
+            soundBuffers: this.soundBuffers.size,
+            configSync: {
+                audioConfig: !!this.audioConfig,
+                configManager: !!this.configManager,
+                watchers: this.configWatchers.size
+            }
         };
     }
 }

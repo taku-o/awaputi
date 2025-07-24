@@ -82,7 +82,7 @@
   - 互換性レイヤーの統合テストを作成
   - _要件: 6.1, 6.2, 6.3_
 
-- [ ] 5.2 AudioManagerの設定システム統合
+- [x] 5.2 AudioManagerの設定システム統合
   - AudioManagerが新しいAudioConfigを使用するように修正
   - 音量設定の動的変更機能を実装
   - AudioManager統合テストを作成
