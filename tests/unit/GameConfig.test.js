@@ -2,7 +2,7 @@
  * GameConfig クラスの単体テスト
  */
 
-const { GameConfig, getGameConfig } = require('../../src/config/GameConfig.js');
+import { GameConfig, getGameConfig } from '../../src/config/GameConfig.js';
 
 describe('GameConfig', () => {
     describe('計算メソッド', () => {
@@ -10,13 +10,13 @@ describe('GameConfig', () => {
             const gameConfig = new GameConfig();
             
             // モックメソッド
-            gameConfig.getAgeBonusConfig = jest.fn().mockReturnValue({
+            gameConfig.getAgeBonusConfig = () => ({
                 earlyBonus: 2.0,
                 lateBonus: 3.0,
                 midBonus: 1.5
             });
             
-            gameConfig.getBubbleBaseScore = jest.fn().mockReturnValue(15);
+            gameConfig.getBubbleBaseScore = () => 15;
             
             // 早期クリック（10%以内）
             expect(gameConfig.calculateScore('normal', 0.05)).toBe(30);  // 15 * 2.0
@@ -35,7 +35,7 @@ describe('GameConfig', () => {
             const gameConfig = new GameConfig();
             
             // モックメソッド
-            gameConfig.getComboConfig = jest.fn().mockReturnValue({
+            gameConfig.getComboConfig = () => ({
                 multiplierIncrement: 0.08,
                 maxMultiplier: 2.5
             });
@@ -54,9 +54,9 @@ describe('GameConfig', () => {
             const gameConfig = new GameConfig();
             
             // モックメソッド
-            gameConfig.getItemBaseCost = jest.fn().mockReturnValue(75);
+            gameConfig.getItemBaseCost = () => 75;
             gameConfig.configManager = {
-                get: jest.fn().mockReturnValue(1.3)  // costMultiplier
+                get: () => 1.3  // costMultiplier
             };
             
             // レベル0（初期購入）
@@ -72,10 +72,13 @@ describe('GameConfig', () => {
         test('isStageUnlocked()はプレイヤーのTAP値に基づいてステージ開放状態を返す', () => {
             const gameConfig = new GameConfig();
             
-            // モックメソッド
-            gameConfig.getStageUnlockRequirement = jest.fn()
-                .mockReturnValueOnce(500)   // hard
-                .mockReturnValueOnce(2000); // veryHard
+            // モックメソッド - 呼び出し回数を追跡
+            let callCount = 0;
+            gameConfig.getStageUnlockRequirement = (stageId) => {
+                if (stageId === 'hard') return 500;
+                if (stageId === 'veryHard') return 2000;
+                return 0;
+            };
             
             // 開放済み
             expect(gameConfig.isStageUnlocked('hard', 600)).toBe(true);

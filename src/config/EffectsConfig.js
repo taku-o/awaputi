@@ -5,8 +5,8 @@
  * ParticleManagerとEffectManagerとの連携インターフェースを提供します。
  */
 
-const { getConfigurationManager } = require('../core/ConfigurationManager.js');
-const { getErrorHandler } = require('../utils/ErrorHandler.js');
+import { getConfigurationManager } from '../core/ConfigurationManager.js';
+import { getErrorHandler } from '../utils/ErrorHandler.js';
 
 class EffectsConfig {
     constructor() {
@@ -582,7 +582,7 @@ function getEffectsConfig() {
     return instance;
 }
 
-module.exports = {
+export {
     EffectsConfig,
     getEffectsConfig
 };

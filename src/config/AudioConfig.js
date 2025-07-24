@@ -5,8 +5,8 @@
  * AudioManagerとの連携インターフェースを提供します。
  */
 
-const { getConfigurationManager } = require('../core/ConfigurationManager.js');
-const { getErrorHandler } = require('../utils/ErrorHandler.js');
+import { getConfigurationManager } from '../core/ConfigurationManager.js';
+import { getErrorHandler } from '../utils/ErrorHandler.js';
 
 class AudioConfig {
     constructor() {
@@ -441,7 +441,7 @@ function getAudioConfig() {
     return instance;
 }
 
-module.exports = {
+export {
     AudioConfig,
     getAudioConfig
 };

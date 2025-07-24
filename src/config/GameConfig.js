@@ -5,9 +5,9 @@
  * スコア、ステージ、アイテム、泡設定のアクセサメソッドを提供します。
  */
 
-const { getConfigurationManager } = require('../core/ConfigurationManager.js');
-const { BALANCE_CONFIG } = require('./GameBalance.js');
-const { ErrorHandler } = require('../utils/ErrorHandler.js');
+import { getConfigurationManager } from '../core/ConfigurationManager.js';
+import { BALANCE_CONFIG } from './GameBalance.js';
+import { ErrorHandler } from '../utils/ErrorHandler.js';
 
 class GameConfig {
     constructor() {
@@ -481,7 +481,7 @@ function getGameConfig() {
     return instance;
 }
 
-module.exports = {
+export {
     GameConfig,
     getGameConfig
 };

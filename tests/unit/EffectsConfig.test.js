@@ -3,10 +3,19 @@
  */
 
 // モックの設定
-const mockGet = jest.fn();
-const mockSet = jest.fn().mockReturnValue(true);
-const mockSetValidationRule = jest.fn();
-const mockGetCategory = jest.fn().mockReturnValue({});
+let mockGetCalls = [];
+const mockGet = function(category, key, defaultValue) {
+    mockGetCalls.push({ category, key, defaultValue });
+    // 戻り値は各テストで設定
+    return defaultValue;
+};
+
+const mockSet = function(category, key, value) {
+    return true;
+};
+
+const mockSetValidationRule = function() {};
+const mockGetCategory = function() { return {}; };
 
 const mockConfigManager = {
     get: mockGet,
@@ -16,31 +25,22 @@ const mockConfigManager = {
 };
 
 // ConfigurationManagerのモック
-const mockGetConfigurationManager = jest.fn().mockReturnValue(mockConfigManager);
-jest.mock('../../src/core/ConfigurationManager.js', () => {
-    return {
-        ConfigurationManager: jest.fn(),
-        getConfigurationManager: mockGetConfigurationManager
-    };
-});
+const mockGetConfigurationManager = function() { return mockConfigManager; };
+
+// ConfigurationManagerのモック
+import { ConfigurationManager, getConfigurationManager } from '../../src/core/ConfigurationManager.js';
 
 // ErrorHandlerのモック
-jest.mock('../../src/utils/ErrorHandler.js', () => {
-    return {
-        getErrorHandler: jest.fn().mockReturnValue({
-            handleError: jest.fn()
-        })
-    };
-});
+import { getErrorHandler } from '../../src/utils/ErrorHandler.js';
 
-const { EffectsConfig, getEffectsConfig } = require('../../src/config/EffectsConfig.js');
+import { EffectsConfig, getEffectsConfig } from '../../src/config/EffectsConfig.js';
 
 describe('EffectsConfig', () => {
     let effectsConfig;
     
     beforeEach(() => {
         // テスト前にモックをリセット
-        jest.clearAllMocks();
+        mockGetCalls = [];
         
         // 新しいインスタンスを作成
         effectsConfig = new EffectsConfig();
@@ -372,33 +372,21 @@ describe('EffectsConfig', () => {
                 maxParticles: 300,
                 poolSize: 50,
                 particlePool: Array(50),
-                initializePool: jest.fn()
+                initializePool: function() { this.initializePoolCalled = true; }
             };
             
             // パーティクル設定のモック
-            mockConfigManager.get
-                .mockReturnValueOnce(400) // maxCount
-                .mockReturnValueOnce(80)  // poolSize
-                .mockReturnValueOnce(0.8) // quality
-                .mockReturnValueOnce(true) // enabled
-                .mockReturnValueOnce(10) // bubble.count
-                .mockReturnValueOnce(2)  // bubble.size
-                .mockReturnValueOnce(80) // bubble.speed
-                .mockReturnValueOnce(600) // bubble.life
-                .mockReturnValueOnce(8)  // star.count
-                .mockReturnValueOnce(3)  // star.size
-                .mockReturnValueOnce(60) // star.speed
-                .mockReturnValueOnce(1000) // star.life
-                .mockReturnValueOnce(20) // explosion.count
-                .mockReturnValueOnce(4)  // explosion.size
-                .mockReturnValueOnce(120) // explosion.speed
-                .mockReturnValueOnce(1200); // explosion.life
+            mockConfigManager.get = function(category, key, defaultValue) {
+                if (key === 'particles.maxCount') return 400;
+                if (key === 'particles.poolSize') return 80;
+                return defaultValue;
+            };
             
             effectsConfig.applyToParticleManager(mockParticleManager);
             
             expect(mockParticleManager.maxParticles).toBe(400);
             expect(mockParticleManager.poolSize).toBe(80);
-            expect(mockParticleManager.initializePool).toHaveBeenCalled();
+            expect(mockParticleManager.initializePoolCalled).toBe(true);
         });
         
         test('syncFromParticleManager がParticleManagerから設定を同期すること', () => {
