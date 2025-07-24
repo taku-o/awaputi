@@ -236,7 +236,7 @@ class BalanceHelper {
     }
 }
 
-module.exports = {
+export {
     BALANCE_CONFIG,
     BalanceHelper
 };

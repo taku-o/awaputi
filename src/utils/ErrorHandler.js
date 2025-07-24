@@ -1083,4 +1083,6 @@ const errorHandler = getErrorHandler;
 // グローバルに公開（デバッグ用）
 if (typeof window !== 'undefined') {
     window.errorHandler = errorHandler;
-}module.exports = { ErrorHandler, getErrorHandler, errorHandler };
+}
+
+export { ErrorHandler, getErrorHandler, errorHandler };

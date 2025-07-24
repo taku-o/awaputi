@@ -6,7 +6,7 @@
   - 単体テストを作成してコア機能を検証
   - _要件: 1.1, 3.1, 3.2_
 
-- [-] 2. 設定カテゴリクラスの実装
+- [x] 2. 設定カテゴリクラスの実装
 - [x] 2.1 GameConfigクラスの実装
   - 既存のBALANCE_CONFIGからゲーム設定を移行
   - スコア、ステージ、アイテム、泡設定のアクセサメソッドを実装
@@ -31,26 +31,26 @@
   - PerformanceConfigの単体テストを作成
   - _要件: 1.1, 5.1_
 
-- [ ] 3. 計算処理システムの構築
-- [ ] 3.1 CalculationEngineクラスの実装
+- [x] 3. 計算処理システムの構築
+- [x] 3.1 CalculationEngineクラスの実装
   - 計算処理の統一管理機能を実装
   - 計算結果のキャッシュシステムを実装
   - CalculationEngineの単体テストを作成
   - _要件: 2.1, 2.2, 5.2_
 
-- [ ] 3.2 ScoreCalculatorクラスの実装
+- [x] 3.2 ScoreCalculatorクラスの実装
   - 基本スコア、コンボスコア、ボーナススコア計算を実装
   - 既存のBalanceHelperからスコア計算ロジックを移行
   - ScoreCalculatorの単体テストを作成
   - _要件: 2.1, 2.3_
 
-- [ ] 3.3 BalanceCalculatorクラスの実装
+- [x] 3.3 BalanceCalculatorクラスの実装
   - 難易度調整、アイテムコスト、開放条件計算を実装
   - 既存のBalanceHelperからバランス計算ロジックを移行
   - BalanceCalculatorの単体テストを作成
   - _要件: 2.1, 2.3_
 
-- [ ] 3.4 EffectsCalculatorクラスの実装
+- [x] 3.4 EffectsCalculatorクラスの実装
   - パーティクル数、アニメーション時間、効果強度計算を実装
   - 既存のエフェクト関連の計算ロジックを統合
   - EffectsCalculatorの単体テストを作成

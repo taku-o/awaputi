@@ -5,7 +5,7 @@
  * 設定の取得、設定、検証、監視機能を実装します。
  */
 
-const { ErrorHandler } = require('../utils/ErrorHandler.js');
+import { ErrorHandler } from '../utils/ErrorHandler.js';
 
 class ConfigurationManager {
     constructor() {
@@ -445,7 +445,7 @@ function getConfigurationManager() {
     return instance;
 }
 
-module.exports = {
+export {
     ConfigurationManager,
     getConfigurationManager
 };
