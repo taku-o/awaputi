@@ -6,7 +6,7 @@
  */
 
 import { getConfigurationManager } from '../core/ConfigurationManager.js';
-import { BALANCE_CONFIG } from './GameBalance.js';
+import { ORIGINAL_BALANCE_CONFIG } from './GameBalance.js';
 import { ErrorHandler } from '../utils/ErrorHandler.js';
 
 class GameConfig {
@@ -49,7 +49,7 @@ class GameConfig {
      * @private
      */
     _migrateScoreConfig() {
-        const scoring = BALANCE_CONFIG.scoring;
+        const scoring = ORIGINAL_BALANCE_CONFIG.scoring;
         
         // 基本スコア
         for (const [bubbleType, score] of Object.entries(scoring.baseScores)) {
@@ -72,7 +72,7 @@ class GameConfig {
      * @private
      */
     _migrateStageConfig() {
-        const stages = BALANCE_CONFIG.stages;
+        const stages = ORIGINAL_BALANCE_CONFIG.stages;
         
         // 開放条件
         for (const [stageId, requirement] of Object.entries(stages.unlockRequirements)) {
@@ -91,7 +91,7 @@ class GameConfig {
      * @private
      */
     _migrateItemConfig() {
-        const items = BALANCE_CONFIG.items;
+        const items = ORIGINAL_BALANCE_CONFIG.items;
         
         // 基本コスト
         for (const [itemId, cost] of Object.entries(items.baseCosts)) {
@@ -117,7 +117,7 @@ class GameConfig {
      * @private
      */
     _migrateBubbleConfig() {
-        const bubbles = BALANCE_CONFIG.bubbles;
+        const bubbles = ORIGINAL_BALANCE_CONFIG.bubbles;
         
         // 生存時間
         for (const [bubbleType, maxAge] of Object.entries(bubbles.maxAge)) {
