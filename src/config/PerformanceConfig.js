@@ -604,6 +604,22 @@ class PerformanceConfig {
             this.setAntiAliasingEnabled(preset.enableAntiAliasing);
             this.setReflectionsEnabled(preset.enableReflections);
             
+            // パフォーマンスレベル別の最適化設定を適用
+            switch (presetName) {
+                case 'low':
+                    this.setMaxBubbles(10);
+                    this.setMaxParticles(100);
+                    break;
+                case 'medium':
+                    this.setMaxBubbles(15);
+                    this.setMaxParticles(300);
+                    break;
+                case 'high':
+                    this.setMaxBubbles(20);
+                    this.setMaxParticles(500);
+                    break;
+            }
+            
             // パフォーマンスレベルも更新
             this.setPerformanceLevel(presetName);
             
