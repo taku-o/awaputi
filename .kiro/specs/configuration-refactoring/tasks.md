@@ -88,7 +88,7 @@
   - AudioManager統合テストを作成
   - _要件: 1.2, 2.2_
 
-- [ ] 5.3 ParticleManagerの設定システム統合
+- [x] 5.3 ParticleManagerの設定システム統合
   - ParticleManagerが新しいEffectsConfigを使用するように修正
   - パーティクル設定の動的変更機能を実装
   - ParticleManager統合テストを作成
