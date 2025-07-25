@@ -94,7 +94,7 @@
   - ParticleManager統合テストを作成
   - _要件: 1.2, 2.2_
 
-- [ ] 5.4 EffectManagerの設定システム統合
+- [x] 5.4 EffectManagerの設定システム統合
   - EffectManagerが新しいEffectsConfigを使用するように修正
   - 画面効果設定の動的変更機能を実装
   - EffectManager統合テストを作成

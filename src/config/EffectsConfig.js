@@ -511,9 +511,10 @@ class EffectsConfig {
                 throw new Error('EffectManagerが指定されていません');
             }
             
-            // 画面効果設定の適用
-            // 実際の適用方法はEffectManagerの実装に依存するため、
-            // 必要に応じて拡張する
+            // EffectManagerの設定適用メソッドを呼び出し
+            if (typeof effectManager.applyConfiguration === 'function') {
+                effectManager.applyConfiguration();
+            }
             
             console.log('[EffectsConfig] EffectManagerに設定を適用しました');
         } catch (error) {
@@ -555,9 +556,24 @@ class EffectsConfig {
                 throw new Error('EffectManagerが指定されていません');
             }
             
-            // EffectManagerの状態を取得
-            // 実際の同期方法はEffectManagerの実装に依存するため、
-            // 必要に応じて拡張する
+            // EffectManagerから現在の設定値を取得して同期
+            const shakeIntensity = effectManager.getConfigValue('shakeIntensity');
+            const flashDuration = effectManager.getConfigValue('flashDuration');
+            const zoomSensitivity = effectManager.getConfigValue('zoomSensitivity');
+            const enabled = effectManager.getConfigValue('enabled');
+            
+            if (shakeIntensity !== null) {
+                this.setShakeIntensity(shakeIntensity);
+            }
+            if (flashDuration !== null) {
+                this.setFlashDuration(flashDuration);
+            }
+            if (zoomSensitivity !== null) {
+                this.setZoomSensitivity(zoomSensitivity);
+            }
+            if (enabled !== null) {
+                this.setScreenEffectEnabled(enabled);
+            }
             
             console.log('[EffectsConfig] EffectManagerから設定を同期しました');
         } catch (error) {
