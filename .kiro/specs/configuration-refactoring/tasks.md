@@ -100,7 +100,7 @@
   - EffectManager統合テストを作成
   - _要件: 1.2, 2.2_
 
-- [ ] 5.5 PerformanceOptimizerの設定システム統合
+- [x] 5.5 PerformanceOptimizerの設定システム統合
   - PerformanceOptimizerが新しいPerformanceConfigを使用するように修正
   - パフォーマンス設定の動的変更機能を実装
   - PerformanceOptimizer統合テストを作成

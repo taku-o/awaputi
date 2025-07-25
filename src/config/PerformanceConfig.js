@@ -587,7 +587,7 @@ class PerformanceConfig {
                 throw new Error(`無効なプリセット名: ${presetName}`);
             }
             
-            const presetKey = `performance.quality.presets.${presetName}`;
+            const presetKey = `quality.presets.${presetName}`;
             const preset = this.configManager.get('performance', presetKey);
             
             if (!preset) {
