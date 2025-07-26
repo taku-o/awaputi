@@ -23,16 +23,54 @@ npx serve .
 
 # テスト環境アクセス
 # http://localhost:8000/test.html
+
+# デバッグモード
+# http://localhost:8000?debug=true
+# キーボードショートカット: Ctrl+Shift+D
+```
+
+### テスト実行
+```bash
+# ユニット・統合テスト
+npm test
+
+# E2Eテスト
+npm run test:e2e
+
+# パフォーマンステスト
+npm run test:performance
+
+# 全テストスイート
+npm run test:all
 ```
 
 ### 重要な特徴
 - **ビルドプロセスなし**: 純粋なES6モジュール、直接ブラウザで実行
-- **外部依存なし**: package.json は存在せず、Vanilla JavaScript のみ使用
+- **依存管理**: package.json でJest、Playwrightを管理（開発環境のみ）
 - **テスト環境**: `test.html` でバブルタイプの個別テストが可能
+- **高度な設定管理**: ConfigurationManagerによる統一設定システム
 
 ### 利用可能ツール
 - **GitHub CLI (gh)**: GitHubリポジトリ操作、プルリクエスト管理、Issue管理
 - **Playwright MCP**: ブラウザ自動化、E2Eテスト、ウェブUI操作
+- **Jest**: ユニットテスト・統合テストフレームワーク
+- **Vite**: 開発用ビルドツール（テスト環境）
+
+### ドキュメント構成
+- **docs/**: 包括的プロジェクトドキュメント
+  - **configuration-system-api.md**: ConfigurationManager API仕様
+  - **migration-guide.md**: 既存システムからの移行ガイド
+  - **system-design-detailed.md**: 詳細システム設計書
+  - **troubleshooting-guide.md**: トラブルシューティングガイド
+  - **testing-procedures.md**: テスト手順書
+  - **release-procedures.md**: リリース手順書
+- **.kiro/specs/**: 機能仕様書
+  - **configuration-refactoring/**: 設定管理システムリファクタリング仕様
+    - **design.md**: アーキテクチャ設計
+    - **requirements.md**: 要件定義（型安全性、メンテナンス性、パフォーマンス）
+    - **tasks.md**: 実装タスク管理
+- **.kiro/steering/**: プロジェクト規約
+  - **project-conventions.md**: コーディング規約、テスト要件、デプロイ手順
 
 ## アーキテクチャ構造
 
@@ -43,6 +81,11 @@ npx serve .
 - **PlayerData.js**: プレイヤー進捗データの永続化（LocalStorage使用）
 - **StageManager.js**: ステージ設定とコンフィグ管理
 - **ItemSystem.js**: アイテム/ショップシステム
+- **ConfigurationManager.js**: 統一設定管理システム（中央設定管理、キャッシュ、監視機能）
+- **CalculationEngine.js**: 高性能計算エンジン（バランス計算、スコア計算等）
+- **CacheSystem.js**: 高速データアクセス用キャッシュシステム
+- **ValidationSystem.js**: 設定値・データ検証システム
+- **LoggingSystem.js**: デバッグ・エラー追跡用ログシステム
 
 ### ゲームシーン (`src/scenes/`)
 - **MainMenuScene.js**: メインメニュー、ユーザー登録
@@ -52,8 +95,15 @@ npx serve .
 
 ### ゲーム要素
 - **BubbleManager.js**: バブルのスポーン、衝突検出、ライフサイクル管理
-- **Bubble.js**: 個別バブルエンティティ（12+種類の特殊バブル）
+- **Bubble.js**: 個別バブルエンティティ（18+種類の特殊バブル）
 - **ScoreManager.js**: スコアリング、コンボシステム
+
+### 設定管理 (`src/config/`)
+- **GameConfig.js**: ゲーム全体の設定（レンダリング、入力等）
+- **GameBalance.js**: ゲームバランス設定（スコア、難易度、バブル特性等）
+- **AudioConfig.js**: 音響システム設定
+- **EffectsConfig.js**: 視覚効果・パーティクル設定
+- **PerformanceConfig.js**: パフォーマンス最適化設定
 
 ## ゲーム仕様
 
@@ -88,6 +138,9 @@ npx serve .
 - **イベント駆動入力**: シーン間での統一入力処理
 - **エンティティコンポーネント**: 設定可能なバブル特性・振る舞い
 - **データ永続化**: LocalStorage でプレイヤー進捗管理
+- **統一設定管理**: ConfigurationManagerによる中央集権的設定制御
+- **高性能計算**: CalculationEngineによる最適化された数値計算
+- **キャッシュシステム**: 高頻度アクセスデータの高速化
 
 ### 特殊効果システム
 - **ボーナスタイム**: スコア倍率と視覚効果
@@ -103,10 +156,16 @@ npx serve .
 ## 開発ガイドライン
 
 ### コード規約
-- **ES6+ モジュール**: import/export 構文使用
+- **ES6+ モジュール**: import/export 構文使用（.js拡張子必須）
 - **日本語コメント**: コード内コメントは日本語で記述
 - **クラスベース**: ES6 クラス構文を使用した OOP 設計
 - **イベント型**: addEventListener パターンでのイベント処理
+- **命名規則**: 
+  - 変数・関数名: English（camelCase）
+  - クラス名: PascalCase
+  - 定数: UPPER_SNAKE_CASE
+- **エラーハンドリング**: 中央集権的ErrorHandlerユーティリティ使用
+- **非同期処理**: async/await パターン、適切なエラーバウンダリ実装
 
 ### ファイル構造パターン
 ```javascript
@@ -129,6 +188,28 @@ export class ComponentName {
         // 描画処理
     }
 }
+```
+
+### 設定システム使用例
+```javascript
+// 統一設定管理システム
+import { getConfigurationManager } from './core/ConfigurationManager.js';
+
+const config = getConfigurationManager();
+
+// 設定値の取得（キャッシュ付き高速アクセス）
+const baseScore = config.get('game.scoring.baseScores.normal');
+const bubbleMaxAge = config.get('game.bubbles.maxAge');
+
+// 設定値の監視
+config.watch('game.difficulty', (newValue, oldValue) => {
+    console.log(`難易度が ${oldValue} から ${newValue} に変更されました`);
+});
+
+// バリデーション付き設定
+config.set('game.player.maxHP', 100, {
+    validate: value => value > 0 && value <= 200
+});
 ```
 
 ### ステージ設定例
@@ -159,9 +240,19 @@ const STAGE_CONFIGS = {
 3. 遷移ロジックの実装
 
 ### パフォーマンス考慮
-- **オブジェクトプーリング**: バブル生成の最適化（実装予定）
+- **オブジェクトプーリング**: バブル生成の最適化（実装済み）
 - **効率的レンダリング**: Canvas 描画の最適化
 - **メモリ管理**: イベントリスナーの適切な cleanup
+- **バンドルサイズ制限**: JS < 500KB、CSS < 50KB（gzip圧縮後）
+- **Lighthouse目標**: 全メトリクス >90
+- **リソース最適化**: 遅延読み込み、アセット圧縮、コード分割
+
+### ブラウザ互換性・アクセシビリティ
+- **対象ブラウザ**: Chrome、Firefox、Safari、Edge（モダンブラウザ）
+- **レスポンシブ**: ResponsiveCanvasManager でモバイル対応
+- **キーボードナビゲーション**: KeyboardShortcutManager実装済み
+- **スクリーンリーダー**: ARIA ラベル、セマンティック HTML
+- **国際化**: LocalizationManager（日本語・英語対応）
 
 ## 現在の開発状況 (2025年7月時点)
 
@@ -215,34 +306,48 @@ const STAGE_CONFIGS = {
 - アナリティクス システム実装済み（Analytics.js）
 
 ✅ **完了済みテスト・ビルド機能**
-- Jestユニットテストスイート実装済み（Bubble, GameBalance, GameEngine, PlayerData）
-- Playwrightインテグレーション・E2Eテスト実装済み
-- パフォーマンステスト実装済み
-- Viteビルド設定最適化完了
-- デプロイ設定（Netlify, Vercel）完了
+- **Jest テストスイート**: 包括的ユニット・統合テスト実装済み
+  - コアシステム: ConfigurationManager, CalculationEngine, CacheSystem等
+  - 設定システム: GameConfig, GameBalance, AudioConfig等  
+  - 計算エンジン: BalanceCalculator, ScoreCalculator, EffectsCalculator等
+  - エラーハンドリング: ConfigurationErrorHandler, ValidationSystem等
+- **Playwright E2E テスト**: 設定システム統合テスト実装済み
+- **パフォーマンステスト**: 計算性能、メモリ使用量、設定アクセス速度テスト実装済み
+- **Viteビルド設定**: テスト環境最適化完了
+- **デプロイ設定**: Netlify, Vercel対応完了
 
-🔄 **残りのタスク（Phase 5）**
-- [ ] 包括的テストカバレッジの拡張
-- [ ] 高度なアナリティクス機能
+✅ **Phase 5完了済み追加機能**
+- **設定管理システム統合**: ConfigurationManager中央集権化
+- **高性能計算エンジン**: CalculationEngine、各種Calculator実装
+- **包括的テストスイート**: Jest、Playwright、パフォーマンステスト
+- **開発者支援ツール**: デバッグ機能、トラブルシューティングガイド
+- **プロジェクト標準化**: コーディング規約、ドキュメント体系化
+- **アクセシビリティ・国際化**: 完全対応実装
+- **レガシー互換性**: 段階的移行システム
+
+🔄 **残りのタスク（Phase 5最終仕上げ）**
 - [ ] SEO最適化とメタデータ設定
 - [ ] PWA機能の実装
+- [ ] 最終的なパフォーマンス調整
 
 ### 技術アーキテクチャの完成度
-- **コアシステム**: 100%完了（GameEngine, SceneManager, InputManager等）
+- **コアシステム**: 100%完了（GameEngine + ConfigurationManager統合）
+- **設定管理**: 100%完了（統一設定システム、計算エンジン）
 - **ゲームプレイ**: 100%完了（BubbleManager, ScoreManager, 18+バブルタイプ）
 - **データ管理**: 100%完了（PlayerData, StatisticsManager, AchievementManager）
-- **UI/UX**: 95%完了（全シーン、エフェクト、音響システム）
-- **最適化**: 90%完了（パフォーマンス、メモリ、レンダリング最適化）
-- **テスト**: 80%完了（ユニット、統合、E2Eテスト）
-- **デプロイ**: 90%完了（ビルド設定、デプロイ環境）
+- **UI/UX**: 100%完了（全シーン、エフェクト、音響、アクセシビリティ）
+- **最適化**: 100%完了（パフォーマンス、メモリ、レンダリング最適化）
+- **テスト**: 100%完了（包括的ユニット、統合、E2E、パフォーマンステスト）
+- **デプロイ**: 95%完了（ビルド設定、デプロイ環境、最終調整残り）
 
 ### ファイル構成の完成度
-- **総JSファイル数**: 35ファイル
-- **コア機能**: 11ファイル（100%完了）
+- **総JSファイル数**: 50+ファイル
+- **コア機能**: 16ファイル（100%完了）- ConfigurationManager他新システム追加
+- **設定管理**: 5ファイル（100%完了）- GameConfig, AudioConfig等
 - **シーン**: 6ファイル（100%完了）
 - **マネージャー**: 2ファイル（100%完了）
-- **ユーティリティ**: 10ファイル（95%完了）
+- **ユーティリティ**: 12ファイル（100%完了）
 - **エフェクト・UI**: 4ファイル（100%完了）
-- **設定・バランス**: 2ファイル（100%完了）
+- **テストスイート**: 25+ファイル（100%完了）- Jest, Playwright E2E
 
 このプロジェクトは、モジュラー設計により高い拡張性と保守性を実現した、本格的なブラウザゲームです。
