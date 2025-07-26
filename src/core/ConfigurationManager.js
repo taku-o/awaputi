@@ -5,7 +5,7 @@
  * 設定の取得、設定、検証、監視機能を実装します。
  */
 
-import { ErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler } from '../utils/ErrorHandler.js';
 
 class ConfigurationManager {
     constructor() {
@@ -81,7 +81,7 @@ class ConfigurationManager {
             return value;
             
         } catch (error) {
-            ErrorHandler.handleError(error, {
+            getErrorHandler().handleError(error, 'CONFIGURATION_ERROR', {
                 context: 'ConfigurationManager.get',
                 category,
                 key,
@@ -128,7 +128,7 @@ class ConfigurationManager {
             return true;
             
         } catch (error) {
-            ErrorHandler.handleError(error, {
+            getErrorHandler().handleError(error, 'CONFIGURATION_ERROR', {
                 context: 'ConfigurationManager.set',
                 category,
                 key,
@@ -185,7 +185,7 @@ class ConfigurationManager {
             return true;
             
         } catch (error) {
-            ErrorHandler.handleError(error, {
+            getErrorHandler().handleError(error, 'CONFIGURATION_ERROR', {
                 context: 'ConfigurationManager.validate',
                 category,
                 key,
@@ -217,7 +217,7 @@ class ConfigurationManager {
             return watchId;
             
         } catch (error) {
-            ErrorHandler.handleError(error, {
+            getErrorHandler().handleError(error, 'CONFIGURATION_ERROR', {
                 context: 'ConfigurationManager.watch',
                 category,
                 key
@@ -251,7 +251,7 @@ class ConfigurationManager {
             return false;
             
         } catch (error) {
-            ErrorHandler.handleError(error, {
+            getErrorHandler().handleError(error, 'CONFIGURATION_ERROR', {
                 context: 'ConfigurationManager.unwatch',
                 watchId
             });
@@ -283,7 +283,7 @@ class ConfigurationManager {
             return true;
             
         } catch (error) {
-            ErrorHandler.handleError(error, {
+            getErrorHandler().handleError(error, 'CONFIGURATION_ERROR', {
                 context: 'ConfigurationManager.reset',
                 category
             });
@@ -368,7 +368,7 @@ class ConfigurationManager {
                 try {
                     callback(newValue, oldValue, category, key);
                 } catch (error) {
-                    ErrorHandler.handleError(error, {
+                    getErrorHandler().handleError(error, 'CONFIGURATION_ERROR', {
                         context: 'ConfigurationManager._notifyWatchers',
                         watchKey
                     });

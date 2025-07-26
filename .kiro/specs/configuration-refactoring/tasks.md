@@ -106,14 +106,14 @@
   - PerformanceOptimizer統合テストを作成
   - _要件: 1.2, 2.2, 5.1_
 
-- [ ] 6. 設定管理UIの実装
-- [ ] 6.1 SettingsManagerの新システム対応
+- [x] 6. 設定管理UIの実装
+- [x] 6.1 SettingsManagerの新システム対応
   - SettingsManagerが新しいConfigurationManagerを使用するように修正
   - 設定の永続化機能を新システムに対応
   - SettingsManager統合テストを作成
   - _要件: 1.2, 3.3_
 
-- [ ] 6.2 設定変更の動的反映機能実装
+- [x] 6.2 設定変更の動的反映機能実装
   - 設定変更時の自動通知システムを実装
   - 各コンポーネントの設定監視機能を実装
   - 動的反映機能の統合テストを作成
