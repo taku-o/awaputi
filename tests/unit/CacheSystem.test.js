@@ -90,26 +90,26 @@ describe('CacheSystem', () => {
     });
     
     describe('有効期限', () => {
-        test('有効期限切れの値はnullを返す', async () => {
+        test('有効期限切れの値はnullを返す', () => {
             cacheSystem.set('key1', 'value1', { ttl: 50 });
             
             expect(cacheSystem.get('key1')).toBe('value1');
             
-            // 有効期限が切れるまで待機
-            await new Promise(resolve => setTimeout(resolve, 60));
+            // 有効期限が切れるまで進める
+            jest.advanceTimersByTime(60);
             
             expect(cacheSystem.get('key1')).toBeNull();
             expect(cacheSystem.has('key1')).toBe(false);
         });
         
-        test('有効期限を更新できる', async () => {
+        test('有効期限を更新できる', () => {
             cacheSystem.set('key1', 'value1', { ttl: 50 });
             
             // 有効期限を延長
             cacheSystem.updateExpiry('key1', 200);
             
-            // 元の有効期限が切れるまで待機
-            await new Promise(resolve => setTimeout(resolve, 60));
+            // 元の有効期限が切れるまで進める
+            jest.advanceTimersByTime(60);
             
             // まだ有効なはず
             expect(cacheSystem.get('key1')).toBe('value1');
@@ -169,14 +169,14 @@ describe('CacheSystem', () => {
             expect(stats.hitRate).toBe('66.67%');
         });
         
-        test('有効期限切れはミスとしてカウントされる', async () => {
+        test('有効期限切れはミスとしてカウントされる', () => {
             cacheSystem.set('key1', 'value1', { ttl: 50 });
             
             // 有効期限内のアクセス
             cacheSystem.get('key1');
             
-            // 有効期限が切れるまで待機
-            await new Promise(resolve => setTimeout(resolve, 60));
+            // 有効期限が切れるまで進める
+            jest.advanceTimersByTime(60);
             
             // 有効期限切れのアクセス
             cacheSystem.get('key1');
@@ -189,12 +189,12 @@ describe('CacheSystem', () => {
     });
     
     describe('クリーンアップ', () => {
-        test('クリーンアップで期限切れアイテムが削除される', async () => {
+        test('クリーンアップで期限切れアイテムが削除される', () => {
             cacheSystem.set('key1', 'value1', { ttl: 30 });
             cacheSystem.set('key2', 'value2', { ttl: 200 });
             
-            // 一部の有効期限が切れるまで待機
-            await new Promise(resolve => setTimeout(resolve, 40));
+            // 一部の有効期限が切れるまで進める
+            jest.advanceTimersByTime(40);
             
             // 手動クリーンアップ
             const removed = cacheSystem.cleanup();
@@ -204,11 +204,11 @@ describe('CacheSystem', () => {
             expect(cacheSystem.has('key2')).toBe(true);
         });
         
-        test('自動クリーンアップが動作する', async () => {
+        test('自動クリーンアップが動作する', () => {
             cacheSystem.set('key1', 'value1', { ttl: 30 });
             
-            // 有効期限 + クリーンアップ間隔を待機
-            await new Promise(resolve => setTimeout(resolve, 100));
+            // 有効期限 + クリーンアップ間隔を進める
+            jest.advanceTimersByTime(100);
             
             // 自動クリーンアップで削除されているはず
             expect(cacheSystem.has('key1')).toBe(false);
