@@ -159,7 +159,7 @@ describe('Configuration System Integration Tests', () => {
             configManager.set('game', 'scoring.baseScores.normal', 25);
             
             // コールバックが呼ばれることを確認（実装に依存するため、設定値の変更を確認）
-            expect(configManager.get('game', 'bubbles.maxAge')).toBe(25);
+            expect(configManager.get('game', 'scoring.baseScores.normal')).toBe(25);
             
             // 監視を解除
             const unwatchResult = configManager.unwatch(watchId);
@@ -183,7 +183,7 @@ describe('Configuration System Integration Tests', () => {
             configManager.set('audio', 'volumes.master', 0.9);
             
             // コールバックが呼ばれることを確認（実装に依存するため、設定値の変更を確認）
-            expect(configManager.get('game', 'bubbles.maxAge')).toBe(15);
+            expect(configManager.get('game', 'scoring.baseScores.normal')).toBe(15);
             expect(configManager.get('audio', 'volumes.master')).toBe(0.9);
         });
 

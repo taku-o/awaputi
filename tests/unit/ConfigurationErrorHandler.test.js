@@ -4,34 +4,19 @@
 
 import { ConfigurationErrorHandler, getConfigurationErrorHandler } from '../../src/core/ConfigurationErrorHandler.js';
 
-// Jest関数を明示的に定義
-const mockFn = () => {
-    const fn = (...args) => fn.mock.results[fn.mock.calls.length - 1]?.value;
-    fn.mock = { calls: [], results: [] };
-    fn.mockReturnValue = (value) => {
-        fn.mock.results.push({ value });
-        return fn;
-    };
-    fn.mockImplementation = (impl) => {
-        fn.implementation = impl;
-        return fn;
-    };
-    return fn;
-};
-
 // モック
 const mockLoggingSystem = {
-    info: mockFn(),
-    warn: mockFn(),
-    error: mockFn()
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn()
 };
 
 const mockErrorHandler = {
-    enableSafeMode: mockFn()
+    enableSafeMode: jest.fn()
 };
 
 const mockValidationSystem = {
-    _getDefaultValue: mockFn()
+    _getDefaultValue: jest.fn()
 };
 
 // モジュールのモック（Jestが利用可能な場合のみ）
