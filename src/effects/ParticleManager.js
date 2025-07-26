@@ -1,3 +1,6 @@
+import { getEffectsConfig } from '../config/EffectsConfig.js';
+import { getErrorHandler } from '../utils/ErrorHandler.js';
+
 /**
  * パーティクル効果管理クラス
  * 泡が割れる時の視覚効果、爆発、きらめき等を管理
@@ -6,18 +9,187 @@ export class ParticleManager {
     constructor() {
         this.particles = [];
         this.particleId = 0;
-        this.maxParticles = 500;
+        
+        // 設定システムの初期化
+        this.effectsConfig = getEffectsConfig();
+        this._initializeFromConfig();
         
         // パーティクルプール（最適化用）
         this.particlePool = [];
-        this.poolSize = 100;
         this.initializePool();
+        
+        // 設定変更の監視
+        this._setupConfigWatchers();
+    }
+    
+    /**
+     * 設定から初期値を設定
+     * @private
+     */
+    _initializeFromConfig() {
+        try {
+            const particleConfig = this.effectsConfig.getParticleConfig();
+            this.maxParticles = particleConfig.maxCount;
+            this.poolSize = particleConfig.poolSize;
+            this.quality = particleConfig.quality;
+            this.enabled = particleConfig.enabled;
+            
+            console.log('[ParticleManager] 設定から初期化完了:', {
+                maxParticles: this.maxParticles,
+                poolSize: this.poolSize,
+                quality: this.quality,
+                enabled: this.enabled
+            });
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'ParticleManager._initializeFromConfig'
+            });
+            
+            // フォールバック値
+            this.maxParticles = 500;
+            this.poolSize = 100;
+            this.quality = 1.0;
+            this.enabled = true;
+        }
+    }
+    
+    /**
+     * 設定変更の監視を設定
+     * @private
+     */
+    _setupConfigWatchers() {
+        try {
+            // 最大パーティクル数の変更監視
+            this.effectsConfig.configManager.watch('effects', 'particles.maxCount', (newValue) => {
+                this._onMaxParticleCountChanged(newValue);
+            });
+            
+            // プールサイズの変更監視
+            this.effectsConfig.configManager.watch('effects', 'particles.poolSize', (newValue) => {
+                this._onPoolSizeChanged(newValue);
+            });
+            
+            // 品質の変更監視
+            this.effectsConfig.configManager.watch('effects', 'particles.quality', (newValue) => {
+                this._onQualityChanged(newValue);
+            });
+            
+            // 有効状態の変更監視
+            this.effectsConfig.configManager.watch('effects', 'particles.enabled', (newValue) => {
+                this._onEnabledChanged(newValue);
+            });
+            
+            console.log('[ParticleManager] 設定変更監視を設定しました');
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'ParticleManager._setupConfigWatchers'
+            });
+        }
+    }
+    
+    /**
+     * 最大パーティクル数変更時の処理
+     * @param {number} newValue - 新しい最大パーティクル数
+     * @private
+     */
+    _onMaxParticleCountChanged(newValue) {
+        try {
+            const oldValue = this.maxParticles;
+            this.maxParticles = newValue;
+            
+            // 現在のパーティクル数が新しい制限を超えている場合は削除
+            if (this.particles.length > newValue) {
+                const excessCount = this.particles.length - newValue;
+                for (let i = 0; i < excessCount; i++) {
+                    const particle = this.particles.shift();
+                    this.returnParticleToPool(particle);
+                }
+            }
+            
+            console.log(`[ParticleManager] 最大パーティクル数を変更: ${oldValue} → ${newValue}`);
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'ParticleManager._onMaxParticleCountChanged'
+            });
+        }
+    }
+    
+    /**
+     * プールサイズ変更時の処理
+     * @param {number} newValue - 新しいプールサイズ
+     * @private
+     */
+    _onPoolSizeChanged(newValue) {
+        try {
+            const oldValue = this.poolSize;
+            this.poolSize = newValue;
+            
+            // プールサイズに合わせて調整
+            if (this.particlePool.length > newValue) {
+                // プールサイズが小さくなった場合は余分なパーティクルを削除
+                this.particlePool.splice(newValue);
+            } else if (this.particlePool.length < newValue) {
+                // プールサイズが大きくなった場合は新しいパーティクルを追加
+                const addCount = newValue - this.particlePool.length;
+                for (let i = 0; i < addCount; i++) {
+                    this.particlePool.push(this.createParticleObject());
+                }
+            }
+            
+            console.log(`[ParticleManager] プールサイズを変更: ${oldValue} → ${newValue}`);
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'ParticleManager._onPoolSizeChanged'
+            });
+        }
+    }
+    
+    /**
+     * 品質変更時の処理
+     * @param {number} newValue - 新しい品質値
+     * @private
+     */
+    _onQualityChanged(newValue) {
+        try {
+            const oldValue = this.quality;
+            this.quality = newValue;
+            
+            console.log(`[ParticleManager] 品質を変更: ${oldValue} → ${newValue}`);
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'ParticleManager._onQualityChanged'
+            });
+        }
+    }
+    
+    /**
+     * 有効状態変更時の処理
+     * @param {boolean} newValue - 新しい有効状態
+     * @private
+     */
+    _onEnabledChanged(newValue) {
+        try {
+            const oldValue = this.enabled;
+            this.enabled = newValue;
+            
+            // 無効になった場合は全パーティクルをクリア
+            if (!newValue) {
+                this.clear();
+            }
+            
+            console.log(`[ParticleManager] 有効状態を変更: ${oldValue} → ${newValue}`);
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'ParticleManager._onEnabledChanged'
+            });
+        }
     }
     
     /**
      * パーティクルプールを初期化
      */
     initializePool() {
+        this.particlePool = [];
         for (let i = 0; i < this.poolSize; i++) {
             this.particlePool.push(this.createParticleObject());
         }
@@ -86,46 +258,62 @@ export class ParticleManager {
      * 泡ポップエフェクトを作成
      */
     createBubblePopEffect(x, y, bubbleType, bubbleSize) {
-        const particleCount = Math.floor(bubbleSize / 5) + 5;
-        const colors = this.getBubbleColors(bubbleType);
-        
-        for (let i = 0; i < particleCount; i++) {
-            const particle = this.getParticleFromPool();
-            
-            // 基本プロパティ
-            particle.x = x + (Math.random() - 0.5) * bubbleSize * 0.5;
-            particle.y = y + (Math.random() - 0.5) * bubbleSize * 0.5;
-            
-            // 速度（放射状に飛び散る）
-            const angle = (Math.PI * 2 * i) / particleCount + (Math.random() - 0.5) * 0.5;
-            const speed = 50 + Math.random() * 100;
-            particle.vx = Math.cos(angle) * speed;
-            particle.vy = Math.sin(angle) * speed;
-            
-            // 見た目
-            particle.size = 2 + Math.random() * 4;
-            particle.color = colors[Math.floor(Math.random() * colors.length)];
-            particle.life = 800 + Math.random() * 400;
-            particle.maxLife = particle.life;
-            particle.alpha = 1;
-            
-            // 物理
-            particle.gravity = 20 + Math.random() * 30;
-            particle.friction = 0.98;
-            particle.bounce = 0.3 + Math.random() * 0.4;
-            
-            // アニメーション
-            particle.rotation = Math.random() * Math.PI * 2;
-            particle.rotationSpeed = (Math.random() - 0.5) * 10;
-            particle.scale = 1;
-            particle.scaleSpeed = -0.8 / (particle.life / 1000);
-            
-            particle.type = 'circle';
-            this.particles.push(particle);
+        // パーティクルが無効な場合は何もしない
+        if (!this.enabled) {
+            return;
         }
         
-        // 特殊効果（バブルタイプ別）
-        this.createSpecialBubbleEffect(x, y, bubbleType, bubbleSize);
+        try {
+            const particleConfig = this.effectsConfig.getParticleConfig();
+            const bubbleConfig = particleConfig.bubble;
+            
+            // 品質に基づいてパーティクル数を調整
+            const baseParticleCount = Math.floor(bubbleSize / 5) + bubbleConfig.count;
+            const particleCount = Math.floor(baseParticleCount * this.quality);
+            const colors = this.getBubbleColors(bubbleType);
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = this.getParticleFromPool();
+                
+                // 基本プロパティ
+                particle.x = x + (Math.random() - 0.5) * bubbleSize * 0.5;
+                particle.y = y + (Math.random() - 0.5) * bubbleSize * 0.5;
+                
+                // 速度（放射状に飛び散る）
+                const angle = (Math.PI * 2 * i) / particleCount + (Math.random() - 0.5) * 0.5;
+                const speed = bubbleConfig.speed * (0.5 + Math.random() * 0.5) * this.quality;
+                particle.vx = Math.cos(angle) * speed;
+                particle.vy = Math.sin(angle) * speed;
+                
+                // 見た目
+                particle.size = bubbleConfig.size * (0.5 + Math.random() * 0.5) * this.quality;
+                particle.color = colors[Math.floor(Math.random() * colors.length)];
+                particle.life = bubbleConfig.life * (0.8 + Math.random() * 0.4);
+                particle.maxLife = particle.life;
+                particle.alpha = 1;
+                
+                // 物理
+                particle.gravity = 20 + Math.random() * 30;
+                particle.friction = 0.98;
+                particle.bounce = 0.3 + Math.random() * 0.4;
+                
+                // アニメーション
+                particle.rotation = Math.random() * Math.PI * 2;
+                particle.rotationSpeed = (Math.random() - 0.5) * 10;
+                particle.scale = 1;
+                particle.scaleSpeed = -0.8 / (particle.life / 1000);
+                
+                particle.type = 'circle';
+                this.particles.push(particle);
+            }
+            
+            // 特殊効果（バブルタイプ別）
+            this.createSpecialBubbleEffect(x, y, bubbleType, bubbleSize);
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'ParticleManager.createBubblePopEffect'
+            });
+        }
     }
     
     /**
@@ -375,30 +563,46 @@ export class ParticleManager {
      * コンボエフェクト
      */
     createComboEffect(x, y, comboCount) {
-        const starCount = Math.min(comboCount, 20);
-        const colors = ['#FFD700', '#FFA500', '#FF8C00', '#FF4500'];
+        // パーティクルが無効な場合は何もしない
+        if (!this.enabled) {
+            return;
+        }
         
-        for (let i = 0; i < starCount; i++) {
-            const particle = this.getParticleFromPool();
+        try {
+            const particleConfig = this.effectsConfig.getParticleConfig();
+            const starConfig = particleConfig.star;
             
-            const angle = (Math.PI * 2 * i) / starCount;
-            const radius = 30 + comboCount * 2;
-            const speed = 60 + Math.random() * 40;
+            // 品質に基づいてパーティクル数を調整
+            const baseStarCount = Math.min(comboCount, starConfig.count * 2);
+            const starCount = Math.floor(baseStarCount * this.quality);
+            const colors = ['#FFD700', '#FFA500', '#FF8C00', '#FF4500'];
             
-            particle.x = x + Math.cos(angle) * radius;
-            particle.y = y + Math.sin(angle) * radius;
-            particle.vx = Math.cos(angle) * speed;
-            particle.vy = Math.sin(angle) * speed;
-            particle.size = 3 + Math.random() * 2;
-            particle.color = colors[Math.min(Math.floor(comboCount / 5), colors.length - 1)];
-            particle.life = 1000 + Math.random() * 500;
-            particle.maxLife = particle.life;
-            particle.gravity = -20;
-            particle.friction = 0.97;
-            particle.type = 'star';
-            particle.rotationSpeed = (Math.random() - 0.5) * 10;
-            
-            this.particles.push(particle);
+            for (let i = 0; i < starCount; i++) {
+                const particle = this.getParticleFromPool();
+                
+                const angle = (Math.PI * 2 * i) / starCount;
+                const radius = 30 + comboCount * 2;
+                const speed = starConfig.speed * (0.6 + Math.random() * 0.4) * this.quality;
+                
+                particle.x = x + Math.cos(angle) * radius;
+                particle.y = y + Math.sin(angle) * radius;
+                particle.vx = Math.cos(angle) * speed;
+                particle.vy = Math.sin(angle) * speed;
+                particle.size = starConfig.size * (0.75 + Math.random() * 0.5) * this.quality;
+                particle.color = colors[Math.min(Math.floor(comboCount / 5), colors.length - 1)];
+                particle.life = starConfig.life * (0.8 + Math.random() * 0.4);
+                particle.maxLife = particle.life;
+                particle.gravity = -20;
+                particle.friction = 0.97;
+                particle.type = 'star';
+                particle.rotationSpeed = (Math.random() - 0.5) * 10;
+                
+                this.particles.push(particle);
+            }
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'ParticleManager.createComboEffect'
+            });
         }
     }
     
@@ -759,5 +963,110 @@ export class ParticleManager {
      */
     clearAllParticles() {
         this.clear();
+    }
+    
+    /**
+     * 設定を動的に更新
+     * @param {Object} config - 新しい設定
+     */
+    updateConfiguration(config) {
+        try {
+            if (config.maxParticles !== undefined) {
+                this.effectsConfig.setMaxParticleCount(config.maxParticles);
+            }
+            
+            if (config.poolSize !== undefined) {
+                this.effectsConfig.setParticlePoolSize(config.poolSize);
+            }
+            
+            if (config.quality !== undefined) {
+                this.effectsConfig.setParticleQuality(config.quality);
+            }
+            
+            if (config.enabled !== undefined) {
+                this.effectsConfig.setParticleEnabled(config.enabled);
+            }
+            
+            console.log('[ParticleManager] 設定を動的に更新しました:', config);
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'ParticleManager.updateConfiguration'
+            });
+        }
+    }
+    
+    /**
+     * 現在の設定を取得
+     * @returns {Object} 現在の設定
+     */
+    getCurrentConfiguration() {
+        return {
+            maxParticles: this.maxParticles,
+            poolSize: this.poolSize,
+            quality: this.quality,
+            enabled: this.enabled,
+            currentParticleCount: this.particles.length,
+            poolUsage: this.poolSize - this.particlePool.length
+        };
+    }
+    
+    /**
+     * パフォーマンス統計を取得
+     * @returns {Object} パフォーマンス統計
+     */
+    getPerformanceStats() {
+        return {
+            activeParticles: this.particles.length,
+            maxParticles: this.maxParticles,
+            poolSize: this.poolSize,
+            availableInPool: this.particlePool.length,
+            poolUsagePercent: ((this.poolSize - this.particlePool.length) / this.poolSize * 100).toFixed(1),
+            particleUtilizationPercent: (this.particles.length / this.maxParticles * 100).toFixed(1),
+            quality: this.quality,
+            enabled: this.enabled
+        };
+    }
+    
+    /**
+     * 設定をEffectsConfigと同期
+     */
+    syncWithEffectsConfig() {
+        try {
+            this.effectsConfig.syncFromParticleManager(this);
+            console.log('[ParticleManager] EffectsConfigと同期しました');
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'ParticleManager.syncWithEffectsConfig'
+            });
+        }
+    }
+    
+    /**
+     * デバッグ情報を出力
+     */
+    debugInfo() {
+        const stats = this.getPerformanceStats();
+        const config = this.getCurrentConfiguration();
+        
+        console.group('[ParticleManager] デバッグ情報');
+        console.log('パフォーマンス統計:', stats);
+        console.log('現在の設定:', config);
+        console.log('パーティクルタイプ分布:', this._getParticleTypeDistribution());
+        console.groupEnd();
+    }
+    
+    /**
+     * パーティクルタイプの分布を取得
+     * @returns {Object} タイプ別パーティクル数
+     * @private
+     */
+    _getParticleTypeDistribution() {
+        const distribution = {};
+        this.particles.forEach(particle => {
+            if (particle.isActive) {
+                distribution[particle.type] = (distribution[particle.type] || 0) + 1;
+            }
+        });
+        return distribution;
     }
 }

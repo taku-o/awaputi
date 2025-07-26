@@ -10,7 +10,7 @@ export default {
   transform: {},
   
   // Setup files
-  setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
+  // setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
   
   // Module name mapping for ES6 imports
   moduleNameMapper: {

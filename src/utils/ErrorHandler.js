@@ -2,7 +2,7 @@
  * エラーハンドリングクラス
  * グレースフルデグラデーション、入力値検証、異常状態からの復旧処理を提供
  */
-export class ErrorHandler {
+class ErrorHandler {
     constructor() {
         this.errorLog = [];
         this.maxLogSize = 100;
@@ -1070,7 +1070,7 @@ export class ErrorHandler {
 // シングルトンインスタンス（遅延初期化）
 let _errorHandler = null;
 
-export function getErrorHandler() {
+function getErrorHandler() {
     if (!_errorHandler) {
         _errorHandler = new ErrorHandler();
     }
@@ -1078,9 +1078,11 @@ export function getErrorHandler() {
 }
 
 // 後方互換性のため
-export const errorHandler = getErrorHandler;
+const errorHandler = getErrorHandler;
 
 // グローバルに公開（デバッグ用）
 if (typeof window !== 'undefined') {
     window.errorHandler = errorHandler;
 }
+
+export { ErrorHandler, getErrorHandler, errorHandler };

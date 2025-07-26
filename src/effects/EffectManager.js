@@ -1,3 +1,6 @@
+import { getEffectsConfig } from '../config/EffectsConfig.js';
+import { getErrorHandler } from '../utils/ErrorHandler.js';
+
 /**
  * 視覚効果管理クラス
  * 画面揺れ、フラッシュ、ズーム、色調変更などの全画面効果を管理
@@ -7,6 +10,10 @@ export class EffectManager {
         this.canvas = canvas;
         this.effects = [];
         this.effectId = 0;
+        
+        // 設定システムとの連携
+        this.effectsConfig = getEffectsConfig();
+        this.configWatchers = new Map();
         
         // 現在の変換状態
         this.currentTransform = {
@@ -34,79 +41,249 @@ export class EffectManager {
             brightness: [],
             saturation: []
         };
+        
+        // 設定変更の監視を開始
+        this._setupConfigWatchers();
     }
     
+    /**
+     * 設定変更の監視を設定
+     * @private
+     */
+    _setupConfigWatchers() {
+        try {
+            // 画面効果設定の監視
+            const configManager = this.effectsConfig.configManager;
+            
+            // 画面揺れ強度の監視
+            const shakeWatcher = configManager.watch('effects', 'screen.shakeIntensity', (newValue) => {
+                console.log(`[EffectManager] 画面揺れ強度が変更されました: ${newValue}`);
+            });
+            this.configWatchers.set('shakeIntensity', shakeWatcher);
+            
+            // フラッシュ時間の監視
+            const flashWatcher = configManager.watch('effects', 'screen.flashDuration', (newValue) => {
+                console.log(`[EffectManager] フラッシュ時間が変更されました: ${newValue}ms`);
+            });
+            this.configWatchers.set('flashDuration', flashWatcher);
+            
+            // ズーム感度の監視
+            const zoomWatcher = configManager.watch('effects', 'screen.zoomSensitivity', (newValue) => {
+                console.log(`[EffectManager] ズーム感度が変更されました: ${newValue}`);
+            });
+            this.configWatchers.set('zoomSensitivity', zoomWatcher);
+            
+            // 画面効果有効状態の監視
+            const enabledWatcher = configManager.watch('effects', 'screen.enabled', (newValue) => {
+                console.log(`[EffectManager] 画面効果有効状態が変更されました: ${newValue}`);
+                if (!newValue) {
+                    this.clearEffects();
+                }
+            });
+            this.configWatchers.set('enabled', enabledWatcher);
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'EffectManager._setupConfigWatchers'
+            });
+        }
+    }
+
+    /**
+     * 設定から効果パラメータを取得
+     * @private
+     */
+    _getEffectParameters() {
+        try {
+            // effectsConfigが無効な場合はnullを返す
+            if (!this.effectsConfig) {
+                return null;
+            }
+            
+            const screenConfig = this.effectsConfig.getScreenEffectConfig();
+            return {
+                shakeIntensity: screenConfig.shakeIntensity,
+                flashDuration: screenConfig.flashDuration,
+                zoomSensitivity: screenConfig.zoomSensitivity,
+                enabled: screenConfig.enabled,
+                shake: screenConfig.shake,
+                flash: screenConfig.flash,
+                zoom: screenConfig.zoom,
+                tint: screenConfig.tint
+            };
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'EffectManager._getEffectParameters'
+            });
+            // エラーの場合もnullを返す
+            return null;
+        }
+    }
+
     /**
      * 画面揺れ効果を追加
      */
     addScreenShake(intensity, duration, type = 'random') {
-        const effect = {
-            id: this.effectId++,
-            type: 'shake',
-            intensity: intensity,
-            duration: duration,
-            elapsed: 0,
-            shakeType: type, // 'random', 'horizontal', 'vertical', 'circular'
-            frequency: 20, // 揺れの頻度
-            damping: 0.9   // 減衰率
-        };
-        
-        this.effects.push(effect);
-        return effect.id;
+        try {
+            const params = this._getEffectParameters();
+            
+            // 設定が取得できない場合は何もしない
+            if (!params) {
+                return -1;
+            }
+            
+            // 画面効果が無効な場合は何もしない
+            if (!params.enabled) {
+                return -1;
+            }
+            
+            // 設定値を適用
+            const adjustedIntensity = intensity * params.shakeIntensity;
+            const configDuration = duration || params.shake.duration;
+            
+            const effect = {
+                id: this.effectId++,
+                type: 'shake',
+                intensity: adjustedIntensity,
+                duration: configDuration,
+                elapsed: 0,
+                shakeType: type, // 'random', 'horizontal', 'vertical', 'circular'
+                frequency: 20, // 揺れの頻度
+                damping: params.shake.damping   // 設定から減衰率を取得
+            };
+            
+            this.effects.push(effect);
+            return effect.id;
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'EffectManager.addScreenShake'
+            });
+            return -1;
+        }
     }
     
     /**
      * フラッシュ効果を追加
      */
     addFlash(color, intensity, duration, fadeType = 'out') {
-        const effect = {
-            id: this.effectId++,
-            type: 'flash',
-            color: this.parseColor(color),
-            intensity: intensity,
-            duration: duration,
-            elapsed: 0,
-            fadeType: fadeType // 'in', 'out', 'inout'
-        };
-        
-        this.effects.push(effect);
-        return effect.id;
+        try {
+            const params = this._getEffectParameters();
+            
+            // 設定が取得できない場合は何もしない
+            if (!params) {
+                return -1;
+            }
+            
+            // 画面効果が無効な場合は何もしない
+            if (!params.enabled) {
+                return -1;
+            }
+            
+            // 設定値を適用
+            const adjustedIntensity = intensity * params.flash.intensity;
+            // durationが指定されていない場合は設定から取得、指定されている場合はそれを使用
+            const configDuration = duration !== undefined ? duration : params.flashDuration;
+            
+            const effect = {
+                id: this.effectId++,
+                type: 'flash',
+                color: this.parseColor(color),
+                intensity: adjustedIntensity,
+                duration: configDuration,
+                elapsed: 0,
+                fadeType: fadeType // 'in', 'out', 'inout'
+            };
+            
+            this.effects.push(effect);
+            return effect.id;
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'EffectManager.addFlash'
+            });
+            return -1;
+        }
     }
     
     /**
      * 色調効果を追加
      */
     addTint(color, intensity, duration, easing = 'linear') {
-        const effect = {
-            id: this.effectId++,
-            type: 'tint',
-            color: this.parseColor(color),
-            intensity: intensity,
-            duration: duration,
-            elapsed: 0,
-            easing: easing
-        };
-        
-        this.effects.push(effect);
-        return effect.id;
+        try {
+            const params = this._getEffectParameters();
+            
+            // 設定が取得できない場合は何もしない
+            if (!params) {
+                return -1;
+            }
+            
+            // 画面効果が無効な場合は何もしない
+            if (!params.enabled) {
+                return -1;
+            }
+            
+            // 設定値を適用
+            const adjustedIntensity = intensity * params.tint.intensity;
+            const configDuration = duration !== undefined ? duration : params.tint.duration;
+            
+            const effect = {
+                id: this.effectId++,
+                type: 'tint',
+                color: this.parseColor(color),
+                intensity: adjustedIntensity,
+                duration: configDuration,
+                elapsed: 0,
+                easing: easing
+            };
+            
+            this.effects.push(effect);
+            return effect.id;
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'EffectManager.addTint'
+            });
+            return -1;
+        }
     }
     
     /**
      * ズーム効果を追加
      */
     addZoom(targetZoom, duration, easing = 'easeOut') {
-        const effect = {
-            id: this.effectId++,
-            type: 'zoom',
-            startZoom: this.currentTransform.zoom,
-            targetZoom: targetZoom,
-            duration: duration,
-            elapsed: 0,
-            easing: easing
-        };
-        
-        this.effects.push(effect);
-        return effect.id;
+        try {
+            const params = this._getEffectParameters();
+            
+            // 設定が取得できない場合は何もしない
+            if (!params) {
+                return -1;
+            }
+            
+            // 画面効果が無効な場合は何もしない
+            if (!params.enabled) {
+                return -1;
+            }
+            
+            // ズーム感度を適用し、範囲を制限
+            const adjustedZoom = 1 + (targetZoom - 1) * params.zoomSensitivity;
+            const clampedZoom = Math.max(params.zoom.min, Math.min(params.zoom.max, adjustedZoom));
+            
+            const effect = {
+                id: this.effectId++,
+                type: 'zoom',
+                startZoom: this.currentTransform.zoom,
+                targetZoom: clampedZoom,
+                duration: duration,
+                elapsed: 0,
+                easing: easing
+            };
+            
+            this.effects.push(effect);
+            return effect.id;
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'EffectManager.addZoom'
+            });
+            return -1;
+        }
     }
     
     /**
@@ -608,6 +785,131 @@ export class EffectManager {
      */
     clearAllEffects() {
         this.clearEffects();
+    }
+
+    /**
+     * 設定システムとの連携を更新
+     * 動的な設定変更に対応
+     */
+    updateConfiguration() {
+        try {
+            // 設定を再読み込み
+            const params = this._getEffectParameters();
+            
+            // 画面効果が無効になった場合、全ての効果をクリア
+            if (!params.enabled) {
+                this.clearEffects();
+            }
+            
+            console.log('[EffectManager] 設定を更新しました');
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'EffectManager.updateConfiguration'
+            });
+        }
+    }
+
+    /**
+     * 設定値を動的に変更
+     * @param {string} key - 設定キー
+     * @param {*} value - 設定値
+     */
+    setConfigValue(key, value) {
+        try {
+            switch (key) {
+                case 'shakeIntensity':
+                    this.effectsConfig.setShakeIntensity(value);
+                    break;
+                case 'flashDuration':
+                    this.effectsConfig.setFlashDuration(value);
+                    break;
+                case 'zoomSensitivity':
+                    this.effectsConfig.setZoomSensitivity(value);
+                    break;
+                case 'enabled':
+                    this.effectsConfig.setScreenEffectEnabled(value);
+                    break;
+                default:
+                    console.warn(`[EffectManager] 未知の設定キー: ${key}`);
+                    return false;
+            }
+            
+            // 設定変更後に更新
+            this.updateConfiguration();
+            return true;
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'EffectManager.setConfigValue'
+            });
+            return false;
+        }
+    }
+
+    /**
+     * 現在の設定値を取得
+     * @param {string} key - 設定キー
+     * @returns {*} 設定値
+     */
+    getConfigValue(key) {
+        try {
+            switch (key) {
+                case 'shakeIntensity':
+                    return this.effectsConfig.getShakeIntensity();
+                case 'flashDuration':
+                    return this.effectsConfig.getFlashDuration();
+                case 'zoomSensitivity':
+                    return this.effectsConfig.getZoomSensitivity();
+                case 'enabled':
+                    return this.effectsConfig.isScreenEffectEnabled();
+                default:
+                    console.warn(`[EffectManager] 未知の設定キー: ${key}`);
+                    return null;
+            }
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'EffectManager.getConfigValue'
+            });
+            return null;
+        }
+    }
+
+    /**
+     * 設定システムとの連携を適用
+     * EffectsConfigから呼び出される
+     */
+    applyConfiguration() {
+        try {
+            this.updateConfiguration();
+            console.log('[EffectManager] 設定システムとの連携を適用しました');
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'EffectManager.applyConfiguration'
+            });
+        }
+    }
+
+    /**
+     * リソースのクリーンアップ
+     */
+    dispose() {
+        try {
+            // 設定監視の解除
+            for (const [key, watcher] of this.configWatchers) {
+                if (watcher && typeof watcher.unwatch === 'function') {
+                    watcher.unwatch();
+                }
+            }
+            this.configWatchers.clear();
+            
+            // 全ての効果をクリア
+            this.clearEffects();
+            
+            console.log('[EffectManager] リソースをクリーンアップしました');
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'EffectManager.dispose'
+            });
+        }
     }
     
     /**

@@ -1,32 +1,22 @@
+import { getPerformanceConfig } from '../config/PerformanceConfig.js';
+import { getErrorHandler } from './ErrorHandler.js';
+
 /**
  * パフォーマンス最適化システム
  * 60FPS維持のための動的最適化機能を提供
+ * 新しいPerformanceConfigシステムと統合
  */
 export class PerformanceOptimizer {
     constructor() {
-        this.targetFPS = 60;
-        this.targetFrameTime = 1000 / this.targetFPS; // 16.67ms
+        this.performanceConfig = getPerformanceConfig();
+        this.errorHandler = getErrorHandler();
+        
+        // 設定から初期値を取得
+        this._initializeFromConfig();
+        
         this.frameTimeHistory = [];
-        this.maxHistorySize = 30;
-        
-        this.settings = {
-            maxBubbles: 20,
-            maxParticles: 500,
-            particleQuality: 1.0, // 0.1 - 1.0
-            renderQuality: 1.0,   // 0.5 - 1.0
-            effectQuality: 1.0,   // 0.1 - 1.0
-            audioQuality: 1.0,    // 0.1 - 1.0
-            enableShadows: true,
-            enableBlur: true,
-            enableAntiAliasing: true
-        };
-        
-        this.originalSettings = { ...this.settings };
-        
-        this.performanceLevel = 'high'; // 'low', 'medium', 'high'
-        this.adaptiveMode = true;
+        this.lastFrameTime = null;
         this.lastOptimizationTime = 0;
-        this.optimizationInterval = 1000; // 1秒ごとに最適化チェック
         
         this.stats = {
             currentFPS: 60,
@@ -36,6 +26,177 @@ export class PerformanceOptimizer {
             optimizationCount: 0,
             lastOptimization: null
         };
+        
+        // 設定変更の監視
+        this._setupConfigWatchers();
+        
+        console.log('[PerformanceOptimizer] 新しい設定システムで初期化完了');
+    }
+    
+    /**
+     * 設定から初期値を設定
+     * @private
+     */
+    _initializeFromConfig() {
+        try {
+            const optimizationConfig = this.performanceConfig.getOptimizationConfig();
+            const qualityConfig = this.performanceConfig.getQualityConfig();
+            
+            this.targetFPS = optimizationConfig.targetFPS;
+            this.targetFrameTime = 1000 / this.targetFPS;
+            this.maxHistorySize = optimizationConfig.maxHistorySize;
+            this.performanceLevel = optimizationConfig.performanceLevel;
+            this.adaptiveMode = optimizationConfig.adaptiveMode;
+            this.optimizationInterval = optimizationConfig.optimizationInterval;
+            
+            this.settings = {
+                maxBubbles: optimizationConfig.maxBubbles,
+                maxParticles: optimizationConfig.maxParticles,
+                particleQuality: qualityConfig.particleQuality,
+                renderQuality: qualityConfig.renderQuality,
+                effectQuality: qualityConfig.effectQuality,
+                audioQuality: qualityConfig.audioQuality,
+                enableShadows: qualityConfig.enableShadows,
+                enableBlur: qualityConfig.enableBlur,
+                enableAntiAliasing: qualityConfig.enableAntiAliasing
+            };
+            
+            this.originalSettings = { ...this.settings };
+        } catch (error) {
+            this.errorHandler.handleError(error, {
+                context: 'PerformanceOptimizer._initializeFromConfig'
+            });
+            
+            // フォールバック設定
+            this._setFallbackSettings();
+        }
+    }
+    
+    /**
+     * フォールバック設定を適用
+     * @private
+     */
+    _setFallbackSettings() {
+        this.targetFPS = 60;
+        this.targetFrameTime = 1000 / this.targetFPS;
+        this.maxHistorySize = 30;
+        this.performanceLevel = 'high';
+        this.adaptiveMode = true;
+        this.optimizationInterval = 1000;
+        
+        this.settings = {
+            maxBubbles: 20,
+            maxParticles: 500,
+            particleQuality: 1.0,
+            renderQuality: 1.0,
+            effectQuality: 1.0,
+            audioQuality: 1.0,
+            enableShadows: true,
+            enableBlur: true,
+            enableAntiAliasing: true
+        };
+        
+        this.originalSettings = { ...this.settings };
+    }
+    
+    /**
+     * 設定変更の監視を設定
+     * @private
+     */
+    _setupConfigWatchers() {
+        try {
+            this._isUpdatingFromConfig = false; // 循環参照防止フラグ
+            
+            // 設定変更時の自動更新（循環参照を防ぐ）
+            this.performanceConfig.configManager.watch('performance', 'optimization.targetFPS', (newValue) => {
+                if (!this._isUpdatingFromConfig) {
+                    this.targetFPS = newValue;
+                    this.targetFrameTime = 1000 / this.targetFPS;
+                    console.log(`[PerformanceOptimizer] 目標FPSを${newValue}に更新`);
+                }
+            });
+            
+            this.performanceConfig.configManager.watch('performance', 'optimization.adaptiveMode', (newValue) => {
+                if (!this._isUpdatingFromConfig) {
+                    this.adaptiveMode = newValue;
+                    console.log(`[PerformanceOptimizer] 適応モードを${newValue ? '有効' : '無効'}に更新`);
+                }
+            });
+            
+            this.performanceConfig.configManager.watch('performance', 'optimization.performanceLevel', (newValue) => {
+                if (!this._isUpdatingFromConfig) {
+                    this._setPerformanceLevelInternal(newValue);
+                }
+            });
+            
+            this.performanceConfig.configManager.watch('performance', 'optimization.maxBubbles', (newValue) => {
+                if (!this._isUpdatingFromConfig) {
+                    this.settings.maxBubbles = newValue;
+                    console.log(`[PerformanceOptimizer] 最大バブル数を${newValue}に更新`);
+                }
+            });
+            
+            this.performanceConfig.configManager.watch('performance', 'optimization.maxParticles', (newValue) => {
+                if (!this._isUpdatingFromConfig) {
+                    this.settings.maxParticles = newValue;
+                    console.log(`[PerformanceOptimizer] 最大パーティクル数を${newValue}に更新`);
+                }
+            });
+            
+            // 品質設定の監視
+            this.performanceConfig.configManager.watch('performance', 'quality.renderQuality', (newValue) => {
+                if (!this._isUpdatingFromConfig) {
+                    this.settings.renderQuality = newValue;
+                    console.log(`[PerformanceOptimizer] レンダリング品質を${newValue}に更新`);
+                }
+            });
+            
+            this.performanceConfig.configManager.watch('performance', 'quality.particleQuality', (newValue) => {
+                if (!this._isUpdatingFromConfig) {
+                    this.settings.particleQuality = newValue;
+                    console.log(`[PerformanceOptimizer] パーティクル品質を${newValue}に更新`);
+                }
+            });
+            
+            this.performanceConfig.configManager.watch('performance', 'quality.effectQuality', (newValue) => {
+                if (!this._isUpdatingFromConfig) {
+                    this.settings.effectQuality = newValue;
+                    console.log(`[PerformanceOptimizer] エフェクト品質を${newValue}に更新`);
+                }
+            });
+            
+            this.performanceConfig.configManager.watch('performance', 'quality.audioQuality', (newValue) => {
+                if (!this._isUpdatingFromConfig) {
+                    this.settings.audioQuality = newValue;
+                    console.log(`[PerformanceOptimizer] 音声品質を${newValue}に更新`);
+                }
+            });
+            
+            this.performanceConfig.configManager.watch('performance', 'quality.enableShadows', (newValue) => {
+                if (!this._isUpdatingFromConfig) {
+                    this.settings.enableShadows = newValue;
+                    console.log(`[PerformanceOptimizer] 影エフェクトを${newValue ? '有効' : '無効'}に更新`);
+                }
+            });
+            
+            this.performanceConfig.configManager.watch('performance', 'quality.enableBlur', (newValue) => {
+                if (!this._isUpdatingFromConfig) {
+                    this.settings.enableBlur = newValue;
+                    console.log(`[PerformanceOptimizer] ブラーエフェクトを${newValue ? '有効' : '無効'}に更新`);
+                }
+            });
+            
+            this.performanceConfig.configManager.watch('performance', 'quality.enableAntiAliasing', (newValue) => {
+                if (!this._isUpdatingFromConfig) {
+                    this.settings.enableAntiAliasing = newValue;
+                    console.log(`[PerformanceOptimizer] アンチエイリアシングを${newValue ? '有効' : '無効'}に更新`);
+                }
+            });
+        } catch (error) {
+            this.errorHandler.handleError(error, {
+                context: 'PerformanceOptimizer._setupConfigWatchers'
+            });
+        }
     }
     
     /**
@@ -112,8 +273,101 @@ export class PerformanceOptimizer {
      * @param {string} level - パフォーマンスレベル
      */
     setPerformanceLevel(level) {
-        this.performanceLevel = level;
-        
+        try {
+            if (!['low', 'medium', 'high'].includes(level)) {
+                throw new Error(`無効なパフォーマンスレベル: ${level}`);
+            }
+            
+            this._isUpdatingFromConfig = true; // 循環参照防止
+            
+            this.performanceLevel = level;
+            
+            // 新しい設定システムを使用してプリセットを適用
+            const success = this.performanceConfig.applyQualityPreset(level);
+            
+            if (success) {
+                // 設定を再読み込み
+                this._reloadSettingsFromConfig();
+                
+                this.stats.optimizationCount++;
+                this.stats.lastOptimization = {
+                    level: level,
+                    time: Date.now(),
+                    reason: `FPS: ${Math.round(this.stats.averageFPS)}`
+                };
+                
+                console.log(`[PerformanceOptimizer] パフォーマンスレベルを${level}に変更 (FPS: ${Math.round(this.stats.averageFPS)})`);
+            } else {
+                // フォールバック: 従来の方式
+                this._setPerformanceLevelFallback(level);
+            }
+        } catch (error) {
+            this.errorHandler.handleError(error, {
+                context: 'PerformanceOptimizer.setPerformanceLevel'
+            });
+            
+            // エラー時のフォールバック
+            this._setPerformanceLevelFallback(level);
+        } finally {
+            this._isUpdatingFromConfig = false; // フラグをリセット
+        }
+    }
+    
+    /**
+     * 内部用パフォーマンスレベル設定（循環参照なし）
+     * @param {string} level - パフォーマンスレベル
+     * @private
+     */
+    _setPerformanceLevelInternal(level) {
+        try {
+            if (!['low', 'medium', 'high'].includes(level)) {
+                return;
+            }
+            
+            this.performanceLevel = level;
+            this._reloadSettingsFromConfig();
+            
+            console.log(`[PerformanceOptimizer] パフォーマンスレベルを${level}に内部更新`);
+        } catch (error) {
+            this.errorHandler.handleError(error, {
+                context: 'PerformanceOptimizer._setPerformanceLevelInternal'
+            });
+        }
+    }
+    
+    /**
+     * 設定から現在の値を再読み込み
+     * @private
+     */
+    _reloadSettingsFromConfig() {
+        try {
+            const optimizationConfig = this.performanceConfig.getOptimizationConfig();
+            const qualityConfig = this.performanceConfig.getQualityConfig();
+            
+            this.settings = {
+                maxBubbles: optimizationConfig.maxBubbles,
+                maxParticles: optimizationConfig.maxParticles,
+                particleQuality: qualityConfig.particleQuality,
+                renderQuality: qualityConfig.renderQuality,
+                effectQuality: qualityConfig.effectQuality,
+                audioQuality: qualityConfig.audioQuality,
+                enableShadows: qualityConfig.enableShadows,
+                enableBlur: qualityConfig.enableBlur,
+                enableAntiAliasing: qualityConfig.enableAntiAliasing
+            };
+        } catch (error) {
+            this.errorHandler.handleError(error, {
+                context: 'PerformanceOptimizer._reloadSettingsFromConfig'
+            });
+        }
+    }
+    
+    /**
+     * フォールバック用のパフォーマンスレベル設定
+     * @param {string} level - パフォーマンスレベル
+     * @private
+     */
+    _setPerformanceLevelFallback(level) {
         switch (level) {
             case 'low':
                 this.settings = {
@@ -152,10 +406,10 @@ export class PerformanceOptimizer {
         this.stats.lastOptimization = {
             level: level,
             time: Date.now(),
-            reason: `FPS: ${Math.round(this.stats.averageFPS)}`
+            reason: `FPS: ${Math.round(this.stats.averageFPS)} (fallback)`
         };
         
-        console.log(`Performance level changed to: ${level} (FPS: ${Math.round(this.stats.averageFPS)})`);
+        console.log(`[PerformanceOptimizer] フォールバック方式でパフォーマンスレベルを${level}に変更`);
     }
     
     /**
@@ -379,10 +633,25 @@ export class PerformanceOptimizer {
      * @param {boolean} enabled - 有効性
      */
     setAdaptiveMode(enabled) {
-        this.adaptiveMode = enabled;
-        
-        if (!enabled) {
-            this.setPerformanceLevel('high');
+        try {
+            this._isUpdatingFromConfig = true; // 循環参照防止
+            
+            this.adaptiveMode = enabled;
+            
+            // 新しい設定システムに反映
+            this.performanceConfig.setAdaptiveModeEnabled(enabled);
+            
+            if (!enabled) {
+                this.setPerformanceLevel('high');
+            }
+            
+            console.log(`[PerformanceOptimizer] 適応モードを${enabled ? '有効' : '無効'}に設定`);
+        } catch (error) {
+            this.errorHandler.handleError(error, {
+                context: 'PerformanceOptimizer.setAdaptiveMode'
+            });
+        } finally {
+            this._isUpdatingFromConfig = false; // フラグをリセット
         }
     }
     
@@ -520,14 +789,269 @@ export class PerformanceOptimizer {
     }
 
     /**
+     * 設定システムとの同期
+     * 設定が外部から変更された場合に呼び出す
+     */
+    syncWithConfig() {
+        try {
+            console.log('[PerformanceOptimizer] 設定システムと同期中...');
+            this._initializeFromConfig();
+            console.log('[PerformanceOptimizer] 設定システムとの同期完了');
+        } catch (error) {
+            this.errorHandler.handleError(error, {
+                context: 'PerformanceOptimizer.syncWithConfig'
+            });
+        }
+    }
+    
+    /**
+     * 目標FPSを動的に変更
+     * @param {number} fps - 新しい目標FPS
+     */
+    setTargetFPS(fps) {
+        try {
+            this._isUpdatingFromConfig = true; // 循環参照防止
+            
+            const success = this.performanceConfig.setTargetFPS(fps);
+            if (success) {
+                this.targetFPS = fps;
+                this.targetFrameTime = 1000 / fps;
+                console.log(`[PerformanceOptimizer] 目標FPSを${fps}に変更`);
+            }
+        } catch (error) {
+            this.errorHandler.handleError(error, {
+                context: 'PerformanceOptimizer.setTargetFPS'
+            });
+        } finally {
+            this._isUpdatingFromConfig = false; // フラグをリセット
+        }
+    }
+    
+    /**
+     * 最大バブル数を動的に変更
+     * @param {number} count - 新しい最大バブル数
+     */
+    setMaxBubbles(count) {
+        try {
+            this._isUpdatingFromConfig = true;
+            const success = this.performanceConfig.setMaxBubbles(count);
+            if (success) {
+                this.settings.maxBubbles = count;
+                console.log(`[PerformanceOptimizer] 最大バブル数を${count}に変更`);
+            }
+        } catch (error) {
+            this.errorHandler.handleError(error, {
+                context: 'PerformanceOptimizer.setMaxBubbles'
+            });
+        } finally {
+            this._isUpdatingFromConfig = false;
+        }
+    }
+    
+    /**
+     * 最大パーティクル数を動的に変更
+     * @param {number} count - 新しい最大パーティクル数
+     */
+    setMaxParticles(count) {
+        try {
+            this._isUpdatingFromConfig = true;
+            const success = this.performanceConfig.setMaxParticles(count);
+            if (success) {
+                this.settings.maxParticles = count;
+                console.log(`[PerformanceOptimizer] 最大パーティクル数を${count}に変更`);
+            }
+        } catch (error) {
+            this.errorHandler.handleError(error, {
+                context: 'PerformanceOptimizer.setMaxParticles'
+            });
+        } finally {
+            this._isUpdatingFromConfig = false;
+        }
+    }
+    
+    /**
+     * レンダリング品質を動的に変更
+     * @param {number} quality - 新しいレンダリング品質 (0.5-1.0)
+     */
+    setRenderQuality(quality) {
+        try {
+            this._isUpdatingFromConfig = true;
+            const success = this.performanceConfig.setRenderQuality(quality);
+            if (success) {
+                this.settings.renderQuality = quality;
+                console.log(`[PerformanceOptimizer] レンダリング品質を${quality}に変更`);
+            }
+        } catch (error) {
+            this.errorHandler.handleError(error, {
+                context: 'PerformanceOptimizer.setRenderQuality'
+            });
+        } finally {
+            this._isUpdatingFromConfig = false;
+        }
+    }
+    
+    /**
+     * パーティクル品質を動的に変更
+     * @param {number} quality - 新しいパーティクル品質 (0.1-1.0)
+     */
+    setParticleQuality(quality) {
+        try {
+            this._isUpdatingFromConfig = true;
+            const success = this.performanceConfig.setParticleQuality(quality);
+            if (success) {
+                this.settings.particleQuality = quality;
+                console.log(`[PerformanceOptimizer] パーティクル品質を${quality}に変更`);
+            }
+        } catch (error) {
+            this.errorHandler.handleError(error, {
+                context: 'PerformanceOptimizer.setParticleQuality'
+            });
+        } finally {
+            this._isUpdatingFromConfig = false;
+        }
+    }
+    
+    /**
+     * エフェクト品質を動的に変更
+     * @param {number} quality - 新しいエフェクト品質 (0.1-1.0)
+     */
+    setEffectQuality(quality) {
+        try {
+            this._isUpdatingFromConfig = true;
+            const success = this.performanceConfig.setEffectQuality(quality);
+            if (success) {
+                this.settings.effectQuality = quality;
+                console.log(`[PerformanceOptimizer] エフェクト品質を${quality}に変更`);
+            }
+        } catch (error) {
+            this.errorHandler.handleError(error, {
+                context: 'PerformanceOptimizer.setEffectQuality'
+            });
+        } finally {
+            this._isUpdatingFromConfig = false;
+        }
+    }
+    
+    /**
+     * 音声品質を動的に変更
+     * @param {number} quality - 新しい音声品質 (0.1-1.0)
+     */
+    setAudioQuality(quality) {
+        try {
+            this._isUpdatingFromConfig = true;
+            const success = this.performanceConfig.setAudioQuality(quality);
+            if (success) {
+                this.settings.audioQuality = quality;
+                console.log(`[PerformanceOptimizer] 音声品質を${quality}に変更`);
+            }
+        } catch (error) {
+            this.errorHandler.handleError(error, {
+                context: 'PerformanceOptimizer.setAudioQuality'
+            });
+        } finally {
+            this._isUpdatingFromConfig = false;
+        }
+    }
+    
+    /**
+     * 影エフェクトの有効状態を動的に変更
+     * @param {boolean} enabled - 影エフェクトの有効状態
+     */
+    setShadowsEnabled(enabled) {
+        try {
+            this._isUpdatingFromConfig = true;
+            const success = this.performanceConfig.setShadowsEnabled(enabled);
+            if (success) {
+                this.settings.enableShadows = enabled;
+                console.log(`[PerformanceOptimizer] 影エフェクトを${enabled ? '有効' : '無効'}に変更`);
+            }
+        } catch (error) {
+            this.errorHandler.handleError(error, {
+                context: 'PerformanceOptimizer.setShadowsEnabled'
+            });
+        } finally {
+            this._isUpdatingFromConfig = false;
+        }
+    }
+    
+    /**
+     * ブラーエフェクトの有効状態を動的に変更
+     * @param {boolean} enabled - ブラーエフェクトの有効状態
+     */
+    setBlurEnabled(enabled) {
+        try {
+            this._isUpdatingFromConfig = true;
+            const success = this.performanceConfig.setBlurEnabled(enabled);
+            if (success) {
+                this.settings.enableBlur = enabled;
+                console.log(`[PerformanceOptimizer] ブラーエフェクトを${enabled ? '有効' : '無効'}に変更`);
+            }
+        } catch (error) {
+            this.errorHandler.handleError(error, {
+                context: 'PerformanceOptimizer.setBlurEnabled'
+            });
+        } finally {
+            this._isUpdatingFromConfig = false;
+        }
+    }
+    
+    /**
+     * アンチエイリアシングの有効状態を動的に変更
+     * @param {boolean} enabled - アンチエイリアシングの有効状態
+     */
+    setAntiAliasingEnabled(enabled) {
+        try {
+            this._isUpdatingFromConfig = true;
+            const success = this.performanceConfig.setAntiAliasingEnabled(enabled);
+            if (success) {
+                this.settings.enableAntiAliasing = enabled;
+                console.log(`[PerformanceOptimizer] アンチエイリアシングを${enabled ? '有効' : '無効'}に変更`);
+            }
+        } catch (error) {
+            this.errorHandler.handleError(error, {
+                context: 'PerformanceOptimizer.setAntiAliasingEnabled'
+            });
+        } finally {
+            this._isUpdatingFromConfig = false;
+        }
+    }
+    
+    /**
+     * 設定システムから現在の設定を取得
+     * @returns {Object} 現在の設定
+     */
+    getCurrentConfig() {
+        try {
+            return {
+                optimization: this.performanceConfig.getOptimizationConfig(),
+                quality: this.performanceConfig.getQualityConfig(),
+                limits: this.performanceConfig.getResourceLimitConfig()
+            };
+        } catch (error) {
+            this.errorHandler.handleError(error, {
+                context: 'PerformanceOptimizer.getCurrentConfig'
+            });
+            return null;
+        }
+    }
+    
+    /**
      * 最適化システムをリセット
      */
     reset() {
-        this.frameTimeHistory = [];
-        this.stats.droppedFrames = 0;
-        this.stats.optimizationCount = 0;
-        this.stats.lastOptimization = null;
-        this.setPerformanceLevel('high');
+        try {
+            this.frameTimeHistory = [];
+            this.stats.droppedFrames = 0;
+            this.stats.optimizationCount = 0;
+            this.stats.lastOptimization = null;
+            this.setPerformanceLevel('high');
+            
+            console.log('[PerformanceOptimizer] システムをリセットしました');
+        } catch (error) {
+            this.errorHandler.handleError(error, {
+                context: 'PerformanceOptimizer.reset'
+            });
+        }
     }
 }
 
@@ -536,9 +1060,34 @@ let _performanceOptimizer = null;
 
 export function getPerformanceOptimizer() {
     if (!_performanceOptimizer) {
-        _performanceOptimizer = new PerformanceOptimizer();
+        try {
+            _performanceOptimizer = new PerformanceOptimizer();
+            console.log('[PerformanceOptimizer] グローバルインスタンスを作成しました');
+        } catch (error) {
+            console.error('[PerformanceOptimizer] インスタンス作成エラー:', error);
+            // フォールバック: 基本的なインスタンスを作成
+            _performanceOptimizer = new PerformanceOptimizer();
+        }
     }
     return _performanceOptimizer;
+}
+
+/**
+ * PerformanceOptimizerインスタンスを再初期化
+ * 設定システムが更新された場合に使用
+ */
+export function reinitializePerformanceOptimizer() {
+    try {
+        if (_performanceOptimizer) {
+            console.log('[PerformanceOptimizer] インスタンスを再初期化中...');
+            _performanceOptimizer.syncWithConfig();
+        } else {
+            _performanceOptimizer = new PerformanceOptimizer();
+        }
+        console.log('[PerformanceOptimizer] 再初期化完了');
+    } catch (error) {
+        console.error('[PerformanceOptimizer] 再初期化エラー:', error);
+    }
 }
 
 // 後方互換性のため
