@@ -26,7 +26,7 @@
   - _Requirements: 1.1, 1.4_
 
 - [ ] 3. Fix configuration value mismatches in tests
-- [ ] 3.1 Update PerformanceConfig test expectations
+- [x] 3.1 Update PerformanceConfig test expectations
   - Change targetFPS expectation from 50 to 60 to match implementation
   - Update maxHistorySize and other performance values to match defaults
   - Fix quality preset test expectations to use correct configuration keys
