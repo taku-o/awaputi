@@ -6,40 +6,22 @@
 import { SettingsManager } from '../../src/core/SettingsManager.js';
 import { getConfigurationManager } from '../../src/core/ConfigurationManager.js';
 
-// 簡単なモック関数
-const mockFn = (returnValue) => {
-    const fn = (...args) => {
-        fn.calls.push(args);
-        return returnValue;
-    };
-    fn.calls = [];
-    fn.mockReturnValue = (value) => { returnValue = value; return fn; };
-    fn.mockImplementation = (impl) => { 
-        const newFn = (...args) => {
-            newFn.calls.push(args);
-            return impl(...args);
-        };
-        newFn.calls = fn.calls;
-        return newFn;
-    };
-    fn.mockClear = () => { fn.calls = []; return fn; };
-    return fn;
-};
+// Jest モック関数を使用
 
 // モックゲームエンジン
 class MockGameEngine {
     constructor() {
         this.audioManager = {
-            setVolume: mockFn(),
-            stopAllSounds: mockFn()
+            setVolume: jest.fn(),
+            stopAllSounds: jest.fn()
         };
         this.performanceOptimizer = {
-            setQualityLevel: mockFn(),
-            enableAutoQuality: mockFn(),
-            setReducedMotion: mockFn()
+            setQualityLevel: jest.fn(),
+            enableAutoQuality: jest.fn(),
+            setReducedMotion: jest.fn()
         };
         this.localizationManager = {
-            setLanguage: mockFn()
+            setLanguage: jest.fn()
         };
     }
 }
@@ -201,7 +183,7 @@ describe('SettingsManager統合テスト', () => {
 
     describe('設定変更の監視', () => {
         test('リスナーが正しく動作する', () => {
-            const callback = mockFn();
+            const callback = jest.fn();
             
             // リスナーを追加
             settingsManager.addListener('masterVolume', callback);
@@ -214,7 +196,7 @@ describe('SettingsManager統合テスト', () => {
         });
 
         test('ConfigurationManagerの監視機能も使用される', () => {
-            const callback = mockFn();
+            const callback = jest.fn();
             
             // リスナーを追加
             settingsManager.addListener('masterVolume', callback);
@@ -227,7 +209,7 @@ describe('SettingsManager統合テスト', () => {
         });
 
         test('リスナーが正しく削除される', () => {
-            const callback = mockFn();
+            const callback = jest.fn();
             
             // リスナーを追加
             settingsManager.addListener('masterVolume', callback);
