@@ -6,6 +6,7 @@
  */
 
 import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getCacheSystem } from './CacheSystem.js';
 
 class ConfigurationManager {
     constructor() {
@@ -24,6 +25,34 @@ class ConfigurationManager {
         // 変更履歴（デバッグ用）
         this.changeHistory = [];
         
+        // 高速アクセス用キャッシュシステム
+        this.cache = getCacheSystem({
+            maxSize: 500,
+            ttl: 300000, // 5分間キャッシュ
+            cleanupInterval: 60000 // 1分間隔でクリーンアップ
+        });
+        
+        // アクセス統計（パフォーマンス監視用）
+        this.accessStats = {
+            totalAccesses: 0,
+            cacheHits: 0,
+            cacheMisses: 0,
+            frequentKeys: new Map(), // キー別アクセス回数
+            lastOptimization: Date.now()
+        };
+        
+        // 遅延読み込み用の設定ローダー
+        this.lazyLoaders = new Map();
+        
+        // 頻繁にアクセスされるキーのプリロード設定
+        this.preloadKeys = new Set([
+            'game.scoring.baseScores',
+            'game.bubbles.maxAge',
+            'performance.optimization.maxBubbles',
+            'effects.particles.maxCount',
+            'audio.volumes.master'
+        ]);
+        
         // 初期化
         this._initialize();
     }
@@ -39,6 +68,11 @@ class ConfigurationManager {
         this.configurations.set('effects', new Map());
         this.configurations.set('performance', new Map());
         
+        // 非同期でキャッシュウォームアップを実行
+        setTimeout(() => {
+            this.warmupCache();
+        }, 100);
+        
         // デバッグログ
         if (this._isDebugMode()) {
             console.log('[ConfigurationManager] 初期化完了');
@@ -46,7 +80,7 @@ class ConfigurationManager {
     }
     
     /**
-     * 設定値を取得
+     * 設定値を取得（最適化版）
      * @param {string} category - 設定カテゴリ
      * @param {string} key - 設定キー
      * @param {*} defaultValue - デフォルト値
@@ -54,30 +88,40 @@ class ConfigurationManager {
      */
     get(category, key, defaultValue = null) {
         try {
-            // カテゴリの存在確認
-            if (!this.configurations.has(category)) {
-                this._logWarning(`カテゴリが存在しません: ${category}`);
-                return defaultValue;
+            const fullKey = `${category}.${key}`;
+            
+            // アクセス統計を更新
+            this._updateAccessStats(fullKey);
+            
+            // キャッシュから取得を試行
+            const cachedValue = this.cache.get(fullKey);
+            if (cachedValue !== null) {
+                this.accessStats.cacheHits++;
+                this._logDebug(`キャッシュから取得: ${fullKey} = ${cachedValue}`);
+                return cachedValue;
             }
             
-            const categoryConfig = this.configurations.get(category);
+            this.accessStats.cacheMisses++;
             
-            // キーの存在確認
-            if (!categoryConfig.has(key)) {
-                // デフォルト値を確認
-                const defaultKey = `${category}.${key}`;
-                if (this.defaultValues.has(defaultKey)) {
-                    const value = this.defaultValues.get(defaultKey);
-                    this._logDebug(`デフォルト値を使用: ${category}.${key} = ${value}`);
-                    return value;
-                }
+            // 遅延読み込みの確認
+            if (this.lazyLoaders.has(fullKey)) {
+                const loader = this.lazyLoaders.get(fullKey);
+                const value = loader();
                 
-                this._logWarning(`設定キーが存在しません: ${category}.${key}`);
-                return defaultValue;
+                // 読み込んだ値をキャッシュに保存
+                this._cacheValue(fullKey, value);
+                this._logDebug(`遅延読み込み: ${fullKey} = ${value}`);
+                return value;
             }
             
-            const value = categoryConfig.get(key);
-            this._logDebug(`設定値取得: ${category}.${key} = ${value}`);
+            // 通常の設定値取得
+            const value = this._getDirectValue(category, key, defaultValue);
+            
+            // 頻繁にアクセスされるキーはキャッシュに保存
+            if (this._shouldCache(fullKey)) {
+                this._cacheValue(fullKey, value);
+            }
+            
             return value;
             
         } catch (error) {
@@ -92,7 +136,43 @@ class ConfigurationManager {
     }
     
     /**
-     * 設定値を設定
+     * 直接的な設定値取得（キャッシュなし）
+     * @param {string} category - 設定カテゴリ
+     * @param {string} key - 設定キー
+     * @param {*} defaultValue - デフォルト値
+     * @returns {*} 設定値
+     * @private
+     */
+    _getDirectValue(category, key, defaultValue = null) {
+        // カテゴリの存在確認
+        if (!this.configurations.has(category)) {
+            this._logWarning(`カテゴリが存在しません: ${category}`);
+            return defaultValue;
+        }
+        
+        const categoryConfig = this.configurations.get(category);
+        
+        // キーの存在確認
+        if (!categoryConfig.has(key)) {
+            // デフォルト値を確認
+            const defaultKey = `${category}.${key}`;
+            if (this.defaultValues.has(defaultKey)) {
+                const value = this.defaultValues.get(defaultKey);
+                this._logDebug(`デフォルト値を使用: ${category}.${key} = ${value}`);
+                return value;
+            }
+            
+            this._logWarning(`設定キーが存在しません: ${category}.${key}`);
+            return defaultValue;
+        }
+        
+        const value = categoryConfig.get(key);
+        this._logDebug(`設定値取得: ${category}.${key} = ${value}`);
+        return value;
+    }
+    
+    /**
+     * 設定値を設定（最適化版）
      * @param {string} category - 設定カテゴリ
      * @param {string} key - 設定キー
      * @param {*} value - 設定値
@@ -117,6 +197,15 @@ class ConfigurationManager {
             
             // 値を設定
             categoryConfig.set(key, value);
+            
+            // キャッシュを無効化
+            const fullKey = `${category}.${key}`;
+            this.cache.delete(fullKey);
+            
+            // 新しい値をキャッシュに保存（頻繁にアクセスされる場合）
+            if (this._shouldCache(fullKey)) {
+                this._cacheValue(fullKey, value);
+            }
             
             // 変更履歴を記録
             this._recordChange(category, key, oldValue, value);
@@ -428,6 +517,199 @@ class ConfigurationManager {
      */
     _logWarning(message) {
         console.warn(`[ConfigurationManager] ${message}`);
+    }
+    
+    /**
+     * アクセス統計を更新
+     * @param {string} fullKey - 完全なキー名
+     * @private
+     */
+    _updateAccessStats(fullKey) {
+        this.accessStats.totalAccesses++;
+        
+        // キー別アクセス回数を更新
+        const currentCount = this.accessStats.frequentKeys.get(fullKey) || 0;
+        this.accessStats.frequentKeys.set(fullKey, currentCount + 1);
+        
+        // 定期的に最適化を実行
+        const now = Date.now();
+        if (now - this.accessStats.lastOptimization > 60000) { // 1分間隔
+            this._optimizeCache();
+            this.accessStats.lastOptimization = now;
+        }
+    }
+    
+    /**
+     * キャッシュすべきかどうかを判定
+     * @param {string} fullKey - 完全なキー名
+     * @returns {boolean} キャッシュすべきかどうか
+     * @private
+     */
+    _shouldCache(fullKey) {
+        // プリロードキーは常にキャッシュ
+        if (this.preloadKeys.has(fullKey)) {
+            return true;
+        }
+        
+        // アクセス回数が閾値を超えた場合はキャッシュ
+        const accessCount = this.accessStats.frequentKeys.get(fullKey) || 0;
+        return accessCount >= 3; // 3回以上アクセスされたらキャッシュ
+    }
+    
+    /**
+     * 値をキャッシュに保存
+     * @param {string} fullKey - 完全なキー名
+     * @param {*} value - キャッシュする値
+     * @private
+     */
+    _cacheValue(fullKey, value) {
+        // 頻繁にアクセスされるキーは長時間キャッシュ
+        const accessCount = this.accessStats.frequentKeys.get(fullKey) || 0;
+        const ttl = this.preloadKeys.has(fullKey) ? 600000 : // プリロードキー: 10分
+                   accessCount >= 10 ? 300000 : // 頻繁アクセス: 5分
+                   60000; // 通常: 1分
+        
+        const priority = this.preloadKeys.has(fullKey) ? 100 : // プリロードキー: 最高優先度
+                        accessCount >= 10 ? 50 : // 頻繁アクセス: 高優先度
+                        10; // 通常: 低優先度
+        
+        this.cache.set(fullKey, value, { ttl, priority });
+    }
+    
+    /**
+     * 遅延読み込み関数を登録
+     * @param {string} category - 設定カテゴリ
+     * @param {string} key - 設定キー
+     * @param {Function} loader - 読み込み関数
+     */
+    registerLazyLoader(category, key, loader) {
+        const fullKey = `${category}.${key}`;
+        this.lazyLoaders.set(fullKey, loader);
+        this._logDebug(`遅延読み込み関数を登録: ${fullKey}`);
+    }
+    
+    /**
+     * プリロードキーを追加
+     * @param {string} category - 設定カテゴリ
+     * @param {string} key - 設定キー
+     */
+    addPreloadKey(category, key) {
+        const fullKey = `${category}.${key}`;
+        this.preloadKeys.add(fullKey);
+        
+        // 既に値が存在する場合はプリロード
+        if (this.has(category, key)) {
+            const value = this._getDirectValue(category, key);
+            this._cacheValue(fullKey, value);
+        }
+        
+        this._logDebug(`プリロードキーを追加: ${fullKey}`);
+    }
+    
+    /**
+     * キャッシュを最適化
+     * @private
+     */
+    _optimizeCache() {
+        try {
+            // 頻繁にアクセスされるキーを特定
+            const sortedKeys = Array.from(this.accessStats.frequentKeys.entries())
+                .sort((a, b) => b[1] - a[1]) // アクセス回数の降順
+                .slice(0, 20); // 上位20キー
+            
+            // 頻繁にアクセスされるキーをプリロード
+            for (const [fullKey, count] of sortedKeys) {
+                if (count >= 5 && !this.cache.has(fullKey)) {
+                    const [category, key] = fullKey.split('.');
+                    if (this.has(category, key)) {
+                        const value = this._getDirectValue(category, key);
+                        this._cacheValue(fullKey, value);
+                    }
+                }
+            }
+            
+            // 古いアクセス統計をクリーンアップ
+            if (this.accessStats.frequentKeys.size > 100) {
+                // アクセス回数の少ないキーを削除
+                const keysToDelete = Array.from(this.accessStats.frequentKeys.entries())
+                    .filter(([, count]) => count < 2)
+                    .map(([key]) => key);
+                
+                for (const key of keysToDelete) {
+                    this.accessStats.frequentKeys.delete(key);
+                }
+            }
+            
+            this._logDebug(`キャッシュ最適化完了: ${sortedKeys.length}キーを処理`);
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'CONFIGURATION_ERROR', {
+                context: 'ConfigurationManager._optimizeCache'
+            });
+        }
+    }
+    
+    /**
+     * パフォーマンス統計を取得
+     * @returns {Object} パフォーマンス統計
+     */
+    getPerformanceStats() {
+        const hitRate = this.accessStats.totalAccesses > 0 
+            ? (this.accessStats.cacheHits / this.accessStats.totalAccesses) * 100 
+            : 0;
+        
+        const topKeys = Array.from(this.accessStats.frequentKeys.entries())
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 10)
+            .map(([key, count]) => ({ key, count }));
+        
+        return {
+            totalAccesses: this.accessStats.totalAccesses,
+            cacheHits: this.accessStats.cacheHits,
+            cacheMisses: this.accessStats.cacheMisses,
+            hitRate: `${hitRate.toFixed(2)}%`,
+            cachedKeys: this.cache.getStats().size,
+            preloadKeys: this.preloadKeys.size,
+            lazyLoaders: this.lazyLoaders.size,
+            topAccessedKeys: topKeys,
+            cacheStats: this.cache.getStats()
+        };
+    }
+    
+    /**
+     * キャッシュをウォームアップ（プリロード）
+     */
+    warmupCache() {
+        try {
+            let warmedCount = 0;
+            
+            // プリロードキーをキャッシュに読み込み
+            for (const fullKey of this.preloadKeys) {
+                const [category, key] = fullKey.split('.');
+                if (this.has(category, key)) {
+                    const value = this._getDirectValue(category, key);
+                    this._cacheValue(fullKey, value);
+                    warmedCount++;
+                }
+            }
+            
+            this._logDebug(`キャッシュウォームアップ完了: ${warmedCount}キーを読み込み`);
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'CONFIGURATION_ERROR', {
+                context: 'ConfigurationManager.warmupCache'
+            });
+        }
+    }
+    
+    /**
+     * キャッシュをクリア
+     * @param {string} prefix - クリアするキーのプレフィックス
+     */
+    clearCache(prefix = null) {
+        const clearedCount = this.cache.clear(prefix);
+        this._logDebug(`キャッシュクリア: ${clearedCount}エントリを削除`);
+        return clearedCount;
     }
 }
 
