@@ -9,13 +9,7 @@ import { EffectManager } from '../../src/effects/EffectManager.js';
 import { getEffectsConfig } from '../../src/config/EffectsConfig.js';
 import { getConfigurationManager } from '../../src/core/ConfigurationManager.js';
 
-// 簡単なモック関数
-const mockFn = (returnValue) => {
-    const fn = (...args) => returnValue;
-    fn.mockReturnValue = (value) => { returnValue = value; return fn; };
-    fn.mockImplementation = (impl) => { fn = impl; return fn; };
-    return fn;
-};
+// Jest モック関数を使用
 
 describe('EffectManager統合テスト', () => {
     let effectManager;
@@ -26,10 +20,10 @@ describe('EffectManager統合テスト', () => {
     beforeAll(() => {
         // コンソールのモック
         global.console = {
-            log: mockFn(),
-            warn: mockFn(),
-            error: mockFn(),
-            info: mockFn()
+            log: jest.fn(),
+            warn: jest.fn(),
+            error: jest.fn(),
+            info: jest.fn()
         };
     });
 
@@ -39,13 +33,13 @@ describe('EffectManager統合テスト', () => {
             width: 800,
             height: 600,
             getContext: mockFn(() => ({
-                save: mockFn(),
-                restore: mockFn(),
-                translate: mockFn(),
-                scale: mockFn(),
-                rotate: mockFn(),
-                setTransform: mockFn(),
-                fillRect: mockFn(),
+                save: jest.fn(),
+                restore: jest.fn(),
+                translate: jest.fn(),
+                scale: jest.fn(),
+                rotate: jest.fn(),
+                setTransform: jest.fn(),
+                fillRect: jest.fn(),
                 globalAlpha: 1,
                 fillStyle: '#000000',
                 globalCompositeOperation: 'source-over',

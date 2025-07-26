@@ -14,7 +14,7 @@ describe('Game Flow Integration', () => {
     document.body.appendChild(mockCanvas);
     
     // Mock localStorage to return some initial data
-    localStorage.getItem.mockImplementation((key) => {
+    localStorage.getItem = jest.fn((key) => {
       if (key === 'bubblePop_playerData') {
         return JSON.stringify({
           username: 'TestPlayer',

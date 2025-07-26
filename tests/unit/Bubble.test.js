@@ -30,7 +30,7 @@ describe('Bubble', () => {
       expect(stoneBubble.size).toBe(55);
 
       const bossBubble = new Bubble('boss', mockPosition);
-      expect(bossBubble.health).toBe(10);
+      expect(bossBubble.health).toBe(5);
       expect(bossBubble.size).toBe(100);
     });
   });
@@ -40,13 +40,13 @@ describe('Bubble', () => {
       const config = bubble.getTypeConfig();
       expect(config.health).toBe(1);
       expect(config.color).toBe('#87CEEB');
-      expect(config.score).toBe(10);
+      expect(config.score).toBe(15);
     });
 
     test('should return correct config for special bubbles', () => {
       const pinkBubble = new Bubble('pink', mockPosition);
       const config = pinkBubble.getTypeConfig();
-      expect(config.healAmount).toBe(20);
+      expect(config.healAmount).toBe(25);
       expect(config.color).toBe('#FFB6C1');
     });
 
@@ -175,7 +175,7 @@ describe('Bubble', () => {
       const effects = pinkBubble.getAndClearEffects();
       expect(effects).toHaveLength(1);
       expect(effects[0].type).toBe('heal');
-      expect(effects[0].amount).toBe(20);
+      expect(effects[0].amount).toBe(25);
     });
 
     test('should not trigger effects when bursting naturally', () => {
@@ -195,7 +195,7 @@ describe('Bubble', () => {
       const effects = pinkBubble.getAndClearEffects();
       expect(effects[0]).toEqual({
         type: 'heal',
-        amount: 20
+        amount: 25
       });
     });
 
@@ -206,7 +206,7 @@ describe('Bubble', () => {
       const effects = poisonBubble.getAndClearEffects();
       expect(effects[0]).toEqual({
         type: 'damage',
-        amount: 10
+        amount: 8
       });
     });
 
@@ -217,7 +217,7 @@ describe('Bubble', () => {
       const effects = spikyBubble.getAndClearEffects();
       expect(effects[0].type).toBe('chain_destroy');
       expect(effects[0].position).toEqual(mockPosition);
-      expect(effects[0].radius).toBe(150);
+      expect(effects[0].radius).toBe(120);
     });
 
     test('should create bonus time effect for rainbow bubble', () => {
@@ -227,7 +227,7 @@ describe('Bubble', () => {
       const effects = rainbowBubble.getAndClearEffects();
       expect(effects[0]).toEqual({
         type: 'bonus_time',
-        duration: 10000
+        duration: 5000
       });
     });
 
