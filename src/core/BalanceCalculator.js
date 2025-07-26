@@ -470,3 +470,17 @@ export class BalanceCalculator {
         };
     }
 }
+
+// シングルトンインスタンス
+let balanceCalculatorInstance = null;
+
+/**
+ * BalanceCalculatorのシングルトンインスタンスを取得
+ * @returns {BalanceCalculator} BalanceCalculatorインスタンス
+ */
+export function getBalanceCalculator() {
+    if (!balanceCalculatorInstance) {
+        balanceCalculatorInstance = new BalanceCalculator();
+    }
+    return balanceCalculatorInstance;
+}

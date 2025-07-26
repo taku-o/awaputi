@@ -171,7 +171,11 @@ export class CalculationEngine {
         }
         
         // 通常の計算実行
-        return calculator[method](...params);
+        if (Array.isArray(params)) {
+            return calculator[method](...params);
+        } else {
+            return calculator[method](params);
+        }
     }
     
     /**
@@ -786,4 +790,38 @@ export class CalculationEngine {
         
         console.log('CalculationEngine destroyed');
     }
+}
+
+// シングルトンインスタンス
+let calculationEngineInstance = null;
+
+/**
+ * CalculationEngineのシングルトンインスタンスを取得
+ * @returns {CalculationEngine} CalculationEngineインスタンス
+ */
+export function getCalculationEngine() {
+    if (!calculationEngineInstance) {
+        calculationEngineInstance = new CalculationEngine();
+        
+        // 各種Calculatorを初期化時に登録
+        import('./ScoreCalculator.js').then(({ getScoreCalculator }) => {
+            calculationEngineInstance.registerCalculator('score', getScoreCalculator());
+        }).catch(error => {
+            console.warn('ScoreCalculator registration failed:', error);
+        });
+        
+        import('./BalanceCalculator.js').then(({ getBalanceCalculator }) => {
+            calculationEngineInstance.registerCalculator('balance', getBalanceCalculator());
+        }).catch(error => {
+            console.warn('BalanceCalculator registration failed:', error);
+        });
+        
+        import('./EffectsCalculator.js').then(({ getEffectsCalculator }) => {
+            calculationEngineInstance.registerCalculator('effects', getEffectsCalculator());
+        }).catch(error => {
+            console.warn('EffectsCalculator registration failed:', error);
+        });
+    }
+    
+    return calculationEngineInstance;
 }

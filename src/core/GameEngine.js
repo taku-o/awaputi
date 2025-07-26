@@ -25,6 +25,8 @@ import { getPerformanceOptimizer } from '../utils/PerformanceOptimizer.js';
 import { getBrowserCompatibility } from '../utils/BrowserCompatibility.js';
 import { ResponsiveCanvasManager } from '../utils/ResponsiveCanvasManager.js';
 import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getConfigurationManager } from './ConfigurationManager.js';
+import { getCalculationEngine } from './CalculationEngine.js';
 
 /**
  * ゲームエンジンクラス - 統合版（パフォーマンス最適化 + 音響・視覚効果）
@@ -51,6 +53,10 @@ export class GameEngine {
             });
             throw error;
         }
+        
+        // 設定管理システム
+        this.configManager = getConfigurationManager();
+        this.calculationEngine = getCalculationEngine();
         
         // レスポンシブCanvas管理
         this.responsiveCanvasManager = new ResponsiveCanvasManager(canvas, this);

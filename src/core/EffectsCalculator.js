@@ -445,3 +445,17 @@ export class EffectsCalculator {
         };
     }
 }
+
+// シングルトンインスタンス
+let effectsCalculatorInstance = null;
+
+/**
+ * EffectsCalculatorのシングルトンインスタンスを取得
+ * @returns {EffectsCalculator} EffectsCalculatorインスタンス
+ */
+export function getEffectsCalculator() {
+    if (!effectsCalculatorInstance) {
+        effectsCalculatorInstance = new EffectsCalculator();
+    }
+    return effectsCalculatorInstance;
+}

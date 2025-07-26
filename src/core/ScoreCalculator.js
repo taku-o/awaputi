@@ -325,3 +325,17 @@ export class ScoreCalculator {
         };
     }
 }
+
+// シングルトンインスタンス
+let scoreCalculatorInstance = null;
+
+/**
+ * ScoreCalculatorのシングルトンインスタンスを取得
+ * @returns {ScoreCalculator} ScoreCalculatorインスタンス
+ */
+export function getScoreCalculator() {
+    if (!scoreCalculatorInstance) {
+        scoreCalculatorInstance = new ScoreCalculator();
+    }
+    return scoreCalculatorInstance;
+}

@@ -34,10 +34,12 @@ const mockValidationSystem = {
     _getDefaultValue: mockFn()
 };
 
-// モジュールのモック
-jest.mock('../../src/core/LoggingSystem.js', () => ({
-    getLoggingSystem: () => mockLoggingSystem
-}));
+// モジュールのモック（Jestが利用可能な場合のみ）
+if (typeof jest !== 'undefined') {
+    jest.mock('../../src/core/LoggingSystem.js', () => ({
+        getLoggingSystem: () => mockLoggingSystem
+    }));
+}
 
 jest.mock('../../src/utils/ErrorHandler.js', () => ({
     getErrorHandler: () => mockErrorHandler
