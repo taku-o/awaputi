@@ -4,18 +4,18 @@
 
 // モックの設定
 let mockGetCalls = [];
-const mockGet = function(category, key, defaultValue) {
+const mockGet = jest.fn((category, key, defaultValue) => {
     mockGetCalls.push({ category, key, defaultValue });
     // 戻り値は各テストで設定
     return defaultValue;
-};
+});
 
-const mockSet = function(category, key, value) {
+const mockSet = jest.fn((category, key, value) => {
     return true;
-};
+});
 
-const mockSetValidationRule = function() {};
-const mockGetCategory = function() { return {}; };
+const mockSetValidationRule = jest.fn();
+const mockGetCategory = jest.fn(() => ({}));
 
 const mockConfigManager = {
     get: mockGet,
@@ -25,7 +25,7 @@ const mockConfigManager = {
 };
 
 // ConfigurationManagerのモック
-const mockGetConfigurationManager = function() { return mockConfigManager; };
+const mockGetConfigurationManager = jest.fn(() => mockConfigManager);
 
 // ConfigurationManagerのモック
 import { ConfigurationManager, getConfigurationManager } from '../../src/core/ConfigurationManager.js';

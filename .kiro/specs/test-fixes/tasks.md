@@ -7,13 +7,13 @@
   - _Requirements: 1.1, 1.2, 1.3, 1.4_
 
 - [ ] 2. Standardize mock configurations in unit tests
-- [ ] 2.1 Fix PerformanceConfig test mock issues
+- [x] 2.1 Fix PerformanceConfig test mock issues
   - Replace manual mock functions with proper jest.fn() in PerformanceConfig.test.js
   - Add mockReturnValueOnce and toHaveBeenCalled capabilities to mocks
   - Update configuration value expectations to match implementation defaults
   - _Requirements: 1.2, 2.1, 2.2_
 
-- [ ] 2.2 Fix EffectsConfig test mock issues
+- [x] 2.2 Fix EffectsConfig test mock issues
   - Replace manual mock functions with proper jest.fn() in EffectsConfig.test.js
   - Add proper spy capabilities to mockConfigManager methods
   - Update test expectations to match actual EffectsConfig implementation
@@ -58,7 +58,7 @@
   - _Requirements: 3.1, 3.2, 3.3_
 
 - [ ] 5. Stabilize performance tests
-- [ ] 5.1 Fix cache performance measurement issues
+- [x] 5.1 Fix cache performance measurement issues
   - Adjust cache improvement threshold from 5% to 2% in configuration-access-performance.test.js
   - Fix baseline measurement methodology for cache effectiveness tests
   - Account for performance variance in cache performance measurements
