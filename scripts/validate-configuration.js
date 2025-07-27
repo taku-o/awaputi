@@ -153,6 +153,9 @@ class ConfigurationExtractor {
             }
             
             Logger.info(`GameBalance.jsから${Object.keys(bubbleConfigs).length}個のバブル設定を抽出しました`);
+            if (isVerbose) {
+                Logger.info('GameBalance.js抽出結果:', JSON.stringify(bubbleConfigs, null, 2));
+            }
             return bubbleConfigs;
             
         } catch (error) {
@@ -216,6 +219,9 @@ class ConfigurationExtractor {
             }
             
             Logger.info(`Bubble.jsから${Object.keys(bubbleConfigs).length}個のハードコード設定を抽出しました`);
+            if (isVerbose) {
+                Logger.info('Bubble.js抽出結果:', JSON.stringify(bubbleConfigs, null, 2));
+            }
             return bubbleConfigs;
             
         } catch (error) {
