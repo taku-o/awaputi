@@ -777,10 +777,343 @@ export class UserInfoScene extends Scene {
      * ユーザー管理画面を描画
      */
     renderUserManagement(context, y, height) {
-        context.fillStyle = '#ffffff';
-        context.font = '18px Arial';
+        const canvas = this.gameEngine.canvas;
+        const contentWidth = canvas.width - this.contentPadding * 2;
+        
+        let currentY = y + this.contentPadding;
+        
+        // 現在のユーザー名表示
+        this.renderCurrentUserInfo(context, this.contentPadding, currentY, contentWidth);
+        currentY += 100;
+        
+        // ユーザー名変更ボタン
+        currentY = this.renderUsernameChangeButton(context, this.contentPadding, currentY, contentWidth);
+        currentY += 20;
+        
+        // データ管理セクション
+        this.renderDataManagementSection(context, this.contentPadding, currentY, contentWidth);
+        
+        // ダイアログを描画
+        if (this.showingDialog) {
+            this.renderDialog(context);
+        }
+    }
+
+    /**
+     * 現在のユーザー情報を描画
+     */
+    renderCurrentUserInfo(context, x, y, width) {
+        // セクション背景
+        context.fillStyle = '#1a1a2e';
+        context.fillRect(x, y, width, 80);
+        
+        // セクション枠線
+        context.strokeStyle = '#333';
+        context.lineWidth = 1;
+        context.strokeRect(x, y, width, 80);
+        
+        // セクションタイトル
+        context.fillStyle = '#4a90e2';
+        context.font = 'bold 18px Arial';
         context.textAlign = 'left';
-        context.fillText('ユーザー管理（実装中）', this.contentPadding, y + 40);
+        context.fillText('ユーザー情報', x + 15, y + 25);
+        
+        // 現在のユーザー名
+        const currentUsername = this.gameEngine.playerData?.username || '未設定';
+        context.fillStyle = '#ffffff';
+        context.font = '16px Arial';
+        context.fillText(`ユーザー名: ${currentUsername}`, x + 15, y + 50);
+        
+        // AP情報
+        const currentAP = this.gameEngine.playerData?.ap || 0;
+        const totalAP = this.gameEngine.playerData?.tap || 0;
+        context.fillStyle = '#cccccc';
+        context.font = '14px Arial';
+        context.fillText(`現在AP: ${currentAP} / 総AP: ${totalAP}`, x + 15, y + 70);
+    }
+
+    /**
+     * ユーザー名変更ボタンを描画
+     */
+    renderUsernameChangeButton(context, x, y, width) {
+        const buttonWidth = 200;
+        const buttonHeight = 40;
+        const isFocused = this.focusedElement === this.tabs.length + 1;
+        
+        // ボタン背景
+        context.fillStyle = isFocused ? '#6bb0ff' : '#4a90e2';
+        context.fillRect(x, y, buttonWidth, buttonHeight);
+        
+        // ボタン枠線
+        context.strokeStyle = '#333';
+        context.lineWidth = 1;
+        context.strokeRect(x, y, buttonWidth, buttonHeight);
+        
+        // ボタンテキスト
+        context.fillStyle = '#ffffff';
+        context.font = '16px Arial';
+        context.textAlign = 'center';
+        context.fillText('ユーザー名変更', x + buttonWidth / 2, y + 25);
+        
+        return y + buttonHeight + 20;
+    }
+
+    /**
+     * データ管理セクションを描画
+     */
+    renderDataManagementSection(context, x, y, width) {
+        // セクション背景
+        context.fillStyle = '#1a1a2e';
+        context.fillRect(x, y, width, 120);
+        
+        // セクション枠線
+        context.strokeStyle = '#333';
+        context.lineWidth = 1;
+        context.strokeRect(x, y, width, 120);
+        
+        // セクションタイトル
+        context.fillStyle = '#4a90e2';
+        context.font = 'bold 18px Arial';
+        context.textAlign = 'left';
+        context.fillText('データ管理', x + 15, y + 25);
+        
+        // エクスポートボタン
+        const exportButtonWidth = 150;
+        const exportButtonHeight = 35;
+        const exportButtonX = x + 15;
+        const exportButtonY = y + 40;
+        const isExportFocused = this.focusedElement === this.tabs.length + 2;
+        
+        context.fillStyle = isExportFocused ? '#6bb0ff' : '#4a90e2';
+        context.fillRect(exportButtonX, exportButtonY, exportButtonWidth, exportButtonHeight);
+        
+        context.strokeStyle = '#333';
+        context.lineWidth = 1;
+        context.strokeRect(exportButtonX, exportButtonY, exportButtonWidth, exportButtonHeight);
+        
+        context.fillStyle = '#ffffff';
+        context.font = '14px Arial';
+        context.textAlign = 'center';
+        context.fillText('データエクスポート', exportButtonX + exportButtonWidth / 2, exportButtonY + 22);
+        
+        // インポートボタン
+        const importButtonWidth = 150;
+        const importButtonHeight = 35;
+        const importButtonX = x + 15 + exportButtonWidth + 20;
+        const importButtonY = y + 40;
+        const isImportFocused = this.focusedElement === this.tabs.length + 3;
+        
+        context.fillStyle = isImportFocused ? '#6bb0ff' : '#4a90e2';
+        context.fillRect(importButtonX, importButtonY, importButtonWidth, importButtonHeight);
+        
+        context.strokeStyle = '#333';
+        context.lineWidth = 1;
+        context.strokeRect(importButtonX, importButtonY, importButtonWidth, importButtonHeight);
+        
+        context.fillStyle = '#ffffff';
+        context.font = '14px Arial';
+        context.textAlign = 'center';
+        context.fillText('データインポート', importButtonX + importButtonWidth / 2, importButtonY + 22);
+        
+        // 説明テキスト
+        context.fillStyle = '#cccccc';
+        context.font = '12px Arial';
+        context.textAlign = 'left';
+        context.fillText('※ データのバックアップと復元が可能です', x + 15, y + 100);
+    }
+
+    /**
+     * ダイアログを描画
+     */
+    renderDialog(context) {
+        const canvas = this.gameEngine.canvas;
+        
+        // オーバーレイ背景
+        context.fillStyle = 'rgba(0, 0, 0, 0.7)';
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // ダイアログサイズ
+        const dialogWidth = Math.min(500, canvas.width - 40);
+        const dialogHeight = 250;
+        const dialogX = (canvas.width - dialogWidth) / 2;
+        const dialogY = (canvas.height - dialogHeight) / 2;
+        
+        // ダイアログ背景
+        context.fillStyle = '#2a2a3e';
+        context.fillRect(dialogX, dialogY, dialogWidth, dialogHeight);
+        
+        // ダイアログ枠線
+        context.strokeStyle = '#4a90e2';
+        context.lineWidth = 2;
+        context.strokeRect(dialogX, dialogY, dialogWidth, dialogHeight);
+        
+        switch (this.showingDialog) {
+            case 'username':
+                this.renderUsernameDialog(context, dialogX, dialogY, dialogWidth, dialogHeight);
+                break;
+            case 'export':
+                this.renderExportDialog(context, dialogX, dialogY, dialogWidth, dialogHeight);
+                break;
+            case 'import':
+                this.renderImportDialog(context, dialogX, dialogY, dialogWidth, dialogHeight);
+                break;
+        }
+    }
+
+    /**
+     * ユーザー名変更ダイアログを描画
+     */
+    renderUsernameDialog(context, x, y, width, height) {
+        // タイトル
+        context.fillStyle = '#ffffff';
+        context.font = 'bold 20px Arial';
+        context.textAlign = 'center';
+        context.fillText('ユーザー名変更', x + width / 2, y + 30);
+        
+        // 現在のユーザー名
+        const currentUsername = this.gameEngine.playerData?.username || '未設定';
+        context.fillStyle = '#cccccc';
+        context.font = '14px Arial';
+        context.fillText(`現在: ${currentUsername}`, x + width / 2, y + 55);
+        
+        // 入力フィールド（シミュレーション）
+        const fieldX = x + 20;
+        const fieldY = y + 80;
+        const fieldWidth = width - 40;
+        const fieldHeight = 30;
+        
+        context.fillStyle = '#ffffff';
+        context.fillRect(fieldX, fieldY, fieldWidth, fieldHeight);
+        
+        context.strokeStyle = '#333';
+        context.lineWidth = 1;
+        context.strokeRect(fieldX, fieldY, fieldWidth, fieldHeight);
+        
+        // 入力テキスト表示
+        context.fillStyle = '#000000';
+        context.font = '16px Arial';
+        context.textAlign = 'left';
+        const inputText = this.dialogData.newUsername || '';
+        context.fillText(inputText + '|', fieldX + 10, fieldY + 20);
+        
+        // エラーメッセージ
+        if (this.dialogData.error) {
+            context.fillStyle = '#cc0000';
+            context.font = '12px Arial';
+            context.textAlign = 'center';
+            context.fillText(this.dialogData.error, x + width / 2, y + 130);
+        }
+        
+        // ボタン
+        this.renderDialogButtons(context, x, y + height - 60, width);
+    }
+
+    /**
+     * エクスポートダイアログを描画
+     */
+    renderExportDialog(context, x, y, width, height) {
+        // タイトル
+        context.fillStyle = '#ffffff';
+        context.font = 'bold 20px Arial';
+        context.textAlign = 'center';
+        context.fillText('データエクスポート', x + width / 2, y + 30);
+        
+        if (this.dialogData.exportData) {
+            // エクスポート完了
+            context.fillStyle = '#00aa00';
+            context.font = '16px Arial';
+            context.fillText('エクスポート完了！', x + width / 2, y + 70);
+            
+            context.fillStyle = '#cccccc';
+            context.font = '14px Arial';
+            context.fillText('データをクリップボードにコピーしました', x + width / 2, y + 95);
+        } else {
+            // エクスポート処理中
+            context.fillStyle = '#cccccc';
+            context.font = '16px Arial';
+            context.fillText('データを準備中...', x + width / 2, y + 70);
+        }
+        
+        // ボタン
+        this.renderDialogButtons(context, x, y + height - 60, width);
+    }
+
+    /**
+     * インポートダイアログを描画
+     */
+    renderImportDialog(context, x, y, width, height) {
+        // タイトル
+        context.fillStyle = '#ffffff';
+        context.font = 'bold 20px Arial';
+        context.textAlign = 'center';
+        context.fillText('データインポート', x + width / 2, y + 30);
+        
+        // 説明
+        context.fillStyle = '#cccccc';
+        context.font = '14px Arial';
+        context.fillText('JSONデータを貼り付けてください', x + width / 2, y + 55);
+        
+        // 入力エリア（シミュレーション）
+        const fieldX = x + 20;
+        const fieldY = y + 80;
+        const fieldWidth = width - 40;
+        const fieldHeight = 80;
+        
+        context.fillStyle = '#ffffff';
+        context.fillRect(fieldX, fieldY, fieldWidth, fieldHeight);
+        
+        context.strokeStyle = '#333';
+        context.lineWidth = 1;
+        context.strokeRect(fieldX, fieldY, fieldWidth, fieldHeight);
+        
+        // エラーメッセージ
+        if (this.dialogData.error) {
+            context.fillStyle = '#cc0000';
+            context.font = '12px Arial';
+            context.textAlign = 'center';
+            context.fillText(this.dialogData.error, x + width / 2, y + 180);
+        }
+        
+        // ボタン
+        this.renderDialogButtons(context, x, y + height - 60, width);
+    }
+
+    /**
+     * ダイアログボタンを描画
+     */
+    renderDialogButtons(context, x, y, width) {
+        const buttonWidth = 80;
+        const buttonHeight = 35;
+        const buttonSpacing = 20;
+        const totalButtonWidth = buttonWidth * 2 + buttonSpacing;
+        const buttonStartX = x + (width - totalButtonWidth) / 2;
+        
+        // OKボタン
+        context.fillStyle = '#4a90e2';
+        context.fillRect(buttonStartX, y, buttonWidth, buttonHeight);
+        
+        context.strokeStyle = '#333';
+        context.lineWidth = 1;
+        context.strokeRect(buttonStartX, y, buttonWidth, buttonHeight);
+        
+        context.fillStyle = '#ffffff';
+        context.font = '14px Arial';
+        context.textAlign = 'center';
+        context.fillText('OK', buttonStartX + buttonWidth / 2, y + 22);
+        
+        // キャンセルボタン
+        const cancelButtonX = buttonStartX + buttonWidth + buttonSpacing;
+        context.fillStyle = '#666666';
+        context.fillRect(cancelButtonX, y, buttonWidth, buttonHeight);
+        
+        context.strokeStyle = '#333';
+        context.lineWidth = 1;
+        context.strokeRect(cancelButtonX, y, buttonWidth, buttonHeight);
+        
+        context.fillStyle = '#ffffff';
+        context.font = '14px Arial';
+        context.textAlign = 'center';
+        context.fillText('キャンセル', cancelButtonX + buttonWidth / 2, y + 22);
     }
 
     /**
@@ -826,6 +1159,12 @@ export class UserInfoScene extends Scene {
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
         
+        // ダイアログが表示されている場合はダイアログの処理を優先
+        if (this.showingDialog) {
+            this.handleDialogClick(x, y);
+            return;
+        }
+        
         // タブクリック処理
         if (y >= this.headerHeight - this.tabHeight && y <= this.headerHeight) {
             const tabIndex = Math.floor(x / (canvas.width / this.tabs.length));
@@ -836,6 +1175,11 @@ export class UserInfoScene extends Scene {
             }
         }
         
+        // ユーザー管理画面のボタンクリック処理
+        if (this.currentTab === 'management') {
+            this.handleManagementClick(x, y);
+        }
+        
         // 戻るボタンクリック処理
         if (x >= 50 && x <= 170 && y >= canvas.height - 70 && y <= canvas.height - 20) {
             this.sceneManager.switchScene('menu');
@@ -844,9 +1188,277 @@ export class UserInfoScene extends Scene {
     }
 
     /**
+     * ユーザー管理画面のクリック処理
+     */
+    handleManagementClick(x, y) {
+        const canvas = this.gameEngine.canvas;
+        const contentY = this.headerHeight + this.contentPadding;
+        
+        // ユーザー名変更ボタン
+        const usernameButtonY = contentY + 100;
+        if (x >= this.contentPadding && x <= this.contentPadding + 200 && 
+            y >= usernameButtonY && y <= usernameButtonY + 40) {
+            this.showUsernameChangeDialog();
+            return;
+        }
+        
+        // データエクスポートボタン
+        const dataManagementY = contentY + 160;
+        const exportButtonY = dataManagementY + 40;
+        if (x >= this.contentPadding + 15 && x <= this.contentPadding + 15 + 150 && 
+            y >= exportButtonY && y <= exportButtonY + 35) {
+            this.showDataExportDialog();
+            return;
+        }
+        
+        // データインポートボタン
+        const importButtonX = this.contentPadding + 15 + 150 + 20;
+        if (x >= importButtonX && x <= importButtonX + 150 && 
+            y >= exportButtonY && y <= exportButtonY + 35) {
+            this.showDataImportDialog();
+            return;
+        }
+    }
+
+    /**
+     * ダイアログのクリック処理
+     */
+    handleDialogClick(x, y) {
+        const canvas = this.gameEngine.canvas;
+        const dialogWidth = Math.min(500, canvas.width - 40);
+        const dialogHeight = 250;
+        const dialogX = (canvas.width - dialogWidth) / 2;
+        const dialogY = (canvas.height - dialogHeight) / 2;
+        
+        // ダイアログ外をクリックした場合は閉じる
+        if (x < dialogX || x > dialogX + dialogWidth || y < dialogY || y > dialogY + dialogHeight) {
+            this.closeDialog();
+            return;
+        }
+        
+        // ボタンクリック処理
+        const buttonY = dialogY + dialogHeight - 60;
+        const buttonWidth = 80;
+        const buttonHeight = 35;
+        const buttonSpacing = 20;
+        const totalButtonWidth = buttonWidth * 2 + buttonSpacing;
+        const buttonStartX = dialogX + (dialogWidth - totalButtonWidth) / 2;
+        
+        // OKボタン
+        if (x >= buttonStartX && x <= buttonStartX + buttonWidth && 
+            y >= buttonY && y <= buttonY + buttonHeight) {
+            this.handleDialogOK();
+            return;
+        }
+        
+        // キャンセルボタン
+        const cancelButtonX = buttonStartX + buttonWidth + buttonSpacing;
+        if (x >= cancelButtonX && x <= cancelButtonX + buttonWidth && 
+            y >= buttonY && y <= buttonY + buttonHeight) {
+            this.closeDialog();
+            return;
+        }
+    }
+
+    /**
+     * ユーザー名変更ダイアログを表示
+     */
+    showUsernameChangeDialog() {
+        this.showingDialog = 'username';
+        this.dialogData = {
+            newUsername: this.gameEngine.playerData?.username || '',
+            error: null
+        };
+    }
+
+    /**
+     * データエクスポートダイアログを表示
+     */
+    showDataExportDialog() {
+        this.showingDialog = 'export';
+        this.dialogData = {
+            exportData: null,
+            error: null
+        };
+        
+        // データエクスポート処理を開始
+        setTimeout(() => {
+            this.exportUserData();
+        }, 500);
+    }
+
+    /**
+     * データインポートダイアログを表示
+     */
+    showDataImportDialog() {
+        this.showingDialog = 'import';
+        this.dialogData = {
+            importData: '',
+            error: null
+        };
+    }
+
+    /**
+     * ダイアログを閉じる
+     */
+    closeDialog() {
+        this.showingDialog = null;
+        this.dialogData = {};
+    }
+
+    /**
+     * ダイアログのOKボタン処理
+     */
+    handleDialogOK() {
+        switch (this.showingDialog) {
+            case 'username':
+                this.processUsernameChange();
+                break;
+            case 'export':
+                this.closeDialog();
+                break;
+            case 'import':
+                this.processDataImport();
+                break;
+        }
+    }
+
+    /**
+     * ユーザー名変更処理
+     */
+    processUsernameChange() {
+        const newUsername = this.dialogData.newUsername || '';
+        
+        // バリデーション
+        if (!this.validateUsername(newUsername)) {
+            return; // エラーメッセージは validateUsername 内で設定
+        }
+        
+        // ユーザー名を更新
+        if (this.gameEngine.playerData) {
+            this.updateUsername(newUsername);
+            this.closeDialog();
+            this.showError('ユーザー名を更新しました');
+        } else {
+            this.dialogData.error = 'プレイヤーデータが見つかりません';
+        }
+    }
+
+    /**
+     * ユーザー名バリデーション
+     */
+    validateUsername(username) {
+        // 長さチェック
+        if (username.length > 10) {
+            this.dialogData.error = 'ユーザー名は10文字以下で入力してください';
+            return false;
+        }
+        
+        // 空文字チェック
+        if (username.trim().length === 0) {
+            this.dialogData.error = 'ユーザー名を入力してください';
+            return false;
+        }
+        
+        // 有効文字チェック（英数字、ひらがな、カタカナ、漢字、一部記号）
+        const validPattern = /^[a-zA-Z0-9あ-んア-ン一-龯ー・\-_]+$/;
+        if (!validPattern.test(username)) {
+            this.dialogData.error = '使用できない文字が含まれています';
+            return false;
+        }
+        
+        this.dialogData.error = null;
+        return true;
+    }
+
+    /**
+     * ユーザー名更新
+     */
+    updateUsername(newUsername) {
+        try {
+            // PlayerDataのユーザー名を更新
+            this.gameEngine.playerData.username = newUsername;
+            
+            // データを保存
+            this.gameEngine.playerData.save();
+            
+        } catch (error) {
+            console.error('Failed to update username:', error);
+            this.showError('ユーザー名の更新に失敗しました');
+        }
+    }
+
+    /**
+     * データエクスポート処理
+     */
+    exportUserData() {
+        try {
+            const exportData = {
+                playerData: {
+                    username: this.gameEngine.playerData?.username || '',
+                    ap: this.gameEngine.playerData?.ap || 0,
+                    tap: this.gameEngine.playerData?.tap || 0,
+                    highScores: this.gameEngine.playerData?.highScores || {},
+                    unlockedStages: this.gameEngine.playerData?.unlockedStages || [],
+                    ownedItems: this.gameEngine.playerData?.ownedItems || []
+                },
+                statistics: this.statisticsData,
+                achievements: this.achievementsData,
+                exportDate: new Date().toISOString(),
+                version: '1.0'
+            };
+            
+            const jsonData = JSON.stringify(exportData, null, 2);
+            
+            // クリップボードにコピー
+            navigator.clipboard.writeText(jsonData).then(() => {
+                this.dialogData.exportData = jsonData;
+            }).catch(() => {
+                // フォールバック：ダウンロードリンクを作成
+                this.createDownloadLink(jsonData);
+                this.dialogData.exportData = jsonData;
+            });
+            
+        } catch (error) {
+            console.error('Export error:', error);
+            this.dialogData.error = 'エクスポートに失敗しました';
+        }
+    }
+
+    /**
+     * ダウンロードリンクを作成
+     */
+    createDownloadLink(data) {
+        const blob = new Blob([data], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `bubblepop_backup_${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    /**
+     * データインポート処理
+     */
+    processDataImport() {
+        // 実際の実装では、クリップボードから読み取りまたはファイル選択を行う
+        // ここではプレースホルダー実装
+        this.dialogData.error = 'インポート機能は実装中です';
+    }
+
+    /**
      * キーボード処理
      */
     handleKeyboard(event) {
+        // ダイアログが表示されている場合
+        if (this.showingDialog) {
+            this.handleDialogKeyboard(event);
+            return;
+        }
+        
         switch (event.key) {
             case 'Escape':
                 this.sceneManager.switchScene('menu');
@@ -874,6 +1486,58 @@ export class UserInfoScene extends Scene {
             case 'Enter':
                 this.activateFocusedElement();
                 break;
+        }
+    }
+
+    /**
+     * ダイアログのキーボード処理
+     */
+    handleDialogKeyboard(event) {
+        switch (event.key) {
+            case 'Escape':
+                this.closeDialog();
+                break;
+            case 'Enter':
+                this.handleDialogOK();
+                break;
+            default:
+                // ユーザー名変更ダイアログでの文字入力
+                if (this.showingDialog === 'username') {
+                    this.handleUsernameInput(event);
+                }
+                break;
+        }
+    }
+
+    /**
+     * ユーザー名入力処理
+     */
+    handleUsernameInput(event) {
+        event.preventDefault();
+        
+        const currentUsername = this.dialogData.newUsername || '';
+        
+        if (event.key === 'Backspace') {
+            // バックスペース処理
+            this.dialogData.newUsername = currentUsername.slice(0, -1);
+        } else if (event.key.length === 1) {
+            // 通常の文字入力
+            const newChar = event.key;
+            
+            // 長さ制限チェック
+            if (currentUsername.length >= 10) {
+                this.dialogData.error = 'ユーザー名は10文字以下で入力してください';
+                return;
+            }
+            
+            // 有効文字チェック
+            const validPattern = /^[a-zA-Z0-9あ-んア-ン一-龯ー・\-_]$/;
+            if (validPattern.test(newChar)) {
+                this.dialogData.newUsername = currentUsername + newChar;
+                this.dialogData.error = null;
+            } else {
+                this.dialogData.error = '使用できない文字が含まれています';
+            }
         }
     }
 
