@@ -11,6 +11,10 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+// Environment check
+const isCI = process.env.CI === 'true' || process.env.GITHUB_ACTIONS === 'true';
+const isVerbose = process.argv.includes('--verbose') || process.env.VERBOSE === 'true';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -29,6 +33,32 @@ const CONFIG_FILES = {
         path.join(PROJECT_ROOT, 'tests', 'unit', 'BubbleManager.test.js')
     ]
 };
+
+// ファイル存在確認
+function checkRequiredFiles() {
+    const requiredFiles = [
+        CONFIG_FILES.gameBalance,
+        CONFIG_FILES.gameConfig,
+        CONFIG_FILES.bubbleClass
+    ];
+    
+    const missingFiles = [];
+    for (const file of requiredFiles) {
+        if (!fs.existsSync(file)) {
+            missingFiles.push(file);
+        }
+    }
+    
+    if (missingFiles.length > 0) {
+        Logger.error('必須ファイルが見つかりません:');
+        missingFiles.forEach(file => Logger.error(`  - ${file}`));
+        throw new Error('Required configuration files are missing');
+    }
+    
+    if (isVerbose) {
+        Logger.info('すべての必須ファイルが確認されました');
+    }
+}
 
 // ログ出力用ヘルパー
 const Logger = {
@@ -558,7 +588,14 @@ class ReportGenerator {
 // メイン実行関数
 async function main() {
     try {
+        // ファイル存在確認
+        checkRequiredFiles();
+        
         Logger.section('ゲームバランス設定検証を開始');
+        
+        if (isCI) {
+            Logger.info('CI環境で実行中...');
+        }
         
         // 設定抽出
         Logger.info('設定ファイルから値を抽出中...');
@@ -618,7 +655,22 @@ async function main() {
         
     } catch (error) {
         Logger.error(`検証スクリプト実行エラー: ${error.message}`);
-        console.error(error.stack);
+        
+        if (isVerbose || isCI) {
+            console.error('Stack trace:', error.stack);
+        }
+        
+        // CI環境では詳細なエラー情報を出力
+        if (isCI) {
+            console.error('Environment info:');
+            console.error(`  Node.js version: ${process.version}`);
+            console.error(`  Platform: ${process.platform}`);
+            console.error(`  Architecture: ${process.arch}`);
+            console.error(`  Working directory: ${process.cwd()}`);
+            console.error(`  Script directory: ${__dirname}`);
+            console.error(`  Project root: ${PROJECT_ROOT}`);
+        }
+        
         process.exit(1);
     }
 }

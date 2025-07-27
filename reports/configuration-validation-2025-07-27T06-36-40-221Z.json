@@ -1,0 +1,94 @@
+{
+  "timestamp": "2025-07-27T06:36:40.220Z",
+  "summary": {
+    "totalBubbleTypes": 8,
+    "totalIssues": 0,
+    "totalWarnings": 1,
+    "criticalIssues": 0,
+    "buildShouldFail": false
+  },
+  "details": {
+    "consistency": {
+      "issues": [],
+      "warnings": []
+    },
+    "logical": {
+      "issues": [],
+      "warnings": [
+        {
+          "type": "BOSS_WEAK",
+          "severity": "MEDIUM",
+          "message": "Boss bubble が弱すぎる可能性: Boss=1, Normal=1"
+        }
+      ]
+    },
+    "performance": {
+      "warnings": []
+    }
+  },
+  "configurations": {
+    "gameBalance": {
+      "normal": {
+        "score": 15
+      },
+      "stone": {
+        "score": 25
+      },
+      "iron": {
+        "score": 40
+      },
+      "diamond": {
+        "score": 60
+      },
+      "boss": {
+        "score": 100
+      },
+      "pink": {
+        "score": 20
+      },
+      "poison": {
+        "score": 30
+      },
+      "spiky": {
+        "score": 35
+      }
+    },
+    "bubbleHardcoded": {},
+    "testExpectations": {
+      "Bubble.test.js": [
+        100,
+        100,
+        0,
+        1,
+        15,
+        50,
+        30000,
+        2,
+        25,
+        55,
+        8,
+        100,
+        90,
+        20,
+        25,
+        15,
+        1500,
+        8000,
+        35,
+        30,
+        1,
+        15
+      ],
+      "GameBalance.test.js": [
+        15,
+        25,
+        40,
+        60,
+        100,
+        20,
+        30,
+        35
+      ]
+    }
+  }
+}
