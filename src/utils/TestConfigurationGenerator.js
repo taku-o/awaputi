@@ -388,6 +388,27 @@ jest.mock('../../src/utils/ErrorHandler.js', () => ({
     }))
 }));
 
+// Mock GameEngine for Bubble constructor
+const createMockGameEngine = () => ({
+    canvas: { width: 800, height: 600 },
+    ctx: {
+        arc: jest.fn(),
+        fill: jest.fn(),
+        stroke: jest.fn(),
+        fillText: jest.fn(),
+        save: jest.fn(),
+        restore: jest.fn(),
+        translate: jest.fn(),
+        beginPath: jest.fn(),
+        closePath: jest.fn()
+    },
+    currentStage: { name: 'normal' },
+    getInputManager: jest.fn(() => ({
+        isMousePressed: jest.fn(() => false),
+        getMousePosition: jest.fn(() => ({ x: 0, y: 0 }))
+    }))
+});
+
 describe('Bubble Class Configuration Tests', () => {
     let mockCanvas;
     let mockContext;

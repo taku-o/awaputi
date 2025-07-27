@@ -305,11 +305,6 @@ describe('Bubble Class Tests', () => {
     });
     
     describe('Test Generation Metadata', () => {
-        const bubbleTypes = [
-            'normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink', 'clock',
-            'electric', 'poison', 'spiky', 'escaping', 'boss'
-        ];
-        
         test('should have consistent test structure', () => {
             // This test validates that our test generation worked correctly
             const metadata = {
