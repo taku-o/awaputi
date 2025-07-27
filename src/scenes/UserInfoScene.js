@@ -33,6 +33,16 @@ export class UserInfoScene extends Scene {
         // エラーハンドリング
         this.errorMessage = null;
         this.errorTimeout = null;
+        
+        // アクセシビリティ設定
+        this.accessibilitySettings = {
+            highContrast: false,
+            largeText: false,
+            reducedMotion: false
+        };
+        
+        // アクセシビリティ設定を読み込み
+        this.loadAccessibilitySettings();
     }
 
     enter() {
@@ -221,24 +231,41 @@ export class UserInfoScene extends Scene {
         const canvas = this.gameEngine.canvas;
         const contentWidth = canvas.width - this.contentPadding * 2;
         const sectionHeight = 180;
-        const columnWidth = contentWidth / 2;
+        
+        // レスポンシブレイアウト判定
+        const layout = this.getResponsiveLayout(canvas.width);
         
         // スクロール対応
         const scrollOffset = this.scrollPosition;
-        
         let currentY = y + this.contentPadding - scrollOffset;
         
-        // 基本統計セクション
-        currentY = this.renderBasicStatsSection(context, this.contentPadding, currentY, columnWidth, sectionHeight);
-        
-        // 泡統計セクション
-        currentY = this.renderBubbleStatsSection(context, this.contentPadding + columnWidth, currentY - sectionHeight - 20, columnWidth, sectionHeight);
-        
-        // コンボ統計セクション
-        currentY = this.renderComboStatsSection(context, this.contentPadding, currentY, columnWidth, sectionHeight);
-        
-        // ステージ統計セクション
-        this.renderStageStatsSection(context, this.contentPadding + columnWidth, currentY - sectionHeight - 20, columnWidth, sectionHeight);
+        if (layout.columns === 1) {
+            // 小画面: 1列レイアウト
+            currentY = this.renderBasicStatsSection(context, this.contentPadding, currentY, contentWidth, sectionHeight);
+            currentY = this.renderBubbleStatsSection(context, this.contentPadding, currentY + 20, contentWidth, sectionHeight);
+            currentY = this.renderComboStatsSection(context, this.contentPadding, currentY + 20, contentWidth, sectionHeight);
+            this.renderStageStatsSection(context, this.contentPadding, currentY + 20, contentWidth, sectionHeight);
+        } else {
+            // 中画面・大画面: 2列レイアウト
+            const columnWidth = contentWidth / 2;
+            currentY = this.renderBasicStatsSection(context, this.contentPadding, currentY, columnWidth, sectionHeight);
+            currentY = this.renderBubbleStatsSection(context, this.contentPadding + columnWidth, currentY - sectionHeight - 20, columnWidth, sectionHeight);
+            currentY = this.renderComboStatsSection(context, this.contentPadding, currentY, columnWidth, sectionHeight);
+            this.renderStageStatsSection(context, this.contentPadding + columnWidth, currentY - sectionHeight - 20, columnWidth, sectionHeight);
+        }
+    }
+
+    /**
+     * レスポンシブレイアウト設定を取得
+     */
+    getResponsiveLayout(screenWidth) {
+        if (screenWidth < 600) {
+            return { columns: 1, fontSize: 'small' };
+        } else if (screenWidth < 800) {
+            return { columns: 2, fontSize: 'medium' };
+        } else {
+            return { columns: 2, fontSize: 'large' };
+        }
     }
 
     /**
@@ -1568,7 +1595,13 @@ export class UserInfoScene extends Scene {
      * フォーカスナビゲーション
      */
     navigateFocus(direction) {
-        const maxFocus = this.tabs.length; // タブ数 + 戻るボタン
+        let maxFocus = this.tabs.length; // タブ数 + 戻るボタン
+        
+        // ユーザー管理画面では追加のフォーカス可能要素がある
+        if (this.currentTab === 'management') {
+            maxFocus += 3; // ユーザー名変更、エクスポート、インポートボタン
+        }
+        
         this.focusedElement = (this.focusedElement + direction + maxFocus + 1) % (maxFocus + 1);
     }
 
@@ -1578,6 +1611,23 @@ export class UserInfoScene extends Scene {
     activateFocusedElement() {
         if (this.focusedElement < this.tabs.length) {
             this.switchTab(this.tabs[this.focusedElement]);
+        } else if (this.currentTab === 'management') {
+            // ユーザー管理画面のボタン処理
+            const buttonIndex = this.focusedElement - this.tabs.length;
+            switch (buttonIndex) {
+                case 0: // 戻るボタン
+                    this.sceneManager.switchScene('menu');
+                    break;
+                case 1: // ユーザー名変更ボタン
+                    this.showUsernameChangeDialog();
+                    break;
+                case 2: // エクスポートボタン
+                    this.showDataExportDialog();
+                    break;
+                case 3: // インポートボタン
+                    this.showDataImportDialog();
+                    break;
+            }
         } else if (this.focusedElement === this.tabs.length) {
             this.sceneManager.switchScene('menu');
         }
@@ -1597,5 +1647,49 @@ export class UserInfoScene extends Scene {
             this.errorMessage = null;
             this.errorTimeout = null;
         }, 3000);
+    }
+
+    /**
+     * アクセシビリティ設定を読み込み
+     */
+    loadAccessibilitySettings() {
+        try {
+            // ブラウザのメディアクエリから設定を検出
+            this.accessibilitySettings.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            this.accessibilitySettings.highContrast = window.matchMedia('(prefers-contrast: high)').matches;
+            
+            // ローカルストレージから設定を読み込み
+            const saved = localStorage.getItem('bubblePop_accessibility');
+            if (saved) {
+                const settings = JSON.parse(saved);
+                this.accessibilitySettings = { ...this.accessibilitySettings, ...settings };
+            }
+        } catch (error) {
+            console.warn('Failed to load accessibility settings:', error);
+        }
+    }
+
+    /**
+     * アクセシビリティ対応の色を取得
+     */
+    getAccessibleColor(normalColor, highContrastColor) {
+        return this.accessibilitySettings.highContrast ? highContrastColor : normalColor;
+    }
+
+    /**
+     * アクセシビリティ対応のフォントサイズを取得
+     */
+    getAccessibleFontSize(normalSize) {
+        const multiplier = this.accessibilitySettings.largeText ? 1.5 : 1;
+        return Math.round(normalSize * multiplier);
+    }
+
+    /**
+     * タッチデバイス対応のボタンサイズを計算
+     */
+    getTouchFriendlySize(normalSize) {
+        // タッチデバイスの場合は最小44pxのタップ領域を確保
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        return isTouchDevice ? Math.max(normalSize, 44) : normalSize;
     }
 }
