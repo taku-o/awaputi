@@ -175,36 +175,42 @@ class ConfigurationExtractor {
             const bubbleConfigs = {};
             
             // _getHardcodedConfig メソッドから設定を抽出
-            const hardcodedConfigMatch = content.match(/_getHardcodedConfig\(\)\s*\{([\s\S]*?)\n\s*\}/);
+            const hardcodedConfigMatch = content.match(/_getHardcodedConfig\(\)\s*\{([\s\S]*?)return configs\[this\.type\]/);
             if (hardcodedConfigMatch) {
                 const configContent = hardcodedConfigMatch[1];
                 
-                // switch文のケースを抽出
-                const caseMatches = configContent.matchAll(/case\s+'(\w+)':\s*return\s*\{([^}]*)\}/g);
-                
-                for (const match of caseMatches) {
-                    const [, bubbleType, configStr] = match;
-                    bubbleConfigs[bubbleType] = {};
+                // configs オブジェクトの設定を抽出
+                const configsMatch = configContent.match(/const configs = \{([\s\S]*?)\};/);
+                if (configsMatch) {
+                    const configsContent = configsMatch[1];
                     
-                    // 各プロパティを抽出
-                    const healthMatch = configStr.match(/health:\s*(\d+)/);
-                    if (healthMatch) {
-                        bubbleConfigs[bubbleType].health = parseInt(healthMatch[1]);
-                    }
+                    // 各バブルタイプの設定を抽出
+                    const bubbleTypeMatches = configsContent.matchAll(/(\w+):\s*\{([^}]*(?:\{[^}]*\}[^}]*)*)\}/g);
                     
-                    const scoreMatch = configStr.match(/score:\s*(\d+)/);
-                    if (scoreMatch) {
-                        bubbleConfigs[bubbleType].score = parseInt(scoreMatch[1]);
-                    }
-                    
-                    const sizeMatch = configStr.match(/size:\s*(\d+)/);
-                    if (sizeMatch) {
-                        bubbleConfigs[bubbleType].size = parseInt(sizeMatch[1]);
-                    }
-                    
-                    const maxAgeMatch = configStr.match(/maxAge:\s*(\d+)/);
-                    if (maxAgeMatch) {
-                        bubbleConfigs[bubbleType].maxAge = parseInt(maxAgeMatch[1]);
+                    for (const match of bubbleTypeMatches) {
+                        const [, bubbleType, configStr] = match;
+                        bubbleConfigs[bubbleType] = {};
+                        
+                        // 各プロパティを抽出
+                        const healthMatch = configStr.match(/health:\s*(\d+)/);
+                        if (healthMatch) {
+                            bubbleConfigs[bubbleType].health = parseInt(healthMatch[1]);
+                        }
+                        
+                        const scoreMatch = configStr.match(/score:\s*(\d+)/);
+                        if (scoreMatch) {
+                            bubbleConfigs[bubbleType].score = parseInt(scoreMatch[1]);
+                        }
+                        
+                        const sizeMatch = configStr.match(/size:\s*(\d+)/);
+                        if (sizeMatch) {
+                            bubbleConfigs[bubbleType].size = parseInt(sizeMatch[1]);
+                        }
+                        
+                        const maxAgeMatch = configStr.match(/maxAge:\s*(\d+)/);
+                        if (maxAgeMatch) {
+                            bubbleConfigs[bubbleType].maxAge = parseInt(maxAgeMatch[1]);
+                        }
                     }
                 }
             }

@@ -94,7 +94,7 @@ describe('Bubble Class Tests', () => {
             const config = bubble.getTypeConfig();
             
             expect(config.health).toBe(2);
-            expect(config.score).toBe(35); // From hardcoded config
+            expect(config.score).toBe(25); // From hardcoded config
             expect(config.size).toBe(55);
         });
         
@@ -103,7 +103,7 @@ describe('Bubble Class Tests', () => {
             const config = bubble.getTypeConfig();
             
             expect(config.health).toBe(8); // From hardcoded implementation
-            expect(config.score).toBe(800); // From hardcoded config
+            expect(config.score).toBe(100); // From hardcoded config
             expect(config.size).toBe(90); // From hardcoded implementation
         });
         
@@ -111,7 +111,7 @@ describe('Bubble Class Tests', () => {
             const bubble = new Bubble('pink', { x: 100, y: 100 });
             const config = bubble.getTypeConfig();
             
-            expect(config.score).toBe(25); // From hardcoded config
+            expect(config.score).toBe(20); // From hardcoded config
             expect(config.healAmount).toBe(25);
             expect(config.color).toBe('#FFB6C1');
         });
@@ -257,7 +257,7 @@ describe('Bubble Class Tests', () => {
             const bubble = new Bubble('spiky', { x: 100, y: 100 });
             const config = bubble.getTypeConfig();
             
-            expect(config.score).toBe(85); // From hardcoded config
+            expect(config.score).toBe(35); // From hardcoded config
             expect(config).toHaveProperty('chainRadius');
         });
         
@@ -265,7 +265,7 @@ describe('Bubble Class Tests', () => {
             const bubble = new Bubble('poison', { x: 100, y: 100 });
             const config = bubble.getTypeConfig();
             
-            expect(config.score).toBe(8); // From hardcoded config
+            expect(config.score).toBe(30); // From hardcoded config
             expect(config).toHaveProperty('damageAmount');
         });
     });

@@ -147,28 +147,28 @@ export class Bubble {
                 size: 55,
                 maxAge: 16000, // 15000 -> 16000 (少し長く)
                 color: '#696969',
-                score: 35
+                score: 25
             },
             iron: {
                 health: 3,
                 size: 60,
                 maxAge: 20000, // 変更なし
                 color: '#708090',
-                score: 65
+                score: 40
             },
             diamond: {
                 health: 4, // 5 -> 4 (少し弱く)
                 size: 65,
                 maxAge: 22000, // 25000 -> 22000 (少し短く)
                 color: '#B0E0E6',
-                score: 120
+                score: 60
             },
             pink: {
                 health: 1,
                 size: 45,
                 maxAge: 10000, // 8000 -> 10000 (少し長く)
                 color: '#FFB6C1',
-                score: 25,
+                score: 20,
                 healAmount: 25 // 20 -> 25 (回復量増加)
             },
             poison: {
@@ -176,7 +176,7 @@ export class Bubble {
                 size: 48,
                 maxAge: 14000, // 12000 -> 14000 (少し長く)
                 color: '#9370DB',
-                score: 8,
+                score: 30,
                 damageAmount: 8 // 10 -> 8 (ダメージ軽減)
             },
             spiky: {
@@ -184,7 +184,7 @@ export class Bubble {
                 size: 52,
                 maxAge: 13000, // 12000 -> 13000 (少し長く)
                 color: '#FF6347',
-                score: 85,
+                score: 35,
                 chainRadius: 120 // 150 -> 120 (連鎖範囲を少し狭く)
             },
             rainbow: {
@@ -241,7 +241,7 @@ export class Bubble {
                 size: 90, // 100 -> 90 (少し小さく)
                 maxAge: 35000, // 30000 -> 35000 (少し長く)
                 color: '#8B0000',
-                score: 800
+                score: 100
             },
             // 新しい泡タイプ
             golden: {
