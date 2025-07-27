@@ -1,6 +1,8 @@
 /**
  * 基本泡クラス
  */
+import { getConfigurationManager } from '../core/ConfigurationManager.js';
+
 export class Bubble {
     constructor(type, position) {
         this.type = type;
@@ -32,8 +34,106 @@ export class Bubble {
     
     /**
      * 泡の種類別設定を取得
+     * ConfigurationManagerから設定を取得し、フォールバックとしてハードコード値を使用
      */
     getTypeConfig() {
+        try {
+            const configManager = getConfigurationManager();
+            
+            // ConfigurationManagerから設定を取得を試行
+            const health = configManager.get('game', `bubbles.${this.type}.health`);
+            const size = configManager.get('game', `bubbles.${this.type}.size`);
+            const maxAge = configManager.get('game', `bubbles.${this.type}.maxAge`);
+            const score = configManager.get('game', `bubbles.${this.type}.score`);
+            const color = configManager.get('game', `bubbles.${this.type}.color`);
+            
+            // 設定が見つかった場合はそれを使用
+            if (health !== null || size !== null || maxAge !== null || score !== null || color !== null) {
+                const config = {};
+                if (health !== null) config.health = health;
+                if (size !== null) config.size = size;
+                if (maxAge !== null) config.maxAge = maxAge;
+                if (score !== null) config.score = score;
+                if (color !== null) config.color = color;
+                
+                // 特殊効果プロパティも取得
+                const specialEffects = this._getSpecialEffectsFromConfig(configManager);
+                Object.assign(config, specialEffects);
+                
+                return config;
+            }
+        } catch (error) {
+            console.warn(`[Bubble] ConfigurationManager利用失敗、フォールバック値を使用: ${error.message}`);
+        }
+        
+        // フォールバック: ハードコード設定
+        return this._getHardcodedConfig();
+    }
+    
+    /**
+     * ConfigurationManagerから特殊効果設定を取得
+     * @param {Object} configManager - 設定管理インスタンス
+     * @returns {Object} 特殊効果設定
+     * @private
+     */
+    _getSpecialEffectsFromConfig(configManager) {
+        const effects = {};
+        
+        switch (this.type) {
+            case 'pink':
+                const healAmount = configManager.get('game', 'bubbles.pink.healAmount');
+                if (healAmount !== null) effects.healAmount = healAmount;
+                break;
+                
+            case 'poison':
+                const damageAmount = configManager.get('game', 'bubbles.poison.damageAmount');
+                if (damageAmount !== null) effects.damageAmount = damageAmount;
+                break;
+                
+            case 'electric':
+                const shakeIntensity = configManager.get('game', 'bubbles.electric.shakeIntensity');
+                const disableDuration = configManager.get('game', 'bubbles.electric.disableDuration');
+                if (shakeIntensity !== null) effects.shakeIntensity = shakeIntensity;
+                if (disableDuration !== null) effects.disableDuration = disableDuration;
+                break;
+                
+            case 'rainbow':
+                const bonusTimeMs = configManager.get('game', 'bubbles.rainbow.bonusTimeMs');
+                if (bonusTimeMs !== null) effects.bonusTimeMs = bonusTimeMs;
+                break;
+                
+            case 'clock':
+                const timeStopMs = configManager.get('game', 'bubbles.clock.timeStopMs');
+                if (timeStopMs !== null) effects.timeStopMs = timeStopMs;
+                break;
+                
+            case 'score':
+                const bonusScore = configManager.get('game', 'bubbles.score.bonusScore');
+                if (bonusScore !== null) effects.bonusScore = bonusScore;
+                break;
+                
+            case 'spiky':
+                const chainRadius = configManager.get('game', 'bubbles.spiky.chainRadius');
+                if (chainRadius !== null) effects.chainRadius = chainRadius;
+                break;
+                
+            case 'escaping':
+                const escapeSpeed = configManager.get('game', 'bubbles.escaping.escapeSpeed');
+                const escapeRadius = configManager.get('game', 'bubbles.escaping.escapeRadius');
+                if (escapeSpeed !== null) effects.escapeSpeed = escapeSpeed;
+                if (escapeRadius !== null) effects.escapeRadius = escapeRadius;
+                break;
+        }
+        
+        return effects;
+    }
+    
+    /**
+     * ハードコード設定を取得（フォールバック）
+     * @returns {Object} 泡設定
+     * @private
+     */
+    _getHardcodedConfig() {
         const configs = {
             normal: {
                 health: 1,
@@ -47,28 +147,28 @@ export class Bubble {
                 size: 55,
                 maxAge: 16000, // 15000 -> 16000 (少し長く)
                 color: '#696969',
-                score: 35
+                score: 25
             },
             iron: {
                 health: 3,
                 size: 60,
                 maxAge: 20000, // 変更なし
                 color: '#708090',
-                score: 65
+                score: 40
             },
             diamond: {
                 health: 4, // 5 -> 4 (少し弱く)
                 size: 65,
                 maxAge: 22000, // 25000 -> 22000 (少し短く)
                 color: '#B0E0E6',
-                score: 120
+                score: 60
             },
             pink: {
                 health: 1,
                 size: 45,
                 maxAge: 10000, // 8000 -> 10000 (少し長く)
                 color: '#FFB6C1',
-                score: 25,
+                score: 20,
                 healAmount: 25 // 20 -> 25 (回復量増加)
             },
             poison: {
@@ -76,7 +176,7 @@ export class Bubble {
                 size: 48,
                 maxAge: 14000, // 12000 -> 14000 (少し長く)
                 color: '#9370DB',
-                score: 8,
+                score: 30,
                 damageAmount: 8 // 10 -> 8 (ダメージ軽減)
             },
             spiky: {
@@ -84,7 +184,7 @@ export class Bubble {
                 size: 52,
                 maxAge: 13000, // 12000 -> 13000 (少し長く)
                 color: '#FF6347',
-                score: 85,
+                score: 35,
                 chainRadius: 120 // 150 -> 120 (連鎖範囲を少し狭く)
             },
             rainbow: {
@@ -141,7 +241,7 @@ export class Bubble {
                 size: 90, // 100 -> 90 (少し小さく)
                 maxAge: 35000, // 30000 -> 35000 (少し長く)
                 color: '#8B0000',
-                score: 800
+                score: 100
             },
             // 新しい泡タイプ
             golden: {
@@ -659,31 +759,6 @@ export class Bubble {
         return Math.floor(baseScore);
     }
     
-    /**
-     * 更新処理
-     */
-    update(deltaTime, mousePosition) {
-        // 年齢を更新
-        this.age += deltaTime;
-        
-        // 寿命チェック
-        if (this.age >= this.maxAge) {
-            this.isAlive = false;
-        }
-        
-        // 特殊タイプの更新処理
-        this.updateSpecialBehavior(deltaTime, mousePosition);
-        
-        // 位置更新（速度がある場合）
-        if (this.velocity.x !== 0 || this.velocity.y !== 0) {
-            this.position.x += this.velocity.x * (deltaTime / 1000);
-            this.position.y += this.velocity.y * (deltaTime / 1000);
-            
-            // 摩擦による減速
-            this.velocity.x *= 0.98;
-            this.velocity.y *= 0.98;
-        }
-    }
     
     /**
      * 特殊タイプの振る舞い更新

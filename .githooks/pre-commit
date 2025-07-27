@@ -1,0 +1,270 @@
+#!/bin/sh
+
+# Pre-commit hook for game balance configuration validation
+# ゲームバランス設定のpre-commitフック
+
+set -e
+
+# カラー出力定義
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# ログ関数
+log_info() {
+    echo "${BLUE}[INFO]${NC} $1"
+}
+
+log_warn() {
+    echo "${YELLOW}[WARN]${NC} $1"
+}
+
+log_error() {
+    echo "${RED}[ERROR]${NC} $1"
+}
+
+log_success() {
+    echo "${GREEN}[SUCCESS]${NC} $1"
+}
+
+# ヘッダー出力
+echo "============================================================"
+echo "  Game Balance Configuration Pre-Commit Validation"
+echo "  ゲームバランス設定の事前検証"
+echo "============================================================"
+
+# プロジェクトルートディレクトリの検出
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+# 設定関連ファイルが変更されたかチェック
+CONFIG_FILES_CHANGED=false
+CHANGED_FILES=$(git diff --cached --name-only)
+
+log_info "コミット対象ファイルをチェック中..."
+
+# 設定関連ファイルのパターン
+CONFIG_PATTERNS=(
+    "src/config/GameBalance.js"
+    "src/config/GameConfig.js"
+    "src/config/AudioConfig.js"
+    "src/config/EffectsConfig.js"
+    "src/config/PerformanceConfig.js"
+    "src/bubbles/Bubble.js"
+    "tests/unit/Bubble.test.js"
+    "tests/unit/GameBalance.test.js"
+    "tests/unit/BubbleManager.test.js"
+)
+
+for pattern in "${CONFIG_PATTERNS[@]}"; do
+    if echo "$CHANGED_FILES" | grep -q "$pattern"; then
+        CONFIG_FILES_CHANGED=true
+        log_info "設定関連ファイルの変更を検出: $pattern"
+    fi
+done
+
+# 設定ファイルに変更がない場合はスキップ
+if [ "$CONFIG_FILES_CHANGED" = false ]; then
+    log_info "設定関連ファイルの変更がありません。検証をスキップします。"
+    exit 0
+fi
+
+log_info "設定関連ファイルの変更を検出しました。検証を実行します..."
+
+# Node.jsの存在チェック
+if ! command -v node >/dev/null 2>&1; then
+    log_error "Node.js が見つかりません。Node.jsをインストールしてください。"
+    exit 1
+fi
+
+# npm の存在チェック
+if ! command -v npm >/dev/null 2>&1; then
+    log_error "npm が見つかりません。npmをインストールしてください。"
+    exit 1
+fi
+
+# プロジェクトディレクトリに移動
+cd "$PROJECT_ROOT"
+
+# package.json の存在チェック
+if [ ! -f "package.json" ]; then
+    log_error "package.json が見つかりません。プロジェクトルートから実行してください。"
+    exit 1
+fi
+
+# 検証スクリプトの存在チェック
+VALIDATION_SCRIPT="scripts/validate-configuration.js"
+if [ ! -f "$VALIDATION_SCRIPT" ]; then
+    log_error "設定検証スクリプトが見つかりません: $VALIDATION_SCRIPT"
+    exit 1
+fi
+
+# 一時的な設定検証（軽量版）の実行
+log_info "設定の基本検証を実行中..."
+
+# Stage済みのファイルを一時的にワーキングディレクトリに復元
+TEMP_DIR=$(mktemp -d)
+trap "rm -rf $TEMP_DIR" EXIT
+
+# 変更されたファイルをテンポラリディレクトリにコピー
+for pattern in "${CONFIG_PATTERNS[@]}"; do
+    if echo "$CHANGED_FILES" | grep -q "$pattern"; then
+        if [ -f "$pattern" ]; then
+            # ディレクトリ構造を作成
+            mkdir -p "$TEMP_DIR/$(dirname "$pattern")"
+            
+            # Stageされたバージョンを一時ファイルに抽出
+            git show ":$pattern" > "$TEMP_DIR/$pattern" 2>/dev/null || {
+                # 新規ファイルの場合は現在のファイルをコピー
+                cp "$pattern" "$TEMP_DIR/$pattern"
+            }
+        fi
+    fi
+done
+
+# 簡易設定チェック関数
+check_syntax() {
+    local file="$1"
+    local temp_file="$TEMP_DIR/$file"
+    
+    if [ -f "$temp_file" ]; then
+        log_info "シンタックスチェック: $file"
+        
+        # JavaScriptシンタックスチェック
+        if ! node -c "$temp_file" >/dev/null 2>&1; then
+            log_error "シンタックスエラー: $file"
+            return 1
+        fi
+        
+        # 基本的な設定値チェック
+        if echo "$file" | grep -q "GameBalance.js"; then
+            # GameBalance.jsの基本チェック
+            if ! grep -q "baseScores" "$temp_file"; then
+                log_warn "GameBalance.js: baseScores が見つかりません"
+            fi
+            
+            if ! grep -q "bubbles" "$temp_file"; then
+                log_warn "GameBalance.js: bubbles 設定が見つかりません"
+            fi
+        fi
+        
+        if echo "$file" | grep -q "Bubble.js"; then
+            # Bubble.jsの基本チェック
+            if ! grep -q "getTypeConfig" "$temp_file"; then
+                log_warn "Bubble.js: getTypeConfig メソッドが見つかりません"
+            fi
+        fi
+    fi
+    
+    return 0
+}
+
+# 設定ファイルの基本チェック
+SYNTAX_ERROR=false
+
+for pattern in "${CONFIG_PATTERNS[@]}"; do
+    if echo "$CHANGED_FILES" | grep -q "$pattern"; then
+        if ! check_syntax "$pattern"; then
+            SYNTAX_ERROR=true
+        fi
+    fi
+done
+
+# シンタックスエラーがある場合は即座に終了
+if [ "$SYNTAX_ERROR" = true ]; then
+    log_error "シンタックスエラーが検出されました。修正してから再度コミットしてください。"
+    exit 1
+fi
+
+# フル検証の実行（時間がかかる可能性がある）
+log_info "詳細な設定検証を実行中..."
+
+# 検証スクリプトを実行（タイムアウト付き）
+VALIDATION_OUTPUT=""
+VALIDATION_EXIT_CODE=0
+
+# タイムアウト付きで検証実行（30秒）
+if command -v timeout >/dev/null 2>&1; then
+    # Linux/Unix系
+    VALIDATION_OUTPUT=$(timeout 30s npm run validate:config 2>&1) || VALIDATION_EXIT_CODE=$?
+elif command -v gtimeout >/dev/null 2>&1; then
+    # macOS (brew install coreutils)
+    VALIDATION_OUTPUT=$(gtimeout 30s npm run validate:config 2>&1) || VALIDATION_EXIT_CODE=$?
+else
+    # タイムアウトなしで実行
+    log_warn "timeout コマンドが見つかりません。タイムアウトなしで実行します。"
+    VALIDATION_OUTPUT=$(npm run validate:config 2>&1) || VALIDATION_EXIT_CODE=$?
+fi
+
+# 検証結果の処理
+if [ $VALIDATION_EXIT_CODE -eq 124 ]; then
+    log_warn "設定検証がタイムアウトしました（30秒）。手動で検証を実行してください："
+    log_warn "  npm run validate:config"
+    log_warn "タイムアウトのため、コミットを続行します。"
+elif [ $VALIDATION_EXIT_CODE -ne 0 ]; then
+    log_error "設定検証が失敗しました："
+    echo "$VALIDATION_OUTPUT"
+    echo ""
+    log_error "設定の不整合を修正してから再度コミットしてください。"
+    log_info "詳細な検証結果:"
+    log_info "  npm run validate:config:verbose"
+    exit 1
+else
+    log_success "設定検証が正常に完了しました。"
+    
+    # 警告がある場合は表示
+    if echo "$VALIDATION_OUTPUT" | grep -q "警告"; then
+        log_warn "設定に関する警告があります："
+        echo "$VALIDATION_OUTPUT" | grep "警告" || true
+        echo ""
+        log_info "警告は修正を推奨しますが、コミットを続行します。"
+    fi
+fi
+
+# 自動修正の提案
+if [ $VALIDATION_EXIT_CODE -ne 0 ]; then
+    echo ""
+    log_info "自動修正オプション："
+    log_info "  1. 設定値の調整: src/config/GameBalance.js を確認"
+    log_info "  2. テスト期待値の更新: tests/unit/ ディレクトリのテストファイルを確認"
+    log_info "  3. バランス調整ガイドライン参照: docs/balance-guidelines.md"
+    echo ""
+fi
+
+# レポートファイルの確認
+REPORTS_DIR="$PROJECT_ROOT/reports"
+if [ -d "$REPORTS_DIR" ]; then
+    LATEST_REPORT=$(ls -t "$REPORTS_DIR"/configuration-validation-*.json 2>/dev/null | head -n1)
+    if [ -n "$LATEST_REPORT" ]; then
+        log_info "詳細なレポート: $(basename "$LATEST_REPORT")"
+    fi
+fi
+
+# Git LFS の設定ファイルチェック（もし使用している場合）
+if [ -f ".gitattributes" ] && grep -q "*.json filter=lfs" .gitattributes; then
+    log_info "Git LFS設定を確認しています..."
+    
+    # レポートファイルをLFS追跡対象から除外する設定を提案
+    if [ -d "$REPORTS_DIR" ] && ! grep -q "reports/*.json !filter" .gitattributes; then
+        log_warn "レポートファイルがLFS追跡対象になる可能性があります。"
+        log_info "除外したい場合は .gitattributes に以下を追加してください："
+        log_info "  reports/*.json !filter"
+    fi
+fi
+
+# コミットメッセージの提案（設定変更の場合）
+if [ "$CONFIG_FILES_CHANGED" = true ]; then
+    echo ""
+    log_info "設定変更のコミットメッセージ例："
+    log_info "  🎯 fix: ゲームバランス設定の調整"
+    log_info "  ⚙️  config: [バブルタイプ]の[プロパティ]を[旧値]から[新値]に変更"
+    log_info "  🔧 balance: [変更理由や影響の説明]"
+    echo ""
+fi
+
+log_success "✅ Pre-commit validation completed successfully!"
+log_info "コミットを続行します..."
+
+exit 0

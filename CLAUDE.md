@@ -90,6 +90,33 @@ npm run test:all
 - **ResponsiveCanvasManager**: レスポンシブレイアウト対応
 - **ErrorHandler**: 包括的エラーハンドリング
 
+### ゲームバランステスト同期プロジェクト（Issue #19対応）
+**目標**: ゲームバランス設定とテストの同期を行い、設定値の統一とバランス調整のガイドライン作成
+
+#### 問題の概要
+現在、テストで期待される設定値と実際のGameBalance.jsの値に不整合があり、ゲームバランスとテストの信頼性に影響を与えています。主な不整合：
+- Normal bubble score: テスト期待値10 vs 実装値15
+- Boss bubble health: テスト期待値5 vs 実装値8
+- Boss bubble size: テスト期待値100 vs 実装値90
+- Electric bubble intensity: テスト期待値20 vs 実装値15
+- Electric bubble duration: テスト期待値2000ms vs 実装値1500ms
+
+#### 実装アプローチ
+- **Phase 1**: 設定不整合の分析とドキュメント化
+- **Phase 2**: 設定検証システムの作成
+- **Phase 3**: 特定された設定不整合の解決
+- **Phase 4**: 統一設定アクセスの実装
+- **Phase 5**: バランス調整ガイドラインの作成
+- **Phase 6**: 自動化された整合性チェックの実装
+- **Phase 7**: 整合性のためのテストスイート更新
+- **Phase 8**: ドキュメントと開発者ツールの作成
+
+#### 主要コンポーネント
+- **ConfigurationSynchronizer**: 設定ソース間の整合性確保
+- **BalanceConfigurationValidator**: 設定値の検証ルール
+- **TestConfigurationGenerator**: 正規設定からテスト期待値生成
+- **BalanceGuidelinesManager**: バランス調整ガイドライン管理
+
 ### 重要な特徴
 - **ビルドプロセスなし**: 純粋なES6モジュール、直接ブラウザで実行
 - **依存管理**: package.json でJest、Playwrightを管理（開発環境のみ）

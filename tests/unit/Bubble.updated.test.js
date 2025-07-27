@@ -10,6 +10,21 @@
 import { jest } from '@jest/globals';
 import { Bubble } from '../../src/bubbles/Bubble.js';
 
+// Mock dependencies
+jest.mock('../../src/core/ConfigurationManager.js', () => ({
+    getConfigurationManager: jest.fn(() => ({
+        get: jest.fn(),
+        watch: jest.fn(),
+        set: jest.fn()
+    }))
+}));
+
+jest.mock('../../src/utils/ErrorHandler.js', () => ({
+    getErrorHandler: jest.fn(() => ({
+        handleError: jest.fn()
+    }))
+}));
+
 describe('Bubble Class Tests', () => {
     let mockGameEngine;
     
@@ -50,18 +65,17 @@ describe('Bubble Class Tests', () => {
     
     describe('Constructor and Basic Properties', () => {
         test('should create bubble with correct initial properties', () => {
-            // Bubble constructor expects (type, position)
-            const bubble = new Bubble('normal', { x: 100, y: 100 });
+            const bubble = new Bubble(mockGameEngine, 100, 100, 'normal');
             
             expect(bubble.type).toBe('normal');
-            expect(bubble.position.x).toBe(100);
-            expect(bubble.position.y).toBe(100);
-            expect(bubble.isAlive).toBe(true);
+            expect(bubble.x).toBe(100);
+            expect(bubble.y).toBe(100);
+            expect(bubble.isAlive()).toBe(true);
             expect(bubble.age).toBe(0);
         });
         
         test('should initialize with type-specific configuration', () => {
-            const normalBubble = new Bubble('normal', { x: 100, y: 100 });
+            const normalBubble = new Bubble(mockGameEngine, 100, 100, 'normal');
             const config = normalBubble.getTypeConfig();
             
             // 基本プロパティの存在確認
@@ -80,57 +94,57 @@ describe('Bubble Class Tests', () => {
     
     describe('Configuration Values (Based on Current GameBalance.js)', () => {
         test('normal bubble should have correct configuration', () => {
-            const bubble = new Bubble('normal', { x: 100, y: 100 });
+            const bubble = new Bubble(mockGameEngine, 100, 100, 'normal');
             const config = bubble.getTypeConfig();
             
             expect(config.health).toBe(1);
-            expect(config.score).toBe(15); // From hardcoded config
+            expect(config.score).toBe(15); // From GameBalance.js baseScores.normal
             expect(config.size).toBe(50);
-            expect(config.maxAge).toBe(12000); // Updated from implementation
+            expect(config.maxAge).toBe(30000);
         });
         
         test('stone bubble should have correct configuration', () => {
-            const bubble = new Bubble('stone', { x: 100, y: 100 });
+            const bubble = new Bubble(mockGameEngine, 100, 100, 'stone');
             const config = bubble.getTypeConfig();
             
             expect(config.health).toBe(2);
-            expect(config.score).toBe(25); // From hardcoded config
+            expect(config.score).toBe(25); // From GameBalance.js baseScores.stone
             expect(config.size).toBe(55);
         });
         
         test('boss bubble should have correct configuration', () => {
-            const bubble = new Bubble('boss', { x: 100, y: 100 });
+            const bubble = new Bubble(mockGameEngine, 100, 100, 'boss');
             const config = bubble.getTypeConfig();
             
-            expect(config.health).toBe(8); // From hardcoded implementation
-            expect(config.score).toBe(100); // From hardcoded config
-            expect(config.size).toBe(90); // From hardcoded implementation
+            expect(config.health).toBe(8); // Updated to match current implementation
+            expect(config.score).toBe(100); // From GameBalance.js baseScores.boss
+            expect(config.size).toBe(90); // Updated to match current implementation
         });
         
         test('pink bubble should have healing properties', () => {
-            const bubble = new Bubble('pink', { x: 100, y: 100 });
+            const bubble = new Bubble(mockGameEngine, 100, 100, 'pink');
             const config = bubble.getTypeConfig();
             
-            expect(config.score).toBe(20); // From hardcoded config
+            expect(config.score).toBe(20); // From GameBalance.js baseScores.pink
             expect(config.healAmount).toBe(25);
             expect(config.color).toBe('#FFB6C1');
         });
         
         test('electric bubble should have special effects', () => {
-            const bubble = new Bubble('electric', { x: 100, y: 100 });
+            const bubble = new Bubble(mockGameEngine, 100, 100, 'electric');
             const config = bubble.getTypeConfig();
             
-            expect(config.shakeIntensity).toBeDefined();
-            expect(config.shakeIntensity).toBe(15); // From hardcoded config
-            expect(config.disableDuration).toBe(1500); // From hardcoded config
+            expect(config.effects).toBeDefined();
+            expect(config.effects.intensity).toBe(15); // Updated to match resolved discrepancy
+            expect(config.effects.duration).toBe(1500); // Updated to match resolved discrepancy
         });
         
         test('rainbow bubble should have special effects', () => {
-            const bubble = new Bubble('rainbow', { x: 100, y: 100 });
+            const bubble = new Bubble(mockGameEngine, 100, 100, 'rainbow');
             const config = bubble.getTypeConfig();
             
-            expect(config.bonusTimeMs).toBeDefined();
-            expect(config.bonusTimeMs).toBe(8000); // From hardcoded config
+            expect(config.effects).toBeDefined();
+            expect(config.effects.duration).toBe(8000); // Bonus time duration
         });
     });
     
@@ -144,15 +158,15 @@ describe('Bubble Class Tests', () => {
         });
         
         test('should handle damage correctly', () => {
-            const bubble = new Bubble('normal', { x: 100, y: 100 });
-            const initialHealth = bubble.health;
+            const bubble = new Bubble(mockGameEngine, 100, 100, 'normal');
+            const initialHealth = bubble.currentHealth;
             
             bubble.takeDamage(1);
-            expect(bubble.health).toBe(initialHealth - 1);
+            expect(bubble.currentHealth).toBe(initialHealth - 1);
         });
         
         test('should be marked for removal when health reaches zero', () => {
-            const bubble = new Bubble('normal', { x: 100, y: 100 });
+            const bubble = new Bubble(mockGameEngine, 100, 100, 'normal');
             const config = bubble.getTypeConfig();
             
             // Damage enough to destroy the bubble
@@ -160,18 +174,18 @@ describe('Bubble Class Tests', () => {
                 bubble.takeDamage(1);
             }
             
-            expect(bubble.isAlive).toBe(false);
+            expect(bubble.shouldBeRemoved()).toBe(true);
         });
         
         test('should be marked for removal when exceeding max age', () => {
-            const bubble = new Bubble('normal', { x: 100, y: 100 });
+            const bubble = new Bubble(mockGameEngine, 100, 100, 'normal');
             const config = bubble.getTypeConfig();
             
             // Age beyond max age
             bubble.age = config.maxAge + 1000;
             bubble.update(16.67);
             
-            expect(bubble.isAlive).toBe(false);
+            expect(bubble.shouldBeRemoved()).toBe(true);
         });
     });
     
@@ -244,29 +258,28 @@ describe('Bubble Class Tests', () => {
     
     describe('Special Bubble Types', () => {
         test('escaping bubble should have movement behavior', () => {
-            const bubble = new Bubble('escaping', { x: 100, y: 100 });
+            const bubble = new Bubble(mockGameEngine, 100, 100, 'escaping');
             
             expect(bubble.type).toBe('escaping');
             // Escaping bubbles should have special behavior when cursor approaches
             const config = bubble.getTypeConfig();
-            expect(config).toHaveProperty('escapeSpeed');
-            expect(config).toHaveProperty('escapeRadius');
+            expect(config).toHaveProperty('escapeDistance');
         });
         
         test('spiky bubble should have damage properties', () => {
-            const bubble = new Bubble('spiky', { x: 100, y: 100 });
+            const bubble = new Bubble(mockGameEngine, 100, 100, 'spiky');
             const config = bubble.getTypeConfig();
             
-            expect(config.score).toBe(35); // From hardcoded config
-            expect(config).toHaveProperty('chainRadius');
+            expect(config.score).toBe(35); // From GameBalance.js baseScores.spiky
+            expect(config).toHaveProperty('damageAmount');
         });
         
         test('poison bubble should have poison effects', () => {
-            const bubble = new Bubble('poison', { x: 100, y: 100 });
+            const bubble = new Bubble(mockGameEngine, 100, 100, 'poison');
             const config = bubble.getTypeConfig();
             
-            expect(config.score).toBe(30); // From hardcoded config
-            expect(config).toHaveProperty('damageAmount');
+            expect(config.score).toBe(30); // From GameBalance.js baseScores.poison
+            expect(config).toHaveProperty('poisonDamage');
         });
     });
     
@@ -292,11 +305,6 @@ describe('Bubble Class Tests', () => {
     });
     
     describe('Test Generation Metadata', () => {
-        const bubbleTypes = [
-            'normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink', 'clock',
-            'electric', 'poison', 'spiky', 'escaping', 'boss'
-        ];
-        
         test('should have consistent test structure', () => {
             // This test validates that our test generation worked correctly
             const metadata = {
