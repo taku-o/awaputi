@@ -158,39 +158,22 @@ jobs:
         run: |
           echo "🔍 Running performance impact validation..."
           
-          # Check for performance-impacting configurations
-          node -e "
-            import fs from 'fs';
+          # Simple file-based checks without inline JavaScript
+          if [ -f "src/config/GameBalance.js" ]; then
+            echo "✅ GameBalance.js found"
             
-            const configFiles = [
-              'src/config/GameBalance.js',
-              'src/config/PerformanceConfig.js'
-            ];
+            # Check for potentially expensive configurations
+            if grep -q "particleCount.*[1-9][0-9][0-9]" src/config/GameBalance.js; then
+              echo "⚠️ High particle count detected in GameBalance.js"
+            fi
             
-            let performanceIssues = [];
-            
-            for (const file of configFiles) {
-              if (fs.existsSync(file)) {
-                const content = fs.readFileSync(file, 'utf8');
-                
-                // Check for potentially expensive configurations
-                if (content.includes('particleCount') && /particleCount:\s*[1-9]\d{2,}/.test(content)) {
-                  performanceIssues.push(\`High particle count detected in \${file}\`);
-                }
-                
-                if (content.includes('maxAge') && /maxAge:\s*[1-9]\d{0,2}/.test(content)) {
-                  performanceIssues.push(\`Very short bubble lifespan detected in \${file}\`);
-                }
-              }
-            }
-            
-            if (performanceIssues.length > 0) {
-              console.log('⚠️ Performance concerns detected:');
-              performanceIssues.forEach(issue => console.log(\`  - \${issue}\`));
-            } else {
-              console.log('✅ No performance issues detected');
-            }
-          "
+            if grep -q "maxAge.*[1-9][0-9]$" src/config/GameBalance.js; then
+              echo "⚠️ Very short bubble lifespan detected in GameBalance.js"
+            fi
+          else
+            echo "❌ GameBalance.js not found"
+            exit 1
+          fi
           
           echo "✅ Performance validation completed"
       
@@ -205,31 +188,28 @@ jobs:
           # Generate comprehensive report
           npm run validate:config:verbose > reports/ci/validation-report.txt 2>&1 || true
           
-          # Generate JSON report
-          node -e "
-            import fs from 'fs';
-            
-            const report = {
-              timestamp: new Date().toISOString(),
-              workflow: {
-                run_id: '${{ github.run_id }}',
-                run_number: '${{ github.run_number }}',
-                actor: '${{ github.actor }}',
-                event: '${{ github.event_name }}',
-                ref: '${{ github.ref }}',
-                sha: '${{ github.sha }}'
-              },
-              validation: {
-                type: '${{ matrix.validation-type }}',
-                node_version: process.version,
-                timeout: '${{ env.VALIDATION_TIMEOUT }}s'
-              },
-              environment: process.env.NODE_ENV || 'development'
-            };
-            
-            fs.writeFileSync('reports/ci/workflow-report.json', JSON.stringify(report, null, 2));
-            console.log('✅ Report generated: reports/ci/workflow-report.json');
-          "
+          # Generate simple JSON report
+          cat > reports/ci/workflow-report.json << EOF
+          {
+            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "workflow": {
+              "run_id": "${{ github.run_id }}",
+              "run_number": "${{ github.run_number }}",
+              "actor": "${{ github.actor }}",
+              "event": "${{ github.event_name }}",
+              "ref": "${{ github.ref }}",
+              "sha": "${{ github.sha }}"
+            },
+            "validation": {
+              "type": "${{ matrix.validation-type }}",
+              "node_version": "$(node --version)",
+              "timeout": "${{ env.VALIDATION_TIMEOUT }}s"
+            },
+            "environment": "${NODE_ENV:-development}"
+          }
+          EOF
+          
+          echo "✅ Report generated: reports/ci/workflow-report.json"
       
       - name: Upload validation reports
         if: always()
@@ -292,45 +272,32 @@ jobs:
         run: |
           echo "🎯 Validating configuration for bubble type: ${{ matrix.bubble-type }}"
           
-          # Extract configuration for specific bubble type
-          node -e "
-            import fs from 'fs';
-            
-            const bubbleType = '${{ matrix.bubble-type }}';
-            console.log(\`Checking configuration for bubble type: \${bubbleType}\`);
-            
-            // Check GameBalance.js
-            if (fs.existsSync('src/config/GameBalance.js')) {
-              const content = fs.readFileSync('src/config/GameBalance.js', 'utf8');
-              
-              // Look for bubble type in baseScores
-              const baseScoresMatch = content.match(/baseScores:\s*\{([^}]+)\}/s);
-              if (baseScoresMatch) {
-                const scoresContent = baseScoresMatch[1];
-                if (scoresContent.includes(bubbleType)) {
-                  console.log(\`✅ \${bubbleType} found in baseScores\`);
-                } else {
-                  console.log(\`⚠️ \${bubbleType} not found in baseScores\`);
-                }
-              }
-              
-              // Look for bubble type in bubbles configuration
-              const bubblesMatch = content.match(/bubbles:\s*\{([\s\S]*?)\n\s*\}/);
-              if (bubblesMatch) {
-                const bubblesContent = bubblesMatch[1];
-                if (bubblesContent.includes(bubbleType)) {
-                  console.log(\`✅ \${bubbleType} found in bubbles configuration\`);
-                } else {
-                  console.log(\`⚠️ \${bubbleType} not found in bubbles configuration\`);
-                }
-              }
-            } else {
-              console.log('❌ GameBalance.js not found');
-              process.exit(1);
-            }
-            
-            console.log(\`✅ Configuration check completed for \${bubbleType}\`);
-          "
+          BUBBLE_TYPE="${{ matrix.bubble-type }}"
+          
+          if [ ! -f "src/config/GameBalance.js" ]; then
+            echo "❌ GameBalance.js not found"
+            exit 1
+          fi
+          
+          echo "Checking configuration for bubble type: $BUBBLE_TYPE"
+          
+          # Check if bubble type exists in baseScores
+          if grep -q "$BUBBLE_TYPE.*:" src/config/GameBalance.js; then
+            echo "✅ $BUBBLE_TYPE found in GameBalance.js"
+          else
+            echo "⚠️ $BUBBLE_TYPE not found in GameBalance.js (may be expected for some types)"
+          fi
+          
+          # Check if bubble type exists in test files
+          if [ -f "tests/unit/Bubble.test.js" ]; then
+            if grep -q "$BUBBLE_TYPE" tests/unit/Bubble.test.js; then
+              echo "✅ $BUBBLE_TYPE found in Bubble.test.js"
+            else
+              echo "⚠️ $BUBBLE_TYPE not found in Bubble.test.js"
+            fi
+          fi
+          
+          echo "✅ Configuration check completed for $BUBBLE_TYPE"
 
   configuration-report:
     name: Generate Comprehensive Report
