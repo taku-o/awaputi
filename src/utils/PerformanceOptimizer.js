@@ -1,5 +1,6 @@
 import { getPerformanceConfig } from '../config/PerformanceConfig.js';
 import { getErrorHandler } from './ErrorHandler.js';
+import { getFrameStabilizer } from './FrameStabilizer.js';
 
 /**
  * パフォーマンス最適化システム
@@ -70,6 +71,9 @@ export class PerformanceOptimizer {
             issuesPredicted: 0,
             issuesActual: 0
         };
+        
+        // Frame Stabilizer integration
+        this.frameStabilizer = getFrameStabilizer(this.targetFPS);
         
         // 設定変更の監視
         this._setupConfigWatchers();
@@ -312,6 +316,13 @@ export class PerformanceOptimizer {
             
             // Memory pressure monitoring
             this.updateMemoryPressureLevel();
+            
+            // Frame Stabilizer integration - feed timing data
+            this.frameStabilizer.processFrameTiming(frameTime, currentTime);
+            
+            // Get stabilizer recommendations and apply if in adaptive mode
+            const stabilizerStatus = this.frameStabilizer.getStabilizationStatus();
+            this.integrateStabilizerRecommendations(stabilizerStatus);
         }
         
         this.lastFrameTime = currentTime;
@@ -445,6 +456,208 @@ export class PerformanceOptimizer {
         } else {
             this.stats.memoryPressureLevel = 1; // Minimal
         }
+    }
+    
+    /**
+     * Integrate Frame Stabilizer recommendations
+     * @param {object} stabilizerStatus - Frame stabilizer status and recommendations
+     */
+    integrateStabilizerRecommendations(stabilizerStatus) {
+        if (!this.adaptiveMode) return;
+        
+        const timing = stabilizerStatus.timing;
+        const adaptive = stabilizerStatus.adaptive;
+        const recommendations = stabilizerStatus.recommendations;
+        
+        // Update enhanced statistics with stabilizer data
+        this.stats.frameTimeVariance = timing.variance;
+        this.stats.stabilityScore = timing.stabilityScore;
+        
+        // Handle critical performance zones
+        if (adaptive.performanceZone === 'critical') {
+            this.recordPerformanceIssue('critical_stability_zone', {
+                zone: adaptive.performanceZone,
+                stabilityScore: timing.stabilityScore,
+                variance: timing.variance
+            });
+            
+            // Force to lowest quality for stability
+            if (this.performanceLevel !== 'low') {
+                this.setPerformanceLevel('low');
+                console.log('[PerformanceOptimizer] Forced to low quality due to critical stability');
+            }
+        } else if (adaptive.performanceZone === 'poor') {
+            // Reduce quality if not already done
+            if (this.performanceLevel === 'high') {
+                this.setPerformanceLevel('medium');
+                console.log('[PerformanceOptimizer] Reduced quality due to poor stability');
+            } else if (this.performanceLevel === 'medium') {
+                this.setPerformanceLevel('low');
+                console.log('[PerformanceOptimizer] Further reduced quality due to poor stability');
+            }
+        } else if (adaptive.performanceZone === 'optimal' && timing.stabilityScore > 0.9) {
+            // Potentially increase quality if stable
+            if (this.performanceLevel === 'low' && timing.stabilityScore > 0.95) {
+                this.setPerformanceLevel('medium');
+                console.log('[PerformanceOptimizer] Increased quality due to excellent stability');
+            } else if (this.performanceLevel === 'medium' && timing.stabilityScore > 0.98) {
+                this.setPerformanceLevel('high');
+                console.log('[PerformanceOptimizer] Increased quality due to optimal stability');
+            }
+        }
+        
+        // Handle high jitter situations
+        if (timing.jitterLevel > 7) {
+            this.recordPerformanceIssue('high_frame_jitter', {
+                jitterLevel: timing.jitterLevel,
+                smoothnessIndex: timing.smoothnessIndex
+            });
+            
+            // Apply anti-jitter measures
+            this.applyAntiJitterMeasures(timing.jitterLevel);
+        }
+        
+        // Adaptive target FPS integration
+        if (adaptive.currentTargetFPS !== this.targetFPS) {
+            const oldTarget = this.targetFPS;
+            this.targetFPS = adaptive.currentTargetFPS;
+            this.targetFrameTime = 1000 / this.targetFPS;
+            
+            console.log(`[PerformanceOptimizer] Synchronized target FPS: ${oldTarget} → ${this.targetFPS}`);
+        }
+        
+        // Store stabilizer insights for detailed analysis
+        this.stats.stabilizerInsights = {
+            performanceZone: adaptive.performanceZone,
+            confidenceLevel: adaptive.confidenceLevel,
+            jitterLevel: timing.jitterLevel,
+            smoothnessIndex: timing.smoothnessIndex,
+            consistencyRating: timing.consistencyRating,
+            vsyncDetected: stabilizerStatus.pacing.vsyncDetected,
+            tearingRisk: stabilizerStatus.pacing.tearingRisk
+        };
+    }
+    
+    /**
+     * Apply anti-jitter measures
+     * @param {number} jitterLevel - Current jitter level (0-10)
+     */
+    applyAntiJitterMeasures(jitterLevel) {
+        if (jitterLevel > 8) {
+            // Severe jitter - aggressive measures
+            this.settings.maxParticles = Math.floor(this.settings.maxParticles * 0.5);
+            this.settings.effectQuality = Math.min(this.settings.effectQuality, 0.3);
+            console.log('[PerformanceOptimizer] Applied aggressive anti-jitter measures');
+        } else if (jitterLevel > 5) {
+            // Moderate jitter - gentle reduction
+            this.settings.maxParticles = Math.floor(this.settings.maxParticles * 0.7);
+            this.settings.effectQuality = Math.min(this.settings.effectQuality, 0.6);
+            console.log('[PerformanceOptimizer] Applied moderate anti-jitter measures');
+        }
+        
+        // Update stats
+        this.stats.optimizationCount++;
+        this.stats.lastOptimization = {
+            level: this.performanceLevel,
+            time: Date.now(),
+            reason: `Anti-jitter: Level ${jitterLevel.toFixed(1)}`,
+            type: 'anti_jitter'
+        };
+    }
+    
+    /**
+     * Get comprehensive frame stability analysis
+     * @returns {object} Detailed stability analysis combining PerformanceOptimizer and FrameStabilizer data
+     */
+    getFrameStabilityAnalysis() {
+        const stabilizerStatus = this.frameStabilizer.getStabilizationStatus();
+        const currentAnalysis = this.analyzeFrameStability();
+        
+        return {
+            // Combined metrics
+            overall: {
+                stabilityScore: (currentAnalysis.stabilityScore + stabilizerStatus.timing.stabilityScore) / 2,
+                variance: stabilizerStatus.timing.variance,
+                consistencyRating: stabilizerStatus.timing.consistencyRating,
+                performanceZone: stabilizerStatus.adaptive.performanceZone,
+                healthScore: this.stats.performanceHealthScore
+            },
+            
+            // PerformanceOptimizer analysis
+            optimizer: {
+                analysis: currentAnalysis,
+                prediction: this.predictPerformanceIssues(),
+                recommendations: currentAnalysis.recommendations
+            },
+            
+            // FrameStabilizer analysis
+            stabilizer: {
+                timing: stabilizerStatus.timing,
+                adaptive: stabilizerStatus.adaptive,
+                pacing: stabilizerStatus.pacing,
+                recommendations: stabilizerStatus.recommendations
+            },
+            
+            // Integration insights
+            integration: {
+                targetFPSSync: this.targetFPS === stabilizerStatus.adaptive.currentTargetFPS,
+                optimizationHistory: this.getOptimizationHistory(),
+                stabilizerInsights: this.stats.stabilizerInsights || {}
+            }
+        };
+    }
+    
+    /**
+     * Get optimization history
+     * @returns {Array} Recent optimization actions
+     */
+    getOptimizationHistory() {
+        const history = [];
+        
+        if (this.stats.lastOptimization) {
+            history.push(this.stats.lastOptimization);
+        }
+        
+        // Add stabilizer adjustment history if available
+        if (this.frameStabilizer && this.frameStabilizer.adaptiveTargeting.adjustmentHistory) {
+            history.push(...this.frameStabilizer.adaptiveTargeting.adjustmentHistory.slice(-5));
+        }
+        
+        return history.sort((a, b) => (b.time || b.timestamp) - (a.time || a.timestamp));
+    }
+    
+    /**
+     * Force frame rate stabilization
+     * @param {number} targetFPS - Target FPS
+     * @param {string} mode - Stabilization mode ('conservative', 'balanced', 'aggressive')
+     */
+    forceFrameStabilization(targetFPS, mode = 'balanced') {
+        console.log(`[PerformanceOptimizer] Forcing frame stabilization to ${targetFPS} FPS (${mode})`);
+        
+        // Update our target
+        this.targetFPS = targetFPS;
+        this.targetFrameTime = 1000 / targetFPS;
+        
+        // Force stabilizer to the same target
+        this.frameStabilizer.forceStabilization(targetFPS, mode);
+        
+        // Set appropriate performance level for the target
+        if (targetFPS >= 60) {
+            this.setPerformanceLevel('high');
+        } else if (targetFPS >= 45) {
+            this.setPerformanceLevel('medium');
+        } else {
+            this.setPerformanceLevel('low');
+        }
+        
+        // Record the action
+        this.stats.optimizationCount++;
+        this.stats.lastOptimization = {
+            level: this.performanceLevel,
+            time: Date.now(),
+            reason: `Forced stabilization: ${targetFPS} FPS (${mode})`,
+            type: 'forced_stabilization'
+        };
     }
     
     /**
