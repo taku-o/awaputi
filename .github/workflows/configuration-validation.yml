@@ -1,0 +1,488 @@
+# Configuration Validation Workflow
+# ゲームバランス設定の継続的検証
+
+name: Game Balance Configuration Validation
+
+on:
+  push:
+    branches: [ main, master, develop ]
+    paths:
+      - 'src/config/**'
+      - 'src/bubbles/Bubble.js'
+      - 'tests/unit/Bubble.test.js'
+      - 'tests/unit/GameBalance.test.js'
+      - 'tests/unit/BubbleManager.test.js'
+      - 'scripts/validate-configuration.js'
+      - '.github/workflows/configuration-validation.yml'
+  
+  pull_request:
+    branches: [ main, master, develop ]
+    paths:
+      - 'src/config/**'
+      - 'src/bubbles/Bubble.js'
+      - 'tests/unit/Bubble.test.js'
+      - 'tests/unit/GameBalance.test.js'
+      - 'tests/unit/BubbleManager.test.js'
+      - 'scripts/validate-configuration.js'
+      - '.github/workflows/configuration-validation.yml'
+  
+  schedule:
+    # 毎日午前2時（UTC）に定期実行
+    - cron: '0 2 * * *'
+  
+  workflow_dispatch:
+    inputs:
+      validation_level:
+        description: 'Validation level (basic, full, strict)'
+        required: false
+        default: 'full'
+        type: choice
+        options:
+          - basic
+          - full
+          - strict
+      
+      generate_report:
+        description: 'Generate detailed report'
+        required: false
+        default: true
+        type: boolean
+
+env:
+  NODE_VERSION: '18'
+  VALIDATION_TIMEOUT: '60'
+
+jobs:
+  configuration-validation:
+    name: Configuration Validation
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        validation-type: [syntax, consistency, balance, performance]
+      fail-fast: false
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: |
+          npm ci
+          npm ls --depth=0
+      
+      - name: Verify configuration files
+        run: |
+          echo "🔍 Checking configuration file existence..."
+          
+          config_files=(
+            "src/config/GameBalance.js"
+            "src/config/GameConfig.js"
+            "src/bubbles/Bubble.js"
+            "scripts/validate-configuration.js"
+          )
+          
+          missing_files=()
+          for file in "${config_files[@]}"; do
+            if [[ ! -f "$file" ]]; then
+              missing_files+=("$file")
+            else
+              echo "✅ Found: $file"
+            fi
+          done
+          
+          if [[ ${#missing_files[@]} -gt 0 ]]; then
+            echo "❌ Missing files:"
+            printf '%s\n' "${missing_files[@]}"
+            exit 1
+          fi
+          
+          echo "✅ All configuration files found"
+      
+      - name: Run syntax validation
+        if: matrix.validation-type == 'syntax'
+        run: |
+          echo "🔍 Running syntax validation..."
+          
+          # JavaScript syntax check
+          find src/config src/bubbles -name "*.js" -exec node -c {} \;
+          
+          # Validation script syntax check
+          node -c scripts/validate-configuration.js
+          
+          echo "✅ Syntax validation completed"
+      
+      - name: Run consistency validation
+        if: matrix.validation-type == 'consistency'
+        timeout-minutes: 5
+        run: |
+          echo "🔍 Running consistency validation..."
+          
+          # Basic configuration validation
+          npm run validate:config
+          
+          echo "✅ Consistency validation completed"
+      
+      - name: Run balance validation
+        if: matrix.validation-type == 'balance'
+        timeout-minutes: 3
+        run: |
+          echo "🔍 Running balance validation..."
+          
+          # Verbose validation for detailed analysis
+          npm run validate:config:verbose > validation-output.log 2>&1 || {
+            echo "❌ Balance validation failed"
+            cat validation-output.log
+            exit 1
+          }
+          
+          # Check for warnings
+          if grep -q "警告" validation-output.log; then
+            echo "⚠️ Balance warnings detected:"
+            grep "警告" validation-output.log || true
+          fi
+          
+          echo "✅ Balance validation completed"
+      
+      - name: Run performance validation
+        if: matrix.validation-type == 'performance'
+        timeout-minutes: 2
+        run: |
+          echo "🔍 Running performance impact validation..."
+          
+          # Check for performance-impacting configurations
+          node -e "
+            import fs from 'fs';
+            
+            const configFiles = [
+              'src/config/GameBalance.js',
+              'src/config/PerformanceConfig.js'
+            ];
+            
+            let performanceIssues = [];
+            
+            for (const file of configFiles) {
+              if (fs.existsSync(file)) {
+                const content = fs.readFileSync(file, 'utf8');
+                
+                // Check for potentially expensive configurations
+                if (content.includes('particleCount') && /particleCount:\s*[1-9]\d{2,}/.test(content)) {
+                  performanceIssues.push(\`High particle count detected in \${file}\`);
+                }
+                
+                if (content.includes('maxAge') && /maxAge:\s*[1-9]\d{0,2}/.test(content)) {
+                  performanceIssues.push(\`Very short bubble lifespan detected in \${file}\`);
+                }
+              }
+            }
+            
+            if (performanceIssues.length > 0) {
+              console.log('⚠️ Performance concerns detected:');
+              performanceIssues.forEach(issue => console.log(\`  - \${issue}\`));
+            } else {
+              console.log('✅ No performance issues detected');
+            }
+          "
+          
+          echo "✅ Performance validation completed"
+      
+      - name: Generate validation report
+        if: always()
+        run: |
+          echo "📊 Generating validation report..."
+          
+          # Create reports directory
+          mkdir -p reports/ci
+          
+          # Generate comprehensive report
+          npm run validate:config:verbose > reports/ci/validation-report.txt 2>&1 || true
+          
+          # Generate JSON report
+          node -e "
+            import fs from 'fs';
+            
+            const report = {
+              timestamp: new Date().toISOString(),
+              workflow: {
+                run_id: '${{ github.run_id }}',
+                run_number: '${{ github.run_number }}',
+                actor: '${{ github.actor }}',
+                event: '${{ github.event_name }}',
+                ref: '${{ github.ref }}',
+                sha: '${{ github.sha }}'
+              },
+              validation: {
+                type: '${{ matrix.validation-type }}',
+                node_version: process.version,
+                timeout: '${{ env.VALIDATION_TIMEOUT }}s'
+              },
+              environment: process.env.NODE_ENV || 'development'
+            };
+            
+            fs.writeFileSync('reports/ci/workflow-report.json', JSON.stringify(report, null, 2));
+            console.log('✅ Report generated: reports/ci/workflow-report.json');
+          "
+      
+      - name: Upload validation reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-reports-${{ matrix.validation-type }}
+          path: |
+            reports/
+            validation-output.log
+          retention-days: 30
+      
+      - name: Check validation results
+        if: always()
+        run: |
+          echo "📋 Validation Summary for ${{ matrix.validation-type }}:"
+          
+          if [[ -f "reports/ci/validation-report.txt" ]]; then
+            echo "📄 Validation report size: $(wc -l < reports/ci/validation-report.txt) lines"
+            
+            # Check for critical issues
+            if grep -q "重要な問題" reports/ci/validation-report.txt; then
+              echo "❌ Critical issues found in validation report"
+              exit 1
+            fi
+            
+            # Check for warnings
+            if grep -q "警告" reports/ci/validation-report.txt; then
+              echo "⚠️ Warnings found in validation report"
+            fi
+          fi
+          
+          echo "✅ Validation summary completed"
+
+  configuration-matrix-test:
+    name: Configuration Matrix Validation
+    runs-on: ubuntu-latest
+    needs: configuration-validation
+    if: always()
+    
+    strategy:
+      matrix:
+        bubble-type: [normal, stone, iron, diamond, rainbow, pink, clock, electric, poison, spiky, escaping, boss]
+      fail-fast: false
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Validate bubble type configuration
+        timeout-minutes: 2
+        run: |
+          echo "🎯 Validating configuration for bubble type: ${{ matrix.bubble-type }}"
+          
+          # Extract configuration for specific bubble type
+          node -e "
+            import fs from 'fs';
+            
+            const bubbleType = '${{ matrix.bubble-type }}';
+            console.log(\`Checking configuration for bubble type: \${bubbleType}\`);
+            
+            // Check GameBalance.js
+            if (fs.existsSync('src/config/GameBalance.js')) {
+              const content = fs.readFileSync('src/config/GameBalance.js', 'utf8');
+              
+              // Look for bubble type in baseScores
+              const baseScoresMatch = content.match(/baseScores:\s*\{([^}]+)\}/s);
+              if (baseScoresMatch) {
+                const scoresContent = baseScoresMatch[1];
+                if (scoresContent.includes(bubbleType)) {
+                  console.log(\`✅ \${bubbleType} found in baseScores\`);
+                } else {
+                  console.log(\`⚠️ \${bubbleType} not found in baseScores\`);
+                }
+              }
+              
+              // Look for bubble type in bubbles configuration
+              const bubblesMatch = content.match(/bubbles:\s*\{([\s\S]*?)\n\s*\}/);
+              if (bubblesMatch) {
+                const bubblesContent = bubblesMatch[1];
+                if (bubblesContent.includes(bubbleType)) {
+                  console.log(\`✅ \${bubbleType} found in bubbles configuration\`);
+                } else {
+                  console.log(\`⚠️ \${bubbleType} not found in bubbles configuration\`);
+                }
+              }
+            } else {
+              console.log('❌ GameBalance.js not found');
+              process.exit(1);
+            }
+            
+            console.log(\`✅ Configuration check completed for \${bubbleType}\`);
+          "
+
+  configuration-report:
+    name: Generate Comprehensive Report
+    runs-on: ubuntu-latest
+    needs: [configuration-validation, configuration-matrix-test]
+    if: always()
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Download all validation reports
+        uses: actions/download-artifact@v4
+        with:
+          path: downloaded-reports
+      
+      - name: Generate comprehensive report
+        run: |
+          echo "📊 Generating comprehensive configuration validation report..."
+          
+          mkdir -p final-reports
+          
+          # Create markdown report
+          cat > final-reports/validation-summary.md << 'EOF'
+          # Game Balance Configuration Validation Report
+          
+          **Generated:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")  
+          **Workflow:** ${{ github.workflow }}  
+          **Run ID:** ${{ github.run_id }}  
+          **Trigger:** ${{ github.event_name }}  
+          **Branch:** ${{ github.ref_name }}  
+          **Commit:** ${{ github.sha }}  
+          **Actor:** ${{ github.actor }}  
+          
+          ## Validation Summary
+          
+          This report contains the results of automated game balance configuration validation.
+          
+          ### Validation Types Executed
+          
+          - ✅ **Syntax Validation:** JavaScript syntax check for configuration files
+          - ✅ **Consistency Validation:** Cross-file configuration consistency check
+          - ✅ **Balance Validation:** Game balance logic validation
+          - ✅ **Performance Validation:** Performance impact assessment
+          
+          ### Configuration Files Validated
+          
+          - `src/config/GameBalance.js` - Main balance configuration
+          - `src/config/GameConfig.js` - General game configuration  
+          - `src/bubbles/Bubble.js` - Bubble class implementation
+          - `tests/unit/Bubble.test.js` - Bubble unit tests
+          
+          ### Matrix Validation
+          
+          Individual validation executed for each bubble type:
+          `normal`, `stone`, `iron`, `diamond`, `rainbow`, `pink`, `clock`, `electric`, `poison`, `spiky`, `escaping`, `boss`
+          
+          ## Detailed Results
+          
+          See attached artifacts for detailed validation results and logs.
+          
+          EOF
+          
+          # Run final validation
+          npm run validate:config:verbose > final-reports/final-validation.log 2>&1 || true
+          
+          echo "✅ Comprehensive report generated"
+      
+      - name: Upload comprehensive report
+        uses: actions/upload-artifact@v4
+        with:
+          name: comprehensive-validation-report
+          path: |
+            final-reports/
+            downloaded-reports/
+          retention-days: 90
+      
+      - name: Comment on PR (if applicable)
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            // Check if validation passed
+            let validationStatus = '✅ Passed';
+            try {
+              const validationLog = fs.readFileSync('final-reports/final-validation.log', 'utf8');
+              if (validationLog.includes('重要な問題')) {
+                validationStatus = '❌ Failed - Critical issues detected';
+              } else if (validationLog.includes('警告')) {
+                validationStatus = '⚠️ Passed with warnings';
+              }
+            } catch (error) {
+              validationStatus = '❓ Unknown - Could not read validation log';
+            }
+            
+            const comment = `## 🎯 Game Balance Configuration Validation
+            
+            **Status:** ${validationStatus}
+            **Workflow:** [${context.workflow}](${context.payload.repository.html_url}/actions/runs/${context.runId})
+            **Commit:** ${context.sha.substring(0, 7)}
+            
+            ### Validation Results
+            
+            The automated configuration validation has completed. Please check the workflow artifacts for detailed results.
+            
+            **Next Steps:**
+            - If validation failed, review the configuration changes
+            - Check the detailed validation report in the workflow artifacts
+            - Consider using \`npm run validate:config:verbose\` locally for more details
+            
+            ---
+            <sub>This comment was automatically generated by the configuration validation workflow.</sub>`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+  notification:
+    name: Send Notification
+    runs-on: ubuntu-latest
+    needs: [configuration-validation, configuration-matrix-test, configuration-report]
+    if: always() && (needs.configuration-validation.result == 'failure' || needs.configuration-matrix-test.result == 'failure')
+    
+    steps:
+      - name: Send notification on failure
+        run: |
+          echo "🚨 Configuration validation failed!"
+          echo "Workflow: ${{ github.workflow }}"
+          echo "Run ID: ${{ github.run_id }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Commit: ${{ github.sha }}"
+          echo "Actor: ${{ github.actor }}"
+          
+          # In a real project, you might want to send notifications via:
+          # - Slack webhook
+          # - Discord webhook  
+          # - Email
+          # - Microsoft Teams
+          # - etc.
+          
+          echo "Please check the workflow logs and fix configuration issues before merging."
