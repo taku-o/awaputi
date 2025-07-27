@@ -419,9 +419,15 @@ export class UserInfoScene extends Scene {
     }
 
     /**
-     * コンボ統計セクションを描画（プレースホルダー）
+     * コンボ統計セクションを描画
      */
     renderComboStatsSection(context, x, y, width, height) {
+        if (!this.statisticsData || !this.statisticsData.combos) {
+            return y + height + 20;
+        }
+        
+        const combos = this.statisticsData.combos;
+        
         // セクション背景
         context.fillStyle = '#1a1a2e';
         context.fillRect(x, y, width - 10, height);
@@ -437,10 +443,56 @@ export class UserInfoScene extends Scene {
         context.textAlign = 'left';
         context.fillText('コンボ統計', x + 15, y + 25);
         
-        // プレースホルダーテキスト
-        context.fillStyle = '#cccccc';
+        // コンボ統計項目
+        const items = [
+            { label: '最高コンボ', value: `${combos.highestCombo}連鎖` },
+            { label: '平均コンボ', value: `${combos.averageCombo}連鎖` },
+            { label: '総コンボ数', value: combos.totalCombos.toLocaleString() },
+            { label: 'コンボブレイク', value: combos.comboBreaks.toLocaleString() },
+            { label: 'コンボ成功率', value: combos.comboSuccessRate }
+        ];
+        
         context.font = '14px Arial';
-        context.fillText('実装中...', x + 15, y + 50);
+        let itemY = y + 50;
+        const lineHeight = 20;
+        
+        for (const item of items) {
+            // ラベル
+            context.fillStyle = '#cccccc';
+            context.textAlign = 'left';
+            context.fillText(item.label, x + 15, itemY);
+            
+            // 値
+            context.fillStyle = '#ffffff';
+            context.textAlign = 'right';
+            context.fillText(item.value, x + width - 25, itemY);
+            
+            itemY += lineHeight;
+        }
+        
+        // コンボ成功率の視覚的表示
+        if (combos.totalCombos > 0) {
+            const successRate = parseFloat(combos.comboSuccessRate);
+            const barY = itemY + 10;
+            const barWidth = width - 50;
+            const barHeight = 8;
+            
+            // プログレスバー背景
+            context.fillStyle = '#333';
+            context.fillRect(x + 15, barY, barWidth, barHeight);
+            
+            // プログレスバー（成功率）
+            const fillWidth = (successRate / 100) * barWidth;
+            const color = successRate >= 70 ? '#00aa00' : successRate >= 40 ? '#cc6600' : '#cc0000';
+            context.fillStyle = color;
+            context.fillRect(x + 15, barY, fillWidth, barHeight);
+            
+            // パーセンテージテキスト
+            context.fillStyle = '#ffffff';
+            context.font = '12px Arial';
+            context.textAlign = 'center';
+            context.fillText(`${successRate}%`, x + 15 + barWidth / 2, barY + barHeight + 15);
+        }
         
         return y + height + 20;
     }
