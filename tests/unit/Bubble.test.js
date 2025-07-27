@@ -30,8 +30,8 @@ describe('Bubble', () => {
       expect(stoneBubble.size).toBe(55);
 
       const bossBubble = new Bubble('boss', mockPosition);
-      expect(bossBubble.health).toBe(5);
-      expect(bossBubble.size).toBe(100);
+      expect(bossBubble.health).toBe(8);
+      expect(bossBubble.size).toBe(90);
     });
   });
 
@@ -227,7 +227,7 @@ describe('Bubble', () => {
       const effects = rainbowBubble.getAndClearEffects();
       expect(effects[0]).toEqual({
         type: 'bonus_time',
-        duration: 5000
+        duration: 8000
       });
     });
 
@@ -238,8 +238,8 @@ describe('Bubble', () => {
       const effects = electricBubble.getAndClearEffects();
       expect(effects[0]).toEqual({
         type: 'screen_shake',
-        intensity: 20,
-        duration: 2000
+        intensity: 15,
+        duration: 1500
       });
     });
   });
@@ -263,22 +263,24 @@ describe('Bubble', () => {
 
   describe('Score Calculation', () => {
     test('should return base score for normal bubble', () => {
-      expect(bubble.getScore()).toBe(10);
+      // Set age to middle range to avoid age bonus
+      bubble.age = bubble.maxAge * 0.5;
+      expect(bubble.getScore()).toBe(15);
     });
 
     test('should apply age bonus for early destruction', () => {
       bubble.age = bubble.maxAge * 0.05; // Very young (5% of max age)
-      expect(bubble.getScore()).toBe(20); // 2x bonus
+      expect(bubble.getScore()).toBe(30); // 2x bonus (15 * 2)
     });
 
     test('should apply age bonus for late destruction', () => {
       bubble.age = bubble.maxAge * 0.95; // Very old (95% of max age)
-      expect(bubble.getScore()).toBe(30); // 3x bonus
+      expect(bubble.getScore()).toBe(45); // 3x bonus (15 * 3)
     });
 
     test('should return base score for middle age', () => {
       bubble.age = bubble.maxAge * 0.5; // Middle age
-      expect(bubble.getScore()).toBe(10); // No bonus
+      expect(bubble.getScore()).toBe(15); // No bonus
     });
   });
 

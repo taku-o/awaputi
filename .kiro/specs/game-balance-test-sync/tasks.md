@@ -25,20 +25,20 @@
   - Create test cases for validation rule enforcement
   - _Requirements: 5.1, 5.3, 5.4_
 
-- [ ] 3. Resolve identified configuration discrepancies
-- [ ] 3.1 Fix normal bubble score inconsistency
+- [x] 3. Resolve identified configuration discrepancies
+- [x] 3.1 Fix normal bubble score inconsistency
   - Update either test expectation (10) or implementation value (15) to match
   - Ensure GameBalance.js, Bubble.js, and tests use consistent value
   - Document the chosen value and rationale for the decision
   - _Requirements: 1.1, 1.2, 3.2_
 
-- [ ] 3.2 Fix boss bubble configuration inconsistencies
+- [x] 3.2 Fix boss bubble configuration inconsistencies
   - Resolve health discrepancy (test expects 5, implementation has 8)
   - Resolve size discrepancy (test expects 100, implementation has 90)
   - Update all configuration sources to use consistent values
   - _Requirements: 1.1, 1.2, 4.3_
 
-- [ ] 3.3 Fix electric bubble effect inconsistencies
+- [x] 3.3 Fix electric bubble effect inconsistencies
   - Resolve intensity discrepancy (test expects 20, implementation has 15)
   - Resolve duration discrepancy (test expects 2000ms, implementation has 1500ms)
   - Ensure special effects configuration is consistent across all sources

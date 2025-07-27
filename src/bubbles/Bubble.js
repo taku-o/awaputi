@@ -659,31 +659,6 @@ export class Bubble {
         return Math.floor(baseScore);
     }
     
-    /**
-     * 更新処理
-     */
-    update(deltaTime, mousePosition) {
-        // 年齢を更新
-        this.age += deltaTime;
-        
-        // 寿命チェック
-        if (this.age >= this.maxAge) {
-            this.isAlive = false;
-        }
-        
-        // 特殊タイプの更新処理
-        this.updateSpecialBehavior(deltaTime, mousePosition);
-        
-        // 位置更新（速度がある場合）
-        if (this.velocity.x !== 0 || this.velocity.y !== 0) {
-            this.position.x += this.velocity.x * (deltaTime / 1000);
-            this.position.y += this.velocity.y * (deltaTime / 1000);
-            
-            // 摩擦による減速
-            this.velocity.x *= 0.98;
-            this.velocity.y *= 0.98;
-        }
-    }
     
     /**
      * 特殊タイプの振る舞い更新
