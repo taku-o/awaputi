@@ -1,0 +1,19 @@
+{
+  "timestamp": "2025-07-27T05:47:08.418Z",
+  "options": {
+    "dryRun": false,
+    "backup": true,
+    "testTypes": null,
+    "validateOnly": false,
+    "verbose": false,
+    "outputDir": null,
+    "help": false
+  },
+  "results": {
+    "updated": [],
+    "failed": [],
+    "skipped": [],
+    "backups": []
+  },
+  "success": true
+}
