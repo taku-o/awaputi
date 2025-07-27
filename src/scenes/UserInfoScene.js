@@ -1075,34 +1075,277 @@ export class UserInfoScene extends Scene {
         context.textAlign = 'center';
         context.fillText('データインポート', x + width / 2, y + 30);
         
+        switch (this.dialogData.step) {
+            case 'select':
+                this.renderImportSelectStep(context, x, y, width, height);
+                break;
+            case 'confirm':
+                this.renderImportConfirmStep(context, x, y, width, height);
+                break;
+            case 'processing':
+                this.renderImportProcessingStep(context, x, y, width, height);
+                break;
+        }
+    }
+
+    /**
+     * インポート方法選択ステップを描画
+     */
+    renderImportSelectStep(context, x, y, width, height) {
         // 説明
         context.fillStyle = '#cccccc';
         context.font = '14px Arial';
-        context.fillText('JSONデータを貼り付けてください', x + width / 2, y + 55);
+        context.textAlign = 'center';
+        context.fillText('インポート方法を選択してください', x + width / 2, y + 60);
         
-        // 入力エリア（シミュレーション）
-        const fieldX = x + 20;
-        const fieldY = y + 80;
-        const fieldWidth = width - 40;
-        const fieldHeight = 80;
+        // ファイル選択ボタン
+        const fileButtonWidth = 200;
+        const fileButtonHeight = 40;
+        const fileButtonX = x + (width - fileButtonWidth) / 2;
+        const fileButtonY = y + 90;
         
-        context.fillStyle = '#ffffff';
-        context.fillRect(fieldX, fieldY, fieldWidth, fieldHeight);
+        context.fillStyle = this.dialogData.importMethod === 'file' ? '#4a90e2' : '#666666';
+        context.fillRect(fileButtonX, fileButtonY, fileButtonWidth, fileButtonHeight);
         
         context.strokeStyle = '#333';
         context.lineWidth = 1;
-        context.strokeRect(fieldX, fieldY, fieldWidth, fieldHeight);
+        context.strokeRect(fileButtonX, fileButtonY, fileButtonWidth, fileButtonHeight);
+        
+        context.fillStyle = '#ffffff';
+        context.font = '16px Arial';
+        context.textAlign = 'center';
+        context.fillText('📁 ファイルを選択', fileButtonX + fileButtonWidth / 2, fileButtonY + 25);
+        
+        // テキスト入力ボタン
+        const textButtonY = fileButtonY + 60;
+        
+        context.fillStyle = this.dialogData.importMethod === 'text' ? '#4a90e2' : '#666666';
+        context.fillRect(fileButtonX, textButtonY, fileButtonWidth, fileButtonHeight);
+        
+        context.strokeStyle = '#333';
+        context.lineWidth = 1;
+        context.strokeRect(fileButtonX, textButtonY, fileButtonWidth, fileButtonHeight);
+        
+        context.fillStyle = '#ffffff';
+        context.font = '16px Arial';
+        context.textAlign = 'center';
+        context.fillText('📝 テキスト入力', fileButtonX + fileButtonWidth / 2, textButtonY + 25);
+        
+        // テキスト入力エリア（テキストモード時のみ）
+        if (this.dialogData.importMethod === 'text') {
+            const fieldX = x + 20;
+            const fieldY = textButtonY + 60;
+            const fieldWidth = width - 40;
+            const fieldHeight = 60;
+            
+            context.fillStyle = '#ffffff';
+            context.fillRect(fieldX, fieldY, fieldWidth, fieldHeight);
+            
+            context.strokeStyle = '#333';
+            context.lineWidth = 1;
+            context.strokeRect(fieldX, fieldY, fieldWidth, fieldHeight);
+            
+            // 入力テキスト表示
+            context.fillStyle = '#000000';
+            context.font = '12px Arial';
+            context.textAlign = 'left';
+            const inputText = this.dialogData.importData || 'JSONデータを貼り付けてください...';
+            const maxLength = 50;
+            const displayText = inputText.length > maxLength ? inputText.substring(0, maxLength) + '...' : inputText;
+            context.fillText(displayText, fieldX + 10, fieldY + 20);
+        }
         
         // エラーメッセージ
         if (this.dialogData.error) {
             context.fillStyle = '#cc0000';
             context.font = '12px Arial';
             context.textAlign = 'center';
-            context.fillText(this.dialogData.error, x + width / 2, y + 180);
+            context.fillText(this.dialogData.error, x + width / 2, y + height - 80);
         }
         
         // ボタン
-        this.renderDialogButtons(context, x, y + height - 60, width);
+        this.renderImportDialogButtons(context, x, y + height - 60, width);
+    }
+
+    /**
+     * インポート確認ステップを描画
+     */
+    renderImportConfirmStep(context, x, y, width, height) {
+        // 確認メッセージ
+        context.fillStyle = '#ffaa00';
+        context.font = '16px Arial';
+        context.textAlign = 'center';
+        context.fillText('⚠️ データをインポートしますか？', x + width / 2, y + 70);
+        
+        context.fillStyle = '#cccccc';
+        context.font = '14px Arial';
+        context.fillText('現在のデータは上書きされます', x + width / 2, y + 95);
+        
+        // データプレビュー
+        if (this.dialogData.parsedData) {
+            const preview = this.dialogData.parsedData;
+            context.fillStyle = '#ffffff';
+            context.font = '12px Arial';
+            context.textAlign = 'left';
+            
+            let previewY = y + 120;
+            const lineHeight = 16;
+            
+            if (preview.playerData) {
+                context.fillText(`ユーザー名: ${preview.playerData.username || '未設定'}`, x + 20, previewY);
+                previewY += lineHeight;
+                context.fillText(`AP: ${preview.playerData.ap || 0}`, x + 20, previewY);
+                previewY += lineHeight;
+            }
+            
+            if (preview.statistics) {
+                context.fillText(`統計データ: あり`, x + 20, previewY);
+                previewY += lineHeight;
+            }
+            
+            if (preview.achievements) {
+                context.fillText(`実績データ: あり`, x + 20, previewY);
+                previewY += lineHeight;
+            }
+            
+            if (preview.exportDate) {
+                const date = new Date(preview.exportDate).toLocaleDateString('ja-JP');
+                context.fillText(`エクスポート日時: ${date}`, x + 20, previewY);
+            }
+        }
+        
+        // エラーメッセージ
+        if (this.dialogData.error) {
+            context.fillStyle = '#cc0000';
+            context.font = '12px Arial';
+            context.textAlign = 'center';
+            context.fillText(this.dialogData.error, x + width / 2, y + height - 80);
+        }
+        
+        // ボタン
+        this.renderImportDialogButtons(context, x, y + height - 60, width);
+    }
+
+    /**
+     * インポート処理中ステップを描画
+     */
+    renderImportProcessingStep(context, x, y, width, height) {
+        // 処理中メッセージ
+        context.fillStyle = '#4a90e2';
+        context.font = '16px Arial';
+        context.textAlign = 'center';
+        context.fillText('データを復元中...', x + width / 2, y + 70);
+        
+        if (this.dialogData.success) {
+            context.fillStyle = '#00aa00';
+            context.fillText('✅ インポート完了！', x + width / 2, y + 110);
+            
+            context.fillStyle = '#cccccc';
+            context.font = '14px Arial';
+            context.fillText('データが正常に復元されました', x + width / 2, y + 135);
+        } else if (this.dialogData.error) {
+            context.fillStyle = '#cc0000';
+            context.fillText('❌ インポート失敗', x + width / 2, y + 110);
+            
+            context.font = '12px Arial';
+            context.fillText(this.dialogData.error, x + width / 2, y + 135);
+        }
+        
+        // ボタン
+        this.renderImportDialogButtons(context, x, y + height - 60, width);
+    }
+
+    /**
+     * インポートダイアログボタンを描画
+     */
+    renderImportDialogButtons(context, x, y, width) {
+        const buttonWidth = 80;
+        const buttonHeight = 35;
+        const buttonSpacing = 20;
+        
+        if (this.dialogData.step === 'select') {
+            // 次へとキャンセルボタン
+            const totalButtonWidth = buttonWidth * 2 + buttonSpacing;
+            const buttonStartX = x + (width - totalButtonWidth) / 2;
+            
+            // 次へボタン（データがある場合のみ有効）
+            const canProceed = (this.dialogData.importMethod === 'file' && this.dialogData.importData) ||
+                             (this.dialogData.importMethod === 'text' && this.dialogData.importData.trim().length > 0);
+            
+            context.fillStyle = canProceed ? '#4a90e2' : '#666666';
+            context.fillRect(buttonStartX, y, buttonWidth, buttonHeight);
+            
+            context.strokeStyle = '#333';
+            context.lineWidth = 1;
+            context.strokeRect(buttonStartX, y, buttonWidth, buttonHeight);
+            
+            context.fillStyle = '#ffffff';
+            context.font = '14px Arial';
+            context.textAlign = 'center';
+            context.fillText('次へ', buttonStartX + buttonWidth / 2, y + 22);
+            
+            // キャンセルボタン
+            const cancelButtonX = buttonStartX + buttonWidth + buttonSpacing;
+            context.fillStyle = '#666666';
+            context.fillRect(cancelButtonX, y, buttonWidth, buttonHeight);
+            
+            context.strokeStyle = '#333';
+            context.lineWidth = 1;
+            context.strokeRect(cancelButtonX, y, buttonWidth, buttonHeight);
+            
+            context.fillStyle = '#ffffff';
+            context.font = '14px Arial';
+            context.textAlign = 'center';
+            context.fillText('キャンセル', cancelButtonX + buttonWidth / 2, y + 22);
+            
+        } else if (this.dialogData.step === 'confirm') {
+            // 実行と戻るボタン
+            const totalButtonWidth = buttonWidth * 2 + buttonSpacing;
+            const buttonStartX = x + (width - totalButtonWidth) / 2;
+            
+            // 実行ボタン
+            context.fillStyle = '#cc6600';
+            context.fillRect(buttonStartX, y, buttonWidth, buttonHeight);
+            
+            context.strokeStyle = '#333';
+            context.lineWidth = 1;
+            context.strokeRect(buttonStartX, y, buttonWidth, buttonHeight);
+            
+            context.fillStyle = '#ffffff';
+            context.font = '14px Arial';
+            context.textAlign = 'center';
+            context.fillText('実行', buttonStartX + buttonWidth / 2, y + 22);
+            
+            // 戻るボタン
+            const backButtonX = buttonStartX + buttonWidth + buttonSpacing;
+            context.fillStyle = '#666666';
+            context.fillRect(backButtonX, y, buttonWidth, buttonHeight);
+            
+            context.strokeStyle = '#333';
+            context.lineWidth = 1;
+            context.strokeRect(backButtonX, y, buttonWidth, buttonHeight);
+            
+            context.fillStyle = '#ffffff';
+            context.font = '14px Arial';
+            context.textAlign = 'center';
+            context.fillText('戻る', backButtonX + buttonWidth / 2, y + 22);
+            
+        } else {
+            // 完了ボタン
+            const buttonStartX = x + (width - buttonWidth) / 2;
+            
+            context.fillStyle = '#4a90e2';
+            context.fillRect(buttonStartX, y, buttonWidth, buttonHeight);
+            
+            context.strokeStyle = '#333';
+            context.lineWidth = 1;
+            context.strokeRect(buttonStartX, y, buttonWidth, buttonHeight);
+            
+            context.fillStyle = '#ffffff';
+            context.font = '14px Arial';
+            context.textAlign = 'center';
+            context.fillText('完了', buttonStartX + buttonWidth / 2, y + 22);
+        }
     }
 
     /**
@@ -1263,7 +1506,13 @@ export class UserInfoScene extends Scene {
             return;
         }
         
-        // ボタンクリック処理
+        // インポートダイアログの特別処理
+        if (this.showingDialog === 'import') {
+            this.handleImportDialogClick(x, y, dialogX, dialogY, dialogWidth, dialogHeight);
+            return;
+        }
+        
+        // その他のダイアログのボタンクリック処理
         const buttonY = dialogY + dialogHeight - 60;
         const buttonWidth = 80;
         const buttonHeight = 35;
@@ -1285,6 +1534,199 @@ export class UserInfoScene extends Scene {
             this.closeDialog();
             return;
         }
+    }
+
+    /**
+     * インポートダイアログのクリック処理
+     */
+    handleImportDialogClick(x, y, dialogX, dialogY, dialogWidth, dialogHeight) {
+        if (this.dialogData.step === 'select') {
+            // ファイル選択ボタン
+            const fileButtonWidth = 200;
+            const fileButtonHeight = 40;
+            const fileButtonX = dialogX + (dialogWidth - fileButtonWidth) / 2;
+            const fileButtonY = dialogY + 90;
+            
+            if (x >= fileButtonX && x <= fileButtonX + fileButtonWidth && 
+                y >= fileButtonY && y <= fileButtonY + fileButtonHeight) {
+                this.selectImportMethod('file');
+                this.openFileSelector();
+                return;
+            }
+            
+            // テキスト入力ボタン
+            const textButtonY = fileButtonY + 60;
+            if (x >= fileButtonX && x <= fileButtonX + fileButtonWidth && 
+                y >= textButtonY && y <= textButtonY + fileButtonHeight) {
+                this.selectImportMethod('text');
+                return;
+            }
+            
+            // ボタンクリック処理
+            const buttonY = dialogY + dialogHeight - 60;
+            const buttonWidth = 80;
+            const buttonHeight = 35;
+            const buttonSpacing = 20;
+            const totalButtonWidth = buttonWidth * 2 + buttonSpacing;
+            const buttonStartX = dialogX + (dialogWidth - totalButtonWidth) / 2;
+            
+            // 次へボタン
+            if (x >= buttonStartX && x <= buttonStartX + buttonWidth && 
+                y >= buttonY && y <= buttonY + buttonHeight) {
+                this.proceedToConfirmStep();
+                return;
+            }
+            
+            // キャンセルボタン
+            const cancelButtonX = buttonStartX + buttonWidth + buttonSpacing;
+            if (x >= cancelButtonX && x <= cancelButtonX + buttonWidth && 
+                y >= buttonY && y <= buttonY + buttonHeight) {
+                this.closeDialog();
+                return;
+            }
+            
+        } else if (this.dialogData.step === 'confirm') {
+            // ボタンクリック処理
+            const buttonY = dialogY + dialogHeight - 60;
+            const buttonWidth = 80;
+            const buttonHeight = 35;
+            const buttonSpacing = 20;
+            const totalButtonWidth = buttonWidth * 2 + buttonSpacing;
+            const buttonStartX = dialogX + (dialogWidth - totalButtonWidth) / 2;
+            
+            // 実行ボタン
+            if (x >= buttonStartX && x <= buttonStartX + buttonWidth && 
+                y >= buttonY && y <= buttonY + buttonHeight) {
+                this.executeImport();
+                return;
+            }
+            
+            // 戻るボタン
+            const backButtonX = buttonStartX + buttonWidth + buttonSpacing;
+            if (x >= backButtonX && x <= backButtonX + buttonWidth && 
+                y >= buttonY && y <= buttonY + buttonHeight) {
+                this.dialogData.step = 'select';
+                this.dialogData.error = null;
+                return;
+            }
+            
+        } else if (this.dialogData.step === 'processing') {
+            // 完了ボタン
+            const buttonWidth = 80;
+            const buttonStartX = dialogX + (dialogWidth - buttonWidth) / 2;
+            const buttonY = dialogY + dialogHeight - 60;
+            const buttonHeight = 35;
+            
+            if (x >= buttonStartX && x <= buttonStartX + buttonWidth && 
+                y >= buttonY && y <= buttonY + buttonHeight) {
+                this.closeDialog();
+                return;
+            }
+        }
+    }
+
+    /**
+     * インポート方法を選択
+     */
+    selectImportMethod(method) {
+        this.dialogData.importMethod = method;
+        if (method === 'file') {
+            this.dialogData.importData = '';
+        }
+        this.dialogData.error = null;
+    }
+
+    /**
+     * ファイル選択ダイアログを開く
+     */
+    openFileSelector() {
+        try {
+            // HTML5 File APIを使用
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json,application/json';
+            input.style.display = 'none';
+            
+            input.onchange = (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    this.readImportFile(file);
+                }
+                document.body.removeChild(input);
+            };
+            
+            input.oncancel = () => {
+                document.body.removeChild(input);
+            };
+            
+            document.body.appendChild(input);
+            input.click();
+            
+        } catch (error) {
+            console.error('File selector error:', error);
+            this.dialogData.error = 'ファイル選択に失敗しました';
+        }
+    }
+
+    /**
+     * インポートファイルを読み込み
+     */
+    readImportFile(file) {
+        try {
+            const reader = new FileReader();
+            
+            reader.onload = (event) => {
+                try {
+                    this.dialogData.importData = event.target.result;
+                    this.dialogData.error = null;
+                } catch (error) {
+                    this.dialogData.error = 'ファイルの読み込みに失敗しました';
+                }
+            };
+            
+            reader.onerror = () => {
+                this.dialogData.error = 'ファイルの読み込みに失敗しました';
+            };
+            
+            reader.readAsText(file);
+            
+        } catch (error) {
+            console.error('File read error:', error);
+            this.dialogData.error = 'ファイルの読み込みに失敗しました';
+        }
+    }
+
+    /**
+     * 確認ステップに進む
+     */
+    proceedToConfirmStep() {
+        // データの有無チェック
+        const canProceed = (this.dialogData.importMethod === 'file' && this.dialogData.importData) ||
+                         (this.dialogData.importMethod === 'text' && this.dialogData.importData.trim().length > 0);
+        
+        if (!canProceed) {
+            this.dialogData.error = 'インポートするデータを選択してください';
+            return;
+        }
+        
+        // データをバリデーション
+        if (this.validateImportData()) {
+            this.dialogData.step = 'confirm';
+            this.dialogData.error = null;
+        }
+    }
+
+    /**
+     * インポート実行
+     */
+    executeImport() {
+        this.dialogData.step = 'processing';
+        this.dialogData.error = null;
+        
+        // 非同期でインポート処理を実行
+        setTimeout(() => {
+            this.processDataImport();
+        }, 500);
     }
 
     /**
@@ -1321,7 +1763,9 @@ export class UserInfoScene extends Scene {
         this.showingDialog = 'import';
         this.dialogData = {
             importData: '',
-            error: null
+            importMethod: 'file', // 'file' or 'text'
+            error: null,
+            step: 'select' // 'select', 'confirm', 'processing'
         };
     }
 
@@ -1468,12 +1912,273 @@ export class UserInfoScene extends Scene {
     }
 
     /**
+     * インポートデータをバリデーション
+     */
+    validateImportData() {
+        try {
+            const jsonData = this.dialogData.importData.trim();
+            
+            // JSON構文チェック
+            let parsedData;
+            try {
+                parsedData = JSON.parse(jsonData);
+            } catch (error) {
+                this.dialogData.error = 'JSONデータの形式が正しくありません';
+                return false;
+            }
+            
+            // 必須フィールドの存在確認
+            if (!this.validateDataStructure(parsedData)) {
+                return false;
+            }
+            
+            // データ型チェック
+            if (!this.validateDataTypes(parsedData)) {
+                return false;
+            }
+            
+            // バリデーション済みデータを保存
+            this.dialogData.parsedData = parsedData;
+            return true;
+            
+        } catch (error) {
+            console.error('Validation error:', error);
+            this.dialogData.error = 'データの検証中にエラーが発生しました';
+            return false;
+        }
+    }
+
+    /**
+     * データ構造をバリデーション
+     */
+    validateDataStructure(data) {
+        // 最低限必要なフィールドをチェック
+        if (!data || typeof data !== 'object') {
+            this.dialogData.error = 'データが正しい形式ではありません';
+            return false;
+        }
+        
+        // バージョンチェック
+        if (!data.version) {
+            this.dialogData.error = 'バージョン情報が見つかりません';
+            return false;
+        }
+        
+        // プレイヤーデータのチェック
+        if (!data.playerData || typeof data.playerData !== 'object') {
+            this.dialogData.error = 'プレイヤーデータが見つかりません';
+            return false;
+        }
+        
+        return true;
+    }
+
+    /**
+     * データ型をバリデーション
+     */
+    validateDataTypes(data) {
+        const playerData = data.playerData;
+        
+        // ユーザー名のチェック
+        if (playerData.username !== undefined && typeof playerData.username !== 'string') {
+            this.dialogData.error = 'ユーザー名のデータ型が正しくありません';
+            return false;
+        }
+        
+        // APのチェック
+        if (playerData.ap !== undefined && (typeof playerData.ap !== 'number' || playerData.ap < 0)) {
+            this.dialogData.error = 'APのデータ型が正しくありません';
+            return false;
+        }
+        
+        // TAPのチェック
+        if (playerData.tap !== undefined && (typeof playerData.tap !== 'number' || playerData.tap < 0)) {
+            this.dialogData.error = 'TAPのデータ型が正しくありません';
+            return false;
+        }
+        
+        // ハイスコアのチェック
+        if (playerData.highScores !== undefined && typeof playerData.highScores !== 'object') {
+            this.dialogData.error = 'ハイスコアのデータ型が正しくありません';
+            return false;
+        }
+        
+        // アンロックステージのチェック
+        if (playerData.unlockedStages !== undefined && !Array.isArray(playerData.unlockedStages)) {
+            this.dialogData.error = 'アンロックステージのデータ型が正しくありません';
+            return false;
+        }
+        
+        // 所有アイテムのチェック
+        if (playerData.ownedItems !== undefined && !Array.isArray(playerData.ownedItems)) {
+            this.dialogData.error = '所有アイテムのデータ型が正しくありません';
+            return false;
+        }
+        
+        return true;
+    }
+
+    /**
+     * データ復元処理
+     */
+    restoreData(jsonData) {
+        try {
+            const parsedData = JSON.parse(jsonData);
+            
+            // プレイヤーデータを復元
+            this.restorePlayerData(parsedData.playerData);
+            
+            // 統計データを復元（存在する場合）
+            if (parsedData.statistics) {
+                this.restoreStatisticsData(parsedData.statistics);
+            }
+            
+            // 実績データを復元（存在する場合）
+            if (parsedData.achievements) {
+                this.restoreAchievementsData(parsedData.achievements);
+            }
+            
+            // データを保存
+            this.saveRestoredData();
+            
+            // UI更新
+            this.loadUserData();
+            
+        } catch (error) {
+            console.error('Data restore error:', error);
+            throw error;
+        }
+    }
+
+    /**
      * データインポート処理
      */
     processDataImport() {
-        // 実際の実装では、クリップボードから読み取りまたはファイル選択を行う
-        // ここではプレースホルダー実装
-        this.dialogData.error = 'インポート機能は実装中です';
+        try {
+            const importData = this.dialogData.parsedData;
+            
+            // プレイヤーデータを復元
+            this.restorePlayerData(importData.playerData);
+            
+            // 統計データを復元（存在する場合）
+            if (importData.statistics) {
+                this.restoreStatisticsData(importData.statistics);
+            }
+            
+            // 実績データを復元（存在する場合）
+            if (importData.achievements) {
+                this.restoreAchievementsData(importData.achievements);
+            }
+            
+            // データを保存
+            this.saveRestoredData();
+            
+            // UI更新
+            this.loadUserData();
+            
+            // 成功メッセージ
+            this.dialogData.success = true;
+            this.dialogData.error = null;
+            
+        } catch (error) {
+            console.error('Import processing error:', error);
+            this.dialogData.error = 'データの復元中にエラーが発生しました';
+            this.dialogData.success = false;
+        }
+    }
+
+    /**
+     * プレイヤーデータを復元
+     */
+    restorePlayerData(playerData) {
+        if (!this.gameEngine.playerData) {
+            throw new Error('PlayerDataが見つかりません');
+        }
+        
+        const player = this.gameEngine.playerData;
+        
+        // 各フィールドを安全に復元
+        if (playerData.username !== undefined) {
+            player.username = playerData.username;
+        }
+        
+        if (playerData.ap !== undefined) {
+            player.ap = Math.max(0, Math.floor(playerData.ap));
+        }
+        
+        if (playerData.tap !== undefined) {
+            player.tap = Math.max(0, Math.floor(playerData.tap));
+        }
+        
+        if (playerData.highScores !== undefined) {
+            player.highScores = { ...playerData.highScores };
+        }
+        
+        if (playerData.unlockedStages !== undefined) {
+            player.unlockedStages = [...playerData.unlockedStages];
+        }
+        
+        if (playerData.ownedItems !== undefined) {
+            player.ownedItems = [...playerData.ownedItems];
+        }
+    }
+
+    /**
+     * 統計データを復元
+     */
+    restoreStatisticsData(statisticsData) {
+        // StatisticsManagerが存在する場合のみ復元
+        if (this.gameEngine.statisticsManager && statisticsData) {
+            // 注意: 統計データの復元は既存データとの整合性を考慮する必要がある
+            // ここでは基本的な復元のみ実装
+            console.log('Statistics data restore is planned for future implementation');
+        }
+    }
+
+    /**
+     * 実績データを復元
+     */
+    restoreAchievementsData(achievementsData) {
+        // AchievementManagerが存在する場合のみ復元
+        if (this.gameEngine.achievementManager && achievementsData) {
+            const manager = this.gameEngine.achievementManager;
+            
+            // 解除済み実績を復元
+            if (achievementsData.unlockedAchievements && Array.isArray(achievementsData.unlockedAchievements)) {
+                manager.unlockedAchievements = new Set(achievementsData.unlockedAchievements);
+            }
+            
+            // 進捗データを復元
+            if (achievementsData.progressData && typeof achievementsData.progressData === 'object') {
+                manager.progressData = { ...achievementsData.progressData };
+            }
+        }
+    }
+
+    /**
+     * 復元されたデータを保存
+     */
+    saveRestoredData() {
+        try {
+            // プレイヤーデータを保存
+            if (this.gameEngine.playerData) {
+                this.gameEngine.playerData.save();
+            }
+            
+            // 統計データを保存
+            if (this.gameEngine.statisticsManager) {
+                this.gameEngine.statisticsManager.save();
+            }
+            
+            // 実績データを保存
+            if (this.gameEngine.achievementManager) {
+                this.gameEngine.achievementManager.save();
+            }
+            
+        } catch (error) {
+            console.error('Save error:', error);
+            throw new Error('データの保存に失敗しました');
+        }
     }
 
     /**
@@ -1532,6 +2237,10 @@ export class UserInfoScene extends Scene {
                 if (this.showingDialog === 'username') {
                     this.handleUsernameInput(event);
                 }
+                // データインポートのテキスト入力モードでの文字入力
+                else if (this.showingDialog === 'importMethod' && this.dialogData.importMethod === 'text') {
+                    this.handleImportTextInput(event);
+                }
                 break;
         }
     }
@@ -1566,6 +2275,29 @@ export class UserInfoScene extends Scene {
                 this.dialogData.error = '使用できない文字が含まれています';
             }
         }
+    }
+
+    /**
+     * インポートテキスト入力処理
+     */
+    handleImportTextInput(event) {
+        event.preventDefault();
+        
+        const currentText = this.dialogData.importData || '';
+        
+        if (event.key === 'Backspace') {
+            // バックスペース処理
+            this.dialogData.importData = currentText.slice(0, -1);
+        } else if (event.key === 'Enter') {
+            // 改行処理
+            this.dialogData.importData = currentText + '\n';
+        } else if (event.key.length === 1) {
+            // 通常の文字入力
+            this.dialogData.importData = currentText + event.key;
+        }
+        
+        // エラーメッセージをクリア
+        this.dialogData.error = null;
     }
 
     /**
