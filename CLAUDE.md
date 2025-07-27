@@ -67,6 +67,29 @@ npm run test:all
 - **統合テスト**: 適切な依存関係初期化
 - **性能テスト**: キャッシュ改善閾値5%→2%、分散許容値設定
 
+### UserInfoScene実装プロジェクト（Issue #18対応）
+**目標**: プレースホルダー状態のUserInfoSceneを完全な機能に拡張
+
+#### 実装対象の機能
+1. **統計表示**: 総プレイ時間、泡種類別破壊数、最高コンボ、ステージ別ベストスコア
+2. **実績システム統合**: 解除済み実績表示、未解除実績の進捗表示
+3. **ユーザー管理**: ユーザー名変更、データエクスポート/インポート機能
+4. **レスポンシブUI**: 画面サイズ対応、アクセシビリティ機能
+
+#### 実装アプローチ
+- **Phase 1**: UserInfoScene基本構造、タブナビゲーション
+- **Phase 2**: StatisticsDisplayComponent（基本・泡・コンボ・ステージ統計）
+- **Phase 3**: AchievementDisplayComponent（実績表示・進捗バー）
+- **Phase 4**: UserManagementComponent（ユーザー名変更・データ管理）
+- **Phase 5**: レスポンシブ・アクセシビリティ・統合テスト
+
+#### 重要な統合ポイント
+- **StatisticsManager**: getDetailedStatistics()で統計データ取得
+- **AchievementManager**: getAchievements()で実績データ取得
+- **PlayerData**: ユーザー名更新、データエクスポート/インポート
+- **ResponsiveCanvasManager**: レスポンシブレイアウト対応
+- **ErrorHandler**: 包括的エラーハンドリング
+
 ### 重要な特徴
 - **ビルドプロセスなし**: 純粋なES6モジュール、直接ブラウザで実行
 - **依存管理**: package.json でJest、Playwrightを管理（開発環境のみ）
@@ -115,6 +138,7 @@ npm run test:all
 - **StageSelectScene.js**: ステージ選択画面
 - **GameScene.js**: メインゲームプレイ
 - **ShopScene.js**: アイテム購入インターフェース
+- **UserInfoScene.js**: ユーザー情報表示画面（Issue #18対応、統計・実績・管理機能）
 
 ### ゲーム要素
 - **BubbleManager.js**: バブルのスポーン、衝突検出、ライフサイクル管理
