@@ -298,9 +298,15 @@ export class UserInfoScene extends Scene {
     }
 
     /**
-     * 泡統計セクションを描画（プレースホルダー）
+     * 泡統計セクションを描画
      */
     renderBubbleStatsSection(context, x, y, width, height) {
+        if (!this.statisticsData || !this.statisticsData.bubbles) {
+            return y + height + 20;
+        }
+        
+        const bubbles = this.statisticsData.bubbles;
+        
         // セクション背景
         context.fillStyle = '#1a1a2e';
         context.fillRect(x, y, width - 10, height);
@@ -316,12 +322,100 @@ export class UserInfoScene extends Scene {
         context.textAlign = 'left';
         context.fillText('泡統計', x + 15, y + 25);
         
-        // プレースホルダーテキスト
-        context.fillStyle = '#cccccc';
+        // 基本泡統計
+        const items = [
+            { label: '総破壊数', value: bubbles.totalPopped.toLocaleString() },
+            { label: '総未破壊数', value: bubbles.totalMissed.toLocaleString() },
+            { label: '精度', value: bubbles.accuracy },
+            { label: '平均反応時間', value: bubbles.averageReactionTime },
+            { label: 'お気に入り泡', value: this.getBubbleTypeName(bubbles.favoriteType?.type) || 'なし' }
+        ];
+        
         context.font = '14px Arial';
-        context.fillText('実装中...', x + 15, y + 50);
+        let itemY = y + 50;
+        const lineHeight = 18;
+        
+        for (let i = 0; i < Math.min(5, items.length); i++) {
+            const item = items[i];
+            
+            // ラベル
+            context.fillStyle = '#cccccc';
+            context.textAlign = 'left';
+            context.fillText(item.label, x + 15, itemY);
+            
+            // 値
+            context.fillStyle = '#ffffff';
+            context.textAlign = 'right';
+            context.fillText(item.value, x + width - 25, itemY);
+            
+            itemY += lineHeight;
+        }
+        
+        // 泡タイプ別詳細（上位3つ）
+        if (bubbles.typeBreakdown && Object.keys(bubbles.typeBreakdown).length > 0) {
+            // 小見出し
+            context.fillStyle = '#4a90e2';
+            context.font = 'bold 14px Arial';
+            context.textAlign = 'left';
+            context.fillText('上位泡タイプ', x + 15, itemY + 10);
+            
+            // 泡タイプをソート
+            const sortedTypes = Object.entries(bubbles.typeBreakdown)
+                .filter(([type, count]) => count > 0)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 3);
+            
+            context.font = '12px Arial';
+            itemY += 30;
+            const typeLineHeight = 16;
+            
+            for (const [type, count] of sortedTypes) {
+                // 泡タイプ名
+                context.fillStyle = '#cccccc';
+                context.textAlign = 'left';
+                const typeName = this.getBubbleTypeName(type);
+                context.fillText(typeName, x + 15, itemY);
+                
+                // カウント
+                context.fillStyle = '#ffffff';
+                context.textAlign = 'right';
+                context.fillText(count.toLocaleString(), x + width - 25, itemY);
+                
+                itemY += typeLineHeight;
+            }
+        }
         
         return y + height + 20;
+    }
+
+    /**
+     * 泡タイプの日本語名を取得
+     */
+    getBubbleTypeName(type) {
+        const typeNames = {
+            normal: '通常',
+            stone: '石',
+            iron: '鉄',
+            diamond: 'ダイヤ',
+            pink: 'ピンク',
+            poison: '毒',
+            spiky: 'トゲ',
+            rainbow: '虹',
+            clock: '時計',
+            score: 'スコア',
+            electric: '電気',
+            escaping: '逃走',
+            cracked: 'ひび',
+            boss: 'ボス',
+            golden: '金',
+            frozen: '氷',
+            magnetic: '磁力',
+            explosive: '爆発',
+            phantom: '幻影',
+            multiplier: '倍率'
+        };
+        
+        return typeNames[type] || type || 'unknown';
     }
 
     /**
