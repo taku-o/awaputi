@@ -614,7 +614,7 @@ export class UserInfoScene extends Scene {
      * 実績データを描画
      */
     renderAchievements(context, y, height) {
-        if (!this.achievementsData) {
+        if (!this.achievementsData || !Array.isArray(this.achievementsData)) {
             context.fillStyle = '#cccccc';
             context.font = '20px Arial';
             context.textAlign = 'center';
@@ -623,11 +623,154 @@ export class UserInfoScene extends Scene {
             return;
         }
         
-        // プレースホルダー実装
-        context.fillStyle = '#ffffff';
-        context.font = '18px Arial';
+        const canvas = this.gameEngine.canvas;
+        const contentWidth = canvas.width - this.contentPadding * 2;
+        const achievementHeight = 80;
+        const spacing = 10;
+        
+        // スクロール対応
+        const scrollOffset = this.scrollPosition;
+        let currentY = y + this.contentPadding - scrollOffset;
+        
+        // 解除済み実績と未解除実績を分離
+        const unlockedAchievements = this.achievementsData.filter(a => a.unlocked);
+        const lockedAchievements = this.achievementsData.filter(a => !a.unlocked);
+        
+        // 解除済み実績セクション
+        if (unlockedAchievements.length > 0) {
+            currentY = this.renderUnlockedAchievements(context, this.contentPadding, currentY, contentWidth, unlockedAchievements);
+        }
+        
+        // 未解除実績セクション
+        if (lockedAchievements.length > 0) {
+            currentY = this.renderProgressAchievements(context, this.contentPadding, currentY + 20, contentWidth, lockedAchievements);
+        }
+    }
+
+    /**
+     * 解除済み実績を描画
+     */
+    renderUnlockedAchievements(context, x, y, width, achievements) {
+        // セクションタイトル
+        context.fillStyle = '#00aa00';
+        context.font = 'bold 20px Arial';
         context.textAlign = 'left';
-        context.fillText('実績情報（実装中）', this.contentPadding, y + 40);
+        context.fillText('解除済み実績', x, y + 25);
+        
+        let currentY = y + 40;
+        const achievementHeight = 70;
+        const spacing = 10;
+        
+        for (const achievement of achievements) {
+            currentY = this.renderAchievementItem(context, x, currentY, width, achievement, true);
+            currentY += spacing;
+        }
+        
+        return currentY;
+    }
+
+    /**
+     * 未解除実績の進捗を描画
+     */
+    renderProgressAchievements(context, x, y, width, achievements) {
+        // セクションタイトル
+        context.fillStyle = '#cc6600';
+        context.font = 'bold 20px Arial';
+        context.textAlign = 'left';
+        context.fillText('進行中の実績', x, y + 25);
+        
+        let currentY = y + 40;
+        const achievementHeight = 70;
+        const spacing = 10;
+        
+        for (const achievement of achievements) {
+            currentY = this.renderAchievementItem(context, x, currentY, width, achievement, false);
+            currentY += spacing;
+        }
+        
+        return currentY;
+    }
+
+    /**
+     * 実績アイテムを描画
+     */
+    renderAchievementItem(context, x, y, width, achievement, isUnlocked) {
+        const itemHeight = 70;
+        
+        // 背景
+        context.fillStyle = isUnlocked ? '#1a2e1a' : '#1a1a2e';
+        context.fillRect(x, y, width, itemHeight);
+        
+        // 枠線
+        context.strokeStyle = isUnlocked ? '#00aa00' : '#333';
+        context.lineWidth = 1;
+        context.strokeRect(x, y, width, itemHeight);
+        
+        // アイコン
+        context.fillStyle = '#ffffff';
+        context.font = '24px Arial';
+        context.textAlign = 'center';
+        context.fillText(achievement.icon || '🏆', x + 30, y + 35);
+        
+        // 実績名
+        context.fillStyle = isUnlocked ? '#ffffff' : '#cccccc';
+        context.font = 'bold 16px Arial';
+        context.textAlign = 'left';
+        context.fillText(achievement.name, x + 60, y + 25);
+        
+        // 実績説明
+        context.fillStyle = isUnlocked ? '#cccccc' : '#999999';
+        context.font = '14px Arial';
+        context.fillText(achievement.description, x + 60, y + 45);
+        
+        // 報酬AP
+        if (achievement.reward && achievement.reward.ap) {
+            context.fillStyle = '#4a90e2';
+            context.font = '12px Arial';
+            context.textAlign = 'right';
+            context.fillText(`${achievement.reward.ap} AP`, x + width - 10, y + 25);
+        }
+        
+        // 進捗バー（未解除実績のみ）
+        if (!isUnlocked && achievement.progress) {
+            this.renderProgressBar(context, x + 60, y + 55, width - 80, achievement.progress);
+        }
+        
+        // 獲得日時（解除済み実績のみ）
+        if (isUnlocked && achievement.unlockedDate) {
+            context.fillStyle = '#888888';
+            context.font = '12px Arial';
+            context.textAlign = 'right';
+            const date = new Date(achievement.unlockedDate).toLocaleDateString('ja-JP');
+            context.fillText(date, x + width - 10, y + 45);
+        }
+        
+        return y + itemHeight;
+    }
+
+    /**
+     * 進捗バーを描画
+     */
+    renderProgressBar(context, x, y, width, progress) {
+        const barHeight = 6;
+        const current = progress.current || 0;
+        const target = progress.target || 1;
+        const percentage = Math.min(100, (current / target) * 100);
+        
+        // 背景
+        context.fillStyle = '#333';
+        context.fillRect(x, y, width, barHeight);
+        
+        // 進捗
+        const fillWidth = (percentage / 100) * width;
+        context.fillStyle = percentage >= 100 ? '#00aa00' : '#4a90e2';
+        context.fillRect(x, y, fillWidth, barHeight);
+        
+        // 進捗テキスト
+        context.fillStyle = '#ffffff';
+        context.font = '11px Arial';
+        context.textAlign = 'center';
+        context.fillText(`${current}/${target} (${percentage.toFixed(0)}%)`, x + width / 2, y + barHeight + 12);
     }
 
     /**
@@ -713,6 +856,16 @@ export class UserInfoScene extends Scene {
                 break;
             case 'ArrowRight':
                 this.navigateTab(1);
+                break;
+            case 'ArrowUp':
+                if (this.currentTab === 'achievements') {
+                    this.scrollPosition = Math.max(0, this.scrollPosition - 30);
+                }
+                break;
+            case 'ArrowDown':
+                if (this.currentTab === 'achievements') {
+                    this.scrollPosition += 30;
+                }
                 break;
             case 'Tab':
                 event.preventDefault();
