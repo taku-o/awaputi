@@ -44,14 +44,14 @@
   - Ensure special effects configuration is consistent across all sources
   - _Requirements: 1.1, 1.2, 4.3_
 
-- [ ] 4. Implement unified configuration access
-- [ ] 4.1 Update Bubble.js to use ConfigurationManager
+- [x] 4. Implement unified configuration access
+- [x] 4.1 Update Bubble.js to use ConfigurationManager
   - Modify getTypeConfig() method to use ConfigurationManager instead of hardcoded values
   - Ensure backward compatibility with existing bubble behavior
   - Write tests to verify configuration values are correctly retrieved
   - _Requirements: 2.1, 2.2, 4.3_
 
-- [ ] 4.2 Create configuration migration utilities
+- [x] 4.2 Create configuration migration utilities
   - Write utility to migrate hardcoded values to ConfigurationManager
   - Implement validation to ensure migration doesn't break existing functionality
   - Create rollback mechanism in case of migration issues

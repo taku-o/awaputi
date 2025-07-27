@@ -1,6 +1,8 @@
 /**
  * 基本泡クラス
  */
+import { getConfigurationManager } from '../core/ConfigurationManager.js';
+
 export class Bubble {
     constructor(type, position) {
         this.type = type;
@@ -32,8 +34,106 @@ export class Bubble {
     
     /**
      * 泡の種類別設定を取得
+     * ConfigurationManagerから設定を取得し、フォールバックとしてハードコード値を使用
      */
     getTypeConfig() {
+        try {
+            const configManager = getConfigurationManager();
+            
+            // ConfigurationManagerから設定を取得を試行
+            const health = configManager.get('game', `bubbles.${this.type}.health`);
+            const size = configManager.get('game', `bubbles.${this.type}.size`);
+            const maxAge = configManager.get('game', `bubbles.${this.type}.maxAge`);
+            const score = configManager.get('game', `bubbles.${this.type}.score`);
+            const color = configManager.get('game', `bubbles.${this.type}.color`);
+            
+            // 設定が見つかった場合はそれを使用
+            if (health !== null || size !== null || maxAge !== null || score !== null || color !== null) {
+                const config = {};
+                if (health !== null) config.health = health;
+                if (size !== null) config.size = size;
+                if (maxAge !== null) config.maxAge = maxAge;
+                if (score !== null) config.score = score;
+                if (color !== null) config.color = color;
+                
+                // 特殊効果プロパティも取得
+                const specialEffects = this._getSpecialEffectsFromConfig(configManager);
+                Object.assign(config, specialEffects);
+                
+                return config;
+            }
+        } catch (error) {
+            console.warn(`[Bubble] ConfigurationManager利用失敗、フォールバック値を使用: ${error.message}`);
+        }
+        
+        // フォールバック: ハードコード設定
+        return this._getHardcodedConfig();
+    }
+    
+    /**
+     * ConfigurationManagerから特殊効果設定を取得
+     * @param {Object} configManager - 設定管理インスタンス
+     * @returns {Object} 特殊効果設定
+     * @private
+     */
+    _getSpecialEffectsFromConfig(configManager) {
+        const effects = {};
+        
+        switch (this.type) {
+            case 'pink':
+                const healAmount = configManager.get('game', 'bubbles.pink.healAmount');
+                if (healAmount !== null) effects.healAmount = healAmount;
+                break;
+                
+            case 'poison':
+                const damageAmount = configManager.get('game', 'bubbles.poison.damageAmount');
+                if (damageAmount !== null) effects.damageAmount = damageAmount;
+                break;
+                
+            case 'electric':
+                const shakeIntensity = configManager.get('game', 'bubbles.electric.shakeIntensity');
+                const disableDuration = configManager.get('game', 'bubbles.electric.disableDuration');
+                if (shakeIntensity !== null) effects.shakeIntensity = shakeIntensity;
+                if (disableDuration !== null) effects.disableDuration = disableDuration;
+                break;
+                
+            case 'rainbow':
+                const bonusTimeMs = configManager.get('game', 'bubbles.rainbow.bonusTimeMs');
+                if (bonusTimeMs !== null) effects.bonusTimeMs = bonusTimeMs;
+                break;
+                
+            case 'clock':
+                const timeStopMs = configManager.get('game', 'bubbles.clock.timeStopMs');
+                if (timeStopMs !== null) effects.timeStopMs = timeStopMs;
+                break;
+                
+            case 'score':
+                const bonusScore = configManager.get('game', 'bubbles.score.bonusScore');
+                if (bonusScore !== null) effects.bonusScore = bonusScore;
+                break;
+                
+            case 'spiky':
+                const chainRadius = configManager.get('game', 'bubbles.spiky.chainRadius');
+                if (chainRadius !== null) effects.chainRadius = chainRadius;
+                break;
+                
+            case 'escaping':
+                const escapeSpeed = configManager.get('game', 'bubbles.escaping.escapeSpeed');
+                const escapeRadius = configManager.get('game', 'bubbles.escaping.escapeRadius');
+                if (escapeSpeed !== null) effects.escapeSpeed = escapeSpeed;
+                if (escapeRadius !== null) effects.escapeRadius = escapeRadius;
+                break;
+        }
+        
+        return effects;
+    }
+    
+    /**
+     * ハードコード設定を取得（フォールバック）
+     * @returns {Object} 泡設定
+     * @private
+     */
+    _getHardcodedConfig() {
         const configs = {
             normal: {
                 health: 1,
