@@ -498,9 +498,15 @@ export class UserInfoScene extends Scene {
     }
 
     /**
-     * ステージ統計セクションを描画（プレースホルダー）
+     * ステージ統計セクションを描画
      */
     renderStageStatsSection(context, x, y, width, height) {
+        if (!this.statisticsData || !this.statisticsData.stages) {
+            return y + height + 20;
+        }
+        
+        const stages = this.statisticsData.stages;
+        
         // セクション背景
         context.fillStyle = '#1a1a2e';
         context.fillRect(x, y, width - 10, height);
@@ -516,12 +522,92 @@ export class UserInfoScene extends Scene {
         context.textAlign = 'left';
         context.fillText('ステージ統計', x + 15, y + 25);
         
-        // プレースホルダーテキスト
-        context.fillStyle = '#cccccc';
+        // ステージ統計項目
+        const totalStages = stages.completed + stages.failed;
+        const clearRate = totalStages > 0 ? (stages.completed / totalStages * 100).toFixed(1) : 0;
+        
+        const items = [
+            { label: 'クリア数', value: `${stages.completed}回` },
+            { label: '失敗数', value: `${stages.failed}回` },
+            { label: 'クリア率', value: `${clearRate}%` },
+            { label: 'お気に入り', value: this.getStageName(stages.favoriteStage?.stage) || 'なし' }
+        ];
+        
         context.font = '14px Arial';
-        context.fillText('実装中...', x + 15, y + 50);
+        let itemY = y + 50;
+        const lineHeight = 18;
+        
+        for (let i = 0; i < Math.min(4, items.length); i++) {
+            const item = items[i];
+            
+            // ラベル
+            context.fillStyle = '#cccccc';
+            context.textAlign = 'left';
+            context.fillText(item.label, x + 15, itemY);
+            
+            // 値
+            context.fillStyle = '#ffffff';
+            context.textAlign = 'right';
+            context.fillText(item.value, x + width - 25, itemY);
+            
+            itemY += lineHeight;
+        }
+        
+        // ステージ別詳細（上位3つ）
+        if (stages.stageBreakdown && Object.keys(stages.stageBreakdown).length > 0) {
+            // 小見出し
+            context.fillStyle = '#4a90e2';
+            context.font = 'bold 14px Arial';
+            context.textAlign = 'left';
+            context.fillText('上位ステージ', x + 15, itemY + 10);
+            
+            // ステージをプレイ回数でソート
+            const sortedStages = Object.entries(stages.stageBreakdown)
+                .filter(([stage, data]) => data.played > 0)
+                .sort((a, b) => b[1].played - a[1].played)
+                .slice(0, 3);
+            
+            context.font = '12px Arial';
+            itemY += 30;
+            const stageLineHeight = 16;
+            
+            for (const [stage, data] of sortedStages) {
+                // ステージ名
+                context.fillStyle = '#cccccc';
+                context.textAlign = 'left';
+                const stageName = this.getStageName(stage);
+                context.fillText(stageName, x + 15, itemY);
+                
+                // プレイ回数
+                context.fillStyle = '#ffffff';
+                context.textAlign = 'right';
+                context.fillText(`${data.played}回`, x + width - 25, itemY);
+                
+                itemY += stageLineHeight;
+            }
+        }
         
         return y + height + 20;
+    }
+
+    /**
+     * ステージ名の日本語名を取得
+     */
+    getStageName(stage) {
+        const stageNames = {
+            tutorial: 'チュートリアル',
+            normal: '通常',
+            hard: 'ハード',
+            extreme: 'エクストリーム',
+            bonus: 'ボーナス',
+            challenge: 'チャレンジ',
+            special: 'スペシャル',
+            endless: 'エンドレス',
+            awaputi: 'アワプチ',
+            mixed: 'ミックス'
+        };
+        
+        return stageNames[stage] || stage || 'unknown';
     }
 
     /**
