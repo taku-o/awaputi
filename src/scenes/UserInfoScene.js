@@ -218,11 +218,164 @@ export class UserInfoScene extends Scene {
             return;
         }
         
-        // プレースホルダー実装
-        context.fillStyle = '#ffffff';
-        context.font = '18px Arial';
+        const canvas = this.gameEngine.canvas;
+        const contentWidth = canvas.width - this.contentPadding * 2;
+        const sectionHeight = 180;
+        const columnWidth = contentWidth / 2;
+        
+        // スクロール対応
+        const scrollOffset = this.scrollPosition;
+        
+        let currentY = y + this.contentPadding - scrollOffset;
+        
+        // 基本統計セクション
+        currentY = this.renderBasicStatsSection(context, this.contentPadding, currentY, columnWidth, sectionHeight);
+        
+        // 泡統計セクション
+        currentY = this.renderBubbleStatsSection(context, this.contentPadding + columnWidth, currentY - sectionHeight - 20, columnWidth, sectionHeight);
+        
+        // コンボ統計セクション
+        currentY = this.renderComboStatsSection(context, this.contentPadding, currentY, columnWidth, sectionHeight);
+        
+        // ステージ統計セクション
+        this.renderStageStatsSection(context, this.contentPadding + columnWidth, currentY - sectionHeight - 20, columnWidth, sectionHeight);
+    }
+
+    /**
+     * 基本統計セクションを描画
+     */
+    renderBasicStatsSection(context, x, y, width, height) {
+        if (!this.statisticsData || !this.statisticsData.basic) {
+            return y + height + 20;
+        }
+        
+        const basic = this.statisticsData.basic;
+        
+        // セクション背景
+        context.fillStyle = '#1a1a2e';
+        context.fillRect(x, y, width - 10, height);
+        
+        // セクション枠線
+        context.strokeStyle = '#333';
+        context.lineWidth = 1;
+        context.strokeRect(x, y, width - 10, height);
+        
+        // セクションタイトル
+        context.fillStyle = '#4a90e2';
+        context.font = 'bold 18px Arial';
         context.textAlign = 'left';
-        context.fillText('統計情報（実装中）', this.contentPadding, y + 40);
+        context.fillText('基本統計', x + 15, y + 25);
+        
+        // 統計項目を描画
+        const items = [
+            { label: '総プレイ回数', value: `${basic.totalGamesPlayed}回` },
+            { label: '総プレイ時間', value: basic.totalPlayTime },
+            { label: '総スコア', value: basic.totalScore.toLocaleString() },
+            { label: '最高スコア', value: basic.highestScore.toLocaleString() },
+            { label: '平均スコア', value: basic.averageScore.toLocaleString() },
+            { label: '完了率', value: `${isNaN(basic.completionRate) ? 0 : basic.completionRate.toFixed(1)}%` }
+        ];
+        
+        context.font = '14px Arial';
+        let itemY = y + 50;
+        const lineHeight = 20;
+        
+        for (const item of items) {
+            // ラベル
+            context.fillStyle = '#cccccc';
+            context.textAlign = 'left';
+            context.fillText(item.label, x + 15, itemY);
+            
+            // 値
+            context.fillStyle = '#ffffff';
+            context.textAlign = 'right';
+            context.fillText(item.value, x + width - 25, itemY);
+            
+            itemY += lineHeight;
+        }
+        
+        return y + height + 20;
+    }
+
+    /**
+     * 泡統計セクションを描画（プレースホルダー）
+     */
+    renderBubbleStatsSection(context, x, y, width, height) {
+        // セクション背景
+        context.fillStyle = '#1a1a2e';
+        context.fillRect(x, y, width - 10, height);
+        
+        // セクション枠線
+        context.strokeStyle = '#333';
+        context.lineWidth = 1;
+        context.strokeRect(x, y, width - 10, height);
+        
+        // セクションタイトル
+        context.fillStyle = '#4a90e2';
+        context.font = 'bold 18px Arial';
+        context.textAlign = 'left';
+        context.fillText('泡統計', x + 15, y + 25);
+        
+        // プレースホルダーテキスト
+        context.fillStyle = '#cccccc';
+        context.font = '14px Arial';
+        context.fillText('実装中...', x + 15, y + 50);
+        
+        return y + height + 20;
+    }
+
+    /**
+     * コンボ統計セクションを描画（プレースホルダー）
+     */
+    renderComboStatsSection(context, x, y, width, height) {
+        // セクション背景
+        context.fillStyle = '#1a1a2e';
+        context.fillRect(x, y, width - 10, height);
+        
+        // セクション枠線
+        context.strokeStyle = '#333';
+        context.lineWidth = 1;
+        context.strokeRect(x, y, width - 10, height);
+        
+        // セクションタイトル
+        context.fillStyle = '#4a90e2';
+        context.font = 'bold 18px Arial';
+        context.textAlign = 'left';
+        context.fillText('コンボ統計', x + 15, y + 25);
+        
+        // プレースホルダーテキスト
+        context.fillStyle = '#cccccc';
+        context.font = '14px Arial';
+        context.fillText('実装中...', x + 15, y + 50);
+        
+        return y + height + 20;
+    }
+
+    /**
+     * ステージ統計セクションを描画（プレースホルダー）
+     */
+    renderStageStatsSection(context, x, y, width, height) {
+        // セクション背景
+        context.fillStyle = '#1a1a2e';
+        context.fillRect(x, y, width - 10, height);
+        
+        // セクション枠線
+        context.strokeStyle = '#333';
+        context.lineWidth = 1;
+        context.strokeRect(x, y, width - 10, height);
+        
+        // セクションタイトル
+        context.fillStyle = '#4a90e2';
+        context.font = 'bold 18px Arial';
+        context.textAlign = 'left';
+        context.fillText('ステージ統計', x + 15, y + 25);
+        
+        // プレースホルダーテキスト
+        context.fillStyle = '#cccccc';
+        context.font = '14px Arial';
+        context.fillText('実装中...', x + 15, y + 50);
+        
+        return y + height + 20;
     }
 
     /**
