@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuration Monitoring Dashboard - Awaputi</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🫧</text></svg>">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <h1>🫧 Awaputi Configuration Dashboard</h1>
+                <div class="header-info">
+                    <span class="last-update">最終更新: <span id="lastUpdate">--</span></span>
+                    <button id="refreshBtn" class="btn btn-primary">🔄 更新</button>
+                    <button id="exportBtn" class="btn btn-secondary">📤 エクスポート</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Summary Cards -->
+            <section class="summary-section">
+                <div class="summary-cards">
+                    <div class="summary-card">
+                        <div class="card-icon">⚙️</div>
+                        <div class="card-content">
+                            <h3>総設定数</h3>
+                            <div class="card-value" id="totalConfigs">--</div>
+                            <div class="card-subtitle">アクティブな設定項目</div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="card-icon">🔍</div>
+                        <div class="card-content">
+                            <h3>整合性ステータス</h3>
+                            <div class="card-value" id="consistencyStatus">--</div>
+                            <div class="card-subtitle">設定間の整合性</div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="card-icon">⚡</div>
+                        <div class="card-content">
+                            <h3>パフォーマンス</h3>
+                            <div class="card-value" id="performanceScore">--</div>
+                            <div class="card-subtitle">設定アクセス効率</div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="card-icon">📊</div>
+                        <div class="card-content">
+                            <h3>変更履歴</h3>
+                            <div class="card-value" id="recentChanges">--</div>
+                            <div class="card-subtitle">過去24時間</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Main Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Configuration Overview -->
+                <section class="dashboard-section config-overview">
+                    <h2>🎮 設定概要</h2>
+                    <div class="config-tabs">
+                        <button class="tab-btn active" data-tab="scoring">🎯 スコア</button>
+                        <button class="tab-btn" data-tab="bubbles">🫧 バブル</button>
+                        <button class="tab-btn" data-tab="stages">🎪 ステージ</button>
+                        <button class="tab-btn" data-tab="performance">⚡ パフォーマンス</button>
+                    </div>
+                    <div class="tab-content" id="configContent">
+                        <!-- タブコンテンツがここに動的に挿入される -->
+                    </div>
+                </section>
+
+                <!-- Real-time Monitoring -->
+                <section class="dashboard-section monitoring">
+                    <h2>📡 リアルタイム監視</h2>
+                    <div class="monitoring-grid">
+                        <div class="monitor-item">
+                            <h3>アクセス頻度</h3>
+                            <canvas id="accessChart" width="300" height="150"></canvas>
+                        </div>
+                        <div class="monitor-item">
+                            <h3>設定変更</h3>
+                            <div id="changesFeed" class="changes-feed">
+                                <!-- 変更フィードがここに表示される -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Validation Status -->
+                <section class="dashboard-section validation">
+                    <h2>✅ 検証ステータス</h2>
+                    <div class="validation-grid">
+                        <div class="validation-item">
+                            <h3>整合性チェック</h3>
+                            <div class="validation-status" id="consistencyCheck">
+                                <div class="status-indicator pending"></div>
+                                <span>チェック中...</span>
+                            </div>
+                            <div class="validation-details" id="consistencyDetails"></div>
+                        </div>
+                        
+                        <div class="validation-item">
+                            <h3>バランス検証</h3>
+                            <div class="validation-status" id="balanceCheck">
+                                <div class="status-indicator pending"></div>
+                                <span>チェック中...</span>
+                            </div>
+                            <div class="validation-details" id="balanceDetails"></div>
+                        </div>
+                        
+                        <div class="validation-item">
+                            <h3>型安全性</h3>
+                            <div class="validation-status" id="typeCheck">
+                                <div class="status-indicator pending"></div>
+                                <span>チェック中...</span>
+                            </div>
+                            <div class="validation-details" id="typeDetails"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Change History -->
+                <section class="dashboard-section history">
+                    <h2>📈 変更履歴</h2>
+                    <div class="history-controls">
+                        <select id="historyFilter">
+                            <option value="all">すべて</option>
+                            <option value="today">今日</option>
+                            <option value="week">1週間</option>
+                            <option value="month">1ヶ月</option>
+                        </select>
+                        <input type="text" id="historySearch" placeholder="設定名で検索...">
+                    </div>
+                    <div id="historyTimeline" class="history-timeline">
+                        <!-- 変更履歴タイムラインがここに表示される -->
+                    </div>
+                </section>
+
+                <!-- Configuration Comparison -->
+                <section class="dashboard-section comparison">
+                    <h2>🔄 設定比較</h2>
+                    <div class="comparison-controls">
+                        <select id="compareSource1">
+                            <option value="">比較元を選択...</option>
+                        </select>
+                        <span class="vs-label">vs</span>
+                        <select id="compareSource2">
+                            <option value="">比較先を選択...</option>
+                        </select>
+                        <button id="compareBtn" class="btn btn-primary">比較実行</button>
+                    </div>
+                    <div id="comparisonResult" class="comparison-result">
+                        <!-- 比較結果がここに表示される -->
+                    </div>
+                </section>
+
+                <!-- Impact Analysis -->
+                <section class="dashboard-section impact">
+                    <h2>🎯 影響分析</h2>
+                    <div class="impact-controls">
+                        <button id="analyzeImpactBtn" class="btn btn-primary">影響分析実行</button>
+                        <button id="generateReportBtn" class="btn btn-secondary">レポート生成</button>
+                    </div>
+                    <div id="impactResults" class="impact-results">
+                        <!-- 影響分析結果がここに表示される -->
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Alert Bar -->
+        <div id="alertBar" class="alert-bar hidden">
+            <div class="alert-content">
+                <span id="alertMessage"></span>
+                <button id="alertClose" class="alert-close">×</button>
+            </div>
+        </div>
+
+        <!-- Modal for detailed views -->
+        <div id="modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalTitle">詳細情報</h3>
+                    <button id="modalClose" class="modal-close">×</button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <!-- モーダルコンテンツがここに表示される -->
+                </div>
+                <div class="modal-footer">
+                    <button id="modalCancelBtn" class="btn btn-secondary">キャンセル</button>
+                    <button id="modalActionBtn" class="btn btn-primary">実行</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="chart.min.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>
