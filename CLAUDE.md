@@ -90,6 +90,30 @@ npm run test:all
 - **ResponsiveCanvasManager**: レスポンシブレイアウト対応
 - **ErrorHandler**: 包括的エラーハンドリング
 
+### 実績システム実装プロジェクト（Issue #21対応）
+**目標**: 基本的な実績システムを包括的なシステムに拡張し、ゲームプレイとの完全統合を実現
+
+#### 実装対象の機能
+1. **実績定義拡張**: 30個以上の多様な実績（スコア系、プレイ系、テクニック系、コレクション系）
+2. **ゲームイベント統合**: BubbleManager、ScoreManager、GameSceneとのリアルタイム統合
+3. **通知システム**: 実績解除時のポップアップ通知、キューイング機能
+4. **UI実装**: UserInfoSceneでの実績表示、進捗バー、カテゴリ表示
+5. **統計機能**: 実績統計、完了率分析、獲得AP表示
+
+#### 実装アプローチ
+- **Phase 1**: 実績定義拡張（30個以上の多様な実績）
+- **Phase 2**: ゲームイベント統合システム（AchievementEventIntegrator）
+- **Phase 3**: 実績通知システム（AchievementNotificationSystem）
+- **Phase 4**: UserInfoScene統合（AchievementListUI、進捗表示）
+- **Phase 5**: 統計システム（AchievementStatsUI、分析機能）
+
+#### 重要な統合ポイント
+- **BubbleManager**: 泡タイプ別統計とリアルタイム実績更新
+- **ScoreManager**: スコア・コンボ実績の進捗追跡
+- **GameScene**: ゲーム終了時の包括的実績チェック
+- **StatisticsManager**: 実績統計との連携
+- **EventSystem**: 統一されたイベント処理システム
+
 ### ゲームバランステスト同期プロジェクト（Issue #19対応）
 **目標**: ゲームバランス設定とテストの同期を行い、設定値の統一とバランス調整のガイドライン作成
 

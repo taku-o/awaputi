@@ -2,15 +2,22 @@
  * ユーザー情報画面シーン
  */
 import { Scene } from '../core/Scene.js';
+import { AchievementStatsUI } from '../core/AchievementStatsUI.js';
+import { AchievementHelpSystem } from '../ui/AchievementHelpSystem.js';
 
 export class UserInfoScene extends Scene {
     constructor(gameEngine) {
         super(gameEngine);
         
         // タブ状態管理
-        this.currentTab = 'statistics'; // 'statistics', 'achievements', 'management'
-        this.tabs = ['statistics', 'achievements', 'management'];
-        this.tabLabels = ['統計', '実績', '管理'];
+        this.currentTab = 'statistics'; // 'statistics', 'achievements', 'management', 'help'
+        this.tabs = ['statistics', 'achievements', 'management', 'help'];
+        this.tabLabels = ['統計', '実績', '管理', 'ヘルプ'];
+        
+        // 実績カテゴリフィルター
+        this.achievementCategories = ['all', 'score', 'play', 'technique', 'collection', 'special'];
+        this.achievementCategoryLabels = ['全て', 'スコア系', 'プレイ系', 'テクニック系', 'コレクション系', '特殊'];
+        this.currentAchievementCategory = 'all';
         
         // ダイアログ状態管理
         this.showingDialog = null; // null, 'username', 'export', 'import'
@@ -30,6 +37,9 @@ export class UserInfoScene extends Scene {
         this.statisticsData = null;
         this.achievementsData = null;
         
+        // ヘルプシステム
+        this.helpSystem = null;
+        
         // エラーハンドリング
         this.errorMessage = null;
         this.errorTimeout = null;
@@ -43,6 +53,12 @@ export class UserInfoScene extends Scene {
         
         // アクセシビリティ設定を読み込み
         this.loadAccessibilitySettings();
+        
+        // 実績統計UI
+        this.achievementStatsUI = null;
+        
+        // ヘルプシステム初期化
+        this.initializeHelpSystem();
     }
 
     enter() {
@@ -99,6 +115,11 @@ export class UserInfoScene extends Scene {
             // 戻るボタンを描画
             this.renderBackButton(context);
             
+            // ヘルプシステムを描画
+            if (this.helpSystem) {
+                this.helpSystem.render(context, canvas);
+            }
+            
         } catch (error) {
             console.error('UserInfoScene render error:', error);
             this.showError('描画エラーが発生しました');
@@ -107,6 +128,18 @@ export class UserInfoScene extends Scene {
 
     handleInput(event) {
         try {
+            // ヘルプシステムが入力を処理する場合は早期リターン
+            if (this.helpSystem && event.type === 'click') {
+                const canvas = this.gameEngine.canvas;
+                const rect = canvas.getBoundingClientRect();
+                const x = event.clientX - rect.left;
+                const y = event.clientY - rect.top;
+                
+                if (this.helpSystem.handleClick(x, y, canvas)) {
+                    return; // ヘルプシステムが処理した場合
+                }
+            }
+            
             if (event.type === 'click') {
                 this.handleClick(event);
             } else if (event.type === 'keydown') {
@@ -131,6 +164,12 @@ export class UserInfoScene extends Scene {
             // AchievementManagerから実績データを取得
             if (this.gameEngine.achievementManager) {
                 this.achievementsData = this.gameEngine.achievementManager.getAchievements();
+                this.achievementsByCategory = this.gameEngine.achievementManager.getAchievementsByCategory();
+                
+                // 実績統計UIを初期化（遅延初期化）
+                if (!this.achievementStatsUI) {
+                    this.achievementStatsUI = new AchievementStatsUI(this.gameEngine.achievementManager);
+                }
             }
             
             this.errorMessage = null;
@@ -212,6 +251,9 @@ export class UserInfoScene extends Scene {
             case 'management':
                 this.renderUserManagement(context, contentY, contentHeight);
                 break;
+            case 'help':
+                this.renderHelp(context, contentY, contentHeight);
+                break;
         }
     }
 
@@ -244,14 +286,24 @@ export class UserInfoScene extends Scene {
             currentY = this.renderBasicStatsSection(context, this.contentPadding, currentY, contentWidth, sectionHeight);
             currentY = this.renderBubbleStatsSection(context, this.contentPadding, currentY + 20, contentWidth, sectionHeight);
             currentY = this.renderComboStatsSection(context, this.contentPadding, currentY + 20, contentWidth, sectionHeight);
-            this.renderStageStatsSection(context, this.contentPadding, currentY + 20, contentWidth, sectionHeight);
+            currentY = this.renderStageStatsSection(context, this.contentPadding, currentY + 20, contentWidth, sectionHeight);
+            
+            // 実績統計セクションを追加
+            if (this.achievementStatsUI) {
+                currentY = this.renderAchievementStatsSection(context, this.contentPadding, currentY + 20, contentWidth);
+            }
         } else {
             // 中画面・大画面: 2列レイアウト
             const columnWidth = contentWidth / 2;
             currentY = this.renderBasicStatsSection(context, this.contentPadding, currentY, columnWidth, sectionHeight);
             currentY = this.renderBubbleStatsSection(context, this.contentPadding + columnWidth, currentY - sectionHeight - 20, columnWidth, sectionHeight);
             currentY = this.renderComboStatsSection(context, this.contentPadding, currentY, columnWidth, sectionHeight);
-            this.renderStageStatsSection(context, this.contentPadding + columnWidth, currentY - sectionHeight - 20, columnWidth, sectionHeight);
+            currentY = this.renderStageStatsSection(context, this.contentPadding + columnWidth, currentY - sectionHeight - 20, columnWidth, sectionHeight);
+            
+            // 実績統計セクションを追加（フルワイド）
+            if (this.achievementStatsUI) {
+                currentY = this.renderAchievementStatsSection(context, this.contentPadding, currentY + 20, contentWidth);
+            }
         }
     }
 
@@ -650,6 +702,10 @@ export class UserInfoScene extends Scene {
             return;
         }
         
+        // カテゴリフィルターを描画
+        y = this.renderAchievementCategoryFilter(context, y);
+        height -= 50; // フィルター分の高さを減算
+        
         const canvas = this.gameEngine.canvas;
         const contentWidth = canvas.width - this.contentPadding * 2;
         const achievementHeight = 80;
@@ -659,9 +715,12 @@ export class UserInfoScene extends Scene {
         const scrollOffset = this.scrollPosition;
         let currentY = y + this.contentPadding - scrollOffset;
         
+        // カテゴリフィルターを適用
+        const filteredAchievements = this.getFilteredAchievements();
+        
         // 解除済み実績と未解除実績を分離
-        const unlockedAchievements = this.achievementsData.filter(a => a.unlocked);
-        const lockedAchievements = this.achievementsData.filter(a => !a.unlocked);
+        const unlockedAchievements = filteredAchievements.filter(a => a.unlocked);
+        const lockedAchievements = filteredAchievements.filter(a => !a.unlocked);
         
         // 解除済み実績セクション
         if (unlockedAchievements.length > 0) {
@@ -717,6 +776,185 @@ export class UserInfoScene extends Scene {
         
         return currentY;
     }
+    
+    /**
+     * 実績統計セクションを描画
+     */
+    renderAchievementStatsSection(context, x, y, width) {
+        if (!this.achievementStatsUI) return y;
+        
+        const sectionHeight = 300;
+        let currentY = y;
+        
+        // セクションタイトル
+        context.fillStyle = '#4CAF50';
+        context.font = 'bold 20px Arial';
+        context.textAlign = 'left';
+        context.fillText('実績統計', x, currentY + 25);
+        
+        // セクション背景
+        context.fillStyle = '#16213e';
+        context.fillRect(x, currentY + 35, width, sectionHeight);
+        
+        // セクション枠線
+        context.strokeStyle = '#4CAF50';
+        context.lineWidth = 2;
+        context.strokeRect(x, currentY + 35, width, sectionHeight);
+        
+        // 統計内容を描画（3つのサブセクション）
+        const subSectionWidth = width / 3;
+        const contentY = currentY + 45;
+        const contentHeight = sectionHeight - 20;
+        
+        // 全体統計
+        this.achievementStatsUI.renderOverallStats(
+            context, 
+            x + 10, 
+            contentY, 
+            subSectionWidth - 20, 
+            contentHeight
+        );
+        
+        // カテゴリ別統計（簡略版）
+        this.renderCompactCategoryStats(
+            context,
+            x + subSectionWidth + 10,
+            contentY,
+            subSectionWidth - 20,
+            contentHeight
+        );
+        
+        // 最近の解除実績
+        this.achievementStatsUI.renderRecentUnlocks(
+            context,
+            x + subSectionWidth * 2 + 10,
+            contentY,
+            subSectionWidth - 20,
+            contentHeight
+        );
+        
+        return currentY + sectionHeight + 50;
+    }
+    
+    /**
+     * コンパクトなカテゴリ統計を描画
+     */
+    renderCompactCategoryStats(context, x, y, width, height) {
+        if (!this.achievementStatsUI) return;
+        
+        const stats = this.achievementStatsUI.getStatistics();
+        const categoryStats = stats.categories;
+        
+        context.save();
+        
+        // サブタイトル
+        context.fillStyle = '#ffffff';
+        context.font = 'bold 16px Arial';
+        context.textAlign = 'left';
+        context.fillText('カテゴリ別達成率', x, y + 20);
+        
+        let currentY = y + 40;
+        const itemHeight = 25;
+        
+        Object.entries(categoryStats).forEach(([key, category]) => {
+            if (currentY + itemHeight > y + height) return; // 範囲外は描画しない
+            
+            // カテゴリ名
+            context.fillStyle = '#cccccc';
+            context.font = '12px Arial';
+            context.textAlign = 'left';
+            context.fillText(category.name, x, currentY + 15);
+            
+            // 達成率
+            context.fillStyle = '#ffffff';
+            context.font = 'bold 12px Arial';
+            context.textAlign = 'right';
+            context.fillText(`${category.completionRate.toFixed(0)}%`, x + width, currentY + 15);
+            
+            // ミニ進捗バー
+            const barWidth = 80;
+            const barHeight = 4;
+            const barX = x + width - barWidth;
+            const barY = currentY + 18;
+            
+            context.fillStyle = '#333';
+            context.fillRect(barX, barY, barWidth, barHeight);
+            
+            const fillWidth = (category.completionRate / 100) * barWidth;
+            context.fillStyle = category.completionRate >= 100 ? '#4CAF50' : '#64B5F6';
+            context.fillRect(barX, barY, fillWidth, barHeight);
+            
+            currentY += itemHeight;
+        });
+        
+        context.restore();
+    }
+    
+    /**
+     * 実績カテゴリフィルターを描画
+     */
+    renderAchievementCategoryFilter(context, y) {
+        const canvas = this.gameEngine.canvas;
+        const filterHeight = 40;
+        const buttonWidth = 120;
+        const buttonHeight = 30;
+        const spacing = 10;
+        
+        // フィルターの背景
+        context.fillStyle = '#1a1a2e';
+        context.fillRect(this.contentPadding, y, canvas.width - this.contentPadding * 2, filterHeight);
+        
+        // フィルターボタンを描画
+        let currentX = this.contentPadding + 10;
+        const buttonY = y + 5;
+        
+        for (let i = 0; i < this.achievementCategories.length; i++) {
+            const category = this.achievementCategories[i];
+            const label = this.achievementCategoryLabels[i];
+            const isActive = this.currentAchievementCategory === category;
+            
+            // ボタンの背景
+            context.fillStyle = isActive ? '#4CAF50' : '#333';
+            context.fillRect(currentX, buttonY, buttonWidth, buttonHeight);
+            
+            // ボタンの枠線
+            context.strokeStyle = isActive ? '#4CAF50' : '#666';
+            context.lineWidth = 1;
+            context.strokeRect(currentX, buttonY, buttonWidth, buttonHeight);
+            
+            // ボタンのテキスト
+            context.fillStyle = isActive ? '#ffffff' : '#cccccc';
+            context.font = '12px Arial';
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            context.fillText(label, currentX + buttonWidth / 2, buttonY + buttonHeight / 2);
+            
+            currentX += buttonWidth + spacing;
+            
+            // 行を超える場合は改行
+            if (currentX + buttonWidth > canvas.width - this.contentPadding) {
+                currentX = this.contentPadding + 10;
+                // 複数行対応（必要に応じて実装）
+            }
+        }
+        
+        return y + filterHeight + 10;
+    }
+    
+    /**
+     * フィルターされた実績を取得
+     */
+    getFilteredAchievements() {
+        if (!this.achievementsData) return [];
+        
+        if (this.currentAchievementCategory === 'all') {
+            return this.achievementsData;
+        }
+        
+        return this.achievementsData.filter(achievement => 
+            achievement.category === this.currentAchievementCategory
+        );
+    }
 
     /**
      * 実績アイテムを描画
@@ -760,7 +998,7 @@ export class UserInfoScene extends Scene {
         
         // 進捗バー（未解除実績のみ）
         if (!isUnlocked && achievement.progress) {
-            this.renderProgressBar(context, x + 60, y + 55, width - 80, achievement.progress);
+            this.renderEnhancedProgressBar(context, x + 60, y + 55, width - 150, achievement.progress);
         }
         
         // 獲得日時（解除済み実績のみ）
@@ -798,6 +1036,96 @@ export class UserInfoScene extends Scene {
         context.font = '11px Arial';
         context.textAlign = 'center';
         context.fillText(`${current}/${target} (${percentage.toFixed(0)}%)`, x + width / 2, y + barHeight + 12);
+    }
+    
+    /**
+     * 拡張進捗バーを描画
+     */
+    renderEnhancedProgressBar(context, x, y, width, progress) {
+        const barHeight = 8;
+        const current = progress.current || 0;
+        const target = progress.target || 1;
+        const percentage = Math.min(100, (current / target) * 100);
+        
+        // 背景（グラデーション）
+        const bgGradient = context.createLinearGradient(x, y, x, y + barHeight);
+        bgGradient.addColorStop(0, '#2a2a2a');
+        bgGradient.addColorStop(1, '#1a1a1a');
+        context.fillStyle = bgGradient;
+        context.fillRect(x, y, width, barHeight);
+        
+        // 枠線
+        context.strokeStyle = '#555';
+        context.lineWidth = 1;
+        context.strokeRect(x, y, width, barHeight);
+        
+        // 進捗（グラデーション）
+        const fillWidth = (percentage / 100) * width;
+        if (fillWidth > 0) {
+            const progressGradient = context.createLinearGradient(x, y, x, y + barHeight);
+            if (percentage >= 100) {
+                progressGradient.addColorStop(0, '#4CAF50');
+                progressGradient.addColorStop(1, '#2E7D32');
+            } else {
+                progressGradient.addColorStop(0, '#64B5F6');
+                progressGradient.addColorStop(1, '#1976D2');
+            }
+            context.fillStyle = progressGradient;
+            context.fillRect(x, y, fillWidth, barHeight);
+            
+            // 光る効果
+            if (percentage < 100) {
+                context.save();
+                context.globalAlpha = 0.3;
+                context.fillStyle = '#ffffff';
+                context.fillRect(x, y, fillWidth, barHeight / 2);
+                context.restore();
+            }
+        }
+        
+        // 進捗テキスト（右側に配置）
+        context.fillStyle = '#ffffff';
+        context.font = '12px Arial';
+        context.textAlign = 'right';
+        context.textBaseline = 'middle';
+        context.fillText(`${current}/${target}`, x + width + 40, y + barHeight / 2);
+        
+        // パーセンテージ（小さく表示）
+        context.fillStyle = '#cccccc';
+        context.font = '10px Arial';
+        context.fillText(`${percentage.toFixed(0)}%`, x + width + 40, y + barHeight / 2 + 12);
+    }
+    
+    /**
+     * 実績カテゴリフィルターのクリック処理
+     */
+    handleAchievementCategoryClick(x, y) {
+        // フィルターボタンの位置を計算
+        const filterY = this.headerHeight + 50; // タブの下のフィルターエリア
+        const buttonWidth = 120;
+        const buttonHeight = 30;
+        const spacing = 10;
+        
+        // フィルターエリア内かチェック
+        if (y >= filterY + 5 && y <= filterY + 5 + buttonHeight) {
+            let currentX = this.contentPadding + 10;
+            
+            for (let i = 0; i < this.achievementCategories.length; i++) {
+                // ボタンの範囲内かチェック
+                if (x >= currentX && x <= currentX + buttonWidth) {
+                    this.currentAchievementCategory = this.achievementCategories[i];
+                    this.scrollPosition = 0; // スクロール位置をリセット
+                    return;
+                }
+                
+                currentX += buttonWidth + spacing;
+                
+                // 行を超える場合は改行（複数行対応）
+                if (currentX + buttonWidth > this.gameEngine.canvas.width - this.contentPadding) {
+                    break; // 現在は1行のみ対応
+                }
+            }
+        }
     }
 
     /**
@@ -1445,9 +1773,19 @@ export class UserInfoScene extends Scene {
             }
         }
         
+        // 実績画面のカテゴリフィルタークリック処理
+        if (this.currentTab === 'achievements') {
+            this.handleAchievementCategoryClick(x, y);
+        }
+        
         // ユーザー管理画面のボタンクリック処理
         if (this.currentTab === 'management') {
             this.handleManagementClick(x, y);
+        }
+        
+        // ヘルプ画面のセクション選択クリック処理
+        if (this.currentTab === 'help') {
+            this.handleHelpSectionClick(x, y);
         }
         
         // 戻るボタンクリック処理
@@ -2423,5 +2761,221 @@ export class UserInfoScene extends Scene {
         // タッチデバイスの場合は最小44pxのタップ領域を確保
         const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         return isTouchDevice ? Math.max(normalSize, 44) : normalSize;
+    }
+    
+    /**
+     * ヘルプシステムを初期化
+     */
+    initializeHelpSystem() {
+        try {
+            // 実績マネージャーが利用可能な場合のみヘルプシステムを初期化
+            if (this.gameEngine.achievementManager) {
+                this.helpSystem = new AchievementHelpSystem(this.gameEngine.achievementManager);
+            }
+        } catch (error) {
+            console.warn('Failed to initialize help system:', error);
+            this.helpSystem = null;
+        }
+    }
+    
+    /**
+     * ヘルプコンテンツを描画
+     */
+    renderHelp(context, y, height) {
+        const canvas = this.gameEngine.canvas;
+        const contentWidth = canvas.width - this.contentPadding * 2;
+        
+        let currentY = y + this.contentPadding;
+        
+        // ヘルプシステムが利用可能かチェック
+        if (!this.helpSystem) {
+            context.fillStyle = '#cccccc';
+            context.font = '18px Arial';
+            context.textAlign = 'center';
+            context.fillText('ヘルプシステムは利用できません', canvas.width / 2, currentY + 50);
+            return;
+        }
+        
+        // ヘルプセクション選択UI
+        currentY = this.renderHelpSectionSelector(context, this.contentPadding, currentY, contentWidth);
+        currentY += 20;
+        
+        // 選択されたヘルプコンテンツ表示
+        this.renderHelpContent(context, this.contentPadding, currentY, contentWidth, height - (currentY - y) - 20);
+    }
+    
+    /**
+     * ヘルプセクション選択UIを描画
+     */
+    renderHelpSectionSelector(context, x, y, width) {
+        const helpSections = ['overview', 'categories', 'progress', 'rewards', 'tips', 'faq'];
+        const sectionLabels = ['概要', 'カテゴリ', '進捗', '報酬', 'コツ', 'FAQ'];
+        
+        const buttonWidth = Math.min(100, width / helpSections.length - 10);
+        const buttonHeight = 35;
+        
+        let currentX = x;
+        
+        for (let i = 0; i < helpSections.length; i++) {
+            const section = helpSections[i];
+            const label = sectionLabels[i];
+            const isActive = this.helpSystem.currentHelpSection === section;
+            
+            // ボタン背景
+            context.fillStyle = isActive ? '#4CAF50' : '#2196F3';
+            context.fillRect(currentX, y, buttonWidth, buttonHeight);
+            
+            // ボタン枠線
+            context.strokeStyle = '#333';
+            context.lineWidth = 1;
+            context.strokeRect(currentX, y, buttonWidth, buttonHeight);
+            
+            // ボタンテキスト
+            context.fillStyle = '#ffffff';
+            context.font = '12px Arial';
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            context.fillText(label, currentX + buttonWidth / 2, y + buttonHeight / 2);
+            
+            currentX += buttonWidth + 10;
+            
+            // 改行処理（必要に応じて）
+            if (currentX + buttonWidth > x + width) {
+                currentX = x;
+                y += buttonHeight + 10;
+            }
+        }
+        
+        return y + buttonHeight;
+    }
+    
+    /**
+     * ヘルプコンテンツを描画
+     */
+    renderHelpContent(context, x, y, width, height) {
+        if (!this.helpSystem.helpContent) return;
+        
+        const currentSection = this.helpSystem.currentHelpSection;
+        const content = this.helpSystem.helpContent[currentSection];
+        
+        if (!content) return;
+        
+        // セクション背景
+        context.fillStyle = '#16213e';
+        context.fillRect(x, y, width, height);
+        
+        // セクション枠線
+        context.strokeStyle = '#333';
+        context.lineWidth = 1;
+        context.strokeRect(x, y, width, height);
+        
+        const padding = 15;
+        const textX = x + padding;
+        let currentY = y + padding;
+        
+        // セクションタイトル
+        context.fillStyle = '#FFD700';
+        context.font = 'bold 20px Arial';
+        context.textAlign = 'left';
+        context.textBaseline = 'top';
+        context.fillText(`${content.icon} ${content.title}`, textX, currentY);
+        currentY += 35;
+        
+        // コンテンツ描画
+        const lineHeight = 20;
+        const maxY = y + height - padding;
+        
+        for (const line of content.content) {
+            if (currentY + lineHeight > maxY) break;
+            
+            if (line === '') {
+                currentY += lineHeight / 2;
+                continue;
+            }
+            
+            // 文字色とフォントを設定
+            if (line.startsWith('🎯 ') || line.startsWith('⏰ ') || 
+                line.startsWith('🎮 ') || line.startsWith('🎨 ') || 
+                line.startsWith('⭐ ') || line.startsWith('💰 ') || 
+                line.startsWith('🛍️ ') || line.startsWith('📊 ') ||
+                line.startsWith('🎁 ')) {
+                context.fillStyle = '#FFD700';
+                context.font = 'bold 14px Arial';
+            } else if (line.startsWith('• ')) {
+                context.fillStyle = '#cccccc';
+                context.font = '13px Arial';
+            } else if (line.startsWith('Q: ')) {
+                context.fillStyle = '#4CAF50';
+                context.font = 'bold 14px Arial';
+            } else if (line.startsWith('A: ')) {
+                context.fillStyle = '#ffffff';
+                context.font = '14px Arial';
+            } else {
+                context.fillStyle = '#ffffff';
+                context.font = '14px Arial';
+            }
+            
+            // 文字列の折り返し描画
+            this.renderWrappedHelpText(context, line, textX, currentY, width - padding * 2, lineHeight);
+            currentY += lineHeight;
+        }
+    }
+    
+    /**
+     * ヘルプテキストの折り返し描画
+     */
+    renderWrappedHelpText(context, text, x, y, maxWidth, lineHeight) {
+        const words = text.split(' ');
+        let line = '';
+        let currentY = y;
+        
+        for (let n = 0; n < words.length; n++) {
+            const testLine = line + words[n] + ' ';
+            const metrics = context.measureText(testLine);
+            const testWidth = metrics.width;
+            
+            if (testWidth > maxWidth && n > 0) {
+                context.fillText(line.trim(), x, currentY);
+                line = words[n] + ' ';
+                currentY += lineHeight;
+            } else {
+                line = testLine;
+            }
+        }
+        context.fillText(line.trim(), x, currentY);
+    }
+    
+    /**
+     * ヘルプセクション選択のクリック処理
+     */
+    handleHelpSectionClick(x, y) {
+        const helpSections = ['overview', 'categories', 'progress', 'rewards', 'tips', 'faq'];
+        const canvas = this.gameEngine.canvas;
+        const contentWidth = canvas.width - this.contentPadding * 2;
+        const buttonWidth = Math.min(100, contentWidth / helpSections.length - 10);
+        const buttonHeight = 35;
+        const selectorY = this.headerHeight + this.contentPadding;
+        
+        // セクション選択ボタンの範囲内かチェック
+        if (y >= selectorY && y <= selectorY + buttonHeight) {
+            let currentX = this.contentPadding;
+            
+            for (let i = 0; i < helpSections.length; i++) {
+                // ボタンの範囲内かチェック
+                if (x >= currentX && x <= currentX + buttonWidth) {
+                    if (this.helpSystem) {
+                        this.helpSystem.changeHelpSection(helpSections[i]);
+                    }
+                    return;
+                }
+                
+                currentX += buttonWidth + 10;
+                
+                // 改行処理（必要に応じて）
+                if (currentX + buttonWidth > this.contentPadding + contentWidth) {
+                    break; // 現在は1行のみ対応
+                }
+            }
+        }
     }
 }
