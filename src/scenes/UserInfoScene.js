@@ -4,6 +4,9 @@
 import { Scene } from '../core/Scene.js';
 import { AchievementStatsUI } from '../core/AchievementStatsUI.js';
 import { AchievementHelpSystem } from '../ui/AchievementHelpSystem.js';
+import { ChartRenderer } from '../core/ChartRenderer.js';
+import { StatisticsDashboard } from '../core/StatisticsDashboard.js';
+import { StatisticsFilterManager } from '../core/StatisticsFilterManager.js';
 
 export class UserInfoScene extends Scene {
     constructor(gameEngine) {
@@ -57,8 +60,27 @@ export class UserInfoScene extends Scene {
         // 実績統計UI
         this.achievementStatsUI = null;
         
+        // 拡張統計システムの初期化
+        this.chartRenderer = null;
+        this.statisticsDashboard = null;
+        this.statisticsFilterManager = null;
+        this.statisticsViewMode = 'dashboard'; // 'dashboard', 'charts', 'details'
+        this.currentPeriodFilter = 'last7days';
+        
+        // 統計表示設定
+        this.statisticsDisplaySettings = {
+            showDashboard: true,
+            showCharts: true,
+            showDetailedStats: true,
+            enableAnimations: true,
+            compactMode: false
+        };
+        
         // ヘルプシステム初期化
         this.initializeHelpSystem();
+        
+        // 拡張統計システム初期化
+        this.initializeExtendedStatistics();
     }
 
     enter() {
@@ -261,49 +283,38 @@ export class UserInfoScene extends Scene {
      * 統計データを描画
      */
     renderStatistics(context, y, height) {
+        const canvas = this.gameEngine.canvas;
+        const contentWidth = canvas.width - this.contentPadding * 2;
+        
+        // 統計フィルターUIの描画
+        let currentY = this.renderStatisticsFilterUI(context, y, contentWidth);
+        
+        // 統計表示モード切り替えUIの描画
+        currentY = this.renderStatisticsViewModeUI(context, currentY + 10, contentWidth);
+        
+        // 利用可能な高さを計算
+        const availableHeight = height - (currentY - y) - 20;
+        
         if (!this.statisticsData) {
             context.fillStyle = '#cccccc';
             context.font = '20px Arial';
             context.textAlign = 'center';
             context.fillText('まだ記録がありません', 
-                this.gameEngine.canvas.width / 2, y + height / 2);
+                canvas.width / 2, currentY + availableHeight / 2);
             return;
         }
         
-        const canvas = this.gameEngine.canvas;
-        const contentWidth = canvas.width - this.contentPadding * 2;
-        const sectionHeight = 180;
-        
-        // レスポンシブレイアウト判定
-        const layout = this.getResponsiveLayout(canvas.width);
-        
-        // スクロール対応
-        const scrollOffset = this.scrollPosition;
-        let currentY = y + this.contentPadding - scrollOffset;
-        
-        if (layout.columns === 1) {
-            // 小画面: 1列レイアウト
-            currentY = this.renderBasicStatsSection(context, this.contentPadding, currentY, contentWidth, sectionHeight);
-            currentY = this.renderBubbleStatsSection(context, this.contentPadding, currentY + 20, contentWidth, sectionHeight);
-            currentY = this.renderComboStatsSection(context, this.contentPadding, currentY + 20, contentWidth, sectionHeight);
-            currentY = this.renderStageStatsSection(context, this.contentPadding, currentY + 20, contentWidth, sectionHeight);
-            
-            // 実績統計セクションを追加
-            if (this.achievementStatsUI) {
-                currentY = this.renderAchievementStatsSection(context, this.contentPadding, currentY + 20, contentWidth);
-            }
-        } else {
-            // 中画面・大画面: 2列レイアウト
-            const columnWidth = contentWidth / 2;
-            currentY = this.renderBasicStatsSection(context, this.contentPadding, currentY, columnWidth, sectionHeight);
-            currentY = this.renderBubbleStatsSection(context, this.contentPadding + columnWidth, currentY - sectionHeight - 20, columnWidth, sectionHeight);
-            currentY = this.renderComboStatsSection(context, this.contentPadding, currentY, columnWidth, sectionHeight);
-            currentY = this.renderStageStatsSection(context, this.contentPadding + columnWidth, currentY - sectionHeight - 20, columnWidth, sectionHeight);
-            
-            // 実績統計セクションを追加（フルワイド）
-            if (this.achievementStatsUI) {
-                currentY = this.renderAchievementStatsSection(context, this.contentPadding, currentY + 20, contentWidth);
-            }
+        // 統計表示モードに応じて描画
+        switch (this.statisticsViewMode) {
+            case 'dashboard':
+                this.renderStatisticsDashboard(context, currentY + 20, availableHeight - 20);
+                break;
+            case 'charts':
+                this.renderStatisticsCharts(context, currentY + 20, availableHeight - 20);
+                break;
+            case 'details':
+                this.renderDetailedStatistics(context, currentY + 20, availableHeight - 20);
+                break;
         }
     }
 
@@ -2776,6 +2787,453 @@ export class UserInfoScene extends Scene {
             console.warn('Failed to initialize help system:', error);
             this.helpSystem = null;
         }
+    }
+
+    /**
+     * 拡張統計システムの初期化
+     */
+    initializeExtendedStatistics() {
+        try {
+            // ChartRendererの初期化
+            this.chartRenderer = new ChartRenderer();
+            
+            // StatisticsFilterManagerの初期化
+            if (this.gameEngine.statisticsManager) {
+                this.statisticsFilterManager = new StatisticsFilterManager(this.gameEngine.statisticsManager);
+                
+                // StatisticsDashboardの初期化
+                this.statisticsDashboard = new StatisticsDashboard(
+                    this.gameEngine.statisticsManager,
+                    this.chartRenderer
+                );
+                
+                // フィルター変更イベントのリスナー設定
+                this.statisticsFilterManager.on('dataFiltered', (data) => {
+                    this.onStatisticsDataFiltered(data);
+                });
+                
+                this.statisticsFilterManager.on('filterError', (error) => {
+                    this.onStatisticsFilterError(error);
+                });
+            }
+        } catch (error) {
+            console.warn('Failed to initialize extended statistics:', error);
+            this.chartRenderer = null;
+            this.statisticsDashboard = null;
+            this.statisticsFilterManager = null;
+        }
+    }
+
+    /**
+     * 統計データフィルタリング完了時のハンドラ
+     */
+    onStatisticsDataFiltered(data) {
+        // フィルタリングされたデータでUI更新
+        this.statisticsData = data.statistics;
+        
+        // 必要に応じて再描画をトリガー
+        if (this.currentTab === 'statistics') {
+            // 再描画フラグを設定（次のrenderループで反映）
+            this.needsRedraw = true;
+        }
+    }
+
+    /**
+     * 統計フィルターエラー時のハンドラ
+     */
+    onStatisticsFilterError(error) {
+        this.setErrorMessage(`統計データの取得に失敗しました: ${error.message}`);
+    }
+
+    /**
+     * 統計フィルターUIの描画
+     */
+    renderStatisticsFilterUI(context, y, width) {
+        const canvas = this.gameEngine.canvas;
+        const filterHeight = 50;
+        const buttonWidth = 100;
+        const buttonHeight = 30;
+        const buttonSpacing = 10;
+        
+        // フィルター背景
+        context.fillStyle = '#F8FAFC';
+        context.fillRect(this.contentPadding, y, width, filterHeight);
+        
+        // フィルター枠線
+        context.strokeStyle = '#E5E7EB';
+        context.lineWidth = 1;
+        context.strokeRect(this.contentPadding, y, width, filterHeight);
+        
+        // フィルタータイトル
+        context.fillStyle = '#374151';
+        context.font = '14px system-ui, -apple-system, sans-serif';
+        context.textAlign = 'left';
+        context.fillText('期間フィルター:', this.contentPadding + 10, y + 20);
+        
+        // 期間フィルターボタン
+        const periods = [
+            { key: 'today', label: '今日' },
+            { key: 'last7days', label: '7日間' },
+            { key: 'last30days', label: '30日間' },
+            { key: 'allTime', label: '全期間' }
+        ];
+        
+        let buttonX = this.contentPadding + 120;
+        periods.forEach((period) => {
+            const isActive = this.currentPeriodFilter === period.key;
+            
+            // ボタン背景
+            context.fillStyle = isActive ? '#3B82F6' : '#FFFFFF';
+            context.fillRect(buttonX, y + 10, buttonWidth, buttonHeight);
+            
+            // ボタン枠線
+            context.strokeStyle = isActive ? '#3B82F6' : '#D1D5DB';
+            context.lineWidth = 1;
+            context.strokeRect(buttonX, y + 10, buttonWidth, buttonHeight);
+            
+            // ボタンテキスト
+            context.fillStyle = isActive ? '#FFFFFF' : '#374151';
+            context.font = '12px system-ui, -apple-system, sans-serif';
+            context.textAlign = 'center';
+            context.fillText(period.label, buttonX + buttonWidth / 2, y + 28);
+            
+            buttonX += buttonWidth + buttonSpacing;
+        });
+        
+        return y + filterHeight;
+    }
+
+    /**
+     * 統計表示モード切り替えUIの描画
+     */
+    renderStatisticsViewModeUI(context, y, width) {
+        const canvas = this.gameEngine.canvas;
+        const modeHeight = 40;
+        const buttonWidth = 80;
+        const buttonHeight = 25;
+        const buttonSpacing = 5;
+        
+        // モード切り替え背景
+        context.fillStyle = '#F8FAFC';
+        context.fillRect(this.contentPadding, y, width, modeHeight);
+        
+        // モード切り替えタイトル
+        context.fillStyle = '#374151';
+        context.font = '12px system-ui, -apple-system, sans-serif';
+        context.textAlign = 'left';
+        context.fillText('表示モード:', this.contentPadding + 10, y + 15);
+        
+        // 表示モードボタン
+        const modes = [
+            { key: 'dashboard', label: 'ダッシュボード' },
+            { key: 'charts', label: 'グラフ' },
+            { key: 'details', label: '詳細' }
+        ];
+        
+        let buttonX = this.contentPadding + 80;
+        modes.forEach((mode) => {
+            const isActive = this.statisticsViewMode === mode.key;
+            
+            // ボタン背景
+            context.fillStyle = isActive ? '#10B981' : '#FFFFFF';
+            context.fillRect(buttonX, y + 8, buttonWidth, buttonHeight);
+            
+            // ボタン枠線
+            context.strokeStyle = isActive ? '#10B981' : '#D1D5DB';
+            context.lineWidth = 1;
+            context.strokeRect(buttonX, y + 8, buttonWidth, buttonHeight);
+            
+            // ボタンテキスト
+            context.fillStyle = isActive ? '#FFFFFF' : '#374151';
+            context.font = '10px system-ui, -apple-system, sans-serif';
+            context.textAlign = 'center';
+            context.fillText(mode.label, buttonX + buttonWidth / 2, y + 22);
+            
+            buttonX += buttonWidth + buttonSpacing;
+        });
+        
+        return y + modeHeight;
+    }
+
+    /**
+     * 統計ダッシュボードの描画
+     */
+    async renderStatisticsDashboard(context, y, height) {
+        if (!this.statisticsDashboard) {
+            this.renderNoDataMessage(context, y, height, 'ダッシュボードを初期化できませんでした');
+            return;
+        }
+        
+        try {
+            // ダッシュボード用のサブキャンバス作成
+            const canvas = this.gameEngine.canvas;
+            const dashboardCanvas = document.createElement('canvas');
+            dashboardCanvas.width = canvas.width - (this.contentPadding * 2);
+            dashboardCanvas.height = height;
+            const dashboardContext = dashboardCanvas.getContext('2d');
+            
+            // ダッシュボードの描画
+            await this.statisticsDashboard.render(dashboardContext, {
+                animated: this.statisticsDisplaySettings.enableAnimations,
+                backgroundColor: '#FFFFFF'
+            });
+            
+            // メインキャンバスに描画
+            context.drawImage(dashboardCanvas, this.contentPadding, y);
+            
+        } catch (error) {
+            console.error('Dashboard rendering failed:', error);
+            this.renderNoDataMessage(context, y, height, 'ダッシュボードの描画に失敗しました');
+        }
+    }
+
+    /**
+     * 統計グラフの描画
+     */
+    async renderStatisticsCharts(context, y, height) {
+        if (!this.chartRenderer || !this.statisticsData) {
+            this.renderNoDataMessage(context, y, height, 'グラフデータがありません');
+            return;
+        }
+        
+        try {
+            const canvas = this.gameEngine.canvas;
+            const chartWidth = (canvas.width - (this.contentPadding * 3)) / 2;
+            const chartHeight = height / 2 - 10;
+            
+            // スコア推移グラフ
+            await this.renderScoreTrendChart(context, this.contentPadding, y, chartWidth, chartHeight);
+            
+            // 精度分析グラフ
+            await this.renderAccuracyChart(context, this.contentPadding + chartWidth + 20, y, chartWidth, chartHeight);
+            
+            // バブル種別統計グラフ
+            await this.renderBubbleStatsChart(context, this.contentPadding, y + chartHeight + 20, chartWidth, chartHeight);
+            
+            // コンボ統計グラフ
+            await this.renderComboStatsChart(context, this.contentPadding + chartWidth + 20, y + chartHeight + 20, chartWidth, chartHeight);
+            
+        } catch (error) {
+            console.error('Charts rendering failed:', error);
+            this.renderNoDataMessage(context, y, height, 'グラフの描画に失敗しました');
+        }
+    }
+
+    /**
+     * 詳細統計の描画
+     */
+    renderDetailedStatistics(context, y, height) {
+        const canvas = this.gameEngine.canvas;
+        const contentWidth = canvas.width - this.contentPadding * 2;
+        const sectionHeight = 180;
+        
+        // レスポンシブレイアウト判定
+        const layout = this.getResponsiveLayout(canvas.width);
+        
+        // スクロール対応
+        const scrollOffset = this.scrollPosition;
+        let currentY = y - scrollOffset;
+        
+        if (layout.columns === 1) {
+            // 小画面: 1列レイアウト
+            currentY = this.renderBasicStatsSection(context, this.contentPadding, currentY, contentWidth, sectionHeight);
+            currentY = this.renderBubbleStatsSection(context, this.contentPadding, currentY + 20, contentWidth, sectionHeight);
+            currentY = this.renderComboStatsSection(context, this.contentPadding, currentY + 20, contentWidth, sectionHeight);
+            currentY = this.renderStageStatsSection(context, this.contentPadding, currentY + 20, contentWidth, sectionHeight);
+            
+            // 実績統計セクションを追加
+            if (this.achievementStatsUI) {
+                currentY = this.renderAchievementStatsSection(context, this.contentPadding, currentY + 20, contentWidth);
+            }
+        } else {
+            // 中画面・大画面: 2列レイアウト
+            const columnWidth = contentWidth / 2;
+            currentY = this.renderBasicStatsSection(context, this.contentPadding, currentY, columnWidth, sectionHeight);
+            currentY = this.renderBubbleStatsSection(context, this.contentPadding + columnWidth, currentY - sectionHeight - 20, columnWidth, sectionHeight);
+            currentY = this.renderComboStatsSection(context, this.contentPadding, currentY, columnWidth, sectionHeight);
+            currentY = this.renderStageStatsSection(context, this.contentPadding + columnWidth, currentY - sectionHeight - 20, columnWidth, sectionHeight);
+            
+            // 実績統計セクションを追加（フルワイド）
+            if (this.achievementStatsUI) {
+                currentY = this.renderAchievementStatsSection(context, this.contentPadding, currentY + 20, contentWidth);
+            }
+        }
+    }
+
+    /**
+     * データなしメッセージの描画
+     */
+    renderNoDataMessage(context, y, height, message) {
+        context.fillStyle = '#9CA3AF';
+        context.font = '16px system-ui, -apple-system, sans-serif';
+        context.textAlign = 'center';
+        context.fillText(message, this.gameEngine.canvas.width / 2, y + height / 2);
+    }
+
+    /**
+     * スコア推移グラフの描画
+     */
+    async renderScoreTrendChart(context, x, y, width, height) {
+        // グラフタイトル
+        context.fillStyle = '#1F2937';
+        context.font = 'bold 14px system-ui, -apple-system, sans-serif';
+        context.textAlign = 'left';
+        context.fillText('スコア推移', x, y + 15);
+        
+        // 模擬データ
+        const trendData = this.generateScoreTrendData();
+        
+        // グラフエリア
+        const chartCanvas = document.createElement('canvas');
+        chartCanvas.width = width;
+        chartCanvas.height = height - 25;
+        const chartContext = chartCanvas.getContext('2d');
+        
+        await this.chartRenderer.render(chartContext, 'line', trendData, {
+            width: width,
+            height: height - 25,
+            showAxes: true,
+            showGrid: true,
+            padding: 10,
+            lineColor: '#3B82F6'
+        });
+        
+        context.drawImage(chartCanvas, x, y + 25);
+    }
+
+    /**
+     * 精度分析グラフの描画
+     */
+    async renderAccuracyChart(context, x, y, width, height) {
+        // グラフタイトル
+        context.fillStyle = '#1F2937';
+        context.font = 'bold 14px system-ui, -apple-system, sans-serif';
+        context.textAlign = 'left';
+        context.fillText('精度分析', x, y + 15);
+        
+        // 模擬データ
+        const accuracyData = this.generateAccuracyData();
+        
+        // グラフエリア
+        const chartCanvas = document.createElement('canvas');
+        chartCanvas.width = width;
+        chartCanvas.height = height - 25;
+        const chartContext = chartCanvas.getContext('2d');
+        
+        await this.chartRenderer.render(chartContext, 'pie', accuracyData, {
+            width: width,
+            height: height - 25,
+            showLegend: true,
+            showLabels: true,
+            padding: 10
+        });
+        
+        context.drawImage(chartCanvas, x, y + 25);
+    }
+
+    /**
+     * バブル統計グラフの描画
+     */
+    async renderBubbleStatsChart(context, x, y, width, height) {
+        // グラフタイトル
+        context.fillStyle = '#1F2937';
+        context.font = 'bold 14px system-ui, -apple-system, sans-serif';
+        context.textAlign = 'left';
+        context.fillText('バブル種別統計', x, y + 15);
+        
+        // 模擬データ
+        const bubbleData = this.generateBubbleStatsData();
+        
+        // グラフエリア
+        const chartCanvas = document.createElement('canvas');
+        chartCanvas.width = width;
+        chartCanvas.height = height - 25;
+        const chartContext = chartCanvas.getContext('2d');
+        
+        await this.chartRenderer.render(chartContext, 'bar', bubbleData, {
+            width: width,
+            height: height - 25,
+            showAxes: true,
+            showGrid: true,
+            padding: 10
+        });
+        
+        context.drawImage(chartCanvas, x, y + 25);
+    }
+
+    /**
+     * コンボ統計グラフの描画
+     */
+    async renderComboStatsChart(context, x, y, width, height) {
+        // グラフタイトル
+        context.fillStyle = '#1F2937';
+        context.font = 'bold 14px system-ui, -apple-system, sans-serif';
+        context.textAlign = 'left';
+        context.fillText('コンボ統計', x, y + 15);
+        
+        // 模擬データ
+        const comboData = this.generateComboStatsData();
+        
+        // グラフエリア
+        const chartCanvas = document.createElement('canvas');
+        chartCanvas.width = width;
+        chartCanvas.height = height - 25;
+        const chartContext = chartCanvas.getContext('2d');
+        
+        await this.chartRenderer.render(chartContext, 'area', comboData, {
+            width: width,
+            height: height - 25,
+            showAxes: true,
+            showGrid: true,
+            padding: 10,
+            areaColor: '#10B981'
+        });
+        
+        context.drawImage(chartCanvas, x, y + 25);
+    }
+
+    /**
+     * 模擬データ生成メソッド群
+     */
+    generateScoreTrendData() {
+        const data = [];
+        for (let i = 0; i < 10; i++) {
+            data.push({
+                x: i,
+                value: 1000 + (i * 150) + (Math.random() * 200),
+                label: `Day ${i + 1}`
+            });
+        }
+        return data;
+    }
+
+    generateAccuracyData() {
+        return [
+            { label: '完璧', value: 45 },
+            { label: '良好', value: 30 },
+            { label: '普通', value: 20 },
+            { label: '要改善', value: 5 }
+        ];
+    }
+
+    generateBubbleStatsData() {
+        return [
+            { label: 'ノーマル', value: 150 },
+            { label: 'ストーン', value: 80 },
+            { label: 'レインボー', value: 25 },
+            { label: 'ボス', value: 12 }
+        ];
+    }
+
+    generateComboStatsData() {
+        const data = [];
+        for (let i = 0; i < 15; i++) {
+            data.push({
+                x: i,
+                value: Math.max(0, 50 + (i * 5) - (Math.random() * 20))
+            });
+        }
+        return data;
     }
     
     /**
