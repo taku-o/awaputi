@@ -27,24 +27,24 @@
   - 既存のStatisticsManagerに時系列データ収集機能を統合する
   - _Requirements: 2.1, 2.2, 2.3, 2.4_
 
-- [ ] 2. 統計分析エンジンの実装
+- [x] 2. 統計分析エンジンの実装
   - StatisticsAnalyzerクラスを作成し、トレンド分析、比較分析、洞察生成機能を実装する
   - 成長指標の計算とプレイスタイル分析機能を実装する
   - _Requirements: 2.4, 1.1, 1.2, 1.3_
 
-- [ ] 2.1 TrendAnalyzerクラスの実装
+- [x] 2.1 TrendAnalyzerクラスの実装
   - 時系列データからトレンドを分析するTrendAnalyzerクラスを作成する
   - スコア向上率、精度向上率、プレイ効率向上率の計算機能を実装する
   - 成長トレンドの可視化データを生成する機能を実装する
   - _Requirements: 2.4_
 
-- [ ] 2.2 ComparisonEngineクラスの実装
+- [x] 2.2 ComparisonEngineクラスの実装
   - 期間別データ比較を行うComparisonEngineクラスを作成する
   - 期間比較機能と期間別ランキング機能を実装する
   - 比較結果の統計的有意性を判定する機能を実装する
   - _Requirements: 4.2_
 
-- [ ] 2.3 InsightGeneratorクラスの実装
+- [x] 2.3 InsightGeneratorクラスの実装
   - 統計データから洞察を生成するInsightGeneratorクラスを作成する
   - プレイヤーの強み・弱み分析と推奨アクション生成機能を実装する
   - 成長ハイライトとマイルストーン検出機能を実装する

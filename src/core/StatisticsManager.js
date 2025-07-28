@@ -16,6 +16,10 @@ export class StatisticsManager {
         // TimeSeriesDataManagerの統合（遅延読み込み）
         this.timeSeriesManager = null;
         this.initializeTimeSeriesManager();
+        
+        // StatisticsAnalyzerの統合（遅延読み込み）
+        this.analyzer = null;
+        this.initializeAnalyzer();
     }
     
     /**
@@ -39,6 +43,18 @@ export class StatisticsManager {
             this.timeSeriesManager = new TimeSeriesDataManager();
         } catch (error) {
             console.warn('TimeSeriesDataManager not available, using fallback mode:', error);
+        }
+    }
+    
+    /**
+     * StatisticsAnalyzerの初期化
+     */
+    async initializeAnalyzer() {
+        try {
+            const { StatisticsAnalyzer } = await import('./StatisticsAnalyzer.js');
+            this.analyzer = new StatisticsAnalyzer(this);
+        } catch (error) {
+            console.warn('StatisticsAnalyzer not available, using fallback mode:', error);
         }
     }
     
@@ -920,6 +936,17 @@ export class StatisticsManager {
                 summary: this.getTimeSeriesStatisticsSummary(),
                 growthTrends: this.analyzeGrowthTrends(),
                 recentPerformance: this.getRecentPerformance()
+            },
+            
+            // 分析機能
+            analysis: {
+                available: this.isAnalysisAvailable(),
+                capabilities: {
+                    trendAnalysis: !!this.analyzer,
+                    comparisonAnalysis: !!this.analyzer,
+                    insightGeneration: !!this.analyzer,
+                    performanceScoring: !!this.analyzer
+                }
             }
         };
     }
@@ -1492,6 +1519,52 @@ export class StatisticsManager {
         });
         
         return performance;
+    }
+    
+    /**
+     * 包括的分析の実行
+     */
+    async performComprehensiveAnalysis(options = {}) {
+        if (!this.analyzer) return null;
+        
+        return await this.analyzer.performComprehensiveAnalysis(options);
+    }
+    
+    /**
+     * トレンド分析の実行
+     */
+    async performTrendAnalysis(options = {}) {
+        if (!this.analyzer) return null;
+        
+        return await this.analyzer.performTrendAnalysis(options);
+    }
+    
+    /**
+     * 洞察生成の実行
+     */
+    async generateInsights(options = {}) {
+        if (!this.analyzer) return null;
+        
+        const detailedStats = this.getDetailedStatistics();
+        return await this.analyzer.generateInsights(detailedStats, options);
+    }
+    
+    /**
+     * パフォーマンススコアの取得
+     */
+    async getPerformanceScore() {
+        if (!this.analyzer) return 0;
+        
+        const analysis = await this.performComprehensiveAnalysis();
+        return analysis && analysis.integratedAnalysis ? 
+            analysis.integratedAnalysis.overallPerformanceScore : 0;
+    }
+    
+    /**
+     * 統計分析が利用可能かチェック
+     */
+    isAnalysisAvailable() {
+        return !!this.analyzer;
     }
     
     /**
