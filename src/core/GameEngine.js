@@ -9,6 +9,7 @@ import { LocalizationManager } from './LocalizationManager.js';
 import { KeyboardShortcutManager } from './KeyboardShortcutManager.js';
 import { AchievementManager } from './AchievementManager.js';
 import { AchievementEventIntegrator } from './AchievementEventIntegrator.js';
+import { AchievementNotificationSystem } from './AchievementNotificationSystem.js';
 import { StatisticsManager } from './StatisticsManager.js';
 import { EventStageManager } from './EventStageManager.js';
 import { MainMenuScene } from '../scenes/MainMenuScene.js';
@@ -95,6 +96,9 @@ export class GameEngine {
         
         // 実績イベント統合システム
         this.achievementEventIntegrator = new AchievementEventIntegrator(this);
+        
+        // 実績通知システム
+        this.achievementNotificationSystem = new AchievementNotificationSystem(this);
         
         // ゲーム状態
         this.timeRemaining = 300000; // 5分
@@ -363,6 +367,11 @@ export class GameEngine {
             this.achievementEventIntegrator.update(adjustedDeltaTime);
         }
         
+        // 実績通知システムの更新
+        if (this.achievementNotificationSystem) {
+            this.achievementNotificationSystem.update(adjustedDeltaTime);
+        }
+        
         // シーンマネージャーに更新を委譲
         this.sceneManager.update(adjustedDeltaTime);
     }
@@ -400,6 +409,11 @@ export class GameEngine {
         
         // エフェクトマネージャーの後処理エフェクト
         this.effectManager.renderPostEffects(this.context);
+        
+        // 実績通知システムの描画（最前面）
+        if (this.achievementNotificationSystem) {
+            this.achievementNotificationSystem.render();
+        }
         
         // レンダリング最適化終了 - 問題のある可能性があるため一時的にコメントアウト
         // this.renderOptimizer.render();
