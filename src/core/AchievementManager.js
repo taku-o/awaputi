@@ -861,20 +861,160 @@ export class AchievementManager {
      */
     save() {
         try {
-            // Setオブジェクトを配列に変換して保存
-            const progressDataForSave = { ...this.progressData };
-            if (this.progressData.bubbleTypesPopped instanceof Set) {
-                progressDataForSave.bubbleTypesPopped = Array.from(this.progressData.bubbleTypesPopped);
+            const dataToSave = this.prepareDataForSave();
+            
+            // データ検証
+            if (!this.validateSaveData(dataToSave)) {
+                throw new Error('Invalid data format for save');
             }
             
-            const data = {
-                unlockedAchievements: Array.from(this.unlockedAchievements),
-                progressData: progressDataForSave
-            };
+            // バックアップ作成
+            this.createBackup();
             
-            localStorage.setItem('bubblePop_achievements', JSON.stringify(data));
+            // メインデータ保存
+            localStorage.setItem('bubblePop_achievements', JSON.stringify(dataToSave));
+            
+            // 保存タイムスタンプ記録
+            localStorage.setItem('bubblePop_achievements_timestamp', Date.now().toString());
+            
         } catch (error) {
             console.error('Failed to save achievement data:', error);
+            this.handleSaveError(error);
+        }
+    }
+    
+    /**
+     * 保存用データを準備
+     */
+    prepareDataForSave() {
+        // Setオブジェクトを配列に変換して保存
+        const progressDataForSave = { ...this.progressData };
+        if (this.progressData.bubbleTypesPopped instanceof Set) {
+            progressDataForSave.bubbleTypesPopped = Array.from(this.progressData.bubbleTypesPopped);
+        }
+        
+        return {
+            version: '1.0',
+            timestamp: Date.now(),
+            unlockedAchievements: Array.from(this.unlockedAchievements),
+            progressData: progressDataForSave,
+            checksum: this.calculateChecksum(this.unlockedAchievements, progressDataForSave)
+        };
+    }
+    
+    /**
+     * 保存データの検証
+     */
+    validateSaveData(data) {
+        try {
+            // 必須フィールドの存在チェック
+            if (!data.hasOwnProperty('unlockedAchievements') || 
+                !data.hasOwnProperty('progressData') ||
+                !data.hasOwnProperty('version') ||
+                !data.hasOwnProperty('timestamp')) {
+                return false;
+            }
+            
+            // データタイプチェック
+            if (!Array.isArray(data.unlockedAchievements) ||
+                typeof data.progressData !== 'object' ||
+                typeof data.timestamp !== 'number') {
+                return false;
+            }
+            
+            // チェックサム検証
+            const expectedChecksum = this.calculateChecksum(data.unlockedAchievements, data.progressData);
+            if (data.checksum !== expectedChecksum) {
+                console.warn('Checksum mismatch in save data');
+                return false;
+            }
+            
+            return true;
+        } catch (error) {
+            console.error('Error validating save data:', error);
+            return false;
+        }
+    }
+    
+    /**
+     * チェックサムを計算
+     */
+    calculateChecksum(unlockedAchievements, progressData) {
+        const dataString = JSON.stringify({
+            unlocked: unlockedAchievements.sort(),
+            progress: progressData
+        });
+        
+        // 簡単なハッシュ関数
+        let hash = 0;
+        for (let i = 0; i < dataString.length; i++) {
+            const char = dataString.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash; // 32bit整数に変換
+        }
+        return hash.toString();
+    }
+    
+    /**
+     * バックアップを作成
+     */
+    createBackup() {
+        try {
+            const currentData = localStorage.getItem('bubblePop_achievements');
+            if (currentData) {
+                // 最新のバックアップを保存
+                localStorage.setItem('bubblePop_achievements_backup', currentData);
+                localStorage.setItem('bubblePop_achievements_backup_timestamp', Date.now().toString());
+                
+                // 古いバックアップをローテーション
+                const oldBackup = localStorage.getItem('bubblePop_achievements_backup');
+                if (oldBackup) {
+                    localStorage.setItem('bubblePop_achievements_backup_old', oldBackup);
+                }
+            }
+        } catch (error) {
+            console.warn('Failed to create backup:', error);
+        }
+    }
+    
+    /**
+     * 保存エラーのハンドリング
+     */
+    handleSaveError(error) {
+        // ストレージ容量不足の場合の処理
+        if (error.name === 'QuotaExceededError') {
+            this.cleanupOldData();
+            // 再試行
+            try {
+                const dataToSave = this.prepareDataForSave();
+                localStorage.setItem('bubblePop_achievements', JSON.stringify(dataToSave));
+            } catch (retryError) {
+                console.error('Failed to save after cleanup:', retryError);
+            }
+        }
+    }
+    
+    /**
+     * 古いデータのクリーンアップ
+     */
+    cleanupOldData() {
+        try {
+            // 古いバックアップを削除
+            localStorage.removeItem('bubblePop_achievements_backup_old');
+            
+            // 他の不要なキーを削除（必要に応じて）
+            const keysToCheck = [
+                'bubblePop_achievements_temp',
+                'bubblePop_achievements_cache'
+            ];
+            
+            keysToCheck.forEach(key => {
+                localStorage.removeItem(key);
+            });
+            
+            console.log('Cleaned up old achievement data');
+        } catch (error) {
+            console.warn('Failed to cleanup old data:', error);
         }
     }
     
@@ -883,21 +1023,181 @@ export class AchievementManager {
      */
     load() {
         try {
-            const savedData = localStorage.getItem('bubblePop_achievements');
-            if (savedData) {
-                const data = JSON.parse(savedData);
-                this.unlockedAchievements = new Set(data.unlockedAchievements || []);
-                this.progressData = data.progressData || {};
-                
-                // 配列からSetオブジェクトに復元
-                if (Array.isArray(this.progressData.bubbleTypesPopped)) {
-                    this.progressData.bubbleTypesPopped = new Set(this.progressData.bubbleTypesPopped);
-                }
+            let loadedData = this.attemptDataLoad();
+            
+            if (!loadedData) {
+                console.log('No achievement data found, starting fresh');
+                this.initializeEmptyData();
+                return;
             }
+            
+            // データを適用
+            this.applyLoadedData(loadedData);
+            
+            // 古いデータの移行処理
+            this.migrateOldDataFormat(loadedData);
+            
+            console.log('Achievement data loaded successfully');
+            
         } catch (error) {
             console.error('Failed to load achievement data:', error);
-            this.unlockedAchievements = new Set();
-            this.progressData = {};
+            this.handleLoadError(error);
+        }
+    }
+    
+    /**
+     * データ読み込みを試行
+     */
+    attemptDataLoad() {
+        // メインデータの読み込み試行
+        const mainData = this.tryLoadFromStorage('bubblePop_achievements');
+        if (mainData && this.validateLoadData(mainData)) {
+            return mainData;
+        }
+        
+        console.warn('Main achievement data is invalid, trying backup...');
+        
+        // バックアップからの復旧試行
+        const backupData = this.tryLoadFromStorage('bubblePop_achievements_backup');
+        if (backupData && this.validateLoadData(backupData)) {
+            console.log('Recovered achievement data from backup');
+            return backupData;
+        }
+        
+        console.warn('Backup data is also invalid, trying old backup...');
+        
+        // 古いバックアップからの復旧試行
+        const oldBackupData = this.tryLoadFromStorage('bubblePop_achievements_backup_old');
+        if (oldBackupData && this.validateLoadData(oldBackupData)) {
+            console.log('Recovered achievement data from old backup');
+            return oldBackupData;
+        }
+        
+        return null;
+    }
+    
+    /**
+     * ストレージからのデータ読み込みを試行
+     */
+    tryLoadFromStorage(key) {
+        try {
+            const rawData = localStorage.getItem(key);
+            if (!rawData) return null;
+            
+            return JSON.parse(rawData);
+        } catch (error) {
+            console.warn(`Failed to parse data from ${key}:`, error);
+            return null;
+        }
+    }
+    
+    /**
+     * 読み込みデータの検証
+     */
+    validateLoadData(data) {
+        try {
+            // 基本的な構造チェック
+            if (!data || typeof data !== 'object') {
+                return false;
+            }
+            
+            // 新しい形式のデータの場合
+            if (data.version) {
+                return this.validateSaveData(data);
+            }
+            
+            // 旧形式のデータの場合（後方互換性）
+            if (data.hasOwnProperty('unlockedAchievements') && 
+                data.hasOwnProperty('progressData')) {
+                return true;
+            }
+            
+            return false;
+        } catch (error) {
+            console.error('Error validating load data:', error);
+            return false;
+        }
+    }
+    
+    /**
+     * 読み込んだデータを適用
+     */
+    applyLoadedData(data) {
+        this.unlockedAchievements = new Set(data.unlockedAchievements || []);
+        this.progressData = data.progressData || {};
+        
+        // 配列からSetオブジェクトに復元
+        if (Array.isArray(this.progressData.bubbleTypesPopped)) {
+            this.progressData.bubbleTypesPopped = new Set(this.progressData.bubbleTypesPopped);
+        }
+        
+        // データ整合性チェック
+        this.validateProgressData();
+    }
+    
+    /**
+     * 進捗データの整合性チェック
+     */
+    validateProgressData() {
+        // 無効な実績IDの削除
+        const validAchievementIds = new Set(Object.keys(this.achievements));
+        const invalidIds = [...this.unlockedAchievements].filter(id => !validAchievementIds.has(id));
+        
+        if (invalidIds.length > 0) {
+            console.warn('Removing invalid achievement IDs:', invalidIds);
+            invalidIds.forEach(id => this.unlockedAchievements.delete(id));
+        }
+        
+        // 進捗データの数値チェック
+        Object.keys(this.progressData).forEach(key => {
+            const value = this.progressData[key];
+            if (typeof value === 'number' && (value < 0 || !isFinite(value))) {
+                console.warn(`Invalid progress value for ${key}: ${value}, resetting to 0`);
+                this.progressData[key] = 0;
+            }
+        });
+    }
+    
+    /**
+     * 古いデータ形式の移行
+     */
+    migrateOldDataFormat(data) {
+        // バージョン情報がない場合は旧形式
+        if (!data.version) {
+            console.log('Migrating achievement data to new format');
+            
+            // 新形式で保存し直す
+            this.save();
+        }
+    }
+    
+    /**
+     * 空のデータで初期化
+     */
+    initializeEmptyData() {
+        this.unlockedAchievements = new Set();
+        this.progressData = {};
+    }
+    
+    /**
+     * 読み込みエラーのハンドリング
+     */
+    handleLoadError(error) {
+        console.error('Critical error loading achievement data:', error);
+        
+        // 最後の手段：データをリセット
+        this.initializeEmptyData();
+        
+        // エラーログを記録（将来の分析用）
+        try {
+            const errorLog = {
+                timestamp: Date.now(),
+                error: error.message,
+                stack: error.stack
+            };
+            localStorage.setItem('bubblePop_achievements_error_log', JSON.stringify(errorLog));
+        } catch (logError) {
+            console.warn('Failed to log error:', logError);
         }
     }
     
@@ -908,6 +1208,166 @@ export class AchievementManager {
         this.unlockedAchievements.clear();
         this.progressData = {};
         this.notifications = [];
-        this.save();
+        
+        // メインデータとバックアップをすべてクリア
+        this.clearAllStorageData();
+        
+        console.log('Achievement data has been reset');
+    }
+    
+    /**
+     * 全ストレージデータをクリア
+     */
+    clearAllStorageData() {
+        const keysToRemove = [
+            'bubblePop_achievements',
+            'bubblePop_achievements_timestamp',
+            'bubblePop_achievements_backup',
+            'bubblePop_achievements_backup_timestamp',
+            'bubblePop_achievements_backup_old',
+            'bubblePop_achievements_error_log'
+        ];
+        
+        keysToRemove.forEach(key => {
+            try {
+                localStorage.removeItem(key);
+            } catch (error) {
+                console.warn(`Failed to remove ${key}:`, error);
+            }
+        });
+    }
+    
+    /**
+     * データの整合性チェック
+     */
+    performIntegrityCheck() {
+        const results = {
+            timestamp: Date.now(),
+            mainDataValid: false,
+            backupDataValid: false,
+            progressDataIntegrity: true,
+            unlockedAchievementsCount: this.unlockedAchievements.size,
+            progressDataKeys: Object.keys(this.progressData).length,
+            issues: []
+        };
+        
+        try {
+            // メインデータチェック
+            const mainData = this.tryLoadFromStorage('bubblePop_achievements');
+            results.mainDataValid = mainData && this.validateLoadData(mainData);
+            
+            // バックアップデータチェック
+            const backupData = this.tryLoadFromStorage('bubblePop_achievements_backup');
+            results.backupDataValid = backupData && this.validateLoadData(backupData);
+            
+            // 進捗データの整合性チェック
+            Object.keys(this.progressData).forEach(key => {
+                const value = this.progressData[key];
+                if (typeof value === 'number' && (value < 0 || !isFinite(value))) {
+                    results.progressDataIntegrity = false;
+                    results.issues.push(`Invalid progress value: ${key} = ${value}`);
+                }
+            });
+            
+            // 無効な実績IDチェック
+            const validAchievementIds = new Set(Object.keys(this.achievements));
+            const invalidIds = [...this.unlockedAchievements].filter(id => !validAchievementIds.has(id));
+            if (invalidIds.length > 0) {
+                results.issues.push(`Invalid achievement IDs: ${invalidIds.join(', ')}`);
+            }
+            
+        } catch (error) {
+            results.issues.push(`Integrity check error: ${error.message}`);
+        }
+        
+        return results;
+    }
+    
+    /**
+     * データ復旧を試行
+     */
+    attemptDataRecovery() {
+        console.log('Attempting achievement data recovery...');
+        
+        const recoveryResults = {
+            success: false,
+            method: null,
+            dataSource: null,
+            recoveredAchievements: 0,
+            issues: []
+        };
+        
+        try {
+            // バックアップからの復旧を試行
+            const backupData = this.tryLoadFromStorage('bubblePop_achievements_backup');
+            if (backupData && this.validateLoadData(backupData)) {
+                this.applyLoadedData(backupData);
+                recoveryResults.success = true;
+                recoveryResults.method = 'backup';
+                recoveryResults.dataSource = 'bubblePop_achievements_backup';
+                recoveryResults.recoveredAchievements = this.unlockedAchievements.size;
+                
+                // 復旧したデータを保存
+                this.save();
+                
+                console.log('Successfully recovered data from backup');
+                return recoveryResults;
+            }
+            
+            // 古いバックアップからの復旧を試行
+            const oldBackupData = this.tryLoadFromStorage('bubblePop_achievements_backup_old');
+            if (oldBackupData && this.validateLoadData(oldBackupData)) {
+                this.applyLoadedData(oldBackupData);
+                recoveryResults.success = true;
+                recoveryResults.method = 'old_backup';
+                recoveryResults.dataSource = 'bubblePop_achievements_backup_old';
+                recoveryResults.recoveredAchievements = this.unlockedAchievements.size;
+                
+                // 復旧したデータを保存
+                this.save();
+                
+                console.log('Successfully recovered data from old backup');
+                return recoveryResults;
+            }
+            
+            recoveryResults.issues.push('No valid backup data found');
+            
+        } catch (error) {
+            recoveryResults.issues.push(`Recovery error: ${error.message}`);
+        }
+        
+        console.warn('Data recovery failed');
+        return recoveryResults;
+    }
+    
+    /**
+     * ストレージ使用量を取得
+     */
+    getStorageUsage() {
+        let totalSize = 0;
+        const usage = {};
+        
+        const keys = [
+            'bubblePop_achievements',
+            'bubblePop_achievements_backup',
+            'bubblePop_achievements_backup_old'
+        ];
+        
+        keys.forEach(key => {
+            try {
+                const data = localStorage.getItem(key);
+                const size = data ? data.length : 0;
+                usage[key] = size;
+                totalSize += size;
+            } catch (error) {
+                usage[key] = 'error';
+            }
+        });
+        
+        return {
+            total: totalSize,
+            breakdown: usage,
+            formatted: `${(totalSize / 1024).toFixed(2)} KB`
+        };
     }
 }
