@@ -3,15 +3,16 @@
  */
 import { Scene } from '../core/Scene.js';
 import { AchievementStatsUI } from '../core/AchievementStatsUI.js';
+import { AchievementHelpSystem } from '../ui/AchievementHelpSystem.js';
 
 export class UserInfoScene extends Scene {
     constructor(gameEngine) {
         super(gameEngine);
         
         // タブ状態管理
-        this.currentTab = 'statistics'; // 'statistics', 'achievements', 'management'
-        this.tabs = ['statistics', 'achievements', 'management'];
-        this.tabLabels = ['統計', '実績', '管理'];
+        this.currentTab = 'statistics'; // 'statistics', 'achievements', 'management', 'help'
+        this.tabs = ['statistics', 'achievements', 'management', 'help'];
+        this.tabLabels = ['統計', '実績', '管理', 'ヘルプ'];
         
         // 実績カテゴリフィルター
         this.achievementCategories = ['all', 'score', 'play', 'technique', 'collection', 'special'];
@@ -36,6 +37,9 @@ export class UserInfoScene extends Scene {
         this.statisticsData = null;
         this.achievementsData = null;
         
+        // ヘルプシステム
+        this.helpSystem = null;
+        
         // エラーハンドリング
         this.errorMessage = null;
         this.errorTimeout = null;
@@ -52,6 +56,9 @@ export class UserInfoScene extends Scene {
         
         // 実績統計UI
         this.achievementStatsUI = null;
+        
+        // ヘルプシステム初期化
+        this.initializeHelpSystem();
     }
 
     enter() {
@@ -108,6 +115,11 @@ export class UserInfoScene extends Scene {
             // 戻るボタンを描画
             this.renderBackButton(context);
             
+            // ヘルプシステムを描画
+            if (this.helpSystem) {
+                this.helpSystem.render(context, canvas);
+            }
+            
         } catch (error) {
             console.error('UserInfoScene render error:', error);
             this.showError('描画エラーが発生しました');
@@ -116,6 +128,18 @@ export class UserInfoScene extends Scene {
 
     handleInput(event) {
         try {
+            // ヘルプシステムが入力を処理する場合は早期リターン
+            if (this.helpSystem && event.type === 'click') {
+                const canvas = this.gameEngine.canvas;
+                const rect = canvas.getBoundingClientRect();
+                const x = event.clientX - rect.left;
+                const y = event.clientY - rect.top;
+                
+                if (this.helpSystem.handleClick(x, y, canvas)) {
+                    return; // ヘルプシステムが処理した場合
+                }
+            }
+            
             if (event.type === 'click') {
                 this.handleClick(event);
             } else if (event.type === 'keydown') {
@@ -226,6 +250,9 @@ export class UserInfoScene extends Scene {
                 break;
             case 'management':
                 this.renderUserManagement(context, contentY, contentHeight);
+                break;
+            case 'help':
+                this.renderHelp(context, contentY, contentHeight);
                 break;
         }
     }
@@ -1756,6 +1783,11 @@ export class UserInfoScene extends Scene {
             this.handleManagementClick(x, y);
         }
         
+        // ヘルプ画面のセクション選択クリック処理
+        if (this.currentTab === 'help') {
+            this.handleHelpSectionClick(x, y);
+        }
+        
         // 戻るボタンクリック処理
         if (x >= 50 && x <= 170 && y >= canvas.height - 70 && y <= canvas.height - 20) {
             this.sceneManager.switchScene('menu');
@@ -2729,5 +2761,221 @@ export class UserInfoScene extends Scene {
         // タッチデバイスの場合は最小44pxのタップ領域を確保
         const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         return isTouchDevice ? Math.max(normalSize, 44) : normalSize;
+    }
+    
+    /**
+     * ヘルプシステムを初期化
+     */
+    initializeHelpSystem() {
+        try {
+            // 実績マネージャーが利用可能な場合のみヘルプシステムを初期化
+            if (this.gameEngine.achievementManager) {
+                this.helpSystem = new AchievementHelpSystem(this.gameEngine.achievementManager);
+            }
+        } catch (error) {
+            console.warn('Failed to initialize help system:', error);
+            this.helpSystem = null;
+        }
+    }
+    
+    /**
+     * ヘルプコンテンツを描画
+     */
+    renderHelp(context, y, height) {
+        const canvas = this.gameEngine.canvas;
+        const contentWidth = canvas.width - this.contentPadding * 2;
+        
+        let currentY = y + this.contentPadding;
+        
+        // ヘルプシステムが利用可能かチェック
+        if (!this.helpSystem) {
+            context.fillStyle = '#cccccc';
+            context.font = '18px Arial';
+            context.textAlign = 'center';
+            context.fillText('ヘルプシステムは利用できません', canvas.width / 2, currentY + 50);
+            return;
+        }
+        
+        // ヘルプセクション選択UI
+        currentY = this.renderHelpSectionSelector(context, this.contentPadding, currentY, contentWidth);
+        currentY += 20;
+        
+        // 選択されたヘルプコンテンツ表示
+        this.renderHelpContent(context, this.contentPadding, currentY, contentWidth, height - (currentY - y) - 20);
+    }
+    
+    /**
+     * ヘルプセクション選択UIを描画
+     */
+    renderHelpSectionSelector(context, x, y, width) {
+        const helpSections = ['overview', 'categories', 'progress', 'rewards', 'tips', 'faq'];
+        const sectionLabels = ['概要', 'カテゴリ', '進捗', '報酬', 'コツ', 'FAQ'];
+        
+        const buttonWidth = Math.min(100, width / helpSections.length - 10);
+        const buttonHeight = 35;
+        
+        let currentX = x;
+        
+        for (let i = 0; i < helpSections.length; i++) {
+            const section = helpSections[i];
+            const label = sectionLabels[i];
+            const isActive = this.helpSystem.currentHelpSection === section;
+            
+            // ボタン背景
+            context.fillStyle = isActive ? '#4CAF50' : '#2196F3';
+            context.fillRect(currentX, y, buttonWidth, buttonHeight);
+            
+            // ボタン枠線
+            context.strokeStyle = '#333';
+            context.lineWidth = 1;
+            context.strokeRect(currentX, y, buttonWidth, buttonHeight);
+            
+            // ボタンテキスト
+            context.fillStyle = '#ffffff';
+            context.font = '12px Arial';
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            context.fillText(label, currentX + buttonWidth / 2, y + buttonHeight / 2);
+            
+            currentX += buttonWidth + 10;
+            
+            // 改行処理（必要に応じて）
+            if (currentX + buttonWidth > x + width) {
+                currentX = x;
+                y += buttonHeight + 10;
+            }
+        }
+        
+        return y + buttonHeight;
+    }
+    
+    /**
+     * ヘルプコンテンツを描画
+     */
+    renderHelpContent(context, x, y, width, height) {
+        if (!this.helpSystem.helpContent) return;
+        
+        const currentSection = this.helpSystem.currentHelpSection;
+        const content = this.helpSystem.helpContent[currentSection];
+        
+        if (!content) return;
+        
+        // セクション背景
+        context.fillStyle = '#16213e';
+        context.fillRect(x, y, width, height);
+        
+        // セクション枠線
+        context.strokeStyle = '#333';
+        context.lineWidth = 1;
+        context.strokeRect(x, y, width, height);
+        
+        const padding = 15;
+        const textX = x + padding;
+        let currentY = y + padding;
+        
+        // セクションタイトル
+        context.fillStyle = '#FFD700';
+        context.font = 'bold 20px Arial';
+        context.textAlign = 'left';
+        context.textBaseline = 'top';
+        context.fillText(`${content.icon} ${content.title}`, textX, currentY);
+        currentY += 35;
+        
+        // コンテンツ描画
+        const lineHeight = 20;
+        const maxY = y + height - padding;
+        
+        for (const line of content.content) {
+            if (currentY + lineHeight > maxY) break;
+            
+            if (line === '') {
+                currentY += lineHeight / 2;
+                continue;
+            }
+            
+            // 文字色とフォントを設定
+            if (line.startsWith('🎯 ') || line.startsWith('⏰ ') || 
+                line.startsWith('🎮 ') || line.startsWith('🎨 ') || 
+                line.startsWith('⭐ ') || line.startsWith('💰 ') || 
+                line.startsWith('🛍️ ') || line.startsWith('📊 ') ||
+                line.startsWith('🎁 ')) {
+                context.fillStyle = '#FFD700';
+                context.font = 'bold 14px Arial';
+            } else if (line.startsWith('• ')) {
+                context.fillStyle = '#cccccc';
+                context.font = '13px Arial';
+            } else if (line.startsWith('Q: ')) {
+                context.fillStyle = '#4CAF50';
+                context.font = 'bold 14px Arial';
+            } else if (line.startsWith('A: ')) {
+                context.fillStyle = '#ffffff';
+                context.font = '14px Arial';
+            } else {
+                context.fillStyle = '#ffffff';
+                context.font = '14px Arial';
+            }
+            
+            // 文字列の折り返し描画
+            this.renderWrappedHelpText(context, line, textX, currentY, width - padding * 2, lineHeight);
+            currentY += lineHeight;
+        }
+    }
+    
+    /**
+     * ヘルプテキストの折り返し描画
+     */
+    renderWrappedHelpText(context, text, x, y, maxWidth, lineHeight) {
+        const words = text.split(' ');
+        let line = '';
+        let currentY = y;
+        
+        for (let n = 0; n < words.length; n++) {
+            const testLine = line + words[n] + ' ';
+            const metrics = context.measureText(testLine);
+            const testWidth = metrics.width;
+            
+            if (testWidth > maxWidth && n > 0) {
+                context.fillText(line.trim(), x, currentY);
+                line = words[n] + ' ';
+                currentY += lineHeight;
+            } else {
+                line = testLine;
+            }
+        }
+        context.fillText(line.trim(), x, currentY);
+    }
+    
+    /**
+     * ヘルプセクション選択のクリック処理
+     */
+    handleHelpSectionClick(x, y) {
+        const helpSections = ['overview', 'categories', 'progress', 'rewards', 'tips', 'faq'];
+        const canvas = this.gameEngine.canvas;
+        const contentWidth = canvas.width - this.contentPadding * 2;
+        const buttonWidth = Math.min(100, contentWidth / helpSections.length - 10);
+        const buttonHeight = 35;
+        const selectorY = this.headerHeight + this.contentPadding;
+        
+        // セクション選択ボタンの範囲内かチェック
+        if (y >= selectorY && y <= selectorY + buttonHeight) {
+            let currentX = this.contentPadding;
+            
+            for (let i = 0; i < helpSections.length; i++) {
+                // ボタンの範囲内かチェック
+                if (x >= currentX && x <= currentX + buttonWidth) {
+                    if (this.helpSystem) {
+                        this.helpSystem.changeHelpSection(helpSections[i]);
+                    }
+                    return;
+                }
+                
+                currentX += buttonWidth + 10;
+                
+                // 改行処理（必要に応じて）
+                if (currentX + buttonWidth > this.contentPadding + contentWidth) {
+                    break; // 現在は1行のみ対応
+                }
+            }
+        }
     }
 }
