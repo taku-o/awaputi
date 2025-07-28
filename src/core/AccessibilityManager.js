@@ -1,4 +1,7 @@
 import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { FocusManager } from './FocusManager.js';
+import { KeyboardAccessibilityManager } from './KeyboardAccessibilityManager.js';
+import { VisualFocusManager } from './VisualFocusManager.js';
 
 /**
  * アクセシビリティ管理システムの中核クラス
@@ -328,12 +331,49 @@ export class AccessibilityManager {
             
             switch (managerType) {
                 case 'keyboard':
-                    // 既存のKeyboardShortcutManagerを拡張利用
-                    if (this.gameEngine.keyboardShortcutManager) {
-                        manager = this.gameEngine.keyboardShortcutManager;
-                        // 既存マネージャーにアクセシビリティ機能を拡張
-                        this.enhanceExistingKeyboardManager(manager);
-                    }
+                    // FocusManagerを先に初期化
+                    const focusManager = new FocusManager(this);
+                    
+                    // KeyboardAccessibilityManagerを初期化（既存のKeyboardShortcutManagerを拡張）
+                    const keyboardAccessibilityManager = new KeyboardAccessibilityManager(
+                        this, 
+                        this.gameEngine.keyboardShortcutManager
+                    );
+                    
+                    // VisualFocusManagerを初期化
+                    const visualFocusManager = new VisualFocusManager(this, focusManager);
+                    
+                    // 統合管理オブジェクトを作成
+                    manager = {
+                        focus: focusManager,
+                        accessibility: keyboardAccessibilityManager,
+                        visual: visualFocusManager,
+                        
+                        // 統一インターフェース
+                        applyConfig: (config) => {
+                            focusManager.applyConfig?.(config);
+                            keyboardAccessibilityManager.applyConfig?.(config);
+                            visualFocusManager.applyConfig?.(config);
+                        },
+                        
+                        setEnabled: (enabled) => {
+                            focusManager.setEnabled?.(enabled);
+                            keyboardAccessibilityManager.setEnabled?.(enabled);
+                            visualFocusManager.setEnabled?.(enabled);
+                        },
+                        
+                        generateReport: () => ({
+                            focus: focusManager.generateReport?.() || {},
+                            accessibility: keyboardAccessibilityManager.generateReport?.() || {},
+                            visual: visualFocusManager.generateReport?.() || {}
+                        }),
+                        
+                        destroy: () => {
+                            focusManager.destroy?.();
+                            keyboardAccessibilityManager.destroy?.();
+                            visualFocusManager.destroy?.();
+                        }
+                    };
                     break;
                     
                 case 'screenReader':
@@ -380,51 +420,6 @@ export class AccessibilityManager {
         }
     }
     
-    /**
-     * 既存キーボードマネージャーの拡張
-     */
-    enhanceExistingKeyboardManager(keyboardManager) {
-        // 既存のKeyboardShortcutManagerにアクセシビリティ機能を追加
-        
-        // アクセシビリティ専用ショートカットの追加
-        const accessibilityShortcuts = new Map([
-            ['toggleScreenReader', {
-                keys: ['Alt+Shift+S'],
-                callback: () => this.toggleScreenReader(),
-                description: 'スクリーンリーダーの切り替え'
-            }],
-            ['increaseTextSize', {
-                keys: ['Ctrl+Plus'],
-                callback: () => this.adjustTextSize(0.1),
-                description: 'テキストサイズを大きく'
-            }],
-            ['decreaseTextSize', {
-                keys: ['Ctrl+Minus'],
-                callback: () => this.adjustTextSize(-0.1),
-                description: 'テキストサイズを小さく'
-            }],
-            ['toggleHighContrast', {
-                keys: ['Ctrl+Alt+H'],
-                callback: () => this.toggleHighContrast(),
-                description: 'ハイコントラストモードの切り替え'
-            }],
-            ['showAccessibilityHelp', {
-                keys: ['Alt+Shift+H'],
-                callback: () => this.showAccessibilityHelp(),
-                description: 'アクセシビリティヘルプの表示'
-            }]
-        ]);
-        
-        // ショートカットを既存マネージャーに追加
-        for (const [name, shortcut] of accessibilityShortcuts) {
-            keyboardManager.addShortcut(name, shortcut.keys, shortcut.callback, {
-                description: shortcut.description,
-                context: 'global'
-            });
-        }
-        
-        console.log('Enhanced existing keyboard manager with accessibility shortcuts');
-    }
     
     /**
      * イベントリスナーの設定
