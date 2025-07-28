@@ -77,7 +77,25 @@ export class MotionManager {
             autoReduceOnPerformance: true,
             customIntensities: new Map(),
             flashingSensitivity: 'medium', // 'low', 'medium', 'high'
-            parallaxSensitivity: 'medium'
+            parallaxSensitivity: 'medium',
+            // 新しい段階的制御設定
+            granularControls: {
+                animationIntensity: 1.0,     // アニメーション強度 (0.0-2.0)
+                transitionSpeed: 1.0,        // トランジション速度 (0.1-3.0)
+                effectsLevel: 1.0,           // エフェクトレベル (0.0-2.0)
+                particleDensity: 1.0,        // パーティクル密度 (0.0-2.0)
+                cameraMovement: 0.5,         // カメラ移動 (0.0-1.0)
+                backgroundMotion: 0.8        // 背景モーション (0.0-1.0)
+            },
+            // 選択的モーション軽減
+            selectiveReduction: {
+                disableRotation: false,
+                disableScaling: false,
+                disableParallax: false,
+                disableParticles: false,
+                disableCameraShake: false,
+                disableBackgroundAnimation: false
+            }
         };
         
         // 危険なモーションパターンの検出
@@ -592,6 +610,12 @@ export class MotionManager {
             return;
         }
         
+        // 段階的制御の適用
+        this.applyGranularControls(element, animationData);
+        
+        // 選択的軽減の適用
+        this.applySelectiveReduction(element, animationData);
+        
         // 強度と持続時間の調整
         const intensityFactor = categoryConfig.intensity;
         const durationFactor = categoryConfig.duration;
@@ -605,6 +629,7 @@ export class MotionManager {
         
         if (this.config.vestibularSafety) {
             element.classList.add('vestibular-safe');
+            this.applyVestibularSafetyEnhancements(element, animationData);
         }
         
         // ゲーム要素の特別制御
@@ -612,6 +637,110 @@ export class MotionManager {
             element.classList.add('game-motion-controlled');
             this.applyGameMotionControl(element, animationData);
         }
+    }
+
+    /**
+     * 段階的制御の適用
+     */
+    applyGranularControls(element, animationData) {
+        const controls = this.userPreferences.granularControls;
+        const category = animationData.category;
+        
+        // カテゴリ別段階的制御
+        switch (category) {
+            case 'particles':
+                element.style.setProperty('--particle-density', controls.particleDensity.toString());
+                element.style.setProperty('--effects-level', controls.effectsLevel.toString());
+                break;
+                
+            case 'camera':
+                element.style.setProperty('--camera-movement', controls.cameraMovement.toString());
+                break;
+                
+            case 'background':
+                element.style.setProperty('--background-motion', controls.backgroundMotion.toString());
+                break;
+                
+            case 'transitions':
+                element.style.setProperty('--transition-speed', controls.transitionSpeed.toString());
+                break;
+                
+            default:
+                element.style.setProperty('--animation-intensity', controls.animationIntensity.toString());
+        }
+    }
+
+    /**
+     * 選択的軽減の適用
+     */
+    applySelectiveReduction(element, animationData) {
+        const selective = this.userPreferences.selectiveReduction;
+        const styles = window.getComputedStyle(element);
+        
+        // 回転の無効化
+        if (selective.disableRotation && styles.transform.includes('rotate')) {
+            element.style.transform = styles.transform.replace(/rotate\([^)]*\)/g, 'rotate(0deg)');
+            element.classList.add('rotation-disabled');
+        }
+        
+        // スケーリングの無効化
+        if (selective.disableScaling && styles.transform.includes('scale')) {
+            element.style.transform = styles.transform.replace(/scale\([^)]*\)/g, 'scale(1)');
+            element.classList.add('scaling-disabled');
+        }
+        
+        // パララックスの無効化
+        if (selective.disableParallax && element.classList.contains('parallax')) {
+            element.style.transform = 'translateZ(0)';
+            element.classList.add('parallax-disabled');
+        }
+        
+        // パーティクルの無効化
+        if (selective.disableParticles && animationData.category === 'particles') {
+            element.style.display = 'none';
+            element.classList.add('particles-disabled');
+        }
+        
+        // カメラシェイクの無効化
+        if (selective.disableCameraShake && element.classList.contains('camera-shake')) {
+            element.style.transform = 'none';
+            element.classList.add('camera-shake-disabled');
+        }
+        
+        // 背景アニメーションの無効化
+        if (selective.disableBackgroundAnimation && element.classList.contains('background-animation')) {
+            element.style.animationPlayState = 'paused';
+            element.classList.add('background-animation-disabled');
+        }
+    }
+
+    /**
+     * 前庭安全性強化機能
+     */
+    applyVestibularSafetyEnhancements(element, animationData) {
+        const guidelines = this.config.vestibularGuidelines;
+        
+        // 自動停止タイマーの設定
+        if (animationData.iterations === 'infinite') {
+            setTimeout(() => {
+                if (element && !element.classList.contains('user-controlled')) {
+                    element.style.animationPlayState = 'paused';
+                    console.log('Auto-paused infinite animation for vestibular safety');
+                }
+            }, guidelines.autoplayPause);
+        }
+        
+        // 前庭障害特有の制限
+        const vestibularLimitations = {
+            maxRotationPerSecond: guidelines.maxRotationSpeed,
+            maxScaleChangePerSecond: guidelines.maxScaleChange / 10,
+            maxTranslationPerSecond: guidelines.maxParallaxDistance
+        };
+        
+        // CSS カスタムプロパティで制限を適用
+        Object.entries(vestibularLimitations).forEach(([key, value]) => {
+            element.style.setProperty(`--vestibular-${key.replace(/([A-Z])/g, '-$1').toLowerCase()}`, value.toString());
+        });
     }
     
     /**
@@ -864,6 +993,243 @@ export class MotionManager {
         };
     }
     
+    /**
+     * 段階的制御の設定
+     */
+    setGranularControl(property, value) {
+        const validProperties = Object.keys(this.userPreferences.granularControls);
+        
+        if (!validProperties.includes(property)) {
+            console.warn(`Invalid granular control property: ${property}`);
+            return false;
+        }
+        
+        // 値の範囲チェック
+        const ranges = {
+            animationIntensity: [0.0, 2.0],
+            transitionSpeed: [0.1, 3.0],
+            effectsLevel: [0.0, 2.0],
+            particleDensity: [0.0, 2.0],
+            cameraMovement: [0.0, 1.0],
+            backgroundMotion: [0.0, 1.0]
+        };
+        
+        const [min, max] = ranges[property];
+        const clampedValue = Math.max(min, Math.min(max, value));
+        
+        this.userPreferences.granularControls[property] = clampedValue;
+        
+        // 該当する要素に変更を適用
+        this.reapplyMotionControls(property);
+        
+        this.saveUserPreferences();
+        console.log(`Granular control ${property} set to ${clampedValue}`);
+        return true;
+    }
+
+    /**
+     * 選択的軽減の設定
+     */
+    setSelectiveReduction(property, enabled) {
+        const validProperties = Object.keys(this.userPreferences.selectiveReduction);
+        
+        if (!validProperties.includes(property)) {
+            console.warn(`Invalid selective reduction property: ${property}`);
+            return false;
+        }
+        
+        this.userPreferences.selectiveReduction[property] = enabled;
+        
+        // 該当する要素に変更を適用
+        this.reapplyMotionControls(property);
+        
+        this.saveUserPreferences();
+        console.log(`Selective reduction ${property} ${enabled ? 'enabled' : 'disabled'}`);
+        return true;
+    }
+
+    /**
+     * モーション制御の再適用
+     */
+    reapplyMotionControls(changedProperty = null) {
+        for (const [element, animationData] of this.activeAnimations) {
+            // 特定のプロパティのみの変更の場合、関連要素のみ更新
+            if (changedProperty && !this.isElementAffectedByProperty(element, animationData, changedProperty)) {
+                continue;
+            }
+            
+            this.applyMotionControl(element, animationData);
+        }
+    }
+
+    /**
+     * 要素が特定のプロパティの影響を受けるかチェック
+     */
+    isElementAffectedByProperty(element, animationData, property) {
+        const propertyMappings = {
+            // 段階的制御
+            animationIntensity: ['transitions', 'transforms', 'ui'],
+            transitionSpeed: ['transitions'],
+            effectsLevel: ['particles', 'effects'],
+            particleDensity: ['particles'],
+            cameraMovement: ['camera'],
+            backgroundMotion: ['background'],
+            
+            // 選択的軽減
+            disableRotation: true, // すべての回転要素
+            disableScaling: true,  // すべてのスケーリング要素
+            disableParallax: ['parallax'],
+            disableParticles: ['particles'],
+            disableCameraShake: ['camera'],
+            disableBackgroundAnimation: ['background']
+        };
+        
+        const mapping = propertyMappings[property];
+        
+        if (mapping === true) {
+            return true; // すべての要素が影響を受ける
+        }
+        
+        if (Array.isArray(mapping)) {
+            return mapping.includes(animationData.category);
+        }
+        
+        return false;
+    }
+
+    /**
+     * アニメーション強度の一括設定
+     */
+    setAnimationIntensityProfile(profileName) {
+        const profiles = {
+            minimal: {
+                animationIntensity: 0.2,
+                transitionSpeed: 0.5,
+                effectsLevel: 0.1,
+                particleDensity: 0.1,
+                cameraMovement: 0.0,
+                backgroundMotion: 0.2
+            },
+            reduced: {
+                animationIntensity: 0.5,
+                transitionSpeed: 0.7,
+                effectsLevel: 0.3,
+                particleDensity: 0.3,
+                cameraMovement: 0.2,
+                backgroundMotion: 0.4
+            },
+            normal: {
+                animationIntensity: 1.0,
+                transitionSpeed: 1.0,
+                effectsLevel: 1.0,
+                particleDensity: 1.0,
+                cameraMovement: 0.5,
+                backgroundMotion: 0.8
+            },
+            enhanced: {
+                animationIntensity: 1.5,
+                transitionSpeed: 1.2,
+                effectsLevel: 1.5,
+                particleDensity: 1.5,
+                cameraMovement: 0.8,
+                backgroundMotion: 1.0
+            }
+        };
+        
+        const profile = profiles[profileName];
+        if (!profile) {
+            console.warn(`Unknown animation intensity profile: ${profileName}`);
+            return false;
+        }
+        
+        Object.assign(this.userPreferences.granularControls, profile);
+        this.reapplyMotionControls();
+        this.saveUserPreferences();
+        
+        console.log(`Animation intensity profile set to: ${profileName}`);
+        return true;
+    }
+
+    /**
+     * 前庭障害対応プロファイルの設定
+     */
+    setVestibularDisorderProfile(severityLevel) {
+        const profiles = {
+            mild: {
+                granularControls: {
+                    animationIntensity: 0.8,
+                    transitionSpeed: 0.8,
+                    effectsLevel: 0.6,
+                    particleDensity: 0.5,
+                    cameraMovement: 0.2,
+                    backgroundMotion: 0.4
+                },
+                selectiveReduction: {
+                    disableRotation: false,
+                    disableScaling: false,
+                    disableParallax: true,
+                    disableParticles: false,
+                    disableCameraShake: true,
+                    disableBackgroundAnimation: false
+                }
+            },
+            moderate: {
+                granularControls: {
+                    animationIntensity: 0.5,
+                    transitionSpeed: 0.6,
+                    effectsLevel: 0.3,
+                    particleDensity: 0.3,
+                    cameraMovement: 0.0,
+                    backgroundMotion: 0.2
+                },
+                selectiveReduction: {
+                    disableRotation: true,
+                    disableScaling: true,
+                    disableParallax: true,
+                    disableParticles: true,
+                    disableCameraShake: true,
+                    disableBackgroundAnimation: true
+                }
+            },
+            severe: {
+                granularControls: {
+                    animationIntensity: 0.1,
+                    transitionSpeed: 0.3,
+                    effectsLevel: 0.0,
+                    particleDensity: 0.0,
+                    cameraMovement: 0.0,
+                    backgroundMotion: 0.0
+                },
+                selectiveReduction: {
+                    disableRotation: true,
+                    disableScaling: true,
+                    disableParallax: true,
+                    disableParticles: true,
+                    disableCameraShake: true,
+                    disableBackgroundAnimation: true
+                }
+            }
+        };
+        
+        const profile = profiles[severityLevel];
+        if (!profile) {
+            console.warn(`Unknown vestibular disorder severity level: ${severityLevel}`);
+            return false;
+        }
+        
+        Object.assign(this.userPreferences.granularControls, profile.granularControls);
+        Object.assign(this.userPreferences.selectiveReduction, profile.selectiveReduction);
+        
+        this.config.vestibularSafety = true;
+        this.userPreferences.vestibularSafety = true;
+        
+        this.reapplyMotionControls();
+        this.saveUserPreferences();
+        
+        console.log(`Vestibular disorder profile set to: ${severityLevel}`);
+        return true;
+    }
+
     /**
      * 設定の適用
      */
