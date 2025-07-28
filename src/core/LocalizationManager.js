@@ -10,6 +10,38 @@ export class LocalizationManager {
         this.translations = new Map();
         this.loadedLanguages = new Set();
         
+        // 文化的適応設定
+        this.culturalAdaptation = {
+            enabled: true,
+            rtlLanguages: ['ar', 'he', 'fa', 'ur'],
+            numeralSystems: {
+                'ar': 'arab',
+                'fa': 'persian',
+                'th': 'thai',
+                'hi': 'devanagari'
+            },
+            dateFormats: {
+                'ja': 'YYYY年MM月DD日',
+                'en': 'MM/DD/YYYY',
+                'en-GB': 'DD/MM/YYYY',
+                'de': 'DD.MM.YYYY',
+                'fr': 'DD/MM/YYYY'
+            },
+            colorMeanings: {
+                'ja': { red: 'danger', green: 'safety', blue: 'trust' },
+                'en': { red: 'danger', green: 'success', blue: 'information' },
+                'zh': { red: 'luck', gold: 'prosperity', white: 'purity' }
+            },
+            gestureConventions: {
+                'ja': { pointing: 'avoid', thumbUp: 'ok' },
+                'en': { pointing: 'acceptable', thumbUp: 'approval' },
+                'ar': { leftHand: 'avoid', thumbUp: 'acceptable' }
+            }
+        };
+        
+        // アクセシビリティ専用翻訳データ
+        this.accessibilityTranslations = new Map();
+        
         // 翻訳データを初期化
         this.initializeTranslations();
     }
@@ -151,7 +183,155 @@ export class LocalizationManager {
             'confirm.yes': 'はい',
             'confirm.no': 'いいえ',
             'confirm.ok': 'OK',
-            'confirm.cancel': 'キャンセル'
+            'confirm.cancel': 'キャンセル',
+            
+            // アクセシビリティ専用翻訳
+            'accessibility.manager.title': 'アクセシビリティ設定',
+            'accessibility.manager.description': 'すべてのユーザーに優しいゲーム体験を提供します',
+            'accessibility.manager.enabled': 'アクセシビリティ機能有効',
+            'accessibility.manager.disabled': 'アクセシビリティ機能無効',
+            
+            // キーボードアクセシビリティ
+            'accessibility.keyboard.title': 'キーボード操作',
+            'accessibility.keyboard.enabled': 'キーボードナビゲーション有効',
+            'accessibility.keyboard.focusRing': 'フォーカスリング表示',
+            'accessibility.keyboard.skipLinks': 'スキップリンク',
+            'accessibility.keyboard.shortcuts': 'キーボードショートカット',
+            'accessibility.keyboard.customization': 'ショートカットカスタマイズ',
+            'accessibility.keyboard.navigation': 'ナビゲーション設定',
+            'accessibility.keyboard.tabOrder': 'タブ順序',
+            'accessibility.keyboard.announcement': 'キーボード操作アナウンス',
+            
+            // スクリーンリーダーサポート
+            'accessibility.screenReader.title': 'スクリーンリーダー',
+            'accessibility.screenReader.enabled': 'スクリーンリーダー対応有効',
+            'accessibility.screenReader.ariaLabels': 'ARIAラベル',
+            'accessibility.screenReader.liveRegions': 'ライブリージョン',
+            'accessibility.screenReader.gameDescriptions': 'ゲーム状況説明',
+            'accessibility.screenReader.bubbleDescriptions': '泡の説明',
+            'accessibility.screenReader.announcements': 'アナウンス設定',
+            'accessibility.screenReader.speechSynthesis': '音声合成',
+            'accessibility.screenReader.voiceSettings': '音声設定',
+            'accessibility.screenReader.rate': '読み上げ速度',
+            'accessibility.screenReader.pitch': '音の高さ',
+            'accessibility.screenReader.volume': '音量',
+            
+            // 視覚アクセシビリティ
+            'accessibility.visual.title': '視覚的支援',
+            'accessibility.visual.contrast': 'コントラスト調整',
+            'accessibility.visual.textScaling': 'テキストサイズ調整',
+            'accessibility.visual.colorBlindness': '色覚サポート',
+            'accessibility.visual.motionReduction': 'モーション軽減',
+            'accessibility.visual.focusIndicators': 'フォーカス表示',
+            'accessibility.visual.colorScheme': '色彩スキーム',
+            'accessibility.visual.fontFamily': 'フォント選択',
+            'accessibility.visual.animationSettings': 'アニメーション設定',
+            
+            // 音声アクセシビリティ
+            'accessibility.audio.title': '音声支援',
+            'accessibility.audio.visualFeedback': '視覚的音声フィードバック',
+            'accessibility.audio.captions': 'キャプション表示',
+            'accessibility.audio.soundVisualization': '音の視覚化',
+            'accessibility.audio.vibrationFeedback': '振動フィードバック',
+            'accessibility.audio.flashAlerts': '点滅アラート',
+            'accessibility.audio.captionStyle': 'キャプションスタイル',
+            'accessibility.audio.captionSize': 'キャプションサイズ',
+            'accessibility.audio.captionPosition': 'キャプション位置',
+            
+            // 運動機能アクセシビリティ
+            'accessibility.motor.title': '運動機能支援',
+            'accessibility.motor.alternativeInput': '代替入力方法',
+            'accessibility.motor.switchInput': 'スイッチ入力',
+            'accessibility.motor.eyeTracking': '視線追跡',
+            'accessibility.motor.voiceControl': '音声制御',
+            'accessibility.motor.gestureCustomization': 'ジェスチャーカスタマイズ',
+            'accessibility.motor.timingAdjustments': 'タイミング調整',
+            'accessibility.motor.sensitivity': '感度設定',
+            'accessibility.motor.dwellTime': '滞留時間',
+            'accessibility.motor.oneHandedMode': '片手操作モード',
+            
+            // 認知支援
+            'accessibility.cognitive.title': '認知支援',
+            'accessibility.cognitive.simplification': 'UI簡素化',
+            'accessibility.cognitive.contextualHelp': '文脈的ヘルプ',
+            'accessibility.cognitive.errorRecovery': 'エラー回復支援',
+            'accessibility.cognitive.memoryAids': '記憶補助',
+            'accessibility.cognitive.distractionReduction': '気散らし軽減',
+            'accessibility.cognitive.clearLanguage': '明確な言語',
+            'accessibility.cognitive.progressIndicators': '進捗表示',
+            'accessibility.cognitive.confirmations': '確認ダイアログ',
+            
+            // プロファイル管理
+            'accessibility.profiles.title': 'アクセシビリティプロファイル',
+            'accessibility.profiles.current': '現在のプロファイル',
+            'accessibility.profiles.switch': 'プロファイル切り替え',
+            'accessibility.profiles.create': 'プロファイル作成',
+            'accessibility.profiles.edit': 'プロファイル編集',
+            'accessibility.profiles.delete': 'プロファイル削除',
+            'accessibility.profiles.export': 'プロファイルエクスポート',
+            'accessibility.profiles.import': 'プロファイルインポート',
+            'accessibility.profiles.share': 'プロファイル共有',
+            'accessibility.profiles.recommendation': 'プロファイル推奨',
+            
+            // プリセットプロファイル
+            'accessibility.profiles.preset.visualImpairment': '視覚障害対応',
+            'accessibility.profiles.preset.hearingImpairment': '聴覚障害対応',
+            'accessibility.profiles.preset.motorImpairment': '運動障害対応',
+            'accessibility.profiles.preset.cognitiveSupport': '認知サポート',
+            'accessibility.profiles.preset.elderlyFriendly': '高齢者向け',
+            'accessibility.profiles.preset.gamingOptimized': 'ゲーミング最適化',
+            'accessibility.profiles.preset.minimumCompliance': '最小限準拠',
+            
+            // オンボーディング
+            'accessibility.onboarding.title': 'アクセシビリティガイド',
+            'accessibility.onboarding.welcome': 'アクセシビリティ機能へようこそ',
+            'accessibility.onboarding.assessment': 'ニーズ評価',
+            'accessibility.onboarding.profileSetup': 'プロファイル設定',
+            'accessibility.onboarding.featureDiscovery': '機能探索',
+            'accessibility.onboarding.practiceSession': '練習セッション',
+            'accessibility.onboarding.completion': '設定完了',
+            'accessibility.onboarding.next': '次へ',
+            'accessibility.onboarding.previous': '前へ',
+            'accessibility.onboarding.skip': 'スキップ',
+            'accessibility.onboarding.finish': '完了',
+            
+            // テスト・デバッグ
+            'accessibility.testing.title': 'アクセシビリティテスト',
+            'accessibility.testing.wcagValidator': 'WCAG準拠チェック',
+            'accessibility.testing.screenReaderTest': 'スクリーンリーダーテスト',
+            'accessibility.testing.keyboardTest': 'キーボードテスト',
+            'accessibility.testing.colorContrastTest': '色コントラストテスト',
+            'accessibility.testing.runTests': 'テスト実行',
+            'accessibility.testing.results': 'テスト結果',
+            'accessibility.testing.passed': '合格',
+            'accessibility.testing.failed': '不合格',
+            'accessibility.testing.warnings': '警告',
+            
+            // アナウンス・通知
+            'accessibility.announcements.profileActivated': 'プロファイル「{{profileName}}」が適用されました',
+            'accessibility.announcements.settingChanged': '設定「{{settingName}}」が変更されました',
+            'accessibility.announcements.featureEnabled': '機能「{{featureName}}」が有効になりました',
+            'accessibility.announcements.featureDisabled': '機能「{{featureName}}」が無効になりました',
+            'accessibility.announcements.testCompleted': 'テスト完了: {{results}}',
+            'accessibility.announcements.errorOccurred': 'エラーが発生しました: {{errorMessage}}',
+            
+            // 文化的適応
+            'accessibility.cultural.readingDirection': '読み方向',
+            'accessibility.cultural.textDirection': 'テキスト方向',
+            'accessibility.cultural.numberFormat': '数値形式',
+            'accessibility.cultural.dateFormat': '日付形式',
+            'accessibility.cultural.colorMeaning': '色の意味',
+            'accessibility.cultural.gestureConventions': 'ジェスチャー規約',
+            
+            // ヘルプ・説明
+            'accessibility.help.title': 'アクセシビリティヘルプ',
+            'accessibility.help.gettingStarted': 'はじめに',
+            'accessibility.help.keyboardNavigation': 'キーボード操作方法',
+            'accessibility.help.screenReaderUsage': 'スクリーンリーダー使用方法',
+            'accessibility.help.troubleshooting': 'トラブルシューティング',
+            'accessibility.help.bestPractices': 'ベストプラクティス',
+            'accessibility.help.feedback': 'フィードバック',
+            'accessibility.help.contact': 'お問い合わせ'
         });
         
         // 英語翻訳
@@ -287,7 +467,155 @@ export class LocalizationManager {
             'confirm.yes': 'Yes',
             'confirm.no': 'No',
             'confirm.ok': 'OK',
-            'confirm.cancel': 'Cancel'
+            'confirm.cancel': 'Cancel',
+            
+            // Accessibility-specific translations
+            'accessibility.manager.title': 'Accessibility Settings',
+            'accessibility.manager.description': 'Providing inclusive gaming experience for all users',
+            'accessibility.manager.enabled': 'Accessibility Features Enabled',
+            'accessibility.manager.disabled': 'Accessibility Features Disabled',
+            
+            // Keyboard accessibility
+            'accessibility.keyboard.title': 'Keyboard Navigation',
+            'accessibility.keyboard.enabled': 'Keyboard Navigation Enabled',
+            'accessibility.keyboard.focusRing': 'Focus Ring Display',
+            'accessibility.keyboard.skipLinks': 'Skip Links',
+            'accessibility.keyboard.shortcuts': 'Keyboard Shortcuts',
+            'accessibility.keyboard.customization': 'Shortcut Customization',
+            'accessibility.keyboard.navigation': 'Navigation Settings',
+            'accessibility.keyboard.tabOrder': 'Tab Order',
+            'accessibility.keyboard.announcement': 'Keyboard Navigation Announcements',
+            
+            // Screen reader support
+            'accessibility.screenReader.title': 'Screen Reader',
+            'accessibility.screenReader.enabled': 'Screen Reader Support Enabled',
+            'accessibility.screenReader.ariaLabels': 'ARIA Labels',
+            'accessibility.screenReader.liveRegions': 'Live Regions',
+            'accessibility.screenReader.gameDescriptions': 'Game State Descriptions',
+            'accessibility.screenReader.bubbleDescriptions': 'Bubble Descriptions',
+            'accessibility.screenReader.announcements': 'Announcement Settings',
+            'accessibility.screenReader.speechSynthesis': 'Speech Synthesis',
+            'accessibility.screenReader.voiceSettings': 'Voice Settings',
+            'accessibility.screenReader.rate': 'Speech Rate',
+            'accessibility.screenReader.pitch': 'Pitch',
+            'accessibility.screenReader.volume': 'Volume',
+            
+            // Visual accessibility
+            'accessibility.visual.title': 'Visual Assistance',
+            'accessibility.visual.contrast': 'Contrast Adjustment',
+            'accessibility.visual.textScaling': 'Text Size Adjustment',
+            'accessibility.visual.colorBlindness': 'Color Vision Support',
+            'accessibility.visual.motionReduction': 'Motion Reduction',
+            'accessibility.visual.focusIndicators': 'Focus Indicators',
+            'accessibility.visual.colorScheme': 'Color Scheme',
+            'accessibility.visual.fontFamily': 'Font Selection',
+            'accessibility.visual.animationSettings': 'Animation Settings',
+            
+            // Audio accessibility
+            'accessibility.audio.title': 'Audio Assistance',
+            'accessibility.audio.visualFeedback': 'Visual Audio Feedback',
+            'accessibility.audio.captions': 'Caption Display',
+            'accessibility.audio.soundVisualization': 'Sound Visualization',
+            'accessibility.audio.vibrationFeedback': 'Vibration Feedback',
+            'accessibility.audio.flashAlerts': 'Flash Alerts',
+            'accessibility.audio.captionStyle': 'Caption Style',
+            'accessibility.audio.captionSize': 'Caption Size',
+            'accessibility.audio.captionPosition': 'Caption Position',
+            
+            // Motor accessibility
+            'accessibility.motor.title': 'Motor Assistance',
+            'accessibility.motor.alternativeInput': 'Alternative Input Methods',
+            'accessibility.motor.switchInput': 'Switch Input',
+            'accessibility.motor.eyeTracking': 'Eye Tracking',
+            'accessibility.motor.voiceControl': 'Voice Control',
+            'accessibility.motor.gestureCustomization': 'Gesture Customization',
+            'accessibility.motor.timingAdjustments': 'Timing Adjustments',
+            'accessibility.motor.sensitivity': 'Sensitivity Settings',
+            'accessibility.motor.dwellTime': 'Dwell Time',
+            'accessibility.motor.oneHandedMode': 'One-handed Mode',
+            
+            // Cognitive support
+            'accessibility.cognitive.title': 'Cognitive Support',
+            'accessibility.cognitive.simplification': 'UI Simplification',
+            'accessibility.cognitive.contextualHelp': 'Contextual Help',
+            'accessibility.cognitive.errorRecovery': 'Error Recovery Assistance',
+            'accessibility.cognitive.memoryAids': 'Memory Aids',
+            'accessibility.cognitive.distractionReduction': 'Distraction Reduction',
+            'accessibility.cognitive.clearLanguage': 'Clear Language',
+            'accessibility.cognitive.progressIndicators': 'Progress Indicators',
+            'accessibility.cognitive.confirmations': 'Confirmation Dialogs',
+            
+            // Profile management
+            'accessibility.profiles.title': 'Accessibility Profiles',
+            'accessibility.profiles.current': 'Current Profile',
+            'accessibility.profiles.switch': 'Switch Profile',
+            'accessibility.profiles.create': 'Create Profile',
+            'accessibility.profiles.edit': 'Edit Profile',
+            'accessibility.profiles.delete': 'Delete Profile',
+            'accessibility.profiles.export': 'Export Profile',
+            'accessibility.profiles.import': 'Import Profile',
+            'accessibility.profiles.share': 'Share Profile',
+            'accessibility.profiles.recommendation': 'Profile Recommendation',
+            
+            // Preset profiles
+            'accessibility.profiles.preset.visualImpairment': 'Visual Impairment Support',
+            'accessibility.profiles.preset.hearingImpairment': 'Hearing Impairment Support',
+            'accessibility.profiles.preset.motorImpairment': 'Motor Impairment Support',
+            'accessibility.profiles.preset.cognitiveSupport': 'Cognitive Support',
+            'accessibility.profiles.preset.elderlyFriendly': 'Elderly-Friendly',
+            'accessibility.profiles.preset.gamingOptimized': 'Gaming Optimized',
+            'accessibility.profiles.preset.minimumCompliance': 'Minimum Compliance',
+            
+            // Onboarding
+            'accessibility.onboarding.title': 'Accessibility Guide',
+            'accessibility.onboarding.welcome': 'Welcome to Accessibility Features',
+            'accessibility.onboarding.assessment': 'Needs Assessment',
+            'accessibility.onboarding.profileSetup': 'Profile Setup',
+            'accessibility.onboarding.featureDiscovery': 'Feature Discovery',
+            'accessibility.onboarding.practiceSession': 'Practice Session',
+            'accessibility.onboarding.completion': 'Setup Complete',
+            'accessibility.onboarding.next': 'Next',
+            'accessibility.onboarding.previous': 'Previous',
+            'accessibility.onboarding.skip': 'Skip',
+            'accessibility.onboarding.finish': 'Finish',
+            
+            // Testing & debugging
+            'accessibility.testing.title': 'Accessibility Testing',
+            'accessibility.testing.wcagValidator': 'WCAG Compliance Check',
+            'accessibility.testing.screenReaderTest': 'Screen Reader Test',
+            'accessibility.testing.keyboardTest': 'Keyboard Test',
+            'accessibility.testing.colorContrastTest': 'Color Contrast Test',
+            'accessibility.testing.runTests': 'Run Tests',
+            'accessibility.testing.results': 'Test Results',
+            'accessibility.testing.passed': 'Passed',
+            'accessibility.testing.failed': 'Failed',
+            'accessibility.testing.warnings': 'Warnings',
+            
+            // Announcements & notifications
+            'accessibility.announcements.profileActivated': 'Profile "{{profileName}}" has been activated',
+            'accessibility.announcements.settingChanged': 'Setting "{{settingName}}" has been changed',
+            'accessibility.announcements.featureEnabled': 'Feature "{{featureName}}" has been enabled',
+            'accessibility.announcements.featureDisabled': 'Feature "{{featureName}}" has been disabled',
+            'accessibility.announcements.testCompleted': 'Test completed: {{results}}',
+            'accessibility.announcements.errorOccurred': 'Error occurred: {{errorMessage}}',
+            
+            // Cultural adaptation
+            'accessibility.cultural.readingDirection': 'Reading Direction',
+            'accessibility.cultural.textDirection': 'Text Direction',
+            'accessibility.cultural.numberFormat': 'Number Format',
+            'accessibility.cultural.dateFormat': 'Date Format',
+            'accessibility.cultural.colorMeaning': 'Color Meaning',
+            'accessibility.cultural.gestureConventions': 'Gesture Conventions',
+            
+            // Help & explanations
+            'accessibility.help.title': 'Accessibility Help',
+            'accessibility.help.gettingStarted': 'Getting Started',
+            'accessibility.help.keyboardNavigation': 'Keyboard Navigation Guide',
+            'accessibility.help.screenReaderUsage': 'Screen Reader Usage Guide',
+            'accessibility.help.troubleshooting': 'Troubleshooting',
+            'accessibility.help.bestPractices': 'Best Practices',
+            'accessibility.help.feedback': 'Feedback',
+            'accessibility.help.contact': 'Contact Us'
         });
         
         this.loadedLanguages.add('ja');
@@ -566,9 +894,301 @@ export class LocalizationManager {
     }
     
     /**
+     * 文化的適応情報の取得
+     */
+    getCulturalAdaptation(language = null) {
+        const lang = language || this.currentLanguage;
+        return {
+            isRTL: this.isRTLLanguage(lang),
+            textDirection: this.getTextDirection(lang),
+            numeralSystem: this.getNumeralSystem(lang),
+            dateFormat: this.getDateFormat(lang),
+            colorMeanings: this.getColorMeanings(lang),
+            gestureConventions: this.getGestureConventions(lang)
+        };
+    }
+    
+    /**
+     * RTL言語の判定
+     */
+    isRTLLanguage(language) {
+        return this.culturalAdaptation.rtlLanguages.includes(language);
+    }
+    
+    /**
+     * テキスト方向の取得
+     */
+    getTextDirection(language) {
+        return this.isRTLLanguage(language) ? 'rtl' : 'ltr';
+    }
+    
+    /**
+     * 数字システムの取得
+     */
+    getNumeralSystem(language) {
+        return this.culturalAdaptation.numeralSystems[language] || 'default';
+    }
+    
+    /**
+     * 日付形式の取得
+     */
+    getDateFormat(language) {
+        return this.culturalAdaptation.dateFormats[language] || 'MM/DD/YYYY';
+    }
+    
+    /**
+     * 色の意味の取得
+     */
+    getColorMeanings(language) {
+        return this.culturalAdaptation.colorMeanings[language] || 
+               this.culturalAdaptation.colorMeanings['en'];
+    }
+    
+    /**
+     * ジェスチャー規約の取得
+     */
+    getGestureConventions(language) {
+        return this.culturalAdaptation.gestureConventions[language] || 
+               this.culturalAdaptation.gestureConventions['en'];
+    }
+    
+    /**
+     * アクセシビリティ専用翻訳の追加
+     */
+    addAccessibilityTranslations(language, translations) {
+        try {
+            if (!this.accessibilityTranslations.has(language)) {
+                this.accessibilityTranslations.set(language, {});
+            }
+            
+            const existing = this.accessibilityTranslations.get(language);
+            const merged = { ...existing, ...translations };
+            
+            this.accessibilityTranslations.set(language, merged);
+            
+            console.log(`Added accessibility translations for ${language}: ${Object.keys(translations).length} keys`);
+            return true;
+        } catch (error) {
+            getErrorHandler().handleError(error, 'LOCALIZATION_ERROR', {
+                operation: 'addAccessibilityTranslations',
+                language: language
+            });
+            return false;
+        }
+    }
+    
+    /**
+     * アクセシビリティ翻訳の取得
+     */
+    getAccessibilityTranslation(key, language = null) {
+        const lang = language || this.currentLanguage;
+        const translations = this.accessibilityTranslations.get(lang);
+        
+        if (!translations) {
+            return null;
+        }
+        
+        const keys = key.split('.');
+        let value = translations;
+        
+        for (const k of keys) {
+            if (value && typeof value === 'object' && k in value) {
+                value = value[k];
+            } else {
+                return null;
+            }
+        }
+        
+        return typeof value === 'string' ? value : null;
+    }
+    
+    /**
+     * 文化的に適応したテキストフォーマット
+     */
+    formatCulturalText(text, type, language = null) {
+        const lang = language || this.currentLanguage;
+        
+        switch (type) {
+            case 'number':
+                return this.formatNumber(text, lang);
+            case 'date':
+                return this.formatDate(text, lang);
+            case 'currency':
+                return this.formatCurrency(text, lang);
+            default:
+                return text;
+        }
+    }
+    
+    /**
+     * 数値のフォーマット
+     */
+    formatNumber(number, language) {
+        try {
+            return new Intl.NumberFormat(language).format(number);
+        } catch (error) {
+            console.warn(`Number formatting failed for ${language}:`, error);
+            return number.toString();
+        }
+    }
+    
+    /**
+     * 日付のフォーマット
+     */
+    formatDate(date, language) {
+        try {
+            return new Intl.DateTimeFormat(language).format(new Date(date));
+        } catch (error) {
+            console.warn(`Date formatting failed for ${language}:`, error);
+            return date.toString();
+        }
+    }
+    
+    /**
+     * 通貨のフォーマット
+     */
+    formatCurrency(amount, language, currency = 'USD') {
+        try {
+            return new Intl.NumberFormat(language, {
+                style: 'currency',
+                currency: currency
+            }).format(amount);
+        } catch (error) {
+            console.warn(`Currency formatting failed for ${language}:`, error);
+            return `${currency} ${amount}`;
+        }
+    }
+    
+    /**
+     * アクセシビリティ文脈での翻訳
+     */
+    ta11y(key, params = {}) {
+        // アクセシビリティ専用翻訳を最初に確認
+        let translation = this.getAccessibilityTranslation(key);
+        
+        // 見つからない場合は通常の翻訳を使用
+        if (!translation) {
+            translation = this.getTranslation(key, this.currentLanguage);
+        }
+        
+        // フォールバック処理
+        if (!translation && this.currentLanguage !== this.fallbackLanguage) {
+            translation = this.getTranslation(key, this.fallbackLanguage);
+        }
+        
+        if (!translation) {
+            console.warn(`Accessibility translation not found: ${key}`);
+            return key;
+        }
+        
+        return this.interpolate(translation, params);
+    }
+    
+    /**
+     * 地域固有の設定取得
+     */
+    getRegionalSettings(language = null) {
+        const lang = language || this.currentLanguage;
+        
+        return {
+            language: lang,
+            locale: this.getLocale(lang),
+            direction: this.getTextDirection(lang),
+            calendar: this.getCalendarSystem(lang),
+            timeZone: this.getTimeZone(lang),
+            weekStart: this.getWeekStart(lang)
+        };
+    }
+    
+    /**
+     * ロケールの取得
+     */
+    getLocale(language) {
+        const localeMap = {
+            'ja': 'ja-JP',
+            'en': 'en-US',
+            'en-gb': 'en-GB',
+            'de': 'de-DE',
+            'fr': 'fr-FR',
+            'zh': 'zh-CN',
+            'ko': 'ko-KR'
+        };
+        
+        return localeMap[language] || language;
+    }
+    
+    /**
+     * カレンダーシステムの取得
+     */
+    getCalendarSystem(language) {
+        const calendarMap = {
+            'ja': 'japanese',
+            'ar': 'islamic',
+            'he': 'hebrew',
+            'th': 'buddhist'
+        };
+        
+        return calendarMap[language] || 'gregorian';
+    }
+    
+    /**
+     * タイムゾーンの取得
+     */
+    getTimeZone(language) {
+        const timezoneMap = {
+            'ja': 'Asia/Tokyo',
+            'en': 'America/New_York',
+            'en-gb': 'Europe/London',
+            'de': 'Europe/Berlin',
+            'fr': 'Europe/Paris'
+        };
+        
+        return timezoneMap[language] || 'UTC';
+    }
+    
+    /**
+     * 週の開始日の取得
+     */
+    getWeekStart(language) {
+        const weekStartMap = {
+            'en': 0, // Sunday
+            'en-gb': 1, // Monday
+            'de': 1,
+            'fr': 1,
+            'ja': 0
+        };
+        
+        return weekStartMap[language] || 1;
+    }
+    
+    /**
+     * 包括的翻訳統計
+     */
+    getAccessibilityStats() {
+        const stats = this.getStats();
+        
+        // アクセシビリティ翻訳の統計を追加
+        stats.accessibilityTranslations = {};
+        for (const [language, translations] of this.accessibilityTranslations) {
+            stats.accessibilityTranslations[language] = this.countTranslations(translations);
+        }
+        
+        // 文化的適応サポート状況
+        stats.culturalSupport = {
+            rtlLanguages: this.culturalAdaptation.rtlLanguages.length,
+            numeralSystems: Object.keys(this.culturalAdaptation.numeralSystems).length,
+            dateFormats: Object.keys(this.culturalAdaptation.dateFormats).length,
+            colorMeanings: Object.keys(this.culturalAdaptation.colorMeanings).length
+        };
+        
+        return stats;
+    }
+    
+    /**
      * クリーンアップ
      */
     cleanup() {
-        // 特にクリーンアップする必要はない
+        // アクセシビリティ翻訳データのクリア
+        this.accessibilityTranslations.clear();
     }
 }
