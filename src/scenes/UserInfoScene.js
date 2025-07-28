@@ -12,6 +12,11 @@ export class UserInfoScene extends Scene {
         this.tabs = ['statistics', 'achievements', 'management'];
         this.tabLabels = ['統計', '実績', '管理'];
         
+        // 実績カテゴリフィルター
+        this.achievementCategories = ['all', 'score', 'play', 'technique', 'collection', 'special'];
+        this.achievementCategoryLabels = ['全て', 'スコア系', 'プレイ系', 'テクニック系', 'コレクション系', '特殊'];
+        this.currentAchievementCategory = 'all';
+        
         // ダイアログ状態管理
         this.showingDialog = null; // null, 'username', 'export', 'import'
         this.dialogData = {};
@@ -131,6 +136,7 @@ export class UserInfoScene extends Scene {
             // AchievementManagerから実績データを取得
             if (this.gameEngine.achievementManager) {
                 this.achievementsData = this.gameEngine.achievementManager.getAchievements();
+                this.achievementsByCategory = this.gameEngine.achievementManager.getAchievementsByCategory();
             }
             
             this.errorMessage = null;
@@ -650,6 +656,10 @@ export class UserInfoScene extends Scene {
             return;
         }
         
+        // カテゴリフィルターを描画
+        y = this.renderAchievementCategoryFilter(context, y);
+        height -= 50; // フィルター分の高さを減算
+        
         const canvas = this.gameEngine.canvas;
         const contentWidth = canvas.width - this.contentPadding * 2;
         const achievementHeight = 80;
@@ -659,9 +669,12 @@ export class UserInfoScene extends Scene {
         const scrollOffset = this.scrollPosition;
         let currentY = y + this.contentPadding - scrollOffset;
         
+        // カテゴリフィルターを適用
+        const filteredAchievements = this.getFilteredAchievements();
+        
         // 解除済み実績と未解除実績を分離
-        const unlockedAchievements = this.achievementsData.filter(a => a.unlocked);
-        const lockedAchievements = this.achievementsData.filter(a => !a.unlocked);
+        const unlockedAchievements = filteredAchievements.filter(a => a.unlocked);
+        const lockedAchievements = filteredAchievements.filter(a => !a.unlocked);
         
         // 解除済み実績セクション
         if (unlockedAchievements.length > 0) {
@@ -717,6 +730,72 @@ export class UserInfoScene extends Scene {
         
         return currentY;
     }
+    
+    /**
+     * 実績カテゴリフィルターを描画
+     */
+    renderAchievementCategoryFilter(context, y) {
+        const canvas = this.gameEngine.canvas;
+        const filterHeight = 40;
+        const buttonWidth = 120;
+        const buttonHeight = 30;
+        const spacing = 10;
+        
+        // フィルターの背景
+        context.fillStyle = '#1a1a2e';
+        context.fillRect(this.contentPadding, y, canvas.width - this.contentPadding * 2, filterHeight);
+        
+        // フィルターボタンを描画
+        let currentX = this.contentPadding + 10;
+        const buttonY = y + 5;
+        
+        for (let i = 0; i < this.achievementCategories.length; i++) {
+            const category = this.achievementCategories[i];
+            const label = this.achievementCategoryLabels[i];
+            const isActive = this.currentAchievementCategory === category;
+            
+            // ボタンの背景
+            context.fillStyle = isActive ? '#4CAF50' : '#333';
+            context.fillRect(currentX, buttonY, buttonWidth, buttonHeight);
+            
+            // ボタンの枠線
+            context.strokeStyle = isActive ? '#4CAF50' : '#666';
+            context.lineWidth = 1;
+            context.strokeRect(currentX, buttonY, buttonWidth, buttonHeight);
+            
+            // ボタンのテキスト
+            context.fillStyle = isActive ? '#ffffff' : '#cccccc';
+            context.font = '12px Arial';
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            context.fillText(label, currentX + buttonWidth / 2, buttonY + buttonHeight / 2);
+            
+            currentX += buttonWidth + spacing;
+            
+            // 行を超える場合は改行
+            if (currentX + buttonWidth > canvas.width - this.contentPadding) {
+                currentX = this.contentPadding + 10;
+                // 複数行対応（必要に応じて実装）
+            }
+        }
+        
+        return y + filterHeight + 10;
+    }
+    
+    /**
+     * フィルターされた実績を取得
+     */
+    getFilteredAchievements() {
+        if (!this.achievementsData) return [];
+        
+        if (this.currentAchievementCategory === 'all') {
+            return this.achievementsData;
+        }
+        
+        return this.achievementsData.filter(achievement => 
+            achievement.category === this.currentAchievementCategory
+        );
+    }
 
     /**
      * 実績アイテムを描画
@@ -760,7 +839,7 @@ export class UserInfoScene extends Scene {
         
         // 進捗バー（未解除実績のみ）
         if (!isUnlocked && achievement.progress) {
-            this.renderProgressBar(context, x + 60, y + 55, width - 80, achievement.progress);
+            this.renderEnhancedProgressBar(context, x + 60, y + 55, width - 150, achievement.progress);
         }
         
         // 獲得日時（解除済み実績のみ）
@@ -798,6 +877,96 @@ export class UserInfoScene extends Scene {
         context.font = '11px Arial';
         context.textAlign = 'center';
         context.fillText(`${current}/${target} (${percentage.toFixed(0)}%)`, x + width / 2, y + barHeight + 12);
+    }
+    
+    /**
+     * 拡張進捗バーを描画
+     */
+    renderEnhancedProgressBar(context, x, y, width, progress) {
+        const barHeight = 8;
+        const current = progress.current || 0;
+        const target = progress.target || 1;
+        const percentage = Math.min(100, (current / target) * 100);
+        
+        // 背景（グラデーション）
+        const bgGradient = context.createLinearGradient(x, y, x, y + barHeight);
+        bgGradient.addColorStop(0, '#2a2a2a');
+        bgGradient.addColorStop(1, '#1a1a1a');
+        context.fillStyle = bgGradient;
+        context.fillRect(x, y, width, barHeight);
+        
+        // 枠線
+        context.strokeStyle = '#555';
+        context.lineWidth = 1;
+        context.strokeRect(x, y, width, barHeight);
+        
+        // 進捗（グラデーション）
+        const fillWidth = (percentage / 100) * width;
+        if (fillWidth > 0) {
+            const progressGradient = context.createLinearGradient(x, y, x, y + barHeight);
+            if (percentage >= 100) {
+                progressGradient.addColorStop(0, '#4CAF50');
+                progressGradient.addColorStop(1, '#2E7D32');
+            } else {
+                progressGradient.addColorStop(0, '#64B5F6');
+                progressGradient.addColorStop(1, '#1976D2');
+            }
+            context.fillStyle = progressGradient;
+            context.fillRect(x, y, fillWidth, barHeight);
+            
+            // 光る効果
+            if (percentage < 100) {
+                context.save();
+                context.globalAlpha = 0.3;
+                context.fillStyle = '#ffffff';
+                context.fillRect(x, y, fillWidth, barHeight / 2);
+                context.restore();
+            }
+        }
+        
+        // 進捗テキスト（右側に配置）
+        context.fillStyle = '#ffffff';
+        context.font = '12px Arial';
+        context.textAlign = 'right';
+        context.textBaseline = 'middle';
+        context.fillText(`${current}/${target}`, x + width + 40, y + barHeight / 2);
+        
+        // パーセンテージ（小さく表示）
+        context.fillStyle = '#cccccc';
+        context.font = '10px Arial';
+        context.fillText(`${percentage.toFixed(0)}%`, x + width + 40, y + barHeight / 2 + 12);
+    }
+    
+    /**
+     * 実績カテゴリフィルターのクリック処理
+     */
+    handleAchievementCategoryClick(x, y) {
+        // フィルターボタンの位置を計算
+        const filterY = this.headerHeight + 50; // タブの下のフィルターエリア
+        const buttonWidth = 120;
+        const buttonHeight = 30;
+        const spacing = 10;
+        
+        // フィルターエリア内かチェック
+        if (y >= filterY + 5 && y <= filterY + 5 + buttonHeight) {
+            let currentX = this.contentPadding + 10;
+            
+            for (let i = 0; i < this.achievementCategories.length; i++) {
+                // ボタンの範囲内かチェック
+                if (x >= currentX && x <= currentX + buttonWidth) {
+                    this.currentAchievementCategory = this.achievementCategories[i];
+                    this.scrollPosition = 0; // スクロール位置をリセット
+                    return;
+                }
+                
+                currentX += buttonWidth + spacing;
+                
+                // 行を超える場合は改行（複数行対応）
+                if (currentX + buttonWidth > this.gameEngine.canvas.width - this.contentPadding) {
+                    break; // 現在は1行のみ対応
+                }
+            }
+        }
     }
 
     /**
@@ -1443,6 +1612,11 @@ export class UserInfoScene extends Scene {
                 this.focusedElement = tabIndex;
                 return;
             }
+        }
+        
+        // 実績画面のカテゴリフィルタークリック処理
+        if (this.currentTab === 'achievements') {
+            this.handleAchievementCategoryClick(x, y);
         }
         
         // ユーザー管理画面のボタンクリック処理
