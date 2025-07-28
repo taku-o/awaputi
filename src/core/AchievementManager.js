@@ -1,6 +1,8 @@
 /**
  * 実績管理クラス
  */
+import { AchievementProgressEngine } from './AchievementProgressEngine.js';
+
 export class AchievementManager {
     constructor(gameEngine) {
         this.gameEngine = gameEngine;
@@ -8,6 +10,9 @@ export class AchievementManager {
         this.unlockedAchievements = new Set();
         this.progressData = {};
         this.notifications = [];
+        
+        // 進捗計算エンジン
+        this.progressEngine = new AchievementProgressEngine();
         
         // パフォーマンス最適化設定
         this.performanceConfig = {
@@ -524,10 +529,548 @@ export class AchievementManager {
                 return; // 既に解除済み
             }
             
-            if (this.checkAchievementConditionOptimized(achievement, eventType, data)) {
-                this.unlockAchievement(achievement);
+            // 新しい進捗エンジンを使用して進捗を更新
+            try {
+                const progressResult = this.updateAchievementProgressAdvanced(achievement, eventType, data);
+                
+                if (progressResult && progressResult.isComplete) {
+                    this.unlockAchievement(achievement, progressResult.milestones);
+                } else if (progressResult && progressResult.milestones.length > 0) {
+                    // 中間マイルストーンの処理
+                    this.processMilestones(achievement, progressResult.milestones);
+                }
+            } catch (error) {
+                console.error(`Error updating progress for achievement ${achievement.id}:`, error);
+                // フォールバックとして従来の方法を使用
+                if (this.checkAchievementConditionOptimized(achievement, eventType, data)) {
+                    this.unlockAchievement(achievement);
+                }
             }
         });
+    }
+    
+    /**
+     * 高度な進捗更新（進捗エンジン使用）
+     */
+    updateAchievementProgressAdvanced(achievement, eventType, data) {
+        const progressData = this.progressData[achievement.id] || { current: 0, target: achievement.target || 1 };
+        
+        // 進捗タイプと計算に必要なコンテキストを決定
+        const progressContext = this.determineProgressContext(achievement, eventType, data);
+        
+        if (!progressContext) {
+            return null; // この実績は現在のイベントタイプに対応していない
+        }
+        
+        // 新しいデータ値を抽出
+        const newDataValue = this.extractProgressValue(eventType, data, achievement);
+        
+        // 進捗エンジンで計算
+        const result = this.progressEngine.calculateProgress(
+            progressContext.type,
+            progressData.current,
+            newDataValue,
+            progressData.target,
+            progressContext
+        );
+        
+        // 進捗データを更新
+        this.progressData[achievement.id] = {
+            current: result.progress,
+            target: progressData.target,
+            percentage: result.percentage,
+            lastUpdated: Date.now(),
+            milestones: progressContext.milestones || []
+        };
+        
+        return result;
+    }
+    
+    /**
+     * 進捗コンテキストを決定
+     */
+    determineProgressContext(achievement, eventType, data) {
+        const condition = achievement.condition;
+        
+        // 実績タイプに基づいてコンテキストを決定
+        switch (achievement.category) {
+            case 'score':
+                return this.getScoreProgressContext(achievement, eventType, data);
+            case 'play':
+                return this.getPlayProgressContext(achievement, eventType, data);
+            case 'technique':
+                return this.getTechniqueProgressContext(achievement, eventType, data);
+            case 'collection':
+                return this.getCollectionProgressContext(achievement, eventType, data);
+            case 'special':
+                return this.getSpecialProgressContext(achievement, eventType, data);
+            default:
+                return this.getDefaultProgressContext(achievement, eventType, data);
+        }
+    }
+    
+    /**
+     * スコア系実績の進捗コンテキスト
+     */
+    getScoreProgressContext(achievement, eventType, data) {
+        if (!eventType.includes('score')) {
+            return null;
+        }
+        
+        const context = {
+            type: 'cumulative',
+            dataType: 'number',
+            milestones: []
+        };
+        
+        // 累積スコア実績の場合
+        if (achievement.id.includes('total')) {
+            context.type = 'cumulative';
+        }
+        // 単発高得点実績の場合
+        else if (achievement.id.includes('single') || achievement.id.includes('high')) {
+            context.type = 'maximum';
+        }
+        
+        // マイルストーンを設定
+        if (achievement.target > 1000) {
+            context.milestones = this.generateScoreMilestones(achievement.target);
+        }
+        
+        return context;
+    }
+    
+    /**
+     * プレイ系実績の進捗コンテキスト
+     */
+    getPlayProgressContext(achievement, eventType, data) {
+        if (!eventType.includes('play') && !eventType.includes('session')) {
+            return null;
+        }
+        
+        const context = {
+            type: 'cumulative',
+            dataType: 'number',
+            milestones: []
+        };
+        
+        // 連続プレイ実績の場合
+        if (achievement.id.includes('consecutive') || achievement.id.includes('daily')) {
+            context.type = 'consecutive';
+            context.isConsecutive = this.checkConsecutivePlay(data);
+        }
+        // プレイ時間実績の場合
+        else if (achievement.id.includes('time')) {
+            context.type = 'cumulative';
+            context.milestones = this.generateTimeMilestones(achievement.target);
+        }
+        
+        return context;
+    }
+    
+    /**
+     * テクニック系実績の進捗コンテキスト
+     */
+    getTechniqueProgressContext(achievement, eventType, data) {
+        if (!eventType.includes('technique') && !eventType.includes('combo') && !eventType.includes('accuracy')) {
+            return null;
+        }
+        
+        const context = {
+            type: 'maximum',
+            dataType: 'number',
+            milestones: []
+        };
+        
+        // コンボ実績の場合
+        if (achievement.id.includes('combo')) {
+            context.type = 'maximum';
+        }
+        // 精度実績の場合
+        else if (achievement.id.includes('accuracy')) {
+            context.type = 'maximum';
+            context.dataType = 'percentage';
+        }
+        
+        return context;
+    }
+    
+    /**
+     * コレクション系実績の進捗コンテキスト
+     */
+    getCollectionProgressContext(achievement, eventType, data) {
+        if (!eventType.includes('bubble') && !eventType.includes('collection')) {
+            return null;
+        }
+        
+        const context = {
+            type: 'conditional',
+            dataType: 'array',
+            milestones: []
+        };
+        
+        // 各種バブル破壊実績の場合
+        if (achievement.id.includes('types')) {
+            context.subConditions = this.getBubbleTypeConditions();
+        }
+        
+        return context;
+    }
+    
+    /**
+     * 特殊実績の進捗コンテキスト
+     */
+    getSpecialProgressContext(achievement, eventType, data) {
+        const context = {
+            type: 'composite',
+            dataType: 'object',
+            milestones: [],
+            subConditions: []
+        };
+        
+        // 複合条件の実績
+        if (achievement.condition && achievement.condition.type === 'composite') {
+            context.subConditions = achievement.condition.subConditions || [];
+        }
+        
+        return context;
+    }
+    
+    /**
+     * デフォルト進捗コンテキスト
+     */
+    getDefaultProgressContext(achievement, eventType, data) {
+        return {
+            type: 'cumulative',
+            dataType: 'number',
+            milestones: []
+        };
+    }
+    
+    /**
+     * 進捗値を抽出
+     */
+    extractProgressValue(eventType, data, achievement) {
+        switch (eventType) {
+            case 'bubble_popped':
+                return 1; // 1個ポップ
+            case 'score_added':
+                return data.score || data.points || data;
+            case 'combo_achieved':
+                return data.combo || data;
+            case 'stage_cleared':
+                return 1; // 1ステージクリア
+            case 'item_used':
+                return 1; // 1アイテム使用
+            case 'session_completed':
+                return data.playTime || data.duration || 1;
+            default:
+                return typeof data === 'number' ? data : 1;
+        }
+    }
+    
+    /**
+     * 中間マイルストーンを処理
+     */
+    processMilestones(achievement, milestones) {
+        milestones.forEach(milestone => {
+            console.log(`Milestone achieved: ${milestone.name} for ${achievement.name}`);
+            
+            // マイルストーン報酬があれば付与
+            if (milestone.reward) {
+                this.awardMilestoneReward(achievement, milestone);
+            }
+            
+            // マイルストーン通知
+            this.notifications.push({
+                type: 'milestone',
+                achievement: achievement,
+                milestone: milestone,
+                timestamp: Date.now()
+            });
+        });
+    }
+    
+    /**
+     * マイルストーン報酬を付与
+     */
+    awardMilestoneReward(achievement, milestone) {
+        if (milestone.reward.ap) {
+            if (this.gameEngine.playerData) {
+                this.gameEngine.playerData.ap += milestone.reward.ap;
+                console.log(`Awarded ${milestone.reward.ap} AP for milestone: ${milestone.name}`);
+            }
+        }
+    }
+    
+    /**
+     * スコア用マイルストーンを生成
+     */
+    generateScoreMilestones(targetScore) {
+        const milestones = [];
+        const intervals = [0.25, 0.5, 0.75]; // 25%, 50%, 75%
+        
+        intervals.forEach((interval, index) => {
+            milestones.push({
+                id: `milestone_${index + 1}`,
+                name: `${(interval * 100)}%達成`,
+                percentage: interval * 100,
+                reward: { ap: Math.floor(targetScore * interval * 0.001) }, // スコアの0.1%をAP報酬
+                achieved: false
+            });
+        });
+        
+        return milestones;
+    }
+    
+    /**
+     * 時間用マイルストーンを生成
+     */
+    generateTimeMilestones(targetTime) {
+        const milestones = [];
+        const intervals = [0.25, 0.5, 0.75];
+        
+        intervals.forEach((interval, index) => {
+            milestones.push({
+                id: `time_milestone_${index + 1}`,
+                name: `${(interval * 100)}%達成`,
+                percentage: interval * 100,
+                reward: { ap: Math.floor(targetTime * interval * 0.01) },
+                achieved: false
+            });
+        });
+        
+        return milestones;
+    }
+    
+    /**
+     * バブルタイプ条件を取得
+     */
+    getBubbleTypeConditions() {
+        const bubbleTypes = ['normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink', 'clock', 
+                           'electric', 'poison', 'spiky', 'escaping', 'boss', 'golden', 
+                           'frozen', 'magnetic', 'explosive', 'phantom', 'multiplier'];
+        
+        return bubbleTypes.map(type => ({
+            type: 'greater_equal',
+            field: `bubbleTypes.${type}.popped`,
+            target: 1,
+            weight: 1
+        }));
+    }
+    
+    /**
+     * 連続プレイをチェック
+     */
+    checkConsecutivePlay(data) {
+        if (!data.lastPlayDate) {
+            return false;
+        }
+        
+        const lastPlay = new Date(data.lastPlayDate);
+        const today = new Date();
+        const diffTime = Math.abs(today - lastPlay);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        return diffDays <= 1; // 24時間以内なら連続とみなす
+    }
+    
+    /**
+     * 進捗データを検証
+     */
+    validateProgressData() {
+        const issues = [];
+        
+        Object.keys(this.progressData).forEach(achievementId => {
+            const progress = this.progressData[achievementId];
+            const achievement = this.achievements[achievementId];
+            
+            if (!achievement) {
+                issues.push({
+                    type: 'orphaned_progress',
+                    achievementId: achievementId,
+                    description: 'Progress data exists for non-existent achievement'
+                });
+                return;
+            }
+            
+            // 進捗データ構造の検証
+            if (!this.progressEngine.validators.get('object')(progress)) {
+                issues.push({
+                    type: 'invalid_progress_structure',
+                    achievementId: achievementId,
+                    description: 'Progress data is not a valid object'
+                });
+                return;
+            }
+            
+            // 現在値の検証
+            if (!this.progressEngine.validators.get('positive_number')(progress.current)) {
+                issues.push({
+                    type: 'invalid_current_value',
+                    achievementId: achievementId,
+                    current: progress.current,
+                    description: 'Current progress value is invalid'
+                });
+            }
+            
+            // 目標値の検証
+            if (!this.progressEngine.validators.get('positive_number')(progress.target)) {
+                issues.push({
+                    type: 'invalid_target_value',
+                    achievementId: achievementId,
+                    target: progress.target,
+                    description: 'Target progress value is invalid'
+                });
+            }
+            
+            // 進捗が目標を超えている場合
+            if (progress.current > progress.target) {
+                issues.push({
+                    type: 'progress_exceeds_target',
+                    achievementId: achievementId,
+                    current: progress.current,
+                    target: progress.target,
+                    description: 'Current progress exceeds target'
+                });
+            }
+            
+            // パーセンテージの検証
+            if (progress.percentage !== undefined) {
+                const expectedPercentage = (progress.current / progress.target) * 100;
+                if (Math.abs(progress.percentage - expectedPercentage) > 0.1) {
+                    issues.push({
+                        type: 'incorrect_percentage',
+                        achievementId: achievementId,
+                        current: progress.percentage,
+                        expected: expectedPercentage,
+                        description: 'Progress percentage is incorrect'
+                    });
+                }
+            }
+        });
+        
+        return issues;
+    }
+    
+    /**
+     * 進捗データを修正
+     */
+    repairProgressData() {
+        const issues = this.validateProgressData();
+        const repaired = [];
+        
+        issues.forEach(issue => {
+            switch (issue.type) {
+                case 'orphaned_progress':
+                    delete this.progressData[issue.achievementId];
+                    repaired.push(`Removed orphaned progress for ${issue.achievementId}`);
+                    break;
+                    
+                case 'invalid_progress_structure':
+                case 'invalid_current_value':
+                case 'invalid_target_value':
+                    const achievement = this.achievements[issue.achievementId];
+                    if (achievement) {
+                        this.progressData[issue.achievementId] = this.progressEngine.repairProgressData(
+                            this.progressData[issue.achievementId],
+                            achievement
+                        );
+                        repaired.push(`Repaired progress structure for ${issue.achievementId}`);
+                    }
+                    break;
+                    
+                case 'progress_exceeds_target':
+                    this.progressData[issue.achievementId].current = issue.target;
+                    repaired.push(`Capped progress for ${issue.achievementId} to target value`);
+                    break;
+                    
+                case 'incorrect_percentage':
+                    const progress = this.progressData[issue.achievementId];
+                    progress.percentage = (progress.current / progress.target) * 100;
+                    repaired.push(`Corrected percentage for ${issue.achievementId}`);
+                    break;
+            }
+        });
+        
+        return repaired;
+    }
+    
+    /**
+     * 複雑な条件評価（進捗エンジン使用）
+     */
+    evaluateComplexConditions(achievement, gameData) {
+        try {
+            if (!achievement.condition || !achievement.condition.complex) {
+                return false; // 複雑な条件ではない
+            }
+            
+            return this.progressEngine.evaluateComplexConditions(gameData, achievement.condition);
+            
+        } catch (error) {
+            console.error(`Error evaluating complex conditions for ${achievement.id}:`, error);
+            return false;
+        }
+    }
+    
+    /**
+     * 時間ベース条件を追跡
+     */
+    trackTimeBasedConditions() {
+        const timeBasedAchievements = Object.values(this.achievements).filter(achievement => 
+            achievement.condition && achievement.condition.timeWindow
+        );
+        
+        timeBasedAchievements.forEach(achievement => {
+            if (this.unlockedAchievements.has(achievement.id)) {
+                return; // 既に解除済み
+            }
+            
+            const progress = this.progressData[achievement.id];
+            if (!progress || !progress.lastUpdated) {
+                return; // 進捗データが無い
+            }
+            
+            // 時間窓の条件をチェック
+            const timeCondition = {
+                type: 'time_window',
+                windowMs: achievement.condition.timeWindow
+            };
+            
+            const isWithinTimeWindow = this.progressEngine.evaluateCondition(
+                progress.lastUpdated,
+                timeCondition
+            );
+            
+            if (!isWithinTimeWindow) {
+                // 時間窓外の場合は進捗をリセット
+                this.resetAchievementProgress(achievement.id);
+                console.log(`Reset time-based achievement progress: ${achievement.id}`);
+            }
+        });
+    }
+    
+    /**
+     * 実績進捗をリセット
+     */
+    resetAchievementProgress(achievementId) {
+        const achievement = this.achievements[achievementId];
+        if (achievement) {
+            this.progressData[achievementId] = {
+                current: 0,
+                target: achievement.target || 1,
+                percentage: 0,
+                lastUpdated: Date.now(),
+                milestones: []
+            };
+        }
+    }
+    
+    /**
+     * 進捗エンジンの診断情報を取得
+     */
+    getProgressEngineDiagnostics() {
+        return this.progressEngine.getDiagnostics();
     }
     
     /**
