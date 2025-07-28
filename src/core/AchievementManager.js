@@ -8,6 +8,29 @@ export class AchievementManager {
         this.unlockedAchievements = new Set();
         this.progressData = {};
         this.notifications = [];
+        
+        // パフォーマンス最適化設定
+        this.performanceConfig = {
+            batchSize: 10, // バッチ処理サイズ
+            throttleDelay: 100, // スロットリング遅延（ms）
+            cacheTimeout: 5000, // キャッシュタイムアウト（ms）
+            maxNotifications: 5 // 最大通知数
+        };
+        
+        // キャッシュとスロットリング
+        this.cache = new Map();
+        this.updateQueue = [];
+        this.throttleTimer = null;
+        this.lastUpdateTime = 0;
+        
+        // パフォーマンス統計
+        this.performanceStats = {
+            updateCount: 0,
+            averageUpdateTime: 0,
+            cacheHits: 0,
+            cacheMisses: 0,
+            batchProcessingCount: 0
+        };
     }
     
     /**
@@ -442,18 +465,150 @@ export class AchievementManager {
     }
     
     /**
-     * 実績の進捗を更新
+     * 実績の進捗を更新（最適化版）
      */
     updateProgress(eventType, data) {
-        Object.values(this.achievements).forEach(achievement => {
+        // 更新リクエストをキューに追加
+        this.updateQueue.push({ eventType, data, timestamp: Date.now() });
+        
+        // スロットリング制御
+        if (this.throttleTimer) {
+            return; // 既にタイマーが動いている
+        }
+        
+        this.throttleTimer = setTimeout(() => {
+            this.processBatchUpdates();
+            this.throttleTimer = null;
+        }, this.performanceConfig.throttleDelay);
+    }
+    
+    /**
+     * バッチ更新処理
+     */
+    processBatchUpdates() {
+        const startTime = performance.now();
+        
+        // キューからバッチサイズ分を取得
+        const batch = this.updateQueue.splice(0, this.performanceConfig.batchSize);
+        
+        if (batch.length === 0) {
+            return;
+        }
+        
+        // バッチ処理統計更新
+        this.performanceStats.batchProcessingCount++;
+        
+        // 各イベントを処理
+        batch.forEach(({ eventType, data }) => {
+            this.processUpdateEvent(eventType, data);
+        });
+        
+        // 残りのキューがある場合は継続処理
+        if (this.updateQueue.length > 0) {
+            setTimeout(() => this.processBatchUpdates(), 0);
+        }
+        
+        // パフォーマンス統計更新
+        const updateTime = performance.now() - startTime;
+        this.updatePerformanceStats(updateTime);
+    }
+    
+    /**
+     * 個別更新イベントを処理
+     */
+    processUpdateEvent(eventType, data) {
+        const relevantAchievements = this.getRelevantAchievements(eventType);
+        
+        relevantAchievements.forEach(achievement => {
             if (this.unlockedAchievements.has(achievement.id)) {
                 return; // 既に解除済み
             }
             
-            if (this.checkAchievementCondition(achievement, eventType, data)) {
+            if (this.checkAchievementConditionOptimized(achievement, eventType, data)) {
                 this.unlockAchievement(achievement);
             }
         });
+    }
+    
+    /**
+     * 関連する実績を取得（最適化）
+     */
+    getRelevantAchievements(eventType) {
+        const cacheKey = `relevant_${eventType}`;
+        
+        if (this.cache.has(cacheKey)) {
+            this.performanceStats.cacheHits++;
+            return this.cache.get(cacheKey);
+        }
+        
+        this.performanceStats.cacheMisses++;
+        
+        // イベントタイプに関連する実績のみをフィルタリング
+        const relevantAchievements = Object.values(this.achievements).filter(achievement => {
+            return this.isAchievementRelevantToEvent(achievement, eventType);
+        });
+        
+        // キャッシュに保存
+        this.cache.set(cacheKey, relevantAchievements);
+        
+        // キャッシュのクリーンアップをスケジュール
+        setTimeout(() => {
+            this.cache.delete(cacheKey);
+        }, this.performanceConfig.cacheTimeout);
+        
+        return relevantAchievements;
+    }
+    
+    /**
+     * 実績がイベントに関連するかチェック
+     */
+    isAchievementRelevantToEvent(achievement, eventType) {
+        const condition = achievement.condition;
+        
+        switch (eventType) {
+            case 'bubblePopped':
+                return ['bubblesPopped', 'bubbleTypePopped', 'allBubbleTypes'].includes(condition.type);
+            case 'gameEnd':
+                return ['singleGameScore', 'survivalTime', 'perfectGame', 'accuracy', 'noItemScore', 'nightTimeScore', 'cumulativeScore', 'totalPlayTime', 'gamesPlayed'].includes(condition.type);
+            case 'comboUpdate':
+                return ['maxCombo'].includes(condition.type);
+            case 'stageCleared':
+                return ['stagesCleared', 'allStagesCleared', 'allStagesMultiple'].includes(condition.type);
+            case 'dayPlayed':
+                return ['consecutiveDays'].includes(condition.type);
+            case 'speedCheck':
+                return ['speedChallenge'].includes(condition.type);
+            case 'sessionEnd':
+                return ['sessionPlayTime'].includes(condition.type);
+            case 'specialEffect':
+                return condition.type === 'specialEffect';
+            case 'lowHpSurvival':
+                return condition.type === 'lowHpSurvival';
+            default:
+                return true; // 不明なイベントの場合は全実績をチェック
+        }
+    }
+    
+    /**
+     * 最適化された実績条件チェック
+     */
+    checkAchievementConditionOptimized(achievement, eventType, data) {
+        // 基本的な条件チェックは元のメソッドを使用
+        return this.checkAchievementCondition(achievement, eventType, data);
+    }
+    
+    /**
+     * パフォーマンス統計を更新
+     */
+    updatePerformanceStats(updateTime) {
+        this.performanceStats.updateCount++;
+        
+        // 移動平均を計算
+        const alpha = 0.1; // 指数移動平均の係数
+        this.performanceStats.averageUpdateTime = 
+            alpha * updateTime + (1 - alpha) * this.performanceStats.averageUpdateTime;
+        
+        this.lastUpdateTime = Date.now();
     }
     
     /**
@@ -659,8 +814,8 @@ export class AchievementManager {
             this.gameEngine.playerData.tap += achievement.reward.ap;
         }
         
-        // 通知を追加
-        this.notifications.push({
+        // 通知を追加（最適化）
+        this.addNotificationOptimized({
             id: achievement.id,
             name: achievement.name,
             description: achievement.description,
@@ -1369,5 +1524,165 @@ export class AchievementManager {
             breakdown: usage,
             formatted: `${(totalSize / 1024).toFixed(2)} KB`
         };
+    }
+    
+    /**
+     * 最適化された通知追加
+     */
+    addNotificationOptimized(notification) {
+        // 通知数の制限チェック
+        if (this.notifications.length >= this.performanceConfig.maxNotifications) {
+            // 古い通知を削除（FIFO）
+            this.notifications.shift();
+        }
+        
+        // 重複通知の防止
+        const isDuplicate = this.notifications.some(n => 
+            n.id === notification.id && 
+            (Date.now() - n.timestamp) < 1000 // 1秒以内の重複は除外
+        );
+        
+        if (!isDuplicate) {
+            this.notifications.push(notification);
+        }
+    }
+    
+    /**
+     * パフォーマンス統計を取得
+     */
+    getPerformanceStats() {
+        const now = Date.now();
+        const timeSinceLastUpdate = now - this.lastUpdateTime;
+        
+        return {
+            ...this.performanceStats,
+            cacheHitRate: this.performanceStats.cacheHits > 0 ? 
+                (this.performanceStats.cacheHits / (this.performanceStats.cacheHits + this.performanceStats.cacheMisses) * 100).toFixed(2) + '%' : '0%',
+            queueLength: this.updateQueue.length,
+            cacheSize: this.cache.size,
+            timeSinceLastUpdate: timeSinceLastUpdate,
+            isThrottling: this.throttleTimer !== null,
+            averageUpdateTimeFormatted: this.performanceStats.averageUpdateTime.toFixed(2) + 'ms'
+        };
+    }
+    
+    /**
+     * キャッシュをクリア
+     */
+    clearCache() {
+        this.cache.clear();
+        console.log('Achievement cache cleared');
+    }
+    
+    /**
+     * キャッシュとキューの状態を最適化
+     */
+    optimizePerformance() {
+        // 古いキャッシュエントリを削除
+        const now = Date.now();
+        const entriesToDelete = [];
+        
+        this.cache.forEach((value, key) => {
+            // タイムスタンプベースのキャッシュクリーンアップ
+            if (key.startsWith('timestamp_')) {
+                const timestamp = parseInt(key.split('_')[1]);
+                if (now - timestamp > this.performanceConfig.cacheTimeout) {
+                    entriesToDelete.push(key);
+                }
+            }
+        });
+        
+        entriesToDelete.forEach(key => this.cache.delete(key));
+        
+        // 古い更新キューエントリを削除
+        this.updateQueue = this.updateQueue.filter(entry => 
+            (now - entry.timestamp) < 10000 // 10秒以上古いエントリは削除
+        );
+        
+        // 通知の最適化
+        if (this.notifications.length > this.performanceConfig.maxNotifications) {
+            this.notifications = this.notifications.slice(-this.performanceConfig.maxNotifications);
+        }
+        
+        console.log('Achievement performance optimized');
+    }
+    
+    /**
+     * パフォーマンス設定を更新
+     */
+    updatePerformanceConfig(newConfig) {
+        this.performanceConfig = {
+            ...this.performanceConfig,
+            ...newConfig
+        };
+        
+        // 新しい設定に基づいて最適化
+        this.optimizePerformance();
+    }
+    
+    /**
+     * メモリ使用量を取得
+     */
+    getMemoryUsage() {
+        const calculateObjectSize = (obj) => {
+            return JSON.stringify(obj).length;
+        };
+        
+        return {
+            achievements: calculateObjectSize(this.achievements),
+            unlockedAchievements: calculateObjectSize(Array.from(this.unlockedAchievements)),
+            progressData: calculateObjectSize(this.progressData),
+            notifications: calculateObjectSize(this.notifications),
+            cache: calculateObjectSize(Array.from(this.cache.entries())),
+            updateQueue: calculateObjectSize(this.updateQueue),
+            total: calculateObjectSize({
+                achievements: this.achievements,
+                unlockedAchievements: Array.from(this.unlockedAchievements),
+                progressData: this.progressData,
+                notifications: this.notifications,
+                cache: Array.from(this.cache.entries()),
+                updateQueue: this.updateQueue
+            })
+        };
+    }
+    
+    /**
+     * パフォーマンス診断を実行
+     */
+    performanceDiagnostic() {
+        const stats = this.getPerformanceStats();
+        const memoryUsage = this.getMemoryUsage();
+        const storageUsage = this.getStorageUsage();
+        
+        const diagnostic = {
+            timestamp: Date.now(),
+            performance: stats,
+            memory: memoryUsage,
+            storage: storageUsage,
+            recommendations: []
+        };
+        
+        // パフォーマンス推奨事項
+        if (parseFloat(stats.cacheHitRate) < 50) {
+            diagnostic.recommendations.push('キャッシュヒット率が低いです。キャッシュタイムアウトを延長することを検討してください。');
+        }
+        
+        if (stats.queueLength > 50) {
+            diagnostic.recommendations.push('更新キューが長すぎます。バッチサイズを増やすかスロットリング遅延を減らしてください。');
+        }
+        
+        if (stats.averageUpdateTime > 10) {
+            diagnostic.recommendations.push('平均更新時間が長いです。実績条件の最適化を検討してください。');
+        }
+        
+        if (memoryUsage.total > 100000) {
+            diagnostic.recommendations.push('メモリ使用量が多いです。データの最適化を検討してください。');
+        }
+        
+        if (diagnostic.recommendations.length === 0) {
+            diagnostic.recommendations.push('パフォーマンスは良好です。');
+        }
+        
+        return diagnostic;
     }
 }
