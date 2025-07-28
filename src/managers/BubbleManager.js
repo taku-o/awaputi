@@ -748,6 +748,99 @@ export class BubbleManager {
     }
     
     /**
+     * パス上のバブルを取得
+     */
+    getBubblesAlongPath(startPos, endPos) {
+        const bubbles = [];
+        const pathLength = Math.sqrt(
+            Math.pow(endPos.x - startPos.x, 2) + 
+            Math.pow(endPos.y - startPos.y, 2)
+        );
+        
+        const direction = {
+            x: (endPos.x - startPos.x) / pathLength,
+            y: (endPos.y - startPos.y) / pathLength
+        };
+        
+        // パス上のバブルを検出
+        this.bubbles.forEach(bubble => {
+            if (!bubble.isAlive) return;
+            
+            // 点と線分の最短距離を計算
+            const distance = this.pointToLineDistance(
+                bubble.position,
+                startPos,
+                endPos
+            );
+            
+            // バブルの半径内にパスが通っている場合
+            if (distance < bubble.size) {
+                bubbles.push(bubble);
+            }
+        });
+        
+        return bubbles;
+    }
+    
+    /**
+     * 指定範囲内のバブルを取得
+     */
+    getBubblesInRadius(x, y, radius) {
+        const bubbles = [];
+        
+        this.bubbles.forEach(bubble => {
+            if (!bubble.isAlive) return;
+            
+            const distance = Math.sqrt(
+                Math.pow(bubble.position.x - x, 2) + 
+                Math.pow(bubble.position.y - y, 2)
+            );
+            
+            if (distance < radius + bubble.size) {
+                bubbles.push(bubble);
+            }
+        });
+        
+        return bubbles;
+    }
+    
+    /**
+     * 点と線分の最短距離を計算
+     */
+    pointToLineDistance(point, lineStart, lineEnd) {
+        const A = point.x - lineStart.x;
+        const B = point.y - lineStart.y;
+        const C = lineEnd.x - lineStart.x;
+        const D = lineEnd.y - lineStart.y;
+        
+        const dot = A * C + B * D;
+        const lenSq = C * C + D * D;
+        let param = -1;
+        
+        if (lenSq !== 0) {
+            param = dot / lenSq;
+        }
+        
+        let xx, yy;
+        
+        if (param < 0) {
+            xx = lineStart.x;
+            yy = lineStart.y;
+        } else if (param > 1) {
+            xx = lineEnd.x;
+            yy = lineEnd.y;
+        } else {
+            xx = lineStart.x + param * C;
+            yy = lineStart.y + param * D;
+        }
+        
+        const dx = point.x - xx;
+        const dy = point.y - yy;
+        
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+    
+    /**
      * ダメージ通知
      */
     notifyDamage(damage, source) {
