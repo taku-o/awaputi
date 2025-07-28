@@ -1,0 +1,229 @@
+{
+  "name": "BubblePop - バブルポップゲーム",
+  "short_name": "BubblePop",
+  "description": "HTML5 Canvas を使用した楽しいバブルポップゲーム。様々な種類のバブルをポップして高スコアを目指そう！",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#4CAF50",
+  "background_color": "#ffffff",
+  "scope": "/",
+  "categories": ["games", "entertainment", "casual"],
+  "lang": "ja",
+  "dir": "ltr",
+
+  "icons": [
+    {
+      "src": "/assets/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icons/icon-maskable-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/assets/icons/icon-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+
+  "shortcuts": [
+    {
+      "name": "クイックプレイ",
+      "short_name": "プレイ",
+      "description": "即座にゲームを開始",
+      "url": "/?action=quickplay",
+      "icons": [
+        {
+          "src": "/assets/icons/shortcut-play.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "統計表示",
+      "short_name": "統計",
+      "description": "プレイ統計とスコアを表示",
+      "url": "/?action=stats",
+      "icons": [
+        {
+          "src": "/assets/icons/shortcut-stats.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "設定",
+      "short_name": "設定",
+      "description": "ゲーム設定を変更",
+      "url": "/?action=settings",
+      "icons": [
+        {
+          "src": "/assets/icons/shortcut-settings.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "実績",
+      "short_name": "実績",
+      "description": "獲得した実績を確認",
+      "url": "/?action=achievements",
+      "icons": [
+        {
+          "src": "/assets/icons/shortcut-achievements.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+
+  "screenshots": [
+    {
+      "src": "/assets/screenshots/game-portrait-1.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "メインゲーム画面（縦向き）"
+    },
+    {
+      "src": "/assets/screenshots/game-portrait-2.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "特殊バブル効果（縦向き）"
+    },
+    {
+      "src": "/assets/screenshots/menu-portrait.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "メインメニュー（縦向き）"
+    },
+    {
+      "src": "/assets/screenshots/stats-portrait.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "統計画面（縦向き）"
+    },
+    {
+      "src": "/assets/screenshots/game-landscape-1.png",
+      "sizes": "720x540",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "メインゲーム画面（横向き）"
+    },
+    {
+      "src": "/assets/screenshots/game-landscape-2.png",
+      "sizes": "720x540",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "コンボ効果（横向き）"
+    }
+  ],
+
+  "related_applications": [],
+  "prefer_related_applications": false,
+
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui",
+    "browser"
+  ],
+
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  },
+
+  "protocol_handlers": [
+    {
+      "protocol": "web+bubblepop",
+      "url": "/?protocol=%s"
+    }
+  ],
+
+  "file_handlers": [
+    {
+      "action": "/",
+      "accept": {
+        "application/json": [".json"]
+      },
+      "launch_type": "single-client"
+    }
+  ],
+
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url",
+      "files": [
+        {
+          "name": "screenshot",
+          "accept": ["image/png", "image/jpeg"]
+        }
+      ]
+    }
+  }
+}
