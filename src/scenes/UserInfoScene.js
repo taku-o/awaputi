@@ -1784,6 +1784,11 @@ export class UserInfoScene extends Scene {
             }
         }
         
+        // 統計画面のフィルター・モード切り替えクリック処理
+        if (this.currentTab === 'statistics') {
+            this.handleStatisticsClick(x, y);
+        }
+        
         // 実績画面のカテゴリフィルタークリック処理
         if (this.currentTab === 'achievements') {
             this.handleAchievementCategoryClick(x, y);
@@ -3234,6 +3239,112 @@ export class UserInfoScene extends Scene {
             });
         }
         return data;
+    }
+
+    /**
+     * 統計画面のクリック処理
+     */
+    handleStatisticsClick(x, y) {
+        const canvas = this.gameEngine.canvas;
+        const contentY = this.headerHeight;
+        
+        // 期間フィルターボタンのクリック判定
+        const filterButtonY = contentY + 10;
+        const filterButtonHeight = 30;
+        const filterButtonWidth = 100;
+        const filterButtonSpacing = 10;
+        
+        if (y >= filterButtonY && y <= filterButtonY + filterButtonHeight) {
+            const periods = [
+                { key: 'today', label: '今日' },
+                { key: 'last7days', label: '7日間' },
+                { key: 'last30days', label: '30日間' },
+                { key: 'allTime', label: '全期間' }
+            ];
+            
+            let buttonX = this.contentPadding + 120;
+            periods.forEach((period) => {
+                if (x >= buttonX && x <= buttonX + filterButtonWidth) {
+                    this.changePeriodFilter(period.key);
+                    return;
+                }
+                buttonX += filterButtonWidth + filterButtonSpacing;
+            });
+        }
+        
+        // 表示モード切り替えボタンのクリック判定
+        const modeButtonY = contentY + 60 + 8;
+        const modeButtonHeight = 25;
+        const modeButtonWidth = 80;
+        const modeButtonSpacing = 5;
+        
+        if (y >= modeButtonY && y <= modeButtonY + modeButtonHeight) {
+            const modes = [
+                { key: 'dashboard', label: 'ダッシュボード' },
+                { key: 'charts', label: 'グラフ' },
+                { key: 'details', label: '詳細' }
+            ];
+            
+            let buttonX = this.contentPadding + 80;
+            modes.forEach((mode) => {
+                if (x >= buttonX && x <= buttonX + modeButtonWidth) {
+                    this.changeViewMode(mode.key);
+                    return;
+                }
+                buttonX += modeButtonWidth + modeButtonSpacing;
+            });
+        }
+    }
+
+    /**
+     * 期間フィルターの変更
+     */
+    async changePeriodFilter(newPeriod) {
+        if (this.currentPeriodFilter === newPeriod) return;
+        
+        this.currentPeriodFilter = newPeriod;
+        
+        // StatisticsFilterManagerを使用してフィルター更新
+        if (this.statisticsFilterManager) {
+            try {
+                await this.statisticsFilterManager.setPeriod(newPeriod);
+                
+                // フィルタリングされたデータを取得
+                const filteredData = await this.statisticsFilterManager.getFilteredStatistics();
+                this.statisticsData = filteredData.statistics;
+                
+                console.log(`期間フィルターを${newPeriod}に変更しました`);
+            } catch (error) {
+                console.error('Period filter change failed:', error);
+                this.setErrorMessage('期間フィルターの変更に失敗しました');
+            }
+        }
+    }
+
+    /**
+     * 表示モードの変更
+     */
+    changeViewMode(newMode) {
+        if (this.statisticsViewMode === newMode) return;
+        
+        this.statisticsViewMode = newMode;
+        console.log(`統計表示モードを${newMode}に変更しました`);
+        
+        // 必要に応じて特定のモード用の初期化処理
+        switch (newMode) {
+            case 'dashboard':
+                if (this.statisticsDashboard) {
+                    // ダッシュボードの自動更新を有効化
+                    this.statisticsDashboard.setAutoUpdate(true);
+                }
+                break;
+            case 'charts':
+                // グラフモード特有の初期化
+                break;
+            case 'details':
+                // 詳細モード特有の初期化
+                break;
+        }
     }
     
     /**
