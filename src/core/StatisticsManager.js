@@ -1066,30 +1066,706 @@ export class StatisticsManager {
     /**
      * データを保存
      */
-    save() {
+    /**
+     * 拡張データ永続化機能
+     */
+    async save(options = {}) {
         try {
-            localStorage.setItem('bubblePop_statistics', JSON.stringify(this.statistics));
+            // 保存オプションの設定
+            const saveOptions = {
+                includeTimeSeriesData: true,
+                createBackup: true,
+                validateIntegrity: true,
+                compress: false,
+                ...options
+            };
+            
+            // データ整合性の事前チェック
+            if (saveOptions.validateIntegrity) {
+                const validation = this.validateStatistics();
+                if (!validation.isValid) {
+                    console.warn('Statistics validation failed before save:', validation.errors);
+                    // 修復を試行
+                    this.repairStatistics(validation.errors);
+                }
+            }
+            
+            // メインデータの保存
+            const saveData = await this.prepareSaveData(saveOptions);
+            
+            // バックアップの作成
+            if (saveOptions.createBackup) {
+                await this.createBackup();
+            }
+            
+            // メインデータの保存実行
+            await this.performSave(saveData, saveOptions);
+            
+            // 時系列データの保存
+            if (saveOptions.includeTimeSeriesData && this.timeSeriesManager) {
+                await this.saveTimeSeriesData();
+            }
+            
+            // 保存メタデータの更新
+            this.updateSaveMetadata();
+            
+            console.debug('Statistics saved successfully');
+            return { success: true, timestamp: Date.now() };
+            
         } catch (error) {
             console.error('Failed to save statistics:', error);
+            
+            // 保存失敗時の処理
+            await this.handleSaveFailure(error);
+            return { success: false, error: error.message };
         }
     }
     
     /**
-     * データを読み込み
+     * 拡張データ読み込み機能
      */
-    load() {
+    async load(options = {}) {
         try {
-            const savedData = localStorage.getItem('bubblePop_statistics');
-            if (savedData) {
-                const data = JSON.parse(savedData);
-                this.statistics = { ...this.initializeStatistics(), ...data };
+            // 読み込みオプションの設定
+            const loadOptions = {
+                includeTimeSeriesData: true,
+                validateIntegrity: true,
+                useBackupOnFailure: true,
+                mergeStrategy: 'replace', // 'replace', 'merge', 'preserve'
+                ...options
+            };
+            
+            // メインデータの読み込み
+            const loadResult = await this.performLoad(loadOptions);
+            
+            if (!loadResult.success && loadOptions.useBackupOnFailure) {
+                console.warn('Main data load failed, attempting backup restore');
+                const backupResult = await this.restoreFromBackup();
+                if (backupResult.success) {
+                    return backupResult;
+                }
+            }
+            
+            if (loadResult.success) {
+                // データの統合
+                this.integrateLoadedData(loadResult.data, loadOptions.mergeStrategy);
+                
+                // 時系列データの読み込み
+                if (loadOptions.includeTimeSeriesData && this.timeSeriesManager) {
+                    await this.loadTimeSeriesData();
+                }
                 
                 // データ整合性チェック
-                this.validateStatistics();
+                if (loadOptions.validateIntegrity) {
+                    const validation = this.validateStatistics();
+                    if (!validation.isValid) {
+                        console.warn('Loaded data validation failed:', validation.errors);
+                        this.repairStatistics(validation.errors);
+                    }
+                }
+                
+                console.debug('Statistics loaded successfully');
+                return { success: true, timestamp: Date.now() };
             }
+            
+            // すべての読み込みが失敗した場合
+            console.error('All data load attempts failed, using default statistics');
+            this.statistics = this.initializeStatistics();
+            return { success: false, fallbackUsed: true };
+            
         } catch (error) {
             console.error('Failed to load statistics:', error);
             this.statistics = this.initializeStatistics();
+            return { success: false, error: error.message };
+        }
+    }
+    
+    /**
+     * 保存データの準備
+     */
+    async prepareSaveData(options) {
+        const saveData = {
+            version: '2.0',
+            timestamp: Date.now(),
+            statistics: { ...this.statistics },
+            metadata: {
+                saveOptions: options,
+                dataVersion: this.getDataVersion(),
+                integrity: this.calculateDataIntegrity(),
+                environment: this.getEnvironmentInfo()
+            }
+        };
+        
+        // データの圧縮
+        if (options.compress && this.compressionManager) {
+            try {
+                const compressed = await this.compressionManager.compressData(
+                    saveData.statistics, 'statistics', { level: 3 }
+                );
+                if (compressed.compressed) {
+                    saveData.statistics = compressed.data;
+                    saveData.metadata.compressed = true;
+                    saveData.metadata.compressionInfo = compressed.info;
+                }
+            } catch (error) {
+                console.warn('Data compression failed, saving uncompressed:', error);
+            }
+        }
+        
+        return saveData;
+    }
+    
+    /**
+     * 保存の実行
+     */
+    async performSave(saveData, options) {
+        // メインストレージへの保存
+        try {
+            const dataString = JSON.stringify(saveData);
+            
+            // サイズチェック
+            if (dataString.length > 5 * 1024 * 1024) { // 5MB制限
+                throw new Error(`Save data too large: ${dataString.length} bytes`);
+            }
+            
+            localStorage.setItem('bubblePop_statistics_v2', dataString);
+            
+            // 冗長保存（複数キー）
+            const backupKeys = ['bubblePop_stats_backup1', 'bubblePop_stats_backup2'];
+            for (let i = 0; i < backupKeys.length; i++) {
+                try {
+                    localStorage.setItem(backupKeys[i], dataString);
+                } catch (error) {
+                    console.warn(`Failed to create redundant save ${i + 1}:`, error);
+                }
+            }
+            
+        } catch (error) {
+            // LocalStorage容量不足等の処理
+            if (error.name === 'QuotaExceededError') {
+                await this.handleStorageQuotaExceeded();
+                throw new Error('Storage quota exceeded');
+            }
+            throw error;
+        }
+    }
+    
+    /**
+     * 読み込みの実行
+     */
+    async performLoad(options) {
+        // 新形式での読み込み試行
+        try {
+            const savedData = localStorage.getItem('bubblePop_statistics_v2');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                
+                // データバージョンの確認
+                if (data.version && this.isCompatibleVersion(data.version)) {
+                    // 圧縮データの解凍
+                    if (data.metadata?.compressed && this.compressionManager) {
+                        data.statistics = await this.compressionManager.decompressData(
+                            data.statistics, data.metadata.compressionInfo
+                        );
+                    }
+                    
+                    return { success: true, data: data };
+                }
+            }
+        } catch (error) {
+            console.warn('Failed to load v2 data format:', error);
+        }
+        
+        // 旧形式での読み込み試行
+        try {
+            const legacyData = localStorage.getItem('bubblePop_statistics');
+            if (legacyData) {
+                const data = JSON.parse(legacyData);
+                console.info('Loaded legacy data format, will upgrade on next save');
+                return { success: true, data: { statistics: data, legacy: true } };
+            }
+        } catch (error) {
+            console.warn('Failed to load legacy data format:', error);
+        }
+        
+        // 冗長保存からの復旧試行
+        const backupKeys = ['bubblePop_stats_backup1', 'bubblePop_stats_backup2'];
+        for (const key of backupKeys) {
+            try {
+                const backupData = localStorage.getItem(key);
+                if (backupData) {
+                    const data = JSON.parse(backupData);
+                    console.info(`Restored from redundant save: ${key}`);
+                    return { success: true, data: data };
+                }
+            } catch (error) {
+                console.warn(`Failed to load from ${key}:`, error);
+            }
+        }
+        
+        return { success: false };
+    }
+    
+    /**
+     * 読み込みデータの統合
+     */
+    integrateLoadedData(loadedData, mergeStrategy) {
+        const sourceStats = loadedData.legacy ? loadedData.statistics : loadedData.statistics;
+        
+        switch (mergeStrategy) {
+            case 'replace':
+                this.statistics = { ...this.initializeStatistics(), ...sourceStats };
+                break;
+                
+            case 'merge':
+                this.statistics = this.deepMergeStatistics(this.statistics, sourceStats);
+                break;
+                
+            case 'preserve':
+                // 既存データを保持し、新しいフィールドのみ追加
+                const defaultStats = this.initializeStatistics();
+                Object.keys(defaultStats).forEach(key => {
+                    if (this.statistics[key] === undefined && sourceStats[key] !== undefined) {
+                        this.statistics[key] = sourceStats[key];
+                    }
+                });
+                break;
+        }
+    }
+    
+    /**
+     * 深いマージ機能
+     */
+    deepMergeStatistics(target, source) {
+        const result = { ...target };
+        
+        Object.keys(source).forEach(key => {
+            if (source[key] !== null && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+                result[key] = this.deepMergeStatistics(target[key] || {}, source[key]);
+            } else if (source[key] !== undefined) {
+                result[key] = source[key];
+            }
+        });
+        
+        return result;
+    }
+    
+    /**
+     * バックアップの作成
+     */
+    async createBackup() {
+        try {
+            const backupData = {
+                version: '2.0',
+                timestamp: Date.now(),
+                statistics: { ...this.statistics },
+                metadata: {
+                    backupType: 'automatic',
+                    originalSize: JSON.stringify(this.statistics).length
+                }
+            };
+            
+            // 世代管理（最新5世代を保持）
+            const backupHistory = this.getBackupHistory();
+            backupHistory.unshift({
+                timestamp: Date.now(),
+                key: `bubblePop_backup_${Date.now()}`
+            });
+            
+            // 古いバックアップの削除
+            while (backupHistory.length > 5) {
+                const oldBackup = backupHistory.pop();
+                try {
+                    localStorage.removeItem(oldBackup.key);
+                } catch (error) {
+                    console.warn('Failed to remove old backup:', error);
+                }
+            }
+            
+            // 新しいバックアップの保存
+            const backupKey = backupHistory[0].key;
+            localStorage.setItem(backupKey, JSON.stringify(backupData));
+            
+            // バックアップ履歴の保存
+            localStorage.setItem('bubblePop_backup_history', JSON.stringify(backupHistory));
+            
+            console.debug(`Backup created: ${backupKey}`);
+            
+        } catch (error) {
+            console.error('Failed to create backup:', error);
+        }
+    }
+    
+    /**
+     * バックアップからの復元
+     */
+    async restoreFromBackup(backupTimestamp = null) {
+        try {
+            const backupHistory = this.getBackupHistory();
+            
+            if (backupHistory.length === 0) {
+                return { success: false, reason: 'No backups available' };
+            }
+            
+            // 指定されたタイムスタンプのバックアップまたは最新バックアップを使用
+            let targetBackup = backupHistory[0];
+            if (backupTimestamp) {
+                targetBackup = backupHistory.find(b => b.timestamp === backupTimestamp);
+                if (!targetBackup) {
+                    return { success: false, reason: 'Specified backup not found' };
+                }
+            }
+            
+            // バックアップデータの読み込み
+            const backupDataString = localStorage.getItem(targetBackup.key);
+            if (!backupDataString) {
+                return { success: false, reason: 'Backup data not found' };
+            }
+            
+            const backupData = JSON.parse(backupDataString);
+            
+            // データの整合性チェック
+            if (!this.validateBackupData(backupData)) {
+                return { success: false, reason: 'Backup data validation failed' };
+            }
+            
+            // バックアップからの復元
+            this.statistics = { ...this.initializeStatistics(), ...backupData.statistics };
+            
+            // データ整合性チェック
+            const validation = this.validateStatistics();
+            if (!validation.isValid) {
+                this.repairStatistics(validation.errors);
+            }
+            
+            console.info(`Statistics restored from backup: ${targetBackup.key}`);
+            return { success: true, timestamp: targetBackup.timestamp };
+            
+        } catch (error) {
+            console.error('Failed to restore from backup:', error);
+            return { success: false, error: error.message };
+        }
+    }
+    
+    /**
+     * バックアップ履歴の取得
+     */
+    getBackupHistory() {
+        try {
+            const historyData = localStorage.getItem('bubblePop_backup_history');
+            return historyData ? JSON.parse(historyData) : [];
+        } catch (error) {
+            console.warn('Failed to load backup history:', error);
+            return [];
+        }
+    }
+    
+    /**
+     * バックアップデータの検証
+     */
+    validateBackupData(backupData) {
+        // 基本構造の確認
+        if (!backupData || typeof backupData !== 'object') {
+            return false;
+        }
+        
+        if (!backupData.statistics || typeof backupData.statistics !== 'object') {
+            return false;
+        }
+        
+        // 必須フィールドの確認
+        const requiredFields = ['gamePlayStats', 'scoreStats', 'bubbleStats'];
+        for (const field of requiredFields) {
+            if (!backupData.statistics[field]) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    /**
+     * 時系列データの保存
+     */
+    async saveTimeSeriesData() {
+        if (!this.timeSeriesManager) return;
+        
+        try {
+            const timeSeriesData = await this.timeSeriesManager.exportData();
+            localStorage.setItem('bubblePop_timeseries', JSON.stringify({
+                version: '1.0',
+                timestamp: Date.now(),
+                data: timeSeriesData
+            }));
+        } catch (error) {
+            console.error('Failed to save time series data:', error);
+        }
+    }
+    
+    /**
+     * 時系列データの読み込み
+     */
+    async loadTimeSeriesData() {
+        if (!this.timeSeriesManager) return;
+        
+        try {
+            const savedData = localStorage.getItem('bubblePop_timeseries');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                await this.timeSeriesManager.importData(data.data);
+            }
+        } catch (error) {
+            console.error('Failed to load time series data:', error);
+        }
+    }
+    
+    /**
+     * ストレージ容量不足の処理
+     */
+    async handleStorageQuotaExceeded() {
+        try {
+            console.warn('Storage quota exceeded, attempting cleanup');
+            
+            // 古いバックアップの削除
+            const backupHistory = this.getBackupHistory();
+            while (backupHistory.length > 2) {
+                const oldBackup = backupHistory.pop();
+                localStorage.removeItem(oldBackup.key);
+            }
+            localStorage.setItem('bubblePop_backup_history', JSON.stringify(backupHistory));
+            
+            // 他の古いデータの削除
+            const keysToCheck = ['bubblePop_statistics', 'bubblePop_legacy_data'];
+            keysToCheck.forEach(key => {
+                if (localStorage.getItem(key)) {
+                    localStorage.removeItem(key);
+                }
+            });
+            
+            // データ圧縮の強制実行
+            if (this.compressionManager) {
+                console.info('Forcing data compression due to storage constraints');
+                // 次回保存時に圧縮を有効化
+            }
+            
+        } catch (error) {
+            console.error('Failed to handle storage quota exceeded:', error);
+        }
+    }
+    
+    /**
+     * 保存失敗時の処理
+     */
+    async handleSaveFailure(error) {
+        console.error('Save operation failed, attempting recovery');
+        
+        try {
+            // エラータイプに応じた対処
+            if (error.name === 'QuotaExceededError') {
+                await this.handleStorageQuotaExceeded();
+            } else if (error.message.includes('circular')) {
+                console.warn('Circular reference detected, cleaning data');
+                this.removeCircularReferences();
+            }
+            
+            // 最低限のデータ保存を試行
+            const minimalData = {
+                gamePlayStats: this.statistics.gamePlayStats,
+                scoreStats: this.statistics.scoreStats,
+                timestamp: Date.now()
+            };
+            localStorage.setItem('bubblePop_minimal_backup', JSON.stringify(minimalData));
+            
+        } catch (recoveryError) {
+            console.error('Save failure recovery also failed:', recoveryError);
+        }
+    }
+    
+    /**
+     * 循環参照の除去
+     */
+    removeCircularReferences() {
+        try {
+            // JSON.stringify のテスト
+            JSON.stringify(this.statistics);
+        } catch (error) {
+            console.warn('Circular reference detected, using safe copy');
+            this.statistics = JSON.parse(JSON.stringify(this.statistics, this.getCircularReplacer()));
+        }
+    }
+    
+    /**
+     * 循環参照対応のreplacer関数
+     */
+    getCircularReplacer() {
+        const seen = new WeakSet();
+        return (key, value) => {
+            if (typeof value === 'object' && value !== null) {
+                if (seen.has(value)) {
+                    return {};
+                }
+                seen.add(value);
+            }
+            return value;
+        };
+    }
+    
+    /**
+     * データバージョンの取得
+     */
+    getDataVersion() {
+        return '2.0';
+    }
+    
+    /**
+     * バージョン互換性の確認
+     */
+    isCompatibleVersion(version) {
+        const major = parseInt(version.split('.')[0]);
+        const currentMajor = parseInt(this.getDataVersion().split('.')[0]);
+        return major === currentMajor;
+    }
+    
+    /**
+     * データ整合性の計算
+     */
+    calculateDataIntegrity() {
+        const dataString = JSON.stringify(this.statistics);
+        let hash = 0;
+        for (let i = 0; i < dataString.length; i++) {
+            const char = dataString.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash; // 32bit integer
+        }
+        return hash.toString(16);
+    }
+    
+    /**
+     * 環境情報の取得
+     */
+    getEnvironmentInfo() {
+        return {
+            userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'unknown',
+            timestamp: Date.now(),
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            language: typeof navigator !== 'undefined' ? navigator.language : 'unknown'
+        };
+    }
+    
+    /**
+     * 保存メタデータの更新
+     */
+    updateSaveMetadata() {
+        this.lastSaveTime = Date.now();
+        this.saveCount = (this.saveCount || 0) + 1;
+    }
+    
+    /**
+     * 統計の修復
+     */
+    repairStatistics(errors) {
+        try {
+            for (const error of errors) {
+                switch (error.type) {
+                    case 'missing_field':
+                        this.repairMissingField(error.field);
+                        break;
+                    case 'invalid_type':
+                        this.repairInvalidType(error.field, error.expected);
+                        break;
+                    case 'out_of_range':
+                        this.repairOutOfRange(error.field, error.min, error.max);
+                        break;
+                }
+            }
+            console.info('Statistics repair completed');
+        } catch (repairError) {
+            console.error('Statistics repair failed:', repairError);
+        }
+    }
+    
+    /**
+     * 欠損フィールドの修復
+     */
+    repairMissingField(fieldPath) {
+        const pathArray = fieldPath.split('.');
+        let current = this.statistics;
+        
+        for (let i = 0; i < pathArray.length - 1; i++) {
+            if (!current[pathArray[i]]) {
+                current[pathArray[i]] = {};
+            }
+            current = current[pathArray[i]];
+        }
+        
+        const lastKey = pathArray[pathArray.length - 1];
+        if (current[lastKey] === undefined) {
+            // デフォルト値を設定
+            const defaultStats = this.initializeStatistics();
+            const defaultValue = this.getNestedValue(defaultStats, fieldPath);
+            current[lastKey] = defaultValue !== undefined ? defaultValue : 0;
+        }
+    }
+    
+    /**
+     * 不正な型の修復
+     */
+    repairInvalidType(fieldPath, expectedType) {
+        const current = this.getNestedValue(this.statistics, fieldPath);
+        if (current !== undefined && typeof current !== expectedType) {
+            this.setNestedValue(this.statistics, fieldPath, this.getDefaultValueForType(expectedType));
+        }
+    }
+    
+    /**
+     * 範囲外値の修復
+     */
+    repairOutOfRange(fieldPath, min, max) {
+        const current = this.getNestedValue(this.statistics, fieldPath);
+        if (typeof current === 'number') {
+            if (current < min) {
+                this.setNestedValue(this.statistics, fieldPath, min);
+            } else if (current > max) {
+                this.setNestedValue(this.statistics, fieldPath, max);
+            }
+        }
+    }
+    
+    /**
+     * ネストされた値の取得
+     */
+    getNestedValue(obj, path) {
+        return path.split('.').reduce((current, key) => current?.[key], obj);
+    }
+    
+    /**
+     * ネストされた値の設定
+     */
+    setNestedValue(obj, path, value) {
+        const pathArray = path.split('.');
+        let current = obj;
+        
+        for (let i = 0; i < pathArray.length - 1; i++) {
+            if (!current[pathArray[i]]) {
+                current[pathArray[i]] = {};
+            }
+            current = current[pathArray[i]];
+        }
+        
+        current[pathArray[pathArray.length - 1]] = value;
+    }
+    
+    /**
+     * 型のデフォルト値取得
+     */
+    getDefaultValueForType(type) {
+        switch (type) {
+            case 'number': return 0;
+            case 'string': return '';
+            case 'boolean': return false;
+            case 'object': return {};
+            case 'array': return [];
+            default: return null;
         }
     }
     

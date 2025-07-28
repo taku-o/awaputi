@@ -7,6 +7,7 @@ import { AchievementHelpSystem } from '../ui/AchievementHelpSystem.js';
 import { ChartRenderer } from '../core/ChartRenderer.js';
 import { StatisticsDashboard } from '../core/StatisticsDashboard.js';
 import { StatisticsFilterManager } from '../core/StatisticsFilterManager.js';
+import { StatisticsExporter } from '../core/StatisticsExporter.js';
 
 export class UserInfoScene extends Scene {
     constructor(gameEngine) {
@@ -64,6 +65,7 @@ export class UserInfoScene extends Scene {
         this.chartRenderer = null;
         this.statisticsDashboard = null;
         this.statisticsFilterManager = null;
+        this.statisticsExporter = null;
         this.statisticsViewMode = 'dashboard'; // 'dashboard', 'charts', 'details'
         this.currentPeriodFilter = 'last7days';
         
@@ -1230,12 +1232,12 @@ export class UserInfoScene extends Scene {
     renderDataManagementSection(context, x, y, width) {
         // セクション背景
         context.fillStyle = '#1a1a2e';
-        context.fillRect(x, y, width, 120);
+        context.fillRect(x, y, width, 160);
         
         // セクション枠線
         context.strokeStyle = '#333';
         context.lineWidth = 1;
-        context.strokeRect(x, y, width, 120);
+        context.strokeRect(x, y, width, 160);
         
         // セクションタイトル
         context.fillStyle = '#4a90e2';
@@ -1243,7 +1245,7 @@ export class UserInfoScene extends Scene {
         context.textAlign = 'left';
         context.fillText('データ管理', x + 15, y + 25);
         
-        // エクスポートボタン
+        // 既存のエクスポートボタン（プレイヤーデータ用）
         const exportButtonWidth = 150;
         const exportButtonHeight = 35;
         const exportButtonX = x + 15;
@@ -1260,9 +1262,10 @@ export class UserInfoScene extends Scene {
         context.fillStyle = '#ffffff';
         context.font = '14px Arial';
         context.textAlign = 'center';
-        context.fillText('データエクスポート', exportButtonX + exportButtonWidth / 2, exportButtonY + 22);
+        context.fillText('プレイヤーデータ', exportButtonX + exportButtonWidth / 2, exportButtonY + 12);
+        context.fillText('エクスポート', exportButtonX + exportButtonWidth / 2, exportButtonY + 26);
         
-        // インポートボタン
+        // 既存のインポートボタン（プレイヤーデータ用）
         const importButtonWidth = 150;
         const importButtonHeight = 35;
         const importButtonX = x + 15 + exportButtonWidth + 20;
@@ -1279,13 +1282,59 @@ export class UserInfoScene extends Scene {
         context.fillStyle = '#ffffff';
         context.font = '14px Arial';
         context.textAlign = 'center';
-        context.fillText('データインポート', importButtonX + importButtonWidth / 2, importButtonY + 22);
+        context.fillText('プレイヤーデータ', importButtonX + importButtonWidth / 2, importButtonY + 12);
+        context.fillText('インポート', importButtonX + importButtonWidth / 2, importButtonY + 26);
         
-        // 説明テキスト
+        // 統計データエクスポートボタン（新規）
+        const statsExportButtonX = x + 15;
+        const statsExportButtonY = y + 85;
+        const isStatsExportFocused = this.focusedElement === this.tabs.length + 4;
+        
+        context.fillStyle = isStatsExportFocused ? '#10B981' : '#059669';
+        context.fillRect(statsExportButtonX, statsExportButtonY, exportButtonWidth, exportButtonHeight);
+        
+        context.strokeStyle = '#333';
+        context.lineWidth = 1;
+        context.strokeRect(statsExportButtonX, statsExportButtonY, exportButtonWidth, exportButtonHeight);
+        
+        context.fillStyle = '#ffffff';
+        context.font = '14px Arial';
+        context.textAlign = 'center';
+        context.fillText('統計データ', statsExportButtonX + exportButtonWidth / 2, statsExportButtonY + 12);
+        context.fillText('エクスポート', statsExportButtonX + exportButtonWidth / 2, statsExportButtonY + 26);
+        
+        // 統計データインポートボタン（新規）
+        const statsImportButtonX = x + 15 + exportButtonWidth + 20;
+        const statsImportButtonY = y + 85;
+        const isStatsImportFocused = this.focusedElement === this.tabs.length + 5;
+        
+        context.fillStyle = isStatsImportFocused ? '#10B981' : '#059669';
+        context.fillRect(statsImportButtonX, statsImportButtonY, importButtonWidth, importButtonHeight);
+        
+        context.strokeStyle = '#333';
+        context.lineWidth = 1;
+        context.strokeRect(statsImportButtonX, statsImportButtonY, importButtonWidth, importButtonHeight);
+        
+        context.fillStyle = '#ffffff';
+        context.font = '14px Arial';
+        context.textAlign = 'center';
+        context.fillText('統計データ', statsImportButtonX + importButtonWidth / 2, statsImportButtonY + 12);
+        context.fillText('インポート', statsImportButtonX + importButtonWidth / 2, statsImportButtonY + 26);
+        
+        // エクスポート形式選択（統計データ用）
         context.fillStyle = '#cccccc';
         context.font = '12px Arial';
         context.textAlign = 'left';
-        context.fillText('※ データのバックアップと復元が可能です', x + 15, y + 100);
+        context.fillText('形式: JSON, CSV, TXT', x + 15, y + 135);
+        
+        // 統計エクスポート状態表示
+        if (this.statisticsExporter && this.statisticsExporter.getExportState().isExporting) {
+            context.fillStyle = '#F59E0B';
+            context.fillText('エクスポート中...', x + 15, y + 150);
+        } else if (this.statisticsExporter && this.statisticsExporter.getExportState().isImporting) {
+            context.fillStyle = '#3B82F6';
+            context.fillText('インポート中...', x + 15, y + 150);
+        }
     }
 
     /**
@@ -1840,6 +1889,21 @@ export class UserInfoScene extends Scene {
         if (x >= importButtonX && x <= importButtonX + 150 && 
             y >= exportButtonY && y <= exportButtonY + 35) {
             this.showDataImportDialog();
+            return;
+        }
+        
+        // 統計データエクスポートボタン
+        const statsExportButtonY = dataManagementY + 85;
+        if (x >= this.contentPadding + 15 && x <= this.contentPadding + 15 + 150 && 
+            y >= statsExportButtonY && y <= statsExportButtonY + 35) {
+            this.showStatisticsExportDialog();
+            return;
+        }
+        
+        // 統計データインポートボタン
+        if (x >= importButtonX && x <= importButtonX + 150 && 
+            y >= statsExportButtonY && y <= statsExportButtonY + 35) {
+            this.showStatisticsImportDialog();
             return;
         }
     }
@@ -2812,6 +2876,9 @@ export class UserInfoScene extends Scene {
                     this.chartRenderer
                 );
                 
+                // StatisticsExporterの初期化
+                this.statisticsExporter = new StatisticsExporter(this.gameEngine.statisticsManager);
+                
                 // フィルター変更イベントのリスナー設定
                 this.statisticsFilterManager.on('dataFiltered', (data) => {
                     this.onStatisticsDataFiltered(data);
@@ -3344,6 +3411,124 @@ export class UserInfoScene extends Scene {
             case 'details':
                 // 詳細モード特有の初期化
                 break;
+        }
+    }
+
+    /**
+     * 統計データエクスポートダイアログを表示
+     */
+    showStatisticsExportDialog() {
+        this.showingDialog = 'statisticsExport';
+        this.dialogData = {
+            selectedFormat: 'json',
+            includeMetadata: true,
+            includeTimeSeriesData: true,
+            anonymizeData: false
+        };
+    }
+
+    /**
+     * 統計データインポートダイアログを表示
+     */
+    showStatisticsImportDialog() {
+        this.showingDialog = 'statisticsImport';
+        this.dialogData = {
+            selectedFile: null,
+            mergeStrategy: 'append',
+            backupBeforeImport: true,
+            validateData: true
+        };
+    }
+
+    /**
+     * 統計データエクスポートの実行
+     */
+    async performStatisticsExport() {
+        if (!this.statisticsExporter) {
+            this.setErrorMessage('統計エクスポート機能が利用できません');
+            return;
+        }
+
+        try {
+            const { selectedFormat, includeMetadata, includeTimeSeriesData, anonymizeData } = this.dialogData;
+            
+            const exportOptions = {
+                includeMetadata: includeMetadata,
+                includeTimeSeriesData: includeTimeSeriesData,
+                privacySettings: {
+                    excludePersonalInfo: anonymizeData,
+                    anonymizeUserData: anonymizeData
+                }
+            };
+
+            let exportResult;
+            switch (selectedFormat) {
+                case 'json':
+                    exportResult = await this.statisticsExporter.exportToJSON(exportOptions);
+                    break;
+                case 'csv':
+                    exportResult = await this.statisticsExporter.exportToCSV(exportOptions);
+                    break;
+                case 'txt':
+                    exportResult = await this.statisticsExporter.exportToText(exportOptions);
+                    break;
+                default:
+                    throw new Error(`未対応のフォーマット: ${selectedFormat}`);
+            }
+
+            // ファイルダウンロードの実行
+            this.downloadFile(exportResult.data, exportResult.filename, this.getContentType(selectedFormat));
+            
+            this.closeDialog();
+            this.setSuccessMessage(`統計データを${selectedFormat.toUpperCase()}形式でエクスポートしました`);
+
+        } catch (error) {
+            console.error('Statistics export failed:', error);
+            this.setErrorMessage(`統計データのエクスポートに失敗しました: ${error.message}`);
+        }
+    }
+
+    /**
+     * 成功メッセージの設定
+     */
+    setSuccessMessage(message) {
+        console.log('Success:', message);
+        this.errorMessage = `✓ ${message}`;
+        this.errorTimeout = setTimeout(() => {
+            this.errorMessage = null;
+        }, 5000);
+    }
+
+    /**
+     * ファイルダウンロードの実行
+     */
+    downloadFile(content, filename, contentType) {
+        const blob = new Blob([content], { type: contentType });
+        const url = URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        
+        URL.revokeObjectURL(url);
+    }
+
+    /**
+     * コンテンツタイプの取得
+     */
+    getContentType(format) {
+        switch (format.toLowerCase()) {
+            case 'json':
+                return 'application/json';
+            case 'csv':
+                return 'text/csv';
+            case 'txt':
+                return 'text/plain';
+            default:
+                return 'application/octet-stream';
         }
     }
     
