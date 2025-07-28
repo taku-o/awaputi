@@ -2,6 +2,7 @@
  * ユーザー情報画面シーン
  */
 import { Scene } from '../core/Scene.js';
+import { AchievementStatsUI } from '../core/AchievementStatsUI.js';
 
 export class UserInfoScene extends Scene {
     constructor(gameEngine) {
@@ -48,6 +49,9 @@ export class UserInfoScene extends Scene {
         
         // アクセシビリティ設定を読み込み
         this.loadAccessibilitySettings();
+        
+        // 実績統計UI
+        this.achievementStatsUI = null;
     }
 
     enter() {
@@ -137,6 +141,11 @@ export class UserInfoScene extends Scene {
             if (this.gameEngine.achievementManager) {
                 this.achievementsData = this.gameEngine.achievementManager.getAchievements();
                 this.achievementsByCategory = this.gameEngine.achievementManager.getAchievementsByCategory();
+                
+                // 実績統計UIを初期化（遅延初期化）
+                if (!this.achievementStatsUI) {
+                    this.achievementStatsUI = new AchievementStatsUI(this.gameEngine.achievementManager);
+                }
             }
             
             this.errorMessage = null;
@@ -250,14 +259,24 @@ export class UserInfoScene extends Scene {
             currentY = this.renderBasicStatsSection(context, this.contentPadding, currentY, contentWidth, sectionHeight);
             currentY = this.renderBubbleStatsSection(context, this.contentPadding, currentY + 20, contentWidth, sectionHeight);
             currentY = this.renderComboStatsSection(context, this.contentPadding, currentY + 20, contentWidth, sectionHeight);
-            this.renderStageStatsSection(context, this.contentPadding, currentY + 20, contentWidth, sectionHeight);
+            currentY = this.renderStageStatsSection(context, this.contentPadding, currentY + 20, contentWidth, sectionHeight);
+            
+            // 実績統計セクションを追加
+            if (this.achievementStatsUI) {
+                currentY = this.renderAchievementStatsSection(context, this.contentPadding, currentY + 20, contentWidth);
+            }
         } else {
             // 中画面・大画面: 2列レイアウト
             const columnWidth = contentWidth / 2;
             currentY = this.renderBasicStatsSection(context, this.contentPadding, currentY, columnWidth, sectionHeight);
             currentY = this.renderBubbleStatsSection(context, this.contentPadding + columnWidth, currentY - sectionHeight - 20, columnWidth, sectionHeight);
             currentY = this.renderComboStatsSection(context, this.contentPadding, currentY, columnWidth, sectionHeight);
-            this.renderStageStatsSection(context, this.contentPadding + columnWidth, currentY - sectionHeight - 20, columnWidth, sectionHeight);
+            currentY = this.renderStageStatsSection(context, this.contentPadding + columnWidth, currentY - sectionHeight - 20, columnWidth, sectionHeight);
+            
+            // 実績統計セクションを追加（フルワイド）
+            if (this.achievementStatsUI) {
+                currentY = this.renderAchievementStatsSection(context, this.contentPadding, currentY + 20, contentWidth);
+            }
         }
     }
 
@@ -729,6 +748,119 @@ export class UserInfoScene extends Scene {
         }
         
         return currentY;
+    }
+    
+    /**
+     * 実績統計セクションを描画
+     */
+    renderAchievementStatsSection(context, x, y, width) {
+        if (!this.achievementStatsUI) return y;
+        
+        const sectionHeight = 300;
+        let currentY = y;
+        
+        // セクションタイトル
+        context.fillStyle = '#4CAF50';
+        context.font = 'bold 20px Arial';
+        context.textAlign = 'left';
+        context.fillText('実績統計', x, currentY + 25);
+        
+        // セクション背景
+        context.fillStyle = '#16213e';
+        context.fillRect(x, currentY + 35, width, sectionHeight);
+        
+        // セクション枠線
+        context.strokeStyle = '#4CAF50';
+        context.lineWidth = 2;
+        context.strokeRect(x, currentY + 35, width, sectionHeight);
+        
+        // 統計内容を描画（3つのサブセクション）
+        const subSectionWidth = width / 3;
+        const contentY = currentY + 45;
+        const contentHeight = sectionHeight - 20;
+        
+        // 全体統計
+        this.achievementStatsUI.renderOverallStats(
+            context, 
+            x + 10, 
+            contentY, 
+            subSectionWidth - 20, 
+            contentHeight
+        );
+        
+        // カテゴリ別統計（簡略版）
+        this.renderCompactCategoryStats(
+            context,
+            x + subSectionWidth + 10,
+            contentY,
+            subSectionWidth - 20,
+            contentHeight
+        );
+        
+        // 最近の解除実績
+        this.achievementStatsUI.renderRecentUnlocks(
+            context,
+            x + subSectionWidth * 2 + 10,
+            contentY,
+            subSectionWidth - 20,
+            contentHeight
+        );
+        
+        return currentY + sectionHeight + 50;
+    }
+    
+    /**
+     * コンパクトなカテゴリ統計を描画
+     */
+    renderCompactCategoryStats(context, x, y, width, height) {
+        if (!this.achievementStatsUI) return;
+        
+        const stats = this.achievementStatsUI.getStatistics();
+        const categoryStats = stats.categories;
+        
+        context.save();
+        
+        // サブタイトル
+        context.fillStyle = '#ffffff';
+        context.font = 'bold 16px Arial';
+        context.textAlign = 'left';
+        context.fillText('カテゴリ別達成率', x, y + 20);
+        
+        let currentY = y + 40;
+        const itemHeight = 25;
+        
+        Object.entries(categoryStats).forEach(([key, category]) => {
+            if (currentY + itemHeight > y + height) return; // 範囲外は描画しない
+            
+            // カテゴリ名
+            context.fillStyle = '#cccccc';
+            context.font = '12px Arial';
+            context.textAlign = 'left';
+            context.fillText(category.name, x, currentY + 15);
+            
+            // 達成率
+            context.fillStyle = '#ffffff';
+            context.font = 'bold 12px Arial';
+            context.textAlign = 'right';
+            context.fillText(`${category.completionRate.toFixed(0)}%`, x + width, currentY + 15);
+            
+            // ミニ進捗バー
+            const barWidth = 80;
+            const barHeight = 4;
+            const barX = x + width - barWidth;
+            const barY = currentY + 18;
+            
+            context.fillStyle = '#333';
+            context.fillRect(barX, barY, barWidth, barHeight);
+            
+            const fillWidth = (category.completionRate / 100) * barWidth;
+            context.fillStyle = category.completionRate >= 100 ? '#4CAF50' : '#64B5F6';
+            context.fillRect(barX, barY, fillWidth, barHeight);
+            
+            currentY += itemHeight;
+        });
+        
+        context.restore();
     }
     
     /**
