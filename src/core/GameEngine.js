@@ -8,6 +8,7 @@ import { SettingsManager } from './SettingsManager.js';
 import { LocalizationManager } from './LocalizationManager.js';
 import { KeyboardShortcutManager } from './KeyboardShortcutManager.js';
 import { AchievementManager } from './AchievementManager.js';
+import { AchievementEventIntegrator } from './AchievementEventIntegrator.js';
 import { StatisticsManager } from './StatisticsManager.js';
 import { EventStageManager } from './EventStageManager.js';
 import { MainMenuScene } from '../scenes/MainMenuScene.js';
@@ -91,6 +92,9 @@ export class GameEngine {
         this.achievementManager = new AchievementManager(this);
         this.statisticsManager = new StatisticsManager(this);
         this.eventStageManager = new EventStageManager(this);
+        
+        // 実績イベント統合システム
+        this.achievementEventIntegrator = new AchievementEventIntegrator(this);
         
         // ゲーム状態
         this.timeRemaining = 300000; // 5分
@@ -353,6 +357,11 @@ export class GameEngine {
         
         // パーティクルマネージャーの更新
         this.particleManager.update(adjustedDeltaTime);
+        
+        // 実績イベント統合システムの更新
+        if (this.achievementEventIntegrator) {
+            this.achievementEventIntegrator.update(adjustedDeltaTime);
+        }
         
         // シーンマネージャーに更新を委譲
         this.sceneManager.update(adjustedDeltaTime);

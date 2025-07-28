@@ -6,25 +6,25 @@
   - 各実績に適切な解除条件、報酬、アイコン、説明を設定する
   - _Requirements: 1.1, 1.4, 5.1, 5.2, 5.3, 5.4_
 
-- [ ] 2. ゲームイベント統合システムの実装
+- [x] 2. ゲームイベント統合システムの実装
   - AchievementEventIntegratorクラスを作成し、既存ゲームシステムとの統合を行う
   - BubbleManager、ScoreManager、GameSceneからのイベント受信機能を実装する
   - リアルタイム進捗更新システムを構築する
   - _Requirements: 8.1, 8.2, 8.3, 8.4_
 
-- [ ] 2.1 BubbleManagerとの統合を実装
+- [x] 2.1 BubbleManagerとの統合を実装
   - BubbleManager.popBubbleメソッドに実績システムへのイベント送信を追加する
   - 泡タイプ別の統計追跡と実績進捗更新を実装する
   - 特殊泡効果発動時の実績チェック機能を追加する
   - _Requirements: 8.1, 5.4_
 
-- [ ] 2.2 ScoreManagerとの統合を実装
+- [x] 2.2 ScoreManagerとの統合を実装
   - ScoreManager.addScoreメソッドにスコア実績の進捗更新を追加する
   - コンボ関連実績の追跡機能を実装する
   - スコア倍率効果使用時の実績チェックを追加する
   - _Requirements: 8.2, 5.3_
 
-- [ ] 2.3 GameSceneとの統合を実装
+- [x] 2.3 GameSceneとの統合を実装
   - GameScene.gameOverメソッドにゲーム終了時の実績チェックを追加する
   - プレイ時間、精度、パーフェクトゲーム判定の実績処理を実装する
   - ステージクリア時の実績解除処理を追加する
