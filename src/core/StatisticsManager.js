@@ -12,6 +12,10 @@ export class StatisticsManager {
         // StatisticsCollectorの統合（遅延読み込み）
         this.collector = null;
         this.initializeCollector();
+        
+        // TimeSeriesDataManagerの統合（遅延読み込み）
+        this.timeSeriesManager = null;
+        this.initializeTimeSeriesManager();
     }
     
     /**
@@ -23,6 +27,18 @@ export class StatisticsManager {
             this.collector = new StatisticsCollector(this);
         } catch (error) {
             console.warn('StatisticsCollector not available, using fallback mode:', error);
+        }
+    }
+    
+    /**
+     * TimeSeriesDataManagerの初期化
+     */
+    async initializeTimeSeriesManager() {
+        try {
+            const { TimeSeriesDataManager } = await import('./TimeSeriesDataManager.js');
+            this.timeSeriesManager = new TimeSeriesDataManager();
+        } catch (error) {
+            console.warn('TimeSeriesDataManager not available, using fallback mode:', error);
         }
     }
     
@@ -391,6 +407,9 @@ export class StatisticsManager {
         
         // 進歩詳細統計更新
         this.updateProgressDetailStats(finalScore, playTime);
+        
+        // 時系列データの記録
+        this.recordTimeSeriesData(finalScore, playTime, completed);
         
         // StatisticsCollectorでのイベント収集
         if (this.collector) {
@@ -893,6 +912,14 @@ export class StatisticsManager {
             // ソーシャル統計（将来の機能用）
             social: {
                 socialStats: this.statistics.socialStats
+            },
+            
+            // 時系列統計
+            timeSeries: {
+                available: !!this.timeSeriesManager,
+                summary: this.getTimeSeriesStatisticsSummary(),
+                growthTrends: this.analyzeGrowthTrends(),
+                recentPerformance: this.getRecentPerformance()
             }
         };
     }
@@ -1252,11 +1279,233 @@ export class StatisticsManager {
     }
     
     /**
+     * 時系列データの記録
+     */
+    recordTimeSeriesData(score, playTime, completed) {
+        if (!this.timeSeriesManager) return;
+        
+        const timestamp = Date.now();
+        
+        // 基本的な時系列データポイントを記録
+        this.timeSeriesManager.addDataPoint(timestamp, 'score', score, {
+            completed: completed,
+            sessionId: this.generateSessionId()
+        });
+        
+        this.timeSeriesManager.addDataPoint(timestamp, 'playTime', playTime, {
+            completed: completed,
+            sessionId: this.generateSessionId()
+        });
+        
+        this.timeSeriesManager.addDataPoint(timestamp, 'bubblesPopped', 
+            this.sessionStats.bubblesThisSession, {
+            completed: completed,
+            sessionId: this.generateSessionId()
+        });
+        
+        // 効率統計の記録
+        const efficiency = playTime > 0 ? (this.sessionStats.bubblesThisSession / (playTime / 60000)) : 0;
+        this.timeSeriesManager.addDataPoint(timestamp, 'efficiency', efficiency, {
+            completed: completed,
+            sessionId: this.generateSessionId()
+        });
+        
+        // 精度統計の記録
+        const sessionAccuracy = this.calculateSessionAccuracy();
+        this.timeSeriesManager.addDataPoint(timestamp, 'accuracy', sessionAccuracy, {
+            completed: completed,
+            sessionId: this.generateSessionId()
+        });
+    }
+    
+    /**
+     * 時系列データの取得
+     */
+    getTimeSeriesData(period, category = null, startDate = null, endDate = null) {
+        if (!this.timeSeriesManager) return [];
+        
+        return this.timeSeriesManager.getTimeSeriesData(period, category, startDate, endDate);
+    }
+    
+    /**
+     * 集計時系列データの取得
+     */
+    getAggregatedTimeSeriesData(category, period, aggregationType = 'sum') {
+        if (!this.timeSeriesManager) return [];
+        
+        return this.timeSeriesManager.getAggregatedData(category, period, aggregationType);
+    }
+    
+    /**
+     * 期間比較分析
+     */
+    compareTimePeriods(category, period1, period2) {
+        if (!this.timeSeriesManager) return null;
+        
+        return this.timeSeriesManager.comparePerformance(category, period1, period2);
+    }
+    
+    /**
+     * 成長トレンドの分析
+     */
+    analyzeGrowthTrends(categories = ['score', 'efficiency', 'accuracy']) {
+        if (!this.timeSeriesManager) return {};
+        
+        const trends = {};
+        
+        categories.forEach(category => {
+            const dailyData = this.timeSeriesManager.getAggregatedData(category, 'daily', 'average');
+            const weeklyData = this.timeSeriesManager.getAggregatedData(category, 'weekly', 'average');
+            const monthlyData = this.timeSeriesManager.getAggregatedData(category, 'monthly', 'average');
+            
+            trends[category] = {
+                daily: this.calculateTrendFromData(dailyData.slice(-7)), // 最新7日
+                weekly: this.calculateTrendFromData(weeklyData.slice(-4)), // 最新4週
+                monthly: this.calculateTrendFromData(monthlyData.slice(-3)), // 最新3ヶ月
+                overall: this.calculateOverallTrend(dailyData)
+            };
+        });
+        
+        return trends;
+    }
+    
+    /**
+     * データからのトレンド計算
+     */
+    calculateTrendFromData(data) {
+        if (data.length < 2) return { trend: 'stable', change: 0, changePercent: 0 };
+        
+        const first = data[0].value;
+        const last = data[data.length - 1].value;
+        const change = last - first;
+        const changePercent = first > 0 ? (change / first) * 100 : 0;
+        
+        let trend = 'stable';
+        if (changePercent > 5) {
+            trend = 'improving';
+        } else if (changePercent < -5) {
+            trend = 'declining';
+        }
+        
+        return {
+            trend: trend,
+            change: Math.round(change * 100) / 100,
+            changePercent: Math.round(changePercent * 100) / 100,
+            dataPoints: data.length
+        };
+    }
+    
+    /**
+     * 全体的なトレンドの計算
+     */
+    calculateOverallTrend(data) {
+        if (data.length < 10) return this.calculateTrendFromData(data);
+        
+        // 直近30%と最初30%を比較
+        const recentSize = Math.ceil(data.length * 0.3);
+        const recent = data.slice(-recentSize);
+        const early = data.slice(0, recentSize);
+        
+        const recentAvg = recent.reduce((sum, item) => sum + item.value, 0) / recent.length;
+        const earlyAvg = early.reduce((sum, item) => sum + item.value, 0) / early.length;
+        
+        const change = recentAvg - earlyAvg;
+        const changePercent = earlyAvg > 0 ? (change / earlyAvg) * 100 : 0;
+        
+        let trend = 'stable';
+        if (changePercent > 10) {
+            trend = 'improving';
+        } else if (changePercent < -10) {
+            trend = 'declining';
+        }
+        
+        return {
+            trend: trend,
+            change: Math.round(change * 100) / 100,
+            changePercent: Math.round(changePercent * 100) / 100,
+            dataPoints: data.length,
+            analysisMethod: 'overall_comparison'
+        };
+    }
+    
+    /**
+     * セッション精度の計算
+     */
+    calculateSessionAccuracy() {
+        // セッション中の精度を計算（簡易版）
+        const sessionBubbles = this.sessionStats.bubblesThisSession;
+        if (sessionBubbles === 0) return 0;
+        
+        // 現在のセッションでの推定ミス数（簡易計算）
+        const estimatedMisses = Math.max(0, sessionBubbles * 0.1); // 仮の計算
+        return sessionBubbles > 0 ? (sessionBubbles / (sessionBubbles + estimatedMisses)) * 100 : 0;
+    }
+    
+    /**
+     * セッションIDの生成
+     */
+    generateSessionId() {
+        if (!this.sessionId) {
+            this.sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        }
+        return this.sessionId;
+    }
+    
+    /**
+     * 時系列統計サマリーの取得
+     */
+    getTimeSeriesStatisticsSummary() {
+        if (!this.timeSeriesManager) return null;
+        
+        const summary = this.timeSeriesManager.getStatisticsSummary();
+        const trends = this.analyzeGrowthTrends();
+        
+        return {
+            ...summary,
+            growthTrends: trends,
+            recentPerformance: this.getRecentPerformance(),
+            timeSeriesAvailable: true
+        };
+    }
+    
+    /**
+     * 最近のパフォーマンス取得
+     */
+    getRecentPerformance() {
+        if (!this.timeSeriesManager) return {};
+        
+        const categories = ['score', 'efficiency', 'accuracy', 'playTime'];
+        const performance = {};
+        
+        categories.forEach(category => {
+            const recentData = this.timeSeriesManager.getAggregatedData(category, 'daily', 'average').slice(-7);
+            if (recentData.length > 0) {
+                const values = recentData.map(item => item.value);
+                performance[category] = {
+                    average: values.reduce((sum, val) => sum + val, 0) / values.length,
+                    best: Math.max(...values),
+                    worst: Math.min(...values),
+                    trend: recentData[recentData.length - 1].trend,
+                    dataPoints: recentData.length
+                };
+            }
+        });
+        
+        return performance;
+    }
+    
+    /**
      * データをリセット
      */
     reset() {
         this.statistics = this.initializeStatistics();
         this.sessionStats = this.initializeSessionStats();
+        
+        // 時系列データもリセット
+        if (this.timeSeriesManager) {
+            this.timeSeriesManager.reset();
+        }
+        
         this.save();
     }
 }
