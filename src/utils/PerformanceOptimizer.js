@@ -1,5 +1,6 @@
 import { getPerformanceConfig } from '../config/PerformanceConfig.js';
 import { getErrorHandler } from './ErrorHandler.js';
+import { getFrameStabilizer } from './FrameStabilizer.js';
 
 /**
  * パフォーマンス最適化システム
@@ -18,14 +19,61 @@ export class PerformanceOptimizer {
         this.lastFrameTime = null;
         this.lastOptimizationTime = 0;
         
+        // Enhanced stability analysis
+        this.stabilityAnalysis = {
+            frameTimeBuffer: [], // Detailed frame time tracking
+            performanceSnapshots: [], // Performance state snapshots
+            issueHistory: [], // Detected performance issues
+            predictionModel: {
+                weights: { fps: 0.4, variance: 0.3, memory: 0.2, trend: 0.1 },
+                confidence: 0.5
+            }
+        };
+        
+        // Performance predictions
+        this.performancePredictions = {
+            nextFrameTime: 16.67,
+            expectedFPS: 60,
+            memoryGrowthRate: 0,
+            stabilityForecast: 'stable',
+            confidenceLevel: 0.5
+        };
+        
+        // Performance thresholds for warnings
+        this.performanceThresholds = {
+            criticalFPS: 30,
+            warningFPS: 45,
+            maxFrameVariance: 10,
+            maxMemoryGrowth: 0.1, // 10% per minute
+            stabilityThreshold: 0.7
+        };
+        
         this.stats = {
             currentFPS: 60,
             averageFPS: 60,
             frameTime: 16.67,
             droppedFrames: 0,
             optimizationCount: 0,
-            lastOptimization: null
+            lastOptimization: null,
+            // Enhanced stability metrics
+            frameTimeVariance: 0,
+            stabilityScore: 1.0,
+            performanceHealthScore: 1.0,
+            predictionAccuracy: 0,
+            // Detailed performance breakdown
+            renderTime: 0,
+            updateTime: 0,
+            totalProcessingTime: 0,
+            memoryPressureLevel: 0,
+            // Historical tracking for predictions
+            performanceTrend: 'stable', // 'improving', 'degrading', 'stable'
+            stabilityTrend: 'stable',
+            issuesPredicted: 0,
+            issuesActual: 0
         };
+        
+        // Frame Stabilizer integration
+        this.frameStabilizer = getFrameStabilizer(this.targetFPS);
         
         // 設定変更の監視
         this._setupConfigWatchers();
@@ -204,6 +252,8 @@ export class PerformanceOptimizer {
      * @param {number} currentTime - 現在時刻
      */
     startFrame(currentTime) {
+        const startProcessingTime = performance.now();
+        
         if (this.lastFrameTime) {
             const frameTime = currentTime - this.lastFrameTime;
             this.frameTimeHistory.push(frameTime);
@@ -212,24 +262,402 @@ export class PerformanceOptimizer {
                 this.frameTimeHistory.shift();
             }
             
-            // 統計更新
+            // Enhanced statistics update
             this.stats.frameTime = frameTime;
             this.stats.currentFPS = 1000 / frameTime;
             this.stats.averageFPS = 1000 / (this.frameTimeHistory.reduce((a, b) => a + b, 0) / this.frameTimeHistory.length);
             
-            // フレームドロップ検出
-            if (frameTime > this.targetFrameTime * 1.5) {
+            // Enhanced frame drop detection with severity classification
+            if (frameTime > this.targetFrameTime * 2.0) {
                 this.stats.droppedFrames++;
+                this.recordPerformanceIssue('severe_frame_drop', { frameTime, threshold: this.targetFrameTime * 2.0 });
+            } else if (frameTime > this.targetFrameTime * 1.5) {
+                this.stats.droppedFrames++;
+                this.recordPerformanceIssue('moderate_frame_drop', { frameTime, threshold: this.targetFrameTime * 1.5 });
             }
             
-            // 適応的最適化
+            // Enhanced stability analysis
+            if (this.frameTimeHistory.length >= 10) {
+                const stabilityInfo = this.analyzeFrameStability();
+                this.stats.frameTimeVariance = stabilityInfo.variance;
+                this.stats.stabilityScore = stabilityInfo.stabilityScore;
+                this.stats.performanceTrend = stabilityInfo.trend;
+                
+                // Update stability trend
+                this.updateStabilityTrend(stabilityInfo);
+            }
+            
+            // Predictive analysis (every 5 seconds to avoid overhead)
+            if (currentTime - this.lastOptimizationTime > 5000) {
+                const prediction = this.predictPerformanceIssues();
+                this.stats.performanceHealthScore = prediction.healthScore;
+                
+                // Update performance trend based on predictions
+                this.updatePerformanceTrend(prediction);
+                
+                // Proactive optimization based on predictions
+                if (prediction.healthScore < 0.4) {
+                    this.recordPerformanceIssue('predicted_performance_degradation', { 
+                        healthScore: prediction.healthScore,
+                        confidence: prediction.confidence 
+                    });
+                    
+                    if (this.adaptiveMode) {
+                        this.performProactiveOptimization(prediction);
+                    }
+                }
+            }
+            
+            // Standard adaptive optimization
             if (this.adaptiveMode && currentTime - this.lastOptimizationTime > this.optimizationInterval) {
                 this.performAdaptiveOptimization();
                 this.lastOptimizationTime = currentTime;
             }
+            
+            // Memory pressure monitoring
+            this.updateMemoryPressureLevel();
+            
+            // Frame Stabilizer integration - feed timing data
+            this.frameStabilizer.processFrameTiming(frameTime, currentTime);
+            
+            // Get stabilizer recommendations and apply if in adaptive mode
+            const stabilizerStatus = this.frameStabilizer.getStabilizationStatus();
+            this.integrateStabilizerRecommendations(stabilizerStatus);
         }
         
         this.lastFrameTime = currentTime;
+        this.stats.totalProcessingTime = performance.now() - startProcessingTime;
+    }
+    
+    /**
+     * Record performance issue for tracking and analysis
+     * @param {string} issueType - Type of performance issue
+     * @param {object} details - Additional details
+     */
+    recordPerformanceIssue(issueType, details) {
+        const issue = {
+            type: issueType,
+            timestamp: Date.now(),
+            details: details,
+            currentFPS: this.stats.currentFPS,
+            memoryUsage: performance.memory ? performance.memory.usedJSHeapSize : 0
+        };
+        
+        this.stabilityAnalysis.issueHistory.push(issue);
+        
+        // Keep only recent issues (last 50)
+        if (this.stabilityAnalysis.issueHistory.length > 50) {
+            this.stabilityAnalysis.issueHistory.shift();
+        }
+        
+        console.log(`[PerformanceOptimizer] Performance issue recorded: ${issueType}`, details);
+    }
+    
+    /**
+     * Update stability trend based on recent analysis
+     * @param {object} stabilityInfo - Current stability analysis
+     */
+    updateStabilityTrend(stabilityInfo) {
+        const recentSnapshots = this.stabilityAnalysis.performanceSnapshots.slice(-5);
+        
+        if (recentSnapshots.length < 3) {
+            this.stats.stabilityTrend = 'insufficient_data';
+            return;
+        }
+        
+        const avgStability = recentSnapshots.reduce((sum, snapshot) => 
+            sum + (snapshot.metrics.stabilityScore || 0.5), 0) / recentSnapshots.length;
+        
+        const currentStability = stabilityInfo.stabilityScore;
+        
+        if (currentStability > avgStability + 0.1) {
+            this.stats.stabilityTrend = 'improving';
+        } else if (currentStability < avgStability - 0.1) {
+            this.stats.stabilityTrend = 'degrading';
+        } else {
+            this.stats.stabilityTrend = 'stable';
+        }
+    }
+    
+    /**
+     * Update performance trend based on predictions
+     * @param {object} prediction - Performance prediction results
+     */
+    updatePerformanceTrend(prediction) {
+        if (prediction.healthScore > 0.8) {
+            this.stats.performanceTrend = 'excellent';
+        } else if (prediction.healthScore > 0.6) {
+            this.stats.performanceTrend = 'good';
+        } else if (prediction.healthScore > 0.4) {
+            this.stats.performanceTrend = 'concerning';
+        } else {
+            this.stats.performanceTrend = 'critical';
+        }
+    }
+    
+    /**
+     * Perform proactive optimization based on predictions
+     * @param {object} prediction - Performance prediction results
+     */
+    performProactiveOptimization(prediction) {
+        console.log('[PerformanceOptimizer] Performing proactive optimization based on predictions');
+        
+        if (prediction.memoryIssueRisk > 0.7) {
+            // Proactive memory management
+            if (window.gc && typeof window.gc === 'function') {
+                window.gc();
+            }
+            console.log('[PerformanceOptimizer] Proactive memory cleanup triggered');
+        }
+        
+        if (prediction.performanceDegradationRisk > 0.8) {
+            // Aggressive quality reduction
+            this.degradePerformance();
+            console.log('[PerformanceOptimizer] Proactive quality reduction triggered');
+        } else if (prediction.performanceDegradationRisk > 0.6) {
+            // Moderate optimization
+            if (this.performanceLevel === 'high') {
+                this.setPerformanceLevel('medium');
+            }
+            console.log('[PerformanceOptimizer] Proactive quality adjustment triggered');
+        }
+        
+        // Update optimization count for proactive actions
+        this.stats.optimizationCount++;
+        this.stats.lastOptimization = {
+            level: this.performanceLevel,
+            time: Date.now(),
+            reason: `Proactive: Health ${Math.round(prediction.healthScore * 100)}%`,
+            type: 'proactive'
+        };
+    }
+    
+    /**
+     * Update memory pressure level
+     */
+    updateMemoryPressureLevel() {
+        if (!performance.memory) {
+            this.stats.memoryPressureLevel = 0;
+            return;
+        }
+        
+        const used = performance.memory.usedJSHeapSize;
+        const limit = performance.memory.jsHeapSizeLimit;
+        const usage = used / limit;
+        
+        if (usage > 0.9) {
+            this.stats.memoryPressureLevel = 5; // Critical
+        } else if (usage > 0.8) {
+            this.stats.memoryPressureLevel = 4; // High
+        } else if (usage > 0.6) {
+            this.stats.memoryPressureLevel = 3; // Moderate
+        } else if (usage > 0.4) {
+            this.stats.memoryPressureLevel = 2; // Low
+        } else {
+            this.stats.memoryPressureLevel = 1; // Minimal
+        }
+    }
+    
+    /**
+     * Integrate Frame Stabilizer recommendations
+     * @param {object} stabilizerStatus - Frame stabilizer status and recommendations
+     */
+    integrateStabilizerRecommendations(stabilizerStatus) {
+        if (!this.adaptiveMode) return;
+        
+        const timing = stabilizerStatus.timing;
+        const adaptive = stabilizerStatus.adaptive;
+        const recommendations = stabilizerStatus.recommendations;
+        
+        // Update enhanced statistics with stabilizer data
+        this.stats.frameTimeVariance = timing.variance;
+        this.stats.stabilityScore = timing.stabilityScore;
+        
+        // Handle critical performance zones
+        if (adaptive.performanceZone === 'critical') {
+            this.recordPerformanceIssue('critical_stability_zone', {
+                zone: adaptive.performanceZone,
+                stabilityScore: timing.stabilityScore,
+                variance: timing.variance
+            });
+            
+            // Force to lowest quality for stability
+            if (this.performanceLevel !== 'low') {
+                this.setPerformanceLevel('low');
+                console.log('[PerformanceOptimizer] Forced to low quality due to critical stability');
+            }
+        } else if (adaptive.performanceZone === 'poor') {
+            // Reduce quality if not already done
+            if (this.performanceLevel === 'high') {
+                this.setPerformanceLevel('medium');
+                console.log('[PerformanceOptimizer] Reduced quality due to poor stability');
+            } else if (this.performanceLevel === 'medium') {
+                this.setPerformanceLevel('low');
+                console.log('[PerformanceOptimizer] Further reduced quality due to poor stability');
+            }
+        } else if (adaptive.performanceZone === 'optimal' && timing.stabilityScore > 0.9) {
+            // Potentially increase quality if stable
+            if (this.performanceLevel === 'low' && timing.stabilityScore > 0.95) {
+                this.setPerformanceLevel('medium');
+                console.log('[PerformanceOptimizer] Increased quality due to excellent stability');
+            } else if (this.performanceLevel === 'medium' && timing.stabilityScore > 0.98) {
+                this.setPerformanceLevel('high');
+                console.log('[PerformanceOptimizer] Increased quality due to optimal stability');
+            }
+        }
+        
+        // Handle high jitter situations
+        if (timing.jitterLevel > 7) {
+            this.recordPerformanceIssue('high_frame_jitter', {
+                jitterLevel: timing.jitterLevel,
+                smoothnessIndex: timing.smoothnessIndex
+            });
+            
+            // Apply anti-jitter measures
+            this.applyAntiJitterMeasures(timing.jitterLevel);
+        }
+        
+        // Adaptive target FPS integration
+        if (adaptive.currentTargetFPS !== this.targetFPS) {
+            const oldTarget = this.targetFPS;
+            this.targetFPS = adaptive.currentTargetFPS;
+            this.targetFrameTime = 1000 / this.targetFPS;
+            
+            console.log(`[PerformanceOptimizer] Synchronized target FPS: ${oldTarget} → ${this.targetFPS}`);
+        }
+        
+        // Store stabilizer insights for detailed analysis
+        this.stats.stabilizerInsights = {
+            performanceZone: adaptive.performanceZone,
+            confidenceLevel: adaptive.confidenceLevel,
+            jitterLevel: timing.jitterLevel,
+            smoothnessIndex: timing.smoothnessIndex,
+            consistencyRating: timing.consistencyRating,
+            vsyncDetected: stabilizerStatus.pacing.vsyncDetected,
+            tearingRisk: stabilizerStatus.pacing.tearingRisk
+        };
+    }
+    
+    /**
+     * Apply anti-jitter measures
+     * @param {number} jitterLevel - Current jitter level (0-10)
+     */
+    applyAntiJitterMeasures(jitterLevel) {
+        if (jitterLevel > 8) {
+            // Severe jitter - aggressive measures
+            this.settings.maxParticles = Math.floor(this.settings.maxParticles * 0.5);
+            this.settings.effectQuality = Math.min(this.settings.effectQuality, 0.3);
+            console.log('[PerformanceOptimizer] Applied aggressive anti-jitter measures');
+        } else if (jitterLevel > 5) {
+            // Moderate jitter - gentle reduction
+            this.settings.maxParticles = Math.floor(this.settings.maxParticles * 0.7);
+            this.settings.effectQuality = Math.min(this.settings.effectQuality, 0.6);
+            console.log('[PerformanceOptimizer] Applied moderate anti-jitter measures');
+        }
+        
+        // Update stats
+        this.stats.optimizationCount++;
+        this.stats.lastOptimization = {
+            level: this.performanceLevel,
+            time: Date.now(),
+            reason: `Anti-jitter: Level ${jitterLevel.toFixed(1)}`,
+            type: 'anti_jitter'
+        };
+    }
+    
+    /**
+     * Get comprehensive frame stability analysis
+     * @returns {object} Detailed stability analysis combining PerformanceOptimizer and FrameStabilizer data
+     */
+    getFrameStabilityAnalysis() {
+        const stabilizerStatus = this.frameStabilizer.getStabilizationStatus();
+        const currentAnalysis = this.analyzeFrameStability();
+        
+        return {
+            // Combined metrics
+            overall: {
+                stabilityScore: (currentAnalysis.stabilityScore + stabilizerStatus.timing.stabilityScore) / 2,
+                variance: stabilizerStatus.timing.variance,
+                consistencyRating: stabilizerStatus.timing.consistencyRating,
+                performanceZone: stabilizerStatus.adaptive.performanceZone,
+                healthScore: this.stats.performanceHealthScore
+            },
+            
+            // PerformanceOptimizer analysis
+            optimizer: {
+                analysis: currentAnalysis,
+                prediction: this.predictPerformanceIssues(),
+                recommendations: currentAnalysis.recommendations
+            },
+            
+            // FrameStabilizer analysis
+            stabilizer: {
+                timing: stabilizerStatus.timing,
+                adaptive: stabilizerStatus.adaptive,
+                pacing: stabilizerStatus.pacing,
+                recommendations: stabilizerStatus.recommendations
+            },
+            
+            // Integration insights
+            integration: {
+                targetFPSSync: this.targetFPS === stabilizerStatus.adaptive.currentTargetFPS,
+                optimizationHistory: this.getOptimizationHistory(),
+                stabilizerInsights: this.stats.stabilizerInsights || {}
+            }
+        };
+    }
+    
+    /**
+     * Get optimization history
+     * @returns {Array} Recent optimization actions
+     */
+    getOptimizationHistory() {
+        const history = [];
+        
+        if (this.stats.lastOptimization) {
+            history.push(this.stats.lastOptimization);
+        }
+        
+        // Add stabilizer adjustment history if available
+        if (this.frameStabilizer && this.frameStabilizer.adaptiveTargeting.adjustmentHistory) {
+            history.push(...this.frameStabilizer.adaptiveTargeting.adjustmentHistory.slice(-5));
+        }
+        
+        return history.sort((a, b) => (b.time || b.timestamp) - (a.time || a.timestamp));
+    }
+    
+    /**
+     * Force frame rate stabilization
+     * @param {number} targetFPS - Target FPS
+     * @param {string} mode - Stabilization mode ('conservative', 'balanced', 'aggressive')
+     */
+    forceFrameStabilization(targetFPS, mode = 'balanced') {
+        console.log(`[PerformanceOptimizer] Forcing frame stabilization to ${targetFPS} FPS (${mode})`);
+        
+        // Update our target
+        this.targetFPS = targetFPS;
+        this.targetFrameTime = 1000 / targetFPS;
+        
+        // Force stabilizer to the same target
+        this.frameStabilizer.forceStabilization(targetFPS, mode);
+        
+        // Set appropriate performance level for the target
+        if (targetFPS >= 60) {
+            this.setPerformanceLevel('high');
+        } else if (targetFPS >= 45) {
+            this.setPerformanceLevel('medium');
+        } else {
+            this.setPerformanceLevel('low');
+        }
+        
+        // Record the action
+        this.stats.optimizationCount++;
+        this.stats.lastOptimization = {
+            level: this.performanceLevel,
+            time: Date.now(),
+            reason: `Forced stabilization: ${targetFPS} FPS (${mode})`,
+            type: 'forced_stabilization'
+        };
     }
     
     /**
@@ -716,6 +1144,389 @@ export class PerformanceOptimizer {
         }, 0) / this.frameTimeHistory.length;
         
         return Math.sqrt(variance);
+    }
+    
+    /**
+     * Enhanced frame stability analysis
+     * @returns {object} 詳細な安定性分析結果
+     */
+    analyzeFrameStability() {
+        const variance = this.calculateFrameTimeVariance();
+        const frameCount = this.frameTimeHistory.length;
+        
+        if (frameCount < 10) {
+            return {
+                stabilityScore: 1.0,
+                variance: 0,
+                trend: 'insufficient_data',
+                confidence: 0.1
+            };
+        }
+        
+        // Stability score calculation (0-1, higher is better)
+        const maxAcceptableVariance = 5.0; // 5ms
+        const stabilityScore = Math.max(0, 1 - (variance / maxAcceptableVariance));
+        
+        // Trend analysis using linear regression
+        const trend = this.calculatePerformanceTrend();
+        
+        // Confidence based on data quantity and consistency
+        const confidence = Math.min(1.0, frameCount / 60) * (stabilityScore > 0.5 ? 1.0 : 0.5);
+        
+        // Update internal tracking
+        this.stats.frameTimeVariance = variance;
+        this.stats.stabilityScore = stabilityScore;
+        this.stabilityAnalysis.frameTimeBuffer = [...this.frameTimeHistory];
+        
+        return {
+            stabilityScore,
+            variance,
+            trend,
+            confidence,
+            frameCount,
+            recommendations: this.generateStabilityRecommendations(stabilityScore, variance, trend)
+        };
+    }
+    
+    /**
+     * Calculate performance trend using linear regression
+     * @returns {string} Trend direction ('improving', 'degrading', 'stable')
+     */
+    calculatePerformanceTrend() {
+        if (this.frameTimeHistory.length < 10) return 'insufficient_data';
+        
+        const recentFrames = this.frameTimeHistory.slice(-30); // Last 30 frames
+        const n = recentFrames.length;
+        
+        if (n < 5) return 'stable';
+        
+        // Simple linear regression to detect trend
+        const xSum = (n * (n - 1)) / 2; // 0 + 1 + 2 + ... + (n-1)
+        const ySum = recentFrames.reduce((sum, time) => sum + time, 0);
+        const xySum = recentFrames.reduce((sum, time, index) => sum + (time * index), 0);
+        const xxSum = (n * (n - 1) * (2 * n - 1)) / 6; // Sum of squares
+        
+        const slope = (n * xySum - xSum * ySum) / (n * xxSum - xSum * xSum);
+        
+        // Classify trend based on slope
+        if (Math.abs(slope) < 0.1) return 'stable';
+        return slope > 0 ? 'degrading' : 'improving';
+    }
+    
+    /**
+     * Generate stability recommendations
+     * @param {number} stabilityScore - Current stability score
+     * @param {number} variance - Frame time variance
+     * @param {string} trend - Performance trend
+     * @returns {string[]} Recommendations
+     */
+    generateStabilityRecommendations(stabilityScore, variance, trend) {
+        const recommendations = [];
+        
+        if (stabilityScore < 0.5) {
+            recommendations.push('Critical stability issue detected - consider reducing quality settings');
+        } else if (stabilityScore < 0.7) {
+            recommendations.push('Stability concerns detected - monitor performance closely');
+        }
+        
+        if (variance > 10) {
+            recommendations.push('High frame time variance - check for background processes');
+        }
+        
+        if (trend === 'degrading') {
+            recommendations.push('Performance degradation trend detected - proactive optimization recommended');
+        } else if (trend === 'improving') {
+            recommendations.push('Performance improving - consider gradually increasing quality');
+        }
+        
+        return recommendations;
+    }
+    
+    /**
+     * Predictive performance issue detection
+     * @returns {object} Prediction results
+     */
+    predictPerformanceIssues() {
+        const currentMetrics = this.gatherPerformanceMetrics();
+        const prediction = this.runPredictionModel(currentMetrics);
+        
+        // Update prediction accuracy based on past predictions vs reality
+        this.updatePredictionAccuracy(prediction);
+        
+        // Store prediction for future validation
+        this.storePredictionSnapshot(prediction);
+        
+        return prediction;
+    }
+    
+    /**
+     * Gather comprehensive performance metrics
+     * @returns {object} Current performance state
+     */
+    gatherPerformanceMetrics() {
+        const memoryInfo = this.checkMemoryUsage();
+        const stabilityInfo = this.analyzeFrameStability();
+        
+        return {
+            fps: this.stats.averageFPS,
+            frameVariance: stabilityInfo.variance,
+            stabilityScore: stabilityInfo.stabilityScore,
+            memoryUsage: performance.memory ? performance.memory.usedJSHeapSize : 0,
+            memoryLimit: performance.memory ? performance.memory.jsHeapSizeLimit : 0,
+            droppedFrames: this.stats.droppedFrames,
+            timestamp: Date.now(),
+            trend: stabilityInfo.trend
+        };
+    }
+    
+    /**
+     * Run prediction model
+     * @param {object} metrics - Current performance metrics
+     * @returns {object} Prediction results
+     */
+    runPredictionModel(metrics) {
+        const weights = this.stabilityAnalysis.predictionModel.weights;
+        
+        // Normalize metrics to 0-1 scale
+        const normalizedFPS = Math.min(1, metrics.fps / this.targetFPS);
+        const normalizedVariance = Math.max(0, 1 - (metrics.frameVariance / 20));
+        const normalizedMemory = metrics.memoryLimit > 0 ? 
+            Math.max(0, 1 - (metrics.memoryUsage / metrics.memoryLimit)) : 1;
+        
+        // Trend impact
+        const trendImpact = metrics.trend === 'improving' ? 1.1 : 
+                           metrics.trend === 'degrading' ? 0.9 : 1.0;
+        
+        // Calculate overall health score
+        const healthScore = (
+            normalizedFPS * weights.fps +
+            normalizedVariance * weights.variance +
+            normalizedMemory * weights.memory +
+            trendImpact * weights.trend
+        );
+        
+        // Predict specific issues
+        const predictions = {
+            healthScore,
+            nextFrameStability: this.predictNextFrameStability(metrics),
+            memoryIssueRisk: this.predictMemoryIssueRisk(metrics),
+            performanceDegradationRisk: this.predictPerformanceDegradationRisk(metrics),
+            recommendedActions: this.generatePredictiveRecommendations(healthScore, metrics),
+            confidence: this.calculatePredictionConfidence(metrics),
+            timestamp: Date.now()
+        };
+        
+        // Update internal predictions
+        this.performancePredictions = {
+            nextFrameTime: 1000 / Math.max(30, this.stats.averageFPS * 0.95),
+            expectedFPS: Math.max(30, this.stats.averageFPS * 0.95),
+            memoryGrowthRate: this.calculateMemoryGrowthRate(),
+            stabilityForecast: healthScore > 0.7 ? 'stable' : healthScore > 0.4 ? 'concerning' : 'critical',
+            confidenceLevel: predictions.confidence
+        };
+        
+        return predictions;
+    }
+    
+    /**
+     * Predict next frame stability
+     * @param {object} metrics - Current metrics
+     * @returns {number} Predicted stability (0-1)
+     */
+    predictNextFrameStability(metrics) {
+        const recentVariance = this.calculateFrameTimeVariance();
+        const baseStability = metrics.stabilityScore;
+        
+        // Factor in trend
+        let trendAdjustment = 0;
+        if (metrics.trend === 'improving') trendAdjustment = 0.05;
+        else if (metrics.trend === 'degrading') trendAdjustment = -0.05;
+        
+        return Math.max(0, Math.min(1, baseStability + trendAdjustment));
+    }
+    
+    /**
+     * Predict memory issue risk
+     * @param {object} metrics - Current metrics
+     * @returns {number} Risk level (0-1)
+     */
+    predictMemoryIssueRisk(metrics) {
+        if (!metrics.memoryLimit) return 0.1; // Unknown risk
+        
+        const memoryUsageRatio = metrics.memoryUsage / metrics.memoryLimit;
+        const growthRate = this.calculateMemoryGrowthRate();
+        
+        // High usage or rapid growth indicates risk
+        let riskScore = memoryUsageRatio;
+        if (growthRate > 0.05) riskScore += 0.3; // 5% growth per check is concerning
+        
+        return Math.min(1, riskScore);
+    }
+    
+    /**
+     * Predict performance degradation risk
+     * @param {object} metrics - Current metrics
+     * @returns {number} Risk level (0-1)
+     */
+    predictPerformanceDegradationRisk(metrics) {
+        const fpsRatio = metrics.fps / this.targetFPS;
+        const varianceImpact = Math.min(1, metrics.frameVariance / 15);
+        const trendImpact = metrics.trend === 'degrading' ? 0.4 : 0;
+        
+        return Math.min(1, (1 - fpsRatio) + varianceImpact + trendImpact);
+    }
+    
+    /**
+     * Calculate memory growth rate
+     * @returns {number} Growth rate per minute
+     */
+    calculateMemoryGrowthRate() {
+        const snapshots = this.stabilityAnalysis.performanceSnapshots;
+        if (snapshots.length < 2) return 0;
+        
+        const recent = snapshots.slice(-5); // Last 5 snapshots
+        if (recent.length < 2) return 0;
+        
+        const firstSnapshot = recent[0];
+        const lastSnapshot = recent[recent.length - 1];
+        const timeDiff = (lastSnapshot.timestamp - firstSnapshot.timestamp) / 1000 / 60; // minutes
+        
+        if (timeDiff <= 0 || !firstSnapshot.memoryUsage || !lastSnapshot.memoryUsage) return 0;
+        
+        const memoryDiff = lastSnapshot.memoryUsage - firstSnapshot.memoryUsage;
+        const growthRate = memoryDiff / firstSnapshot.memoryUsage / timeDiff;
+        
+        return Math.max(0, growthRate);
+    }
+    
+    /**
+     * Generate predictive recommendations
+     * @param {number} healthScore - Overall health score
+     * @param {object} metrics - Current metrics
+     * @returns {string[]} Recommendations
+     */
+    generatePredictiveRecommendations(healthScore, metrics) {
+        const recommendations = [];
+        
+        if (healthScore < 0.3) {
+            recommendations.push('Critical: Immediate performance intervention required');
+            recommendations.push('Reduce quality settings to minimum');
+            recommendations.push('Clear memory caches');
+        } else if (healthScore < 0.6) {
+            recommendations.push('Warning: Performance degradation predicted');
+            recommendations.push('Consider reducing particle effects');
+            recommendations.push('Monitor memory usage closely');
+        } else if (healthScore > 0.8 && this.performanceLevel !== 'high') {
+            recommendations.push('Performance headroom available');
+            recommendations.push('Consider increasing quality settings');
+        }
+        
+        if (this.predictMemoryIssueRisk(metrics) > 0.7) {
+            recommendations.push('High memory pressure predicted - schedule cleanup');
+        }
+        
+        if (metrics.trend === 'degrading') {
+            recommendations.push('Performance trend is concerning - proactive optimization needed');
+        }
+        
+        return recommendations;
+    }
+    
+    /**
+     * Calculate prediction confidence
+     * @param {object} metrics - Current metrics
+     * @returns {number} Confidence level (0-1)
+     */
+    calculatePredictionConfidence(metrics) {
+        let confidence = this.stabilityAnalysis.predictionModel.confidence;
+        
+        // More data = higher confidence
+        const dataPoints = this.frameTimeHistory.length;
+        if (dataPoints > 60) confidence += 0.2;
+        else if (dataPoints > 30) confidence += 0.1;
+        
+        // Stable trends = higher confidence
+        if (metrics.trend === 'stable') confidence += 0.1;
+        
+        // Consistent performance = higher confidence
+        if (metrics.stabilityScore > 0.8) confidence += 0.1;
+        
+        return Math.min(1, confidence);
+    }
+    
+    /**
+     * Update prediction accuracy based on past predictions
+     * @param {object} prediction - Current prediction
+     */
+    updatePredictionAccuracy(prediction) {
+        // Compare with actual performance from previous predictions
+        const snapshots = this.stabilityAnalysis.performanceSnapshots;
+        if (snapshots.length < 2) return;
+        
+        const previousSnapshot = snapshots[snapshots.length - 2];
+        if (!previousSnapshot.prediction) return;
+        
+        const actualHealthScore = this.gatherPerformanceMetrics().fps / this.targetFPS;
+        const predictedHealthScore = previousSnapshot.prediction.healthScore;
+        
+        const accuracy = 1 - Math.abs(actualHealthScore - predictedHealthScore);
+        
+        // Update model confidence
+        this.stabilityAnalysis.predictionModel.confidence = 
+            (this.stabilityAnalysis.predictionModel.confidence * 0.9) + (accuracy * 0.1);
+        
+        this.stats.predictionAccuracy = accuracy;
+    }
+    
+    /**
+     * Store prediction snapshot for future validation
+     * @param {object} prediction - Prediction results
+     */
+    storePredictionSnapshot(prediction) {
+        const snapshot = {
+            timestamp: Date.now(),
+            metrics: this.gatherPerformanceMetrics(),
+            prediction: prediction
+        };
+        
+        this.stabilityAnalysis.performanceSnapshots.push(snapshot);
+        
+        // Keep only recent snapshots (last 100)
+        if (this.stabilityAnalysis.performanceSnapshots.length > 100) {
+            this.stabilityAnalysis.performanceSnapshots.shift();
+        }
+    }
+    
+    /**
+     * Get detailed performance analysis
+     * @returns {object} Comprehensive performance analysis
+     */
+    getDetailedPerformanceMetrics() {
+        const stability = this.analyzeFrameStability();
+        const prediction = this.predictPerformanceIssues();
+        const currentMetrics = this.gatherPerformanceMetrics();
+        
+        return {
+            current: currentMetrics,
+            stability: stability,
+            prediction: prediction,
+            trends: {
+                performance: this.stats.performanceTrend,
+                stability: this.stats.stabilityTrend,
+                memoryGrowth: this.calculateMemoryGrowthRate()
+            },
+            health: {
+                overall: prediction.healthScore,
+                stability: stability.stabilityScore,
+                performance: currentMetrics.fps / this.targetFPS,
+                memory: currentMetrics.memoryLimit > 0 ? 
+                    1 - (currentMetrics.memoryUsage / currentMetrics.memoryLimit) : 1
+            },
+            recommendations: [
+                ...stability.recommendations,
+                ...prediction.recommendedActions
+            ]
+        };
     }
     
     /**
