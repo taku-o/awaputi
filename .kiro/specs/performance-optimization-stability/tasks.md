@@ -78,14 +78,14 @@
     - Add static layer caching system
     - _Requirements: 9.1, 9.4_
 
-- [ ] 7. Particle Effect Performance Optimization
-  - [ ] 7.1 Implement intelligent particle culling
+- [x] 7. Particle Effect Performance Optimization
+  - [x] 7.1 Implement intelligent particle culling
     - Create particle importance scoring system
     - Implement quality-based particle reduction
     - Add particle effect performance monitoring
     - _Requirements: 8.1, 8.2_
 
-  - [ ] 7.2 Optimize particle rendering pipeline
+  - [x] 7.2 Optimize particle rendering pipeline
     - Implement batch particle rendering
     - Create particle effect quality scaling
     - Add particle system performance controls
