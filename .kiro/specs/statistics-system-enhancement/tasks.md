@@ -9,7 +9,7 @@
   - StatisticsCollectorクラスを作成し、イベントキューとバッチ処理機能を実装する
   - _Requirements: 1.1, 1.2, 1.3, 6.1_
 
-- [ ] 1.1 StatisticsCollectorクラスの実装
+- [x] 1.1 StatisticsCollectorクラスの実装
   - イベントキューとバッチ処理機能を持つStatisticsCollectorクラスを作成する
   - 非同期イベント収集とパフォーマンス最適化されたデータ処理を実装する
   - 既存のStatisticsManagerとの統合ポイントを作成する
