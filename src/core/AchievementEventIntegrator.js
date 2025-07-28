@@ -34,7 +34,16 @@ export class AchievementEventIntegrator {
      */
     integrateBubbleManager() {
         const bubbleManager = this.gameEngine.bubbleManager;
-        if (!bubbleManager) return;
+        if (!bubbleManager) {
+            console.warn('BubbleManager not found during integration');
+            return;
+        }
+        
+        // popBubbleメソッドの存在確認
+        if (typeof bubbleManager.popBubble !== 'function') {
+            console.warn('BubbleManager.popBubble method not found');
+            return;
+        }
         
         // 元のpopBubbleメソッドを保存
         const originalPopBubble = bubbleManager.popBubble.bind(bubbleManager);
@@ -61,7 +70,16 @@ export class AchievementEventIntegrator {
      */
     integrateScoreManager() {
         const scoreManager = this.gameEngine.scoreManager;
-        if (!scoreManager) return;
+        if (!scoreManager) {
+            console.warn('ScoreManager not found during integration');
+            return;
+        }
+        
+        // addScoreメソッドの存在確認
+        if (typeof scoreManager.addScore !== 'function') {
+            console.warn('ScoreManager.addScore method not found');
+            return;
+        }
         
         // 元のaddScoreメソッドを保存
         const originalAddScore = scoreManager.addScore.bind(scoreManager);
@@ -78,19 +96,24 @@ export class AchievementEventIntegrator {
             return result;
         };
         
-        // 元のbreakComboメソッドを保存
-        const originalBreakCombo = scoreManager.breakCombo.bind(scoreManager);
-        
-        // breakComboメソッドを拡張
-        scoreManager.breakCombo = (...args) => {
-            const lastCombo = scoreManager.combo;
-            const result = originalBreakCombo(...args);
+        // breakComboメソッドの存在確認と拡張
+        if (typeof scoreManager.resetCombo === 'function') {
+            // 元のresetComboメソッドを保存（正しいメソッド名を使用）
+            const originalResetCombo = scoreManager.resetCombo.bind(scoreManager);
             
-            // コンボ破綻イベントを送信
-            this.handleComboUpdate(lastCombo, true);
-            
-            return result;
-        };
+            // resetComboメソッドを拡張
+            scoreManager.resetCombo = (...args) => {
+                const lastCombo = scoreManager.combo;
+                const result = originalResetCombo(...args);
+                
+                // コンボ破綻イベントを送信
+                this.handleComboUpdate(lastCombo, true);
+                
+                return result;
+            };
+        } else {
+            console.warn('ScoreManager.resetCombo method not found');
+        }
         
         console.log('ScoreManager integration completed');
     }
@@ -99,25 +122,33 @@ export class AchievementEventIntegrator {
      * GameSceneとの統合
      */
     integrateGameScene() {
-        const gameScene = this.gameEngine.sceneManager.scenes.game;
-        if (!gameScene) return;
+        const gameScene = this.gameEngine.sceneManager?.scenes?.game;
+        if (!gameScene) {
+            console.warn('GameScene not found during integration');
+            return;
+        }
         
-        // 元のgameOverメソッドを保存
-        const originalGameOver = gameScene.gameOver.bind(gameScene);
-        
-        // gameOverメソッドを拡張
-        gameScene.gameOver = (...args) => {
-            const gameData = this.collectGameEndData();
+        // gameOverメソッドの存在確認と拡張
+        if (typeof gameScene.gameOver === 'function') {
+            // 元のgameOverメソッドを保存
+            const originalGameOver = gameScene.gameOver.bind(gameScene);
             
-            // ゲーム終了イベントを送信
-            this.handleGameEnd(gameData);
-            
-            const result = originalGameOver(...args);
-            return result;
-        };
+            // gameOverメソッドを拡張
+            gameScene.gameOver = (...args) => {
+                const gameData = this.collectGameEndData();
+                
+                // ゲーム終了イベントを送信
+                this.handleGameEnd(gameData);
+                
+                const result = originalGameOver(...args);
+                return result;
+            };
+        } else {
+            console.warn('GameScene.gameOver method not found');
+        }
         
         // ステージクリア統合
-        if (gameScene.completeStage) {
+        if (typeof gameScene.completeStage === 'function') {
             const originalCompleteStage = gameScene.completeStage.bind(gameScene);
             
             gameScene.completeStage = (stageId, ...args) => {
@@ -127,7 +158,7 @@ export class AchievementEventIntegrator {
                 this.handleStageCleared(stageId, {
                     stageId: stageId,
                     clearTime: Date.now() - this.sessionStartTime,
-                    score: this.gameEngine.scoreManager.score
+                    score: this.gameEngine.scoreManager?.score || 0
                 });
                 
                 return result;
@@ -142,7 +173,10 @@ export class AchievementEventIntegrator {
      */
     integrateStatisticsManager() {
         const statisticsManager = this.gameEngine.statisticsManager;
-        if (!statisticsManager) return;
+        if (!statisticsManager) {
+            console.warn('StatisticsManager not found during integration');
+            return;
+        }
         
         // StatisticsManagerのイベントを監視して実績チェック
         // (StatisticsManagerが独自のイベントシステムを持つ場合)
@@ -176,7 +210,9 @@ export class AchievementEventIntegrator {
      * 泡が割れた時のイベント処理
      */
     handleBubblePopped(bubbleType, data) {
-        this.achievementManager.updateProgress('bubblePopped', data);
+        if (this.achievementManager && typeof this.achievementManager.updateProgress === 'function') {
+            this.achievementManager.updateProgress('bubblePopped', data);
+        }
         
         // 特殊効果発動チェック
         if (['rainbow', 'electric', 'explosive', 'magnetic'].includes(bubbleType)) {
@@ -188,7 +224,9 @@ export class AchievementEventIntegrator {
      * ゲーム終了時のイベント処理
      */
     handleGameEnd(gameData) {
-        this.achievementManager.updateProgress('gameEnd', gameData);
+        if (this.achievementManager && typeof this.achievementManager.updateProgress === 'function') {
+            this.achievementManager.updateProgress('gameEnd', gameData);
+        }
         
         // 精度チェック
         if (gameData.bubblesPopped > 0) {
@@ -197,7 +235,9 @@ export class AchievementEventIntegrator {
         
         // パーフェクトゲームチェック
         if (gameData.bubblesMissed === 0 && gameData.bubblesPopped >= 50) {
-            this.achievementManager.updateProgress('perfectGame', gameData);
+            if (this.achievementManager && typeof this.achievementManager.updateProgress === 'function') {
+                this.achievementManager.updateProgress('perfectGame', gameData);
+            }
         }
         
         // 夜間プレイチェック
@@ -208,35 +248,45 @@ export class AchievementEventIntegrator {
      * コンボ更新時のイベント処理
      */
     handleComboUpdate(combo, broken) {
-        this.achievementManager.updateProgress('comboUpdate', { combo, broken });
+        if (this.achievementManager && typeof this.achievementManager.updateProgress === 'function') {
+            this.achievementManager.updateProgress('comboUpdate', { combo, broken });
+        }
     }
     
     /**
      * 特殊効果発動時のイベント処理
      */
     handleSpecialEffect(effectType) {
-        this.achievementManager.updateProgress('specialEffect', { effectType });
+        if (this.achievementManager && typeof this.achievementManager.updateProgress === 'function') {
+            this.achievementManager.updateProgress('specialEffect', { effectType });
+        }
     }
     
     /**
      * ステージクリア時のイベント処理
      */
     handleStageCleared(stageId, data) {
-        this.achievementManager.updateProgress('stageCleared', data);
+        if (this.achievementManager && typeof this.achievementManager.updateProgress === 'function') {
+            this.achievementManager.updateProgress('stageCleared', data);
+        }
     }
     
     /**
      * 日次プレイイベント処理
      */
     handleDayPlayed(date) {
-        this.achievementManager.updateProgress('dayPlayed', { date });
+        if (this.achievementManager && typeof this.achievementManager.updateProgress === 'function') {
+            this.achievementManager.updateProgress('dayPlayed', { date });
+        }
     }
     
     /**
      * セッション終了時のイベント処理
      */
     handleSessionEnd(data) {
-        this.achievementManager.updateProgress('sessionEnd', data);
+        if (this.achievementManager && typeof this.achievementManager.updateProgress === 'function') {
+            this.achievementManager.updateProgress('sessionEnd', data);
+        }
         
         if (this.speedCheckInterval) {
             clearInterval(this.speedCheckInterval);
@@ -252,18 +302,18 @@ export class AchievementEventIntegrator {
         const playerData = this.gameEngine.playerData;
         
         const playTime = Date.now() - this.sessionStartTime;
-        const bubblesPopped = scoreManager.bubblesPopped || 0;
-        const bubblesMissed = bubbleManager.bubblesMissed || 0;
+        const bubblesPopped = scoreManager?.bubblesPopped || 0;
+        const bubblesMissed = bubbleManager?.bubblesMissed || 0;
         
         return {
-            finalScore: scoreManager.score,
-            maxCombo: scoreManager.maxCombo || 0,
+            finalScore: scoreManager?.score || 0,
+            maxCombo: scoreManager?.maxCombo || 0,
             bubblesPopped: bubblesPopped,
             bubblesMissed: bubblesMissed,
             playTime: playTime,
             accuracy: bubblesPopped > 0 ? (bubblesPopped / (bubblesPopped + bubblesMissed)) * 100 : 0,
             itemsUsed: this.checkItemsUsed(),
-            hp: playerData.hp || 100
+            hp: playerData?.hp || 100
         };
     }
     
@@ -273,7 +323,9 @@ export class AchievementEventIntegrator {
     checkItemsUsed() {
         // ItemSystemからアイテム使用状況を取得
         const itemSystem = this.gameEngine.itemSystem;
-        return itemSystem ? itemSystem.getUsedItemsInSession().length > 0 : false;
+        return itemSystem && typeof itemSystem.getUsedItemsInSession === 'function' 
+            ? itemSystem.getUsedItemsInSession().length > 0 
+            : false;
     }
     
     /**
@@ -282,7 +334,9 @@ export class AchievementEventIntegrator {
     checkAccuracyAchievements(gameData) {
         // 95%と99%の精度実績をチェック
         if (gameData.accuracy >= 95) {
-            this.achievementManager.updateProgress('accuracy', { accuracy: gameData.accuracy });
+            if (this.achievementManager && typeof this.achievementManager.updateProgress === 'function') {
+                this.achievementManager.updateProgress('accuracy', { accuracy: gameData.accuracy });
+            }
         }
     }
     
@@ -292,7 +346,9 @@ export class AchievementEventIntegrator {
     checkNightTimePlay(gameData) {
         const hour = new Date().getHours();
         if ((hour >= 23 || hour < 5) && gameData.finalScore >= 1000) {
-            this.achievementManager.updateProgress('nightTimeScore', gameData);
+            if (this.achievementManager && typeof this.achievementManager.updateProgress === 'function') {
+                this.achievementManager.updateProgress('nightTimeScore', gameData);
+            }
         }
     }
     
@@ -302,14 +358,16 @@ export class AchievementEventIntegrator {
     checkSpeedChallenge() {
         const scoreManager = this.gameEngine.scoreManager;
         const timeElapsed = Date.now() - this.sessionStartTime;
-        const bubblesPopped = scoreManager.bubblesPopped || 0;
+        const bubblesPopped = scoreManager?.bubblesPopped || 0;
         
         // 1分以内に100個の泡を割る実績
         if (timeElapsed <= 60000 && bubblesPopped >= 100) {
-            this.achievementManager.updateProgress('speedCheck', {
-                bubblesPopped: bubblesPopped,
-                timeElapsed: timeElapsed
-            });
+            if (this.achievementManager && typeof this.achievementManager.updateProgress === 'function') {
+                this.achievementManager.updateProgress('speedCheck', {
+                    bubblesPopped: bubblesPopped,
+                    timeElapsed: timeElapsed
+                });
+            }
         }
     }
     
@@ -320,7 +378,7 @@ export class AchievementEventIntegrator {
         const playerData = this.gameEngine.playerData;
         const currentTime = Date.now();
         
-        if (playerData.hp <= 10) {
+        if (playerData && playerData.hp <= 10) {
             if (!this.lowHpStartTime) {
                 this.lowHpStartTime = currentTime;
             }
@@ -329,10 +387,12 @@ export class AchievementEventIntegrator {
             
             // 1分間（60秒）または2分間（120秒）の低HP生存チェック
             if (survivalTime >= 60000) {
-                this.achievementManager.updateProgress('lowHpSurvival', {
-                    hp: playerData.hp,
-                    survivalTime: survivalTime
-                });
+                if (this.achievementManager && typeof this.achievementManager.updateProgress === 'function') {
+                    this.achievementManager.updateProgress('lowHpSurvival', {
+                        hp: playerData.hp,
+                        survivalTime: survivalTime
+                    });
+                }
             }
         } else {
             this.lowHpStartTime = null;
