@@ -130,36 +130,36 @@
   - Verify achievement system works identically to current implementation
   - _Requirements: 3.1, 3.2, 3.3, 5.2_
 
-- [ ] 6. Extract Statistics Tab Component (Phase 5)
-- [ ] 6.1 Create StatisticsTab component
+- [x] 6. Extract Statistics Tab Component (Phase 5)
+- [x] 6.1 Create StatisticsTab component
   - Implement StatisticsTab class extending TabComponent
   - Add statistics rendering coordination methods
   - Create statistics view mode management
   - Write unit tests for StatisticsTab component
   - _Requirements: 2.1, 3.2, 5.2_
 
-- [ ] 6.2 Create StatisticsFilterUI component
+- [x] 6.2 Create StatisticsFilterUI component
   - Implement statistics filter interface
   - Add period filter and display mode controls
   - Create filter state management
   - Write unit tests for StatisticsFilterUI
   - _Requirements: 2.1, 3.2, 5.2_
 
-- [ ] 6.3 Create StatisticsRenderer component
+- [x] 6.3 Create StatisticsRenderer component
   - Implement detailed statistics rendering
   - Add basic stats, bubble stats, combo stats, and stage stats sections
   - Create responsive statistics layout
   - Write unit tests for StatisticsRenderer
   - _Requirements: 2.1, 3.2, 5.2_
 
-- [ ] 6.4 Create StatisticsDashboardRenderer component
+- [x] 6.4 Create StatisticsDashboardRenderer component
   - Implement dashboard view rendering
   - Add chart integration and dashboard layout
   - Create dashboard data management
   - Write unit tests for StatisticsDashboardRenderer
   - _Requirements: 2.1, 3.2, 5.2_
 
-- [ ] 6.5 Integrate StatisticsTab with main scene
+- [x] 6.5 Integrate StatisticsTab with main scene
   - Update UserInfoScene to use StatisticsTab component
   - Replace inline statistics rendering with component calls
   - Test statistics display and filtering functionality

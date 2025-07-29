@@ -22,6 +22,7 @@ import { HelpTab } from './components/HelpTab.js';
 import { HelpSectionSelector } from './components/HelpSectionSelector.js';
 import { ManagementTab } from './components/ManagementTab.js';
 import { AchievementsTab } from './components/AchievementsTab.js';
+import { StatisticsTab } from './components/StatisticsTab.js';
 
 export class UserInfoScene extends Scene {
     constructor(gameEngine) {
@@ -108,6 +109,10 @@ export class UserInfoScene extends Scene {
      * タブコンポーネントを初期化
      */
     initializeTabComponents() {
+        // StatisticsTabコンポーネントを作成
+        this.statisticsTabComponent = new StatisticsTab(this.gameEngine, this.eventBus, this.sceneState);
+        this.statisticsTabComponent.initialize();
+        
         // HelpTabコンポーネントを作成
         this.helpTabComponent = new HelpTab(this.gameEngine, this.eventBus, this.sceneState);
         this.helpTabComponent.initialize();
@@ -125,6 +130,7 @@ export class UserInfoScene extends Scene {
         
         // タブコンポーネントマップを作成
         this.tabComponents = new Map();
+        this.tabComponents.set('statistics', this.statisticsTabComponent);
         this.tabComponents.set('help', this.helpTabComponent);
         this.tabComponents.set('management', this.managementTabComponent);
         this.tabComponents.set('achievements', this.achievementsTabComponent);
@@ -224,6 +230,9 @@ export class UserInfoScene extends Scene {
         // フォーカスをリセット
         this.focusedElement = 0;
         this.scrollPosition = 0;
+        
+        // 初期タブをアクティブ化
+        this.activateCurrentTab();
     }
 
     exit() {
@@ -272,6 +281,14 @@ export class UserInfoScene extends Scene {
         if (!this.lastDataUpdate || Date.now() - this.lastDataUpdate > 5000) {
             this.loadUserData();
             this.lastDataUpdate = Date.now();
+        }
+        
+        // アクティブなタブコンポーネントの更新
+        if (this.tabComponents && this.tabComponents.has(this.currentTab)) {
+            const activeComponent = this.tabComponents.get(this.currentTab);
+            if (activeComponent && activeComponent.isActive && activeComponent.update) {
+                activeComponent.update(deltaTime);
+            }
         }
     }
 
@@ -451,7 +468,7 @@ export class UserInfoScene extends Scene {
         // 現在のタブに応じてコンテンツを描画
         switch (this.currentTab) {
             case 'statistics':
-                this.renderStatistics(context, contentY, contentHeight);
+                this.renderStatisticsWithComponent(context, contentY, contentHeight);
                 break;
             case 'achievements':
                 this.renderAchievementsWithComponent(context, contentY, contentHeight);
@@ -466,42 +483,33 @@ export class UserInfoScene extends Scene {
     }
 
     /**
-     * 統計データを描画
+     * 統計データをコンポーネントで描画
      */
-    renderStatistics(context, y, height) {
+    renderStatisticsWithComponent(context, y, height) {
+        try {
+            if (this.statisticsTabComponent && this.statisticsTabComponent.isActive) {
+                const canvas = this.gameEngine.canvas;
+                this.statisticsTabComponent.render(context, 0, y, canvas.width, height);
+            } else {
+                // フォールバック: 統計タブコンポーネントが無効な場合
+                this.renderStatisticsFallback(context, y, height);
+            }
+        } catch (error) {
+            console.error('Statistics tab rendering failed:', error);
+            this.renderStatisticsFallback(context, y, height);
+        }
+    }
+    
+    /**
+     * 統計データのフォールバック描画
+     */
+    renderStatisticsFallback(context, y, height) {
         const canvas = this.gameEngine.canvas;
-        const contentWidth = canvas.width - this.contentPadding * 2;
-        
-        // 統計フィルターUIの描画
-        let currentY = this.renderStatisticsFilterUI(context, y, contentWidth);
-        
-        // 統計表示モード切り替えUIの描画
-        currentY = this.renderStatisticsViewModeUI(context, currentY + 10, contentWidth);
-        
-        // 利用可能な高さを計算
-        const availableHeight = height - (currentY - y) - 20;
-        
-        if (!this.statisticsData) {
-            context.fillStyle = '#cccccc';
-            context.font = '20px Arial';
-            context.textAlign = 'center';
-            context.fillText('まだ記録がありません', 
-                canvas.width / 2, currentY + availableHeight / 2);
-            return;
-        }
-        
-        // 統計表示モードに応じて描画
-        switch (this.statisticsViewMode) {
-            case 'dashboard':
-                this.renderStatisticsDashboard(context, currentY + 20, availableHeight - 20);
-                break;
-            case 'charts':
-                this.renderStatisticsCharts(context, currentY + 20, availableHeight - 20);
-                break;
-            case 'details':
-                this.renderDetailedStatistics(context, currentY + 20, availableHeight - 20);
-                break;
-        }
+        context.fillStyle = '#cccccc';
+        context.font = '20px Arial';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        context.fillText('統計データを読み込み中...', canvas.width / 2, y + height / 2);
     }
 
     /**
@@ -2019,7 +2027,7 @@ export class UserInfoScene extends Scene {
         
         // 統計画面のフィルター・モード切り替えクリック処理
         if (this.currentTab === 'statistics') {
-            this.handleStatisticsClick(x, y);
+            this.handleStatisticsClickWithComponent(x, y);
         }
         
         // 実績画面のカテゴリフィルタークリック処理
@@ -2933,9 +2941,41 @@ export class UserInfoScene extends Scene {
      */
     switchTab(tabName) {
         if (this.tabs.includes(tabName)) {
+            // 既存のタブを非アクティブ化
+            this.deactivateAllTabs();
+            
+            // 新しいタブに切り替え
             this.currentTab = tabName;
             this.scrollPosition = 0;
             this.selectedItem = -1;
+            
+            // 新しいタブをアクティブ化
+            this.activateCurrentTab();
+        }
+    }
+    
+    /**
+     * 全タブコンポーネントを非アクティブ化
+     */
+    deactivateAllTabs() {
+        if (this.tabComponents) {
+            this.tabComponents.forEach(component => {
+                if (component && component.deactivate) {
+                    component.deactivate();
+                }
+            });
+        }
+    }
+    
+    /**
+     * 現在のタブコンポーネントをアクティブ化
+     */
+    activateCurrentTab() {
+        if (this.tabComponents && this.tabComponents.has(this.currentTab)) {
+            const component = this.tabComponents.get(this.currentTab);
+            if (component && component.activate) {
+                component.activate();
+            }
         }
     }
 
@@ -3621,6 +3661,33 @@ export class UserInfoScene extends Scene {
             case 'details':
                 // 詳細モード特有の初期化
                 break;
+        }
+    }
+    
+    /**
+     * 統計画面のコンポーネント版クリック処理
+     */
+    handleStatisticsClickWithComponent(x, y) {
+        try {
+            if (this.statisticsTabComponent && this.statisticsTabComponent.isActive) {
+                // 座標を調整（コンテンツエリア相対座標に変換）
+                const contentY = this.headerHeight;
+                const relativeX = x;
+                const relativeY = y - contentY;
+                
+                // StatisticsTabコンポーネントにクリック処理を委譲
+                if (this.statisticsTabComponent.handleClick(relativeX, relativeY)) {
+                    return; // クリックが処理された
+                }
+            }
+            
+            // フォールバック: 従来のクリック処理
+            this.handleStatisticsClick(x, y);
+            
+        } catch (error) {
+            console.error('Statistics click handling failed:', error);
+            // フォールバック処理
+            this.handleStatisticsClick(x, y);
         }
     }
 
