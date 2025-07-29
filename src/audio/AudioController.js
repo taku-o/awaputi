@@ -2,6 +2,7 @@ import { getErrorHandler } from '../utils/ErrorHandler.js';
 import { getConfigurationManager } from '../core/ConfigurationManager.js';
 import { Equalizer } from './Equalizer.js';
 import { PresetManager } from './PresetManager.js';
+import { EnvironmentalAudioManager } from './EnvironmentalAudioManager.js';
 
 /**
  * AudioController - 高度な音響制御システム
@@ -73,6 +74,9 @@ export class AudioController {
         // プリセット管理システム
         this.presetManager = null;
         
+        // 環境音システム
+        this.environmentalAudioManager = null;
+        
         // 音響品質動的調整
         this.qualityManager = {
             currentQuality: 1.0,
@@ -141,6 +145,9 @@ export class AudioController {
             
             // プリセット管理システムの初期化
             this._initializePresetManager();
+            
+            // 環境音システムの初期化
+            this._initializeEnvironmentalAudio();
             
             console.log('AudioController initialized successfully');
         } catch (error) {
@@ -1748,6 +1755,346 @@ export class AudioController {
     getTemporaryPresets() {
         return this.getAllPresets('temporary');
     }
+    
+    // ================================
+    // 環境音システム初期化
+    // ================================
+    
+    /**
+     * 環境音システムの初期化
+     * @private
+     */
+    _initializeEnvironmentalAudio() {
+        try {
+            if (!this.audioContext) {
+                console.warn('AudioContext is not available for environmental audio initialization');
+                return;
+            }
+            
+            // 環境音システムを作成（マスターGainNodeに接続）
+            this.environmentalAudioManager = new EnvironmentalAudioManager(
+                this.audioContext,
+                this.gainNodes.bgm // BGMカテゴリに環境音を接続
+            );
+            
+            console.log('Environmental audio system initialized successfully');
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: '_initializeEnvironmentalAudio',
+                component: 'AudioController'
+            });
+        }
+    }
+    
+    // ================================
+    // 環境音制御メソッド
+    // ================================
+    
+    /**
+     * 環境音を開始
+     * @param {string} biomeId - バイオームID
+     * @param {string} weatherId - 天候ID（オプション）
+     * @param {string} timeOfDay - 時間帯ID（オプション）
+     */
+    startEnvironmentalAudio(biomeId, weatherId = null, timeOfDay = null) {
+        try {
+            if (!this.environmentalAudioManager) {
+                console.warn('Environmental audio manager is not initialized');
+                return false;
+            }
+            
+            return this.environmentalAudioManager.start(biomeId, weatherId, timeOfDay);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'startEnvironmentalAudio',
+                biomeId: biomeId,
+                weatherId: weatherId,
+                timeOfDay: timeOfDay
+            });
+            return false;
+        }
+    }
+    
+    /**
+     * 環境音を停止
+     * @param {number} fadeOutTime - フェードアウト時間（秒）
+     */
+    stopEnvironmentalAudio(fadeOutTime = 2.0) {
+        try {
+            if (!this.environmentalAudioManager) {
+                console.warn('Environmental audio manager is not initialized');
+                return;
+            }
+            
+            this.environmentalAudioManager.stop(fadeOutTime);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'stopEnvironmentalAudio',
+                fadeOutTime: fadeOutTime
+            });
+        }
+    }
+    
+    /**
+     * 環境音の再生状態を取得
+     * @returns {boolean} 再生中かどうか
+     */
+    isEnvironmentalAudioPlaying() {
+        try {
+            if (!this.environmentalAudioManager) {
+                return false;
+            }
+            
+            return this.environmentalAudioManager.isPlaying();
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'isEnvironmentalAudioPlaying'
+            });
+            return false;
+        }
+    }
+    
+    /**
+     * 環境音の音量を設定
+     * @param {number} volume - 音量 (0-1)
+     */
+    setEnvironmentalAudioVolume(volume) {
+        try {
+            if (!this.environmentalAudioManager) {
+                console.warn('Environmental audio manager is not initialized');
+                return;
+            }
+            
+            this.environmentalAudioManager.setVolume(volume);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'setEnvironmentalAudioVolume',
+                volume: volume
+            });
+        }
+    }
+    
+    /**
+     * 環境音の現在の音量を取得
+     * @returns {number} 現在の音量 (0-1)
+     */
+    getEnvironmentalAudioVolume() {
+        try {
+            if (!this.environmentalAudioManager) {
+                return 0;
+            }
+            
+            return this.environmentalAudioManager.getVolume();
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'getEnvironmentalAudioVolume'
+            });
+            return 0;
+        }
+    }
+    
+    /**
+     * バイオームを変更
+     * @param {string} newBiomeId - 新しいバイオームID
+     * @param {number} transitionTime - 遷移時間（秒）
+     */
+    changeBiome(newBiomeId, transitionTime = 3.0) {
+        try {
+            if (!this.environmentalAudioManager) {
+                console.warn('Environmental audio manager is not initialized');
+                return false;
+            }
+            
+            return this.environmentalAudioManager.changeBiome(newBiomeId, transitionTime);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'changeBiome',
+                newBiomeId: newBiomeId,
+                transitionTime: transitionTime
+            });
+            return false;
+        }
+    }
+    
+    /**
+     * 天候効果を変更
+     * @param {string} weatherId - 天候ID（nullで天候効果なし）
+     * @param {number} transitionTime - 遷移時間（秒）
+     */
+    changeWeather(weatherId, transitionTime = 2.0) {
+        try {
+            if (!this.environmentalAudioManager) {
+                console.warn('Environmental audio manager is not initialized');
+                return false;
+            }
+            
+            return this.environmentalAudioManager.changeWeather(weatherId, transitionTime);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'changeWeather',
+                weatherId: weatherId,
+                transitionTime: transitionTime
+            });
+            return false;
+        }
+    }
+    
+    /**
+     * 時間帯を変更
+     * @param {string} timeOfDay - 時間帯ID
+     * @param {number} transitionTime - 遷移時間（秒）
+     */
+    changeTimeOfDay(timeOfDay, transitionTime = 5.0) {
+        try {
+            if (!this.environmentalAudioManager) {
+                console.warn('Environmental audio manager is not initialized');
+                return false;
+            }
+            
+            return this.environmentalAudioManager.changeTimeOfDay(timeOfDay, transitionTime);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'changeTimeOfDay',
+                timeOfDay: timeOfDay,
+                transitionTime: transitionTime
+            });
+            return false;
+        }
+    }
+    
+    /**
+     * 利用可能なバイオーム一覧を取得
+     * @returns {Array} バイオーム一覧
+     */
+    getAvailableBiomes() {
+        try {
+            if (!this.environmentalAudioManager) {
+                return [];
+            }
+            
+            return this.environmentalAudioManager.getAvailableBiomes();
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'getAvailableBiomes'
+            });
+            return [];
+        }
+    }
+    
+    /**
+     * 利用可能な天候効果一覧を取得
+     * @returns {Array} 天候効果一覧
+     */
+    getAvailableWeatherEffects() {
+        try {
+            if (!this.environmentalAudioManager) {
+                return [];
+            }
+            
+            return this.environmentalAudioManager.getAvailableWeatherEffects();
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'getAvailableWeatherEffects'
+            });
+            return [];
+        }
+    }
+    
+    /**
+     * 利用可能な時間帯一覧を取得
+     * @returns {Array} 時間帯一覧
+     */
+    getAvailableTimesOfDay() {
+        try {
+            if (!this.environmentalAudioManager) {
+                return [];
+            }
+            
+            return this.environmentalAudioManager.getAvailableTimesOfDay();
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'getAvailableTimesOfDay'
+            });
+            return [];
+        }
+    }
+    
+    /**
+     * 現在の環境音設定を取得
+     * @returns {Object} 現在の環境音設定
+     */
+    getCurrentEnvironmentalSettings() {
+        try {
+            if (!this.environmentalAudioManager) {
+                return {
+                    isPlaying: false,
+                    currentBiome: null,
+                    currentWeather: null,
+                    currentTimeOfDay: null,
+                    volume: 0
+                };
+            }
+            
+            return this.environmentalAudioManager.getCurrentSettings();
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'getCurrentEnvironmentalSettings'
+            });
+            return {
+                isPlaying: false,
+                currentBiome: null,
+                currentWeather: null,
+                currentTimeOfDay: null,
+                volume: 0
+            };
+        }
+    }
+    
+    /**
+     * 環境音システムの詳細ステータスを取得
+     * @returns {Object} 詳細ステータス
+     */
+    getEnvironmentalAudioStatus() {
+        try {
+            if (!this.environmentalAudioManager) {
+                return {
+                    initialized: false,
+                    isPlaying: false,
+                    availableBiomes: [],
+                    availableWeatherEffects: [],
+                    availableTimesOfDay: [],
+                    currentSettings: {
+                        biome: null,
+                        weather: null,
+                        timeOfDay: null,
+                        volume: 0
+                    }
+                };
+            }
+            
+            return {
+                initialized: true,
+                ...this.environmentalAudioManager.getStatus()
+            };
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'getEnvironmentalAudioStatus'
+            });
+            return {
+                initialized: false,
+                isPlaying: false,
+                availableBiomes: [],
+                availableWeatherEffects: [],
+                availableTimesOfDay: [],
+                currentSettings: {
+                    biome: null,
+                    weather: null,
+                    timeOfDay: null,
+                    volume: 0
+                }
+            };
+        }
+    }
 
     // ================================
     // 音響品質動的調整機能
@@ -2375,6 +2722,12 @@ export class AudioController {
             if (this.presetManager) {
                 this.presetManager.dispose();
                 this.presetManager = null;
+            }
+            
+            // 環境音システムを破棄
+            if (this.environmentalAudioManager) {
+                this.environmentalAudioManager.dispose();
+                this.environmentalAudioManager = null;
             }
             
             // GainNodeを切断

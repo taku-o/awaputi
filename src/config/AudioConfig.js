@@ -96,6 +96,13 @@ class AudioConfig {
         // プリセット設定
         this.configManager.set('audio', 'presets.user', {});
         this.configManager.set('audio', 'presets.lastApplied', null);
+        
+        // 環境音設定
+        this.configManager.set('audio', 'environmental.enabled', false);
+        this.configManager.set('audio', 'environmental.volume', 0.3);
+        this.configManager.set('audio', 'environmental.currentBiome', null);
+        this.configManager.set('audio', 'environmental.currentWeather', null);
+        this.configManager.set('audio', 'environmental.currentTimeOfDay', null);
     }
 
     /**
@@ -173,6 +180,17 @@ class AudioConfig {
         this.configManager.setValidationRule('audio', 'effects.equalizer.bands.mid', bandValidation);
         this.configManager.setValidationRule('audio', 'effects.equalizer.bands.highMid', bandValidation);
         this.configManager.setValidationRule('audio', 'effects.equalizer.bands.treble', bandValidation);
+        
+        // 環境音設定の検証ルール
+        this.configManager.setValidationRule('audio', 'environmental.enabled', {
+            type: 'boolean'
+        });
+        
+        this.configManager.setValidationRule('audio', 'environmental.volume', {
+            type: 'number',
+            min: 0,
+            max: 1
+        });
     }
 
     /**
