@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多言語テスト - BubblePop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .language-selector {
+            margin: 20px 0;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background: #4CAF50;
+            color: white;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .menu-items {
+            margin-top: 20px;
+        }
+        .menu-item {
+            padding: 10px;
+            margin: 5px 0;
+            background: #e8e8e8;
+            border-radius: 4px;
+        }
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .loading { background: #fff3cd; color: #856404; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>多言語対応テスト</h1>
+        
+        <div class="language-selector">
+            <h2>言語選択</h2>
+            <button onclick="switchLanguage('ja')">日本語</button>
+            <button onclick="switchLanguage('en')">English</button>
+        </div>
+        
+        <div class="status" id="status">システム初期化中...</div>
+        
+        <div class="menu-items">
+            <h2>メニュー項目</h2>
+            <div class="menu-item" id="menu-title">タイトル: <span id="title-text">-</span></div>
+            <div class="menu-item" id="menu-start">開始: <span id="start-text">-</span></div>
+            <div class="menu-item" id="menu-settings">設定: <span id="settings-text">-</span></div>
+            <div class="menu-item" id="menu-userinfo">ユーザー情報: <span id="userinfo-text">-</span></div>
+        </div>
+        
+        <div>
+            <h2>翻訳データ状況</h2>
+            <div id="translation-status">確認中...</div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { LocalizationManager } from './src/core/LocalizationManager.js';
+        
+        let localizationManager;
+        
+        function setStatus(message, type = 'loading') {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = message;
+            statusEl.className = 'status ' + type;
+        }
+        
+        function updateTranslationStatus(data) {
+            const statusEl = document.getElementById('translation-status');
+            statusEl.innerHTML = `
+                <p>現在の言語: ${data.currentLanguage}</p>
+                <p>利用可能言語: ${data.availableLanguages.join(', ')}</p>
+                <p>翻訳数: ${JSON.stringify(data.translationCounts)}</p>
+            `;
+        }
+        
+        function updateMenuTexts() {
+            if (!localizationManager) return;
+            
+            try {
+                document.getElementById('title-text').textContent = localizationManager.t('menu.title');
+                document.getElementById('start-text').textContent = localizationManager.t('menu.start');
+                document.getElementById('settings-text').textContent = localizationManager.t('menu.settings');
+                document.getElementById('userinfo-text').textContent = localizationManager.t('menu.userInfo');
+            } catch (error) {
+                console.error('Translation error:', error);
+                setStatus('翻訳エラー: ' + error.message, 'error');
+            }
+        }
+        
+        async function switchLanguage(language) {
+            if (!localizationManager) {
+                setStatus('LocalizationManager が初期化されていません', 'error');
+                return;
+            }
+            
+            try {
+                setStatus(`言語を ${language} に切り替え中...`, 'loading');
+                const success = await localizationManager.setLanguage(language);
+                
+                if (success) {
+                    setStatus(`言語を ${language} に切り替えました`, 'success');
+                    updateMenuTexts();
+                    updateTranslationStatus(localizationManager.getStats());
+                } else {
+                    setStatus(`言語 ${language} への切り替えに失敗しました`, 'error');
+                }
+            } catch (error) {
+                console.error('Language switch error:', error);
+                setStatus('言語切り替えエラー: ' + error.message, 'error');
+            }
+        }
+        
+        // グローバル関数として登録
+        window.switchLanguage = switchLanguage;
+        
+        // 初期化
+        async function initialize() {
+            try {
+                setStatus('LocalizationManager を初期化中...', 'loading');
+                
+                localizationManager = new LocalizationManager();
+                
+                // 初期化完了を待つ
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                setStatus('初期化完了', 'success');
+                updateMenuTexts();
+                updateTranslationStatus(localizationManager.getStats());
+                
+            } catch (error) {
+                console.error('Initialization error:', error);
+                setStatus('初期化エラー: ' + error.message, 'error');
+            }
+        }
+        
+        // ページ読み込み完了後に初期化
+        initialize();
+    </script>
+</body>
+</html>
