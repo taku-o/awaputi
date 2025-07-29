@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translation Automation Tools Test - 翻訳自動化ツールテスト</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+
+        .tool-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #3498db;
+        }
+
+        .tool-section h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tool-section h3 {
+            color: #34495e;
+            margin: 20px 0 10px 0;
+            font-size: 1.3em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 5px;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .controls label {
+            font-weight: 600;
+            color: #2c3e50;
+            min-width: 120px;
+        }
+
+        .controls select, .controls input {
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            min-width: 150px;
+        }
+
+        .controls select:focus, .controls input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 10px 0;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: normal;
+            min-width: auto;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+        }
+
+        .btn.danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .btn.success {
+            background: linear-gradient(135deg, #27ae60, #229954);
+        }
+
+        .results {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 15px;
+            white-space: pre-wrap;
+            line-height: 1.4;
+        }
+
+        .status {
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status.info {
+            background: #cce7ff;
+            color: #004085;
+            border: 1px solid #b3d7ff;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            background: #ecf0f1;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #7f8c8d;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background: #3498db;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .file-input-area {
+            border: 2px dashed #bdc3c7;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin: 15px 0;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-input-area:hover {
+            border-color: #3498db;
+            background: #e3f2fd;
+        }
+
+        .file-input-area.dragover {
+            border-color: #27ae60;
+            background: #e8f5e8;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #ecf0f1;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: 700;
+            color: #3498db;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .output-format-selector {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .format-option {
+            padding: 8px 15px;
+            background: #ecf0f1;
+            border: 2px solid #bdc3c7;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .format-option.selected {
+            background: #3498db;
+            color: white;
+            border-color: #2980b9;
+        }
+
+        .icon {
+            font-size: 1.2em;
+            margin-right: 5px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .controls label {
+                min-width: auto;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab {
+                flex: 1;
+                min-width: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 Translation Automation Tools</h1>
+        <p class="subtitle">翻訳自動化ツール - ファイル生成・インポート・エクスポート機能テスト</p>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('generator')">
+                <span class="icon">🏗️</span>ファイル生成
+            </button>
+            <button class="tab" onclick="showTab('export')">
+                <span class="icon">📤</span>エクスポート
+            </button>
+            <button class="tab" onclick="showTab('import')">
+                <span class="icon">📥</span>インポート
+            </button>
+            <button class="tab" onclick="showTab('sync')">
+                <span class="icon">🔄</span>同期管理
+            </button>
+            <button class="tab" onclick="showTab('extraction')">
+                <span class="icon">🔍</span>キー抽出
+            </button>
+        </div>
+
+        <!-- ファイル生成タブ -->
+        <div id="generator" class="tab-content active">
+            <div class="tool-section">
+                <h2><span class="icon">🏗️</span>翻訳ファイル生成ツール</h2>
+                
+                <h3>新言語ファイルセット生成</h3>
+                <div class="controls">
+                    <label>対象言語:</label>
+                    <select id="generateLanguage">
+                        <option value="zh-CN">中国語 (簡体字)</option>
+                        <option value="zh-TW">中国語 (繁体字)</option>
+                        <option value="ko">韓国語</option>
+                        <option value="fr">フランス語</option>
+                        <option value="de">ドイツ語</option>
+                        <option value="es">スペイン語</option>
+                        <option value="ar">アラビア語</option>
+                    </select>
+                    
+                    <label>基準言語:</label>
+                    <select id="baseLanguage">
+                        <option value="ja">日本語</option>
+                        <option value="en">英語</option>
+                    </select>
+                </div>
+
+                <div class="checkbox-group">
+                    <label>
+                        <input type="checkbox" id="includeEmpty" checked>
+                        空翻訳を含める
+                    </label>
+                    <label>
+                        <input type="checkbox" id="generateTemplates" checked>
+                        テンプレート生成
+                    </label>
+                    <label>
+                        <input type="checkbox" id="preserveExisting" checked>
+                        既存翻訳を保持
+                    </label>
+                </div>
+
+                <button class="btn" onclick="generateLanguageFiles()">
+                    <span class="icon">🏗️</span>言語ファイル生成
+                </button>
+                <button class="btn secondary" onclick="generateTemplate()">
+                    <span class="icon">📋</span>翻訳テンプレート生成
+                </button>
+                <button class="btn secondary" onclick="getSupportedLanguages()">
+                    <span class="icon">🌐</span>サポート言語一覧
+                </button>
+
+                <div id="generatorResults" class="results"></div>
+            </div>
+        </div>
+
+        <!-- エクスポートタブ -->
+        <div id="export" class="tab-content">
+            <div class="tool-section">
+                <h2><span class="icon">📤</span>翻訳エクスポート機能</h2>
+                
+                <h3>エクスポート設定</h3>
+                <div class="controls">
+                    <label>エクスポート言語:</label>
+                    <select id="exportLanguage">
+                        <option value="ja">日本語</option>
+                        <option value="en">英語</option>
+                        <option value="zh-CN">中国語 (簡体字)</option>
+                        <option value="ko">韓国語</option>
+                    </select>
+                    
+                    <label>カテゴリ:</label>
+                    <select id="exportCategories" multiple>
+                        <option value="common">共通</option>
+                        <option value="menu">メニュー</option>
+                        <option value="game">ゲーム</option>
+                        <option value="settings">設定</option>
+                        <option value="errors">エラー</option>
+                        <option value="achievements">実績</option>
+                        <option value="help">ヘルプ</option>
+                    </select>
+                </div>
+
+                <h3>出力フォーマット</h3>
+                <div class="output-format-selector">
+                    <div class="format-option selected" data-format="json">
+                        <span class="icon">📄</span>JSON
+                    </div>
+                    <div class="format-option" data-format="csv">
+                        <span class="icon">📊</span>CSV
+                    </div>
+                    <div class="format-option" data-format="xlsx">
+                        <span class="icon">📈</span>Excel
+                    </div>
+                    <div class="format-option" data-format="xml">
+                        <span class="icon">📜</span>XML
+                    </div>
+                    <div class="format-option" data-format="properties">
+                        <span class="icon">⚙️</span>Properties
+                    </div>
+                </div>
+
+                <div class="checkbox-group">
+                    <label>
+                        <input type="checkbox" id="includeMetadata" checked>
+                        メタデータを含める
+                    </label>
+                    <label>
+                        <input type="checkbox" id="includeEmptyKeys">
+                        空キーを含める
+                    </label>
+                    <label>
+                        <input type="checkbox" id="flattenStructure">
+                        構造を平坦化
+                    </label>
+                </div>
+
+                <button class="btn" onclick="exportTranslations()">
+                    <span class="icon">📤</span>翻訳エクスポート
+                </button>
+                <button class="btn secondary" onclick="getSupportedFormats()">
+                    <span class="icon">📋</span>サポート形式一覧
+                </button>
+
+                <div id="exportResults" class="results"></div>
+            </div>
+        </div>
+
+        <!-- インポートタブ -->
+        <div id="import" class="tab-content">
+            <div class="tool-section">
+                <h2><span class="icon">📥</span>翻訳インポート機能</h2>
+                
+                <h3>インポート設定</h3>
+                <div class="controls">
+                    <label>対象言語:</label>
+                    <select id="importLanguage">
+                        <option value="">自動検出</option>
+                        <option value="ja">日本語</option>
+                        <option value="en">英語</option>
+                        <option value="zh-CN">中国語 (簡体字)</option>
+                        <option value="ko">韓国語</option>
+                    </select>
+                    
+                    <label>ファイル形式:</label>
+                    <select id="importFormat">
+                        <option value="auto">自動検出</option>
+                        <option value="json">JSON</option>
+                        <option value="csv">CSV</option>
+                        <option value="xlsx">Excel</option>
+                        <option value="xml">XML</option>
+                        <option value="properties">Properties</option>
+                    </select>
+                </div>
+
+                <div class="checkbox-group">
+                    <label>
+                        <input type="checkbox" id="validateKeys" checked>
+                        キー検証
+                    </label>
+                    <label>
+                        <input type="checkbox" id="preserveExistingImport" checked>
+                        既存翻訳を保持
+                    </label>
+                    <label>
+                        <input type="checkbox" id="strictMode">
+                        厳密モード
+                    </label>
+                    <label>
+                        <input type="checkbox" id="createBackup" checked>
+                        バックアップ作成
+                    </label>
+                </div>
+
+                <h3>ファイル選択</h3>
+                <div class="file-input-area" id="fileDropArea">
+                    <p><span class="icon">📁</span>翻訳ファイルをドラッグ＆ドロップするか、クリックして選択</p>
+                    <input type="file" id="fileInput" style="display: none;" accept=".json,.csv,.xlsx,.xml,.properties">
+                </div>
+
+                <h3>サンプルデータでテスト</h3>
+                <div class="controls">
+                    <button class="btn secondary" onclick="loadSampleJSON()">JSONサンプル</button>
+                    <button class="btn secondary" onclick="loadSampleCSV()">CSVサンプル</button>
+                    <button class="btn secondary" onclick="loadSampleXML()">XMLサンプル</button>
+                </div>
+
+                <button class="btn" onclick="importTranslations()" id="importBtn" disabled>
+                    <span class="icon">📥</span>翻訳インポート
+                </button>
+
+                <div id="importResults" class="results"></div>
+            </div>
+        </div>
+
+        <!-- 同期管理タブ -->
+        <div id="sync" class="tab-content">
+            <div class="tool-section">
+                <h2><span class="icon">🔄</span>翻訳同期管理</h2>
+                
+                <h3>同期設定</h3>
+                <div class="controls">
+                    <label>基準言語:</label>
+                    <select id="syncBaseLanguage">
+                        <option value="ja">日本語</option>
+                        <option value="en">英語</option>
+                    </select>
+                    
+                    <label>対象言語:</label>
+                    <select id="syncTargetLanguages" multiple>
+                        <option value="en">英語</option>
+                        <option value="zh-CN">中国語 (簡体字)</option>
+                        <option value="zh-TW">中国語 (繁体字)</option>
+                        <option value="ko">韓国語</option>
+                        <option value="fr">フランス語</option>
+                    </select>
+                </div>
+
+                <div class="checkbox-group">
+                    <label>
+                        <input type="checkbox" id="addMissingKeys" checked>
+                        不足キーを追加
+                    </label>
+                    <label>
+                        <input type="checkbox" id="removeObsoleteKeys">
+                        廃止キーを削除
+                    </label>
+                    <label>
+                        <input type="checkbox" id="updateMetadata" checked>
+                        メタデータ更新
+                    </label>
+                    <label>
+                        <input type="checkbox" id="generateSyncReport" checked>
+                        同期レポート生成
+                    </label>
+                </div>
+
+                <button class="btn" onclick="synchronizeFiles()">
+                    <span class="icon">🔄</span>ファイル同期実行
+                </button>
+                <button class="btn secondary" onclick="manageDifferences()">
+                    <span class="icon">🔍</span>差分管理
+                </button>
+
+                <h3>バックアップ管理</h3>
+                <div class="controls">
+                    <label>バックアップ言語:</label>
+                    <select id="backupLanguage">
+                        <option value="ja">日本語</option>
+                        <option value="en">英語</option>
+                        <option value="zh-CN">中国語 (簡体字)</option>
+                        <option value="ko">韓国語</option>
+                    </select>
+                    
+                    <label>説明:</label>
+                    <input type="text" id="backupDescription" placeholder="バックアップの説明を入力" value="手動バックアップ">
+                </div>
+
+                <button class="btn success" onclick="createBackup()">
+                    <span class="icon">💾</span>バックアップ作成
+                </button>
+                <button class="btn secondary" onclick="listBackups()">
+                    <span class="icon">📋</span>バックアップ一覧
+                </button>
+
+                <div id="syncResults" class="results"></div>
+            </div>
+        </div>
+
+        <!-- キー抽出タブ -->
+        <div id="extraction" class="tab-content">
+            <div class="tool-section">
+                <h2><span class="icon">🔍</span>翻訳キー自動抽出</h2>
+                
+                <h3>抽出設定</h3>
+                <div class="controls">
+                    <label>出力形式:</label>
+                    <select id="extractionOutputFormat">
+                        <option value="detailed">詳細</option>
+                        <option value="summary">要約</option>
+                        <option value="keys-only">キーのみ</option>
+                        <option value="csv">CSV</option>
+                    </select>
+                </div>
+
+                <div class="checkbox-group">
+                    <label>
+                        <input type="checkbox" id="includeContext" checked>
+                        コンテキストを含める
+                    </label>
+                    <label>
+                        <input type="checkbox" id="autoRegister" checked>
+                        キーを自動登録
+                    </label>
+                    <label>
+                        <input type="checkbox" id="showStatistics" checked>
+                        統計情報表示
+                    </label>
+                </div>
+
+                <h3>抽出パターン</h3>
+                <div class="checkbox-group">
+                    <label>
+                        <input type="checkbox" id="pattern_t" checked>
+                        t('key') パターン
+                    </label>
+                    <label>
+                        <input type="checkbox" id="pattern_translate" checked>
+                        translate('key') パターン
+                    </label>
+                    <label>
+                        <input type="checkbox" id="pattern_getText" checked>
+                        getText('key') パターン
+                    </label>
+                    <label>
+                        <input type="checkbox" id="pattern_$t" checked>
+                        $t('key') パターン
+                    </label>
+                </div>
+
+                <h3>サンプルソースコード</h3>
+                <div class="controls">
+                    <button class="btn secondary" onclick="loadSampleSource()">サンプルコード読み込み</button>
+                    <button class="btn secondary" onclick="clearExtractionResults()">結果クリア</button>
+                </div>
+
+                <button class="btn" onclick="extractTranslationKeys()">
+                    <span class="icon">🔍</span>翻訳キー抽出実行
+                </button>
+
+                <div id="extractionResults" class="results"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 統計表示 -->
+    <div class="container">
+        <h2><span class="icon">📊</span>自動化ツール統計</h2>
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="stat-number" id="generatedFiles">0</div>
+                <div class="stat-label">生成ファイル数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="exportedFiles">0</div>
+                <div class="stat-label">エクスポート回数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="importedFiles">0</div>
+                <div class="stat-label">インポート回数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="syncOperations">0</div>
+                <div class="stat-label">同期操作回数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="extractedKeys">0</div>
+                <div class="stat-label">抽出キー数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="backupsCreated">0</div>
+                <div class="stat-label">作成バックアップ数</div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { getTranslationFileGenerator } from './src/core/i18n/automation/TranslationFileGenerator.js';
+        import { getTranslationImportExport } from './src/core/i18n/automation/TranslationImportExport.js';
+
+        // グローバル変数
+        let fileGenerator, importExport;
+        let currentFile = null;
+        let statistics = {
+            generatedFiles: 0,
+            exportedFiles: 0,
+            importedFiles: 0,
+            syncOperations: 0,
+            extractedKeys: 0,
+            backupsCreated: 0
+        };
+
+        // 初期化
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                fileGenerator = getTranslationFileGenerator();
+                importExport = getTranslationImportExport();
+                
+                setupEventListeners();
+                updateStatistics();
+                showStatus('自動化ツールテストが初期化されました', 'success');
+            } catch (error) {
+                console.error('Initialization error:', error);
+                showStatus(`初期化エラー: ${error.message}`, 'error');
+            }
+        });
+
+        // イベントリスナー設定
+        function setupEventListeners() {
+            // ファイルドロップ機能
+            const dropArea = document.getElementById('fileDropArea');
+            const fileInput = document.getElementById('fileInput');
+
+            dropArea.addEventListener('click', () => fileInput.click());
+            dropArea.addEventListener('dragover', handleDragOver);
+            dropArea.addEventListener('dragleave', handleDragLeave);
+            dropArea.addEventListener('drop', handleFileDrop);
+            
+            fileInput.addEventListener('change', handleFileSelect);
+
+            // フォーマット選択
+            document.querySelectorAll('.format-option').forEach(option => {
+                option.addEventListener('click', (e) => {
+                    document.querySelectorAll('.format-option').forEach(opt => opt.classList.remove('selected'));
+                    e.target.classList.add('selected');
+                });
+            });
+        }
+
+        // タブ切り替え
+        window.showTab = function(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            document.querySelector(`[onclick="showTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        };
+
+        // ファイル生成機能
+        window.generateLanguageFiles = async function() {
+            const language = document.getElementById('generateLanguage').value;
+            const baseLanguage = document.getElementById('baseLanguage').value;
+            const includeEmpty = document.getElementById('includeEmpty').checked;
+            const generateTemplates = document.getElementById('generateTemplates').checked;
+            const preserveExisting = document.getElementById('preserveExisting').checked;
+
+            showProgress('言語ファイル生成中...', 30);
+            
+            try {
+                const result = await fileGenerator.generateLanguageFiles(language, {
+                    baseLanguage: baseLanguage,
+                    includeEmpty: includeEmpty,
+                    generateTemplates: generateTemplates,
+                    preserveExisting: preserveExisting
+                });
+
+                showProgress('言語ファイル生成完了', 100);
+                
+                if (result.success) {
+                    statistics.generatedFiles += result.results.totalFiles;
+                    updateStatistics();
+                    
+                    displayResults('generatorResults', {
+                        title: `${result.results.languageName} (${result.results.language}) 言語ファイル生成結果`,
+                        data: {
+                            '生成ファイル数': result.results.totalFiles,
+                            '総キー数': result.results.totalKeys,
+                            'エラー数': result.results.errors.length,
+                            '生成日時': new Date().toLocaleString('ja-JP')
+                        },
+                        details: result.results.filesGenerated,
+                        files: result.files
+                    });
+                    showStatus(`${result.results.languageName}の言語ファイル生成が完了しました`, 'success');
+                } else {
+                    displayResults('generatorResults', { error: result.error });
+                    showStatus(`生成エラー: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                console.error('Generation error:', error);
+                showStatus(`生成エラー: ${error.message}`, 'error');
+                displayResults('generatorResults', { error: error.message });
+            }
+        };
+
+        window.generateTemplate = async function() {
+            showProgress('翻訳テンプレート生成中...', 50);
+            
+            try {
+                // モック翻訳データ
+                const baseTranslations = {
+                    common: {
+                        ok: 'OK',
+                        cancel: 'キャンセル',
+                        save: '保存'
+                    },
+                    menu: {
+                        play: 'プレイ',
+                        settings: '設定'
+                    }
+                };
+
+                const template = fileGenerator.generateTranslationTemplate(baseTranslations, {
+                    language: 'new',
+                    includeInstructions: true,
+                    includeExamples: true
+                });
+
+                showProgress('テンプレート生成完了', 100);
+                
+                displayResults('generatorResults', {
+                    title: '翻訳テンプレート生成結果',
+                    template: template
+                });
+                showStatus('翻訳テンプレートが生成されました', 'success');
+            } catch (error) {
+                console.error('Template generation error:', error);
+                showStatus(`テンプレート生成エラー: ${error.message}`, 'error');
+            }
+        };
+
+        window.getSupportedLanguages = function() {
+            const languages = fileGenerator.getSupportedLanguages();
+            displayResults('generatorResults', {
+                title: 'サポート言語一覧',
+                languages: languages
+            });
+        };
+
+        // エクスポート機能
+        window.exportTranslations = async function() {
+            const language = document.getElementById('exportLanguage').value;
+            const categories = Array.from(document.getElementById('exportCategories').selectedOptions).map(opt => opt.value);
+            const format = document.querySelector('.format-option.selected').dataset.format;
+            const includeMetadata = document.getElementById('includeMetadata').checked;
+            const includeEmptyKeys = document.getElementById('includeEmptyKeys').checked;
+            const flattenStructure = document.getElementById('flattenStructure').checked;
+
+            showProgress('翻訳エクスポート中...', 40);
+            
+            try {
+                const result = await importExport.exportTranslations(language, {
+                    format: format,
+                    categories: categories,
+                    includeMetadata: includeMetadata,
+                    includeEmptyKeys: includeEmptyKeys,
+                    flattenStructure: flattenStructure
+                });
+
+                showProgress('エクスポート完了', 100);
+                
+                if (result.success) {
+                    statistics.exportedFiles++;
+                    updateStatistics();
+                    
+                    displayResults('exportResults', {
+                        title: `${language} 翻訳エクスポート結果`,
+                        data: {
+                            '言語': result.language,
+                            '形式': result.format,
+                            'ファイル名': result.fileName,
+                            'ファイルサイズ': `${result.size} bytes`,
+                            '総キー数': result.statistics.totalKeys,
+                            '空キー数': result.statistics.emptyKeys,
+                            'カテゴリ数': result.statistics.categories.length,
+                            'エクスポート日時': new Date(result.exportedAt).toLocaleString('ja-JP')
+                        },
+                        content: result.content
+                    });
+                    showStatus(`${language} の翻訳エクスポートが完了しました`, 'success');
+                } else {
+                    displayResults('exportResults', { error: result.error });
+                    showStatus(`エクスポートエラー: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                console.error('Export error:', error);
+                showStatus(`エクスポートエラー: ${error.message}`, 'error');
+            }
+        };
+
+        window.getSupportedFormats = function() {
+            const formats = importExport.getSupportedFormats();
+            displayResults('exportResults', {
+                title: 'サポートファイル形式一覧',
+                formats: formats
+            });
+        };
+
+        // インポート機能
+        window.importTranslations = async function() {
+            if (!currentFile) {
+                showStatus('インポートするファイルを選択してください', 'error');
+                return;
+            }
+
+            const language = document.getElementById('importLanguage').value;
+            const format = document.getElementById('importFormat').value;
+            const validateKeys = document.getElementById('validateKeys').checked;
+            const preserveExisting = document.getElementById('preserveExistingImport').checked;
+            const strictMode = document.getElementById('strictMode').checked;
+            const createBackup = document.getElementById('createBackup').checked;
+
+            showProgress('翻訳インポート中...', 60);
+            
+            try {
+                const result = await importExport.importTranslations(currentFile.content, {
+                    format: format,
+                    language: language,
+                    fileName: currentFile.name,
+                    validateKeys: validateKeys,
+                    preserveExisting: preserveExisting,
+                    strictMode: strictMode,
+                    createBackup: createBackup
+                });
+
+                showProgress('インポート完了', 100);
+                
+                if (result.success) {
+                    statistics.importedFiles++;
+                    if (result.backup?.created) {
+                        statistics.backupsCreated++;
+                    }
+                    updateStatistics();
+                    
+                    displayResults('importResults', {
+                        title: `${result.language} 翻訳インポート結果`,
+                        data: {
+                            '言語': result.language,
+                            '形式': result.format,
+                            '総キー数': result.statistics.totalKeys,
+                            'インポートキー数': result.statistics.importedKeys,
+                            'スキップキー数': result.statistics.skippedKeys,
+                            '更新キー数': result.statistics.updatedKeys,
+                            '新規キー数': result.statistics.newKeys,
+                            'バックアップ': result.backup ? '作成済み' : '未作成',
+                            'インポート日時': new Date(result.importedAt).toLocaleString('ja-JP')
+                        },
+                        validation: result.validation
+                    });
+                    showStatus(`${result.language} の翻訳インポートが完了しました`, 'success');
+                } else {
+                    displayResults('importResults', { error: result.error });
+                    showStatus(`インポートエラー: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                console.error('Import error:', error);
+                showStatus(`インポートエラー: ${error.message}`, 'error');
+            }
+        };
+
+        // サンプルデータ読み込み
+        window.loadSampleJSON = function() {
+            const sampleJSON = `{
+  "_metadata": {
+    "language": "en",
+    "version": "1.0.0",
+    "translator": "Sample Translator"
+  },
+  "common": {
+    "ok": "OK",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete"
+  },
+  "menu": {
+    "play": "Play",
+    "settings": "Settings",
+    "help": "Help",
+    "exit": "Exit"
+  }
+}`;
+            currentFile = { name: 'sample.json', content: sampleJSON };
+            document.getElementById('importBtn').disabled = false;
+            showStatus('JSONサンプルデータを読み込みました', 'info');
+        };
+
+        window.loadSampleCSV = function() {
+            const sampleCSV = `Key,Value,Category,Notes
+"common.ok","OK","common",""
+"common.cancel","Cancel","common",""
+"common.save","Save","common",""
+"menu.play","Play","menu",""
+"menu.settings","Settings","menu",""`;
+            currentFile = { name: 'sample.csv', content: sampleCSV };
+            document.getElementById('importBtn').disabled = false;
+            showStatus('CSVサンプルデータを読み込みました', 'info');
+        };
+
+        window.loadSampleXML = function() {
+            const sampleXML = `<?xml version="1.0" encoding="UTF-8"?>
+<translations language="en">
+  <common>
+    <ok>OK</ok>
+    <cancel>Cancel</cancel>
+    <save>Save</save>
+  </common>
+  <menu>
+    <play>Play</play>
+    <settings>Settings</settings>
+  </menu>
+</translations>`;
+            currentFile = { name: 'sample.xml', content: sampleXML };
+            document.getElementById('importBtn').disabled = false;
+            showStatus('XMLサンプルデータを読み込みました', 'info');
+        };
+
+        // 同期機能
+        window.synchronizeFiles = async function() {
+            const baseLanguage = document.getElementById('syncBaseLanguage').value;
+            const targetLanguages = Array.from(document.getElementById('syncTargetLanguages').selectedOptions).map(opt => opt.value);
+            const addMissingKeys = document.getElementById('addMissingKeys').checked;
+            const removeObsoleteKeys = document.getElementById('removeObsoleteKeys').checked;
+            const updateMetadata = document.getElementById('updateMetadata').checked;
+            const generateReport = document.getElementById('generateSyncReport').checked;
+
+            if (targetLanguages.length === 0) {
+                showStatus('対象言語を選択してください', 'error');
+                return;
+            }
+
+            showProgress('ファイル同期中...', 70);
+            
+            try {
+                const result = await fileGenerator.synchronizeTranslationFiles(baseLanguage, targetLanguages, {
+                    addMissingKeys: addMissingKeys,
+                    removeObsoleteKeys: removeObsoleteKeys,
+                    updateMetadata: updateMetadata,
+                    generateReport: generateReport
+                });
+
+                showProgress('同期完了', 100);
+                statistics.syncOperations++;
+                updateStatistics();
+                
+                displayResults('syncResults', {
+                    title: `翻訳ファイル同期結果`,
+                    data: {
+                        '基準言語': result.baseLanguage,
+                        '対象言語数': result.targetLanguages.length,
+                        '処理ファイル数': result.summary.filesProcessed,
+                        '追加キー数': result.summary.keysAdded,
+                        '更新キー数': result.summary.keysUpdated,
+                        '削除キー数': result.summary.keysRemoved,
+                        'エラー数': result.summary.errors,
+                        '同期日時': new Date(result.timestamp).toLocaleString('ja-JP')
+                    },
+                    changes: Object.fromEntries(result.changes)
+                });
+                showStatus('翻訳ファイル同期が完了しました', 'success');
+            } catch (error) {
+                console.error('Synchronization error:', error);
+                showStatus(`同期エラー: ${error.message}`, 'error');
+            }
+        };
+
+        window.manageDifferences = async function() {
+            try {
+                // モックデータで差分管理をテスト
+                const baseVersion = {
+                    common: { ok: 'OK', cancel: 'Cancel' },
+                    menu: { play: 'Play' }
+                };
+                
+                const newVersion = {
+                    common: { ok: 'OK', cancel: 'キャンセル', save: 'Save' },
+                    menu: { play: 'プレイ', settings: 'Settings' }
+                };
+
+                const differences = await importExport.manageDifferences(baseVersion, newVersion, {
+                    generatePatch: true,
+                    includeMetadata: true
+                });
+
+                displayResults('syncResults', {
+                    title: '翻訳データ差分管理結果',
+                    data: {
+                        '総変更数': differences.statistics.totalChanges,
+                        '追加数': differences.statistics.addedCount,
+                        '変更数': differences.statistics.modifiedCount,
+                        '削除数': differences.statistics.deletedCount,
+                        '分析日時': new Date(differences.timestamp).toLocaleString('ja-JP')
+                    },
+                    differences: differences
+                });
+                showStatus('差分分析が完了しました', 'success');
+            } catch (error) {
+                console.error('Difference management error:', error);
+                showStatus(`差分管理エラー: ${error.message}`, 'error');
+            }
+        };
+
+        window.createBackup = async function() {
+            const language = document.getElementById('backupLanguage').value;
+            const description = document.getElementById('backupDescription').value;
+
+            showProgress('バックアップ作成中...', 80);
+            
+            try {
+                const backup = await importExport.createBackup(language, {
+                    description: description,
+                    includeMetadata: true
+                });
+
+                showProgress('バックアップ完了', 100);
+                statistics.backupsCreated++;
+                updateStatistics();
+                
+                displayResults('syncResults', {
+                    title: `${language} バックアップ作成結果`,
+                    data: {
+                        'バックアップID': backup.id,
+                        '言語': backup.language,
+                        '説明': backup.description,
+                        '作成日時': new Date(backup.timestamp).toLocaleString('ja-JP'),
+                        '総キー数': backup.statistics.totalKeys,
+                        '元サイズ': `${backup.metadata.originalSize} bytes`,
+                        '圧縮': backup.compressed ? 'あり' : 'なし'
+                    }
+                });
+                showStatus(`${language} のバックアップが作成されました`, 'success');
+            } catch (error) {
+                console.error('Backup creation error:', error);
+                showStatus(`バックアップエラー: ${error.message}`, 'error');
+            }
+        };
+
+        // キー抽出機能
+        window.extractTranslationKeys = async function() {
+            const outputFormat = document.getElementById('extractionOutputFormat').value;
+            const includeContext = document.getElementById('includeContext').checked;
+            const autoRegister = document.getElementById('autoRegister').checked;
+
+            // 抽出パターンを収集
+            const patterns = [];
+            if (document.getElementById('pattern_t').checked) {
+                patterns.push(/t\(['"`]([^'"`]+)['"`]\)/g);
+            }
+            if (document.getElementById('pattern_translate').checked) {
+                patterns.push(/translate\(['"`]([^'"`]+)['"`]\)/g);
+            }
+            if (document.getElementById('pattern_getText').checked) {
+                patterns.push(/getText\(['"`]([^'"`]+)['"`]\)/g);
+            }
+            if (document.getElementById('pattern_$t').checked) {
+                patterns.push(/\$t\(['"`]([^'"`]+)['"`]\)/g);
+            }
+
+            showProgress('翻訳キー抽出中...', 90);
+            
+            try {
+                // サンプルソースファイル
+                const sourceFiles = ['sample1.js', 'sample2.js'];
+                
+                const result = await fileGenerator.extractTranslationKeys(sourceFiles, {
+                    patterns: patterns,
+                    includeContext: includeContext,
+                    autoRegister: autoRegister,
+                    outputFormat: outputFormat
+                });
+
+                showProgress('抽出完了', 100);
+                statistics.extractedKeys += result.uniqueKeys || 0;
+                updateStatistics();
+                
+                displayResults('extractionResults', {
+                    title: '翻訳キー抽出結果',
+                    data: {
+                        '処理ファイル数': result.totalFiles,
+                        '総キー数': result.totalKeys,
+                        'ユニークキー数': result.uniqueKeys,
+                        'エラー数': result.errors.length,
+                        '自動登録': autoRegister ? 'あり' : 'なし',
+                        '抽出日時': new Date().toLocaleString('ja-JP')
+                    },
+                    extractedKeys: result.extractedKeys,
+                    keysByFile: Object.fromEntries(result.keysByFile || [])
+                });
+                showStatus(`${result.uniqueKeys} 個の翻訳キーを抽出しました`, 'success');
+            } catch (error) {
+                console.error('Key extraction error:', error);
+                showStatus(`キー抽出エラー: ${error.message}`, 'error');
+            }
+        };
+
+        window.loadSampleSource = function() {
+            displayResults('extractionResults', {
+                title: 'サンプルソースコード',
+                sourceCode: `// sample1.js
+const message = t('common.welcome');
+const title = translate('menu.mainTitle');
+const error = getText('errors.networkError');
+
+// sample2.js
+function showDialog() {
+    const okText = t('common.ok');
+    const cancelText = $t('common.cancel');
+    return getText('dialog.confirmMessage');
+}`
+            });
+            showStatus('サンプルソースコードを表示しました', 'info');
+        };
+
+        window.clearExtractionResults = function() {
+            document.getElementById('extractionResults').innerHTML = '';
+            showStatus('抽出結果をクリアしました', 'info');
+        };
+
+        // ユーティリティ関数
+        function showStatus(message, type) {
+            const existing = document.querySelector('.status');
+            if (existing) existing.remove();
+            
+            const status = document.createElement('div');
+            status.className = `status ${type}`;
+            status.textContent = message;
+            document.body.insertBefore(status, document.body.firstChild);
+            
+            setTimeout(() => status.remove(), 5000);
+        }
+
+        function showProgress(message, percent) {
+            // プログレスバー表示の実装（必要に応じて）
+            console.log(`Progress: ${message} (${percent}%)`);
+        }
+
+        function displayResults(elementId, data) {
+            const element = document.getElementById(elementId);
+            let output = '';
+
+            if (data.error) {
+                output = `❌ エラー: ${data.error}`;
+            } else {
+                if (data.title) {
+                    output += `📋 ${data.title}\n${'='.repeat(50)}\n\n`;
+                }
+                
+                if (data.data) {
+                    output += '📊 基本情報:\n';
+                    for (const [key, value] of Object.entries(data.data)) {
+                        output += `  ${key}: ${value}\n`;
+                    }
+                    output += '\n';
+                }
+                
+                if (data.languages) {
+                    output += '🌐 サポート言語:\n';
+                    data.languages.forEach(lang => {
+                        output += `  ${lang.code}: ${lang.name} (${lang.direction})\n`;
+                    });
+                }
+                
+                if (data.formats) {
+                    output += '📄 サポート形式:\n';
+                    data.formats.forEach(format => {
+                        output += `  ${format.code}: ${format.name}\n`;
+                        output += `    拡張子: ${format.extensions.join(', ')}\n`;
+                        output += `    ネスト: ${format.supportsNesting ? 'あり' : 'なし'}\n\n`;
+                    });
+                }
+                
+                if (data.template) {
+                    output += '📋 テンプレート内容:\n';
+                    output += JSON.stringify(JSON.parse(data.template), null, 2);
+                }
+                
+                if (data.content) {
+                    output += '📄 エクスポート内容 (先頭500文字):\n';
+                    output += data.content.substring(0, 500);
+                    if (data.content.length > 500) {
+                        output += '\n... (省略)';
+                    }
+                }
+                
+                if (data.sourceCode) {
+                    output += '💻 ソースコード:\n';
+                    output += data.sourceCode;
+                }
+            }
+            
+            element.textContent = output;
+        }
+
+        function updateStatistics() {
+            Object.entries(statistics).forEach(([key, value]) => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = value;
+                }
+            });
+        }
+
+        // ファイル処理関数
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.currentTarget.classList.remove('dragover');
+        }
+
+        function handleFileDrop(e) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                processFile(files[0]);
+            }
+        }
+
+        function handleFileSelect(e) {
+            if (e.target.files.length > 0) {
+                processFile(e.target.files[0]);
+            }
+        }
+
+        function processFile(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                currentFile = {
+                    name: file.name,
+                    content: e.target.result,
+                    size: file.size,
+                    type: file.type
+                };
+                
+                document.getElementById('importBtn').disabled = false;
+                showStatus(`ファイル "${file.name}" を読み込みました`, 'success');
+            };
+            reader.readAsText(file);
+        }
+    </script>
+</body>
+</html>
