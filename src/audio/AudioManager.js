@@ -1,6 +1,11 @@
 import { getErrorHandler } from '../utils/ErrorHandler.js';
 import { getAudioConfig } from '../config/AudioConfig.js';
 import { getConfigurationManager } from '../core/ConfigurationManager.js';
+import { BGMSystem } from './BGMSystem.js';
+import { SoundEffectSystem } from './SoundEffectSystem.js';
+import { AudioController } from './AudioController.js';
+import { AudioVisualizer } from './AudioVisualizer.js';
+import { AudioAccessibilitySupport } from './AudioAccessibilitySupport.js';
 
 /**
  * 音響管理クラス - Web Audio API を使用した高度な音響システム
@@ -28,14 +33,33 @@ export class AudioManager {
         this.bgmGainNode = null;
         this.compressor = null;
         
-        // BGM関連
-        this.currentBGM = null;
-        this.bgmSource = null;
-        this.bgmBuffer = null;
+        // BGMシステム
+        this.bgmSystem = null;
+        
+        // 効果音システム
+        this.soundEffectSystem = null;
+        
+        // 音響制御システム
+        this.audioController = null;
+        
+        // 音響視覚化システム
+        this.audioVisualizer = null;
+        
+        // アクセシビリティ支援システム
+        this.accessibilitySupport = null;
         
         // 効果音バッファ
         this.soundBuffers = new Map();
         this.activeSources = new Set();
+        
+        // シーン連携
+        this.currentScene = null;
+        this.sceneToTrackMapping = {
+            menu: 'menu',
+            gameplay: 'gameplay', 
+            bonus: 'bonus',
+            gameover: 'gameover'
+        };
         
         // 音響効果
         this.reverbBuffer = null;
@@ -194,6 +218,61 @@ export class AudioManager {
                     operation: 'generate'
                 });
                 // 効果音なしで続行
+            }
+            
+            // BGMシステムの初期化
+            try {
+                this.bgmSystem = new BGMSystem(this);
+            } catch (bgmError) {
+                getErrorHandler().handleError(bgmError, 'AUDIO_ERROR', { 
+                    component: 'bgmSystem',
+                    operation: 'initialize'
+                });
+                // BGMなしで続行
+            }
+            
+            // 効果音システムの初期化
+            try {
+                this.soundEffectSystem = new SoundEffectSystem(this);
+            } catch (sfxError) {
+                getErrorHandler().handleError(sfxError, 'AUDIO_ERROR', { 
+                    component: 'soundEffectSystem',
+                    operation: 'initialize'
+                });
+                // 効果音システムなしで続行
+            }
+            
+            // 音響制御システムの初期化
+            try {
+                this.audioController = new AudioController(this);
+            } catch (controllerError) {
+                getErrorHandler().handleError(controllerError, 'AUDIO_ERROR', { 
+                    component: 'audioController',
+                    operation: 'initialize'
+                });
+                // 音響制御システムなしで続行
+            }
+            
+            // 音響視覚化システムの初期化
+            try {
+                this.audioVisualizer = new AudioVisualizer(this);
+            } catch (visualizerError) {
+                getErrorHandler().handleError(visualizerError, 'AUDIO_ERROR', { 
+                    component: 'audioVisualizer',
+                    operation: 'initialize'
+                });
+                // 音響視覚化システムなしで続行
+            }
+            
+            // アクセシビリティ支援システムの初期化
+            try {
+                this.accessibilitySupport = new AudioAccessibilitySupport(this);
+            } catch (accessibilityError) {
+                getErrorHandler().handleError(accessibilityError, 'AUDIO_ERROR', { 
+                    component: 'accessibilitySupport',
+                    operation: 'initialize'
+                });
+                // アクセシビリティ支援システムなしで続行
             }
             
             console.log('AudioManager initialized successfully');
@@ -668,7 +747,382 @@ export class AudioManager {
     }
     
     /**
-     * 効果音を再生
+     * 泡破壊音を再生（新しいSoundEffectSystemを経由）
+     * @param {string} bubbleType - 泡タイプ
+     * @param {number} comboLevel - コンボレベル
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playBubbleSound(bubbleType, comboLevel = 0, options = {}) {
+        if (this.soundEffectSystem) {
+            return this.soundEffectSystem.playBubbleSound(bubbleType, comboLevel, options);
+        }
+        // フォールバック: 従来の効果音
+        return this.playSound('pop', options);
+    }
+    
+    /**
+     * サイズ調整された泡破壊音を再生
+     * @param {string} bubbleType - 泡タイプ
+     * @param {number} size - 泡サイズ (0.5-2.0)
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playBubbleSoundBySize(bubbleType, size = 1.0, options = {}) {
+        if (this.soundEffectSystem) {
+            const buffer = this.soundEffectSystem.generateBubbleSoundBySize(bubbleType, size);
+            if (buffer) {
+                return this.soundEffectSystem._playSound(buffer, options);
+            }
+        }
+        // フォールバック: 通常の泡音
+        return this.playBubbleSound(bubbleType, 0, options);
+    }
+    
+    /**
+     * コンテキスト依存の泡破壊音を再生
+     * @param {string} bubbleType - 泡タイプ
+     * @param {Object} context - コンテキスト情報
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playContextualBubbleSound(bubbleType, context = {}, options = {}) {
+        if (this.soundEffectSystem) {
+            const buffer = this.soundEffectSystem.generateContextualBubbleSound(bubbleType, context);
+            if (buffer) {
+                return this.soundEffectSystem._playSound(buffer, options);
+            }
+        }
+        // フォールバック: 通常の泡音
+        return this.playBubbleSound(bubbleType, 0, options);
+    }
+    
+    /**
+     * 動的バリエーション音響を再生
+     * @param {string} baseSound - ベース音名
+     * @param {number} variation - バリエーション番号
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playSoundVariation(baseSound, variation, options = {}) {
+        if (this.soundEffectSystem) {
+            const buffer = this.soundEffectSystem.generateSoundVariation(baseSound, variation);
+            if (buffer) {
+                return this.soundEffectSystem._playSound(buffer, options);
+            }
+        }
+        // フォールバック: 通常の音
+        return this.playSound(baseSound, options);
+    }
+    
+    /**
+     * コンボ音を再生
+     * @param {number} comboLevel - コンボレベル
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playComboSound(comboLevel, options = {}) {
+        if (this.soundEffectSystem) {
+            return this.soundEffectSystem.playComboSound(comboLevel, options);
+        }
+        // フォールバック: 従来の効果音
+        return this.playSound('pop_combo', options);
+    }
+    
+    /**
+     * 連続コンボ用の連鎖音響を再生
+     * @param {number} comboCount - 連続コンボ数
+     * @param {number} comboLevel - 現在のコンボレベル
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playComboChainSound(comboCount, comboLevel, options = {}) {
+        if (this.soundEffectSystem) {
+            const buffer = this.soundEffectSystem.generateComboChainSound(comboCount, comboLevel);
+            if (buffer) {
+                return this.soundEffectSystem._playSound(buffer, options);
+            }
+        }
+        // フォールバック: 通常のコンボ音
+        return this.playComboSound(comboLevel, options);
+    }
+    
+    /**
+     * コンボブレイク時の音響を再生
+     * @param {number} maxComboLevel - 達成した最大コンボレベル
+     * @param {number} comboCount - 最終コンボ数
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playComboBreakSound(maxComboLevel, comboCount, options = {}) {
+        if (this.soundEffectSystem) {
+            const buffer = this.soundEffectSystem.generateComboBreakSound(maxComboLevel, comboCount);
+            if (buffer) {
+                return this.soundEffectSystem._playSound(buffer, options);
+            }
+        }
+        // フォールバック: エラー音
+        return this.playSound('error', options);
+    }
+    
+    /**
+     * コンボミルストーン達成音を再生
+     * @param {number} milestone - マイルストーン（10, 25, 50, 100など）
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playComboMilestoneSound(milestone, options = {}) {
+        if (this.soundEffectSystem) {
+            const buffer = this.soundEffectSystem.generateComboMilestoneSound(milestone);
+            if (buffer) {
+                return this.soundEffectSystem._playSound(buffer, options);
+            }
+        }
+        // フォールバック: 成功音
+        return this.playSound('success', options);
+    }
+    
+    /**
+     * UI操作音を再生
+     * @param {string} actionType - アクションタイプ
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playUISound(actionType, options = {}) {
+        if (this.soundEffectSystem) {
+            return this.soundEffectSystem.playUISound(actionType, options);
+        }
+        // フォールバック: 従来の効果音
+        return this.playSound(actionType, options);
+    }
+    
+    /**
+     * UI要素に音響イベントリスナーを設定
+     * @param {HTMLElement} element - 対象要素
+     * @param {Object} soundMap - 音響マッピング
+     */
+    setupUIElementSounds(element, soundMap) {
+        if (this.soundEffectSystem) {
+            this.soundEffectSystem.setupUIEventListeners(element, soundMap);
+        }
+    }
+    
+    /**
+     * UI要素タイプ別の自動音響設定
+     * @param {HTMLElement} element - 対象要素
+     */
+    setupElementTypeSounds(element) {
+        if (this.soundEffectSystem) {
+            this.soundEffectSystem.setupElementTypeSounds(element);
+        }
+    }
+    
+    /**
+     * ページ全体のUI音響を自動設定
+     * @param {Document|HTMLElement} container - 対象コンテナ
+     */
+    setupGlobalUISounds(container = document) {
+        if (this.soundEffectSystem) {
+            this.soundEffectSystem.setupGlobalUISounds(container);
+        }
+    }
+    
+    /**
+     * 実績解除音を再生
+     * @param {string} rarity - レアリティ
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playAchievementSound(rarity, options = {}) {
+        if (this.soundEffectSystem) {
+            return this.soundEffectSystem.playAchievementSound(rarity, options);
+        }
+        // フォールバック: 従来の効果音
+        return this.playSound('success', options);
+    }
+    
+    /**
+     * カテゴリ別実績解除音を再生
+     * @param {string} category - 実績カテゴリ
+     * @param {string} rarity - レアリティ
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playCategoryAchievementSound(category, rarity, options = {}) {
+        if (this.soundEffectSystem) {
+            const key = `${category}_${rarity}`;
+            if (this.soundEffectSystem.achievementSounds.has(key)) {
+                const buffer = this.soundEffectSystem.achievementSounds.get(key);
+                return this.soundEffectSystem._playSound(buffer, options);
+            }
+        }
+        // フォールバック: 通常の実績音
+        return this.playAchievementSound(rarity, options);
+    }
+    
+    /**
+     * 実績進捗音を再生
+     * @param {number} progress - 進捗度 (0-1)
+     * @param {string} category - カテゴリ
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playAchievementProgressSound(progress, category = 'score', options = {}) {
+        if (this.soundEffectSystem && this.soundEffectSystem.generateAchievementProgressSound) {
+            const buffer = this.soundEffectSystem.generateAchievementProgressSound(progress, category);
+            if (buffer) {
+                return this.soundEffectSystem._playSound(buffer, options);
+            }
+        }
+        // フォールバック: 微かな成功音
+        return this.playSound('success', { ...options, volume: (options.volume || 1) * 0.3 });
+    }
+    
+    /**
+     * 実績解除予告音を再生
+     * @param {string} rarity - レアリティ
+     * @param {number} timeToUnlock - 解除までの時間（秒）
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playAchievementHintSound(rarity, timeToUnlock = 3, options = {}) {
+        if (this.soundEffectSystem && this.soundEffectSystem.generateAchievementHintSound) {
+            const buffer = this.soundEffectSystem.generateAchievementHintSound(rarity, timeToUnlock);
+            if (buffer) {
+                return this.soundEffectSystem._playSound(buffer, options);
+            }
+        }
+        // フォールバック: 微かなホバー音
+        return this.playSound('hover', { ...options, volume: (options.volume || 1) * 0.2 });
+    }
+    
+    /**
+     * ゲーム状態音を再生
+     * @param {string} stateType - 状態タイプ
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playGameStateSound(stateType, options = {}) {
+        if (this.soundEffectSystem) {
+            return this.soundEffectSystem.playGameStateSound(stateType, options);
+        }
+        // フォールバック: 従来の効果音
+        const fallbackMap = {
+            'levelup': 'success',
+            'warning': 'warning',
+            'timeup': 'error',
+            'stageclear': 'success',
+            'bonus_start': 'bonus',
+            'bonus_end': 'success',
+            'health_low': 'warning',
+            'health_critical': 'error',
+            'powerup': 'success',
+            'speedup': 'success',
+            'slowdown': 'success',
+            'checkpoint': 'success',
+            'pause': 'click',
+            'resume': 'click',
+            'countdown': 'warning',
+            'perfect': 'success',
+            'near_miss': 'hover'
+        };
+        return this.playSound(fallbackMap[stateType] || 'success', options);
+    }
+    
+    /**
+     * レベル別レベルアップ音を再生
+     * @param {number} level - レベル
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playLevelUpSound(level, options = {}) {
+        if (this.soundEffectSystem) {
+            const key = `levelup_${level}`;
+            if (this.soundEffectSystem.gameStateSounds.has(key)) {
+                const buffer = this.soundEffectSystem.gameStateSounds.get(key);
+                return this.soundEffectSystem._playSound(buffer, options);
+            }
+            // フォールバック: 通常のレベルアップ音
+            return this.soundEffectSystem.playGameStateSound('levelup', options);
+        }
+        // フォールバック: 成功音
+        return this.playSound('success', options);
+    }
+    
+    /**
+     * ヘルス状態に応じた警告音を再生
+     * @param {number} healthPercentage - ヘルス残量パーセンテージ (0-1)
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playHealthWarningSound(healthPercentage, options = {}) {
+        let soundType = 'success'; // デフォルト（健康）
+        
+        if (healthPercentage <= 0.1) {
+            soundType = 'health_critical';
+        } else if (healthPercentage <= 0.25) {
+            soundType = 'health_low';
+        }
+        
+        if (soundType !== 'success') {
+            return this.playGameStateSound(soundType, options);
+        }
+        
+        return null; // 健康時は音を出さない
+    }
+    
+    /**
+     * パフォーマンス評価音を再生
+     * @param {string} performance - パフォーマンス ('perfect', 'great', 'good', 'near_miss', 'miss')
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playPerformanceSound(performance, options = {}) {
+        const performanceMap = {
+            'perfect': 'perfect',
+            'great': 'success',
+            'good': 'success',
+            'near_miss': 'near_miss',
+            'miss': 'error'
+        };
+        
+        const soundType = performanceMap[performance];
+        if (soundType) {
+            if (['perfect', 'near_miss'].includes(soundType)) {
+                return this.playGameStateSound(soundType, options);
+            } else {
+                return this.playSound(soundType, options);
+            }
+        }
+        
+        return null;
+    }
+    
+    /**
+     * 段階的カウントダウン音を再生
+     * @param {number} count - カウント数 (3, 2, 1, 0)
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playCountdownSound(count, options = {}) {
+        if (count === 0) {
+            // 開始音
+            return this.playGameStateSound('bonus_start', options);
+        } else if (count > 0) {
+            // カウントダウン音（音程が下がる）
+            const pitch = 1 + (count - 1) * 0.2; // 3→1.4, 2→1.2, 1→1.0
+            return this.playGameStateSound('countdown', { 
+                ...options, 
+                pitch: pitch,
+                volume: (options.volume || 1) * 0.7
+            });
+        }
+        
+        return null;
+    }
+    
+    /**
+     * 効果音を再生（レガシー対応）
      */
     playSound(soundName, options = {}) {
         if (!this.isEnabled || this.isMuted || !this.audioContext || !this.soundBuffers.has(soundName)) {
@@ -767,6 +1221,165 @@ export class AudioManager {
     }
     
     /**
+     * シーン変更時のBGM自動切り替え
+     * @param {string} sceneName - シーン名
+     * @param {Object} options - オプション
+     */
+    async onSceneChange(sceneName, options = {}) {
+        try {
+            if (!this.bgmSystem) {
+                console.warn('BGMSystem is not initialized');
+                return;
+            }
+            
+            const previousScene = this.currentScene;
+            this.currentScene = sceneName;
+            
+            // シーンに対応するBGMトラックを取得
+            const trackName = this.sceneToTrackMapping[sceneName];
+            
+            if (!trackName) {
+                console.warn(`No BGM track mapped for scene: ${sceneName}`);
+                return;
+            }
+            
+            const {
+                transition = 'crossfade',
+                fadeInDuration = 2.0,
+                fadeOutDuration = 2.0,
+                crossfadeDuration = 3.0,
+                volume = 1.0
+            } = options;
+            
+            if (previousScene && this.bgmSystem.isPlaying) {
+                // トランジションを使用して切り替え
+                await this.bgmSystem.transitionTo(trackName, {
+                    type: transition,
+                    duration: crossfadeDuration,
+                    fadeInDuration: fadeInDuration,
+                    fadeOutDuration: fadeOutDuration,
+                    volume: volume
+                });
+            } else {
+                // 初回再生
+                await this.bgmSystem.playBGM(trackName, {
+                    volume: volume,
+                    fadeInDuration: fadeInDuration
+                });
+            }
+            
+            console.log(`Scene changed: ${previousScene} -> ${sceneName}, BGM: ${trackName}`);
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                operation: 'onSceneChange',
+                sceneName: sceneName,
+                previousScene: this.currentScene,
+                options: options
+            });
+        }
+    }
+    
+    /**
+     * シーンとBGMトラックのマッピングを設定
+     * @param {Object} mapping - シーン→トラックのマッピング
+     */
+    setSceneToTrackMapping(mapping) {
+        try {
+            this.sceneToTrackMapping = { ...this.sceneToTrackMapping, ...mapping };
+            console.log('Scene to track mapping updated:', this.sceneToTrackMapping);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                operation: 'setSceneToTrackMapping',
+                mapping: mapping
+            });
+        }
+    }
+    
+    /**
+     * BGMを直接再生
+     * @param {string} trackName - トラック名
+     * @param {Object} options - オプション
+     */
+    async playBGM(trackName, options = {}) {
+        try {
+            if (!this.bgmSystem) {
+                console.warn('BGMSystem is not initialized');
+                return;
+            }
+            
+            await this.bgmSystem.playBGM(trackName, options);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                operation: 'playBGM',
+                trackName: trackName,
+                options: options
+            });
+        }
+    }
+    
+    /**
+     * BGMを停止
+     * @param {Object} options - オプション
+     */
+    async stopBGM(options = {}) {
+        try {
+            if (!this.bgmSystem) {
+                console.warn('BGMSystem is not initialized');
+                return;
+            }
+            
+            await this.bgmSystem.stopBGM(options);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                operation: 'stopBGM',
+                options: options
+            });
+        }
+    }
+    
+    /**
+     * BGM音量を設定
+     * @param {number} volume - 音量 (0-1)
+     * @param {number} fadeTime - フェード時間
+     */
+    setBGMVolume(volume, fadeTime = 0) {
+        try {
+            if (!this.bgmSystem) {
+                console.warn('BGMSystem is not initialized');
+                return;
+            }
+            
+            this.bgmSystem.setVolume(volume, fadeTime);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                operation: 'setBGMVolume',
+                volume: volume,
+                fadeTime: fadeTime
+            });
+        }
+    }
+    
+    /**
+     * 現在のBGM情報を取得
+     * @returns {Object} BGM情報
+     */
+    getCurrentBGMInfo() {
+        try {
+            if (!this.bgmSystem) {
+                return null;
+            }
+            
+            return this.bgmSystem.getCurrentBGMInfo();
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                operation: 'getCurrentBGMInfo'
+            });
+            return null;
+        }
+    }
+    
+    /**
      * プロシージャルBGMを生成・再生
      */
     startProceduralBGM() {
@@ -827,8 +1440,12 @@ export class AudioManager {
      * 全ての音を停止
      */
     stopAllSounds() {
-        this.stopBGM();
+        // BGMを停止
+        if (this.bgmSystem) {
+            this.bgmSystem.stopBGM({ fadeOutDuration: 0 });
+        }
         
+        // 効果音を停止
         this.activeSources.forEach(source => {
             try {
                 source.stop();
@@ -951,11 +1568,351 @@ export class AudioManager {
         }
     }
     
+    // ================================
+    // AudioController 便利メソッド
+    // ================================
+    
+    /**
+     * 音量を設定（AudioController経由）
+     * @param {string} category - 音量カテゴリ
+     * @param {number} volume - 音量レベル (0-1)
+     * @param {number} fadeTime - フェード時間（秒）
+     */
+    setVolumeLevel(category, volume, fadeTime = 0) {
+        if (this.audioController) {
+            return this.audioController.setVolume(category, volume, fadeTime);
+        }
+        console.warn('AudioController is not available');
+    }
+    
+    /**
+     * 音量を取得（AudioController経由）
+     * @param {string} category - 音量カテゴリ
+     * @returns {number} 音量レベル (0-1)
+     */
+    getVolumeLevel(category) {
+        if (this.audioController) {
+            return this.audioController.getVolume(category);
+        }
+        console.warn('AudioController is not available');
+        return 0;
+    }
+    
+    /**
+     * ミュート状態を設定（AudioController経由）
+     * @param {string} category - 音量カテゴリ
+     * @param {boolean} muted - ミュート状態
+     */
+    setMuteState(category, muted) {
+        if (this.audioController) {
+            return this.audioController.setMute(category, muted);
+        }
+        console.warn('AudioController is not available');
+    }
+    
+    /**
+     * ミュート状態を取得（AudioController経由）
+     * @param {string} category - 音量カテゴリ
+     * @returns {boolean} ミュート状態
+     */
+    getMuteState(category) {
+        if (this.audioController) {
+            return this.audioController.getMute(category);
+        }
+        console.warn('AudioController is not available');
+        return false;
+    }
+    
+    /**
+     * フェードイン効果（AudioController経由）
+     * @param {string} category - 音量カテゴリ
+     * @param {number} duration - フェード時間（秒）
+     * @param {number} targetVolume - 目標音量レベル
+     */
+    async fadeInVolume(category, duration = 1.0, targetVolume = null) {
+        if (this.audioController) {
+            return await this.audioController.fadeIn(category, duration, targetVolume);
+        }
+        console.warn('AudioController is not available');
+    }
+    
+    /**
+     * フェードアウト効果（AudioController経由）
+     * @param {string} category - 音量カテゴリ
+     * @param {number} duration - フェード時間（秒）
+     * @param {number} targetVolume - 目標音量レベル
+     */
+    async fadeOutVolume(category, duration = 1.0, targetVolume = 0) {
+        if (this.audioController) {
+            return await this.audioController.fadeOut(category, duration, targetVolume);
+        }
+        console.warn('AudioController is not available');
+    }
+    
+    /**
+     * 全音量情報を取得（AudioController経由）
+     * @returns {Object} 音量情報
+     */
+    getAllVolumeLevels() {
+        if (this.audioController) {
+            return this.audioController.getAllVolumes();
+        }
+        console.warn('AudioController is not available');
+        return null;
+    }
+    
+    /**
+     * 音響制御システムの状態を取得（AudioController経由）
+     * @returns {Object} システム状態
+     */
+    getAudioControllerState() {
+        if (this.audioController) {
+            return this.audioController.getControllerState();
+        }
+        console.warn('AudioController is not available');
+        return null;
+    }
+    
+    /**
+     * 音響品質を設定（AudioController経由）
+     * @param {number} quality - 品質レベル (0-1)
+     */
+    async setAudioQuality(quality) {
+        if (this.audioController) {
+            return await this.audioController.setAudioQuality(quality);
+        }
+        console.warn('AudioController is not available');
+    }
+    
+    /**
+     * 現在の音響品質を取得（AudioController経由）
+     * @returns {number} 品質レベル (0-1)
+     */
+    getAudioQuality() {
+        if (this.audioController) {
+            return this.audioController.getAudioQuality();
+        }
+        console.warn('AudioController is not available');
+        return 1.0;
+    }
+    
+    /**
+     * パフォーマンスメトリクスを取得（AudioController経由）
+     * @returns {Object} パフォーマンスメトリクス
+     */
+    getAudioPerformanceMetrics() {
+        if (this.audioController) {
+            return this.audioController.getPerformanceMetrics();
+        }
+        console.warn('AudioController is not available');
+        return null;
+    }
+    
+    /**
+     * 音響品質の自動調整を有効/無効化（AudioController経由）
+     * @param {boolean} enabled - 有効フラグ
+     */
+    setAutomaticAudioQualityAdjustment(enabled) {
+        if (this.audioController) {
+            return this.audioController.setAutomaticQualityAdjustment(enabled);
+        }
+        console.warn('AudioController is not available');
+    }
+    
+    /**
+     * パフォーマンス監視の強制更新（AudioController経由）
+     */
+    forceAudioPerformanceUpdate() {
+        if (this.audioController) {
+            return this.audioController.forcePerformanceUpdate();
+        }
+        console.warn('AudioController is not available');
+    }
+    
+    /**
+     * カスタムフェード効果（AudioController経由）
+     * @param {string} category - 音量カテゴリ
+     * @param {number} targetVolume - 目標音量レベル (0-1)
+     * @param {number} duration - フェード時間（秒）
+     * @param {string} curve - フェードカーブタイプ
+     * @param {Function} callback - 完了時のコールバック
+     */
+    async customFadeVolume(category, targetVolume, duration = 1.0, curve = 'exponential', callback = null) {
+        if (this.audioController) {
+            return await this.audioController.customFade(category, targetVolume, duration, curve, callback);
+        }
+        console.warn('AudioController is not available');
+    }
+    
+    /**
+     * クロスフェード効果（AudioController経由）
+     * @param {string} fromCategory - フェードアウトするカテゴリ
+     * @param {string} toCategory - フェードインするカテゴリ
+     * @param {number} duration - フェード時間（秒）
+     * @param {string} curve - フェードカーブタイプ
+     * @param {Function} callback - 完了時のコールバック
+     */
+    async crossFadeVolume(fromCategory, toCategory, duration = 2.0, curve = 'exponential', callback = null) {
+        if (this.audioController) {
+            return await this.audioController.crossFade(fromCategory, toCategory, duration, curve, callback);
+        }
+        console.warn('AudioController is not available');
+    }
+    
+    /**
+     * すべてのアクティブなフェードをキャンセル（AudioController経由）
+     */
+    cancelAllVolumeFades() {
+        if (this.audioController) {
+            return this.audioController.cancelAllFades();
+        }
+        console.warn('AudioController is not available');
+    }
+    
+    /**
+     * フェード状態を取得（AudioController経由）
+     * @returns {Object} フェード状態情報
+     */
+    getVolumeFadeStatus() {
+        if (this.audioController) {
+            return this.audioController.getFadeStatus();
+        }
+        console.warn('AudioController is not available');
+        return null;
+    }
+    
+    /**
+     * デフォルトのフェードカーブを設定（AudioController経由）
+     * @param {string} curve - フェードカーブタイプ
+     */
+    setDefaultVolumeFadeCurve(curve) {
+        if (this.audioController) {
+            return this.audioController.setDefaultFadeCurve(curve);
+        }
+        console.warn('AudioController is not available');
+    }
+    
+    // ================================
+    // AudioVisualizer 便利メソッド
+    // ================================
+    
+    /**
+     * 音響視覚化を開始（AudioVisualizer経由）
+     */
+    startAudioVisualization() {
+        if (this.audioVisualizer) {
+            return this.audioVisualizer.start();
+        }
+        console.warn('AudioVisualizer is not available');
+    }
+    
+    /**
+     * 音響視覚化を停止（AudioVisualizer経由）
+     */
+    stopAudioVisualization() {
+        if (this.audioVisualizer) {
+            return this.audioVisualizer.stop();
+        }
+        console.warn('AudioVisualizer is not available');
+    }
+    
+    /**
+     * 視覚化タイプを設定（AudioVisualizer経由）
+     * @param {string} type - 視覚化タイプ
+     */
+    setVisualizationType(type) {
+        if (this.audioVisualizer) {
+            return this.audioVisualizer.setVisualizationType(type);
+        }
+        console.warn('AudioVisualizer is not available');
+    }
+    
+    /**
+     * 色スキームを設定（AudioVisualizer経由）
+     * @param {string} scheme - 色スキーム
+     */
+    setVisualizationColorScheme(scheme) {
+        if (this.audioVisualizer) {
+            return this.audioVisualizer.setColorScheme(scheme);
+        }
+        console.warn('AudioVisualizer is not available');
+    }
+    
+    /**
+     * 視覚化のパフォーマンスモードを設定（AudioVisualizer経由）
+     * @param {string} mode - パフォーマンスモード
+     */
+    setVisualizationPerformanceMode(mode) {
+        if (this.audioVisualizer) {
+            return this.audioVisualizer.setPerformanceMode(mode);
+        }
+        console.warn('AudioVisualizer is not available');
+    }
+    
+    /**
+     * アクセシビリティモードを設定（AudioVisualizer経由）
+     * @param {boolean} enabled - 有効状態
+     */
+    setVisualizationAccessibilityMode(enabled) {
+        if (this.audioVisualizer) {
+            return this.audioVisualizer.setAccessibilityMode(enabled);
+        }
+        console.warn('AudioVisualizer is not available');
+    }
+    
+    /**
+     * 音響イベントを手動でトリガー（AudioVisualizer経由）
+     * @param {string} eventType - イベントタイプ
+     * @param {number} intensity - 強度
+     */
+    triggerVisualizationEvent(eventType, intensity) {
+        if (this.audioVisualizer) {
+            return this.audioVisualizer.triggerAudioEvent(eventType, intensity);
+        }
+        console.warn('AudioVisualizer is not available');
+    }
+    
+    /**
+     * 視覚化統計を取得（AudioVisualizer経由）
+     * @returns {Object} 統計情報
+     */
+    getVisualizationStatistics() {
+        if (this.audioVisualizer) {
+            return this.audioVisualizer.getStatistics();
+        }
+        console.warn('AudioVisualizer is not available');
+        return null;
+    }
+    
     /**
      * リソースの解放
      */
     dispose() {
         this.stopAllSounds();
+        
+        // BGMシステムを破棄
+        if (this.bgmSystem) {
+            this.bgmSystem.dispose();
+            this.bgmSystem = null;
+        }
+        
+        // 効果音システムを破棄
+        if (this.soundEffectSystem) {
+            this.soundEffectSystem.dispose();
+            this.soundEffectSystem = null;
+        }
+        
+        // 音響制御システムを破棄
+        if (this.audioController) {
+            this.audioController.dispose();
+            this.audioController = null;
+        }
+        
+        // 音響視覚化システムを破棄
+        if (this.audioVisualizer) {
+            this.audioVisualizer.dispose();
+            this.audioVisualizer = null;
+        }
         
         // 設定監視の解除
         if (this.configWatchers) {
@@ -1085,7 +2042,7 @@ export class AudioManager {
      * 状態情報を取得
      */
     getStatus() {
-        return {
+        const status = {
             isEnabled: this.isEnabled,
             isMuted: this.isMuted,
             masterVolume: this.masterVolume,
@@ -1098,7 +2055,20 @@ export class AudioManager {
                 audioConfig: !!this.audioConfig,
                 configManager: !!this.configManager,
                 watchers: this.configWatchers.size
+            },
+            systems: {
+                bgmSystem: !!this.bgmSystem,
+                soundEffectSystem: !!this.soundEffectSystem,
+                audioController: !!this.audioController,
+                audioVisualizer: !!this.audioVisualizer
             }
         };
+        
+        // SoundEffectSystemの統計を追加
+        if (this.soundEffectSystem) {
+            status.soundEffectSystem = this.soundEffectSystem.getSystemStats();
+        }
+        
+        return status;
     }
 }

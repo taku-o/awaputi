@@ -84,6 +84,25 @@ class AudioConfig {
         this.configManager.set('audio', 'effects.reverb.duration', 2.0);
         this.configManager.set('audio', 'effects.reverb.decay', 0.5);
         this.configManager.set('audio', 'effects.reverb.wet', 0.3);
+        
+        // イコライザー設定
+        this.configManager.set('audio', 'effects.equalizer.enabled', false);
+        this.configManager.set('audio', 'effects.equalizer.bands.bass', 0);
+        this.configManager.set('audio', 'effects.equalizer.bands.lowMid', 0);
+        this.configManager.set('audio', 'effects.equalizer.bands.mid', 0);
+        this.configManager.set('audio', 'effects.equalizer.bands.highMid', 0);
+        this.configManager.set('audio', 'effects.equalizer.bands.treble', 0);
+        
+        // プリセット設定
+        this.configManager.set('audio', 'presets.user', {});
+        this.configManager.set('audio', 'presets.lastApplied', null);
+        
+        // 環境音設定
+        this.configManager.set('audio', 'environmental.enabled', false);
+        this.configManager.set('audio', 'environmental.volume', 0.3);
+        this.configManager.set('audio', 'environmental.currentBiome', null);
+        this.configManager.set('audio', 'environmental.currentWeather', null);
+        this.configManager.set('audio', 'environmental.currentTimeOfDay', null);
     }
 
     /**
@@ -142,6 +161,35 @@ class AudioConfig {
             type: 'number',
             min: 1,
             max: 20
+        });
+        
+        // イコライザー設定の検証ルール
+        this.configManager.setValidationRule('audio', 'effects.equalizer.enabled', {
+            type: 'boolean'
+        });
+        
+        // 各バンドのゲイン検証ルール（-20dB to +20dB）
+        const bandValidation = {
+            type: 'number',
+            min: -20,
+            max: 20
+        };
+        
+        this.configManager.setValidationRule('audio', 'effects.equalizer.bands.bass', bandValidation);
+        this.configManager.setValidationRule('audio', 'effects.equalizer.bands.lowMid', bandValidation);
+        this.configManager.setValidationRule('audio', 'effects.equalizer.bands.mid', bandValidation);
+        this.configManager.setValidationRule('audio', 'effects.equalizer.bands.highMid', bandValidation);
+        this.configManager.setValidationRule('audio', 'effects.equalizer.bands.treble', bandValidation);
+        
+        // 環境音設定の検証ルール
+        this.configManager.setValidationRule('audio', 'environmental.enabled', {
+            type: 'boolean'
+        });
+        
+        this.configManager.setValidationRule('audio', 'environmental.volume', {
+            type: 'number',
+            min: 0,
+            max: 1
         });
     }
 
