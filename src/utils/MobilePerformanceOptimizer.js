@@ -155,14 +155,71 @@ export class MobilePerformanceOptimizer {
                 cacheAggressive: true
             },
             
-            // Memory optimizations
+            // Enhanced Memory optimizations
             memory: {
                 enabled: true,
                 aggressiveGC: true,
                 textureStreamingEnabled: true,
                 audioCompression: true,
                 assetPreloading: false,
-                memoryPressureHandling: true
+                memoryPressureHandling: true,
+                
+                // Advanced memory management
+                memoryManagement: {
+                    enabled: true,
+                    intelligentCaching: true,
+                    memoryDefragmentation: true,
+                    preemptiveCleanup: true,
+                    memorySizeTuning: true
+                },
+                
+                // Memory pressure detection
+                pressureDetection: {
+                    enabled: true,
+                    pressureLevels: ['normal', 'moderate', 'severe', 'critical'],
+                    currentPressure: 'normal',
+                    thresholds: {
+                        moderate: 0.70,
+                        severe: 0.85,
+                        critical: 0.95
+                    },
+                    warningTriggered: false
+                },
+                
+                // Memory pool management
+                poolManagement: {
+                    enabled: true,
+                    objectPools: new Map(),
+                    maxPoolSize: 1000,
+                    poolReuse: true,
+                    poolCleanupInterval: 30000
+                },
+                
+                // Memory leak detection
+                leakDetection: {
+                    enabled: true,
+                    trackingEnabled: true,
+                    leakThreshold: 50, // MB
+                    suspiciousGrowthRate: 10, // MB/minute
+                    detectedLeaks: [],
+                    monitoringInterval: 15000
+                },
+                
+                // Platform-specific optimizations
+                platformOptimizations: {
+                    ios: {
+                        memoryWarningHandling: true,
+                        backgroundAppRefresh: false
+                    },
+                    android: {
+                        lowMemoryKiller: true,
+                        compactHeap: true
+                    },
+                    web: {
+                        webWorkerMemoryLimit: 256, // MB
+                        offscreenCanvasLimit: 128
+                    }
+                }
             },
             
             // UI/UX optimizations
@@ -201,22 +258,106 @@ export class MobilePerformanceOptimizer {
                 gestureRecognitionTime: 0
             },
             
-            // Thermal monitoring
+            // Enhanced Thermal monitoring
             thermalMonitoring: {
                 enabled: true,
                 currentState: 'normal', // 'normal', 'moderate', 'serious', 'critical'
                 throttleThreshold: 'moderate',
-                cooldownRequired: false
+                cooldownRequired: false,
+                
+                // Advanced thermal management
+                thermalControl: {
+                    enabled: true,
+                    adaptiveCooling: true,
+                    predictiveThrottling: true,
+                    emergencyShutdown: false,
+                    maxTemperatureReached: false
+                },
+                
+                // Temperature estimation system
+                temperatureEstimation: {
+                    enabled: true,
+                    baselineTemperature: 25, // Celsius
+                    currentEstimate: 25,
+                    deltaTemperature: 0,
+                    heatGenerationRate: 0,
+                    coolingRate: 0
+                },
+                
+                // Performance impact tracking
+                performanceImpact: {
+                    cpuThrottleLevel: 0, // 0-1 scale
+                    gpuThrottleLevel: 0,
+                    memoryThrottleLevel: 0,
+                    ioThrottleLevel: 0,
+                    overallThrottleLevel: 0
+                },
+                
+                // Thermal history and patterns
+                thermalHistory: {
+                    temperatureLog: [],
+                    heatEvents: [],
+                    coolingEvents: [],
+                    throttleEvents: [],
+                    maxHistorySize: 1000
+                },
+                
+                // Device-specific thermal characteristics
+                thermalCharacteristics: {
+                    maxSafeTemperature: 70, // Celsius
+                    criticalTemperature: 85,
+                    thermalMass: 1.0, // Relative thermal mass
+                    coolingEfficiency: 1.0,
+                    heatDissipationRate: 1.0
+                }
             },
             
-            // Battery monitoring
+            // Enhanced Battery monitoring
             batteryMonitoring: {
                 enabled: true,
                 initialLevel: 1.0,
                 currentLevel: 1.0,
                 drainRate: 0,
                 projectedLife: Infinity,
-                powerSavingMode: false
+                powerSavingMode: false,
+                
+                // Advanced battery features
+                chargingOptimization: {
+                    enabled: true,
+                    fastChargingDetected: false,
+                    chargingEfficiency: 1.0,
+                    temperatureMonitoring: true
+                },
+                
+                // Battery health tracking
+                healthMetrics: {
+                    cycleCount: 0,
+                    degradationLevel: 0, // 0-1 scale
+                    optimalRange: { min: 0.2, max: 0.8 },
+                    lastFullCharge: null
+                },
+                
+                // Power consumption analysis
+                consumptionAnalysis: {
+                    baselineConsumption: 0,
+                    peakConsumption: 0,
+                    averageConsumption: 0,
+                    consumptionHistory: [],
+                    deviceSpecificBaseline: 0
+                },
+                
+                // Dynamic power management
+                dynamicPowerManagement: {
+                    enabled: true,
+                    adaptiveThresholds: {
+                        critical: 0.10,
+                        low: 0.20,
+                        medium: 0.50,
+                        high: 0.80
+                    },
+                    powerStates: ['normal', 'conservation', 'aggressive', 'emergency'],
+                    currentPowerState: 'normal'
+                }
             },
             
             // Network monitoring
@@ -1356,16 +1497,19 @@ export class MobilePerformanceOptimizer {
         // Start touch latency monitoring
         this.startTouchLatencyMonitoring();
         
-        // Start thermal monitoring
-        this.startThermalMonitoring();
+        // Start enhanced thermal monitoring
+        this.startAdvancedThermalMonitoring();
         
-        // Start battery monitoring
-        this.startBatteryMonitoring();
+        // Start enhanced battery monitoring
+        this.startAdvancedBatteryMonitoring();
+        
+        // Start enhanced memory management
+        this.startAdvancedMemoryManagement();
         
         // Start network monitoring
         this.startNetworkMonitoring();
         
-        console.log('[MobilePerformanceOptimizer] Mobile monitoring started');
+        console.log('[MobilePerformanceOptimizer] Enhanced mobile monitoring started');
     }
     
     /**
@@ -2106,18 +2250,1096 @@ export class MobilePerformanceOptimizer {
     }
     
     /**
-     * Cleanup mobile optimizer
+     * Enhanced Battery API Integration and Management
+     */
+    
+    /**
+     * Advanced battery monitoring with health tracking
+     */
+    startAdvancedBatteryMonitoring() {
+        const batteryMonitoring = this.mobileMonitoring.batteryMonitoring;
+        
+        if (!batteryMonitoring.enabled) return;
+        
+        // Start continuous monitoring
+        this.batteryMonitoringInterval = setInterval(() => {
+            this.updateAdvancedBatteryMetrics();
+        }, 10000); // Every 10 seconds
+        
+        // Monitor charging state changes
+        this.setupAdvancedBatteryEventListeners();
+        
+        console.log('[MobilePerformanceOptimizer] Advanced battery monitoring started');
+    }
+    
+    /**
+     * Update advanced battery metrics
+     */
+    async updateAdvancedBatteryMetrics() {
+        try {
+            const batteryInfo = await this.getBatteryInfo();
+            const monitoring = this.mobileMonitoring.batteryMonitoring;
+            
+            if (batteryInfo) {
+                this.analyzeChargingOptimization(batteryInfo);
+                this.trackBatteryHealth(batteryInfo);
+                this.analyzePowerConsumption(batteryInfo);
+                this.updateDynamicPowerManagement(batteryInfo);
+            }
+        } catch (error) {
+            console.warn('[MobilePerformanceOptimizer] Battery metrics update failed:', error);
+        }
+    }
+    
+    /**
+     * Analyze charging optimization
+     */
+    analyzeChargingOptimization(batteryInfo) {
+        const chargingOpt = this.mobileMonitoring.batteryMonitoring.chargingOptimization;
+        
+        if (batteryInfo.charging) {
+            // Detect fast charging
+            const chargingRate = this.calculateChargingRate(batteryInfo);
+            chargingOpt.fastChargingDetected = chargingRate > 0.5; // >50% per hour
+            
+            // Calculate charging efficiency
+            if (chargingRate > 0) {
+                chargingOpt.chargingEfficiency = Math.min(1.0, chargingRate / 0.8); // Expected max rate
+            }
+        }
+    }
+    
+    /**
+     * Calculate current charging rate
+     */
+    calculateChargingRate(batteryInfo) {
+        const history = this.mobileMonitoring.batteryMonitoring.consumptionAnalysis.consumptionHistory;
+        
+        if (history.length < 2) return 0;
+        
+        const recent = history[history.length - 1];
+        const previous = history[history.length - 2];
+        const timeDiff = recent.timestamp - previous.timestamp;
+        const levelDiff = recent.level - previous.level;
+        
+        if (timeDiff > 0 && levelDiff > 0) {
+            return (levelDiff / timeDiff) * 3600000; // Per hour
+        }
+        
+        return 0;
+    }
+    
+    /**
+     * Track battery health metrics
+     */
+    trackBatteryHealth(batteryInfo) {
+        const healthMetrics = this.mobileMonitoring.batteryMonitoring.healthMetrics;
+        
+        // Track full charge cycles
+        if (batteryInfo.level >= 0.99 && !healthMetrics.lastFullCharge) {
+            healthMetrics.lastFullCharge = Date.now();
+            healthMetrics.cycleCount++;
+        } else if (batteryInfo.level < 0.95) {
+            healthMetrics.lastFullCharge = null;
+        }
+        
+        // Estimate degradation based on charging patterns
+        if (healthMetrics.cycleCount > 0) {
+            const expectedCapacity = Math.max(0.7, 1.0 - (healthMetrics.cycleCount * 0.0002));
+            healthMetrics.degradationLevel = 1.0 - expectedCapacity;
+        }
+    }
+    
+    /**
+     * Analyze power consumption patterns
+     */
+    analyzePowerConsumption(batteryInfo) {
+        const analysis = this.mobileMonitoring.batteryMonitoring.consumptionAnalysis;
+        
+        // Add to consumption history
+        analysis.consumptionHistory.push({
+            timestamp: Date.now(),
+            level: batteryInfo.level,
+            charging: batteryInfo.charging
+        });
+        
+        // Keep history manageable
+        if (analysis.consumptionHistory.length > 100) {
+            analysis.consumptionHistory.shift();
+        }
+        
+        // Calculate consumption metrics
+        this.calculateConsumptionMetrics(analysis);
+    }
+    
+    /**
+     * Calculate power consumption metrics
+     */
+    calculateConsumptionMetrics(analysis) {
+        const history = analysis.consumptionHistory;
+        if (history.length < 3) return;
+        
+        const consumptionRates = [];
+        
+        for (let i = 1; i < history.length; i++) {
+            const current = history[i];
+            const previous = history[i - 1];
+            
+            if (!current.charging && !previous.charging) {
+                const timeDiff = current.timestamp - previous.timestamp;
+                const levelDiff = previous.level - current.level;
+                
+                if (timeDiff > 0 && levelDiff > 0) {
+                    const rate = (levelDiff / timeDiff) * 3600000; // Per hour
+                    consumptionRates.push(rate);
+                }
+            }
+        }
+        
+        if (consumptionRates.length > 0) {
+            analysis.averageConsumption = consumptionRates.reduce((sum, rate) => sum + rate, 0) / consumptionRates.length;
+            analysis.peakConsumption = Math.max(...consumptionRates);
+            analysis.baselineConsumption = Math.min(...consumptionRates);
+        }
+    }
+    
+    /**
+     * Update dynamic power management state
+     */
+    updateDynamicPowerManagement(batteryInfo) {
+        const powerMgmt = this.mobileMonitoring.batteryMonitoring.dynamicPowerManagement;
+        const level = batteryInfo.level;
+        
+        // Determine power state based on adaptive thresholds
+        let newPowerState = 'normal';
+        
+        if (level <= powerMgmt.adaptiveThresholds.critical) {
+            newPowerState = 'emergency';
+        } else if (level <= powerMgmt.adaptiveThresholds.low) {
+            newPowerState = 'aggressive';
+        } else if (level <= powerMgmt.adaptiveThresholds.medium) {
+            newPowerState = 'conservation';
+        }
+        
+        // Apply power state if changed
+        if (newPowerState !== powerMgmt.currentPowerState) {
+            this.applyPowerState(newPowerState);
+            powerMgmt.currentPowerState = newPowerState;
+        }
+    }
+    
+    /**
+     * Apply specific power management state
+     */
+    applyPowerState(powerState) {
+        console.log(`[MobilePerformanceOptimizer] Applying power state: ${powerState}`);
+        
+        switch (powerState) {
+            case 'emergency':
+                this.triggerAdaptiveOptimization('emergency');
+                break;
+            case 'aggressive':
+                this.triggerAdaptiveOptimization('battery_save');
+                break;
+            case 'conservation':
+                this.configManager.set('performance.targetFPS', 40);
+                this.configManager.set('graphics.quality', 'medium');
+                break;
+            case 'normal':
+                this.disableBatteryOptimizations();
+                break;
+        }
+    }
+    
+    /**
+     * Enhanced Thermal Monitoring and Control
+     */
+    
+    /**
+     * Start advanced thermal monitoring
+     */
+    startAdvancedThermalMonitoring() {
+        const thermalMonitoring = this.mobileMonitoring.thermalMonitoring;
+        
+        if (!thermalMonitoring.enabled) return;
+        
+        // Start thermal estimation
+        this.thermalMonitoringInterval = setInterval(() => {
+            this.updateThermalEstimation();
+            this.analyzeThermalPatterns();
+            this.applyThermalControl();
+        }, 2000); // Every 2 seconds
+        
+        console.log('[MobilePerformanceOptimizer] Advanced thermal monitoring started');
+    }
+    
+    /**
+     * Update thermal estimation based on performance metrics
+     */
+    updateThermalEstimation() {
+        const thermal = this.mobileMonitoring.thermalMonitoring;
+        const estimation = thermal.temperatureEstimation;
+        
+        // Estimate temperature based on performance degradation
+        const performanceData = this.gatherPerformanceData();
+        const heatGeneration = this.calculateHeatGeneration(performanceData);
+        
+        // Update temperature estimate
+        const coolingEffect = this.calculateCoolingEffect();
+        estimation.deltaTemperature = heatGeneration - coolingEffect;
+        estimation.currentEstimate = Math.max(
+            estimation.baselineTemperature,
+            estimation.currentEstimate + estimation.deltaTemperature
+        );
+        
+        // Update heat generation and cooling rates
+        estimation.heatGenerationRate = heatGeneration;
+        estimation.coolingRate = coolingEffect;
+        
+        // Log temperature data
+        this.logThermalData(estimation.currentEstimate);
+    }
+    
+    /**
+     * Gather performance data for thermal estimation
+     */
+    gatherPerformanceData() {
+        return {
+            fps: this.mobileMonitoring.metrics.fps,
+            frameTime: this.mobileMonitoring.metrics.frameTime,
+            cpuUsage: this.estimateCPUUsage(),
+            gpuUsage: this.estimateGPUUsage(),
+            memoryPressure: this.mobileOptimizations.memory.pressureDetection.currentPressure
+        };
+    }
+    
+    /**
+     * Calculate heat generation based on performance data
+     */
+    calculateHeatGeneration(performanceData) {
+        // Heat generation factors
+        const baseFactor = 0.1;
+        const cpuFactor = performanceData.cpuUsage * 0.5;
+        const gpuFactor = performanceData.gpuUsage * 0.3;
+        const memoryFactor = this.getPressureLevel(performanceData.memoryPressure) * 0.2;
+        
+        return baseFactor + cpuFactor + gpuFactor + memoryFactor;
+    }
+    
+    /**
+     * Calculate cooling effect
+     */
+    calculateCoolingEffect() {
+        const thermal = this.mobileMonitoring.thermalMonitoring;
+        const characteristics = thermal.thermalCharacteristics;
+        
+        // Natural cooling rate
+        const ambientCooling = 0.05 * characteristics.coolingEfficiency;
+        
+        // Active cooling (if device is idle or optimizations are active)
+        const activeCooling = this.isDeviceIdle() ? 0.02 : 0;
+        
+        return ambientCooling + activeCooling;
+    }
+    
+    /**
+     * Estimate CPU usage based on performance metrics
+     */
+    estimateCPUUsage() {
+        const fps = this.mobileMonitoring.metrics.fps;
+        const targetFPS = this.mobileConfig.targets.targetFPS;
+        
+        // Estimate based on FPS performance
+        if (fps >= targetFPS) {
+            return 0.5; // Normal usage
+        } else {
+            return Math.min(1.0, 1.0 - (fps / targetFPS)); // Higher usage if struggling
+        }
+    }
+    
+    /**
+     * Estimate GPU usage based on rendering metrics
+     */
+    estimateGPUUsage() {
+        const frameTime = this.mobileMonitoring.metrics.frameTime;
+        const targetFrameTime = 1000 / this.mobileConfig.targets.targetFPS;
+        
+        return Math.min(1.0, frameTime / targetFrameTime);
+    }
+    
+    /**
+     * Get numeric pressure level
+     */
+    getPressureLevel(pressureString) {
+        const levels = { 'normal': 0, 'moderate': 0.3, 'severe': 0.7, 'critical': 1.0 };
+        return levels[pressureString] || 0;
+    }
+    
+    /**
+     * Check if device is idle
+     */
+    isDeviceIdle() {
+        const touchTracking = this.mobileMonitoring.touchTracking;
+        const lastTouchTime = Date.now() - 30000; // 30 seconds
+        
+        return touchTracking.touchEvents.length === 0 || 
+               touchTracking.touchEvents[touchTracking.touchEvents.length - 1] < lastTouchTime;
+    }
+    
+    /**
+     * Log thermal data for analysis
+     */
+    logThermalData(temperature) {
+        const thermal = this.mobileMonitoring.thermalMonitoring;
+        const history = thermal.thermalHistory;
+        
+        // Add temperature log entry
+        history.temperatureLog.push({
+            timestamp: Date.now(),
+            temperature: temperature,
+            throttleLevel: thermal.performanceImpact.overallThrottleLevel
+        });
+        
+        // Maintain history size
+        if (history.temperatureLog.length > history.maxHistorySize) {
+            history.temperatureLog.shift();
+        }
+    }
+    
+    /**
+     * Analyze thermal patterns
+     */
+    analyzeThermalPatterns() {
+        const thermal = this.mobileMonitoring.thermalMonitoring;
+        const estimation = thermal.temperatureEstimation;
+        const characteristics = thermal.thermalCharacteristics;
+        
+        // Determine thermal state
+        let newState = 'normal';
+        
+        if (estimation.currentEstimate >= characteristics.criticalTemperature) {
+            newState = 'critical';
+        } else if (estimation.currentEstimate >= characteristics.maxSafeTemperature + 10) {
+            newState = 'serious';
+        } else if (estimation.currentEstimate >= characteristics.maxSafeTemperature) {
+            newState = 'moderate';
+        }
+        
+        // Update thermal state
+        if (newState !== thermal.currentState) {
+            this.handleThermalStateChange(thermal.currentState, newState);
+            thermal.currentState = newState;
+        }
+    }
+    
+    /**
+     * Handle thermal state changes
+     */
+    handleThermalStateChange(oldState, newState) {
+        console.log(`[MobilePerformanceOptimizer] Thermal state changed: ${oldState} → ${newState}`);
+        
+        const thermal = this.mobileMonitoring.thermalMonitoring;
+        
+        // Log thermal event
+        thermal.thermalHistory.heatEvents.push({
+            timestamp: Date.now(),
+            oldState,
+            newState,
+            temperature: thermal.temperatureEstimation.currentEstimate
+        });
+        
+        // Apply thermal control if needed
+        if (newState === 'critical' || newState === 'serious') {
+            this.applyEmergencyThermalControl();
+        }
+    }
+    
+    /**
+     * Apply thermal control measures
+     */
+    applyThermalControl() {
+        const thermal = this.mobileMonitoring.thermalMonitoring;
+        const control = thermal.thermalControl;
+        
+        if (!control.enabled) return;
+        
+        // Calculate required throttle levels
+        const throttleLevels = this.calculateThermalThrottleLevels();
+        thermal.performanceImpact = throttleLevels;
+        
+        // Apply adaptive cooling
+        if (control.adaptiveCooling) {
+            this.applyAdaptiveCooling(throttleLevels);
+        }
+        
+        // Apply predictive throttling
+        if (control.predictiveThrottling) {
+            this.applyPredictiveThrottling();
+        }
+    }
+    
+    /**
+     * Calculate thermal throttle levels
+     */
+    calculateThermalThrottleLevels() {
+        const thermal = this.mobileMonitoring.thermalMonitoring;
+        const currentTemp = thermal.temperatureEstimation.currentEstimate;
+        const maxSafe = thermal.thermalCharacteristics.maxSafeTemperature;
+        const critical = thermal.thermalCharacteristics.criticalTemperature;
+        
+        let throttleLevel = 0;
+        
+        if (currentTemp > maxSafe) {
+            throttleLevel = Math.min(1.0, (currentTemp - maxSafe) / (critical - maxSafe));
+        }
+        
+        return {
+            cpuThrottleLevel: throttleLevel,
+            gpuThrottleLevel: throttleLevel * 0.8, // GPU less aggressive
+            memoryThrottleLevel: throttleLevel * 0.6,
+            ioThrottleLevel: throttleLevel * 0.4,
+            overallThrottleLevel: throttleLevel
+        };
+    }
+    
+    /**
+     * Apply adaptive cooling measures
+     */
+    applyAdaptiveCooling(throttleLevels) {
+        const overallThrottle = throttleLevels.overallThrottleLevel;
+        
+        if (overallThrottle > 0.8) {
+            this.triggerAdaptiveOptimization('emergency');
+        } else if (overallThrottle > 0.5) {
+            this.triggerAdaptiveOptimization('thermal_throttle');
+        } else if (overallThrottle > 0.2) {
+            // Light throttling
+            this.configManager.set('performance.targetFPS', Math.round(this.mobileConfig.targets.targetFPS * (1 - overallThrottle * 0.5)));
+        }
+    }
+    
+    /**
+     * Apply predictive throttling
+     */
+    applyPredictiveThrottling() {
+        const thermal = this.mobileMonitoring.thermalMonitoring;
+        const estimation = thermal.temperatureEstimation;
+        
+        // Predict temperature in next 30 seconds
+        const predictedTemp = estimation.currentEstimate + (estimation.heatGenerationRate * 30);
+        
+        if (predictedTemp > thermal.thermalCharacteristics.maxSafeTemperature) {
+            console.log('[MobilePerformanceOptimizer] Predictive thermal throttling activated');
+            this.triggerAdaptiveOptimization('thermal_throttle');
+        }
+    }
+    
+    /**
+     * Apply emergency thermal control
+     */
+    applyEmergencyThermalControl() {
+        console.log('[MobilePerformanceOptimizer] Emergency thermal control activated');
+        
+        const thermal = this.mobileMonitoring.thermalMonitoring;
+        thermal.thermalControl.emergencyShutdown = true;
+        
+        // Extreme measures
+        this.triggerAdaptiveOptimization('emergency');
+        
+        // Log emergency event
+        thermal.thermalHistory.throttleEvents.push({
+            timestamp: Date.now(),
+            type: 'emergency',
+            temperature: thermal.temperatureEstimation.currentEstimate,
+            action: 'emergency_throttle'
+        });
+    }
+    
+    /**
+     * Enhanced Memory Management
+     */
+    
+    /**
+     * Start advanced memory management
+     */
+    startAdvancedMemoryManagement() {
+        const memoryOpt = this.mobileOptimizations.memory;
+        
+        if (!memoryOpt.enabled) return;
+        
+        // Start memory monitoring
+        this.memoryMonitoringInterval = setInterval(() => {
+            this.updateMemoryPressureDetection();
+            this.performIntelligentMemoryManagement();
+            this.detectMemoryLeaks();
+        }, 5000); // Every 5 seconds
+        
+        // Setup memory pools
+        this.initializeMemoryPools();
+        
+        // Setup platform-specific optimizations
+        this.applyPlatformMemoryOptimizations();
+        
+        console.log('[MobilePerformanceOptimizer] Advanced memory management started');
+    }
+    
+    /**
+     * Update memory pressure detection
+     */
+    updateMemoryPressureDetection() {
+        const pressureDetection = this.mobileOptimizations.memory.pressureDetection;
+        
+        if (!pressureDetection.enabled || !performance.memory) return;
+        
+        const memInfo = performance.memory;
+        const memoryUsage = memInfo.usedJSHeapSize / memInfo.jsHeapSizeLimit;
+        
+        // Determine pressure level
+        let newPressure = 'normal';
+        
+        if (memoryUsage >= pressureDetection.thresholds.critical) {
+            newPressure = 'critical';
+        } else if (memoryUsage >= pressureDetection.thresholds.severe) {
+            newPressure = 'severe';
+        } else if (memoryUsage >= pressureDetection.thresholds.moderate) {
+            newPressure = 'moderate';
+        }
+        
+        // Handle pressure level changes
+        if (newPressure !== pressureDetection.currentPressure) {
+            this.handleMemoryPressureChange(pressureDetection.currentPressure, newPressure);
+            pressureDetection.currentPressure = newPressure;
+        }
+        
+        // Update monitoring metrics
+        this.mobileMonitoring.metrics.memoryUsage = memoryUsage;
+    }
+    
+    /**
+     * Handle memory pressure level changes
+     */
+    handleMemoryPressureChange(oldPressure, newPressure) {
+        console.log(`[MobilePerformanceOptimizer] Memory pressure changed: ${oldPressure} → ${newPressure}`);
+        
+        switch (newPressure) {
+            case 'critical':
+                this.triggerEmergencyMemoryCleanup();
+                this.triggerAdaptiveOptimization('emergency');
+                break;
+            case 'severe':
+                this.triggerAdaptiveOptimization('memory_pressure');
+                break;
+            case 'moderate':
+                this.performPreemptiveMemoryCleanup();
+                break;
+            case 'normal':
+                this.restoreNormalMemoryOperations();
+                break;
+        }
+    }
+    
+    /**
+     * Perform intelligent memory management
+     */
+    performIntelligentMemoryManagement() {
+        const memoryMgmt = this.mobileOptimizations.memory.memoryManagement;
+        
+        if (!memoryMgmt.enabled) return;
+        
+        // Intelligent caching
+        if (memoryMgmt.intelligentCaching) {
+            this.optimizeMemoryCaches();
+        }
+        
+        // Memory defragmentation
+        if (memoryMgmt.memoryDefragmentation) {
+            this.performMemoryDefragmentation();
+        }
+        
+        // Preemptive cleanup
+        if (memoryMgmt.preemptiveCleanup) {
+            this.performPreemptiveMemoryCleanup();
+        }
+    }
+    
+    /**
+     * Optimize memory caches
+     */
+    optimizeMemoryCaches() {
+        // Clear least recently used cache entries
+        if (this.configManager && this.configManager.clearLRUCache) {
+            this.configManager.clearLRUCache();
+        }
+        
+        // Optimize texture cache
+        this.configManager.set('graphics.textures.cacheOptimization', true);
+        
+        // Optimize audio cache
+        this.configManager.set('audio.cacheOptimization', true);
+    }
+    
+    /**
+     * Perform memory defragmentation
+     */
+    performMemoryDefragmentation() {
+        // Force garbage collection if available
+        if (window.gc) {
+            window.gc();
+        }
+        
+        // Compact object pools
+        this.compactMemoryPools();
+        
+        console.log('[MobilePerformanceOptimizer] Memory defragmentation performed');
+    }
+    
+    /**
+     * Perform preemptive memory cleanup
+     */
+    performPreemptiveMemoryCleanup() {
+        // Clear temporary objects
+        this.clearTemporaryObjects();
+        
+        // Optimize object pools
+        this.optimizeMemoryPools();
+        
+        // Clear unused resources
+        this.clearUnusedResources();
+    }
+    
+    /**
+     * Trigger emergency memory cleanup
+     */
+    triggerEmergencyMemoryCleanup() {
+        console.log('[MobilePerformanceOptimizer] Emergency memory cleanup triggered');
+        
+        // Aggressive cleanup measures
+        this.performMemoryDefragmentation();
+        this.clearAllCaches();
+        this.releaseUnusedMemory();
+        
+        // Force GC multiple times
+        if (window.gc) {
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => window.gc(), i * 100);
+            }
+        }
+    }
+    
+    /**
+     * Initialize memory pools
+     */
+    initializeMemoryPools() {
+        const poolMgmt = this.mobileOptimizations.memory.poolManagement;
+        
+        if (!poolMgmt.enabled) return;
+        
+        // Initialize common object pools
+        poolMgmt.objectPools.set('touchEvents', {
+            pool: [],
+            maxSize: 50,
+            createFn: () => ({ x: 0, y: 0, timestamp: 0, identifier: 0 })
+        });
+        
+        poolMgmt.objectPools.set('performanceMetrics', {
+            pool: [],
+            maxSize: 100,
+            createFn: () => ({ fps: 0, frameTime: 0, timestamp: 0 })
+        });
+        
+        console.log('[MobilePerformanceOptimizer] Memory pools initialized');
+    }
+    
+    /**
+     * Optimize memory pools
+     */
+    optimizeMemoryPools() {
+        const poolMgmt = this.mobileOptimizations.memory.poolManagement;
+        
+        poolMgmt.objectPools.forEach((pool, name) => {
+            // Remove excess objects from pool
+            while (pool.pool.length > pool.maxSize / 2) {
+                pool.pool.pop();
+            }
+        });
+    }
+    
+    /**
+     * Compact memory pools
+     */
+    compactMemoryPools() {
+        const poolMgmt = this.mobileOptimizations.memory.poolManagement;
+        
+        poolMgmt.objectPools.forEach((pool, name) => {
+            // Recreate pool with current objects to reduce fragmentation
+            const currentObjects = pool.pool.slice();
+            pool.pool = currentObjects;
+        });
+    }
+    
+    /**
+     * Detect memory leaks
+     */
+    detectMemoryLeaks() {
+        const leakDetection = this.mobileOptimizations.memory.leakDetection;
+        
+        if (!leakDetection.enabled || !performance.memory) return;
+        
+        const memInfo = performance.memory;
+        const currentUsage = memInfo.usedJSHeapSize / (1024 * 1024); // MB
+        
+        // Track memory growth over time
+        if (!this.memoryGrowthHistory) {
+            this.memoryGrowthHistory = [];
+        }
+        
+        this.memoryGrowthHistory.push({
+            timestamp: Date.now(),
+            usage: currentUsage
+        });
+        
+        // Keep only recent history
+        if (this.memoryGrowthHistory.length > 20) {
+            this.memoryGrowthHistory.shift();
+        }
+        
+        // Analyze growth pattern
+        if (this.memoryGrowthHistory.length >= 10) {
+            this.analyzeMemoryGrowthPattern();
+        }
+    }
+    
+    /**
+     * Analyze memory growth pattern for leaks
+     */
+    analyzeMemoryGrowthPattern() {
+        const leakDetection = this.mobileOptimizations.memory.leakDetection;
+        const history = this.memoryGrowthHistory;
+        
+        // Calculate growth rate over last 10 minutes
+        const recent = history[history.length - 1];
+        const old = history[0];
+        const timeDiff = (recent.timestamp - old.timestamp) / 60000; // minutes
+        const usageDiff = recent.usage - old.usage;
+        
+        if (timeDiff > 0) {
+            const growthRate = usageDiff / timeDiff; // MB per minute
+            
+            // Check for suspicious growth
+            if (growthRate > leakDetection.suspiciousGrowthRate) {
+                this.reportSuspiciousMemoryGrowth(growthRate);
+            }
+            
+            // Check for excessive memory usage
+            if (recent.usage > leakDetection.leakThreshold) {
+                this.reportExcessiveMemoryUsage(recent.usage);
+            }
+        }
+    }
+    
+    /**
+     * Report suspicious memory growth
+     */
+    reportSuspiciousMemoryGrowth(growthRate) {
+        const leakDetection = this.mobileOptimizations.memory.leakDetection;
+        
+        const leak = {
+            type: 'suspicious_growth',
+            growthRate: growthRate,
+            timestamp: Date.now(),
+            severity: growthRate > leakDetection.suspiciousGrowthRate * 2 ? 'high' : 'medium'
+        };
+        
+        leakDetection.detectedLeaks.push(leak);
+        
+        console.warn(`[MobilePerformanceOptimizer] Suspicious memory growth detected: ${growthRate.toFixed(2)} MB/min`);
+        
+        // Trigger cleanup if severe
+        if (leak.severity === 'high') {
+            this.triggerEmergencyMemoryCleanup();
+        }
+    }
+    
+    /**
+     * Report excessive memory usage
+     */
+    reportExcessiveMemoryUsage(usage) {
+        const leakDetection = this.mobileOptimizations.memory.leakDetection;
+        
+        const leak = {
+            type: 'excessive_usage',
+            usage: usage,
+            timestamp: Date.now(),
+            severity: usage > leakDetection.leakThreshold * 2 ? 'critical' : 'high'
+        };
+        
+        leakDetection.detectedLeaks.push(leak);
+        
+        console.warn(`[MobilePerformanceOptimizer] Excessive memory usage detected: ${usage.toFixed(2)} MB`);
+        
+        // Trigger immediate cleanup
+        this.triggerEmergencyMemoryCleanup();
+    }
+    
+    /**
+     * Apply platform-specific memory optimizations
+     */
+    applyPlatformMemoryOptimizations() {
+        const platform = this.deviceDetection.platform;
+        const platformOpts = this.mobileOptimizations.memory.platformOptimizations;
+        
+        switch (platform) {
+            case 'ios':
+                this.applyIOSMemoryOptimizations(platformOpts.ios);
+                break;
+            case 'android':
+                this.applyAndroidMemoryOptimizations(platformOpts.android);
+                break;
+            case 'web':
+                this.applyWebMemoryOptimizations(platformOpts.web);
+                break;
+        }
+    }
+    
+    /**
+     * Apply iOS-specific memory optimizations
+     */
+    applyIOSMemoryOptimizations(iosOpts) {
+        if (iosOpts.memoryWarningHandling) {
+            // Listen for memory warnings (if available)
+            document.addEventListener('webkitmemorypressure', () => {
+                console.log('[MobilePerformanceOptimizer] iOS memory pressure detected');
+                this.triggerEmergencyMemoryCleanup();
+            });
+        }
+        
+        if (iosOpts.backgroundAppRefresh) {
+            // Disable background app refresh behavior
+            this.configManager.set('background.refreshEnabled', false);
+        }
+    }
+    
+    /**
+     * Apply Android-specific memory optimizations
+     */
+    applyAndroidMemoryOptimizations(androidOpts) {
+        if (androidOpts.lowMemoryKiller) {
+            // Implement low memory killer logic
+            this.setupLowMemoryKiller();
+        }
+        
+        if (androidOpts.compactHeap) {
+            // Trigger heap compaction more frequently
+            this.heapCompactionInterval = setInterval(() => {
+                this.performMemoryDefragmentation();
+            }, 30000);
+        }
+    }
+    
+    /**
+     * Apply web-specific memory optimizations
+     */
+    applyWebMemoryOptimizations(webOpts) {
+        // Set Web Worker memory limits
+        this.configManager.set('webWorkers.memoryLimit', webOpts.webWorkerMemoryLimit);
+        
+        // Set OffscreenCanvas limits
+        this.configManager.set('canvas.offscreenMemoryLimit', webOpts.offscreenCanvasLimit);
+    }
+    
+    /**
+     * Setup low memory killer for Android
+     */
+    setupLowMemoryKiller() {
+        // Monitor memory pressure and kill non-essential processes
+        const checkMemoryPressure = () => {
+            if (this.mobileOptimizations.memory.pressureDetection.currentPressure === 'critical') {
+                this.killNonEssentialProcesses();
+            }
+        };
+        
+        setInterval(checkMemoryPressure, 10000); // Every 10 seconds
+    }
+    
+    /**
+     * Kill non-essential processes
+     */
+    killNonEssentialProcesses() {
+        // Pause non-critical game systems
+        this.configManager.set('particles.enabled', false);
+        this.configManager.set('audio.backgroundMusic', false);
+        this.configManager.set('effects.advancedEffects', false);
+        
+        console.log('[MobilePerformanceOptimizer] Non-essential processes paused due to memory pressure');
+    }
+    
+    /**
+     * Clear all caches
+     */
+    clearAllCaches() {
+        // Clear configuration cache
+        if (this.configManager && this.configManager.clearCache) {
+            this.configManager.clearCache();
+        }
+        
+        // Clear performance cache
+        this.performance.cache.measurements.clear();
+        this.performance.cache.calculations.clear();
+    }
+    
+    /**
+     * Clear temporary objects
+     */
+    clearTemporaryObjects() {
+        // Clear touch event history
+        this.mobileMonitoring.touchTracking.touchEvents = [];
+        
+        // Clear thermal history (keep recent)
+        const thermalHistory = this.mobileMonitoring.thermalMonitoring.thermalHistory;
+        if (thermalHistory.temperatureLog.length > 100) {
+            thermalHistory.temperatureLog = thermalHistory.temperatureLog.slice(-50);
+        }
+    }
+    
+    /**
+     * Clear unused resources
+     */
+    clearUnusedResources() {
+        // Clear optimization history (keep recent)
+        if (this.adaptiveSystem.optimizationHistory.length > 50) {
+            this.adaptiveSystem.optimizationHistory = this.adaptiveSystem.optimizationHistory.slice(-25);
+        }
+        
+        // Clear memory growth history
+        if (this.memoryGrowthHistory && this.memoryGrowthHistory.length > 10) {
+            this.memoryGrowthHistory = this.memoryGrowthHistory.slice(-5);
+        }
+    }
+    
+    /**
+     * Release unused memory
+     */
+    releaseUnusedMemory() {
+        // Clear large data structures that can be rebuilt
+        this.deviceDetection.benchmarks = {
+            cpuScore: 0,
+            gpuScore: 0,
+            memoryScore: 0,
+            overallScore: 0,
+            benchmarkComplete: false
+        };
+        
+        // Reset performance cache
+        this.performance.cache.lastUpdate = 0;
+    }
+    
+    /**
+     * Restore normal memory operations
+     */
+    restoreNormalMemoryOperations() {
+        // Re-enable disabled systems
+        this.configManager.set('particles.enabled', true);
+        this.configManager.set('audio.backgroundMusic', true);
+        this.configManager.set('effects.advancedEffects', true);
+        
+        console.log('[MobilePerformanceOptimizer] Normal memory operations restored');
+    }
+    
+    /**
+     * Get comprehensive battery information
+     */
+    async getBatteryInfo() {
+        try {
+            if (navigator.getBattery) {
+                return await navigator.getBattery();
+            }
+        } catch (error) {
+            // Fallback to stored battery info
+            return this.deviceDetection.hardware.battery;
+        }
+        return null;
+    }
+    
+    /**
+     * Enhanced public API methods
+     */
+    
+    /**
+     * Get comprehensive performance report
+     */
+    getPerformanceReport() {
+        return {
+            device: this.getDeviceInfo(),
+            battery: {
+                level: this.mobileMonitoring.batteryMonitoring.currentLevel,
+                powerState: this.mobileMonitoring.batteryMonitoring.dynamicPowerManagement.currentPowerState,
+                drainRate: this.mobileMonitoring.batteryMonitoring.drainRate,
+                healthMetrics: this.mobileMonitoring.batteryMonitoring.healthMetrics
+            },
+            thermal: {
+                currentState: this.mobileMonitoring.thermalMonitoring.currentState,
+                estimatedTemperature: this.mobileMonitoring.thermalMonitoring.temperatureEstimation.currentEstimate,
+                throttleLevel: this.mobileMonitoring.thermalMonitoring.performanceImpact.overallThrottleLevel
+            },
+            memory: {
+                pressure: this.mobileOptimizations.memory.pressureDetection.currentPressure,
+                usage: this.mobileMonitoring.metrics.memoryUsage,
+                leaks: this.mobileOptimizations.memory.leakDetection.detectedLeaks.length
+            },
+            optimizations: {
+                active: Array.from(this.adaptiveSystem.currentOptimizations),
+                level: this.mobileConfig.optimizationLevel
+            }
+        };
+    }
+    
+    /**
+     * Force optimization trigger
+     */
+    forceOptimization(type, reason = 'manual') {
+        console.log(`[MobilePerformanceOptimizer] Force optimization triggered: ${type} (${reason})`);
+        
+        switch (type) {
+            case 'battery':
+                this.triggerBatteryOptimizations();
+                break;
+            case 'thermal':
+                this.applyEmergencyThermalControl();
+                break;
+            case 'memory':
+                this.triggerEmergencyMemoryCleanup();
+                break;
+            case 'all':
+                this.triggerAdaptiveOptimization('emergency');
+                break;
+            default:
+                this.triggerAdaptiveOptimization(type);
+        }
+    }
+    
+    /**
+     * Enhanced cleanup with advanced monitoring
      */
     destroy() {
-        // Clear intervals
-        if (this.gcInterval) {
-            clearInterval(this.gcInterval);
-        }
+        // Clear all monitoring intervals
+        if (this.gcInterval) clearInterval(this.gcInterval);
+        if (this.batteryMonitoringInterval) clearInterval(this.batteryMonitoringInterval);
+        if (this.thermalMonitoringInterval) clearInterval(this.thermalMonitoringInterval);
+        if (this.memoryMonitoringInterval) clearInterval(this.memoryMonitoringInterval);
+        if (this.heapCompactionInterval) clearInterval(this.heapCompactionInterval);
         
         // Clear optimizations
         this.adaptiveSystem.currentOptimizations.clear();
         
-        console.log('[MobilePerformanceOptimizer] Mobile optimizer destroyed');
+        // Clear memory pools
+        if (this.mobileOptimizations.memory.poolManagement.objectPools) {
+            this.mobileOptimizations.memory.poolManagement.objectPools.clear();
+        }
+        
+        // Final cleanup
+        this.clearAllCaches();
+        
+        console.log('[MobilePerformanceOptimizer] Enhanced mobile optimizer destroyed');
     }
 }
 

@@ -827,6 +827,146 @@ export class GameScene extends Scene {
     }
     
     /**
+     * スワイプエフェクトを作成
+     */
+    createSwipeEffect(startPos, endPos, direction) {
+        const particleCount = 20;
+        const pathLength = Math.sqrt(
+            Math.pow(endPos.x - startPos.x, 2) + 
+            Math.pow(endPos.y - startPos.y, 2)
+        );
+        
+        for (let i = 0; i < particleCount; i++) {
+            const t = i / (particleCount - 1);
+            const x = startPos.x + (endPos.x - startPos.x) * t;
+            const y = startPos.y + (endPos.y - startPos.y) * t;
+            
+            this.dragVisualization.particles.push({
+                x: x + (Math.random() - 0.5) * 10,
+                y: y + (Math.random() - 0.5) * 10,
+                vx: (Math.random() - 0.5) * 50,
+                vy: (Math.random() - 0.5) * 50,
+                size: 3 + Math.random() * 4,
+                color: `hsl(${200 + Math.random() * 60}, 100%, 50%)`,
+                life: 800,
+                maxLife: 800,
+                alpha: 1
+            });
+        }
+        
+        // フローティングテキスト
+        this.floatingTextManager.addAnimatedText(
+            (startPos.x + endPos.x) / 2,
+            (startPos.y + endPos.y) / 2,
+            'SWIPE!',
+            'special'
+        );
+    }
+    
+    /**
+     * ピンチエフェクトを作成
+     */
+    createPinchEffect(center, scale) {
+        const particleCount = 30;
+        const angleStep = (Math.PI * 2) / particleCount;
+        
+        for (let i = 0; i < particleCount; i++) {
+            const angle = i * angleStep;
+            const radius = 50 * scale;
+            const x = center.x + Math.cos(angle) * radius;
+            const y = center.y + Math.sin(angle) * radius;
+            
+            this.dragVisualization.particles.push({
+                x: x,
+                y: y,
+                vx: Math.cos(angle) * 100 * (scale - 1),
+                vy: Math.sin(angle) * 100 * (scale - 1),
+                size: 2 + Math.random() * 3,
+                color: `hsl(${280 + Math.random() * 40}, 100%, 50%)`,
+                life: 1000,
+                maxLife: 1000,
+                alpha: 1
+            });
+        }
+    }
+    
+    /**
+     * 放射状バーストエフェクトを作成
+     */
+    createRadialBurstEffect(position, radius) {
+        const particleCount = 40;
+        const angleStep = (Math.PI * 2) / particleCount;
+        
+        for (let i = 0; i < particleCount; i++) {
+            const angle = i * angleStep + Math.random() * 0.2;
+            const speed = 150 + Math.random() * 100;
+            
+            this.dragVisualization.particles.push({
+                x: position.x,
+                y: position.y,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed,
+                size: 4 + Math.random() * 4,
+                color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+                life: 1200,
+                maxLife: 1200,
+                alpha: 1
+            });
+        }
+        
+        // フローティングテキスト
+        this.floatingTextManager.addAnimatedText(
+            position.x,
+            position.y - 30,
+            'BURST!',
+            'combo'
+        );
+    }
+    
+    /**
+     * 長押しエフェクトを作成
+     */
+    createLongPressEffect(position) {
+        const rings = 3;
+        
+        for (let ring = 0; ring < rings; ring++) {
+            const delay = ring * 200;
+            
+            setTimeout(() => {
+                const particleCount = 20;
+                const angleStep = (Math.PI * 2) / particleCount;
+                const radius = 30 + ring * 20;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const angle = i * angleStep;
+                    const x = position.x + Math.cos(angle) * radius;
+                    const y = position.y + Math.sin(angle) * radius;
+                    
+                    this.dragVisualization.particles.push({
+                        x: x,
+                        y: y,
+                        vx: 0,
+                        vy: -20,
+                        size: 3 + Math.random() * 2,
+                        color: `hsl(${60 + ring * 30}, 100%, 50%)`,
+                        life: 1500,
+                        maxLife: 1500,
+                        alpha: 1
+                    });
+                }
+            }, delay);
+        }
+        
+        // フローティングテキスト
+        this.floatingTextManager.addAnimatedText(
+            position.x,
+            position.y - 40,
+            'POWER!',
+            'special'
+        );
+    }
+    
+    /**
      * ドラッグビジュアライゼーションを更新（時間経過）
      */
     updateDragVisualization(deltaTime) {

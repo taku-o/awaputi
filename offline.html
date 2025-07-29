@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#4CAF50">
+    <title>BubblePop - オフライン</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .offline-container {
+            max-width: 400px;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .offline-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+        
+        .offline-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+        
+        .offline-message {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            opacity: 0.9;
+        }
+        
+        .offline-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary {
+            background: #4CAF50;
+        }
+        
+        .btn-primary:hover {
+            background: #45a049;
+        }
+        
+        .network-status {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+        }
+        
+        .status-online {
+            background: rgba(76, 175, 80, 0.3);
+        }
+        
+        .status-offline {
+            background: rgba(244, 67, 54, 0.3);
+        }
+        
+        .features-list {
+            text-align: left;
+            margin: 20px 0;
+        }
+        
+        .features-list li {
+            margin: 8px 0;
+            opacity: 0.9;
+        }
+        
+        .features-list li:before {
+            content: "✓ ";
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 480px) {
+            .offline-container {
+                padding: 30px 15px;
+            }
+            
+            .offline-icon {
+                font-size: 48px;
+            }
+            
+            .offline-title {
+                font-size: 20px;
+            }
+            
+            .offline-message {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon">🎮</div>
+        <h1 class="offline-title">BubblePop</h1>
+        <p class="offline-message">
+            現在オフラインです。ネットワーク接続を確認してください。
+        </p>
+        
+        <div class="offline-message">
+            <strong>オフラインでもお楽しみいただけます：</strong>
+            <ul class="features-list">
+                <li>基本的なゲームプレイ</li>
+                <li>ローカル統計の確認</li>
+                <li>設定の変更</li>
+                <li>実績の確認</li>
+            </ul>
+        </div>
+        
+        <div class="offline-actions">
+            <button class="btn btn-primary" onclick="tryReload()">再読み込み</button>
+            <button class="btn" onclick="goToGame()">オフラインでプレイ</button>
+        </div>
+        
+        <div id="networkStatus" class="network-status status-offline">
+            📡 ネットワーク: オフライン
+        </div>
+    </div>
+    
+    <script>
+        // ネットワーク状態の監視
+        function updateNetworkStatus() {
+            const statusElement = document.getElementById('networkStatus');
+            const isOnline = navigator.onLine;
+            
+            if (isOnline) {
+                statusElement.textContent = '📡 ネットワーク: オンライン';
+                statusElement.className = 'network-status status-online';
+                
+                // オンライン復帰時の自動リロード
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 2000);
+            } else {
+                statusElement.textContent = '📡 ネットワーク: オフライン';
+                statusElement.className = 'network-status status-offline';
+            }
+        }
+        
+        // 再読み込み処理
+        function tryReload() {
+            if (navigator.onLine) {
+                window.location.reload();
+            } else {
+                alert('まだオフラインです。ネットワーク接続を確認してください。');
+            }
+        }
+        
+        // オフラインゲームへ移動
+        function goToGame() {
+            // Service Workerがあればキャッシュされたゲームにアクセス
+            if ('serviceWorker' in navigator) {
+                window.location.href = '/';
+            } else {
+                alert('オフライン機能を利用するにはService Workerが必要です。');
+            }
+        }
+        
+        // イベントリスナーの設定
+        window.addEventListener('online', updateNetworkStatus);
+        window.addEventListener('offline', updateNetworkStatus);
+        
+        // 初期状態の設定
+        updateNetworkStatus();
+        
+        // Service Worker関連の処理
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.ready.then(registration => {
+                console.log('[OfflinePage] Service Worker準備完了');
+                
+                // Service Workerからのメッセージを受信
+                navigator.serviceWorker.addEventListener('message', event => {
+                    const { type, payload } = event.data || {};
+                    
+                    if (type === 'CACHE_UPDATED') {
+                        console.log('[OfflinePage] キャッシュ更新完了');
+                        // 更新通知を表示（実装可能）
+                    }
+                });
+            });
+        }
+        
+        // PWA関連の処理
+        window.addEventListener('load', () => {
+            // インストールプロンプトがある場合
+            window.addEventListener('beforeinstallprompt', (e) => {
+                console.log('[OfflinePage] インストールプロンプト利用可能');
+                
+                // インストールボタンを動的に追加
+                const installButton = document.createElement('button');
+                installButton.className = 'btn';
+                installButton.textContent = 'アプリをインストール';
+                installButton.onclick = () => {
+                    e.prompt();
+                };
+                
+                document.querySelector('.offline-actions').appendChild(installButton);
+            });
+        });
+        
+        // ページ可視性の監視
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) {
+                updateNetworkStatus();
+            }
+        });
+    </script>
+</body>
+</html>
