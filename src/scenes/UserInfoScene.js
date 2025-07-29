@@ -17,6 +17,10 @@ import { UsernameDialog } from './components/UsernameDialog.js';
 import { ExportDialog } from './components/ExportDialog.js';
 import { ImportDialog } from './components/ImportDialog.js';
 
+// 新しいタブコンポーネントシステム
+import { HelpTab } from './components/HelpTab.js';
+import { HelpSectionSelector } from './components/HelpSectionSelector.js';
+
 export class UserInfoScene extends Scene {
     constructor(gameEngine) {
         super(gameEngine);
@@ -88,11 +92,32 @@ export class UserInfoScene extends Scene {
         this.dialogManager.registerDialog('export', ExportDialog);
         this.dialogManager.registerDialog('import', ImportDialog);
         
+        // タブコンポーネントを初期化
+        this.initializeTabComponents();
+        
         // イベントリスナーをセットアップ
         this.setupEventListeners();
         
         // レガシープロパティとの互換性維持
         this.setupLegacyCompatibility();
+    }
+    
+    /**
+     * タブコンポーネントを初期化
+     */
+    initializeTabComponents() {
+        // HelpTabコンポーネントを作成
+        this.helpTabComponent = new HelpTab(this.gameEngine, this.eventBus, this.sceneState);
+        this.helpTabComponent.initialize();
+        
+        // ヘルプセクションセレクターを作成
+        this.helpSectionSelector = new HelpSectionSelector(this.gameEngine, this.eventBus, this.sceneState);
+        
+        // タブコンポーネントマップを作成（将来の拡張用）
+        this.tabComponents = new Map();
+        this.tabComponents.set('help', this.helpTabComponent);
+        
+        console.log('Tab components initialized');
     }
     
     /**
@@ -117,6 +142,7 @@ export class UserInfoScene extends Scene {
         // 状態変更の監視
         this.sceneState.onChange('currentTab', (newTab, oldTab) => {
             console.log(`Tab changed from ${oldTab} to ${newTab}`);
+            this.handleTabChange(newTab, oldTab);
         });
     }
     
@@ -154,6 +180,28 @@ export class UserInfoScene extends Scene {
         // アクセシビリティ設定の参照
         this.accessibilitySettings = this.sceneState.accessibilitySettings;
     }
+    
+    /**
+     * タブ変更処理
+     * @param {string} newTab - 新しいタブ
+     * @param {string} oldTab - 古いタブ
+     */
+    handleTabChange(newTab, oldTab) {
+        // 古いタブコンポーネントを非アクティブ化
+        if (oldTab && this.tabComponents.has(oldTab)) {
+            this.tabComponents.get(oldTab).deactivate();
+        }
+        
+        // 新しいタブコンポーネントをアクティブ化
+        if (newTab && this.tabComponents.has(newTab)) {
+            this.tabComponents.get(newTab).activate();
+        }
+        
+        // ヘルプタブ特有の処理
+        if (newTab === 'help' && this.helpTabComponent) {
+            this.helpTabComponent.activate();
+        }
+    }
 
     enter() {
         console.log('User info scene entered');
@@ -186,6 +234,24 @@ export class UserInfoScene extends Scene {
         
         if (this.sceneState) {
             this.sceneState.cleanup();
+        }
+        
+        // タブコンポーネントのクリーンアップ
+        if (this.helpTabComponent) {
+            this.helpTabComponent.cleanup();
+        }
+        
+        if (this.helpSectionSelector) {
+            this.helpSectionSelector.cleanup();
+        }
+        
+        if (this.tabComponents) {
+            for (const component of this.tabComponents.values()) {
+                if (component.cleanup) {
+                    component.cleanup();
+                }
+            }
+            this.tabComponents.clear();
         }
     }
 
@@ -382,7 +448,7 @@ export class UserInfoScene extends Scene {
                 this.renderUserManagement(context, contentY, contentHeight);
                 break;
             case 'help':
-                this.renderHelp(context, contentY, contentHeight);
+                this.renderHelpWithComponent(context, contentY, contentHeight);
                 break;
         }
     }
@@ -1956,7 +2022,7 @@ export class UserInfoScene extends Scene {
         
         // ヘルプ画面のセクション選択クリック処理
         if (this.currentTab === 'help') {
-            this.handleHelpSectionClick(x, y);
+            this.handleHelpTabClick(x, y);
         }
         
         // 戻るボタンクリック処理
@@ -3665,7 +3731,24 @@ export class UserInfoScene extends Scene {
     }
     
     /**
-     * ヘルプコンテンツを描画
+     * 新しいコンポーネントシステムでヘルプをレンダリング
+     */
+    renderHelpWithComponent(context, y, height) {
+        const canvas = this.gameEngine.canvas;
+        const contentWidth = canvas.width - this.contentPadding * 2;
+        const contentX = this.contentPadding;
+        
+        if (this.helpTabComponent && this.helpTabComponent.isActive) {
+            // 新しいHelpTabコンポーネントでレンダリング
+            this.helpTabComponent.render(context, contentX, y, contentWidth, height);
+        } else {
+            // フォールバック: 古いシステムを使用
+            this.renderHelp(context, y, height);
+        }
+    }
+    
+    /**
+     * ヘルプコンテンツを描画（レガシー）
      */
     renderHelp(context, y, height) {
         const canvas = this.gameEngine.canvas;
@@ -3832,7 +3915,27 @@ export class UserInfoScene extends Scene {
     }
     
     /**
-     * ヘルプセクション選択のクリック処理
+     * 新しいヘルプタブのクリック処理
+     */
+    handleHelpTabClick(x, y) {
+        const canvas = this.gameEngine.canvas;
+        const contentY = this.headerHeight + this.tabHeight;
+        const relativeX = x;
+        const relativeY = y - contentY;
+        
+        if (this.helpTabComponent && this.helpTabComponent.isActive) {
+            // 新しいHelpTabコンポーネントでクリック処理
+            if (this.helpTabComponent.handleClick(relativeX, relativeY)) {
+                return; // コンポーネントが処理した場合
+            }
+        }
+        
+        // フォールバック: 古いシステムを使用
+        this.handleHelpSectionClick(x, y);
+    }
+    
+    /**
+     * ヘルプセクション選択のクリック処理（レガシー）
      */
     handleHelpSectionClick(x, y) {
         const helpSections = ['overview', 'categories', 'progress', 'rewards', 'tips', 'faq'];
