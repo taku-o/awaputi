@@ -30,7 +30,7 @@
   - シーン変更時の自動BGM切り替え機能
   - _Requirements: 1.3, 1.5_
 
-- [ ] 2.1 BGMTransitionManagerクラスを実装
+- [x] 2.1 BGMTransitionManagerクラスを実装
   - BGMTransitionManagerクラスの作成
   - フェードイン/アウトのGainNode制御実装
   - トランジション状態管理とタイミング制御
