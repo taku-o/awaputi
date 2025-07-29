@@ -34,6 +34,11 @@ export class DataManager {
         this.validation = null;
         this.ui = null;
         
+        // クラウド対応コンポーネント
+        this.cloudStorage = null;
+        this.syncManager = null;
+        this.offlineManager = null;
+        
         // 非同期操作管理
         this.asyncQueue = getAsyncOperationQueue();
         
@@ -120,6 +125,9 @@ export class DataManager {
             // DataStorageの初期化
             await this.initializeStorage();
             
+            // クラウド対応コンポーネントの初期化
+            await this.initializeCloudComponents();
+            
         } catch (error) {
             getErrorHandler().handleError(error, 'COMPONENT_INITIALIZATION_ERROR', {
                 operation: 'initializeComponents'
@@ -151,6 +159,108 @@ export class DataManager {
                 }
             };
         }
+    }
+    
+    /**
+     * クラウド対応コンポーネントの初期化
+     */
+    async initializeCloudComponents() {
+        try {
+            // CloudStorageAdapterの初期化
+            await this.initializeCloudStorage();
+            
+            // SyncManagerの初期化
+            if (this.storage && this.cloudStorage) {
+                await this.initializeSyncManager();
+            }
+            
+            // OfflineManagerの初期化
+            if (this.storage && this.syncManager) {
+                await this.initializeOfflineManager();
+            }
+            
+        } catch (error) {
+            console.warn('Cloud components initialization failed, continuing in offline mode:', error);
+            // クラウド機能が利用できない場合でも、ローカル機能は動作継続
+        }
+    }
+    
+    /**
+     * クラウドストレージの初期化
+     */
+    async initializeCloudStorage() {
+        try {
+            const { createCloudStorageAdapter } = await import('./CloudStorageAdapter.js');
+            
+            // 設定からクラウドプロバイダー情報を取得
+            const cloudConfig = this.getCloudConfig();
+            
+            if (cloudConfig.enabled) {
+                this.cloudStorage = createCloudStorageAdapter(cloudConfig.provider, cloudConfig);
+                console.log('DataManager: CloudStorageAdapter initialized');
+            }
+        } catch (error) {
+            console.warn('CloudStorageAdapter not available:', error);
+        }
+    }
+    
+    /**
+     * 同期マネージャーの初期化
+     */
+    async initializeSyncManager() {
+        try {
+            const { SyncManager } = await import('./SyncManager.js');
+            this.syncManager = new SyncManager(this.storage, this.cloudStorage);
+            console.log('DataManager: SyncManager initialized');
+        } catch (error) {
+            console.warn('SyncManager not available:', error);
+        }
+    }
+    
+    /**
+     * オフラインマネージャーの初期化
+     */
+    async initializeOfflineManager() {
+        try {
+            const { OfflineManager } = await import('./OfflineManager.js');
+            this.offlineManager = new OfflineManager(this.storage, this.syncManager);
+            console.log('DataManager: OfflineManager initialized');
+        } catch (error) {
+            console.warn('OfflineManager not available:', error);
+        }
+    }
+    
+    /**
+     * クラウド設定の取得
+     */
+    getCloudConfig() {
+        // デフォルト設定
+        const defaultConfig = {
+            enabled: false,
+            provider: 'generic',
+            apiEndpoint: null,
+            autoSync: true,
+            conflictResolution: 'timestamp'
+        };
+        
+        try {
+            // SettingsManagerから設定を取得
+            if (this.settingsManager && this.settingsManager.get) {
+                const cloudSettings = this.settingsManager.get('cloud') || {};
+                return { ...defaultConfig, ...cloudSettings };
+            }
+            
+            // LocalStorageから設定を取得（フォールバック）
+            const storedConfig = localStorage.getItem('bubblePop_cloudConfig');
+            if (storedConfig) {
+                const parsedConfig = JSON.parse(storedConfig);
+                return { ...defaultConfig, ...parsedConfig };
+            }
+        } catch (error) {
+            console.warn('Failed to get cloud config:', error);
+        }
+        
+        return defaultConfig;
     }
     
     /**
@@ -886,6 +996,116 @@ export class DataManager {
     }
     
     /**
+     * クラウド同期の実行
+     */
+    async syncToCloud(options = {}) {
+        try {
+            if (!this.syncManager) {
+                throw new Error('Sync manager not available');
+            }
+            
+            console.log('DataManager: Starting cloud sync...');
+            const syncResult = await this.syncManager.sync(options);
+            
+            this.emit('cloudSyncCompleted', syncResult);
+            return syncResult;
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'CLOUD_SYNC_ERROR', {
+                operation: 'syncToCloud'
+            });
+            this.emit('cloudSyncFailed', error);
+            throw error;
+        }
+    }
+    
+    /**
+     * オフライン状態の取得
+     */
+    getOfflineStatus() {
+        if (this.offlineManager) {
+            return this.offlineManager.getOfflineStatus();
+        }
+        
+        return {
+            isOnline: navigator.onLine,
+            connectionQuality: 'unknown',
+            offlineOperations: 0,
+            cloudAvailable: !!this.cloudStorage
+        };
+    }
+    
+    /**
+     * 同期状態の取得
+     */
+    getSyncStatus() {
+        if (this.syncManager) {
+            return this.syncManager.getSyncStatus();
+        }
+        
+        return {
+            isInProgress: false,
+            lastSyncTime: null,
+            pendingConflicts: 0,
+            cloudAuthenticated: this.cloudStorage ? this.cloudStorage.isAuthenticated() : false,
+            isOnline: navigator.onLine
+        };
+    }
+    
+    /**
+     * クラウドストレージへの認証
+     */
+    async authenticateCloud(credentials) {
+        try {
+            if (!this.cloudStorage) {
+                throw new Error('Cloud storage not available');
+            }
+            
+            const result = await this.cloudStorage.authenticate(credentials);
+            
+            if (result) {
+                // 認証成功後、自動同期を開始
+                if (this.syncManager) {
+                    this.syncManager.startAutoSync();
+                }
+                
+                this.emit('cloudAuthenticated', { timestamp: Date.now() });
+            }
+            
+            return result;
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'CLOUD_AUTH_ERROR', {
+                operation: 'authenticateCloud'
+            });
+            this.emit('cloudAuthFailed', error);
+            throw error;
+        }
+    }
+    
+    /**
+     * クラウドストレージからのログアウト
+     */
+    async logoutCloud() {
+        try {
+            if (this.cloudStorage) {
+                await this.cloudStorage.logout();
+            }
+            
+            if (this.syncManager) {
+                this.syncManager.stopAutoSync();
+            }
+            
+            this.emit('cloudLoggedOut', { timestamp: Date.now() });
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'CLOUD_LOGOUT_ERROR', {
+                operation: 'logoutCloud'
+            });
+        }
+    }
+    
+    /**
      * リソースの解放
      */
     destroy() {
@@ -897,6 +1117,19 @@ export class DataManager {
             // 各コンポーネントのクリーンアップ
             if (this.storage && typeof this.storage.destroy === 'function') {
                 this.storage.destroy();
+            }
+            
+            // クラウド対応コンポーネントのクリーンアップ
+            if (this.offlineManager && typeof this.offlineManager.destroy === 'function') {
+                this.offlineManager.destroy();
+            }
+            
+            if (this.syncManager && typeof this.syncManager.destroy === 'function') {
+                this.syncManager.destroy();
+            }
+            
+            if (this.cloudStorage && typeof this.cloudStorage.destroy === 'function') {
+                this.cloudStorage.destroy();
             }
             
             console.log('DataManager destroyed');
