@@ -164,7 +164,7 @@
   - データクリア機能を実装
   - _要件: 4.1, 4.2, 4.3, 4.4, 4.5_
 
-- [ ] 7.1 DataManagementUIクラスの基本実装
+- [x] 7.1 DataManagementUIクラスの基本実装
   - src/ui/DataManagementUI.jsファイルを作成
   - 基本的なUI構造とレイアウトを実装
   - UserInfoSceneとの統合を実装
