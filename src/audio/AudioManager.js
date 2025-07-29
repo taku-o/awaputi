@@ -897,6 +897,61 @@ export class AudioManager {
     }
     
     /**
+     * カテゴリ別実績解除音を再生
+     * @param {string} category - 実績カテゴリ
+     * @param {string} rarity - レアリティ
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playCategoryAchievementSound(category, rarity, options = {}) {
+        if (this.soundEffectSystem) {
+            const key = `${category}_${rarity}`;
+            if (this.soundEffectSystem.achievementSounds.has(key)) {
+                const buffer = this.soundEffectSystem.achievementSounds.get(key);
+                return this.soundEffectSystem._playSound(buffer, options);
+            }
+        }
+        // フォールバック: 通常の実績音
+        return this.playAchievementSound(rarity, options);
+    }
+    
+    /**
+     * 実績進捗音を再生
+     * @param {number} progress - 進捗度 (0-1)
+     * @param {string} category - カテゴリ
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playAchievementProgressSound(progress, category = 'score', options = {}) {
+        if (this.soundEffectSystem && this.soundEffectSystem.generateAchievementProgressSound) {
+            const buffer = this.soundEffectSystem.generateAchievementProgressSound(progress, category);
+            if (buffer) {
+                return this.soundEffectSystem._playSound(buffer, options);
+            }
+        }
+        // フォールバック: 微かな成功音
+        return this.playSound('success', { ...options, volume: (options.volume || 1) * 0.3 });
+    }
+    
+    /**
+     * 実績解除予告音を再生
+     * @param {string} rarity - レアリティ
+     * @param {number} timeToUnlock - 解除までの時間（秒）
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playAchievementHintSound(rarity, timeToUnlock = 3, options = {}) {
+        if (this.soundEffectSystem && this.soundEffectSystem.generateAchievementHintSound) {
+            const buffer = this.soundEffectSystem.generateAchievementHintSound(rarity, timeToUnlock);
+            if (buffer) {
+                return this.soundEffectSystem._playSound(buffer, options);
+            }
+        }
+        // フォールバック: 微かなホバー音
+        return this.playSound('hover', { ...options, volume: (options.volume || 1) * 0.2 });
+    }
+    
+    /**
      * ゲーム状態音を再生
      * @param {string} stateType - 状態タイプ
      * @param {Object} options - 再生オプション

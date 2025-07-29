@@ -899,6 +899,27 @@ export class SoundEffectSystem {
             const buffer = this.createAchievementSound(rarity);
             this.achievementSounds.set(rarity, buffer);
         });
+        
+        // 実績カテゴリ別音響も生成
+        this.generateAchievementCategorySounds();
+    }
+    
+    /**
+     * 実績カテゴリ別音響を生成
+     */
+    generateAchievementCategorySounds() {
+        const categories = [
+            'score', 'combo', 'bubble', 'time', 'survival', 'collection', 
+            'progression', 'mastery', 'special', 'secret'
+        ];
+        
+        categories.forEach(category => {
+            this.achievementRarities.forEach(rarity => {
+                const key = `${category}_${rarity}`;
+                const buffer = this.createCategoryAchievementSound(category, rarity);
+                this.achievementSounds.set(key, buffer);
+            });
+        });
     }
     
     /**
