@@ -1,5 +1,6 @@
 import { getErrorHandler } from '../utils/ErrorHandler.js';
 import { getConfigurationManager } from '../core/ConfigurationManager.js';
+import { Equalizer } from './Equalizer.js';
 
 /**
  * AudioController - 高度な音響制御システム
@@ -65,6 +66,9 @@ export class AudioController {
         // 設定監視のID管理
         this.configWatchers = new Set();
         
+        // イコライザーシステム
+        this.equalizer = null;
+        
         // 音響品質動的調整
         this.qualityManager = {
             currentQuality: 1.0,
@@ -127,6 +131,9 @@ export class AudioController {
             
             // パフォーマンス監視の開始
             this._startPerformanceMonitoring();
+            
+            // イコライザーシステムの初期化
+            this._initializeEqualizer();
             
             console.log('AudioController initialized successfully');
         } catch (error) {
@@ -1119,6 +1126,295 @@ export class AudioController {
     }
     
     // ================================
+    // イコライザーシステム初期化
+    // ================================
+    
+    /**
+     * イコライザーシステムの初期化
+     * @private
+     */
+    _initializeEqualizer() {
+        try {
+            if (!this.audioContext) {
+                console.warn('AudioContext is not available for equalizer initialization');
+                return;
+            }
+            
+            // イコライザーを作成（マスターGainNodeの前段に挿入）
+            const inputNode = this.gainNodes.master;
+            const outputNode = this.audioContext.destination;
+            
+            this.equalizer = new Equalizer(this.audioContext, inputNode, outputNode);
+            
+            console.log('Equalizer system initialized successfully');
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: '_initializeEqualizer',
+                component: 'AudioController'
+            });
+        }
+    }
+    
+    // ================================
+    // イコライザー制御メソッド
+    // ================================
+    
+    /**
+     * イコライザーの有効/無効を設定
+     * @param {boolean} enabled - 有効状態
+     */
+    setEqualizerEnabled(enabled) {
+        try {
+            if (!this.equalizer) {
+                console.warn('Equalizer is not initialized');
+                return;
+            }
+            
+            this.equalizer.setEnabled(enabled);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'setEqualizerEnabled',
+                enabled: enabled
+            });
+        }
+    }
+    
+    /**
+     * イコライザーの有効状態を取得
+     * @returns {boolean} 有効状態
+     */
+    isEqualizerEnabled() {
+        try {
+            if (!this.equalizer) {
+                return false;
+            }
+            
+            return this.equalizer.isEnabled;
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'isEqualizerEnabled'
+            });
+            return false;
+        }
+    }
+    
+    /**
+     * イコライザーのバンドゲインを設定
+     * @param {number} bandIndex - バンドインデックス (0-4)
+     * @param {number} gain - ゲイン値 (dB, -20 to +20)
+     */
+    setEqualizerBandGain(bandIndex, gain) {
+        try {
+            if (!this.equalizer) {
+                console.warn('Equalizer is not initialized');
+                return;
+            }
+            
+            this.equalizer.setBandGain(bandIndex, gain);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'setEqualizerBandGain',
+                bandIndex: bandIndex,
+                gain: gain
+            });
+        }
+    }
+    
+    /**
+     * イコライザーのバンドゲインを取得
+     * @param {number} bandIndex - バンドインデックス (0-4)
+     * @returns {number} ゲイン値 (dB)
+     */
+    getEqualizerBandGain(bandIndex) {
+        try {
+            if (!this.equalizer) {
+                console.warn('Equalizer is not initialized');
+                return 0;
+            }
+            
+            return this.equalizer.getBandGain(bandIndex);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'getEqualizerBandGain',
+                bandIndex: bandIndex
+            });
+            return 0;
+        }
+    }
+    
+    /**
+     * イコライザーの全バンドゲインを設定
+     * @param {number[]} gains - ゲイン値の配列 [bass, lowMid, mid, highMid, treble]
+     */
+    setEqualizerGains(gains) {
+        try {
+            if (!this.equalizer) {
+                console.warn('Equalizer is not initialized');
+                return;
+            }
+            
+            this.equalizer.setAllBandGains(gains);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'setEqualizerGains',
+                gains: gains
+            });
+        }
+    }
+    
+    /**
+     * イコライザーの全バンドゲインを取得
+     * @returns {number[]} ゲイン値の配列
+     */
+    getEqualizerGains() {
+        try {
+            if (!this.equalizer) {
+                console.warn('Equalizer is not initialized');
+                return [0, 0, 0, 0, 0];
+            }
+            
+            return this.equalizer.getAllBandGains();
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'getEqualizerGains'
+            });
+            return [0, 0, 0, 0, 0];
+        }
+    }
+    
+    /**
+     * イコライザープリセットを適用
+     * @param {string} presetName - プリセット名
+     */
+    applyEqualizerPreset(presetName) {
+        try {
+            if (!this.equalizer) {
+                console.warn('Equalizer is not initialized');
+                return;
+            }
+            
+            this.equalizer.applyPreset(presetName);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'applyEqualizerPreset',
+                presetName: presetName
+            });
+        }
+    }
+    
+    /**
+     * イコライザープリセット一覧を取得
+     * @returns {Object} プリセット定義
+     */
+    getEqualizerPresets() {
+        try {
+            if (!this.equalizer) {
+                console.warn('Equalizer is not initialized');
+                return {};
+            }
+            
+            return this.equalizer.getPresets();
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'getEqualizerPresets'
+            });
+            return {};
+        }
+    }
+    
+    /**
+     * イコライザーをリセット
+     */
+    resetEqualizer() {
+        try {
+            if (!this.equalizer) {
+                console.warn('Equalizer is not initialized');
+                return;
+            }
+            
+            this.equalizer.reset();
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'resetEqualizer'
+            });
+        }
+    }
+    
+    /**
+     * イコライザーの周波数レスポンスを取得
+     * @param {number} samplePoints - サンプルポイント数
+     * @returns {Object} 周波数レスポンスデータ
+     */
+    getEqualizerFrequencyResponse(samplePoints = 256) {
+        try {
+            if (!this.equalizer) {
+                console.warn('Equalizer is not initialized');
+                return null;
+            }
+            
+            return this.equalizer.getFrequencyResponse(samplePoints);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'getEqualizerFrequencyResponse',
+                samplePoints: samplePoints
+            });
+            return null;
+        }
+    }
+    
+    /**
+     * イコライザーのバンド情報を取得
+     * @returns {Array} バンド情報の配列
+     */
+    getEqualizerBandInfo() {
+        try {
+            if (!this.equalizer) {
+                console.warn('Equalizer is not initialized');
+                return [];
+            }
+            
+            return this.equalizer.getBandInfo();
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'getEqualizerBandInfo'
+            });
+            return [];
+        }
+    }
+    
+    /**
+     * イコライザーの状態情報を取得
+     * @returns {Object} 状態情報
+     */
+    getEqualizerStatus() {
+        try {
+            if (!this.equalizer) {
+                return {
+                    initialized: false,
+                    isEnabled: false,
+                    bands: [],
+                    presets: []
+                };
+            }
+            
+            return {
+                initialized: true,
+                ...this.equalizer.getStatus()
+            };
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'getEqualizerStatus'
+            });
+            return {
+                initialized: false,
+                isEnabled: false,
+                bands: [],
+                presets: []
+            };
+        }
+    }
+
+    // ================================
     // 音響品質動的調整機能
     // ================================
     
@@ -1732,6 +2028,12 @@ export class AudioController {
             // パフォーマンス監視データをクリア
             if (this.performanceMonitor.metrics) {
                 this.performanceMonitor.metrics.clear();
+            }
+            
+            // イコライザーシステムを破棄
+            if (this.equalizer) {
+                this.equalizer.dispose();
+                this.equalizer = null;
             }
             
             // GainNodeを切断
