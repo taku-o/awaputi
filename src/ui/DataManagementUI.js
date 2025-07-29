@@ -895,33 +895,700 @@ export class DataManagementUI {
      * エクスポートビューの描画
      */
     renderExportView(context, x, y, width, height) {
-        // 後で実装
-        context.fillStyle = this.colors.text;
-        context.font = '18px Arial';
-        context.textAlign = 'center';
-        context.fillText('エクスポート機能（実装予定）', x + width / 2, y + height / 2);
+        const padding = this.layoutConfig.padding;
+        let currentY = y + padding;
+        
+        // エクスポート対象選択セクション
+        this.renderExportTargetSelection(context, x + padding, currentY, width - padding * 2);
+        currentY += 180;
+        
+        // エクスポート形式選択セクション
+        this.renderExportFormatSelection(context, x + padding, currentY, width - padding * 2);
+        currentY += 120;
+        
+        // エクスポートアクションボタン
+        this.renderExportActions(context, x + padding, currentY, width - padding * 2);
+        currentY += 80;
+        
+        // エクスポート履歴
+        this.renderExportHistory(context, x + padding, currentY, width - padding * 2);
+    }
+    
+    /**
+     * エクスポート対象選択の描画
+     */
+    renderExportTargetSelection(context, x, y, width) {
+        // セクション背景
+        context.fillStyle = this.colors.cardBackground;
+        context.fillRect(x, y, width, 160);
+        
+        // セクション枠線
+        context.strokeStyle = this.colors.border;
+        context.lineWidth = 1;
+        context.strokeRect(x, y, width, 160);
+        
+        // セクションタイトル
+        context.fillStyle = this.colors.primary;
+        context.font = 'bold 18px Arial';
+        context.textAlign = 'left';
+        context.fillText('エクスポート対象', x + 15, y + 25);
+        
+        // データタイプのチェックボックス
+        const dataTypes = [
+            { name: 'playerData', label: 'プレイヤーデータ', selected: true },
+            { name: 'settings', label: '設定データ', selected: true },
+            { name: 'statistics', label: '統計データ', selected: false },
+            { name: 'achievements', label: '実績データ', selected: false }
+        ];
+        
+        dataTypes.forEach((dataType, index) => {
+            const checkboxX = x + 15 + (index % 2) * 250;
+            const checkboxY = y + 50 + Math.floor(index / 2) * 30;
+            
+            // チェックボックス
+            context.fillStyle = dataType.selected ? this.colors.success : this.colors.border;
+            context.fillRect(checkboxX, checkboxY, 20, 20);
+            
+            context.strokeStyle = this.colors.text;
+            context.lineWidth = 2;
+            context.strokeRect(checkboxX, checkboxY, 20, 20);
+            
+            // チェックマーク
+            if (dataType.selected) {
+                context.strokeStyle = this.colors.text;
+                context.lineWidth = 3;
+                context.beginPath();
+                context.moveTo(checkboxX + 4, checkboxY + 10);
+                context.lineTo(checkboxX + 8, checkboxY + 14);
+                context.lineTo(checkboxX + 16, checkboxY + 6);
+                context.stroke();
+            }
+            
+            // ラベル
+            context.fillStyle = this.colors.text;
+            context.font = '14px Arial';
+            context.textAlign = 'left';
+            context.fillText(dataType.label, checkboxX + 30, checkboxY + 15);
+        });
+        
+        // データサイズ予測
+        context.fillStyle = this.colors.textSecondary;
+        context.font = '12px Arial';
+        context.fillText('予想サイズ: 約 2.5MB', x + 15, y + 140);
+    }
+    
+    /**
+     * エクスポート形式選択の描画
+     */
+    renderExportFormatSelection(context, x, y, width) {
+        // セクション背景
+        context.fillStyle = this.colors.cardBackground;
+        context.fillRect(x, y, width, 100);
+        
+        // セクション枠線
+        context.strokeStyle = this.colors.border;
+        context.lineWidth = 1;
+        context.strokeRect(x, y, width, 100);
+        
+        // セクションタイトル
+        context.fillStyle = this.colors.primary;
+        context.font = 'bold 18px Arial';
+        context.textAlign = 'left';
+        context.fillText('エクスポート形式', x + 15, y + 25);
+        
+        // 形式選択ラジオボタン
+        const formats = [
+            { name: 'json', label: 'JSON（推奨）', description: '汎用的で読みやすい形式' },
+            { name: 'compressed', label: '圧縮JSON', description: 'ファイルサイズを削減' },
+            { name: 'encrypted', label: '暗号化JSON', description: 'セキュリティ強化' }
+        ];
+        
+        formats.forEach((format, index) => {
+            const radioX = x + 15 + index * 200;
+            const radioY = y + 50;
+            const isSelected = index === 0; // デフォルトでJSONを選択
+            
+            // ラジオボタン
+            context.fillStyle = this.colors.border;
+            context.fillRect(radioX, radioY, 16, 16);
+            
+            if (isSelected) {
+                context.fillStyle = this.colors.primary;
+                context.fillRect(radioX + 3, radioY + 3, 10, 10);
+            }
+            
+            context.strokeStyle = this.colors.text;
+            context.lineWidth = 2;
+            context.strokeRect(radioX, radioY, 16, 16);
+            
+            // ラベル
+            context.fillStyle = this.colors.text;
+            context.font = '14px Arial';
+            context.textAlign = 'left';
+            context.fillText(format.label, radioX + 25, radioY + 12);
+            
+            // 説明
+            context.fillStyle = this.colors.textSecondary;
+            context.font = '10px Arial';
+            context.fillText(format.description, radioX + 25, radioY + 25);
+        });
+    }
+    
+    /**
+     * エクスポートアクションの描画
+     */
+    renderExportActions(context, x, y, width) {
+        const buttonWidth = this.layoutConfig.buttonWidth;
+        const buttonHeight = this.layoutConfig.buttonHeight;
+        const spacing = 20;
+        
+        const actions = [
+            { text: 'エクスポート開始', action: 'startExport', color: this.colors.success },
+            { text: 'プレビュー', action: 'preview', color: this.colors.secondary },
+            { text: 'キャンセル', action: 'cancel', color: this.colors.textSecondary }
+        ];
+        
+        actions.forEach((action, index) => {
+            const buttonX = x + (buttonWidth + spacing) * index;
+            
+            // ボタン背景
+            context.fillStyle = action.color;
+            context.fillRect(buttonX, y, buttonWidth, buttonHeight);
+            
+            // ボタン枠線
+            context.strokeStyle = this.colors.border;
+            context.lineWidth = 1;
+            context.strokeRect(buttonX, y, buttonWidth, buttonHeight);
+            
+            // ボタンテキスト
+            context.fillStyle = this.colors.text;
+            context.font = '14px Arial';
+            context.textAlign = 'center';
+            context.fillText(action.text, buttonX + buttonWidth / 2, y + 25);
+        });
+        
+        // 操作中のプログレスバー
+        if (this.operationInProgress && this.currentView === 'export') {
+            this.renderProgressBar(context, x, y + buttonHeight + 20, width);
+        }
+    }
+    
+    /**
+     * エクスポート履歴の描画
+     */
+    renderExportHistory(context, x, y, width) {
+        // セクション背景
+        context.fillStyle = this.colors.cardBackground;
+        context.fillRect(x, y, width, 100);
+        
+        // セクション枠線
+        context.strokeStyle = this.colors.border;
+        context.lineWidth = 1;
+        context.strokeRect(x, y, width, 100);
+        
+        // セクションタイトル
+        context.fillStyle = this.colors.primary;
+        context.font = 'bold 18px Arial';
+        context.textAlign = 'left';
+        context.fillText('最近のエクスポート', x + 15, y + 25);
+        
+        // エクスポート履歴（サンプル）
+        const recentExports = [
+            { date: '2024-01-15 14:30', type: 'プレイヤーデータ', size: '1.2MB', status: '成功' },
+            { date: '2024-01-14 09:15', type: '全データ', size: '2.8MB', status: '成功' }
+        ];
+        
+        if (recentExports.length === 0) {
+            context.fillStyle = this.colors.textSecondary;
+            context.font = '14px Arial';
+            context.textAlign = 'center';
+            context.fillText('エクスポート履歴がありません', x + width / 2, y + 60);
+        } else {
+            recentExports.forEach((exportItem, index) => {
+                const itemY = y + 45 + index * 20;
+                
+                context.fillStyle = this.colors.text;
+                context.font = '12px Arial';
+                context.textAlign = 'left';
+                context.fillText(`${exportItem.date} - ${exportItem.type} (${exportItem.size})`, 
+                               x + 15, itemY);
+                
+                context.fillStyle = this.colors.success;
+                context.fillText(exportItem.status, x + width - 60, itemY);
+            });
+        }
     }
     
     /**
      * インポートビューの描画
      */
     renderImportView(context, x, y, width, height) {
-        // 後で実装
+        const padding = this.layoutConfig.padding;
+        let currentY = y + padding;
+        
+        // ファイル選択セクション
+        this.renderFileSelection(context, x + padding, currentY, width - padding * 2);
+        currentY += 140;
+        
+        // インポート設定セクション
+        this.renderImportSettings(context, x + padding, currentY, width - padding * 2);
+        currentY += 160;
+        
+        // 競合解決設定セクション
+        this.renderConflictResolution(context, x + padding, currentY, width - padding * 2);
+        currentY += 120;
+        
+        // インポートアクションボタン
+        this.renderImportActions(context, x + padding, currentY, width - padding * 2);
+    }
+    
+    /**
+     * ファイル選択の描画
+     */
+    renderFileSelection(context, x, y, width) {
+        // セクション背景
+        context.fillStyle = this.colors.cardBackground;
+        context.fillRect(x, y, width, 120);
+        
+        // セクション枠線
+        context.strokeStyle = this.colors.border;
+        context.lineWidth = 1;
+        context.strokeRect(x, y, width, 120);
+        
+        // セクションタイトル
+        context.fillStyle = this.colors.primary;
+        context.font = 'bold 18px Arial';
+        context.textAlign = 'left';
+        context.fillText('ファイル選択', x + 15, y + 25);
+        
+        // ファイル選択エリア
+        const dropAreaX = x + 15;
+        const dropAreaY = y + 40;
+        const dropAreaWidth = width - 30;
+        const dropAreaHeight = 60;
+        
+        // ドロップエリア背景
+        context.fillStyle = 'rgba(74, 144, 226, 0.1)';
+        context.fillRect(dropAreaX, dropAreaY, dropAreaWidth, dropAreaHeight);
+        
+        // ドロップエリア枠線（点線風）
+        context.strokeStyle = this.colors.primary;
+        context.lineWidth = 2;
+        context.setLineDash([5, 5]);
+        context.strokeRect(dropAreaX, dropAreaY, dropAreaWidth, dropAreaHeight);
+        context.setLineDash([]);
+        
+        // ドロップエリアテキスト
         context.fillStyle = this.colors.text;
-        context.font = '18px Arial';
+        context.font = '16px Arial';
         context.textAlign = 'center';
-        context.fillText('インポート機能（実装予定）', x + width / 2, y + height / 2);
+        context.fillText('ファイルをドロップまたはクリックして選択', 
+                        dropAreaX + dropAreaWidth / 2, dropAreaY + 25);
+        
+        context.fillStyle = this.colors.textSecondary;
+        context.font = '12px Arial';
+        context.fillText('対応形式: JSON, 暗号化JSON, 圧縮JSON', 
+                        dropAreaX + dropAreaWidth / 2, dropAreaY + 45);
+    }
+    
+    /**
+     * インポート設定の描画
+     */
+    renderImportSettings(context, x, y, width) {
+        // セクション背景
+        context.fillStyle = this.colors.cardBackground;
+        context.fillRect(x, y, width, 140);
+        
+        // セクション枠線
+        context.strokeStyle = this.colors.border;
+        context.lineWidth = 1;
+        context.strokeRect(x, y, width, 140);
+        
+        // セクションタイトル
+        context.fillStyle = this.colors.primary;
+        context.font = 'bold 18px Arial';
+        context.textAlign = 'left';
+        context.fillText('インポート設定', x + 15, y + 25);
+        
+        // インポート対象のチェックボックス
+        const importTargets = [
+            { name: 'playerData', label: 'プレイヤーデータ', selected: true },
+            { name: 'settings', label: '設定データ', selected: false },
+            { name: 'statistics', label: '統計データ', selected: false },
+            { name: 'achievements', label: '実績データ', selected: false }
+        ];
+        
+        importTargets.forEach((target, index) => {
+            const checkboxX = x + 15 + (index % 2) * 250;
+            const checkboxY = y + 50 + Math.floor(index / 2) * 30;
+            
+            // チェックボックス
+            context.fillStyle = target.selected ? this.colors.success : this.colors.border;
+            context.fillRect(checkboxX, checkboxY, 20, 20);
+            
+            context.strokeStyle = this.colors.text;
+            context.lineWidth = 2;
+            context.strokeRect(checkboxX, checkboxY, 20, 20);
+            
+            // チェックマーク
+            if (target.selected) {
+                context.strokeStyle = this.colors.text;
+                context.lineWidth = 3;
+                context.beginPath();
+                context.moveTo(checkboxX + 4, checkboxY + 10);
+                context.lineTo(checkboxX + 8, checkboxY + 14);
+                context.lineTo(checkboxX + 16, checkboxY + 6);
+                context.stroke();
+            }
+            
+            // ラベル
+            context.fillStyle = this.colors.text;
+            context.font = '14px Arial';
+            context.textAlign = 'left';
+            context.fillText(target.label, checkboxX + 30, checkboxY + 15);
+        });
+        
+        // バリデーション設定
+        context.fillStyle = this.colors.textSecondary;
+        context.font = '12px Arial';
+        context.fillText('✓ データ整合性チェックを実行', x + 15, y + 125);
+    }
+    
+    /**
+     * 競合解決設定の描画
+     */
+    renderConflictResolution(context, x, y, width) {
+        // セクション背景
+        context.fillStyle = this.colors.cardBackground;
+        context.fillRect(x, y, width, 100);
+        
+        // セクション枠線
+        context.strokeStyle = this.colors.border;
+        context.lineWidth = 1;
+        context.strokeRect(x, y, width, 100);
+        
+        // セクションタイトル
+        context.fillStyle = this.colors.primary;
+        context.font = 'bold 18px Arial';
+        context.textAlign = 'left';
+        context.fillText('競合解決方法', x + 15, y + 25);
+        
+        // 競合解決オプション
+        const resolutionOptions = [
+            { name: 'merge', label: 'マージ', description: '既存データと統合' },
+            { name: 'overwrite', label: '上書き', description: '既存データを置換' },
+            { name: 'skip', label: 'スキップ', description: '競合データを無視' }
+        ];
+        
+        resolutionOptions.forEach((option, index) => {
+            const radioX = x + 15 + index * 180;
+            const radioY = y + 50;
+            const isSelected = index === 0; // デフォルトでマージを選択
+            
+            // ラジオボタン
+            context.fillStyle = this.colors.border;
+            context.fillRect(radioX, radioY, 16, 16);
+            
+            if (isSelected) {
+                context.fillStyle = this.colors.primary;
+                context.fillRect(radioX + 3, radioY + 3, 10, 10);
+            }
+            
+            context.strokeStyle = this.colors.text;
+            context.lineWidth = 2;
+            context.strokeRect(radioX, radioY, 16, 16);
+            
+            // ラベル
+            context.fillStyle = this.colors.text;
+            context.font = '14px Arial';
+            context.textAlign = 'left';
+            context.fillText(option.label, radioX + 25, radioY + 12);
+            
+            // 説明
+            context.fillStyle = this.colors.textSecondary;
+            context.font = '10px Arial';
+            context.fillText(option.description, radioX + 25, radioY + 25);
+        });
+    }
+    
+    /**
+     * インポートアクションの描画
+     */
+    renderImportActions(context, x, y, width) {
+        const buttonWidth = this.layoutConfig.buttonWidth;
+        const buttonHeight = this.layoutConfig.buttonHeight;
+        const spacing = 20;
+        
+        const actions = [
+            { text: 'インポート開始', action: 'startImport', color: this.colors.primary },
+            { text: 'ファイル検証', action: 'validate', color: this.colors.secondary },
+            { text: 'キャンセル', action: 'cancel', color: this.colors.textSecondary }
+        ];
+        
+        actions.forEach((action, index) => {
+            const buttonX = x + (buttonWidth + spacing) * index;
+            
+            // ボタン背景
+            context.fillStyle = action.color;
+            context.fillRect(buttonX, y, buttonWidth, buttonHeight);
+            
+            // ボタン枠線
+            context.strokeStyle = this.colors.border;
+            context.lineWidth = 1;
+            context.strokeRect(buttonX, y, buttonWidth, buttonHeight);
+            
+            // ボタンテキスト
+            context.fillStyle = this.colors.text;
+            context.font = '14px Arial';
+            context.textAlign = 'center';
+            context.fillText(action.text, buttonX + buttonWidth / 2, y + 25);
+        });
+        
+        // 操作中のプログレスバー
+        if (this.operationInProgress && this.currentView === 'import') {
+            this.renderProgressBar(context, x, y + buttonHeight + 20, width);
+        }
+        
+        // 警告メッセージ
+        context.fillStyle = this.colors.warning;
+        context.font = '12px Arial';
+        context.textAlign = 'left';
+        context.fillText('⚠️ インポートにより既存データが変更される可能性があります', x, y + buttonHeight + 60);
     }
     
     /**
      * データクリアビューの描画
      */
     renderClearView(context, x, y, width, height) {
-        // 後で実装
+        const padding = this.layoutConfig.padding;
+        let currentY = y + padding;
+        
+        // 警告セクション
+        this.renderClearWarning(context, x + padding, currentY, width - padding * 2);
+        currentY += 100;
+        
+        // データ選択セクション
+        this.renderClearDataSelection(context, x + padding, currentY, width - padding * 2);
+        currentY += 180;
+        
+        // 確認セクション
+        this.renderClearConfirmation(context, x + padding, currentY, width - padding * 2);
+        currentY += 120;
+        
+        // データクリアアクションボタン
+        this.renderClearActions(context, x + padding, currentY, width - padding * 2);
+    }
+    
+    /**
+     * データクリア警告の描画
+     */
+    renderClearWarning(context, x, y, width) {
+        // 警告セクション背景
+        context.fillStyle = 'rgba(239, 68, 68, 0.1)';
+        context.fillRect(x, y, width, 80);
+        
+        // 警告セクション枠線
+        context.strokeStyle = this.colors.danger;
+        context.lineWidth = 2;
+        context.strokeRect(x, y, width, 80);
+        
+        // 警告アイコンとタイトル
+        context.fillStyle = this.colors.danger;
+        context.font = 'bold 20px Arial';
+        context.textAlign = 'left';
+        context.fillText('⚠️ 重要な警告', x + 20, y + 30);
+        
+        // 警告メッセージ
         context.fillStyle = this.colors.text;
-        context.font = '18px Arial';
-        context.textAlign = 'center';
-        context.fillText('データクリア機能（実装予定）', x + width / 2, y + height / 2);
+        context.font = '14px Arial';
+        context.fillText('データクリアは取り消すことができません。', x + 20, y + 50);
+        context.fillText('実行前に必ずバックアップを作成してください。', x + 20, y + 65);
+    }
+    
+    /**
+     * データ選択セクションの描画
+     */
+    renderClearDataSelection(context, x, y, width) {
+        // セクション背景
+        context.fillStyle = this.colors.cardBackground;
+        context.fillRect(x, y, width, 160);
+        
+        // セクション枠線
+        context.strokeStyle = this.colors.border;
+        context.lineWidth = 1;
+        context.strokeRect(x, y, width, 160);
+        
+        // セクションタイトル
+        context.fillStyle = this.colors.primary;
+        context.font = 'bold 18px Arial';
+        context.textAlign = 'left';
+        context.fillText('削除対象データ', x + 15, y + 25);
+        
+        // データタイプのチェックボックス
+        const dataTypes = [
+            { name: 'playerData', label: 'プレイヤーデータ', description: 'ユーザー名、スコア、進捗', selected: false },
+            { name: 'settings', label: '設定データ', description: '音量、画面設定等', selected: false },
+            { name: 'statistics', label: '統計データ', description: 'プレイ統計、分析データ', selected: false },
+            { name: 'achievements', label: '実績データ', description: '獲得実績、進捗状況', selected: false },
+            { name: 'backups', label: 'バックアップデータ', description: '作成済みバックアップ', selected: false },
+            { name: 'all', label: '全データ', description: '上記すべてを削除', selected: false }
+        ];
+        
+        dataTypes.forEach((dataType, index) => {
+            const checkboxX = x + 15 + (index % 2) * 350;
+            const checkboxY = y + 50 + Math.floor(index / 2) * 35;
+            
+            // チェックボックス
+            const isSelected = this.dialogData.selectedDataTypes?.includes(dataType.name) || false;
+            context.fillStyle = isSelected ? this.colors.danger : this.colors.border;
+            context.fillRect(checkboxX, checkboxY, 20, 20);
+            
+            context.strokeStyle = this.colors.text;
+            context.lineWidth = 2;
+            context.strokeRect(checkboxX, checkboxY, 20, 20);
+            
+            // チェックマーク
+            if (isSelected) {
+                context.strokeStyle = this.colors.text;
+                context.lineWidth = 3;
+                context.beginPath();
+                context.moveTo(checkboxX + 4, checkboxY + 10);
+                context.lineTo(checkboxX + 8, checkboxY + 14);
+                context.lineTo(checkboxX + 16, checkboxY + 6);
+                context.stroke();
+            }
+            
+            // ラベル
+            context.fillStyle = this.colors.text;
+            context.font = '14px Arial';
+            context.textAlign = 'left';
+            context.fillText(dataType.label, checkboxX + 30, checkboxY + 15);
+            
+            // 説明
+            context.fillStyle = this.colors.textSecondary;
+            context.font = '10px Arial';
+            context.fillText(dataType.description, checkboxX + 30, checkboxY + 28);
+        });
+    }
+    
+    /**
+     * 確認セクションの描画
+     */
+    renderClearConfirmation(context, x, y, width) {
+        // セクション背景
+        context.fillStyle = this.colors.cardBackground;
+        context.fillRect(x, y, width, 100);
+        
+        // セクション枠線
+        context.strokeStyle = this.colors.border;
+        context.lineWidth = 1;
+        context.strokeRect(x, y, width, 100);
+        
+        // セクションタイトル
+        context.fillStyle = this.colors.primary;
+        context.font = 'bold 18px Arial';
+        context.textAlign = 'left';
+        context.fillText('削除確認', x + 15, y + 25);
+        
+        // 確認チェックボックス
+        const confirmCheckboxX = x + 15;
+        const confirmCheckboxY = y + 45;
+        const isConfirmed = this.dialogData.deleteConfirmed || false;
+        
+        context.fillStyle = isConfirmed ? this.colors.danger : this.colors.border;
+        context.fillRect(confirmCheckboxX, confirmCheckboxY, 20, 20);
+        
+        context.strokeStyle = this.colors.text;
+        context.lineWidth = 2;
+        context.strokeRect(confirmCheckboxX, confirmCheckboxY, 20, 20);
+        
+        if (isConfirmed) {
+            context.strokeStyle = this.colors.text;
+            context.lineWidth = 3;
+            context.beginPath();
+            context.moveTo(confirmCheckboxX + 4, confirmCheckboxY + 10);
+            context.lineTo(confirmCheckboxX + 8, confirmCheckboxY + 14);
+            context.lineTo(confirmCheckboxX + 16, confirmCheckboxY + 6);
+            context.stroke();
+        }
+        
+        // 確認テキスト
+        context.fillStyle = this.colors.text;
+        context.font = '14px Arial';
+        context.textAlign = 'left';
+        context.fillText('データを完全に削除することを理解し、同意します', confirmCheckboxX + 30, confirmCheckboxY + 15);
+        
+        // 追加の注意事項
+        context.fillStyle = this.colors.textSecondary;
+        context.font = '12px Arial';
+        context.fillText('※ 削除されたデータは復旧できません', x + 15, y + 85);
+    }
+    
+    /**
+     * データクリアアクションの描画
+     */
+    renderClearActions(context, x, y, width) {
+        const buttonWidth = this.layoutConfig.buttonWidth;
+        const buttonHeight = this.layoutConfig.buttonHeight;
+        const spacing = 20;
+        
+        // 削除可能かチェック
+        const hasSelectedData = this.dialogData.selectedDataTypes?.length > 0;
+        const isConfirmed = this.dialogData.deleteConfirmed || false;
+        const canDelete = hasSelectedData && isConfirmed;
+        
+        const actions = [
+            { 
+                text: 'データ削除実行', 
+                action: 'executeClear', 
+                color: canDelete ? this.colors.danger : this.colors.textSecondary,
+                enabled: canDelete
+            },
+            { 
+                text: 'バックアップ作成', 
+                action: 'createBackupFirst', 
+                color: this.colors.success,
+                enabled: true
+            },
+            { 
+                text: 'キャンセル', 
+                action: 'cancel', 
+                color: this.colors.textSecondary,
+                enabled: true
+            }
+        ];
+        
+        actions.forEach((action, index) => {
+            const buttonX = x + (buttonWidth + spacing) * index;
+            
+            // ボタン背景
+            context.fillStyle = action.enabled ? action.color : this.colors.border;
+            context.fillRect(buttonX, y, buttonWidth, buttonHeight);
+            
+            // ボタン枠線
+            context.strokeStyle = this.colors.border;
+            context.lineWidth = 1;
+            context.strokeRect(buttonX, y, buttonWidth, buttonHeight);
+            
+            // ボタンテキスト
+            context.fillStyle = action.enabled ? this.colors.text : this.colors.textSecondary;
+            context.font = '14px Arial';
+            context.textAlign = 'center';
+            context.fillText(action.text, buttonX + buttonWidth / 2, y + 25);
+        });
+        
+        // 操作中のプログレスバー
+        if (this.operationInProgress && this.currentView === 'clear') {
+            this.renderProgressBar(context, x, y + buttonHeight + 20, width);
+        }
+        
+        // 最終警告
+        if (canDelete) {
+            context.fillStyle = this.colors.danger;
+            context.font = 'bold 12px Arial';
+            context.textAlign = 'center';
+            context.fillText('⚠️ この操作は取り消すことができません', x + width / 2, y + buttonHeight + 60);
+        }
     }
     
     /**
