@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "language": "ja",
+    "region": "JP",
+    "version": "1.0.0",
+    "lastUpdated": "2025-01-28T00:00:00Z",
+    "completeness": 100,
+    "quality": 95
+  },
+  "translations": {
+    "menu": {
+      "title": "BubblePop",
+      "subtitle": "泡割りゲーム",
+      "start": "ゲーム開始",
+      "settings": "設定",
+      "userInfo": "ユーザー情報",
+      "controls": "↑↓: 選択  Enter: 決定  ESC: 終了",
+      "clickInfo": "クリックでも操作できます"
+    },
+    "shortcuts": {
+      "title": "キーボードショートカット",
+      "pause": "一時停止",
+      "menu": "メニュー",
+      "fullscreen": "フルスクリーン",
+      "mute": "ミュート",
+      "settings": "設定",
+      "help": "ヘルプ"
+    }
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "number": {
+    "ja": {
+      "decimal": ".",
+      "thousands": ",",
+      "percent": "%",
+      "negative": "-",
+      "infinity": "∞"
+    },
+    "en": {
+      "decimal": ".",
+      "thousands": ",",
+      "percent": "%",
+      "negative": "-",
+      "infinity": "∞"
+    },
+    "zh-CN": {
+      "decimal": ".",
+      "thousands": ",",
+      "percent": "%",
+      "negative": "-",
+      "infinity": "∞"
+    },
+    "zh-TW": {
+      "decimal": ".",
+      "thousands": ",",
+      "percent": "%",
+      "negative": "-",
+      "infinity": "∞"
+    },
+    "ko": {
+      "decimal": ".",
+      "thousands": ",",
+      "percent": "%",
+      "negative": "-",
+      "infinity": "∞"
+    }
+  },
+  "currency": {
+    "ja": {
+      "symbol": "¥",
+      "code": "JPY",
+      "position": "before",
+      "space": false
+    },
+    "en": {
+      "symbol": "$",
+      "code": "USD",
+      "position": "before",
+      "space": false
+    },
+    "zh-CN": {
+      "symbol": "¥",
+      "code": "CNY",
+      "position": "before",
+      "space": false
+    },
+    "zh-TW": {
+      "symbol": "NT$",
+      "code": "TWD",
+      "position": "before",
+      "space": false
+    },
+    "ko": {
+      "symbol": "₩",
+      "code": "KRW",
+      "position": "before",
+      "space": false
+    }
+  },
+  "date": {
+    "ja": {
+      "short": "YYYY/MM/DD",
+      "medium": "YYYY年MM月DD日",
+      "long": "YYYY年MM月DD日(ddd)",
+      "full": "YYYY年MM月DD日 dddd"
+    },
+    "en": {
+      "short": "MM/DD/YYYY",
+      "medium": "MMM DD, YYYY",
+      "long": "MMMM DD, YYYY",
+      "full": "dddd, MMMM DD, YYYY"
+    },
+    "zh-CN": {
+      "short": "YYYY/MM/DD",
+      "medium": "YYYY年MM月DD日",
+      "long": "YYYY年MM月DD日 dddd",
+      "full": "YYYY年MM月DD日 dddd"
+    },
+    "zh-TW": {
+      "short": "YYYY/MM/DD",
+      "medium": "YYYY年MM月DD日",
+      "long": "YYYY年MM月DD日 dddd",
+      "full": "YYYY年MM月DD日 dddd"
+    },
+    "ko": {
+      "short": "YYYY. MM. DD",
+      "medium": "YYYY년 MM월 DD일",
+      "long": "YYYY년 MM월 DD일 dddd",
+      "full": "YYYY년 MM월 DD일 dddd"
+    }
+  },
+  "time": {
+    "ja": {
+      "short": "HH:mm",
+      "medium": "HH:mm:ss",
+      "long": "HH時mm分ss秒",
+      "full": "HH時mm分ss秒 z"
+    },
+    "en": {
+      "short": "h:mm A",
+      "medium": "h:mm:ss A",
+      "long": "h:mm:ss A z",
+      "full": "h:mm:ss A zzzz"
+    },
+    "zh-CN": {
+      "short": "HH:mm",
+      "medium": "HH:mm:ss",
+      "long": "HH时mm分ss秒",
+      "full": "HH时mm分ss秒 z"
+    },
+    "zh-TW": {
+      "short": "HH:mm",
+      "medium": "HH:mm:ss",
+      "long": "HH時mm分ss秒",
+      "full": "HH時mm分ss秒 z"
+    },
+    "ko": {
+      "short": "HH:mm",
+      "medium": "HH:mm:ss",
+      "long": "HH시 mm분 ss초",
+      "full": "HH시 mm분 ss초 z"
+    }
+  }
+}
