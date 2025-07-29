@@ -12,6 +12,9 @@ export class AudioAccessibilitySupport {
         this.localizationManager = getLocalizationManager();
         this.errorHandler = getErrorHandler();
         
+        // VibrationManagerとの連携
+        this.vibrationManager = null;
+        
         // 視覚的通知システム
         this.visualNotifications = [];
         this.notificationContainer = null;
@@ -51,7 +54,32 @@ export class AudioAccessibilitySupport {
             patternRecognition: false,
             highContrast: false,
             largeFonts: false,
-            reduceMotion: false
+            reduceMotion: false,
+            hapticFeedback: false, // 触覚フィードバック設定
+            vibrationIntensity: 0.8 // 振動強度
+        };
+        
+        // 触覚フィードバック設定
+        this.hapticSettings = {
+            enabled: false,
+            vibrationIntensity: 0.8,
+            audioToVibrationMapping: {
+                bubblePop: 'bubblePop',
+                comboAchieved: 'combo',
+                achievementUnlocked: 'bonus',
+                gameStateChange: {
+                    gameOver: 'gameOver',
+                    levelUp: 'levelUp',
+                    warning: 'warning'
+                },
+                backgroundMusic: 'heartbeat', // BGMのリズムに合わせた振動
+                specialEffects: {
+                    electric: 'electric',
+                    explosion: 'explosion',
+                    freeze: 'freeze',
+                    magnetic: 'magnetic'
+                }
+            }
         };
         
         // 音響イベントリスナー
@@ -82,6 +110,9 @@ export class AudioAccessibilitySupport {
             
             // 音響パターンを初期化
             this.initializePatterns();
+            
+            // VibrationManagerとの連携を初期化
+            this.initializeVibrationManager();
             
             console.log('AudioAccessibilitySupport initialized');
         } catch (error) {
@@ -301,6 +332,17 @@ export class AudioAccessibilitySupport {
                 this.applySettings();
             });
         });
+        
+        // 触覚フィードバック設定の監視
+        this.configManager.watch('audio', 'accessibility.hapticFeedback', (newValue) => {
+            this.hapticSettings.enabled = newValue;
+            this.updateVibrationManagerSettings();
+        });
+        
+        this.configManager.watch('audio', 'accessibility.vibrationIntensity', (newValue) => {
+            this.hapticSettings.vibrationIntensity = newValue;
+            this.updateVibrationManagerSettings();
+        });
     }
     
     /**
@@ -349,6 +391,11 @@ export class AudioAccessibilitySupport {
             const stats = this.audioManager.getVisualizationStatistics();
             if (stats) {
                 this.updateColorIndicator(stats.averageLevel || 0);
+                
+                // 音響レベルに基づく触覚フィードバック
+                if (this.settings.hapticFeedback) {
+                    this.triggerAudioLevelVibration(stats.averageLevel || 0, 'background');
+                }
             }
             
             setTimeout(monitorLoop, updateInterval);
@@ -441,6 +488,11 @@ export class AudioAccessibilitySupport {
         if (this.settings.captioning) {
             this.showCaption(`${bubbleType}泡を破壊しました`);
         }
+        
+        // 触覚フィードバック
+        if (this.settings.hapticFeedback && this.vibrationManager) {
+            this.triggerHapticFeedback('bubblePop', event);
+        }
     }
     
     /**
@@ -465,6 +517,11 @@ export class AudioAccessibilitySupport {
         if (this.settings.captioning) {
             this.showCaption(`${comboCount}コンボ達成！`);
         }
+        
+        // 触覚フィードバック
+        if (this.settings.hapticFeedback && this.vibrationManager) {
+            this.triggerHapticFeedback('comboAchieved', event);
+        }
     }
     
     /**
@@ -488,6 +545,11 @@ export class AudioAccessibilitySupport {
         // 字幕
         if (this.settings.captioning) {
             this.showCaption(`実績「${achievementName}」を解除しました！`);
+        }
+        
+        // 触覚フィードバック
+        if (this.settings.hapticFeedback && this.vibrationManager) {
+            this.triggerHapticFeedback('achievementUnlocked', event);
         }
     }
     
@@ -522,6 +584,11 @@ export class AudioAccessibilitySupport {
             // 字幕
             if (this.settings.captioning) {
                 this.showCaption(`${stateInfo.title}${details ? ': ' + details : ''}`);
+            }
+            
+            // 触覚フィードバック
+            if (this.settings.hapticFeedback && this.vibrationManager) {
+                this.triggerHapticFeedback('gameStateChange', { state, ...event });
             }
         }
     }
@@ -882,6 +949,194 @@ export class AudioAccessibilitySupport {
     }
     
     /**
+     * VibrationManagerを初期化
+     * @private
+     */
+    initializeVibrationManager() {
+        // VibrationManagerのインスタンスを遅延初期化
+        if (this.audioManager?.accessibilityManager?.vibrationManager) {
+            this.vibrationManager = this.audioManager.accessibilityManager.vibrationManager;
+        } else {
+            // AudioManagerまたはAccessibilityManagerが存在しない場合は動的にインポート
+            this.loadVibrationManager();
+        }
+    }
+    
+    /**
+     * VibrationManagerを動的に読み込み
+     * @private
+     */
+    async loadVibrationManager() {
+        try {
+            const { VibrationManager } = await import('../core/VibrationManager.js');
+            this.vibrationManager = new VibrationManager(this);
+            this.updateVibrationManagerSettings();
+            console.log('VibrationManager loaded dynamically');
+        } catch (error) {
+            console.warn('Failed to load VibrationManager:', error);
+            this.settings.hapticFeedback = false; // フォールバック
+        }
+    }
+    
+    /**
+     * VibrationManagerの設定を更新
+     * @private
+     */
+    updateVibrationManagerSettings() {
+        if (!this.vibrationManager) return;
+        
+        this.vibrationManager.setEnabled(this.hapticSettings.enabled);
+        this.vibrationManager.setGlobalIntensity(this.hapticSettings.vibrationIntensity);
+        
+        // アクセシビリティモードを有効化
+        if (this.vibrationManager.userPreferences) {
+            this.vibrationManager.userPreferences.accessibilityEnhanced = true;
+        }
+    }
+    
+    /**
+     * 触覚フィードバックをトリガー
+     * @private
+     * @param {string} eventType - イベントタイプ
+     * @param {Object} eventData - イベントデータ
+     */
+    triggerHapticFeedback(eventType, eventData) {
+        if (!this.vibrationManager || !this.hapticSettings.enabled) {
+            return;
+        }
+        
+        try {
+            const mapping = this.hapticSettings.audioToVibrationMapping[eventType];
+            
+            if (typeof mapping === 'string') {
+                // 直接マッピング
+                this.vibrationManager.triggerVibration(mapping, {
+                    intensity: this.hapticSettings.vibrationIntensity,
+                    category: 'accessibility',
+                    eventData: eventData
+                });
+            } else if (typeof mapping === 'object' && eventData.state) {
+                // 状態ベースマッピング（gameStateChangeなど）
+                const stateMapping = mapping[eventData.state];
+                if (stateMapping) {
+                    this.vibrationManager.triggerVibration(stateMapping, {
+                        intensity: this.hapticSettings.vibrationIntensity,
+                        category: 'accessibility',
+                        eventData: eventData
+                    });
+                }
+            }
+            
+            console.log(`Haptic feedback triggered for: ${eventType}`);
+        } catch (error) {
+            this.errorHandler.handleError(error, 'ACCESSIBILITY_ERROR', {
+                component: 'AudioAccessibilitySupport',
+                operation: 'triggerHapticFeedback',
+                eventType: eventType
+            });
+        }
+    }
+    
+    /**
+     * 音響レベルに基づく触覚フィードバック
+     * @private
+     * @param {number} audioLevel - 音響レベル (0-1)
+     * @param {string} audioType - 音響タイプ
+     */
+    triggerAudioLevelVibration(audioLevel, audioType = 'general') {
+        if (!this.vibrationManager || !this.hapticSettings.enabled) {
+            return;
+        }
+        
+        // 音響レベルが一定以上の場合のみ振動
+        if (audioLevel < 0.3) return;
+        
+        try {
+            // 音響レベルに応じた振動パターンを生成
+            let vibrationPattern;
+            
+            if (audioLevel < 0.5) {
+                vibrationPattern = 'pulse'; // 弱いパルス
+            } else if (audioLevel < 0.8) {
+                vibrationPattern = 'heartbeat'; // 心拍パターン
+            } else {
+                vibrationPattern = 'wave'; // 波パターン
+            }
+            
+            this.vibrationManager.triggerVibration(vibrationPattern, {
+                intensity: audioLevel * this.hapticSettings.vibrationIntensity,
+                category: 'accessibility',
+                eventData: { audioLevel, audioType }
+            });
+        } catch (error) {
+            console.warn('Failed to trigger audio level vibration:', error);
+        }
+    }
+    
+    /**
+     * BGMリズムに同期した触覚フィードバック
+     * @param {Object} rhythmData - リズムデータ
+     */
+    synchronizeWithBGMRhythm(rhythmData) {
+        if (!this.vibrationManager || !this.hapticSettings.enabled) {
+            return;
+        }
+        
+        try {
+            const { bpm, beat, intensity } = rhythmData;
+            
+            if (beat % 4 === 0) { // 4拍子の1拍目で振動
+                this.vibrationManager.triggerVibration('heartbeat', {
+                    intensity: intensity * this.hapticSettings.vibrationIntensity * 0.3, // BGMは控えめに
+                    category: 'accessibility',
+                    eventData: rhythmData
+                });
+            }
+        } catch (error) {
+            console.warn('Failed to synchronize vibration with BGM:', error);
+        }
+    }
+    
+    /**
+     * 特殊効果に対応した触覚フィードバック
+     * @param {string} effectType - エフェクトタイプ
+     * @param {Object} effectData - エフェクトデータ
+     */
+    triggerSpecialEffectVibration(effectType, effectData) {
+        if (!this.vibrationManager || !this.hapticSettings.enabled) {
+            return;
+        }
+        
+        try {
+            const mapping = this.hapticSettings.audioToVibrationMapping.specialEffects[effectType];
+            if (mapping) {
+                this.vibrationManager.triggerVibration(mapping, {
+                    intensity: this.hapticSettings.vibrationIntensity,
+                    category: 'accessibility',
+                    eventData: effectData
+                });
+            }
+        } catch (error) {
+            console.warn(`Failed to trigger special effect vibration for ${effectType}:`, error);
+        }
+    }
+    
+    /**
+     * 触覚フィードバック設定を更新
+     * @param {Object} settings - 新しい設定
+     */
+    updateHapticSettings(settings) {
+        Object.assign(this.hapticSettings, settings);
+        this.updateVibrationManagerSettings();
+        
+        // 設定をConfigurationManagerに保存
+        this.configManager.set('audio.accessibility.hapticFeedback', this.hapticSettings.enabled);
+        this.configManager.set('audio.accessibility.vibrationIntensity', this.hapticSettings.vibrationIntensity);
+        
+        console.log('Haptic settings updated:', this.hapticSettings);
+    }
+    
+    /**
      * イベント履歴を取得
      * @returns {Array} イベント履歴
      */
@@ -901,6 +1156,7 @@ export class AudioAccessibilitySupport {
         
         return {
             settings: { ...this.settings },
+            hapticSettings: { ...this.hapticSettings },
             eventHistory: this.eventHistory.length,
             eventCounts: eventCounts,
             activeNotifications: this.visualNotifications.length,
@@ -910,6 +1166,10 @@ export class AudioAccessibilitySupport {
                 patterns: this.patternRecognition.patterns.size,
                 currentPatternLength: this.patternRecognition.currentPattern ? 
                     this.patternRecognition.currentPattern.length : 0
+            },
+            vibrationManager: {
+                available: !!this.vibrationManager,
+                enabled: this.vibrationManager ? this.vibrationManager.config.enabled : false
             }
         };
     }
@@ -936,12 +1196,18 @@ export class AudioAccessibilitySupport {
             clearTimeout(this.patternRecognition.patternTimeout);
         }
         
+        // VibrationManagerの解放
+        if (this.vibrationManager && typeof this.vibrationManager.destroy === 'function') {
+            this.vibrationManager.destroy();
+        }
+        
         // データをクリア
         this.visualNotifications = [];
         this.eventHistory = [];
         this.captionQueue = [];
         this.audioEventListeners.clear();
         this.patternRecognition.patterns.clear();
+        this.vibrationManager = null;
         
         console.log('AudioAccessibilitySupport disposed');
     }
