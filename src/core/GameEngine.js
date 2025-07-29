@@ -36,6 +36,9 @@ import { ResponsiveCanvasManager } from '../utils/ResponsiveCanvasManager.js';
 import { getErrorHandler } from '../utils/ErrorHandler.js';
 import { getConfigurationManager } from './ConfigurationManager.js';
 import { getCalculationEngine } from './CalculationEngine.js';
+import { EffectDebugInterface } from '../effects/EffectDebugInterface.js';
+import { EffectProfiler } from '../effects/EffectProfiler.js';
+import { AnimationManager } from '../effects/AnimationManager.js';
 
 /**
  * ゲームエンジンクラス - 統合版（パフォーマンス最適化 + 音響・視覚効果）
@@ -95,9 +98,14 @@ export class GameEngine {
         // 拡張エフェクトマネージャー
         this.enhancedParticleManager = new EnhancedParticleManager();
         this.enhancedEffectManager = new EnhancedEffectManager(canvas);
+        this.animationManager = new AnimationManager();
         
         // システム統合の設定
         this._setupSystemIntegration();
+        
+        // デバッグ・プロファイリングツール（開発環境用）
+        this.effectDebugInterface = new EffectDebugInterface(this);
+        this.effectProfiler = new EffectProfiler(this);
         
         // コアシステム
         this.playerData = new PlayerData(this);
