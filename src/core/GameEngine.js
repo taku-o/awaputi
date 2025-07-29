@@ -39,6 +39,9 @@ import { getCalculationEngine } from './CalculationEngine.js';
 import { EffectDebugInterface } from '../effects/EffectDebugInterface.js';
 import { EffectProfiler } from '../effects/EffectProfiler.js';
 import { EffectOptimizationAdvisor } from '../effects/EffectOptimizationAdvisor.js';
+import { EffectPerformanceOptimizer } from '../effects/EffectPerformanceOptimizer.js';
+import { EffectErrorHandler } from '../effects/EffectErrorHandler.js';
+import { VisualPolishEnhancements } from '../effects/VisualPolishEnhancements.js';
 import { AnimationManager } from '../effects/AnimationManager.js';
 
 /**
@@ -108,6 +111,9 @@ export class GameEngine {
         this.effectDebugInterface = new EffectDebugInterface(this);
         this.effectProfiler = new EffectProfiler(this);
         this.effectOptimizationAdvisor = new EffectOptimizationAdvisor(this);
+        this.effectPerformanceOptimizer = new EffectPerformanceOptimizer(this);
+        this.effectErrorHandler = new EffectErrorHandler(this);
+        this.visualPolishEnhancements = new VisualPolishEnhancements(this);
         
         // コアシステム
         this.playerData = new PlayerData(this);
