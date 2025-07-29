@@ -2,6 +2,7 @@ import { getErrorHandler } from '../utils/ErrorHandler.js';
 import { getAudioConfig } from '../config/AudioConfig.js';
 import { getConfigurationManager } from '../core/ConfigurationManager.js';
 import { BGMSystem } from './BGMSystem.js';
+import { SoundEffectSystem } from './SoundEffectSystem.js';
 
 /**
  * 音響管理クラス - Web Audio API を使用した高度な音響システム
@@ -31,6 +32,9 @@ export class AudioManager {
         
         // BGMシステム
         this.bgmSystem = null;
+        
+        // 効果音システム
+        this.soundEffectSystem = null;
         
         // 効果音バッファ
         this.soundBuffers = new Map();
@@ -213,6 +217,17 @@ export class AudioManager {
                     operation: 'initialize'
                 });
                 // BGMなしで続行
+            }
+            
+            // 効果音システムの初期化
+            try {
+                this.soundEffectSystem = new SoundEffectSystem(this);
+            } catch (sfxError) {
+                getErrorHandler().handleError(sfxError, 'AUDIO_ERROR', { 
+                    component: 'soundEffectSystem',
+                    operation: 'initialize'
+                });
+                // 効果音システムなしで続行
             }
             
             console.log('AudioManager initialized successfully');
@@ -687,7 +702,86 @@ export class AudioManager {
     }
     
     /**
-     * 効果音を再生
+     * 泡破壊音を再生（新しいSoundEffectSystemを経由）
+     * @param {string} bubbleType - 泡タイプ
+     * @param {number} comboLevel - コンボレベル
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playBubbleSound(bubbleType, comboLevel = 0, options = {}) {
+        if (this.soundEffectSystem) {
+            return this.soundEffectSystem.playBubbleSound(bubbleType, comboLevel, options);
+        }
+        // フォールバック: 従来の効果音
+        return this.playSound('pop', options);
+    }
+    
+    /**
+     * コンボ音を再生
+     * @param {number} comboLevel - コンボレベル
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playComboSound(comboLevel, options = {}) {
+        if (this.soundEffectSystem) {
+            return this.soundEffectSystem.playComboSound(comboLevel, options);
+        }
+        // フォールバック: 従来の効果音
+        return this.playSound('pop_combo', options);
+    }
+    
+    /**
+     * UI操作音を再生
+     * @param {string} actionType - アクションタイプ
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playUISound(actionType, options = {}) {
+        if (this.soundEffectSystem) {
+            return this.soundEffectSystem.playUISound(actionType, options);
+        }
+        // フォールバック: 従来の効果音
+        return this.playSound(actionType, options);
+    }
+    
+    /**
+     * 実績解除音を再生
+     * @param {string} rarity - レアリティ
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playAchievementSound(rarity, options = {}) {
+        if (this.soundEffectSystem) {
+            return this.soundEffectSystem.playAchievementSound(rarity, options);
+        }
+        // フォールバック: 従来の効果音
+        return this.playSound('success', options);
+    }
+    
+    /**
+     * ゲーム状態音を再生
+     * @param {string} stateType - 状態タイプ
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playGameStateSound(stateType, options = {}) {
+        if (this.soundEffectSystem) {
+            return this.soundEffectSystem.playGameStateSound(stateType, options);
+        }
+        // フォールバック: 従来の効果音
+        const fallbackMap = {
+            'levelup': 'success',
+            'warning': 'warning',
+            'timeup': 'error',
+            'stageclear': 'success',
+            'bonus_start': 'bonus',
+            'bonus_end': 'success'
+        };
+        return this.playSound(fallbackMap[stateType] || 'success', options);
+    }
+    
+    /**
+     * 効果音を再生（レガシー対応）
      */
     playSound(soundName, options = {}) {
         if (!this.isEnabled || this.isMuted || !this.audioContext || !this.soundBuffers.has(soundName)) {
@@ -1145,6 +1239,12 @@ export class AudioManager {
             this.bgmSystem = null;
         }
         
+        // 効果音システムを破棄
+        if (this.soundEffectSystem) {
+            this.soundEffectSystem.dispose();
+            this.soundEffectSystem = null;
+        }
+        
         // 設定監視の解除
         if (this.configWatchers) {
             this.configWatchers.forEach(watchId => {
@@ -1273,7 +1373,7 @@ export class AudioManager {
      * 状態情報を取得
      */
     getStatus() {
-        return {
+        const status = {
             isEnabled: this.isEnabled,
             isMuted: this.isMuted,
             masterVolume: this.masterVolume,
@@ -1286,7 +1386,18 @@ export class AudioManager {
                 audioConfig: !!this.audioConfig,
                 configManager: !!this.configManager,
                 watchers: this.configWatchers.size
+            },
+            systems: {
+                bgmSystem: !!this.bgmSystem,
+                soundEffectSystem: !!this.soundEffectSystem
             }
         };
+        
+        // SoundEffectSystemの統計を追加
+        if (this.soundEffectSystem) {
+            status.soundEffectSystem = this.soundEffectSystem.getSystemStats();
+        }
+        
+        return status;
     }
 }
