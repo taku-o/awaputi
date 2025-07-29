@@ -9,28 +9,23 @@ import { StatisticsDashboard } from '../core/StatisticsDashboard.js';
 import { StatisticsFilterManager } from '../core/StatisticsFilterManager.js';
 import { StatisticsExporter } from '../core/StatisticsExporter.js';
 
+// 新しいダイアログシステム
+import { DialogManager } from './components/DialogManager.js';
+import { ComponentEventBus } from './components/ComponentEventBus.js';
+import { SceneState } from './components/SceneState.js';
+import { UsernameDialog } from './components/UsernameDialog.js';
+import { ExportDialog } from './components/ExportDialog.js';
+import { ImportDialog } from './components/ImportDialog.js';
+
 export class UserInfoScene extends Scene {
     constructor(gameEngine) {
         super(gameEngine);
         
-        // タブ状態管理
-        this.currentTab = 'statistics'; // 'statistics', 'achievements', 'management', 'help'
-        this.tabs = ['statistics', 'achievements', 'management', 'help'];
-        this.tabLabels = ['統計', '実績', '管理', 'ヘルプ'];
+        // 新しいコンポーネントシステムの初期化
+        this.initializeComponentSystem();
         
-        // 実績カテゴリフィルター
-        this.achievementCategories = ['all', 'score', 'play', 'technique', 'collection', 'special'];
-        this.achievementCategoryLabels = ['全て', 'スコア系', 'プレイ系', 'テクニック系', 'コレクション系', '特殊'];
-        this.currentAchievementCategory = 'all';
-        
-        // ダイアログ状態管理
-        this.showingDialog = null; // null, 'username', 'export', 'import'
-        this.dialogData = {};
-        
-        // UI状態管理
-        this.scrollPosition = 0;
-        this.selectedItem = -1;
-        this.focusedElement = 0; // キーボードナビゲーション用
+        // レガシーサポート（段階的移行用）
+        this.legacyMode = false; // ダイアログシステム移行用フラグ
         
         // レイアウト設定
         this.tabHeight = 60;
@@ -47,16 +42,6 @@ export class UserInfoScene extends Scene {
         // エラーハンドリング
         this.errorMessage = null;
         this.errorTimeout = null;
-        
-        // アクセシビリティ設定
-        this.accessibilitySettings = {
-            highContrast: false,
-            largeText: false,
-            reducedMotion: false
-        };
-        
-        // アクセシビリティ設定を読み込み
-        this.loadAccessibilitySettings();
         
         // 実績統計UI
         this.achievementStatsUI = null;
@@ -84,6 +69,91 @@ export class UserInfoScene extends Scene {
         // 拡張統計システム初期化
         this.initializeExtendedStatistics();
     }
+    
+    /**
+     * 新しいコンポーネントシステムの初期化
+     */
+    initializeComponentSystem() {
+        // イベントバス作成
+        this.eventBus = new ComponentEventBus();
+        
+        // 共有状態作成
+        this.sceneState = new SceneState(this.gameEngine);
+        
+        // ダイアログマネージャー作成
+        this.dialogManager = new DialogManager(this.gameEngine, this.eventBus, this.sceneState);
+        
+        // ダイアログコンポーネントを登録
+        this.dialogManager.registerDialog('username', UsernameDialog);
+        this.dialogManager.registerDialog('export', ExportDialog);
+        this.dialogManager.registerDialog('import', ImportDialog);
+        
+        // イベントリスナーをセットアップ
+        this.setupEventListeners();
+        
+        // レガシープロパティとの互換性維持
+        this.setupLegacyCompatibility();
+    }
+    
+    /**
+     * イベントリスナーをセットアップ
+     */
+    setupEventListeners() {
+        // ダイアログイベントの監視
+        this.eventBus.on('dialog-opened', (data) => {
+            console.log('Dialog opened:', data.type);
+        });
+        
+        this.eventBus.on('dialog-closed', (data) => {
+            console.log('Dialog closed:', data.type);
+        });
+        
+        // エラーイベントの監視
+        this.eventBus.on('component-error', (error) => {
+            console.error('Component error:', error);
+            this.showError('コンポーネントエラーが発生しました');
+        });
+        
+        // 状態変更の監視
+        this.sceneState.onChange('currentTab', (newTab, oldTab) => {
+            console.log(`Tab changed from ${oldTab} to ${newTab}`);
+        });
+    }
+    
+    /**
+     * レガシー互換性をセットアップ
+     */
+    setupLegacyCompatibility() {
+        // 既存プロパティを新システムと同期
+        Object.defineProperty(this, 'showingDialog', {
+            get: () => this.sceneState.showingDialog,
+            set: (value) => this.sceneState.set('showingDialog', value)
+        });
+        
+        Object.defineProperty(this, 'dialogData', {
+            get: () => this.sceneState.dialogData,
+            set: (value) => this.sceneState.set('dialogData', value)
+        });
+        
+        Object.defineProperty(this, 'currentTab', {
+            get: () => this.sceneState.currentTab,
+            set: (value) => this.sceneState.set('currentTab', value)
+        });
+        
+        Object.defineProperty(this, 'currentAchievementCategory', {
+            get: () => this.sceneState.currentAchievementCategory,
+            set: (value) => this.sceneState.set('currentAchievementCategory', value)
+        });
+        
+        // 配列プロパティの参照を維持
+        this.tabs = this.sceneState.tabs;
+        this.tabLabels = this.sceneState.tabLabels;
+        this.achievementCategories = this.sceneState.achievementCategories;
+        this.achievementCategoryLabels = this.sceneState.achievementCategoryLabels;
+        
+        // アクセシビリティ設定の参照
+        this.accessibilitySettings = this.sceneState.accessibilitySettings;
+    }
 
     enter() {
         console.log('User info scene entered');
@@ -103,6 +173,19 @@ export class UserInfoScene extends Scene {
         if (this.errorTimeout) {
             clearTimeout(this.errorTimeout);
             this.errorTimeout = null;
+        }
+        
+        // 新しいコンポーネントシステムのクリーンアップ
+        if (this.dialogManager) {
+            this.dialogManager.cleanup();
+        }
+        
+        if (this.eventBus) {
+            this.eventBus.cleanup();
+        }
+        
+        if (this.sceneState) {
+            this.sceneState.cleanup();
         }
     }
 
@@ -144,6 +227,11 @@ export class UserInfoScene extends Scene {
                 this.helpSystem.render(context, canvas);
             }
             
+            // 新しいダイアログシステムを描画
+            if (this.dialogManager && this.dialogManager.isDialogOpen()) {
+                this.dialogManager.render(context);
+            }
+            
         } catch (error) {
             console.error('UserInfoScene render error:', error);
             this.showError('描画エラーが発生しました');
@@ -152,6 +240,24 @@ export class UserInfoScene extends Scene {
 
     handleInput(event) {
         try {
+            // ダイアログが開いている場合は優先的に処理
+            if (this.dialogManager && this.dialogManager.isDialogOpen()) {
+                if (event.type === 'click') {
+                    const canvas = this.gameEngine.canvas;
+                    const rect = canvas.getBoundingClientRect();
+                    const x = event.clientX - rect.left;
+                    const y = event.clientY - rect.top;
+                    
+                    if (this.dialogManager.handleClick(x, y)) {
+                        return; // ダイアログが処理した場合
+                    }
+                } else if (event.type === 'keydown') {
+                    if (this.dialogManager.handleKeyboard(event)) {
+                        return; // ダイアログが処理した場合
+                    }
+                }
+            }
+            
             // ヘルプシステムが入力を処理する場合は早期リターン
             if (this.helpSystem && event.type === 'click') {
                 const canvas = this.gameEngine.canvas;
@@ -1161,8 +1267,8 @@ export class UserInfoScene extends Scene {
         // データ管理セクション
         this.renderDataManagementSection(context, this.contentPadding, currentY, contentWidth);
         
-        // ダイアログを描画
-        if (this.showingDialog) {
+        // ダイアログを描画（新システムでは不要、DialogManagerで処理）
+        if (this.showingDialog && this.legacyMode) {
             this.renderDialog(context);
         }
     }
@@ -2150,49 +2256,75 @@ export class UserInfoScene extends Scene {
     /**
      * ユーザー名変更ダイアログを表示
      */
-    showUsernameChangeDialog() {
-        this.showingDialog = 'username';
-        this.dialogData = {
-            newUsername: this.gameEngine.playerData?.username || '',
-            error: null
-        };
+    async showUsernameChangeDialog() {
+        try {
+            const result = await this.dialogManager.showDialog('username');
+            
+            if (result.action === 'change') {
+                console.log('Username changed:', result.data);
+                this.showMessage('ユーザー名が変更されました');
+                this.loadUserData(); // データを再読み込み
+            }
+        } catch (error) {
+            console.error('Username change dialog error:', error);
+            this.showError('ユーザー名変更ダイアログでエラーが発生しました');
+        }
     }
 
     /**
      * データエクスポートダイアログを表示
      */
-    showDataExportDialog() {
-        this.showingDialog = 'export';
-        this.dialogData = {
-            exportData: null,
-            error: null
-        };
-        
-        // データエクスポート処理を開始
-        setTimeout(() => {
-            this.exportUserData();
-        }, 500);
+    async showDataExportDialog() {
+        try {
+            const result = await this.dialogManager.showDialog('export', {
+                exportType: 'playerData',
+                format: 'json'
+            });
+            
+            if (result.action === 'download') {
+                console.log('Data exported and downloaded:', result.data);
+                this.showMessage('データがダウンロードされました');
+            } else if (result.action === 'copy') {
+                console.log('Data copied to clipboard:', result.data);
+                this.showMessage('データがクリップボードにコピーされました');
+            }
+        } catch (error) {
+            console.error('Export dialog error:', error);
+            this.showError('エクスポートダイアログでエラーが発生しました');
+        }
     }
 
     /**
      * データインポートダイアログを表示
      */
-    showDataImportDialog() {
-        this.showingDialog = 'import';
-        this.dialogData = {
-            importData: '',
-            importMethod: 'file', // 'file' or 'text'
-            error: null,
-            step: 'select' // 'select', 'confirm', 'processing'
-        };
+    async showDataImportDialog() {
+        try {
+            const result = await this.dialogManager.showDialog('import');
+            
+            if (result.action === 'import' && result.data.success) {
+                console.log('Data imported successfully:', result.data);
+                this.showMessage('データが正常にインポートされました');
+                this.loadUserData(); // データを再読み込み
+            } else if (result.data.error) {
+                this.showError(`インポートエラー: ${result.data.error}`);
+            }
+        } catch (error) {
+            console.error('Import dialog error:', error);
+            this.showError('インポートダイアログでエラーが発生しました');
+        }
     }
 
     /**
-     * ダイアログを閉じる
+     * ダイアログを閉じる（レガシー互換）
      */
     closeDialog() {
-        this.showingDialog = null;
-        this.dialogData = {};
+        if (this.dialogManager) {
+            this.dialogManager.closeDialog();
+        } else {
+            // フォールバック
+            this.showingDialog = null;
+            this.dialogData = {};
+        }
     }
 
     /**

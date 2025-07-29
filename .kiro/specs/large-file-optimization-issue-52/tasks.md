@@ -7,36 +7,36 @@
   - Create SceneState class for shared state management
   - _Requirements: 4.1, 4.2, 4.3_
 
-- [ ] 2. Extract Dialog Management System (Phase 1)
-- [ ] 2.1 Create DialogManager base class
+- [x] 2. Extract Dialog Management System (Phase 1)
+- [x] 2.1 Create DialogManager base class
   - Implement DialogManager class with dialog state management
   - Add dialog rendering coordination methods
   - Create dialog event handling infrastructure
   - Write unit tests for DialogManager functionality
   - _Requirements: 2.1, 3.1, 5.1_
 
-- [ ] 2.2 Extract UsernameDialog component
+- [x] 2.2 Extract UsernameDialog component
   - Create UsernameDialog class extending base dialog interface
   - Implement username change dialog rendering
   - Add username validation and update functionality
   - Write unit tests for UsernameDialog component
   - _Requirements: 2.4, 3.2, 5.2_
 
-- [ ] 2.3 Extract ExportDialog component
+- [x] 2.3 Extract ExportDialog component
   - Create ExportDialog class for data export functionality
   - Implement export dialog UI rendering
   - Add data export operations and file generation
   - Write unit tests for ExportDialog component
   - _Requirements: 2.4, 3.2, 5.2_
 
-- [ ] 2.4 Extract ImportDialog component
+- [x] 2.4 Extract ImportDialog component
   - Create ImportDialog class with multi-step import workflow
   - Implement import method selection UI
   - Add file import processing and validation
   - Write unit tests for ImportDialog component
   - _Requirements: 2.4, 3.2, 5.2_
 
-- [ ] 2.5 Integrate dialog system with main scene
+- [x] 2.5 Integrate dialog system with main scene
   - Update UserInfoScene to use DialogManager
   - Replace inline dialog code with component calls
   - Test dialog functionality integration
