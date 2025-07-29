@@ -286,10 +286,17 @@ jobs:
           if [[ -f "reports/ci/validation-report.txt" ]]; then
             echo "📄 Validation report size: $(wc -l < reports/ci/validation-report.txt) lines"
             
-            # Check for critical issues
-            if grep -q "重要な問題" reports/ci/validation-report.txt; then
-              echo "❌ Critical issues found in validation report"
-              exit 1
+            # Check for critical issues (parse the number after "重要な問題:")
+            if grep -q "重要な問題:" reports/ci/validation-report.txt; then
+              CRITICAL_COUNT=$(grep "重要な問題:" reports/ci/validation-report.txt | grep -o '[0-9]\+' | head -1)
+              echo "🔍 Critical issues count: $CRITICAL_COUNT"
+              
+              if [[ "$CRITICAL_COUNT" -gt 0 ]]; then
+                echo "❌ Critical issues found in validation report: $CRITICAL_COUNT"
+                exit 1
+              else
+                echo "✅ No critical issues found"
+              fi
             fi
             
             # Check for warnings
@@ -459,7 +466,10 @@ jobs:
             let validationStatus = '✅ Passed';
             try {
               const validationLog = fs.readFileSync('final-reports/final-validation.log', 'utf8');
-              if (validationLog.includes('重要な問題')) {
+              
+              // Check for critical issues by parsing the count
+              const criticalMatch = validationLog.match(/重要な問題:\s*(\d+)/);
+              if (criticalMatch && parseInt(criticalMatch[1]) > 0) {
                 validationStatus = '❌ Failed - Critical issues detected';
               } else if (validationLog.includes('警告')) {
                 validationStatus = '⚠️ Passed with warnings';
