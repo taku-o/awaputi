@@ -4,6 +4,8 @@ import { getConfigurationManager } from '../core/ConfigurationManager.js';
 import { BGMSystem } from './BGMSystem.js';
 import { SoundEffectSystem } from './SoundEffectSystem.js';
 import { AudioController } from './AudioController.js';
+import { AudioVisualizer } from './AudioVisualizer.js';
+import { AudioAccessibilitySupport } from './AudioAccessibilitySupport.js';
 
 /**
  * 音響管理クラス - Web Audio API を使用した高度な音響システム
@@ -39,6 +41,12 @@ export class AudioManager {
         
         // 音響制御システム
         this.audioController = null;
+        
+        // 音響視覚化システム
+        this.audioVisualizer = null;
+        
+        // アクセシビリティ支援システム
+        this.accessibilitySupport = null;
         
         // 効果音バッファ
         this.soundBuffers = new Map();
@@ -243,6 +251,28 @@ export class AudioManager {
                     operation: 'initialize'
                 });
                 // 音響制御システムなしで続行
+            }
+            
+            // 音響視覚化システムの初期化
+            try {
+                this.audioVisualizer = new AudioVisualizer(this);
+            } catch (visualizerError) {
+                getErrorHandler().handleError(visualizerError, 'AUDIO_ERROR', { 
+                    component: 'audioVisualizer',
+                    operation: 'initialize'
+                });
+                // 音響視覚化システムなしで続行
+            }
+            
+            // アクセシビリティ支援システムの初期化
+            try {
+                this.accessibilitySupport = new AudioAccessibilitySupport(this);
+            } catch (accessibilityError) {
+                getErrorHandler().handleError(accessibilityError, 'AUDIO_ERROR', { 
+                    component: 'accessibilitySupport',
+                    operation: 'initialize'
+                });
+                // アクセシビリティ支援システムなしで続行
             }
             
             console.log('AudioManager initialized successfully');
@@ -1762,6 +1792,98 @@ export class AudioManager {
         console.warn('AudioController is not available');
     }
     
+    // ================================
+    // AudioVisualizer 便利メソッド
+    // ================================
+    
+    /**
+     * 音響視覚化を開始（AudioVisualizer経由）
+     */
+    startAudioVisualization() {
+        if (this.audioVisualizer) {
+            return this.audioVisualizer.start();
+        }
+        console.warn('AudioVisualizer is not available');
+    }
+    
+    /**
+     * 音響視覚化を停止（AudioVisualizer経由）
+     */
+    stopAudioVisualization() {
+        if (this.audioVisualizer) {
+            return this.audioVisualizer.stop();
+        }
+        console.warn('AudioVisualizer is not available');
+    }
+    
+    /**
+     * 視覚化タイプを設定（AudioVisualizer経由）
+     * @param {string} type - 視覚化タイプ
+     */
+    setVisualizationType(type) {
+        if (this.audioVisualizer) {
+            return this.audioVisualizer.setVisualizationType(type);
+        }
+        console.warn('AudioVisualizer is not available');
+    }
+    
+    /**
+     * 色スキームを設定（AudioVisualizer経由）
+     * @param {string} scheme - 色スキーム
+     */
+    setVisualizationColorScheme(scheme) {
+        if (this.audioVisualizer) {
+            return this.audioVisualizer.setColorScheme(scheme);
+        }
+        console.warn('AudioVisualizer is not available');
+    }
+    
+    /**
+     * 視覚化のパフォーマンスモードを設定（AudioVisualizer経由）
+     * @param {string} mode - パフォーマンスモード
+     */
+    setVisualizationPerformanceMode(mode) {
+        if (this.audioVisualizer) {
+            return this.audioVisualizer.setPerformanceMode(mode);
+        }
+        console.warn('AudioVisualizer is not available');
+    }
+    
+    /**
+     * アクセシビリティモードを設定（AudioVisualizer経由）
+     * @param {boolean} enabled - 有効状態
+     */
+    setVisualizationAccessibilityMode(enabled) {
+        if (this.audioVisualizer) {
+            return this.audioVisualizer.setAccessibilityMode(enabled);
+        }
+        console.warn('AudioVisualizer is not available');
+    }
+    
+    /**
+     * 音響イベントを手動でトリガー（AudioVisualizer経由）
+     * @param {string} eventType - イベントタイプ
+     * @param {number} intensity - 強度
+     */
+    triggerVisualizationEvent(eventType, intensity) {
+        if (this.audioVisualizer) {
+            return this.audioVisualizer.triggerAudioEvent(eventType, intensity);
+        }
+        console.warn('AudioVisualizer is not available');
+    }
+    
+    /**
+     * 視覚化統計を取得（AudioVisualizer経由）
+     * @returns {Object} 統計情報
+     */
+    getVisualizationStatistics() {
+        if (this.audioVisualizer) {
+            return this.audioVisualizer.getStatistics();
+        }
+        console.warn('AudioVisualizer is not available');
+        return null;
+    }
+    
     /**
      * リソースの解放
      */
@@ -1784,6 +1906,12 @@ export class AudioManager {
         if (this.audioController) {
             this.audioController.dispose();
             this.audioController = null;
+        }
+        
+        // 音響視覚化システムを破棄
+        if (this.audioVisualizer) {
+            this.audioVisualizer.dispose();
+            this.audioVisualizer = null;
         }
         
         // 設定監視の解除
@@ -1930,7 +2058,9 @@ export class AudioManager {
             },
             systems: {
                 bgmSystem: !!this.bgmSystem,
-                soundEffectSystem: !!this.soundEffectSystem
+                soundEffectSystem: !!this.soundEffectSystem,
+                audioController: !!this.audioController,
+                audioVisualizer: !!this.audioVisualizer
             }
         };
         
