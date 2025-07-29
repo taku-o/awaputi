@@ -4,6 +4,8 @@ import { ComboEffectRenderer } from './renderers/ComboEffectRenderer.js';
 import { SpecialEffectRenderer } from './renderers/SpecialEffectRenderer.js';
 import { SeasonalEffectRenderer } from './renderers/SeasonalEffectRenderer.js';
 import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getEffectQualityController } from './EffectQualityController.js';
+import { getEffectPerformanceMonitor } from './EffectPerformanceMonitor.js';
 
 /**
  * 強化されたパーティクル管理クラス
@@ -13,7 +15,11 @@ export class EnhancedParticleManager extends ParticleManager {
     constructor() {
         super();
         
-        // 拡張パーティクル設定
+        // 品質コントローラーとパフォーマンス監視の取得
+        this.qualityController = getEffectQualityController();
+        this.performanceMonitor = getEffectPerformanceMonitor();
+        
+        // 拡張パーティクル設定（品質コントローラーに移行）
         this.qualitySettings = {
             low: { countMultiplier: 0.25, sizeMultiplier: 0.8, complexityLevel: 1 },
             medium: { countMultiplier: 0.5, sizeMultiplier: 0.9, complexityLevel: 2 },
@@ -21,8 +27,8 @@ export class EnhancedParticleManager extends ParticleManager {
             ultra: { countMultiplier: 1.5, sizeMultiplier: 1.2, complexityLevel: 4 }
         };
         
-        // 現在の品質レベル
-        this.currentQualityLevel = 'high';
+        // 現在の品質レベル（品質コントローラーから取得）
+        this.currentQualityLevel = this.qualityController.getCurrentQualityLevel();
         
         // 背景パーティクル
         this.backgroundParticles = [];
@@ -76,7 +82,9 @@ export class EnhancedParticleManager extends ParticleManager {
      * @returns {Object} 品質設定
      */
     getCurrentQualitySettings() {
-        return this.qualitySettings[this.currentQualityLevel];
+        // 品質コントローラーから最新の設定を取得
+        this.currentQualityLevel = this.qualityController.getCurrentQualityLevel();
+        return this.qualityController.getCurrentQualitySettings();
     }
     
     /**
@@ -100,9 +108,22 @@ export class EnhancedParticleManager extends ParticleManager {
     createAdvancedBubbleEffect(x, y, bubbleType, bubbleSize, options = {}) {
         if (!this.enabled) return;
         
+        // エフェクト実行可否のチェック
+        const priority = options.priority || 'normal';
+        if (!this.qualityController.canExecuteEffect('particle', priority)) {
+            return;
+        }
+        
         try {
             // BubbleEffectRendererに委譲
             this.bubbleRenderer.createAdvancedBubbleEffect(x, y, bubbleType, bubbleSize, options);
+            
+            // エフェクトカウントの更新
+            this.qualityController.updateEffectCount('particles', 1);
+            
+            // パフォーマンス統計の記録
+            this.performanceMonitor.recordRenderStats('particle', 1);
+            
         } catch (error) {
             getErrorHandler().handleError(error, {
                 context: 'EnhancedParticleManager.createAdvancedBubbleEffect'
@@ -120,9 +141,23 @@ export class EnhancedParticleManager extends ParticleManager {
     createEnhancedComboEffect(x, y, comboCount, comboType = 'normal') {
         if (!this.enabled) return;
         
+        // コンボ効果は重要度が高いので優先度を高く設定
+        const priority = comboCount >= 10 ? 'critical' : 'important';
+        if (!this.qualityController.canExecuteEffect('particle', priority)) {
+            return;
+        }
+        
         try {
             // ComboEffectRendererに委譲
             this.comboRenderer.createEnhancedComboEffect(x, y, comboCount, comboType);
+            
+            // エフェクトカウントの更新
+            const particleCount = Math.min(comboCount * 2, 20); // 推定パーティクル数
+            this.qualityController.updateEffectCount('particles', particleCount);
+            
+            // パフォーマンス統計の記録
+            this.performanceMonitor.recordRenderStats('particle', particleCount);
+            
         } catch (error) {
             getErrorHandler().handleError(error, {
                 context: 'EnhancedParticleManager.createEnhancedComboEffect'
@@ -274,11 +309,17 @@ export class EnhancedParticleManager extends ParticleManager {
      * @param {number} deltaTime - 経過時間
      */
     update(deltaTime) {
+        // パフォーマンス監視の更新
+        this.performanceMonitor.update(performance.now());
+        
         // 親クラスの更新を実行
         super.update(deltaTime);
         
         // 背景パーティクルの更新
         this.updateBackgroundParticles(deltaTime);
+        
+        // 品質レベルの同期
+        this.currentQualityLevel = this.qualityController.getCurrentQualityLevel();
     }
     
     /**
