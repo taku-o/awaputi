@@ -131,6 +131,7 @@
                 <button class="language-btn active" data-lang="ja" id="btnJa">日本語</button>
                 <button class="language-btn" data-lang="en" id="btnEn">English</button>
                 <button class="language-btn" data-lang="zh-CN" id="btnZhCN">简体中文</button>
+                <button class="language-btn" data-lang="zh-TW" id="btnZhTW">繁體中文</button>
             </div>
         </div>
 
@@ -224,6 +225,7 @@
                 document.getElementById('btnJa').textContent = '日本語';
                 document.getElementById('btnEn').textContent = 'English';
                 document.getElementById('btnZhCN').textContent = '简体中文';
+                document.getElementById('btnZhTW').textContent = '繁體中文';
                 
             } catch (error) {
                 addLog(`UI label update error: ${error.message}`, 'error');
