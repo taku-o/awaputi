@@ -21,6 +21,7 @@ import { ImportDialog } from './components/ImportDialog.js';
 import { HelpTab } from './components/HelpTab.js';
 import { HelpSectionSelector } from './components/HelpSectionSelector.js';
 import { ManagementTab } from './components/ManagementTab.js';
+import { AchievementsTab } from './components/AchievementsTab.js';
 
 export class UserInfoScene extends Scene {
     constructor(gameEngine) {
@@ -115,6 +116,10 @@ export class UserInfoScene extends Scene {
         this.managementTabComponent = new ManagementTab(this.gameEngine, this.eventBus, this.sceneState);
         this.managementTabComponent.initialize();
         
+        // AchievementsTabコンポーネントを作成
+        this.achievementsTabComponent = new AchievementsTab(this.gameEngine, this.eventBus, this.sceneState);
+        this.achievementsTabComponent.initialize();
+        
         // ヘルプセクションセレクターを作成
         this.helpSectionSelector = new HelpSectionSelector(this.gameEngine, this.eventBus, this.sceneState);
         
@@ -122,6 +127,7 @@ export class UserInfoScene extends Scene {
         this.tabComponents = new Map();
         this.tabComponents.set('help', this.helpTabComponent);
         this.tabComponents.set('management', this.managementTabComponent);
+        this.tabComponents.set('achievements', this.achievementsTabComponent);
         
         console.log('Tab components initialized');
     }
@@ -448,7 +454,7 @@ export class UserInfoScene extends Scene {
                 this.renderStatistics(context, contentY, contentHeight);
                 break;
             case 'achievements':
-                this.renderAchievements(context, contentY, contentHeight);
+                this.renderAchievementsWithComponent(context, contentY, contentHeight);
                 break;
             case 'management':
                 this.renderManagementWithComponent(context, contentY, contentHeight);
@@ -3767,6 +3773,23 @@ export class UserInfoScene extends Scene {
         } else {
             // フォールバック: 古いシステムを使用
             this.renderUserManagement(context, y, height);
+        }
+    }
+    
+    /**
+     * 実績タブコンポーネントでレンダリング
+     */
+    renderAchievementsWithComponent(context, y, height) {
+        const canvas = this.gameEngine.canvas;
+        const contentWidth = canvas.width - this.contentPadding * 2;
+        const contentX = this.contentPadding;
+        
+        if (this.achievementsTabComponent && this.achievementsTabComponent.isActive) {
+            // 新しいAchievementsTabコンポーネントでレンダリング
+            this.achievementsTabComponent.render(context, contentX, y, contentWidth, height);
+        } else {
+            // フォールバック: 古いシステムを使用
+            this.renderAchievements(context, y, height);
         }
     }
     
