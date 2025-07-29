@@ -1,6 +1,7 @@
 import { EffectManager } from './EffectManager.js';
 import { getEffectsConfig } from '../config/EffectsConfig.js';
 import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { AccessibilityEffectIntegrator } from './accessibility/AccessibilityEffectIntegrator.js';
 
 /**
  * 拡張画面効果管理クラス
@@ -20,6 +21,10 @@ export class EnhancedEffectManager extends EffectManager {
         this.backgroundEffects = [];
         this.shadowCasters = [];
         this.reflectionSurfaces = [];
+        
+        // アクセシビリティ統合（初期化時に設定）
+        this.accessibilityIntegrator = null;
+        this.accessibilityEnabled = false;
         
         // 拡張変換状態
         this.enhancedTransform = {
@@ -51,6 +56,26 @@ export class EnhancedEffectManager extends EffectManager {
         };
         
         console.log('[EnhancedEffectManager] 拡張画面効果管理システムを初期化しました');
+    }
+    
+    /**
+     * アクセシビリティ統合の初期化
+     */
+    async initializeAccessibility(gameEngine) {
+        try {
+            this.accessibilityIntegrator = new AccessibilityEffectIntegrator(gameEngine);
+            await this.accessibilityIntegrator.initialize();
+            this.accessibilityEnabled = true;
+            
+            console.log('[EnhancedEffectManager] アクセシビリティ統合を初期化しました');
+            return true;
+        } catch (error) {
+            getErrorHandler().handleError(error, 'ACCESSIBILITY_ERROR', {
+                operation: 'initializeAccessibility',
+                component: 'EnhancedEffectManager'
+            });
+            return false;
+        }
     }
     
     // ========================================

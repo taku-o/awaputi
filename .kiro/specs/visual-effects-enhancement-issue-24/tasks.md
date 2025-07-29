@@ -104,7 +104,7 @@
     - _Requirements: 8.2, 8.3_
 
 - [ ] 9. Implement accessibility features
-  - [ ] 9.1 Add accessibility support for visual effects
+  - [x] 9.1 Add accessibility support for visual effects
     - Implement high contrast mode for effects
     - Add color blind friendly effect alternatives
     - Create motion sensitivity options for reduced animation
