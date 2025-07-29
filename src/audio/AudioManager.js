@@ -1700,6 +1700,69 @@ export class AudioManager {
     }
     
     /**
+     * カスタムフェード効果（AudioController経由）
+     * @param {string} category - 音量カテゴリ
+     * @param {number} targetVolume - 目標音量レベル (0-1)
+     * @param {number} duration - フェード時間（秒）
+     * @param {string} curve - フェードカーブタイプ
+     * @param {Function} callback - 完了時のコールバック
+     */
+    async customFadeVolume(category, targetVolume, duration = 1.0, curve = 'exponential', callback = null) {
+        if (this.audioController) {
+            return await this.audioController.customFade(category, targetVolume, duration, curve, callback);
+        }
+        console.warn('AudioController is not available');
+    }
+    
+    /**
+     * クロスフェード効果（AudioController経由）
+     * @param {string} fromCategory - フェードアウトするカテゴリ
+     * @param {string} toCategory - フェードインするカテゴリ
+     * @param {number} duration - フェード時間（秒）
+     * @param {string} curve - フェードカーブタイプ
+     * @param {Function} callback - 完了時のコールバック
+     */
+    async crossFadeVolume(fromCategory, toCategory, duration = 2.0, curve = 'exponential', callback = null) {
+        if (this.audioController) {
+            return await this.audioController.crossFade(fromCategory, toCategory, duration, curve, callback);
+        }
+        console.warn('AudioController is not available');
+    }
+    
+    /**
+     * すべてのアクティブなフェードをキャンセル（AudioController経由）
+     */
+    cancelAllVolumeFades() {
+        if (this.audioController) {
+            return this.audioController.cancelAllFades();
+        }
+        console.warn('AudioController is not available');
+    }
+    
+    /**
+     * フェード状態を取得（AudioController経由）
+     * @returns {Object} フェード状態情報
+     */
+    getVolumeFadeStatus() {
+        if (this.audioController) {
+            return this.audioController.getFadeStatus();
+        }
+        console.warn('AudioController is not available');
+        return null;
+    }
+    
+    /**
+     * デフォルトのフェードカーブを設定（AudioController経由）
+     * @param {string} curve - フェードカーブタイプ
+     */
+    setDefaultVolumeFadeCurve(curve) {
+        if (this.audioController) {
+            return this.audioController.setDefaultFadeCurve(curve);
+        }
+        console.warn('AudioController is not available');
+    }
+    
+    /**
      * リソースの解放
      */
     dispose() {

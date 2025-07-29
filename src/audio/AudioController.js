@@ -46,6 +46,22 @@ export class AudioController {
         // フェード操作管理
         this.activeTransitions = new Map();
         
+        // 高度なフェード機能
+        this.fadeManager = {
+            activeFades: new Map(),
+            fadeTypes: {
+                LINEAR: 'linear',
+                EXPONENTIAL: 'exponential',
+                LOGARITHMIC: 'logarithmic',
+                SINE: 'sine',
+                COSINE: 'cosine',
+                EASE_IN: 'ease-in',
+                EASE_OUT: 'ease-out',
+                EASE_IN_OUT: 'ease-in-out'
+            },
+            defaultCurve: 'exponential'
+        };
+        
         // 設定監視のID管理
         this.configWatchers = new Set();
         
@@ -463,80 +479,74 @@ export class AudioController {
     }
     
     /**
-     * フェードイン効果
+     * 高度なフェードイン効果
      * @param {string} category - 音量カテゴリ
      * @param {number} duration - フェード時間（秒）
      * @param {number} targetVolume - 目標音量レベル (0-1)
+     * @param {string} curve - フェードカーブタイプ
+     * @param {Function} callback - 完了時のコールバック
      */
-    async fadeIn(category, duration = 1.0, targetVolume = null) {
+    async fadeIn(category, duration = 1.0, targetVolume = null, curve = null, callback = null) {
         try {
             if (!this.gainNodes[category]) {
                 throw new Error(`Unknown volume category: ${category}`);
             }
             
             const finalVolume = targetVolume !== null ? targetVolume : this.volumeLevels[category];
-            const gainNode = this.gainNodes[category];
-            const currentTime = this.audioContext.currentTime;
+            const fadeType = curve || this.fadeManager.defaultCurve;
+            const startVolume = this.gainNodes[category].gain.value;
             
-            // 現在の音量から開始
-            const currentVolume = gainNode.gain.value;
+            console.log(`Starting fade in for ${category}: ${startVolume.toFixed(3)} -> ${finalVolume.toFixed(3)} (${duration}s, ${fadeType})`);
             
-            // フェードイン実行
-            gainNode.gain.setValueAtTime(currentVolume, currentTime);
-            gainNode.gain.linearRampToValueAtTime(finalVolume, currentTime + duration);
+            // 高度なフェード実行
+            await this._performAdvancedFade(category, startVolume, finalVolume, duration, fadeType, callback);
             
-            // フェード完了を待機
-            await new Promise(resolve => setTimeout(resolve, duration * 1000));
-            
-            console.log(`Fade in completed for ${category}: ${currentVolume} -> ${finalVolume} (${duration}s)`);
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
                 operation: 'fadeIn',
                 category: category,
                 duration: duration,
-                targetVolume: targetVolume
+                targetVolume: targetVolume,
+                curve: curve
             });
         }
     }
     
     /**
-     * フェードアウト効果
+     * 高度なフェードアウト効果
      * @param {string} category - 音量カテゴリ
      * @param {number} duration - フェード時間（秒）
      * @param {number} targetVolume - 目標音量レベル (0-1)
+     * @param {string} curve - フェードカーブタイプ
+     * @param {Function} callback - 完了時のコールバック
      */
-    async fadeOut(category, duration = 1.0, targetVolume = 0) {
+    async fadeOut(category, duration = 1.0, targetVolume = 0, curve = null, callback = null) {
         try {
             if (!this.gainNodes[category]) {
                 throw new Error(`Unknown volume category: ${category}`);
             }
             
-            const gainNode = this.gainNodes[category];
-            const currentTime = this.audioContext.currentTime;
+            const fadeType = curve || this.fadeManager.defaultCurve;
+            const startVolume = this.gainNodes[category].gain.value;
             
-            // 現在の音量から開始
-            const currentVolume = gainNode.gain.value;
+            console.log(`Starting fade out for ${category}: ${startVolume.toFixed(3)} -> ${targetVolume.toFixed(3)} (${duration}s, ${fadeType})`);
             
-            // フェードアウト実行
-            gainNode.gain.setValueAtTime(currentVolume, currentTime);
-            gainNode.gain.linearRampToValueAtTime(targetVolume, currentTime + duration);
+            // 高度なフェード実行
+            await this._performAdvancedFade(category, startVolume, targetVolume, duration, fadeType, callback);
             
-            // フェード完了を待機
-            await new Promise(resolve => setTimeout(resolve, duration * 1000));
-            
-            console.log(`Fade out completed for ${category}: ${currentVolume} -> ${targetVolume} (${duration}s)`);
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
                 operation: 'fadeOut',
                 category: category,
                 duration: duration,
-                targetVolume: targetVolume
+                targetVolume: targetVolume,
+                curve: curve
             });
         }
     }
     
     /**
-     * 指数関数的フェード効果
+     * 指数関数的フェード効果（下位互換のため保持）
      * @param {string} category - 音量カテゴリ
      * @param {number} startVolume - 開始音量
      * @param {number} endVolume - 終了音量
@@ -544,24 +554,7 @@ export class AudioController {
      */
     async exponentialFade(category, startVolume, endVolume, duration = 1.0) {
         try {
-            if (!this.gainNodes[category]) {
-                throw new Error(`Unknown volume category: ${category}`);
-            }
-            
-            const gainNode = this.gainNodes[category];
-            const currentTime = this.audioContext.currentTime;
-            
-            // 指数関数的フェード実行
-            gainNode.gain.setValueAtTime(startVolume, currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(
-                Math.max(endVolume, 0.001), // 0は指数関数的に到達できないので最小値を設定
-                currentTime + duration
-            );
-            
-            // フェード完了を待機
-            await new Promise(resolve => setTimeout(resolve, duration * 1000));
-            
-            console.log(`Exponential fade completed for ${category}: ${startVolume} -> ${endVolume} (${duration}s)`);
+            return await this._performAdvancedFade(category, startVolume, endVolume, duration, 'exponential');
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
                 operation: 'exponentialFade',
@@ -569,6 +562,478 @@ export class AudioController {
                 startVolume: startVolume,
                 endVolume: endVolume,
                 duration: duration
+            });
+        }
+    }
+    
+    // ================================
+    // 高度なフェード機能の実装
+    // ================================
+    
+    /**
+     * 高度なフェード処理の実行
+     * @param {string} category - 音量カテゴリ
+     * @param {number} startVolume - 開始音量
+     * @param {number} endVolume - 終了音量
+     * @param {number} duration - フェード時間（秒）
+     * @param {string} curveType - フェードカーブタイプ
+     * @param {Function} callback - 完了時のコールバック
+     * @private
+     */
+    async _performAdvancedFade(category, startVolume, endVolume, duration, curveType, callback = null) {
+        try {
+            if (!this.gainNodes[category]) {
+                throw new Error(`Unknown volume category: ${category}`);
+            }
+            
+            const fadeId = `${category}_${Date.now()}`;
+            const gainNode = this.gainNodes[category];
+            const currentTime = this.audioContext.currentTime;
+            
+            // 既存のフェードをキャンセル
+            if (this.fadeManager.activeFades.has(category)) {
+                await this._cancelFade(category);
+            }
+            
+            // フェード情報を登録
+            this.fadeManager.activeFades.set(category, {
+                id: fadeId,
+                startTime: currentTime,
+                duration: duration,
+                startVolume: startVolume,
+                endVolume: endVolume,
+                curveType: curveType,
+                callback: callback
+            });
+            
+            // フェードカーブに応じた処理
+            switch (curveType) {
+                case 'linear':
+                    await this._performLinearFade(gainNode, startVolume, endVolume, duration, currentTime);
+                    break;
+                case 'exponential':
+                    await this._performExponentialFade(gainNode, startVolume, endVolume, duration, currentTime);
+                    break;
+                case 'logarithmic':
+                    await this._performLogarithmicFade(gainNode, startVolume, endVolume, duration, currentTime);
+                    break;
+                case 'sine':
+                    await this._performSineFade(gainNode, startVolume, endVolume, duration, currentTime);
+                    break;
+                case 'cosine':
+                    await this._performCosineFade(gainNode, startVolume, endVolume, duration, currentTime);
+                    break;
+                case 'ease-in':
+                    await this._performEaseInFade(gainNode, startVolume, endVolume, duration, currentTime);
+                    break;
+                case 'ease-out':
+                    await this._performEaseOutFade(gainNode, startVolume, endVolume, duration, currentTime);
+                    break;
+                case 'ease-in-out':
+                    await this._performEaseInOutFade(gainNode, startVolume, endVolume, duration, currentTime);
+                    break;
+                default:
+                    await this._performExponentialFade(gainNode, startVolume, endVolume, duration, currentTime);
+                    break;
+            }
+            
+            // フェード完了処理
+            this.fadeManager.activeFades.delete(category);
+            
+            // コールバック実行
+            if (callback && typeof callback === 'function') {
+                try {
+                    callback({
+                        category: category,
+                        startVolume: startVolume,
+                        endVolume: endVolume,
+                        duration: duration,
+                        curveType: curveType,
+                        success: true
+                    });
+                } catch (callbackError) {
+                    console.warn('Fade callback error:', callbackError);
+                }
+            }
+            
+            console.log(`Advanced fade completed for ${category}: ${startVolume.toFixed(3)} -> ${endVolume.toFixed(3)} (${duration}s, ${curveType})`);
+            
+        } catch (error) {
+            // フェード情報をクリア
+            this.fadeManager.activeFades.delete(category);
+            
+            // エラーコールバック実行
+            if (callback && typeof callback === 'function') {
+                try {
+                    callback({
+                        category: category,
+                        startVolume: startVolume,
+                        endVolume: endVolume,
+                        duration: duration,
+                        curveType: curveType,
+                        success: false,
+                        error: error.message
+                    });
+                } catch (callbackError) {
+                    console.warn('Fade error callback error:', callbackError);
+                }
+            }
+            
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: '_performAdvancedFade',
+                category: category,
+                startVolume: startVolume,
+                endVolume: endVolume,
+                duration: duration,
+                curveType: curveType
+            });
+        }
+    }
+    
+    /**
+     * リニアフェードの実行
+     * @private
+     */
+    async _performLinearFade(gainNode, startVolume, endVolume, duration, currentTime) {
+        gainNode.gain.setValueAtTime(startVolume, currentTime);
+        gainNode.gain.linearRampToValueAtTime(endVolume, currentTime + duration);
+        await new Promise(resolve => setTimeout(resolve, duration * 1000));
+    }
+    
+    /**
+     * 指数関数的フェードの実行
+     * @private
+     */
+    async _performExponentialFade(gainNode, startVolume, endVolume, duration, currentTime) {
+        gainNode.gain.setValueAtTime(startVolume, currentTime);
+        // 指数関数的フェードでは0に到達できないため最小値を設定
+        const safeEndVolume = Math.max(endVolume, 0.001);
+        gainNode.gain.exponentialRampToValueAtTime(safeEndVolume, currentTime + duration);
+        await new Promise(resolve => setTimeout(resolve, duration * 1000));
+        
+        // 目標が0の場合は最後に0に設定
+        if (endVolume === 0) {
+            gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+        }
+    }
+    
+    /**
+     * 対数フェードの実行
+     * @private
+     */
+    async _performLogarithmicFade(gainNode, startVolume, endVolume, duration, currentTime) {
+        const steps = 50;
+        const stepDuration = duration / steps;
+        
+        for (let i = 0; i <= steps; i++) {
+            const progress = i / steps;
+            const logProgress = Math.log(1 + progress * (Math.E - 1)) / Math.log(Math.E);
+            const volume = startVolume + (endVolume - startVolume) * logProgress;
+            
+            gainNode.gain.setValueAtTime(volume, currentTime + (i * stepDuration));
+        }
+        
+        await new Promise(resolve => setTimeout(resolve, duration * 1000));
+    }
+    
+    /**
+     * サインカーブフェードの実行
+     * @private
+     */
+    async _performSineFade(gainNode, startVolume, endVolume, duration, currentTime) {
+        const steps = 50;
+        const stepDuration = duration / steps;
+        
+        for (let i = 0; i <= steps; i++) {
+            const progress = i / steps;
+            const sineProgress = Math.sin(progress * Math.PI / 2);
+            const volume = startVolume + (endVolume - startVolume) * sineProgress;
+            
+            gainNode.gain.setValueAtTime(volume, currentTime + (i * stepDuration));
+        }
+        
+        await new Promise(resolve => setTimeout(resolve, duration * 1000));
+    }
+    
+    /**
+     * コサインカーブフェードの実行
+     * @private
+     */
+    async _performCosineFade(gainNode, startVolume, endVolume, duration, currentTime) {
+        const steps = 50;
+        const stepDuration = duration / steps;
+        
+        for (let i = 0; i <= steps; i++) {
+            const progress = i / steps;
+            const cosineProgress = 1 - Math.cos(progress * Math.PI / 2);
+            const volume = startVolume + (endVolume - startVolume) * cosineProgress;
+            
+            gainNode.gain.setValueAtTime(volume, currentTime + (i * stepDuration));
+        }
+        
+        await new Promise(resolve => setTimeout(resolve, duration * 1000));
+    }
+    
+    /**
+     * Ease-Inフェードの実行
+     * @private
+     */
+    async _performEaseInFade(gainNode, startVolume, endVolume, duration, currentTime) {
+        const steps = 50;
+        const stepDuration = duration / steps;
+        
+        for (let i = 0; i <= steps; i++) {
+            const progress = i / steps;
+            const easeProgress = progress * progress * progress; // cubic ease-in
+            const volume = startVolume + (endVolume - startVolume) * easeProgress;
+            
+            gainNode.gain.setValueAtTime(volume, currentTime + (i * stepDuration));
+        }
+        
+        await new Promise(resolve => setTimeout(resolve, duration * 1000));
+    }
+    
+    /**
+     * Ease-Outフェードの実行
+     * @private
+     */
+    async _performEaseOutFade(gainNode, startVolume, endVolume, duration, currentTime) {
+        const steps = 50;
+        const stepDuration = duration / steps;
+        
+        for (let i = 0; i <= steps; i++) {
+            const progress = i / steps;
+            const easeProgress = 1 - Math.pow(1 - progress, 3); // cubic ease-out
+            const volume = startVolume + (endVolume - startVolume) * easeProgress;
+            
+            gainNode.gain.setValueAtTime(volume, currentTime + (i * stepDuration));
+        }
+        
+        await new Promise(resolve => setTimeout(resolve, duration * 1000));
+    }
+    
+    /**
+     * Ease-In-Outフェードの実行
+     * @private
+     */
+    async _performEaseInOutFade(gainNode, startVolume, endVolume, duration, currentTime) {
+        const steps = 50;
+        const stepDuration = duration / steps;
+        
+        for (let i = 0; i <= steps; i++) {
+            const progress = i / steps;
+            let easeProgress;
+            
+            if (progress < 0.5) {
+                easeProgress = 4 * progress * progress * progress;
+            } else {
+                easeProgress = 1 - Math.pow(-2 * progress + 2, 3) / 2;
+            }
+            
+            const volume = startVolume + (endVolume - startVolume) * easeProgress;
+            gainNode.gain.setValueAtTime(volume, currentTime + (i * stepDuration));
+        }
+        
+        await new Promise(resolve => setTimeout(resolve, duration * 1000));
+    }
+    
+    /**
+     * フェードをキャンセル
+     * @param {string} category - 音量カテゴリ
+     * @private
+     */
+    async _cancelFade(category) {
+        try {
+            if (this.fadeManager.activeFades.has(category)) {
+                const fadeInfo = this.fadeManager.activeFades.get(category);
+                
+                // 現在の音量を取得して固定
+                const currentVolume = this.gainNodes[category].gain.value;
+                this.gainNodes[category].gain.cancelScheduledValues(this.audioContext.currentTime);
+                this.gainNodes[category].gain.setValueAtTime(currentVolume, this.audioContext.currentTime);
+                
+                // フェード情報を削除
+                this.fadeManager.activeFades.delete(category);
+                
+                console.log(`Fade cancelled for ${category} at volume ${currentVolume.toFixed(3)}`);
+            }
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: '_cancelFade',
+                category: category
+            });
+        }
+    }
+    
+    // ================================
+    // 公開メソッド（高度なフェード制御）
+    // ================================
+    
+    /**
+     * カスタムフェード効果
+     * @param {string} category - 音量カテゴリ
+     * @param {number} targetVolume - 目標音量レベル (0-1)
+     * @param {number} duration - フェード時間（秒）
+     * @param {string} curve - フェードカーブタイプ
+     * @param {Function} callback - 完了時のコールバック
+     */
+    async customFade(category, targetVolume, duration = 1.0, curve = 'exponential', callback = null) {
+        try {
+            if (!this.gainNodes[category]) {
+                throw new Error(`Unknown volume category: ${category}`);
+            }
+            
+            const startVolume = this.gainNodes[category].gain.value;
+            
+            await this._performAdvancedFade(category, startVolume, targetVolume, duration, curve, callback);
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'customFade',
+                category: category,
+                targetVolume: targetVolume,
+                duration: duration,
+                curve: curve
+            });
+        }
+    }
+    
+    /**
+     * クロスフェード効果
+     * @param {string} fromCategory - フェードアウトするカテゴリ
+     * @param {string} toCategory - フェードインするカテゴリ
+     * @param {number} duration - フェード時間（秒）
+     * @param {string} curve - フェードカーブタイプ
+     * @param {Function} callback - 完了時のコールバック
+     */
+    async crossFade(fromCategory, toCategory, duration = 2.0, curve = 'exponential', callback = null) {
+        try {
+            if (!this.gainNodes[fromCategory] || !this.gainNodes[toCategory]) {
+                throw new Error(`Unknown volume categories: ${fromCategory} or ${toCategory}`);
+            }
+            
+            const fromStartVolume = this.gainNodes[fromCategory].gain.value;
+            const toStartVolume = this.gainNodes[toCategory].gain.value;
+            const toTargetVolume = this.volumeLevels[toCategory];
+            
+            console.log(`Starting crossfade: ${fromCategory}(${fromStartVolume.toFixed(3)}) -> ${toCategory}(${toTargetVolume.toFixed(3)}) (${duration}s, ${curve})`);
+            
+            // 並行してフェードアウトとフェードインを実行
+            const fadePromises = [
+                this._performAdvancedFade(fromCategory, fromStartVolume, 0, duration, curve),
+                this._performAdvancedFade(toCategory, toStartVolume, toTargetVolume, duration, curve)
+            ];
+            
+            await Promise.all(fadePromises);
+            
+            // コールバック実行
+            if (callback && typeof callback === 'function') {
+                callback({
+                    fromCategory: fromCategory,
+                    toCategory: toCategory,
+                    duration: duration,
+                    curve: curve,
+                    success: true
+                });
+            }
+            
+            console.log(`Crossfade completed: ${fromCategory} -> ${toCategory}`);
+            
+        } catch (error) {
+            // エラーコールバック実行
+            if (callback && typeof callback === 'function') {
+                callback({
+                    fromCategory: fromCategory,
+                    toCategory: toCategory,
+                    duration: duration,
+                    curve: curve,
+                    success: false,
+                    error: error.message
+                });
+            }
+            
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'crossFade',
+                fromCategory: fromCategory,
+                toCategory: toCategory,
+                duration: duration,
+                curve: curve
+            });
+        }
+    }
+    
+    /**
+     * すべてのアクティブなフェードをキャンセル
+     */
+    cancelAllFades() {
+        try {
+            const categories = Array.from(this.fadeManager.activeFades.keys());
+            
+            for (const category of categories) {
+                this._cancelFade(category);
+            }
+            
+            console.log(`Cancelled ${categories.length} active fades`);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'cancelAllFades'
+            });
+        }
+    }
+    
+    /**
+     * フェード状態を取得
+     * @returns {Object} フェード状態情報
+     */
+    getFadeStatus() {
+        try {
+            const activeStates = {};
+            
+            for (const [category, fadeInfo] of this.fadeManager.activeFades) {
+                const elapsed = this.audioContext.currentTime - fadeInfo.startTime;
+                const progress = Math.min(elapsed / fadeInfo.duration, 1.0);
+                
+                activeStates[category] = {
+                    id: fadeInfo.id,
+                    startVolume: fadeInfo.startVolume,
+                    endVolume: fadeInfo.endVolume,
+                    duration: fadeInfo.duration,
+                    curveType: fadeInfo.curveType,
+                    progress: progress,
+                    remaining: Math.max(0, fadeInfo.duration - elapsed)
+                };
+            }
+            
+            return {
+                activeFades: activeStates,
+                totalActiveFades: this.fadeManager.activeFades.size,
+                availableCurves: Object.values(this.fadeManager.fadeTypes),
+                defaultCurve: this.fadeManager.defaultCurve
+            };
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'getFadeStatus'
+            });
+            return null;
+        }
+    }
+    
+    /**
+     * デフォルトのフェードカーブを設定
+     * @param {string} curve - フェードカーブタイプ
+     */
+    setDefaultFadeCurve(curve) {
+        try {
+            if (!Object.values(this.fadeManager.fadeTypes).includes(curve)) {
+                throw new Error(`Unknown fade curve type: ${curve}`);
+            }
+            
+            this.fadeManager.defaultCurve = curve;
+            console.log(`Default fade curve set to: ${curve}`);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'setDefaultFadeCurve',
+                curve: curve
             });
         }
     }
@@ -1260,6 +1725,9 @@ export class AudioController {
             if (this.activeTransitions) {
                 this.activeTransitions.clear();
             }
+            
+            // アクティブなフェードをキャンセル
+            this.cancelAllFades();
             
             // パフォーマンス監視データをクリア
             if (this.performanceMonitor.metrics) {
