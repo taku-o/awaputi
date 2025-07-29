@@ -20,6 +20,7 @@ import { ImportDialog } from './components/ImportDialog.js';
 // 新しいタブコンポーネントシステム
 import { HelpTab } from './components/HelpTab.js';
 import { HelpSectionSelector } from './components/HelpSectionSelector.js';
+import { ManagementTab } from './components/ManagementTab.js';
 
 export class UserInfoScene extends Scene {
     constructor(gameEngine) {
@@ -110,12 +111,17 @@ export class UserInfoScene extends Scene {
         this.helpTabComponent = new HelpTab(this.gameEngine, this.eventBus, this.sceneState);
         this.helpTabComponent.initialize();
         
+        // ManagementTabコンポーネントを作成
+        this.managementTabComponent = new ManagementTab(this.gameEngine, this.eventBus, this.sceneState);
+        this.managementTabComponent.initialize();
+        
         // ヘルプセクションセレクターを作成
         this.helpSectionSelector = new HelpSectionSelector(this.gameEngine, this.eventBus, this.sceneState);
         
-        // タブコンポーネントマップを作成（将来の拡張用）
+        // タブコンポーネントマップを作成
         this.tabComponents = new Map();
         this.tabComponents.set('help', this.helpTabComponent);
+        this.tabComponents.set('management', this.managementTabComponent);
         
         console.log('Tab components initialized');
     }
@@ -445,7 +451,7 @@ export class UserInfoScene extends Scene {
                 this.renderAchievements(context, contentY, contentHeight);
                 break;
             case 'management':
-                this.renderUserManagement(context, contentY, contentHeight);
+                this.renderManagementWithComponent(context, contentY, contentHeight);
                 break;
             case 'help':
                 this.renderHelpWithComponent(context, contentY, contentHeight);
@@ -3744,6 +3750,23 @@ export class UserInfoScene extends Scene {
         } else {
             // フォールバック: 古いシステムを使用
             this.renderHelp(context, y, height);
+        }
+    }
+    
+    /**
+     * 管理タブコンポーネントでレンダリング
+     */
+    renderManagementWithComponent(context, y, height) {
+        const canvas = this.gameEngine.canvas;
+        const contentWidth = canvas.width - this.contentPadding * 2;
+        const contentX = this.contentPadding;
+        
+        if (this.managementTabComponent && this.managementTabComponent.isActive) {
+            // 新しいManagementTabコンポーネントでレンダリング
+            this.managementTabComponent.render(context, contentX, y, contentWidth, height);
+        } else {
+            // フォールバック: 古いシステムを使用
+            this.renderUserManagement(context, y, height);
         }
     }
     
