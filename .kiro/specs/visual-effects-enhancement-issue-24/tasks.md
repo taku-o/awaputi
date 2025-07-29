@@ -38,14 +38,14 @@
     - Add combo achievement celebration effects
     - _Requirements: 2.4, 2.5_
 
-- [ ] 4. Implement enhanced screen effects
-  - [ ] 4.1 Create EnhancedEffectManager extending EffectManager
+- [x] 4. Implement enhanced screen effects
+  - [x] 4.1 Create EnhancedEffectManager extending EffectManager
     - Add smooth screen transition effects (fade, slide, zoom)
     - Implement dynamic background effects and environmental particles
     - Create lighting effect system with dynamic light sources
     - _Requirements: 3.1, 3.2, 3.3_
 
-  - [ ] 4.2 Add advanced screen effects
+  - [x] 4.2 Add advanced screen effects
     - Implement shadow rendering system for bubbles and UI elements
     - Create reflection effects for bubble surfaces
     - Add depth-of-field and blur effects for focus management

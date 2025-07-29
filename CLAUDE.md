@@ -206,6 +206,69 @@ npm run test:all
 - **効率性**: メモリ使用量20%削減、レンダリング性能15%向上、自動回復機能
 - **ユーザビリティ**: 2秒以内警告表示、1秒以内品質調整、モバイル性能デスクトップ10%以内
 
+### 視覚効果強化プロジェクト（Issue #24対応）
+**目標**: 既存のParticleManagerとEffectManagerを拡張し、より多様で魅力的な視覚効果を実現する包括的なシステムを実装
+
+#### 実装対象の機能
+1. **泡種類別パーティクル効果**: 18+種類の泡に特化した破壊エフェクト、15+パーティクル生成、物理演算強化
+2. **段階的コンボエフェクト**: 2-5コンボ（基本金色）、6-10コンボ（画面フラッシュ）、11+コンボ（画面震動・ズーム・虹色）
+3. **画面効果システム**: 遷移アニメーション、光源効果、影・反射、背景パーティクル、深度ブラー
+4. **UIアニメーション**: 泡スポーン、メニュー遷移、スコア更新、ローディングアニメーション
+5. **品質制御システム**: Low/Medium/High/Ultra品質、自動FPS調整、パフォーマンス監視
+6. **季節限定エフェクト**: 春夏秋冬テーマ、イベント限定効果、カスタムテーマサポート
+7. **モバイル最適化**: デバイス検出、タッチ最適化、バッテリー考慮、メモリ管理
+8. **アクセシビリティ対応**: 高コントラスト、色覚異常サポート、動き制御、代替フィードバック
+
+#### 実装アーキテクチャ
+```
+VisualEffectsSystem
+├── EnhancedParticleManager (extends ParticleManager)
+│   ├── BubbleEffectRenderer      // 泡種類別特殊効果
+│   ├── ComboEffectRenderer       // 段階的コンボエフェクト
+│   ├── SpecialEffectRenderer     // 特殊パーティクル効果
+│   └── SeasonalEffectRenderer    // 季節限定エフェクト
+├── EnhancedEffectManager (extends EffectManager)
+│   ├── ScreenTransitionManager   // 画面遷移効果
+│   ├── LightingEffectManager     // 光源・影・反射
+│   └── BackgroundEffectManager   // 背景環境効果
+├── AnimationManager              // UI・オブジェクトアニメーション
+├── EffectQualityController       // 品質制御・パフォーマンス監視
+└── SeasonalEffectManager         // テーマ・イベント管理
+```
+
+#### 実装フェーズ（13大タスク）
+- **Task 1-3**: 完了（EnhancedParticleManager、泡種類別エフェクト、コンボシステム）
+- **Task 4**: 進行中（EnhancedEffectManager - 画面効果強化）
+- **Task 5**: UIアニメーションシステム（泡スポーン、メニュー遷移、スコア更新）
+- **Task 6**: 品質制御システム（パフォーマンス監視、自動調整、リソース管理）
+- **Task 7**: 季節限定エフェクト（テーマシステム、イベント効果、カスタマイズ）
+- **Task 8**: システム統合（GameEngine、ConfigurationManager、AudioManager連携）
+- **Task 9**: アクセシビリティ機能（視覚代替、設定統合、支援技術対応）
+- **Task 10**: モバイル最適化（デバイス検出、タッチ最適化、バッテリー考慮）
+- **Task 11**: 包括テストスイート（ユニット、統合、パフォーマンス、視覚テスト）
+- **Task 12**: 開発ツール（デバッグUI、プロファイリング、最適化支援）
+- **Task 13**: 最終統合（システム統合テスト、パフォーマンス最適化、品質保証）
+
+#### 主要コンポーネント
+- **EnhancedParticleManager**: 高度パーティクル管理、物理演算、品質スケーリング
+- **EnhancedEffectManager**: 画面効果統合、光源・影システム、遷移アニメーション
+- **AnimationManager**: UI・オブジェクトアニメーション制御、イージング関数
+- **EffectQualityController**: 動的品質調整、パフォーマンス監視、リソース最適化
+- **SeasonalEffectManager**: テーマ管理、季節限定効果、カスタムエフェクト
+
+#### 既存システム統合ポイント
+- **ParticleManager/EffectManager**: 既存システムを継承・拡張、互換性維持
+- **GameEngine**: 全エフェクトシステムの統合管理、ライフサイクル制御
+- **ConfigurationManager**: 品質設定、ユーザー設定、リアルタイム更新
+- **AudioManager**: 音響・視覚効果の同期、統合フィードバック
+- **PerformanceOptimizer**: 動的品質調整、メモリ管理、FPS監視
+
+#### パフォーマンス目標
+- **品質制御**: Ultra（150% particles）、High（100%）、Medium（50%）、Low（25%）
+- **フレームレート**: 60FPS維持、30FPS以下で自動品質低下
+- **メモリ使用**: オブジェクトプール活用、20%メモリ削減目標
+- **モバイル対応**: デスクトップ性能の80%以上、バッテリー効率考慮
+
 ### アクセシビリティ強化プロジェクト（Issue #25対応）
 **目標**: WCAG 2.1 AA準拠の包括的なアクセシビリティサポート実装
 
