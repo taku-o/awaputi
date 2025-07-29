@@ -92,6 +92,10 @@ class AudioConfig {
         this.configManager.set('audio', 'effects.equalizer.bands.mid', 0);
         this.configManager.set('audio', 'effects.equalizer.bands.highMid', 0);
         this.configManager.set('audio', 'effects.equalizer.bands.treble', 0);
+        
+        // プリセット設定
+        this.configManager.set('audio', 'presets.user', {});
+        this.configManager.set('audio', 'presets.lastApplied', null);
     }
 
     /**

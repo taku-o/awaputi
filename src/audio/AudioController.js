@@ -1,6 +1,7 @@
 import { getErrorHandler } from '../utils/ErrorHandler.js';
 import { getConfigurationManager } from '../core/ConfigurationManager.js';
 import { Equalizer } from './Equalizer.js';
+import { PresetManager } from './PresetManager.js';
 
 /**
  * AudioController - 高度な音響制御システム
@@ -69,6 +70,9 @@ export class AudioController {
         // イコライザーシステム
         this.equalizer = null;
         
+        // プリセット管理システム
+        this.presetManager = null;
+        
         // 音響品質動的調整
         this.qualityManager = {
             currentQuality: 1.0,
@@ -134,6 +138,9 @@ export class AudioController {
             
             // イコライザーシステムの初期化
             this._initializeEqualizer();
+            
+            // プリセット管理システムの初期化
+            this._initializePresetManager();
             
             console.log('AudioController initialized successfully');
         } catch (error) {
@@ -1413,6 +1420,334 @@ export class AudioController {
             };
         }
     }
+    
+    // ================================
+    // プリセット管理システム初期化
+    // ================================
+    
+    /**
+     * プリセット管理システムの初期化
+     * @private
+     */
+    _initializePresetManager() {
+        try {
+            if (!this.audioContext) {
+                console.warn('AudioContext is not available for preset manager initialization');
+                return;
+            }
+            
+            this.presetManager = new PresetManager(this);
+            
+            console.log('PresetManager initialized successfully');
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: '_initializePresetManager',
+                component: 'AudioController'
+            });
+        }
+    }
+    
+    // ================================
+    // プリセット制御メソッド
+    // ================================
+    
+    /**
+     * プリセットを適用
+     * @param {string} presetId - プリセットID
+     * @param {boolean} saveAsLast - 最後に適用したプリセットとして保存するか
+     * @returns {boolean} 適用成功
+     */
+    applyPreset(presetId, saveAsLast = true) {
+        try {
+            if (!this.presetManager) {
+                console.warn('PresetManager is not initialized');
+                return false;
+            }
+            
+            return this.presetManager.applyPreset(presetId, saveAsLast);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'applyPreset',
+                presetId: presetId
+            });
+            return false;
+        }
+    }
+    
+    /**
+     * 現在の設定をプリセットとして保存
+     * @param {string} name - プリセット名
+     * @param {string} description - プリセット説明
+     * @param {Array<string>} tags - タグ配列
+     * @param {boolean} isTemporary - 一時プリセットとして保存するか
+     * @returns {string|null} 作成されたプリセットID
+     */
+    saveCurrentAsPreset(name, description = '', tags = [], isTemporary = false) {
+        try {
+            if (!this.presetManager) {
+                console.warn('PresetManager is not initialized');
+                return null;
+            }
+            
+            return this.presetManager.saveCurrentAsPreset(name, description, tags, isTemporary);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'saveCurrentAsPreset',
+                name: name
+            });
+            return null;
+        }
+    }
+    
+    /**
+     * プリセットを取得
+     * @param {string} presetId - プリセットID
+     * @returns {Object|null} プリセットデータ
+     */
+    getPreset(presetId) {
+        try {
+            if (!this.presetManager) {
+                console.warn('PresetManager is not initialized');
+                return null;
+            }
+            
+            return this.presetManager.getPreset(presetId);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'getPreset',
+                presetId: presetId
+            });
+            return null;
+        }
+    }
+    
+    /**
+     * 全プリセット一覧を取得
+     * @param {string} filterType - フィルタータイプ
+     * @returns {Array} プリセット一覧
+     */
+    getAllPresets(filterType = null) {
+        try {
+            if (!this.presetManager) {
+                console.warn('PresetManager is not initialized');
+                return [];
+            }
+            
+            return this.presetManager.getAllPresets(filterType);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'getAllPresets',
+                filterType: filterType
+            });
+            return [];
+        }
+    }
+    
+    /**
+     * プリセットを削除
+     * @param {string} presetId - プリセットID
+     * @returns {boolean} 削除成功
+     */
+    deletePreset(presetId) {
+        try {
+            if (!this.presetManager) {
+                console.warn('PresetManager is not initialized');
+                return false;
+            }
+            
+            return this.presetManager.deletePreset(presetId);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'deletePreset',
+                presetId: presetId
+            });
+            return false;
+        }
+    }
+    
+    /**
+     * プリセットを更新
+     * @param {string} presetId - プリセットID
+     * @param {Object} updateData - 更新データ
+     * @returns {boolean} 更新成功
+     */
+    updatePreset(presetId, updateData) {
+        try {
+            if (!this.presetManager) {
+                console.warn('PresetManager is not initialized');
+                return false;
+            }
+            
+            return this.presetManager.updatePreset(presetId, updateData);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'updatePreset',
+                presetId: presetId
+            });
+            return false;
+        }
+    }
+    
+    /**
+     * プリセットを複製
+     * @param {string} sourcePresetId - 複製元プリセットID
+     * @param {string} newName - 新しいプリセット名
+     * @param {boolean} isTemporary - 一時プリセットとして作成するか
+     * @returns {string|null} 作成されたプリセットID
+     */
+    duplicatePreset(sourcePresetId, newName, isTemporary = false) {
+        try {
+            if (!this.presetManager) {
+                console.warn('PresetManager is not initialized');
+                return null;
+            }
+            
+            return this.presetManager.duplicatePreset(sourcePresetId, newName, isTemporary);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'duplicatePreset',
+                sourcePresetId: sourcePresetId,
+                newName: newName
+            });
+            return null;
+        }
+    }
+    
+    /**
+     * プリセット適用履歴を取得
+     * @returns {Array} 履歴一覧
+     */
+    getPresetHistory() {
+        try {
+            if (!this.presetManager) {
+                console.warn('PresetManager is not initialized');
+                return [];
+            }
+            
+            return this.presetManager.getPresetHistory();
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'getPresetHistory'
+            });
+            return [];
+        }
+    }
+    
+    /**
+     * 現在適用されているプリセット情報を取得
+     * @returns {Object|null} 現在のプリセット情報
+     */
+    getCurrentPreset() {
+        try {
+            if (!this.presetManager) {
+                return null;
+            }
+            
+            return this.presetManager.getCurrentPreset();
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'getCurrentPreset'
+            });
+            return null;
+        }
+    }
+    
+    /**
+     * プリセットをエクスポート
+     * @param {string} presetId - プリセットID
+     * @returns {Object|null} エクスポートデータ
+     */
+    exportPreset(presetId) {
+        try {
+            if (!this.presetManager) {
+                console.warn('PresetManager is not initialized');
+                return null;
+            }
+            
+            return this.presetManager.exportPreset(presetId);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'exportPreset',
+                presetId: presetId
+            });
+            return null;
+        }
+    }
+    
+    /**
+     * プリセットをインポート
+     * @param {Object} importData - インポートデータ
+     * @param {string} newName - 新しいプリセット名
+     * @returns {string|null} インポートされたプリセットID
+     */
+    importPreset(importData, newName = null) {
+        try {
+            if (!this.presetManager) {
+                console.warn('PresetManager is not initialized');
+                return null;
+            }
+            
+            return this.presetManager.importPreset(importData, newName);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'importPreset'
+            });
+            return null;
+        }
+    }
+    
+    /**
+     * プリセット管理システムの状態を取得
+     * @returns {Object} 状態情報
+     */
+    getPresetManagerStatus() {
+        try {
+            if (!this.presetManager) {
+                return {
+                    initialized: false,
+                    presetCounts: { builtin: 0, user: 0, temporary: 0, total: 0 },
+                    currentPreset: null,
+                    historySize: 0
+                };
+            }
+            
+            return this.presetManager.getStatus();
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'getPresetManagerStatus'
+            });
+            return {
+                initialized: false,
+                presetCounts: { builtin: 0, user: 0, temporary: 0, total: 0 },
+                currentPreset: null,
+                historySize: 0
+            };
+        }
+    }
+    
+    /**
+     * 事前定義プリセット一覧を取得
+     * @returns {Array} 事前定義プリセット一覧
+     */
+    getBuiltinPresets() {
+        return this.getAllPresets('builtin');
+    }
+    
+    /**
+     * ユーザー定義プリセット一覧を取得
+     * @returns {Array} ユーザー定義プリセット一覧
+     */
+    getUserPresets() {
+        return this.getAllPresets('user');
+    }
+    
+    /**
+     * 一時プリセット一覧を取得
+     * @returns {Array} 一時プリセット一覧
+     */
+    getTemporaryPresets() {
+        return this.getAllPresets('temporary');
+    }
 
     // ================================
     // 音響品質動的調整機能
@@ -2034,6 +2369,12 @@ export class AudioController {
             if (this.equalizer) {
                 this.equalizer.dispose();
                 this.equalizer = null;
+            }
+            
+            // プリセット管理システムを破棄
+            if (this.presetManager) {
+                this.presetManager.dispose();
+                this.presetManager = null;
             }
             
             // GainNodeを切断
