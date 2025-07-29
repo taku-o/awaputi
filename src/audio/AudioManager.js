@@ -1,6 +1,7 @@
 import { getErrorHandler } from '../utils/ErrorHandler.js';
 import { getAudioConfig } from '../config/AudioConfig.js';
 import { getConfigurationManager } from '../core/ConfigurationManager.js';
+import { BGMSystem } from './BGMSystem.js';
 
 /**
  * 音響管理クラス - Web Audio API を使用した高度な音響システム
@@ -28,14 +29,21 @@ export class AudioManager {
         this.bgmGainNode = null;
         this.compressor = null;
         
-        // BGM関連
-        this.currentBGM = null;
-        this.bgmSource = null;
-        this.bgmBuffer = null;
+        // BGMシステム
+        this.bgmSystem = null;
         
         // 効果音バッファ
         this.soundBuffers = new Map();
         this.activeSources = new Set();
+        
+        // シーン連携
+        this.currentScene = null;
+        this.sceneToTrackMapping = {
+            menu: 'menu',
+            gameplay: 'gameplay', 
+            bonus: 'bonus',
+            gameover: 'gameover'
+        };
         
         // 音響効果
         this.reverbBuffer = null;
@@ -194,6 +202,17 @@ export class AudioManager {
                     operation: 'generate'
                 });
                 // 効果音なしで続行
+            }
+            
+            // BGMシステムの初期化
+            try {
+                this.bgmSystem = new BGMSystem(this);
+            } catch (bgmError) {
+                getErrorHandler().handleError(bgmError, 'AUDIO_ERROR', { 
+                    component: 'bgmSystem',
+                    operation: 'initialize'
+                });
+                // BGMなしで続行
             }
             
             console.log('AudioManager initialized successfully');
@@ -767,6 +786,165 @@ export class AudioManager {
     }
     
     /**
+     * シーン変更時のBGM自動切り替え
+     * @param {string} sceneName - シーン名
+     * @param {Object} options - オプション
+     */
+    async onSceneChange(sceneName, options = {}) {
+        try {
+            if (!this.bgmSystem) {
+                console.warn('BGMSystem is not initialized');
+                return;
+            }
+            
+            const previousScene = this.currentScene;
+            this.currentScene = sceneName;
+            
+            // シーンに対応するBGMトラックを取得
+            const trackName = this.sceneToTrackMapping[sceneName];
+            
+            if (!trackName) {
+                console.warn(`No BGM track mapped for scene: ${sceneName}`);
+                return;
+            }
+            
+            const {
+                transition = 'crossfade',
+                fadeInDuration = 2.0,
+                fadeOutDuration = 2.0,
+                crossfadeDuration = 3.0,
+                volume = 1.0
+            } = options;
+            
+            if (previousScene && this.bgmSystem.isPlaying) {
+                // トランジションを使用して切り替え
+                await this.bgmSystem.transitionTo(trackName, {
+                    type: transition,
+                    duration: crossfadeDuration,
+                    fadeInDuration: fadeInDuration,
+                    fadeOutDuration: fadeOutDuration,
+                    volume: volume
+                });
+            } else {
+                // 初回再生
+                await this.bgmSystem.playBGM(trackName, {
+                    volume: volume,
+                    fadeInDuration: fadeInDuration
+                });
+            }
+            
+            console.log(`Scene changed: ${previousScene} -> ${sceneName}, BGM: ${trackName}`);
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                operation: 'onSceneChange',
+                sceneName: sceneName,
+                previousScene: this.currentScene,
+                options: options
+            });
+        }
+    }
+    
+    /**
+     * シーンとBGMトラックのマッピングを設定
+     * @param {Object} mapping - シーン→トラックのマッピング
+     */
+    setSceneToTrackMapping(mapping) {
+        try {
+            this.sceneToTrackMapping = { ...this.sceneToTrackMapping, ...mapping };
+            console.log('Scene to track mapping updated:', this.sceneToTrackMapping);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                operation: 'setSceneToTrackMapping',
+                mapping: mapping
+            });
+        }
+    }
+    
+    /**
+     * BGMを直接再生
+     * @param {string} trackName - トラック名
+     * @param {Object} options - オプション
+     */
+    async playBGM(trackName, options = {}) {
+        try {
+            if (!this.bgmSystem) {
+                console.warn('BGMSystem is not initialized');
+                return;
+            }
+            
+            await this.bgmSystem.playBGM(trackName, options);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                operation: 'playBGM',
+                trackName: trackName,
+                options: options
+            });
+        }
+    }
+    
+    /**
+     * BGMを停止
+     * @param {Object} options - オプション
+     */
+    async stopBGM(options = {}) {
+        try {
+            if (!this.bgmSystem) {
+                console.warn('BGMSystem is not initialized');
+                return;
+            }
+            
+            await this.bgmSystem.stopBGM(options);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                operation: 'stopBGM',
+                options: options
+            });
+        }
+    }
+    
+    /**
+     * BGM音量を設定
+     * @param {number} volume - 音量 (0-1)
+     * @param {number} fadeTime - フェード時間
+     */
+    setBGMVolume(volume, fadeTime = 0) {
+        try {
+            if (!this.bgmSystem) {
+                console.warn('BGMSystem is not initialized');
+                return;
+            }
+            
+            this.bgmSystem.setVolume(volume, fadeTime);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                operation: 'setBGMVolume',
+                volume: volume,
+                fadeTime: fadeTime
+            });
+        }
+    }
+    
+    /**
+     * 現在のBGM情報を取得
+     * @returns {Object} BGM情報
+     */
+    getCurrentBGMInfo() {
+        try {
+            if (!this.bgmSystem) {
+                return null;
+            }
+            
+            return this.bgmSystem.getCurrentBGMInfo();
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                operation: 'getCurrentBGMInfo'
+            });
+            return null;
+        }
+    }
+    
+    /**
      * プロシージャルBGMを生成・再生
      */
     startProceduralBGM() {
@@ -827,8 +1005,12 @@ export class AudioManager {
      * 全ての音を停止
      */
     stopAllSounds() {
-        this.stopBGM();
+        // BGMを停止
+        if (this.bgmSystem) {
+            this.bgmSystem.stopBGM({ fadeOutDuration: 0 });
+        }
         
+        // 効果音を停止
         this.activeSources.forEach(source => {
             try {
                 source.stop();
@@ -956,6 +1138,12 @@ export class AudioManager {
      */
     dispose() {
         this.stopAllSounds();
+        
+        // BGMシステムを破棄
+        if (this.bgmSystem) {
+            this.bgmSystem.dispose();
+            this.bgmSystem = null;
+        }
         
         // 設定監視の解除
         if (this.configWatchers) {
