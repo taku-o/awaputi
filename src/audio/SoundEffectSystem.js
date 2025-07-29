@@ -988,12 +988,29 @@ export class SoundEffectSystem {
      * ゲーム状態音を生成
      */
     generateGameStateSounds() {
-        const gameStateTypes = ['levelup', 'warning', 'timeup', 'stageclear', 'bonus_start', 'bonus_end'];
+        const gameStateTypes = [
+            'levelup', 'warning', 'timeup', 'stageclear', 'bonus_start', 'bonus_end',
+            'health_low', 'health_critical', 'powerup', 'speedup', 'slowdown',
+            'checkpoint', 'pause', 'resume', 'countdown', 'perfect', 'near_miss'
+        ];
         
         gameStateTypes.forEach(type => {
             const buffer = this.createGameStateSound(type);
             this.gameStateSounds.set(type, buffer);
         });
+        
+        // レベル別レベルアップ音も生成
+        this.generateLevelUpSounds();
+    }
+    
+    /**
+     * レベル別レベルアップ音を生成
+     */
+    generateLevelUpSounds() {
+        for (let level = 1; level <= 10; level++) {
+            const buffer = this.createLevelUpSound(level);
+            this.gameStateSounds.set(`levelup_${level}`, buffer);
+        }
     }
     
     /**
@@ -1002,53 +1019,346 @@ export class SoundEffectSystem {
      * @returns {AudioBuffer} 生成された音響バッファ
      */
     createGameStateSound(type) {
+        const profile = this.getGameStateSoundProfile(type);
         const sampleRate = this.audioContext.sampleRate;
-        let buffer, data;
+        const buffer = this.audioContext.createBuffer(1, profile.duration * sampleRate, sampleRate);
+        const data = buffer.getChannelData(0);
         
-        switch (type) {
+        for (let i = 0; i < data.length; i++) {
+            const t = i / sampleRate;
+            const progress = t / profile.duration;
+            
+            let sample = 0;
+            
+            // プロファイルに基づいて音響生成
+            if (profile.frequencies) {
+                // 複数周波数（和音やアルペジオ）
+                profile.frequencies.forEach((freq, index) => {
+                    const delay = index * (profile.noteDelay || 0);
+                    if (t >= delay) {
+                        const noteProgress = (t - delay) / (profile.duration - delay);
+                        const envelope = this.generateGameStateEnvelope(noteProgress, profile.envelope);
+                        const noteFreq = typeof freq === 'function' ? freq(t - delay, noteProgress) : freq;
+                        sample += Math.sin(2 * Math.PI * noteFreq * (t - delay)) * envelope;
+                    }
+                });
+            } else {
+                // 単一周波数
+                const freq = typeof profile.frequency === 'function' ? 
+                           profile.frequency(t, progress) : profile.frequency;
+                const envelope = this.generateGameStateEnvelope(progress, profile.envelope);
+                sample = Math.sin(2 * Math.PI * freq * t) * envelope;
+            }
+            
+            // 特殊効果の追加
+            sample += this.generateGameStateSpecialEffects(t, progress, profile);
+            
+            data[i] = sample * profile.volume;
+        }
+        
+        return buffer;
+    }
+    
+    /**
+     * ゲーム状態音プロファイルを取得
+     * @param {string} type - ゲーム状態タイプ
+     * @returns {Object} 音響プロファイル
+     */
+    getGameStateSoundProfile(type) {
+        const profiles = {
+            levelup: {
+                frequencies: [261.63, 329.63, 392.00, 523.25], // C, E, G, C
+                duration: 1.0,
+                volume: 0.3,
+                envelope: 'levelup',
+                noteDelay: 0.2,
+                character: 'triumphant'
+            },
+            warning: {
+                frequency: (t) => 800 + Math.sin(t * 10) * 200,
+                duration: 0.5,
+                volume: 0.3,
+                envelope: 'urgent_pulse',
+                character: 'urgent'
+            },
+            timeup: {
+                frequency: (t, progress) => 400 * Math.pow(0.5, progress),
+                duration: 1.0,
+                volume: 0.4,
+                envelope: 'fade_down',
+                character: 'dramatic'
+            },
+            stageclear: {
+                frequencies: [523.25, 659.25, 783.99, 1046.50], // C5, E5, G5, C6
+                duration: 1.5,
+                volume: 0.35,
+                envelope: 'celebration',
+                noteDelay: 0.15,
+                character: 'victorious'
+            },
+            bonus_start: {
+                frequencies: [440, 554.37, 659.25], // A, C#, E (A major)
+                duration: 0.8,
+                volume: 0.3,
+                envelope: 'exciting',
+                noteDelay: 0.1,
+                character: 'energetic'
+            },
+            bonus_end: {
+                frequency: (t, progress) => 880 * Math.pow(0.8, progress),
+                duration: 0.6,
+                volume: 0.25,
+                envelope: 'gentle_fade',
+                character: 'calming'
+            },
+            health_low: {
+                frequency: (t) => 300 + Math.sin(t * 15) * 50,
+                duration: 0.4,
+                volume: 0.25,
+                envelope: 'concerned',
+                character: 'warning'
+            },
+            health_critical: {
+                frequency: (t) => 200 + Math.sin(t * 25) * 100,
+                duration: 0.6,
+                volume: 0.35,
+                envelope: 'critical',
+                character: 'danger'
+            },
+            powerup: {
+                frequency: (t, progress) => 440 * Math.pow(2, progress),
+                duration: 0.5,
+                volume: 0.3,
+                envelope: 'powerup',
+                character: 'empowering'
+            },
+            speedup: {
+                frequency: (t) => 600 + t * 400,
+                duration: 0.3,
+                volume: 0.25,
+                envelope: 'accelerating',
+                character: 'fast'
+            },
+            slowdown: {
+                frequency: (t) => 600 - t * 200,
+                duration: 0.4,
+                volume: 0.2,
+                envelope: 'decelerating',
+                character: 'slow'
+            },
+            checkpoint: {
+                frequencies: [523.25, 659.25], // C, E
+                duration: 0.4,
+                volume: 0.2,
+                envelope: 'checkpoint',
+                noteDelay: 0.1,
+                character: 'safe'
+            },
+            pause: {
+                frequency: (t, progress) => 440 * (1 - progress * 0.5),
+                duration: 0.3,
+                volume: 0.15,
+                envelope: 'pause',
+                character: 'neutral'
+            },
+            resume: {
+                frequency: (t, progress) => 440 * (0.5 + progress * 0.5),
+                duration: 0.3,
+                volume: 0.2,
+                envelope: 'resume',
+                character: 'active'
+            },
+            countdown: {
+                frequency: (t) => 800 - (t % 1) * 100,
+                duration: 3.0,
+                volume: 0.3,
+                envelope: 'countdown',
+                character: 'tense'
+            },
+            perfect: {
+                frequencies: [523.25, 659.25, 783.99, 1046.50, 1318.51], // C5-E6
+                duration: 2.0,
+                volume: 0.4,
+                envelope: 'perfect',
+                noteDelay: 0.08,
+                character: 'flawless'
+            },
+            near_miss: {
+                frequency: (t) => 600 + Math.sin(t * 30) * 100,
+                duration: 0.2,
+                volume: 0.15,
+                envelope: 'tense',
+                character: 'close_call'
+            }
+        };
+        
+        return profiles[type] || {
+            frequency: 440,
+            duration: 0.3,
+            volume: 0.2,
+            envelope: 'default',
+            character: 'neutral'
+        };
+    }
+    
+    /**
+     * ゲーム状態音用エンベロープを生成
+     * @param {number} progress - 進行度 (0-1)
+     * @param {string} envelopeType - エンベロープタイプ
+     * @returns {number} エンベロープ値
+     */
+    generateGameStateEnvelope(progress, envelopeType) {
+        switch (envelopeType) {
             case 'levelup':
-                buffer = this.audioContext.createBuffer(1, 1.0 * sampleRate, sampleRate);
-                data = buffer.getChannelData(0);
-                
-                for (let i = 0; i < data.length; i++) {
-                    const t = i / sampleRate;
-                    const progress = t / 1.0;
-                    
-                    // 上昇するアルペジオ
-                    const frequencies = [261.63, 329.63, 392.00, 523.25]; // C, E, G, C
-                    const noteIndex = Math.floor(progress * frequencies.length);
-                    const freq = frequencies[Math.min(noteIndex, frequencies.length - 1)];
-                    
-                    const noteProgress = (progress * frequencies.length) % 1;
-                    const envelope = Math.sin(Math.PI * noteProgress) * Math.exp(-t * 1);
-                    
-                    data[i] = Math.sin(2 * Math.PI * freq * t) * envelope * 0.3;
-                }
-                break;
-                
-            case 'warning':
-                buffer = this.audioContext.createBuffer(1, 0.5 * sampleRate, sampleRate);
-                data = buffer.getChannelData(0);
-                
-                for (let i = 0; i < data.length; i++) {
-                    const t = i / sampleRate;
-                    const freq = 800 + Math.sin(t * 10) * 200;
-                    const envelope = Math.sin(t * 20) * Math.exp(-t * 2);
-                    
-                    data[i] = Math.sin(2 * Math.PI * freq * t) * envelope * 0.3;
-                }
-                break;
-                
+                return Math.sin(Math.PI * progress) * Math.exp(-progress * 1);
+            case 'urgent_pulse':
+                return Math.sin(progress * Math.PI * 20) * Math.exp(-progress * 2);
+            case 'fade_down':
+                return Math.exp(-progress * 2) * (1 - progress);
+            case 'celebration':
+                return Math.sin(Math.PI * progress) * Math.exp(-progress * 0.8);
+            case 'exciting':
+                return Math.sin(Math.PI * progress) * (1 + Math.sin(progress * Math.PI * 8) * 0.3);
+            case 'gentle_fade':
+                return Math.exp(-progress * 3) * Math.sin(Math.PI * progress);
+            case 'concerned':
+                return Math.exp(-progress * 4) * (1 + Math.sin(progress * Math.PI * 6) * 0.2);
+            case 'critical':
+                return Math.exp(-progress * 2) * (1 + Math.sin(progress * Math.PI * 12) * 0.4);
+            case 'powerup':
+                return progress < 0.1 ? progress / 0.1 : Math.exp(-(progress - 0.1) * 3);
+            case 'accelerating':
+                return Math.exp(-progress * 5) * (1 + progress);
+            case 'decelerating':
+                return Math.exp(-progress * 4) * (2 - progress);
+            case 'checkpoint':
+                return Math.exp(-progress * 6) * Math.sin(Math.PI * progress);
+            case 'pause':
+                return Math.exp(-progress * 8) * (1 - progress * 0.5);
+            case 'resume':
+                return Math.exp(-progress * 6) * (0.5 + progress * 0.5);
+            case 'countdown':
+                return Math.exp(-progress * 1) * (1 + Math.sin(progress * Math.PI * 30) * 0.1);
+            case 'perfect':
+                return Math.exp(-progress * 0.5) * Math.sin(Math.PI * progress) * 
+                       (1 + Math.sin(progress * Math.PI * 16) * 0.2);
+            case 'tense':
+                return Math.exp(-progress * 10) * (1 + Math.sin(progress * Math.PI * 15) * 0.3);
             default:
-                // デフォルト音
-                buffer = this.audioContext.createBuffer(1, 0.3 * sampleRate, sampleRate);
-                data = buffer.getChannelData(0);
+                return Math.exp(-progress * 5);
+        }
+    }
+    
+    /**
+     * ゲーム状態音用特殊効果を生成
+     * @param {number} t - 時間
+     * @param {number} progress - 進行度
+     * @param {Object} profile - 音響プロファイル
+     * @returns {number} 特殊効果値
+     */
+    generateGameStateSpecialEffects(t, progress, profile) {
+        let effects = 0;
+        
+        switch (profile.character) {
+            case 'triumphant':
+                // 勝利のファンファーレ効果
+                effects += Math.sin(2 * Math.PI * 880 * t) * Math.exp(-t * 3) * 0.1;
+                break;
                 
-                for (let i = 0; i < data.length; i++) {
-                    const t = i / sampleRate;
-                    const decay = Math.exp(-t * 5);
-                    data[i] = Math.sin(2 * Math.PI * 440 * t) * decay * 0.2;
+            case 'urgent':
+                // 緊急感のあるノイズ
+                effects += (Math.random() - 0.5) * Math.exp(-t * 5) * 0.1;
+                break;
+                
+            case 'dramatic':
+                // ドラマチックなリバーブ効果
+                effects += Math.sin(2 * Math.PI * 220 * t) * Math.exp(-t * 2) * 0.2;
+                break;
+                
+            case 'victorious':
+                // 勝利の鐘の音
+                effects += Math.sin(2 * Math.PI * 1760 * t) * Math.exp(-t * 4) * 0.08;
+                break;
+                
+            case 'energetic':
+                // エネルギッシュなトリル
+                effects += Math.sin(2 * Math.PI * 660 * t + Math.sin(t * 20)) * 
+                          Math.exp(-t * 4) * 0.1;
+                break;
+                
+            case 'danger':
+                // 危険を示す不協和音
+                effects += Math.sin(2 * Math.PI * 150 * 1.189 * t) * Math.exp(-t * 3) * 0.15;
+                break;
+                
+            case 'empowering':
+                // パワーアップのエネルギー感
+                effects += Math.sin(2 * Math.PI * 1100 * t) * Math.exp(-t * 6) * 0.12;
+                break;
+                
+            case 'flawless':
+                // 完璧さを表すクリスタル音
+                effects += Math.sin(2 * Math.PI * 2200 * t) * Math.exp(-t * 8) * 0.05;
+                effects += Math.sin(2 * Math.PI * 3300 * t) * Math.exp(-t * 10) * 0.03;
+                break;
+        }
+        
+        return effects;
+    }
+    
+    /**
+     * レベル別レベルアップ音を作成
+     * @param {number} level - レベル
+     * @returns {AudioBuffer} 生成された音響バッファ
+     */
+    createLevelUpSound(level) {
+        const baseProfile = this.getGameStateSoundProfile('levelup');
+        
+        // レベルに応じて音響特性を調整
+        const levelProfile = {
+            ...baseProfile,
+            frequencies: baseProfile.frequencies.map(f => f * Math.pow(1.059463, level - 1)), // 半音ずつ上昇
+            volume: Math.min(baseProfile.volume * (1 + level * 0.05), 0.5), // 徐々に音量増加
+            duration: Math.min(baseProfile.duration + level * 0.1, 2.0), // 徐々に長く
+            noteDelay: Math.max(baseProfile.noteDelay - level * 0.01, 0.05) // 少しずつ速く
+        };
+        
+        const sampleRate = this.audioContext.sampleRate;
+        const buffer = this.audioContext.createBuffer(1, levelProfile.duration * sampleRate, sampleRate);
+        const data = buffer.getChannelData(0);
+        
+        for (let i = 0; i < data.length; i++) {
+            const t = i / sampleRate;
+            const progress = t / levelProfile.duration;
+            
+            let sample = 0;
+            
+            // レベルに応じた複雑な和音
+            levelProfile.frequencies.forEach((freq, index) => {
+                const delay = index * levelProfile.noteDelay;
+                if (t >= delay) {
+                    const noteProgress = (t - delay) / (levelProfile.duration - delay);
+                    const envelope = this.generateGameStateEnvelope(noteProgress, 'levelup');
+                    sample += Math.sin(2 * Math.PI * freq * (t - delay)) * envelope;
                 }
+            });
+            
+            // レベルが高いほど豪華な装飾
+            if (level >= 5) {
+                sample += Math.sin(2 * Math.PI * levelProfile.frequencies[0] * 2 * t) * 
+                         Math.exp(-t * 5) * 0.1;
+            }
+            if (level >= 8) {
+                sample += Math.sin(2 * Math.PI * levelProfile.frequencies[0] * 4 * t) * 
+                         Math.exp(-t * 8) * 0.05;
+            }
+            if (level === 10) {
+                // 最高レベルの特別効果
+                sample += Math.sin(2 * Math.PI * levelProfile.frequencies[0] * 8 * t) * 
+                         Math.exp(-t * 12) * 0.03;
+            }
+            
+            data[i] = sample * levelProfile.volume / levelProfile.frequencies.length;
         }
         
         return buffer;

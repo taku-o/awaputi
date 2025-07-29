@@ -968,9 +968,112 @@ export class AudioManager {
             'timeup': 'error',
             'stageclear': 'success',
             'bonus_start': 'bonus',
-            'bonus_end': 'success'
+            'bonus_end': 'success',
+            'health_low': 'warning',
+            'health_critical': 'error',
+            'powerup': 'success',
+            'speedup': 'success',
+            'slowdown': 'success',
+            'checkpoint': 'success',
+            'pause': 'click',
+            'resume': 'click',
+            'countdown': 'warning',
+            'perfect': 'success',
+            'near_miss': 'hover'
         };
         return this.playSound(fallbackMap[stateType] || 'success', options);
+    }
+    
+    /**
+     * レベル別レベルアップ音を再生
+     * @param {number} level - レベル
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playLevelUpSound(level, options = {}) {
+        if (this.soundEffectSystem) {
+            const key = `levelup_${level}`;
+            if (this.soundEffectSystem.gameStateSounds.has(key)) {
+                const buffer = this.soundEffectSystem.gameStateSounds.get(key);
+                return this.soundEffectSystem._playSound(buffer, options);
+            }
+            // フォールバック: 通常のレベルアップ音
+            return this.soundEffectSystem.playGameStateSound('levelup', options);
+        }
+        // フォールバック: 成功音
+        return this.playSound('success', options);
+    }
+    
+    /**
+     * ヘルス状態に応じた警告音を再生
+     * @param {number} healthPercentage - ヘルス残量パーセンテージ (0-1)
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playHealthWarningSound(healthPercentage, options = {}) {
+        let soundType = 'success'; // デフォルト（健康）
+        
+        if (healthPercentage <= 0.1) {
+            soundType = 'health_critical';
+        } else if (healthPercentage <= 0.25) {
+            soundType = 'health_low';
+        }
+        
+        if (soundType !== 'success') {
+            return this.playGameStateSound(soundType, options);
+        }
+        
+        return null; // 健康時は音を出さない
+    }
+    
+    /**
+     * パフォーマンス評価音を再生
+     * @param {string} performance - パフォーマンス ('perfect', 'great', 'good', 'near_miss', 'miss')
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playPerformanceSound(performance, options = {}) {
+        const performanceMap = {
+            'perfect': 'perfect',
+            'great': 'success',
+            'good': 'success',
+            'near_miss': 'near_miss',
+            'miss': 'error'
+        };
+        
+        const soundType = performanceMap[performance];
+        if (soundType) {
+            if (['perfect', 'near_miss'].includes(soundType)) {
+                return this.playGameStateSound(soundType, options);
+            } else {
+                return this.playSound(soundType, options);
+            }
+        }
+        
+        return null;
+    }
+    
+    /**
+     * 段階的カウントダウン音を再生
+     * @param {number} count - カウント数 (3, 2, 1, 0)
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playCountdownSound(count, options = {}) {
+        if (count === 0) {
+            // 開始音
+            return this.playGameStateSound('bonus_start', options);
+        } else if (count > 0) {
+            // カウントダウン音（音程が下がる）
+            const pitch = 1 + (count - 1) * 0.2; // 3→1.4, 2→1.2, 1→1.0
+            return this.playGameStateSound('countdown', { 
+                ...options, 
+                pitch: pitch,
+                volume: (options.volume || 1) * 0.7
+            });
+        }
+        
+        return null;
     }
     
     /**
