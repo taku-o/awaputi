@@ -667,8 +667,8 @@ export class SoundEffectSystem {
             const freq = baseFreq * (1 + variation * 0.05);
             const freqModulation = 1.2 + (comboLevel * 0.1);
             
-            // エンベロープ
-            const envelope = Math.exp(-t * (8 + comboLevel)) * (1 + comboLevel * 0.1);
+            // コンボレベル別エンベロープの強化
+            const envelope = this.generateComboEnvelope(progress, comboLevel);
             
             // 基本音
             let sample = Math.sin(2 * Math.PI * freq * Math.pow(freqModulation, -t * 4) * t) * envelope;
@@ -680,16 +680,299 @@ export class SoundEffectSystem {
                 sample += Math.sin(2 * Math.PI * harmonicFreq * t) * envelope * harmonicAmp;
             }
             
-            // キラキラ効果（高コンボ時）
-            if (comboLevel >= 3) {
-                const sparkle = Math.sin(2 * Math.PI * (freq * 3) * t) * envelope * 0.1;
-                sample += sparkle;
-            }
+            // コンボレベル別特殊効果
+            sample += this.generateComboSpecialEffects(t, progress, freq, envelope, comboLevel, variation);
             
-            data[i] = sample * (0.3 + comboLevel * 0.05);
+            data[i] = sample * this.getComboVolumeMultiplier(comboLevel);
         }
         
         return buffer;
+    }
+    
+    /**
+     * コンボレベル別エンベロープを生成
+     * @param {number} progress - 進行度 (0-1)
+     * @param {number} comboLevel - コンボレベル
+     * @returns {number} エンベロープ値
+     */
+    generateComboEnvelope(progress, comboLevel) {
+        const baseDecay = 8 + comboLevel;
+        let envelope = Math.exp(-progress * baseDecay) * (1 + comboLevel * 0.1);
+        
+        // コンボレベル別エンベロープ特性
+        switch (comboLevel) {
+            case 1:
+                // シンプルな減衰
+                break;
+            case 2:
+                // 軽いパルス
+                envelope *= (1 + Math.sin(progress * Math.PI * 2) * 0.1);
+                break;
+            case 3:
+                // 複数パルス
+                envelope *= (1 + Math.sin(progress * Math.PI * 4) * 0.15);
+                break;
+            case 4:
+                // 複雑な変調
+                envelope *= (1 + Math.sin(progress * Math.PI * 6) * 0.2 + 
+                           Math.cos(progress * Math.PI * 8) * 0.1);
+                break;
+            case 5:
+                // 最大の変調と持続
+                envelope *= (1 + Math.sin(progress * Math.PI * 8) * 0.25 + 
+                           Math.cos(progress * Math.PI * 12) * 0.15);
+                // より長い持続
+                envelope = Math.max(envelope, Math.exp(-progress * 4) * 0.3);
+                break;
+        }
+        
+        return envelope;
+    }
+    
+    /**
+     * コンボレベル別特殊効果を生成
+     * @param {number} t - 時間
+     * @param {number} progress - 進行度
+     * @param {number} freq - 基本周波数
+     * @param {number} envelope - エンベロープ値
+     * @param {number} comboLevel - コンボレベル
+     * @param {number} variation - バリエーション番号
+     * @returns {number} 特殊効果値
+     */
+    generateComboSpecialEffects(t, progress, freq, envelope, comboLevel, variation) {
+        let effects = 0;
+        
+        // レベル3以上：キラキラ効果
+        if (comboLevel >= 3) {
+            const sparkleFreq = freq * 3 + variation * 50;
+            const sparkle = Math.sin(2 * Math.PI * sparkleFreq * t) * envelope * envelope * 0.1;
+            effects += sparkle;
+        }
+        
+        // レベル4以上：和音アルペジオ
+        if (comboLevel >= 4) {
+            const arpeggioNotes = [1, 1.25, 1.5, 2]; // メジャーコード + オクターブ
+            const noteIndex = Math.floor(progress * arpeggioNotes.length);
+            const arpeggioFreq = freq * arpeggioNotes[noteIndex];
+            const arpeggio = Math.sin(2 * Math.PI * arpeggioFreq * t) * envelope * 0.15;
+            effects += arpeggio;
+        }
+        
+        // レベル5：グリッサンド効果
+        if (comboLevel === 5) {
+            const glissandoFreq = freq * (1 + progress * 0.5); // 50%音程上昇
+            const glissando = Math.sin(2 * Math.PI * glissandoFreq * t) * envelope * 0.2;
+            effects += glissando;
+            
+            // 超高音キラキラ
+            const highSparkle = Math.sin(2 * Math.PI * freq * 8 * t) * 
+                              envelope * envelope * envelope * 0.05;
+            effects += highSparkle;
+        }
+        
+        return effects;
+    }
+    
+    /**
+     * コンボレベル別音量倍率を取得
+     * @param {number} comboLevel - コンボレベル
+     * @returns {number} 音量倍率
+     */
+    getComboVolumeMultiplier(comboLevel) {
+        const baseVolume = 0.3;
+        const levelMultiplier = 1 + (comboLevel - 1) * 0.1; // 10%ずつ増加
+        const maxMultiplier = 1.5; // 最大50%増
+        
+        return Math.min(baseVolume * levelMultiplier, baseVolume * maxMultiplier);
+    }
+    
+    /**
+     * 連続コンボ用の連鎖音響を生成
+     * @param {number} comboCount - 連続コンボ数
+     * @param {number} comboLevel - 現在のコンボレベル
+     * @returns {AudioBuffer} 連鎖音響バッファ
+     */
+    generateComboChainSound(comboCount, comboLevel) {
+        try {
+            const duration = 0.05 + Math.min(comboCount * 0.01, 0.15); // 最大0.2秒
+            const sampleRate = this.audioContext.sampleRate;
+            const buffer = this.audioContext.createBuffer(1, duration * sampleRate, sampleRate);
+            const data = buffer.getChannelData(0);
+            
+            const baseFreq = 600 + (comboLevel * 100) + (comboCount * 25);
+            
+            for (let i = 0; i < data.length; i++) {
+                const t = i / sampleRate;
+                const progress = t / duration;
+                
+                // 急速な減衰
+                const envelope = Math.exp(-t * 15);
+                
+                // 基本音
+                let sample = Math.sin(2 * Math.PI * baseFreq * t) * envelope;
+                
+                // 連続コンボのエコー効果
+                if (comboCount > 3) {
+                    const echoDelay = 0.01;
+                    const echoT = t - echoDelay;
+                    if (echoT > 0) {
+                        const echoSample = Math.sin(2 * Math.PI * baseFreq * 1.2 * echoT) * 
+                                         Math.exp(-echoT * 20) * 0.3;
+                        sample += echoSample;
+                    }
+                }
+                
+                // 高コンボ時のハーモニー
+                if (comboCount > 5) {
+                    const harmonyFreq = baseFreq * 1.5;
+                    const harmony = Math.sin(2 * Math.PI * harmonyFreq * t) * envelope * 0.4;
+                    sample += harmony;
+                }
+                
+                data[i] = sample * 0.2;
+            }
+            
+            return buffer;
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                component: 'SoundEffectSystem',
+                operation: 'generateComboChainSound',
+                comboCount: comboCount,
+                comboLevel: comboLevel
+            });
+            return null;
+        }
+    }
+    
+    /**
+     * コンボブレイク時の音響を生成
+     * @param {number} maxComboLevel - 達成した最大コンボレベル
+     * @param {number} comboCount - 最終コンボ数
+     * @returns {AudioBuffer} コンボブレイク音響バッファ
+     */
+    generateComboBreakSound(maxComboLevel, comboCount) {
+        try {
+            const duration = 0.3 + (maxComboLevel * 0.1); // レベルに応じて長く
+            const sampleRate = this.audioContext.sampleRate;
+            const buffer = this.audioContext.createBuffer(1, duration * sampleRate, sampleRate);
+            const data = buffer.getChannelData(0);
+            
+            const baseFreq = 300; // 低めの音から開始
+            
+            for (let i = 0; i < data.length; i++) {
+                const t = i / sampleRate;
+                const progress = t / duration;
+                
+                // 下降する音程（コンボが終わる感じ）
+                const freq = baseFreq * Math.pow(0.5, progress); // 1オクターブ下降
+                
+                // 徐々に消える
+                const envelope = Math.exp(-t * 3) * (1 - progress * 0.5);
+                
+                // 基本音
+                let sample = Math.sin(2 * Math.PI * freq * t) * envelope;
+                
+                // 高コンボの場合は和音でリッチに
+                if (maxComboLevel >= 3) {
+                    const harmony1 = Math.sin(2 * Math.PI * freq * 1.25 * t) * envelope * 0.6;
+                    const harmony2 = Math.sin(2 * Math.PI * freq * 1.5 * t) * envelope * 0.4;
+                    sample += harmony1 + harmony2;
+                }
+                
+                // 最高レベルの場合は特別な残響
+                if (maxComboLevel === 5) {
+                    const reverb = Math.sin(2 * Math.PI * freq * 0.5 * t) * envelope * 0.3;
+                    sample += reverb;
+                }
+                
+                data[i] = sample * 0.4;
+            }
+            
+            return buffer;
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                component: 'SoundEffectSystem',
+                operation: 'generateComboBreakSound',
+                maxComboLevel: maxComboLevel,
+                comboCount: comboCount
+            });
+            return null;
+        }
+    }
+    
+    /**
+     * コンボミルストーン達成音を生成
+     * @param {number} milestone - マイルストーン（10, 25, 50, 100など）
+     * @returns {AudioBuffer} マイルストーン音響バッファ
+     */
+    generateComboMilestoneSound(milestone) {
+        try {
+            const duration = 1.0 + Math.log10(milestone / 10) * 0.5; // ログスケールで長く
+            const sampleRate = this.audioContext.sampleRate;
+            const buffer = this.audioContext.createBuffer(1, duration * sampleRate, sampleRate);
+            const data = buffer.getChannelData(0);
+            
+            // マイルストーンに応じた和音
+            const chordNotes = this.getMilestoneChord(milestone);
+            
+            for (let i = 0; i < data.length; i++) {
+                const t = i / sampleRate;
+                const progress = t / duration;
+                
+                // 美しいエンベロープ
+                const envelope = Math.sin(Math.PI * progress) * Math.exp(-t * 1);
+                
+                let sample = 0;
+                
+                // 和音演奏
+                chordNotes.forEach((noteRatio, index) => {
+                    const freq = 440 * noteRatio; // A4基準
+                    const noteEnvelope = envelope * Math.exp(-index * 0.1); // 高音ほど早く減衰
+                    sample += Math.sin(2 * Math.PI * freq * t) * noteEnvelope;
+                });
+                
+                // 高マイルストーン時の装飾
+                if (milestone >= 50) {
+                    const decoration = Math.sin(2 * Math.PI * 880 * 3 * t) * envelope * envelope * 0.1;
+                    sample += decoration;
+                }
+                
+                data[i] = sample * (0.3 / chordNotes.length); // 正規化
+            }
+            
+            return buffer;
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                component: 'SoundEffectSystem',
+                operation: 'generateComboMilestoneSound',
+                milestone: milestone
+            });
+            return null;
+        }
+    }
+    
+    /**
+     * マイルストーンに応じた和音を取得
+     * @param {number} milestone - マイルストーン数
+     * @returns {number[]} 音程比率の配列
+     */
+    getMilestoneChord(milestone) {
+        if (milestone >= 100) {
+            // 100以上：豪華な7th和音
+            return [1, 1.25, 1.5, 1.875, 2]; // C, E, G, Bb, C
+        } else if (milestone >= 50) {
+            // 50以上：6th和音
+            return [1, 1.25, 1.5, 1.667]; // C, E, G, A
+        } else if (milestone >= 25) {
+            // 25以上：メジャー7th
+            return [1, 1.25, 1.5, 1.875]; // C, E, G, Bb
+        } else if (milestone >= 10) {
+            // 10以上：基本三和音
+            return [1, 1.25, 1.5]; // C, E, G
+        } else {
+            // 10未満：単音
+            return [1];
+        }
     }
     
     /**

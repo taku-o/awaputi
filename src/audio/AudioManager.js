@@ -785,6 +785,59 @@ export class AudioManager {
     }
     
     /**
+     * 連続コンボ用の連鎖音響を再生
+     * @param {number} comboCount - 連続コンボ数
+     * @param {number} comboLevel - 現在のコンボレベル
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playComboChainSound(comboCount, comboLevel, options = {}) {
+        if (this.soundEffectSystem) {
+            const buffer = this.soundEffectSystem.generateComboChainSound(comboCount, comboLevel);
+            if (buffer) {
+                return this.soundEffectSystem._playSound(buffer, options);
+            }
+        }
+        // フォールバック: 通常のコンボ音
+        return this.playComboSound(comboLevel, options);
+    }
+    
+    /**
+     * コンボブレイク時の音響を再生
+     * @param {number} maxComboLevel - 達成した最大コンボレベル
+     * @param {number} comboCount - 最終コンボ数
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playComboBreakSound(maxComboLevel, comboCount, options = {}) {
+        if (this.soundEffectSystem) {
+            const buffer = this.soundEffectSystem.generateComboBreakSound(maxComboLevel, comboCount);
+            if (buffer) {
+                return this.soundEffectSystem._playSound(buffer, options);
+            }
+        }
+        // フォールバック: エラー音
+        return this.playSound('error', options);
+    }
+    
+    /**
+     * コンボミルストーン達成音を再生
+     * @param {number} milestone - マイルストーン（10, 25, 50, 100など）
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playComboMilestoneSound(milestone, options = {}) {
+        if (this.soundEffectSystem) {
+            const buffer = this.soundEffectSystem.generateComboMilestoneSound(milestone);
+            if (buffer) {
+                return this.soundEffectSystem._playSound(buffer, options);
+            }
+        }
+        // フォールバック: 成功音
+        return this.playSound('success', options);
+    }
+    
+    /**
      * UI操作音を再生
      * @param {string} actionType - アクションタイプ
      * @param {Object} options - 再生オプション
