@@ -18,11 +18,25 @@ inclusion: always
 - Scene classes extend base Scene class for different game states
 - Core classes provide fundamental game functionality
 
+### Component-Based Architecture (Post-Issue #52)
+- **Tab Components**: Extend TabComponent base class for scene tabs
+- **Sub-Components**: Extend BaseComponent for specialized functionality
+- **Dialog Components**: Extend BaseDialog for modal dialogs
+- **Component Size Limits**: Keep components under 2,500 words for AI tool compatibility
+- **Event-Driven Communication**: Use ComponentEventBus for inter-component communication
+- **Lazy Loading**: Load components on-demand with automatic cleanup
+- **Lifecycle Management**: Implement initialize(), activate(), deactivate(), cleanup() methods
+
 ### File Organization
 ```
 src/
 ├── core/           # Core game engine and systems
 ├── scenes/         # Game scenes (MainMenu, Game, etc.)
+│   └── components/ # Scene components (post-Issue #52 refactoring)
+│       ├── infrastructure/  # Core component systems
+│       ├── tabs/           # Tab-specific components
+│       ├── dialogs/        # Dialog system components
+│       └── [feature]/      # Feature-specific sub-components
 ├── bubbles/        # Bubble types and behaviors
 ├── managers/       # System managers
 ├── utils/          # Utility functions and helpers
@@ -133,6 +147,14 @@ src/
 - GitHub CLI (gh) is available for issue management and repository operations
 - Use GitHub CLI for creating issues, pull requests, and repository management
 - Environment supports macOS with zsh shell
+
+### Component Development Workflow
+- **Single Component Focus**: Work on one component at a time for optimal AI tool support
+- **File Size Monitoring**: Check component size with `wc -w` before committing
+- **Event Naming**: Use pattern `[domain]-[action]-[detail]` for event names
+- **Testing Strategy**: Write unit tests for components, integration tests for interactions
+- **Memory Management**: Always implement proper cleanup() methods
+- **Error Handling**: Use try-catch blocks for async operations with user-friendly messages
 
 ## Security Considerations
 
