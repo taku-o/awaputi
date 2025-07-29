@@ -1,4 +1,7 @@
 import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getAsyncOperationQueue } from './AsyncOperationQueue.js';
+import { getChunkProcessor } from './ChunkProcessor.js';
+import { getDataCache } from './DataCache.js';
 
 /**
  * データ管理クラス - 包括的なデータ管理システムの中央制御
@@ -30,6 +33,15 @@ export class DataManager {
         this.security = null;
         this.validation = null;
         this.ui = null;
+        
+        // 非同期操作管理
+        this.asyncQueue = getAsyncOperationQueue();
+        
+        // チャンク処理管理
+        this.chunkProcessor = getChunkProcessor();
+        
+        // キャッシュ管理
+        this.cache = getDataCache();
         
         // イベントリスナー
         this.listeners = new Map();
@@ -145,106 +157,142 @@ export class DataManager {
      * データ保存の統一インターフェース
      */
     async save(dataType, data, options = {}) {
-        try {
-            if (!this.isInitialized) {
-                await this.initialize();
+        // 非同期キューを使用してデータ保存を実行
+        return await this.asyncQueue.enqueue(async () => {
+            try {
+                if (!this.isInitialized) {
+                    await this.initialize();
+                }
+                
+                const startTime = performance.now();
+                
+                // データタイプ別の処理
+                let result;
+                switch (dataType) {
+                    case 'playerData':
+                        result = await this.savePlayerData(data, options);
+                        break;
+                    case 'settings':
+                        result = await this.saveSettings(data, options);
+                        break;
+                    case 'statistics':
+                        result = await this.saveStatistics(data, options);
+                        break;
+                    default:
+                        result = await this.saveGenericData(dataType, data, options);
+                }
+                
+                const endTime = performance.now();
+                const duration = endTime - startTime;
+                
+                // パフォーマンス要件チェック（< 100ms）
+                if (duration > 100) {
+                    console.warn(`Data save operation took ${duration.toFixed(2)}ms, exceeding target of 100ms`);
+                }
+                
+                this.emit('dataSaved', { dataType, duration, timestamp: Date.now() });
+                
+                // データ保存後にキャッシュを無効化
+                this.invalidateCacheByDataType(dataType);
+                
+                return result;
+                
+            } catch (error) {
+                getErrorHandler().handleError(error, 'DATA_SAVE_ERROR', {
+                    operation: 'save',
+                    dataType,
+                    options
+                });
+                throw error; // キューがエラーハンドリングするためにre-throw
             }
-            
-            if (this.status.operationInProgress) {
-                throw new Error('Another operation is in progress');
-            }
-            
-            this.status.operationInProgress = true;
-            
-            const startTime = performance.now();
-            
-            // データタイプ別の処理
-            let result;
-            switch (dataType) {
-                case 'playerData':
-                    result = await this.savePlayerData(data, options);
-                    break;
-                case 'settings':
-                    result = await this.saveSettings(data, options);
-                    break;
-                case 'statistics':
-                    result = await this.saveStatistics(data, options);
-                    break;
-                default:
-                    result = await this.saveGenericData(dataType, data, options);
-            }
-            
-            const endTime = performance.now();
-            const duration = endTime - startTime;
-            
-            // パフォーマンス要件チェック（< 100ms）
-            if (duration > 100) {
-                console.warn(`Data save operation took ${duration.toFixed(2)}ms, exceeding target of 100ms`);
-            }
-            
-            this.emit('dataSaved', { dataType, duration, timestamp: Date.now() });
-            
-            return result;
-            
-        } catch (error) {
-            getErrorHandler().handleError(error, 'DATA_SAVE_ERROR', {
-                operation: 'save',
-                dataType,
-                options
-            });
-            return false;
-        } finally {
-            this.status.operationInProgress = false;
+        }, {
+            priority: options.priority || 'normal',
+            timeout: options.timeout || 10000,
+            metadata: { dataType, operation: 'save' }
+        });
+    }
+    
+    /**
+     * データ読み込みの統一インターフェース（キャッシュ対応）
+     */
+    async load(dataType, options = {}) {
+        // キャッシュキーの生成
+        const cacheKey = this.generateCacheKey(dataType, options);
+        const useCache = options.useCache !== false;
+        
+        if (useCache) {
+            // キャッシュからの取得を試行
+            return await this.cache.getOrSet(
+                cacheKey,
+                async () => {
+                    return await this.loadWithQueue(dataType, options);
+                },
+                {
+                    ttl: options.cacheTtl || 5 * 60 * 1000, // 5分
+                    priority: options.priority === 'high' ? 'high' : 'normal',
+                    tags: [`dataType:${dataType}`, 'data-load'],
+                    dependencies: options.dependencies || []
+                }
+            );
+        } else {
+            // キャッシュを使用しない直接読み込み
+            return await this.loadWithQueue(dataType, options);
         }
     }
     
     /**
-     * データ読み込みの統一インターフェース
+     * キューを使用したデータ読み込み
      */
-    async load(dataType, options = {}) {
-        try {
-            if (!this.isInitialized) {
-                await this.initialize();
+    async loadWithQueue(dataType, options) {
+        return await this.asyncQueue.enqueue(async () => {
+            try {
+                if (!this.isInitialized) {
+                    await this.initialize();
+                }
+                
+                const startTime = performance.now();
+                
+                // データタイプ別の処理
+                let result;
+                switch (dataType) {
+                    case 'playerData':
+                        result = await this.loadPlayerData(options);
+                        break;
+                    case 'settings':
+                        result = await this.loadSettings(options);
+                        break;
+                    case 'statistics':
+                        result = await this.loadStatistics(options);
+                        break;
+                    default:
+                        result = await this.loadGenericData(dataType, options);
+                }
+                
+                const endTime = performance.now();
+                const duration = endTime - startTime;
+                
+                // パフォーマンス要件チェック（< 50ms）
+                if (duration > 50) {
+                    console.warn(`Data load operation took ${duration.toFixed(2)}ms, exceeding target of 50ms`);
+                }
+                
+                this.emit('dataLoaded', { dataType, duration, timestamp: Date.now() });
+                
+                return result;
+                
+            } catch (error) {
+                getErrorHandler().handleError(error, 'DATA_LOAD_ERROR', {
+                    operation: 'load',
+                    dataType,
+                    options
+                });
+                throw error;
             }
-            
-            const startTime = performance.now();
-            
-            // データタイプ別の処理
-            let result;
-            switch (dataType) {
-                case 'playerData':
-                    result = await this.loadPlayerData(options);
-                    break;
-                case 'settings':
-                    result = await this.loadSettings(options);
-                    break;
-                case 'statistics':
-                    result = await this.loadStatistics(options);
-                    break;
-                default:
-                    result = await this.loadGenericData(dataType, options);
-            }
-            
-            const endTime = performance.now();
-            const duration = endTime - startTime;
-            
-            // パフォーマンス要件チェック（< 50ms）
-            if (duration > 50) {
-                console.warn(`Data load operation took ${duration.toFixed(2)}ms, exceeding target of 50ms`);
-            }
-            
-            this.emit('dataLoaded', { dataType, duration, timestamp: Date.now() });
-            
-            return result;
-            
-        } catch (error) {
-            getErrorHandler().handleError(error, 'DATA_LOAD_ERROR', {
-                operation: 'load',
-                dataType,
-                options
-            });
-            return null;
-        }
+        }, {
+            priority: options.priority || 'low',
+            timeout: options.timeout || 5000,
+            metadata: { dataType, operation: 'load' }
+        });
     }
     
     /**
@@ -363,6 +411,413 @@ export class DataManager {
     }
     
     /**
+     * バッチ保存操作
+     */
+    async saveBatch(operations, options = {}) {
+        const batchOperations = operations.map(({ dataType, data, operationOptions = {} }) => {
+            return async () => {
+                return await this.saveDataDirect(dataType, data, operationOptions);
+            };
+        });
+        
+        return await this.asyncQueue.executeBatch(batchOperations, {
+            priority: options.priority || 'normal',
+            parallel: options.parallel !== false,
+            metadata: { operation: 'batchSave', count: operations.length }
+        });
+    }
+    
+    /**
+     * バッチ読み込み操作
+     */
+    async loadBatch(dataTypes, options = {}) {
+        const batchOperations = dataTypes.map(({ dataType, operationOptions = {} }) => {
+            return async () => {
+                return await this.loadDataDirect(dataType, operationOptions);
+            };
+        });
+        
+        return await this.asyncQueue.executeBatch(batchOperations, {
+            priority: options.priority || 'low',
+            parallel: options.parallel !== false,
+            metadata: { operation: 'batchLoad', count: dataTypes.length }
+        });
+    }
+    
+    /**
+     * 直接データ保存（キューを経由しない）
+     */
+    async saveDataDirect(dataType, data, options = {}) {
+        try {
+            if (!this.isInitialized) {
+                await this.initialize();
+            }
+            
+            const startTime = performance.now();
+            
+            // データタイプ別の処理
+            let result;
+            switch (dataType) {
+                case 'playerData':
+                    result = await this.savePlayerData(data, options);
+                    break;
+                case 'settings':
+                    result = await this.saveSettings(data, options);
+                    break;
+                case 'statistics':
+                    result = await this.saveStatistics(data, options);
+                    break;
+                default:
+                    result = await this.saveGenericData(dataType, data, options);
+            }
+            
+            const duration = performance.now() - startTime;
+            return { result, duration };
+            
+        } catch (error) {
+            throw error;
+        }
+    }
+    
+    /**
+     * 直接データ読み込み（キューを経由しない）
+     */
+    async loadDataDirect(dataType, options = {}) {
+        try {
+            if (!this.isInitialized) {
+                await this.initialize();
+            }
+            
+            const startTime = performance.now();
+            
+            // データタイプ別の処理
+            let result;
+            switch (dataType) {
+                case 'playerData':
+                    result = await this.loadPlayerData(options);
+                    break;
+                case 'settings':
+                    result = await this.loadSettings(options);
+                    break;
+                case 'statistics':
+                    result = await this.loadStatistics(options);
+                    break;
+                default:
+                    result = await this.loadGenericData(dataType, options);
+            }
+            
+            const duration = performance.now() - startTime;
+            return { result, duration };
+            
+        } catch (error) {
+            throw error;
+        }
+    }
+    
+    /**
+     * 大量データの保存（チャンク処理）
+     */
+    async saveLargeData(dataType, data, options = {}) {
+        if (!Array.isArray(data) && typeof data !== 'object') {
+            throw new Error('Large data must be an array or object');
+        }
+        
+        const chunkSize = options.chunkSize || 1000;
+        const saveOptions = { ...options, priority: 'high' };
+        
+        if (Array.isArray(data)) {
+            return await this.chunkProcessor.processArray(
+                data,
+                async (chunk, chunkIndex, processInfo) => {
+                    const chunkKey = `${dataType}_chunk_${chunkIndex}`;
+                    await this.saveDataDirect(chunkKey, chunk, saveOptions);
+                    
+                    // 進捗通知
+                    this.emit('largeDataProgress', {
+                        operation: 'save',
+                        dataType,
+                        progress: (processInfo.processedItems / processInfo.totalItems) * 100,
+                        processedItems: processInfo.processedItems,
+                        totalItems: processInfo.totalItems
+                    });
+                    
+                    return { chunkIndex, itemCount: chunk.length };
+                },
+                {
+                    chunkSize,
+                    collectResults: true,
+                    ...options
+                }
+            );
+        } else {
+            return await this.chunkProcessor.processObject(
+                data,
+                async (chunkObj, chunkIndex, processInfo) => {
+                    const chunkKey = `${dataType}_chunk_${chunkIndex}`;
+                    await this.saveDataDirect(chunkKey, chunkObj, saveOptions);
+                    
+                    this.emit('largeDataProgress', {
+                        operation: 'save',
+                        dataType,
+                        progress: (processInfo.processedItems / processInfo.totalItems) * 100,
+                        processedItems: processInfo.processedItems,
+                        totalItems: processInfo.totalItems
+                    });
+                    
+                    return { chunkIndex, keyCount: Object.keys(chunkObj).length };
+                },
+                {
+                    chunkSize,
+                    collectResults: true,
+                    mergeResults: false,
+                    ...options
+                }
+            );
+        }
+    }
+    
+    /**
+     * 大量データの読み込み（チャンク処理）
+     */
+    async loadLargeData(dataType, options = {}) {
+        const chunkSize = options.chunkSize || 1000;
+        const loadOptions = { ...options, priority: 'low' };
+        
+        try {
+            // チャンクメタデータの取得
+            const metadataKey = `${dataType}_metadata`;
+            const metadata = await this.loadDataDirect(metadataKey, loadOptions);
+            
+            if (!metadata || !metadata.result) {
+                throw new Error(`Large data metadata not found for ${dataType}`);
+            }
+            
+            const { totalChunks, dataStructure } = metadata.result;
+            const chunkIndices = Array.from({ length: totalChunks }, (_, i) => i);
+            
+            const chunks = await this.chunkProcessor.processArray(
+                chunkIndices,
+                async (chunkIndexes, batchIndex, processInfo) => {
+                    const batchResults = [];
+                    
+                    for (const chunkIndex of chunkIndexes) {
+                        const chunkKey = `${dataType}_chunk_${chunkIndex}`;
+                        const chunkData = await this.loadDataDirect(chunkKey, loadOptions);
+                        
+                        if (chunkData && chunkData.result) {
+                            batchResults.push({
+                                chunkIndex,
+                                data: chunkData.result
+                            });
+                        }
+                    }
+                    
+                    this.emit('largeDataProgress', {
+                        operation: 'load',
+                        dataType,
+                        progress: (processInfo.processedItems / processInfo.totalItems) * 100,
+                        processedItems: processInfo.processedItems,
+                        totalItems: processInfo.totalItems
+                    });
+                    
+                    return batchResults;
+                },
+                {
+                    chunkSize: Math.min(chunkSize, 10), // 読み込みは小さなバッチで
+                    collectResults: true,
+                    ...options
+                }
+            );
+            
+            // チャンクを元のデータ構造に再構成
+            return this.reconstructLargeData(chunks.flat(), dataStructure);
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'LARGE_DATA_LOAD_ERROR', {
+                dataType,
+                options
+            });
+            throw error;
+        }
+    }
+    
+    /**
+     * 大量データの削除（チャンク単位）
+     */
+    async deleteLargeData(dataType, options = {}) {
+        try {
+            // メタデータの取得
+            const metadataKey = `${dataType}_metadata`;
+            const metadata = await this.loadDataDirect(metadataKey, options);
+            
+            if (!metadata || !metadata.result) {
+                console.warn(`Large data metadata not found for ${dataType}, attempting direct deletion`);
+                return await this.deleteGenericData(dataType, options);
+            }
+            
+            const { totalChunks } = metadata.result;
+            const deleteOperations = [];
+            
+            // 各チャンクの削除操作を準備
+            for (let i = 0; i < totalChunks; i++) {
+                const chunkKey = `${dataType}_chunk_${i}`;
+                deleteOperations.push({
+                    dataType: chunkKey,
+                    data: null,
+                    operationOptions: options
+                });
+            }
+            
+            // メタデータ削除も追加
+            deleteOperations.push({
+                dataType: metadataKey,
+                data: null,
+                operationOptions: options
+            });
+            
+            // バッチ削除実行
+            await this.deleteBatch(deleteOperations, options);
+            
+            this.emit('largeDataDeleted', { dataType, chunks: totalChunks });
+            
+            return true;
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'LARGE_DATA_DELETE_ERROR', {
+                dataType,
+                options
+            });
+            throw error;
+        }
+    }
+    
+    /**
+     * 大量データの再構成
+     */
+    reconstructLargeData(chunks, dataStructure) {
+        try {
+            // チャンクをインデックス順にソート
+            chunks.sort((a, b) => a.chunkIndex - b.chunkIndex);
+            
+            if (dataStructure === 'array') {
+                return chunks.reduce((result, chunk) => {
+                    return result.concat(chunk.data);
+                }, []);
+            } else if (dataStructure === 'object') {
+                return chunks.reduce((result, chunk) => {
+                    return { ...result, ...chunk.data };
+                }, {});
+            }
+            
+            // デフォルト: 配列として返す
+            return chunks.map(chunk => chunk.data);
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'LARGE_DATA_RECONSTRUCTION_ERROR', {
+                chunksCount: chunks.length,
+                dataStructure
+            });
+            throw error;
+        }
+    }
+    
+    /**
+     * 大量データのメタデータ保存
+     */
+    async saveLargeDataMetadata(dataType, metadata) {
+        const metadataKey = `${dataType}_metadata`;
+        return await this.saveDataDirect(metadataKey, metadata, { priority: 'high' });
+    }
+    
+    /**
+     * キャッシュキーの生成
+     */
+    generateCacheKey(dataType, options = {}) {
+        const baseKey = `dm:${dataType}`;
+        
+        // オプションを含むハッシュ生成（簡易版）
+        if (Object.keys(options).length === 0) {
+            return baseKey;
+        }
+        
+        const optionsStr = JSON.stringify(options, Object.keys(options).sort());
+        const optionsHash = this.simpleHash(optionsStr);
+        
+        return `${baseKey}:${optionsHash}`;
+    }
+    
+    /**
+     * 簡易ハッシュ関数
+     */
+    simpleHash(str) {
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            const char = str.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash; // 32bit整数に変換
+        }
+        return Math.abs(hash).toString(36);
+    }
+    
+    /**
+     * キャッシュの無効化
+     */
+    invalidateCache(pattern) {
+        if (typeof pattern === 'string') {
+            // 特定のキーまたはパターンで無効化
+            if (pattern.includes('*')) {
+                // パターンマッチング
+                const regex = new RegExp(pattern.replace(/\*/g, '.*'));
+                const keysToDelete = this.cache.keys().filter(key => regex.test(key));
+                return this.cache.deleteMany(keysToDelete);
+            } else {
+                // 単一キー
+                return this.cache.delete(pattern) ? 1 : 0;
+            }
+        } else if (Array.isArray(pattern)) {
+            // 複数キー
+            return this.cache.deleteMany(pattern);
+        }
+        
+        return 0;
+    }
+    
+    /**
+     * データタイプ別キャッシュ無効化
+     */
+    invalidateCacheByDataType(dataType) {
+        return this.cache.invalidateByTag(`dataType:${dataType}`);
+    }
+    
+    /**
+     * 依存関係によるキャッシュ無効化
+     */
+    invalidateCacheByDependency(dependency) {
+        return this.cache.invalidateByDependency(dependency);
+    }
+    
+    /**
+     * キャッシュ統計の取得
+     */
+    getCacheStatus() {
+        return this.cache.getStats();
+    }
+    
+    /**
+     * チャンク処理の状態を取得
+     */
+    getChunkProcessorStatus() {
+        return this.chunkProcessor.getStats();
+    }
+    
+    /**
+     * 非同期操作キューの状態を取得
+     */
+    getAsyncQueueStatus() {
+        return this.asyncQueue.getStatus();
+    }
+    
+    /**
      * データマネージャーの状態を取得
      */
     getStatus() {
@@ -370,6 +825,9 @@ export class DataManager {
             isInitialized: this.isInitialized,
             version: this.version,
             status: { ...this.status },
+            asyncQueue: this.getAsyncQueueStatus(),
+            chunkProcessor: this.getChunkProcessorStatus(),
+            cache: this.getCacheStatus(),
             components: {
                 playerData: !!this.playerData,
                 settingsManager: !!this.settingsManager,
