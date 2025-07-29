@@ -7,11 +7,14 @@ export class MainMenuScene extends Scene {
     constructor(gameEngine) {
         super(gameEngine);
         this.selectedMenuIndex = 0;
+        // メニュー項目は動的に生成される（updateMenuLabels内で翻訳適用）
         this.menuItems = [
-            { id: 'start', label: 'ゲーム開始', action: () => this.startGame() },
-            { id: 'settings', label: '設定', action: () => this.openSettings() },
-            { id: 'userInfo', label: 'ユーザー情報', action: () => this.openUserInfo() }
+            { id: 'start', key: 'menu.start', action: () => this.startGame() },
+            { id: 'settings', key: 'menu.settings', action: () => this.openSettings() },
+            { id: 'userInfo', key: 'menu.userInfo', action: () => this.openUserInfo() }
         ];
+        
+        this.updateMenuLabels();
         this.showingUsernameInput = false;
         this.showingSettings = false;
         this.showingUserInfo = false;
@@ -19,6 +22,17 @@ export class MainMenuScene extends Scene {
         this.showingControlsHelp = false;
         this.usernameInput = '';
         this.isEditingUsername = false;
+    }
+    
+    /**
+     * メニューラベルを現在の言語で更新
+     */
+    updateMenuLabels() {
+        const t = this.gameEngine.localizationManager.t.bind(this.gameEngine.localizationManager);
+        
+        this.menuItems.forEach(item => {
+            item.label = t(item.key);
+        });
     }
     
     /**
@@ -32,6 +46,9 @@ export class MainMenuScene extends Scene {
         this.showingDataClearConfirmation = false;
         this.showingControlsHelp = false;
         this.isEditingUsername = false;
+        
+        // メニューラベルを現在の言語で更新
+        this.updateMenuLabels();
         
         // 初回起動時にユーザー名が未設定の場合、ユーザー名入力を表示
         if (!this.gameEngine.playerData.username) {

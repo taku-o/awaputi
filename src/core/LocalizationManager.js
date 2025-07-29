@@ -1,4 +1,5 @@
 import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { TranslationLoader } from './i18n/TranslationLoader.js';
 
 /**
  * ローカライゼーション管理クラス - 多言語対応
@@ -9,6 +10,9 @@ export class LocalizationManager {
         this.fallbackLanguage = 'en';
         this.translations = new Map();
         this.loadedLanguages = new Set();
+        
+        // 翻訳ローダーの初期化
+        this.translationLoader = new TranslationLoader();
         
         // 文化的適応設定
         this.culturalAdaptation = {
@@ -44,6 +48,27 @@ export class LocalizationManager {
         
         // 翻訳データを初期化
         this.initializeTranslations();
+        
+        // 非同期でファイルベース翻訳を初期化
+        this.initializeAsync();
+    }
+    
+    /**
+     * 非同期初期化
+     */
+    async initializeAsync() {
+        try {
+            // 基本言語（日本語と英語）をプリロード
+            await this.translationLoader.preloadLanguages(['ja', 'en']);
+            
+            // ファイルベース翻訳をロード
+            await this.loadLanguageData('ja');
+            await this.loadLanguageData('en');
+            
+            console.log('LocalizationManager initialized with file-based translations');
+        } catch (error) {
+            console.warn('Failed to initialize file-based translations, using fallback data:', error);
+        }
     }
     
     /**
@@ -623,15 +648,53 @@ export class LocalizationManager {
     }
     
     /**
-     * 言語を設定
+     * 言語を設定（非同期）
      */
-    setLanguage(language) {
-        if (this.loadedLanguages.has(language)) {
-            this.currentLanguage = language;
-            console.log(`Language set to: ${language}`);
-            return true;
-        } else {
-            console.warn(`Language not supported: ${language}`);
+    async setLanguage(language) {
+        try {
+            // 言語がロードされていない場合は読み込み
+            if (!this.loadedLanguages.has(language)) {
+                await this.loadLanguageData(language);
+            }
+            
+            if (this.loadedLanguages.has(language)) {
+                this.currentLanguage = language;
+                console.log(`Language set to: ${language}`);
+                return true;
+            } else {
+                console.warn(`Failed to load language: ${language}`);
+                return false;
+            }
+        } catch (error) {
+            getErrorHandler().handleError(error, 'LOCALIZATION_ERROR', {
+                operation: 'setLanguage',
+                language: language
+            });
+            return false;
+        }
+    }
+    
+    /**
+     * 言語データを読み込み
+     */
+    async loadLanguageData(language) {
+        try {
+            const translations = await this.translationLoader.loadLanguage(language);
+            
+            if (translations && Object.keys(translations).length > 0) {
+                this.translations.set(language, translations);
+                this.loadedLanguages.add(language);
+                console.log(`Loaded language data for: ${language}`);
+                return true;
+            } else {
+                console.warn(`No translations found for: ${language}`);
+                return false;
+            }
+        } catch (error) {
+            getErrorHandler().handleError(error, 'LOCALIZATION_ERROR', {
+                operation: 'loadLanguageData',
+                language: language
+            });
             return false;
         }
     }
