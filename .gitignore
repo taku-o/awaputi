@@ -122,7 +122,7 @@ Thumbs.db
 test-results/
 playwright-report/
 lighthouse-report.html
-reports/bundle-report.html
+reports/
 
 # Deployment artifacts
 .netlify/

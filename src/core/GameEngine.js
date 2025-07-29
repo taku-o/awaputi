@@ -20,6 +20,13 @@ import { UserInfoScene } from '../scenes/UserInfoScene.js';
 import { AudioManager } from '../audio/AudioManager.js';
 import { ParticleManager } from '../effects/ParticleManager.js';
 import { EffectManager } from '../effects/EffectManager.js';
+import { EnhancedParticleManager } from '../effects/EnhancedParticleManager.js';
+import { EnhancedEffectManager } from '../effects/EnhancedEffectManager.js';
+import { getSeasonalEffectManager } from '../effects/SeasonalEffectManager.js';
+import { getEffectQualityController } from '../effects/EffectQualityController.js';
+import { getEffectPerformanceMonitor } from '../effects/EffectPerformanceMonitor.js';
+import { getEffectConfigurationIntegrator } from '../effects/EffectConfigurationIntegrator.js';
+import { getAudioVisualSynchronizer } from '../effects/AudioVisualSynchronizer.js';
 import { getPoolManager } from '../utils/ObjectPool.js';
 import { RenderOptimizer, PerformanceMonitor } from '../utils/RenderOptimizer.js';
 import { getMemoryManager } from '../utils/MemoryManager.js';
@@ -29,6 +36,13 @@ import { ResponsiveCanvasManager } from '../utils/ResponsiveCanvasManager.js';
 import { getErrorHandler } from '../utils/ErrorHandler.js';
 import { getConfigurationManager } from './ConfigurationManager.js';
 import { getCalculationEngine } from './CalculationEngine.js';
+import { EffectDebugInterface } from '../effects/EffectDebugInterface.js';
+import { EffectProfiler } from '../effects/EffectProfiler.js';
+import { EffectOptimizationAdvisor } from '../effects/EffectOptimizationAdvisor.js';
+import { EffectPerformanceOptimizer } from '../effects/EffectPerformanceOptimizer.js';
+import { EffectErrorHandler } from '../effects/EffectErrorHandler.js';
+import { VisualPolishEnhancements } from '../effects/VisualPolishEnhancements.js';
+import { AnimationManager } from '../effects/AnimationManager.js';
 
 /**
  * ゲームエンジンクラス - 統合版（パフォーマンス最適化 + 音響・視覚効果）
@@ -73,8 +87,33 @@ export class GameEngine {
         
         // 新しいシステム（音響・視覚効果）
         this.audioManager = new AudioManager();
+        
+        // 拡張エフェクトシステムの初期化
+        this.effectQualityController = getEffectQualityController();
+        this.effectPerformanceMonitor = getEffectPerformanceMonitor();
+        this.seasonalEffectManager = getSeasonalEffectManager();
+        this.effectConfigurationIntegrator = getEffectConfigurationIntegrator();
+        this.audioVisualSynchronizer = getAudioVisualSynchronizer();
+        
+        // 既存システムとの下位互換性を保持
         this.particleManager = new ParticleManager();
         this.effectManager = new EffectManager(canvas);
+        
+        // 拡張エフェクトマネージャー
+        this.enhancedParticleManager = new EnhancedParticleManager();
+        this.enhancedEffectManager = new EnhancedEffectManager(canvas);
+        this.animationManager = new AnimationManager();
+        
+        // システム統合の設定
+        this._setupSystemIntegration();
+        
+        // デバッグ・プロファイリングツール（開発環境用）
+        this.effectDebugInterface = new EffectDebugInterface(this);
+        this.effectProfiler = new EffectProfiler(this);
+        this.effectOptimizationAdvisor = new EffectOptimizationAdvisor(this);
+        this.effectPerformanceOptimizer = new EffectPerformanceOptimizer(this);
+        this.effectErrorHandler = new EffectErrorHandler(this);
+        this.visualPolishEnhancements = new VisualPolishEnhancements(this);
         
         // コアシステム
         this.playerData = new PlayerData(this);
@@ -356,11 +395,20 @@ export class GameEngine {
         // 特殊効果の更新
         this.updateSpecialEffects(adjustedDeltaTime);
         
-        // エフェクトマネージャーの更新
+        // エフェクトマネージャーの更新（既存）
         this.effectManager.update(adjustedDeltaTime);
         
-        // パーティクルマネージャーの更新
+        // パーティクルマネージャーの更新（既存）
         this.particleManager.update(adjustedDeltaTime);
+        
+        // 拡張エフェクトシステムの更新
+        this.enhancedParticleManager.update(adjustedDeltaTime);
+        this.enhancedEffectManager.update(adjustedDeltaTime);
+        this.seasonalEffectManager.update(adjustedDeltaTime);
+        this.audioVisualSynchronizer.update(adjustedDeltaTime);
+        
+        // パフォーマンス監視の更新
+        this.effectPerformanceMonitor.startFrame();
         
         // 実績イベント統合システムの更新
         if (this.achievementEventIntegrator) {
@@ -404,11 +452,20 @@ export class GameEngine {
         // シーンマネージャーに描画を委譲
         this.sceneManager.render(this.context);
         
-        // パーティクルエフェクトを描画
+        // パーティクルエフェクトを描画（既存）
         this.particleManager.render(this.context);
         
-        // エフェクトマネージャーの後処理エフェクト
+        // 拡張パーティクルエフェクトを描画
+        this.enhancedParticleManager.render(this.context);
+        
+        // 季節限定エフェクトを描画
+        this.seasonalEffectManager.render(this.context);
+        
+        // エフェクトマネージャーの後処理エフェクト（既存）
         this.effectManager.renderPostEffects(this.context);
+        
+        // 拡張エフェクトマネージャーのレンダリング
+        this.enhancedEffectManager.render(this.context);
         
         // 実績通知システムの描画（最前面）
         if (this.achievementNotificationSystem) {
@@ -549,6 +606,191 @@ export class GameEngine {
         if (intensity > 0.5) {
             this.effectManager.addScreenFlash(0.1, 100, '#FFFFFF');
         }
+    }
+    
+    /**
+     * 拡張バブル破壊エフェクトを作成
+     * @param {number} x - X座標
+     * @param {number} y - Y座標
+     * @param {string} bubbleType - バブルタイプ
+     * @param {number} bubbleSize - バブルサイズ
+     * @param {Object} options - 追加オプション
+     */
+    createEnhancedBubbleEffect(x, y, bubbleType, bubbleSize, options = {}) {
+        // 拡張パーティクルエフェクト
+        this.enhancedParticleManager.createAdvancedBubbleEffect(x, y, bubbleType, bubbleSize, options);
+        
+        // 季節限定エフェクト
+        this.seasonalEffectManager.createSeasonalBubbleEffect(x, y, bubbleType, bubbleSize);
+        
+        // 拡張エフェクトマネージャー
+        this.enhancedEffectManager.createEnhancedScreenEffect(x, y, 'bubble_destruction', {
+            bubbleType,
+            bubbleSize,
+            ...options
+        });
+        
+        // 音響エフェクト（既存）
+        this.audioManager.playPopSound(false, bubbleType);
+    }
+    
+    /**
+     * 拡張コンボエフェクトを作成
+     * @param {number} x - X座標
+     * @param {number} y - Y座標
+     * @param {number} comboCount - コンボ数
+     * @param {string} comboType - コンボタイプ
+     */
+    createEnhancedComboEffect(x, y, comboCount, comboType = 'normal') {
+        // 拡張パーティクルエフェクト
+        this.enhancedParticleManager.createEnhancedComboEffect(x, y, comboCount, comboType);
+        
+        // 季節限定コンボエフェクト
+        this.seasonalEffectManager.createSeasonalComboEffect(x, y, comboCount);
+        
+        // 拡張画面エフェクト
+        this.enhancedEffectManager.createComboScreenEffect(x, y, comboCount, comboType);
+        
+        // 音響エフェクト
+        this.audioManager.playComboSound(comboCount);
+    }
+    
+    /**
+     * 特殊バブルエフェクトを作成
+     * @param {number} x - X座標
+     * @param {number} y - Y座標
+     * @param {string} specialType - 特殊タイプ
+     * @param {Object} effectData - エフェクトデータ
+     */
+    createSpecialBubbleEffect(x, y, specialType, effectData = {}) {
+        // 拡張特殊エフェクト
+        this.enhancedParticleManager.createSpecialBubbleEffect(x, y, specialType, effectData);
+        
+        // 特殊画面エフェクト
+        this.enhancedEffectManager.createSpecialScreenEffect(x, y, specialType, effectData);
+        
+        // 音響エフェクト
+        this.audioManager.playSpecialSound(specialType);
+    }
+    
+    /**
+     * エフェクト品質レベルを設定
+     * @param {string} qualityLevel - 品質レベル
+     */
+    setEffectQuality(qualityLevel) {
+        this.effectQualityController.setQualityLevel(qualityLevel);
+        console.log(`[GameEngine] エフェクト品質レベル設定: ${qualityLevel}`);
+    }
+    
+    /**
+     * 季節テーマを設定
+     * @param {string} season - 季節
+     */
+    setSeasonalTheme(season) {
+        this.seasonalEffectManager.setSeason(season);
+        console.log(`[GameEngine] 季節テーマ設定: ${season}`);
+    }
+    
+    /**
+     * カスタムテーマを適用
+     * @param {string} themeId - テーマID
+     */
+    applyCustomTheme(themeId) {
+        const result = this.seasonalEffectManager.applyCustomTheme(themeId);
+        if (result) {
+            console.log(`[GameEngine] カスタムテーマ適用: ${themeId}`);
+        } else {
+            console.warn(`[GameEngine] カスタムテーマ適用失敗: ${themeId}`);
+        }
+        return result;
+    }
+    
+    /**
+     * エフェクトパフォーマンス統計を取得
+     * @returns {Object} パフォーマンス統計
+     */
+    getEffectPerformanceStats() {
+        return {
+            performanceMonitor: this.effectPerformanceMonitor.getPerformanceStats(),
+            qualityController: this.effectQualityController.getPerformanceStats(),
+            currentTheme: this.seasonalEffectManager.getCurrentTheme()?.name || 'None',
+            audioVisualSync: this.audioVisualSynchronizer.getStats(),
+            configurationStats: this.effectConfigurationIntegrator.getConfigurationStats()
+        };
+    }
+    
+    /**
+     * システム統合の設定
+     * @private
+     */
+    _setupSystemIntegration() {
+        try {            
+            // エフェクト統合システムにシステムを登録
+            this.effectConfigurationIntegrator.registerEffectSystems({
+                qualityController: this.effectQualityController,
+                seasonalManager: this.seasonalEffectManager,
+                audioManager: this.audioManager
+            });
+            
+            // オーディオビジュアル同期システムにシステムを登録
+            this.audioVisualSynchronizer.registerSystems({
+                audioManager: this.audioManager,
+                particleManager: this.enhancedParticleManager,
+                effectManager: this.enhancedEffectManager,
+                seasonalManager: this.seasonalEffectManager
+            });
+            
+            console.log('[GameEngine] システム統合設定完了');
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'GameEngine._setupSystemIntegration');
+        }
+    }
+    
+    /**
+     * 統合エフェクト作成（音響・視覚同期）
+     * @param {string} effectType - エフェクトタイプ
+     * @param {number} x - X座標
+     * @param {number} y - Y座標
+     * @param {Object} parameters - パラメータ
+     */
+    createIntegratedEffect(effectType, x, y, parameters = {}) {
+        // 統合エフェクトの作成（音響・視覚同期）
+        this.audioVisualSynchronizer.createSyncedEffect(effectType, x, y, parameters);
+    }
+    
+    /**
+     * エフェクト設定の更新
+     * @param {string} key - 設定キー
+     * @param {*} value - 新しい値
+     */
+    updateEffectConfiguration(key, value) {
+        this.effectConfigurationIntegrator.updateConfiguration(key, value);
+    }
+    
+    /**
+     * エフェクト設定の一括更新
+     * @param {Object} settings - 設定オブジェクト
+     */
+    updateMultipleEffectConfigurations(settings) {
+        this.effectConfigurationIntegrator.updateMultipleConfigurations(settings);
+    }
+    
+    /**
+     * エフェクト設定のエクスポート
+     * @returns {Object} エクスポート用設定データ
+     */
+    exportEffectSettings() {
+        return this.effectConfigurationIntegrator.exportEffectSettings();
+    }
+    
+    /**
+     * エフェクト設定のインポート
+     * @param {Object} settings - インポート用設定データ
+     * @returns {boolean} インポート成功か
+     */
+    importEffectSettings(settings) {
+        return this.effectConfigurationIntegrator.importEffectSettings(settings);
     }
     
     /**
@@ -916,16 +1158,45 @@ export class GameEngine {
         // レンダリング最適化をクリーンアップ
         this.renderOptimizer.cleanup();
         
-        // エフェクトマネージャーをクリア
+        // エフェクトマネージャーをクリア（既存）
         this.effectManager.clearAllEffects();
         
-        // パーティクルマネージャーをクリア
+        // パーティクルマネージャーをクリア（既存）
         this.particleManager.clearAllParticles();
+        
+        // 拡張エフェクトシステムのクリーンアップ
+        if (this.enhancedParticleManager) {
+            this.enhancedParticleManager.dispose();
+        }
+        
+        if (this.enhancedEffectManager) {
+            this.enhancedEffectManager.dispose();
+        }
+        
+        if (this.seasonalEffectManager) {
+            this.seasonalEffectManager.dispose();
+        }
+        
+        if (this.effectPerformanceMonitor) {
+            this.effectPerformanceMonitor.dispose();
+        }
+        
+        if (this.effectQualityController) {
+            this.effectQualityController.dispose();
+        }
+        
+        if (this.effectConfigurationIntegrator) {
+            this.effectConfigurationIntegrator.dispose();
+        }
+        
+        if (this.audioVisualSynchronizer) {
+            this.audioVisualSynchronizer.dispose();
+        }
         
         // メモリ最適化を実行
         getMemoryManager().performCleanup();
         
-        console.log('Game cleanup completed');
+        console.log('Game cleanup completed (with enhanced effects)');
     }
     
     /**
