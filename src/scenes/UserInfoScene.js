@@ -106,36 +106,127 @@ export class UserInfoScene extends Scene {
     }
     
     /**
-     * タブコンポーネントを初期化
+     * タブコンポーネントを初期化（遅延読み込み対応）
      */
     initializeTabComponents() {
-        // StatisticsTabコンポーネントを作成
-        this.statisticsTabComponent = new StatisticsTab(this.gameEngine, this.eventBus, this.sceneState);
-        this.statisticsTabComponent.initialize();
+        // コンポーネント工場とキャッシュを初期化
+        this.componentFactory = new Map();
+        this.componentCache = new Map();
+        this.tabComponents = new Map();
         
-        // HelpTabコンポーネントを作成
-        this.helpTabComponent = new HelpTab(this.gameEngine, this.eventBus, this.sceneState);
-        this.helpTabComponent.initialize();
+        // コンポーネント工場を登録（遅延読み込み用）
+        this.componentFactory.set('statistics', () => {
+            if (!this.componentCache.has('statistics')) {
+                const component = new StatisticsTab(this.gameEngine, this.eventBus, this.sceneState);
+                component.initialize();
+                this.componentCache.set('statistics', component);
+                console.log('StatisticsTab lazy loaded and cached');
+            }
+            return this.componentCache.get('statistics');
+        });
         
-        // ManagementTabコンポーネントを作成
-        this.managementTabComponent = new ManagementTab(this.gameEngine, this.eventBus, this.sceneState);
-        this.managementTabComponent.initialize();
+        this.componentFactory.set('help', () => {
+            if (!this.componentCache.has('help')) {
+                const component = new HelpTab(this.gameEngine, this.eventBus, this.sceneState);
+                component.initialize();
+                this.componentCache.set('help', component);
+                console.log('HelpTab lazy loaded and cached');
+            }
+            return this.componentCache.get('help');
+        });
         
-        // AchievementsTabコンポーネントを作成
-        this.achievementsTabComponent = new AchievementsTab(this.gameEngine, this.eventBus, this.sceneState);
-        this.achievementsTabComponent.initialize();
+        this.componentFactory.set('management', () => {
+            if (!this.componentCache.has('management')) {
+                const component = new ManagementTab(this.gameEngine, this.eventBus, this.sceneState);
+                component.initialize();
+                this.componentCache.set('management', component);
+                console.log('ManagementTab lazy loaded and cached');
+            }
+            return this.componentCache.get('management');
+        });
         
-        // ヘルプセクションセレクターを作成
+        this.componentFactory.set('achievements', () => {
+            if (!this.componentCache.has('achievements')) {
+                const component = new AchievementsTab(this.gameEngine, this.eventBus, this.sceneState);
+                component.initialize();
+                this.componentCache.set('achievements', component);
+                console.log('AchievementsTab lazy loaded and cached');
+            }
+            return this.componentCache.get('achievements');
+        });
+        
+        // ヘルプセクションセレクターは軽量なので即座に作成
         this.helpSectionSelector = new HelpSectionSelector(this.gameEngine, this.eventBus, this.sceneState);
         
-        // タブコンポーネントマップを作成
-        this.tabComponents = new Map();
-        this.tabComponents.set('statistics', this.statisticsTabComponent);
-        this.tabComponents.set('help', this.helpTabComponent);
-        this.tabComponents.set('management', this.managementTabComponent);
-        this.tabComponents.set('achievements', this.achievementsTabComponent);
+        // 初期タブ（statistics）のコンポーネントをプリロード
+        this.preloadComponent(this.currentTab);
         
-        console.log('Tab components initialized');
+        console.log('Tab components initialized with lazy loading');
+    }
+    
+    /**
+     * コンポーネントのプリロード
+     * @param {string} tabName - プリロードするタブ名
+     */
+    preloadComponent(tabName) {
+        if (this.componentFactory.has(tabName)) {
+            const component = this.componentFactory.get(tabName)();
+            this.tabComponents.set(tabName, component);
+        }
+    }
+    
+    /**
+     * コンポーネントの遅延取得
+     * @param {string} tabName - 取得するタブ名
+     * @returns {Object|null} - タブコンポーネント
+     */
+    getTabComponent(tabName) {
+        // 既にロード済みの場合はそれを返す
+        if (this.tabComponents.has(tabName)) {
+            return this.tabComponents.get(tabName);
+        }
+        
+        // 遅延読み込み
+        if (this.componentFactory.has(tabName)) {
+            const component = this.componentFactory.get(tabName)();
+            this.tabComponents.set(tabName, component);
+            return component;
+        }
+        
+        console.warn(`Unknown tab component: ${tabName}`);
+        return null;
+    }
+    
+    /**
+     * 使用されていないコンポーネントのメモリクリーンアップ
+     */
+    cleanupUnusedComponents() {
+        const maxUnusedComponents = 2; // 最大2つまでの非アクティブコンポーネントを保持
+        const componentsToCleanup = [];
+        
+        // 最後にアクセスされた時間を記録
+        this.tabComponents.forEach((component, tabName) => {
+            if (tabName !== this.currentTab && component.lastAccessTime) {
+                const timeSinceLastAccess = Date.now() - component.lastAccessTime;
+                if (timeSinceLastAccess > 60000) { // 1分以上未使用
+                    componentsToCleanup.push({ tabName, timeSinceLastAccess });
+                }
+            }
+        });
+        
+        // 古いものから順にクリーンアップ
+        componentsToCleanup
+            .sort((a, b) => b.timeSinceLastAccess - a.timeSinceLastAccess)
+            .slice(maxUnusedComponents)
+            .forEach(({ tabName }) => {
+                const component = this.tabComponents.get(tabName);
+                if (component && component.cleanup) {
+                    component.cleanup();
+                }
+                this.tabComponents.delete(tabName);
+                this.componentCache.delete(tabName);
+                console.log(`Cleaned up unused component: ${tabName}`);
+            });
     }
     
     /**
@@ -283,13 +374,8 @@ export class UserInfoScene extends Scene {
             this.lastDataUpdate = Date.now();
         }
         
-        // アクティブなタブコンポーネントの更新
-        if (this.tabComponents && this.tabComponents.has(this.currentTab)) {
-            const activeComponent = this.tabComponents.get(this.currentTab);
-            if (activeComponent && activeComponent.isActive && activeComponent.update) {
-                activeComponent.update(deltaTime);
-            }
-        }
+        // コンポーネント調整システムによる更新
+        this.updateComponentCoordination(deltaTime);
     }
 
     render(context) {
@@ -525,374 +611,9 @@ export class UserInfoScene extends Scene {
         }
     }
 
-    /**
-     * 基本統計セクションを描画
-     */
-    renderBasicStatsSection(context, x, y, width, height) {
-        if (!this.statisticsData || !this.statisticsData.basic) {
-            return y + height + 20;
-        }
-        
-        const basic = this.statisticsData.basic;
-        
-        // セクション背景
-        context.fillStyle = '#1a1a2e';
-        context.fillRect(x, y, width - 10, height);
-        
-        // セクション枠線
-        context.strokeStyle = '#333';
-        context.lineWidth = 1;
-        context.strokeRect(x, y, width - 10, height);
-        
-        // セクションタイトル
-        context.fillStyle = '#4a90e2';
-        context.font = 'bold 18px Arial';
-        context.textAlign = 'left';
-        context.fillText('基本統計', x + 15, y + 25);
-        
-        // 統計項目を描画
-        const items = [
-            { label: '総プレイ回数', value: `${basic.totalGamesPlayed}回` },
-            { label: '総プレイ時間', value: basic.totalPlayTime },
-            { label: '総スコア', value: basic.totalScore.toLocaleString() },
-            { label: '最高スコア', value: basic.highestScore.toLocaleString() },
-            { label: '平均スコア', value: basic.averageScore.toLocaleString() },
-            { label: '完了率', value: `${isNaN(basic.completionRate) ? 0 : basic.completionRate.toFixed(1)}%` }
-        ];
-        
-        context.font = '14px Arial';
-        let itemY = y + 50;
-        const lineHeight = 20;
-        
-        for (const item of items) {
-            // ラベル
-            context.fillStyle = '#cccccc';
-            context.textAlign = 'left';
-            context.fillText(item.label, x + 15, itemY);
-            
-            // 値
-            context.fillStyle = '#ffffff';
-            context.textAlign = 'right';
-            context.fillText(item.value, x + width - 25, itemY);
-            
-            itemY += lineHeight;
-        }
-        
-        return y + height + 20;
-    }
 
-    /**
-     * 泡統計セクションを描画
-     */
-    renderBubbleStatsSection(context, x, y, width, height) {
-        if (!this.statisticsData || !this.statisticsData.bubbles) {
-            return y + height + 20;
-        }
-        
-        const bubbles = this.statisticsData.bubbles;
-        
-        // セクション背景
-        context.fillStyle = '#1a1a2e';
-        context.fillRect(x, y, width - 10, height);
-        
-        // セクション枠線
-        context.strokeStyle = '#333';
-        context.lineWidth = 1;
-        context.strokeRect(x, y, width - 10, height);
-        
-        // セクションタイトル
-        context.fillStyle = '#4a90e2';
-        context.font = 'bold 18px Arial';
-        context.textAlign = 'left';
-        context.fillText('泡統計', x + 15, y + 25);
-        
-        // 基本泡統計
-        const items = [
-            { label: '総破壊数', value: bubbles.totalPopped.toLocaleString() },
-            { label: '総未破壊数', value: bubbles.totalMissed.toLocaleString() },
-            { label: '精度', value: bubbles.accuracy },
-            { label: '平均反応時間', value: bubbles.averageReactionTime },
-            { label: 'お気に入り泡', value: this.getBubbleTypeName(bubbles.favoriteType?.type) || 'なし' }
-        ];
-        
-        context.font = '14px Arial';
-        let itemY = y + 50;
-        const lineHeight = 18;
-        
-        for (let i = 0; i < Math.min(5, items.length); i++) {
-            const item = items[i];
-            
-            // ラベル
-            context.fillStyle = '#cccccc';
-            context.textAlign = 'left';
-            context.fillText(item.label, x + 15, itemY);
-            
-            // 値
-            context.fillStyle = '#ffffff';
-            context.textAlign = 'right';
-            context.fillText(item.value, x + width - 25, itemY);
-            
-            itemY += lineHeight;
-        }
-        
-        // 泡タイプ別詳細（上位3つ）
-        if (bubbles.typeBreakdown && Object.keys(bubbles.typeBreakdown).length > 0) {
-            // 小見出し
-            context.fillStyle = '#4a90e2';
-            context.font = 'bold 14px Arial';
-            context.textAlign = 'left';
-            context.fillText('上位泡タイプ', x + 15, itemY + 10);
-            
-            // 泡タイプをソート
-            const sortedTypes = Object.entries(bubbles.typeBreakdown)
-                .filter(([type, count]) => count > 0)
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 3);
-            
-            context.font = '12px Arial';
-            itemY += 30;
-            const typeLineHeight = 16;
-            
-            for (const [type, count] of sortedTypes) {
-                // 泡タイプ名
-                context.fillStyle = '#cccccc';
-                context.textAlign = 'left';
-                const typeName = this.getBubbleTypeName(type);
-                context.fillText(typeName, x + 15, itemY);
-                
-                // カウント
-                context.fillStyle = '#ffffff';
-                context.textAlign = 'right';
-                context.fillText(count.toLocaleString(), x + width - 25, itemY);
-                
-                itemY += typeLineHeight;
-            }
-        }
-        
-        return y + height + 20;
-    }
 
-    /**
-     * 泡タイプの日本語名を取得
-     */
-    getBubbleTypeName(type) {
-        const typeNames = {
-            normal: '通常',
-            stone: '石',
-            iron: '鉄',
-            diamond: 'ダイヤ',
-            pink: 'ピンク',
-            poison: '毒',
-            spiky: 'トゲ',
-            rainbow: '虹',
-            clock: '時計',
-            score: 'スコア',
-            electric: '電気',
-            escaping: '逃走',
-            cracked: 'ひび',
-            boss: 'ボス',
-            golden: '金',
-            frozen: '氷',
-            magnetic: '磁力',
-            explosive: '爆発',
-            phantom: '幻影',
-            multiplier: '倍率'
-        };
-        
-        return typeNames[type] || type || 'unknown';
-    }
 
-    /**
-     * コンボ統計セクションを描画
-     */
-    renderComboStatsSection(context, x, y, width, height) {
-        if (!this.statisticsData || !this.statisticsData.combos) {
-            return y + height + 20;
-        }
-        
-        const combos = this.statisticsData.combos;
-        
-        // セクション背景
-        context.fillStyle = '#1a1a2e';
-        context.fillRect(x, y, width - 10, height);
-        
-        // セクション枠線
-        context.strokeStyle = '#333';
-        context.lineWidth = 1;
-        context.strokeRect(x, y, width - 10, height);
-        
-        // セクションタイトル
-        context.fillStyle = '#4a90e2';
-        context.font = 'bold 18px Arial';
-        context.textAlign = 'left';
-        context.fillText('コンボ統計', x + 15, y + 25);
-        
-        // コンボ統計項目
-        const items = [
-            { label: '最高コンボ', value: `${combos.highestCombo}連鎖` },
-            { label: '平均コンボ', value: `${combos.averageCombo}連鎖` },
-            { label: '総コンボ数', value: combos.totalCombos.toLocaleString() },
-            { label: 'コンボブレイク', value: combos.comboBreaks.toLocaleString() },
-            { label: 'コンボ成功率', value: combos.comboSuccessRate }
-        ];
-        
-        context.font = '14px Arial';
-        let itemY = y + 50;
-        const lineHeight = 20;
-        
-        for (const item of items) {
-            // ラベル
-            context.fillStyle = '#cccccc';
-            context.textAlign = 'left';
-            context.fillText(item.label, x + 15, itemY);
-            
-            // 値
-            context.fillStyle = '#ffffff';
-            context.textAlign = 'right';
-            context.fillText(item.value, x + width - 25, itemY);
-            
-            itemY += lineHeight;
-        }
-        
-        // コンボ成功率の視覚的表示
-        if (combos.totalCombos > 0) {
-            const successRate = parseFloat(combos.comboSuccessRate);
-            const barY = itemY + 10;
-            const barWidth = width - 50;
-            const barHeight = 8;
-            
-            // プログレスバー背景
-            context.fillStyle = '#333';
-            context.fillRect(x + 15, barY, barWidth, barHeight);
-            
-            // プログレスバー（成功率）
-            const fillWidth = (successRate / 100) * barWidth;
-            const color = successRate >= 70 ? '#00aa00' : successRate >= 40 ? '#cc6600' : '#cc0000';
-            context.fillStyle = color;
-            context.fillRect(x + 15, barY, fillWidth, barHeight);
-            
-            // パーセンテージテキスト
-            context.fillStyle = '#ffffff';
-            context.font = '12px Arial';
-            context.textAlign = 'center';
-            context.fillText(`${successRate}%`, x + 15 + barWidth / 2, barY + barHeight + 15);
-        }
-        
-        return y + height + 20;
-    }
-
-    /**
-     * ステージ統計セクションを描画
-     */
-    renderStageStatsSection(context, x, y, width, height) {
-        if (!this.statisticsData || !this.statisticsData.stages) {
-            return y + height + 20;
-        }
-        
-        const stages = this.statisticsData.stages;
-        
-        // セクション背景
-        context.fillStyle = '#1a1a2e';
-        context.fillRect(x, y, width - 10, height);
-        
-        // セクション枠線
-        context.strokeStyle = '#333';
-        context.lineWidth = 1;
-        context.strokeRect(x, y, width - 10, height);
-        
-        // セクションタイトル
-        context.fillStyle = '#4a90e2';
-        context.font = 'bold 18px Arial';
-        context.textAlign = 'left';
-        context.fillText('ステージ統計', x + 15, y + 25);
-        
-        // ステージ統計項目
-        const totalStages = stages.completed + stages.failed;
-        const clearRate = totalStages > 0 ? (stages.completed / totalStages * 100).toFixed(1) : 0;
-        
-        const items = [
-            { label: 'クリア数', value: `${stages.completed}回` },
-            { label: '失敗数', value: `${stages.failed}回` },
-            { label: 'クリア率', value: `${clearRate}%` },
-            { label: 'お気に入り', value: this.getStageName(stages.favoriteStage?.stage) || 'なし' }
-        ];
-        
-        context.font = '14px Arial';
-        let itemY = y + 50;
-        const lineHeight = 18;
-        
-        for (let i = 0; i < Math.min(4, items.length); i++) {
-            const item = items[i];
-            
-            // ラベル
-            context.fillStyle = '#cccccc';
-            context.textAlign = 'left';
-            context.fillText(item.label, x + 15, itemY);
-            
-            // 値
-            context.fillStyle = '#ffffff';
-            context.textAlign = 'right';
-            context.fillText(item.value, x + width - 25, itemY);
-            
-            itemY += lineHeight;
-        }
-        
-        // ステージ別詳細（上位3つ）
-        if (stages.stageBreakdown && Object.keys(stages.stageBreakdown).length > 0) {
-            // 小見出し
-            context.fillStyle = '#4a90e2';
-            context.font = 'bold 14px Arial';
-            context.textAlign = 'left';
-            context.fillText('上位ステージ', x + 15, itemY + 10);
-            
-            // ステージをプレイ回数でソート
-            const sortedStages = Object.entries(stages.stageBreakdown)
-                .filter(([stage, data]) => data.played > 0)
-                .sort((a, b) => b[1].played - a[1].played)
-                .slice(0, 3);
-            
-            context.font = '12px Arial';
-            itemY += 30;
-            const stageLineHeight = 16;
-            
-            for (const [stage, data] of sortedStages) {
-                // ステージ名
-                context.fillStyle = '#cccccc';
-                context.textAlign = 'left';
-                const stageName = this.getStageName(stage);
-                context.fillText(stageName, x + 15, itemY);
-                
-                // プレイ回数
-                context.fillStyle = '#ffffff';
-                context.textAlign = 'right';
-                context.fillText(`${data.played}回`, x + width - 25, itemY);
-                
-                itemY += stageLineHeight;
-            }
-        }
-        
-        return y + height + 20;
-    }
-
-    /**
-     * ステージ名の日本語名を取得
-     */
-    getStageName(stage) {
-        const stageNames = {
-            tutorial: 'チュートリアル',
-            normal: '通常',
-            hard: 'ハード',
-            extreme: 'エクストリーム',
-            bonus: 'ボーナス',
-            challenge: 'チャレンジ',
-            special: 'スペシャル',
-            endless: 'エンドレス',
-            awaputi: 'アワプチ',
-            mixed: 'ミックス'
-        };
-        
-        return stageNames[stage] || stage || 'unknown';
-    }
 
     /**
      * 実績データを描画
@@ -2971,11 +2692,156 @@ export class UserInfoScene extends Scene {
      * 現在のタブコンポーネントをアクティブ化
      */
     activateCurrentTab() {
-        if (this.tabComponents && this.tabComponents.has(this.currentTab)) {
-            const component = this.tabComponents.get(this.currentTab);
-            if (component && component.activate) {
-                component.activate();
+        const component = this.getTabComponent(this.currentTab);
+        if (component && component.activate) {
+            component.activate();
+            // アクセス時間を記録（メモリ管理用）
+            component.lastAccessTime = Date.now();
+        }
+    }
+    
+    /**
+     * コンポーネント調整システム - 更新処理
+     * @param {number} deltaTime - 前フレームからの経過時間（ミリ秒）
+     */
+    updateComponentCoordination(deltaTime) {
+        try {
+            // アクティブなタブコンポーネントの更新（遅延読み込み対応）
+            const activeComponent = this.getTabComponent(this.currentTab);
+            if (activeComponent && activeComponent.isActive && activeComponent.update) {
+                activeComponent.update(deltaTime);
+                activeComponent.lastAccessTime = Date.now();
             }
+            
+            // 定期的にメモリクリーンアップを実行（30秒間隔）
+            if (!this.lastCleanupTime || Date.now() - this.lastCleanupTime > 30000) {
+                this.cleanupUnusedComponents();
+                this.lastCleanupTime = Date.now();
+            }
+            
+            // 共有状態の同期
+            this.synchronizeSharedState();
+            
+            // ダイアログマネージャーの更新
+            if (this.dialogManager && this.dialogManager.update) {
+                this.dialogManager.update(deltaTime);
+            }
+            
+            // イベントバスの処理（必要に応じて）
+            if (this.eventBus && this.eventBus.processQueuedEvents) {
+                this.eventBus.processQueuedEvents();
+            }
+            
+        } catch (error) {
+            console.error('Component coordination update failed:', error);
+        }
+    }
+    
+    /**
+     * 共有状態の同期
+     */
+    synchronizeSharedState() {
+        if (!this.sceneState) return;
+        
+        try {
+            // 現在のタブ状態を共有状態に反映
+            this.sceneState.currentTab = this.currentTab;
+            this.sceneState.focusedElement = this.focusedElement;
+            this.sceneState.scrollPosition = this.scrollPosition;
+            
+            // ユーザーデータの同期
+            if (this.userData !== this.sceneState.userData) {
+                this.sceneState.userData = this.userData;
+                this.eventBus.emit('user-data-updated', this.userData);
+            }
+            
+            // 統計データの同期
+            if (this.statisticsData !== this.sceneState.statisticsData) {
+                this.sceneState.statisticsData = this.statisticsData;
+                this.eventBus.emit('statistics-data-updated', this.statisticsData);
+            }
+            
+            // 実績データの同期
+            if (this.achievementsData !== this.sceneState.achievementsData) {
+                this.sceneState.achievementsData = this.achievementsData;
+                this.eventBus.emit('achievements-data-updated', this.achievementsData);
+            }
+            
+            // アクセシビリティ設定の同期
+            if (this.gameEngine.accessibilityManager) {
+                const accessibilitySettings = this.gameEngine.accessibilityManager.getSettings();
+                if (JSON.stringify(accessibilitySettings) !== JSON.stringify(this.sceneState.accessibilitySettings)) {
+                    this.sceneState.accessibilitySettings = accessibilitySettings;
+                    this.eventBus.emit('accessibility-settings-updated', accessibilitySettings);
+                }
+            }
+            
+        } catch (error) {
+            console.error('Shared state synchronization failed:', error);
+        }
+    }
+    
+    /**
+     * コンポーネント間イベント委譲
+     * @param {string} eventType - イベントタイプ
+     * @param {*} eventData - イベントデータ
+     * @returns {boolean} - イベントが処理された場合true
+     */
+    delegateComponentEvent(eventType, eventData) {
+        try {
+            // アクティブなタブコンポーネントに最初に委譲（遅延読み込み対応）
+            const activeComponent = this.getTabComponent(this.currentTab);
+            if (activeComponent && activeComponent.handleEvent) {
+                if (activeComponent.handleEvent(eventType, eventData)) {
+                    activeComponent.lastAccessTime = Date.now();
+                    return true; // イベントが処理された
+                }
+            }
+            
+            // ダイアログマネージャーに委譲
+            if (this.dialogManager && this.dialogManager.handleEvent) {
+                if (this.dialogManager.handleEvent(eventType, eventData)) {
+                    return true;
+                }
+            }
+            
+            // イベントバスにブロードキャスト
+            if (this.eventBus) {
+                this.eventBus.emit(`scene-${eventType}`, eventData);
+            }
+            
+            return false; // イベントが処理されなかった
+            
+        } catch (error) {
+            console.error('Component event delegation failed:', error);
+            return false;
+        }
+    }
+    
+    /**
+     * コンポーネントライフサイクル管理
+     * @param {string} action - 'initialize' | 'activate' | 'deactivate' | 'cleanup'
+     * @param {string} [componentName] - 特定のコンポーネント名（オプション）
+     */
+    manageComponentLifecycle(action, componentName = null) {
+        try {
+            const components = componentName ? 
+                [this.tabComponents.get(componentName)].filter(Boolean) :
+                Array.from(this.tabComponents.values());
+            
+            components.forEach(component => {
+                if (component && typeof component[action] === 'function') {
+                    component[action]();
+                }
+            });
+            
+            // ダイアログマネージャーのライフサイクル管理
+            if (!componentName && this.dialogManager && typeof this.dialogManager[action] === 'function') {
+                this.dialogManager[action]();
+            }
+            
+        } catch (error) {
+            console.error(`Component lifecycle management failed for action: ${action}`, error);
         }
     }
 
@@ -3167,115 +3033,7 @@ export class UserInfoScene extends Scene {
         this.setErrorMessage(`統計データの取得に失敗しました: ${error.message}`);
     }
 
-    /**
-     * 統計フィルターUIの描画
-     */
-    renderStatisticsFilterUI(context, y, width) {
-        const canvas = this.gameEngine.canvas;
-        const filterHeight = 50;
-        const buttonWidth = 100;
-        const buttonHeight = 30;
-        const buttonSpacing = 10;
-        
-        // フィルター背景
-        context.fillStyle = '#F8FAFC';
-        context.fillRect(this.contentPadding, y, width, filterHeight);
-        
-        // フィルター枠線
-        context.strokeStyle = '#E5E7EB';
-        context.lineWidth = 1;
-        context.strokeRect(this.contentPadding, y, width, filterHeight);
-        
-        // フィルタータイトル
-        context.fillStyle = '#374151';
-        context.font = '14px system-ui, -apple-system, sans-serif';
-        context.textAlign = 'left';
-        context.fillText('期間フィルター:', this.contentPadding + 10, y + 20);
-        
-        // 期間フィルターボタン
-        const periods = [
-            { key: 'today', label: '今日' },
-            { key: 'last7days', label: '7日間' },
-            { key: 'last30days', label: '30日間' },
-            { key: 'allTime', label: '全期間' }
-        ];
-        
-        let buttonX = this.contentPadding + 120;
-        periods.forEach((period) => {
-            const isActive = this.currentPeriodFilter === period.key;
-            
-            // ボタン背景
-            context.fillStyle = isActive ? '#3B82F6' : '#FFFFFF';
-            context.fillRect(buttonX, y + 10, buttonWidth, buttonHeight);
-            
-            // ボタン枠線
-            context.strokeStyle = isActive ? '#3B82F6' : '#D1D5DB';
-            context.lineWidth = 1;
-            context.strokeRect(buttonX, y + 10, buttonWidth, buttonHeight);
-            
-            // ボタンテキスト
-            context.fillStyle = isActive ? '#FFFFFF' : '#374151';
-            context.font = '12px system-ui, -apple-system, sans-serif';
-            context.textAlign = 'center';
-            context.fillText(period.label, buttonX + buttonWidth / 2, y + 28);
-            
-            buttonX += buttonWidth + buttonSpacing;
-        });
-        
-        return y + filterHeight;
-    }
 
-    /**
-     * 統計表示モード切り替えUIの描画
-     */
-    renderStatisticsViewModeUI(context, y, width) {
-        const canvas = this.gameEngine.canvas;
-        const modeHeight = 40;
-        const buttonWidth = 80;
-        const buttonHeight = 25;
-        const buttonSpacing = 5;
-        
-        // モード切り替え背景
-        context.fillStyle = '#F8FAFC';
-        context.fillRect(this.contentPadding, y, width, modeHeight);
-        
-        // モード切り替えタイトル
-        context.fillStyle = '#374151';
-        context.font = '12px system-ui, -apple-system, sans-serif';
-        context.textAlign = 'left';
-        context.fillText('表示モード:', this.contentPadding + 10, y + 15);
-        
-        // 表示モードボタン
-        const modes = [
-            { key: 'dashboard', label: 'ダッシュボード' },
-            { key: 'charts', label: 'グラフ' },
-            { key: 'details', label: '詳細' }
-        ];
-        
-        let buttonX = this.contentPadding + 80;
-        modes.forEach((mode) => {
-            const isActive = this.statisticsViewMode === mode.key;
-            
-            // ボタン背景
-            context.fillStyle = isActive ? '#10B981' : '#FFFFFF';
-            context.fillRect(buttonX, y + 8, buttonWidth, buttonHeight);
-            
-            // ボタン枠線
-            context.strokeStyle = isActive ? '#10B981' : '#D1D5DB';
-            context.lineWidth = 1;
-            context.strokeRect(buttonX, y + 8, buttonWidth, buttonHeight);
-            
-            // ボタンテキスト
-            context.fillStyle = isActive ? '#FFFFFF' : '#374151';
-            context.font = '10px system-ui, -apple-system, sans-serif';
-            context.textAlign = 'center';
-            context.fillText(mode.label, buttonX + buttonWidth / 2, y + 22);
-            
-            buttonX += buttonWidth + buttonSpacing;
-        });
-        
-        return y + modeHeight;
-    }
 
     /**
      * 統計ダッシュボードの描画
