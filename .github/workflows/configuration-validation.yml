@@ -3,6 +3,12 @@
 
 name: Game Balance Configuration Validation
 
+# Grant necessary permissions for PR comments
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
 on:
   push:
     branches: [ main, master, develop ]
