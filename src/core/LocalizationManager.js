@@ -14,6 +14,9 @@ export class LocalizationManager {
         // 翻訳ローダーの初期化
         this.translationLoader = new TranslationLoader();
         
+        // 言語変更イベントリスナー
+        this.languageChangeListeners = new Set();
+        
         // 文化的適応設定
         this.culturalAdaptation = {
             enabled: true,
@@ -652,6 +655,8 @@ export class LocalizationManager {
      */
     async setLanguage(language) {
         try {
+            const oldLanguage = this.currentLanguage;
+            
             // 言語がロードされていない場合は読み込み
             if (!this.loadedLanguages.has(language)) {
                 await this.loadLanguageData(language);
@@ -659,6 +664,10 @@ export class LocalizationManager {
             
             if (this.loadedLanguages.has(language)) {
                 this.currentLanguage = language;
+                
+                // 言語変更イベントを通知
+                this.notifyLanguageChange(language, oldLanguage);
+                
                 console.log(`Language set to: ${language}`);
                 return true;
             } else {
@@ -1248,10 +1257,44 @@ export class LocalizationManager {
     }
     
     /**
+     * 言語変更リスナーを追加
+     */
+    addLanguageChangeListener(listener) {
+        if (typeof listener === 'function') {
+            this.languageChangeListeners.add(listener);
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * 言語変更リスナーを削除
+     */
+    removeLanguageChangeListener(listener) {
+        return this.languageChangeListeners.delete(listener);
+    }
+    
+    /**
+     * 言語変更イベントを通知
+     */
+    notifyLanguageChange(newLanguage, oldLanguage) {
+        for (const listener of this.languageChangeListeners) {
+            try {
+                listener(newLanguage, oldLanguage);
+            } catch (error) {
+                console.warn('Language change listener error:', error);
+            }
+        }
+    }
+    
+    /**
      * クリーンアップ
      */
     cleanup() {
         // アクセシビリティ翻訳データのクリア
         this.accessibilityTranslations.clear();
+        
+        // 言語変更リスナーのクリア
+        this.languageChangeListeners.clear();
     }
 }
