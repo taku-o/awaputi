@@ -4,24 +4,24 @@
 
 以下のタスクは段階的に実装し、各段階で既存システムとの統合テストを行います。
 
-- [ ] 1. データ管理基盤の実装
+- [x] 1. データ管理基盤の実装
   - DataManagerクラスの基本構造を作成
   - 既存のPlayerData、SettingsManager、StatisticsManagerとの統合インターフェースを実装
   - _要件: 1.1, 7.1, 7.2, 7.3_
 
-- [ ] 1.1 DataManagerクラスの基本実装
+- [x] 1.1 DataManagerクラスの基本実装
   - src/core/DataManager.jsファイルを作成
   - 基本的なコンストラクタとプロパティを実装
   - 既存システムとの連携メソッドの骨格を作成
   - _要件: 1.1, 7.1_
 
-- [ ] 1.2 DataStorageアダプターの実装
+- [x] 1.2 DataStorageアダプターの実装
   - src/core/DataStorage.jsファイルを作成
   - LocalStorageAdapterとIndexedDBAdapterの基本実装
   - ストレージフォールバック機能を実装
   - _要件: 1.1, 6.4_
 
-- [ ] 1.3 既存システム統合インターフェースの実装
+- [x] 1.3 既存システム統合インターフェースの実装
   - PlayerData、SettingsManager、StatisticsManagerとの連携コードを実装
   - データ形式の統一化処理を実装
   - 後方互換性を確保するアダプターを作成
