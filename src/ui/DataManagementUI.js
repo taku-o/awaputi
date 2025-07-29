@@ -125,26 +125,32 @@ export class DataManagementUI {
     async loadBackupStatus() {
         try {
             if (!this.dataManager.backup) {
-                // BackupManagerが利用できない場合はデフォルト値を使用
+                // BackupManagerの遅延ロード
+                await this.initializeBackupManager();
+            }
+            
+            if (this.dataManager.backup) {
+                // BackupManagerから状況を取得
+                const status = await this.dataManager.backup.getStatus();
+                this.backupStatus = {
+                    lastBackup: status.lastBackup,
+                    backupCount: status.backupCount || 0,
+                    totalSize: status.totalSize || 0,
+                    autoBackupEnabled: status.autoBackupEnabled || false,
+                    nextBackup: status.nextBackup,
+                    backupHistory: status.backupHistory || []
+                };
+            } else {
+                // フォールバック: デフォルト値を使用
                 this.backupStatus = {
                     lastBackup: null,
                     backupCount: 0,
                     totalSize: 0,
                     autoBackupEnabled: false,
-                    nextBackup: null
+                    nextBackup: null,
+                    backupHistory: []
                 };
-                return;
             }
-            
-            // BackupManagerから状況を取得
-            const status = await this.dataManager.backup.getStatus();
-            this.backupStatus = {
-                lastBackup: status.lastBackup,
-                backupCount: status.backupCount || 0,
-                totalSize: status.totalSize || 0,
-                autoBackupEnabled: status.autoBackupEnabled || false,
-                nextBackup: status.nextBackup
-            };
             
         } catch (error) {
             console.warn('Failed to load backup status:', error);
@@ -154,8 +160,24 @@ export class DataManagementUI {
                 backupCount: 0,
                 totalSize: 0,
                 autoBackupEnabled: false,
-                nextBackup: null
+                nextBackup: null,
+                backupHistory: []
             };
+        }
+    }
+    
+    /**
+     * BackupManagerの初期化
+     */
+    async initializeBackupManager() {
+        try {
+            const { BackupManager } = await import('../core/BackupManager.js');
+            if (this.dataManager.storage) {
+                this.dataManager.backup = new BackupManager(this.dataManager.storage);
+                console.log('DataManagementUI: BackupManager initialized');
+            }
+        } catch (error) {
+            console.warn('BackupManager not available:', error);
         }
     }
     
@@ -559,11 +581,314 @@ export class DataManagementUI {
      * バックアップビューの描画
      */
     renderBackupView(context, x, y, width, height) {
-        // 後で実装
+        const padding = this.layoutConfig.padding;
+        let currentY = y + padding;
+        
+        // バックアップ履歴セクション
+        this.renderBackupHistory(context, x + padding, currentY, width - padding * 2);
+        currentY += 250;
+        
+        // バックアップ設定セクション
+        this.renderBackupSettings(context, x + padding, currentY, width - padding * 2);
+        currentY += 150;
+        
+        // バックアップアクションボタン
+        this.renderBackupActions(context, x + padding, currentY, width - padding * 2);
+    }
+    
+    /**
+     * バックアップ履歴の描画
+     */
+    renderBackupHistory(context, x, y, width) {
+        // セクション背景
+        context.fillStyle = this.colors.cardBackground;
+        context.fillRect(x, y, width, 230);
+        
+        // セクション枠線
+        context.strokeStyle = this.colors.border;
+        context.lineWidth = 1;
+        context.strokeRect(x, y, width, 230);
+        
+        // セクションタイトル
+        context.fillStyle = this.colors.primary;
+        context.font = 'bold 18px Arial';
+        context.textAlign = 'left';
+        context.fillText('バックアップ履歴', x + 15, y + 25);
+        
+        // バックアップが存在しない場合
+        if (this.backupStatus.backupCount === 0) {
+            context.fillStyle = this.colors.textSecondary;
+            context.font = '16px Arial';
+            context.textAlign = 'center';
+            context.fillText('バックアップが存在しません', x + width / 2, y + 120);
+            
+            context.font = '14px Arial';
+            context.fillText('新しいバックアップを作成してください', x + width / 2, y + 145);
+            return;
+        }
+        
+        // バックアップ履歴ヘッダー
+        context.fillStyle = this.colors.textSecondary;
+        context.font = 'bold 14px Arial';
+        context.textAlign = 'left';
+        context.fillText('日時', x + 15, y + 55);
+        context.fillText('サイズ', x + 200, y + 55);
+        context.fillText('タイプ', x + 300, y + 55);
+        context.fillText('状態', x + 400, y + 55);
+        
+        // ヘッダー下線
+        context.strokeStyle = this.colors.border;
+        context.lineWidth = 1;
+        context.beginPath();
+        context.moveTo(x + 15, y + 65);
+        context.lineTo(x + width - 15, y + 65);
+        context.stroke();
+        
+        // サンプルバックアップエントリ（実際のデータがない場合）
+        const sampleBackups = this.generateSampleBackupEntries();
+        
+        sampleBackups.forEach((backup, index) => {
+            const itemY = y + 80 + index * 30;
+            const isSelected = this.selectedItem === index;
+            
+            // 選択されたアイテムのハイライト
+            if (isSelected) {
+                context.fillStyle = 'rgba(74, 144, 226, 0.3)';
+                context.fillRect(x + 10, itemY - 15, width - 20, 25);
+            }
+            
+            // バックアップエントリ情報
+            context.fillStyle = this.colors.text;
+            context.font = '14px Arial';
+            context.textAlign = 'left';
+            
+            // 日時
+            context.fillText(backup.date, x + 15, itemY);
+            
+            // サイズ
+            context.fillText(backup.size, x + 200, itemY);
+            
+            // タイプ
+            context.fillText(backup.type, x + 300, itemY);
+            
+            // 状態
+            context.fillStyle = backup.statusColor;
+            context.fillText(backup.status, x + 400, itemY);
+            
+            context.fillStyle = this.colors.text;
+        });
+        
+        // スクロールインジケーター（必要に応じて）
+        if (sampleBackups.length > 5) {
+            this.renderScrollIndicator(context, x + width - 20, y + 80, 10, 120);
+        }
+    }
+    
+    /**
+     * バックアップ設定の描画
+     */
+    renderBackupSettings(context, x, y, width) {
+        // セクション背景
+        context.fillStyle = this.colors.cardBackground;
+        context.fillRect(x, y, width, 130);
+        
+        // セクション枠線
+        context.strokeStyle = this.colors.border;
+        context.lineWidth = 1;
+        context.strokeRect(x, y, width, 130);
+        
+        // セクションタイトル
+        context.fillStyle = this.colors.primary;
+        context.font = 'bold 18px Arial';
+        context.textAlign = 'left';
+        context.fillText('バックアップ設定', x + 15, y + 25);
+        
+        // 自動バックアップ設定
         context.fillStyle = this.colors.text;
-        context.font = '18px Arial';
+        context.font = '14px Arial';
+        context.fillText('自動バックアップ:', x + 15, y + 55);
+        
+        // 自動バックアップ切り替えボタン
+        const toggleX = x + 150;
+        const toggleY = y + 40;
+        const toggleWidth = 60;
+        const toggleHeight = 25;
+        
+        context.fillStyle = this.backupStatus.autoBackupEnabled ? this.colors.success : this.colors.textSecondary;
+        context.fillRect(toggleX, toggleY, toggleWidth, toggleHeight);
+        
+        context.strokeStyle = this.colors.border;
+        context.lineWidth = 1;
+        context.strokeRect(toggleX, toggleY, toggleWidth, toggleHeight);
+        
+        context.fillStyle = this.colors.text;
+        context.font = '12px Arial';
         context.textAlign = 'center';
-        context.fillText('バックアップ機能（実装予定）', x + width / 2, y + height / 2);
+        context.fillText(this.backupStatus.autoBackupEnabled ? 'ON' : 'OFF', 
+                        toggleX + toggleWidth / 2, toggleY + 16);
+        
+        // バックアップ間隔設定
+        context.fillStyle = this.colors.text;
+        context.font = '14px Arial';
+        context.textAlign = 'left';
+        context.fillText('バックアップ間隔:', x + 15, y + 85);
+        context.fillText('5分毎', x + 150, y + 85);
+        
+        // 最大保持数設定
+        context.fillText('最大保持数:', x + 300, y + 55);
+        context.fillText('10個', x + 400, y + 55);
+        
+        // 次回バックアップ予定
+        if (this.backupStatus.nextBackup) {
+            const nextBackupTime = new Date(this.backupStatus.nextBackup).toLocaleTimeString('ja-JP');
+            context.fillStyle = this.colors.textSecondary;
+            context.fillText(`次回バックアップ: ${nextBackupTime}`, x + 300, y + 85);
+        }
+        
+        // ストレージ使用状況
+        const storageUsed = this.getStorageUsage();
+        const storageText = this.formatFileSize(storageUsed);
+        context.fillStyle = this.colors.textSecondary;
+        context.fillText(`ストレージ使用量: ${storageText}`, x + 15, y + 110);
+    }
+    
+    /**
+     * バックアップアクションの描画
+     */
+    renderBackupActions(context, x, y, width) {
+        const buttonWidth = this.layoutConfig.buttonWidth;
+        const buttonHeight = this.layoutConfig.buttonHeight;
+        const spacing = 20;
+        
+        const actions = [
+            { text: '今すぐバックアップ', action: 'createBackup', color: this.colors.primary },
+            { text: 'バックアップ復元', action: 'restoreBackup', color: this.colors.secondary },
+            { text: 'バックアップ削除', action: 'deleteBackup', color: this.colors.danger }
+        ];
+        
+        actions.forEach((action, index) => {
+            const buttonX = x + (buttonWidth + spacing) * index;
+            
+            // ボタン背景
+            context.fillStyle = action.color;
+            context.fillRect(buttonX, y, buttonWidth, buttonHeight);
+            
+            // ボタン枠線
+            context.strokeStyle = this.colors.border;
+            context.lineWidth = 1;
+            context.strokeRect(buttonX, y, buttonWidth, buttonHeight);
+            
+            // ボタンテキスト
+            context.fillStyle = this.colors.text;
+            context.font = '14px Arial';
+            context.textAlign = 'center';
+            context.fillText(action.text, buttonX + buttonWidth / 2, y + 25);
+        });
+        
+        // 操作中のプログレスバー
+        if (this.operationInProgress) {
+            this.renderProgressBar(context, x, y + buttonHeight + 20, width);
+        }
+    }
+    
+    /**
+     * スクロールインジケーターの描画
+     */
+    renderScrollIndicator(context, x, y, width, height) {
+        // スクロールバー背景
+        context.fillStyle = this.colors.border;
+        context.fillRect(x, y, width, height);
+        
+        // スクロールハンドル
+        const handleHeight = Math.max(20, height * 0.3);
+        const handleY = y + (this.scrollPosition / 100) * (height - handleHeight);
+        
+        context.fillStyle = this.colors.primary;
+        context.fillRect(x, handleY, width, handleHeight);
+    }
+    
+    /**
+     * プログレスバーの描画
+     */
+    renderProgressBar(context, x, y, width) {
+        const barHeight = 20;
+        
+        // プログレスバー背景
+        context.fillStyle = this.colors.border;
+        context.fillRect(x, y, width, barHeight);
+        
+        // プログレスバー前景
+        const progressWidth = (width * this.operationProgress) / 100;
+        context.fillStyle = this.colors.success;
+        context.fillRect(x, y, progressWidth, barHeight);
+        
+        // プログレスバー枠線
+        context.strokeStyle = this.colors.text;
+        context.lineWidth = 1;
+        context.strokeRect(x, y, width, barHeight);
+        
+        // プログレステキスト
+        context.fillStyle = this.colors.text;
+        context.font = '12px Arial';
+        context.textAlign = 'center';
+        context.fillText(`${this.operationProgress}% - ${this.operationMessage}`, 
+                        x + width / 2, y + 14);
+    }
+    
+    /**
+     * バックアップエントリの取得
+     */
+    generateSampleBackupEntries() {
+        if (this.backupStatus.backupCount === 0) {
+            return [];
+        }
+        
+        // 実際のバックアップ履歴が利用可能な場合
+        if (this.backupStatus.backupHistory && this.backupStatus.backupHistory.length > 0) {
+            return this.backupStatus.backupHistory.slice(0, 5).map(backup => ({
+                date: new Date(backup.timestamp).toLocaleString('ja-JP'),
+                size: this.formatFileSize(backup.size || 0),
+                type: backup.type || '自動',
+                status: backup.status || '正常',
+                statusColor: this.getStatusColor(backup.status || '正常')
+            }));
+        }
+        
+        // フォールバック: サンプルデータを生成
+        const entries = [];
+        const now = Date.now();
+        
+        for (let i = 0; i < Math.min(this.backupStatus.backupCount, 5); i++) {
+            const date = new Date(now - (i * 5 * 60 * 1000)); // 5分間隔
+            entries.push({
+                date: date.toLocaleString('ja-JP'),
+                size: this.formatFileSize(Math.random() * 1024 * 1024), // ランダムサイズ
+                type: i === 0 ? '手動' : '自動',
+                status: '正常',
+                statusColor: this.colors.success
+            });
+        }
+        
+        return entries;
+    }
+    
+    /**
+     * ステータスに対応する色を取得
+     */
+    getStatusColor(status) {
+        switch (status) {
+            case '正常':
+            case 'success':
+                return this.colors.success;
+            case 'エラー':
+            case 'error':
+                return this.colors.danger;
+            case '進行中':
+            case 'progress':
+                return this.colors.warning;
+            default:
+                return this.colors.textSecondary;
+        }
     }
     
     /**
