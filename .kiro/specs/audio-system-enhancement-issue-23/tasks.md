@@ -6,7 +6,7 @@
   - プロシージャルBGM生成の基本アルゴリズム実装
   - _Requirements: 1.1, 1.2, 1.6_
 
-- [ ] 1.1 BGMSystemクラスの基本構造を実装
+- [x] 1.1 BGMSystemクラスの基本構造を実装
   - BGMSystemクラスの作成とコンストラクタ実装
   - AudioManagerとの連携インターフェース定義
   - BGMトラック管理用のMapとプロパティ初期化
