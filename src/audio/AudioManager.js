@@ -1644,6 +1644,62 @@ export class AudioManager {
     }
     
     /**
+     * 音響品質を設定（AudioController経由）
+     * @param {number} quality - 品質レベル (0-1)
+     */
+    async setAudioQuality(quality) {
+        if (this.audioController) {
+            return await this.audioController.setAudioQuality(quality);
+        }
+        console.warn('AudioController is not available');
+    }
+    
+    /**
+     * 現在の音響品質を取得（AudioController経由）
+     * @returns {number} 品質レベル (0-1)
+     */
+    getAudioQuality() {
+        if (this.audioController) {
+            return this.audioController.getAudioQuality();
+        }
+        console.warn('AudioController is not available');
+        return 1.0;
+    }
+    
+    /**
+     * パフォーマンスメトリクスを取得（AudioController経由）
+     * @returns {Object} パフォーマンスメトリクス
+     */
+    getAudioPerformanceMetrics() {
+        if (this.audioController) {
+            return this.audioController.getPerformanceMetrics();
+        }
+        console.warn('AudioController is not available');
+        return null;
+    }
+    
+    /**
+     * 音響品質の自動調整を有効/無効化（AudioController経由）
+     * @param {boolean} enabled - 有効フラグ
+     */
+    setAutomaticAudioQualityAdjustment(enabled) {
+        if (this.audioController) {
+            return this.audioController.setAutomaticQualityAdjustment(enabled);
+        }
+        console.warn('AudioController is not available');
+    }
+    
+    /**
+     * パフォーマンス監視の強制更新（AudioController経由）
+     */
+    forceAudioPerformanceUpdate() {
+        if (this.audioController) {
+            return this.audioController.forcePerformanceUpdate();
+        }
+        console.warn('AudioController is not available');
+    }
+    
+    /**
      * リソースの解放
      */
     dispose() {

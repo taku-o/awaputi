@@ -102,7 +102,7 @@
   - 音響品質の動的調整機能
   - _Requirements: 3.1, 3.2, 3.3, 3.5_
 
-- [ ] 5.1 AudioControllerクラスの基本機能を実装
+- [x] 5.1 AudioControllerクラスの基本機能を実装
   - AudioControllerクラスの作成
   - 音量制御用GainNodeの階層構造実装
   - リアルタイム音量調整とConfigurationManager連携

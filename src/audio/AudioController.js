@@ -49,6 +49,39 @@ export class AudioController {
         // 設定監視のID管理
         this.configWatchers = new Set();
         
+        // 音響品質動的調整
+        this.qualityManager = {
+            currentQuality: 1.0,
+            targetQuality: 1.0,
+            adjustmentInProgress: false,
+            performanceMetrics: {
+                audioProcessingLoad: 0,
+                activeAudioNodes: 0,
+                memoryUsage: 0,
+                cpuUsage: 0
+            },
+            qualityLevels: {
+                low: 0.3,
+                medium: 0.6,
+                high: 1.0
+            },
+            adjustmentTimer: null,
+            monitoringEnabled: true
+        };
+        
+        // パフォーマンス監視
+        this.performanceMonitor = {
+            lastUpdateTime: 0,
+            updateInterval: 1000, // 1秒間隔
+            metrics: new Map(),
+            thresholds: {
+                cpuHigh: 0.8,
+                memoryHigh: 0.8,
+                audioNodesHigh: 20,
+                processingLoadHigh: 0.7
+            }
+        };
+        
         this.initialize();
     }
     
@@ -72,6 +105,12 @@ export class AudioController {
             
             // 設定変更の監視を設定
             this._setupConfigWatchers();
+            
+            // 音響品質動的調整の初期化
+            this._initializeQualityAdjustment();
+            
+            // パフォーマンス監視の開始
+            this._startPerformanceMonitoring();
             
             console.log('AudioController initialized successfully');
         } catch (error) {
@@ -262,6 +301,29 @@ export class AudioController {
                 this.setMute('master', newValue);
             });
             if (mutedWatcher) this.configWatchers.add(mutedWatcher);
+            
+            // 音響品質の監視
+            const audioQualityWatcher = this.configManager.watch('performance', 'quality.audioQuality', (newValue) => {
+                this.setAudioQuality(newValue);
+            });
+            if (audioQualityWatcher) this.configWatchers.add(audioQualityWatcher);
+            
+            // パフォーマンスレベルの監視
+            const performanceLevelWatcher = this.configManager.watch('performance', 'optimization.performanceLevel', (newValue) => {
+                this._applyPerformanceLevel(newValue);
+            });
+            if (performanceLevelWatcher) this.configWatchers.add(performanceLevelWatcher);
+            
+            // 適応モードの監視
+            const adaptiveModeWatcher = this.configManager.watch('performance', 'optimization.adaptiveMode', (newValue) => {
+                this.qualityManager.monitoringEnabled = newValue;
+                if (!newValue) {
+                    this._stopPerformanceMonitoring();
+                } else {
+                    this._startPerformanceMonitoring();
+                }
+            });
+            if (adaptiveModeWatcher) this.configWatchers.add(adaptiveModeWatcher);
             
             console.log('Config watchers set up successfully');
         } catch (error) {
@@ -591,11 +653,601 @@ export class AudioController {
         };
     }
     
+    // ================================
+    // 音響品質動的調整機能
+    // ================================
+    
+    /**
+     * 音響品質動的調整の初期化
+     * @private
+     */
+    _initializeQualityAdjustment() {
+        try {
+            // 設定から初期品質を読み込み
+            const audioQuality = this.configManager.get('performance', 'quality.audioQuality') || 1.0;
+            const performanceLevel = this.configManager.get('performance', 'optimization.performanceLevel') || 'high';
+            const adaptiveMode = this.configManager.get('performance', 'optimization.adaptiveMode') || true;
+            
+            this.qualityManager.currentQuality = audioQuality;
+            this.qualityManager.targetQuality = audioQuality;
+            this.qualityManager.monitoringEnabled = adaptiveMode;
+            
+            // パフォーマンスレベルに応じた初期設定
+            this._applyPerformanceLevel(performanceLevel);
+            
+            console.log(`Quality adjustment initialized: quality=${audioQuality}, level=${performanceLevel}, adaptive=${adaptiveMode}`);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: '_initializeQualityAdjustment'
+            });
+        }
+    }
+    
+    /**
+     * パフォーマンス監視の開始
+     * @private
+     */
+    _startPerformanceMonitoring() {
+        try {
+            if (!this.qualityManager.monitoringEnabled) {
+                return;
+            }
+            
+            // 既存の監視を停止
+            this._stopPerformanceMonitoring();
+            
+            // 監視間隔を設定から取得
+            const interval = this.configManager.get('performance', 'optimization.optimizationInterval') || 1000;
+            this.performanceMonitor.updateInterval = interval;
+            
+            // 定期的なパフォーマンス監視を開始
+            this.performanceMonitor.intervalId = setInterval(() => {
+                this._updatePerformanceMetrics();
+                this._evaluateQualityAdjustment();
+            }, this.performanceMonitor.updateInterval);
+            
+            console.log(`Performance monitoring started (interval: ${interval}ms)`);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: '_startPerformanceMonitoring'
+            });
+        }
+    }
+    
+    /**
+     * パフォーマンス監視の停止
+     * @private
+     */
+    _stopPerformanceMonitoring() {
+        try {
+            if (this.performanceMonitor.intervalId) {
+                clearInterval(this.performanceMonitor.intervalId);
+                this.performanceMonitor.intervalId = null;
+            }
+            
+            // 品質調整タイマーも停止
+            if (this.qualityManager.adjustmentTimer) {
+                clearTimeout(this.qualityManager.adjustmentTimer);
+                this.qualityManager.adjustmentTimer = null;
+            }
+            
+            console.log('Performance monitoring stopped');
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: '_stopPerformanceMonitoring'
+            });
+        }
+    }
+    
+    /**
+     * パフォーマンスメトリクスの更新
+     * @private
+     */
+    _updatePerformanceMetrics() {
+        try {
+            const currentTime = performance.now();
+            
+            // 音響処理負荷の測定
+            const audioProcessingLoad = this._measureAudioProcessingLoad();
+            
+            // アクティブなオーディオノード数の計測
+            const activeAudioNodes = this._countActiveAudioNodes();
+            
+            // メモリ使用量の推定
+            const memoryUsage = this._estimateAudioMemoryUsage();
+            
+            // CPU使用率の推定（簡易的）
+            const cpuUsage = this._estimateAudioCPUUsage();
+            
+            // メトリクスを更新
+            this.qualityManager.performanceMetrics = {
+                audioProcessingLoad,
+                activeAudioNodes,
+                memoryUsage,
+                cpuUsage,
+                timestamp: currentTime
+            };
+            
+            // メトリクス履歴に追加
+            this.performanceMonitor.metrics.set(currentTime, {
+                ...this.qualityManager.performanceMetrics
+            });
+            
+            // 古いメトリクスを削除（最大30秒間保持）
+            const maxAge = 30000; // 30秒
+            const cutoffTime = currentTime - maxAge;
+            for (const [timestamp] of this.performanceMonitor.metrics) {
+                if (timestamp < cutoffTime) {
+                    this.performanceMonitor.metrics.delete(timestamp);
+                } else {
+                    break; // Map は挿入順で順序が保証されているため
+                }
+            }
+            
+            this.performanceMonitor.lastUpdateTime = currentTime;
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: '_updatePerformanceMetrics'
+            });
+        }
+    }
+    
+    /**
+     * 音響処理負荷を測定
+     * @returns {number} 処理負荷 (0-1)
+     * @private
+     */
+    _measureAudioProcessingLoad() {
+        try {
+            if (!this.audioContext) return 0;
+            
+            // 現在の音響処理負荷を推定
+            // Web Audio APIの制限により、実際のCPU使用率は取得できないため推定値を使用
+            const activeNodes = this._countActiveAudioNodes();
+            const maxNodes = 50; // 想定される最大ノード数
+            
+            const baseLoad = Math.min(activeNodes / maxNodes, 1.0);
+            
+            // ランダムファクターを追加してより現実的な値にする
+            const randomFactor = 0.1 * (Math.random() - 0.5);
+            
+            return Math.max(0, Math.min(1, baseLoad + randomFactor));
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: '_measureAudioProcessingLoad'
+            });
+            return 0;
+        }
+    }
+    
+    /**
+     * アクティブなオーディオノード数を計測
+     * @returns {number} ノード数
+     * @private
+     */
+    _countActiveAudioNodes() {
+        try {
+            let nodeCount = 0;
+            
+            // GainNodeの数
+            nodeCount += Object.values(this.gainNodes).filter(node => node !== null).length;
+            
+            // AudioManagerのアクティブソース数を推定
+            if (this.audioManager && this.audioManager.activeSources) {
+                nodeCount += this.audioManager.activeSources.size;
+            }
+            
+            // BGMシステムのノード数を推定
+            if (this.audioManager && this.audioManager.bgmSystem) {
+                nodeCount += 5; // BGM再生用の推定ノード数
+            }
+            
+            return nodeCount;
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: '_countActiveAudioNodes'
+            });
+            return 0;
+        }
+    }
+    
+    /**
+     * 音響メモリ使用量を推定
+     * @returns {number} メモリ使用量 (0-1)
+     * @private
+     */
+    _estimateAudioMemoryUsage() {
+        try {
+            // Web Audio APIのメモリ使用量は直接取得できないため推定
+            const activeNodes = this._countActiveAudioNodes();
+            const estimatedMemoryPerNode = 0.1; // MB per node (推定値)
+            const totalEstimatedMemory = activeNodes * estimatedMemoryPerNode;
+            
+            // メモリ制限を設定から取得
+            const memoryLimit = this.configManager.get('performance', 'limits.memoryThreshold') || 100; // MB
+            
+            return Math.min(totalEstimatedMemory / memoryLimit, 1.0);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: '_estimateAudioMemoryUsage'
+            });
+            return 0;
+        }
+    }
+    
+    /**
+     * 音響CPU使用率を推定
+     * @returns {number} CPU使用率 (0-1)
+     * @private
+     */
+    _estimateAudioCPUUsage() {
+        try {
+            // 簡易的なCPU使用率推定
+            const processingLoad = this.qualityManager.performanceMetrics.audioProcessingLoad;
+            const nodeLoad = this.qualityManager.performanceMetrics.activeAudioNodes / 20; // 20ノードで50%と仮定
+            
+            return Math.min((processingLoad + nodeLoad) / 2, 1.0);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: '_estimateAudioCPUUsage'
+            });
+            return 0;
+        }
+    }
+    
+    /**
+     * 品質調整の評価と実行
+     * @private
+     */
+    _evaluateQualityAdjustment() {
+        try {
+            if (!this.qualityManager.monitoringEnabled || this.qualityManager.adjustmentInProgress) {
+                return;
+            }
+            
+            const metrics = this.qualityManager.performanceMetrics;
+            const thresholds = this.performanceMonitor.thresholds;
+            
+            // パフォーマンス問題の検出
+            const hasPerformanceIssue = 
+                metrics.cpuUsage > thresholds.cpuHigh ||
+                metrics.memoryUsage > thresholds.memoryHigh ||
+                metrics.activeAudioNodes > thresholds.audioNodesHigh ||
+                metrics.audioProcessingLoad > thresholds.processingLoadHigh;
+            
+            // 目標品質を決定
+            let targetQuality = this.qualityManager.currentQuality;
+            
+            if (hasPerformanceIssue) {
+                // パフォーマンス問題がある場合は品質を下げる
+                if (metrics.cpuUsage > 0.9 || metrics.memoryUsage > 0.9) {
+                    targetQuality = this.qualityManager.qualityLevels.low;
+                } else if (metrics.cpuUsage > 0.8 || metrics.memoryUsage > 0.8) {
+                    targetQuality = this.qualityManager.qualityLevels.medium;
+                }
+            } else {
+                // パフォーマンスに余裕がある場合は品質を上げる
+                if (metrics.cpuUsage < 0.4 && metrics.memoryUsage < 0.4) {
+                    targetQuality = this.qualityManager.qualityLevels.high;
+                } else if (metrics.cpuUsage < 0.6 && metrics.memoryUsage < 0.6) {
+                    targetQuality = this.qualityManager.qualityLevels.medium;
+                }
+            }
+            
+            // 品質調整が必要な場合のみ実行
+            if (Math.abs(targetQuality - this.qualityManager.currentQuality) > 0.1) {
+                this._adjustAudioQuality(targetQuality);
+            }
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: '_evaluateQualityAdjustment'
+            });
+        }
+    }
+    
+    /**
+     * 音響品質を調整
+     * @param {number} targetQuality - 目標品質 (0-1)
+     * @private
+     */
+    async _adjustAudioQuality(targetQuality) {
+        try {
+            if (this.qualityManager.adjustmentInProgress) {
+                return;
+            }
+            
+            this.qualityManager.adjustmentInProgress = true;
+            this.qualityManager.targetQuality = targetQuality;
+            
+            const currentQuality = this.qualityManager.currentQuality;
+            const qualityDifference = targetQuality - currentQuality;
+            const adjustmentSteps = 10;
+            const stepSize = qualityDifference / adjustmentSteps;
+            const stepDelay = 100; // ms
+            
+            console.log(`Adjusting audio quality: ${currentQuality.toFixed(2)} -> ${targetQuality.toFixed(2)}`);
+            
+            // 段階的に品質を調整
+            for (let step = 1; step <= adjustmentSteps; step++) {
+                const intermediateQuality = currentQuality + (stepSize * step);
+                
+                // 品質設定を適用
+                await this._applyQualitySettings(intermediateQuality);
+                
+                // 次のステップまで待機
+                if (step < adjustmentSteps) {
+                    await new Promise(resolve => setTimeout(resolve, stepDelay));
+                }
+            }
+            
+            // 最終品質を設定に保存
+            this.configManager.set('performance', 'quality.audioQuality', targetQuality);
+            this.qualityManager.currentQuality = targetQuality;
+            
+            console.log(`Audio quality adjustment completed: ${targetQuality.toFixed(2)}`);
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: '_adjustAudioQuality',
+                targetQuality: targetQuality
+            });
+        } finally {
+            this.qualityManager.adjustmentInProgress = false;
+        }
+    }
+    
+    /**
+     * 品質設定を適用
+     * @param {number} quality - 品質レベル (0-1)
+     * @private
+     */
+    async _applyQualitySettings(quality) {
+        try {
+            // SoundEffectSystemの品質設定を調整
+            if (this.audioManager.soundEffectSystem) {
+                // バリエーション数を品質に応じて調整
+                const maxVariations = Math.ceil(quality * 5); // 最大5バリエーション
+                if (typeof this.audioManager.soundEffectSystem.setMaxVariations === 'function') {
+                    this.audioManager.soundEffectSystem.setMaxVariations(maxVariations);
+                }
+                
+                // 効果音の品質を調整
+                if (typeof this.audioManager.soundEffectSystem.setQuality === 'function') {
+                    this.audioManager.soundEffectSystem.setQuality(quality);
+                }
+            }
+            
+            // BGMSystemの品質設定を調整
+            if (this.audioManager.bgmSystem) {
+                // BGM生成品質を調整
+                if (typeof this.audioManager.bgmSystem.setQuality === 'function') {
+                    this.audioManager.bgmSystem.setQuality(quality);
+                }
+            }
+            
+            // 低品質モードでの処理軽減
+            if (quality < 0.5) {
+                // 一部のエフェクトを無効化
+                this._disableNonEssentialEffects();
+            } else {
+                // エフェクトを再有効化
+                this._enableAllEffects();
+            }
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: '_applyQualitySettings',
+                quality: quality
+            });
+        }
+    }
+    
+    /**
+     * 非必須エフェクトを無効化
+     * @private
+     */
+    _disableNonEssentialEffects() {
+        try {
+            // リバーブの無効化
+            if (this.audioManager.reverbConvolver) {
+                this.audioManager.bypassReverb();
+            }
+            
+            // コンプレッサーの軽量化
+            if (this.audioManager.compressor) {
+                this.audioManager.compressor.threshold.value = -30; // 軽い圧縮
+                this.audioManager.compressor.ratio.value = 2;
+            }
+            
+            console.log('Non-essential audio effects disabled for performance');
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: '_disableNonEssentialEffects'
+            });
+        }
+    }
+    
+    /**
+     * 全エフェクトを有効化
+     * @private
+     */
+    _enableAllEffects() {
+        try {
+            // リバーブの有効化
+            if (this.audioManager.reverbConvolver && this.configManager.get('audio', 'effects.reverb')) {
+                this.audioManager.reconnectReverb();
+            }
+            
+            // コンプレッサーの復元
+            if (this.audioManager.compressor) {
+                const compressorConfig = this.audioManager.audioConfig.getCompressorConfig();
+                this.audioManager.compressor.threshold.value = compressorConfig.threshold;
+                this.audioManager.compressor.ratio.value = compressorConfig.ratio;
+            }
+            
+            console.log('All audio effects enabled');
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: '_enableAllEffects'
+            });
+        }
+    }
+    
+    /**
+     * パフォーマンスレベルを適用
+     * @param {string} level - パフォーマンスレベル ('low', 'medium', 'high')
+     * @private
+     */
+    _applyPerformanceLevel(level) {
+        try {
+            const qualityPresets = {
+                low: this.configManager.get('performance', 'quality.presets.low'),
+                medium: this.configManager.get('performance', 'quality.presets.medium'),
+                high: this.configManager.get('performance', 'quality.presets.high')
+            };
+            
+            const preset = qualityPresets[level];
+            if (!preset) {
+                console.warn(`Unknown performance level: ${level}`);
+                return;
+            }
+            
+            // 音響品質を設定
+            this.setAudioQuality(preset.audioQuality);
+            
+            // 監視間隔を調整
+            if (level === 'low') {
+                this.performanceMonitor.updateInterval = 2000; // 2秒間隔
+            } else if (level === 'medium') {
+                this.performanceMonitor.updateInterval = 1500; // 1.5秒間隔
+            } else {
+                this.performanceMonitor.updateInterval = 1000; // 1秒間隔
+            }
+            
+            // 閾値を調整
+            if (level === 'low') {
+                this.performanceMonitor.thresholds.cpuHigh = 0.9;
+                this.performanceMonitor.thresholds.memoryHigh = 0.9;
+            } else if (level === 'medium') {
+                this.performanceMonitor.thresholds.cpuHigh = 0.8;
+                this.performanceMonitor.thresholds.memoryHigh = 0.8;
+            } else {
+                this.performanceMonitor.thresholds.cpuHigh = 0.7;
+                this.performanceMonitor.thresholds.memoryHigh = 0.7;
+            }
+            
+            console.log(`Performance level applied: ${level}`, preset);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: '_applyPerformanceLevel',
+                level: level
+            });
+        }
+    }
+    
+    // ================================
+    // 公開メソッド（音響品質制御）
+    // ================================
+    
+    /**
+     * 音響品質を設定
+     * @param {number} quality - 品質レベル (0-1)
+     */
+    async setAudioQuality(quality) {
+        try {
+            if (quality < 0 || quality > 1) {
+                throw new Error(`Audio quality must be between 0 and 1, got: ${quality}`);
+            }
+            
+            await this._adjustAudioQuality(quality);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'setAudioQuality',
+                quality: quality
+            });
+        }
+    }
+    
+    /**
+     * 現在の音響品質を取得
+     * @returns {number} 品質レベル (0-1)
+     */
+    getAudioQuality() {
+        return this.qualityManager.currentQuality;
+    }
+    
+    /**
+     * パフォーマンスメトリクスを取得
+     * @returns {Object} パフォーマンスメトリクス
+     */
+    getPerformanceMetrics() {
+        return {
+            current: { ...this.qualityManager.performanceMetrics },
+            quality: {
+                current: this.qualityManager.currentQuality,
+                target: this.qualityManager.targetQuality,
+                adjustmentInProgress: this.qualityManager.adjustmentInProgress
+            },
+            monitoring: {
+                enabled: this.qualityManager.monitoringEnabled,
+                interval: this.performanceMonitor.updateInterval,
+                lastUpdate: this.performanceMonitor.lastUpdateTime
+            },
+            history: Array.from(this.performanceMonitor.metrics.values())
+        };
+    }
+    
+    /**
+     * 音響品質の自動調整を有効/無効化
+     * @param {boolean} enabled - 有効フラグ
+     */
+    setAutomaticQualityAdjustment(enabled) {
+        try {
+            this.qualityManager.monitoringEnabled = enabled;
+            
+            if (enabled) {
+                this._startPerformanceMonitoring();
+            } else {
+                this._stopPerformanceMonitoring();
+            }
+            
+            // 設定に保存
+            this.configManager.set('performance', 'optimization.adaptiveMode', enabled);
+            
+            console.log(`Automatic quality adjustment ${enabled ? 'enabled' : 'disabled'}`);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'setAutomaticQualityAdjustment',
+                enabled: enabled
+            });
+        }
+    }
+    
+    /**
+     * パフォーマンス監視の強制更新
+     */
+    forcePerformanceUpdate() {
+        try {
+            this._updatePerformanceMetrics();
+            this._evaluateQualityAdjustment();
+            
+            console.log('Performance metrics updated manually');
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_CONTROLLER_ERROR', {
+                operation: 'forcePerformanceUpdate'
+            });
+        }
+    }
+    
     /**
      * リソースの解放
      */
     dispose() {
         try {
+            // パフォーマンス監視の停止
+            this._stopPerformanceMonitoring();
+            
             // 設定監視の解除
             if (this.configWatchers) {
                 this.configWatchers.forEach(watchId => {
@@ -609,6 +1261,11 @@ export class AudioController {
                 this.activeTransitions.clear();
             }
             
+            // パフォーマンス監視データをクリア
+            if (this.performanceMonitor.metrics) {
+                this.performanceMonitor.metrics.clear();
+            }
+            
             // GainNodeを切断
             Object.values(this.gainNodes).forEach(gainNode => {
                 if (gainNode) {
@@ -620,6 +1277,8 @@ export class AudioController {
             this.gainNodes = {};
             this.volumeLevels = {};
             this.muteStates = {};
+            this.qualityManager = null;
+            this.performanceMonitor = null;
             
             console.log('AudioController disposed');
         } catch (error) {
