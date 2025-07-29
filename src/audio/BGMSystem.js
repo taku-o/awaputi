@@ -1,6 +1,7 @@
 import { getErrorHandler } from '../utils/ErrorHandler.js';
 import { getConfigurationManager } from '../core/ConfigurationManager.js';
 import { BGMGenerator } from './BGMGenerator.js';
+import { BGMPlayer } from './BGMPlayer.js';
 
 /**
  * BGMシステム - 包括的なBGM管理・生成・再生システム
@@ -14,9 +15,8 @@ export class BGMSystem {
         // BGMトラック管理
         this.tracks = new Map();
         this.currentTrack = null;
-        this.currentSource = null;
         
-        // 状態管理
+        // 状態管理（BGMPlayerと同期）
         this.isPlaying = false;
         this.isPaused = false;
         this.currentVolume = 1.0;
@@ -32,8 +32,9 @@ export class BGMSystem {
             gameover: { style: 'dramatic', tempo: 80, key: 'Am', duration: 40 }
         };
         
-        // BGM生成器
+        // BGM生成器とプレイヤー
         this.bgmGenerator = null;
+        this.bgmPlayer = null;
         
         this.initialize();
     }
@@ -49,6 +50,9 @@ export class BGMSystem {
             
             // BGM生成器を初期化
             this.bgmGenerator = new BGMGenerator(this.audioContext);
+            
+            // BGMプレイヤーを初期化
+            this.bgmPlayer = new BGMPlayer(this.audioContext, this.audioManager.bgmGainNode);
             
             // 設定変更の監視
             this._setupConfigWatchers();
@@ -70,8 +74,8 @@ export class BGMSystem {
         // BGM音量の監視
         const bgmVolumeWatcher = this.configManager.watch('audio', 'volumes.bgm', (newValue) => {
             this.currentVolume = newValue;
-            if (this.currentSource && this.currentSource.gainNode) {
-                this.currentSource.gainNode.gain.value = newValue;
+            if (this.bgmPlayer) {
+                this.bgmPlayer.setVolume(newValue, 0.1); // 0.1秒でフェード
             }
         });
         if (bgmVolumeWatcher) this.configWatchers.add(bgmVolumeWatcher);
@@ -157,9 +161,8 @@ export class BGMSystem {
      */
     async playBGM(trackName, options = {}) {
         try {
-            // 現在再生中のBGMを停止
-            if (this.isPlaying) {
-                await this.stopBGM();
+            if (!this.bgmPlayer) {
+                throw new Error('BGMPlayer is not initialized');
             }
             
             // トラックを取得または生成
@@ -174,53 +177,20 @@ export class BGMSystem {
             // バッファが未生成の場合は生成
             if (!track.buffer) {
                 track.buffer = await this._generateTrackBuffer(track);
+                if (!track.buffer) {
+                    throw new Error(`Failed to generate buffer for track: ${trackName}`);
+                }
             }
             
-            // AudioBufferSourceNodeを作成
-            const source = this.audioContext.createBufferSource();
-            source.buffer = track.buffer;
-            source.loop = track.loop;
+            // BGMPlayerを使用して再生
+            await this.bgmPlayer.play(track, options);
             
-            // GainNodeを作成（フェード用）
-            const gainNode = this.audioContext.createGain();
-            gainNode.gain.value = 0; // フェードインのため0から開始
-            
-            // 接続
-            source.connect(gainNode);
-            gainNode.connect(this.audioManager.bgmGainNode);
-            
-            // ソース情報を保存
-            this.currentSource = {
-                source: source,
-                gainNode: gainNode,
-                track: track
-            };
+            // 状態を同期
             this.currentTrack = track;
+            this.isPlaying = this.bgmPlayer.getState().isPlaying;
+            this.isPaused = this.bgmPlayer.getState().isPaused;
             
-            // フェードイン
-            const fadeInDuration = options.fadeInDuration || track.fadeInDuration;
-            const targetVolume = options.volume || this.currentVolume;
-            
-            gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
-            gainNode.gain.linearRampToValueAtTime(targetVolume, this.audioContext.currentTime + fadeInDuration);
-            
-            // 再生開始
-            source.start();
-            
-            // 状態更新
-            this.isPlaying = true;
-            this.isPaused = false;
-            
-            // 終了時の処理
-            source.addEventListener('ended', () => {
-                if (this.currentSource && this.currentSource.source === source) {
-                    this.isPlaying = false;
-                    this.currentSource = null;
-                    this.currentTrack = null;
-                }
-            });
-            
-            console.log(`BGM "${trackName}" started playing`);
+            console.log(`BGM "${trackName}" started playing via BGMPlayer`);
         } catch (error) {
             getErrorHandler().handleError(error, 'BGM_ERROR', {
                 operation: 'playBGM',
@@ -273,40 +243,19 @@ export class BGMSystem {
      */
     async stopBGM(options = {}) {
         try {
-            if (!this.isPlaying || !this.currentSource) {
+            if (!this.bgmPlayer) {
                 return;
             }
             
-            const fadeOutDuration = options.fadeOutDuration || this.currentTrack?.fadeOutDuration || 1.0;
+            await this.bgmPlayer.stop(options);
             
-            if (fadeOutDuration > 0) {
-                // フェードアウト
-                const gainNode = this.currentSource.gainNode;
-                gainNode.gain.setValueAtTime(gainNode.gain.value, this.audioContext.currentTime);
-                gainNode.gain.linearRampToValueAtTime(0, this.audioContext.currentTime + fadeOutDuration);
-                
-                // フェードアウト完了後に停止
-                setTimeout(() => {
-                    if (this.currentSource) {
-                        try {
-                            this.currentSource.source.stop();
-                        } catch (e) {
-                            // 既に停止済み
-                        }
-                    }
-                }, fadeOutDuration * 1000);
-            } else {
-                // 即座に停止
-                this.currentSource.source.stop();
-            }
+            // 状態を同期
+            const playerState = this.bgmPlayer.getState();
+            this.isPlaying = playerState.isPlaying;
+            this.isPaused = playerState.isPaused;
+            this.currentTrack = playerState.currentTrack;
             
-            // 状態更新
-            this.isPlaying = false;
-            this.isPaused = false;
-            this.currentSource = null;
-            this.currentTrack = null;
-            
-            console.log('BGM stopped');
+            console.log('BGM stopped via BGMPlayer');
         } catch (error) {
             getErrorHandler().handleError(error, 'BGM_ERROR', {
                 operation: 'stopBGM',
@@ -320,16 +269,18 @@ export class BGMSystem {
      */
     pause() {
         try {
-            if (!this.isPlaying || this.isPaused) {
+            if (!this.bgmPlayer) {
                 return;
             }
             
-            if (this.currentSource && this.currentSource.gainNode) {
-                // 音量を0にして一時停止をシミュレート
-                this.currentSource.gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
-                this.isPaused = true;
-                console.log('BGM paused');
-            }
+            this.bgmPlayer.pause();
+            
+            // 状態を同期
+            const playerState = this.bgmPlayer.getState();
+            this.isPlaying = playerState.isPlaying;
+            this.isPaused = playerState.isPaused;
+            
+            console.log('BGM paused via BGMPlayer');
         } catch (error) {
             getErrorHandler().handleError(error, 'BGM_ERROR', {
                 operation: 'pause'
@@ -342,16 +293,18 @@ export class BGMSystem {
      */
     resume() {
         try {
-            if (!this.isPlaying || !this.isPaused) {
+            if (!this.bgmPlayer) {
                 return;
             }
             
-            if (this.currentSource && this.currentSource.gainNode) {
-                // 音量を復元
-                this.currentSource.gainNode.gain.setValueAtTime(this.currentVolume, this.audioContext.currentTime);
-                this.isPaused = false;
-                console.log('BGM resumed');
-            }
+            this.bgmPlayer.resume();
+            
+            // 状態を同期
+            const playerState = this.bgmPlayer.getState();
+            this.isPlaying = playerState.isPlaying;
+            this.isPaused = playerState.isPaused;
+            
+            console.log('BGM resumed via BGMPlayer');
         } catch (error) {
             getErrorHandler().handleError(error, 'BGM_ERROR', {
                 operation: 'resume'
@@ -364,19 +317,101 @@ export class BGMSystem {
      * @returns {Object} BGM情報
      */
     getCurrentBGMInfo() {
-        if (!this.currentTrack) {
+        if (!this.bgmPlayer) {
+            return null;
+        }
+        
+        const playerState = this.bgmPlayer.getState();
+        if (!playerState.currentTrack) {
             return null;
         }
         
         return {
-            id: this.currentTrack.id,
-            name: this.currentTrack.name,
-            style: this.currentTrack.style,
-            isPlaying: this.isPlaying,
-            isPaused: this.isPaused,
-            volume: this.currentVolume,
-            metadata: this.currentTrack.metadata
+            ...playerState.currentTrack,
+            isPlaying: playerState.isPlaying,
+            isPaused: playerState.isPaused,
+            volume: playerState.volume,
+            currentTime: playerState.currentTime,
+            loopEnabled: playerState.loopEnabled,
+            playbackRate: playerState.playbackRate,
+            stats: playerState.stats
         };
+    }
+    
+    /**
+     * BGM音量を設定
+     * @param {number} volume - 音量 (0-1)
+     * @param {number} fadeTime - フェード時間（秒）
+     */
+    setVolume(volume, fadeTime = 0) {
+        try {
+            if (this.bgmPlayer) {
+                this.bgmPlayer.setVolume(volume, fadeTime);
+                this.currentVolume = volume;
+            }
+        } catch (error) {
+            getErrorHandler().handleError(error, 'BGM_ERROR', {
+                operation: 'setVolume',
+                volume: volume,
+                fadeTime: fadeTime
+            });
+        }
+    }
+    
+    /**
+     * ループ設定を変更
+     * @param {boolean} enabled - ループ有効フラグ
+     */
+    setLoop(enabled) {
+        try {
+            if (this.bgmPlayer) {
+                this.bgmPlayer.setLoop(enabled);
+            }
+        } catch (error) {
+            getErrorHandler().handleError(error, 'BGM_ERROR', {
+                operation: 'setLoop',
+                enabled: enabled
+            });
+        }
+    }
+    
+    /**
+     * 次に再生するトラックを予約
+     * @param {string} trackName - 次のトラック名
+     * @param {Object} options - 再生オプション
+     */
+    async queueNext(trackName, options = {}) {
+        try {
+            if (!this.bgmPlayer) {
+                throw new Error('BGMPlayer is not initialized');
+            }
+            
+            // トラックを取得または生成
+            let track = this.tracks.get(trackName);
+            if (!track) {
+                track = this.generateTrack(trackName, options);
+                if (!track) {
+                    throw new Error(`Failed to generate track: ${trackName}`);
+                }
+            }
+            
+            // バッファが未生成の場合は生成
+            if (!track.buffer) {
+                track.buffer = await this._generateTrackBuffer(track);
+                if (!track.buffer) {
+                    throw new Error(`Failed to generate buffer for track: ${trackName}`);
+                }
+            }
+            
+            this.bgmPlayer.queueNext(track, options);
+            console.log(`Next BGM track queued: "${trackName}"`);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'BGM_ERROR', {
+                operation: 'queueNext',
+                trackName: trackName,
+                options: options
+            });
+        }
     }
     
     /**
@@ -398,9 +433,10 @@ export class BGMSystem {
      */
     dispose() {
         try {
-            // BGMを停止
-            if (this.isPlaying) {
-                this.stopBGM({ fadeOutDuration: 0 });
+            // BGMプレイヤーを破棄
+            if (this.bgmPlayer) {
+                this.bgmPlayer.dispose();
+                this.bgmPlayer = null;
             }
             
             // 設定監視の解除
@@ -413,6 +449,9 @@ export class BGMSystem {
             
             // トラックデータをクリア
             this.tracks.clear();
+            
+            // BGM生成器をクリア
+            this.bgmGenerator = null;
             
             console.log('BGMSystem disposed');
         } catch (error) {

@@ -1,6 +1,6 @@
 # Implementation Plan
 
-- [ ] 1. BGMシステムの基盤実装
+- [x] 1. BGMシステムの基盤実装
   - BGMSystemクラスの作成とAudioManagerとの統合
   - BGMトラック管理機能の実装
   - プロシージャルBGM生成の基本アルゴリズム実装
@@ -18,7 +18,7 @@
   - メロディ生成とリズムパターン生成機能
   - _Requirements: 1.1, 1.2_
 
-- [ ] 1.3 BGM再生とループ機能を実装
+- [x] 1.3 BGM再生とループ機能を実装
   - BGMPlayerクラスの作成
   - AudioBufferSourceNodeを使用した再生機能
   - シームレスループ機能の実装
