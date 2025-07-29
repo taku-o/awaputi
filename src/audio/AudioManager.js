@@ -717,6 +717,60 @@ export class AudioManager {
     }
     
     /**
+     * サイズ調整された泡破壊音を再生
+     * @param {string} bubbleType - 泡タイプ
+     * @param {number} size - 泡サイズ (0.5-2.0)
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playBubbleSoundBySize(bubbleType, size = 1.0, options = {}) {
+        if (this.soundEffectSystem) {
+            const buffer = this.soundEffectSystem.generateBubbleSoundBySize(bubbleType, size);
+            if (buffer) {
+                return this.soundEffectSystem._playSound(buffer, options);
+            }
+        }
+        // フォールバック: 通常の泡音
+        return this.playBubbleSound(bubbleType, 0, options);
+    }
+    
+    /**
+     * コンテキスト依存の泡破壊音を再生
+     * @param {string} bubbleType - 泡タイプ
+     * @param {Object} context - コンテキスト情報
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playContextualBubbleSound(bubbleType, context = {}, options = {}) {
+        if (this.soundEffectSystem) {
+            const buffer = this.soundEffectSystem.generateContextualBubbleSound(bubbleType, context);
+            if (buffer) {
+                return this.soundEffectSystem._playSound(buffer, options);
+            }
+        }
+        // フォールバック: 通常の泡音
+        return this.playBubbleSound(bubbleType, 0, options);
+    }
+    
+    /**
+     * 動的バリエーション音響を再生
+     * @param {string} baseSound - ベース音名
+     * @param {number} variation - バリエーション番号
+     * @param {Object} options - 再生オプション
+     * @returns {AudioBufferSourceNode|null} 音源ノード
+     */
+    playSoundVariation(baseSound, variation, options = {}) {
+        if (this.soundEffectSystem) {
+            const buffer = this.soundEffectSystem.generateSoundVariation(baseSound, variation);
+            if (buffer) {
+                return this.soundEffectSystem._playSound(buffer, options);
+            }
+        }
+        // フォールバック: 通常の音
+        return this.playSound(baseSound, options);
+    }
+    
+    /**
      * コンボ音を再生
      * @param {number} comboLevel - コンボレベル
      * @param {Object} options - 再生オプション

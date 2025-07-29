@@ -888,7 +888,344 @@ export class SoundEffectSystem {
      * @returns {AudioBuffer} 生成された音響バッファ
      */
     generateSoundVariation(baseSound, variation) {
-        // 実装は次のタスクで詳細化
+        try {
+            // 泡タイプの場合
+            if (this.bubbleTypes.includes(baseSound)) {
+                return this.generateDynamicBubbleVariation(baseSound, variation);
+            }
+            
+            // その他の音響の場合
+            return this.generateGenericVariation(baseSound, variation);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                component: 'SoundEffectSystem',
+                operation: 'generateSoundVariation',
+                baseSound: baseSound,
+                variation: variation
+            });
+            return null;
+        }
+    }
+    
+    /**
+     * 動的な泡バリエーションを生成
+     * @param {string} bubbleType - 泡タイプ
+     * @param {number} variation - バリエーション番号
+     * @returns {AudioBuffer} 生成された音響バッファ
+     */
+    generateDynamicBubbleVariation(bubbleType, variation) {
+        const profile = this.getBubbleSoundProfile(bubbleType);
+        
+        // バリエーション固有のパラメータ
+        const variationParams = this.calculateVariationParameters(variation);
+        
+        // 泡サイズと種類に応じた音響特性調整
+        const adjustedProfile = this.adjustSoundProfileForVariation(profile, variationParams);
+        
+        return this.createBubbleSoundWithProfile(adjustedProfile, variation);
+    }
+    
+    /**
+     * バリエーションパラメータを計算
+     * @param {number} variation - バリエーション番号
+     * @returns {Object} バリエーションパラメータ
+     */
+    calculateVariationParameters(variation) {
+        const variationSeed = variation * 0.618034; // 黄金比ベースのシード
+        
+        return {
+            pitchOffset: Math.sin(variationSeed * Math.PI * 2) * 0.15, // ±15%のピッチ変化
+            durationMultiplier: 1 + Math.cos(variationSeed * Math.PI * 3) * 0.1, // ±10%の長さ変化
+            harmonicShift: Math.sin(variationSeed * Math.PI * 5) * 0.2, // 倍音の変化
+            noiseLevel: Math.abs(Math.sin(variationSeed * Math.PI * 7)) * 0.1, // ノイズレベル変化
+            envelopeVariation: Math.sin(variationSeed * Math.PI * 11) * 0.3, // エンベロープ変化
+            volumeOffset: 1 + Math.cos(variationSeed * Math.PI * 13) * 0.1 // ±10%の音量変化
+        };
+    }
+    
+    /**
+     * バリエーションに応じて音響プロファイルを調整
+     * @param {Object} profile - 元の音響プロファイル
+     * @param {Object} variationParams - バリエーションパラメータ
+     * @returns {Object} 調整された音響プロファイル
+     */
+    adjustSoundProfileForVariation(profile, variationParams) {
+        return {
+            ...profile,
+            frequency: profile.frequency * (1 + variationParams.pitchOffset),
+            duration: profile.duration * variationParams.durationMultiplier,
+            volume: profile.volume * variationParams.volumeOffset,
+            noise: Math.min(profile.noise + variationParams.noiseLevel, 0.5),
+            harmonics: profile.harmonics ? 
+                profile.harmonics.map(h => h * (1 + variationParams.harmonicShift)) : 
+                profile.harmonics,
+            envelopeVariation: variationParams.envelopeVariation
+        };
+    }
+    
+    /**
+     * 調整された音響プロファイルで泡音を作成
+     * @param {Object} profile - 調整された音響プロファイル
+     * @param {number} variation - バリエーション番号
+     * @returns {AudioBuffer} 生成された音響バッファ
+     */
+    createBubbleSoundWithProfile(profile, variation) {
+        const duration = profile.duration;
+        const sampleRate = this.audioContext.sampleRate;
+        const buffer = this.audioContext.createBuffer(1, duration * sampleRate, sampleRate);
+        const data = buffer.getChannelData(0);
+        
+        for (let i = 0; i < data.length; i++) {
+            const t = i / sampleRate;
+            const progress = t / duration;
+            
+            // 基本周波数とモジュレーション
+            const freq = profile.frequency * Math.pow(profile.modulation, -t * profile.decayRate);
+            
+            // バリエーション固有のエンベロープ調整
+            let envelope = this.generateEnvelope(progress, profile.envelope);
+            if (profile.envelopeVariation) {
+                envelope *= (1 + profile.envelopeVariation * Math.sin(progress * Math.PI * 3));
+            }
+            
+            // 基本波形
+            let sample = Math.sin(2 * Math.PI * freq * t) * envelope;
+            
+            // 調整された倍音
+            if (profile.harmonics) {
+                profile.harmonics.forEach((harmonic, index) => {
+                    const harmonicFreq = freq * (index + 2);
+                    sample += Math.sin(2 * Math.PI * harmonicFreq * t) * envelope * harmonic;
+                });
+            }
+            
+            // バリエーション固有のマイクロディテール
+            sample += this.generateMicroDetails(t, progress, freq, envelope, variation);
+            
+            // ノイズ成分
+            if (profile.noise > 0) {
+                sample += (Math.random() - 0.5) * envelope * profile.noise;
+            }
+            
+            data[i] = sample * profile.volume;
+        }
+        
+        return buffer;
+    }
+    
+    /**
+     * バリエーション固有のマイクロディテールを生成
+     * @param {number} t - 時間
+     * @param {number} progress - 進行度
+     * @param {number} freq - 基本周波数
+     * @param {number} envelope - エンベロープ値
+     * @param {number} variation - バリエーション番号
+     * @returns {number} マイクロディテール値
+     */
+    generateMicroDetails(t, progress, freq, envelope, variation) {
+        const variationSeed = variation * 0.314159; // π/10 ベースのシード
+        let details = 0;
+        
+        // 微細な周波数変調
+        const microFM = Math.sin(t * freq * 0.1 + variationSeed) * envelope * 0.02;
+        details += microFM;
+        
+        // パルス的なアクセント
+        if (variation % 3 === 0) {
+            const pulse = Math.sin(t * 100 + variationSeed) * envelope * 0.05;
+            details += pulse;
+        }
+        
+        // 高周波キラキラ効果（特定のバリエーションのみ）
+        if (variation % 5 === 0) {
+            const sparkle = Math.sin(2 * Math.PI * freq * 4 * t + variationSeed) * 
+                           envelope * envelope * 0.03; // envelope^2で急速減衰
+            details += sparkle;
+        }
+        
+        return details;
+    }
+    
+    /**
+     * 一般的な音響のバリエーションを生成
+     * @param {string} baseSound - ベース音名
+     * @param {number} variation - バリエーション番号
+     * @returns {AudioBuffer} 生成された音響バッファ
+     */
+    generateGenericVariation(baseSound, variation) {
+        // UI音や実績音などの基本的なバリエーション
+        const variationParams = this.calculateVariationParameters(variation);
+        
+        // 元の音を取得
+        let originalBuffer = null;
+        if (this.uiSounds.has(baseSound)) {
+            originalBuffer = this.uiSounds.get(baseSound);
+        } else if (this.achievementSounds.has(baseSound)) {
+            originalBuffer = this.achievementSounds.get(baseSound);
+        } else if (this.gameStateSounds.has(baseSound)) {
+            originalBuffer = this.gameStateSounds.get(baseSound);
+        }
+        
+        if (!originalBuffer) {
+            return null;
+        }
+        
+        // バリエーションを適用した新しいバッファを作成
+        return this.applyVariationToBuffer(originalBuffer, variationParams);
+    }
+    
+    /**
+     * 既存バッファにバリエーションを適用
+     * @param {AudioBuffer} originalBuffer - 元のバッファ
+     * @param {Object} variationParams - バリエーションパラメータ
+     * @returns {AudioBuffer} バリエーション適用後のバッファ
+     */
+    applyVariationToBuffer(originalBuffer, variationParams) {
+        const originalData = originalBuffer.getChannelData(0);
+        const newDuration = originalBuffer.duration * variationParams.durationMultiplier;
+        const newBuffer = this.audioContext.createBuffer(
+            1, 
+            newDuration * this.audioContext.sampleRate, 
+            this.audioContext.sampleRate
+        );
+        const newData = newBuffer.getChannelData(0);
+        
+        for (let i = 0; i < newData.length; i++) {
+            const t = i / this.audioContext.sampleRate;
+            const originalIndex = Math.floor(t / variationParams.durationMultiplier * this.audioContext.sampleRate);
+            
+            if (originalIndex < originalData.length) {
+                let sample = originalData[originalIndex];
+                
+                // ピッチシフト効果をシミュレート（簡易版）
+                if (variationParams.pitchOffset !== 0) {
+                    const pitchShiftedIndex = Math.floor(originalIndex * (1 + variationParams.pitchOffset));
+                    if (pitchShiftedIndex < originalData.length && pitchShiftedIndex >= 0) {
+                        sample = originalData[pitchShiftedIndex];
+                    }
+                }
+                
+                // 音量調整
+                sample *= variationParams.volumeOffset;
+                
+                // ノイズ追加
+                if (variationParams.noiseLevel > 0) {
+                    sample += (Math.random() - 0.5) * variationParams.noiseLevel;
+                }
+                
+                newData[i] = sample;
+            }
+        }
+        
+        return newBuffer;
+    }
+    
+    /**
+     * 泡サイズによる音響特性調整
+     * @param {string} bubbleType - 泡タイプ
+     * @param {number} size - 泡サイズ (0.5-2.0)
+     * @returns {AudioBuffer} サイズ調整された音響バッファ
+     */
+    generateBubbleSoundBySize(bubbleType, size = 1.0) {
+        try {
+            const profile = this.getBubbleSoundProfile(bubbleType);
+            
+            // サイズに応じた音響特性調整
+            const sizeAdjustedProfile = {
+                ...profile,
+                frequency: profile.frequency * Math.pow(size, -0.5), // 大きいほど低音
+                duration: profile.duration * Math.pow(size, 0.3), // 大きいほど長い
+                volume: profile.volume * Math.pow(size, 0.2), // 大きいほど大きい音
+                decayRate: profile.decayRate * Math.pow(size, -0.2) // 大きいほど減衰が遅い
+            };
+            
+            return this.createBubbleSoundWithProfile(sizeAdjustedProfile, 0);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                component: 'SoundEffectSystem',
+                operation: 'generateBubbleSoundBySize',
+                bubbleType: bubbleType,
+                size: size
+            });
+            return null;
+        }
+    }
+    
+    /**
+     * コンテキスト依存の泡音生成
+     * @param {string} bubbleType - 泡タイプ
+     * @param {Object} context - コンテキスト情報
+     * @returns {AudioBuffer} コンテキスト調整された音響バッファ
+     */
+    generateContextualBubbleSound(bubbleType, context = {}) {
+        try {
+            const {
+                depth = 0, // 水深（0-1）
+                pressure = 1, // 圧力
+                temperature = 0.5, // 温度（0-1）
+                velocity = 0, // 移動速度
+                age = 0 // 泡の年齢（0-1）
+            } = context;
+            
+            const profile = this.getBubbleSoundProfile(bubbleType);
+            
+            // コンテキストに応じた調整
+            const contextProfile = {
+                ...profile,
+                frequency: profile.frequency * 
+                    (1 + depth * 0.2) * // 深いほど高音
+                    Math.pow(pressure, 0.1) * // 圧力による影響
+                    (1 - temperature * 0.1), // 温度による影響
+                duration: profile.duration * 
+                    (1 + age * 0.3) * // 古いほど長い音
+                    Math.pow(pressure, -0.1),
+                volume: profile.volume * 
+                    Math.pow(pressure, 0.2) * // 圧力で音量変化
+                    (1 + velocity * 0.1), // 速度で音量変化
+                noise: profile.noise + 
+                    depth * 0.1 + // 深いほどノイジー
+                    age * 0.05 // 古いほどノイジー
+            };
+            
+            return this.createBubbleSoundWithProfile(contextProfile, Math.floor(depth * 10));
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                component: 'SoundEffectSystem',
+                operation: 'generateContextualBubbleSound',
+                bubbleType: bubbleType,
+                context: context
+            });
+            return null;
+        }
+    }
+    
+    /**
+     * 動的バリエーションキャッシュを管理
+     * @param {string} key - キャッシュキー
+     * @param {AudioBuffer} buffer - 音響バッファ
+     */
+    cacheSoundVariation(key, buffer) {
+        // LRUキャッシュの実装（簡易版）
+        if (this.soundVariations.size > 100) {
+            const firstKey = this.soundVariations.keys().next().value;
+            this.soundVariations.delete(firstKey);
+        }
+        this.soundVariations.set(key, buffer);
+    }
+    
+    /**
+     * キャッシュから音響バリエーションを取得
+     * @param {string} key - キャッシュキー
+     * @returns {AudioBuffer|null} 音響バッファまたはnull
+     */
+    getCachedSoundVariation(key) {
+        if (this.soundVariations.has(key)) {
+            // アクセス順更新のためにre-set
+            const buffer = this.soundVariations.get(key);
+            this.soundVariations.delete(key);
+            this.soundVariations.set(key, buffer);
+            return buffer;
+        }
         return null;
     }
     
