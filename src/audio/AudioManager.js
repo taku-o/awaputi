@@ -3,6 +3,7 @@ import { getAudioConfig } from '../config/AudioConfig.js';
 import { getConfigurationManager } from '../core/ConfigurationManager.js';
 import { BGMSystem } from './BGMSystem.js';
 import { SoundEffectSystem } from './SoundEffectSystem.js';
+import { AudioController } from './AudioController.js';
 
 /**
  * 音響管理クラス - Web Audio API を使用した高度な音響システム
@@ -35,6 +36,9 @@ export class AudioManager {
         
         // 効果音システム
         this.soundEffectSystem = null;
+        
+        // 音響制御システム
+        this.audioController = null;
         
         // 効果音バッファ
         this.soundBuffers = new Map();
@@ -228,6 +232,17 @@ export class AudioManager {
                     operation: 'initialize'
                 });
                 // 効果音システムなしで続行
+            }
+            
+            // 音響制御システムの初期化
+            try {
+                this.audioController = new AudioController(this);
+            } catch (controllerError) {
+                getErrorHandler().handleError(controllerError, 'AUDIO_ERROR', { 
+                    component: 'audioController',
+                    operation: 'initialize'
+                });
+                // 音響制御システムなしで続行
             }
             
             console.log('AudioManager initialized successfully');
@@ -1523,6 +1538,111 @@ export class AudioManager {
         }
     }
     
+    // ================================
+    // AudioController 便利メソッド
+    // ================================
+    
+    /**
+     * 音量を設定（AudioController経由）
+     * @param {string} category - 音量カテゴリ
+     * @param {number} volume - 音量レベル (0-1)
+     * @param {number} fadeTime - フェード時間（秒）
+     */
+    setVolumeLevel(category, volume, fadeTime = 0) {
+        if (this.audioController) {
+            return this.audioController.setVolume(category, volume, fadeTime);
+        }
+        console.warn('AudioController is not available');
+    }
+    
+    /**
+     * 音量を取得（AudioController経由）
+     * @param {string} category - 音量カテゴリ
+     * @returns {number} 音量レベル (0-1)
+     */
+    getVolumeLevel(category) {
+        if (this.audioController) {
+            return this.audioController.getVolume(category);
+        }
+        console.warn('AudioController is not available');
+        return 0;
+    }
+    
+    /**
+     * ミュート状態を設定（AudioController経由）
+     * @param {string} category - 音量カテゴリ
+     * @param {boolean} muted - ミュート状態
+     */
+    setMuteState(category, muted) {
+        if (this.audioController) {
+            return this.audioController.setMute(category, muted);
+        }
+        console.warn('AudioController is not available');
+    }
+    
+    /**
+     * ミュート状態を取得（AudioController経由）
+     * @param {string} category - 音量カテゴリ
+     * @returns {boolean} ミュート状態
+     */
+    getMuteState(category) {
+        if (this.audioController) {
+            return this.audioController.getMute(category);
+        }
+        console.warn('AudioController is not available');
+        return false;
+    }
+    
+    /**
+     * フェードイン効果（AudioController経由）
+     * @param {string} category - 音量カテゴリ
+     * @param {number} duration - フェード時間（秒）
+     * @param {number} targetVolume - 目標音量レベル
+     */
+    async fadeInVolume(category, duration = 1.0, targetVolume = null) {
+        if (this.audioController) {
+            return await this.audioController.fadeIn(category, duration, targetVolume);
+        }
+        console.warn('AudioController is not available');
+    }
+    
+    /**
+     * フェードアウト効果（AudioController経由）
+     * @param {string} category - 音量カテゴリ
+     * @param {number} duration - フェード時間（秒）
+     * @param {number} targetVolume - 目標音量レベル
+     */
+    async fadeOutVolume(category, duration = 1.0, targetVolume = 0) {
+        if (this.audioController) {
+            return await this.audioController.fadeOut(category, duration, targetVolume);
+        }
+        console.warn('AudioController is not available');
+    }
+    
+    /**
+     * 全音量情報を取得（AudioController経由）
+     * @returns {Object} 音量情報
+     */
+    getAllVolumeLevels() {
+        if (this.audioController) {
+            return this.audioController.getAllVolumes();
+        }
+        console.warn('AudioController is not available');
+        return null;
+    }
+    
+    /**
+     * 音響制御システムの状態を取得（AudioController経由）
+     * @returns {Object} システム状態
+     */
+    getAudioControllerState() {
+        if (this.audioController) {
+            return this.audioController.getControllerState();
+        }
+        console.warn('AudioController is not available');
+        return null;
+    }
+    
     /**
      * リソースの解放
      */
@@ -1539,6 +1659,12 @@ export class AudioManager {
         if (this.soundEffectSystem) {
             this.soundEffectSystem.dispose();
             this.soundEffectSystem = null;
+        }
+        
+        // 音響制御システムを破棄
+        if (this.audioController) {
+            this.audioController.dispose();
+            this.audioController = null;
         }
         
         // 設定監視の解除
