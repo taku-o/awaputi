@@ -1,5 +1,5 @@
 import { getErrorHandler } from '../utils/ErrorHandler.js';
-import { getLocalizationManager } from '../utils/LocalizationManager.js';
+import { getLocalizationManager } from '../core/LocalizationManager.js';
 
 /**
  * 音響テストパネルクラス - 各音響要素の個別テスト再生機能
