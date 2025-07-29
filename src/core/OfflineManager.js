@@ -45,7 +45,7 @@ export class OfflineManager {
      */
     async initialize() {
         try {
-            console.log('OfflineManager: Initializing...');
+            console.log('OfflineManager: オフライン管理を初期化中...');
             
             // 保存されたオフライン状態の復元
             await this.restoreOfflineState();
@@ -59,7 +59,7 @@ export class OfflineManager {
             // 初期接続テスト
             await this.checkConnectionQuality();
             
-            console.log('OfflineManager: Initialization completed');
+            console.log('OfflineManager: 初期化が完了しました');
             
         } catch (error) {
             getErrorHandler().handleError(error, 'OFFLINE_MANAGER_INITIALIZATION_ERROR', {
@@ -171,7 +171,7 @@ export class OfflineManager {
      */
     async recordOfflineOperation(operation) {
         if (!this.config.enableOfflineMode) {
-            throw new Error('Offline mode is disabled');
+            throw new Error('オフラインモードが無効になっています');
         }
         
         try {

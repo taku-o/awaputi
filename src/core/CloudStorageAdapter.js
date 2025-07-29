@@ -40,11 +40,11 @@ export class CloudStorageAdapter {
      */
     async initialize() {
         try {
-            console.log('CloudStorageAdapter: Initializing...');
+            console.log('CloudStorageAdapter: クラウドストレージアダプターを初期化中...');
             
             // オンライン状態の確認
             if (!this.isOnline) {
-                console.warn('CloudStorageAdapter: Offline mode - initialization deferred');
+                console.warn('CloudStorageAdapter: オフラインモード - 初期化を延期します');
                 return;
             }
             
@@ -57,7 +57,7 @@ export class CloudStorageAdapter {
             }
             
             this.isInitialized = true;
-            console.log('CloudStorageAdapter: Initialization completed');
+            console.log('CloudStorageAdapter: 初期化が完了しました');
             
         } catch (error) {
             getErrorHandler().handleError(error, 'CLOUD_STORAGE_INITIALIZATION_ERROR', {
@@ -118,7 +118,7 @@ export class CloudStorageAdapter {
     async testConnection() {
         try {
             if (!this.config.apiEndpoint) {
-                throw new Error('API endpoint not configured');
+                throw new Error('APIエンドポイントが設定されていません');
             }
             
             const response = await this.makeRequest('GET', '/health', null, {
@@ -130,7 +130,7 @@ export class CloudStorageAdapter {
                 return true;
             }
             
-            throw new Error(`Connection test failed: ${response.message || 'Unknown error'}`);
+            throw new Error(`接続テストに失敗しました: ${response.message || '不明なエラー'}`);
             
         } catch (error) {
             console.warn('CloudStorageAdapter: Connection test failed:', error.message);

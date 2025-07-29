@@ -41,7 +41,7 @@ export class SyncManager {
      */
     async initialize() {
         try {
-            console.log('SyncManager: Initializing...');
+            console.log('SyncManager: 同期マネージャーを初期化中...');
             
             // 保存された同期状態の復元
             await this.restoreSyncState();
@@ -52,7 +52,7 @@ export class SyncManager {
             // イベントリスナーの設定
             this.setupEventListeners();
             
-            console.log('SyncManager: Initialization completed');
+            console.log('SyncManager: 初期化が完了しました');
             
         } catch (error) {
             getErrorHandler().handleError(error, 'SYNC_MANAGER_INITIALIZATION_ERROR', {
@@ -122,12 +122,12 @@ export class SyncManager {
         try {
             // クラウドストレージの認証確認
             if (!this.cloudStorage.isAuthenticated()) {
-                throw new Error('Cloud storage not authenticated');
+                throw new Error('クラウドストレージが認証されていません');
             }
             
             // オンライン状態の確認
             if (!navigator.onLine && !options.forceOffline) {
-                throw new Error('Offline - cannot sync');
+                throw new Error('オフライン状態のため同期できません');
             }
             
             // ローカルキーとクラウドキーの取得

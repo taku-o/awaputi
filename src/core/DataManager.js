@@ -101,13 +101,13 @@ export class DataManager {
             
             // 各システムの状態を確認
             if (this.playerData) {
-                console.log('DataManager: PlayerData integrated');
+                console.log('DataManager: PlayerDataを統合しました');
             }
             if (this.settingsManager) {
-                console.log('DataManager: SettingsManager integrated');
+                console.log('DataManager: SettingsManagerを統合しました');
             }
             if (this.statisticsManager) {
-                console.log('DataManager: StatisticsManager integrated');
+                console.log('DataManager: StatisticsManagerを統合しました');
             }
             
         } catch (error) {
