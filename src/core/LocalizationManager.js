@@ -1,5 +1,6 @@
 import { getErrorHandler } from '../utils/ErrorHandler.js';
 import { TranslationLoader } from './i18n/TranslationLoader.js';
+import { getFontManager } from './i18n/FontManager.js';
 
 /**
  * ローカライゼーション管理クラス - 多言語対応
@@ -13,6 +14,9 @@ export class LocalizationManager {
         
         // 翻訳ローダーの初期化
         this.translationLoader = new TranslationLoader();
+        
+        // フォントマネージャーの初期化
+        this.fontManager = getFontManager();
         
         // 言語変更イベントリスナー
         this.languageChangeListeners = new Set();
@@ -665,6 +669,9 @@ export class LocalizationManager {
             if (this.loadedLanguages.has(language)) {
                 this.currentLanguage = language;
                 
+                // フォントを読み込み
+                await this.loadFontsForLanguage(language);
+                
                 // 言語変更イベントを通知
                 this.notifyLanguageChange(language, oldLanguage);
                 
@@ -1288,6 +1295,82 @@ export class LocalizationManager {
     }
     
     /**
+     * 言語用のフォントを読み込み
+     */
+    async loadFontsForLanguage(language) {
+        try {
+            console.log(`Loading fonts for language: ${language}`);
+            const result = await this.fontManager.loadFontsForLanguage(language, 'primary');
+            
+            if (result) {
+                // グローバルCSSを適用
+                this.applyGlobalFontStyles(language);
+            }
+            
+            return result;
+        } catch (error) {
+            console.warn(`Failed to load fonts for ${language}:`, error);
+            return false;
+        }
+    }
+    
+    /**
+     * グローバルフォントスタイルを適用
+     */
+    applyGlobalFontStyles(language) {
+        try {
+            // 既存のフォントスタイルを削除
+            const existingStyle = document.getElementById('localization-font-styles');
+            if (existingStyle) {
+                existingStyle.remove();
+            }
+            
+            // 新しいスタイルを作成
+            const style = document.createElement('style');
+            style.id = 'localization-font-styles';
+            style.textContent = this.fontManager.generateGlobalFontCSS(language);
+            
+            document.head.appendChild(style);
+            
+            // HTML要素に言語属性を設定
+            document.documentElement.lang = language;
+            
+            console.log(`Global font styles applied for ${language}`);
+        } catch (error) {
+            console.warn(`Failed to apply global font styles:`, error);
+        }
+    }
+    
+    /**
+     * 現在の言語のフォントスタックを取得
+     */
+    getFontStack(priority = 'primary') {
+        return this.fontManager.getFontStack(this.currentLanguage, priority);
+    }
+    
+    /**
+     * 要素にフォントを適用
+     */
+    applyFontToElement(element, priority = 'primary') {
+        return this.fontManager.applyFontToElement(element, this.currentLanguage, priority);
+    }
+    
+    /**
+     * フォント読み込み状態を取得
+     */
+    getFontLoadingStatus() {
+        return this.fontManager.getStats();
+    }
+    
+    /**
+     * 複数言語のフォントを事前読み込み
+     */
+    async preloadFonts(languages) {
+        console.log(`Preloading fonts for languages: ${languages.join(', ')}`);
+        return await this.fontManager.preloadFontsForLanguages(languages);
+    }
+    
+    /**
      * クリーンアップ
      */
     cleanup() {
@@ -1296,5 +1379,8 @@ export class LocalizationManager {
         
         // 言語変更リスナーのクリア
         this.languageChangeListeners.clear();
+        
+        // フォントキャッシュのクリア
+        this.fontManager.clearCache();
     }
 }
