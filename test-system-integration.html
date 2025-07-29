@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Integration Testing - 多言語システム統合テスト</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+        }
+
+        .header p {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        .controls {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .control-group {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .control-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #059669;
+        }
+
+        .btn-warning {
+            background-color: var(--warning-color);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background-color: #d97706;
+        }
+
+        .btn-danger {
+            background-color: var(--error-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+
+        .select {
+            padding: 0.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .checkbox {
+            accent-color: var(--primary-color);
+            margin-right: 0.5rem;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .results {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .results-header {
+            background: #f1f5f9;
+            padding: 1rem 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+            font-weight: 600;
+        }
+
+        .results-content {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .test-suite {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .test-suite:last-child {
+            border-bottom: none;
+        }
+
+        .suite-header {
+            padding: 1rem 1.5rem;
+            background: #fafbfc;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .suite-header:hover {
+            background: #f1f5f9;
+        }
+
+        .suite-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .test-results {
+            display: none;
+            padding: 0;
+        }
+
+        .test-results.expanded {
+            display: block;
+        }
+
+        .test-item {
+            padding: 0.75rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+
+        .test-item:last-child {
+            border-bottom: none;
+        }
+
+        .test-name {
+            font-weight: 500;
+        }
+
+        .test-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-passed {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .status-failed {
+            background-color: #fef2f2;
+            color: #991b1b;
+        }
+
+        .status-skipped {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .test-duration {
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+
+        .test-error {
+            color: var(--error-color);
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--success-color);
+            transition: width 0.3s ease;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .report-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .report-section.active {
+            display: block;
+        }
+
+        .report-header {
+            background: #f1f5f9;
+            padding: 1rem 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+            font-weight: 600;
+        }
+
+        .report-content {
+            padding: 1.5rem;
+        }
+
+        .recommendations {
+            background: #fef3c7;
+            border: 1px solid #fbbf24;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .recommendations h4 {
+            color: #92400e;
+            margin-bottom: 0.5rem;
+        }
+
+        .recommendations ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .recommendations li {
+            color: #92400e;
+            margin-bottom: 0.25rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .recommendations li:before {
+            content: "⚠️";
+            position: absolute;
+            left: 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .control-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🔧 System Integration Testing</h1>
+            <p>多言語対応システムの統合テスト環境</p>
+        </header>
+
+        <section class="controls">
+            <div class="control-group">
+                <label for="test-suite-select">テストスイート:</label>
+                <select id="test-suite-select" class="select">
+                    <option value="all">全テストスイート</option>
+                    <option value="localization-core">LocalizationManager コア機能</option>
+                    <option value="translation-loading">翻訳読み込み機能</option>
+                    <option value="formatting-integration">フォーマット機能統合</option>
+                    <option value="cultural-adaptation">文化的適応機能</option>
+                    <option value="rtl-integration">RTL統合機能</option>
+                    <option value="language-switching">言語切り替え</option>
+                    <option value="performance-integration">パフォーマンス統合</option>
+                    <option value="error-handling">エラーハンドリング</option>
+                    <option value="memory-management">メモリ管理</option>
+                    <option value="concurrent-operations">並行処理</option>
+                </select>
+                
+                <label>
+                    <input type="checkbox" id="fail-fast" class="checkbox">
+                    高速失敗モード
+                </label>
+                
+                <label>
+                    <input type="checkbox" id="generate-report" class="checkbox" checked>
+                    詳細レポート生成
+                </label>
+                
+                <label>
+                    <input type="checkbox" id="cleanup-after" class="checkbox" checked>
+                    テスト後クリーンアップ
+                </label>
+            </div>
+            
+            <div class="control-group">
+                <button id="run-tests-btn" class="btn btn-primary">
+                    🚀 テスト実行
+                </button>
+                <button id="run-performance-btn" class="btn btn-warning">
+                    ⚡ パフォーマンステストのみ
+                </button>
+                <button id="run-integration-btn" class="btn btn-success">
+                    🔗 統合テストのみ
+                </button>
+                <button id="clear-results-btn" class="btn btn-danger">
+                    🗑️ 結果クリア
+                </button>
+            </div>
+        </section>
+
+        <section class="stats">
+            <div class="stat-card">
+                <div class="stat-value" id="total-tests">0</div>
+                <div class="stat-label">総テスト数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="passed-tests" style="color: var(--success-color);">0</div>
+                <div class="stat-label">成功</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="failed-tests" style="color: var(--error-color);">0</div>
+                <div class="stat-label">失敗</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="success-rate">0%</div>
+                <div class="stat-label">成功率</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="test-duration">0ms</div>
+                <div class="stat-label">実行時間</div>
+            </div>
+        </section>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>システム統合テストを実行中...</p>
+        </div>
+
+        <section class="results" id="results-section">
+            <div class="results-header">
+                テスト結果
+            </div>
+            
+            <div class="results-content" id="results-content">
+                <p style="padding: 2rem; text-align: center; color: #64748b;">
+                    テストを実行してください
+                </p>
+            </div>
+        </section>
+
+        <section class="report-section" id="report-section">
+            <div class="report-header">
+                詳細レポート
+            </div>
+            
+            <div class="report-content" id="report-content">
+                <!-- レポート内容がここに動的に生成されます -->
+            </div>
+        </section>
+    </div>
+
+    <script type="module">
+        import { getSystemIntegrationTester } from './src/core/i18n/testing/SystemIntegrationTester.js';
+
+        class IntegrationTestUI {
+            constructor() {
+                this.integrationTester = getSystemIntegrationTester();
+                this.isRunning = false;
+                
+                this.initializeEventListeners();
+                this.updateStats();
+            }
+            
+            initializeEventListeners() {
+                document.getElementById('run-tests-btn').addEventListener('click', 
+                    () => this.runTests());
+                document.getElementById('run-performance-btn').addEventListener('click', 
+                    () => this.runPerformanceTests());
+                document.getElementById('run-integration-btn').addEventListener('click', 
+                    () => this.runIntegrationTests());
+                document.getElementById('clear-results-btn').addEventListener('click', 
+                    () => this.clearResults());
+            }
+            
+            async runTests() {
+                if (this.isRunning) return;
+                
+                this.isRunning = true;
+                this.showLoading(true);
+                
+                try {
+                    const suiteSelect = document.getElementById('test-suite-select');
+                    const failFast = document.getElementById('fail-fast').checked;
+                    const generateReport = document.getElementById('generate-report').checked;
+                    const cleanup = document.getElementById('cleanup-after').checked;
+                    
+                    const selectedSuite = suiteSelect.value;
+                    const suites = selectedSuite === 'all' ? 
+                        undefined : [selectedSuite];
+                    
+                    const options = {
+                        suites: suites,
+                        failFast: failFast,
+                        generateReport: generateReport,
+                        cleanup: cleanup
+                    };
+                    
+                    console.log('🚀 Starting integration tests with options:', options);
+                    
+                    const results = await this.integrationTester.runAllTests(options);
+                    
+                    this.displayResults(results);
+                    this.updateStats(results.summary);
+                    
+                    if (generateReport && results.suiteResults) {
+                        this.displayReport(results);
+                    }
+                    
+                    console.log('✅ Integration tests completed');
+                    
+                } catch (error) {
+                    console.error('❌ Test execution failed:', error);
+                    this.displayError(error);
+                } finally {
+                    this.isRunning = false;
+                    this.showLoading(false);
+                }
+            }
+            
+            async runPerformanceTests() {
+                if (this.isRunning) return;
+                
+                const performanceSubsets = ['performance-integration', 'memory-management'];
+                await this.runSpecificTests(performanceSubsets, 'パフォーマンステスト');
+            }
+            
+            async runIntegrationTests() {
+                if (this.isRunning) return;
+                
+                const integrationSubsets = [
+                    'localization-core', 
+                    'translation-loading', 
+                    'language-switching',
+                    'concurrent-operations'
+                ];
+                await this.runSpecificTests(integrationSubsets, '統合テスト');
+            }
+            
+            async runSpecificTests(suites, testType) {
+                this.isRunning = true;
+                this.showLoading(true);
+                
+                try {
+                    const generateReport = document.getElementById('generate-report').checked;
+                    const cleanup = document.getElementById('cleanup-after').checked;
+                    
+                    console.log(`🚀 Starting ${testType}...`);
+                    
+                    const results = await this.integrationTester.runAllTests({
+                        suites: suites,
+                        failFast: false,
+                        generateReport: generateReport,
+                        cleanup: cleanup
+                    });
+                    
+                    this.displayResults(results);
+                    this.updateStats(results.summary);
+                    
+                    if (generateReport && results.suiteResults) {
+                        this.displayReport(results);
+                    }
+                    
+                    console.log(`✅ ${testType} completed`);
+                    
+                } catch (error) {
+                    console.error(`❌ ${testType} failed:`, error);
+                    this.displayError(error);
+                } finally {
+                    this.isRunning = false;
+                    this.showLoading(false);
+                }
+            }
+            
+            displayResults(results) {
+                const resultsContent = document.getElementById('results-content');
+                
+                if (!results.suiteResults) {
+                    resultsContent.innerHTML = `
+                        <div style="padding: 2rem; text-align: center;">
+                            <p>テスト結果の詳細情報が利用できません</p>
+                            <pre style="text-align: left; background: #f8f9fa; padding: 1rem; border-radius: 4px; margin-top: 1rem;">
+                                ${JSON.stringify(results, null, 2)}
+                            </pre>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                let html = '';
+                
+                for (const [suiteName, suiteResult] of Object.entries(results.suiteResults)) {
+                    const passedCount = suiteResult.passed;
+                    const failédCount = suiteResult.failed;
+                    const totalCount = suiteResult.totalTests;
+                    const avgDuration = suiteResult.averageDuration;
+                    
+                    html += `
+                        <div class="test-suite">
+                            <div class="suite-header" onclick="toggleSuite('${suiteName}')">
+                                <span>${this.formatSuiteName(suiteName)}</span>
+                                <div class="suite-stats">
+                                    <span style="color: var(--success-color);">✅ ${passedCount}</span>
+                                    <span style="color: var(--error-color);">❌ ${failédCount}</span>
+                                    <span style="color: #64748b;">${avgDuration}ms avg</span>
+                                </div>
+                            </div>
+                            <div class="test-results" id="suite-${suiteName}">
+                    `;
+                    
+                    for (const test of suiteResult.tests) {
+                        const statusClass = `status-${test.status}`;
+                        const statusIcon = test.status === 'passed' ? '✅' : 
+                                         test.status === 'failed' ? '❌' : '⏭️';
+                        
+                        html += `
+                            <div class="test-item">
+                                <div>
+                                    <div class="test-name">${test.name}</div>
+                                    ${test.error ? `<div class="test-error">${test.error}</div>` : ''}
+                                </div>
+                                <div class="test-status">
+                                    <span class="status-badge ${statusClass}">
+                                        ${statusIcon} ${test.status.toUpperCase()}
+                                    </span>
+                                    <span class="test-duration">${test.duration}ms</span>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    html += `
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                resultsContent.innerHTML = html;
+            }
+            
+            displayReport(results) {
+                const reportSection = document.getElementById('report-section');
+                const reportContent = document.getElementById('report-content');
+                
+                let html = `
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                        <div class="stat-card">
+                            <div class="stat-value">${results.summary.totalTests}</div>
+                            <div class="stat-label">総テスト数</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" style="color: var(--success-color);">${results.summary.passedTests}</div>
+                            <div class="stat-label">成功</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" style="color: var(--error-color);">${results.summary.failedTests}</div>
+                            <div class="stat-label">失敗</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${results.summary.successRate}</div>
+                            <div class="stat-label">成功率</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${results.summary.duration}</div>
+                            <div class="stat-label">実行時間</div>
+                        </div>
+                    </div>
+                `;
+                
+                if (results.recommendations && results.recommendations.length > 0) {
+                    html += `
+                        <div class="recommendations">
+                            <h4>推奨事項</h4>
+                            <ul>
+                                ${results.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+                
+                html += `
+                    <details style="margin-top: 2rem;">
+                        <summary style="cursor: pointer; font-weight: 600; padding: 0.5rem 0;">
+                            詳細データ (JSON)
+                        </summary>
+                        <pre style="background: #f8f9fa; padding: 1rem; border-radius: 4px; overflow-x: auto; font-size: 0.8rem; margin-top: 1rem;">
+                            ${JSON.stringify(results, null, 2)}
+                        </pre>
+                    </details>
+                `;
+                
+                reportContent.innerHTML = html;
+                reportSection.classList.add('active');
+            }
+            
+            displayError(error) {
+                const resultsContent = document.getElementById('results-content');
+                resultsContent.innerHTML = `
+                    <div style="padding: 2rem; text-align: center; color: var(--error-color);">
+                        <h3>❌ エラーが発生しました</h3>
+                        <p style="margin: 1rem 0;">${error.message}</p>
+                        <pre style="text-align: left; background: #fef2f2; padding: 1rem; border-radius: 4px; border: 1px solid var(--error-color);">
+                            ${error.stack || error.toString()}
+                        </pre>
+                    </div>
+                `;
+            }
+            
+            updateStats(summary = null) {
+                if (summary) {
+                    document.getElementById('total-tests').textContent = summary.totalTests;
+                    document.getElementById('passed-tests').textContent = summary.passedTests;
+                    document.getElementById('failed-tests').textContent = summary.failedTests;
+                    document.getElementById('success-rate').textContent = summary.successRate;
+                    document.getElementById('test-duration').textContent = summary.duration;
+                    
+                    // プログレスバーを更新
+                    const successRate = parseFloat(summary.successRate) || 0;
+                    document.getElementById('progress-fill').style.width = `${successRate}%`;
+                } else {
+                    const stats = this.integrationTester.getStats();
+                    document.getElementById('total-tests').textContent = '0';
+                    document.getElementById('passed-tests').textContent = '0';
+                    document.getElementById('failed-tests').textContent = '0';
+                    document.getElementById('success-rate').textContent = '0%';
+                    document.getElementById('test-duration').textContent = '0ms';
+                    document.getElementById('progress-fill').style.width = '0%';
+                }
+            }
+            
+            showLoading(show) {
+                const loading = document.getElementById('loading');
+                loading.classList.toggle('active', show);
+            }
+            
+            clearResults() {
+                document.getElementById('results-content').innerHTML = `
+                    <p style="padding: 2rem; text-align: center; color: #64748b;">
+                        テストを実行してください
+                    </p>
+                `;
+                
+                document.getElementById('report-section').classList.remove('active');
+                this.updateStats();
+            }
+            
+            formatSuiteName(suiteName) {
+                const names = {
+                    'localization-core': 'LocalizationManager コア機能',
+                    'translation-loading': '翻訳読み込み機能',
+                    'formatting-integration': 'フォーマット機能統合',
+                    'cultural-adaptation': '文化的適応機能',
+                    'rtl-integration': 'RTL統合機能',
+                    'language-switching': '言語切り替え',
+                    'performance-integration': 'パフォーマンス統合',
+                    'error-handling': 'エラーハンドリング',
+                    'memory-management': 'メモリ管理',
+                    'concurrent-operations': '並行処理'
+                };
+                return names[suiteName] || suiteName;
+            }
+        }
+        
+        // グローバル関数
+        window.toggleSuite = function(suiteName) {
+            const element = document.getElementById(`suite-${suiteName}`);
+            element.classList.toggle('expanded');
+        };
+        
+        // アプリケーション初期化
+        document.addEventListener('DOMContentLoaded', () => {
+            new IntegrationTestUI();
+        });
+    </script>
+</body>
+</html>
