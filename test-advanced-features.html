@@ -1,0 +1,1762 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Internationalization Features Test - 高度な多言語対応機能テスト</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+
+        .feature-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #e74c3c;
+        }
+
+        .feature-section h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature-section h3 {
+            color: #34495e;
+            margin: 20px 0 10px 0;
+            font-size: 1.3em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 5px;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .controls label {
+            font-weight: 600;
+            color: #2c3e50;
+            min-width: 120px;
+        }
+
+        .controls select, .controls input, .controls textarea {
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            min-width: 150px;
+        }
+
+        .controls select:focus, .controls input:focus, .controls textarea:focus {
+            border-color: #e74c3c;
+            outline: none;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+        }
+
+        .btn.info {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+
+        .btn.success {
+            background: linear-gradient(135deg, #27ae60, #229954);
+        }
+
+        .results {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 15px;
+            white-space: pre-wrap;
+            line-height: 1.4;
+        }
+
+        .status {
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status.info {
+            background: #cce7ff;
+            color: #004085;
+            border: 1px solid #b3d7ff;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ecf0f1;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            background: #ecf0f1;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #7f8c8d;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .tab.active {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .demo-area {
+            border: 2px dashed #bdc3c7;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            background: #f8f9fa;
+            min-height: 150px;
+        }
+
+        .rtl-demo {
+            direction: rtl;
+            text-align: right;
+            font-family: Arial, sans-serif;
+        }
+
+        .cultural-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+
+        .cultural-lucky-number {
+            color: #27ae60;
+            font-weight: bold;
+            text-shadow: 0 0 2px #27ae6040;
+        }
+
+        .cultural-number-adapted::after {
+            content: "📝";
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 10px;
+            opacity: 0.7;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: 700;
+            color: #e74c3c;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .example-text {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+
+        .language-selector {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .language-option {
+            padding: 8px 15px;
+            background: #ecf0f1;
+            border: 2px solid #bdc3c7;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .language-option.selected {
+            background: #e74c3c;
+            color: white;
+            border-color: #c0392b;
+        }
+
+        .icon {
+            font-size: 1.2em;
+            margin-right: 5px;
+        }
+
+        .rtl-content {
+            direction: rtl;
+            text-align: right;
+        }
+
+        .ltr-content {
+            direction: ltr;
+            text-align: left;
+        }
+
+        /* Cultural adaptation styles */
+        .culture-ar .cultural-lucky-number {
+            color: #008000;
+        }
+
+        .culture-ja .cultural-lucky-number {
+            color: #FFD700;
+        }
+
+        .culture-zh .cultural-lucky-number {
+            color: #FF0000;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .controls label {
+                min-width: auto;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                flex: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌍 Advanced I18n Features</h1>
+        <p class="subtitle">高度な多言語対応機能 - RTL言語・文化的適応・高度フォーマット機能テスト</p>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('rtl')">
+                <span class="icon">🔄</span>RTL対応
+            </button>
+            <button class="tab" onclick="showTab('cultural')">
+                <span class="icon">🏛️</span>文化的適応
+            </button>
+            <button class="tab" onclick="showTab('formatting')">
+                <span class="icon">🔧</span>高度フォーマット
+            </button>
+            <button class="tab" onclick="showTab('components')">
+                <span class="icon">🧩</span>RTLコンポーネント
+            </button>
+        </div>
+
+        <!-- RTL対応タブ -->
+        <div id="rtl" class="tab-content active">
+            <div class="feature-section">
+                <h2><span class="icon">🔄</span>RTL言語検出・レイアウト機能</h2>
+                
+                <h3>RTL言語検出</h3>
+                <div class="controls">
+                    <label>テスト言語:</label>
+                    <select id="rtlLanguage">
+                        <option value="ar">アラビア語 (ar)</option>
+                        <option value="he">ヘブライ語 (he)</option>
+                        <option value="fa">ペルシャ語 (fa)</option>
+                        <option value="ur">ウルドゥー語 (ur)</option>
+                        <option value="ja">日本語 (ja)</option>
+                        <option value="en">英語 (en)</option>
+                    </select>
+                    
+                    <label>テストテキスト:</label>
+                    <input type="text" id="rtlTestText" placeholder="RTLテキストを入力" value="مرحبا بك">
+                </div>
+
+                <button class="btn" onclick="testRTLDetection()">
+                    <span class="icon">🔍</span>RTL検出テスト
+                </button>
+                <button class="btn secondary" onclick="testTextDirection()">
+                    <span class="icon">📝</span>テキスト方向検出
+                </button>
+                <button class="btn info" onclick="generateBidiText()">
+                    <span class="icon">🔄</span>双方向テキスト生成
+                </button>
+
+                <div class="demo-area" id="rtlDemoArea">
+                    <p>RTL検出結果がここに表示されます</p>
+                </div>
+
+                <h3>RTLレイアウト適用</h3>
+                <div class="controls">
+                    <label>レイアウト方向:</label>
+                    <select id="layoutDirection">
+                        <option value="ltr">LTR (左から右)</option>
+                        <option value="rtl">RTL (右から左)</option>
+                    </select>
+                    
+                    <label>コンポーネントタイプ:</label>
+                    <select id="componentType">
+                        <option value="generic">汎用</option>
+                        <option value="menu">メニュー</option>
+                        <option value="navigation">ナビゲーション</option>
+                        <option value="form">フォーム</option>
+                        <option value="dialog">ダイアログ</option>
+                    </select>
+                </div>
+
+                <button class="btn" onclick="applyRTLLayout()">
+                    <span class="icon">⚡</span>RTLレイアウト適用
+                </button>
+                <button class="btn secondary" onclick="generateRTLCSS()">
+                    <span class="icon">🎨</span>RTL CSS生成
+                </button>
+
+                <div id="rtlResults" class="results"></div>
+            </div>
+        </div>
+
+        <!-- 文化的適応タブ -->
+        <div id="cultural" class="tab-content">
+            <div class="feature-section">
+                <h2><span class="icon">🏛️</span>文化的適応システム</h2>
+                
+                <h3>文化設定</h3>
+                <div class="language-selector">
+                    <div class="language-option selected" data-culture="ja">
+                        <span class="icon">🇯🇵</span>日本
+                    </div>
+                    <div class="language-option" data-culture="ar">
+                        <span class="icon">🇦🇪</span>アラビア
+                    </div>
+                    <div class="language-option" data-culture="zh">
+                        <span class="icon">🇨🇳</span>中国
+                    </div>
+                    <div class="language-option" data-culture="ko">
+                        <span class="icon">🇰🇷</span>韓国
+                    </div>
+                    <div class="language-option" data-culture="en">
+                        <span class="icon">🇺🇸</span>西欧
+                    </div>
+                </div>
+
+                <h3>色の文化的適応</h3>
+                <div class="controls">
+                    <label>色の用途:</label>
+                    <select id="colorUsage">
+                        <option value="general">一般</option>
+                        <option value="accent">アクセント</option>
+                        <option value="important">重要</option>
+                        <option value="background">背景</option>
+                    </select>
+                </div>
+
+                <button class="btn" onclick="testColorAdaptation()">
+                    <span class="icon">🎨</span>色適応テスト
+                </button>
+                <button class="btn secondary" onclick="testNumberAdaptation()">
+                    <span class="icon">🔢</span>数字適応テスト
+                </button>
+                <button class="btn info" onclick="testGestureAdaptation()">
+                    <span class="icon">👋</span>ジェスチャー適応テスト
+                </button>
+
+                <div class="demo-area" id="culturalDemoArea">
+                    <p>文化的適応のデモがここに表示されます</p>
+                </div>
+
+                <h3>タブー検証</h3>
+                <div class="controls">
+                    <label>コンテンツタイプ:</label>
+                    <select id="contentType">
+                        <option value="general">一般</option>
+                        <option value="visual">視覚的</option>
+                        <option value="behavioral">行動的</option>
+                        <option value="interaction">インタラクション</option>
+                    </select>
+                    
+                    <label>テストコンテンツ:</label>
+                    <textarea id="tabooTestContent" placeholder="タブー検証用コンテンツを入力">数字の4を強調して使用します。</textarea>
+                </div>
+
+                <button class="btn" onclick="validateTaboos()">
+                    <span class="icon">⚠️</span>タブー検証実行
+                </button>
+
+                <div id="culturalResults" class="results"></div>
+            </div>
+        </div>
+
+        <!-- 高度フォーマットタブ -->
+        <div id="formatting" class="tab-content">
+            <div class="feature-section">
+                <h2><span class="icon">🔧</span>高度フォーマット機能</h2>
+                
+                <h3>複数形処理</h3>
+                <div class="controls">
+                    <label>言語:</label>
+                    <select id="pluralLanguage">
+                        <option value="en">英語 (2形式)</option>
+                        <option value="ar">アラビア語 (6形式)</option>
+                        <option value="ru">ロシア語 (4形式)</option>
+                        <option value="ja">日本語 (1形式)</option>
+                    </select>
+                    
+                    <label>数値:</label>
+                    <input type="number" id="pluralCount" value="5" min="0" max="1000">
+                    
+                    <label>翻訳キー:</label>
+                    <input type="text" id="pluralKey" value="item" placeholder="item, comment, etc.">
+                </div>
+
+                <button class="btn" onclick="testPluralFormatting()">
+                    <span class="icon">📊</span>複数形テスト
+                </button>
+                <button class="btn secondary" onclick="testComplexPlurals()">
+                    <span class="icon">🔢</span>複雑な複数形テスト
+                </button>
+
+                <h3>文脈依存翻訳</h3>
+                <div class="controls">
+                    <label>文脈タイプ:</label>
+                    <select id="contextType">
+                        <option value="politeness">敬語レベル (日本語)</option>
+                        <option value="intimacy">親密度 (韓国語)</option>
+                        <option value="gender">性別 (アラビア語)</option>
+                    </select>
+                    
+                    <label>文脈値:</label>
+                    <select id="contextValue">
+                        <option value="casual">カジュアル</option>
+                        <option value="polite">丁寧</option>
+                        <option value="formal">フォーマル</option>
+                        <option value="honorific">敬語</option>
+                    </select>
+                </div>
+
+                <button class="btn" onclick="testContextualTranslation()">
+                    <span class="icon">🎭</span>文脈依存翻訳テスト
+                </button>
+
+                <h3>動的翻訳生成</h3>
+                <div class="controls">
+                    <label>生成タイプ:</label>
+                    <select id="generationType">
+                        <option value="number-expression">数値表現</option>
+                        <option value="time-expression">時間表現</option>
+                        <option value="comparison-expression">比較表現</option>
+                    </select>
+                    
+                    <label>データ:</label>
+                    <input type="text" id="generationData" placeholder="JSON形式のデータ" value='{"value": 1500000}'>
+                </div>
+
+                <button class="btn" onclick="testDynamicGeneration()">
+                    <span class="icon">⚡</span>動的翻訳生成テスト
+                </button>
+                <button class="btn secondary" onclick="testComplexFormatting()">
+                    <span class="icon">🔧</span>複合フォーマットテスト
+                </button>
+
+                <h3>翻訳メモリ</h3>
+                <div class="controls">
+                    <label>検索クエリ:</label>
+                    <input type="text" id="memoryQuery" placeholder="翻訳メモリ検索" value="hello world">
+                    
+                    <label>言語:</label>
+                    <select id="memoryLanguage">
+                        <option value="ja">日本語</option>
+                        <option value="en">英語</option>
+                        <option value="ar">アラビア語</option>
+                    </select>
+                </div>
+
+                <button class="btn info" onclick="searchTranslationMemory()">
+                    <span class="icon">🔍</span>メモリ検索
+                </button>
+                <button class="btn secondary" onclick="showMemoryStats()">
+                    <span class="icon">📊</span>メモリ統計
+                </button>
+
+                <div id="formattingResults" class="results"></div>
+            </div>
+        </div>
+
+        <!-- RTLコンポーネントタブ -->
+        <div id="components" class="tab-content">
+            <div class="feature-section">
+                <h2><span class="icon">🧩</span>RTL対応UIコンポーネント</h2>
+                
+                <h3>入力コンポーネント</h3>
+                <div class="controls">
+                    <label>言語:</label>
+                    <select id="componentLanguage">
+                        <option value="ar">アラビア語</option>
+                        <option value="he">ヘブライ語</option>
+                        <option value="fa">ペルシャ語</option>
+                        <option value="ur">ウルドゥー語</option>
+                    </select>
+                </div>
+
+                <button class="btn" onclick="createRTLInput()">
+                    <span class="icon">📝</span>RTL入力フィールド作成
+                </button>
+                <button class="btn" onclick="createRTLTextArea()">
+                    <span class="icon">📄</span>RTLテキストエリア作成
+                </button>
+                <button class="btn" onclick="createRTLSelect()">
+                    <span class="icon">📋</span>RTLセレクト作成
+                </button>
+
+                <h3>ナビゲーションコンポーネント</h3>
+                <button class="btn secondary" onclick="createRTLMenu()">
+                    <span class="icon">🍔</span>RTLメニュー作成
+                </button>
+                <button class="btn secondary" onclick="createRTLNavigation()">
+                    <span class="icon">🧭</span>RTLナビゲーション作成
+                </button>
+                <button class="btn secondary" onclick="createRTLBreadcrumb()">
+                    <span class="icon">🍞</span>RTLパンくず作成
+                </button>
+
+                <h3>UI要素コンポーネント</h3>
+                <button class="btn info" onclick="createRTLDialog()">
+                    <span class="icon">💬</span>RTLダイアログ作成
+                </button>
+                <button class="btn info" onclick="createRTLPagination()">
+                    <span class="icon">📖</span>RTLページネーション作成
+                </button>
+                <button class="btn info" onclick="createRTLDropdown()">
+                    <span class="icon">⬇️</span>RTLドロップダウン作成
+                </button>
+
+                <div class="demo-area" id="componentDemoArea">
+                    <p>RTLコンポーネントがここに表示されます</p>
+                </div>
+
+                <div id="componentResults" class="results"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 統計表示 -->
+    <div class="container">
+        <h2><span class="icon">📊</span>高度機能統計</h2>
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="stat-number" id="rtlDetections">0</div>
+                <div class="stat-label">RTL検出回数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="culturalAdaptations">0</div>
+                <div class="stat-label">文化的適応回数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="pluralFormattings">0</div>
+                <div class="stat-label">複数形処理回数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="contextualTranslations">0</div>
+                <div class="stat-label">文脈依存翻訳回数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="dynamicGenerations">0</div>
+                <div class="stat-label">動的生成回数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="componentsCreated">0</div>
+                <div class="stat-label">作成コンポーネント数</div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { getRTLLanguageDetector } from './src/core/i18n/rtl/RTLLanguageDetector.js';
+        import { getRTLLayoutManager } from './src/core/i18n/rtl/RTLLayoutManager.js';
+        import { getRTLUIComponents } from './src/core/i18n/rtl/RTLUIComponents.js';
+        import { getCulturalAdaptationSystem } from './src/core/i18n/cultural/CulturalAdaptationSystem.js';
+        import { getAdvancedFormatterEngine } from './src/core/i18n/advanced/AdvancedFormatterEngine.js';
+
+        // グローバル変数
+        let rtlDetector, rtlLayoutManager, rtlUIComponents, culturalSystem, formatterEngine;
+        let currentCulture = 'ja';
+        let statistics = {
+            rtlDetections: 0,
+            culturalAdaptations: 0,
+            pluralFormattings: 0,
+            contextualTranslations: 0,
+            dynamicGenerations: 0,
+            componentsCreated: 0
+        };
+
+        // 初期化
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                rtlDetector = getRTLLanguageDetector();
+                rtlLayoutManager = getRTLLayoutManager();
+                rtlUIComponents = getRTLUIComponents();
+                culturalSystem = getCulturalAdaptationSystem();
+                formatterEngine = getAdvancedFormatterEngine();
+                
+                setupEventListeners();
+                updateStatistics();
+                showStatus('高度な多言語対応機能テストが初期化されました', 'success');
+            } catch (error) {
+                console.error('Initialization error:', error);
+                showStatus(`初期化エラー: ${error.message}`, 'error');
+            }
+        });
+
+        // イベントリスナー設定
+        function setupEventListeners() {
+            // 文化選択
+            document.querySelectorAll('.language-option').forEach(option => {
+                option.addEventListener('click', (e) => {
+                    document.querySelectorAll('.language-option').forEach(opt => opt.classList.remove('selected'));
+                    e.currentTarget.classList.add('selected');
+                    currentCulture = e.currentTarget.dataset.culture;
+                    culturalSystem.setCulturalAdaptation(currentCulture);
+                    showStatus(`文化設定を${currentCulture}に変更しました`, 'info');
+                });
+            });
+        }
+
+        // タブ切り替え
+        window.showTab = function(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            document.querySelector(`[onclick="showTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        };
+
+        // RTL検出機能
+        window.testRTLDetection = function() {
+            const language = document.getElementById('rtlLanguage').value;
+            const testText = document.getElementById('rtlTestText').value;
+            
+            try {
+                const isRTL = rtlDetector.isRTLLanguage(language);
+                const containsRTL = rtlDetector.containsRTLCharacters(testText);
+                const languageInfo = rtlDetector.getRTLLanguageInfo(language);
+                
+                const demoArea = document.getElementById('rtlDemoArea');
+                demoArea.innerHTML = `
+                    <div style="margin-bottom: 15px;">
+                        <strong>検出結果:</strong><br>
+                        言語 "${language}" はRTL: <span style="color: ${isRTL ? 'green' : 'red'}">${isRTL ? 'はい' : 'いいえ'}</span><br>
+                        テキスト "${testText}" にRTL文字を含む: <span style="color: ${containsRTL ? 'green' : 'red'}">${containsRTL ? 'はい' : 'いいえ'}</span>
+                    </div>
+                    ${languageInfo ? `
+                    <div style="margin-bottom: 15px;">
+                        <strong>言語情報:</strong><br>
+                        名前: ${languageInfo.name}<br>
+                        文字体系: ${languageInfo.script}<br>
+                        方向: ${languageInfo.direction}<br>
+                        ファミリー: ${languageInfo.family}
+                    </div>
+                    ` : ''}
+                    <div class="${isRTL ? 'rtl-content' : 'ltr-content'}" style="border: 1px solid #ddd; padding: 10px; background: white;">
+                        ${testText}
+                    </div>
+                `;
+                
+                statistics.rtlDetections++;
+                updateStatistics();
+                showStatus('RTL検出テストが完了しました', 'success');
+                
+            } catch (error) {
+                console.error('RTL detection error:', error);
+                showStatus(`RTL検出エラー: ${error.message}`, 'error');
+            }
+        };
+
+        window.testTextDirection = function() {
+            const testText = document.getElementById('rtlTestText').value;
+            
+            try {
+                const direction = rtlDetector.detectTextDirection(testText);
+                
+                displayResults('rtlResults', {
+                    title: 'テキスト方向検出結果',
+                    data: {
+                        'テキスト': testText,
+                        '検出方向': direction.direction,
+                        '信頼度': `${(direction.confidence * 100).toFixed(1)}%`,
+                        'RTL文字数': direction.details.rtlChars,
+                        'LTR文字数': direction.details.ltrChars,
+                        '中性文字数': direction.details.neutralChars,
+                        'RTL文字比率': `${(direction.details.rtlRatio * 100).toFixed(1)}%`
+                    }
+                });
+                
+                statistics.rtlDetections++;
+                updateStatistics();
+                showStatus('テキスト方向検出が完了しました', 'success');
+                
+            } catch (error) {
+                console.error('Text direction detection error:', error);
+                showStatus(`テキスト方向検出エラー: ${error.message}`, 'error');
+            }
+        };
+
+        window.generateBidiText = function() {
+            try {
+                const segments = [
+                    { text: 'Hello', language: 'en', direction: 'ltr' },
+                    { text: 'مرحبا', language: 'ar', direction: 'rtl' },
+                    { text: 'World', language: 'en', direction: 'ltr' },
+                    { text: 'عالم', language: 'ar', direction: 'rtl' }
+                ];
+                
+                const result = rtlDetector.generateBidiText(segments);
+                
+                const demoArea = document.getElementById('rtlDemoArea');
+                demoArea.innerHTML = `
+                    <div style="margin-bottom: 15px;">
+                        <strong>双方向テキスト生成結果:</strong><br>
+                        RTL文字を含む: <span style="color: ${result.hasRTL ? 'green' : 'red'}">${result.hasRTL ? 'はい' : 'いいえ'}</span>
+                    </div>
+                    <div style="border: 1px solid #ddd; padding: 10px; background: white; direction: ltr;">
+                        <strong>生成されたテキスト:</strong><br>
+                        ${result.text}
+                    </div>
+                    <div style="margin-top: 10px; font-size: 12px; color: #666;">
+                        双方向制御文字が挿入されて、正しい表示が保証されます
+                    </div>
+                `;
+                
+                showStatus('双方向テキスト生成が完了しました', 'success');
+                
+            } catch (error) {
+                console.error('Bidi text generation error:', error);
+                showStatus(`双方向テキスト生成エラー: ${error.message}`, 'error');
+            }
+        };
+
+        // RTLレイアウト機能
+        window.applyRTLLayout = function() {
+            const direction = document.getElementById('layoutDirection').value;
+            const componentType = document.getElementById('componentType').value;
+            
+            try {
+                rtlLayoutManager.setLayoutDirection(direction, direction === 'rtl' ? 'ar' : 'en');
+                
+                const demoArea = document.getElementById('rtlDemoArea');
+                demoArea.style.direction = direction;
+                demoArea.style.textAlign = direction === 'rtl' ? 'right' : 'left';
+                
+                rtlLayoutManager.applyRTLLayout(demoArea, {
+                    componentType: componentType
+                });
+                
+                displayResults('rtlResults', {
+                    title: 'RTLレイアウト適用結果',
+                    data: {
+                        '適用方向': direction,
+                        'コンポーネントタイプ': componentType,
+                        '現在の方向': rtlLayoutManager.getCurrentDirection(),
+                        '現在の言語': rtlLayoutManager.getCurrentLanguage() || '未設定'
+                    }
+                });
+                
+                showStatus(`${direction.toUpperCase()}レイアウトが適用されました`, 'success');
+                
+            } catch (error) {
+                console.error('RTL layout application error:', error);
+                showStatus(`RTLレイアウト適用エラー: ${error.message}`, 'error');
+            }
+        };
+
+        window.generateRTLCSS = function() {
+            const language = document.getElementById('rtlLanguage').value;
+            
+            try {
+                const rtlCSS = rtlDetector.generateRTLCSS(language, {
+                    includeLayout: true,
+                    includeTypography: true,
+                    includeSpacing: true
+                });
+                
+                displayResults('rtlResults', {
+                    title: `${language} RTL CSS生成結果`,
+                    data: {
+                        'RTL言語': rtlCSS.isRTL ? 'はい' : 'いいえ',
+                        '言語': rtlCSS.language || '未対応',
+                        'CSS長': `${rtlCSS.css.length} 文字`
+                    },
+                    css: rtlCSS.css
+                });
+                
+                showStatus('RTL CSS生成が完了しました', 'success');
+                
+            } catch (error) {
+                console.error('RTL CSS generation error:', error);
+                showStatus(`RTL CSS生成エラー: ${error.message}`, 'error');
+            }
+        };
+
+        // 文化的適応機能
+        window.testColorAdaptation = function() {
+            const colorUsage = document.getElementById('colorUsage').value;
+            
+            try {
+                culturalSystem.setCulturalAdaptation(currentCulture);
+                
+                const demoArea = document.getElementById('culturalDemoArea');
+                demoArea.innerHTML = `
+                    <div style="background-color: #ff0000; color: white; padding: 10px; margin: 5px;">赤色のテスト要素</div>
+                    <div style="background-color: #000000; color: white; padding: 10px; margin: 5px;">黒色のテスト要素</div>
+                    <div style="background-color: #ffffff; color: black; padding: 10px; margin: 5px; border: 1px solid #ccc;">白色のテスト要素</div>
+                    <div style="background-color: #008000; color: white; padding: 10px; margin: 5px;">緑色のテスト要素</div>
+                `;
+                
+                // 各要素に文化的適応を適用
+                const elements = demoArea.children;
+                let adaptedCount = 0;
+                
+                for (let element of elements) {
+                    if (culturalSystem.adaptColors(element, colorUsage)) {
+                        adaptedCount++;
+                        element.classList.add('cultural-adapted');
+                    }
+                }
+                
+                displayResults('culturalResults', {
+                    title: `${currentCulture} 色適応テスト結果`,
+                    data: {
+                        '文化': currentCulture,
+                        '色用途': colorUsage,
+                        '要素数': elements.length,
+                        '適応要素数': adaptedCount,
+                        '適応率': `${(adaptedCount / elements.length * 100).toFixed(1)}%`
+                    }
+                });
+                
+                statistics.culturalAdaptations += adaptedCount;
+                updateStatistics();
+                showStatus(`色の文化的適応が完了しました (${adaptedCount}個の要素)`, 'success');
+                
+            } catch (error) {
+                console.error('Color adaptation error:', error);
+                showStatus(`色適応エラー: ${error.message}`, 'error');
+            }
+        };
+
+        window.testNumberAdaptation = function() {
+            try {
+                culturalSystem.setCulturalAdaptation(currentCulture);
+                
+                const demoArea = document.getElementById('culturalDemoArea');
+                demoArea.innerHTML = `
+                    <div class="example-text">レベル 4 をクリアしました！</div>
+                    <div class="example-text">7つのアイテムを獲得</div>
+                    <div class="example-text">スコア: 8888点</div>
+                    <div class="example-text">ステージ 13 に挑戦</div>
+                    <div class="example-text">合計 9回のチャレンジ</div>
+                `;
+                
+                // 各要素に数字適応を適用
+                const elements = demoArea.children;
+                let adaptedCount = 0;
+                
+                for (let element of elements) {
+                    if (culturalSystem.adaptNumbers(element)) {
+                        adaptedCount++;
+                    }
+                }
+                
+                displayResults('culturalResults', {
+                    title: `${currentCulture} 数字適応テスト結果`,
+                    data: {
+                        '文化': currentCulture,
+                        '要素数': elements.length,
+                        '適応要素数': adaptedCount,
+                        '適応内容': '不吉な数字の置換、幸運な数字の強調'
+                    }
+                });
+                
+                statistics.culturalAdaptations += adaptedCount;
+                updateStatistics();
+                showStatus(`数字の文化的適応が完了しました`, 'success');
+                
+            } catch (error) {
+                console.error('Number adaptation error:', error);
+                showStatus(`数字適応エラー: ${error.message}`, 'error');
+            }
+        };
+
+        window.testGestureAdaptation = function() {
+            try {
+                culturalSystem.setCulturalAdaptation(currentCulture);
+                
+                const demoArea = document.getElementById('culturalDemoArea');
+                demoArea.innerHTML = `
+                    <div class="example-text">いいね！ <span data-gesture="thumbs-up">👍</span></div>
+                    <div class="example-text">OK <span data-gesture="ok-sign">👌</span></div>
+                    <div class="example-text">こちらです <span data-gesture="pointing">👉</span></div>
+                    <div class="example-text">いらっしゃい <span data-gesture="beckoning">👋</span></div>
+                `;
+                
+                let adaptedCount = 0;
+                if (culturalSystem.adaptGestures(demoArea)) {
+                    adaptedCount++;
+                }
+                
+                displayResults('culturalResults', {
+                    title: `${currentCulture} ジェスチャー適応テスト結果`,
+                    data: {
+                        '文化': currentCulture,
+                        '適応実行': adaptedCount > 0 ? 'はい' : 'いいえ',
+                        '不適切ジェスチャー': '文化に応じて検出・置換',
+                        '警告表示': '不適切な可能性のあるジェスチャーにマーク'
+                    }
+                });
+                
+                statistics.culturalAdaptations += adaptedCount;
+                updateStatistics();
+                showStatus(`ジェスチャーの文化的適応が完了しました`, 'success');
+                
+            } catch (error) {
+                console.error('Gesture adaptation error:', error);
+                showStatus(`ジェスチャー適応エラー: ${error.message}`, 'error');
+            }
+        };
+
+        window.validateTaboos = function() {
+            const contentType = document.getElementById('contentType').value;
+            const testContent = document.getElementById('tabooTestContent').value;
+            
+            try {
+                culturalSystem.setCulturalAdaptation(currentCulture);
+                const validation = culturalSystem.validateAgainstTaboos(testContent, contentType);
+                
+                displayResults('culturalResults', {
+                    title: `${currentCulture} タブー検証結果`,
+                    data: {
+                        '文化': validation.culture || currentCulture,
+                        'コンテンツタイプ': contentType,
+                        '検証結果': validation.valid ? '適切' : '問題あり',
+                        '警告数': validation.warnings.length,
+                        'テストコンテンツ': testContent
+                    },
+                    warnings: validation.warnings
+                });
+                
+                if (!validation.valid) {
+                    const warningDiv = document.createElement('div');
+                    warningDiv.className = 'cultural-warning';
+                    warningDiv.innerHTML = `
+                        <strong>⚠️ 文化的タブー検出:</strong><br>
+                        ${validation.warnings.map(w => `• ${w.type}: ${w.suggestion}`).join('<br>')}
+                    `;
+                    document.getElementById('culturalDemoArea').appendChild(warningDiv);
+                }
+                
+                showStatus(`タブー検証が完了しました (${validation.warnings.length}個の警告)`, 
+                          validation.valid ? 'success' : 'error');
+                
+            } catch (error) {
+                console.error('Taboo validation error:', error);
+                showStatus(`タブー検証エラー: ${error.message}`, 'error');
+            }
+        };
+
+        // 高度フォーマット機能
+        window.testPluralFormatting = function() {
+            const language = document.getElementById('pluralLanguage').value;
+            const count = parseInt(document.getElementById('pluralCount').value);
+            const key = document.getElementById('pluralKey').value;
+            
+            try {
+                const result = formatterEngine.formatPlural(key, count, language);
+                
+                // 複数のカウントでテスト
+                const testCounts = [0, 1, 2, 3, 5, 11, 21, 100];
+                const pluralTests = testCounts.map(testCount => ({
+                    count: testCount,
+                    result: formatterEngine.formatPlural(key, testCount, language)
+                }));
+                
+                displayResults('formattingResults', {
+                    title: `${language} 複数形処理結果`,
+                    data: {
+                        '言語': language,
+                        'キー': key,
+                        '入力カウント': count,
+                        '結果': result
+                    },
+                    pluralTests: pluralTests
+                });
+                
+                statistics.pluralFormattings++;
+                updateStatistics();
+                showStatus('複数形処理テストが完了しました', 'success');
+                
+            } catch (error) {
+                console.error('Plural formatting error:', error);
+                showStatus(`複数形処理エラー: ${error.message}`, 'error');
+            }
+        };
+
+        window.testComplexPlurals = function() {
+            try {
+                const languages = ['en', 'ar', 'ru'];
+                const testCounts = [0, 1, 2, 3, 4, 5, 11, 21, 101];
+                const results = {};
+                
+                languages.forEach(lang => {
+                    results[lang] = testCounts.map(count => ({
+                        count: count,
+                        result: formatterEngine.formatPlural('item', count, lang)
+                    }));
+                });
+                
+                displayResults('formattingResults', {
+                    title: '複雑な複数形比較テスト',
+                    complexPlurals: results
+                });
+                
+                statistics.pluralFormattings += languages.length * testCounts.length;
+                updateStatistics();
+                showStatus('複雑な複数形テストが完了しました', 'success');
+                
+            } catch (error) {
+                console.error('Complex plural test error:', error);
+                showStatus(`複雑な複数形テストエラー: ${error.message}`, 'error');
+            }
+        };
+
+        window.testContextualTranslation = function() {
+            const contextType = document.getElementById('contextType').value;
+            const contextValue = document.getElementById('contextValue').value;
+            
+            try {
+                let language, key;
+                
+                switch (contextType) {
+                    case 'politeness':
+                        language = 'ja';
+                        key = 'greeting.hello';
+                        break;
+                    case 'intimacy':
+                        language = 'ko';
+                        key = 'greeting.hello';
+                        break;
+                    case 'gender':
+                        language = 'ar';
+                        key = 'adjective.good';
+                        break;
+                    default:
+                        language = 'ja';
+                        key = 'greeting.hello';
+                }
+                
+                const result = formatterEngine.formatContextual(key, contextValue, language);
+                
+                // 全コンテキストレベルでテスト
+                const contextLevels = ['casual', 'polite', 'formal', 'honorific'];
+                const contextTests = contextLevels.map(level => ({
+                    context: level,
+                    result: formatterEngine.formatContextual(key, level, language)
+                }));
+                
+                displayResults('formattingResults', {
+                    title: `${language} 文脈依存翻訳結果`,
+                    data: {
+                        '言語': language,
+                        'キー': key,
+                        'コンテキストタイプ': contextType,
+                        'コンテキスト値': contextValue,
+                        '結果': result
+                    },
+                    contextTests: contextTests
+                });
+                
+                statistics.contextualTranslations++;
+                updateStatistics();
+                showStatus('文脈依存翻訳テストが完了しました', 'success');
+                
+            } catch (error) {
+                console.error('Contextual translation error:', error);
+                showStatus(`文脈依存翻訳エラー: ${error.message}`, 'error');
+            }
+        };
+
+        window.testDynamicGeneration = function() {
+            const generationType = document.getElementById('generationType').value;
+            const dataStr = document.getElementById('generationData').value;
+            
+            try {
+                const data = JSON.parse(dataStr);
+                const languages = ['ja', 'en', 'ar'];
+                const results = {};
+                
+                languages.forEach(lang => {
+                    results[lang] = formatterEngine.generateDynamicTranslation(generationType, data, lang);
+                });
+                
+                displayResults('formattingResults', {
+                    title: `${generationType} 動的翻訳生成結果`,
+                    data: {
+                        '生成タイプ': generationType,
+                        '入力データ': JSON.stringify(data),
+                        '対象言語数': languages.length
+                    },
+                    dynamicResults: results
+                });
+                
+                statistics.dynamicGenerations += languages.length;
+                updateStatistics();
+                showStatus('動的翻訳生成テストが完了しました', 'success');
+                
+            } catch (error) {
+                console.error('Dynamic generation error:', error);
+                showStatus(`動的翻訳生成エラー: ${error.message}`, 'error');
+            }
+        };
+
+        window.testComplexFormatting = function() {
+            try {
+                const pattern = '{count, plural, one {# item} other {# items}} in {category, select, electronics {Electronics} books {Books} other {General}} at {price, number, currency}';
+                const data = {
+                    count: 5,
+                    category: 'electronics',
+                    price: 1299.99
+                };
+                
+                const result = formatterEngine.formatComplex(pattern, data, 'en');
+                
+                displayResults('formattingResults', {
+                    title: '複合フォーマット処理結果',
+                    data: {
+                        'パターン': pattern,
+                        'データ': JSON.stringify(data),
+                        '結果': result
+                    }
+                });
+                
+                showStatus('複合フォーマット処理が完了しました', 'success');
+                
+            } catch (error) {
+                console.error('Complex formatting error:', error);
+                showStatus(`複合フォーマット処理エラー: ${error.message}`, 'error');
+            }
+        };
+
+        window.searchTranslationMemory = function() {
+            const query = document.getElementById('memoryQuery').value;
+            const language = document.getElementById('memoryLanguage').value;
+            
+            try {
+                const results = formatterEngine.searchTranslationMemory(query, language, {
+                    maxResults: 5,
+                    minSimilarity: 0.5
+                });
+                
+                displayResults('formattingResults', {
+                    title: `翻訳メモリ検索結果 (${language})`,
+                    data: {
+                        'クエリ': query,
+                        '言語': language,
+                        '結果数': results.length
+                    },
+                    memoryResults: results
+                });
+                
+                showStatus(`翻訳メモリ検索が完了しました (${results.length}件)`, 'success');
+                
+            } catch (error) {
+                console.error('Translation memory search error:', error);
+                showStatus(`翻訳メモリ検索エラー: ${error.message}`, 'error');
+            }
+        };
+
+        window.showMemoryStats = function() {
+            try {
+                const stats = formatterEngine.getStats();
+                
+                displayResults('formattingResults', {
+                    title: '翻訳メモリ統計',
+                    memoryStats: stats
+                });
+                
+                showStatus('翻訳メモリ統計を表示しました', 'info');
+                
+            } catch (error) {
+                console.error('Memory stats error:', error);
+                showStatus(`メモリ統計エラー: ${error.message}`, 'error');
+            }
+        };
+
+        // RTLコンポーネント機能
+        window.createRTLInput = function() {
+            const language = document.getElementById('componentLanguage').value;
+            
+            try {
+                const { component, componentId } = rtlUIComponents.createRTLComponent('input', {
+                    type: 'text',
+                    placeholder: 'RTL入力フィールド',
+                    language: language,
+                    autoDirection: true,
+                    validateRTL: true
+                });
+                
+                const demoArea = document.getElementById('componentDemoArea');
+                demoArea.appendChild(component);
+                
+                displayResults('componentResults', {
+                    title: 'RTL入力フィールド作成結果',
+                    data: {
+                        'コンポーネントID': componentId,
+                        '言語': language,
+                        '自動方向検出': 'あり',
+                        'RTL検証': 'あり'
+                    }
+                });
+                
+                statistics.componentsCreated++;
+                updateStatistics();
+                showStatus('RTL入力フィールドが作成されました', 'success');
+                
+            } catch (error) {
+                console.error('RTL input creation error:', error);
+                showStatus(`RTL入力フィールド作成エラー: ${error.message}`, 'error');
+            }
+        };
+
+        window.createRTLTextArea = function() {
+            const language = document.getElementById('componentLanguage').value;
+            
+            try {
+                const { component, componentId } = rtlUIComponents.createRTLComponent('textarea', {
+                    rows: 4,
+                    placeholder: 'RTLテキストエリア',
+                    language: language,
+                    autoResize: true
+                });
+                
+                const demoArea = document.getElementById('componentDemoArea');
+                demoArea.appendChild(component);
+                
+                displayResults('componentResults', {
+                    title: 'RTLテキストエリア作成結果',
+                    data: {
+                        'コンポーネントID': componentId,
+                        '言語': language,
+                        '自動リサイズ': 'あり'
+                    }
+                });
+                
+                statistics.componentsCreated++;
+                updateStatistics();
+                showStatus('RTLテキストエリアが作成されました', 'success');
+                
+            } catch (error) {
+                console.error('RTL textarea creation error:', error);
+                showStatus(`RTLテキストエリア作成エラー: ${error.message}`, 'error');
+            }
+        };
+
+        window.createRTLSelect = function() {
+            const language = document.getElementById('componentLanguage').value;
+            
+            try {
+                const { component, componentId } = rtlUIComponents.createRTLComponent('select', {
+                    options: [
+                        { value: 'option1', text: 'خيار 1' },
+                        { value: 'option2', text: 'خيار 2' },
+                        { value: 'option3', text: 'خيار 3' }
+                    ],
+                    language: language
+                });
+                
+                const demoArea = document.getElementById('componentDemoArea');
+                demoArea.appendChild(component);
+                
+                displayResults('componentResults', {
+                    title: 'RTLセレクト作成結果',
+                    data: {
+                        'コンポーネントID': componentId,
+                        '言語': language,
+                        'オプション数': 3
+                    }
+                });
+                
+                statistics.componentsCreated++;
+                updateStatistics();
+                showStatus('RTLセレクトが作成されました', 'success');
+                
+            } catch (error) {
+                console.error('RTL select creation error:', error);
+                showStatus(`RTLセレクト作成エラー: ${error.message}`, 'error');
+            }
+        };
+
+        window.createRTLMenu = function() {
+            const language = document.getElementById('componentLanguage').value;
+            
+            try {
+                const { component, componentId } = rtlUIComponents.createRTLComponent('menu', {
+                    items: [
+                        'الصفحة الرئيسية',
+                        'حول',
+                        'الخدمات',
+                        'اتصل بنا'
+                    ],
+                    orientation: 'vertical',
+                    language: language
+                });
+                
+                const demoArea = document.getElementById('componentDemoArea');
+                demoArea.appendChild(component);
+                
+                displayResults('componentResults', {
+                    title: 'RTLメニュー作成結果',
+                    data: {
+                        'コンポーネントID': componentId,
+                        '言語': language,
+                        '方向': '縦型',
+                        'メニュー項目数': 4
+                    }
+                });
+                
+                statistics.componentsCreated++;
+                updateStatistics();
+                showStatus('RTLメニューが作成されました', 'success');
+                
+            } catch (error) {
+                console.error('RTL menu creation error:', error);
+                showStatus(`RTLメニュー作成エラー: ${error.message}`, 'error');
+            }
+        };
+
+        window.createRTLNavigation = function() {
+            const language = document.getElementById('componentLanguage').value;
+            
+            try {
+                const { component, componentId } = rtlUIComponents.createRTLComponent('navigation', {
+                    links: [
+                        { href: '#home', text: 'الرئيسية', icon: 'fa-home' },
+                        { href: '#about', text: 'حول', icon: 'fa-info' },
+                        { href: '#contact', text: 'اتصال', icon: 'fa-phone' }
+                    ],
+                    language: language,
+                    showIcons: true
+                });
+                
+                const demoArea = document.getElementById('componentDemoArea');
+                demoArea.appendChild(component);
+                
+                displayResults('componentResults', {
+                    title: 'RTLナビゲーション作成結果',
+                    data: {
+                        'コンポーネントID': componentId,
+                        '言語': language,
+                        'リンク数': 3,
+                        'アイコン表示': 'あり'
+                    }
+                });
+                
+                statistics.componentsCreated++;
+                updateStatistics();
+                showStatus('RTLナビゲーションが作成されました', 'success');
+                
+            } catch (error) {
+                console.error('RTL navigation creation error:', error);
+                showStatus(`RTLナビゲーション作成エラー: ${error.message}`, 'error');
+            }
+        };
+
+        window.createRTLBreadcrumb = function() {
+            const language = document.getElementById('componentLanguage').value;
+            
+            try {
+                const { component, componentId } = rtlUIComponents.createRTLComponent('breadcrumb', {
+                    items: [
+                        { text: 'الرئيسية', href: '#home' },
+                        { text: 'المنتجات', href: '#products' },
+                        { text: 'الإلكترونيات', href: '#electronics' },
+                        { text: 'الهواتف الذكية' }
+                    ],
+                    separator: '/',
+                    language: language
+                });
+                
+                const demoArea = document.getElementById('componentDemoArea');
+                demoArea.appendChild(component);
+                
+                displayResults('componentResults', {
+                    title: 'RTLパンくず作成結果',
+                    data: {
+                        'コンポーネントID': componentId,
+                        '言語': language,
+                        'アイテム数': 4,
+                        'セパレータ': '/',
+                        '順序': 'RTL用に逆転'
+                    }
+                });
+                
+                statistics.componentsCreated++;
+                updateStatistics();
+                showStatus('RTLパンくずが作成されました', 'success');
+                
+            } catch (error) {
+                console.error('RTL breadcrumb creation error:', error);
+                showStatus(`RTLパンくず作成エラー: ${error.message}`, 'error');
+            }
+        };
+
+        window.createRTLDialog = function() {
+            const language = document.getElementById('componentLanguage').value;
+            
+            try {
+                const { component, componentId } = rtlUIComponents.createRTLComponent('dialog', {
+                    title: 'تأكيد العملية',
+                    content: 'هل أنت متأكد من أنك تريد الاستمرار؟',
+                    buttons: [
+                        { text: 'موافق', type: 'primary', onClick: () => alert('موافق') },
+                        { text: 'إلغاء', type: 'secondary', onClick: () => component.style.display = 'none' }
+                    ],
+                    language: language,
+                    modal: true
+                });
+                
+                component.style.display = 'block';
+                component.style.position = 'relative';
+                component.style.border = '1px solid #ddd';
+                component.style.borderRadius = '8px';
+                component.style.backgroundColor = 'white';
+                component.style.maxWidth = '400px';
+                
+                const demoArea = document.getElementById('componentDemoArea');
+                demoArea.appendChild(component);
+                
+                displayResults('componentResults', {
+                    title: 'RTLダイアログ作成結果',
+                    data: {
+                        'コンポーネントID': componentId,
+                        '言語': language,
+                        'ボタン数': 2,
+                        'モーダル': 'あり'
+                    }
+                });
+                
+                statistics.componentsCreated++;
+                updateStatistics();
+                showStatus('RTLダイアログが作成されました', 'success');
+                
+            } catch (error) {
+                console.error('RTL dialog creation error:', error);
+                showStatus(`RTLダイアログ作成エラー: ${error.message}`, 'error');
+            }
+        };
+
+        window.createRTLPagination = function() {
+            const language = document.getElementById('componentLanguage').value;
+            
+            try {
+                const { component, componentId } = rtlUIComponents.createRTLComponent('pagination', {
+                    currentPage: 5,
+                    totalPages: 20,
+                    showFirstLast: true,
+                    showPrevNext: true,
+                    language: language
+                });
+                
+                const demoArea = document.getElementById('componentDemoArea');
+                demoArea.appendChild(component);
+                
+                displayResults('componentResults', {
+                    title: 'RTLページネーション作成結果',
+                    data: {
+                        'コンポーネントID': componentId,
+                        '言語': language,
+                        '現在ページ': 5,
+                        '総ページ数': 20,
+                        'ページ順序': 'RTL用に逆転'
+                    }
+                });
+                
+                statistics.componentsCreated++;
+                updateStatistics();
+                showStatus('RTLページネーションが作成されました', 'success');
+                
+            } catch (error) {
+                console.error('RTL pagination creation error:', error);
+                showStatus(`RTLページネーション作成エラー: ${error.message}`, 'error');
+            }
+        };
+
+        window.createRTLDropdown = function() {
+            const language = document.getElementById('componentLanguage').value;
+            
+            try {
+                const { component, componentId } = rtlUIComponents.createRTLComponent('dropdown', {
+                    trigger: 'القائمة',
+                    items: [
+                        { text: 'الخيار الأول', href: '#option1' },
+                        { text: 'الخيار الثاني', href: '#option2' },
+                        { text: 'الخيار الثالث', href: '#option3' }
+                    ],
+                    language: language
+                });
+                
+                const demoArea = document.getElementById('componentDemoArea');
+                demoArea.appendChild(component);
+                
+                displayResults('componentResults', {
+                    title: 'RTLドロップダウン作成結果',
+                    data: {
+                        'コンポーネントID': componentId,
+                        '言語': language,
+                        'アイテム数': 3,
+                        'トリガー': 'القائمة'
+                    }
+                });
+                
+                statistics.componentsCreated++;
+                updateStatistics();
+                showStatus('RTLドロップダウンが作成されました', 'success');
+                
+            } catch (error) {
+                console.error('RTL dropdown creation error:', error);
+                showStatus(`RTLドロップダウン作成エラー: ${error.message}`, 'error');
+            }
+        };
+
+        // ユーティリティ関数
+        function showStatus(message, type) {
+            const existing = document.querySelector('.status');
+            if (existing) existing.remove();
+            
+            const status = document.createElement('div');
+            status.className = `status ${type}`;
+            status.textContent = message;
+            document.body.insertBefore(status, document.body.firstChild);
+            
+            setTimeout(() => status.remove(), 5000);
+        }
+
+        function displayResults(elementId, data) {
+            const element = document.getElementById(elementId);
+            let output = '';
+
+            if (data.error) {
+                output = `❌ エラー: ${data.error}`;
+            } else {
+                if (data.title) {
+                    output += `📋 ${data.title}\n${'='.repeat(50)}\n\n`;
+                }
+                
+                if (data.data) {
+                    output += '📊 基本情報:\n';
+                    for (const [key, value] of Object.entries(data.data)) {
+                        output += `  ${key}: ${value}\n`;
+                    }
+                    output += '\n';
+                }
+                
+                if (data.css) {
+                    output += '🎨 生成CSS:\n';
+                    output += data.css + '\n\n';
+                }
+                
+                if (data.warnings) {
+                    output += '⚠️ 警告:\n';
+                    data.warnings.forEach(warning => {
+                        output += `  • ${warning.type} (${warning.severity}): ${warning.suggestion}\n`;
+                    });
+                    output += '\n';
+                }
+                
+                if (data.pluralTests) {
+                    output += '🔢 複数形テスト:\n';
+                    data.pluralTests.forEach(test => {
+                        output += `  ${test.count}: ${test.result}\n`;
+                    });
+                    output += '\n';
+                }
+                
+                if (data.complexPlurals) {
+                    output += '🌐 言語別複数形比較:\n';
+                    Object.entries(data.complexPlurals).forEach(([lang, tests]) => {
+                        output += `  ${lang}:\n`;
+                        tests.forEach(test => {
+                            output += `    ${test.count}: ${test.result}\n`;
+                        });
+                    });
+                    output += '\n';
+                }
+                
+                if (data.contextTests) {
+                    output += '🎭 文脈レベル比較:\n';
+                    data.contextTests.forEach(test => {
+                        output += `  ${test.context}: ${test.result}\n`;
+                    });
+                    output += '\n';
+                }
+                
+                if (data.dynamicResults) {
+                    output += '⚡ 言語別動的生成結果:\n';
+                    Object.entries(data.dynamicResults).forEach(([lang, result]) => {
+                        output += `  ${lang}: ${result}\n`;
+                    });
+                    output += '\n';
+                }
+                
+                if (data.memoryResults) {
+                    output += '💾 翻訳メモリ検索結果:\n';
+                    data.memoryResults.forEach((result, index) => {
+                        output += `  ${index + 1}. 類似度: ${(result.similarity * 100).toFixed(1)}%\n`;
+                        output += `     原文: ${result.original}\n`;
+                        output += `     翻訳: ${result.translation}\n`;
+                    });
+                    output += '\n';
+                }
+                
+                if (data.memoryStats) {
+                    output += '📈 翻訳メモリ統計:\n';
+                    Object.entries(data.memoryStats).forEach(([key, value]) => {
+                        output += `  ${key}: ${value}\n`;
+                    });
+                }
+            }
+            
+            element.textContent = output;
+        }
+
+        function updateStatistics() {
+            Object.entries(statistics).forEach(([key, value]) => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = value;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
