@@ -141,14 +141,14 @@
 
 ### 7. 地域化機能の実装
 
-- [ ] 7.1 FormatterEngine クラスの実装
+- [x] 7.1 FormatterEngine クラスの実装
   - 数値フォーマッター（NumberFormatter）の実装
   - 日付フォーマッター（DateFormatter）の実装
   - 通貨フォーマッター（CurrencyFormatter）の実装
   - 相対時間フォーマッター（RelativeTimeFormatter）の実装
   - _要件: 3.1, 3.2, 3.3_
 
-- [ ] 7.2 地域別フォーマット設定の実装
+- [x] 7.2 地域別フォーマット設定の実装
   - 各言語・地域の数値フォーマット設定
   - 日付・時刻フォーマット設定
   - 通貨表示フォーマット設定

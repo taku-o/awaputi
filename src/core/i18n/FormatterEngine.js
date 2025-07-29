@@ -1,4 +1,5 @@
 import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getRegionalSettingsManager } from './RegionalSettingsManager.js';
 
 /**
  * フォーマッターエンジン - 地域化対応のテキストフォーマット
@@ -13,6 +14,9 @@ export class FormatterEngine {
             ['list', new ListFormatter()],
             ['plural', new PluralFormatter()]
         ]);
+        
+        // 地域設定マネージャーの参照
+        this.regionalSettingsManager = getRegionalSettingsManager();
     }
     
     /**
@@ -167,6 +171,107 @@ export class FormatterEngine {
     getAvailableFormatters() {
         return Array.from(this.formatters.keys());
     }
+    
+    /**
+     * 地域設定に基づく包括的フォーマット
+     */
+    formatWithRegionalSettings(text, params, language, region = null) {
+        try {
+            if (typeof text !== 'string') {
+                return text;
+            }
+            
+            // 地域設定を取得
+            const settings = this.regionalSettingsManager.getCompleteSettings(language, region);
+            
+            let formatted = text;
+            
+            // パラメータ置換
+            formatted = this.replaceParameters(formatted, params);
+            
+            // 地域固有フォーマット（拡張版）
+            formatted = this.applyAdvancedRegionalFormatting(formatted, params, settings);
+            
+            // 特殊フォーマット処理
+            formatted = this.processSpecialFormats(formatted, params, language);
+            
+            return formatted;
+        } catch (error) {
+            getErrorHandler().handleError(error, 'FORMATTER_ERROR', {
+                operation: 'formatWithRegionalSettings',
+                text: text,
+                language: language,
+                region: region
+            });
+            return text;
+        }
+    }
+    
+    /**
+     * 高度な地域固有フォーマットを適用
+     */
+    applyAdvancedRegionalFormatting(text, params, settings) {
+        let formatted = text;
+        
+        // 数値フォーマット（地域設定適用）: {{number:key:format}}
+        formatted = formatted.replace(/\{\{number:(\w+)(?::(\w+))?\}\}/g, (match, key, format) => {
+            const value = params[key];
+            if (value !== undefined) {
+                return this.formatters.get('number').formatWithSettings(value, settings.numberFormat, format);
+            }
+            return match;
+        });
+        
+        // 日付フォーマット（地域設定適用）: {{date:key:format}}
+        formatted = formatted.replace(/\{\{date:(\w+)(?::(\w+))?\}\}/g, (match, key, format) => {
+            const value = params[key];
+            if (value !== undefined) {
+                return this.formatters.get('date').formatWithSettings(value, settings.dateFormat, format, settings.regionInfo);
+            }
+            return match;
+        });
+        
+        // 通貨フォーマット（地域設定適用）: {{currency:key:format}}
+        formatted = formatted.replace(/\{\{currency:(\w+)(?::(\w+))?\}\}/g, (match, key, format) => {
+            const value = params[key];
+            if (value !== undefined) {
+                return this.formatters.get('currency').formatWithSettings(value, settings.currencyFormat, format);
+            }
+            return match;
+        });
+        
+        // 時刻フォーマット（地域設定適用）: {{time:key:format}}
+        formatted = formatted.replace(/\{\{time:(\w+)(?::(\w+))?\}\}/g, (match, key, format) => {
+            const value = params[key];
+            if (value !== undefined) {
+                return this.formatters.get('date').formatTimeWithSettings(value, settings.timeFormat, format, settings.regionInfo);
+            }
+            return match;
+        });
+        
+        return formatted;
+    }
+    
+    /**
+     * 地域設定情報を取得
+     */
+    getRegionalSettings(language, region = null) {
+        return this.regionalSettingsManager.getCompleteSettings(language, region);
+    }
+    
+    /**
+     * フォーマット統計を取得
+     */
+    getFormatterStats() {
+        const regionalStats = this.regionalSettingsManager.getStats();
+        
+        return {
+            availableFormatters: this.getAvailableFormatters(),
+            regionalSettings: regionalStats,
+            supportedLanguages: regionalStats.supportedLanguages,
+            supportedRegions: regionalStats.supportedRegions
+        };
+    }
 }
 
 /**
@@ -184,6 +289,44 @@ export class NumberFormatter {
             return new Intl.NumberFormat(locale).format(number);
         } catch (error) {
             console.warn(`Number formatting failed for ${language}:`, error);
+            return value.toString();
+        }
+    }
+    
+    /**
+     * 地域設定を使用した数値フォーマット
+     */
+    formatWithSettings(value, numberFormatSettings, format = 'default') {
+        try {
+            const number = Number(value);
+            if (isNaN(number)) {
+                return value.toString();
+            }
+            
+            // カスタム数値フォーマット設定を適用
+            const decimalSeparator = numberFormatSettings?.decimal || '.';
+            const thousandsSeparator = numberFormatSettings?.thousands || ',';
+            
+            let formatted = number.toString();
+            
+            // 小数点以下の処理
+            const parts = formatted.split('.');
+            
+            // 千の位区切りを適用
+            if (Math.abs(number) >= 1000) {
+                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, thousandsSeparator);
+            }
+            
+            // 小数点記号の置換
+            if (parts.length > 1) {
+                formatted = parts[0] + decimalSeparator + parts[1];
+            } else {
+                formatted = parts[0];
+            }
+            
+            return formatted;
+        } catch (error) {
+            console.warn(`Number formatting with settings failed:`, error);
             return value.toString();
         }
     }
@@ -229,6 +372,90 @@ export class DateFormatter {
             console.warn(`Date formatting failed for ${language}:`, error);
             return value.toString();
         }
+    }
+    
+    /**
+     * 地域設定を使用した日付フォーマット
+     */
+    formatWithSettings(value, dateFormatSettings, format = 'medium', regionInfo = {}) {
+        try {
+            const date = new Date(value);
+            if (isNaN(date.getTime())) {
+                return value.toString();
+            }
+            
+            // フォーマット設定から適切なパターンを取得
+            const formatPattern = dateFormatSettings?.[format] || dateFormatSettings?.medium || 'YYYY/MM/DD';
+            
+            // 基本的な日付フォーマット置換
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const weekday = date.toLocaleDateString('ja-JP', { weekday: 'short' });
+            
+            let formatted = formatPattern
+                .replace(/YYYY/g, year)
+                .replace(/MM/g, month)
+                .replace(/DD/g, day)
+                .replace(/ddd/g, weekday);
+            
+            // 言語固有の月名処理
+            if (formatted.includes('MMM')) {
+                const monthNames = this.getMonthNames(regionInfo);
+                const monthName = monthNames[date.getMonth()];
+                formatted = formatted.replace(/MMMM/g, monthName).replace(/MMM/g, monthName);
+            }
+            
+            return formatted;
+        } catch (error) {
+            console.warn(`Date formatting with settings failed:`, error);
+            return value.toString();
+        }
+    }
+    
+    /**
+     * 地域設定を使用した時刻フォーマット
+     */
+    formatTimeWithSettings(value, timeFormatSettings, format = 'medium', regionInfo = {}) {
+        try {
+            const date = new Date(value);
+            if (isNaN(date.getTime())) {
+                return value.toString();
+            }
+            
+            // フォーマット設定から適切なパターンを取得
+            const formatPattern = timeFormatSettings?.[format] || timeFormatSettings?.medium || 'HH:mm:ss';
+            
+            // 基本的な時刻要素
+            const hours24 = date.getHours();
+            const hours12 = hours24 % 12 || 12;
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+            const ampm = hours24 < 12 ? 'AM' : 'PM';
+            
+            let formatted = formatPattern
+                .replace(/HH/g, String(hours24).padStart(2, '0'))
+                .replace(/h/g, String(hours12))
+                .replace(/mm/g, minutes)
+                .replace(/ss/g, seconds)
+                .replace(/A/g, ampm);
+            
+            return formatted;
+        } catch (error) {
+            console.warn(`Time formatting with settings failed:`, error);
+            return value.toString();
+        }
+    }
+    
+    /**
+     * 月名を取得
+     */
+    getMonthNames(regionInfo) {
+        // 簡略化された月名マップ
+        return [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
     }
     
     getLocale(language, region) {
@@ -287,6 +514,41 @@ export class CurrencyFormatter {
         };
         
         return localeMap[language] || language;
+    }
+    
+    /**
+     * 地域設定を使用した通貨フォーマット
+     */
+    formatWithSettings(value, currencyFormatSettings, format = 'default') {
+        try {
+            const number = Number(value);
+            if (isNaN(number)) {
+                return value.toString();
+            }
+            
+            const symbol = currencyFormatSettings?.symbol || '$';
+            const code = currencyFormatSettings?.code || 'USD';
+            const position = currencyFormatSettings?.position || 'before';
+            const space = currencyFormatSettings?.space || false;
+            
+            // 数値をフォーマット（千の位区切り）
+            const formattedNumber = new Intl.NumberFormat('en-US').format(Math.abs(number));
+            const sign = number < 0 ? '-' : '';
+            
+            // 通貨記号の位置に応じてフォーマット
+            let formatted;
+            if (position === 'before') {
+                formatted = `${sign}${symbol}${space ? ' ' : ''}${formattedNumber}`;
+            } else {
+                formatted = `${sign}${formattedNumber}${space ? ' ' : ''}${symbol}`;
+            }
+            
+            return formatted;
+        } catch (error) {
+            console.warn(`Currency formatting with settings failed:`, error);
+            const code = currencyFormatSettings?.code || 'USD';
+            return `${code} ${value}`;
+        }
     }
     
     getCurrencyCode(language, region) {
