@@ -852,6 +852,37 @@ export class AudioManager {
     }
     
     /**
+     * UI要素に音響イベントリスナーを設定
+     * @param {HTMLElement} element - 対象要素
+     * @param {Object} soundMap - 音響マッピング
+     */
+    setupUIElementSounds(element, soundMap) {
+        if (this.soundEffectSystem) {
+            this.soundEffectSystem.setupUIEventListeners(element, soundMap);
+        }
+    }
+    
+    /**
+     * UI要素タイプ別の自動音響設定
+     * @param {HTMLElement} element - 対象要素
+     */
+    setupElementTypeSounds(element) {
+        if (this.soundEffectSystem) {
+            this.soundEffectSystem.setupElementTypeSounds(element);
+        }
+    }
+    
+    /**
+     * ページ全体のUI音響を自動設定
+     * @param {Document|HTMLElement} container - 対象コンテナ
+     */
+    setupGlobalUISounds(container = document) {
+        if (this.soundEffectSystem) {
+            this.soundEffectSystem.setupGlobalUISounds(container);
+        }
+    }
+    
+    /**
      * 実績解除音を再生
      * @param {string} rarity - レアリティ
      * @param {Object} options - 再生オプション

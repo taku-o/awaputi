@@ -427,7 +427,13 @@ export class SoundEffectSystem {
      * UI操作音を生成
      */
     generateUISounds() {
-        const uiSoundTypes = ['click', 'hover', 'error', 'success', 'select', 'back', 'confirm', 'cancel'];
+        const uiSoundTypes = [
+            'click', 'hover', 'error', 'success', 'select', 'back', 'confirm', 'cancel',
+            'button_press', 'button_release', 'tab_switch', 'dropdown_open', 'dropdown_close',
+            'modal_open', 'modal_close', 'notification', 'toggle_on', 'toggle_off',
+            'slider_move', 'focus_in', 'focus_out', 'drag_start', 'drag_end', 'drop',
+            'menu_open', 'menu_close', 'scroll', 'page_turn', 'typing'
+        ];
         
         uiSoundTypes.forEach(type => {
             const buffer = this.createUISound(type);
@@ -441,18 +447,7 @@ export class SoundEffectSystem {
      * @returns {AudioBuffer} 生成された音響バッファ
      */
     createUISound(type) {
-        const profiles = {
-            click: { freq: 800, duration: 0.05, decay: 20 },
-            hover: { freq: 600, duration: 0.1, decay: 10 },
-            error: { freq: 200, duration: 0.3, decay: 3, freqSlide: -100 },
-            success: { freq: 440, duration: 0.4, decay: 2, freqSlide: 220 },
-            select: { freq: 700, duration: 0.08, decay: 15 },
-            back: { freq: 500, duration: 0.12, decay: 8 },
-            confirm: { freq: 523, duration: 0.2, decay: 5 },
-            cancel: { freq: 350, duration: 0.15, decay: 6 }
-        };
-        
-        const profile = profiles[type] || profiles.click;
+        const profile = this.getUISoundProfile(type);
         const sampleRate = this.audioContext.sampleRate;
         const buffer = this.audioContext.createBuffer(1, profile.duration * sampleRate, sampleRate);
         const data = buffer.getChannelData(0);
@@ -466,13 +461,434 @@ export class SoundEffectSystem {
                 freq += profile.freqSlide * progress;
             }
             
+            // プロファイル別のエンベロープ生成
+            const envelope = this.generateUIEnvelope(progress, profile.envelope || 'default');
             const decay = Math.exp(-t * profile.decay);
-            const envelope = type === 'success' ? Math.sin(Math.PI * progress) : 1;
             
-            data[i] = Math.sin(2 * Math.PI * freq * t) * decay * envelope * 0.2;
+            let sample = Math.sin(2 * Math.PI * freq * t) * decay * envelope;
+            
+            // 特殊効果の追加
+            sample += this.generateUISpecialEffects(t, progress, freq, envelope, profile);
+            
+            data[i] = sample * profile.volume;
         }
         
         return buffer;
+    }
+    
+    /**
+     * UI音響プロファイルを取得
+     * @param {string} type - UI音タイプ
+     * @returns {Object} UI音響プロファイル
+     */
+    getUISoundProfile(type) {
+        const profiles = {
+            // 基本操作音
+            click: { 
+                freq: 800, duration: 0.05, decay: 20, volume: 0.2, 
+                envelope: 'sharp', category: 'button' 
+            },
+            hover: { 
+                freq: 600, duration: 0.1, decay: 10, volume: 0.1, 
+                envelope: 'soft', category: 'feedback' 
+            },
+            error: { 
+                freq: 200, duration: 0.3, decay: 3, freqSlide: -100, volume: 0.3, 
+                envelope: 'error', category: 'alert' 
+            },
+            success: { 
+                freq: 440, duration: 0.4, decay: 2, freqSlide: 220, volume: 0.3, 
+                envelope: 'success', category: 'confirmation' 
+            },
+            select: { 
+                freq: 700, duration: 0.08, decay: 15, volume: 0.2, 
+                envelope: 'crisp', category: 'selection' 
+            },
+            back: { 
+                freq: 500, duration: 0.12, decay: 8, volume: 0.25, 
+                envelope: 'backward', category: 'navigation' 
+            },
+            confirm: { 
+                freq: 523, duration: 0.2, decay: 5, volume: 0.3, 
+                envelope: 'confirm', category: 'confirmation' 
+            },
+            cancel: { 
+                freq: 350, duration: 0.15, decay: 6, volume: 0.25, 
+                envelope: 'cancel', category: 'cancellation' 
+            },
+            
+            // 高度なUI音
+            button_press: { 
+                freq: 750, duration: 0.04, decay: 25, volume: 0.2, 
+                envelope: 'press', category: 'button' 
+            },
+            button_release: { 
+                freq: 650, duration: 0.06, decay: 18, volume: 0.15, 
+                envelope: 'release', category: 'button' 
+            },
+            tab_switch: { 
+                freq: 600, duration: 0.1, decay: 12, volume: 0.2, 
+                envelope: 'switch', category: 'navigation' 
+            },
+            dropdown_open: { 
+                freq: 500, duration: 0.15, freqSlide: 100, decay: 8, volume: 0.2, 
+                envelope: 'expand', category: 'control' 
+            },
+            dropdown_close: { 
+                freq: 600, duration: 0.1, freqSlide: -50, decay: 12, volume: 0.15, 
+                envelope: 'collapse', category: 'control' 
+            },
+            modal_open: { 
+                freq: 440, duration: 0.3, decay: 4, volume: 0.25, 
+                envelope: 'modal_open', category: 'overlay' 
+            },
+            modal_close: { 
+                freq: 440, duration: 0.2, decay: 6, volume: 0.2, 
+                envelope: 'modal_close', category: 'overlay' 
+            },
+            notification: { 
+                freq: 880, duration: 0.4, decay: 3, volume: 0.3, 
+                envelope: 'notification', category: 'alert' 
+            },
+            toggle_on: { 
+                freq: 700, duration: 0.08, freqSlide: 200, decay: 15, volume: 0.2, 
+                envelope: 'on', category: 'toggle' 
+            },
+            toggle_off: { 
+                freq: 500, duration: 0.08, freqSlide: -100, decay: 15, volume: 0.15, 
+                envelope: 'off', category: 'toggle' 
+            },
+            slider_move: { 
+                freq: 400, duration: 0.03, decay: 30, volume: 0.1, 
+                envelope: 'slide', category: 'control' 
+            },
+            focus_in: { 
+                freq: 650, duration: 0.06, decay: 18, volume: 0.1, 
+                envelope: 'focus_in', category: 'feedback' 
+            },
+            focus_out: { 
+                freq: 550, duration: 0.06, decay: 18, volume: 0.08, 
+                envelope: 'focus_out', category: 'feedback' 
+            },
+            drag_start: { 
+                freq: 600, duration: 0.08, decay: 15, volume: 0.15, 
+                envelope: 'drag_start', category: 'interaction' 
+            },
+            drag_end: { 
+                freq: 500, duration: 0.1, decay: 12, volume: 0.15, 
+                envelope: 'drag_end', category: 'interaction' 
+            },
+            drop: { 
+                freq: 400, duration: 0.12, decay: 10, volume: 0.2, 
+                envelope: 'drop', category: 'interaction' 
+            },
+            menu_open: { 
+                freq: 523, duration: 0.15, freqSlide: 50, decay: 8, volume: 0.2, 
+                envelope: 'menu_open', category: 'navigation' 
+            },
+            menu_close: { 
+                freq: 523, duration: 0.1, freqSlide: -30, decay: 12, volume: 0.15, 
+                envelope: 'menu_close', category: 'navigation' 
+            },
+            scroll: { 
+                freq: 300, duration: 0.02, decay: 50, volume: 0.05, 
+                envelope: 'scroll', category: 'feedback' 
+            },
+            page_turn: { 
+                freq: 450, duration: 0.2, decay: 6, volume: 0.2, 
+                envelope: 'page_turn', category: 'navigation' 
+            },
+            typing: { 
+                freq: 800, duration: 0.02, decay: 40, volume: 0.08, 
+                envelope: 'typing', category: 'input' 
+            }
+        };
+        
+        return profiles[type] || profiles.click;
+    }
+    
+    /**
+     * UI音響用エンベロープを生成
+     * @param {number} progress - 進行度 (0-1)
+     * @param {string} envelopeType - エンベロープタイプ
+     * @returns {number} エンベロープ値
+     */
+    generateUIEnvelope(progress, envelopeType) {
+        switch (envelopeType) {
+            case 'sharp':
+                return Math.exp(-progress * 20);
+            case 'soft':
+                return Math.exp(-progress * 10) * Math.sin(Math.PI * progress);
+            case 'error':
+                return Math.exp(-progress * 3) * (1 + Math.sin(progress * 20) * 0.2);
+            case 'success':
+                return Math.sin(Math.PI * progress) * Math.exp(-progress * 2);
+            case 'crisp':
+                return Math.exp(-progress * 15);
+            case 'backward':
+                return (1 - progress) * Math.exp(-progress * 8);
+            case 'confirm':
+                return Math.sin(Math.PI * progress * 0.7) * Math.exp(-progress * 5);
+            case 'cancel':
+                return Math.exp(-progress * 6) * (1 - progress * 0.3);
+            case 'press':
+                return Math.exp(-progress * 25) * (progress < 0.1 ? progress / 0.1 : 1);
+            case 'release':
+                return Math.exp(-progress * 18) * (1 - progress * 0.2);
+            case 'switch':
+                return Math.exp(-progress * 12) * Math.sin(Math.PI * progress);
+            case 'expand':
+                return progress < 0.3 ? progress / 0.3 : Math.exp(-(progress - 0.3) * 10);
+            case 'collapse':
+                return Math.exp(-progress * 12) * (1 - progress * 0.5);
+            case 'modal_open':
+                return Math.sin(Math.PI * progress * 0.5) * Math.exp(-progress * 4);
+            case 'modal_close':
+                return Math.exp(-progress * 6);
+            case 'notification':
+                return Math.sin(Math.PI * progress) * Math.exp(-progress * 3);
+            case 'on':
+                return progress < 0.2 ? progress / 0.2 : Math.exp(-(progress - 0.2) * 12);
+            case 'off':
+                return Math.exp(-progress * 15) * (1 - progress);
+            case 'slide':
+                return Math.exp(-progress * 30);
+            case 'focus_in':
+                return progress < 0.3 ? progress / 0.3 : Math.exp(-(progress - 0.3) * 15);
+            case 'focus_out':
+                return Math.exp(-progress * 18) * (1 - progress * 0.3);
+            case 'drag_start':
+                return Math.exp(-progress * 15) * (1 + Math.sin(progress * 10) * 0.1);
+            case 'drag_end':
+                return Math.exp(-progress * 12);
+            case 'drop':
+                return progress < 0.1 ? progress / 0.1 : Math.exp(-(progress - 0.1) * 8);
+            case 'menu_open':
+                return Math.sin(Math.PI * progress * 0.6) * Math.exp(-progress * 8);
+            case 'menu_close':
+                return Math.exp(-progress * 12);
+            case 'scroll':
+                return Math.exp(-progress * 50);
+            case 'page_turn':
+                return Math.sin(Math.PI * progress * 0.8) * Math.exp(-progress * 6);
+            case 'typing':
+                return Math.exp(-progress * 40);
+            default:
+                return Math.exp(-progress * 15);
+        }
+    }
+    
+    /**
+     * UI音響用特殊効果を生成
+     * @param {number} t - 時間
+     * @param {number} progress - 進行度
+     * @param {number} freq - 基本周波数
+     * @param {number} envelope - エンベロープ値
+     * @param {Object} profile - 音響プロファイル
+     * @returns {number} 特殊効果値
+     */
+    generateUISpecialEffects(t, progress, freq, envelope, profile) {
+        let effects = 0;
+        
+        switch (profile.category) {
+            case 'button':
+                // ボタン音にはわずかなクリック感
+                if (progress < 0.1) {
+                    effects += Math.sin(2 * Math.PI * freq * 2 * t) * envelope * 0.1;
+                }
+                break;
+                
+            case 'alert':
+                // アラート音には注意を引く変調
+                effects += Math.sin(2 * Math.PI * freq * 0.5 * t + Math.sin(t * 20)) * envelope * 0.1;
+                break;
+                
+            case 'confirmation':
+                // 確認音には安心感のある和音
+                effects += Math.sin(2 * Math.PI * freq * 1.25 * t) * envelope * 0.3;
+                break;
+                
+            case 'toggle':
+                // トグル音にはON/OFF感のある倍音
+                effects += Math.sin(2 * Math.PI * freq * 1.5 * t) * envelope * 0.2;
+                break;
+                
+            case 'interaction':
+                // インタラクション音には動的な要素
+                effects += Math.sin(2 * Math.PI * freq * (1 + progress * 0.2) * t) * envelope * 0.15;
+                break;
+                
+            case 'overlay':
+                // オーバーレイ音には空間的な広がり
+                effects += Math.sin(2 * Math.PI * freq * 0.5 * t) * envelope * envelope * 0.2;
+                break;
+        }
+        
+        return effects;
+    }
+    
+    /**
+     * UIイベントとの自動連携機能
+     * @param {HTMLElement} element - 対象要素
+     * @param {Object} soundMap - 音響マッピング
+     */
+    setupUIEventListeners(element, soundMap = {}) {
+        try {
+            const defaultSoundMap = {
+                'click': 'click',
+                'mouseenter': 'hover',
+                'focus': 'focus_in',
+                'blur': 'focus_out',
+                'dragstart': 'drag_start',
+                'dragend': 'drag_end',
+                'drop': 'drop',
+                'input': 'typing',
+                'change': 'select'
+            };
+            
+            const finalSoundMap = { ...defaultSoundMap, ...soundMap };
+            
+            Object.entries(finalSoundMap).forEach(([eventType, soundType]) => {
+                element.addEventListener(eventType, (event) => {
+                    this.playUISound(soundType, { volume: 0.5 });
+                });
+            });
+            
+            console.log(`UI event listeners set up for element:`, element);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                component: 'SoundEffectSystem',
+                operation: 'setupUIEventListeners',
+                element: element?.tagName
+            });
+        }
+    }
+    
+    /**
+     * UI要素タイプ別の自動音響設定
+     * @param {HTMLElement} element - 対象要素
+     */
+    setupElementTypeSounds(element) {
+        try {
+            const tagName = element.tagName.toLowerCase();
+            const role = element.getAttribute('role');
+            const type = element.getAttribute('type');
+            
+            let soundMap = {};
+            
+            // 要素タイプ別の音響マッピング
+            switch (tagName) {
+                case 'button':
+                    soundMap = {
+                        'mousedown': 'button_press',
+                        'mouseup': 'button_release',
+                        'click': 'confirm',
+                        'mouseenter': 'hover'
+                    };
+                    break;
+                    
+                case 'input':
+                    if (type === 'checkbox' || type === 'radio') {
+                        soundMap = {
+                            'change': element.checked ? 'toggle_on' : 'toggle_off',
+                            'mouseenter': 'hover'
+                        };
+                    } else if (type === 'range') {
+                        soundMap = {
+                            'input': 'slider_move',
+                            'mouseenter': 'hover'
+                        };
+                    } else {
+                        soundMap = {
+                            'input': 'typing',
+                            'focus': 'focus_in',
+                            'blur': 'focus_out'
+                        };
+                    }
+                    break;
+                    
+                case 'select':
+                    soundMap = {
+                        'click': 'dropdown_open',
+                        'change': 'select',
+                        'blur': 'dropdown_close'
+                    };
+                    break;
+                    
+                case 'a':
+                    soundMap = {
+                        'click': 'select',
+                        'mouseenter': 'hover'
+                    };
+                    break;
+                    
+                default:
+                    // role属性による判定
+                    if (role === 'tab') {
+                        soundMap = {
+                            'click': 'tab_switch',
+                            'mouseenter': 'hover'
+                        };
+                    } else if (role === 'button') {
+                        soundMap = {
+                            'click': 'button_press',
+                            'mouseenter': 'hover'
+                        };
+                    }
+            }
+            
+            if (Object.keys(soundMap).length > 0) {
+                this.setupUIEventListeners(element, soundMap);
+            }
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                component: 'SoundEffectSystem',
+                operation: 'setupElementTypeSounds',
+                element: element?.tagName
+            });
+        }
+    }
+    
+    /**
+     * ページ全体のUI音響を自動設定
+     * @param {Document|HTMLElement} container - 対象コンテナ（デフォルト: document）
+     */
+    setupGlobalUISounds(container = document) {
+        try {
+            // 主要なUI要素を取得して音響を設定
+            const selectors = [
+                'button',
+                'input[type="button"]',
+                'input[type="submit"]',
+                'input[type="reset"]',
+                'input[type="checkbox"]',
+                'input[type="radio"]',
+                'input[type="range"]',
+                'input[type="text"]',
+                'input[type="email"]',
+                'input[type="password"]',
+                'select',
+                'textarea',
+                'a[href]',
+                '[role="button"]',
+                '[role="tab"]',
+                '[role="menuitem"]'
+            ];
+            
+            selectors.forEach(selector => {
+                const elements = container.querySelectorAll(selector);
+                elements.forEach(element => {
+                    this.setupElementTypeSounds(element);
+                });
+            });
+            
+            console.log(`Global UI sounds set up for ${selectors.length} element types`);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+                component: 'SoundEffectSystem',
+                operation: 'setupGlobalUISounds'
+            });
+        }
     }
     
     /**
