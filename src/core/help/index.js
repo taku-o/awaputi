@@ -14,6 +14,7 @@ export { ContentLoader, getContentLoader, reinitializeContentLoader } from './Co
 export { HelpContentModel, TutorialModel, FAQModel, UserProgressModel, DataModelFactory } from './DataModels.js';
 export { ContentValidation, getContentValidation, reinitializeContentValidation } from './ContentValidation.js';
 export { SearchEngine, getSearchEngine, reinitializeSearchEngine } from './SearchEngine.js';
+export { MultilingualContentManager, getMultilingualContentManager, reinitializeMultilingualContentManager } from './MultilingualContentManager.js';
 
 /**
  * ヘルプシステム全体の初期化
@@ -31,6 +32,7 @@ export function initializeHelpSystem(gameEngine) {
         const contentLoader = getContentLoader();
         const contentValidation = getContentValidation();
         const searchEngine = getSearchEngine();
+        const multilingualContentManager = getMultilingualContentManager();
 
         return {
             helpManager,
@@ -40,6 +42,7 @@ export function initializeHelpSystem(gameEngine) {
             contentLoader,
             contentValidation,
             searchEngine,
+            multilingualContentManager,
             initialized: true,
             version: '1.0.0'
         };
@@ -73,7 +76,8 @@ export function destroyHelpSystem() {
             getHelpErrorHandler(),
             getContentLoader(),
             getContentValidation(),
-            getSearchEngine()
+            getSearchEngine(),
+            getMultilingualContentManager()
         ];
 
         components.forEach(component => {
