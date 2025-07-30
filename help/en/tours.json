@@ -1,0 +1,583 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-07-30",
+  "language": "en",
+  "tours": [
+    {
+      "id": "main_menu_tour",
+      "title": "Main Menu Guide",
+      "description": "Learn how to use the game's main menu",
+      "category": "Basic Operations",
+      "difficulty": "Beginner",
+      "estimatedTime": "3 minutes",
+      "icon": "🏠",
+      "prerequisites": [],
+      "steps": [
+        {
+          "id": "menu_welcome",
+          "title": "Welcome to Main Menu",
+          "description": "This is the main menu of awaputi (Bubble Pop). You can access all game features from here.",
+          "targetElement": ".main-menu-container",
+          "targetSelector": ".main-menu-container",
+          "highlightType": "outline",
+          "position": "center",
+          "content": {
+            "text": "This is the main menu. You can access various features by clicking each button.",
+            "tips": [
+              "Use Tab key to navigate between buttons",
+              "Press Enter key to activate buttons"
+            ]
+          },
+          "actions": ["next", "skip"],
+          "validation": {
+            "type": "none"
+          }
+        },
+        {
+          "id": "username_input",
+          "title": "Setting Username",
+          "description": "First, let's set your username. Your scores and progress will be recorded under this name.",
+          "targetElement": "#username-input",
+          "targetSelector": "#username-input",
+          "highlightType": "glow",
+          "position": "below",
+          "content": {
+            "text": "Enter your preferred username here. You can change it later if needed.",
+            "tips": [
+              "Both Japanese and English characters are supported",
+              "Spaces and special characters can be used",
+              "Maximum 20 characters allowed"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "user_input",
+            "target": "#username-input",
+            "condition": "not_empty"
+          }
+        },
+        {
+          "id": "stage_select_button",
+          "title": "Stage Selection",
+          "description": "Use the stage select button to start playing the game.",
+          "targetElement": ".stage-select-button",
+          "targetSelector": ".stage-select-button",
+          "highlightType": "pulse",
+          "position": "below",
+          "content": {
+            "text": "Click this button to select a stage and start the game.",
+            "tips": [
+              "Tutorial stage is recommended for first-time players",
+              "Each stage has different difficulty and rules"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "none"
+          }
+        },
+        {
+          "id": "shop_button",
+          "title": "Shop Feature",
+          "description": "You can purchase items using AP (Awaputi Points) you've earned.",
+          "targetElement": ".shop-button",
+          "targetSelector": ".shop-button",
+          "highlightType": "outline",
+          "position": "below",
+          "content": {
+            "text": "Use AP earned from gameplay to purchase various items.",
+            "tips": [
+              "AP is earned by playing the game",
+              "Items help you progress through the game",
+              "Purchased items are automatically applied"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "none"
+          }
+        },
+        {
+          "id": "user_info_button",
+          "title": "User Information",
+          "description": "View and modify statistics, achievements, and settings.",
+          "targetElement": ".user-info-button",
+          "targetSelector": ".user-info-button",
+          "highlightType": "glow",
+          "position": "below",
+          "content": {
+            "text": "Check and modify play statistics, unlocked achievements, and game settings.",
+            "tips": [
+              "View detailed statistical data",
+              "Check achievement progress",
+              "Customize game settings"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "none"
+          }
+        },
+        {
+          "id": "help_button",
+          "title": "Help and Support",
+          "description": "Access game instructions and support information when you need help.",
+          "targetElement": ".help-button",
+          "targetSelector": ".help-button",
+          "highlightType": "pulse",
+          "position": "below",
+          "content": {
+            "text": "Find game rules, controls, FAQ, and troubleshooting information.",
+            "tips": [
+              "Beginner's guides are available",
+              "Check frequently asked questions and answers",
+              "Refer here when you encounter problems"
+            ]
+          },
+          "actions": ["finish", "previous"],
+          "validation": {
+            "type": "none"
+          }
+        }
+      ],
+      "completionRewards": {
+        "ap": 50,
+        "achievement": "menu_master"
+      }
+    },
+    {
+      "id": "gameplay_tour",
+      "title": "Gameplay Guide",
+      "description": "Learn the basic gameplay mechanics",
+      "category": "Gameplay",
+      "difficulty": "Beginner",
+      "estimatedTime": "5 minutes",
+      "icon": "🎮",
+      "prerequisites": ["main_menu_tour"],
+      "steps": [
+        {
+          "id": "game_area_overview",
+          "title": "Game Screen Overview",
+          "description": "Let's explain each element of the game screen.",
+          "targetElement": ".game-canvas",
+          "targetSelector": ".game-canvas",
+          "highlightType": "outline",
+          "position": "center",
+          "content": {
+            "text": "This is the main game screen where bubbles appear and players interact.",
+            "tips": [
+              "Bubbles appear from the top of the screen",
+              "Bubbles will automatically pop after some time",
+              "Click bubbles to pop them before they burst"
+            ]
+          },
+          "actions": ["next", "skip"],
+          "validation": {
+            "type": "none"
+          }
+        },
+        {
+          "id": "score_display",
+          "title": "Score Display",
+          "description": "Current score and HP are displayed here.",
+          "targetElement": ".score-display",
+          "targetSelector": ".score-display",
+          "highlightType": "glow",
+          "position": "above",
+          "content": {
+            "text": "Your score and HP (health points) are shown at the top. Game over when HP reaches 0.",
+            "tips": [
+              "Score increases when you pop bubbles",
+              "Consecutive pops give combo bonuses",
+              "HP decreases when bubbles burst"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "none"
+          }
+        },
+        {
+          "id": "bubble_click_demo",
+          "title": "Click Bubbles",
+          "description": "Try clicking a bubble to pop it.",
+          "targetElement": ".bubble",
+          "targetSelector": ".bubble:first-child",
+          "highlightType": "pulse",
+          "position": "center",
+          "content": {
+            "text": "Click or tap bubbles to pop them. Accurate clicking is important.",
+            "tips": [
+              "Clicking the center of bubbles is most reliable",
+              "Click quickly to aim for combos",
+              "Different colored bubbles have special effects"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "user_action",
+            "action": "bubble_pop",
+            "target": ".bubble"
+          }
+        },
+        {
+          "id": "drag_interaction",
+          "title": "Drag Bubbles",
+          "description": "You can also drag bubbles to change their position.",
+          "targetElement": ".bubble",
+          "targetSelector": ".bubble:nth-child(2)",
+          "highlightType": "outline",
+          "position": "center",
+          "content": {
+            "text": "You can drag bubbles to move them slightly. Useful for emergency evasion.",
+            "tips": [
+              "Click and hold while moving mouse to drag",
+              "On smartphones, press and hold with your finger",
+              "Cannot move bubbles too far"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "user_action",
+            "action": "bubble_drag",
+            "target": ".bubble"
+          }
+        },
+        {
+          "id": "special_bubbles",
+          "title": "Special Bubbles Introduction",
+          "description": "Various bubbles with special effects exist.",
+          "targetElement": ".game-canvas",
+          "targetSelector": ".game-canvas",
+          "highlightType": "glow",
+          "position": "center",
+          "content": {
+            "text": "Besides normal blue bubbles, special effect bubbles will appear.",
+            "tips": [
+              "Rainbow Bubble: Activates bonus time",
+              "Pink Bubble: Restores HP",
+              "Clock Bubble: Temporarily stops time",
+              "Electric Bubble: Screen shake interference effect"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "none"
+          }
+        },
+        {
+          "id": "combo_system",
+          "title": "Combo System",
+          "description": "Pop bubbles consecutively to create combos.",
+          "targetElement": ".combo-display",
+          "targetSelector": ".combo-display",
+          "highlightType": "pulse",
+          "position": "above",
+          "content": {
+            "text": "Popping bubbles consecutively in a short time creates combos and bonus scores.",
+            "tips": [
+              "Quick consecutive clicks create combos",
+              "Longer combos give higher scores",
+              "Combos break if you wait too long"
+            ]
+          },
+          "actions": ["finish", "previous"],
+          "validation": {
+            "type": "user_action",
+            "action": "combo_achievement",
+            "target": "combo >= 3"
+          }
+        }
+      ],
+      "completionRewards": {
+        "ap": 100,
+        "achievement": "gameplay_master"
+      }
+    },
+    {
+      "id": "settings_tour",
+      "title": "Settings Guide",
+      "description": "Learn how to modify game settings",
+      "category": "Customization",
+      "difficulty": "Beginner",
+      "estimatedTime": "4 minutes",
+      "icon": "⚙️",
+      "prerequisites": ["main_menu_tour"],
+      "steps": [
+        {
+          "id": "settings_overview",
+          "title": "Settings Overview",
+          "description": "Open the settings tab in the user information screen.",
+          "targetElement": ".settings-tab",
+          "targetSelector": ".settings-tab",
+          "highlightType": "outline",
+          "position": "center",
+          "content": {
+            "text": "In the settings tab, you can modify various game settings.",
+            "tips": [
+              "Settings are automatically saved",
+              "You can change settings anytime",
+              "Settings can be reset if needed"
+            ]
+          },
+          "actions": ["next", "skip"],
+          "validation": {
+            "type": "element_visible",
+            "target": ".settings-panel"
+          }
+        },
+        {
+          "id": "audio_settings",
+          "title": "Audio Settings",
+          "description": "Adjust music and sound effects settings.",
+          "targetElement": ".audio-settings",
+          "targetSelector": ".audio-settings",
+          "highlightType": "glow",
+          "position": "below",
+          "content": {
+            "text": "Adjust BGM and sound effects volume and quality settings.",
+            "tips": [
+              "BGM and sound effects volume can be adjusted separately",
+              "Performance can be adjusted through quality settings",
+              "Complete muting is also possible"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "user_interaction",
+            "target": ".volume-slider"
+          }
+        },
+        {
+          "id": "display_settings",
+          "title": "Display Settings",
+          "description": "Change screen display and effects settings.",
+          "targetElement": ".display-settings",
+          "targetSelector": ".display-settings",
+          "highlightType": "pulse",
+          "position": "below",
+          "content": {
+            "text": "Adjust screen brightness, effect intensity, frame rate, etc.",
+            "tips": [
+              "Lower effect quality if performance is heavy",
+              "Frame rate limits can reduce power consumption",
+              "Color vision support features are also available"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "none"
+          }
+        },
+        {
+          "id": "accessibility_settings",
+          "title": "Accessibility Settings",
+          "description": "Configure assistive features for more comfortable play.",
+          "targetElement": ".accessibility-settings",
+          "targetSelector": ".accessibility-settings",
+          "highlightType": "outline",
+          "position": "below",
+          "content": {
+            "text": "Enable visual, auditory, and interaction assistive features.",
+            "tips": [
+              "High contrast mode improves visibility",
+              "Keyboard controls can be enabled",
+              "Screen reader support is available",
+              "Text size can be enlarged"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "none"
+          }
+        },
+        {
+          "id": "language_settings",
+          "title": "Language Settings",
+          "description": "Change the game's display language.",
+          "targetElement": ".language-selector",
+          "targetSelector": ".language-selector",
+          "highlightType": "glow",
+          "position": "below",
+          "content": {
+            "text": "Select game display language from Japanese, English, Chinese, or Korean.",
+            "tips": [
+              "Language changes are applied immediately",
+              "All menus and messages are translated",
+              "Help content is available in each language"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "none"
+          }
+        },
+        {
+          "id": "data_management",
+          "title": "Data Management",
+          "description": "Backup and restore game data.",
+          "targetElement": ".data-management",
+          "targetSelector": ".data-management",
+          "highlightType": "pulse",
+          "position": "below",
+          "content": {
+            "text": "Export/import play data and reset functions are available.",
+            "tips": [
+              "Data can be exported as JSON files",
+              "Data can be transferred to other devices",
+              "Complete data reset is also possible",
+              "Automatic backup feature is available"
+            ]
+          },
+          "actions": ["finish", "previous"],
+          "validation": {
+            "type": "none"
+          }
+        }
+      ],
+      "completionRewards": {
+        "ap": 75,
+        "achievement": "settings_explorer"
+      }
+    },
+    {
+      "id": "advanced_features_tour",
+      "title": "Advanced Features Guide",
+      "description": "Discover advanced features and hidden elements",
+      "category": "Advanced",
+      "difficulty": "Advanced",
+      "estimatedTime": "7 minutes",
+      "icon": "🚀",
+      "prerequisites": ["main_menu_tour", "gameplay_tour", "settings_tour"],
+      "steps": [
+        {
+          "id": "achievement_system",
+          "title": "Achievement System",
+          "description": "Unlock various achievements to earn AP.",
+          "targetElement": ".achievements-tab",
+          "targetSelector": ".achievements-tab",
+          "highlightType": "outline",
+          "position": "center",
+          "content": {
+            "text": "Check unlocked and locked achievements in the achievements tab.",
+            "tips": [
+              "Unlocking achievements gives you AP",
+              "Hidden achievements also exist",
+              "Progress status can be checked",
+              "Read achievement descriptions to take on challenges"
+            ]
+          },
+          "actions": ["next", "skip"],
+          "validation": {
+            "type": "element_visible",
+            "target": ".achievements-list"
+          }
+        },
+        {
+          "id": "statistics_analysis",
+          "title": "Statistics Analysis",
+          "description": "Analyze detailed play statistics to improve your skills.",
+          "targetElement": ".statistics-tab",
+          "targetSelector": ".statistics-tab",
+          "highlightType": "glow",
+          "position": "center",
+          "content": {
+            "text": "Check detailed play data in the statistics tab.",
+            "tips": [
+              "Time series graphs show score trends",
+              "Statistics by bubble type",
+              "Records of highest combos and best scores",
+              "Play time and frequency statistics"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "element_visible",
+            "target": ".statistics-charts"
+          }
+        },
+        {
+          "id": "special_stages",
+          "title": "Special Stages",
+          "description": "Learn how to access hidden special stages.",
+          "targetElement": ".stage-selector",
+          "targetSelector": ".stage-selector",
+          "highlightType": "pulse",
+          "position": "center",
+          "content": {
+            "text": "Special event stages appear when certain conditions are met.",
+            "tips": [
+              "Golden Rush stage: Full of golden bubbles",
+              "Phantom Night stage: Invisible bubbles",
+              "Explosive Chaos stage: Explosion bubble festival",
+              "Special AP rewards are available"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "none"
+          }
+        },
+        {
+          "id": "keyboard_shortcuts",
+          "title": "Keyboard Shortcuts",
+          "description": "Learn keyboard shortcuts for efficient play.",
+          "targetElement": ".game-canvas",
+          "targetSelector": ".game-canvas",
+          "highlightType": "outline",
+          "position": "center",
+          "content": {
+            "text": "Play more comfortably using keyboard shortcuts.",
+            "tips": [
+              "Space key: Pause/resume game",
+              "Ctrl+Shift+D: Show debug information",
+              "F: Toggle fullscreen mode",
+              "M: Toggle music on/off",
+              "Escape: Return to menu"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "user_action",
+            "action": "keypress",
+            "target": "Space"
+          }
+        },
+        {
+          "id": "debug_features",
+          "title": "Developer Features",
+          "description": "Use debug features to analyze the game in detail.",
+          "targetElement": ".debug-panel",
+          "targetSelector": ".debug-panel",
+          "highlightType": "glow",
+          "position": "center",
+          "content": {
+            "text": "Open the debug panel with Ctrl+Shift+D to check detailed information.",
+            "tips": [
+              "Monitor frame rate",
+              "Check memory usage",
+              "Display performance metrics",
+              "Check bubble generation patterns"
+            ]
+          },
+          "actions": ["finish", "previous"],
+          "validation": {
+            "type": "element_visible",
+            "target": ".debug-panel"
+          }
+        }
+      ],
+      "completionRewards": {
+        "ap": 200,
+        "achievement": "power_user"
+      }
+    }
+  ],
+  "metadata": {
+    "totalTours": 4,
+    "categories": ["Basic Operations", "Gameplay", "Customization", "Advanced"],
+    "difficultyLevels": ["Beginner", "Advanced"],
+    "averageCompletionTime": "19 minutes",
+    "lastUpdated": "2025-07-30"
+  }
+}

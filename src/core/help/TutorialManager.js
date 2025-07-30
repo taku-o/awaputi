@@ -563,6 +563,9 @@ export class TutorialManager {
                 }
             }
             
+            // ガイドツアーデータの読み込み
+            await this.loadGuidedTourData(currentLanguage);
+            
             // 基本チュートリアルが存在しない場合はデフォルトを作成
             if (!this.tutorialData.has('basic_tutorial')) {
                 const basicTutorial = await this.createBasicTutorial();
@@ -580,6 +583,154 @@ export class TutorialManager {
             } catch (fallbackError) {
                 this.loggingSystem.error('TutorialManager', 'Failed to create fallback tutorial', fallbackError);
             }
+        }
+    }
+
+    /**
+     * ガイドツアーデータの読み込み
+     * @param {string} language - 言語コード
+     */
+    async loadGuidedTourData(language) {
+        try {
+            const tourUrl = `/help/${language}/tours.json`;
+            const response = await fetch(tourUrl);
+            
+            if (!response.ok) {
+                this.loggingSystem.warn('TutorialManager', `Failed to load tour data for ${language}: ${response.status}`);
+                return;
+            }
+            
+            const tourData = await response.json();
+            
+            if (tourData.tours && Array.isArray(tourData.tours)) {
+                for (const tour of tourData.tours) {
+                    // ツアーデータをTutorialModel形式に変換
+                    const tutorialData = this.convertTourToTutorial(tour);
+                    
+                    const tutorialModel = new TutorialModel(tutorialData);
+                    if (tutorialModel.validate()) {
+                        this.tutorialData.set(tutorialModel.id, tutorialModel);
+                        this.loggingSystem.debug('TutorialManager', `Loaded guided tour: ${tour.id}`);
+                    } else {
+                        this.loggingSystem.warn('TutorialManager', `Invalid tour data: ${tour.id}`);
+                    }
+                }
+                
+                this.loggingSystem.info('TutorialManager', `Loaded ${tourData.tours.length} guided tours for ${language}`);
+            }
+        } catch (error) {
+            this.loggingSystem.warn('TutorialManager', `Failed to load guided tour data for ${language}`, error);
+            // ガイドツアーが読み込めなくても基本機能は動作するようにする
+        }
+    }
+
+    /**
+     * ツアーデータをTutorialModel形式に変換
+     * @param {Object} tour - ツアーデータ
+     * @returns {Object} TutorialModel形式のデータ
+     */
+    convertTourToTutorial(tour) {
+        return {
+            id: tour.id,
+            title: tour.title,
+            description: tour.description,
+            category: tour.category || 'guided_tour',
+            difficulty: tour.difficulty === 'Beginner' ? 'beginner' : 
+                       tour.difficulty === 'Advanced' ? 'advanced' : 'intermediate',
+            estimatedDuration: this.parseEstimatedTime(tour.estimatedTime),
+            language: 'ja', // ツアーデータから推定
+            steps: tour.steps.map((step, index) => ({
+                id: step.id,
+                title: step.title,
+                instructions: step.description,
+                content: step.content,
+                targetElement: step.targetSelector || step.targetElement,
+                highlightType: step.highlightType || 'outline',
+                position: step.position || 'center',
+                highlightArea: { type: 'element' },
+                waitForAction: this.determineWaitAction(step),
+                validationFunction: this.determineValidationFunction(step),
+                skipAllowed: step.actions ? step.actions.includes('skip') : true,
+                timeout: 60000, // 1分のタイムアウト
+                retryOnFailure: true,
+                skipOnTimeout: false,
+                actions: step.actions || ['next']
+            })),
+            prerequisites: tour.prerequisites || [],
+            completionRewards: tour.completionRewards || {},
+            tourType: 'guided_tour', // ガイドツアーであることを示すフラグ
+            icon: tour.icon,
+            estimatedTimeText: tour.estimatedTime
+        };
+    }
+
+    /**
+     * 推定時間をミリ秒に変換
+     * @param {string} timeText - 時間テキスト（例: "3分", "5 minutes"）
+     * @returns {number} ミリ秒
+     */
+    parseEstimatedTime(timeText) {
+        if (!timeText) return 180000; // デフォルト3分
+        
+        const minutes = parseInt(timeText.match(/\d+/)?.[0] || '3');
+        return minutes * 60 * 1000;
+    }
+
+    /**
+     * ステップに応じた待機アクションを決定
+     * @param {Object} step - ステップデータ
+     * @returns {string|null} 待機アクション
+     */
+    determineWaitAction(step) {
+        // バリデーションの種類に基づいて待機アクションを決定
+        if (step.validation) {
+            switch (step.validation.type) {
+                case 'user_input':
+                    return 'input';
+                case 'user_action':
+                    return step.validation.action || 'click';
+                case 'user_interaction':
+                    return 'interaction';
+                case 'element_visible':
+                    return 'element_visible';
+                default:
+                    return 'click';
+            }
+        }
+        
+        // アクションに基づいて決定
+        if (step.actions) {
+            if (step.actions.includes('finish')) return null;
+            return 'click';
+        }
+        
+        return 'click';
+    }
+
+    /**
+     * ステップに応じたバリデーション関数を決定
+     * @param {Object} step - ステップデータ
+     * @returns {string|null} バリデーション関数名
+     */
+    determineValidationFunction(step) {
+        if (!step.validation) return null;
+        
+        switch (step.validation.type) {
+            case 'user_input':
+                return 'validateUserInput';
+            case 'user_action':
+                const action = step.validation.action;
+                if (action === 'bubble_pop') return 'validateBubblePop';
+                if (action === 'bubble_drag') return 'validateBubbleDrag';
+                if (action === 'combo_achievement') return 'validateCombo';
+                if (action === 'keypress') return 'validateKeypress';
+                return 'validateCustomAction';
+            case 'user_interaction':
+                return 'validateUserInteraction';
+            case 'element_visible':
+                return 'validateElementVisible';
+            default:
+                return null;
         }
     }
 
@@ -1012,6 +1163,114 @@ export class TutorialManager {
             };
         });
         
+        // ガイドツアー用の追加バリデーション関数
+        this.validationFunctions.set('validateUserInput', async (actionResult, step, gameEngine) => {
+            // ユーザー入力の検証
+            const target = step.validation?.target;
+            if (!target) {
+                return { success: true };
+            }
+            
+            const element = document.querySelector(target);
+            if (!element) {
+                return { success: false, error: '入力要素が見つかりません' };
+            }
+            
+            const condition = step.validation.condition;
+            const value = element.value || element.textContent;
+            
+            switch (condition) {
+                case 'not_empty':
+                    return value.trim().length > 0 ? 
+                        { success: true } : 
+                        { success: false, error: '値を入力してください' };
+                case 'min_length':
+                    const minLength = step.validation.minLength || 1;
+                    return value.length >= minLength ? 
+                        { success: true } : 
+                        { success: false, error: `最低${minLength}文字入力してください` };
+                default:
+                    return { success: true };
+            }
+        });
+        
+        this.validationFunctions.set('validateElementVisible', async (actionResult, step, gameEngine) => {
+            // 要素の表示確認
+            const target = step.validation?.target;
+            if (!target) {
+                return { success: true };
+            }
+            
+            const element = document.querySelector(target);
+            if (!element) {
+                return { success: false, error: '要素が見つかりません' };
+            }
+            
+            const isVisible = element.offsetParent !== null || 
+                             (element.offsetWidth > 0 && element.offsetHeight > 0);
+            
+            return isVisible ? 
+                { success: true } : 
+                { success: false, error: '要素が表示されていません' };
+        });
+        
+        this.validationFunctions.set('validateUserInteraction', async (actionResult, step, gameEngine) => {
+            // ユーザーインタラクション検証（スライダー操作など）
+            const target = step.validation?.target;
+            if (!target) {
+                return { success: true };
+            }
+            
+            const element = document.querySelector(target);
+            if (!element) {
+                return { success: false, error: 'インタラクション要素が見つかりません' };
+            }
+            
+            // 要素の変更を検証（値、選択状態など）
+            const hasChanged = element.dataset.tutorialInteracted === 'true' || 
+                              element.value !== element.defaultValue ||
+                              element.checked !== element.defaultChecked;
+            
+            return hasChanged ? 
+                { success: true } : 
+                { success: false, error: '設定を変更してください' };
+        });
+        
+        this.validationFunctions.set('validateKeypress', async (actionResult, step, gameEngine) => {
+            // キーボード操作の検証
+            const expectedKey = step.validation?.target;
+            const actualKey = actionResult?.key;
+            
+            if (!expectedKey) {
+                return { success: true };
+            }
+            
+            return expectedKey.toLowerCase() === actualKey?.toLowerCase() ? 
+                { success: true } : 
+                { success: false, error: `${expectedKey}キーを押してください` };
+        });
+        
+        this.validationFunctions.set('validateCustomAction', async (actionResult, step, gameEngine) => {
+            // カスタムアクション検証
+            const action = step.validation?.action;
+            const target = step.validation?.target;
+            
+            switch (action) {
+                case 'combo_achievement':
+                    const comboRequirement = parseInt(target?.replace('combo >= ', '') || '3');
+                    const currentCombo = actionResult?.comboCount || 0;
+                    return currentCombo >= comboRequirement ? 
+                        { success: true } : 
+                        { success: false, error: `${comboRequirement}連続コンボを達成してください` };
+                
+                case 'keypress':
+                    return this.validationFunctions.get('validateKeypress')(actionResult, step, gameEngine);
+                
+                default:
+                    return { success: true };
+            }
+        });
+        
         this.validationFunctions.set('validateCustom', async (actionResult, step, gameEngine) => {
             // カスタムバリデーション
             if (step.customValidation && typeof step.customValidation === 'function') {
@@ -1111,11 +1370,244 @@ export class TutorialManager {
             const progress = {
                 completedTutorials: Array.from(this.userProgress.completedTutorials),
                 currentTutorialId: this.userProgress.currentTutorialId,
-                currentStepIndex: this.userProgress.currentStepIndex
+                currentStepIndex: this.userProgress.currentStepIndex,
+                startTime: this.userProgress.startTime,
+                pausedTime: this.userProgress.pausedTime,
+                
+                // ガイドツアー専用の進捗情報
+                tourProgress: {
+                    lastActiveStep: this.currentStep,
+                    stepStartTime: Date.now(),
+                    stepAttempts: this.currentStepAttempts || 0,
+                    tourType: this.currentTutorial?.tourType || null,
+                    completedSteps: this.getCompletedStepsForCurrentTour(),
+                    skippedSteps: this.getSkippedStepsForCurrentTour()
+                }
             };
+            
             localStorage.setItem('awaputi_tutorial_progress', JSON.stringify(progress));
+            
+            // ガイドツアー専用の詳細進捗も保存
+            if (this.currentTutorial?.tourType === 'guided_tour') {
+                this.saveTourSpecificProgress();
+            }
         } catch (error) {
             this.loggingSystem.error('TutorialManager', 'Failed to save user progress', error);
+        }
+    }
+
+    /**
+     * 現在のツアーで完了済みのステップを取得
+     * @returns {Array} 完了済みステップのID配列
+     */
+    getCompletedStepsForCurrentTour() {
+        if (!this.currentTutorial) return [];
+        
+        const completedSteps = [];
+        for (let i = 0; i < this.currentStep; i++) {
+            if (this.currentTutorial.steps[i]) {
+                completedSteps.push(this.currentTutorial.steps[i].id);
+            }
+        }
+        return completedSteps;
+    }
+
+    /**
+     * 現在のツアーでスキップされたステップを取得
+     * @returns {Array} スキップされたステップのID配列
+     */
+    getSkippedStepsForCurrentTour() {
+        // スキップされたステップの追跡は今後の拡張として実装
+        return this.skippedSteps || [];
+    }
+
+    /**
+     * ツアー固有の進捗情報を保存
+     */
+    saveTourSpecificProgress() {
+        try {
+            if (!this.currentTutorial) return;
+            
+            const tourId = this.currentTutorial.id;
+            const tourProgress = {
+                tourId,
+                lastAccessTime: Date.now(),
+                currentStep: this.currentStep,
+                totalSteps: this.currentTutorial.steps.length,
+                completedSteps: this.getCompletedStepsForCurrentTour(),
+                estimatedTimeRemaining: this.calculateEstimatedTimeRemaining(tourId),
+                
+                // ステップ別の詳細情報
+                stepDetails: this.currentTutorial.steps.map((step, index) => ({
+                    id: step.id,
+                    title: step.title,
+                    isCompleted: index < this.currentStep,
+                    isCurrent: index === this.currentStep,
+                    attempts: this.getStepAttempts(tourId, step.id),
+                    lastAttemptTime: this.getStepLastAttemptTime(tourId, step.id)
+                }))
+            };
+            
+            const storageKey = `awaputi_tour_progress_${tourId}`;
+            localStorage.setItem(storageKey, JSON.stringify(tourProgress));
+        } catch (error) {
+            this.loggingSystem.error('TutorialManager', 'Failed to save tour specific progress', error);
+        }
+    }
+
+    /**
+     * ツアー固有の進捗情報を読み込み
+     * @param {string} tourId - ツアーID
+     * @returns {Object|null} ツアー進捗情報
+     */
+    loadTourSpecificProgress(tourId) {
+        try {
+            const storageKey = `awaputi_tour_progress_${tourId}`;
+            const saved = localStorage.getItem(storageKey);
+            
+            if (saved) {
+                const progress = JSON.parse(saved);
+                return progress;
+            }
+            
+            return null;
+        } catch (error) {
+            this.loggingSystem.error('TutorialManager', 'Failed to load tour specific progress', error);
+            return null;
+        }
+    }
+
+    /**
+     * ステップの試行回数を取得
+     * @param {string} tourId - ツアーID
+     * @param {string} stepId - ステップID
+     * @returns {number} 試行回数
+     */
+    getStepAttempts(tourId, stepId) {
+        const stepKey = `${tourId}_${stepId}`;
+        return this.tutorialStats.attemptCount.get(stepKey) || 0;
+    }
+
+    /**
+     * ステップの最後の試行時間を取得
+     * @param {string} tourId - ツアーID
+     * @param {string} stepId - ステップID
+     * @returns {number|null} 最後の試行時間
+     */
+    getStepLastAttemptTime(tourId, stepId) {
+        const storageKey = `awaputi_step_attempt_${tourId}_${stepId}`;
+        try {
+            const saved = localStorage.getItem(storageKey);
+            return saved ? parseInt(saved) : null;
+        } catch (error) {
+            return null;
+        }
+    }
+
+    /**
+     * ガイドツアーを再開
+     * @param {string} tourId - ツアーID
+     * @returns {Promise<boolean>} 再開成功フラグ
+     */
+    async resumeGuidedTour(tourId) {
+        try {
+            const tourProgress = this.loadTourSpecificProgress(tourId);
+            if (!tourProgress) {
+                this.loggingSystem.warn('TutorialManager', `No saved progress found for tour: ${tourId}`);
+                return await this.startTutorial(tourId);
+            }
+
+            // 保存された進捗から再開
+            const tutorial = this.tutorialData.get(tourId);
+            if (!tutorial) {
+                this.loggingSystem.error('TutorialManager', `Tutorial not found: ${tourId}`);
+                return false;
+            }
+
+            this.currentTutorial = tutorial;
+            this.currentStep = tourProgress.currentStep || 0;
+            this.userProgress.currentTutorialId = tourId;
+            this.userProgress.currentStepIndex = this.currentStep;
+            this.userProgress.startTime = Date.now();
+            this.userProgress.pausedTime = null;
+
+            // TutorialOverlayにツアーを表示
+            await this.showTutorialOverlay();
+            
+            // 現在のステップを実行
+            await this.executeStep(this.currentStep);
+            
+            this.loggingSystem.info('TutorialManager', `Resumed guided tour: ${tourId} at step ${this.currentStep}`);
+            this.saveUserProgress();
+            
+            return true;
+        } catch (error) {
+            this.loggingSystem.error('TutorialManager', `Failed to resume guided tour: ${tourId}`, error);
+            return false;
+        }
+    }
+
+    /**
+     * 利用可能なガイドツアー一覧を取得
+     * @param {Object} options - フィルタオプション
+     * @returns {Array} ガイドツアー一覧
+     */
+    getAvailableGuidedTours(options = {}) {
+        try {
+            const tours = Array.from(this.tutorialData.values())
+                .filter(tutorial => tutorial.tourType === 'guided_tour');
+            
+            // フィルタリング
+            let filteredTours = tours;
+            
+            if (options.category) {
+                filteredTours = filteredTours.filter(t => t.category === options.category);
+            }
+            
+            if (options.difficulty) {
+                filteredTours = filteredTours.filter(t => t.difficulty === options.difficulty);
+            }
+            
+            if (options.showOnlyAvailable) {
+                filteredTours = filteredTours.filter(t => this.checkPrerequisites(t));
+            }
+            
+            if (options.showOnlyIncomplete) {
+                filteredTours = filteredTours.filter(t => !this.userProgress.completedTutorials.has(t.id));
+            }
+
+            return filteredTours.map(tour => {
+                const progress = this.loadTourSpecificProgress(tour.id);
+                
+                return {
+                    id: tour.id,
+                    title: tour.title,
+                    description: tour.description,
+                    category: tour.category,
+                    difficulty: tour.difficulty,
+                    estimatedTime: tour.estimatedTimeText,
+                    estimatedDuration: tour.estimatedDuration,
+                    steps: tour.steps.length,
+                    icon: tour.icon,
+                    
+                    // 進捗情報
+                    isCompleted: this.userProgress.completedTutorials.has(tour.id),
+                    isAvailable: this.checkPrerequisites(tour),
+                    hasProgress: !!progress,
+                    currentStep: progress?.currentStep || 0,
+                    completionRate: progress ? 
+                        Math.round((progress.currentStep / tour.steps.length) * 100) : 0,
+                    
+                    // 前提条件
+                    prerequisites: tour.prerequisites,
+                    
+                    // 報酬情報
+                    rewards: tour.completionRewards
+                };
+            });
+        } catch (error) {
+            this.loggingSystem.error('TutorialManager', 'Failed to get available guided tours', error);
+            return [];
         }
     }
 
