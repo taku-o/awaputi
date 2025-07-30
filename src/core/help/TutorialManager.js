@@ -44,6 +44,8 @@ export class TutorialManager {
             totalTime: 0,
             averageStepTime: new Map(),
             skipCount: new Map(),
+            failureCount: new Map(),
+            attemptCount: new Map(),
             completionRate: 0,
             lastUpdated: Date.now()
         };
@@ -360,7 +362,8 @@ export class TutorialManager {
     waitForUserAction(actionType, options = {}) {
         return new Promise((resolve, reject) => {
             try {
-                const timeout = options.timeout || 30000; // 30秒タイムアウト
+                const timeout = options.timeout || this.config.defaultTimeout;
+                const stepId = options.stepId;
                 
                 // タイムアウト設定
                 const timeoutId = setTimeout(() => {
@@ -372,16 +375,128 @@ export class TutorialManager {
                 const handler = (event) => {
                     clearTimeout(timeoutId);
                     this.removeInteractionHandler(actionType);
-                    resolve(event);
+                    
+                    // アクション結果の構築
+                    const actionResult = this.buildActionResult(actionType, event, stepId);
+                    resolve(actionResult);
                 };
 
                 this.addInteractionHandler(actionType, handler);
+                
+                // ゲームイベントの監視設定
+                this.setupActionListeners(actionType, handler);
                 
                 this.loggingSystem.debug('TutorialManager', `Waiting for user action: ${actionType}`);
             } catch (error) {
                 reject(error);
             }
         });
+    }
+
+    /**
+     * アクション結果の構築
+     * @param {string} actionType - アクションタイプ
+     * @param {Event} event - イベントオブジェクト
+     * @param {string} stepId - ステップID
+     * @returns {Object} アクション結果
+     */
+    buildActionResult(actionType, event, stepId) {
+        const result = {
+            actionType,
+            stepId,
+            timestamp: Date.now(),
+            event: event
+        };
+        
+        switch (actionType) {
+            case 'bubble_pop':
+                result.bubbleId = event.bubbleId;
+                result.bubbleType = event.bubbleType;
+                result.position = event.position;
+                result.score = event.score;
+                break;
+                
+            case 'bubble_drag':
+                result.bubbleId = event.bubbleId;
+                result.dragDistance = event.dragDistance;
+                result.dragDirection = event.dragDirection;
+                result.startPosition = event.startPosition;
+                result.endPosition = event.endPosition;
+                break;
+                
+            case 'special_bubble_pop':
+                result.bubbleId = event.bubbleId;
+                result.bubbleType = event.bubbleType;
+                result.specialEffect = event.specialEffect;
+                result.affectedBubbles = event.affectedBubbles;
+                break;
+                
+            case 'click':
+                result.position = { x: event.clientX, y: event.clientY };
+                result.target = event.target;
+                break;
+                
+            case 'combo_achieved':
+                result.comboCount = event.comboCount;
+                result.comboScore = event.comboScore;
+                break;
+                
+            case 'score_reached':
+                result.score = event.score;
+                result.milestone = event.milestone;
+                break;
+                
+            default:
+                // カスタムアクションタイプ
+                Object.assign(result, event);
+                break;
+        }
+        
+        return result;
+    }
+
+    /**
+     * アクションリスナーの設定
+     * @param {string} actionType - アクションタイプ
+     * @param {Function} handler - ハンドラー関数
+     */
+    setupActionListeners(actionType, handler) {
+        if (!this.gameEngine || !this.gameEngine.eventBus) {
+            return;
+        }
+        
+        const eventBus = this.gameEngine.eventBus;
+        
+        switch (actionType) {
+            case 'bubble_pop':
+                eventBus.once('bubble_popped', handler);
+                break;
+                
+            case 'bubble_drag':
+                eventBus.once('bubble_dragged', handler);
+                break;
+                
+            case 'special_bubble_pop':
+                eventBus.once('special_bubble_popped', handler);
+                break;
+                
+            case 'click':
+                document.addEventListener('click', handler, { once: true });
+                break;
+                
+            case 'combo_achieved':
+                eventBus.once('combo_achieved', handler);
+                break;
+                
+            case 'score_reached':
+                eventBus.once('score_milestone', handler);
+                break;
+                
+            default:
+                // カスタムイベントタイプ
+                eventBus.once(actionType, handler);
+                break;
+        }
     }
 
     /**
@@ -549,31 +664,91 @@ export class TutorialManager {
             }
 
             const step = this.currentTutorial.steps[stepIndex];
+            const stepStartTime = Date.now();
+            
+            // ステップ開始イベント
+            if (this.gameEngine && this.gameEngine.eventBus) {
+                this.gameEngine.eventBus.emit('tutorial_step_start', {
+                    tutorialId: this.currentTutorial.id,
+                    stepId: step.id,
+                    stepIndex: stepIndex
+                });
+            }
             
             // ステップ指示の表示
             this.showStepInstructions(step);
             
             // 要素のハイライト
             if (step.targetElement) {
-                this.highlightElement(step.targetElement, step.instructions);
+                this.highlightElement(step.targetElement, step.instructions, {
+                    highlightArea: step.highlightArea
+                });
             }
             
             // ユーザーアクションの待機
             if (step.waitForAction) {
                 try {
-                    await this.waitForUserAction(step.waitForAction);
+                    const actionResult = await this.waitForUserAction(step.waitForAction, {
+                        timeout: step.timeout || this.config.defaultTimeout,
+                        stepId: step.id
+                    });
                     
                     // バリデーション実行
-                    if (step.validationFunction && !this.validateStep(step)) {
-                        this.loggingSystem.warn('TutorialManager', `Step validation failed: ${step.id}`);
-                        return;
+                    if (step.validationFunction) {
+                        const validationResult = await this.validateStep(step, actionResult);
+                        if (!validationResult.success) {
+                            this.loggingSystem.warn('TutorialManager', `Step validation failed: ${step.id}`, validationResult.error);
+                            
+                            // バリデーション失敗時の処理
+                            if (step.retryOnFailure !== false) {
+                                await this.showValidationError(validationResult.error);
+                                // 同じステップを再実行
+                                setTimeout(() => this.executeStep(stepIndex), 1500);
+                                return;
+                            }
+                        }
+                    }
+                    
+                    // ステップ完了の記録
+                    const stepDuration = Date.now() - stepStartTime;
+                    this.updateStepStats(step.id, stepDuration);
+                    
+                    // ステップ完了イベント
+                    if (this.gameEngine && this.gameEngine.eventBus) {
+                        this.gameEngine.eventBus.emit('tutorial_step_complete', {
+                            tutorialId: this.currentTutorial.id,
+                            stepId: step.id,
+                            stepIndex: stepIndex,
+                            duration: stepDuration
+                        });
                     }
                     
                     // 次のステップに自動進行
-                    setTimeout(() => this.nextStep(), 1000);
+                    if (this.config.autoAdvance) {
+                        setTimeout(() => this.nextStep(), this.config.autoAdvanceDelay);
+                    }
                     
                 } catch (error) {
-                    this.loggingSystem.error('TutorialManager', `Step execution failed: ${step.id}`, error);
+                    if (error.message.includes('timeout')) {
+                        this.loggingSystem.warn('TutorialManager', `Step timeout: ${step.id}`);
+                        
+                        // タイムアウト時の処理
+                        if (step.skipOnTimeout) {
+                            this.nextStep();
+                        } else {
+                            await this.showTimeoutMessage(step);
+                        }
+                    } else {
+                        this.loggingSystem.error('TutorialManager', `Step execution failed: ${step.id}`, error);
+                    }
+                }
+            } else {
+                // アクション待機なしのステップ
+                const stepDuration = Date.now() - stepStartTime;
+                this.updateStepStats(step.id, stepDuration);
+                
+                if (this.config.autoAdvance) {
+                    setTimeout(() => this.nextStep(), this.config.autoAdvanceDelay);
                 }
             }
             
@@ -652,18 +827,83 @@ export class TutorialManager {
     /**
      * ステップのバリデーション
      * @param {Object} step - ステップデータ
-     * @returns {boolean} バリデーション結果
+     * @param {any} actionResult - アクション結果
+     * @returns {Object} バリデーション結果
      */
-    validateStep(step) {
+    async validateStep(step, actionResult) {
         try {
             const validationFunc = this.validationFunctions.get(step.validationFunction);
-            if (validationFunc) {
-                return validationFunc();
+            if (!validationFunc) {
+                return { success: true };
             }
-            return true;
+            
+            // バリデーション実行
+            const result = await validationFunc(actionResult, step, this.gameEngine);
+            
+            // 結果の正規化
+            if (typeof result === 'boolean') {
+                return { success: result, error: result ? null : 'Validation failed' };
+            }
+            
+            return {
+                success: result.success || false,
+                error: result.error || null,
+                details: result.details || null
+            };
+            
         } catch (error) {
             this.loggingSystem.error('TutorialManager', `Step validation error: ${step.id}`, error);
-            return false;
+            return {
+                success: false,
+                error: error.message || 'Validation error occurred'
+            };
+        }
+    }
+
+    /**
+     * バリデーションエラーメッセージの表示
+     * @param {string} error - エラーメッセージ
+     */
+    async showValidationError(error) {
+        try {
+            if (this.tutorialOverlay) {
+                await this.tutorialOverlay.showError(error);
+            }
+            
+            // エラーイベントの発火
+            if (this.gameEngine && this.gameEngine.eventBus) {
+                this.gameEngine.eventBus.emit('tutorial_validation_error', {
+                    tutorialId: this.currentTutorial?.id,
+                    stepId: this.currentTutorial?.steps[this.currentStep]?.id,
+                    error: error
+                });
+            }
+        } catch (err) {
+            this.loggingSystem.error('TutorialManager', 'Failed to show validation error', err);
+        }
+    }
+
+    /**
+     * タイムアウトメッセージの表示
+     * @param {Object} step - ステップデータ
+     */
+    async showTimeoutMessage(step) {
+        try {
+            const message = step.timeoutMessage || 'このステップの制限時間を超過しました。もう一度お試しください。';
+            if (this.tutorialOverlay) {
+                await this.tutorialOverlay.showTimeout(message);
+            }
+            
+            // タイムアウトイベントの発火
+            if (this.gameEngine && this.gameEngine.eventBus) {
+                this.gameEngine.eventBus.emit('tutorial_step_timeout', {
+                    tutorialId: this.currentTutorial?.id,
+                    stepId: step.id,
+                    stepIndex: this.currentStep
+                });
+            }
+        } catch (error) {
+            this.loggingSystem.error('TutorialManager', 'Failed to show timeout message', error);
         }
     }
 
@@ -672,19 +912,112 @@ export class TutorialManager {
      */
     setupInteractionHandlers() {
         // バリデーション関数の登録
-        this.validationFunctions.set('validateBubblePop', () => {
+        this.validationFunctions.set('validateBubblePop', async (actionResult, step, gameEngine) => {
             // 泡が割られたかの検証
-            return true; // プレースホルダー
+            const bubbleManager = gameEngine?.bubbleManager;
+            if (!bubbleManager) {
+                return { success: false, error: 'BubbleManager not available' };
+            }
+            
+            // アクション結果から泡IDを取得
+            const bubbleId = actionResult?.bubbleId;
+            if (!bubbleId) {
+                return { success: false, error: '泡を正しくクリックしてください' };
+            }
+            
+            // 泡が正常に破壊されたか確認
+            const bubble = bubbleManager.getBubbleById(bubbleId);
+            if (bubble && bubble.isPopped) {
+                return { success: true };
+            }
+            
+            return { success: false, error: '泡が正しく割れませんでした' };
         });
         
-        this.validationFunctions.set('validateBubbleDrag', () => {
+        this.validationFunctions.set('validateBubbleDrag', async (actionResult, step, gameEngine) => {
             // 泡がドラッグされたかの検証
-            return true; // プレースホルダー
+            if (!actionResult || !actionResult.dragDistance) {
+                return { success: false, error: 'ドラッグ操作が検出されませんでした' };
+            }
+            
+            // 最小ドラッグ距離の確認
+            const minDistance = step.minDragDistance || 50;
+            if (actionResult.dragDistance < minDistance) {
+                return { 
+                    success: false, 
+                    error: `もう少し長くドラッグしてください（最小: ${minDistance}px）` 
+                };
+            }
+            
+            return { success: true };
         });
         
-        this.validationFunctions.set('validateSpecialBubblePop', () => {
+        this.validationFunctions.set('validateSpecialBubblePop', async (actionResult, step, gameEngine) => {
             // 特殊泡が割られたかの検証
-            return true; // プレースホルダー
+            const bubbleType = actionResult?.bubbleType;
+            if (!bubbleType) {
+                return { success: false, error: '泡の情報が取得できません' };
+            }
+            
+            // 特殊泡のタイプを確認
+            const specialTypes = ['rainbow', 'pink', 'clock', 'electric', 'golden', 'frozen', 'magnetic', 'explosive', 'phantom', 'multiplier'];
+            if (!specialTypes.includes(bubbleType)) {
+                return { 
+                    success: false, 
+                    error: '特殊な泡をクリックしてください',
+                    details: { expectedTypes: specialTypes, actualType: bubbleType }
+                };
+            }
+            
+            return { success: true, details: { bubbleType } };
+        });
+        
+        this.validationFunctions.set('validateCombo', async (actionResult, step, gameEngine) => {
+            // コンボが達成されたかの検証
+            const scoreManager = gameEngine?.scoreManager;
+            if (!scoreManager) {
+                return { success: false, error: 'ScoreManager not available' };
+            }
+            
+            const requiredCombo = step.requiredCombo || 3;
+            const currentCombo = scoreManager.getCurrentCombo();
+            
+            if (currentCombo >= requiredCombo) {
+                return { success: true, details: { combo: currentCombo } };
+            }
+            
+            return { 
+                success: false, 
+                error: `${requiredCombo}連続コンボを達成してください（現在: ${currentCombo}）` 
+            };
+        });
+        
+        this.validationFunctions.set('validateScore', async (actionResult, step, gameEngine) => {
+            // 指定スコアに到達したかの検証
+            const scoreManager = gameEngine?.scoreManager;
+            if (!scoreManager) {
+                return { success: false, error: 'ScoreManager not available' };
+            }
+            
+            const requiredScore = step.requiredScore || 100;
+            const currentScore = scoreManager.getCurrentScore();
+            
+            if (currentScore >= requiredScore) {
+                return { success: true, details: { score: currentScore } };
+            }
+            
+            return { 
+                success: false, 
+                error: `スコア ${requiredScore} に到達してください（現在: ${currentScore}）` 
+            };
+        });
+        
+        this.validationFunctions.set('validateCustom', async (actionResult, step, gameEngine) => {
+            // カスタムバリデーション
+            if (step.customValidation && typeof step.customValidation === 'function') {
+                return await step.customValidation(actionResult, step, gameEngine);
+            }
+            return { success: true };
         });
     }
 
@@ -961,6 +1294,8 @@ export class TutorialManager {
                     totalTime: stats.totalTime || 0,
                     averageStepTime: new Map(stats.averageStepTime || []),
                     skipCount: new Map(stats.skipCount || []),
+                    failureCount: new Map(stats.failureCount || []),
+                    attemptCount: new Map(stats.attemptCount || []),
                     completionRate: stats.completionRate || 0,
                     lastUpdated: stats.lastUpdated || Date.now()
                 };
@@ -979,6 +1314,8 @@ export class TutorialManager {
                 totalTime: this.tutorialStats.totalTime,
                 averageStepTime: Array.from(this.tutorialStats.averageStepTime.entries()),
                 skipCount: Array.from(this.tutorialStats.skipCount.entries()),
+                failureCount: Array.from(this.tutorialStats.failureCount.entries()),
+                attemptCount: Array.from(this.tutorialStats.attemptCount.entries()),
                 completionRate: this.tutorialStats.completionRate,
                 lastUpdated: Date.now()
             };
@@ -993,14 +1330,45 @@ export class TutorialManager {
      * ステップ統計の更新
      * @param {string} stepId - ステップID
      * @param {number} duration - 所要時間
+     * @param {boolean} success - 成功フラグ
+     * @param {boolean} skipped - スキップフラグ
      */
-    updateStepStats(stepId, duration) {
+    updateStepStats(stepId, duration, success = true, skipped = false) {
         try {
-            const currentAvg = this.tutorialStats.averageStepTime.get(stepId) || 0;
+            const tutorialId = this.currentTutorial?.id;
+            if (!tutorialId) return;
+            
+            const stepKey = `${tutorialId}_${stepId}`;
+            
+            // 平均時間の更新
+            const currentAvg = this.tutorialStats.averageStepTime.get(stepKey) || 0;
             const newAvg = currentAvg > 0 ? (currentAvg + duration) / 2 : duration;
-            this.tutorialStats.averageStepTime.set(stepId, newAvg);
+            this.tutorialStats.averageStepTime.set(stepKey, newAvg);
+            
+            // 試行回数の更新
+            const currentAttempts = this.tutorialStats.attemptCount.get(stepKey) || 0;
+            this.tutorialStats.attemptCount.set(stepKey, currentAttempts + 1);
+            
+            // スキップ回数の更新
+            if (skipped) {
+                const currentSkips = this.tutorialStats.skipCount.get(stepKey) || 0;
+                this.tutorialStats.skipCount.set(stepKey, currentSkips + 1);
+            }
+            
+            // 失敗回数の更新
+            if (!success) {
+                const currentFailures = this.tutorialStats.failureCount.get(stepKey) || 0;
+                this.tutorialStats.failureCount.set(stepKey, currentFailures + 1);
+            }
             
             this.tutorialStats.totalTime += duration;
+            
+            // 統計の自動保存（5分間隔）
+            const now = Date.now();
+            if (now - this.tutorialStats.lastUpdated > 300000) { // 5分
+                this.saveTutorialStats();
+            }
+            
         } catch (error) {
             this.loggingSystem.error('TutorialManager', 'Failed to update step statistics', error);
         }
@@ -1046,6 +1414,191 @@ export class TutorialManager {
             }
         } catch (error) {
             this.loggingSystem.error('TutorialManager', 'Failed to handle overlay navigation', error);
+        }
+    }
+
+    /**
+     * チュートリアル進捗の詳細を取得
+     * @param {string} tutorialId - チュートリアルID（省略時は現在のチュートリアル）
+     * @returns {Object} 詳細な進捗情報
+     */
+    getTutorialProgressDetails(tutorialId = null) {
+        try {
+            const targetId = tutorialId || this.userProgress.currentTutorialId;
+            if (!targetId) {
+                return null;
+            }
+            
+            const tutorial = this.tutorialData.get(targetId);
+            if (!tutorial) {
+                return null;
+            }
+            
+            const isCompleted = this.userProgress.completedTutorials.has(targetId);
+            const stepStats = this.getStepStatistics(targetId);
+            
+            return {
+                tutorialId: targetId,
+                title: tutorial.title,
+                totalSteps: tutorial.steps.length,
+                currentStep: targetId === this.userProgress.currentTutorialId ? this.currentStep : 0,
+                isCompleted,
+                isRunning: targetId === this.userProgress.currentTutorialId && !!this.currentTutorial,
+                isPaused: !!this.userProgress.pausedTime,
+                completionRate: this.calculateCompletionRate(targetId),
+                estimatedTimeRemaining: this.calculateEstimatedTimeRemaining(targetId),
+                stepStatistics: stepStats,
+                lastAttempt: this.getLastAttemptInfo(targetId),
+                prerequisites: tutorial.prerequisites,
+                difficulty: tutorial.difficulty || 'beginner'
+            };
+        } catch (error) {
+            this.loggingSystem.error('TutorialManager', 'Failed to get tutorial progress details', error);
+            return null;
+        }
+    }
+
+    /**
+     * ステップ統計の取得
+     * @param {string} tutorialId - チュートリアルID
+     * @returns {Object} ステップ統計
+     */
+    getStepStatistics(tutorialId) {
+        try {
+            const tutorial = this.tutorialData.get(tutorialId);
+            if (!tutorial) {
+                return {};
+            }
+            
+            const stats = {};
+            tutorial.steps.forEach((step, index) => {
+                const stepKey = `${tutorialId}_${step.id}`;
+                stats[step.id] = {
+                    index,
+                    title: step.title,
+                    averageTime: this.tutorialStats.averageStepTime.get(stepKey) || 0,
+                    skipCount: this.tutorialStats.skipCount.get(stepKey) || 0,
+                    failureCount: this.tutorialStats.failureCount?.get(stepKey) || 0,
+                    successRate: this.calculateStepSuccessRate(stepKey)
+                };
+            });
+            
+            return stats;
+        } catch (error) {
+            this.loggingSystem.error('TutorialManager', 'Failed to get step statistics', error);
+            return {};
+        }
+    }
+
+    /**
+     * 完了率の計算
+     * @param {string} tutorialId - チュートリアルID
+     * @returns {number} 完了率（0-100）
+     */
+    calculateCompletionRate(tutorialId) {
+        if (this.userProgress.completedTutorials.has(tutorialId)) {
+            return 100;
+        }
+        
+        if (tutorialId !== this.userProgress.currentTutorialId) {
+            return 0;
+        }
+        
+        const tutorial = this.tutorialData.get(tutorialId);
+        if (!tutorial || !tutorial.steps.length) {
+            return 0;
+        }
+        
+        return Math.round((this.currentStep / tutorial.steps.length) * 100);
+    }
+
+    /**
+     * 推定残り時間の計算
+     * @param {string} tutorialId - チュートリアルID
+     * @returns {number} 推定残り時間（ミリ秒）
+     */
+    calculateEstimatedTimeRemaining(tutorialId) {
+        try {
+            const tutorial = this.tutorialData.get(tutorialId);
+            if (!tutorial) {
+                return 0;
+            }
+            
+            if (this.userProgress.completedTutorials.has(tutorialId)) {
+                return 0;
+            }
+            
+            let remainingTime = 0;
+            const startIndex = tutorialId === this.userProgress.currentTutorialId ? this.currentStep : 0;
+            
+            for (let i = startIndex; i < tutorial.steps.length; i++) {
+                const step = tutorial.steps[i];
+                const stepKey = `${tutorialId}_${step.id}`;
+                const avgTime = this.tutorialStats.averageStepTime.get(stepKey);
+                
+                // 平均時間がある場合はそれを使用、なければデフォルト値
+                remainingTime += avgTime || (step.estimatedDuration || 30000);
+            }
+            
+            return remainingTime;
+        } catch (error) {
+            this.loggingSystem.error('TutorialManager', 'Failed to calculate estimated time remaining', error);
+            return 0;
+        }
+    }
+
+    /**
+     * ステップ成功率の計算
+     * @param {string} stepKey - ステップキー
+     * @returns {number} 成功率（0-100）
+     */
+    calculateStepSuccessRate(stepKey) {
+        const attempts = (this.tutorialStats.attemptCount?.get(stepKey) || 0);
+        const failures = (this.tutorialStats.failureCount?.get(stepKey) || 0);
+        
+        if (attempts === 0) {
+            return 0;
+        }
+        
+        const successes = attempts - failures;
+        return Math.round((successes / attempts) * 100);
+    }
+
+    /**
+     * 最後の試行情報を取得
+     * @param {string} tutorialId - チュートリアルID
+     * @returns {Object|null} 最後の試行情報
+     */
+    getLastAttemptInfo(tutorialId) {
+        const key = `awaputi_tutorial_last_attempt_${tutorialId}`;
+        try {
+            const saved = localStorage.getItem(key);
+            return saved ? JSON.parse(saved) : null;
+        } catch (error) {
+            return null;
+        }
+    }
+
+    /**
+     * チュートリアル試行の記録
+     * @param {string} tutorialId - チュートリアルID
+     * @param {Object} attemptInfo - 試行情報
+     */
+    recordTutorialAttempt(tutorialId, attemptInfo) {
+        try {
+            const key = `awaputi_tutorial_last_attempt_${tutorialId}`;
+            const record = {
+                tutorialId,
+                timestamp: Date.now(),
+                completed: attemptInfo.completed || false,
+                stepsCompleted: attemptInfo.stepsCompleted || 0,
+                totalTime: attemptInfo.totalTime || 0,
+                skipped: attemptInfo.skipped || false
+            };
+            
+            localStorage.setItem(key, JSON.stringify(record));
+        } catch (error) {
+            this.loggingSystem.error('TutorialManager', 'Failed to record tutorial attempt', error);
         }
     }
 
