@@ -7,6 +7,8 @@
 import { ErrorHandler } from '../../utils/ErrorHandler.js';
 import { LoggingSystem } from '../LoggingSystem.js';
 import { CacheSystem } from '../CacheSystem.js';
+import { ContentLoader, getContentLoader } from './ContentLoader.js';
+import { TutorialModel } from './DataModels.js';
 
 /**
  * チュートリアル管理クラス
@@ -16,6 +18,7 @@ export class TutorialManager {
         this.gameEngine = gameEngine;
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
         this.cacheSystem = CacheSystem.getInstance ? CacheSystem.getInstance() : new CacheSystem();
+        this.contentLoader = getContentLoader();
         
         // チュートリアル状態
         this.currentTutorial = null;
@@ -34,6 +37,26 @@ export class TutorialManager {
         this.validationFunctions = new Map();
         this.stepTimer = null;
         
+        // チュートリアル統計
+        this.tutorialStats = {
+            totalTime: 0,
+            averageStepTime: new Map(),
+            skipCount: new Map(),
+            completionRate: 0,
+            lastUpdated: Date.now()
+        };
+        
+        // チュートリアル設定
+        this.config = {
+            autoAdvance: true,
+            autoAdvanceDelay: 1000,
+            showProgress: true,
+            allowSkip: true,
+            allowBackNavigation: true,
+            defaultTimeout: 30000,
+            highlightEnabled: true
+        };
+        
         this.initialize();
     }
 
@@ -44,11 +67,14 @@ export class TutorialManager {
         try {
             this.loggingSystem.info('TutorialManager', 'Initializing tutorial system...');
             
-            // デフォルトチュートリアルデータの読み込み
+            // チュートリアルデータの読み込み（ContentLoaderから）
             await this.loadTutorialData();
             
             // ユーザー進捗の復元
             this.loadUserProgress();
+            
+            // チュートリアル統計の読み込み
+            this.loadTutorialStats();
             
             // インタラクション検出ハンドラーの設定
             this.setupInteractionHandlers();
@@ -375,23 +401,46 @@ export class TutorialManager {
      */
     async loadTutorialData() {
         try {
-            // 基本チュートリアルデータの定義
-            const basicTutorial = await this.createBasicTutorial();
-            this.tutorialData.set('basic_tutorial', basicTutorial);
+            // ContentLoaderから各言語のチュートリアルデータを読み込み
+            const currentLanguage = this.gameEngine?.localizationManager?.getCurrentLanguage() || 'ja';
+            const tutorials = await this.contentLoader.loadTutorialData(currentLanguage);
             
-            // 将来的には外部ファイルから読み込み
-            this.loggingSystem.info('TutorialManager', 'Tutorial data loaded');
+            // TutorialModelインスタンスとしてデータを格納
+            for (const tutorialData of tutorials) {
+                const tutorialModel = new TutorialModel(tutorialData);
+                if (tutorialModel.validate()) {
+                    this.tutorialData.set(tutorialModel.id, tutorialModel);
+                } else {
+                    this.loggingSystem.warn('TutorialManager', `Invalid tutorial data: ${tutorialData.id}`);
+                }
+            }
+            
+            // 基本チュートリアルが存在しない場合はデフォルトを作成
+            if (!this.tutorialData.has('basic_tutorial')) {
+                const basicTutorial = await this.createBasicTutorial();
+                this.tutorialData.set('basic_tutorial', basicTutorial);
+            }
+            
+            this.loggingSystem.info('TutorialManager', `Tutorial data loaded: ${this.tutorialData.size} tutorials`);
         } catch (error) {
             this.loggingSystem.error('TutorialManager', 'Failed to load tutorial data', error);
+            
+            // フォールバック: 基本チュートリアルのみ作成
+            try {
+                const basicTutorial = await this.createBasicTutorial();
+                this.tutorialData.set('basic_tutorial', basicTutorial);
+            } catch (fallbackError) {
+                this.loggingSystem.error('TutorialManager', 'Failed to create fallback tutorial', fallbackError);
+            }
         }
     }
 
     /**
      * 基本チュートリアルの作成
-     * @returns {Object} 基本チュートリアルデータ
+     * @returns {TutorialModel} 基本チュートリアルデータ
      */
     async createBasicTutorial() {
-        return {
+        const tutorialData = {
             id: 'basic_tutorial',
             title: '基本操作チュートリアル',
             description: 'ゲームの基本的な操作方法を学びます',
@@ -452,6 +501,8 @@ export class TutorialManager {
             ],
             prerequisites: []
         };
+        
+        return new TutorialModel(tutorialData);
     }
 
     /**
@@ -700,13 +751,236 @@ export class TutorialManager {
     }
 
     /**
+     * 利用可能なチュートリアル一覧を取得
+     * @param {Object} options - フィルタオプション
+     * @returns {Array} チュートリアル一覧
+     */
+    getAvailableTutorials(options = {}) {
+        try {
+            const tutorials = Array.from(this.tutorialData.values());
+            
+            // フィルタリング
+            let filteredTutorials = tutorials;
+            
+            if (options.category) {
+                filteredTutorials = filteredTutorials.filter(t => t.category === options.category);
+            }
+            
+            if (options.difficulty) {
+                filteredTutorials = filteredTutorials.filter(t => t.difficulty === options.difficulty);
+            }
+            
+            if (options.showOnlyAvailable) {
+                filteredTutorials = filteredTutorials.filter(t => this.checkPrerequisites(t));
+            }
+            
+            if (options.showOnlyIncomplete) {
+                filteredTutorials = filteredTutorials.filter(t => !this.userProgress.completedTutorials.has(t.id));
+            }
+            
+            // ソート
+            const sortBy = options.sortBy || 'order';
+            switch (sortBy) {
+                case 'difficulty':
+                    const difficultyOrder = { 'beginner': 1, 'intermediate': 2, 'advanced': 3 };
+                    filteredTutorials.sort((a, b) => difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty]);
+                    break;
+                case 'duration':
+                    filteredTutorials.sort((a, b) => a.estimatedDuration - b.estimatedDuration);
+                    break;
+                case 'alphabetical':
+                    filteredTutorials.sort((a, b) => a.title.localeCompare(b.title));
+                    break;
+                default:
+                    // デフォルトは定義順
+                    break;
+            }
+            
+            return filteredTutorials.map(tutorial => ({
+                id: tutorial.id,
+                title: tutorial.title,
+                description: tutorial.description,
+                category: tutorial.category,
+                difficulty: tutorial.difficulty,
+                estimatedDuration: tutorial.estimatedDuration,
+                steps: tutorial.steps.length,
+                isCompleted: this.userProgress.completedTutorials.has(tutorial.id),
+                isAvailable: this.checkPrerequisites(tutorial),
+                prerequisites: tutorial.prerequisites
+            }));
+            
+        } catch (error) {
+            this.loggingSystem.error('TutorialManager', 'Failed to get available tutorials', error);
+            return [];
+        }
+    }
+
+    /**
+     * チュートリアル統計の取得
+     * @returns {Object} 統計情報
+     */
+    getTutorialStatistics() {
+        try {
+            const totalTutorials = this.tutorialData.size;
+            const completedTutorials = this.userProgress.completedTutorials.size;
+            const completionRate = totalTutorials > 0 ? (completedTutorials / totalTutorials) * 100 : 0;
+            
+            return {
+                totalTutorials,
+                completedTutorials,
+                completionRate,
+                totalTime: this.tutorialStats.totalTime,
+                averageStepTimes: Object.fromEntries(this.tutorialStats.averageStepTime),
+                skipCounts: Object.fromEntries(this.tutorialStats.skipCount),
+                lastUpdated: this.tutorialStats.lastUpdated,
+                currentTutorial: this.userProgress.currentTutorialId,
+                isRunning: !!this.currentTutorial
+            };
+        } catch (error) {
+            this.loggingSystem.error('TutorialManager', 'Failed to get tutorial statistics', error);
+            return {};
+        }
+    }
+
+    /**
+     * チュートリアル設定の更新
+     * @param {Object} newConfig - 新しい設定
+     */
+    updateConfig(newConfig) {
+        try {
+            this.config = { ...this.config, ...newConfig };
+            this.loggingSystem.info('TutorialManager', 'Tutorial config updated', newConfig);
+        } catch (error) {
+            this.loggingSystem.error('TutorialManager', 'Failed to update tutorial config', error);
+        }
+    }
+
+    /**
+     * 特定のステップに移動
+     * @param {number} stepIndex - ステップインデックス
+     * @returns {boolean} 移動成功フラグ
+     */
+    goToStep(stepIndex) {
+        try {
+            if (!this.currentTutorial) {
+                this.loggingSystem.warn('TutorialManager', 'No tutorial is currently running');
+                return false;
+            }
+            
+            if (stepIndex < 0 || stepIndex >= this.currentTutorial.steps.length) {
+                this.loggingSystem.warn('TutorialManager', `Invalid step index: ${stepIndex}`);
+                return false;
+            }
+            
+            this.currentStep = stepIndex;
+            this.userProgress.currentStepIndex = stepIndex;
+            
+            this.executeStep(stepIndex);
+            this.saveUserProgress();
+            
+            this.loggingSystem.info('TutorialManager', `Moved to step ${stepIndex}`);
+            return true;
+            
+        } catch (error) {
+            this.loggingSystem.error('TutorialManager', `Failed to go to step ${stepIndex}`, error);
+            return false;
+        }
+    }
+
+    /**
+     * チュートリアルの再起動
+     * @param {string} tutorialId - チュートリアルID（省略時は現在のチュートリアル）
+     * @returns {Promise<boolean>} 再起動成功フラグ
+     */
+    async restartTutorial(tutorialId = null) {
+        try {
+            const targetTutorialId = tutorialId || this.userProgress.currentTutorialId;
+            
+            if (!targetTutorialId) {
+                this.loggingSystem.warn('TutorialManager', 'No tutorial to restart');
+                return false;
+            }
+            
+            // 現在のチュートリアルを停止
+            this.stopTutorial();
+            
+            // 指定されたチュートリアルを開始
+            return await this.startTutorial(targetTutorialId);
+            
+        } catch (error) {
+            this.loggingSystem.error('TutorialManager', 'Failed to restart tutorial', error);
+            return false;
+        }
+    }
+
+    /**
+     * チュートリアル統計の読み込み
+     */
+    loadTutorialStats() {
+        try {
+            const saved = localStorage.getItem('awaputi_tutorial_stats');
+            if (saved) {
+                const stats = JSON.parse(saved);
+                this.tutorialStats = {
+                    totalTime: stats.totalTime || 0,
+                    averageStepTime: new Map(stats.averageStepTime || []),
+                    skipCount: new Map(stats.skipCount || []),
+                    completionRate: stats.completionRate || 0,
+                    lastUpdated: stats.lastUpdated || Date.now()
+                };
+            }
+        } catch (error) {
+            this.loggingSystem.error('TutorialManager', 'Failed to load tutorial statistics', error);
+        }
+    }
+
+    /**
+     * チュートリアル統計の保存
+     */
+    saveTutorialStats() {
+        try {
+            const stats = {
+                totalTime: this.tutorialStats.totalTime,
+                averageStepTime: Array.from(this.tutorialStats.averageStepTime.entries()),
+                skipCount: Array.from(this.tutorialStats.skipCount.entries()),
+                completionRate: this.tutorialStats.completionRate,
+                lastUpdated: Date.now()
+            };
+            localStorage.setItem('awaputi_tutorial_stats', JSON.stringify(stats));
+            this.tutorialStats.lastUpdated = Date.now();
+        } catch (error) {
+            this.loggingSystem.error('TutorialManager', 'Failed to save tutorial statistics', error);
+        }
+    }
+
+    /**
+     * ステップ統計の更新
+     * @param {string} stepId - ステップID
+     * @param {number} duration - 所要時間
+     */
+    updateStepStats(stepId, duration) {
+        try {
+            const currentAvg = this.tutorialStats.averageStepTime.get(stepId) || 0;
+            const newAvg = currentAvg > 0 ? (currentAvg + duration) / 2 : duration;
+            this.tutorialStats.averageStepTime.set(stepId, newAvg);
+            
+            this.tutorialStats.totalTime += duration;
+        } catch (error) {
+            this.loggingSystem.error('TutorialManager', 'Failed to update step statistics', error);
+        }
+    }
+
+    /**
      * リソースのクリーンアップ
      */
     destroy() {
         try {
             this.stopTutorial();
             this.saveUserProgress();
+            this.saveTutorialStats();
             this.tutorialData.clear();
+            this.interactionHandlers.clear();
+            this.validationFunctions.clear();
             this.loggingSystem.info('TutorialManager', 'Tutorial manager destroyed');
         } catch (error) {
             this.loggingSystem.error('TutorialManager', 'Failed to destroy tutorial manager', error);
