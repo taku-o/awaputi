@@ -6,6 +6,7 @@
 import { EffectDebugInterface } from '../effects/EffectDebugInterface.js';
 import { PanelManager } from './PanelManager.js';
 import { KeyboardShortcutManager } from './KeyboardShortcutManager.js';
+import { ResponsiveDebugLayout } from './ResponsiveDebugLayout.js';
 
 export class EnhancedDebugInterface extends EffectDebugInterface {
     constructor(gameEngine) {
@@ -46,6 +47,9 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
             maxHistorySize: 1000
         };
         
+        // レスポンシブレイアウト管理
+        this.responsiveLayout = null;
+        
         this.initializeEnhancedFeatures();
     }
 
@@ -54,6 +58,13 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
         this.registerDefaultPanels();
         this.setupDefaultShortcuts();
         this.loadSettings();
+        this.initializeResponsiveLayout();
+    }
+
+    initializeResponsiveLayout() {
+        // ResponsiveDebugLayoutを初期化
+        this.responsiveLayout = new ResponsiveDebugLayout(this);
+        console.log('Responsive debug layout initialized');
     }
 
     setupEnhancedUI() {
@@ -70,7 +81,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
     createEnhancedDebugPanel() {
         this.debugPanel = document.createElement('div');
         this.debugPanel.id = 'enhanced-debug-panel';
-        this.debugPanel.className = 'enhanced-debug-panel';
+        this.debugPanel.className = 'enhanced-debug-interface';
         this.debugPanel.style.cssText = `
             position: fixed;
             top: ${this.position.y}px;
@@ -169,6 +180,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
 
         // CSS スタイルの追加
         this.addDebugStyles();
+        this.addResponsiveStyles();
         
         document.body.appendChild(this.debugPanel);
         this.bindEnhancedEvents();
@@ -226,6 +238,105 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
             }
             .enhanced-debug-panel .debug-content::-webkit-scrollbar-thumb:hover {
                 background: #777;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    addResponsiveStyles() {
+        if (document.getElementById('responsive-debug-styles')) return;
+        
+        const style = document.createElement('style');
+        style.id = 'responsive-debug-styles';
+        style.textContent = `
+            /* Mobile Layout */
+            .enhanced-debug-interface.layout-mobile {
+                font-size: 16px;
+            }
+            
+            .enhanced-debug-interface.layout-mobile .mobile-tab-nav {
+                position: sticky;
+                top: 0;
+                background: rgba(0, 0, 0, 0.9);
+                z-index: 1000;
+                margin: -10px -10px 10px -10px;
+                padding: 10px;
+            }
+            
+            .enhanced-debug-interface.layout-mobile .tab-buttons {
+                display: flex;
+                gap: 5px;
+                overflow-x: auto;
+            }
+            
+            .enhanced-debug-interface.layout-mobile .tab-btn {
+                flex: 1;
+                min-width: 60px;
+                padding: 8px 12px;
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                color: white;
+                border-radius: 4px;
+                font-size: 14px;
+            }
+            
+            .enhanced-debug-interface.layout-mobile .tab-btn.active {
+                background: rgba(0, 255, 0, 0.3);
+                border-color: rgba(0, 255, 0, 0.5);
+            }
+            
+            /* Touch Optimizations */
+            .enhanced-debug-interface.touch-optimized button,
+            .enhanced-debug-interface.touch-optimized input,
+            .enhanced-debug-interface.touch-optimized select {
+                min-height: 44px;
+                padding: 8px 16px;
+            }
+            
+            /* Tablet Layout */
+            .enhanced-debug-interface.layout-tablet {
+                font-size: 14px;
+            }
+            
+            /* Desktop Layout */ 
+            .enhanced-debug-interface.layout-desktop {
+                font-size: 12px;
+            }
+            
+            /* Large Layout */
+            .enhanced-debug-interface.layout-large {
+                font-size: 12px;
+            }
+            
+            /* Orientation Classes */
+            .enhanced-debug-interface.orientation-portrait {
+                /* Portrait-specific styles */
+            }
+            
+            .enhanced-debug-interface.orientation-landscape {
+                /* Landscape-specific styles */
+            }
+            
+            /* Responsive Debug Tab Styles */
+            @media (max-width: 480px) {
+                .enhanced-debug-interface .debug-tabs {
+                    flex-wrap: wrap;
+                }
+                
+                .enhanced-debug-interface .debug-tab {
+                    font-size: 12px;
+                    padding: 6px 8px;
+                }
+            }
+            
+            @media (max-width: 768px) {
+                .enhanced-debug-interface {
+                    font-size: 13px;
+                }
+                
+                .enhanced-debug-interface .debug-header h3 {
+                    font-size: 12px;
+                }
             }
         `;
         document.head.appendChild(style);
@@ -611,6 +722,11 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
             this.keyboardShortcutManager.destroy();
         }
         
+        // ResponsiveDebugLayoutの破棄
+        if (this.responsiveLayout) {
+            this.responsiveLayout.destroy();
+        }
+        
         // パネルの破棄（後方互換性）
         for (const [name, panel] of this.panels) {
             if (typeof panel.destroy === 'function') {
@@ -728,6 +844,23 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
 
     setSuspendShortcuts(suspended) {
         return this.keyboardShortcutManager.setSuspended(suspended);
+    }
+
+    // ResponsiveDebugLayout API の公開
+    getResponsiveLayout() {
+        return this.responsiveLayout;
+    }
+
+    getCurrentBreakpoint() {
+        return this.responsiveLayout ? this.responsiveLayout.getCurrentBreakpoint() : 'desktop';
+    }
+    
+    isTouchDevice() {
+        return this.responsiveLayout ? this.responsiveLayout.touchDevice : false;
+    }
+    
+    getOrientation() {
+        return this.responsiveLayout ? this.responsiveLayout.getOrientation() : 'landscape';
     }
 }
 

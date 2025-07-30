@@ -378,6 +378,21 @@ export class TestPanel {
     }
 
     /**
+     * パネルサイズを更新（レスポンシブレイアウト用）
+     */
+    updateSize() {
+        // パネルサイズ変更時の処理
+        if (this.element) {
+            // ベンチマーク結果の表示を調整
+            const resultsDiv = this.element.querySelector('#benchmark-results');
+            if (resultsDiv) {
+                // 必要に応じてスクロール位置を調整
+                resultsDiv.scrollTop = resultsDiv.scrollHeight;
+            }
+        }
+    }
+
+    /**
      * パネルを破棄
      */
     destroy() {

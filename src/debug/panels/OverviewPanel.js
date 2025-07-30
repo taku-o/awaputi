@@ -175,6 +175,17 @@ export class OverviewPanel {
     }
 
     /**
+     * パネルサイズを更新（レスポンシブレイアウト用）
+     */
+    updateSize() {
+        // パネルサイズ変更時の処理
+        if (this.element) {
+            // 必要に応じてレイアウトを再計算
+            this.update();
+        }
+    }
+
+    /**
      * パネルを破棄
      */
     destroy() {

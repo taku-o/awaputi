@@ -325,6 +325,17 @@ export class ErrorPanel {
     }
 
     /**
+     * パネルサイズを更新（レスポンシブレイアウト用）
+     */
+    updateSize() {
+        // パネルサイズ変更時の処理
+        if (this.element) {
+            // エラーリストの表示を更新
+            this.updateErrorDisplay();
+        }
+    }
+
+    /**
      * パネルを破棄
      */
     destroy() {

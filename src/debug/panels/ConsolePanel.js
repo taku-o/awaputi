@@ -231,6 +231,20 @@ export class ConsolePanel {
     }
 
     /**
+     * パネルサイズを更新（レスポンシブレイアウト用）
+     */
+    updateSize() {
+        // パネルサイズ変更時の処理
+        if (this.element) {
+            // コンソール出力を最新の位置にスクロール
+            const output = this.element.querySelector('#console-output');
+            if (output) {
+                output.scrollTop = output.scrollHeight;
+            }
+        }
+    }
+
+    /**
      * パネルを破棄
      */
     destroy() {
