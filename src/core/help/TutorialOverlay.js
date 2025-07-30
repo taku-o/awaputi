@@ -100,7 +100,7 @@ export class TutorialOverlay extends BaseDialog {
      * @param {Object} step - 現在のステップ
      * @param {number} stepIndex - ステップインデックス
      */
-    showTutorial(tutorial, step, stepIndex) {
+    async showTutorial(tutorial, step, stepIndex) {
         try {
             this.currentTutorial = tutorial;
             this.currentStep = step;
@@ -130,7 +130,10 @@ export class TutorialOverlay extends BaseDialog {
             }
             
             // オーバーレイの表示アニメーション
-            this.animateShow();
+            await this.animateShow();
+            
+            // フォーカス管理の設定
+            this.setupFocusManagement();
             
             this.loggingSystem.info('TutorialOverlay', `Tutorial step displayed: ${stepIndex + 1}/${this.totalSteps}`);
         } catch (error) {
@@ -218,6 +221,12 @@ export class TutorialOverlay extends BaseDialog {
     createInstructionPanel() {
         this.instructionPanel = document.createElement('div');
         this.instructionPanel.className = 'tutorial-instruction-panel';
+        this.instructionPanel.setAttribute('role', 'dialog');
+        this.instructionPanel.setAttribute('aria-labelledby', 'tutorial-step-title');
+        this.instructionPanel.setAttribute('aria-describedby', 'tutorial-step-content');
+        this.instructionPanel.setAttribute('aria-modal', 'true');
+        this.instructionPanel.tabIndex = -1;
+        
         this.instructionPanel.style.cssText = `
             position: fixed;
             width: ${this.layout.instructionPanelWidth}px;
@@ -241,6 +250,7 @@ export class TutorialOverlay extends BaseDialog {
         
         this.overlay.appendChild(this.instructionPanel);
     }
+    }
 
     /**
      * 指示パネルの内容更新
@@ -252,15 +262,15 @@ export class TutorialOverlay extends BaseDialog {
         
         this.instructionPanel.innerHTML = `
             <div class="tutorial-step-header">
-                <h3 class="tutorial-step-title">${step.title}</h3>
-                <div class="tutorial-step-counter">${this.stepIndex + 1} / ${this.totalSteps}</div>
+                <h3 id="tutorial-step-title" class="tutorial-step-title">${step.title}</h3>
+                <div class="tutorial-step-counter" aria-label="ステップ ${this.stepIndex + 1} / ${this.totalSteps}">${this.stepIndex + 1} / ${this.totalSteps}</div>
             </div>
-            <div class="tutorial-step-content">
-                <p class="tutorial-step-instructions">${step.instructions}</p>
-                ${step.tips ? `<div class="tutorial-step-tips">💡 ${step.tips}</div>` : ''}
-                ${step.warning ? `<div class="tutorial-step-warning">⚠️ ${step.warning}</div>` : ''}
+            <div id="tutorial-step-content" class="tutorial-step-content">
+                <p class="tutorial-step-instructions" role="main">${step.instructions}</p>
+                ${step.tips ? `<div class="tutorial-step-tips" role="note" aria-label="ヒント">💡 ${step.tips}</div>` : ''}
+                ${step.warning ? `<div class="tutorial-step-warning" role="alert" aria-label="警告">⚠️ ${step.warning}</div>` : ''}
             </div>
-            ${step.image ? `<div class="tutorial-step-image"><img src="${step.image}" alt="${step.title}" /></div>` : ''}
+            ${step.image ? `<div class="tutorial-step-image"><img src="${step.image}" alt="${step.title}" role="img" /></div>` : ''}
         `;
     }
 
@@ -270,6 +280,8 @@ export class TutorialOverlay extends BaseDialog {
     createNavigationPanel() {
         this.navigationPanel = document.createElement('div');
         this.navigationPanel.className = 'tutorial-navigation-panel';
+        this.navigationPanel.setAttribute('role', 'navigation');
+        this.navigationPanel.setAttribute('aria-label', 'チュートリアルナビゲーション');
         this.navigationPanel.style.cssText = `
             position: fixed;
             bottom: 20px;
@@ -340,6 +352,22 @@ export class TutorialOverlay extends BaseDialog {
         button.className = `tutorial-nav-button tutorial-nav-button-${type}`;
         button.textContent = text;
         button.disabled = !enabled;
+        
+        // アクセシビリティ属性の追加
+        switch (type) {
+            case 'prev':
+                button.setAttribute('aria-label', '前のステップに戻る');
+                break;
+            case 'next':
+                button.setAttribute('aria-label', this.stepIndex >= this.totalSteps - 1 ? 'チュートリアルを完了する' : '次のステップに進む');
+                break;
+            case 'skip':
+                button.setAttribute('aria-label', 'このステップをスキップする');
+                break;
+            case 'help':
+                button.setAttribute('aria-label', 'このステップのヘルプを表示する');
+                break;
+        }
         
         const baseStyle = `
             padding: 8px 16px;
@@ -541,6 +569,146 @@ export class TutorialOverlay extends BaseDialog {
     }
 
     /**
+     * エラーメッセージの表示
+     * @param {string} errorMessage - エラーメッセージ
+     */
+    async showError(errorMessage) {
+        try {
+            const errorPanel = document.createElement('div');
+            errorPanel.className = 'tutorial-error-panel';
+            errorPanel.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: #f8d7da;
+                border: 2px solid #dc3545;
+                border-radius: 8px;
+                padding: 20px;
+                max-width: 400px;
+                z-index: ${this.layout.overlayZIndex + 3};
+                box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+                opacity: 0;
+                animation: tutorial-error-shake 0.5s ease-in-out, tutorial-fade-in 0.3s ease-in-out;
+            `;
+            
+            errorPanel.innerHTML = `
+                <div class="tutorial-error-header">
+                    <span class="tutorial-error-icon">⚠️</span>
+                    <h4 class="tutorial-error-title">チュートリアルエラー</h4>
+                </div>
+                <p class="tutorial-error-message">${errorMessage}</p>
+                <div class="tutorial-error-actions">
+                    <button class="tutorial-error-retry">再試行</button>
+                    <button class="tutorial-error-skip">スキップ</button>
+                </div>
+            `;
+            
+            // エラーパネルのスタイルを追加
+            this.injectErrorStyles();
+            
+            // ボタンのイベントハンドラー
+            const retryButton = errorPanel.querySelector('.tutorial-error-retry');
+            const skipButton = errorPanel.querySelector('.tutorial-error-skip');
+            
+            retryButton.onclick = () => {
+                errorPanel.remove();
+                // 現在のステップを再実行
+                if (this.eventBus) {
+                    this.eventBus.emit('tutorial_retry_step', {
+                        stepIndex: this.stepIndex
+                    });
+                }
+            };
+            
+            skipButton.onclick = () => {
+                errorPanel.remove();
+                this.navigateStep('next');
+            };
+            
+            document.body.appendChild(errorPanel);
+            
+            // 3秒後に自動的に閉じる
+            setTimeout(() => {
+                if (errorPanel.parentNode) {
+                    errorPanel.style.opacity = '0';
+                    setTimeout(() => errorPanel.remove(), 300);
+                }
+            }, 3000);
+            
+            this.loggingSystem.info('TutorialOverlay', `Error displayed: ${errorMessage}`);
+        } catch (error) {
+            this.loggingSystem.error('TutorialOverlay', 'Failed to show error', error);
+        }
+    }
+
+    /**
+     * タイムアウトメッセージの表示
+     * @param {string} timeoutMessage - タイムアウトメッセージ
+     */
+    async showTimeout(timeoutMessage) {
+        try {
+            const timeoutPanel = document.createElement('div');
+            timeoutPanel.className = 'tutorial-timeout-panel';
+            timeoutPanel.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: #fff3cd;
+                border: 2px solid #ffc107;
+                border-radius: 8px;
+                padding: 20px;
+                max-width: 400px;
+                z-index: ${this.layout.overlayZIndex + 3};
+                box-shadow: 0 4px 20px rgba(255, 193, 7, 0.3);
+                opacity: 0;
+                animation: tutorial-fade-in 0.3s ease-in-out forwards;
+            `;
+            
+            timeoutPanel.innerHTML = `
+                <div class="tutorial-timeout-header">
+                    <span class="tutorial-timeout-icon">⏰</span>
+                    <h4 class="tutorial-timeout-title">時間切れ</h4>
+                </div>
+                <p class="tutorial-timeout-message">${timeoutMessage}</p>
+                <div class="tutorial-timeout-actions">
+                    <button class="tutorial-timeout-retry">もう一度</button>
+                    <button class="tutorial-timeout-continue">続行</button>
+                </div>
+            `;
+            
+            // タイムアウトパネルのスタイルを追加
+            this.injectTimeoutStyles();
+            
+            // ボタンのイベントハンドラー
+            const retryButton = timeoutPanel.querySelector('.tutorial-timeout-retry');
+            const continueButton = timeoutPanel.querySelector('.tutorial-timeout-continue');
+            
+            retryButton.onclick = () => {
+                timeoutPanel.remove();
+                // 現在のステップを再実行
+                if (this.eventBus) {
+                    this.eventBus.emit('tutorial_retry_step', {
+                        stepIndex: this.stepIndex
+                    });
+                }
+            };
+            
+            continueButton.onclick = () => {
+                timeoutPanel.remove();
+                this.navigateStep('next');
+            };
+            
+            document.body.appendChild(timeoutPanel);
+            
+            this.loggingSystem.info('TutorialOverlay', `Timeout displayed: ${timeoutMessage}`);
+        } catch (error) {
+            this.loggingSystem.error('TutorialOverlay', 'Failed to show timeout', error);
+        }
+    }
+
+    /**
      * キーボードイベントハンドラー
      * @param {KeyboardEvent} event - キーボードイベント
      */
@@ -702,6 +870,76 @@ export class TutorialOverlay extends BaseDialog {
     }
 
     /**
+     * フォーカス管理の設定
+     */
+    setupFocusManagement() {
+        try {
+            if (!this.instructionPanel) return;
+            
+            // フォーカス可能な要素を取得
+            const focusableElements = this.instructionPanel.querySelectorAll(
+                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            );
+            
+            if (focusableElements.length > 0) {
+                // 最初の要素にフォーカス
+                focusableElements[0].focus();
+            } else {
+                // フォーカス可能な要素がない場合はパネル自体にフォーカス
+                this.instructionPanel.focus();
+            }
+            
+            // フォーカストラップの設定
+            this.setupFocusTrap(focusableElements);
+            
+        } catch (error) {
+            this.loggingSystem.error('TutorialOverlay', 'Failed to setup focus management', error);
+        }
+    }
+
+    /**
+     * フォーカストラップの設定
+     * @param {NodeList} focusableElements - フォーカス可能な要素
+     */
+    setupFocusTrap(focusableElements) {
+        if (focusableElements.length === 0) return;
+        
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+        
+        // Tab/Shift+Tab でのフォーカストラップ
+        this.focusTrapHandler = (event) => {
+            if (event.key !== 'Tab') return;
+            
+            if (event.shiftKey) {
+                // Shift + Tab (逆方向)
+                if (document.activeElement === firstElement) {
+                    event.preventDefault();
+                    lastElement.focus();
+                }
+            } else {
+                // Tab (順方向)
+                if (document.activeElement === lastElement) {
+                    event.preventDefault();
+                    firstElement.focus();
+                }
+            }
+        };
+        
+        document.addEventListener('keydown', this.focusTrapHandler);
+    }
+
+    /**
+     * フォーカストラップの解除
+     */
+    removeFocusTrap() {
+        if (this.focusTrapHandler) {
+            document.removeEventListener('keydown', this.focusTrapHandler);
+            this.focusTrapHandler = null;
+        }
+    }
+
+    /**
      * 非表示アニメーション
      */
     async animateHide() {
@@ -813,6 +1051,124 @@ export class TutorialOverlay extends BaseDialog {
     }
 
     /**
+     * エラーパネル用CSSスタイルの注入
+     */
+    injectErrorStyles() {
+        if (document.getElementById('tutorial-error-styles')) return;
+        
+        const styles = document.createElement('style');
+        styles.id = 'tutorial-error-styles';
+        styles.textContent = `
+            @keyframes tutorial-error-shake {
+                0%, 100% { transform: translate(-50%, -50%); }
+                25% { transform: translate(-52%, -50%); }
+                75% { transform: translate(-48%, -50%); }
+            }
+            
+            @keyframes tutorial-fade-in {
+                0% { opacity: 0; }
+                100% { opacity: 1; }
+            }
+            
+            .tutorial-error-header,
+            .tutorial-timeout-header {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 12px;
+            }
+            
+            .tutorial-error-icon,
+            .tutorial-timeout-icon {
+                font-size: 20px;
+            }
+            
+            .tutorial-error-title,
+            .tutorial-timeout-title {
+                margin: 0;
+                font-size: 16px;
+                font-weight: 600;
+            }
+            
+            .tutorial-error-title {
+                color: #721c24;
+            }
+            
+            .tutorial-timeout-title {
+                color: #856404;
+            }
+            
+            .tutorial-error-message,
+            .tutorial-timeout-message {
+                margin: 0 0 16px 0;
+                line-height: 1.5;
+            }
+            
+            .tutorial-error-message {
+                color: #721c24;
+            }
+            
+            .tutorial-timeout-message {
+                color: #856404;
+            }
+            
+            .tutorial-error-actions,
+            .tutorial-timeout-actions {
+                display: flex;
+                gap: 12px;
+                justify-content: flex-end;
+            }
+            
+            .tutorial-error-retry,
+            .tutorial-error-skip,
+            .tutorial-timeout-retry,
+            .tutorial-timeout-continue {
+                padding: 8px 16px;
+                border: none;
+                border-radius: 6px;
+                font-size: 14px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 200ms ease;
+            }
+            
+            .tutorial-error-retry,
+            .tutorial-timeout-retry {
+                background: #007bff;
+                color: white;
+            }
+            
+            .tutorial-error-retry:hover,
+            .tutorial-timeout-retry:hover {
+                background: #0056b3;
+                transform: translateY(-1px);
+            }
+            
+            .tutorial-error-skip,
+            .tutorial-timeout-continue {
+                background: #6c757d;
+                color: white;
+            }
+            
+            .tutorial-error-skip:hover,
+            .tutorial-timeout-continue:hover {
+                background: #545b62;
+                transform: translateY(-1px);
+            }
+        `;
+        
+        document.head.appendChild(styles);
+    }
+
+    /**
+     * タイムアウトパネル用CSSスタイルの注入
+     */
+    injectTimeoutStyles() {
+        // エラースタイルと共通のスタイルを使用
+        this.injectErrorStyles();
+    }
+
+    /**
      * イベントリスナーの設定
      */
     setupEventListeners() {
@@ -833,6 +1189,9 @@ export class TutorialOverlay extends BaseDialog {
      */
     cleanup() {
         try {
+            // フォーカストラップの解除
+            this.removeFocusTrap();
+            
             // イベントリスナーの削除
             this.removeEventListeners();
             

@@ -32,7 +32,7 @@
   - Create tutorial validation and completion detection
   - _Requirements: 1.1, 1.2, 1.3_
 
-- [ ] 3.2 Implement TutorialOverlay UI component
+- [x] 3.2 Implement TutorialOverlay UI component
   - Create overlay dialog extending BaseDialog for tutorial display
   - Implement element highlighting and instruction rendering
   - Add step navigation controls and skip functionality
