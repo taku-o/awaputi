@@ -7,6 +7,8 @@ import { EffectDebugInterface } from '../effects/EffectDebugInterface.js';
 import { PanelManager } from './PanelManager.js';
 import { KeyboardShortcutManager } from './KeyboardShortcutManager.js';
 import { ResponsiveDebugLayout } from './ResponsiveDebugLayout.js';
+import { ThemeManager } from './ThemeManager.js';
+import { AccessibilityManager } from './AccessibilityManager.js';
 
 export class EnhancedDebugInterface extends EffectDebugInterface {
     constructor(gameEngine) {
@@ -50,6 +52,12 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
         // レスポンシブレイアウト管理
         this.responsiveLayout = null;
         
+        // テーマ管理
+        this.themeManager = null;
+        
+        // アクセシビリティ管理
+        this.accessibilityManager = null;
+        
         this.initializeEnhancedFeatures();
     }
 
@@ -59,12 +67,26 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
         this.setupDefaultShortcuts();
         this.loadSettings();
         this.initializeResponsiveLayout();
+        this.initializeThemeManager();
+        this.initializeAccessibilityManager();
     }
 
     initializeResponsiveLayout() {
         // ResponsiveDebugLayoutを初期化
         this.responsiveLayout = new ResponsiveDebugLayout(this);
         console.log('Responsive debug layout initialized');
+    }
+
+    initializeThemeManager() {
+        // ThemeManagerを初期化
+        this.themeManager = new ThemeManager(this);
+        console.log('Theme manager initialized');
+    }
+
+    initializeAccessibilityManager() {
+        // AccessibilityManagerを初期化
+        this.accessibilityManager = new AccessibilityManager(this);
+        console.log('Accessibility manager initialized');
     }
 
     setupEnhancedUI() {
@@ -426,6 +448,11 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
             duration: Date.now() - this.sessionStartTime
         });
 
+        // アクセシビリティ管理に通知
+        if (this.accessibilityManager) {
+            this.accessibilityManager.onPanelSwitch(panelName);
+        }
+
         this.updateStatus(`Switched to ${panelName} panel`);
     }
 
@@ -642,8 +669,141 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
     }
 
     showSettings() {
-        // 設定パネルの表示（後で実装）
-        alert('Settings panel will be implemented in the next phase');
+        this.createSettingsModal();
+    }
+
+    createSettingsModal() {
+        // 既存のモーダルがあれば削除
+        const existingModal = document.getElementById('debug-settings-modal');
+        if (existingModal) {
+            existingModal.remove();
+        }
+
+        const modal = document.createElement('div');
+        modal.id = 'debug-settings-modal';
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10001;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        `;
+
+        const dialog = document.createElement('div');
+        dialog.style.cssText = `
+            background: var(--debug-bg, rgba(0, 0, 0, 0.9));
+            color: var(--debug-text, white);
+            border: 2px solid var(--debug-border, #333);
+            border-radius: 8px;
+            padding: 20px;
+            width: 400px;
+            max-width: 90vw;
+            max-height: 80vh;
+            overflow-y: auto;
+        `;
+
+        const availableThemes = this.themeManager.getAvailableThemes();
+        const currentTheme = this.themeManager.getCurrentTheme();
+        const accessibilityInfo = this.accessibilityManager.getAccessibilityInfo();
+
+        dialog.innerHTML = `
+            <h3 style="margin-top: 0;">Debug Interface Settings</h3>
+            
+            <div style="margin-bottom: 20px;">
+                <h4>Theme</h4>
+                <select id="theme-selector" style="width: 100%; padding: 5px;">
+                    ${availableThemes.map(theme => 
+                        `<option value="${theme.key}" ${theme.key === currentTheme ? 'selected' : ''}>${theme.name}</option>`
+                    ).join('')}
+                </select>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <h4>Accessibility</h4>
+                <label style="display: block; margin-bottom: 10px;">
+                    <input type="checkbox" id="keyboard-nav" ${accessibilityInfo.keyboardNavigationEnabled ? 'checked' : ''}> 
+                    Enable keyboard navigation
+                </label>
+                <div style="font-size: 12px; color: var(--debug-text-muted, #888);">
+                    Screen reader detected: ${accessibilityInfo.screenReaderDetected ? 'Yes' : 'No'}
+                </div>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <h4>Layout</h4>
+                <div style="font-size: 12px; color: var(--debug-text-muted, #888);">
+                    Current breakpoint: ${this.getCurrentBreakpoint()}<br>
+                    Touch device: ${this.isTouchDevice() ? 'Yes' : 'No'}<br>
+                    Orientation: ${this.getOrientation()}
+                </div>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <h4>Session Info</h4>
+                <div style="font-size: 12px; color: var(--debug-text-muted, #888);">
+                    Session ID: ${this.sessionId}<br>
+                    Uptime: ${Math.floor((Date.now() - this.sessionStartTime) / 1000)}s<br>
+                    Active panel: ${this.activePanel}
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button id="settings-apply" style="background: var(--debug-accent, #0066cc); color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Apply</button>
+                <button id="settings-cancel" style="background: var(--debug-panel, #333); color: var(--debug-text, white); border: 1px solid var(--debug-border, #555); padding: 8px 16px; border-radius: 4px; cursor: pointer;">Cancel</button>
+            </div>
+        `;
+
+        modal.appendChild(dialog);
+        document.body.appendChild(modal);
+
+        // イベントバインド
+        document.getElementById('theme-selector').addEventListener('change', (e) => {
+            this.themeManager.setTheme(e.target.value);
+        });
+
+        document.getElementById('keyboard-nav').addEventListener('change', (e) => {
+            this.accessibilityManager.setKeyboardNavigationEnabled(e.target.checked);
+        });
+
+        document.getElementById('settings-apply').addEventListener('click', () => {
+            this.closeSettingsModal();
+        });
+
+        document.getElementById('settings-cancel').addEventListener('click', () => {
+            this.closeSettingsModal();
+        });
+
+        // ESCキーで閉じる
+        modal.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                this.closeSettingsModal();
+            }
+        });
+
+        // モーダル外クリックで閉じる
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                this.closeSettingsModal();
+            }
+        });
+
+        // フォーカス管理
+        const firstFocusable = dialog.querySelector('select, input, button');
+        if (firstFocusable) {
+            firstFocusable.focus();
+        }
+    }
+
+    closeSettingsModal() {
+        const modal = document.getElementById('debug-settings-modal');
+        if (modal) {
+            modal.remove();
+        }
     }
 
     updateStatus(message) {
@@ -725,6 +885,16 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
         // ResponsiveDebugLayoutの破棄
         if (this.responsiveLayout) {
             this.responsiveLayout.destroy();
+        }
+        
+        // ThemeManagerの破棄
+        if (this.themeManager) {
+            this.themeManager.destroy();
+        }
+        
+        // AccessibilityManagerの破棄
+        if (this.accessibilityManager) {
+            this.accessibilityManager.destroy();
         }
         
         // パネルの破棄（後方互換性）
@@ -861,6 +1031,44 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
     
     getOrientation() {
         return this.responsiveLayout ? this.responsiveLayout.getOrientation() : 'landscape';
+    }
+
+    // ThemeManager API の公開
+    getThemeManager() {
+        return this.themeManager;
+    }
+
+    setTheme(themeName) {
+        return this.themeManager ? this.themeManager.setTheme(themeName) : false;
+    }
+
+    getCurrentTheme() {
+        return this.themeManager ? this.themeManager.getCurrentTheme() : 'dark';
+    }
+
+    getAvailableThemes() {
+        return this.themeManager ? this.themeManager.getAvailableThemes() : [];
+    }
+
+    // AccessibilityManager API の公開
+    getAccessibilityManager() {
+        return this.accessibilityManager;
+    }
+
+    getAccessibilityInfo() {
+        return this.accessibilityManager ? this.accessibilityManager.getAccessibilityInfo() : {};
+    }
+
+    setKeyboardNavigationEnabled(enabled) {
+        if (this.accessibilityManager) {
+            this.accessibilityManager.setKeyboardNavigationEnabled(enabled);
+        }
+    }
+
+    announceToScreenReader(message, priority = 'polite') {
+        if (this.accessibilityManager) {
+            this.accessibilityManager.announceToScreenReader(message, priority);
+        }
     }
 }
 
