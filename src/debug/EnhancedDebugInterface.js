@@ -9,6 +9,8 @@ import { KeyboardShortcutManager } from './KeyboardShortcutManager.js';
 import { ResponsiveDebugLayout } from './ResponsiveDebugLayout.js';
 import { ThemeManager } from './ThemeManager.js';
 import { AccessibilityManager } from './AccessibilityManager.js';
+import { DebugPerformanceMonitor } from './DebugPerformanceMonitor.js';
+import { LazyLoadManager } from './LazyLoadManager.js';
 
 export class EnhancedDebugInterface extends EffectDebugInterface {
     constructor(gameEngine) {
@@ -58,6 +60,12 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
         // アクセシビリティ管理
         this.accessibilityManager = null;
         
+        // パフォーマンス監視
+        this.performanceMonitor = null;
+        
+        // 遅延読み込み管理
+        this.lazyLoadManager = null;
+        
         this.initializeEnhancedFeatures();
     }
 
@@ -69,6 +77,8 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
         this.initializeResponsiveLayout();
         this.initializeThemeManager();
         this.initializeAccessibilityManager();
+        this.initializePerformanceMonitor();
+        this.initializeLazyLoadManager();
     }
 
     initializeResponsiveLayout() {
@@ -87,6 +97,19 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
         // AccessibilityManagerを初期化
         this.accessibilityManager = new AccessibilityManager(this);
         console.log('Accessibility manager initialized');
+    }
+
+    initializePerformanceMonitor() {
+        // DebugPerformanceMonitorを初期化
+        this.performanceMonitor = new DebugPerformanceMonitor(this);
+        this.performanceMonitor.startMonitoring();
+        console.log('Debug performance monitor initialized');
+    }
+
+    initializeLazyLoadManager() {
+        // LazyLoadManagerを初期化
+        this.lazyLoadManager = new LazyLoadManager(this);
+        console.log('Lazy load manager initialized');
     }
 
     setupEnhancedUI() {
@@ -432,6 +455,12 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
             }
         }
 
+        // パフォーマンス測定開始
+        if (this.performanceMonitor) {
+            this.performanceMonitor.startMeasure('panel-switch');
+            this.performanceMonitor.recordOperation('panelSwitches');
+        }
+
         // アクティブパネルの変更
         this.activePanel = panelName;
 
@@ -440,6 +469,11 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
         
         // パネルのアクティベート
         this.activatePanel(panelName);
+
+        // パフォーマンス測定終了
+        if (this.performanceMonitor) {
+            this.performanceMonitor.endMeasure('panel-switch');
+        }
 
         // セッションデータに記録
         this.sessionData.panels.push({
@@ -669,6 +703,9 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
     }
 
     showSettings() {
+        if (this.performanceMonitor) {
+            this.performanceMonitor.recordOperation('modalOpens');
+        }
         this.createSettingsModal();
     }
 
@@ -763,6 +800,9 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
 
         // イベントバインド
         document.getElementById('theme-selector').addEventListener('change', (e) => {
+            if (this.performanceMonitor) {
+                this.performanceMonitor.recordOperation('settingsChanges');
+            }
             this.themeManager.setTheme(e.target.value);
         });
 
@@ -895,6 +935,16 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
         // AccessibilityManagerの破棄
         if (this.accessibilityManager) {
             this.accessibilityManager.destroy();
+        }
+        
+        // DebugPerformanceMonitorの破棄
+        if (this.performanceMonitor) {
+            this.performanceMonitor.destroy();
+        }
+        
+        // LazyLoadManagerの破棄
+        if (this.lazyLoadManager) {
+            this.lazyLoadManager.destroy();
         }
         
         // パネルの破棄（後方互換性）
@@ -1068,6 +1118,54 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
     announceToScreenReader(message, priority = 'polite') {
         if (this.accessibilityManager) {
             this.accessibilityManager.announceToScreenReader(message, priority);
+        }
+    }
+
+    // DebugPerformanceMonitor API の公開
+    getPerformanceMonitor() {
+        return this.performanceMonitor;
+    }
+
+    getPerformanceStats() {
+        return this.performanceMonitor ? this.performanceMonitor.getPerformanceStats() : {};
+    }
+
+    generatePerformanceReport() {
+        return this.performanceMonitor ? this.performanceMonitor.generatePerformanceReport() : null;
+    }
+
+    setPerformanceMonitoring(enabled) {
+        if (!this.performanceMonitor) return;
+        
+        if (enabled) {
+            this.performanceMonitor.startMonitoring();
+        } else {
+            this.performanceMonitor.stopMonitoring();
+        }
+    }
+
+    // LazyLoadManager API の公開
+    getLazyLoadManager() {
+        return this.lazyLoadManager;
+    }
+
+    async loadDebugComponent(name) {
+        return this.lazyLoadManager ? this.lazyLoadManager.loadComponent(name) : null;
+    }
+
+    preloadDebugComponents() {
+        if (this.lazyLoadManager) {
+            return this.lazyLoadManager.preloadComponents();
+        }
+    }
+
+    getLoadingStats() {
+        return this.lazyLoadManager ? this.lazyLoadManager.getLoadingStats() : {};
+    }
+
+    optimizeDebugMemory() {
+        if (this.lazyLoadManager) {
+            this.lazyLoadManager.optimizeMemoryUsage();
         }
     }
 }
