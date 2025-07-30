@@ -583,6 +583,7 @@ AccessibilityManager (中核統制)
 ### 利用可能ツール
 - **GitHub CLI (gh)**: GitHubリポジトリ操作、プルリクエスト管理、Issue管理
 - **Playwright MCP**: ブラウザ自動化、E2Eテスト、ウェブUI操作
+- **Serena MCP**: セマンティックコード解析、シンボル検索、効率的コード編集、メモリ管理
 - **Jest**: ユニットテスト・統合テストフレームワーク
 - **Vite**: 開発用ビルドツール（テスト環境）
 
