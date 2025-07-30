@@ -76,7 +76,7 @@
   - Write unit tests for command parsing and execution
   - _Requirements: 2.1, 2.5_
 
-- [ ] 3.2 Implement Game State Manipulation Commands
+- [x] 3.2 Implement Game State Manipulation Commands
   - Create built-in commands for game state control (pause, resume, reset)
   - Add commands for score manipulation, bubble generation, and level control
   - Implement player data modification commands
