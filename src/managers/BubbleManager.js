@@ -1295,4 +1295,129 @@ export class BubbleManager {
         // 通常の生成
         return this.getRandomBubbleType();
     }
+
+    /**
+     * テスト用バブルの追加（デバッグツール用）
+     */
+    addTestBubble(bubbleData) {
+        try {
+            // バブルデータの検証
+            if (!bubbleData || !bubbleData.type) {
+                console.warn('Invalid bubble data provided to addTestBubble');
+                return false;
+            }
+
+            // 新しいバブルを作成
+            const bubble = new Bubble(
+                bubbleData.x || Math.random() * 800,
+                bubbleData.y || Math.random() * 600,
+                bubbleData.type,
+                this.gameEngine
+            );
+
+            // カスタムプロパティの設定
+            if (bubbleData.size) {
+                bubble.size = bubbleData.size;
+            }
+            if (bubbleData.health !== undefined) {
+                bubble.health = bubbleData.health;
+                bubble.maxHealth = bubbleData.health;
+            }
+            if (bubbleData.velocity) {
+                bubble.vx = bubbleData.velocity.x || 0;
+                bubble.vy = bubbleData.velocity.y || 0;
+            }
+            if (bubbleData.spawnTime) {
+                bubble.spawnTime = bubbleData.spawnTime;
+            }
+            if (bubbleData.properties) {
+                Object.assign(bubble, bubbleData.properties);
+            }
+
+            // バブルリストに追加
+            this.bubbles.push(bubble);
+
+            console.log(`Test bubble added: ${bubbleData.type} at (${bubbleData.x}, ${bubbleData.y})`);
+            return true;
+
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'BubbleManager.addTestBubble',
+                bubbleData
+            });
+            return false;
+        }
+    }
+
+    /**
+     * 複数のテストバブルを一度に追加
+     */
+    addTestBubbles(bubblesData) {
+        if (!Array.isArray(bubblesData)) {
+            console.warn('bubblesData must be an array');
+            return 0;
+        }
+
+        let addedCount = 0;
+        for (const bubbleData of bubblesData) {
+            if (this.addTestBubble(bubbleData)) {
+                addedCount++;
+            }
+        }
+
+        return addedCount;
+    }
+
+    /**
+     * テスト用バブルの削除（IDまたは条件による）
+     */
+    removeTestBubbles(condition) {
+        let removedCount = 0;
+        
+        if (typeof condition === 'string') {
+            // IDによる削除
+            this.bubbles = this.bubbles.filter(bubble => {
+                if (bubble.id === condition) {
+                    removedCount++;
+                    return false;
+                }
+                return true;
+            });
+        } else if (typeof condition === 'function') {
+            // 条件関数による削除
+            this.bubbles = this.bubbles.filter(bubble => {
+                if (condition(bubble)) {
+                    removedCount++;
+                    return false;
+                }
+                return true;
+            });
+        } else if (condition === 'all') {
+            // 全削除
+            removedCount = this.bubbles.length;
+            this.bubbles = [];
+        }
+
+        return removedCount;
+    }
+
+    /**
+     * テスト用バブル情報の取得
+     */
+    getTestBubbleInfo() {
+        return {
+            total: this.bubbles.length,
+            byType: this.bubbles.reduce((acc, bubble) => {
+                acc[bubble.type] = (acc[bubble.type] || 0) + 1;
+                return acc;
+            }, {}),
+            positions: this.bubbles.map(bubble => ({
+                id: bubble.id,
+                type: bubble.type,
+                x: bubble.x,
+                y: bubble.y,
+                health: bubble.health
+            }))
+        };
+    }
 }

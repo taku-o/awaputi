@@ -6,6 +6,9 @@
 import { ConfigurationCommands } from './ConfigurationCommands.js';
 import { EnhancedAutocompleteEngine } from './EnhancedAutocompleteEngine.js';
 import { EnhancedHistoryManager } from './EnhancedHistoryManager.js';
+import { TestDataGenerationCommands } from './TestDataGenerationCommands.js';
+import { AutocompleteEngine } from './AutocompleteEngine.js';
+import { ExecutionContext } from './ExecutionContext.js';
 
 export class DeveloperConsole {
     constructor(gameEngine) {
@@ -44,6 +47,7 @@ export class DeveloperConsole {
         
         // 拡張コマンド群
         this.configurationCommands = new ConfigurationCommands(gameEngine);
+        this.testDataGenerationCommands = new TestDataGenerationCommands(gameEngine);
         
         this.initialize();
     }
@@ -586,6 +590,9 @@ export class DeveloperConsole {
     registerExtensionCommands() {
         // 設定管理コマンドの登録
         this.configurationCommands.registerCommands(this);
+        
+        // テストデータ生成コマンドの登録
+        this.testDataGenerationCommands.registerCommands(this);
     }
 
     // 組み込みコマンドの実装
@@ -866,83 +873,3 @@ export class DeveloperConsole {
         this.outputBuffer = [];
     }
 }
-
-/**
- * 自動補完エンジン
- */
-class AutocompleteEngine {
-    constructor(console) {
-        this.console = console;
-    }
-
-    getSuggestions(partial) {
-        const suggestions = [];
-        
-        // コマンド名の補完
-        for (const [command, data] of this.console.commands) {
-            if (command.startsWith(partial) && !data.hidden) {
-                suggestions.push({
-                    text: command,
-                    type: 'command',
-                    description: data.description
-                });
-            }
-        }
-        
-        // エイリアスの補完
-        for (const [alias, command] of this.console.aliases) {
-            if (alias.startsWith(partial)) {
-                const data = this.console.commands.get(command);
-                if (data && !data.hidden) {
-                    suggestions.push({
-                        text: alias,
-                        type: 'alias',
-                        description: `Alias for ${command}`
-                    });
-                }
-            }
-        }
-        
-        // 変数の補完
-        for (const variable of this.console.context.getVariableNames()) {
-            if (variable.startsWith(partial)) {
-                suggestions.push({
-                    text: variable,
-                    type: 'variable',
-                    description: 'Context variable'
-                });
-            }
-        }
-        
-        return suggestions.sort((a, b) => a.text.localeCompare(b.text));
-    }
-}
-
-/**
- * 実行コンテキスト
- */
-class ExecutionContext {
-    constructor(gameEngine) {
-        this.gameEngine = gameEngine;
-        this.variables = new Map();
-    }
-
-    setVariable(name, value) {
-        this.variables.set(name, value);
-    }
-
-    getVariable(name) {
-        return this.variables.get(name);
-    }
-
-    getVariableNames() {
-        return Array.from(this.variables.keys());
-    }
-
-    clearVariables() {
-        this.variables.clear();
-    }
-}
-
-// デフォルトエクスポート
-export default DeveloperConsole;
