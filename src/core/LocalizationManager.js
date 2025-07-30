@@ -3,6 +3,8 @@ import { TranslationLoader } from './i18n/TranslationLoader.js';
 import { OptimizedTranslationLoader } from './i18n/OptimizedTranslationLoader.js';
 import { I18nPerformanceMonitor } from './i18n/I18nPerformanceMonitor.js';
 import { I18nRenderOptimizer } from './i18n/I18nRenderOptimizer.js';
+import { I18nSecurityManager } from './i18n/I18nSecurityManager.js';
+import { I18nSecurityTester } from './i18n/I18nSecurityTester.js';
 import { getFontManager } from './i18n/FontManager.js';
 
 /**
@@ -25,6 +27,10 @@ export class LocalizationManager {
         // パフォーマンス監視とレンダリング最適化
         this.performanceMonitor = new I18nPerformanceMonitor();
         this.renderOptimizer = new I18nRenderOptimizer();
+        
+        // セキュリティ管理
+        this.securityManager = new I18nSecurityManager();
+        this.securityTester = new I18nSecurityTester(this.securityManager);
         
         // 言語変更イベントリスナー
         this.languageChangeListeners = new Set();
@@ -718,7 +724,7 @@ export class LocalizationManager {
     }
     
     /**
-     * 言語データを読み込み（最適化版）
+     * 言語データを読み込み（最適化・セキュリティ検証版）
      */
     async loadLanguageData(language) {
         try {
@@ -728,9 +734,30 @@ export class LocalizationManager {
             });
             
             if (translations && Object.keys(translations).length > 0) {
+                // セキュリティ検証を実行
+                const securityResult = this.securityManager.validateTranslationData(
+                    translations, 
+                    `language_file:${language}`
+                );
+                
+                if (!securityResult.isValid) {
+                    console.warn(`Security violations found in ${language} translations:`, 
+                        securityResult.violations);
+                    
+                    // 高重要度の違反がある場合は読み込みを拒否
+                    const hasHighSeverityViolations = securityResult.violations.some(
+                        v => v.severity === 'high'
+                    );
+                    
+                    if (hasHighSeverityViolations) {
+                        console.error(`Critical security violations in ${language}, rejecting translation data`);
+                        return false;
+                    }
+                }
+                
                 this.translations.set(language, translations);
                 this.loadedLanguages.add(language);
-                console.log(`Loaded optimized language data for: ${language}`);
+                console.log(`Loaded and validated language data for: ${language}`);
                 return true;
             } else {
                 console.warn(`No translations found for: ${language}`);
@@ -742,6 +769,17 @@ export class LocalizationManager {
             try {
                 const translations = await this.translationLoader.loadLanguage(language);
                 if (translations && Object.keys(translations).length > 0) {
+                    // フォールバック時もセキュリティ検証
+                    const securityResult = this.securityManager.validateTranslationData(
+                        translations, 
+                        `fallback_language_file:${language}`
+                    );
+                    
+                    if (securityResult.violations.some(v => v.severity === 'high')) {
+                        console.error(`Critical security violations in fallback ${language}, rejecting translation data`);
+                        return false;
+                    }
+                    
                     this.translations.set(language, translations);
                     this.loadedLanguages.add(language);
                     console.log(`Loaded fallback language data for: ${language}`);
@@ -823,16 +861,15 @@ export class LocalizationManager {
     }
     
     /**
-     * パラメータ置換
+     * パラメータ置換（セキュリティ強化版）
      */
     interpolate(text, params) {
         if (typeof text !== 'string' || Object.keys(params).length === 0) {
             return text;
         }
         
-        return text.replace(/\{\{(\w+)\}\}/g, (match, key) => {
-            return params[key] !== undefined ? params[key] : match;
-        });
+        // セキュリティマネージャーを使用した安全な翻訳生成
+        return this.securityManager.generateSafeTranslation(text, params);
     }
     
     /**
@@ -1505,9 +1542,56 @@ export class LocalizationManager {
     }
     
     /**
+     * セキュリティテストの実行
+     */
+    async runSecurityTest() {
+        console.log('Running comprehensive I18n security test...');
+        return await this.securityTester.runComprehensiveSecurityTest();
+    }
+    
+    /**
+     * 翻訳データの安全性検証  
+     */
+    validateTranslationSecurity(translations, source = 'user_input') {
+        return this.securityManager.validateTranslationData(translations, source);
+    }
+    
+    /**
+     * セキュリティ統計の取得
+     */
+    getSecurityStats() {
+        return this.securityManager.getSecurityStats();
+    }
+    
+    /**
+     * セキュリティレポートの生成
+     */
+    generateSecurityReport() {
+        return this.securityManager.generateSecurityReport();
+    }
+    
+    /**
+     * セキュリティ設定の更新
+     */
+    updateSecurityConfig(config) {
+        return this.securityManager.updateSecurityConfig(config);
+    }
+    
+    /**
+     * 翻訳の安全なサニタイゼーション
+     */
+    sanitizeTranslation(text) {
+        return this.securityManager.sanitizeString(text);
+    }
+    
+    /**
      * クリーンアップ
      */
     cleanup() {
+        // セキュリティ機能のクリーンアップ
+        this.securityManager.cleanup();
+        this.securityTester.cleanup();
+        
         // パフォーマンス監視の停止
         this.performanceMonitor.cleanup();
         
