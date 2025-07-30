@@ -9,6 +9,9 @@ export { TutorialManager, getTutorialManager, reinitializeTutorialManager } from
 export { ContextManager, getContextManager, reinitializeContextManager } from './ContextManager.js';
 export { HelpErrorHandler, getHelpErrorHandler, reinitializeHelpErrorHandler } from './HelpErrorHandler.js';
 
+// UI Components
+export { TutorialOverlay, getTutorialOverlay, reinitializeTutorialOverlay } from './TutorialOverlay.js';
+
 // Content Management System Components
 export { ContentLoader, getContentLoader, reinitializeContentLoader } from './ContentLoader.js';
 export { HelpContentModel, TutorialModel, FAQModel, UserProgressModel, DataModelFactory } from './DataModels.js';
@@ -28,6 +31,9 @@ export function initializeHelpSystem(gameEngine) {
         const contextManager = getContextManager(gameEngine);
         const helpErrorHandler = getHelpErrorHandler(gameEngine);
         
+        // UI Components
+        const tutorialOverlay = getTutorialOverlay(gameEngine, gameEngine?.eventBus, gameEngine?.state);
+        
         // Content Management System
         const contentLoader = getContentLoader();
         const contentValidation = getContentValidation();
@@ -39,6 +45,7 @@ export function initializeHelpSystem(gameEngine) {
             tutorialManager,
             contextManager,
             helpErrorHandler,
+            tutorialOverlay,
             contentLoader,
             contentValidation,
             searchEngine,
@@ -74,6 +81,7 @@ export function destroyHelpSystem() {
             getTutorialManager(),
             getContextManager(),
             getHelpErrorHandler(),
+            getTutorialOverlay(),
             getContentLoader(),
             getContentValidation(),
             getSearchEngine(),

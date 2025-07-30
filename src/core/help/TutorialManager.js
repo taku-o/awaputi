@@ -9,6 +9,7 @@ import { LoggingSystem } from '../LoggingSystem.js';
 import { CacheSystem } from '../CacheSystem.js';
 import { ContentLoader, getContentLoader } from './ContentLoader.js';
 import { TutorialModel } from './DataModels.js';
+import { TutorialOverlay, getTutorialOverlay } from './TutorialOverlay.js';
 
 /**
  * チュートリアル管理クラス
@@ -19,6 +20,7 @@ export class TutorialManager {
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
         this.cacheSystem = CacheSystem.getInstance ? CacheSystem.getInstance() : new CacheSystem();
         this.contentLoader = getContentLoader();
+        this.tutorialOverlay = getTutorialOverlay(gameEngine, gameEngine?.eventBus, gameEngine?.state);
         
         // チュートリアル状態
         this.currentTutorial = null;
@@ -79,6 +81,9 @@ export class TutorialManager {
             // インタラクション検出ハンドラーの設定
             this.setupInteractionHandlers();
             
+            // TutorialOverlayとのイベント連携
+            this.setupOverlayIntegration();
+            
             this.loggingSystem.info('TutorialManager', 'Tutorial system initialized successfully');
         } catch (error) {
             this.loggingSystem.error('TutorialManager', 'Failed to initialize tutorial system', error);
@@ -117,6 +122,9 @@ export class TutorialManager {
             this.userProgress.startTime = Date.now();
             this.userProgress.pausedTime = null;
 
+            // TutorialOverlayにチュートリアルを表示
+            await this.showTutorialOverlay();
+            
             // 最初のステップを実行
             await this.executeStep(0);
             
@@ -377,18 +385,43 @@ export class TutorialManager {
     }
 
     /**
+     * TutorialOverlayの表示
+     */
+    async showTutorialOverlay() {
+        try {
+            if (this.currentTutorial && this.currentStep !== null) {
+                const step = this.currentTutorial.steps[this.currentStep];
+                await this.tutorialOverlay.showTutorial(this.currentTutorial, step, this.currentStep);
+            }
+        } catch (error) {
+            this.loggingSystem.error('TutorialManager', 'Failed to show tutorial overlay', error);
+        }
+    }
+
+    /**
+     * TutorialOverlayの更新
+     */
+    async updateTutorialOverlay() {
+        try {
+            if (this.currentTutorial && this.currentStep !== null && this.currentStep < this.currentTutorial.steps.length) {
+                const step = this.currentTutorial.steps[this.currentStep];
+                await this.tutorialOverlay.updateStep(step, this.currentStep);
+            }
+        } catch (error) {
+            this.loggingSystem.error('TutorialManager', 'Failed to update tutorial overlay', error);
+        }
+    }
+
+    /**
      * ステップ指示の表示
      * @param {Object} step - ステップデータ
      */
     showStepInstructions(step) {
         try {
-            // TutorialOverlayとの連携は後続のタスクで実装
+            // TutorialOverlayに委譲
+            this.updateTutorialOverlay();
+            
             this.loggingSystem.info('TutorialManager', `Step instructions: ${step.title}`);
-            
-            // 基本的な指示表示（プレースホルダー）
-            console.log(`チュートリアル: ${step.title}`);
-            console.log(`説明: ${step.instructions}`);
-            
         } catch (error) {
             this.loggingSystem.error('TutorialManager', 'Failed to show step instructions', error);
         }
@@ -581,6 +614,9 @@ export class TutorialManager {
      */
     stopTutorial() {
         try {
+            // TutorialOverlayを非表示
+            this.tutorialOverlay.hideTutorial();
+            
             this.clearHighlight();
             this.clearStepTimer();
             this.clearInteractionHandlers();
@@ -967,6 +1003,49 @@ export class TutorialManager {
             this.tutorialStats.totalTime += duration;
         } catch (error) {
             this.loggingSystem.error('TutorialManager', 'Failed to update step statistics', error);
+        }
+    }
+
+    /**
+     * TutorialOverlayとの統合設定
+     */
+    setupOverlayIntegration() {
+        try {
+            // チュートリアルナビゲーションイベントの監視
+            if (this.gameEngine && this.gameEngine.eventBus) {
+                this.gameEngine.eventBus.on('tutorial_navigate', (data) => {
+                    this.handleOverlayNavigation(data);
+                });
+            }
+        } catch (error) {
+            this.loggingSystem.error('TutorialManager', 'Failed to setup overlay integration', error);
+        }
+    }
+
+    /**
+     * オーバーレイナビゲーションの処理
+     * @param {Object} data - ナビゲーションデータ
+     */
+    handleOverlayNavigation(data) {
+        try {
+            const { direction } = data;
+            
+            switch (direction) {
+                case 'next':
+                    this.nextStep();
+                    break;
+                case 'previous':
+                    this.previousStep();
+                    break;
+                case 'skip':
+                    this.skipTutorial();
+                    break;
+                default:
+                    this.loggingSystem.warn('TutorialManager', `Unknown navigation direction: ${direction}`);
+                    break;
+            }
+        } catch (error) {
+            this.loggingSystem.error('TutorialManager', 'Failed to handle overlay navigation', error);
         }
     }
 
