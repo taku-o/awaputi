@@ -127,3 +127,7 @@ reports/
 # Deployment artifacts
 .netlify/
 .vercel/
+
+# Serena
+.serena/cache/
+

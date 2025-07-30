@@ -2257,4 +2257,188 @@ export class StatisticsManager {
         
         this.save();
     }
+
+    /**
+     * テストデータのインポート（デバッグツール用）
+     */
+    importTestData(testData, options = {}) {
+        try {
+            if (!Array.isArray(testData)) {
+                console.warn('Test data must be an array');
+                return false;
+            }
+
+            const importMode = options.mode || 'append'; // 'append', 'replace', 'merge'
+            
+            if (importMode === 'replace') {
+                // 既存データを置き換え
+                this.reset();
+            }
+
+            let importedCount = 0;
+            const currentTime = Date.now();
+
+            for (const dataEntry of testData) {
+                try {
+                    // データエントリの検証
+                    if (!dataEntry.timestamp && !dataEntry.date) {
+                        console.warn('Test data entry missing timestamp/date, using current time');
+                        dataEntry.timestamp = currentTime - Math.random() * 86400000; // 24時間以内のランダム時間
+                    }
+
+                    // 時系列データとして追加
+                    if (this.timeSeriesManager) {
+                        this.timeSeriesManager.addDataPoint({
+                            timestamp: dataEntry.timestamp || new Date(dataEntry.date).getTime(),
+                            data: dataEntry
+                        });
+                    }
+
+                    // 統計データの更新
+                    if (dataEntry.sessionsPlayed) {
+                        this.statistics.totalSessions += dataEntry.sessionsPlayed;
+                    }
+                    if (dataEntry.totalScore) {
+                        this.statistics.totalScore += dataEntry.totalScore;
+                        this.statistics.highScore = Math.max(this.statistics.highScore, dataEntry.totalScore);
+                    }
+                    if (dataEntry.bubblesPopped) {
+                        this.statistics.totalBubblesPopped += dataEntry.bubblesPopped;
+                    }
+                    if (dataEntry.maxCombo) {
+                        this.statistics.bestCombo = Math.max(this.statistics.bestCombo, dataEntry.maxCombo);
+                    }
+                    if (dataEntry.playtimeMinutes) {
+                        this.statistics.totalPlayTime += dataEntry.playtimeMinutes * 60 * 1000; // ミリ秒に変換
+                    }
+                    if (dataEntry.achievements) {
+                        this.statistics.achievementUnlocks += dataEntry.achievements;
+                    }
+
+                    importedCount++;
+
+                } catch (entryError) {
+                    console.warn('Failed to import test data entry:', entryError, dataEntry);
+                }
+            }
+
+            // 平均値の再計算
+            if (this.statistics.totalSessions > 0) {
+                this.statistics.averageScore = Math.floor(this.statistics.totalScore / this.statistics.totalSessions);
+                this.statistics.averagePlayTime = Math.floor(this.statistics.totalPlayTime / this.statistics.totalSessions);
+            }
+
+            // データの保存
+            this.save();
+
+            console.log(`Imported ${importedCount} test statistics entries`);
+            return { success: true, imported: importedCount, total: testData.length };
+
+        } catch (error) {
+            console.error('Failed to import test data:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    /**
+     * テスト統計データの生成
+     */
+    generateTestStatistics(profile = 'normal', options = {}) {
+        const profiles = {
+            beginner: {
+                sessions: Math.floor(Math.random() * 20) + 5,
+                averageScore: Math.floor(Math.random() * 500) + 100,
+                totalPlaytime: Math.floor(Math.random() * 1800000) + 300000, // 5-35分
+                achievements: Math.floor(Math.random() * 5) + 1
+            },
+            normal: {
+                sessions: Math.floor(Math.random() * 100) + 50,
+                averageScore: Math.floor(Math.random() * 2000) + 500,
+                totalPlaytime: Math.floor(Math.random() * 7200000) + 1800000, // 30-150分
+                achievements: Math.floor(Math.random() * 15) + 5
+            },
+            expert: {
+                sessions: Math.floor(Math.random() * 500) + 200,
+                averageScore: Math.floor(Math.random() * 10000) + 2000,
+                totalPlaytime: Math.floor(Math.random() * 36000000) + 7200000, // 2-12時間
+                achievements: Math.floor(Math.random() * 50) + 20
+            }
+        };
+
+        const baseProfile = profiles[profile] || profiles.normal;
+        const testStats = { ...baseProfile, ...options };
+
+        // 現在の統計に適用
+        this.statistics.totalSessions += testStats.sessions;
+        this.statistics.totalScore += testStats.averageScore * testStats.sessions;
+        this.statistics.averageScore = Math.floor(this.statistics.totalScore / this.statistics.totalSessions);
+        this.statistics.totalPlayTime += testStats.totalPlaytime;
+        this.statistics.averagePlayTime = Math.floor(this.statistics.totalPlayTime / this.statistics.totalSessions);
+        this.statistics.achievementUnlocks += testStats.achievements;
+
+        this.save();
+        return testStats;
+    }
+
+    /**
+     * テスト統計データのクリア
+     */
+    clearTestData() {
+        const backup = {
+            statistics: { ...this.statistics },
+            sessionStats: { ...this.sessionStats }
+        };
+
+        this.reset();
+        
+        console.log('Test statistics data cleared');
+        return backup;
+    }
+
+    /**
+     * テスト統計データの検証
+     */
+    validateTestData(testData) {
+        const errors = [];
+        
+        if (!Array.isArray(testData)) {
+            errors.push('Test data must be an array');
+            return { valid: false, errors };
+        }
+
+        for (let i = 0; i < testData.length; i++) {
+            const entry = testData[i];
+            const entryErrors = [];
+
+            if (typeof entry !== 'object' || entry === null) {
+                entryErrors.push('Entry must be an object');
+            } else {
+                // 数値フィールドの検証
+                const numericFields = ['sessionsPlayed', 'totalScore', 'bubblesPopped', 'maxCombo', 'playtimeMinutes', 'achievements'];
+                for (const field of numericFields) {
+                    if (entry[field] !== undefined && (typeof entry[field] !== 'number' || entry[field] < 0)) {
+                        entryErrors.push(`${field} must be a non-negative number`);
+                    }
+                }
+
+                // 日時フィールドの検証
+                if (entry.timestamp !== undefined && (typeof entry.timestamp !== 'number' || entry.timestamp < 0)) {
+                    entryErrors.push('timestamp must be a non-negative number');
+                }
+                if (entry.date !== undefined && isNaN(new Date(entry.date).getTime())) {
+                    entryErrors.push('date must be a valid date string');
+                }
+            }
+
+            if (entryErrors.length > 0) {
+                errors.push(`Entry ${i}: ${entryErrors.join(', ')}`);
+            }
+        }
+
+        return {
+            valid: errors.length === 0,
+            errors,
+            entryCount: testData.length
+        };
+    }
 }
