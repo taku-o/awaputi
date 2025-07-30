@@ -5,6 +5,7 @@
 
 import { ErrorHandler } from '../utils/ErrorHandler.js';
 import { ErrorScreenshotCapture } from './ErrorScreenshotCapture.js';
+import { ErrorNotificationSystem } from './ErrorNotificationSystem.js';
 
 export class ErrorReporter extends ErrorHandler {
     constructor(gameEngine) {
@@ -16,6 +17,7 @@ export class ErrorReporter extends ErrorHandler {
         this.errorAnalyzer = new ErrorAnalyzer(this);
         this.errorStorage = new ErrorStorage(this);
         this.screenshotCapture = new ErrorScreenshotCapture(gameEngine);
+        this.notificationSystem = new ErrorNotificationSystem(this);
         
         // セッション管理
         this.sessionId = this.generateSessionId();
@@ -356,22 +358,27 @@ export class ErrorReporter extends ErrorHandler {
     notifyDeveloper(error, type = 'standard', additionalInfo = {}) {
         if (!this.developerNotifications.enabled) return;
         
-        // レート制限チェック
-        if (!this.checkNotificationRateLimit()) return;
+        // 新しい通知システムを使用
+        const notificationSent = this.notificationSystem.processErrorNotification(error, type, additionalInfo);
         
-        const notification = {
-            id: this.generateNotificationId(),
-            timestamp: Date.now(),
-            type,
-            error,
-            additionalInfo,
-            sessionId: this.sessionId
-        };
-        
-        this.developerNotifications.recentNotifications.push(notification);
-        
-        // 通知チャンネルへの送信
-        this.sendToNotificationChannels(notification);
+        if (notificationSent) {
+            // 既存の履歴記録も保持（後方互換性）
+            const notification = {
+                id: this.generateNotificationId(),
+                timestamp: Date.now(),
+                type,
+                error,
+                additionalInfo,
+                sessionId: this.sessionId
+            };
+            
+            this.developerNotifications.recentNotifications.push(notification);
+            
+            // 履歴サイズ制限
+            if (this.developerNotifications.recentNotifications.length > 100) {
+                this.developerNotifications.recentNotifications.shift();
+            }
+        }
     }
     
     /**
@@ -565,6 +572,7 @@ export class ErrorReporter extends ErrorHandler {
         this.saveSettings();
         this.errorStorage.cleanup();
         this.screenshotCapture?.destroy();
+        this.notificationSystem?.destroy();
         super.destroy?.();
     }
 }
