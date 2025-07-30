@@ -9,6 +9,12 @@ export { TutorialManager, getTutorialManager, reinitializeTutorialManager } from
 export { ContextManager, getContextManager, reinitializeContextManager } from './ContextManager.js';
 export { HelpErrorHandler, getHelpErrorHandler, reinitializeHelpErrorHandler } from './HelpErrorHandler.js';
 
+// Content Management System Components
+export { ContentLoader, getContentLoader, reinitializeContentLoader } from './ContentLoader.js';
+export { HelpContentModel, TutorialModel, FAQModel, UserProgressModel, DataModelFactory } from './DataModels.js';
+export { ContentValidation, getContentValidation, reinitializeContentValidation } from './ContentValidation.js';
+export { SearchEngine, getSearchEngine, reinitializeSearchEngine } from './SearchEngine.js';
+
 /**
  * ヘルプシステム全体の初期化
  * @param {Object} gameEngine - ゲームエンジン
@@ -20,12 +26,20 @@ export function initializeHelpSystem(gameEngine) {
         const tutorialManager = getTutorialManager(gameEngine);
         const contextManager = getContextManager(gameEngine);
         const helpErrorHandler = getHelpErrorHandler(gameEngine);
+        
+        // Content Management System
+        const contentLoader = getContentLoader();
+        const contentValidation = getContentValidation();
+        const searchEngine = getSearchEngine();
 
         return {
             helpManager,
             tutorialManager,
             contextManager,
             helpErrorHandler,
+            contentLoader,
+            contentValidation,
+            searchEngine,
             initialized: true,
             version: '1.0.0'
         };
@@ -51,13 +65,24 @@ export function destroyHelpSystem() {
             'helpErrorHandlerInstance'
         ];
 
-        // インスタンスが存在する場合は破棄
-        managers.forEach(managerName => {
-            if (global[managerName]) {
-                if (typeof global[managerName].destroy === 'function') {
-                    global[managerName].destroy();
+        // 全コンポーネントの破棄
+        const components = [
+            getHelpManager(),
+            getTutorialManager(),
+            getContextManager(),
+            getHelpErrorHandler(),
+            getContentLoader(),
+            getContentValidation(),
+            getSearchEngine()
+        ];
+
+        components.forEach(component => {
+            if (component && typeof component.destroy === 'function') {
+                try {
+                    component.destroy();
+                } catch (error) {
+                    console.warn('Failed to destroy component:', error);
                 }
-                global[managerName] = null;
             }
         });
 
