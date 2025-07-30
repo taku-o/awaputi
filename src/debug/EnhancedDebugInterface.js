@@ -11,6 +11,9 @@ import { ThemeManager } from './ThemeManager.js';
 import { AccessibilityManager } from './AccessibilityManager.js';
 import { DebugPerformanceMonitor } from './DebugPerformanceMonitor.js';
 import { LazyLoadManager } from './LazyLoadManager.js';
+import { IntegrationTestSuite } from './IntegrationTestSuite.js';
+import { RequirementsValidationSuite } from './RequirementsValidationSuite.js';
+import { FinalValidationSuite } from './FinalValidationSuite.js';
 
 export class EnhancedDebugInterface extends EffectDebugInterface {
     constructor(gameEngine) {
@@ -66,6 +69,15 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
         // 遅延読み込み管理
         this.lazyLoadManager = null;
         
+        // 統合テストスイート
+        this.integrationTestSuite = null;
+        
+        // 要件検証スイート
+        this.requirementsValidationSuite = null;
+        
+        // 最終検証スイート
+        this.finalValidationSuite = null;
+        
         this.initializeEnhancedFeatures();
     }
 
@@ -79,6 +91,9 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
         this.initializeAccessibilityManager();
         this.initializePerformanceMonitor();
         this.initializeLazyLoadManager();
+        this.initializeIntegrationTestSuite();
+        this.initializeRequirementsValidationSuite();
+        this.initializeFinalValidationSuite();
     }
 
     initializeResponsiveLayout() {
@@ -110,6 +125,24 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
         // LazyLoadManagerを初期化
         this.lazyLoadManager = new LazyLoadManager(this);
         console.log('Lazy load manager initialized');
+    }
+
+    initializeIntegrationTestSuite() {
+        // IntegrationTestSuiteを初期化
+        this.integrationTestSuite = new IntegrationTestSuite(this.gameEngine);
+        console.log('Integration test suite initialized');
+    }
+
+    initializeRequirementsValidationSuite() {
+        // RequirementsValidationSuiteを初期化
+        this.requirementsValidationSuite = new RequirementsValidationSuite(this.gameEngine);
+        console.log('Requirements validation suite initialized');
+    }
+
+    initializeFinalValidationSuite() {
+        // FinalValidationSuiteを初期化
+        this.finalValidationSuite = new FinalValidationSuite(this.gameEngine);
+        console.log('Final validation suite initialized');
     }
 
     setupEnhancedUI() {
@@ -947,6 +980,13 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
             this.lazyLoadManager.destroy();
         }
         
+        // IntegrationTestSuiteの破棄
+        if (this.integrationTestSuite) {
+            // テスト実行中の場合は停止
+            this.integrationTestSuite.testRunning = false;
+            this.integrationTestSuite = null;
+        }
+        
         // パネルの破棄（後方互換性）
         for (const [name, panel] of this.panels) {
             if (typeof panel.destroy === 'function') {
@@ -1167,6 +1207,101 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
         if (this.lazyLoadManager) {
             this.lazyLoadManager.optimizeMemoryUsage();
         }
+    }
+
+    // IntegrationTestSuite API の公開
+    getIntegrationTestSuite() {
+        return this.integrationTestSuite;
+    }
+
+    async runIntegrationTests() {
+        if (!this.integrationTestSuite) {
+            throw new Error('Integration test suite not initialized');
+        }
+        return await this.integrationTestSuite.runAllTests();
+    }
+
+    async runIntegrationTestCategory(category) {
+        if (!this.integrationTestSuite) {
+            throw new Error('Integration test suite not initialized');
+        }
+        return await this.integrationTestSuite.runCategoryTests(category);
+    }
+
+    /**
+     * カテゴリ別統合テストを実行（TestPanel用）
+     */
+    async runCategoryIntegrationTests(category) {
+        if (!this.integrationTestSuite) {
+            throw new Error('Integration test suite not initialized');
+        }
+        
+        // 個別カテゴリのテストを実行
+        this.integrationTestSuite.testResults = [];
+        this.integrationTestSuite.startTime = performance.now();
+        
+        await this.integrationTestSuite.runCategoryTests(category);
+        
+        const endTime = performance.now();
+        const duration = endTime - this.integrationTestSuite.startTime;
+        
+        return this.integrationTestSuite.generateTestSummary(duration);
+    }
+
+    getIntegrationTestResults() {
+        return this.integrationTestSuite ? this.integrationTestSuite.testResults : [];
+    }
+
+    exportIntegrationTestResults() {
+        return this.integrationTestSuite ? this.integrationTestSuite.exportResults() : null;
+    }
+
+    /**
+     * 要件検証テストを実行
+     */
+    async runRequirementsValidation() {
+        if (!this.requirementsValidationSuite) {
+            throw new Error('Requirements validation suite not initialized');
+        }
+        return await this.requirementsValidationSuite.runAllValidations();
+    }
+
+    /**
+     * 要件検証結果をエクスポート
+     */
+    exportRequirementsValidationResults() {
+        return this.requirementsValidationSuite ? this.requirementsValidationSuite.exportValidationResults() : null;
+    }
+
+    /**
+     * 要件検証結果を取得
+     */
+    getRequirementsValidationResults() {
+        return this.requirementsValidationSuite ? this.requirementsValidationSuite.validationResults : [];
+    }
+
+    /**
+     * 最終検証テストを実行
+     */
+    async runFinalValidation() {
+        if (!this.finalValidationSuite) {
+            throw new Error('Final validation suite not initialized');
+        }
+        return await this.finalValidationSuite.runFinalValidation();
+    }
+
+    /**
+     * 最終検証結果をエクスポート
+     */
+    exportFinalValidationResults() {
+        return this.finalValidationSuite ? this.finalValidationSuite.exportValidationResults() : null;
+    }
+
+    /**
+     * 最終検証結果を取得
+     */
+    getFinalValidationResults() {
+        return this.finalValidationSuite ? this.finalValidationSuite.validationResults : [];
     }
 }
 
