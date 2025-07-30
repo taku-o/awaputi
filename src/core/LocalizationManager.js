@@ -1,4 +1,11 @@
 import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { TranslationLoader } from './i18n/TranslationLoader.js';
+import { OptimizedTranslationLoader } from './i18n/OptimizedTranslationLoader.js';
+import { I18nPerformanceMonitor } from './i18n/I18nPerformanceMonitor.js';
+import { I18nRenderOptimizer } from './i18n/I18nRenderOptimizer.js';
+import { I18nSecurityManager } from './i18n/I18nSecurityManager.js';
+import { I18nSecurityTester } from './i18n/I18nSecurityTester.js';
+import { getFontManager } from './i18n/FontManager.js';
 
 /**
  * ローカライゼーション管理クラス - 多言語対応
@@ -9,6 +16,24 @@ export class LocalizationManager {
         this.fallbackLanguage = 'en';
         this.translations = new Map();
         this.loadedLanguages = new Set();
+        
+        // 翻訳ローダーの初期化（最適化版を優先）
+        this.translationLoader = new TranslationLoader();
+        this.optimizedLoader = new OptimizedTranslationLoader();
+        
+        // フォントマネージャーの初期化
+        this.fontManager = getFontManager();
+        
+        // パフォーマンス監視とレンダリング最適化
+        this.performanceMonitor = new I18nPerformanceMonitor();
+        this.renderOptimizer = new I18nRenderOptimizer();
+        
+        // セキュリティ管理
+        this.securityManager = new I18nSecurityManager();
+        this.securityTester = new I18nSecurityTester(this.securityManager);
+        
+        // 言語変更イベントリスナー
+        this.languageChangeListeners = new Set();
         
         // 文化的適応設定
         this.culturalAdaptation = {
@@ -44,6 +69,27 @@ export class LocalizationManager {
         
         // 翻訳データを初期化
         this.initializeTranslations();
+        
+        // 非同期でファイルベース翻訳を初期化
+        this.initializeAsync();
+    }
+    
+    /**
+     * 非同期初期化
+     */
+    async initializeAsync() {
+        try {
+            // 最適化されたローダーで基本言語をプリロード
+            await this.optimizedLoader.preloadLanguages(['ja', 'en']);
+            
+            // ファイルベース翻訳をロード
+            await this.loadLanguageData('ja');
+            await this.loadLanguageData('en');
+            
+            console.log('LocalizationManager initialized with optimized file-based translations');
+        } catch (error) {
+            console.warn('Failed to initialize file-based translations, using fallback data:', error);
+        }
     }
     
     /**
@@ -623,24 +669,140 @@ export class LocalizationManager {
     }
     
     /**
-     * 言語を設定
+     * 言語を設定（非同期・最適化版）
      */
-    setLanguage(language) {
-        if (this.loadedLanguages.has(language)) {
-            this.currentLanguage = language;
-            console.log(`Language set to: ${language}`);
+    async setLanguage(language) {
+        try {
+            const oldLanguage = this.currentLanguage;
+            
+            // パフォーマンス監視開始
+            const switchMeasurement = await this.performanceMonitor.measureLanguageSwitch(
+                oldLanguage, 
+                language, 
+                async () => {
+                    // 言語がロードされていない場合は読み込み
+                    if (!this.loadedLanguages.has(language)) {
+                        await this.loadLanguageData(language);
+                    }
+                    
+                    if (this.loadedLanguages.has(language)) {
+                        // レンダリング最適化付き言語切り替え
+                        const renderResult = await this.renderOptimizer.optimizeLanguageSwitch(
+                            oldLanguage,
+                            language,
+                            async (element) => {
+                                // UI要素の更新処理
+                                return this.updateElementLanguage(element, language);
+                            }
+                        );
+                        
+                        this.currentLanguage = language;
+                        
+                        // フォントを読み込み
+                        await this.loadFontsForLanguage(language);
+                        
+                        // 言語変更イベントを通知
+                        this.notifyLanguageChange(language, oldLanguage);
+                        
+                        return { success: true, renderResult };
+                    } else {
+                        throw new Error(`Failed to load language: ${language}`);
+                    }
+                }
+            );
+            
+            console.log(`Language switched to ${language} in ${switchMeasurement.duration.toFixed(2)}ms`);
             return true;
-        } else {
-            console.warn(`Language not supported: ${language}`);
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'LOCALIZATION_ERROR', {
+                operation: 'setLanguage',
+                language: language
+            });
             return false;
         }
     }
     
     /**
-     * 翻訳を取得
+     * 言語データを読み込み（最適化・セキュリティ検証版）
+     */
+    async loadLanguageData(language) {
+        try {
+            // 最適化されたローダーを使用
+            const translations = await this.optimizedLoader.loadLanguage(language, {
+                priority: language === this.currentLanguage ? 'high' : 'medium'
+            });
+            
+            if (translations && Object.keys(translations).length > 0) {
+                // セキュリティ検証を実行
+                const securityResult = this.securityManager.validateTranslationData(
+                    translations, 
+                    `language_file:${language}`
+                );
+                
+                if (!securityResult.isValid) {
+                    console.warn(`Security violations found in ${language} translations:`, 
+                        securityResult.violations);
+                    
+                    // 高重要度の違反がある場合は読み込みを拒否
+                    const hasHighSeverityViolations = securityResult.violations.some(
+                        v => v.severity === 'high'
+                    );
+                    
+                    if (hasHighSeverityViolations) {
+                        console.error(`Critical security violations in ${language}, rejecting translation data`);
+                        return false;
+                    }
+                }
+                
+                this.translations.set(language, translations);
+                this.loadedLanguages.add(language);
+                console.log(`Loaded and validated language data for: ${language}`);
+                return true;
+            } else {
+                console.warn(`No translations found for: ${language}`);
+                return false;
+            }
+        } catch (error) {
+            // フルバック: 通常のローダーを試す
+            console.warn(`Optimized loader failed for ${language}, trying fallback...`);
+            try {
+                const translations = await this.translationLoader.loadLanguage(language);
+                if (translations && Object.keys(translations).length > 0) {
+                    // フォールバック時もセキュリティ検証
+                    const securityResult = this.securityManager.validateTranslationData(
+                        translations, 
+                        `fallback_language_file:${language}`
+                    );
+                    
+                    if (securityResult.violations.some(v => v.severity === 'high')) {
+                        console.error(`Critical security violations in fallback ${language}, rejecting translation data`);
+                        return false;
+                    }
+                    
+                    this.translations.set(language, translations);
+                    this.loadedLanguages.add(language);
+                    console.log(`Loaded fallback language data for: ${language}`);
+                    return true;
+                }
+            } catch (fallbackError) {
+                getErrorHandler().handleError(fallbackError, 'LOCALIZATION_ERROR', {
+                    operation: 'loadLanguageData',
+                    language: language
+                });
+            }
+            return false;
+        }
+    }
+    
+    /**
+     * 翻訳を取得（パフォーマンス監視付き）
      */
     t(key, params = {}) {
         try {
+            // パフォーマンス測定開始
+            const measurement = this.performanceMonitor.startTranslationMeasurement(key, this.currentLanguage);
+            
             // 現在の言語で翻訳を取得
             let translation = this.getTranslation(key, this.currentLanguage);
             
@@ -652,11 +814,17 @@ export class LocalizationManager {
             // それでも見つからない場合はキーをそのまま返す
             if (translation === null) {
                 console.warn(`Translation not found: ${key}`);
+                this.performanceMonitor.endTranslationMeasurement(measurement, false);
                 return key;
             }
             
             // パラメータ置換
-            return this.interpolate(translation, params);
+            const result = this.interpolate(translation, params);
+            
+            // パフォーマンス測定終了
+            this.performanceMonitor.endTranslationMeasurement(measurement, true);
+            
+            return result;
         } catch (error) {
             getErrorHandler().handleError(error, 'LOCALIZATION_ERROR', {
                 operation: 'translate',
@@ -693,16 +861,15 @@ export class LocalizationManager {
     }
     
     /**
-     * パラメータ置換
+     * パラメータ置換（セキュリティ強化版）
      */
     interpolate(text, params) {
         if (typeof text !== 'string' || Object.keys(params).length === 0) {
             return text;
         }
         
-        return text.replace(/\{\{(\w+)\}\}/g, (match, key) => {
-            return params[key] !== undefined ? params[key] : match;
-        });
+        // セキュリティマネージャーを使用した安全な翻訳生成
+        return this.securityManager.generateSafeTranslation(text, params);
     }
     
     /**
@@ -1185,10 +1352,264 @@ export class LocalizationManager {
     }
     
     /**
+     * 言語変更リスナーを追加
+     */
+    addLanguageChangeListener(listener) {
+        if (typeof listener === 'function') {
+            this.languageChangeListeners.add(listener);
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * 言語変更リスナーを削除
+     */
+    removeLanguageChangeListener(listener) {
+        return this.languageChangeListeners.delete(listener);
+    }
+    
+    /**
+     * 言語変更イベントを通知
+     */
+    notifyLanguageChange(newLanguage, oldLanguage) {
+        for (const listener of this.languageChangeListeners) {
+            try {
+                listener(newLanguage, oldLanguage);
+            } catch (error) {
+                console.warn('Language change listener error:', error);
+            }
+        }
+    }
+    
+    /**
+     * 言語用のフォントを読み込み
+     */
+    async loadFontsForLanguage(language) {
+        try {
+            console.log(`Loading fonts for language: ${language}`);
+            const result = await this.fontManager.loadFontsForLanguage(language, 'primary');
+            
+            if (result) {
+                // グローバルCSSを適用
+                this.applyGlobalFontStyles(language);
+            }
+            
+            return result;
+        } catch (error) {
+            console.warn(`Failed to load fonts for ${language}:`, error);
+            return false;
+        }
+    }
+    
+    /**
+     * グローバルフォントスタイルを適用
+     */
+    applyGlobalFontStyles(language) {
+        try {
+            // 既存のフォントスタイルを削除
+            const existingStyle = document.getElementById('localization-font-styles');
+            if (existingStyle) {
+                existingStyle.remove();
+            }
+            
+            // 新しいスタイルを作成
+            const style = document.createElement('style');
+            style.id = 'localization-font-styles';
+            style.textContent = this.fontManager.generateGlobalFontCSS(language);
+            
+            document.head.appendChild(style);
+            
+            // HTML要素に言語属性を設定
+            document.documentElement.lang = language;
+            
+            console.log(`Global font styles applied for ${language}`);
+        } catch (error) {
+            console.warn(`Failed to apply global font styles:`, error);
+        }
+    }
+    
+    /**
+     * 現在の言語のフォントスタックを取得
+     */
+    getFontStack(priority = 'primary') {
+        return this.fontManager.getFontStack(this.currentLanguage, priority);
+    }
+    
+    /**
+     * 要素にフォントを適用
+     */
+    applyFontToElement(element, priority = 'primary') {
+        return this.fontManager.applyFontToElement(element, this.currentLanguage, priority);
+    }
+    
+    /**
+     * フォント読み込み状態を取得
+     */
+    getFontLoadingStatus() {
+        return this.fontManager.getStats();
+    }
+    
+    /**
+     * 複数言語のフォントを事前読み込み
+     */
+    async preloadFonts(languages) {
+        console.log(`Preloading fonts for languages: ${languages.join(', ')}`);
+        return await this.fontManager.preloadFontsForLanguages(languages);
+    }
+    
+    /**
+     * UI要素の言語更新（レンダリング最適化用）
+     */
+    updateElementLanguage(element, language) {
+        try {
+            // data-i18n属性からキーを取得
+            const translationKey = element.getAttribute('data-i18n');
+            if (translationKey) {
+                const translation = this.getTranslation(translationKey, language);
+                if (translation) {
+                    return translation;
+                }
+            }
+            
+            // data-i18n-attr属性からキーを取得（属性翻訳）
+            const attrKey = element.getAttribute('data-i18n-attr');
+            if (attrKey) {
+                const translation = this.getTranslation(attrKey, language);
+                if (translation) {
+                    return translation;
+                }
+            }
+            
+            return element.textContent;
+        } catch (error) {
+            console.warn('Element language update failed:', error);
+            return element.textContent;
+        }
+    }
+    
+    /**
+     * パフォーマンス統計の取得
+     */
+    getPerformanceStats() {
+        return {
+            translation: this.performanceMonitor.generatePerformanceReport(),
+            loading: this.optimizedLoader.getPerformanceStats(),
+            rendering: this.renderOptimizer.getPerformanceStats()
+        };
+    }
+    
+    /**
+     * 遅延翻訳読み込み
+     */
+    async loadNamespace(language, namespace) {
+        try {
+            const data = await this.optimizedLoader.lazyLoadNamespace(language, namespace);
+            if (data) {
+                // 既存の翻訳データにマージ
+                const existing = this.translations.get(language) || {};
+                this.translations.set(language, { ...existing, ...data });
+                return true;
+            }
+            return false;
+        } catch (error) {
+            console.warn(`Failed to load namespace ${namespace} for ${language}:`, error);
+            return false;
+        }
+    }
+    
+    /**
+     * 翻訳キャッシュのクリア
+     */
+    clearTranslationCache() {
+        this.optimizedLoader.clearCache();
+        this.renderOptimizer.clearCaches();
+        console.log('Translation caches cleared');
+    }
+    
+    /**
+     * パフォーマンス監視の停止
+     */
+    stopPerformanceMonitoring() {
+        this.performanceMonitor.stopMonitoring();
+    }
+    
+    /**
+     * パフォーマンス監視の再開
+     */
+    startPerformanceMonitoring() {
+        this.performanceMonitor.startMonitoring();
+    }
+    
+    /**
+     * セキュリティテストの実行
+     */
+    async runSecurityTest() {
+        console.log('Running comprehensive I18n security test...');
+        return await this.securityTester.runComprehensiveSecurityTest();
+    }
+    
+    /**
+     * 翻訳データの安全性検証  
+     */
+    validateTranslationSecurity(translations, source = 'user_input') {
+        return this.securityManager.validateTranslationData(translations, source);
+    }
+    
+    /**
+     * セキュリティ統計の取得
+     */
+    getSecurityStats() {
+        return this.securityManager.getSecurityStats();
+    }
+    
+    /**
+     * セキュリティレポートの生成
+     */
+    generateSecurityReport() {
+        return this.securityManager.generateSecurityReport();
+    }
+    
+    /**
+     * セキュリティ設定の更新
+     */
+    updateSecurityConfig(config) {
+        return this.securityManager.updateSecurityConfig(config);
+    }
+    
+    /**
+     * 翻訳の安全なサニタイゼーション
+     */
+    sanitizeTranslation(text) {
+        return this.securityManager.sanitizeString(text);
+    }
+    
+    /**
      * クリーンアップ
      */
     cleanup() {
+        // セキュリティ機能のクリーンアップ
+        this.securityManager.cleanup();
+        this.securityTester.cleanup();
+        
+        // パフォーマンス監視の停止
+        this.performanceMonitor.cleanup();
+        
+        // レンダリング最適化のクリーンアップ
+        this.renderOptimizer.cleanup();
+        
+        // 最適化ローダーのクリーンアップ
+        this.optimizedLoader.cleanup();
+        
         // アクセシビリティ翻訳データのクリア
         this.accessibilityTranslations.clear();
+        
+        // 言語変更リスナーのクリア
+        this.languageChangeListeners.clear();
+        
+        // フォントキャッシュのクリア
+        this.fontManager.clearCache();
+        
+        console.log('LocalizationManager cleanup completed');
     }
 }

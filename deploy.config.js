@@ -113,9 +113,81 @@ export const deployConfig = {
       formats: ['webm', 'ogg', 'mp3'],
       quality: 'high'
     },
+    fonts: {
+      preload: ['ja', 'en', 'zh-CN', 'zh-TW', 'ko'],
+      fallbacks: {
+        ja: ['Hiragino Sans', 'Yu Gothic', 'Meiryo', 'sans-serif'],
+        'zh-CN': ['PingFang SC', 'Microsoft YaHei', 'SimHei', 'sans-serif'],
+        'zh-TW': ['PingFang TC', 'Microsoft JhengHei', 'PMingLiU', 'sans-serif'],
+        ko: ['Apple SD Gothic Neo', 'Malgun Gothic', 'Nanum Gothic', 'sans-serif'],
+        en: ['Arial', 'Helvetica', 'sans-serif']
+      }
+    },
+    translation: {
+      preload: ['ja', 'en'], // Preload most common languages
+      lazy: ['zh-CN', 'zh-TW', 'ko'], // Lazy load less common languages
+      compression: {
+        enabled: true,
+        threshold: 1024, // Only compress files larger than 1KB
+        format: 'gzip'
+      },
+      caching: {
+        maxAge: 86400, // 24 hours for translation files
+        immutable: false // Translation files can be updated
+      }
+    },
     compression: {
       gzip: true,
       brotli: true
+    }
+  },
+
+  // CDN configuration for internationalization
+  cdn: {
+    enabled: true,
+    regions: [
+      { code: 'ja', region: 'asia-northeast1', primary: true },
+      { code: 'en', region: 'us-central1', primary: false },
+      { code: 'zh-CN', region: 'asia-east1', primary: false },
+      { code: 'zh-TW', region: 'asia-east1', primary: false },
+      { code: 'ko', region: 'asia-northeast1', primary: false }
+    ],
+    caching: {
+      translation: {
+        ttl: 86400, // 24 hours
+        staleWhileRevalidate: 3600 // 1 hour
+      },
+      fonts: {
+        ttl: 2592000, // 30 days
+        staleWhileRevalidate: 86400 // 24 hours
+      }
+    },
+    preload: {
+      critical: ['/src/locales/ja/common.json', '/src/locales/en/common.json'],
+      prefetch: [
+        '/src/locales/ja/menu.json',
+        '/src/locales/en/menu.json',
+        '/src/locales/config/languages.json'
+      ]
+    }
+  },
+
+  // Internationalization-specific settings
+  internationalization: {
+    defaultLanguage: 'ja',
+    supportedLanguages: ['ja', 'en', 'zh-CN', 'zh-TW', 'ko'],
+    fallbackChain: {
+      'zh-CN': ['zh-TW', 'en', 'ja'],
+      'zh-TW': ['zh-CN', 'en', 'ja'],
+      'ko': ['en', 'ja'],
+      'en': ['ja'],
+      'ja': []
+    },
+    detection: {
+      order: ['querystring', 'localStorage', 'navigator', 'default'],
+      lookupQuerystring: 'lang',
+      lookupLocalStorage: 'bubblePop_language',
+      caches: ['localStorage']
     }
   },
 
@@ -138,7 +210,12 @@ export const deployConfig = {
     },
     performance: {
       webVitals: true,
-      lighthouse: true
+      lighthouse: true,
+      i18n: {
+        languageSwitchTime: true,
+        translationLoadTime: true,
+        fontLoadTime: true
+      }
     }
   }
 };

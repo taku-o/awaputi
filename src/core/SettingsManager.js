@@ -614,8 +614,10 @@ export class SettingsManager {
                     break;
                     
                 case 'language':
-                    // 言語変更の処理
-                    this.applyLanguageChange(newValue);
+                    // 言語変更の処理（非同期）
+                    this.applyLanguageChange(newValue).catch(error => {
+                        console.error('Language change failed:', error);
+                    });
                     break;
                     
                 case 'quality':
@@ -649,18 +651,22 @@ export class SettingsManager {
     }
     
     /**
-     * 言語変更を適用
+     * 言語変更を適用（非同期）
      */
-    applyLanguageChange(language) {
-        // 言語設定をHTMLに反映
-        document.documentElement.lang = language;
-        
-        // ローカライゼーションマネージャーに通知
-        if (this.gameEngine.localizationManager) {
-            this.gameEngine.localizationManager.setLanguage(language);
+    async applyLanguageChange(language) {
+        try {
+            // ローカライゼーションマネージャーで言語を設定（非同期）
+            if (this.gameEngine.localizationManager) {
+                const success = await this.gameEngine.localizationManager.setLanguage(language);
+                if (success) {
+                    console.log(`Language successfully changed to: ${language}`);
+                } else {
+                    console.warn(`Failed to change language to: ${language}`);
+                }
+            }
+        } catch (error) {
+            console.error('Language change error:', error);
         }
-        
-        console.log(`Language changed to: ${language}`);
     }
     
     /**

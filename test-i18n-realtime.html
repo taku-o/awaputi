@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>リアルタイム言語切り替えテスト - BubblePop</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .language-switcher {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .language-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .language-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid transparent;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .language-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .language-btn.active {
+            background: rgba(255, 255, 255, 0.4);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        .game-canvas {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .status-info {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .status-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-family: monospace;
+        }
+
+        .status-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .key {
+            color: #ffeb3b;
+        }
+
+        .value {
+            color: #4caf50;
+        }
+
+        .log-container {
+            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+            text-align: left;
+        }
+
+        .log-entry {
+            font-family: monospace;
+            font-size: 12px;
+            margin-bottom: 5px;
+            color: #e0e0e0;
+        }
+
+        .log-entry.success {
+            color: #4caf50;
+        }
+
+        .log-entry.error {
+            color: #f44336;
+        }
+
+        .log-entry.info {
+            color: #2196f3;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🌐 リアルタイム言語切り替えテスト</h1>
+        
+        <div class="language-switcher">
+            <h3 id="languageSwitcherTitle">言語選択</h3>
+            <div class="language-buttons">
+                <button class="language-btn active" data-lang="ja" id="btnJa">日本語</button>
+                <button class="language-btn" data-lang="en" id="btnEn">English</button>
+                <button class="language-btn" data-lang="zh-CN" id="btnZhCN">简体中文</button>
+                <button class="language-btn" data-lang="zh-TW" id="btnZhTW">繁體中文</button>
+                <button class="language-btn" data-lang="ko" id="btnKo">한국어</button>
+            </div>
+        </div>
+
+        <canvas id="gameCanvas" class="game-canvas" width="800" height="600"></canvas>
+
+        <div class="status-info">
+            <div class="status-row">
+                <span class="key" id="statusCurrentLang">現在の言語:</span>
+                <span class="value" id="currentLang">ja</span>
+            </div>
+            <div class="status-row">
+                <span class="key" id="statusAvailableLangs">利用可能言語:</span>
+                <span class="value" id="availableLangs">-</span>
+            </div>
+            <div class="status-row">
+                <span class="key" id="statusTranslationCount">翻訳数:</span>
+                <span class="value" id="translationCount">-</span>
+            </div>
+            <div class="status-row">
+                <span class="key" id="statusGameScene">現在のシーン:</span>
+                <span class="value" id="currentScene">-</span>
+            </div>
+        </div>
+
+        <div class="log-container">
+            <div class="log-entry info">リアルタイム言語切り替えテスト開始...</div>
+            <div id="logContainer"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { GameEngine } from './src/core/GameEngine.js';
+
+        let gameEngine;
+        let logContainer;
+
+        function addLog(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${type}`;
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        function updateStatus() {
+            if (!gameEngine || !gameEngine.localizationManager) return;
+
+            try {
+                const lm = gameEngine.localizationManager;
+                
+                // 現在の言語
+                document.getElementById('currentLang').textContent = lm.getCurrentLanguage();
+                
+                // 利用可能言語
+                const availableLangs = lm.getAvailableLanguages();
+                document.getElementById('availableLangs').textContent = availableLangs.join(', ');
+                
+                // 翻訳統計
+                const stats = lm.getStats();
+                const totalTranslations = Object.values(stats.translationCounts).reduce((sum, count) => sum + count, 0);
+                document.getElementById('translationCount').textContent = totalTranslations;
+                
+                // 現在のシーン
+                const currentScene = gameEngine.sceneManager?.getCurrentSceneName() || 'unknown';
+                document.getElementById('currentScene').textContent = currentScene;
+                
+                // 翻訳でUI要素を更新
+                updateUILabels();
+                
+                addLog(`Status updated - Language: ${lm.getCurrentLanguage()}, Translations: ${totalTranslations}`, 'success');
+            } catch (error) {
+                addLog(`Status update error: ${error.message}`, 'error');
+            }
+        }
+
+        function updateUILabels() {
+            if (!gameEngine || !gameEngine.localizationManager) return;
+
+            const t = gameEngine.localizationManager.t.bind(gameEngine.localizationManager);
+            
+            try {
+                // UI要素を翻訳で更新
+                document.getElementById('languageSwitcherTitle').textContent = t('settings.language');
+                document.getElementById('statusCurrentLang').textContent = t('settings.language') + ':';
+                document.getElementById('statusAvailableLangs').textContent = '利用可能言語:'; // ハードコード（翻訳キーがないため）
+                document.getElementById('statusTranslationCount').textContent = '翻訳数:'; // ハードコード
+                document.getElementById('statusGameScene').textContent = '現在のシーン:'; // ハードコード
+                
+                // 言語ボタンのラベル更新
+                document.getElementById('btnJa').textContent = '日本語';
+                document.getElementById('btnEn').textContent = 'English';
+                document.getElementById('btnZhCN').textContent = '简体中文';
+                document.getElementById('btnZhTW').textContent = '繁體中文';
+                document.getElementById('btnKo').textContent = '한국어';
+                
+            } catch (error) {
+                addLog(`UI label update error: ${error.message}`, 'error');
+            }
+        }
+
+        async function switchLanguage(language) {
+            if (!gameEngine || !gameEngine.localizationManager) return;
+
+            try {
+                addLog(`Switching to language: ${language}`, 'info');
+                
+                const success = await gameEngine.localizationManager.setLanguage(language);
+                
+                if (success) {
+                    // アクティブボタンの更新
+                    document.querySelectorAll('.language-btn').forEach(btn => {
+                        btn.classList.toggle('active', btn.dataset.lang === language);
+                    });
+                    
+                    // 統計更新
+                    updateStatus();
+                    
+                    addLog(`Successfully switched to ${language}`, 'success');
+                } else {
+                    addLog(`Failed to switch to ${language}`, 'error');
+                }
+            } catch (error) {
+                addLog(`Language switch error: ${error.message}`, 'error');
+            }
+        }
+
+        async function initializeTest() {
+            try {
+                logContainer = document.getElementById('logContainer');
+                addLog('Initializing BubblePop game engine...', 'info');
+                
+                const canvas = document.getElementById('gameCanvas');
+                gameEngine = new GameEngine(canvas);
+                
+                // 言語変更リスナーを追加（テスト用）
+                gameEngine.localizationManager.addLanguageChangeListener((newLang, oldLang) => {
+                    addLog(`Language changed: ${oldLang} → ${newLang}`, 'success');
+                    document.documentElement.lang = newLang;
+                    updateStatus();
+                });
+                
+                // 言語切り替えボタンのイベントリスナー
+                document.querySelectorAll('.language-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const language = btn.dataset.lang;
+                        switchLanguage(language);
+                    });
+                });
+                
+                // ゲーム開始
+                gameEngine.start();
+                
+                // 初期統計更新
+                setTimeout(() => {
+                    updateStatus();
+                    addLog('Real-time language switching test ready!', 'success');
+                }, 1000);
+                
+            } catch (error) {
+                addLog(`Initialization error: ${error.message}`, 'error');
+                console.error('Test initialization failed:', error);
+            }
+        }
+
+        // テスト開始
+        window.addEventListener('load', initializeTest);
+    </script>
+</body>
+</html>

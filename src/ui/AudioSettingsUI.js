@@ -1,6 +1,6 @@
 import { getErrorHandler } from '../utils/ErrorHandler.js';
 import { getConfigurationManager } from '../core/ConfigurationManager.js';
-import { getLocalizationManager } from '../utils/LocalizationManager.js';
+import { getLocalizationManager } from '../core/LocalizationManager.js';
 import { AudioTestPanel } from './AudioTestPanel.js';
 
 /**

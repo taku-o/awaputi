@@ -78,7 +78,7 @@ const STATIC_ASSETS = [
     '/src/utils/BrowserCompatibility.js',
     '/src/utils/ResponsiveCanvasManager.js',
     '/src/utils/SettingsManager.js',
-    '/src/utils/LocalizationManager.js',
+    '/src/core/LocalizationManager.js',
     '/src/utils/KeyboardShortcutManager.js',
     '/src/utils/Analytics.js',
     '/src/utils/MobilePerformanceOptimizer.js',

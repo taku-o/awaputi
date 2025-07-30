@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Korean Input Handler Test - BubblePop</title>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+
+        .input-group {
+            margin: 20px 0;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            font-family: inherit;
+        }
+
+        .input-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        .status-panel {
+            margin: 20px 0;
+            padding: 15px;
+            background: #e8f5e8;
+            border-radius: 8px;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-item {
+            margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .status-item .label {
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .status-item .value {
+            color: #28a745;
+            font-family: 'Courier New', monospace;
+        }
+
+        .composing {
+            background: #fff3cd;
+            border-color: #ffeaa7;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        button:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .toggle-switch {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toggle-switch input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .hangul-analysis {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+
+        .hangul-analysis h3 {
+            margin-top: 0;
+            color: #495057;
+        }
+
+        .jamo-display {
+            display: flex;
+            gap: 20px;
+            margin: 10px 0;
+        }
+
+        .jamo-item {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+        }
+
+        .jamo-item .type {
+            font-size: 12px;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+
+        .jamo-item .char {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .test-results {
+            margin: 20px 0;
+            padding: 15px;
+            background: #d4edda;
+            border-radius: 8px;
+            border: 1px solid #c3e6cb;
+            display: none;
+        }
+
+        .test-results.error {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
+        .test-results h3 {
+            margin-top: 0;
+            color: #155724;
+        }
+
+        .test-results.error h3 {
+            color: #721c24;
+        }
+
+        .demo-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .demo-section h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 5px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #28a745;
+        }
+
+        .info-box {
+            padding: 15px;
+            background: #e3f2fd;
+            border-radius: 8px;
+            border: 1px solid #bbdefb;
+            margin: 20px 0;
+        }
+
+        .info-box h4 {
+            margin-top: 0;
+            color: #1565c0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🇰🇷 한국어 입력 처리 테스트</h1>
+        <p>BubblePop 게임의 한국어 입력 최적화 시스템을 테스트하는 페이지입니다.</p>
+
+        <!-- 입력 테스트 섹션 -->
+        <div class="section">
+            <h2>⌨️ 한국어 입력 테스트</h2>
+            
+            <div class="input-group">
+                <label for="singleLineInput">한 줄 입력 (Single Line Input)</label>
+                <input type="text" id="singleLineInput" placeholder="여기에 한국어를 입력하세요...">
+            </div>
+
+            <div class="input-group">
+                <label for="multiLineInput">여러 줄 입력 (Multi Line Input)</label>
+                <textarea id="multiLineInput" placeholder="여러 줄의 한국어 텍스트를 입력하세요..."></textarea>
+            </div>
+
+            <div class="controls">
+                <button id="attachHandlerBtn">핸들러 연결</button>
+                <button id="detachHandlerBtn">핸들러 해제</button>
+                <button id="testSmartSpacingBtn">스마트 띄어쓰기 테스트</button>
+                <button id="testJamoFixBtn">자모 분리 수정 테스트</button>
+            </div>
+
+            <div class="toggle-switch">
+                <input type="checkbox" id="autoCompleteToggle" checked>
+                <label for="autoCompleteToggle">자동 완성 활성화</label>
+            </div>
+            <div class="toggle-switch">
+                <input type="checkbox" id="smartSpacingToggle" checked>
+                <label for="smartSpacingToggle">스마트 띄어쓰기 활성화</label>
+            </div>
+        </div>
+
+        <!-- 입력 상태 모니터링 -->
+        <div class="section">
+            <h2>📊 입력 상태 모니터링</h2>
+            <div class="status-panel" id="statusPanel">
+                <div class="status-item">
+                    <span class="label">Composition 상태:</span>
+                    <span class="value" id="compositionStatus">대기 중</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">현재 조합 중인 텍스트:</span>
+                    <span class="value" id="compositionText">-</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">한국어 IME 감지:</span>
+                    <span class="value" id="imeStatus">확인 중...</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">연결된 입력 필드:</span>
+                    <span class="value" id="attachedCount">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 한글 분석 -->
+        <div class="section">
+            <h2>🔍 한글 분석</h2>
+            <div class="input-group">
+                <label for="analyzeInput">분석할 텍스트 입력</label>
+                <input type="text" id="analyzeInput" placeholder="분석할 한글을 입력하세요... (예: 한글)">
+            </div>
+            <button id="analyzeBtn">분석하기</button>
+            
+            <div class="hangul-analysis" id="analysisResult" style="display: none;">
+                <h3>분석 결과</h3>
+                <div id="analysisContent"></div>
+            </div>
+        </div>
+
+        <!-- 기능 데모 -->
+        <div class="demo-section">
+            <h3>🎯 주요 기능</h3>
+            <ul class="feature-list">
+                <li>한글 조합 실시간 모니터링 (Composition Events)</li>
+                <li>자모 분리 현상 자동 수정</li>
+                <li>스마트 띄어쓰기 (조사 앞 공백 제거)</li>
+                <li>한글 음절 분석 (초성, 중성, 종성)</li>
+                <li>IME 상태 감지 및 최적화</li>
+                <li>자동 완성 제안 (데모)</li>
+                <li>입력 통계 수집</li>
+            </ul>
+        </div>
+
+        <!-- 정보 박스 -->
+        <div class="info-box">
+            <h4>💡 사용 방법</h4>
+            <p>1. "핸들러 연결" 버튼을 클릭하여 한국어 입력 최적화를 활성화합니다.</p>
+            <p>2. 입력 필드에 한국어를 입력하면서 실시간 상태를 모니터링합니다.</p>
+            <p>3. 한글 분석 섹션에서 개별 문자의 자모 구성을 확인할 수 있습니다.</p>
+            <p>4. 스마트 띄어쓰기는 "은", "는", "이", "가" 등의 조사 앞 공백을 자동으로 제거합니다.</p>
+        </div>
+
+        <!-- 테스트 결과 표시 -->
+        <div class="test-results" id="testResults">
+            <h3>테스트 결과</h3>
+            <div id="testResultContent"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { getKoreanInputHandler } from './src/core/i18n/KoreanInputHandler.js';
+
+        class KoreanInputTestUI {
+            constructor() {
+                this.koreanHandler = getKoreanInputHandler();
+                this.initializeElements();
+                this.setupEventListeners();
+                this.updateStatus();
+            }
+
+            initializeElements() {
+                this.elements = {
+                    singleLineInput: document.getElementById('singleLineInput'),
+                    multiLineInput: document.getElementById('multiLineInput'),
+                    attachHandlerBtn: document.getElementById('attachHandlerBtn'),
+                    detachHandlerBtn: document.getElementById('detachHandlerBtn'),
+                    testSmartSpacingBtn: document.getElementById('testSmartSpacingBtn'),
+                    testJamoFixBtn: document.getElementById('testJamoFixBtn'),
+                    autoCompleteToggle: document.getElementById('autoCompleteToggle'),
+                    smartSpacingToggle: document.getElementById('smartSpacingToggle'),
+                    compositionStatus: document.getElementById('compositionStatus'),
+                    compositionText: document.getElementById('compositionText'),
+                    imeStatus: document.getElementById('imeStatus'),
+                    attachedCount: document.getElementById('attachedCount'),
+                    statusPanel: document.getElementById('statusPanel'),
+                    analyzeInput: document.getElementById('analyzeInput'),
+                    analyzeBtn: document.getElementById('analyzeBtn'),
+                    analysisResult: document.getElementById('analysisResult'),
+                    analysisContent: document.getElementById('analysisContent'),
+                    testResults: document.getElementById('testResults'),
+                    testResultContent: document.getElementById('testResultContent')
+                };
+            }
+
+            setupEventListeners() {
+                // 핸들러 연결/해제
+                this.elements.attachHandlerBtn.addEventListener('click', () => this.attachHandlers());
+                this.elements.detachHandlerBtn.addEventListener('click', () => this.detachHandlers());
+
+                // 테스트 버튼
+                this.elements.testSmartSpacingBtn.addEventListener('click', () => this.testSmartSpacing());
+                this.elements.testJamoFixBtn.addEventListener('click', () => this.testJamoFix());
+
+                // 설정 토글
+                this.elements.autoCompleteToggle.addEventListener('change', () => this.updateSettings());
+                this.elements.smartSpacingToggle.addEventListener('change', () => this.updateSettings());
+
+                // 한글 분석
+                this.elements.analyzeBtn.addEventListener('click', () => this.analyzeText());
+                this.elements.analyzeInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.analyzeText();
+                });
+
+                // 상태 모니터링을 위한 이벤트 리스너
+                this.setupCompositionMonitoring();
+            }
+
+            setupCompositionMonitoring() {
+                const inputs = [this.elements.singleLineInput, this.elements.multiLineInput];
+                
+                inputs.forEach(input => {
+                    input.addEventListener('compositionstart', () => {
+                        this.elements.compositionStatus.textContent = '조합 중';
+                        this.elements.statusPanel.classList.add('composing');
+                    });
+
+                    input.addEventListener('compositionupdate', (e) => {
+                        this.elements.compositionText.textContent = e.data || '-';
+                    });
+
+                    input.addEventListener('compositionend', () => {
+                        this.elements.compositionStatus.textContent = '대기 중';
+                        this.elements.compositionText.textContent = '-';
+                        this.elements.statusPanel.classList.remove('composing');
+                    });
+                });
+            }
+
+            attachHandlers() {
+                const attached1 = this.koreanHandler.attachToInput(this.elements.singleLineInput);
+                const attached2 = this.koreanHandler.attachToInput(this.elements.multiLineInput);
+
+                if (attached1 && attached2) {
+                    this.showResult('✅ 한국어 입력 핸들러가 연결되었습니다.', false);
+                } else {
+                    this.showResult('⚠️ 일부 입력 필드에 핸들러 연결이 실패했습니다.', true);
+                }
+
+                this.updateStatus();
+            }
+
+            detachHandlers() {
+                this.koreanHandler.detachFromInput(this.elements.singleLineInput);
+                this.koreanHandler.detachFromInput(this.elements.multiLineInput);
+                
+                this.showResult('✅ 한국어 입력 핸들러가 해제되었습니다.', false);
+                this.updateStatus();
+            }
+
+            updateSettings() {
+                const settings = {
+                    autoComplete: this.elements.autoCompleteToggle.checked,
+                    smartSpacing: this.elements.smartSpacingToggle.checked
+                };
+                
+                this.koreanHandler.updateSettings(settings);
+                this.showResult('✅ 설정이 업데이트되었습니다.', false);
+            }
+
+            testSmartSpacing() {
+                const testCases = [
+                    { input: '나 는 학생 이다', expected: '나는 학생이다' },
+                    { input: '책 을 읽는다', expected: '책을 읽는다' },
+                    { input: '학교 에 간다', expected: '학교에 간다' },
+                    { input: '친구 와 놀았다', expected: '친구와 놀았다' }
+                ];
+
+                let results = '<h4>스마트 띄어쓰기 테스트</h4>';
+                let allPassed = true;
+
+                testCases.forEach(test => {
+                    const result = this.koreanHandler.optimizeSpacing(test.input);
+                    const passed = result === test.expected;
+                    allPassed = allPassed && passed;
+                    
+                    results += `<p>${passed ? '✅' : '❌'} "${test.input}" → "${result}" (예상: "${test.expected}")</p>`;
+                });
+
+                this.showResult(results, !allPassed);
+            }
+
+            testJamoFix() {
+                const testCases = [
+                    { input: 'ㄱㅏ', expected: '가' },
+                    { input: 'ㄴㅏ', expected: '나' },
+                    { input: 'ㄷㅏ', expected: '다' }
+                ];
+
+                let results = '<h4>자모 분리 수정 테스트</h4>';
+                let allPassed = true;
+
+                testCases.forEach(test => {
+                    const result = this.koreanHandler.fixSeparatedJamo(test.input);
+                    const passed = result === test.expected;
+                    allPassed = allPassed && passed;
+                    
+                    results += `<p>${passed ? '✅' : '❌'} "${test.input}" → "${result}" (예상: "${test.expected}")</p>`;
+                });
+
+                this.showResult(results, !allPassed);
+            }
+
+            analyzeText() {
+                const text = this.elements.analyzeInput.value;
+                if (!text) {
+                    this.showResult('분석할 텍스트를 입력하세요.', true);
+                    return;
+                }
+
+                const analysis = this.koreanHandler.analyzeHangul(text);
+                
+                let html = '';
+                analysis.forEach(item => {
+                    if (item.char && item.chosung) {
+                        // 완성형 한글
+                        html += `
+                            <div style="margin: 10px 0;">
+                                <h4>"${item.char}" 분석</h4>
+                                <div class="jamo-display">
+                                    <div class="jamo-item">
+                                        <div class="type">초성</div>
+                                        <div class="char">${item.chosung}</div>
+                                    </div>
+                                    <div class="jamo-item">
+                                        <div class="type">중성</div>
+                                        <div class="char">${item.jungsung}</div>
+                                    </div>
+                                    <div class="jamo-item">
+                                        <div class="type">종성</div>
+                                        <div class="char">${item.jongsung || '없음'}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    } else if (item.type) {
+                        // 자모음
+                        html += `<p>"${item.char}" - ${item.type}</p>`;
+                    }
+                });
+
+                this.elements.analysisContent.innerHTML = html || '<p>한글이 포함되지 않았습니다.</p>';
+                this.elements.analysisResult.style.display = 'block';
+            }
+
+            updateStatus() {
+                const stats = this.koreanHandler.getStats();
+                
+                this.elements.imeStatus.textContent = stats.hasKoreanIME ? '✅ 감지됨' : '❌ 감지 안 됨';
+                this.elements.attachedCount.textContent = stats.attachedInputs;
+                
+                // 현재 설정 상태 반영
+                this.elements.autoCompleteToggle.checked = stats.settings.autoComplete;
+                this.elements.smartSpacingToggle.checked = stats.settings.smartSpacing;
+            }
+
+            showResult(content, isError = false) {
+                this.elements.testResultContent.innerHTML = content;
+                this.elements.testResults.classList.toggle('error', isError);
+                this.elements.testResults.style.display = 'block';
+                
+                // 3초 후 자동으로 숨기기
+                setTimeout(() => {
+                    this.elements.testResults.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // 페이지 로드 완료 후 초기화
+        document.addEventListener('DOMContentLoaded', () => {
+            new KoreanInputTestUI();
+        });
+    </script>
+</body>
+</html>

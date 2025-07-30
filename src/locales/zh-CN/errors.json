@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "language": "zh-CN",
+    "region": "CN",
+    "version": "1.0.0",
+    "lastUpdated": "2025-01-29T00:00:00Z",
+    "completeness": 100,
+    "quality": 90
+  },
+  "translations": {
+    "error": {
+      "generic": "发生错误",
+      "reload": "重新加载",
+      "canvasNotSupported": "您的浏览器不支持Canvas API。请使用现代浏览器。",
+      "audioNotSupported": "音频功能不可用。",
+      "storageNotSupported": "无法保存数据。"
+    }
+  }
+}

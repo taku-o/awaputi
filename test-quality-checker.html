@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translation Quality Checker Test - BubblePop</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+
+        .test-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .input-group {
+            margin: 20px 0;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .input-group input,
+        .input-group textarea,
+        .input-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .input-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            align-items: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover:not(:disabled) {
+            background: #2980b9;
+        }
+
+        button:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        button.secondary {
+            background: #95a5a6;
+        }
+
+        button.secondary:hover:not(:disabled) {
+            background: #7f8c8d;
+        }
+
+        button.success {
+            background: #27ae60;
+        }
+
+        button.success:hover:not(:disabled) {
+            background: #229954;
+        }
+
+        button.danger {
+            background: #e74c3c;
+        }
+
+        button.danger:hover:not(:disabled) {
+            background: #c0392b;
+        }
+
+        .results-area {
+            margin: 30px 0;
+            min-height: 200px;
+        }
+
+        .validation-results {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .validation-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .summary-card {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .summary-card .value {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .summary-card .label {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .summary-card.score {
+            border-left: 4px solid #3498db;
+        }
+
+        .summary-card.errors {
+            border-left: 4px solid #e74c3c;
+        }
+
+        .summary-card.warnings {
+            border-left: 4px solid #f39c12;
+        }
+
+        .summary-card.passed {
+            border-left: 4px solid #27ae60;
+        }
+
+        .quality-grade {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin: 10px 0;
+        }
+
+        .grade-excellent { background: #27ae60; }
+        .grade-good { background: #f39c12; }
+        .grade-acceptable { background: #e67e22; }
+        .grade-poor { background: #e74c3c; }
+        .grade-unacceptable { background: #8e44ad; }
+
+        .issues-section {
+            margin: 20px 0;
+        }
+
+        .issues-category {
+            margin: 15px 0;
+        }
+
+        .issues-category h4 {
+            margin: 10px 0 5px 0;
+            color: #2c3e50;
+        }
+
+        .issue-item {
+            margin: 8px 0;
+            padding: 12px;
+            border-radius: 6px;
+            border-left: 4px solid #ddd;
+        }
+
+        .issue-item.error {
+            background: #fee;
+            border-left-color: #e74c3c;
+        }
+
+        .issue-item.warning {
+            background: #fff8e1;
+            border-left-color: #f39c12;
+        }
+
+        .issue-item.passed {
+            background: #e8f5e8;
+            border-left-color: #27ae60;
+        }
+
+        .issue-header {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .issue-message {
+            margin: 8px 0;
+            color: #444;
+        }
+
+        .issue-suggestion {
+            background: rgba(52, 152, 219, 0.1);
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            margin-top: 8px;
+        }
+
+        .report-section {
+            margin: 30px 0;
+        }
+
+        .report-frame {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .test-samples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .sample-card {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .sample-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .sample-card h4 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+        }
+
+        .sample-card .sample-text {
+            font-size: 0.9em;
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .status-info {
+            padding: 15px;
+            background: #e8f5e8;
+            border-radius: 8px;
+            border: 1px solid #c3e6cb;
+            margin: 20px 0;
+        }
+
+        .status-info h4 {
+            margin: 0 0 10px 0;
+            color: #155724;
+        }
+
+        .rules-config {
+            margin: 20px 0;
+        }
+
+        .rule-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+
+        .rule-item input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .rule-item .rule-name {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .rule-item .rule-description {
+            flex: 2;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #ddd;
+            margin: 20px 0 0 0;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: #f8f9fa;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: white;
+            border-bottom-color: #3498db;
+            color: #3498db;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px 0;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 翻訳品質管理システム テスト</h1>
+        <p>BubblePop の翻訳品質管理システムの包括的なテストページです。翻訳の品質チェック、レポート生成、検証ルールのテストができます。</p>
+
+        <!-- テストサンプル選択 -->
+        <div class="section">
+            <h2>📋 テストサンプル</h2>
+            <p>以下のサンプルから選択してテストできます：</p>
+            
+            <div class="test-samples" id="testSamples">
+                <div class="sample-card" data-sample="good-translation">
+                    <h4>✅ 良好な翻訳</h4>
+                    <div class="sample-text">パラメータ、フォーマット、長さが適切な翻訳例</div>
+                </div>
+                <div class="sample-card" data-sample="parameter-error">
+                    <h4>❌ パラメータエラー</h4>
+                    <div class="sample-text">パラメータが不足している翻訳例</div>
+                </div>
+                <div class="sample-card" data-sample="format-error">
+                    <h4>❌ フォーマットエラー</h4>
+                    <div class="sample-text">HTMLタグやマークダウンが欠けている翻訳例</div>
+                </div>
+                <div class="sample-card" data-sample="length-warning">
+                    <h4>⚠️ 長さ警告</h4>
+                    <div class="sample-text">翻訳が長すぎる/短すぎる例</div>
+                </div>
+                <div class="sample-card" data-sample="cultural-warning">
+                    <h4>⚠️ 文化的配慮</h4>
+                    <div class="sample-text">文化的に不適切な表現を含む例</div>
+                </div>
+                <div class="sample-card" data-sample="incomplete-error">
+                    <h4>❌ 未完成翻訳</h4>
+                    <div class="sample-text">未翻訳マーカーや空文字を含む例</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 翻訳入力エリア -->
+        <div class="section">
+            <h2>✏️ 翻訳テスト入力</h2>
+            
+            <div class="test-area">
+                <div class="input-group">
+                    <label for="sourceText">原文（日本語）</label>
+                    <textarea id="sourceText" placeholder="チェックしたい原文を入力してください..."></textarea>
+                </div>
+                <div class="input-group">
+                    <label for="translationText">翻訳文</label>
+                    <textarea id="translationText" placeholder="品質をチェックする翻訳文を入力してください..."></textarea>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="targetLanguage">対象言語</label>
+                <select id="targetLanguage">
+                    <option value="en">English</option>
+                    <option value="zh-CN">简体中文 (Simplified Chinese)</option>
+                    <option value="zh-TW">繁體中文 (Traditional Chinese)</option>
+                    <option value="ko">한국어 (Korean)</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="translationKey">翻訳キー（オプション）</label>
+                <input type="text" id="translationKey" placeholder="例: menu.play, game.score">
+            </div>
+
+            <div class="controls">
+                <button id="runQualityCheck">品質チェック実行</button>
+                <button id="generateReport" class="secondary">詳細レポート生成</button>
+                <button id="generateCsvReport" class="secondary">CSV出力</button>
+                <button id="clearResults" class="danger">結果クリア</button>
+            </div>
+        </div>
+
+        <!-- 検証ルール設定 -->
+        <div class="section">
+            <h2>⚙️ 検証ルール設定</h2>
+            
+            <div class="rules-config" id="rulesConfig">
+                <!-- 動的に生成 -->
+            </div>
+        </div>
+
+        <!-- 結果表示エリア -->
+        <div class="section">
+            <h2>📊 検証結果</h2>
+            
+            <div class="loading" id="loadingIndicator">
+                <div class="spinner"></div>
+                <p>品質チェック実行中...</p>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active" data-tab="summary">サマリー</button>
+                <button class="tab" data-tab="issues">問題詳細</button>
+                <button class="tab" data-tab="report">レポート</button>
+                <button class="tab" data-tab="stats">統計</button>
+            </div>
+
+            <div class="tab-content active" id="summary-tab">
+                <div id="validationSummary">
+                    <p>品質チェックを実行してください。</p>
+                </div>
+            </div>
+
+            <div class="tab-content" id="issues-tab">
+                <div id="validationIssues">
+                    <p>品質チェックを実行すると、問題の詳細がここに表示されます。</p>
+                </div>
+            </div>
+
+            <div class="tab-content" id="report-tab">
+                <div id="qualityReport">
+                    <p>詳細レポートを生成してください。</p>
+                </div>
+            </div>
+
+            <div class="tab-content" id="stats-tab">
+                <div id="qualityStats">
+                    <p>品質チェックの統計情報がここに表示されます。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ステータス情報 -->
+        <div class="status-info">
+            <h4>💡 システム情報</h4>
+            <div id="systemStatus">
+                システムの初期化中...
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { getQualityChecker } from './src/core/i18n/quality/QualityChecker.js';
+        import { getQualityReporter } from './src/core/i18n/quality/QualityReporter.js';
+        import { validationRuleFactory } from './src/core/i18n/quality/ValidationRules.js';
+
+        class QualityCheckerTestUI {
+            constructor() {
+                this.qualityChecker = getQualityChecker();
+                this.qualityReporter = getQualityReporter();
+                this.validationRuleFactory = validationRuleFactory;
+                this.currentResults = null;
+                
+                this.initializeElements();
+                this.setupEventListeners();
+                this.initializeRulesConfig();
+                this.initializeTestSamples();
+                this.updateSystemStatus();
+            }
+
+            initializeElements() {
+                this.elements = {
+                    sourceText: document.getElementById('sourceText'),
+                    translationText: document.getElementById('translationText'),
+                    targetLanguage: document.getElementById('targetLanguage'),
+                    translationKey: document.getElementById('translationKey'),
+                    runQualityCheck: document.getElementById('runQualityCheck'),
+                    generateReport: document.getElementById('generateReport'),
+                    generateCsvReport: document.getElementById('generateCsvReport'),
+                    clearResults: document.getElementById('clearResults'),
+                    rulesConfig: document.getElementById('rulesConfig'),
+                    loadingIndicator: document.getElementById('loadingIndicator'),
+                    validationSummary: document.getElementById('validationSummary'),
+                    validationIssues: document.getElementById('validationIssues'),
+                    qualityReport: document.getElementById('qualityReport'),
+                    qualityStats: document.getElementById('qualityStats'),
+                    systemStatus: document.getElementById('systemStatus'),
+                    testSamples: document.getElementById('testSamples')
+                };
+            }
+
+            setupEventListeners() {
+                // メインボタン
+                this.elements.runQualityCheck.addEventListener('click', () => this.runQualityCheck());
+                this.elements.generateReport.addEventListener('click', () => this.generateDetailedReport());
+                this.elements.generateCsvReport.addEventListener('click', () => this.generateCSVReport());
+                this.elements.clearResults.addEventListener('click', () => this.clearResults());
+
+                // タブ切り替え
+                document.querySelectorAll('.tab').forEach(tab => {
+                    tab.addEventListener('click', (e) => this.switchTab(e.target.dataset.tab));
+                });
+
+                // テストサンプル選択
+                this.elements.testSamples.addEventListener('click', (e) => {
+                    const sampleCard = e.target.closest('.sample-card');
+                    if (sampleCard) {
+                        this.loadTestSample(sampleCard.dataset.sample);
+                    }
+                });
+            }
+
+            initializeRulesConfig() {
+                const rules = [
+                    { id: 'parameterConsistency', name: 'パラメータ整合性チェック', description: '翻訳文中のパラメータが原文と一致するかチェック', enabled: true },
+                    { id: 'lengthValidation', name: '翻訳長制限チェック', description: '翻訳文の長さが適切な範囲内かチェック', enabled: true },
+                    { id: 'formatValidation', name: 'フォーマット検証', description: 'HTML要素、マークダウン記法等のフォーマットが保持されているかチェック', enabled: true },
+                    { id: 'culturalAppropriateness', name: '文化的適切性チェック', description: '文化的に不適切な表現や誤解を招く表現がないかチェック', enabled: true },
+                    { id: 'completenessCheck', name: '翻訳完成度チェック', description: '空文字や未翻訳の項目がないかチェック', enabled: true },
+                    { id: 'consistencyCheck', name: '翻訳一貫性チェック', description: '翻訳の一貫性をチェック', enabled: true }
+                ];
+
+                let html = '';
+                rules.forEach(rule => {
+                    html += `
+                        <div class="rule-item">
+                            <input type="checkbox" id="rule-${rule.id}" ${rule.enabled ? 'checked' : ''}>
+                            <div class="rule-name">${rule.name}</div>
+                            <div class="rule-description">${rule.description}</div>
+                        </div>
+                    `;
+                });
+
+                this.elements.rulesConfig.innerHTML = html;
+            }
+
+            initializeTestSamples() {
+                this.testSamples = {
+                    'good-translation': {
+                        source: 'あなたのスコアは {score} 点です。**おめでとうございます！**',
+                        translation: 'Your score is {score} points. **Congratulations!**',
+                        key: 'game.score_message',
+                        targetLanguage: 'en'
+                    },
+                    'parameter-error': {
+                        source: 'プレイヤー {player} が {points} ポイント獲得しました。',
+                        translation: 'Player gained points.',
+                        key: 'game.player_points',
+                        targetLanguage: 'en'
+                    },
+                    'format-error': {
+                        source: '<strong>重要</strong>: この操作は**取り消せません**。',
+                        translation: '重要: This operation cannot be undone.',
+                        key: 'common.warning',
+                        targetLanguage: 'en'
+                    },
+                    'length-warning': {
+                        source: 'OK',
+                        translation: 'This is an extremely long translation that is way too verbose for such a simple original text and should probably be shortened significantly.',
+                        key: 'common.ok',
+                        targetLanguage: 'en'
+                    },
+                    'cultural-warning': {
+                        source: 'アジア系の文化について学びましょう。',
+                        translation: 'Let us learn about oriental culture.',
+                        key: 'education.culture',
+                        targetLanguage: 'en'
+                    },
+                    'incomplete-error': {
+                        source: 'ゲームを開始する',
+                        translation: 'TODO: Start the game',
+                        key: 'menu.start_game',
+                        targetLanguage: 'en'
+                    }
+                };
+            }
+
+            loadTestSample(sampleId) {
+                const sample = this.testSamples[sampleId];
+                if (!sample) return;
+
+                this.elements.sourceText.value = sample.source;
+                this.elements.translationText.value = sample.translation;
+                this.elements.translationKey.value = sample.key;
+                this.elements.targetLanguage.value = sample.targetLanguage;
+
+                // ハイライト効果
+                const sampleCard = document.querySelector(`[data-sample="${sampleId}"]`);
+                if (sampleCard) {
+                    sampleCard.style.background = '#e3f2fd';
+                    setTimeout(() => {
+                        sampleCard.style.background = '';
+                    }, 1000);
+                }
+            }
+
+            async runQualityCheck() {
+                const sourceText = this.elements.sourceText.value.trim();
+                const translationText = this.elements.translationText.value.trim();
+                const targetLanguage = this.elements.targetLanguage.value;
+                const translationKey = this.elements.translationKey.value.trim() || 'test.key';
+
+                if (!sourceText || !translationText) {
+                    alert('原文と翻訳文の両方を入力してください。');
+                    return;
+                }
+
+                this.showLoading(true);
+
+                try {
+                    // 翻訳データを構成
+                    const translations = {
+                        [translationKey]: translationText
+                    };
+
+                    // 品質チェック実行
+                    const results = await this.qualityChecker.validateTranslations(
+                        translations,
+                        'ja',
+                        targetLanguage
+                    );
+
+                    this.currentResults = results;
+                    this.displayResults(results);
+                    this.switchTab('summary');
+
+                } catch (error) {
+                    console.error('Quality check error:', error);
+                    alert(`品質チェック中にエラーが発生しました: ${error.message}`);
+                } finally {
+                    this.showLoading(false);
+                }
+            }
+
+            async generateDetailedReport() {
+                if (!this.currentResults) {
+                    alert('先に品質チェックを実行してください。');
+                    return;
+                }
+
+                this.showLoading(true);
+
+                try {
+                    const reportResult = this.qualityReporter.generateComprehensiveReport(
+                        this.currentResults,
+                        { template: 'detailed' }
+                    );
+
+                    this.displayReport(reportResult.report);
+                    this.switchTab('report');
+
+                } catch (error) {
+                    console.error('Report generation error:', error);
+                    alert(`レポート生成中にエラーが発生しました: ${error.message}`);
+                } finally {
+                    this.showLoading(false);
+                }
+            }
+
+            async generateCSVReport() {
+                if (!this.currentResults) {
+                    alert('先に品質チェックを実行してください。');
+                    return;
+                }
+
+                try {
+                    const reportResult = this.qualityReporter.generateComprehensiveReport(
+                        this.currentResults,
+                        { template: 'csv' }
+                    );
+
+                    // CSVをダウンロード
+                    const blob = new Blob([reportResult.report], { type: 'text/csv' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `quality-report-${this.currentResults.language}-${Date.now()}.csv`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+
+                } catch (error) {
+                    console.error('CSV generation error:', error);
+                    alert(`CSV生成中にエラーが発生しました: ${error.message}`);
+                }
+            }
+
+            displayResults(results) {
+                this.displaySummary(results);
+                this.displayIssues(results);
+                this.displayStats();
+            }
+
+            displaySummary(results) {
+                const qualityGradeClass = `grade-${results.qualityGrade}`;
+                const qualityGradeText = this.getQualityGradeText(results.qualityGrade);
+
+                this.elements.validationSummary.innerHTML = `
+                    <div class="validation-summary">
+                        <div class="summary-card score">
+                            <div class="value">${results.qualityScore}</div>
+                            <div class="label">品質スコア</div>
+                        </div>
+                        <div class="summary-card errors">
+                            <div class="value">${results.errors.length}</div>
+                            <div class="label">エラー</div>
+                        </div>
+                        <div class="summary-card warnings">
+                            <div class="value">${results.warnings.length}</div>
+                            <div class="label">警告</div>
+                        </div>
+                        <div class="summary-card passed">
+                            <div class="value">${results.passed.length}</div>
+                            <div class="label">合格</div>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 20px 0;">
+                        <div class="quality-grade ${qualityGradeClass}">${qualityGradeText}</div>
+                    </div>
+                    
+                    <div style="margin: 20px 0;">
+                        <p><strong>言語:</strong> ${results.language}</p>
+                        <p><strong>チェック項目:</strong> ${results.checkedItems} / ${results.totalItems}</p>
+                        <p><strong>検証完了時刻:</strong> ${new Date(results.timestamp).toLocaleString('ja-JP')}</p>
+                    </div>
+                `;
+            }
+
+            displayIssues(results) {
+                let html = '';
+
+                if (results.errors.length > 0) {
+                    html += '<div class="issues-category"><h4>🔴 エラー</h4>';
+                    results.errors.forEach(error => {
+                        html += this.renderIssueItem(error, 'error');
+                    });
+                    html += '</div>';
+                }
+
+                if (results.warnings.length > 0) {
+                    html += '<div class="issues-category"><h4>🟡 警告</h4>';
+                    results.warnings.forEach(warning => {
+                        html += this.renderIssueItem(warning, 'warning');
+                    });
+                    html += '</div>';
+                }
+
+                if (results.passed.length > 0) {
+                    html += '<div class="issues-category"><h4>✅ 合格</h4>';
+                    results.passed.slice(0, 10).forEach(passed => { // 最初の10個のみ表示
+                        html += this.renderIssueItem(passed, 'passed');
+                    });
+                    if (results.passed.length > 10) {
+                        html += `<p style="text-align: center; color: #666;">他 ${results.passed.length - 10} 個の合格項目があります。</p>`;
+                    }
+                    html += '</div>';
+                }
+
+                this.elements.validationIssues.innerHTML = html || '<p>問題は検出されませんでした。</p>';
+            }
+
+            renderIssueItem(issue, type) {
+                return `
+                    <div class="issue-item ${type}">
+                        <div class="issue-header">${issue.name || this.getRuleDisplayName(issue.rule)}</div>
+                        <div class="issue-message">${issue.message}</div>
+                        ${issue.suggestion ? `<div class="issue-suggestion">💡 ${issue.suggestion}</div>` : ''}
+                    </div>
+                `;
+            }
+
+            displayReport(reportHtml) {
+                this.elements.qualityReport.innerHTML = `
+                    <div style="border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
+                        <iframe srcdoc="${reportHtml.replace(/"/g, '&quot;')}" 
+                                style="width: 100%; height: 600px; border: none;">
+                        </iframe>
+                    </div>
+                `;
+            }
+
+            displayStats() {
+                const stats = this.qualityChecker.getStats();
+                const reporterStats = this.qualityReporter.getStats();
+
+                this.elements.qualityStats.innerHTML = `
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <h4>品質チェッカー統計</h4>
+                            <ul>
+                                <li>総チェック数: ${stats.totalChecks}</li>
+                                <li>合格数: ${stats.passedChecks}</li>
+                                <li>失敗数: ${stats.failedChecks}</li>
+                                <li>警告数: ${stats.warnings}</li>
+                                <li>有効ルール数: ${stats.activeRules.length}</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>レポーター統計</h4>
+                            <ul>
+                                <li>生成レポート数: ${reporterStats.totalReports}</li>
+                                <li>追跡言語数: ${reporterStats.languagesTracked}</li>
+                                <li>利用可能テンプレート: ${reporterStats.availableTemplates.join(', ')}</li>
+                                <li>平均品質スコア: ${reporterStats.averageQualityScore}</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            }
+
+            switchTab(tabName) {
+                // タブの切り替え
+                document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+                document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+                document.getElementById(`${tabName}-tab`).classList.add('active');
+            }
+
+            showLoading(show) {
+                this.elements.loadingIndicator.classList.toggle('show', show);
+                this.elements.runQualityCheck.disabled = show;
+                this.elements.generateReport.disabled = show;
+                this.elements.generateCsvReport.disabled = show;
+            }
+
+            clearResults() {
+                this.currentResults = null;
+                this.elements.validationSummary.innerHTML = '<p>品質チェックを実行してください。</p>';
+                this.elements.validationIssues.innerHTML = '<p>品質チェックを実行すると、問題の詳細がここに表示されます。</p>';
+                this.elements.qualityReport.innerHTML = '<p>詳細レポートを生成してください。</p>';
+                this.elements.qualityStats.innerHTML = '<p>品質チェックの統計情報がここに表示されます。</p>';
+                this.switchTab('summary');
+            }
+
+            updateSystemStatus() {
+                const checkerStats = this.qualityChecker.getStats();
+                const availableRules = this.validationRuleFactory.getAvailableRuleTypes();
+
+                this.elements.systemStatus.innerHTML = `
+                    <p><strong>品質チェッカー:</strong> 初期化完了</p>
+                    <p><strong>利用可能検証ルール:</strong> ${availableRules.length} 個</p>
+                    <p><strong>品質レポーター:</strong> 初期化完了</p>
+                    <p><strong>テストサンプル:</strong> ${Object.keys(this.testSamples).length} 個</p>
+                `;
+            }
+
+            // ヘルパー関数
+            getQualityGradeText(grade) {
+                const grades = {
+                    excellent: '優秀',
+                    good: '良好',
+                    acceptable: '可',
+                    poor: '不良',
+                    unacceptable: '不可'
+                };
+                return grades[grade] || grade;
+            }
+
+            getRuleDisplayName(rule) {
+                const names = {
+                    parameterConsistency: 'パラメータ整合性',
+                    lengthValidation: '長さ検証',
+                    formatValidation: 'フォーマット検証',
+                    culturalAppropriateness: '文化的適切性',
+                    completenessCheck: '完成度チェック',
+                    consistencyCheck: '一貫性チェック'
+                };
+                return names[rule] || rule;
+            }
+        }
+
+        // ページ読み込み完了後に初期化
+        document.addEventListener('DOMContentLoaded', () => {
+            new QualityCheckerTestUI();
+        });
+    </script>
+</body>
+</html>

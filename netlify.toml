@@ -57,6 +57,21 @@
     Cache-Control = "public, max-age=31536000, immutable"
     X-Content-Type-Options = "nosniff"
 
+# Translation files caching - shorter cache time for updates
+[[headers]]
+  for = "/src/locales/*.json"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, must-revalidate"
+    X-Content-Type-Options = "nosniff"
+    Content-Type = "application/json; charset=utf-8"
+
+[[headers]]
+  for = "/src/locales/*/*.json"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, must-revalidate"
+    X-Content-Type-Options = "nosniff"
+    Content-Type = "application/json; charset=utf-8"
+
 [[headers]]
   for = "/index.html"
   [headers.values]
@@ -65,6 +80,11 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    # Content Security Policy for internationalization
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self'; img-src 'self' data: blob:;"
+    # Internationalization headers
+    Accept-Language = "ja, en, zh-CN, zh-TW, ko"
+    Vary = "Accept-Language, Accept-Encoding"
 
 [[headers]]
   for = "/*.html"
@@ -72,6 +92,7 @@
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+    Vary = "Accept-Language, Accept-Encoding"
 
 # Edge functions (if needed for future features)
 # [[edge_functions]]

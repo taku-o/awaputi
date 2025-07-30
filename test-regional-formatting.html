@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regional Formatting Test - BubblePop</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+
+        .test-section h2 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+
+        .test-controls {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        button:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .results {
+            margin: 20px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 5px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .test-result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .test-result.pass {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .test-result.fail {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .format-demo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .format-card {
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .format-card h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+
+        .format-example {
+            margin: 10px 0;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .language-selector {
+            margin: 20px 0;
+        }
+
+        select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            font-size: 14px;
+        }
+
+        .summary {
+            margin: 30px 0;
+            padding: 20px;
+            background: #e8f5e8;
+            border-radius: 8px;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌍 Regional Formatting Test Suite</h1>
+        <p>このページでは、BubblePopゲームの地域化機能（多言語・地域別フォーマット）をテストします。</p>
+
+        <!-- テスト制御 -->
+        <div class="test-section">
+            <h2>🧪 Test Controls</h2>
+            <div class="test-controls">
+                <button id="runAllTests">全テストを実行</button>
+                <button id="runNumberTest">数値フォーマットテスト</button>
+                <button id="runDateTest">日付フォーマットテスト</button>
+                <button id="runCurrencyTest">通貨フォーマットテスト</button>
+                <button id="clearResults">結果クリア</button>
+            </div>
+        </div>
+
+        <!-- ライブフォーマットデモ -->
+        <div class="test-section">
+            <h2>🎨 Live Formatting Demo</h2>
+            <div class="language-selector">
+                <label>言語選択: </label>
+                <select id="languageSelect">
+                    <option value="ja">日本語 (ja)</option>
+                    <option value="en">English (en)</option>
+                    <option value="zh-CN">简体中文 (zh-CN)</option>
+                    <option value="zh-TW">繁體中文 (zh-TW)</option>
+                    <option value="ko">한국어 (ko)</option>
+                </select>
+                <button id="updateDemo">デモ更新</button>
+            </div>
+            <div class="format-demo" id="formatDemo">
+                <!-- 動的に生成 -->
+            </div>
+        </div>
+
+        <!-- テスト結果 -->
+        <div class="test-section">
+            <h2>📊 Test Results</h2>
+            <div id="testSummary" class="summary" style="display: none;">
+                <!-- テストサマリー -->
+            </div>
+            <div id="testResults" class="results">
+                <p>テストを実行すると、ここに結果が表示されます。</p>
+            </div>
+        </div>
+
+        <!-- エラー表示 -->
+        <div id="errorDisplay" class="error" style="display: none;">
+            <!-- エラーメッセージ -->
+        </div>
+
+        <!-- ローディング表示 -->
+        <div id="loadingDisplay" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>テストを実行中...</p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { runRegionalFormattingTests } from './src/core/i18n/test/RegionalFormattingTest.js';
+        import { FormatterEngine } from './src/core/i18n/FormatterEngine.js';
+        import { getRegionalSettingsManager } from './src/core/i18n/RegionalSettingsManager.js';
+
+        class RegionalFormattingTestUI {
+            constructor() {
+                this.formatterEngine = new FormatterEngine();
+                this.regionalSettingsManager = getRegionalSettingsManager();
+                this.currentLanguage = 'ja';
+                
+                this.initializeUI();
+                this.setupEventListeners();
+                
+                // 初期デモ表示
+                setTimeout(() => this.updateDemo(), 500);
+            }
+
+            initializeUI() {
+                this.elements = {
+                    runAllTests: document.getElementById('runAllTests'),
+                    runNumberTest: document.getElementById('runNumberTest'),
+                    runDateTest: document.getElementById('runDateTest'),
+                    runCurrencyTest: document.getElementById('runCurrencyTest'),
+                    clearResults: document.getElementById('clearResults'),
+                    languageSelect: document.getElementById('languageSelect'),
+                    updateDemo: document.getElementById('updateDemo'),
+                    formatDemo: document.getElementById('formatDemo'),
+                    testSummary: document.getElementById('testSummary'),
+                    testResults: document.getElementById('testResults'),
+                    errorDisplay: document.getElementById('errorDisplay'),
+                    loadingDisplay: document.getElementById('loadingDisplay')
+                };
+            }
+
+            setupEventListeners() {
+                this.elements.runAllTests.addEventListener('click', () => this.runAllTests());
+                this.elements.runNumberTest.addEventListener('click', () => this.runSpecificTest('number'));
+                this.elements.runDateTest.addEventListener('click', () => this.runSpecificTest('date'));
+                this.elements.runCurrencyTest.addEventListener('click', () => this.runSpecificTest('currency'));
+                this.elements.clearResults.addEventListener('click', () => this.clearResults());
+                this.elements.updateDemo.addEventListener('click', () => this.updateDemo());
+                this.elements.languageSelect.addEventListener('change', (e) => {
+                    this.currentLanguage = e.target.value;
+                    this.updateDemo();
+                });
+            }
+
+            async runAllTests() {
+                this.showLoading(true);
+                this.hideError();
+
+                try {
+                    const { results, report } = await runRegionalFormattingTests();
+                    this.displayTestResults(results, report);
+                } catch (error) {
+                    this.showError('テスト実行中にエラーが発生しました: ' + error.message);
+                } finally {
+                    this.showLoading(false);
+                }
+            }
+
+            async runSpecificTest(type) {
+                this.showLoading(true);
+                this.hideError();
+
+                try {
+                    // 簡単な個別テスト実装
+                    let results = [];
+                    
+                    switch (type) {
+                        case 'number':
+                            results = await this.testNumberFormatting();
+                            break;
+                        case 'date':
+                            results = await this.testDateFormatting();
+                            break;
+                        case 'currency':
+                            results = await this.testCurrencyFormatting();
+                            break;
+                    }
+                    
+                    this.displaySpecificTestResults(results, type);
+                } catch (error) {
+                    this.showError(`${type}テスト実行中にエラーが発生しました: ` + error.message);
+                } finally {
+                    this.showLoading(false);
+                }
+            }
+
+            async testNumberFormatting() {
+                const results = [];
+                const testValues = [1234.56, 1000000, 0.123, -5678];
+                const languages = ['ja', 'en', 'zh-CN', 'ko'];
+
+                for (const language of languages) {
+                    for (const value of testValues) {
+                        try {
+                            const settings = this.regionalSettingsManager.getCompleteSettings(language);
+                            const formatted = this.formatterEngine.formatters.get('number')
+                                .formatWithSettings(value, settings.numberFormat);
+                            
+                            results.push({
+                                category: 'Number Formatting',
+                                testName: `${language}: ${value}`,
+                                passed: true,
+                                actual: formatted,
+                                expected: 'Formatted successfully'
+                            });
+                        } catch (error) {
+                            results.push({
+                                category: 'Number Formatting',
+                                testName: `${language}: ${value}`,
+                                passed: false,
+                                actual: 'Error',
+                                expected: error.message
+                            });
+                        }
+                    }
+                }
+
+                return results;
+            }
+
+            async testDateFormatting() {
+                const results = [];
+                const testDate = new Date('2025-07-29T14:30:00');
+                const languages = ['ja', 'en', 'zh-CN', 'ko'];
+                const formats = ['short', 'medium', 'long'];
+
+                for (const language of languages) {
+                    for (const format of formats) {
+                        try {
+                            const settings = this.regionalSettingsManager.getCompleteSettings(language);
+                            const formatted = this.formatterEngine.formatters.get('date')
+                                .formatWithSettings(testDate, settings.dateFormat, format);
+                            
+                            results.push({
+                                category: 'Date Formatting',
+                                testName: `${language} (${format})`,
+                                passed: true,
+                                actual: formatted,
+                                expected: 'Formatted successfully'
+                            });
+                        } catch (error) {
+                            results.push({
+                                category: 'Date Formatting',
+                                testName: `${language} (${format})`,
+                                passed: false,
+                                actual: 'Error',
+                                expected: error.message
+                            });
+                        }
+                    }
+                }
+
+                return results;
+            }
+
+            async testCurrencyFormatting() {
+                const results = [];
+                const testValues = [1234.56, 100, -50.99];
+                const languages = ['ja', 'en', 'zh-CN', 'ko'];
+
+                for (const language of languages) {
+                    for (const value of testValues) {
+                        try {
+                            const settings = this.regionalSettingsManager.getCompleteSettings(language);
+                            const formatted = this.formatterEngine.formatters.get('currency')
+                                .formatWithSettings(value, settings.currencyFormat);
+                            
+                            results.push({
+                                category: 'Currency Formatting',
+                                testName: `${language}: ${value}`,
+                                passed: true,
+                                actual: formatted,
+                                expected: 'Formatted successfully'
+                            });
+                        } catch (error) {
+                            results.push({
+                                category: 'Currency Formatting',
+                                testName: `${language}: ${value}`,
+                                passed: false,
+                                actual: 'Error',
+                                expected: error.message
+                            });
+                        }
+                    }
+                }
+
+                return results;
+            }
+
+            displayTestResults(results, report) {
+                // サマリー表示
+                this.elements.testSummary.innerHTML = `
+                    <h3>📊 Test Summary</h3>
+                    <p><strong>Total Tests:</strong> ${report.summary.totalTests}</p>
+                    <p><strong>Passed:</strong> ${report.summary.passedTests}</p>
+                    <p><strong>Failed:</strong> ${report.summary.failedTests}</p>
+                    <p><strong>Success Rate:</strong> ${report.summary.successRate}</p>
+                `;
+                this.elements.testSummary.style.display = 'block';
+
+                // 詳細結果表示
+                let html = '<h3>詳細テスト結果</h3>';
+                
+                Object.keys(report.categories).forEach(category => {
+                    const categoryData = report.categories[category];
+                    html += `<h4>${category} (${categoryData.passed}/${categoryData.total})</h4>`;
+                    
+                    categoryData.tests.forEach(test => {
+                        const cssClass = test.passed ? 'pass' : 'fail';
+                        const icon = test.passed ? '✅' : '❌';
+                        
+                        html += `
+                            <div class="test-result ${cssClass}">
+                                ${icon} <strong>${test.testName}</strong><br>
+                                Result: ${test.actual}
+                                ${!test.passed ? `<br>Expected: ${test.expected}` : ''}
+                            </div>
+                        `;
+                    });
+                });
+
+                this.elements.testResults.innerHTML = html;
+            }
+
+            displaySpecificTestResults(results, type) {
+                const passedCount = results.filter(r => r.passed).length;
+                const totalCount = results.length;
+
+                let html = `<h3>${type} テスト結果 (${passedCount}/${totalCount})</h3>`;
+                
+                results.forEach(result => {
+                    const cssClass = result.passed ? 'pass' : 'fail';
+                    const icon = result.passed ? '✅' : '❌';
+                    
+                    html += `
+                        <div class="test-result ${cssClass}">
+                            ${icon} <strong>${result.testName}</strong><br>
+                            Result: ${result.actual}
+                            ${!result.passed ? `<br>Expected: ${result.expected}` : ''}
+                        </div>
+                    `;
+                });
+
+                this.elements.testResults.innerHTML = html;
+                this.elements.testSummary.style.display = 'none';
+            }
+
+            async updateDemo() {
+                try {
+                    const settings = this.regionalSettingsManager.getCompleteSettings(this.currentLanguage);
+                    const now = new Date();
+                    
+                    const demoData = [
+                        {
+                            title: '数値フォーマット',
+                            examples: [
+                                { label: '整数', value: this.formatterEngine.formatters.get('number').formatWithSettings(12345, settings.numberFormat) },
+                                { label: '小数', value: this.formatterEngine.formatters.get('number').formatWithSettings(1234.56, settings.numberFormat) },
+                                { label: '大きな数', value: this.formatterEngine.formatters.get('number').formatWithSettings(1234567.89, settings.numberFormat) }
+                            ]
+                        },
+                        {
+                            title: '日付フォーマット',
+                            examples: [
+                                { label: 'Short', value: this.formatterEngine.formatters.get('date').formatWithSettings(now, settings.dateFormat, 'short') },
+                                { label: 'Medium', value: this.formatterEngine.formatters.get('date').formatWithSettings(now, settings.dateFormat, 'medium') },
+                                { label: 'Long', value: this.formatterEngine.formatters.get('date').formatWithSettings(now, settings.dateFormat, 'long') }
+                            ]
+                        },
+                        {
+                            title: '通貨フォーマット',
+                            examples: [
+                                { label: '基本', value: this.formatterEngine.formatters.get('currency').formatWithSettings(99.99, settings.currencyFormat) },
+                                { label: '大きな金額', value: this.formatterEngine.formatters.get('currency').formatWithSettings(123456.78, settings.currencyFormat) },
+                                { label: '負の値', value: this.formatterEngine.formatters.get('currency').formatWithSettings(-50.25, settings.currencyFormat) }
+                            ]
+                        },
+                        {
+                            title: '時刻フォーマット',
+                            examples: [
+                                { label: 'Short', value: this.formatterEngine.formatters.get('date').formatTimeWithSettings(now, settings.timeFormat, 'short') },
+                                { label: 'Medium', value: this.formatterEngine.formatters.get('date').formatTimeWithSettings(now, settings.timeFormat, 'medium') },
+                                { label: 'Long', value: this.formatterEngine.formatters.get('date').formatTimeWithSettings(now, settings.timeFormat, 'long') }
+                            ]
+                        }
+                    ];
+
+                    let html = '';
+                    demoData.forEach(section => {
+                        html += `
+                            <div class="format-card">
+                                <h3>${section.title}</h3>
+                                ${section.examples.map(example => 
+                                    `<div class="format-example">
+                                        <strong>${example.label}:</strong> ${example.value}
+                                    </div>`
+                                ).join('')}
+                            </div>
+                        `;
+                    });
+
+                    this.elements.formatDemo.innerHTML = html;
+                } catch (error) {
+                    this.showError('デモ更新中にエラーが発生しました: ' + error.message);
+                }
+            }
+
+            clearResults() {
+                this.elements.testResults.innerHTML = '<p>テストを実行すると、ここに結果が表示されます。</p>';
+                this.elements.testSummary.style.display = 'none';
+                this.hideError();
+            }
+
+            showLoading(show) {
+                this.elements.loadingDisplay.style.display = show ? 'block' : 'none';
+                
+                // ボタンを無効化/有効化
+                const buttons = [
+                    this.elements.runAllTests,
+                    this.elements.runNumberTest,
+                    this.elements.runDateTest,
+                    this.elements.runCurrencyTest
+                ];
+                
+                buttons.forEach(button => {
+                    button.disabled = show;
+                });
+            }
+
+            showError(message) {
+                this.elements.errorDisplay.innerHTML = `<strong>エラー:</strong> ${message}`;
+                this.elements.errorDisplay.style.display = 'block';
+            }
+
+            hideError() {
+                this.elements.errorDisplay.style.display = 'none';
+            }
+        }
+
+        // ページ読み込み完了後に初期化
+        document.addEventListener('DOMContentLoaded', () => {
+            new RegionalFormattingTestUI();
+        });
+    </script>
+</body>
+</html>

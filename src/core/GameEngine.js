@@ -165,6 +165,75 @@ export class GameEngine {
         
         this.setupEventListeners();
         this.initializePerformanceOptimization();
+        
+        // 言語変更イベントリスナーを設定
+        this.setupLanguageChangeListener();
+    }
+    
+    /**
+     * 言語変更イベントリスナーを設定
+     */
+    setupLanguageChangeListener() {
+        this.localizationManager.addLanguageChangeListener((newLanguage, oldLanguage) => {
+            this.onLanguageChanged(newLanguage, oldLanguage);
+        });
+    }
+    
+    /**
+     * 言語変更時の処理
+     */
+    onLanguageChanged(newLanguage, oldLanguage) {
+        try {
+            console.log(`Language changed from ${oldLanguage} to ${newLanguage}`);
+            
+            // HTMLのlang属性を更新
+            document.documentElement.lang = newLanguage;
+            
+            // 設定を永続化
+            this.settingsManager.set('language', newLanguage);
+            
+            // 全シーンのUI更新
+            this.refreshAllScenes();
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'LANGUAGE_CHANGE_ERROR', {
+                newLanguage: newLanguage,
+                oldLanguage: oldLanguage
+            });
+        }
+    }
+    
+    /**
+     * 全シーンのUI更新
+     */
+    refreshAllScenes() {
+        try {
+            // 現在のシーンを取得
+            const currentScene = this.sceneManager.getCurrentScene();
+            
+            // すべての登録されたシーンの翻訳を更新
+            const sceneNames = ['menu', 'stageSelect', 'game', 'shop', 'userInfo'];
+            
+            for (const sceneName of sceneNames) {
+                const scene = this.sceneManager.getScene(sceneName);
+                if (scene && typeof scene.updateMenuLabels === 'function') {
+                    scene.updateMenuLabels();
+                }
+                if (scene && typeof scene.refreshLabels === 'function') {
+                    scene.refreshLabels();
+                }
+            }
+            
+            // 現在のシーンを再描画
+            if (currentScene && typeof currentScene.render === 'function') {
+                currentScene.render(this.context);
+            }
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'SCENE_REFRESH_ERROR', {
+                operation: 'refreshAllScenes'
+            });
+        }
     }
     
     /**
