@@ -5,6 +5,7 @@
 
 import { EffectDebugInterface } from '../effects/EffectDebugInterface.js';
 import { PanelManager } from './PanelManager.js';
+import { KeyboardShortcutManager } from './KeyboardShortcutManager.js';
 
 export class EnhancedDebugInterface extends EffectDebugInterface {
     constructor(gameEngine) {
@@ -21,9 +22,10 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
         this.position = { x: 10, y: 10 };
         this.size = { width: 400, height: 600 };
         
-        // キーボードショートカット
-        this.shortcuts = new Map();
-        this.shortcutConflicts = new Map();
+        // キーボードショートカット管理システム
+        this.keyboardShortcutManager = new KeyboardShortcutManager(this);
+        this.shortcuts = new Map(); // 後方互換性のため保持
+        this.shortcutConflicts = new Map(); // 後方互換性のため保持
         
         // デバッグセッション管理
         this.sessionId = this.generateSessionId();
@@ -353,27 +355,24 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
     }
 
     setupDefaultShortcuts() {
-        this.registerShortcut('ctrl+shift+d', () => this.toggle(), 'Toggle Debug Interface');
-        this.registerShortcut('ctrl+shift+p', () => this.switchPanel('performance'), 'Switch to Performance Panel');
-        this.registerShortcut('ctrl+shift+c', () => this.switchPanel('console'), 'Switch to Console Panel');
-        this.registerShortcut('ctrl+shift+e', () => this.switchPanel('errors'), 'Switch to Errors Panel');
-        this.registerShortcut('ctrl+shift+t', () => this.switchPanel('tests'), 'Switch to Tests Panel');
-        this.registerShortcut('escape', () => this.hide(), 'Hide Debug Interface');
+        // KeyboardShortcutManagerがデフォルトショートカットを処理
+        // 追加のカスタムショートカットがあればここで登録
     }
 
     registerShortcut(shortcut, callback, description = '') {
-        const normalizedShortcut = this.normalizeShortcut(shortcut);
+        // KeyboardShortcutManagerに委譲
+        const result = this.keyboardShortcutManager.register(shortcut, callback, {
+            description,
+            group: 'custom'
+        });
         
-        // 競合チェック
-        if (this.shortcuts.has(normalizedShortcut)) {
-            const existing = this.shortcuts.get(normalizedShortcut);
-            this.shortcutConflicts.set(normalizedShortcut, [existing, { callback, description }]);
-            console.warn(`Shortcut conflict detected for '${shortcut}':`, description);
-            return false;
+        // 後方互換性のため古いマップも更新
+        if (result) {
+            const normalizedShortcut = this.normalizeShortcut(shortcut);
+            this.shortcuts.set(normalizedShortcut, { callback, description });
         }
-
-        this.shortcuts.set(normalizedShortcut, { callback, description });
-        return true;
+        
+        return result;
     }
 
     normalizeShortcut(shortcut) {
@@ -381,16 +380,8 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
     }
 
     handleKeyboardEvent(event) {
-        const shortcut = this.buildShortcutString(event);
-        const handler = this.shortcuts.get(shortcut);
-        
-        if (handler) {
-            event.preventDefault();
-            handler.callback();
-            return true;
-        }
-        
-        return false;
+        // KeyboardShortcutManagerに委譲
+        return this.keyboardShortcutManager.execute(event);
     }
 
     buildShortcutString(event) {
@@ -589,6 +580,11 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
             this.panelManager.destroy();
         }
         
+        // KeyboardShortcutManagerの破棄
+        if (this.keyboardShortcutManager) {
+            this.keyboardShortcutManager.destroy();
+        }
+        
         // パネルの破棄（後方互換性）
         for (const [name, panel] of this.panels) {
             if (typeof panel.destroy === 'function') {
@@ -641,11 +637,13 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
     }
 
     getShortcuts() {
-        return new Map(this.shortcuts);
+        // KeyboardShortcutManagerから取得（後方互換性も保持）
+        return this.keyboardShortcutManager.getAllShortcuts();
     }
 
     getShortcutConflicts() {
-        return new Map(this.shortcutConflicts);
+        // KeyboardShortcutManagerから取得（後方互換性も保持）
+        return this.keyboardShortcutManager.getConflicts();
     }
 
     // PanelManager API の公開
@@ -675,6 +673,35 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
 
     removeLifecycleHook(hookName, callback) {
         return this.panelManager.removeLifecycleHook(hookName, callback);
+    }
+
+    // KeyboardShortcutManager API の公開
+    getKeyboardShortcutManager() {
+        return this.keyboardShortcutManager;
+    }
+
+    getShortcutsByGroup(group) {
+        return this.keyboardShortcutManager.getShortcutsByGroup(group);
+    }
+
+    getShortcutsByContext(context) {
+        return this.keyboardShortcutManager.getShortcutsByContext(context);
+    }
+
+    switchShortcutContext(context) {
+        return this.keyboardShortcutManager.switchContext(context);
+    }
+
+    getShortcutStatistics() {
+        return this.keyboardShortcutManager.getStatistics();
+    }
+
+    setShortcutsEnabled(enabled) {
+        return this.keyboardShortcutManager.setEnabled(enabled);
+    }
+
+    setSuspendShortcuts(suspended) {
+        return this.keyboardShortcutManager.setSuspended(suspended);
     }
 }
 
