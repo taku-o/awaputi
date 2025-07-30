@@ -6,6 +6,7 @@
 import { ErrorHandler } from '../utils/ErrorHandler.js';
 import { ErrorScreenshotCapture } from './ErrorScreenshotCapture.js';
 import { ErrorNotificationSystem } from './ErrorNotificationSystem.js';
+import { ErrorRecoveryTracker } from './ErrorRecoveryTracker.js';
 
 export class ErrorReporter extends ErrorHandler {
     constructor(gameEngine) {
@@ -18,6 +19,7 @@ export class ErrorReporter extends ErrorHandler {
         this.errorStorage = new ErrorStorage(this);
         this.screenshotCapture = new ErrorScreenshotCapture(gameEngine);
         this.notificationSystem = new ErrorNotificationSystem(this);
+        this.recoveryTracker = new ErrorRecoveryTracker(this);
         
         // セッション管理
         this.sessionId = this.generateSessionId();
@@ -181,7 +183,44 @@ export class ErrorReporter extends ErrorHandler {
         // 通知判定
         this.checkNotificationThreshold(enhancedError);
         
+        // 復旧可能性の評価と復旧試行
+        if (this.shouldAttemptRecovery(enhancedError)) {
+            try {
+                const recoveryResult = await this.recoveryTracker.attemptRecovery(enhancedError, context);
+                enhancedError.recovery = recoveryResult;
+                
+                if (recoveryResult.success) {
+                    console.log(`🔧 Error recovery successful: ${recoveryResult.result}`);
+                }
+            } catch (recoveryError) {
+                console.warn('Recovery attempt failed:', recoveryError.message);
+            }
+        }
+        
         return enhancedError;
+    }
+    
+    /**
+     * 復旧試行の判定
+     */
+    shouldAttemptRecovery(error) {
+        // クリティカルまたは高重要度エラーの場合
+        if (['critical', 'high'].includes(error.severity)) {
+            return true;
+        }
+        
+        // ゲーム実行中のエラーの場合
+        if (error.context.gameState?.isRunning === true) {
+            return true;
+        }
+        
+        // 特定カテゴリのエラー
+        const recoverableCategories = ['rendering', 'audio', 'memory', 'storage', 'network'];
+        if (recoverableCategories.includes(error.category)) {
+            return true;
+        }
+        
+        return false;
     }
     
     /**
@@ -573,6 +612,7 @@ export class ErrorReporter extends ErrorHandler {
         this.errorStorage.cleanup();
         this.screenshotCapture?.destroy();
         this.notificationSystem?.destroy();
+        this.recoveryTracker?.destroy();
         super.destroy?.();
     }
 }
