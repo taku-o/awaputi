@@ -1,731 +1,161 @@
 /**
  * Developer Console
- * 開発者向けコマンドライン インターフェース
+ * インタラクティブなコマンドライン環境でゲーム状態操作とデバッグを支援
  */
 
 export class DeveloperConsole {
     constructor(gameEngine) {
         this.gameEngine = gameEngine;
-        this.element = null;
-        this.inputElement = null;
-        this.outputElement = null;
-        this.commandRegistry = new CommandRegistry(this);
-        this.errorHandler = null;
         
-        // コンソール状態
-        this.state = {
-            visible: false,
-            focused: false,
-            history: [],
-            historyIndex: -1,
-            currentInput: '',
-            maxHistorySize: 100
-        };
+        // コマンド管理
+        this.commands = new Map();
+        this.commandGroups = new Map();
+        this.aliases = new Map();
         
-        // 出力設定
-        this.output = {
-            lines: [],
-            maxLines: 500,
-            scrollToBottom: true,
-            timestampFormat: 'HH:mm:ss'
-        };
+        // 履歴管理
+        this.history = [];
+        this.historyIndex = -1;
+        this.maxHistorySize = 100;
         
-        // スタイル設定
-        this.styles = {
-            console: {
-                position: 'fixed',
-                bottom: '0',
-                left: '0',
-                width: '100%',
-                height: '300px',
-                backgroundColor: 'rgba(0, 0, 0, 0.9)',
-                border: '2px solid #333',
-                borderBottom: 'none',
-                fontFamily: 'Monaco, Consolas, monospace',
-                fontSize: '12px',
-                color: '#00ff00',
-                zIndex: '10001',
-                display: 'none'
-            },
-            output: {
-                height: '250px',
-                padding: '10px',
-                overflowY: 'auto',
-                borderBottom: '1px solid #333',
-                whiteSpace: 'pre-wrap',
-                wordWrap: 'break-word'
-            },
-            input: {
-                width: '100%',
-                height: '40px',
-                backgroundColor: 'transparent',
-                border: 'none',
-                outline: 'none',
-                color: '#00ff00',
-                fontFamily: 'inherit',
-                fontSize: 'inherit',
-                padding: '10px',
-                boxSizing: 'border-box'
-            }
-        };
+        // 自動補完
+        this.autocomplete = new AutocompleteEngine(this);
+        
+        // 実行コンテキスト
+        this.context = new ExecutionContext(gameEngine);
+        
+        // 出力管理
+        this.outputBuffer = [];
+        this.maxOutputLines = 500;
+        
+        // 状態
+        this.isOpen = false;
+        this.currentInput = '';
+        this.suggestions = [];
         
         this.initialize();
     }
 
     initialize() {
-        this.setupErrorHandler();
-        this.createConsoleElement();
-        this.setupEventListeners();
-        this.registerDefaultCommands();
-        this.setupKeyboardShortcuts();
-        
-        console.log('[DeveloperConsole] Developer console initialized');
+        this.registerBuiltinCommands();
+        this.loadHistory();
     }
 
     /**
-     * エラーハンドラ設定
-     */
-    setupErrorHandler() {
-        try {
-            const { getErrorHandler } = require('../utils/ErrorHandler.js');
-            this.errorHandler = getErrorHandler();
-        } catch (error) {
-            console.warn('[DeveloperConsole] ErrorHandler not available:', error.message);
-            this.errorHandler = {
-                handleError: (error, context) => console.error(`[${context}]`, error)
-            };
-        }
-    }
-
-    /**
-     * コンソール要素作成
-     */
-    createConsoleElement() {
-        // メインコンテナ
-        this.element = document.createElement('div');
-        this.element.className = 'developer-console';
-        this.applyStyles(this.element, this.styles.console);
-        
-        // 出力エリア
-        this.outputElement = document.createElement('div');
-        this.outputElement.className = 'console-output';
-        this.applyStyles(this.outputElement, this.styles.output);
-        
-        // 入力エリア
-        this.inputElement = document.createElement('input');
-        this.inputElement.type = 'text';
-        this.inputElement.className = 'console-input';
-        this.inputElement.placeholder = 'Type command or "help" for available commands...';
-        this.applyStyles(this.inputElement, this.styles.input);
-        
-        // 組み立て
-        this.element.appendChild(this.outputElement);
-        this.element.appendChild(this.inputElement);
-        document.body.appendChild(this.element);
-        
-        // 初期メッセージ
-        this.printWelcomeMessage();
-    }
-
-    /**
-     * スタイル適用
-     */
-    applyStyles(element, styles) {
-        Object.assign(element.style, styles);
-    }
-
-    /**
-     * イベントリスナー設定
-     */
-    setupEventListeners() {
-        // 入力イベント
-        this.inputElement.addEventListener('keydown', (e) => {
-            this.handleKeyDown(e);
-        });
-        
-        this.inputElement.addEventListener('input', (e) => {
-            this.state.currentInput = e.target.value;
-        });
-        
-        this.inputElement.addEventListener('focus', () => {
-            this.state.focused = true;
-        });
-        
-        this.inputElement.addEventListener('blur', () => {
-            this.state.focused = false;
-        });
-        
-        // アウトプットクリック（フォーカス復帰）
-        this.outputElement.addEventListener('click', () => {
-            if (this.state.visible) {
-                this.inputElement.focus();
-            }
-        });
-    }
-
-    /**
-     * キーボードショートカット設定
-     */
-    setupKeyboardShortcuts() {
-        document.addEventListener('keydown', (e) => {
-            // F12またはCtrl+Shift+C でコンソール切り替え
-            if ((e.key === 'F12') || (e.ctrlKey && e.shiftKey && e.key === 'C')) {
-                e.preventDefault();
-                this.toggle();
-            }
-            
-            // Escapeでコンソール非表示
-            if (e.key === 'Escape' && this.state.visible) {
-                e.preventDefault();
-                this.hide();
-            }
-        });
-    }
-
-    /**
-     * キーダウンハンドラ
-     */
-    handleKeyDown(e) {
-        switch (e.key) {
-            case 'Enter':
-                e.preventDefault();
-                this.executeCommand();
-                break;
-                
-            case 'ArrowUp':
-                e.preventDefault();
-                this.navigateHistory(-1);
-                break;
-                
-            case 'ArrowDown':
-                e.preventDefault();
-                this.navigateHistory(1);
-                break;
-                
-            case 'Tab':
-                e.preventDefault();
-                this.handleTabCompletion();
-                break;
-                
-            case 'Escape':
-                e.preventDefault();
-                this.hide();
-                break;
-        }
-    }
-
-    /**
-     * コマンド実行
-     */
-    executeCommand() {
-        const input = this.inputElement.value.trim();
-        if (!input) return;
-        
-        // 履歴に追加
-        this.addToHistory(input);
-        
-        // コマンド表示
-        this.print(`> ${input}`, 'command');
-        
-        // 入力クリア
-        this.inputElement.value = '';
-        this.state.currentInput = '';
-        this.state.historyIndex = -1;
-        
-        try {
-            // コマンド解析・実行
-            const result = this.commandRegistry.execute(input);
-            
-            if (result !== undefined && result !== null) {
-                this.print(result);
-            }
-        } catch (error) {
-            this.printError(`Command error: ${error.message}`);
-            this.errorHandler.handleError(error, 'DeveloperConsole.executeCommand');
-        }
-    }
-
-    /**
-     * 履歴ナビゲーション
-     */
-    navigateHistory(direction) {
-        if (this.state.history.length === 0) return;
-        
-        if (direction === -1) { // 上 (古い方向)
-            if (this.state.historyIndex === -1) {
-                this.state.historyIndex = this.state.history.length - 1;
-            } else if (this.state.historyIndex > 0) {
-                this.state.historyIndex--;
-            }
-        } else { // 下 (新しい方向)
-            if (this.state.historyIndex === -1) return;
-            if (this.state.historyIndex < this.state.history.length - 1) {
-                this.state.historyIndex++;
-            } else {
-                this.state.historyIndex = -1;
-                this.inputElement.value = this.state.currentInput;
-                return;
-            }
-        }
-        
-        this.inputElement.value = this.state.history[this.state.historyIndex];
-    }
-
-    /**
-     * タブ補完処理
-     */
-    handleTabCompletion() {
-        const input = this.inputElement.value;
-        const completions = this.commandRegistry.getCompletions(input);
-        
-        if (completions.length === 1) {
-            // 単一の補完候補
-            this.inputElement.value = completions[0];
-        } else if (completions.length > 1) {
-            // 複数の補完候補を表示
-            this.print(`Available completions:`);
-            completions.forEach(completion => {
-                this.print(`  ${completion}`, 'info');
-            });
-        }
-    }
-
-    /**
-     * 履歴追加
-     */
-    addToHistory(command) {
-        // 重複する最新エントリを削除
-        const lastIndex = this.state.history.lastIndexOf(command);
-        if (lastIndex === this.state.history.length - 1) {
-            this.state.history.pop();
-        }
-        
-        this.state.history.push(command);
-        
-        // サイズ制限
-        if (this.state.history.length > this.state.maxHistorySize) {
-            this.state.history.shift();
-        }
-    }
-
-    /**
-     * テキスト出力
-     */
-    print(text, type = 'normal') {
-        const timestamp = this.formatTimestamp(new Date());
-        const line = {
-            timestamp: timestamp,
-            text: String(text),
-            type: type
-        };
-        
-        this.output.lines.push(line);
-        
-        // 行数制限
-        if (this.output.lines.length > this.output.maxLines) {
-            this.output.lines.shift();
-        }
-        
-        this.renderOutput();
-    }
-
-    /**
-     * エラー出力
-     */
-    printError(text) {
-        this.print(text, 'error');
-    }
-
-    /**
-     * 警告出力
-     */
-    printWarning(text) {
-        this.print(text, 'warning');
-    }
-
-    /**
-     * 情報出力
-     */
-    printInfo(text) {
-        this.print(text, 'info');
-    }
-
-    /**
-     * 成功出力
-     */
-    printSuccess(text) {
-        this.print(text, 'success');
-    }
-
-    /**
-     * 出力レンダリング
-     */
-    renderOutput() {
-        const html = this.output.lines.map(line => {
-            const colorClass = this.getColorClass(line.type);
-            return `<span class="${colorClass}">[${line.timestamp}] ${this.escapeHtml(line.text)}</span>`;
-        }).join('\n');
-        
-        this.outputElement.innerHTML = html;
-        
-        // 最下部にスクロール
-        if (this.output.scrollToBottom) {
-            this.outputElement.scrollTop = this.outputElement.scrollHeight;
-        }
-    }
-
-    /**
-     * カラークラス取得
-     */
-    getColorClass(type) {
-        const colors = {
-            normal: 'color: #00ff00',
-            command: 'color: #ffffff',
-            error: 'color: #ff6b6b',
-            warning: 'color: #ffa500',
-            info: 'color: #4ecdc4',
-            success: 'color: #00ff88'
-        };
-        
-        return `style="${colors[type] || colors.normal}"`;
-    }
-
-    /**
-     * HTML エスケープ
-     */
-    escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
-
-    /**
-     * タイムスタンプフォーマット
-     */
-    formatTimestamp(date) {
-        return date.toTimeString().split(' ')[0];
-    }
-
-    /**
-     * ウェルカムメッセージ
-     */
-    printWelcomeMessage() {
-        this.print('=== Developer Console ===', 'info');
-        this.print('Type "help" for available commands', 'info');
-        this.print('Press F12 or Ctrl+Shift+C to toggle console', 'info');
-        this.print('Press Escape to hide console', 'info');
-        this.print('Use Tab for command completion', 'info');
-        this.print('Use Up/Down arrows for command history', 'info');
-        this.print('');
-    }
-
-    /**
-     * デフォルトコマンド登録
-     */
-    registerDefaultCommands() {
-        // ヘルプコマンド
-        this.commandRegistry.register('help', {
-            description: 'Show available commands',
-            usage: 'help [command]',
-            execute: (args) => {
-                if (args.length > 0) {
-                    return this.commandRegistry.getCommandHelp(args[0]);
-                } else {
-                    return this.commandRegistry.getCommandList();
-                }
-            }
-        });
-        
-        // クリアコマンド
-        this.commandRegistry.register('clear', {
-            description: 'Clear console output',
-            usage: 'clear',
-            execute: () => {
-                this.clear();
-                return 'Console cleared';
-            }
-        });
-        
-        // 履歴表示コマンド
-        this.commandRegistry.register('history', {
-            description: 'Show command history',
-            usage: 'history [count]',
-            execute: (args) => {
-                const count = args.length > 0 ? parseInt(args[0]) : this.state.history.length;
-                const start = Math.max(0, this.state.history.length - count);
-                return this.state.history.slice(start).map((cmd, i) => 
-                    `${start + i + 1}: ${cmd}`
-                ).join('\n');
-            }
-        });
-        
-        // エコーコマンド
-        this.commandRegistry.register('echo', {
-            description: 'Echo text to console',
-            usage: 'echo <text>',
-            execute: (args) => {
-                return args.join(' ');
-            }
-        });
-        
-        // 日時表示コマンド
-        this.commandRegistry.register('date', {
-            description: 'Show current date and time',
-            usage: 'date',
-            execute: () => {
-                return new Date().toString();
-            }
-        });
-        
-        // ゲームエンジン情報
-        this.commandRegistry.register('engine', {
-            description: 'Show game engine information',
-            usage: 'engine',
-            execute: () => {
-                if (!this.gameEngine) return 'Game engine not available';
-                
-                const info = [];
-                info.push('=== Game Engine Information ===');
-                info.push(`Canvas: ${this.gameEngine.canvas ? 'Available' : 'Not available'}`);
-                info.push(`Scene Manager: ${this.gameEngine.sceneManager ? 'Available' : 'Not available'}`);
-                info.push(`Input Manager: ${this.gameEngine.inputManager ? 'Available' : 'Not available'}`);
-                
-                if (this.gameEngine.performanceOptimizer) {
-                    info.push(`Current FPS: ${this.gameEngine.performanceOptimizer.getCurrentFPS()}`);
-                }
-                
-                return info.join('\n');
-            }
-        });
-    }
-
-    /**
-     * 表示/非表示切り替え
+     * コンソールの表示/非表示切り替え
      */
     toggle() {
-        if (this.state.visible) {
+        if (this.isOpen) {
             this.hide();
         } else {
             this.show();
         }
     }
 
-    /**
-     * 表示
-     */
     show() {
-        this.element.style.display = 'block';
-        this.state.visible = true;
-        this.inputElement.focus();
-        this.print('Console opened', 'info');
+        this.isOpen = true;
+        // UIの表示処理は ConsolePanel で行う
     }
 
-    /**
-     * 非表示
-     */
     hide() {
-        this.element.style.display = 'none';
-        this.state.visible = false;
-        this.state.focused = false;
-        this.print('Console closed', 'info');
+        this.isOpen = false;
+        // UIの非表示処理は ConsolePanel で行う
     }
 
     /**
-     * クリア
+     * コマンドの登録
      */
-    clear() {
-        this.output.lines = [];
-        this.outputElement.innerHTML = '';
-    }
-
-    /**
-     * コマンド登録（外部から）
-     */
-    registerCommand(name, config) {
-        return this.commandRegistry.register(name, config);
-    }
-
-    /**
-     * コマンド登録解除
-     */
-    unregisterCommand(name) {
-        return this.commandRegistry.unregister(name);
-    }
-
-    /**
-     * 設定更新
-     */
-    updateSettings(settings) {
-        if (settings.maxHistorySize) {
-            this.state.maxHistorySize = settings.maxHistorySize;
-        }
-        
-        if (settings.maxOutputLines) {
-            this.output.maxLines = settings.maxOutputLines;
-        }
-        
-        if (settings.timestampFormat) {
-            this.output.timestampFormat = settings.timestampFormat;
-        }
-        
-        if (settings.styles) {
-            Object.assign(this.styles, settings.styles);
-            this.applyStyles(this.element, this.styles.console);
-            this.applyStyles(this.outputElement, this.styles.output);
-            this.applyStyles(this.inputElement, this.styles.input);
-        }
-        
-        this.print('Console settings updated', 'info');
-    }
-
-    /**
-     * 状態取得
-     */
-    getState() {
-        return {
-            visible: this.state.visible,
-            focused: this.state.focused,
-            historySize: this.state.history.length,
-            outputLines: this.output.lines.length,
-            availableCommands: this.commandRegistry.getCommandNames()
-        };
-    }
-
-    /**
-     * クリーンアップ
-     */
-    destroy() {
-        if (this.element && this.element.parentNode) {
-            this.element.parentNode.removeChild(this.element);
-        }
-        
-        this.commandRegistry.destroy();
-        
-        console.log('[DeveloperConsole] Destroyed');
-    }
-}
-
-/**
- * Command Registry
- * コマンド登録・管理システム
- */
-export class CommandRegistry {
-    constructor(console) {
-        this.console = console;
-        this.commands = new Map();
-        this.aliases = new Map();
-        this.middleware = [];
-    }
-
-    /**
-     * コマンド登録
-     */
-    register(name, config) {
-        if (!name || !config || typeof config.execute !== 'function') {
-            throw new Error('Invalid command configuration');
-        }
-
-        const command = {
-            name: name,
-            description: config.description || 'No description',
-            usage: config.usage || name,
-            execute: config.execute,
-            aliases: config.aliases || [],
-            category: config.category || 'general',
-            hidden: config.hidden || false
+    register(name, handler, options = {}) {
+        const commandData = {
+            name,
+            handler,
+            description: options.description || '',
+            usage: options.usage || name,
+            group: options.group || 'custom',
+            aliases: options.aliases || [],
+            parameters: options.parameters || [],
+            examples: options.examples || [],
+            permissions: options.permissions || 'user',
+            hidden: options.hidden || false
         };
 
-        this.commands.set(name, command);
-
-        // エイリアス登録
-        if (command.aliases) {
-            command.aliases.forEach(alias => {
-                this.aliases.set(alias, name);
-            });
+        // メインコマンドの登録
+        this.commands.set(name, commandData);
+        
+        // エイリアスの登録
+        for (const alias of commandData.aliases) {
+            this.aliases.set(alias, name);
         }
-
-        console.log(`[CommandRegistry] Command '${name}' registered`);
+        
+        // グループへの追加
+        this.addToGroup(commandData.group, name);
+        
         return true;
     }
 
     /**
-     * コマンド登録解除
+     * コマンドの実行
      */
-    unregister(name) {
-        const command = this.commands.get(name);
-        if (!command) return false;
-
-        // エイリアス削除
-        if (command.aliases) {
-            command.aliases.forEach(alias => {
-                this.aliases.delete(alias);
-            });
+    async execute(commandLine) {
+        if (!commandLine.trim()) return;
+        
+        try {
+            // 履歴に追加
+            this.addToHistory(commandLine);
+            
+            // コマンドの解析
+            const parsed = this.parseCommand(commandLine);
+            
+            // 出力にコマンドを表示
+            this.output(`> ${commandLine}`, 'input');
+            
+            // コマンドの実行
+            const result = await this.executeCommand(parsed);
+            
+            // 結果の出力
+            if (result !== undefined) {
+                this.output(result, 'result');
+            }
+            
+        } catch (error) {
+            this.output(`Error: ${error.message}`, 'error');
+            console.error('Console command error:', error);
         }
-
-        this.commands.delete(name);
-        console.log(`[CommandRegistry] Command '${name}' unregistered`);
-        return true;
     }
 
     /**
-     * コマンド実行
+     * コマンドの解析
      */
-    execute(input) {
-        const { command, args } = this.parseInput(input);
+    parseCommand(commandLine) {
+        const parts = this.tokenize(commandLine);
         
-        if (!command) {
+        if (parts.length === 0) {
             throw new Error('Empty command');
         }
-
-        // エイリアス解決
-        const actualCommand = this.aliases.get(command) || command;
-        const commandObj = this.commands.get(actualCommand);
-
-        if (!commandObj) {
-            throw new Error(`Unknown command: ${command}`);
-        }
-
-        // ミドルウェア実行
-        for (const middleware of this.middleware) {
-            const result = middleware(actualCommand, args);
-            if (result === false) {
-                throw new Error('Command blocked by middleware');
-            }
-        }
-
-        // コマンド実行
-        try {
-            return commandObj.execute(args, this.console);
-        } catch (error) {
-            throw new Error(`Command execution failed: ${error.message}`);
-        }
-    }
-
-    /**
-     * 入力解析
-     */
-    parseInput(input) {
-        const trimmed = input.trim();
-        if (!trimmed) return { command: null, args: [] };
-
-        const parts = this.splitCommand(trimmed);
+        
+        const commandName = parts[0];
+        const args = parts.slice(1);
+        
+        // エイリアスの解決
+        const resolvedName = this.aliases.get(commandName) || commandName;
+        
         return {
-            command: parts[0],
-            args: parts.slice(1)
+            name: resolvedName,
+            args,
+            raw: commandLine
         };
     }
 
     /**
-     * コマンド分割（クォート対応）
+     * コマンドラインのトークン化
      */
-    splitCommand(input) {
-        const parts = [];
+    tokenize(commandLine) {
+        const tokens = [];
         let current = '';
         let inQuotes = false;
         let quoteChar = '';
-
-        for (let i = 0; i < input.length; i++) {
-            const char = input[i];
+        
+        for (let i = 0; i < commandLine.length; i++) {
+            const char = commandLine[i];
             
             if (!inQuotes && (char === '"' || char === "'")) {
                 inQuotes = true;
@@ -734,127 +164,534 @@ export class CommandRegistry {
                 inQuotes = false;
                 quoteChar = '';
             } else if (!inQuotes && char === ' ') {
-                if (current) {
-                    parts.push(current);
+                if (current.trim()) {
+                    tokens.push(current.trim());
                     current = '';
                 }
             } else {
                 current += char;
             }
         }
-
-        if (current) {
-            parts.push(current);
-        }
-
-        return parts;
-    }
-
-    /**
-     * 補完候補取得
-     */
-    getCompletions(input) {
-        const { command, args } = this.parseInput(input);
         
-        if (args.length === 0) {
-            // コマンド名の補完
-            const commandNames = Array.from(this.commands.keys())
-                .concat(Array.from(this.aliases.keys()))
-                .filter(name => name.startsWith(command || ''))
-                .sort();
-            
-            return commandNames;
-        } else {
-            // 引数の補完（コマンド固有の実装が必要）
-            const commandObj = this.commands.get(command);
-            if (commandObj && commandObj.getCompletions) {
-                return commandObj.getCompletions(args);
-            }
-            return [];
+        if (current.trim()) {
+            tokens.push(current.trim());
         }
-    }
-
-    /**
-     * コマンド一覧取得
-     */
-    getCommandList() {
-        const categories = {};
         
-        this.commands.forEach((command, name) => {
-            if (command.hidden) return;
-            
-            if (!categories[command.category]) {
-                categories[command.category] = [];
-            }
-            
-            categories[command.category].push({
-                name: name,
-                description: command.description,
-                aliases: command.aliases
-            });
-        });
-
-        const output = [];
-        output.push('Available commands:');
-        output.push('');
-
-        Object.keys(categories).sort().forEach(category => {
-            output.push(`${category.toUpperCase()}:`);
-            categories[category].forEach(cmd => {
-                const aliasText = cmd.aliases.length > 0 ? ` (${cmd.aliases.join(', ')})` : '';
-                output.push(`  ${cmd.name}${aliasText} - ${cmd.description}`);
-            });
-            output.push('');
-        });
-
-        return output.join('\n');
+        return tokens;
     }
 
     /**
-     * コマンドヘルプ取得
+     * コマンドの実行
      */
-    getCommandHelp(commandName) {
-        const actualCommand = this.aliases.get(commandName) || commandName;
-        const command = this.commands.get(actualCommand);
-
+    async executeCommand(parsed) {
+        const command = this.commands.get(parsed.name);
+        
         if (!command) {
-            return `Unknown command: ${commandName}`;
+            throw new Error(`Unknown command: ${parsed.name}`);
         }
-
-        const output = [];
-        output.push(`Command: ${command.name}`);
-        output.push(`Description: ${command.description}`);
-        output.push(`Usage: ${command.usage}`);
         
-        if (command.aliases.length > 0) {
-            output.push(`Aliases: ${command.aliases.join(', ')}`);
+        // パラメータのバリデーション
+        this.validateParameters(command, parsed.args);
+        
+        // ハンドラーの実行
+        return await command.handler(parsed.args, this.context, this);
+    }
+
+    /**
+     * パラメータのバリデーション
+     */
+    validateParameters(command, args) {
+        const required = command.parameters.filter(p => p.required);
+        
+        if (args.length < required.length) {
+            throw new Error(
+                `Command '${command.name}' requires at least ${required.length} arguments. ` +
+                `Usage: ${command.usage}`
+            );
         }
-
-        return output.join('\n');
+        
+        // 型チェック
+        for (let i = 0; i < command.parameters.length && i < args.length; i++) {
+            const param = command.parameters[i];
+            const arg = args[i];
+            
+            if (param.type && !this.validateParameterType(arg, param.type)) {
+                throw new Error(
+                    `Parameter '${param.name}' must be of type ${param.type}, got: ${arg}`
+                );
+            }
+        }
     }
 
     /**
-     * コマンド名一覧取得
+     * パラメータ型のバリデーション
      */
-    getCommandNames() {
-        return Array.from(this.commands.keys()).sort();
+    validateParameterType(value, type) {
+        switch (type) {
+            case 'number':
+                return !isNaN(parseFloat(value));
+            case 'boolean':
+                return ['true', 'false', '1', '0', 'on', 'off'].includes(value.toLowerCase());
+            case 'string':
+                return true;
+            default:
+                return true;
+        }
     }
 
     /**
-     * ミドルウェア追加
+     * 出力
      */
-    addMiddleware(middleware) {
-        this.middleware.push(middleware);
+    output(message, type = 'info') {
+        const timestamp = new Date().toISOString().substr(11, 8);
+        const outputLine = {
+            message,
+            type,
+            timestamp,
+            id: Date.now() + Math.random()
+        };
+        
+        this.outputBuffer.push(outputLine);
+        
+        // バッファサイズの制限
+        if (this.outputBuffer.length > this.maxOutputLines) {
+            this.outputBuffer.shift();
+        }
+        
+        // UIへの通知
+        this.notifyOutput(outputLine);
     }
 
     /**
-     * クリーンアップ
+     * 履歴への追加
      */
+    addToHistory(command) {
+        // 重複する直前のコマンドは追加しない
+        if (this.history.length > 0 && this.history[this.history.length - 1] === command) {
+            return;
+        }
+        
+        this.history.push(command);
+        
+        // 履歴サイズの制限
+        if (this.history.length > this.maxHistorySize) {
+            this.history.shift();
+        }
+        
+        this.historyIndex = this.history.length;
+        this.saveHistory();
+    }
+
+    /**
+     * 履歴のナビゲーション
+     */
+    navigateHistory(direction) {
+        if (this.history.length === 0) return '';
+        
+        if (direction === 'up') {
+            this.historyIndex = Math.max(0, this.historyIndex - 1);
+        } else if (direction === 'down') {
+            this.historyIndex = Math.min(this.history.length, this.historyIndex + 1);
+        }
+        
+        return this.historyIndex < this.history.length 
+            ? this.history[this.historyIndex] 
+            : '';
+    }
+
+    /**
+     * 自動補完の取得
+     */
+    getAutocompleteSuggestions(partial) {
+        return this.autocomplete.getSuggestions(partial);
+    }
+
+    /**
+     * グループへの追加
+     */
+    addToGroup(group, commandName) {
+        if (!this.commandGroups.has(group)) {
+            this.commandGroups.set(group, new Set());
+        }
+        this.commandGroups.get(group).add(commandName);
+    }
+
+    /**
+     * 出力の通知
+     */
+    notifyOutput(outputLine) {
+        // ConsolePanel が実装
+    }
+
+    /**
+     * 履歴の保存
+     */
+    saveHistory() {
+        try {
+            localStorage.setItem('debug-console-history', JSON.stringify(this.history));
+        } catch (error) {
+            console.warn('Failed to save console history:', error);
+        }
+    }
+
+    /**
+     * 履歴の読み込み
+     */
+    loadHistory() {
+        try {
+            const saved = localStorage.getItem('debug-console-history');
+            if (saved) {
+                this.history = JSON.parse(saved);
+                this.historyIndex = this.history.length;
+            }
+        } catch (error) {
+            console.warn('Failed to load console history:', error);
+        }
+    }
+
+    /**
+     * 組み込みコマンドの登録
+     */
+    registerBuiltinCommands() {
+        // ヘルプコマンド
+        this.register('help', this.helpCommand.bind(this), {
+            description: 'Show available commands or detailed help for a specific command',
+            usage: 'help [command]',
+            parameters: [
+                { name: 'command', type: 'string', required: false, description: 'Specific command to get help for' }
+            ],
+            examples: ['help', 'help game.pause'],
+            group: 'system'
+        });
+
+        // クリアコマンド
+        this.register('clear', this.clearCommand.bind(this), {
+            description: 'Clear the console output',
+            usage: 'clear',
+            aliases: ['cls'],
+            group: 'system'
+        });
+
+        // 履歴コマンド
+        this.register('history', this.historyCommand.bind(this), {
+            description: 'Show command history',
+            usage: 'history [count]',
+            parameters: [
+                { name: 'count', type: 'number', required: false, description: 'Number of recent commands to show' }
+            ],
+            group: 'system'
+        });
+
+        // エコーコマンド
+        this.register('echo', this.echoCommand.bind(this), {
+            description: 'Print text to console',
+            usage: 'echo <text>',
+            parameters: [
+                { name: 'text', type: 'string', required: true, description: 'Text to print' }
+            ],
+            examples: ['echo "Hello World"'],
+            group: 'system'
+        });
+
+        // 変数設定コマンド
+        this.register('set', this.setCommand.bind(this), {
+            description: 'Set a variable in the console context',
+            usage: 'set <name> <value>',
+            parameters: [
+                { name: 'name', type: 'string', required: true, description: 'Variable name' },
+                { name: 'value', type: 'string', required: true, description: 'Variable value' }
+            ],
+            examples: ['set testValue 123'],
+            group: 'system'
+        });
+
+        // 変数取得コマンド
+        this.register('get', this.getCommand.bind(this), {
+            description: 'Get a variable from the console context',
+            usage: 'get <name>',
+            parameters: [
+                { name: 'name', type: 'string', required: true, description: 'Variable name' }
+            ],
+            examples: ['get testValue'],
+            group: 'system'
+        });
+
+        // JavaScriptコマンド
+        this.register('js', this.jsCommand.bind(this), {
+            description: 'Execute JavaScript code',
+            usage: 'js <code>',
+            parameters: [
+                { name: 'code', type: 'string', required: true, description: 'JavaScript code to execute' }
+            ],
+            examples: ['js console.log("Hello from console")'],
+            group: 'system'
+        });
+
+        // コマンド一覧
+        this.register('commands', this.commandsCommand.bind(this), {
+            description: 'List all available commands',
+            usage: 'commands [group]',
+            parameters: [
+                { name: 'group', type: 'string', required: false, description: 'Filter by command group' }
+            ],
+            examples: ['commands', 'commands game'],
+            group: 'system'
+        });
+    }
+
+    // 組み込みコマンドの実装
+    helpCommand(args) {
+        if (args.length === 0) {
+            const groups = Array.from(this.commandGroups.keys()).sort();
+            let output = 'Available command groups:\n';
+            
+            for (const group of groups) {
+                const commands = Array.from(this.commandGroups.get(group));
+                output += `  ${group}: ${commands.length} commands\n`;
+            }
+            
+            output += '\nUse "help <command>" for detailed information.\n';
+            output += 'Use "commands [group]" to list commands in a group.';
+            
+            return output;
+        } else {
+            const commandName = args[0];
+            const command = this.commands.get(commandName);
+            
+            if (!command) {
+                return `Command '${commandName}' not found.`;
+            }
+            
+            let output = `Command: ${command.name}\n`;
+            output += `Description: ${command.description}\n`;
+            output += `Usage: ${command.usage}\n`;
+            
+            if (command.aliases.length > 0) {
+                output += `Aliases: ${command.aliases.join(', ')}\n`;
+            }
+            
+            if (command.parameters.length > 0) {
+                output += 'Parameters:\n';
+                for (const param of command.parameters) {
+                    const req = param.required ? '[required]' : '[optional]';
+                    output += `  ${param.name} (${param.type || 'any'}) ${req}: ${param.description}\n`;
+                }
+            }
+            
+            if (command.examples.length > 0) {
+                output += 'Examples:\n';
+                for (const example of command.examples) {
+                    output += `  ${example}\n`;
+                }
+            }
+            
+            return output;
+        }
+    }
+
+    clearCommand() {
+        this.outputBuffer = [];
+        return ''; // 何も出力しない
+    }
+
+    historyCommand(args) {
+        const count = args.length > 0 ? parseInt(args[0]) : 10;
+        const recentHistory = this.history.slice(-count);
+        
+        if (recentHistory.length === 0) {
+            return 'No command history available.';
+        }
+        
+        let output = 'Recent commands:\n';
+        recentHistory.forEach((cmd, index) => {
+            const num = this.history.length - count + index + 1;
+            output += `  ${num}: ${cmd}\n`;
+        });
+        
+        return output;
+    }
+
+    echoCommand(args) {
+        return args.join(' ');
+    }
+
+    setCommand(args) {
+        const [name, ...valueParts] = args;
+        const value = valueParts.join(' ');
+        
+        this.context.setVariable(name, value);
+        return `Set ${name} = ${value}`;
+    }
+
+    getCommand(args) {
+        const name = args[0];
+        const value = this.context.getVariable(name);
+        
+        if (value === undefined) {
+            return `Variable '${name}' is not defined.`;
+        }
+        
+        return `${name} = ${value}`;
+    }
+
+    jsCommand(args) {
+        const code = args.join(' ');
+        
+        try {
+            // コンテキストに gameEngine を追加
+            const context = {
+                gameEngine: this.gameEngine,
+                console: this,
+                ...this.context.variables
+            };
+            
+            // セキュリティ上の理由でeval()の代わりにFunction()を使用
+            const func = new Function(...Object.keys(context), `return ${code}`);
+            const result = func(...Object.values(context));
+            
+            return result !== undefined ? String(result) : 'undefined';
+        } catch (error) {
+            return `JavaScript Error: ${error.message}`;
+        }
+    }
+
+    commandsCommand(args) {
+        const groupFilter = args.length > 0 ? args[0] : null;
+        
+        let commands;
+        if (groupFilter) {
+            const groupCommands = this.commandGroups.get(groupFilter);
+            if (!groupCommands) {
+                return `Group '${groupFilter}' not found.`;
+            }
+            commands = Array.from(groupCommands);
+        } else {
+            commands = Array.from(this.commands.keys());
+        }
+        
+        commands.sort();
+        
+        let output = groupFilter 
+            ? `Commands in group '${groupFilter}':\n`
+            : 'All available commands:\n';
+        
+        for (const cmdName of commands) {
+            const cmd = this.commands.get(cmdName);
+            if (!cmd.hidden) {
+                output += `  ${cmdName} - ${cmd.description}\n`;
+            }
+        }
+        
+        return output;
+    }
+
+    // パブリックAPI
+    getCommands() {
+        return Array.from(this.commands.keys());
+    }
+
+    getCommandGroups() {
+        return Array.from(this.commandGroups.keys());
+    }
+
+    getHistory() {
+        return [...this.history];
+    }
+
+    getOutput() {
+        return [...this.outputBuffer];
+    }
+
+    clearOutput() {
+        this.outputBuffer = [];
+    }
+
     destroy() {
+        this.saveHistory();
         this.commands.clear();
+        this.commandGroups.clear();
         this.aliases.clear();
-        this.middleware = [];
+        this.history = [];
+        this.outputBuffer = [];
     }
 }
 
+/**
+ * 自動補完エンジン
+ */
+class AutocompleteEngine {
+    constructor(console) {
+        this.console = console;
+    }
+
+    getSuggestions(partial) {
+        const suggestions = [];
+        
+        // コマンド名の補完
+        for (const [command, data] of this.console.commands) {
+            if (command.startsWith(partial) && !data.hidden) {
+                suggestions.push({
+                    text: command,
+                    type: 'command',
+                    description: data.description
+                });
+            }
+        }
+        
+        // エイリアスの補完
+        for (const [alias, command] of this.console.aliases) {
+            if (alias.startsWith(partial)) {
+                const data = this.console.commands.get(command);
+                if (data && !data.hidden) {
+                    suggestions.push({
+                        text: alias,
+                        type: 'alias',
+                        description: `Alias for ${command}`
+                    });
+                }
+            }
+        }
+        
+        // 変数の補完
+        for (const variable of this.console.context.getVariableNames()) {
+            if (variable.startsWith(partial)) {
+                suggestions.push({
+                    text: variable,
+                    type: 'variable',
+                    description: 'Context variable'
+                });
+            }
+        }
+        
+        return suggestions.sort((a, b) => a.text.localeCompare(b.text));
+    }
+}
+
+/**
+ * 実行コンテキスト
+ */
+class ExecutionContext {
+    constructor(gameEngine) {
+        this.gameEngine = gameEngine;
+        this.variables = new Map();
+    }
+
+    setVariable(name, value) {
+        this.variables.set(name, value);
+    }
+
+    getVariable(name) {
+        return this.variables.get(name);
+    }
+
+    getVariableNames() {
+        return Array.from(this.variables.keys());
+    }
+
+    clearVariables() {
+        this.variables.clear();
+    }
+}
+
+// デフォルトエクスポート
 export default DeveloperConsole;
