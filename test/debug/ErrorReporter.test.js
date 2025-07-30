@@ -30,6 +30,16 @@ describe('ErrorReporter', () => {
     
     beforeEach(() => {
         mockGameEngine = createMockGameEngine();
+        // Canvasモックを追加
+        mockGameEngine.canvas = {
+            width: 800,
+            height: 600,
+            getContext: jest.fn(() => ({
+                drawImage: jest.fn()
+            })),
+            toDataURL: jest.fn(() => 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEA...')
+        };
+        
         errorReporter = new ErrorReporter(mockGameEngine);
         
         // LocalStorageのモック
@@ -40,6 +50,19 @@ describe('ErrorReporter', () => {
             clear: jest.fn()
         };
         global.localStorage = localStorageMock;
+        
+        // Document.createElement のモック
+        global.document = {
+            createElement: jest.fn(() => mockGameEngine.canvas)
+        };
+        
+        // Window プロパティのモック
+        global.window = {
+            ...global.window,
+            innerWidth: 1920,
+            innerHeight: 1080,
+            devicePixelRatio: 1
+        };
         
         // コンソールのモック
         jest.spyOn(console, 'log').mockImplementation();
@@ -61,6 +84,7 @@ describe('ErrorReporter', () => {
             expect(errorReporter.errorCollector).toBeDefined();
             expect(errorReporter.errorAnalyzer).toBeDefined();
             expect(errorReporter.errorStorage).toBeDefined();
+            expect(errorReporter.screenshotCapture).toBeDefined();
         });
         
         test('セッションIDが一意である', () => {
@@ -110,36 +134,83 @@ describe('ErrorReporter', () => {
             expect(typeof collectedError.fingerprint).toBe('string');
         });
         
-        test('エラー重要度が正しく計算される', () => {
+        test('エラー重要度が正しく計算される', async () => {
             const typeError = new TypeError('Type error test');
-            const collectedError1 = errorReporter.collectEnhancedError(typeError);
+            const collectedError1 = await errorReporter.collectEnhancedError(typeError);
             expect(collectedError1.severity).toBe('high');
             
             const genericError = new Error('Generic error test');
-            const collectedError2 = errorReporter.collectEnhancedError(genericError);
+            const collectedError2 = await errorReporter.collectEnhancedError(genericError);
             expect(collectedError2.severity).toBe('low');
         });
         
-        test('エラーカテゴリが正しく分類される', () => {
+        test('エラーカテゴリが正しく分類される', async () => {
             const networkError = new Error('Network request failed');
-            const collectedError1 = errorReporter.collectEnhancedError(networkError);
+            const collectedError1 = await errorReporter.collectEnhancedError(networkError);
             expect(collectedError1.category).toBe('network');
             
             const renderError = new Error('Canvas rendering failed');
-            const collectedError2 = errorReporter.collectEnhancedError(renderError);
+            const collectedError2 = await errorReporter.collectEnhancedError(renderError);
             expect(collectedError2.category).toBe('rendering');
+        });
+        
+        test('クリティカルエラーでスクリーンショットが取得される', async () => {
+            const criticalError = new Error('Critical system failure');
+            
+            const collectedError = await errorReporter.collectEnhancedError(criticalError, { critical: true });
+            
+            expect(collectedError.severity).toBe('critical');
+            expect(collectedError.screenshot).toBeDefined();
+            expect(collectedError.screenshot.id).toMatch(/^screenshot_/);
+            expect(mockGameEngine.canvas.toDataURL).toHaveBeenCalled();
+        });
+        
+        test('高重要度エラーでスクリーンショットが取得される', async () => {
+            const highSeverityError = new TypeError('Type error causing screenshot');
+            
+            const collectedError = await errorReporter.collectEnhancedError(highSeverityError);
+            
+            expect(collectedError.severity).toBe('high');
+            expect(collectedError.screenshot).toBeDefined();
+            expect(mockGameEngine.canvas.toDataURL).toHaveBeenCalled();
+        });
+        
+        test('低重要度エラーではスクリーンショットが取得されない', async () => {
+            const lowSeverityError = new Error('Minor error');
+            
+            const collectedError = await errorReporter.collectEnhancedError(lowSeverityError);
+            
+            expect(collectedError.severity).toBe('low');
+            expect(collectedError.screenshot).toBeUndefined();
+        });
+        
+        test('スクリーンショット取得エラーは適切に処理される', async () => {
+            // Canvas.toDataURLでエラーを発生させる
+            mockGameEngine.canvas.toDataURL.mockImplementation(() => {
+                throw new Error('Canvas error');
+            });
+            
+            const criticalError = new Error('Critical error');
+            const collectedError = await errorReporter.collectEnhancedError(criticalError, { critical: true });
+            
+            expect(collectedError.severity).toBe('critical');
+            expect(collectedError.screenshot).toBeUndefined();
+            expect(console.warn).toHaveBeenCalledWith(
+                'Failed to capture error screenshot:',
+                expect.any(String)
+            );
         });
     });
     
     describe('パターン分析', () => {
-        test('同じエラーパターンが正しく検出される', () => {
+        test('同じエラーパターンが正しく検出される', async () => {
             const testError = new Error('Repeated error');
             const context = { component: 'TestComponent' };
             
             // 同じエラーを複数回収集
-            errorReporter.collectEnhancedError(testError, context);
-            errorReporter.collectEnhancedError(testError, context);
-            errorReporter.collectEnhancedError(testError, context);
+            await errorReporter.collectEnhancedError(testError, context);
+            await errorReporter.collectEnhancedError(testError, context);
+            await errorReporter.collectEnhancedError(testError, context);
             
             const patterns = errorReporter.errorPatterns;
             expect(patterns.size).toBe(1);

@@ -4,6 +4,7 @@
  */
 
 import { ErrorHandler } from '../utils/ErrorHandler.js';
+import { ErrorScreenshotCapture } from './ErrorScreenshotCapture.js';
 
 export class ErrorReporter extends ErrorHandler {
     constructor(gameEngine) {
@@ -14,6 +15,7 @@ export class ErrorReporter extends ErrorHandler {
         this.errorCollector = new ErrorCollector(this);
         this.errorAnalyzer = new ErrorAnalyzer(this);
         this.errorStorage = new ErrorStorage(this);
+        this.screenshotCapture = new ErrorScreenshotCapture(gameEngine);
         
         // セッション管理
         this.sessionId = this.generateSessionId();
@@ -60,12 +62,16 @@ export class ErrorReporter extends ErrorHandler {
         // 既存のエラーハンドリングを拡張
         const originalHandleError = this.handleError.bind(this);
         
-        this.handleError = (error, context = {}) => {
+        this.handleError = async (error, context = {}) => {
             // 元のエラーハンドリングを実行
             const result = originalHandleError(error, context);
             
-            // 拡張エラー収集を実行
-            this.collectEnhancedError(error, context);
+            // 拡張エラー収集を実行（非同期）
+            try {
+                await this.collectEnhancedError(error, context);
+            } catch (collectionError) {
+                console.warn('Error collection failed:', collectionError.message);
+            }
             
             return result;
         };
@@ -79,23 +85,31 @@ export class ErrorReporter extends ErrorHandler {
      */
     setupAdditionalErrorCatching() {
         // Promise rejectionのキャッチ
-        window.addEventListener('unhandledrejection', (event) => {
-            this.collectEnhancedError(new Error(event.reason), {
-                type: 'unhandledrejection',
-                promise: event.promise,
-                gameState: this.captureGameState()
-            });
+        window.addEventListener('unhandledrejection', async (event) => {
+            try {
+                await this.collectEnhancedError(new Error(event.reason), {
+                    type: 'unhandledrejection',
+                    promise: event.promise,
+                    gameState: this.captureGameState()
+                });
+            } catch (e) {
+                console.warn('Unhandled rejection collection failed:', e.message);
+            }
         });
         
         // リソース読み込みエラー
-        window.addEventListener('error', (event) => {
+        window.addEventListener('error', async (event) => {
             if (event.target !== window) {
-                this.collectEnhancedError(new Error(`Resource load failed: ${event.target.src || event.target.href}`), {
-                    type: 'resource_error',
-                    element: event.target.tagName,
-                    source: event.target.src || event.target.href,
-                    gameState: this.captureGameState()
-                });
+                try {
+                    await this.collectEnhancedError(new Error(`Resource load failed: ${event.target.src || event.target.href}`), {
+                        type: 'resource_error',
+                        element: event.target.tagName,
+                        source: event.target.src || event.target.href,
+                        gameState: this.captureGameState()
+                    });
+                } catch (e) {
+                    console.warn('Resource error collection failed:', e.message);
+                }
             }
         }, true);
     }
@@ -103,7 +117,7 @@ export class ErrorReporter extends ErrorHandler {
     /**
      * 拡張エラー情報の収集
      */
-    collectEnhancedError(error, context = {}) {
+    async collectEnhancedError(error, context = {}) {
         const enhancedError = {
             id: this.generateErrorId(),
             sessionId: this.sessionId,
@@ -133,6 +147,26 @@ export class ErrorReporter extends ErrorHandler {
             severity: this.calculateSeverity(error, context),
             category: this.categorizeError(error, context)
         };
+        
+        // クリティカルエラーの場合はスクリーンショットを取得
+        if (enhancedError.severity === 'critical' || enhancedError.severity === 'high') {
+            try {
+                const screenshot = await this.screenshotCapture.captureOnCriticalError(error, {
+                    errorId: enhancedError.id,
+                    gameState: enhancedError.context.gameState
+                });
+                
+                if (screenshot) {
+                    enhancedError.screenshot = {
+                        id: screenshot.id,
+                        timestamp: screenshot.timestamp,
+                        size: screenshot.size
+                    };
+                }
+            } catch (screenshotError) {
+                console.warn('Failed to capture error screenshot:', screenshotError.message);
+            }
+        }
         
         // エラーを保存
         this.errorCollector.collect(enhancedError);
@@ -530,6 +564,7 @@ export class ErrorReporter extends ErrorHandler {
     destroy() {
         this.saveSettings();
         this.errorStorage.cleanup();
+        this.screenshotCapture?.destroy();
         super.destroy?.();
     }
 }
