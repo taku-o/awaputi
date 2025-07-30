@@ -37,6 +37,7 @@ import { getErrorHandler } from '../utils/ErrorHandler.js';
 import { getConfigurationManager } from './ConfigurationManager.js';
 import { getCalculationEngine } from './CalculationEngine.js';
 import { EffectDebugInterface } from '../effects/EffectDebugInterface.js';
+import { EnhancedDebugInterface } from '../debug/EnhancedDebugInterface.js';
 import { EffectProfiler } from '../effects/EffectProfiler.js';
 import { EffectOptimizationAdvisor } from '../effects/EffectOptimizationAdvisor.js';
 import { EffectPerformanceOptimizer } from '../effects/EffectPerformanceOptimizer.js';
@@ -109,6 +110,9 @@ export class GameEngine {
         
         // デバッグ・プロファイリングツール（開発環境用）
         this.effectDebugInterface = new EffectDebugInterface(this);
+        
+        // 統合デバッグインターフェース（拡張版）
+        this.enhancedDebugInterface = new EnhancedDebugInterface(this);
         this.effectProfiler = new EffectProfiler(this);
         this.effectOptimizationAdvisor = new EffectOptimizationAdvisor(this);
         this.effectPerformanceOptimizer = new EffectPerformanceOptimizer(this);

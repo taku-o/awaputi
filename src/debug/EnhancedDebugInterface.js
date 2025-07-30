@@ -350,8 +350,34 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
     }
 
     registerDefaultPanels() {
-        // デフォルトパネルの登録（後で個別クラスで実装）
-        console.log('Registering default panels...');
+        // デフォルトパネルのimportと登録
+        Promise.all([
+            import('./panels/OverviewPanel.js'),
+            import('./panels/PerformancePanel.js'),
+            import('./panels/ConsolePanel.js'),
+            import('./panels/ErrorPanel.js'),
+            import('./panels/TestPanel.js')
+        ]).then(([
+            { OverviewPanel },
+            { PerformancePanel },
+            { ConsolePanel },
+            { ErrorPanel },
+            { TestPanel }
+        ]) => {
+            // パネルを登録
+            this.registerPanel('overview', OverviewPanel);
+            this.registerPanel('performance', PerformancePanel);
+            this.registerPanel('console', ConsolePanel);
+            this.registerPanel('error', ErrorPanel);
+            this.registerPanel('test', TestPanel);
+            
+            // デフォルトで概要パネルを表示
+            this.switchPanel('overview');
+            
+            console.log('Default debug panels registered successfully');
+        }).catch(error => {
+            console.error('Failed to load debug panels:', error);
+        });
     }
 
     setupDefaultShortcuts() {
