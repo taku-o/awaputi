@@ -5,6 +5,7 @@
 
 import { getPerformanceConfig } from '../config/PerformanceConfig.js';
 import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { DetailedMetricsCollector } from './DetailedMetricsCollector.js';
 
 export class AdvancedPerformanceMonitor {
     constructor(gameEngine) {
@@ -17,6 +18,7 @@ export class AdvancedPerformanceMonitor {
         
         // メトリクス収集システム
         this.metricsCollector = new MetricsCollector(this);
+        this.detailedMetricsCollector = new DetailedMetricsCollector(this);
         this.performanceAnalyzer = new PerformanceAnalyzer(this);
         this.detailedProfiler = new DetailedProfiler(this);
         
@@ -117,8 +119,11 @@ export class AdvancedPerformanceMonitor {
         const startTime = performance.now();
 
         try {
-            // 各種メトリクスの収集
+            // 基本メトリクスの収集
             this.metricsCollector.collectAll();
+            
+            // 詳細メトリクスの収集
+            this.detailedMetricsCollector.collectDetailedMetrics();
             
             // 履歴データの更新
             this.updateHistoryData();
@@ -463,6 +468,30 @@ export class AdvancedPerformanceMonitor {
     }
 
     /**
+     * 詳細メトリクス取得
+     */
+    getDetailedMetrics() {
+        return this.detailedMetricsCollector.getExtendedMetrics();
+    }
+
+    /**
+     * プロファイリングデータ取得
+     */
+    getProfilingData() {
+        return this.detailedMetricsCollector.getProfilingData();
+    }
+
+    /**
+     * 収集統計取得
+     */
+    getCollectionStatistics() {
+        return {
+            basic: this.getStatistics(),
+            detailed: this.detailedMetricsCollector.getCollectionStatistics()
+        };
+    }
+
+    /**
      * 履歴データ取得
      */
     getHistoryData(type = null, timeRange = null) {
@@ -595,6 +624,10 @@ export class AdvancedPerformanceMonitor {
         // メトリクス収集システムの破棄
         if (this.metricsCollector) {
             this.metricsCollector.destroy();
+        }
+        
+        if (this.detailedMetricsCollector) {
+            this.detailedMetricsCollector.destroy();
         }
         
         if (this.performanceAnalyzer) {
