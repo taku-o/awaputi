@@ -25,11 +25,14 @@ An action game where you click and tap various types of bubbles that appear on t
 ## Key Features
 
 *   **Intuitive Controls:** Simple and easy-to-understand operation by clicking or tapping bubbles
-*   **Diverse Bubble Types:** Over 10 types of bubbles, from regular bubbles to those with special effects
+*   **Diverse Bubble Types:** 18+ unique bubble types (Normal, Stone, Diamond, Rainbow, Electric, Boss bubbles, etc.)
 *   **Strategic Gameplay:** Deep game mechanics where time and HP management are crucial
-*   **Rich Stages:** 10 different stages from tutorial to advanced levels
+*   **Rich Stages:** 10 diverse stages from Tutorial to All-In Awawa challenge
 *   **Persistent Progress System:** Collect AP and TAP to purchase items and advance your game
-*   **Accessibility Support:** Designed for everyone to enjoy, with keyboard controls and multi-language support
+*   **Comprehensive Accessibility:** WCAG 2.1 AA compliant, full screen reader support, complete keyboard navigation
+*   **Complete Multilingual Support:** 5 languages supported (Japanese, English, Simplified/Traditional Chinese, Korean) with cultural adaptation
+*   **Advanced Performance Optimization:** 60FPS maintenance, memory optimization, mobile support
+*   **Comprehensive Statistics & Achievement System:** Detailed play statistics, 30+ achievement types, progress tracking
 
 ## How to Play
 
@@ -55,6 +58,20 @@ An action game where you click and tap various types of bubbles that appear on t
     *   Mozilla Firefox (latest version)
     *   Safari (latest version)
     *   Microsoft Edge (latest version)
+
+*   **Supported Languages:**
+    *   🇯🇵 日本語 (Japanese) - Full support
+    *   🇺🇸 English - Full support
+    *   🇨🇳 中文简体 (Simplified Chinese) - Implemented, translation in progress
+    *   🇹🇼 中文繁體 (Traditional Chinese) - Implemented, translation in progress
+    *   🇰🇷 한국어 (Korean) - Implemented, translation in progress
+
+*   **Accessibility Features:**
+    *   WCAG 2.1 AA compliant
+    *   Full screen reader support
+    *   Complete keyboard navigation
+    *   High contrast & large text support
+    *   Color blindness support
 
 ## Installation & Setup
 
@@ -123,7 +140,34 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 Enjoy the game!
 
-## Language Versions
+## Internationalization & Localization
 
-- [日本語版 README](./README.md)
-- [English README](./README.en.md)
+This game features a comprehensive multilingual support system:
+
+### Supported Languages
+- 🇯🇵 [日本語版 README](./README.md)
+- 🇺🇸 [English README](./README.en.md)
+- 🇨🇳 [中文简体 README](./README.zh-CN.md)
+- 🇹🇼 [中文繁體 README](./README.zh-TW.md)
+- 🇰🇷 [한국어 README](./README.ko.md)
+
+### Multilingual Features
+- **Dynamic Language Switching:** Change language instantly during gameplay
+- **Cultural Adaptation:** Number and date formatting adapted to each language/region
+- **Localization Support:** Currency display, time display optimized for each region
+- **Accessibility Translation:** Dedicated translations for screen reader support
+- **RTL Language Preparation:** Foundation ready for future Arabic/Hebrew support
+
+### Translation Quality Management
+- Automated quality checking
+- Translation consistency validation
+- Cultural appropriateness checking
+- Progress tracking system
+
+### For Developers
+Comprehensive internationalization documentation available:
+- [Developer Guide](./docs/i18n-developer-guide.md)
+- [Translation Tools Guide](./docs/i18n-translation-tools.md)
+- [New Language Addition Guide](./docs/i18n-new-language-guide.md)
+- [Troubleshooting Guide](./docs/i18n-troubleshooting-guide.md)
+- [API Reference](./docs/i18n-system-api.md)
