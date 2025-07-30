@@ -4,13 +4,15 @@
  */
 
 import { EffectDebugInterface } from '../effects/EffectDebugInterface.js';
+import { PanelManager } from './PanelManager.js';
 
 export class EnhancedDebugInterface extends EffectDebugInterface {
     constructor(gameEngine) {
         super(gameEngine);
         
         // パネル管理システム
-        this.panels = new Map();
+        this.panelManager = new PanelManager(this);
+        this.panels = new Map(); // 後方互換性のため保持
         this.activePanel = 'overview';
         this.panelHistory = [];
         
@@ -247,28 +249,19 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
         // パネル固有のイベント処理は各パネルクラスで実装
     }
 
-    registerPanel(name, panelClass) {
-        if (this.panels.has(name)) {
-            console.warn(`Panel '${name}' is already registered`);
-            return false;
+    registerPanel(name, panelClass, config = {}) {
+        // PanelManagerに委譲
+        const result = this.panelManager.registerPanel(name, panelClass, config);
+        
+        // 後方互換性のため、古いpanelsマップも更新
+        if (result) {
+            const panelInfo = this.panelManager.getPanelInfo(name);
+            if (panelInfo && panelInfo.instance) {
+                this.panels.set(name, panelInfo.instance);
+            }
         }
-
-        try {
-            const panelInstance = new panelClass(this.gameEngine, this);
-            this.panels.set(name, panelInstance);
-            
-            // パネルタブの追加
-            this.addPanelTab(name, panelInstance.getDisplayName());
-            
-            // パネルコンテンツエリアの追加
-            this.addPanelContent(name);
-            
-            console.log(`Panel '${name}' registered successfully`);
-            return true;
-        } catch (error) {
-            console.error(`Failed to register panel '${name}':`, error);
-            return false;
-        }
+        
+        return result;
     }
 
     addPanelTab(name, displayName) {
@@ -344,6 +337,10 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
     }
 
     activatePanel(panelName) {
+        // PanelManagerのshowPanelを使用
+        this.panelManager.showPanel(panelName);
+        
+        // 後方互換性
         const panel = this.panels.get(panelName);
         if (panel && typeof panel.activate === 'function') {
             panel.activate();
@@ -587,7 +584,12 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
             this.saveSessionData();
         }
         
-        // パネルの破棄
+        // PanelManagerの破棄
+        if (this.panelManager) {
+            this.panelManager.destroy();
+        }
+        
+        // パネルの破棄（後方互換性）
         for (const [name, panel] of this.panels) {
             if (typeof panel.destroy === 'function') {
                 panel.destroy();
@@ -644,6 +646,35 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
 
     getShortcutConflicts() {
         return new Map(this.shortcutConflicts);
+    }
+
+    // PanelManager API の公開
+    getPanelManager() {
+        return this.panelManager;
+    }
+
+    getPanelInfo(name) {
+        return this.panelManager.getPanelInfo(name);
+    }
+
+    getAllPanels() {
+        return this.panelManager.getAllPanels();
+    }
+
+    getVisiblePanels() {
+        return this.panelManager.getVisiblePanels();
+    }
+
+    getPanelStatistics() {
+        return this.panelManager.getPanelStatistics();
+    }
+
+    addLifecycleHook(hookName, callback) {
+        return this.panelManager.addLifecycleHook(hookName, callback);
+    }
+
+    removeLifecycleHook(hookName, callback) {
+        return this.panelManager.removeLifecycleHook(hookName, callback);
     }
 }
 
