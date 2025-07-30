@@ -141,7 +141,7 @@ self.addEventListener('install', (event) => {
                 console.log('[ServiceWorker] 静的リソースキャッシュ完了:', validAssets.length);
                 
                 // クライアントに通知
-                self.postMessage({
+                await postMessageToClients({
                     type: 'CACHE_UPDATED',
                     payload: {
                         cached: validAssets.length,
@@ -179,7 +179,7 @@ self.addEventListener('activate', (event) => {
                 console.log('[ServiceWorker] アクティブ化完了');
                 
                 // クライアントに通知
-                self.postMessage({
+                await postMessageToClients({
                     type: 'OFFLINE_READY',
                     payload: { timestamp: Date.now() }
                 });
@@ -719,11 +719,26 @@ async function setStorageData(key, data) {
  * クライアントへのメッセージ送信
  */
 async function postMessageToClients(message) {
-    const clients = await self.clients.matchAll();
-    
-    clients.forEach(client => {
-        client.postMessage(message);
-    });
+    try {
+        const clients = await self.clients.matchAll();
+        
+        if (clients.length === 0) {
+            console.log('[ServiceWorker] No clients available for messaging');
+            return;
+        }
+        
+        console.log(`[ServiceWorker] Sending message to ${clients.length} client(s):`, message.type);
+        
+        clients.forEach(client => {
+            try {
+                client.postMessage(message);
+            } catch (error) {
+                console.error('[ServiceWorker] Failed to send message to client:', error);
+            }
+        });
+    } catch (error) {
+        console.error('[ServiceWorker] Failed to get clients for messaging:', error);
+    }
 }
 
 console.log('[ServiceWorker] Service Worker読み込み完了:', CACHE_CONFIG.version);
