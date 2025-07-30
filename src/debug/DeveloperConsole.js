@@ -3,6 +3,8 @@
  * インタラクティブなコマンドライン環境でゲーム状態操作とデバッグを支援
  */
 
+import { ConfigurationCommands } from './ConfigurationCommands.js';
+
 export class DeveloperConsole {
     constructor(gameEngine) {
         this.gameEngine = gameEngine;
@@ -32,11 +34,15 @@ export class DeveloperConsole {
         this.currentInput = '';
         this.suggestions = [];
         
+        // 拡張コマンド群
+        this.configurationCommands = new ConfigurationCommands(gameEngine);
+        
         this.initialize();
     }
 
     initialize() {
         this.registerBuiltinCommands();
+        this.registerExtensionCommands();
         this.loadHistory();
     }
 
@@ -439,6 +445,14 @@ export class DeveloperConsole {
         });
     }
 
+    /**
+     * 拡張コマンドの登録
+     */
+    registerExtensionCommands() {
+        // 設定管理コマンドの登録
+        this.configurationCommands.registerCommands(this);
+    }
+
     // 組み込みコマンドの実装
     helpCommand(args) {
         if (args.length === 0) {
@@ -608,6 +622,12 @@ export class DeveloperConsole {
 
     destroy() {
         this.saveHistory();
+        
+        // 拡張コマンドのクリーンアップ  
+        if (this.configurationCommands) {
+            this.configurationCommands.destroy();
+        }
+        
         this.commands.clear();
         this.commandGroups.clear();
         this.aliases.clear();

@@ -25,6 +25,15 @@ const mockGameEngine = {
     inputManager: { mock: 'inputManager' },
     performanceOptimizer: {
         getCurrentFPS: jest.fn(() => 60)
+    },
+    configurationManager: {
+        get: jest.fn(),
+        set: jest.fn(),
+        getDefault: jest.fn(),
+        getAll: jest.fn(),
+        getAllDefaults: jest.fn(),
+        validate: jest.fn(),
+        validateAll: jest.fn()
     }
 };
 
@@ -787,6 +796,106 @@ describe('CommandRegistry', () => {
             expect(registry.commands.size).toBe(0);
             expect(registry.aliases.size).toBe(0);
             expect(registry.middleware).toEqual([]);
+        });
+    });
+
+    describe('Configuration Commands Integration', () => {
+        test('should register configuration commands', async () => {
+            const console = new DeveloperConsole(mockGameEngine);
+            
+            // Check that config commands are registered
+            const commands = console.getCommands();
+            expect(commands).toContain('config.get');
+            expect(commands).toContain('config.set');
+            expect(commands).toContain('config.reset');
+            expect(commands).toContain('config.list');
+            expect(commands).toContain('config.validate');
+            expect(commands).toContain('config.export');
+            expect(commands).toContain('config.import');
+            expect(commands).toContain('config.history');
+            expect(commands).toContain('config.revert');
+            expect(commands).toContain('config.diff');
+            expect(commands).toContain('config.template');
+        });
+
+        test('should execute config.get command', async () => {
+            mockGameEngine.configurationManager.get.mockReturnValue(25);
+            
+            const console = new DeveloperConsole(mockGameEngine);
+            
+            await console.execute('config.get game.scoring.baseScores.normal');
+            
+            expect(mockGameEngine.configurationManager.get).toHaveBeenCalledWith('game.scoring.baseScores.normal');
+            
+            const output = console.getOutput();
+            expect(output.some(line => line.message.includes('game.scoring.baseScores.normal = 25'))).toBe(true);
+        });
+
+        test('should execute config.set command', async () => {
+            mockGameEngine.configurationManager.get.mockReturnValue(10); // original value
+            mockGameEngine.configurationManager.set.mockReturnValue(true);
+            
+            const console = new DeveloperConsole(mockGameEngine);
+            
+            await console.execute('config.set game.scoring.baseScores.normal 25');
+            
+            expect(mockGameEngine.configurationManager.set).toHaveBeenCalledWith(
+                'game.scoring.baseScores.normal', 
+                25, 
+                { validate: true, saveToStorage: false }
+            );
+            
+            const output = console.getOutput();
+            expect(output.some(line => line.message.includes('Set game.scoring.baseScores.normal = 25'))).toBe(true);
+        });
+
+        test('should execute config.template command', async () => {
+            mockGameEngine.configurationManager.get.mockReturnValue(30); // original value
+            mockGameEngine.configurationManager.set.mockReturnValue(true);
+            
+            const console = new DeveloperConsole(mockGameEngine);
+            
+            await console.execute('config.template development');
+            
+            // development テンプレートの設定が適用されることを確認
+            expect(mockGameEngine.configurationManager.set).toHaveBeenCalledWith(
+                'performance.targetFPS', 
+                60, 
+                { validate: true, saveToStorage: false }
+            );
+            expect(mockGameEngine.configurationManager.set).toHaveBeenCalledWith(
+                'debug.enabled', 
+                true, 
+                { validate: true, saveToStorage: false }
+            );
+            
+            const output = console.getOutput();
+            expect(output.some(line => line.message.includes("Applied template 'development'"))).toBe(true);
+        });
+
+        test('should handle config command errors gracefully', async () => {
+            mockGameEngine.configurationManager.set.mockImplementation(() => {
+                throw new Error('Validation failed');
+            });
+            
+            const console = new DeveloperConsole(mockGameEngine);
+            
+            await console.execute('config.set invalid.path invalidValue');
+            
+            const output = console.getOutput();
+            expect(output.some(line => 
+                line.type === 'result' && 
+                line.message.includes('Error setting configuration: Validation failed')
+            )).toBe(true);
+        });
+
+        test('should clean up configuration commands on destroy', () => {
+            const console = new DeveloperConsole(mockGameEngine);
+            const destroySpy = jest.spyOn(console.configurationCommands, 'destroy');
+            
+            console.destroy();
+            
+            expect(destroySpy).toHaveBeenCalled();
         });
     });
 });
