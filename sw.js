@@ -141,7 +141,7 @@ self.addEventListener('install', (event) => {
                 console.log('[ServiceWorker] 静的リソースキャッシュ完了:', validAssets.length);
                 
                 // クライアントに通知
-                self.postMessage({
+                await postMessageToClients({
                     type: 'CACHE_UPDATED',
                     payload: {
                         cached: validAssets.length,
@@ -179,7 +179,7 @@ self.addEventListener('activate', (event) => {
                 console.log('[ServiceWorker] アクティブ化完了');
                 
                 // クライアントに通知
-                self.postMessage({
+                await postMessageToClients({
                     type: 'OFFLINE_READY',
                     payload: { timestamp: Date.now() }
                 });
