@@ -1,0 +1,563 @@
+{
+  "category": "troubleshooting",
+  "title": "トラブルシューティングガイド",
+  "description": "よくある問題の解決方法とサポート情報",
+  "language": "ja",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-27",
+  "topics": [
+    {
+      "id": "loading_issues",
+      "title": "読み込み問題",
+      "description": "ゲームが正常に読み込まれない場合の対処法",
+      "content": {
+        "game_not_loading": {
+          "symptoms": [
+            "白い画面のまま変わらない",
+            "「読み込み中...」から進まない",
+            "エラーメッセージが表示される"
+          ],
+          "common_causes": [
+            "JavaScriptが無効になっている",
+            "ブラウザキャッシュの問題",
+            "ネットワーク接続の問題",
+            "ブラウザの互換性問題"
+          ],
+          "solutions": [
+            {
+              "step": 1,
+              "action": "ブラウザの更新",
+              "description": "F5キーまたはCtrl+R でページを更新"
+            },
+            {
+              "step": 2,
+              "action": "JavaScriptの確認",
+              "description": "ブラウザ設定でJavaScriptが有効になっているか確認"
+            },
+            {
+              "step": 3,
+              "action": "キャッシュクリア",
+              "description": "Ctrl+Shift+R でハードリロード、またはキャッシュを削除"
+            },
+            {
+              "step": 4,
+              "action": "他ブラウザで試行",
+              "description": "Chrome、Firefox、Safari、Edgeなど別ブラウザで確認"
+            },
+            {
+              "step": 5,
+              "action": "拡張機能の確認",
+              "description": "広告ブロッカーやセキュリティ拡張を一時的に無効化"
+            }
+          ]
+        },
+        "slow_loading": {
+          "symptoms": [
+            "読み込みに異常に時間がかかる",
+            "アセット読み込みでフリーズ",
+            "進行バーが途中で止まる"
+          ],
+          "optimization_steps": [
+            "他のタブを閉じてメモリを確保",
+            "バックグラウンドアプリを終了",
+            "ネットワーク接続の安定性を確認",
+            "ブラウザを再起動",
+            "PCの再起動"
+          ]
+        },
+        "partial_loading": {
+          "symptoms": [
+            "画像が表示されない",
+            "音声が再生されない",
+            "一部機能が使用できない"
+          ],
+          "solutions": [
+            "セキュリティソフトの設定確認",
+            "ファイアウォール設定の確認",
+            "プロキシ設定の確認",
+            "DNS設定のリセット"
+          ]
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 240,
+      "tags": ["読み込み", "起動", "エラー", "初期化"]
+    },
+    {
+      "id": "performance_issues",
+      "title": "パフォーマンス問題",
+      "description": "ゲームの動作が重い・カクつく場合の対処法",
+      "content": {
+        "low_fps": {
+          "symptoms": [
+            "フレームレートが30FPS未満",
+            "動きがカクカクする",
+            "操作の反応が遅い"
+          ],
+          "diagnostic_steps": [
+            "デバッグモード（Ctrl+Shift+D）でFPS確認",
+            "CPU・GPU使用率の確認",
+            "メモリ使用量の確認",
+            "他のアプリケーションの動作確認"
+          ],
+          "optimization_solutions": [
+            {
+              "category": "ゲーム設定",
+              "actions": [
+                "パーティクル効果を「低」に設定",
+                "アニメーション品質を「簡素」に変更",
+                "目標FPSを30に制限",
+                "画面効果を無効化"
+              ]
+            },
+            {
+              "category": "ブラウザ設定",
+              "actions": [
+                "ハードウェアアクセラレーションを有効化",
+                "他のタブを閉じる",
+                "不要な拡張機能を無効化",
+                "ブラウザのメモリ使用量を確認"
+              ]
+            },
+            {
+              "category": "システム設定",
+              "actions": [
+                "電源設定を「高パフォーマンス」に変更",
+                "バックグラウンドアプリを終了",
+                "ウイルススキャンを一時停止",
+                "グラフィックドライバを更新"
+              ]
+            }
+          ]
+        },
+        "memory_issues": {
+          "symptoms": [
+            "ゲーム中にブラウザがクラッシュ",
+            "「メモリ不足」エラー",
+            "動作が徐々に重くなる"
+          ],
+          "prevention_measures": [
+            "メモリクリーンアップを「積極的」に設定",
+            "テクスチャ品質を下げる",
+            "長時間プレイ時は定期的にブラウザ再起動",
+            "RAMの増設を検討（4GB以下の場合）"
+          ]
+        },
+        "input_lag": {
+          "symptoms": [
+            "クリックしてから反応するまでに遅延",
+            "マウス操作がずれる",
+            "キーボードの反応が悪い"
+          ],
+          "solutions": [
+            "フルスクリーンモードに切り替え",
+            "マウスの設定でポーリングレートを上げる",
+            "VSync設定を調整",
+            "ブラウザのズーム設定を100%に戻す"
+          ]
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 300,
+      "tags": ["パフォーマンス", "FPS", "遅延", "最適化"]
+    },
+    {
+      "id": "audio_issues",
+      "title": "音声問題",
+      "description": "音が出ない・音質が悪い場合の解決方法",
+      "content": {
+        "no_sound": {
+          "symptoms": [
+            "BGMが再生されない",
+            "効果音が聞こえない",
+            "音声が完全に無音"
+          ],
+          "basic_checks": [
+            "システム音量の確認",
+            "ブラウザの音量設定確認",
+            "ゲーム内音量設定の確認",
+            "ミュート状態の確認"
+          ],
+          "advanced_solutions": [
+            "オーディオドライバの更新",
+            "Windows音声設定の確認",
+            "オーディオデバイスの選択確認",
+            "ブラウザの音声権限設定",
+            "他のアプリケーションとの競合確認"
+          ]
+        },
+        "distorted_audio": {
+          "symptoms": [
+            "音がぶつぶつ切れる",
+            "ノイズが混入する",
+            "音声が歪む"
+          ],
+          "solutions": [
+            "音声バッファサイズを「大」に変更",
+            "サンプリングレートを下げる",
+            "他の音声アプリを終了",
+            "Exclusive Modeを無効化",
+            "音声ドライバを再インストール"
+          ]
+        },
+        "sync_issues": {
+          "symptoms": [
+            "音と映像がずれる",
+            "効果音のタイミングが合わない",
+            "BGMが途切れる"
+          ],
+          "fixes": [
+            "音声遅延設定の調整",
+            "フレームレート設定の確認",
+            "音声処理優先度の変更",
+            "リアルタイム音声処理の有効化"
+          ]
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 180,
+      "tags": ["音声", "音量", "ノイズ", "同期"]
+    },
+    {
+      "id": "input_problems",
+      "title": "入力問題",
+      "description": "マウスやキーボードの操作に関する問題",
+      "content": {
+        "mouse_issues": {
+          "click_not_working": {
+            "description": "マウスクリックが反応しない",
+            "solutions": [
+              "マウスボタンの物理的確認",
+              "マウスドライバの更新",
+              "別のマウスでテスト",
+              "ブラウザ設定の確認",
+              "セキュリティソフトの干渉確認"
+            ]
+          },
+          "cursor_offset": {
+            "description": "クリック位置とカーソル位置がずれる",
+            "causes": [
+              "ブラウザのズーム設定",
+              "DPI設定の問題",
+              "マルチモニター環境",
+              "高解像度ディスプレイ"
+            ],
+            "solutions": [
+              "ブラウザズームを100%に設定",
+              "Windows表示スケールを100%に変更",
+              "フルスクリーンモードに切り替え",
+              "マウス設定でDPIを調整"
+            ]
+          },
+          "drag_problems": {
+            "description": "ドラッグ操作がうまくいかない",
+            "troubleshooting": [
+              "ドラッグ感度設定の調整",
+              "マウスボタンの押し方確認",
+              "十分な距離をドラッグする",
+              "ゲーム設定でドラッグ閾値を調整"
+            ]
+          }
+        },
+        "keyboard_issues": {
+          "shortcuts_not_working": {
+            "description": "キーボードショートカットが効かない",
+            "solutions": [
+              "ゲームウィンドウにフォーカスを当てる",
+              "日本語入力をオフにする",
+              "他のアプリのホットキーとの競合確認",
+              "ブラウザのショートカット設定確認",
+              "Sticky Keysなどの機能を無効化"
+            ]
+          },
+          "key_repeat": {
+            "description": "キーの連打や無反応",
+            "fixes": [
+              "キーボードドライバの更新",
+              "物理的なキーボードの清掃",
+              "別のキーボードでテスト",
+              "Windows キーボード設定の確認"
+            ]
+          }
+        },
+        "touch_issues": {
+          "touch_not_responsive": {
+            "description": "タッチ操作が反応しない（モバイル）",
+            "solutions": [
+              "画面の清掃",
+              "ブラウザの再起動",
+              "他の指で操作テスト",
+              "タッチ感度設定の確認",
+              "保護フィルムの確認"
+            ]
+          },
+          "multi_touch_problems": {
+            "description": "マルチタッチが正しく動作しない",
+            "troubleshooting": [
+              "同時タッチ数の制限確認",
+              "ブラウザのタッチサポート確認",
+              "デバイスのマルチタッチ機能確認"
+            ]
+          }
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 240,
+      "tags": ["入力", "マウス", "キーボード", "タッチ"]
+    },
+    {
+      "id": "data_issues",
+      "title": "データ問題",
+      "description": "セーブデータの消失や破損に関する問題",
+      "content": {
+        "data_loss": {
+          "symptoms": [
+            "ゲーム進捗が消えた",
+            "設定がリセットされた",
+            "実績記録が失われた"
+          ],
+          "common_causes": [
+            "ブラウザのプライベートモード使用",
+            "クッキー・ローカルストレージの削除",
+            "ブラウザの初期化",
+            "セキュリティソフトによる削除",
+            "ストレージ容量不足"
+          ],
+          "recovery_methods": [
+            {
+              "method": "自動バックアップからの復元",
+              "steps": [
+                "設定 → データ管理 → バックアップ一覧",
+                "最新のバックアップを選択",
+                "「復元」ボタンをクリック",
+                "データの整合性確認"
+              ]
+            },
+            {
+              "method": "手動バックアップファイルの使用",
+              "steps": [
+                "エクスポートしたJSONファイルを準備",
+                "設定 → データ管理 → インポート",
+                "ファイルを選択してアップロード",
+                "データのマージまたは上書きを選択"
+              ]
+            }
+          ],
+          "prevention": [
+            "定期的な手動バックアップ作成",
+            "クラウドストレージへのデータ保存",
+            "複数ブラウザでのデータ複製",
+            "プライベートモードを避ける"
+          ]
+        },
+        "data_corruption": {
+          "symptoms": [
+            "ゲーム起動時にエラー",
+            "設定が正常に読み込まれない",
+            "異常なスコア値の表示"
+          ],
+          "diagnostic_tools": [
+            "デバッグモードでのデータ検証",
+            "ブラウザ開発者ツールでのストレージ確認",
+            "データ整合性チェック機能の使用"
+          ],
+          "repair_options": [
+            "破損データの自動修復機能",
+            "デフォルト値での置き換え",
+            "バックアップからの選択的復元",
+            "完全なデータリセット（最終手段）"
+          ]
+        },
+        "sync_problems": {
+          "description": "複数デバイス間でのデータ同期問題",
+          "issues": [
+            "デバイス間でスコアが異なる",
+            "設定が同期されない",
+            "実績の重複や欠落"
+          ],
+          "solutions": [
+            "手動での強制同期実行",
+            "競合データの手動解決",
+            "マスターデータの選択と同期",
+            "同期機能の無効化と手動管理"
+          ]
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 280,
+      "tags": ["データ", "バックアップ", "復元", "同期"]
+    },
+    {
+      "id": "browser_compatibility",
+      "title": "ブラウザ互換性",
+      "description": "特定のブラウザでの問題と対処法",
+      "content": {
+        "supported_browsers": {
+          "recommended": [
+            {
+              "name": "Google Chrome",
+              "version": "90+",
+              "performance": "最高",
+              "notes": "最も安定した動作"
+            },
+            {
+              "name": "Mozilla Firefox",
+              "version": "88+",
+              "performance": "優秀",
+              "notes": "音声処理が優秀"
+            },
+            {
+              "name": "Microsoft Edge",
+              "version": "90+",
+              "performance": "良好",
+              "notes": "Windows環境で最適"
+            },
+            {
+              "name": "Safari",
+              "version": "14+",
+              "performance": "良好",
+              "notes": "macOS/iOS環境で使用"
+            }
+          ],
+          "limited_support": [
+            "Internet Explorer（サポート終了）",
+            "古いバージョンのブラウザ",
+            "モバイル向け軽量ブラウザ"
+          ]
+        },
+        "chrome_issues": {
+          "common_problems": [
+            "ハードウェアアクセラレーション無効時の性能低下",
+            "拡張機能による干渉",
+            "自動更新による設定リセット"
+          ],
+          "solutions": [
+            "chrome://settings/system でハードウェアアクセラレーション有効化",
+            "シークレットモードでの動作確認",
+            "Chrome フラグの最適化設定"
+          ]
+        },
+        "firefox_issues": {
+          "common_problems": [
+            "音声遅延の発生",
+            "WebGL性能の制限",
+            "プライバシー設定による機能制限"
+          ],
+          "solutions": [
+            "about:config で音声設定調整",
+            "WebGL設定の確認と有効化",
+            "Enhanced Tracking Protectionの調整"
+          ]
+        },
+        "safari_issues": {
+          "common_problems": [
+            "Web Audio API の制限",
+            "フルスクリーンモードの制約",
+            "タッチイベントの処理差異"
+          ],
+          "solutions": [
+            "Safari固有の音声初期化処理",
+            "代替フルスクリーン方式の使用",
+            "タッチイベントハンドラの調整"
+          ]
+        },
+        "mobile_browsers": {
+          "optimization_tips": [
+            "画面タッチの最適化",
+            "縦横画面切り替え対応",
+            "バッテリー消費の最小化",
+            "ネットワーク使用量の削減"
+          ]
+        }
+      },
+      "difficulty": "advanced",
+      "estimatedReadTime": 200,
+      "tags": ["ブラウザ", "互換性", "Chrome", "Firefox", "Safari"]
+    }
+  ],
+  "emergency_procedures": {
+    "game_crash": {
+      "immediate_actions": [
+        "ブラウザタブの再読み込み（F5）",
+        "ブラウザの完全再起動",
+        "他のアプリケーションを終了してメモリ確保",
+        "PCの再起動（必要に応じて）"
+      ],
+      "data_protection": [
+        "自動バックアップの確認",
+        "エクスポート機能での手動バックアップ",
+        "複数の保存場所への分散保存"
+      ]
+    },
+    "performance_emergency": {
+      "quick_fixes": [
+        "デバッグモードで問題箇所特定",
+        "設定を最低品質に一時変更",
+        "不要なバックグラウンドプロセス終了",
+        "ブラウザキャッシュクリア"
+      ]
+    },
+    "data_emergency": {
+      "backup_recovery": [
+        "最新バックアップファイルの場所確認",
+        "バックアップからの緊急復元手順",
+        "部分データの手動再構築方法"
+      ]
+    }
+  },
+  "contact_support": {
+    "before_contacting": {
+      "information_to_gather": [
+        "使用しているブラウザとバージョン",
+        "オペレーティングシステム",
+        "発生している問題の詳細",
+        "問題再現の手順",
+        "エラーメッセージのスクリーンショット"
+      ]
+    },
+    "support_channels": {
+      "github_issues": {
+        "url": "https://github.com/taku-o/awaputi/issues",
+        "description": "バグレポートや機能要求に最適",
+        "response_time": "1-3営業日"
+      },
+      "community_forum": {
+        "description": "ユーザー同士の情報交換",
+        "topics": [
+          "攻略情報",
+          "技術的質問",
+          "改善提案"
+        ]
+      }
+    },
+    "bug_report_template": {
+      "required_fields": [
+        "問題の概要",
+        "再現手順",
+        "期待される動作",
+        "実際の動作",
+        "環境情報",
+        "添付ファイル（必要に応じて）"
+      ]
+    }
+  },
+  "diagnostic_tools": {
+    "built_in_tools": [
+      "デバッグモード（Ctrl+Shift+D）",
+      "パフォーマンス監視画面",
+      "データ整合性チェック",
+      "システム情報表示"
+    ],
+    "browser_tools": [
+      "開発者ツール（F12）",
+      "コンソールログ確認",
+      "ネットワークタブでの通信確認",
+      "パフォーマンスプロファイラー"
+    ],
+    "external_tools": [
+      "システムリソース監視ツール",
+      "ネットワーク診断ツール",
+      "ブラウザベンチマークツール"
+    ]
+  }
+}
