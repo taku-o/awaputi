@@ -22,6 +22,9 @@ export class TutorialManager {
         this.contentLoader = getContentLoader();
         this.tutorialOverlay = getTutorialOverlay(gameEngine, gameEngine?.eventBus, gameEngine?.state);
         
+        // アクセシビリティマネージャー統合
+        this.accessibilityManager = gameEngine?.accessibilityManager || null;
+        
         // チュートリアル状態
         this.currentTutorial = null;
         this.currentStep = 0;
@@ -58,7 +61,24 @@ export class TutorialManager {
             allowSkip: true,
             allowBackNavigation: true,
             defaultTimeout: 30000,
-            highlightEnabled: true
+            highlightEnabled: true,
+            
+            // アクセシビリティ設定
+            accessibility: {
+                enabled: false,
+                highContrast: false,
+                largeText: false,
+                screenReaderMode: false,
+                cognitiveAssistance: false,
+                alternativeInput: false,
+                voiceInstructions: false,
+                extendedTimeouts: false,
+                simplifiedMode: false,
+                keyboardNavigation: true,
+                focusIndicators: true,
+                reducedMotion: false,
+                audioDescriptions: false
+            }
         };
         
         this.initialize();
@@ -85,6 +105,9 @@ export class TutorialManager {
             
             // TutorialOverlayとのイベント連携
             this.setupOverlayIntegration();
+            
+            // アクセシビリティ機能の初期化
+            this.initializeAccessibility();
             
             this.loggingSystem.info('TutorialManager', 'Tutorial system initialized successfully');
         } catch (error) {
@@ -2097,6 +2120,228 @@ export class TutorialManager {
     /**
      * リソースのクリーンアップ
      */
+    /**
+     * アクセシビリティ設定を更新
+     * @param {Object} accessibilityConfig - アクセシビリティ設定オブジェクト
+     */
+    updateAccessibilityConfig(accessibilityConfig) {
+        try {
+            this.config.accessibility = { ...this.config.accessibility, ...accessibilityConfig };
+            
+            // AccessibilityManagerと連携
+            if (this.accessibilityManager) {
+                this.accessibilityManager.emit('tutorialAccessibilityUpdated', {
+                    config: this.config.accessibility,
+                    source: 'TutorialManager'
+                });
+            }
+            
+            // 現在実行中のチュートリアルに設定を適用
+            if (this.currentTutorial && this.tutorialOverlay) {
+                this.applyAccessibilityToCurrentTutorial();
+            }
+            
+            this.loggingSystem.log('アクセシビリティ設定が更新されました', 'info', 'TutorialManager');
+        } catch (error) {
+            this.loggingSystem.log(`アクセシビリティ設定更新エラー: ${error.message}`, 'error', 'TutorialManager');
+        }
+    }
+
+    /**
+     * 現在のチュートリアルにアクセシビリティ設定を適用
+     */
+    applyAccessibilityToCurrentTutorial() {
+        if (!this.tutorialOverlay || !this.config.accessibility.enabled) {
+            return;
+        }
+
+        try {
+            const accessibility = this.config.accessibility;
+            
+            // TutorialOverlayにアクセシビリティ設定を渡す
+            this.tutorialOverlay.updateAccessibilitySettings({
+                highContrast: accessibility.highContrast,
+                largeText: accessibility.largeText,
+                screenReaderMode: accessibility.screenReaderMode,
+                reducedMotion: accessibility.reducedMotion,
+                keyboardNavigation: accessibility.keyboardNavigation,
+                focusIndicators: accessibility.focusIndicators
+            });
+            
+            // 簡素化モードの場合、ステップ内容を調整
+            if (accessibility.simplifiedMode && this.currentTutorial) {
+                this.applySimplifiedMode();
+            }
+            
+            // 拡張タイムアウトの適用
+            if (accessibility.extendedTimeouts) {
+                this.config.defaultTimeout = this.config.defaultTimeout * 2;
+                this.config.autoAdvanceDelay = this.config.autoAdvanceDelay * 1.5;
+            }
+            
+        } catch (error) {
+            this.loggingSystem.log(`アクセシビリティ適用エラー: ${error.message}`, 'error', 'TutorialManager');
+        }
+    }
+
+    /**
+     * 簡素化モードを適用（認知アクセシビリティ対応）
+     */
+    applySimplifiedMode() {
+        if (!this.currentTutorial) return;
+
+        try {
+            // ステップの内容を簡素化
+            this.currentTutorial.steps = this.currentTutorial.steps.map(step => ({
+                ...step,
+                content: this.simplifyStepContent(step.content),
+                // 複雑な検証を簡略化
+                validation: step.validation ? this.simplifyValidation(step.validation) : null,
+                // より長いタイムアウト
+                timeout: (step.timeout || this.config.defaultTimeout) * 1.5
+            }));
+            
+            // 自動進行を無効化（ユーザーのペースに合わせる）
+            this.config.autoAdvance = false;
+            
+            this.loggingSystem.log('簡素化モードが適用されました', 'info', 'TutorialManager');
+        } catch (error) {
+            this.loggingSystem.log(`簡素化モード適用エラー: ${error.message}`, 'error', 'TutorialManager');
+        }
+    }
+
+    /**
+     * ステップ内容を簡素化
+     * @param {string} content - 元の内容
+     * @returns {string} 簡素化された内容
+     */
+    simplifyStepContent(content) {
+        if (!content || typeof content !== 'string') return content;
+        
+        try {
+            // 長い文章を短縮
+            const sentences = content.split('。').filter(s => s.trim());
+            if (sentences.length <= 2) return content;
+            
+            // 最初の1-2文のみ使用
+            const simplified = sentences.slice(0, 2).join('。') + '。';
+            return simplified;
+        } catch (error) {
+            return content; // エラー時は元の内容を返す
+        }
+    }
+
+    /**
+     * 検証を簡略化
+     * @param {Function|Object} validation - 元の検証
+     * @returns {Function|Object} 簡略化された検証
+     */
+    simplifyValidation(validation) {
+        // 複雑な検証を簡単な検証に置き換え
+        if (typeof validation === 'function') {
+            return () => true; // 常に成功とする
+        }
+        
+        if (validation && typeof validation === 'object') {
+            return { ...validation, strict: false, tolerance: 'high' };
+        }
+        
+        return validation;
+    }
+
+    /**
+     * アクセシビリティ機能を初期化
+     */
+    initializeAccessibility() {
+        try {
+            // AccessibilityManagerから設定を取得
+            if (this.accessibilityManager) {
+                const systemPrefs = this.accessibilityManager.getConfiguration();
+                
+                // システム設定に基づいてデフォルト値を更新
+                if (systemPrefs) {
+                    this.config.accessibility.highContrast = systemPrefs.highContrast || false;
+                    this.config.accessibility.largeText = systemPrefs.largeText || false;
+                    this.config.accessibility.screenReaderMode = systemPrefs.screenReader || false;
+                    this.config.accessibility.reducedMotion = systemPrefs.reducedMotion || false;
+                }
+                
+                // AccessibilityManagerのイベントリスナーを設定
+                this.accessibilityManager.addEventListener('settingsChanged', (event) => {
+                    this.handleAccessibilitySettingsChange(event.detail);
+                });
+            }
+            
+            this.loggingSystem.log('アクセシビリティ機能が初期化されました', 'info', 'TutorialManager');
+        } catch (error) {
+            this.loggingSystem.log(`アクセシビリティ初期化エラー: ${error.message}`, 'error', 'TutorialManager');
+        }
+    }
+
+    /**
+     * アクセシビリティ設定変更の処理
+     * @param {Object} newSettings - 新しい設定
+     */
+    handleAccessibilitySettingsChange(newSettings) {
+        try {
+            this.updateAccessibilityConfig(newSettings);
+            
+            // 音声アナウンス（スクリーンリーダー対応）
+            if (this.config.accessibility.screenReaderMode) {
+                this.announceSettingsChange(newSettings);
+            }
+            
+        } catch (error) {
+            this.loggingSystem.log(`設定変更処理エラー: ${error.message}`, 'error', 'TutorialManager');
+        }
+    }
+
+    /**
+     * 設定変更を音声でアナウンス
+     * @param {Object} settings - 変更された設定
+     */
+    announceSettingsChange(settings) {
+        try {
+            const changes = [];
+            
+            if (settings.highContrast !== undefined) {
+                changes.push(settings.highContrast ? '高コントラストモードが有効になりました' : '高コントラストモードが無効になりました');
+            }
+            
+            if (settings.largeText !== undefined) {
+                changes.push(settings.largeText ? '大きな文字表示が有効になりました' : '大きな文字表示が無効になりました');
+            }
+            
+            if (settings.simplifiedMode !== undefined) {
+                changes.push(settings.simplifiedMode ? '簡素化モードが有効になりました' : '簡素化モードが無効になりました');
+            }
+            
+            if (changes.length > 0 && this.accessibilityManager) {
+                const announcement = changes.join('。');
+                this.accessibilityManager.emit('announceToScreenReader', { message: announcement });
+            }
+            
+        } catch (error) {
+            this.loggingSystem.log(`音声アナウンスエラー: ${error.message}`, 'error', 'TutorialManager');
+        }
+    }
+
+    /**
+     * アクセシビリティ機能の有効状態を取得
+     * @returns {boolean} アクセシビリティ機能が有効かどうか
+     */
+    isAccessibilityEnabled() {
+        return this.config.accessibility.enabled;
+    }
+
+    /**
+     * アクセシビリティ設定を取得
+     * @returns {Object} 現在のアクセシビリティ設定
+     */
+    getAccessibilityConfig() {
+        return { ...this.config.accessibility };
+    }
+
     destroy() {
         try {
             this.stopTutorial();

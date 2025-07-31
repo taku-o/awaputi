@@ -71,6 +71,22 @@ export class TutorialOverlay extends BaseDialog {
             click: this.handleOverlayClick.bind(this)
         };
         
+        // アクセシビリティ設定
+        this.accessibility = {
+            enabled: false,
+            highContrast: false,
+            largeText: false,
+            screenReaderMode: false,
+            reducedMotion: false,
+            keyboardNavigation: true,
+            focusIndicators: true,
+            textSizeMultiplier: 1.0,
+            colorAdjustment: {
+                contrastRatio: 1.0,
+                brightness: 1.0
+            }
+        };
+        
         this.initialize();
     }
 
@@ -189,6 +205,1077 @@ export class TutorialOverlay extends BaseDialog {
             this.loggingSystem.debug('TutorialOverlay', `Step updated: ${stepIndex + 1}/${this.totalSteps}`);
         } catch (error) {
             this.loggingSystem.error('TutorialOverlay', 'Failed to update step', error);
+        }
+    }
+
+    /**
+     * アクセシビリティ設定を更新
+     * @param {Object} settings - アクセシビリティ設定
+     */
+    updateAccessibilitySettings(settings) {
+        try {
+            this.accessibility = { ...this.accessibility, ...settings };
+            
+            // 既存のUI要素にアクセシビリティ設定を適用
+            if (this.overlay) {
+                this.applyAccessibilityStyles();
+            }
+            
+            // アニメーション設定の調整
+            if (this.accessibility.reducedMotion) {
+                this.disableAnimations();
+            } else {
+                this.enableAnimations();
+            }
+            
+            this.loggingSystem.log('TutorialOverlay アクセシビリティ設定が更新されました', 'info');
+        } catch (error) {
+            this.loggingSystem.log(`アクセシビリティ設定更新エラー: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * アクセシビリティスタイルを適用
+     */
+    applyAccessibilityStyles() {
+        if (!this.overlay) return;
+
+        try {
+            // 高コントラストモード
+            if (this.accessibility.highContrast) {
+                this.applyHighContrastStyles();
+            } else {
+                this.removeHighContrastStyles();
+            }
+
+            // 大きな文字表示
+            if (this.accessibility.largeText) {
+                this.applyLargeTextStyles();
+            } else {
+                this.removeLargeTextStyles();
+            }
+
+            // フォーカスインジケーター
+            if (this.accessibility.focusIndicators) {
+                this.enableFocusIndicators();
+            }
+
+            // スクリーンリーダー対応
+            if (this.accessibility.screenReaderMode) {
+                this.enableScreenReaderSupport();
+            }
+
+        } catch (error) {
+            this.loggingSystem.log(`アクセシビリティスタイル適用エラー: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * 高コントラストスタイルを適用
+     */
+    applyHighContrastStyles() {
+        const overlay = this.overlay;
+        if (!overlay) return;
+
+        // オーバーレイの背景を濃くする
+        overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+
+        // インストラクションパネルのスタイル
+        if (this.instructionPanel) {
+            this.instructionPanel.style.backgroundColor = '#000000';
+            this.instructionPanel.style.color = '#ffffff';
+            this.instructionPanel.style.border = '3px solid #ffffff';
+        }
+
+        // ナビゲーションボタンのスタイル
+        const buttons = overlay.querySelectorAll('button');
+        buttons.forEach(button => {
+            button.style.backgroundColor = '#ffffff';
+            button.style.color = '#000000';
+            button.style.border = '2px solid #ffffff';
+            button.style.fontWeight = 'bold';
+        });
+
+        // プログレスバーのスタイル
+        if (this.progressBar) {
+            this.progressBar.style.backgroundColor = '#ffffff';
+            const progressFill = this.progressBar.querySelector('.progress-fill');
+            if (progressFill) {
+                progressFill.style.backgroundColor = '#00ff00';
+            }
+        }
+
+        // ハイライト要素のスタイル
+        if (this.highlightElement) {
+            this.highlightElement.style.border = '4px solid #ffff00';
+            this.highlightElement.style.backgroundColor = 'rgba(255, 255, 0, 0.3)';
+        }
+    }
+
+    /**
+     * 高コントラストスタイルを除去
+     */
+    removeHighContrastStyles() {
+        const overlay = this.overlay;
+        if (!overlay) return;
+
+        // デフォルトスタイルに戻す
+        overlay.style.backgroundColor = this.styles.overlayBackground;
+
+        if (this.instructionPanel) {
+            this.instructionPanel.style.backgroundColor = this.styles.panelBackground;
+            this.instructionPanel.style.color = '#333333';
+            this.instructionPanel.style.border = this.styles.panelBorder;
+        }
+
+        // ボタンスタイルをリセット
+        const buttons = overlay.querySelectorAll('button');
+        buttons.forEach(button => {
+            button.style.backgroundColor = '';
+            button.style.color = '';
+            button.style.border = '';
+            button.style.fontWeight = '';
+        });
+
+        // プログレスバーとハイライトもリセット
+        if (this.progressBar) {
+            this.progressBar.style.backgroundColor = this.styles.progressBarBackground;
+        }
+
+        if (this.highlightElement) {
+            this.highlightElement.style.border = this.styles.highlightBorder;
+            this.highlightElement.style.backgroundColor = this.styles.highlightBackground;
+        }
+    }
+
+    /**
+     * 大きな文字スタイルを適用
+     */
+    applyLargeTextStyles() {
+        const multiplier = this.accessibility.textSizeMultiplier;
+        
+        if (this.instructionPanel) {
+            const textElements = this.instructionPanel.querySelectorAll('p, span, div, button');
+            textElements.forEach(element => {
+                const currentSize = parseFloat(getComputedStyle(element).fontSize);
+                element.style.fontSize = `${currentSize * multiplier}px`;
+                element.style.lineHeight = '1.6';
+            });
+
+            // パネルサイズの調整
+            this.instructionPanel.style.width = `${this.layout.instructionPanelWidth * multiplier}px`;
+            this.instructionPanel.style.maxHeight = `${this.layout.instructionPanelMaxHeight * multiplier}px`;
+        }
+    }
+
+    /**
+     * 大きな文字スタイルを除去
+     */
+    removeLargeTextStyles() {
+        if (this.instructionPanel) {
+            const textElements = this.instructionPanel.querySelectorAll('p, span, div, button');
+            textElements.forEach(element => {
+                element.style.fontSize = '';
+                element.style.lineHeight = '';
+            });
+
+            // パネルサイズをリセット
+            this.instructionPanel.style.width = `${this.layout.instructionPanelWidth}px`;
+            this.instructionPanel.style.maxHeight = `${this.layout.instructionPanelMaxHeight}px`;
+        }
+    }
+
+    /**
+     * フォーカスインジケーターを有効化
+     */
+    enableFocusIndicators() {
+        if (!this.overlay) return;
+
+        const focusableElements = this.overlay.querySelectorAll('button, [tabindex="0"]');
+        focusableElements.forEach(element => {
+            element.style.outline = '3px solid #007bff';
+            element.style.outlineOffset = '2px';
+            
+            // フォーカス時のスタイル
+            element.addEventListener('focus', () => {
+                element.style.boxShadow = '0 0 0 3px rgba(0, 123, 255, 0.5)';
+            });
+            
+            element.addEventListener('blur', () => {
+                element.style.boxShadow = '';
+            });
+        });
+    }
+
+    /**
+     * スクリーンリーダーサポートを有効化
+     */
+    enableScreenReaderSupport() {
+        if (!this.overlay) return;
+
+        // ARIA属性の追加
+        this.overlay.setAttribute('role', 'dialog');
+        this.overlay.setAttribute('aria-modal', 'true');
+        this.overlay.setAttribute('aria-labelledby', 'tutorial-title');
+        this.overlay.setAttribute('aria-describedby', 'tutorial-content');
+
+        if (this.instructionPanel) {
+            this.instructionPanel.setAttribute('role', 'main');
+            
+            // タイトル要素にIDを追加
+            const titleElement = this.instructionPanel.querySelector('h3, .tutorial-title');
+            if (titleElement) {
+                titleElement.id = 'tutorial-title';
+                titleElement.setAttribute('aria-level', '1');
+            }
+
+            // コンテンツ要素にIDを追加
+            const contentElement = this.instructionPanel.querySelector('p, .tutorial-content');
+            if (contentElement) {
+                contentElement.id = 'tutorial-content';
+            }
+        }
+
+        // ナビゲーションボタンのARIA属性
+        const buttons = this.overlay.querySelectorAll('button');
+        buttons.forEach((button, index) => {
+            if (button.textContent.includes('次へ') || button.textContent.includes('Next')) {
+                button.setAttribute('aria-label', '次のステップに進む');
+            } else if (button.textContent.includes('前へ') || button.textContent.includes('Previous')) {
+                button.setAttribute('aria-label', '前のステップに戻る');
+            } else if (button.textContent.includes('スキップ') || button.textContent.includes('Skip')) {
+                button.setAttribute('aria-label', 'チュートリアルをスキップ');
+            } else if (button.textContent.includes('完了') || button.textContent.includes('Complete')) {
+                button.setAttribute('aria-label', 'チュートリアルを完了');
+            }
+        });
+
+        // プログレスバーのARIA属性
+        if (this.progressBar) {
+            this.progressBar.setAttribute('role', 'progressbar');
+            this.progressBar.setAttribute('aria-valuemin', '0');
+            this.progressBar.setAttribute('aria-valuemax', this.totalSteps.toString());
+            this.progressBar.setAttribute('aria-valuenow', (this.stepIndex + 1).toString());
+            this.progressBar.setAttribute('aria-label', `チュートリアル進捗: ${this.stepIndex + 1}/${this.totalSteps}`);
+        }
+    }
+
+    /**
+     * アニメーションを無効化（動きの軽減対応）
+     */
+    disableAnimations() {
+        this.animationConfig = {
+            fadeInDuration: 0,
+            fadeOutDuration: 0,
+            pulseInterval: 0,
+            highlightAnimationDuration: 0,
+            panelSlideAnimationDuration: 0
+        };
+
+        // CSS transitionを無効化
+        if (this.overlay) {
+            this.overlay.style.transition = 'none';
+            
+            const allElements = this.overlay.querySelectorAll('*');
+            allElements.forEach(element => {
+                element.style.transition = 'none';
+                element.style.animation = 'none';
+            });
+        }
+    }
+
+    /**
+     * アニメーションを有効化
+     */
+    enableAnimations() {
+        this.animationConfig = {
+            fadeInDuration: 300,
+            fadeOutDuration: 200,
+            pulseInterval: 2000,
+            highlightAnimationDuration: 500,
+            panelSlideAnimationDuration: 400
+        };
+
+        // CSS transitionを復元
+        if (this.overlay) {
+            this.overlay.style.transition = '';
+            
+            const allElements = this.overlay.querySelectorAll('*');
+            allElements.forEach(element => {
+                element.style.transition = '';
+                element.style.animation = '';
+            });
+        }
+    }
+
+    /**
+     * アクセシビリティ設定を取得
+     * @returns {Object} 現在のアクセシビリティ設定
+     */
+    getAccessibilitySettings() {
+        return { ...this.accessibility };
+    }
+
+    /**
+     * Enterキーの処理
+     * @param {KeyboardEvent} event - キーボードイベント
+     */
+    handleEnterKey(event) {
+        try {
+            // フォーカスされた要素がある場合はそれをクリック
+            const focusedElement = document.activeElement;
+            if (focusedElement && focusedElement.tagName === 'BUTTON') {
+                focusedElement.click();
+                return;
+            }
+            
+            // デフォルトでは次のステップに進む
+            this.navigateStep('next');
+            this.announceNavigation('次のステップに進みました');
+        } catch (error) {
+            this.loggingSystem.log(`Enterキー処理エラー: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * Tabキーナビゲーションの処理
+     * @param {KeyboardEvent} event - キーボードイベント
+     */
+    handleTabNavigation(event) {
+        if (!this.overlay) return;
+
+        try {
+            const focusableElements = this.getFocusableElements();
+            const currentIndex = focusableElements.indexOf(document.activeElement);
+            
+            if (event.shiftKey) {
+                // Shift+Tab: 前の要素にフォーカス
+                event.preventDefault();
+                const prevIndex = currentIndex <= 0 ? focusableElements.length - 1 : currentIndex - 1;
+                focusableElements[prevIndex]?.focus();
+                this.announceNavigation(`${focusableElements[prevIndex]?.getAttribute('aria-label') || 'ボタン'}にフォーカスしました`);
+            } else {
+                // Tab: 次の要素にフォーカス
+                event.preventDefault();
+                const nextIndex = currentIndex >= focusableElements.length - 1 ? 0 : currentIndex + 1;
+                focusableElements[nextIndex]?.focus();
+                this.announceNavigation(`${focusableElements[nextIndex]?.getAttribute('aria-label') || 'ボタン'}にフォーカスしました`);
+            }
+        } catch (error) {
+            this.loggingSystem.log(`Tabナビゲーションエラー: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * フォーカス可能な要素を取得
+     * @returns {HTMLElement[]} フォーカス可能な要素の配列
+     */
+    getFocusableElements() {
+        if (!this.overlay) return [];
+
+        const selector = 'button, [tabindex="0"], input, select, textarea, [contenteditable="true"]';
+        return Array.from(this.overlay.querySelectorAll(selector))
+            .filter(element => {
+                // 表示されている要素のみを対象
+                const style = getComputedStyle(element);
+                return style.display !== 'none' && style.visibility !== 'hidden';
+            });
+    }
+
+    /**
+     * 最初のステップに移動
+     */
+    goToFirstStep() {
+        try {
+            this.stepIndex = 0;
+            this.updateStep();
+        } catch (error) {
+            this.loggingSystem.log(`最初のステップ移動エラー: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * 最後のステップに移動
+     */
+    goToLastStep() {
+        try {
+            this.stepIndex = this.totalSteps - 1;
+            this.updateStep();
+        } catch (error) {
+            this.loggingSystem.log(`最後のステップ移動エラー: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * 指定した数だけステップをスキップ
+     * @param {number} count - スキップするステップ数（負の値で戻る）
+     */
+    skipSteps(count) {
+        try {
+            const newIndex = Math.max(0, Math.min(this.totalSteps - 1, this.stepIndex + count));
+            this.stepIndex = newIndex;
+            this.updateStep();
+        } catch (error) {
+            this.loggingSystem.log(`ステップスキップエラー: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * 指定したステップにジャンプ
+     * @param {number} stepNumber - ジャンプ先のステップ番号（0ベース）
+     */
+    jumpToStep(stepNumber) {
+        try {
+            if (stepNumber >= 0 && stepNumber < this.totalSteps) {
+                this.stepIndex = stepNumber;
+                this.updateStep();
+            }
+        } catch (error) {
+            this.loggingSystem.log(`ステップジャンプエラー: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * 高コントラストモードの切り替え
+     */
+    toggleHighContrast() {
+        try {
+            this.accessibility.highContrast = !this.accessibility.highContrast;
+            this.applyAccessibilityStyles();
+            
+            const status = this.accessibility.highContrast ? '有効' : '無効';
+            this.announceNavigation(`高コントラストモードが${status}になりました`);
+        } catch (error) {
+            this.loggingSystem.log(`高コントラスト切り替えエラー: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * 大きな文字表示の切り替え
+     */
+    toggleLargeText() {
+        try {
+            this.accessibility.largeText = !this.accessibility.largeText;
+            // テキストサイズ倍率を調整
+            this.accessibility.textSizeMultiplier = this.accessibility.largeText ? 1.25 : 1.0;
+            this.applyAccessibilityStyles();
+            
+            const status = this.accessibility.largeText ? '有効' : '無効';
+            this.announceNavigation(`大きな文字表示が${status}になりました`);
+        } catch (error) {
+            this.loggingSystem.log(`大きな文字切り替えエラー: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * スクリーンリーダーモードの切り替え
+     */
+    toggleScreenReaderMode() {
+        try {
+            this.accessibility.screenReaderMode = !this.accessibility.screenReaderMode;
+            
+            if (this.accessibility.screenReaderMode) {
+                this.enableScreenReaderSupport();
+            }
+            
+            const status = this.accessibility.screenReaderMode ? '有効' : '無効';
+            this.announceNavigation(`スクリーンリーダーモードが${status}になりました`);
+        } catch (error) {
+            this.loggingSystem.log(`スクリーンリーダーモード切り替えエラー: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * 音声入力機能の切り替え（将来の拡張用）
+     */
+    toggleVoiceInput() {
+        try {
+            // Web Speech API対応の確認
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                this.announceNavigation('音声入力は、このブラウザではサポートされていません');
+                return;
+            }
+            
+            this.accessibility.voiceInput = !this.accessibility.voiceInput;
+            
+            if (this.accessibility.voiceInput) {
+                this.startVoiceRecognition();
+                this.announceNavigation('音声入力が有効になりました。話しかけてください');
+            } else {
+                this.stopVoiceRecognition();
+                this.announceNavigation('音声入力が無効になりました');
+            }
+        } catch (error) {
+            this.loggingSystem.log(`音声入力切り替えエラー: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * 音声認識を開始
+     */
+    startVoiceRecognition() {
+        try {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            this.speechRecognition = new SpeechRecognition();
+            
+            this.speechRecognition.continuous = true;
+            this.speechRecognition.interimResults = false;
+            this.speechRecognition.lang = 'ja-JP';
+            
+            this.speechRecognition.onresult = (event) => {
+                const transcript = event.results[event.results.length - 1][0].transcript.toLowerCase();
+                this.handleVoiceCommand(transcript);
+            };
+            
+            this.speechRecognition.onerror = (event) => {
+                this.loggingSystem.log(`音声認識エラー: ${event.error}`, 'error');
+            };
+            
+            this.speechRecognition.start();
+        } catch (error) {
+            this.loggingSystem.log(`音声認識開始エラー: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * 音声認識を停止
+     */
+    stopVoiceRecognition() {
+        if (this.speechRecognition) {
+            this.speechRecognition.stop();
+            this.speechRecognition = null;
+        }
+    }
+
+    /**
+     * 音声コマンドの処理
+     * @param {string} command - 認識された音声コマンド
+     */
+    handleVoiceCommand(command) {
+        try {
+            if (command.includes('次へ') || command.includes('進む')) {
+                this.navigateStep('next');
+                this.announceNavigation('音声コマンドで次のステップに進みました');
+            } else if (command.includes('前へ') || command.includes('戻る')) {
+                this.navigateStep('previous');
+                this.announceNavigation('音声コマンドで前のステップに戻りました');
+            } else if (command.includes('スキップ') || command.includes('飛ばす')) {
+                this.navigateStep('skip');
+                this.announceNavigation('音声コマンドでチュートリアルをスキップしました');
+            } else if (command.includes('ヘルプ')) {
+                this.showStepHelp();
+                this.announceNavigation('音声コマンドでヘルプを表示しました');
+            } else if (command.includes('最初')) {
+                this.goToFirstStep();
+                this.announceNavigation('音声コマンドで最初のステップに移動しました');
+            } else if (command.includes('最後')) {
+                this.goToLastStep();
+                this.announceNavigation('音声コマンドで最後のステップに移動しました');
+            } else {
+                this.announceNavigation('音声コマンドが認識されませんでした。もう一度お試しください');
+            }
+        } catch (error) {
+            this.loggingSystem.log(`音声コマンド処理エラー: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * ナビゲーション状況をアナウンス
+     * @param {string} message - アナウンスするメッセージ
+     */
+    announceNavigation(message) {
+        try {
+            if (this.accessibility.screenReaderMode && this.gameEngine?.accessibilityManager) {
+                this.gameEngine.accessibilityManager.emit('announceToScreenReader', { 
+                    message: message,
+                    priority: 'assertive'
+                });
+            }
+        } catch (error) {
+            this.loggingSystem.log(`ナビゲーションアナウンスエラー: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * デバッグモードの切り替え（開発者向け）
+     */
+    toggleDebugMode() {
+        try {
+            this.debugMode = !this.debugMode;
+            
+            if (this.debugMode) {
+                this.showDebugInfo();
+                console.log('TutorialOverlay Debug Mode Enabled');
+                console.log('Current State:', {
+                    stepIndex: this.stepIndex,
+                    totalSteps: this.totalSteps,
+                    accessibility: this.accessibility,
+                    currentTutorial: this.currentTutorial
+                });
+            } else {
+                this.hideDebugInfo();
+                console.log('TutorialOverlay Debug Mode Disabled');
+            }
+        } catch (error) {
+            this.loggingSystem.log(`デバッグモード切り替えエラー: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * デバッグ情報の表示
+     */
+    showDebugInfo() {
+        if (!this.overlay) return;
+
+        const debugPanel = document.createElement('div');
+        debugPanel.id = 'tutorial-debug-panel';
+        debugPanel.style.cssText = `
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            z-index: 10001;
+            max-width: 300px;
+        `;
+
+        debugPanel.innerHTML = `
+            <strong>Tutorial Debug Info</strong><br>
+            Step: ${this.stepIndex + 1}/${this.totalSteps}<br>
+            Accessibility Enabled: ${this.accessibility.enabled}<br>
+            High Contrast: ${this.accessibility.highContrast}<br>
+            Large Text: ${this.accessibility.largeText}<br>
+            Screen Reader: ${this.accessibility.screenReaderMode}<br>
+            Voice Input: ${this.accessibility.voiceInput || false}<br>
+            Current Tutorial: ${this.currentTutorial?.id || 'None'}
+        `;
+
+        this.overlay.appendChild(debugPanel);
+    }
+
+    /**
+     * デバッグ情報の非表示
+     */
+    hideDebugInfo() {
+        const debugPanel = document.getElementById('tutorial-debug-panel');
+        if (debugPanel) {
+            debugPanel.remove();
+        }
+    }
+
+    /**
+     * 認知アクセシビリティ対応の簡素化モードを適用
+     */
+    applyCognitiveAccessibilityMode() {
+        if (!this.accessibility.cognitiveAssistance || !this.overlay) return;
+
+        try {
+            // UI要素の簡素化
+            this.simplifyCognitiveUI();
+            
+            // インタラクションの簡素化
+            this.simplifyCognitiveInteractions();
+            
+            // コンテンツの読みやすさ向上
+            this.improveCognitiveReadability();
+            
+            // 注意散漫要素の除去
+            this.removeDistractions();
+            
+            this.loggingSystem.log('認知アクセシビリティモードが適用されました', 'info');
+        } catch (error) {
+            this.loggingSystem.log(`認知アクセシビリティモード適用エラー: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * 認知アクセシビリティ向けUI簡素化
+     */
+    simplifyCognitiveUI() {
+        if (!this.instructionPanel) return;
+
+        try {
+            // パネルのレイアウトを簡素化
+            this.instructionPanel.style.border = '3px solid #333333';
+            this.instructionPanel.style.borderRadius = '8px';
+            this.instructionPanel.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
+            this.instructionPanel.style.backgroundColor = '#f8f9fa';
+            
+            // 不要な装飾要素を非表示
+            const decorativeElements = this.instructionPanel.querySelectorAll('.decoration, .animation, .gradient');
+            decorativeElements.forEach(element => {
+                element.style.display = 'none';
+            });
+
+            // ボタンを大きく、わかりやすくする
+            const buttons = this.overlay.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.style.fontSize = '18px';
+                button.style.padding = '12px 24px';
+                button.style.margin = '8px';
+                button.style.borderRadius = '6px';
+                button.style.border = '2px solid #333333';
+                button.style.backgroundColor = '#ffffff';
+                button.style.color = '#333333';
+                button.style.fontWeight = 'bold';
+                button.style.cursor = 'pointer';
+                
+                // ホバー効果を明確に
+                button.addEventListener('mouseenter', () => {
+                    button.style.backgroundColor = '#e9ecef';
+                    button.style.transform = 'scale(1.05)';
+                });
+                
+                button.addEventListener('mouseleave', () => {
+                    button.style.backgroundColor = '#ffffff';
+                    button.style.transform = 'scale(1)';
+                });
+            });
+
+            // プログレスバーを視覚的に分かりやすく
+            if (this.progressBar) {
+                this.progressBar.style.height = '12px';
+                this.progressBar.style.borderRadius = '6px';
+                this.progressBar.style.border = '2px solid #333333';
+                this.progressBar.style.backgroundColor = '#e9ecef';
+                
+                const progressFill = this.progressBar.querySelector('.progress-fill');
+                if (progressFill) {
+                    progressFill.style.backgroundColor = '#28a745';
+                    progressFill.style.borderRadius = '4px';
+                }
+                
+                // プログレス数値を大きく表示
+                const progressText = this.progressBar.querySelector('.progress-text') || 
+                    document.createElement('div');
+                progressText.className = 'progress-text';
+                progressText.style.cssText = `
+                    position: absolute;
+                    top: -30px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    font-size: 16px;
+                    font-weight: bold;
+                    color: #333333;
+                `;
+                progressText.textContent = `${this.stepIndex + 1} / ${this.totalSteps}`;
+                this.progressBar.appendChild(progressText);
+            }
+
+        } catch (error) {
+            this.loggingSystem.log(`認知UI簡素化エラー: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * 認知アクセシビリティ向けインタラクション簡素化
+     */
+    simplifyCognitiveInteractions() {
+        try {
+            // 自動進行を無効化（ユーザーのペースに任せる）
+            this.autoAdvanceEnabled = false;
+            
+            // タイムアウトを延長または無効化
+            this.stepTimeout = null;
+            
+            // 複雑なキーボードショートカットを無効化
+            this.simplifiedKeyboardMode = true;
+            
+            // 音声入力や複雑な機能を無効化
+            this.accessibility.voiceInput = false;
+            
+            // シンプルな確認メッセージを追加
+            this.addCognitiveConfirmationMessages();
+            
+        } catch (error) {
+            this.loggingSystem.log(`認知インタラクション簡素化エラー: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * 認知アクセシビリティ向け読みやすさ向上
+     */
+    improveCognitiveReadability() {
+        if (!this.instructionPanel) return;
+
+        try {
+            // 文字サイズと行間を調整
+            const textElements = this.instructionPanel.querySelectorAll('p, span, div, li');
+            textElements.forEach(element => {
+                element.style.fontSize = '18px';
+                element.style.lineHeight = '1.8';
+                element.style.color = '#333333';
+                element.style.fontFamily = 'Arial, sans-serif';
+                element.style.marginBottom = '12px';
+            });
+
+            // タイトルを大きく、目立つように
+            const titleElements = this.instructionPanel.querySelectorAll('h1, h2, h3, .title');
+            titleElements.forEach(element => {
+                element.style.fontSize = '24px';
+                element.style.fontWeight = 'bold';
+                element.style.color = '#000000';
+                element.style.marginBottom = '16px';
+                element.style.textAlign = 'center';
+            });
+
+            // 重要なポイントにアイコンを追加
+            this.addCognitiveVisualCues();
+
+        } catch (error) {
+            this.loggingSystem.log(`認知読みやすさ向上エラー: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * 注意散漫要素の除去
+     */
+    removeDistractions() {
+        try {
+            // アニメーションを停止
+            this.disableAnimations();
+            
+            // 不要な視覚効果を非表示
+            if (this.spotlight) {
+                this.spotlight.style.display = 'none';
+            }
+            
+            // パーティクル効果や装飾を非表示
+            const distractingElements = this.overlay.querySelectorAll(
+                '.particle, .sparkle, .glow, .shadow, .reflection'
+            );
+            distractingElements.forEach(element => {
+                element.style.display = 'none';
+            });
+
+            // 背景を単色に変更
+            this.overlay.style.background = 'rgba(240, 240, 240, 0.95)';
+            
+        } catch (error) {
+            this.loggingSystem.log(`注意散漫要素除去エラー: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * 認知アクセシビリティ向け確認メッセージの追加
+     */
+    addCognitiveConfirmationMessages() {
+        try {
+            // 操作成功時の明確なフィードバック
+            this.showCognitiveSuccessMessage = (message) => {
+                const successElement = document.createElement('div');
+                successElement.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: #d4edda;
+                    color: #155724;
+                    border: 3px solid #c3e6cb;
+                    border-radius: 8px;
+                    padding: 20px;
+                    font-size: 20px;
+                    font-weight: bold;
+                    z-index: 10002;
+                    text-align: center;
+                `;
+                successElement.textContent = `✓ ${message}`;
+                
+                document.body.appendChild(successElement);
+                
+                setTimeout(() => {
+                    successElement.remove();
+                }, 3000);
+            };
+
+            // エラー時の分かりやすいメッセージ
+            this.showCognitiveErrorMessage = (message) => {
+                const errorElement = document.createElement('div');
+                errorElement.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: #f8d7da;
+                    color: #721c24;
+                    border: 3px solid #f5c6cb;
+                    border-radius: 8px;
+                    padding: 20px;
+                    font-size: 20px;
+                    font-weight: bold;
+                    z-index: 10002;
+                    text-align: center;
+                `;
+                errorElement.textContent = `⚠ ${message}`;
+                
+                document.body.appendChild(errorElement);
+                
+                setTimeout(() => {
+                    errorElement.remove();
+                }, 4000);
+            };
+
+        } catch (error) {
+            this.loggingSystem.log(`認知確認メッセージ追加エラー: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * 認知アクセシビリティ向け視覚的手がかりの追加
+     */
+    addCognitiveVisualCues() {
+        if (!this.instructionPanel) return;
+
+        try {
+            // ステップ番号を大きく表示
+            const stepNumberElement = document.createElement('div');
+            stepNumberElement.style.cssText = `
+                position: absolute;
+                top: -15px;
+                left: -15px;
+                width: 40px;
+                height: 40px;
+                background: #007bff;
+                color: white;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 20px;
+                font-weight: bold;
+                border: 3px solid white;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            `;
+            stepNumberElement.textContent = this.stepIndex + 1;
+            this.instructionPanel.appendChild(stepNumberElement);
+
+            // 進捗インジケーターを追加
+            const progressIndicator = document.createElement('div');
+            progressIndicator.style.cssText = `
+                margin: 16px 0;
+                text-align: center;
+                font-size: 16px;
+                color: #666666;
+            `;
+            progressIndicator.innerHTML = `
+                <strong>進捗:</strong> ${this.stepIndex + 1} / ${this.totalSteps} ステップ<br>
+                <small>あと ${this.totalSteps - this.stepIndex - 1} ステップで完了です</small>
+            `;
+            
+            const contentArea = this.instructionPanel.querySelector('.content') || this.instructionPanel;
+            contentArea.insertBefore(progressIndicator, contentArea.firstChild);
+
+            // 重要なアクションにアイコンを追加
+            const actionButtons = this.overlay.querySelectorAll('button');
+            actionButtons.forEach(button => {
+                const buttonText = button.textContent.toLowerCase();
+                let icon = '';
+                
+                if (buttonText.includes('次') || buttonText.includes('進む')) {
+                    icon = '→ ';
+                } else if (buttonText.includes('前') || buttonText.includes('戻る')) {
+                    icon = '← ';
+                } else if (buttonText.includes('完了')) {
+                    icon = '✓ ';
+                } else if (buttonText.includes('スキップ')) {
+                    icon = '⏭ ';
+                }
+                
+                if (icon) {
+                    button.textContent = icon + button.textContent;
+                }
+            });
+
+        } catch (error) {
+            this.loggingSystem.log(`認知視覚的手がかり追加エラー: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * 簡素化されたキーボード処理（認知アクセシビリティモード用）
+     * @param {KeyboardEvent} event - キーボードイベント
+     */
+    handleSimplifiedKeyboard(event) {
+        if (!this.simplifiedKeyboardMode) return false;
+
+        try {
+            switch (event.key) {
+                case 'Enter':
+                case ' ':
+                    event.preventDefault();
+                    this.navigateStep('next');
+                    this.showCognitiveSuccessMessage('次のステップに進みました');
+                    return true;
+                    
+                case 'Escape':
+                    event.preventDefault();
+                    this.navigateStep('skip');
+                    this.showCognitiveSuccessMessage('チュートリアルを終了しました');
+                    return true;
+                    
+                case 'F1':
+                    event.preventDefault();
+                    this.showStepHelp();
+                    this.showCognitiveSuccessMessage('ヘルプを表示しました');
+                    return true;
+                    
+                default:
+                    return false; // 他のキーは処理しない
+            }
+        } catch (error) {
+            this.loggingSystem.log(`簡素化キーボード処理エラー: ${error.message}`, 'error');
+            return false;
+        }
+    }
+
+    /**
+     * 認知アクセシビリティ設定の切り替え
+     */
+    toggleCognitiveAccessibility() {
+        try {
+            this.accessibility.cognitiveAssistance = !this.accessibility.cognitiveAssistance;
+            
+            if (this.accessibility.cognitiveAssistance) {
+                this.applyCognitiveAccessibilityMode();
+                this.announceNavigation('認知アクセシビリティモードが有効になりました');
+            } else {
+                this.removeCognitiveAccessibilityMode();
+                this.announceNavigation('認知アクセシビリティモードが無効になりました');
+            }
+            
+        } catch (error) {
+            this.loggingSystem.log(`認知アクセシビリティ切り替えエラー: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * 認知アクセシビリティモードの解除
+     */
+    removeCognitiveAccessibilityMode() {
+        try {
+            // 簡素化された要素を削除
+            const cognitiveElements = this.overlay.querySelectorAll('.cognitive-element, .step-number, .progress-indicator');
+            cognitiveElements.forEach(element => element.remove());
+            
+            // デフォルトスタイルに戻す
+            if (this.instructionPanel) {
+                this.instructionPanel.style.border = this.styles.panelBorder;
+                this.instructionPanel.style.backgroundColor = this.styles.panelBackground;
+            }
+            
+            // 通常のキーボード処理に戻す
+            this.simplifiedKeyboardMode = false;
+            
+            // アニメーションを復活
+            this.enableAnimations();
+            
+            this.loggingSystem.log('認知アクセシビリティモードが解除されました', 'info');
+        } catch (error) {
+            this.loggingSystem.log(`認知アクセシビリティモード解除エラー: ${error.message}`, 'error');
         }
     }
 
@@ -714,25 +1801,110 @@ export class TutorialOverlay extends BaseDialog {
      */
     handleKeydown(event) {
         try {
+            // アクセシビリティ機能が無効の場合は基本機能のみ
+            if (!this.accessibility.keyboardNavigation) {
+                return;
+            }
+
+            // 認知アクセシビリティモードの場合は簡素化された処理
+            if (this.accessibility.cognitiveAssistance && this.handleSimplifiedKeyboard(event)) {
+                return;
+            }
+
             switch (event.key) {
+                // 基本ナビゲーション
                 case 'ArrowLeft':
                 case 'ArrowUp':
                     event.preventDefault();
                     this.navigateStep('previous');
+                    this.announceNavigation('前のステップに移動しました');
                     break;
                 case 'ArrowRight':
                 case 'ArrowDown':
                 case ' ':
                     event.preventDefault();
                     this.navigateStep('next');
+                    this.announceNavigation('次のステップに移動しました');
                     break;
                 case 'Escape':
                     event.preventDefault();
                     this.navigateStep('skip');
+                    this.announceNavigation('チュートリアルをスキップしました');
                     break;
+                
+                // 拡張キーボードショートカット
+                case 'Enter':
+                    event.preventDefault();
+                    this.handleEnterKey(event);
+                    break;
+                case 'Tab':
+                    this.handleTabNavigation(event);
+                    break;
+                case 'Home':
+                    event.preventDefault();
+                    this.goToFirstStep();
+                    this.announceNavigation('最初のステップに移動しました');
+                    break;
+                case 'End':
+                    event.preventDefault();
+                    this.goToLastStep();
+                    this.announceNavigation('最後のステップに移動しました');
+                    break;
+                case 'PageUp':
+                    event.preventDefault();
+                    this.skipSteps(-5); // 5ステップ戻る
+                    this.announceNavigation('5ステップ戻りました');
+                    break;
+                case 'PageDown':
+                    event.preventDefault();
+                    this.skipSteps(5); // 5ステップ進む
+                    this.announceNavigation('5ステップ進みました');
+                    break;
+                
+                // ヘルプとアクセシビリティ
                 case 'F1':
                     event.preventDefault();
                     this.showStepHelp();
+                    this.announceNavigation('ヘルプを表示しました');
+                    break;
+                case 'F2':
+                    event.preventDefault();
+                    this.toggleHighContrast();
+                    break;
+                case 'F3':
+                    event.preventDefault();
+                    this.toggleLargeText();
+                    break;
+                case 'F4':
+                    event.preventDefault();
+                    this.toggleScreenReaderMode();
+                    break;
+                
+                // 数字キー（ステップジャンプ）
+                case '1': case '2': case '3': case '4': case '5':
+                case '6': case '7': case '8': case '9':
+                    if (event.ctrlKey) {
+                        event.preventDefault();
+                        const stepNumber = parseInt(event.key) - 1;
+                        this.jumpToStep(stepNumber);
+                        this.announceNavigation(`ステップ${event.key}に移動しました`);
+                    }
+                    break;
+                
+                // 音声制御（音声入力対応）
+                case 'v':
+                    if (event.ctrlKey && event.shiftKey) {
+                        event.preventDefault();
+                        this.toggleVoiceInput();
+                    }
+                    break;
+                
+                // デバッグモード（開発者向け）
+                case 'd':
+                    if (event.ctrlKey && event.shiftKey) {
+                        event.preventDefault();
+                        this.toggleDebugMode();
+                    }
                     break;
             }
         } catch (error) {
