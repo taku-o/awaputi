@@ -26,9 +26,12 @@ const mockContentLoader = {
     getCachedContent: jest.fn()
 };
 
-// モック設定
-jest.mock('../../../src/core/help/components/ContentLoader.js', () => ({
-    ContentLoader: jest.fn(() => mockContentLoader)
+// 既存のクラスのモック設定
+jest.mock('../../../src/core/LocalizationManager.js', () => ({
+    LocalizationManager: jest.fn(() => ({
+        getCurrentLanguage: jest.fn(() => 'ja'),
+        getString: jest.fn((key) => `translated_${key}`)
+    }))
 }));
 
 describe('TutorialManager', () => {
@@ -41,7 +44,7 @@ describe('TutorialManager', () => {
 
     afterEach(() => {
         if (tutorialManager) {
-            tutorialManager.cleanup();
+            tutorialManager.destroy();
         }
     });
 
@@ -355,7 +358,7 @@ describe('TutorialManager', () => {
             tutorialManager.highlightedElement = {};
             tutorialManager.currentInstructions = {};
 
-            tutorialManager.cleanup();
+            tutorialManager.destroy();
 
             expect(tutorialManager.currentTutorial).toBeNull();
             expect(tutorialManager.highlightedElement).toBeNull();

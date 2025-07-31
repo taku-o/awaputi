@@ -23,6 +23,9 @@ export class ContextManager {
         // ツールチップ管理
         this.activeTooltips = new Map();
         this.tooltipRegistry = new Map();
+        this.tooltipElements = new Map();
+        this.currentTooltip = null;
+        this.contextCache = new Map();
         this.tooltipConfig = {
             showDelay: 800,
             hideDelay: 300,

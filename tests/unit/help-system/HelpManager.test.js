@@ -29,14 +29,7 @@ const mockSearchEngine = {
     getSuggestions: jest.fn()
 };
 
-// モック設定
-jest.mock('../../../src/core/help/components/ContentLoader.js', () => ({
-    ContentLoader: jest.fn(() => mockContentLoader)
-}));
-
-jest.mock('../../../src/core/help/components/SearchEngine.js', () => ({
-    SearchEngine: jest.fn(() => mockSearchEngine)
-}));
+// モック設定は実際のクラスを使用するため削除
 
 describe('HelpManager', () => {
     let helpManager;
@@ -48,7 +41,7 @@ describe('HelpManager', () => {
 
     afterEach(() => {
         if (helpManager) {
-            helpManager.cleanup();
+            helpManager.destroy();
         }
     });
 
@@ -226,7 +219,7 @@ describe('HelpManager', () => {
             helpManager.usageStats = new Map([['test', 'stats']]);
             helpManager.readSections = new Set(['section1']);
 
-            helpManager.cleanup();
+            helpManager.destroy();
 
             expect(helpManager.helpContent.size).toBe(0);
             expect(helpManager.usageStats.size).toBe(0);

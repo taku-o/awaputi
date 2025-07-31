@@ -4,8 +4,8 @@
 
 import { jest } from '@jest/globals';
 import { HelpScene } from '../../../src/scenes/HelpScene.js';
-import { TutorialOverlay } from '../../../src/core/help/ui/TutorialOverlay.js';
-import { TooltipSystem } from '../../../src/core/help/ui/TooltipSystem.js';
+import { TutorialOverlay } from '../../../src/core/help/TutorialOverlay.js';
+import { TooltipSystem } from '../../../src/core/help/TooltipSystem.js';
 
 // ARIA属性検証ヘルパー
 const validateARIA = (element) => {
@@ -107,7 +107,7 @@ describe('Help System Accessibility Tests', () => {
 
         afterEach(() => {
             if (helpScene) {
-                helpScene.cleanup();
+                helpScene.destroy();
             }
         });
 
@@ -219,7 +219,7 @@ describe('Help System Accessibility Tests', () => {
 
         afterEach(() => {
             if (tutorialOverlay) {
-                tutorialOverlay.cleanup();
+                tutorialOverlay.destroy();
             }
         });
 
@@ -321,7 +321,7 @@ describe('Help System Accessibility Tests', () => {
 
         afterEach(() => {
             if (tooltipSystem) {
-                tooltipSystem.cleanup();
+                tooltipSystem.destroy();
             }
         });
 

@@ -34,7 +34,7 @@ describe('ContextManager', () => {
 
     afterEach(() => {
         if (contextManager) {
-            contextManager.cleanup();
+            contextManager.destroy();
         }
     });
 
@@ -369,7 +369,7 @@ describe('ContextManager', () => {
             contextManager.registerTooltip(element, content);
             contextManager.showContextualTooltip(100, 100, content);
 
-            contextManager.cleanup();
+            contextManager.destroy();
 
             expect(contextManager.tooltipElements.size).toBe(0);
             expect(contextManager.currentTooltip).toBeNull();
