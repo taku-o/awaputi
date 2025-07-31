@@ -31,13 +31,45 @@ export class TutorialOverlay extends BaseDialog {
         this.highlightElement = null;
         this.spotlight = null;
         
-        // アニメーション設定
+        // 拡張アニメーション設定
         this.animationConfig = {
             fadeInDuration: 300,
             fadeOutDuration: 200,
             pulseInterval: 2000,
             highlightAnimationDuration: 500,
-            panelSlideAnimationDuration: 400
+            panelSlideAnimationDuration: 400,
+            // 新しいアニメーション設定
+            breathingPulseDuration: 3000,
+            rippleAnimationDuration: 1500,
+            sparkleAnimationDuration: 2000,
+            glowIntensity: 0.8,
+            bounceHeight: 15,
+            bounceDuration: 800
+        };
+        
+        // アニメーション状態
+        this.animations = {
+            highlight: {
+                isActive: false,
+                startTime: 0,
+                type: 'pulse', // 'pulse', 'breathing', 'ripple', 'sparkle', 'bounce'
+                intensity: 1.0,
+                currentFrame: 0
+            },
+            panel: {
+                isActive: false,
+                startTime: 0,
+                type: 'slideIn', // 'slideIn', 'slideOut', 'bounceIn', 'scaleIn'
+                direction: 'bottom', // 'top', 'bottom', 'left', 'right'
+                progress: 0
+            },
+            spotlight: {
+                isActive: false,
+                startTime: 0,
+                currentRadius: 0,
+                targetRadius: 0,
+                expansion: false
+            }
         };
         
         // レイアウト設定
@@ -51,7 +83,7 @@ export class TutorialOverlay extends BaseDialog {
             spotlightRadius: 100
         };
         
-        // スタイル設定
+        // 拡張スタイル設定
         this.styles = {
             overlayBackground: 'rgba(0, 0, 0, 0.6)',
             panelBackground: '#ffffff',
@@ -61,7 +93,12 @@ export class TutorialOverlay extends BaseDialog {
             highlightBorder: '3px solid #007bff',
             highlightBackground: 'rgba(0, 123, 255, 0.1)',
             progressBarColor: '#007bff',
-            progressBarBackground: '#e9ecef'
+            progressBarBackground: '#e9ecef',
+            // 新しいスタイル
+            glowColor: '#007bff',
+            rippleColor: 'rgba(0, 123, 255, 0.3)',
+            sparkleColor: '#ffd700',
+            pulseColor: 'rgba(0, 123, 255, 0.4)'
         };
         
         // イベントハンドラー
@@ -111,6 +148,421 @@ export class TutorialOverlay extends BaseDialog {
     }
 
     /**
+     * ハイライトアニメーションの開始
+     * @param {string} type - アニメーションタイプ ('pulse', 'breathing', 'ripple', 'sparkle', 'bounce')
+     * @param {number} intensity - アニメーション強度 (0.1-2.0)
+     */
+    startHighlightAnimation(type = 'pulse', intensity = 1.0) {
+        this.animations.highlight = {
+            isActive: true,
+            startTime: Date.now(),
+            type: type,
+            intensity: intensity,
+            currentFrame: 0
+        };
+        
+        this.loggingSystem.debug('TutorialOverlay', `Highlight animation started: ${type}, intensity: ${intensity}`);
+    }
+    
+    /**
+     * パネルアニメーションの開始
+     * @param {string} type - アニメーションタイプ ('slideIn', 'slideOut', 'bounceIn', 'scaleIn')
+     * @param {string} direction - 方向 ('top', 'bottom', 'left', 'right')
+     */
+    startPanelAnimation(type = 'slideIn', direction = 'bottom') {
+        this.animations.panel = {
+            isActive: true,
+            startTime: Date.now(),
+            type: type,
+            direction: direction,
+            progress: 0
+        };
+        
+        this.loggingSystem.debug('TutorialOverlay', `Panel animation started: ${type} from ${direction}`);
+    }
+    
+    /**
+     * スポットライトアニメーションの開始
+     * @param {number} targetRadius - 目標半径
+     * @param {boolean} expansion - 拡張するかどうか
+     */
+    startSpotlightAnimation(targetRadius, expansion = true) {
+        this.animations.spotlight = {
+            isActive: true,
+            startTime: Date.now(),
+            currentRadius: expansion ? 0 : this.layout.spotlightRadius,
+            targetRadius: targetRadius,
+            expansion: expansion
+        };
+        
+        this.loggingSystem.debug('TutorialOverlay', `Spotlight animation started: radius ${targetRadius}, expansion: ${expansion}`);
+    }
+    
+    /**
+     * アニメーション更新処理
+     * @param {number} currentTime - 現在時刻
+     */
+    updateAnimations(currentTime) {
+        this.updateHighlightAnimation(currentTime);
+        this.updatePanelAnimation(currentTime);
+        this.updateSpotlightAnimation(currentTime);
+    }
+    
+    /**
+     * ハイライトアニメーションの更新
+     * @param {number} currentTime - 現在時刻
+     */
+    updateHighlightAnimation(currentTime) {
+        if (!this.animations.highlight.isActive) return;
+        
+        const animation = this.animations.highlight;
+        let duration;
+        
+        switch (animation.type) {
+            case 'pulse':
+                duration = this.animationConfig.pulseInterval;
+                break;
+            case 'breathing':
+                duration = this.animationConfig.breathingPulseDuration;
+                break;
+            case 'ripple':
+                duration = this.animationConfig.rippleAnimationDuration;
+                break;
+            case 'sparkle':
+                duration = this.animationConfig.sparkleAnimationDuration;
+                break;
+            case 'bounce':
+                duration = this.animationConfig.bounceDuration;
+                break;
+            default:
+                duration = this.animationConfig.pulseInterval;
+        }
+        
+        const elapsed = currentTime - animation.startTime;
+        const cycle = Math.floor(elapsed / duration);
+        const progress = (elapsed % duration) / duration;
+        
+        animation.currentFrame = progress;
+        
+        // アニメーションのスタイルを要素に適用
+        this.applyHighlightAnimationStyles(animation);
+    }
+    
+    /**
+     * パネルアニメーションの更新
+     * @param {number} currentTime - 現在時刻
+     */
+    updatePanelAnimation(currentTime) {
+        if (!this.animations.panel.isActive) return;
+        
+        const animation = this.animations.panel;
+        const elapsed = currentTime - animation.startTime;
+        const duration = this.animationConfig.panelSlideAnimationDuration;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // イージング関数適用
+        animation.progress = this.easeOutBounce(progress);
+        
+        if (progress >= 1) {
+            animation.isActive = false;
+            this.loggingSystem.debug('TutorialOverlay', 'Panel animation completed');
+        }
+        
+        this.applyPanelAnimationStyles(animation);
+    }
+    
+    /**
+     * スポットライトアニメーションの更新
+     * @param {number} currentTime - 現在時刻
+     */
+    updateSpotlightAnimation(currentTime) {
+        if (!this.animations.spotlight.isActive) return;
+        
+        const animation = this.animations.spotlight;
+        const elapsed = currentTime - animation.startTime;
+        const duration = 500; // 500ms
+        const progress = Math.min(elapsed / duration, 1);
+        
+        const startRadius = animation.expansion ? 0 : this.layout.spotlightRadius;
+        const endRadius = animation.targetRadius;
+        
+        animation.currentRadius = startRadius + (endRadius - startRadius) * this.easeOutCubic(progress);
+        
+        if (progress >= 1) {
+            animation.isActive = false;
+            this.loggingSystem.debug('TutorialOverlay', 'Spotlight animation completed');
+        }
+    }
+    
+    /**
+     * ハイライトアニメーションスタイルの適用
+     * @param {Object} animation - アニメーション情報
+     */
+    applyHighlightAnimationStyles(animation) {
+        if (!this.highlightElement) return;
+        
+        const element = this.highlightElement;
+        const frame = animation.currentFrame;
+        const intensity = animation.intensity;
+        
+        switch (animation.type) {
+            case 'pulse':
+                this.applyPulseEffect(element, frame, intensity);
+                break;
+            case 'breathing':
+                this.applyBreathingEffect(element, frame, intensity);
+                break;
+            case 'ripple':
+                this.applyRippleEffect(element, frame, intensity);
+                break;
+            case 'sparkle':
+                this.applySparkleEffect(element, frame, intensity);
+                break;
+            case 'bounce':
+                this.applyBounceEffect(element, frame, intensity);
+                break;
+        }
+    }
+    
+    /**
+     * パルス効果の適用
+     * @param {HTMLElement} element - 対象要素
+     * @param {number} frame - アニメーションフレーム (0-1)
+     * @param {number} intensity - 強度
+     */
+    applyPulseEffect(element, frame, intensity) {
+        const scale = 1 + Math.sin(frame * 2 * Math.PI) * 0.1 * intensity;
+        const glow = Math.sin(frame * 2 * Math.PI) * 0.5 + 0.5;
+        
+        element.style.transform = `scale(${scale})`;
+        element.style.boxShadow = `0 0 ${20 * glow * intensity}px ${this.styles.glowColor}`;
+        element.style.borderColor = this.adjustColorOpacity(this.styles.highlightBorder, 0.7 + glow * 0.3);
+    }
+    
+    /**
+     * ブリージング効果の適用
+     * @param {HTMLElement} element - 対象要素
+     * @param {number} frame - アニメーションフレーム (0-1)
+     * @param {number} intensity - 強度
+     */
+    applyBreathingEffect(element, frame, intensity) {
+        const breathe = Math.sin(frame * 2 * Math.PI) * 0.5 + 0.5;
+        const scale = 1 + breathe * 0.05 * intensity;
+        const opacity = 0.8 + breathe * 0.2;
+        
+        element.style.transform = `scale(${scale})`;
+        element.style.opacity = opacity;
+        element.style.filter = `brightness(${1 + breathe * 0.2})`;
+    }
+    
+    /**
+     * リップル効果の適用
+     * @param {HTMLElement} element - 対象要素
+     * @param {number} frame - アニメーションフレーム (0-1)
+     * @param {number} intensity - 強度
+     */
+    applyRippleEffect(element, frame, intensity) {
+        const rippleRadius = frame * 100 * intensity;
+        const rippleOpacity = (1 - frame) * 0.6;
+        
+        // 疑似要素でリップル効果を実現（CSS keyframesを動的生成）
+        if (!element.rippleStyle) {
+            element.rippleStyle = document.createElement('style');
+            document.head.appendChild(element.rippleStyle);
+        }
+        
+        element.rippleStyle.textContent = `
+            .tutorial-highlight-ripple::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: ${rippleRadius * 2}px;
+                height: ${rippleRadius * 2}px;
+                margin: -${rippleRadius}px;
+                border: 2px solid ${this.styles.rippleColor};
+                border-radius: 50%;
+                opacity: ${rippleOpacity};
+                pointer-events: none;
+            }
+        `;
+        
+        element.classList.add('tutorial-highlight-ripple');
+    }
+    
+    /**
+     * スパークル効果の適用
+     * @param {HTMLElement} element - 対象要素
+     * @param {number} frame - アニメーションフレーム (0-1)
+     * @param {number} intensity - 強度
+     */
+    applySparkleEffect(element, frame, intensity) {
+        // スパークル要素を動的に生成・管理
+        if (!element.sparkles) {
+            element.sparkles = [];
+            for (let i = 0; i < 6; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'tutorial-sparkle';
+                sparkle.style.cssText = `
+                    position: absolute;
+                    width: 4px;
+                    height: 4px;
+                    background: ${this.styles.sparkleColor};
+                    border-radius: 50%;
+                    pointer-events: none;
+                    z-index: 1001;
+                `;
+                element.appendChild(sparkle);
+                element.sparkles.push(sparkle);
+            }
+        }
+        
+        // スパークルの位置をアニメート
+        element.sparkles.forEach((sparkle, index) => {
+            const angle = (index / element.sparkles.length) * 2 * Math.PI + frame * 2 * Math.PI;
+            const radius = 30 + Math.sin(frame * 4 * Math.PI + index) * 15;
+            const x = Math.cos(angle) * radius * intensity;
+            const y = Math.sin(angle) * radius * intensity;
+            const opacity = (Math.sin(frame * 4 * Math.PI + index) + 1) * 0.5;
+            
+            sparkle.style.transform = `translate(${x}px, ${y}px)`;
+            sparkle.style.opacity = opacity;
+        });
+    }
+    
+    /**
+     * バウンス効果の適用
+     * @param {HTMLElement} element - 対象要素
+     * @param {number} frame - アニメーションフレーム (0-1)
+     * @param {number} intensity - 強度
+     */
+    applyBounceEffect(element, frame, intensity) {
+        const bounce = Math.abs(Math.sin(frame * 4 * Math.PI)) * this.animationConfig.bounceHeight * intensity;
+        const scale = 1 + bounce * 0.01;
+        
+        element.style.transform = `translateY(-${bounce}px) scale(${scale})`;
+        element.style.filter = `drop-shadow(0 ${bounce + 5}px ${bounce * 0.5}px rgba(0,0,0,0.3))`;
+    }
+    
+    /**
+     * パネルアニメーションスタイルの適用
+     * @param {Object} animation - アニメーション情報
+     */
+    applyPanelAnimationStyles(animation) {
+        if (!this.instructionPanel) return;
+        
+        const progress = animation.progress;
+        const panel = this.instructionPanel;
+        
+        switch (animation.type) {
+            case 'slideIn':
+                this.applySlideInEffect(panel, animation.direction, progress);
+                break;
+            case 'slideOut':
+                this.applySlideOutEffect(panel, animation.direction, progress);
+                break;
+            case 'bounceIn':
+                this.applyBounceInEffect(panel, progress);
+                break;
+            case 'scaleIn':
+                this.applyScaleInEffect(panel, progress);
+                break;
+        }
+    }
+    
+    /**
+     * スライドイン効果の適用
+     * @param {HTMLElement} panel - パネル要素
+     * @param {string} direction - 方向
+     * @param {number} progress - 進捗 (0-1)
+     */
+    applySlideInEffect(panel, direction, progress) {
+        const distance = 100; // px
+        let x = 0, y = 0;
+        
+        switch (direction) {
+            case 'top':
+                y = -distance * (1 - progress);
+                break;
+            case 'bottom':
+                y = distance * (1 - progress);
+                break;
+            case 'left':
+                x = -distance * (1 - progress);
+                break;
+            case 'right':
+                x = distance * (1 - progress);
+                break;
+        }
+        
+        panel.style.transform = `translate(${x}px, ${y}px)`;
+        panel.style.opacity = progress;
+    }
+    
+    /**
+     * バウンスイン効果の適用
+     * @param {HTMLElement} panel - パネル要素
+     * @param {number} progress - 進捗 (0-1)
+     */
+    applyBounceInEffect(panel, progress) {
+        const scale = this.easeOutBounce(progress);
+        panel.style.transform = `scale(${scale})`;
+        panel.style.opacity = progress;
+    }
+    
+    /**
+     * スケールイン効果の適用
+     * @param {HTMLElement} panel - パネル要素
+     * @param {number} progress - 進捗 (0-1)
+     */
+    applyScaleInEffect(panel, progress) {
+        const scale = 0.8 + progress * 0.2;
+        panel.style.transform = `scale(${scale})`;
+        panel.style.opacity = progress;
+    }
+    
+    /**
+     * イージング関数 - ease-out-bounce
+     * @param {number} t - 進捗 (0-1)
+     * @returns {number} イージングされた値
+     */
+    easeOutBounce(t) {
+        if (t < 1 / 2.75) {
+            return 7.5625 * t * t;
+        } else if (t < 2 / 2.75) {
+            return 7.5625 * (t -= 1.5 / 2.75) * t + 0.75;
+        } else if (t < 2.5 / 2.75) {
+            return 7.5625 * (t -= 2.25 / 2.75) * t + 0.9375;
+        } else {
+            return 7.5625 * (t -= 2.625 / 2.75) * t + 0.984375;
+        }
+    }
+    
+    /**
+     * イージング関数 - ease-out-cubic
+     * @param {number} t - 進捗 (0-1)
+     * @returns {number} イージングされた値
+     */
+    easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+    }
+    
+    /**
+     * 色の透明度を調整
+     * @param {string} color - 色文字列
+     * @param {number} opacity - 透明度 (0-1)
+     * @returns {string} 調整された色文字列
+     */
+    adjustColorOpacity(color, opacity) {
+        if (color.startsWith('rgba(')) {
+            return color.replace(/,\s*[\d.]+\)$/, `, ${opacity})`);
+        } else if (color.startsWith('rgb(')) {
+            return color.replace('rgb(', 'rgba(').replace(')', `, ${opacity})`);
+        }
+        return color;
+    }
+
+    /**
      * チュートリアルの表示
      * @param {Object} tutorial - チュートリアルデータ
      * @param {Object} step - 現在のステップ
@@ -135,15 +587,26 @@ export class TutorialOverlay extends BaseDialog {
             // プログレスバーの作成
             this.createProgressBar();
             
-            // 要素のハイライト
+            // 要素のハイライト（アニメーション付き）
             if (step.targetElement) {
                 this.highlightElement(step.targetElement);
+                
+                // ハイライトアニメーションの開始
+                const animationType = step.highlightAnimation || 'breathing';
+                const intensity = step.animationIntensity || 1.0;
+                this.startHighlightAnimation(animationType, intensity);
             }
             
-            // スポットライト効果
+            // スポットライト効果（アニメーション付き）
             if (step.spotlight) {
                 this.createSpotlight(step.spotlight);
+                this.startSpotlightAnimation(step.spotlight.radius || this.layout.spotlightRadius, true);
             }
+            
+            // パネルアニメーションの開始
+            const panelAnimation = step.panelAnimation || 'bounceIn';
+            const panelDirection = step.panelDirection || 'bottom';
+            this.startPanelAnimation(panelAnimation, panelDirection);
             
             // オーバーレイの表示アニメーション
             await this.animateShow();
@@ -151,7 +614,7 @@ export class TutorialOverlay extends BaseDialog {
             // フォーカス管理の設定
             this.setupFocusManagement();
             
-            this.loggingSystem.info('TutorialOverlay', `Tutorial step displayed: ${stepIndex + 1}/${this.totalSteps}`);
+            this.loggingSystem.info('TutorialOverlay', `Tutorial step displayed: ${stepIndex + 1}/${this.totalSteps} with animations`);
         } catch (error) {
             this.loggingSystem.error('TutorialOverlay', 'Failed to show tutorial', error);
             ErrorHandler.handle(error, 'TutorialOverlay.showTutorial');

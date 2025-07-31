@@ -265,7 +265,7 @@ export class TooltipSystem {
      * @param {number} mouseX - マウスX座標
      * @param {number} mouseY - マウスY座標
      */
-    showTooltip(tooltip, mouseX, mouseY) {
+    showTooltip(tooltip, mouseX, mouseY, animationType = 'fadeUp') {
         try {
             // 既存のツールチップが表示中の場合は処理をスキップ
             if (this.animations.has(tooltip.id)) {
@@ -274,7 +274,7 @@ export class TooltipSystem {
             
             // 遅延表示の設定
             const showTimer = setTimeout(() => {
-                this.createTooltipElement(tooltip, mouseX, mouseY);
+                this.createTooltipElement(tooltip, mouseX, mouseY, animationType);
             }, tooltip.showDelay);
             
             // アニメーション情報を保存
@@ -282,7 +282,8 @@ export class TooltipSystem {
                 tooltip: tooltip,
                 showTimer: showTimer,
                 element: null,
-                fadeAnimation: null
+                fadeAnimation: null,
+                animationType: animationType
             });
             
         } catch (error) {
@@ -296,7 +297,7 @@ export class TooltipSystem {
      * @param {number} mouseX - マウスX座標
      * @param {number} mouseY - マウスY座標
      */
-    createTooltipElement(tooltip, mouseX, mouseY) {
+    createTooltipElement(tooltip, mouseX, mouseY, animationType = 'fadeUp') {
         try {
             // DOM要素の作成
             const element = document.createElement('div');
@@ -312,8 +313,8 @@ export class TooltipSystem {
             // 位置の計算と設定
             this.updateTooltipPosition(element, tooltip);
             
-            // フェードインアニメーション
-            this.animateTooltipIn(element, tooltip.id);
+            // アニメーションタイプに応じたフェードインアニメーション
+            this.animateTooltipIn(element, tooltip.id, animationType);
             
             // アニメーション情報を更新
             const animation = this.animations.get(tooltip.id);
@@ -321,7 +322,7 @@ export class TooltipSystem {
                 animation.element = element;
             }
             
-            this.loggingSystem.debug('TooltipSystem', `Tooltip shown: ${tooltip.id}`);
+            this.loggingSystem.debug('TooltipSystem', `Tooltip shown with ${animationType}: ${tooltip.id}`);
         } catch (error) {
             this.loggingSystem.error('TooltipSystem', `Failed to create tooltip element: ${tooltip.id}`, error);
         }
@@ -450,19 +451,22 @@ export class TooltipSystem {
      * @param {HTMLElement} element - ツールチップ要素
      * @param {string} tooltipId - ツールチップID
      */
-    animateTooltipIn(element, tooltipId) {
+    animateTooltipIn(element, tooltipId, animationType = 'fadeUp') {
         const startTime = performance.now();
         const duration = this.config.fadeInDuration;
+        
+        // アニメーションタイプに応じた初期設定
+        this.setupInitialAnimationState(element, animationType);
         
         const animate = (currentTime) => {
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
             
-            // イージング関数（ease-out）
-            const easeOut = 1 - Math.pow(1 - progress, 3);
+            // イージング関数（ease-out-back）
+            const easeOutBack = 1 - Math.pow(1 - progress, 3) * (1 - progress * 0.3);
             
-            element.style.opacity = easeOut;
-            element.style.transform = `translateY(${(1 - easeOut) * -10}px)`;
+            // アニメーションタイプに応じた効果適用
+            this.applyAnimationEffect(element, animationType, easeOutBack, 'in');
             
             if (progress < 1) {
                 requestAnimationFrame(animate);
@@ -472,6 +476,7 @@ export class TooltipSystem {
                 if (animation) {
                     animation.fadeAnimation = null;
                 }
+                this.finalizeAnimation(element, animationType, 'in');
             }
         };
         
@@ -479,10 +484,165 @@ export class TooltipSystem {
     }
     
     /**
+     * アニメーションの初期状態を設定
+     * @param {HTMLElement} element - ツールチップ要素
+     * @param {string} animationType - アニメーションタイプ
+     */
+    setupInitialAnimationState(element, animationType) {
+        switch (animationType) {
+            case 'fadeUp':
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(10px)';
+                break;
+            case 'fadeDown':
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(-10px)';
+                break;
+            case 'fadeLeft':
+                element.style.opacity = '0';
+                element.style.transform = 'translateX(10px)';
+                break;
+            case 'fadeRight':
+                element.style.opacity = '0';
+                element.style.transform = 'translateX(-10px)';
+                break;
+            case 'scaleIn':
+                element.style.opacity = '0';
+                element.style.transform = 'scale(0.8)';
+                break;
+            case 'bounceIn':
+                element.style.opacity = '0';
+                element.style.transform = 'scale(0.3)';
+                break;
+            case 'rotateIn':
+                element.style.opacity = '0';
+                element.style.transform = 'rotate(-180deg) scale(0.8)';
+                break;
+            case 'elastic':
+                element.style.opacity = '0';
+                element.style.transform = 'scale(0.1)';
+                break;
+            default:
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(10px)';
+        }
+    }
+    
+    /**
+     * アニメーション効果の適用
+     * @param {HTMLElement} element - ツールチップ要素
+     * @param {string} animationType - アニメーションタイプ
+     * @param {number} progress - 進捗 (0-1)
+     * @param {string} direction - 方向 ('in' | 'out')
+     */
+    applyAnimationEffect(element, animationType, progress, direction) {
+        const isOut = direction === 'out';
+        const effectiveProgress = isOut ? 1 - progress : progress;
+        
+        switch (animationType) {
+            case 'fadeUp':
+                element.style.opacity = effectiveProgress;
+                element.style.transform = `translateY(${(1 - effectiveProgress) * 10}px)`;
+                break;
+                
+            case 'fadeDown':
+                element.style.opacity = effectiveProgress;
+                element.style.transform = `translateY(${(1 - effectiveProgress) * -10}px)`;
+                break;
+                
+            case 'fadeLeft':
+                element.style.opacity = effectiveProgress;
+                element.style.transform = `translateX(${(1 - effectiveProgress) * 10}px)`;
+                break;
+                
+            case 'fadeRight':
+                element.style.opacity = effectiveProgress;
+                element.style.transform = `translateX(${(1 - effectiveProgress) * -10}px)`;
+                break;
+                
+            case 'scaleIn':
+                element.style.opacity = effectiveProgress;
+                element.style.transform = `scale(${0.8 + effectiveProgress * 0.2})`;
+                break;
+                
+            case 'bounceIn':
+                element.style.opacity = effectiveProgress;
+                const bounceScale = isOut ? effectiveProgress : this.easeOutBounce(effectiveProgress);
+                element.style.transform = `scale(${bounceScale})`;
+                break;
+                
+            case 'rotateIn':
+                element.style.opacity = effectiveProgress;
+                const rotation = (1 - effectiveProgress) * -180;
+                const scale = 0.8 + effectiveProgress * 0.2;
+                element.style.transform = `rotate(${rotation}deg) scale(${scale})`;
+                break;
+                
+            case 'elastic':
+                element.style.opacity = effectiveProgress;
+                const elasticScale = isOut ? effectiveProgress : this.easeOutElastic(effectiveProgress);
+                element.style.transform = `scale(${elasticScale})`;
+                break;
+                
+            default:
+                element.style.opacity = effectiveProgress;
+                element.style.transform = `translateY(${(1 - effectiveProgress) * 10}px)`;
+        }
+        
+        // 追加の視覚効果
+        if (!isOut && effectiveProgress > 0.5) {
+            element.style.filter = `drop-shadow(0 4px 8px rgba(0,0,0,${0.1 * effectiveProgress}))`;
+        }
+    }
+    
+    /**
+     * アニメーション完了時の最終処理
+     * @param {HTMLElement} element - ツールチップ要素
+     * @param {string} animationType - アニメーションタイプ
+     * @param {string} direction - 方向
+     */
+    finalizeAnimation(element, animationType, direction) {
+        if (direction === 'in') {
+            element.style.opacity = '1';
+            element.style.transform = 'none';
+            element.style.filter = 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))';
+        }
+    }
+    
+    /**
+     * バウンス イージング関数
+     * @param {number} t - 進捗 (0-1)
+     * @returns {number} イージングされた値
+     */
+    easeOutBounce(t) {
+        if (t < 1 / 2.75) {
+            return 7.5625 * t * t;
+        } else if (t < 2 / 2.75) {
+            return 7.5625 * (t -= 1.5 / 2.75) * t + 0.75;
+        } else if (t < 2.5 / 2.75) {
+            return 7.5625 * (t -= 2.25 / 2.75) * t + 0.9375;
+        } else {
+            return 7.5625 * (t -= 2.625 / 2.75) * t + 0.984375;
+        }
+    }
+    
+    /**
+     * エラスティック イージング関数
+     * @param {number} t - 進捗 (0-1)
+     * @returns {number} イージングされた値
+     */
+    easeOutElastic(t) {
+        const c4 = (2 * Math.PI) / 3;
+        
+        return t === 0 ? 0 : t === 1 ? 1 :
+            Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * c4) + 1;
+    }
+    
+    /**
      * ツールチップ非表示
      * @param {string} tooltipId - ツールチップID
      */
-    hideTooltip(tooltipId) {
+    hideTooltip(tooltipId, animationType = null) {
         try {
             const animation = this.animations.get(tooltipId);
             if (!animation) return;
@@ -492,9 +652,12 @@ export class TooltipSystem {
                 clearTimeout(animation.showTimer);
             }
             
+            // アニメーションタイプの決定（出現時の逆アニメーション）
+            const hideAnimationType = animationType || this.getExitAnimationType(animation.animationType || 'fadeUp');
+            
             // 要素が存在する場合はフェードアウト
             if (animation.element) {
-                this.animateTooltipOut(animation.element, tooltipId);
+                this.animateTooltipOut(animation.element, tooltipId, hideAnimationType);
             } else {
                 // 要素がない場合は直接削除
                 this.animations.delete(tooltipId);
@@ -506,11 +669,31 @@ export class TooltipSystem {
     }
     
     /**
+     * 入場アニメーションに対応する退場アニメーションタイプを取得
+     * @param {string} enterAnimationType - 入場アニメーションタイプ
+     * @returns {string} 退場アニメーションタイプ
+     */
+    getExitAnimationType(enterAnimationType) {
+        const exitAnimationMap = {
+            'fadeUp': 'fadeDown',
+            'fadeDown': 'fadeUp',
+            'fadeLeft': 'fadeRight',
+            'fadeRight': 'fadeLeft',
+            'scaleIn': 'scaleOut',
+            'bounceIn': 'bounceOut',
+            'rotateIn': 'rotateOut',
+            'elastic': 'elasticOut'
+        };
+        
+        return exitAnimationMap[enterAnimationType] || 'fadeDown';
+    }
+    
+    /**
      * ツールチップフェードアウトアニメーション
      * @param {HTMLElement} element - ツールチップ要素
      * @param {string} tooltipId - ツールチップID
      */
-    animateTooltipOut(element, tooltipId) {
+    animateTooltipOut(element, tooltipId, animationType = 'fadeDown') {
         const startTime = performance.now();
         const duration = this.config.fadeOutDuration;
         const startOpacity = parseFloat(element.style.opacity) || 1;
@@ -519,7 +702,11 @@ export class TooltipSystem {
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
             
-            element.style.opacity = startOpacity * (1 - progress);
+            // イージング関数（ease-in-back）
+            const easeInBack = Math.pow(progress, 2) * ((1.7 + 1) * progress - 1.7);
+            
+            // アニメーション効果の適用
+            this.applyAnimationEffect(element, animationType, easeInBack, 'out');
             
             if (progress >= 1) {
                 // アニメーション完了 - 要素を削除
@@ -527,7 +714,7 @@ export class TooltipSystem {
                     element.parentNode.removeChild(element);
                 }
                 this.animations.delete(tooltipId);
-                this.loggingSystem.debug('TooltipSystem', `Tooltip hidden: ${tooltipId}`);
+                this.loggingSystem.debug('TooltipSystem', `Tooltip hidden with ${animationType}: ${tooltipId}`);
             } else {
                 requestAnimationFrame(animate);
             }

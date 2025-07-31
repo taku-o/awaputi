@@ -31,6 +31,34 @@ export class HelpScene extends Scene {
         this.searchResults = [];
         this.isSearching = false;
         
+        // アニメーション状態
+        this.animations = {
+            contentTransition: {
+                isActive: false,
+                startTime: 0,
+                duration: 300, // 300ms
+                fromContent: null,
+                toContent: null,
+                progress: 0,
+                type: 'slide' // 'slide', 'fade', 'scale'
+            },
+            categoryTransition: {
+                isActive: false,
+                startTime: 0,
+                duration: 200,
+                fromIndex: 0,
+                toIndex: 0,
+                progress: 0
+            },
+            searchTransition: {
+                isActive: false,
+                startTime: 0,
+                duration: 250,
+                isEntering: true,
+                progress: 0
+            }
+        };
+        
         // レイアウト設定
         this.layout = {
             sidebar: {
@@ -600,12 +628,22 @@ export class HelpScene extends Scene {
                 return;
             }
             
+            const wasSearching = this.isSearching;
             this.isSearching = true;
             this.searchQuery = query;
+            
+            // 検索モードに入る際のアニメーション
+            if (!wasSearching && query.trim() !== '') {
+                this.startSearchTransition(true);
+            }
             
             if (query.trim() === '') {
                 this.searchResults = [];
                 this.isSearching = false;
+                // 検索モードから出る際のアニメーション
+                if (wasSearching) {
+                    this.startSearchTransition(false);
+                }
                 return;
             }
             
@@ -632,6 +670,14 @@ export class HelpScene extends Scene {
             return;
         }
         
+        const fromIndex = this.categories.findIndex(cat => cat.id === this.selectedCategory);
+        const toIndex = this.categories.findIndex(cat => cat.id === categoryId);
+        
+        // カテゴリ遷移アニメーションを開始
+        if (fromIndex !== -1 && toIndex !== -1) {
+            this.startCategoryTransition(fromIndex, toIndex);
+        }
+        
         this.selectedCategory = categoryId;
         this.selectedTopicIndex = 0;
         this.searchResults = [];
@@ -655,10 +701,143 @@ export class HelpScene extends Scene {
         
         try {
             if (this.helpManager) {
-                this.currentContent = await this.helpManager.getHelpContent(topic.id);
+                const newContent = await this.helpManager.getHelpContent(topic.id);
+                
+                // アニメーション付きでコンテンツを変更
+                if (this.currentContent && newContent) {
+                    this.startContentTransition(newContent, 'slide');
+                } else {
+                    this.currentContent = newContent;
+                }
             }
         } catch (error) {
             this.loggingSystem.error('HelpScene', `Failed to load topic content: ${topic.id}`, error);
+        }
+    }
+
+    /**
+     * コンテンツ遷移アニメーションの開始
+     * @param {Object} newContent - 新しいコンテンツ
+     * @param {string} transitionType - 遷移タイプ ('slide', 'fade', 'scale')
+     */
+    startContentTransition(newContent, transitionType = 'slide') {
+        if (this.animations.contentTransition.isActive) {
+            return; // 既に遷移中の場合は何もしない
+        }
+        
+        this.animations.contentTransition = {
+            isActive: true,
+            startTime: Date.now(),
+            duration: 300,
+            fromContent: this.currentContent,
+            toContent: newContent,
+            progress: 0,
+            type: transitionType
+        };
+        
+        this.loggingSystem.debug('HelpScene', `Content transition started: ${transitionType}`);
+    }
+    
+    /**
+     * カテゴリ遷移アニメーションの開始
+     * @param {number} fromIndex - 元のカテゴリインデックス
+     * @param {number} toIndex - 新しいカテゴリインデックス
+     */
+    startCategoryTransition(fromIndex, toIndex) {
+        if (this.animations.categoryTransition.isActive) {
+            return;
+        }
+        
+        this.animations.categoryTransition = {
+            isActive: true,
+            startTime: Date.now(),
+            duration: 200,
+            fromIndex: fromIndex,
+            toIndex: toIndex,
+            progress: 0
+        };
+        
+        this.loggingSystem.debug('HelpScene', `Category transition started: ${fromIndex} -> ${toIndex}`);
+    }
+    
+    /**
+     * 検索遷移アニメーションの開始
+     * @param {boolean} isEntering - 検索モードに入るかどうか
+     */
+    startSearchTransition(isEntering) {
+        this.animations.searchTransition = {
+            isActive: true,
+            startTime: Date.now(),
+            duration: 250,
+            isEntering: isEntering,
+            progress: 0
+        };
+        
+        this.loggingSystem.debug('HelpScene', `Search transition started: ${isEntering ? 'entering' : 'exiting'}`);
+    }
+    
+    /**
+     * イージング関数 - ease-out
+     * @param {number} t - 進捗 (0-1)
+     * @returns {number} イージングされた値
+     */
+    easeOut(t) {
+        return 1 - Math.pow(1 - t, 3);
+    }
+    
+    /**
+     * イージング関数 - ease-in-out
+     * @param {number} t - 進捗 (0-1)
+     * @returns {number} イージングされた値
+     */
+    easeInOut(t) {
+        return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+    
+    /**
+     * アニメーション更新処理
+     * @param {number} currentTime - 現在時刻
+     */
+    updateAnimations(currentTime) {
+        // コンテンツ遷移アニメーション
+        if (this.animations.contentTransition.isActive) {
+            const elapsed = currentTime - this.animations.contentTransition.startTime;
+            const progress = Math.min(elapsed / this.animations.contentTransition.duration, 1);
+            
+            this.animations.contentTransition.progress = this.easeOut(progress);
+            
+            if (progress >= 1) {
+                // アニメーション完了
+                this.currentContent = this.animations.contentTransition.toContent;
+                this.animations.contentTransition.isActive = false;
+                this.loggingSystem.debug('HelpScene', 'Content transition completed');
+            }
+        }
+        
+        // カテゴリ遷移アニメーション
+        if (this.animations.categoryTransition.isActive) {
+            const elapsed = currentTime - this.animations.categoryTransition.startTime;
+            const progress = Math.min(elapsed / this.animations.categoryTransition.duration, 1);
+            
+            this.animations.categoryTransition.progress = this.easeInOut(progress);
+            
+            if (progress >= 1) {
+                this.animations.categoryTransition.isActive = false;
+                this.loggingSystem.debug('HelpScene', 'Category transition completed');
+            }
+        }
+        
+        // 検索遷移アニメーション
+        if (this.animations.searchTransition.isActive) {
+            const elapsed = currentTime - this.animations.searchTransition.startTime;
+            const progress = Math.min(elapsed / this.animations.searchTransition.duration, 1);
+            
+            this.animations.searchTransition.progress = this.easeOut(progress);
+            
+            if (progress >= 1) {
+                this.animations.searchTransition.isActive = false;
+                this.loggingSystem.debug('HelpScene', 'Search transition completed');
+            }
         }
     }
     
@@ -865,9 +1044,40 @@ export class HelpScene extends Scene {
         
         let currentY = sidebar.y + 20;
         
+        // カテゴリ遷移アニメーションの処理
+        let transitionOffset = 0;
+        if (this.animations.categoryTransition.isActive) {
+            const progress = this.animations.categoryTransition.progress;
+            const fromIndex = this.animations.categoryTransition.fromIndex;
+            const toIndex = this.animations.categoryTransition.toIndex;
+            const direction = toIndex > fromIndex ? 1 : -1;
+            transitionOffset = direction * 10 * Math.sin(progress * Math.PI);
+        }
+        
         // カテゴリ描画
-        for (const category of this.categories) {
+        for (let catIndex = 0; catIndex < this.categories.length; catIndex++) {
+            const category = this.categories[catIndex];
             const isSelected = category.id === this.selectedCategory;
+            
+            // カテゴリ遷移アニメーション適用
+            let categoryAlpha = 1;
+            let categoryOffset = 0;
+            if (this.animations.categoryTransition.isActive) {
+                const progress = this.animations.categoryTransition.progress;
+                const fromIndex = this.animations.categoryTransition.fromIndex;
+                const toIndex = this.animations.categoryTransition.toIndex;
+                
+                if (catIndex === fromIndex) {
+                    categoryAlpha = 1 - progress * 0.3;
+                } else if (catIndex === toIndex) {
+                    categoryAlpha = 0.7 + progress * 0.3;
+                    categoryOffset = -transitionOffset;
+                }
+            }
+            
+            ctx.save();
+            ctx.globalAlpha = categoryAlpha;
+            ctx.translate(categoryOffset, 0);
             
             // カテゴリ項目背景（アクセシビリティ対応）
             if (isSelected) {
@@ -883,13 +1093,28 @@ export class HelpScene extends Scene {
             ctx.font = isSelected ? `bold ${fontSize}px Arial` : `${fontSize}px Arial`;
             ctx.textAlign = 'left';
             ctx.fillText(t(category.key, category.id), sidebar.x + 15, currentY);
+            
+            ctx.restore();
             currentY += 30;
             
-            // 選択されたカテゴリのトピック表示
+            // 選択されたカテゴリのトピック表示（アニメーション付き）
             if (isSelected && category.topics.length > 0) {
                 for (let i = 0; i < category.topics.length; i++) {
                     const topic = category.topics[i];
                     const isTopicSelected = i === this.selectedTopicIndex;
+                    
+                    // トピック項目のアニメーション
+                    let topicAlpha = 1;
+                    let topicSlide = 0;
+                    if (this.animations.contentTransition.isActive && isTopicSelected) {
+                        const progress = this.animations.contentTransition.progress;
+                        topicAlpha = 0.7 + progress * 0.3;
+                        topicSlide = Math.sin(progress * Math.PI) * 3;
+                    }
+                    
+                    ctx.save();
+                    ctx.globalAlpha = topicAlpha;
+                    ctx.translate(topicSlide, 0);
                     
                     // トピック項目背景（アクセシビリティ対応）
                     if (isTopicSelected) {
@@ -904,6 +1129,8 @@ export class HelpScene extends Scene {
                     const topicFontSize = Math.round(12 * (this.textSizeMultiplier || 1));
                     ctx.font = `${topicFontSize}px Arial`;
                     ctx.fillText('  • ' + topic.title, sidebar.x + 25, currentY);
+                    
+                    ctx.restore();
                     currentY += 25;
                 }
             }
@@ -931,6 +1158,139 @@ export class HelpScene extends Scene {
             ctx.strokeRect(content.x - 2, content.y - 2, content.width + 4, content.height + 4);
         }
         
+        // アニメーション中の処理
+        if (this.animations.contentTransition.isActive) {
+            this.renderContentTransition(ctx, content);
+            return;
+        }
+        
+        // 通常のコンテンツ描画
+        this.renderNormalContent(ctx, content);
+    }
+    
+    /**
+     * コンテンツ遷移アニメーションの描画
+     * @param {CanvasRenderingContext2D} ctx - 描画コンテキスト
+     * @param {Object} contentArea - コンテンツエリアの情報
+     */
+    renderContentTransition(ctx, contentArea) {
+        const transition = this.animations.contentTransition;
+        const progress = transition.progress;
+        
+        // クリッピング領域を設定
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(contentArea.x, contentArea.y, contentArea.width, contentArea.height);
+        ctx.clip();
+        
+        switch (transition.type) {
+            case 'slide':
+                this.renderSlideTransition(ctx, contentArea, transition, progress);
+                break;
+            case 'fade':
+                this.renderFadeTransition(ctx, contentArea, transition, progress);
+                break;
+            case 'scale':
+                this.renderScaleTransition(ctx, contentArea, transition, progress);
+                break;
+        }
+        
+        ctx.restore();
+    }
+    
+    /**
+     * スライド遷移の描画
+     * @param {CanvasRenderingContext2D} ctx - 描画コンテキスト
+     * @param {Object} contentArea - コンテンツエリア
+     * @param {Object} transition - 遷移情報
+     * @param {number} progress - 進捗 (0-1)
+     */
+    renderSlideTransition(ctx, contentArea, transition, progress) {
+        const slideDistance = contentArea.width;
+        const offset = slideDistance * (1 - progress);
+        
+        // 古いコンテンツを左にスライドアウト
+        if (transition.fromContent) {
+            ctx.save();
+            ctx.translate(-offset, 0);
+            this.renderContentData(ctx, contentArea, transition.fromContent);
+            ctx.restore();
+        }
+        
+        // 新しいコンテンツを右からスライドイン
+        if (transition.toContent) {
+            ctx.save();
+            ctx.translate(slideDistance - offset, 0);
+            this.renderContentData(ctx, contentArea, transition.toContent);
+            ctx.restore();
+        }
+    }
+    
+    /**
+     * フェード遷移の描画
+     * @param {CanvasRenderingContext2D} ctx - 描画コンテキスト
+     * @param {Object} contentArea - コンテンツエリア
+     * @param {Object} transition - 遷移情報
+     * @param {number} progress - 進捗 (0-1)
+     */
+    renderFadeTransition(ctx, contentArea, transition, progress) {
+        // 古いコンテンツをフェードアウト
+        if (transition.fromContent) {
+            ctx.save();
+            ctx.globalAlpha = 1 - progress;
+            this.renderContentData(ctx, contentArea, transition.fromContent);
+            ctx.restore();
+        }
+        
+        // 新しいコンテンツをフェードイン
+        if (transition.toContent) {
+            ctx.save();
+            ctx.globalAlpha = progress;
+            this.renderContentData(ctx, contentArea, transition.toContent);
+            ctx.restore();
+        }
+    }
+    
+    /**
+     * スケール遷移の描画
+     * @param {CanvasRenderingContext2D} ctx - 描画コンテキスト
+     * @param {Object} contentArea - コンテンツエリア
+     * @param {Object} transition - 遷移情報
+     * @param {number} progress - 進捗 (0-1)
+     */
+    renderScaleTransition(ctx, contentArea, transition, progress) {
+        const centerX = contentArea.x + contentArea.width / 2;
+        const centerY = contentArea.y + contentArea.height / 2;
+        
+        // 古いコンテンツをスケールアウト
+        if (transition.fromContent) {
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.scale(1 - progress * 0.2, 1 - progress * 0.2);
+            ctx.globalAlpha = 1 - progress;
+            ctx.translate(-centerX, -centerY);
+            this.renderContentData(ctx, contentArea, transition.fromContent);
+            ctx.restore();
+        }
+        
+        // 新しいコンテンツをスケールイン
+        if (transition.toContent) {
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.scale(0.8 + progress * 0.2, 0.8 + progress * 0.2);
+            ctx.globalAlpha = progress;
+            ctx.translate(-centerX, -centerY);
+            this.renderContentData(ctx, contentArea, transition.toContent);
+            ctx.restore();
+        }
+    }
+    
+    /**
+     * 通常のコンテンツ描画
+     * @param {CanvasRenderingContext2D} ctx - 描画コンテキスト
+     * @param {Object} contentArea - コンテンツエリア
+     */
+    renderNormalContent(ctx, contentArea) {
         if (!this.currentContent) {
             // コンテンツがない場合（アクセシビリティ対応）
             ctx.fillStyle = this.highContrastMode ? '#000' : '#999';
@@ -938,46 +1298,55 @@ export class HelpScene extends Scene {
             ctx.font = `${fontSize}px Arial`;
             ctx.textAlign = 'center';
             ctx.fillText('コンテンツを選択してください', 
-                         content.x + content.width / 2, 
-                         content.y + content.height / 2);
+                         contentArea.x + contentArea.width / 2, 
+                         contentArea.y + contentArea.height / 2);
             return;
         }
         
-        // コンテンツ描画
-        let currentY = content.y + 30;
+        this.renderContentData(ctx, contentArea, this.currentContent);
+    }
+    
+    /**
+     * コンテンツデータの描画
+     * @param {CanvasRenderingContext2D} ctx - 描画コンテキスト
+     * @param {Object} contentArea - コンテンツエリア
+     * @param {Object} contentData - コンテンツデータ
+     */
+    renderContentData(ctx, contentArea, contentData) {
+        let currentY = contentArea.y + 30;
         
         // タイトル（アクセシビリティ対応）
-        if (this.currentContent.title) {
+        if (contentData.title) {
             ctx.fillStyle = this.highContrastMode ? '#000' : '#333';
             const titleFontSize = Math.round(18 * (this.textSizeMultiplier || 1));
             ctx.font = `bold ${titleFontSize}px Arial`;
             ctx.textAlign = 'left';
-            ctx.fillText(this.currentContent.title, content.x + 20, currentY);
+            ctx.fillText(contentData.title, contentArea.x + 20, currentY);
             currentY += 40;
         }
         
         // 説明文（アクセシビリティ対応）
-        if (this.currentContent.description) {
+        if (contentData.description) {
             ctx.fillStyle = this.highContrastMode ? '#000' : '#666';
             const descFontSize = Math.round(14 * (this.textSizeMultiplier || 1));
             ctx.font = `${descFontSize}px Arial`;
-            this.renderWrappedText(ctx, this.currentContent.description, 
-                                   content.x + 20, currentY, content.width - 40);
+            this.renderWrappedText(ctx, contentData.description, 
+                                   contentArea.x + 20, currentY, contentArea.width - 40);
             currentY += 60;
         }
         
         // 手順・詳細内容
-        if (this.currentContent.steps && Array.isArray(this.currentContent.steps)) {
-            for (let i = 0; i < this.currentContent.steps.length; i++) {
-                const step = this.currentContent.steps[i];
+        if (contentData.steps && Array.isArray(contentData.steps)) {
+            for (let i = 0; i < contentData.steps.length; i++) {
+                const step = contentData.steps[i];
                 
                 ctx.fillStyle = this.highContrastMode ? '#000' : '#333';
                 const stepFontSize = Math.round(14 * (this.textSizeMultiplier || 1));
                 ctx.font = `${stepFontSize}px Arial`;
-                ctx.fillText(`${i + 1}. ${step}`, content.x + 20, currentY);
+                ctx.fillText(`${i + 1}. ${step}`, contentArea.x + 20, currentY);
                 currentY += 25;
                 
-                if (currentY > content.y + content.height - 30) {
+                if (currentY > contentArea.y + contentArea.height - 30) {
                     break; // エリア溢れ防止
                 }
             }
@@ -990,6 +1359,32 @@ export class HelpScene extends Scene {
      */
     renderSearchResults(ctx) {
         const content = this.layout.content;
+        
+        // 検索遷移アニメーション適用
+        let alpha = 1;
+        let scale = 1;
+        if (this.animations.searchTransition.isActive) {
+            const progress = this.animations.searchTransition.progress;
+            if (this.animations.searchTransition.isEntering) {
+                alpha = progress;
+                scale = 0.95 + progress * 0.05;
+            } else {
+                alpha = 1 - progress;
+                scale = 1 - progress * 0.05;
+            }
+        }
+        
+        ctx.save();
+        
+        // スケール変換を適用
+        const centerX = content.x + content.width / 2;
+        const centerY = content.y + content.height / 2;
+        ctx.translate(centerX, centerY);
+        ctx.scale(scale, scale);
+        ctx.translate(-centerX, -centerY);
+        
+        // 透明度を適用
+        ctx.globalAlpha = alpha;
         
         // 検索結果オーバーレイ
         ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
@@ -1008,26 +1403,39 @@ export class HelpScene extends Scene {
         ctx.fillText(`検索結果: ${this.searchResults.length}件`, content.x + 20, currentY);
         currentY += 40;
         
-        // 検索結果項目
+        // 検索結果項目（アニメーション付き）
         for (let i = 0; i < Math.min(this.searchResults.length, 10); i++) {
             const result = this.searchResults[i];
             const isSelected = i === this.selectedTopicIndex;
             
+            // 項目ごとのアニメーション遅延
+            const itemAlpha = this.animations.searchTransition.isActive ? 
+                Math.min(alpha * (1 + i * 0.1), 1) : alpha;
+            
+            ctx.save();
+            ctx.globalAlpha = itemAlpha;
+            
+            // 選択状態の背景
             if (isSelected) {
                 ctx.fillStyle = '#e3f2fd';
                 ctx.fillRect(content.x + 10, currentY - 15, content.width - 20, 25);
             }
             
+            // タイトル
             ctx.fillStyle = isSelected ? '#1976d2' : '#333';
             ctx.font = '14px Arial';
             ctx.fillText(result.title, content.x + 20, currentY);
             
+            // カテゴリとスニペット
             ctx.fillStyle = '#666';
             ctx.font = '12px Arial';
             ctx.fillText(`[${result.category}] ${result.snippet}`, content.x + 20, currentY + 15);
             
+            ctx.restore();
             currentY += 35;
         }
+        
+        ctx.restore();
     }
     
     /**
@@ -1096,6 +1504,7 @@ export class HelpScene extends Scene {
      * @param {number} deltaTime - デルタタイム
      */
     update(deltaTime) {
-        // 必要に応じて更新処理を実装
+        // アニメーション更新
+        this.updateAnimations(Date.now());
     }
 }
