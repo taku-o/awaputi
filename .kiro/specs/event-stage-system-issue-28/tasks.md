@@ -6,7 +6,7 @@
   - checkSeasonalEventActivation()メソッドを実装して定期的な季節イベント状態チェック
   - _Requirements: 1.1, 1.4_
 
-- [ ] 2. EventStageManagerにイベント通知機能を統合
+- [x] 2. EventStageManagerにイベント通知機能を統合
   - sendEventNotification()メソッドを実装してAchievementNotificationSystemとの連携
   - checkEventNotifications()メソッドを実装してイベント開始・終了・リマインダー通知の管理
   - イベント通知用のデータ構造を定義してtype: 'event'の通知オブジェクト作成
