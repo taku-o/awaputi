@@ -1,0 +1,22 @@
+Apple Touch Icon - apple-touch-icon-72x72.png
+Size: 72x72px
+Device: iPad (iOS 6 and earlier)
+Priority: Legacy
+Generated: 2025-07-31T11:09:38.909Z
+
+Apple Touch Icon Specifications:
+- iOS automatically applies rounded corners (don't pre-round)
+- High contrast design for better visibility
+- Optimized for Retina displays with fine details
+- Background fills entire canvas area
+
+HTML meta tag usage:
+<link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+
+iOS Behavior:
+- iOS will automatically downscale larger icons if exact size not found
+- Primary icon (180x180) is used for modern iPhones
+- Legacy icons maintained for older iOS versions
+
+To convert to PNG:
+sips -s format png apple-touch-icon-72x72.svg --out apple-touch-icon-72x72.png

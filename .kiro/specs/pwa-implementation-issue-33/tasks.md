@@ -25,14 +25,14 @@
     - Test maskable icon display on Android devices
     - _Requirements: 3.4_
 
-- [ ] 3. Create Apple-specific PWA assets
-  - [ ] 3.1 Generate Apple Touch Icons
+- [x] 3. Create Apple-specific PWA assets
+  - [x] 3.1 Generate Apple Touch Icons
     - Create 180x180px Apple Touch Icon for iOS devices
     - Generate additional Apple icon sizes (57x57, 60x60, 72x72, 76x76, 114x114, 120x120, 144x144, 152x152)
     - Implement iOS-specific icon optimization
     - _Requirements: 3.3_
 
-  - [ ] 3.2 Create Apple splash screen images
+  - [x] 3.2 Create Apple splash screen images
     - Generate splash screen images for different iOS device sizes
     - Implement proper aspect ratio handling for various devices
     - Add splash screen meta tags to index.html

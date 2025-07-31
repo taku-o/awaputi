@@ -1,0 +1,18 @@
+Apple Splash Screen - apple-splash-320x568.png
+Dimensions: 320×568px
+Device: iPhone SE (1st gen)
+Orientation: portrait
+Generated: 2025-07-31T11:12:28.071Z
+
+Apple Splash Screen Specifications:
+- Optimized for iOS Safari PWA launch experience
+- Responsive design adapts to portrait/landscape orientations
+- Loading animation provides visual feedback during app initialization
+- Device-specific dimensions ensure pixel-perfect display
+
+HTML meta tag usage:
+<link rel="apple-touch-startup-image" href="/assets/splash-screens/apple-splash-320x568.png" 
+      media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+
+To convert to PNG:
+sips -s format png apple-splash-320x568.svg --out apple-splash-320x568.png

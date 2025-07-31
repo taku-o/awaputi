@@ -1,0 +1,18 @@
+Apple Splash Screen - apple-splash-844x390.png
+Dimensions: 844×390px
+Device: iPhone 12/13 mini
+Orientation: landscape
+Generated: 2025-07-31T11:12:28.080Z
+
+Apple Splash Screen Specifications:
+- Optimized for iOS Safari PWA launch experience
+- Responsive design adapts to portrait/landscape orientations
+- Loading animation provides visual feedback during app initialization
+- Device-specific dimensions ensure pixel-perfect display
+
+HTML meta tag usage:
+<link rel="apple-touch-startup-image" href="/assets/splash-screens/apple-splash-844x390.png" 
+      media="(device-width: 844px) and (device-height: 390px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+
+To convert to PNG:
+sips -s format png apple-splash-844x390.svg --out apple-splash-844x390.png
