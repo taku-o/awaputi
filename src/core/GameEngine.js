@@ -46,6 +46,7 @@ import { EffectErrorHandler } from '../effects/EffectErrorHandler.js';
 import { VisualPolishEnhancements } from '../effects/VisualPolishEnhancements.js';
 import { AnimationManager } from '../effects/AnimationManager.js';
 import { getHelpManager } from './help/HelpManager.js';
+import { getSEOMonitor } from '../seo/SEOMonitor.js';
 
 /**
  * ゲームエンジンクラス - 統合版（パフォーマンス最適化 + 音響・視覚効果）
@@ -57,6 +58,9 @@ export class GameEngine {
             this.context = canvas.getContext('2d');
             this.isRunning = false;
             this.lastTime = 0;
+            
+            // シンプルなイベントエミッター機能
+            this.eventListeners = new Map();
             
             // Canvas コンテキストの検証
             if (!this.context) {
@@ -177,6 +181,9 @@ export class GameEngine {
         
         // 言語変更イベントリスナーを設定
         this.setupLanguageChangeListener();
+        
+        // SEOシステム統合の初期化
+        this.setupSEOIntegration();
     }
     
     /**
@@ -187,6 +194,279 @@ export class GameEngine {
             this.onLanguageChanged(newLanguage, oldLanguage);
         });
     }
+
+    /**
+     * SEOシステムとの統合機能を設定
+     * @private
+     */
+    setupSEOIntegration() {
+        try {
+            // SEOシステムが利用可能な場合のみ統合
+            if (window.seoMetaManager && window.structuredDataEngine) {
+                // SEO監視システムの初期化
+                this.seoMonitor = getSEOMonitor();
+                
+                // SEO監視システムを開始
+                this.seoMonitor.startMonitoring({
+                    interval: 300000, // 5分間隔
+                    includeLighthouse: true,
+                    includeCoreWebVitals: true,
+                    includeSocialMedia: true,
+                    includeSearchConsole: true,
+                    enableAlerts: true
+                });
+                
+                // アラートコールバックの設定
+                this.seoMonitor.addAlertCallback((alert) => {
+                    console.warn(`[SEO Alert] ${alert.severity.toUpperCase()}: ${alert.message}`, alert);
+                    
+                    // 重要なアラートはゲーム内通知として表示
+                    if (alert.severity === 'critical' && this.achievementNotificationSystem) {
+                        this.achievementNotificationSystem.showNotification({
+                            title: 'SEO Alert',
+                            message: alert.message,
+                            type: 'warning',
+                            duration: 5000
+                        });
+                    }
+                });
+                
+                // ゲーム状態変更時のSEO更新
+                this.on('gameStateChanged', async (gameState) => {
+                    await this.updateSEOMetadata(gameState);
+                });
+                
+                // プレイヤー実績達成時のSEO更新
+                this.on('achievementUnlocked', async (achievement) => {
+                    await this.updateSEOForAchievement(achievement);
+                });
+                
+                // ハイスコア更新時のSEO更新
+                this.on('highScoreUpdated', async (score) => {
+                    await this.updateSEOForHighScore(score);
+                });
+                
+                // グローバルにアクセス可能にする
+                window.seoMonitor = this.seoMonitor;
+                
+                console.log('[GameEngine] SEO system integration with monitoring initialized');
+            }
+        } catch (error) {
+            console.error('[GameEngine] Failed to setup SEO integration:', error);
+        }
+    }
+
+    
+    /**
+     * イベントリスナーを追加
+     * @param {string} eventName - イベント名
+     * @param {Function} listener - リスナー関数
+     */
+    on(eventName, listener) {
+        if (!this.eventListeners.has(eventName)) {
+            this.eventListeners.set(eventName, []);
+        }
+        this.eventListeners.get(eventName).push(listener);
+    }
+    
+    /**
+     * イベントを発火
+     * @param {string} eventName - イベント名
+     * @param {*} data - イベントデータ
+     */
+    emit(eventName, data) {
+        const listeners = this.eventListeners.get(eventName);
+        if (listeners) {
+            listeners.forEach(listener => {
+                try {
+                    listener(data);
+                } catch (error) {
+                    console.error(`[GameEngine] Error in event listener for ${eventName}:`, error);
+                }
+            });
+        }
+    }
+    
+    /**
+     * イベントリスナーを削除
+     * @param {string} eventName - イベント名
+     * @param {Function} listener - リスナー関数
+     */
+    off(eventName, listener) {
+        const listeners = this.eventListeners.get(eventName);
+        if (listeners) {
+            const index = listeners.indexOf(listener);
+            if (index > -1) {
+                listeners.splice(index, 1);
+            }
+        }
+    }
+    
+    /**
+     * ゲーム状態に基づいてSEOメタデータを更新
+     * @param {Object} gameState - 現在のゲーム状態
+     * @private
+     */
+    async updateSEOMetadata(gameState) {
+        try {
+            if (!window.seoMetaManager) return;
+            
+            // 動的コンテンツ生成
+            const dynamicContent = {
+                gameState: gameState.scene || 'menu',
+                playingTime: gameState.playTime || 0,
+                currentScore: gameState.score || 0,
+                level: gameState.level || 1,
+                bubblesPopped: gameState.bubblesPopped || 0
+            };
+            
+            // メタタグ更新
+            await window.seoMetaManager.updateDynamicContent(dynamicContent);
+            
+            // 構造化データ更新
+            if (window.structuredDataEngine) {
+                await window.structuredDataEngine.updateGameplayData(dynamicContent);
+            }
+            
+        } catch (error) {
+            console.error('[GameEngine] Failed to update SEO metadata:', error);
+        }
+    }
+    
+    /**
+     * 実績解除時のSEO更新
+     * @param {Object} achievement - 解除された実績
+     * @private
+     */
+    async updateSEOForAchievement(achievement) {
+        try {
+            if (!window.seoMetaManager) return;
+            
+            // 実績共有用のメタデータ生成
+            const achievementContent = {
+                type: 'achievement',
+                title: `実績解除: ${achievement.name}`,
+                description: `BubblePopで「${achievement.name}」を達成しました！`,
+                imageUrl: achievement.shareImage || '/assets/images/achievement-share.png'
+            };
+            
+            // ソーシャルメディア用メタタグ更新
+            await window.seoMetaManager.updateForSharing(achievementContent);
+            
+        } catch (error) {
+            console.error('[GameEngine] Failed to update SEO for achievement:', error);
+        }
+    }
+    
+    /**
+     * ハイスコア更新時のSEO更新
+     * @param {number} score - 新しいハイスコア
+     * @private
+     */
+    async updateSEOForHighScore(score) {
+        try {
+            if (!window.seoMetaManager) return;
+            
+            // ハイスコア共有用のメタデータ生成
+            const highScoreContent = {
+                type: 'highscore',
+                title: `新記録達成: ${score.toLocaleString()}点`,
+                description: `BubblePopで${score.toLocaleString()}点の新記録を達成！`,
+                imageUrl: `/assets/images/score-share.png?score=${score}`
+            };
+            
+            // ソーシャルメディア用メタタグ更新
+            await window.seoMetaManager.updateForSharing(highScoreContent);
+            
+        } catch (error) {
+            console.error('[GameEngine] Failed to update SEO for high score:', error);
+        }
+    }
+
+        /**
+         * ソーシャルメディア共有機能のトリガー
+         * @param {string} platform - 共有プラットフォーム
+         * @param {Object} customGameState - カスタムゲーム状態（オプション）
+         */
+        async triggerSocialShare(platform, customGameState = null) {
+            try {
+                if (!window.socialMediaOptimizer) {
+                    console.warn('[GameEngine] SocialMediaOptimizer not available');
+                    return;
+                }
+
+                // 現在のゲーム状態を取得
+                const currentGameState = customGameState || this._getCurrentGameState();
+                
+                // プラットフォーム別の共有コンテンツを生成
+                const shareContent = window.socialMediaOptimizer.generateShareContent(platform, currentGameState);
+                
+                // ソーシャル共有URLを生成
+                const shareUrl = this._generatePlatformShareUrl(platform, shareContent);
+                
+                // 新しいウィンドウでソーシャル共有を開く
+                if (shareUrl) {
+                    window.open(shareUrl, '_blank', 'width=600,height=400,scrollbars=yes,resizable=yes');
+                }
+                
+                // 共有イベントを発火
+                this.emit('socialShareTriggered', { platform, gameState: currentGameState, shareContent });
+                
+            } catch (error) {
+                console.error('[GameEngine] Failed to trigger social share:', error);
+            }
+        }
+
+        /**
+         * 現在のゲーム状態を取得
+         * @returns {Object} ゲーム状態オブジェクト
+         */
+        _getCurrentGameState() {
+            const scene = this.sceneManager?.getCurrentScene();
+            
+            return {
+                scene: scene?.constructor.name || 'Unknown',
+                score: this.scoreManager?.getScore() || 0,
+                level: this.currentLevel || 1,
+                bubblesPopped: this.totalBubblesPopped || 0,
+                playTime: this.gameTime || 0,
+                achievements: this.achievementManager?.getUnlockedAchievements() || [],
+                timestamp: Date.now()
+            };
+        }
+
+        /**
+         * プラットフォーム別のソーシャル共有URLを生成
+         * @param {string} platform - プラットフォーム名
+         * @param {Object} shareContent - 共有コンテンツ
+         * @returns {string|null} 共有URL
+         */
+        _generatePlatformShareUrl(platform, shareContent) {
+            const encodedUrl = encodeURIComponent(shareContent.url || window.location.href);
+            const encodedTitle = encodeURIComponent(shareContent.title || 'BubblePop');
+            const encodedText = encodeURIComponent(shareContent.text || shareContent.description || '');
+            
+            switch (platform.toLowerCase()) {
+                case 'twitter':
+                    return `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`;
+                
+                case 'facebook':
+                    return `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&title=${encodedTitle}&description=${encodeURIComponent(shareContent.description || '')}`;
+                
+                case 'line':
+                    return `https://social-plugins.line.me/lineit/share?url=${encodedUrl}&text=${encodedText}`;
+                
+                case 'reddit':
+                    return `https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`;
+                
+                case 'linkedin':
+                    return `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+                
+                default:
+                    console.warn(`[GameEngine] Unsupported share platform: ${platform}`);
+                    return null;
+            }
+        }
     
     /**
      * 言語変更時の処理
@@ -1212,6 +1492,13 @@ export class GameEngine {
      */
     gameOver() {
         this.isGameOver = true;
+        
+        // ゲーム終了イベントをSEOシステムに通知
+        this.emit('gameStateChanged', {
+            state: 'gameOver',
+            score: this.playerData.currentScore,
+            timestamp: Date.now()
+        });
         
         // 音響エフェクト
         this.audioManager.playGameOverSound();

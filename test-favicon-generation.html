@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favicon Generation Test - BubblePop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .button:hover {
+            background: #45a049;
+        }
+        .button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+        .output {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .favicon-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .favicon-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            background: white;
+        }
+        .favicon-item img {
+            max-width: 48px;
+            max-height: 48px;
+            margin-bottom: 5px;
+        }
+        .favicon-info {
+            font-size: 12px;
+            color: #666;
+        }
+        .category-header {
+            color: #4CAF50;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 5px;
+            margin: 20px 0 10px 0;
+        }
+        .progress {
+            width: 100%;
+            height: 20px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: #4CAF50;
+            transition: width 0.3s ease;
+        }
+        .error {
+            color: #d32f2f;
+            background: #ffebee;
+            border: 1px solid #ffcdd2;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .success {
+            color: #388e3c;
+            background: #e8f5e8;
+            border: 1px solid #c8e6c9;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BubblePop - Favicon Generation Tool</h1>
+        <p>このツールを使用して、BubblePopゲーム用の包括的なファビコンセットを生成できます。</p>
+        
+        <div class="controls">
+            <button class="button" onclick="generateAllFavicons()">🎨 全ファビコン生成</button>
+            <button class="button" onclick="generateFaviconPreview()">👁️ プレビュー生成</button>
+            <button class="button" onclick="downloadFavicons()" id="downloadBtn" disabled>💾 ファビコンダウンロード</button>
+            <button class="button" onclick="clearOutput()">🗑️ 出力クリア</button>
+        </div>
+        
+        <div class="progress" id="progressContainer" style="display: none;">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div class="output" id="output">ここに実行結果が表示されます...</div>
+    </div>
+    
+    <div class="container" id="previewContainer" style="display: none;">
+        <h2>ファビコンプレビュー</h2>
+        <div id="faviconPreview" class="favicon-preview"></div>
+    </div>
+    
+    <div class="container">
+        <h2>カテゴリ別生成</h2>
+        <button class="button" onclick="generateCategory('standard')">🏠 標準ファビコン</button>
+        <button class="button" onclick="generateCategory('apple')">🍎 Apple Touch Icons</button>
+        <button class="button" onclick="generateCategory('android')">🤖 Android Chrome</button>
+        <button class="button" onclick="generateCategory('microsoft')">🖥️ Microsoft Tiles</button>
+        <button class="button" onclick="generateCategory('safari')">🧭 Safari</button>
+        <button class="button" onclick="generateCategory('iosLegacy')">📱 iOS Legacy</button>
+    </div>
+    
+    <div class="container">
+        <h2>ツール情報</h2>
+        <p><strong>生成されるファビコン:</strong></p>
+        <ul>
+            <li><strong>標準:</strong> favicon.ico, favicon.svg, PNG (16x16, 32x32, 48x48)</li>
+            <li><strong>Apple:</strong> Apple Touch Icons (57x57 ~ 180x180)</li>
+            <li><strong>Android:</strong> Chrome Icons (36x36 ~ 512x512)</li>
+            <li><strong>Microsoft:</strong> Windows Tiles (70x70 ~ 310x310)</li>
+            <li><strong>Safari:</strong> safari-pinned-tab.svg</li>
+            <li><strong>iOS Legacy:</strong> precomposed versions</li>
+        </ul>
+        
+        <p><strong>注意:</strong> ブラウザがFile System Access APIをサポートしている場合、ファイルを直接保存できます。そうでない場合は、個別にダウンロードされます。</p>
+    </div>
+
+    <script type="module">
+        import { FaviconManager } from './src/seo/FaviconManager.js';
+        import { 
+            generateAllFavicons as generateAllFaviconsScript,
+            generateFaviconCategory,
+            generateFaviconPreview as generateFaviconPreviewScript
+        } from './src/seo/scripts/generateFavicons.js';
+        
+        let faviconManager;
+        let generatedFavicons = [];
+        
+        // グローバル関数として定義
+        window.generateAllFavicons = async function() {
+            await withProgress(async () => {
+                log('🚀 全ファビコン生成を開始...');
+                try {
+                    faviconManager = new FaviconManager();
+                    const results = await faviconManager.generateAllFavicons({ forceRegenerate: true });
+                    
+                    generatedFavicons = results.generated;
+                    
+                    log(`✅ 生成完了: ${results.generated.length} ファビコン`);
+                    log(`❌ エラー: ${results.errors.length} 件`);
+                    
+                    if (results.generated.length > 0) {
+                        log('\n📄 生成されたファビコン:');
+                        results.generated.forEach(favicon => {
+                            log(`  ✓ ${favicon.filename} (${favicon.size}, ${favicon.type})`);
+                        });
+                        
+                        document.getElementById('downloadBtn').disabled = false;
+                        displayFaviconPreview(results.generated);
+                    }
+                    
+                    if (results.errors.length > 0) {
+                        log('\n❌ エラー一覧:');
+                        results.errors.forEach(error => {
+                            log(`  ✗ ${error.filename}: ${error.error}`, 'error');
+                        });
+                    }
+                    
+                    // HTMLメタタグの表示
+                    const htmlTags = faviconManager.generateFaviconMetaTags();
+                    log('\n📋 HTMLメタタグ:');
+                    log(htmlTags);
+                    
+                    // 検証結果
+                    const validation = faviconManager.validateFaviconSetup();
+                    log(`\n🔍 検証結果: ${validation.isValid ? '✅ 有効' : '❌ 無効'}`);
+                    
+                    log('✨ 全ファビコン生成が完了しました!', 'success');
+                    
+                } catch (error) {
+                    log(`❌ エラー: ${error.message}`, 'error');
+                }
+            });
+        };
+        
+        window.generateCategory = async function(category) {
+            await withProgress(async () => {
+                log(`🎯 ${category} ファビコンを生成中...`);
+                try {
+                    const categoryFavicons = await generateFaviconCategory(category);
+                    log(`✅ ${categoryFavicons.length} 個の ${category} ファビコンを生成しました`);
+                    
+                    categoryFavicons.forEach(favicon => {
+                        log(`  ✓ ${favicon.filename}`);
+                    });
+                    
+                } catch (error) {
+                    log(`❌ ${category} ファビコン生成エラー: ${error.message}`, 'error');
+                }
+            });
+        };
+        
+        window.generateFaviconPreview = async function() {
+            await withProgress(async () => {
+                log('👁️ ファビコンプレビューを生成中...');
+                try {
+                    const html = await generateFaviconPreviewScript();
+                    log('✅ プレビューファイルがダウンロードされました', 'success');
+                } catch (error) {
+                    log(`❌ プレビュー生成エラー: ${error.message}`, 'error');
+                }
+            });
+        };
+        
+        window.downloadFavicons = async function() {
+            if (generatedFavicons.length === 0) {
+                log('⚠️ ダウンロードするファビコンがありません。まず生成してください。', 'error');
+                return;
+            }
+            
+            await withProgress(async () => {
+                log('💾 ファビコンファイルをダウンロード中...');
+                try {
+                    if (faviconManager) {
+                        await faviconManager.writeFaviconFiles(generatedFavicons);
+                        log('✅ ファビコンファイルのダウンロードが完了しました!', 'success');
+                    }
+                } catch (error) {
+                    log(`❌ ダウンロードエラー: ${error.message}`, 'error');
+                }
+            });
+        };
+        
+        window.clearOutput = function() {
+            document.getElementById('output').textContent = 'ここに実行結果が表示されます...';
+            document.getElementById('previewContainer').style.display = 'none';
+            document.getElementById('downloadBtn').disabled = true;
+            generatedFavicons = [];
+        };
+        
+        function log(message, type = 'info') {
+            const output = document.getElementById('output');
+            const timestamp = new Date().toLocaleTimeString();
+            const formattedMessage = `[${timestamp}] ${message}\n`;
+            
+            if (output.textContent === 'ここに実行結果が表示されます...') {
+                output.textContent = '';
+            }
+            
+            output.textContent += formattedMessage;
+            output.scrollTop = output.scrollHeight;
+            
+            // タイプ別のスタイリング
+            if (type === 'error') {
+                output.style.color = '#d32f2f';
+            } else if (type === 'success') {
+                output.style.color = '#388e3c';
+            } else {
+                output.style.color = '#333';
+            }
+        }
+        
+        function displayFaviconPreview(favicons) {
+            const container = document.getElementById('previewContainer');
+            const preview = document.getElementById('faviconPreview');
+            
+            preview.innerHTML = '';
+            
+            // カテゴリ別にグループ化
+            const categories = [...new Set(favicons.map(f => f.category))];
+            
+            categories.forEach(category => {
+                const header = document.createElement('h3');
+                header.textContent = `${category.charAt(0).toUpperCase() + category.slice(1)} Favicons`;
+                header.className = 'category-header';
+                preview.appendChild(header);
+                
+                const categoryFavicons = favicons.filter(f => f.category === category);
+                categoryFavicons.forEach(favicon => {
+                    const item = document.createElement('div');
+                    item.className = 'favicon-item';
+                    
+                    const img = document.createElement('img');
+                    img.src = favicon.dataUrl;
+                    img.alt = favicon.filename;
+                    
+                    const info = document.createElement('div');
+                    info.className = 'favicon-info';
+                    info.innerHTML = `
+                        <strong>${favicon.filename}</strong><br>
+                        Size: ${favicon.size}<br>
+                        Type: ${favicon.type}
+                    `;
+                    
+                    item.appendChild(img);
+                    item.appendChild(info);
+                    preview.appendChild(item);
+                });
+            });
+            
+            container.style.display = 'block';
+        }
+        
+        async function withProgress(asyncFunction) {
+            const progressContainer = document.getElementById('progressContainer');
+            const progressBar = document.getElementById('progressBar');
+            
+            progressContainer.style.display = 'block';
+            progressBar.style.width = '0%';
+            
+            // プログレスバーのアニメーション
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 90) progress = 90;
+                progressBar.style.width = progress + '%';
+            }, 200);
+            
+            try {
+                await asyncFunction();
+                progressBar.style.width = '100%';
+            } finally {
+                clearInterval(interval);
+                setTimeout(() => {
+                    progressContainer.style.display = 'none';
+                    progressBar.style.width = '0%';
+                }, 1000);
+            }
+        }
+        
+        // 初期化メッセージ
+        log('🎨 ファビコン生成ツールが準備完了しました');
+        log('📱 全ファビコン生成ボタンをクリックして開始してください');
+    </script>
+</body>
+</html>

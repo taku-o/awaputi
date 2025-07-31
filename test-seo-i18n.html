@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO I18n Test - BubblePop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .button:hover {
+            background: #45a049;
+        }
+        .button.secondary {
+            background: #2196F3;
+        }
+        .button.secondary:hover {
+            background: #1976D2;
+        }
+        .output {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .meta-preview {
+            background: #e8f5e8;
+            border: 1px solid #c8e6c9;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .meta-preview h3 {
+            color: #2e7d32;
+            margin-top: 0;
+        }
+        .language-selector {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .language-btn {
+            padding: 8px 16px;
+            border: 2px solid #4CAF50;
+            background: white;
+            color: #4CAF50;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .language-btn:hover,
+        .language-btn.active {
+            background: #4CAF50;
+            color: white;
+        }
+        .info-box {
+            background: #e3f2fd;
+            border: 1px solid #90caf9;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .info-box h4 {
+            color: #1565c0;
+            margin-top: 0;
+        }
+        .validation-result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .validation-result.valid {
+            background: #e8f5e8;
+            border: 1px solid #c8e6c9;
+            color: #2e7d32;
+        }
+        .validation-result.invalid {
+            background: #ffebee;
+            border: 1px solid #ffcdd2;
+            color: #d32f2f;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: #f5f5f5;
+            border: none;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab:hover,
+        .tab.active {
+            background: #4CAF50;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌍 SEO多言語化テストツール</h1>
+        <p>SEO国際化機能（hreflangタグ、多言語メタタグ、構造化データ）をテストします。</p>
+        
+        <div class="info-box">
+            <h4>📋 テスト対象機能</h4>
+            <ul>
+                <li><strong>hreflangタグ生成:</strong> 全サポート言語のhreflangタグ</li>
+                <li><strong>多言語メタタグ:</strong> 言語別のtitle, description, keywords</li>
+                <li><strong>構造化データ:</strong> 言語固有のJSON-LD</li>
+                <li><strong>地域化機能:</strong> 通貨、タイムゾーン、地域設定</li>
+                <li><strong>多言語サイトマップ:</strong> hreflang対応sitemap.xml</li>
+            </ul>
+        </div>
+        
+        <div class="language-selector">
+            <span><strong>言語選択:</strong></span>
+            <button class="language-btn active" data-lang="ja">日本語 (ja)</button>
+            <button class="language-btn" data-lang="en">English (en)</button>
+            <button class="language-btn" data-lang="zh-CN">中文简体 (zh-CN)</button>
+            <button class="language-btn" data-lang="zh-TW">中文繁體 (zh-TW)</button>
+            <button class="language-btn" data-lang="ko">한국어 (ko)</button>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="tabs">
+            <button class="tab active" data-tab="hreflang">hreflangタグ</button>
+            <button class="tab" data-tab="meta">メタタグ</button>
+            <button class="tab" data-tab="structured">構造化データ</button>
+            <button class="tab" data-tab="sitemap">サイトマップ</button>
+            <button class="tab" data-tab="validation">検証</button>
+        </div>
+        
+        <!-- hreflangタブ -->
+        <div class="tab-content active" id="hreflang">
+            <h3>🔗 hreflangタグ生成テスト</h3>
+            <div class="controls">
+                <button class="button" onclick="generateHreflangTags()">hreflangタグ生成</button>
+                <button class="button secondary" onclick="testDifferentPaths()">複数パステスト</button>
+            </div>
+            <div class="output" id="hreflangOutput">hreflangタグがここに表示されます...</div>
+        </div>
+        
+        <!-- メタタグタブ -->
+        <div class="tab-content" id="meta">
+            <h3>🏷️ 多言語メタタグテスト</h3>
+            <div class="controls">
+                <button class="button" onclick="generateLocalizedMeta()">多言語メタタグ生成</button>
+                <button class="button secondary" onclick="testGameStateContext()">ゲーム状態連携テスト</button>
+            </div>
+            <div class="meta-preview" id="metaPreview"></div>
+            <div class="output" id="metaOutput">メタタグ情報がここに表示されます...</div>
+        </div>
+        
+        <!-- 構造化データタブ -->
+        <div class="tab-content" id="structured">
+            <h3>📊 多言語構造化データテスト</h3>
+            <div class="controls">
+                <button class="button" onclick="generateStructuredData()">構造化データ生成</button>
+                <button class="button secondary" onclick="testAllLanguagesStructured()">全言語テスト</button>
+            </div>
+            <div class="output" id="structuredOutput">構造化データがここに表示されます...</div>
+        </div>
+        
+        <!-- サイトマップタブ -->
+        <div class="tab-content" id="sitemap">
+            <h3>🗺️ 多言語サイトマップテスト</h3>
+            <div class="controls">
+                <button class="button" onclick="generateMultilingualSitemap()">多言語サイトマップ生成</button>
+                <button class="button secondary" onclick="downloadSitemap()">サイトマップダウンロード</button>
+            </div>
+            <div class="output" id="sitemapOutput">サイトマップがここに表示されます...</div>
+        </div>
+        
+        <!-- 検証タブ -->
+        <div class="tab-content" id="validation">
+            <h3>✅ SEO多言語化検証</h3>
+            <div class="controls">
+                <button class="button" onclick="validateI18nSEO()">SEO検証実行</button>
+                <button class="button secondary" onclick="generateComplianceReport()">コンプライアンスレポート</button>
+            </div>
+            <div id="validationResults"></div>
+            <div class="output" id="validationOutput">検証結果がここに表示されます...</div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h2>🎮 実際のゲーム連携テスト</h2>
+        <div class="controls">
+            <button class="button" onclick="simulateGameContext()">ゲームコンテキストシミュレート</button>
+            <button class="button secondary" onclick="testSEOIntegration()">SEO統合テスト</button>
+        </div>
+        <div class="output" id="integrationOutput">統合テスト結果がここに表示されます...</div>
+    </div>
+
+    <script type="module">
+        import { SEOI18nManager } from './src/seo/SEOI18nManager.js';
+        import { SEOMetaManager } from './src/seo/SEOMetaManager.js';
+        
+        let i18nManager;
+        let metaManager;
+        let currentLanguage = 'ja';
+        let lastGeneratedSitemap = '';
+        
+        // モックLocalizationManager（実際のテスト用）
+        const mockLocalizationManager = {
+            currentLanguage: 'ja',
+            translations: {
+                ja: {
+                    'seo.title': 'BubblePop',
+                    'seo.subtitle': '泡割りゲーム',
+                    'seo.description': 'HTML5 Canvas を使用したバブルポップゲーム。18種類以上の特殊な泡を割って高スコアを目指そう！',
+                    'seo.keywords': 'バブルポップ,ゲーム,HTML5,ブラウザゲーム,無料,泡割り,パズル'
+                },
+                en: {
+                    'seo.title': 'BubblePop',
+                    'seo.subtitle': 'Bubble Popping Game',
+                    'seo.description': 'A bubble popping game built with HTML5 Canvas. Pop over 18 types of special bubbles to achieve high scores!',
+                    'seo.keywords': 'bubble pop,game,HTML5,browser game,free,puzzle,casual'
+                },
+                'zh-CN': {
+                    'seo.title': 'BubblePop',
+                    'seo.subtitle': '泡泡射击游戏',
+                    'seo.description': '使用 HTML5 Canvas 构建的泡泡射击游戏。射击超过18种特殊泡泡，争取高分！',
+                    'seo.keywords': '泡泡射击,游戏,HTML5,浏览器游戏,免费,益智'
+                },
+                'zh-TW': {
+                    'seo.title': 'BubblePop',
+                    'seo.subtitle': '泡泡射擊遊戲',
+                    'seo.description': '使用 HTML5 Canvas 構建的泡泡射擊遊戲。射擊超過18種特殊泡泡，爭取高分！',
+                    'seo.keywords': '泡泡射擊,遊戲,HTML5,瀏覽器遊戲,免費,益智'
+                },
+                ko: {
+                    'seo.title': 'BubblePop',
+                    'seo.subtitle': '버블팝 게임',
+                    'seo.description': 'HTML5 Canvas로 제작된 버블팝 게임. 18가지 이상의 특수 버블을 터뜨려 높은 점수를 달성하세요!',
+                    'seo.keywords': '버블팝,게임,HTML5,브라우저게임,무료,퍼즐'
+                }
+            },
+            languageChangeListeners: [],
+            
+            getCurrentLanguage() {
+                return this.currentLanguage;
+            },
+            
+            t(key) {
+                const translation = this.translations[this.currentLanguage]?.[key];
+                return translation || key;
+            },
+            
+            isRTLLanguage(lang) {
+                const rtlLanguages = ['ar', 'he', 'fa', 'ur'];
+                return rtlLanguages.includes(lang);
+            },
+            
+            getTextDirection() {
+                return this.isRTLLanguage(this.currentLanguage) ? 'rtl' : 'ltr';
+            },
+            
+            addLanguageChangeListener(callback) {
+                this.languageChangeListeners.push(callback);
+            },
+            
+            removeLanguageChangeListener(callback) {
+                const index = this.languageChangeListeners.indexOf(callback);
+                if (index > -1) {
+                    this.languageChangeListeners.splice(index, 1);
+                }
+            },
+            
+            setLanguage(lang) {
+                const oldLang = this.currentLanguage;
+                this.currentLanguage = lang;
+                this.languageChangeListeners.forEach(listener => listener(lang, oldLang));
+            }
+        };
+        
+        // 初期化
+        async function initialize() {
+            try {
+                metaManager = new SEOMetaManager(mockLocalizationManager);
+                i18nManager = new SEOI18nManager(mockLocalizationManager, metaManager);
+                
+                log('🚀 SEO多言語化システムの初期化が完了しました');
+                log('📱 各タブでテスト機能を試してください');
+            } catch (error) {
+                log(`❌ 初期化エラー: ${error.message}`, 'error');
+            }
+        }
+        
+        // グローバル関数の定義
+        window.generateHreflangTags = async function() {
+            try {
+                log('🔗 hreflangタグを生成中...');
+                
+                const hreflangTags = await i18nManager.generateHreflangTags('/');
+                document.getElementById('hreflangOutput').textContent = hreflangTags;
+                
+                log('✅ hreflangタグの生成が完了しました');
+            } catch (error) {
+                log(`❌ hreflangタグ生成エラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.testDifferentPaths = async function() {
+            try {
+                log('🛤️ 複数パスのhreflangテストを実行中...');
+                
+                const paths = ['/', '/help/', '/stats/', '/achievements/'];
+                let allTags = '';
+                
+                for (const path of paths) {
+                    const tags = await i18nManager.generateHreflangTags(path);
+                    allTags += `\\n<!-- ${path} -->\\n${tags}`;
+                }
+                
+                document.getElementById('hreflangOutput').textContent = allTags;
+                log('✅ 複数パステストが完了しました');
+            } catch (error) {
+                log(`❌ 複数パステストエラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.generateLocalizedMeta = async function() {
+            try {
+                log('🏷️ 多言語メタタグを生成中...');
+                
+                const metadata = await i18nManager.generateLocalizedMetaTags({
+                    pageType: 'game'
+                });
+                
+                // プレビュー表示
+                const preview = document.getElementById('metaPreview');
+                preview.innerHTML = `
+                    <h3>📄 ${metadata.language.toUpperCase()} メタタグプレビュー</h3>
+                    <p><strong>Title:</strong> ${metadata.title}</p>
+                    <p><strong>Description:</strong> ${metadata.description}</p>
+                    <p><strong>Keywords:</strong> ${metadata.keywords}</p>
+                    <p><strong>Locale:</strong> ${metadata.locale}</p>
+                    <p><strong>Direction:</strong> ${metadata.direction}</p>
+                `;
+                
+                // 詳細情報
+                document.getElementById('metaOutput').textContent = JSON.stringify(metadata, null, 2);
+                
+                log('✅ 多言語メタタグの生成が完了しました');
+            } catch (error) {
+                log(`❌ メタタグ生成エラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.testGameStateContext = async function() {
+            try {
+                log('🎮 ゲーム状態連携テストを実行中...');
+                
+                const gameState = {
+                    score: 150000,
+                    level: 5,
+                    achievements: ['combo_master', 'speed_demon'],
+                    playTime: 1200
+                };
+                
+                const metadata = await i18nManager.generateLocalizedMetaTags({
+                    pageType: 'game',
+                    gameState: gameState
+                });
+                
+                document.getElementById('metaOutput').textContent = JSON.stringify(metadata, null, 2);
+                log('✅ ゲーム状態連携テストが完了しました');
+            } catch (error) {
+                log(`❌ ゲーム状態テストエラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.generateStructuredData = async function() {
+            try {
+                log('📊 構造化データを生成中...');
+                
+                const gameData = {
+                    screenshots: [
+                        '/assets/screenshots/game-portrait-1.png',
+                        '/assets/screenshots/game-landscape-1.png'
+                    ],
+                    video: '/assets/videos/gameplay-trailer.mp4'
+                };
+                
+                const structuredData = await i18nManager.generateLocalizedStructuredData(
+                    currentLanguage, 
+                    gameData
+                );
+                
+                document.getElementById('structuredOutput').textContent = JSON.stringify(structuredData, null, 2);
+                log('✅ 構造化データの生成が完了しました');
+            } catch (error) {
+                log(`❌ 構造化データ生成エラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.testAllLanguagesStructured = async function() {
+            try {
+                log('🌍 全言語の構造化データテストを実行中...');
+                
+                const languages = ['ja', 'en', 'zh-CN', 'zh-TW', 'ko'];
+                const allData = {};
+                
+                for (const lang of languages) {
+                    const data = await i18nManager.generateLocalizedStructuredData(lang);
+                    allData[lang] = data;
+                }
+                
+                document.getElementById('structuredOutput').textContent = JSON.stringify(allData, null, 2);
+                log('✅ 全言語構造化データテストが完了しました');
+            } catch (error) {
+                log(`❌ 全言語テストエラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.generateMultilingualSitemap = async function() {
+            try {
+                log('🗺️ 多言語サイトマップを生成中...');
+                
+                const baseUrls = ['/', '/help/', '/stats/', '/achievements/'];
+                const sitemap = await i18nManager.generateMultilingualSitemap(baseUrls);
+                
+                lastGeneratedSitemap = sitemap;
+                document.getElementById('sitemapOutput').textContent = sitemap;
+                
+                log('✅ 多言語サイトマップの生成が完了しました');
+            } catch (error) {
+                log(`❌ サイトマップ生成エラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.downloadSitemap = function() {
+            if (!lastGeneratedSitemap) {
+                log('⚠️ ダウンロードするサイトマップがありません。まず生成してください。', 'warning');
+                return;
+            }
+            
+            try {
+                const blob = new Blob([lastGeneratedSitemap], { type: 'application/xml' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'multilingual-sitemap.xml';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                log('✅ サイトマップファイルがダウンロードされました');
+            } catch (error) {
+                log(`❌ ダウンロードエラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.validateI18nSEO = async function() {
+            try {
+                log('✅ SEO多言語化検証を実行中...');
+                
+                const validation = i18nManager.validateI18nSEO();
+                
+                // 検証結果の表示
+                const resultsDiv = document.getElementById('validationResults');
+                const isValid = validation.isValid;
+                
+                resultsDiv.innerHTML = `
+                    <div class="validation-result ${isValid ? 'valid' : 'invalid'}">
+                        <h4>${isValid ? '✅ 検証合格' : '❌ 検証不合格'}</h4>
+                        <p><strong>サポート言語数:</strong> ${validation.supportedLanguages}</p>
+                        <p><strong>デフォルト言語:</strong> ${validation.defaultLanguage}</p>
+                        <p><strong>LocalizationManager統合:</strong> ${validation.hasLocalizationManager ? '✅' : '❌'}</p>
+                    </div>
+                `;
+                
+                document.getElementById('validationOutput').textContent = JSON.stringify(validation, null, 2);
+                
+                log(`${isValid ? '✅' : '❌'} 検証が完了しました`);
+            } catch (error) {
+                log(`❌ 検証エラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.generateComplianceReport = async function() {
+            try {
+                log('📋 コンプライアンスレポートを生成中...');
+                
+                const report = {
+                    timestamp: new Date().toISOString(),
+                    hreflangCompliance: await testHreflangCompliance(),
+                    metaTagCompliance: await testMetaTagCompliance(),
+                    structuredDataCompliance: await testStructuredDataCompliance(),
+                    overallScore: 0
+                };
+                
+                // スコア計算
+                const scores = [
+                    report.hreflangCompliance.score,
+                    report.metaTagCompliance.score,
+                    report.structuredDataCompliance.score
+                ];
+                report.overallScore = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+                
+                document.getElementById('validationOutput').textContent = JSON.stringify(report, null, 2);
+                log('✅ コンプライアンスレポートが完成しました');
+            } catch (error) {
+                log(`❌ レポート生成エラー: ${error.message}`, 'error');
+            }
+        };
+        
+        // ヘルパー関数
+        async function testHreflangCompliance() {
+            const languages = ['ja', 'en', 'zh-CN', 'zh-TW', 'ko'];
+            const paths = ['/', '/help/'];
+            let score = 0;
+            const issues = [];
+            
+            for (const path of paths) {
+                try {
+                    const tags = await i18nManager.generateHreflangTags(path);
+                    
+                    // hreflangタグの数をチェック
+                    const hreflangCount = (tags.match(/hreflang=/g) || []).length;
+                    const expectedCount = languages.length + 1; // +1 for x-default
+                    
+                    if (hreflangCount === expectedCount) {
+                        score += 20;
+                    } else {
+                        issues.push(`Path ${path}: Expected ${expectedCount} hreflang tags, found ${hreflangCount}`);
+                    }
+                } catch (error) {
+                    issues.push(`Path ${path}: ${error.message}`);
+                }
+            }
+            
+            return { score: Math.min(score, 100), issues };
+        }
+        
+        async function testMetaTagCompliance() {
+            const languages = ['ja', 'en', 'zh-CN', 'zh-TW', 'ko'];
+            let score = 0;
+            const issues = [];
+            
+            for (const lang of languages) {
+                try {
+                    mockLocalizationManager.setLanguage(lang);
+                    const metadata = await i18nManager.generateLocalizedMetaTags();
+                    
+                    if (metadata.title && metadata.description && metadata.keywords) {
+                        score += 20;
+                    } else {
+                        issues.push(`Language ${lang}: Missing required meta tags`);
+                    }
+                } catch (error) {
+                    issues.push(`Language ${lang}: ${error.message}`);
+                }
+            }
+            
+            return { score: Math.min(score, 100), issues };
+        }
+        
+        async function testStructuredDataCompliance() {
+            const languages = ['ja', 'en'];
+            let score = 0;
+            const issues = [];
+            
+            for (const lang of languages) {
+                try {
+                    const data = await i18nManager.generateLocalizedStructuredData(lang);
+                    
+                    if (data['@context'] && data['@type'] && data.name && data.description) {
+                        score += 50;
+                    } else {
+                        issues.push(`Language ${lang}: Missing required structured data properties`);
+                    }
+                } catch (error) {
+                    issues.push(`Language ${lang}: ${error.message}`);
+                }
+            }
+            
+            return { score: Math.min(score, 100), issues };
+        }
+        
+        window.simulateGameContext = async function() {
+            try {
+                log('🎮 ゲームコンテキストをシミュレート中...');
+                
+                const gameContext = {
+                    currentScene: 'GameScene',
+                    playerData: {
+                        score: 245000,
+                        level: 8,
+                        achievements: ['bubble_master', 'speed_demon', 'combo_king'],
+                        totalPlayTime: 3600
+                    },
+                    gameState: {
+                        bubblesPopped: 1250,
+                        currentCombo: 15,
+                        specialBubblesHit: 45
+                    }
+                };
+                
+                const metadata = await i18nManager.generateLocalizedMetaTags({
+                    pageType: 'game',
+                    gameState: gameContext.gameState,
+                    playerData: gameContext.playerData,
+                    titleKey: 'seo.titles.game_active',
+                    descriptionKey: 'seo.descriptions.game_active'
+                });
+                
+                document.getElementById('integrationOutput').textContent = JSON.stringify({
+                    gameContext,
+                    generatedMetadata: metadata
+                }, null, 2);
+                
+                log('✅ ゲームコンテキストシミュレーションが完了しました');
+            } catch (error) {
+                log(`❌ シミュレーションエラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.testSEOIntegration = async function() {
+            try {
+                log('🔄 SEO統合テストを実行中...');
+                
+                const integrationTests = [];
+                
+                // テスト1: 言語変更時のメタタグ更新
+                for (const lang of ['ja', 'en', 'zh-CN']) {
+                    mockLocalizationManager.setLanguage(lang);
+                    const metadata = await i18nManager.generateLocalizedMetaTags();
+                    integrationTests.push({
+                        test: `Language Change to ${lang}`,
+                        result: metadata.language === lang ? 'PASS' : 'FAIL',
+                        metadata: {
+                            language: metadata.language,
+                            title: metadata.title,
+                            locale: metadata.locale
+                        }
+                    });
+                }
+                
+                // テスト2: hreflangと構造化データの一貫性
+                const hreflangTags = await i18nManager.generateHreflangTags('/');
+                const structuredData = await i18nManager.generateLocalizedStructuredData('ja');
+                integrationTests.push({
+                    test: 'hreflang and Structured Data Consistency',
+                    result: (hreflangTags.includes('ja') && structuredData.inLanguage === 'ja') ? 'PASS' : 'FAIL',
+                    details: {
+                        hreflangHasJapanese: hreflangTags.includes('ja'),
+                        structuredDataLanguage: structuredData.inLanguage
+                    }
+                });
+                
+                document.getElementById('integrationOutput').textContent = JSON.stringify(integrationTests, null, 2);
+                
+                const passedTests = integrationTests.filter(t => t.result === 'PASS').length;
+                const totalTests = integrationTests.length;
+                
+                log(`✅ SEO統合テストが完了しました (${passedTests}/${totalTests} PASS)`);
+            } catch (error) {
+                log(`❌ 統合テストエラー: ${error.message}`, 'error');
+            }
+        };
+        
+        // ユーティリティ関数
+        function log(message, type = 'info') {
+            console.log(`[SEO I18n Test] ${message}`);
+            
+            // 画面にも表示（オプション）
+            const timestamp = new Date().toLocaleTimeString();
+            console.log(`[${timestamp}] ${message}`);
+        }
+        
+        // イベントリスナー
+        document.addEventListener('DOMContentLoaded', function() {
+            // タブ切り替え
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const targetTab = this.dataset.tab;
+                    
+                    // アクティブタブの更新
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    document.getElementById(targetTab).classList.add('active');
+                });
+            });
+            
+            // 言語選択
+            document.querySelectorAll('.language-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const lang = this.dataset.lang;
+                    
+                    // アクティブ言語の更新
+                    document.querySelectorAll('.language-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 言語変更
+                    currentLanguage = lang;
+                    mockLocalizationManager.setLanguage(lang);
+                    
+                    log(`言語を ${lang} に変更しました`);
+                });
+            });
+        });
+        
+        // 初期化の実行
+        initialize();
+    </script>
+</body>
+</html>

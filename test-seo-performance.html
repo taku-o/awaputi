@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Performance Optimizer Test - BubblePop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .button:hover {
+            background: #45a049;
+        }
+        .button.secondary {
+            background: #2196F3;
+        }
+        .button.secondary:hover {
+            background: #1976D2;
+        }
+        .button.warning {
+            background: #FF9800;
+        }
+        .button.warning:hover {
+            background: #F57C00;
+        }
+        .output {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .metric-card {
+            background: #e8f5e8;
+            border: 1px solid #c8e6c9;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2e7d32;
+            margin: 10px 0;
+        }
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+        }
+        .performance-chart {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            min-height: 300px;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: #f5f5f5;
+            border: none;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab:hover,
+        .tab.active {
+            background: #4CAF50;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .info-box {
+            background: #e3f2fd;
+            border: 1px solid #90caf9;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .info-box h4 {
+            color: #1565c0;
+            margin-top: 0;
+        }
+        .progress {
+            width: 100%;
+            height: 20px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: #4CAF50;
+            transition: width 0.3s ease;
+        }
+        .image-preview {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .image-comparison {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            min-width: 200px;
+        }
+        .image-comparison img {
+            max-width: 150px;
+            max-height: 150px;
+            border: 1px solid #ccc;
+            margin: 10px 0;
+        }
+        .compression-info {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚡ SEOパフォーマンス最適化テストツール</h1>
+        <p>SEO関連アセットのパフォーマンス最適化機能をテストし、監視します。</p>
+        
+        <div class="info-box">
+            <h4>🔧 テスト対象機能</h4>
+            <ul>
+                <li><strong>画像最適化:</strong> WebP対応、圧縮、キャッシュ機能</li>
+                <li><strong>構造化データ最適化:</strong> JSON-LD最小化、キャッシュ機能</li>
+                <li><strong>メタタグ最適化:</strong> テンプレート最適化、重複除去</li>
+                <li><strong>パフォーマンス監視:</strong> リアルタイム性能メトリクス</li>
+                <li><strong>キャッシュ管理:</strong> 効率的なキャッシュ戦略</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="tabs">
+            <button class="tab active" data-tab="optimization">最適化テスト</button>
+            <button class="tab" data-tab="performance">パフォーマンス監視</button>
+            <button class="tab" data-tab="cache">キャッシュ管理</button>
+            <button class="tab" data-tab="comparison">比較テスト</button>
+        </div>
+        
+        <!-- 最適化テストタブ -->
+        <div class="tab-content active" id="optimization">
+            <h3>🚀 SEO最適化テスト</h3>
+            <div class="controls">
+                <button class="button" onclick="testImageOptimization()">🖼️ 画像最適化テスト</button>
+                <button class="button" onclick="testStructuredDataOptimization()">📊 構造化データ最適化</button>
+                <button class="button" onclick="testMetaTagOptimization()">🏷️ メタタグ最適化</button>
+                <button class="button secondary" onclick="runComprehensiveOptimization()">⚡ 包括最適化テスト</button>
+            </div>
+            <div class="output" id="optimizationOutput">最適化テスト結果がここに表示されます...</div>
+            <div class="image-preview" id="imagePreview"></div>
+        </div>
+        
+        <!-- パフォーマンス監視タブ -->
+        <div class="tab-content" id="performance">
+            <h3>📈 パフォーマンス監視</h3>
+            <div class="controls">
+                <button class="button" onclick="startPerformanceMonitoring()">▶️ パフォーマンス監視開始</button>
+                <button class="button warning" onclick="stopPerformanceMonitoring()">⏹️ 監視停止</button>
+                <button class="button secondary" onclick="generatePerformanceReport()">📊 レポート生成</button>
+            </div>
+            
+            <div class="metrics-grid" id="metricsGrid">
+                <div class="metric-card">
+                    <div class="metric-value" id="cacheHitRate">-</div>
+                    <div class="metric-label">キャッシュヒット率</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="avgProcessingTime">-</div>
+                    <div class="metric-label">平均処理時間 (ms)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="totalOptimizations">-</div>
+                    <div class="metric-label">最適化実行回数</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="compressionRatio">-</div>
+                    <div class="metric-label">平均圧縮率</div>
+                </div>
+            </div>
+            
+            <div class="performance-chart" id="performanceChart">
+                <h4>⏱️ リアルタイムパフォーマンス</h4>
+                <canvas id="performanceCanvas" width="800" height="200"></canvas>
+            </div>
+            
+            <div class="output" id="performanceOutput">パフォーマンス監視結果がここに表示されます...</div>
+        </div>
+        
+        <!-- キャッシュ管理タブ -->
+        <div class="tab-content" id="cache">
+            <h3>💾 キャッシュ管理</h3>
+            <div class="controls">
+                <button class="button" onclick="analyzeCacheEfficiency()">📊 キャッシュ効率分析</button>
+                <button class="button secondary" onclick="testCacheStrategies()">🔄 キャッシュ戦略テスト</button>
+                <button class="button warning" onclick="clearAllCaches()">🗑️ 全キャッシュクリア</button>
+            </div>
+            <div class="output" id="cacheOutput">キャッシュ管理結果がここに表示されます...</div>
+        </div>
+        
+        <!-- 比較テストタブ -->
+        <div class="tab-content" id="comparison">
+            <h3>⚖️ 最適化前後比較</h3>
+            <div class="controls">
+                <button class="button" onclick="runBeforeAfterComparison()">📊 最適化前後比較</button>
+                <button class="button secondary" onclick="benchmarkDifferentSizes()">📏 サイズ別ベンチマーク</button>
+                <button class="button secondary" onclick="testBrowserCompatibility()">🌐 ブラウザ互換性テスト</button>
+            </div>
+            <div class="output" id="comparisonOutput">比較テスト結果がここに表示されます...</div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h2>🎮 実際のゲーム統合テスト</h2>
+        <div class="controls">
+            <button class="button" onclick="simulateGameSEOOptimization()">🕹️ ゲームSEO最適化シミュレート</button>
+            <button class="button secondary" onclick="testRealTimeOptimization()">⚡ リアルタイム最適化テスト</button>
+        </div>
+        <div class="output" id="integrationOutput">統合テスト結果がここに表示されます...</div>
+    </div>
+
+    <script type="module">
+        import { SEOPerformanceOptimizer } from './src/seo/SEOPerformanceOptimizer.js';
+        
+        let performanceOptimizer;
+        let monitoringInterval;
+        let performanceData = [];
+        let isMonitoring = false;
+        
+        // 初期化
+        async function initialize() {
+            try {
+                performanceOptimizer = new SEOPerformanceOptimizer();
+                log('🚀 SEOパフォーマンス最適化システムの初期化が完了しました');
+                log('📊 各タブでテスト機能を試してください');
+            } catch (error) {
+                log(`❌ 初期化エラー: ${error.message}`, 'error');
+            }
+        }
+        
+        // グローバル関数の定義
+        window.testImageOptimization = async function() {
+            try {
+                log('🖼️ 画像最適化テストを開始...');
+                
+                // テスト用の画像データURL（小さな赤い正方形）
+                const testImageDataUrl = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABUlEQVR42mNkYPhfDwABIgCBWW+6zAAAAABJRU5ErkJggg==';
+                
+                // 複数の最適化オプションをテスト
+                const optimizationTests = [
+                    { width: 32, height: 32, quality: 85, format: 'auto' },
+                    { width: 64, height: 64, quality: 75, format: 'webp' },
+                    { width: 128, height: 128, quality: 90, format: 'png' },
+                    { width: 256, height: 256, quality: 80, format: 'jpg' }
+                ];
+                
+                const imagePreview = document.getElementById('imagePreview');
+                imagePreview.innerHTML = '';
+                
+                for (const options of optimizationTests) {
+                    const startTime = performance.now();
+                    const optimizedUrl = await performanceOptimizer.optimizeImage(testImageDataUrl, options);
+                    const endTime = performance.now();
+                    
+                    log(`✅ 最適化完了 (${options.width}x${options.height}, ${options.format}): ${(endTime - startTime).toFixed(2)}ms`);
+                    
+                    // プレビュー表示
+                    const comparison = document.createElement('div');
+                    comparison.className = 'image-comparison';
+                    comparison.innerHTML = `
+                        <h4>${options.width}x${options.height} (${options.format})</h4>
+                        <div>元画像</div>
+                        <img src="${testImageDataUrl}" alt="Original">
+                        <div>最適化後</div>
+                        <img src="${optimizedUrl}" alt="Optimized">
+                        <div class="compression-info">処理時間: ${(endTime - startTime).toFixed(2)}ms</div>
+                    `;
+                    imagePreview.appendChild(comparison);
+                }
+                
+                log('✨ 画像最適化テストが完了しました!');
+            } catch (error) {
+                log(`❌ 画像最適化テストエラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.testStructuredDataOptimization = async function() {
+            try {
+                log('📊 構造化データ最適化テストを開始...');
+                
+                const testStructuredData = {
+                    "@context": "https://schema.org",
+                    "@type": "VideoGame",
+                    "name": "BubblePop - 泡割りゲーム",
+                    "description": "HTML5 Canvas を使用したバブルポップゲーム。18種類以上の特殊な泡を割って高スコアを目指そう！",
+                    "genre": "パズル・アクション",
+                    "gamePlatform": ["Web Browser", "Progressive Web App"],
+                    "operatingSystem": ["Any"],
+                    "applicationCategory": "Game",
+                    "image": "https://example.com/game-screenshot-large.png",
+                    "screenshot": [
+                        "https://example.com/screenshot1.png",
+                        "https://example.com/screenshot2.png"
+                    ],
+                    "offers": {
+                        "@type": "Offer",
+                        "price": "0",
+                        "priceCurrency": "JPY",
+                        "availability": "https://schema.org/InStock"
+                    },
+                    "creator": {
+                        "@type": "Organization",
+                        "name": "BubblePop Development Team"
+                    },
+                    "datePublished": "2024-01-01",
+                    "dateModified": new Date().toISOString().split('T')[0],
+                    "optionalField": "",
+                    "emptyArray": [],
+                    "nullValue": null
+                };
+                
+                const originalSize = JSON.stringify(testStructuredData).length;
+                log(`📏 元のデータサイズ: ${originalSize} 文字`);
+                
+                // 最適化オプション別テスト
+                const optimizationOptions = [
+                    { minify: true, removeOptionalFields: false, compressImages: false },
+                    { minify: true, removeOptionalFields: true, compressImages: false },
+                    { minify: true, removeOptionalFields: true, compressImages: true }
+                ];
+                
+                for (const options of optimizationOptions) {
+                    const startTime = performance.now();
+                    const optimized = await performanceOptimizer.optimizeStructuredData(testStructuredData, options);
+                    const endTime = performance.now();
+                    
+                    const optimizedSize = JSON.stringify(optimized).length;
+                    const compressionRatio = ((originalSize - optimizedSize) / originalSize * 100).toFixed(1);
+                    
+                    log(`✅ 最適化完了 (minify:${options.minify}, removeOptional:${options.removeOptionalFields})`);
+                    log(`   📉 サイズ削減: ${originalSize} → ${optimizedSize} 文字 (${compressionRatio}%削減)`);
+                    log(`   ⏱️ 処理時間: ${(endTime - startTime).toFixed(2)}ms`);
+                }
+                
+                log('✨ 構造化データ最適化テストが完了しました!');
+            } catch (error) {
+                log(`❌ 構造化データ最適化テストエラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.testMetaTagOptimization = async function() {
+            try {
+                log('🏷️ メタタグ最適化テストを開始...');
+                
+                const testMetaTags = {
+                    title: 'BubblePop - 泡割りゲーム - 無料で遊べるHTML5パズルゲーム',
+                    description: 'HTML5 Canvas を使用したバブルポップゲーム。18種類以上の特殊な泡を割って高スコアを目指そう！無料でブラウザで遊べるパズルゲームです。',
+                    keywords: 'バブルポップ,ゲーム,HTML5,ブラウザゲーム,無料,泡割り,パズル,バブルポップ,ゲーム,HTML5', // 重複あり
+                    image: 'https://example.com/large-social-image.png',
+                    ogTitle: 'BubblePop - 泡割りゲーム - 無料で遊べるHTML5パズルゲーム',
+                    ogDescription: 'HTML5 Canvas を使用したバブルポップゲーム。18種類以上の特殊な泡を割って高スコアを目指そう！無料でブラウザで遊べるパズルゲームです。',
+                    twitterTitle: 'BubblePop - 泡割りゲーム - 無料で遊べるHTML5パズルゲーム',
+                    twitterDescription: 'HTML5 Canvas を使用したバブルポップゲーム。18種類以上の特殊な泡を割って高スコアを目指そう！無料でブラウザで遊べるパズルゲームです。',
+                    charset: 'UTF-8'
+                };
+                
+                const optimizationOptions = [
+                    { compressDescriptions: true, optimizeImages: false, removeDuplicates: true, prioritizeCharset: true },
+                    { compressDescriptions: true, optimizeImages: true, removeDuplicates: true, prioritizeCharset: true }
+                ];
+                
+                for (const options of optimizationOptions) {
+                    const startTime = performance.now();
+                    const optimized = await performanceOptimizer.optimizeMetaTags(testMetaTags, options);
+                    const endTime = performance.now();
+                    
+                    log(`✅ メタタグ最適化完了 (画像最適化:${options.optimizeImages})`);
+                    log(`   📏 タイトル長: ${testMetaTags.title.length} → ${optimized.title.length} 文字`);
+                    log(`   📏 説明文長: ${testMetaTags.description.length} → ${optimized.description.length} 文字`);
+                    log(`   🔗 キーワード数: ${testMetaTags.keywords.split(',').length} → ${optimized.keywords.split(',').length} 個`);
+                    log(`   ⏱️ 処理時間: ${(endTime - startTime).toFixed(2)}ms`);
+                }
+                
+                log('✨ メタタグ最適化テストが完了しました!');
+            } catch (error) {
+                log(`❌ メタタグ最適化テストエラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.runComprehensiveOptimization = async function() {
+            try {
+                log('⚡ 包括最適化テストを開始...');
+                
+                // 複数の最適化を同時実行
+                const tasks = [
+                    testImageOptimization,
+                    testStructuredDataOptimization,
+                    testMetaTagOptimization
+                ];
+                
+                const startTime = performance.now();
+                await Promise.all(tasks.map(task => task()));
+                const endTime = performance.now();
+                
+                log(`✨ 包括最適化テストが完了しました! 総実行時間: ${(endTime - startTime).toFixed(2)}ms`);
+                
+                // パフォーマンスメトリクスの表示
+                const metrics = performanceOptimizer.getPerformanceMetrics();
+                log('📊 最終パフォーマンスメトリクス:');
+                log(`   💾 キャッシュヒット率: ${metrics.cacheEfficiency}%`);
+                log(`   ⏱️ 平均処理時間: ${metrics.averageProcessingTime}ms`);
+                log(`   🔢 最適化実行回数: ${metrics.imageOptimizations}`);
+                log(`   📦 総キャッシュサイズ: ${metrics.totalCacheSize}`);
+                
+            } catch (error) {
+                log(`❌ 包括最適化テストエラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.startPerformanceMonitoring = function() {
+            if (isMonitoring) {
+                log('⚠️ パフォーマンス監視は既に実行中です', 'warning');
+                return;
+            }
+            
+            log('▶️ リアルタイムパフォーマンス監視を開始...');
+            isMonitoring = true;
+            
+            monitoringInterval = setInterval(() => {
+                const metrics = performanceOptimizer.getPerformanceMetrics();
+                
+                // メトリクス表示の更新
+                document.getElementById('cacheHitRate').textContent = `${metrics.cacheEfficiency}%`;
+                document.getElementById('avgProcessingTime').textContent = `${metrics.averageProcessingTime}ms`;
+                document.getElementById('totalOptimizations').textContent = metrics.imageOptimizations;
+                document.getElementById('compressionRatio').textContent = `${metrics.averageCompressionRatio.toFixed(1)}%`;
+                
+                // パフォーマンスデータの記録
+                performanceData.push({
+                    timestamp: Date.now(),
+                    ...metrics
+                });
+                
+                // データは最大100ポイントまで
+                if (performanceData.length > 100) {
+                    performanceData.shift();
+                }
+                
+                // チャートの更新
+                updatePerformanceChart();
+                
+            }, 1000);
+            
+            log('✅ パフォーマンス監視が開始されました（1秒間隔）');
+        };
+        
+        window.stopPerformanceMonitoring = function() {
+            if (!isMonitoring) {
+                log('⚠️ パフォーマンス監視は実行されていません', 'warning');
+                return;
+            }
+            
+            clearInterval(monitoringInterval);
+            isMonitoring = false;
+            
+            log('⏹️ パフォーマンス監視を停止しました');
+        };
+        
+        window.generatePerformanceReport = function() {
+            if (performanceData.length === 0) {
+                log('⚠️ パフォーマンスデータがありません。監視を開始してください。', 'warning');
+                return;
+            }
+            
+            try {
+                log('📊 パフォーマンスレポートを生成中...');
+                
+                const latest = performanceData[performanceData.length - 1];
+                const oldest = performanceData[0];
+                const duration = (latest.timestamp - oldest.timestamp) / 1000;
+                
+                const report = {
+                    監視期間: `${duration.toFixed(1)}秒`,
+                    データポイント数: performanceData.length,
+                    最終メトリクス: {
+                        キャッシュヒット率: `${latest.cacheEfficiency}%`,
+                        平均処理時間: `${latest.averageProcessingTime}ms`,
+                        最適化実行回数: latest.imageOptimizations,
+                        圧縮率: `${latest.averageCompressionRatio.toFixed(1)}%`,
+                        キャッシュサイズ: latest.totalCacheSize
+                    },
+                    WebP対応: latest.webpSupported ? '✅ 対応' : '❌ 非対応'
+                };
+                
+                log('📋 パフォーマンスレポート:');
+                log(JSON.stringify(report, null, 2));
+                
+                // レポートのダウンロード
+                const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `seo-performance-report-${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                log('✅ パフォーマンスレポートがダウンロードされました');
+                
+            } catch (error) {
+                log(`❌ レポート生成エラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.analyzeCacheEfficiency = function() {
+            try {
+                log('📊 キャッシュ効率分析を実行中...');
+                
+                const metrics = performanceOptimizer.getPerformanceMetrics();
+                const cacheHeaders = performanceOptimizer.generateCacheHeaders('image');
+                
+                log('💾 キャッシュ分析結果:');
+                log(`   ヒット率: ${metrics.cacheEfficiency}% (${metrics.cacheHits}/${metrics.cacheHits + metrics.cacheMisses})`);
+                log(`   総キャッシュサイズ: ${metrics.totalCacheSize} アイテム`);
+                log(`   推奨キャッシュヘッダー:`);
+                Object.entries(cacheHeaders).forEach(([key, value]) => {
+                    log(`     ${key}: ${value}`);
+                });
+                
+                // キャッシュ効率の評価
+                let efficiency = 'Unknown';
+                if (metrics.cacheEfficiency >= 80) efficiency = '優秀';
+                else if (metrics.cacheEfficiency >= 60) efficiency = '良好';
+                else if (metrics.cacheEfficiency >= 40) efficiency = '改善の余地あり';
+                else efficiency = '要改善';
+                
+                log(`   📈 効率評価: ${efficiency}`);
+                
+            } catch (error) {
+                log(`❌ キャッシュ分析エラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.testCacheStrategies = async function() {
+            try {
+                log('🔄 キャッシュ戦略テストを開始...');
+                
+                // テスト用データ
+                const testImageUrl = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABUlEQVR42mNkYPhfDwABIgCBWW+6zAAAAABJRU5ErkJggg==';
+                
+                // 同じ画像を複数回最適化してキャッシュ効果をテスト
+                log('📊 キャッシュヒット率テスト...');
+                
+                for (let i = 0; i < 5; i++) {
+                    const startTime = performance.now();
+                    await performanceOptimizer.optimizeImage(testImageUrl, { width: 32, height: 32 });
+                    const endTime = performance.now();
+                    
+                    log(`   実行 ${i + 1}: ${(endTime - startTime).toFixed(2)}ms`);
+                }
+                
+                const finalMetrics = performanceOptimizer.getPerformanceMetrics();
+                log(`✅ 最終キャッシュヒット率: ${finalMetrics.cacheEfficiency}%`);
+                
+            } catch (error) {
+                log(`❌ キャッシュ戦略テストエラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.clearAllCaches = function() {
+            try {
+                log('🗑️ 全キャッシュをクリア中...');
+                
+                performanceOptimizer.clearCache('all');
+                
+                // メトリクスの更新
+                const metrics = performanceOptimizer.getPerformanceMetrics();
+                document.getElementById('cacheHitRate').textContent = `${metrics.cacheEfficiency}%`;
+                document.getElementById('totalOptimizations').textContent = metrics.imageOptimizations;
+                
+                log('✅ 全キャッシュがクリアされました');
+                
+            } catch (error) {
+                log(`❌ キャッシュクリアエラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.runBeforeAfterComparison = async function() {
+            try {
+                log('📊 最適化前後比較テストを開始...');
+                
+                // テスト用の大きめの画像データ
+                const testImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABUlEQVR42mNkYPhfDwABIgCBWW+6zAAAAABJRU5ErkJggg==';
+                
+                const comparisons = [
+                    { size: '32x32', width: 32, height: 32, quality: 85 },
+                    { size: '64x64', width: 64, height: 64, quality: 75 },
+                    { size: '128x128', width: 128, height: 128, quality: 90 }
+                ];
+                
+                log('⚖️ 最適化前後の比較:');
+                
+                for (const comp of comparisons) {
+                    const originalSize = testImage.length;
+                    
+                    const startTime = performance.now();
+                    const optimized = await performanceOptimizer.optimizeImage(testImage, comp);
+                    const endTime = performance.now();
+                    
+                    const optimizedSize = optimized.length;
+                    const reduction = ((originalSize - optimizedSize) / originalSize * 100).toFixed(1);
+                    
+                    log(`   📏 ${comp.size}: ${originalSize} → ${optimizedSize} bytes (${reduction}%削減, ${(endTime - startTime).toFixed(2)}ms)`);
+                }
+                
+                log('✅ 最適化前後比較が完了しました');
+                
+            } catch (error) {
+                log(`❌ 比較テストエラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.benchmarkDifferentSizes = async function() {
+            try {
+                log('📏 サイズ別ベンチマークテストを開始...');
+                
+                const sizes = [
+                    { name: '小 (16x16)', width: 16, height: 16 },
+                    { name: '中 (64x64)', width: 64, height: 64 },
+                    { name: '大 (256x256)', width: 256, height: 256 },
+                    { name: '特大 (512x512)', width: 512, height: 512 }
+                ];
+                
+                const testImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABUlEQVR42mNkYPhfDwABIgCBWW+6zAAAAABJRU5ErkJggg==';
+                
+                log('⚡ サイズ別処理時間:');
+                
+                for (const size of sizes) {
+                    const times = [];
+                    
+                    // 各サイズを3回テストして平均を算出
+                    for (let i = 0; i < 3; i++) {
+                        const startTime = performance.now();
+                        await performanceOptimizer.optimizeImage(testImage, size);
+                        const endTime = performance.now();
+                        times.push(endTime - startTime);
+                    }
+                    
+                    const avgTime = times.reduce((a, b) => a + b, 0) / times.length;
+                    log(`   ${size.name}: 平均 ${avgTime.toFixed(2)}ms`);
+                }
+                
+                log('✅ サイズ別ベンチマークが完了しました');
+                
+            } catch (error) {
+                log(`❌ ベンチマークテストエラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.testBrowserCompatibility = async function() {
+            try {
+                log('🌐 ブラウザ互換性テストを開始...');
+                
+                const compatibility = {
+                    WebP対応: 'webpSupported' in performanceOptimizer ? await performanceOptimizer._detectWebPSupport() : false,
+                    Canvas2D: 'CanvasRenderingContext2D' in window,
+                    FileAPI: 'File' in window && 'FileReader' in window,
+                    IntersectionObserver: 'IntersectionObserver' in window,
+                    PerformanceObserver: 'PerformanceObserver' in window,
+                    ServiceWorker: 'serviceWorker' in navigator
+                };
+                
+                log('🔍 ブラウザ機能対応状況:');
+                Object.entries(compatibility).forEach(([feature, supported]) => {
+                    log(`   ${feature}: ${supported ? '✅ 対応' : '❌ 非対応'}`);
+                });
+                
+                // 互換性スコアの計算
+                const supportedFeatures = Object.values(compatibility).filter(Boolean).length;
+                const totalFeatures = Object.keys(compatibility).length;
+                const compatibilityScore = Math.round((supportedFeatures / totalFeatures) * 100);
+                
+                log(`📊 互換性スコア: ${compatibilityScore}% (${supportedFeatures}/${totalFeatures})`);
+                
+            } catch (error) {
+                log(`❌ 互換性テストエラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.simulateGameSEOOptimization = async function() {
+            try {
+                log('🕹️ ゲームSEO最適化シミュレーションを開始...');
+                
+                // ゲーム状態のシミュレーション
+                const gameState = {
+                    currentScene: 'GameScene',
+                    score: 125000,
+                    level: 7,
+                    bubblesPopped: 850,
+                    achievements: ['bubble_master', 'combo_king'],
+                    playTime: 1800 // 30分
+                };
+                
+                // ゲーム状態に基づく動的メタデータ
+                const dynamicMetadata = {
+                    title: `BubblePop - スコア ${gameState.score.toLocaleString()} | レベル ${gameState.level}`,
+                    description: `現在のスコア: ${gameState.score.toLocaleString()}点、レベル ${gameState.level}。${gameState.bubblesPopped}個の泡を破壊し、${gameState.achievements.length}個の実績を解除。`,
+                    image: '/assets/images/dynamic-score-share.png',
+                    ogTitle: `BubblePop - 高スコア達成！ ${gameState.score.toLocaleString()}点`,
+                    gameData: gameState
+                };
+                
+                // メタタグの最適化
+                const optimizedMeta = await performanceOptimizer.optimizeMetaTags(dynamicMetadata, {
+                    compressDescriptions: true,
+                    optimizeImages: true,
+                    removeDuplicates: true
+                });
+                
+                // 構造化データの生成と最適化
+                const structuredData = {
+                    "@context": "https://schema.org",
+                    "@type": "VideoGame",
+                    "name": "BubblePop",
+                    "description": optimizedMeta.description,
+                    "gameLocation": {
+                        "@type": "VirtualLocation",
+                        "name": gameState.currentScene
+                    },
+                    "quest": {
+                        "@type": "Thing",
+                        "name": `レベル ${gameState.level}`,
+                        "description": `現在スコア: ${gameState.score.toLocaleString()}`
+                    },
+                    "achievement": gameState.achievements.map(achievement => ({
+                        "@type": "Achievement",
+                        "name": achievement
+                    }))
+                };
+                
+                const optimizedStructuredData = await performanceOptimizer.optimizeStructuredData(structuredData, {
+                    minify: true,
+                    removeOptionalFields: true
+                });
+                
+                log('🎮 ゲーム状態ベースSEO最適化結果:');
+                log(`   📊 スコア: ${gameState.score.toLocaleString()}点`);
+                log(`   🎯 レベル: ${gameState.level}`);
+                log(`   💥 破壊泡数: ${gameState.bubblesPopped}個`);
+                log(`   🏆 実績数: ${gameState.achievements.length}個`);
+                log(`   📏 最適化後タイトル長: ${optimizedMeta.title.length}文字`);
+                log(`   📄 構造化データサイズ: ${JSON.stringify(optimizedStructuredData).length}文字`);
+                
+                log('✨ ゲームSEO最適化シミュレーションが完了しました!');
+                
+            } catch (error) {
+                log(`❌ ゲーム最適化シミュレーションエラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.testRealTimeOptimization = async function() {
+            try {
+                log('⚡ リアルタイム最適化テストを開始...');
+                
+                // リアルタイム最適化のシミュレーション
+                const scenarios = [
+                    { event: 'スコア更新', score: 50000 },
+                    { event: 'レベルアップ', level: 3 },
+                    { event: '実績解除', achievement: 'speed_demon' },
+                    { event: 'ハイスコア更新', score: 200000 },
+                    { event: 'ゲーム終了', finalScore: 185000, playTime: 900 }
+                ];
+                
+                for (const scenario of scenarios) {
+                    log(`📢 イベント: ${scenario.event}`);
+                    
+                    const startTime = performance.now();
+                    
+                    // メタタグの動的更新
+                    const metaTags = {
+                        title: `BubblePop - ${scenario.event}`,
+                        description: `リアルタイム更新: ${JSON.stringify(scenario)}`,
+                        image: '/assets/images/realtime-update.png'
+                    };
+                    
+                    const optimized = await performanceOptimizer.optimizeMetaTags(metaTags);
+                    const endTime = performance.now();
+                    
+                    log(`   ⚡ 最適化完了: ${(endTime - startTime).toFixed(2)}ms`);
+                    log(`   📏 タイトル: "${optimized.title}"`);
+                    
+                    // 短い間隔をシミュレート
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
+                
+                const finalMetrics = performanceOptimizer.getPerformanceMetrics();
+                log(`📊 リアルタイム最適化性能:`);
+                log(`   ⚡ 平均処理時間: ${finalMetrics.averageProcessingTime}ms`);
+                log(`   💾 キャッシュ効率: ${finalMetrics.cacheEfficiency}%`);
+                
+                log('✅ リアルタイム最適化テストが完了しました!');
+                
+            } catch (error) {
+                log(`❌ リアルタイム最適化テストエラー: ${error.message}`, 'error');
+            }
+        };
+        
+        // ユーティリティ関数
+        function log(message, type = 'info') {
+            const activeTab = document.querySelector('.tab.active').dataset.tab;
+            const outputId = `${activeTab}Output`;
+            const output = document.getElementById(outputId);
+            
+            const timestamp = new Date().toLocaleTimeString();
+            const formattedMessage = `[${timestamp}] ${message}\n`;
+            
+            if (output.textContent.includes('結果がここに表示されます...')) {
+                output.textContent = '';
+            }
+            
+            output.textContent += formattedMessage;
+            output.scrollTop = output.scrollHeight;
+            
+            console.log(`[SEO Performance Test] ${message}`);
+        }
+        
+        function updatePerformanceChart() {
+            const canvas = document.getElementById('performanceCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            if (!performanceData.length) return;
+            
+            // キャンバスをクリア
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // グラフの描画領域
+            const padding = 40;
+            const graphWidth = canvas.width - padding * 2;
+            const graphHeight = canvas.height - padding * 2;
+            
+            // 軸の描画
+            ctx.strokeStyle = '#ddd';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, canvas.height - padding);
+            ctx.lineTo(canvas.width - padding, canvas.height - padding);
+            ctx.stroke();
+            
+            if (performanceData.length < 2) return;
+            
+            // データの正規化
+            const maxProcessingTime = Math.max(...performanceData.map(d => d.averageProcessingTime || 0));
+            const maxCacheEfficiency = 100;
+            
+            // 処理時間のグラフ（青）
+            ctx.strokeStyle = '#2196F3';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            
+            performanceData.forEach((data, index) => {
+                const x = padding + (index / (performanceData.length - 1)) * graphWidth;
+                const y = canvas.height - padding - ((data.averageProcessingTime || 0) / maxProcessingTime) * (graphHeight / 2);
+                
+                if (index === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            });
+            ctx.stroke();
+            
+            // キャッシュ効率のグラフ（緑）
+            ctx.strokeStyle = '#4CAF50';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            
+            performanceData.forEach((data, index) => {
+                const x = padding + (index / (performanceData.length - 1)) * graphWidth;
+                const y = canvas.height - padding - (graphHeight / 2) - ((data.cacheEfficiency || 0) / maxCacheEfficiency) * (graphHeight / 2);
+                
+                if (index === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            });
+            ctx.stroke();
+            
+            // 凡例
+            ctx.font = '12px Arial';
+            ctx.fillStyle = '#2196F3';
+            ctx.fillText('処理時間 (ms)', padding + 10, padding + 20);
+            ctx.fillStyle = '#4CAF50';
+            ctx.fillText('キャッシュ効率 (%)', padding + 10, padding + 40);
+        }
+        
+        // イベントリスナー
+        document.addEventListener('DOMContentLoaded', function() {
+            // タブ切り替え
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const targetTab = this.dataset.tab;
+                    
+                    // アクティブタブの更新
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    document.getElementById(targetTab).classList.add('active');
+                });
+            });
+        });
+        
+        // 初期化の実行
+        initialize();
+    </script>
+</body>
+</html>

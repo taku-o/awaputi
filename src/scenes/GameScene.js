@@ -1193,6 +1193,14 @@ export class GameScene extends Scene {
                 };
                 console.log(`New high score for ${stageId}: ${finalScore}`);
                 
+                // SEOシステムにハイスコア更新を通知
+                this.gameEngine.emit('highScoreUpdated', {
+                    score: finalScore,
+                    stageId: stageId,
+                    previousScore: currentHighScore,
+                    timestamp: Date.now()
+                });
+                
                 // 新記録通知
                 this.floatingTextManager.addAnimatedText(
                     this.gameEngine.canvas.width / 2,
