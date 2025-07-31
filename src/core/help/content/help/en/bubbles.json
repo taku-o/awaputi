@@ -1,0 +1,287 @@
+{
+  "category": "bubbles",
+  "title": "Bubble Types Guide",
+  "description": "Detailed explanation of all bubble types appearing in awaputi",
+  "language": "en",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-27",
+  "topics": [
+    {
+      "id": "normal_bubbles",
+      "title": "Normal Bubbles",
+      "description": "Basic bubble types",
+      "content": {
+        "normal": {
+          "name": "Normal Bubble",
+          "appearance": "Semi-transparent sphere",
+          "behavior": "Bursts naturally after a certain time",
+          "score": 15,
+          "hp_damage": 10,
+          "strategy": "Basic source of points. Use as combo starter."
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 60,
+      "tags": ["normal", "basic", "standard"]
+    },
+    {
+      "id": "hardened_bubbles",
+      "title": "Hardened Bubbles",
+      "description": "Tough bubbles requiring multiple clicks",
+      "content": {
+        "stone": {
+          "name": "Stone Bubble",
+          "appearance": "Gray stone-like appearance",
+          "behavior": "Bursts after 2 clicks",
+          "score": 30,
+          "hp_damage": 15,
+          "strategy": "Process when you have time. Expect high scores.",
+          "visual_cues": "Cracks appear after first click"
+        },
+        "iron": {
+          "name": "Iron Bubble",
+          "appearance": "Metallic lustrous appearance",
+          "behavior": "Bursts after 3 clicks",
+          "score": 45,
+          "hp_damage": 20,
+          "strategy": "High score but time-consuming. Target when screen is clear.",
+          "visual_cues": "Cracks deepen with each click"
+        },
+        "diamond": {
+          "name": "Diamond Bubble",
+          "appearance": "Transparent, sparkling gem-like appearance",
+          "behavior": "Bursts after 4 clicks",
+          "score": 60,
+          "hp_damage": 25,
+          "strategy": "Highest scoring hardened bubble. Major point source when time allows.",
+          "special_note": "Rare appearance. Worth prioritizing when found."
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 180,
+      "tags": ["hardened", "multiple-clicks", "high-score"]
+    },
+    {
+      "id": "beneficial_bubbles",
+      "title": "Beneficial Bubbles",
+      "description": "Bubbles that provide advantageous effects to the player",
+      "content": {
+        "rainbow": {
+          "name": "Rainbow Bubble",
+          "appearance": "Beautiful bubble glowing with rainbow colors",
+          "behavior": "Bursts with 1 click",
+          "score": 50,
+          "special_effect": "Triggers bonus time (2x score for 10 seconds)",
+          "strategy": "Use when many high-scoring bubbles are present.",
+          "timing": "Actively pop bubbles while effect is active"
+        },
+        "pink": {
+          "name": "Pink Bubble (Healing Bubble)",
+          "appearance": "Soft pink colored bubble",
+          "behavior": "Bursts with 1 click",
+          "score": 25,
+          "special_effect": "HP recovery (20 points)",
+          "strategy": "Top priority when HP is low.",
+          "bonus_note": "Bonus score equivalent to healing amount even when HP is full"
+        },
+        "clock": {
+          "name": "Clock Bubble",
+          "appearance": "Bubble with visible clock face",
+          "behavior": "Bursts with 1 click",
+          "score": 30,
+          "special_effect": "Time stop (5 seconds)",
+          "strategy": "Use for cleanup when screen is crowded. Time to reorganize strategy.",
+          "usage_tip": "Target dangerous or high-scoring bubbles during effect"
+        },
+        "golden": {
+          "name": "Golden Bubble",
+          "appearance": "Luxurious bubble shining with gold",
+          "behavior": "Bursts with 1 click",
+          "score": 75,
+          "special_effect": "5x score of normal bubbles",
+          "strategy": "Top priority target. Even higher score if popped during combo.",
+          "rarity": "Rare appearance. Process immediately when found"
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 240,
+      "tags": ["beneficial", "bonus", "healing", "high-score"]
+    },
+    {
+      "id": "hazardous_bubbles",
+      "title": "Hazardous Bubbles",
+      "description": "Bubbles with harmful effects requiring caution",
+      "content": {
+        "poison": {
+          "name": "Poison Bubble",
+          "appearance": "Eerie bubble emitting purple aura",
+          "behavior": "Bursts with 1 click",
+          "score": 40,
+          "hp_damage": 30,
+          "special_effect": "Deals HP damage even when popped",
+          "strategy": "High score but risky. Only target when HP is sufficient.",
+          "warning": "Avoid or move with drag when HP is low"
+        },
+        "electric": {
+          "name": "Electric Bubble",
+          "appearance": "Blue-white bubble with electricity running through it",
+          "behavior": "Bursts with 1 click",
+          "score": 35,
+          "special_effect": "Screen shake (3 seconds)",
+          "strategy": "Choose timing carefully. Operation is difficult during shake.",
+          "tactical_use": "Process last when many enemies are present"
+        },
+        "spiky": {
+          "name": "Spiky Bubble",
+          "appearance": "Dangerous bubble with spikes on surface",
+          "behavior": "Damages surrounding area when burst",
+          "score": 25,
+          "special_effect": "Chain damage to surrounding bubbles",
+          "strategy": "Consider surrounding bubble placement before processing. Can aim for chains.",
+          "range": "Within 50 pixel radius around"
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 210,
+      "tags": ["hazardous", "damage", "risk", "caution"]
+    },
+    {
+      "id": "special_effect_bubbles",
+      "title": "Special Effect Bubbles",
+      "description": "Special bubbles with unique effects",
+      "content": {
+        "frozen": {
+          "name": "Ice Bubble",
+          "appearance": "Blue bubble with visible ice crystals",
+          "behavior": "Bursts with 1 click",
+          "score": 35,
+          "special_effect": "Slows movement of surrounding bubbles (8 seconds)",
+          "strategy": "Useful for buying time and strategic planning.",
+          "area_effect": "Within 100 pixel radius around"
+        },
+        "magnetic": {
+          "name": "Magnetic Bubble",
+          "appearance": "Metallic bubble with visible magnetic field lines",
+          "behavior": "Bursts with 1 click",
+          "score": 30,
+          "special_effect": "Attracts surrounding bubbles (5 seconds)",
+          "strategy": "Gather bubbles for combo preparation. Collect then process all at once.",
+          "tactical_advantage": "Perfect for organizing scattered bubbles"
+        },
+        "explosive": {
+          "name": "Explosive Bubble",
+          "appearance": "Bubble with flashing red danger symbol",
+          "behavior": "Explodes with 1 click",
+          "score": 45,
+          "special_effect": "Destroys surrounding bubbles together",
+          "strategy": "Batch processing when dangerous bubbles are clustered. Chain reactions possible.",
+          "explosion_radius": "Within 80 pixel radius around",
+          "chain_reaction": "Other explosive bubbles also detonate"
+        },
+        "phantom": {
+          "name": "Phantom Bubble",
+          "appearance": "Semi-transparent, occasionally disappearing mystical bubble",
+          "behavior": "Visibility changes intermittently",
+          "score": 55,
+          "special_effect": "Only clickable when visible",
+          "strategy": "Time your clicks carefully. Worth high score.",
+          "visibility_cycle": "Visible for 2 seconds → Invisible for 1 second cycle"
+        },
+        "multiplier": {
+          "name": "Multiplier Bubble",
+          "appearance": "Bubble displaying numbers like '×2', '×3'",
+          "behavior": "Bursts with 1 click",
+          "score": "Display multiplier × 20",
+          "special_effect": "Increases score of next popped bubble by multiplier",
+          "strategy": "Pop right before high-scoring bubbles. Combine with combos for massive points.",
+          "multiplier_types": "Three types exist: ×2, ×3, ×5"
+        },
+        "escaping": {
+          "name": "Escaping Bubble",
+          "appearance": "Agile bubble moving quickly around",
+          "behavior": "Flees from mouse cursor",
+          "score": 50,
+          "special_effect": "Escapes when chased",
+          "strategy": "Corner against walls, or approach from different direction.",
+          "escape_speed": "3x movement speed of normal bubbles"
+        }
+      },
+      "difficulty": "advanced",
+      "estimatedReadTime": 360,
+      "tags": ["special-effects", "strategy", "advanced", "unique"]
+    },
+    {
+      "id": "boss_bubbles",
+      "title": "Boss Bubbles",
+      "description": "Specially powerful and large bubbles",
+      "content": {
+        "boss": {
+          "name": "Boss Bubble",
+          "appearance": "Twice the size of other bubbles, intimidating appearance",
+          "behavior": "Bursts after multiple clicks (5-8 times)",
+          "score": 100,
+          "hp_damage": 50,
+          "special_effect": "Special effect across entire screen when burst",
+          "strategy": "Highest score but time-consuming. Clear other bubbles first then focus.",
+          "health_display": "Shows remaining health with HP bar",
+          "variants": [
+            "Red Boss: Explosion effect",
+            "Blue Boss: Freezing effect",
+            "Yellow Boss: Electric effect",
+            "Purple Boss: Poison mist effect"
+          ]
+        }
+      },
+      "difficulty": "advanced",
+      "estimatedReadTime": 120,
+      "tags": ["boss", "large", "high-score", "multiple-attacks"]
+    }
+  ],
+  "bubble_identification_guide": {
+    "color_coding": {
+      "beneficial": ["Rainbow", "Pink", "Golden", "Blue (Clock)"],
+      "neutral": ["Transparent (Normal)", "Gray (Stone)", "Silver (Iron)", "White (Diamond)"],
+      "hazardous": ["Purple (Poison)", "Blue-white (Electric)", "Red (Spiky/Explosive)"],
+      "special": ["Semi-transparent (Phantom)", "Magnetic lines (Magnetic)", "Numbers (Multiplier)"]
+    },
+    "size_categories": {
+      "small": "Normal size (30-35px)",
+      "medium": "Medium (40-45px)",
+      "large": "Large/Boss (60-70px)"
+    },
+    "animation_patterns": {
+      "static": "Normal bubbles, hardened bubbles",
+      "pulsing": "Hazardous bubbles, special effect bubbles",
+      "moving": "Escaping bubbles, magnetic bubble effects",
+      "flickering": "Phantom bubbles, electric bubbles"
+    }
+  },
+  "strategic_combinations": [
+    {
+      "combo": "Rainbow Bubble + Golden Bubble",
+      "effect": "High score gain during bonus time",
+      "score_potential": "Maximum 150 points (with bonus)"
+    },
+    {
+      "combo": "Magnetic Bubble + Explosive Bubble",
+      "effect": "Gather bubbles then batch process",
+      "score_potential": "Major combo increase through chains"
+    },
+    {
+      "combo": "Clock Bubble + Multiple Boss Bubbles",
+      "effect": "Process boss bubbles during time stop",
+      "score_potential": "Safe boss conquest possible"
+    },
+    {
+      "combo": "Multiplier Bubble + Boss Bubble",
+      "effect": "Multiply boss defeat score",
+      "score_potential": "Ultra high score up to 500 points"
+    }
+  ],
+  "mastery_progression": {
+    "beginner": ["Basic processing of normal and hardened bubbles"],
+    "intermediate": ["Effective use of beneficial bubbles, safe processing of hazardous bubbles"],
+    "advanced": ["Strategic use of special effect bubbles, combination utilization"],
+    "expert": ["Boss bubble conquest, complex chain design, perfect timing control"]
+  }
+}

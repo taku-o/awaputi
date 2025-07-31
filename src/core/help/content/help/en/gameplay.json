@@ -1,0 +1,243 @@
+{
+  "category": "gameplay",
+  "title": "Gameplay Guide",
+  "description": "Basic gameplay methods and rules for awaputi",
+  "language": "en",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-27",
+  "topics": [
+    {
+      "id": "game_basics",
+      "title": "Game Basics",
+      "description": "Game objectives and basic rules",
+      "content": {
+        "overview": "awaputi is an action game where you pop bubbles appearing on screen to achieve high scores.",
+        "objective": "The goal is to pop as many bubbles as possible within the time limit to achieve a high score.",
+        "basic_rules": [
+          "Bubbles will burst naturally over time and deal damage to your HP",
+          "Game over when HP reaches 0",
+          "Popping bubbles consecutively creates combos and gives score bonuses",
+          "Special bubbles have different unique effects"
+        ],
+        "tips": [
+          "Prioritize dangerous bubbles (blinking red)",
+          "Use special bubble effects strategically",
+          "Maintain combos to maximize score"
+        ]
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 120,
+      "tags": ["basics", "rules", "objective"]
+    },
+    {
+      "id": "controls_guide",
+      "title": "Controls",
+      "description": "Detailed guide for mouse and keyboard controls",
+      "content": {
+        "mouse_controls": {
+          "left_click": "Click bubbles to pop them",
+          "drag": "Drag bubbles to push them away",
+          "double_click": "Double-click for hard bubbles (stone/iron)"
+        },
+        "keyboard_shortcuts": {
+          "esc": "Open/close menu",
+          "h": "Show help",
+          "p": "Pause game",
+          "space": "Pause game (during gameplay only)",
+          "ctrl_shift_d": "Toggle debug mode",
+          "f": "Toggle fullscreen",
+          "m": "Toggle music mute"
+        },
+        "advanced_techniques": [
+          "Use drag to move bubbles to safe locations",
+          "Arrange multiple bubbles for simultaneous processing",
+          "Strategic placement considering special bubble effect ranges"
+        ]
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 180,
+      "tags": ["controls", "mouse", "keyboard", "shortcuts"]
+    },
+    {
+      "id": "game_mechanics",
+      "title": "Game Mechanics",
+      "description": "System details including HP, timer, and difficulty",
+      "content": {
+        "hp_system": {
+          "description": "Player HP (Health Points) system",
+          "mechanics": [
+            "Initial HP: 100",
+            "Take damage when bubbles burst naturally",
+            "Damage amount varies by bubble type",
+            "Pink bubbles can restore HP",
+            "Game over at HP 0"
+          ]
+        },
+        "timer_system": {
+          "description": "Time limit and timer system",
+          "mechanics": [
+            "Time limit set for each stage",
+            "Earn as many points as possible within time limit",
+            "Clock bubbles trigger time stop effect",
+            "Bonus score based on remaining time"
+          ]
+        },
+        "difficulty_scaling": {
+          "description": "Gradual difficulty increase",
+          "mechanics": [
+            "Bubble spawn frequency increases over time",
+            "Special bubble appearance rates change",
+            "Bubble movement speed gradually increases",
+            "New bubble types unlock progressively"
+          ]
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 240,
+      "tags": ["HP", "timer", "difficulty", "system"]
+    },
+    {
+      "id": "scoring_system",
+      "title": "Scoring System",
+      "description": "Details of score calculation and combo system",
+      "content": {
+        "base_scoring": {
+          "description": "Basic score calculation",
+          "normal_bubble": 15,
+          "special_bubbles": {
+            "rainbow": 50,
+            "pink": 25,
+            "clock": 30,
+            "golden": 75,
+            "stone": 30,
+            "iron": 45,
+            "diamond": 60
+          }
+        },
+        "combo_system": {
+          "description": "Combo system details",
+          "mechanics": [
+            "Combo count increases when popping bubbles consecutively",
+            "Score multiplier increases based on combo count",
+            "Combo resets after inactivity",
+            "Special bonus based on maximum combo count"
+          ],
+          "multipliers": {
+            "2-5 combo": "1.2x",
+            "6-10 combo": "1.5x",
+            "11-20 combo": "2.0x",
+            "21+ combo": "2.5x"
+          }
+        },
+        "bonus_scoring": {
+          "perfect_timing": "1.5x bonus for popping right before burst",
+          "chain_reaction": "Additional bonus from chain reactions",
+          "time_bonus": "Clear bonus based on remaining time",
+          "hp_bonus": "Bonus based on remaining HP"
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 300,
+      "tags": ["score", "combo", "bonus", "calculation"]
+    },
+    {
+      "id": "game_strategies",
+      "title": "Game Strategies",
+      "description": "Strategies and techniques for achieving high scores",
+      "content": {
+        "priority_management": {
+          "description": "Bubble processing priority",
+          "high_priority": [
+            "Dangerous bubbles about to burst (blinking red)",
+            "Poison bubbles (avoid HP reduction with early processing)",
+            "Electric bubbles (minimize screen shake interference)"
+          ],
+          "medium_priority": [
+            "Rainbow bubbles (trigger bonus time)",
+            "Golden bubbles (high score gain)",
+            "Clock bubbles (time stop effect)"
+          ],
+          "low_priority": [
+            "Normal bubbles (basic score)",
+            "Stone/iron bubbles (when time permits)"
+          ]
+        },
+        "combo_strategies": {
+          "description": "Efficient combo maintenance strategies",
+          "techniques": [
+            "Start processing from dense bubble areas",
+            "Use special bubble effects for chains",
+            "Collect bubbles with drag then process all at once",
+            "Use explosive bubbles for mass processing"
+          ]
+        },
+        "special_bubble_tactics": {
+          "description": "Strategic use of special bubbles",
+          "tactics": [
+            "Rainbow bubbles: Use when many high-scoring bubbles present",
+            "Clock bubbles: Use for cleanup when screen is crowded",
+            "Magnetic bubbles: Collect bubbles for combo preparation",
+            "Explosive bubbles: Mass processing of dangerous bubbles",
+            "Ice bubbles: Buy time and plan strategy"
+          ]
+        },
+        "advanced_techniques": [
+          "Use screen edges to guide bubbles",
+          "Combine special effects for synergy",
+          "Risk management (HP conservation vs high score pursuit)",
+          "Endgame strategy (utilizing remaining time)"
+        ]
+      },
+      "difficulty": "advanced",
+      "estimatedReadTime": 420,
+      "tags": ["strategy", "techniques", "high-score", "priority"]
+    }
+  ],
+  "quick_reference": {
+    "essential_controls": {
+      "click": "Pop bubbles",
+      "drag": "Move bubbles",
+      "esc": "Menu",
+      "h": "Help",
+      "p": "Pause"
+    },
+    "danger_signs": [
+      "Red blinking bubbles (about to burst)",
+      "Purple aura of poison bubbles",
+      "Low HP warning sound"
+    ],
+    "high_value_targets": [
+      "Rainbow bubbles (bonus time)",
+      "Golden bubbles (high score)",
+      "Special effect bubbles (strategic value)"
+    ]
+  },
+  "troubleshooting": {
+    "common_problems": [
+      {
+        "problem": "Bubbles don't respond to clicks",
+        "solutions": [
+          "Check if mouse is accurately positioned over bubble",
+          "Set browser zoom to 100%",
+          "Check if other applications are blocking input"
+        ]
+      },
+      {
+        "problem": "Game is slow or choppy",
+        "solutions": [
+          "Lower visual effects in settings",
+          "Close other browser tabs",
+          "Change settings to reduce particle count"
+        ]
+      },
+      {
+        "problem": "Unable to achieve high scores",
+        "solutions": [
+          "Utilize the combo system",
+          "Understand and use special bubble effects",
+          "Process dangerous bubbles early to preserve HP"
+        ]
+      }
+    ]
+  }
+}

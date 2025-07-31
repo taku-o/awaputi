@@ -66,9 +66,15 @@ export class HelpManager {
                 return content;
             }
 
-            // コンテンツファイルの読み込み
-            const contentPath = `/help/${language}/${category}.json`;
-            const response = await fetch(contentPath);
+            // コンテンツファイルの読み込み（多言語対応パス）
+            let contentPath = `./src/core/help/content/help/${language}/${category}.json`;
+            let response = await fetch(contentPath);
+            
+            // フォールバック: 言語固有ファイルが見つからない場合、デフォルト（日本語）を試行
+            if (!response.ok && language !== 'ja') {
+                contentPath = `./src/core/help/content/help/${category}.json`;
+                response = await fetch(contentPath);
+            }
             
             if (!response.ok) {
                 // フォールバック: 日本語版を試行
@@ -461,6 +467,119 @@ export class HelpManager {
     /**
      * リソースのクリーンアップ
      */
+    /**
+     * カテゴリのヘルプトピック一覧を取得
+     * @param {string} categoryId - カテゴリID
+     * @param {string} language - 言語コード
+     * @returns {Promise<Array>} トピック一覧
+     */
+    async getHelpTopics(categoryId, language = null) {
+        try {
+            // 現在の言語を取得
+            const currentLanguage = language || this.gameEngine.localizationManager.getCurrentLanguage();
+            
+            // ヘルプコンテンツを読み込み
+            const content = await this.loadHelpContent(categoryId, currentLanguage);
+            
+            if (content && content.topics) {
+                return content.topics.map(topic => ({
+                    id: topic.id,
+                    title: topic.title,
+                    description: topic.description,
+                    difficulty: topic.difficulty,
+                    estimatedReadTime: topic.estimatedReadTime,
+                    tags: topic.tags
+                }));
+            }
+            
+            return [];
+        } catch (error) {
+            this.loggingSystem.error('HelpManager', `Failed to get help topics for ${categoryId}`, error);
+            return [];
+        }
+    }
+    
+    /**
+     * 特定のヘルプコンテンツを取得
+     * @param {string} topicId - トピックID
+     * @param {string} categoryId - カテゴリID（オプション）
+     * @param {string} language - 言語コード
+     * @returns {Promise<Object>} ヘルプコンテンツ
+     */
+    async getHelpContent(topicId, categoryId = null, language = null) {
+        try {
+            // 現在の言語を取得
+            const currentLanguage = language || this.gameEngine.localizationManager.getCurrentLanguage();
+            
+            // カテゴリが指定されていない場合、全カテゴリを検索
+            if (!categoryId) {
+                const categories = ['gameplay', 'bubbles', 'controls', 'scoring', 'settings', 'troubleshooting'];
+                for (const cat of categories) {
+                    const content = await this.findContentInCategory(topicId, cat, currentLanguage);
+                    if (content) return content;
+                }
+                return null;
+            }
+            
+            return await this.findContentInCategory(topicId, categoryId, currentLanguage);
+        } catch (error) {
+            this.loggingSystem.error('HelpManager', `Failed to get help content for ${topicId}`, error);
+            return null;
+        }
+    }
+    
+    /**
+     * カテゴリ内でコンテンツを検索
+     * @param {string} topicId - トピックID
+     * @param {string} categoryId - カテゴリID
+     * @param {string} language - 言語コード
+     * @returns {Promise<Object>} 見つかったコンテンツ
+     */
+    async findContentInCategory(topicId, categoryId, language) {
+        try {
+            const categoryContent = await this.loadHelpContent(categoryId, language);
+            if (!categoryContent || !categoryContent.topics) return null;
+            
+            const topic = categoryContent.topics.find(t => t.id === topicId);
+            if (!topic) return null;
+            
+            return {
+                id: topic.id,
+                title: topic.title,
+                description: topic.description,
+                content: topic.content,
+                difficulty: topic.difficulty,
+                estimatedReadTime: topic.estimatedReadTime,
+                tags: topic.tags,
+                category: categoryId,
+                language: language
+            };
+        } catch (error) {
+            this.loggingSystem.error('HelpManager', `Error finding content in category ${categoryId}`, error);
+            return null;
+        }
+    }
+    
+    /**
+     * 言語変更時の処理
+     * @param {string} newLanguage - 新しい言語コード
+     */
+    async onLanguageChange(newLanguage) {
+        try {
+            // キャッシュをクリア
+            this.helpContent.clear();
+            
+            // 検索エンジンのインデックスを再構築
+            if (this.searchEngine) {
+                await this.searchEngine.buildIndex(newLanguage);
+            }
+            
+            this.loggingSystem.info('HelpManager', `Language changed to ${newLanguage}, content refreshed`);
+        } catch (error) {
+            this.loggingSystem.error('HelpManager', `Failed to handle language change to ${newLanguage}`, error);
+        }
+    }
+
     destroy() {
         try {
             this.saveUserProgress();
