@@ -99,6 +99,101 @@ export class StructuredDataEngine {
             return seoErrorHandler.handle(error, 'structuredDataGeneration', { context });
         }
     }
+
+    /**
+     * ゲームプレイデータに基づいて構造化データを更新
+     * @param {Object} gameplayData - ゲームプレイデータ
+     */
+    async updateGameplayData(gameplayData) {
+        try {
+            if (!this.initialized) {
+                seoLogger.warn('StructuredDataEngine not initialized');
+                return;
+            }
+
+            // 現在の VideoGame スキーマを取得
+            const currentSchema = await this.generateVideoGameSchema();
+            
+            // ゲームプレイデータを組み込んだ拡張スキーマを生成
+            const enhancedSchema = {
+                ...currentSchema,
+                // ゲームプレイ統計を追加
+                additionalProperty: [
+                    {
+                        "@type": "PropertyValue",
+                        "name": "currentHighScore",
+                        "value": gameplayData.score || 0
+                    },
+                    {
+                        "@type": "PropertyValue", 
+                        "name": "totalBubblesPopped",
+                        "value": gameplayData.bubblesPopped || 0
+                    },
+                    {
+                        "@type": "PropertyValue",
+                        "name": "currentLevel",
+                        "value": gameplayData.level || 1
+                    },
+                    {
+                        "@type": "PropertyValue",
+                        "name": "playTime",
+                        "value": gameplayData.playTime || 0
+                    }
+                ],
+                // プレイヤー活動の証拠として最終更新時刻を更新
+                dateModified: new Date().toISOString()
+            };
+
+            // インタラクション統計が存在する場合は追加
+            if (gameplayData.score > 0) {
+                enhancedSchema.interactionStatistic = {
+                    "@type": "InteractionCounter",
+                    "interactionType": "http://schema.org/PlayAction",
+                    "userInteractionCount": gameplayData.bubblesPopped || 0
+                };
+            }
+
+            // 動的にスキーマを更新
+            await this._updateSchemaInDOM('VideoGame', enhancedSchema);
+
+            seoLogger.info('Gameplay data updated in structured data', gameplayData);
+        } catch (error) {
+            seoErrorHandler.handle(error, 'updateGameplayData', { gameplayData });
+        }
+    }
+
+    /**
+     * DOM内の特定のスキーマを更新
+     * @param {string} schemaType - スキーマタイプ
+     * @param {Object} newSchema - 新しいスキーマデータ
+     */
+    async _updateSchemaInDOM(schemaType, newSchema) {
+        try {
+            // 既存のスクリプトタグを検索
+            const existingScript = document.querySelector(`script[type="application/ld+json"][data-schema="${schemaType}"]`);
+            
+            if (existingScript) {
+                // 既存のスキーマを更新
+                existingScript.textContent = JSON.stringify(newSchema, null, 2);
+                seoLogger.debug(`Updated ${schemaType} schema in DOM`);
+            } else {
+                // 新しいスクリプトタグを作成
+                const scriptTag = document.createElement('script');
+                scriptTag.type = 'application/ld+json';
+                scriptTag.setAttribute('data-schema', schemaType);
+                scriptTag.textContent = JSON.stringify(newSchema, null, 2);
+                
+                // 構造化データ注入ポイントに追加
+                const injectionPoint = document.getElementById('structured-data-injection-point');
+                if (injectionPoint) {
+                    injectionPoint.appendChild(scriptTag);
+                    seoLogger.debug(`Added ${schemaType} schema to DOM`);
+                }
+            }
+        } catch (error) {
+            seoErrorHandler.handle(error, '_updateSchemaInDOM', { schemaType });
+        }
+    }
     
     /**
      * VideoGameスキーマの生成

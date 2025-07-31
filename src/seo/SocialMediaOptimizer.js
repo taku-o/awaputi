@@ -149,6 +149,254 @@ export class SocialMediaOptimizer {
             return seoErrorHandler.handle(error, 'generateOptimizedContent', { platform, content });
         }
     }
+
+    /**
+     * ゲーム状態に基づいた動的共有コンテンツを生成
+     * @param {string} platform - プラットフォーム名 ('twitter', 'facebook', 'line', 'discord')
+     * @param {Object} gameState - ゲーム状態データ
+     * @returns {Object} 動的共有コンテンツ
+     */
+    generateShareContent(platform, gameState = {}) {
+        try {
+            if (!this.initialized) {
+                seoLogger.warn('SocialMediaOptimizer not initialized');
+                return this._getFallbackShareContent(platform);
+            }
+
+            const { score, level, bubblesPopped, achievements } = gameState;
+            
+            // プラットフォーム別の動的コンテンツ生成
+            switch (platform.toLowerCase()) {
+                case 'twitter':
+                    return this._generateTwitterShareContent(gameState);
+                
+                case 'facebook':
+                    return this._generateFacebookShareContent(gameState);
+                
+                case 'line':
+                    return this._generateLineShareContent(gameState);
+                
+                case 'discord':
+                    return this._generateDiscordShareContent(gameState);
+                
+                default:
+                    seoLogger.warn(`Unsupported platform: ${platform}`);
+                    return this._getFallbackShareContent(platform);
+            }
+        } catch (error) {
+            seoErrorHandler.handle(error, 'generateShareContent', { platform, gameState });
+            return this._getFallbackShareContent(platform);
+        }
+    }
+
+    /**
+     * Twitter用動的共有コンテンツ生成
+     * @param {Object} gameState - ゲーム状態
+     * @returns {Object} Twitter共有コンテンツ
+     */
+    _generateTwitterShareContent(gameState) {
+        const { score, level, bubblesPopped, achievements } = gameState;
+        
+        let tweetText = 'BubblePop で遊んでいます！🎮✨';
+        
+        if (score > 0) {
+            tweetText = `BubblePop で ${score.toLocaleString()} 点を獲得！🎯`;
+            
+            if (level > 1) {
+                tweetText += ` レベル ${level} 到達！🚀`;
+            }
+            
+            if (bubblesPopped > 0) {
+                tweetText += ` 泡を ${bubblesPopped.toLocaleString()} 個破りました！💥`;
+            }
+        }
+        
+        // 実績がある場合は追加
+        if (achievements && achievements.length > 0) {
+            const recentAchievement = achievements[achievements.length - 1];
+            tweetText += ` 「${recentAchievement.name}」実績解除！🏆`;
+        }
+        
+        tweetText += '\n\n#BubblePop #HTML5ゲーム #ブラウザゲーム';
+        
+        return {
+            text: tweetText,
+            url: this._generateGameUrl(gameState),
+            hashtags: this._generateHashtags(gameState),
+            imageUrl: this._selectDynamicImage(gameState, 'twitter')
+        };
+    }
+
+    /**
+     * Facebook用動的共有コンテンツ生成
+     * @param {Object} gameState - ゲーム状態
+     * @returns {Object} Facebook共有コンテンツ
+     */
+    _generateFacebookShareContent(gameState) {
+        const { score, level, bubblesPopped } = gameState;
+        
+        let title = 'BubblePop - 泡割りゲーム';
+        let description = 'HTML5 Canvas を使用したバブルポップゲーム。泡を割って高スコアを目指そう！';
+        
+        if (score > 0) {
+            title = `BubblePop で ${score.toLocaleString()} 点獲得！`;
+            description = `レベル ${level || 1} で ${score.toLocaleString()} 点を獲得しました！`;
+            
+            if (bubblesPopped > 0) {
+                description += ` 合計 ${bubblesPopped.toLocaleString()} 個の泡を破りました。`;
+            }
+            
+            description += ' あなたも挑戦してみませんか？';
+        }
+        
+        return {
+            title,
+            description,
+            url: this._generateGameUrl(gameState),
+            imageUrl: this._selectDynamicImage(gameState, 'facebook'),
+            quote: score > 0 ? `${score.toLocaleString()} 点獲得！` : undefined
+        };
+    }
+
+    /**
+     * LINE用動的共有コンテンツ生成
+     * @param {Object} gameState - ゲーム状態
+     * @returns {Object} LINE共有コンテンツ
+     */
+    _generateLineShareContent(gameState) {
+        const { score, level } = gameState;
+        
+        let message = 'BubblePop というゲームで遊んでいます！🎮';
+        
+        if (score > 0) {
+            message = `BubblePop で ${score.toLocaleString()} 点獲得！🎯\nレベル ${level || 1} まで到達しました！\n一緒にやりませんか？`;
+        }
+        
+        return {
+            message,
+            url: this._generateGameUrl(gameState)
+        };
+    }
+
+    /**
+     * Discord用動的共有コンテンツ生成
+     * @param {Object} gameState - ゲーム状態
+     * @returns {Object} Discord共有コンテンツ
+     */
+    _generateDiscordShareContent(gameState) {
+        const { score, level, bubblesPopped, playTime } = gameState;
+        
+        const embed = {
+            title: 'BubblePop - 泡割りゲーム',
+            description: 'HTML5 Canvas バブルポップゲーム',
+            color: 0x4CAF50,
+            url: this._generateGameUrl(gameState),
+            image: {
+                url: this._selectDynamicImage(gameState, 'discord')
+            },
+            timestamp: new Date().toISOString()
+        };
+        
+        if (score > 0) {
+            embed.title = `BubblePop スコア: ${score.toLocaleString()} 点！`;
+            embed.fields = [
+                {
+                    name: 'スコア',
+                    value: score.toLocaleString(),
+                    inline: true
+                },
+                {
+                    name: 'レベル',
+                    value: level || 1,
+                    inline: true
+                }
+            ];
+            
+            if (bubblesPopped > 0) {
+                embed.fields.push({
+                    name: '破った泡',
+                    value: `${bubblesPopped.toLocaleString()} 個`,
+                    inline: true
+                });
+            }
+            
+            if (playTime > 0) {
+                const minutes = Math.floor(playTime / 60000);
+                const seconds = Math.floor((playTime % 60000) / 1000);
+                embed.fields.push({
+                    name: 'プレイ時間',
+                    value: `${minutes}分${seconds}秒`,
+                    inline: true
+                });
+            }
+        }
+        
+        return { embeds: [embed] };
+    }
+
+    /**
+     * ゲーム状態に応じた動的画像選択
+     * @param {Object} gameState - ゲーム状態
+     * @param {string} platform - プラットフォーム
+     * @returns {string} 画像URL
+     */
+    _selectDynamicImage(gameState, platform) {
+        const { score } = gameState;
+        const specs = this.platformSpecs[platform];
+        
+        if (!score || score === 0) {
+            return specs?.defaultImage || '/assets/social/og-image.png';
+        }
+        
+        // スコアに基づいた画像選択
+        if (score >= 100000) {
+            return '/assets/social/og-image-champion.png';
+        } else if (score >= 50000) {
+            return '/assets/social/og-image-expert.png';
+        } else if (score >= 10000) {
+            return '/assets/social/og-image-pro.png';
+        } else {
+            return '/assets/social/og-image-beginner.png';
+        }
+    }
+
+    /**
+     * ゲーム状態を含むURLを生成
+     * @param {Object} gameState - ゲーム状態
+     * @returns {string} ゲームURL
+     */
+    _generateGameUrl(gameState) {
+        const baseUrl = window.location.origin + window.location.pathname;
+        const { score, level } = gameState;
+        
+        if (score > 0) {
+            const params = new URLSearchParams({
+                utm_source: 'social_share',
+                utm_medium: 'share',
+                utm_campaign: 'gameplay_share',
+                score: score.toString(),
+                level: (level || 1).toString()
+            });
+            return `${baseUrl}?${params.toString()}`;
+        }
+        
+        return baseUrl;
+    }
+
+    /**
+     * フォールバック共有コンテンツ
+     * @param {string} platform - プラットフォーム
+     * @returns {Object} フォールバック共有コンテンツ
+     */
+    _getFallbackShareContent(platform) {
+        return {
+            title: 'BubblePop - 泡割りゲーム',
+            description: 'HTML5 Canvas を使用したバブルポップゲーム',
+            url: window.location.href,
+            text: 'BubblePop で遊んでいます！ 🎮',
+            imageUrl: '/assets/social/og-image.png'
+        };
+    }
     
     /**
      * 動的ソーシャル画像の生成

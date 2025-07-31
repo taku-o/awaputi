@@ -78,6 +78,281 @@ export class SEOMetaManager {
         // デバウンスされた更新を実行
         this.debouncedUpdate(context);
     }
+
+    /**
+     * ゲーム状態に基づいた動的コンテンツでメタタグを更新
+     * @param {Object} dynamicContent - ゲーム状態データ
+     */
+    async updateDynamicContent(dynamicContent) {
+        try {
+            if (!this.initialized) {
+                seoLogger.warn('SEOMetaManager not initialized');
+                return;
+            }
+
+            // ゲーム状態をコンテキストに統合
+            const enhancedContext = {
+                ...dynamicContent,
+                timestamp: Date.now(),
+                gameSession: {
+                    scene: dynamicContent.gameState || 'menu',
+                    score: dynamicContent.currentScore || 0,
+                    level: dynamicContent.level || 1,
+                    playTime: dynamicContent.playingTime || 0,
+                    bubblesPopped: dynamicContent.bubblesPopped || 0
+                }
+            };
+
+            // 動的メタデータ生成
+            const metadata = await this._generateDynamicMetadata(enhancedContext);
+
+            // メタタグ更新
+            await this.updateMetaTags(metadata);
+
+            // ソーシャルメディア用の画像URL更新
+            if (dynamicContent.currentScore > 0) {
+                await this._updateSocialImageForScore(dynamicContent.currentScore);
+            }
+
+            seoLogger.info('Dynamic content updated successfully', enhancedContext);
+        } catch (error) {
+            seoErrorHandler.handle(error, 'updateDynamicContent', { dynamicContent });
+        }
+    }
+
+    /**
+     * ゲーム状態に基づいた動的メタデータ生成
+     * @param {Object} context - 拡張されたコンテキスト
+     * @returns {Object} 動的メタデータ
+     */
+    async _generateDynamicMetadata(context) {
+        const { gameSession } = context;
+        
+        // 動的タイトル生成
+        let dynamicTitle = this._getLocalizedTitle();
+        if (gameSession.score > 0) {
+            const scoreText = this.localizationManager ? 
+                this.localizationManager.get('seo.titleWithScore', { score: gameSession.score.toLocaleString() }) :
+                `スコア ${gameSession.score.toLocaleString()}`;
+            dynamicTitle = `${dynamicTitle} - ${scoreText}`;
+        }
+
+        // 動的説明文生成
+        let dynamicDescription = this._getLocalizedDescription();
+        if (gameSession.scene === 'game' && gameSession.score > 0) {
+            const gameplayText = this.localizationManager ?
+                this.localizationManager.get('seo.gameplayDescription', {
+                    score: gameSession.score.toLocaleString(),
+                    bubbles: gameSession.bubblesPopped.toLocaleString(),
+                    level: gameSession.level
+                }) :
+                `現在スコア: ${gameSession.score.toLocaleString()}、レベル ${gameSession.level}`;
+            dynamicDescription = `${dynamicDescription} ${gameplayText}`;
+        }
+
+        return {
+            title: dynamicTitle,
+            description: dynamicDescription,
+            gameState: gameSession,
+            url: this._generateUrl()
+        };
+    }
+
+    /**
+     * スコアに基づいたソーシャル画像の更新
+     * @param {number} score - 現在のスコア
+     */
+    async _updateSocialImageForScore(score) {
+        try {
+            // スコアランクに基づいて画像を選択
+            let imageUrl = '/assets/social/og-image.png'; // デフォルト
+            
+            if (score >= 100000) {
+                imageUrl = '/assets/social/og-image-champion.png';
+            } else if (score >= 50000) {
+                imageUrl = '/assets/social/og-image-expert.png';
+            } else if (score >= 10000) {
+                imageUrl = '/assets/social/og-image-pro.png';
+            }
+
+            // Open Graph画像の更新
+            this._updateMetaTag('property', 'og:image', imageUrl);
+            this._updateMetaTag('name', 'twitter:image', imageUrl);
+
+            seoLogger.debug('Social image updated for score', { score, imageUrl });
+        } catch (error) {
+            seoErrorHandler.handle(error, '_updateSocialImageForScore', { score });
+        }
+    }
+
+    /**
+     * 言語変更時の処理
+     * @param {string} newLanguage - 新しい言語
+     */
+    updateLanguage(newLanguage) {
+        try {
+            this.currentLanguage = newLanguage;
+            
+            // キャッシュをクリア
+            this.metaCache.clear();
+            
+            // メタタグを再生成・更新
+            this.updateMetaTags({ forceRefresh: true });
+            
+            seoLogger.info(`SEOMetaManager language updated to ${newLanguage}`);
+        } catch (error) {
+            seoErrorHandler.handle(error, 'updateLanguage', { newLanguage });
+        }
+    }
+    
+    /**
+     * LocalizationManagerとの統合強化
+     * @param {Object} context - コンテキスト情報
+     * @returns {Promise<Object>}
+     */
+    async getLocalizedMetadata(context = {}) {
+        try {
+            if (!this.localizationManager) {
+                return this._generateFallbackMetadata(context);
+            }
+            
+            const currentLang = this.localizationManager.getCurrentLanguage();
+            
+            return {
+                language: currentLang,
+                title: await this._getLocalizedTitle(context),
+                description: await this._getLocalizedDescription(context),
+                keywords: await this._getLocalizedKeywords(context),
+                siteName: await this._getLocalizedSiteName(),
+                locale: this._getOGLocale(),
+                direction: this._getTextDirection(),
+                charset: 'UTF-8'
+            };
+        } catch (error) {
+            return seoErrorHandler.handle(error, 'getLocalizedMetadata', context);
+        }
+    }
+    
+    /**
+     * ローカライズされたタイトル生成
+     * @private
+     */
+    async _getLocalizedTitle(context) {
+        if (!this.localizationManager) {
+            return context.title || 'BubblePop - 泡割りゲーム';
+        }
+        
+        // コンテキスト固有のタイトルキー
+        if (context.titleKey) {
+            return this.localizationManager.t(context.titleKey);
+        }
+        
+        // ページタイプ別のタイトル
+        if (context.pageType) {
+            const titleKey = `seo.titles.${context.pageType}`;
+            const pageTitle = this.localizationManager.t(titleKey);
+            if (pageTitle !== titleKey) { // 翻訳が存在する場合
+                return pageTitle;
+            }
+        }
+        
+        // デフォルトタイトル
+        const baseTitle = this.localizationManager.t('seo.title') || 'BubblePop';
+        const subtitle = this.localizationManager.t('seo.subtitle') || '泡割りゲーム';
+        
+        return `${baseTitle} - ${subtitle}`;
+    }
+    
+    /**
+     * ローカライズされた説明文生成
+     * @private
+     */
+    async _getLocalizedDescription(context) {
+        if (!this.localizationManager) {
+            return context.description || 'HTML5 Canvas を使用したバブルポップゲーム。泡を割って高スコアを目指そう！';
+        }
+        
+        // コンテキスト固有の説明キー
+        if (context.descriptionKey) {
+            return this.localizationManager.t(context.descriptionKey);
+        }
+        
+        // ページタイプ別の説明
+        if (context.pageType) {
+            const descKey = `seo.descriptions.${context.pageType}`;
+            const pageDesc = this.localizationManager.t(descKey);
+            if (pageDesc !== descKey) { // 翻訳が存在する場合
+                return pageDesc;
+            }
+        }
+        
+        // ゲーム状態による動的説明
+        if (context.gameState) {
+            return await this._enhanceDescriptionWithGameState(context.gameState);
+        }
+        
+        // デフォルト説明
+        return this.localizationManager.t('seo.description') || 
+            'HTML5 Canvas を使用したバブルポップゲーム。泡を割って高スコアを目指そう！';
+    }
+    
+    /**
+     * ローカライズされたキーワード生成
+     * @private
+     */
+    async _getLocalizedKeywords(context) {
+        if (!this.localizationManager) {
+            return context.keywords || 'バブルポップ,ゲーム,HTML5,ブラウザゲーム,無料';
+        }
+        
+        const lang = this.localizationManager.getCurrentLanguage();
+        
+        // 基本キーワード
+        const baseKeywords = this.localizationManager.t('seo.keywords') || '';
+        
+        // 言語固有のキーワード
+        const langKeywords = this.localizationManager.t(`seo.keywords.${lang}`) || '';
+        
+        // ページタイプ固有のキーワード
+        let pageKeywords = '';
+        if (context.pageType) {
+            pageKeywords = this.localizationManager.t(`seo.keywords.${context.pageType}`) || '';
+        }
+        
+        // キーワードの結合
+        const keywordParts = [baseKeywords, langKeywords, pageKeywords].filter(k => k);
+        return keywordParts.join(',');
+    }
+    
+    /**
+     * テキスト方向の取得
+     * @private
+     */
+    _getTextDirection() {
+        if (!this.localizationManager) {
+            return 'ltr';
+        }
+        
+        return this.localizationManager.getTextDirection ? 
+            this.localizationManager.getTextDirection() : 'ltr';
+    }
+    
+    /**
+     * フォールバックメタデータの生成
+     * @private
+     */
+    _generateFallbackMetadata(context) {
+        return {
+            language: 'ja',
+            title: context.title || 'BubblePop - 泡割りゲーム',
+            description: context.description || 'HTML5 Canvas を使用したバブルポップゲーム。泡を割って高スコアを目指そう！',
+            keywords: context.keywords || 'バブルポップ,ゲーム,HTML5,ブラウザゲーム,無料',
+            siteName: 'BubblePop',
+            locale: 'ja_JP',
+            direction: 'ltr',
+            charset: 'UTF-8'
+        };
+    }
     
     /**
      * 実際のメタタグ更新処理

@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Comprehensive Test Suite - BubblePop</title>
+    <meta name="description" content="HTML5 Canvas を使用したバブルポップゲーム。18種類以上の特殊な泡を割って高スコアを目指そう！">
+    <meta name="keywords" content="バブルポップ,ゲーム,HTML5,ブラウザゲーム,無料,泡割り,パズル">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="BubblePop - 泡割りゲーム">
+    <meta property="og:description" content="HTML5 Canvas を使用したバブルポップゲーム。18種類以上の特殊な泡を割って高スコアを目指そう！">
+    <meta property="og:image" content="/assets/images/og-image.png">
+    <meta property="og:url" content="https://example.com">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="BubblePop - 泡割りゲーム">
+    <meta name="twitter:description" content="HTML5 Canvas を使用したバブルポップゲーム。18種類以上の特殊な泡を割って高スコアを目指そう！">
+    <meta name="twitter:image" content="/assets/images/twitter-card.png">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "VideoGame",
+        "name": "BubblePop - 泡割りゲーム",
+        "description": "HTML5 Canvas を使用したバブルポップゲーム。18種類以上の特殊な泡を割って高スコアを目指そう！",
+        "genre": "パズル・アクション",
+        "gamePlatform": ["Web Browser", "Progressive Web App"],
+        "operatingSystem": ["Any"],
+        "applicationCategory": "Game",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "JPY",
+            "availability": "https://schema.org/InStock"
+        },
+        "creator": {
+            "@type": "Organization",
+            "name": "BubblePop Development Team"
+        }
+    }
+    </script>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .button:hover {
+            background: #45a049;
+        }
+        .button.secondary {
+            background: #2196F3;
+        }
+        .button.secondary:hover {
+            background: #1976D2;
+        }
+        .button.warning {
+            background: #FF9800;
+        }
+        .button.warning:hover {
+            background: #F57C00;
+        }
+        .button.danger {
+            background: #f44336;
+        }
+        .button.danger:hover {
+            background: #d32f2f;
+        }
+        .output {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .test-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .test-category {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .test-category h3 {
+            margin-top: 0;
+            color: #4CAF50;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 5px;
+        }
+        .test-item {
+            margin: 10px 0;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .test-item.passed {
+            background: #e8f5e8;
+            border-left: 4px solid #4CAF50;
+            color: #2e7d32;
+        }
+        .test-item.failed {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            color: #d32f2f;
+        }
+        .test-item.warning {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            color: #ef6c00;
+        }
+        .score-display {
+            text-align: center;
+            font-size: 48px;
+            font-weight: bold;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .score-display.excellent {
+            background: #e8f5e8;
+            color: #2e7d32;
+        }
+        .score-display.good {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+        .score-display.needs-improvement {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+        .score-display.poor {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: #f5f5f5;
+            border: none;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab:hover,
+        .tab.active {
+            background: #4CAF50;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .monitoring-controls {
+            background: #e3f2fd;
+            border: 1px solid #90caf9;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .monitoring-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .monitoring-status.active {
+            background: #e8f5e8;
+            color: #2e7d32;
+        }
+        .monitoring-status.inactive {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+        .alert-item {
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .alert-item.critical {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            color: #d32f2f;
+        }
+        .alert-item.warning {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            color: #ef6c00;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+        .progress-fill.excellent {
+            background: linear-gradient(90deg, #4CAF50, #66BB6A);
+        }
+        .progress-fill.good {
+            background: linear-gradient(90deg, #9C27B0, #BA68C8);
+        }
+        .progress-fill.needs-improvement {
+            background: linear-gradient(90deg, #FF9800, #FFB74D);
+        }
+        .progress-fill.poor {
+            background: linear-gradient(90deg, #f44336, #EF5350);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 SEO包括テストスイート</h1>
+        <p>BubblePopゲームのSEO最適化を包括的にテストし、監視します。</p>
+        
+        <div class="tabs">
+            <button class="tab active" data-tab="validation">SEO検証</button>
+            <button class="tab" data-tab="monitoring">リアルタイム監視</button>
+            <button class="tab" data-tab="lighthouse">Lighthouseスコア</button>
+            <button class="tab" data-tab="reporting">レポート生成</button>
+        </div>
+    </div>
+    
+    <!-- SEO検証タブ -->
+    <div class="tab-content active" id="validation">
+        <div class="container">
+            <h2>🎯 SEO包括検証</h2>
+            <div class="controls">
+                <button class="button" onclick="runComprehensiveTest()">🚀 包括テスト実行</button>
+                <button class="button secondary" onclick="runQuickTest()">⚡ クイックテスト</button>
+                <button class="button secondary" onclick="validateMetaTags()">🏷️ メタタグ検証</button>
+                <button class="button secondary" onclick="validateStructuredData()">📊 構造化データ検証</button>
+                <button class="button warning" onclick="clearTestResults()">🗑️ 結果クリア</button>
+            </div>
+            
+            <div id="overallScore" class="score-display" style="display: none;">
+                <div class="score-value">-</div>
+                <div style="font-size: 16px; margin-top: 10px;">総合SEOスコア</div>
+            </div>
+            
+            <div class="test-results" id="testResults">
+                <!-- テスト結果がここに表示されます -->
+            </div>
+            
+            <div class="output" id="validationOutput">包括テスト結果がここに表示されます...</div>
+        </div>
+    </div>
+    
+    <!-- リアルタイム監視タブ -->
+    <div class="tab-content" id="monitoring">
+        <div class="container">
+            <h2>📊 リアルタイムSEO監視</h2>
+            <div class="monitoring-controls">
+                <h4>監視制御</h4>
+                <button class="button" onclick="startMonitoring()">▶️ 監視開始</button>
+                <button class="button danger" onclick="stopMonitoring()">⏹️ 監視停止</button>
+                <button class="button warning" onclick="pauseMonitoring()">⏸️ 一時停止</button>
+                <button class="button secondary" onclick="resumeMonitoring()">▶️ 再開</button>
+                <span class="monitoring-status inactive" id="monitoringStatus">停止中</span>
+            </div>
+            
+            <div class="monitoring-controls">
+                <h4>監視設定</h4>
+                <label>
+                    監視間隔: 
+                    <select id="monitoringInterval">
+                        <option value="60000">1分</option>
+                        <option value="300000" selected>5分</option>
+                        <option value="600000">10分</option>
+                        <option value="1800000">30分</option>
+                    </select>
+                </label>
+                <label style="margin-left: 20px;">
+                    <input type="checkbox" id="enableAlerts" checked> アラート有効
+                </label>
+            </div>
+            
+            <div class="test-results">
+                <div class="test-category">
+                    <h3>📈 現在の監視メトリクス</h3>
+                    <div id="currentMetrics">
+                        <div class="test-item"><strong>Lighthouseスコア:</strong> <span id="currentLighthouse">-</span></div>
+                        <div class="test-item"><strong>LCP:</strong> <span id="currentLCP">-</span> ms</div>
+                        <div class="test-item"><strong>FID:</strong> <span id="currentFID">-</span> ms</div>
+                        <div class="test-item"><strong>CLS:</strong> <span id="currentCLS">-</span></div>
+                        <div class="test-item"><strong>最終チェック:</strong> <span id="lastCheck">-</span></div>
+                    </div>
+                </div>
+                
+                <div class="test-category">
+                    <h3>🚨 アクティブアラート</h3>
+                    <div id="activeAlerts">
+                        <div class="test-item">アラートはありません</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="output" id="monitoringOutput">監視結果がここに表示されます...</div>
+        </div>
+    </div>
+    
+    <!-- Lighthouseスコアタブ -->
+    <div class="tab-content" id="lighthouse">
+        <div class="container">
+            <h2>🏮 Lighthouseスコア分析</h2>
+            <div class="controls">
+                <button class="button" onclick="runLighthouseAudit()">🔍 Lighthouse監査実行</button>
+                <button class="button secondary" onclick="trackCoreWebVitals()">📊 Core Web Vitals追跡</button>
+                <button class="button secondary" onclick="generatePerformanceReport()">📄 パフォーマンスレポート</button>
+            </div>
+            
+            <div class="test-results">
+                <div class="test-category">
+                    <h3>Lighthouseスコア</h3>
+                    <div id="lighthouseScores">
+                        <div class="score-item">
+                            <strong>Performance:</strong> <span id="performanceScore">-</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="performanceProgress" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                        <div class="score-item">
+                            <strong>Accessibility:</strong> <span id="accessibilityScore">-</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="accessibilityProgress" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                        <div class="score-item">
+                            <strong>Best Practices:</strong> <span id="bestPracticesScore">-</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="bestPracticesProgress" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                        <div class="score-item">
+                            <strong>SEO:</strong> <span id="seoScore">-</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="seoProgress" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="test-category">
+                    <h3>Core Web Vitals</h3>
+                    <div id="coreWebVitals">
+                        <div class="test-item"><strong>LCP (Largest Contentful Paint):</strong> <span id="lcpValue">-</span> ms</div>
+                        <div class="test-item"><strong>FID (First Input Delay):</strong> <span id="fidValue">-</span> ms</div>
+                        <div class="test-item"><strong>CLS (Cumulative Layout Shift):</strong> <span id="clsValue">-</span></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="output" id="lighthouseOutput">Lighthouse分析結果がここに表示されます...</div>
+        </div>
+    </div>
+    
+    <!-- レポート生成タブ -->
+    <div class="tab-content" id="reporting">
+        <div class="container">
+            <h2>📊 レポート生成</h2>
+            <div class="controls">
+                <button class="button" onclick="generateComprehensiveReport()">📄 包括レポート生成</button>
+                <button class="button secondary" onclick="generateMonitoringReport()">📈 監視レポート生成</button>
+                <button class="button secondary" onclick="exportTestResults()">💾 テスト結果エクスポート</button>
+                <button class="button warning" onclick="scheduleAutomatedReports()">⏰ 自動レポート設定</button>
+            </div>
+            
+            <div class="monitoring-controls">
+                <h4>レポート設定</h4>
+                <label>
+                    フォーマット: 
+                    <select id="reportFormat">
+                        <option value="html">HTML</option>
+                        <option value="json">JSON</option>
+                        <option value="csv">CSV</option>
+                    </select>
+                </label>
+                <label style="margin-left: 20px;">
+                    期間: 
+                    <select id="reportPeriod">
+                        <option value="1hour">過去1時間</option>
+                        <option value="24hours" selected>過去24時間</option>
+                        <option value="7days">過去7日間</option>
+                        <option value="30days">過去30日間</option>
+                    </select>
+                </label>
+            </div>
+            
+            <div class="test-results">
+                <div class="test-category">
+                    <h3>📈 レポート統計</h3>
+                    <div id="reportStats">
+                        <div class="test-item"><strong>総検証回数:</strong> <span id="totalValidations">0</span></div>
+                        <div class="test-item"><strong>総アラート数:</strong> <span id="totalAlerts">0</span></div>
+                        <div class="test-item"><strong>平均SEOスコア:</strong> <span id="averageSEOScore">-</span></div>
+                        <div class="test-item"><strong>最新レポート生成:</strong> <span id="lastReportTime">-</span></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="output" id="reportingOutput">レポート生成結果がここに表示されます...</div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { SEOTester } from './src/seo/SEOTester.js';
+        import { SEOMonitor } from './src/seo/SEOMonitor.js';
+        
+        let seoTester;
+        let seoMonitor;
+        let lastTestResults = null;
+        let monitoringActive = false;
+        
+        // 初期化
+        async function initialize() {
+            try {
+                seoTester = new SEOTester();
+                seoMonitor = new SEOMonitor();
+                
+                // アラートコールバックの設定
+                seoMonitor.addAlertCallback((alert) => {
+                    displayAlert(alert);
+                });
+                
+                log('🚀 SEO包括テストシステムの初期化が完了しました');
+                log('📊 各タブでテスト・監視機能を利用できます');
+            } catch (error) {
+                log(`❌ 初期化エラー: ${error.message}`, 'error');
+            }
+        }
+        
+        // グローバル関数の定義
+        window.runComprehensiveTest = async function() {
+            try {
+                log('🚀 SEO包括テストを開始します...');
+                displayOverallScore('実行中...', 'needs-improvement');
+                
+                const startTime = performance.now();
+                const results = await seoTester.runComprehensiveTest({
+                    includeMetaTags: true,
+                    includeStructuredData: true,
+                    includeSocialMedia: true,
+                    includePerformance: true,
+                    includeAccessibility: true,
+                    includeSitemap: true,
+                    includeRobots: true
+                });
+                const endTime = performance.now();
+                
+                lastTestResults = results;
+                
+                // 結果の表示
+                displayTestResults(results);
+                displayOverallScore(results.overallScore, getScoreClass(results.overallScore));
+                
+                log(`✅ 包括テストが完了しました (${(endTime - startTime).toFixed(2)}ms)`);
+                log(`📊 総合スコア: ${results.overallScore}%`);
+                log(`✓ 成功: ${results.summary.passedTests}、✗ 失敗: ${results.summary.failedTests}、⚠ 警告: ${results.summary.warnings}`);
+                
+            } catch (error) {
+                log(`❌ 包括テストエラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.runQuickTest = async function() {
+            try {
+                log('⚡ クイックテストを開始します...');
+                
+                const results = await seoTester.runComprehensiveTest({
+                    includeMetaTags: true,
+                    includeStructuredData: true,
+                    includeSocialMedia: false,
+                    includePerformance: false,
+                    includeAccessibility: false,
+                    includeSitemap: false,
+                    includeRobots: false
+                });
+                
+                lastTestResults = results;
+                displayTestResults(results);
+                displayOverallScore(results.overallScore, getScoreClass(results.overallScore));
+                
+                log(`✅ クイックテストが完了しました - スコア: ${results.overallScore}%`);
+                
+            } catch (error) {
+                log(`❌ クイックテストエラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.validateMetaTags = async function() {
+            try {
+                log('🏷️ メタタグ検証を実行中...');
+                
+                const results = await seoTester.validateMetaTags();
+                displaySingleCategoryResult(results);
+                
+                log(`✅ メタタグ検証完了 - 成功: ${results.passed}、失敗: ${results.failed}、警告: ${results.warnings}`);
+                
+            } catch (error) {
+                log(`❌ メタタグ検証エラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.validateStructuredData = async function() {
+            try {
+                log('📊 構造化データ検証を実行中...');
+                
+                const results = await seoTester.validateStructuredData();
+                displaySingleCategoryResult(results);
+                
+                log(`✅ 構造化データ検証完了 - 成功: ${results.passed}、失敗: ${results.failed}、警告: ${results.warnings}`);
+                
+            } catch (error) {
+                log(`❌ 構造化データ検証エラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.startMonitoring = async function() {
+            try {
+                if (monitoringActive) {
+                    log('⚠️ 監視は既に実行中です', 'warning');
+                    return;
+                }
+                
+                const interval = parseInt(document.getElementById('monitoringInterval').value);
+                const enableAlerts = document.getElementById('enableAlerts').checked;
+                
+                log('▶️ リアルタイムSEO監視を開始します...');
+                
+                await seoMonitor.startMonitoring({
+                    interval: interval,
+                    includeLighthouse: true,
+                    includeCoreWebVitals: true,
+                    includeMetaTags: true,
+                    enableAlerts: enableAlerts
+                });
+                
+                monitoringActive = true;
+                updateMonitoringStatus('active', '監視中');
+                
+                // 定期的なメトリクス更新
+                startMetricsUpdate();
+                
+                log('✅ SEO監視が開始されました');
+                
+            } catch (error) {
+                log(`❌ 監視開始エラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.stopMonitoring = function() {
+            try {
+                if (!monitoringActive) {
+                    log('⚠️ 監視は実行されていません', 'warning');
+                    return;
+                }
+                
+                seoMonitor.stopMonitoring();
+                monitoringActive = false;
+                updateMonitoringStatus('inactive', '停止中');
+                
+                log('⏹️ SEO監視を停止しました');
+                
+            } catch (error) {
+                log(`❌ 監視停止エラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.pauseMonitoring = function() {
+            try {
+                seoMonitor.pauseMonitoring();
+                updateMonitoringStatus('inactive', '一時停止中');
+                log('⏸️ SEO監視を一時停止しました');
+                
+            } catch (error) {
+                log(`❌ 監視一時停止エラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.resumeMonitoring = function() {
+            try {
+                seoMonitor.resumeMonitoring();
+                updateMonitoringStatus('active', '監視中');
+                log('▶️ SEO監視を再開しました');
+                
+            } catch (error) {
+                log(`❌ 監視再開エラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.runLighthouseAudit = async function() {
+            try {
+                log('🔍 Lighthouse監査を実行中...');
+                
+                const lighthouseScore = await seoMonitor._checkLighthouseScore();
+                displayLighthouseScores(lighthouseScore);
+                
+                log('✅ Lighthouse監査が完了しました');
+                log(`📊 スコア - Performance: ${lighthouseScore.performance}, SEO: ${lighthouseScore.seo}`);
+                
+            } catch (error) {
+                log(`❌ Lighthouse監査エラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.trackCoreWebVitals = async function() {
+            try {
+                log('📊 Core Web Vitals追跡を開始...');
+                
+                const vitals = await seoMonitor._checkCoreWebVitals();
+                displayCoreWebVitals(vitals);
+                
+                log('✅ Core Web Vitals追跡が完了しました');
+                log(`📈 LCP: ${vitals.LCP.toFixed(1)}ms, FID: ${vitals.FID.toFixed(1)}ms, CLS: ${vitals.CLS.toFixed(3)}`);
+                
+            } catch (error) {
+                log(`❌ Core Web Vitals追跡エラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.generateComprehensiveReport = function() {
+            try {
+                log('📄 包括レポートを生成中...');
+                
+                if (!lastTestResults) {
+                    log('⚠️ テスト結果がありません。まずテストを実行してください。', 'warning');
+                    return;
+                }
+                
+                const format = document.getElementById('reportFormat').value;
+                const report = seoTester.exportResults(lastTestResults, format);
+                
+                downloadReport(report, `seo-comprehensive-report.${format}`, format);
+                
+                log('✅ 包括レポートが生成されました');
+                
+            } catch (error) {
+                log(`❌ レポート生成エラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.generateMonitoringReport = function() {
+            try {
+                log('📈 監視レポートを生成中...');
+                
+                const format = document.getElementById('reportFormat').value;
+                const report = seoMonitor.generateReport(format);
+                
+                downloadReport(report, `seo-monitoring-report.${format}`, format);
+                
+                log('✅ 監視レポートが生成されました');
+                
+            } catch (error) {
+                log(`❌ 監視レポート生成エラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.exportTestResults = function() {
+            try {
+                if (!lastTestResults) {
+                    log('⚠️ エクスポートするテスト結果がありません', 'warning');
+                    return;
+                }
+                
+                const format = document.getElementById('reportFormat').value;
+                const exported = seoTester.exportResults(lastTestResults, format);
+                
+                downloadReport(exported, `seo-test-results.${format}`, format);
+                
+                log('✅ テスト結果がエクスポートされました');
+                
+            } catch (error) {
+                log(`❌ エクスポートエラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.scheduleAutomatedReports = function() {
+            try {
+                log('⏰ 自動レポート機能の設定...');
+                
+                // 実際の実装では cron-like scheduler を設定
+                const interval = 24 * 60 * 60 * 1000; // 24時間
+                
+                setInterval(() => {
+                    if (lastTestResults) {
+                        const report = seoTester.exportResults(lastTestResults, 'html');
+                        downloadReport(report, `automated-seo-report-${new Date().toISOString().split('T')[0]}.html`, 'html');
+                        log('📄 自動レポートが生成されました');
+                    }
+                }, interval);
+                
+                log('✅ 自動レポートが24時間間隔で設定されました');
+                
+            } catch (error) {
+                log(`❌ 自動レポート設定エラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.clearTestResults = function() {
+            document.getElementById('testResults').innerHTML = '';
+            document.getElementById('overallScore').style.display = 'none';
+            lastTestResults = null;
+            log('🗑️ テスト結果がクリアされました');
+        };
+        
+        // ヘルパー関数
+        
+        function displayTestResults(results) {
+            const container = document.getElementById('testResults');
+            container.innerHTML = '';
+            
+            Object.entries(results.categories).forEach(([name, category]) => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'test-category';
+                
+                const title = document.createElement('h3');
+                title.textContent = `${category.category} (${category.passed}/${category.tests.length})`;
+                categoryDiv.appendChild(title);
+                
+                category.tests.forEach(test => {
+                    const testDiv = document.createElement('div');
+                    testDiv.className = `test-item ${test.passed ? 'passed' : 'failed'}`;
+                    testDiv.innerHTML = `<strong>${test.name}:</strong> ${test.message}`;
+                    categoryDiv.appendChild(testDiv);
+                });
+                
+                container.appendChild(categoryDiv);
+            });
+        }
+        
+        function displaySingleCategoryResult(results) {
+            const container = document.getElementById('testResults');
+            container.innerHTML = '';
+            
+            const categoryDiv = document.createElement('div');
+            categoryDiv.className = 'test-category';
+            
+            const title = document.createElement('h3');
+            title.textContent = `${results.category} (${results.passed}/${results.tests.length})`;
+            categoryDiv.appendChild(title);
+            
+            results.tests.forEach(test => {
+                const testDiv = document.createElement('div');
+                testDiv.className = `test-item ${test.passed ? 'passed' : 'failed'}`;
+                testDiv.innerHTML = `<strong>${test.name}:</strong> ${test.message}`;
+                categoryDiv.appendChild(testDiv);
+            });
+            
+            container.appendChild(categoryDiv);
+        }
+        
+        function displayOverallScore(score, className) {
+            const scoreElement = document.getElementById('overallScore');
+            const scoreValue = scoreElement.querySelector('.score-value');
+            
+            scoreValue.textContent = typeof score === 'number' ? `${score}%` : score;
+            scoreElement.className = `score-display ${className}`;
+            scoreElement.style.display = 'block';
+        }
+        
+        function displayLighthouseScores(scores) {
+            const metrics = ['performance', 'accessibility', 'bestPractices', 'seo'];
+            
+            metrics.forEach(metric => {
+                const score = scores[metric];
+                const scoreElement = document.getElementById(`${metric}Score`);
+                const progressElement = document.getElementById(`${metric}Progress`);
+                
+                if (scoreElement && progressElement) {
+                    scoreElement.textContent = score;
+                    progressElement.style.width = `${score}%`;
+                    progressElement.className = `progress-fill ${getScoreClass(score)}`;
+                }
+            });
+        }
+        
+        function displayCoreWebVitals(vitals) {
+            document.getElementById('lcpValue').textContent = vitals.LCP.toFixed(1);
+            document.getElementById('fidValue').textContent = vitals.FID.toFixed(1);
+            document.getElementById('clsValue').textContent = vitals.CLS.toFixed(3);
+        }
+        
+        function displayAlert(alert) {
+            const alertsContainer = document.getElementById('activeAlerts');
+            
+            // 既存のアラートをクリア
+            if (alertsContainer.children[0]?.textContent === 'アラートはありません') {
+                alertsContainer.innerHTML = '';
+            }
+            
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert-item ${alert.severity}`;
+            alertDiv.innerHTML = `
+                <strong>${alert.type}:</strong> ${alert.message}
+                <br><small>${new Date(alert.timestamp).toLocaleString()}</small>
+            `;
+            
+            alertsContainer.insertBefore(alertDiv, alertsContainer.firstChild);
+            
+            // 最大10個のアラートを保持
+            while (alertsContainer.children.length > 10) {
+                alertsContainer.removeChild(alertsContainer.lastChild);
+            }
+        }
+        
+        function updateMonitoringStatus(status, text) {
+            const statusElement = document.getElementById('monitoringStatus');
+            statusElement.className = `monitoring-status ${status}`;
+            statusElement.textContent = text;
+        }
+        
+        function startMetricsUpdate() {
+            const updateInterval = setInterval(() => {
+                if (!monitoringActive) {
+                    clearInterval(updateInterval);
+                    return;
+                }
+                
+                const stats = seoMonitor.getMonitoringStats();
+                const data = seoMonitor.getMonitoringData();
+                
+                // 現在のメトリクスを更新
+                if (data.lighthouse.length > 0) {
+                    const latest = data.lighthouse[data.lighthouse.length - 1];
+                    document.getElementById('currentLighthouse').textContent = `${latest.seo}/100`;
+                }
+                
+                if (data.coreWebVitals.length > 0) {
+                    const latest = data.coreWebVitals[data.coreWebVitals.length - 1];
+                    document.getElementById('currentLCP').textContent = latest.LCP.toFixed(1);
+                    document.getElementById('currentFID').textContent = latest.FID.toFixed(1);
+                    document.getElementById('currentCLS').textContent = latest.CLS.toFixed(3);
+                }
+                
+                document.getElementById('lastCheck').textContent = stats.lastCheck ? 
+                    new Date(stats.lastCheck).toLocaleString() : '-';
+                
+            }, 5000); // 5秒間隔で更新
+        }
+        
+        function getScoreClass(score) {
+            if (score >= 95) return 'excellent';
+            if (score >= 85) return 'good';
+            if (score >= 70) return 'needs-improvement';
+            return 'poor';
+        }
+        
+        function downloadReport(content, filename, format) {
+            const mimeTypes = {
+                html: 'text/html',
+                json: 'application/json',
+                csv: 'text/csv'
+            };
+            
+            const blob = new Blob([content], { type: mimeTypes[format] });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        function log(message, type = 'info') {
+            const activeTab = document.querySelector('.tab.active').dataset.tab;
+            const outputId = `${activeTab}Output`;
+            const output = document.getElementById(outputId);
+            
+            const timestamp = new Date().toLocaleTimeString();
+            const formattedMessage = `[${timestamp}] ${message}\n`;
+            
+            if (output.textContent.includes('結果がここに表示されます...')) {
+                output.textContent = '';
+            }
+            
+            output.textContent += formattedMessage;
+            output.scrollTop = output.scrollHeight;
+            
+            console.log(`[SEO Comprehensive Test] ${message}`);
+        }
+        
+        // イベントリスナー
+        document.addEventListener('DOMContentLoaded', function() {
+            // タブ切り替え
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const targetTab = this.dataset.tab;
+                    
+                    // アクティブタブの更新
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    document.getElementById(targetTab).classList.add('active');
+                });
+            });
+        });
+        
+        // 初期化の実行
+        initialize();
+    </script>
+</body>
+</html>

@@ -38,66 +38,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     
-    <!-- SEO and Social Media -->
-    <meta name="author" content="BubblePop Game Team">
-    <meta name="robots" content="index, follow">
-    <meta name="googlebot" content="index, follow">
-    <meta name="rating" content="general">
-    <meta name="distribution" content="global">
-    <meta name="classification" content="game">
-    <meta name="category" content="entertainment">
+    <!-- SEO Meta Tags will be dynamically injected by SEOMetaManager -->
+    <div id="seo-meta-injection-point"></div>
     
-    <!-- Open Graph Tags -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="BubblePop - 泡割りゲーム">
-    <meta property="og:description" content="HTML5 Canvas を使用したバブルポップゲーム。泡を割って高スコアを目指そう！">
-    <meta property="og:image" content="/assets/screenshots/game-portrait.png">
-    <meta property="og:image:alt" content="BubblePop ゲーム画面">
-    <meta property="og:url" content="https://your-domain.com/">
-    <meta property="og:site_name" content="BubblePop">
-    <meta property="og:locale" content="ja_JP">
-    
-    <!-- Twitter Card Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="BubblePop - 泡割りゲーム">
-    <meta name="twitter:description" content="HTML5 Canvas を使用したバブルポップゲーム。泡を割って高スコアを目指そう！">
-    <meta name="twitter:image" content="/assets/screenshots/game-landscape-1.png">
-    <meta name="twitter:image:alt" content="BubblePop ゲーム画面">
-    
-    <!-- Rich Snippets -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "VideoGame",
-        "name": "BubblePop",
-        "alternateName": "泡割りゲーム",
-        "description": "HTML5 Canvas を使用したバブルポップゲーム。泡を割って高スコアを目指すアクションゲーム",
-        "genre": ["Action", "Casual", "Arcade"],
-        "gameItem": {
-            "@type": "Thing",
-            "name": "バブル"
-        },
-        "playMode": "SinglePlayer",
-        "applicationCategory": "Game",
-        "operatingSystem": ["Web Browser", "iOS", "Android"],
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "JPY"
-        },
-        "author": {
-            "@type": "Organization",
-            "name": "BubblePop Game Team"
-        },
-        "publisher": {
-            "@type": "Organization",
-            "name": "BubblePop Game Team"
-        },
-        "inLanguage": "ja",
-        "isAccessibleForFree": true,
-        "contentRating": "Everyone"
-    }
-    </script>
+    <!-- Structured Data will be dynamically injected by StructuredDataEngine -->
+    <div id="structured-data-injection-point"></div>
     <title>BubblePop - 泡割りゲーム</title>
     
     <!-- PWA Manifest -->
@@ -471,8 +416,89 @@
     <div id="focusIndicator" class="screen-reader-only" aria-live="polite"></div>
     
     <script type="module">
+        // SEO システム初期化
+        import { SEOMetaManager } from './src/seo/SEOMetaManager.js';
+        import { StructuredDataEngine } from './src/seo/StructuredDataEngine.js';
+        import { seoLogger } from './src/seo/SEOLogger.js';
+        import { seoErrorHandler } from './src/seo/SEOErrorHandler.js';
+        
         // PWA初期化スクリプト
         import { getPWAManager } from './src/core/PWAManager.js';
+        
+        // SEOシステムの初期化
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                seoLogger.info('SEO system initialization started');
+                
+                // SEOMetaManagerの初期化
+                const seoMetaManager = new SEOMetaManager();
+                
+                // 動的メタタグの生成と注入
+                const metaInjectionPoint = document.getElementById('seo-meta-injection-point');
+                if (metaInjectionPoint) {
+                    try {
+                        const metaTags = await seoMetaManager.generateDynamicMetaTags();
+                        metaInjectionPoint.innerHTML = metaTags;
+                        seoLogger.info('Dynamic meta tags injected successfully');
+                    } catch (error) {
+                        seoLogger.error('Failed to inject dynamic meta tags', error);
+                        // フォールバック: 基本的なメタタグを手動で追加
+                        metaInjectionPoint.innerHTML = `
+                            <!-- Basic SEO Meta Tags (Fallback) -->
+                            <meta name="author" content="BubblePop Game Team">
+                            <meta name="robots" content="index, follow">
+                            <meta name="rating" content="general">
+                            <meta property="og:type" content="website">
+                            <meta property="og:title" content="BubblePop - 泡割りゲーム">
+                            <meta property="og:description" content="HTML5 Canvas を使用したバブルポップゲーム">
+                            <meta name="twitter:card" content="summary_large_image">
+                            <meta name="twitter:title" content="BubblePop - 泡割りゲーム">
+                        `;
+                    }
+                }
+                
+                // StructuredDataEngineの初期化
+                const structuredDataEngine = new StructuredDataEngine();
+                
+                // 構造化データの生成と注入
+                const structuredDataInjectionPoint = document.getElementById('structured-data-injection-point');
+                if (structuredDataInjectionPoint) {
+                    try {
+                        const structuredData = await structuredDataEngine.generateVideoGameSchema();
+                        const scriptTag = document.createElement('script');
+                        scriptTag.type = 'application/ld+json';
+                        scriptTag.textContent = JSON.stringify(structuredData, null, 2);
+                        structuredDataInjectionPoint.appendChild(scriptTag);
+                        seoLogger.info('Structured data injected successfully');
+                    } catch (error) {
+                        seoLogger.error('Failed to inject structured data', error);
+                        // フォールバック: 基本的な構造化データを手動で追加
+                        const fallbackScript = document.createElement('script');
+                        fallbackScript.type = 'application/ld+json';
+                        fallbackScript.textContent = JSON.stringify({
+                            "@context": "https://schema.org",
+                            "@type": "VideoGame",
+                            "name": "BubblePop",
+                            "description": "HTML5 Canvas を使用したバブルポップゲーム",
+                            "genre": ["Action", "Casual"],
+                            "applicationCategory": "Game",
+                            "operatingSystem": "Web Browser",
+                            "isAccessibleForFree": true
+                        }, null, 2);
+                        structuredDataInjectionPoint.appendChild(fallbackScript);
+                    }
+                }
+                
+                // グローバルにアクセス可能にする
+                window.seoMetaManager = seoMetaManager;
+                window.structuredDataEngine = structuredDataEngine;
+                
+                seoLogger.info('SEO system initialization completed');
+                
+            } catch (error) {
+                seoErrorHandler.handle(error, 'seoSystemInit');
+            }
+        });
         
         // PWA機能の初期化
         if ('serviceWorker' in navigator) {

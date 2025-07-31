@@ -1357,6 +1357,16 @@ export class AchievementManager {
             this.gameEngine.playerData.tap += achievement.reward.ap;
         }
         
+        // SEOシステムに実績解除を通知
+        this.gameEngine.emit('achievementUnlocked', {
+            id: achievement.id,
+            name: achievement.name,
+            description: achievement.description,
+            icon: achievement.icon,
+            reward: achievement.reward,
+            timestamp: Date.now()
+        });
+        
         // 通知を追加（最適化）
         this.addNotificationOptimized({
             id: achievement.id,
