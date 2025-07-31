@@ -30,7 +30,9 @@ export class EventStageManager {
         
         // 定期的に季節イベントをチェック
         this.seasonalCheckInterval = null;
+        this.notificationCheckInterval = null;
         this.startSeasonalEventChecking();
+        this.startNotificationChecking();
     }
     
     /**
@@ -214,6 +216,12 @@ export class EventStageManager {
                     type: 'seasonal',
                     season: 'spring',
                     autoActivate: true
+                },
+                notifications: {
+                    onStart: true,
+                    onEnd: true,
+                    reminderInterval: 24 * 60 * 60 * 1000, // 24時間
+                    endWarning: 7 * 24 * 60 * 60 * 1000 // 7日前
                 }
             },
             
@@ -242,6 +250,12 @@ export class EventStageManager {
                     type: 'seasonal',
                     season: 'summer',
                     autoActivate: true
+                },
+                notifications: {
+                    onStart: true,
+                    onEnd: true,
+                    reminderInterval: 24 * 60 * 60 * 1000,
+                    endWarning: 7 * 24 * 60 * 60 * 1000
                 }
             },
             
@@ -270,6 +284,12 @@ export class EventStageManager {
                     type: 'seasonal',
                     season: 'autumn',
                     autoActivate: true
+                },
+                notifications: {
+                    onStart: true,
+                    onEnd: true,
+                    reminderInterval: 24 * 60 * 60 * 1000,
+                    endWarning: 7 * 24 * 60 * 60 * 1000
                 }
             },
             
@@ -298,6 +318,12 @@ export class EventStageManager {
                     type: 'seasonal',
                     season: 'winter',
                     autoActivate: true
+                },
+                notifications: {
+                    onStart: true,
+                    onEnd: true,
+                    reminderInterval: 24 * 60 * 60 * 1000,
+                    endWarning: 7 * 24 * 60 * 60 * 1000
                 }
             }
         };
@@ -781,8 +807,8 @@ export class EventStageManager {
         
         console.log(`Seasonal event activated: ${event.name} (${season})`);
         
-        // 通知を送信（Task 2で実装予定）
-        // this.sendEventNotification(eventId, 'EVENT_STARTED');
+        // 通知を送信
+        this.sendEventNotification(eventId, 'EVENT_STARTED');
         
         return true;
     }
@@ -798,8 +824,8 @@ export class EventStageManager {
         
         console.log(`Seasonal event deactivated: ${event.name}`);
         
-        // 通知を送信（Task 2で実装予定）
-        // this.sendEventNotification(eventId, 'EVENT_ENDED');
+        // 通知を送信
+        this.sendEventNotification(eventId, 'EVENT_ENDED');
         
         return true;
     }
@@ -854,12 +880,191 @@ export class EventStageManager {
     }
     
     /**
+     * イベント通知を送信
+     */
+    sendEventNotification(eventId, notificationType) {
+        const event = this.eventStages[eventId];
+        if (!event || !this.gameEngine.achievementNotificationSystem) {
+            return false;
+        }
+        
+        try {
+            const notification = this.createEventNotification(eventId, notificationType);
+            this.gameEngine.achievementNotificationSystem.queueNotification(notification);
+            console.log(`Event notification sent: ${notificationType} for ${event.name}`);
+            return true;
+        } catch (error) {
+            console.warn('Event notification failed:', error);
+            return false;
+        }
+    }
+    
+    /**
+     * イベント通知オブジェクトを作成
+     */
+    createEventNotification(eventId, notificationType) {
+        const event = this.eventStages[eventId];
+        if (!event) throw new Error(`Event ${eventId} not found`);
+        
+        const baseNotification = {
+            id: `event_${eventId}_${notificationType}_${Date.now()}`,
+            type: 'event',
+            subType: notificationType,
+            eventId: eventId,
+            timestamp: Date.now()
+        };
+        
+        switch (notificationType) {
+            case 'EVENT_STARTED':
+                return {
+                    ...baseNotification,
+                    name: `${event.name}開始！`,
+                    description: `${event.description}`,
+                    icon: event.icon,
+                    reward: null,
+                    duration: 4000,
+                    actions: ['参加する', '後で']
+                };
+                
+            case 'EVENT_ENDED':
+                return {
+                    ...baseNotification,
+                    name: `${event.name}終了`,
+                    description: `${event.name}が終了しました`,
+                    icon: '⏰',
+                    reward: null,
+                    duration: 3000
+                };
+                
+            case 'EVENT_ENDING':
+                const timeRemaining = this.getEventTimeRemaining(event, Date.now());
+                const hoursRemaining = Math.ceil(timeRemaining / (1000 * 60 * 60));
+                return {
+                    ...baseNotification,
+                    name: `${event.name}まもなく終了`,
+                    description: `あと${hoursRemaining}時間で終了します`,
+                    icon: '⚠️',
+                    reward: null,
+                    duration: 5000,
+                    actions: ['今すぐ参加', '閉じる']
+                };
+                
+            case 'EVENT_ELIGIBLE':
+                return {
+                    ...baseNotification,
+                    name: `参加条件達成！`,
+                    description: `${event.name}に参加できます`,
+                    icon: '✅',
+                    reward: null,
+                    duration: 4000,
+                    actions: ['参加する', '後で']
+                };
+                
+            case 'EVENT_REMINDER':
+                return {
+                    ...baseNotification,
+                    name: `イベント参加お忘れなく`,
+                    description: `${event.name}がまだ利用可能です`,
+                    icon: '🔔',
+                    reward: null,
+                    duration: 3000,
+                    actions: ['参加する', '閉じる']
+                };
+                
+            default:
+                throw new Error(`Unknown notification type: ${notificationType}`);
+        }
+    }
+    
+    /**
+     * イベント通知をチェック
+     */
+    checkEventNotifications() {
+        const now = Date.now();
+        
+        // 終了予告通知をチェック
+        this.activeEvents.forEach((eventData, eventId) => {
+            const event = this.eventStages[eventId];
+            if (!event || !event.notifications) return;
+            
+            const timeRemaining = eventData.endTime - now;
+            const warningThreshold = event.notifications.endWarning || 24 * 60 * 60 * 1000; // デフォルト24時間前
+            
+            // 終了警告通知
+            if (timeRemaining <= warningThreshold && timeRemaining > 0) {
+                const lastWarning = eventData.lastWarningNotification || 0;
+                const warningInterval = 12 * 60 * 60 * 1000; // 12時間ごと
+                
+                if (now - lastWarning >= warningInterval) {
+                    this.sendEventNotification(eventId, 'EVENT_ENDING');
+                    eventData.lastWarningNotification = now;
+                }
+            }
+        });
+        
+        // リマインダー通知をチェック
+        this.activeEvents.forEach((eventData, eventId) => {
+            const event = this.eventStages[eventId];
+            if (!event || !event.notifications) return;
+            
+            const reminderInterval = event.notifications.reminderInterval || 24 * 60 * 60 * 1000; // デフォルト24時間
+            const lastReminder = eventData.lastReminderNotification || eventData.startTime;
+            
+            if (now - lastReminder >= reminderInterval) {
+                // プレイヤーがまだ参加していない場合のみ
+                const hasParticipated = this.eventHistory.some(entry => 
+                    entry.eventId === eventId && 
+                    entry.startTime >= eventData.startTime
+                );
+                
+                if (!hasParticipated) {
+                    this.sendEventNotification(eventId, 'EVENT_REMINDER');
+                    eventData.lastReminderNotification = now;
+                }
+            }
+        });
+    }
+    
+    /**
+     * 通知設定を更新
+     */
+    updateNotificationSettings(eventId, settings) {
+        const event = this.eventStages[eventId];
+        if (!event) return false;
+        
+        event.notifications = {
+            ...event.notifications,
+            ...settings
+        };
+        
+        return true;
+    }
+    
+    /**
+     * 通知チェックを開始
+     */
+    startNotificationChecking() {
+        // 初回チェック
+        this.checkEventNotifications();
+        
+        // 1時間ごとに通知をチェック
+        this.notificationCheckInterval = setInterval(() => {
+            this.checkEventNotifications();
+        }, 60 * 60 * 1000);
+    }
+    
+    /**
      * クリーンアップ処理
      */
     cleanup() {
         if (this.seasonalCheckInterval) {
             clearInterval(this.seasonalCheckInterval);
             this.seasonalCheckInterval = null;
+        }
+        
+        if (this.notificationCheckInterval) {
+            clearInterval(this.notificationCheckInterval);
+            this.notificationCheckInterval = null;
         }
     }
 }

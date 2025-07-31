@@ -1,6 +1,6 @@
 # Implementation Plan
 
-- [ ] 1. EventStageManagerの季節イベント自動スケジューリング機能を実装
+- [x] 1. EventStageManagerの季節イベント自動スケジューリング機能を実装
   - 季節判定ロジックを追加してSEASONAL_PERIODSの定数を定義
   - scheduleSeasonalEvents()メソッドを実装して現在の日付に基づく季節イベントの自動有効化
   - checkSeasonalEventActivation()メソッドを実装して定期的な季節イベント状態チェック
