@@ -1,0 +1,129 @@
+{
+  "version": "1.0.0",
+  "description": "BubblePop ドキュメント検証設定",
+  
+  "validationRules": {
+    "requiredSections": {
+      "setup-guide.md": [
+        "概要",
+        "前提条件", 
+        "環境構築手順",
+        "開発ツールの設定",
+        "よくある問題と解決方法"
+      ],
+      "contribution-guide.md": [
+        "概要",
+        "コントリビューション手順",
+        "コーディング規約",
+        "レビュープロセス",
+        "コミュニティガイドライン"
+      ],
+      "architecture-guide.md": [
+        "概要",
+        "アーキテクチャ原則", 
+        "システムアーキテクチャ",
+        "設計パターン",
+        "パフォーマンス最適化"
+      ],
+      "troubleshooting-guide.md": [
+        "概要",
+        "開発環境の問題",
+        "ゲーム実行時の問題",
+        "テスト関連の問題",
+        "緊急時対応"
+      ],
+      "README.md": [
+        "概要",
+        "ガイド一覧",
+        "クイックスタート"
+      ]
+    },
+    
+    "qualityRules": {
+      "maxLineLength": 120,
+      "minSectionWords": 30,
+      "maxFileSize": 1000000,
+      "requiredCodeBlocks": [
+        "```javascript",
+        "```bash", 
+        "```json",
+        "```html",
+        "```css"
+      ]
+    },
+    
+    "linkValidation": {
+      "checkExternalLinks": true,
+      "externalLinkTimeout": 10000,
+      "externalLinkRetries": 2,
+      "allowedDomains": [
+        "github.com",
+        "developer.mozilla.org",
+        "nodejs.org",
+        "npmjs.com",
+        "jestjs.io",
+        "playwright.dev",
+        "docs.anthropic.com"
+      ],
+      "ignoredLinks": [
+        "localhost",
+        "127.0.0.1",
+        "example.com"
+      ]
+    },
+    
+    "contentValidation": {
+      "checkJapaneseContent": true,
+      "checkCodeBlockLanguages": true,
+      "checkImageAltText": true,
+      "checkDuplicateHeaders": true,
+      "checkTodoItems": true
+    },
+    
+    "filePatterns": {
+      "include": [
+        "**/*.md"
+      ],
+      "exclude": [
+        "node_modules/**",
+        ".git/**",
+        "coverage/**",
+        "build/**",
+        "dist/**"
+      ]
+    }
+  },
+  
+  "reporting": {
+    "formats": ["json", "html", "txt"],
+    "includeStats": true,
+    "includeRecommendations": true,
+    "saveHistory": true,
+    "maxHistoryFiles": 10
+  },
+  
+  "notifications": {
+    "enabled": true,
+    "methods": ["console", "file"],
+    "thresholds": {
+      "criticalErrors": 5,
+      "totalWarnings": 20,
+      "brokenLinksLimit": 3
+    }
+  },
+  
+  "automation": {
+    "preCommitHook": true,
+    "scheduledCheck": {
+      "enabled": false,
+      "interval": "daily",
+      "time": "02:00"
+    },
+    "integrations": {
+      "github": {
+        "createIssues": false,
+        "commentOnPR": true
+      }
+    }
+  }
+}
