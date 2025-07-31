@@ -1093,6 +1093,9 @@ export class GameScene extends Scene {
                 case 'KeyF':
                     this.togglePerformanceMetrics();
                     break;
+                case 'KeyH':
+                    this.gameEngine.sceneManager.switchScene('help');
+                    break;
             }
         } else if (event.type === 'click') {
             // UI要素のクリック判定

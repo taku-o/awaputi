@@ -718,7 +718,7 @@ export class HelpScene extends Scene {
             this.searchResults = [];
             this.searchQuery = '';
         } else {
-            this.sceneManager.changeScene('MainMenuScene');
+            this.gameEngine.sceneManager.switchScene('menu');
         }
     }
     

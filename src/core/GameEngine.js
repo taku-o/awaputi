@@ -17,6 +17,7 @@ import { StageSelectScene } from '../scenes/StageSelectScene.js';
 import { GameScene } from '../scenes/GameScene.js';
 import { ShopScene } from '../scenes/ShopScene.js';
 import { UserInfoScene } from '../scenes/UserInfoScene.js';
+import { HelpScene } from '../scenes/HelpScene.js';
 import { AudioManager } from '../audio/AudioManager.js';
 import { ParticleManager } from '../effects/ParticleManager.js';
 import { EffectManager } from '../effects/EffectManager.js';
@@ -44,6 +45,7 @@ import { EffectPerformanceOptimizer } from '../effects/EffectPerformanceOptimize
 import { EffectErrorHandler } from '../effects/EffectErrorHandler.js';
 import { VisualPolishEnhancements } from '../effects/VisualPolishEnhancements.js';
 import { AnimationManager } from '../effects/AnimationManager.js';
+import { getHelpManager } from './help/HelpManager.js';
 
 /**
  * ゲームエンジンクラス - 統合版（パフォーマンス最適化 + 音響・視覚効果）
@@ -143,6 +145,9 @@ export class GameEngine {
         // 実績通知システム
         this.achievementNotificationSystem = new AchievementNotificationSystem(this);
         
+        // ヘルプシステム
+        this.helpManager = getHelpManager(this);
+        
         // ゲーム状態
         this.timeRemaining = 300000; // 5分
         this.isGameOver = false;
@@ -216,7 +221,7 @@ export class GameEngine {
             const currentScene = this.sceneManager.getCurrentScene();
             
             // すべての登録されたシーンの翻訳を更新
-            const sceneNames = ['menu', 'stageSelect', 'game', 'shop', 'userInfo'];
+            const sceneNames = ['menu', 'stageSelect', 'game', 'shop', 'userInfo', 'help'];
             
             for (const sceneName of sceneNames) {
                 const scene = this.sceneManager.getScene(sceneName);
@@ -296,6 +301,7 @@ export class GameEngine {
             const gameScene = new GameScene(this);
             const shopScene = new ShopScene(this);
             const userInfoScene = new UserInfoScene(this);
+            const helpScene = new HelpScene(this);
             
             // シーンを登録
             this.sceneManager.addScene('menu', mainMenuScene);
@@ -303,6 +309,7 @@ export class GameEngine {
             this.sceneManager.addScene('game', gameScene);
             this.sceneManager.addScene('shop', shopScene);
             this.sceneManager.addScene('userInfo', userInfoScene);
+            this.sceneManager.addScene('help', helpScene);
             
             // データを読み込み
             try {
