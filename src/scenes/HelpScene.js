@@ -106,7 +106,8 @@ export class HelpScene extends Scene {
             'Enter': () => this.selectCurrentItem(),
             'Escape': () => this.goBack(),
             'Tab': (event) => this.handleTabNavigation(event),
-            '/': (event) => { event.preventDefault(); this.focusSearchBar(); }
+            '/': (event) => { event.preventDefault(); this.focusSearchBar(); },
+            'F': (event) => { if (event.ctrlKey) { event.preventDefault(); this.showFeedbackDialog(); } }
         };
         
         this.initialize();
@@ -125,6 +126,14 @@ export class HelpScene extends Scene {
                 this.helpManager = this.gameEngine.helpManager;
                 this.searchEngine = this.helpManager.searchEngine;
             }
+            
+            // ヘルプアナリティクスの初期化
+            const { getHelpAnalytics } = await import('../core/help/HelpAnalytics.js');
+            this.helpAnalytics = getHelpAnalytics(this.gameEngine);
+            
+            // ヘルプフィードバックシステムの初期化
+            const { getHelpFeedbackSystem } = await import('../core/help/HelpFeedbackSystem.js');
+            this.helpFeedbackSystem = getHelpFeedbackSystem(this.gameEngine);
             
             // ヘルプコンテンツの読み込み
             await this.loadHelpContent();
@@ -308,6 +317,16 @@ export class HelpScene extends Scene {
         // コンテンツの再読み込み
         this.loadCategoryContent(this.selectedCategory);
         
+        // ヘルプセッションの開始（アナリティクス）
+        if (this.helpAnalytics) {
+            this.helpAnalytics.startHelpSession('help_scene', {
+                initialCategory: this.selectedCategory,
+                userAgent: navigator.userAgent,
+                screenSize: `${window.innerWidth}x${window.innerHeight}`,
+                language: this.gameEngine.localizationManager?.getCurrentLanguage() || 'ja'
+            });
+        }
+        
         // スクリーンリーダーへの入場アナウンス
         const t = this.gameEngine.localizationManager.t.bind(this.gameEngine.localizationManager);
         this.announceToScreenReader(t('help.accessibility.sceneEntered', 'ヘルプシーンに入りました。F1キーでキーボードショートカットを確認できます。'));
@@ -319,6 +338,25 @@ export class HelpScene extends Scene {
      * シーン終了時の処理
      */
     exit() {
+        // 現在表示中のコンテンツのビュー終了を追跡（フィードバック）
+        if (this.helpFeedbackSystem && this.currentContent) {
+            const category = this.categories.find(cat => cat.id === this.selectedCategory);
+            if (category && category.topics[this.selectedTopicIndex]) {
+                const topic = category.topics[this.selectedTopicIndex];
+                this.helpFeedbackSystem.endContentView(topic.id);
+            }
+        }
+        
+        // ヘルプセッションの終了（アナリティクス）
+        if (this.helpAnalytics) {
+            this.helpAnalytics.endHelpSession('scene_exit', {
+                finalCategory: this.selectedCategory,
+                finalTopic: this.selectedTopicIndex,
+                searchPerformed: this.searchQuery !== '',
+                lastSearchQuery: this.searchQuery
+            });
+        }
+        
         // イベントリスナーの削除
         this.removeEventListeners();
         
@@ -337,6 +375,9 @@ export class HelpScene extends Scene {
         
         this.boundClickHandler = (event) => this.handleClick(event);
         document.addEventListener('click', this.boundClickHandler);
+        
+        this.boundContextMenuHandler = (event) => this.handleContextMenu(event);
+        document.addEventListener('contextmenu', this.boundContextMenuHandler);
     }
     
     /**
@@ -351,6 +392,11 @@ export class HelpScene extends Scene {
         if (this.boundClickHandler) {
             document.removeEventListener('click', this.boundClickHandler);
             this.boundClickHandler = null;
+        }
+        
+        if (this.boundContextMenuHandler) {
+            document.removeEventListener('contextmenu', this.boundContextMenuHandler);
+            this.boundContextMenuHandler = null;
         }
     }
     
@@ -465,9 +511,11 @@ export class HelpScene extends Scene {
             'Escape: 戻る\n' +
             'Tab: フォーカス移動\n' +
             '/: 検索バーにフォーカス\n' +
+            'Ctrl+F: フィードバック送信\n' +
             'F1: このヘルプ\n' +
             'Alt+H: 詳細説明\n' +
-            'Ctrl+Shift+?: ショートカット一覧'
+            'Ctrl+Shift+?: ショートカット一覧\n' +
+            '右クリック: クイックフィードバック'
         );
         
         this.announceToScreenReader(helpText, 'assertive');
@@ -652,6 +700,11 @@ export class HelpScene extends Scene {
                 categories: this.categories.map(cat => cat.id)
             });
             
+            // 検索クエリの追跡（アナリティクス）
+            if (this.helpAnalytics) {
+                this.helpAnalytics.trackSearchQuery(query, this.searchResults, this.searchResults.length);
+            }
+            
             this.loggingSystem.debug('HelpScene', `Search completed: ${this.searchResults.length} results`);
         } catch (error) {
             this.loggingSystem.error('HelpScene', 'Search failed', error);
@@ -696,12 +749,36 @@ export class HelpScene extends Scene {
             return;
         }
         
+        // 前のトピックのビューを終了（フィードバック）
+        if (this.helpFeedbackSystem && this.currentContent && category.topics[this.selectedTopicIndex]) {
+            const previousTopic = category.topics[this.selectedTopicIndex];
+            this.helpFeedbackSystem.endContentView(previousTopic.id);
+        }
+        
         this.selectedTopicIndex = index;
         const topic = category.topics[index];
         
         try {
             if (this.helpManager) {
                 const newContent = await this.helpManager.getHelpContent(topic.id);
+                
+                // ページビューの追跡（アナリティクス）
+                if (this.helpAnalytics) {
+                    this.helpAnalytics.trackPageView(topic.id, {
+                        category: this.selectedCategory,
+                        topicTitle: topic.title,
+                        topicIndex: index
+                    });
+                }
+                
+                // コンテンツ表示の開始を追跡（フィードバック）
+                if (this.helpFeedbackSystem) {
+                    this.helpFeedbackSystem.startContentView(topic.id, {
+                        category: this.selectedCategory,
+                        topicTitle: topic.title,
+                        topicIndex: index
+                    });
+                }
                 
                 // アニメーション付きでコンテンツを変更
                 if (this.currentContent && newContent) {
@@ -913,6 +990,54 @@ export class HelpScene extends Scene {
             this.navigateLeft();
         } else {
             this.navigateRight();
+        }
+    }
+    
+    /**
+     * 右クリック処理
+     * @param {MouseEvent} event - マウスイベント
+     */
+    handleContextMenu(event) {
+        const rect = this.gameEngine.canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        
+        // コンテンツエリア内での右クリックの場合
+        if (this.isPointInRect(x, y, this.layout.content) && this.currentContent) {
+            event.preventDefault();
+            this.showQuickFeedback(x, y);
+        }
+    }
+    
+    /**
+     * フィードバックダイアログの表示
+     */
+    showFeedbackDialog() {
+        if (!this.helpFeedbackSystem || !this.currentContent) {
+            return;
+        }
+        
+        const category = this.categories.find(cat => cat.id === this.selectedCategory);
+        if (category && category.topics[this.selectedTopicIndex]) {
+            const topic = category.topics[this.selectedTopicIndex];
+            this.helpFeedbackSystem.showFeedbackDialog(topic.id);
+        }
+    }
+    
+    /**
+     * クイックフィードバックの表示
+     * @param {number} x - X座標
+     * @param {number} y - Y座標
+     */
+    showQuickFeedback(x, y) {
+        if (!this.helpFeedbackSystem || !this.currentContent) {
+            return;
+        }
+        
+        const category = this.categories.find(cat => cat.id === this.selectedCategory);
+        if (category && category.topics[this.selectedTopicIndex]) {
+            const topic = category.topics[this.selectedTopicIndex];
+            this.helpFeedbackSystem.showQuickFeedback(topic.id, x, y);
         }
     }
     
