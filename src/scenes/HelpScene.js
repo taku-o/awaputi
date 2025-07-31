@@ -1,6 +1,7 @@
 import { Scene } from '../core/Scene.js';
 import { ErrorHandler } from '../utils/ErrorHandler.js';
 import { LoggingSystem } from '../core/LoggingSystem.js';
+import { AccessibilityManager } from '../core/AccessibilityManager.js';
 
 /**
  * ヘルプシーン
@@ -10,6 +11,13 @@ export class HelpScene extends Scene {
     constructor(gameEngine) {
         super(gameEngine);
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
+        
+        // アクセシビリティ管理
+        this.accessibilityManager = gameEngine.accessibilityManager || new AccessibilityManager(gameEngine);
+        this.currentFocusIndex = 0;
+        this.focusableElements = [];
+        this.announcementQueue = [];
+        this.ariaLabels = new Map();
         
         // ヘルプ管理
         this.helpManager = null;
@@ -81,6 +89,9 @@ export class HelpScene extends Scene {
      */
     async initialize() {
         try {
+            // アクセシビリティの初期化
+            await this.initializeAccessibility();
+            
             // ヘルプマネージャーとの統合
             if (this.gameEngine.helpManager) {
                 this.helpManager = this.gameEngine.helpManager;
@@ -99,6 +110,103 @@ export class HelpScene extends Scene {
         } catch (error) {
             this.loggingSystem.error('HelpScene', 'Failed to initialize help scene', error);
             ErrorHandler.handle(error, 'HelpScene.initialize');
+        }
+    }
+    
+    /**
+     * アクセシビリティ機能の初期化
+     */
+    async initializeAccessibility() {
+        try {
+            // フォーカス可能要素の定義
+            this.focusableElements = [
+                { id: 'searchBar', type: 'input', label: 'help.searchBar.label' },
+                { id: 'categoryList', type: 'list', label: 'help.categoryList.label' },
+                { id: 'topicList', type: 'list', label: 'help.topicList.label' },
+                { id: 'contentArea', type: 'region', label: 'help.contentArea.label' },
+                { id: 'backButton', type: 'button', label: 'help.backButton.label' }
+            ];
+            
+            // ARIAラベルの設定
+            this.setupAriaLabels();
+            
+            // スクリーンリーダー対応の準備
+            this.prepareScreenReaderSupport();
+            
+            this.loggingSystem.debug('HelpScene', 'Accessibility initialized');
+        } catch (error) {
+            this.loggingSystem.error('HelpScene', 'Failed to initialize accessibility', error);
+        }
+    }
+    
+    /**
+     * ARIAラベルの設定
+     */
+    setupAriaLabels() {
+        const t = this.gameEngine.localizationManager.t.bind(this.gameEngine.localizationManager);
+        
+        this.ariaLabels.set('searchBar', {
+            label: t('help.accessibility.searchBar', 'ヘルプを検索するための入力フィールド'),
+            role: 'searchbox',
+            description: t('help.accessibility.searchBarDesc', 'キーワードを入力してヘルプコンテンツを検索できます')
+        });
+        
+        this.ariaLabels.set('categoryList', {
+            label: t('help.accessibility.categoryList', 'ヘルプカテゴリ一覧'),
+            role: 'listbox',
+            description: t('help.accessibility.categoryListDesc', '矢印キーで移動、Enterで選択')
+        });
+        
+        this.ariaLabels.set('topicList', {
+            label: t('help.accessibility.topicList', 'トピック一覧'),
+            role: 'listbox',
+            description: t('help.accessibility.topicListDesc', '選択されたカテゴリのトピック一覧')
+        });
+        
+        this.ariaLabels.set('contentArea', {
+            label: t('help.accessibility.contentArea', 'ヘルプコンテンツ表示エリア'),
+            role: 'main',
+            description: t('help.accessibility.contentAreaDesc', '選択されたトピックの詳細情報')
+        });
+        
+        this.ariaLabels.set('backButton', {
+            label: t('help.accessibility.backButton', '戻るボタン'),
+            role: 'button',
+            description: t('help.accessibility.backButtonDesc', 'メインメニューに戻ります')
+        });
+    }
+    
+    /**
+     * スクリーンリーダー対応の準備
+     */
+    prepareScreenReaderSupport() {
+        // スクリーンリーダーが検出された場合の特別な処理
+        if (this.accessibilityManager.getState().screenReaderDetected) {
+            this.enableScreenReaderMode();
+        }
+    }
+    
+    /**
+     * スクリーンリーダーモードの有効化
+     */
+    enableScreenReaderMode() {
+        // 音声による案内の有効化
+        this.screenReaderMode = true;
+        
+        // コンテンツ変更時の自動読み上げ設定
+        this.autoAnnounceContentChanges = true;
+        
+        this.loggingSystem.info('HelpScene', 'Screen reader mode enabled');
+    }
+    
+    /**
+     * スクリーンリーダーへのアナウンス
+     * @param {string} message - アナウンスメッセージ
+     * @param {string} priority - 優先度 (polite|assertive)
+     */
+    announceToScreenReader(message, priority = 'polite') {
+        if (this.screenReaderMode && this.accessibilityManager) {
+            this.accessibilityManager.announceToScreenReader(message, priority);
         }
     }
     
@@ -161,12 +269,20 @@ export class HelpScene extends Scene {
         this.searchQuery = '';
         this.searchResults = [];
         this.isSearching = false;
+        this.currentFocusIndex = 0;
         
         // イベントリスナーの設定
         this.setupEventListeners();
         
+        // アクセシビリティ機能の有効化
+        this.enableAccessibilityFeatures();
+        
         // コンテンツの再読み込み
         this.loadCategoryContent(this.selectedCategory);
+        
+        // スクリーンリーダーへの入場アナウンス
+        const t = this.gameEngine.localizationManager.t.bind(this.gameEngine.localizationManager);
+        this.announceToScreenReader(t('help.accessibility.sceneEntered', 'ヘルプシーンに入りました。F1キーでキーボードショートカットを確認できます。'));
         
         this.loggingSystem.info('HelpScene', 'Help scene entered');
     }
@@ -177,6 +293,9 @@ export class HelpScene extends Scene {
     exit() {
         // イベントリスナーの削除
         this.removeEventListeners();
+        
+        // アクセシビリティ機能の無効化
+        this.disableAccessibilityFeatures();
         
         this.loggingSystem.info('HelpScene', 'Help scene exited');
     }
@@ -212,11 +331,204 @@ export class HelpScene extends Scene {
      * @param {KeyboardEvent} event - キーボードイベント
      */
     handleKeyPress(event) {
+        // アクセシビリティモードでの特別なキー処理
+        if (this.handleAccessibilityKeys(event)) {
+            return;
+        }
+        
         const handler = this.keyboardHandlers[event.key];
         if (handler) {
             event.preventDefault();
             handler(event);
+            
+            // スクリーンリーダーへのフィードバック
+            this.announceNavigationChange(event.key);
         }
+    }
+    
+    /**
+     * アクセシビリティ関連のキー処理
+     * @param {KeyboardEvent} event - キーボードイベント
+     * @returns {boolean} 処理された場合true
+     */
+    handleAccessibilityKeys(event) {
+        // F1キー: アクセシビリティヘルプの表示
+        if (event.key === 'F1') {
+            event.preventDefault();
+            this.showAccessibilityHelp();
+            return true;
+        }
+        
+        // Alt + H: 現在の要素の詳細説明
+        if (event.altKey && event.key === 'h') {
+            event.preventDefault();
+            this.announceCurrentElementDetails();
+            return true;
+        }
+        
+        // Ctrl + Shift + ?: キーボードショートカット一覧
+        if (event.ctrlKey && event.shiftKey && event.key === '?') {
+            event.preventDefault();
+            this.announceKeyboardShortcuts();
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * ナビゲーション変更のアナウンス
+     * @param {string} key - 押されたキー
+     */
+    announceNavigationChange(key) {
+        const t = this.gameEngine.localizationManager.t.bind(this.gameEngine.localizationManager);
+        let message = '';
+        
+        switch (key) {
+            case 'ArrowUp':
+            case 'ArrowDown':
+                const category = this.categories.find(cat => cat.id === this.selectedCategory);
+                if (category && category.topics[this.selectedTopicIndex]) {
+                    message = t('help.accessibility.topicSelected', 
+                              `選択中: ${category.topics[this.selectedTopicIndex].title}`);
+                }
+                break;
+                
+            case 'ArrowLeft':
+            case 'ArrowRight':
+                const selectedCat = this.categories.find(cat => cat.id === this.selectedCategory);
+                if (selectedCat) {
+                    message = t('help.accessibility.categorySelected', 
+                              `カテゴリ選択中: ${t(selectedCat.key, selectedCat.id)}`);
+                }
+                break;
+                
+            case 'Enter':
+                if (this.isSearching) {
+                    message = t('help.accessibility.searchResultSelected', '検索結果を選択しました');
+                } else {
+                    message = t('help.accessibility.topicOpened', 'トピックを開きました');
+                }
+                break;
+                
+            case 'Escape':
+                if (this.isSearching) {
+                    message = t('help.accessibility.searchClosed', '検索を終了しました');
+                } else {
+                    message = t('help.accessibility.returningToMenu', 'メインメニューに戻ります');
+                }
+                break;
+        }
+        
+        if (message) {
+            this.announceToScreenReader(message);
+        }
+    }
+    
+    /**
+     * アクセシビリティヘルプの表示
+     */
+    showAccessibilityHelp() {
+        const t = this.gameEngine.localizationManager.t.bind(this.gameEngine.localizationManager);
+        const helpText = t('help.accessibility.helpText', 
+            'ヘルプシーンのキーボードショートカット:\n' +
+            '矢印キー: ナビゲーション\n' +
+            'Enter: 選択\n' +
+            'Escape: 戻る\n' +
+            'Tab: フォーカス移動\n' +
+            '/: 検索バーにフォーカス\n' +
+            'F1: このヘルプ\n' +
+            'Alt+H: 詳細説明\n' +
+            'Ctrl+Shift+?: ショートカット一覧'
+        );
+        
+        this.announceToScreenReader(helpText, 'assertive');
+    }
+    
+    /**
+     * 現在の要素の詳細説明
+     */
+    announceCurrentElementDetails() {
+        const currentElement = this.focusableElements[this.currentFocusIndex];
+        if (currentElement && this.ariaLabels.has(currentElement.id)) {
+            const ariaInfo = this.ariaLabels.get(currentElement.id);
+            const message = `${ariaInfo.label}. ${ariaInfo.description}`;
+            this.announceToScreenReader(message, 'assertive');
+        }
+    }
+    
+    /**
+     * キーボードショートカット一覧のアナウンス
+     */
+    announceKeyboardShortcuts() {
+        this.showAccessibilityHelp();
+    }
+    
+    /**
+     * アクセシビリティ機能の有効化
+     */
+    enableAccessibilityFeatures() {
+        // AccessibilityManagerに現在のシーンを通知
+        if (this.accessibilityManager) {
+            this.accessibilityManager.setCurrentScene('HelpScene');
+            this.accessibilityManager.setFocusableElements(this.focusableElements);
+        }
+        
+        // 高コントラストモードの確認
+        if (this.accessibilityManager && this.accessibilityManager.getState().highContrastEnabled) {
+            this.enableHighContrastMode();
+        }
+        
+        // 大きな文字サイズの確認
+        if (this.accessibilityManager && this.accessibilityManager.getState().largeTextEnabled) {
+            this.enableLargeTextMode();
+        }
+    }
+    
+    /**
+     * アクセシビリティ機能の無効化
+     */
+    disableAccessibilityFeatures() {
+        // 特別なモードの解除
+        this.disableHighContrastMode();
+        this.disableLargeTextMode();
+        
+        // AccessibilityManagerのクリーンアップ
+        if (this.accessibilityManager) {
+            this.accessibilityManager.clearCurrentScene();
+        }
+    }
+    
+    /**
+     * 高コントラストモードの有効化
+     */
+    enableHighContrastMode() {
+        this.highContrastMode = true;
+        this.loggingSystem.debug('HelpScene', 'High contrast mode enabled');
+    }
+    
+    /**
+     * 高コントラストモードの無効化
+     */
+    disableHighContrastMode() {
+        this.highContrastMode = false;
+    }
+    
+    /**
+     * 大きな文字サイズモードの有効化
+     */
+    enableLargeTextMode() {
+        this.largeTextMode = true;
+        this.textSizeMultiplier = 1.3;
+        this.loggingSystem.debug('HelpScene', 'Large text mode enabled');
+    }
+    
+    /**
+     * 大きな文字サイズモードの無効化
+     */
+    disableLargeTextMode() {
+        this.largeTextMode = false;
+        this.textSizeMultiplier = 1.0;
     }
     
     /**
@@ -479,8 +791,10 @@ export class HelpScene extends Scene {
     renderTitle(ctx) {
         const t = this.gameEngine.localizationManager.t.bind(this.gameEngine.localizationManager);
         
-        ctx.fillStyle = '#333';
-        ctx.font = 'bold 24px Arial';
+        // アクセシビリティモードに応じた色とフォントサイズの調整
+        ctx.fillStyle = this.highContrastMode ? '#000' : '#333';
+        const fontSize = Math.round(24 * (this.textSizeMultiplier || 1));
+        ctx.font = `bold ${fontSize}px Arial`;
         ctx.textAlign = 'left';
         ctx.fillText(t('help.title', 'ヘルプ'), 50, 30);
     }
@@ -493,23 +807,36 @@ export class HelpScene extends Scene {
         const t = this.gameEngine.localizationManager.t.bind(this.gameEngine.localizationManager);
         const searchBar = this.layout.searchBar;
         
+        // アクセシビリティモードに応じた色の調整
+        const bgColor = this.isSearching ? (this.highContrastMode ? '#fff' : '#fff') : (this.highContrastMode ? '#e0e0e0' : '#f0f0f0');
+        const borderColor = this.isSearching ? (this.highContrastMode ? '#000' : '#007acc') : (this.highContrastMode ? '#000' : '#ccc');
+        
         // 検索バー背景
-        ctx.fillStyle = this.isSearching ? '#fff' : '#f0f0f0';
-        ctx.strokeStyle = this.isSearching ? '#007acc' : '#ccc';
-        ctx.lineWidth = 2;
+        ctx.fillStyle = bgColor;
+        ctx.strokeStyle = borderColor;
+        ctx.lineWidth = this.highContrastMode ? 3 : 2;
         ctx.fillRect(searchBar.x, searchBar.y, searchBar.width, searchBar.height);
         ctx.strokeRect(searchBar.x, searchBar.y, searchBar.width, searchBar.height);
         
+        // フォーカス表示（キーボードナビゲーション用）
+        if (this.currentFocusIndex === 0) { // searchBarのフォーカス
+            ctx.strokeStyle = this.highContrastMode ? '#ff0000' : '#ff6600';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(searchBar.x - 2, searchBar.y - 2, searchBar.width + 4, searchBar.height + 4);
+        }
+        
         // プレースホルダー・検索テキスト
-        ctx.fillStyle = '#666';
-        ctx.font = '14px Arial';
+        ctx.fillStyle = this.highContrastMode ? '#000' : '#666';
+        const fontSize = Math.round(14 * (this.textSizeMultiplier || 1));
+        ctx.font = `${fontSize}px Arial`;
         ctx.textAlign = 'left';
         const text = this.searchQuery || t('help.searchPlaceholder', 'ヘルプを検索...');
         ctx.fillText(text, searchBar.x + 10, searchBar.y + 25);
         
         // 検索アイコン
-        ctx.fillStyle = '#999';
-        ctx.font = '16px Arial';
+        ctx.fillStyle = this.highContrastMode ? '#000' : '#999';
+        const iconSize = Math.round(16 * (this.textSizeMultiplier || 1));
+        ctx.font = `${iconSize}px Arial`;
         ctx.textAlign = 'right';
         ctx.fillText('🔍', searchBar.x + searchBar.width - 10, searchBar.y + 25);
     }
@@ -522,12 +849,19 @@ export class HelpScene extends Scene {
         const t = this.gameEngine.localizationManager.t.bind(this.gameEngine.localizationManager);
         const sidebar = this.layout.sidebar;
         
-        // サイドバー背景
-        ctx.fillStyle = '#fff';
-        ctx.strokeStyle = '#ddd';
-        ctx.lineWidth = 1;
+        // サイドバー背景（アクセシビリティ対応）
+        ctx.fillStyle = this.highContrastMode ? '#f8f8f8' : '#fff';
+        ctx.strokeStyle = this.highContrastMode ? '#000' : '#ddd';
+        ctx.lineWidth = this.highContrastMode ? 2 : 1;
         ctx.fillRect(sidebar.x, sidebar.y, sidebar.width, sidebar.height);
         ctx.strokeRect(sidebar.x, sidebar.y, sidebar.width, sidebar.height);
+        
+        // カテゴリリストのフォーカス表示
+        if (this.currentFocusIndex === 1) { // categoryListのフォーカス
+            ctx.strokeStyle = this.highContrastMode ? '#ff0000' : '#ff6600';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(sidebar.x - 2, sidebar.y - 2, sidebar.width + 4, sidebar.height + 4);
+        }
         
         let currentY = sidebar.y + 20;
         
@@ -535,15 +869,18 @@ export class HelpScene extends Scene {
         for (const category of this.categories) {
             const isSelected = category.id === this.selectedCategory;
             
-            // カテゴリ項目背景
+            // カテゴリ項目背景（アクセシビリティ対応）
             if (isSelected) {
-                ctx.fillStyle = '#e3f2fd';
+                ctx.fillStyle = this.highContrastMode ? '#000' : '#e3f2fd';
                 ctx.fillRect(sidebar.x + 5, currentY - 15, sidebar.width - 10, 25);
             }
             
-            // カテゴリ名
-            ctx.fillStyle = isSelected ? '#1976d2' : '#333';
-            ctx.font = isSelected ? 'bold 14px Arial' : '14px Arial';
+            // カテゴリ名（アクセシビリティ対応）
+            ctx.fillStyle = isSelected ? 
+                (this.highContrastMode ? '#fff' : '#1976d2') : 
+                (this.highContrastMode ? '#000' : '#333');
+            const fontSize = Math.round(14 * (this.textSizeMultiplier || 1));
+            ctx.font = isSelected ? `bold ${fontSize}px Arial` : `${fontSize}px Arial`;
             ctx.textAlign = 'left';
             ctx.fillText(t(category.key, category.id), sidebar.x + 15, currentY);
             currentY += 30;
@@ -554,15 +891,18 @@ export class HelpScene extends Scene {
                     const topic = category.topics[i];
                     const isTopicSelected = i === this.selectedTopicIndex;
                     
-                    // トピック項目背景
+                    // トピック項目背景（アクセシビリティ対応）
                     if (isTopicSelected) {
-                        ctx.fillStyle = '#f3e5f5';
+                        ctx.fillStyle = this.highContrastMode ? '#666' : '#f3e5f5';
                         ctx.fillRect(sidebar.x + 15, currentY - 12, sidebar.width - 20, 20);
                     }
                     
-                    // トピック名
-                    ctx.fillStyle = isTopicSelected ? '#7b1fa2' : '#666';
-                    ctx.font = '12px Arial';
+                    // トピック名（アクセシビリティ対応）
+                    ctx.fillStyle = isTopicSelected ? 
+                        (this.highContrastMode ? '#fff' : '#7b1fa2') : 
+                        (this.highContrastMode ? '#000' : '#666');
+                    const topicFontSize = Math.round(12 * (this.textSizeMultiplier || 1));
+                    ctx.font = `${topicFontSize}px Arial`;
                     ctx.fillText('  • ' + topic.title, sidebar.x + 25, currentY);
                     currentY += 25;
                 }
@@ -577,17 +917,25 @@ export class HelpScene extends Scene {
     renderContent(ctx) {
         const content = this.layout.content;
         
-        // コンテンツエリア背景
-        ctx.fillStyle = '#fff';
-        ctx.strokeStyle = '#ddd';
-        ctx.lineWidth = 1;
+        // コンテンツエリア背景（アクセシビリティ対応）
+        ctx.fillStyle = this.highContrastMode ? '#f8f8f8' : '#fff';
+        ctx.strokeStyle = this.highContrastMode ? '#000' : '#ddd';
+        ctx.lineWidth = this.highContrastMode ? 2 : 1;
         ctx.fillRect(content.x, content.y, content.width, content.height);
         ctx.strokeRect(content.x, content.y, content.width, content.height);
         
+        // コンテンツエリアのフォーカス表示
+        if (this.currentFocusIndex === 3) { // contentAreaのフォーカス
+            ctx.strokeStyle = this.highContrastMode ? '#ff0000' : '#ff6600';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(content.x - 2, content.y - 2, content.width + 4, content.height + 4);
+        }
+        
         if (!this.currentContent) {
-            // コンテンツがない場合
-            ctx.fillStyle = '#999';
-            ctx.font = '14px Arial';
+            // コンテンツがない場合（アクセシビリティ対応）
+            ctx.fillStyle = this.highContrastMode ? '#000' : '#999';
+            const fontSize = Math.round(14 * (this.textSizeMultiplier || 1));
+            ctx.font = `${fontSize}px Arial`;
             ctx.textAlign = 'center';
             ctx.fillText('コンテンツを選択してください', 
                          content.x + content.width / 2, 
@@ -598,19 +946,21 @@ export class HelpScene extends Scene {
         // コンテンツ描画
         let currentY = content.y + 30;
         
-        // タイトル
+        // タイトル（アクセシビリティ対応）
         if (this.currentContent.title) {
-            ctx.fillStyle = '#333';
-            ctx.font = 'bold 18px Arial';
+            ctx.fillStyle = this.highContrastMode ? '#000' : '#333';
+            const titleFontSize = Math.round(18 * (this.textSizeMultiplier || 1));
+            ctx.font = `bold ${titleFontSize}px Arial`;
             ctx.textAlign = 'left';
             ctx.fillText(this.currentContent.title, content.x + 20, currentY);
             currentY += 40;
         }
         
-        // 説明文
+        // 説明文（アクセシビリティ対応）
         if (this.currentContent.description) {
-            ctx.fillStyle = '#666';
-            ctx.font = '14px Arial';
+            ctx.fillStyle = this.highContrastMode ? '#000' : '#666';
+            const descFontSize = Math.round(14 * (this.textSizeMultiplier || 1));
+            ctx.font = `${descFontSize}px Arial`;
             this.renderWrappedText(ctx, this.currentContent.description, 
                                    content.x + 20, currentY, content.width - 40);
             currentY += 60;
@@ -621,8 +971,9 @@ export class HelpScene extends Scene {
             for (let i = 0; i < this.currentContent.steps.length; i++) {
                 const step = this.currentContent.steps[i];
                 
-                ctx.fillStyle = '#333';
-                ctx.font = '14px Arial';
+                ctx.fillStyle = this.highContrastMode ? '#000' : '#333';
+                const stepFontSize = Math.round(14 * (this.textSizeMultiplier || 1));
+                ctx.font = `${stepFontSize}px Arial`;
                 ctx.fillText(`${i + 1}. ${step}`, content.x + 20, currentY);
                 currentY += 25;
                 
@@ -687,13 +1038,21 @@ export class HelpScene extends Scene {
         const t = this.gameEngine.localizationManager.t.bind(this.gameEngine.localizationManager);
         const button = this.layout.backButton;
         
-        // ボタン背景
-        ctx.fillStyle = '#007acc';
+        // ボタン背景（アクセシビリティ対応）
+        ctx.fillStyle = this.highContrastMode ? '#000' : '#007acc';
         ctx.fillRect(button.x, button.y, button.width, button.height);
         
-        // ボタンテキスト
+        // フォーカス表示
+        if (this.currentFocusIndex === 4) { // backButtonのフォーカス
+            ctx.strokeStyle = this.highContrastMode ? '#ff0000' : '#ff6600';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(button.x - 2, button.y - 2, button.width + 4, button.height + 4);
+        }
+        
+        // ボタンテキスト（アクセシビリティ対応）
         ctx.fillStyle = '#fff';
-        ctx.font = '14px Arial';
+        const buttonFontSize = Math.round(14 * (this.textSizeMultiplier || 1));
+        ctx.font = `${buttonFontSize}px Arial`;
         ctx.textAlign = 'center';
         ctx.fillText(t('common.back', '戻る'), 
                      button.x + button.width / 2, 
