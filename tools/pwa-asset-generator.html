@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA Asset Generator - BubblePop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .instructions {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .instructions h2 {
+            margin-top: 0;
+            color: #E8F5E8;
+        }
+        
+        .instructions ol {
+            line-height: 1.6;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+        }
+        
+        .note {
+            background: rgba(255, 193, 7, 0.2);
+            border-left: 4px solid #FFC107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .warning {
+            background: rgba(244, 67, 54, 0.2);
+            border-left: 4px solid #f44336;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .status {
+            text-align: center;
+            font-size: 18px;
+            margin: 20px 0;
+        }
+        
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background: #45a049;
+        }
+        
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+        
+        .center {
+            text-align: center;
+        }
+        
+        .file-list {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        
+        .file-list h3 {
+            margin-top: 0;
+            color: #E8F5E8;
+        }
+        
+        .file-category {
+            margin-bottom: 15px;
+        }
+        
+        .file-category h4 {
+            color: #C8E6C9;
+            margin-bottom: 5px;
+        }
+        
+        .file-category ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .file-category li {
+            margin-bottom: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🫧 PWA Asset Generator</h1>
+        
+        <div class="instructions">
+            <h2>📋 使用方法</h2>
+            <ol>
+                <li><strong>プレビュー確認:</strong> "Preview Icons"ボタンでアイコンデザインを確認</li>
+                <li><strong>アセット生成:</strong> "Generate All Assets"ボタンで全アイコンを生成・ダウンロード</li>
+                <li><strong>ファイル配置:</strong> ダウンロードしたファイルを適切なディレクトリに配置</li>
+                <li><strong>manifest.json更新:</strong> 必要に応じて設定を調整</li>
+            </ol>
+        </div>
+        
+        <div class="note">
+            <strong>注意:</strong> このツールはブラウザ内でCanvas APIを使用してアイコンを生成します。
+            生成されたファイルは自動的にダウンロードされますが、手動でプロジェクトディレクトリに配置する必要があります。
+        </div>
+        
+        <div class="center">
+            <button onclick="showPreview()">👀 Preview Icons</button>
+            <button onclick="generateAssets()">⚡ Generate All Assets</button>
+            <button onclick="openInstructions()">📖 Detailed Instructions</button>
+        </div>
+        
+        <div class="file-list">
+            <h3>📁 Generated Files</h3>
+            
+            <div class="file-category">
+                <h4>Standard PWA Icons (/assets/icons/)</h4>
+                <ul>
+                    <li>icon-72x72.png</li>
+                    <li>icon-96x96.png</li>
+                    <li>icon-128x128.png</li>
+                    <li>icon-144x144.png</li>
+                    <li>icon-152x152.png</li>
+                    <li>icon-192x192.png</li>
+                    <li>icon-384x384.png</li>
+                    <li>icon-512x512.png</li>
+                </ul>
+            </div>
+            
+            <div class="file-category">
+                <h4>Maskable Icons (/assets/icons/)</h4>
+                <ul>
+                    <li>icon-maskable-192x192.png</li>
+                    <li>icon-maskable-512x512.png</li>
+                </ul>
+            </div>
+            
+            <div class="file-category">
+                <h4>Favicons (Root directory /)</h4>
+                <ul>
+                    <li>favicon-16x16.png</li>
+                    <li>favicon-32x32.png</li>
+                </ul>
+            </div>
+            
+            <div class="file-category">
+                <h4>Apple Touch Icons (Root directory /)</h4>
+                <ul>
+                    <li>apple-touch-icon-57x57.png</li>
+                    <li>apple-touch-icon-60x60.png</li>
+                    <li>apple-touch-icon-72x72.png</li>
+                    <li>apple-touch-icon-76x76.png</li>
+                    <li>apple-touch-icon-114x114.png</li>
+                    <li>apple-touch-icon-120x120.png</li>
+                    <li>apple-touch-icon-144x144.png</li>
+                    <li>apple-touch-icon-152x152.png</li>
+                    <li>apple-touch-icon-180x180.png</li>
+                </ul>
+            </div>
+            
+            <div class="file-category">
+                <h4>Shortcut Icons (/assets/icons/)</h4>
+                <ul>
+                    <li>shortcut-play.png</li>
+                    <li>shortcut-stats.png</li>
+                    <li>shortcut-settings.png</li>
+                    <li>shortcut-achievements.png</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="warning">
+            <strong>重要:</strong> アセット生成後、以下の作業が必要です：<br>
+            1. 生成されたファイルを適切なディレクトリに配置<br>
+            2. manifest.jsonの参照パスが正しいことを確認<br>
+            3. index.htmlのfaviconとApple Touch Iconの参照を追加<br>
+            4. PWA機能のテストを実行
+        </div>
+        
+        <div class="status" id="status">
+            Ready to generate PWA assets
+        </div>
+    </div>
+    
+    <script type="module">
+        import { getPWAAssetGenerator } from '../src/utilities/PWAAssetGenerator.js';
+        
+        let generator = null;
+        
+        // 初期化
+        function init() {
+            try {
+                generator = getPWAAssetGenerator();
+                updateStatus('PWA Asset Generator ready', 'success');
+            } catch (error) {
+                updateStatus('Error initializing generator: ' + error.message, 'error');
+                console.error('Initialization error:', error);
+            }
+        }
+        
+        // ステータス更新
+        function updateStatus(message, type = 'info') {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = message;
+            
+            const colors = {
+                info: '#E8F5E8',
+                success: '#4CAF50',
+                error: '#f44336',
+                warning: '#FF9800'
+            };
+            
+            statusEl.style.color = colors[type] || colors.info;
+        }
+        
+        // プレビュー表示
+        window.showPreview = function() {
+            if (!generator) {
+                updateStatus('Generator not initialized', 'error');
+                return;
+            }
+            
+            updateStatus('Generating preview...', 'info');
+            
+            try {
+                // プレビューコンテナを作成
+                let previewContainer = document.getElementById('preview-container');
+                if (!previewContainer) {
+                    previewContainer = document.createElement('div');
+                    previewContainer.id = 'preview-container';
+                    previewContainer.style.cssText = `
+                        background: rgba(255, 255, 255, 0.1);
+                        padding: 20px;
+                        border-radius: 10px;
+                        margin: 20px 0;
+                        text-align: center;
+                    `;
+                    document.querySelector('.container').appendChild(previewContainer);
+                }
+                
+                previewContainer.innerHTML = '<h3>🎨 Icon Preview</h3><div id="preview-icons" style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;"></div>';
+                
+                const previewIcons = document.getElementById('preview-icons');
+                
+                const previews = [
+                    { size: 192, label: 'PWA 192px', maskable: false },
+                    { size: 192, label: 'Maskable 192px', maskable: true },
+                    { size: 512, label: 'PWA 512px', maskable: false },
+                    { size: 32, label: 'Favicon 32px', maskable: false }
+                ];
+                
+                previews.forEach(({ size, label, maskable }) => {
+                    const canvas = generator.previewIcon(size, maskable);
+                    canvas.style.cssText = `
+                        width: 80px;
+                        height: 80px;
+                        border: 2px solid rgba(255, 255, 255, 0.3);
+                        border-radius: 8px;
+                        background: rgba(255, 255, 255, 0.1);
+                    `;
+                    
+                    const wrapper = document.createElement('div');
+                    wrapper.style.cssText = 'text-align: center; margin: 10px;';
+                    
+                    const labelEl = document.createElement('div');
+                    labelEl.textContent = label;
+                    labelEl.style.cssText = 'font-size: 12px; margin-top: 8px; color: #E8F5E8;';
+                    
+                    wrapper.appendChild(canvas);
+                    wrapper.appendChild(labelEl);
+                    previewIcons.appendChild(wrapper);
+                });
+                
+                updateStatus('Preview generated successfully!', 'success');
+                
+            } catch (error) {
+                updateStatus('Error generating preview: ' + error.message, 'error');
+                console.error('Preview error:', error);
+            }
+        };
+        
+        // アセット生成
+        window.generateAssets = async function() {
+            if (!generator) {
+                updateStatus('Generator not initialized', 'error');
+                return;
+            }
+            
+            updateStatus('Generating assets... (this may take a few moments)', 'warning');
+            
+            // generate-pwa-assets.jsを動的にロード
+            try {
+                await import('./generate-pwa-assets.js');
+                // 自動初期化される
+                updateStatus('Asset generator UI loaded. Check the popup for progress.', 'success');
+            } catch (error) {
+                updateStatus('Error loading asset generator: ' + error.message, 'error');
+                console.error('Asset generator error:', error);
+            }
+        };
+        
+        // 詳細説明を開く
+        window.openInstructions = function() {
+            const instructions = `
+PWA Asset Generator - 詳細手順
+
+1. アセット生成:
+   - "Generate All Assets"をクリック
+   - 生成されたファイルがダウンロードされます
+
+2. ファイル配置:
+   /assets/icons/ フォルダに以下を配置:
+   - icon-*.png (標準PWAアイコン)
+   - icon-maskable-*.png (マスカブルアイコン)
+   - shortcut-*.png (ショートカットアイコン)
+   
+   ルートディレクトリに以下を配置:
+   - favicon-*.png (ファビコン)
+   - apple-touch-icon-*.png (Apple Touch Icons)
+
+3. HTMLファイル更新:
+   index.htmlの<head>に以下を追加:
+   
+   <!-- Favicons -->
+   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+   
+   <!-- Apple Touch Icons -->
+   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+   <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+   <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+   <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+   <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+   <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+   <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+   <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+   <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+
+4. テスト:
+   - ブラウザでPWA機能をテスト
+   - Lighthouse監査でPWAスコアを確認
+   - 各デバイスでアイコン表示を確認
+
+詳細な手順については .kiro/specs/pwa-implementation-issue-33/ を参照してください。
+            `;
+            
+            alert(instructions);
+        };
+        
+        // 初期化実行
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA Icon Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #4CAF50;
+            text-align: center;
+        }
+        .icon-preview {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .icon-item {
+            text-align: center;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+        .icon-item canvas {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .icon-item h3 {
+            margin: 10px 0 5px 0;
+            font-size: 14px;
+            color: #333;
+        }
+        .icon-item p {
+            margin: 0;
+            font-size: 12px;
+            color: #666;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .controls {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .status {
+            background: #e8f5e9;
+            border: 1px solid #4CAF50;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #2e7d32;
+        }
+        .instructions {
+            background: #fff3e0;
+            border: 1px solid #ff9800;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #e65100;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🫧 PWA Icon Generator</h1>
+        
+        <div class="instructions">
+            <strong>使用方法:</strong><br>
+            1. "Generate Icons"ボタンを押してアイコンを生成<br>
+            2. 各アイコンの"Download"ボタンでファイルをダウンロード<br>
+            3. ダウンロードしたファイルを assets/icons/ フォルダに配置
+        </div>
+        
+        <div class="controls">
+            <button onclick="generateIcons()">🎨 Generate Icons</button>
+            <button onclick="downloadAll()">⬇️ Download All</button>
+        </div>
+        
+        <div id="status" class="status" style="display: none;"></div>
+        
+        <div id="iconPreview" class="icon-preview"></div>
+    </div>
+
+    <script>
+        let generatedIcons = new Map();
+        
+        function showStatus(message, isError = false) {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = message;
+            statusEl.style.display = 'block';
+            statusEl.style.background = isError ? '#ffebee' : '#e8f5e9';
+            statusEl.style.color = isError ? '#c62828' : '#2e7d32';
+            statusEl.style.borderColor = isError ? '#f44336' : '#4CAF50';
+        }
+        
+        function drawBubbleIcon(ctx, size, maskable = false) {
+            // 背景をクリア
+            ctx.clearRect(0, 0, size, size);
+            
+            // マスカブルアイコンの場合、安全領域を考慮（80%のサイズに）
+            const safeArea = maskable ? 0.8 : 1.0;
+            const bubbleSize = size * safeArea;
+            const offset = (size - bubbleSize) / 2;
+            
+            // グラデーション背景（BubblePopのテーマカラー）
+            const gradient = ctx.createRadialGradient(
+                size / 2, size / 2, 0,
+                size / 2, size / 2, bubbleSize / 2
+            );
+            gradient.addColorStop(0, '#4CAF50');
+            gradient.addColorStop(0.7, '#2E7D32');
+            gradient.addColorStop(1, '#1B5E20');
+            
+            // メインの泡を描画
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(size / 2, size / 2, bubbleSize / 2 - 2, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // ハイライト効果
+            const highlightGradient = ctx.createRadialGradient(
+                size / 2 - bubbleSize / 6, size / 2 - bubbleSize / 6, 0,
+                size / 2 - bubbleSize / 6, size / 2 - bubbleSize / 6, bubbleSize / 4
+            );
+            highlightGradient.addColorStop(0, 'rgba(255, 255, 255, 0.8)');
+            highlightGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+            
+            ctx.fillStyle = highlightGradient;
+            ctx.beginPath();
+            ctx.arc(size / 2 - bubbleSize / 6, size / 2 - bubbleSize / 6, bubbleSize / 4, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // 小さな装飾泡
+            const decorBubbles = [
+                { x: 0.7, y: 0.3, size: 0.12, alpha: 0.6 },
+                { x: 0.8, y: 0.7, size: 0.08, alpha: 0.5 },
+                { x: 0.3, y: 0.8, size: 0.1, alpha: 0.4 }
+            ];
+            
+            decorBubbles.forEach(bubble => {
+                const x = size * bubble.x;
+                const y = size * bubble.y;
+                const r = bubbleSize * bubble.size;
+                
+                // バブルが境界内にある場合のみ描画
+                if (x - r > offset && x + r < size - offset && 
+                    y - r > offset && y + r < size - offset) {
+                    
+                    ctx.fillStyle = `rgba(255, 255, 255, ${bubble.alpha})`;
+                    ctx.beginPath();
+                    ctx.arc(x, y, r, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // 小さなハイライト
+                    ctx.fillStyle = `rgba(255, 255, 255, ${bubble.alpha * 0.8})`;
+                    ctx.beginPath();
+                    ctx.arc(x - r/3, y - r/3, r/3, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            });
+            
+            // ゲーム名テキスト（大きなアイコンの場合のみ）
+            if (size >= 192) {
+                const fontSize = Math.max(size * 0.08, 12);
+                ctx.font = `bold ${fontSize}px Arial, sans-serif`;
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                // テキストに影を追加
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+                ctx.shadowBlur = 2;
+                ctx.shadowOffsetX = 1;
+                ctx.shadowOffsetY = 1;
+                
+                ctx.fillText('BubblePop', size / 2, size * 0.85);
+                
+                // 影をリセット
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+            }
+        }
+        
+        function createIconCanvas(size, maskable = false) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            drawBubbleIcon(ctx, size, maskable);
+            
+            return canvas;
+        }
+        
+        function downloadCanvas(canvas, filename) {
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 'image/png');
+        }
+        
+        function generateIcons() {
+            showStatus('Generating icons...');
+            
+            const icons = [
+                { size: 192, filename: 'icon-192x192.png', label: 'PWA 192x192', maskable: false },
+                { size: 512, filename: 'icon-512x512.png', label: 'PWA 512x512', maskable: false }
+            ];
+            
+            const previewContainer = document.getElementById('iconPreview');
+            previewContainer.innerHTML = '';
+            generatedIcons.clear();
+            
+            icons.forEach(iconConfig => {
+                const canvas = createIconCanvas(iconConfig.size, iconConfig.maskable);
+                generatedIcons.set(iconConfig.filename, canvas);
+                
+                // プレビュー表示用のキャンバス
+                const previewCanvas = createIconCanvas(iconConfig.size, iconConfig.maskable);
+                previewCanvas.style.width = '80px';
+                previewCanvas.style.height = '80px';
+                
+                const iconItem = document.createElement('div');
+                iconItem.className = 'icon-item';
+                iconItem.innerHTML = `
+                    <h3>${iconConfig.label}</h3>
+                    <p>${iconConfig.size}x${iconConfig.size}px</p>
+                    <button onclick="downloadCanvas(generatedIcons.get('${iconConfig.filename}'), '${iconConfig.filename}')">
+                        Download
+                    </button>
+                `;
+                
+                iconItem.insertBefore(previewCanvas, iconItem.querySelector('button'));
+                previewContainer.appendChild(iconItem);
+            });
+            
+            showStatus(`Successfully generated ${icons.length} icons!`);
+        }
+        
+        function downloadAll() {
+            if (generatedIcons.size === 0) {
+                showStatus('Please generate icons first!', true);
+                return;
+            }
+            
+            showStatus('Downloading all icons...');
+            
+            generatedIcons.forEach((canvas, filename) => {
+                setTimeout(() => {
+                    downloadCanvas(canvas, filename);
+                }, 100 * Array.from(generatedIcons.keys()).indexOf(filename));
+            });
+            
+            showStatus(`Downloaded ${generatedIcons.size} icons!`);
+        }
+        
+        // 初期生成
+        window.onload = function() {
+            generateIcons();
+        };
+    </script>
+</body>
+</html>
