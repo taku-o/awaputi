@@ -1,0 +1,16 @@
+Favicon - favicon-16x16.png
+Dimensions: 16×16px
+Purpose: Standard browser tab icon
+Generated: 2025-07-31T11:14:05.410Z
+
+Favicon Specifications:
+- Optimized for browser tab display
+- High contrast design for small size visibility
+- Bubble-themed design consistent with PWA icons
+- Cross-browser compatibility
+
+HTML usage:
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+To convert to PNG:
+sips -s format png favicon-16x16.svg --out favicon-16x16.png

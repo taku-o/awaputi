@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+        <defs>
+            <!-- Background gradient for favicon -->
+            <radialGradient id="faviconBg-32" cx="50%" cy="50%" r="70%">
+                <stop offset="0%" style="stop-color:#81C784"/>
+                <stop offset="50%" style="stop-color:#66BB6A"/>
+                <stop offset="100%" style="stop-color:#4CAF50"/>
+            </radialGradient>
+            
+            <!-- Main bubble gradient -->
+            <radialGradient id="faviconBubble-32" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" style="stop-color:#E8F5E8"/>
+                <stop offset="30%" style="stop-color:#C8E6C9"/>
+                <stop offset="70%" style="stop-color:#A5D6A7"/>
+                <stop offset="100%" style="stop-color:#81C784"/>
+            </radialGradient>
+            
+            <!-- Highlight gradient -->
+            <radialGradient id="faviconHighlight-32" cx="40%" cy="30%" r="50%">
+                <stop offset="0%" style="stop-color:rgba(255,255,255,0.9)"/>
+                <stop offset="100%" style="stop-color:rgba(255,255,255,0)"/>
+            </radialGradient>
+        </defs>
+        
+        <!-- Background -->
+        <rect width="32" height="32" rx="3.2" fill="url(#faviconBg-32)"/>
+        
+        <!-- Main bubble -->
+        <circle cx="16" cy="16" r="11.2" 
+                fill="url(#faviconBubble-32)"/>
+        
+        <!-- Main highlight -->
+        <circle cx="12.64" cy="12.64" 
+                r="4.4799999999999995" 
+                fill="url(#faviconHighlight-32)"/>
+        
+        <!-- Small decorative bubbles -->
+        <circle cx="22.72" cy="11.52" 
+                r="1.68" 
+                fill="rgba(255,255,255,0.7)"/>
+        <circle cx="20.48" cy="22.72" 
+                r="1.344" 
+                fill="rgba(255,255,255,0.6)"/>
+    </svg>
