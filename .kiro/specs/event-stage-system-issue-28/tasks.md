@@ -62,7 +62,7 @@
   - コミュニティイベント設定を実装してcommunityGoalsとsharedRewardsの特別ルール
   - _Requirements: 2.1, 2.2, 2.3, 2.4_
 
-- [ ] 11. イベント報酬システムを実装
+- [x] 11. イベント報酬システムを実装
   - grantEventRewards()メソッドを拡張してイベント限定報酬の付与処理
   - calculateEventBonus()メソッドを実装してイベント固有のボーナス計算
   - trackEventAchievements()メソッドを実装してイベント実績の追跡

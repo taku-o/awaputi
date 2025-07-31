@@ -1,6 +1,8 @@
 /**
  * イベントステージ管理クラス
  */
+import { EventRankingManager } from './EventRankingManager.js';
+
 export class EventStageManager {
     constructor(gameEngine) {
         this.gameEngine = gameEngine;
@@ -28,11 +30,23 @@ export class EventStageManager {
             }
         };
         
+        // ランキングシステムを初期化
+        this.eventRankingManager = null; // 遅延初期化
+        
         // 定期的に季節イベントをチェック
         this.seasonalCheckInterval = null;
         this.notificationCheckInterval = null;
         this.startSeasonalEventChecking();
         this.startNotificationChecking();
+    }
+    /**
+     * EventRankingManagerを遅延初期化
+     */
+    initializeRankingManager() {
+        if (!this.eventRankingManager) {
+            this.eventRankingManager = new EventRankingManager(this.gameEngine);
+        }
+        return this.eventRankingManager;
     }
     
     /**
@@ -1144,6 +1158,11 @@ export class EventStageManager {
         // 完了報酬を付与
         this.grantEventRewards(event, finalScore, stats);
         
+        // ランキングを更新
+        const rankingManager = this.initializeRankingManager();
+        const playerId = this.gameEngine.playerData.getPlayerId();
+        rankingManager.updateEventRanking(eventId, playerId, finalScore, stats);
+        
         // 履歴を更新
         const historyEntry = this.eventHistory.find(entry => 
             entry.eventId === eventId && !entry.completed
@@ -1156,6 +1175,51 @@ export class EventStageManager {
         }
         
         console.log(`Event stage completed: ${event.name}, Score: ${finalScore}`);
+    }
+
+    /**
+     * イベントランキングを取得
+     */
+    getEventRanking(eventId, limit = 10, offset = 0) {
+        const rankingManager = this.initializeRankingManager();
+        return rankingManager.getEventLeaderboard(eventId, limit, offset);
+    }
+    
+    /**
+     * プレイヤーのイベントランキング情報を取得
+     */
+    getPlayerEventRanking(eventId, playerId = null) {
+        const rankingManager = this.initializeRankingManager();
+        const actualPlayerId = playerId || this.gameEngine.playerData.getPlayerId();
+        return rankingManager.getPlayerEventRanking(actualPlayerId, eventId);
+    }
+    
+    /**
+     * イベント終了時にランキング報酬を配布
+     */
+    distributeEventRankingRewards(eventId) {
+        const rankingManager = this.initializeRankingManager();
+        return rankingManager.distributeRankingRewards(eventId);
+    }
+    
+    /**
+     * 全アクティブイベントのランキング報酬を配布
+     */
+    distributeAllRankingRewards() {
+        const rankingManager = this.initializeRankingManager();
+        let distributedCount = 0;
+        
+        Object.keys(this.eventStages).forEach(eventId => {
+            if (!this.isEventAvailable(eventId)) {
+                // 終了したイベントの報酬配布
+                if (rankingManager.distributeRankingRewards(eventId)) {
+                    distributedCount++;
+                }
+            }
+        });
+        
+        console.log(`Ranking rewards distributed for ${distributedCount} events`);
+        return distributedCount;
     }
     
     /**
