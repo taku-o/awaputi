@@ -1162,48 +1162,716 @@ export class EventStageManager {
      * イベント報酬を付与
      */
     grantEventRewards(event, finalScore, stats) {
-        const rewards = event.rewards;
+        const rewards = event.rewards || {};
+        const eventBonus = this.calculateEventBonus(event, finalScore, stats);
         let totalAP = 0;
+        let grantedItems = [];
+        let specialRewards = [];
+        
+        // 基本参加報酬
+        if (rewards.participation) {
+            totalAP += rewards.participation.ap || 0;
+            if (rewards.participation.items) {
+                grantedItems.push(...rewards.participation.items);
+            }
+        }
         
         // 完了報酬
-        if (rewards.completion) {
-            totalAP += rewards.completion.ap || 0;
+        if (rewards.completion && stats.completed) {
+            const completionAP = rewards.completion.ap || 0;
+            totalAP += Math.floor(completionAP * eventBonus.completionMultiplier);
+            
+            if (rewards.completion.items) {
+                grantedItems.push(...rewards.completion.items);
+            }
         }
         
         // ハイスコア報酬
         if (rewards.highScore && finalScore >= rewards.highScore.threshold) {
-            totalAP += rewards.highScore.ap || 0;
+            const highScoreAP = rewards.highScore.ap || 0;
+            totalAP += Math.floor(highScoreAP * eventBonus.scoreMultiplier);
+            
+            if (rewards.highScore.items) {
+                grantedItems.push(...rewards.highScore.items);
+            }
         }
         
-        // 特殊条件報酬
-        if (rewards.survivalBonus && stats.survived) {
-            totalAP += rewards.survivalBonus.ap || 0;
+        // パフォーマンス依存報酬
+        this.grantPerformanceRewards(rewards, stats, eventBonus, (ap, items) => {
+            totalAP += ap;
+            if (items) grantedItems.push(...items);
+        });
+        
+        // 季節・特別イベント限定報酬
+        this.grantSeasonalSpecialRewards(event, eventBonus, (ap, items, special) => {
+            totalAP += ap;
+            if (items) grantedItems.push(...items);
+            if (special) specialRewards.push(...special);
+        });
+        
+        // イベント固有の実績報酬
+        const achievementRewards = this.trackEventAchievements(event.id, finalScore, stats);
+        totalAP += achievementRewards.ap;
+        grantedItems.push(...achievementRewards.items);
+        specialRewards.push(...achievementRewards.special);
+        
+        // 特別報酬モードのボーナス
+        if (this.specialRewardModes && this.specialRewardModes[event.id]) {
+            const mode = this.specialRewardModes[event.id];
+            totalAP = Math.floor(totalAP * mode.multiplier);
+            grantedItems.push(...(mode.bonusItems || []));
         }
         
-        if (rewards.chainMaster && stats.maxChain >= rewards.chainMaster.chains) {
-            totalAP += rewards.chainMaster.ap || 0;
+        // ボーナス報酬モードのボーナス
+        if (this.bonusRewardModes && this.bonusRewardModes[event.id]) {
+            const mode = this.bonusRewardModes[event.id];
+            totalAP = Math.floor(totalAP * mode.apMultiplier);
+            
+            // レアアイテム抽選
+            if (Math.random() < mode.rareItemChance) {
+                const rareItems = this.getRareEventItems(event.type, event.season);
+                grantedItems.push(...rareItems);
+            }
         }
         
-        if (rewards.perfectSpeed && stats.targetReached && stats.timeRemaining > 0) {
-            totalAP += rewards.perfectSpeed.ap || 0;
+        // 報酬を実際に付与
+        this.applyRewards(totalAP, grantedItems, specialRewards, event);
+        
+        // 報酬付与の記録
+        this.recordRewardGrant(event.id, {
+            ap: totalAP,
+            items: grantedItems,
+            special: specialRewards,
+            timestamp: Date.now(),
+            finalScore,
+            stats
+        });
+        
+        return {
+            ap: totalAP,
+            items: grantedItems,
+            special: specialRewards,
+            bonus: eventBonus
+        };
+    }
+
+    /**
+     * イベント固有のボーナス計算
+     */
+    calculateEventBonus(event, finalScore, stats) {
+        const bonus = {
+            completionMultiplier: 1.0,
+            scoreMultiplier: 1.0,
+            timeMultiplier: 1.0,
+            performanceMultiplier: 1.0,
+            seasonalMultiplier: 1.0,
+            rarityMultiplier: 1.0
+        };
+        
+        // イベントタイプ別ボーナス
+        switch (event.type) {
+            case 'seasonal':
+                bonus.seasonalMultiplier = this.calculateSeasonalBonus(event.season);
+                break;
+            case 'special':
+                bonus.rarityMultiplier = 1.5; // 特別イベントは希少性ボーナス
+                break;
+            case 'challenge':
+                bonus.performanceMultiplier = this.calculateChallengeBonus(event, stats);
+                break;
+            case 'limited_time':
+                bonus.timeMultiplier = this.calculateTimeLimitedBonus(event);
+                break;
         }
         
-        if (rewards.ironWill && stats.lowHpSurvival) {
-            totalAP += rewards.ironWill.ap || 0;
+        // スコア依存ボーナス
+        if (event.rewards?.highScore) {
+            const threshold = event.rewards.highScore.threshold;
+            if (finalScore > threshold * 1.5) {
+                bonus.scoreMultiplier = 2.0; // 期待値の150%超で2倍
+            } else if (finalScore > threshold * 1.2) {
+                bonus.scoreMultiplier = 1.5; // 期待値の120%超で1.5倍
+            }
         }
         
-        // 特別報酬
-        if (rewards.anniversary) {
-            totalAP += rewards.anniversary.ap || 0;
-            // 特別バッジなどの処理
+        // 完了時間によるボーナス
+        if (stats.timeRemaining && event.duration) {
+            const remainingRatio = stats.timeRemaining / event.duration;
+            if (remainingRatio > 0.5) {
+                bonus.timeMultiplier = 1.3; // 時間の半分以上残してクリア
+            } else if (remainingRatio > 0.2) {
+                bonus.timeMultiplier = 1.1; // 時間の20%以上残してクリア
+            }
         }
         
+        // 特殊パフォーマンスボーナス
+        if (stats.perfectRun) bonus.performanceMultiplier *= 1.5;
+        if (stats.noHitRun) bonus.performanceMultiplier *= 1.3;
+        if (stats.maxChain > 10) bonus.performanceMultiplier *= (1 + (stats.maxChain - 10) * 0.1);
+        
+        return bonus;
+    }
+    
+    /**
+     * 季節ボーナスを計算
+     */
+    calculateSeasonalBonus(season) {
+        const currentSeason = this.getCurrentSeason();
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth() + 1;
+        
+        // 実際の季節と一致している場合にボーナス
+        if (season === currentSeason) {
+            return 1.4; // 季節一致ボーナス
+        }
+        
+        // 特別な期間のボーナス
+        if (season === 'winter' && (currentMonth === 12 || currentMonth === 1)) {
+            return 1.6; // 年末年始ボーナス
+        }
+        
+        if (season === 'spring' && currentMonth === 4) {
+            return 1.5; // 桜シーズンボーナス
+        }
+        
+        return 1.2; // 季節イベント基本ボーナス
+    }
+    
+    /**
+     * チャレンジボーナスを計算
+     */
+    calculateChallengeBonus(event, stats) {
+        let multiplier = 1.0;
+        
+        // チャレンジ固有の条件達成ボーナス
+        const specialRules = event.specialRules || {};
+        
+        if (specialRules.targetBubbles && stats.bubblesPopped >= specialRules.targetBubbles) {
+            multiplier *= 1.5; // 目標達成ボーナス
+        }
+        
+        if (specialRules.survivalMode && stats.survived) {
+            multiplier *= 2.0; // サバイバル成功ボーナス
+        }
+        
+        if (specialRules.timeAttack && stats.timeRemaining > 0) {
+            const efficiency = stats.timeRemaining / event.duration;
+            multiplier *= (1 + efficiency); // 時間効率ボーナス
+        }
+        
+        // 難易度に応じたボーナス
+        if (stats.difficulty > 1.0) {
+            multiplier *= stats.difficulty;
+        }
+        
+        return multiplier;
+    }
+    
+    /**
+     * 期間限定ボーナスを計算
+     */
+    calculateTimeLimitedBonus(event) {
+        const now = Date.now();
+        const startTime = event.availability?.activatedAt || now;
+        const duration = event.availability?.duration || (7 * 24 * 60 * 60 * 1000); // デフォルト1週間
+        
+        const elapsed = now - startTime;
+        const remaining = duration - elapsed;
+        
+        if (remaining < 24 * 60 * 60 * 1000) { // 残り24時間未満
+            return 1.8; // ラストチャンスボーナス
+        } else if (remaining < 3 * 24 * 60 * 60 * 1000) { // 残り3日未満
+            return 1.4; // 終了間近ボーナス
+        } else if (elapsed < 24 * 60 * 60 * 1000) { // 開始24時間以内
+            return 1.3; // 早期参加ボーナス
+        }
+        
+        return 1.1; // 基本期間限定ボーナス
+    }
+
+    /**
+     * イベント実績の追跡
+     */
+    trackEventAchievements(eventId, finalScore, stats) {
+        const rewards = {
+            ap: 0,
+            items: [],
+            special: []
+        };
+        
+        // イベント実績定義
+        const eventAchievements = this.getEventAchievements(eventId);
+        const completedAchievements = [];
+        
+        eventAchievements.forEach(achievement => {
+            if (this.checkEventAchievementCompleted(achievement, finalScore, stats)) {
+                completedAchievements.push(achievement);
+                rewards.ap += achievement.reward.ap || 0;
+                
+                if (achievement.reward.items) {
+                    rewards.items.push(...achievement.reward.items);
+                }
+                
+                if (achievement.reward.special) {
+                    rewards.special.push(achievement.reward.special);
+                }
+                
+                // 通知システムに実績解除を通知
+                if (this.gameEngine.achievementNotificationSystem) {
+                    this.gameEngine.achievementNotificationSystem.queueNotification({
+                        type: 'achievement',
+                        title: '実績解除！',
+                        message: achievement.name,
+                        icon: achievement.icon || '🏆',
+                        duration: 4000
+                    });
+                }
+            }
+        });
+        
+        // 実績データを永続化
+        if (completedAchievements.length > 0) {
+            this.saveEventAchievements(eventId, completedAchievements);
+        }
+        
+        return rewards;
+    }
+    
+    /**
+     * イベント固有の実績定義を取得
+     */
+    getEventAchievements(eventId) {
+        const event = this.eventStages[eventId];
+        if (!event) return [];
+        
+        const achievements = [];
+        
+        // イベントタイプ別実績
+        switch (event.type) {
+            case 'seasonal':
+                achievements.push(...this.getSeasonalAchievements(event.season));
+                break;
+            case 'challenge':
+                achievements.push(...this.getChallengeAchievements(eventId));
+                break;
+            case 'special':
+                achievements.push(...this.getSpecialEventAchievements(eventId));
+                break;
+            case 'limited_time':
+                achievements.push(...this.getLimitedTimeAchievements(eventId));
+                break;
+        }
+        
+        // 共通イベント実績
+        achievements.push(
+            {
+                id: `${eventId}_first_clear`,
+                name: `${event.name}初回クリア`,
+                description: `${event.name}を初めてクリアしました`,
+                icon: '🎉',
+                condition: 'first_completion',
+                reward: { ap: 100, items: [`${eventId}_first_clear_badge`] }
+            },
+            {
+                id: `${eventId}_perfect_score`,
+                name: `${event.name}完璧な成績`,
+                description: `${event.name}で期待スコアの200%を達成`,
+                icon: '💎',
+                condition: 'score_ratio_200',
+                reward: { ap: 300, special: `${eventId}_perfect_trophy` }
+            },
+            {
+                id: `${eventId}_speed_clear`,
+                name: `${event.name}高速クリア`,
+                description: `${event.name}を時間の70%以上残してクリア`,
+                icon: '⚡',
+                condition: 'fast_completion',
+                reward: { ap: 200, items: [`${eventId}_speed_badge`] }
+            }
+        );
+        
+        return achievements;
+    }
+    
+    /**
+     * 季節イベント実績を取得
+     */
+    getSeasonalAchievements(season) {
+        const achievements = [];
+        
+        switch (season) {
+            case 'spring':
+                achievements.push(
+                    {
+                        id: 'spring_cherry_master',
+                        name: '桜の達人',
+                        description: '春イベントでピンク泡を50個破壊',
+                        icon: '🌸',
+                        condition: 'pink_bubbles_50',
+                        reward: { ap: 150, items: ['cherry_crown'] }
+                    }
+                );
+                break;
+            case 'summer':
+                achievements.push(
+                    {
+                        id: 'summer_fireworks_master',
+                        name: '花火の芸術家',
+                        description: '夏イベントで爆発連鎖を10回達成',
+                        icon: '🎆',
+                        condition: 'explosion_chains_10',
+                        reward: { ap: 200, items: ['fireworks_master_badge'] }
+                    }
+                );
+                break;
+            case 'autumn':
+                achievements.push(
+                    {
+                        id: 'autumn_harvest_master',
+                        name: '収穫の達人',
+                        description: '秋イベントでゴールデン泡を30個破壊',
+                        icon: '🍂',
+                        condition: 'golden_bubbles_30',
+                        reward: { ap: 175, items: ['harvest_trophy'] }
+                    }
+                );
+                break;
+            case 'winter':
+                achievements.push(
+                    {
+                        id: 'winter_ice_master',
+                        name: '氷の支配者',
+                        description: '冬イベントで凍結泡を40個破壊',
+                        icon: '❄️',
+                        condition: 'frozen_bubbles_40',
+                        reward: { ap: 180, items: ['ice_crown'] }
+                    }
+                );
+                break;
+        }
+        
+        return achievements;
+    }
+    
+    /**
+     * チャレンジイベント実績を取得
+     */
+    getChallengeAchievements(eventId) {
+        const achievements = [];
+        
+        if (eventId === 'speedChallenge') {
+            achievements.push(
+                {
+                    id: 'speed_demon',
+                    name: 'スピードデーモン',
+                    description: 'スピードチャレンジを90秒以内でクリア',
+                    icon: '👹',
+                    condition: 'time_under_90',
+                    reward: { ap: 400, special: 'speed_demon_title' }
+                }
+            );
+        }
+        
+        if (eventId === 'survivalHell') {
+            achievements.push(
+                {
+                    id: 'survivor',
+                    name: '究極のサバイバー',
+                    description: 'サバイバル地獄でHP10以下で生存',
+                    icon: '💀',
+                    condition: 'low_hp_survival',
+                    reward: { ap: 500, special: 'survivor_legend_title' }
+                }
+            );
+        }
+        
+        return achievements;
+    }
+    
+    /**
+     * 特別イベント実績を取得
+     */
+    getSpecialEventAchievements(eventId) {
+        const achievements = [];
+        
+        if (eventId === 'anniversary') {
+            achievements.push(
+                {
+                    id: 'anniversary_legend',
+                    name: 'アニバーサリーレジェンド',
+                    description: 'アニバーサリーイベントで全泡種類を破壊',
+                    icon: '👑',
+                    condition: 'all_bubble_types',
+                    reward: { ap: 1000, special: 'anniversary_legend_crown' }
+                }
+            );
+        }
+        
+        return achievements;
+    }
+    
+    /**
+     * 期間限定イベント実績を取得
+     */
+    getLimitedTimeAchievements(eventId) {
+        const achievements = [];
+        
+        // 期間限定イベント共通実績
+        achievements.push(
+            {
+                id: `${eventId}_early_bird`,
+                name: 'アーリーバード',
+                description: 'イベント開始24時間以内に参加',
+                icon: '🐦',
+                condition: 'early_participation',
+                reward: { ap: 150, items: ['early_bird_badge'] }
+            }
+        );
+        
+        return achievements;
+    }
+    
+    /**
+     * 実績達成条件をチェック
+     */
+    checkEventAchievementCompleted(achievement, finalScore, stats) {
+        switch (achievement.condition) {
+            case 'first_completion':
+                return !this.hasCompletedEvent(achievement.id);
+            case 'score_ratio_200':
+                return this.getScoreRatio(finalScore, achievement.eventId) >= 2.0;
+            case 'fast_completion':
+                return stats.timeRemainingRatio >= 0.7;
+            case 'pink_bubbles_50':
+                return stats.pinkBubblesPopped >= 50;
+            case 'explosion_chains_10':
+                return stats.explosionChains >= 10;
+            case 'golden_bubbles_30':
+                return stats.goldenBubblesPopped >= 30;
+            case 'frozen_bubbles_40':
+                return stats.frozenBubblesPopped >= 40;
+            case 'time_under_90':
+                return stats.completionTime <= 90000;
+            case 'low_hp_survival':
+                return stats.minHP <= 10 && stats.survived;
+            case 'all_bubble_types':
+                return stats.uniqueBubbleTypes >= 20;
+            case 'early_participation':
+                return this.isEarlyParticipation(achievement.eventId);
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * パフォーマンス依存報酬を付与
+     */
+    grantPerformanceRewards(rewards, stats, eventBonus, callback) {
+        let totalAP = 0;
+        let items = [];
+        
+        // 各種パフォーマンス報酬
+        const performanceRewards = [
+            { key: 'survivalBonus', condition: () => stats.survived },
+            { key: 'chainMaster', condition: () => stats.maxChain >= (rewards.chainMaster?.chains || 5) },
+            { key: 'perfectSpeed', condition: () => stats.targetReached && stats.timeRemaining > 0 },
+            { key: 'ironWill', condition: () => stats.lowHpSurvival },
+            { key: 'noHit', condition: () => stats.damagesTaken === 0 },
+            { key: 'comboMaster', condition: () => stats.maxCombo >= 20 }
+        ];
+        
+        performanceRewards.forEach(reward => {
+            if (rewards[reward.key] && reward.condition()) {
+                const ap = Math.floor((rewards[reward.key].ap || 0) * eventBonus.performanceMultiplier);
+                totalAP += ap;
+                
+                if (rewards[reward.key].items) {
+                    items.push(...rewards[reward.key].items);
+                }
+            }
+        });
+        
+        callback(totalAP, items);
+    }
+    
+    /**
+     * 季節・特別イベント限定報酬を付与
+     */
+    grantSeasonalSpecialRewards(event, eventBonus, callback) {
+        let totalAP = 0;
+        let items = [];
+        let special = [];
+        
+        if (event.type === 'seasonal') {
+            const seasonalAP = this.getSeasonalBonusAP(event.season);
+            totalAP += Math.floor(seasonalAP * eventBonus.seasonalMultiplier);
+            
+            const seasonalItems = this.getSeasonalItems(event.season);
+            items.push(...seasonalItems);
+        }
+        
+        if (event.type === 'special') {
+            if (event.rewards?.anniversary) {
+                totalAP += Math.floor((event.rewards.anniversary.ap || 0) * eventBonus.rarityMultiplier);
+                
+                if (event.rewards.anniversary.special) {
+                    special.push(event.rewards.anniversary.special);
+                }
+            }
+        }
+        
+        callback(totalAP, items, special);
+    }
+    
+    /**
+     * レアイベントアイテムを取得
+     */
+    getRareEventItems(eventType, season) {
+        const rareItems = [];
+        
+        if (eventType === 'seasonal' && season) {
+            const seasonalRares = {
+                spring: ['rare_cherry_essence', 'spring_wind_charm'],
+                summer: ['rare_firework_core', 'summer_night_star'],
+                autumn: ['rare_golden_leaf', 'autumn_harvest_gem'],
+                winter: ['rare_ice_crystal', 'winter_frost_jewel']
+            };
+            rareItems.push(...(seasonalRares[season] || []));
+        }
+        
+        if (eventType === 'challenge') {
+            rareItems.push('challenger_medal', 'rare_trophy_fragment');
+        }
+        
+        if (eventType === 'special') {
+            rareItems.push('legendary_essence', 'special_commemorative_item');
+        }
+        
+        return rareItems;
+    }
+    
+    /**
+     * 報酬を実際に適用
+     */
+    applyRewards(totalAP, items, specialRewards, event) {
         // AP付与
         if (totalAP > 0) {
             this.gameEngine.playerData.ap += totalAP;
             this.gameEngine.playerData.tap += totalAP;
-            console.log(`Event rewards granted: ${totalAP} AP`);
         }
+        
+        // アイテム付与
+        items.forEach(item => {
+            this.gameEngine.playerData.addItem(item);
+        });
+        
+        // 特別報酬付与
+        specialRewards.forEach(reward => {
+            this.gameEngine.playerData.addSpecialReward(reward);
+        });
+        
+        // 報酬通知
+        if (this.gameEngine.achievementNotificationSystem) {
+            let message = '';
+            if (totalAP > 0) message += `${totalAP} AP獲得`;
+            if (items.length > 0) message += `${message ? '、' : ''}${items.length}個のアイテム獲得`;
+            if (specialRewards.length > 0) message += `${message ? '、' : ''}特別報酬獲得`;
+            
+            if (message) {
+                this.gameEngine.achievementNotificationSystem.queueNotification({
+                    type: 'reward',
+                    title: 'イベント報酬獲得！',
+                    message: message,
+                    icon: '🎁',
+                    duration: 5000
+                });
+            }
+        }
+        
+        console.log(`Event rewards applied: ${totalAP} AP, ${items.length} items, ${specialRewards.length} special rewards`);
+    }
+    
+    /**
+     * 報酬付与を記録
+     */
+    recordRewardGrant(eventId, rewardData) {
+        this.rewardHistory = this.rewardHistory || {};
+        this.rewardHistory[eventId] = this.rewardHistory[eventId] || [];
+        this.rewardHistory[eventId].push(rewardData);
+        
+        // 永続化
+        this.save();
+    }
+    
+    /**
+     * 季節ボーナスAPを取得
+     */
+    getSeasonalBonusAP(season) {
+        const bonusAP = {
+            spring: 150,
+            summer: 175,
+            autumn: 160,
+            winter: 180
+        };
+        return bonusAP[season] || 100;
+    }
+    
+    /**
+     * 季節アイテムを取得
+     */
+    getSeasonalItems(season) {
+        const seasonalItems = {
+            spring: ['cherry_petal', 'spring_breeze_charm'],
+            summer: ['firework_spark', 'summer_night_badge'],
+            autumn: ['golden_leaf', 'harvest_moon_gem'],
+            winter: ['snowflake_crystal', 'winter_star_charm']
+        };
+        return seasonalItems[season] || [];
+    }
+    
+    /**
+     * イベント完了履歴をチェック
+     */
+    hasCompletedEvent(achievementId) {
+        this.eventAchievements = this.eventAchievements || {};
+        return this.eventAchievements[achievementId] !== undefined;
+    }
+    
+    /**
+     * スコア比率を取得
+     */
+    getScoreRatio(finalScore, eventId) {
+        const event = this.eventStages[eventId];
+        const expectedScore = event?.rewards?.highScore?.threshold || 10000;
+        return finalScore / expectedScore;
+    }
+    
+    /**
+     * 早期参加かをチェック
+     */
+    isEarlyParticipation(eventId) {
+        const event = this.eventStages[eventId];
+        if (!event?.availability?.activatedAt) return false;
+        
+        const elapsed = Date.now() - event.availability.activatedAt;
+        return elapsed < 24 * 60 * 60 * 1000; // 24時間以内
+    }
+    
+    /**
+     * イベント実績を保存
+     */
+    saveEventAchievements(eventId, achievements) {
+        this.eventAchievements = this.eventAchievements || {};
+        achievements.forEach(achievement => {
+            this.eventAchievements[achievement.id] = {
+                eventId,
+                achievementId: achievement.id,
+                unlockedAt: Date.now(),
+                reward: achievement.reward
+            };
+        });
+        
+        this.save();
     }
     
     /**

@@ -55,7 +55,7 @@
   - 冬の雪景色ステージ設定を実装してsnowEffectとfrozenBubblesの特別ルール
   - _Requirements: 1.1, 1.2_
 
-- [ ] 10. 特別イベントの具体的な設定を実装
+- [x] 10. 特別イベントの具体的な設定を実装
   - 記念日イベント設定を実装してanniversaryBonusとspecialRewardsの特別ルール
   - チャレンジステージ設定を実装してtimeAttackとsurvivalModeの特別ルール
   - 限定コラボステージ設定を実装してcollaborationThemeとexclusiveContentの特別ルール
