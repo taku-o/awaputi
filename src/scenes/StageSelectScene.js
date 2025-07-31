@@ -18,6 +18,11 @@ export class StageSelectScene extends Scene {
         this.showingEvents = false;
         this.eventScrollOffset = 0;
         this.maxVisibleEvents = 4;
+        
+        // 通知関連の状態
+        this.eventNotifications = [];
+        this.unreadNotificationCount = 0;
+        this.notificationCheckInterval = null;
     }
     
     /**
@@ -26,10 +31,21 @@ export class StageSelectScene extends Scene {
     enter() {
         this.updateStageList();
         this.updateEventList();
+        this.updateEventNotifications();
         this.selectedStageIndex = 0;
         this.scrollOffset = 0;
         this.selectedEventIndex = -1;
         this.eventScrollOffset = 0;
+        
+        // 定期的な通知更新を開始
+        this.startNotificationUpdates();
+    }
+
+    /**
+     * シーン終了時の処理
+     */
+    exit() {
+        this.stopNotificationUpdates();
     }
     
     /**
@@ -50,6 +66,198 @@ export class StageSelectScene extends Scene {
         } else {
             this.availableEvents = [];
         }
+    }
+
+    /**
+     * イベント通知状態を更新
+     */
+    updateEventNotifications() {
+        if (!this.gameEngine.eventStageManager) {
+            this.eventNotifications = [];
+            this.unreadNotificationCount = 0;
+            return;
+        }
+        
+        // イベントマネージャーから通知情報を取得
+        this.gameEngine.eventStageManager.checkEventNotifications();
+        
+        // 新規イベントの通知を生成
+        const newEvents = this.availableEvents.filter(event => {
+            const eventStartTime = event.schedule?.activatedAt || event.activatedAt;
+            const now = Date.now();
+            
+            // 24時間以内に開始されたイベント
+            return eventStartTime && (now - eventStartTime) < 24 * 60 * 60 * 1000;
+        });
+        
+        // 終了間近のイベントの通知を生成
+        const endingSoonEvents = this.availableEvents.filter(event => {
+            const timeRemaining = this.gameEngine.eventStageManager.getEventTimeRemaining(event.id);
+            // 6時間以内に終了するイベント
+            return timeRemaining > 0 && timeRemaining < 6 * 60 * 60 * 1000;
+        });
+        
+        // 通知リストを更新
+        this.eventNotifications = [
+            ...newEvents.map(event => ({
+                type: 'new_event',
+                eventId: event.id,
+                title: '新しいイベント開始！',
+                message: `${event.name}が開始されました`,
+                timestamp: event.schedule?.activatedAt || event.activatedAt,
+                read: false
+            })),
+            ...endingSoonEvents.map(event => ({
+                type: 'ending_soon',
+                eventId: event.id,
+                title: 'イベント終了間近！',
+                message: `${event.name}まもなく終了`,
+                timestamp: Date.now(),
+                read: false
+            }))
+        ];
+        
+        // 未読通知数を計算
+        this.unreadNotificationCount = this.eventNotifications.filter(n => !n.read).length;
+    }
+
+    /**
+     * 定期的な通知更新を開始
+     */
+    startNotificationUpdates() {
+        // 既存のインターバルをクリア
+        if (this.notificationCheckInterval) {
+            clearInterval(this.notificationCheckInterval);
+        }
+        
+        // 30秒ごとに通知をチェック
+        this.notificationCheckInterval = setInterval(() => {
+            this.updateEventNotifications();
+        }, 30000);
+    }
+    
+    /**
+     * 定期的な通知更新を停止
+     */
+    stopNotificationUpdates() {
+        if (this.notificationCheckInterval) {
+            clearInterval(this.notificationCheckInterval);
+            this.notificationCheckInterval = null;
+        }
+    }
+
+    /**
+     * イベント通知バッジを描画
+     */
+    renderEventNotificationBadge(context) {
+        if (this.unreadNotificationCount === 0) return;
+        
+        const canvas = this.gameEngine.canvas;
+        const badgeSize = 24;
+        const badgeX = canvas.width - 50;
+        const badgeY = 130; // イベントセクションの右上
+        
+        context.save();
+        
+        // バッジの背景（赤い円）
+        context.fillStyle = '#FF4444';
+        context.beginPath();
+        context.arc(badgeX, badgeY, badgeSize / 2, 0, Math.PI * 2);
+        context.fill();
+        
+        // バッジの縁
+        context.strokeStyle = '#FFFFFF';
+        context.lineWidth = 2;
+        context.stroke();
+        
+        // 通知数テキスト
+        context.fillStyle = '#FFFFFF';
+        context.font = 'bold 12px Arial';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        
+        const displayCount = this.unreadNotificationCount > 99 ? '99+' : this.unreadNotificationCount.toString();
+        context.fillText(displayCount, badgeX, badgeY);
+        
+        // 点滅効果（1秒間隔）
+        const shouldBlink = Math.floor(Date.now() / 1000) % 2 === 0;
+        if (shouldBlink) {
+            context.shadowColor = '#FF4444';
+            context.shadowBlur = 10;
+            context.beginPath();
+            context.arc(badgeX, badgeY, badgeSize / 2 + 2, 0, Math.PI * 2);
+            context.strokeStyle = '#FF4444';
+            context.lineWidth = 1;
+            context.stroke();
+        }
+        
+        context.restore();
+    }
+
+    /**
+     * イベント通知クリック処理
+     */
+    handleEventNotificationClick(x, y) {
+        const canvas = this.gameEngine.canvas;
+        const badgeSize = 24;
+        const badgeX = canvas.width - 50;
+        const badgeY = 130;
+        
+        // バッジクリック判定
+        const distance = Math.sqrt((x - badgeX) ** 2 + (y - badgeY) ** 2);
+        if (distance <= badgeSize / 2) {
+            // すべての通知を既読にする
+            this.eventNotifications.forEach(notification => {
+                notification.read = true;
+            });
+            this.unreadNotificationCount = 0;
+            
+            // 通知詳細を表示（シンプルなアラート）
+            if (this.eventNotifications.length > 0) {
+                const latestNotification = this.eventNotifications[this.eventNotifications.length - 1];
+                
+                // 通知メッセージをユーザーに表示
+                if (this.gameEngine.achievementNotificationSystem) {
+                    this.gameEngine.achievementNotificationSystem.queueNotification({
+                        type: 'info',
+                        title: 'イベント通知',
+                        message: latestNotification.message,
+                        icon: '📢',
+                        duration: 3000
+                    });
+                }
+            }
+            
+            return true; // クリック処理済み
+        }
+        
+        return false; // クリック処理されていない
+    }
+
+    /**
+     * イベントステージのクリック処理
+     */
+    handleEventStageClick(x, y) {
+        const sectionStartY = 120;
+        const itemHeight = 40;
+        const itemSpacing = 5;
+        const itemStartY = sectionStartY + 50;
+        
+        // クリックされたイベントアイテムを特定
+        this.availableEvents.forEach((event, index) => {
+            if (index < this.eventScrollOffset) return;
+            if (index >= this.eventScrollOffset + this.maxVisibleEvents) return;
+            
+            const itemY = itemStartY + (index - this.eventScrollOffset) * (itemHeight + itemSpacing);
+            
+            if (y >= itemY && y <= itemY + itemHeight) {
+                this.selectedEventIndex = index;
+                this.showingEvents = true;
+                
+                // イベントステージを開始
+                this.selectEventStage(event);
+            }
+        });
     }
     
     /**
@@ -83,6 +291,9 @@ export class StageSelectScene extends Scene {
         
         // イベントセクション
         this.renderEventSection(context);
+        
+        // イベント通知バッジ
+        this.renderEventNotificationBadge(context);
         
         // 通常ステージリスト
         this.renderStageList(context);
@@ -483,6 +694,11 @@ export class StageSelectScene extends Scene {
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
         
+        // イベント通知バッジのクリック判定
+        if (this.handleEventNotificationClick(x, y)) {
+            return;
+        }
+        
         // ショップボタンのクリック判定
         const buttonWidth = 120;
         const buttonHeight = 40;
@@ -494,7 +710,16 @@ export class StageSelectScene extends Scene {
             return;
         }
         
-        const startY = 150;
+        // イベントステージのクリック判定
+        const eventSectionY = 120;
+        const eventSectionHeight = 200;
+        if (y >= eventSectionY && y <= eventSectionY + eventSectionHeight) {
+            this.handleEventStageClick(x, y);
+            return;
+        }
+        
+        // 通常ステージのクリック判定
+        const startY = 340;
         const itemHeight = 60;
         const itemSpacing = 10;
         

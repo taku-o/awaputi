@@ -30,7 +30,7 @@
   - exportEventData()メソッドを実装して統計データのエクスポート機能
   - _Requirements: 6.1, 6.2, 6.3, 6.4_
 
-- [ ] 6. StageSelectSceneにイベントステージ表示機能を追加
+- [x] 6. StageSelectSceneにイベントステージ表示機能を追加
   - renderEventSection()メソッドを実装してイベント専用セクションの描画
   - renderEventStageItem()メソッドを実装してイベントステージアイテムの表示
   - renderEventTimer()メソッドを実装してイベント残り時間の表示
