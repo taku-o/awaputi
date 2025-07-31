@@ -27,6 +27,7 @@ export class AchievementNotificationSystem {
         this.soundEnabled = true;
         
         this.initialize();
+        this.setupEventListeners();
     }
     
     /**
@@ -67,6 +68,12 @@ export class AchievementNotificationSystem {
      * 通知オブジェクトを作成
      */
     createNotification(achievementData) {
+        // イベント通知の場合は専用処理
+        if (achievementData.type === 'event') {
+            return this.createEventNotification(achievementData);
+        }
+        
+        // 通常の実績通知
         return {
             id: achievementData.id,
             name: achievementData.name,
@@ -74,6 +81,7 @@ export class AchievementNotificationSystem {
             icon: achievementData.icon,
             reward: achievementData.reward,
             timestamp: achievementData.timestamp || Date.now(),
+            type: 'achievement',
             
             // アニメーション状態
             animationState: 'entering',
@@ -93,6 +101,48 @@ export class AchievementNotificationSystem {
             // フラグ
             displayed: false,
             shouldRemove: false
+        };
+    }
+    
+    /**
+     * イベント通知オブジェクトを作成
+     */
+    createEventNotification(eventData) {
+        return {
+            id: eventData.id,
+            name: eventData.name,
+            description: eventData.description,
+            icon: eventData.icon,
+            reward: eventData.reward,
+            timestamp: eventData.timestamp || Date.now(),
+            type: 'event',
+            subType: eventData.subType,
+            eventId: eventData.eventId,
+            duration: eventData.duration || this.notificationDuration,
+            actions: eventData.actions || [],
+            
+            // アニメーション状態
+            animationState: 'entering',
+            animationProgress: 0,
+            displayTime: 0,
+            
+            // 表示位置
+            x: this.canvas.width,
+            y: 0,
+            targetX: this.canvas.width - this.notificationWidth - this.notificationMargin,
+            targetY: 0,
+            
+            // 視覚効果
+            alpha: 0,
+            scale: 0.8,
+            
+            // フラグ
+            displayed: false,
+            shouldRemove: false,
+            
+            // イベント固有プロパティ
+            isEventNotification: true,
+            clickable: eventData.actions && eventData.actions.length > 0
         };
     }
     
@@ -290,13 +340,209 @@ export class AchievementNotificationSystem {
         ctx.scale(notification.scale, notification.scale);
         ctx.translate(-this.notificationWidth / 2, -this.notificationHeight / 2);
         
-        // 背景を描画
-        this.renderNotificationBackground(ctx, notification);
-        
-        // コンテンツを描画
-        this.renderNotificationContent(ctx, notification);
+        // 通知タイプに応じて描画
+        if (notification.type === 'event') {
+            this.renderEventNotificationBackground(ctx, notification);
+            this.renderEventNotificationContent(ctx, notification);
+        } else {
+            this.renderNotificationBackground(ctx, notification);
+            this.renderNotificationContent(ctx, notification);
+        }
         
         ctx.restore();
+    }
+    
+    /**
+     * イベント通知の背景を描画
+     */
+    renderEventNotificationBackground(ctx, notification) {
+        // イベント通知のタイプに応じた背景色
+        let gradient;
+        switch (notification.subType) {
+            case 'EVENT_STARTED':
+                gradient = ctx.createLinearGradient(0, 0, this.notificationWidth, 0);
+                gradient.addColorStop(0, '#00C851');
+                gradient.addColorStop(1, '#007E33');
+                break;
+            case 'EVENT_ENDING':
+                gradient = ctx.createLinearGradient(0, 0, this.notificationWidth, 0);
+                gradient.addColorStop(0, '#FF8800');
+                gradient.addColorStop(1, '#FF6600');
+                break;
+            case 'EVENT_ENDED':
+                gradient = ctx.createLinearGradient(0, 0, this.notificationWidth, 0);
+                gradient.addColorStop(0, '#757575');
+                gradient.addColorStop(1, '#424242');
+                break;
+            case 'EVENT_ELIGIBLE':
+                gradient = ctx.createLinearGradient(0, 0, this.notificationWidth, 0);
+                gradient.addColorStop(0, '#2196F3');
+                gradient.addColorStop(1, '#0D47A1');
+                break;
+            case 'EVENT_REMINDER':
+                gradient = ctx.createLinearGradient(0, 0, this.notificationWidth, 0);
+                gradient.addColorStop(0, '#9C27B0');
+                gradient.addColorStop(1, '#4A148C');
+                break;
+            default:
+                gradient = ctx.createLinearGradient(0, 0, this.notificationWidth, 0);
+                gradient.addColorStop(0, '#607D8B');
+                gradient.addColorStop(1, '#37474F');
+                break;
+        }
+        
+        // 背景の描画
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, this.notificationWidth, this.notificationHeight);
+        
+        // 枠線
+        ctx.strokeStyle = '#FFFFFF';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(0, 0, this.notificationWidth, this.notificationHeight);
+        
+        // 光る効果
+        if (notification.animationState === 'entering') {
+            ctx.save();
+            ctx.globalAlpha = 0.3 * (1 - notification.animationProgress);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, this.notificationWidth, this.notificationHeight);
+            ctx.restore();
+        }
+        
+        // イベントタイプのインジケーター
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+        ctx.fillRect(0, 0, 4, this.notificationHeight);
+    }
+    
+    /**
+     * イベント通知のコンテンツを描画
+     */
+    renderEventNotificationContent(ctx, notification) {
+        // アイコンを描画
+        this.renderEventNotificationIcon(ctx, notification);
+        
+        // テキストを描画
+        this.renderEventNotificationText(ctx, notification);
+        
+        // アクションボタンを描画
+        this.renderEventNotificationActions(ctx, notification);
+    }
+    
+    /**
+     * イベント通知アイコンを描画
+     */
+    renderEventNotificationIcon(ctx, notification) {
+        const iconSize = 36;
+        const iconX = this.notificationPadding + 4;
+        const iconY = (this.notificationHeight - iconSize) / 2;
+        
+        ctx.save();
+        
+        // アイコン背景（円形）
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+        ctx.beginPath();
+        ctx.arc(iconX + iconSize / 2, iconY + iconSize / 2, iconSize / 2 + 5, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // アイコン（絵文字）
+        ctx.font = `${iconSize}px Arial`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillText(
+            notification.icon, 
+            iconX + iconSize / 2, 
+            iconY + iconSize / 2
+        );
+        
+        ctx.restore();
+    }
+    
+    /**
+     * イベント通知テキストを描画
+     */
+    renderEventNotificationText(ctx, notification) {
+        const textX = this.notificationPadding + 50;
+        const textY = this.notificationPadding + 2;
+        const textWidth = this.notificationWidth - textX - this.notificationPadding - 80;
+        
+        ctx.save();
+        ctx.fillStyle = '#FFFFFF';
+        
+        // タイトル
+        ctx.font = 'bold 15px Arial';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        
+        const titleText = this.truncateText(ctx, notification.name, textWidth);
+        ctx.fillText(titleText, textX, textY);
+        
+        // 説明
+        ctx.font = '11px Arial';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        const descText = this.truncateText(ctx, notification.description, textWidth);
+        ctx.fillText(descText, textX, textY + 18);
+        
+        // イベントタイプ表示
+        ctx.font = '10px Arial';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+        const typeText = this.getEventTypeDisplayText(notification.subType);
+        ctx.fillText(typeText, textX, textY + 35);
+        
+        ctx.restore();
+    }
+    
+    /**
+     * イベント通知アクションを描画
+     */
+    renderEventNotificationActions(ctx, notification) {
+        if (!notification.actions || notification.actions.length === 0) return;
+        
+        const actionWidth = 60;
+        const actionHeight = 20;
+        const actionX = this.notificationWidth - this.notificationPadding - actionWidth;
+        const actionY = this.notificationHeight - this.notificationPadding - actionHeight - 5;
+        
+        ctx.save();
+        
+        // 最初のアクションボタンのみ表示
+        const primaryAction = notification.actions[0];
+        
+        // ボタン背景
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+        ctx.fillRect(actionX, actionY, actionWidth, actionHeight);
+        
+        // ボタンテキスト
+        ctx.font = '10px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = '#333333';
+        ctx.fillText(
+            primaryAction,
+            actionX + actionWidth / 2,
+            actionY + actionHeight / 2
+        );
+        
+        // ボタン枠線
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(actionX, actionY, actionWidth, actionHeight);
+        
+        ctx.restore();
+    }
+    
+    /**
+     * イベントタイプの表示テキストを取得
+     */
+    getEventTypeDisplayText(subType) {
+        switch (subType) {
+            case 'EVENT_STARTED': return 'イベント開始';
+            case 'EVENT_ENDING': return 'まもなく終了';
+            case 'EVENT_ENDED': return 'イベント終了';
+            case 'EVENT_ELIGIBLE': return '参加可能';
+            case 'EVENT_REMINDER': return 'リマインダー';
+            default: return 'イベント';
+        }
     }
     
     /**
@@ -476,6 +722,107 @@ export class AchievementNotificationSystem {
      */
     setSoundEnabled(enabled) {
         this.soundEnabled = enabled;
+    }
+    
+    /**
+     * イベントリスナーを設定
+     */
+    setupEventListeners() {
+        this.canvas.addEventListener('click', (event) => {
+            this.handleNotificationClick(event);
+        });
+    }
+    
+    /**
+     * 通知クリック処理
+     */
+    handleNotificationClick(event) {
+        const rect = this.canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        
+        // 表示中の通知をチェック
+        for (let i = this.notifications.length - 1; i >= 0; i--) {
+            const notification = this.notifications[i];
+            
+            // 通知領域内かチェック
+            if (this.isPointInNotification(x, y, notification)) {
+                if (notification.type === 'event' && notification.clickable) {
+                    this.handleEventNotificationClick(notification, x, y);
+                    return;
+                }
+            }
+        }
+    }
+    
+    /**
+     * 点が通知領域内にあるかチェック
+     */
+    isPointInNotification(x, y, notification) {
+        const notificationX = notification.targetX;
+        const notificationY = notification.targetY;
+        
+        return x >= notificationX && 
+               x <= notificationX + this.notificationWidth &&
+               y >= notificationY && 
+               y <= notificationY + this.notificationHeight;
+    }
+    
+    /**
+     * イベント通知クリック処理
+     */
+    handleEventNotificationClick(notification, x, y) {
+        // アクションボタンクリックかチェック
+        const actionWidth = 60;
+        const actionHeight = 20;
+        const actionX = notification.targetX + this.notificationWidth - this.notificationPadding - actionWidth;
+        const actionY = notification.targetY + this.notificationHeight - this.notificationPadding - actionHeight - 5;
+        
+        if (x >= actionX && x <= actionX + actionWidth &&
+            y >= actionY && y <= actionY + actionHeight) {
+            
+            // 最初のアクション（「参加する」など）を実行
+            this.executeEventAction(notification, notification.actions[0]);
+        } else {
+            // 通知全体のクリック - 通知を閉じる
+            this.dismissNotification(notification);
+        }
+    }
+    
+    /**
+     * イベントアクションを実行
+     */
+    executeEventAction(notification, action) {
+        console.log(`Event action executed: ${action} for event ${notification.eventId}`);
+        
+        switch (action) {
+            case '参加する':
+            case '今すぐ参加':
+                // イベントステージ選択画面に遷移
+                if (this.gameEngine.sceneManager) {
+                    this.gameEngine.sceneManager.switchScene('stageSelect');
+                    // イベントフィルターを有効化（Task 6-8で実装予定）
+                }
+                break;
+                
+            case '後で':
+            case '閉じる':
+                // 通知を閉じる
+                this.dismissNotification(notification);
+                break;
+                
+            default:
+                this.dismissNotification(notification);
+                break;
+        }
+    }
+    
+    /**
+     * 通知を閉じる
+     */
+    dismissNotification(notification) {
+        notification.animationState = 'exiting';
+        notification.animationProgress = 0;
     }
     
     /**

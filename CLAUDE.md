@@ -556,6 +556,47 @@ src/locales/
 - **タスク17**: 品質保証テスト（翻訳品質テスト、パフォーマンステスト実施）
 - **タスク18**: 最終検証（要件適合性検証、リリース準備、移行ガイド作成）
 
+### イベントステージシステム実装プロジェクト（Issue #28対応）🔄進行中
+**目標**: EventStageManagerの完全実装により、期間限定コンテンツと特別なルールを持つステージを提供し、長期的なユーザー維持とコンテンツ拡張を実現
+
+#### 実装対象の機能
+1. **季節イベント**: 春の桜・夏の花火・秋の紅葉・冬の雪景色ステージ（自動スケジューリング対応）
+2. **特別イベント**: 記念日・チャレンジ・限定コラボ・コミュニティイベント
+3. **特別ルール**: 時間制限変更、特殊泡出現率変更、スコア倍率変更、特別勝利条件
+4. **イベント管理**: スケジュール管理、開始・終了時刻制御、通知システム、参加条件設定
+5. **報酬システム**: イベント限定報酬、ランキングシステム、参加賞配布、特別称号付与
+6. **統計収集**: イベント参加履歴、完了率、お気に入りイベント、総イベントスコア
+
+#### 実装アプローチ（15大タスク）
+- **Task 1**: 季節イベント自動スケジューリング機能（SEASONAL_PERIODS定数、scheduleSeasonalEvents()）
+- **Task 2**: イベント通知機能統合（sendEventNotification()、AchievementNotificationSystemとの連携）
+- **Task 3**: AchievementNotificationSystemのイベント通知対応拡張
+- **Task 4**: 管理者向けイベント制御機能（adminActivateEvent()、adminDeactivateEvent()）
+- **Task 5**: 統計収集機能強化（recordEventParticipation()、getDetailedEventStatistics()）
+- **Task 6**: StageSelectSceneイベント表示機能（renderEventSection()、renderEventTimer()）
+- **Task 7**: StageSelectSceneイベント通知表示（renderEventNotificationBadge()）
+- **Task 8**: StageSelectSceneイベント選択機能（selectEventStage()、validateEventStageAccess()）
+- **Task 9**: 季節イベント具体的設定実装（春夏秋冬の特別ルール）
+- **Task 10**: 特別イベント具体的設定実装（記念日、チャレンジ、コラボ、コミュニティ）
+- **Task 11**: イベント報酬システム実装（grantEventRewards()拡張、calculateEventBonus()）
+- **Task 12**: イベントランキングシステム（EventRankingManager、リーダーボード、ランキング報酬）
+- **Task 13**: イベントデータ永続化（saveEventData()、loadEventData()、migrateEventData()）
+- **Task 14**: 統合テスト実装（単体・統合・フロー全体テスト）
+- **Task 15**: エラーハンドリング実装（handleEventError()、validateEventConfiguration()）
+
+#### 主要コンポーネント
+- **Enhanced EventStageManager**: 既存クラスを拡張（季節イベント、通知、管理者機能、統計強化）
+- **Event Notification System**: AchievementNotificationSystemを活用したイベント通知
+- **Enhanced StageSelectScene**: イベント専用セクション、残り時間表示、通知バッジ
+- **Seasonal Event Scheduler**: 日付ベース自動有効化、地域設定対応準備
+- **Event Statistics Collector**: 詳細統計収集、エクスポート機能
+- **EventRankingManager**: イベント別ランキング管理システム
+
+#### 既存実装の活用
+- **EventStageManager**: 基本構造実装済み（6種類のイベント定義、基本的な報酬システム）
+- **AchievementNotificationSystem**: 通知基盤として活用・拡張
+- **StageManager/StageSelectScene**: イベントステージ統合先
+
 ### モバイル対応強化プロジェクト（Issue #26対応）
 **目標**: モバイルデバイスでのユーザー体験を大幅に向上させる高度なモバイル特化機能の実装
 
