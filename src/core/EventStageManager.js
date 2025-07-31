@@ -7,6 +7,30 @@ export class EventStageManager {
         this.eventStages = this.initializeEventStages();
         this.activeEvents = new Map();
         this.eventHistory = [];
+        
+        // 季節イベント用定数
+        this.SEASONAL_PERIODS = {
+            spring: { 
+                months: [3, 4, 5], 
+                events: ['spring-cherry-blossom', 'spring-festival'] 
+            },
+            summer: { 
+                months: [6, 7, 8], 
+                events: ['summer-fireworks', 'summer-festival'] 
+            },
+            autumn: { 
+                months: [9, 10, 11], 
+                events: ['autumn-leaves', 'harvest-festival'] 
+            },
+            winter: { 
+                months: [12, 1, 2], 
+                events: ['winter-snow', 'new-year'] 
+            }
+        };
+        
+        // 定期的に季節イベントをチェック
+        this.seasonalCheckInterval = null;
+        this.startSeasonalEventChecking();
     }
     
     /**
@@ -161,6 +185,120 @@ export class EventStageManager {
                 availability: {
                     recurring: 'yearly'
                 }
+            },
+            
+            // 季節イベント
+            'spring-cherry-blossom': {
+                id: 'spring-cherry-blossom',
+                name: '桜の舞うステージ',
+                description: '美しい桜が舞い散る春限定ステージ',
+                icon: '🌸',
+                type: 'seasonal',
+                season: 'spring',
+                duration: 300000,
+                bubbleTypes: ['normal', 'pink', 'pink', 'rainbow', 'stone', 'golden'],
+                spawnRate: 1.8,
+                maxBubbles: 25,
+                specialRules: {
+                    cherryBlossomEffect: true,
+                    windEffect: true,
+                    scoreMultiplier: 1.5,
+                    pinkBubbleBonus: 2.0
+                },
+                rewards: {
+                    completion: { ap: 200 },
+                    highScore: { threshold: 20000, ap: 300 },
+                    perfect: { ap: 500, special: 'sakura_master' }
+                },
+                availability: {
+                    type: 'seasonal',
+                    season: 'spring',
+                    autoActivate: true
+                }
+            },
+            
+            'summer-fireworks': {
+                id: 'summer-fireworks',
+                name: '花火大会ステージ',
+                description: '夜空に輝く花火と共に楽しむ夏限定ステージ',
+                icon: '🎆',
+                type: 'seasonal',
+                season: 'summer',
+                duration: 300000,
+                bubbleTypes: ['normal', 'explosive', 'explosive', 'rainbow', 'golden', 'multiplier'],
+                spawnRate: 2.2,
+                maxBubbles: 30,
+                specialRules: {
+                    fireworksEffect: true,
+                    nightSky: true,
+                    explosionChainBonus: 2.0,
+                    heatWaveSpeed: 1.2
+                },
+                rewards: {
+                    completion: { ap: 250 },
+                    fireworksMaster: { explosions: 10, ap: 400 }
+                },
+                availability: {
+                    type: 'seasonal',
+                    season: 'summer',
+                    autoActivate: true
+                }
+            },
+            
+            'autumn-leaves': {
+                id: 'autumn-leaves',
+                name: '紅葉狩りステージ',
+                description: '色とりどりの葉が舞う秋限定ステージ',
+                icon: '🍁',
+                type: 'seasonal',
+                season: 'autumn',
+                duration: 300000,
+                bubbleTypes: ['normal', 'stone', 'iron', 'golden', 'clock', 'score'],
+                spawnRate: 2.0,
+                maxBubbles: 28,
+                specialRules: {
+                    autumnLeavesEffect: true,
+                    windyWeather: true,
+                    goldBubbleRate: 0.3,
+                    timeSlowEffect: 0.8
+                },
+                rewards: {
+                    completion: { ap: 220 },
+                    collector: { golden: 20, ap: 350 }
+                },
+                availability: {
+                    type: 'seasonal',
+                    season: 'autumn',
+                    autoActivate: true
+                }
+            },
+            
+            'winter-snow': {
+                id: 'winter-snow',
+                name: '雪景色ステージ',
+                description: '静かに雪が降る冬限定ステージ',
+                icon: '❄️',
+                type: 'seasonal',
+                season: 'winter',
+                duration: 300000,
+                bubbleTypes: ['normal', 'frozen', 'frozen', 'diamond', 'clock', 'boss'],
+                spawnRate: 1.6,
+                maxBubbles: 22,
+                specialRules: {
+                    snowEffect: true,
+                    frozenBubbles: true,
+                    slowMotion: 0.7,
+                    freezeChain: true
+                },
+                rewards: {
+                    completion: { ap: 240 },
+                    iceBreaker: { frozen: 30, ap: 380 }
+                },
+                availability: {
+                    type: 'seasonal',
+                    season: 'winter',
+                    autoActivate: true
+                }
             }
         };
     }
@@ -193,6 +331,11 @@ export class EventStageManager {
         
         // 特別イベントは手動で有効化
         if (event.type === 'special') {
+            return this.activeEvents.has(event.id);
+        }
+        
+        // 季節イベントの場合
+        if (event.type === 'seasonal') {
             return this.activeEvents.has(event.id);
         }
         
@@ -534,5 +677,189 @@ export class EventStageManager {
         this.eventHistory = [];
         this.activeEvents.clear();
         this.save();
+    }
+    
+    /**
+     * 季節イベントの自動チェックを開始
+     */
+    startSeasonalEventChecking() {
+        // 初回チェック
+        this.scheduleSeasonalEvents();
+        
+        // 24時間ごとにチェック
+        this.seasonalCheckInterval = setInterval(() => {
+            this.scheduleSeasonalEvents();
+        }, 24 * 60 * 60 * 1000);
+    }
+    
+    /**
+     * 季節イベントをスケジュール
+     */
+    scheduleSeasonalEvents() {
+        const currentDate = new Date();
+        const currentSeason = this.getCurrentSeason(currentDate);
+        
+        if (!currentSeason) return;
+        
+        // 現在の季節に対応するイベントを有効化
+        const seasonalEvents = this.SEASONAL_PERIODS[currentSeason].events;
+        
+        seasonalEvents.forEach(eventId => {
+            const event = this.eventStages[eventId];
+            if (event && event.availability.autoActivate) {
+                // 既に有効化されていない場合のみ有効化
+                if (!this.activeEvents.has(eventId)) {
+                    this.activateSeasonalEvent(eventId, currentSeason);
+                }
+            }
+        });
+        
+        // 他の季節のイベントを無効化
+        Object.keys(this.SEASONAL_PERIODS).forEach(season => {
+            if (season !== currentSeason) {
+                this.SEASONAL_PERIODS[season].events.forEach(eventId => {
+                    if (this.activeEvents.has(eventId)) {
+                        this.deactivateSeasonalEvent(eventId);
+                    }
+                });
+            }
+        });
+    }
+    
+    /**
+     * 現在の季節を取得
+     */
+    getCurrentSeason(date) {
+        const month = date.getMonth() + 1; // 0-based to 1-based
+        
+        for (const [season, config] of Object.entries(this.SEASONAL_PERIODS)) {
+            if (config.months.includes(month)) {
+                return season;
+            }
+        }
+        
+        return null;
+    }
+    
+    /**
+     * 季節イベントの有効化チェック
+     */
+    checkSeasonalEventActivation(currentDate = new Date()) {
+        const currentSeason = this.getCurrentSeason(currentDate);
+        
+        // 各季節イベントの状態をチェック
+        Object.values(this.eventStages).forEach(event => {
+            if (event.type === 'seasonal' && event.availability.autoActivate) {
+                const shouldBeActive = event.season === currentSeason;
+                const isActive = this.activeEvents.has(event.id);
+                
+                if (shouldBeActive && !isActive) {
+                    this.activateSeasonalEvent(event.id, currentSeason);
+                } else if (!shouldBeActive && isActive) {
+                    this.deactivateSeasonalEvent(event.id);
+                }
+            }
+        });
+    }
+    
+    /**
+     * 季節イベントを有効化
+     */
+    activateSeasonalEvent(eventId, season) {
+        const event = this.eventStages[eventId];
+        if (!event || event.type !== 'seasonal') return false;
+        
+        // 季節の終了日を計算
+        const endDate = this.getSeasonEndDate(season);
+        
+        this.activeEvents.set(eventId, {
+            startTime: Date.now(),
+            endTime: endDate.getTime(),
+            season: season,
+            type: 'seasonal'
+        });
+        
+        console.log(`Seasonal event activated: ${event.name} (${season})`);
+        
+        // 通知を送信（Task 2で実装予定）
+        // this.sendEventNotification(eventId, 'EVENT_STARTED');
+        
+        return true;
+    }
+    
+    /**
+     * 季節イベントを無効化
+     */
+    deactivateSeasonalEvent(eventId) {
+        const event = this.eventStages[eventId];
+        if (!event || event.type !== 'seasonal') return false;
+        
+        this.activeEvents.delete(eventId);
+        
+        console.log(`Seasonal event deactivated: ${event.name}`);
+        
+        // 通知を送信（Task 2で実装予定）
+        // this.sendEventNotification(eventId, 'EVENT_ENDED');
+        
+        return true;
+    }
+    
+    /**
+     * 季節の終了日を取得
+     */
+    getSeasonEndDate(season) {
+        const now = new Date();
+        const year = now.getFullYear();
+        const seasonConfig = this.SEASONAL_PERIODS[season];
+        
+        // 季節の最後の月の最終日を取得
+        const lastMonth = Math.max(...seasonConfig.months);
+        
+        // 冬の場合、年をまたぐ可能性を考慮
+        let targetYear = year;
+        if (season === 'winter' && now.getMonth() < 2) {
+            // 1月か2月の場合、2月末が終了日
+            targetYear = year;
+        } else if (season === 'winter' && now.getMonth() >= 11) {
+            // 12月の場合、翌年の2月末が終了日
+            targetYear = year + 1;
+        }
+        
+        // 月末日を取得（月は0-based）
+        const endDate = new Date(targetYear, lastMonth, 0);
+        endDate.setHours(23, 59, 59, 999);
+        
+        return endDate;
+    }
+    
+    /**
+     * 季節イベントの設定を取得
+     */
+    getSeasonalEventConfig(season) {
+        const seasonalEvents = this.SEASONAL_PERIODS[season]?.events || [];
+        const configs = [];
+        
+        seasonalEvents.forEach(eventId => {
+            const event = this.eventStages[eventId];
+            if (event) {
+                configs.push({
+                    ...event,
+                    isActive: this.activeEvents.has(eventId),
+                    timeRemaining: this.getEventTimeRemaining(event, Date.now())
+                });
+            }
+        });
+        
+        return configs;
+    }
+    
+    /**
+     * クリーンアップ処理
+     */
+    cleanup() {
+        if (this.seasonalCheckInterval) {
+            clearInterval(this.seasonalCheckInterval);
+            this.seasonalCheckInterval = null;
+        }
     }
 }
