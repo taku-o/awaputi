@@ -2388,11 +2388,7 @@ export class EventStageManager {
      */
     save() {
         try {
-            const data = {
-                eventHistory: this.eventHistory,
-                activeEvents: Array.from(this.activeEvents.entries())
-            };
-            localStorage.setItem('bubblePop_events', JSON.stringify(data));
+            this.saveEventData();
         } catch (error) {
             console.error('Failed to save event data:', error);
         }
@@ -2403,17 +2399,580 @@ export class EventStageManager {
      */
     load() {
         try {
-            const savedData = localStorage.getItem('bubblePop_events');
-            if (savedData) {
-                const data = JSON.parse(savedData);
-                this.eventHistory = data.eventHistory || [];
-                this.activeEvents = new Map(data.activeEvents || []);
-            }
+            this.loadEventData();
         } catch (error) {
             console.error('Failed to load event data:', error);
-            this.eventHistory = [];
-            this.activeEvents = new Map();
+            this.initializeDefaultEventData();
         }
+    }
+
+    /**
+     * イベントデータを保存（拡張版）
+     */
+    saveEventData() {
+        const currentVersion = '1.2.0';
+        
+        const data = {
+            version: currentVersion,
+            timestamp: Date.now(),
+            
+            // 基本イベントデータ
+            eventHistory: this.eventHistory,
+            activeEvents: Array.from(this.activeEvents.entries()),
+            
+            // 参加記録データ
+            participationRecords: this.participationRecords || [],
+            eventStatistics: this.eventStatistics || {},
+            
+            // 実績と報酬データ
+            eventAchievements: this.eventAchievements || {},
+            rewardHistory: this.rewardHistory || {},
+            
+            // 特別モードデータ
+            specialRewardModes: this.specialRewardModes || {},
+            bonusRewardModes: this.bonusRewardModes || {},
+            survivalDifficultyModes: this.survivalDifficultyModes || {},
+            
+            // コミュニティ機能データ
+            communityGoals: this.communityGoals || {},
+            sharedRewardSystems: this.sharedRewardSystems || {},
+            cooperativeModes: this.cooperativeModes || {},
+            realTimeStats: this.realTimeStats || {},
+            
+            // 設定とキャッシュデータ
+            seasonalEventCache: this.seasonalEventCache || {},
+            notificationSettings: this.notificationSettings || {},
+            
+            // 管理者ログ
+            adminLogs: this.adminLogs || []
+        };
+        
+        // メインデータを保存
+        localStorage.setItem('bubblePop_events', JSON.stringify(data));
+        
+        // ランキングデータを別途保存（EventRankingManagerが担当）
+        if (this.eventRankingManager) {
+            this.eventRankingManager.save();
+        }
+        
+        // バックアップデータを作成（最近3回分）
+        this.createEventDataBackup(data);
+        
+        console.log(`Event data saved (version: ${currentVersion})`);
+    }
+    
+    /**
+     * イベントデータを読み込み（拡張版）
+     */
+    loadEventData() {
+        const savedData = localStorage.getItem('bubblePop_events');
+        
+        if (!savedData) {
+            this.initializeDefaultEventData();
+            return;
+        }
+        
+        const data = JSON.parse(savedData);
+        const dataVersion = data.version || '1.0.0';
+        const currentVersion = '1.2.0';
+        
+        // バージョンチェックとマイグレーション
+        if (dataVersion !== currentVersion) {
+            console.log(`Migrating event data from ${dataVersion} to ${currentVersion}`);
+            const migratedData = this.migrateEventData(data, dataVersion, currentVersion);
+            if (migratedData) {
+                this.loadEventDataFromObject(migratedData);
+                this.saveEventData(); // マイグレーション後に保存
+                return;
+            }
+        }
+        
+        this.loadEventDataFromObject(data);
+        console.log(`Event data loaded (version: ${dataVersion})`);
+    }
+    
+    /**
+     * データオブジェクトからイベントデータを読み込み
+     */
+    loadEventDataFromObject(data) {
+        // 基本イベントデータ
+        this.eventHistory = data.eventHistory || [];
+        this.activeEvents = new Map(data.activeEvents || []);
+        
+        // 参加記録データ
+        this.participationRecords = data.participationRecords || [];
+        this.eventStatistics = data.eventStatistics || {};
+        
+        // 実績と報酬データ
+        this.eventAchievements = data.eventAchievements || {};
+        this.rewardHistory = data.rewardHistory || {};
+        
+        // 特別モードデータ
+        this.specialRewardModes = data.specialRewardModes || {};
+        this.bonusRewardModes = data.bonusRewardModes || {};
+        this.survivalDifficultyModes = data.survivalDifficultyModes || {};
+        
+        // コミュニティ機能データ
+        this.communityGoals = data.communityGoals || {};
+        this.sharedRewardSystems = data.sharedRewardSystems || {};
+        this.cooperativeModes = data.cooperativeModes || {};
+        this.realTimeStats = data.realTimeStats || {};
+        
+        // 設定とキャッシュデータ
+        this.seasonalEventCache = data.seasonalEventCache || {};
+        this.notificationSettings = data.notificationSettings || {};
+        
+        // 管理者ログ
+        this.adminLogs = data.adminLogs || [];
+        
+        // ランキングデータの読み込み（EventRankingManagerが担当）
+        if (this.eventRankingManager) {
+            this.eventRankingManager.load();
+        }
+    }
+    
+    /**
+     * イベントデータ形式の移行処理
+     */
+    migrateEventData(data, fromVersion, toVersion) {
+        try {
+            console.log(`Starting event data migration from ${fromVersion} to ${toVersion}`);
+            
+            let migratedData = { ...data };
+            
+            // バージョン別マイグレーション処理
+            if (this.compareVersions(fromVersion, '1.1.0') < 0) {
+                migratedData = this.migrateToV1_1_0(migratedData);
+            }
+            
+            if (this.compareVersions(fromVersion, '1.2.0') < 0) {
+                migratedData = this.migrateToV1_2_0(migratedData);
+            }
+            
+            // バージョンを更新
+            migratedData.version = toVersion;
+            migratedData.migrationTimestamp = Date.now();
+            
+            console.log(`Event data migration completed to version ${toVersion}`);
+            return migratedData;
+            
+        } catch (error) {
+            console.error('Event data migration failed:', error);
+            // マイグレーション失敗時はバックアップから復元を試行
+            return this.restoreFromBackup();
+        }
+    }
+    
+    /**
+     * v1.1.0への移行処理
+     */
+    migrateToV1_1_0(data) {
+        const migrated = { ...data };
+        
+        // 参加記録の形式変更
+        if (migrated.eventHistory) {
+            migrated.participationRecords = migrated.eventHistory.map(entry => ({
+                id: this.generateParticipationId(),
+                eventId: entry.eventId,
+                playerId: entry.playerId || 'default_player',
+                startTime: entry.startTime,
+                endTime: entry.endTime,
+                completed: entry.completed || false,
+                score: entry.finalScore || 0,
+                stats: entry.stats || {}
+            }));
+        }
+        
+        // 実績データの初期化
+        if (!migrated.eventAchievements) {
+            migrated.eventAchievements = {};
+        }
+        
+        return migrated;
+    }
+    
+    /**
+     * v1.2.0への移行処理
+     */
+    migrateToV1_2_0(data) {
+        const migrated = { ...data };
+        
+        // コミュニティ機能データの追加
+        migrated.communityGoals = migrated.communityGoals || {};
+        migrated.sharedRewardSystems = migrated.sharedRewardSystems || {};
+        migrated.cooperativeModes = migrated.cooperativeModes || {};
+        migrated.realTimeStats = migrated.realTimeStats || {};
+        
+        // 管理者ログの追加
+        migrated.adminLogs = migrated.adminLogs || [];
+        
+        // 通知設定の追加
+        migrated.notificationSettings = migrated.notificationSettings || {
+            eventStart: true,
+            eventEnd: true,
+            rankingUpdate: true,
+            newAchievement: true
+        };
+        
+        return migrated;
+    }
+    
+    /**
+     * バージョン比較
+     */
+    compareVersions(version1, version2) {
+        const v1parts = version1.split('.').map(Number);
+        const v2parts = version2.split('.').map(Number);
+        
+        for (let i = 0; i < Math.max(v1parts.length, v2parts.length); i++) {
+            const v1part = v1parts[i] || 0;
+            const v2part = v2parts[i] || 0;
+            
+            if (v1part < v2part) return -1;
+            if (v1part > v2part) return 1;
+        }
+        
+        return 0;
+    }
+    
+    /**
+     * イベントデータのバックアップを作成
+     */
+    createEventDataBackup(data) {
+        try {
+            const backupKey = `bubblePop_events_backup_${Date.now()}`;
+            const backupData = {
+                ...data,
+                backupTimestamp: Date.now()
+            };
+            
+            localStorage.setItem(backupKey, JSON.stringify(backupData));
+            
+            // 古いバックアップを削除（最新3個まで保持）
+            this.cleanupOldBackups();
+            
+        } catch (error) {
+            console.error('Failed to create event data backup:', error);
+        }
+    }
+    
+    /**
+     * 古いバックアップファイルを削除
+     */
+    cleanupOldBackups() {
+        const backupKeys = [];
+        
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && key.startsWith('bubblePop_events_backup_')) {
+                backupKeys.push(key);
+            }
+        }
+        
+        // タイムスタンプ順でソート
+        backupKeys.sort((a, b) => {
+            const timestampA = parseInt(a.split('_').pop());
+            const timestampB = parseInt(b.split('_').pop());
+            return timestampB - timestampA;
+        });
+        
+        // 最新3個以外を削除
+        backupKeys.slice(3).forEach(key => {
+            localStorage.removeItem(key);
+        });
+    }
+    
+    /**
+     * バックアップから復元
+     */
+    restoreFromBackup() {
+        try {
+            const backupKeys = [];
+            
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('bubblePop_events_backup_')) {
+                    backupKeys.push(key);
+                }
+            }
+            
+            if (backupKeys.length === 0) {
+                console.warn('No backup data found');
+                return null;
+            }
+            
+            // 最新のバックアップを取得
+            backupKeys.sort((a, b) => {
+                const timestampA = parseInt(a.split('_').pop());
+                const timestampB = parseInt(b.split('_').pop());
+                return timestampB - timestampA;
+            });
+            
+            const latestBackupKey = backupKeys[0];
+            const backupData = localStorage.getItem(latestBackupKey);
+            
+            if (backupData) {
+                console.log(`Restoring from backup: ${latestBackupKey}`);
+                return JSON.parse(backupData);
+            }
+            
+        } catch (error) {
+            console.error('Failed to restore from backup:', error);
+        }
+        
+        return null;
+    }
+    
+    /**
+     * デフォルトイベントデータを初期化
+     */
+    initializeDefaultEventData() {
+        this.eventHistory = [];
+        this.activeEvents = new Map();
+        this.participationRecords = [];
+        this.eventStatistics = {};
+        this.eventAchievements = {};
+        this.rewardHistory = {};
+        this.specialRewardModes = {};
+        this.bonusRewardModes = {};
+        this.survivalDifficultyModes = {};
+        this.communityGoals = {};
+        this.sharedRewardSystems = {};
+        this.cooperativeModes = {};
+        this.realTimeStats = {};
+        this.seasonalEventCache = {};
+        this.notificationSettings = {
+            eventStart: true,
+            eventEnd: true,
+            rankingUpdate: true,
+            newAchievement: true
+        };
+        this.adminLogs = [];
+        
+        console.log('Default event data initialized');
+    }
+    
+    /**
+     * 参加記録IDを生成
+     */
+    generateParticipationId() {
+        return `participation_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    }
+
+    /**
+     * イベントデータをエクスポート
+     */
+    exportEventData() {
+        try {
+            const exportData = {
+                exportTimestamp: Date.now(),
+                exportVersion: '1.2.0',
+                gameVersion: this.gameEngine.version || '1.0.0',
+                
+                // イベント関連データ
+                eventHistory: this.eventHistory,
+                participationRecords: this.participationRecords || [],
+                eventStatistics: this.eventStatistics || {},
+                eventAchievements: this.eventAchievements || {},
+                rewardHistory: this.rewardHistory || {},
+                
+                // ランキングデータ（EventRankingManagerから取得）
+                rankingData: this.eventRankingManager ? {
+                    eventRankings: this.eventRankingManager.eventRankings,
+                    playerRankings: this.eventRankingManager.playerRankings,
+                    rewardDistributionHistory: this.eventRankingManager.rewardDistributionHistory
+                } : {},
+                
+                // 設定データ
+                notificationSettings: this.notificationSettings || {}
+            };
+            
+            const exportJson = JSON.stringify(exportData, null, 2);
+            console.log('Event data exported successfully');
+            return exportJson;
+            
+        } catch (error) {
+            console.error('Failed to export event data:', error);
+            return null;
+        }
+    }
+    
+    /**
+     * イベントデータをインポート
+     */
+    importEventData(importJson) {
+        try {
+            const importData = JSON.parse(importJson);
+            
+            // バージョンチェック
+            const importVersion = importData.exportVersion || '1.0.0';
+            const currentVersion = '1.2.0';
+            
+            if (this.compareVersions(importVersion, currentVersion) > 0) {
+                throw new Error(`Import data version ${importVersion} is newer than current version ${currentVersion}`);
+            }
+            
+            // 現在のデータをバックアップ
+            this.createEventDataBackup({
+                version: currentVersion,
+                timestamp: Date.now(),
+                eventHistory: this.eventHistory,
+                participationRecords: this.participationRecords || [],
+                eventStatistics: this.eventStatistics || {},
+                eventAchievements: this.eventAchievements || {},
+                rewardHistory: this.rewardHistory || {}
+            });
+            
+            // データのマイグレーション（必要な場合）
+            let processedData = importData;
+            if (importVersion !== currentVersion) {
+                processedData = this.migrateEventData(importData, importVersion, currentVersion);
+            }
+            
+            // データをインポート
+            this.eventHistory = processedData.eventHistory || [];
+            this.participationRecords = processedData.participationRecords || [];
+            this.eventStatistics = processedData.eventStatistics || {};
+            this.eventAchievements = processedData.eventAchievements || {};
+            this.rewardHistory = processedData.rewardHistory || {};
+            this.notificationSettings = processedData.notificationSettings || {};
+            
+            // ランキングデータのインポート
+            if (processedData.rankingData && this.eventRankingManager) {
+                if (processedData.rankingData.eventRankings) {
+                    this.eventRankingManager.eventRankings = processedData.rankingData.eventRankings;
+                }
+                if (processedData.rankingData.playerRankings) {
+                    this.eventRankingManager.playerRankings = processedData.rankingData.playerRankings;
+                }
+                if (processedData.rankingData.rewardDistributionHistory) {
+                    this.eventRankingManager.rewardDistributionHistory = processedData.rankingData.rewardDistributionHistory;
+                }
+            }
+            
+            // データを保存
+            this.saveEventData();
+            
+            console.log(`Event data imported successfully from version ${importVersion}`);
+            return true;
+            
+        } catch (error) {
+            console.error('Failed to import event data:', error);
+            return false;
+        }
+    }
+    
+    /**
+     * データ整合性チェック
+     */
+    validateEventData() {
+        const issues = [];
+        
+        // 基本データの存在チェック
+        if (!Array.isArray(this.eventHistory)) {
+            issues.push('eventHistory is not an array');
+            this.eventHistory = [];
+        }
+        
+        if (!Array.isArray(this.participationRecords)) {
+            issues.push('participationRecords is not an array');
+            this.participationRecords = [];
+        }
+        
+        // 実績データの整合性チェック
+        if (this.eventAchievements && typeof this.eventAchievements !== 'object') {
+            issues.push('eventAchievements is not an object');
+            this.eventAchievements = {};
+        }
+        
+        // 重複参加記録のチェック
+        const participationIds = new Set();
+        this.participationRecords = this.participationRecords.filter(record => {
+            if (participationIds.has(record.id)) {
+                issues.push(`Duplicate participation record: ${record.id}`);
+                return false;
+            }
+            participationIds.add(record.id);
+            return true;
+        });
+        
+        // 孤立した履歴データのクリーンアップ
+        const validEventIds = Object.keys(this.eventStages);
+        this.eventHistory = this.eventHistory.filter(entry => {
+            if (!validEventIds.includes(entry.eventId)) {
+                issues.push(`Orphaned event history entry: ${entry.eventId}`);
+                return false;
+            }
+            return true;
+        });
+        
+        if (issues.length > 0) {
+            console.warn('Event data validation issues found:', issues);
+            this.saveEventData(); // 修正後のデータを保存
+        }
+        
+        return {
+            isValid: issues.length === 0,
+            issues: issues
+        };
+    }
+    
+    /**
+     * データ統計情報を取得
+     */
+    getEventDataStatistics() {
+        return {
+            totalEvents: Object.keys(this.eventStages).length,
+            participationRecords: this.participationRecords?.length || 0,
+            completedEvents: this.eventHistory?.filter(e => e.completed).length || 0,
+            unlockedAchievements: Object.keys(this.eventAchievements || {}).length,
+            rewardHistory: Object.keys(this.rewardHistory || {}).length,
+            dataSize: this.calculateDataSize(),
+            lastSave: this.getLastSaveTime(),
+            backupCount: this.getBackupCount()
+        };
+    }
+    
+    /**
+     * データサイズを計算（概算）
+     */
+    calculateDataSize() {
+        try {
+            const data = localStorage.getItem('bubblePop_events');
+            return data ? Math.round(data.length / 1024 * 100) / 100 : 0; // KB単位
+        } catch (error) {
+            return 0;
+        }
+    }
+    
+    /**
+     * 最後の保存時刻を取得
+     */
+    getLastSaveTime() {
+        try {
+            const data = localStorage.getItem('bubblePop_events');
+            if (data) {
+                const parsed = JSON.parse(data);
+                return parsed.timestamp || null;
+            }
+        } catch (error) {
+            return null;
+        }
+        return null;
+    }
+    
+    /**
+     * バックアップ数を取得
+     */
+    getBackupCount() {
+        let count = 0;
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && key.startsWith('bubblePop_events_backup_')) {
+                count++;
+            }
+        }
+        return count;
     }
     
     /**
@@ -3048,6 +3607,793 @@ export class EventStageManager {
         });
         
         return results;
+    }
+    
+    /**
+     * イベント実行エラーの処理
+     */
+    handleEventError(error, eventId, context = {}) {
+        try {
+            // エラー情報の構造化
+            const errorInfo = {
+                eventId: eventId,
+                errorType: error.name || 'UnknownError',
+                errorMessage: error.message || 'Unknown error occurred',
+                errorStack: error.stack,
+                context: context,
+                timestamp: Date.now(),
+                playerId: context.playerId || null,
+                action: context.action || 'unknown'
+            };
+            
+            // エラー統計を更新
+            this.updateErrorStatistics(errorInfo);
+            
+            // エラーログ記録
+            this.logEventError(errorInfo);
+            
+            // エラータイプ別処理
+            switch (errorInfo.errorType) {
+                case 'EventNotFoundError':
+                    return this.handleEventNotFoundError(errorInfo);
+                    
+                case 'EventAccessDeniedError':
+                    return this.handleEventAccessError(errorInfo);
+                    
+                case 'EventConfigurationError':
+                    return this.handleEventConfigurationError(errorInfo);
+                    
+                case 'EventDataCorruptionError':
+                    return this.handleEventDataError(errorInfo);
+                    
+                case 'StorageError':
+                case 'QuotaExceededError':
+                    return this.handleStorageError(errorInfo);
+                    
+                case 'NetworkError':
+                    return this.handleNetworkError(errorInfo);
+                    
+                case 'RenderingError':
+                    return this.handleRenderingError(errorInfo);
+                    
+                default:
+                    return this.handleGenericError(errorInfo);
+            }
+            
+        } catch (handlerError) {
+            // エラーハンドラー自体でエラーが発生した場合の最終的な処理
+            console.error('Critical error in event error handler:', handlerError);
+            this.criticalErrorFallback(eventId, error, handlerError);
+            return {
+                recovered: false,
+                action: 'critical_fallback',
+                message: 'Critical error handling failure'
+            };
+        }
+    }
+    
+    /**
+     * イベント設定の検証
+     */
+    validateEventConfiguration(eventConfig) {
+        try {
+            const validationResult = {
+                isValid: true,
+                errors: [],
+                warnings: [],
+                suggestions: []
+            };
+            
+            // 必須フィールド検証
+            const requiredFields = ['id', 'name', 'type'];
+            requiredFields.forEach(field => {
+                if (!eventConfig[field]) {
+                    validationResult.errors.push({
+                        field: field,
+                        message: `Required field '${field}' is missing`,
+                        severity: 'error'
+                    });
+                }
+            });
+            
+            // ID検証
+            if (eventConfig.id) {
+                if (!/^[a-z0-9\-_]+$/.test(eventConfig.id)) {
+                    validationResult.errors.push({
+                        field: 'id',
+                        message: 'Event ID must contain only lowercase letters, numbers, hyphens, and underscores',
+                        severity: 'error'
+                    });
+                }
+                
+                if (eventConfig.id.length > 50) {
+                    validationResult.errors.push({
+                        field: 'id',
+                        message: 'Event ID must be 50 characters or less',
+                        severity: 'error'
+                    });
+                }
+            }
+            
+            // タイプ検証
+            const validTypes = ['seasonal', 'special', 'challenge', 'collaboration', 'community'];
+            if (eventConfig.type && !validTypes.includes(eventConfig.type)) {
+                validationResult.errors.push({
+                    field: 'type',
+                    message: `Event type must be one of: ${validTypes.join(', ')}`,
+                    severity: 'error'
+                });
+            }
+            
+            // 時間設定検証
+            if (eventConfig.startTime && eventConfig.endTime) {
+                if (eventConfig.startTime >= eventConfig.endTime) {
+                    validationResult.errors.push({
+                        field: 'time',
+                        message: 'Start time must be before end time',
+                        severity: 'error'
+                    });
+                }
+                
+                const duration = eventConfig.endTime - eventConfig.startTime;
+                if (duration < 60000) { // 1分未満
+                    validationResult.warnings.push({
+                        field: 'duration',
+                        message: 'Event duration is very short (less than 1 minute)',
+                        severity: 'warning'
+                    });
+                } else if (duration > 2592000000) { // 30日超過
+                    validationResult.warnings.push({
+                        field: 'duration',
+                        message: 'Event duration is very long (more than 30 days)',
+                        severity: 'warning'
+                    });
+                }
+            }
+            
+            // 参加条件検証
+            if (eventConfig.participationConditions) {
+                const conditions = eventConfig.participationConditions;
+                
+                if (conditions.minLevel && (conditions.minLevel < 1 || conditions.minLevel > 100)) {
+                    validationResult.errors.push({
+                        field: 'participationConditions.minLevel',
+                        message: 'Minimum level must be between 1 and 100',
+                        severity: 'error'
+                    });
+                }
+                
+                if (conditions.requiredAP && conditions.requiredAP < 0) {
+                    validationResult.errors.push({
+                        field: 'participationConditions.requiredAP',
+                        message: 'Required AP cannot be negative',
+                        severity: 'error'
+                    });
+                }
+                
+                if (conditions.maxParticipations && conditions.maxParticipations < 1) {
+                    validationResult.errors.push({
+                        field: 'participationConditions.maxParticipations',
+                        message: 'Maximum participations must be at least 1',
+                        severity: 'error'
+                    });
+                }
+            }
+            
+            // ゲームプレイ設定検証
+            if (eventConfig.gameplay) {
+                const gameplay = eventConfig.gameplay;
+                
+                if (gameplay.duration && (gameplay.duration < 10000 || gameplay.duration > 3600000)) {
+                    validationResult.warnings.push({
+                        field: 'gameplay.duration',
+                        message: 'Game duration outside recommended range (10s - 60min)',
+                        severity: 'warning'
+                    });
+                }
+                
+                if (gameplay.spawnRate && (gameplay.spawnRate < 0.1 || gameplay.spawnRate > 10)) {
+                    validationResult.warnings.push({
+                        field: 'gameplay.spawnRate',
+                        message: 'Spawn rate outside recommended range (0.1 - 10)',
+                        severity: 'warning'
+                    });
+                }
+                
+                if (gameplay.maxBubbles && (gameplay.maxBubbles < 5 || gameplay.maxBubbles > 100)) {
+                    validationResult.warnings.push({
+                        field: 'gameplay.maxBubbles',
+                        message: 'Max bubbles outside recommended range (5 - 100)',
+                        severity: 'warning'
+                    });
+                }
+                
+                // 特別ルール検証
+                if (gameplay.specialRules) {
+                    const rules = gameplay.specialRules;
+                    
+                    if (rules.scoreMultiplier && (rules.scoreMultiplier < 0.1 || rules.scoreMultiplier > 10)) {
+                        validationResult.warnings.push({
+                            field: 'gameplay.specialRules.scoreMultiplier',
+                            message: 'Score multiplier outside recommended range (0.1 - 10)',
+                            severity: 'warning'
+                        });
+                    }
+                }
+            }
+            
+            // 報酬設定検証
+            if (eventConfig.rewards) {
+                const rewards = eventConfig.rewards;
+                
+                Object.entries(rewards).forEach(([rewardType, reward]) => {
+                    if (reward.ap && (reward.ap < 0 || reward.ap > 10000)) {
+                        validationResult.warnings.push({
+                            field: `rewards.${rewardType}.ap`,
+                            message: 'AP reward outside recommended range (0 - 10000)',
+                            severity: 'warning'
+                        });
+                    }
+                    
+                    if (reward.items && !Array.isArray(reward.items)) {
+                        validationResult.errors.push({
+                            field: `rewards.${rewardType}.items`,
+                            message: 'Items must be an array',
+                            severity: 'error'
+                        });
+                    }
+                });
+            }
+            
+            // 通知設定検証
+            if (eventConfig.notifications) {
+                const notifications = eventConfig.notifications;
+                
+                if (notifications.reminderInterval && notifications.reminderInterval < 300000) {
+                    validationResult.warnings.push({
+                        field: 'notifications.reminderInterval',
+                        message: 'Reminder interval is very short (less than 5 minutes)',
+                        severity: 'warning'
+                    });
+                }
+                
+                if (notifications.endWarning && notifications.endWarning < 300000) {
+                    validationResult.warnings.push({
+                        field: 'notifications.endWarning',
+                        message: 'End warning time is very short (less than 5 minutes)',
+                        severity: 'warning'
+                    });
+                }
+            }
+            
+            // 最終判定
+            validationResult.isValid = validationResult.errors.length === 0;
+            
+            // 推奨設定の提案
+            if (validationResult.isValid) {
+                this.addConfigurationSuggestions(eventConfig, validationResult);
+            }
+            
+            return validationResult;
+            
+        } catch (error) {
+            console.error('Error during event configuration validation:', error);
+            return {
+                isValid: false,
+                errors: [{
+                    field: 'validation',
+                    message: 'Validation process failed: ' + error.message,
+                    severity: 'error'
+                }],
+                warnings: [],
+                suggestions: []
+            };
+        }
+    }
+    
+    /**
+     * イベント失敗時の復旧処理
+     */
+    recoverFromEventFailure(eventId, failureReason, context = {}) {
+        try {
+            const recoveryPlan = {
+                eventId: eventId,
+                failureReason: failureReason,
+                recoveryActions: [],
+                fallbackOptions: [],
+                success: false,
+                message: ''
+            };
+            
+            // 失敗原因別の復旧処理
+            switch (failureReason) {
+                case 'data_corruption':
+                    recoveryPlan.recoveryActions.push('restore_from_backup');
+                    recoveryPlan.recoveryActions.push('validate_restored_data');
+                    return this.recoverFromDataCorruption(eventId, recoveryPlan);
+                    
+                case 'configuration_error':
+                    recoveryPlan.recoveryActions.push('reset_to_default_config');
+                    recoveryPlan.recoveryActions.push('validate_configuration');
+                    return this.recoverFromConfigurationError(eventId, recoveryPlan);
+                    
+                case 'storage_quota_exceeded':
+                    recoveryPlan.recoveryActions.push('cleanup_old_data');
+                    recoveryPlan.recoveryActions.push('compress_data');
+                    return this.recoverFromStorageQuotaError(eventId, recoveryPlan);
+                    
+                case 'access_denied':
+                    recoveryPlan.recoveryActions.push('check_permissions');
+                    recoveryPlan.recoveryActions.push('request_elevated_access');
+                    return this.recoverFromAccessDeniedError(eventId, recoveryPlan);
+                    
+                case 'network_failure':
+                    recoveryPlan.recoveryActions.push('enable_offline_mode');
+                    recoveryPlan.recoveryActions.push('cache_essential_data');
+                    return this.recoverFromNetworkFailure(eventId, recoveryPlan);
+                    
+                case 'rendering_failure':
+                    recoveryPlan.recoveryActions.push('fallback_to_simple_rendering');
+                    recoveryPlan.recoveryActions.push('disable_advanced_effects');
+                    return this.recoverFromRenderingFailure(eventId, recoveryPlan);
+                    
+                case 'memory_leak':
+                    recoveryPlan.recoveryActions.push('force_garbage_collection');
+                    recoveryPlan.recoveryActions.push('reduce_memory_usage');
+                    return this.recoverFromMemoryLeak(eventId, recoveryPlan);
+                    
+                default:
+                    return this.recoverFromGenericFailure(eventId, recoveryPlan);
+            }
+            
+        } catch (error) {
+            console.error('Error during event recovery:', error);
+            return this.criticalRecoveryFallback(eventId, failureReason, error);
+        }
+    }
+    
+    // エラータイプ別処理メソッド
+    handleEventNotFoundError(errorInfo) {
+        console.warn(`Event not found: ${errorInfo.eventId}`);
+        
+        // 利用可能なイベントを通知
+        const availableEvents = this.getAvailableEvents();
+        const suggestions = availableEvents.map(event => event.id).slice(0, 3);
+        
+        return {
+            recovered: false,
+            action: 'suggest_alternatives',
+            message: `Event '${errorInfo.eventId}' not found`,
+            suggestions: suggestions
+        };
+    }
+    
+    handleEventAccessError(errorInfo) {
+        console.warn(`Event access denied: ${errorInfo.eventId}`);
+        
+        // アクセス条件をチェック
+        const event = this.getEventById(errorInfo.eventId);
+        if (event && event.participationConditions) {
+            return {
+                recovered: false,
+                action: 'show_requirements',
+                message: 'Access denied',
+                requirements: event.participationConditions
+            };
+        }
+        
+        return {
+            recovered: false,
+            action: 'access_denied',
+            message: 'Event access denied'
+        };
+    }
+    
+    handleEventConfigurationError(errorInfo) {
+        console.error(`Event configuration error: ${errorInfo.eventId}`, errorInfo.errorMessage);
+        
+        // デフォルト設定で復旧を試行
+        const recovery = this.recoverFromConfigurationError(errorInfo.eventId, {
+            recoveryActions: ['reset_to_default_config']
+        });
+        
+        return {
+            recovered: recovery.success,
+            action: 'configuration_recovery',
+            message: recovery.message
+        };
+    }
+    
+    handleEventDataError(errorInfo) {
+        console.error(`Event data corruption: ${errorInfo.eventId}`, errorInfo.errorMessage);
+        
+        // バックアップからの復旧を試行
+        const recovery = this.recoverFromDataCorruption(errorInfo.eventId, {
+            recoveryActions: ['restore_from_backup']
+        });
+        
+        return {
+            recovered: recovery.success,
+            action: 'data_recovery',
+            message: recovery.message
+        };
+    }
+    
+    handleStorageError(errorInfo) {
+        console.error('Storage error:', errorInfo.errorMessage);
+        
+        // ストレージクリーンアップを実行
+        const recovery = this.recoverFromStorageQuotaError(errorInfo.eventId, {
+            recoveryActions: ['cleanup_old_data']
+        });
+        
+        return {
+            recovered: recovery.success,
+            action: 'storage_cleanup',
+            message: recovery.message
+        };
+    }
+    
+    handleNetworkError(errorInfo) {
+        console.warn('Network error:', errorInfo.errorMessage);
+        
+        // オフラインモードで続行
+        return {
+            recovered: true,
+            action: 'offline_mode',
+            message: 'Continuing in offline mode'
+        };
+    }
+    
+    handleRenderingError(errorInfo) {
+        console.warn('Rendering error:', errorInfo.errorMessage);
+        
+        // シンプルレンダリングモードに切り替え
+        return {
+            recovered: true,
+            action: 'simple_rendering',
+            message: 'Switched to simple rendering mode'
+        };
+    }
+    
+    handleGenericError(errorInfo) {
+        console.error('Generic event error:', errorInfo.errorMessage);
+        
+        // 汎用復旧処理
+        return {
+            recovered: false,
+            action: 'generic_fallback',
+            message: 'Unknown error occurred'
+        };
+    }
+    
+    // 復旧処理メソッド
+    recoverFromDataCorruption(eventId, recoveryPlan) {
+        try {
+            // バックアップデータの確認
+            const backupKey = `eventStageData_backup_${eventId}`;
+            const backupData = localStorage.getItem(backupKey);
+            
+            if (backupData) {
+                // バックアップから復元
+                const parsedBackup = JSON.parse(backupData);
+                
+                // データ検証
+                if (this.validateEventData(parsedBackup)) {
+                    this.eventParticipationHistory = parsedBackup.eventParticipationHistory || {};
+                    this.eventStatistics = parsedBackup.eventStatistics || {};
+                    
+                    recoveryPlan.success = true;
+                    recoveryPlan.message = 'Data recovered from backup';
+                    return recoveryPlan;
+                }
+            }
+            
+            // バックアップが無効な場合、デフォルトデータで初期化
+            this.eventParticipationHistory = {};
+            this.eventStatistics = {};
+            
+            recoveryPlan.success = true;
+            recoveryPlan.message = 'Data reset to default state';
+            return recoveryPlan;
+            
+        } catch (error) {
+            recoveryPlan.success = false;
+            recoveryPlan.message = `Data recovery failed: ${error.message}`;
+            return recoveryPlan;
+        }
+    }
+    
+    recoverFromConfigurationError(eventId, recoveryPlan) {
+        try {
+            const event = this.events[eventId];
+            if (!event) {
+                recoveryPlan.success = false;
+                recoveryPlan.message = 'Event not found for configuration recovery';
+                return recoveryPlan;
+            }
+            
+            // デフォルト設定を適用
+            const defaultConfig = this.getDefaultEventConfiguration(event.type);
+            Object.assign(event, defaultConfig);
+            
+            // 設定検証
+            const validation = this.validateEventConfiguration(event);
+            if (validation.isValid) {
+                recoveryPlan.success = true;
+                recoveryPlan.message = 'Configuration recovered with defaults';
+            } else {
+                recoveryPlan.success = false;
+                recoveryPlan.message = 'Default configuration is also invalid';
+            }
+            
+            return recoveryPlan;
+            
+        } catch (error) {
+            recoveryPlan.success = false;
+            recoveryPlan.message = `Configuration recovery failed: ${error.message}`;
+            return recoveryPlan;
+        }
+    }
+    
+    recoverFromStorageQuotaError(eventId, recoveryPlan) {
+        try {
+            // 古いデータを削除
+            this.cleanupOldEventData();
+            
+            // データ圧縮を試行
+            const compressedData = this.compressEventData();
+            
+            // 保存を再試行
+            localStorage.setItem('eventStageData', JSON.stringify(compressedData));
+            
+            recoveryPlan.success = true;
+            recoveryPlan.message = 'Storage quota recovered through cleanup and compression';
+            return recoveryPlan;
+            
+        } catch (error) {
+            recoveryPlan.success = false;
+            recoveryPlan.message = `Storage recovery failed: ${error.message}`;
+            return recoveryPlan;
+        }
+    }
+    
+    recoverFromGenericFailure(eventId, recoveryPlan) {
+        try {
+            // 汎用的な復旧処理
+            recoveryPlan.fallbackOptions = [
+                'restart_event_system',
+                'reset_event_data',
+                'disable_event_temporarily'
+            ];
+            
+            // 最も安全な選択肢を実行
+            this.disableEventTemporarily(eventId);
+            
+            recoveryPlan.success = true;
+            recoveryPlan.message = 'Event temporarily disabled for recovery';
+            return recoveryPlan;
+            
+        } catch (error) {
+            recoveryPlan.success = false;
+            recoveryPlan.message = `Generic recovery failed: ${error.message}`;
+            return recoveryPlan;
+        }
+    }
+    
+    // ヘルパーメソッド
+    updateErrorStatistics(errorInfo) {
+        if (!this.errorStatistics) {
+            this.errorStatistics = {};
+        }
+        
+        const errorType = errorInfo.errorType;
+        if (!this.errorStatistics[errorType]) {
+            this.errorStatistics[errorType] = {
+                count: 0,
+                lastOccurrence: null,
+                affectedEvents: new Set()
+            };
+        }
+        
+        this.errorStatistics[errorType].count++;
+        this.errorStatistics[errorType].lastOccurrence = errorInfo.timestamp;
+        if (errorInfo.eventId) {
+            this.errorStatistics[errorType].affectedEvents.add(errorInfo.eventId);
+        }
+    }
+    
+    logEventError(errorInfo) {
+        console.error('Event Error Log:', {
+            timestamp: new Date(errorInfo.timestamp).toISOString(),
+            eventId: errorInfo.eventId,
+            errorType: errorInfo.errorType,
+            message: errorInfo.errorMessage,
+            context: errorInfo.context
+        });
+        
+        // エラーログをlocalStorageに保存（デバッグ用）
+        try {
+            const errorLogs = JSON.parse(localStorage.getItem('eventErrorLogs') || '[]');
+            errorLogs.push(errorInfo);
+            
+            // 最新100件のみ保持
+            if (errorLogs.length > 100) {
+                errorLogs.splice(0, errorLogs.length - 100);
+            }
+            
+            localStorage.setItem('eventErrorLogs', JSON.stringify(errorLogs));
+        } catch (logError) {
+            console.warn('Failed to save error log:', logError);
+        }
+    }
+    
+    addConfigurationSuggestions(eventConfig, validationResult) {
+        // パフォーマンス最適化の提案
+        if (!eventConfig.gameplay?.maxBubbles || eventConfig.gameplay.maxBubbles > 50) {
+            validationResult.suggestions.push({
+                field: 'gameplay.maxBubbles',
+                message: 'Consider limiting max bubbles to 50 for better performance',
+                priority: 'performance'
+            });
+        }
+        
+        // ユーザビリティの提案
+        if (!eventConfig.notifications?.onStart) {
+            validationResult.suggestions.push({
+                field: 'notifications.onStart',
+                message: 'Enable start notifications to improve user engagement',
+                priority: 'usability'
+            });
+        }
+        
+        // バランスの提案
+        if (eventConfig.gameplay?.specialRules?.scoreMultiplier > 3) {
+            validationResult.suggestions.push({
+                field: 'gameplay.specialRules.scoreMultiplier',
+                message: 'High score multipliers may affect game balance',
+                priority: 'balance'
+            });
+        }
+    }
+    
+    getDefaultEventConfiguration(eventType) {
+        const baseConfig = {
+            duration: 300000, // 5 minutes
+            bubbleTypes: ['normal', 'stone', 'rainbow'],
+            spawnRate: 1.5,
+            maxBubbles: 30,
+            specialRules: {}
+        };
+        
+        switch (eventType) {
+            case 'seasonal':
+                return {
+                    ...baseConfig,
+                    specialRules: {
+                        scoreMultiplier: 1.2
+                    }
+                };
+                
+            case 'special':
+                return {
+                    ...baseConfig,
+                    specialRules: {
+                        scoreMultiplier: 1.5,
+                        bonusTime: true
+                    }
+                };
+                
+            case 'challenge':
+                return {
+                    ...baseConfig,
+                    duration: 180000, // 3 minutes
+                    spawnRate: 2.0,
+                    specialRules: {
+                        timeAttack: true
+                    }
+                };
+                
+            default:
+                return baseConfig;
+        }
+    }
+    
+    validateEventData(data) {
+        try {
+            return data && 
+                   typeof data === 'object' && 
+                   data.version && 
+                   typeof data.eventParticipationHistory === 'object';
+        } catch (error) {
+            return false;
+        }
+    }
+    
+    cleanupOldEventData() {
+        const cutoffTime = Date.now() - (30 * 24 * 60 * 60 * 1000); // 30日前
+        
+        Object.keys(this.eventParticipationHistory).forEach(playerId => {
+            const playerHistory = this.eventParticipationHistory[playerId];
+            
+            Object.keys(playerHistory).forEach(eventId => {
+                const eventHistory = playerHistory[eventId];
+                if (eventHistory.lastParticipation < cutoffTime) {
+                    delete playerHistory[eventId];
+                }
+            });
+            
+            if (Object.keys(playerHistory).length === 0) {
+                delete this.eventParticipationHistory[playerId];
+            }
+        });
+    }
+    
+    compressEventData() {
+        // 簡単なデータ圧縮（冗長な情報を削除）
+        const compressedData = {
+            version: this.version,
+            eventParticipationHistory: {},
+            eventStatistics: {}
+        };
+        
+        // 必要最小限のデータのみ保持
+        Object.keys(this.eventParticipationHistory).forEach(playerId => {
+            const playerHistory = this.eventParticipationHistory[playerId];
+            compressedData.eventParticipationHistory[playerId] = {};
+            
+            Object.keys(playerHistory).forEach(eventId => {
+                const eventHistory = playerHistory[eventId];
+                compressedData.eventParticipationHistory[playerId][eventId] = {
+                    participationCount: eventHistory.participationCount,
+                    bestScore: eventHistory.bestScore,
+                    lastParticipation: eventHistory.lastParticipation
+                };
+            });
+        });
+        
+        return compressedData;
+    }
+    
+    disableEventTemporarily(eventId) {
+        const event = this.events[eventId];
+        if (event) {
+            event.temporarilyDisabled = true;
+            event.disabledReason = 'system_error';
+            event.disabledAt = Date.now();
+        }
+    }
+    
+    criticalErrorFallback(eventId, originalError, handlerError) {
+        console.error('CRITICAL: Event system failure', {
+            eventId: eventId,
+            originalError: originalError.message,
+            handlerError: handlerError.message
+        });
+        
+        // 最後の手段として全イベントシステムを一時停止
+        this.emergencyShutdown = true;
+        
+        // ユーザーに通知
+        if (this.gameEngine.achievementNotificationSystem) {
+            this.gameEngine.achievementNotificationSystem.queueNotification({
+                type: 'system',
+                title: 'システムエラー',
+                message: 'イベントシステムに問題が発生しました。しばらくお待ちください。',
+                duration: 10000
+            });
+        }
+    }
+    
+    criticalRecoveryFallback(eventId, failureReason, error) {
+        return {
+            eventId: eventId,
+            failureReason: failureReason,
+            success: false,
+            recoveryActions: ['emergency_shutdown'],
+            message: `Critical recovery failure: ${error.message}`,
+            recommendation: 'Please restart the application'
+        };
     }
     
     /**
