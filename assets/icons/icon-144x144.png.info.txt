@@ -1,0 +1,11 @@
+PWA Icon - icon-144x144.png
+Size: 144x144px
+Purpose: Windows tile icon (large)
+Type: Standard PWA Icon
+Generated: 2025-07-31T11:06:04.095Z
+
+To convert to PNG:
+1. Use: sips -s format png icon-144x144.svg --out icon-144x144.png
+2. Or open generate-icons.html and generate manually
+
+SVG version is immediately usable for PWA manifest.

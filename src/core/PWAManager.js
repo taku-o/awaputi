@@ -58,7 +58,7 @@ export class PWAManager {
             
             // キャッシュ設定
             cache: {
-                version: '1.0.0',
+                version: '1.1.0-pwa',
                 strategies: {
                     static: 'cache-first',
                     dynamic: 'network-first',
@@ -137,6 +137,9 @@ export class PWAManager {
         
         // イベントリスナー
         this.eventListeners = new Map();
+        
+        // セッション開始時間を記録（統計用）
+        this.sessionStartTime = Date.now();
         
         console.log('[PWAManager] PWA Manager初期化完了');
         console.log('[PWAManager] サポート機能:', this.features);
@@ -622,6 +625,17 @@ export class PWAManager {
         }
         
         try {
+            // プロンプト表示前の分析データ収集
+            const promptAnalytics = {
+                timestamp: Date.now(),
+                userAgent: navigator.userAgent,
+                platform: this.browserCompatibility.deviceInfo?.platform || 'unknown',
+                pageUrl: window.location.href,
+                sessionDuration: Date.now() - (this.sessionStartTime || Date.now()),
+                previousAttempts: this.pwaConfig.installation.promptCount,
+                gameState: this.gameEngine ? this.gameEngine.getCurrentSceneName() : 'unknown'
+            };
+            
             // プロンプトを表示
             this.pwaConfig.installation.deferPrompt.prompt();
             this.pwaConfig.installation.promptCount++;
@@ -630,10 +644,21 @@ export class PWAManager {
             const { outcome } = await this.pwaConfig.installation.deferPrompt.userChoice;
             this.pwaConfig.installation.userChoice = outcome;
             
+            // 完了時のanalyticsデータ更新
+            promptAnalytics.outcome = outcome;
+            promptAnalytics.responseTime = Date.now() - promptAnalytics.timestamp;
+            
             console.log('[PWAManager] インストールプロンプト結果:', outcome);
             
-            // 統計記録
-            this.recordInstallEvent(outcome);
+            // 詳細統計記録
+            this.recordInstallEvent(outcome, promptAnalytics);
+            
+            // ユーザー体験の向上: 結果に応じた適切なフィードバック
+            if (outcome === 'accepted') {
+                this.showInstallSuccessMessage();
+            } else if (outcome === 'dismissed') {
+                this.handleInstallDismissal();
+            }
             
             // プロンプトをクリア
             this.pwaConfig.installation.deferPrompt = null;
@@ -643,23 +668,72 @@ export class PWAManager {
             
         } catch (error) {
             console.error('[PWAManager] インストールプロンプトエラー:', error);
+            // エラー時の統計記録
+            this.recordInstallEvent('error', { error: error.message });
             return false;
         }
     }
     
     /**
-     * インストールイベントの記録
+     * インストール成功メッセージの表示
      */
-    recordInstallEvent(event) {
-        // 統計記録（StatisticsManagerがある場合）
-        if (this.gameEngine && this.gameEngine.statisticsManager) {
-            this.gameEngine.statisticsManager.recordEvent('pwa_install', {
-                event: event,
-                timestamp: Date.now(),
-                userAgent: navigator.userAgent,
-                platform: this.browserCompatibility.deviceInfo.platform
+    showInstallSuccessMessage() {
+        if (this.gameEngine && this.gameEngine.showNotification) {
+            this.gameEngine.showNotification({
+                title: 'インストールありがとうございます！',
+                message: 'ホーム画面からアプリを起動できます',
+                type: 'success',
+                duration: 5000
             });
         }
+    }
+    
+    /**
+     * インストール拒否時の処理
+     */
+    handleInstallDismissal() {
+        // 次回プロンプト表示の遅延
+        const nextPromptDelay = Math.min(
+            this.pwaConfig.installation.promptDelay * Math.pow(2, this.pwaConfig.installation.promptCount),
+            24 * 60 * 60 * 1000 // 最大24時間
+        );
+        
+        // 遅延時間を記録
+        localStorage.setItem('pwa_next_prompt_time', Date.now() + nextPromptDelay);
+        
+        console.log('[PWAManager] 次回プロンプト表示予定:', new Date(Date.now() + nextPromptDelay));
+    }
+    
+    /**
+     * インストールイベントの記録
+     */
+    recordInstallEvent(event, analytics = {}) {
+        // 基本統計データ
+        const eventData = {
+            event: event,
+            timestamp: Date.now(),
+            userAgent: navigator.userAgent,
+            platform: this.browserCompatibility.deviceInfo?.platform || 'unknown',
+            ...analytics
+        };
+        
+        // 統計記録（StatisticsManagerがある場合）
+        if (this.gameEngine && this.gameEngine.statisticsManager) {
+            this.gameEngine.statisticsManager.recordEvent('pwa_install', eventData);
+        }
+        
+        // ローカルストレージにも保存（分析用）
+        const installHistory = JSON.parse(localStorage.getItem('pwa_install_history') || '[]');
+        installHistory.push(eventData);
+        
+        // 履歴は最大50件まで保持
+        if (installHistory.length > 50) {
+            installHistory.splice(0, installHistory.length - 50);
+        }
+        
+        localStorage.setItem('pwa_install_history', JSON.stringify(installHistory));
+        
+        console.log('[PWAManager] インストールイベント記録:', eventData);
     }
     
     /**
@@ -773,18 +847,113 @@ export class PWAManager {
         const enabledFeatures = this.pwaConfig.offline.enabledFeatures;
         const disabledFeatures = this.pwaConfig.offline.disabledFeatures;
         
+        // 機能別の詳細制御
+        const offlineConfig = {
+            enabled: enabledFeatures,
+            disabled: disabledFeatures,
+            
+            // 機能別の設定
+            gameplay: {
+                enabled: enabledFeatures.includes('gameplay'),
+                saveLocalScore: true,
+                cacheAssets: true,
+                limitedBubbleTypes: ['normal', 'stone', 'rainbow', 'pink'] // オフライン時は基本的な泡のみ
+            },
+            
+            settings: {
+                enabled: enabledFeatures.includes('settings'),
+                allowLocalChanges: true,
+                syncOnReconnect: true
+            },
+            
+            statistics: {
+                enabled: enabledFeatures.includes('statistics'),
+                trackOfflineStats: true,
+                queueForSync: true
+            },
+            
+            achievements: {
+                enabled: !disabledFeatures.includes('achievements_sync'),
+                localProcessing: true,
+                syncRequired: true
+            }
+        };
+        
         // ゲームエンジンの設定を更新
-        if (this.gameEngine && this.gameEngine.setOfflineMode) {
-            this.gameEngine.setOfflineMode({
-                enabled: enabledFeatures,
-                disabled: disabledFeatures
-            });
+        if (this.gameEngine) {
+            if (this.gameEngine.setOfflineMode) {
+                this.gameEngine.setOfflineMode(offlineConfig);
+            }
+            
+            // 各マネージャーへの個別通知
+            if (this.gameEngine.bubbleManager) {
+                this.gameEngine.bubbleManager.setOfflineMode(offlineConfig.gameplay);
+            }
+            
+            if (this.gameEngine.settingsManager) {
+                this.gameEngine.settingsManager.setOfflineMode(offlineConfig.settings);
+            }
+            
+            if (this.gameEngine.statisticsManager) {
+                this.gameEngine.statisticsManager.setOfflineMode(offlineConfig.statistics);
+            }
+            
+            if (this.gameEngine.achievementManager) {
+                this.gameEngine.achievementManager.setOfflineMode(offlineConfig.achievements);
+            }
         }
         
-        console.log('[PWAManager] オフライン機能有効化:', {
-            enabled: enabledFeatures,
-            disabled: disabledFeatures
+        // オフライン状態のUI更新
+        this.updateOfflineUI(true);
+        
+        console.log('[PWAManager] オフライン機能有効化:', offlineConfig);
+    }
+    
+    /**
+     * オフライン状態のUI更新
+     */
+    updateOfflineUI(isOffline) {
+        // オフライン状態インジケータの表示/非表示
+        if (isOffline) {
+            this.showOfflineIndicator();
+            this.disableOnlineOnlyFeatures();
+        } else {
+            this.hideOfflineIndicator();
+            this.enableOnlineOnlyFeatures();
+        }
+        
+        // ゲーム内UIの更新
+        if (this.gameEngine && this.gameEngine.updateNetworkStatusUI) {
+            this.gameEngine.updateNetworkStatusUI(!isOffline);
+        }
+    }
+    
+    /**
+     * オンライン限定機能の無効化
+     */
+    disableOnlineOnlyFeatures() {
+        const onlineOnlyElements = document.querySelectorAll('[data-require-online="true"]');
+        onlineOnlyElements.forEach(element => {
+            element.disabled = true;
+            element.classList.add('offline-disabled');
+            element.title = 'この機能はオンライン時のみ利用できます';
         });
+        
+        console.log('[PWAManager] オンライン限定機能を無効化:', onlineOnlyElements.length);
+    }
+    
+    /**
+     * オンライン限定機能の有効化
+     */
+    enableOnlineOnlyFeatures() {
+        const onlineOnlyElements = document.querySelectorAll('[data-require-online="true"]');
+        onlineOnlyElements.forEach(element => {
+            element.disabled = false;
+            element.classList.remove('offline-disabled');
+            element.title = '';
+        });
+        
+        console.log('[PWAManager] オンライン限定機能を有効化:', onlineOnlyElements.length);
     }
     
     /**
@@ -805,14 +974,52 @@ export class PWAManager {
      * オフライン通知の表示
      */
     showOfflineNotification() {
+        // ユーザーフレンドリーな通知
+        const offlineFeatures = this.pwaConfig.offline.enabledFeatures;
+        const availableFeatures = offlineFeatures.map(feature => {
+            switch (feature) {
+                case 'gameplay': return 'ゲームプレイ';
+                case 'settings': return '設定変更';
+                case 'statistics': return '統計表示';
+                default: return feature;
+            }
+        }).join('、');
+        
         if (this.gameEngine && this.gameEngine.showNotification) {
             this.gameEngine.showNotification({
                 title: 'オフラインモード',
-                message: 'ネットワーク接続がありません。基本機能は引き続き利用できます。',
-                type: 'warning',
-                duration: 5000
+                message: `ネットワーク接続がありません。${availableFeatures}は引き続き利用できます。`,
+                type: 'info',
+                duration: 6000,
+                actions: [
+                    {
+                        label: 'OK',
+                        action: () => this.acknowledgeOfflineMode()
+                    }
+                ]
             });
         }
+        
+        // ブラウザ通知も表示（権限がある場合）
+        if (this.features.notificationSupported && Notification.permission === 'granted') {
+            new Notification('BubblePop - オフラインモード', {
+                body: `ネットワーク接続がありません。基本機能は利用できます。`,
+                icon: '/assets/icons/icon-192x192.png',
+                badge: '/assets/icons/badge-72x72.png',
+                tag: 'offline-mode'
+            });
+        }
+        
+        console.log('[PWAManager] オフライン通知表示:', { availableFeatures });
+    }
+    
+    /**
+     * オフラインモードの承認
+     */
+    acknowledgeOfflineMode() {
+        // ユーザーがオフラインモードを承認したことを記録
+        localStorage.setItem('pwa_offline_acknowledged', Date.now().toString());
+        console.log('[PWAManager] オフラインモード承認');
     }
     
     /**
@@ -1102,8 +1309,103 @@ export class PWAManager {
      * オフライン状態インジケータの表示
      */
     showOfflineIndicator() {
-        // UI実装は後で追加
-        console.log('[PWAManager] オフライン状態表示');
+        // 既存のオフラインインジケータを削除
+        this.hideOfflineIndicator();
+        
+        // オフライン状態インジケータを作成
+        const indicator = document.createElement('div');
+        indicator.id = 'pwa-offline-indicator';
+        indicator.className = 'pwa-offline-indicator';
+        indicator.innerHTML = `
+            <div class="offline-icon">📴</div>
+            <div class="offline-text">オフライン</div>
+        `;
+        
+        // スタイルを設定
+        indicator.style.cssText = `
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #ff6b35;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            animation: pwaSlideIn 0.3s ease-out;
+        `;
+        
+        // アニメーションCSS追加
+        if (!document.getElementById('pwa-offline-styles')) {
+            const styles = document.createElement('style');
+            styles.id = 'pwa-offline-styles';
+            styles.textContent = `
+                @keyframes pwaSlideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                
+                @keyframes pwaSlideOut {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+                
+                .pwa-offline-indicator:hover {
+                    background: #e55a2b;
+                    cursor: pointer;
+                }
+            `;
+            document.head.appendChild(styles);
+        }
+        
+        // クリックでより詳細な情報を表示
+        indicator.addEventListener('click', () => {
+            this.showOfflineDetails();
+        });
+        
+        document.body.appendChild(indicator);
+        console.log('[PWAManager] オフライン状態インジケータ表示');
+    }
+    
+    /**
+     * オフライン状態インジケータを非表示
+     */
+    hideOfflineIndicator() {
+        const indicator = document.getElementById('pwa-offline-indicator');
+        if (indicator) {
+            indicator.style.animation = 'pwaSlideOut 0.3s ease-in';
+            setTimeout(() => {
+                indicator.remove();
+            }, 300);
+            console.log('[PWAManager] オフライン状態インジケータ非表示');
+        }
+    }
+    
+    /**
+     * オフライン詳細情報を表示
+     */
+    showOfflineDetails() {
+        const enabledFeatures = this.pwaConfig.offline.enabledFeatures;
+        const disabledFeatures = this.pwaConfig.offline.disabledFeatures;
+        
+        if (this.gameEngine && this.gameEngine.showNotification) {
+            this.gameEngine.showNotification({
+                title: 'オフラインモード詳細',
+                message: `
+                    利用可能: ${enabledFeatures.join('、')}
+                    利用不可: ${disabledFeatures.join('、')}
+                    
+                    ネットワーク復旧時に自動的にデータが同期されます。
+                `,
+                type: 'info',
+                duration: 8000
+            });
+        }
     }
     
     /**

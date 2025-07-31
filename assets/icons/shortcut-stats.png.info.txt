@@ -1,0 +1,27 @@
+PWA Shortcut Icon - shortcut-stats.png
+Size: 96×96px
+Type: stats
+Purpose: Statistics - Player stats and scores shortcut icon
+Manifest Name: 統計表示
+Generated: 2025-07-31T11:18:27.146Z
+
+PWA Shortcut Icon Specifications:
+- Designed for PWA app shortcuts in launcher/home screen
+- 96x96px is the standard size for shortcut icons
+- Optimized for visibility at small sizes
+- Bubble-themed design consistent with main app icons
+
+Manifest.json usage:
+{
+  "name": "統計表示",
+  "icons": [
+    {
+      "src": "/assets/icons/shortcut-stats.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    }
+  ]
+}
+
+To convert to PNG:
+sips -s format png shortcut-stats.svg --out shortcut-stats.png

@@ -1,0 +1,21 @@
+Favicon - favicon.ico
+Format: ICO (multi-size: 16x16, 32x32, 48x48)
+Purpose: Legacy browser support and shortcut icon
+Generated: 2025-07-31T11:14:05.415Z
+
+ICO Favicon Specifications:
+- Multi-size ICO format for broad compatibility
+- Contains 16x16, 32x32, and 48x48 pixel versions
+- Optimized for Windows taskbar and desktop shortcuts
+- Legacy Internet Explorer support
+
+HTML usage:
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+Manual ICO creation required:
+1. Convert SVG to PNG: sips -s format png favicon.svg --out favicon-48x48.png
+2. Use online ICO converter or ImageMagick:
+   convert favicon-16x16.png favicon-32x32.png favicon-48x48.png favicon.ico
+
+Alternative: Use online ICO generator with generated PNG files

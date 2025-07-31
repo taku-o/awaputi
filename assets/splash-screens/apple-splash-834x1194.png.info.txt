@@ -1,0 +1,18 @@
+Apple Splash Screen - apple-splash-834x1194.png
+Dimensions: 834×1194px
+Device: iPad Air (4th/5th gen)
+Orientation: portrait
+Generated: 2025-07-31T11:12:28.082Z
+
+Apple Splash Screen Specifications:
+- Optimized for iOS Safari PWA launch experience
+- Responsive design adapts to portrait/landscape orientations
+- Loading animation provides visual feedback during app initialization
+- Device-specific dimensions ensure pixel-perfect display
+
+HTML meta tag usage:
+<link rel="apple-touch-startup-image" href="/assets/splash-screens/apple-splash-834x1194.png" 
+      media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+
+To convert to PNG:
+sips -s format png apple-splash-834x1194.svg --out apple-splash-834x1194.png

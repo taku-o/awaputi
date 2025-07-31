@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+        <defs>
+            <radialGradient id="mainGradient" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" style="stop-color:#4CAF50"/>
+                <stop offset="70%" style="stop-color:#2E7D32"/>
+                <stop offset="100%" style="stop-color:#1B5E20"/>
+            </radialGradient>
+            <radialGradient id="highlightGradient" cx="30%" cy="30%" r="40%">
+                <stop offset="0%" style="stop-color:rgba(255,255,255,0.8)"/>
+                <stop offset="100%" style="stop-color:rgba(255,255,255,0)"/>
+            </radialGradient>
+        </defs>
+        
+        <!-- Main bubble -->
+        <circle cx="96" cy="96" r="94" fill="url(#mainGradient)"/>
+        
+        <!-- Highlight -->
+        <circle cx="64" cy="64" r="48" fill="url(#highlightGradient)"/>
+        
+        <!-- Decorative bubbles -->
+        <circle cx="134.39999999999998" cy="57.599999999999994" r="23.04" fill="rgba(255,255,255,0.6)"/>
+        <circle cx="153.60000000000002" cy="134.39999999999998" r="15.36" fill="rgba(255,255,255,0.5)"/>
+        <circle cx="57.599999999999994" cy="153.60000000000002" r="19.200000000000003" fill="rgba(255,255,255,0.4)"/>
+        
+        <!-- Small highlights on decorative bubbles -->
+        <circle cx="126.71999999999997" cy="49.919999999999995" r="7.68" fill="rgba(255,255,255,0.5)"/>
+        <circle cx="148.41600000000003" cy="129.21599999999998" r="5.184" fill="rgba(255,255,255,0.4)"/>
+        <circle cx="51.263999999999996" cy="147.264" r="6.336" fill="rgba(255,255,255,0.32)"/>
+        
+        
+        <!-- Game title -->
+        <text x="96" y="163.2" 
+              font-family="Arial, sans-serif" 
+              font-size="15.36" 
+              font-weight="bold" 
+              text-anchor="middle" 
+              fill="rgba(255,255,255,0.9)"
+              style="filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5))">BubblePop</text>
+        
+    </svg>

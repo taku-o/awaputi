@@ -1,0 +1,27 @@
+PWA Shortcut Icon - shortcut-achievements.png
+Size: 96×96px
+Type: achievements
+Purpose: Achievements - Player achievements shortcut icon
+Manifest Name: 実績
+Generated: 2025-07-31T11:18:27.147Z
+
+PWA Shortcut Icon Specifications:
+- Designed for PWA app shortcuts in launcher/home screen
+- 96x96px is the standard size for shortcut icons
+- Optimized for visibility at small sizes
+- Bubble-themed design consistent with main app icons
+
+Manifest.json usage:
+{
+  "name": "実績",
+  "icons": [
+    {
+      "src": "/assets/icons/shortcut-achievements.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    }
+  ]
+}
+
+To convert to PNG:
+sips -s format png shortcut-achievements.svg --out shortcut-achievements.png

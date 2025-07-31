@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="540" viewBox="0 0 720 540">
+        
+        <defs>
+            <!-- Screen gradient -->
+            <linearGradient id="screenBg-game-landscape-1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#E8F5E8"/>
+                <stop offset="50%" style="stop-color:#C8E6C9"/>
+                <stop offset="100%" style="stop-color:#A5D6A7"/>
+            </linearGradient>
+            
+            <!-- UI element gradient -->
+            <linearGradient id="uiBg-game-landscape-1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#66BB6A"/>
+                <stop offset="100%" style="stop-color:#4CAF50"/>
+            </linearGradient>
+            
+            <!-- Bubble gradient -->
+            <radialGradient id="bubbleGrad-game-landscape-1" cx="30%" cy="30%" r="70%">
+                <stop offset="0%" style="stop-color:#E8F5E8"/>
+                <stop offset="50%" style="stop-color:#A5D6A7"/>
+                <stop offset="100%" style="stop-color:#66BB6A"/>
+            </radialGradient>
+            
+            <!-- Text shadow -->
+            <filter id="textShadow-game-landscape-1">
+                <feDropShadow dx="1" dy="1" stdDeviation="2" flood-color="rgba(0,0,0,0.3)"/>
+            </filter>
+            
+            <!-- Button shadow -->
+            <filter id="buttonShadow-game-landscape-1">
+                <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="rgba(0,0,0,0.2)"/>
+            </filter>
+        </defs>
+        
+        <!-- Main background -->
+        <rect width="720" height="540" fill="#F1F8E9"/>
+        
+        
+                <!-- Game area background -->
+                <rect x="36" y="81" width="648" height="378" 
+                      rx="20" fill="url(#screenBg-game-landscape-1)" stroke="#388E3C" stroke-width="3"/>
+                
+                <!-- Header UI -->
+                <rect x="36" y="10.8" width="648" height="43.2" 
+                      rx="15" fill="url(#uiBg-game-landscape-1)" filter="url(#buttonShadow-game-landscape-1)"/>
+                <text x="72" y="37.800000000000004" font-family="Arial, sans-serif" 
+                      font-size="21.6" font-weight="bold" fill="white"
+                      filter="url(#textShadow-game-landscape-1)">BubblePop</text>
+                <text x="503.99999999999994" y="27" font-family="Arial, sans-serif" 
+                      font-size="13.5" fill="white"
+                      filter="url(#textShadow-game-landscape-1)">スコア: 12,450</text>
+                <text x="503.99999999999994" y="43.2" font-family="Arial, sans-serif" 
+                      font-size="13.5" fill="white"
+                      filter="url(#textShadow-game-landscape-1)">コンボ: x5</text>
+                
+                <!-- Game bubbles -->
+                
+            <circle cx="211.96817281905544" cy="221.82872603621908" r="45.36" 
+                    fill="#66BB6A" opacity="0.8" filter="url(#buttonShadow-game-landscape-1)"/>
+            <circle cx="198.36017281905544" cy="208.22072603621908" r="13.607999999999999" 
+                    fill="rgba(255,255,255,0.6)"/>
+            <circle cx="353.424442452735" cy="373.7922495182388" r="45.36" 
+                    fill="#42A5F5" opacity="0.8" filter="url(#buttonShadow-game-landscape-1)"/>
+            <circle cx="339.816442452735" cy="360.1842495182388" r="13.607999999999999" 
+                    fill="rgba(255,255,255,0.6)"/>
+            <circle cx="147.61197928269428" cy="122.34143417523765" r="45.36" 
+                    fill="#FFA726" opacity="0.8" filter="url(#buttonShadow-game-landscape-1)"/>
+            <circle cx="134.00397928269427" cy="108.73343417523765" r="13.607999999999999" 
+                    fill="rgba(255,255,255,0.6)"/>
+            <circle cx="317.5293511577188" cy="258.7853752580403" r="45.36" 
+                    fill="#EF5350" opacity="0.8" filter="url(#buttonShadow-game-landscape-1)"/>
+            <circle cx="303.9213511577188" cy="245.17737525804029" r="13.607999999999999" 
+                    fill="rgba(255,255,255,0.6)"/>
+            <circle cx="228.98551178588858" cy="203.1253112485768" r="45.36" 
+                    fill="#AB47BC" opacity="0.8" filter="url(#buttonShadow-game-landscape-1)"/>
+            <circle cx="215.37751178588857" cy="189.5173112485768" r="13.607999999999999" 
+                    fill="rgba(255,255,255,0.6)"/>
+            <circle cx="491.851905516489" cy="306.30480371274905" r="45.36" 
+                    fill="#66BB6A" opacity="0.8" filter="url(#buttonShadow-game-landscape-1)"/>
+            <circle cx="478.243905516489" cy="292.69680371274904" r="13.607999999999999" 
+                    fill="rgba(255,255,255,0.6)"/>
+            <circle cx="179.53185376886432" cy="146.71693342528272" r="45.36" 
+                    fill="#42A5F5" opacity="0.8" filter="url(#buttonShadow-game-landscape-1)"/>
+            <circle cx="165.92385376886432" cy="133.10893342528271" r="13.607999999999999" 
+                    fill="rgba(255,255,255,0.6)"/>
+            <circle cx="221.93218028697552" cy="268.7492233119797" r="45.36" 
+                    fill="#FFA726" opacity="0.8" filter="url(#buttonShadow-game-landscape-1)"/>
+            <circle cx="208.32418028697552" cy="255.14122331197967" r="13.607999999999999" 
+                    fill="rgba(255,255,255,0.6)"/>
+                
+                <!-- Bottom UI -->
+                <rect x="36" y="486" width="648" height="43.2" 
+                      rx="15" fill="url(#uiBg-game-landscape-1)" filter="url(#buttonShadow-game-landscape-1)"/>
+                <text x="72" y="513" font-family="Arial, sans-serif" 
+                      font-size="16.2" fill="white"
+                      filter="url(#textShadow-game-landscape-1)">残り時間: 2:15</text>
+                <text x="503.99999999999994" y="513" font-family="Arial, sans-serif" 
+                      font-size="16.2" fill="white"
+                      filter="url(#textShadow-game-landscape-1)">HP: ♥♥♥</text>
+    </svg>

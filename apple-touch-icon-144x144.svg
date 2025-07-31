@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="144" height="144" viewBox="0 0 144 144">
+        <defs>
+            <!-- Apple-optimized gradients with better contrast -->
+            <radialGradient id="appleMainGradient-144" cx="45%" cy="45%" r="60%">
+                <stop offset="0%" style="stop-color:#66BB6A"/>
+                <stop offset="30%" style="stop-color:#4CAF50"/>
+                <stop offset="70%" style="stop-color:#2E7D32"/>
+                <stop offset="100%" style="stop-color:#1B5E20"/>
+            </radialGradient>
+            
+            <!-- High-contrast highlight for Retina displays -->
+            <radialGradient id="appleHighlight-144" cx="35%" cy="35%" r="45%">
+                <stop offset="0%" style="stop-color:rgba(255,255,255,0.95)"/>
+                <stop offset="60%" style="stop-color:rgba(255,255,255,0.3)"/>
+                <stop offset="100%" style="stop-color:rgba(255,255,255,0)"/>
+            </radialGradient>
+            
+            <!-- Background gradient for full coverage -->
+            <linearGradient id="appleBg-144" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#81C784"/>
+                <stop offset="50%" style="stop-color:#4CAF50"/>
+                <stop offset="100%" style="stop-color:#388E3C"/>
+            </linearGradient>
+            
+            <!-- Subtle shadow for depth -->
+            <filter id="appleShadow-144" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur in="SourceAlpha" stdDeviation="1.44"/>
+                <feOffset dx="1.44" dy="2.16" result="offset"/>
+                <feFlood flood-color="rgba(0,0,0,0.3)"/>
+                <feComposite in2="offset" operator="in"/>
+                <feMerge>
+                    <feMergeNode/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+        </defs>
+        
+        <!-- Background - full coverage for Apple's rounded corners -->
+        <rect width="144" height="144" fill="url(#appleBg-144)"/>
+        
+        <!-- Main bubble with Apple-optimized positioning -->
+        <circle cx="72" cy="72" r="60.48" 
+                fill="url(#appleMainGradient-144)" 
+                filter="url(#appleShadow-144)"/>
+        
+        <!-- Primary highlight - optimized for Apple's rendering -->
+        <circle cx="50.832" cy="47.808" 
+                r="36.288" 
+                fill="url(#appleHighlight-144)"/>
+        
+        
+        <!-- Detailed decorative elements for high-res displays -->
+        <circle cx="102.24" cy="35.712" 
+                r="10.886399999999998" 
+                fill="rgba(255,255,255,0.7)"/>
+        <circle cx="108.288" cy="96.19200000000001" 
+                r="8.4672" 
+                fill="rgba(255,255,255,0.6)"/>
+        <circle cx="35.712" cy="102.24" 
+                r="9.6768" 
+                fill="rgba(255,255,255,0.5)"/>
+        
+        <!-- High-res highlights on decorative bubbles -->
+        <circle cx="99.216" cy="32.688" 
+                r="3.6287999999999996" 
+                fill="rgba(255,255,255,0.9)"/>
+        <circle cx="105.8688" cy="93.77279999999999" 
+                r="3.024" 
+                fill="rgba(255,255,255,0.8)"/>
+        <circle cx="33.2928" cy="99.82079999999999" 
+                r="3.3264" 
+                fill="rgba(255,255,255,0.7)"/>
+        
+        
+        
+        
+        <!-- Corner details for better Apple integration -->
+        <circle cx="28.8" cy="28.8" r="5.76" 
+                fill="rgba(255,255,255,0.15)" opacity="0.8"/>
+        <circle cx="115.2" cy="28.8" r="5.040000000000001" 
+                fill="rgba(255,255,255,0.12)" opacity="0.7"/>
+        <circle cx="28.8" cy="115.2" r="5.4719999999999995" 
+                fill="rgba(255,255,255,0.13)" opacity="0.75"/>
+        <circle cx="115.2" cy="115.2" r="4.6080000000000005" 
+                fill="rgba(255,255,255,0.11)" opacity="0.65"/>
+    </svg>

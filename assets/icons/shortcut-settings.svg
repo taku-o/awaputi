@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96">
+        
+        <defs>
+            <linearGradient id="shortcutBg-settings" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#66BB6A"/>
+                <stop offset="50%" style="stop-color:#4CAF50"/>
+                <stop offset="100%" style="stop-color:#388E3C"/>
+            </linearGradient>
+            <filter id="shadow-settings">
+                <feDropShadow dx="2" dy="2" stdDeviation="4" flood-color="rgba(0,0,0,0.3)"/>
+            </filter>
+        </defs>
+        
+        <!-- Background -->
+        <rect width="96" height="96" rx="14.399999999999999" fill="url(#shortcutBg-settings)"/>
+        
+        <!-- Icon content -->
+        
+                <!-- Settings gear -->
+                <g transform="translate(48, 48)">
+                    <!-- Outer gear -->
+                    <circle r="34.56000000000001" fill="rgba(255,255,255,0.9)" filter="url(#shadow-settings)"/>
+                    
+                    <!-- Gear teeth -->
+                    <rect x="29.568" y="-5.760000000000001" 
+                                      width="6.144000000000001" height="11.520000000000001" 
+                                      fill="#2E7D32" 
+                                      transform="rotate(0 32.64 0)"/><rect x="20.007965337928916" y="17.319965337928913" 
+                                      width="6.144000000000001" height="11.520000000000001" 
+                                      fill="#2E7D32" 
+                                      transform="rotate(45 23.079965337928915 23.079965337928915)"/><rect x="-3.0719999999999983" y="26.88" 
+                                      width="6.144000000000001" height="11.520000000000001" 
+                                      fill="#2E7D32" 
+                                      transform="rotate(90 1.9986235762084807e-15 32.64)"/><rect x="-26.151965337928914" y="17.319965337928913" 
+                                      width="6.144000000000001" height="11.520000000000001" 
+                                      fill="#2E7D32" 
+                                      transform="rotate(135 -23.079965337928915 23.079965337928915)"/><rect x="-35.712" y="-5.759999999999996" 
+                                      width="6.144000000000001" height="11.520000000000001" 
+                                      fill="#2E7D32" 
+                                      transform="rotate(180 -32.64 3.9972471524169615e-15)"/><rect x="-26.151965337928917" y="-28.839965337928916" 
+                                      width="6.144000000000001" height="11.520000000000001" 
+                                      fill="#2E7D32" 
+                                      transform="rotate(225 -23.07996533792892 -23.079965337928915)"/><rect x="-3.0720000000000067" y="-38.4" 
+                                      width="6.144000000000001" height="11.520000000000001" 
+                                      fill="#2E7D32" 
+                                      transform="rotate(270 -5.995870728625442e-15 -32.64)"/><rect x="20.00796533792891" y="-28.83996533792892" 
+                                      width="6.144000000000001" height="11.520000000000001" 
+                                      fill="#2E7D32" 
+                                      transform="rotate(315 23.079965337928908 -23.07996533792892)"/>
+                    
+                    <!-- Inner circle -->
+                    <circle r="15.360000000000003" fill="#4CAF50"/>
+                    <circle r="5.760000000000001" fill="rgba(255,255,255,0.8)"/>
+                </g>
+    </svg>

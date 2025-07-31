@@ -1,0 +1,18 @@
+Apple Splash Screen - apple-splash-414x896.png
+Dimensions: 414×896px
+Device: iPhone XR/XS Max/11/12/13/14 Plus
+Orientation: portrait
+Generated: 2025-07-31T11:12:28.077Z
+
+Apple Splash Screen Specifications:
+- Optimized for iOS Safari PWA launch experience
+- Responsive design adapts to portrait/landscape orientations
+- Loading animation provides visual feedback during app initialization
+- Device-specific dimensions ensure pixel-perfect display
+
+HTML meta tag usage:
+<link rel="apple-touch-startup-image" href="/assets/splash-screens/apple-splash-414x896.png" 
+      media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+
+To convert to PNG:
+sips -s format png apple-splash-414x896.svg --out apple-splash-414x896.png

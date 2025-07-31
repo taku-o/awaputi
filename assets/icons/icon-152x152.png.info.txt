@@ -1,0 +1,11 @@
+PWA Icon - icon-152x152.png
+Size: 152x152px
+Purpose: iPad touch icon
+Type: Standard PWA Icon
+Generated: 2025-07-31T11:06:04.096Z
+
+To convert to PNG:
+1. Use: sips -s format png icon-152x152.svg --out icon-152x152.png
+2. Or open generate-icons.html and generate manually
+
+SVG version is immediately usable for PWA manifest.

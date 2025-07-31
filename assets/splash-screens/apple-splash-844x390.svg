@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="844" height="390" viewBox="0 0 844 390">
+        <defs>
+            <!-- Background gradient optimized for splash screens -->
+            <linearGradient id="splashBg-844x390" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#E8F5E8"/>
+                <stop offset="30%" style="stop-color:#C8E6C9"/>
+                <stop offset="70%" style="stop-color:#A5D6A7"/>
+                <stop offset="100%" style="stop-color:#81C784"/>
+            </linearGradient>
+            
+            <!-- Main logo gradient -->
+            <radialGradient id="splashLogo-844x390" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" style="stop-color:#66BB6A"/>
+                <stop offset="30%" style="stop-color:#4CAF50"/>
+                <stop offset="70%" style="stop-color:#2E7D32"/>
+                <stop offset="100%" style="stop-color:#1B5E20"/>
+            </radialGradient>
+            
+            <!-- Logo highlight -->
+            <radialGradient id="splashHighlight-844x390" cx="35%" cy="30%" r="40%">
+                <stop offset="0%" style="stop-color:rgba(255,255,255,0.9)"/>
+                <stop offset="100%" style="stop-color:rgba(255,255,255,0)"/>
+            </radialGradient>
+            
+            <!-- Text shadow filter -->
+            <filter id="textShadow-844x390">
+                <feDropShadow dx="2" dy="2" stdDeviation="3" flood-color="rgba(0,0,0,0.3)"/>
+            </filter>
+            
+            <!-- Logo shadow filter -->
+            <filter id="logoShadow-844x390">
+                <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="rgba(0,0,0,0.15)"/>
+            </filter>
+        </defs>
+        
+        <!-- Background -->
+        <rect width="844" height="390" fill="url(#splashBg-844x390)"/>
+        
+        <!-- Decorative background bubbles -->
+        <circle cx="126.6" cy="78" r="31.2" 
+                fill="rgba(255,255,255,0.1)" opacity="0.6"/>
+        <circle cx="717.4" cy="97.5" r="23.4" 
+                fill="rgba(255,255,255,0.08)" opacity="0.5"/>
+        <circle cx="84.4" cy="273" r="19.5" 
+                fill="rgba(255,255,255,0.12)" opacity="0.4"/>
+        <circle cx="759.6" cy="312" r="27.300000000000004" 
+                fill="rgba(255,255,255,0.09)" opacity="0.5"/>
+        
+        <!-- Main logo bubble -->
+        <circle cx="422" cy="195" r="58.5" 
+                fill="url(#splashLogo-844x390)" 
+                filter="url(#logoShadow-844x390)"/>
+        
+        <!-- Logo highlight -->
+        <circle cx="404.45" cy="177.45" 
+                r="29.25" 
+                fill="url(#splashHighlight-844x390)"/>
+        
+        <!-- Logo decorative bubbles -->
+        <circle cx="445.4" cy="165.75" 
+                r="8.775" 
+                fill="rgba(255,255,255,0.7)"/>
+        <circle cx="451.25" cy="212.55" 
+                r="7.02" 
+                fill="rgba(255,255,255,0.6)"/>
+        <circle cx="392.75" cy="218.4" 
+                r="7.605" 
+                fill="rgba(255,255,255,0.5)"/>
+        
+        <!-- Game title -->
+        <text x="422" y="300.3" 
+              font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', Helvetica, Arial, sans-serif" 
+              font-size="23.4" 
+              font-weight="700" 
+              text-anchor="middle" 
+              fill="#2E7D32"
+              filter="url(#textShadow-844x390)">BubblePop</text>
+        
+        <!-- Subtitle -->
+        <text x="422" y="335.4" 
+              font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', Helvetica, Arial, sans-serif" 
+              font-size="9.36" 
+              font-weight="400" 
+              text-anchor="middle" 
+              fill="#388E3C"
+              opacity="0.8">バブルポップゲーム</text>
+        
+        <!-- Loading indicator area (bottom) -->
+        <g transform="translate(422, 351)">
+            <!-- Loading dots -->
+            <circle cx="-11.7" cy="0" r="3.12" 
+                    fill="#4CAF50" opacity="0.6">
+                <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="0" cy="0" r="3.12" 
+                    fill="#4CAF50" opacity="0.6">
+                <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" begin="0.3s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="11.7" cy="0" r="3.12" 
+                    fill="#4CAF50" opacity="0.6">
+                <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" begin="0.6s" repeatCount="indefinite"/>
+            </circle>
+        </g>
+        
+        <!-- Device info (for development - remove in production) -->
+        <!-- <text x="834" y="380" 
+              font-family="SF Mono, Monaco, monospace" 
+              font-size="10" 
+              text-anchor="end" 
+              fill="rgba(0,0,0,0.3)">iPhone 12/13 mini (844×390)</text> -->
+    </svg>

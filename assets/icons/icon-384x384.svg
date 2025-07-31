@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="384" height="384" viewBox="0 0 384 384">
+        <defs>
+            <radialGradient id="mainGradient-384" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" style="stop-color:#4CAF50"/>
+                <stop offset="70%" style="stop-color:#2E7D32"/>
+                <stop offset="100%" style="stop-color:#1B5E20"/>
+            </radialGradient>
+            <radialGradient id="highlightGradient-384" cx="30%" cy="30%" r="40%">
+                <stop offset="0%" style="stop-color:rgba(255,255,255,0.8)"/>
+                <stop offset="100%" style="stop-color:rgba(255,255,255,0)"/>
+            </radialGradient>
+        </defs>
+        
+        <!-- Main bubble -->
+        <circle cx="192" cy="192" r="190" fill="url(#mainGradient-384)"/>
+        
+        <!-- Highlight -->
+        <circle cx="128" cy="128" r="96" fill="url(#highlightGradient-384)"/>
+        
+        
+        <!-- Decorative bubbles -->
+        <circle cx="268.79999999999995" cy="115.19999999999999" r="46.08" fill="rgba(255,255,255,0.6)"/>
+        <circle cx="307.20000000000005" cy="268.79999999999995" r="30.72" fill="rgba(255,255,255,0.5)"/>
+        <circle cx="115.19999999999999" cy="307.20000000000005" r="38.400000000000006" fill="rgba(255,255,255,0.4)"/>
+        
+        <!-- Small highlights on decorative bubbles -->
+        <circle cx="253.43999999999994" cy="99.83999999999999" r="15.36" fill="rgba(255,255,255,0.5)"/>
+        <circle cx="296.83200000000005" cy="258.43199999999996" r="10.368" fill="rgba(255,255,255,0.4)"/>
+        <circle cx="102.52799999999999" cy="294.528" r="12.672" fill="rgba(255,255,255,0.32)"/>
+        
+        
+        
+        <!-- Game title -->
+        <text x="192" y="326.4" 
+              font-family="Arial, sans-serif" 
+              font-size="30.72" 
+              font-weight="bold" 
+              text-anchor="middle" 
+              fill="rgba(255,255,255,0.9)"
+              style="filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5))">BubblePop</text>
+        
+    </svg>

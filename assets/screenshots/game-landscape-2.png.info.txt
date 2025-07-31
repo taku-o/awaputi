@@ -1,0 +1,25 @@
+PWA Screenshot - game-landscape-2.png
+Dimensions: 720×540px
+Type: game-landscape-2
+Purpose: Combo effects (landscape)
+Manifest Label: コンボ効果（横向き）
+Generated: 2025-07-31T11:20:02.839Z
+
+PWA Screenshot Specifications:
+- Designed for PWA app store listings and installation prompts
+- Portrait: 540×720px (3:4 aspect ratio)
+- Landscape: 720×540px (4:3 aspect ratio)
+- Mockup screenshots showing actual game functionality
+- Optimized for visibility in app stores and PWA discovery
+
+Manifest.json usage:
+{
+  "src": "/assets/screenshots/game-landscape-2.png",
+  "sizes": "720x540",
+  "type": "image/png",
+  "form_factor": "wide",
+  "label": "コンボ効果（横向き）"
+}
+
+To convert to PNG:
+sips -s format png game-landscape-2.svg --out game-landscape-2.png

@@ -1,0 +1,27 @@
+PWA Shortcut Icon - shortcut-settings.png
+Size: 96×96px
+Type: settings
+Purpose: Settings - Game configuration shortcut icon
+Manifest Name: 設定
+Generated: 2025-07-31T11:18:27.146Z
+
+PWA Shortcut Icon Specifications:
+- Designed for PWA app shortcuts in launcher/home screen
+- 96x96px is the standard size for shortcut icons
+- Optimized for visibility at small sizes
+- Bubble-themed design consistent with main app icons
+
+Manifest.json usage:
+{
+  "name": "設定",
+  "icons": [
+    {
+      "src": "/assets/icons/shortcut-settings.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    }
+  ]
+}
+
+To convert to PNG:
+sips -s format png shortcut-settings.svg --out shortcut-settings.png

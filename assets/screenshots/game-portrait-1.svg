@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="540" height="720" viewBox="0 0 540 720">
+        
+        <defs>
+            <!-- Screen gradient -->
+            <linearGradient id="screenBg-game-portrait-1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#E8F5E8"/>
+                <stop offset="50%" style="stop-color:#C8E6C9"/>
+                <stop offset="100%" style="stop-color:#A5D6A7"/>
+            </linearGradient>
+            
+            <!-- UI element gradient -->
+            <linearGradient id="uiBg-game-portrait-1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#66BB6A"/>
+                <stop offset="100%" style="stop-color:#4CAF50"/>
+            </linearGradient>
+            
+            <!-- Bubble gradient -->
+            <radialGradient id="bubbleGrad-game-portrait-1" cx="30%" cy="30%" r="70%">
+                <stop offset="0%" style="stop-color:#E8F5E8"/>
+                <stop offset="50%" style="stop-color:#A5D6A7"/>
+                <stop offset="100%" style="stop-color:#66BB6A"/>
+            </radialGradient>
+            
+            <!-- Text shadow -->
+            <filter id="textShadow-game-portrait-1">
+                <feDropShadow dx="1" dy="1" stdDeviation="2" flood-color="rgba(0,0,0,0.3)"/>
+            </filter>
+            
+            <!-- Button shadow -->
+            <filter id="buttonShadow-game-portrait-1">
+                <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="rgba(0,0,0,0.2)"/>
+            </filter>
+        </defs>
+        
+        <!-- Main background -->
+        <rect width="540" height="720" fill="#F1F8E9"/>
+        
+        
+                <!-- Game area background -->
+                <rect x="27" y="108" width="486" height="503.99999999999994" 
+                      rx="20" fill="url(#screenBg-game-portrait-1)" stroke="#388E3C" stroke-width="3"/>
+                
+                <!-- Header UI -->
+                <rect x="27" y="14.4" width="486" height="57.6" 
+                      rx="15" fill="url(#uiBg-game-portrait-1)" filter="url(#buttonShadow-game-portrait-1)"/>
+                <text x="54" y="50.400000000000006" font-family="Arial, sans-serif" 
+                      font-size="21.6" font-weight="bold" fill="white"
+                      filter="url(#textShadow-game-portrait-1)">BubblePop</text>
+                <text x="378" y="36" font-family="Arial, sans-serif" 
+                      font-size="13.5" fill="white"
+                      filter="url(#textShadow-game-portrait-1)">スコア: 12,450</text>
+                <text x="378" y="57.6" font-family="Arial, sans-serif" 
+                      font-size="13.5" fill="white"
+                      filter="url(#textShadow-game-portrait-1)">コンボ: x5</text>
+                
+                <!-- Game bubbles -->
+                
+            <circle cx="99.0969112201644" cy="191.18364835974836" r="58.32" 
+                    fill="#66BB6A" opacity="0.8" filter="url(#buttonShadow-game-portrait-1)"/>
+            <circle cx="81.6009112201644" cy="173.68764835974835" r="17.496" 
+                    fill="rgba(255,255,255,0.6)"/>
+            <circle cx="233.22525807645152" cy="216.8941934358941" r="58.32" 
+                    fill="#42A5F5" opacity="0.8" filter="url(#buttonShadow-game-portrait-1)"/>
+            <circle cx="215.72925807645152" cy="199.3981934358941" r="17.496" 
+                    fill="rgba(255,255,255,0.6)"/>
+            <circle cx="226.3687583874113" cy="380.74107897281493" r="58.32" 
+                    fill="#FFA726" opacity="0.8" filter="url(#buttonShadow-game-portrait-1)"/>
+            <circle cx="208.8727583874113" cy="363.24507897281495" r="17.496" 
+                    fill="rgba(255,255,255,0.6)"/>
+            <circle cx="401.9942538554565" cy="483.4142653002749" r="58.32" 
+                    fill="#EF5350" opacity="0.8" filter="url(#buttonShadow-game-portrait-1)"/>
+            <circle cx="384.49825385545654" cy="465.9182653002749" r="17.496" 
+                    fill="rgba(255,255,255,0.6)"/>
+            <circle cx="134.0217372096142" cy="362.6393272121868" r="58.32" 
+                    fill="#AB47BC" opacity="0.8" filter="url(#buttonShadow-game-portrait-1)"/>
+            <circle cx="116.5257372096142" cy="345.1433272121868" r="17.496" 
+                    fill="rgba(255,255,255,0.6)"/>
+            <circle cx="462.86217053002605" cy="543.082721186068" r="58.32" 
+                    fill="#66BB6A" opacity="0.8" filter="url(#buttonShadow-game-portrait-1)"/>
+            <circle cx="445.36617053002607" cy="525.5867211860681" r="17.496" 
+                    fill="rgba(255,255,255,0.6)"/>
+                
+                <!-- Bottom UI -->
+                <rect x="27" y="648" width="486" height="57.6" 
+                      rx="15" fill="url(#uiBg-game-portrait-1)" filter="url(#buttonShadow-game-portrait-1)"/>
+                <text x="54" y="684" font-family="Arial, sans-serif" 
+                      font-size="16.2" fill="white"
+                      filter="url(#textShadow-game-portrait-1)">残り時間: 2:15</text>
+                <text x="378" y="684" font-family="Arial, sans-serif" 
+                      font-size="16.2" fill="white"
+                      filter="url(#textShadow-game-portrait-1)">HP: ♥♥♥</text>
+    </svg>

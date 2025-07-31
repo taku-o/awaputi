@@ -5,32 +5,64 @@
 
 // キャッシュ設定
 const CACHE_CONFIG = {
-    version: '1.0.0',
-    staticCacheName: 'bubblepop-static-v1.0.0',
-    dynamicCacheName: 'bubblepop-dynamic-v1.0.0',
-    apiCacheName: 'bubblepop-api-v1.0.0',
+    version: '1.1.0-pwa',
+    staticCacheName: 'bubblepop-static-v1.1.0-pwa',
+    dynamicCacheName: 'bubblepop-dynamic-v1.1.0-pwa',
+    apiCacheName: 'bubblepop-api-v1.1.0-pwa',
     
     // キャッシュ戦略
     strategies: {
-        static: 'cache-first',
-        dynamic: 'network-first',
-        api: 'network-only'
+        static: 'cache-first',      // 静的ファイル（JS、CSS、アイコン等）
+        dynamic: 'network-first',   // 動的コンテンツ
+        api: 'network-only',        // API呼び出し
+        icons: 'cache-first',       // PWAアイコン（長期キャッシュ）
+        screenshots: 'cache-first'  // スクリーンショット（オンデマンド読み込み）
     },
     
-    // キャッシュサイズ制限
+    // キャッシュサイズ制限（PWA対応で増量）
     limits: {
-        staticCache: 50 * 1024 * 1024, // 50MB
-        dynamicCache: 20 * 1024 * 1024, // 20MB
-        apiCache: 5 * 1024 * 1024, // 5MB
-        maxAge: 7 * 24 * 60 * 60 * 1000 // 7日間
+        staticCache: 100 * 1024 * 1024,  // 100MB（PWAアセット増加に対応）
+        dynamicCache: 20 * 1024 * 1024,  // 20MB
+        apiCache: 5 * 1024 * 1024,       // 5MB
+        iconCache: 30 * 1024 * 1024,     // 30MB（PWAアイコン専用）
+        maxAge: 30 * 24 * 60 * 60 * 1000 // 30日間（PWAアセットは長期保持）
+    },
+    
+    // 新しいキャッシュ戦略設定
+    cacheStrategies: {
+        // 高優先度（即座にキャッシュ）
+        highPriority: [
+            /^\/$/,                           // ルートページ
+            /^\/index\.html$/,                // メインページ
+            /^\/manifest\.json$/,             // PWA manifest
+            /^\/assets\/icons\/icon-.*\.png$/, // PWAアイコン
+            /^\/favicon.*\.png$/,             // ファビコン
+            /^\/apple-touch-icon.*\.png$/     // Apple Touch Icons
+        ],
+        
+        // 中優先度（使用時にキャッシュ）
+        mediumPriority: [
+            /^\/src\/core\//,                 // コアJS
+            /^\/src\/scenes\//,               // シーン
+            /^\/src\/managers\//,             // マネージャー
+            /^\/src\/config\//                // 設定
+        ],
+        
+        // 低優先度（オンデマンド）
+        lowPriority: [
+            /^\/assets\/screenshots\//,       // スクリーンショット
+            /^\/assets\/splash-screens\//,    // スプラッシュスクリーン
+            /^\/src\/utils\//                 // ユーティリティ
+        ]
     }
-};
+};;
 
 // 静的リソースリスト
 const STATIC_ASSETS = [
     '/',
     '/index.html',
     '/test.html',
+    '/manifest.json',
     
     // メインJSファイル
     '/src/core/GameEngine.js',
@@ -84,13 +116,59 @@ const STATIC_ASSETS = [
     '/src/utils/MobilePerformanceOptimizer.js',
     '/src/utils/ObjectPool.js',
     
-    // アセット（実在するもののみ）
+    // PWA Icons - Standard
+    '/assets/icons/icon-72x72.png',
+    '/assets/icons/icon-96x96.png',
+    '/assets/icons/icon-128x128.png',
+    '/assets/icons/icon-144x144.png',
+    '/assets/icons/icon-152x152.png',
     '/assets/icons/icon-192x192.png',
+    '/assets/icons/icon-384x384.png',
     '/assets/icons/icon-512x512.png',
+    
+    // PWA Icons - Maskable
+    '/assets/icons/icon-maskable-192x192.png',
+    '/assets/icons/icon-maskable-512x512.png',
+    
+    // PWA Shortcut Icons
+    '/assets/icons/shortcut-play.png',
+    '/assets/icons/shortcut-stats.png',
+    '/assets/icons/shortcut-settings.png',
+    '/assets/icons/shortcut-achievements.png',
+    
+    // Apple Touch Icons
+    '/apple-touch-icon-57x57.png',
+    '/apple-touch-icon-60x60.png',
+    '/apple-touch-icon-72x72.png',
+    '/apple-touch-icon-76x76.png',
+    '/apple-touch-icon-114x114.png',
+    '/apple-touch-icon-120x120.png',
+    '/apple-touch-icon-144x144.png',
+    '/apple-touch-icon-152x152.png',
+    '/apple-touch-icon-180x180.png',
+    
+    // Favicons
+    '/favicon-16x16.png',
+    '/favicon-32x32.png',
+    '/favicon-48x48.png',
+    '/favicon.ico',
+    
+    // Apple Splash Screens (重要なもののみ、全22個は多すぎるためメジャーデバイスのみ)
+    '/assets/splash-screens/apple-splash-375x812.png',  // iPhone X/XS/11 Pro
+    '/assets/splash-screens/apple-splash-390x844.png',  // iPhone 12/13 mini
+    '/assets/splash-screens/apple-splash-393x852.png',  // iPhone 14/15
+    '/assets/splash-screens/apple-splash-414x896.png',  // iPhone XR/XS Max/11/12/13/14 Plus
+    '/assets/splash-screens/apple-splash-430x932.png',  // iPhone 14 Pro Max/15 Pro Max
+    '/assets/splash-screens/apple-splash-768x1024.png', // iPad
+    '/assets/splash-screens/apple-splash-834x1194.png', // iPad Air
+    '/assets/splash-screens/apple-splash-1024x1366.png', // iPad Pro 12.9"
+    
+    // Screenshots (プリロードしない、必要時のみ読み込み)
+    // '/assets/screenshots/' files are loaded on demand
     
     // CSS（実在するもののみ）
     '/styles/main.css'
-];
+];;
 
 // ネットワーク優先のパターン
 const NETWORK_FIRST_PATTERNS = [
@@ -201,11 +279,16 @@ self.addEventListener('fetch', (event) => {
         return;
     }
     
-    // リクエストタイプに応じた戦略を選択
-    const strategy = getRequestStrategy(request);
+    // 特定のリクエストは無視（Service Worker自体、chrome-extension等）
+    if (url.pathname.startsWith('/sw.js') || 
+        url.protocol.startsWith('chrome-extension') ||
+        url.pathname.startsWith('/_')) {
+        return;
+    }
     
-    event.respondWith(handleRequest(request, strategy));
-});
+    // PWA対応の改善されたリクエスト処理
+    event.respondWith(handlePWARequest(request));
+};);
 
 // メッセージイベントの処理
 self.addEventListener('message', (event) => {
@@ -338,6 +421,116 @@ async function handleRequest(request, strategy) {
         }
     } catch (error) {
         console.error('[ServiceWorker] リクエスト処理エラー:', error);
+        return await getOfflineFallback(request);
+    }
+}
+
+/**
+ * PWA特化のリクエスト戦略決定
+ * @param {Request} request 
+ * @returns {string} 適用すべき戦略
+ */
+function getPWAStrategy(request) {
+    const url = new URL(request.url);
+    const pathname = url.pathname;
+    
+    // 高優先度リソース（Cache First）
+    for (const pattern of CACHE_CONFIG.cacheStrategies.highPriority) {
+        if (pattern.test(pathname)) {
+            return 'cache-first';
+        }
+    }
+    
+    // 中優先度リソース（Stale While Revalidate）
+    for (const pattern of CACHE_CONFIG.cacheStrategies.mediumPriority) {
+        if (pattern.test(pathname)) {
+            return 'stale-while-revalidate';
+        }
+    }
+    
+    // 低優先度リソース（Network First）
+    for (const pattern of CACHE_CONFIG.cacheStrategies.lowPriority) {
+        if (pattern.test(pathname)) {
+            return 'network-first';
+        }
+    }
+    
+    // API呼び出し
+    if (pathname.startsWith('/api/')) {
+        return 'network-only';
+    }
+    
+    // デフォルト戦略
+    return 'network-first';
+}
+
+/**
+ * Stale While Revalidate戦略
+ * キャッシュがあれば即座に返し、同時にネットワークから更新
+ */
+async function staleWhileRevalidateStrategy(request) {
+    const cache = await caches.open(CACHE_CONFIG.staticCacheName);
+    
+    // キャッシュから即座に応答
+    const cachedResponse = await cache.match(request);
+    
+    // バックグラウンドでネットワークから更新
+    const networkResponsePromise = fetch(request)
+        .then(async (networkResponse) => {
+            if (networkResponse && networkResponse.status === 200) {
+                // 新しいレスポンスをキャッシュ
+                const responseClone = networkResponse.clone();
+                await cache.put(request, responseClone);
+                console.log(`[ServiceWorker] バックグラウンド更新: ${request.url}`);
+            }
+            return networkResponse;
+        })
+        .catch(error => {
+            console.log(`[ServiceWorker] バックグラウンド更新失敗: ${request.url}`, error);
+            return null;
+        });
+    
+    // キャッシュがあれば即座に返す
+    if (cachedResponse) {
+        console.log(`[ServiceWorker] キャッシュから応答: ${request.url}`);
+        // バックグラウンド更新は続行
+        networkResponsePromise.catch(() => {}); // エラーを無視
+        return cachedResponse;
+    }
+    
+    // キャッシュがない場合はネットワークを待つ
+    console.log(`[ServiceWorker] ネットワークから取得: ${request.url}`);
+    return await networkResponsePromise || await getOfflineFallback(request);
+}
+
+/**
+ * 改善されたリクエストハンドラー（PWA対応）
+ */
+async function handlePWARequest(request) {
+    try {
+        const strategy = getPWAStrategy(request);
+        
+        switch (strategy) {
+            case 'cache-first':
+                return await cacheFirstStrategy(request);
+                
+            case 'network-first':
+                return await networkFirstStrategy(request);
+                
+            case 'network-only':
+                return await networkOnlyStrategy(request);
+                
+            case 'cache-only':
+                return await cacheOnlyStrategy(request);
+                
+            case 'stale-while-revalidate':
+                return await staleWhileRevalidateStrategy(request);
+                
+            default:
+                return await networkFirstStrategy(request);
+        }
+    } catch (error) {
+        console.error('[ServiceWorker] PWAリクエスト処理エラー:', error);
         return await getOfflineFallback(request);
     }
 }
@@ -562,21 +755,77 @@ async function enforceMaxCacheSize(cacheName) {
             limit = CACHE_CONFIG.limits.apiCache;
             break;
         default:
-            return;
+            // 新しいキャッシュタイプに対応
+            if (cacheName.includes('icon')) {
+                limit = CACHE_CONFIG.limits.iconCache;
+            } else {
+                limit = CACHE_CONFIG.limits.staticCache; // デフォルト
+            }
+            break;
     }
     
-    // サイズ計算は概算（実装簡略化）
-    const estimatedSize = requests.length * 10000; // 10KB per request (概算)
+    // より正確なサイズ計算（Response content-lengthを使用）
+    let totalSize = 0;
+    const entries = [];
     
-    if (estimatedSize > limit) {
-        // 古いエントリから削除（FIFO）
-        const deleteCount = Math.ceil(requests.length * 0.2); // 20%削除
+    for (const request of requests) {
+        const response = await cache.match(request);
+        if (response) {
+            const size = parseInt(response.headers.get('content-length')) || 10000; // fallback 10KB
+            const lastModified = response.headers.get('last-modified') || new Date().toISOString();
+            entries.push({
+                request,
+                size,
+                lastModified: new Date(lastModified),
+                url: request.url
+            });
+            totalSize += size;
+        }
+    }
+    
+    if (totalSize > limit) {
+        // 使用頻度とアクセス時間を考慮したLRU + 重要度ベースのクリーンアップ
+        const deleteTarget = totalSize - (limit * 0.8); // 80%まで削減
+        let deletedSize = 0;
         
-        for (let i = 0; i < deleteCount && i < requests.length; i++) {
-            await cache.delete(requests[i]);
+        // 重要度による保護（PWA必須ファイル）
+        const protectedPatterns = [
+            /\/$/,                          // ルート
+            /\/index\.html$/,               // メインページ
+            /\/manifest\.json$/,            // PWA manifest
+            /\/assets\/icons\/icon-192x192\.png$/, // 必須PWAアイコン
+            /\/assets\/icons\/icon-512x512\.png$/, // 必須PWAアイコン
+            /\/src\/core\/GameEngine\.js$/  // コアエンジン
+        ];
+        
+        // 削除候補を優先度順にソート
+        const sortedEntries = entries
+            .filter(entry => !protectedPatterns.some(pattern => pattern.test(entry.url)))
+            .sort((a, b) => {
+                // 1. 古いファイルを優先削除
+                const timeDiff = a.lastModified - b.lastModified;
+                if (Math.abs(timeDiff) > 24 * 60 * 60 * 1000) { // 1日以上の差
+                    return timeDiff;
+                }
+                
+                // 2. サイズの大きいファイルを優先削除
+                return b.size - a.size;
+            });
+        
+        console.log(`[ServiceWorker] キャッシュサイズ制限: ${totalSize}bytes > ${limit}bytes`);
+        console.log(`[ServiceWorker] 削除目標: ${deleteTarget}bytes`);
+        
+        for (const entry of sortedEntries) {
+            if (deletedSize >= deleteTarget) break;
+            
+            await cache.delete(entry.request);
+            deletedSize += entry.size;
+            console.log(`[ServiceWorker] 削除: ${entry.url} (${entry.size}bytes)`);
         }
         
-        console.log(`[ServiceWorker] キャッシュクリーンアップ: ${deleteCount}件削除 (${cacheName})`);
+        console.log(`[ServiceWorker] キャッシュクリーンアップ完了: ${deletedSize}bytes削除 (${cacheName})`);
+    } else {
+        console.log(`[ServiceWorker] キャッシュサイズ正常: ${totalSize}bytes <= ${limit}bytes (${cacheName})`);
     }
 }
 
@@ -585,22 +834,83 @@ async function enforceMaxCacheSize(cacheName) {
  */
 async function cleanupOldCaches() {
     const cacheNames = await caches.keys();
-    const currentCaches = [
+    const currentVersion = CACHE_CONFIG.version;
+    
+    // 現在有効なキャッシュ名のパターン
+    const currentCachePatterns = [
         CACHE_CONFIG.staticCacheName,
         CACHE_CONFIG.dynamicCacheName,
-        CACHE_CONFIG.apiCacheName
+        CACHE_CONFIG.apiCacheName,
+        // 動的に生成される可能性のあるキャッシュも含める
+        `bubblepop-icons-v${currentVersion}`,
+        `bubblepop-screenshots-v${currentVersion}`
     ];
     
-    const deletePromises = cacheNames
-        .filter(cacheName => !currentCaches.includes(cacheName))
-        .map(cacheName => caches.delete(cacheName));
+    // BubblePop関連の古いキャッシュを特定
+    const oldCacheNames = cacheNames.filter(cacheName => {
+        // BubblePopプロジェクト関連のキャッシュのみ対象
+        if (!cacheName.startsWith('bubblepop-')) {
+            return false;
+        }
+        
+        // 現在のバージョンのキャッシュは保持
+        if (currentCachePatterns.includes(cacheName)) {
+            return false;
+        }
+        
+        // バージョン情報を含むキャッシュの場合、古いバージョンかチェック
+        const versionMatch = cacheName.match(/v(\d+\.\d+\.\d+(?:-\w+)?)/);
+        if (versionMatch) {
+            const cacheVersion = versionMatch[1];
+            if (cacheVersion === currentVersion) {
+                return false;
+            }
+        }
+        
+        return true;
+    });
     
-    const deleted = await Promise.all(deletePromises);
-    const deletedCount = deleted.filter(Boolean).length;
+    console.log(`[ServiceWorker] キャッシュクリーンアップ開始`);
+    console.log(`[ServiceWorker] 現在のバージョン: ${currentVersion}`);
+    console.log(`[ServiceWorker] 検出されたキャッシュ: ${cacheNames.length}個`);
+    console.log(`[ServiceWorker] 削除対象: ${oldCacheNames.length}個`);
+    
+    if (oldCacheNames.length > 0) {
+        console.log(`[ServiceWorker] 削除対象キャッシュ:`, oldCacheNames);
+    }
+    
+    // 古いキャッシュを並列削除
+    const deletePromises = oldCacheNames.map(async (cacheName) => {
+        try {
+            const deleted = await caches.delete(cacheName);
+            if (deleted) {
+                console.log(`[ServiceWorker] キャッシュ削除成功: ${cacheName}`);
+            }
+            return deleted;
+        } catch (error) {
+            console.error(`[ServiceWorker] キャッシュ削除エラー: ${cacheName}`, error);
+            return false;
+        }
+    });
+    
+    const results = await Promise.all(deletePromises);
+    const deletedCount = results.filter(Boolean).length;
     
     if (deletedCount > 0) {
-        console.log(`[ServiceWorker] 古いキャッシュ削除: ${deletedCount}件`);
+        console.log(`[ServiceWorker] 古いキャッシュ削除完了: ${deletedCount}件`);
+        
+        // クライアントに更新完了を通知
+        await postMessageToClients({
+            type: 'CACHE_UPDATED',
+            message: `キャッシュ更新完了 (${deletedCount}件の古いキャッシュを削除)`,
+            version: currentVersion,
+            deletedCaches: oldCacheNames
+        });
+    } else {
+        console.log(`[ServiceWorker] 削除すべき古いキャッシュなし`);
     }
+    
+    return deletedCount;
 }
 
 /**
