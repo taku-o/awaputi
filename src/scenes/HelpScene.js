@@ -107,7 +107,8 @@ export class HelpScene extends Scene {
             'Escape': () => this.goBack(),
             'Tab': (event) => this.handleTabNavigation(event),
             '/': (event) => { event.preventDefault(); this.focusSearchBar(); },
-            'F': (event) => { if (event.ctrlKey) { event.preventDefault(); this.showFeedbackDialog(); } }
+            'F': (event) => { if (event.ctrlKey) { event.preventDefault(); this.showFeedbackDialog(); } },
+            'E': (event) => { if (event.ctrlKey && event.shiftKey) { event.preventDefault(); this.showEffectivenessReport(); } }
         };
         
         this.initialize();
@@ -134,6 +135,10 @@ export class HelpScene extends Scene {
             // ヘルプフィードバックシステムの初期化
             const { getHelpFeedbackSystem } = await import('../core/help/HelpFeedbackSystem.js');
             this.helpFeedbackSystem = getHelpFeedbackSystem(this.gameEngine);
+            
+            // ヘルプ効果測定ツールの初期化
+            const { getHelpEffectivenessAnalyzer } = await import('../core/help/HelpEffectivenessAnalyzer.js');
+            this.helpEffectivenessAnalyzer = getHelpEffectivenessAnalyzer(this.gameEngine);
             
             // ヘルプコンテンツの読み込み
             await this.loadHelpContent();
@@ -512,6 +517,7 @@ export class HelpScene extends Scene {
             'Tab: フォーカス移動\n' +
             '/: 検索バーにフォーカス\n' +
             'Ctrl+F: フィードバック送信\n' +
+            'Ctrl+Shift+E: 効果測定レポート（開発者向け）\n' +
             'F1: このヘルプ\n' +
             'Alt+H: 詳細説明\n' +
             'Ctrl+Shift+?: ショートカット一覧\n' +
@@ -1038,6 +1044,56 @@ export class HelpScene extends Scene {
         if (category && category.topics[this.selectedTopicIndex]) {
             const topic = category.topics[this.selectedTopicIndex];
             this.helpFeedbackSystem.showQuickFeedback(topic.id, x, y);
+        }
+    }
+    
+    /**
+     * 効果測定レポートの表示（開発者向け）
+     */
+    async showEffectivenessReport() {
+        if (!this.helpEffectivenessAnalyzer) {
+            console.warn('HelpEffectivenessAnalyzer is not available');
+            return;
+        }
+        
+        try {
+            console.log('Generating help effectiveness report...');
+            const report = await this.helpEffectivenessAnalyzer.generateEffectivenessReport('comprehensive', {
+                period: 'all',
+                includeTrends: true,
+                includeRecommendations: true
+            });
+            
+            console.log('📊 Help Effectiveness Report:');
+            console.log('==================================');
+            console.log(`Overall Effectiveness Score: ${(report.overallEffectivenessScore * 100).toFixed(1)}%`);
+            console.log(`Classification: ${report.detailedAnalysis.effectiveness.classification}`);
+            console.log('');
+            console.log('Key Metrics:');
+            console.log(`- Usage Score: ${(report.detailedAnalysis.effectiveness.breakdown.usage.score * 100).toFixed(1)}%`);
+            console.log(`- Engagement Score: ${(report.detailedAnalysis.effectiveness.breakdown.engagement.score * 100).toFixed(1)}%`);
+            console.log(`- Satisfaction Score: ${(report.detailedAnalysis.effectiveness.breakdown.satisfaction.score * 100).toFixed(1)}%`);
+            console.log('');
+            console.log(`Data Quality: ${(report.dataQuality * 100).toFixed(1)}%`);
+            console.log(`Confidence Level: ${(report.metadata.confidenceLevel * 100).toFixed(1)}%`);
+            console.log('');
+            console.log('Full report object available in browser console as helpEffectivenessReport');
+            console.log('==================================');
+            
+            // グローバル変数として利用可能にする
+            window.helpEffectivenessReport = report;
+            
+            // スクリーンリーダーへの通知
+            const t = this.gameEngine.localizationManager.t.bind(this.gameEngine.localizationManager);
+            this.announceToScreenReader(
+                t('help.effectiveness.reportGenerated', 
+                  `ヘルプ効果測定レポートが生成されました。総合スコア: ${(report.overallEffectivenessScore * 100).toFixed(1)}%`),
+                'assertive'
+            );
+            
+        } catch (error) {
+            console.error('Failed to generate effectiveness report:', error);
+            this.announceToScreenReader('効果測定レポートの生成に失敗しました', 'assertive');
         }
     }
     
