@@ -13,13 +13,13 @@
     - Implement PNG format optimization
     - _Requirements: 3.1, 3.2_
 
-  - [ ] 2.2 Create additional PWA icon sizes
+  - [x] 2.2 Create additional PWA icon sizes
     - Generate 72x72px, 96x96px, 128x128px, 144x144px, 152x152px, 384x384px icons
     - Implement consistent icon scaling and quality
     - Add proper file naming conventions
     - _Requirements: 3.1, 3.2_
 
-  - [ ] 2.3 Create maskable icons for adaptive icon support
+  - [x] 2.3 Create maskable icons for adaptive icon support
     - Generate 192x192px and 512x512px maskable icons
     - Implement proper safe zone padding for maskable icons
     - Test maskable icon display on Android devices

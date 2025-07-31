@@ -1,0 +1,23 @@
+Maskable PWA Icon - icon-maskable-192x192.png
+Size: 192x192px
+Purpose: Maskable PWA installation icon
+Type: Maskable PWA Icon (Android Adaptive Icon compatible)
+Generated: 2025-07-31T11:07:42.542Z
+
+Maskable Icon Specifications:
+- Safe Zone: 80% of icon size (154x154px)
+- Display Zone: 66% of icon size (127x127px)
+- Background: Full canvas utilization for better appearance
+- Compatibility: Android Adaptive Icons, PWA maskable icons
+
+To convert to PNG:
+1. Use: sips -s format png icon-maskable-192x192.svg --out icon-maskable-192x192.png
+2. Or use the web-based generator
+
+Manifest.json usage:
+{
+  "src": "/assets/icons/icon-maskable-192x192.png",
+  "sizes": "192x192",
+  "type": "image/png",
+  "purpose": "maskable"
+}

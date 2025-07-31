@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+        <defs>
+            <radialGradient id="mainGradient-128" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" style="stop-color:#4CAF50"/>
+                <stop offset="70%" style="stop-color:#2E7D32"/>
+                <stop offset="100%" style="stop-color:#1B5E20"/>
+            </radialGradient>
+            <radialGradient id="highlightGradient-128" cx="30%" cy="30%" r="40%">
+                <stop offset="0%" style="stop-color:rgba(255,255,255,0.8)"/>
+                <stop offset="100%" style="stop-color:rgba(255,255,255,0)"/>
+            </radialGradient>
+        </defs>
+        
+        <!-- Main bubble -->
+        <circle cx="64" cy="64" r="62" fill="url(#mainGradient-128)"/>
+        
+        <!-- Highlight -->
+        <circle cx="42.66666666666667" cy="42.66666666666667" r="32" fill="url(#highlightGradient-128)"/>
+        
+        
+        <!-- Decorative bubbles -->
+        <circle cx="89.6" cy="38.4" r="15.36" fill="rgba(255,255,255,0.6)"/>
+        <circle cx="102.4" cy="89.6" r="10.24" fill="rgba(255,255,255,0.5)"/>
+        <circle cx="38.4" cy="102.4" r="12.8" fill="rgba(255,255,255,0.4)"/>
+        
+        <!-- Small highlights on decorative bubbles -->
+        <circle cx="84.47999999999999" cy="33.28" r="5.12" fill="rgba(255,255,255,0.5)"/>
+        <circle cx="98.944" cy="86.14399999999999" r="3.456" fill="rgba(255,255,255,0.4)"/>
+        <circle cx="34.176" cy="98.176" r="4.224" fill="rgba(255,255,255,0.32)"/>
+        
+        
+        
+    </svg>
