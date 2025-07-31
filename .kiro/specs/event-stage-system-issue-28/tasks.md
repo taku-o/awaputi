@@ -68,20 +68,20 @@
   - trackEventAchievements()メソッドを実装してイベント実績の追跡
   - _Requirements: 5.1, 5.2, 5.3, 5.4_
 
-- [ ] 12. イベントランキングシステムを実装
+- [x] 12. イベントランキングシステムを実装
   - EventRankingManagerクラスを作成してイベント別ランキング管理
   - updateEventRanking()メソッドを実装してスコア更新時のランキング処理
   - getEventLeaderboard()メソッドを実装してリーダーボード取得
   - distributeRankingRewards()メソッドを実装してランキング報酬配布
   - _Requirements: 5.2, 5.3_
 
-- [ ] 13. イベントデータの永続化機能を実装
+- [x] 13. イベントデータの永続化機能を実装
   - saveEventData()メソッドを拡張してイベント参加履歴とランキングデータの保存
   - loadEventData()メソッドを拡張してイベントデータの読み込み処理
   - migrateEventData()メソッドを実装してイベントデータ形式の移行処理
   - _Requirements: 6.1, 6.2, 6.3_
 
-- [ ] 14. イベントシステムの統合テストを実装
+- [x] 14. イベントシステムの統合テストを実装
   - EventStageManagerの単体テストを作成して季節イベント、通知、統計機能をテスト
   - StageSelectSceneの統合テストを作成してイベント表示とイベント選択機能をテスト
   - イベントフロー全体の統合テストを作成してイベント開始から完了までの処理をテスト
