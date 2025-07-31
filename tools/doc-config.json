@@ -1,0 +1,83 @@
+{
+  "apiDocumentationGenerator": {
+    "version": "1.0.0",
+    "sourceDir": "../src",
+    "outputDir": "../docs/api-reference",
+    "config": {
+      "includePrivateMethods": false,
+      "includeJapaneseComments": true,
+      "includeMethodSignatures": true,
+      "includeUsageExamples": true,
+      "outputFormat": "markdown",
+      "generateIndex": true,
+      "generateCrossReferences": true,
+      "generateVersionHistory": true
+    },
+    "includePatterns": [
+      "**/*.js"
+    ],
+    "excludePatterns": [
+      "**/test/**",
+      "**/tests/**",
+      "**/*.test.js",
+      "**/*.spec.js",
+      "**/node_modules/**",
+      "**/build/**",
+      "**/dist/**"
+    ],
+    "priorityFiles": [
+      "src/core/GameEngine.js",
+      "src/core/ConfigurationManager.js",
+      "src/core/SceneManager.js",
+      "src/core/BubbleManager.js",
+      "src/core/ScoreManager.js",
+      "src/managers/StatisticsManager.js",
+      "src/managers/AchievementManager.js"
+    ],
+    "categories": {
+      "core": {
+        "name": "コアシステム",
+        "description": "ゲームエンジンと中核機能",
+        "priority": 1
+      },
+      "managers": {
+        "name": "マネージャー",
+        "description": "各種システム管理クラス",
+        "priority": 2
+      },
+      "scenes": {
+        "name": "シーン",
+        "description": "ゲーム画面とUI",
+        "priority": 3
+      },
+      "config": {
+        "name": "設定",
+        "description": "ゲーム設定とバランス調整",
+        "priority": 4
+      },
+      "utils": {
+        "name": "ユーティリティ",
+        "description": "補助機能とヘルパー",
+        "priority": 5
+      }
+    },
+    "templates": {
+      "classHeader": "## {className}\n\n{description}\n\n**ファイル**: `{filePath}`  \n**行番号**: {lineNumber}\n\n",
+      "methodHeader": "### {methodName}\n\n{description}\n\n",
+      "exampleCode": "```javascript\n{code}\n```\n\n"
+    },
+    "crossReferences": {
+      "enabled": true,
+      "includeInheritance": true,
+      "includeUsages": true,
+      "includeDependencies": true
+    },
+    "output": {
+      "generateSummary": true,
+      "generateChangelog": true,
+      "generateSearchIndex": true,
+      "minifyOutput": false,
+      "prettyPrint": true
+    }
+  }
+}

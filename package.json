@@ -48,7 +48,12 @@
     "lighthouse:ci": "lhci autorun",
     "size-check": "bundlesize",
     "setup:hooks": "node scripts/setup-git-hooks.js",
-    "setup:hooks:force": "node scripts/setup-git-hooks.js --force-default-path"
+    "setup:hooks:force": "node scripts/setup-git-hooks.js --force-default-path",
+    "docs:generate": "node tools/api-doc-generator.js",
+    "docs:generate:private": "node tools/api-doc-generator.js --include-private",
+    "docs:generate:no-examples": "node tools/api-doc-generator.js --no-examples",
+    "docs:clean": "rm -rf docs/api-reference",
+    "docs:serve": "cd docs/api-reference && python -m http.server 8080"
   },
   "devDependencies": {
     "@playwright/test": "^1.40.0",
