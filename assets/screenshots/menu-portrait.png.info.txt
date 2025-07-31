@@ -1,0 +1,25 @@
+PWA Screenshot - menu-portrait.png
+Dimensions: 540×720px
+Type: menu-portrait
+Purpose: Main menu (portrait)
+Manifest Label: メインメニュー（縦向き）
+Generated: 2025-07-31T11:20:02.838Z
+
+PWA Screenshot Specifications:
+- Designed for PWA app store listings and installation prompts
+- Portrait: 540×720px (3:4 aspect ratio)
+- Landscape: 720×540px (4:3 aspect ratio)
+- Mockup screenshots showing actual game functionality
+- Optimized for visibility in app stores and PWA discovery
+
+Manifest.json usage:
+{
+  "src": "/assets/screenshots/menu-portrait.png",
+  "sizes": "540x720",
+  "type": "image/png",
+  "form_factor": "narrow",
+  "label": "メインメニュー（縦向き）"
+}
+
+To convert to PNG:
+sips -s format png menu-portrait.svg --out menu-portrait.png

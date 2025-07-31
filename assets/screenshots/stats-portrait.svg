@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="540" height="720" viewBox="0 0 540 720">
+        
+        <defs>
+            <!-- Screen gradient -->
+            <linearGradient id="screenBg-stats-portrait" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#E8F5E8"/>
+                <stop offset="50%" style="stop-color:#C8E6C9"/>
+                <stop offset="100%" style="stop-color:#A5D6A7"/>
+            </linearGradient>
+            
+            <!-- UI element gradient -->
+            <linearGradient id="uiBg-stats-portrait" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#66BB6A"/>
+                <stop offset="100%" style="stop-color:#4CAF50"/>
+            </linearGradient>
+            
+            <!-- Bubble gradient -->
+            <radialGradient id="bubbleGrad-stats-portrait" cx="30%" cy="30%" r="70%">
+                <stop offset="0%" style="stop-color:#E8F5E8"/>
+                <stop offset="50%" style="stop-color:#A5D6A7"/>
+                <stop offset="100%" style="stop-color:#66BB6A"/>
+            </radialGradient>
+            
+            <!-- Text shadow -->
+            <filter id="textShadow-stats-portrait">
+                <feDropShadow dx="1" dy="1" stdDeviation="2" flood-color="rgba(0,0,0,0.3)"/>
+            </filter>
+            
+            <!-- Button shadow -->
+            <filter id="buttonShadow-stats-portrait">
+                <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="rgba(0,0,0,0.2)"/>
+            </filter>
+        </defs>
+        
+        <!-- Main background -->
+        <rect width="540" height="720" fill="#F1F8E9"/>
+        
+        
+                <!-- Stats background -->
+                <rect width="540" height="720" fill="url(#screenBg-stats-portrait)"/>
+                
+                <!-- Header -->
+                <rect x="27" y="36" width="486" height="86.39999999999999" 
+                      rx="15" fill="url(#uiBg-stats-portrait)" filter="url(#buttonShadow-stats-portrait)"/>
+                <text x="270" y="86.39999999999999" font-family="Arial, sans-serif" 
+                      font-size="27" font-weight="bold" fill="white"
+                      text-anchor="middle" filter="url(#textShadow-stats-portrait)">プレイ統計</text>
+                
+                <!-- Stats content -->
+                
+            <rect x="54" y="180" width="432" height="57.6" 
+                  rx="10" fill="rgba(255,255,255,0.7)" filter="url(#buttonShadow-stats-portrait)"/>
+            <text x="81" y="216" 
+                  font-family="Arial, sans-serif" font-size="18" 
+                  fill="#2E7D32" dominant-baseline="central">総プレイ時間</text>
+            <text x="459" y="216" 
+                  font-family="Arial, sans-serif" font-size="21.599999999999998" 
+                  font-weight="bold" fill="#1B5E20" text-anchor="end" 
+                  dominant-baseline="central">2時間 34分</text>
+            <rect x="54" y="252" width="432" height="57.6" 
+                  rx="10" fill="rgba(255,255,255,0.7)" filter="url(#buttonShadow-stats-portrait)"/>
+            <text x="81" y="288" 
+                  font-family="Arial, sans-serif" font-size="18" 
+                  fill="#2E7D32" dominant-baseline="central">最高スコア</text>
+            <text x="459" y="288" 
+                  font-family="Arial, sans-serif" font-size="21.599999999999998" 
+                  font-weight="bold" fill="#1B5E20" text-anchor="end" 
+                  dominant-baseline="central">45,280</text>
+            <rect x="54" y="324" width="432" height="57.6" 
+                  rx="10" fill="rgba(255,255,255,0.7)" filter="url(#buttonShadow-stats-portrait)"/>
+            <text x="81" y="360" 
+                  font-family="Arial, sans-serif" font-size="18" 
+                  fill="#2E7D32" dominant-baseline="central">泡破壊数</text>
+            <text x="459" y="360" 
+                  font-family="Arial, sans-serif" font-size="21.599999999999998" 
+                  font-weight="bold" fill="#1B5E20" text-anchor="end" 
+                  dominant-baseline="central">1,247個</text>
+            <rect x="54" y="396" width="432" height="57.6" 
+                  rx="10" fill="rgba(255,255,255,0.7)" filter="url(#buttonShadow-stats-portrait)"/>
+            <text x="81" y="432" 
+                  font-family="Arial, sans-serif" font-size="18" 
+                  fill="#2E7D32" dominant-baseline="central">最高コンボ</text>
+            <text x="459" y="432" 
+                  font-family="Arial, sans-serif" font-size="21.599999999999998" 
+                  font-weight="bold" fill="#1B5E20" text-anchor="end" 
+                  dominant-baseline="central">x18</text>
+            <rect x="54" y="468" width="432" height="57.6" 
+                  rx="10" fill="rgba(255,255,255,0.7)" filter="url(#buttonShadow-stats-portrait)"/>
+            <text x="81" y="504" 
+                  font-family="Arial, sans-serif" font-size="18" 
+                  fill="#2E7D32" dominant-baseline="central">実績解除</text>
+            <text x="459" y="504" 
+                  font-family="Arial, sans-serif" font-size="21.599999999999998" 
+                  font-weight="bold" fill="#1B5E20" text-anchor="end" 
+                  dominant-baseline="central">8/15</text>
+    </svg>

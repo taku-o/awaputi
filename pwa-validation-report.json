@@ -1,0 +1,56 @@
+{
+  "timestamp": "2025-07-31T11:20:08.908Z",
+  "icons": {
+    "total": 10,
+    "existing": 10,
+    "missing": 0,
+    "issues": []
+  },
+  "shortcuts": {
+    "total": 4,
+    "existing": 4,
+    "missing": 0,
+    "issues": []
+  },
+  "screenshots": {
+    "total": 6,
+    "existing": 6,
+    "missing": 0,
+    "issues": []
+  },
+  "compliance": {
+    "required": [
+      "✅ name: 10 points",
+      "✅ short_name: 10 points",
+      "✅ start_url: 10 points",
+      "✅ display: 10 points",
+      "✅ theme_color: 5 points",
+      "✅ background_color: 5 points",
+      "✅ icons: 15 points"
+    ],
+    "recommended": [
+      "✅ description: 5 points",
+      "✅ orientation: 3 points",
+      "✅ scope: 3 points",
+      "✅ lang: 2 points",
+      "✅ categories: 2 points"
+    ],
+    "optional": [
+      "✅ shortcuts: 5 points",
+      "✅ screenshots: 5 points",
+      "✅ display_override: 3 points",
+      "✅ protocol_handlers: 2 points",
+      "✅ file_handlers: 2 points",
+      "✅ share_target: 3 points"
+    ],
+    "score": 100,
+    "maxScore": 100
+  },
+  "suggestions": [],
+  "summary": {
+    "totalScore": 100,
+    "maxScore": 100,
+    "percentage": 100,
+    "status": "EXCELLENT"
+  }
+}

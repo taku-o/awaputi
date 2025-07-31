@@ -1,0 +1,27 @@
+PWA Shortcut Icon - shortcut-play.png
+Size: 96×96px
+Type: play
+Purpose: Quick Play - Game start shortcut icon
+Manifest Name: クイックプレイ
+Generated: 2025-07-31T11:18:27.143Z
+
+PWA Shortcut Icon Specifications:
+- Designed for PWA app shortcuts in launcher/home screen
+- 96x96px is the standard size for shortcut icons
+- Optimized for visibility at small sizes
+- Bubble-themed design consistent with main app icons
+
+Manifest.json usage:
+{
+  "name": "クイックプレイ",
+  "icons": [
+    {
+      "src": "/assets/icons/shortcut-play.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    }
+  ]
+}
+
+To convert to PNG:
+sips -s format png shortcut-play.svg --out shortcut-play.png

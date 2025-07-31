@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="540" viewBox="0 0 720 540">
+        
+        <defs>
+            <!-- Screen gradient -->
+            <linearGradient id="screenBg-game-landscape-2" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#E8F5E8"/>
+                <stop offset="50%" style="stop-color:#C8E6C9"/>
+                <stop offset="100%" style="stop-color:#A5D6A7"/>
+            </linearGradient>
+            
+            <!-- UI element gradient -->
+            <linearGradient id="uiBg-game-landscape-2" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#66BB6A"/>
+                <stop offset="100%" style="stop-color:#4CAF50"/>
+            </linearGradient>
+            
+            <!-- Bubble gradient -->
+            <radialGradient id="bubbleGrad-game-landscape-2" cx="30%" cy="30%" r="70%">
+                <stop offset="0%" style="stop-color:#E8F5E8"/>
+                <stop offset="50%" style="stop-color:#A5D6A7"/>
+                <stop offset="100%" style="stop-color:#66BB6A"/>
+            </radialGradient>
+            
+            <!-- Text shadow -->
+            <filter id="textShadow-game-landscape-2">
+                <feDropShadow dx="1" dy="1" stdDeviation="2" flood-color="rgba(0,0,0,0.3)"/>
+            </filter>
+            
+            <!-- Button shadow -->
+            <filter id="buttonShadow-game-landscape-2">
+                <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="rgba(0,0,0,0.2)"/>
+            </filter>
+        </defs>
+        
+        <!-- Main background -->
+        <rect width="720" height="540" fill="#F1F8E9"/>
+        
+        
+                <!-- Game area with special effects -->
+                <rect x="36" y="81" width="648" height="378" 
+                      rx="20" fill="url(#screenBg-game-landscape-2)" stroke="#FF6F00" stroke-width="5" stroke-dasharray="10,5"/>
+                
+                <!-- Bonus time indicator -->
+                <rect x="36" y="10.8" width="648" height="43.2" 
+                      rx="15" fill="#FF8F00" filter="url(#buttonShadow-game-landscape-2)"/>
+                <text x="72" y="37.800000000000004" font-family="Arial, sans-serif" 
+                      font-size="21.6" font-weight="bold" fill="white"
+                      filter="url(#textShadow-game-landscape-2)">🌟 ボーナスタイム! 🌟</text>
+                
+                <!-- Special bubbles with effects -->
+                
+        <circle cx="230.4" cy="232.20000000000002" r="56.699999999999996" 
+                fill="url(#bubbleGrad-game-landscape-2)" stroke="#FF6F00" stroke-width="4" 
+                filter="url(#buttonShadow-game-landscape-2)"/>
+        <text x="230.4" y="239.76" 
+              font-family="Arial, sans-serif" font-size="22.68" 
+              text-anchor="middle" fill="white">🌈</text>
+        <circle cx="489.59999999999997" cy="307.79999999999995" r="56.699999999999996" 
+                fill="#FFD54F" stroke="#FFA000" stroke-width="4" 
+                filter="url(#buttonShadow-game-landscape-2)"/>
+        <text x="489.59999999999997" y="315.36" 
+              font-family="Arial, sans-serif" font-size="22.68" 
+              text-anchor="middle" fill="white">⚡</text>
+                
+                <!-- Combo effect -->
+                <text x="360" y="270" font-family="Arial, sans-serif" 
+                      font-size="43.2" font-weight="bold" fill="#FF6F00"
+                      text-anchor="middle" filter="url(#textShadow-game-landscape-2)">COMBO x12!</text>
+                
+                <!-- Particle effects -->
+                <circle cx="151.10307653907034" cy="161.4379353956182" r="2.690283235742454" 
+                             fill="#FFD700" opacity="0.7158861675143474"/><circle cx="446.88220591302587" cy="305.77044921924295" r="7.194133431291643" 
+                             fill="#FFD700" opacity="0.31208165151089357"/><circle cx="23.527622000126218" cy="7.192143490033809" r="6.229508923096761" 
+                             fill="#FFD700" opacity="0.7614768651632784"/><circle cx="0.27235670567206327" cy="503.64284609769464" r="9.298254993982797" 
+                             fill="#FFD700" opacity="0.5085822349890013"/><circle cx="628.6594514733107" cy="52.372247387735754" r="7.179122339625481" 
+                             fill="#FFD700" opacity="0.4761943688161472"/><circle cx="499.99468761107477" cy="322.75055894464253" r="8.065255086197107" 
+                             fill="#FFD700" opacity="0.7666740609399265"/><circle cx="711.0079976899241" cy="81.01829723939181" r="3.002237300259786" 
+                             fill="#FFD700" opacity="0.3320515558266077"/><circle cx="407.60622581549313" cy="393.5083951231051" r="3.7731657731011428" 
+                             fill="#FFD700" opacity="0.3167843891558812"/><circle cx="129.35578042305693" cy="107.16247473624864" r="4.655404373229604" 
+                             fill="#FFD700" opacity="0.44775541060104246"/><circle cx="35.600117485806976" cy="215.11398090697386" r="7.3699357603336075" 
+                             fill="#FFD700" opacity="0.6398265943371197"/><circle cx="252.81441965062461" cy="532.5262585155194" r="2.102269794134692" 
+                             fill="#FFD700" opacity="0.7291134921421194"/><circle cx="228.14035670522964" cy="15.09224031531252" r="6.081138449298164" 
+                             fill="#FFD700" opacity="0.421827776747893"/><circle cx="186.03989890661472" cy="402.7698492392785" r="2.919933206008748" 
+                             fill="#FFD700" opacity="0.4760731963102178"/><circle cx="426.46718145866845" cy="420.99850111147697" r="2.026834789425335" 
+                             fill="#FFD700" opacity="0.7027973806499734"/><circle cx="345.5304832665602" cy="8.079129949776508" r="3.8413803722191915" 
+                             fill="#FFD700" opacity="0.7830416412729388"/>
+    </svg>
