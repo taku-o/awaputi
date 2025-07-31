@@ -42,7 +42,7 @@
   - handleEventNotificationClick()メソッドを実装して通知クリック処理
   - _Requirements: 4.1, 8.4_
 
-- [ ] 8. StageSelectSceneのイベントステージ選択機能を実装
+- [x] 8. StageSelectSceneのイベントステージ選択機能を実装
   - selectEventStage()メソッドを実装してイベントステージ選択処理
   - validateEventStageAccess()メソッドを実装してイベント参加条件チェック
   - startEventStageFromSelection()メソッドを実装してイベントステージ開始処理

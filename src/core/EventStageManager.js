@@ -274,7 +274,8 @@ export class EventStageManager {
                     autumnLeavesEffect: true,
                     windyWeather: true,
                     goldBubbleRate: 0.3,
-                    timeSlowEffect: 0.8
+                    timeSlowEffect: 0.8,
+                    harvestBonus: 1.8
                 },
                 rewards: {
                     completion: { ap: 220 },
@@ -306,9 +307,11 @@ export class EventStageManager {
                 maxBubbles: 22,
                 specialRules: {
                     snowEffect: true,
-                    frozenBubbles: true,
+                    frozenBubblesEffect: true,
                     slowMotion: 0.7,
-                    freezeChain: true
+                    freezeChain: true,
+                    crystalBonus: 2.0,
+                    coldEffect: true
                 },
                 rewards: {
                     completion: { ap: 240 },
@@ -523,6 +526,222 @@ export class EventStageManager {
         
         if (specialRules.explosiveSpawnRate) {
             this.gameEngine.bubbleManager.setSpecialSpawnRate('explosive', specialRules.explosiveSpawnRate);
+        }
+        
+        // 季節イベント特別ルール
+        this.applySeasonalEffects(event, specialRules);
+    }
+
+    /**
+     * 季節イベントの特別効果を適用
+     */
+    applySeasonalEffects(event, specialRules) {
+        if (event.type !== 'seasonal') return;
+        
+        switch (event.season) {
+            case 'spring':
+                this.applySpringEffects(specialRules);
+                break;
+            case 'summer':
+                this.applySummerEffects(specialRules);
+                break;
+            case 'autumn':
+                this.applyAutumnEffects(specialRules);
+                break;
+            case 'winter':
+                this.applyWinterEffects(specialRules);
+                break;
+        }
+    }
+    
+    /**
+     * 春の特別効果を適用（桜エフェクト、風エフェクト）
+     */
+    applySpringEffects(specialRules) {
+        // 桜エフェクト
+        if (specialRules.cherryBlossomEffect) {
+            // パーティクルエフェクトマネージャーに桜の花びらエフェクトを追加
+            if (this.gameEngine.particleManager) {
+                this.gameEngine.particleManager.addSeasonalEffect('cherryBlossom', {
+                    particleCount: 20,
+                    fallSpeed: 1.5,
+                    color: '#FFB6C1',
+                    size: 8,
+                    opacity: 0.7,
+                    windEffect: true
+                });
+            }
+            
+            // 背景色を春らしい色調に変更
+            if (this.gameEngine.renderer) {
+                this.gameEngine.renderer.setSeasonalBackground('spring', {
+                    primaryColor: '#E6F3FF',
+                    secondaryColor: '#FFE4E6',
+                    gradientDirection: 'vertical'
+                });
+            }
+        }
+        
+        // 風エフェクト
+        if (specialRules.windEffect) {
+            // 泡の動きに風の影響を追加
+            if (this.gameEngine.bubbleManager) {
+                this.gameEngine.bubbleManager.enableWindEffect({
+                    strength: 0.8,
+                    direction: Math.PI / 6, // 30度
+                    variability: 0.3
+                });
+            }
+        }
+        
+        // ピンク泡ボーナス
+        if (specialRules.pinkBubbleBonus) {
+            if (this.gameEngine.scoreManager) {
+                this.gameEngine.scoreManager.setSpecialBubbleMultiplier('pink', specialRules.pinkBubbleBonus);
+            }
+        }
+    }
+    
+    /**
+     * 夏の特別効果を適用（花火エフェクト、熱波）
+     */
+    applySummerEffects(specialRules) {
+        // 花火エフェクト
+        if (specialRules.fireworksEffect) {
+            // 花火パーティクルエフェクト
+            if (this.gameEngine.particleManager) {
+                this.gameEngine.particleManager.addSeasonalEffect('fireworks', {
+                    frequency: 3000, // 3秒ごと
+                    colors: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7'],
+                    explosionSize: 50,
+                    sparkleCount: 15,
+                    duration: 2000
+                });
+            }
+            
+            // 夜空背景
+            if (this.gameEngine.renderer) {
+                this.gameEngine.renderer.setSeasonalBackground('summer', {
+                    primaryColor: '#0F0F23',
+                    secondaryColor: '#1A1A3A',
+                    stars: true,
+                    gradientDirection: 'radial'
+                });
+            }
+        }
+        
+        // 熱波効果（スピード上昇）
+        if (specialRules.heatWaveSpeed) {
+            if (this.gameEngine.bubbleManager) {
+                this.gameEngine.bubbleManager.setGlobalSpeedMultiplier(specialRules.heatWaveSpeed);
+            }
+        }
+        
+        // 爆発連鎖ボーナス
+        if (specialRules.explosionChainBonus) {
+            if (this.gameEngine.scoreManager) {
+                this.gameEngine.scoreManager.setChainExplosionMultiplier(specialRules.explosionChainBonus);
+            }
+        }
+    }
+    
+    /**
+     * 秋の特別効果を適用（紅葉エフェクト、風の天候）
+     */
+    applyAutumnEffects(specialRules) {
+        // 紅葉エフェクト
+        if (specialRules.autumnLeavesEffect) {
+            // 落ち葉パーティクルエフェクト
+            if (this.gameEngine.particleManager) {
+                this.gameEngine.particleManager.addSeasonalEffect('autumnLeaves', {
+                    particleCount: 25,
+                    fallSpeed: 2.0,
+                    colors: ['#D2691E', '#CD853F', '#B22222', '#FF8C00', '#DAA520'],
+                    size: 12,
+                    rotation: true,
+                    windEffect: true
+                });
+            }
+            
+            // 秋の背景色
+            if (this.gameEngine.renderer) {
+                this.gameEngine.renderer.setSeasonalBackground('autumn', {
+                    primaryColor: '#FFF8DC',
+                    secondaryColor: '#F4A460',
+                    gradientDirection: 'diagonal'
+                });
+            }
+        }
+        
+        // 風の強い天候
+        if (specialRules.windyWeather) {
+            if (this.gameEngine.bubbleManager) {
+                this.gameEngine.bubbleManager.enableWindEffect({
+                    strength: 1.5, // 春より強い風
+                    direction: Math.PI / 4, // 45度
+                    variability: 0.6,
+                    gusty: true // 突風効果
+                });
+            }
+        }
+        
+        // 収穫ボーナス（ゴールデン泡追加スコア）
+        if (specialRules.harvestBonus) {
+            if (this.gameEngine.scoreManager) {
+                this.gameEngine.scoreManager.setSpecialBubbleMultiplier('golden', specialRules.harvestBonus);
+            }
+        }
+    }
+    
+    /**
+     * 冬の特別効果を適用（雪エフェクト、凍結泡）
+     */
+    applyWinterEffects(specialRules) {
+        // 雪エフェクト
+        if (specialRules.snowEffect) {
+            // 雪のパーティクルエフェクト
+            if (this.gameEngine.particleManager) {
+                this.gameEngine.particleManager.addSeasonalEffect('snow', {
+                    particleCount: 30,
+                    fallSpeed: 1.0,
+                    color: '#FFFFFF',
+                    size: 6,
+                    opacity: 0.8,
+                    swayEffect: true
+                });
+            }
+            
+            // 冬の背景色
+            if (this.gameEngine.renderer) {
+                this.gameEngine.renderer.setSeasonalBackground('winter', {
+                    primaryColor: '#F0F8FF',
+                    secondaryColor: '#E0EEEE',
+                    frost: true,
+                    gradientDirection: 'vertical'
+                });
+            }
+        }
+        
+        // 凍結泡効果
+        if (specialRules.frozenBubblesEffect) {
+            if (this.gameEngine.bubbleManager) {
+                this.gameEngine.bubbleManager.setSpecialSpawnRate('frozen', 0.3);
+                this.gameEngine.bubbleManager.enableFrozenBubbleSlowdown(0.7); // 30%スピードダウン
+            }
+        }
+        
+        // 氷の結晶ボーナス
+        if (specialRules.crystalBonus) {
+            if (this.gameEngine.scoreManager) {
+                this.gameEngine.scoreManager.setSpecialBubbleMultiplier('frozen', specialRules.crystalBonus);
+            }
+        }
+        
+        // 寒さ効果（全体的な動作の軽微な遅延）
+        if (specialRules.coldEffect) {
+            if (this.gameEngine.bubbleManager) {
+                this.gameEngine.bubbleManager.setGlobalSpeedMultiplier(0.9); // 10%スピードダウン
+            }
         }
     }
     
