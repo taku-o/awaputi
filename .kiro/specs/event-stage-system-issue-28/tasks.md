@@ -12,7 +12,7 @@
   - イベント通知用のデータ構造を定義してtype: 'event'の通知オブジェクト作成
   - _Requirements: 4.1, 4.2, 4.3, 4.4_
 
-- [ ] 3. AchievementNotificationSystemをイベント通知に対応拡張
+- [x] 3. AchievementNotificationSystemをイベント通知に対応拡張
   - イベント通知タイプ（EVENT_STARTED, EVENT_ENDING, EVENT_ELIGIBLE, EVENT_REMINDER）を追加
   - createEventNotification()メソッドを実装してイベント専用通知オブジェクト生成
   - イベント通知の表示スタイルとアニメーションを実装

@@ -725,6 +725,8 @@ export class EventStageManager {
         const currentDate = new Date();
         const currentSeason = this.getCurrentSeason(currentDate);
         
+        this.lastSeasonalCheck = Date.now();
+        
         if (!currentSeason) return;
         
         // 現在の季節に対応するイベントを有効化
@@ -981,6 +983,7 @@ export class EventStageManager {
      */
     checkEventNotifications() {
         const now = Date.now();
+        this.lastNotificationCheck = now;
         
         // 終了予告通知をチェック
         this.activeEvents.forEach((eventData, eventId) => {
@@ -1051,6 +1054,280 @@ export class EventStageManager {
         this.notificationCheckInterval = setInterval(() => {
             this.checkEventNotifications();
         }, 60 * 60 * 1000);
+    }
+    
+    /**
+     * 管理者向けイベント有効化
+     */
+    adminActivateEvent(eventId, duration, options = {}) {
+        const event = this.eventStages[eventId];
+        if (!event) {
+            console.error(`Event ${eventId} not found`);
+            return false;
+        }
+        
+        try {
+            const now = Date.now();
+            const eventDuration = duration || event.duration || 24 * 60 * 60 * 1000; // デフォルト24時間
+            
+            // イベントデータを作成
+            const eventData = {
+                startTime: now,
+                endTime: now + eventDuration,
+                type: 'admin_activated',
+                adminOptions: {
+                    ...options,
+                    activatedBy: 'admin',
+                    activatedAt: now
+                }
+            };
+            
+            // カスタム設定を適用
+            if (options.customSettings) {
+                eventData.customSettings = options.customSettings;
+            }
+            
+            this.activeEvents.set(eventId, eventData);
+            
+            console.log(`Admin activated event: ${event.name} for ${Math.round(eventDuration / (60 * 60 * 1000))} hours`);
+            
+            // 通知を送信
+            if (options.notifyPlayers !== false) {
+                this.sendEventNotification(eventId, 'EVENT_STARTED');
+            }
+            
+            // 管理者ログを記録
+            this.logAdminAction('activate', eventId, {
+                duration: eventDuration,
+                options: options
+            });
+            
+            return true;
+            
+        } catch (error) {
+            console.error('Failed to activate event:', error);
+            return false;
+        }
+    }
+    
+    /**
+     * 管理者向けイベント無効化
+     */
+    adminDeactivateEvent(eventId, options = {}) {
+        const event = this.eventStages[eventId];
+        if (!event) {
+            console.error(`Event ${eventId} not found`);
+            return false;
+        }
+        
+        if (!this.activeEvents.has(eventId)) {
+            console.warn(`Event ${eventId} is not currently active`);
+            return false;
+        }
+        
+        try {
+            this.activeEvents.delete(eventId);
+            
+            console.log(`Admin deactivated event: ${event.name}`);
+            
+            // 通知を送信
+            if (options.notifyPlayers !== false) {
+                this.sendEventNotification(eventId, 'EVENT_ENDED');
+            }
+            
+            // 管理者ログを記録
+            this.logAdminAction('deactivate', eventId, options);
+            
+            return true;
+            
+        } catch (error) {
+            console.error('Failed to deactivate event:', error);
+            return false;
+        }
+    }
+    
+    /**
+     * イベント管理状態を取得
+     */
+    getEventManagementStatus() {
+        const status = {
+            totalEvents: Object.keys(this.eventStages).length,
+            activeEvents: this.activeEvents.size,
+            seasonalEvents: 0,
+            specialEvents: 0,
+            adminEvents: 0,
+            eventDetails: [],
+            systemStatus: {
+                seasonalCheckActive: this.seasonalCheckInterval !== null,
+                notificationCheckActive: this.notificationCheckInterval !== null,
+                lastSeasonalCheck: this.lastSeasonalCheck || null,
+                lastNotificationCheck: this.lastNotificationCheck || null
+            }
+        };
+        
+        // イベント詳細を収集
+        Object.values(this.eventStages).forEach(event => {
+            const isActive = this.activeEvents.has(event.id);
+            const eventData = this.activeEvents.get(event.id);
+            
+            const detail = {
+                id: event.id,
+                name: event.name,
+                type: event.type,
+                isActive: isActive,
+                description: event.description,
+                icon: event.icon
+            };
+            
+            if (isActive && eventData) {
+                detail.activeData = {
+                    startTime: eventData.startTime,
+                    endTime: eventData.endTime,
+                    activationType: eventData.type,
+                    timeRemaining: Math.max(0, eventData.endTime - Date.now()),
+                    adminOptions: eventData.adminOptions || null
+                };
+            }
+            
+            // タイプ別カウント
+            switch (event.type) {
+                case 'seasonal':
+                    status.seasonalEvents++;
+                    break;
+                case 'special':
+                    status.specialEvents++;
+                    break;
+                default:
+                    if (eventData && eventData.type === 'admin_activated') {
+                        status.adminEvents++;
+                    }
+                    break;
+            }
+            
+            status.eventDetails.push(detail);
+        });
+        
+        return status;
+    }
+    
+    /**
+     * 管理者アクションをログに記録
+     */
+    logAdminAction(action, eventId, options = {}) {
+        const logEntry = {
+            timestamp: Date.now(),
+            action: action,
+            eventId: eventId,
+            eventName: this.eventStages[eventId]?.name || 'Unknown Event',
+            options: options,
+            userAgent: navigator.userAgent,
+            sessionId: this.getSessionId()
+        };
+        
+        // ローカルストレージに管理者ログを保存
+        try {
+            const existingLogs = JSON.parse(localStorage.getItem('bubblePop_adminLogs') || '[]');
+            existingLogs.push(logEntry);
+            
+            // 最大100件のログを保持
+            if (existingLogs.length > 100) {
+                existingLogs.splice(0, existingLogs.length - 100);
+            }
+            
+            localStorage.setItem('bubblePop_adminLogs', JSON.stringify(existingLogs));
+            
+        } catch (error) {
+            console.error('Failed to log admin action:', error);
+        }
+        
+        console.log('Admin action logged:', logEntry);
+    }
+    
+    /**
+     * セッションIDを取得
+     */
+    getSessionId() {
+        let sessionId = sessionStorage.getItem('bubblePop_sessionId');
+        if (!sessionId) {
+            sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            sessionStorage.setItem('bubblePop_sessionId', sessionId);
+        }
+        return sessionId;
+    }
+    
+    /**
+     * 管理者ログを取得
+     */
+    getAdminLogs(limit = 50) {
+        try {
+            const logs = JSON.parse(localStorage.getItem('bubblePop_adminLogs') || '[]');
+            return logs.slice(-limit).reverse(); // 最新のlimit件を新しい順で返す
+        } catch (error) {
+            console.error('Failed to get admin logs:', error);
+            return [];
+        }
+    }
+    
+    /**
+     * 複数イベントの一括制御
+     */
+    adminBulkEventControl(eventIds, action, options = {}) {
+        const results = {
+            success: [],
+            failed: [],
+            skipped: []
+        };
+        
+        eventIds.forEach(eventId => {
+            try {
+                let result = false;
+                
+                switch (action) {
+                    case 'activate':
+                        result = this.adminActivateEvent(eventId, options.duration, {
+                            ...options,
+                            notifyPlayers: false // 一括処理では個別通知を無効化
+                        });
+                        break;
+                        
+                    case 'deactivate':
+                        result = this.adminDeactivateEvent(eventId, {
+                            ...options,
+                            notifyPlayers: false
+                        });
+                        break;
+                        
+                    default:
+                        results.skipped.push({ eventId, reason: 'Unknown action' });
+                        return;
+                }
+                
+                if (result) {
+                    results.success.push(eventId);
+                } else {
+                    results.failed.push({ eventId, reason: 'Action failed' });
+                }
+                
+            } catch (error) {
+                results.failed.push({ eventId, reason: error.message });
+            }
+        });
+        
+        // 一括処理完了通知
+        if (options.notifyPlayers !== false && results.success.length > 0) {
+            // 最初の成功したイベントで代表通知を送信
+            const firstEventId = results.success[0];
+            const notificationType = action === 'activate' ? 'EVENT_STARTED' : 'EVENT_ENDED';
+            this.sendEventNotification(firstEventId, notificationType);
+        }
+        
+        this.logAdminAction(`bulk_${action}`, 'multiple', {
+            eventIds: eventIds,
+            results: results,
+            options: options
+        });
+        
+        return results;
     }
     
     /**
