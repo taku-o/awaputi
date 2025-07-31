@@ -94,6 +94,46 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Vary = "Accept-Language, Accept-Encoding"
 
+# PWA specific headers
+[[headers]]
+  for = "/manifest.json"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, must-revalidate"
+    X-Content-Type-Options = "nosniff"
+    Content-Type = "application/manifest+json; charset=utf-8"
+
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    X-Content-Type-Options = "nosniff"
+    Content-Type = "application/javascript; charset=utf-8"
+
+# PWA Icons - long cache for immutable assets
+[[headers]]
+  for = "/assets/icons/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    X-Content-Type-Options = "nosniff"
+
+[[headers]]
+  for = "/assets/splash-screens/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    X-Content-Type-Options = "nosniff"
+
+[[headers]]
+  for = "/apple-touch-icon*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    X-Content-Type-Options = "nosniff"
+
+[[headers]]
+  for = "/favicon*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    X-Content-Type-Options = "nosniff"
+
 # Edge functions (if needed for future features)
 # [[edge_functions]]
 #   function = "game-analytics"
