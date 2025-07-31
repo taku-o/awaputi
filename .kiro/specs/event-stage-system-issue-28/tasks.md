@@ -36,7 +36,7 @@
   - renderEventTimer()メソッドを実装してイベント残り時間の表示
   - _Requirements: 8.1, 8.2, 8.3_
 
-- [ ] 7. StageSelectSceneにイベント通知表示機能を追加
+- [x] 7. StageSelectSceneにイベント通知表示機能を追加
   - renderEventNotificationBadge()メソッドを実装して新規イベント通知バッジ表示
   - updateEventNotifications()メソッドを実装してイベント通知状態の更新
   - handleEventNotificationClick()メソッドを実装して通知クリック処理

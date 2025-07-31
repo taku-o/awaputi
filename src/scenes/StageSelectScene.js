@@ -259,6 +259,180 @@ export class StageSelectScene extends Scene {
             }
         });
     }
+
+    /**
+     * イベントステージ選択処理
+     */
+    selectEventStage(event) {
+        if (!event) {
+            console.warn('Invalid event provided to selectEventStage');
+            return;
+        }
+        
+        // イベント参加条件をチェック
+        const accessResult = this.validateEventStageAccess(event);
+        if (!accessResult.canAccess) {
+            // アクセス拒否メッセージを表示
+            if (this.gameEngine.achievementNotificationSystem) {
+                this.gameEngine.achievementNotificationSystem.queueNotification({
+                    type: 'warning',
+                    title: 'イベント参加不可',
+                    message: accessResult.reason,
+                    icon: '⚠️',
+                    duration: 4000
+                });
+            }
+            return;
+        }
+        
+        // イベントステージを開始
+        this.startEventStageFromSelection(event);
+    }
+
+    /**
+     * イベント参加条件チェック
+     */
+    validateEventStageAccess(event) {
+        const result = {
+            canAccess: true,
+            reason: ''
+        };
+        
+        // イベントが有効かチェック
+        if (!this.gameEngine.eventStageManager.isEventAvailable(event.id)) {
+            result.canAccess = false;
+            result.reason = 'このイベントは現在利用できません';
+            return result;
+        }
+        
+        // イベント時間制限のチェック
+        const timeRemaining = this.gameEngine.eventStageManager.getEventTimeRemaining(event.id);
+        if (timeRemaining <= 0) {
+            result.canAccess = false;
+            result.reason = 'このイベントは終了しました';
+            return result;
+        }
+        
+        // プレイヤーレベル制限のチェック（もしある場合）
+        if (event.requirements && event.requirements.minLevel) {
+            const playerLevel = this.gameEngine.playerData.getLevel();
+            if (playerLevel < event.requirements.minLevel) {
+                result.canAccess = false;
+                result.reason = `レベル ${event.requirements.minLevel} 以上が必要です（現在: ${playerLevel}）`;
+                return result;
+            }
+        }
+        
+        // 必要APのチェック（もしある場合）
+        if (event.requirements && event.requirements.minAP) {
+            const currentAP = this.gameEngine.playerData.getAP();
+            if (currentAP < event.requirements.minAP) {
+                result.canAccess = false;
+                result.reason = `${event.requirements.minAP} AP以上が必要です（現在: ${currentAP} AP）`;
+                return result;
+            }
+        }
+        
+        // 前提ステージクリア条件のチェック（もしある場合）
+        if (event.requirements && event.requirements.clearedStages) {
+            const clearedStages = this.gameEngine.playerData.getClearedStages();
+            const requiredStages = event.requirements.clearedStages;
+            
+            for (const requiredStage of requiredStages) {
+                if (!clearedStages.includes(requiredStage)) {
+                    result.canAccess = false;
+                    result.reason = `「${requiredStage}」ステージのクリアが必要です`;
+                    return result;
+                }
+            }
+        }
+        
+        // 参加回数制限のチェック（もしある場合）
+        if (event.limits && event.limits.maxParticipations) {
+            const participationCount = this.getEventParticipationCount(event.id);
+            if (participationCount >= event.limits.maxParticipations) {
+                result.canAccess = false;
+                result.reason = `参加回数の上限に達しています（${participationCount}/${event.limits.maxParticipations}）`;
+                return result;
+            }
+        }
+        
+        return result;
+    }
+
+    /**
+     * イベント参加回数を取得
+     */
+    getEventParticipationCount(eventId) {
+        if (!this.gameEngine.eventStageManager) {
+            return 0;
+        }
+        
+        const participationRecords = this.gameEngine.eventStageManager.getParticipationRecords();
+        return participationRecords.filter(record => record.eventId === eventId).length;
+    }
+
+    /**
+     * イベントステージ開始処理
+     */
+    startEventStageFromSelection(event) {
+        try {
+            // イベントステージの開始を試行
+            const success = this.gameEngine.eventStageManager.startEventStage(event.id);
+            
+            if (success) {
+                // イベント参加の通知
+                if (this.gameEngine.achievementNotificationSystem) {
+                    this.gameEngine.achievementNotificationSystem.queueNotification({
+                        type: 'success',
+                        title: 'イベント開始！',
+                        message: `${event.name}に参加しました`,
+                        icon: '🎯',
+                        duration: 3000
+                    });
+                }
+                
+                // ゲームシーンに遷移
+                this.gameEngine.sceneManager.switchScene('game', {
+                    stageType: 'event',
+                    eventId: event.id,
+                    eventConfig: event
+                });
+                
+                // 参加統計を記録
+                this.gameEngine.eventStageManager.recordEventParticipation(
+                    event.id, 
+                    this.gameEngine.playerData.getPlayerId()
+                );
+                
+            } else {
+                // イベント開始失敗の通知
+                if (this.gameEngine.achievementNotificationSystem) {
+                    this.gameEngine.achievementNotificationSystem.queueNotification({
+                        type: 'error',
+                        title: 'イベント開始失敗',
+                        message: 'イベントを開始できませんでした',
+                        icon: '❌',
+                        duration: 4000
+                    });
+                }
+            }
+            
+        } catch (error) {
+            console.error('Failed to start event stage:', error);
+            
+            // エラー通知
+            if (this.gameEngine.achievementNotificationSystem) {
+                this.gameEngine.achievementNotificationSystem.queueNotification({
+                    type: 'error',
+                    title: 'エラー',
+                    message: 'イベントの開始中にエラーが発生しました',
+                    icon: '⚠️',
+                    duration: 4000
+                });
+            }
+        }
+    }
     
     /**
      * 更新処理
