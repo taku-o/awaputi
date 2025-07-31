@@ -2575,6 +2575,10 @@ export class UserInfoScene extends Scene {
             case 'Enter':
                 this.activateFocusedElement();
                 break;
+            case 'h':
+            case 'H':
+                this.gameEngine.sceneManager.switchScene('help');
+                break;
         }
     }
 

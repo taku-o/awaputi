@@ -1,0 +1,382 @@
+{
+  "category": "controls",
+  "title": "操作方法ガイド",
+  "description": "awaputiの操作方法とキーボードショートカット",
+  "language": "ja",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-27",
+  "topics": [
+    {
+      "id": "mouse_controls",
+      "title": "マウス操作",
+      "description": "マウスを使った基本操作",
+      "content": {
+        "left_click": {
+          "action": "泡をクリックして割る",
+          "description": "最も基本的な操作。泡の上で左クリックすると泡が割れます。",
+          "tips": [
+            "正確にクリックするためにマウス感度を調整",
+            "連続クリックでコンボを狙う",
+            "硬化泡は複数回クリックが必要"
+          ]
+        },
+        "drag_action": {
+          "action": "泡をドラッグして移動",
+          "description": "泡をドラッグすることで安全な場所に移動させることができます。",
+          "how_to": [
+            "泡の上でマウスボタンを押し下げる",
+            "ボタンを押したままマウスを移動",
+            "目的地でマウスボタンを離す"
+          ],
+          "strategy": [
+            "危険な泡を画面端に移動",
+            "有益な泡を安全な場所に保管",
+            "泡を集めてコンボ準備"
+          ]
+        },
+        "right_click": {
+          "action": "使用しません",
+          "description": "awaputiでは右クリックは特別な機能を持ちません。",
+          "note": "誤って右クリックメニューが出た場合はEscキーで閉じてください。"
+        },
+        "mouse_wheel": {
+          "action": "ズーム（デバッグモード時のみ）",
+          "description": "デバッグモード時にマウスホイールでズームイン・アウトが可能です。",
+          "usage": "Ctrl+Shift+Dでデバッグモードを有効にしてから使用"
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 120,
+      "tags": ["マウス", "クリック", "ドラッグ", "基本操作"]
+    },
+    {
+      "id": "keyboard_shortcuts",
+      "title": "キーボードショートカット",
+      "description": "効率的なゲームプレイのためのキーボード操作",
+      "content": {
+        "game_controls": {
+          "esc": {
+            "action": "メニューを開く/閉じる",
+            "description": "ゲーム中にメインメニューに戻る、または現在のメニューを閉じます。",
+            "context": "全シーンで使用可能"
+          },
+          "space": {
+            "action": "ゲームを一時停止",
+            "description": "ゲーム中に一時停止/再開を切り替えます。",
+            "context": "ゲームプレイ中のみ"
+          },
+          "p": {
+            "action": "ポーズ",
+            "description": "スペースキーと同じくゲームを一時停止します。",
+            "context": "ゲームプレイ中のみ"
+          },
+          "r": {
+            "action": "ゲーム再開",
+            "description": "一時停止中のゲームを再開します。",
+            "context": "ポーズ中のみ"
+          }
+        },
+        "help_and_info": {
+          "h": {
+            "action": "ヘルプを表示",
+            "description": "コンテキストに応じたヘルプを表示します。",
+            "context": "全シーンで使用可能"
+          },
+          "f1": {
+            "action": "クイックヘルプ",
+            "description": "現在の画面の簡単な操作説明を表示します。",
+            "context": "全シーンで使用可能"
+          },
+          "i": {
+            "action": "ユーザー情報画面",
+            "description": "ユーザー情報、統計、実績画面を開きます。",
+            "context": "メニュー画面で使用可能"
+          }
+        },
+        "display_controls": {
+          "f": {
+            "action": "フルスクリーン切り替え",
+            "description": "フルスクリーンモードとウィンドウモードを切り替えます。",
+            "note": "ブラウザによっては動作しない場合があります"
+          },
+          "ctrl_shift_d": {
+            "action": "デバッグモード切り替え",
+            "description": "開発者向けデバッグ情報の表示/非表示を切り替えます。",
+            "features": [
+              "FPS表示",
+              "メモリ使用量",
+              "泡の詳細情報",
+              "当たり判定の可視化"
+            ]
+          }
+        },
+        "audio_controls": {
+          "m": {
+            "action": "音楽ミュート切り替え",
+            "description": "BGMのオン/オフを切り替えます。",
+            "note": "効果音は別途設定で調整"
+          },
+          "ctrl_m": {
+            "action": "全音声ミュート",
+            "description": "BGMと効果音をまとめてミュート/解除します。",
+            "shortcut": "緊急時の音声停止に便利"
+          }
+        },
+        "navigation": {
+          "tab": {
+            "action": "フォーカス移動",
+            "description": "メニュー項目間でフォーカスを移動します。",
+            "context": "メニュー画面で使用"
+          },
+          "shift_tab": {
+            "action": "逆方向フォーカス移動",
+            "description": "前のメニュー項目にフォーカスを移動します。",
+            "context": "メニュー画面で使用"
+          },
+          "enter": {
+            "action": "決定/選択",
+            "description": "フォーカスされた項目を選択します。",
+            "context": "メニュー画面で使用"
+          },
+          "arrow_keys": {
+            "action": "メニューナビゲーション",
+            "description": "矢印キーでメニュー項目を選択できます。",
+            "details": {
+              "up_down": "メニュー項目の上下移動",
+              "left_right": "タブ切り替え、値の増減"
+            }
+          }
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 300,
+      "tags": ["キーボード", "ショートカット", "効率化", "ナビゲーション"]
+    },
+    {
+      "id": "advanced_techniques",
+      "title": "上級テクニック",
+      "description": "効率的なプレイのための高度な操作技術",
+      "content": {
+        "mouse_techniques": {
+          "rapid_clicking": {
+            "name": "高速クリック",
+            "description": "連続した泡を素早くクリックしてコンボを稼ぐ技術",
+            "tips": [
+              "手首を固定して指だけで連打",
+              "一定のリズムを保つ",
+              "疲労を避けるため適度に休憩"
+            ],
+            "practice": "通常泡が密集した時に練習"
+          },
+          "precision_dragging": {
+            "name": "精密ドラッグ",
+            "description": "泡を正確な位置に移動させる技術",
+            "techniques": [
+              "小刻みな動きで微調整",
+              "目標位置を明確にイメージ",
+              "画面端や角を活用した配置"
+            ],
+            "applications": [
+              "危険泡の安全地帯への移動",
+              "特殊泡の効果範囲調整",
+              "コンボ用の泡集約"
+            ]
+          },
+          "multi_target_selection": {
+            "name": "複数ターゲット処理",
+            "description": "複数の泡を効率的に処理する手順",
+            "strategy": [
+              "処理順序の事前計画",
+              "マウス移動距離の最小化",
+              "連鎖反応を考慮した順序決定"
+            ]
+          }
+        },
+        "keyboard_mastery": {
+          "hotkey_combinations": {
+            "name": "ホットキー組み合わせ",
+            "combinations": [
+              "H → I: ヘルプから情報画面への素早い移行",
+              "Esc → Space: メニューからゲーム復帰",
+              "Ctrl+Shift+D → F: デバッグモードでフルスクリーン"
+            ]
+          },
+          "context_switching": {
+            "name": "コンテキスト切り替え",
+            "description": "画面に応じた最適なキー操作の選択",
+            "guidelines": [
+              "ゲーム中: Space/Pでポーズを多用",
+              "メニュー中: 矢印キーとEnterで素早いナビゲーション",
+              "設定中: TabキーでフィールドをSkip"
+            ]
+          }
+        },
+        "hybrid_techniques": {
+          "mouse_keyboard_combo": {
+            "name": "マウス・キーボード連携",
+            "description": "マウスとキーボードを同時に使う高効率操作",
+            "examples": [
+              "マウスでプレイ + Hキーでクイックヘルプ確認",
+              "ドラッグ中にSpaceで一時停止して戦略検討",
+              "クリック連打中にMキーで音楽調整"
+            ]
+          },
+          "situational_adaptation": {
+            "name": "状況適応操作",
+            "description": "ゲーム状況に応じた操作方法の変更",
+            "scenarios": [
+              "高密度時: 主にドラッグで整理",
+              "低密度時: 精密クリックで高得点狙い",
+              "緊急時: ショートカットで即座にポーズ"
+            ]
+          }
+        }
+      },
+      "difficulty": "advanced",
+      "estimatedReadTime": 240,
+      "tags": ["上級", "テクニック", "効率化", "マスタリー"]
+    },
+    {
+      "id": "accessibility_options",
+      "title": "アクセシビリティオプション",
+      "description": "様々なプレイヤーが快適にプレイできるための設定",
+      "content": {
+        "visual_assistance": {
+          "high_contrast": {
+            "description": "高コントラストモードで視認性を向上",
+            "activation": "設定 → アクセシビリティ → 高コントラスト",
+            "effects": "泡の境界線を強調、背景とのコントラスト向上"
+          },
+          "text_scaling": {
+            "description": "UI テキストのサイズ調整",
+            "options": ["小(90%)", "標準(100%)", "大(120%)", "特大(150%)"],
+            "note": "メニューテキストとスコア表示に適用"
+          },
+          "color_blind_support": {
+            "description": "色覚異常の方への配慮",
+            "features": [
+              "色以外の識別要素（形状、パターン）を追加",
+              "代替色パレットオプション",
+              "テキストラベル表示オプション"
+            ]
+          }
+        },
+        "motor_assistance": {
+          "click_hold_duration": {
+            "description": "クリック認識時間の調整",
+            "range": "50ms～500ms",
+            "benefit": "素早いクリックが困難な方への配慮"
+          },
+          "drag_sensitivity": {
+            "description": "ドラッグ操作の感度調整",
+            "options": ["低感度", "標準", "高感度"],
+            "recommendation": "手の震えがある方は低感度を推奨"
+          },
+          "pause_assistance": {
+            "description": "自動ポーズ機能",
+            "trigger": "一定時間操作がない場合に自動でポーズ",
+            "timing": "5秒、10秒、30秒から選択可能"
+          }
+        },
+        "cognitive_assistance": {
+          "simplified_ui": {
+            "description": "UI の簡素化オプション",
+            "features": [
+              "不要な装飾の削除",
+              "重要な情報のみ表示",
+              "分かりやすいアイコン使用"
+            ]
+          },
+          "tutorial_replay": {
+            "description": "チュートリアルの繰り返し再生",
+            "access": "ヘルプメニューからいつでもアクセス可能",
+            "benefit": "操作方法を何度でも確認可能"
+          },
+          "context_help": {
+            "description": "状況に応じたヘルプ表示",
+            "activation": "F1キーまたは？ボタン",
+            "content": "現在の状況に最適なアドバイスを表示"
+          }
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 180,
+      "tags": ["アクセシビリティ", "設定", "支援機能", "ユニバーサル"]
+    }
+  ],
+  "quick_reference_card": {
+    "essential_shortcuts": {
+      "Esc": "メニュー",
+      "Space/P": "ポーズ",
+      "H": "ヘルプ",
+      "F": "フルスクリーン",
+      "M": "音楽ミュート"
+    },
+    "mouse_actions": {
+      "左クリック": "泡を割る",
+      "ドラッグ": "泡を移動",
+      "ホイール": "ズーム（デバッグ時）"
+    },
+    "emergency_controls": {
+      "Ctrl+M": "全音声停止",
+      "Esc": "即座にメニューへ",
+      "Space": "緊急ポーズ"
+    }
+  },
+  "troubleshooting": {
+    "common_issues": [
+      {
+        "problem": "クリックが反応しない",
+        "causes": [
+          "マウス感度が低すぎる",
+          "ブラウザのズーム設定",
+          "他のアプリケーションの干渉"
+        ],
+        "solutions": [
+          "マウス設定の確認",
+          "ブラウザのズームを100%に設定",
+          "他のアプリを閉じる"
+        ]
+      },
+      {
+        "problem": "ドラッグ操作がうまくいかない",
+        "causes": [
+          "ドラッグ距離が短すぎる",
+          "マウスボタンを早く離している",
+          "感度設定が適切でない"
+        ],
+        "solutions": [
+          "しっかりとドラッグ距離を取る",
+          "目的地まで確実にドラッグ",
+          "設定でドラッグ感度を調整"
+        ]
+      },
+      {
+        "problem": "キーボードショートカットが効かない",
+        "causes": [
+          "他のアプリがキーを占有",
+          "ブラウザの設定",
+          "言語設定の問題"
+        ],
+        "solutions": [
+          "ゲームにフォーカスを当てる",
+          "F5でページをリロード",
+          "日本語入力をオフにする"
+        ]
+      }
+    ]
+  },
+  "customization_guide": {
+    "personal_optimization": [
+      "利き手に応じたマウス設定調整",
+      "プレイスタイルに合わせたキーバインド変更",
+      "画面解像度に応じたUI スケール調整",
+      "反応速度に合わせた感度設定"
+    ],
+    "performance_tuning": [
+      "高フレームレート維持のための設定",
+      "入力遅延を最小化する設定",
+      "CPU負荷を軽減する表示設定"
+    ]
+  }
+}

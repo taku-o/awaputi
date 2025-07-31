@@ -1,0 +1,583 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-07-30",
+  "language": "ja",
+  "tours": [
+    {
+      "id": "main_menu_tour",
+      "title": "メインメニューガイド",
+      "description": "ゲームのメインメニューの使い方を学びましょう",
+      "category": "基本操作",
+      "difficulty": "初級",
+      "estimatedTime": "3分",
+      "icon": "🏠",
+      "prerequisites": [],
+      "steps": [
+        {
+          "id": "menu_welcome",
+          "title": "メインメニューへようこそ",
+          "description": "awaputi（あわぷち）のメインメニューです。ここからゲームのすべての機能にアクセスできます。",
+          "targetElement": ".main-menu-container",
+          "targetSelector": ".main-menu-container",
+          "highlightType": "outline",
+          "position": "center",
+          "content": {
+            "text": "これがメインメニューです。各ボタンをクリックして様々な機能を利用できます。",
+            "tips": [
+              "キーボードのTabキーでボタン間を移動できます",
+              "Enterキーでボタンを押すことができます"
+            ]
+          },
+          "actions": ["next", "skip"],
+          "validation": {
+            "type": "none"
+          }
+        },
+        {
+          "id": "username_input",
+          "title": "ユーザー名の設定",
+          "description": "最初にユーザー名を設定しましょう。スコアや進捗がこの名前で記録されます。",
+          "targetElement": "#username-input",
+          "targetSelector": "#username-input",
+          "highlightType": "glow",
+          "position": "below",
+          "content": {
+            "text": "ここにお好きなユーザー名を入力してください。後から変更することも可能です。",
+            "tips": [
+              "日本語・英語どちらでも入力できます",
+              "スペースや特殊文字も使用可能です",
+              "最大20文字まで入力できます"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "user_input",
+            "target": "#username-input",
+            "condition": "not_empty"
+          }
+        },
+        {
+          "id": "stage_select_button",
+          "title": "ステージ選択",
+          "description": "ステージ選択ボタンでゲームを始めることができます。",
+          "targetElement": ".stage-select-button",
+          "targetSelector": ".stage-select-button",
+          "highlightType": "pulse",
+          "position": "below",
+          "content": {
+            "text": "このボタンをクリックしてステージを選択し、ゲームを開始します。",
+            "tips": [
+              "初回プレイではチュートリアルステージが推奨されます",
+              "各ステージには異なる難易度とルールがあります"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "none"
+          }
+        },
+        {
+          "id": "shop_button",
+          "title": "ショップ機能",
+          "description": "獲得したAP（アワプチポイント）でアイテムを購入できます。",
+          "targetElement": ".shop-button",
+          "targetSelector": ".shop-button",
+          "highlightType": "outline",
+          "position": "below",
+          "content": {
+            "text": "ゲームをプレイして獲得したAPを使って、様々なアイテムを購入できます。",
+            "tips": [
+              "APはゲームプレイで獲得できます",
+              "アイテムはゲームを有利に進めるのに役立ちます",
+              "購入したアイテムは自動的に適用されます"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "none"
+          }
+        },
+        {
+          "id": "user_info_button",
+          "title": "ユーザー情報",
+          "description": "統計情報、実績、設定を確認・変更できます。",
+          "targetElement": ".user-info-button",
+          "targetSelector": ".user-info-button",
+          "highlightType": "glow",
+          "position": "below",
+          "content": {
+            "text": "プレイ統計、解除済み実績、ゲーム設定などを確認・変更できます。",
+            "tips": [
+              "詳細な統計データを確認できます",
+              "実績の進捗状況を見ることができます",
+              "ゲームの設定をカスタマイズできます"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "none"
+          }
+        },
+        {
+          "id": "help_button",
+          "title": "ヘルプとサポート",
+          "description": "ゲームの使い方や困ったときのサポート情報にアクセスできます。",
+          "targetElement": ".help-button",
+          "targetSelector": ".help-button",
+          "highlightType": "pulse",
+          "position": "below",
+          "content": {
+            "text": "ゲームルール、操作方法、FAQ、トラブルシューティングなどを確認できます。",
+            "tips": [
+              "初心者向けガイドがあります",
+              "よくある質問と回答を確認できます",
+              "困ったときはここを確認してください"
+            ]
+          },
+          "actions": ["finish", "previous"],
+          "validation": {
+            "type": "none"
+          }
+        }
+      ],
+      "completionRewards": {
+        "ap": 50,
+        "achievement": "menu_master"
+      }
+    },
+    {
+      "id": "gameplay_tour",
+      "title": "ゲームプレイガイド",
+      "description": "基本的なゲームプレイの方法を学びましょう",
+      "category": "ゲームプレイ",
+      "difficulty": "初級",
+      "estimatedTime": "5分",
+      "icon": "🎮",
+      "prerequisites": ["main_menu_tour"],
+      "steps": [
+        {
+          "id": "game_area_overview",
+          "title": "ゲーム画面の説明",
+          "description": "ゲーム画面の各要素について説明します。",
+          "targetElement": ".game-canvas",
+          "targetSelector": ".game-canvas",
+          "highlightType": "outline",
+          "position": "center",
+          "content": {
+            "text": "これがメインのゲーム画面です。ここでバブルが出現し、プレイヤーが操作します。",
+            "tips": [
+              "バブルは画面上部から出現します",
+              "時間が経つとバブルは自動で破裂します",
+              "破裂前にバブルをクリックしてポップしましょう"
+            ]
+          },
+          "actions": ["next", "skip"],
+          "validation": {
+            "type": "none"
+          }
+        },
+        {
+          "id": "score_display",
+          "title": "スコア表示",
+          "description": "現在のスコアとHPが表示されます。",
+          "targetElement": ".score-display",
+          "targetSelector": ".score-display",
+          "highlightType": "glow",
+          "position": "above",
+          "content": {
+            "text": "画面上部にスコアとHP（体力）が表示されます。HPが0になるとゲームオーバーです。",
+            "tips": [
+              "バブルをポップするとスコアが増加します",
+              "連続でポップするとコンボボーナスがもらえます",
+              "バブルが破裂するとHPが減少します"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "none"
+          }
+        },
+        {
+          "id": "bubble_click_demo",
+          "title": "バブルをクリック",
+          "description": "バブルをクリックしてポップしてみましょう。",
+          "targetElement": ".bubble",
+          "targetSelector": ".bubble:first-child",
+          "highlightType": "pulse",
+          "position": "center",
+          "content": {
+            "text": "バブルをクリックまたはタップしてポップしましょう。正確にクリックすることが重要です。",
+            "tips": [
+              "バブルの中心をクリックすると確実です",
+              "素早くクリックしてコンボを狙いましょう",
+              "異なる色のバブルには特殊効果があります"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "user_action",
+            "action": "bubble_pop",
+            "target": ".bubble"
+          }
+        },
+        {
+          "id": "drag_interaction",
+          "title": "バブルをドラッグ",
+          "description": "バブルをドラッグして位置を変えることもできます。",
+          "targetElement": ".bubble",
+          "targetSelector": ".bubble:nth-child(2)",
+          "highlightType": "outline",
+          "position": "center",
+          "content": {
+            "text": "バブルをドラッグして少し動かすことができます。緊急時の回避に使えます。",
+            "tips": [
+              "クリックしたままマウスを動かしてドラッグします",
+              "スマートフォンでは指で押したまま動かします",
+              "あまり遠くまでは動かせません"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "user_action",
+            "action": "bubble_drag",
+            "target": ".bubble"
+          }
+        },
+        {
+          "id": "special_bubbles",
+          "title": "特殊バブルの紹介",
+          "description": "様々な特殊効果を持つバブルが存在します。",
+          "targetElement": ".game-canvas",
+          "targetSelector": ".game-canvas",
+          "highlightType": "glow",
+          "position": "center",
+          "content": {
+            "text": "通常の青いバブル以外にも、特殊な効果を持つバブルが出現します。",
+            "tips": [
+              "レインボーバブル：ボーナスタイムを発動",
+              "ピンクバブル：HPを回復",
+              "時計バブル：時間を一時停止",
+              "電気バブル：画面が震動する妨害効果"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "none"
+          }
+        },
+        {
+          "id": "combo_system",
+          "title": "コンボシステム",
+          "description": "連続でバブルをポップしてコンボを作りましょう。",
+          "targetElement": ".combo-display",
+          "targetSelector": ".combo-display",
+          "highlightType": "pulse",
+          "position": "above",
+          "content": {
+            "text": "短時間で連続してバブルをポップするとコンボが発生し、ボーナススコアがもらえます。",
+            "tips": [
+              "素早く連続でクリックするとコンボが発生",
+              "コンボが続くほど高得点",
+              "時間を空けすぎるとコンボが途切れます"
+            ]
+          },
+          "actions": ["finish", "previous"],
+          "validation": {
+            "type": "user_action",
+            "action": "combo_achievement",
+            "target": "combo >= 3"
+          }
+        }
+      ],
+      "completionRewards": {
+        "ap": 100,
+        "achievement": "gameplay_master"
+      }
+    },
+    {
+      "id": "settings_tour",
+      "title": "設定画面ガイド",
+      "description": "ゲーム設定の変更方法を学びましょう",
+      "category": "カスタマイズ",
+      "difficulty": "初級",
+      "estimatedTime": "4分",
+      "icon": "⚙️",
+      "prerequisites": ["main_menu_tour"],
+      "steps": [
+        {
+          "id": "settings_overview",
+          "title": "設定画面の概要",
+          "description": "ユーザー情報画面の設定タブを開きます。",
+          "targetElement": ".settings-tab",
+          "targetSelector": ".settings-tab",
+          "highlightType": "outline",
+          "position": "center",
+          "content": {
+            "text": "設定タブでは、ゲームの様々な設定を変更できます。",
+            "tips": [
+              "設定は自動的に保存されます",
+              "いつでも設定を変更できます",
+              "設定をリセットすることも可能です"
+            ]
+          },
+          "actions": ["next", "skip"],
+          "validation": {
+            "type": "element_visible",
+            "target": ".settings-panel"
+          }
+        },
+        {
+          "id": "audio_settings",
+          "title": "音響設定",
+          "description": "音楽とサウンドエフェクトの設定を調整します。",
+          "targetElement": ".audio-settings",
+          "targetSelector": ".audio-settings",
+          "highlightType": "glow",
+          "position": "below",
+          "content": {
+            "text": "BGMと効果音の音量、音質設定を調整できます。",
+            "tips": [
+              "BGMと効果音は個別に音量調整可能",
+              "音質設定で性能を調整できます",
+              "完全にミュートにすることも可能"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "user_interaction",
+            "target": ".volume-slider"
+          }
+        },
+        {
+          "id": "display_settings",
+          "title": "表示設定",
+          "description": "画面の表示やエフェクトの設定を変更します。",
+          "targetElement": ".display-settings",
+          "targetSelector": ".display-settings",
+          "highlightType": "pulse",
+          "position": "below",
+          "content": {
+            "text": "画面の明るさ、エフェクトの強度、フレームレートなどを調整できます。",
+            "tips": [
+              "パフォーマンスが重い場合はエフェクト品質を下げてください",
+              "フレームレート制限で電力消費を抑制できます",
+              "色覚サポート機能も利用できます"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "none"
+          }
+        },
+        {
+          "id": "accessibility_settings",
+          "title": "アクセシビリティ設定",
+          "description": "より快適にプレイするための支援機能を設定します。",
+          "targetElement": ".accessibility-settings",
+          "targetSelector": ".accessibility-settings",
+          "highlightType": "outline",
+          "position": "below",
+          "content": {
+            "text": "視覚・聴覚・操作の支援機能を有効にできます。",
+            "tips": [
+              "高コントラストモードで見やすくできます",
+              "キーボード操作を有効にできます",
+              "スクリーンリーダーに対応しています",
+              "テキストサイズを拡大できます"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "none"
+          }
+        },
+        {
+          "id": "language_settings",
+          "title": "言語設定",
+          "description": "ゲームの表示言語を変更できます。",
+          "targetElement": ".language-selector",
+          "targetSelector": ".language-selector",
+          "highlightType": "glow",
+          "position": "below",
+          "content": {
+            "text": "ゲームの表示言語を日本語、英語、中国語、韓国語から選択できます。",
+            "tips": [
+              "言語変更は即座に反映されます",
+              "すべてのメニューとメッセージが翻訳されます",
+              "ヘルプコンテンツも各言語で利用可能"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "none"
+          }
+        },
+        {
+          "id": "data_management",
+          "title": "データ管理",
+          "description": "ゲームデータのバックアップや復元ができます。",
+          "targetElement": ".data-management",
+          "targetSelector": ".data-management",
+          "highlightType": "pulse",
+          "position": "below",
+          "content": {
+            "text": "プレイデータのエクスポート・インポート、リセットができます。",
+            "tips": [
+              "JSONファイルでデータをエクスポートできます",
+              "他のデバイスにデータを移行できます",
+              "データを完全にリセットすることも可能",
+              "自動バックアップ機能もあります"
+            ]
+          },
+          "actions": ["finish", "previous"],
+          "validation": {
+            "type": "none"
+          }
+        }
+      ],
+      "completionRewards": {
+        "ap": 75,
+        "achievement": "settings_explorer"
+      }
+    },
+    {
+      "id": "advanced_features_tour",
+      "title": "高度な機能ガイド",
+      "description": "上級者向けの機能や隠し要素を発見しましょう",
+      "category": "上級",
+      "difficulty": "上級",
+      "estimatedTime": "7分",
+      "icon": "🚀",
+      "prerequisites": ["main_menu_tour", "gameplay_tour", "settings_tour"],
+      "steps": [
+        {
+          "id": "achievement_system",
+          "title": "実績システム",
+          "description": "様々な実績を解除してAPを獲得しましょう。",
+          "targetElement": ".achievements-tab",
+          "targetSelector": ".achievements-tab",
+          "highlightType": "outline",
+          "position": "center",
+          "content": {
+            "text": "実績タブで解除済み・未解除の実績を確認できます。",
+            "tips": [
+              "実績を解除するとAPがもらえます",
+              "隠し実績も存在します",
+              "進捗状況を確認できます",
+              "実績の説明を読んで挑戦しましょう"
+            ]
+          },
+          "actions": ["next", "skip"],
+          "validation": {
+            "type": "element_visible",
+            "target": ".achievements-list"
+          }
+        },
+        {
+          "id": "statistics_analysis",
+          "title": "統計分析",
+          "description": "詳細なプレイ統計を分析して上達を目指しましょう。",
+          "targetElement": ".statistics-tab",
+          "targetSelector": ".statistics-tab",
+          "highlightType": "glow",
+          "position": "center",
+          "content": {
+            "text": "統計タブで詳細なプレイデータを確認できます。",
+            "tips": [
+              "時系列グラフでスコアの推移を確認",
+              "バブル種類別の統計データ",
+              "最高コンボやベストスコアの記録",
+              "プレイ時間や回数の統計"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "element_visible",
+            "target": ".statistics-charts"
+          }
+        },
+        {
+          "id": "special_stages",
+          "title": "特別ステージ",
+          "description": "隠された特別ステージにアクセスする方法を学びます。",
+          "targetElement": ".stage-selector",
+          "targetSelector": ".stage-selector",
+          "highlightType": "pulse",
+          "position": "center",
+          "content": {
+            "text": "条件を満たすと特別なイベントステージが出現します。",
+            "tips": [
+              "Golden Rushステージ：黄金バブルだらけ",
+              "Phantom Nightステージ：見えないバブル",
+              "Explosive Chaosステージ：爆発バブル祭り",
+              "特別なAP報酬がもらえます"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "none"
+          }
+        },
+        {
+          "id": "keyboard_shortcuts",
+          "title": "キーボードショートカット",
+          "description": "効率的なプレイのためのキーボードショートカットを覚えましょう。",
+          "targetElement": ".game-canvas",
+          "targetSelector": ".game-canvas",
+          "highlightType": "outline",
+          "position": "center",
+          "content": {
+            "text": "キーボードショートカットでより快適にプレイできます。",
+            "tips": [
+              "Spaceキー：ゲーム一時停止/再開",
+              "Ctrl+Shift+D：デバッグ情報表示",
+              "F：フルスクリーンモード切り替え",
+              "M：音楽のオン/オフ切り替え",
+              "Escape：メニューに戻る"
+            ]
+          },
+          "actions": ["next", "previous", "skip"],
+          "validation": {
+            "type": "user_action",
+            "action": "keypress",
+            "target": "Space"
+          }
+        },
+        {
+          "id": "debug_features",
+          "title": "開発者機能",
+          "description": "デバッグ機能を使ってゲームを詳しく分析できます。",
+          "targetElement": ".debug-panel",
+          "targetSelector": ".debug-panel",
+          "highlightType": "glow",
+          "position": "center",
+          "content": {
+            "text": "Ctrl+Shift+Dでデバッグパネルを開き、詳細情報を確認できます。",
+            "tips": [
+              "フレームレートの監視",
+              "メモリ使用量の確認",
+              "パフォーマンス指標の表示",
+              "バブル生成パターンの確認"
+            ]
+          },
+          "actions": ["finish", "previous"],
+          "validation": {
+            "type": "element_visible",
+            "target": ".debug-panel"
+          }
+        }
+      ],
+      "completionRewards": {
+        "ap": 200,
+        "achievement": "power_user"
+      }
+    }
+  ],
+  "metadata": {
+    "totalTours": 4,
+    "categories": ["基本操作", "ゲームプレイ", "カスタマイズ", "上級"],
+    "difficultyLevels": ["初級", "上級"],
+    "averageCompletionTime": "19分",
+    "lastUpdated": "2025-07-30"
+  }
+}

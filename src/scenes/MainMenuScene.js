@@ -11,7 +11,8 @@ export class MainMenuScene extends Scene {
         this.menuItems = [
             { id: 'start', key: 'menu.start', action: () => this.startGame() },
             { id: 'settings', key: 'menu.settings', action: () => this.openSettings() },
-            { id: 'userInfo', key: 'menu.userInfo', action: () => this.openUserInfo() }
+            { id: 'userInfo', key: 'menu.userInfo', action: () => this.openUserInfo() },
+            { id: 'help', key: 'menu.help', action: () => this.openHelp() }
         ];
         
         this.updateMenuLabels();
@@ -1121,6 +1122,13 @@ export class MainMenuScene extends Scene {
      */
     openUserInfo() {
         this.showingUserInfo = true;
+    }
+    
+    /**
+     * ヘルプ画面を開く
+     */
+    openHelp() {
+        this.gameEngine.sceneManager.switchScene('help');
     }
     
     /**

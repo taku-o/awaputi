@@ -217,7 +217,7 @@ export class StageSelectScene extends Scene {
         context.textBaseline = 'bottom';
         
         const controlsY = canvas.height - 40;
-        context.fillText('↑↓: 選択  Enter: 決定  S: ショップ  ESC: 戻る', canvas.width / 2, controlsY);
+        context.fillText('↑↓: 選択  Enter: 決定  S: ショップ  H: ヘルプ  ESC: 戻る', canvas.width / 2, controlsY);
         context.fillText('クリックでも操作できます', canvas.width / 2, controlsY + 20);
         
         context.restore();
@@ -240,6 +240,9 @@ export class StageSelectScene extends Scene {
                     break;
                 case 'KeyS':
                     this.sceneManager.switchScene('shop');
+                    break;
+                case 'KeyH':
+                    this.gameEngine.sceneManager.switchScene('help');
                     break;
                 case 'Escape':
                     this.sceneManager.switchScene('menu');
