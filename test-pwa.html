@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA テストツール - BubblePop</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .test-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .test-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .test-section h3 {
+            margin-top: 0;
+            color: #4CAF50;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        
+        .test-button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            margin: 5px;
+            transition: background 0.2s;
+        }
+        
+        .test-button:hover {
+            background: #45a049;
+        }
+        
+        .test-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .test-button.secondary {
+            background: #2196F3;
+        }
+        
+        .test-button.secondary:hover {
+            background: #1976D2;
+        }
+        
+        .test-button.danger {
+            background: #f44336;
+        }
+        
+        .test-button.danger:hover {
+            background: #d32f2f;
+        }
+        
+        .test-results {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        
+        .test-results h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        
+        .test-log {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-indicator.success { background: #4CAF50; }
+        .status-indicator.error { background: #f44336; }
+        .status-indicator.warning { background: #ff9800; }
+        .status-indicator.info { background: #2196F3; }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .test-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .summary-card {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .summary-card.failed { border-left-color: #f44336; }
+        .summary-card.warning { border-left-color: #ff9800; }
+        
+        .summary-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .summary-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+        }
+        
+        .installation-guide {
+            background: #e7f3ff;
+            border: 1px solid #b3d7ff;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .installation-guide h4 {
+            margin-top: 0;
+            color: #1976D2;
+        }
+        
+        .device-info {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin: 10px 0;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .test-controls {
+                grid-template-columns: 1fr;
+            }
+            
+            .test-summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🧪 PWA テストツール</h1>
+        <p>BubblePop PWA機能の包括的テストと検証</p>
+        <div class="device-info" id="deviceInfo">
+            デバイス情報を読み込み中...
+        </div>
+    </div>
+
+    <div class="test-controls">
+        <div class="test-section">
+            <h3>📋 基本テスト</h3>
+            <button class="test-button" onclick="runBasicTests()">基本PWA機能テスト</button>
+            <button class="test-button" onclick="runServiceWorkerTests()">Service Worker テスト</button>
+            <button class="test-button" onclick="runManifestTest()">Manifest 検証</button>
+            <button class="test-button" onclick="runIconTests()">アイコン読み込みテスト</button>
+        </div>
+
+        <div class="test-section">
+            <h3>📱 デバイステスト</h3>
+            <button class="test-button secondary" onclick="runCrossDeviceTests()">クロスデバイステスト</button>
+            <button class="test-button secondary" onclick="runResponsiveTests()">レスポンシブテスト</button>
+            <button class="test-button secondary" onclick="runTouchTests()">タッチ操作テスト</button>
+            <button class="test-button secondary" onclick="runOrientationTests()">画面向きテスト</button>
+        </div>
+
+        <div class="test-section">
+            <h3>🔧 高度なテスト</h3>
+            <button class="test-button" onclick="runOfflineTests()">オフライン機能テスト</button>
+            <button class="test-button" onclick="runCacheTests()">キャッシュ機能テスト</button>
+            <button class="test-button" onclick="runPerformanceTests()">パフォーマンステスト</button>
+            <button class="test-button" onclick="runInstallationTests()">インストールテスト</button>
+        </div>
+
+        <div class="test-section">
+            <h3>🚀 包括テスト</h3>
+            <button class="test-button" onclick="runAllTests()">全テスト実行</button>
+            <button class="test-button secondary" onclick="runCustomTestSuite()">カスタムテスト</button>
+            <button class="test-button danger" onclick="clearTestResults()">結果クリア</button>
+            <button class="test-button secondary" onclick="exportTestReport()">レポート出力</button>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h3>📊 インストール機能</h3>
+        <div id="installationStatus">インストール状態を確認中...</div>
+        <div class="installation-guide" id="installationGuide" style="display: none;">
+            <h4>PWAインストール方法</h4>
+            <div id="installInstructions"></div>
+        </div>
+        <button class="test-button" id="installButton" onclick="promptInstall()" style="display: none;">
+            アプリをインストール
+        </button>
+    </div>
+
+    <div class="test-results">
+        <h3>📈 テスト結果</h3>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <div class="test-summary" id="testSummary">
+            <div class="summary-card">
+                <div class="summary-value" id="totalTests">0</div>
+                <div class="summary-label">総テスト数</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-value" id="passedTests">0</div>
+                <div class="summary-label">合格</div>
+            </div>
+            <div class="summary-card failed">
+                <div class="summary-value" id="failedTests">0</div>
+                <div class="summary-label">失敗</div>
+            </div>
+            <div class="summary-card warning">
+                <div class="summary-value" id="warningTests">0</div>
+                <div class="summary-label">警告</div>
+            </div>
+        </div>
+        
+        <div class="test-log" id="testLog">
+テストを実行してください...
+
+使用可能なテスト:
+• 基本PWA機能テスト - manifest、Service Worker、メタタグの確認
+• クロスデバイステスト - デバイス・ブラウザ互換性の確認
+• オフライン機能テスト - キャッシュとオフライン動作の確認
+• パフォーマンステスト - 読み込み速度とレスポンス性能の測定
+• インストールテスト - PWAインストール機能の確認
+
+ヒント: 全テスト実行で包括的な検証を行うことをお勧めします。
+        </div>
+    </div>
+
+    <script type="module">
+        // PWAテストフレームワークの読み込み
+        import { PWATestFramework } from './tests/pwa/PWATestFramework.js';
+        import { PWACrossDeviceTest } from './tests/pwa/PWACrossDeviceTest.js';
+        
+        // グローバル変数
+        window.pwaTestFramework = new PWATestFramework();
+        window.pwaCrossDeviceTest = new PWACrossDeviceTest();
+        window.currentTestResults = null;
+        window.isTestRunning = false;
+        
+        // デバイス情報の表示
+        function displayDeviceInfo() {
+            const deviceInfo = {
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                language: navigator.language,
+                cookieEnabled: navigator.cookieEnabled,
+                onLine: navigator.onLine,
+                screenResolution: `${screen.width}x${screen.height}`,
+                viewportSize: `${window.innerWidth}x${window.innerHeight}`,
+                devicePixelRatio: window.devicePixelRatio,
+                touchSupport: 'ontouchstart' in window || navigator.maxTouchPoints > 0,
+                serviceWorkerSupport: 'serviceWorker' in navigator,
+                notificationSupport: 'Notification' in window,
+                geolocationSupport: 'geolocation' in navigator
+            };
+            
+            // ブラウザ検出
+            let browserName = 'Unknown';
+            if (/Chrome/i.test(navigator.userAgent) && !/Edge/i.test(navigator.userAgent)) {
+                browserName = 'Chrome';
+            } else if (/Firefox/i.test(navigator.userAgent)) {
+                browserName = 'Firefox';
+            } else if (/Safari/i.test(navigator.userAgent) && !/Chrome/i.test(navigator.userAgent)) {
+                browserName = 'Safari';
+            } else if (/Edge/i.test(navigator.userAgent)) {
+                browserName = 'Edge';
+            }
+            
+            // デバイスタイプ検出
+            let deviceType = 'Desktop';
+            if (/Mobile|Android|iPhone/i.test(navigator.userAgent)) {
+                deviceType = 'Mobile';
+            } else if (/Tablet|iPad/i.test(navigator.userAgent)) {
+                deviceType = 'Tablet';
+            }
+            
+            const deviceInfoElement = document.getElementById('deviceInfo');
+            deviceInfoElement.innerHTML = `
+                <strong>${browserName}</strong> on <strong>${deviceType}</strong> | 
+                画面: ${deviceInfo.viewportSize} | 
+                PWA対応: ${deviceInfo.serviceWorkerSupport ? '✅' : '❌'} | 
+                タッチ: ${deviceInfo.touchSupport ? '✅' : '❌'} | 
+                オンライン: ${deviceInfo.onLine ? '✅' : '❌'}
+            `;
+        }
+        
+        // インストール状態の確認
+        async function checkInstallationStatus() {
+            const statusElement = document.getElementById('installationStatus');
+            const guideElement = document.getElementById('installationGuide');
+            const installButton = document.getElementById('installButton');
+            const instructionsElement = document.getElementById('installInstructions');
+            
+            try {
+                // PWAManagerの状態確認
+                if (window.pwaManager) {
+                    const pwaState = window.pwaManager.getPWAState();
+                    
+                    if (pwaState.isInstalled) {
+                        statusElement.innerHTML = '<span class="status-indicator success"></span>PWAはインストール済みです';
+                        installButton.style.display = 'none';
+                    } else if (pwaState.installPromptAvailable) {
+                        statusElement.innerHTML = '<span class="status-indicator info"></span>PWAインストール可能';
+                        installButton.style.display = 'inline-block';
+                    } else {
+                        statusElement.innerHTML = '<span class="status-indicator warning"></span>PWAインストール待機中';
+                        installButton.style.display = 'none';
+                    }
+                    
+                    // ブラウザ別インストール手順
+                    let instructions = '';
+                    if (/Chrome/i.test(navigator.userAgent)) {
+                        instructions = `
+                            <p><strong>Chrome でのインストール:</strong></p>
+                            <ul>
+                                <li>アドレスバーの右側にある「インストール」アイコンをクリック</li>
+                                <li>または、右上のメニュー → その他のツール → ショートカットを作成</li>
+                                <li>ポップアップが表示されたら「インストール」をクリック</li>
+                            </ul>
+                        `;
+                    } else if (/Safari/i.test(navigator.userAgent)) {
+                        instructions = `
+                            <p><strong>Safari でのインストール:</strong></p>
+                            <ul>
+                                <li>下部の共有ボタン（□↗）をタップ</li>
+                                <li>「ホーム画面に追加」を選択</li>
+                                <li>アプリ名を確認して「追加」をタップ</li>
+                            </ul>
+                        `;
+                    } else if (/Firefox/i.test(navigator.userAgent)) {
+                        instructions = `
+                            <p><strong>Firefox でのインストール:</strong></p>
+                            <ul>
+                                <li>右上のメニュー → ページ → ホーム画面に追加</li>
+                                <li>または、アドレスバーの家アイコンをクリック</li>
+                            </ul>
+                        `;
+                    } else {
+                        instructions = `
+                            <p><strong>一般的なインストール方法:</strong></p>
+                            <ul>
+                                <li>ブラウザのメニューから「ホーム画面に追加」または「アプリとしてインストール」を探してください</li>
+                                <li>PWA対応ブラウザをご利用ください（Chrome、Safari、Firefox、Edge等）</li>
+                            </ul>
+                        `;
+                    }
+                    
+                    instructionsElement.innerHTML = instructions;
+                    guideElement.style.display = 'block';
+                    
+                } else {
+                    statusElement.innerHTML = '<span class="status-indicator error"></span>PWAManagerが初期化されていません';
+                }
+                
+            } catch (error) {
+                statusElement.innerHTML = '<span class="status-indicator error"></span>インストール状態の確認に失敗しました';
+                console.error('Installation status check failed:', error);
+            }
+        }
+        
+        // ログ出力関数
+        function logMessage(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString('ja-JP');
+            const logElement = document.getElementById('testLog');
+            const statusIcon = type === 'success' ? '✅' : 
+                             type === 'error' ? '❌' : 
+                             type === 'warning' ? '⚠️' : 'ℹ️';
+            
+            logElement.textContent += `\n[${timestamp}] ${statusIcon} ${message}`;
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+        
+        // 進捗更新
+        function updateProgress(current, total) {
+            const progressFill = document.getElementById('progressFill');
+            const percentage = total > 0 ? (current / total) * 100 : 0;
+            progressFill.style.width = `${percentage}%`;
+        }
+        
+        // サマリー更新
+        function updateSummary(results) {
+            document.getElementById('totalTests').textContent = results.length;
+            document.getElementById('passedTests').textContent = results.filter(r => r.status === 'passed').length;
+            document.getElementById('failedTests').textContent = results.filter(r => r.status === 'failed').length;
+            document.getElementById('warningTests').textContent = results.filter(r => r.status === 'warning').length;
+        }
+        
+        // 初期化
+        document.addEventListener('DOMContentLoaded', () => {
+            displayDeviceInfo();
+            
+            // PWAManagerの初期化を待つ
+            setTimeout(() => {
+                checkInstallationStatus();
+            }, 2000);
+        });
+        
+        // グローバル関数定義
+        window.logMessage = logMessage;
+        window.updateProgress = updateProgress;
+        window.updateSummary = updateSummary;
+        window.checkInstallationStatus = checkInstallationStatus;
+    </script>
+
+    <script>
+        // テスト実行関数群
+        
+        async function runBasicTests() {
+            if (window.isTestRunning) return;
+            
+            window.isTestRunning = true;
+            logMessage('基本PWA機能テストを開始します...', 'info');
+            
+            try {
+                const results = await window.pwaTestFramework.runBasicPWATests();
+                window.currentTestResults = results;
+                updateSummary(results);
+                
+                logMessage(`基本テスト完了: ${results.length}件のテストを実行`, 'success');
+                
+                for (const result of results) {
+                    const status = result.status === 'passed' ? 'success' : 'error';
+                    logMessage(`${result.name}: ${result.status}`, status);
+                }
+                
+            } catch (error) {
+                logMessage(`基本テスト実行エラー: ${error.message}`, 'error');
+            } finally {
+                window.isTestRunning = false;
+            }
+        }
+        
+        async function runServiceWorkerTests() {
+            if (window.isTestRunning) return;
+            
+            window.isTestRunning = true;
+            logMessage('Service Workerテストを開始します...', 'info');
+            
+            try {
+                const results = await window.pwaTestFramework.runServiceWorkerTests();
+                window.currentTestResults = results;
+                updateSummary(results);
+                
+                logMessage(`Service Workerテスト完了: ${results.length}件のテストを実行`, 'success');
+                
+                for (const result of results) {
+                    const status = result.status === 'passed' ? 'success' : 'error';
+                    logMessage(`${result.name}: ${result.status}`, status);
+                }
+                
+            } catch (error) {
+                logMessage(`Service Workerテスト実行エラー: ${error.message}`, 'error');
+            } finally {
+                window.isTestRunning = false;
+            }
+        }
+        
+        async function runManifestTest() {
+            if (window.isTestRunning) return;
+            
+            logMessage('Manifest検証を開始します...', 'info');
+            
+            try {
+                const manifestLink = document.querySelector('link[rel="manifest"]');
+                if (!manifestLink) {
+                    logMessage('Manifestリンクが見つかりません', 'error');
+                    return;
+                }
+                
+                const response = await fetch(manifestLink.href);
+                const manifest = await response.json();
+                
+                logMessage('Manifest読み込み成功', 'success');
+                logMessage(`アプリ名: ${manifest.name}`, 'info');
+                logMessage(`アイコン数: ${manifest.icons?.length || 0}`, 'info');
+                logMessage(`テーマカラー: ${manifest.theme_color}`, 'info');
+                logMessage(`表示モード: ${manifest.display}`, 'info');
+                
+            } catch (error) {
+                logMessage(`Manifest検証エラー: ${error.message}`, 'error');
+            }
+        }
+        
+        async function runIconTests() {
+            if (window.isTestRunning) return;
+            
+            window.isTestRunning = true;
+            logMessage('アイコン読み込みテストを開始します...', 'info');
+            
+            try {
+                const results = await window.pwaTestFramework.runIconAndUITests();
+                window.currentTestResults = results;
+                updateSummary(results);
+                
+                logMessage(`アイコンテスト完了: ${results.length}件のテストを実行`, 'success');
+                
+                for (const result of results) {
+                    const status = result.status === 'passed' ? 'success' : 'error';
+                    logMessage(`${result.name}: ${result.status}`, status);
+                    
+                    if (result.result && result.result.iconTests) {
+                        const loadedCount = result.result.iconTests.filter(t => t.loaded).length;
+                        logMessage(`  アイコン読み込み: ${loadedCount}/${result.result.totalIcons}`, 'info');
+                    }
+                }
+                
+            } catch (error) {
+                logMessage(`アイコンテスト実行エラー: ${error.message}`, 'error');
+            } finally {
+                window.isTestRunning = false;
+            }
+        }
+        
+        async function runCrossDeviceTests() {
+            if (window.isTestRunning) return;
+            
+            window.isTestRunning = true;
+            logMessage('クロスデバイステストを開始します...', 'info');
+            
+            try {
+                const results = await window.pwaCrossDeviceTest.runCrossDeviceTests();
+                window.currentTestResults = results.details;
+                updateSummary(results.details);
+                
+                logMessage(`クロスデバイステスト完了: ${results.summary.totalTests}件のテストを実行`, 'success');
+                logMessage(`合格: ${results.summary.passedTests}, 失敗: ${results.summary.failedTests}`, 'info');
+                
+                // デバイス別結果の表示
+                for (const [deviceType, deviceResults] of Object.entries(results.summary.deviceResults)) {
+                    logMessage(`${deviceType}: 成功率 ${deviceResults.successRate.toFixed(1)}%`, 'info');
+                }
+                
+            } catch (error) {
+                logMessage(`クロスデバイステスト実行エラー: ${error.message}`, 'error');
+            } finally {
+                window.isTestRunning = false;
+            }
+        }
+        
+        async function runResponsiveTests() {
+            logMessage('レスポンシブテストを実行中...', 'info');
+            
+            const viewports = [
+                { width: 320, height: 568, name: 'Mobile Small' },
+                { width: 768, height: 1024, name: 'Tablet' },
+                { width: 1920, height: 1080, name: 'Desktop' }
+            ];
+            
+            for (const viewport of viewports) {
+                const currentWidth = window.innerWidth;
+                const currentHeight = window.innerHeight;
+                
+                const widthDiff = Math.abs(currentWidth - viewport.width);
+                const heightDiff = Math.abs(currentHeight - viewport.height);
+                
+                if (widthDiff <= 100 && heightDiff <= 100) {
+                    logMessage(`${viewport.name} (${viewport.width}x${viewport.height}): 適合`, 'success');
+                } else {
+                    logMessage(`${viewport.name}: 現在 ${currentWidth}x${currentHeight}`, 'info');
+                }
+            }
+        }
+        
+        async function runTouchTests() {
+            logMessage('タッチ操作テストを実行中...', 'info');
+            
+            const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            const maxTouchPoints = navigator.maxTouchPoints || 0;
+            
+            logMessage(`タッチサポート: ${hasTouch ? '対応' : '非対応'}`, hasTouch ? 'success' : 'warning');
+            logMessage(`最大タッチポイント: ${maxTouchPoints}`, 'info');
+            
+            if (hasTouch) {
+                logMessage('タッチイベントが利用可能です', 'success');
+            } else {
+                logMessage('マウス操作のみ利用可能です', 'info');
+            }
+        }
+        
+        async function runOrientationTests() {
+            logMessage('画面向きテストを実行中...', 'info');
+            
+            const hasOrientationAPI = 'orientation' in screen;
+            const hasOrientationEvent = 'onorientationchange' in window;
+            
+            logMessage(`画面向きAPI: ${hasOrientationAPI ? '対応' : '非対応'}`, hasOrientationAPI ? 'success' : 'warning');
+            logMessage(`向き変更イベント: ${hasOrientationEvent ? '対応' : '非対応'}`, hasOrientationEvent ? 'success' : 'warning');
+            
+            if (hasOrientationAPI) {
+                const orientation = screen.orientation ? screen.orientation.type : '不明';
+                logMessage(`現在の向き: ${orientation}`, 'info');
+            }
+        }
+        
+        async function runOfflineTests() {
+            if (window.isTestRunning) return;
+            
+            window.isTestRunning = true;
+            logMessage('オフライン機能テストを開始します...', 'info');
+            
+            try {
+                const results = await window.pwaTestFramework.runOfflineTests();
+                window.currentTestResults = results;
+                updateSummary(results);
+                
+                logMessage(`オフラインテスト完了: ${results.length}件のテストを実行`, 'success');
+                
+                for (const result of results) {
+                    const status = result.status === 'passed' ? 'success' : 'error';
+                    logMessage(`${result.name}: ${result.status}`, status);
+                }
+                
+            } catch (error) {
+                logMessage(`オフラインテスト実行エラー: ${error.message}`, 'error');
+            } finally {
+                window.isTestRunning = false;
+            }
+        }
+        
+        async function runCacheTests() {
+            logMessage('キャッシュ機能テストを実行中...', 'info');
+            
+            try {
+                // キャッシュの存在確認
+                const cacheNames = await caches.keys();
+                logMessage(`利用可能なキャッシュ: ${cacheNames.length}個`, 'info');
+                
+                for (const cacheName of cacheNames) {
+                    logMessage(`- ${cacheName}`, 'info');
+                    
+                    const cache = await caches.open(cacheName);
+                    const requests = await cache.keys();
+                    logMessage(`  キャッシュされたリソース: ${requests.length}個`, 'info');
+                }
+                
+                if (cacheNames.length > 0) {
+                    logMessage('キャッシュ機能は正常に動作しています', 'success');
+                } else {
+                    logMessage('キャッシュが見つかりません', 'warning');
+                }
+                
+            } catch (error) {
+                logMessage(`キャッシュテストエラー: ${error.message}`, 'error');
+            }
+        }
+        
+        async function runPerformanceTests() {
+            if (window.isTestRunning) return;
+            
+            window.isTestRunning = true;
+            logMessage('パフォーマンステストを開始します...', 'info');
+            
+            try {
+                const results = await window.pwaTestFramework.runPerformanceTests();
+                window.currentTestResults = results;
+                updateSummary(results);
+                
+                logMessage(`パフォーマンステスト完了: ${results.length}件のテストを実行`, 'success');
+                
+                for (const result of results) {
+                    const status = result.status === 'passed' ? 'success' : 'error';
+                    logMessage(`${result.name}: ${result.status}`, status);
+                    
+                    if (result.result) {
+                        if (result.result.loadTime) {
+                            logMessage(`  読み込み時間: ${result.result.loadTime.toFixed(2)}ms`, 'info');
+                        }
+                        if (result.result.performance) {
+                            logMessage(`  パフォーマンス評価: ${result.result.performance}`, 'info');
+                        }
+                    }
+                }
+                
+            } catch (error) {
+                logMessage(`パフォーマンステスト実行エラー: ${error.message}`, 'error');
+            } finally {
+                window.isTestRunning = false;
+            }
+        }
+        
+        async function runInstallationTests() {
+            if (window.isTestRunning) return;
+            
+            window.isTestRunning = true;
+            logMessage('インストールテストを開始します...', 'info');
+            
+            try {
+                const results = await window.pwaTestFramework.runInstallationTests();
+                window.currentTestResults = results;
+                updateSummary(results);
+                
+                logMessage(`インストールテスト完了: ${results.length}件のテストを実行`, 'success');
+                
+                for (const result of results) {
+                    const status = result.status === 'passed' ? 'success' : 'error';
+                    logMessage(`${result.name}: ${result.status}`, status);
+                }
+                
+                // インストール状態を再確認
+                setTimeout(checkInstallationStatus, 1000);
+                
+            } catch (error) {
+                logMessage(`インストールテスト実行エラー: ${error.message}`, 'error');
+            } finally {
+                window.isTestRunning = false;
+            }
+        }
+        
+        async function runAllTests() {
+            if (window.isTestRunning) return;
+            
+            window.isTestRunning = true;
+            logMessage('全PWAテストを開始します...', 'info');
+            
+            try {
+                const results = await window.pwaTestFramework.runAllTests();
+                window.currentTestResults = results.details;
+                updateSummary(results.details);
+                updateProgress(results.details.length, results.details.length);
+                
+                logMessage(`全テスト完了!`, 'success');
+                logMessage(`総テスト数: ${results.summary.totalTests}`, 'info');
+                logMessage(`合格: ${results.summary.passedTests}`, 'success');
+                logMessage(`失敗: ${results.summary.failedTests}`, 'error');
+                logMessage(`成功率: ${results.summary.successRate.toFixed(1)}%`, 'info');
+                logMessage(`実行時間: ${results.summary.totalDuration.toFixed(0)}ms`, 'info');
+                
+                // 推奨事項の表示
+                if (results.recommendations && results.recommendations.length > 0) {
+                    logMessage('=== 推奨事項 ===', 'warning');
+                    for (const rec of results.recommendations) {
+                        logMessage(`[${rec.priority.toUpperCase()}] ${rec.message}`, 'warning');
+                    }
+                }
+                
+            } catch (error) {
+                logMessage(`全テスト実行エラー: ${error.message}`, 'error');
+            } finally {
+                window.isTestRunning = false;
+            }
+        }
+        
+        async function runCustomTestSuite() {
+            logMessage('カスタムテストスイートを実行中...', 'info');
+            
+            // 簡単なカスタムテスト例
+            const tests = [
+                { name: 'PWAManager存在確認', test: () => window.pwaManager !== undefined },
+                { name: 'ゲームキャンバス存在確認', test: () => document.getElementById('gameCanvas') !== null },
+                { name: 'Service Worker登録確認', test: async () => {
+                    const registration = await navigator.serviceWorker.getRegistration();
+                    return registration !== undefined;
+                }},
+                { name: 'オンライン状態確認', test: () => navigator.onLine }
+            ];
+            
+            let passed = 0;
+            let total = tests.length;
+            
+            for (const testCase of tests) {
+                try {
+                    const result = await testCase.test();
+                    if (result) {
+                        logMessage(`${testCase.name}: 合格`, 'success');
+                        passed++;
+                    } else {
+                        logMessage(`${testCase.name}: 失敗`, 'error');
+                    }
+                } catch (error) {
+                    logMessage(`${testCase.name}: エラー - ${error.message}`, 'error');
+                }
+            }
+            
+            logMessage(`カスタムテスト完了: ${passed}/${total} 合格`, 'info');
+        }
+        
+        function clearTestResults() {
+            document.getElementById('testLog').textContent = 'テスト結果をクリアしました...\n\n新しいテストを実行してください。';
+            document.getElementById('totalTests').textContent = '0';
+            document.getElementById('passedTests').textContent = '0';
+            document.getElementById('failedTests').textContent = '0';
+            document.getElementById('warningTests').textContent = '0';
+            document.getElementById('progressFill').style.width = '0%';
+            window.currentTestResults = null;
+        }
+        
+        function exportTestReport() {
+            if (!window.currentTestResults) {
+                logMessage('エクスポートするテスト結果がありません', 'warning');
+                return;
+            }
+            
+            try {
+                const report = window.pwaTestFramework.generateTestReport();
+                const htmlReport = window.pwaTestFramework.generateHTMLReport();
+                
+                // HTMLレポートを新しいウィンドウで開く
+                const newWindow = window.open('', '_blank');
+                newWindow.document.write(htmlReport);
+                newWindow.document.close();
+                
+                logMessage('テストレポートを新しいウィンドウで開きました', 'success');
+                
+                // JSONレポートをダウンロード
+                const jsonBlob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+                const jsonUrl = URL.createObjectURL(jsonBlob);
+                const jsonLink = document.createElement('a');
+                jsonLink.href = jsonUrl;
+                jsonLink.download = `pwa-test-report-${new Date().toISOString().split('T')[0]}.json`;
+                jsonLink.click();
+                URL.revokeObjectURL(jsonUrl);
+                
+                logMessage('JSONレポートをダウンロードしました', 'success');
+                
+            } catch (error) {
+                logMessage(`レポートエクスポートエラー: ${error.message}`, 'error');
+            }
+        }
+        
+        async function promptInstall() {
+            if (!window.pwaManager) {
+                logMessage('PWAManagerが利用できません', 'error');
+                return;
+            }
+            
+            try {
+                const result = await window.pwaManager.promptInstall();
+                
+                if (result) {
+                    logMessage('PWAインストールが受け入れられました', 'success');
+                } else {
+                    logMessage('PWAインストールが拒否されました', 'warning');
+                }
+                
+                // インストール状態を再確認
+                setTimeout(checkInstallationStatus, 1000);
+                
+            } catch (error) {
+                logMessage(`インストールプロンプトエラー: ${error.message}`, 'error');
+            }
+        }
+    </script>
+</body>
+</html>
