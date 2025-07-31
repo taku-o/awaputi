@@ -48,7 +48,7 @@
   - startEventStageFromSelection()メソッドを実装してイベントステージ開始処理
   - _Requirements: 8.1, 8.2_
 
-- [ ] 9. 季節イベントの具体的な設定を実装
+- [x] 9. 季節イベントの具体的な設定を実装
   - 春の桜ステージ設定を実装してcherryBlossomEffectとwindEffectの特別ルール
   - 夏の花火ステージ設定を実装してfireworksEffectとheatWaveの特別ルール
   - 秋の紅葉ステージ設定を実装してautumnLeavesEffectとwindyWeatherの特別ルール

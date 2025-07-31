@@ -127,7 +127,10 @@ export class EventStageManager {
                 specialRules: {
                     targetBubbles: 200,
                     timeLimit: 120000,
-                    fastSpawn: true
+                    fastSpawn: true,
+                    timeAttack: true,
+                    timeBonusMultiplier: 2.5,
+                    spawnRateMultiplier: 2.0
                 },
                 rewards: {
                     completion: { ap: 300 },
@@ -151,7 +154,10 @@ export class EventStageManager {
                 specialRules: {
                     startingHP: 50,
                     noPinkBubbles: true,
-                    increasingDifficulty: true
+                    increasingDifficulty: true,
+                    survivalMode: true,
+                    difficultyIncreaseRate: 0.08,
+                    damageOverTime: false
                 },
                 rewards: {
                     completion: { ap: 500 },
@@ -178,7 +184,13 @@ export class EventStageManager {
                 specialRules: {
                     allBubblesAvailable: true,
                     bonusRewards: true,
-                    specialEffects: true
+                    specialEffects: true,
+                    anniversaryBonus: 2.5,
+                    specialRewards: {
+                        multiplier: 3.0,
+                        bonusItems: ['anniversary_badge', 'golden_crown'],
+                        rarityBoost: 2.0
+                    }
                 },
                 rewards: {
                     completion: { ap: 1000 },
@@ -530,6 +542,9 @@ export class EventStageManager {
         
         // 季節イベント特別ルール
         this.applySeasonalEffects(event, specialRules);
+        
+        // 特別イベント特別ルール
+        this.applySpecialEventEffects(event, specialRules);
     }
 
     /**
@@ -742,6 +757,380 @@ export class EventStageManager {
             if (this.gameEngine.bubbleManager) {
                 this.gameEngine.bubbleManager.setGlobalSpeedMultiplier(0.9); // 10%スピードダウン
             }
+        }
+    }
+
+    /**
+     * 特別イベントの特別効果を適用
+     */
+    applySpecialEventEffects(event, specialRules) {
+        switch (event.type) {
+            case 'special':
+                this.applySpecialEventRules(event, specialRules);
+                break;
+            case 'challenge':
+                this.applyChallengeEventRules(event, specialRules);
+                break;
+            case 'collaboration':
+                this.applyCollaborationEventRules(event, specialRules);
+                break;
+            case 'community':
+                this.applyCommunityEventRules(event, specialRules);
+                break;
+        }
+    }
+    
+    /**
+     * 記念日・特別イベントのルールを適用
+     */
+    applySpecialEventRules(event, specialRules) {
+        // アニバーサリーボーナス
+        if (specialRules.anniversaryBonus) {
+            // 全ての泡にボーナススコア適用
+            if (this.gameEngine.scoreManager) {
+                this.gameEngine.scoreManager.setGlobalScoreMultiplier(specialRules.anniversaryBonus);
+            }
+            
+            // 特別な視覚効果
+            if (this.gameEngine.particleManager) {
+                this.gameEngine.particleManager.addSeasonalEffect('celebration', {
+                    particleCount: 35,
+                    colors: ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4'],
+                    sparkleEffect: true,
+                    confettiMode: true,
+                    duration: event.duration
+                });
+            }
+        }
+        
+        // 特別報酬
+        if (specialRules.specialRewards) {
+            // アニバーサリーイベントなどで特別な報酬を設定
+            this.activateSpecialRewardMode(event.id, specialRules.specialRewards);
+        }
+        
+        // 全泡種類利用可能
+        if (specialRules.allBubblesAvailable) {
+            if (this.gameEngine.bubbleManager) {
+                this.gameEngine.bubbleManager.enableAllBubbleTypes();
+            }
+        }
+        
+        // 特別エフェクト
+        if (specialRules.specialEffects) {
+            this.enableSpecialVisualEffects(event);
+        }
+        
+        // ボーナス報酬モード
+        if (specialRules.bonusRewards) {
+            this.activateBonusRewardMode(event.id);
+        }
+    }
+    
+    /**
+     * チャレンジイベントのルールを適用
+     */
+    applyChallengeEventRules(event, specialRules) {
+        // タイムアタック
+        if (specialRules.timeAttack) {
+            // 厳格な時間制限を設定
+            if (this.gameEngine.gameScene) {
+                this.gameEngine.gameScene.setStrictTimeLimit(specialRules.timeLimit || event.duration);
+                this.gameEngine.gameScene.enableTimeAttackMode();
+            }
+            
+            // 時間に応じたスコアボーナス
+            if (this.gameEngine.scoreManager) {
+                this.gameEngine.scoreManager.enableTimeBonus(specialRules.timeBonusMultiplier || 2.0);
+            }
+        }
+        
+        // サバイバルモード
+        if (specialRules.survivalMode) {
+            // 継続的なダメージまたは難易度増加
+            if (this.gameEngine.bubbleManager) {
+                this.gameEngine.bubbleManager.enableSurvivalMode({
+                    difficultyIncreaseRate: specialRules.difficultyIncreaseRate || 0.1,
+                    damageOverTime: specialRules.damageOverTime || false
+                });
+            }
+            
+            // サバイバル専用UI
+            if (this.gameEngine.uiManager) {
+                this.gameEngine.uiManager.enableSurvivalUI();
+            }
+        }
+        
+        // 高速スポーン
+        if (specialRules.fastSpawn) {
+            if (this.gameEngine.bubbleManager) {
+                this.gameEngine.bubbleManager.setGlobalSpawnRateMultiplier(
+                    specialRules.spawnRateMultiplier || 2.0
+                );
+            }
+        }
+        
+        // 目標泡数
+        if (specialRules.targetBubbles) {
+            if (this.gameEngine.gameScene) {
+                this.gameEngine.gameScene.setTargetBubbleCount(specialRules.targetBubbles);
+            }
+        }
+        
+        // 難易度増加
+        if (specialRules.increasingDifficulty) {
+            this.activateIncreasingSurvivalDifficulty(event.id);
+        }
+    }
+    
+    /**
+     * コラボレーションイベントのルールを適用
+     */
+    applyCollaborationEventRules(event, specialRules) {
+        // コラボテーマ
+        if (specialRules.collaborationTheme) {
+            // 特別なテーマ背景と音楽
+            if (this.gameEngine.renderer) {
+                this.gameEngine.renderer.setCollaborationTheme(specialRules.collaborationTheme);
+            }
+            
+            if (this.gameEngine.audioManager) {
+                this.gameEngine.audioManager.setCollaborationMusic(specialRules.collaborationTheme);
+            }
+        }
+        
+        // 限定コンテンツ
+        if (specialRules.exclusiveContent) {
+            // 限定泡タイプや特別アイテム
+            if (this.gameEngine.bubbleManager) {
+                this.gameEngine.bubbleManager.enableExclusiveContent(specialRules.exclusiveContent);
+            }
+            
+            // 限定UI要素
+            if (this.gameEngine.uiManager) {
+                this.gameEngine.uiManager.enableCollaborationUI(specialRules.exclusiveContent);
+            }
+        }
+        
+        // 特別キャラクター
+        if (specialRules.specialCharacters) {
+            this.activateSpecialCharacters(specialRules.specialCharacters);
+        }
+        
+        // コラボ限定エフェクト
+        if (specialRules.collaborationEffects) {
+            if (this.gameEngine.particleManager) {
+                this.gameEngine.particleManager.addCollaborationEffects(
+                    specialRules.collaborationEffects
+                );
+            }
+        }
+    }
+    
+    /**
+     * コミュニティイベントのルールを適用
+     */
+    applyCommunityEventRules(event, specialRules) {
+        // コミュニティ目標
+        if (specialRules.communityGoals) {
+            // グローバル進捗追跡
+            this.initializeCommunityGoals(event.id, specialRules.communityGoals);
+            
+            // 進捗表示UI
+            if (this.gameEngine.uiManager) {
+                this.gameEngine.uiManager.enableCommunityProgressUI(specialRules.communityGoals);
+            }
+        }
+        
+        // 共有報酬
+        if (specialRules.sharedRewards) {
+            // 参加者全員への報酬システム
+            this.initializeSharedRewardSystem(event.id, specialRules.sharedRewards);
+        }
+        
+        // 協力モード
+        if (specialRules.cooperativeMode) {
+            this.enableCooperativeMode(event.id, specialRules.cooperativeMode);
+        }
+        
+        // リアルタイム統計
+        if (specialRules.realTimeStats) {
+            this.enableRealTimeStatistics(event.id);
+        }
+        
+        // コミュニティチャット（将来実装）
+        if (specialRules.communityChat) {
+            // プレースホルダー：将来のチャット機能
+            console.log('Community chat feature will be implemented in future versions');
+        }
+    }
+
+    /**
+     * 特別報酬モードを有効化
+     */
+    activateSpecialRewardMode(eventId, rewardConfig) {
+        this.specialRewardModes = this.specialRewardModes || {};
+        this.specialRewardModes[eventId] = {
+            multiplier: rewardConfig.multiplier || 2.0,
+            bonusItems: rewardConfig.bonusItems || [],
+            rarityBoost: rewardConfig.rarityBoost || 1.5,
+            startTime: Date.now()
+        };
+    }
+    
+    /**
+     * 特別視覚効果を有効化
+     */
+    enableSpecialVisualEffects(event) {
+        if (this.gameEngine.particleManager) {
+            this.gameEngine.particleManager.addSeasonalEffect('special', {
+                particleCount: 25,
+                colors: ['#FFD700', '#FFA500', '#FF69B4', '#00CED1'],
+                glowEffect: true,
+                rotationSpeed: 2.0,
+                duration: event.duration
+            });
+        }
+        
+        if (this.gameEngine.renderer) {
+            this.gameEngine.renderer.enableSpecialEffects(event.id);
+        }
+    }
+    
+    /**
+     * ボーナス報酬モードを有効化
+     */
+    activateBonusRewardMode(eventId) {
+        this.bonusRewardModes = this.bonusRewardModes || {};
+        this.bonusRewardModes[eventId] = {
+            apMultiplier: 1.5,
+            itemDropRate: 2.0,
+            rareItemChance: 0.25,
+            startTime: Date.now()
+        };
+    }
+    
+    /**
+     * 増加するサバイバル難易度を有効化
+     */
+    activateIncreasingSurvivalDifficulty(eventId) {
+        this.survivalDifficultyModes = this.survivalDifficultyModes || {};
+        this.survivalDifficultyModes[eventId] = {
+            initialDifficulty: 1.0,
+            increaseRate: 0.05, // 5%ずつ増加
+            maxDifficulty: 3.0,
+            intervalMs: 30000, // 30秒ごと
+            startTime: Date.now()
+        };
+        
+        // 難易度増加タイマーを開始
+        const difficultyTimer = setInterval(() => {
+            const mode = this.survivalDifficultyModes[eventId];
+            if (!mode) {
+                clearInterval(difficultyTimer);
+                return;
+            }
+            
+            mode.initialDifficulty = Math.min(
+                mode.initialDifficulty + mode.increaseRate,
+                mode.maxDifficulty
+            );
+            
+            // バブルマネージャーに難易度を適用
+            if (this.gameEngine.bubbleManager) {
+                this.gameEngine.bubbleManager.setDifficultyMultiplier(mode.initialDifficulty);
+            }
+        }, this.survivalDifficultyModes[eventId].intervalMs);
+    }
+    
+    /**
+     * 特別キャラクターを有効化
+     */
+    activateSpecialCharacters(characters) {
+        if (this.gameEngine.characterManager) {
+            characters.forEach(character => {
+                this.gameEngine.characterManager.activateSpecialCharacter(character);
+            });
+        }
+    }
+    
+    /**
+     * コミュニティ目標を初期化
+     */
+    initializeCommunityGoals(eventId, goals) {
+        this.communityGoals = this.communityGoals || {};
+        this.communityGoals[eventId] = {
+            goals: goals.map(goal => ({
+                ...goal,
+                currentProgress: 0,
+                completed: false
+            })),
+            totalParticipants: 0,
+            startTime: Date.now()
+        };
+    }
+    
+    /**
+     * 共有報酬システムを初期化
+     */
+    initializeSharedRewardSystem(eventId, rewardConfig) {
+        this.sharedRewardSystems = this.sharedRewardSystems || {};
+        this.sharedRewardSystems[eventId] = {
+            baseReward: rewardConfig.baseReward || { ap: 100 },
+            participationBonus: rewardConfig.participationBonus || { ap: 50 },
+            milestoneRewards: rewardConfig.milestoneRewards || [],
+            distributionSchedule: rewardConfig.distributionSchedule || 'immediate'
+        };
+    }
+    
+    /**
+     * 協力モードを有効化
+     */
+    enableCooperativeMode(eventId, config) {
+        this.cooperativeModes = this.cooperativeModes || {};
+        this.cooperativeModes[eventId] = {
+            maxPlayers: config.maxPlayers || 10,
+            sharedScore: config.sharedScore || false,
+            teamBuffs: config.teamBuffs || [],
+            communicationEnabled: config.communicationEnabled || false
+        };
+    }
+    
+    /**
+     * リアルタイム統計を有効化
+     */
+    enableRealTimeStatistics(eventId) {
+        this.realTimeStats = this.realTimeStats || {};
+        this.realTimeStats[eventId] = {
+            participantCount: 0,
+            averageScore: 0,
+            topScores: [],
+            completionRate: 0,
+            updateInterval: 5000 // 5秒ごと更新
+        };
+        
+        // 統計更新タイマーを開始
+        const statsTimer = setInterval(() => {
+            this.updateRealTimeStatistics(eventId);
+        }, this.realTimeStats[eventId].updateInterval);
+        
+        // イベント終了時にタイマーをクリア
+        setTimeout(() => {
+            clearInterval(statsTimer);
+        }, this.eventStages[eventId]?.duration || 300000);
+    }
+    
+    /**
+     * リアルタイム統計を更新
+     */
+    updateRealTimeStatistics(eventId) {
+        if (!this.realTimeStats[eventId]) return;
+        
+        const eventStats = this.getDetailedEventStatistics().events[eventId];
+        if (eventStats) {
+            this.realTimeStats[eventId].participantCount = eventStats.totalParticipations;
+            this.realTimeStats[eventId].averageScore = eventStats.averageScore;
+            this.realTimeStats[eventId].completionRate = eventStats.completionRate;
         }
     }
     
