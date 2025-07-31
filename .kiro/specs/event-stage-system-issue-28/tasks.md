@@ -24,7 +24,7 @@
   - getEventManagementStatus()メソッドを実装して管理者向け状態情報取得
   - _Requirements: 7.1, 7.2, 7.3, 7.4_
 
-- [ ] 5. EventStageManagerの統計収集機能を強化
+- [x] 5. EventStageManagerの統計収集機能を強化
   - recordEventParticipation()メソッドを実装してイベント参加記録
   - getDetailedEventStatistics()メソッドを実装して詳細統計データ取得
   - exportEventData()メソッドを実装して統計データのエクスポート機能

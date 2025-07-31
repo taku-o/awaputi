@@ -11,6 +11,13 @@ export class StageSelectScene extends Scene {
         this.lockedStages = [];
         this.scrollOffset = 0;
         this.maxVisibleStages = 8;
+        
+        // イベント関連の状態
+        this.availableEvents = [];
+        this.selectedEventIndex = -1;
+        this.showingEvents = false;
+        this.eventScrollOffset = 0;
+        this.maxVisibleEvents = 4;
     }
     
     /**
@@ -18,8 +25,11 @@ export class StageSelectScene extends Scene {
      */
     enter() {
         this.updateStageList();
+        this.updateEventList();
         this.selectedStageIndex = 0;
         this.scrollOffset = 0;
+        this.selectedEventIndex = -1;
+        this.eventScrollOffset = 0;
     }
     
     /**
@@ -29,6 +39,17 @@ export class StageSelectScene extends Scene {
         const stageManager = this.gameEngine.stageManager;
         this.unlockedStages = stageManager.getUnlockedStages();
         this.lockedStages = stageManager.getLockedStages();
+    }
+
+    /**
+     * 利用可能なイベントリストを更新
+     */
+    updateEventList() {
+        if (this.gameEngine.eventStageManager) {
+            this.availableEvents = this.gameEngine.eventStageManager.getAvailableEvents();
+        } else {
+            this.availableEvents = [];
+        }
     }
     
     /**
@@ -60,7 +81,10 @@ export class StageSelectScene extends Scene {
         // プレイヤー情報
         this.renderPlayerInfo(context);
         
-        // ステージリスト
+        // イベントセクション
+        this.renderEventSection(context);
+        
+        // 通常ステージリスト
         this.renderStageList(context);
         
         // ショップボタン
@@ -90,16 +114,213 @@ export class StageSelectScene extends Scene {
         
         context.restore();
     }
+
+    /**
+     * イベント専用セクションを描画
+     */
+    renderEventSection(context) {
+        const canvas = this.gameEngine.canvas;
+        const sectionStartY = 120;
+        const sectionHeight = 200;
+        const sectionWidth = canvas.width - 40;
+        const sectionX = 20;
+        
+        // イベントセクションの背景
+        context.save();
+        context.fillStyle = 'rgba(255, 215, 0, 0.1)';
+        context.strokeStyle = '#FFD700';
+        context.lineWidth = 2;
+        context.fillRect(sectionX, sectionStartY, sectionWidth, sectionHeight);
+        context.strokeRect(sectionX, sectionStartY, sectionWidth, sectionHeight);
+        
+        // イベントセクションタイトル
+        context.fillStyle = '#FFD700';
+        context.font = 'bold 24px Arial';
+        context.textAlign = 'left';
+        context.textBaseline = 'top';
+        context.fillText('🎉 期間限定イベント', sectionX + 10, sectionStartY + 10);
+        
+        context.restore();
+        
+        // イベントがない場合のメッセージ
+        if (this.availableEvents.length === 0) {
+            context.save();
+            context.fillStyle = '#CCCCCC';
+            context.font = '18px Arial';
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            context.fillText('現在開催中のイベントはありません', 
+                canvas.width / 2, sectionStartY + sectionHeight / 2);
+            context.fillText('次回イベントをお楽しみに！', 
+                canvas.width / 2, sectionStartY + sectionHeight / 2 + 25);
+            context.restore();
+            return;
+        }
+        
+        // イベントアイテムを描画
+        const itemHeight = 40;
+        const itemSpacing = 5;
+        let currentY = sectionStartY + 50;
+        
+        this.availableEvents.forEach((event, index) => {
+            if (index < this.eventScrollOffset) return;
+            if (index >= this.eventScrollOffset + this.maxVisibleEvents) return;
+            if (currentY + itemHeight > sectionStartY + sectionHeight - 10) return;
+            
+            const isSelected = index === this.selectedEventIndex;
+            this.renderEventStageItem(context, event, sectionX + 10, currentY, 
+                sectionWidth - 20, itemHeight, isSelected);
+            currentY += itemHeight + itemSpacing;
+        });
+    }
+
+    /**
+     * イベントステージアイテムを描画
+     */
+    renderEventStageItem(context, event, x, y, width, height, isSelected) {
+        context.save();
+        
+        // アイテム背景
+        if (isSelected) {
+            context.fillStyle = 'rgba(255, 215, 0, 0.3)';
+            context.strokeStyle = '#FFD700';
+            context.lineWidth = 2;
+        } else {
+            context.fillStyle = 'rgba(255, 255, 255, 0.1)';
+            context.strokeStyle = '#888888';
+            context.lineWidth = 1;
+        }
+        
+        context.fillRect(x, y, width, height);
+        context.strokeRect(x, y, width, height);
+        
+        // イベントタイプアイコン
+        const iconSize = 24;
+        const iconX = x + 10;
+        const iconY = y + (height - iconSize) / 2;
+        
+        context.font = `${iconSize}px Arial`;
+        context.textAlign = 'left';
+        context.textBaseline = 'middle';
+        
+        // タイプに応じたアイコン
+        let icon = '🎪';
+        if (event.type === 'seasonal') {
+            if (event.season === 'spring') icon = '🌸';
+            else if (event.season === 'summer') icon = '🎆';
+            else if (event.season === 'autumn') icon = '🍂';
+            else if (event.season === 'winter') icon = '❄️';
+        } else if (event.type === 'special') {
+            icon = '⭐';
+        } else if (event.type === 'challenge') {
+            icon = '🏆';
+        }
+        
+        context.fillText(icon, iconX, iconY + iconSize / 2);
+        
+        // イベント名
+        const nameX = iconX + iconSize + 10;
+        const nameY = y + height / 2 - 5;
+        
+        context.fillStyle = isSelected ? '#FFD700' : '#FFFFFF';
+        context.font = 'bold 16px Arial';
+        context.textAlign = 'left';
+        context.textBaseline = 'middle';
+        context.fillText(event.name, nameX, nameY);
+        
+        // 残り時間表示
+        const timeRemaining = this.gameEngine.eventStageManager.getEventTimeRemaining(event.id);
+        if (timeRemaining > 0) {
+            this.renderEventTimer(context, timeRemaining, x + width - 120, y + height / 2 + 5, 110, 15);
+        }
+        
+        // 新規バッジ（最近開始されたイベント）
+        const now = Date.now();
+        const eventStartTime = event.schedule?.activatedAt || event.activatedAt;
+        if (eventStartTime && (now - eventStartTime) < 24 * 60 * 60 * 1000) { // 24時間以内
+            context.fillStyle = '#FF4444';
+            context.font = 'bold 12px Arial';
+            context.textAlign = 'right';
+            context.textBaseline = 'top';
+            context.fillText('NEW!', x + width - 10, y + 5);
+        }
+        
+        context.restore();
+    }
+
+    /**
+     * イベント残り時間を表示
+     */
+    renderEventTimer(context, timeRemaining, x, y, width, height) {
+        context.save();
+        
+        // 残り時間の計算
+        const hours = Math.floor(timeRemaining / (1000 * 60 * 60));
+        const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+        
+        let timeText = '';
+        let urgencyLevel = 'normal'; // normal, warning, critical
+        
+        if (hours > 24) {
+            const days = Math.floor(hours / 24);
+            timeText = `残り ${days}日`;
+        } else if (hours > 0) {
+            timeText = `残り ${hours}:${minutes.toString().padStart(2, '0')}`;
+            if (hours < 6) urgencyLevel = 'warning';
+        } else {
+            timeText = `残り ${minutes}:${seconds.toString().padStart(2, '0')}`;
+            urgencyLevel = 'critical';
+        }
+        
+        // 背景色（緊急度に応じて）
+        let bgColor, textColor;
+        switch (urgencyLevel) {
+            case 'critical':
+                bgColor = 'rgba(255, 68, 68, 0.8)';
+                textColor = '#FFFFFF';
+                break;
+            case 'warning':
+                bgColor = 'rgba(255, 165, 0, 0.8)';
+                textColor = '#FFFFFF';
+                break;
+            default:
+                bgColor = 'rgba(34, 197, 94, 0.8)';
+                textColor = '#FFFFFF';
+        }
+        
+        // タイマー背景
+        context.fillStyle = bgColor;
+        context.fillRect(x, y, width, height);
+        
+        // タイマーテキスト
+        context.fillStyle = textColor;
+        context.font = 'bold 12px Arial';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        context.fillText(timeText, x + width / 2, y + height / 2);
+        
+        context.restore();
+    }
     
     /**
      * ステージリストを描画
      */
     renderStageList(context) {
         const canvas = this.gameEngine.canvas;
-        const startY = 150;
+        const startY = 340; // イベントセクション分下にずらす
         const itemHeight = 60;
         const itemWidth = canvas.width - 40;
         const itemX = 20;
+        
+        // セクションタイトル
+        context.save();
+        context.fillStyle = '#FFFFFF';
+        context.font = 'bold 20px Arial';
+        context.textAlign = 'left';
+        context.textBaseline = 'top';
+        context.fillText('通常ステージ', itemX, startY - 30);
+        context.restore();
         
         // 開放済みステージ
         let currentY = startY;
@@ -107,7 +328,7 @@ export class StageSelectScene extends Scene {
             if (index < this.scrollOffset) return;
             if (index >= this.scrollOffset + this.maxVisibleStages) return;
             
-            const isSelected = index === this.selectedStageIndex;
+            const isSelected = index === this.selectedStageIndex && !this.showingEvents;
             this.renderStageItem(context, stage, itemX, currentY, itemWidth, itemHeight, isSelected, false);
             currentY += itemHeight + 10;
         });
@@ -118,7 +339,7 @@ export class StageSelectScene extends Scene {
             if (adjustedIndex < this.scrollOffset) return;
             if (adjustedIndex >= this.scrollOffset + this.maxVisibleStages) return;
             
-            const isSelected = adjustedIndex === this.selectedStageIndex;
+            const isSelected = adjustedIndex === this.selectedStageIndex && !this.showingEvents;
             this.renderStageItem(context, stage, itemX, currentY, itemWidth, itemHeight, isSelected, true);
             currentY += itemHeight + 10;
         });
