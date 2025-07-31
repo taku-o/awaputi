@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://bubblepop-game.com/</loc>
+    <lastmod>2025-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bubblepop-game.com/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://bubblepop-game.com/en/" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bubblepop-game.com/zh-cn/" />
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://bubblepop-game.com/zh-tw/" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bubblepop-game.com/ko/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bubblepop-game.com/" />
+  </url>
+  <url>
+    <loc>https://bubblepop-game.com/help/</loc>
+    <lastmod>2025-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bubblepop-game.com/help/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://bubblepop-game.com/en/help/" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bubblepop-game.com/zh-cn/help/" />
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://bubblepop-game.com/zh-tw/help/" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bubblepop-game.com/ko/help/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bubblepop-game.com/help/" />
+  </url>
+  <url>
+    <loc>https://bubblepop-game.com/help/tutorial/</loc>
+    <lastmod>2025-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bubblepop-game.com/help/gameplay/</loc>
+    <lastmod>2025-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bubblepop-game.com/help/scoring/</loc>
+    <lastmod>2025-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bubblepop-game.com/help/special-bubbles/</loc>
+    <lastmod>2025-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bubblepop-game.com/help/achievements/</loc>
+    <lastmod>2025-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bubblepop-game.com/help/settings/</loc>
+    <lastmod>2025-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bubblepop-game.com/en/</loc>
+    <lastmod>2025-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bubblepop-game.com/zh-cn/</loc>
+    <lastmod>2025-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bubblepop-game.com/zh-tw/</loc>
+    <lastmod>2025-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bubblepop-game.com/ko/</loc>
+    <lastmod>2025-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bubblepop-game.com/assets/screenshots/game-portrait.png</loc>
+    <lastmod>2025-07-31</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://bubblepop-game.com/assets/screenshots/game-landscape-1.png</loc>
+    <lastmod>2025-07-31</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://bubblepop-game.com/assets/social/og-image.png</loc>
+    <lastmod>2025-07-31</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://bubblepop-game.com/assets/icons/icon-512x512.png</loc>
+    <lastmod>2025-07-31</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+</urlset>
