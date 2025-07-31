@@ -610,7 +610,387 @@ export class EventStageManager {
     }
     
     /**
-     * イベント統計を取得
+     * イベント参加を記録
+     */
+    recordEventParticipation(eventId, playerId, participationData) {
+        const event = this.eventStages[eventId];
+        if (!event) {
+            console.error(`Event ${eventId} not found for participation recording`);
+            return false;
+        }
+        
+        try {
+            const participationRecord = {
+                id: `participation_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                eventId: eventId,
+                playerId: playerId || 'default_player',
+                startTime: participationData.startTime || Date.now(),
+                endTime: participationData.endTime || null,
+                completed: participationData.completed || false,
+                score: participationData.score || 0,
+                stats: {
+                    bubblesPopped: participationData.bubblesPopped || 0,
+                    specialBubblesPopped: participationData.specialBubblesPopped || 0,
+                    maxChain: participationData.maxChain || 0,
+                    timeRemaining: participationData.timeRemaining || 0,
+                    specialAchievements: participationData.specialAchievements || [],
+                    performanceRating: this.calculatePerformanceRating(participationData)
+                },
+                rewards: participationData.rewards || {},
+                sessionData: {
+                    userAgent: navigator.userAgent,
+                    timestamp: Date.now(),
+                    eventVersion: event.version || '1.0'
+                }
+            };
+            
+            // 詳細統計データを保存
+            this.saveParticipationRecord(participationRecord);
+            
+            // 既存の履歴も更新
+            const historyEntry = this.eventHistory.find(entry => 
+                entry.eventId === eventId && 
+                !entry.completed &&
+                Math.abs(entry.startTime - participationRecord.startTime) < 60000 // 1分以内
+            );
+            
+            if (historyEntry) {
+                Object.assign(historyEntry, {
+                    completed: participationRecord.completed,
+                    endTime: participationRecord.endTime,
+                    finalScore: participationRecord.score,
+                    stats: participationRecord.stats
+                });
+            } else {
+                // 新しい履歴エントリを作成
+                this.eventHistory.push({
+                    eventId: eventId,
+                    startTime: participationRecord.startTime,
+                    endTime: participationRecord.endTime,
+                    completed: participationRecord.completed,
+                    finalScore: participationRecord.score,
+                    stats: participationRecord.stats
+                });
+            }
+            
+            console.log(`Event participation recorded: ${event.name}`);
+            return participationRecord.id;
+            
+        } catch (error) {
+            console.error('Failed to record event participation:', error);
+            return false;
+        }
+    }
+    
+    /**
+     * パフォーマンス評価を計算
+     */
+    calculatePerformanceRating(data) {
+        let rating = 0;
+        let factors = 0;
+        
+        // スコア評価（0-40点）
+        if (data.score) {
+            rating += Math.min(40, data.score / 500); // 20000点で満点
+            factors++;
+        }
+        
+        // 完了評価（0-20点）
+        if (data.completed) {
+            rating += 20;
+        }
+        factors++;
+        
+        // チェーン評価（0-20点）
+        if (data.maxChain) {
+            rating += Math.min(20, data.maxChain * 2); // 10チェーンで満点
+            factors++;
+        }
+        
+        // 時間評価（0-20点）
+        if (data.timeRemaining && data.timeRemaining > 0) {
+            rating += Math.min(20, data.timeRemaining / 15000); // 5分残りで満点
+            factors++;
+        }
+        
+        return factors > 0 ? Math.round(rating / factors * 100) / 100 : 0;
+    }
+    
+    /**
+     * 参加記録を保存
+     */
+    saveParticipationRecord(record) {
+        try {
+            const key = 'bubblePop_eventParticipations';
+            const existing = JSON.parse(localStorage.getItem(key) || '[]');
+            existing.push(record);
+            
+            // 最大500件の参加記録を保持
+            if (existing.length > 500) {
+                existing.splice(0, existing.length - 500);
+            }
+            
+            localStorage.setItem(key, JSON.stringify(existing));
+        } catch (error) {
+            console.error('Failed to save participation record:', error);
+        }
+    }
+    
+    /**
+     * 詳細イベント統計を取得
+     */
+    getDetailedEventStatistics() {
+        const basicStats = this.getEventStatistics();
+        
+        // 詳細参加記録を取得
+        const participationRecords = this.getParticipationRecords();
+        
+        const detailedStats = {
+            ...basicStats,
+            
+            // 基本統計
+            totalParticipations: participationRecords.length,
+            uniqueEventsPlayed: new Set(participationRecords.map(r => r.eventId)).size,
+            averageScore: 0,
+            averagePerformanceRating: 0,
+            
+            // イベント別統計
+            eventBreakdown: {},
+            
+            // 時間別統計
+            playTimeAnalysis: {
+                totalPlayTime: 0,
+                averageSessionTime: 0,
+                longestSession: 0,
+                shortestSession: Number.MAX_SAFE_INTEGER
+            },
+            
+            // パフォーマンス統計
+            performanceAnalysis: {
+                bestPerformance: 0,
+                worstPerformance: 100,
+                consistencyScore: 0,
+                improvementTrend: 0
+            },
+            
+            // 実績統計
+            achievementAnalysis: {
+                totalSpecialAchievements: 0,
+                uniqueAchievements: new Set(),
+                achievementRate: 0
+            },
+            
+            // 期間別統計
+            periodAnalysis: {
+                last7Days: { participations: 0, completions: 0, totalScore: 0 },
+                last30Days: { participations: 0, completions: 0, totalScore: 0 },
+                allTime: { participations: 0, completions: 0, totalScore: 0 }
+            }
+        };
+        
+        if (participationRecords.length === 0) {
+            return detailedStats;
+        }
+        
+        // 詳細統計を計算
+        this.calculateDetailedStatistics(participationRecords, detailedStats);
+        
+        return detailedStats;
+    }
+    
+    /**
+     * 詳細統計を計算
+     */
+    calculateDetailedStatistics(records, stats) {
+        let totalScore = 0;
+        let totalRating = 0;
+        let totalPlayTime = 0;
+        let validSessions = 0;
+        
+        const now = Date.now();
+        const sevenDaysAgo = now - (7 * 24 * 60 * 60 * 1000);
+        const thirtyDaysAgo = now - (30 * 24 * 60 * 60 * 1000);
+        
+        records.forEach(record => {
+            // 基本統計
+            totalScore += record.score || 0;
+            totalRating += record.stats.performanceRating || 0;
+            
+            // セッション時間
+            if (record.endTime && record.startTime) {
+                const sessionTime = record.endTime - record.startTime;
+                totalPlayTime += sessionTime;
+                validSessions++;
+                
+                stats.playTimeAnalysis.longestSession = Math.max(
+                    stats.playTimeAnalysis.longestSession, 
+                    sessionTime
+                );
+                stats.playTimeAnalysis.shortestSession = Math.min(
+                    stats.playTimeAnalysis.shortestSession, 
+                    sessionTime
+                );
+            }
+            
+            // イベント別統計
+            if (!stats.eventBreakdown[record.eventId]) {
+                const event = this.eventStages[record.eventId];
+                stats.eventBreakdown[record.eventId] = {
+                    name: event?.name || record.eventId,
+                    participations: 0,
+                    completions: 0,
+                    totalScore: 0,
+                    averageScore: 0,
+                    bestScore: 0,
+                    averageRating: 0
+                };
+            }
+            
+            const eventStats = stats.eventBreakdown[record.eventId];
+            eventStats.participations++;
+            eventStats.totalScore += record.score || 0;
+            eventStats.bestScore = Math.max(eventStats.bestScore, record.score || 0);
+            
+            if (record.completed) {
+                eventStats.completions++;
+            }
+            
+            // パフォーマンス統計
+            const rating = record.stats.performanceRating || 0;
+            stats.performanceAnalysis.bestPerformance = Math.max(
+                stats.performanceAnalysis.bestPerformance, 
+                rating
+            );
+            stats.performanceAnalysis.worstPerformance = Math.min(
+                stats.performanceAnalysis.worstPerformance, 
+                rating
+            );
+            
+            // 実績統計
+            if (record.stats.specialAchievements) {
+                stats.achievementAnalysis.totalSpecialAchievements += record.stats.specialAchievements.length;
+                record.stats.specialAchievements.forEach(achievement => {
+                    stats.achievementAnalysis.uniqueAchievements.add(achievement);
+                });
+            }
+            
+            // 期間別統計
+            const recordTime = record.startTime;
+            stats.periodAnalysis.allTime.participations++;
+            stats.periodAnalysis.allTime.totalScore += record.score || 0;
+            if (record.completed) stats.periodAnalysis.allTime.completions++;
+            
+            if (recordTime >= sevenDaysAgo) {
+                stats.periodAnalysis.last7Days.participations++;
+                stats.periodAnalysis.last7Days.totalScore += record.score || 0;
+                if (record.completed) stats.periodAnalysis.last7Days.completions++;
+            }
+            
+            if (recordTime >= thirtyDaysAgo) {
+                stats.periodAnalysis.last30Days.participations++;
+                stats.periodAnalysis.last30Days.totalScore += record.score || 0;
+                if (record.completed) stats.periodAnalysis.last30Days.completions++;
+            }
+        });
+        
+        // 平均値計算
+        if (records.length > 0) {
+            stats.averageScore = Math.round(totalScore / records.length);
+            stats.averagePerformanceRating = Math.round(totalRating / records.length * 100) / 100;
+        }
+        
+        if (validSessions > 0) {
+            stats.playTimeAnalysis.totalPlayTime = totalPlayTime;
+            stats.playTimeAnalysis.averageSessionTime = Math.round(totalPlayTime / validSessions);
+        }
+        
+        // イベント別平均値計算
+        Object.values(stats.eventBreakdown).forEach(eventStats => {
+            if (eventStats.participations > 0) {
+                eventStats.averageScore = Math.round(eventStats.totalScore / eventStats.participations);
+            }
+        });
+        
+        // 実績統計の最終計算
+        stats.achievementAnalysis.uniqueAchievements = stats.achievementAnalysis.uniqueAchievements.size;
+        if (records.length > 0) {
+            stats.achievementAnalysis.achievementRate = Math.round(
+                (stats.achievementAnalysis.totalSpecialAchievements / records.length) * 100
+            ) / 100;
+        }
+    }
+    
+    /**
+     * 参加記録を取得
+     */
+    getParticipationRecords(limit = null) {
+        try {
+            const key = 'bubblePop_eventParticipations';
+            const records = JSON.parse(localStorage.getItem(key) || '[]');
+            
+            if (limit) {
+                return records.slice(-limit);
+            }
+            
+            return records;
+        } catch (error) {
+            console.error('Failed to get participation records:', error);
+            return [];
+        }
+    }
+    
+    /**
+     * イベントデータをエクスポート
+     */
+    exportEventData() {
+        try {
+            const exportData = {
+                timestamp: Date.now(),
+                version: '1.0',
+                eventStages: this.eventStages,
+                eventHistory: this.eventHistory,
+                activeEvents: Array.from(this.activeEvents.entries()),
+                participationRecords: this.getParticipationRecords(),
+                adminLogs: this.getAdminLogs(),
+                systemInfo: {
+                    userAgent: navigator.userAgent,
+                    sessionId: this.getSessionId(),
+                    lastSeasonalCheck: this.lastSeasonalCheck,
+                    lastNotificationCheck: this.lastNotificationCheck
+                }
+            };
+            
+            // JSON文字列に変換
+            const jsonString = JSON.stringify(exportData, null, 2);
+            
+            // Blobを作成してダウンロード用URLを生成
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            // ダウンロードリンクを作成
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `bubble-pop-event-data-${new Date().toISOString().split('T')[0]}.json`;
+            
+            // ダウンロードを実行
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // URLを解放
+            URL.revokeObjectURL(url);
+            
+            console.log('Event data exported successfully');
+            return true;
+            
+        } catch (error) {
+            console.error('Failed to export event data:', error);
+            return false;
+        }
+    }
+    
+    /**
+     * イベント統計を取得（レガシー互換性）
      */
     getEventStatistics() {
         const stats = {

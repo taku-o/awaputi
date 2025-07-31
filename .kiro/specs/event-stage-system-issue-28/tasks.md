@@ -18,7 +18,7 @@
   - イベント通知の表示スタイルとアニメーションを実装
   - _Requirements: 4.1, 4.2, 4.3, 4.4_
 
-- [ ] 4. EventStageManagerに管理者向けイベント制御機能を追加
+- [x] 4. EventStageManagerに管理者向けイベント制御機能を追加
   - adminActivateEvent()メソッドを実装して手動イベント有効化
   - adminDeactivateEvent()メソッドを実装して手動イベント無効化
   - getEventManagementStatus()メソッドを実装して管理者向け状態情報取得
