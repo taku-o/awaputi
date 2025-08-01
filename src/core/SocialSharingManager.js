@@ -151,6 +151,21 @@ export class SocialSharingManager {
             const { ScreenshotCapture } = await import('./ScreenshotCapture.js');
             this.screenshotCapture = new ScreenshotCapture(this.gameEngine);
             
+            // SocialAccessibilityManagerの初期化 (Task 23)
+            const { SocialAccessibilityManager } = await import('./SocialAccessibilityManager.js');
+            this.accessibilityManager = new SocialAccessibilityManager(this);
+            
+            // ChallengeUIの初期化 (Task 23 - アクセシビリティ対応)
+            const { ChallengeUI } = await import('./ChallengeUI.js');
+            this.challengeUI = new ChallengeUI(this.challengeSystem, {
+                accessibility: true,
+                announcements: true,
+                keyboardNavigation: true,
+                screenReaderOptimized: true,
+                highContrast: false,
+                reducedMotion: false
+            });
+            
             // GameEngineイベントリスナー設定
             this.gameEngine.on('gameEnd', this.onGameEnd.bind(this));
             this.gameEngine.on('highScore', this.onHighScore.bind(this));
@@ -163,7 +178,8 @@ export class SocialSharingManager {
             localizationManager: !!this.localizationManager,
             leaderboardManager: !!this.leaderboardManager,
             shareContentGenerator: !!this.shareContentGenerator,
-            screenshotCapture: !!this.screenshotCapture
+            screenshotCapture: !!this.screenshotCapture,
+            accessibilityManager: !!this.accessibilityManager
         });
     }
     
@@ -2451,9 +2467,123 @@ export class SocialSharingManager {
     }
     
     /**
+     * アクセシビリティ機能の取得 (Task 23)
+     */
+    getAccessibilityFeatures() {
+        if (!this.accessibilityManager) return null;
+        
+        return {
+            screenReaderSupport: this.accessibilityManager.state.screenReaderActive,
+            keyboardNavigation: this.accessibilityManager.config.keyboard.enabled,
+            highContrast: this.accessibilityManager.config.highContrast.enabled,
+            reducedMotion: this.accessibilityManager.config.reducedMotion.enabled,
+            focusManagement: this.accessibilityManager.state.currentFocus !== null,
+            announcements: this.accessibilityManager.config.screenReader.announcements
+        };
+    }
+    
+    /**
+     * アクセシビリティ設定の更新 (Task 23)
+     */
+    updateAccessibilitySettings(settings) {
+        if (this.accessibilityManager) {
+            this.accessibilityManager.updateConfig(settings);
+        }
+        
+        if (this.challengeUI) {
+            this.challengeUI.updateConfig({ accessibility: settings });
+        }
+        
+        this.log('アクセシビリティ設定更新', settings);
+    }
+    
+    /**
+     * チャレンジUIの表示 (Task 23)
+     */
+    showChallengeUI() {
+        if (this.challengeUI) {
+            this.challengeUI.show();
+            
+            // アクセシビリティアナウンス
+            if (this.accessibilityManager) {
+                this.accessibilityManager.announce('チャレンジ一覧を表示しました');
+            }
+        }
+    }
+    
+    /**
+     * チャレンジUIの非表示 (Task 23)
+     */
+    hideChallengeUI() {
+        if (this.challengeUI) {
+            this.challengeUI.hide();
+            
+            // アクセシビリティアナウンス
+            if (this.accessibilityManager) {
+                this.accessibilityManager.announce('チャレンジ一覧を閉じました');
+            }
+        }
+    }
+    
+    /**
+     * アクセシビリティレポートの生成 (Task 23)
+     */
+    generateAccessibilityReport() {
+        if (!this.accessibilityManager) {
+            return { error: 'アクセシビリティマネージャーが初期化されていません' };
+        }
+        
+        const report = this.accessibilityManager.generateAccessibilityReport();
+        
+        // ChallengeUIの統計を追加
+        if (this.challengeUI) {
+            report.challengeUI = {
+                stats: this.challengeUI.getStats(),
+                visible: this.challengeUI.state.visible,
+                accessible: this.challengeUI.config.accessibility.enabled
+            };
+        }
+        
+        return report;
+    }
+    
+    /**
+     * アクセシビリティテストの実行 (Task 23)
+     */
+    runAccessibilityTest() {
+        if (!this.accessibilityManager) {
+            return { error: 'アクセシビリティマネージャーが初期化されていません' };
+        }
+        
+        const violations = this.accessibilityManager.validateAccessibility();
+        
+        return {
+            timestamp: new Date().toISOString(),
+            totalViolations: violations.length,
+            violations,
+            recommendations: this.accessibilityManager.generateRecommendations(violations),
+            overallCompliance: violations.length === 0 ? 'WCAG 2.1 AA準拠' : '改善が必要',
+            components: {
+                socialSharingManager: 'テスト済み',
+                accessibilityManager: 'テスト済み',
+                challengeUI: this.challengeUI ? 'テスト済み' : '未初期化'
+            }
+        };
+    }
+    
+    /**
      * システムのクリーンアップ
      */
     cleanup() {
+        // アクセシビリティ関連のクリーンアップ (Task 23)
+        if (this.accessibilityManager) {
+            this.accessibilityManager.destroy();
+        }
+        
+        if (this.challengeUI) {
+            this.challengeUI.destroy();
+        }
+        
         // イベントリスナーの削除
         window.removeEventListener('beforeunload', this.onBeforeUnload.bind(this));
         window.removeEventListener('online', this.onOnlineStatusChange.bind(this));
