@@ -158,7 +158,7 @@
   - エラーログとデバッグ情報収集機能を実装
   - _要件: 6.4, 8.4_
 
-- [ ] 20. 単体テスト実装
+- [x] 20. 単体テスト実装
   - ShareContentGeneratorのテストスイートを作成
   - ScreenshotCaptureのテストスイートを作成
   - LeaderboardManagerのテストスイートを作成
