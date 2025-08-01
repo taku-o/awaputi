@@ -95,6 +95,46 @@ export class SettingsManager {
                 showDebugInfo: false,
                 animationSpeed: 1.0,
                 uiScale: 1.0
+            },
+            
+            // ソーシャル共有設定
+            social: {
+                enableSharing: true,
+                autoPromptHighScore: true,
+                autoPromptAchievements: true,
+                defaultPlatform: 'auto', // 'auto', 'twitter', 'facebook', 'native'
+                includeScreenshot: true,
+                screenshotQuality: 'high', // 'low', 'medium', 'high'
+                privacyLevel: 'public', // 'public', 'friends', 'private'
+                customMessage: '',
+                showWatermark: true
+            },
+            
+            // 通知設定
+            notifications: {
+                challenges: {
+                    enabled: true,
+                    newChallenge: true,
+                    challengeComplete: true,
+                    dailyReminder: true,
+                    weeklyReminder: true
+                },
+                achievements: {
+                    enabled: true,
+                    unlocked: true,
+                    progress: false,
+                    rare: true
+                },
+                leaderboard: {
+                    enabled: true,
+                    newRecord: true,
+                    rankChange: false
+                },
+                system: {
+                    enabled: true,
+                    updates: true,
+                    maintenance: true
+                }
             }
         };
     }
@@ -172,6 +212,31 @@ export class SettingsManager {
         
         // キーボードショートカット設定
         this._setupSettingsCategory('keyboard', defaultSettings.keyboardShortcuts, {});
+        
+        // ソーシャル共有設定
+        this._setupSettingsCategory('social', defaultSettings.social, {
+            enableSharing: { type: 'boolean' },
+            autoPromptHighScore: { type: 'boolean' },
+            autoPromptAchievements: { type: 'boolean' },
+            defaultPlatform: { 
+                type: 'string', 
+                validator: (value) => ['auto', 'twitter', 'facebook', 'native'].includes(value)
+            },
+            includeScreenshot: { type: 'boolean' },
+            screenshotQuality: { 
+                type: 'string', 
+                validator: (value) => ['low', 'medium', 'high'].includes(value)
+            },
+            privacyLevel: { 
+                type: 'string', 
+                validator: (value) => ['public', 'friends', 'private'].includes(value)
+            },
+            customMessage: { type: 'string' },
+            showWatermark: { type: 'boolean' }
+        });
+        
+        // 通知設定
+        this._setupSettingsCategory('notifications', defaultSettings.notifications, {});
     }
     
     /**

@@ -20,6 +20,7 @@ import { StageSelectScene } from '../scenes/StageSelectScene.js';
 import { GameScene } from '../scenes/GameScene.js';
 import { ShopScene } from '../scenes/ShopScene.js';
 import { UserInfoScene } from '../scenes/UserInfoScene.js';
+import { SettingsScene } from '../scenes/SettingsScene.js';
 import { HelpScene } from '../scenes/HelpScene.js';
 import { AudioManager } from '../audio/AudioManager.js';
 import { ParticleManager } from '../effects/ParticleManager.js';
@@ -601,6 +602,7 @@ export class GameEngine {
             const gameScene = new GameScene(this);
             const shopScene = new ShopScene(this);
             const userInfoScene = new UserInfoScene(this);
+            const settingsScene = new SettingsScene(this);
             const helpScene = new HelpScene(this);
             
             // シーンを登録
@@ -609,6 +611,7 @@ export class GameEngine {
             this.sceneManager.addScene('game', gameScene);
             this.sceneManager.addScene('shop', shopScene);
             this.sceneManager.addScene('userInfo', userInfoScene);
+            this.sceneManager.addScene('settings', settingsScene);
             this.sceneManager.addScene('help', helpScene);
             
             // データを読み込み
