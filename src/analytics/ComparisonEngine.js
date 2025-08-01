@@ -466,6 +466,644 @@ export class ComparisonEngine {
     }
 
     /**
+     * ステージ別比較分析を実行
+     * @param {Object} options - 比較オプション
+     * @returns {Promise<Object>} ステージ別比較結果
+     */
+    async compareByStage(options = {}) {
+        try {
+            const {
+                metrics = ['score', 'accuracy', 'playTime', 'completionRate'],
+                includeDetails = true,
+                period = 'month' // デフォルトで1ヶ月間のデータを使用
+            } = options;
+
+            // 現在のステージ別パフォーマンスを取得
+            const currentStageData = await this.getCurrentStagePerformance(period);
+            if (!currentStageData || Object.keys(currentStageData).length === 0) {
+                return {
+                    success: false,
+                    error: 'Current stage performance data is insufficient',
+                    message: '現在のステージ別パフォーマンスデータが不足しています'
+                };
+            }
+
+            // 過去のステージ別パフォーマンスを取得（比較対象期間）
+            const pastStageData = await this.getPastStagePerformance(period);
+
+            // ステージ別比較を計算
+            const stageComparisons = {};
+            const stageList = Object.keys(currentStageData);
+
+            for (const stageId of stageList) {
+                const currentStage = currentStageData[stageId];
+                const pastStage = pastStageData[stageId] || null;
+
+                stageComparisons[stageId] = {
+                    stageInfo: this.getStageInfo(stageId),
+                    current: currentStage,
+                    past: pastStage,
+                    comparison: pastStage ? 
+                        this.calculateStageComparison(currentStage, pastStage, metrics) :
+                        { available: false, message: 'このステージの過去データが不足しています' },
+                    difficulty: this.calculateStageDifficulty(currentStage),
+                    performance: this.assessStagePerformance(currentStage, metrics)
+                };
+            }
+
+            // 全体的なステージ別サマリーを生成
+            const summary = this.generateStageComparisonSummary(stageComparisons, metrics);
+
+            return {
+                success: true,
+                stageComparisons: stageComparisons,
+                summary: summary,
+                totalStages: stageList.length,
+                timestamp: Date.now(),
+                details: includeDetails ? this.generateStageAnalysisDetails(stageComparisons) : null
+            };
+
+        } catch (error) {
+            console.error('Stage comparison failed:', error);
+            return {
+                success: false,
+                error: error.message,
+                stageComparisons: {}
+            };
+        }
+    }
+
+    /**
+     * 現在のステージ別パフォーマンスを取得
+     * @param {string} period - データ取得期間
+     * @returns {Promise<Object>} ステージ別パフォーマンス
+     */
+    async getCurrentStagePerformance(period) {
+        const cacheKey = `current_stage_performance_${period}`;
+        const cached = this.getCachedData(cacheKey);
+        if (cached) return cached;
+
+        const periodMs = this.comparisonPeriods[period];
+        const endDate = new Date();
+        const startDate = new Date(endDate.getTime() - periodMs);
+
+        const sessionData = await this.storageManager.getData('sessions', {
+            range: {
+                lower: startDate.getTime(),
+                upper: endDate.getTime()
+            },
+            index: 'startTime'
+        });
+
+        if (sessionData.length === 0) {
+            return {};
+        }
+
+        // ステージ別にデータをグループ化
+        const stageGroups = new Map();
+        sessionData.forEach(session => {
+            const stageId = session.stageId || 'unknown';
+            if (!stageGroups.has(stageId)) {
+                stageGroups.set(stageId, []);
+            }
+            stageGroups.get(stageId).push(session);
+        });
+
+        // 各ステージのパフォーマンス指標を計算
+        const stagePerformance = {};
+        stageGroups.forEach((sessions, stageId) => {
+            if (sessions.length >= 1) { // 最低1セッション以上
+                stagePerformance[stageId] = this.calculateStageMetrics(sessions, stageId);
+            }
+        });
+
+        this.setCachedData(cacheKey, stagePerformance);
+        return stagePerformance;
+    }
+
+    /**
+     * 過去のステージ別パフォーマンスを取得
+     * @param {string} period - 比較期間
+     * @returns {Promise<Object>} 過去のステージ別パフォーマンス
+     */
+    async getPastStagePerformance(period) {
+        const cacheKey = `past_stage_performance_${period}`;
+        const cached = this.getCachedData(cacheKey);
+        if (cached) return cached;
+
+        const periodMs = this.comparisonPeriods[period];
+        const endDate = new Date(Date.now() - periodMs);
+        const startDate = new Date(endDate.getTime() - periodMs);
+
+        const sessionData = await this.storageManager.getData('sessions', {
+            range: {
+                lower: startDate.getTime(),
+                upper: endDate.getTime()
+            },
+            index: 'startTime'
+        });
+
+        if (sessionData.length === 0) {
+            return {};
+        }
+
+        // ステージ別にデータをグループ化
+        const stageGroups = new Map();
+        sessionData.forEach(session => {
+            const stageId = session.stageId || 'unknown';
+            if (!stageGroups.has(stageId)) {
+                stageGroups.set(stageId, []);
+            }
+            stageGroups.get(stageId).push(session);
+        });
+
+        // 各ステージのパフォーマンス指標を計算
+        const stagePerformance = {};
+        stageGroups.forEach((sessions, stageId) => {
+            if (sessions.length >= 1) {
+                stagePerformance[stageId] = this.calculateStageMetrics(sessions, stageId);
+            }
+        });
+
+        this.setCachedData(cacheKey, stagePerformance);
+        return stagePerformance;
+    }
+
+    /**
+     * ステージ別指標を計算
+     * @param {Array} sessions - セッションデータ
+     * @param {string} stageId - ステージID
+     * @returns {Object} ステージ指標
+     */
+    calculateStageMetrics(sessions, stageId) {
+        const baseMetrics = this.calculatePerformanceMetrics(sessions);
+        
+        // ステージ固有の追加指標
+        const stageSpecific = {
+            stageId: stageId,
+            attempts: sessions.length,
+            firstCompletionTime: this.findFirstCompletionTime(sessions),
+            bestScore: Math.max(...sessions.map(s => s.finalScore || 0)),
+            averageAttemptsToComplete: this.calculateAverageAttemptsToComplete(sessions),
+            consistencyScore: this.calculateConsistencyScore(sessions),
+            difficultyRating: this.estimateStageDifficulty(sessions)
+        };
+
+        return { ...baseMetrics, ...stageSpecific };
+    }
+
+    /**
+     * 最初のクリア時間を取得
+     * @param {Array} sessions - セッションデータ
+     * @returns {number|null} 最初のクリア時間
+     */
+    findFirstCompletionTime(sessions) {
+        const completedSessions = sessions
+            .filter(s => s.completed === true)
+            .sort((a, b) => a.startTime - b.startTime);
+        
+        return completedSessions.length > 0 ? completedSessions[0].startTime : null;
+    }
+
+    /**
+     * クリアまでの平均試行回数を計算
+     * @param {Array} sessions - セッションデータ
+     * @returns {number} 平均試行回数
+     */
+    calculateAverageAttemptsToComplete(sessions) {
+        const completedSessions = sessions.filter(s => s.completed === true);
+        if (completedSessions.length === 0) return sessions.length;
+
+        // 最初のクリアまでの試行回数を計算
+        const firstCompletion = completedSessions[0];
+        const attemptsToFirst = sessions
+            .filter(s => s.startTime <= firstCompletion.startTime).length;
+
+        return attemptsToFirst;
+    }
+
+    /**
+     * 一貫性スコアを計算（スコアのばらつきの逆数）
+     * @param {Array} sessions - セッションデータ
+     * @returns {number} 一貫性スコア（0-1、1が最も一貫している）
+     */
+    calculateConsistencyScore(sessions) {
+        const scores = sessions.map(s => s.finalScore || 0).filter(s => s > 0);
+        if (scores.length < 2) return 0;
+
+        const mean = scores.reduce((sum, s) => sum + s, 0) / scores.length;
+        const variance = scores.reduce((sum, s) => sum + Math.pow(s - mean, 2), 0) / scores.length;
+        const standardDeviation = Math.sqrt(variance);
+        
+        // 変動係数の逆数を一貫性スコアとする（正規化して0-1に）
+        const coefficientOfVariation = mean > 0 ? standardDeviation / mean : 1;
+        return Math.max(0, Math.min(1, 1 - coefficientOfVariation));
+    }
+
+    /**
+     * ステージ難易度を推定
+     * @param {Array} sessions - セッションデータ
+     * @returns {number} 難易度レーティング（1-10）
+     */
+    estimateStageDifficulty(sessions) {
+        const completionRate = sessions.filter(s => s.completed === true).length / sessions.length;
+        const averageScore = sessions.reduce((sum, s) => sum + (s.finalScore || 0), 0) / sessions.length;
+        const averagePlayTime = sessions.reduce((sum, s) => {
+            const duration = s.endTime && s.startTime ? 
+                (s.endTime - s.startTime) / 1000 : (s.duration || 0);
+            return sum + duration;
+        }, 0) / sessions.length;
+
+        // 難易度要因の重み付け計算
+        const completionFactor = (1 - completionRate) * 4; // 完了率が低いほど難しい
+        const timeFactor = Math.min(2, averagePlayTime / 60); // 時間が長いほど難しい
+        const scoreFactor = Math.max(0, (1000 - averageScore) / 200); // スコアが低いほど難しい
+
+        const difficulty = Math.min(10, Math.max(1, completionFactor + timeFactor + scoreFactor));
+        return Math.round(difficulty * 10) / 10; // 小数点1桁
+    }
+
+    /**
+     * ステージ情報を取得
+     * @param {string} stageId - ステージID
+     * @returns {Object} ステージ情報
+     */
+    getStageInfo(stageId) {
+        // ステージ名のマッピング（実際のゲーム設定に合わせて調整）
+        const stageNames = {
+            'tutorial': 'チュートリアル',
+            'stage1': 'ステージ1 - 基本',
+            'stage2': 'ステージ2 - 発展',
+            'stage3': 'ステージ3 - 挑戦',
+            'stage4': 'ステージ4 - 上級',
+            'stage5': 'ステージ5 - エキスパート',
+            'endless': 'エンドレスモード',
+            'timeattack': 'タイムアタック',
+            'awawa': 'アワアワモード'
+        };
+
+        return {
+            id: stageId,
+            name: stageNames[stageId] || `ステージ ${stageId}`,
+            category: this.categorizeStage(stageId)
+        };
+    }
+
+    /**
+     * ステージをカテゴリ分け
+     * @param {string} stageId - ステージID
+     * @returns {string} カテゴリ
+     */
+    categorizeStage(stageId) {
+        if (stageId === 'tutorial') return 'tutorial';
+        if (stageId.startsWith('stage')) return 'normal';
+        if (['endless', 'timeattack', 'awawa'].includes(stageId)) return 'special';
+        return 'other';
+    }
+
+    /**
+     * ステージ比較を計算
+     * @param {Object} current - 現在のステージデータ
+     * @param {Object} past - 過去のステージデータ
+     * @param {Array} metrics - 比較指標
+     * @returns {Object} ステージ比較結果
+     */
+    calculateStageComparison(current, past, metrics) {
+        const comparison = {
+            available: true,
+            improvements: 0,
+            declines: 0,
+            stable: 0,
+            metrics: {},
+            stageSpecific: {
+                attemptsChange: current.attempts - past.attempts,
+                consistencyChange: current.consistencyScore - past.consistencyScore,
+                bestScoreImprovement: current.bestScore - past.bestScore
+            }
+        };
+
+        // 基本指標の比較
+        metrics.forEach(metricKey => {
+            const metric = this.metrics[metricKey];
+            if (!metric) return;
+
+            const currentValue = current[metric.key] || 0;
+            const pastValue = past[metric.key] || 0;
+            
+            const change = currentValue - pastValue;
+            const changePercent = pastValue !== 0 ? (change / pastValue) * 100 : 0;
+            
+            let trend = 'stable';
+            if (Math.abs(changePercent) > 5) {
+                trend = change > 0 ? 'improved' : 'declined';
+            }
+
+            comparison.metrics[metricKey] = {
+                current: currentValue,
+                past: pastValue,
+                change: change,
+                changePercent: changePercent,
+                trend: trend,
+                displayCurrent: metric.format(currentValue),
+                displayPast: metric.format(pastValue),
+                displayChange: this.formatChange(change, changePercent, metric)
+            };
+
+            // 傾向カウント
+            if (trend === 'improved') comparison.improvements++;
+            else if (trend === 'declined') comparison.declines++;
+            else comparison.stable++;
+        });
+
+        return comparison;
+    }
+
+    /**
+     * ステージ難易度を計算
+     * @param {Object} stageData - ステージデータ
+     * @returns {Object} 難易度情報
+     */
+    calculateStageDifficulty(stageData) {
+        const difficulty = stageData.difficultyRating || 5;
+        let level, description;
+
+        if (difficulty <= 2) {
+            level = 'easy';
+            description = '簡単';
+        } else if (difficulty <= 4) {
+            level = 'normal';
+            description = '普通';
+        } else if (difficulty <= 6) {
+            level = 'medium';
+            description = 'やや難しい';
+        } else if (difficulty <= 8) {
+            level = 'hard';
+            description = '難しい';
+        } else {
+            level = 'very_hard';
+            description = 'とても難しい';
+        }
+
+        return {
+            rating: difficulty,
+            level: level,
+            description: description,
+            completionRate: stageData.completionRate || 0
+        };
+    }
+
+    /**
+     * ステージパフォーマンスを評価
+     * @param {Object} stageData - ステージデータ
+     * @param {Array} metrics - 評価指標
+     * @returns {Object} パフォーマンス評価
+     */
+    assessStagePerformance(stageData, metrics) {
+        const scores = [];
+        
+        // 各指標を0-100点で評価
+        if (stageData.completionRate !== undefined) {
+            scores.push(stageData.completionRate * 100);
+        }
+        if (stageData.averageAccuracy !== undefined) {
+            scores.push(stageData.averageAccuracy * 100);
+        }
+        if (stageData.consistencyScore !== undefined) {
+            scores.push(stageData.consistencyScore * 100);
+        }
+
+        const averageScore = scores.length > 0 ? 
+            scores.reduce((sum, s) => sum + s, 0) / scores.length : 50;
+
+        let grade, description;
+        if (averageScore >= 90) {
+            grade = 'S';
+            description = '優秀';
+        } else if (averageScore >= 80) {
+            grade = 'A';
+            description = '良好';
+        } else if (averageScore >= 70) {
+            grade = 'B';
+            description = '標準';
+        } else if (averageScore >= 60) {
+            grade = 'C';
+            description = '要改善';
+        } else {
+            grade = 'D';
+            description = '練習が必要';
+        }
+
+        return {
+            score: Math.round(averageScore),
+            grade: grade,
+            description: description,
+            strengths: this.identifyStageStrengths(stageData),
+            weaknesses: this.identifyStageWeaknesses(stageData)
+        };
+    }
+
+    /**
+     * ステージの強みを特定
+     * @param {Object} stageData - ステージデータ
+     * @returns {Array} 強み一覧
+     */
+    identifyStageStrengths(stageData) {
+        const strengths = [];
+        
+        if (stageData.completionRate >= 0.8) {
+            strengths.push('高いクリア率');
+        }
+        if (stageData.averageAccuracy >= 0.85) {
+            strengths.push('高い精度');
+        }
+        if (stageData.consistencyScore >= 0.7) {
+            strengths.push('安定したパフォーマンス');
+        }
+        if (stageData.averageAttemptsToComplete <= 3) {
+            strengths.push('素早いクリア');
+        }
+
+        return strengths;
+    }
+
+    /**
+     * ステージの弱みを特定
+     * @param {Object} stageData - ステージデータ
+     * @returns {Array} 弱み一覧
+     */
+    identifyStageWeaknesses(stageData) {
+        const weaknesses = [];
+        
+        if (stageData.completionRate < 0.5) {
+            weaknesses.push('低いクリア率');
+        }
+        if (stageData.averageAccuracy < 0.7) {
+            weaknesses.push('精度の低さ');
+        }
+        if (stageData.consistencyScore < 0.4) {
+            weaknesses.push('不安定なパフォーマンス');
+        }
+        if (stageData.averageAttemptsToComplete > 10) {
+            weaknesses.push('クリアまでの試行回数が多い');
+        }
+
+        return weaknesses;
+    }
+
+    /**
+     * ステージ比較サマリーを生成
+     * @param {Object} stageComparisons - ステージ比較結果
+     * @param {Array} metrics - 指標リスト
+     * @returns {Object} サマリー
+     */
+    generateStageComparisonSummary(stageComparisons, metrics) {
+        const stages = Object.values(stageComparisons);
+        const availableComparisons = stages.filter(s => s.comparison.available);
+        
+        if (availableComparisons.length === 0) {
+            return {
+                overall: 'insufficient_data',
+                message: 'ステージ別比較に十分なデータがありません。各ステージを複数回プレイしてから再度確認してください。',
+                strongestStages: [],
+                weakestStages: [],
+                improvingStages: [],
+                decliningStages: []
+            };
+        }
+
+        // 最も成績の良いステージと悪いステージを特定
+        const rankedStages = stages
+            .filter(s => s.performance.score > 0)
+            .sort((a, b) => b.performance.score - a.performance.score);
+
+        const strongestStages = rankedStages.slice(0, 3).map(s => ({
+            name: s.stageInfo.name,
+            grade: s.performance.grade,
+            score: s.performance.score
+        }));
+
+        const weakestStages = rankedStages.slice(-3).reverse().map(s => ({
+            name: s.stageInfo.name,
+            grade: s.performance.grade,
+            score: s.performance.score
+        }));
+
+        // 改善・悪化しているステージを特定
+        const improvingStages = availableComparisons
+            .filter(s => s.comparison.improvements > s.comparison.declines)
+            .map(s => ({
+                name: s.stageInfo.name,
+                improvements: s.comparison.improvements
+            }));
+
+        const decliningStages = availableComparisons
+            .filter(s => s.comparison.declines > s.comparison.improvements)
+            .map(s => ({
+                name: s.stageInfo.name,
+                declines: s.comparison.declines
+            }));
+
+        // 全体的な傾向を判定
+        let overall, message;
+        const totalImprovements = availableComparisons.reduce((sum, s) => sum + s.comparison.improvements, 0);
+        const totalDeclines = availableComparisons.reduce((sum, s) => sum + s.comparison.declines, 0);
+
+        if (totalImprovements > totalDeclines) {
+            overall = 'improving';
+            message = `全体的にステージパフォーマンスが向上しています！${improvingStages.length}個のステージで改善が見られます。`;
+        } else if (totalDeclines > totalImprovements) {
+            overall = 'declining';
+            message = `一部のステージで低下が見られます。${decliningStages.length}個のステージで注意が必要です。`;
+        } else {
+            overall = 'stable';
+            message = 'ステージパフォーマンスは安定しています。継続的な練習で更なる向上を目指しましょう。';
+        }
+
+        return {
+            overall: overall,
+            message: message,
+            totalStages: stages.length,
+            comparableStages: availableComparisons.length,
+            strongestStages: strongestStages,
+            weakestStages: weakestStages,
+            improvingStages: improvingStages,
+            decliningStages: decliningStages,
+            totalImprovements: totalImprovements,
+            totalDeclines: totalDeclines
+        };
+    }
+
+    /**
+     * ステージ分析詳細を生成
+     * @param {Object} stageComparisons - ステージ比較結果
+     * @returns {Object} 詳細分析
+     */
+    generateStageAnalysisDetails(stageComparisons) {
+        const analysis = {
+            categoryAnalysis: {},
+            recommendations: [],
+            focusAreas: [],
+            achievements: []
+        };
+
+        // カテゴリ別分析
+        const categories = { tutorial: [], normal: [], special: [], other: [] };
+        Object.values(stageComparisons).forEach(stage => {
+            const category = stage.stageInfo.category;
+            if (categories[category]) {
+                categories[category].push(stage);
+            }
+        });
+
+        Object.entries(categories).forEach(([category, stages]) => {
+            if (stages.length > 0) {
+                const avgScore = stages.reduce((sum, s) => sum + s.performance.score, 0) / stages.length;
+                const categoryName = {
+                    tutorial: 'チュートリアル',
+                    normal: '通常ステージ',
+                    special: '特別モード',
+                    other: 'その他'
+                }[category];
+
+                analysis.categoryAnalysis[category] = {
+                    name: categoryName,
+                    averageScore: Math.round(avgScore),
+                    stageCount: stages.length,
+                    performance: avgScore >= 80 ? 'excellent' : avgScore >= 60 ? 'good' : 'needs_improvement'
+                };
+            }
+        });
+
+        // 推奨事項の生成
+        const weakStages = Object.values(stageComparisons)
+            .filter(s => s.performance.score < 60)
+            .sort((a, b) => a.performance.score - b.performance.score);
+
+        if (weakStages.length > 0) {
+            analysis.recommendations.push(
+                `最も苦手な${weakStages[0].stageInfo.name}から重点的に練習することをお勧めします。`
+            );
+            analysis.focusAreas.push(weakStages[0].stageInfo.name);
+        }
+
+        const improvingStages = Object.values(stageComparisons)
+            .filter(s => s.comparison.available && s.comparison.improvements > s.comparison.declines);
+
+        if (improvingStages.length > 0) {
+            analysis.achievements.push(`${improvingStages.length}個のステージで改善が見られます。`);
+        }
+
+        const excellentStages = Object.values(stageComparisons)
+            .filter(s => s.performance.grade === 'S').length;
+
+        if (excellentStages > 0) {
+            analysis.achievements.push(`${excellentStages}個のステージでSランクを達成しています。`);
+        }
+
+        return analysis;
+    }
+
+    /**
      * ベンチマーク詳細分析を生成
      * @param {Object} comparison - 比較結果
      * @returns {Object} 詳細分析
@@ -523,6 +1161,564 @@ export class ComparisonEngine {
         }
 
         return analysis;
+    }
+
+    /**
+     * 改善提案を生成
+     * @param {Object} comparisonResult - 比較分析結果
+     * @param {Object} options - 提案オプション
+     * @returns {Object} 改善提案
+     */
+    generateImprovementSuggestions(comparisonResult, options = {}) {
+        const {
+            focusAreas = 3,
+            timeHorizon = 7, // 日数
+            difficultyPreference = 'balanced', // 'easy', 'balanced', 'challenging'
+            includeMotivationalElements = true
+        } = options;
+
+        const suggestions = {
+            planId: `improvement_plan_${Date.now()}`,
+            timestamp: Date.now(),
+            targetAreas: [],
+            actionPlan: [],
+            motivation: {},
+            timeline: timeHorizon,
+            expectedOutcomes: [],
+            followUpActions: []
+        };
+
+        // 比較結果から弱点を特定
+        const weakAreas = this.identifyWeakAreas(comparisonResult);
+        const strongAreas = this.identifyStrongAreas(comparisonResult);
+
+        // 重点改善エリアを選択
+        suggestions.targetAreas = weakAreas.slice(0, focusAreas).map(area => ({
+            metric: area.metric,
+            currentLevel: area.currentValue,
+            targetLevel: area.suggestedTarget,
+            priority: area.priority,
+            improvementPotential: area.improvementPotential
+        }));
+
+        // アクションプランを生成
+        suggestions.actionPlan = this.createActionPlan(
+            suggestions.targetAreas, 
+            strongAreas,
+            difficultyPreference,
+            timeHorizon
+        );
+
+        // 期待される成果を計算
+        suggestions.expectedOutcomes = this.calculateExpectedOutcomes(
+            suggestions.targetAreas,
+            timeHorizon
+        );
+
+        // フォローアップアクションを設定
+        suggestions.followUpActions = this.generateFollowUpActions(
+            suggestions.targetAreas,
+            timeHorizon
+        );
+
+        // モチベーション要素を追加
+        if (includeMotivationalElements) {
+            suggestions.motivation = this.generateMotivationalElements(
+                strongAreas,
+                suggestions.targetAreas,
+                comparisonResult
+            );
+        }
+
+        return suggestions;
+    }
+
+    /**
+     * 弱点エリアを特定
+     * @param {Object} comparisonResult - 比較結果
+     * @returns {Array} 弱点エリア
+     */
+    identifyWeakAreas(comparisonResult) {
+        const weakAreas = [];
+
+        // 過去データとの比較から弱点を特定
+        if (comparisonResult.pastComparison && comparisonResult.pastComparison.available) {
+            Object.entries(comparisonResult.pastComparison.metrics).forEach(([metricKey, metric]) => {
+                if (metric.trend === 'declined' && Math.abs(metric.changePercent) > 10) {
+                    weakAreas.push({
+                        metric: metricKey,
+                        type: 'declining',
+                        currentValue: metric.current,
+                        pastValue: metric.past,
+                        changePercent: metric.changePercent,
+                        priority: Math.abs(metric.changePercent) > 20 ? 'high' : 'medium',
+                        improvementPotential: Math.abs(metric.changePercent),
+                        suggestedTarget: metric.past * 1.1, // 過去の値より10%向上
+                        issue: '最近のパフォーマンスが低下しています',
+                        category: 'trend'
+                    });
+                }
+            });
+        }
+
+        // ベンチマーク比較から弱点を特定
+        if (comparisonResult.benchmarkComparison && comparisonResult.benchmarkComparison.available) {
+            Object.entries(comparisonResult.benchmarkComparison.metrics).forEach(([metricKey, metric]) => {
+                if (metric.performance === 'below_average' && metric.percentileRank < 25) {
+                    weakAreas.push({
+                        metric: metricKey,
+                        type: 'below_benchmark',
+                        currentValue: metric.current,
+                        benchmarkValue: metric.benchmarkMean,
+                        percentileRank: metric.percentileRank,
+                        priority: metric.percentileRank < 10 ? 'high' : 'medium',
+                        improvementPotential: Math.abs(metric.differencePercent),
+                        suggestedTarget: metric.benchmarkMean * 1.05, // ベンチマークより5%向上
+                        issue: 'この指標で平均を大きく下回っています',
+                        category: 'benchmark'
+                    });
+                }
+            });
+        }
+
+        // ステージ別比較から弱点を特定
+        if (comparisonResult.stageComparison && comparisonResult.stageComparison.stageComparisons) {
+            Object.entries(comparisonResult.stageComparison.stageComparisons).forEach(([stageId, stageData]) => {
+                if (stageData.performance && stageData.performance.grade === 'D') {
+                    const worstMetric = this.findWorstStageMetric(stageData);
+                    if (worstMetric) {
+                        weakAreas.push({
+                            metric: worstMetric.metric,
+                            type: 'stage_specific',
+                            stageId: stageId,
+                            stageName: stageData.stageInfo.name,
+                            currentValue: worstMetric.value,
+                            priority: 'medium',
+                            improvementPotential: 30, // ステージ固有の改善可能性
+                            suggestedTarget: worstMetric.value * 1.3,
+                            issue: `${stageData.stageInfo.name}で苦戦しています`,
+                            category: 'stage'
+                        });
+                    }
+                }
+            });
+        }
+
+        // 優先度とインパクトでソート
+        return weakAreas.sort((a, b) => {
+            const priorityWeight = { high: 3, medium: 2, low: 1 };
+            const priorityDiff = priorityWeight[b.priority] - priorityWeight[a.priority];
+            if (priorityDiff !== 0) return priorityDiff;
+            return b.improvementPotential - a.improvementPotential;
+        });
+    }
+
+    /**
+     * 強みエリアを特定
+     * @param {Object} comparisonResult - 比較結果
+     * @returns {Array} 強みエリア
+     */
+    identifyStrongAreas(comparisonResult) {
+        const strongAreas = [];
+
+        // 過去データとの比較から強みを特定
+        if (comparisonResult.pastComparison && comparisonResult.pastComparison.available) {
+            Object.entries(comparisonResult.pastComparison.metrics).forEach(([metricKey, metric]) => {
+                if (metric.trend === 'improved' && Math.abs(metric.changePercent) > 10) {
+                    strongAreas.push({
+                        metric: metricKey,
+                        type: 'improving',
+                        currentValue: metric.current,
+                        changePercent: metric.changePercent,
+                        category: 'trend'
+                    });
+                }
+            });
+        }
+
+        // ベンチマーク比較から強みを特定
+        if (comparisonResult.benchmarkComparison && comparisonResult.benchmarkComparison.available) {
+            Object.entries(comparisonResult.benchmarkComparison.metrics).forEach(([metricKey, metric]) => {
+                if (metric.performance === 'above_average' && metric.percentileRank > 75) {
+                    strongAreas.push({
+                        metric: metricKey,
+                        type: 'above_benchmark',
+                        currentValue: metric.current,
+                        percentileRank: metric.percentileRank,
+                        category: 'benchmark'
+                    });
+                }
+            });
+        }
+
+        return strongAreas;
+    }
+
+    /**
+     * ステージの最も弱い指標を特定
+     * @param {Object} stageData - ステージデータ
+     * @returns {Object|null} 最も弱い指標
+     */
+    findWorstStageMetric(stageData) {
+        if (!stageData.current) return null;
+
+        const metrics = [
+            { metric: 'completionRate', value: stageData.current.completionRate || 0 },
+            { metric: 'averageAccuracy', value: stageData.current.averageAccuracy || 0 },
+            { metric: 'consistencyScore', value: stageData.current.consistencyScore || 0 }
+        ];
+
+        return metrics.sort((a, b) => a.value - b.value)[0];
+    }
+
+    /**
+     * アクションプランを作成
+     * @param {Array} targetAreas - 対象エリア
+     * @param {Array} strongAreas - 強みエリア
+     * @param {string} difficultyPreference - 難易度設定
+     * @param {number} timeHorizon - 期間
+     * @returns {Array} アクションプラン
+     */
+    createActionPlan(targetAreas, strongAreas, difficultyPreference, timeHorizon) {
+        const actionPlan = [];
+
+        targetAreas.forEach((area, index) => {
+            const metricInfo = this.metrics[area.metric];
+            if (!metricInfo) return;
+
+            const actions = this.generateMetricSpecificActions(
+                area,
+                metricInfo,
+                difficultyPreference,
+                timeHorizon
+            );
+
+            actionPlan.push({
+                week: Math.floor(index / 2) + 1, // 2つのエリアずつ週ごとに集中
+                focus: metricInfo.displayName,
+                metric: area.metric,
+                currentLevel: area.currentLevel,
+                targetLevel: area.targetLevel,
+                actions: actions,
+                priority: area.priority,
+                estimatedEffort: this.estimateEffort(area, difficultyPreference),
+                expectedProgress: this.calculateWeeklyProgress(area, timeHorizon)
+            });
+        });
+
+        // 強みを活かすアクションも追加
+        if (strongAreas.length > 0) {
+            const leverageActions = this.generateLeverageActions(strongAreas);
+            actionPlan.push({
+                week: Math.ceil(targetAreas.length / 2) + 1,
+                focus: '強みの活用',
+                metric: 'overall',
+                actions: leverageActions,
+                priority: 'medium',
+                estimatedEffort: 'low',
+                description: '既存の強みを更に伸ばして全体的なパフォーマンス向上を図ります'
+            });
+        }
+
+        return actionPlan;
+    }
+
+    /**
+     * 指標固有のアクションを生成
+     * @param {Object} area - 対象エリア
+     * @param {Object} metricInfo - 指標情報
+     * @param {string} difficultyPreference - 難易度設定
+     * @param {number} timeHorizon - 期間
+     * @returns {Array} アクション
+     */
+    generateMetricSpecificActions(area, metricInfo, difficultyPreference, timeHorizon) {
+        const actionTemplates = {
+            score: [
+                { action: '高得点バブルの優先的な狙い', difficulty: 'easy', effectiveness: 'medium' },
+                { action: 'コンボ継続の練習', difficulty: 'medium', effectiveness: 'high' },
+                { action: '特殊バブルの効果的な活用', difficulty: 'challenging', effectiveness: 'high' }
+            ],
+            accuracy: [
+                { action: 'ゆっくり確実にクリックする練習', difficulty: 'easy', effectiveness: 'medium' },
+                { action: '画面の端から順番に処理する', difficulty: 'medium', effectiveness: 'medium' },
+                { action: '時間を意識しすぎない精度重視の練習', difficulty: 'easy', effectiveness: 'high' }
+            ],
+            playTime: [
+                { action: '短時間集中セッションの実施', difficulty: 'easy', effectiveness: 'medium' },
+                { action: '効率的なバブル処理パターンの習得', difficulty: 'medium', effectiveness: 'high' },
+                { action: 'タイムアタックモードでの練習', difficulty: 'challenging', effectiveness: 'high' }
+            ],
+            completionRate: [
+                { action: '簡単なステージでの確実なクリア', difficulty: 'easy', effectiveness: 'medium' },
+                { action: 'HP管理の意識向上', difficulty: 'medium', effectiveness: 'high' },
+                { action: '危険な状況での適切な判断練習', difficulty: 'challenging', effectiveness: 'high' }
+            ]
+        };
+
+        const templates = actionTemplates[area.metric] || [
+            { action: `${metricInfo.displayName}の基本練習`, difficulty: 'easy', effectiveness: 'medium' },
+            { action: `${metricInfo.displayName}の応用テクニック習得`, difficulty: 'medium', effectiveness: 'high' }
+        ];
+
+        // 難易度設定に基づいてアクションをフィルタ
+        const difficultyFilter = {
+            easy: ['easy'],
+            balanced: ['easy', 'medium'],
+            challenging: ['easy', 'medium', 'hard']
+        };
+
+        const allowedDifficulties = difficultyFilter[difficultyPreference] || difficultyFilter['balanced'];
+        const filteredTemplates = templates.filter(template => 
+            allowedDifficulties.includes(template.difficulty)
+        );
+
+        return filteredTemplates.map(template => ({
+            ...template,
+            timeframe: this.calculateActionTimeframe(template.difficulty, timeHorizon),
+            practiceFrequency: this.calculatePracticeFrequency(template.difficulty, difficultyPreference)
+        }));
+    }
+
+    /**
+     * 強みを活用するアクションを生成
+     * @param {Array} strongAreas - 強みエリア
+     * @returns {Array} 活用アクション
+     */
+    generateLeverageActions(strongAreas) {
+        const leverageActions = [];
+
+        strongAreas.forEach(area => {
+            const metricInfo = this.metrics[area.metric];
+            if (metricInfo) {
+                leverageActions.push({
+                    action: `${metricInfo.displayName}の強みを他の分野にも応用`,
+                    difficulty: 'medium',
+                    effectiveness: 'high',
+                    description: `現在得意な${metricInfo.displayName}のスキルを他の指標向上にも活用しましょう`,
+                    timeframe: '継続的',
+                    practiceFrequency: '日常的'
+                });
+            }
+        });
+
+        if (leverageActions.length === 0) {
+            leverageActions.push({
+                action: 'バランスの取れたスキル向上',
+                difficulty: 'medium',
+                effectiveness: 'medium',
+                description: '全ての指標をバランス良く向上させることを目指しましょう',
+                timeframe: '継続的',
+                practiceFrequency: '日常的'
+            });
+        }
+
+        return leverageActions;
+    }
+
+    /**
+     * 期待される成果を計算
+     * @param {Array} targetAreas - 対象エリア
+     * @param {number} timeHorizon - 期間
+     * @returns {Array} 期待成果
+     */
+    calculateExpectedOutcomes(targetAreas, timeHorizon) {
+        return targetAreas.map(area => {
+            const metricInfo = this.metrics[area.metric];
+            const improvementRate = this.calculateImprovementRate(area, timeHorizon);
+            
+            return {
+                metric: area.metric,
+                displayName: metricInfo ? metricInfo.displayName : area.metric,
+                currentValue: area.currentLevel,
+                expectedValue: area.currentLevel * (1 + improvementRate),
+                improvementPercent: improvementRate * 100,
+                timeframe: `${timeHorizon}日後`,
+                confidence: this.calculateConfidence(area, timeHorizon)
+            };
+        });
+    }
+
+    /**
+     * フォローアップアクションを生成
+     * @param {Array} targetAreas - 対象エリア
+     * @param {number} timeHorizon - 期間
+     * @returns {Array} フォローアップアクション
+     */
+    generateFollowUpActions(targetAreas, timeHorizon) {
+        const checkpoints = [];
+        
+        // 中間チェックポイント
+        const midPoint = Math.floor(timeHorizon / 2);
+        checkpoints.push({
+            day: midPoint,
+            action: 'progress_check',
+            title: '中間進捗確認',
+            description: '目標に向けた進捗を確認し、必要に応じて戦略を調整します',
+            tasks: [
+                '各指標の現在の値を測定',
+                '改善ペースの評価',
+                '困難な部分の特定',
+                '必要に応じてアクションプランの調整'
+            ]
+        });
+
+        // 最終評価
+        checkpoints.push({
+            day: timeHorizon,
+            action: 'final_evaluation',
+            title: '最終評価と次のステップ',
+            description: '改善結果を評価し、次の改善サイクルの計画を立てます',
+            tasks: [
+                '全指標の最終値測定',
+                '改善目標の達成度評価',
+                '成功要因と課題の分析',
+                '次の改善サイクルの目標設定'
+            ]
+        });
+
+        return checkpoints;
+    }
+
+    /**
+     * モチベーション要素を生成
+     * @param {Array} strongAreas - 強みエリア
+     * @param {Array} targetAreas - 対象エリア
+     * @param {Object} comparisonResult - 比較結果
+     * @returns {Object} モチベーション要素
+     */
+    generateMotivationalElements(strongAreas, targetAreas, comparisonResult) {
+        const motivation = {
+            achievements: [],
+            encouragement: [],
+            milestones: [],
+            rewards: []
+        };
+
+        // 既存の成果を強調
+        if (strongAreas.length > 0) {
+            motivation.achievements.push(
+                `${strongAreas.length}個の指標で優秀な成績を維持しています！`
+            );
+            
+            strongAreas.forEach(area => {
+                const metricInfo = this.metrics[area.metric];
+                if (metricInfo && area.percentileRank) {
+                    motivation.achievements.push(
+                        `${metricInfo.displayName}では上位${100 - area.percentileRank}%の成績です`
+                    );
+                }
+            });
+        }
+
+        // 励ましのメッセージ
+        if (targetAreas.length > 0) {
+            motivation.encouragement.push(
+                '改善の余地があるということは、成長のチャンスがまだたくさんあるということです！'
+            );
+            
+            const easiestTarget = targetAreas.find(area => area.priority !== 'high');
+            if (easiestTarget) {
+                const metricInfo = this.metrics[easiestTarget.metric];
+                if (metricInfo) {
+                    motivation.encouragement.push(
+                        `特に${metricInfo.displayName}は短期間で改善が期待できる分野です`
+                    );
+                }
+            }
+        }
+
+        // マイルストーン設定
+        targetAreas.forEach(area => {
+            const metricInfo = this.metrics[area.metric];
+            if (metricInfo) {
+                motivation.milestones.push({
+                    metric: area.metric,
+                    displayName: metricInfo.displayName,
+                    milestones: [
+                        {
+                            target: area.currentLevel * 1.1,
+                            description: `${metricInfo.displayName}が10%向上`
+                        },
+                        {
+                            target: area.suggestedTarget,
+                            description: `目標値（${metricInfo.format(area.suggestedTarget)}）達成`
+                        }
+                    ]
+                });
+            }
+        });
+
+        // 報酬提案
+        motivation.rewards = [
+            '小さな改善でも自分を褒めてあげましょう',
+            '目標達成時は好きなことをして祝いましょう',
+            '継続的な努力が最も価値のある成果です'
+        ];
+
+        return motivation;
+    }
+
+    /**
+     * ヘルパーメソッド群
+     */
+    estimateEffort(area, difficultyPreference) {
+        const baseEffort = { high: 'high', medium: 'medium', low: 'low' };
+        const difficultyMultiplier = { 
+            easy: 0.8, 
+            balanced: 1.0, 
+            challenging: 1.3 
+        };
+        
+        const effort = baseEffort[area.priority] || 'medium';
+        const multiplier = difficultyMultiplier[difficultyPreference] || 1.0;
+        
+        if (multiplier <= 0.8) return 'low';
+        if (multiplier >= 1.3) return 'high';
+        return effort;
+    }
+
+    calculateWeeklyProgress(area, timeHorizon) {
+        const totalImprovement = (area.suggestedTarget - area.currentLevel) / area.currentLevel;
+        const weeks = Math.ceil(timeHorizon / 7);
+        return totalImprovement / weeks;
+    }
+
+    calculateActionTimeframe(difficulty, timeHorizon) {
+        const timeframes = {
+            easy: Math.min(3, Math.floor(timeHorizon / 3)),
+            medium: Math.min(5, Math.floor(timeHorizon / 2)),
+            challenging: timeHorizon
+        };
+        return `${timeframes[difficulty] || timeHorizon}日間`;
+    }
+
+    calculatePracticeFrequency(difficulty, difficultyPreference) {
+        const frequencies = {
+            easy: { easy: '週2-3回', balanced: '週3-4回', challenging: '毎日' },
+            medium: { easy: '週3-4回', balanced: '週4-5回', challenging: '毎日' },
+            challenging: { easy: '週4-5回', balanced: '毎日', challenging: '1日2回' }
+        };
+        return frequencies[difficulty]?.[difficultyPreference] || '週3-4回';
+    }
+
+    calculateImprovementRate(area, timeHorizon) {
+        // 基本改善率（週当たり）
+        const baseRate = 0.05; // 5%
+        const priorityMultiplier = { high: 1.2, medium: 1.0, low: 0.8 };
+        const weeks = timeHorizon / 7;
+        
+        return baseRate * weeks * (priorityMultiplier[area.priority] || 1.0);
+    }
+
+    calculateConfidence(area, timeHorizon) {
+        // 信頼度は優先度、期間、改善可能性に基づく
+        let confidence = 0.7; // ベース信頼度 70%
+        
+        if (area.priority === 'high') confidence += 0.1;
+        if (timeHorizon >= 14) confidence += 0.1;
+        if (area.improvementPotential > 20) confidence += 0.1;
+        
+        return Math.min(0.95, confidence); // 最大95%
     }
 
     /**
