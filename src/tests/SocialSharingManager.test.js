@@ -70,6 +70,7 @@ describe('SocialSharingManager', () => {
             expect(socialSharingManager.statisticsManager).toBe(gameEngine.statisticsManager);
             expect(socialSharingManager.achievementManager).toBe(gameEngine.achievementManager);
             expect(socialSharingManager.localizationManager).toBe(gameEngine.localizationManager);
+            expect(socialSharingManager.shareContentGenerator).toBeDefined();
         });
         
         test('GameEngineイベントリスナーが設定される', async () => {
@@ -142,6 +143,8 @@ describe('SocialSharingManager', () => {
         });
         
         test('ハイスコア達成時の処理', async () => {
+            await socialSharingManager.initialize();
+            
             const scoreData = { 
                 score: 2000, 
                 stage: 'hard' 
@@ -152,9 +155,12 @@ describe('SocialSharingManager', () => {
             expect(result).toBeDefined();
             expect(result.type).toBe('score');
             expect(result.content.score).toBe(2000);
+            expect(result.content.message).toContain('2,000');
         });
         
         test('実績解除時の処理', async () => {
+            await socialSharingManager.initialize();
+            
             const achievementData = { 
                 id: 'first_100', 
                 name: '初回100点達成' 
@@ -165,6 +171,56 @@ describe('SocialSharingManager', () => {
             expect(result).toBeDefined();
             expect(result.type).toBe('achievement');
             expect(result.content.achievement).toBe(achievementData);
+            expect(result.content.message).toContain('初回100点達成');
+        });
+    });
+    
+    describe('ShareContentGenerator統合', () => {
+        beforeEach(async () => {
+            const { SocialSharingManager } = await import('../core/SocialSharingManager.js');
+            socialSharingManager = new SocialSharingManager(gameEngine);
+            await socialSharingManager.initialize();
+        });
+        
+        test('スコアメッセージが正しく生成される', async () => {
+            const scoreData = { score: 1500, stage: 'normal' };
+            const result = await socialSharingManager.promptShareScore(scoreData);
+            
+            expect(result.content.message).toContain('1,500');
+            expect(result.metadata.platform).toBeDefined();
+            expect(result.metadata.language).toBe('ja');
+        });
+        
+        test('実績メッセージが正しく生成される', async () => {
+            const achievementData = { 
+                id: 'combo_master', 
+                name: 'コンボマスター',
+                description: '10連続コンボ達成'
+            };
+            const result = await socialSharingManager.promptShareAchievement(achievementData);
+            
+            expect(result.content.message).toContain('コンボマスター');
+            expect(result.metadata.platform).toBeDefined();
+        });
+        
+        test('共有URLが正しく生成される', () => {
+            const scoreData = { score: 1000, stage: 'normal' };
+            const url = socialSharingManager.getShareUrl(scoreData);
+            
+            expect(url).toContain('score=1000');
+            expect(url).toContain('stage=normal');
+            expect(url).toContain('utm_source=social_share');
+        });
+        
+        test('ShareContentGeneratorエラー時のフォールバック', async () => {
+            // ShareContentGeneratorを無効化
+            socialSharingManager.shareContentGenerator = null;
+            
+            const scoreData = { score: 1000 };
+            const result = await socialSharingManager.promptShareScore(scoreData);
+            
+            expect(result.metadata.isFallback).toBe(true);
+            expect(result.content.message).toContain('1000点');
         });
     });
     

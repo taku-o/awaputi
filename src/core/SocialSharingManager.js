@@ -4,6 +4,7 @@
  */
 
 import { ErrorHandler } from '../utils/ErrorHandler.js';
+import { ShareContentGenerator } from './ShareContentGenerator.js';
 
 export class SocialSharingManager {
     constructor(gameEngine) {
@@ -87,6 +88,9 @@ export class SocialSharingManager {
             // LocalizationManagerとの連携
             this.localizationManager = this.gameEngine.localizationManager;
             
+            // ShareContentGeneratorの初期化
+            this.shareContentGenerator = new ShareContentGenerator(this.localizationManager);
+            
             // GameEngineイベントリスナー設定
             this.gameEngine.on('gameEnd', this.onGameEnd.bind(this));
             this.gameEngine.on('highScore', this.onHighScore.bind(this));
@@ -96,7 +100,8 @@ export class SocialSharingManager {
         this.log('システム連携設定完了', {
             statisticsManager: !!this.statisticsManager,
             achievementManager: !!this.achievementManager,
-            localizationManager: !!this.localizationManager
+            localizationManager: !!this.localizationManager,
+            shareContentGenerator: !!this.shareContentGenerator
         });
     }
     
@@ -209,47 +214,163 @@ export class SocialSharingManager {
      * スコア共有プロンプトの表示
      */
     async promptShareScore(scoreData) {
-        // TODO: Task 2で実装予定のShareContentGeneratorを使用
-        this.log('スコア共有プロンプト表示', scoreData);
-        
-        // 仮実装：基本的な共有データ生成
-        const shareData = {
-            type: 'score',
-            content: {
-                score: scoreData.score,
-                stage: scoreData.stage,
-                timestamp: Date.now()
-            },
-            metadata: {
-                gameVersion: '1.0.0',
-                platform: this.detectPlatform()
+        try {
+            this.log('スコア共有プロンプト表示', scoreData);
+            
+            if (!this.shareContentGenerator) {
+                throw new Error('ShareContentGeneratorが初期化されていません');
             }
-        };
-        
-        return shareData;
+            
+            // プラットフォームの検出
+            const platform = this.detectPlatform();
+            
+            // 共有メッセージの生成
+            const messageResult = this.shareContentGenerator.generateScoreMessage(
+                scoreData, 
+                platform,
+                { url: this.getShareUrl(scoreData) }
+            );
+            
+            // 共有データの構築
+            const shareData = {
+                type: 'score',
+                content: {
+                    score: scoreData.score,
+                    stage: scoreData.stage,
+                    message: messageResult.message,
+                    timestamp: Date.now()
+                },
+                metadata: {
+                    gameVersion: '1.0.0',
+                    platform: messageResult.platform,
+                    language: messageResult.language,
+                    generationTime: messageResult.metadata.generationTime
+                }
+            };
+            
+            // 統計の更新
+            if (this.statisticsManager) {
+                this.statisticsManager.recordSocialEvent('scoreSharePrompted', {
+                    score: scoreData.score,
+                    platform: messageResult.platform
+                });
+            }
+            
+            return shareData;
+            
+        } catch (error) {
+            this.handleError('SCORE_SHARE_PROMPT_FAILED', error, { scoreData });
+            
+            // フォールバック：基本的な共有データ
+            return {
+                type: 'score',
+                content: {
+                    score: scoreData.score,
+                    stage: scoreData.stage,
+                    message: `BubblePopで${scoreData.score}点を達成！`,
+                    timestamp: Date.now()
+                },
+                metadata: {
+                    gameVersion: '1.0.0',
+                    platform: this.detectPlatform(),
+                    isFallback: true
+                }
+            };
+        }
     }
     
     /**
      * 実績共有プロンプトの表示
      */
     async promptShareAchievement(achievementData) {
-        // TODO: Task 2で実装予定のShareContentGeneratorを使用
-        this.log('実績共有プロンプト表示', achievementData);
-        
-        // 仮実装：基本的な共有データ生成
-        const shareData = {
-            type: 'achievement',
-            content: {
-                achievement: achievementData,
-                timestamp: Date.now()
-            },
-            metadata: {
-                gameVersion: '1.0.0',
-                platform: this.detectPlatform()
+        try {
+            this.log('実績共有プロンプト表示', achievementData);
+            
+            if (!this.shareContentGenerator) {
+                throw new Error('ShareContentGeneratorが初期化されていません');
             }
-        };
+            
+            // プラットフォームの検出
+            const platform = this.detectPlatform();
+            
+            // 共有メッセージの生成
+            const messageResult = this.shareContentGenerator.generateAchievementMessage(
+                achievementData, 
+                platform,
+                { url: this.getShareUrl(achievementData) }
+            );
+            
+            // 共有データの構築
+            const shareData = {
+                type: 'achievement',
+                content: {
+                    achievement: achievementData,
+                    message: messageResult.message,
+                    timestamp: Date.now()
+                },
+                metadata: {
+                    gameVersion: '1.0.0',
+                    platform: messageResult.platform,
+                    language: messageResult.language,
+                    isRare: messageResult.metadata.isRare
+                }
+            };
+            
+            // 統計の更新
+            if (this.statisticsManager) {
+                this.statisticsManager.recordSocialEvent('achievementSharePrompted', {
+                    achievementId: achievementData.id,
+                    platform: messageResult.platform,
+                    isRare: messageResult.metadata.isRare
+                });
+            }
+            
+            return shareData;
+            
+        } catch (error) {
+            this.handleError('ACHIEVEMENT_SHARE_PROMPT_FAILED', error, { achievementData });
+            
+            // フォールバック：基本的な共有データ
+            return {
+                type: 'achievement',
+                content: {
+                    achievement: achievementData,
+                    message: `実績「${achievementData.name || '新しい実績'}」を解除しました！`,
+                    timestamp: Date.now()
+                },
+                metadata: {
+                    gameVersion: '1.0.0',
+                    platform: this.detectPlatform(),
+                    isFallback: true
+                }
+            };
+        }
+    }
+    
+    /**
+     * 共有用URLの生成
+     */
+    getShareUrl(data) {
+        const baseUrl = window.location.origin + window.location.pathname;
+        const params = new URLSearchParams();
         
-        return shareData;
+        // データタイプに応じたパラメータ追加
+        if (data.score) {
+            params.append('score', data.score);
+        }
+        if (data.stage) {
+            params.append('stage', data.stage);
+        }
+        if (data.id) {
+            params.append('achievement', data.id);
+        }
+        
+        // UTMパラメータの追加
+        params.append('utm_source', 'social_share');
+        params.append('utm_medium', 'social');
+        params.append('utm_campaign', 'game_share');
+        
+        return `${baseUrl}?${params.toString()}`;
     }
     
     /**
