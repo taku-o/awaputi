@@ -1217,6 +1217,26 @@ export class GameScene extends Scene {
         // データを保存
         this.gameEngine.playerData.save();
         
+        // リーダーボードにスコアを記録
+        if (this.gameEngine.leaderboardManager) {
+            try {
+                await this.gameEngine.leaderboardManager.recordScore(
+                    this.gameEngine.playerData.playerId || 'anonymous',
+                    this.gameEngine.playerData.username || 'プレイヤー',
+                    finalScore,
+                    currentStage?.id,
+                    {
+                        combo: this.gameEngine.scoreManager?.getMaxCombo() || 0,
+                        accuracy: this.calculateAccuracy(),
+                        duration: this.getGameTime(),
+                        bubbleTypes: this.getBubbleTypeStats()
+                    }
+                );
+            } catch (error) {
+                console.warn('[GameScene] リーダーボード記録エラー:', error);
+            }
+        }
+        
         // ゲーム終了データの準備
         const gameEndData = this.prepareGameEndData(finalScore, isNewHighScore, currentStage);
         
@@ -1460,6 +1480,29 @@ export class GameScene extends Scene {
      */
     updateLastShareTime() {
         this.saveShareSettings({ lastShareTime: Date.now() });
+    }
+
+    /**
+     * ゲーム精度を計算
+     */
+    calculateAccuracy() {
+        const totalClicks = this.gameEngine.scoreManager?.getTotalClicks() || 0;
+        const successfulClicks = this.gameEngine.scoreManager?.getSuccessfulClicks() || 0;
+        
+        if (totalClicks === 0) return 0;
+        return Math.round((successfulClicks / totalClicks) * 100);
+    }
+    
+    /**
+     * バブルタイプ別統計を取得
+     */
+    getBubbleTypeStats() {
+        const bubbleManager = this.gameEngine.bubbleManager;
+        if (!bubbleManager || !bubbleManager.getTypeStats) {
+            return {};
+        }
+        
+        return bubbleManager.getTypeStats();
     }
     
     /**

@@ -88,6 +88,9 @@ export class SocialSharingManager {
             // LocalizationManagerとの連携
             this.localizationManager = this.gameEngine.localizationManager;
             
+            // LeaderboardManagerとの連携
+            this.leaderboardManager = this.gameEngine.leaderboardManager;
+            
             // ShareContentGeneratorの初期化
             const { ShareContentGenerator } = await import('./ShareContentGenerator.js');
             this.shareContentGenerator = new ShareContentGenerator(this.localizationManager);
@@ -106,6 +109,7 @@ export class SocialSharingManager {
             statisticsManager: !!this.statisticsManager,
             achievementManager: !!this.achievementManager,
             localizationManager: !!this.localizationManager,
+            leaderboardManager: !!this.leaderboardManager,
             shareContentGenerator: !!this.shareContentGenerator,
             screenshotCapture: !!this.screenshotCapture
         });

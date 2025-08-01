@@ -48,6 +48,7 @@ import { AnimationManager } from '../effects/AnimationManager.js';
 import { getHelpManager } from './help/HelpManager.js';
 import { getSEOMonitor } from '../seo/SEOMonitor.js';
 import { SocialSharingManager } from './SocialSharingManager.js';
+import { LeaderboardManager } from './LeaderboardManager.js';
 
 /**
  * ゲームエンジンクラス - 統合版（パフォーマンス最適化 + 音響・視覚効果）
@@ -155,6 +156,9 @@ export class GameEngine {
         
         // ソーシャル機能システム（遅延初期化）
         this.socialSharingManager = null;
+        
+        // リーダーボードシステム
+        this.leaderboardManager = new LeaderboardManager(this);
         
         // ゲーム状態
         this.timeRemaining = 300000; // 5分
@@ -619,6 +623,9 @@ export class GameEngine {
                 
                 // ソーシャル機能システムの初期化
                 this.initializeSocialSharingManager();
+                
+                // リーダーボードシステムの初期化
+                await this.leaderboardManager.initialize();
             } catch (error) {
                 getErrorHandler().handleError(error, 'INITIALIZATION_ERROR', { component: 'additionalSystems' });
                 // フォールバック: 新システムなしで続行
