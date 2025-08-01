@@ -5,6 +5,7 @@
 
 import { ErrorHandler } from '../utils/ErrorHandler.js';
 import { ShareContentGenerator } from './ShareContentGenerator.js';
+import { socialErrorHandler } from './SocialErrorHandler.js';
 
 export class SocialSharingManager {
     constructor(gameEngine) {
@@ -12,6 +13,9 @@ export class SocialSharingManager {
         this.statisticsManager = null;
         this.achievementManager = null;
         this.localizationManager = null;
+        
+        // エラーハンドラーの設定
+        this.errorHandler = socialErrorHandler;
         
         // コンポーネント参照（後で初期化）
         this.shareContentGenerator = null;
@@ -46,6 +50,9 @@ export class SocialSharingManager {
             INVALID_DATA: 'INVALID_DATA'
         };
         
+        // 最後の操作（リトライ用）
+        this.lastOperation = null;
+        
         this.initialize();
     }
     
@@ -55,6 +62,9 @@ export class SocialSharingManager {
     async initialize() {
         try {
             this.log('SocialSharingManager: 初期化開始');
+            
+            // エラーハンドラーの設定
+            this.setupErrorHandler();
             
             // 既存システムとの連携設定
             await this.setupSystemIntegration();
@@ -71,6 +81,48 @@ export class SocialSharingManager {
             this.handleError('INITIALIZATION_FAILED', error, {
                 context: 'SocialSharingManager.initialize'
             });
+        }
+    }
+    
+    /**
+     * エラーハンドラーの設定 (Task 19)
+     */
+    setupErrorHandler() {
+        // エラー通知コールバックの登録
+        this.errorHandler.addErrorCallback((errorInfo) => {
+            // リトライアクションの処理
+            if (errorInfo.action === 'retry') {
+                this.handleRetryAction(errorInfo);
+            }
+            
+            // 統計の記録
+            if (this.statisticsManager) {
+                this.statisticsManager.recordSocialEvent('error', {
+                    errorType: errorInfo.type,
+                    component: errorInfo.component,
+                    severity: errorInfo.category.severity,
+                    recovered: errorInfo.recovered || false
+                });
+            }
+        });
+        
+        // デバッグモードの設定
+        const debugMode = this.settings.debugMode || false;
+        this.errorHandler.setDebugMode(debugMode);
+    }
+    
+    /**
+     * リトライアクションの処理
+     */
+    handleRetryAction(errorInfo) {
+        // 最後の操作を再試行
+        if (this.lastOperation) {
+            const { method, args } = this.lastOperation;
+            if (this[method] && typeof this[method] === 'function') {
+                this[method](...args).catch(error => {
+                    this.log('リトライ失敗', error, 'error');
+                });
+            }
         }
     }
     
@@ -1488,6 +1540,9 @@ export class SocialSharingManager {
      */
     async share(shareData, options = {}) {
         try {
+            // 最後の操作を記録（リトライ用）
+            this.lastOperation = { method: 'share', args: [shareData, options] };
+            
             const startTime = performance.now();
             
             // プラットフォームの検出
@@ -2177,38 +2232,37 @@ export class SocialSharingManager {
     }
     
     /**
-     * エラーハンドリング
+     * エラーハンドリング (Task 19)
      */
-    handleError(type, error, context = {}) {
-        const errorInfo = {
-            type,
-            error: error.message || error,
-            context,
-            timestamp: Date.now(),
-            userAgent: navigator.userAgent
-        };
+    async handleError(type, error, context = {}) {
+        // 新しいエラーハンドラーを使用
+        const result = await this.errorHandler.handleError(
+            type, 
+            error, 
+            context, 
+            'SocialSharingManager'
+        );
         
         // パフォーマンス統計の更新
         this.performanceStats.failedShares++;
         
-        // ErrorHandlerユーティリティの使用
-        if (ErrorHandler) {
-            ErrorHandler.handleError(error, 'SocialSharingManager', context);
+        // 復旧成功した場合
+        if (result.recovered) {
+            this.log('エラーから復旧しました', { type, recovered: true });
+            
+            // 復旧後のリトライが必要な場合のコールバック
+            if (context.retryCallback && typeof context.retryCallback === 'function') {
+                try {
+                    await context.retryCallback();
+                } catch (retryError) {
+                    this.log('リトライ失敗', retryError, 'error');
+                }
+            }
         }
         
-        // ローカルログの記録
-        this.log('エラー発生', errorInfo, 'error');
-        
-        // ユーザーフレンドリーなエラー表示（必要に応じて）
-        this.showUserError(type, context);
+        return result;
     }
     
-    /**
-     * ユーザー向けエラー表示
-     */
-    showUserError(errorType, context) {
-        // TODO: ユーザーフレンドリーなエラーメッセージの表示
-        // 現在は基本的なアラートで代替
         switch (errorType) {
             case this.errorTypes.WEB_SHARE_NOT_SUPPORTED:
                 console.warn('このブラウザでは共有機能がサポートされていません');
@@ -2296,10 +2350,12 @@ export class SocialSharingManager {
     }
     
     /**
-     * デバッグ情報の取得
+     * デバッグ情報の取得 (Task 19.4)
      */
     getDebugInfo() {
         return {
+            version: '1.0.0',
+            timestamp: new Date().toISOString(),
             settings: this.settings,
             performanceStats: this.getPerformanceStats(),
             systemIntegration: {
@@ -2308,10 +2364,90 @@ export class SocialSharingManager {
                 achievementManager: !!this.achievementManager,
                 localizationManager: !!this.localizationManager
             },
+            components: {
+                shareContentGenerator: !!this.shareContentGenerator,
+                screenshotCapture: !!this.screenshotCapture,
+                leaderboardManager: !!this.leaderboardManager,
+                challengeSystem: !!this.challengeSystem
+            },
+            lastOperation: this.lastOperation,
+            errorStatistics: this.errorHandler.getErrorStatistics(),
+            memoryUsage: this.getMemoryInfo(),
             platform: this.detectPlatform(),
             onlineStatus: navigator.onLine,
-            userAgent: navigator.userAgent
+            userAgent: navigator.userAgent,
+            screenResolution: `${screen.width}x${screen.height}`,
+            windowSize: `${window.innerWidth}x${window.innerHeight}`,
+            language: navigator.language,
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
         };
+    }
+    
+    /**
+     * メモリ情報の取得
+     */
+    getMemoryInfo() {
+        if (performance.memory) {
+            return {
+                usedJSHeapSize: Math.round(performance.memory.usedJSHeapSize / 1048576) + 'MB',
+                totalJSHeapSize: Math.round(performance.memory.totalJSHeapSize / 1048576) + 'MB',
+                jsHeapSizeLimit: Math.round(performance.memory.jsHeapSizeLimit / 1048576) + 'MB'
+            };
+        }
+        return null;
+    }
+    
+    /**
+     * エラーレポートの取得 (Task 19.4)
+     */
+    getErrorReport() {
+        return {
+            generated: new Date().toISOString(),
+            system: this.getDebugInfo(),
+            errorHistory: this.errorHandler.getErrorHistory(),
+            errorStatistics: this.errorHandler.getErrorStatistics()
+        };
+    }
+    
+    /**
+     * エラーレポートのエクスポート (Task 19.4)
+     */
+    exportErrorReport() {
+        const report = this.getErrorReport();
+        
+        const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `social-sharing-error-report-${Date.now()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        
+        this.log('エラーレポートをエクスポートしました');
+    }
+    
+    /**
+     * デバッグモードの設定 (Task 19.4)
+     */
+    setDebugMode(enabled) {
+        this.settings.debugMode = enabled;
+        this.errorHandler.setDebugMode(enabled);
+        this.saveSettings();
+        
+        if (enabled) {
+            console.log('[SocialSharingManager] デバッグモード有効化');
+            console.log('Debug Info:', this.getDebugInfo());
+        } else {
+            console.log('[SocialSharingManager] デバッグモード無効化');
+        }
+    }
+    
+    /**
+     * エラー履歴のクリア (Task 19.4)
+     */
+    clearErrorHistory() {
+        this.errorHandler.clearErrorHistory();
+        this.log('エラー履歴をクリアしました');
     }
     
     /**
