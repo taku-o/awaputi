@@ -114,6 +114,418 @@ export class ComparisonEngine {
     }
 
     /**
+     * ベンチマーク比較分析を実行
+     * @param {Object} options - 比較オプション
+     * @returns {Promise<Object>} ベンチマーク比較結果
+     */
+    async compareWithBenchmark(options = {}) {
+        try {
+            const {
+                metrics = ['score', 'accuracy', 'playTime'],
+                includeDetails = true,
+                benchmarkPeriod = 'quarter' // デフォルトで3ヶ月間のデータを使用
+            } = options;
+
+            const currentData = await this.getCurrentPerformance();
+            if (!currentData || currentData.sessionCount === 0) {
+                return {
+                    success: false,
+                    error: 'Current performance data is insufficient',
+                    message: '現在のパフォーマンスデータが不足しています'
+                };
+            }
+
+            const benchmarkData = await this.getBenchmarkData(benchmarkPeriod);
+            if (!benchmarkData || Object.keys(benchmarkData).length === 0) {
+                return {
+                    success: false,
+                    error: 'Benchmark data is insufficient',
+                    message: 'ベンチマークデータが不足しています'
+                };
+            }
+
+            const comparison = this.calculateBenchmarkComparison(
+                currentData, 
+                benchmarkData, 
+                metrics
+            );
+
+            const summary = this.generateBenchmarkSummary(comparison, metrics);
+
+            return {
+                success: true,
+                current: currentData,
+                benchmark: benchmarkData,
+                comparison: comparison,
+                summary: summary,
+                timestamp: Date.now(),
+                details: includeDetails ? this.generateBenchmarkAnalysis(comparison) : null
+            };
+
+        } catch (error) {
+            console.error('Benchmark comparison failed:', error);
+            return {
+                success: false,
+                error: error.message,
+                comparison: {}
+            };
+        }
+    }
+
+    /**
+     * ベンチマークデータを取得（匿名化された全プレイヤー平均値）
+     * @param {string} period - データ収集期間
+     * @returns {Promise<Object>} ベンチマークデータ
+     */
+    async getBenchmarkData(period = 'quarter') {
+        const cacheKey = `benchmark_data_${period}`;
+        const cached = this.getCachedData(cacheKey);
+        if (cached) return cached;
+
+        const periodMs = this.comparisonPeriods[period];
+        const endDate = new Date();
+        const startDate = new Date(endDate.getTime() - periodMs);
+
+        // 全プレイヤーのセッションデータを取得（匿名化）
+        const allSessionData = await this.storageManager.getData('sessions', {
+            range: {
+                lower: startDate.getTime(),
+                upper: endDate.getTime()
+            },
+            index: 'startTime'
+        });
+
+        if (allSessionData.length === 0) {
+            return null;
+        }
+
+        // プレイヤー別にデータをグループ化（匿名化）
+        const playerData = new Map();
+        allSessionData.forEach(session => {
+            // プレイヤーIDは匿名化されたハッシュとして扱う
+            const anonymizedPlayerId = this.anonymizePlayerId(session.playerId || 'default');
+            if (!playerData.has(anonymizedPlayerId)) {
+                playerData.set(anonymizedPlayerId, []);
+            }
+            playerData.get(anonymizedPlayerId).push(session);
+        });
+
+        // 各プレイヤーのパフォーマンス指標を計算
+        const playerMetrics = [];
+        playerData.forEach((sessions, playerId) => {
+            const metrics = this.calculatePerformanceMetrics(sessions);
+            if (metrics.sessionCount >= 3) { // 最低3セッション以上のプレイヤーのみ
+                playerMetrics.push({
+                    playerId: playerId, // 匿名化ID
+                    ...metrics
+                });
+            }
+        });
+
+        if (playerMetrics.length === 0) {
+            return null;
+        }
+
+        // 全プレイヤーの平均値を計算
+        const benchmarkData = this.calculateBenchmarkMetrics(playerMetrics);
+        this.setCachedData(cacheKey, benchmarkData);
+        
+        return benchmarkData;
+    }
+
+    /**
+     * プレイヤーIDを匿名化
+     * @param {string} playerId - 元のプレイヤーID
+     * @returns {string} 匿名化されたID
+     */
+    anonymizePlayerId(playerId) {
+        // 簡単なハッシュ関数（本番では暗号学的ハッシュを使用）
+        let hash = 0;
+        for (let i = 0; i < playerId.length; i++) {
+            const char = playerId.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash; // 32bit整数に変換
+        }
+        return `player_${Math.abs(hash)}`;
+    }
+
+    /**
+     * ベンチマーク指標を計算
+     * @param {Array} playerMetrics - プレイヤー指標の配列
+     * @returns {Object} ベンチマーク指標
+     */
+    calculateBenchmarkMetrics(playerMetrics) {
+        const totalPlayers = playerMetrics.length;
+        
+        // 各指標の統計値を計算
+        const metrics = ['averageScore', 'averageAccuracy', 'averagePlayTime', 'completionRate', 'maxCombo'];
+        const benchmark = {
+            totalPlayers: totalPlayers,
+            dataQuality: this.assessBenchmarkDataQuality(playerMetrics)
+        };
+
+        metrics.forEach(metric => {
+            const values = playerMetrics.map(p => p[metric] || 0).filter(v => !isNaN(v));
+            if (values.length > 0) {
+                values.sort((a, b) => a - b);
+                
+                benchmark[metric] = {
+                    mean: values.reduce((sum, v) => sum + v, 0) / values.length,
+                    median: values[Math.floor(values.length / 2)],
+                    percentile25: values[Math.floor(values.length * 0.25)],
+                    percentile75: values[Math.floor(values.length * 0.75)],
+                    min: values[0],
+                    max: values[values.length - 1],
+                    standardDeviation: this.calculateStandardDeviation(values)
+                };
+            }
+        });
+
+        return benchmark;
+    }
+
+    /**
+     * ベンチマークデータの品質を評価
+     * @param {Array} playerMetrics - プレイヤー指標
+     * @returns {Object} データ品質評価
+     */
+    assessBenchmarkDataQuality(playerMetrics) {
+        const totalSessions = playerMetrics.reduce((sum, p) => sum + p.sessionCount, 0);
+        const avgSessionsPerPlayer = totalSessions / playerMetrics.length;
+        
+        return {
+            playerCount: playerMetrics.length,
+            totalSessions: totalSessions,
+            averageSessionsPerPlayer: Math.round(avgSessionsPerPlayer * 10) / 10,
+            quality: playerMetrics.length >= 10 ? 'high' : 
+                    playerMetrics.length >= 3 ? 'medium' : 'low'  // 3人以上でmedium
+        };
+    }
+
+    /**
+     * 標準偏差を計算
+     * @param {Array} values - 値の配列
+     * @returns {number} 標準偏差
+     */
+    calculateStandardDeviation(values) {
+        if (values.length === 0) return 0;
+        
+        const mean = values.reduce((sum, v) => sum + v, 0) / values.length;
+        const squaredDiffs = values.map(v => Math.pow(v - mean, 2));
+        const variance = squaredDiffs.reduce((sum, v) => sum + v, 0) / values.length;
+        
+        return Math.sqrt(variance);
+    }
+
+    /**
+     * ベンチマーク比較を計算
+     * @param {Object} current - 現在のデータ
+     * @param {Object} benchmark - ベンチマークデータ
+     * @param {Array} metrics - 比較する指標
+     * @returns {Object} ベンチマーク比較結果
+     */
+    calculateBenchmarkComparison(current, benchmark, metrics) {
+        const comparison = {
+            available: true,
+            above_average: 0,
+            below_average: 0,
+            average: 0,
+            metrics: {},
+            ranking: {}
+        };
+
+        metrics.forEach(metricKey => {
+            const metric = this.metrics[metricKey];
+            if (!metric || !benchmark[metric.key]) return;
+
+            const currentValue = current[metric.key] || 0;
+            const benchmarkStats = benchmark[metric.key];
+            
+            // パーセンタイル順位を計算
+            const percentileRank = this.calculatePercentileRank(
+                currentValue, 
+                benchmarkStats
+            );
+            
+            let performance = 'average';
+            if (percentileRank >= 75) performance = 'above_average';
+            else if (percentileRank <= 25) performance = 'below_average';
+
+            const differenceFromMean = currentValue - benchmarkStats.mean;
+            const differencePercent = benchmarkStats.mean !== 0 ? 
+                (differenceFromMean / benchmarkStats.mean) * 100 : 0;
+
+            comparison.metrics[metricKey] = {
+                current: currentValue,
+                benchmarkMean: benchmarkStats.mean,
+                benchmarkMedian: benchmarkStats.median,
+                difference: differenceFromMean,
+                differencePercent: differencePercent,
+                percentileRank: percentileRank,
+                performance: performance,
+                displayCurrent: metric.format(currentValue),
+                displayBenchmark: metric.format(benchmarkStats.mean),
+                displayDifference: this.formatBenchmarkDifference(
+                    differenceFromMean, 
+                    differencePercent, 
+                    metric
+                )
+            };
+
+            comparison.ranking[metricKey] = {
+                percentile: percentileRank,
+                above: percentileRank,
+                below: 100 - percentileRank
+            };
+
+            // パフォーマンスカウント
+            if (performance === 'above_average') comparison.above_average++;
+            else if (performance === 'below_average') comparison.below_average++;
+            else comparison.average++;
+        });
+
+        return comparison;
+    }
+
+    /**
+     * パーセンタイル順位を計算
+     * @param {number} value - 値
+     * @param {Object} stats - 統計データ
+     * @returns {number} パーセンタイル順位（0-100）
+     */
+    calculatePercentileRank(value, stats) {
+        // 境界値の処理
+        if (value <= stats.percentile25) return 25;
+        if (value >= stats.max) return 100;
+        
+        // 線形補間でより正確なパーセンタイルを計算
+        if (value <= stats.median) {
+            if (stats.median === stats.percentile25) return 50; // 分母が0の場合
+            const ratio = (value - stats.percentile25) / (stats.median - stats.percentile25);
+            return 25 + (ratio * 25);
+        } else if (value <= stats.percentile75) {
+            if (stats.percentile75 === stats.median) return 75; // 分母が0の場合
+            const ratio = (value - stats.median) / (stats.percentile75 - stats.median);
+            return 50 + (ratio * 25);
+        } else {
+            if (stats.max === stats.percentile75) return 100; // 分母が0の場合
+            const ratio = (value - stats.percentile75) / (stats.max - stats.percentile75);
+            return 75 + (ratio * 25);
+        }
+    }
+
+    /**
+     * ベンチマーク差分の表示形式を整形
+     * @param {number} difference - 差分
+     * @param {number} differencePercent - 差分パーセント
+     * @param {Object} metric - 指標設定
+     * @returns {string} 整形された差分
+     */
+    formatBenchmarkDifference(difference, differencePercent, metric) {
+        const diffSign = difference >= 0 ? '+' : '-';
+        const percentSign = differencePercent >= 0 ? '+' : '-';
+        const formattedDiff = metric.format(Math.abs(difference));
+        const formattedPercent = Math.abs(differencePercent).toFixed(1);
+        
+        return `${diffSign}${formattedDiff}${metric.unit} (${percentSign}${formattedPercent}%)`;
+    }
+
+    /**
+     * ベンチマークサマリーを生成
+     * @param {Object} comparison - 比較結果
+     * @param {Array} metrics - 指標リスト
+     * @returns {Object} サマリー
+     */
+    generateBenchmarkSummary(comparison, metrics) {
+        const { above_average, below_average, average } = comparison;
+        const totalMetrics = metrics.length;
+        
+        let overall, message;
+        
+        if (above_average > below_average) {
+            overall = 'above_average';
+            const percentage = Math.round((above_average / totalMetrics) * 100);
+            message = `全体的に平均以上のパフォーマンスです！${above_average}個の指標で平均を上回っています（${percentage}%）。`;
+        } else if (below_average > above_average) {
+            overall = 'below_average';
+            const percentage = Math.round((below_average / totalMetrics) * 100);
+            message = `一部の指標で平均を下回っています。${below_average}個の指標で改善の余地があります（${percentage}%）。`;
+        } else {
+            overall = 'average';
+            message = '全体的に平均的なパフォーマンスです。継続的な練習で更なる向上を目指しましょう。';
+        }
+
+        return {
+            overall: overall,
+            message: message,
+            above_average: above_average,
+            below_average: below_average,
+            average: average,
+            benchmark_quality: comparison.benchmark?.dataQuality || 'unknown'
+        };
+    }
+
+    /**
+     * ベンチマーク詳細分析を生成
+     * @param {Object} comparison - 比較結果
+     * @returns {Object} 詳細分析
+     */
+    generateBenchmarkAnalysis(comparison) {
+        const analysis = {
+            strengths: [],
+            improvements: [],
+            recommendations: [],
+            rankings: []
+        };
+
+        Object.entries(comparison.metrics).forEach(([metricKey, metric]) => {
+            const metricInfo = this.metrics[metricKey];
+            const percentile = comparison.ranking[metricKey]?.percentile || 0;
+            
+            if (metric.performance === 'above_average') {
+                analysis.strengths.push(
+                    `${metricInfo.displayName}: 上位${100 - percentile}%に位置（${metric.displayCurrent}）`
+                );
+            } else if (metric.performance === 'below_average') {
+                analysis.improvements.push(
+                    `${metricInfo.displayName}: 下位${percentile}%（平均との差: ${metric.displayDifference}）`
+                );
+            }
+
+            analysis.rankings.push({
+                metric: metricInfo.displayName,
+                percentile: Math.round(percentile),
+                performance: metric.performance,
+                current: metric.displayCurrent,
+                benchmark: metric.displayBenchmark
+            });
+        });
+
+        // 推奨事項を生成
+        if (analysis.improvements.length > 0) {
+            analysis.recommendations.push('平均を下回る指標に焦点を当てて練習することをお勧めします。');
+            
+            // 具体的な改善提案
+            const worstMetric = analysis.rankings.sort((a, b) => a.percentile - b.percentile)[0];
+            if (worstMetric) {
+                analysis.recommendations.push(
+                    `特に${worstMetric.metric}（現在${worstMetric.percentile}パーセンタイル）の改善が効果的です。`
+                );
+            }
+        }
+        
+        if (analysis.strengths.length > 0) {
+            analysis.recommendations.push('強みのある指標を活かしてさらなる向上を目指しましょう。');
+        }
+        
+        if (analysis.strengths.length === 0 && analysis.improvements.length === 0) {
+            analysis.recommendations.push('バランスの取れたパフォーマンスです。全体的なスキル向上を目指しましょう。');
+        }
+
+        return analysis;
+    }
+
+    /**
      * 現在のパフォーマンスデータを取得
      * @returns {Promise<Object>} 現在のパフォーマンス
      */
