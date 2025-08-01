@@ -10,6 +10,10 @@ import { jest } from '@jest/globals';
 // Make jest available globally
 global.jest = jest;
 
+// Set up global environment variables
+global.__PROD__ = false;
+global.__ANALYTICS_ID__ = null;
+
 global.webkitAudioContext = global.AudioContext;
 
 // Mock requestAnimationFrame

@@ -3,15 +3,16 @@
  * 既存のAnalyticsクラスを拡張し、ゲーム分析機能を統合
  */
 
-import { Analytics } from '../utils/Analytics.js';
+import analytics from '../utils/Analytics.js';
 import { PrivacyManager } from './PrivacyManager.js';
 import { IndexedDBStorageManager } from './IndexedDBStorageManager.js';
 import { DataCollector } from './DataCollector.js';
 import { GameBalanceCollector } from './GameBalanceCollector.js';
 
-export class EnhancedAnalyticsManager extends Analytics {
+export class EnhancedAnalyticsManager {
     constructor(options = {}) {
-        super();
+        // 基本のAnalyticsインスタンスを保持
+        this.analytics = analytics;
         
         // 設定
         this.options = {
@@ -118,8 +119,8 @@ export class EnhancedAnalyticsManager extends Analytics {
         this.isGameAnalyticsEnabled = false;
         
         // エラーレポート（基本のAnalyticsを使用）
-        if (typeof this.trackError === 'function') {
-            this.trackError(error, {
+        if (this.analytics && typeof this.analytics.trackError === 'function') {
+            this.analytics.trackError(error, {
                 context: 'EnhancedAnalyticsManager.initialize',
                 severity: 'high'
             });
@@ -132,8 +133,8 @@ export class EnhancedAnalyticsManager extends Analytics {
      */
     startGameSession(sessionInfo) {
         // 基本のAnalytics
-        if (typeof this.trackEvent === 'function') {
-            this.trackEvent('game_session_start', {
+        if (this.analytics && typeof this.analytics.trackEvent === 'function') {
+            this.analytics.trackEvent('game_session_start', {
                 stage_id: sessionInfo.stageId,
                 difficulty: sessionInfo.difficulty,
                 player_level: sessionInfo.playerLevel || 'unknown'
@@ -162,8 +163,8 @@ export class EnhancedAnalyticsManager extends Analytics {
      */
     endGameSession(endInfo) {
         // 基本のAnalytics
-        if (typeof this.trackEvent === 'function') {
-            this.trackEvent('game_session_end', {
+        if (this.analytics && typeof this.analytics.trackEvent === 'function') {
+            this.analytics.trackEvent('game_session_end', {
                 duration: endInfo.duration,
                 final_score: endInfo.finalScore,
                 completed: endInfo.completed,
@@ -193,8 +194,8 @@ export class EnhancedAnalyticsManager extends Analytics {
      */
     trackBubbleInteraction(bubbleData) {
         // 基本のAnalytics
-        if (typeof this.trackEvent === 'function') {
-            this.trackEvent('bubble_interaction', {
+        if (this.analytics && typeof this.analytics.trackEvent === 'function') {
+            this.analytics.trackEvent('bubble_interaction', {
                 bubble_type: bubbleData.bubbleType,
                 action: bubbleData.action,
                 reaction_time: bubbleData.reactionTime
@@ -231,8 +232,8 @@ export class EnhancedAnalyticsManager extends Analytics {
      */
     trackScore(scoreData) {
         // 基本のAnalytics
-        if (typeof this.trackEvent === 'function') {
-            this.trackEvent('score_gained', {
+        if (this.analytics && typeof this.analytics.trackEvent === 'function') {
+            this.analytics.trackEvent('score_gained', {
                 score_type: scoreData.type,
                 amount: scoreData.amount,
                 total_score: scoreData.totalScore
@@ -266,13 +267,162 @@ export class EnhancedAnalyticsManager extends Analytics {
     }
     
     /**
+     * ゲームバランス分析の追跡
+     * @param {Object} balanceData - ゲームバランスデータ
+     */
+    trackGameBalance(balanceData) {
+        // 基本のAnalytics
+        if (this.analytics && typeof this.analytics.trackEvent === 'function') {
+            this.analytics.trackEvent('game_balance', {
+                balance_type: balanceData.type,
+                stage_id: balanceData.stageId,
+                difficulty: balanceData.difficulty
+            });
+        }
+        
+        // 拡張アナリティクス
+        if (this.isGameAnalyticsEnabled && this.gameBalanceCollector) {
+            // バブル出現頻度とスコア分布の分析
+            this.gameBalanceCollector.collectGameBalanceData({
+                type: balanceData.type,
+                stageId: balanceData.stageId,
+                difficulty: balanceData.difficulty,
+                bubbleFrequency: balanceData.bubbleFrequency || {},
+                scoreDistribution: balanceData.scoreDistribution || {},
+                averagePlayTime: balanceData.averagePlayTime || 0,
+                completionRate: balanceData.completionRate || 0,
+                playerPerformance: balanceData.playerPerformance || {},
+                difficultyMetrics: balanceData.difficultyMetrics || {},
+                balanceWarnings: this.checkGameBalanceWarnings(balanceData)
+            });
+        }
+    }
+    
+    /**
+     * ゲームバランス警告のチェック
+     * @param {Object} balanceData - バランスデータ
+     * @returns {Array} 警告リスト
+     */
+    checkGameBalanceWarnings(balanceData) {
+        const warnings = [];
+        
+        // スコア分布の異常チェック
+        if (balanceData.scoreDistribution) {
+            const scores = Object.values(balanceData.scoreDistribution);
+            if (scores.length > 0) {
+                const avgScore = scores.reduce((sum, score) => sum + score, 0) / scores.length;
+                const maxScore = Math.max(...scores);
+                const minScore = Math.min(...scores);
+                
+                // スコア分布の偏りチェック
+                if (maxScore > avgScore * 5) {
+                    warnings.push({
+                        type: 'score_distribution_anomaly',
+                        severity: 'high',
+                        message: 'Extreme score outliers detected',
+                        data: { avgScore, maxScore, ratio: maxScore / avgScore }
+                    });
+                }
+                
+                // スコア範囲の異常チェック
+                if (maxScore - minScore > avgScore * 10) {
+                    warnings.push({
+                        type: 'score_range_anomaly',
+                        severity: 'medium',
+                        message: 'Unusually wide score range detected',
+                        data: { range: maxScore - minScore, avgScore }
+                    });
+                }
+            }
+        }
+        
+        // バブル出現頻度の異常チェック
+        if (balanceData.bubbleFrequency) {
+            const frequencies = Object.values(balanceData.bubbleFrequency);
+            if (frequencies.length > 0) {
+                const totalFreq = frequencies.reduce((sum, freq) => sum + freq, 0);
+                const avgFreq = totalFreq / frequencies.length;
+                
+                Object.entries(balanceData.bubbleFrequency).forEach(([bubbleType, frequency]) => {
+                    // 特定バブルタイプの出現頻度異常
+                    if (frequency > avgFreq * 3) {
+                        warnings.push({
+                            type: 'bubble_frequency_anomaly',
+                            severity: 'medium',
+                            message: `High frequency detected for ${bubbleType}`,
+                            data: { bubbleType, frequency, avgFreq, ratio: frequency / avgFreq }
+                        });
+                    }
+                });
+            }
+        }
+        
+        // 完了率の異常チェック
+        if (balanceData.completionRate !== undefined) {
+            if (balanceData.completionRate < 0.1) {
+                warnings.push({
+                    type: 'low_completion_rate',
+                    severity: 'high',
+                    message: 'Very low stage completion rate',
+                    data: { completionRate: balanceData.completionRate }
+                });
+            } else if (balanceData.completionRate > 0.95) {
+                warnings.push({
+                    type: 'high_completion_rate',
+                    severity: 'medium',
+                    message: 'Stage may be too easy',
+                    data: { completionRate: balanceData.completionRate }
+                });
+            }
+        }
+        
+        // プレイ時間の異常チェック
+        if (balanceData.averagePlayTime) {
+            const expectedPlayTime = 5 * 60 * 1000; // 5分想定
+            const playTimeRatio = balanceData.averagePlayTime / expectedPlayTime;
+            
+            if (playTimeRatio < 0.2) {
+                warnings.push({
+                    type: 'short_play_time',
+                    severity: 'medium',
+                    message: 'Players finishing stages very quickly',
+                    data: { averagePlayTime: balanceData.averagePlayTime, ratio: playTimeRatio }
+                });
+            } else if (playTimeRatio > 2.0) {
+                warnings.push({
+                    type: 'long_play_time',
+                    severity: 'medium',
+                    message: 'Players taking unusually long to complete stages',
+                    data: { averagePlayTime: balanceData.averagePlayTime, ratio: playTimeRatio }
+                });
+            }
+        }
+        
+        // 警告をログに出力
+        warnings.forEach(warning => {
+            console.warn(`[Game Balance Warning] ${warning.severity.toUpperCase()}: ${warning.message}`, warning.data);
+            
+            if (this.analytics && typeof this.analytics.trackEvent === 'function') {
+                this.analytics.trackEvent('game_balance_warning', {
+                    warning_type: warning.type,
+                    severity: warning.severity,
+                    stage_id: balanceData.stageId,
+                    difficulty: balanceData.difficulty
+                });
+            }
+        });
+        
+        return warnings;
+    }
+
+    /**
      * アイテム使用の追跡
      * @param {Object} itemData - アイテムデータ
      */
     trackItemUsage(itemData) {
         // 基本のAnalytics
-        if (typeof this.trackEvent === 'function') {
-            this.trackEvent('item_used', {
+        if (this.analytics && typeof this.analytics.trackEvent === 'function') {
+            this.analytics.trackEvent('item_used', {
                 item_type: itemData.itemType,
                 cost: itemData.cost,
                 effectiveness: itemData.effectiveness
@@ -312,8 +462,8 @@ export class EnhancedAnalyticsManager extends Analytics {
      */
     trackStageCompletion(stageData) {
         // 基本のAnalytics
-        if (typeof this.trackEvent === 'function') {
-            this.trackEvent('stage_completed', {
+        if (this.analytics && typeof this.analytics.trackEvent === 'function') {
+            this.analytics.trackEvent('stage_completed', {
                 stage_id: stageData.stageId,
                 completion_time: stageData.playTime,
                 final_score: stageData.finalScore,
@@ -352,7 +502,7 @@ export class EnhancedAnalyticsManager extends Analytics {
      */
     trackError(error, context = {}) {
         // 基本のAnalytics
-        super.trackError && super.trackError(error, context);
+        // 基本のAnalyticsのエラー追跡
         
         // 拡張アナリティクス
         if (this.isGameAnalyticsEnabled && this.dataCollector) {
@@ -474,8 +624,8 @@ export class EnhancedAnalyticsManager extends Analytics {
         warnings.forEach(warning => {
             console.warn(`[Performance Warning] ${warning.severity.toUpperCase()}: ${warning.message}`);
             
-            if (typeof this.trackEvent === 'function') {
-                this.trackEvent('performance_warning', {
+            if (this.analytics && typeof this.analytics.trackEvent === 'function') {
+                this.analytics.trackEvent('performance_warning', {
                     warning_type: warning.type,
                     severity: warning.severity,
                     value: warning.value

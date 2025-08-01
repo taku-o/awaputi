@@ -153,6 +153,71 @@ export class GameBalanceCollector {
     }
     
     /**
+     * ゲームバランスデータの統合収集
+     * @param {Object} balanceData - バランスデータ
+     */
+    collectGameBalanceData(balanceData) {
+        // データタイプに応じて適切な収集メソッドに分岐
+        switch (balanceData.type) {
+            case 'bubbleSpawn':
+                this.collectBubbleSpawn(balanceData);
+                break;
+            case 'scoreAnalysis':
+                this.collectScoreData(balanceData);
+                break;
+            case 'itemEffect':
+                this.collectItemEffectData(balanceData);
+                break;
+            case 'stageDifficulty':
+                this.collectStageDifficultyData(balanceData);
+                break;
+            case 'playerBehavior':
+            case 'playerBehaviorAnalysis':
+            case 'exitPattern':
+            case 'longSessionMarker':
+            case 'balanceWarning':
+                // プレイヤー行動分析や警告データは直接データコレクターに送信
+                this.dataCollector.collectGameBalanceData(balanceData);
+                break;
+            default:
+                // 一般的なゲームバランスデータとして処理
+                this.processGeneralBalanceData(balanceData);
+                break;
+        }
+    }
+    
+    /**
+     * 一般的なバランスデータの処理
+     * @param {Object} balanceData - バランスデータ
+     */
+    processGeneralBalanceData(balanceData) {
+        const processedData = {
+            type: 'generalGameBalance',
+            timestamp: Date.now(),
+            stageId: balanceData.stageId,
+            difficulty: balanceData.difficulty,
+            bubbleFrequency: balanceData.bubbleFrequency || {},
+            scoreDistribution: balanceData.scoreDistribution || {},
+            averagePlayTime: balanceData.averagePlayTime || 0,
+            completionRate: balanceData.completionRate || 0,
+            playerPerformance: balanceData.playerPerformance || {},
+            difficultyMetrics: balanceData.difficultyMetrics || {},
+            balanceWarnings: balanceData.balanceWarnings || [],
+            rawData: balanceData
+        };
+        
+        // 警告の処理
+        if (processedData.balanceWarnings && processedData.balanceWarnings.length > 0) {
+            processedData.balanceWarnings.forEach(warning => {
+                console.warn(`[Game Balance] ${warning.severity}: ${warning.message}`, warning.data);
+            });
+        }
+        
+        // データコレクターに送信
+        this.dataCollector.collectGameBalanceData(processedData);
+    }
+
+    /**
      * ステージ難易度データ収集
      * @param {Object} stageInfo - ステージ情報
      */
