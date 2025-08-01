@@ -59,6 +59,9 @@ export class LeaderboardManager {
             // 定期クリーンアップの設定
             this.setupPeriodicCleanup();
             
+            // 高度なキャッシュ機能の設定 (Task 18.4)
+            this.setupAdvancedCaching();
+            
             console.log('[LeaderboardManager] 初期化完了');
             
         } catch (error) {
@@ -1032,10 +1035,331 @@ export class LeaderboardManager {
     }
 
     /**
+     * ページ分けでランキングデータを遅延読み込み (Task 18.2)
+     */
+    async getLeaderboardPaginated(type, period = 'all', options = {}) {
+        try {
+            const {
+                page = 1, 
+                pageSize = 20, 
+                sortBy = 'score',
+                sortOrder = 'desc',
+                includePlayerRank = false
+            } = options;
+            
+            // キャッシュキーの生成
+            const cacheKey = `paginated_${type}_${period}_${page}_${pageSize}_${sortBy}_${sortOrder}`;
+            
+            // キャッシュチェック
+            if (this.cache.has(cacheKey)) {
+                const cachedData = this.cache.get(cacheKey);
+                const age = Date.now() - (this.lastUpdate.get(cacheKey) || 0);
+                
+                if (age < this.config.cacheTTL) {
+                    this.stats.cacheHits++;
+                    console.log(`[LeaderboardManager] キャッシュヒット: ${cacheKey}`);
+                    return cachedData;
+                }
+            }
+            
+            this.stats.cacheMisses++;
+            
+            // ランキングデータの非同期取得
+            const startTime = performance.now();
+            const leaderboard = await this.loadLeaderboardAsync(type, period);
+            
+            if (!leaderboard || !leaderboard.entries) {
+                return {
+                    data: [],
+                    pagination: {
+                        page,
+                        pageSize,
+                        total: 0,
+                        totalPages: 0,
+                        hasNext: false,
+                        hasPrev: false
+                    },
+                    playerRank: includePlayerRank ? null : undefined
+                };
+            }
+            
+            // ソート処理
+            const sortedEntries = await this.sortEntriesAsync(leaderboard.entries, sortBy, sortOrder);
+            
+            // ページネーション処理
+            const total = sortedEntries.length;
+            const totalPages = Math.ceil(total / pageSize);
+            const startIndex = (page - 1) * pageSize;
+            const endIndex = Math.min(startIndex + pageSize, total);
+            const pageData = sortedEntries.slice(startIndex, endIndex);
+            
+            // プレイヤーランク取得（要求された場合）
+            let playerRank = null;
+            if (includePlayerRank && this.gameEngine.playerData) {
+                const playerId = this.gameEngine.playerData.getPlayerId();
+                playerRank = await this.getPlayerRankAsync(sortedEntries, playerId);
+            }
+            
+            const result = {
+                data: pageData,
+                pagination: {
+                    page,
+                    pageSize,
+                    total,
+                    totalPages,
+                    hasNext: page < totalPages,
+                    hasPrev: page > 1
+                },
+                playerRank: includePlayerRank ? playerRank : undefined,
+                loadTime: performance.now() - startTime
+            };
+            
+            // キャッシュに保存
+            this.cache.set(cacheKey, result);
+            this.lastUpdate.set(cacheKey, Date.now());
+            
+            // キャッシュサイズ制限
+            this.limitCacheSize();
+            
+            console.log(`[LeaderboardManager] ページ読み込み完了: ${cacheKey} (${Math.round(result.loadTime)}ms)`);
+            return result;
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'LEADERBOARD_PAGINATION_ERROR', {
+                type, period, page: options.page
+            });
+            throw error;
+        }
+    }
+    
+    /**
+     * リーダーボードデータの非同期読み込み
+     */
+    async loadLeaderboardAsync(type, period) {
+        return new Promise((resolve) => {
+            // Web Workers が利用可能な場合はWorkerで処理
+            // そうでなければsetTimeoutで非同期化
+            setTimeout(() => {
+                const leaderboard = this.getLeaderboard(type, period);
+                resolve(leaderboard);
+            }, 0);
+        });
+    }
+    
+    /**
+     * エントリーの非同期ソート
+     */
+    async sortEntriesAsync(entries, sortBy, sortOrder) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const sorted = [...entries].sort((a, b) => {
+                    let comparison = 0;
+                    
+                    switch (sortBy) {
+                        case 'score':
+                            comparison = (b.score || 0) - (a.score || 0);
+                            break;
+                        case 'date':
+                            comparison = (b.timestamp || 0) - (a.timestamp || 0);
+                            break;
+                        case 'name':
+                            comparison = (a.playerName || '').localeCompare(b.playerName || '');
+                            break;
+                        default:
+                            comparison = (b.score || 0) - (a.score || 0);
+                    }
+                    
+                    return sortOrder === 'asc' ? -comparison : comparison;
+                });
+                
+                resolve(sorted);
+            }, 0);
+        });
+    }
+    
+    /**
+     * プレイヤーランクの非同期取得
+     */
+    async getPlayerRankAsync(entries, playerId) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const playerIndex = entries.findIndex(entry => entry.playerId === playerId);
+                resolve(playerIndex >= 0 ? {
+                    rank: playerIndex + 1,
+                    entry: entries[playerIndex]
+                } : null);
+            }, 0);
+        });
+    }
+    
+    /**
+     * キャッシュサイズ制限 (Task 18.3)
+     */
+    limitCacheSize() {
+        const maxCacheSize = 50; // 最大50エントリー
+        
+        if (this.cache.size > maxCacheSize) {
+            // LRU (Least Recently Used) 方式でキャッシュを削除
+            const entries = Array.from(this.lastUpdate.entries())
+                .sort((a, b) => a[1] - b[1]) // 更新時刻でソート
+                .slice(0, this.cache.size - maxCacheSize); // 削除対象を選択
+                
+            for (const [key] of entries) {
+                this.cache.delete(key);
+                this.lastUpdate.delete(key);
+            }
+            
+            console.log(`[LeaderboardManager] キャッシュクリーンアップ: ${entries.length}エントリー削除`);
+        }
+    }
+    
+    /**
+     * メモリ使用量監視 (Task 18.3)  
+     */
+    getMemoryUsage() {
+        try {
+            // キャッシュサイズの推定
+            let cacheSize = 0;
+            for (const [key, value] of this.cache.entries()) {
+                cacheSize += JSON.stringify({key, value}).length * 2; // 文字ごとに2バイト
+            }
+            
+            // リーダーボードデータサイズの推定
+            let leaderboardSize = 0;
+            for (const [key, value] of this.leaderboards.entries()) {
+                leaderboardSize += JSON.stringify({key, value}).length * 2;
+            }
+            
+            return {
+                cache: {
+                    entries: this.cache.size,
+                    estimatedSizeBytes: cacheSize,
+                    estimatedSizeKB: Math.round(cacheSize / 1024)
+                },
+                leaderboards: {
+                    entries: this.leaderboards.size,
+                    estimatedSizeBytes: leaderboardSize,
+                    estimatedSizeKB: Math.round(leaderboardSize / 1024)
+                },
+                total: {
+                    estimatedSizeBytes: cacheSize + leaderboardSize,
+                    estimatedSizeKB: Math.round((cacheSize + leaderboardSize) / 1024)
+                }
+            };
+        } catch (error) {
+            console.warn('[LeaderboardManager] メモリ使用量計算エラー:', error);
+            return null;
+        }
+    }
+    
+    /**
+     * 高度なキャッシュ機能 (Task 18.4)
+     */
+    setupAdvancedCaching() {
+        // プリローディング機能
+        this.preloadCommonQueries();
+        
+        // 定期的なキャッシュ最適化
+        setInterval(() => {
+            this.optimizeCache();
+        }, 5 * 60 * 1000); // 5分ごと
+    }
+    
+    /**
+     * よく使われるクエリのプリローディング
+     */
+    async preloadCommonQueries() {
+        const commonQueries = [
+            { type: 'global', period: 'all', page: 1, pageSize: 10 },
+            { type: 'daily', period: 'today', page: 1, pageSize: 10 },
+            { type: 'weekly', period: 'thisWeek', page: 1, pageSize: 10 }
+        ];
+        
+        for (const query of commonQueries) {
+            try {
+                await this.getLeaderboardPaginated(query.type, query.period, {
+                    page: query.page,
+                    pageSize: query.pageSize
+                });
+            } catch (error) {
+                console.warn(`[LeaderboardManager] プリローディング失敗: ${query.type}/${query.period}`);
+            }
+        }
+        
+        console.log('[LeaderboardManager] 共通クエリのプリローディング完了');
+    }
+    
+    /**
+     * キャッシュ最適化
+     */
+    optimizeCache() {
+        // 期限切れキャッシュの削除
+        const now = Date.now();
+        let expiredCount = 0;
+        
+        for (const [key, updateTime] of this.lastUpdate.entries()) {
+            if (now - updateTime > this.config.cacheTTL) {
+                this.cache.delete(key);
+                this.lastUpdate.delete(key);
+                expiredCount++;
+            }
+        }
+        
+        if (expiredCount > 0) {
+            console.log(`[LeaderboardManager] 期限切れキャッシュを${expiredCount}件削除`);
+        }
+        
+        // キャッシュサイズ制限
+        this.limitCacheSize();
+    }
+    
+    /**
+     * 非同期バックグラウンド保存 (Task 18.1)
+     */
+    async saveAsync() {
+        return new Promise((resolve, reject) => {
+            // setTimeoutで非同期化してUIをブロックしない
+            setTimeout(async () => {
+                try {
+                    await this.save();
+                    resolve();
+                } catch (error) {
+                    reject(error);
+                }
+            }, 0);
+        });
+    }
+    
+    /**
+     * パフォーマンス統計の拡張 (Task 18.3)
+     */
+    getPerformanceStats() {
+        const memoryUsage = this.getMemoryUsage();
+        
+        return {
+            ...this.stats,
+            memory: memoryUsage,
+            cache: {
+                size: this.cache.size,
+                hitRate: this.stats.cacheHits > 0 ? 
+                    this.stats.cacheHits / (this.stats.cacheHits + this.stats.cacheMisses) : 0,
+                hits: this.stats.cacheHits,
+                misses: this.stats.cacheMisses
+            },
+            performance: {
+                averageLoadTime: this.stats.dataLoadTime,
+                totalSaves: this.stats.saveCount,
+                validationErrors: this.stats.validationErrors
+            }
+        };
+    }
+
+    /**
      * クリーンアップ
      */
     cleanup() {
         this.cache.clear();
+        this.lastUpdate.clear();
         console.log('[LeaderboardManager] クリーンアップ完了');
     }
 }

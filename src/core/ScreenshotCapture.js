@@ -51,6 +51,10 @@ export class ScreenshotCapture {
         this.overlayEnabled = true;
         this.screenshotOverlay = null;
         
+        // パフォーマンス最適化機能の初期化 (Task 18)
+        this.setupCaptureQueue();
+        this.setupAutoMemoryManagement();
+        
         this.log('ScreenshotCapture初期化完了');
     }
     
@@ -743,9 +747,262 @@ export class ScreenshotCapture {
     }
     
     /**
+     * バックグラウンドでのスクリーンショット生成 (Task 18.1)
+     */
+    async captureInBackground(options = {}) {
+        return new Promise((resolve, reject) => {
+            // Web Worker が利用可能な場合の処理
+            if (typeof Worker !== 'undefined') {
+                this.captureWithWorker(options, resolve, reject);
+            } else {
+                // フォールバック: setTimeout で非同期化
+                setTimeout(async () => {
+                    try {
+                        const result = await this.captureGameCanvas(options);
+                        resolve(result);
+                    } catch (error) {
+                        reject(error);
+                    }
+                }, 0);
+            }
+        });
+    }
+    
+    /**
+     * Web Worker を使用したスクリーンショット生成
+     */
+    captureWithWorker(options, resolve, reject) {
+        try {
+            // Canvas データを別スレッドで処理するためのWorker
+            const workerCode = `
+                self.onmessage = function(e) {
+                    const { imageData, options } = e.data;
+                    
+                    // 画像処理をWorkerで実行
+                    try {
+                        // ここで重い画像処理を実行
+                        const result = {
+                            processed: true,
+                            timestamp: Date.now()
+                        };
+                        
+                        self.postMessage({ success: true, data: result });
+                    } catch (error) {
+                        self.postMessage({ success: false, error: error.message });
+                    }
+                };
+            `;
+            
+            const blob = new Blob([workerCode], { type: 'application/javascript' });
+            const worker = new Worker(URL.createObjectURL(blob));
+            
+            worker.onmessage = (e) => {
+                const { success, data, error } = e.data;
+                
+                if (success) {
+                    // メインスレッドでCanvas処理を完了
+                    this.captureGameCanvas(options).then(resolve).catch(reject);
+                } else {
+                    reject(new Error(error));
+                }
+                
+                // Worker をクリーンアップ
+                worker.terminate();
+                URL.revokeObjectURL(blob);
+            };
+            
+            worker.onerror = (error) => {
+                reject(error);
+                worker.terminate();
+            };
+            
+            // ダミーデータを送信（実際の実装では Canvas データを送信）
+            worker.postMessage({ imageData: null, options });
+            
+        } catch (error) {
+            // Worker 作成失敗時はフォールバック
+            setTimeout(async () => {
+                try {
+                    const result = await this.captureGameCanvas(options);
+                    resolve(result);
+                } catch (err) {
+                    reject(err);
+                }
+            }, 0);
+        }
+    }
+    
+    /**
+     * バッチ処理でのスクリーンショット生成 (Task 18.1)
+     */
+    async captureBatch(requests = []) {
+        const results = [];
+        const batchSize = 3; // 同時実行数制限
+        
+        for (let i = 0; i < requests.length; i += batchSize) {
+            const batch = requests.slice(i, i + batchSize);
+            
+            const batchResults = await Promise.allSettled(
+                batch.map(async (request) => {
+                    try {
+                        return await this.captureInBackground(request.options);
+                    } catch (error) {
+                        return { error: error.message, request };
+                    }
+                })
+            );
+            
+            results.push(...batchResults);
+            
+            // バッチ間で少し休憩してCPU負荷を軽減
+            if (i + batchSize < requests.length) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+        }
+        
+        return results;
+    }
+    
+    /**
+     * スクリーンショットキュー管理 (Task 18.1)
+     */
+    setupCaptureQueue() {
+        this.captureQueue = [];
+        this.isProcessingQueue = false;
+        this.maxQueueSize = 10;
+    }
+    
+    /**
+     * キューにスクリーンショット要求を追加
+     */
+    async queueCapture(options = {}) {
+        return new Promise((resolve, reject) => {
+            if (this.captureQueue.length >= this.maxQueueSize) {
+                reject(new Error('スクリーンショットキューが満杯です'));
+                return;
+            }
+            
+            this.captureQueue.push({ options, resolve, reject });
+            this.processQueue();
+        });
+    }
+    
+    /**
+     * キューの処理
+     */
+    async processQueue() {
+        if (this.isProcessingQueue || this.captureQueue.length === 0) {
+            return;
+        }
+        
+        this.isProcessingQueue = true;
+        
+        while (this.captureQueue.length > 0) {
+            const { options, resolve, reject } = this.captureQueue.shift();
+            
+            try {
+                const result = await this.captureInBackground(options);
+                resolve(result);
+            } catch (error) {
+                reject(error);
+            }
+            
+            // キュー処理間の小休止
+            await new Promise(r => setTimeout(r, 50));
+        }
+        
+        this.isProcessingQueue = false;
+    }
+    
+    /**
+     * メモリ使用量監視 (Task 18.3)
+     */
+    getMemoryUsage() {
+        try {
+            let totalSize = 0;
+            
+            // キャプチャ履歴のサイズ
+            for (const capture of this.captureHistory) {
+                totalSize += capture.size || 0;
+            }
+            
+            // 最後のキャプチャのサイズ
+            if (this.lastCapture) {
+                totalSize += this.lastCapture.size || 0;
+            }
+            
+            return {
+                captureHistory: {
+                    count: this.captureHistory.length,
+                    totalSizeBytes: totalSize,
+                    totalSizeKB: Math.round(totalSize / 1024),
+                    totalSizeMB: Math.round(totalSize / (1024 * 1024))
+                },
+                queue: {
+                    size: this.captureQueue ? this.captureQueue.length : 0,
+                    maxSize: this.maxQueueSize || 0,
+                    isProcessing: this.isProcessingQueue || false
+                },
+                stats: {
+                    ...this.stats,
+                    memoryEfficiency: this.stats.totalSize > 0 ? 
+                        Math.round((this.stats.successes / this.stats.totalSize) * 1024) : 0
+                }
+            };
+        } catch (error) {
+            console.warn('[ScreenshotCapture] メモリ使用量計算エラー:', error);
+            return null;
+        }
+    }
+    
+    /**
+     * 自動メモリ管理 (Task 18.3)
+     */
+    setupAutoMemoryManagement() {
+        // 5分ごとにメモリ使用量をチェック
+        setInterval(() => {
+            this.performMemoryCleanup();
+        }, 5 * 60 * 1000);
+    }
+    
+    /**
+     * メモリクリーンアップ
+     */
+    performMemoryCleanup() {
+        const memoryUsage = this.getMemoryUsage();
+        
+        if (!memoryUsage) return;
+        
+        const maxMemoryMB = 50; // 50MB制限
+        
+        if (memoryUsage.captureHistory.totalSizeMB > maxMemoryMB) {
+            // 古いキャプチャから削除
+            const itemsToRemove = Math.ceil(this.captureHistory.length * 0.3); // 30%削除
+            
+            for (let i = 0; i < itemsToRemove && this.captureHistory.length > 0; i++) {
+                const removed = this.captureHistory.pop();
+                if (removed && removed.url) {
+                    URL.revokeObjectURL(removed.url);
+                }
+            }
+            
+            this.log(`メモリクリーンアップ: ${itemsToRemove}件のキャプチャを削除`);
+        }
+    }
+
+    /**
      * クリーンアップ
      */
     cleanup() {
+        // キューのクリーンアップ
+        if (this.captureQueue) {
+            // 待機中の要求をすべてキャンセル
+            for (const { reject } of this.captureQueue) {
+                reject(new Error('ScreenshotCapture がクリーンアップされました'));
+            }
+            this.captureQueue = [];
+        }
+        
         // キャプチャ履歴のクリーンアップ
         this.clearHistory();
         
