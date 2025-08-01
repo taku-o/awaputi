@@ -12,6 +12,7 @@ import { AchievementEventIntegrator } from './AchievementEventIntegrator.js';
 import { AchievementNotificationSystem } from './AchievementNotificationSystem.js';
 import { StatisticsManager } from './StatisticsManager.js';
 import { EventStageManager } from './EventStageManager.js';
+import { ChallengeSystem } from './ChallengeSystem.js';
 import { MainMenuScene } from '../scenes/MainMenuScene.js';
 import { StageSelectScene } from '../scenes/StageSelectScene.js';
 import { GameScene } from '../scenes/GameScene.js';
@@ -159,6 +160,9 @@ export class GameEngine {
         
         // リーダーボードシステム
         this.leaderboardManager = new LeaderboardManager(this);
+        
+        // チャレンジシステム
+        this.challengeSystem = new ChallengeSystem(this);
         
         // ゲーム状態
         this.timeRemaining = 300000; // 5分
@@ -626,6 +630,9 @@ export class GameEngine {
                 
                 // リーダーボードシステムの初期化
                 await this.leaderboardManager.initialize();
+                
+                // チャレンジシステムの初期化
+                await this.challengeSystem.initialize();
             } catch (error) {
                 getErrorHandler().handleError(error, 'INITIALIZATION_ERROR', { component: 'additionalSystems' });
                 // フォールバック: 新システムなしで続行
@@ -1596,6 +1603,16 @@ export class GameEngine {
         
         if (this.audioVisualSynchronizer) {
             this.audioVisualSynchronizer.dispose();
+        }
+        
+        // チャレンジシステムのクリーンアップ
+        if (this.challengeSystem) {
+            this.challengeSystem.cleanup();
+        }
+        
+        // リーダーボードシステムのクリーンアップ
+        if (this.leaderboardManager) {
+            this.leaderboardManager.cleanup();
         }
         
         // メモリ最適化を実行
