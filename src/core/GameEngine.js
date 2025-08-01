@@ -12,11 +12,15 @@ import { AchievementEventIntegrator } from './AchievementEventIntegrator.js';
 import { AchievementNotificationSystem } from './AchievementNotificationSystem.js';
 import { StatisticsManager } from './StatisticsManager.js';
 import { EventStageManager } from './EventStageManager.js';
+import { ChallengeSystem } from './ChallengeSystem.js';
+import { DailyChallengeManager } from './DailyChallengeManager.js';
+import { WeeklyChallengeManager } from './WeeklyChallengeManager.js';
 import { MainMenuScene } from '../scenes/MainMenuScene.js';
 import { StageSelectScene } from '../scenes/StageSelectScene.js';
 import { GameScene } from '../scenes/GameScene.js';
 import { ShopScene } from '../scenes/ShopScene.js';
 import { UserInfoScene } from '../scenes/UserInfoScene.js';
+import { SettingsScene } from '../scenes/SettingsScene.js';
 import { HelpScene } from '../scenes/HelpScene.js';
 import { AudioManager } from '../audio/AudioManager.js';
 import { ParticleManager } from '../effects/ParticleManager.js';
@@ -47,6 +51,8 @@ import { VisualPolishEnhancements } from '../effects/VisualPolishEnhancements.js
 import { AnimationManager } from '../effects/AnimationManager.js';
 import { getHelpManager } from './help/HelpManager.js';
 import { getSEOMonitor } from '../seo/SEOMonitor.js';
+import { SocialSharingManager } from './SocialSharingManager.js';
+import { LeaderboardManager } from './LeaderboardManager.js';
 
 /**
  * ゲームエンジンクラス - 統合版（パフォーマンス最適化 + 音響・視覚効果）
@@ -151,6 +157,21 @@ export class GameEngine {
         
         // ヘルプシステム
         this.helpManager = getHelpManager(this);
+        
+        // ソーシャル機能システム（遅延初期化）
+        this.socialSharingManager = null;
+        
+        // リーダーボードシステム
+        this.leaderboardManager = new LeaderboardManager(this);
+        
+        // チャレンジシステム
+        this.challengeSystem = new ChallengeSystem(this);
+        
+        // デイリーチャレンジシステム
+        this.dailyChallengeManager = new DailyChallengeManager(this, this.challengeSystem);
+        
+        // ウィークリーチャレンジシステム
+        this.weeklyChallengeManager = new WeeklyChallengeManager(this, this.challengeSystem);
         
         // ゲーム状態
         this.timeRemaining = 300000; // 5分
@@ -581,6 +602,7 @@ export class GameEngine {
             const gameScene = new GameScene(this);
             const shopScene = new ShopScene(this);
             const userInfoScene = new UserInfoScene(this);
+            const settingsScene = new SettingsScene(this);
             const helpScene = new HelpScene(this);
             
             // シーンを登録
@@ -589,6 +611,7 @@ export class GameEngine {
             this.sceneManager.addScene('game', gameScene);
             this.sceneManager.addScene('shop', shopScene);
             this.sceneManager.addScene('userInfo', userInfoScene);
+            this.sceneManager.addScene('settings', settingsScene);
             this.sceneManager.addScene('help', helpScene);
             
             // データを読み込み
@@ -612,6 +635,21 @@ export class GameEngine {
                 this.achievementManager.load();
                 this.statisticsManager.load();
                 this.eventStageManager.load();
+                
+                // ソーシャル機能システムの初期化
+                await this.initializeSocialSharingManager();
+                
+                // リーダーボードシステムの初期化
+                await this.leaderboardManager.initialize();
+                
+                // チャレンジシステムの初期化
+                await this.challengeSystem.initialize();
+                
+                // デイリーチャレンジシステムの初期化
+                await this.dailyChallengeManager.initialize();
+                
+                // ウィークリーチャレンジシステムの初期化
+                await this.weeklyChallengeManager.initialize();
             } catch (error) {
                 getErrorHandler().handleError(error, 'INITIALIZATION_ERROR', { component: 'additionalSystems' });
                 // フォールバック: 新システムなしで続行
@@ -661,6 +699,30 @@ export class GameEngine {
             this.sceneManager.handleInput(event);
         };
         getMemoryManager().addEventListener(document, 'keydown', keyDownHandler);
+    }
+    
+    /**
+     * ソーシャル機能システムの初期化
+     */
+    async initializeSocialSharingManager() {
+        try {
+            if (!this.socialSharingManager) {
+                this.socialSharingManager = new SocialSharingManager(this);
+                await this.socialSharingManager.initialize();
+                
+                // SEOシステムとの連携
+                if (this.seoMetaManager) {
+                    this.socialSharingManager.seoMetaManager = this.seoMetaManager;
+                }
+                
+                console.log('[GameEngine] SocialSharingManager初期化完了');
+            }
+        } catch (error) {
+            getErrorHandler().handleError(error, 'INITIALIZATION_ERROR', { 
+                component: 'SocialSharingManager' 
+            });
+            console.warn('[GameEngine] SocialSharingManager初期化に失敗しましたが、ゲームは続行されます');
+        }
     }
     
     /**
@@ -1558,6 +1620,26 @@ export class GameEngine {
         
         if (this.audioVisualSynchronizer) {
             this.audioVisualSynchronizer.dispose();
+        }
+        
+        // チャレンジシステムのクリーンアップ
+        if (this.challengeSystem) {
+            this.challengeSystem.cleanup();
+        }
+        
+        // デイリーチャレンジシステムのクリーンアップ
+        if (this.dailyChallengeManager) {
+            this.dailyChallengeManager.cleanup();
+        }
+        
+        // ウィークリーチャレンジシステムのクリーンアップ
+        if (this.weeklyChallengeManager) {
+            this.weeklyChallengeManager.cleanup();
+        }
+        
+        // リーダーボードシステムのクリーンアップ
+        if (this.leaderboardManager) {
+            this.leaderboardManager.cleanup();
         }
         
         // メモリ最適化を実行

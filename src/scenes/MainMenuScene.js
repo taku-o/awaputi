@@ -1101,13 +1101,8 @@ export class MainMenuScene extends Scene {
      * 設定画面を開く
      */
     openSettings() {
-        this.showingSettings = true;
-        
-        // クリック領域配列をクリア
-        this.volumeSliders = [];
-        this.toggleButtons = [];
-        this.languageButtons = [];
-        this.qualityButtons = [];
+        // 新しいSettingsSceneに遷移
+        this.sceneManager.switchScene('settings');
     }
     
     /**

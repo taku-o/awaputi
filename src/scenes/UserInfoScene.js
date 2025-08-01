@@ -23,6 +23,8 @@ import { HelpSectionSelector } from './components/HelpSectionSelector.js';
 import { ManagementTab } from './components/ManagementTab.js';
 import { AchievementsTab } from './components/AchievementsTab.js';
 import { StatisticsTab } from './components/StatisticsTab.js';
+import { LeaderboardTab } from './components/LeaderboardTab.js';
+import { ChallengesTab } from './components/ChallengesTab.js';
 
 export class UserInfoScene extends Scene {
     constructor(gameEngine) {
@@ -153,6 +155,26 @@ export class UserInfoScene extends Scene {
                 console.log('AchievementsTab lazy loaded and cached');
             }
             return this.componentCache.get('achievements');
+        });
+        
+        this.componentFactory.set('leaderboard', () => {
+            if (!this.componentCache.has('leaderboard')) {
+                const component = new LeaderboardTab(this.gameEngine, this.eventBus, this.sceneState);
+                component.initialize();
+                this.componentCache.set('leaderboard', component);
+                console.log('LeaderboardTab lazy loaded and cached');
+            }
+            return this.componentCache.get('leaderboard');
+        });
+        
+        this.componentFactory.set('challenges', () => {
+            if (!this.componentCache.has('challenges')) {
+                const component = new ChallengesTab(this.gameEngine, this.eventBus, this.sceneState);
+                component.initialize();
+                this.componentCache.set('challenges', component);
+                console.log('ChallengesTab lazy loaded and cached');
+            }
+            return this.componentCache.get('challenges');
         });
         
         // ヘルプセクションセレクターは軽量なので即座に作成
@@ -376,6 +398,14 @@ export class UserInfoScene extends Scene {
         
         // コンポーネント調整システムによる更新
         this.updateComponentCoordination(deltaTime);
+        
+        // リーダーボードタブが表示中の場合、コンポーネントを更新
+        if (this.currentTab === 'leaderboard') {
+            const component = this.getTabComponent('leaderboard');
+            if (component && component.update) {
+                component.update(deltaTime);
+            }
+        }
     }
 
     render(context) {
@@ -455,10 +485,62 @@ export class UserInfoScene extends Scene {
                 this.handleClick(event);
             } else if (event.type === 'keydown') {
                 this.handleKeyboard(event);
+            } else if (event.type === 'mousemove') {
+                this.handleMouseMove(event);
+            } else if (event.type === 'wheel') {
+                this.handleWheel(event);
             }
         } catch (error) {
             console.error('UserInfoScene input error:', error);
             this.showError('入力処理エラーが発生しました');
+        }
+    }
+
+    /**
+     * マウス移動処理
+     */
+    handleMouseMove(event) {
+        try {
+            const canvas = this.gameEngine.canvas;
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            
+            // リーダーボードタブでのマウスホバー処理
+            if (this.currentTab === 'leaderboard') {
+                const component = this.getTabComponent('leaderboard');
+                if (component) {
+                    const contentY = this.headerHeight;
+                    const contentHeight = canvas.height - contentY - 80;
+                    component.handleHover(x, y, contentY, contentHeight);
+                }
+            }
+        } catch (error) {
+            console.error('[UserInfoScene] マウス移動処理エラー:', error);
+        }
+    }
+
+    /**
+     * ホイール処理
+     */
+    handleWheel(event) {
+        try {
+            // デフォルトのスクロール動作を無効化
+            event.preventDefault();
+            
+            // リーダーボードタブでのスクロール処理
+            if (this.currentTab === 'leaderboard') {
+                const component = this.getTabComponent('leaderboard');
+                if (component) {
+                    component.handleScroll(event.deltaY);
+                }
+                return;
+            }
+            
+            // その他のタブでもスクロール処理があれば追加
+            
+        } catch (error) {
+            console.error('[UserInfoScene] ホイール処理エラー:', error);
         }
     }
 
@@ -558,6 +640,12 @@ export class UserInfoScene extends Scene {
                 break;
             case 'achievements':
                 this.renderAchievementsWithComponent(context, contentY, contentHeight);
+                break;
+            case 'leaderboard':
+                this.renderLeaderboardWithComponent(context, contentY, contentHeight);
+                break;
+            case 'challenges':
+                this.renderChallengesWithComponent(context, contentY, contentHeight);
                 break;
             case 'management':
                 this.renderManagementWithComponent(context, contentY, contentHeight);
@@ -1756,6 +1844,16 @@ export class UserInfoScene extends Scene {
             this.handleAchievementCategoryClick(x, y);
         }
         
+        // リーダーボード画面のクリック処理
+        if (this.currentTab === 'leaderboard') {
+            this.handleLeaderboardClick(x, y);
+        }
+        
+        // チャレンジ画面のクリック処理
+        if (this.currentTab === 'challenges') {
+            this.handleChallengesClick(x, y);
+        }
+        
         // ユーザー管理画面のボタンクリック処理
         if (this.currentTab === 'management') {
             this.handleManagementClick(x, y);
@@ -1818,6 +1916,57 @@ export class UserInfoScene extends Scene {
             y >= statsExportButtonY && y <= statsExportButtonY + 35) {
             this.showStatisticsImportDialog();
             return;
+        }
+    }
+
+    /**
+     * リーダーボードクリック処理
+     */
+    handleLeaderboardClick(x, y) {
+        try {
+            // コンポーネントのクリック処理に委譲
+            const component = this.getTabComponent('leaderboard');
+            if (component) {
+                const canvas = this.gameEngine.canvas;
+                const contentY = this.headerHeight;
+                const contentHeight = canvas.height - contentY - 80;
+                
+                const handled = component.handleClick(x, y, contentY, contentHeight);
+                if (handled) {
+                    return;
+                }
+            }
+        } catch (error) {
+            console.error('[UserInfoScene] リーダーボードクリック処理エラー:', error);
+        }
+    }
+
+    /**
+     * チャレンジ画面のクリック処理
+     */
+    handleChallengesClick(x, y) {
+        try {
+            const component = this.getTabComponent('challenges');
+            if (component && typeof component.handleClick === 'function') {
+                const canvas = this.gameEngine.canvas;
+                const contentY = this.headerHeight;
+                const contentHeight = canvas.height - contentY - 80;
+                const contentX = this.contentPadding;
+                const contentWidth = canvas.width - this.contentPadding * 2;
+                
+                // コンポーネントのクリック処理を呼び出し
+                const handled = component.handleClick(x, y, contentX, contentY, contentWidth, contentHeight);
+                
+                if (handled) {
+                    return;
+                }
+            }
+            
+            // コンポーネントで処理されなかった場合の代替処理
+            console.log('[UserInfoScene] チャレンジクリック - 代替処理');
+            
+        } catch (error) {
+            console.error('[UserInfoScene] チャレンジクリック処理エラー:', error);
         }
     }
 
@@ -2548,6 +2697,24 @@ export class UserInfoScene extends Scene {
             return;
         }
         
+        // リーダーボードタブ固有のキーボード処理
+        if (this.currentTab === 'leaderboard') {
+            const component = this.getTabComponent('leaderboard');
+            if (component && component.handleKeyDown(event.key)) {
+                return; // コンポーネントが処理した場合
+            }
+        }
+        
+        // チャレンジタブ固有のキーボード処理
+        if (this.currentTab === 'challenges') {
+            const component = this.getTabComponent('challenges');
+            if (component && typeof component.handleKeyboard === 'function') {
+                if (component.handleKeyboard(event)) {
+                    return; // コンポーネントが処理した場合
+                }
+            }
+        }
+        
         switch (event.key) {
             case 'Escape':
                 this.sceneManager.switchScene('menu');
@@ -2561,11 +2728,17 @@ export class UserInfoScene extends Scene {
             case 'ArrowUp':
                 if (this.currentTab === 'achievements') {
                     this.scrollPosition = Math.max(0, this.scrollPosition - 30);
+                } else if (this.currentTab === 'leaderboard') {
+                    const component = this.getTabComponent('leaderboard');
+                    if (component) component.handleScroll(-50);
                 }
                 break;
             case 'ArrowDown':
                 if (this.currentTab === 'achievements') {
                     this.scrollPosition += 30;
+                } else if (this.currentTab === 'leaderboard') {
+                    const component = this.getTabComponent('leaderboard');
+                    if (component) component.handleScroll(50);
                 }
                 break;
             case 'Tab':
@@ -3620,6 +3793,160 @@ export class UserInfoScene extends Scene {
             // フォールバック: 古いシステムを使用
             this.renderAchievements(context, y, height);
         }
+    }
+
+    /**
+     * リーダーボードタブをコンポーネントで描画
+     */
+    renderLeaderboardWithComponent(context, contentY, contentHeight) {
+        try {
+            const component = this.getTabComponent('leaderboard');
+            if (component) {
+                component.render(context, contentY, contentHeight);
+            } else {
+                this.renderLeaderboardLoadingState(context, contentY, contentHeight);
+            }
+        } catch (error) {
+            console.error('[UserInfoScene] リーダーボードコンポーネント描画エラー:', error);
+            this.renderLeaderboardErrorState(context, contentY, contentHeight);
+        }
+    }
+
+    /**
+     * チャレンジコンポーネントを使用した描画
+     */
+    renderChallengesWithComponent(context, contentY, contentHeight) {
+        try {
+            const component = this.getTabComponent('challenges');
+            if (component) {
+                const canvas = this.gameEngine.canvas;
+                const contentX = this.contentPadding;
+                const contentWidth = canvas.width - this.contentPadding * 2;
+                component.render(context, contentX, contentY, contentWidth, contentHeight);
+            } else {
+                this.renderChallengesLoadingState(context, contentY, contentHeight);
+            }
+        } catch (error) {
+            console.error('[UserInfoScene] チャレンジコンポーネント描画エラー:', error);
+            this.renderChallengesErrorState(context, contentY, contentHeight);
+        }
+    }
+    
+    /**
+     * チャレンジローディング状態の描画
+     */
+    renderChallengesLoadingState(context, contentY, contentHeight) {
+        const canvas = this.gameEngine.canvas;
+        const centerX = canvas.width / 2;
+        const centerY = contentY + contentHeight / 2;
+        
+        context.save();
+        
+        // 背景
+        context.fillStyle = '#f8f9fa';
+        context.fillRect(0, contentY, canvas.width, contentHeight);
+        
+        // ローディングメッセージ
+        context.fillStyle = '#7f8c8d';
+        context.font = '18px Arial, sans-serif';
+        context.textAlign = 'center';
+        context.fillText('チャレンジを読み込み中...', centerX, centerY - 10);
+        
+        // ローディングスピナー（簡単な実装）
+        const time = Date.now() / 1000;
+        const rotation = time * 2;
+        
+        context.translate(centerX, centerY + 30);
+        context.rotate(rotation);
+        context.strokeStyle = '#3498db';
+        context.lineWidth = 3;
+        context.beginPath();
+        context.arc(0, 0, 15, 0, Math.PI * 1.5);
+        context.stroke();
+        
+        context.restore();
+    }
+    
+    /**
+     * チャレンジエラー状態の描画
+     */
+    renderChallengesErrorState(context, contentY, contentHeight) {
+        const canvas = this.gameEngine.canvas;
+        const centerX = canvas.width / 2;
+        const centerY = contentY + contentHeight / 2;
+        
+        context.save();
+        
+        // 背景
+        context.fillStyle = '#ffebee';
+        context.fillRect(0, contentY, canvas.width, contentHeight);
+        
+        // エラーアイコン
+        context.fillStyle = '#e74c3c';
+        context.font = '48px Arial, sans-serif';
+        context.textAlign = 'center';
+        context.fillText('⚠', centerX, centerY - 30);
+        
+        // エラーメッセージ
+        context.fillStyle = '#e74c3c';
+        context.font = 'bold 18px Arial, sans-serif';
+        context.fillText('チャレンジの読み込みに失敗しました', centerX, centerY + 10);
+        
+        context.fillStyle = '#7f8c8d';
+        context.font = '14px Arial, sans-serif';
+        context.fillText('ページを更新してもう一度お試しください', centerX, centerY + 35);
+        
+        context.restore();
+    }
+
+    /**
+     * リーダーボードローディング状態描画
+     */
+    renderLeaderboardLoadingState(context, contentY, contentHeight) {
+        const canvas = this.gameEngine.canvas;
+        
+        // 背景
+        context.fillStyle = '#1a1a2e';
+        context.fillRect(0, contentY, canvas.width, contentHeight);
+        
+        // ローディングメッセージ
+        context.fillStyle = '#ffffff';
+        context.font = '18px Arial';
+        context.textAlign = 'center';
+        context.fillText(
+            'リーダーボードを初期化中...',
+            canvas.width / 2,
+            contentY + contentHeight / 2
+        );
+    }
+
+    /**
+     * リーダーボードエラー状態描画
+     */
+    renderLeaderboardErrorState(context, contentY, contentHeight) {
+        const canvas = this.gameEngine.canvas;
+        
+        // 背景
+        context.fillStyle = '#2a1a1a';
+        context.fillRect(0, contentY, canvas.width, contentHeight);
+        
+        // エラーメッセージ
+        context.fillStyle = '#ff6666';
+        context.font = '18px Arial';
+        context.textAlign = 'center';
+        context.fillText(
+            'リーダーボードの初期化に失敗しました',
+            canvas.width / 2,
+            contentY + contentHeight / 2 - 20
+        );
+        
+        context.fillStyle = '#cccccc';
+        context.font = '14px Arial';
+        context.fillText(
+            'LeaderboardManagerが利用できません',
+            canvas.width / 2,
+            contentY + contentHeight / 2 + 10
+        );
     }
     
     /**
