@@ -8,6 +8,7 @@ import { PrivacyManager } from './PrivacyManager.js';
 import { IndexedDBStorageManager } from './IndexedDBStorageManager.js';
 import { DataCollector } from './DataCollector.js';
 import { GameBalanceCollector } from './GameBalanceCollector.js';
+import { AnalyticsPerformanceOptimizer } from './AnalyticsPerformanceOptimizer.js';
 
 export class EnhancedAnalyticsManager {
     constructor(options = {}) {
@@ -28,6 +29,7 @@ export class EnhancedAnalyticsManager {
         this.storageManager = null;
         this.dataCollector = null;
         this.gameBalanceCollector = null;
+        this.performanceOptimizer = null;
         
         // 状態管理
         this.isInitialized = false;
@@ -92,6 +94,9 @@ export class EnhancedAnalyticsManager {
             
             // ゲームバランスコレクターの初期化
             this.gameBalanceCollector = new GameBalanceCollector(this.dataCollector);
+            
+            // パフォーマンス最適化の初期化
+            this.performanceOptimizer = new AnalyticsPerformanceOptimizer(this, this.options.performanceOptimization);
             
             // パフォーマンス監視の開始
             if (this.options.enablePerformanceTracking) {
@@ -1521,9 +1526,92 @@ export class EnhancedAnalyticsManager {
     }
     
     /**
+     * パフォーマンス最適化統計取得
+     * @returns {Object}
+     */
+    getPerformanceOptimizationStats() {
+        if (!this.performanceOptimizer) {
+            return { error: 'Performance optimizer not initialized' };
+        }
+        
+        return this.performanceOptimizer.getOptimizationStats();
+    }
+    
+    /**
+     * パフォーマンス最適化レポート生成
+     * @returns {Object}
+     */
+    generatePerformanceReport() {
+        if (!this.performanceOptimizer) {
+            return { error: 'Performance optimizer not initialized' };
+        }
+        
+        return this.performanceOptimizer.generatePerformanceReport();
+    }
+    
+    /**
+     * パフォーマンス最適化設定動的調整
+     * @param {Object} newConfig - 新しい設定
+     */
+    adjustPerformanceConfiguration(newConfig) {
+        if (this.performanceOptimizer) {
+            this.performanceOptimizer.adjustConfiguration(newConfig);
+        }
+    }
+    
+    /**
+     * キャッシュからデータ取得
+     * @param {string} key - キャッシュキー
+     * @returns {any|null}
+     */
+    getCachedAnalyticsData(key) {
+        if (!this.performanceOptimizer) return null;
+        
+        return this.performanceOptimizer.getCachedData(key);
+    }
+    
+    /**
+     * データをキャッシュに保存
+     * @param {string} key - キャッシュキー
+     * @param {any} data - データ
+     */
+    setCachedAnalyticsData(key, data) {
+        if (this.performanceOptimizer) {
+            this.performanceOptimizer.setCachedData(key, data);
+        }
+    }
+    
+    /**
+     * 拡張統計取得（キャッシュ付き）
+     * @returns {Object}
+     */
+    getExtendedAnalyticsStats() {
+        const cacheKey = 'extended_analytics_stats';
+        const cached = this.getCachedAnalyticsData(cacheKey);
+        
+        if (cached) {
+            return cached;
+        }
+        
+        const stats = {
+            ...this.getAnalyticsStats(),
+            performanceOptimization: this.getPerformanceOptimizationStats(),
+            timestamp: Date.now()
+        };
+        
+        this.setCachedAnalyticsData(cacheKey, stats);
+        
+        return stats;
+    }
+    
+    /**
      * Enhanced Analytics Managerの破棄
      */
     destroy() {
+        if (this.performanceOptimizer) {
+            this.performanceOptimizer.destroy();
+        }
+        
         if (this.dataCollector) {
             this.dataCollector.destroy();
         }
