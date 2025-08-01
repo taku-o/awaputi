@@ -179,6 +179,249 @@ export class ComparisonEngine {
     }
     
     /**
+     * ステージ別比較機能
+     */
+    compareStagePerformance(stageData, options = {}) {
+        const stageIds = Object.keys(stageData);
+        if (stageIds.length < 2) {
+            return {
+                error: 'insufficient_stages',
+                message: 'At least 2 stages required for comparison',
+                availableStages: stageIds.length
+            };
+        }
+        
+        // ステージ別統計の計算
+        const stageStatistics = {};
+        const stageComparisons = {};
+        
+        stageIds.forEach(stageId => {
+            const stage = stageData[stageId];
+            stageStatistics[stageId] = {
+                stageId: stageId,
+                name: stage.name || stageId,
+                difficulty: stage.difficulty || 'unknown',
+                ...this.calculateStageStatistics(stage),
+                performanceMetrics: this.calculateStagePerformanceMetrics(stage),
+                difficultyAdjustedMetrics: this.calculateDifficultyAdjustedMetrics(stage)
+            };
+        });
+        
+        // ステージ間比較の実行
+        for (let i = 0; i < stageIds.length; i++) {
+            for (let j = i + 1; j < stageIds.length; j++) {
+                const stageA = stageIds[i];
+                const stageB = stageIds[j];
+                
+                const comparisonKey = `${stageA}_vs_${stageB}`;
+                stageComparisons[comparisonKey] = this.compareIndividualStages(
+                    stageStatistics[stageA],
+                    stageStatistics[stageB],
+                    options
+                );
+            }
+        }
+        
+        // 統合分析
+        const overallAnalysis = this.analyzeOverallStagePerformance(stageStatistics, stageComparisons);
+        
+        // ランキング生成
+        const rankings = this.generateStageRankings(stageStatistics);
+        
+        // 改善提案
+        const improvements = this.generateStageImprovementSuggestions(stageStatistics, overallAnalysis);
+        
+        return {
+            comparisonId: this.generateComparisonId(),
+            timestamp: Date.now(),
+            
+            // ステージ統計
+            stageStatistics: stageStatistics,
+            
+            // ペアワイズ比較
+            stageComparisons: stageComparisons,
+            
+            // 統合分析
+            overallAnalysis: overallAnalysis,
+            
+            // ランキング
+            rankings: rankings,
+            
+            // 改善提案
+            improvements: improvements,
+            
+            // サマリー
+            summary: {
+                totalStages: stageIds.length,
+                totalComparisons: Object.keys(stageComparisons).length,
+                bestPerformingStage: rankings.overall[0],
+                mostDifficultStage: rankings.difficulty[0],
+                recommendedFocus: improvements.priorityStages
+            }
+        };
+    }
+    
+    /**
+     * ステージ統計の計算
+     */
+    calculateStageStatistics(stageData) {
+        const sessions = stageData.sessions || [];
+        
+        if (sessions.length === 0) {
+            return this.createEmptyStageStatistics();
+        }
+        
+        // 基本統計
+        const scores = sessions.map(s => s.score || 0);
+        const playTimes = sessions.map(s => s.playTime || 0);
+        const completionRates = sessions.map(s => s.completed ? 1 : 0);
+        const bubblesPopped = sessions.map(s => s.bubblesPopped || 0);
+        const bubblesMissed = sessions.map(s => s.bubblesMissed || 0);
+        const maxCombos = sessions.map(s => s.maxCombo || 0);
+        
+        return {
+            totalSessions: sessions.length,
+            scoreStats: this.calculateBasicStatistics(scores.map(s => ({ value: s }))),
+            playTimeStats: this.calculateBasicStatistics(playTimes.map(t => ({ value: t }))),
+            completionRate: completionRates.reduce((sum, rate) => sum + rate, 0) / sessions.length,
+            bubbleAccuracy: this.calculateBubbleAccuracy(bubblesPopped, bubblesMissed),
+            comboStats: this.calculateBasicStatistics(maxCombos.map(c => ({ value: c }))),
+            
+            // 詳細統計
+            sessionLengthConsistency: this.calculateConsistency(playTimes),
+            scoreConsistency: this.calculateConsistency(scores),
+            improvementTrend: this.calculateImprovementTrend(sessions),
+            retryRate: this.calculateRetryRate(sessions),
+            perfectRuns: sessions.filter(s => s.bubblesMissed === 0).length
+        };
+    }
+    
+    /**
+     * ステージパフォーマンスメトリクスの計算
+     */
+    calculateStagePerformanceMetrics(stageData) {
+        const sessions = stageData.sessions || [];
+        
+        if (sessions.length === 0) {
+            return {};
+        }
+        
+        // 効率メトリクス
+        const timeEfficiency = sessions.map(s => {
+            if (!s.playTime || s.playTime === 0) return 0;
+            return (s.score || 0) / s.playTime;
+        });
+        
+        const bubbleEfficiency = sessions.map(s => {
+            const totalBubbles = (s.bubblesPopped || 0) + (s.bubblesMissed || 0);
+            if (totalBubbles === 0) return 0;
+            return (s.bubblesPopped || 0) / totalBubbles;
+        });
+        
+        // 安定性メトリクス
+        const scoreVariability = this.calculateVariabilityMetric(sessions.map(s => s.score || 0));
+        const timeVariability = this.calculateVariabilityMetric(sessions.map(s => s.playTime || 0));
+        
+        // 成長メトリクス
+        const learningRate = this.calculateLearningRate(sessions);
+        const plateuScore = this.detectPerformancePlateau(sessions);
+        
+        return {
+            efficiency: {
+                timeEfficiency: this.calculateBasicStatistics(timeEfficiency.map(e => ({ value: e }))),
+                bubbleEfficiency: this.calculateBasicStatistics(bubbleEfficiency.map(e => ({ value: e }))),
+                overallEfficiency: (timeEfficiency.reduce((sum, e) => sum + e, 0) + 
+                                  bubbleEfficiency.reduce((sum, e) => sum + e, 0)) / 2
+            },
+            stability: {
+                scoreVariability: scoreVariability,
+                timeVariability: timeVariability,
+                consistencyIndex: this.calculateConsistencyIndex(scoreVariability, timeVariability)
+            },
+            growth: {
+                learningRate: learningRate,
+                hasPlateaued: plateuScore.hasPlateaued,
+                plateauScore: plateuScore.score,
+                improvementPotential: this.calculateImprovementPotential(sessions, learningRate)
+            }
+        };
+    }
+    
+    /**
+     * 難易度調整済みメトリクスの計算
+     */
+    calculateDifficultyAdjustedMetrics(stageData) {
+        const difficulty = this.normalizeDifficulty(stageData.difficulty);
+        const baseMetrics = this.calculateStageStatistics(stageData);
+        
+        // 難易度による調整係数
+        const difficultyMultiplier = this.getDifficultyMultiplier(difficulty);
+        
+        return {
+            adjustedScore: baseMetrics.scoreStats.mean * difficultyMultiplier.score,
+            adjustedEfficiency: (baseMetrics.bubbleAccuracy / 100) * difficultyMultiplier.accuracy,
+            adjustedCompletionRate: baseMetrics.completionRate * difficultyMultiplier.completion,
+            difficultyRating: difficulty,
+            
+            // 相対パフォーマンス指標
+            relativePerformance: {
+                scorePerDifficulty: baseMetrics.scoreStats.mean / Math.max(difficulty, 0.1),
+                accuracyPerDifficulty: (baseMetrics.bubbleAccuracy / 100) / Math.max(difficulty, 0.1),
+                completionPerDifficulty: baseMetrics.completionRate / Math.max(difficulty, 0.1)
+            }
+        };
+    }
+    
+    /**
+     * 個別ステージ比較
+     */
+    compareIndividualStages(stageA, stageB, options = {}) {
+        const comparison = {
+            stages: {
+                stageA: { id: stageA.stageId, name: stageA.name, difficulty: stageA.difficulty },
+                stageB: { id: stageB.stageId, name: stageB.name, difficulty: stageB.difficulty }
+            }
+        };
+        
+        // 基本メトリクス比較
+        comparison.scoreComparison = this.compareMetric(
+            stageA.scoreStats, stageB.scoreStats, 'score'
+        );
+        
+        comparison.timeComparison = this.compareMetric(
+            stageA.playTimeStats, stageB.playTimeStats, 'playTime'
+        );
+        
+        comparison.accuracyComparison = this.compareSimpleMetric(
+            stageA.bubbleAccuracy, stageB.bubbleAccuracy, 'accuracy'
+        );
+        
+        comparison.completionComparison = this.compareSimpleMetric(
+            stageA.completionRate, stageB.completionRate, 'completionRate'
+        );
+        
+        // 難易度調整済み比較
+        comparison.difficultyAdjustedComparison = {
+            scoreAdvantage: this.calculateDifficultyAdjustedAdvantage(
+                stageA.difficultyAdjustedMetrics.adjustedScore,
+                stageB.difficultyAdjustedMetrics.adjustedScore
+            ),
+            efficiencyAdvantage: this.calculateDifficultyAdjustedAdvantage(
+                stageA.difficultyAdjustedMetrics.adjustedEfficiency,
+                stageB.difficultyAdjustedMetrics.adjustedEfficiency
+            )
+        };
+        
+        // パフォーマンス分析
+        comparison.performanceAnalysis = this.analyzeStagePerformanceDifferences(stageA, stageB);
+        
+        // 推奨事項
+        comparison.recommendations = this.generateStageComparisonRecommendations(stageA, stageB, comparison);
+        
+        return comparison;
+    }
+    
+    /**
      * データの前処理
      */
     preprocessComparisonData(dataset, label) {
@@ -593,6 +836,354 @@ export class ComparisonEngine {
         return `comparison_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     }
     
+    // ステージ比較用ヘルパーメソッド
+    createEmptyStageStatistics() {
+        return {
+            totalSessions: 0,
+            scoreStats: this.createEmptyStatistics(),
+            playTimeStats: this.createEmptyStatistics(),
+            completionRate: 0,
+            bubbleAccuracy: 0,
+            comboStats: this.createEmptyStatistics(),
+            sessionLengthConsistency: 0,
+            scoreConsistency: 0,
+            improvementTrend: 0,
+            retryRate: 0,
+            perfectRuns: 0
+        };
+    }
+    
+    calculateBubbleAccuracy(poppedList, missedList) {
+        const totalPopped = Array.isArray(poppedList) ? 
+            poppedList.reduce((sum, val) => sum + val, 0) : (poppedList || 0);
+        const totalMissed = Array.isArray(missedList) ? 
+            missedList.reduce((sum, val) => sum + val, 0) : (missedList || 0);
+        
+        const total = totalPopped + totalMissed;
+        return total > 0 ? (totalPopped / total) * 100 : 0;
+    }
+    
+    calculateConsistency(values) {
+        if (values.length <= 1) return 0;
+        
+        const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
+        const variance = values.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / values.length;
+        const standardDeviation = Math.sqrt(variance);
+        
+        return mean > 0 ? (1 - (standardDeviation / mean)) * 100 : 0;
+    }
+    
+    calculateImprovementTrend(sessions) {
+        if (sessions.length <= 1) return 0;
+        
+        // 線形回帰による傾向計算
+        const n = sessions.length;
+        const x = Array.from({ length: n }, (_, i) => i + 1);
+        const y = sessions.map(s => s.score || 0);
+        
+        const sumX = x.reduce((sum, val) => sum + val, 0);
+        const sumY = y.reduce((sum, val) => sum + val, 0);
+        const sumXY = x.reduce((sum, val, i) => sum + val * y[i], 0);
+        const sumXX = x.reduce((sum, val) => sum + val * val, 0);
+        
+        const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
+        return isNaN(slope) ? 0 : slope;
+    }
+    
+    calculateRetryRate(sessions) {
+        if (sessions.length === 0) return 0;
+        
+        const failed = sessions.filter(s => !s.completed).length;
+        return (failed / sessions.length) * 100;
+    }
+    
+    calculateVariabilityMetric(values) {
+        if (values.length <= 1) return 0;
+        
+        const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
+        const variance = values.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / values.length;
+        
+        return Math.sqrt(variance);
+    }
+    
+    calculateLearningRate(sessions) {
+        if (sessions.length < 3) return 0;
+        
+        // 最初の1/3と最後の1/3を比較
+        const firstThird = sessions.slice(0, Math.ceil(sessions.length / 3));
+        const lastThird = sessions.slice(-Math.ceil(sessions.length / 3));
+        
+        const firstAvg = firstThird.reduce((sum, s) => sum + (s.score || 0), 0) / firstThird.length;
+        const lastAvg = lastThird.reduce((sum, s) => sum + (s.score || 0), 0) / lastThird.length;
+        
+        return firstAvg > 0 ? ((lastAvg - firstAvg) / firstAvg) * 100 : 0;
+    }
+    
+    detectPerformancePlateau(sessions) {
+        if (sessions.length < 5) return { hasPlateaued: false, score: 0 };
+        
+        const recentSessions = sessions.slice(-5);
+        const scores = recentSessions.map(s => s.score || 0);
+        const variability = this.calculateVariabilityMetric(scores);
+        const mean = scores.reduce((sum, val) => sum + val, 0) / scores.length;
+        
+        const hasPlateaued = mean > 0 && (variability / mean) < 0.1; // 10%未満の変動
+        
+        return { hasPlateaued, score: mean };
+    }
+    
+    calculateConsistencyIndex(scoreVar, timeVar) {
+        const normalizedScoreVar = Math.min(scoreVar / 1000, 1); // 正規化
+        const normalizedTimeVar = Math.min(timeVar / 60000, 1); // 正規化（分単位）
+        
+        return Math.max(0, 1 - (normalizedScoreVar + normalizedTimeVar) / 2) * 100;
+    }
+    
+    calculateImprovementPotential(sessions, learningRate) {
+        if (sessions.length === 0) return 0;
+        
+        const recentPerformance = sessions.slice(-3);
+        const avgRecentScore = recentPerformance.reduce((sum, s) => sum + (s.score || 0), 0) / recentPerformance.length;
+        const maxScore = Math.max(...sessions.map(s => s.score || 0));
+        
+        const currentPotential = maxScore > 0 ? (avgRecentScore / maxScore) * 100 : 0;
+        const learningFactor = Math.max(0, learningRate) / 10; // 学習率による調整
+        
+        return Math.min(100, currentPotential + learningFactor);
+    }
+    
+    normalizeDifficulty(difficulty) {
+        if (typeof difficulty === 'number') return Math.max(0.1, Math.min(5, difficulty));
+        
+        const difficultyMap = {
+            'very_easy': 0.5,
+            'easy': 1,
+            'normal': 2,
+            'hard': 3,
+            'very_hard': 4,
+            'extreme': 5
+        };
+        
+        return difficultyMap[difficulty] || 2;
+    }
+    
+    getDifficultyMultiplier(difficulty) {
+        return {
+            score: Math.pow(difficulty, 0.5), // 平方根で調整
+            accuracy: 1 + (difficulty - 1) * 0.2, // 線形調整
+            completion: 1 + (difficulty - 1) * 0.3 // より強い調整
+        };
+    }
+    
+    compareMetric(statsA, statsB, metricName) {
+        return {
+            metricName: metricName,
+            stageA: {
+                mean: statsA.mean,
+                median: statsA.median,
+                standardDeviation: statsA.standardDeviation
+            },
+            stageB: {
+                mean: statsB.mean,
+                median: statsB.median,
+                standardDeviation: statsB.standardDeviation
+            },
+            difference: {
+                mean: statsB.mean - statsA.mean,
+                percent: statsA.mean > 0 ? ((statsB.mean - statsA.mean) / statsA.mean) * 100 : 0
+            },
+            winner: statsB.mean > statsA.mean ? 'stageB' : 'stageA',
+            confidence: this.calculateComparisonConfidence(statsA, statsB)
+        };
+    }
+    
+    compareSimpleMetric(valueA, valueB, metricName) {
+        return {
+            metricName: metricName,
+            stageA: valueA,
+            stageB: valueB,
+            difference: {
+                absolute: valueB - valueA,
+                percent: valueA > 0 ? ((valueB - valueA) / valueA) * 100 : 0
+            },
+            winner: valueB > valueA ? 'stageB' : 'stageA'
+        };
+    }
+    
+    calculateDifficultyAdjustedAdvantage(valueA, valueB) {
+        if (valueA === 0 && valueB === 0) return { advantage: 'none', ratio: 1 };
+        if (valueA === 0) return { advantage: 'stageB', ratio: Infinity };
+        if (valueB === 0) return { advantage: 'stageA', ratio: Infinity };
+        
+        const ratio = valueB / valueA;
+        const advantage = ratio > 1.1 ? 'stageB' : ratio < 0.9 ? 'stageA' : 'none';
+        
+        return { advantage, ratio };
+    }
+    
+    calculateComparisonConfidence(statsA, statsB) {
+        // 簡易的な信頼度計算
+        const sampleSizeA = statsA.count || 0;
+        const sampleSizeB = statsB.count || 0;
+        
+        if (sampleSizeA < 3 || sampleSizeB < 3) return 'low';
+        if (sampleSizeA < 10 || sampleSizeB < 10) return 'medium';
+        return 'high';
+    }
+    
+    analyzeStagePerformanceDifferences(stageA, stageB) {
+        return {
+            strengthsA: this.identifyStageStrengths(stageA),
+            strengthsB: this.identifyStageStrengths(stageB),
+            weaknessesA: this.identifyStageWeaknesses(stageA),
+            weaknessesB: this.identifyStageWeaknesses(stageB),
+            overallAssessment: this.assessOverallStagePerformance(stageA, stageB)
+        };
+    }
+    
+    identifyStageStrengths(stage) {
+        const strengths = [];
+        
+        if (stage.completionRate > 0.8) strengths.push('high_completion_rate');
+        if (stage.bubbleAccuracy > 85) strengths.push('high_accuracy');
+        if (stage.scoreConsistency > 70) strengths.push('consistent_performance');
+        if (stage.improvementTrend > 0) strengths.push('positive_learning_trend');
+        if (stage.perfectRuns > stage.totalSessions * 0.1) strengths.push('frequent_perfect_runs');
+        
+        return strengths;
+    }
+    
+    identifyStageWeaknesses(stage) {
+        const weaknesses = [];
+        
+        if (stage.completionRate < 0.5) weaknesses.push('low_completion_rate');
+        if (stage.bubbleAccuracy < 70) weaknesses.push('low_accuracy');
+        if (stage.scoreConsistency < 30) weaknesses.push('inconsistent_performance');
+        if (stage.improvementTrend < -5) weaknesses.push('declining_performance');
+        if (stage.retryRate > 50) weaknesses.push('high_retry_rate');
+        
+        return weaknesses;
+    }
+    
+    assessOverallStagePerformance(stageA, stageB) {
+        const scoreA = this.calculateOverallPerformanceScore(stageA);
+        const scoreB = this.calculateOverallPerformanceScore(stageB);
+        
+        return {
+            stageA: { score: scoreA, rating: this.getRatingFromScore(scoreA) },
+            stageB: { score: scoreB, rating: this.getRatingFromScore(scoreB) },
+            winner: scoreA > scoreB ? 'stageA' : 'stageB',
+            margin: Math.abs(scoreA - scoreB)
+        };
+    }
+    
+    calculateOverallPerformanceScore(stage) {
+        const weights = {
+            completion: 0.3,
+            accuracy: 0.25,
+            consistency: 0.2,
+            improvement: 0.15,
+            efficiency: 0.1
+        };
+        
+        const scores = {
+            completion: stage.completionRate * 100,
+            accuracy: stage.bubbleAccuracy,
+            consistency: stage.scoreConsistency,
+            improvement: Math.max(0, stage.improvementTrend),
+            efficiency: stage.performanceMetrics?.efficiency?.overallEfficiency || 0
+        };
+        
+        return Object.keys(weights).reduce((total, key) => {
+            return total + (scores[key] * weights[key]);
+        }, 0);
+    }
+    
+    getRatingFromScore(score) {
+        if (score >= 80) return 'excellent';
+        if (score >= 70) return 'good';
+        if (score >= 60) return 'average';
+        if (score >= 50) return 'below_average';
+        return 'poor';
+    }
+    
+    generateStageComparisonRecommendations(stageA, stageB, comparison) {
+        const recommendations = [];
+        
+        // 完了率に基づく推奨
+        if (comparison.completionComparison.winner === 'stageB' && comparison.completionComparison.difference.percent > 20) {
+            recommendations.push({
+                type: 'focus_practice',
+                stage: stageA.stageId,
+                reason: 'low_completion_rate',
+                suggestion: `${stageA.name}での完了率を向上させるため、より集中的な練習を推奨`
+            });
+        }
+        
+        // 精度に基づく推奨
+        if (comparison.accuracyComparison.winner === 'stageB' && comparison.accuracyComparison.difference.percent > 15) {
+            recommendations.push({
+                type: 'accuracy_improvement',
+                stage: stageA.stageId,
+                reason: 'low_accuracy',
+                suggestion: `${stageA.name}での泡の精度向上に重点を置いた練習を推奨`
+            });
+        }
+        
+        // 難易度調整に基づく推奨
+        if (comparison.difficultyAdjustedComparison.scoreAdvantage.advantage === 'stageB') {
+            recommendations.push({
+                type: 'difficulty_consideration',
+                stage: stageA.stageId,
+                reason: 'difficulty_adjusted_performance',
+                suggestion: `難易度を考慮すると${stageB.name}の方が効率的。戦略の見直しを推奨`
+            });
+        }
+        
+        return recommendations;
+    }
+    
+    analyzeOverallStagePerformance(stageStatistics, stageComparisons) {
+        const stageIds = Object.keys(stageStatistics);
+        
+        return {
+            performanceDistribution: this.analyzePerformanceDistribution(stageStatistics),
+            difficultyCorrelation: this.analyzeDifficultyCorrelation(stageStatistics),
+            learningPatterns: this.analyzeLearningPatterns(stageStatistics),
+            optimalProgression: this.determineOptimalProgression(stageStatistics),
+            bottlenecks: this.identifyPerformanceBottlenecks(stageStatistics)
+        };
+    }
+    
+    generateStageRankings(stageStatistics) {
+        const stageIds = Object.keys(stageStatistics);
+        
+        return {
+            overall: this.rankStagesByOverallPerformance(stageStatistics),
+            difficulty: this.rankStagesByDifficulty(stageStatistics),
+            improvement: this.rankStagesByImprovement(stageStatistics),
+            consistency: this.rankStagesByConsistency(stageStatistics),
+            efficiency: this.rankStagesByEfficiency(stageStatistics)
+        };
+    }
+    
+    generateStageImprovementSuggestions(stageStatistics, overallAnalysis) {
+        const suggestions = [];
+        const stageIds = Object.keys(stageStatistics);
+        
+        stageIds.forEach(stageId => {
+            const stage = stageStatistics[stageId];
+            const stageSuggestions = this.generateIndividualStageSuggestions(stage);
+            suggestions.push(...stageSuggestions);
+        });
+        
+        return {
+            individualSuggestions: suggestions,
+            priorityStages: this.identifyPriorityStages(stageStatistics),
+            generalRecommendations: this.generateGeneralRecommendations(overallAnalysis)
+        };
+    }
+    
     // 簡略化された実装のプレースホルダ
     analyzeDistribution(data) { return { type: 'unknown' }; }
     compareTrends(data1, data2) { return { correlation: 0 }; }
@@ -615,4 +1206,523 @@ export class ComparisonEngine {
     calculatePerformanceIndex(current, baseline) { return 1; }
     calculateConfidenceInterval(current, baseline) { return { lower: 0, upper: 0 }; }
     determineAlertLevel(change, significance) { return 'normal'; }
+    
+    // 改善提案システムの実装
+    generatePersonalizedImprovementPlan(playerData, comparisonAnalysis, options = {}) {
+        const config = {
+            focusAreas: 3, // 重点分野の数
+            timeHorizon: 30, // 日数
+            difficultyPreference: 'gradual', // 'aggressive', 'gradual', 'conservative'
+            includeMotivationalElements: true,
+            ...options
+        };
+        
+        // プレイスタイル分析
+        const playStyle = this.analyzePlayStyle(playerData);
+        
+        // 弱点と改善機会の特定
+        const weaknesses = this.identifyPlayerWeaknesses(playerData, comparisonAnalysis);
+        const opportunities = this.identifyImprovementOpportunities(playerData, comparisonAnalysis);
+        
+        // 個別化された提案生成
+        const personalizedSuggestions = this.generatePersonalizedSuggestions(playStyle, weaknesses, opportunities, config);
+        
+        // 実行可能なアクションプラン
+        const actionPlan = this.createActionPlan(personalizedSuggestions, config);
+        
+        // モチベーション要素
+        const motivationalElements = config.includeMotivationalElements ? 
+            this.generateMotivationalElements(playerData, actionPlan) : null;
+        
+        return {
+            planId: this.generatePlanId(),
+            timestamp: Date.now(),
+            playerProfile: playStyle,
+            
+            // 分析結果
+            analysis: {
+                strengths: this.identifyPlayerStrengths(playerData),
+                weaknesses: weaknesses,
+                opportunities: opportunities,
+                threats: this.identifyPerformanceThreats(playerData)
+            },
+            
+            // 個別提案
+            suggestions: personalizedSuggestions,
+            
+            // アクションプラン
+            actionPlan: actionPlan,
+            
+            // モチベーション要素
+            motivation: motivationalElements,
+            
+            // 成功メトリクス
+            successMetrics: this.defineSuccessMetrics(personalizedSuggestions),
+            
+            // フォローアップ
+            followUp: this.createFollowUpPlan(actionPlan, config.timeHorizon)
+        };
+    }
+    
+    analyzePlayStyle(playerData) {
+        const stats = playerData.statistics || {};
+        
+        // プレイパターンの分析
+        const patterns = {
+            pace: this.analyzePace(stats),
+            riskTolerance: this.analyzeRiskTolerance(stats),
+            consistency: this.analyzeConsistencyPattern(stats),
+            learningStyle: this.analyzeLearningStyle(stats),
+            preferredStages: this.analyzeStagePreferences(stats),
+            sessionHabits: this.analyzeSessionHabits(stats)
+        };
+        
+        // プレイスタイル分類
+        const styleClassification = this.classifyPlayStyle(patterns);
+        
+        return {
+            classification: styleClassification,
+            patterns: patterns,
+            characteristics: this.getStyleCharacteristics(styleClassification),
+            recommendations: this.getStyleBasedRecommendations(styleClassification)
+        };
+    }
+    
+    identifyPlayerWeaknesses(playerData, comparisonAnalysis) {
+        const weaknesses = [];
+        const stats = playerData.statistics || {};
+        const benchmarks = comparisonAnalysis.benchmarks || {};
+        
+        // スコア関連の弱点
+        if (stats.averageScore < benchmarks.averageScore * 0.8) {
+            weaknesses.push({
+                type: 'low_average_score',
+                severity: 'high',
+                description: '平均スコアがベンチマークより20%以上低い',
+                impactArea: 'scoring',
+                priority: 1
+            });
+        }
+        
+        // 精度関連の弱点
+        if (stats.bubbleAccuracy < benchmarks.bubbleAccuracy * 0.85) {
+            weaknesses.push({
+                type: 'low_accuracy',
+                severity: 'medium',
+                description: '泡の命中精度が平均より低い',
+                impactArea: 'accuracy',
+                priority: 2
+            });
+        }
+        
+        // 一貫性関連の弱点
+        if (this.calculateScoreVariability(stats) > benchmarks.scoreVariability * 1.3) {
+            weaknesses.push({
+                type: 'inconsistent_performance',
+                severity: 'medium',
+                description: 'パフォーマンスの一貫性に課題がある',
+                impactArea: 'consistency',
+                priority: 2
+            });
+        }
+        
+        // 学習効率の弱点
+        if (stats.improvementTrend < 0) {
+            weaknesses.push({
+                type: 'declining_performance',
+                severity: 'high',
+                description: '最近のパフォーマンスが低下傾向にある',
+                impactArea: 'learning',
+                priority: 1
+            });
+        }
+        
+        // 完了率の弱点
+        if (stats.completionRate < benchmarks.completionRate * 0.75) {
+            weaknesses.push({
+                type: 'low_completion_rate',
+                severity: 'medium',
+                description: 'ステージ完了率が平均より低い',
+                impactArea: 'completion',
+                priority: 2
+            });
+        }
+        
+        return weaknesses.sort((a, b) => a.priority - b.priority);
+    }
+    
+    identifyImprovementOpportunities(playerData, comparisonAnalysis) {
+        const opportunities = [];
+        const stats = playerData.statistics || {};
+        
+        // スキル向上の機会
+        const skillGaps = this.identifySkillGaps(stats, comparisonAnalysis);
+        skillGaps.forEach(gap => {
+            opportunities.push({
+                type: 'skill_improvement',
+                area: gap.skill,
+                potential: gap.potential,
+                timeframe: gap.estimatedTime,
+                description: `${gap.skill}スキルの向上により${gap.potential}%のパフォーマンス向上が期待できる`
+            });
+        });
+        
+        // ステージ最適化の機会
+        const stageOpportunities = this.identifyStageOptimizationOpportunities(stats);
+        opportunities.push(...stageOpportunities);
+        
+        // プレイ時間最適化の機会
+        const timeOptimization = this.identifyTimeOptimizationOpportunities(stats);
+        if (timeOptimization) {
+            opportunities.push(timeOptimization);
+        }
+        
+        return opportunities;
+    }
+    
+    generatePersonalizedSuggestions(playStyle, weaknesses, opportunities, config) {
+        const suggestions = [];
+        
+        // 弱点に基づく提案
+        weaknesses.slice(0, config.focusAreas).forEach(weakness => {
+            const suggestion = this.createWeaknessBasedSuggestion(weakness, playStyle, config);
+            suggestions.push(suggestion);
+        });
+        
+        // 機会に基づく提案
+        opportunities.filter(opp => opp.potential > 10).forEach(opportunity => {
+            const suggestion = this.createOpportunityBasedSuggestion(opportunity, playStyle, config);
+            suggestions.push(suggestion);
+        });
+        
+        // プレイスタイルに基づく提案
+        const styleSuggestions = this.createStyleBasedSuggestions(playStyle, config);
+        suggestions.push(...styleSuggestions);
+        
+        return suggestions.slice(0, 5); // 最大5つの提案
+    }
+    
+    createWeaknessBasedSuggestion(weakness, playStyle, config) {
+        const suggestionTemplates = {
+            low_average_score: {
+                title: 'スコア向上トレーニング',
+                description: '特殊泡を狙った集中練習でスコアを向上させましょう',
+                actions: [
+                    'レインボー泡を優先的に狙う練習',
+                    'コンボ継続テクニックの習得',
+                    '高得点ステージでの反復練習'
+                ],
+                expectedImprovement: '15-25%のスコア向上',
+                timeframe: '2-3週間'
+            },
+            low_accuracy: {
+                title: '精度向上プログラム',
+                description: '狙いを定めた正確なクリックでミスを減らしましょう',
+                actions: [
+                    'スロー泡でのターゲット練習',
+                    'マウス感度の最適化',
+                    '短いセッションでの集中練習'
+                ],
+                expectedImprovement: '10-20%の精度向上',
+                timeframe: '1-2週間'
+            },
+            inconsistent_performance: {
+                title: '安定性向上トレーニング',
+                description: '一定のパフォーマンスを維持する練習を行いましょう',
+                actions: [
+                    '毎日決まった時間での短期練習',
+                    'ウォームアップルーチンの確立',
+                    '集中力維持テクニックの習得'
+                ],
+                expectedImprovement: 'パフォーマンスの安定化',
+                timeframe: '3-4週間'
+            }
+        };
+        
+        const template = suggestionTemplates[weakness.type] || suggestionTemplates.low_average_score;
+        
+        return {
+            id: this.generateSuggestionId(),
+            type: 'weakness_improvement',
+            priority: weakness.priority,
+            ...template,
+            targetWeakness: weakness.type,
+            personalizedActions: this.personalizeActions(template.actions, playStyle)
+        };
+    }
+    
+    createOpportunityBasedSuggestion(opportunity, playStyle, config) {
+        return {
+            id: this.generateSuggestionId(),
+            type: 'opportunity_exploitation',
+            title: `${opportunity.area}の最適化`,
+            description: opportunity.description,
+            potential: opportunity.potential,
+            timeframe: opportunity.timeframe,
+            actions: this.generateOpportunityActions(opportunity, playStyle),
+            priority: Math.ceil(opportunity.potential / 10)
+        };
+    }
+    
+    createStyleBasedSuggestions(playStyle, config) {
+        const suggestions = [];
+        const style = playStyle.classification;
+        
+        const styleSpecificSuggestions = {
+            aggressive: [
+                {
+                    title: 'リスク管理の習得',
+                    description: '攻撃的なプレイスタイルにリスク管理を組み合わせましょう',
+                    actions: ['安全な泡を確保してからリスクを取る', '残り時間を意識した戦略の切り替え']
+                }
+            ],
+            conservative: [
+                {
+                    title: 'チャンス活用の強化',
+                    description: '安全性を保ちながらより多くのチャンスを活用しましょう',
+                    actions: ['特殊泡出現時の迅速な判断練習', 'リスクとリターンの計算練習']
+                }
+            ],
+            balanced: [
+                {
+                    title: 'スペシャリゼーションの検討',
+                    description: '特定の分野での強みをさらに伸ばしましょう',
+                    actions: ['得意なステージタイプの特定', '専門スキルの集中強化']
+                }
+            ]
+        };
+        
+        const styleSuggestions = styleSpecificSuggestions[style] || styleSpecificSuggestions.balanced;
+        
+        styleSuggestions.forEach(suggestion => {
+            suggestions.push({
+                id: this.generateSuggestionId(),
+                type: 'style_optimization',
+                priority: 3,
+                timeframe: '2-4週間',
+                ...suggestion
+            });
+        });
+        
+        return suggestions;
+    }
+    
+    createActionPlan(suggestions, config) {
+        const plan = {
+            phases: [],
+            timeline: config.timeHorizon,
+            milestones: []
+        };
+        
+        // フェーズ分け
+        const phaseDuration = Math.ceil(config.timeHorizon / 3);
+        
+        // Phase 1: 基礎固め
+        plan.phases.push({
+            phase: 1,
+            name: '基礎強化フェーズ',
+            duration: phaseDuration,
+            focus: 'weakness_improvement',
+            actions: this.getPhaseActions(suggestions, 'weakness_improvement', 1),
+            goals: this.getPhaseGoals(suggestions, 1)
+        });
+        
+        // Phase 2: スキル向上
+        plan.phases.push({
+            phase: 2,
+            name: 'スキル向上フェーズ',
+            duration: phaseDuration,
+            focus: 'opportunity_exploitation',
+            actions: this.getPhaseActions(suggestions, 'opportunity_exploitation', 2),
+            goals: this.getPhaseGoals(suggestions, 2)
+        });
+        
+        // Phase 3: 最適化
+        plan.phases.push({
+            phase: 3,
+            name: '最適化フェーズ',
+            duration: config.timeHorizon - phaseDuration * 2,
+            focus: 'style_optimization',
+            actions: this.getPhaseActions(suggestions, 'style_optimization', 3),
+            goals: this.getPhaseGoals(suggestions, 3)
+        });
+        
+        // マイルストーン設定
+        plan.milestones = this.createMilestones(plan.phases);
+        
+        return plan;
+    }
+    
+    generateMotivationalElements(playerData, actionPlan) {
+        return {
+            encouragement: this.generateEncouragement(playerData),
+            achievements: this.predictAchievements(actionPlan),
+            challenges: this.createPersonalChallenges(playerData, actionPlan),
+            socialElements: this.generateSocialMotivation(playerData),
+            rewards: this.suggestRewardMilestones(actionPlan)
+        };
+    }
+    
+    defineSuccessMetrics(suggestions) {
+        const metrics = [];
+        
+        suggestions.forEach(suggestion => {
+            switch (suggestion.type) {
+                case 'weakness_improvement':
+                    metrics.push({
+                        name: `${suggestion.targetWeakness}_improvement`,
+                        type: 'improvement_percentage',
+                        target: suggestion.expectedImprovement,
+                        measurement: 'weekly_average'
+                    });
+                    break;
+                case 'opportunity_exploitation':
+                    metrics.push({
+                        name: `${suggestion.title}_utilization`,
+                        type: 'opportunity_realization',
+                        target: `${suggestion.potential}% potential realized`,
+                        measurement: 'cumulative'
+                    });
+                    break;
+                case 'style_optimization':
+                    metrics.push({
+                        name: 'style_consistency',
+                        type: 'consistency_score',
+                        target: 'improved consistency',
+                        measurement: 'rolling_average'
+                    });
+                    break;
+            }
+        });
+        
+        return metrics;
+    }
+    
+    createFollowUpPlan(actionPlan, timeHorizon) {
+        const checkpoints = [];
+        const weeklyInterval = Math.ceil(timeHorizon / 4); // 4回のチェックポイント
+        
+        for (let i = 1; i <= 4; i++) {
+            checkpoints.push({
+                week: i * weeklyInterval,
+                focus: this.getCheckpointFocus(i),
+                assessments: this.getCheckpointAssessments(i),
+                adjustments: this.getCheckpointAdjustments(i)
+            });
+        }
+        
+        return {
+            checkpoints: checkpoints,
+            finalReview: {
+                week: timeHorizon,
+                comprehensive: true,
+                nextPlanGeneration: true
+            }
+        };
+    }
+    
+    // ヘルパーメソッドの実装
+    analyzePace(stats) {
+        const avgSessionTime = stats.averageSessionLength || 0;
+        if (avgSessionTime < 180000) return 'fast'; // 3分未満
+        if (avgSessionTime > 600000) return 'slow'; // 10分超
+        return 'medium';
+    }
+    
+    analyzeRiskTolerance(stats) {
+        const perfectGameRate = (stats.perfectGames || 0) / Math.max(stats.totalGamesPlayed || 1, 1);
+        if (perfectGameRate > 0.3) return 'conservative';
+        if (perfectGameRate < 0.1) return 'risk_taking';
+        return 'balanced';
+    }
+    
+    analyzeConsistencyPattern(stats) {
+        const scoreVariability = this.calculateScoreVariability(stats);
+        if (scoreVariability < 0.2) return 'highly_consistent';
+        if (scoreVariability > 0.5) return 'highly_variable';
+        return 'moderately_consistent';
+    }
+    
+    analyzeLearningStyle(stats) {
+        const improvementTrend = stats.improvementTrend || 0;
+        if (improvementTrend > 5) return 'fast_learner';
+        if (improvementTrend < -2) return 'needs_support';
+        return 'steady_learner';
+    }
+    
+    analyzeStagePreferences(stats) {
+        const stageStats = stats.stageStats || {};
+        const favorites = Object.entries(stageStats)
+            .sort((a, b) => b[1].gamesPlayed - a[1].gamesPlayed)
+            .slice(0, 3)
+            .map(([stageId]) => stageId);
+        return favorites;
+    }
+    
+    analyzeSessionHabits(stats) {
+        const playTimeByHour = stats.playTimeByHour || new Array(24).fill(0);
+        const peakHour = playTimeByHour.indexOf(Math.max(...playTimeByHour));
+        
+        return {
+            peakHour: peakHour,
+            averageSessionsPerDay: (stats.totalGamesPlayed || 0) / Math.max((stats.totalPlayTime || 1) / 86400000, 1),
+            preferredTimeSlot: this.getTimeSlot(peakHour)
+        };
+    }
+    
+    classifyPlayStyle(patterns) {
+        if (patterns.riskTolerance === 'risk_taking' && patterns.pace === 'fast') {
+            return 'aggressive';
+        }
+        if (patterns.riskTolerance === 'conservative' && patterns.consistency === 'highly_consistent') {
+            return 'conservative';
+        }
+        return 'balanced';
+    }
+    
+    calculateScoreVariability(stats) {
+        if (!stats.totalScore || !stats.totalGamesPlayed) return 0;
+        const avgScore = stats.totalScore / stats.totalGamesPlayed;
+        return stats.highestScore > 0 ? 1 - (avgScore / stats.highestScore) : 0;
+    }
+    
+    // プレースホルダ実装
+    getStyleCharacteristics(style) { return {}; }
+    getStyleBasedRecommendations(style) { return []; }
+    identifyPlayerStrengths(playerData) { return []; }
+    identifyPerformanceThreats(playerData) { return []; }
+    identifySkillGaps(stats, analysis) { return []; }
+    identifyStageOptimizationOpportunities(stats) { return []; }
+    identifyTimeOptimizationOpportunities(stats) { return null; }
+    personalizeActions(actions, playStyle) { return actions; }
+    generateOpportunityActions(opportunity, playStyle) { return []; }
+    getPhaseActions(suggestions, type, phase) { return []; }
+    getPhaseGoals(suggestions, phase) { return []; }
+    createMilestones(phases) { return []; }
+    generateEncouragement(playerData) { return ''; }
+    predictAchievements(actionPlan) { return []; }
+    createPersonalChallenges(playerData, actionPlan) { return []; }
+    generateSocialMotivation(playerData) { return {}; }
+    suggestRewardMilestones(actionPlan) { return []; }
+    getCheckpointFocus(week) { return 'general'; }
+    getCheckpointAssessments(week) { return []; }
+    getCheckpointAdjustments(week) { return []; }
+    getTimeSlot(hour) { return hour < 12 ? 'morning' : hour < 18 ? 'afternoon' : 'evening'; }
+    generatePlanId() { return `plan_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`; }
+    generateSuggestionId() { return `suggestion_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`; }
+    
+    // 残りのステージ比較用プレースホルダ
+    analyzePerformanceDistribution(stats) { return {}; }
+    analyzeDifficultyCorrelation(stats) { return { correlation: 0 }; }
+    analyzeLearningPatterns(stats) { return {}; }
+    determineOptimalProgression(stats) { return []; }
+    identifyPerformanceBottlenecks(stats) { return []; }
+    rankStagesByOverallPerformance(stats) { return Object.keys(stats); }
+    rankStagesByDifficulty(stats) { return Object.keys(stats); }
+    rankStagesByImprovement(stats) { return Object.keys(stats); }
+    rankStagesByConsistency(stats) { return Object.keys(stats); }
+    rankStagesByEfficiency(stats) { return Object.keys(stats); }
+    generateIndividualStageSuggestions(stage) { return []; }
+    identifyPriorityStages(stats) { return []; }
+    generateGeneralRecommendations(analysis) { return []; }
 }
