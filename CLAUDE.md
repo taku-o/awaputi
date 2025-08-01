@@ -1052,6 +1052,50 @@ const STAGE_CONFIGS = {
 - **構造化データ**: VideoGame、Organization、WebApplicationスキーマ
 - **Lighthouse SEOスコア**: >90維持、パフォーマンス影響最小化
 
+### チュートリアルシステム実装プロジェクト（Issue #36対応）🔄進行中
+**目標**: 新規プレイヤーがゲームを理解しやすくするため、インタラクティブなチュートリアルシステムを実装し、プレイヤーの離脱率を減少させ、ゲーム理解度を向上させる
+
+#### 実装対象の機能
+1. **段階的チュートリアルシステム**: 基本操作説明、バブルタイプ紹介、UI要素説明、アイテムシステム紹介
+2. **インタラクティブガイドシステム**: 要素ハイライト、ステップバイステップ指示、実操作プロンプト、進行状況表示
+3. **包括的ヘルプシステム**: いつでもアクセス可能なヘルプ、FAQ機能、ゲーム用語集、戦略とコツ
+4. **プレイヤー適応型システム**: 自動チュートリアル開始、スキップ機能、復習機能、難易度別ヒント
+5. **マルチメディア対応システム**: アニメーション付き説明、音声ガイド、視覚的デモンストレーション、動画チュートリアル
+6. **データ永続化システム**: LocalStorage進行状況保存、中断・再開機能、完了状態管理
+7. **既存システム統合**: SceneManager、LocalizationManager、AccessibilityManager統合
+
+#### 主要コンポーネント
+- **TutorialManager**: 中央制御、ステップ管理、イベントシステム
+- **TutorialOverlay**: UI表示、ハイライト機能、ツールチップ
+- **TutorialStepManager**: ステップ定義、遷移ロジック、検証システム
+- **TutorialProgressTracker**: 進行状況管理、LocalStorage連携
+- **TutorialActions**: インタラクティブ機能、デモンストレーション
+
+#### 実装アプローチ（15大タスク、60+サブタスク）
+- **Task 1**: コアシステム基盤構築（TutorialManager、GameEngine統合、エラーハンドリング）
+- **Task 2**: データ永続化システム（TutorialProgressTracker、LocalStorage連携、リセット機能）
+- **Task 3**: ステップ管理システム（TutorialStepManager、ステップ定義、遷移ロジック）
+- **Task 4**: オーバーレイUIシステム（TutorialOverlay、コンテンツ表示、プログレス表示）
+- **Task 5**: ハイライトシステム（要素ハイライト、アニメーション、管理機能）
+- **Task 6**: インタラクティブ機能（TutorialActions、検証システム、デモンストレーション）
+- **Task 7**: ツールチップシステム（TooltipSystem、位置調整、コンテンツ管理）
+- **Task 8**: 多言語対応システム（LocalizationManager統合、RTL言語サポート）
+- **Task 9**: アクセシビリティ機能（AccessibilityManager統合、スクリーンリーダー対応）
+- **Task 10**: 音声・マルチメディア機能（音声ガイド、動画チュートリアル）
+- **Task 11**: 適応型機能（スキップ、復習、難易度別ヒント）
+- **Task 12**: GameEngine統合とシーン連携（SceneManager統合、ゲーム内チュートリアル）
+- **Task 13**: パフォーマンス最適化（メモリ、レンダリング、遅延読み込み）
+- **Task 14**: テスト実装（ユニット、統合、E2Eテスト）
+- **Task 15**: ドキュメント作成と最終統合（APIドキュメント、ユーザーガイド）
+
+#### 既存システム統合ポイント
+- **GameEngine**: 全チュートリアル機能の中央制御
+- **SceneManager**: チュートリアルシーン統合、既存シーンでのオーバーレイ表示
+- **LocalizationManager**: 多言語チュートリアルコンテンツ
+- **AccessibilityManager**: WCAG準拠チュートリアル機能
+- **HelpManager**: 既存ヘルプシステムとの統合（src/core/help/）
+- **TutorialOverlay**: 既存実装（src/core/help/TutorialOverlay.js）の活用・拡張
+
 ### ゲーム分析機能実装プロジェクト（Issue #35対応）🔄進行中
 **目標**: プレイヤー行動とゲームバランスの分析機能を実装し、データドリブンなゲーム改善を実現
 
