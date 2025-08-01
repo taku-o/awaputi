@@ -56,6 +56,9 @@ export class LeaderboardManager {
                 await this.performIntegrityCheck();
             }
             
+            // 定期クリーンアップの設定
+            this.setupPeriodicCleanup();
+            
             console.log('[LeaderboardManager] 初期化完了');
             
         } catch (error) {
@@ -66,6 +69,31 @@ export class LeaderboardManager {
             // フォールバック: 空のデータで初期化
             this.initializeEmptyData();
         }
+    }
+
+    /**
+     * 定期クリーンアップの設定
+     */
+    setupPeriodicCleanup() {
+        // 1時間ごとに期限切れエントリーをクリーンアップ
+        setInterval(async () => {
+            try {
+                await this.cleanupExpiredPeriodEntries();
+            } catch (error) {
+                console.error('[LeaderboardManager] 定期クリーンアップエラー:', error);
+            }
+        }, 60 * 60 * 1000); // 1時間
+
+        // 24時間ごとにランキングを再計算
+        setInterval(async () => {
+            try {
+                await this.recalculatePeriodRankings();
+            } catch (error) {
+                console.error('[LeaderboardManager] ランキング再計算エラー:', error);
+            }
+        }, 24 * 60 * 60 * 1000); // 24時間
+        
+        console.log('[LeaderboardManager] 定期クリーンアップタスク設定完了');
     }
 
     /**
@@ -142,8 +170,8 @@ export class LeaderboardManager {
                 checksum: this.calculateScoreChecksum({ playerId, score, stageId, timestamp })
             };
             
-            // 各リーダーボードに記録
-            await this.updateLeaderboards(scoreEntry);
+            // 効率的なランキング更新を使用
+            const updateResult = await this.updateRankingEfficiently(scoreEntry);
             
             // プレイヤースコア履歴に記録
             this.recordPlayerScore(scoreEntry);
@@ -246,6 +274,168 @@ export class LeaderboardManager {
         if (now - timestamp <= 30 * 24 * 60 * 60 * 1000) {
             await this.updateLeaderboard('monthly', scoreEntry);
         }
+    }
+
+    /**
+     * 期間別ランキングのクリーンアップ
+     */
+    async cleanupExpiredPeriodEntries() {
+        const now = Date.now();
+        
+        // 各期間の有効期限
+        const periods = {
+            daily: 24 * 60 * 60 * 1000,      // 24時間
+            weekly: 7 * 24 * 60 * 60 * 1000,  // 7日
+            monthly: 30 * 24 * 60 * 60 * 1000 // 30日
+        };
+        
+        for (const [periodName, duration] of Object.entries(periods)) {
+            const leaderboard = this.leaderboards.get(periodName);
+            if (!leaderboard) continue;
+            
+            const beforeCount = leaderboard.entries.length;
+            
+            // 期限切れエントリーを削除
+            leaderboard.entries = leaderboard.entries.filter(entry => {
+                return (now - entry.timestamp) <= duration;
+            });
+            
+            const afterCount = leaderboard.entries.length;
+            
+            if (beforeCount !== afterCount) {
+                leaderboard.lastUpdated = now;
+                console.log(`[LeaderboardManager] ${periodName}ランキング: ${beforeCount - afterCount}件の期限切れエントリーを削除`);
+            }
+        }
+        
+        // キャッシュクリア
+        this.clearExpiredCache();
+    }
+
+    /**
+     * 期間別ランキングの再計算
+     */
+    async recalculatePeriodRankings() {
+        const now = Date.now();
+        
+        // 全プレイヤーのスコア履歴から期間別ランキングを再構築
+        const periods = {
+            daily: 24 * 60 * 60 * 1000,
+            weekly: 7 * 24 * 60 * 60 * 1000,
+            monthly: 30 * 24 * 60 * 60 * 1000
+        };
+        
+        // 期間別リーダーボードをリセット
+        for (const periodName of Object.keys(periods)) {
+            const leaderboard = this.leaderboards.get(periodName);
+            if (leaderboard) {
+                leaderboard.entries = [];
+            }
+        }
+        
+        // 全プレイヤーのスコア履歴を参照して再構築
+        for (const [playerId, scoreHistory] of this.playerScores) {
+            for (const scoreEntry of scoreHistory) {
+                // 各期間内のスコアのみを対象に
+                for (const [periodName, duration] of Object.entries(periods)) {
+                    if ((now - scoreEntry.timestamp) <= duration) {
+                        await this.updateLeaderboard(periodName, scoreEntry);
+                    }
+                }
+            }
+        }
+        
+        console.log('[LeaderboardManager] 期間別ランキング再計算完了');
+    }
+
+    /**
+     * 期間別統計の取得
+     */
+    getPeriodStats() {
+        const stats = {};
+        const now = Date.now();
+        const periods = {
+            daily: 24 * 60 * 60 * 1000,
+            weekly: 7 * 24 * 60 * 60 * 1000,
+            monthly: 30 * 24 * 60 * 60 * 1000
+        };
+        
+        for (const [periodName, duration] of Object.entries(periods)) {
+            const leaderboard = this.leaderboards.get(periodName);
+            if (!leaderboard) continue;
+            
+            // 有効エントリー数
+            const validEntries = leaderboard.entries.filter(entry => 
+                (now - entry.timestamp) <= duration
+            );
+            
+            stats[periodName] = {
+                totalEntries: validEntries.length,
+                topScore: validEntries.length > 0 ? validEntries[0].score : 0,
+                averageScore: validEntries.length > 0 
+                    ? Math.round(validEntries.reduce((sum, entry) => sum + entry.score, 0) / validEntries.length)
+                    : 0,
+                lastUpdated: leaderboard.lastUpdated,
+                oldestEntry: validEntries.length > 0 
+                    ? Math.min(...validEntries.map(entry => entry.timestamp))
+                    : null
+            };
+        }
+        
+        return stats;
+    }
+
+    /**
+     * 期間フィルタリング付きランキング取得
+     */
+    getPeriodRanking(period, options = {}) {
+        const {
+            limit = 10,
+            offset = 0,
+            includeExpired = false
+        } = options;
+        
+        const leaderboard = this.leaderboards.get(period);
+        if (!leaderboard) {
+            return { error: `Period ${period} not found` };
+        }
+        
+        let entries = leaderboard.entries;
+        
+        // 期限切れエントリーの除外
+        if (!includeExpired) {
+            const now = Date.now();
+            const periods = {
+                daily: 24 * 60 * 60 * 1000,
+                weekly: 7 * 24 * 60 * 60 * 1000,
+                monthly: 30 * 24 * 60 * 60 * 1000
+            };
+            
+            const duration = periods[period];
+            if (duration) {
+                entries = entries.filter(entry => (now - entry.timestamp) <= duration);
+            }
+        }
+        
+        // ページネーション
+        const paginatedEntries = entries
+            .slice(offset, offset + limit)
+            .map((entry, index) => ({
+                rank: offset + index + 1,
+                playerId: entry.playerId,
+                playerName: entry.playerName,
+                score: entry.score,
+                timestamp: entry.timestamp,
+                gameData: entry.gameData
+            }));
+        
+        return {
+            period,
+            entries: paginatedEntries,
+            total: entries.length,
+            hasMore: (offset + limit) < entries.length,
+            lastUpdated: leaderboard.lastUpdated
+        };
     }
 
     /**
@@ -426,6 +616,215 @@ export class LeaderboardManager {
         for (const key of keysToDelete) {
             this.cache.delete(key);
         }
+    }
+
+    /**
+     * 期限切れキャッシュのクリア
+     */
+    clearExpiredCache() {
+        const now = Date.now();
+        const keysToDelete = [];
+        
+        for (const [key, cached] of this.cache) {
+            if (now - cached.timestamp >= this.config.cacheTTL) {
+                keysToDelete.push(key);
+            }
+        }
+        
+        for (const key of keysToDelete) {
+            this.cache.delete(key);
+        }
+        
+        if (keysToDelete.length > 0) {
+            console.log(`[LeaderboardManager] ${keysToDelete.length}件の期限切れキャッシュを削除`);
+        }
+    }
+
+    /**
+     * ステージ別ランキング機能の強化
+     */
+    getStageRanking(stageId, options = {}) {
+        const {
+            limit = 10,
+            offset = 0,
+            includePlayerData = true,
+            sortBy = 'score' // score, timestamp, combo, accuracy
+        } = options;
+        
+        const leaderboardId = `stage_${stageId}`;
+        const leaderboard = this.leaderboards.get(leaderboardId);
+        
+        if (!leaderboard) {
+            return { error: `Stage leaderboard not found: ${stageId}` };
+        }
+        
+        // ソート条件に応じてエントリーをソート
+        let sortedEntries = [...leaderboard.entries];
+        
+        switch (sortBy) {
+            case 'score':
+                sortedEntries.sort((a, b) => b.score - a.score);
+                break;
+            case 'timestamp':
+                sortedEntries.sort((a, b) => b.timestamp - a.timestamp);
+                break;
+            case 'combo':
+                sortedEntries.sort((a, b) => (b.gameData?.combo || 0) - (a.gameData?.combo || 0));
+                break;
+            case 'accuracy':
+                sortedEntries.sort((a, b) => (b.gameData?.accuracy || 0) - (a.gameData?.accuracy || 0));
+                break;
+            default:
+                sortedEntries.sort((a, b) => b.score - a.score);
+        }
+        
+        // ページネーション適用
+        const paginatedEntries = sortedEntries
+            .slice(offset, offset + limit)
+            .map((entry, index) => ({
+                rank: offset + index + 1,
+                playerId: entry.playerId,
+                playerName: entry.playerName,
+                score: entry.score,
+                timestamp: entry.timestamp,
+                gameData: includePlayerData ? entry.gameData : undefined
+            }));
+        
+        return {
+            stageId,
+            entries: paginatedEntries,
+            total: sortedEntries.length,
+            hasMore: (offset + limit) < sortedEntries.length,
+            sortBy,
+            lastUpdated: leaderboard.lastUpdated
+        };
+    }
+
+    /**
+     * 複合ランキング（総合＋ステージ別）表示機能
+     */
+    getCompositeRanking(options = {}) {
+        const {
+            limit = 5,
+            includeStages = true,
+            includePeriods = true
+        } = options;
+        
+        const composite = {
+            overall: this.getLeaderboard('overall', { limit }),
+            stages: {},
+            periods: {}
+        };
+        
+        // ステージ別ランキング
+        if (includeStages) {
+            for (const [leaderboardId, leaderboard] of this.leaderboards) {
+                if (leaderboardId.startsWith('stage_')) {
+                    const stageId = leaderboardId.replace('stage_', '');
+                    composite.stages[stageId] = this.getStageRanking(stageId, { limit });
+                }
+            }
+        }
+        
+        // 期間別ランキング
+        if (includePeriods) {
+            const periods = ['daily', 'weekly', 'monthly'];
+            for (const period of periods) {
+                composite.periods[period] = this.getPeriodRanking(period, { limit });
+            }
+        }
+        
+        return composite;
+    }
+
+    /**
+     * ステージ別統計の取得
+     */
+    getStageStats() {
+        const stageStats = {};
+        
+        for (const [leaderboardId, leaderboard] of this.leaderboards) {
+            if (!leaderboardId.startsWith('stage_')) continue;
+            
+            const stageId = leaderboardId.replace('stage_', '');
+            const entries = leaderboard.entries;
+            
+            if (entries.length > 0) {
+                stageStats[stageId] = {
+                    totalPlayers: entries.length,
+                    topScore: entries[0]?.score || 0,
+                    averageScore: Math.round(
+                        entries.reduce((sum, entry) => sum + entry.score, 0) / entries.length
+                    ),
+                    topCombo: Math.max(...entries.map(entry => entry.gameData?.combo || 0)),
+                    averageAccuracy: Math.round(
+                        entries.reduce((sum, entry) => sum + (entry.gameData?.accuracy || 0), 0) / entries.length
+                    ),
+                    lastPlayed: Math.max(...entries.map(entry => entry.timestamp)),
+                    playCount: entries.length
+                };
+            } else {
+                stageStats[stageId] = {
+                    totalPlayers: 0,
+                    topScore: 0,
+                    averageScore: 0,
+                    topCombo: 0,
+                    averageAccuracy: 0,
+                    lastPlayed: null,
+                    playCount: 0
+                };
+            }
+        }
+        
+        return stageStats;
+    }
+
+    /**
+     * ランキングデータの効率的な更新
+     */
+    async updateRankingEfficiently(scoreEntry) {
+        const startTime = performance.now();
+        
+        // バッチ更新用の配列
+        const updates = [];
+        
+        // 総合ランキング
+        updates.push({ leaderboardId: 'overall', scoreEntry });
+        
+        // 期間別ランキング（条件チェック済みのもののみ）
+        const now = Date.now();
+        const { timestamp } = scoreEntry;
+        
+        if (now - timestamp <= 24 * 60 * 60 * 1000) {
+            updates.push({ leaderboardId: 'daily', scoreEntry });
+        }
+        if (now - timestamp <= 7 * 24 * 60 * 60 * 1000) {
+            updates.push({ leaderboardId: 'weekly', scoreEntry });
+        }
+        if (now - timestamp <= 30 * 24 * 60 * 60 * 1000) {
+            updates.push({ leaderboardId: 'monthly', scoreEntry });
+        }
+        
+        // ステージ別ランキング
+        if (scoreEntry.stageId) {
+            updates.push({ leaderboardId: `stage_${scoreEntry.stageId}`, scoreEntry });
+        }
+        
+        // バッチ更新実行
+        for (const update of updates) {
+            await this.updateLeaderboard(update.leaderboardId, update.scoreEntry);
+        }
+        
+        // 関連キャッシュクリア
+        this.clearRelevantCache(scoreEntry.stageId);
+        
+        const processingTime = performance.now() - startTime;
+        this.stats.batchUpdateTime = processingTime;
+        
+        return {
+            updatedLeaderboards: updates.length,
+            processingTime
+        };
     }
 
     /**
