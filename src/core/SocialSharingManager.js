@@ -144,7 +144,6 @@ export class SocialSharingManager {
             this.leaderboardManager = this.gameEngine.leaderboardManager;
             
             // ShareContentGeneratorの初期化
-            const { ShareContentGenerator } = await import('./ShareContentGenerator.js');
             this.shareContentGenerator = new ShareContentGenerator(this.localizationManager);
             
             // ScreenshotCaptureの初期化 (Task 5)
@@ -165,6 +164,19 @@ export class SocialSharingManager {
                 highContrast: false,
                 reducedMotion: false
             });
+            
+            // SocialI18nManagerの初期化 (Task 24 - 国際化対応)
+            const { SocialI18nManager } = await import('./SocialI18nManager.js');
+            this.socialI18nManager = new SocialI18nManager(this.localizationManager, {
+                cache: true,
+                cacheSize: 1000,
+                fallbackLanguage: 'en'
+            });
+            
+            // ShareContentGeneratorにSocialI18nManagerを設定
+            if (this.shareContentGenerator) {
+                this.shareContentGenerator.setSocialI18nManager(this.socialI18nManager);
+            }
             
             // GameEngineイベントリスナー設定
             this.gameEngine.on('gameEnd', this.onGameEnd.bind(this));
@@ -2572,9 +2584,215 @@ export class SocialSharingManager {
     }
     
     /**
+     * 多言語メッセージ生成 (Task 24)
+     */
+    generateI18nMessage(messageKey, data, options = {}) {
+        if (this.shareContentGenerator && this.socialI18nManager) {
+            return this.shareContentGenerator.generateI18nMessage(messageKey, data, options.platform, options);
+        }
+        
+        // フォールバック
+        return this.shareContentGenerator ? 
+            this.shareContentGenerator.generateLegacyMessage(messageKey, data, options.platform || 'generic', options) :
+            { message: `[${messageKey}]`, platform: 'generic', language: 'ja' };
+    }
+    
+    /**
+     * 地域別最適化共有 (Task 24)
+     */
+    async shareWithRegionalOptimization(shareData, options = {}) {
+        try {
+            // 現在の言語を取得
+            const currentLanguage = this.socialI18nManager ? 
+                this.socialI18nManager.state.currentLanguage : 'ja';
+            
+            // 地域別プラットフォーム設定を取得
+            const regionalPlatforms = this.socialI18nManager ? 
+                this.socialI18nManager.getRegionalPlatforms(currentLanguage) : 
+                ['twitter', 'facebook', 'copy'];
+            
+            // 地域固有のメッセージ生成
+            const messageKey = shareData.type || 'shareScore';
+            const optimizedMessage = this.generateI18nMessage(messageKey, shareData, {
+                language: currentLanguage,
+                platform: options.platform || regionalPlatforms[0]
+            });
+            
+            // 共有データの更新
+            const localizedShareData = {
+                ...shareData,
+                text: optimizedMessage.message,
+                language: currentLanguage,
+                platforms: regionalPlatforms
+            };
+            
+            // 通常の共有処理を実行
+            return await this.share(localizedShareData, options);
+            
+        } catch (error) {
+            this.handleError('REGIONAL_SHARE_FAILED', error, { shareData, options });
+            
+            // フォールバック: 通常の共有
+            return await this.share(shareData, options);
+        }
+    }
+    
+    /**
+     * 多言語一括共有 (Task 24)
+     */
+    async shareMultiLanguage(shareData, languages = null, platforms = null, options = {}) {
+        try {
+            const targetLanguages = languages || 
+                (this.socialI18nManager ? this.socialI18nManager.getSupportedLanguages() : ['ja', 'en']);
+            
+            const targetPlatforms = platforms || ['twitter', 'facebook', 'copy'];
+            const results = {};
+            
+            for (const language of targetLanguages) {
+                results[language] = {};
+                
+                // 地域別プラットフォーム設定を取得
+                const regionalPlatforms = this.socialI18nManager ? 
+                    this.socialI18nManager.getRegionalPlatforms(language) : 
+                    targetPlatforms;
+                
+                for (const platform of regionalPlatforms) {
+                    try {
+                        // 言語・地域特化メッセージ生成
+                        const messageKey = shareData.type || 'shareScore';
+                        const localizedMessage = this.generateI18nMessage(messageKey, shareData, {
+                            language,
+                            platform
+                        });
+                        
+                        // 共有データの準備
+                        const localizedShareData = {
+                            ...shareData,
+                            text: localizedMessage.message,
+                            language,
+                            platform
+                        };
+                        
+                        // 共有実行（実際にはメッセージ生成のみ）
+                        results[language][platform] = {
+                            success: true,
+                            message: localizedMessage.message,
+                            metadata: localizedMessage.metadata
+                        };
+                        
+                    } catch (error) {
+                        results[language][platform] = {
+                            success: false,
+                            error: error.message
+                        };
+                    }
+                }
+            }
+            
+            this.log('多言語一括共有完了', {
+                languages: targetLanguages.length,
+                platforms: targetPlatforms.length,
+                total: Object.keys(results).length
+            });
+            
+            return results;
+            
+        } catch (error) {
+            this.handleError('MULTI_LANGUAGE_SHARE_FAILED', error, { shareData, languages, platforms, options });
+            return {};
+        }
+    }
+    
+    /**
+     * 国際化統計の取得 (Task 24)
+     */
+    getI18nStats() {
+        const baseStats = {
+            enabled: !!this.socialI18nManager,
+            currentLanguage: this.socialI18nManager ? this.socialI18nManager.state.currentLanguage : 'ja',
+            supportedLanguages: this.socialI18nManager ? this.socialI18nManager.getSupportedLanguages().length : 0
+        };
+        
+        if (this.socialI18nManager) {
+            const i18nManagerStats = this.socialI18nManager.getStats();
+            const contentGeneratorStats = this.shareContentGenerator ? 
+                this.shareContentGenerator.getI18nStats() : {};
+            
+            return {
+                ...baseStats,
+                socialI18nManager: i18nManagerStats,
+                shareContentGenerator: contentGeneratorStats
+            };
+        }
+        
+        return baseStats;
+    }
+    
+    /**
+     * 言語設定の更新 (Task 24)
+     */
+    async updateLanguageSettings(language, options = {}) {
+        try {
+            // 言語サポートの確認
+            if (this.socialI18nManager && !this.socialI18nManager.isLanguageSupported(language)) {
+                throw new Error(`サポートされていない言語: ${language}`);
+            }
+            
+            // LocalizationManagerの言語更新
+            if (this.localizationManager && typeof this.localizationManager.setLanguage === 'function') {
+                await this.localizationManager.setLanguage(language);
+            }
+            
+            // SocialI18nManagerの言語更新
+            if (this.socialI18nManager) {
+                this.socialI18nManager.handleLanguageChange(language, this.socialI18nManager.state.currentLanguage);
+            }
+            
+            // アクセシビリティマネージャーにも通知
+            if (this.accessibilityManager) {
+                this.accessibilityManager.announce(`言語が${language}に変更されました`, 'polite');
+            }
+            
+            this.log(`言語設定更新: ${language}`, options);
+            return true;
+            
+        } catch (error) {
+            this.handleError('LANGUAGE_UPDATE_FAILED', error, { language, options });
+            return false;
+        }
+    }
+    
+    /**
+     * 地域設定の取得 (Task 24)
+     */
+    getRegionalSettings(language = null) {
+        if (this.socialI18nManager) {
+            return this.socialI18nManager.getRegionalSettings(language);
+        }
+        
+        // フォールバック設定
+        return {
+            platforms: ['twitter', 'facebook', 'copy'],
+            dateFormat: 'YYYY/MM/DD',
+            numberFormat: '99,999',
+            currency: 'USD',
+            rtl: false,
+            socialHosts: {
+                twitter: 'twitter.com',
+                facebook: 'facebook.com'
+            }
+        };
+    }
+    
+    /**
      * システムのクリーンアップ
      */
     cleanup() {
+        // 国際化関連のクリーンアップ (Task 24)
+        if (this.socialI18nManager) {
+            this.socialI18nManager.clearCache();
+        }
+        
         // アクセシビリティ関連のクリーンアップ (Task 23)
         if (this.accessibilityManager) {
             this.accessibilityManager.destroy();

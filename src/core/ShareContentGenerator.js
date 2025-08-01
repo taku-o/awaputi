@@ -6,8 +6,9 @@
 import { ErrorHandler } from '../utils/ErrorHandler.js';
 
 export class ShareContentGenerator {
-    constructor(localizationManager) {
+    constructor(localizationManager, socialI18nManager = null) {
         this.localizationManager = localizationManager;
+        this.socialI18nManager = socialI18nManager;
         
         // メッセージテンプレート
         this.templates = this.initializeTemplates();
@@ -688,6 +689,172 @@ export class ShareContentGenerator {
     }
     
     /**
+     * SocialI18nManagerを使用したメッセージ生成 (Task 24)
+     */
+    generateI18nMessage(messageKey, data, platform = 'generic', options = {}) {
+        try {
+            if (!this.socialI18nManager) {
+                // フォールバック: 既存のテンプレートシステムを使用
+                return this.generateLegacyMessage(messageKey, data, platform, options);
+            }
+            
+            const startTime = performance.now();
+            const language = options.language || this.getCurrentLanguage();
+            const platformKey = this.normalizePlatform(platform);
+            
+            // SocialI18nManagerからメッセージを取得
+            let message = this.socialI18nManager.getMessage(messageKey, language, data);
+            
+            // プラットフォーム固有の最適化
+            if (platformKey !== 'generic') {
+                message = this.optimizeForPlatform(message, platformKey, options);
+            }
+            
+            // 統計の更新
+            this.stats.generated++;
+            
+            const result = {
+                message,
+                platform: platformKey,
+                language,
+                metadata: {
+                    messageKey,
+                    i18nGenerated: true,
+                    generationTime: performance.now() - startTime
+                }
+            };
+            
+            this.log(`I18nメッセージ生成完了: ${messageKey}`, result.metadata);
+            return result;
+            
+        } catch (error) {
+            this.stats.errors++;
+            this.handleError('I18N_MESSAGE_GENERATION_FAILED', error, { messageKey, data, platform, options });
+            
+            // フォールバック
+            return this.generateLegacyMessage(messageKey, data, platform, options);
+        }
+    }
+    
+    /**
+     * 地域別プラットフォーム最適化メッセージ生成 (Task 24)
+     */
+    generateRegionalMessage(messageKey, data, options = {}) {
+        try {
+            if (!this.socialI18nManager) {
+                return this.generateI18nMessage(messageKey, data, 'generic', options);
+            }
+            
+            const language = options.language || this.getCurrentLanguage();
+            
+            // 地域別プラットフォーム設定を取得
+            const regionalPlatforms = this.socialI18nManager.getRegionalPlatforms(language);
+            const preferredPlatform = options.platform || regionalPlatforms[0] || 'generic';
+            
+            // 地域別ソーシャルホストを適用
+            const socialHost = this.socialI18nManager.getSocialHost(preferredPlatform, language);
+            
+            // メッセージ生成
+            const result = this.generateI18nMessage(messageKey, data, preferredPlatform, {
+                ...options,
+                language,
+                socialHost
+            });
+            
+            // 地域固有の後処理
+            if (this.socialI18nManager.isRTL(language)) {
+                result.message = this.applyRTLFormatting(result.message);
+                result.metadata.rtl = true;
+            }
+            
+            // 地域別メタデータを追加
+            result.metadata.regional = {
+                availablePlatforms: regionalPlatforms,
+                preferredPlatform,
+                socialHost,
+                isRTL: this.socialI18nManager.isRTL(language)
+            };
+            
+            this.log(`地域別メッセージ生成完了: ${language}`, result.metadata.regional);
+            return result;
+            
+        } catch (error) {
+            this.handleError('REGIONAL_MESSAGE_GENERATION_FAILED', error, { messageKey, data, options });
+            return this.generateI18nMessage(messageKey, data, 'generic', options);
+        }
+    }
+    
+    /**
+     * RTLフォーマットの適用 (Task 24)
+     */
+    applyRTLFormatting(message) {
+        // RTL言語に対応したフォーマット調整
+        // 絵文字やハッシュタグの位置調整
+        return message
+            .replace(/^([🎮🏆🎖️✅🏅])\s+/, '$1 ') // 絵文字の間隔調整
+            .replace(/\s+(#\w+)/g, ' $1'); // ハッシュタグの間隔調整
+    }
+    
+    /**
+     * 既存テンプレートシステムでのメッセージ生成 (フォールバック)
+     */
+    generateLegacyMessage(messageKey, data, platform, options) {
+        try {
+            // 既存のgenerateメソッドマッピング
+            const methodMap = {
+                shareScore: 'generateScoreMessage',
+                highScore: 'generateScoreMessage',
+                achievement: 'generateAchievementMessage',
+                challengeComplete: 'generateChallengeMessage',
+                leaderboard: 'generateScoreMessage'
+            };
+            
+            const methodName = methodMap[messageKey];
+            if (methodName && typeof this[methodName] === 'function') {
+                return this[methodName](data, platform, options);
+            }
+            
+            // 基本フォールバック
+            return this.generateFallbackMessage(messageKey, data, platform);
+            
+        } catch (error) {
+            this.handleError('LEGACY_MESSAGE_GENERATION_FAILED', error, { messageKey, data, platform, options });
+            return this.generateFallbackMessage(messageKey, data, platform);
+        }
+    }
+    
+    /**
+     * SocialI18nManagerの設定 (Task 24)
+     */
+    setSocialI18nManager(socialI18nManager) {
+        this.socialI18nManager = socialI18nManager;
+        this.log('SocialI18nManager設定完了');
+    }
+    
+    /**
+     * 多言語対応統計の取得 (Task 24)
+     */
+    getI18nStats() {
+        const baseStats = this.getStats();
+        
+        if (this.socialI18nManager) {
+            const i18nStats = this.socialI18nManager.getStats();
+            return {
+                ...baseStats,
+                i18n: i18nStats,
+                multiLanguageSupport: true,
+                supportedLanguages: this.socialI18nManager.getSupportedLanguages().length
+            };
+        }
+        
+        return {
+            ...baseStats,
+            multiLanguageSupport: false,
+            supportedLanguages: 0
+        };
+    }
+    
+    /**
      * デバッグ情報の取得
      */
     getDebugInfo() {
@@ -695,8 +862,10 @@ export class ShareContentGenerator {
             templates: Object.keys(this.templates),
             platforms: Object.keys(this.platformLimits),
             currentLanguage: this.getCurrentLanguage(),
-            stats: this.getStats(),
-            localizationManager: !!this.localizationManager
+            stats: this.getI18nStats(),
+            localizationManager: !!this.localizationManager,
+            socialI18nManager: !!this.socialI18nManager,
+            multiLanguageSupport: !!this.socialI18nManager
         };
     }
 }
