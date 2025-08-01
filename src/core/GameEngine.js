@@ -47,6 +47,7 @@ import { VisualPolishEnhancements } from '../effects/VisualPolishEnhancements.js
 import { AnimationManager } from '../effects/AnimationManager.js';
 import { getHelpManager } from './help/HelpManager.js';
 import { getSEOMonitor } from '../seo/SEOMonitor.js';
+import { SocialSharingManager } from './SocialSharingManager.js';
 
 /**
  * ゲームエンジンクラス - 統合版（パフォーマンス最適化 + 音響・視覚効果）
@@ -151,6 +152,9 @@ export class GameEngine {
         
         // ヘルプシステム
         this.helpManager = getHelpManager(this);
+        
+        // ソーシャル機能システム（遅延初期化）
+        this.socialSharingManager = null;
         
         // ゲーム状態
         this.timeRemaining = 300000; // 5分
@@ -612,6 +616,9 @@ export class GameEngine {
                 this.achievementManager.load();
                 this.statisticsManager.load();
                 this.eventStageManager.load();
+                
+                // ソーシャル機能システムの初期化
+                this.initializeSocialSharingManager();
             } catch (error) {
                 getErrorHandler().handleError(error, 'INITIALIZATION_ERROR', { component: 'additionalSystems' });
                 // フォールバック: 新システムなしで続行
@@ -661,6 +668,30 @@ export class GameEngine {
             this.sceneManager.handleInput(event);
         };
         getMemoryManager().addEventListener(document, 'keydown', keyDownHandler);
+    }
+    
+    /**
+     * ソーシャル機能システムの初期化
+     */
+    async initializeSocialSharingManager() {
+        try {
+            if (!this.socialSharingManager) {
+                this.socialSharingManager = new SocialSharingManager(this);
+                await this.socialSharingManager.initialize();
+                
+                // SEOシステムとの連携
+                if (this.seoMetaManager) {
+                    this.socialSharingManager.seoMetaManager = this.seoMetaManager;
+                }
+                
+                console.log('[GameEngine] SocialSharingManager初期化完了');
+            }
+        } catch (error) {
+            getErrorHandler().handleError(error, 'INITIALIZATION_ERROR', { 
+                component: 'SocialSharingManager' 
+            });
+            console.warn('[GameEngine] SocialSharingManager初期化に失敗しましたが、ゲームは続行されます');
+        }
     }
     
     /**
