@@ -529,22 +529,30 @@ describe('ShareContentGenerator', () => {
     });
 
     describe('プラットフォーム検出', () => {
+        let originalNavigator;
+        
+        beforeEach(() => {
+            originalNavigator = global.navigator;
+            // navigatorオブジェクト全体をモック
+            global.navigator = {
+                userAgent: 'default user agent'
+            };
+        });
+        
+        afterEach(() => {
+            global.navigator = originalNavigator;
+        });
+
         it('User Agentからプラットフォームを検出する', () => {
             // Twitter User Agent
-            Object.defineProperty(global.navigator, 'userAgent', {
-                value: 'Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/88.0.4324.181 Mobile Safari/537.36 (compatible; TwitterBot/1.0; +https://twitterbot.com/)',
-                configurable: true
-            });
+            global.navigator.userAgent = 'Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/88.0.4324.181 Mobile Safari/537.36 (compatible; TwitterBot/1.0; +https://twitterbot.com/)';
             
             const platform = generator.detectPlatform();
             expect(platform).toBe('twitter');
         });
 
         it('不明なUser Agentでデフォルトを返す', () => {
-            Object.defineProperty(global.navigator, 'userAgent', {
-                value: 'Unknown Browser',
-                configurable: true
-            });
+            global.navigator.userAgent = 'Unknown Browser';
             
             const platform = generator.detectPlatform();
             expect(platform).toBe('generic');
@@ -562,9 +570,9 @@ describe('ShareContentGenerator', () => {
         it('UTMパラメータを追加する', () => {
             const baseUrl = 'https://example.com';
             const utmParams = {
-                source: 'twitter',
-                medium: 'social',
-                campaign: 'share'
+                utm_source: 'twitter',
+                utm_medium: 'social',
+                utm_campaign: 'share'
             };
             
             const urlWithUTM = generator.addUTMParameters(baseUrl, utmParams);

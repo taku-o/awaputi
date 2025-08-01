@@ -158,9 +158,11 @@ export class ShareContentGenerator {
             this.stats.generated++;
             
             const result = {
-                message,
+                text: message,
+                message, // 後方互換性のため
                 platform: platformKey,
                 language,
+                url: messageData.url,
                 metadata: {
                     originalScore: scoreData.score,
                     generationTime: performance.now() - startTime,
@@ -225,9 +227,11 @@ export class ShareContentGenerator {
             this.stats.generated++;
             
             const result = {
-                message,
+                text: message,
+                message, // 後方互換性のため
                 platform: platformKey,
                 language,
+                url: messageData.url,
                 metadata: {
                     achievementId: achievementData.id,
                     generationTime: performance.now() - startTime,
@@ -516,7 +520,9 @@ export class ShareContentGenerator {
             case 'webshare':
                 return 'generic';
             default:
-                return normalizedPlatform;
+                // 有効なプラットフォームのリスト
+                const validPlatforms = ['twitter', 'facebook', 'generic'];
+                return validPlatforms.includes(normalizedPlatform) ? normalizedPlatform : 'generic';
         }
     }
     
@@ -852,6 +858,113 @@ export class ShareContentGenerator {
             multiLanguageSupport: false,
             supportedLanguages: 0
         };
+    }
+    
+    /**
+     * URL短縮機能
+     */
+    shortenUrl(url, maxLength = 30) {
+        if (url.length <= maxLength) {
+            return url;
+        }
+        
+        try {
+            const urlObj = new URL(url);
+            const domain = urlObj.hostname;
+            const path = urlObj.pathname;
+            
+            // ドメインだけで最大長を超える場合
+            if (domain.length >= maxLength - 3) {
+                return domain.substring(0, maxLength - 3) + '...';
+            }
+            
+            // パス部分を調整
+            const availableLength = maxLength - domain.length - 3; // '...'の分
+            if (path.length > availableLength) {
+                return domain + path.substring(0, availableLength) + '...';
+            }
+            
+            return domain + path;
+        } catch (error) {
+            this.log('URL短縮エラー:', error);
+            return url.substring(0, maxLength - 3) + '...';
+        }
+    }
+    
+    /**
+     * UTMパラメータの追加
+     */
+    addUTMParameters(baseUrl, utmParams = {}) {
+        try {
+            const url = new URL(baseUrl);
+            
+            // デフォルトUTMパラメータ
+            const defaultParams = {
+                utm_source: 'social',
+                utm_medium: 'share',
+                utm_campaign: 'bubblepop'
+            };
+            
+            // パラメータをマージ
+            const params = { ...defaultParams, ...utmParams };
+            
+            // URLにパラメータを追加
+            Object.entries(params).forEach(([key, value]) => {
+                if (value) {
+                    url.searchParams.set(key, value);
+                }
+            });
+            
+            return url.toString();
+        } catch (error) {
+            this.log('UTMパラメータ追加エラー:', error);
+            return baseUrl;
+        }
+    }
+    
+    /**
+     * 統計レポートの取得
+     */
+    getStatsReport() {
+        const total = this.stats.generated + this.stats.errors;
+        const successRate = total > 0 ? (this.stats.generated / total) * 100 : 0;
+        
+        return {
+            generated: this.stats.generated,
+            errors: this.stats.errors,
+            truncated: this.stats.truncated,
+            total,
+            successRate: parseFloat(successRate.toFixed(2)),
+            errorRate: parseFloat(((this.stats.errors / total) * 100 || 0).toFixed(2))
+        };
+    }
+    
+    /**
+     * 設定更新
+     */
+    updateConfig(newConfig) {
+        // 設定検証
+        if (newConfig.platformLimits) {
+            // プラットフォーム制限の検証
+            for (const [platform, limits] of Object.entries(newConfig.platformLimits)) {
+                if (limits.maxLength && (typeof limits.maxLength !== 'number' || limits.maxLength <= 0)) {
+                    throw new Error(`無効なmaxLength設定: ${platform}`);
+                }
+            }
+            Object.assign(this.platformLimits, newConfig.platformLimits);
+        }
+        
+        if (newConfig.templates) {
+            // テンプレートの検証
+            for (const template of Object.values(newConfig.templates)) {
+                if (typeof template !== 'object') {
+                    throw new Error('無効なテンプレート設定');
+                }
+            }
+            Object.assign(this.templates, newConfig.templates);
+        }
+        
+        this.log('設定を更新しました');
     }
     
     /**

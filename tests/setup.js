@@ -189,12 +189,17 @@ global.advanceTime = (ms) => {
 
 // Setup fake timers by default
 beforeEach(() => {
-  jest.useFakeTimers();
+  // Avoid duplicate timer installation
+  if (!jest.isMockFunction(global.setTimeout)) {
+    jest.useFakeTimers();
+  }
   jest.clearAllMocks();
   localStorageMock.getItem.mockReturnValue(null);
 });
 
 afterEach(() => {
-  jest.runOnlyPendingTimers();
-  jest.useRealTimers();
+  if (jest.isMockFunction(global.setTimeout)) {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+  }
 });

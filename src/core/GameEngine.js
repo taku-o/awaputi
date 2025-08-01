@@ -637,7 +637,7 @@ export class GameEngine {
                 this.eventStageManager.load();
                 
                 // ソーシャル機能システムの初期化
-                this.initializeSocialSharingManager();
+                await this.initializeSocialSharingManager();
                 
                 // リーダーボードシステムの初期化
                 await this.leaderboardManager.initialize();
