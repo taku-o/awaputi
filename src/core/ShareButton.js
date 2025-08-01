@@ -264,23 +264,62 @@ export class ShareButton {
     applyStyles() {
         const container = this.elements.container;
         const styles = this.config.styles;
+        const isMobile = window.innerWidth <= 768;
         
         // 位置の設定
         const position = this.getPositionStyles();
         Object.assign(container.style, position);
         
-        // 基本スタイル
+        // 基本スタイル（モバイル対応の改善）
         Object.assign(container.style, {
             position: 'fixed',
             zIndex: styles.zIndex,
             backgroundColor: styles.backgroundColor,
             color: styles.textColor,
             borderRadius: styles.borderRadius,
-            fontSize: styles.fontSize,
-            padding: styles.padding,
+            fontSize: isMobile ? '16px' : styles.fontSize, // モバイルで最小16px（ズーム防止）
+            padding: isMobile ? '12px' : styles.padding,
             boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
             transition: this.config.animation ? 'all 0.3s ease' : 'none',
-            userSelect: 'none'
+            userSelect: 'none',
+            // タッチ操作の改善
+            touchAction: 'manipulation',
+            WebkitTapHighlightColor: 'transparent',
+            // モバイルでの最小タッチターゲットサイズ（44px×44px）
+            minHeight: isMobile ? '44px' : 'auto',
+            minWidth: isMobile ? '44px' : 'auto'
+        });
+        
+        // ボタンのタッチ操作改善
+        if (this.elements.mainButton) {
+            Object.assign(this.elements.mainButton.style, {
+                minHeight: isMobile ? '44px' : '36px',
+                minWidth: isMobile ? '44px' : '36px',
+                padding: isMobile ? '8px 16px' : '6px 12px',
+                touchAction: 'manipulation',
+                cursor: 'pointer',
+                outline: 'none',
+                border: 'none',
+                borderRadius: '8px',
+                fontSize: 'inherit',
+                fontFamily: 'inherit'
+            });
+        }
+        
+        // プラットフォームボタンのスタイル
+        this.elements.platformButtons.forEach(button => {
+            Object.assign(button.style, {
+                minHeight: isMobile ? '44px' : '36px',
+                minWidth: isMobile ? '44px' : '36px',
+                padding: isMobile ? '8px' : '6px',
+                margin: isMobile ? '4px' : '2px',
+                touchAction: 'manipulation',
+                cursor: 'pointer',
+                outline: 'none',
+                border: 'none',
+                borderRadius: '6px',
+                transition: 'all 0.2s ease'
+            });
         });
         
         // テーマ別スタイル
@@ -299,7 +338,9 @@ export class ShareButton {
      * 位置スタイルの取得
      */
     getPositionStyles() {
-        const padding = 20;
+        // モバイルデバイスではより大きなパディングを使用
+        const isMobile = window.innerWidth <= 768;
+        const padding = isMobile ? 16 : 20;
         
         switch (this.config.position) {
             case 'top-left':
