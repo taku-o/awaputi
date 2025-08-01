@@ -1,3 +1,5 @@
+import { ExportManager } from './ExportManager.js';
+
 /**
  * Analytics API
  * 分析データのプログラマティックアクセス機能を提供します
@@ -8,11 +10,15 @@
  * - レート制限とアクセス制御
  * - 集計機能とフィルタリング
  * - プライバシー保護対応
+ * - 多形式エクスポート機能（CSV、JSON、XML）
  */
 export class AnalyticsAPI {
     constructor(storageManager, privacyManager = null) {
         this.storageManager = storageManager;
         this.privacyManager = privacyManager;
+        
+        // ExportManager統合
+        this.exportManager = new ExportManager(storageManager, privacyManager);
         
         // エンドポイント管理
         this.endpoints = new Map();
@@ -101,6 +107,15 @@ export class AnalyticsAPI {
         // APIメタデータ取得
         this.registerEndpoint('/meta', async () => {
             return this.getAPIMetadata();
+        });
+        
+        // データエクスポート（多形式対応）
+        this.registerEndpoint('/export', async (query) => {
+            return await this.exportData(query);
+        }, {
+            requireAuth: false,
+            rateLimit: true,
+            maxRequestsPerMinute: 10 // エクスポートは重い処理なので制限を厳しく
         });
     }
     
@@ -1353,12 +1368,108 @@ export class AnalyticsAPI {
     }
     
     /**
+     * データエクスポート機能
+     * ExportManagerを使用して多形式エクスポートを提供
+     * @param {Object} options - エクスポートオプション
+     * @param {string|Array} options.dataTypes - エクスポートするデータタイプ
+     * @param {string} options.format - 出力形式（json, csv, xml）
+     * @param {Object} options.filters - データフィルター
+     * @param {boolean} options.anonymize - データ匿名化フラグ
+     * @param {boolean} options.includeMetadata - メタデータ含有フラグ
+     * @returns {Promise<Object>} エクスポート結果
+     */
+    async exportData(options = {}) {
+        const startTime = performance.now();
+        
+        try {
+            // デフォルト設定
+            const exportOptions = {
+                dataTypes: options.dataTypes || 'all',
+                format: options.format || 'json',
+                filters: options.filters || {},
+                anonymize: options.anonymize !== false, // デフォルトで匿名化を有効
+                includeMetadata: options.includeMetadata !== false,
+                ...options
+            };
+            
+            // ExportManagerを使用してエクスポート実行
+            const result = await this.exportManager.exportData(exportOptions);
+            
+            if (result.success) {
+                // API用のレスポンス形式に変換
+                return {
+                    success: true,
+                    data: result.data,
+                    format: result.format,
+                    filename: result.filename,
+                    size: result.size,
+                    duration: result.duration,
+                    metadata: {
+                        exportId: result.metadata?.exportId || `api_export_${Date.now()}`,
+                        timestamp: new Date().toISOString(),
+                        apiEndpoint: '/export',
+                        requestOptions: exportOptions,
+                        responseTime: Math.max(performance.now() - startTime, 0.1)
+                    }
+                };
+            } else {
+                throw new Error(result.error || 'Export failed');
+            }
+        } catch (error) {
+            console.error('Export API error:', error);
+            return {
+                success: false,
+                error: {
+                    code: 'EXPORT_ERROR',
+                    message: error.message,
+                    status: 500,
+                    timestamp: new Date().toISOString(),
+                    endpoint: '/export'
+                },
+                metadata: {
+                    responseTime: Math.max(performance.now() - startTime, 0.1)
+                }
+            };
+        }
+    }
+    
+    /**
+     * サポートされているエクスポート形式の取得
+     * @returns {Array<string>} サポートされている形式リスト
+     */
+    getSupportedExportFormats() {
+        return this.exportManager.getSupportedFormats();
+    }
+    
+    /**
+     * エクスポート可能なデータタイプの取得
+     * @returns {Array<string>} サポートされているデータタイプリスト
+     */
+    getSupportedExportDataTypes() {
+        return this.exportManager.getSupportedDataTypes();
+    }
+    
+    /**
+     * エクスポート統計の取得
+     * @returns {Object} エクスポート統計情報
+     */
+    getExportStats() {
+        return this.exportManager.getExportStats();
+    }
+    
+    /**
      * リソースの解放
      */
     destroy() {
         this.endpoints.clear();
         this.rateLimiting.requestHistory.clear();
         this.aggregationCache.clear();
+        
+        // ExportManagerのリソースも解放
+        if (this.exportManager && typeof this.exportManager.destroy === 'function') {
+            this.exportManager.destroy();
+        }
+        
         console.log('Analytics API destroyed');
     }
 }

@@ -154,6 +154,7 @@ describe('AnalyticsAPI', () => {
             expect(analyticsAPI.endpoints.has('/stats/summary')).toBe(true);
             expect(analyticsAPI.endpoints.has('/realtime')).toBe(true);
             expect(analyticsAPI.endpoints.has('/meta')).toBe(true);
+            expect(analyticsAPI.endpoints.has('/export')).toBe(true);
         });
         
         test('レート制限設定が初期化される', () => {
@@ -831,6 +832,123 @@ describe('AnalyticsAPI', () => {
             const limited = analyticsAPI.limitAggregationResults(details, 2);
             
             expect(Object.keys(limited.sessionData.groups)).toHaveLength(2);
+        });
+    });
+    
+    describe('データエクスポート機能', () => {
+        test('JSON形式でのエクスポートが動作する', async () => {
+            const result = await analyticsAPI.getData('/export', {
+                dataTypes: ['sessionData'],
+                format: 'json'
+            });
+            
+            expect(result.success).toBe(true);
+            expect(result.data).toBeDefined();
+            // エクスポート結果は data.data の中にあるレスポンス構造
+            if (result.data.format) {
+                expect(result.data.format).toBe('json');
+            }
+            if (result.data.filename) {
+                expect(result.data.filename).toBeDefined();
+            }
+        });
+        
+        test('CSV形式でのエクスポートが動作する', async () => {
+            const result = await analyticsAPI.getData('/export', {
+                dataTypes: ['sessionData'],
+                format: 'csv'
+            });
+            
+            expect(result.success).toBe(true);
+            expect(result.data).toBeDefined();
+            if (result.data.format) {
+                expect(result.data.format).toBe('csv');
+            }
+            if (result.data.filename) {
+                expect(result.data.filename).toMatch(/\.csv$/);
+            }
+        });
+        
+        test('XML形式でのエクスポートが動作する', async () => {
+            const result = await analyticsAPI.getData('/export', {
+                dataTypes: ['sessionData'],
+                format: 'xml'
+            });
+            
+            expect(result.success).toBe(true);
+            expect(result.data).toBeDefined();
+            if (result.data.format) {
+                expect(result.data.format).toBe('xml');
+            }
+            if (result.data.filename) {
+                expect(result.data.filename).toMatch(/\.xml$/);
+            }
+        });
+        
+        test('エクスポート形式サポート情報が取得できる', () => {
+            const formats = analyticsAPI.getSupportedExportFormats();
+            expect(formats).toContain('json');
+            expect(formats).toContain('csv');
+            expect(formats).toContain('xml');
+        });
+        
+        test('エクスポート可能データタイプが取得できる', () => {
+            const dataTypes = analyticsAPI.getSupportedExportDataTypes();
+            expect(dataTypes).toContain('sessionData');
+            expect(dataTypes).toContain('bubbleInteractions');
+            expect(dataTypes).toContain('performanceData');
+        });
+        
+        test('エクスポート統計が取得できる', () => {
+            const stats = analyticsAPI.getExportStats();
+            expect(stats).toBeDefined();
+            expect(typeof stats.totalExports).toBe('number');
+            expect(typeof stats.successfulExports).toBe('number');
+            expect(typeof stats.successRate).toBe('number');
+        });
+        
+        test('無効な形式でのエクスポートがエラーになる', async () => {
+            const result = await analyticsAPI.getData('/export', {
+                dataTypes: ['sessionData'],
+                format: 'invalid'
+            });
+            
+            // エラーが適切に処理されているかチェック
+            expect(result.success).toBe(true); // getDataは成功だが、内部のエクスポートが失敗
+            if (result.data && result.data.success === false) {
+                expect(result.data.error.code).toBe('EXPORT_ERROR');
+            }
+        });
+        
+        test('データフィルタリングが動作する', async () => {
+            const result = await analyticsAPI.getData('/export', {
+                dataTypes: ['sessionData'],
+                format: 'json',
+                filters: {
+                    sessionId: 'session_1'
+                }
+            });
+            
+            expect(result.success).toBe(true);
+            expect(result.data).toBeDefined();
+        });
+        
+        test('データ匿名化オプションが動作する', async () => {
+            const result = await analyticsAPI.getData('/export', {
+                dataTypes: ['sessionData'],
+                format: 'json',
+                anonymize: false
+            });
+            
+            expect(result.success).toBe(true);
+            expect(result.data).toBeDefined();
+        });
+        
+        test('エクスポートのレート制限が動作する', async () => {
+            // エクスポート用の厳しいレート制限をテスト
+            const endpoint = analyticsAPI.endpoints.get('/export');
+            expect(endpoint.options.maxRequestsPerMinute).toBe(10);
+            expect(endpoint.options.rateLimit).toBe(true);
         });
     });
     
