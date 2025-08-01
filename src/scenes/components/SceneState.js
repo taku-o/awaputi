@@ -8,8 +8,8 @@ export class SceneState {
         
         // タブ状態管理
         this.currentTab = 'statistics';
-        this.tabs = ['statistics', 'achievements', 'management', 'help'];
-        this.tabLabels = ['統計', '実績', '管理', 'ヘルプ'];
+        this.tabs = ['statistics', 'achievements', 'leaderboard', 'management', 'help'];
+        this.tabLabels = ['統計', '実績', 'ランキング', '管理', 'ヘルプ'];
         
         // ダイアログ状態管理
         this.showingDialog = null; // null, 'username', 'export', 'import'
