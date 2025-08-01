@@ -89,7 +89,12 @@ export class SocialSharingManager {
             this.localizationManager = this.gameEngine.localizationManager;
             
             // ShareContentGeneratorの初期化
+            const { ShareContentGenerator } = await import('./ShareContentGenerator.js');
             this.shareContentGenerator = new ShareContentGenerator(this.localizationManager);
+            
+            // ScreenshotCaptureの初期化 (Task 5)
+            const { ScreenshotCapture } = await import('./ScreenshotCapture.js');
+            this.screenshotCapture = new ScreenshotCapture(this.gameEngine);
             
             // GameEngineイベントリスナー設定
             this.gameEngine.on('gameEnd', this.onGameEnd.bind(this));
@@ -101,7 +106,8 @@ export class SocialSharingManager {
             statisticsManager: !!this.statisticsManager,
             achievementManager: !!this.achievementManager,
             localizationManager: !!this.localizationManager,
-            shareContentGenerator: !!this.shareContentGenerator
+            shareContentGenerator: !!this.shareContentGenerator,
+            screenshotCapture: !!this.screenshotCapture
         });
     }
     
@@ -1637,6 +1643,504 @@ export class SocialSharingManager {
                 error: error.message
             };
         }
+    }
+
+    /**
+     * スクリーンショット付きでの共有 (Task 5)
+     */
+    async shareWithScreenshot(shareData, options = {}) {
+        try {
+            const startTime = performance.now();
+            
+            if (!this.screenshotCapture) {
+                throw new Error('ScreenshotCaptureが初期化されていません');
+            }
+            
+            // スクリーンショットの取得
+            this.log('スクリーンショット付き共有開始', shareData);
+            
+            const screenshotOptions = {
+                format: options.imageFormat || 'png',
+                quality: options.imageQuality || 'high',
+                maxWidth: options.maxWidth || 1200,
+                maxHeight: options.maxHeight || 630,
+                optimize: options.optimize !== false,
+                filename: options.filename || this.screenshotCapture.generateFilename('share')
+            };
+            
+            const screenshot = await this.screenshotCapture.captureGameCanvas(screenshotOptions);
+            
+            // スクリーンショット統計の記録
+            if (this.statisticsManager) {
+                this.statisticsManager.recordSocialEvent('screenshotCaptured', {
+                    format: screenshot.format,
+                    size: screenshot.size,
+                    optimized: screenshot.optimized,
+                    captureTime: performance.now() - startTime
+                });
+            }
+            
+            // 共有データにスクリーンショット情報を追加
+            const enhancedShareData = {
+                ...shareData,
+                screenshot: {
+                    url: screenshot.url,
+                    blob: screenshot.blob,
+                    size: screenshot.size,
+                    format: screenshot.format,
+                    filename: screenshot.filename
+                }
+            };
+            
+            // プラットフォーム別の共有処理
+            const platform = options.platform || this.detectPlatform();
+            let shareResult;
+            
+            switch (platform) {
+                case 'twitter':
+                    shareResult = await this.shareScreenshotViaTwitter(enhancedShareData, options);
+                    break;
+                case 'facebook':
+                    shareResult = await this.shareScreenshotViaFacebook(enhancedShareData, options);
+                    break;
+                default:
+                    shareResult = await this.shareScreenshotViaWebAPI(enhancedShareData, options);
+                    break;
+            }
+            
+            this.updatePerformanceStats('screenshotShare');
+            
+            this.log('スクリーンショット付き共有完了', {
+                platform: shareResult.platform,
+                screenshotSize: `${Math.round(screenshot.size / 1024)}KB`,
+                totalTime: `${Math.round(performance.now() - startTime)}ms`
+            });
+            
+            return {
+                ...shareResult,
+                screenshot: {
+                    format: screenshot.format,
+                    size: screenshot.size,
+                    optimized: screenshot.optimized
+                }
+            };
+            
+        } catch (error) {
+            this.handleError('SCREENSHOT_SHARE_FAILED', error, { shareData, options });
+            
+            // フォールバック: スクリーンショットなしでの共有
+            this.log('スクリーンショットなしでの共有にフォールバック', null, 'warn');
+            return await this.share(shareData, { ...options, fallback: true });
+        }
+    }
+    
+    /**
+     * Twitterでのスクリーンショット共有
+     */
+    async shareScreenshotViaTwitter(shareData, options = {}) {
+        try {
+            // Twitterは画像アップロードAPIが必要なため、URLのみでの共有
+            const twitterUrl = this.generateTwitterShareUrl(shareData, options);
+            
+            // 新しいウィンドウで共有
+            const shareWindow = window.open(
+                twitterUrl,
+                'twitter-share',
+                'width=550,height=420,scrollbars=yes,resizable=yes'
+            );
+            
+            if (!shareWindow) {
+                throw new Error('ポップアップがブロックされました');
+            }
+            
+            // 統計記録
+            if (this.statisticsManager) {
+                this.statisticsManager.recordSocialEvent('twitterScreenshotShare', {
+                    hasScreenshot: !!shareData.screenshot,
+                    screenshotFormat: shareData.screenshot?.format,
+                    screenshotSize: shareData.screenshot?.size
+                });
+            }
+            
+            return {
+                success: true,
+                method: 'twitter-url',
+                platform: 'twitter',
+                url: twitterUrl,
+                hasScreenshot: true
+            };
+            
+        } catch (error) {
+            this.handleError('TWITTER_SCREENSHOT_SHARE_FAILED', error, shareData);
+            throw error;
+        }
+    }
+    
+    /**
+     * Facebookでのスクリーンショット共有
+     */
+    async shareScreenshotViaFacebook(shareData, options = {}) {
+        try {
+            // Open Graphタグを更新
+            this.updateOGTagsForFacebook(shareData);
+            
+            const facebookUrl = this.generateFacebookShareUrl(shareData, options);
+            
+            // 新しいウィンドウで共有
+            const shareWindow = window.open(
+                facebookUrl,
+                'facebook-share',
+                'width=626,height=436,scrollbars=yes,resizable=yes'
+            );
+            
+            if (!shareWindow) {
+                throw new Error('ポップアップがブロックされました');
+            }
+            
+            // 統計記録
+            if (this.statisticsManager) {
+                this.statisticsManager.recordSocialEvent('facebookScreenshotShare', {
+                    hasScreenshot: !!shareData.screenshot,
+                    screenshotFormat: shareData.screenshot?.format,
+                    screenshotSize: shareData.screenshot?.size
+                });
+            }
+            
+            return {
+                success: true,
+                method: 'facebook-url',
+                platform: 'facebook',
+                url: facebookUrl,
+                hasScreenshot: true
+            };
+            
+        } catch (error) {
+            this.handleError('FACEBOOK_SCREENSHOT_SHARE_FAILED', error, shareData);
+            throw error;
+        }
+    }
+    
+    /**
+     * Web Share APIでのスクリーンショット共有
+     */
+    async shareScreenshotViaWebAPI(shareData, options = {}) {
+        try {
+            if (!this.isWebShareSupported()) {
+                throw new Error('Web Share APIがサポートされていません');
+            }
+            
+            // Web Share APIにファイルが含まれている場合
+            const sharePayload = {
+                title: shareData.title || 'BubblePop - ゲーム画面',
+                text: shareData.text || shareData.message || 'BubblePopをプレイ中！',
+                url: shareData.url || window.location.href
+            };
+            
+            // スクリーンショットファイルの追加
+            if (shareData.screenshot && shareData.screenshot.blob) {
+                const file = new File([shareData.screenshot.blob], shareData.screenshot.filename, {
+                    type: shareData.screenshot.blob.type
+                });
+                sharePayload.files = [file];
+            }
+            
+            await navigator.share(sharePayload);
+            
+            // 統計記録
+            if (this.statisticsManager) {
+                this.statisticsManager.recordSocialEvent('webApiScreenshotShare', {
+                    hasScreenshot: !!shareData.screenshot,
+                    screenshotFormat: shareData.screenshot?.format,
+                    screenshotSize: shareData.screenshot?.size
+                });
+            }
+            
+            return {
+                success: true,
+                method: 'web-share-api',
+                platform: 'web-share',
+                hasScreenshot: true
+            };
+            
+        } catch (error) {
+            if (error.name === 'AbortError') {
+                return {
+                    success: false,
+                    error: 'ユーザーによってキャンセルされました',
+                    method: 'web-share-api',
+                    platform: 'web-share'
+                };
+            }
+            
+            this.handleError('WEB_API_SCREENSHOT_SHARE_FAILED', error, shareData);
+            throw error;
+        }
+    }
+    
+    /**
+     * カスタム領域のスクリーンショット共有
+     */
+    async shareRegionScreenshot(x, y, width, height, shareData, options = {}) {
+        try {
+            if (!this.screenshotCapture) {
+                throw new Error('ScreenshotCaptureが初期化されていません');
+            }
+            
+            // 指定領域のスクリーンショットを取得
+            const screenshotOptions = {
+                format: options.imageFormat || 'png',
+                quality: options.imageQuality || 'high',
+                optimize: options.optimize !== false,
+                filename: options.filename || this.screenshotCapture.generateFilename('region-share')
+            };
+            
+            const screenshot = await this.screenshotCapture.captureRegion(x, y, width, height, screenshotOptions);
+            
+            // 共有データにスクリーンショット情報を追加
+            const enhancedShareData = {
+                ...shareData,
+                screenshot: {
+                    url: screenshot.url,
+                    blob: screenshot.blob,
+                    size: screenshot.size,
+                    format: screenshot.format,
+                    filename: screenshot.filename
+                }
+            };
+            
+            // 通常のスクリーンショット共有を実行
+            return await this.shareWithScreenshot(enhancedShareData, { ...options, skipCapture: true });
+            
+        } catch (error) {
+            this.handleError('REGION_SCREENSHOT_SHARE_FAILED', error, { x, y, width, height, shareData, options });
+            throw error;
+        }
+    }
+
+    
+    /**
+     * オーバーレイ付きスクリーンショット共有 (Task 6)
+     */
+    async shareWithOverlayScreenshot(shareData, overlayType, overlayData, options = {}) {
+        try {
+            const startTime = performance.now();
+            
+            if (!this.screenshotCapture) {
+                throw new Error('ScreenshotCaptureが初期化されていません');
+            }
+            
+            this.log('オーバーレイ付きスクリーンショット共有開始', { 
+                overlayType, 
+                shareData: shareData.type 
+            });
+            
+            // オーバーレイ設定の準備
+            const overlayOptions = {
+                format: options.imageFormat || 'png',
+                quality: options.imageQuality || 'high',
+                optimize: options.optimize !== false,
+                filename: options.filename || this.screenshotCapture.generateFilename(`${overlayType}-share`),
+                overlay: options.overlayConfig || {}
+            };
+            
+            // オーバーレイタイプ別のスクリーンショット取得
+            let screenshot;
+            
+            switch (overlayType) {
+                case 'score':
+                    screenshot = await this.screenshotCapture.captureWithScore(overlayData, overlayOptions);
+                    break;
+                case 'achievement':
+                    screenshot = await this.screenshotCapture.captureWithAchievement(overlayData, overlayOptions);
+                    break;
+                case 'custom':
+                    screenshot = await this.screenshotCapture.captureWithCustomOverlay(overlayData, overlayOptions);
+                    break;
+                default:
+                    throw new Error(`未対応のオーバーレイタイプ: ${overlayType}`);
+            }
+            
+            // 統計記録
+            if (this.statisticsManager) {
+                this.statisticsManager.recordSocialEvent('overlayScreenshotCaptured', {
+                    overlayType,
+                    format: screenshot.format,
+                    size: screenshot.size,
+                    optimized: screenshot.optimized,
+                    captureTime: performance.now() - startTime
+                });
+            }
+            
+            // 共有データにスクリーンショット情報を追加
+            const enhancedShareData = {
+                ...shareData,
+                screenshot: {
+                    url: screenshot.url,
+                    blob: screenshot.blob,
+                    size: screenshot.size,
+                    format: screenshot.format,
+                    filename: screenshot.filename,
+                    overlayType: screenshot.overlayType,
+                    hasOverlay: screenshot.hasOverlay
+                }
+            };
+            
+            // 標準のスクリーンショット共有を実行
+            const shareResult = await this.shareWithScreenshot(enhancedShareData, {
+                ...options,
+                skipCapture: true // 既にキャプチャ済み
+            });
+            
+            this.log('オーバーレイ付きスクリーンショット共有完了', {
+                overlayType,
+                platform: shareResult.platform,
+                screenshotSize: `${Math.round(screenshot.size / 1024)}KB`,
+                totalTime: `${Math.round(performance.now() - startTime)}ms`
+            });
+            
+            return {
+                ...shareResult,
+                overlayType,
+                screenshot: {
+                    format: screenshot.format,
+                    size: screenshot.size,
+                    optimized: screenshot.optimized,
+                    hasOverlay: true
+                }
+            };
+            
+        } catch (error) {
+            this.handleError('OVERLAY_SCREENSHOT_SHARE_FAILED', error, { shareData, overlayType, overlayData, options });
+            
+            // フォールバック: 通常のスクリーンショット共有
+            this.log('通常のスクリーンショット共有にフォールバック', null, 'warn');
+            return await this.shareWithScreenshot(shareData, options);
+        }
+    }
+    
+    /**
+     * スコア情報オーバーレイ付き共有
+     */
+    async shareScoreWithOverlay(scoreData, shareData, options = {}) {
+        return await this.shareWithOverlayScreenshot(
+            shareData || { type: 'score', score: scoreData.score },
+            'score',
+            scoreData,
+            options
+        );
+    }
+    
+    /**
+     * 実績オーバーレイ付き共有
+     */
+    async shareAchievementWithOverlay(achievementData, shareData, options = {}) {
+        return await this.shareWithOverlayScreenshot(
+            shareData || { type: 'achievement', name: achievementData.name },
+            'achievement',
+            achievementData,
+            options
+        );
+    }
+    
+    /**
+     * カスタムオーバーレイ付き共有
+     */
+    async shareCustomOverlay(customData, shareData, options = {}) {
+        return await this.shareWithOverlayScreenshot(
+            shareData || { type: 'custom' },
+            'custom',
+            customData,
+            options
+        );
+    }
+    
+    /**
+     * プリセットオーバーレイ付き共有
+     */
+    async shareWithPresetOverlay(presetName, shareData, overlayData, options = {}) {
+        // プリセット設定の取得
+        if (this.screenshotCapture && this.screenshotCapture.screenshotOverlay) {
+            const presetConfig = this.screenshotCapture.screenshotOverlay.getPresetConfig(presetName);
+            options.overlayConfig = { ...presetConfig, ...options.overlayConfig };
+        }
+        
+        return await this.shareWithOverlayScreenshot(shareData, overlayData.type, overlayData.data, options);
+    }
+    
+    /**
+     * レスポンシブオーバーレイ付き共有
+     */
+    async shareWithResponsiveOverlay(shareData, overlayType, overlayData, options = {}) {
+        // レスポンシブ設定の適用
+        if (this.screenshotCapture && this.screenshotCapture.screenshotOverlay) {
+            const canvas = this.screenshotCapture.getGameCanvas();
+            if (canvas) {
+                const responsiveConfig = this.screenshotCapture.screenshotOverlay.getResponsiveConfig(
+                    canvas.width, 
+                    canvas.height
+                );
+                options.overlayConfig = { ...responsiveConfig, ...options.overlayConfig };
+            }
+        }
+        
+        return await this.shareWithOverlayScreenshot(shareData, overlayType, overlayData, options);
+    }
+    
+    /**
+     * オーバーレイ機能の状態確認
+     */
+    getOverlayCapabilities() {
+        const capabilities = {
+            available: !!(this.screenshotCapture && this.screenshotCapture.overlayEnabled),
+            types: ['score', 'achievement', 'custom'],
+            presets: ['minimal', 'elegant', 'gaming', 'social'],
+            responsive: true,
+            customizable: true
+        };
+        
+        if (this.screenshotCapture && this.screenshotCapture.screenshotOverlay) {
+            capabilities.stats = this.screenshotCapture.screenshotOverlay.getStats();
+        }
+        
+        return capabilities;
+    }
+    
+    /**
+     * スクリーンショット機能の状態確認
+     */
+    getScreenshotCapabilities() {
+        const capabilities = {
+            available: !!this.screenshotCapture,
+            formats: ['png', 'jpeg'],
+            optimization: true,
+            maxDimensions: {
+                width: this.screenshotCapture?.config.maxWidth || 1200,
+                height: this.screenshotCapture?.config.maxHeight || 630
+            }
+        };
+        
+        // WebPサポートの確認
+        if (this.screenshotCapture && this.screenshotCapture.isWebPSupported()) {
+            capabilities.formats.push('webp');
+        }
+        
+        // Web Share APIでのファイル共有サポート
+        capabilities.webShareFiles = this.isWebShareSupported() && 
+            navigator.canShare && 
+            navigator.canShare({ files: [new File([''], 'test.png', { type: 'image/png' })] });
+        
+        return capabilities;
+    }
+    
+    /**
+     * スクリーンショットキャプチャの統計取得
+     */
+    getScreenshotStats() {
+        if (!this.screenshotCapture) {
+            return null;
+        }
+        
+        return this.screenshotCapture.getStats();
     }
     
     /**

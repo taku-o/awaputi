@@ -1182,6 +1182,8 @@ export class GameScene extends Scene {
         
         // ハイスコア更新
         const currentStage = this.gameEngine.stageManager.getCurrentStage();
+        let isNewHighScore = false;
+        
         if (currentStage) {
             const stageId = currentStage.id;
             const currentHighScore = this.gameEngine.playerData.highScores[stageId];
@@ -1191,6 +1193,7 @@ export class GameScene extends Scene {
                     score: finalScore,
                     date: new Date().toISOString()
                 };
+                isNewHighScore = true;
                 console.log(`New high score for ${stageId}: ${finalScore}`);
                 
                 // SEOシステムにハイスコア更新を通知
@@ -1214,6 +1217,271 @@ export class GameScene extends Scene {
         // データを保存
         this.gameEngine.playerData.save();
         
-        console.log(`Game over. Final score: ${finalScore}, Earned AP: ${earnedAP}`);
+        // ゲーム終了データの準備
+        const gameEndData = this.prepareGameEndData(finalScore, isNewHighScore, currentStage);
+        
+        // ソーシャル共有システムに通知
+        this.triggerSharePrompt(gameEndData);
+        
+        console.log(`Game over. Final score: ${finalScore}, Earned AP: ${earnedAP}, High Score: ${isNewHighScore}`);
+    }
+
+    /**
+     * ゲーム終了データの準備
+     */
+    prepareGameEndData(finalScore, isNewHighScore, currentStage) {
+        const stats = this.gameEngine.statisticsManager || null;
+        const accuracy = stats ? stats.getAccuracy() : 0;
+        const maxCombo = stats ? stats.getMaxCombo() : 0;
+        const bubblesPopped = stats ? stats.getBubblesPopped() : 0;
+        
+        return {
+            score: finalScore,
+            isHighScore: isNewHighScore,
+            stage: currentStage ? currentStage.id : 'unknown',
+            stageType: currentStage ? currentStage.type : 'normal',
+            accuracy: accuracy,
+            combo: maxCombo,
+            bubblesPopped: bubblesPopped,
+            playTime: this.gameEngine.getGameTime ? this.gameEngine.getGameTime() : 0,
+            timestamp: Date.now()
+        };
+    }
+    
+    /**
+     * 共有プロンプトのトリガー
+     */
+    async triggerSharePrompt(gameEndData) {
+        try {
+            // SocialSharingManagerの取得
+            const socialManager = this.gameEngine.socialSharingManager;
+            if (!socialManager || !socialManager.settings.enabled) {
+                this.log('ソーシャル共有システムが無効、またはSocialSharingManagerが見つかりません');
+                return;
+            }
+            
+            // 共有設定の確認
+            const shareSettings = this.getShareSettings();
+            
+            // ハイスコア達成時の自動プロンプト
+            if (gameEndData.isHighScore && shareSettings.shareOnHighScore) {
+                await this.showHighScoreSharePrompt(gameEndData, socialManager);
+            }
+            // 通常のゲーム終了時プロンプト（設定に応じて）
+            else if (shareSettings.shareOnGameEnd && this.shouldShowSharePrompt(gameEndData)) {
+                await this.showGameEndSharePrompt(gameEndData, socialManager);
+            }
+            
+        } catch (error) {
+            console.error('共有プロンプトエラー:', error);
+            // エラーハンドリング（ゲーム進行を妨げない）
+            if (this.gameEngine.errorHandler) {
+                this.gameEngine.errorHandler.handleError(error, 'GameScene', {
+                    context: 'triggerSharePrompt',
+                    gameEndData
+                });
+            }
+        }
+    }
+    
+    /**
+     * ハイスコア達成時の共有プロンプト表示
+     */
+    async showHighScoreSharePrompt(gameEndData, socialManager) {
+        try {
+            this.log('ハイスコア達成！共有プロンプトを表示します', gameEndData);
+            
+            // ハイスコア達成メッセージの生成
+            const shareMessage = this.generateHighScoreMessage(gameEndData);
+            
+            // 共有データの構築
+            const shareData = {
+                ...gameEndData,
+                title: shareMessage.title,
+                text: shareMessage.text,
+                hashtags: shareMessage.hashtags,
+                url: window.location.href
+            };
+            
+            // 共有プロンプト表示
+            await socialManager.onHighScore(shareData);
+            
+            // 共有設定を更新（最後の共有時刻）
+            this.updateLastShareTime();
+            
+        } catch (error) {
+            console.error('ハイスコア共有プロンプトエラー:', error);
+        }
+    }
+    
+    /**
+     * 通常のゲーム終了時共有プロンプト表示
+     */
+    async showGameEndSharePrompt(gameEndData, socialManager) {
+        try {
+            this.log('ゲーム終了時の共有プロンプトを表示します', gameEndData);
+            
+            // 通常の共有メッセージの生成
+            const shareMessage = this.generateGameEndMessage(gameEndData);
+            
+            // 共有データの構築
+            const shareData = {
+                ...gameEndData,
+                title: shareMessage.title,
+                text: shareMessage.text,
+                hashtags: shareMessage.hashtags,
+                url: window.location.href
+            };
+            
+            // 共有プロンプト表示
+            await socialManager.onGameEnd(shareData);
+            
+            // 共有設定を更新
+            this.updateLastShareTime();
+            
+        } catch (error) {
+            console.error('ゲーム終了共有プロンプトエラー:', error);
+        }
+    }
+    
+    /**
+     * ハイスコア達成メッセージの生成
+     */
+    generateHighScoreMessage(gameEndData) {
+        const score = gameEndData.score.toLocaleString();
+        const stage = gameEndData.stage;
+        
+        return {
+            title: `新記録達成！ BubblePop`,
+            text: `🎉 新記録達成！${score}点を記録しました！ステージ: ${stage}`,
+            hashtags: ['BubblePop', 'NewRecord', 'HighScore', 'Gaming']
+        };
+    }
+    
+    /**
+     * ゲーム終了メッセージの生成
+     */
+    generateGameEndMessage(gameEndData) {
+        const score = gameEndData.score.toLocaleString();
+        const accuracy = Math.round(gameEndData.accuracy);
+        const combo = gameEndData.combo;
+        
+        let text = `🎮 BubblePopで${score}点を獲得！`;
+        
+        if (accuracy > 80) {
+            text += ` 精度${accuracy}%の素晴らしいプレイ！`;
+        }
+        
+        if (combo > 10) {
+            text += ` 最大コンボ${combo}連鎖達成！`;
+        }
+        
+        return {
+            title: `BubblePop - ${score}点獲得`,
+            text: text,
+            hashtags: ['BubblePop', 'Gaming', 'Score']
+        };
+    }
+    
+    /**
+     * 共有プロンプト表示の判定
+     */
+    shouldShowSharePrompt(gameEndData) {
+        const shareSettings = this.getShareSettings();
+        
+        // 最小スコア閾値チェック
+        if (shareSettings.minScoreThreshold && gameEndData.score < shareSettings.minScoreThreshold) {
+            return false;
+        }
+        
+        // 最後の共有からの時間チェック（スパム防止）
+        const lastShareTime = shareSettings.lastShareTime || 0;
+        const timeSinceLastShare = Date.now() - lastShareTime;
+        const minInterval = shareSettings.shareInterval || 5 * 60 * 1000; // 5分
+        
+        if (timeSinceLastShare < minInterval) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * 共有設定の取得
+     */
+    getShareSettings() {
+        try {
+            const settings = localStorage.getItem('bubblepop_share_settings');
+            const defaultSettings = {
+                shareOnHighScore: true,
+                shareOnGameEnd: false,
+                minScoreThreshold: 1000,
+                shareInterval: 5 * 60 * 1000, // 5分
+                lastShareTime: 0,
+                preferredPlatforms: ['web-share', 'twitter', 'facebook'],
+                autoPrompt: true
+            };
+            
+            if (settings) {
+                return { ...defaultSettings, ...JSON.parse(settings) };
+            }
+            
+            return defaultSettings;
+        } catch (error) {
+            console.error('共有設定の読み込みエラー:', error);
+            return {
+                shareOnHighScore: true,
+                shareOnGameEnd: false,
+                minScoreThreshold: 1000,
+                shareInterval: 5 * 60 * 1000,
+                lastShareTime: 0,
+                preferredPlatforms: ['web-share', 'twitter', 'facebook'],
+                autoPrompt: true
+            };
+        }
+    }
+    
+    /**
+     * 共有設定の保存
+     */
+    saveShareSettings(settings) {
+        try {
+            const currentSettings = this.getShareSettings();
+            const updatedSettings = { ...currentSettings, ...settings };
+            localStorage.setItem('bubblepop_share_settings', JSON.stringify(updatedSettings));
+            this.log('共有設定を保存しました', updatedSettings);
+        } catch (error) {
+            console.error('共有設定の保存エラー:', error);
+        }
+    }
+    
+    /**
+     * 最終共有時刻の更新
+     */
+    updateLastShareTime() {
+        this.saveShareSettings({ lastShareTime: Date.now() });
+    }
+    
+    /**
+     * ログ記録
+     */
+    log(message, data = null) {
+        console.log(`[GameScene] ${message}`, data || '');
+    }
+
+    
+    /**
+     * ゲーム経過時間の取得
+     */
+    getGameTime() {
+        // GameEngineから経過時間を取得、または現在の残り時間から逆算
+        if (this.gameEngine.getGameTime) {
+            return this.gameEngine.getGameTime();
+        }
+        
+        // フォールバック: 初期時間から残り時間を引いて経過時間を計算
+        const initialTime = 300000; // 5分
+        const elapsedTime = initialTime - this.gameEngine.timeRemaining;
+        return Math.max(0, elapsedTime);
     }
 }
