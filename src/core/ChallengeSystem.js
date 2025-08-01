@@ -40,7 +40,14 @@ export class ChallengeSystem {
             TIME_PLAYED: 'time_played', // プレイ時間
             STAGE_CLEAR: 'stage_clear', // ステージクリア
             ITEM_USE: 'item_use',     // アイテム使用
-            ACHIEVEMENT: 'achievement' // 実績解除
+            ACHIEVEMENT: 'achievement', // 実績解除
+            // ウィークリーチャレンジ用の累積/ベスト記録タイプ
+            SCORE_CUMULATIVE: 'score_cumulative',
+            PLAY_COUNT_CUMULATIVE: 'play_count_cumulative',
+            BUBBLE_POP_CUMULATIVE: 'bubble_pop_cumulative',
+            TIME_PLAYED_CUMULATIVE: 'time_played_cumulative',
+            COMBO_BEST: 'combo_best',
+            CONSECUTIVE_DAYS: 'consecutive_days'
         };
         
         // 報酬タイプ
@@ -115,6 +122,31 @@ export class ChallengeSystem {
             }
             if (data.maxCombo) {
                 this.updateProgress('COMBO', data.maxCombo);
+            }
+            
+            // ウィークリーチャレンジ用の累積/ベスト記録更新
+            this.updateProgress('PLAY_COUNT_CUMULATIVE', 1);
+            this.updateProgress('SCORE_CUMULATIVE', data.score);
+            this.updateProgress('TIME_PLAYED_CUMULATIVE', data.duration);
+            if (data.bubbleStats) {
+                this.updateProgress('BUBBLE_POP_CUMULATIVE', data.bubbleStats.total);
+            }
+            if (data.maxCombo) {
+                this.updateProgress('COMBO_BEST', data.maxCombo);
+            }
+            
+            // 週間統計更新（WeeklyChallengeManagerに通知）
+            if (this.gameEngine.weeklyChallengeManager) {
+                this.gameEngine.weeklyChallengeManager.updateWeeklyProgress('SCORE_CUMULATIVE', data.score);
+                this.gameEngine.weeklyChallengeManager.updateWeeklyProgress('PLAY_COUNT_CUMULATIVE', 1);
+                this.gameEngine.weeklyChallengeManager.updateWeeklyProgress('TIME_PLAYED_CUMULATIVE', data.duration);
+                if (data.bubbleStats) {
+                    this.gameEngine.weeklyChallengeManager.updateWeeklyProgress('BUBBLE_POP_CUMULATIVE', data.bubbleStats.total);
+                }
+                if (data.maxCombo) {
+                    this.gameEngine.weeklyChallengeManager.updateWeeklyProgress('COMBO_BEST', data.maxCombo);
+                }
+                this.gameEngine.weeklyChallengeManager.updateWeeklyProgress('CONSECUTIVE_DAYS', 1);
             }
         });
         
@@ -207,9 +239,17 @@ export class ChallengeSystem {
                 
                 // 進捗値更新
                 const oldValue = progress.currentValue;
-                progress.currentValue = Math.max(progress.currentValue, 
-                    progressType === 'SCORE' || progressType === 'COMBO' ? value : progress.currentValue + value
-                );
+                
+                if (progressType.includes('CUMULATIVE')) {
+                    // 累積系：値を加算
+                    progress.currentValue += value;
+                } else if (progressType.includes('BEST') || progressType === 'SCORE' || progressType === 'COMBO') {
+                    // ベスト記録系：最大値を保持
+                    progress.currentValue = Math.max(progress.currentValue, value);
+                } else {
+                    // その他：加算
+                    progress.currentValue = progress.currentValue + value;
+                }
                 progress.lastUpdate = Date.now();
                 
                 // 完了チェック

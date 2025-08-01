@@ -14,6 +14,7 @@ import { StatisticsManager } from './StatisticsManager.js';
 import { EventStageManager } from './EventStageManager.js';
 import { ChallengeSystem } from './ChallengeSystem.js';
 import { DailyChallengeManager } from './DailyChallengeManager.js';
+import { WeeklyChallengeManager } from './WeeklyChallengeManager.js';
 import { MainMenuScene } from '../scenes/MainMenuScene.js';
 import { StageSelectScene } from '../scenes/StageSelectScene.js';
 import { GameScene } from '../scenes/GameScene.js';
@@ -167,6 +168,9 @@ export class GameEngine {
         
         // デイリーチャレンジシステム
         this.dailyChallengeManager = new DailyChallengeManager(this, this.challengeSystem);
+        
+        // ウィークリーチャレンジシステム
+        this.weeklyChallengeManager = new WeeklyChallengeManager(this, this.challengeSystem);
         
         // ゲーム状態
         this.timeRemaining = 300000; // 5分
@@ -640,6 +644,9 @@ export class GameEngine {
                 
                 // デイリーチャレンジシステムの初期化
                 await this.dailyChallengeManager.initialize();
+                
+                // ウィークリーチャレンジシステムの初期化
+                await this.weeklyChallengeManager.initialize();
             } catch (error) {
                 getErrorHandler().handleError(error, 'INITIALIZATION_ERROR', { component: 'additionalSystems' });
                 // フォールバック: 新システムなしで続行
@@ -1620,6 +1627,11 @@ export class GameEngine {
         // デイリーチャレンジシステムのクリーンアップ
         if (this.dailyChallengeManager) {
             this.dailyChallengeManager.cleanup();
+        }
+        
+        // ウィークリーチャレンジシステムのクリーンアップ
+        if (this.weeklyChallengeManager) {
+            this.weeklyChallengeManager.cleanup();
         }
         
         // リーダーボードシステムのクリーンアップ
