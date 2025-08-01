@@ -213,80 +213,95 @@ export class SocialSharingManager {
     /**
      * スコア共有プロンプトの表示
      */
-    async promptShareScore(scoreData) {
+    async promptShareScore(scoreData, options = {}) {
         try {
             this.log('スコア共有プロンプト表示', scoreData);
             
-            if (!this.shareContentGenerator) {
-                throw new Error('ShareContentGeneratorが初期化されていません');
-            }
-            
-            // プラットフォームの検出
-            const platform = this.detectPlatform();
-            
-            // 共有メッセージの生成
-            const messageResult = this.shareContentGenerator.generateScoreMessage(
-                scoreData, 
-                platform,
-                { url: this.getShareUrl(scoreData) }
-            );
-            
-            // Web Share API用の共有データを構築
-            const webShareData = {
-                title: `BubblePop - ${scoreData.score}点達成！`,
-                text: messageResult.message,
-                url: this.getShareUrl(scoreData)
+            // 共有データの構築
+            const shareData = {
+                type: 'score',
+                title: `BubblePop - ${scoreData.score.toLocaleString()}点達成！`,
+                text: '', // generateOptimizedMessageで最適化される
+                url: options.url || this.getShareUrl(scoreData),
+                score: scoreData.score,
+                stage: scoreData.stage,
+                combo: scoreData.combo,
+                accuracy: scoreData.accuracy,
+                isHighScore: scoreData.isHighScore || false,
+                timestamp: Date.now()
             };
             
-            // 統合共有メソッドを使用して実際に共有
-            const shareResult = await this.share(webShareData);
+            // カスタムオプションの追加
+            if (options.customHashtags) {
+                shareData.customHashtags = options.customHashtags;
+            }
+            
+            if (options.mentions) {
+                shareData.mentions = options.mentions;
+            }
+            
+            if (options.via) {
+                shareData.via = options.via;
+            }
+            
+            // プラットフォーム固有の共有実行
+            const shareResult = await this.share(shareData, options);
             
             // 統計の更新
-            if (this.statisticsManager) {
-                this.statisticsManager.recordSocialEvent('scoreSharePrompted', {
+            if (this.gameEngine.statisticsManager) {
+                this.gameEngine.statisticsManager.recordSocialEvent('scoreSharePrompted', {
                     score: scoreData.score,
-                    platform: messageResult.platform,
+                    platform: shareResult.platform || 'unknown',
                     shareResult: shareResult.success,
-                    shareMethod: shareResult.method
+                    shareMethod: shareResult.method,
+                    optimized: shareResult.optimized || false
                 });
             }
             
-            // 共有データの構築（返り値用）
-            const shareData = {
+            // 成功時の結果データ
+            const resultData = {
                 type: 'score',
                 content: {
                     score: scoreData.score,
                     stage: scoreData.stage,
-                    message: messageResult.message,
-                    timestamp: Date.now()
+                    message: shareData.text || shareData.title,
+                    timestamp: shareData.timestamp
                 },
                 metadata: {
                     gameVersion: '1.0.0',
-                    platform: messageResult.platform,
-                    language: messageResult.language,
-                    generationTime: messageResult.metadata.generationTime,
-                    shareResult
+                    platform: shareResult.platform || this.detectPlatform(),
+                    language: shareResult.language || 'ja',
+                    shareResult,
+                    optimized: shareResult.optimized || false,
+                    responseTime: shareResult.responseTime
                 }
             };
             
-            return shareData;
+            this.log('スコア共有完了', { 
+                success: shareResult.success, 
+                method: shareResult.method,
+                optimized: shareResult.optimized
+            });
+            
+            return resultData;
             
         } catch (error) {
-            this.handleError('SCORE_SHARE_PROMPT_FAILED', error, { scoreData });
+            this.handleError('SCORE_SHARE_PROMPT_FAILED', error, { scoreData, options });
             
-            // フォールバック：基本的な共有データ
+            // フォールバック: 基本的な共有データ
             return {
                 type: 'score',
                 content: {
                     score: scoreData.score,
                     stage: scoreData.stage,
-                    message: `BubblePopで${scoreData.score}点を達成！`,
+                    message: `BubblePopで${scoreData.score.toLocaleString()}点を達成！`,
                     timestamp: Date.now()
                 },
                 metadata: {
                     gameVersion: '1.0.0',
                     platform: this.detectPlatform(),
-                    isFallback: true
+                    isFallback: true,
+                    error: error.message
                 }
             };
         }
@@ -295,68 +310,89 @@ export class SocialSharingManager {
     /**
      * 実績共有プロンプトの表示
      */
-    async promptShareAchievement(achievementData) {
+    async promptShareAchievement(achievementData, options = {}) {
         try {
             this.log('実績共有プロンプト表示', achievementData);
             
-            if (!this.shareContentGenerator) {
-                throw new Error('ShareContentGeneratorが初期化されていません');
-            }
-            
-            // プラットフォームの検出
-            const platform = this.detectPlatform();
-            
-            // 共有メッセージの生成
-            const messageResult = this.shareContentGenerator.generateAchievementMessage(
-                achievementData, 
-                platform,
-                { url: this.getShareUrl(achievementData) }
-            );
-            
-            // Web Share API用の共有データを構築
-            const webShareData = {
+            // 共有データの構築
+            const shareData = {
+                type: 'achievement',
                 title: `BubblePop - 実績「${achievementData.name}」解除！`,
-                text: messageResult.message,
-                url: this.getShareUrl(achievementData)
+                text: '', // generateOptimizedMessageで最適化される
+                url: options.url || this.getShareUrl(achievementData),
+                name: achievementData.name,
+                description: achievementData.description,
+                id: achievementData.id,
+                rarity: achievementData.rarity,
+                timestamp: Date.now()
             };
             
-            // 統合共有メソッドを使用して実際に共有
-            const shareResult = await this.share(webShareData);
+            // カスタムオプションの追加
+            if (options.customHashtags) {
+                shareData.customHashtags = options.customHashtags;
+            }
+            
+            if (options.mentions) {
+                shareData.mentions = options.mentions;
+            }
+            
+            if (options.via) {
+                shareData.via = options.via;
+            }
+            
+            // レア実績の場合は特別なハッシュタグを追加
+            if (achievementData.rarity === 'legendary') {
+                shareData.customHashtags = shareData.customHashtags || [];
+                shareData.customHashtags.push('Legendary', 'Rare');
+            }
+            
+            // プラットフォーム固有の共有実行
+            const shareResult = await this.share(shareData, options);
             
             // 統計の更新
-            if (this.statisticsManager) {
-                this.statisticsManager.recordSocialEvent('achievementSharePrompted', {
+            if (this.gameEngine.statisticsManager) {
+                this.gameEngine.statisticsManager.recordSocialEvent('achievementSharePrompted', {
                     achievementId: achievementData.id,
-                    platform: messageResult.platform,
-                    isRare: messageResult.metadata.isRare,
+                    platform: shareResult.platform || 'unknown',
+                    isRare: achievementData.rarity === 'legendary',
                     shareResult: shareResult.success,
-                    shareMethod: shareResult.method
+                    shareMethod: shareResult.method,
+                    optimized: shareResult.optimized || false
                 });
             }
             
-            // 共有データの構築（返り値用）
-            const shareData = {
+            // 成功時の結果データ
+            const resultData = {
                 type: 'achievement',
                 content: {
                     achievement: achievementData,
-                    message: messageResult.message,
-                    timestamp: Date.now()
+                    message: shareData.text || shareData.title,
+                    timestamp: shareData.timestamp
                 },
                 metadata: {
                     gameVersion: '1.0.0',
-                    platform: messageResult.platform,
-                    language: messageResult.language,
-                    isRare: messageResult.metadata.isRare,
-                    shareResult
+                    platform: shareResult.platform || this.detectPlatform(),
+                    language: shareResult.language || 'ja',
+                    isRare: achievementData.rarity === 'legendary',
+                    shareResult,
+                    optimized: shareResult.optimized || false,
+                    responseTime: shareResult.responseTime
                 }
             };
             
-            return shareData;
+            this.log('実績共有完了', { 
+                success: shareResult.success, 
+                method: shareResult.method,
+                isRare: achievementData.rarity === 'legendary',
+                optimized: shareResult.optimized
+            });
+            
+            return resultData;
             
         } catch (error) {
-            this.handleError('ACHIEVEMENT_SHARE_PROMPT_FAILED', error, { achievementData });
+            this.handleError('ACHIEVEMENT_SHARE_PROMPT_FAILED', error, { achievementData, options });
             
-            // フォールバック：基本的な共有データ
+            // フォールバック: 基本的な共有データ
             return {
                 type: 'achievement',
                 content: {
@@ -367,7 +403,8 @@ export class SocialSharingManager {
                 metadata: {
                     gameVersion: '1.0.0',
                     platform: this.detectPlatform(),
-                    isFallback: true
+                    isFallback: true,
+                    error: error.message
                 }
             };
         }
@@ -403,15 +440,55 @@ export class SocialSharingManager {
      * プラットフォーム検出
      */
     detectPlatform() {
+        // Web Share API の優先度が最も高い
         if (this.isWebShareSupported()) {
             return 'web-share';
-        } else if (navigator.userAgent.includes('Twitter')) {
-            return 'twitter';
-        } else if (navigator.userAgent.includes('Facebook')) {
-            return 'facebook';
-        } else {
-            return 'generic';
         }
+        
+        // User Agentベースのプラットフォーム検出
+        const userAgent = navigator.userAgent.toLowerCase();
+        
+        // Twitter/X アプリ内ブラウザの検出
+        if (userAgent.includes('twitter') || userAgent.includes('twitterandroid')) {
+            return 'twitter';
+        }
+        
+        // Facebook アプリ内ブラウザの検出
+        if (userAgent.includes('fban') || userAgent.includes('fbav') || userAgent.includes('facebook')) {
+            return 'facebook';
+        }
+        
+        // モバイルデバイスの検出
+        const isMobile = /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+        
+        // URL パラメータベースの検出
+        const urlParams = new URLSearchParams(window.location.search);
+        const platformParam = urlParams.get('share_platform') || urlParams.get('utm_source');
+        
+        if (platformParam) {
+            switch (platformParam.toLowerCase()) {
+                case 'twitter':
+                case 'x':
+                    return 'twitter';
+                case 'facebook':
+                case 'fb':
+                    return 'facebook';
+            }
+        }
+        
+        // Referrerベースの検出
+        if (document.referrer) {
+            const referrer = document.referrer.toLowerCase();
+            if (referrer.includes('twitter.com') || referrer.includes('t.co')) {
+                return 'twitter';
+            }
+            if (referrer.includes('facebook.com') || referrer.includes('fb.com')) {
+                return 'facebook';
+            }
+        }
+        
+        // デフォルト（モバイルの場合はgeneric、デスクトップの場合もgeneric）
+        return 'generic';
     }
     
     /**
@@ -1017,33 +1094,374 @@ export class SocialSharingManager {
      * TwitterシェアURL生成
      */
     generateTwitterShareUrl(shareData) {
-        const params = new URLSearchParams();
-        
-        let text = shareData.text || shareData.title || '';
-        if (shareData.url) {
-            params.append('url', shareData.url);
+        try {
+            const params = new URLSearchParams();
+            
+            // テキストの構築（文字数制限対応）
+            let text = shareData.text || shareData.title || '';
+            
+            // ハッシュタグの追加
+            const hashtags = this.generateTwitterHashtags(shareData);
+            if (hashtags.length > 0) {
+                text += ' ' + hashtags.join(' ');
+            }
+            
+            // メンションの追加（あれば）
+            if (shareData.mentions && Array.isArray(shareData.mentions)) {
+                const mentions = shareData.mentions
+                    .filter(mention => mention && typeof mention === 'string')
+                    .map(mention => mention.startsWith('@') ? mention : `@${mention}`)
+                    .slice(0, 2); // 最大2つのメンション
+                
+                if (mentions.length > 0) {
+                    text += ' ' + mentions.join(' ');
+                }
+            }
+            
+            // Twitter文字数制限の適用（URL短縮考慮）
+            const urlLength = shareData.url ? 23 : 0; // Twitter URL短縮の固定長
+            const maxTextLength = 280 - urlLength;
+            
+            if (text.length > maxTextLength) {
+                text = this.truncateForTwitter(text, maxTextLength);
+            }
+            
+            // パラメータの設定
+            if (text.trim()) {
+                params.append('text', text.trim());
+            }
+            
+            if (shareData.url) {
+                params.append('url', shareData.url);
+            }
+            
+            // via パラメータ（オプション）
+            if (shareData.via) {
+                params.append('via', shareData.via.replace('@', ''));
+            }
+            
+            const url = `https://twitter.com/intent/tweet?${params.toString()}`;
+            
+            // 統計の記録
+            this.updatePerformanceStats('twitterUrlGenerated');
+            
+            this.log('Twitter共有URL生成完了', { 
+                textLength: text.length, 
+                hasUrl: !!shareData.url,
+                hashtagCount: hashtags.length 
+            });
+            
+            return url;
+            
+        } catch (error) {
+            this.handleError('TWITTER_URL_GENERATION_FAILED', error, shareData);
+            
+            // フォールバック: 基本的なURL
+            const params = new URLSearchParams();
+            if (shareData.text || shareData.title) {
+                params.append('text', shareData.text || shareData.title);
+            }
+            if (shareData.url) {
+                params.append('url', shareData.url);
+            }
+            
+            return `https://twitter.com/intent/tweet?${params.toString()}`;
         }
-        if (text) {
-            params.append('text', text);
-        }
-        
-        return `https://twitter.com/intent/tweet?${params.toString()}`;
     }
     
     /**
      * FacebookシェアURL生成
      */
-    generateFacebookShareUrl(shareData) {
-        const params = new URLSearchParams();
-        
-        if (shareData.url) {
-            params.append('u', shareData.url);
+    generateFacebookShareUrl(shareData, options = {}) {
+        try {
+            const params = new URLSearchParams();
+            
+            // 基本パラメータの設定
+            if (shareData.url) {
+                params.append('u', shareData.url);
+            }
+            
+            // タイトルの設定（Facebook側では主にOGタグを使用するが、フォールバック）
+            if (shareData.title) {
+                params.append('t', shareData.title);
+            }
+            
+            // quote パラメータ（Facebookの引用機能）
+            if (shareData.quote || shareData.text) {
+                const quote = shareData.quote || shareData.text;
+                // Facebook文字数制限の適用
+                const maxQuoteLength = 500; // Facebook推奨制限
+                const truncatedQuote = quote.length > maxQuoteLength ? 
+                    quote.substring(0, maxQuoteLength - 3) + '...' : quote;
+                params.append('quote', truncatedQuote);
+            }
+            
+            // hashtag パラメータ（単一ハッシュタグ）
+            if (shareData.hashtag) {
+                const hashtag = shareData.hashtag.startsWith('#') ? 
+                    shareData.hashtag.substring(1) : shareData.hashtag;
+                params.append('hashtag', hashtag);
+            } else if (shareData.type) {
+                // データタイプに基づいたデフォルトハッシュタグ
+                const defaultHashtags = {
+                    score: 'BubblePopScore',
+                    achievement: 'BubblePopAchievement',
+                    challenge: 'BubblePopChallenge'
+                };
+                if (defaultHashtags[shareData.type]) {
+                    params.append('hashtag', defaultHashtags[shareData.type]);
+                }
+            }
+            
+            // Facebook共有モードの選択
+            const shareMode = options.mode || 'sharer'; // 'sharer' or 'dialog'
+            const baseUrl = shareMode === 'dialog' ? 
+                'https://www.facebook.com/dialog/share' : 
+                'https://www.facebook.com/sharer/sharer.php';
+            
+            // app_id パラメータ（Facebookアプリ登録時）
+            if (options.appId) {
+                params.append('app_id', options.appId);
+            }
+            
+            const url = `${baseUrl}?${params.toString()}`;
+            
+            // OGタグの動的更新（SEOシステムとの連携）
+            if (this.gameEngine.seoMetaManager && shareData.url === window.location.href) {
+                this.updateOGTagsForFacebook(shareData);
+            }
+            
+            // 統計の記録
+            this.updatePerformanceStats('facebookUrlGenerated');
+            
+            this.log('Facebook共有URL生成完了', { 
+                hasUrl: !!shareData.url,
+                hasQuote: !!(shareData.quote || shareData.text),
+                hasHashtag: !!shareData.hashtag,
+                mode: shareMode
+            });
+            
+            return url;
+            
+        } catch (error) {
+            this.handleError('FACEBOOK_URL_GENERATION_FAILED', error, shareData);
+            
+            // フォールバック: 基本的なURL
+            const params = new URLSearchParams();
+            if (shareData.url) {
+                params.append('u', shareData.url);
+            }
+            if (shareData.title) {
+                params.append('t', shareData.title);
+            }
+            
+            return `https://www.facebook.com/sharer/sharer.php?${params.toString()}`;
         }
-        if (shareData.title) {
-            params.append('t', shareData.title);
+    }
+
+    /**
+     * Twitter用ハッシュタグの生成
+     */
+    generateTwitterHashtags(shareData) {
+        const hashtags = [];
+        
+        // 基本ハッシュタグ
+        hashtags.push('#BubblePop');
+        
+        // データタイプ別ハッシュタグ
+        switch (shareData.type) {
+            case 'score':
+                hashtags.push('#Gaming');
+                if (shareData.isHighScore) {
+                    hashtags.push('#HighScore');
+                }
+                break;
+            case 'achievement':
+                hashtags.push('#Achievement');
+                if (shareData.rarity === 'legendary') {
+                    hashtags.push('#Legendary');
+                }
+                break;
+            case 'challenge':
+                hashtags.push('#Challenge');
+                if (shareData.challengeType === 'daily') {
+                    hashtags.push('#Daily');
+                }
+                break;
         }
         
-        return `https://www.facebook.com/sharer/sharer.php?${params.toString()}`;
+        // 言語固有ハッシュタグ
+        const language = this.gameEngine.localizationManager?.getCurrentLanguage() || 'ja';
+        const languageHashtags = {
+            'ja': ['#ゲーム'],
+            'en': ['#Game'],
+            'zh-CN': ['#游戏'],
+            'zh-TW': ['#遊戲'],
+            'ko': ['#게임']
+        };
+        
+        if (languageHashtags[language]) {
+            hashtags.push(...languageHashtags[language]);
+        }
+        
+        // カスタムハッシュタグの追加
+        if (shareData.customHashtags && Array.isArray(shareData.customHashtags)) {
+            shareData.customHashtags.forEach(tag => {
+                const formattedTag = tag.startsWith('#') ? tag : `#${tag}`;
+                if (!hashtags.includes(formattedTag)) {
+                    hashtags.push(formattedTag);
+                }
+            });
+        }
+        
+        // Twitter制限（最大2つのハッシュタグ）に調整
+        return hashtags.slice(0, 2);
+    }
+    
+    /**
+     * Twitter向けテキスト短縮
+     */
+    truncateForTwitter(text, maxLength) {
+        if (text.length <= maxLength) {
+            return text;
+        }
+        
+        // ハッシュタグとメンションを保護しながら短縮
+        const hashtagsAndMentions = text.match(/(#\w+|@\w+)/g) || [];
+        const protectedLength = hashtagsAndMentions.join(' ').length;
+        const availableLength = maxLength - protectedLength - 3; // "..." 分
+        
+        if (availableLength <= 0) {
+            // 保護すべき要素が長すぎる場合、基本的な短縮
+            return text.substring(0, maxLength - 3) + '...';
+        }
+        
+        // 単語境界で短縮を試行
+        const words = text.split(' ');
+        let result = '';
+        
+        for (const word of words) {
+            if ((result + ' ' + word).length <= availableLength) {
+                result += (result ? ' ' : '') + word;
+            } else {
+                break;
+            }
+        }
+        
+        // ハッシュタグとメンションを再追加
+        result += '...' + (hashtagsAndMentions.length > 0 ? ' ' + hashtagsAndMentions.join(' ') : '');
+        
+        return result;
+    }
+    
+    /**
+     * Facebook用OGタグの動的更新
+     */
+    updateOGTagsForFacebook(shareData) {
+        try {
+            if (!this.gameEngine.seoMetaManager) {
+                this.log('SEOMetaManagerが利用できません', null, 'warn');
+                return;
+            }
+            
+            const ogData = {
+                title: shareData.title || 'BubblePop - バブルポップゲーム',
+                description: shareData.text || shareData.description || 'HTML5で作られたバブルポップゲームで遊ぼう！',
+                url: shareData.url || window.location.href,
+                type: 'website'
+            };
+            
+            // スコア共有の場合の特別処理
+            if (shareData.type === 'score' && shareData.score) {
+                ogData.title = `BubblePop - ${shareData.score.toLocaleString()}点達成！`;
+                ogData.description = `BubblePopで${shareData.score.toLocaleString()}点を達成しました！あなたも挑戦してみませんか？`;
+            }
+            
+            // 実績共有の場合の特別処理
+            if (shareData.type === 'achievement' && shareData.name) {
+                ogData.title = `BubblePop - 実績「${shareData.name}」解除！`;
+                ogData.description = `BubblePopで実績「${shareData.name}」を解除しました！`;
+            }
+            
+            // 画像の設定（ゲーム画面のスクリーンショットがあれば）
+            if (shareData.image) {
+                ogData.image = shareData.image;
+                ogData.imageAlt = ogData.title;
+            }
+            
+            // SEOMetaManagerを使用してOGタグを更新
+            this.gameEngine.seoMetaManager.updateOpenGraphTags(ogData);
+            
+            this.log('OGタグ更新完了', ogData);
+            
+        } catch (error) {
+            this.handleError('OG_TAGS_UPDATE_FAILED', error, shareData);
+        }
+    }
+    
+    /**
+     * プラットフォーム固有の最適化されたメッセージ生成
+     */
+    generateOptimizedMessage(shareData, platform) {
+        if (!this.shareContentGenerator) {
+            this.log('ShareContentGeneratorが利用できません', null, 'warn');
+            return shareData;
+        }
+        
+        try {
+            let result = null;
+            
+            switch (shareData.type) {
+                case 'score':
+                    result = this.shareContentGenerator.generateScoreMessage(shareData, platform);
+                    break;
+                case 'achievement':
+                    result = this.shareContentGenerator.generateAchievementMessage(shareData, platform);
+                    break;
+                case 'challenge':
+                    result = this.shareContentGenerator.generateChallengeMessage(shareData, platform);
+                    break;
+                default:
+                    // カスタムメッセージまたはフォールバック
+                    if (shareData.customTemplate) {
+                        result = this.shareContentGenerator.generateCustomMessage(
+                            shareData.type || 'custom',
+                            shareData,
+                            shareData.customTemplate,
+                            platform
+                        );
+                    }
+            }
+            
+            if (result && result.message) {
+                return {
+                    ...shareData,
+                    text: result.message,
+                    platform: result.platform,
+                    language: result.language,
+                    optimized: true,
+                    metadata: result.metadata
+                };
+            }
+            
+            return shareData;
+            
+        } catch (error) {
+            this.handleError('MESSAGE_OPTIMIZATION_FAILED', error, { shareData, platform });
+            return shareData;
+        }
+    }
+    
+    /**
+     * パフォーマンス統計の更新
+     */
+    updatePerformanceStats(action) {
+        if (!this.performanceStats) {
+            this.performanceStats = {};
+        }
+        
+        this.performanceStats[action] = (this.performanceStats[action] || 0) + 1;
+        this.performanceStats.lastUpdate = Date.now();
     }
     
     /**
@@ -1058,13 +1476,38 @@ export class SocialSharingManager {
     /**
      * 統合共有メソッド（Web API優先、フォールバック対応）
      */
-    async share(shareData) {
+    async share(shareData, options = {}) {
         try {
+            const startTime = performance.now();
+            
+            // プラットフォームの検出
+            const targetPlatform = options.platform || this.detectPlatform();
+            
+            // メッセージの最適化
+            const optimizedData = this.generateOptimizedMessage(shareData, targetPlatform);
+            
+            // プラットフォーム固有の処理
+            if (targetPlatform === 'twitter' && options.forceExternal) {
+                return await this.shareViaTwitterUrl(optimizedData);
+            }
+            
+            if (targetPlatform === 'facebook' && options.forceExternal) {
+                return await this.shareViaFacebookUrl(optimizedData, options);
+            }
+            
             // Web Share APIが利用可能な場合は優先して使用
-            if (this.isWebShareSupported()) {
-                const result = await this.shareViaWebAPI(shareData);
+            if (this.isWebShareSupported() && !options.forceExternal) {
+                const result = await this.shareViaWebAPI(optimizedData);
                 if (result.success) {
-                    return result;
+                    // パフォーマンス統計の更新
+                    const responseTime = performance.now() - startTime;
+                    this.updatePerformanceStats('shareSuccess');
+                    
+                    return {
+                        ...result,
+                        responseTime,
+                        optimized: optimizedData.optimized || false
+                    };
                 }
                 
                 // Web Share APIが失敗した場合、フォールバックを使用
@@ -1072,13 +1515,125 @@ export class SocialSharingManager {
             }
             
             // フォールバックダイアログを表示
-            return await this.showFallbackShareDialog(shareData);
+            const fallbackResult = await this.showFallbackShareDialog(optimizedData);
+            const responseTime = performance.now() - startTime;
+            
+            return {
+                ...fallbackResult,
+                responseTime,
+                optimized: optimizedData.optimized || false
+            };
             
         } catch (error) {
-            this.handleError('SHARE_FAILED', error, { shareData });
+            this.handleError('SHARE_FAILED', error, { shareData, options });
             return {
                 success: false,
                 method: 'unknown',
+                error: error.message
+            };
+        }
+    }
+
+    /**
+     * Twitter URLを使用した共有
+     */
+    async shareViaTwitterUrl(shareData) {
+        try {
+            const twitterUrl = this.generateTwitterShareUrl(shareData);
+            
+            // 新しいウィンドウで開く
+            const shareWindow = window.open(
+                twitterUrl,
+                'twitter-share',
+                'width=550,height=420,scrollbars=yes,resizable=yes'
+            );
+            
+            if (!shareWindow) {
+                throw new Error('ポップアップがブロックされました');
+            }
+            
+            // ウィンドウが閉じられたかを監視
+            const checkClosed = setInterval(() => {
+                if (shareWindow.closed) {
+                    clearInterval(checkClosed);
+                    this.updatePerformanceStats('twitterShareCompleted');
+                }
+            }, 1000);
+            
+            // 統計の記録
+            this.gameEngine.statisticsManager?.recordSocialEvent('twitterShareAttempt', {
+                hasText: !!shareData.text,
+                hasUrl: !!shareData.url,
+                dataType: shareData.type || 'unknown'
+            });
+            
+            this.log('Twitter共有ウィンドウを開きました', { url: twitterUrl });
+            
+            return {
+                success: true,
+                method: 'twitter-url',
+                url: twitterUrl,
+                platform: 'twitter'
+            };
+            
+        } catch (error) {
+            this.handleError('TWITTER_SHARE_FAILED', error, shareData);
+            return {
+                success: false,
+                method: 'twitter-url',
+                error: error.message
+            };
+        }
+    }
+    
+    /**
+     * Facebook URLを使用した共有
+     */
+    async shareViaFacebookUrl(shareData, options = {}) {
+        try {
+            const facebookUrl = this.generateFacebookShareUrl(shareData, options);
+            
+            // 新しいウィンドウで開く
+            const shareWindow = window.open(
+                facebookUrl,
+                'facebook-share',
+                'width=626,height=436,scrollbars=yes,resizable=yes'
+            );
+            
+            if (!shareWindow) {
+                throw new Error('ポップアップがブロックされました');
+            }
+            
+            // ウィンドウが閉じられたかを監視
+            const checkClosed = setInterval(() => {
+                if (shareWindow.closed) {
+                    clearInterval(checkClosed);
+                    this.updatePerformanceStats('facebookShareCompleted');
+                }
+            }, 1000);
+            
+            // 統計の記録
+            this.gameEngine.statisticsManager?.recordSocialEvent('facebookShareAttempt', {
+                hasUrl: !!shareData.url,
+                hasTitle: !!shareData.title,
+                hasQuote: !!(shareData.quote || shareData.text),
+                dataType: shareData.type || 'unknown'
+            });
+            
+            this.log('Facebook共有ウィンドウを開きました', { url: facebookUrl });
+            
+            return {
+                success: true,
+                method: 'facebook-url',
+                url: facebookUrl,
+                platform: 'facebook'
+            };
+            
+        } catch (error) {
+            this.handleError('FACEBOOK_SHARE_FAILED', error, shareData);
+            return {
+                success: false,
+                method: 'facebook-url',
                 error: error.message
             };
         }
