@@ -609,6 +609,231 @@ describe('AnalyticsAPI', () => {
         });
     });
     
+    describe('高度な集計機能', () => {
+        test('複数データタイプの集計が動作する', async () => {
+            const aggregationRules = {
+                dataTypes: ['sessionData', 'bubbleInteractions'],
+                multiGroupBy: ['bubbleType'],
+                customAggregations: {
+                    conditionalAggregations: [
+                        {
+                            field: 'scoreGained',
+                            condition: { field: 'action', operator: '==', value: 'popped' },
+                            aggregationType: 'sum',
+                            resultField: 'totalScore'
+                        }
+                    ]
+                }
+            };
+            
+            const result = await analyticsAPI.getAdvancedAggregatedData(aggregationRules);
+            
+            expect(result.success).toBe(true);
+            expect(result.data.summary).toBeDefined();
+            expect(result.data.details).toBeDefined();
+            expect(result.data.details.sessionData).toBeDefined();
+            expect(result.data.details.bubbleInteractions).toBeDefined();
+        });
+        
+        test('階層的グループ化が動作する', async () => {
+            const aggregationRules = {
+                dataTypes: ['bubbleInteractions'],
+                hierarchicalGrouping: {
+                    levels: ['bubbleType', 'action']
+                }
+            };
+            
+            const result = await analyticsAPI.getAdvancedAggregatedData(aggregationRules);
+            
+            expect(result.success).toBe(true);
+            expect(result.data.details.bubbleInteractions.groups).toBeDefined();
+        });
+        
+        test('時間窓フィルタリングが動作する', async () => {
+            const aggregationRules = {
+                dataTypes: ['sessionData'],
+                timeWindow: {
+                    windowSize: 24 * 60 * 60 * 1000, // 24時間
+                    windowType: 'sliding',
+                    baseTime: Date.now()
+                }
+            };
+            
+            const result = await analyticsAPI.getAdvancedAggregatedData(aggregationRules);
+            
+            expect(result.success).toBe(true);
+        });
+        
+        test('キャッシュ機能が動作する', async () => {
+            const aggregationRules = {
+                dataTypes: ['sessionData'],
+                cacheKey: 'test_cache_key'
+            };
+            
+            // 最初のリクエスト
+            const result1 = await analyticsAPI.getAdvancedAggregatedData(aggregationRules);
+            expect(result1.success).toBe(true);
+            expect(result1.metadata.cached).toBe(false);
+            
+            // 2回目のリクエスト（キャッシュから取得）
+            const result2 = await analyticsAPI.getAdvancedAggregatedData(aggregationRules);
+            expect(result2.success).toBe(true);
+            expect(result2.metadata.cached).toBe(true);
+        });
+    });
+    
+    describe('時系列集計機能', () => {
+        test('時系列集計が動作する', async () => {
+            const timeSeriesRules = {
+                dataType: 'sessionData',
+                timeField: 'timestamp',
+                interval: 'day',
+                aggregateBy: {
+                    'finalScore': ['sum', 'avg'],
+                    'duration': ['avg']
+                },
+                startDate: '2022-01-01T00:00:00Z',
+                endDate: '2022-01-03T00:00:00Z',
+                fillGaps: true
+            };
+            
+            const result = await analyticsAPI.getTimeSeriesAggregation(timeSeriesRules);
+            
+            expect(result.success).toBe(true);
+            expect(Array.isArray(result.data)).toBe(true);
+            expect(result.metadata.interval).toBe('day');
+            expect(result.metadata.dataPoints).toBeGreaterThan(0);
+        });
+        
+        test('時間間隔の設定が正しく動作する', async () => {
+            const timeSeriesRules = {
+                dataType: 'sessionData',
+                interval: 'hour',
+                startDate: '2022-01-01T00:00:00Z',
+                endDate: '2022-01-01T23:59:59Z'
+            };
+            
+            const result = await analyticsAPI.getTimeSeriesAggregation(timeSeriesRules);
+            
+            expect(result.success).toBe(true);
+            if (result.data.length > 0) {
+                expect(result.data[0].interval).toBe('hour');
+                expect(result.data[0].datetime).toBeDefined();
+            }
+        });
+        
+        test('ギャップ埋め機能が動作する', async () => {
+            const timeSeriesRules = {
+                dataType: 'sessionData',
+                interval: 'day',
+                startDate: '2022-01-01T00:00:00Z',
+                endDate: '2022-01-03T00:00:00Z',
+                fillGaps: true
+            };
+            
+            const result = await analyticsAPI.getTimeSeriesAggregation(timeSeriesRules);
+            
+            expect(result.success).toBe(true);
+            // ギャップが埋められているかは実データに依存するためここでは基本動作のみテスト
+        });
+        
+        test('データがない場合の時系列集計', async () => {
+            const emptyAPI = new AnalyticsAPI(new MockStorageManager());
+            
+            const timeSeriesRules = {
+                dataType: 'sessionData',
+                interval: 'day',
+                startDate: '2022-01-01T00:00:00Z',
+                endDate: '2022-01-03T00:00:00Z'
+            };
+            
+            const result = await emptyAPI.getTimeSeriesAggregation(timeSeriesRules);
+            
+            expect(result.success).toBe(true);
+            expect(result.data).toEqual([]);
+            expect(result.metadata.message).toContain('No data found');
+        });
+    });
+    
+    describe('条件付き集計機能', () => {
+        test('条件評価が正しく動作する', () => {
+            const record = { score: 100, type: 'normal', completed: true };
+            
+            // 等価条件
+            expect(analyticsAPI.evaluateCondition(record, { field: 'type', operator: '==', value: 'normal' })).toBe(true);
+            expect(analyticsAPI.evaluateCondition(record, { field: 'type', operator: '==', value: 'special' })).toBe(false);
+            
+            // 数値比較
+            expect(analyticsAPI.evaluateCondition(record, { field: 'score', operator: '>', value: 50 })).toBe(true);
+            expect(analyticsAPI.evaluateCondition(record, { field: 'score', operator: '<', value: 50 })).toBe(false);
+            
+            // 配列内包含
+            expect(analyticsAPI.evaluateCondition(record, { field: 'type', operator: 'in', value: ['normal', 'special'] })).toBe(true);
+            expect(analyticsAPI.evaluateCondition(record, { field: 'type', operator: 'in', value: ['special', 'rare'] })).toBe(false);
+        });
+        
+        test('集計関数が正しく動作する', () => {
+            const values = [10, 20, 30, 40, 50];
+            
+            expect(analyticsAPI.performAggregationFunction(values, 'sum')).toBe(150);
+            expect(analyticsAPI.performAggregationFunction(values, 'avg')).toBe(30);
+            expect(analyticsAPI.performAggregationFunction(values, 'min')).toBe(10);
+            expect(analyticsAPI.performAggregationFunction(values, 'max')).toBe(50);
+            expect(analyticsAPI.performAggregationFunction(values, 'count')).toBe(5);
+            expect(analyticsAPI.performAggregationFunction([1, 2, 2, 3, 3, 3], 'distinct')).toBe(3);
+        });
+        
+        test('空の値配列での集計関数', () => {
+            const emptyValues = [];
+            
+            expect(analyticsAPI.performAggregationFunction(emptyValues, 'sum')).toBe(0);
+            expect(analyticsAPI.performAggregationFunction(emptyValues, 'avg')).toBe(0);
+            expect(analyticsAPI.performAggregationFunction(emptyValues, 'count')).toBe(0);
+        });
+    });
+    
+    describe('ヘルパーメソッド', () => {
+        test('時間間隔のミリ秒変換が正しく動作する', () => {
+            expect(analyticsAPI.getIntervalMilliseconds('minute')).toBe(60 * 1000);
+            expect(analyticsAPI.getIntervalMilliseconds('hour')).toBe(60 * 60 * 1000);
+            expect(analyticsAPI.getIntervalMilliseconds('day')).toBe(24 * 60 * 60 * 1000);
+            expect(analyticsAPI.getIntervalMilliseconds('week')).toBe(7 * 24 * 60 * 60 * 1000);
+            expect(analyticsAPI.getIntervalMilliseconds('month')).toBe(30 * 24 * 60 * 60 * 1000);
+            expect(analyticsAPI.getIntervalMilliseconds('unknown')).toBe(60 * 60 * 1000); // デフォルトは'hour'
+        });
+        
+        test('グループ数のカウントが正しく動作する', () => {
+            const result = {
+                details: {
+                    sessionData: {
+                        groups: { 'group1': {}, 'group2': {}, 'group3': {} }
+                    },
+                    bubbleInteractions: {
+                        groups: { 'group1': {}, 'group2': {} }
+                    }
+                }
+            };
+            
+            expect(analyticsAPI.countTotalGroups(result)).toBe(5);
+        });
+        
+        test('集計結果の制限が正しく動作する', () => {
+            const details = {
+                sessionData: {
+                    groups: {
+                        'group1': { count: 10 },
+                        'group2': { count: 20 },
+                        'group3': { count: 30 }
+                    }
+                }
+            };
+            
+            const limited = analyticsAPI.limitAggregationResults(details, 2);
+            
+            expect(Object.keys(limited.sessionData.groups)).toHaveLength(2);
+        });
+    });
+    
     describe('リソース管理', () => {
         test('destroyメソッドが正しく動作する', () => {
             const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
@@ -618,6 +843,7 @@ describe('AnalyticsAPI', () => {
             expect(consoleSpy).toHaveBeenCalledWith('Analytics API destroyed');
             expect(analyticsAPI.endpoints.size).toBe(0);
             expect(analyticsAPI.rateLimiting.requestHistory.size).toBe(0);
+            expect(analyticsAPI.aggregationCache.size).toBe(0);
             
             consoleSpy.mockRestore();
         });

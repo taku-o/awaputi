@@ -42,6 +42,10 @@ export class AnalyticsAPI {
             lastRequestTime: null
         };
         
+        // 集計キャッシュ（LRUキャッシュ）
+        this.aggregationCache = new Map();
+        this.maxCacheSize = 100;
+        
         this.initialize();
     }
     
@@ -261,6 +265,165 @@ export class AnalyticsAPI {
             console.error('Aggregation error:', error);
             return this.createErrorResponse('AGGREGATION_ERROR', 
                 'Failed to aggregate data', 500);
+        }
+    }
+    
+    /**
+     * 高度な集計データ取得API
+     * @param {Object} aggregationRules - 高度な集計ルール
+     * @param {Object} options - オプション
+     * @returns {Promise<Object>} 集計結果
+     */
+    async getAdvancedAggregatedData(aggregationRules, options = {}) {
+        const startTime = performance.now();
+        const requestId = this.generateRequestId();
+        
+        try {
+            this.apiStats.totalRequests++;
+            
+            // 高度な集計ルールの解析
+            const {
+                dataTypes = ['sessionData'],
+                multiGroupBy = [],
+                customAggregations = {},
+                timeWindow = null,
+                conditionalAggregations = [],
+                hierarchicalGrouping = null,
+                cacheKey = null,
+                maxResults = 1000
+            } = aggregationRules;
+            
+            // キャッシュチェック
+            if (cacheKey && this.aggregationCache && this.aggregationCache.has(cacheKey)) {
+                const cachedResult = this.aggregationCache.get(cacheKey);
+                if (Date.now() - cachedResult.timestamp < 300000) { // 5分間有効
+                    return this.createSuccessResponse(cachedResult.data, {
+                        cached: true,
+                        requestId,
+                        responseTime: performance.now() - startTime
+                    });
+                }
+            }
+            
+            // 複数データタイプからのデータ収集
+            const aggregatedResults = {};
+            
+            for (const dataType of dataTypes) {
+                // データタイプ固有の集計処理
+                const typeResult = await this.performAdvancedAggregation(dataType, {
+                    multiGroupBy,
+                    customAggregations,
+                    timeWindow,
+                    conditionalAggregations,
+                    hierarchicalGrouping,
+                    filters: aggregationRules.filters || {},
+                    period: aggregationRules.period
+                });
+                
+                aggregatedResults[dataType] = typeResult;
+            }
+            
+            // 結果の統合と後処理
+            const finalResult = this.consolidateAggregationResults(aggregatedResults, {
+                maxResults,
+                sortBy: aggregationRules.sortBy,
+                sortOrder: aggregationRules.sortOrder || 'desc'
+            });
+            
+            // キャッシュに保存
+            if (cacheKey && this.aggregationCache) {
+                this.aggregationCache.set(cacheKey, {
+                    data: finalResult,
+                    timestamp: Date.now()
+                });
+            }
+            
+            const responseTime = Math.max(performance.now() - startTime, 0.1);
+            this.updateAPIStats(true, responseTime);
+            
+            return this.createSuccessResponse(finalResult, {
+                requestId,
+                responseTime,
+                aggregationRules,
+                dataTypes,
+                totalGroups: this.countTotalGroups(finalResult),
+                cached: false
+            });
+            
+        } catch (error) {
+            const responseTime = Math.max(performance.now() - startTime, 0.1);
+            this.updateAPIStats(false, responseTime);
+            
+            console.error('Advanced aggregation error:', error);
+            return this.createErrorResponse('ADVANCED_AGGREGATION_ERROR', 
+                error.message, 500, { requestId });
+        }
+    }
+    
+    /**
+     * 時系列集計API
+     * @param {Object} timeSeriesRules - 時系列集計ルール
+     * @param {Object} options - オプション
+     * @returns {Promise<Object>} 時系列集計結果
+     */
+    async getTimeSeriesAggregation(timeSeriesRules, options = {}) {
+        const startTime = performance.now();
+        const requestId = this.generateRequestId();
+        
+        try {
+            this.apiStats.totalRequests++;
+            
+            const {
+                dataType = 'sessionData',
+                timeField = 'timestamp',
+                interval = 'hour', // hour, day, week, month
+                aggregateBy = {},
+                filters = {},
+                startDate,
+                endDate,
+                fillGaps = true
+            } = timeSeriesRules;
+            
+            // 時系列データの取得
+            const query = this.buildTimeSeriesQuery(filters, startDate, endDate);
+            const rawData = await this.storageManager.getData(dataType, query);
+            
+            if (!Array.isArray(rawData) || rawData.length === 0) {
+                return this.createSuccessResponse([], {
+                    message: 'No data found for time series aggregation',
+                    requestId,
+                    responseTime: Math.max(performance.now() - startTime, 0.1)
+                });
+            }
+            
+            // 時系列集計の実行
+            const timeSeriesResult = this.performTimeSeriesAggregation(rawData, {
+                timeField,
+                interval,
+                aggregateBy,
+                fillGaps,
+                startDate: new Date(startDate).getTime(),
+                endDate: new Date(endDate).getTime()
+            });
+            
+            const responseTime = Math.max(performance.now() - startTime, 0.1);
+            this.updateAPIStats(true, responseTime);
+            
+            return this.createSuccessResponse(timeSeriesResult, {
+                requestId,
+                responseTime,
+                timeSeriesRules,
+                interval,
+                dataPoints: timeSeriesResult.length
+            });
+            
+        } catch (error) {
+            const responseTime = Math.max(performance.now() - startTime, 0.1);
+            this.updateAPIStats(false, responseTime);
+            
+            console.error('Time series aggregation error:', error);
+            return this.createErrorResponse('TIMESERIES_AGGREGATION_ERROR', 
+                error.message, 500, { requestId });
         }
     }
     
@@ -727,11 +890,475 @@ export class AnalyticsAPI {
     }
     
     /**
+     * 高度な集計処理の実行
+     * @param {string} dataType - データタイプ
+     * @param {Object} rules - 集計ルール
+     * @returns {Promise<Object>} 集計結果
+     */
+    async performAdvancedAggregation(dataType, rules) {
+        const {
+            multiGroupBy = [],
+            customAggregations = {},
+            timeWindow = null,
+            conditionalAggregations = [],
+            hierarchicalGrouping = null,
+            filters = {},
+            period = null
+        } = rules;
+        
+        // データの取得
+        const query = this.buildAggregationQuery(filters, period);
+        const rawData = await this.storageManager.getData(dataType, query);
+        
+        if (!Array.isArray(rawData) || rawData.length === 0) {
+            return { groups: {}, metadata: { totalRecords: 0 } };
+        }
+        
+        let processedData = rawData;
+        
+        // 時間窓によるフィルタリング
+        if (timeWindow) {
+            processedData = this.applyTimeWindow(processedData, timeWindow);
+        }
+        
+        // 階層的グループ化
+        let groupedData;
+        if (hierarchicalGrouping) {
+            groupedData = this.performHierarchicalGrouping(processedData, hierarchicalGrouping);
+        } else {
+            groupedData = this.groupData(processedData, multiGroupBy);
+        }
+        
+        // カスタム集計の実行
+        const aggregatedResult = {};
+        for (const [groupKey, groupData] of Object.entries(groupedData)) {
+            aggregatedResult[groupKey] = this.performCustomAggregations(groupData, {
+                ...customAggregations,
+                conditionalAggregations
+            });
+        }
+        
+        return {
+            groups: aggregatedResult,
+            metadata: {
+                totalRecords: rawData.length,
+                processedRecords: processedData.length,
+                groupCount: Object.keys(aggregatedResult).length
+            }
+        };
+    }
+    
+    /**
+     * 時系列集計の実行
+     * @param {Array} data - データ配列
+     * @param {Object} rules - 時系列集計ルール
+     * @returns {Array} 時系列集計結果
+     */
+    performTimeSeriesAggregation(data, rules) {
+        const {
+            timeField,
+            interval,
+            aggregateBy,
+            fillGaps,
+            startDate,
+            endDate
+        } = rules;
+        
+        // 時間間隔の定義
+        const intervalMs = this.getIntervalMilliseconds(interval);
+        
+        // 時系列データのグループ化
+        const timeGroups = {};
+        
+        for (const record of data) {
+            const timestamp = record[timeField];
+            if (!timestamp) continue;
+            
+            // 時間間隔に基づくキーの生成
+            const timeKey = Math.floor(timestamp / intervalMs) * intervalMs;
+            
+            if (!timeGroups[timeKey]) {
+                timeGroups[timeKey] = [];
+            }
+            timeGroups[timeKey].push(record);
+        }
+        
+        // 各時間グループの集計
+        const result = [];
+        const sortedTimeKeys = Object.keys(timeGroups).map(Number).sort((a, b) => a - b);
+        
+        for (const timeKey of sortedTimeKeys) {
+            const groupData = timeGroups[timeKey];
+            const aggregated = this.aggregateGroup(groupData, aggregateBy);
+            
+            result.push({
+                timestamp: timeKey,
+                datetime: new Date(timeKey).toISOString(),
+                interval,
+                ...aggregated
+            });
+        }
+        
+        // ギャップを埋める処理
+        if (fillGaps && result.length > 0) {
+            return this.fillTimeSeriesGaps(result, intervalMs, startDate, endDate);
+        }
+        
+        return result;
+    }
+    
+    /**
+     * 時間窓の適用
+     * @param {Array} data - データ配列
+     * @param {Object} timeWindow - 時間窓設定
+     * @returns {Array} フィルタリングされたデータ
+     */
+    applyTimeWindow(data, timeWindow) {
+        const { windowSize, windowType = 'sliding', baseTime = Date.now() } = timeWindow;
+        
+        if (windowType === 'sliding') {
+            const cutoffTime = baseTime - windowSize;
+            return data.filter(record => record.timestamp >= cutoffTime);
+        }
+        
+        // 他の時間窓タイプの実装を将来追加可能
+        return data;
+    }
+    
+    /**
+     * 階層的グループ化の実行
+     * @param {Array} data - データ配列
+     * @param {Object} hierarchicalGrouping - 階層的グループ化設定
+     * @returns {Object} 階層的にグループ化されたデータ
+     */
+    performHierarchicalGrouping(data, hierarchicalGrouping) {
+        const { levels = [] } = hierarchicalGrouping;
+        
+        if (levels.length === 0) {
+            return { 'all': data };
+        }
+        
+        const result = {};
+        
+        for (const record of data) {
+            let currentLevel = result;
+            let pathKey = '';
+            
+            for (let i = 0; i < levels.length; i++) {
+                const levelKey = levels[i];
+                const value = record[levelKey] || 'unknown';
+                pathKey += (pathKey ? '|' : '') + value;
+                
+                if (i === levels.length - 1) {
+                    // 最終レベル
+                    if (!currentLevel[pathKey]) {
+                        currentLevel[pathKey] = [];
+                    }
+                    currentLevel[pathKey].push(record);
+                } else {
+                    // 中間レベル
+                    if (!currentLevel[value]) {
+                        currentLevel[value] = {};
+                    }
+                    currentLevel = currentLevel[value];
+                }
+            }
+        }
+        
+        return this.flattenHierarchicalGroups(result);
+    }
+    
+    /**
+     * カスタム集計の実行
+     * @param {Array} groupData - グループデータ
+     * @param {Object} customAggregations - カスタム集計設定
+     * @returns {Object} 集計結果
+     */
+    performCustomAggregations(groupData, customAggregations) {
+        const result = { count: groupData.length };
+        const { conditionalAggregations = [] } = customAggregations;
+        
+        // 条件付き集計の実行
+        for (const conditionalAgg of conditionalAggregations) {
+            const {
+                field,
+                condition,
+                aggregationType,
+                resultField
+            } = conditionalAgg;
+            
+            const filteredData = groupData.filter(record => this.evaluateCondition(record, condition));
+            
+            if (filteredData.length > 0) {
+                const values = filteredData.map(record => record[field]).filter(val => val != null);
+                result[resultField] = this.performAggregationFunction(values, aggregationType);
+            } else {
+                result[resultField] = 0;
+            }
+        }
+        
+        return result;
+    }
+    
+    /**
+     * 条件の評価
+     * @param {Object} record - レコード
+     * @param {Object} condition - 条件
+     * @returns {boolean} 条件の評価結果
+     */
+    evaluateCondition(record, condition) {
+        const { field, operator, value } = condition;
+        const recordValue = record[field];
+        
+        switch (operator) {
+            case '=':
+            case '==':
+                return recordValue == value;
+            case '!=':
+                return recordValue != value;
+            case '>':
+                return recordValue > value;
+            case '>=':
+                return recordValue >= value;
+            case '<':
+                return recordValue < value;
+            case '<=':
+                return recordValue <= value;
+            case 'in':
+                return Array.isArray(value) && value.includes(recordValue);
+            case 'contains':
+                return String(recordValue).includes(value);
+            default:
+                return true;
+        }
+    }
+    
+    /**
+     * 集計関数の実行
+     * @param {Array} values - 値の配列
+     * @param {string} aggregationType - 集計タイプ
+     * @returns {number} 集計結果
+     */
+    performAggregationFunction(values, aggregationType) {
+        if (values.length === 0) return 0;
+        
+        switch (aggregationType) {
+            case 'sum':
+                return values.reduce((sum, val) => sum + Number(val), 0);
+            case 'avg':
+                return values.reduce((sum, val) => sum + Number(val), 0) / values.length;
+            case 'min':
+                return Math.min(...values.map(Number));
+            case 'max':
+                return Math.max(...values.map(Number));
+            case 'count':
+                return values.length;
+            case 'distinct':
+                return new Set(values).size;
+            default:
+                return values.length;
+        }
+    }
+    
+    /**
+     * 集計結果の統合
+     * @param {Object} aggregatedResults - 集計結果
+     * @param {Object} options - 統合オプション
+     * @returns {Object} 統合された結果
+     */
+    consolidateAggregationResults(aggregatedResults, options = {}) {
+        const { maxResults, sortBy, sortOrder } = options;
+        
+        const consolidated = {
+            summary: this.createAggregationSummary(aggregatedResults),
+            details: aggregatedResults
+        };
+        
+        // ソート処理
+        if (sortBy && consolidated.details) {
+            for (const [dataType, typeResult] of Object.entries(consolidated.details)) {
+                if (typeResult.groups) {
+                    const sortedGroups = this.sortAggregationGroups(typeResult.groups, sortBy, sortOrder);
+                    consolidated.details[dataType].groups = sortedGroups;
+                }
+            }
+        }
+        
+        // 結果数制限
+        if (maxResults && consolidated.details) {
+            consolidated.details = this.limitAggregationResults(consolidated.details, maxResults);
+        }
+        
+        return consolidated;
+    }
+    
+    /**
+     * 時系列クエリの構築
+     * @param {Object} filters - フィルター
+     * @param {string} startDate - 開始日
+     * @param {string} endDate - 終了日
+     * @returns {Object} クエリオブジェクト
+     */
+    buildTimeSeriesQuery(filters, startDate, endDate) {
+        const query = { ...filters };
+        
+        if (startDate || endDate) {
+            query.timestamp = {};
+            if (startDate) {
+                query.timestamp.$gte = new Date(startDate).getTime();
+            }
+            if (endDate) {
+                query.timestamp.$lte = new Date(endDate).getTime();
+            }
+        }
+        
+        return query;
+    }
+    
+    /**
+     * 間隔のミリ秒取得
+     * @param {string} interval - 間隔
+     * @returns {number} ミリ秒
+     */
+    getIntervalMilliseconds(interval) {
+        const intervals = {
+            'minute': 60 * 1000,
+            'hour': 60 * 60 * 1000,
+            'day': 24 * 60 * 60 * 1000,
+            'week': 7 * 24 * 60 * 60 * 1000,
+            'month': 30 * 24 * 60 * 60 * 1000
+        };
+        
+        return intervals[interval] || intervals['hour'];
+    }
+    
+    /**
+     * 時系列のギャップを埋める
+     * @param {Array} data - 時系列データ
+     * @param {number} intervalMs - 間隔（ミリ秒）
+     * @param {number} startDate - 開始日時
+     * @param {number} endDate - 終了日時
+     * @returns {Array} ギャップが埋められた時系列データ
+     */
+    fillTimeSeriesGaps(data, intervalMs, startDate, endDate) {
+        if (data.length === 0) return data;
+        
+        const filled = [];
+        const dataMap = new Map();
+        
+        // 既存データをマップに格納
+        for (const item of data) {
+            dataMap.set(item.timestamp, item);
+        }
+        
+        // 範囲内の全時間点を生成
+        const start = Math.max(startDate, data[0].timestamp);
+        const end = Math.min(endDate, data[data.length - 1].timestamp);
+        
+        for (let timestamp = start; timestamp <= end; timestamp += intervalMs) {
+            if (dataMap.has(timestamp)) {
+                filled.push(dataMap.get(timestamp));
+            } else {
+                // 空のデータポイントを作成
+                filled.push({
+                    timestamp,
+                    datetime: new Date(timestamp).toISOString(),
+                    interval: data[0].interval,
+                    count: 0
+                });
+            }
+        }
+        
+        return filled;
+    }
+    
+    /**
+     * ヘルパーメソッド群
+     */
+    flattenHierarchicalGroups(hierarchicalGroups) {
+        const flattened = {};
+        
+        const flatten = (obj, prefix = '') => {
+            for (const [key, value] of Object.entries(obj)) {
+                const newKey = prefix ? `${prefix}|${key}` : key;
+                if (Array.isArray(value)) {
+                    flattened[newKey] = value;
+                } else if (typeof value === 'object') {
+                    flatten(value, newKey);
+                }
+            }
+        };
+        
+        flatten(hierarchicalGroups);
+        return flattened;
+    }
+    
+    createAggregationSummary(aggregatedResults) {
+        const summary = {};
+        
+        for (const [dataType, result] of Object.entries(aggregatedResults)) {
+            summary[dataType] = {
+                totalGroups: Object.keys(result.groups || {}).length,
+                totalRecords: result.metadata?.totalRecords || 0,
+                processedRecords: result.metadata?.processedRecords || 0
+            };
+        }
+        
+        return summary;
+    }
+    
+    sortAggregationGroups(groups, sortBy, sortOrder) {
+        const entries = Object.entries(groups);
+        
+        entries.sort((a, b) => {
+            const aVal = a[1][sortBy] || 0;
+            const bVal = b[1][sortBy] || 0;
+            return sortOrder === 'desc' ? bVal - aVal : aVal - bVal;
+        });
+        
+        return Object.fromEntries(entries);
+    }
+    
+    limitAggregationResults(details, maxResults) {
+        const limited = {};
+        
+        for (const [dataType, result] of Object.entries(details)) {
+            if (result.groups) {
+                const groupEntries = Object.entries(result.groups);
+                const limitedGroups = Object.fromEntries(groupEntries.slice(0, maxResults));
+                limited[dataType] = {
+                    ...result,
+                    groups: limitedGroups
+                };
+            } else {
+                limited[dataType] = result;
+            }
+        }
+        
+        return limited;
+    }
+    
+    countTotalGroups(result) {
+        let total = 0;
+        
+        if (result.details) {
+            for (const typeResult of Object.values(result.details)) {
+                if (typeResult.groups) {
+                    total += Object.keys(typeResult.groups).length;
+                }
+            }
+        }
+        
+        return total;
+    }
+    
+    /**
      * リソースの解放
      */
     destroy() {
         this.endpoints.clear();
         this.rateLimiting.requestHistory.clear();
+        this.aggregationCache.clear();
         console.log('Analytics API destroyed');
     }
 }
