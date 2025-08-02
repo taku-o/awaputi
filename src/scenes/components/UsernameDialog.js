@@ -50,7 +50,7 @@ export class UsernameDialog extends BaseDialog {
                 action: () => this.handleUsernameChange(),
                 get disabled() {
                     return !this.isValidUsername();
-                }.bind(this)
+                }
             },
             {
                 text: 'キャンセル',

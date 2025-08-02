@@ -9,7 +9,7 @@ import { LocalizationManager } from './LocalizationManager.js';
 import { KeyboardShortcutManager } from './KeyboardShortcutManager.js';
 import { AchievementManager } from './AchievementManager.js';
 import { AchievementEventIntegrator } from './AchievementEventIntegrator.js';
-import { AchievementNotificationSystem } from './AchievementNotificationSystem.js';
+import { AchievementNotificationSystem } from './achievements/AchievementNotificationSystem.js';
 import { StatisticsManager } from './StatisticsManager.js';
 import { EventStageManager } from './EventStageManager.js';
 import { ChallengeSystem } from './ChallengeSystem.js';

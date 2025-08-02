@@ -52,7 +52,7 @@ export class ExportDialog extends BaseDialog {
                 action: () => this.handleDownload(),
                 get disabled() {
                     return !this.data.exportData || this.exportInProgress;
-                }.bind(this)
+                }
             },
             {
                 text: 'コピー',
@@ -60,7 +60,7 @@ export class ExportDialog extends BaseDialog {
                 action: () => this.handleCopy(),
                 get disabled() {
                     return !this.data.exportData || this.exportInProgress;
-                }.bind(this)
+                }
             },
             {
                 text: '閉じる',
