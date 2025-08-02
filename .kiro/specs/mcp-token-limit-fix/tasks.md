@@ -78,12 +78,14 @@
 
 ## 中優先度対応フェーズ
 
-- [ ] 7. AudioController.js の分割（6,409語 → 複数ファイル）
+- [x] 7. AudioController.js の分割（6,409語 → 1,411語）
   - AudioController.js のメインコントローラー部分の抽出（< 2,500語）
   - AudioChannelManager.js の作成（チャンネル管理）
   - AudioVolumeController.js の作成（音量制御）
   - AudioFormatHandler.js の作成（フォーマット処理）
+  - AudioPerformanceMonitor.js の作成（パフォーマンス監視）
   - インポート文の更新と依存関係の修正
+  - 分割後のオーディオ機能テスト実行
   - _要件: 2.1, 2.2, 2.3_
 
 - [ ] 8. LeaderboardUI.js の分割（6,337語 → 複数ファイル）
