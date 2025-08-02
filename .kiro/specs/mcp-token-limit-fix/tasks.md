@@ -66,7 +66,7 @@
   - 分割後のオーディオ機能テスト実行
   - _要件: 1.4, 2.2, 2.3_
 
-- [ ] 6. TutorialOverlay.js の分割（6,627語 → 複数ファイル）
+- [x] 6. TutorialOverlay.js の分割（6,627語 → 1,634語）
   - TutorialOverlay.js のメインオーバーレイ部分の抽出（< 2,500語）
   - TutorialStepManager.js の作成（ステップ管理）
   - TutorialAnimationController.js の作成（アニメーション制御）
