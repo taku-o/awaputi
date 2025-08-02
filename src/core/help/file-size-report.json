@@ -1,0 +1,442 @@
+{
+  "timestamp": "2025-08-02T09:02:46.623Z",
+  "config": {
+    "WORD_LIMIT": 2500,
+    "TOKEN_LIMIT": 20000,
+    "EXCLUDED_PATTERNS": [
+      "node_modules/**",
+      "dist/**",
+      "**/*.log",
+      "test-results/**",
+      "playwright-report/**",
+      ".git/**",
+      "coverage/**"
+    ],
+    "TARGET_EXTENSIONS": [
+      ".js",
+      ".md"
+    ],
+    "WARNING_THRESHOLD": 2000,
+    "ERROR_THRESHOLD": 2500
+  },
+  "summary": {
+    "totalFiles": 28,
+    "warningFiles": 6,
+    "errorFiles": 1,
+    "averageWordCount": 1590
+  },
+  "results": [
+    {
+      "filePath": "src/core/help/HelpEffectivenessAnalyzer.js",
+      "relativePath": "HelpEffectivenessAnalyzer.js",
+      "fileName": "HelpEffectivenessAnalyzer.js",
+      "wordCount": 2744,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:02:46.584Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/TooltipSystem.js",
+      "relativePath": "TooltipSystem.js",
+      "fileName": "TooltipSystem.js",
+      "wordCount": 2362,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:02:46.586Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/SearchEngine.js",
+      "relativePath": "SearchEngine.js",
+      "fileName": "SearchEngine.js",
+      "wordCount": 2264,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:02:46.586Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/ContextManager.js",
+      "relativePath": "ContextManager.js",
+      "fileName": "ContextManager.js",
+      "wordCount": 2215,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:02:46.582Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/MultilingualContentManager.js",
+      "relativePath": "MultilingualContentManager.js",
+      "fileName": "MultilingualContentManager.js",
+      "wordCount": 2194,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:02:46.585Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/HelpAnalytics.js",
+      "relativePath": "HelpAnalytics.js",
+      "fileName": "HelpAnalytics.js",
+      "wordCount": 2040,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:02:46.583Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/ContentValidation.js",
+      "relativePath": "ContentValidation.js",
+      "fileName": "ContentValidation.js",
+      "wordCount": 2023,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:02:46.582Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/FAQSystem.js",
+      "relativePath": "FAQSystem.js",
+      "fileName": "FAQSystem.js",
+      "wordCount": 1973,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:46.583Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/DataModels.js",
+      "relativePath": "DataModels.js",
+      "fileName": "DataModels.js",
+      "wordCount": 1849,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:46.583Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/HelpFeedbackSystem.js",
+      "relativePath": "HelpFeedbackSystem.js",
+      "fileName": "HelpFeedbackSystem.js",
+      "wordCount": 1746,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:46.584Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/components/TutorialAnimationController.js",
+      "relativePath": "components/TutorialAnimationController.js",
+      "fileName": "TutorialAnimationController.js",
+      "wordCount": 1733,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:46.591Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/ContentLoader.js",
+      "relativePath": "ContentLoader.js",
+      "fileName": "ContentLoader.js",
+      "wordCount": 1700,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:46.581Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/TutorialOverlay.js",
+      "relativePath": "TutorialOverlay.js",
+      "fileName": "TutorialOverlay.js",
+      "wordCount": 1624,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:46.588Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/HelpManager.js",
+      "relativePath": "HelpManager.js",
+      "fileName": "HelpManager.js",
+      "wordCount": 1613,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:46.585Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/components/TutorialInteractionHandler.js",
+      "relativePath": "components/TutorialInteractionHandler.js",
+      "fileName": "TutorialInteractionHandler.js",
+      "wordCount": 1571,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:46.591Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/components/SearchEngine.js",
+      "relativePath": "components/SearchEngine.js",
+      "fileName": "SearchEngine.js",
+      "wordCount": 1483,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:46.590Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/TutorialManager.js",
+      "relativePath": "TutorialManager.js",
+      "fileName": "TutorialManager.js",
+      "wordCount": 1450,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:46.587Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/HelpErrorHandler.js",
+      "relativePath": "HelpErrorHandler.js",
+      "fileName": "HelpErrorHandler.js",
+      "wordCount": 1445,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:46.584Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/components/TutorialProgressTracker.js",
+      "relativePath": "components/TutorialProgressTracker.js",
+      "fileName": "TutorialProgressTracker.js",
+      "wordCount": 1393,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:46.592Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/TutorialActions.js",
+      "relativePath": "TutorialActions.js",
+      "fileName": "TutorialActions.js",
+      "wordCount": 1370,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:46.586Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/components/HelpPerformanceMonitor.js",
+      "relativePath": "components/HelpPerformanceMonitor.js",
+      "fileName": "HelpPerformanceMonitor.js",
+      "wordCount": 1301,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:46.590Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/TutorialStatsManager.js",
+      "relativePath": "TutorialStatsManager.js",
+      "fileName": "TutorialStatsManager.js",
+      "wordCount": 1206,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:46.589Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/components/ContentLoader.js",
+      "relativePath": "components/ContentLoader.js",
+      "fileName": "ContentLoader.js",
+      "wordCount": 1188,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:46.590Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/TutorialValidationEngine.js",
+      "relativePath": "TutorialValidationEngine.js",
+      "fileName": "TutorialValidationEngine.js",
+      "wordCount": 1173,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:46.589Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/TutorialProgressManager.js",
+      "relativePath": "TutorialProgressManager.js",
+      "fileName": "TutorialProgressManager.js",
+      "wordCount": 988,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:46.588Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/components/TutorialStepManager.js",
+      "relativePath": "components/TutorialStepManager.js",
+      "fileName": "TutorialStepManager.js",
+      "wordCount": 868,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:46.593Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/TutorialAccessibilityManager.js",
+      "relativePath": "TutorialAccessibilityManager.js",
+      "fileName": "TutorialAccessibilityManager.js",
+      "wordCount": 722,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:46.586Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/index.js",
+      "relativePath": "index.js",
+      "fileName": "index.js",
+      "wordCount": 286,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:46.593Z",
+      "suggestions": []
+    }
+  ],
+  "warnings": [
+    {
+      "filePath": "src/core/help/ContentValidation.js",
+      "relativePath": "ContentValidation.js",
+      "fileName": "ContentValidation.js",
+      "wordCount": 2023,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:02:46.582Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/ContextManager.js",
+      "relativePath": "ContextManager.js",
+      "fileName": "ContextManager.js",
+      "wordCount": 2215,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:02:46.582Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/HelpAnalytics.js",
+      "relativePath": "HelpAnalytics.js",
+      "fileName": "HelpAnalytics.js",
+      "wordCount": 2040,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:02:46.583Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/MultilingualContentManager.js",
+      "relativePath": "MultilingualContentManager.js",
+      "fileName": "MultilingualContentManager.js",
+      "wordCount": 2194,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:02:46.585Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/SearchEngine.js",
+      "relativePath": "SearchEngine.js",
+      "fileName": "SearchEngine.js",
+      "wordCount": 2264,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:02:46.586Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/TooltipSystem.js",
+      "relativePath": "TooltipSystem.js",
+      "fileName": "TooltipSystem.js",
+      "wordCount": 2362,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:02:46.586Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "filePath": "src/core/help/HelpEffectivenessAnalyzer.js",
+      "relativePath": "HelpEffectivenessAnalyzer.js",
+      "fileName": "HelpEffectivenessAnalyzer.js",
+      "wordCount": 2744,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:02:46.584Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください"
+      ]
+    }
+  ]
+}

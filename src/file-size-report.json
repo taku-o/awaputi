@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-08-02T00:10:42.077Z",
+  "timestamp": "2025-08-02T09:02:57.699Z",
   "config": {
     "WORD_LIMIT": 2500,
     "TOKEN_LIMIT": 20000,
@@ -20,144 +20,23 @@
     "ERROR_THRESHOLD": 2500
   },
   "summary": {
-    "totalFiles": 382,
-    "warningFiles": 63,
-    "errorFiles": 83,
-    "averageWordCount": 2021
+    "totalFiles": 425,
+    "warningFiles": 68,
+    "errorFiles": 74,
+    "averageWordCount": 1821
   },
   "results": [
     {
-      "filePath": "src/scenes/UserInfoScene.js",
-      "relativePath": "scenes/UserInfoScene.js",
-      "fileName": "UserInfoScene.js",
-      "wordCount": 11166,
-      "limit": 2500,
-      "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.014Z",
-      "suggestions": [
-        "緊急: ファイルを複数のモジュールに分割してください",
-        "単一責任の原則に従ってクラス/機能を分離してください",
-        "UIコンポーネントを別ファイルに分離してください"
-      ]
-    },
-    {
-      "filePath": "src/core/EventStageManager.js",
-      "relativePath": "core/EventStageManager.js",
-      "fileName": "EventStageManager.js",
-      "wordCount": 9801,
-      "limit": 2500,
-      "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.943Z",
-      "suggestions": [
-        "緊急: ファイルを複数のモジュールに分割してください",
-        "単一責任の原則に従ってクラス/機能を分離してください",
-        "機能別にサブマネージャーを作成してください"
-      ]
-    },
-    {
-      "filePath": "src/utils/MobilePerformanceOptimizer.js",
-      "relativePath": "utils/MobilePerformanceOptimizer.js",
-      "fileName": "MobilePerformanceOptimizer.js",
-      "wordCount": 8405,
-      "limit": 2500,
-      "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.039Z",
-      "suggestions": [
-        "緊急: ファイルを複数のモジュールに分割してください",
-        "単一責任の原則に従ってクラス/機能を分離してください"
-      ]
-    },
-    {
-      "filePath": "src/audio/SoundEffectSystem.js",
-      "relativePath": "audio/SoundEffectSystem.js",
-      "fileName": "SoundEffectSystem.js",
+      "filePath": "src/audio/SoundEffectSystem_old.js",
+      "relativePath": "audio/SoundEffectSystem_old.js",
+      "fileName": "SoundEffectSystem_old.js",
       "wordCount": 7322,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.922Z",
+      "lastChecked": "2025-08-02T09:02:57.521Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
-      ]
-    },
-    {
-      "filePath": "src/core/help/TutorialOverlay.js",
-      "relativePath": "core/help/TutorialOverlay.js",
-      "fileName": "TutorialOverlay.js",
-      "wordCount": 6559,
-      "limit": 2500,
-      "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.978Z",
-      "suggestions": [
-        "緊急: ファイルを複数のモジュールに分割してください",
-        "単一責任の原則に従ってクラス/機能を分離してください"
-      ]
-    },
-    {
-      "filePath": "src/audio/AudioController.js",
-      "relativePath": "audio/AudioController.js",
-      "fileName": "AudioController.js",
-      "wordCount": 6347,
-      "limit": 2500,
-      "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.916Z",
-      "suggestions": [
-        "緊急: ファイルを複数のモジュールに分割してください",
-        "単一責任の原則に従ってクラス/機能を分離してください"
-      ]
-    },
-    {
-      "filePath": "src/ui/components/LeaderboardUI.js",
-      "relativePath": "ui/components/LeaderboardUI.js",
-      "fileName": "LeaderboardUI.js",
-      "wordCount": 6298,
-      "limit": 2500,
-      "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.032Z",
-      "suggestions": [
-        "緊急: ファイルを複数のモジュールに分割してください",
-        "単一責任の原則に従ってクラス/機能を分離してください"
-      ]
-    },
-    {
-      "filePath": "src/analytics/ComparisonEngine.js",
-      "relativePath": "analytics/ComparisonEngine.js",
-      "fileName": "ComparisonEngine.js",
-      "wordCount": 6100,
-      "limit": 2500,
-      "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.907Z",
-      "suggestions": [
-        "緊急: ファイルを複数のモジュールに分割してください",
-        "単一責任の原則に従ってクラス/機能を分離してください"
-      ]
-    },
-    {
-      "filePath": "src/core/SocialSharingManager.js",
-      "relativePath": "core/SocialSharingManager.js",
-      "fileName": "SocialSharingManager.js",
-      "wordCount": 5884,
-      "limit": 2500,
-      "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.962Z",
-      "suggestions": [
-        "緊急: ファイルを複数のモジュールに分割してください",
-        "単一責任の原則に従ってクラス/機能を分離してください",
-        "機能別にサブマネージャーを作成してください"
-      ]
-    },
-    {
-      "filePath": "src/core/help/TutorialManager.js",
-      "relativePath": "core/help/TutorialManager.js",
-      "fileName": "TutorialManager.js",
-      "wordCount": 5787,
-      "limit": 2500,
-      "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.977Z",
-      "suggestions": [
-        "緊急: ファイルを複数のモジュールに分割してください",
-        "単一責任の原則に従ってクラス/機能を分離してください",
-        "機能別にサブマネージャーを作成してください"
       ]
     },
     {
@@ -167,7 +46,7 @@
       "wordCount": 5625,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.967Z",
+      "lastChecked": "2025-08-02T09:02:57.575Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -181,7 +60,7 @@
       "wordCount": 5554,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.918Z",
+      "lastChecked": "2025-08-02T09:02:57.517Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -195,7 +74,7 @@
       "wordCount": 5420,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.033Z",
+      "lastChecked": "2025-08-02T09:02:57.664Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -208,7 +87,7 @@
       "wordCount": 5097,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.926Z",
+      "lastChecked": "2025-08-02T09:02:57.532Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -222,7 +101,7 @@
       "wordCount": 5067,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.043Z",
+      "lastChecked": "2025-08-02T09:02:57.676Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -235,7 +114,7 @@
       "wordCount": 5029,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.935Z",
+      "lastChecked": "2025-08-02T09:02:57.542Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -248,7 +127,7 @@
       "wordCount": 4858,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.038Z",
+      "lastChecked": "2025-08-02T09:02:57.670Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -262,7 +141,7 @@
       "wordCount": 4657,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.030Z",
+      "lastChecked": "2025-08-02T09:02:57.658Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -275,7 +154,7 @@
       "wordCount": 4466,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.011Z",
+      "lastChecked": "2025-08-02T09:02:57.633Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -289,7 +168,7 @@
       "wordCount": 4431,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.998Z",
+      "lastChecked": "2025-08-02T09:02:57.618Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -303,7 +182,7 @@
       "wordCount": 4282,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.029Z",
+      "lastChecked": "2025-08-02T09:02:57.657Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -316,7 +195,7 @@
       "wordCount": 4252,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.040Z",
+      "lastChecked": "2025-08-02T09:02:57.672Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -329,7 +208,7 @@
       "wordCount": 4197,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.002Z",
+      "lastChecked": "2025-08-02T09:02:57.622Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -343,7 +222,7 @@
       "wordCount": 4162,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.909Z",
+      "lastChecked": "2025-08-02T09:02:57.507Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -357,7 +236,7 @@
       "wordCount": 4155,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.012Z",
+      "lastChecked": "2025-08-02T09:02:57.633Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -371,7 +250,7 @@
       "wordCount": 4069,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.033Z",
+      "lastChecked": "2025-08-02T09:02:57.664Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -384,7 +263,7 @@
       "wordCount": 3979,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.945Z",
+      "lastChecked": "2025-08-02T09:02:57.551Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -397,7 +276,7 @@
       "wordCount": 3967,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.929Z",
+      "lastChecked": "2025-08-02T09:02:57.536Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -411,7 +290,7 @@
       "wordCount": 3929,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.936Z",
+      "lastChecked": "2025-08-02T09:02:57.543Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -425,7 +304,7 @@
       "wordCount": 3923,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.042Z",
+      "lastChecked": "2025-08-02T09:02:57.674Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -438,7 +317,7 @@
       "wordCount": 3894,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.933Z",
+      "lastChecked": "2025-08-02T09:02:57.540Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -451,7 +330,7 @@
       "wordCount": 3867,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.004Z",
+      "lastChecked": "2025-08-02T09:02:57.624Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -465,7 +344,7 @@
       "wordCount": 3837,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.960Z",
+      "lastChecked": "2025-08-02T09:02:57.566Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -479,7 +358,7 @@
       "wordCount": 3822,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.904Z",
+      "lastChecked": "2025-08-02T09:02:57.503Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -492,7 +371,7 @@
       "wordCount": 3816,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.010Z",
+      "lastChecked": "2025-08-02T09:02:57.632Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -506,7 +385,7 @@
       "wordCount": 3595,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.043Z",
+      "lastChecked": "2025-08-02T09:02:57.677Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -519,7 +398,7 @@
       "wordCount": 3588,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.949Z",
+      "lastChecked": "2025-08-02T09:02:57.556Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -533,7 +412,7 @@
       "wordCount": 3573,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.941Z",
+      "lastChecked": "2025-08-02T09:02:57.548Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -547,7 +426,7 @@
       "wordCount": 3567,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.945Z",
+      "lastChecked": "2025-08-02T09:02:57.551Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -560,7 +439,7 @@
       "wordCount": 3546,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.020Z",
+      "lastChecked": "2025-08-02T09:02:57.646Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -573,7 +452,7 @@
       "wordCount": 3525,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.921Z",
+      "lastChecked": "2025-08-02T09:02:57.520Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -587,7 +466,7 @@
       "wordCount": 3517,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.009Z",
+      "lastChecked": "2025-08-02T09:02:57.630Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -601,7 +480,7 @@
       "wordCount": 3359,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.988Z",
+      "lastChecked": "2025-08-02T09:02:57.606Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -614,7 +493,7 @@
       "wordCount": 3333,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.995Z",
+      "lastChecked": "2025-08-02T09:02:57.614Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -627,7 +506,7 @@
       "wordCount": 3332,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.948Z",
+      "lastChecked": "2025-08-02T09:02:57.554Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -641,7 +520,7 @@
       "wordCount": 3208,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.044Z",
+      "lastChecked": "2025-08-02T09:02:57.677Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -654,7 +533,7 @@
       "wordCount": 3204,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.044Z",
+      "lastChecked": "2025-08-02T09:02:57.677Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -667,7 +546,7 @@
       "wordCount": 3203,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.028Z",
+      "lastChecked": "2025-08-02T09:02:57.656Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -680,7 +559,7 @@
       "wordCount": 3192,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.043Z",
+      "lastChecked": "2025-08-02T09:02:57.675Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -693,7 +572,7 @@
       "wordCount": 3167,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.991Z",
+      "lastChecked": "2025-08-02T09:02:57.610Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -706,7 +585,7 @@
       "wordCount": 3073,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.902Z",
+      "lastChecked": "2025-08-02T09:02:57.501Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -719,7 +598,7 @@
       "wordCount": 3020,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.992Z",
+      "lastChecked": "2025-08-02T09:02:57.612Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -732,7 +611,7 @@
       "wordCount": 2928,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.954Z",
+      "lastChecked": "2025-08-02T09:02:57.560Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -746,7 +625,7 @@
       "wordCount": 2913,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.903Z",
+      "lastChecked": "2025-08-02T09:02:57.502Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -759,7 +638,7 @@
       "wordCount": 2902,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.042Z",
+      "lastChecked": "2025-08-02T09:02:57.675Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -772,7 +651,7 @@
       "wordCount": 2846,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.902Z",
+      "lastChecked": "2025-08-02T09:02:57.501Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -785,7 +664,7 @@
       "wordCount": 2774,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.958Z",
+      "lastChecked": "2025-08-02T09:02:57.564Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -799,7 +678,7 @@
       "wordCount": 2754,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.990Z",
+      "lastChecked": "2025-08-02T09:02:57.608Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -812,7 +691,7 @@
       "wordCount": 2747,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.045Z",
+      "lastChecked": "2025-08-02T09:02:57.680Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -825,7 +704,7 @@
       "wordCount": 2745,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.900Z",
+      "lastChecked": "2025-08-02T09:02:57.499Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -838,7 +717,7 @@
       "wordCount": 2744,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.975Z",
+      "lastChecked": "2025-08-02T09:02:57.588Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -851,7 +730,7 @@
       "wordCount": 2730,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.965Z",
+      "lastChecked": "2025-08-02T09:02:57.573Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -864,7 +743,7 @@
       "wordCount": 2728,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.944Z",
+      "lastChecked": "2025-08-02T09:02:57.550Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -878,7 +757,7 @@
       "wordCount": 2726,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.953Z",
+      "lastChecked": "2025-08-02T09:02:57.559Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -892,7 +771,7 @@
       "wordCount": 2717,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.003Z",
+      "lastChecked": "2025-08-02T09:02:57.623Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -906,7 +785,7 @@
       "wordCount": 2688,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.034Z",
+      "lastChecked": "2025-08-02T09:02:57.666Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -919,7 +798,7 @@
       "wordCount": 2687,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.901Z",
+      "lastChecked": "2025-08-02T09:02:57.500Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -932,7 +811,7 @@
       "wordCount": 2681,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.901Z",
+      "lastChecked": "2025-08-02T09:02:57.500Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -945,7 +824,7 @@
       "wordCount": 2617,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.993Z",
+      "lastChecked": "2025-08-02T09:02:57.613Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -958,7 +837,7 @@
       "wordCount": 2615,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.042Z",
+      "lastChecked": "2025-08-02T09:02:57.674Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -971,7 +850,7 @@
       "wordCount": 2614,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.932Z",
+      "lastChecked": "2025-08-02T09:02:57.539Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -984,7 +863,7 @@
       "wordCount": 2602,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.994Z",
+      "lastChecked": "2025-08-02T09:02:57.613Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -997,7 +876,7 @@
       "wordCount": 2585,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.964Z",
+      "lastChecked": "2025-08-02T09:02:57.572Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -1010,7 +889,7 @@
       "wordCount": 2574,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.950Z",
+      "lastChecked": "2025-08-02T09:02:57.556Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -1024,7 +903,7 @@
       "wordCount": 2563,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.938Z",
+      "lastChecked": "2025-08-02T09:02:57.546Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -1038,7 +917,7 @@
       "wordCount": 2557,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.914Z",
+      "lastChecked": "2025-08-02T09:02:57.514Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -1051,7 +930,7 @@
       "wordCount": 2545,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.021Z",
+      "lastChecked": "2025-08-02T09:02:57.647Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -1064,7 +943,7 @@
       "wordCount": 2544,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.013Z",
+      "lastChecked": "2025-08-02T09:02:57.634Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -1078,7 +957,7 @@
       "wordCount": 2536,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.915Z",
+      "lastChecked": "2025-08-02T09:02:57.515Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -1092,7 +971,7 @@
       "wordCount": 2524,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.995Z",
+      "lastChecked": "2025-08-02T09:02:57.614Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -1105,7 +984,7 @@
       "wordCount": 2513,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.041Z",
+      "lastChecked": "2025-08-02T09:02:57.673Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -1118,7 +997,7 @@
       "wordCount": 2511,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.970Z",
+      "lastChecked": "2025-08-02T09:02:57.579Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -1132,7 +1011,7 @@
       "wordCount": 2505,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.991Z",
+      "lastChecked": "2025-08-02T09:02:57.611Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -1145,7 +1024,7 @@
       "wordCount": 2490,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.972Z",
+      "lastChecked": "2025-08-02T09:02:57.583Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -1159,7 +1038,7 @@
       "wordCount": 2484,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.962Z",
+      "lastChecked": "2025-08-02T09:02:57.568Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1172,7 +1051,7 @@
       "wordCount": 2483,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.972Z",
+      "lastChecked": "2025-08-02T09:02:57.583Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -1186,7 +1065,7 @@
       "wordCount": 2449,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.951Z",
+      "lastChecked": "2025-08-02T09:02:57.557Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1199,7 +1078,7 @@
       "wordCount": 2424,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:42.037Z",
+      "lastChecked": "2025-08-02T09:02:57.669Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1212,7 +1091,7 @@
       "wordCount": 2419,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.946Z",
+      "lastChecked": "2025-08-02T09:02:57.552Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -1226,7 +1105,7 @@
       "wordCount": 2418,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.921Z",
+      "lastChecked": "2025-08-02T09:02:57.520Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -1240,7 +1119,7 @@
       "wordCount": 2404,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.937Z",
+      "lastChecked": "2025-08-02T09:02:57.545Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -1254,7 +1133,7 @@
       "wordCount": 2403,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:42.014Z",
+      "lastChecked": "2025-08-02T09:02:57.636Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1267,7 +1146,7 @@
       "wordCount": 2396,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:42.034Z",
+      "lastChecked": "2025-08-02T09:02:57.666Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1280,7 +1159,7 @@
       "wordCount": 2386,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.985Z",
+      "lastChecked": "2025-08-02T09:02:57.603Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1293,7 +1172,7 @@
       "wordCount": 2383,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.931Z",
+      "lastChecked": "2025-08-02T09:02:57.538Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -1307,7 +1186,7 @@
       "wordCount": 2373,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.919Z",
+      "lastChecked": "2025-08-02T09:02:57.518Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1320,7 +1199,7 @@
       "wordCount": 2370,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.924Z",
+      "lastChecked": "2025-08-02T09:02:57.530Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -1334,7 +1213,7 @@
       "wordCount": 2362,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.976Z",
+      "lastChecked": "2025-08-02T09:02:57.590Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1347,7 +1226,7 @@
       "wordCount": 2339,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.959Z",
+      "lastChecked": "2025-08-02T09:02:57.566Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1360,7 +1239,7 @@
       "wordCount": 2337,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.952Z",
+      "lastChecked": "2025-08-02T09:02:57.558Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -1374,7 +1253,7 @@
       "wordCount": 2331,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.910Z",
+      "lastChecked": "2025-08-02T09:02:57.509Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1387,7 +1266,7 @@
       "wordCount": 2331,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.993Z",
+      "lastChecked": "2025-08-02T09:02:57.612Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1400,7 +1279,20 @@
       "wordCount": 2326,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.991Z",
+      "lastChecked": "2025-08-02T09:02:57.610Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/scenes/components/user-info/UserDataExporter.js",
+      "relativePath": "scenes/components/user-info/UserDataExporter.js",
+      "fileName": "UserDataExporter.js",
+      "wordCount": 2313,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:02:57.641Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1413,7 +1305,7 @@
       "wordCount": 2308,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.927Z",
+      "lastChecked": "2025-08-02T09:02:57.534Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1426,7 +1318,7 @@
       "wordCount": 2303,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.972Z",
+      "lastChecked": "2025-08-02T09:02:57.582Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -1440,7 +1332,7 @@
       "wordCount": 2288,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:42.015Z",
+      "lastChecked": "2025-08-02T09:02:57.637Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1453,7 +1345,7 @@
       "wordCount": 2285,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.986Z",
+      "lastChecked": "2025-08-02T09:02:57.603Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1466,7 +1358,7 @@
       "wordCount": 2284,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.968Z",
+      "lastChecked": "2025-08-02T09:02:57.576Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1479,7 +1371,7 @@
       "wordCount": 2278,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.930Z",
+      "lastChecked": "2025-08-02T09:02:57.538Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1492,7 +1384,7 @@
       "wordCount": 2277,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.957Z",
+      "lastChecked": "2025-08-02T09:02:57.563Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1505,7 +1397,7 @@
       "wordCount": 2273,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.917Z",
+      "lastChecked": "2025-08-02T09:02:57.516Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1518,7 +1410,7 @@
       "wordCount": 2271,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.989Z",
+      "lastChecked": "2025-08-02T09:02:57.607Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1531,7 +1423,7 @@
       "wordCount": 2264,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.976Z",
+      "lastChecked": "2025-08-02T09:02:57.589Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1544,10 +1436,24 @@
       "wordCount": 2246,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.958Z",
+      "lastChecked": "2025-08-02T09:02:57.565Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/scenes/UserInfoScene.js",
+      "relativePath": "scenes/UserInfoScene.js",
+      "fileName": "UserInfoScene.js",
+      "wordCount": 2245,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:02:57.635Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "UIコンポーネントを別ファイルに分離してください"
       ]
     },
     {
@@ -1557,7 +1463,7 @@
       "wordCount": 2243,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.899Z",
+      "lastChecked": "2025-08-02T09:02:57.497Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1570,7 +1476,7 @@
       "wordCount": 2225,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.908Z",
+      "lastChecked": "2025-08-02T09:02:57.506Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1583,7 +1489,7 @@
       "wordCount": 2215,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.974Z",
+      "lastChecked": "2025-08-02T09:02:57.587Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -1597,7 +1503,7 @@
       "wordCount": 2201,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.989Z",
+      "lastChecked": "2025-08-02T09:02:57.607Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1610,7 +1516,7 @@
       "wordCount": 2199,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.936Z",
+      "lastChecked": "2025-08-02T09:02:57.544Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -1624,7 +1530,7 @@
       "wordCount": 2198,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:42.037Z",
+      "lastChecked": "2025-08-02T09:02:57.669Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1637,7 +1543,7 @@
       "wordCount": 2194,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.976Z",
+      "lastChecked": "2025-08-02T09:02:57.589Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -1651,7 +1557,7 @@
       "wordCount": 2191,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:42.012Z",
+      "lastChecked": "2025-08-02T09:02:57.633Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -1665,7 +1571,7 @@
       "wordCount": 2187,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:42.002Z",
+      "lastChecked": "2025-08-02T09:02:57.622Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -1679,7 +1585,7 @@
       "wordCount": 2182,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.954Z",
+      "lastChecked": "2025-08-02T09:02:57.561Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -1693,7 +1599,7 @@
       "wordCount": 2180,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:42.035Z",
+      "lastChecked": "2025-08-02T09:02:57.666Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1706,7 +1612,7 @@
       "wordCount": 2155,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.984Z",
+      "lastChecked": "2025-08-02T09:02:57.601Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1719,7 +1625,7 @@
       "wordCount": 2139,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.901Z",
+      "lastChecked": "2025-08-02T09:02:57.500Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1732,11 +1638,24 @@
       "wordCount": 2116,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.999Z",
+      "lastChecked": "2025-08-02T09:02:57.620Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
         "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/audio/components/AudioFormatHandler.js",
+      "relativePath": "audio/components/AudioFormatHandler.js",
+      "fileName": "AudioFormatHandler.js",
+      "wordCount": 2107,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:02:57.523Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
       ]
     },
     {
@@ -1746,7 +1665,7 @@
       "wordCount": 2098,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.947Z",
+      "lastChecked": "2025-08-02T09:02:57.553Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -1760,7 +1679,7 @@
       "wordCount": 2091,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.963Z",
+      "lastChecked": "2025-08-02T09:02:57.571Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -1774,7 +1693,7 @@
       "wordCount": 2076,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.900Z",
+      "lastChecked": "2025-08-02T09:02:57.499Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -1788,7 +1707,7 @@
       "wordCount": 2068,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.992Z",
+      "lastChecked": "2025-08-02T09:02:57.611Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -1802,7 +1721,7 @@
       "wordCount": 2059,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.919Z",
+      "lastChecked": "2025-08-02T09:02:57.518Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1815,7 +1734,20 @@
       "wordCount": 2054,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.922Z",
+      "lastChecked": "2025-08-02T09:02:57.527Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/ui/components/leaderboard/LeaderboardRenderer.js",
+      "relativePath": "ui/components/leaderboard/LeaderboardRenderer.js",
+      "fileName": "LeaderboardRenderer.js",
+      "wordCount": 2053,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:02:57.662Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1828,7 +1760,7 @@
       "wordCount": 2048,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:42.031Z",
+      "lastChecked": "2025-08-02T09:02:57.660Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1841,7 +1773,7 @@
       "wordCount": 2041,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.965Z",
+      "lastChecked": "2025-08-02T09:02:57.573Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1854,7 +1786,7 @@
       "wordCount": 2040,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.975Z",
+      "lastChecked": "2025-08-02T09:02:57.588Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1867,7 +1799,7 @@
       "wordCount": 2040,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:42.022Z",
+      "lastChecked": "2025-08-02T09:02:57.649Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1880,7 +1812,7 @@
       "wordCount": 2030,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.961Z",
+      "lastChecked": "2025-08-02T09:02:57.567Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1893,7 +1825,7 @@
       "wordCount": 2024,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.987Z",
+      "lastChecked": "2025-08-02T09:02:57.605Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1906,7 +1838,7 @@
       "wordCount": 2023,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.900Z",
+      "lastChecked": "2025-08-02T09:02:57.498Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1919,7 +1851,7 @@
       "wordCount": 2023,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.974Z",
+      "lastChecked": "2025-08-02T09:02:57.587Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1932,10 +1864,24 @@
       "wordCount": 2023,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.990Z",
+      "lastChecked": "2025-08-02T09:02:57.609Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/utils/mobile/MobileMemoryManager.js",
+      "relativePath": "utils/mobile/MobileMemoryManager.js",
+      "fileName": "MobileMemoryManager.js",
+      "wordCount": 2022,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:02:57.683Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
       ]
     },
     {
@@ -1945,7 +1891,7 @@
       "wordCount": 2019,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.957Z",
+      "lastChecked": "2025-08-02T09:02:57.563Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1958,7 +1904,7 @@
       "wordCount": 2010,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.993Z",
+      "lastChecked": "2025-08-02T09:02:57.612Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1971,7 +1917,7 @@
       "wordCount": 2003,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.931Z",
+      "lastChecked": "2025-08-02T09:02:57.538Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -1984,7 +1930,27 @@
       "wordCount": 1998,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.934Z",
+      "lastChecked": "2025-08-02T09:02:57.541Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/audio/components/AudioPerformanceMonitor.js",
+      "relativePath": "audio/components/AudioPerformanceMonitor.js",
+      "fileName": "AudioPerformanceMonitor.js",
+      "wordCount": 1995,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.523Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/ui/components/leaderboard/LeaderboardEventHandler.js",
+      "relativePath": "ui/components/leaderboard/LeaderboardEventHandler.js",
+      "fileName": "LeaderboardEventHandler.js",
+      "wordCount": 1989,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.662Z",
       "suggestions": []
     },
     {
@@ -1994,7 +1960,7 @@
       "wordCount": 1987,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.987Z",
+      "lastChecked": "2025-08-02T09:02:57.605Z",
       "suggestions": []
     },
     {
@@ -2004,7 +1970,7 @@
       "wordCount": 1982,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.939Z",
+      "lastChecked": "2025-08-02T09:02:57.547Z",
       "suggestions": []
     },
     {
@@ -2014,7 +1980,7 @@
       "wordCount": 1979,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.944Z",
+      "lastChecked": "2025-08-02T09:02:57.550Z",
       "suggestions": []
     },
     {
@@ -2024,7 +1990,7 @@
       "wordCount": 1979,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.007Z",
+      "lastChecked": "2025-08-02T09:02:57.628Z",
       "suggestions": []
     },
     {
@@ -2034,7 +2000,7 @@
       "wordCount": 1975,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.006Z",
+      "lastChecked": "2025-08-02T09:02:57.627Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2046,7 +2012,7 @@
       "wordCount": 1973,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.904Z",
+      "lastChecked": "2025-08-02T09:02:57.503Z",
       "suggestions": []
     },
     {
@@ -2056,7 +2022,7 @@
       "wordCount": 1973,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.975Z",
+      "lastChecked": "2025-08-02T09:02:57.588Z",
       "suggestions": []
     },
     {
@@ -2066,7 +2032,7 @@
       "wordCount": 1964,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.928Z",
+      "lastChecked": "2025-08-02T09:02:57.535Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2078,7 +2044,7 @@
       "wordCount": 1958,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.988Z",
+      "lastChecked": "2025-08-02T09:02:57.606Z",
       "suggestions": []
     },
     {
@@ -2088,7 +2054,7 @@
       "wordCount": 1946,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.019Z",
+      "lastChecked": "2025-08-02T09:02:57.645Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2100,7 +2066,7 @@
       "wordCount": 1945,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.988Z",
+      "lastChecked": "2025-08-02T09:02:57.606Z",
       "suggestions": []
     },
     {
@@ -2110,7 +2076,7 @@
       "wordCount": 1943,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.963Z",
+      "lastChecked": "2025-08-02T09:02:57.569Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2122,7 +2088,7 @@
       "wordCount": 1942,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.961Z",
+      "lastChecked": "2025-08-02T09:02:57.568Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2134,7 +2100,7 @@
       "wordCount": 1940,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.967Z",
+      "lastChecked": "2025-08-02T09:02:57.575Z",
       "suggestions": []
     },
     {
@@ -2144,7 +2110,7 @@
       "wordCount": 1935,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.909Z",
+      "lastChecked": "2025-08-02T09:02:57.507Z",
       "suggestions": []
     },
     {
@@ -2154,7 +2120,7 @@
       "wordCount": 1935,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.985Z",
+      "lastChecked": "2025-08-02T09:02:57.602Z",
       "suggestions": []
     },
     {
@@ -2164,7 +2130,7 @@
       "wordCount": 1921,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.924Z",
+      "lastChecked": "2025-08-02T09:02:57.530Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2176,7 +2142,7 @@
       "wordCount": 1917,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.961Z",
+      "lastChecked": "2025-08-02T09:02:57.567Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2188,7 +2154,7 @@
       "wordCount": 1915,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.006Z",
+      "lastChecked": "2025-08-02T09:02:57.626Z",
       "suggestions": []
     },
     {
@@ -2198,7 +2164,7 @@
       "wordCount": 1914,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.938Z",
+      "lastChecked": "2025-08-02T09:02:57.545Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2210,7 +2176,7 @@
       "wordCount": 1913,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.917Z",
+      "lastChecked": "2025-08-02T09:02:57.516Z",
       "suggestions": []
     },
     {
@@ -2220,7 +2186,7 @@
       "wordCount": 1910,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.926Z",
+      "lastChecked": "2025-08-02T09:02:57.532Z",
       "suggestions": []
     },
     {
@@ -2230,7 +2196,7 @@
       "wordCount": 1909,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.948Z",
+      "lastChecked": "2025-08-02T09:02:57.555Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2242,7 +2208,7 @@
       "wordCount": 1907,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.983Z",
+      "lastChecked": "2025-08-02T09:02:57.600Z",
       "suggestions": []
     },
     {
@@ -2252,7 +2218,7 @@
       "wordCount": 1896,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.007Z",
+      "lastChecked": "2025-08-02T09:02:57.628Z",
       "suggestions": []
     },
     {
@@ -2262,7 +2228,7 @@
       "wordCount": 1895,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.971Z",
+      "lastChecked": "2025-08-02T09:02:57.581Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2274,7 +2240,7 @@
       "wordCount": 1889,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.986Z",
+      "lastChecked": "2025-08-02T09:02:57.604Z",
       "suggestions": []
     },
     {
@@ -2284,7 +2250,7 @@
       "wordCount": 1888,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.940Z",
+      "lastChecked": "2025-08-02T09:02:57.547Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2296,7 +2262,7 @@
       "wordCount": 1881,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.007Z",
+      "lastChecked": "2025-08-02T09:02:57.627Z",
       "suggestions": []
     },
     {
@@ -2306,7 +2272,7 @@
       "wordCount": 1876,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.035Z",
+      "lastChecked": "2025-08-02T09:02:57.667Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2318,7 +2284,7 @@
       "wordCount": 1874,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.007Z",
+      "lastChecked": "2025-08-02T09:02:57.628Z",
       "suggestions": []
     },
     {
@@ -2328,7 +2294,17 @@
       "wordCount": 1871,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.039Z",
+      "lastChecked": "2025-08-02T09:02:57.672Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/utils/MobilePerformanceOptimizer.js",
+      "relativePath": "utils/MobilePerformanceOptimizer.js",
+      "fileName": "MobilePerformanceOptimizer.js",
+      "wordCount": 1858,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.671Z",
       "suggestions": []
     },
     {
@@ -2338,7 +2314,7 @@
       "wordCount": 1852,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.984Z",
+      "lastChecked": "2025-08-02T09:02:57.602Z",
       "suggestions": []
     },
     {
@@ -2348,7 +2324,7 @@
       "wordCount": 1849,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.974Z",
+      "lastChecked": "2025-08-02T09:02:57.587Z",
       "suggestions": []
     },
     {
@@ -2358,7 +2334,7 @@
       "wordCount": 1847,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.919Z",
+      "lastChecked": "2025-08-02T09:02:57.518Z",
       "suggestions": []
     },
     {
@@ -2368,7 +2344,7 @@
       "wordCount": 1845,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.020Z",
+      "lastChecked": "2025-08-02T09:02:57.646Z",
       "suggestions": []
     },
     {
@@ -2378,7 +2354,7 @@
       "wordCount": 1844,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.984Z",
+      "lastChecked": "2025-08-02T09:02:57.601Z",
       "suggestions": []
     },
     {
@@ -2388,7 +2364,7 @@
       "wordCount": 1842,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.017Z",
+      "lastChecked": "2025-08-02T09:02:57.639Z",
       "suggestions": []
     },
     {
@@ -2398,7 +2374,7 @@
       "wordCount": 1827,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.980Z",
+      "lastChecked": "2025-08-02T09:02:57.597Z",
       "suggestions": []
     },
     {
@@ -2408,7 +2384,7 @@
       "wordCount": 1813,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.957Z",
+      "lastChecked": "2025-08-02T09:02:57.563Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2420,7 +2396,7 @@
       "wordCount": 1806,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.969Z",
+      "lastChecked": "2025-08-02T09:02:57.577Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2432,7 +2408,7 @@
       "wordCount": 1806,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.980Z",
+      "lastChecked": "2025-08-02T09:02:57.596Z",
       "suggestions": []
     },
     {
@@ -2442,7 +2418,7 @@
       "wordCount": 1795,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.006Z",
+      "lastChecked": "2025-08-02T09:02:57.626Z",
       "suggestions": []
     },
     {
@@ -2452,7 +2428,7 @@
       "wordCount": 1780,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.979Z",
+      "lastChecked": "2025-08-02T09:02:57.596Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2464,7 +2440,7 @@
       "wordCount": 1779,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.899Z",
+      "lastChecked": "2025-08-02T09:02:57.498Z",
       "suggestions": []
     },
     {
@@ -2474,7 +2450,7 @@
       "wordCount": 1775,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.985Z",
+      "lastChecked": "2025-08-02T09:02:57.602Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2486,7 +2462,7 @@
       "wordCount": 1774,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.982Z",
+      "lastChecked": "2025-08-02T09:02:57.599Z",
       "suggestions": []
     },
     {
@@ -2496,7 +2472,7 @@
       "wordCount": 1757,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.955Z",
+      "lastChecked": "2025-08-02T09:02:57.561Z",
       "suggestions": []
     },
     {
@@ -2506,7 +2482,7 @@
       "wordCount": 1749,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.028Z",
+      "lastChecked": "2025-08-02T09:02:57.657Z",
       "suggestions": []
     },
     {
@@ -2516,7 +2492,7 @@
       "wordCount": 1746,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.975Z",
+      "lastChecked": "2025-08-02T09:02:57.589Z",
       "suggestions": []
     },
     {
@@ -2526,7 +2502,7 @@
       "wordCount": 1746,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.981Z",
+      "lastChecked": "2025-08-02T09:02:57.597Z",
       "suggestions": []
     },
     {
@@ -2536,7 +2512,7 @@
       "wordCount": 1745,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.996Z",
+      "lastChecked": "2025-08-02T09:02:57.616Z",
       "suggestions": []
     },
     {
@@ -2546,7 +2522,7 @@
       "wordCount": 1745,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.029Z",
+      "lastChecked": "2025-08-02T09:02:57.658Z",
       "suggestions": []
     },
     {
@@ -2556,7 +2532,27 @@
       "wordCount": 1743,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.025Z",
+      "lastChecked": "2025-08-02T09:02:57.653Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/components/TutorialAnimationController.js",
+      "relativePath": "core/help/components/TutorialAnimationController.js",
+      "fileName": "TutorialAnimationController.js",
+      "wordCount": 1733,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.593Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/audio/effects/SoundEffectRenderer.js",
+      "relativePath": "audio/effects/SoundEffectRenderer.js",
+      "fileName": "SoundEffectRenderer.js",
+      "wordCount": 1723,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.526Z",
       "suggestions": []
     },
     {
@@ -2566,7 +2562,7 @@
       "wordCount": 1719,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.988Z",
+      "lastChecked": "2025-08-02T09:02:57.606Z",
       "suggestions": []
     },
     {
@@ -2576,7 +2572,7 @@
       "wordCount": 1710,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.910Z",
+      "lastChecked": "2025-08-02T09:02:57.508Z",
       "suggestions": []
     },
     {
@@ -2586,7 +2582,7 @@
       "wordCount": 1709,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.936Z",
+      "lastChecked": "2025-08-02T09:02:57.543Z",
       "suggestions": []
     },
     {
@@ -2596,7 +2592,7 @@
       "wordCount": 1709,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.990Z",
+      "lastChecked": "2025-08-02T09:02:57.609Z",
       "suggestions": []
     },
     {
@@ -2606,7 +2602,7 @@
       "wordCount": 1700,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.973Z",
+      "lastChecked": "2025-08-02T09:02:57.586Z",
       "suggestions": []
     },
     {
@@ -2616,7 +2612,7 @@
       "wordCount": 1692,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.993Z",
+      "lastChecked": "2025-08-02T09:02:57.612Z",
       "suggestions": []
     },
     {
@@ -2626,7 +2622,7 @@
       "wordCount": 1690,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.935Z",
+      "lastChecked": "2025-08-02T09:02:57.542Z",
       "suggestions": []
     },
     {
@@ -2636,7 +2632,7 @@
       "wordCount": 1687,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.970Z",
+      "lastChecked": "2025-08-02T09:02:57.580Z",
       "suggestions": []
     },
     {
@@ -2646,7 +2642,7 @@
       "wordCount": 1685,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.984Z",
+      "lastChecked": "2025-08-02T09:02:57.601Z",
       "suggestions": []
     },
     {
@@ -2656,7 +2652,7 @@
       "wordCount": 1684,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.973Z",
+      "lastChecked": "2025-08-02T09:02:57.583Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2668,7 +2664,7 @@
       "wordCount": 1668,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.936Z",
+      "lastChecked": "2025-08-02T09:02:57.543Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2680,8 +2676,20 @@
       "wordCount": 1663,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.981Z",
+      "lastChecked": "2025-08-02T09:02:57.598Z",
       "suggestions": []
+    },
+    {
+      "filePath": "src/ui/components/leaderboard/LeaderboardDataManager.js",
+      "relativePath": "ui/components/leaderboard/LeaderboardDataManager.js",
+      "fileName": "LeaderboardDataManager.js",
+      "wordCount": 1661,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.661Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
     },
     {
       "filePath": "src/core/i18n/automation/TranslationFileGenerator.js",
@@ -2690,7 +2698,7 @@
       "wordCount": 1658,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.984Z",
+      "lastChecked": "2025-08-02T09:02:57.601Z",
       "suggestions": []
     },
     {
@@ -2700,7 +2708,7 @@
       "wordCount": 1658,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.017Z",
+      "lastChecked": "2025-08-02T09:02:57.643Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2712,7 +2720,17 @@
       "wordCount": 1653,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.911Z",
+      "lastChecked": "2025-08-02T09:02:57.509Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/analytics/comparison/ComparisonAnalyzer.js",
+      "relativePath": "analytics/comparison/ComparisonAnalyzer.js",
+      "fileName": "ComparisonAnalyzer.js",
+      "wordCount": 1650,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.512Z",
       "suggestions": []
     },
     {
@@ -2722,7 +2740,17 @@
       "wordCount": 1625,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.986Z",
+      "lastChecked": "2025-08-02T09:02:57.603Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/TutorialOverlay.js",
+      "relativePath": "core/help/TutorialOverlay.js",
+      "fileName": "TutorialOverlay.js",
+      "wordCount": 1624,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.591Z",
       "suggestions": []
     },
     {
@@ -2732,7 +2760,7 @@
       "wordCount": 1623,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.981Z",
+      "lastChecked": "2025-08-02T09:02:57.598Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2744,7 +2772,7 @@
       "wordCount": 1621,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.905Z",
+      "lastChecked": "2025-08-02T09:02:57.504Z",
       "suggestions": []
     },
     {
@@ -2754,7 +2782,7 @@
       "wordCount": 1613,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.976Z",
+      "lastChecked": "2025-08-02T09:02:57.589Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2766,7 +2794,7 @@
       "wordCount": 1608,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.913Z",
+      "lastChecked": "2025-08-02T09:02:57.511Z",
       "suggestions": []
     },
     {
@@ -2776,7 +2804,7 @@
       "wordCount": 1606,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.911Z",
+      "lastChecked": "2025-08-02T09:02:57.510Z",
       "suggestions": []
     },
     {
@@ -2786,7 +2814,7 @@
       "wordCount": 1603,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.914Z",
+      "lastChecked": "2025-08-02T09:02:57.511Z",
       "suggestions": []
     },
     {
@@ -2796,7 +2824,7 @@
       "wordCount": 1599,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.952Z",
+      "lastChecked": "2025-08-02T09:02:57.559Z",
       "suggestions": []
     },
     {
@@ -2806,7 +2834,7 @@
       "wordCount": 1586,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.036Z",
+      "lastChecked": "2025-08-02T09:02:57.668Z",
       "suggestions": []
     },
     {
@@ -2816,7 +2844,7 @@
       "wordCount": 1585,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.912Z",
+      "lastChecked": "2025-08-02T09:02:57.510Z",
       "suggestions": []
     },
     {
@@ -2826,7 +2854,17 @@
       "wordCount": 1584,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.986Z",
+      "lastChecked": "2025-08-02T09:02:57.604Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/audio/components/AudioVolumeController.js",
+      "relativePath": "audio/components/AudioVolumeController.js",
+      "fileName": "AudioVolumeController.js",
+      "wordCount": 1583,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.524Z",
       "suggestions": []
     },
     {
@@ -2836,7 +2874,17 @@
       "wordCount": 1579,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.907Z",
+      "lastChecked": "2025-08-02T09:02:57.505Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/components/TutorialInteractionHandler.js",
+      "relativePath": "core/help/components/TutorialInteractionHandler.js",
+      "fileName": "TutorialInteractionHandler.js",
+      "wordCount": 1571,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.594Z",
       "suggestions": []
     },
     {
@@ -2846,7 +2894,17 @@
       "wordCount": 1568,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.992Z",
+      "lastChecked": "2025-08-02T09:02:57.611Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/ui/components/leaderboard/LeaderboardAnimationController.js",
+      "relativePath": "ui/components/leaderboard/LeaderboardAnimationController.js",
+      "fileName": "LeaderboardAnimationController.js",
+      "wordCount": 1567,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.661Z",
       "suggestions": []
     },
     {
@@ -2856,7 +2914,17 @@
       "wordCount": 1552,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.966Z",
+      "lastChecked": "2025-08-02T09:02:57.574Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/utils/mobile/MobileBatteryOptimizer.js",
+      "relativePath": "utils/mobile/MobileBatteryOptimizer.js",
+      "fileName": "MobileBatteryOptimizer.js",
+      "wordCount": 1552,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.681Z",
       "suggestions": []
     },
     {
@@ -2866,7 +2934,7 @@
       "wordCount": 1548,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.943Z",
+      "lastChecked": "2025-08-02T09:02:57.549Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2878,7 +2946,7 @@
       "wordCount": 1533,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.018Z",
+      "lastChecked": "2025-08-02T09:02:57.644Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2890,7 +2958,7 @@
       "wordCount": 1526,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.005Z",
+      "lastChecked": "2025-08-02T09:02:57.626Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2902,7 +2970,7 @@
       "wordCount": 1520,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.946Z",
+      "lastChecked": "2025-08-02T09:02:57.552Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2914,7 +2982,7 @@
       "wordCount": 1516,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.981Z",
+      "lastChecked": "2025-08-02T09:02:57.598Z",
       "suggestions": []
     },
     {
@@ -2924,7 +2992,7 @@
       "wordCount": 1510,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.015Z",
+      "lastChecked": "2025-08-02T09:02:57.637Z",
       "suggestions": []
     },
     {
@@ -2934,7 +3002,7 @@
       "wordCount": 1495,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.969Z",
+      "lastChecked": "2025-08-02T09:02:57.578Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2946,7 +3014,7 @@
       "wordCount": 1489,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.005Z",
+      "lastChecked": "2025-08-02T09:02:57.626Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -2958,7 +3026,7 @@
       "wordCount": 1485,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.924Z",
+      "lastChecked": "2025-08-02T09:02:57.529Z",
       "suggestions": []
     },
     {
@@ -2968,7 +3036,7 @@
       "wordCount": 1485,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.023Z",
+      "lastChecked": "2025-08-02T09:02:57.650Z",
       "suggestions": []
     },
     {
@@ -2978,7 +3046,7 @@
       "wordCount": 1483,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.979Z",
+      "lastChecked": "2025-08-02T09:02:57.592Z",
       "suggestions": []
     },
     {
@@ -2988,7 +3056,7 @@
       "wordCount": 1480,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.920Z",
+      "lastChecked": "2025-08-02T09:02:57.519Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -3000,8 +3068,20 @@
       "wordCount": 1460,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.950Z",
+      "lastChecked": "2025-08-02T09:02:57.557Z",
       "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/TutorialManager.js",
+      "relativePath": "core/help/TutorialManager.js",
+      "fileName": "TutorialManager.js",
+      "wordCount": 1450,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.590Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
     },
     {
       "filePath": "src/scenes/components/HelpSectionSelector.js",
@@ -3010,7 +3090,7 @@
       "wordCount": 1449,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.015Z",
+      "lastChecked": "2025-08-02T09:02:57.637Z",
       "suggestions": []
     },
     {
@@ -3020,7 +3100,7 @@
       "wordCount": 1445,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.975Z",
+      "lastChecked": "2025-08-02T09:02:57.588Z",
       "suggestions": []
     },
     {
@@ -3030,7 +3110,7 @@
       "wordCount": 1443,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.927Z",
+      "lastChecked": "2025-08-02T09:02:57.534Z",
       "suggestions": []
     },
     {
@@ -3040,7 +3120,17 @@
       "wordCount": 1441,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.982Z",
+      "lastChecked": "2025-08-02T09:02:57.599Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/scenes/components/user-info/UserAchievementDisplay.js",
+      "relativePath": "scenes/components/user-info/UserAchievementDisplay.js",
+      "fileName": "UserAchievementDisplay.js",
+      "wordCount": 1431,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.640Z",
       "suggestions": []
     },
     {
@@ -3050,7 +3140,17 @@
       "wordCount": 1425,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.005Z",
+      "lastChecked": "2025-08-02T09:02:57.625Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/utils/mobile/MobileRenderOptimizer.js",
+      "relativePath": "utils/mobile/MobileRenderOptimizer.js",
+      "fileName": "MobileRenderOptimizer.js",
+      "wordCount": 1423,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.683Z",
       "suggestions": []
     },
     {
@@ -3060,7 +3160,7 @@
       "wordCount": 1420,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.946Z",
+      "lastChecked": "2025-08-02T09:02:57.553Z",
       "suggestions": []
     },
     {
@@ -3070,7 +3170,7 @@
       "wordCount": 1419,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.940Z",
+      "lastChecked": "2025-08-02T09:02:57.547Z",
       "suggestions": []
     },
     {
@@ -3080,7 +3180,17 @@
       "wordCount": 1416,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.982Z",
+      "lastChecked": "2025-08-02T09:02:57.599Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/scenes/components/user-info/UserHelpIntegration.js",
+      "relativePath": "scenes/components/user-info/UserHelpIntegration.js",
+      "fileName": "UserHelpIntegration.js",
+      "wordCount": 1410,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.642Z",
       "suggestions": []
     },
     {
@@ -3090,7 +3200,7 @@
       "wordCount": 1409,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.910Z",
+      "lastChecked": "2025-08-02T09:02:57.508Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -3102,7 +3212,7 @@
       "wordCount": 1408,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.009Z",
+      "lastChecked": "2025-08-02T09:02:57.630Z",
       "suggestions": []
     },
     {
@@ -3112,10 +3222,20 @@
       "wordCount": 1407,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.993Z",
+      "lastChecked": "2025-08-02T09:02:57.612Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
+    },
+    {
+      "filePath": "src/audio/AudioController.js",
+      "relativePath": "audio/AudioController.js",
+      "fileName": "AudioController.js",
+      "wordCount": 1396,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.515Z",
+      "suggestions": []
     },
     {
       "filePath": "src/effects/AudioVisualSynchronizer.js",
@@ -3124,7 +3244,27 @@
       "wordCount": 1394,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.998Z",
+      "lastChecked": "2025-08-02T09:02:57.618Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/analytics/comparison/ComparisonResultRenderer.js",
+      "relativePath": "analytics/comparison/ComparisonResultRenderer.js",
+      "fileName": "ComparisonResultRenderer.js",
+      "wordCount": 1393,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.513Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/components/TutorialProgressTracker.js",
+      "relativePath": "core/help/components/TutorialProgressTracker.js",
+      "fileName": "TutorialProgressTracker.js",
+      "wordCount": 1393,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.594Z",
       "suggestions": []
     },
     {
@@ -3134,7 +3274,7 @@
       "wordCount": 1393,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.980Z",
+      "lastChecked": "2025-08-02T09:02:57.596Z",
       "suggestions": []
     },
     {
@@ -3144,7 +3284,7 @@
       "wordCount": 1385,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.927Z",
+      "lastChecked": "2025-08-02T09:02:57.533Z",
       "suggestions": []
     },
     {
@@ -3154,7 +3294,7 @@
       "wordCount": 1377,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.905Z",
+      "lastChecked": "2025-08-02T09:02:57.505Z",
       "suggestions": []
     },
     {
@@ -3164,7 +3304,7 @@
       "wordCount": 1372,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.981Z",
+      "lastChecked": "2025-08-02T09:02:57.599Z",
       "suggestions": []
     },
     {
@@ -3174,7 +3314,7 @@
       "wordCount": 1371,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.921Z",
+      "lastChecked": "2025-08-02T09:02:57.520Z",
       "suggestions": []
     },
     {
@@ -3184,7 +3324,7 @@
       "wordCount": 1370,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.977Z",
+      "lastChecked": "2025-08-02T09:02:57.590Z",
       "suggestions": []
     },
     {
@@ -3194,7 +3334,7 @@
       "wordCount": 1365,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.004Z",
+      "lastChecked": "2025-08-02T09:02:57.625Z",
       "suggestions": []
     },
     {
@@ -3204,7 +3344,7 @@
       "wordCount": 1351,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.920Z",
+      "lastChecked": "2025-08-02T09:02:57.519Z",
       "suggestions": []
     },
     {
@@ -3214,7 +3354,7 @@
       "wordCount": 1335,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.932Z",
+      "lastChecked": "2025-08-02T09:02:57.539Z",
       "suggestions": []
     },
     {
@@ -3224,7 +3364,7 @@
       "wordCount": 1319,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.934Z",
+      "lastChecked": "2025-08-02T09:02:57.541Z",
       "suggestions": []
     },
     {
@@ -3234,7 +3374,7 @@
       "wordCount": 1316,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.016Z",
+      "lastChecked": "2025-08-02T09:02:57.639Z",
       "suggestions": []
     },
     {
@@ -3244,7 +3384,7 @@
       "wordCount": 1306,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.913Z",
+      "lastChecked": "2025-08-02T09:02:57.511Z",
       "suggestions": []
     },
     {
@@ -3254,7 +3394,7 @@
       "wordCount": 1306,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.937Z",
+      "lastChecked": "2025-08-02T09:02:57.544Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -3266,7 +3406,7 @@
       "wordCount": 1303,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.996Z",
+      "lastChecked": "2025-08-02T09:02:57.616Z",
       "suggestions": []
     },
     {
@@ -3276,7 +3416,7 @@
       "wordCount": 1301,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.979Z",
+      "lastChecked": "2025-08-02T09:02:57.592Z",
       "suggestions": []
     },
     {
@@ -3286,7 +3426,7 @@
       "wordCount": 1295,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.939Z",
+      "lastChecked": "2025-08-02T09:02:57.546Z",
       "suggestions": []
     },
     {
@@ -3296,7 +3436,7 @@
       "wordCount": 1289,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.902Z",
+      "lastChecked": "2025-08-02T09:02:57.501Z",
       "suggestions": []
     },
     {
@@ -3306,7 +3446,7 @@
       "wordCount": 1284,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.966Z",
+      "lastChecked": "2025-08-02T09:02:57.574Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -3318,7 +3458,7 @@
       "wordCount": 1283,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.986Z",
+      "lastChecked": "2025-08-02T09:02:57.604Z",
       "suggestions": []
     },
     {
@@ -3328,7 +3468,7 @@
       "wordCount": 1277,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.949Z",
+      "lastChecked": "2025-08-02T09:02:57.556Z",
       "suggestions": []
     },
     {
@@ -3338,7 +3478,7 @@
       "wordCount": 1271,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.923Z",
+      "lastChecked": "2025-08-02T09:02:57.528Z",
       "suggestions": []
     },
     {
@@ -3348,7 +3488,7 @@
       "wordCount": 1269,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.001Z",
+      "lastChecked": "2025-08-02T09:02:57.621Z",
       "suggestions": []
     },
     {
@@ -3358,7 +3498,7 @@
       "wordCount": 1251,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.025Z",
+      "lastChecked": "2025-08-02T09:02:57.653Z",
       "suggestions": []
     },
     {
@@ -3368,7 +3508,7 @@
       "wordCount": 1249,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.911Z",
+      "lastChecked": "2025-08-02T09:02:57.509Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -3380,7 +3520,7 @@
       "wordCount": 1249,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.938Z",
+      "lastChecked": "2025-08-02T09:02:57.545Z",
       "suggestions": []
     },
     {
@@ -3390,7 +3530,7 @@
       "wordCount": 1244,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.968Z",
+      "lastChecked": "2025-08-02T09:02:57.577Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -3402,7 +3542,7 @@
       "wordCount": 1243,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.044Z",
+      "lastChecked": "2025-08-02T09:02:57.678Z",
       "suggestions": []
     },
     {
@@ -3412,7 +3552,7 @@
       "wordCount": 1230,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.027Z",
+      "lastChecked": "2025-08-02T09:02:57.655Z",
       "suggestions": []
     },
     {
@@ -3422,7 +3562,41 @@
       "wordCount": 1229,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.022Z",
+      "lastChecked": "2025-08-02T09:02:57.648Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/audio/effects/AudioEffectManager.js",
+      "relativePath": "audio/effects/AudioEffectManager.js",
+      "fileName": "AudioEffectManager.js",
+      "wordCount": 1225,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.525Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/TutorialStatsManager.js",
+      "relativePath": "core/help/TutorialStatsManager.js",
+      "fileName": "TutorialStatsManager.js",
+      "wordCount": 1206,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.591Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/analytics/comparison/ComparisonAlgorithms.js",
+      "relativePath": "analytics/comparison/ComparisonAlgorithms.js",
+      "fileName": "ComparisonAlgorithms.js",
+      "wordCount": 1203,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.512Z",
       "suggestions": []
     },
     {
@@ -3432,7 +3606,7 @@
       "wordCount": 1202,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.964Z",
+      "lastChecked": "2025-08-02T09:02:57.571Z",
       "suggestions": []
     },
     {
@@ -3442,7 +3616,29 @@
       "wordCount": 1201,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.930Z",
+      "lastChecked": "2025-08-02T09:02:57.537Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/utils/mobile/MobileResourceManager.js",
+      "relativePath": "utils/mobile/MobileResourceManager.js",
+      "fileName": "MobileResourceManager.js",
+      "wordCount": 1198,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.684Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/audio/SoundEffectSystem.js",
+      "relativePath": "audio/SoundEffectSystem.js",
+      "fileName": "SoundEffectSystem.js",
+      "wordCount": 1197,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.521Z",
       "suggestions": []
     },
     {
@@ -3452,8 +3648,20 @@
       "wordCount": 1196,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.000Z",
+      "lastChecked": "2025-08-02T09:02:57.620Z",
       "suggestions": []
+    },
+    {
+      "filePath": "src/core/events/EventHistoryManager.js",
+      "relativePath": "core/events/EventHistoryManager.js",
+      "fileName": "EventHistoryManager.js",
+      "wordCount": 1188,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.584Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
     },
     {
       "filePath": "src/core/help/components/ContentLoader.js",
@@ -3462,7 +3670,7 @@
       "wordCount": 1188,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.978Z",
+      "lastChecked": "2025-08-02T09:02:57.592Z",
       "suggestions": []
     },
     {
@@ -3472,10 +3680,30 @@
       "wordCount": 1184,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.929Z",
+      "lastChecked": "2025-08-02T09:02:57.537Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
+    },
+    {
+      "filePath": "src/core/events/EventRankingSystem.js",
+      "relativePath": "core/events/EventRankingSystem.js",
+      "fileName": "EventRankingSystem.js",
+      "wordCount": 1173,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.585Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/TutorialValidationEngine.js",
+      "relativePath": "core/help/TutorialValidationEngine.js",
+      "fileName": "TutorialValidationEngine.js",
+      "wordCount": 1173,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.592Z",
+      "suggestions": []
     },
     {
       "filePath": "src/core/i18n/rtl/RTLLayoutManager.js",
@@ -3484,7 +3712,7 @@
       "wordCount": 1162,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.986Z",
+      "lastChecked": "2025-08-02T09:02:57.604Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -3496,7 +3724,7 @@
       "wordCount": 1151,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.912Z",
+      "lastChecked": "2025-08-02T09:02:57.510Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -3508,7 +3736,7 @@
       "wordCount": 1147,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.024Z",
+      "lastChecked": "2025-08-02T09:02:57.652Z",
       "suggestions": []
     },
     {
@@ -3518,7 +3746,7 @@
       "wordCount": 1144,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.933Z",
+      "lastChecked": "2025-08-02T09:02:57.541Z",
       "suggestions": []
     },
     {
@@ -3528,7 +3756,7 @@
       "wordCount": 1139,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.026Z",
+      "lastChecked": "2025-08-02T09:02:57.654Z",
       "suggestions": []
     },
     {
@@ -3538,7 +3766,7 @@
       "wordCount": 1134,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.958Z",
+      "lastChecked": "2025-08-02T09:02:57.564Z",
       "suggestions": []
     },
     {
@@ -3548,7 +3776,19 @@
       "wordCount": 1133,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.980Z",
+      "lastChecked": "2025-08-02T09:02:57.597Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/audio/components/AudioChannelManager.js",
+      "relativePath": "audio/components/AudioChannelManager.js",
+      "fileName": "AudioChannelManager.js",
+      "wordCount": 1131,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.522Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -3560,7 +3800,7 @@
       "wordCount": 1126,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.941Z",
+      "lastChecked": "2025-08-02T09:02:57.548Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -3572,7 +3812,7 @@
       "wordCount": 1119,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.947Z",
+      "lastChecked": "2025-08-02T09:02:57.554Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -3584,7 +3824,7 @@
       "wordCount": 1116,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.920Z",
+      "lastChecked": "2025-08-02T09:02:57.519Z",
       "suggestions": []
     },
     {
@@ -3594,10 +3834,20 @@
       "wordCount": 1114,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.953Z",
+      "lastChecked": "2025-08-02T09:02:57.559Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
+    },
+    {
+      "filePath": "src/analytics/comparison/DataComparator.js",
+      "relativePath": "analytics/comparison/DataComparator.js",
+      "fileName": "DataComparator.js",
+      "wordCount": 1113,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.513Z",
+      "suggestions": []
     },
     {
       "filePath": "src/effects/EffectConfigurationIntegrator.js",
@@ -3606,7 +3856,7 @@
       "wordCount": 1113,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.998Z",
+      "lastChecked": "2025-08-02T09:02:57.618Z",
       "suggestions": []
     },
     {
@@ -3616,7 +3866,7 @@
       "wordCount": 1109,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.987Z",
+      "lastChecked": "2025-08-02T09:02:57.605Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -3628,7 +3878,7 @@
       "wordCount": 1097,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.036Z",
+      "lastChecked": "2025-08-02T09:02:57.668Z",
       "suggestions": []
     },
     {
@@ -3638,7 +3888,7 @@
       "wordCount": 1096,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.980Z",
+      "lastChecked": "2025-08-02T09:02:57.597Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -3650,7 +3900,7 @@
       "wordCount": 1090,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.923Z",
+      "lastChecked": "2025-08-02T09:02:57.529Z",
       "suggestions": []
     },
     {
@@ -3660,7 +3910,7 @@
       "wordCount": 1086,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.907Z",
+      "lastChecked": "2025-08-02T09:02:57.505Z",
       "suggestions": []
     },
     {
@@ -3670,7 +3920,7 @@
       "wordCount": 1081,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.027Z",
+      "lastChecked": "2025-08-02T09:02:57.655Z",
       "suggestions": []
     },
     {
@@ -3680,7 +3930,17 @@
       "wordCount": 1080,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.035Z",
+      "lastChecked": "2025-08-02T09:02:57.667Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/scenes/components/user-info/UserStatisticsRenderer.js",
+      "relativePath": "scenes/components/user-info/UserStatisticsRenderer.js",
+      "fileName": "UserStatisticsRenderer.js",
+      "wordCount": 1074,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.643Z",
       "suggestions": []
     },
     {
@@ -3690,7 +3950,7 @@
       "wordCount": 1071,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.905Z",
+      "lastChecked": "2025-08-02T09:02:57.504Z",
       "suggestions": []
     },
     {
@@ -3700,7 +3960,7 @@
       "wordCount": 1066,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.003Z",
+      "lastChecked": "2025-08-02T09:02:57.623Z",
       "suggestions": []
     },
     {
@@ -3710,7 +3970,7 @@
       "wordCount": 1061,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.929Z",
+      "lastChecked": "2025-08-02T09:02:57.536Z",
       "suggestions": []
     },
     {
@@ -3720,8 +3980,20 @@
       "wordCount": 1058,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.016Z",
+      "lastChecked": "2025-08-02T09:02:57.639Z",
       "suggestions": []
+    },
+    {
+      "filePath": "src/audio/effects/AudioContextManager.js",
+      "relativePath": "audio/effects/AudioContextManager.js",
+      "fileName": "AudioContextManager.js",
+      "wordCount": 1053,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.525Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
     },
     {
       "filePath": "src/debug/ResponsiveDebugLayout.js",
@@ -3730,7 +4002,7 @@
       "wordCount": 1046,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.993Z",
+      "lastChecked": "2025-08-02T09:02:57.613Z",
       "suggestions": []
     },
     {
@@ -3740,7 +4012,7 @@
       "wordCount": 1046,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.000Z",
+      "lastChecked": "2025-08-02T09:02:57.620Z",
       "suggestions": []
     },
     {
@@ -3750,7 +4022,7 @@
       "wordCount": 1045,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.999Z",
+      "lastChecked": "2025-08-02T09:02:57.619Z",
       "suggestions": []
     },
     {
@@ -3760,7 +4032,17 @@
       "wordCount": 1043,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.024Z",
+      "lastChecked": "2025-08-02T09:02:57.652Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/ui/components/LeaderboardUI.js",
+      "relativePath": "ui/components/LeaderboardUI.js",
+      "fileName": "LeaderboardUI.js",
+      "wordCount": 1030,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.660Z",
       "suggestions": []
     },
     {
@@ -3770,7 +4052,7 @@
       "wordCount": 1024,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.023Z",
+      "lastChecked": "2025-08-02T09:02:57.651Z",
       "suggestions": []
     },
     {
@@ -3780,7 +4062,7 @@
       "wordCount": 1016,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.987Z",
+      "lastChecked": "2025-08-02T09:02:57.604Z",
       "suggestions": []
     },
     {
@@ -3790,7 +4072,7 @@
       "wordCount": 1007,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.922Z",
+      "lastChecked": "2025-08-02T09:02:57.528Z",
       "suggestions": []
     },
     {
@@ -3800,8 +4082,20 @@
       "wordCount": 997,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.024Z",
+      "lastChecked": "2025-08-02T09:02:57.651Z",
       "suggestions": []
+    },
+    {
+      "filePath": "src/audio/effects/SoundPoolManager.js",
+      "relativePath": "audio/effects/SoundPoolManager.js",
+      "fileName": "SoundPoolManager.js",
+      "wordCount": 993,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.527Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
     },
     {
       "filePath": "src/utilities/PWAAssetGenerator.js",
@@ -3810,8 +4104,20 @@
       "wordCount": 990,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.032Z",
+      "lastChecked": "2025-08-02T09:02:57.663Z",
       "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/TutorialProgressManager.js",
+      "relativePath": "core/help/TutorialProgressManager.js",
+      "fileName": "TutorialProgressManager.js",
+      "wordCount": 988,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.591Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
     },
     {
       "filePath": "src/tests/SocialSharingScreenshot.test.js",
@@ -3820,7 +4126,7 @@
       "wordCount": 985,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.025Z",
+      "lastChecked": "2025-08-02T09:02:57.653Z",
       "suggestions": []
     },
     {
@@ -3830,7 +4136,7 @@
       "wordCount": 972,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.001Z",
+      "lastChecked": "2025-08-02T09:02:57.621Z",
       "suggestions": []
     },
     {
@@ -3840,7 +4146,17 @@
       "wordCount": 972,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.022Z",
+      "lastChecked": "2025-08-02T09:02:57.649Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/SocialPlatformAdapters.js",
+      "relativePath": "core/SocialPlatformAdapters.js",
+      "fileName": "SocialPlatformAdapters.js",
+      "wordCount": 968,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.569Z",
       "suggestions": []
     },
     {
@@ -3850,7 +4166,7 @@
       "wordCount": 960,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.016Z",
+      "lastChecked": "2025-08-02T09:02:57.638Z",
       "suggestions": [
         "UIコンポーネントを別ファイルに分離してください"
       ]
@@ -3862,7 +4178,7 @@
       "wordCount": 944,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.971Z",
+      "lastChecked": "2025-08-02T09:02:57.581Z",
       "suggestions": []
     },
     {
@@ -3872,7 +4188,19 @@
       "wordCount": 924,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.963Z",
+      "lastChecked": "2025-08-02T09:02:57.570Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/EventStageManager.js",
+      "relativePath": "core/EventStageManager.js",
+      "fileName": "EventStageManager.js",
+      "wordCount": 921,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.549Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -3884,7 +4212,7 @@
       "wordCount": 920,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.925Z",
+      "lastChecked": "2025-08-02T09:02:57.531Z",
       "suggestions": []
     },
     {
@@ -3894,7 +4222,7 @@
       "wordCount": 915,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.983Z",
+      "lastChecked": "2025-08-02T09:02:57.600Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -3906,7 +4234,7 @@
       "wordCount": 915,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.025Z",
+      "lastChecked": "2025-08-02T09:02:57.652Z",
       "suggestions": []
     },
     {
@@ -3916,7 +4244,7 @@
       "wordCount": 913,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.999Z",
+      "lastChecked": "2025-08-02T09:02:57.619Z",
       "suggestions": []
     },
     {
@@ -3926,7 +4254,17 @@
       "wordCount": 904,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.988Z",
+      "lastChecked": "2025-08-02T09:02:57.606Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/SocialAnalyticsTracker.js",
+      "relativePath": "core/SocialAnalyticsTracker.js",
+      "fileName": "SocialAnalyticsTracker.js",
+      "wordCount": 896,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.567Z",
       "suggestions": []
     },
     {
@@ -3936,7 +4274,7 @@
       "wordCount": 895,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.017Z",
+      "lastChecked": "2025-08-02T09:02:57.640Z",
       "suggestions": []
     },
     {
@@ -3946,7 +4284,7 @@
       "wordCount": 893,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.983Z",
+      "lastChecked": "2025-08-02T09:02:57.600Z",
       "suggestions": []
     },
     {
@@ -3956,7 +4294,7 @@
       "wordCount": 888,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.024Z",
+      "lastChecked": "2025-08-02T09:02:57.651Z",
       "suggestions": []
     },
     {
@@ -3966,7 +4304,7 @@
       "wordCount": 886,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.995Z",
+      "lastChecked": "2025-08-02T09:02:57.615Z",
       "suggestions": []
     },
     {
@@ -3976,7 +4314,7 @@
       "wordCount": 877,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.964Z",
+      "lastChecked": "2025-08-02T09:02:57.572Z",
       "suggestions": []
     },
     {
@@ -3986,7 +4324,7 @@
       "wordCount": 875,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.012Z",
+      "lastChecked": "2025-08-02T09:02:57.633Z",
       "suggestions": [
         "UIコンポーネントを別ファイルに分離してください"
       ]
@@ -3998,8 +4336,20 @@
       "wordCount": 869,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.991Z",
+      "lastChecked": "2025-08-02T09:02:57.610Z",
       "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/components/TutorialStepManager.js",
+      "relativePath": "core/help/components/TutorialStepManager.js",
+      "fileName": "TutorialStepManager.js",
+      "wordCount": 868,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.595Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
     },
     {
       "filePath": "src/ui/FloatingTextManager.js",
@@ -4008,7 +4358,7 @@
       "wordCount": 867,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.030Z",
+      "lastChecked": "2025-08-02T09:02:57.659Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -4020,7 +4370,7 @@
       "wordCount": 866,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.015Z",
+      "lastChecked": "2025-08-02T09:02:57.637Z",
       "suggestions": []
     },
     {
@@ -4030,7 +4380,7 @@
       "wordCount": 859,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.014Z",
+      "lastChecked": "2025-08-02T09:02:57.636Z",
       "suggestions": []
     },
     {
@@ -4040,7 +4390,7 @@
       "wordCount": 834,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.956Z",
+      "lastChecked": "2025-08-02T09:02:57.562Z",
       "suggestions": []
     },
     {
@@ -4050,7 +4400,7 @@
       "wordCount": 832,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.026Z",
+      "lastChecked": "2025-08-02T09:02:57.654Z",
       "suggestions": []
     },
     {
@@ -4060,7 +4410,7 @@
       "wordCount": 828,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.025Z",
+      "lastChecked": "2025-08-02T09:02:57.653Z",
       "suggestions": []
     },
     {
@@ -4070,7 +4420,7 @@
       "wordCount": 813,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.004Z",
+      "lastChecked": "2025-08-02T09:02:57.624Z",
       "suggestions": []
     },
     {
@@ -4080,7 +4430,7 @@
       "wordCount": 812,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.021Z",
+      "lastChecked": "2025-08-02T09:02:57.648Z",
       "suggestions": []
     },
     {
@@ -4090,7 +4440,7 @@
       "wordCount": 804,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.983Z",
+      "lastChecked": "2025-08-02T09:02:57.600Z",
       "suggestions": []
     },
     {
@@ -4100,7 +4450,7 @@
       "wordCount": 802,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.992Z",
+      "lastChecked": "2025-08-02T09:02:57.611Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -4112,8 +4462,32 @@
       "wordCount": 797,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.024Z",
+      "lastChecked": "2025-08-02T09:02:57.652Z",
       "suggestions": []
+    },
+    {
+      "filePath": "src/core/SocialSharingManager.js",
+      "relativePath": "core/SocialSharingManager.js",
+      "fileName": "SocialSharingManager.js",
+      "wordCount": 796,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.569Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/scenes/components/user-info/UserInfoTabManager.js",
+      "relativePath": "scenes/components/user-info/UserInfoTabManager.js",
+      "fileName": "UserInfoTabManager.js",
+      "wordCount": 780,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.643Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
     },
     {
       "filePath": "src/core/ItemSystem.js",
@@ -4122,7 +4496,17 @@
       "wordCount": 764,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.946Z",
+      "lastChecked": "2025-08-02T09:02:57.553Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/scenes/components/user-info/UserInfoEventHandler.js",
+      "relativePath": "scenes/components/user-info/UserInfoEventHandler.js",
+      "fileName": "UserInfoEventHandler.js",
+      "wordCount": 762,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.642Z",
       "suggestions": []
     },
     {
@@ -4132,7 +4516,7 @@
       "wordCount": 758,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.034Z",
+      "lastChecked": "2025-08-02T09:02:57.665Z",
       "suggestions": []
     },
     {
@@ -4142,7 +4526,7 @@
       "wordCount": 753,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.008Z",
+      "lastChecked": "2025-08-02T09:02:57.629Z",
       "suggestions": []
     },
     {
@@ -4152,7 +4536,17 @@
       "wordCount": 746,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.040Z",
+      "lastChecked": "2025-08-02T09:02:57.672Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/events/EventNotificationSystem.js",
+      "relativePath": "core/events/EventNotificationSystem.js",
+      "fileName": "EventNotificationSystem.js",
+      "wordCount": 738,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.585Z",
       "suggestions": []
     },
     {
@@ -4162,7 +4556,19 @@
       "wordCount": 729,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.044Z",
+      "lastChecked": "2025-08-02T09:02:57.679Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/TutorialAccessibilityManager.js",
+      "relativePath": "core/help/TutorialAccessibilityManager.js",
+      "fileName": "TutorialAccessibilityManager.js",
+      "wordCount": 722,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.590Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -4174,10 +4580,20 @@
       "wordCount": 718,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.995Z",
+      "lastChecked": "2025-08-02T09:02:57.615Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
+    },
+    {
+      "filePath": "src/scenes/components/user-info/UserInfoRenderer.js",
+      "relativePath": "scenes/components/user-info/UserInfoRenderer.js",
+      "fileName": "UserInfoRenderer.js",
+      "wordCount": 716,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.642Z",
+      "suggestions": []
     },
     {
       "filePath": "src/debug/panels/ErrorPanel.js",
@@ -4186,7 +4602,7 @@
       "wordCount": 709,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.996Z",
+      "lastChecked": "2025-08-02T09:02:57.616Z",
       "suggestions": []
     },
     {
@@ -4196,8 +4612,20 @@
       "wordCount": 707,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.954Z",
+      "lastChecked": "2025-08-02T09:02:57.560Z",
       "suggestions": []
+    },
+    {
+      "filePath": "src/core/events/SeasonalEventManager.js",
+      "relativePath": "core/events/SeasonalEventManager.js",
+      "fileName": "SeasonalEventManager.js",
+      "wordCount": 702,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.586Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
     },
     {
       "filePath": "src/tests/SocialSharingManager.test.js",
@@ -4206,7 +4634,7 @@
       "wordCount": 692,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.025Z",
+      "lastChecked": "2025-08-02T09:02:57.652Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -4218,7 +4646,7 @@
       "wordCount": 685,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.014Z",
+      "lastChecked": "2025-08-02T09:02:57.636Z",
       "suggestions": []
     },
     {
@@ -4228,7 +4656,7 @@
       "wordCount": 662,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.990Z",
+      "lastChecked": "2025-08-02T09:02:57.608Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -4240,7 +4668,19 @@
       "wordCount": 653,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.009Z",
+      "lastChecked": "2025-08-02T09:02:57.630Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/scenes/components/user-info/UserProfileManager.js",
+      "relativePath": "scenes/components/user-info/UserProfileManager.js",
+      "fileName": "UserProfileManager.js",
+      "wordCount": 648,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.643Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -4252,7 +4692,7 @@
       "wordCount": 616,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.982Z",
+      "lastChecked": "2025-08-02T09:02:57.599Z",
       "suggestions": []
     },
     {
@@ -4262,7 +4702,7 @@
       "wordCount": 601,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.018Z",
+      "lastChecked": "2025-08-02T09:02:57.644Z",
       "suggestions": []
     },
     {
@@ -4272,7 +4712,7 @@
       "wordCount": 594,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.000Z",
+      "lastChecked": "2025-08-02T09:02:57.621Z",
       "suggestions": []
     },
     {
@@ -4282,7 +4722,7 @@
       "wordCount": 574,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.991Z",
+      "lastChecked": "2025-08-02T09:02:57.610Z",
       "suggestions": []
     },
     {
@@ -4292,7 +4732,17 @@
       "wordCount": 573,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.023Z",
+      "lastChecked": "2025-08-02T09:02:57.650Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/analytics/ComparisonEngine.js",
+      "relativePath": "analytics/ComparisonEngine.js",
+      "fileName": "ComparisonEngine.js",
+      "wordCount": 525,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:02:57.505Z",
       "suggestions": []
     },
     {
@@ -4302,7 +4752,7 @@
       "wordCount": 513,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.018Z",
+      "lastChecked": "2025-08-02T09:02:57.644Z",
       "suggestions": []
     },
     {
@@ -4312,7 +4762,7 @@
       "wordCount": 502,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.996Z",
+      "lastChecked": "2025-08-02T09:02:57.616Z",
       "suggestions": []
     },
     {
@@ -4322,7 +4772,7 @@
       "wordCount": 475,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.018Z",
+      "lastChecked": "2025-08-02T09:02:57.644Z",
       "suggestions": []
     },
     {
@@ -4332,7 +4782,7 @@
       "wordCount": 468,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.923Z",
+      "lastChecked": "2025-08-02T09:02:57.529Z",
       "suggestions": []
     },
     {
@@ -4342,7 +4792,7 @@
       "wordCount": 465,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.009Z",
+      "lastChecked": "2025-08-02T09:02:57.631Z",
       "suggestions": [
         "機能別にサブマネージャーを作成してください"
       ]
@@ -4354,7 +4804,7 @@
       "wordCount": 450,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.944Z",
+      "lastChecked": "2025-08-02T09:02:57.550Z",
       "suggestions": []
     },
     {
@@ -4364,7 +4814,7 @@
       "wordCount": 400,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.989Z",
+      "lastChecked": "2025-08-02T09:02:57.607Z",
       "suggestions": []
     },
     {
@@ -4374,7 +4824,7 @@
       "wordCount": 381,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.996Z",
+      "lastChecked": "2025-08-02T09:02:57.616Z",
       "suggestions": []
     },
     {
@@ -4384,7 +4834,7 @@
       "wordCount": 338,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.017Z",
+      "lastChecked": "2025-08-02T09:02:57.640Z",
       "suggestions": []
     },
     {
@@ -4394,7 +4844,7 @@
       "wordCount": 286,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.979Z",
+      "lastChecked": "2025-08-02T09:02:57.595Z",
       "suggestions": []
     },
     {
@@ -4404,7 +4854,7 @@
       "wordCount": 270,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.987Z",
+      "lastChecked": "2025-08-02T09:02:57.605Z",
       "suggestions": []
     },
     {
@@ -4414,7 +4864,7 @@
       "wordCount": 192,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.027Z",
+      "lastChecked": "2025-08-02T09:02:57.655Z",
       "suggestions": []
     },
     {
@@ -4424,7 +4874,7 @@
       "wordCount": 121,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.955Z",
+      "lastChecked": "2025-08-02T09:02:57.562Z",
       "suggestions": [
         "UIコンポーネントを別ファイルに分離してください",
         "機能別にサブマネージャーを作成してください"
@@ -4437,7 +4887,7 @@
       "wordCount": 73,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:41.955Z",
+      "lastChecked": "2025-08-02T09:02:57.562Z",
       "suggestions": [
         "UIコンポーネントを別ファイルに分離してください"
       ]
@@ -4449,7 +4899,7 @@
       "wordCount": 31,
       "limit": 2500,
       "status": "ok",
-      "lastChecked": "2025-08-02T00:10:42.023Z",
+      "lastChecked": "2025-08-02T09:02:57.650Z",
       "suggestions": []
     }
   ],
@@ -4461,7 +4911,7 @@
       "wordCount": 2243,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.899Z",
+      "lastChecked": "2025-08-02T09:02:57.497Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -4474,7 +4924,7 @@
       "wordCount": 2023,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.900Z",
+      "lastChecked": "2025-08-02T09:02:57.498Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -4487,7 +4937,7 @@
       "wordCount": 2076,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.900Z",
+      "lastChecked": "2025-08-02T09:02:57.499Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -4501,7 +4951,7 @@
       "wordCount": 2139,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.901Z",
+      "lastChecked": "2025-08-02T09:02:57.500Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -4514,7 +4964,7 @@
       "wordCount": 2225,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.908Z",
+      "lastChecked": "2025-08-02T09:02:57.506Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -4527,7 +4977,7 @@
       "wordCount": 2331,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.910Z",
+      "lastChecked": "2025-08-02T09:02:57.509Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -4540,7 +4990,7 @@
       "wordCount": 2273,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.917Z",
+      "lastChecked": "2025-08-02T09:02:57.516Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -4553,7 +5003,7 @@
       "wordCount": 2373,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.919Z",
+      "lastChecked": "2025-08-02T09:02:57.518Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -4566,7 +5016,7 @@
       "wordCount": 2059,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.919Z",
+      "lastChecked": "2025-08-02T09:02:57.518Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -4579,11 +5029,24 @@
       "wordCount": 2418,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.921Z",
+      "lastChecked": "2025-08-02T09:02:57.520Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
         "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/audio/components/AudioFormatHandler.js",
+      "relativePath": "audio/components/AudioFormatHandler.js",
+      "fileName": "AudioFormatHandler.js",
+      "wordCount": 2107,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:02:57.523Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
       ]
     },
     {
@@ -4593,7 +5056,7 @@
       "wordCount": 2054,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.922Z",
+      "lastChecked": "2025-08-02T09:02:57.527Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -4606,7 +5069,7 @@
       "wordCount": 2370,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.924Z",
+      "lastChecked": "2025-08-02T09:02:57.530Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -4620,7 +5083,7 @@
       "wordCount": 2308,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.927Z",
+      "lastChecked": "2025-08-02T09:02:57.534Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -4633,7 +5096,7 @@
       "wordCount": 2278,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.930Z",
+      "lastChecked": "2025-08-02T09:02:57.538Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -4646,7 +5109,7 @@
       "wordCount": 2003,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.931Z",
+      "lastChecked": "2025-08-02T09:02:57.538Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -4659,7 +5122,7 @@
       "wordCount": 2383,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.931Z",
+      "lastChecked": "2025-08-02T09:02:57.538Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -4673,7 +5136,7 @@
       "wordCount": 2199,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.936Z",
+      "lastChecked": "2025-08-02T09:02:57.544Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -4687,7 +5150,7 @@
       "wordCount": 2404,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.937Z",
+      "lastChecked": "2025-08-02T09:02:57.545Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -4701,7 +5164,7 @@
       "wordCount": 2419,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.946Z",
+      "lastChecked": "2025-08-02T09:02:57.552Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -4715,7 +5178,7 @@
       "wordCount": 2098,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.947Z",
+      "lastChecked": "2025-08-02T09:02:57.553Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -4729,7 +5192,7 @@
       "wordCount": 2449,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.951Z",
+      "lastChecked": "2025-08-02T09:02:57.557Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -4742,7 +5205,7 @@
       "wordCount": 2337,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.952Z",
+      "lastChecked": "2025-08-02T09:02:57.558Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -4756,7 +5219,7 @@
       "wordCount": 2182,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.954Z",
+      "lastChecked": "2025-08-02T09:02:57.561Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -4770,7 +5233,7 @@
       "wordCount": 2277,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.957Z",
+      "lastChecked": "2025-08-02T09:02:57.563Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -4783,7 +5246,7 @@
       "wordCount": 2019,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.957Z",
+      "lastChecked": "2025-08-02T09:02:57.563Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -4796,7 +5259,7 @@
       "wordCount": 2246,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.958Z",
+      "lastChecked": "2025-08-02T09:02:57.565Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -4809,7 +5272,7 @@
       "wordCount": 2339,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.959Z",
+      "lastChecked": "2025-08-02T09:02:57.566Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -4822,7 +5285,7 @@
       "wordCount": 2030,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.961Z",
+      "lastChecked": "2025-08-02T09:02:57.567Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -4835,7 +5298,7 @@
       "wordCount": 2484,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.962Z",
+      "lastChecked": "2025-08-02T09:02:57.568Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -4848,7 +5311,7 @@
       "wordCount": 2091,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.963Z",
+      "lastChecked": "2025-08-02T09:02:57.571Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -4862,7 +5325,7 @@
       "wordCount": 2041,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.965Z",
+      "lastChecked": "2025-08-02T09:02:57.573Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -4875,7 +5338,7 @@
       "wordCount": 2284,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.968Z",
+      "lastChecked": "2025-08-02T09:02:57.576Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -4888,7 +5351,7 @@
       "wordCount": 2303,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.972Z",
+      "lastChecked": "2025-08-02T09:02:57.582Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -4902,7 +5365,7 @@
       "wordCount": 2483,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.972Z",
+      "lastChecked": "2025-08-02T09:02:57.583Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -4916,7 +5379,7 @@
       "wordCount": 2490,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.972Z",
+      "lastChecked": "2025-08-02T09:02:57.583Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -4930,7 +5393,7 @@
       "wordCount": 2023,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.974Z",
+      "lastChecked": "2025-08-02T09:02:57.587Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -4943,7 +5406,7 @@
       "wordCount": 2215,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.974Z",
+      "lastChecked": "2025-08-02T09:02:57.587Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -4957,7 +5420,7 @@
       "wordCount": 2040,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.975Z",
+      "lastChecked": "2025-08-02T09:02:57.588Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -4970,7 +5433,7 @@
       "wordCount": 2194,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.976Z",
+      "lastChecked": "2025-08-02T09:02:57.589Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -4984,7 +5447,7 @@
       "wordCount": 2264,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.976Z",
+      "lastChecked": "2025-08-02T09:02:57.589Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -4997,7 +5460,7 @@
       "wordCount": 2362,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.976Z",
+      "lastChecked": "2025-08-02T09:02:57.590Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -5010,7 +5473,7 @@
       "wordCount": 2155,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.984Z",
+      "lastChecked": "2025-08-02T09:02:57.601Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -5023,7 +5486,7 @@
       "wordCount": 2386,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.985Z",
+      "lastChecked": "2025-08-02T09:02:57.603Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -5036,7 +5499,7 @@
       "wordCount": 2285,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.986Z",
+      "lastChecked": "2025-08-02T09:02:57.603Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -5049,7 +5512,7 @@
       "wordCount": 2024,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.987Z",
+      "lastChecked": "2025-08-02T09:02:57.605Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -5062,7 +5525,7 @@
       "wordCount": 2201,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.989Z",
+      "lastChecked": "2025-08-02T09:02:57.607Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -5075,7 +5538,7 @@
       "wordCount": 2271,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.989Z",
+      "lastChecked": "2025-08-02T09:02:57.607Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -5088,7 +5551,7 @@
       "wordCount": 2023,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.990Z",
+      "lastChecked": "2025-08-02T09:02:57.609Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -5101,7 +5564,7 @@
       "wordCount": 2326,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.991Z",
+      "lastChecked": "2025-08-02T09:02:57.610Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -5114,7 +5577,7 @@
       "wordCount": 2068,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.992Z",
+      "lastChecked": "2025-08-02T09:02:57.611Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -5128,7 +5591,7 @@
       "wordCount": 2331,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.993Z",
+      "lastChecked": "2025-08-02T09:02:57.612Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -5141,7 +5604,7 @@
       "wordCount": 2010,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.993Z",
+      "lastChecked": "2025-08-02T09:02:57.612Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -5154,7 +5617,7 @@
       "wordCount": 2116,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:41.999Z",
+      "lastChecked": "2025-08-02T09:02:57.620Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -5168,7 +5631,7 @@
       "wordCount": 2187,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:42.002Z",
+      "lastChecked": "2025-08-02T09:02:57.622Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -5182,7 +5645,21 @@
       "wordCount": 2191,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:42.012Z",
+      "lastChecked": "2025-08-02T09:02:57.633Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "UIコンポーネントを別ファイルに分離してください"
+      ]
+    },
+    {
+      "filePath": "src/scenes/UserInfoScene.js",
+      "relativePath": "scenes/UserInfoScene.js",
+      "fileName": "UserInfoScene.js",
+      "wordCount": 2245,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:02:57.635Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください",
@@ -5196,7 +5673,7 @@
       "wordCount": 2403,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:42.014Z",
+      "lastChecked": "2025-08-02T09:02:57.636Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -5209,7 +5686,20 @@
       "wordCount": 2288,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:42.015Z",
+      "lastChecked": "2025-08-02T09:02:57.637Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/scenes/components/user-info/UserDataExporter.js",
+      "relativePath": "scenes/components/user-info/UserDataExporter.js",
+      "fileName": "UserDataExporter.js",
+      "wordCount": 2313,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:02:57.641Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -5222,7 +5712,7 @@
       "wordCount": 2040,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:42.022Z",
+      "lastChecked": "2025-08-02T09:02:57.649Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -5235,7 +5725,20 @@
       "wordCount": 2048,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:42.031Z",
+      "lastChecked": "2025-08-02T09:02:57.660Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/ui/components/leaderboard/LeaderboardRenderer.js",
+      "relativePath": "ui/components/leaderboard/LeaderboardRenderer.js",
+      "fileName": "LeaderboardRenderer.js",
+      "wordCount": 2053,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:02:57.662Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -5248,7 +5751,7 @@
       "wordCount": 2396,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:42.034Z",
+      "lastChecked": "2025-08-02T09:02:57.666Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -5261,7 +5764,7 @@
       "wordCount": 2180,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:42.035Z",
+      "lastChecked": "2025-08-02T09:02:57.666Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -5274,7 +5777,7 @@
       "wordCount": 2424,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:42.037Z",
+      "lastChecked": "2025-08-02T09:02:57.669Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
@@ -5287,10 +5790,24 @@
       "wordCount": 2198,
       "limit": 2500,
       "status": "warning",
-      "lastChecked": "2025-08-02T00:10:42.037Z",
+      "lastChecked": "2025-08-02T09:02:57.669Z",
       "suggestions": [
         "警告: ファイルサイズが大きくなっています",
         "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/utils/mobile/MobileMemoryManager.js",
+      "relativePath": "utils/mobile/MobileMemoryManager.js",
+      "fileName": "MobileMemoryManager.js",
+      "wordCount": 2022,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:02:57.683Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
       ]
     }
   ],
@@ -5302,7 +5819,7 @@
       "wordCount": 2745,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.900Z",
+      "lastChecked": "2025-08-02T09:02:57.499Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -5315,7 +5832,7 @@
       "wordCount": 2681,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.901Z",
+      "lastChecked": "2025-08-02T09:02:57.500Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -5328,7 +5845,7 @@
       "wordCount": 2687,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.901Z",
+      "lastChecked": "2025-08-02T09:02:57.500Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -5341,7 +5858,7 @@
       "wordCount": 3073,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.902Z",
+      "lastChecked": "2025-08-02T09:02:57.501Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -5354,7 +5871,7 @@
       "wordCount": 2846,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.902Z",
+      "lastChecked": "2025-08-02T09:02:57.501Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -5367,7 +5884,7 @@
       "wordCount": 2913,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.903Z",
+      "lastChecked": "2025-08-02T09:02:57.502Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -5380,20 +5897,7 @@
       "wordCount": 3822,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.904Z",
-      "suggestions": [
-        "緊急: ファイルを複数のモジュールに分割してください",
-        "単一責任の原則に従ってクラス/機能を分離してください"
-      ]
-    },
-    {
-      "filePath": "src/analytics/ComparisonEngine.js",
-      "relativePath": "analytics/ComparisonEngine.js",
-      "fileName": "ComparisonEngine.js",
-      "wordCount": 6100,
-      "limit": 2500,
-      "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.907Z",
+      "lastChecked": "2025-08-02T09:02:57.503Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -5406,7 +5910,7 @@
       "wordCount": 4162,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.909Z",
+      "lastChecked": "2025-08-02T09:02:57.507Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -5420,7 +5924,7 @@
       "wordCount": 2557,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.914Z",
+      "lastChecked": "2025-08-02T09:02:57.514Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -5433,24 +5937,11 @@
       "wordCount": 2536,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.915Z",
+      "lastChecked": "2025-08-02T09:02:57.515Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
         "機能別にサブマネージャーを作成してください"
-      ]
-    },
-    {
-      "filePath": "src/audio/AudioController.js",
-      "relativePath": "audio/AudioController.js",
-      "fileName": "AudioController.js",
-      "wordCount": 6347,
-      "limit": 2500,
-      "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.916Z",
-      "suggestions": [
-        "緊急: ファイルを複数のモジュールに分割してください",
-        "単一責任の原則に従ってクラス/機能を分離してください"
       ]
     },
     {
@@ -5460,7 +5951,7 @@
       "wordCount": 5554,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.918Z",
+      "lastChecked": "2025-08-02T09:02:57.517Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -5474,7 +5965,7 @@
       "wordCount": 3525,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.921Z",
+      "lastChecked": "2025-08-02T09:02:57.520Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -5482,13 +5973,13 @@
       ]
     },
     {
-      "filePath": "src/audio/SoundEffectSystem.js",
-      "relativePath": "audio/SoundEffectSystem.js",
-      "fileName": "SoundEffectSystem.js",
+      "filePath": "src/audio/SoundEffectSystem_old.js",
+      "relativePath": "audio/SoundEffectSystem_old.js",
+      "fileName": "SoundEffectSystem_old.js",
       "wordCount": 7322,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.922Z",
+      "lastChecked": "2025-08-02T09:02:57.521Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -5501,7 +5992,7 @@
       "wordCount": 5097,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.926Z",
+      "lastChecked": "2025-08-02T09:02:57.532Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -5515,7 +6006,7 @@
       "wordCount": 3967,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.929Z",
+      "lastChecked": "2025-08-02T09:02:57.536Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -5529,7 +6020,7 @@
       "wordCount": 2614,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.932Z",
+      "lastChecked": "2025-08-02T09:02:57.539Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -5542,7 +6033,7 @@
       "wordCount": 3894,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.933Z",
+      "lastChecked": "2025-08-02T09:02:57.540Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -5555,7 +6046,7 @@
       "wordCount": 5029,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.935Z",
+      "lastChecked": "2025-08-02T09:02:57.542Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -5568,7 +6059,7 @@
       "wordCount": 3929,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.936Z",
+      "lastChecked": "2025-08-02T09:02:57.543Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -5582,7 +6073,7 @@
       "wordCount": 2563,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.938Z",
+      "lastChecked": "2025-08-02T09:02:57.546Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -5596,21 +6087,7 @@
       "wordCount": 3573,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.941Z",
-      "suggestions": [
-        "緊急: ファイルを複数のモジュールに分割してください",
-        "単一責任の原則に従ってクラス/機能を分離してください",
-        "機能別にサブマネージャーを作成してください"
-      ]
-    },
-    {
-      "filePath": "src/core/EventStageManager.js",
-      "relativePath": "core/EventStageManager.js",
-      "fileName": "EventStageManager.js",
-      "wordCount": 9801,
-      "limit": 2500,
-      "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.943Z",
+      "lastChecked": "2025-08-02T09:02:57.548Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -5624,7 +6101,7 @@
       "wordCount": 2728,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.944Z",
+      "lastChecked": "2025-08-02T09:02:57.550Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -5638,7 +6115,7 @@
       "wordCount": 3979,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.945Z",
+      "lastChecked": "2025-08-02T09:02:57.551Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -5651,7 +6128,7 @@
       "wordCount": 3567,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.945Z",
+      "lastChecked": "2025-08-02T09:02:57.551Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -5664,7 +6141,7 @@
       "wordCount": 3332,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.948Z",
+      "lastChecked": "2025-08-02T09:02:57.554Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -5678,7 +6155,7 @@
       "wordCount": 3588,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.949Z",
+      "lastChecked": "2025-08-02T09:02:57.556Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -5692,7 +6169,7 @@
       "wordCount": 2574,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.950Z",
+      "lastChecked": "2025-08-02T09:02:57.556Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -5706,7 +6183,7 @@
       "wordCount": 2726,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.953Z",
+      "lastChecked": "2025-08-02T09:02:57.559Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -5720,7 +6197,7 @@
       "wordCount": 2928,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.954Z",
+      "lastChecked": "2025-08-02T09:02:57.560Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -5734,7 +6211,7 @@
       "wordCount": 2774,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.958Z",
+      "lastChecked": "2025-08-02T09:02:57.564Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -5748,21 +6225,7 @@
       "wordCount": 3837,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.960Z",
-      "suggestions": [
-        "緊急: ファイルを複数のモジュールに分割してください",
-        "単一責任の原則に従ってクラス/機能を分離してください",
-        "機能別にサブマネージャーを作成してください"
-      ]
-    },
-    {
-      "filePath": "src/core/SocialSharingManager.js",
-      "relativePath": "core/SocialSharingManager.js",
-      "fileName": "SocialSharingManager.js",
-      "wordCount": 5884,
-      "limit": 2500,
-      "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.962Z",
+      "lastChecked": "2025-08-02T09:02:57.566Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -5776,7 +6239,7 @@
       "wordCount": 2585,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.964Z",
+      "lastChecked": "2025-08-02T09:02:57.572Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -5789,7 +6252,7 @@
       "wordCount": 2730,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.965Z",
+      "lastChecked": "2025-08-02T09:02:57.573Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -5802,7 +6265,7 @@
       "wordCount": 5625,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.967Z",
+      "lastChecked": "2025-08-02T09:02:57.575Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -5816,7 +6279,7 @@
       "wordCount": 2511,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.970Z",
+      "lastChecked": "2025-08-02T09:02:57.579Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -5830,34 +6293,7 @@
       "wordCount": 2744,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.975Z",
-      "suggestions": [
-        "緊急: ファイルを複数のモジュールに分割してください",
-        "単一責任の原則に従ってクラス/機能を分離してください"
-      ]
-    },
-    {
-      "filePath": "src/core/help/TutorialManager.js",
-      "relativePath": "core/help/TutorialManager.js",
-      "fileName": "TutorialManager.js",
-      "wordCount": 5787,
-      "limit": 2500,
-      "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.977Z",
-      "suggestions": [
-        "緊急: ファイルを複数のモジュールに分割してください",
-        "単一責任の原則に従ってクラス/機能を分離してください",
-        "機能別にサブマネージャーを作成してください"
-      ]
-    },
-    {
-      "filePath": "src/core/help/TutorialOverlay.js",
-      "relativePath": "core/help/TutorialOverlay.js",
-      "fileName": "TutorialOverlay.js",
-      "wordCount": 6559,
-      "limit": 2500,
-      "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.978Z",
+      "lastChecked": "2025-08-02T09:02:57.588Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -5870,7 +6306,7 @@
       "wordCount": 3359,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.988Z",
+      "lastChecked": "2025-08-02T09:02:57.606Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -5883,7 +6319,7 @@
       "wordCount": 2754,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.990Z",
+      "lastChecked": "2025-08-02T09:02:57.608Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -5896,7 +6332,7 @@
       "wordCount": 3167,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.991Z",
+      "lastChecked": "2025-08-02T09:02:57.610Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -5909,7 +6345,7 @@
       "wordCount": 2505,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.991Z",
+      "lastChecked": "2025-08-02T09:02:57.611Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -5922,7 +6358,7 @@
       "wordCount": 3020,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.992Z",
+      "lastChecked": "2025-08-02T09:02:57.612Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -5935,7 +6371,7 @@
       "wordCount": 2617,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.993Z",
+      "lastChecked": "2025-08-02T09:02:57.613Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -5948,7 +6384,7 @@
       "wordCount": 2602,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.994Z",
+      "lastChecked": "2025-08-02T09:02:57.613Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -5961,7 +6397,7 @@
       "wordCount": 3333,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.995Z",
+      "lastChecked": "2025-08-02T09:02:57.614Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -5974,7 +6410,7 @@
       "wordCount": 2524,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.995Z",
+      "lastChecked": "2025-08-02T09:02:57.614Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -5987,7 +6423,7 @@
       "wordCount": 4431,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:41.998Z",
+      "lastChecked": "2025-08-02T09:02:57.618Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -6001,7 +6437,7 @@
       "wordCount": 4197,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.002Z",
+      "lastChecked": "2025-08-02T09:02:57.622Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -6015,7 +6451,7 @@
       "wordCount": 2717,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.003Z",
+      "lastChecked": "2025-08-02T09:02:57.623Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -6029,7 +6465,7 @@
       "wordCount": 3867,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.004Z",
+      "lastChecked": "2025-08-02T09:02:57.624Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -6043,7 +6479,7 @@
       "wordCount": 3517,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.009Z",
+      "lastChecked": "2025-08-02T09:02:57.630Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -6057,7 +6493,7 @@
       "wordCount": 3816,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.010Z",
+      "lastChecked": "2025-08-02T09:02:57.632Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -6071,7 +6507,7 @@
       "wordCount": 4466,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.011Z",
+      "lastChecked": "2025-08-02T09:02:57.633Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -6085,7 +6521,7 @@
       "wordCount": 4155,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.012Z",
+      "lastChecked": "2025-08-02T09:02:57.633Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -6099,21 +6535,7 @@
       "wordCount": 2544,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.013Z",
-      "suggestions": [
-        "緊急: ファイルを複数のモジュールに分割してください",
-        "単一責任の原則に従ってクラス/機能を分離してください",
-        "UIコンポーネントを別ファイルに分離してください"
-      ]
-    },
-    {
-      "filePath": "src/scenes/UserInfoScene.js",
-      "relativePath": "scenes/UserInfoScene.js",
-      "fileName": "UserInfoScene.js",
-      "wordCount": 11166,
-      "limit": 2500,
-      "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.014Z",
+      "lastChecked": "2025-08-02T09:02:57.634Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
@@ -6127,7 +6549,7 @@
       "wordCount": 3546,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.020Z",
+      "lastChecked": "2025-08-02T09:02:57.646Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -6140,7 +6562,7 @@
       "wordCount": 2545,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.021Z",
+      "lastChecked": "2025-08-02T09:02:57.647Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -6153,7 +6575,7 @@
       "wordCount": 3203,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.028Z",
+      "lastChecked": "2025-08-02T09:02:57.656Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -6166,7 +6588,7 @@
       "wordCount": 4282,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.029Z",
+      "lastChecked": "2025-08-02T09:02:57.657Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -6179,20 +6601,7 @@
       "wordCount": 4657,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.030Z",
-      "suggestions": [
-        "緊急: ファイルを複数のモジュールに分割してください",
-        "単一責任の原則に従ってクラス/機能を分離してください"
-      ]
-    },
-    {
-      "filePath": "src/ui/components/LeaderboardUI.js",
-      "relativePath": "ui/components/LeaderboardUI.js",
-      "fileName": "LeaderboardUI.js",
-      "wordCount": 6298,
-      "limit": 2500,
-      "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.032Z",
+      "lastChecked": "2025-08-02T09:02:57.658Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -6205,7 +6614,7 @@
       "wordCount": 4069,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.033Z",
+      "lastChecked": "2025-08-02T09:02:57.664Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -6218,7 +6627,7 @@
       "wordCount": 5420,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.033Z",
+      "lastChecked": "2025-08-02T09:02:57.664Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -6231,7 +6640,7 @@
       "wordCount": 2688,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.034Z",
+      "lastChecked": "2025-08-02T09:02:57.666Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -6244,24 +6653,11 @@
       "wordCount": 4858,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.038Z",
+      "lastChecked": "2025-08-02T09:02:57.670Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください",
         "機能別にサブマネージャーを作成してください"
-      ]
-    },
-    {
-      "filePath": "src/utils/MobilePerformanceOptimizer.js",
-      "relativePath": "utils/MobilePerformanceOptimizer.js",
-      "fileName": "MobilePerformanceOptimizer.js",
-      "wordCount": 8405,
-      "limit": 2500,
-      "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.039Z",
-      "suggestions": [
-        "緊急: ファイルを複数のモジュールに分割してください",
-        "単一責任の原則に従ってクラス/機能を分離してください"
       ]
     },
     {
@@ -6271,7 +6667,7 @@
       "wordCount": 4252,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.040Z",
+      "lastChecked": "2025-08-02T09:02:57.672Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -6284,7 +6680,7 @@
       "wordCount": 2513,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.041Z",
+      "lastChecked": "2025-08-02T09:02:57.673Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -6297,7 +6693,7 @@
       "wordCount": 2615,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.042Z",
+      "lastChecked": "2025-08-02T09:02:57.674Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -6310,7 +6706,7 @@
       "wordCount": 3923,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.042Z",
+      "lastChecked": "2025-08-02T09:02:57.674Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -6323,7 +6719,7 @@
       "wordCount": 2902,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.042Z",
+      "lastChecked": "2025-08-02T09:02:57.675Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -6336,7 +6732,7 @@
       "wordCount": 3192,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.043Z",
+      "lastChecked": "2025-08-02T09:02:57.675Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -6349,7 +6745,7 @@
       "wordCount": 5067,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.043Z",
+      "lastChecked": "2025-08-02T09:02:57.676Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -6362,7 +6758,7 @@
       "wordCount": 3595,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.043Z",
+      "lastChecked": "2025-08-02T09:02:57.677Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -6375,7 +6771,7 @@
       "wordCount": 3204,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.044Z",
+      "lastChecked": "2025-08-02T09:02:57.677Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -6388,7 +6784,7 @@
       "wordCount": 3208,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.044Z",
+      "lastChecked": "2025-08-02T09:02:57.677Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
@@ -6401,7 +6797,7 @@
       "wordCount": 2747,
       "limit": 2500,
       "status": "error",
-      "lastChecked": "2025-08-02T00:10:42.045Z",
+      "lastChecked": "2025-08-02T09:02:57.680Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
