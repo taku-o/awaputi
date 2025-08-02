@@ -17,13 +17,16 @@
   - ファイルサイズ制限ルールをdocs/development-guide.mdに追加
   - _要件: 1.1, 2.1_
 
-- [ ] 2. UserInfoScene.js の分割（11,260語 → 複数ファイル）
+- [x] 2. UserInfoScene.js の分割（11,260語 → 複数ファイル）
   - UserInfoScene.js のメインコントローラー部分の抽出（< 2,500語）
   - UserProfileManager.js の作成（プロフィール管理機能）
   - UserStatisticsRenderer.js の作成（統計表示機能）
   - UserAchievementDisplay.js の作成（実績表示機能）
   - UserDataExporter.js の作成（データエクスポート機能）
   - UserHelpIntegration.js の作成（ヘルプ統合機能）
+  - UserInfoTabManager.js の作成（タブ管理機能）
+  - UserInfoRenderer.js の作成（レンダリング機能）
+  - UserInfoEventHandler.js の作成（イベント処理機能）
   - インポート文の更新と依存関係の修正
   - 分割後の機能テスト実行
   - _要件: 1.1, 2.2, 2.3_
