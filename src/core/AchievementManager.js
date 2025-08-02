@@ -2,7 +2,7 @@
  * 実績管理クラス - Main Achievement Management System
  * 分割されたコンポーネントを統合し、実績システムの中央制御を行う
  */
-import { AchievementProgressEngine } from './AchievementProgressEngine.js';
+// AchievementProgressEngine import removed - functionality integrated into ProgressTracker
 import { AchievementDefinitions } from './achievements/AchievementDefinitions.js';
 import { AchievementNotificationSystem } from './achievements/AchievementNotificationSystem.js';
 import { AchievementProgressTracker } from './achievements/AchievementProgressTracker.js';
@@ -18,8 +18,7 @@ export class AchievementManager {
         this.progressTracker = new AchievementProgressTracker();
         this.performanceOptimizer = new AchievementPerformanceOptimizer();
         
-        // 進捗計算エンジン（既存との互換性）
-        this.progressEngine = new AchievementProgressEngine();
+        // 進捗計算エンジン機能はprogressTrackerに統合済み
         
         // 統合設定
         this.config = {

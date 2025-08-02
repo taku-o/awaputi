@@ -177,8 +177,10 @@ export class GameEngine {
         this.timeRemaining = 300000; // 5分
         this.isGameOver = false;
         
-        // シーンを初期化
-        this.initializeScenes();
+        // シーンを初期化（非同期）
+        this.initializeScenes().catch(error => {
+            console.error('Scene initialization failed:', error);
+        });
         
         // 特殊効果状態
         this.bonusTimeRemaining = 0;
@@ -594,7 +596,7 @@ export class GameEngine {
     /**
      * シーンを初期化
      */
-    initializeScenes() {
+    async initializeScenes() {
         try {
             // シーンを作成
             const mainMenuScene = new MainMenuScene(this);
