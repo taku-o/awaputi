@@ -527,6 +527,11 @@ export class PerformanceOptimizer {
     getBlurEnabled() { return this.settings.blurEnabled; }
     getAntiAliasingEnabled() { return this.settings.antiAliasingEnabled; }
     
+    // 後方互換性のためのエイリアス
+    areShadowsEnabled() { return this.getShadowsEnabled(); }
+    isBlurEnabled() { return this.getBlurEnabled(); }
+    isAntiAliasingEnabled() { return this.getAntiAliasingEnabled(); }
+    
     // =============================================================================
     // 設定変更メソッド（後方互換性維持）
     // =============================================================================
@@ -580,6 +585,92 @@ export class PerformanceOptimizer {
     setAntiAliasingEnabled(enabled) {
         this.settings.antiAliasingEnabled = enabled;
         this.performanceConfig.setQualityConfig({ antiAliasingEnabled: enabled });
+    }
+    
+    // =============================================================================
+    // テスト・管理用メソッド
+    // =============================================================================
+    
+    /**
+     * 設定と連携してリセット
+     */
+    reset() {
+        try {
+            // 統計をリセット
+            this.stats = this._initializeStats();
+            
+            // フレーム履歴をクリア
+            this.frameTimeHistory = [];
+            this.lastFrameTime = null;
+            this.lastOptimizationTime = 0;
+            
+            // 設定を再読み込み
+            this._initializeFromConfig();
+            
+            // サブコンポーネントをリセット（可能な場合）
+            if (this.analyzer && typeof this.analyzer.reset === 'function') {
+                this.analyzer.reset();
+            }
+            if (this.adaptiveController && typeof this.adaptiveController.reset === 'function') {
+                this.adaptiveController.reset();
+            }
+            
+            console.log('[PerformanceOptimizer] Reset completed');
+            
+        } catch (error) {
+            this.errorHandler.logError('Failed to reset PerformanceOptimizer', error);
+        }
+    }
+    
+    /**
+     * 設定と同期
+     */
+    syncWithConfig() {
+        try {
+            this._initializeFromConfig();
+            console.log('[PerformanceOptimizer] Synchronized with config');
+        } catch (error) {
+            this.errorHandler.logError('Failed to sync with config', error);
+        }
+    }
+    
+    /**
+     * 現在の設定を取得
+     * @returns {object} 現在の設定
+     */
+    getCurrentConfig() {
+        return {
+            targetFPS: this.targetFPS,
+            performanceLevel: this.performanceLevel,
+            adaptiveMode: this.adaptiveMode,
+            settings: { ...this.settings }
+        };
+    }
+    
+    /**
+     * Canvasリサイズ時の処理
+     * @param {object} canvasInfo - Canvas情報
+     */
+    onCanvasResize(canvasInfo) {
+        try {
+            if (!canvasInfo) return;
+            
+            const { width, height, scale } = canvasInfo;
+            const totalPixels = width * height * (scale || 1);
+            const pixelThreshold = 1920 * 1080; // Full HD基準
+            
+            // 高解像度の場合はパフォーマンス調整を検討
+            if (totalPixels > pixelThreshold * 1.5) {
+                console.log('[PerformanceOptimizer] High resolution detected, considering performance adjustment');
+                // 必要に応じて品質を調整
+                if (this.adaptiveMode && this.performanceLevel === 'high') {
+                    this.setPerformanceLevel('medium');
+                }
+            }
+            
+        } catch (error) {
+            this.errorHandler.logError('Failed to handle canvas resize', error);
+        }
     }
     
     // =============================================================================
@@ -649,6 +740,15 @@ export function getPerformanceOptimizer() {
         _performanceOptimizer = new PerformanceOptimizer();
     }
     return _performanceOptimizer;
+}
+
+/**
+ * PerformanceOptimizerを再初期化（テスト用）
+ * @returns {PerformanceOptimizer} 新しいインスタンス
+ */
+export function reinitializePerformanceOptimizer() {
+    _performanceOptimizer = null;
+    return getPerformanceOptimizer();
 }
 
 // デフォルトエクスポート（後方互換性）

@@ -8,14 +8,14 @@
  * - リアルタイムパフォーマンス制御
  */
 
-import { ErrorHandler } from '../../core/ErrorHandler.js';
-import { PerformanceConfig } from '../../config/PerformanceConfig.js';
+import { getErrorHandler } from '../ErrorHandler.js';
+import { getPerformanceConfig } from '../../config/PerformanceConfig.js';
 
 export class PerformanceAdaptiveController {
     constructor(config = {}) {
         this.config = config;
-        this.errorHandler = ErrorHandler.getInstance();
-        this.performanceConfig = PerformanceConfig.getInstance();
+        this.errorHandler = getErrorHandler();
+        this.performanceConfig = getPerformanceConfig();
         
         // 現在のパフォーマンスレベル
         this.performanceLevel = 'high';

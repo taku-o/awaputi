@@ -8,12 +8,12 @@
  * - 安定性推奨事項の生成
  */
 
-import { ErrorHandler } from '../../core/ErrorHandler.js';
+import { getErrorHandler } from '../ErrorHandler.js';
 
 export class PerformanceAnalyzer {
     constructor(config = {}) {
         this.config = config;
-        this.errorHandler = ErrorHandler.getInstance();
+        this.errorHandler = getErrorHandler();
         
         // フレーム解析用データ
         this.frameTimeHistory = [];

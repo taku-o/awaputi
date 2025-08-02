@@ -8,12 +8,12 @@
  * - 安定性統計とパフォーマンス履歴管理
  */
 
-import { ErrorHandler } from '../../core/ErrorHandler.js';
+import { getErrorHandler } from '../ErrorHandler.js';
 
 export class PerformanceStabilizerIntegrator {
     constructor(config = {}) {
         this.config = config;
-        this.errorHandler = ErrorHandler.getInstance();
+        this.errorHandler = getErrorHandler();
         
         // FrameStabilizer統合設定
         this.stabilizerIntegration = {
