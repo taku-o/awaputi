@@ -319,3 +319,23 @@ find_symbolツールが25,000トークン制限を超過してエラーになる
 - **制限値**: 1ファイル2,500語以下を推奨
 - **監視**: pre-commitフックとCIで自動チェック
 - **分割基準**: 単一責任の原則に従ったコンポーネント分離
+
+### ChallengeUIインポート修正プロジェクト（Issue #71対応）
+**目標**: ChallengeUI関連コンポーネントのインポートエラーを修正し、ビルドの安定化を実現
+
+#### 問題の概要
+ChallengesTab.jsでインポートエラーが発生し、ビルドプロセスが失敗している：
+- ChallengeUIの間違ったインポートパス（LeaderboardUI.jsから参照）
+- 存在しないChallengeDetailModalクラスの参照
+- 開発環境での動作不安定
+
+#### 修正対象
+1. **インポートパス修正**: `../../ui/components/LeaderboardUI.js` → `../../core/ChallengeUI.js`
+2. **ChallengeDetailModal実装**: 新規作成（src/ui/components/ChallengeDetailModal.js）
+3. **ビルド安定化**: インポートエラーの完全解決
+
+#### 実装アプローチ
+- **Phase 1**: インポートパスの即座修正
+- **Phase 2**: ChallengeDetailModal基本実装
+- **Phase 3**: モーダル機能拡充（UI、イベント処理）
+- **Phase 4**: テスト・検証・統合

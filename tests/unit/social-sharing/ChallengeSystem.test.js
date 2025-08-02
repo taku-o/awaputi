@@ -42,9 +42,14 @@ const mockGameEngine = {
 };
 
 // ErrorHandler Mock
-jest.mock('../../../src/utils/ErrorHandler.js', () => ({
+jest.mock('@/utils/ErrorHandler.js', () => ({
     getErrorHandler: () => ({
-        handleError: jest.fn()
+        handleError: jest.fn(),
+        logError: jest.fn(),
+        handleRecovery: jest.fn(),
+        validateInput: jest.fn(() => true),
+        setupFallback: jest.fn(),
+        initialize: jest.fn()
     })
 }));
 

@@ -1613,3 +1613,17 @@ export class LocalizationManager {
         console.log('LocalizationManager cleanup completed');
     }
 }
+
+// シングルトンインスタンス管理
+let localizationManagerInstance = null;
+
+/**
+ * LocalizationManagerのシングルトンインスタンスを取得
+ * @returns {LocalizationManager} インスタンス
+ */
+export function getLocalizationManager() {
+    if (!localizationManagerInstance) {
+        localizationManagerInstance = new LocalizationManager();
+    }
+    return localizationManagerInstance;
+}
