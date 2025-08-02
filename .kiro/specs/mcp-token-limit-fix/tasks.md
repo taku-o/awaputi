@@ -88,11 +88,12 @@
   - 分割後のオーディオ機能テスト実行
   - _要件: 2.1, 2.2, 2.3_
 
-- [ ] 8. LeaderboardUI.js の分割（6,337語 → 複数ファイル）
-  - LeaderboardUI.js のメインUI部分の抽出（< 2,500語）
-  - LeaderboardRenderer.js の作成（レンダリング）
-  - LeaderboardDataManager.js の作成（データ管理）
-  - LeaderboardAnimationController.js の作成（アニメーション）
+- [x] 8. LeaderboardUI.js の分割（6,337語 → 470行）
+  - LeaderboardUI.js のメインUI部分の抽出（470行、約1,600語）
+  - LeaderboardRenderer.js の作成（レンダリング、592行）
+  - LeaderboardDataManager.js の作成（データ管理、703行）
+  - LeaderboardAnimationController.js の作成（アニメーション、692行）
+  - LeaderboardEventHandler.js の作成（イベント処理、838行）
   - インポート文の更新と依存関係の修正
   - _要件: 2.1, 2.2, 2.3_
 
