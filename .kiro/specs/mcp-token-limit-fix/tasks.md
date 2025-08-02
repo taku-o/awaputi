@@ -31,13 +31,15 @@
   - 分割後の機能テスト実行
   - _要件: 1.1, 2.2, 2.3_
 
-- [ ] 3. EventStageManager.js の分割（9,914語 → 複数ファイル）
+- [x] 3. EventStageManager.js の分割（9,914語 → 933語）
   - EventStageManager.js のメインマネージャー部分の抽出（< 2,500語）
   - SeasonalEventManager.js の作成（季節イベント管理）
   - EventRankingSystem.js の作成（ランキングシステム）
   - EventNotificationSystem.js の作成（通知システム）
   - EventHistoryManager.js の作成（履歴管理）
   - インポート文の更新と依存関係の修正
+  - 新コンポーネントアーキテクチャによる統合
+  - レガシーAPI互換性の維持
   - 分割後の機能テスト実行
   - _要件: 1.2, 2.2, 2.3_
 
