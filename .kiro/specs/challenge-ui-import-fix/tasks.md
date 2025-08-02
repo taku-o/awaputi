@@ -1,6 +1,6 @@
 # Implementation Plan
 
-- [ ] 1. Fix ChallengeUI import path in ChallengesTab.js
+- [x] 1. Fix ChallengeUI import path in ChallengesTab.js
   - Update import statement to use correct path from src/core/ChallengeUI.js
   - Verify ChallengeUI instantiation still works correctly
   - _Requirements: 1.1, 2.1, 2.2_
