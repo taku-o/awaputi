@@ -1,6 +1,6 @@
 import { LoggingSystem } from '../LoggingSystem.js';
 import { ErrorHandler } from '../../utils/ErrorHandler.js';
-import { BaseDialog } from '../../ui/BaseDialog.js';
+import { BaseDialog } from '../../scenes/components/BaseDialog.js';
 
 /**
  * ヘルプコンテンツに対するフィードバック収集システム

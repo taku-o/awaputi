@@ -14,7 +14,7 @@ let GameBalance;
 
 beforeAll(async () => {
     const module = await import('../../src/config/GameBalance.js');
-    GameBalance = module.default || module.GameBalance;
+    GameBalance = module.BALANCE_CONFIG || module.default || module.GameBalance;
 });
 
 describe('GameBalance Configuration Tests', () => {

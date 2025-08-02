@@ -1170,7 +1170,7 @@ export class GameScene extends Scene {
     /**
      * ゲームオーバー処理
      */
-    gameOver() {
+    async gameOver() {
         this.gameEngine.isGameOver = true;
         
         // スコアをAPとTAPに変換

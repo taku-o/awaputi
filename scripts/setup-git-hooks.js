@@ -187,6 +187,32 @@ function testHooks() {
             }
         }
         
+        // ファイルサイズ監視スクリプトのテスト
+        const fileSizeScript = path.join(PROJECT_ROOT, 'tools', 'file-size-monitor.js');
+        if (fs.existsSync(fileSizeScript)) {
+            try {
+                log.info('Testing file size monitoring script...');
+                
+                // ファイルサイズ監視スクリプトのテスト実行
+                execSync(`node "${fileSizeScript}" "${PROJECT_ROOT}"`, {
+                    cwd: PROJECT_ROOT,
+                    stdio: 'pipe',
+                    timeout: 30000
+                });
+                
+                log.success('File size monitoring script is working');
+            } catch (testError) {
+                if (testError.status === 1) {
+                    log.warn('File size monitoring detected limit violations (this is expected)');
+                } else {
+                    log.error(`File size monitoring test failed: ${testError.message}`);
+                    return false;
+                }
+            }
+        } else {
+            log.warn('File size monitoring script not found, skipping test');
+        }
+        
         return true;
     } catch (error) {
         log.error(`Hook testing failed: ${error.message}`);
@@ -216,6 +242,20 @@ function updatePackageJson() {
             'setup:hooks': 'node scripts/setup-git-hooks.js',
             'setup:hooks:force': 'node scripts/setup-git-hooks.js --force-default-path'
         };
+        
+        // ファイルサイズ監視スクリプトも確認・追加
+        const fileSizeScripts = {
+            'filesize:check': 'node tools/file-size-monitor.js',
+            'filesize:watch': 'nodemon --watch src --ext js,md --exec "npm run filesize:check"',
+            'filesize:report': 'node tools/file-size-monitor.js . && cat file-size-report.json | jq ".summary"'
+        };
+        
+        // ファイルサイズ監視スクリプトが存在しない場合は追加
+        for (const [scriptName, scriptCommand] of Object.entries(fileSizeScripts)) {
+            if (!packageJson.scripts[scriptName]) {
+                scriptsToAdd[scriptName] = scriptCommand;
+            }
+        }
         
         let modified = false;
         for (const [scriptName, scriptCommand] of Object.entries(scriptsToAdd)) {
@@ -259,7 +299,12 @@ Examples:
   npm run setup:hooks:force
 
 Installed Hooks:
-  pre-commit               Validates game balance configuration before commit
+  pre-commit               Validates game balance configuration and file size before commit
+
+File Size Monitoring:
+  npm run filesize:check   Check all files for size violations
+  npm run filesize:watch   Monitor files in real-time during development
+  npm run filesize:report  Generate detailed file size report
 
 Hook Files Location:
   Source: .githooks/
@@ -279,7 +324,7 @@ async function main() {
             process.exit(0);
         }
         
-        log.info('Setting up Git hooks for game balance configuration validation...');
+        log.info('Setting up Git hooks for configuration validation and file size monitoring...');
         
         // Git リポジトリチェック
         if (!checkGitRepository()) {
@@ -323,16 +368,17 @@ async function main() {
         
         console.log(`
 Next steps:
-1. The pre-commit hook will automatically validate configuration changes
+1. The pre-commit hook will automatically validate configuration and file sizes
 2. To manually run validation: npm run validate:config
-3. To test the pre-commit hook: make a config change and try to commit
-4. To bypass validation (if needed): git commit --no-verify
+3. To check file sizes: npm run filesize:check
+4. To monitor files during development: npm run filesize:watch
+5. To test the pre-commit hook: make a change and try to commit
+6. To bypass validation (if needed): git commit --no-verify
 
-Configuration files monitored:
-- src/config/GameBalance.js
-- src/config/GameConfig.js
-- src/bubbles/Bubble.js
-- tests/unit/Bubble.test.js
+Monitored files:
+- Configuration files: src/config/GameBalance.js, src/config/GameConfig.js, etc.
+- All .js and .md files for size limit violations (2,500 words)
+- File size monitoring with automatic pre-commit blocking
         `);
         
     } catch (error) {

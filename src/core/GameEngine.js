@@ -9,7 +9,7 @@ import { LocalizationManager } from './LocalizationManager.js';
 import { KeyboardShortcutManager } from './KeyboardShortcutManager.js';
 import { AchievementManager } from './AchievementManager.js';
 import { AchievementEventIntegrator } from './AchievementEventIntegrator.js';
-import { AchievementNotificationSystem } from './AchievementNotificationSystem.js';
+import { AchievementNotificationSystem } from './achievements/AchievementNotificationSystem.js';
 import { StatisticsManager } from './StatisticsManager.js';
 import { EventStageManager } from './EventStageManager.js';
 import { ChallengeSystem } from './ChallengeSystem.js';
@@ -177,8 +177,10 @@ export class GameEngine {
         this.timeRemaining = 300000; // 5分
         this.isGameOver = false;
         
-        // シーンを初期化
-        this.initializeScenes();
+        // シーンを初期化（非同期）
+        this.initializeScenes().catch(error => {
+            console.error('Scene initialization failed:', error);
+        });
         
         // 特殊効果状態
         this.bonusTimeRemaining = 0;
@@ -594,7 +596,7 @@ export class GameEngine {
     /**
      * シーンを初期化
      */
-    initializeScenes() {
+    async initializeScenes() {
         try {
             // シーンを作成
             const mainMenuScene = new MainMenuScene(this);

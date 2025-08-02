@@ -192,7 +192,7 @@ describe('SettingsManager統合テスト', () => {
             settingsManager.set('masterVolume', 0.5);
             
             // コールバックが呼ばれることを確認
-            expect(callback.calls.length).toBeGreaterThan(0);
+            expect(callback).toHaveBeenCalled();
         });
 
         test('ConfigurationManagerの監視機能も使用される', () => {
@@ -205,7 +205,7 @@ describe('SettingsManager統合テスト', () => {
             configManager.set('audio', 'masterVolume', 0.3);
             
             // コールバックが呼ばれることを確認
-            expect(callback.calls.length).toBeGreaterThan(0);
+            expect(callback).toHaveBeenCalled();
         });
 
         test('リスナーが正しく削除される', () => {
@@ -221,7 +221,7 @@ describe('SettingsManager統合テスト', () => {
             settingsManager.set('masterVolume', 0.4);
             
             // コールバックが呼ばれないことを確認
-            expect(callback.calls.length).toBe(0);
+            expect(callback).not.toHaveBeenCalled();
         });
     });
 
@@ -313,7 +313,7 @@ describe('SettingsManager統合テスト', () => {
         test('localStorageエラー時の処理', () => {
             // localStorageを無効化
             const originalSetItem = localStorage.setItem;
-            localStorage.setItem = mockFn(() => {
+            localStorage.setItem = jest.fn(() => {
                 throw new Error('Storage error');
             });
             
@@ -331,19 +331,19 @@ describe('SettingsManager統合テスト', () => {
         test('音量設定がAudioManagerに反映される', () => {
             settingsManager.set('masterVolume', 0.5);
             
-            expect(mockGameEngine.audioManager.setVolume.calls.length).toBeGreaterThan(0);
+            expect(mockGameEngine.audioManager.setVolume).toHaveBeenCalled();
         });
 
         test('言語設定がLocalizationManagerに反映される', () => {
             settingsManager.set('language', 'ja');
             
-            expect(mockGameEngine.localizationManager.setLanguage.calls.length).toBeGreaterThan(0);
+            expect(mockGameEngine.localizationManager.setLanguage).toHaveBeenCalled();
         });
 
         test('品質設定がPerformanceOptimizerに反映される', () => {
             settingsManager.set('quality', 'high');
             
-            expect(mockGameEngine.performanceOptimizer.setQualityLevel.calls.length).toBeGreaterThan(0);
+            expect(mockGameEngine.performanceOptimizer.setQualityLevel).toHaveBeenCalled();
         });
 
         test('アクセシビリティ設定がDOMに反映される', () => {

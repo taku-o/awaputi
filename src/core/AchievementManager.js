@@ -1,2241 +1,345 @@
 /**
- * 実績管理クラス
+ * 実績管理クラス - Main Achievement Management System
+ * 分割されたコンポーネントを統合し、実績システムの中央制御を行う
  */
-import { AchievementProgressEngine } from './AchievementProgressEngine.js';
+// AchievementProgressEngine import removed - functionality integrated into ProgressTracker
+import { AchievementDefinitions } from './achievements/AchievementDefinitions.js';
+import { AchievementNotificationSystem } from './achievements/AchievementNotificationSystem.js';
+import { AchievementProgressTracker } from './achievements/AchievementProgressTracker.js';
+import { AchievementPerformanceOptimizer } from './achievements/AchievementPerformanceOptimizer.js';
 
 export class AchievementManager {
     constructor(gameEngine) {
         this.gameEngine = gameEngine;
-        this.achievements = this.initializeAchievements();
-        this.unlockedAchievements = new Set();
-        this.progressData = {};
-        this.notifications = [];
         
-        // 進捗計算エンジン
-        this.progressEngine = new AchievementProgressEngine();
+        // コンポーネント初期化
+        this.definitions = new AchievementDefinitions();
+        this.notificationSystem = new AchievementNotificationSystem();
+        this.progressTracker = new AchievementProgressTracker();
+        this.performanceOptimizer = new AchievementPerformanceOptimizer();
         
-        // パフォーマンス最適化設定
-        this.performanceConfig = {
-            batchSize: 10, // バッチ処理サイズ
-            throttleDelay: 100, // スロットリング遅延（ms）
-            cacheTimeout: 5000, // キャッシュタイムアウト（ms）
-            maxNotifications: 5 // 最大通知数
+        // 進捗計算エンジン機能はprogressTrackerに統合済み
+        
+        // 統合設定
+        this.config = {
+            enableNotifications: true,
+            enablePerformanceOptimization: true,
+            autoSave: true,
+            debugMode: false
         };
         
-        // キャッシュとスロットリング
-        this.cache = new Map();
-        this.updateQueue = [];
-        this.throttleTimer = null;
-        this.lastUpdateTime = 0;
-        
-        // パフォーマンス統計
-        this.performanceStats = {
-            updateCount: 0,
-            averageUpdateTime: 0,
-            cacheHits: 0,
-            cacheMisses: 0,
-            batchProcessingCount: 0
-        };
+        this.initializeAchievementManager();
     }
     
     /**
-     * 実績を初期化
+     * 実績管理システムを初期化
+     */
+    initializeAchievementManager() {
+        // パフォーマンス最適化を初期化
+        this.performanceOptimizer.initialize();
+        
+        // 進捗追跡イベントリスナーを設定
+        this.setupEventListeners();
+        
+        // 通知システム設定
+        this.configureNotificationSystem();
+        
+        console.log('[AchievementManager] Achievement management system initialized');
+    }
+    
+    /**
+     * イベントリスナーを設定
+     */
+    setupEventListeners() {
+        // 進捗追跡からの実績解除イベント
+        this.progressTracker.addEventListener('achievementUnlocked', (data) => {
+            this.handleAchievementUnlocked(data);
+        });
+        
+        // 進捗更新イベント
+        this.progressTracker.addEventListener('progressUpdated', (data) => {
+            this.handleProgressUpdated(data);
+        });
+    }
+    
+    /**
+     * 通知システムを設定
+     */
+    configureNotificationSystem() {
+        if (this.config.enableNotifications) {
+            this.notificationSystem.updateConfig({
+                position: 'top-right',
+                fadeIn: true,
+                slideIn: true,
+                sound: true
+            });
+        }
+    }
+    
+    /**
+     * 実績を初期化（後方互換性）
      */
     initializeAchievements() {
-        return {
-            // 基本プレイ実績
-            firstBubble: {
-                id: 'firstBubble',
-                name: '初めての泡',
-                description: '初めて泡を割る',
-                icon: '🎈',
-                type: 'single',
-                condition: { type: 'bubblesPopped', value: 1 },
-                reward: { ap: 10 }
-            },
-            bubbleHunter: {
-                id: 'bubbleHunter',
-                name: '泡ハンター',
-                description: '100個の泡を割る',
-                icon: '🏹',
-                type: 'cumulative',
-                condition: { type: 'bubblesPopped', value: 100 },
-                reward: { ap: 50 }
-            },
-            bubbleMaster: {
-                id: 'bubbleMaster',
-                name: '泡マスター',
-                description: '1000個の泡を割る',
-                icon: '👑',
-                type: 'cumulative',
-                condition: { type: 'bubblesPopped', value: 1000 },
-                reward: { ap: 200 }
-            },
-            
-            // スコア実績
-            firstThousand: {
-                id: 'firstThousand',
-                name: '千点突破',
-                description: '1回のゲームで1000点を獲得',
-                icon: '⭐',
-                type: 'single',
-                condition: { type: 'singleGameScore', value: 1000 },
-                reward: { ap: 25 }
-            },
-            scoreKing: {
-                id: 'scoreKing',
-                name: 'スコアキング',
-                description: '1回のゲームで10000点を獲得',
-                icon: '👑',
-                type: 'single',
-                condition: { type: 'singleGameScore', value: 10000 },
-                reward: { ap: 100 }
-            },
-            
-            // コンボ実績
-            comboStarter: {
-                id: 'comboStarter',
-                name: 'コンボスターター',
-                description: '10コンボを達成',
-                icon: '🔥',
-                type: 'single',
-                condition: { type: 'maxCombo', value: 10 },
-                reward: { ap: 30 }
-            },
-            comboMaster: {
-                id: 'comboMaster',
-                name: 'コンボマスター',
-                description: '50コンボを達成',
-                icon: '💥',
-                type: 'single',
-                condition: { type: 'maxCombo', value: 50 },
-                reward: { ap: 150 }
-            },
-            
-            // 特殊泡実績
-            rainbowHunter: {
-                id: 'rainbowHunter',
-                name: '虹色ハンター',
-                description: '虹色の泡を10個割る',
-                icon: '🌈',
-                type: 'cumulative',
-                condition: { type: 'bubbleTypePopped', bubbleType: 'rainbow', value: 10 },
-                reward: { ap: 75 }
-            },
-            diamondBreaker: {
-                id: 'diamondBreaker',
-                name: 'ダイヤモンドブレイカー',
-                description: 'ダイヤモンドの泡を5個割る',
-                icon: '💎',
-                type: 'cumulative',
-                condition: { type: 'bubbleTypePopped', bubbleType: 'diamond', value: 5 },
-                reward: { ap: 100 }
-            },
-            bossSlayer: {
-                id: 'bossSlayer',
-                name: 'ボススレイヤー',
-                description: 'ボス泡を3個割る',
-                icon: '⚔️',
-                type: 'cumulative',
-                condition: { type: 'bubbleTypePopped', bubbleType: 'boss', value: 3 },
-                reward: { ap: 200 }
-            },
-            
-            // 新しい泡タイプ実績
-            goldenTouch: {
-                id: 'goldenTouch',
-                name: '黄金の手',
-                description: '黄金の泡を5個割る',
-                icon: '✨',
-                type: 'cumulative',
-                condition: { type: 'bubbleTypePopped', bubbleType: 'golden', value: 5 },
-                reward: { ap: 80 }
-            },
-            phantomHunter: {
-                id: 'phantomHunter',
-                name: '幻影ハンター',
-                description: '幻の泡を10個割る（すり抜けを含む）',
-                icon: '👻',
-                type: 'cumulative',
-                condition: { type: 'bubbleTypePopped', bubbleType: 'phantom', value: 10 },
-                reward: { ap: 120 }
-            },
-            
-            // サバイバル実績
-            survivor: {
-                id: 'survivor',
-                name: 'サバイバー',
-                description: '5分間生き残る',
-                icon: '🛡️',
-                type: 'single',
-                condition: { type: 'survivalTime', value: 300000 },
-                reward: { ap: 100 }
-            },
-            ironWill: {
-                id: 'ironWill',
-                name: '鉄の意志',
-                description: 'HP10以下で1分間生き残る',
-                icon: '💪',
-                type: 'single',
-                condition: { type: 'lowHpSurvival', hp: 10, time: 60000 },
-                reward: { ap: 150 }
-            },
-            
-            // ステージ実績
-            stageExplorer: {
-                id: 'stageExplorer',
-                name: 'ステージ探検家',
-                description: '5つのステージをクリア',
-                icon: '🗺️',
-                type: 'cumulative',
-                condition: { type: 'stagesCleared', value: 5 },
-                reward: { ap: 100 }
-            },
-            allStagesClear: {
-                id: 'allStagesClear',
-                name: '全ステージ制覇',
-                description: '全てのステージをクリア',
-                icon: '🏆',
-                type: 'single',
-                condition: { type: 'allStagesCleared', value: true },
-                reward: { ap: 500 }
-            },
-            
-            // 特殊実績
-            perfectionist: {
-                id: 'perfectionist',
-                name: '完璧主義者',
-                description: '1回のゲームで泡を一度も逃さない（50個以上）',
-                icon: '🎯',
-                type: 'single',
-                condition: { type: 'perfectGame', minBubbles: 50 },
-                reward: { ap: 300 }
-            },
-            speedster: {
-                id: 'speedster',
-                name: 'スピードスター',
-                description: '1分以内に100個の泡を割る',
-                icon: '⚡',
-                type: 'single',
-                condition: { type: 'speedChallenge', bubbles: 100, time: 60000 },
-                reward: { ap: 200 }
-            },
-            
-            // 追加スコア実績
-            megaScore: {
-                id: 'megaScore',
-                name: 'メガスコア',
-                description: '1回のゲームで50000点を獲得',
-                icon: '💫',
-                type: 'single',
-                condition: { type: 'singleGameScore', value: 50000 },
-                reward: { ap: 250 }
-            },
-            scoreGod: {
-                id: 'scoreGod',
-                name: 'スコアゴッド',
-                description: '1回のゲームで100000点を獲得',
-                icon: '🌟',
-                type: 'single',
-                condition: { type: 'singleGameScore', value: 100000 },
-                reward: { ap: 500 }
-            },
-            cumulativeScoreBronze: {
-                id: 'cumulativeScoreBronze',
-                name: '累計ブロンズ',
-                description: '累計100000点を獲得',
-                icon: '🥉',
-                type: 'cumulative',
-                condition: { type: 'cumulativeScore', value: 100000 },
-                reward: { ap: 100 }
-            },
-            cumulativeScoreSilver: {
-                id: 'cumulativeScoreSilver',
-                name: '累計シルバー',
-                description: '累計500000点を獲得',
-                icon: '🥈',
-                type: 'cumulative',
-                condition: { type: 'cumulativeScore', value: 500000 },
-                reward: { ap: 200 }
-            },
-            cumulativeScoreGold: {
-                id: 'cumulativeScoreGold',
-                name: '累計ゴールド',
-                description: '累計1000000点を獲得',
-                icon: '🥇',
-                type: 'cumulative',
-                condition: { type: 'cumulativeScore', value: 1000000 },
-                reward: { ap: 500 }
-            },
-            
-            // 追加プレイ実績
-            consecutiveDays3: {
-                id: 'consecutiveDays3',
-                name: '3日連続',
-                description: '3日連続でプレイ',
-                icon: '📅',
-                type: 'single',
-                condition: { type: 'consecutiveDays', value: 3 },
-                reward: { ap: 50 }
-            },
-            consecutiveDays7: {
-                id: 'consecutiveDays7',
-                name: 'ウィークプレイヤー',
-                description: '7日連続でプレイ',
-                icon: '🗓️',
-                type: 'single',
-                condition: { type: 'consecutiveDays', value: 7 },
-                reward: { ap: 150 }
-            },
-            consecutiveDays30: {
-                id: 'consecutiveDays30',
-                name: 'マンスリープレイヤー',
-                description: '30日連続でプレイ',
-                icon: '🏅',
-                type: 'single',
-                condition: { type: 'consecutiveDays', value: 30 },
-                reward: { ap: 500 }
-            },
-            totalPlayTime1h: {
-                id: 'totalPlayTime1h',
-                name: '1時間プレイ',
-                description: '累計1時間プレイ',
-                icon: '⏰',
-                type: 'cumulative',
-                condition: { type: 'totalPlayTime', value: 3600000 },
-                reward: { ap: 75 }
-            },
-            totalPlayTime10h: {
-                id: 'totalPlayTime10h',
-                name: '10時間プレイ',
-                description: '累計10時間プレイ',
-                icon: '⏳',
-                type: 'cumulative',
-                condition: { type: 'totalPlayTime', value: 36000000 },
-                reward: { ap: 200 }
-            },
-            gamesPlayed50: {
-                id: 'gamesPlayed50',
-                name: '50ゲーム達成',
-                description: '50回ゲームをプレイ',
-                icon: '🎮',
-                type: 'cumulative',
-                condition: { type: 'gamesPlayed', value: 50 },
-                reward: { ap: 100 }
-            },
-            gamesPlayed500: {
-                id: 'gamesPlayed500',
-                name: '500ゲーム達成',
-                description: '500回ゲームをプレイ',
-                icon: '🎯',
-                type: 'cumulative',
-                condition: { type: 'gamesPlayed', value: 500 },
-                reward: { ap: 300 }
-            },
-            
-            // 追加テクニック実績
-            comboLegend: {
-                id: 'comboLegend',
-                name: 'コンボレジェンド',
-                description: '100コンボを達成',
-                icon: '🔥',
-                type: 'single',
-                condition: { type: 'maxCombo', value: 100 },
-                reward: { ap: 300 }
-            },
-            comboGod: {
-                id: 'comboGod',
-                name: 'コンボゴッド',
-                description: '200コンボを達成',
-                icon: '🌪️',
-                type: 'single',
-                condition: { type: 'maxCombo', value: 200 },
-                reward: { ap: 500 }
-            },
-            accuracyExpert: {
-                id: 'accuracyExpert',
-                name: '精密射手',
-                description: '95%以上の精度でゲームを完了',
-                icon: '🎯',
-                type: 'single',
-                condition: { type: 'accuracy', value: 95 },
-                reward: { ap: 200 }
-            },
-            accuracyMaster: {
-                id: 'accuracyMaster',
-                name: '精密マスター',
-                description: '99%以上の精度でゲームを完了',
-                icon: '🏹',
-                type: 'single',
-                condition: { type: 'accuracy', value: 99 },
-                reward: { ap: 400 }
-            },
-            
-            // 特殊泡実績拡張
-            explosiveExpert: {
-                id: 'explosiveExpert',
-                name: '爆発エキスパート',
-                description: '爆発泡を20個割る',
-                icon: '💥',
-                type: 'cumulative',
-                condition: { type: 'bubbleTypePopped', bubbleType: 'explosive', value: 20 },
-                reward: { ap: 150 }
-            },
-            magneticMaster: {
-                id: 'magneticMaster',
-                name: '磁力マスター',
-                description: '磁力泡を15個割る',
-                icon: '🧲',
-                type: 'cumulative',
-                condition: { type: 'bubbleTypePopped', bubbleType: 'magnetic', value: 15 },
-                reward: { ap: 120 }
-            },
-            frozenBreaker: {
-                id: 'frozenBreaker',
-                name: 'アイスブレイカー',
-                description: '氷結泡を25個割る',
-                icon: '❄️',
-                type: 'cumulative',
-                condition: { type: 'bubbleTypePopped', bubbleType: 'frozen', value: 25 },
-                reward: { ap: 100 }
-            },
-            multiplierChaser: {
-                id: 'multiplierChaser',
-                name: '倍率ハンター',
-                description: 'マルチプライヤー泡を10個割る',
-                icon: '✖️',
-                type: 'cumulative',
-                condition: { type: 'bubbleTypePopped', bubbleType: 'multiplier', value: 10 },
-                reward: { ap: 180 }
-            },
-            
-            // コレクション実績
-            bubbleCollector: {
-                id: 'bubbleCollector',
-                name: '泡コレクター',
-                description: '全種類の泡を少なくとも1個ずつ割る',
-                icon: '🗂️',
-                type: 'single',
-                condition: { type: 'allBubbleTypes', value: true },
-                reward: { ap: 300 }
-            },
-            stageCompletionist: {
-                id: 'stageCompletionist',
-                name: 'ステージコンプリート',
-                description: '各ステージを10回ずつクリア',
-                icon: '📋',
-                type: 'single',
-                condition: { type: 'allStagesMultiple', value: 10 },
-                reward: { ap: 400 }
-            },
-            
-            // 特殊チャレンジ実績
-            noItemChallenge: {
-                id: 'noItemChallenge',
-                name: 'ピュアプレイヤー',
-                description: 'アイテム使用なしで5000点を獲得',
-                icon: '🚫',
-                type: 'single',
-                condition: { type: 'noItemScore', value: 5000 },
-                reward: { ap: 250 }
-            },
-            lowHpHero: {
-                id: 'lowHpHero',
-                name: 'ローHPヒーロー',
-                description: 'HP5以下で2分間生き残る',
-                icon: '❤️',
-                type: 'single',
-                condition: { type: 'lowHpSurvival', hp: 5, time: 120000 },
-                reward: { ap: 200 }
-            },
-            nightOwl: {
-                id: 'nightOwl',
-                name: 'ナイトオウル',
-                description: '夜中（23:00-5:00）にプレイして1000点獲得',
-                icon: '🦉',
-                type: 'single',
-                condition: { type: 'nightTimeScore', value: 1000 },
-                reward: { ap: 100 }
-            },
-            marathonPlayer: {
-                id: 'marathonPlayer',
-                name: 'マラソンプレイヤー',
-                description: '1回のセッションで1時間プレイ',
-                icon: '🏃',
-                type: 'single',
-                condition: { type: 'sessionPlayTime', value: 3600000 },
-                reward: { ap: 250 }
-            }
-        };
+        return this.definitions.getAllAchievements();
     }
     
     /**
-     * 実績の進捗を更新（最適化版）
+     * 進捗を更新
+     * @param {string} eventType - イベントタイプ
+     * @param {object} data - イベントデータ
      */
     updateProgress(eventType, data) {
-        // 更新リクエストをキューに追加
-        this.updateQueue.push({ eventType, data, timestamp: Date.now() });
-        
-        // スロットリング制御
-        if (this.throttleTimer) {
-            return; // 既にタイマーが動いている
-        }
-        
-        this.throttleTimer = setTimeout(() => {
-            this.processBatchUpdates();
-            this.throttleTimer = null;
-        }, this.performanceConfig.throttleDelay);
-    }
-    
-    /**
-     * バッチ更新処理
-     */
-    processBatchUpdates() {
-        const startTime = performance.now();
-        
-        // キューからバッチサイズ分を取得
-        const batch = this.updateQueue.splice(0, this.performanceConfig.batchSize);
-        
-        if (batch.length === 0) {
-            return;
-        }
-        
-        // バッチ処理統計更新
-        this.performanceStats.batchProcessingCount++;
-        
-        // 各イベントを処理
-        batch.forEach(({ eventType, data }) => {
-            this.processUpdateEvent(eventType, data);
-        });
-        
-        // 残りのキューがある場合は継続処理
-        if (this.updateQueue.length > 0) {
-            setTimeout(() => this.processBatchUpdates(), 0);
-        }
-        
-        // パフォーマンス統計更新
-        const updateTime = performance.now() - startTime;
-        this.updatePerformanceStats(updateTime);
-    }
-    
-    /**
-     * 個別更新イベントを処理
-     */
-    processUpdateEvent(eventType, data) {
-        const relevantAchievements = this.getRelevantAchievements(eventType);
-        
-        relevantAchievements.forEach(achievement => {
-            if (this.unlockedAchievements.has(achievement.id)) {
-                return; // 既に解除済み
-            }
-            
-            // 新しい進捗エンジンを使用して進捗を更新
-            try {
-                const progressResult = this.updateAchievementProgressAdvanced(achievement, eventType, data);
-                
-                if (progressResult && progressResult.isComplete) {
-                    this.unlockAchievement(achievement, progressResult.milestones);
-                } else if (progressResult && progressResult.milestones.length > 0) {
-                    // 中間マイルストーンの処理
-                    this.processMilestones(achievement, progressResult.milestones);
-                }
-            } catch (error) {
-                console.error(`Error updating progress for achievement ${achievement.id}:`, error);
-                // フォールバックとして従来の方法を使用
-                if (this.checkAchievementConditionOptimized(achievement, eventType, data)) {
-                    this.unlockAchievement(achievement);
-                }
-            }
-        });
-    }
-    
-    /**
-     * 高度な進捗更新（進捗エンジン使用）
-     */
-    updateAchievementProgressAdvanced(achievement, eventType, data) {
-        const progressData = this.progressData[achievement.id] || { current: 0, target: achievement.target || 1 };
-        
-        // 進捗タイプと計算に必要なコンテキストを決定
-        const progressContext = this.determineProgressContext(achievement, eventType, data);
-        
-        if (!progressContext) {
-            return null; // この実績は現在のイベントタイプに対応していない
-        }
-        
-        // 新しいデータ値を抽出
-        const newDataValue = this.extractProgressValue(eventType, data, achievement);
-        
-        // 進捗エンジンで計算
-        const result = this.progressEngine.calculateProgress(
-            progressContext.type,
-            progressData.current,
-            newDataValue,
-            progressData.target,
-            progressContext
-        );
-        
-        // 進捗データを更新
-        this.progressData[achievement.id] = {
-            current: result.progress,
-            target: progressData.target,
-            percentage: result.percentage,
-            lastUpdated: Date.now(),
-            milestones: progressContext.milestones || []
-        };
-        
-        return result;
-    }
-    
-    /**
-     * 進捗コンテキストを決定
-     */
-    determineProgressContext(achievement, eventType, data) {
-        const condition = achievement.condition;
-        
-        // 実績タイプに基づいてコンテキストを決定
-        switch (achievement.category) {
-            case 'score':
-                return this.getScoreProgressContext(achievement, eventType, data);
-            case 'play':
-                return this.getPlayProgressContext(achievement, eventType, data);
-            case 'technique':
-                return this.getTechniqueProgressContext(achievement, eventType, data);
-            case 'collection':
-                return this.getCollectionProgressContext(achievement, eventType, data);
-            case 'special':
-                return this.getSpecialProgressContext(achievement, eventType, data);
-            default:
-                return this.getDefaultProgressContext(achievement, eventType, data);
-        }
-    }
-    
-    /**
-     * スコア系実績の進捗コンテキスト
-     */
-    getScoreProgressContext(achievement, eventType, data) {
-        if (!eventType.includes('score')) {
-            return null;
-        }
-        
-        const context = {
-            type: 'cumulative',
-            dataType: 'number',
-            milestones: []
-        };
-        
-        // 累積スコア実績の場合
-        if (achievement.id.includes('total')) {
-            context.type = 'cumulative';
-        }
-        // 単発高得点実績の場合
-        else if (achievement.id.includes('single') || achievement.id.includes('high')) {
-            context.type = 'maximum';
-        }
-        
-        // マイルストーンを設定
-        if (achievement.target > 1000) {
-            context.milestones = this.generateScoreMilestones(achievement.target);
-        }
-        
-        return context;
-    }
-    
-    /**
-     * プレイ系実績の進捗コンテキスト
-     */
-    getPlayProgressContext(achievement, eventType, data) {
-        if (!eventType.includes('play') && !eventType.includes('session')) {
-            return null;
-        }
-        
-        const context = {
-            type: 'cumulative',
-            dataType: 'number',
-            milestones: []
-        };
-        
-        // 連続プレイ実績の場合
-        if (achievement.id.includes('consecutive') || achievement.id.includes('daily')) {
-            context.type = 'consecutive';
-            context.isConsecutive = this.checkConsecutivePlay(data);
-        }
-        // プレイ時間実績の場合
-        else if (achievement.id.includes('time')) {
-            context.type = 'cumulative';
-            context.milestones = this.generateTimeMilestones(achievement.target);
-        }
-        
-        return context;
-    }
-    
-    /**
-     * テクニック系実績の進捗コンテキスト
-     */
-    getTechniqueProgressContext(achievement, eventType, data) {
-        if (!eventType.includes('technique') && !eventType.includes('combo') && !eventType.includes('accuracy')) {
-            return null;
-        }
-        
-        const context = {
-            type: 'maximum',
-            dataType: 'number',
-            milestones: []
-        };
-        
-        // コンボ実績の場合
-        if (achievement.id.includes('combo')) {
-            context.type = 'maximum';
-        }
-        // 精度実績の場合
-        else if (achievement.id.includes('accuracy')) {
-            context.type = 'maximum';
-            context.dataType = 'percentage';
-        }
-        
-        return context;
-    }
-    
-    /**
-     * コレクション系実績の進捗コンテキスト
-     */
-    getCollectionProgressContext(achievement, eventType, data) {
-        if (!eventType.includes('bubble') && !eventType.includes('collection')) {
-            return null;
-        }
-        
-        const context = {
-            type: 'conditional',
-            dataType: 'array',
-            milestones: []
-        };
-        
-        // 各種バブル破壊実績の場合
-        if (achievement.id.includes('types')) {
-            context.subConditions = this.getBubbleTypeConditions();
-        }
-        
-        return context;
-    }
-    
-    /**
-     * 特殊実績の進捗コンテキスト
-     */
-    getSpecialProgressContext(achievement, eventType, data) {
-        const context = {
-            type: 'composite',
-            dataType: 'object',
-            milestones: [],
-            subConditions: []
-        };
-        
-        // 複合条件の実績
-        if (achievement.condition && achievement.condition.type === 'composite') {
-            context.subConditions = achievement.condition.subConditions || [];
-        }
-        
-        return context;
-    }
-    
-    /**
-     * デフォルト進捗コンテキスト
-     */
-    getDefaultProgressContext(achievement, eventType, data) {
-        return {
-            type: 'cumulative',
-            dataType: 'number',
-            milestones: []
-        };
-    }
-    
-    /**
-     * 進捗値を抽出
-     */
-    extractProgressValue(eventType, data, achievement) {
-        switch (eventType) {
-            case 'bubble_popped':
-                return 1; // 1個ポップ
-            case 'score_added':
-                return data.score || data.points || data;
-            case 'combo_achieved':
-                return data.combo || data;
-            case 'stage_cleared':
-                return 1; // 1ステージクリア
-            case 'item_used':
-                return 1; // 1アイテム使用
-            case 'session_completed':
-                return data.playTime || data.duration || 1;
-            default:
-                return typeof data === 'number' ? data : 1;
-        }
-    }
-    
-    /**
-     * 中間マイルストーンを処理
-     */
-    processMilestones(achievement, milestones) {
-        milestones.forEach(milestone => {
-            console.log(`Milestone achieved: ${milestone.name} for ${achievement.name}`);
-            
-            // マイルストーン報酬があれば付与
-            if (milestone.reward) {
-                this.awardMilestoneReward(achievement, milestone);
-            }
-            
-            // マイルストーン通知
-            this.notifications.push({
-                type: 'milestone',
-                achievement: achievement,
-                milestone: milestone,
-                timestamp: Date.now()
+        if (this.config.enablePerformanceOptimization) {
+            // パフォーマンス最適化ありで処理
+            this.performanceOptimizer.processUpdate(eventType, data, (type, eventData) => {
+                return this.processUpdateEvent(type, eventData);
             });
-        });
-    }
-    
-    /**
-     * マイルストーン報酬を付与
-     */
-    awardMilestoneReward(achievement, milestone) {
-        if (milestone.reward.ap) {
-            if (this.gameEngine.playerData) {
-                this.gameEngine.playerData.ap += milestone.reward.ap;
-                console.log(`Awarded ${milestone.reward.ap} AP for milestone: ${milestone.name}`);
-            }
-        }
-    }
-    
-    /**
-     * スコア用マイルストーンを生成
-     */
-    generateScoreMilestones(targetScore) {
-        const milestones = [];
-        const intervals = [0.25, 0.5, 0.75]; // 25%, 50%, 75%
-        
-        intervals.forEach((interval, index) => {
-            milestones.push({
-                id: `milestone_${index + 1}`,
-                name: `${(interval * 100)}%達成`,
-                percentage: interval * 100,
-                reward: { ap: Math.floor(targetScore * interval * 0.001) }, // スコアの0.1%をAP報酬
-                achieved: false
-            });
-        });
-        
-        return milestones;
-    }
-    
-    /**
-     * 時間用マイルストーンを生成
-     */
-    generateTimeMilestones(targetTime) {
-        const milestones = [];
-        const intervals = [0.25, 0.5, 0.75];
-        
-        intervals.forEach((interval, index) => {
-            milestones.push({
-                id: `time_milestone_${index + 1}`,
-                name: `${(interval * 100)}%達成`,
-                percentage: interval * 100,
-                reward: { ap: Math.floor(targetTime * interval * 0.01) },
-                achieved: false
-            });
-        });
-        
-        return milestones;
-    }
-    
-    /**
-     * バブルタイプ条件を取得
-     */
-    getBubbleTypeConditions() {
-        const bubbleTypes = ['normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink', 'clock', 
-                           'electric', 'poison', 'spiky', 'escaping', 'boss', 'golden', 
-                           'frozen', 'magnetic', 'explosive', 'phantom', 'multiplier'];
-        
-        return bubbleTypes.map(type => ({
-            type: 'greater_equal',
-            field: `bubbleTypes.${type}.popped`,
-            target: 1,
-            weight: 1
-        }));
-    }
-    
-    /**
-     * 連続プレイをチェック
-     */
-    checkConsecutivePlay(data) {
-        if (!data.lastPlayDate) {
-            return false;
-        }
-        
-        const lastPlay = new Date(data.lastPlayDate);
-        const today = new Date();
-        const diffTime = Math.abs(today - lastPlay);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        
-        return diffDays <= 1; // 24時間以内なら連続とみなす
-    }
-    
-    /**
-     * 進捗データを検証
-     */
-    validateProgressData() {
-        const issues = [];
-        
-        Object.keys(this.progressData).forEach(achievementId => {
-            const progress = this.progressData[achievementId];
-            const achievement = this.achievements[achievementId];
-            
-            if (!achievement) {
-                issues.push({
-                    type: 'orphaned_progress',
-                    achievementId: achievementId,
-                    description: 'Progress data exists for non-existent achievement'
-                });
-                return;
-            }
-            
-            // 進捗データ構造の検証
-            if (!this.progressEngine.validators.get('object')(progress)) {
-                issues.push({
-                    type: 'invalid_progress_structure',
-                    achievementId: achievementId,
-                    description: 'Progress data is not a valid object'
-                });
-                return;
-            }
-            
-            // 現在値の検証
-            if (!this.progressEngine.validators.get('positive_number')(progress.current)) {
-                issues.push({
-                    type: 'invalid_current_value',
-                    achievementId: achievementId,
-                    current: progress.current,
-                    description: 'Current progress value is invalid'
-                });
-            }
-            
-            // 目標値の検証
-            if (!this.progressEngine.validators.get('positive_number')(progress.target)) {
-                issues.push({
-                    type: 'invalid_target_value',
-                    achievementId: achievementId,
-                    target: progress.target,
-                    description: 'Target progress value is invalid'
-                });
-            }
-            
-            // 進捗が目標を超えている場合
-            if (progress.current > progress.target) {
-                issues.push({
-                    type: 'progress_exceeds_target',
-                    achievementId: achievementId,
-                    current: progress.current,
-                    target: progress.target,
-                    description: 'Current progress exceeds target'
-                });
-            }
-            
-            // パーセンテージの検証
-            if (progress.percentage !== undefined) {
-                const expectedPercentage = (progress.current / progress.target) * 100;
-                if (Math.abs(progress.percentage - expectedPercentage) > 0.1) {
-                    issues.push({
-                        type: 'incorrect_percentage',
-                        achievementId: achievementId,
-                        current: progress.percentage,
-                        expected: expectedPercentage,
-                        description: 'Progress percentage is incorrect'
-                    });
-                }
-            }
-        });
-        
-        return issues;
-    }
-    
-    /**
-     * 進捗データを修正
-     */
-    repairProgressData() {
-        const issues = this.validateProgressData();
-        const repaired = [];
-        
-        issues.forEach(issue => {
-            switch (issue.type) {
-                case 'orphaned_progress':
-                    delete this.progressData[issue.achievementId];
-                    repaired.push(`Removed orphaned progress for ${issue.achievementId}`);
-                    break;
-                    
-                case 'invalid_progress_structure':
-                case 'invalid_current_value':
-                case 'invalid_target_value':
-                    const achievement = this.achievements[issue.achievementId];
-                    if (achievement) {
-                        this.progressData[issue.achievementId] = this.progressEngine.repairProgressData(
-                            this.progressData[issue.achievementId],
-                            achievement
-                        );
-                        repaired.push(`Repaired progress structure for ${issue.achievementId}`);
-                    }
-                    break;
-                    
-                case 'progress_exceeds_target':
-                    this.progressData[issue.achievementId].current = issue.target;
-                    repaired.push(`Capped progress for ${issue.achievementId} to target value`);
-                    break;
-                    
-                case 'incorrect_percentage':
-                    const progress = this.progressData[issue.achievementId];
-                    progress.percentage = (progress.current / progress.target) * 100;
-                    repaired.push(`Corrected percentage for ${issue.achievementId}`);
-                    break;
-            }
-        });
-        
-        return repaired;
-    }
-    
-    /**
-     * 複雑な条件評価（進捗エンジン使用）
-     */
-    evaluateComplexConditions(achievement, gameData) {
-        try {
-            if (!achievement.condition || !achievement.condition.complex) {
-                return false; // 複雑な条件ではない
-            }
-            
-            return this.progressEngine.evaluateComplexConditions(gameData, achievement.condition);
-            
-        } catch (error) {
-            console.error(`Error evaluating complex conditions for ${achievement.id}:`, error);
-            return false;
-        }
-    }
-    
-    /**
-     * 時間ベース条件を追跡
-     */
-    trackTimeBasedConditions() {
-        const timeBasedAchievements = Object.values(this.achievements).filter(achievement => 
-            achievement.condition && achievement.condition.timeWindow
-        );
-        
-        timeBasedAchievements.forEach(achievement => {
-            if (this.unlockedAchievements.has(achievement.id)) {
-                return; // 既に解除済み
-            }
-            
-            const progress = this.progressData[achievement.id];
-            if (!progress || !progress.lastUpdated) {
-                return; // 進捗データが無い
-            }
-            
-            // 時間窓の条件をチェック
-            const timeCondition = {
-                type: 'time_window',
-                windowMs: achievement.condition.timeWindow
-            };
-            
-            const isWithinTimeWindow = this.progressEngine.evaluateCondition(
-                progress.lastUpdated,
-                timeCondition
-            );
-            
-            if (!isWithinTimeWindow) {
-                // 時間窓外の場合は進捗をリセット
-                this.resetAchievementProgress(achievement.id);
-                console.log(`Reset time-based achievement progress: ${achievement.id}`);
-            }
-        });
-    }
-    
-    /**
-     * 実績進捗をリセット
-     */
-    resetAchievementProgress(achievementId) {
-        const achievement = this.achievements[achievementId];
-        if (achievement) {
-            this.progressData[achievementId] = {
-                current: 0,
-                target: achievement.target || 1,
-                percentage: 0,
-                lastUpdated: Date.now(),
-                milestones: []
-            };
-        }
-    }
-    
-    /**
-     * 進捗エンジンの診断情報を取得
-     */
-    getProgressEngineDiagnostics() {
-        return this.progressEngine.getDiagnostics();
-    }
-    
-    /**
-     * 関連する実績を取得（最適化）
-     */
-    getRelevantAchievements(eventType) {
-        const cacheKey = `relevant_${eventType}`;
-        
-        if (this.cache.has(cacheKey)) {
-            this.performanceStats.cacheHits++;
-            return this.cache.get(cacheKey);
-        }
-        
-        this.performanceStats.cacheMisses++;
-        
-        // イベントタイプに関連する実績のみをフィルタリング
-        const relevantAchievements = Object.values(this.achievements).filter(achievement => {
-            return this.isAchievementRelevantToEvent(achievement, eventType);
-        });
-        
-        // キャッシュに保存
-        this.cache.set(cacheKey, relevantAchievements);
-        
-        // キャッシュのクリーンアップをスケジュール
-        setTimeout(() => {
-            this.cache.delete(cacheKey);
-        }, this.performanceConfig.cacheTimeout);
-        
-        return relevantAchievements;
-    }
-    
-    /**
-     * 実績がイベントに関連するかチェック
-     */
-    isAchievementRelevantToEvent(achievement, eventType) {
-        const condition = achievement.condition;
-        
-        switch (eventType) {
-            case 'bubblePopped':
-                return ['bubblesPopped', 'bubbleTypePopped', 'allBubbleTypes'].includes(condition.type);
-            case 'gameEnd':
-                return ['singleGameScore', 'survivalTime', 'perfectGame', 'accuracy', 'noItemScore', 'nightTimeScore', 'cumulativeScore', 'totalPlayTime', 'gamesPlayed'].includes(condition.type);
-            case 'comboUpdate':
-                return ['maxCombo'].includes(condition.type);
-            case 'stageCleared':
-                return ['stagesCleared', 'allStagesCleared', 'allStagesMultiple'].includes(condition.type);
-            case 'dayPlayed':
-                return ['consecutiveDays'].includes(condition.type);
-            case 'speedCheck':
-                return ['speedChallenge'].includes(condition.type);
-            case 'sessionEnd':
-                return ['sessionPlayTime'].includes(condition.type);
-            case 'specialEffect':
-                return condition.type === 'specialEffect';
-            case 'lowHpSurvival':
-                return condition.type === 'lowHpSurvival';
-            default:
-                return true; // 不明なイベントの場合は全実績をチェック
-        }
-    }
-    
-    /**
-     * 最適化された実績条件チェック
-     */
-    checkAchievementConditionOptimized(achievement, eventType, data) {
-        // 基本的な条件チェックは元のメソッドを使用
-        return this.checkAchievementCondition(achievement, eventType, data);
-    }
-    
-    /**
-     * パフォーマンス統計を更新
-     */
-    updatePerformanceStats(updateTime) {
-        this.performanceStats.updateCount++;
-        
-        // 移動平均を計算
-        const alpha = 0.1; // 指数移動平均の係数
-        this.performanceStats.averageUpdateTime = 
-            alpha * updateTime + (1 - alpha) * this.performanceStats.averageUpdateTime;
-        
-        this.lastUpdateTime = Date.now();
-    }
-    
-    /**
-     * 実績条件をチェック
-     */
-    checkAchievementCondition(achievement, eventType, data) {
-        const condition = achievement.condition;
-        
-        switch (condition.type) {
-            case 'bubblesPopped':
-                if (eventType === 'bubblePopped') {
-                    this.progressData.totalBubblesPopped = (this.progressData.totalBubblesPopped || 0) + 1;
-                    return this.progressData.totalBubblesPopped >= condition.value;
-                }
-                break;
-                
-            case 'singleGameScore':
-                if (eventType === 'gameEnd') {
-                    return data.finalScore >= condition.value;
-                }
-                break;
-                
-            case 'maxCombo':
-                if (eventType === 'comboUpdate') {
-                    this.progressData.maxCombo = Math.max(this.progressData.maxCombo || 0, data.combo);
-                    return this.progressData.maxCombo >= condition.value;
-                }
-                break;
-                
-            case 'bubbleTypePopped':
-                if (eventType === 'bubblePopped' && data.bubbleType === condition.bubbleType) {
-                    const key = `${condition.bubbleType}Popped`;
-                    this.progressData[key] = (this.progressData[key] || 0) + 1;
-                    return this.progressData[key] >= condition.value;
-                }
-                break;
-                
-            case 'survivalTime':
-                if (eventType === 'gameEnd') {
-                    return data.playTime >= condition.value;
-                }
-                break;
-                
-            case 'lowHpSurvival':
-                if (eventType === 'lowHpSurvival') {
-                    return data.hp <= condition.hp && data.survivalTime >= condition.time;
-                }
-                break;
-                
-            case 'stagesCleared':
-                if (eventType === 'stageCleared') {
-                    this.progressData.stagesCleared = (this.progressData.stagesCleared || 0) + 1;
-                    return this.progressData.stagesCleared >= condition.value;
-                }
-                break;
-                
-            case 'allStagesCleared':
-                if (eventType === 'stageCleared') {
-                    const totalStages = Object.keys(this.gameEngine.stageManager.stageConfigs).length;
-                    const clearedStages = this.progressData.stagesCleared || 0;
-                    return clearedStages >= totalStages;
-                }
-                break;
-                
-            case 'perfectGame':
-                if (eventType === 'gameEnd') {
-                    return data.bubblesPopped >= condition.minBubbles && data.bubblesMissed === 0;
-                }
-                break;
-                
-            case 'speedChallenge':
-                if (eventType === 'speedCheck') {
-                    return data.bubblesPopped >= condition.bubbles && data.timeElapsed <= condition.time;
-                }
-                break;
-                
-            case 'cumulativeScore':
-                if (eventType === 'gameEnd') {
-                    this.progressData.totalScore = (this.progressData.totalScore || 0) + data.finalScore;
-                    return this.progressData.totalScore >= condition.value;
-                }
-                break;
-                
-            case 'consecutiveDays':
-                if (eventType === 'dayPlayed') {
-                    this.updateConsecutiveDays(data.date);
-                    return this.progressData.consecutiveDays >= condition.value;
-                }
-                break;
-                
-            case 'totalPlayTime':
-                if (eventType === 'gameEnd') {
-                    this.progressData.totalPlayTime = (this.progressData.totalPlayTime || 0) + data.playTime;
-                    return this.progressData.totalPlayTime >= condition.value;
-                }
-                break;
-                
-            case 'gamesPlayed':
-                if (eventType === 'gameEnd') {
-                    this.progressData.gamesPlayed = (this.progressData.gamesPlayed || 0) + 1;
-                    return this.progressData.gamesPlayed >= condition.value;
-                }
-                break;
-                
-            case 'accuracy':
-                if (eventType === 'gameEnd') {
-                    const accuracy = (data.bubblesPopped / (data.bubblesPopped + data.bubblesMissed)) * 100;
-                    return accuracy >= condition.value;
-                }
-                break;
-                
-            case 'allBubbleTypes':
-                if (eventType === 'bubblePopped') {
-                    this.progressData.bubbleTypesPopped = this.progressData.bubbleTypesPopped || new Set();
-                    this.progressData.bubbleTypesPopped.add(data.bubbleType);
-                    // 全バブルタイプ数（18個の基本タイプ + 新タイプ）
-                    const totalBubbleTypes = 18; // 必要に応じて調整
-                    return this.progressData.bubbleTypesPopped.size >= totalBubbleTypes;
-                }
-                break;
-                
-            case 'allStagesMultiple':
-                if (eventType === 'stageCleared') {
-                    const stageKey = `stage_${data.stageId}_cleared`;
-                    this.progressData[stageKey] = (this.progressData[stageKey] || 0) + 1;
-                    
-                    // 全ステージが指定回数クリアされているかチェック
-                    const totalStages = Object.keys(this.gameEngine.stageManager.stageConfigs).length;
-                    let allStagesCleared = true;
-                    for (let i = 0; i < totalStages; i++) {
-                        const key = `stage_${i}_cleared`;
-                        if ((this.progressData[key] || 0) < condition.value) {
-                            allStagesCleared = false;
-                            break;
-                        }
-                    }
-                    return allStagesCleared;
-                }
-                break;
-                
-            case 'noItemScore':
-                if (eventType === 'gameEnd') {
-                    return data.finalScore >= condition.value && !data.itemsUsed;
-                }
-                break;
-                
-            case 'nightTimeScore':
-                if (eventType === 'gameEnd') {
-                    const hour = new Date().getHours();
-                    const isNightTime = hour >= 23 || hour < 5;
-                    return isNightTime && data.finalScore >= condition.value;
-                }
-                break;
-                
-            case 'sessionPlayTime':
-                if (eventType === 'sessionEnd') {
-                    return data.sessionDuration >= condition.value;
-                }
-                break;
-        }
-        
-        return false;
-    }
-    
-    /**
-     * 連続日数を更新
-     */
-    updateConsecutiveDays(currentDate) {
-        const today = new Date(currentDate).toDateString();
-        const lastPlayDate = this.progressData.lastPlayDate;
-        
-        if (!lastPlayDate) {
-            this.progressData.consecutiveDays = 1;
         } else {
-            const lastDate = new Date(lastPlayDate);
-            const todayDate = new Date(today);
-            const dayDiff = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+            // 直接処理
+            this.processUpdateEvent(eventType, data);
+        }
+    }
+    
+    /**
+     * 更新イベントを処理
+     * @param {string} eventType - イベントタイプ
+     * @param {object} data - イベントデータ
+     */
+    async processUpdateEvent(eventType, data) {
+        // 進捗追跡を更新
+        this.progressTracker.updateProgress(eventType, data);
+        
+        // 全実績をチェック
+        const achievements = this.definitions.getAllAchievements();
+        
+        for (const achievement of Object.values(achievements)) {
+            // 既に解除済みの実績はスキップ
+            if (this.progressTracker.isAchievementUnlocked(achievement.id)) {
+                continue;
+            }
             
-            if (dayDiff === 1) {
-                // 連続している
-                this.progressData.consecutiveDays = (this.progressData.consecutiveDays || 0) + 1;
-            } else if (dayDiff === 0) {
-                // 同じ日（更新しない）
-                return;
-            } else {
-                // 連続が途切れた
-                this.progressData.consecutiveDays = 1;
+            // キャッシュチェック
+            const cacheKey = `achievement_${achievement.id}_${eventType}`;
+            let progressResult = this.performanceOptimizer.getFromCache(cacheKey);
+            
+            if (!progressResult) {
+                // 実績条件を評価
+                progressResult = this.progressTracker.evaluateAchievementCondition(achievement);
+                
+                // キャッシュに保存
+                this.performanceOptimizer.setCache(cacheKey, progressResult);
+            }
+            
+            // 実績解除チェック
+            if (progressResult && progressResult.isComplete) {
+                this.unlockAchievement(achievement);
             }
         }
-        
-        this.progressData.lastPlayDate = today;
     }
     
     /**
      * 実績を解除
+     * @param {object} achievement - 実績オブジェクト
      */
     unlockAchievement(achievement) {
-        this.unlockedAchievements.add(achievement.id);
+        // 進捗追跡に解除を記録
+        this.progressTracker.unlockAchievement(achievement.id, achievement);
         
-        // 報酬を付与
-        if (achievement.reward.ap) {
-            this.gameEngine.playerData.ap += achievement.reward.ap;
-            this.gameEngine.playerData.tap += achievement.reward.ap;
+        // 通知を表示
+        if (this.config.enableNotifications) {
+            this.notificationSystem.createAchievementNotification(achievement);
         }
         
-        // SEOシステムに実績解除を通知
-        this.gameEngine.emit('achievementUnlocked', {
-            id: achievement.id,
-            name: achievement.name,
-            description: achievement.description,
-            icon: achievement.icon,
-            reward: achievement.reward,
-            timestamp: Date.now()
-        });
+        // ゲームエンジンに通知（AP獲得など）
+        if (this.gameEngine && this.gameEngine.handleAchievementUnlocked) {
+            this.gameEngine.handleAchievementUnlocked(achievement);
+        }
         
-        // 通知を追加（最適化）
-        this.addNotificationOptimized({
-            id: achievement.id,
-            name: achievement.name,
-            description: achievement.description,
-            icon: achievement.icon,
-            reward: achievement.reward,
-            timestamp: Date.now()
-        });
-        
-        console.log(`Achievement unlocked: ${achievement.name}`);
-        
-        // データを保存
-        this.save();
+        console.log(`[AchievementManager] Achievement unlocked: ${achievement.name}`);
     }
     
     /**
-     * 実績通知を取得
+     * 実績解除イベントを処理
+     * @param {object} data - イベントデータ
      */
-    getNotifications() {
-        const notifications = [...this.notifications];
-        this.notifications = []; // 通知をクリア
-        return notifications;
+    handleAchievementUnlocked(data) {
+        // 追加の処理が必要な場合はここに記述
+        if (this.config.debugMode) {
+            console.log('[AchievementManager] Achievement unlocked event:', data);
+        }
+    }
+    
+    /**
+     * 進捗更新イベントを処理
+     * @param {object} data - イベントデータ
+     */
+    handleProgressUpdated(data) {
+        // 追加の処理が必要な場合はここに記述
+        if (this.config.debugMode) {
+            console.log('[AchievementManager] Progress updated event:', data);
+        }
+    }
+    
+    /**
+     * 実績進捗を高度に更新（既存メソッドとの互換性）
+     * @param {object} achievement - 実績オブジェクト
+     * @param {string} eventType - イベントタイプ
+     * @param {object} data - イベントデータ
+     */
+    updateAchievementProgressAdvanced(achievement, eventType, data) {
+        const progressResult = this.progressTracker.evaluateAchievementCondition(achievement);
+        
+        if (progressResult && progressResult.isComplete) {
+            this.unlockAchievement(achievement);
+        }
+        
+        return progressResult;
+    }
+    
+    /**
+     * 実績条件を最適化チェック（既存メソッドとの互換性）
+     * @param {object} achievement - 実績オブジェクト
+     * @param {string} eventType - イベントタイプ
+     * @param {object} data - イベントデータ
+     * @returns {boolean} 条件を満たすかどうか
+     */
+    checkAchievementConditionOptimized(achievement, eventType, data) {
+        const progressResult = this.progressTracker.evaluateAchievementCondition(achievement);
+        return progressResult && progressResult.isComplete;
     }
     
     /**
      * 実績一覧を取得
+     * @returns {object} 実績一覧
      */
     getAchievements() {
-        return Object.values(this.achievements).map(achievement => ({
-            ...achievement,
-            unlocked: this.unlockedAchievements.has(achievement.id),
-            progress: this.getAchievementProgress(achievement),
-            category: this.getAchievementCategory(achievement)
-        }));
+        return this.definitions.getAllAchievements();
     }
     
     /**
      * カテゴリ別実績を取得
+     * @param {string} category - カテゴリ名
+     * @returns {Array} カテゴリ内の実績配列
      */
-    getAchievementsByCategory() {
-        const achievements = this.getAchievements();
-        const categories = {
-            score: { name: 'スコア系', achievements: [] },
-            play: { name: 'プレイ系', achievements: [] },
-            technique: { name: 'テクニック系', achievements: [] },
-            collection: { name: 'コレクション系', achievements: [] },
-            special: { name: '特殊', achievements: [] }
-        };
-        
-        achievements.forEach(achievement => {
-            const category = achievement.category;
-            if (categories[category]) {
-                categories[category].achievements.push(achievement);
-            } else {
-                categories.special.achievements.push(achievement);
-            }
-        });
-        
-        return categories;
+    getAchievementsByCategory(category) {
+        return this.definitions.getAchievementsByCategory(category);
     }
     
     /**
-     * 実績のカテゴリを取得
+     * 実績進捗を取得
+     * @param {string} achievementId - 実績ID
+     * @returns {object} 進捗情報
      */
-    getAchievementCategory(achievement) {
-        const condition = achievement.condition;
+    getAchievementProgress(achievementId) {
+        const achievement = this.definitions.getAchievement(achievementId);
+        if (!achievement) return null;
         
-        if (['singleGameScore', 'cumulativeScore'].includes(condition.type)) {
-            return 'score';
-        }
-        if (['consecutiveDays', 'totalPlayTime', 'gamesPlayed'].includes(condition.type)) {
-            return 'play';
-        }
-        if (['maxCombo', 'accuracy', 'speedChallenge', 'perfectGame'].includes(condition.type)) {
-            return 'technique';
-        }
-        if (['allBubbleTypes', 'allStagesCleared', 'allStagesMultiple', 'stagesCleared'].includes(condition.type)) {
-            return 'collection';
-        }
-        
-        return 'special';
+        return this.progressTracker.evaluateAchievementCondition(achievement);
     }
     
     /**
-     * 実績の進捗を取得
+     * 解除済み実績を取得
+     * @returns {Array} 解除済み実績ID配列
      */
-    getAchievementProgress(achievement) {
-        const condition = achievement.condition;
-        
-        switch (condition.type) {
-            case 'bubblesPopped':
-                return {
-                    current: this.progressData.totalBubblesPopped || 0,
-                    target: condition.value
-                };
-                
-            case 'bubbleTypePopped':
-                const key = `${condition.bubbleType}Popped`;
-                return {
-                    current: this.progressData[key] || 0,
-                    target: condition.value
-                };
-                
-            case 'maxCombo':
-                return {
-                    current: this.progressData.maxCombo || 0,
-                    target: condition.value
-                };
-                
-            case 'stagesCleared':
-                return {
-                    current: this.progressData.stagesCleared || 0,
-                    target: condition.value
-                };
-                
-            case 'cumulativeScore':
-                return {
-                    current: this.progressData.totalScore || 0,
-                    target: condition.value
-                };
-                
-            case 'consecutiveDays':
-                return {
-                    current: this.progressData.consecutiveDays || 0,
-                    target: condition.value
-                };
-                
-            case 'totalPlayTime':
-                return {
-                    current: this.progressData.totalPlayTime || 0,
-                    target: condition.value
-                };
-                
-            case 'gamesPlayed':
-                return {
-                    current: this.progressData.gamesPlayed || 0,
-                    target: condition.value
-                };
-                
-            case 'allBubbleTypes':
-                const bubbleTypesPopped = this.progressData.bubbleTypesPopped ? 
-                    this.progressData.bubbleTypesPopped.size : 0;
-                return {
-                    current: bubbleTypesPopped,
-                    target: 18 // 全バブルタイプ数
-                };
-                
-            case 'allStagesMultiple':
-                const totalStages = this.gameEngine ? 
-                    Object.keys(this.gameEngine.stageManager.stageConfigs).length : 10;
-                let completedStages = 0;
-                for (let i = 0; i < totalStages; i++) {
-                    const key = `stage_${i}_cleared`;
-                    if ((this.progressData[key] || 0) >= condition.value) {
-                        completedStages++;
-                    }
-                }
-                return {
-                    current: completedStages,
-                    target: totalStages
-                };
-                
-            default:
-                return { current: 0, target: 1 };
-        }
+    getUnlockedAchievements() {
+        return this.progressTracker.getUnlockedAchievements();
     }
     
     /**
-     * 統計情報を取得
+     * 実績が解除済みかチェック
+     * @param {string} achievementId - 実績ID
+     * @returns {boolean} 解除済みかどうか
+     */
+    isUnlocked(achievementId) {
+        return this.progressTracker.isAchievementUnlocked(achievementId);
+    }
+    
+    /**
+     * 実績統計を取得
+     * @returns {object} 実績統計
      */
     getStatistics() {
+        const definitions = this.definitions.getStatistics();
+        const unlocked = this.progressTracker.getUnlockedAchievements();
+        const performance = this.performanceOptimizer.getPerformanceStats();
+        
         return {
-            totalAchievements: Object.keys(this.achievements).length,
-            unlockedAchievements: this.unlockedAchievements.size,
-            completionRate: (this.unlockedAchievements.size / Object.keys(this.achievements).length * 100).toFixed(1),
-            totalRewardsEarned: this.calculateTotalRewards(),
-            progressData: { ...this.progressData }
+            total: definitions.total,
+            unlocked: unlocked.length,
+            unlockedPercentage: (unlocked.length / definitions.total) * 100,
+            categories: definitions.byCategory,
+            performance,
+            ...definitions
         };
     }
     
     /**
-     * 獲得した報酬の合計を計算
+     * 通知履歴を取得
+     * @param {number} limit - 取得件数制限
+     * @returns {Array} 通知履歴
      */
-    calculateTotalRewards() {
-        let totalAP = 0;
-        
-        this.unlockedAchievements.forEach(achievementId => {
-            const achievement = this.achievements[achievementId];
-            if (achievement && achievement.reward.ap) {
-                totalAP += achievement.reward.ap;
-            }
-        });
-        
-        return { ap: totalAP };
+    getNotificationHistory(limit = 10) {
+        return this.notificationSystem.getNotificationHistory(limit);
     }
     
     /**
-     * データを保存
+     * 進捗データを取得
+     * @returns {object} 進捗データ
      */
-    save() {
-        try {
-            const dataToSave = this.prepareDataForSave();
-            
-            // データ検証
-            if (!this.validateSaveData(dataToSave)) {
-                throw new Error('Invalid data format for save');
-            }
-            
-            // バックアップ作成
-            this.createBackup();
-            
-            // メインデータ保存
-            localStorage.setItem('bubblePop_achievements', JSON.stringify(dataToSave));
-            
-            // 保存タイムスタンプ記録
-            localStorage.setItem('bubblePop_achievements_timestamp', Date.now().toString());
-            
-        } catch (error) {
-            console.error('Failed to save achievement data:', error);
-            this.handleSaveError(error);
+    getProgressData() {
+        return this.progressTracker.getProgressData();
+    }
+    
+    /**
+     * 設定を更新
+     * @param {object} config - 新しい設定
+     */
+    updateConfig(config) {
+        Object.assign(this.config, config);
+        
+        // コンポーネントの設定も更新
+        if (config.notifications) {
+            this.notificationSystem.updateConfig(config.notifications);
+        }
+        
+        if (config.performance) {
+            this.performanceOptimizer.updateConfig(config.performance);
         }
     }
     
     /**
-     * 保存用データを準備
+     * デバッグ情報を取得
+     * @returns {object} デバッグ情報
      */
-    prepareDataForSave() {
-        // Setオブジェクトを配列に変換して保存
-        const progressDataForSave = { ...this.progressData };
-        if (this.progressData.bubbleTypesPopped instanceof Set) {
-            progressDataForSave.bubbleTypesPopped = Array.from(this.progressData.bubbleTypesPopped);
-        }
-        
+    getDebugInfo() {
         return {
-            version: '1.0',
-            timestamp: Date.now(),
-            unlockedAchievements: Array.from(this.unlockedAchievements),
-            progressData: progressDataForSave,
-            checksum: this.calculateChecksum(this.unlockedAchievements, progressDataForSave)
+            config: this.config,
+            statistics: this.getStatistics(),
+            progressData: this.progressTracker.getProgressData(),
+            performance: this.performanceOptimizer.getPerformanceStats(),
+            notificationHistory: this.notificationSystem.getNotificationHistory(5),
+            progressHistory: this.progressTracker.getProgressHistory(10)
         };
-    }
-    
-    /**
-     * 保存データの検証
-     */
-    validateSaveData(data) {
-        try {
-            // 必須フィールドの存在チェック
-            if (!data.hasOwnProperty('unlockedAchievements') || 
-                !data.hasOwnProperty('progressData') ||
-                !data.hasOwnProperty('version') ||
-                !data.hasOwnProperty('timestamp')) {
-                return false;
-            }
-            
-            // データタイプチェック
-            if (!Array.isArray(data.unlockedAchievements) ||
-                typeof data.progressData !== 'object' ||
-                typeof data.timestamp !== 'number') {
-                return false;
-            }
-            
-            // チェックサム検証
-            const expectedChecksum = this.calculateChecksum(data.unlockedAchievements, data.progressData);
-            if (data.checksum !== expectedChecksum) {
-                console.warn('Checksum mismatch in save data');
-                return false;
-            }
-            
-            return true;
-        } catch (error) {
-            console.error('Error validating save data:', error);
-            return false;
-        }
-    }
-    
-    /**
-     * チェックサムを計算
-     */
-    calculateChecksum(unlockedAchievements, progressData) {
-        const dataString = JSON.stringify({
-            unlocked: unlockedAchievements.sort(),
-            progress: progressData
-        });
-        
-        // 簡単なハッシュ関数
-        let hash = 0;
-        for (let i = 0; i < dataString.length; i++) {
-            const char = dataString.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash; // 32bit整数に変換
-        }
-        return hash.toString();
-    }
-    
-    /**
-     * バックアップを作成
-     */
-    createBackup() {
-        try {
-            const currentData = localStorage.getItem('bubblePop_achievements');
-            if (currentData) {
-                // 最新のバックアップを保存
-                localStorage.setItem('bubblePop_achievements_backup', currentData);
-                localStorage.setItem('bubblePop_achievements_backup_timestamp', Date.now().toString());
-                
-                // 古いバックアップをローテーション
-                const oldBackup = localStorage.getItem('bubblePop_achievements_backup');
-                if (oldBackup) {
-                    localStorage.setItem('bubblePop_achievements_backup_old', oldBackup);
-                }
-            }
-        } catch (error) {
-            console.warn('Failed to create backup:', error);
-        }
-    }
-    
-    /**
-     * 保存エラーのハンドリング
-     */
-    handleSaveError(error) {
-        // ストレージ容量不足の場合の処理
-        if (error.name === 'QuotaExceededError') {
-            this.cleanupOldData();
-            // 再試行
-            try {
-                const dataToSave = this.prepareDataForSave();
-                localStorage.setItem('bubblePop_achievements', JSON.stringify(dataToSave));
-            } catch (retryError) {
-                console.error('Failed to save after cleanup:', retryError);
-            }
-        }
-    }
-    
-    /**
-     * 古いデータのクリーンアップ
-     */
-    cleanupOldData() {
-        try {
-            // 古いバックアップを削除
-            localStorage.removeItem('bubblePop_achievements_backup_old');
-            
-            // 他の不要なキーを削除（必要に応じて）
-            const keysToCheck = [
-                'bubblePop_achievements_temp',
-                'bubblePop_achievements_cache'
-            ];
-            
-            keysToCheck.forEach(key => {
-                localStorage.removeItem(key);
-            });
-            
-            console.log('Cleaned up old achievement data');
-        } catch (error) {
-            console.warn('Failed to cleanup old data:', error);
-        }
-    }
-    
-    /**
-     * データを読み込み
-     */
-    load() {
-        try {
-            let loadedData = this.attemptDataLoad();
-            
-            if (!loadedData) {
-                console.log('No achievement data found, starting fresh');
-                this.initializeEmptyData();
-                return;
-            }
-            
-            // データを適用
-            this.applyLoadedData(loadedData);
-            
-            // 古いデータの移行処理
-            this.migrateOldDataFormat(loadedData);
-            
-            console.log('Achievement data loaded successfully');
-            
-        } catch (error) {
-            console.error('Failed to load achievement data:', error);
-            this.handleLoadError(error);
-        }
-    }
-    
-    /**
-     * データ読み込みを試行
-     */
-    attemptDataLoad() {
-        // メインデータの読み込み試行
-        const mainData = this.tryLoadFromStorage('bubblePop_achievements');
-        if (mainData && this.validateLoadData(mainData)) {
-            return mainData;
-        }
-        
-        console.warn('Main achievement data is invalid, trying backup...');
-        
-        // バックアップからの復旧試行
-        const backupData = this.tryLoadFromStorage('bubblePop_achievements_backup');
-        if (backupData && this.validateLoadData(backupData)) {
-            console.log('Recovered achievement data from backup');
-            return backupData;
-        }
-        
-        console.warn('Backup data is also invalid, trying old backup...');
-        
-        // 古いバックアップからの復旧試行
-        const oldBackupData = this.tryLoadFromStorage('bubblePop_achievements_backup_old');
-        if (oldBackupData && this.validateLoadData(oldBackupData)) {
-            console.log('Recovered achievement data from old backup');
-            return oldBackupData;
-        }
-        
-        return null;
-    }
-    
-    /**
-     * ストレージからのデータ読み込みを試行
-     */
-    tryLoadFromStorage(key) {
-        try {
-            const rawData = localStorage.getItem(key);
-            if (!rawData) return null;
-            
-            return JSON.parse(rawData);
-        } catch (error) {
-            console.warn(`Failed to parse data from ${key}:`, error);
-            return null;
-        }
-    }
-    
-    /**
-     * 読み込みデータの検証
-     */
-    validateLoadData(data) {
-        try {
-            // 基本的な構造チェック
-            if (!data || typeof data !== 'object') {
-                return false;
-            }
-            
-            // 新しい形式のデータの場合
-            if (data.version) {
-                return this.validateSaveData(data);
-            }
-            
-            // 旧形式のデータの場合（後方互換性）
-            if (data.hasOwnProperty('unlockedAchievements') && 
-                data.hasOwnProperty('progressData')) {
-                return true;
-            }
-            
-            return false;
-        } catch (error) {
-            console.error('Error validating load data:', error);
-            return false;
-        }
-    }
-    
-    /**
-     * 読み込んだデータを適用
-     */
-    applyLoadedData(data) {
-        this.unlockedAchievements = new Set(data.unlockedAchievements || []);
-        this.progressData = data.progressData || {};
-        
-        // 配列からSetオブジェクトに復元
-        if (Array.isArray(this.progressData.bubbleTypesPopped)) {
-            this.progressData.bubbleTypesPopped = new Set(this.progressData.bubbleTypesPopped);
-        }
-        
-        // データ整合性チェック
-        this.validateProgressData();
-    }
-    
-    /**
-     * 進捗データの整合性チェック
-     */
-    validateProgressData() {
-        // 無効な実績IDの削除
-        const validAchievementIds = new Set(Object.keys(this.achievements));
-        const invalidIds = [...this.unlockedAchievements].filter(id => !validAchievementIds.has(id));
-        
-        if (invalidIds.length > 0) {
-            console.warn('Removing invalid achievement IDs:', invalidIds);
-            invalidIds.forEach(id => this.unlockedAchievements.delete(id));
-        }
-        
-        // 進捗データの数値チェック
-        Object.keys(this.progressData).forEach(key => {
-            const value = this.progressData[key];
-            if (typeof value === 'number' && (value < 0 || !isFinite(value))) {
-                console.warn(`Invalid progress value for ${key}: ${value}, resetting to 0`);
-                this.progressData[key] = 0;
-            }
-        });
-    }
-    
-    /**
-     * 古いデータ形式の移行
-     */
-    migrateOldDataFormat(data) {
-        // バージョン情報がない場合は旧形式
-        if (!data.version) {
-            console.log('Migrating achievement data to new format');
-            
-            // 新形式で保存し直す
-            this.save();
-        }
-    }
-    
-    /**
-     * 空のデータで初期化
-     */
-    initializeEmptyData() {
-        this.unlockedAchievements = new Set();
-        this.progressData = {};
-    }
-    
-    /**
-     * 読み込みエラーのハンドリング
-     */
-    handleLoadError(error) {
-        console.error('Critical error loading achievement data:', error);
-        
-        // 最後の手段：データをリセット
-        this.initializeEmptyData();
-        
-        // エラーログを記録（将来の分析用）
-        try {
-            const errorLog = {
-                timestamp: Date.now(),
-                error: error.message,
-                stack: error.stack
-            };
-            localStorage.setItem('bubblePop_achievements_error_log', JSON.stringify(errorLog));
-        } catch (logError) {
-            console.warn('Failed to log error:', logError);
-        }
     }
     
     /**
      * データをリセット
      */
-    reset() {
-        this.unlockedAchievements.clear();
-        this.progressData = {};
-        this.notifications = [];
+    resetData() {
+        this.progressTracker.resetProgress();
+        this.notificationSystem.clearAllNotifications();
+        this.performanceOptimizer.resetPerformanceStats();
         
-        // メインデータとバックアップをすべてクリア
-        this.clearAllStorageData();
-        
-        console.log('Achievement data has been reset');
+        console.log('[AchievementManager] All achievement data reset');
     }
     
     /**
-     * 全ストレージデータをクリア
+     * 実績管理システムを破棄
      */
-    clearAllStorageData() {
-        const keysToRemove = [
-            'bubblePop_achievements',
-            'bubblePop_achievements_timestamp',
-            'bubblePop_achievements_backup',
-            'bubblePop_achievements_backup_timestamp',
-            'bubblePop_achievements_backup_old',
-            'bubblePop_achievements_error_log'
-        ];
+    destroy() {
+        this.performanceOptimizer.destroy();
+        this.notificationSystem.destroy();
         
-        keysToRemove.forEach(key => {
-            try {
-                localStorage.removeItem(key);
-            } catch (error) {
-                console.warn(`Failed to remove ${key}:`, error);
-            }
-        });
-    }
-    
-    /**
-     * データの整合性チェック
-     */
-    performIntegrityCheck() {
-        const results = {
-            timestamp: Date.now(),
-            mainDataValid: false,
-            backupDataValid: false,
-            progressDataIntegrity: true,
-            unlockedAchievementsCount: this.unlockedAchievements.size,
-            progressDataKeys: Object.keys(this.progressData).length,
-            issues: []
-        };
-        
-        try {
-            // メインデータチェック
-            const mainData = this.tryLoadFromStorage('bubblePop_achievements');
-            results.mainDataValid = mainData && this.validateLoadData(mainData);
-            
-            // バックアップデータチェック
-            const backupData = this.tryLoadFromStorage('bubblePop_achievements_backup');
-            results.backupDataValid = backupData && this.validateLoadData(backupData);
-            
-            // 進捗データの整合性チェック
-            Object.keys(this.progressData).forEach(key => {
-                const value = this.progressData[key];
-                if (typeof value === 'number' && (value < 0 || !isFinite(value))) {
-                    results.progressDataIntegrity = false;
-                    results.issues.push(`Invalid progress value: ${key} = ${value}`);
-                }
-            });
-            
-            // 無効な実績IDチェック
-            const validAchievementIds = new Set(Object.keys(this.achievements));
-            const invalidIds = [...this.unlockedAchievements].filter(id => !validAchievementIds.has(id));
-            if (invalidIds.length > 0) {
-                results.issues.push(`Invalid achievement IDs: ${invalidIds.join(', ')}`);
-            }
-            
-        } catch (error) {
-            results.issues.push(`Integrity check error: ${error.message}`);
-        }
-        
-        return results;
-    }
-    
-    /**
-     * データ復旧を試行
-     */
-    attemptDataRecovery() {
-        console.log('Attempting achievement data recovery...');
-        
-        const recoveryResults = {
-            success: false,
-            method: null,
-            dataSource: null,
-            recoveredAchievements: 0,
-            issues: []
-        };
-        
-        try {
-            // バックアップからの復旧を試行
-            const backupData = this.tryLoadFromStorage('bubblePop_achievements_backup');
-            if (backupData && this.validateLoadData(backupData)) {
-                this.applyLoadedData(backupData);
-                recoveryResults.success = true;
-                recoveryResults.method = 'backup';
-                recoveryResults.dataSource = 'bubblePop_achievements_backup';
-                recoveryResults.recoveredAchievements = this.unlockedAchievements.size;
-                
-                // 復旧したデータを保存
-                this.save();
-                
-                console.log('Successfully recovered data from backup');
-                return recoveryResults;
-            }
-            
-            // 古いバックアップからの復旧を試行
-            const oldBackupData = this.tryLoadFromStorage('bubblePop_achievements_backup_old');
-            if (oldBackupData && this.validateLoadData(oldBackupData)) {
-                this.applyLoadedData(oldBackupData);
-                recoveryResults.success = true;
-                recoveryResults.method = 'old_backup';
-                recoveryResults.dataSource = 'bubblePop_achievements_backup_old';
-                recoveryResults.recoveredAchievements = this.unlockedAchievements.size;
-                
-                // 復旧したデータを保存
-                this.save();
-                
-                console.log('Successfully recovered data from old backup');
-                return recoveryResults;
-            }
-            
-            recoveryResults.issues.push('No valid backup data found');
-            
-        } catch (error) {
-            recoveryResults.issues.push(`Recovery error: ${error.message}`);
-        }
-        
-        console.warn('Data recovery failed');
-        return recoveryResults;
-    }
-    
-    /**
-     * ストレージ使用量を取得
-     */
-    getStorageUsage() {
-        let totalSize = 0;
-        const usage = {};
-        
-        const keys = [
-            'bubblePop_achievements',
-            'bubblePop_achievements_backup',
-            'bubblePop_achievements_backup_old'
-        ];
-        
-        keys.forEach(key => {
-            try {
-                const data = localStorage.getItem(key);
-                const size = data ? data.length : 0;
-                usage[key] = size;
-                totalSize += size;
-            } catch (error) {
-                usage[key] = 'error';
-            }
-        });
-        
-        return {
-            total: totalSize,
-            breakdown: usage,
-            formatted: `${(totalSize / 1024).toFixed(2)} KB`
-        };
-    }
-    
-    /**
-     * 最適化された通知追加
-     */
-    addNotificationOptimized(notification) {
-        // 通知数の制限チェック
-        if (this.notifications.length >= this.performanceConfig.maxNotifications) {
-            // 古い通知を削除（FIFO）
-            this.notifications.shift();
-        }
-        
-        // 重複通知の防止
-        const isDuplicate = this.notifications.some(n => 
-            n.id === notification.id && 
-            (Date.now() - n.timestamp) < 1000 // 1秒以内の重複は除外
-        );
-        
-        if (!isDuplicate) {
-            this.notifications.push(notification);
-        }
-    }
-    
-    /**
-     * パフォーマンス統計を取得
-     */
-    getPerformanceStats() {
-        const now = Date.now();
-        const timeSinceLastUpdate = now - this.lastUpdateTime;
-        
-        return {
-            ...this.performanceStats,
-            cacheHitRate: this.performanceStats.cacheHits > 0 ? 
-                (this.performanceStats.cacheHits / (this.performanceStats.cacheHits + this.performanceStats.cacheMisses) * 100).toFixed(2) + '%' : '0%',
-            queueLength: this.updateQueue.length,
-            cacheSize: this.cache.size,
-            timeSinceLastUpdate: timeSinceLastUpdate,
-            isThrottling: this.throttleTimer !== null,
-            averageUpdateTimeFormatted: this.performanceStats.averageUpdateTime.toFixed(2) + 'ms'
-        };
-    }
-    
-    /**
-     * キャッシュをクリア
-     */
-    clearCache() {
-        this.cache.clear();
-        console.log('Achievement cache cleared');
-    }
-    
-    /**
-     * キャッシュとキューの状態を最適化
-     */
-    optimizePerformance() {
-        // 古いキャッシュエントリを削除
-        const now = Date.now();
-        const entriesToDelete = [];
-        
-        this.cache.forEach((value, key) => {
-            // タイムスタンプベースのキャッシュクリーンアップ
-            if (key.startsWith('timestamp_')) {
-                const timestamp = parseInt(key.split('_')[1]);
-                if (now - timestamp > this.performanceConfig.cacheTimeout) {
-                    entriesToDelete.push(key);
-                }
-            }
-        });
-        
-        entriesToDelete.forEach(key => this.cache.delete(key));
-        
-        // 古い更新キューエントリを削除
-        this.updateQueue = this.updateQueue.filter(entry => 
-            (now - entry.timestamp) < 10000 // 10秒以上古いエントリは削除
-        );
-        
-        // 通知の最適化
-        if (this.notifications.length > this.performanceConfig.maxNotifications) {
-            this.notifications = this.notifications.slice(-this.performanceConfig.maxNotifications);
-        }
-        
-        console.log('Achievement performance optimized');
-    }
-    
-    /**
-     * パフォーマンス設定を更新
-     */
-    updatePerformanceConfig(newConfig) {
-        this.performanceConfig = {
-            ...this.performanceConfig,
-            ...newConfig
-        };
-        
-        // 新しい設定に基づいて最適化
-        this.optimizePerformance();
-    }
-    
-    /**
-     * メモリ使用量を取得
-     */
-    getMemoryUsage() {
-        const calculateObjectSize = (obj) => {
-            return JSON.stringify(obj).length;
-        };
-        
-        return {
-            achievements: calculateObjectSize(this.achievements),
-            unlockedAchievements: calculateObjectSize(Array.from(this.unlockedAchievements)),
-            progressData: calculateObjectSize(this.progressData),
-            notifications: calculateObjectSize(this.notifications),
-            cache: calculateObjectSize(Array.from(this.cache.entries())),
-            updateQueue: calculateObjectSize(this.updateQueue),
-            total: calculateObjectSize({
-                achievements: this.achievements,
-                unlockedAchievements: Array.from(this.unlockedAchievements),
-                progressData: this.progressData,
-                notifications: this.notifications,
-                cache: Array.from(this.cache.entries()),
-                updateQueue: this.updateQueue
-            })
-        };
-    }
-    
-    /**
-     * パフォーマンス診断を実行
-     */
-    performanceDiagnostic() {
-        const stats = this.getPerformanceStats();
-        const memoryUsage = this.getMemoryUsage();
-        const storageUsage = this.getStorageUsage();
-        
-        const diagnostic = {
-            timestamp: Date.now(),
-            performance: stats,
-            memory: memoryUsage,
-            storage: storageUsage,
-            recommendations: []
-        };
-        
-        // パフォーマンス推奨事項
-        if (parseFloat(stats.cacheHitRate) < 50) {
-            diagnostic.recommendations.push('キャッシュヒット率が低いです。キャッシュタイムアウトを延長することを検討してください。');
-        }
-        
-        if (stats.queueLength > 50) {
-            diagnostic.recommendations.push('更新キューが長すぎます。バッチサイズを増やすかスロットリング遅延を減らしてください。');
-        }
-        
-        if (stats.averageUpdateTime > 10) {
-            diagnostic.recommendations.push('平均更新時間が長いです。実績条件の最適化を検討してください。');
-        }
-        
-        if (memoryUsage.total > 100000) {
-            diagnostic.recommendations.push('メモリ使用量が多いです。データの最適化を検討してください。');
-        }
-        
-        if (diagnostic.recommendations.length === 0) {
-            diagnostic.recommendations.push('パフォーマンスは良好です。');
-        }
-        
-        return diagnostic;
+        console.log('[AchievementManager] Achievement management system destroyed');
     }
 }

@@ -264,6 +264,40 @@ if [ "$CONFIG_FILES_CHANGED" = true ]; then
     echo ""
 fi
 
+# ファイルサイズ監視チェック
+log_info "ファイルサイズ監視を実行中..."
+
+FILE_SIZE_SCRIPT="tools/file-size-monitor.js"
+if [ -f "$FILE_SIZE_SCRIPT" ]; then
+    # ファイルサイズチェックを実行
+    FILE_SIZE_OUTPUT=""
+    FILE_SIZE_EXIT_CODE=0
+    
+    FILE_SIZE_OUTPUT=$(node "$FILE_SIZE_SCRIPT" "$PROJECT_ROOT" 2>&1) || FILE_SIZE_EXIT_CODE=$?
+    
+    if [ $FILE_SIZE_EXIT_CODE -eq 1 ]; then
+        log_error "ファイルサイズ制限超過が検出されました："
+        echo "$FILE_SIZE_OUTPUT"
+        echo ""
+        log_error "制限超過ファイルを分割してから再度コミットしてください。"
+        log_info "ファイル分割ガイドライン："
+        log_info "  1. 2,500語を超えるファイルは分割が必要です"
+        log_info "  2. 単一責任の原則に従ってクラス/機能を分離してください"
+        log_info "  3. インポート文を適切に更新してください"
+        exit 1
+    elif [ $FILE_SIZE_EXIT_CODE -eq 0 ] && echo "$FILE_SIZE_OUTPUT" | grep -q "警告"; then
+        log_warn "ファイルサイズの警告があります："
+        echo "$FILE_SIZE_OUTPUT" | grep -A 5 "警告ファイル" || true
+        echo ""
+        log_info "警告ファイルは監視対象です。将来的な分割を検討してください。"
+    else
+        log_success "ファイルサイズチェックが正常に完了しました。"
+    fi
+else
+    log_warn "ファイルサイズ監視スクリプトが見つかりません: $FILE_SIZE_SCRIPT"
+    log_info "ファイルサイズチェックをスキップします。"
+fi
+
 log_success "✅ Pre-commit validation completed successfully!"
 log_info "コミットを続行します..."
 

@@ -109,3 +109,114 @@ jobs:
           name: validation-results
           path: validation-output/
           retention-days: 7
+
+  file-size-monitoring:
+    name: File Size Monitoring
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run file size monitoring
+        run: |
+          echo "📏 Running file size monitoring..."
+          
+          # Create output directory
+          mkdir -p file-size-reports
+          
+          # Run file size monitor
+          node tools/file-size-monitor.js . > file-size-reports/console-output.txt 2>&1 || {
+            EXIT_CODE=$?
+            echo "📊 File size monitoring results:"
+            cat file-size-reports/console-output.txt
+            
+            if [ $EXIT_CODE -eq 1 ]; then
+              echo "❌ File size limit violations detected!"
+              echo "🔧 Files exceeding 2,500 words must be split before merging."
+              exit 1
+            fi
+          }
+          
+          echo "✅ File size monitoring completed successfully"
+          
+          # Show summary
+          if [ -f "file-size-report.json" ]; then
+            echo "📊 File size report summary:"
+            cat file-size-report.json | jq '.summary // empty' || echo "Report format differs"
+          fi
+      
+      - name: Upload file size report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: file-size-report
+          path: |
+            file-size-report.json
+            file-size-reports/
+          retention-days: 7
+      
+      - name: Comment PR with file size report
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            try {
+              const reportPath = 'file-size-report.json';
+              if (fs.existsSync(reportPath)) {
+                const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+                
+                let comment = '## 📏 File Size Monitoring Report\n\n';
+                comment += `**Check Date:** ${new Date(report.timestamp).toLocaleString()}\n\n`;
+                comment += `### Summary\n`;
+                comment += `- Total Files: ${report.summary.totalFiles}\n`;
+                comment += `- Warning Files: ${report.summary.warningFiles}\n`;
+                comment += `- Error Files: ${report.summary.errorFiles}\n`;
+                comment += `- Average Word Count: ${report.summary.averageWordCount}\n\n`;
+                
+                if (report.errors.length > 0) {
+                  comment += `### 🚨 Files Exceeding Limit (${report.config.WORD_LIMIT} words)\n`;
+                  report.errors.forEach((error, index) => {
+                    comment += `${index + 1}. **${error.relativePath}** (${error.wordCount} words)\n`;
+                    error.suggestions.forEach(suggestion => {
+                      comment += `   - 💡 ${suggestion}\n`;
+                    });
+                  });
+                  comment += '\n';
+                }
+                
+                if (report.warnings.length > 0) {
+                  comment += `### ⚠️ Files Approaching Limit (${report.config.WARNING_THRESHOLD}+ words)\n`;
+                  report.warnings.forEach((warning, index) => {
+                    comment += `${index + 1}. **${warning.relativePath}** (${warning.wordCount} words)\n`;
+                  });
+                  comment += '\n';
+                }
+                
+                if (report.errors.length === 0) {
+                  comment += '✅ All files are within the size limit.\n';
+                } else {
+                  comment += '❌ Some files exceed the size limit and must be split before merging.\n';
+                }
+                
+                github.rest.issues.createComment({
+                  issue_number: context.issue.number,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  body: comment
+                });
+              }
+            } catch (error) {
+              console.error('Failed to post file size report:', error);
+            }

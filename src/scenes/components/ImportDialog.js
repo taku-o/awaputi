@@ -51,7 +51,7 @@ export class ImportDialog extends BaseDialog {
                         action: () => this.handleNextStep(),
                         get disabled() {
                             return !this.canProceedFromSelect();
-                        }.bind(this)
+                        }
                     },
                     {
                         text: 'キャンセル',

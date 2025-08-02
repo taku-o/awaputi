@@ -749,3 +749,13 @@ export class StatisticsExporter {
         }
     }
 }
+
+// シングルトンインスタンス管理
+let statisticsExporterInstance = null;
+
+export function getStatisticsExporter(statisticsManager) {
+    if (!statisticsExporterInstance && statisticsManager) {
+        statisticsExporterInstance = new StatisticsExporter(statisticsManager);
+    }
+    return statisticsExporterInstance;
+}
