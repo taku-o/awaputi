@@ -1,4 +1,5 @@
-import { ChallengeUI, ChallengeDetailModal } from '../../ui/components/LeaderboardUI.js';
+import { ChallengeUI } from '../../core/ChallengeUI.js';
+import { ChallengeDetailModal } from '../../ui/components/ChallengeDetailModal.js';
 
 /**
  * チャレンジタブコンポーネント
