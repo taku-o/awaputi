@@ -853,6 +853,24 @@ AccessibilityManager (中核統制)
 - **エラーハンドリング**: 中央集権的ErrorHandlerユーティリティ使用
 - **非同期処理**: async/await パターン、適切なエラーバウンダリ実装
 
+### ファイルサイズ制限（MCPトークン制限対応）
+- **制限値**: 1ファイルあたり2,500語以下を厳守
+- **監視**: `tools/file-size-monitor.js`による自動監視
+- **警告閾値**: 2,000語で要監視、2,500語で緊急分割必要
+- **分割原則**: 
+  - 単一責任の原則に従ってコンポーネント分離
+  - 機能別、UI別、データ処理別に適切にモジュール化
+  - 分割後も既存のインポート関係を維持
+- **除外対象**: `node_modules/`, `dist/`, `test-results/`, `playwright-report/`
+- **チェック方法**: 
+  ```bash
+  # 全ファイルチェック
+  node tools/file-size-monitor.js src
+  
+  # 特定ディレクトリチェック
+  node tools/file-size-monitor.js src/scenes
+  ```
+
 ### ファイル構造パターン
 ```javascript
 // 基本的なクラス構造
