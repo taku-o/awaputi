@@ -2,12 +2,6 @@
  * ユーザー情報画面シーン
  */
 import { Scene } from '../core/Scene.js';
-import { AchievementStatsUI } from '../core/AchievementStatsUI.js';
-import { AchievementHelpSystem } from '../ui/AchievementHelpSystem.js';
-import { ChartRenderer } from '../core/ChartRenderer.js';
-import { StatisticsDashboard } from '../core/StatisticsDashboard.js';
-import { StatisticsFilterManager } from '../core/StatisticsFilterManager.js';
-import { StatisticsExporter } from '../core/StatisticsExporter.js';
 
 // 新しいダイアログシステム
 import { DialogManager } from './components/DialogManager.js';
@@ -26,6 +20,13 @@ import { StatisticsTab } from './components/StatisticsTab.js';
 import { LeaderboardTab } from './components/LeaderboardTab.js';
 import { ChallengesTab } from './components/ChallengesTab.js';
 
+// 分離されたコンポーネント
+import { UserProfileManager } from './components/user-info/UserProfileManager.js';
+import { UserStatisticsRenderer } from './components/user-info/UserStatisticsRenderer.js';
+import { UserAchievementDisplay } from './components/user-info/UserAchievementDisplay.js';
+import { UserDataExporter } from './components/user-info/UserDataExporter.js';
+import { UserHelpIntegration } from './components/user-info/UserHelpIntegration.js';
+
 export class UserInfoScene extends Scene {
     constructor(gameEngine) {
         super(gameEngine);
@@ -41,42 +42,12 @@ export class UserInfoScene extends Scene {
         this.headerHeight = 120;
         this.contentPadding = 20;
         
-        // 統計・実績データ
-        this.statisticsData = null;
-        this.achievementsData = null;
-        
-        // ヘルプシステム
-        this.helpSystem = null;
-        
         // エラーハンドリング
         this.errorMessage = null;
         this.errorTimeout = null;
         
-        // 実績統計UI
-        this.achievementStatsUI = null;
-        
-        // 拡張統計システムの初期化
-        this.chartRenderer = null;
-        this.statisticsDashboard = null;
-        this.statisticsFilterManager = null;
-        this.statisticsExporter = null;
-        this.statisticsViewMode = 'dashboard'; // 'dashboard', 'charts', 'details'
-        this.currentPeriodFilter = 'last7days';
-        
-        // 統計表示設定
-        this.statisticsDisplaySettings = {
-            showDashboard: true,
-            showCharts: true,
-            showDetailedStats: true,
-            enableAnimations: true,
-            compactMode: false
-        };
-        
-        // ヘルプシステム初期化
-        this.initializeHelpSystem();
-        
-        // 拡張統計システム初期化
-        this.initializeExtendedStatistics();
+        // 分離されたコンポーネントの初期化
+        this.initializeUserComponents();
     }
     
     /**
@@ -184,6 +155,31 @@ export class UserInfoScene extends Scene {
         this.preloadComponent(this.currentTab);
         
         console.log('Tab components initialized with lazy loading');
+    }
+    
+    /**
+     * 分離されたユーザーコンポーネントの初期化
+     */
+    initializeUserComponents() {
+        // プロフィール管理コンポーネント
+        this.userProfileManager = new UserProfileManager(this.gameEngine, this.eventBus, this.sceneState);
+        
+        // 統計描画コンポーネント
+        this.userStatisticsRenderer = new UserStatisticsRenderer(this.gameEngine, this.eventBus, this.sceneState);
+        
+        // 実績表示コンポーネント
+        this.userAchievementDisplay = new UserAchievementDisplay(this.gameEngine, this.eventBus, this.sceneState);
+        
+        // データエクスポートコンポーネント
+        this.userDataExporter = new UserDataExporter(this.gameEngine, this.eventBus, this.sceneState);
+        
+        // ヘルプ統合コンポーネント
+        this.userHelpIntegration = new UserHelpIntegration(this.gameEngine, this.eventBus, this.sceneState);
+        
+        // 初期化完了
+        this.userProfileManager.initialize();
+        
+        console.log('User components initialized successfully');
     }
     
     /**
@@ -660,30 +656,7 @@ export class UserInfoScene extends Scene {
      * 統計データをコンポーネントで描画
      */
     renderStatisticsWithComponent(context, y, height) {
-        try {
-            if (this.statisticsTabComponent && this.statisticsTabComponent.isActive) {
-                const canvas = this.gameEngine.canvas;
-                this.statisticsTabComponent.render(context, 0, y, canvas.width, height);
-            } else {
-                // フォールバック: 統計タブコンポーネントが無効な場合
-                this.renderStatisticsFallback(context, y, height);
-            }
-        } catch (error) {
-            console.error('Statistics tab rendering failed:', error);
-            this.renderStatisticsFallback(context, y, height);
-        }
-    }
-    
-    /**
-     * 統計データのフォールバック描画
-     */
-    renderStatisticsFallback(context, y, height) {
-        const canvas = this.gameEngine.canvas;
-        context.fillStyle = '#cccccc';
-        context.font = '20px Arial';
-        context.textAlign = 'center';
-        context.textBaseline = 'middle';
-        context.fillText('統計データを読み込み中...', canvas.width / 2, y + height / 2);
+        return this.userStatisticsRenderer.renderStatisticsWithComponent(context, y, height, this.statisticsTabComponent);
     }
 
     /**
@@ -1172,170 +1145,21 @@ export class UserInfoScene extends Scene {
      * 現在のユーザー情報を描画
      */
     renderCurrentUserInfo(context, x, y, width) {
-        // セクション背景
-        context.fillStyle = '#1a1a2e';
-        context.fillRect(x, y, width, 80);
-        
-        // セクション枠線
-        context.strokeStyle = '#333';
-        context.lineWidth = 1;
-        context.strokeRect(x, y, width, 80);
-        
-        // セクションタイトル
-        context.fillStyle = '#4a90e2';
-        context.font = 'bold 18px Arial';
-        context.textAlign = 'left';
-        context.fillText('ユーザー情報', x + 15, y + 25);
-        
-        // 現在のユーザー名
-        const currentUsername = this.gameEngine.playerData?.username || '未設定';
-        context.fillStyle = '#ffffff';
-        context.font = '16px Arial';
-        context.fillText(`ユーザー名: ${currentUsername}`, x + 15, y + 50);
-        
-        // AP情報
-        const currentAP = this.gameEngine.playerData?.ap || 0;
-        const totalAP = this.gameEngine.playerData?.tap || 0;
-        context.fillStyle = '#cccccc';
-        context.font = '14px Arial';
-        context.fillText(`現在AP: ${currentAP} / 総AP: ${totalAP}`, x + 15, y + 70);
+        return this.userProfileManager.renderCurrentUserInfo(context, x, y, width);
     }
 
     /**
      * ユーザー名変更ボタンを描画
      */
     renderUsernameChangeButton(context, x, y, width) {
-        const buttonWidth = 200;
-        const buttonHeight = 40;
-        const isFocused = this.focusedElement === this.tabs.length + 1;
-        
-        // ボタン背景
-        context.fillStyle = isFocused ? '#6bb0ff' : '#4a90e2';
-        context.fillRect(x, y, buttonWidth, buttonHeight);
-        
-        // ボタン枠線
-        context.strokeStyle = '#333';
-        context.lineWidth = 1;
-        context.strokeRect(x, y, buttonWidth, buttonHeight);
-        
-        // ボタンテキスト
-        context.fillStyle = '#ffffff';
-        context.font = '16px Arial';
-        context.textAlign = 'center';
-        context.fillText('ユーザー名変更', x + buttonWidth / 2, y + 25);
-        
-        return y + buttonHeight + 20;
+        return this.userProfileManager.renderUsernameChangeButton(context, x, y, width, this.focusedElement, this.tabs.length);
     }
 
     /**
      * データ管理セクションを描画
      */
     renderDataManagementSection(context, x, y, width) {
-        // セクション背景
-        context.fillStyle = '#1a1a2e';
-        context.fillRect(x, y, width, 160);
-        
-        // セクション枠線
-        context.strokeStyle = '#333';
-        context.lineWidth = 1;
-        context.strokeRect(x, y, width, 160);
-        
-        // セクションタイトル
-        context.fillStyle = '#4a90e2';
-        context.font = 'bold 18px Arial';
-        context.textAlign = 'left';
-        context.fillText('データ管理', x + 15, y + 25);
-        
-        // 既存のエクスポートボタン（プレイヤーデータ用）
-        const exportButtonWidth = 150;
-        const exportButtonHeight = 35;
-        const exportButtonX = x + 15;
-        const exportButtonY = y + 40;
-        const isExportFocused = this.focusedElement === this.tabs.length + 2;
-        
-        context.fillStyle = isExportFocused ? '#6bb0ff' : '#4a90e2';
-        context.fillRect(exportButtonX, exportButtonY, exportButtonWidth, exportButtonHeight);
-        
-        context.strokeStyle = '#333';
-        context.lineWidth = 1;
-        context.strokeRect(exportButtonX, exportButtonY, exportButtonWidth, exportButtonHeight);
-        
-        context.fillStyle = '#ffffff';
-        context.font = '14px Arial';
-        context.textAlign = 'center';
-        context.fillText('プレイヤーデータ', exportButtonX + exportButtonWidth / 2, exportButtonY + 12);
-        context.fillText('エクスポート', exportButtonX + exportButtonWidth / 2, exportButtonY + 26);
-        
-        // 既存のインポートボタン（プレイヤーデータ用）
-        const importButtonWidth = 150;
-        const importButtonHeight = 35;
-        const importButtonX = x + 15 + exportButtonWidth + 20;
-        const importButtonY = y + 40;
-        const isImportFocused = this.focusedElement === this.tabs.length + 3;
-        
-        context.fillStyle = isImportFocused ? '#6bb0ff' : '#4a90e2';
-        context.fillRect(importButtonX, importButtonY, importButtonWidth, importButtonHeight);
-        
-        context.strokeStyle = '#333';
-        context.lineWidth = 1;
-        context.strokeRect(importButtonX, importButtonY, importButtonWidth, importButtonHeight);
-        
-        context.fillStyle = '#ffffff';
-        context.font = '14px Arial';
-        context.textAlign = 'center';
-        context.fillText('プレイヤーデータ', importButtonX + importButtonWidth / 2, importButtonY + 12);
-        context.fillText('インポート', importButtonX + importButtonWidth / 2, importButtonY + 26);
-        
-        // 統計データエクスポートボタン（新規）
-        const statsExportButtonX = x + 15;
-        const statsExportButtonY = y + 85;
-        const isStatsExportFocused = this.focusedElement === this.tabs.length + 4;
-        
-        context.fillStyle = isStatsExportFocused ? '#10B981' : '#059669';
-        context.fillRect(statsExportButtonX, statsExportButtonY, exportButtonWidth, exportButtonHeight);
-        
-        context.strokeStyle = '#333';
-        context.lineWidth = 1;
-        context.strokeRect(statsExportButtonX, statsExportButtonY, exportButtonWidth, exportButtonHeight);
-        
-        context.fillStyle = '#ffffff';
-        context.font = '14px Arial';
-        context.textAlign = 'center';
-        context.fillText('統計データ', statsExportButtonX + exportButtonWidth / 2, statsExportButtonY + 12);
-        context.fillText('エクスポート', statsExportButtonX + exportButtonWidth / 2, statsExportButtonY + 26);
-        
-        // 統計データインポートボタン（新規）
-        const statsImportButtonX = x + 15 + exportButtonWidth + 20;
-        const statsImportButtonY = y + 85;
-        const isStatsImportFocused = this.focusedElement === this.tabs.length + 5;
-        
-        context.fillStyle = isStatsImportFocused ? '#10B981' : '#059669';
-        context.fillRect(statsImportButtonX, statsImportButtonY, importButtonWidth, importButtonHeight);
-        
-        context.strokeStyle = '#333';
-        context.lineWidth = 1;
-        context.strokeRect(statsImportButtonX, statsImportButtonY, importButtonWidth, importButtonHeight);
-        
-        context.fillStyle = '#ffffff';
-        context.font = '14px Arial';
-        context.textAlign = 'center';
-        context.fillText('統計データ', statsImportButtonX + importButtonWidth / 2, statsImportButtonY + 12);
-        context.fillText('インポート', statsImportButtonX + importButtonWidth / 2, statsImportButtonY + 26);
-        
-        // エクスポート形式選択（統計データ用）
-        context.fillStyle = '#cccccc';
-        context.font = '12px Arial';
-        context.textAlign = 'left';
-        context.fillText('形式: JSON, CSV, TXT', x + 15, y + 135);
-        
-        // 統計エクスポート状態表示
-        if (this.statisticsExporter && this.statisticsExporter.getExportState().isExporting) {
-            context.fillStyle = '#F59E0B';
-            context.fillText('エクスポート中...', x + 15, y + 150);
-        } else if (this.statisticsExporter && this.statisticsExporter.getExportState().isImporting) {
-            context.fillStyle = '#3B82F6';
-            context.fillText('インポート中...', x + 15, y + 150);
-        }
+        return this.userDataExporter.renderDataManagementSection(context, x, y, width);
     }
 
     /**
@@ -3136,58 +2960,7 @@ export class UserInfoScene extends Scene {
         return isTouchDevice ? Math.max(normalSize, 44) : normalSize;
     }
     
-    /**
-     * ヘルプシステムを初期化
-     */
-    initializeHelpSystem() {
-        try {
-            // 実績マネージャーが利用可能な場合のみヘルプシステムを初期化
-            if (this.gameEngine.achievementManager) {
-                this.helpSystem = new AchievementHelpSystem(this.gameEngine.achievementManager);
-            }
-        } catch (error) {
-            console.warn('Failed to initialize help system:', error);
-            this.helpSystem = null;
-        }
-    }
 
-    /**
-     * 拡張統計システムの初期化
-     */
-    initializeExtendedStatistics() {
-        try {
-            // ChartRendererの初期化
-            this.chartRenderer = new ChartRenderer();
-            
-            // StatisticsFilterManagerの初期化
-            if (this.gameEngine.statisticsManager) {
-                this.statisticsFilterManager = new StatisticsFilterManager(this.gameEngine.statisticsManager);
-                
-                // StatisticsDashboardの初期化
-                this.statisticsDashboard = new StatisticsDashboard(
-                    this.gameEngine.statisticsManager,
-                    this.chartRenderer
-                );
-                
-                // StatisticsExporterの初期化
-                this.statisticsExporter = new StatisticsExporter(this.gameEngine.statisticsManager);
-                
-                // フィルター変更イベントのリスナー設定
-                this.statisticsFilterManager.on('dataFiltered', (data) => {
-                    this.onStatisticsDataFiltered(data);
-                });
-                
-                this.statisticsFilterManager.on('filterError', (error) => {
-                    this.onStatisticsFilterError(error);
-                });
-            }
-        } catch (error) {
-            console.warn('Failed to initialize extended statistics:', error);
-            this.chartRenderer = null;
-            this.statisticsDashboard = null;
-            this.statisticsFilterManager = null;
-        }
-    }
 
     /**
      * 統計データフィルタリング完了時のハンドラ
@@ -3216,32 +2989,7 @@ export class UserInfoScene extends Scene {
      * 統計ダッシュボードの描画
      */
     async renderStatisticsDashboard(context, y, height) {
-        if (!this.statisticsDashboard) {
-            this.renderNoDataMessage(context, y, height, 'ダッシュボードを初期化できませんでした');
-            return;
-        }
-        
-        try {
-            // ダッシュボード用のサブキャンバス作成
-            const canvas = this.gameEngine.canvas;
-            const dashboardCanvas = document.createElement('canvas');
-            dashboardCanvas.width = canvas.width - (this.contentPadding * 2);
-            dashboardCanvas.height = height;
-            const dashboardContext = dashboardCanvas.getContext('2d');
-            
-            // ダッシュボードの描画
-            await this.statisticsDashboard.render(dashboardContext, {
-                animated: this.statisticsDisplaySettings.enableAnimations,
-                backgroundColor: '#FFFFFF'
-            });
-            
-            // メインキャンバスに描画
-            context.drawImage(dashboardCanvas, this.contentPadding, y);
-            
-        } catch (error) {
-            console.error('Dashboard rendering failed:', error);
-            this.renderNoDataMessage(context, y, height, 'ダッシュボードの描画に失敗しました');
-        }
+        return await this.userStatisticsRenderer.renderStatisticsDashboard(context, y, height);
     }
 
     /**
@@ -3358,65 +3106,7 @@ export class UserInfoScene extends Scene {
         context.drawImage(chartCanvas, x, y + 25);
     }
 
-    /**
-     * 精度分析グラフの描画
-     */
-    async renderAccuracyChart(context, x, y, width, height) {
-        // グラフタイトル
-        context.fillStyle = '#1F2937';
-        context.font = 'bold 14px system-ui, -apple-system, sans-serif';
-        context.textAlign = 'left';
-        context.fillText('精度分析', x, y + 15);
-        
-        // 模擬データ
-        const accuracyData = this.generateAccuracyData();
-        
-        // グラフエリア
-        const chartCanvas = document.createElement('canvas');
-        chartCanvas.width = width;
-        chartCanvas.height = height - 25;
-        const chartContext = chartCanvas.getContext('2d');
-        
-        await this.chartRenderer.render(chartContext, 'pie', accuracyData, {
-            width: width,
-            height: height - 25,
-            showLegend: true,
-            showLabels: true,
-            padding: 10
-        });
-        
-        context.drawImage(chartCanvas, x, y + 25);
-    }
-
-    /**
-     * バブル統計グラフの描画
-     */
-    async renderBubbleStatsChart(context, x, y, width, height) {
-        // グラフタイトル
-        context.fillStyle = '#1F2937';
-        context.font = 'bold 14px system-ui, -apple-system, sans-serif';
-        context.textAlign = 'left';
-        context.fillText('バブル種別統計', x, y + 15);
-        
-        // 模擬データ
-        const bubbleData = this.generateBubbleStatsData();
-        
-        // グラフエリア
-        const chartCanvas = document.createElement('canvas');
-        chartCanvas.width = width;
-        chartCanvas.height = height - 25;
-        const chartContext = chartCanvas.getContext('2d');
-        
-        await this.chartRenderer.render(chartContext, 'bar', bubbleData, {
-            width: width,
-            height: height - 25,
-            showAxes: true,
-            showGrid: true,
-            padding: 10
-        });
-        
-        context.drawImage(chartCanvas, x, y + 25);
-    }
+    // Chart rendering methods moved to UserStatisticsRenderer component
 
     /**
      * コンボ統計グラフの描画
@@ -3464,335 +3154,32 @@ export class UserInfoScene extends Scene {
         return data;
     }
 
-    generateAccuracyData() {
-        return [
-            { label: '完璧', value: 45 },
-            { label: '良好', value: 30 },
-            { label: '普通', value: 20 },
-            { label: '要改善', value: 5 }
-        ];
-    }
+    // Data generation methods moved to UserStatisticsRenderer component
 
-    generateBubbleStatsData() {
-        return [
-            { label: 'ノーマル', value: 150 },
-            { label: 'ストーン', value: 80 },
-            { label: 'レインボー', value: 25 },
-            { label: 'ボス', value: 12 }
-        ];
-    }
+    // Statistics click handling moved to UserStatisticsRenderer component
 
-    generateComboStatsData() {
-        const data = [];
-        for (let i = 0; i < 15; i++) {
-            data.push({
-                x: i,
-                value: Math.max(0, 50 + (i * 5) - (Math.random() * 20))
-            });
-        }
-        return data;
-    }
-
-    /**
-     * 統計画面のクリック処理
-     */
-    handleStatisticsClick(x, y) {
-        const canvas = this.gameEngine.canvas;
-        const contentY = this.headerHeight;
-        
-        // 期間フィルターボタンのクリック判定
-        const filterButtonY = contentY + 10;
-        const filterButtonHeight = 30;
-        const filterButtonWidth = 100;
-        const filterButtonSpacing = 10;
-        
-        if (y >= filterButtonY && y <= filterButtonY + filterButtonHeight) {
-            const periods = [
-                { key: 'today', label: '今日' },
-                { key: 'last7days', label: '7日間' },
-                { key: 'last30days', label: '30日間' },
-                { key: 'allTime', label: '全期間' }
-            ];
-            
-            let buttonX = this.contentPadding + 120;
-            periods.forEach((period) => {
-                if (x >= buttonX && x <= buttonX + filterButtonWidth) {
-                    this.changePeriodFilter(period.key);
-                    return;
-                }
-                buttonX += filterButtonWidth + filterButtonSpacing;
-            });
-        }
-        
-        // 表示モード切り替えボタンのクリック判定
-        const modeButtonY = contentY + 60 + 8;
-        const modeButtonHeight = 25;
-        const modeButtonWidth = 80;
-        const modeButtonSpacing = 5;
-        
-        if (y >= modeButtonY && y <= modeButtonY + modeButtonHeight) {
-            const modes = [
-                { key: 'dashboard', label: 'ダッシュボード' },
-                { key: 'charts', label: 'グラフ' },
-                { key: 'details', label: '詳細' }
-            ];
-            
-            let buttonX = this.contentPadding + 80;
-            modes.forEach((mode) => {
-                if (x >= buttonX && x <= buttonX + modeButtonWidth) {
-                    this.changeViewMode(mode.key);
-                    return;
-                }
-                buttonX += modeButtonWidth + modeButtonSpacing;
-            });
-        }
-    }
-
-    /**
-     * 期間フィルターの変更
-     */
-    async changePeriodFilter(newPeriod) {
-        if (this.currentPeriodFilter === newPeriod) return;
-        
-        this.currentPeriodFilter = newPeriod;
-        
-        // StatisticsFilterManagerを使用してフィルター更新
-        if (this.statisticsFilterManager) {
-            try {
-                await this.statisticsFilterManager.setPeriod(newPeriod);
-                
-                // フィルタリングされたデータを取得
-                const filteredData = await this.statisticsFilterManager.getFilteredStatistics();
-                this.statisticsData = filteredData.statistics;
-                
-                console.log(`期間フィルターを${newPeriod}に変更しました`);
-            } catch (error) {
-                console.error('Period filter change failed:', error);
-                this.setErrorMessage('期間フィルターの変更に失敗しました');
-            }
-        }
-    }
-
-    /**
-     * 表示モードの変更
-     */
-    changeViewMode(newMode) {
-        if (this.statisticsViewMode === newMode) return;
-        
-        this.statisticsViewMode = newMode;
-        console.log(`統計表示モードを${newMode}に変更しました`);
-        
-        // 必要に応じて特定のモード用の初期化処理
-        switch (newMode) {
-            case 'dashboard':
-                if (this.statisticsDashboard) {
-                    // ダッシュボードの自動更新を有効化
-                    this.statisticsDashboard.setAutoUpdate(true);
-                }
-                break;
-            case 'charts':
-                // グラフモード特有の初期化
-                break;
-            case 'details':
-                // 詳細モード特有の初期化
-                break;
-        }
-    }
+    // Period filter and view mode methods moved to UserStatisticsRenderer component
     
-    /**
-     * 統計画面のコンポーネント版クリック処理
-     */
-    handleStatisticsClickWithComponent(x, y) {
-        try {
-            if (this.statisticsTabComponent && this.statisticsTabComponent.isActive) {
-                // 座標を調整（コンテンツエリア相対座標に変換）
-                const contentY = this.headerHeight;
-                const relativeX = x;
-                const relativeY = y - contentY;
-                
-                // StatisticsTabコンポーネントにクリック処理を委譲
-                if (this.statisticsTabComponent.handleClick(relativeX, relativeY)) {
-                    return; // クリックが処理された
-                }
-            }
-            
-            // フォールバック: 従来のクリック処理
-            this.handleStatisticsClick(x, y);
-            
-        } catch (error) {
-            console.error('Statistics click handling failed:', error);
-            // フォールバック処理
-            this.handleStatisticsClick(x, y);
-        }
-    }
-
-    /**
-     * 統計データエクスポートダイアログを表示
-     */
-    showStatisticsExportDialog() {
-        this.showingDialog = 'statisticsExport';
-        this.dialogData = {
-            selectedFormat: 'json',
-            includeMetadata: true,
-            includeTimeSeriesData: true,
-            anonymizeData: false
-        };
-    }
-
-    /**
-     * 統計データインポートダイアログを表示
-     */
-    showStatisticsImportDialog() {
-        this.showingDialog = 'statisticsImport';
-        this.dialogData = {
-            selectedFile: null,
-            mergeStrategy: 'append',
-            backupBeforeImport: true,
-            validateData: true
-        };
-    }
-
-    /**
-     * 統計データエクスポートの実行
-     */
-    async performStatisticsExport() {
-        if (!this.statisticsExporter) {
-            this.setErrorMessage('統計エクスポート機能が利用できません');
-            return;
-        }
-
-        try {
-            const { selectedFormat, includeMetadata, includeTimeSeriesData, anonymizeData } = this.dialogData;
-            
-            const exportOptions = {
-                includeMetadata: includeMetadata,
-                includeTimeSeriesData: includeTimeSeriesData,
-                privacySettings: {
-                    excludePersonalInfo: anonymizeData,
-                    anonymizeUserData: anonymizeData
-                }
-            };
-
-            let exportResult;
-            switch (selectedFormat) {
-                case 'json':
-                    exportResult = await this.statisticsExporter.exportToJSON(exportOptions);
-                    break;
-                case 'csv':
-                    exportResult = await this.statisticsExporter.exportToCSV(exportOptions);
-                    break;
-                case 'txt':
-                    exportResult = await this.statisticsExporter.exportToText(exportOptions);
-                    break;
-                default:
-                    throw new Error(`未対応のフォーマット: ${selectedFormat}`);
-            }
-
-            // ファイルダウンロードの実行
-            this.downloadFile(exportResult.data, exportResult.filename, this.getContentType(selectedFormat));
-            
-            this.closeDialog();
-            this.setSuccessMessage(`統計データを${selectedFormat.toUpperCase()}形式でエクスポートしました`);
-
-        } catch (error) {
-            console.error('Statistics export failed:', error);
-            this.setErrorMessage(`統計データのエクスポートに失敗しました: ${error.message}`);
-        }
-    }
-
-    /**
-     * 成功メッセージの設定
-     */
-    setSuccessMessage(message) {
-        console.log('Success:', message);
-        this.errorMessage = `✓ ${message}`;
-        this.errorTimeout = setTimeout(() => {
-            this.errorMessage = null;
-        }, 5000);
-    }
-
-    /**
-     * ファイルダウンロードの実行
-     */
-    downloadFile(content, filename, contentType) {
-        const blob = new Blob([content], { type: contentType });
-        const url = URL.createObjectURL(blob);
-        
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        
-        URL.revokeObjectURL(url);
-    }
-
-    /**
-     * コンテンツタイプの取得
-     */
-    getContentType(format) {
-        switch (format.toLowerCase()) {
-            case 'json':
-                return 'application/json';
-            case 'csv':
-                return 'text/csv';
-            case 'txt':
-                return 'text/plain';
-            default:
-                return 'application/octet-stream';
-        }
-    }
+    // Statistics methods moved to UserStatisticsRenderer and UserDataExporter components
     
-    /**
-     * 新しいコンポーネントシステムでヘルプをレンダリング
-     */
     renderHelpWithComponent(context, y, height) {
-        const canvas = this.gameEngine.canvas;
-        const contentWidth = canvas.width - this.contentPadding * 2;
-        const contentX = this.contentPadding;
-        
-        if (this.helpTabComponent && this.helpTabComponent.isActive) {
-            // 新しいHelpTabコンポーネントでレンダリング
-            this.helpTabComponent.render(context, contentX, y, contentWidth, height);
-        } else {
-            // フォールバック: 古いシステムを使用
-            this.renderHelp(context, y, height);
-        }
+        return this.userHelpIntegration.renderHelpWithComponent(context, y, height, this.helpTabComponent);
     }
     
-    /**
-     * 管理タブコンポーネントでレンダリング
-     */
     renderManagementWithComponent(context, y, height) {
         const canvas = this.gameEngine.canvas;
         const contentWidth = canvas.width - this.contentPadding * 2;
         const contentX = this.contentPadding;
         
         if (this.managementTabComponent && this.managementTabComponent.isActive) {
-            // 新しいManagementTabコンポーネントでレンダリング
             this.managementTabComponent.render(context, contentX, y, contentWidth, height);
         } else {
-            // フォールバック: 古いシステムを使用
             this.renderUserManagement(context, y, height);
         }
     }
     
-    /**
-     * 実績タブコンポーネントでレンダリング
-     */
     renderAchievementsWithComponent(context, y, height) {
-        const canvas = this.gameEngine.canvas;
-        const contentWidth = canvas.width - this.contentPadding * 2;
-        const contentX = this.contentPadding;
-        
-        if (this.achievementsTabComponent && this.achievementsTabComponent.isActive) {
-            // 新しいAchievementsTabコンポーネントでレンダリング
-            this.achievementsTabComponent.render(context, contentX, y, contentWidth, height);
-        } else {
-            // フォールバック: 古いシステムを使用
-            this.renderAchievements(context, y, height);
-        }
+        return this.userAchievementDisplay.renderAchievementsWithComponent(context, y, height, this.achievementsTabComponent);
     }
 
     /**

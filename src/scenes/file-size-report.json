@@ -1,0 +1,390 @@
+{
+  "timestamp": "2025-08-02T00:22:41.097Z",
+  "config": {
+    "WORD_LIMIT": 2500,
+    "TOKEN_LIMIT": 20000,
+    "EXCLUDED_PATTERNS": [
+      "node_modules/**",
+      "dist/**",
+      "**/*.log",
+      "test-results/**",
+      "playwright-report/**",
+      ".git/**",
+      "coverage/**"
+    ],
+    "TARGET_EXTENSIONS": [
+      ".js",
+      ".md"
+    ],
+    "WARNING_THRESHOLD": 2000,
+    "ERROR_THRESHOLD": 2500
+  },
+  "summary": {
+    "totalFiles": 21,
+    "warningFiles": 3,
+    "errorFiles": 5,
+    "averageWordCount": 2197
+  },
+  "results": [
+    {
+      "filePath": "src/scenes/UserInfoScene.js",
+      "relativePath": "UserInfoScene.js",
+      "fileName": "UserInfoScene.js",
+      "wordCount": 11166,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T00:22:41.081Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "UIコンポーネントを別ファイルに分離してください"
+      ]
+    },
+    {
+      "filePath": "src/scenes/HelpScene.js",
+      "relativePath": "HelpScene.js",
+      "fileName": "HelpScene.js",
+      "wordCount": 4466,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T00:22:41.079Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "UIコンポーネントを別ファイルに分離してください"
+      ]
+    },
+    {
+      "filePath": "src/scenes/MainMenuScene.js",
+      "relativePath": "MainMenuScene.js",
+      "fileName": "MainMenuScene.js",
+      "wordCount": 4155,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T00:22:41.080Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "UIコンポーネントを別ファイルに分離してください"
+      ]
+    },
+    {
+      "filePath": "src/scenes/GameScene.js",
+      "relativePath": "GameScene.js",
+      "fileName": "GameScene.js",
+      "wordCount": 3816,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T00:22:41.079Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "UIコンポーネントを別ファイルに分離してください"
+      ]
+    },
+    {
+      "filePath": "src/scenes/StageSelectScene.js",
+      "relativePath": "StageSelectScene.js",
+      "fileName": "StageSelectScene.js",
+      "wordCount": 2544,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T00:22:41.080Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "UIコンポーネントを別ファイルに分離してください"
+      ]
+    },
+    {
+      "filePath": "src/scenes/components/AchievementsTab.js",
+      "relativePath": "components/AchievementsTab.js",
+      "fileName": "AchievementsTab.js",
+      "wordCount": 2403,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T00:22:41.082Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/scenes/components/ManagementTab.js",
+      "relativePath": "components/ManagementTab.js",
+      "fileName": "ManagementTab.js",
+      "wordCount": 2288,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T00:22:41.083Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/scenes/SettingsScene.js",
+      "relativePath": "SettingsScene.js",
+      "fileName": "SettingsScene.js",
+      "wordCount": 2191,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T00:22:41.080Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "UIコンポーネントを別ファイルに分離してください"
+      ]
+    },
+    {
+      "filePath": "src/scenes/components/StatisticsRenderer.js",
+      "relativePath": "components/StatisticsRenderer.js",
+      "fileName": "StatisticsRenderer.js",
+      "wordCount": 1842,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T00:22:41.084Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/scenes/components/HelpTab.js",
+      "relativePath": "components/HelpTab.js",
+      "fileName": "HelpTab.js",
+      "wordCount": 1510,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T00:22:41.082Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/scenes/components/HelpSectionSelector.js",
+      "relativePath": "components/HelpSectionSelector.js",
+      "fileName": "HelpSectionSelector.js",
+      "wordCount": 1449,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T00:22:41.082Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/scenes/components/StatisticsDashboardRenderer.js",
+      "relativePath": "components/StatisticsDashboardRenderer.js",
+      "fileName": "StatisticsDashboardRenderer.js",
+      "wordCount": 1316,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T00:22:41.083Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/scenes/components/StatisticsFilterUI.js",
+      "relativePath": "components/StatisticsFilterUI.js",
+      "fileName": "StatisticsFilterUI.js",
+      "wordCount": 1058,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T00:22:41.084Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/scenes/components/SceneState.js",
+      "relativePath": "components/SceneState.js",
+      "fileName": "SceneState.js",
+      "wordCount": 960,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T00:22:41.083Z",
+      "suggestions": [
+        "UIコンポーネントを別ファイルに分離してください"
+      ]
+    },
+    {
+      "filePath": "src/scenes/components/StatisticsTab.js",
+      "relativePath": "components/StatisticsTab.js",
+      "fileName": "StatisticsTab.js",
+      "wordCount": 895,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T00:22:41.084Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/scenes/ShopScene.js",
+      "relativePath": "ShopScene.js",
+      "fileName": "ShopScene.js",
+      "wordCount": 875,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T00:22:41.080Z",
+      "suggestions": [
+        "UIコンポーネントを別ファイルに分離してください"
+      ]
+    },
+    {
+      "filePath": "src/scenes/components/LeaderboardTab.js",
+      "relativePath": "components/LeaderboardTab.js",
+      "fileName": "LeaderboardTab.js",
+      "wordCount": 866,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T00:22:41.083Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/scenes/components/ChallengesTab.js",
+      "relativePath": "components/ChallengesTab.js",
+      "fileName": "ChallengesTab.js",
+      "wordCount": 859,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T00:22:41.082Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/scenes/components/ComponentEventBus.js",
+      "relativePath": "components/ComponentEventBus.js",
+      "fileName": "ComponentEventBus.js",
+      "wordCount": 685,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T00:22:41.082Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/scenes/GameInputManager.js",
+      "relativePath": "GameInputManager.js",
+      "fileName": "GameInputManager.js",
+      "wordCount": 465,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T00:22:41.078Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/scenes/components/TabComponent.js",
+      "relativePath": "components/TabComponent.js",
+      "fileName": "TabComponent.js",
+      "wordCount": 338,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T00:22:41.084Z",
+      "suggestions": []
+    }
+  ],
+  "warnings": [
+    {
+      "filePath": "src/scenes/SettingsScene.js",
+      "relativePath": "SettingsScene.js",
+      "fileName": "SettingsScene.js",
+      "wordCount": 2191,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T00:22:41.080Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "UIコンポーネントを別ファイルに分離してください"
+      ]
+    },
+    {
+      "filePath": "src/scenes/components/AchievementsTab.js",
+      "relativePath": "components/AchievementsTab.js",
+      "fileName": "AchievementsTab.js",
+      "wordCount": 2403,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T00:22:41.082Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/scenes/components/ManagementTab.js",
+      "relativePath": "components/ManagementTab.js",
+      "fileName": "ManagementTab.js",
+      "wordCount": 2288,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T00:22:41.083Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "filePath": "src/scenes/GameScene.js",
+      "relativePath": "GameScene.js",
+      "fileName": "GameScene.js",
+      "wordCount": 3816,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T00:22:41.079Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "UIコンポーネントを別ファイルに分離してください"
+      ]
+    },
+    {
+      "filePath": "src/scenes/HelpScene.js",
+      "relativePath": "HelpScene.js",
+      "fileName": "HelpScene.js",
+      "wordCount": 4466,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T00:22:41.079Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "UIコンポーネントを別ファイルに分離してください"
+      ]
+    },
+    {
+      "filePath": "src/scenes/MainMenuScene.js",
+      "relativePath": "MainMenuScene.js",
+      "fileName": "MainMenuScene.js",
+      "wordCount": 4155,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T00:22:41.080Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "UIコンポーネントを別ファイルに分離してください"
+      ]
+    },
+    {
+      "filePath": "src/scenes/StageSelectScene.js",
+      "relativePath": "StageSelectScene.js",
+      "fileName": "StageSelectScene.js",
+      "wordCount": 2544,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T00:22:41.080Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "UIコンポーネントを別ファイルに分離してください"
+      ]
+    },
+    {
+      "filePath": "src/scenes/UserInfoScene.js",
+      "relativePath": "UserInfoScene.js",
+      "fileName": "UserInfoScene.js",
+      "wordCount": 11166,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T00:22:41.081Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "UIコンポーネントを別ファイルに分離してください"
+      ]
+    }
+  ]
+}

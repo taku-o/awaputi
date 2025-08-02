@@ -2,11 +2,20 @@
 
 ## 緊急対応フェーズ（最優先）
 
-- [ ] 1. ファイルサイズ監視システムの構築
+- [x] 1. ファイルサイズ監視システムの構築
   - ファイルサイズチェックスクリプトの作成
   - 制限超過ファイルの自動検出機能
   - 分割優先度の自動算出
   - _要件: 3.1, 3.2_
+
+- [x] 1.1. CLAUDE.mdの分割（3,835語 → 865語）
+  - 完了済みプロジェクト情報をdocs/projects/completed-projects.mdに移動
+  - 進行中プロジェクト情報をdocs/projects/active-projects.mdに移動
+  - アーキテクチャ情報をdocs/architecture.mdに移動
+  - 開発ガイドラインをdocs/development-guide.mdに移動
+  - CLAUDE.mdから詳細情報を削除し、参照リンクに置き換え
+  - ファイルサイズ制限ルールをdocs/development-guide.mdに追加
+  - _要件: 1.1, 2.1_
 
 - [ ] 2. UserInfoScene.js の分割（11,260語 → 複数ファイル）
   - UserInfoScene.js のメインコントローラー部分の抽出（< 2,500語）
