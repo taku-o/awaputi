@@ -339,3 +339,40 @@ ChallengesTab.jsでインポートエラーが発生し、ビルドプロセス�
 - **Phase 2**: ChallengeDetailModal基本実装
 - **Phase 3**: モーダル機能拡充（UI、イベント処理）
 - **Phase 4**: テスト・検証・統合
+
+### 大容量ファイル分割プロジェクト（Issue #72対応）
+**目標**: PerformanceOptimizer.js（5,092語）とComparisonEngine.js（5,043語）を2,500語以下に分割し、MCPツールの安定動作を実現
+
+#### 問題の概要
+MCPツール（find_symbol）が25,000トークン制限を超過してエラーになる。大容量ファイル（2,500語超）が原因。対象：
+- PerformanceOptimizer.js（5,092語）
+- ComparisonEngine.js（5,043語）
+
+#### 分割戦略
+1. **Main Controller Pattern**: 元クラスは軽量コントローラーとしてサブコンポーネントを統制
+2. **機能分離**: 関連メソッドを専門クラスにグループ化
+3. **API保持**: 後方互換性のため公開インターフェース維持
+4. **依存注入**: サブコンポーネントをメインコントローラーに注入
+
+#### PerformanceOptimizer分割設計
+- **PerformanceOptimizer.js** (メインコントローラー): 公開API、統制、設定管理
+- **PerformanceAnalyzer.js**: フレーム解析、メトリクス計算、安定性解析
+- **PerformanceAdaptiveController.js**: 適応最適化、品質レベル調整
+- **PerformanceStabilizerIntegrator.js**: 安定化統合、安定性解析
+
+#### ComparisonEngine分割設計
+- **ComparisonEngine.js** (メインコントローラー): 公開API、比較統制、結果集約
+- **StatisticalAnalyzer.js**: 基本統計計算、有意性検定、効果量計算
+- **StageComparisonAnalyzer.js**: ステージ特化比較、難易度調整メトリクス
+- **ComparisonDataProcessor.js**: データ前処理、検証、ヘルパーユーティリティ
+
+#### 実装フェーズ（9大タスク）
+- **Task 1**: プロジェクト準備（ディレクトリ構造、監視ツール）
+- **Task 2**: PerformanceOptimizer分析・準備（4サブタスク）
+- **Task 3**: PerformanceOptimizer分割実装（3サブタスク）
+- **Task 4**: ComparisonEngine分析・準備（4サブタスク）
+- **Task 5**: ComparisonEngine分割実装（3サブタスク）
+- **Task 6**: 統合テスト・検証（3サブタスク）
+- **Task 7**: MCPツール互換性検証（2サブタスク）
+- **Task 8**: ドキュメント・クリーンアップ（2サブタスク）
+- **Task 9**: 最終検証・プロジェクト健全性チェック（2サブタスク）
