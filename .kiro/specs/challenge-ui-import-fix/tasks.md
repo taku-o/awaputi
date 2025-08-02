@@ -5,19 +5,19 @@
   - Verify ChallengeUI instantiation still works correctly
   - _Requirements: 1.1, 2.1, 2.2_
 
-- [ ] 2. Create basic ChallengeDetailModal implementation
+- [x] 2. Create basic ChallengeDetailModal implementation
   - Create new file src/ui/components/ChallengeDetailModal.js
   - Implement basic modal structure with constructor, show, close, cleanup methods
   - Add isVisible getter property
   - _Requirements: 3.1, 3.2_
 
-- [ ] 3. Implement ChallengeDetailModal core functionality
+- [x] 3. Implement ChallengeDetailModal core functionality
   - Add modal DOM structure creation
   - Implement challenge data display logic
   - Add proper event handling for modal interactions
   - _Requirements: 3.1, 3.2_
 
-- [ ] 4. Add ChallengeDetailModal styling and accessibility
+- [x] 4. Add ChallengeDetailModal styling and accessibility
   - Create CSS styles for modal appearance
   - Add ARIA attributes for screen reader support
   - Implement keyboard navigation (Escape to close)
