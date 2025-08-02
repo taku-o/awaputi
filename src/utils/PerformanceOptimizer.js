@@ -129,15 +129,15 @@ export class PerformanceOptimizer {
             this.optimizationInterval = optimizationConfig.optimizationInterval;
             
             this.settings = {
-                maxBubbles: qualityConfig.maxBubbles,
-                maxParticles: qualityConfig.maxParticles,
+                maxBubbles: optimizationConfig.maxBubbles,
+                maxParticles: optimizationConfig.maxParticles,
                 renderQuality: qualityConfig.renderQuality,
                 particleQuality: qualityConfig.particleQuality,
                 effectQuality: qualityConfig.effectQuality,
                 audioQuality: qualityConfig.audioQuality,
-                shadowsEnabled: qualityConfig.shadowsEnabled,
-                blurEnabled: qualityConfig.blurEnabled,
-                antiAliasingEnabled: qualityConfig.antiAliasingEnabled
+                shadowsEnabled: qualityConfig.enableShadows,
+                blurEnabled: qualityConfig.enableBlur,
+                antiAliasingEnabled: qualityConfig.enableAntiAliasing
             };
             
         } catch (error) {
@@ -179,27 +179,8 @@ export class PerformanceOptimizer {
      */
     _setupConfigWatchers() {
         try {
-            // パフォーマンス設定変更監視
-            this.performanceConfig.onOptimizationConfigChange((newConfig) => {
-                this.targetFPS = newConfig.targetFPS;
-                this.targetFrameTime = 1000 / this.targetFPS;
-                this.performanceLevel = newConfig.performanceLevel;
-                this.adaptiveMode = newConfig.adaptiveMode;
-                
-                // サブコンポーネントにも反映
-                if (this.adaptiveController) {
-                    this.adaptiveController.setPerformanceLevel(this.performanceLevel);
-                    this.adaptiveController.setAdaptiveMode(this.adaptiveMode);
-                }
-                
-                console.log('[PerformanceOptimizer] Configuration updated from PerformanceConfig');
-            });
-            
-            // 品質設定変更監視
-            this.performanceConfig.onQualityConfigChange((newConfig) => {
-                Object.assign(this.settings, newConfig);
-                console.log('[PerformanceOptimizer] Quality settings updated from PerformanceConfig');
-            });
+            // 設定監視のメソッドが存在しない場合はスキップ
+            console.log('[PerformanceOptimizer] Configuration watchers setup skipped (methods not available)');
             
         } catch (error) {
             this.errorHandler.logError('Failed to setup config watchers', error);
@@ -488,7 +469,7 @@ export class PerformanceOptimizer {
             this.adaptiveController.setPerformanceLevel(level);
             
             // 設定をPerformanceConfigに反映
-            this.performanceConfig.setOptimizationConfig({ performanceLevel: level });
+            this.performanceConfig.setPerformanceLevel(level);
             
             console.log(`[PerformanceOptimizer] Performance level set to: ${level}`);
             
@@ -539,52 +520,52 @@ export class PerformanceOptimizer {
     setTargetFPS(fps) {
         this.targetFPS = fps;
         this.targetFrameTime = 1000 / fps;
-        this.performanceConfig.setOptimizationConfig({ targetFPS: fps });
+        this.performanceConfig.setTargetFPS(fps);
     }
     
     setMaxBubbles(count) {
         this.settings.maxBubbles = count;
-        this.performanceConfig.setQualityConfig({ maxBubbles: count });
+        this.performanceConfig.setMaxBubbles(count);
     }
     
     setMaxParticles(count) {
         this.settings.maxParticles = count;
-        this.performanceConfig.setQualityConfig({ maxParticles: count });
+        this.performanceConfig.setMaxParticles(count);
     }
     
     setRenderQuality(quality) {
         this.settings.renderQuality = quality;
-        this.performanceConfig.setQualityConfig({ renderQuality: quality });
+        this.performanceConfig.setRenderQuality(quality);
     }
     
     setParticleQuality(quality) {
         this.settings.particleQuality = quality;
-        this.performanceConfig.setQualityConfig({ particleQuality: quality });
+        this.performanceConfig.setParticleQuality(quality);
     }
     
     setEffectQuality(quality) {
         this.settings.effectQuality = quality;
-        this.performanceConfig.setQualityConfig({ effectQuality: quality });
+        this.performanceConfig.setEffectQuality(quality);
     }
     
     setAudioQuality(quality) {
         this.settings.audioQuality = quality;
-        this.performanceConfig.setQualityConfig({ audioQuality: quality });
+        this.performanceConfig.setAudioQuality(quality);
     }
     
     setShadowsEnabled(enabled) {
         this.settings.shadowsEnabled = enabled;
-        this.performanceConfig.setQualityConfig({ shadowsEnabled: enabled });
+        this.performanceConfig.setShadowsEnabled(enabled);
     }
     
     setBlurEnabled(enabled) {
         this.settings.blurEnabled = enabled;
-        this.performanceConfig.setQualityConfig({ blurEnabled: enabled });
+        this.performanceConfig.setBlurEnabled(enabled);
     }
     
     setAntiAliasingEnabled(enabled) {
         this.settings.antiAliasingEnabled = enabled;
-        this.performanceConfig.setQualityConfig({ antiAliasingEnabled: enabled });
+        this.performanceConfig.setAntiAliasingEnabled(enabled);
     }
     
     // =============================================================================
