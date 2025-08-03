@@ -2,12 +2,8 @@
  * Jest setup file for BubblePop game tests
  */
 
-// Jest globals are automatically available
-// No need to import separately in setup
-
-// Canvas mock (replacing jest-canvas-mock)
-HTMLCanvasElement.prototype.getContext = jest.fn();
-global.Path2D = jest.fn();
+// Use jest-canvas-mock for ES Modules compatibility
+import 'jest-canvas-mock';
 
 // Set up global environment variables
 global.__PROD__ = false;
@@ -16,17 +12,17 @@ global.__ANALYTICS_ID__ = null;
 global.webkitAudioContext = global.AudioContext;
 
 // Mock requestAnimationFrame
-global.requestAnimationFrame = jest.fn((callback) => {
+global.requestAnimationFrame = (callback) => {
   return setTimeout(callback, 16); // ~60fps
-});
+};
 
-global.cancelAnimationFrame = jest.fn((id) => {
+global.cancelAnimationFrame = (id) => {
   clearTimeout(id);
-});
+};
 
 // Mock performance API
 global.performance = {
-  now: jest.fn(() => Date.now()),
+  now: () => Date.now(),
   timing: {
     navigationStart: Date.now() - 1000,
     loadEventEnd: Date.now()
@@ -40,63 +36,25 @@ global.performance = {
 
 // Mock localStorage
 const localStorageMock = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  removeItem: jest.fn(),
-  clear: jest.fn(),
+  getItem: () => {},
+  setItem: () => {},
+  removeItem: () => {},
+  clear: () => {},
   length: 0,
-  key: jest.fn()
+  key: () => {}
 };
 global.localStorage = localStorageMock;
 
 // Mock console methods for cleaner test output
 global.console = {
   ...console,
-  log: jest.fn(),
-  warn: jest.fn(),
-  error: jest.fn(),
-  info: jest.fn()
+  log: () => {},
+  warn: () => {},
+  error: () => {},
+  info: () => {}
 };
 
-// Mock Canvas API methods
-HTMLCanvasElement.prototype.getContext = jest.fn((contextType) => {
-  if (contextType === '2d') {
-    return {
-      fillRect: jest.fn(),
-      clearRect: jest.fn(),
-      getImageData: jest.fn(() => ({ data: new Array(4) })),
-      putImageData: jest.fn(),
-      createImageData: jest.fn(() => ({ data: new Array(4) })),
-      setTransform: jest.fn(),
-      drawImage: jest.fn(),
-      save: jest.fn(),
-      restore: jest.fn(),
-      beginPath: jest.fn(),
-      moveTo: jest.fn(),
-      lineTo: jest.fn(),
-      closePath: jest.fn(),
-      stroke: jest.fn(),
-      fill: jest.fn(),
-      arc: jest.fn(),
-      fillText: jest.fn(),
-      measureText: jest.fn(() => ({ width: 0 })),
-      translate: jest.fn(),
-      scale: jest.fn(),
-      rotate: jest.fn(),
-      createLinearGradient: jest.fn(() => ({
-        addColorStop: jest.fn()
-      })),
-      createRadialGradient: jest.fn(() => ({
-        addColorStop: jest.fn()
-      })),
-      canvas: {
-        width: 800,
-        height: 600
-      }
-    };
-  }
-  return null;
-});
+// Canvas mocking is handled by jest-canvas-mock
 
 // Mock touch events
 global.TouchEvent = class TouchEvent extends Event {
@@ -183,7 +141,7 @@ global.createMockTouchEvent = (type, touches = [], options = {}) => {
 
 // Helper function to advance time in tests
 global.advanceTime = (ms) => {
-  jest.advanceTimersByTime(ms);
+  // Timer advancement will be handled by individual test files
 };
 
 // Setup completed - beforeEach/afterEach should be used in individual test files
