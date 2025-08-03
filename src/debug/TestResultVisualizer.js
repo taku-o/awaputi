@@ -1,16 +1,30 @@
 /**
  * Test Result Visualizer
  * テスト結果の可視化とダッシュボード表示システム
+ * 
+ * Main Controller Pattern: Lightweight orchestrator delegating to specialized sub-components
  */
+
+import { TestChartGenerator } from './test-result-visualizer/TestChartGenerator.js';
+import { TestDataVisualizer } from './test-result-visualizer/TestDataVisualizer.js';
 
 export class TestResultVisualizer {
     constructor(testSupportTools) {
         this.testSupportTools = testSupportTools;
+        
+        // Initialize sub-components using dependency injection
+        this.chartGenerator = new TestChartGenerator(this);
+        this.dataVisualizer = new TestDataVisualizer(this);
+        
+        // Core UI components (maintained for backward compatibility)
         this.container = null;
         this.charts = new Map();
         this.isVisible = false;
+        this.currentTestResults = null;
         
         this.initialize();
+        
+        console.log('[TestResultVisualizer] Initialized with Main Controller Pattern');
     }
 
     initialize() {
@@ -410,49 +424,23 @@ export class TestResultVisualizer {
         this.drawCategoryBarChart(results);
     }
 
+    // Delegate quality score calculation to data visualizer
     calculateQualityScore(results) {
-        const successRate = results.results.passed / (results.results.passed + results.results.failed);
-        const performanceScore = (results.summary?.performance?.improvements?.length || 0) - 
-                               (results.summary?.performance?.regressions?.length || 0);
-        const speedScore = Math.min(100, 10000 / results.results.executionTime);
-        
-        const overallScore = (successRate * 60) + (Math.min(10, Math.max(-10, performanceScore)) * 2) + (speedScore * 0.3);
-        return Math.max(0, Math.min(100, Math.round(overallScore)));
+        return this.dataVisualizer.calculateQualityScore(results);
     }
 
+    // Delegate color determination to data visualizer
     getQualityScoreColor(score) {
-        if (score >= 80) return '#28a745';
-        if (score >= 60) return '#ffc107';
-        if (score >= 40) return '#fd7e14';
-        return '#dc3545';
+        return this.dataVisualizer.getQualityColor(score);
     }
 
+    // Delegate chart drawing to chart generator
     drawResultsPieChart(results) {
-        const canvas = document.getElementById('results-pie-chart');
-        const ctx = canvas.getContext('2d');
-        
-        const data = [
-            { label: 'Passed', value: results.results.passed, color: '#28a745' },
-            { label: 'Failed', value: results.results.failed, color: '#dc3545' },
-            { label: 'Skipped', value: results.results.skipped, color: '#6c757d' }
-        ];
-
-        this.drawPieChart(ctx, data, canvas.width, canvas.height);
+        return this.chartGenerator.generateResultsPieChart(results);
     }
 
     drawCategoryBarChart(results) {
-        const canvas = document.getElementById('category-bar-chart');
-        const ctx = canvas.getContext('2d');
-        
-        const categories = results.summary?.categories || {};
-        const data = Object.entries(categories).map(([name, stats]) => ({
-            label: name,
-            passed: stats.passed,
-            failed: stats.failed,
-            warnings: stats.warnings
-        }));
-
-        this.drawStackedBarChart(ctx, data, canvas.width, canvas.height);
+        return this.chartGenerator.generateCategoryBarChart(results);
     }
 
     updatePerformanceTab(results) {
@@ -460,24 +448,10 @@ export class TestResultVisualizer {
         this.updateBenchmarkResults(results);
     }
 
+    // Delegate performance chart drawing to chart generator
     drawPerformanceLineChart() {
-        const canvas = document.getElementById('performance-line-chart');
-        const ctx = canvas.getContext('2d');
-        
         const history = this.testSupportTools.getTestHistory(10);
-        if (history.length === 0) return;
-
-        const data = history.map((session, index) => ({
-            x: index,
-            y: session.executionTime,
-            label: new Date(session.timestamp).toLocaleTimeString()
-        }));
-
-        this.drawLineChart(ctx, data, canvas.width, canvas.height, {
-            title: 'Execution Time Trends',
-            yLabel: 'Time (ms)',
-            color: '#007acc'
-        });
+        return this.chartGenerator.generatePerformanceLineChart(history);
     }
 
     updateBenchmarkResults(results) {
@@ -552,28 +526,9 @@ export class TestResultVisualizer {
         this.updateTrendsInsights(history);
     }
 
+    // Delegate trends chart drawing to chart generator
     drawTrendsLineChart(history) {
-        const canvas = document.getElementById('trends-line-chart');
-        const ctx = canvas.getContext('2d');
-        
-        if (history.length === 0) return;
-
-        const data = history.map((session, index) => {
-            const successRate = session.results.passed / (session.results.passed + session.results.failed) * 100;
-            return {
-                x: index,
-                y: successRate,
-                label: new Date(session.timestamp).toLocaleDateString()
-            };
-        });
-
-        this.drawLineChart(ctx, data, canvas.width, canvas.height, {
-            title: 'Success Rate Trends',
-            yLabel: 'Success Rate (%)',
-            color: '#28a745',
-            yMin: 0,
-            yMax: 100
-        });
+        return this.chartGenerator.generateTrendsLineChart(history);
     }
 
     updateTrendsInsights(history) {
@@ -718,10 +673,9 @@ export class TestResultVisualizer {
         this.renderTestResultsTable(filteredResults);
     }
 
+    // Delegate test status determination to data visualizer
     getTestStatus(test) {
-        if (!test.passed && test.failed) return 'failed';
-        if (test.passed && !test.failed) return 'passed';
-        return 'warning';
+        return this.dataVisualizer.getTestStatus(test);
     }
 
     renderTestResultsTable(results) {
@@ -758,14 +712,9 @@ export class TestResultVisualizer {
         container.innerHTML = tableHTML;
     }
 
+    // Delegate status icon determination to data visualizer
     getStatusIcon(test) {
-        const status = this.getTestStatus(test);
-        switch (status) {
-            case 'passed': return '✅';
-            case 'failed': return '❌';
-            case 'warning': return '⚠️';
-            default: return '❓';
-        }
+        return this.dataVisualizer.getStatusIcon(test);
     }
 
     updateCoverageTab(results) {
@@ -773,21 +722,9 @@ export class TestResultVisualizer {
         this.updateCoverageDetails(results);
     }
 
+    // Delegate coverage chart drawing to chart generator
     drawCoverageBarChart() {
-        const canvas = document.getElementById('coverage-bar-chart');
-        const ctx = canvas.getContext('2d');
-        
-        // モックカバレッジデータ（実際の実装では真のカバレッジデータを使用）
-        const coverageData = [
-            { component: 'GameEngine', coverage: 85 },
-            { component: 'BubbleManager', coverage: 92 },
-            { component: 'ScoreManager', coverage: 78 },
-            { component: 'InputManager', coverage: 88 },
-            { component: 'AudioManager', coverage: 65 },
-            { component: 'EffectManager', coverage: 71 }
-        ];
-
-        this.drawHorizontalBarChart(ctx, coverageData, canvas.width, canvas.height);
+        return this.chartGenerator.generateCoverageBarChart();
     }
 
     updateCoverageDetails(results) {
@@ -844,188 +781,15 @@ export class TestResultVisualizer {
         }
     }
 
-    // チャート描画ユーティリティ
-    drawPieChart(ctx, data, width, height) {
-        const centerX = width / 2;
-        const centerY = height / 2;
-        const radius = Math.min(width, height) / 3;
-        
-        const total = data.reduce((sum, item) => sum + item.value, 0);
-        if (total === 0) return;
-
-        ctx.clearRect(0, 0, width, height);
-        
-        let currentAngle = -Math.PI / 2;
-        
-        data.forEach(item => {
-            if (item.value === 0) return;
-            
-            const sliceAngle = (item.value / total) * 2 * Math.PI;
-            
-            ctx.beginPath();
-            ctx.moveTo(centerX, centerY);
-            ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
-            ctx.closePath();
-            ctx.fillStyle = item.color;
-            ctx.fill();
-            
-            // ラベル描画
-            const labelAngle = currentAngle + sliceAngle / 2;
-            const labelX = centerX + Math.cos(labelAngle) * (radius + 20);
-            const labelY = centerY + Math.sin(labelAngle) * (radius + 20);
-            
-            ctx.fillStyle = 'white';
-            ctx.font = '11px monospace';
-            ctx.textAlign = 'center';
-            ctx.fillText(`${item.label}: ${item.value}`, labelX, labelY);
-            
-            currentAngle += sliceAngle;
-        });
+    // Chart drawing utilities are now handled by chartGenerator component
+    // Simplified methods for backward compatibility
+    
+    visualizeResults(results, options = {}) {
+        return this.dataVisualizer.visualizeResults(results, options);
     }
-
-    drawStackedBarChart(ctx, data, width, height) {
-        if (data.length === 0) return;
-
-        ctx.clearRect(0, 0, width, height);
-        
-        const margin = 40;
-        const chartWidth = width - margin * 2;
-        const chartHeight = height - margin * 2;
-        const barWidth = chartWidth / data.length * 0.8;
-        
-        const maxValue = Math.max(...data.map(item => item.passed + item.failed + item.warnings));
-        
-        data.forEach((item, index) => {
-            const x = margin + index * (chartWidth / data.length) + (chartWidth / data.length - barWidth) / 2;
-            const total = item.passed + item.failed + item.warnings;
-            
-            if (total === 0) return;
-            
-            let y = margin + chartHeight;
-            
-            // Failed (bottom)
-            if (item.failed > 0) {
-                const failedHeight = (item.failed / maxValue) * chartHeight;
-                ctx.fillStyle = '#dc3545';
-                ctx.fillRect(x, y - failedHeight, barWidth, failedHeight);
-                y -= failedHeight;
-            }
-            
-            // Warnings (middle)
-            if (item.warnings > 0) {
-                const warningsHeight = (item.warnings / maxValue) * chartHeight;
-                ctx.fillStyle = '#ffc107';
-                ctx.fillRect(x, y - warningsHeight, barWidth, warningsHeight);
-                y -= warningsHeight;
-            }
-            
-            // Passed (top)
-            if (item.passed > 0) {
-                const passedHeight = (item.passed / maxValue) * chartHeight;
-                ctx.fillStyle = '#28a745';
-                ctx.fillRect(x, y - passedHeight, barWidth, passedHeight);
-            }
-            
-            // Label
-            ctx.fillStyle = 'white';
-            ctx.font = '10px monospace';
-            ctx.textAlign = 'center';
-            ctx.fillText(item.label, x + barWidth / 2, margin + chartHeight + 15);
-        });
-    }
-
-    drawLineChart(ctx, data, width, height, options = {}) {
-        if (data.length === 0) return;
-
-        ctx.clearRect(0, 0, width, height);
-        
-        const margin = 40;
-        const chartWidth = width - margin * 2;
-        const chartHeight = height - margin * 2;
-        
-        const minY = options.yMin !== undefined ? options.yMin : Math.min(...data.map(p => p.y));
-        const maxY = options.yMax !== undefined ? options.yMax : Math.max(...data.map(p => p.y));
-        const rangeY = maxY - minY || 1;
-        
-        // 軸描画
-        ctx.strokeStyle = '#666';
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(margin, margin);
-        ctx.lineTo(margin, margin + chartHeight);
-        ctx.lineTo(margin + chartWidth, margin + chartHeight);
-        ctx.stroke();
-        
-        // データ線描画
-        ctx.strokeStyle = options.color || '#007acc';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        
-        data.forEach((point, index) => {
-            const x = margin + (index / (data.length - 1)) * chartWidth;
-            const y = margin + chartHeight - ((point.y - minY) / rangeY) * chartHeight;
-            
-            if (index === 0) {
-                ctx.moveTo(x, y);
-            } else {
-                ctx.lineTo(x, y);
-            }
-        });
-        
-        ctx.stroke();
-        
-        // データポイント描画
-        ctx.fillStyle = options.color || '#007acc';
-        data.forEach((point, index) => {
-            const x = margin + (index / (data.length - 1)) * chartWidth;
-            const y = margin + chartHeight - ((point.y - minY) / rangeY) * chartHeight;
-            
-            ctx.beginPath();
-            ctx.arc(x, y, 3, 0, Math.PI * 2);
-            ctx.fill();
-        });
-        
-        // Y軸ラベル
-        ctx.fillStyle = 'white';
-        ctx.font = '10px monospace';
-        ctx.textAlign = 'right';
-        for (let i = 0; i <= 5; i++) {
-            const value = minY + (rangeY * i / 5);
-            const y = margin + chartHeight - (i / 5) * chartHeight;
-            ctx.fillText(value.toFixed(0), margin - 5, y + 3);
-        }
-    }
-
-    drawHorizontalBarChart(ctx, data, width, height) {
-        if (data.length === 0) return;
-
-        ctx.clearRect(0, 0, width, height);
-        
-        const margin = 80;
-        const chartWidth = width - margin * 2;
-        const chartHeight = height - margin * 2;
-        const barHeight = chartHeight / data.length * 0.8;
-        
-        data.forEach((item, index) => {
-            const y = margin + index * (chartHeight / data.length) + (chartHeight / data.length - barHeight) / 2;
-            const barWidth = (item.coverage / 100) * chartWidth;
-            
-            // バー描画
-            const color = item.coverage >= 80 ? '#28a745' : 
-                         item.coverage >= 60 ? '#ffc107' : '#dc3545';
-            ctx.fillStyle = color;
-            ctx.fillRect(margin, y, barWidth, barHeight);
-            
-            // ラベル描画
-            ctx.fillStyle = 'white';
-            ctx.font = '11px monospace';
-            ctx.textAlign = 'right';
-            ctx.fillText(item.component, margin - 5, y + barHeight / 2 + 3);
-            
-            // パーセンテージ表示
-            ctx.textAlign = 'left';
-            ctx.fillText(`${item.coverage}%`, margin + barWidth + 5, y + barHeight / 2 + 3);
-        });
+    
+    customizeChartColors(colors) {
+        return this.chartGenerator.customizeColors(colors);
     }
 
     // エクスポート機能
@@ -1068,11 +832,38 @@ export class TestResultVisualizer {
         });
     }
 
+    /**
+     * Configure visualizer components
+     * @param {object} config - Configuration options
+     */
+    configure(config) {
+        if (config.chartGenerator) {
+            this.chartGenerator.configure(config.chartGenerator);
+        }
+        
+        if (config.dataVisualizer) {
+            this.dataVisualizer.configure(config.dataVisualizer);
+        }
+        
+        console.log('[TestResultVisualizer] Configuration updated');
+    }
+
     destroy() {
         if (this.container && this.container.parentNode) {
             this.container.parentNode.removeChild(this.container);
         }
         this.charts.clear();
+        
+        // Destroy sub-components
+        if (this.chartGenerator) {
+            this.chartGenerator.destroy();
+        }
+        
+        if (this.dataVisualizer) {
+            this.dataVisualizer.destroy();
+        }
+        
+        console.log('[TestResultVisualizer] Test result visualizer destroyed');
     }
 }
 
