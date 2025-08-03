@@ -2,13 +2,12 @@
  * Jest setup file for BubblePop game tests
  */
 
-import 'jest-canvas-mock';
+// Jest globals are automatically available
+// No need to import separately in setup
 
-// Import jest globals for ES modules
-import { jest } from '@jest/globals';
-
-// Make jest available globally
-global.jest = jest;
+// Canvas mock (replacing jest-canvas-mock)
+HTMLCanvasElement.prototype.getContext = jest.fn();
+global.Path2D = jest.fn();
 
 // Set up global environment variables
 global.__PROD__ = false;
@@ -187,18 +186,4 @@ global.advanceTime = (ms) => {
   jest.advanceTimersByTime(ms);
 };
 
-// Setup fake timers by default
-beforeEach(() => {
-  // Reset localStorage mock
-  localStorageMock.getItem.mockReturnValue(null);
-});
-
-afterEach(() => {
-  // Clean up timers if they were used in the test
-  try {
-    jest.runOnlyPendingTimers();
-    jest.useRealTimers();
-  } catch (e) {
-    // Ignore if no timers were set
-  }
-});
+// Setup completed - beforeEach/afterEach should be used in individual test files

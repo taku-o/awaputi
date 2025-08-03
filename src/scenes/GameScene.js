@@ -1,97 +1,51 @@
+/**
+ * GameScene - ゲームシーンメインコントローラー
+ * 
+ * Main Controller Patternにより、専門化されたコンポーネントを統制します。
+ * ゲーム状態管理、UI管理、視覚化、パフォーマンス監視を統合して管理します。
+ */
+
 import { Scene } from '../core/Scene.js';
 import { GameInputManager } from './GameInputManager.js';
 import { FloatingTextManager } from '../ui/FloatingTextManager.js';
+import { GameStateManager } from './game-scene/GameStateManager.js';
+import { GameUIManager } from './game-scene/GameUIManager.js';
+import { GameVisualizationManager } from './game-scene/GameVisualizationManager.js';
+import { GamePerformanceMonitor } from './game-scene/GamePerformanceMonitor.js';
 
-/**
- * ゲームシーン
- */
 export class GameScene extends Scene {
     constructor(gameEngine) {
         super(gameEngine);
-        this.isPaused = false;
+        
+        // 基本コンポーネント
         this.inputManager = new GameInputManager(gameEngine.canvas, this);
         this.floatingTextManager = new FloatingTextManager();
         
-        // ビジュアルフィードバック用
-        this.dragVisualization = {
-            isActive: false,
-            startPosition: { x: 0, y: 0 },
-            currentPosition: { x: 0, y: 0 },
-            targetBubble: null,
-            forceIndicator: 0,
-            particles: [],
-            duration: 0,
-            intensity: 1
-        };
+        // 専門化されたコンポーネントを初期化
+        this.stateManager = new GameStateManager(gameEngine);
+        this.uiManager = new GameUIManager(gameEngine, this.floatingTextManager);
+        this.visualizationManager = new GameVisualizationManager(gameEngine);
+        this.performanceMonitor = new GamePerformanceMonitor(gameEngine);
         
-        // UI状態管理
-        this.uiState = {
-            showingDetailedInfo: false,
-            lastComboDisplayTime: 0,
-            comboFlashTimer: 0,
-            hpFlashTimer: 0,
-            timeWarningActive: false,
-            scoreAnimationTimer: 0,
-            lastScore: 0
-        };
-        
-        // パフォーマンス表示用
-        this.performanceMetrics = {
-            fps: 60,
-            frameCount: 0,
-            lastFpsUpdate: Date.now(),
-            bubbleCount: 0,
-            showMetrics: false
-        };
+        // ポーズ状態の委譲
+        this.isPaused = false;
     }
     
     /**
      * シーン開始時の処理
      */
     enter() {
-        // ゲーム状態をリセット
-        this.gameEngine.playerData.reset();
-        this.gameEngine.scoreManager.resetCombo();
-        this.gameEngine.bubbleManager.clearAllBubbles();
-        this.gameEngine.isGameOver = false;
-        this.isPaused = false;
+        // 各コンポーネントの初期化
+        this.stateManager.startGame();
+        this.uiManager.resetUIState();
+        this.visualizationManager.resetDragVisualization();
+        this.performanceMonitor.startMonitoring();
         
-        // UI状態をリセット
-        this.uiState = {
-            showingDetailedInfo: false,
-            lastComboDisplayTime: 0,
-            comboFlashTimer: 0,
-            hpFlashTimer: 0,
-            timeWarningActive: false,
-            scoreAnimationTimer: 0,
-            lastScore: 0
-        };
-        
-        // フローティングテキストをクリア
-        this.floatingTextManager.clear();
-        
-        // アイテム効果を適用
-        this.applyItemEffects();
-        
-        // 特殊効果をリセット
-        this.gameEngine.bonusTimeRemaining = 0;
-        this.gameEngine.timeStopRemaining = 0;
-        this.gameEngine.scoreMultiplier = 1;
-        this.gameEngine.screenShakeRemaining = 0;
-        this.gameEngine.screenShakeIntensity = 0;
-        this.gameEngine.inputDisabled = false;
-        
-        // ドラッグビジュアライゼーションをリセット
-        this.resetDragVisualization();
+        // 同期状態の更新
+        this.isPaused = this.stateManager.isPaused;
         
         // ゲーム開始メッセージ
-        const canvas = this.gameEngine.canvas;
-        this.floatingTextManager.addAnimatedText(
-            canvas.width / 2, 
-            canvas.height / 2, 
-            'GAME START!', 
-            'explosive'
-        );
+        this.uiManager.showGameStartMessage();
         
         console.log('Game scene started');
     }
@@ -100,34 +54,12 @@ export class GameScene extends Scene {
      * シーン終了時の処理
      */
     exit() {
-        this.resetDragVisualization();
-        this.floatingTextManager.clear();
-        console.log('Game scene exited');
-    }
-    
-    /**
-     * アイテム効果を適用
-     */
-    applyItemEffects() {
-        const itemManager = this.gameEngine.itemManager;
+        this.stateManager.endGame();
+        this.uiManager.resetUIState();
+        this.visualizationManager.resetDragVisualization();
+        this.performanceMonitor.stopMonitoring();
         
-        // スコア倍率アップアイテム
-        itemManager.ownedItems.forEach(itemId => {
-            const item = itemManager.getItem(itemId);
-            if (item && item.effect.type === 'scoreMultiplier') {
-                this.gameEngine.scoreManager.addScoreMultiplier(item.effect.value);
-                console.log(`Score multiplier applied: ${item.effect.value}x`);
-                
-                // アイテム効果の通知
-                const canvas = this.gameEngine.canvas;
-                this.floatingTextManager.addEffectText(
-                    canvas.width / 2,
-                    100,
-                    `Score x${item.effect.value}`,
-                    'bonus'
-                );
-            }
-        });
+        console.log('Game scene exited');
     }
     
     /**
@@ -135,1396 +67,271 @@ export class GameScene extends Scene {
      */
     update(deltaTime) {
         // パフォーマンス測定
-        this.updatePerformanceMetrics(deltaTime);
+        this.performanceMonitor.updatePerformanceMetrics(deltaTime);
+        
+        // ポーズ状態の同期
+        this.isPaused = this.stateManager.isPaused;
         
         if (this.isPaused || this.gameEngine.isGameOver) {
-            // ポーズ中でもフローティングテキストは更新
-            this.floatingTextManager.update(deltaTime);
+            // ポーズ中でもUI更新は継続
+            this.uiManager.updateUIState(deltaTime);
             return;
         }
         
-        // 時間経過（時間停止中は除く）
-        if (!this.gameEngine.isTimeStopActive()) {
-            this.gameEngine.timeRemaining -= deltaTime;
-            
-            if (this.gameEngine.timeRemaining <= 0) {
-                this.gameEngine.timeRemaining = 0;
-                this.gameOver();
-                return;
-            }
-            
-            // 時間警告
-            this.checkTimeWarning();
-        }
+        // ゲーム状態の更新
+        this.stateManager.updateGameState(deltaTime);
         
         // UI状態の更新
-        this.updateUIState(deltaTime);
+        this.uiManager.updateUIState(deltaTime);
         
         // 泡の更新
         this.gameEngine.bubbleManager.update(deltaTime);
         
         // ドラッグビジュアライゼーションの更新
-        this.updateDragVisualization(deltaTime);
+        this.visualizationManager.updateDragVisualization(deltaTime);
         
-        // フローティングテキストの更新
-        this.floatingTextManager.update(deltaTime);
+        // 画面エフェクトの更新
+        this.visualizationManager.updateScreenEffects(deltaTime);
         
         // スコア変化の監視
-        this.checkScoreChange();
+        this.handleScoreChange();
         
-        // ゲームオーバー判定
-        if (this.gameEngine.playerData.currentHP <= 0) {
-            this.gameOver();
+        // 時間警告のチェック
+        this.handleTimeWarnings();
+    }
+    
+    /**
+     * スコア変化の処理
+     */
+    handleScoreChange() {
+        if (this.stateManager.checkScoreChange()) {
+            const newScore = this.gameEngine.playerData.currentScore;
+            this.uiManager.onScoreChanged(newScore);
         }
     }
     
     /**
-     * パフォーマンス測定の更新
+     * 時間警告の処理
      */
-    updatePerformanceMetrics(deltaTime) {
-        this.performanceMetrics.frameCount++;
-        const now = Date.now();
-        
-        if (now - this.performanceMetrics.lastFpsUpdate >= 1000) {
-            this.performanceMetrics.fps = this.performanceMetrics.frameCount;
-            this.performanceMetrics.frameCount = 0;
-            this.performanceMetrics.lastFpsUpdate = now;
-            this.performanceMetrics.bubbleCount = this.gameEngine.bubbleManager.getBubbleCount();
+    handleTimeWarnings() {
+        const warnings = this.stateManager.checkTimeWarning();
+        if (warnings.timeWarning || warnings.urgentWarning) {
+            this.uiManager.showTimeWarnings(warnings);
         }
-    }
-    
-    /**
-     * UI状態の更新
-     */
-    updateUIState(deltaTime) {
-        // コンボフラッシュタイマー
-        if (this.uiState.comboFlashTimer > 0) {
-            this.uiState.comboFlashTimer -= deltaTime;
-        }
-        
-        // HPフラッシュタイマー
-        if (this.uiState.hpFlashTimer > 0) {
-            this.uiState.hpFlashTimer -= deltaTime;
-        }
-        
-        // スコアアニメーションタイマー
-        if (this.uiState.scoreAnimationTimer > 0) {
-            this.uiState.scoreAnimationTimer -= deltaTime;
-        }
-    }
-    
-    /**
-     * 時間警告チェック
-     */
-    checkTimeWarning() {
-        const timeRemaining = this.gameEngine.timeRemaining;
-        
-        // 30秒以下で警告
-        if (timeRemaining <= 30000 && !this.uiState.timeWarningActive) {
-            this.uiState.timeWarningActive = true;
-            const canvas = this.gameEngine.canvas;
-            this.floatingTextManager.addEffectText(
-                canvas.width / 2,
-                canvas.height / 2 - 50,
-                'TIME WARNING!',
-                'shock'
-            );
-        }
-        
-        // 10秒以下で緊急警告
-        if (timeRemaining <= 10000 && timeRemaining > 9000) {
-            const canvas = this.gameEngine.canvas;
-            this.floatingTextManager.addEffectText(
-                canvas.width / 2,
-                canvas.height / 2,
-                'HURRY UP!',
-                'explosive'
-            );
-        }
-    }
-    
-    /**
-     * スコア変化チェック
-     */
-    checkScoreChange() {
-        const currentScore = this.gameEngine.playerData.currentScore;
-        if (currentScore !== this.uiState.lastScore) {
-            this.uiState.scoreAnimationTimer = 500; // 0.5秒間アニメーション
-            this.uiState.lastScore = currentScore;
-        }
-    }
-    
-    /**
-     * スコア獲得時の処理
-     */
-    onScoreGained(score, x, y, multiplier = 1) {
-        // フローティングテキストでスコア表示
-        this.floatingTextManager.addScoreText(x, y, score, multiplier);
-        
-        // コンボチェック
-        const combo = this.gameEngine.scoreManager.combo;
-        if (combo > 1) {
-            this.onComboAchieved(combo, x, y + 30);
-        }
-    }
-    
-    /**
-     * コンボ達成時の処理
-     */
-    onComboAchieved(combo, x, y) {
-        this.floatingTextManager.addComboText(x, y, combo);
-        this.uiState.comboFlashTimer = 1000;
-        this.uiState.lastComboDisplayTime = Date.now();
-    }
-    
-    /**
-     * ダメージ受信時の処理
-     */
-    onDamageTaken(damage, source = 'unknown') {
-        const canvas = this.gameEngine.canvas;
-        const playerData = this.gameEngine.playerData;
-        
-        // フローティングテキストでダメージ表示
-        this.floatingTextManager.addDamageText(
-            canvas.width / 2,
-            canvas.height / 2,
-            damage
-        );
-        
-        // 新しいダメージエフェクト
-        this.gameEngine.createDamageEffect(damage, source);
-        
-        // HPフラッシュ効果
-        this.uiState.hpFlashTimer = 1000;
-        
-        // 低HP警告
-        if (playerData.currentHP <= playerData.maxHP * 0.25) {
-            this.floatingTextManager.addEffectText(
-                canvas.width / 2,
-                canvas.height / 2 + 50,
-                'LOW HP!',
-                'shock'
-            );
-        }
-    }
-    
-    /**
-     * 回復時の処理
-     */
-    onHealed(heal) {
-        const canvas = this.gameEngine.canvas;
-        this.floatingTextManager.addHealText(
-            canvas.width / 2,
-            canvas.height / 2,
-            heal
-        );
-        
-        // 新しい回復エフェクト
-        this.gameEngine.createHealEffect(heal);
-    }
-    
-    /**
-     * 特殊効果発動時の処理
-     */
-    onSpecialEffect(effectType, x, y) {
-        const effectMessages = {
-            rainbow: 'BONUS TIME!',
-            clock: 'TIME STOP!',
-            electric: 'SHOCKED!',
-            spiky: 'CHAIN REACTION!',
-            poison: 'POISONED!',
-            pink: 'HEALED!'
-        };
-        
-        const message = effectMessages[effectType] || 'SPECIAL EFFECT!';;
-        const type = effectType === 'rainbow' ? 'bonus' : 
-                    effectType === 'clock' ? 'timeStop' :
-                    effectType === 'electric' ? 'shock' :
-                    effectType === 'spiky' ? 'chain' : 'normal';
-        
-        this.floatingTextManager.addEffectText(x, y, message, type);
-        
-        // 追加の視覚・音響効果は既にGameEngineの各start*メソッドで処理済み
     }
     
     /**
      * 描画処理
      */
     render(context) {
-        const canvas = this.gameEngine.canvas;
+        const renderStartTime = performance.now();
         
-        // 背景グラデーション
-        this.renderBackground(context);
+        // 背景描画
+        this.visualizationManager.renderBackground(context);
         
         // 泡を描画
         this.gameEngine.bubbleManager.render(context);
         
         // ドラッグビジュアライゼーションを描画
-        this.renderDragVisualization(context);
+        this.visualizationManager.renderDragVisualization(context);
         
         // フローティングテキストを描画
-        this.floatingTextManager.render(context);
+        this.uiManager.renderFloatingText(context);
         
         // UI を描画
-        this.renderEnhancedUI(context);
+        this.uiManager.renderEnhancedUI(context);
         
         // パフォーマンス情報（デバッグ用）
-        if (this.performanceMetrics.showMetrics) {
-            this.renderPerformanceMetrics(context);
-        }
+        this.performanceMonitor.renderPerformanceMetrics(context);
         
         // ゲームオーバー画面
         if (this.gameEngine.isGameOver) {
-            this.renderGameOver(context);
+            this.visualizationManager.renderGameOver(context);
         }
         
         // ポーズ画面
         if (this.isPaused) {
-            this.renderPause(context);
+            this.visualizationManager.renderPause(context);
         }
+        
+        // 描画時間の測定
+        const renderEndTime = performance.now();
+        this.performanceMonitor.updateAverageRenderTime(renderEndTime - renderStartTime);
+    }
+    
+    // ===== デリゲートメソッド（外部インターフェース互換性） =====
+    
+    /**
+     * ゲームオーバー処理
+     */
+    gameOver() {
+        this.stateManager.triggerGameOver();
     }
     
     /**
-     * 背景グラデーション描画
+     * ダメージ処理
+     * @param {number} damage - ダメージ量
      */
-    renderBackground(context) {
-        const canvas = this.gameEngine.canvas;
-        
-        // 時間に基づくグラデーション
-        const timeRatio = this.gameEngine.timeRemaining / 300000; // 5分
-        const topColor = timeRatio > 0.5 ? '#000033' : timeRatio > 0.25 ? '#330000' : '#660000';
-        const bottomColor = timeRatio > 0.5 ? '#000011' : timeRatio > 0.25 ? '#110000' : '#220000';
-        
-        const gradient = context.createLinearGradient(0, 0, 0, canvas.height);
-        gradient.addColorStop(0, topColor);
-        gradient.addColorStop(1, bottomColor);
-        
-        context.fillStyle = gradient;
-        context.fillRect(0, 0, canvas.width, canvas.height);
-        
-        // ボーナスタイム時のオーバーレイ
-        if (this.gameEngine.bonusTimeRemaining > 0) {
-            const alpha = 0.1 + 0.1 * Math.sin(Date.now() * 0.01);
-            context.fillStyle = `rgba(255, 215, 0, ${alpha})`;
-            context.fillRect(0, 0, canvas.width, canvas.height);
-        }
-        
-        // 時間停止時のオーバーレイ
-        if (this.gameEngine.timeStopRemaining > 0) {
-            context.fillStyle = 'rgba(0, 100, 200, 0.1)';
-            context.fillRect(0, 0, canvas.width, canvas.height);
-        }
+    onPlayerDamaged(damage) {
+        this.stateManager.onPlayerDamaged(damage);
+        this.uiManager.onPlayerDamaged(damage);
     }
     
     /**
-     * 改良されたUI描画
+     * 回復処理
+     * @param {number} heal - 回復量
      */
-    renderEnhancedUI(context) {
-        const canvas = this.gameEngine.canvas;
-        const playerData = this.gameEngine.playerData;
+    onHealed(heal) {
+        const actualHeal = this.stateManager.onPlayerHealed(heal);
+        this.uiManager.onPlayerHealed(actualHeal);
         
-        context.save();
-        
-        // スコア（アニメーション付き）
-        const scoreScale = this.uiState.scoreAnimationTimer > 0 ? 1.2 : 1;
-        context.save();
-        context.scale(scoreScale, scoreScale);
-        context.fillStyle = '#FFFFFF';
-        context.font = 'bold 28px Arial';
-        context.textAlign = 'left';
-        context.textBaseline = 'top';
-        context.shadowColor = 'rgba(0, 0, 0, 0.8)';
-        context.shadowOffsetX = 2;
-        context.shadowOffsetY = 2;
-        context.shadowBlur = 4;
-        context.fillText(`スコア: ${playerData.currentScore.toLocaleString()}`, 20 / scoreScale, 20 / scoreScale);
-        context.restore();
-        
-        // 残り時間（色分け）
-        const minutes = Math.floor(this.gameEngine.timeRemaining / 60000);
-        const seconds = Math.floor((this.gameEngine.timeRemaining % 60000) / 1000);
-        const timeColor = this.gameEngine.timeRemaining > 30000 ? '#FFFFFF' : 
-                         this.gameEngine.timeRemaining > 10000 ? '#FFFF00' : '#FF0000';
-        
-        context.fillStyle = timeColor;
-        context.font = 'bold 24px Arial';
-        if (this.gameEngine.timeRemaining <= 10000) {
-            // 緊急時は点滅
-            const flash = Math.sin(Date.now() * 0.01) > 0;
-            if (flash) {
-                context.fillText(`時間: ${minutes}:${seconds.toString().padStart(2, '0')}`, 20, 60);
-            }
-        } else {
-            context.fillText(`時間: ${minutes}:${seconds.toString().padStart(2, '0')}`, 20, 60);
-        }
-        
-        // HP表示（改良版）
-        const hpRatio = playerData.currentHP / playerData.maxHP;
-        const hpFlash = this.uiState.hpFlashTimer > 0;
-        const hpColor = hpFlash ? '#FFFFFF' : 
-                       hpRatio > 0.5 ? '#00FF00' : 
-                       hpRatio > 0.25 ? '#FFFF00' : '#FF0000';
-        
-        context.fillStyle = hpColor;
-        context.font = 'bold 22px Arial';
-        context.fillText(`HP: ${playerData.currentHP}/${playerData.maxHP}`, 20, 100);
-        
-        // HPバー（グラデーション）
-        const hpBarX = 20;
-        const hpBarY = 130;
-        const hpBarWidth = 250;
-        const hpBarHeight = 25;
-        
-        // HPバー背景
-        context.fillStyle = 'rgba(255, 255, 255, 0.2)';
-        context.fillRect(hpBarX, hpBarY, hpBarWidth, hpBarHeight);
-        
-        // HPバーグラデーション
-        const hpGradient = context.createLinearGradient(hpBarX, 0, hpBarX + hpBarWidth, 0);
-        if (hpRatio > 0.5) {
-            hpGradient.addColorStop(0, '#00FF00');
-            hpGradient.addColorStop(1, '#88FF88');
-        } else if (hpRatio > 0.25) {
-            hpGradient.addColorStop(0, '#FFFF00');
-            hpGradient.addColorStop(1, '#FFAA00');
-        } else {
-            hpGradient.addColorStop(0, '#FF0000');
-            hpGradient.addColorStop(1, '#FF4444');
-        }
-        
-        context.fillStyle = hpGradient;
-        context.fillRect(hpBarX, hpBarY, hpBarWidth * hpRatio, hpBarHeight);
-        
-        // HPバー枠線
-        context.strokeStyle = '#FFFFFF';
-        context.lineWidth = 2;
-        context.strokeRect(hpBarX, hpBarY, hpBarWidth, hpBarHeight);
-        
-        // コンボ表示（改良版）
-        const combo = this.gameEngine.scoreManager.combo;
-        if (combo > 1) {
-            const comboFlash = this.uiState.comboFlashTimer > 0;
-            const comboScale = comboFlash ? 1.5 : 1;
-            const comboAlpha = Math.sin(Date.now() * 0.02) * 0.3 + 0.7;
-            
-            context.save();
-            context.globalAlpha = comboAlpha;
-            context.scale(comboScale, comboScale);
-            
-            // コンボテキストのグラデーション
-            const comboGradient = context.createLinearGradient(0, 0, 0, 50);
-            comboGradient.addColorStop(0, '#FFD700');
-            comboGradient.addColorStop(1, '#FF8C00');
-            
-            context.fillStyle = comboGradient;
-            context.font = `bold ${36 + Math.min(combo * 2, 20)}px Arial`;
-            context.textAlign = 'center';
-            context.strokeStyle = '#000000';
-            context.lineWidth = 3;
-            context.strokeText(`${combo} COMBO!`, (canvas.width / 2) / comboScale, 120 / comboScale);
-            context.fillText(`${combo} COMBO!`, (canvas.width / 2) / comboScale, 120 / comboScale);
-            context.restore();
-        }
-        
-        // ボーナス情報
-        if (this.gameEngine.bonusTimeRemaining > 0) {
-            const bonusSeconds = Math.ceil(this.gameEngine.bonusTimeRemaining / 1000);
-            context.fillStyle = '#FFD700';
-            context.font = 'bold 20px Arial';
-            context.textAlign = 'center';
-            context.fillText(`BONUS: ${bonusSeconds}s (x${this.gameEngine.scoreMultiplier})`, canvas.width / 2, 160);
-        }
-        
-        // 時間停止情報
-        if (this.gameEngine.timeStopRemaining > 0) {
-            const stopSeconds = Math.ceil(this.gameEngine.timeStopRemaining / 1000);
-            context.fillStyle = '#00AAFF';
-            context.font = 'bold 18px Arial';
-            context.textAlign = 'center';
-            context.fillText(`TIME STOP: ${stopSeconds}s`, canvas.width / 2, 180);
-        }
-        
-        // 改良されたギブアップボタン
-        this.renderGiveUpButton(context);
-        
-        // 詳細情報ボタン
-        this.renderInfoButton(context);
-        
-        // 詳細情報パネル
-        if (this.uiState.showingDetailedInfo) {
-            this.renderDetailedInfoPanel(context);
-        }
-        
-        context.restore();
+        // 新しい回復エフェクト
+        this.gameEngine.createHealEffect(actualHeal);
     }
     
     /**
-     * ギブアップボタン描画
+     * 特殊効果発動時の処理
+     * @param {string} effectType - エフェクトタイプ
+     * @param {number} x - X座標
+     * @param {number} y - Y座標
      */
-    renderGiveUpButton(context) {
-        const canvas = this.gameEngine.canvas;
-        const buttonX = canvas.width - 130;
-        const buttonY = 20;
-        const buttonWidth = 110;
-        const buttonHeight = 45;
-        
-        // ボタングラデーション
-        const buttonGradient = context.createLinearGradient(buttonX, buttonY, buttonX, buttonY + buttonHeight);
-        buttonGradient.addColorStop(0, '#CC0000');
-        buttonGradient.addColorStop(1, '#880000');
-        
-        context.fillStyle = buttonGradient;
-        context.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
-        
-        // ボタン枠線
-        context.strokeStyle = '#FFFFFF';
-        context.lineWidth = 2;
-        context.strokeRect(buttonX, buttonY, buttonWidth, buttonHeight);
-        
-        // ボタンテキスト
-        context.fillStyle = '#FFFFFF';
-        context.font = 'bold 16px Arial';
-        context.textAlign = 'center';
-        context.textBaseline = 'middle';
-        context.shadowColor = 'rgba(0, 0, 0, 0.8)';
-        context.shadowOffsetX = 1;
-        context.shadowOffsetY = 1;
-        context.shadowBlur = 2;
-        context.fillText('ギブアップ', buttonX + buttonWidth / 2, buttonY + buttonHeight / 2);
+    onSpecialEffect(effectType, x, y) {
+        this.stateManager.onSpecialEffect(effectType, x, y);
+        this.uiManager.onSpecialEffect(effectType, x, y);
     }
     
     /**
-     * 情報ボタン描画
+     * ドラッグ開始
+     * @param {number} x - 開始X座標
+     * @param {number} y - 開始Y座標
+     * @param {Object} targetBubble - 対象の泡
      */
-    renderInfoButton(context) {
-        const canvas = this.gameEngine.canvas;
-        const buttonX = canvas.width - 60;
-        const buttonY = 80;
-        const buttonSize = 40;
-        
-        // 円形ボタン
-        context.fillStyle = this.uiState.showingDetailedInfo ? '#0066CC' : '#333333';
-        context.beginPath();
-        context.arc(buttonX + buttonSize / 2, buttonY + buttonSize / 2, buttonSize / 2, 0, Math.PI * 2);
-        context.fill();
-        
-        context.strokeStyle = '#FFFFFF';
-        context.lineWidth = 2;
-        context.stroke();
-        
-        // 情報アイコン
-        context.fillStyle = '#FFFFFF';
-        context.font = 'bold 20px Arial';
-        context.textAlign = 'center';
-        context.textBaseline = 'middle';
-        context.fillText('i', buttonX + buttonSize / 2, buttonY + buttonSize / 2);
+    startDrag(x, y, targetBubble = null) {
+        this.visualizationManager.startDrag(x, y, targetBubble);
     }
     
     /**
-     * 詳細情報パネル描画
+     * ドラッグ更新
+     * @param {number} x - 現在のX座標
+     * @param {number} y - 現在のY座標
      */
-    renderDetailedInfoPanel(context) {
-        const canvas = this.gameEngine.canvas;
-        const panelX = canvas.width - 300;
-        const panelY = 130;
-        const panelWidth = 280;
-        const panelHeight = 200;
-        
-        // パネル背景
-        context.fillStyle = 'rgba(0, 0, 0, 0.8)';
-        context.fillRect(panelX, panelY, panelWidth, panelHeight);
-        
-        context.strokeStyle = '#FFFFFF';
-        context.lineWidth = 1;
-        context.strokeRect(panelX, panelY, panelWidth, panelHeight);
-        
-        // パネル内容
-        context.fillStyle = '#FFFFFF';
-        context.font = '14px Arial';
-        context.textAlign = 'left';
-        context.textBaseline = 'top';
-        
-        let infoY = panelY + 15;
-        const lineHeight = 18;
-        
-        const bubbleCount = this.gameEngine.bubbleManager.getBubbleCount();
-        const stageConfig = this.gameEngine.stageManager.getCurrentStage();
-        const stageName = stageConfig ? stageConfig.name : 'Unknown';
-        
-        context.fillText(`ステージ: ${stageName}`, panelX + 10, infoY);
-        infoY += lineHeight;
-        context.fillText(`泡数: ${bubbleCount}/${this.gameEngine.bubbleManager.maxBubbles}`, panelX + 10, infoY);
-        infoY += lineHeight;
-        context.fillText(`総AP: ${this.gameEngine.playerData.ap.toLocaleString()}`, panelX + 10, infoY);
-        infoY += lineHeight;
-        context.fillText(`総TAP: ${this.gameEngine.playerData.tap.toLocaleString()}`, panelX + 10, infoY);
-        infoY += lineHeight;
-        
-        if (this.performanceMetrics.showMetrics) {
-            infoY += 10;
-            context.fillText(`FPS: ${this.performanceMetrics.fps}`, panelX + 10, infoY);
-            infoY += lineHeight;
-            context.fillText(`テキスト数: ${this.floatingTextManager.getTextCount()}`, panelX + 10, infoY);
-        }
+    updateDrag(x, y) {
+        this.visualizationManager.updateDrag(x, y);
     }
     
     /**
-     * パフォーマンス指標描画
+     * ドラッグ終了
      */
-    renderPerformanceMetrics(context) {
-        const canvas = this.gameEngine.canvas;
-        
-        context.save();
-        context.fillStyle = 'rgba(0, 0, 0, 0.7)';
-        context.fillRect(canvas.width - 150, canvas.height - 100, 140, 90);
-        
-        context.fillStyle = '#00FF00';
-        context.font = '12px monospace';
-        context.textAlign = 'left';
-        
-        let y = canvas.height - 85;
-        context.fillText(`FPS: ${this.performanceMetrics.fps}`, canvas.width - 140, y);
-        y += 15;
-        context.fillText(`Bubbles: ${this.performanceMetrics.bubbleCount}`, canvas.width - 140, y);
-        y += 15;
-        context.fillText(`Texts: ${this.floatingTextManager.getTextCount()}`, canvas.width - 140, y);
-        y += 15;
-        context.fillText(`Particles: ${this.dragVisualization.particles.length}`, canvas.width - 140, y);
-        
-        context.restore();
+    endDrag() {
+        this.visualizationManager.endDrag();
     }
     
     /**
-     * ドラッグビジュアライゼーションを描画
+     * ポーズ状態の切り替え
      */
-    renderDragVisualization(context) {
-        if (!this.dragVisualization.isActive) return;
-        
-        context.save();
-        
-        const start = this.dragVisualization.startPosition;
-        const current = this.dragVisualization.currentPosition;
-        
-        // ドラッグライン
-        const dx = current.x - start.x;
-        const dy = current.y - start.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        
-        if (distance > 10) {
-            // ライン色を力の強さで変更
-            const forceRatio = Math.min(distance / 200, 1);
-            const red = Math.floor(255 * forceRatio);
-            const green = Math.floor(255 * (1 - forceRatio));
-            
-            context.strokeStyle = `rgb(${red}, ${green}, 0)`;
-            context.lineWidth = 3 + forceRatio * 3;
-            context.setLineDash([5, 5]);
-            
-            context.beginPath();
-            context.moveTo(start.x, start.y);
-            context.lineTo(current.x, current.y);
-            context.stroke();
-            
-            // 矢印ヘッド
-            const angle = Math.atan2(dy, dx);
-            const arrowLength = 15;
-            const arrowAngle = Math.PI / 6;
-            
-            context.setLineDash([]);
-            context.lineWidth = 2;
-            context.beginPath();
-            context.moveTo(current.x, current.y);
-            context.lineTo(
-                current.x - arrowLength * Math.cos(angle - arrowAngle),
-                current.y - arrowLength * Math.sin(angle - arrowAngle)
-            );
-            context.moveTo(current.x, current.y);
-            context.lineTo(
-                current.x - arrowLength * Math.cos(angle + arrowAngle),
-                current.y - arrowLength * Math.sin(angle + arrowAngle)
-            );
-            context.stroke();
-            
-            // フォースインジケーター
-            context.fillStyle = `rgba(${red}, ${green}, 0, 0.9)`;
-            context.font = 'bold 16px Arial';
-            context.textAlign = 'center';
-            context.shadowColor = 'rgba(0, 0, 0, 0.8)';
-            context.shadowOffsetX = 1;
-            context.shadowOffsetY = 1;
-            context.shadowBlur = 2;
-            context.fillText(
-                `${this.dragVisualization.forceIndicator.toFixed(1)}x`,
-                current.x,
-                current.y - 25
-            );
-        }
-        
-        // ターゲット泡のハイライト
-        if (this.dragVisualization.targetBubble) {
-            const bubble = this.dragVisualization.targetBubble;
-            context.strokeStyle = '#FFFF00';
-            context.lineWidth = 4;
-            context.setLineDash([4, 4]);
-            context.beginPath();
-            context.arc(bubble.x, bubble.y, bubble.size + 8, 0, Math.PI * 2);
-            context.stroke();
-        }
-        
-        // パーティクル効果
-        this.dragVisualization.particles.forEach(particle => {
-            context.globalAlpha = particle.alpha;
-            context.fillStyle = particle.color;
-            context.beginPath();
-            context.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-            context.fill();
-        });
-        
-        context.restore();
+    togglePause() {
+        this.stateManager.togglePause();
+        this.isPaused = this.stateManager.isPaused;
     }
     
     /**
-     * パーティクルを生成
+     * ポーズ設定
+     * @param {boolean} paused - ポーズ状態
      */
-    createDragParticles(x, y, force) {
-        const particleCount = Math.floor(force / 2);
-        
-        for (let i = 0; i < particleCount; i++) {
-            this.dragVisualization.particles.push({
-                x: x + (Math.random() - 0.5) * 20,
-                y: y + (Math.random() - 0.5) * 20,
-                vx: (Math.random() - 0.5) * 100,
-                vy: (Math.random() - 0.5) * 100,
-                size: 2 + Math.random() * 3,
-                color: `hsl(${Math.random() * 60 + 30}, 100%, 50%)`,
-                life: 1000,
-                maxLife: 1000,
-                alpha: 1
-            });
-        }
+    setPaused(paused) {
+        this.stateManager.setPaused(paused);
+        this.isPaused = this.stateManager.isPaused;
     }
     
     /**
-     * ドラッグビジュアライゼーションをリセット
+     * 画面震動の開始
+     * @param {number} duration - 持続時間
+     * @param {number} intensity - 強度
      */
-    resetDragVisualization() {
-        this.dragVisualization.isActive = false;
-        this.dragVisualization.targetBubble = null;
-        this.dragVisualization.particles = [];
-        this.dragVisualization.forceIndicator = 0;
-        this.dragVisualization.duration = 0;
-        this.dragVisualization.intensity = 1;
+    startScreenShake(duration, intensity) {
+        this.visualizationManager.startScreenShake(duration, intensity);
     }
     
     /**
-     * ドラッグビジュアライゼーションを開始
+     * パフォーマンス表示の切り替え
      */
-    startDragVisualization(startPos, targetBubble) {
-        this.dragVisualization.isActive = true;
-        this.dragVisualization.startPosition = { ...startPos };
-        this.dragVisualization.currentPosition = { ...startPos };
-        this.dragVisualization.targetBubble = targetBubble;
-    }
-    
-    /**
-     * スワイプエフェクトを作成
-     */
-    createSwipeEffect(startPos, endPos, direction) {
-        const particleCount = 20;
-        const pathLength = Math.sqrt(
-            Math.pow(endPos.x - startPos.x, 2) + 
-            Math.pow(endPos.y - startPos.y, 2)
-        );
-        
-        for (let i = 0; i < particleCount; i++) {
-            const t = i / (particleCount - 1);
-            const x = startPos.x + (endPos.x - startPos.x) * t;
-            const y = startPos.y + (endPos.y - startPos.y) * t;
-            
-            this.dragVisualization.particles.push({
-                x: x + (Math.random() - 0.5) * 10,
-                y: y + (Math.random() - 0.5) * 10,
-                vx: (Math.random() - 0.5) * 50,
-                vy: (Math.random() - 0.5) * 50,
-                size: 3 + Math.random() * 4,
-                color: `hsl(${200 + Math.random() * 60}, 100%, 50%)`,
-                life: 800,
-                maxLife: 800,
-                alpha: 1
-            });
-        }
-        
-        // フローティングテキスト
-        this.floatingTextManager.addAnimatedText(
-            (startPos.x + endPos.x) / 2,
-            (startPos.y + endPos.y) / 2,
-            'SWIPE!',
-            'special'
-        );
-    }
-    
-    /**
-     * ピンチエフェクトを作成
-     */
-    createPinchEffect(center, scale) {
-        const particleCount = 30;
-        const angleStep = (Math.PI * 2) / particleCount;
-        
-        for (let i = 0; i < particleCount; i++) {
-            const angle = i * angleStep;
-            const radius = 50 * scale;
-            const x = center.x + Math.cos(angle) * radius;
-            const y = center.y + Math.sin(angle) * radius;
-            
-            this.dragVisualization.particles.push({
-                x: x,
-                y: y,
-                vx: Math.cos(angle) * 100 * (scale - 1),
-                vy: Math.sin(angle) * 100 * (scale - 1),
-                size: 2 + Math.random() * 3,
-                color: `hsl(${280 + Math.random() * 40}, 100%, 50%)`,
-                life: 1000,
-                maxLife: 1000,
-                alpha: 1
-            });
-        }
-    }
-    
-    /**
-     * 放射状バーストエフェクトを作成
-     */
-    createRadialBurstEffect(position, radius) {
-        const particleCount = 40;
-        const angleStep = (Math.PI * 2) / particleCount;
-        
-        for (let i = 0; i < particleCount; i++) {
-            const angle = i * angleStep + Math.random() * 0.2;
-            const speed = 150 + Math.random() * 100;
-            
-            this.dragVisualization.particles.push({
-                x: position.x,
-                y: position.y,
-                vx: Math.cos(angle) * speed,
-                vy: Math.sin(angle) * speed,
-                size: 4 + Math.random() * 4,
-                color: `hsl(${Math.random() * 360}, 100%, 50%)`,
-                life: 1200,
-                maxLife: 1200,
-                alpha: 1
-            });
-        }
-        
-        // フローティングテキスト
-        this.floatingTextManager.addAnimatedText(
-            position.x,
-            position.y - 30,
-            'BURST!',
-            'combo'
-        );
-    }
-    
-    /**
-     * 長押しエフェクトを作成
-     */
-    createLongPressEffect(position) {
-        const rings = 3;
-        
-        for (let ring = 0; ring < rings; ring++) {
-            const delay = ring * 200;
-            
-            setTimeout(() => {
-                const particleCount = 20;
-                const angleStep = (Math.PI * 2) / particleCount;
-                const radius = 30 + ring * 20;
-                
-                for (let i = 0; i < particleCount; i++) {
-                    const angle = i * angleStep;
-                    const x = position.x + Math.cos(angle) * radius;
-                    const y = position.y + Math.sin(angle) * radius;
-                    
-                    this.dragVisualization.particles.push({
-                        x: x,
-                        y: y,
-                        vx: 0,
-                        vy: -20,
-                        size: 3 + Math.random() * 2,
-                        color: `hsl(${60 + ring * 30}, 100%, 50%)`,
-                        life: 1500,
-                        maxLife: 1500,
-                        alpha: 1
-                    });
-                }
-            }, delay);
-        }
-        
-        // フローティングテキスト
-        this.floatingTextManager.addAnimatedText(
-            position.x,
-            position.y - 40,
-            'POWER!',
-            'special'
-        );
-    }
-    
-    /**
-     * ドラッグビジュアライゼーションを更新（時間経過）
-     */
-    updateDragVisualization(deltaTime) {
-        if (!this.dragVisualization.isActive) {
-            return;
-        }
-        
-        // ドラッグの持続時間による視覚効果の調整
-        this.dragVisualization.duration += deltaTime;
-        
-        // 長時間ドラッグしている場合の視覚的なフィードバック
-        if (this.dragVisualization.duration > 2000) { // 2秒以上
-            this.dragVisualization.intensity = Math.min(2, this.dragVisualization.intensity + deltaTime / 1000);
-        }
-    }
-    
-    /**
-     * ドラッグビジュアライゼーションを更新
-     */
-    updateDragVisualizationPosition(currentPos) {
-        if (this.dragVisualization.isActive) {
-            this.dragVisualization.currentPosition = { ...currentPos };
-        }
-    }
-    
-    /**
-     * ゲームオーバー画面を描画
-     */
-    renderGameOver(context) {
-        const canvas = this.gameEngine.canvas;
-        
-        // 半透明オーバーレイ
-        context.save();
-        context.fillStyle = 'rgba(0,0,0,0.8)';
-        context.fillRect(0, 0, canvas.width, canvas.height);
-        
-        // ゲームオーバーテキスト
-        const gameOverGradient = context.createLinearGradient(0, 150, 0, 250);
-        gameOverGradient.addColorStop(0, '#FF6666');
-        gameOverGradient.addColorStop(1, '#CC0000');
-        
-        context.fillStyle = gameOverGradient;
-        context.font = 'bold 48px Arial';
-        context.textAlign = 'center';
-        context.textBaseline = 'middle';
-        context.shadowColor = 'rgba(0, 0, 0, 0.8)';
-        context.shadowOffsetX = 3;
-        context.shadowOffsetY = 3;
-        context.shadowBlur = 6;
-        context.fillText('GAME OVER', canvas.width / 2, 200);
-        
-        // 最終スコア
-        context.fillStyle = '#FFFFFF';
-        context.font = 'bold 32px Arial';
-        context.fillText(`最終スコア: ${this.gameEngine.playerData.currentScore.toLocaleString()}`, canvas.width / 2, 280);
-        
-        // 獲得AP
-        const earnedAP = Math.floor(this.gameEngine.playerData.currentScore / 100);
-        context.font = '24px Arial';
-        context.fillStyle = '#FFFF99';
-        context.fillText(`獲得AP: ${earnedAP}`, canvas.width / 2, 320);
-        
-        // 操作説明
-        context.font = '20px Arial';
-        context.fillStyle = '#CCCCCC';
-        context.fillText('クリックまたはEnterでメニューに戻る', canvas.width / 2, 380);
-        
-        context.restore();
-    }
-    
-    /**
-     * ポーズ画面を描画
-     */
-    renderPause(context) {
-        const canvas = this.gameEngine.canvas;
-        
-        // 半透明オーバーレイ
-        context.save();
-        context.fillStyle = 'rgba(0,0,0,0.5)';
-        context.fillRect(0, 0, canvas.width, canvas.height);
-        
-        // ポーズテキスト
-        context.fillStyle = '#FFFFFF';
-        context.font = 'bold 48px Arial';
-        context.textAlign = 'center';
-        context.textBaseline = 'middle';
-        context.shadowColor = 'rgba(0, 0, 0, 0.8)';
-        context.shadowOffsetX = 2;
-        context.shadowOffsetY = 2;
-        context.shadowBlur = 4;
-        context.fillText('PAUSE', canvas.width / 2, canvas.height / 2);
-        
-        // 再開方法
-        context.font = '20px Arial';
-        context.fillStyle = '#CCCCCC';
-        context.fillText('ESCまたはPキーで再開', canvas.width / 2, canvas.height / 2 + 50);
-        
-        context.restore();
-    }
-    
-    /**
-     * 入力処理
-     */
-    handleInput(event) {
-        if (this.gameEngine.isGameOver) {
-            if (event.type === 'click' || (event.type === 'keydown' && event.code === 'Enter')) {
-                // メニューに戻る
-                this.sceneManager.switchScene('menu');
-                return;
-            }
-        }
-        
-        if (event.type === 'keydown') {
-            switch (event.code) {
-                case 'Escape':
-                    this.togglePause();
-                    break;
-                case 'KeyP':
-                    this.togglePause();
-                    break;
-                case 'KeyI':
-                    this.toggleDetailedInfo();
-                    break;
-                case 'KeyF':
-                    this.togglePerformanceMetrics();
-                    break;
-                case 'KeyH':
-                    this.gameEngine.sceneManager.switchScene('help');
-                    break;
-            }
-        } else if (event.type === 'click') {
-            // UI要素のクリック判定
-            this.handleUIClick(event);
-        }
-        
-        // InputManagerに委譲
-        this.inputManager.handleInput?.(event);
-    }
-    
-    /**
-     * UIクリック処理
-     */
-    handleUIClick(event) {
-        const canvas = this.gameEngine.canvas;
-        const rect = canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
-        
-        // ギブアップボタン
-        const giveUpButtonX = canvas.width - 130;
-        const giveUpButtonY = 20;
-        const giveUpButtonWidth = 110;
-        const giveUpButtonHeight = 45;
-        
-        if (x >= giveUpButtonX && x <= giveUpButtonX + giveUpButtonWidth && 
-            y >= giveUpButtonY && y <= giveUpButtonY + giveUpButtonHeight) {
-            this.gameOver();
-            return;
-        }
-        
-        // 情報ボタン
-        const infoButtonX = canvas.width - 60;
-        const infoButtonY = 80;
-        const infoButtonSize = 40;
-        
-        const distToInfo = Math.sqrt(
-            Math.pow(x - (infoButtonX + infoButtonSize / 2), 2) + 
-            Math.pow(y - (infoButtonY + infoButtonSize / 2), 2)
-        );
-        
-        if (distToInfo <= infoButtonSize / 2) {
-            this.toggleDetailedInfo();
-            return;
-        }
+    togglePerformanceDisplay() {
+        this.performanceMonitor.toggleMetricsDisplay();
     }
     
     /**
      * 詳細情報表示の切り替え
      */
     toggleDetailedInfo() {
-        this.uiState.showingDetailedInfo = !this.uiState.showingDetailedInfo;
+        this.uiManager.toggleDetailedInfo();
     }
     
-    /**
-     * パフォーマンス表示の切り替え
-     */
-    togglePerformanceMetrics() {
-        this.performanceMetrics.showMetrics = !this.performanceMetrics.showMetrics;
-    }
+    // ===== 統計・デバッグ情報 =====
     
     /**
-     * ポーズ切り替え
+     * ゲーム統計の取得
+     * @returns {Object} 統計情報
      */
-    togglePause() {
-        if (!this.gameEngine.isGameOver) {
-            this.isPaused = !this.isPaused;
-            console.log(this.isPaused ? 'Game paused' : 'Game resumed');
-        }
-    }
-    
-    /**
-     * ゲームオーバー処理
-     */
-    async gameOver() {
-        this.gameEngine.isGameOver = true;
-        
-        // スコアをAPとTAPに変換
-        const finalScore = this.gameEngine.playerData.currentScore;
-        const earnedAP = Math.floor(finalScore / 100); // 100点で1AP
-        
-        this.gameEngine.playerData.ap += earnedAP;
-        this.gameEngine.playerData.tap += earnedAP;
-        
-        // ハイスコア更新
-        const currentStage = this.gameEngine.stageManager.getCurrentStage();
-        let isNewHighScore = false;
-        
-        if (currentStage) {
-            const stageId = currentStage.id;
-            const currentHighScore = this.gameEngine.playerData.highScores[stageId];
-            
-            if (!currentHighScore || finalScore > currentHighScore) {
-                this.gameEngine.playerData.highScores[stageId] = {
-                    score: finalScore,
-                    date: new Date().toISOString()
-                };
-                isNewHighScore = true;
-                console.log(`New high score for ${stageId}: ${finalScore}`);
-                
-                // SEOシステムにハイスコア更新を通知
-                this.gameEngine.emit('highScoreUpdated', {
-                    score: finalScore,
-                    stageId: stageId,
-                    previousScore: currentHighScore,
-                    timestamp: Date.now()
-                });
-                
-                // 新記録通知
-                this.floatingTextManager.addAnimatedText(
-                    this.gameEngine.canvas.width / 2,
-                    this.gameEngine.canvas.height / 2 - 100,
-                    'NEW RECORD!',
-                    'explosive'
-                );
-            }
-        }
-        
-        // データを保存
-        this.gameEngine.playerData.save();
-        
-        // リーダーボードにスコアを記録
-        if (this.gameEngine.leaderboardManager) {
-            try {
-                await this.gameEngine.leaderboardManager.recordScore(
-                    this.gameEngine.playerData.playerId || 'anonymous',
-                    this.gameEngine.playerData.username || 'プレイヤー',
-                    finalScore,
-                    currentStage?.id,
-                    {
-                        combo: this.gameEngine.scoreManager?.getMaxCombo() || 0,
-                        accuracy: this.calculateAccuracy(),
-                        duration: this.getGameTime(),
-                        bubbleTypes: this.getBubbleTypeStats()
-                    }
-                );
-            } catch (error) {
-                console.warn('[GameScene] リーダーボード記録エラー:', error);
-            }
-        }
-        
-        // ゲーム終了データの準備
-        const gameEndData = this.prepareGameEndData(finalScore, isNewHighScore, currentStage);
-        
-        // ソーシャル共有システムに通知
-        this.triggerSharePrompt(gameEndData);
-        
-        console.log(`Game over. Final score: ${finalScore}, Earned AP: ${earnedAP}, High Score: ${isNewHighScore}`);
-    }
-
-    /**
-     * ゲーム終了データの準備
-     */
-    prepareGameEndData(finalScore, isNewHighScore, currentStage) {
-        const stats = this.gameEngine.statisticsManager || null;
-        const accuracy = stats ? stats.getAccuracy() : 0;
-        const maxCombo = stats ? stats.getMaxCombo() : 0;
-        const bubblesPopped = stats ? stats.getBubblesPopped() : 0;
-        
+    getGameStats() {
         return {
-            score: finalScore,
-            isHighScore: isNewHighScore,
-            stage: currentStage ? currentStage.id : 'unknown',
-            stageType: currentStage ? currentStage.type : 'normal',
-            accuracy: accuracy,
-            combo: maxCombo,
-            bubblesPopped: bubblesPopped,
-            playTime: this.gameEngine.getGameTime ? this.gameEngine.getGameTime() : 0,
-            timestamp: Date.now()
+            state: this.stateManager.getGameStats(),
+            ui: this.uiManager.getUIState(),
+            visualization: this.visualizationManager.getVisualizationStats(),
+            performance: this.performanceMonitor.getPerformanceStats()
         };
     }
     
     /**
-     * 共有プロンプトのトリガー
+     * パフォーマンス推奨事項の取得
+     * @returns {Array} 推奨事項配列
      */
-    async triggerSharePrompt(gameEndData) {
-        try {
-            // SocialSharingManagerの取得
-            const socialManager = this.gameEngine.socialSharingManager;
-            if (!socialManager || !socialManager.settings.enabled) {
-                this.log('ソーシャル共有システムが無効、またはSocialSharingManagerが見つかりません');
-                return;
-            }
-            
-            // 共有設定の確認
-            const shareSettings = this.getShareSettings();
-            
-            // ハイスコア達成時の自動プロンプト
-            if (gameEndData.isHighScore && shareSettings.shareOnHighScore) {
-                await this.showHighScoreSharePrompt(gameEndData, socialManager);
-            }
-            // 通常のゲーム終了時プロンプト（設定に応じて）
-            else if (shareSettings.shareOnGameEnd && this.shouldShowSharePrompt(gameEndData)) {
-                await this.showGameEndSharePrompt(gameEndData, socialManager);
-            }
-            
-        } catch (error) {
-            console.error('共有プロンプトエラー:', error);
-            // エラーハンドリング（ゲーム進行を妨げない）
-            if (this.gameEngine.errorHandler) {
-                this.gameEngine.errorHandler.handleError(error, 'GameScene', {
-                    context: 'triggerSharePrompt',
-                    gameEndData
-                });
-            }
-        }
+    getPerformanceRecommendations() {
+        return this.performanceMonitor.getPerformanceRecommendations();
     }
     
     /**
-     * ハイスコア達成時の共有プロンプト表示
+     * デバッグ情報の取得
+     * @returns {Object} デバッグ情報
      */
-    async showHighScoreSharePrompt(gameEndData, socialManager) {
-        try {
-            this.log('ハイスコア達成！共有プロンプトを表示します', gameEndData);
-            
-            // ハイスコア達成メッセージの生成
-            const shareMessage = this.generateHighScoreMessage(gameEndData);
-            
-            // 共有データの構築
-            const shareData = {
-                ...gameEndData,
-                title: shareMessage.title,
-                text: shareMessage.text,
-                hashtags: shareMessage.hashtags,
-                url: window.location.href
-            };
-            
-            // 共有プロンプト表示
-            await socialManager.onHighScore(shareData);
-            
-            // 共有設定を更新（最後の共有時刻）
-            this.updateLastShareTime();
-            
-        } catch (error) {
-            console.error('ハイスコア共有プロンプトエラー:', error);
-        }
-    }
-    
-    /**
-     * 通常のゲーム終了時共有プロンプト表示
-     */
-    async showGameEndSharePrompt(gameEndData, socialManager) {
-        try {
-            this.log('ゲーム終了時の共有プロンプトを表示します', gameEndData);
-            
-            // 通常の共有メッセージの生成
-            const shareMessage = this.generateGameEndMessage(gameEndData);
-            
-            // 共有データの構築
-            const shareData = {
-                ...gameEndData,
-                title: shareMessage.title,
-                text: shareMessage.text,
-                hashtags: shareMessage.hashtags,
-                url: window.location.href
-            };
-            
-            // 共有プロンプト表示
-            await socialManager.onGameEnd(shareData);
-            
-            // 共有設定を更新
-            this.updateLastShareTime();
-            
-        } catch (error) {
-            console.error('ゲーム終了共有プロンプトエラー:', error);
-        }
-    }
-    
-    /**
-     * ハイスコア達成メッセージの生成
-     */
-    generateHighScoreMessage(gameEndData) {
-        const score = gameEndData.score.toLocaleString();
-        const stage = gameEndData.stage;
-        
+    getDebugInfo() {
         return {
-            title: `新記録達成！ BubblePop`,
-            text: `🎉 新記録達成！${score}点を記録しました！ステージ: ${stage}`,
-            hashtags: ['BubblePop', 'NewRecord', 'HighScore', 'Gaming']
+            scene: 'GameScene',
+            isPaused: this.isPaused,
+            isGameOver: this.gameEngine.isGameOver,
+            components: {
+                stateManager: this.stateManager.getDebugInfo(),
+                uiManager: this.uiManager.getUIState(),
+                visualizationManager: this.visualizationManager.getVisualizationStats(),
+                performanceMonitor: this.performanceMonitor.getPerformanceStats()
+            },
+            gameStats: this.getGameStats()
         };
     }
     
     /**
-     * ゲーム終了メッセージの生成
+     * 設定の更新
+     * @param {Object} settings - 設定オブジェクト
      */
-    generateGameEndMessage(gameEndData) {
-        const score = gameEndData.score.toLocaleString();
-        const accuracy = Math.round(gameEndData.accuracy);
-        const combo = gameEndData.combo;
-        
-        let text = `🎮 BubblePopで${score}点を獲得！`;
-        
-        if (accuracy > 80) {
-            text += ` 精度${accuracy}%の素晴らしいプレイ！`;
+    updateSettings(settings) {
+        if (settings.performance) {
+            this.performanceMonitor.updateSettings(settings.performance);
         }
         
-        if (combo > 10) {
-            text += ` 最大コンボ${combo}連鎖達成！`;
-        }
-        
-        return {
-            title: `BubblePop - ${score}点獲得`,
-            text: text,
-            hashtags: ['BubblePop', 'Gaming', 'Score']
-        };
+        console.log('[GameScene] Settings updated');
     }
     
     /**
-     * 共有プロンプト表示の判定
+     * コンポーネント状態の検証
+     * @returns {boolean} 全コンポーネントが正常かどうか
      */
-    shouldShowSharePrompt(gameEndData) {
-        const shareSettings = this.getShareSettings();
+    validateComponents() {
+        const validations = [
+            this.stateManager.validateGameState(),
+            !!this.uiManager,
+            !!this.visualizationManager,
+            !!this.performanceMonitor
+        ];
         
-        // 最小スコア閾値チェック
-        if (shareSettings.minScoreThreshold && gameEndData.score < shareSettings.minScoreThreshold) {
-            return false;
-        }
-        
-        // 最後の共有からの時間チェック（スパム防止）
-        const lastShareTime = shareSettings.lastShareTime || 0;
-        const timeSinceLastShare = Date.now() - lastShareTime;
-        const minInterval = shareSettings.shareInterval || 5 * 60 * 1000; // 5分
-        
-        if (timeSinceLastShare < minInterval) {
-            return false;
-        }
-        
-        return true;
-    }
-    
-    /**
-     * 共有設定の取得
-     */
-    getShareSettings() {
-        try {
-            const settings = localStorage.getItem('bubblepop_share_settings');
-            const defaultSettings = {
-                shareOnHighScore: true,
-                shareOnGameEnd: false,
-                minScoreThreshold: 1000,
-                shareInterval: 5 * 60 * 1000, // 5分
-                lastShareTime: 0,
-                preferredPlatforms: ['web-share', 'twitter', 'facebook'],
-                autoPrompt: true
-            };
-            
-            if (settings) {
-                return { ...defaultSettings, ...JSON.parse(settings) };
-            }
-            
-            return defaultSettings;
-        } catch (error) {
-            console.error('共有設定の読み込みエラー:', error);
-            return {
-                shareOnHighScore: true,
-                shareOnGameEnd: false,
-                minScoreThreshold: 1000,
-                shareInterval: 5 * 60 * 1000,
-                lastShareTime: 0,
-                preferredPlatforms: ['web-share', 'twitter', 'facebook'],
-                autoPrompt: true
-            };
-        }
-    }
-    
-    /**
-     * 共有設定の保存
-     */
-    saveShareSettings(settings) {
-        try {
-            const currentSettings = this.getShareSettings();
-            const updatedSettings = { ...currentSettings, ...settings };
-            localStorage.setItem('bubblepop_share_settings', JSON.stringify(updatedSettings));
-            this.log('共有設定を保存しました', updatedSettings);
-        } catch (error) {
-            console.error('共有設定の保存エラー:', error);
-        }
-    }
-    
-    /**
-     * 最終共有時刻の更新
-     */
-    updateLastShareTime() {
-        this.saveShareSettings({ lastShareTime: Date.now() });
-    }
-
-    /**
-     * ゲーム精度を計算
-     */
-    calculateAccuracy() {
-        const totalClicks = this.gameEngine.scoreManager?.getTotalClicks() || 0;
-        const successfulClicks = this.gameEngine.scoreManager?.getSuccessfulClicks() || 0;
-        
-        if (totalClicks === 0) return 0;
-        return Math.round((successfulClicks / totalClicks) * 100);
-    }
-    
-    /**
-     * バブルタイプ別統計を取得
-     */
-    getBubbleTypeStats() {
-        const bubbleManager = this.gameEngine.bubbleManager;
-        if (!bubbleManager || !bubbleManager.getTypeStats) {
-            return {};
-        }
-        
-        return bubbleManager.getTypeStats();
-    }
-    
-    /**
-     * ログ記録
-     */
-    log(message, data = null) {
-        console.log(`[GameScene] ${message}`, data || '');
-    }
-
-    
-    /**
-     * ゲーム経過時間の取得
-     */
-    getGameTime() {
-        // GameEngineから経過時間を取得、または現在の残り時間から逆算
-        if (this.gameEngine.getGameTime) {
-            return this.gameEngine.getGameTime();
-        }
-        
-        // フォールバック: 初期時間から残り時間を引いて経過時間を計算
-        const initialTime = 300000; // 5分
-        const elapsedTime = initialTime - this.gameEngine.timeRemaining;
-        return Math.max(0, elapsedTime);
+        return validations.every(valid => valid);
     }
 }

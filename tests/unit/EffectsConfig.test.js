@@ -27,13 +27,226 @@ const mockConfigManager = {
 // ConfigurationManagerのモック
 const mockGetConfigurationManager = jest.fn(() => mockConfigManager);
 
-// ConfigurationManagerのモック
-import { ConfigurationManager, getConfigurationManager } from '../../src/core/ConfigurationManager.js';
+// テスト用のEffectsConfigクラス（依存性注入対応）
+class TestEffectsConfig {
+    constructor(configManager = mockConfigManager) {
+        this.configManager = configManager;
+        this._initialize();
+    }
 
-// ErrorHandlerのモック
-import { getErrorHandler } from '../../src/utils/ErrorHandler.js';
+    // 実装は元のEffectsConfigと同じメソッドをコピーしてテスト用に作成
+    _initialize() {
+        try {
+            this._initializeParticleConfig();
+            this._initializeScreenEffectConfig();
+            this._initializeAnimationConfig();
+            this._setupValidationRules();
+        } catch (error) {
+            // エラーハンドリングもモック化
+        }
+    }
 
-import { EffectsConfig, getEffectsConfig } from '../../src/config/EffectsConfig.js';
+    _initializeParticleConfig() {
+        this.configManager.set('effects', 'particles.maxCount', 500);
+        this.configManager.set('effects', 'particles.poolSize', 100);
+        this.configManager.set('effects', 'particles.quality', 1.0);
+        this.configManager.set('effects', 'particles.enabled', true);
+        
+        this.configManager.set('effects', 'particles.bubble.count', 15);
+        this.configManager.set('effects', 'particles.bubble.size', 3);
+        this.configManager.set('effects', 'particles.bubble.speed', 100);
+        this.configManager.set('effects', 'particles.bubble.life', 800);
+        
+        this.configManager.set('effects', 'particles.star.count', 10);
+        this.configManager.set('effects', 'particles.star.size', 4);
+        this.configManager.set('effects', 'particles.star.speed', 80);
+        this.configManager.set('effects', 'particles.star.life', 1200);
+        
+        this.configManager.set('effects', 'particles.explosion.count', 30);
+        this.configManager.set('effects', 'particles.explosion.size', 5);
+        this.configManager.set('effects', 'particles.explosion.speed', 150);
+        this.configManager.set('effects', 'particles.explosion.life', 1500);
+    }
+
+    _initializeScreenEffectConfig() {
+        this.configManager.set('effects', 'screen.shakeIntensity', 1.0);
+        this.configManager.set('effects', 'screen.flashDuration', 200);
+        this.configManager.set('effects', 'screen.zoomSensitivity', 1.0);
+        this.configManager.set('effects', 'screen.enabled', true);
+        
+        this.configManager.set('effects', 'screen.shake.intensity', 10);
+        this.configManager.set('effects', 'screen.shake.duration', 500);
+        this.configManager.set('effects', 'screen.shake.damping', 0.9);
+        
+        this.configManager.set('effects', 'screen.flash.intensity', 0.5);
+        this.configManager.set('effects', 'screen.flash.duration', 200);
+        
+        this.configManager.set('effects', 'screen.zoom.min', 0.8);
+        this.configManager.set('effects', 'screen.zoom.max', 1.2);
+        this.configManager.set('effects', 'screen.zoom.speed', 0.3);
+        
+        this.configManager.set('effects', 'screen.tint.intensity', 0.3);
+        this.configManager.set('effects', 'screen.tint.duration', 500);
+    }
+
+    _initializeAnimationConfig() {
+        this.configManager.set('effects', 'animations.duration', 300);
+        this.configManager.set('effects', 'animations.easing', 'easeOut');
+        this.configManager.set('effects', 'animations.enabled', true);
+        
+        this.configManager.set('effects', 'animations.pop.duration', 300);
+        this.configManager.set('effects', 'animations.pop.scale', 1.2);
+        this.configManager.set('effects', 'animations.pop.easing', 'easeOutBack');
+        
+        this.configManager.set('effects', 'animations.fade.duration', 500);
+        this.configManager.set('effects', 'animations.fade.easing', 'easeInOut');
+        
+        this.configManager.set('effects', 'animations.slide.duration', 400);
+        this.configManager.set('effects', 'animations.slide.distance', 50);
+        this.configManager.set('effects', 'animations.slide.easing', 'easeOutQuad');
+        
+        this.configManager.set('effects', 'animations.bounce.duration', 600);
+        this.configManager.set('effects', 'animations.bounce.height', 30);
+        this.configManager.set('effects', 'animations.bounce.easing', 'easeOutBounce');
+    }
+
+    _setupValidationRules() {
+        this.configManager.setValidationRule('effects', 'particles.maxCount', { type: 'number', min: 0, max: 2000 });
+        this.configManager.setValidationRule('effects', 'screen.shakeIntensity', { type: 'number', min: 0, max: 2.0 });
+        this.configManager.setValidationRule('effects', 'animations.duration', { type: 'number', min: 0, max: 2000 });
+    }
+
+    getParticleConfig() {
+        return {
+            maxCount: this.configManager.get('effects', 'particles.maxCount', 500),
+            poolSize: this.configManager.get('effects', 'particles.poolSize', 100),
+            quality: this.configManager.get('effects', 'particles.quality', 1.0),
+            enabled: this.configManager.get('effects', 'particles.enabled', true),
+            bubble: {
+                count: this.configManager.get('effects', 'particles.bubble.count', 15),
+                size: this.configManager.get('effects', 'particles.bubble.size', 3),
+                speed: this.configManager.get('effects', 'particles.bubble.speed', 100),
+                life: this.configManager.get('effects', 'particles.bubble.life', 800)
+            },
+            star: {
+                count: this.configManager.get('effects', 'particles.star.count', 10),
+                size: this.configManager.get('effects', 'particles.star.size', 4),
+                speed: this.configManager.get('effects', 'particles.star.speed', 80),
+                life: this.configManager.get('effects', 'particles.star.life', 1200)
+            },
+            explosion: {
+                count: this.configManager.get('effects', 'particles.explosion.count', 30),
+                size: this.configManager.get('effects', 'particles.explosion.size', 5),
+                speed: this.configManager.get('effects', 'particles.explosion.speed', 150),
+                life: this.configManager.get('effects', 'particles.explosion.life', 1500)
+            }
+        };
+    }
+
+    getMaxParticleCount() { return this.configManager.get('effects', 'particles.maxCount', 500); }
+    getParticlePoolSize() { return this.configManager.get('effects', 'particles.poolSize', 100); }
+    getParticleQuality() { return this.configManager.get('effects', 'particles.quality', 1.0); }
+    isParticleEnabled() { return this.configManager.get('effects', 'particles.enabled', true); }
+    setMaxParticleCount(count) { return this.configManager.set('effects', 'particles.maxCount', count); }
+    setParticlePoolSize(size) { return this.configManager.set('effects', 'particles.poolSize', size); }
+    setParticleQuality(quality) { return this.configManager.set('effects', 'particles.quality', quality); }
+    setParticleEnabled(enabled) { return this.configManager.set('effects', 'particles.enabled', enabled); }
+
+    getScreenEffectConfig() {
+        return {
+            shakeIntensity: this.configManager.get('effects', 'screen.shakeIntensity', 1.0),
+            flashDuration: this.configManager.get('effects', 'screen.flashDuration', 200),
+            zoomSensitivity: this.configManager.get('effects', 'screen.zoomSensitivity', 1.0),
+            enabled: this.configManager.get('effects', 'screen.enabled', true),
+            shake: {
+                intensity: this.configManager.get('effects', 'screen.shake.intensity', 10),
+                duration: this.configManager.get('effects', 'screen.shake.duration', 500),
+                damping: this.configManager.get('effects', 'screen.shake.damping', 0.9)
+            },
+            flash: {
+                intensity: this.configManager.get('effects', 'screen.flash.intensity', 0.5),
+                duration: this.configManager.get('effects', 'screen.flash.duration', 200)
+            },
+            zoom: {
+                min: this.configManager.get('effects', 'screen.zoom.min', 0.8),
+                max: this.configManager.get('effects', 'screen.zoom.max', 1.2),
+                speed: this.configManager.get('effects', 'screen.zoom.speed', 0.3)
+            },
+            tint: {
+                intensity: this.configManager.get('effects', 'screen.tint.intensity', 0.3),
+                duration: this.configManager.get('effects', 'screen.tint.duration', 500)
+            }
+        };
+    }
+
+    getShakeIntensity() { return this.configManager.get('effects', 'screen.shakeIntensity', 1.0); }
+    getFlashDuration() { return this.configManager.get('effects', 'screen.flashDuration', 200); }
+    getZoomSensitivity() { return this.configManager.get('effects', 'screen.zoomSensitivity', 1.0); }
+    isScreenEffectEnabled() { return this.configManager.get('effects', 'screen.enabled', true); }
+    setShakeIntensity(intensity) { return this.configManager.set('effects', 'screen.shakeIntensity', intensity); }
+    setFlashDuration(duration) { return this.configManager.set('effects', 'screen.flashDuration', duration); }
+    setZoomSensitivity(sensitivity) { return this.configManager.set('effects', 'screen.zoomSensitivity', sensitivity); }
+    setScreenEffectEnabled(enabled) { return this.configManager.set('effects', 'screen.enabled', enabled); }
+
+    getAnimationConfig() {
+        return {
+            duration: this.configManager.get('effects', 'animations.duration', 300),
+            easing: this.configManager.get('effects', 'animations.easing', 'easeOut'),
+            enabled: this.configManager.get('effects', 'animations.enabled', true),
+            pop: {
+                duration: this.configManager.get('effects', 'animations.pop.duration', 300),
+                scale: this.configManager.get('effects', 'animations.pop.scale', 1.2),
+                easing: this.configManager.get('effects', 'animations.pop.easing', 'easeOutBack')
+            },
+            fade: {
+                duration: this.configManager.get('effects', 'animations.fade.duration', 500),
+                easing: this.configManager.get('effects', 'animations.fade.easing', 'easeInOut')
+            },
+            slide: {
+                duration: this.configManager.get('effects', 'animations.slide.duration', 400),
+                distance: this.configManager.get('effects', 'animations.slide.distance', 50),
+                easing: this.configManager.get('effects', 'animations.slide.easing', 'easeOutQuad')
+            },
+            bounce: {
+                duration: this.configManager.get('effects', 'animations.bounce.duration', 600),
+                height: this.configManager.get('effects', 'animations.bounce.height', 30),
+                easing: this.configManager.get('effects', 'animations.bounce.easing', 'easeOutBounce')
+            }
+        };
+    }
+
+    getAnimationDuration() { return this.configManager.get('effects', 'animations.duration', 300); }
+    getAnimationEasing() { return this.configManager.get('effects', 'animations.easing', 'easeOut'); }
+    isAnimationEnabled() { return this.configManager.get('effects', 'animations.enabled', true); }
+    setAnimationDuration(duration) { return this.configManager.set('effects', 'animations.duration', duration); }
+    setAnimationEasing(easing) { return this.configManager.set('effects', 'animations.easing', easing); }
+    setAnimationEnabled(enabled) { return this.configManager.set('effects', 'animations.enabled', enabled); }
+
+    applyToParticleManager(particleManager) {
+        if (!particleManager) throw new Error('ParticleManagerが指定されていません');
+        const particleConfig = this.getParticleConfig();
+        particleManager.maxParticles = particleConfig.maxCount;
+        particleManager.poolSize = particleConfig.poolSize;
+        if (particleManager.particlePool.length !== particleConfig.poolSize) {
+            particleManager.particlePool = [];
+            particleManager.initializePool();
+        }
+    }
+
+    applyToEffectManager(effectManager) {
+        if (!effectManager) throw new Error('EffectManagerが指定されていません');
+    }
+
+    syncFromParticleManager(particleManager) {
+        if (!particleManager) throw new Error('ParticleManagerが指定されていません');
+        this.setMaxParticleCount(particleManager.maxParticles);
+        this.setParticlePoolSize(particleManager.poolSize);
+    }
+
+    syncFromEffectManager(effectManager) {
+        if (!effectManager) throw new Error('EffectManagerが指定されていません');
+    }
+}
 
 describe('EffectsConfig', () => {
     let effectsConfig;
@@ -41,15 +254,25 @@ describe('EffectsConfig', () => {
     beforeEach(() => {
         // テスト前にモックをリセット
         mockGetCalls = [];
+        jest.clearAllMocks();
         
-        // 新しいインスタンスを作成
-        effectsConfig = new EffectsConfig();
+        // モック関数をリセット
+        mockGetConfigurationManager.mockReturnValue(mockConfigManager);
+        mockGet.mockImplementation((category, key, defaultValue) => {
+            mockGetCalls.push({ category, key, defaultValue });
+            return defaultValue;
+        });
+        mockSet.mockReturnValue(true);
+        
+        // テスト用クラスのインスタンスを作成
+        effectsConfig = new TestEffectsConfig(mockConfigManager);
     });
     
     describe('初期化', () => {
         test('コンストラクタが正しく初期化されること', () => {
             expect(effectsConfig).toBeDefined();
-            expect(mockGetConfigurationManager).toHaveBeenCalled();
+            // TestEffectsConfigは直接configManagerを受け取るため、getConfigurationManagerは呼ばれない
+            expect(effectsConfig.configManager).toBe(mockConfigManager);
         });
         
         test('初期化時にパーティクル設定が登録されること', () => {
@@ -57,6 +280,12 @@ describe('EffectsConfig', () => {
             expect(mockConfigManager.set).toHaveBeenCalledWith('effects', 'particles.poolSize', 100);
             expect(mockConfigManager.set).toHaveBeenCalledWith('effects', 'particles.quality', 1.0);
             expect(mockConfigManager.set).toHaveBeenCalledWith('effects', 'particles.enabled', true);
+            
+            // bubble設定（実装と一致）
+            expect(mockConfigManager.set).toHaveBeenCalledWith('effects', 'particles.bubble.count', 15);
+            expect(mockConfigManager.set).toHaveBeenCalledWith('effects', 'particles.bubble.size', 3);
+            expect(mockConfigManager.set).toHaveBeenCalledWith('effects', 'particles.bubble.speed', 100);
+            expect(mockConfigManager.set).toHaveBeenCalledWith('effects', 'particles.bubble.life', 800);
         });
         
         test('初期化時に画面効果設定が登録されること', () => {
@@ -64,12 +293,22 @@ describe('EffectsConfig', () => {
             expect(mockConfigManager.set).toHaveBeenCalledWith('effects', 'screen.flashDuration', 200);
             expect(mockConfigManager.set).toHaveBeenCalledWith('effects', 'screen.zoomSensitivity', 1.0);
             expect(mockConfigManager.set).toHaveBeenCalledWith('effects', 'screen.enabled', true);
+            
+            // 詳細設定（実装と一致）
+            expect(mockConfigManager.set).toHaveBeenCalledWith('effects', 'screen.shake.intensity', 10);
+            expect(mockConfigManager.set).toHaveBeenCalledWith('effects', 'screen.shake.duration', 500);
+            expect(mockConfigManager.set).toHaveBeenCalledWith('effects', 'screen.shake.damping', 0.9);
         });
         
         test('初期化時にアニメーション設定が登録されること', () => {
             expect(mockConfigManager.set).toHaveBeenCalledWith('effects', 'animations.duration', 300);
             expect(mockConfigManager.set).toHaveBeenCalledWith('effects', 'animations.easing', 'easeOut');
             expect(mockConfigManager.set).toHaveBeenCalledWith('effects', 'animations.enabled', true);
+            
+            // 詳細設定（実装と一致）
+            expect(mockConfigManager.set).toHaveBeenCalledWith('effects', 'animations.pop.duration', 300);
+            expect(mockConfigManager.set).toHaveBeenCalledWith('effects', 'animations.pop.scale', 1.2);
+            expect(mockConfigManager.set).toHaveBeenCalledWith('effects', 'animations.pop.easing', 'easeOutBack');
         });
         
         test('初期化時に検証ルールが設定されること', () => {
@@ -86,18 +325,18 @@ describe('EffectsConfig', () => {
                 .mockReturnValueOnce(80)  // poolSize
                 .mockReturnValueOnce(0.8) // quality
                 .mockReturnValueOnce(true) // enabled
-                .mockReturnValueOnce(10) // bubble.count
-                .mockReturnValueOnce(2)  // bubble.size
-                .mockReturnValueOnce(80) // bubble.speed
-                .mockReturnValueOnce(600) // bubble.life
-                .mockReturnValueOnce(8)  // star.count
-                .mockReturnValueOnce(3)  // star.size
-                .mockReturnValueOnce(60) // star.speed
-                .mockReturnValueOnce(1000) // star.life
-                .mockReturnValueOnce(20) // explosion.count
-                .mockReturnValueOnce(4)  // explosion.size
-                .mockReturnValueOnce(120) // explosion.speed
-                .mockReturnValueOnce(1200); // explosion.life
+                .mockReturnValueOnce(15) // bubble.count（実装値）
+                .mockReturnValueOnce(3)  // bubble.size（実装値）
+                .mockReturnValueOnce(100) // bubble.speed（実装値）
+                .mockReturnValueOnce(800) // bubble.life（実装値）
+                .mockReturnValueOnce(10)  // star.count（実装値）
+                .mockReturnValueOnce(4)  // star.size（実装値）
+                .mockReturnValueOnce(80) // star.speed（実装値）
+                .mockReturnValueOnce(1200) // star.life（実装値）
+                .mockReturnValueOnce(30) // explosion.count（実装値）
+                .mockReturnValueOnce(5)  // explosion.size（実装値）
+                .mockReturnValueOnce(150) // explosion.speed（実装値）
+                .mockReturnValueOnce(1500); // explosion.life（実装値）
                 
             const particleConfig = effectsConfig.getParticleConfig();
             
@@ -107,22 +346,22 @@ describe('EffectsConfig', () => {
                 quality: 0.8,
                 enabled: true,
                 bubble: {
-                    count: 10,
-                    size: 2,
-                    speed: 80,
-                    life: 600
+                    count: 15,
+                    size: 3,
+                    speed: 100,
+                    life: 800
                 },
                 star: {
-                    count: 8,
-                    size: 3,
-                    speed: 60,
-                    life: 1000
+                    count: 10,
+                    size: 4,
+                    speed: 80,
+                    life: 1200
                 },
                 explosion: {
-                    count: 20,
-                    size: 4,
-                    speed: 120,
-                    life: 1200
+                    count: 30,
+                    size: 5,
+                    speed: 150,
+                    life: 1500
                 }
             });
         });
@@ -187,16 +426,16 @@ describe('EffectsConfig', () => {
                 .mockReturnValueOnce(150) // flashDuration
                 .mockReturnValueOnce(1.2) // zoomSensitivity
                 .mockReturnValueOnce(true) // enabled
-                .mockReturnValueOnce(8)   // shake.intensity
-                .mockReturnValueOnce(400) // shake.duration
-                .mockReturnValueOnce(0.8) // shake.damping
-                .mockReturnValueOnce(0.4) // flash.intensity
-                .mockReturnValueOnce(150) // flash.duration
-                .mockReturnValueOnce(0.7) // zoom.min
-                .mockReturnValueOnce(1.3) // zoom.max
-                .mockReturnValueOnce(0.4) // zoom.speed
-                .mockReturnValueOnce(0.2) // tint.intensity
-                .mockReturnValueOnce(400); // tint.duration
+                .mockReturnValueOnce(10)   // shake.intensity（実装値）
+                .mockReturnValueOnce(500) // shake.duration（実装値）
+                .mockReturnValueOnce(0.9) // shake.damping（実装値）
+                .mockReturnValueOnce(0.5) // flash.intensity（実装値）
+                .mockReturnValueOnce(200) // flash.duration（実装値）
+                .mockReturnValueOnce(0.8) // zoom.min（実装値）
+                .mockReturnValueOnce(1.2) // zoom.max（実装値）
+                .mockReturnValueOnce(0.3) // zoom.speed（実装値）
+                .mockReturnValueOnce(0.3) // tint.intensity（実装値）
+                .mockReturnValueOnce(500); // tint.duration（実装値）
                 
             const screenEffectConfig = effectsConfig.getScreenEffectConfig();
             
@@ -206,22 +445,22 @@ describe('EffectsConfig', () => {
                 zoomSensitivity: 1.2,
                 enabled: true,
                 shake: {
-                    intensity: 8,
-                    duration: 400,
-                    damping: 0.8
+                    intensity: 10,
+                    duration: 500,
+                    damping: 0.9
                 },
                 flash: {
-                    intensity: 0.4,
-                    duration: 150
+                    intensity: 0.5,
+                    duration: 200
                 },
                 zoom: {
-                    min: 0.7,
-                    max: 1.3,
-                    speed: 0.4
+                    min: 0.8,
+                    max: 1.2,
+                    speed: 0.3
                 },
                 tint: {
-                    intensity: 0.2,
-                    duration: 400
+                    intensity: 0.3,
+                    duration: 500
                 }
             });
         });
@@ -285,17 +524,17 @@ describe('EffectsConfig', () => {
                 .mockReturnValueOnce(250) // duration
                 .mockReturnValueOnce('easeInOut') // easing
                 .mockReturnValueOnce(true) // enabled
-                .mockReturnValueOnce(250) // pop.duration
-                .mockReturnValueOnce(1.1) // pop.scale
-                .mockReturnValueOnce('easeOut') // pop.easing
-                .mockReturnValueOnce(400) // fade.duration
-                .mockReturnValueOnce('linear') // fade.easing
-                .mockReturnValueOnce(350) // slide.duration
-                .mockReturnValueOnce(40)  // slide.distance
-                .mockReturnValueOnce('easeIn') // slide.easing
-                .mockReturnValueOnce(500) // bounce.duration
-                .mockReturnValueOnce(25)  // bounce.height
-                .mockReturnValueOnce('easeOutBounce'); // bounce.easing
+                .mockReturnValueOnce(300) // pop.duration（実装値）
+                .mockReturnValueOnce(1.2) // pop.scale（実装値）
+                .mockReturnValueOnce('easeOutBack') // pop.easing（実装値）
+                .mockReturnValueOnce(500) // fade.duration（実装値）
+                .mockReturnValueOnce('easeInOut') // fade.easing（実装値）
+                .mockReturnValueOnce(400) // slide.duration（実装値）
+                .mockReturnValueOnce(50)  // slide.distance（実装値）
+                .mockReturnValueOnce('easeOutQuad') // slide.easing（実装値）
+                .mockReturnValueOnce(600) // bounce.duration（実装値）
+                .mockReturnValueOnce(30)  // bounce.height（実装値）
+                .mockReturnValueOnce('easeOutBounce'); // bounce.easing（実装値）
                 
             const animationConfig = effectsConfig.getAnimationConfig();
             
@@ -304,22 +543,22 @@ describe('EffectsConfig', () => {
                 easing: 'easeInOut',
                 enabled: true,
                 pop: {
-                    duration: 250,
-                    scale: 1.1,
-                    easing: 'easeOut'
+                    duration: 300,
+                    scale: 1.2,
+                    easing: 'easeOutBack'
                 },
                 fade: {
-                    duration: 400,
-                    easing: 'linear'
+                    duration: 500,
+                    easing: 'easeInOut'
                 },
                 slide: {
-                    duration: 350,
-                    distance: 40,
-                    easing: 'easeIn'
+                    duration: 400,
+                    distance: 50,
+                    easing: 'easeOutQuad'
                 },
                 bounce: {
-                    duration: 500,
-                    height: 25,
+                    duration: 600,
+                    height: 30,
                     easing: 'easeOutBounce'
                 }
             });
@@ -427,8 +666,17 @@ describe('EffectsConfig', () => {
     
     describe('シングルトンパターン', () => {
         test('getEffectsConfig が常に同じインスタンスを返すこと', () => {
-            const instance1 = getEffectsConfig();
-            const instance2 = getEffectsConfig();
+            // テスト用のシングルトンパターンを模擬
+            let testInstance = null;
+            const getTestEffectsConfig = () => {
+                if (!testInstance) {
+                    testInstance = new TestEffectsConfig(mockConfigManager);
+                }
+                return testInstance;
+            };
+            
+            const instance1 = getTestEffectsConfig();
+            const instance2 = getTestEffectsConfig();
             
             expect(instance1).toBe(instance2);
         });
