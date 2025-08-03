@@ -2,6 +2,7 @@ import { getErrorHandler } from '../utils/ErrorHandler.js';
 import { getAsyncOperationQueue } from './AsyncOperationQueue.js';
 import { getChunkProcessor } from './ChunkProcessor.js';
 import { getDataCache } from './DataCache.js';
+import { DataStorageManager } from './data/DataStorageManager.js';
 
 /**
  * データ管理クラス - 包括的なデータ管理システムの中央制御
@@ -47,6 +48,9 @@ export class DataManager {
         
         // キャッシュ管理
         this.cache = getDataCache();
+        
+        // ストレージマネージャーの初期化
+        this.storageManager = new DataStorageManager(this);
         
         // イベントリスナー
         this.listeners = new Map();
@@ -264,62 +268,10 @@ export class DataManager {
     }
     
     /**
-     * データ保存の統一インターフェース
+     * データ保存の統一インターフェース（ストレージマネージャーに委譲）
      */
     async save(dataType, data, options = {}) {
-        // 非同期キューを使用してデータ保存を実行
-        return await this.asyncQueue.enqueue(async () => {
-            try {
-                if (!this.isInitialized) {
-                    await this.initialize();
-                }
-                
-                const startTime = performance.now();
-                
-                // データタイプ別の処理
-                let result;
-                switch (dataType) {
-                    case 'playerData':
-                        result = await this.savePlayerData(data, options);
-                        break;
-                    case 'settings':
-                        result = await this.saveSettings(data, options);
-                        break;
-                    case 'statistics':
-                        result = await this.saveStatistics(data, options);
-                        break;
-                    default:
-                        result = await this.saveGenericData(dataType, data, options);
-                }
-                
-                const endTime = performance.now();
-                const duration = endTime - startTime;
-                
-                // パフォーマンス要件チェック（< 100ms）
-                if (duration > 100) {
-                    console.warn(`Data save operation took ${duration.toFixed(2)}ms, exceeding target of 100ms`);
-                }
-                
-                this.emit('dataSaved', { dataType, duration, timestamp: Date.now() });
-                
-                // データ保存後にキャッシュを無効化
-                this.invalidateCacheByDataType(dataType);
-                
-                return result;
-                
-            } catch (error) {
-                getErrorHandler().handleError(error, 'DATA_SAVE_ERROR', {
-                    operation: 'save',
-                    dataType,
-                    options
-                });
-                throw error; // キューがエラーハンドリングするためにre-throw
-            }
-        }, {
-            priority: options.priority || 'normal',
-            timeout: options.timeout || 10000,
-            metadata: { dataType, operation: 'save' }
-        });
+        return await this.storageManager.save(dataType, data, options);
     }
     
     /**
@@ -327,7 +279,7 @@ export class DataManager {
      */
     async load(dataType, options = {}) {
         // キャッシュキーの生成
-        const cacheKey = this.generateCacheKey(dataType, options);
+        const cacheKey = this.storageManager.generateCacheKey(dataType, options);
         const useCache = options.useCache !== false;
         
         if (useCache) {
@@ -335,7 +287,7 @@ export class DataManager {
             return await this.cache.getOrSet(
                 cacheKey,
                 async () => {
-                    return await this.loadWithQueue(dataType, options);
+                    return await this.storageManager.loadWithQueue(dataType, options);
                 },
                 {
                     ttl: options.cacheTtl || 5 * 60 * 1000, // 5分
@@ -346,64 +298,10 @@ export class DataManager {
             );
         } else {
             // キャッシュを使用しない直接読み込み
-            return await this.loadWithQueue(dataType, options);
+            return await this.storageManager.loadWithQueue(dataType, options);
         }
     }
     
-    /**
-     * キューを使用したデータ読み込み
-     */
-    async loadWithQueue(dataType, options) {
-        return await this.asyncQueue.enqueue(async () => {
-            try {
-                if (!this.isInitialized) {
-                    await this.initialize();
-                }
-                
-                const startTime = performance.now();
-                
-                // データタイプ別の処理
-                let result;
-                switch (dataType) {
-                    case 'playerData':
-                        result = await this.loadPlayerData(options);
-                        break;
-                    case 'settings':
-                        result = await this.loadSettings(options);
-                        break;
-                    case 'statistics':
-                        result = await this.loadStatistics(options);
-                        break;
-                    default:
-                        result = await this.loadGenericData(dataType, options);
-                }
-                
-                const endTime = performance.now();
-                const duration = endTime - startTime;
-                
-                // パフォーマンス要件チェック（< 50ms）
-                if (duration > 50) {
-                    console.warn(`Data load operation took ${duration.toFixed(2)}ms, exceeding target of 50ms`);
-                }
-                
-                this.emit('dataLoaded', { dataType, duration, timestamp: Date.now() });
-                
-                return result;
-                
-            } catch (error) {
-                getErrorHandler().handleError(error, 'DATA_LOAD_ERROR', {
-                    operation: 'load',
-                    dataType,
-                    options
-                });
-                throw error;
-            }
-        }, {
-            priority: options.priority || 'low',
-            timeout: options.timeout || 5000,
-            metadata: { dataType, operation: 'load' }
-        });
-    }
     
     /**
      * PlayerDataの保存
@@ -839,35 +737,6 @@ export class DataManager {
         return await this.saveDataDirect(metadataKey, metadata, { priority: 'high' });
     }
     
-    /**
-     * キャッシュキーの生成
-     */
-    generateCacheKey(dataType, options = {}) {
-        const baseKey = `dm:${dataType}`;
-        
-        // オプションを含むハッシュ生成（簡易版）
-        if (Object.keys(options).length === 0) {
-            return baseKey;
-        }
-        
-        const optionsStr = JSON.stringify(options, Object.keys(options).sort());
-        const optionsHash = this.simpleHash(optionsStr);
-        
-        return `${baseKey}:${optionsHash}`;
-    }
-    
-    /**
-     * 簡易ハッシュ関数
-     */
-    simpleHash(str) {
-        let hash = 0;
-        for (let i = 0; i < str.length; i++) {
-            const char = str.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash; // 32bit整数に変換
-        }
-        return Math.abs(hash).toString(36);
-    }
     
     /**
      * キャッシュの無効化
@@ -892,12 +761,6 @@ export class DataManager {
         return 0;
     }
     
-    /**
-     * データタイプ別キャッシュ無効化
-     */
-    invalidateCacheByDataType(dataType) {
-        return this.cache.invalidateByTag(`dataType:${dataType}`);
-    }
     
     /**
      * 依存関係によるキャッシュ無効化

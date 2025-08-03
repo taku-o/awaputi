@@ -432,3 +432,16 @@ export class LocalizationManager {
         console.log('LocalizationManager destroyed');
     }
 }
+
+// シングルトンインスタンス
+let localizationManagerInstance = null;
+
+/**
+ * LocalizationManagerシングルトンインスタンスの取得
+ */
+export function getLocalizationManager() {
+    if (!localizationManagerInstance) {
+        localizationManagerInstance = new LocalizationManager();
+    }
+    return localizationManagerInstance;
+}

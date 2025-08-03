@@ -12,6 +12,10 @@ class ErrorHandler {
         this.fallbackModes = new Map();
         this.isInitialized = false;
         
+        // 環境判定
+        this.isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
+        this.isNode = typeof process !== 'undefined' && process.versions && process.versions.node;
+        
         // エラー統計
         this.errorStats = {
             total: 0,
@@ -59,6 +63,12 @@ class ErrorHandler {
      * グローバルエラーハンドラーを設定
      */
     setupGlobalErrorHandlers() {
+        // ブラウザ環境でのみグローバルエラーハンドラーを設定
+        if (!this.isBrowser) {
+            console.log('ErrorHandler: Skipping global error handlers in non-browser environment');
+            return;
+        }
+        
         // 未処理のJavaScriptエラー
         window.addEventListener('error', (event) => {
             this.handleError(event.error, 'GLOBAL_ERROR', {
@@ -92,6 +102,12 @@ class ErrorHandler {
      * パフォーマンス監視を設定
      */
     setupPerformanceMonitoring() {
+        // ブラウザ環境でのみパフォーマンス監視を設定
+        if (!this.isBrowser) {
+            console.log('ErrorHandler: Skipping performance monitoring in non-browser environment');
+            return;
+        }
+        
         // メモリ使用量の監視
         if (window.performance && window.performance.memory) {
             setInterval(() => {
@@ -296,6 +312,15 @@ class ErrorHandler {
             name = error.name || 'Error';
         }
         
+        // 環境別の情報収集
+        const browserInfo = this.isBrowser ? {
+            userAgent: navigator.userAgent,
+            url: window.location.href
+        } : {
+            userAgent: 'Node.js',
+            url: 'N/A'
+        };
+        
         return {
             id,
             timestamp,
@@ -304,8 +329,7 @@ class ErrorHandler {
             name,
             context,
             metadata: { ...metadata },
-            userAgent: navigator.userAgent,
-            url: window.location.href,
+            ...browserInfo,
             recovered: false
         };
     }
@@ -717,8 +741,8 @@ class ErrorHandler {
         this.fallbackState.safeMode = true;
         this.fallbackState.reducedEffects = true;
         
-        // 最小限の機能で動作
-        if (window.gameEngine) {
+        // ブラウザ環境でのみゲームエンジンの操作を実行
+        if (this.isBrowser && typeof window !== 'undefined' && window.gameEngine) {
             // すべてのエフェクトを無効化
             if (window.gameEngine.effectManager) {
                 window.gameEngine.effectManager.disable();

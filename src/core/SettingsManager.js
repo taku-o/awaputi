@@ -1,49 +1,31 @@
 import { getErrorHandler } from '../utils/ErrorHandler.js';
 import { getConfigurationManager } from './ConfigurationManager.js';
 import { getSettingsNotificationSystem } from './SettingsNotificationSystem.js';
+import { SettingsValidator } from './settings/SettingsValidator.js';
+import { SettingsStorageManager } from './settings/SettingsStorageManager.js';
 
 /**
- * 設定管理クラス - ゲーム設定の統合管理
- * ConfigurationManagerと統合された新しい設定システム
+ * 設定管理クラス（Main Controller）
+ * ゲーム設定の統合管理システム - 検証、保存、通知の統合制御
  */
 export class SettingsManager {
     constructor(gameEngine) {
         this.gameEngine = gameEngine;
         this.configManager = getConfigurationManager();
         this.notificationSystem = getSettingsNotificationSystem();
+        this.errorHandler = getErrorHandler();
         this.listeners = new Map();
         
-        // 設定の検証ルール
-        this.validationRules = {
-            masterVolume: { type: 'number', min: 0, max: 1 },
-            sfxVolume: { type: 'number', min: 0, max: 1 },
-            bgmVolume: { type: 'number', min: 0, max: 1 },
-            language: { type: 'string', enum: ['ja', 'en'] },
-            quality: { type: 'string', enum: ['low', 'medium', 'high', 'auto'] },
-            accessibility: {
-                type: 'object',
-                properties: {
-                    highContrast: { type: 'boolean' },
-                    reducedMotion: { type: 'boolean' },
-                    largeText: { type: 'boolean' },
-                    screenReader: { type: 'boolean' },
-                    colorBlindSupport: { type: 'boolean' }
-                }
-            },
-            controls: {
-                type: 'object',
-                properties: {
-                    keyboardEnabled: { type: 'boolean' },
-                    mouseEnabled: { type: 'boolean' },
-                    touchEnabled: { type: 'boolean' }
-                }
-            }
-        };
+        // サブコンポーネントの初期化
+        this.validator = new SettingsValidator(this);
+        this.storageManager = new SettingsStorageManager(this);
         
         // ConfigurationManagerに検証ルールとデフォルト値を設定
         this._setupConfigurationManager();
         
         this.load();
+        
+        console.log('[SettingsManager] Main Controller initialized');
     }
     
     /**
@@ -455,14 +437,7 @@ export class SettingsManager {
      * 設定値を検証
      */
     validateSetting(key, value) {
-        const topLevelKey = key.split('.')[0];
-        const rule = this.validationRules[topLevelKey];
-        
-        if (!rule) {
-            return { isValid: true, sanitizedValue: value };
-        }
-        
-        return getErrorHandler().validateInput(value, rule.type, rule);
+        return this.validator.validateSetting(key, value);
     }
     
     /**
@@ -823,44 +798,40 @@ export class SettingsManager {
      */
     save() {
         try {
-            // 従来の設定データを保存
-            if (this.settings) {
-                const settingsData = JSON.stringify(this.settings);
-                localStorage.setItem('bubblePop_settings', settingsData);
-            }
+            // 設定データを保存
+            const saveSuccess = this.storageManager.saveSettings(this.settings);
             
             // ConfigurationManagerの設定も保存
-            this._saveConfigurationManagerData();
+            if (saveSuccess) {
+                const configData = this._getConfigurationManagerData();
+                this.storageManager.saveConfigurationManagerData(configData);
+            }
+            
+            return saveSuccess;
             
         } catch (error) {
-            getErrorHandler().handleError(error, 'STORAGE_ERROR', {
+            this.errorHandler.handleError(error, 'STORAGE_ERROR', {
                 operation: 'save',
-                data: 'settings'
+                component: 'SettingsManager'
             });
+            return false;
         }
     }
     
     /**
-     * ConfigurationManagerのデータを保存
+     * ConfigurationManagerのデータを取得
      * @private
      */
-    _saveConfigurationManagerData() {
-        try {
-            const configData = {
-                ui: this.configManager.getCategory('ui'),
-                audio: this.configManager.getCategory('audio'),
-                accessibility: this.configManager.getCategory('accessibility'),
-                controls: this.configManager.getCategory('controls'),
-                keyboard: this.configManager.getCategory('keyboard')
-            };
-            
-            localStorage.setItem('bubblePop_configManager', JSON.stringify(configData));
-            
-        } catch (error) {
-            getErrorHandler().handleError(error, 'STORAGE_ERROR', {
-                operation: '_saveConfigurationManagerData'
-            });
-        }
+    _getConfigurationManagerData() {
+        return {
+            ui: this.configManager.getCategory('ui'),
+            audio: this.configManager.getCategory('audio'),
+            accessibility: this.configManager.getCategory('accessibility'),
+            controls: this.configManager.getCategory('controls'),
+            keyboard: this.configManager.getCategory('keyboard'),
+            social: this.configManager.getCategory('social'),
+            notifications: this.configManager.getCategory('notifications')
+        };
     }
     
     /**
@@ -868,11 +839,10 @@ export class SettingsManager {
      */
     load() {
         try {
-            // 従来の設定データを読み込み
-            const settingsData = localStorage.getItem('bubblePop_settings');
-            if (settingsData) {
-                const loadedSettings = JSON.parse(settingsData);
-                
+            // 設定データを読み込み
+            const loadedSettings = this.storageManager.loadSettings();
+            
+            if (loadedSettings) {
                 // デフォルト設定とマージ
                 this.settings = this.mergeSettings(this.getDefaultSettings(), loadedSettings);
             } else {
@@ -886,9 +856,9 @@ export class SettingsManager {
             this.applyAllSettings();
             
         } catch (error) {
-            getErrorHandler().handleError(error, 'STORAGE_ERROR', {
+            this.errorHandler.handleError(error, 'STORAGE_ERROR', {
                 operation: 'load',
-                data: 'settings'
+                component: 'SettingsManager'
             });
             
             // エラーの場合はデフォルト設定を使用
@@ -902,20 +872,22 @@ export class SettingsManager {
      */
     _loadConfigurationManagerData() {
         try {
-            const configData = localStorage.getItem('bubblePop_configManager');
-            if (configData) {
-                const loadedConfig = JSON.parse(configData);
-                
+            const loadedConfig = this.storageManager.loadConfigurationManagerData();
+            
+            if (loadedConfig) {
                 // 各カテゴリのデータをConfigurationManagerに設定
                 for (const [category, settings] of Object.entries(loadedConfig)) {
-                    for (const [key, value] of Object.entries(settings)) {
-                        this.configManager.set(category, key, value);
+                    if (settings && typeof settings === 'object') {
+                        for (const [key, value] of Object.entries(settings)) {
+                            this.configManager.set(category, key, value);
+                        }
                     }
                 }
             }
         } catch (error) {
-            getErrorHandler().handleError(error, 'STORAGE_ERROR', {
-                operation: '_loadConfigurationManagerData'
+            this.errorHandler.handleError(error, 'STORAGE_ERROR', {
+                operation: '_loadConfigurationManagerData',
+                component: 'SettingsManager'
             });
         }
     }
@@ -967,40 +939,45 @@ export class SettingsManager {
      * 設定のエクスポート
      */
     export() {
-        return JSON.stringify(this.settings, null, 2);
+        return this.storageManager.exportSettings();
     }
     
     /**
      * 設定のインポート
      */
     import(settingsJson) {
-        try {
-            const importedSettings = JSON.parse(settingsJson);
-            this.settings = this.mergeSettings(this.getDefaultSettings(), importedSettings);
-            this.save();
-            this.applyAllSettings();
+        const success = this.storageManager.importSettings(settingsJson);
+        
+        if (success) {
+            // 設定を再読み込み
+            this.load();
             this.notifyChange('*', this.settings, null);
-            return true;
-        } catch (error) {
-            getErrorHandler().handleError(error, 'SETTINGS_ERROR', {
-                operation: 'import',
-                data: settingsJson
-            });
-            return false;
         }
+        
+        return success;
     }
     
     /**
      * 設定の統計情報を取得
      */
     getStats() {
+        const storageStats = this.storageManager.getSyncStats();
+        const validationStats = this.validator.getValidationStats();
+        
         return {
             totalSettings: Object.keys(this.settings).length,
             listeners: this.listeners.size,
             language: this.settings.language,
             quality: this.settings.quality,
             accessibility: Object.values(this.settings.accessibility).filter(Boolean).length,
-            lastModified: localStorage.getItem('bubblePop_settings_timestamp') || 'unknown'
+            storageStats,
+            validationStats,
+            componentStats: {
+                validator: !!this.validator,
+                storageManager: !!this.storageManager,
+                configManager: !!this.configManager,
+                notificationSystem: !!this.notificationSystem
+            }
         };
     }
     
@@ -1222,11 +1199,58 @@ export class SettingsManager {
     getNotificationHistory(limit = 50) {
         return this.notificationSystem.getNotificationHistory(limit);
     }
+
+    /**
+     * バックアップを作成
+     * @returns {boolean} バックアップ成功可否
+     */
+    createBackup() {
+        return this.storageManager.createBackup();
+    }
+
+    /**
+     * バックアップから復旧
+     * @param {number} backupIndex バックアップのインデックス
+     * @returns {boolean} 復旧成功可否
+     */
+    restoreFromBackup(backupIndex = -1) {
+        const restoredSettings = this.storageManager.restoreFromBackup(backupIndex);
+        
+        if (restoredSettings) {
+            this.settings = this.mergeSettings(this.getDefaultSettings(), restoredSettings);
+            this.applyAllSettings();
+            this.notifyChange('*', this.settings, null);
+            return true;
+        }
+        
+        return false;
+    }
+
+    /**
+     * バックアップ履歴を取得
+     * @returns {Array} バックアップ履歴
+     */
+    getBackupHistory() {
+        return this.storageManager.getBackupHistory();
+    }
+
+    /**
+     * ストレージの健全性をチェック
+     * @returns {Object} 健全性レポート
+     */
+    checkStorageHealth() {
+        return this.storageManager.checkStorageHealth();
+    }
     
     /**
      * クリーンアップ
      */
     cleanup() {
+        // サブコンポーネントのクリーンアップ
+        if (this.storageManager) {
+            this.storageManager.cleanup();
+        }
+        
         // 従来のリスナーをクリア
         this.listeners.clear();
         
@@ -1240,5 +1264,20 @@ export class SettingsManager {
         
         // 通知システムをクリーンアップ
         this.notificationSystem.cleanup();
+        
+        console.log('[SettingsManager] Main Controller cleanup completed');
     }
+}
+
+// シングルトンインスタンス
+let settingsManagerInstance = null;
+
+/**
+ * SettingsManagerシングルトンインスタンスの取得
+ */
+export function getSettingsManager(gameEngine) {
+    if (!settingsManagerInstance && gameEngine) {
+        settingsManagerInstance = new SettingsManager(gameEngine);
+    }
+    return settingsManagerInstance;
 }
