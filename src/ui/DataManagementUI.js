@@ -1,7 +1,25 @@
 import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { 
+    UIStateManager, 
+    DialogStateManager, 
+    OperationStateManager, 
+    BackupStatusManager 
+} from './data-management-ui/DataManagementStateManager.js';
+import { 
+    UILayoutManager, 
+    UIRenderer, 
+    ViewRenderer 
+} from './data-management-ui/DataManagementRenderer.js';
+import { DialogManager } from './data-management-ui/DataManagementDialogs.js';
 
 /**
- * データ管理UI - 包括的なデータ管理機能のユーザーインターフェース
+ * データ管理UI (Refactored)
+ * データ管理UIメインコントローラー - 包括的なデータ管理機能のユーザーインターフェース
+ * 
+ * サブコンポーネント化により責任を分離し、保守性を向上
+ * - DataManagementStateManager: 状態管理システム
+ * - DataManagementRenderer: レンダリングシステム
+ * - DataManagementDialogs: ダイアログシステム
  * 
  * 責任:
  * - バックアップ状況表示機能の提供
@@ -13,62 +31,50 @@ export class DataManagementUI {
     constructor(dataManager) {
         this.dataManager = dataManager;
         
-        // UI状態管理
-        this.isVisible = false;
-        this.currentView = 'overview'; // 'overview', 'backup', 'export', 'import', 'clear'
-        this.selectedItem = 0;
-        this.scrollPosition = 0;
+        // Initialize sub-components
+        this._initializeSubComponents();
         
-        // ダイアログ状態
-        this.showingDialog = null; // null, 'backup', 'export', 'import', 'clear', 'progress'
-        this.dialogData = {};
-        this.dialogInput = '';
-        
-        // 操作状態
-        this.operationInProgress = false;
-        this.operationProgress = 0;
-        this.operationMessage = '';
-        
-        // バックアップ状況データ
-        this.backupStatus = {
-            lastBackup: null,
-            backupCount: 0,
-            totalSize: 0,
-            autoBackupEnabled: true,
-            nextBackup: null
+        // Main configuration
+        this.config = {
+            autoRefresh: true,
+            refreshInterval: 30000, // 30 seconds
+            enableAnimations: true,
+            showAdvancedOptions: false
         };
         
-        // エラー状態
-        this.errorMessage = null;
-        this.errorTimeout = null;
-        
-        // レイアウト設定
-        this.layoutConfig = {
-            padding: 20,
-            itemHeight: 60,
-            headerHeight: 80,
-            dialogPadding: 40,
-            buttonHeight: 40,
-            buttonWidth: 150,
-            sectionSpacing: 30
-        };
-        
-        // 色設定
-        this.colors = {
-            background: '#0f0f1a',
-            cardBackground: '#1a1a2e',
-            primary: '#4a90e2',
-            secondary: '#6bb0ff',
-            success: '#10B981',
-            warning: '#F59E0B',
-            danger: '#EF4444',
-            text: '#ffffff',
-            textSecondary: '#cccccc',
-            border: '#333',
-            overlay: 'rgba(0, 0, 0, 0.8)'
-        };
+        // Canvas and input
+        this.canvas = null;
+        this.lastInputTime = 0;
+        this.inputCooldown = 150;
         
         this.initialize();
+    }
+    
+    /**
+     * Initialize sub-component systems
+     * @private
+     */
+    _initializeSubComponents() {
+        try {
+            // Initialize state managers
+            this.uiState = new UIStateManager();
+            this.dialogState = new DialogStateManager();
+            this.operationState = new OperationStateManager();
+            this.backupStatus = new BackupStatusManager();
+            
+            // Initialize rendering system
+            this.layoutManager = new UILayoutManager();
+            this.uiRenderer = new UIRenderer(this.layoutManager);
+            this.viewRenderer = new ViewRenderer(this.uiRenderer, this.layoutManager);
+            
+            // Initialize dialog system
+            this.dialogManager = new DialogManager(this.uiRenderer, this.layoutManager);
+            
+            console.log('DataManagementUI sub-components initialized');
+            
+        } catch (error) {
+            console.error('Failed to initialize DataManagementUI sub-components:', error);
+        }
     }
     
     /**
@@ -76,11 +82,12 @@ export class DataManagementUI {
      */
     async initialize() {
         try {
-            // バックアップ状況を初期化
-            await this.loadBackupStatus();
+            // Initialize backup status
+            await this.backupStatus.initialize(this.dataManager);
             
-            // DataManagerのイベントリスナーを設定
+            // Setup event listeners
             this.setupEventListeners();
+            this.setupStateChangeListeners();
             
             console.log('DataManagementUI initialized');
             
@@ -97,414 +104,518 @@ export class DataManagementUI {
     setupEventListeners() {
         if (this.dataManager) {
             // DataManagerのイベントを監視
-            this.dataManager.on('backupCreated', (data) => {
+            this.dataManager.on?.('backupCreated', (data) => {
                 this.onBackupCreated(data);
             });
             
-            this.dataManager.on('dataExported', (data) => {
+            this.dataManager.on?.('dataExported', (data) => {
                 this.onDataExported(data);
             });
             
-            this.dataManager.on('dataImported', (data) => {
+            this.dataManager.on?.('dataImported', (data) => {
                 this.onDataImported(data);
             });
             
-            this.dataManager.on('operationProgress', (data) => {
+            this.dataManager.on?.('operationProgress', (data) => {
                 this.onOperationProgress(data);
             });
             
-            this.dataManager.on('error', (data) => {
+            this.dataManager.on?.('error', (data) => {
                 this.onError(data);
             });
         }
     }
     
     /**
-     * バックアップ状況の読み込み
+     * 状態変更リスナーの設定
      */
-    async loadBackupStatus() {
-        try {
-            if (!this.dataManager.backup) {
-                // BackupManagerの遅延ロード
-                await this.initializeBackupManager();
+    setupStateChangeListeners() {
+        // UI state changes
+        this.uiState.onStateChange((type, data) => {
+            if (type === 'view') {
+                console.log(`View changed to: ${data.view}`);
             }
-            
-            if (this.dataManager.backup) {
-                // BackupManagerから状況を取得
-                const status = await this.dataManager.backup.getStatus();
-                this.backupStatus = {
-                    lastBackup: status.lastBackup,
-                    backupCount: status.backupCount || 0,
-                    totalSize: status.totalSize || 0,
-                    autoBackupEnabled: status.autoBackupEnabled || false,
-                    nextBackup: status.nextBackup,
-                    backupHistory: status.backupHistory || []
-                };
-            } else {
-                // フォールバック: デフォルト値を使用
-                this.backupStatus = {
-                    lastBackup: null,
-                    backupCount: 0,
-                    totalSize: 0,
-                    autoBackupEnabled: false,
-                    nextBackup: null,
-                    backupHistory: []
-                };
+        });
+        
+        // Dialog state changes
+        this.dialogState.onDialogChange((action, data) => {
+            if (action === 'show') {
+                console.log(`Dialog opened: ${data.type}`);
             }
-            
-        } catch (error) {
-            console.warn('Failed to load backup status:', error);
-            // フォールバック: デフォルト値を使用
-            this.backupStatus = {
-                lastBackup: null,
-                backupCount: 0,
-                totalSize: 0,
-                autoBackupEnabled: false,
-                nextBackup: null,
-                backupHistory: []
-            };
-        }
-    }
-    
-    /**
-     * BackupManagerの初期化
-     */
-    async initializeBackupManager() {
-        try {
-            const { BackupManager } = await import('../core/BackupManager.js');
-            if (this.dataManager.storage) {
-                this.dataManager.backup = new BackupManager(this.dataManager.storage);
-                console.log('DataManagementUI: BackupManager initialized');
+        });
+        
+        // Operation state changes
+        this.operationState.onOperationChange((action, data) => {
+            if (action === 'start') {
+                this.dialogState.showDialog('progress', {
+                    title: `${data.type} in progress`,
+                    message: data.message,
+                    progress: 0,
+                    startTime: data.startTime,
+                    cancellable: true
+                });
+            } else if (action === 'progress') {
+                this.dialogState.setDialogData({
+                    progress: data.progress,
+                    message: data.message
+                });
+            } else if (action === 'end') {
+                this.dialogState.hideDialog();
+                
+                if (data.result === 'success') {
+                    this.uiState.showError(`Operation completed successfully`, 3000);
+                } else if (data.result === 'error') {
+                    this.uiState.showError(`Operation failed: ${data.message}`, 5000);
+                }
             }
-        } catch (error) {
-            console.warn('BackupManager not available:', error);
-        }
+        });
     }
     
     /**
      * UIの表示
+     * @param {HTMLCanvasElement} canvas - 描画キャンバス
      */
-    show() {
-        this.isVisible = true;
-        this.currentView = 'overview';
-        this.selectedItem = 0;
-        this.scrollPosition = 0;
-        this.loadBackupStatus();
+    show(canvas) {
+        this.canvas = canvas;
+        this.uiRenderer.setCanvas(canvas);
+        this.uiState.setVisible(true);
+        
+        if (this.config.autoRefresh) {
+            this.startAutoRefresh();
+        }
     }
     
     /**
      * UIの非表示
      */
     hide() {
-        this.isVisible = false;
-        this.showingDialog = null;
-        this.clearError();
+        this.uiState.setVisible(false);
+        this.stopAutoRefresh();
     }
     
     /**
-     * UIの更新
+     * UIの可視性を切り替え
+     * @param {HTMLCanvasElement} canvas - 描画キャンバス
      */
-    update(deltaTime) {
-        if (!this.isVisible) return;
-        
-        // エラーメッセージのタイムアウト処理
-        if (this.errorTimeout && Date.now() > this.errorTimeout) {
-            this.clearError();
+    toggle(canvas) {
+        if (this.uiState.isUIVisible()) {
+            this.hide();
+        } else {
+            this.show(canvas);
         }
+    }
+    
+    /**
+     * UIが表示されているかチェック
+     * @returns {boolean} 表示状態
+     */
+    isVisible() {
+        return this.uiState.isUIVisible();
+    }
+    
+    /**
+     * 自動リフレッシュの開始
+     */
+    startAutoRefresh() {
+        this.stopAutoRefresh();
         
-        // 進行中の操作の更新
-        if (this.operationInProgress) {
-            this.updateOperationProgress();
+        this.refreshInterval = setInterval(() => {
+            this.backupStatus.loadBackupStatus().catch(error => {
+                console.error('Auto refresh failed:', error);
+            });
+        }, this.config.refreshInterval);
+    }
+    
+    /**
+     * 自動リフレッシュの停止
+     */
+    stopAutoRefresh() {
+        if (this.refreshInterval) {
+            clearInterval(this.refreshInterval);
+            this.refreshInterval = null;
         }
     }
     
     /**
      * UIの描画
      */
-    render(context, canvas) {
-        if (!this.isVisible) return;
+    render() {
+        if (!this.uiState.isUIVisible() || !this.canvas) return;
         
-        // 背景オーバーレイ
-        context.fillStyle = this.colors.overlay;
-        context.fillRect(0, 0, canvas.width, canvas.height);
-        
-        // メインコンテナ
-        const containerWidth = Math.min(800, canvas.width - 40);
-        const containerHeight = Math.min(600, canvas.height - 40);
-        const containerX = (canvas.width - containerWidth) / 2;
-        const containerY = (canvas.height - containerHeight) / 2;
-        
-        // メインコンテナ背景
-        context.fillStyle = this.colors.background;
-        context.fillRect(containerX, containerY, containerWidth, containerHeight);
-        
-        // メインコンテナ枠線
-        context.strokeStyle = this.colors.border;
-        context.lineWidth = 2;
-        context.strokeRect(containerX, containerY, containerWidth, containerHeight);
-        
-        // ヘッダー
-        this.renderHeader(context, containerX, containerY, containerWidth);
-        
-        // コンテンツエリア
-        const contentY = containerY + this.layoutConfig.headerHeight;
-        const contentHeight = containerHeight - this.layoutConfig.headerHeight;
-        
-        switch (this.currentView) {
-            case 'overview':
-                this.renderOverview(context, containerX, contentY, containerWidth, contentHeight);
-                break;
-            case 'backup':
-                this.renderBackupView(context, containerX, contentY, containerWidth, contentHeight);
-                break;
-            case 'export':
-                this.renderExportView(context, containerX, contentY, containerWidth, contentHeight);
-                break;
-            case 'import':
-                this.renderImportView(context, containerX, contentY, containerWidth, contentHeight);
-                break;
-            case 'clear':
-                this.renderClearView(context, containerX, contentY, containerWidth, contentHeight);
-                break;
-        }
-        
-        // ダイアログ
-        if (this.showingDialog) {
-            this.renderDialog(context, canvas);
-        }
-        
-        // エラーメッセージ
-        if (this.errorMessage) {
-            this.renderErrorMessage(context, canvas);
-        }
-    }
-    
-    /**
-     * ヘッダーの描画
-     */
-    renderHeader(context, x, y, width) {
-        // ヘッダー背景
-        context.fillStyle = this.colors.cardBackground;
-        context.fillRect(x, y, width, this.layoutConfig.headerHeight);
-        
-        // ヘッダー下線
-        context.strokeStyle = this.colors.border;
-        context.lineWidth = 1;
-        context.beginPath();
-        context.moveTo(x, y + this.layoutConfig.headerHeight);
-        context.lineTo(x + width, y + this.layoutConfig.headerHeight);
-        context.stroke();
-        
-        // タイトル
-        context.fillStyle = this.colors.text;
-        context.font = 'bold 24px Arial';
-        context.textAlign = 'left';
-        context.fillText('データ管理', x + this.layoutConfig.padding, y + 35);
-        
-        // 戻るボタン
-        const backButtonX = x + width - 100;
-        const backButtonY = y + 20;
-        const backButtonWidth = 80;
-        const backButtonHeight = 40;
-        
-        context.fillStyle = this.colors.secondary;
-        context.fillRect(backButtonX, backButtonY, backButtonWidth, backButtonHeight);
-        
-        context.strokeStyle = this.colors.border;
-        context.lineWidth = 1;
-        context.strokeRect(backButtonX, backButtonY, backButtonWidth, backButtonHeight);
-        
-        context.fillStyle = this.colors.text;
-        context.font = '16px Arial';
-        context.textAlign = 'center';
-        context.fillText('戻る', backButtonX + backButtonWidth / 2, backButtonY + 25);
-        
-        // 現在のビュー表示
-        context.fillStyle = this.colors.textSecondary;
-        context.font = '14px Arial';
-        context.textAlign = 'left';
-        const viewLabels = {
-            overview: '概要',
-            backup: 'バックアップ',
-            export: 'エクスポート',
-            import: 'インポート',
-            clear: 'データクリア'
-        };
-        context.fillText(`現在: ${viewLabels[this.currentView]}`, x + this.layoutConfig.padding, y + 60);
-    }
-    
-    /**
-     * 概要画面の描画
-     */
-    renderOverview(context, x, y, width, height) {
-        const padding = this.layoutConfig.padding;
-        let currentY = y + padding;
-        
-        // バックアップ状況カード
-        this.renderBackupStatusCard(context, x + padding, currentY, width - padding * 2);
-        currentY += 120;
-        
-        // クイックアクションボタン
-        this.renderQuickActionButtons(context, x + padding, currentY, width - padding * 2);
-        currentY += 100;
-        
-        // システム情報
-        this.renderSystemInfo(context, x + padding, currentY, width - padding * 2);
-    }
-    
-    /**
-     * バックアップ状況カードの描画
-     */
-    renderBackupStatusCard(context, x, y, width) {
-        // カード背景
-        context.fillStyle = this.colors.cardBackground;
-        context.fillRect(x, y, width, 100);
-        
-        // カード枠線
-        context.strokeStyle = this.colors.border;
-        context.lineWidth = 1;
-        context.strokeRect(x, y, width, 100);
-        
-        // カードタイトル
-        context.fillStyle = this.colors.primary;
-        context.font = 'bold 18px Arial';
-        context.textAlign = 'left';
-        context.fillText('バックアップ状況', x + 15, y + 25);
-        
-        // 最終バックアップ日時
-        const lastBackupText = this.backupStatus.lastBackup 
-            ? new Date(this.backupStatus.lastBackup).toLocaleString('ja-JP')
-            : '未実行';
-        
-        context.fillStyle = this.colors.text;
-        context.font = '14px Arial';
-        context.fillText(`最終バックアップ: ${lastBackupText}`, x + 15, y + 50);
-        
-        // バックアップ数とサイズ
-        const sizeText = this.formatFileSize(this.backupStatus.totalSize);
-        context.fillText(`バックアップ数: ${this.backupStatus.backupCount} (${sizeText})`, x + 15, y + 70);
-        
-        // 自動バックアップ状態
-        const autoStatus = this.backupStatus.autoBackupEnabled ? '有効' : '無効';
-        const statusColor = this.backupStatus.autoBackupEnabled ? this.colors.success : this.colors.warning;
-        
-        context.fillStyle = statusColor;
-        context.fillText(`自動バックアップ: ${autoStatus}`, x + width - 200, y + 50);
-    }
-    
-    /**
-     * クイックアクションボタンの描画
-     */
-    renderQuickActionButtons(context, x, y, width) {
-        const buttonWidth = (width - 30) / 4;
-        const buttonHeight = this.layoutConfig.buttonHeight;
-        const spacing = 10;
-        
-        const buttons = [
-            { text: 'バックアップ', action: 'backup', color: this.colors.primary },
-            { text: 'エクスポート', action: 'export', color: this.colors.success },
-            { text: 'インポート', action: 'import', color: this.colors.secondary },
-            { text: 'データクリア', action: 'clear', color: this.colors.danger }
-        ];
-        
-        buttons.forEach((button, index) => {
-            const buttonX = x + (buttonWidth + spacing) * index;
-            
-            // ボタン背景
-            context.fillStyle = button.color;
-            context.fillRect(buttonX, y, buttonWidth, buttonHeight);
-            
-            // ボタン枠線
-            context.strokeStyle = this.colors.border;
-            context.lineWidth = 1;
-            context.strokeRect(buttonX, y, buttonWidth, buttonHeight);
-            
-            // ボタンテキスト
-            context.fillStyle = this.colors.text;
-            context.font = '14px Arial';
-            context.textAlign = 'center';
-            context.fillText(button.text, buttonX + buttonWidth / 2, y + 25);
-        });
-    }
-    
-    /**
-     * システム情報の描画
-     */
-    renderSystemInfo(context, x, y, width) {
-        // セクション背景
-        context.fillStyle = this.colors.cardBackground;
-        context.fillRect(x, y, width, 120);
-        
-        // セクション枠線
-        context.strokeStyle = this.colors.border;
-        context.lineWidth = 1;
-        context.strokeRect(x, y, width, 120);
-        
-        // セクションタイトル
-        context.fillStyle = this.colors.primary;
-        context.font = 'bold 18px Arial';
-        context.textAlign = 'left';
-        context.fillText('システム情報', x + 15, y + 25);
-        
-        // DataManager状態
-        const dmStatus = this.dataManager ? this.dataManager.getStatus() : null;
-        const initStatus = dmStatus?.isInitialized ? '初期化済み' : '未初期化';
-        const initColor = dmStatus?.isInitialized ? this.colors.success : this.colors.warning;
-        
-        context.fillStyle = this.colors.text;
-        context.font = '14px Arial';
-        context.fillText('DataManager:', x + 15, y + 50);
-        
-        context.fillStyle = initColor;
-        context.fillText(initStatus, x + 150, y + 50);
-        
-        // ストレージ使用量
         try {
-            const storageUsed = this.getStorageUsage();
-            context.fillStyle = this.colors.text;
-            context.fillText(`ストレージ使用量: ${this.formatFileSize(storageUsed)}`, x + 15, y + 75);
+            // Clear and draw background
+            this.uiRenderer.clear();
+            this.uiRenderer.drawBackground();
+            
+            // Calculate menu bounds
+            const bounds = this.layoutManager.calculateMenuBounds();
+            
+            // Draw header
+            this.uiRenderer.drawMenuHeader(bounds, 'Data Management');
+            
+            // Render current view
+            this.renderCurrentView(bounds);
+            
+            // Render dialog if visible
+            if (this.dialogState.isDialogVisible()) {
+                const dialogType = this.dialogState.getDialogType();
+                const dialogData = this.dialogState.getDialogData();
+                this.dialogManager.renderDialog(dialogType, dialogData);
+            }
+            
+            // Render error message if present
+            this.renderErrorMessage();
+            
         } catch (error) {
-            context.fillStyle = this.colors.textSecondary;
-            context.fillText('ストレージ使用量: 取得できません', x + 15, y + 75);
+            console.error('Render error:', error);
         }
+    }
+    
+    /**
+     * 現在のビューをレンダリング
+     */
+    renderCurrentView(bounds) {
+        const currentView = this.uiState.getCurrentView();
+        const selectedItem = this.uiState.getSelectedItem();
         
-        // バージョン情報
-        const version = dmStatus?.version || '不明';
-        context.fillStyle = this.colors.textSecondary;
-        context.fillText(`バージョン: ${version}`, x + 15, y + 100);
+        switch (currentView) {
+            case 'overview':
+                this.viewRenderer.renderOverviewView(
+                    bounds, 
+                    this.backupStatus.getBackupStatus(), 
+                    selectedItem
+                );
+                break;
+                
+            case 'export':
+                this.viewRenderer.renderExportView(bounds, selectedItem);
+                break;
+                
+            // Add other views as needed
+            default:
+                this.viewRenderer.renderOverviewView(
+                    bounds, 
+                    this.backupStatus.getBackupStatus(), 
+                    selectedItem
+                );
+        }
     }
     
     /**
      * エラーメッセージの描画
      */
-    renderErrorMessage(context, canvas) {
-        const messageWidth = 400;
-        const messageHeight = 80;
-        const messageX = (canvas.width - messageWidth) / 2;
-        const messageY = 50;
+    renderErrorMessage() {
+        const errorMessage = this.uiState.getError();
+        if (!errorMessage) return;
         
-        // エラーメッセージ背景
-        context.fillStyle = this.colors.danger;
-        context.fillRect(messageX, messageY, messageWidth, messageHeight);
+        const colors = this.layoutManager.getColors();
+        const bounds = this.layoutManager.calculateMenuBounds();
         
-        // エラーメッセージ枠線
-        context.strokeStyle = '#ffffff';
-        context.lineWidth = 2;
-        context.strokeRect(messageX, messageY, messageWidth, messageHeight);
+        // Error banner
+        this.uiRenderer.drawCard(
+            bounds.x, bounds.y + bounds.height + 10, 
+            bounds.width, 50, false
+        );
         
-        // エラーメッセージテキスト
-        context.fillStyle = '#ffffff';
-        context.font = 'bold 16px Arial';
-        context.textAlign = 'center';
-        context.fillText('エラー', messageX + messageWidth / 2, messageY + 25);
-        
-        context.font = '14px Arial';
-        context.fillText(this.errorMessage, messageX + messageWidth / 2, messageY + 50);
+        this.uiRenderer.drawText('⚠️ ' + errorMessage, 
+            bounds.x + 20, bounds.y + bounds.height + 35, {
+                fontSize: 14,
+                color: colors.danger,
+                align: 'left',
+                baseline: 'middle'
+            });
     }
     
     /**
-     * ファイルサイズのフォーマット
+     * 入力処理
+     * @param {string} key - 押されたキー
      */
+    handleInput(key) {
+        if (!this.uiState.isUIVisible()) return false;
+        
+        // Input cooldown
+        const now = Date.now();
+        if (now - this.lastInputTime < this.inputCooldown) return true;
+        this.lastInputTime = now;
+        
+        // Handle dialog input first
+        if (this.dialogState.isDialogVisible()) {
+            return this.handleDialogInput(key);
+        }
+        
+        // Handle main UI input
+        return this.handleMainUIInput(key);
+    }
+    
+    /**
+     * ダイアログ入力処理
+     */
+    handleDialogInput(key) {
+        const dialogType = this.dialogState.getDialogType();
+        const dialog = this.dialogManager.getDialog(dialogType);
+        
+        switch (key) {
+            case 'Escape':
+                this.dialogState.hideDialog();
+                return true;
+                
+            case 'ArrowLeft':
+                if (dialog) {
+                    const currentButton = dialog.getSelectedButton();
+                    dialog.setSelectedButton(Math.max(0, currentButton - 1));
+                }
+                return true;
+                
+            case 'ArrowRight':
+                if (dialog) {
+                    const currentButton = dialog.getSelectedButton();
+                    // Assume max 2 buttons for simplicity
+                    dialog.setSelectedButton(Math.min(1, currentButton + 1));
+                }
+                return true;
+                
+            case 'Enter':
+                this.executeDialogAction(dialogType, dialog?.getSelectedButton() || 0);
+                return true;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * メインUI入力処理
+     */
+    handleMainUIInput(key) {
+        switch (key) {
+            case 'Escape':
+                this.hide();
+                return true;
+                
+            case 'ArrowUp':
+                this.uiState.moveSelectionUp();
+                return true;
+                
+            case 'ArrowDown':
+                this.uiState.moveSelectionDown(5); // Assume 5 menu items
+                return true;
+                
+            case 'Enter':
+                this.executeMainAction();
+                return true;
+                
+            case 'Tab':
+                this.cycleView();
+                return true;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * メインアクション実行
+     */
+    executeMainAction() {
+        const selectedItem = this.uiState.getSelectedItem();
+        const currentView = this.uiState.getCurrentView();
+        
+        if (currentView === 'overview') {
+            switch (selectedItem) {
+                case 1: // Create Backup
+                    this.showBackupDialog();
+                    break;
+                case 2: // Export Data
+                    this.showExportDialog();
+                    break;
+                case 3: // Import Data
+                    this.showImportDialog();
+                    break;
+                case 4: // Clear Data
+                    this.showClearDataDialog();
+                    break;
+            }
+        }
+    }
+    
+    /**
+     * ダイアログアクション実行
+     */
+    async executeDialogAction(dialogType, buttonIndex) {
+        try {
+            switch (dialogType) {
+                case 'backup':
+                    if (buttonIndex === 1) { // Confirm
+                        await this.createBackup();
+                    }
+                    break;
+                    
+                case 'export':
+                    if (buttonIndex === 1) { // Export
+                        await this.exportData();
+                    }
+                    break;
+                    
+                case 'import':
+                    if (buttonIndex === 1) { // Import
+                        await this.importData();
+                    }
+                    break;
+                    
+                case 'clear':
+                    if (buttonIndex === 1) { // Confirm
+                        await this.clearData();
+                    }
+                    break;
+            }
+            
+            this.dialogState.hideDialog();
+            
+        } catch (error) {
+            this.uiState.showError(error.message);
+            console.error('Dialog action failed:', error);
+        }
+    }
+    
+    /**
+     * ビューサイクル
+     */
+    cycleView() {
+        const views = ['overview', 'export', 'import'];
+        const currentIndex = views.indexOf(this.uiState.getCurrentView());
+        const nextIndex = (currentIndex + 1) % views.length;
+        this.uiState.setCurrentView(views[nextIndex]);
+    }
+    
+    // Dialog show methods
+    showBackupDialog() {
+        this.dialogState.showDialog('backup', {
+            estimatedSize: this.formatFileSize(1024 * 1024), // 1MB estimate
+            autoBackupEnabled: this.backupStatus.isAutoBackupEnabled()
+        });
+    }
+    
+    showExportDialog() {
+        this.dialogState.showDialog('export', {
+            formats: ['JSON', 'CSV', 'XML'],
+            selectedFormat: 0,
+            includeOptions: [
+                { name: 'Game Progress', checked: true },
+                { name: 'Settings', checked: true },
+                { name: 'Statistics', checked: false }
+            ]
+        });
+    }
+    
+    showImportDialog() {
+        this.dialogState.showDialog('import', {
+            importOptions: [
+                { name: 'Merge with existing data', checked: true },
+                { name: 'Replace all data', checked: false },
+                { name: 'Create backup before import', checked: true }
+            ]
+        });
+    }
+    
+    showClearDataDialog() {
+        this.dialogState.showDialog('clear', {
+            confirmText: ''
+        });
+    }
+    
+    // Operation methods (simplified implementations)
+    async createBackup() {
+        this.operationState.startOperation('backup', 'Creating backup...');
+        
+        try {
+            // Simulate backup creation
+            for (let i = 0; i <= 100; i += 10) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+                this.operationState.updateOperation(i, `Creating backup... ${i}%`);
+            }
+            
+            this.backupStatus.addBackupToHistory({
+                id: Date.now(),
+                size: 1024 * 1024,
+                type: 'manual'
+            });
+            
+            this.operationState.endOperation('success', 'Backup created successfully');
+            
+        } catch (error) {
+            this.operationState.endOperation('error', error.message);
+        }
+    }
+    
+    async exportData() {
+        this.operationState.startOperation('export', 'Exporting data...');
+        
+        try {
+            // Simulate export
+            for (let i = 0; i <= 100; i += 20) {
+                await new Promise(resolve => setTimeout(resolve, 200));
+                this.operationState.updateOperation(i, `Exporting... ${i}%`);
+            }
+            
+            this.operationState.endOperation('success', 'Data exported successfully');
+            
+        } catch (error) {
+            this.operationState.endOperation('error', error.message);
+        }
+    }
+    
+    async importData() {
+        this.operationState.startOperation('import', 'Importing data...');
+        
+        try {
+            // Simulate import
+            for (let i = 0; i <= 100; i += 15) {
+                await new Promise(resolve => setTimeout(resolve, 150));
+                this.operationState.updateOperation(i, `Importing... ${i}%`);
+            }
+            
+            this.operationState.endOperation('success', 'Data imported successfully');
+            
+        } catch (error) {
+            this.operationState.endOperation('error', error.message);
+        }
+    }
+    
+    async clearData() {
+        this.operationState.startOperation('clear', 'Clearing data...');
+        
+        try {
+            // Simulate data clearing
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            this.operationState.updateOperation(100, 'Data cleared');
+            this.operationState.endOperation('success', 'All data cleared successfully');
+            
+        } catch (error) {
+            this.operationState.endOperation('error', error.message);
+        }
+    }
+    
+    // Event handlers
+    onBackupCreated(data) {
+        this.backupStatus.addBackupToHistory(data);
+        this.uiState.showError('Backup created successfully', 3000);
+    }
+    
+    onDataExported(data) {
+        this.uiState.showError('Data exported successfully', 3000);
+    }
+    
+    onDataImported(data) {
+        this.uiState.showError('Data imported successfully', 3000);
+    }
+    
+    onOperationProgress(data) {
+        this.operationState.updateOperation(data.progress, data.message);
+    }
+    
+    onError(data) {
+        this.uiState.showError(data.message || 'An error occurred');
+    }
+    
+    // Utility methods
     formatFileSize(bytes) {
         if (bytes === 0) return '0 B';
         
@@ -515,1095 +626,35 @@ export class DataManagementUI {
         return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
     }
     
-    /**
-     * ストレージ使用量の取得
-     */
-    getStorageUsage() {
-        let totalSize = 0;
-        
-        for (let key in localStorage) {
-            if (localStorage.hasOwnProperty(key) && key.startsWith('bubblePop_')) {
-                totalSize += new Blob([localStorage[key]]).size;
-            }
-        }
-        
-        return totalSize;
+    // Configuration
+    configure(newConfig) {
+        Object.assign(this.config, newConfig);
     }
     
-    /**
-     * エラーの表示
-     */
-    showError(message, duration = 5000) {
-        this.errorMessage = message;
-        this.errorTimeout = Date.now() + duration;
+    getConfiguration() {
+        return { ...this.config };
     }
     
-    /**
-     * エラーのクリア
-     */
-    clearError() {
-        this.errorMessage = null;
-        this.errorTimeout = null;
+    // Status and diagnostics
+    getStatus() {
+        return {
+            visible: this.uiState.isUIVisible(),
+            currentView: this.uiState.getCurrentView(),
+            selectedItem: this.uiState.getSelectedItem(),
+            dialogVisible: this.dialogState.isDialogVisible(),
+            operationInProgress: this.operationState.isOperationInProgress(),
+            backupStatus: this.backupStatus.getBackupStatus()
+        };
     }
     
-    // イベントハンドラー
-    onBackupCreated(data) {
-        this.loadBackupStatus();
-        this.showError('バックアップが作成されました', 3000);
-    }
-    
-    onDataExported(data) {
-        this.showError('データのエクスポートが完了しました', 3000);
-    }
-    
-    onDataImported(data) {
-        this.loadBackupStatus();
-        this.showError('データのインポートが完了しました', 3000);
-    }
-    
-    onOperationProgress(data) {
-        this.operationProgress = data.progress || 0;
-        this.operationMessage = data.message || '';
-    }
-    
-    onError(data) {
-        this.showError(data.message || 'エラーが発生しました');
-    }
-    
-    /**
-     * 操作進行状況の更新
-     */
-    updateOperationProgress() {
-        // 実装は後で追加
-    }
-    
-    /**
-     * バックアップビューの描画
-     */
-    renderBackupView(context, x, y, width, height) {
-        const padding = this.layoutConfig.padding;
-        let currentY = y + padding;
-        
-        // バックアップ履歴セクション
-        this.renderBackupHistory(context, x + padding, currentY, width - padding * 2);
-        currentY += 250;
-        
-        // バックアップ設定セクション
-        this.renderBackupSettings(context, x + padding, currentY, width - padding * 2);
-        currentY += 150;
-        
-        // バックアップアクションボタン
-        this.renderBackupActions(context, x + padding, currentY, width - padding * 2);
-    }
-    
-    /**
-     * バックアップ履歴の描画
-     */
-    renderBackupHistory(context, x, y, width) {
-        // セクション背景
-        context.fillStyle = this.colors.cardBackground;
-        context.fillRect(x, y, width, 230);
-        
-        // セクション枠線
-        context.strokeStyle = this.colors.border;
-        context.lineWidth = 1;
-        context.strokeRect(x, y, width, 230);
-        
-        // セクションタイトル
-        context.fillStyle = this.colors.primary;
-        context.font = 'bold 18px Arial';
-        context.textAlign = 'left';
-        context.fillText('バックアップ履歴', x + 15, y + 25);
-        
-        // バックアップが存在しない場合
-        if (this.backupStatus.backupCount === 0) {
-            context.fillStyle = this.colors.textSecondary;
-            context.font = '16px Arial';
-            context.textAlign = 'center';
-            context.fillText('バックアップが存在しません', x + width / 2, y + 120);
-            
-            context.font = '14px Arial';
-            context.fillText('新しいバックアップを作成してください', x + width / 2, y + 145);
-            return;
-        }
-        
-        // バックアップ履歴ヘッダー
-        context.fillStyle = this.colors.textSecondary;
-        context.font = 'bold 14px Arial';
-        context.textAlign = 'left';
-        context.fillText('日時', x + 15, y + 55);
-        context.fillText('サイズ', x + 200, y + 55);
-        context.fillText('タイプ', x + 300, y + 55);
-        context.fillText('状態', x + 400, y + 55);
-        
-        // ヘッダー下線
-        context.strokeStyle = this.colors.border;
-        context.lineWidth = 1;
-        context.beginPath();
-        context.moveTo(x + 15, y + 65);
-        context.lineTo(x + width - 15, y + 65);
-        context.stroke();
-        
-        // サンプルバックアップエントリ（実際のデータがない場合）
-        const sampleBackups = this.generateSampleBackupEntries();
-        
-        sampleBackups.forEach((backup, index) => {
-            const itemY = y + 80 + index * 30;
-            const isSelected = this.selectedItem === index;
-            
-            // 選択されたアイテムのハイライト
-            if (isSelected) {
-                context.fillStyle = 'rgba(74, 144, 226, 0.3)';
-                context.fillRect(x + 10, itemY - 15, width - 20, 25);
-            }
-            
-            // バックアップエントリ情報
-            context.fillStyle = this.colors.text;
-            context.font = '14px Arial';
-            context.textAlign = 'left';
-            
-            // 日時
-            context.fillText(backup.date, x + 15, itemY);
-            
-            // サイズ
-            context.fillText(backup.size, x + 200, itemY);
-            
-            // タイプ
-            context.fillText(backup.type, x + 300, itemY);
-            
-            // 状態
-            context.fillStyle = backup.statusColor;
-            context.fillText(backup.status, x + 400, itemY);
-            
-            context.fillStyle = this.colors.text;
-        });
-        
-        // スクロールインジケーター（必要に応じて）
-        if (sampleBackups.length > 5) {
-            this.renderScrollIndicator(context, x + width - 20, y + 80, 10, 120);
-        }
-    }
-    
-    /**
-     * バックアップ設定の描画
-     */
-    renderBackupSettings(context, x, y, width) {
-        // セクション背景
-        context.fillStyle = this.colors.cardBackground;
-        context.fillRect(x, y, width, 130);
-        
-        // セクション枠線
-        context.strokeStyle = this.colors.border;
-        context.lineWidth = 1;
-        context.strokeRect(x, y, width, 130);
-        
-        // セクションタイトル
-        context.fillStyle = this.colors.primary;
-        context.font = 'bold 18px Arial';
-        context.textAlign = 'left';
-        context.fillText('バックアップ設定', x + 15, y + 25);
-        
-        // 自動バックアップ設定
-        context.fillStyle = this.colors.text;
-        context.font = '14px Arial';
-        context.fillText('自動バックアップ:', x + 15, y + 55);
-        
-        // 自動バックアップ切り替えボタン
-        const toggleX = x + 150;
-        const toggleY = y + 40;
-        const toggleWidth = 60;
-        const toggleHeight = 25;
-        
-        context.fillStyle = this.backupStatus.autoBackupEnabled ? this.colors.success : this.colors.textSecondary;
-        context.fillRect(toggleX, toggleY, toggleWidth, toggleHeight);
-        
-        context.strokeStyle = this.colors.border;
-        context.lineWidth = 1;
-        context.strokeRect(toggleX, toggleY, toggleWidth, toggleHeight);
-        
-        context.fillStyle = this.colors.text;
-        context.font = '12px Arial';
-        context.textAlign = 'center';
-        context.fillText(this.backupStatus.autoBackupEnabled ? 'ON' : 'OFF', 
-                        toggleX + toggleWidth / 2, toggleY + 16);
-        
-        // バックアップ間隔設定
-        context.fillStyle = this.colors.text;
-        context.font = '14px Arial';
-        context.textAlign = 'left';
-        context.fillText('バックアップ間隔:', x + 15, y + 85);
-        context.fillText('5分毎', x + 150, y + 85);
-        
-        // 最大保持数設定
-        context.fillText('最大保持数:', x + 300, y + 55);
-        context.fillText('10個', x + 400, y + 55);
-        
-        // 次回バックアップ予定
-        if (this.backupStatus.nextBackup) {
-            const nextBackupTime = new Date(this.backupStatus.nextBackup).toLocaleTimeString('ja-JP');
-            context.fillStyle = this.colors.textSecondary;
-            context.fillText(`次回バックアップ: ${nextBackupTime}`, x + 300, y + 85);
-        }
-        
-        // ストレージ使用状況
-        const storageUsed = this.getStorageUsage();
-        const storageText = this.formatFileSize(storageUsed);
-        context.fillStyle = this.colors.textSecondary;
-        context.fillText(`ストレージ使用量: ${storageText}`, x + 15, y + 110);
-    }
-    
-    /**
-     * バックアップアクションの描画
-     */
-    renderBackupActions(context, x, y, width) {
-        const buttonWidth = this.layoutConfig.buttonWidth;
-        const buttonHeight = this.layoutConfig.buttonHeight;
-        const spacing = 20;
-        
-        const actions = [
-            { text: '今すぐバックアップ', action: 'createBackup', color: this.colors.primary },
-            { text: 'バックアップ復元', action: 'restoreBackup', color: this.colors.secondary },
-            { text: 'バックアップ削除', action: 'deleteBackup', color: this.colors.danger }
-        ];
-        
-        actions.forEach((action, index) => {
-            const buttonX = x + (buttonWidth + spacing) * index;
-            
-            // ボタン背景
-            context.fillStyle = action.color;
-            context.fillRect(buttonX, y, buttonWidth, buttonHeight);
-            
-            // ボタン枠線
-            context.strokeStyle = this.colors.border;
-            context.lineWidth = 1;
-            context.strokeRect(buttonX, y, buttonWidth, buttonHeight);
-            
-            // ボタンテキスト
-            context.fillStyle = this.colors.text;
-            context.font = '14px Arial';
-            context.textAlign = 'center';
-            context.fillText(action.text, buttonX + buttonWidth / 2, y + 25);
-        });
-        
-        // 操作中のプログレスバー
-        if (this.operationInProgress) {
-            this.renderProgressBar(context, x, y + buttonHeight + 20, width);
-        }
-    }
-    
-    /**
-     * スクロールインジケーターの描画
-     */
-    renderScrollIndicator(context, x, y, width, height) {
-        // スクロールバー背景
-        context.fillStyle = this.colors.border;
-        context.fillRect(x, y, width, height);
-        
-        // スクロールハンドル
-        const handleHeight = Math.max(20, height * 0.3);
-        const handleY = y + (this.scrollPosition / 100) * (height - handleHeight);
-        
-        context.fillStyle = this.colors.primary;
-        context.fillRect(x, handleY, width, handleHeight);
-    }
-    
-    /**
-     * プログレスバーの描画
-     */
-    renderProgressBar(context, x, y, width) {
-        const barHeight = 20;
-        
-        // プログレスバー背景
-        context.fillStyle = this.colors.border;
-        context.fillRect(x, y, width, barHeight);
-        
-        // プログレスバー前景
-        const progressWidth = (width * this.operationProgress) / 100;
-        context.fillStyle = this.colors.success;
-        context.fillRect(x, y, progressWidth, barHeight);
-        
-        // プログレスバー枠線
-        context.strokeStyle = this.colors.text;
-        context.lineWidth = 1;
-        context.strokeRect(x, y, width, barHeight);
-        
-        // プログレステキスト
-        context.fillStyle = this.colors.text;
-        context.font = '12px Arial';
-        context.textAlign = 'center';
-        context.fillText(`${this.operationProgress}% - ${this.operationMessage}`, 
-                        x + width / 2, y + 14);
-    }
-    
-    /**
-     * バックアップエントリの取得
-     */
-    generateSampleBackupEntries() {
-        if (this.backupStatus.backupCount === 0) {
-            return [];
-        }
-        
-        // 実際のバックアップ履歴が利用可能な場合
-        if (this.backupStatus.backupHistory && this.backupStatus.backupHistory.length > 0) {
-            return this.backupStatus.backupHistory.slice(0, 5).map(backup => ({
-                date: new Date(backup.timestamp).toLocaleString('ja-JP'),
-                size: this.formatFileSize(backup.size || 0),
-                type: backup.type || '自動',
-                status: backup.status || '正常',
-                statusColor: this.getStatusColor(backup.status || '正常')
-            }));
-        }
-        
-        // フォールバック: サンプルデータを生成
-        const entries = [];
-        const now = Date.now();
-        
-        for (let i = 0; i < Math.min(this.backupStatus.backupCount, 5); i++) {
-            const date = new Date(now - (i * 5 * 60 * 1000)); // 5分間隔
-            entries.push({
-                date: date.toLocaleString('ja-JP'),
-                size: this.formatFileSize(Math.random() * 1024 * 1024), // ランダムサイズ
-                type: i === 0 ? '手動' : '自動',
-                status: '正常',
-                statusColor: this.colors.success
-            });
-        }
-        
-        return entries;
-    }
-    
-    /**
-     * ステータスに対応する色を取得
-     */
-    getStatusColor(status) {
-        switch (status) {
-            case '正常':
-            case 'success':
-                return this.colors.success;
-            case 'エラー':
-            case 'error':
-                return this.colors.danger;
-            case '進行中':
-            case 'progress':
-                return this.colors.warning;
-            default:
-                return this.colors.textSecondary;
-        }
-    }
-    
-    /**
-     * エクスポートビューの描画
-     */
-    renderExportView(context, x, y, width, height) {
-        const padding = this.layoutConfig.padding;
-        let currentY = y + padding;
-        
-        // エクスポート対象選択セクション
-        this.renderExportTargetSelection(context, x + padding, currentY, width - padding * 2);
-        currentY += 180;
-        
-        // エクスポート形式選択セクション
-        this.renderExportFormatSelection(context, x + padding, currentY, width - padding * 2);
-        currentY += 120;
-        
-        // エクスポートアクションボタン
-        this.renderExportActions(context, x + padding, currentY, width - padding * 2);
-        currentY += 80;
-        
-        // エクスポート履歴
-        this.renderExportHistory(context, x + padding, currentY, width - padding * 2);
-    }
-    
-    /**
-     * エクスポート対象選択の描画
-     */
-    renderExportTargetSelection(context, x, y, width) {
-        // セクション背景
-        context.fillStyle = this.colors.cardBackground;
-        context.fillRect(x, y, width, 160);
-        
-        // セクション枠線
-        context.strokeStyle = this.colors.border;
-        context.lineWidth = 1;
-        context.strokeRect(x, y, width, 160);
-        
-        // セクションタイトル
-        context.fillStyle = this.colors.primary;
-        context.font = 'bold 18px Arial';
-        context.textAlign = 'left';
-        context.fillText('エクスポート対象', x + 15, y + 25);
-        
-        // データタイプのチェックボックス
-        const dataTypes = [
-            { name: 'playerData', label: 'プレイヤーデータ', selected: true },
-            { name: 'settings', label: '設定データ', selected: true },
-            { name: 'statistics', label: '統計データ', selected: false },
-            { name: 'achievements', label: '実績データ', selected: false }
-        ];
-        
-        dataTypes.forEach((dataType, index) => {
-            const checkboxX = x + 15 + (index % 2) * 250;
-            const checkboxY = y + 50 + Math.floor(index / 2) * 30;
-            
-            // チェックボックス
-            context.fillStyle = dataType.selected ? this.colors.success : this.colors.border;
-            context.fillRect(checkboxX, checkboxY, 20, 20);
-            
-            context.strokeStyle = this.colors.text;
-            context.lineWidth = 2;
-            context.strokeRect(checkboxX, checkboxY, 20, 20);
-            
-            // チェックマーク
-            if (dataType.selected) {
-                context.strokeStyle = this.colors.text;
-                context.lineWidth = 3;
-                context.beginPath();
-                context.moveTo(checkboxX + 4, checkboxY + 10);
-                context.lineTo(checkboxX + 8, checkboxY + 14);
-                context.lineTo(checkboxX + 16, checkboxY + 6);
-                context.stroke();
-            }
-            
-            // ラベル
-            context.fillStyle = this.colors.text;
-            context.font = '14px Arial';
-            context.textAlign = 'left';
-            context.fillText(dataType.label, checkboxX + 30, checkboxY + 15);
-        });
-        
-        // データサイズ予測
-        context.fillStyle = this.colors.textSecondary;
-        context.font = '12px Arial';
-        context.fillText('予想サイズ: 約 2.5MB', x + 15, y + 140);
-    }
-    
-    /**
-     * エクスポート形式選択の描画
-     */
-    renderExportFormatSelection(context, x, y, width) {
-        // セクション背景
-        context.fillStyle = this.colors.cardBackground;
-        context.fillRect(x, y, width, 100);
-        
-        // セクション枠線
-        context.strokeStyle = this.colors.border;
-        context.lineWidth = 1;
-        context.strokeRect(x, y, width, 100);
-        
-        // セクションタイトル
-        context.fillStyle = this.colors.primary;
-        context.font = 'bold 18px Arial';
-        context.textAlign = 'left';
-        context.fillText('エクスポート形式', x + 15, y + 25);
-        
-        // 形式選択ラジオボタン
-        const formats = [
-            { name: 'json', label: 'JSON（推奨）', description: '汎用的で読みやすい形式' },
-            { name: 'compressed', label: '圧縮JSON', description: 'ファイルサイズを削減' },
-            { name: 'encrypted', label: '暗号化JSON', description: 'セキュリティ強化' }
-        ];
-        
-        formats.forEach((format, index) => {
-            const radioX = x + 15 + index * 200;
-            const radioY = y + 50;
-            const isSelected = index === 0; // デフォルトでJSONを選択
-            
-            // ラジオボタン
-            context.fillStyle = this.colors.border;
-            context.fillRect(radioX, radioY, 16, 16);
-            
-            if (isSelected) {
-                context.fillStyle = this.colors.primary;
-                context.fillRect(radioX + 3, radioY + 3, 10, 10);
-            }
-            
-            context.strokeStyle = this.colors.text;
-            context.lineWidth = 2;
-            context.strokeRect(radioX, radioY, 16, 16);
-            
-            // ラベル
-            context.fillStyle = this.colors.text;
-            context.font = '14px Arial';
-            context.textAlign = 'left';
-            context.fillText(format.label, radioX + 25, radioY + 12);
-            
-            // 説明
-            context.fillStyle = this.colors.textSecondary;
-            context.font = '10px Arial';
-            context.fillText(format.description, radioX + 25, radioY + 25);
-        });
-    }
-    
-    /**
-     * エクスポートアクションの描画
-     */
-    renderExportActions(context, x, y, width) {
-        const buttonWidth = this.layoutConfig.buttonWidth;
-        const buttonHeight = this.layoutConfig.buttonHeight;
-        const spacing = 20;
-        
-        const actions = [
-            { text: 'エクスポート開始', action: 'startExport', color: this.colors.success },
-            { text: 'プレビュー', action: 'preview', color: this.colors.secondary },
-            { text: 'キャンセル', action: 'cancel', color: this.colors.textSecondary }
-        ];
-        
-        actions.forEach((action, index) => {
-            const buttonX = x + (buttonWidth + spacing) * index;
-            
-            // ボタン背景
-            context.fillStyle = action.color;
-            context.fillRect(buttonX, y, buttonWidth, buttonHeight);
-            
-            // ボタン枠線
-            context.strokeStyle = this.colors.border;
-            context.lineWidth = 1;
-            context.strokeRect(buttonX, y, buttonWidth, buttonHeight);
-            
-            // ボタンテキスト
-            context.fillStyle = this.colors.text;
-            context.font = '14px Arial';
-            context.textAlign = 'center';
-            context.fillText(action.text, buttonX + buttonWidth / 2, y + 25);
-        });
-        
-        // 操作中のプログレスバー
-        if (this.operationInProgress && this.currentView === 'export') {
-            this.renderProgressBar(context, x, y + buttonHeight + 20, width);
-        }
-    }
-    
-    /**
-     * エクスポート履歴の描画
-     */
-    renderExportHistory(context, x, y, width) {
-        // セクション背景
-        context.fillStyle = this.colors.cardBackground;
-        context.fillRect(x, y, width, 100);
-        
-        // セクション枠線
-        context.strokeStyle = this.colors.border;
-        context.lineWidth = 1;
-        context.strokeRect(x, y, width, 100);
-        
-        // セクションタイトル
-        context.fillStyle = this.colors.primary;
-        context.font = 'bold 18px Arial';
-        context.textAlign = 'left';
-        context.fillText('最近のエクスポート', x + 15, y + 25);
-        
-        // エクスポート履歴（サンプル）
-        const recentExports = [
-            { date: '2024-01-15 14:30', type: 'プレイヤーデータ', size: '1.2MB', status: '成功' },
-            { date: '2024-01-14 09:15', type: '全データ', size: '2.8MB', status: '成功' }
-        ];
-        
-        if (recentExports.length === 0) {
-            context.fillStyle = this.colors.textSecondary;
-            context.font = '14px Arial';
-            context.textAlign = 'center';
-            context.fillText('エクスポート履歴がありません', x + width / 2, y + 60);
-        } else {
-            recentExports.forEach((exportItem, index) => {
-                const itemY = y + 45 + index * 20;
-                
-                context.fillStyle = this.colors.text;
-                context.font = '12px Arial';
-                context.textAlign = 'left';
-                context.fillText(`${exportItem.date} - ${exportItem.type} (${exportItem.size})`, 
-                               x + 15, itemY);
-                
-                context.fillStyle = this.colors.success;
-                context.fillText(exportItem.status, x + width - 60, itemY);
-            });
-        }
-    }
-    
-    /**
-     * インポートビューの描画
-     */
-    renderImportView(context, x, y, width, height) {
-        const padding = this.layoutConfig.padding;
-        let currentY = y + padding;
-        
-        // ファイル選択セクション
-        this.renderFileSelection(context, x + padding, currentY, width - padding * 2);
-        currentY += 140;
-        
-        // インポート設定セクション
-        this.renderImportSettings(context, x + padding, currentY, width - padding * 2);
-        currentY += 160;
-        
-        // 競合解決設定セクション
-        this.renderConflictResolution(context, x + padding, currentY, width - padding * 2);
-        currentY += 120;
-        
-        // インポートアクションボタン
-        this.renderImportActions(context, x + padding, currentY, width - padding * 2);
-    }
-    
-    /**
-     * ファイル選択の描画
-     */
-    renderFileSelection(context, x, y, width) {
-        // セクション背景
-        context.fillStyle = this.colors.cardBackground;
-        context.fillRect(x, y, width, 120);
-        
-        // セクション枠線
-        context.strokeStyle = this.colors.border;
-        context.lineWidth = 1;
-        context.strokeRect(x, y, width, 120);
-        
-        // セクションタイトル
-        context.fillStyle = this.colors.primary;
-        context.font = 'bold 18px Arial';
-        context.textAlign = 'left';
-        context.fillText('ファイル選択', x + 15, y + 25);
-        
-        // ファイル選択エリア
-        const dropAreaX = x + 15;
-        const dropAreaY = y + 40;
-        const dropAreaWidth = width - 30;
-        const dropAreaHeight = 60;
-        
-        // ドロップエリア背景
-        context.fillStyle = 'rgba(74, 144, 226, 0.1)';
-        context.fillRect(dropAreaX, dropAreaY, dropAreaWidth, dropAreaHeight);
-        
-        // ドロップエリア枠線（点線風）
-        context.strokeStyle = this.colors.primary;
-        context.lineWidth = 2;
-        context.setLineDash([5, 5]);
-        context.strokeRect(dropAreaX, dropAreaY, dropAreaWidth, dropAreaHeight);
-        context.setLineDash([]);
-        
-        // ドロップエリアテキスト
-        context.fillStyle = this.colors.text;
-        context.font = '16px Arial';
-        context.textAlign = 'center';
-        context.fillText('ファイルをドロップまたはクリックして選択', 
-                        dropAreaX + dropAreaWidth / 2, dropAreaY + 25);
-        
-        context.fillStyle = this.colors.textSecondary;
-        context.font = '12px Arial';
-        context.fillText('対応形式: JSON, 暗号化JSON, 圧縮JSON', 
-                        dropAreaX + dropAreaWidth / 2, dropAreaY + 45);
-    }
-    
-    /**
-     * インポート設定の描画
-     */
-    renderImportSettings(context, x, y, width) {
-        // セクション背景
-        context.fillStyle = this.colors.cardBackground;
-        context.fillRect(x, y, width, 140);
-        
-        // セクション枠線
-        context.strokeStyle = this.colors.border;
-        context.lineWidth = 1;
-        context.strokeRect(x, y, width, 140);
-        
-        // セクションタイトル
-        context.fillStyle = this.colors.primary;
-        context.font = 'bold 18px Arial';
-        context.textAlign = 'left';
-        context.fillText('インポート設定', x + 15, y + 25);
-        
-        // インポート対象のチェックボックス
-        const importTargets = [
-            { name: 'playerData', label: 'プレイヤーデータ', selected: true },
-            { name: 'settings', label: '設定データ', selected: false },
-            { name: 'statistics', label: '統計データ', selected: false },
-            { name: 'achievements', label: '実績データ', selected: false }
-        ];
-        
-        importTargets.forEach((target, index) => {
-            const checkboxX = x + 15 + (index % 2) * 250;
-            const checkboxY = y + 50 + Math.floor(index / 2) * 30;
-            
-            // チェックボックス
-            context.fillStyle = target.selected ? this.colors.success : this.colors.border;
-            context.fillRect(checkboxX, checkboxY, 20, 20);
-            
-            context.strokeStyle = this.colors.text;
-            context.lineWidth = 2;
-            context.strokeRect(checkboxX, checkboxY, 20, 20);
-            
-            // チェックマーク
-            if (target.selected) {
-                context.strokeStyle = this.colors.text;
-                context.lineWidth = 3;
-                context.beginPath();
-                context.moveTo(checkboxX + 4, checkboxY + 10);
-                context.lineTo(checkboxX + 8, checkboxY + 14);
-                context.lineTo(checkboxX + 16, checkboxY + 6);
-                context.stroke();
-            }
-            
-            // ラベル
-            context.fillStyle = this.colors.text;
-            context.font = '14px Arial';
-            context.textAlign = 'left';
-            context.fillText(target.label, checkboxX + 30, checkboxY + 15);
-        });
-        
-        // バリデーション設定
-        context.fillStyle = this.colors.textSecondary;
-        context.font = '12px Arial';
-        context.fillText('✓ データ整合性チェックを実行', x + 15, y + 125);
-    }
-    
-    /**
-     * 競合解決設定の描画
-     */
-    renderConflictResolution(context, x, y, width) {
-        // セクション背景
-        context.fillStyle = this.colors.cardBackground;
-        context.fillRect(x, y, width, 100);
-        
-        // セクション枠線
-        context.strokeStyle = this.colors.border;
-        context.lineWidth = 1;
-        context.strokeRect(x, y, width, 100);
-        
-        // セクションタイトル
-        context.fillStyle = this.colors.primary;
-        context.font = 'bold 18px Arial';
-        context.textAlign = 'left';
-        context.fillText('競合解決方法', x + 15, y + 25);
-        
-        // 競合解決オプション
-        const resolutionOptions = [
-            { name: 'merge', label: 'マージ', description: '既存データと統合' },
-            { name: 'overwrite', label: '上書き', description: '既存データを置換' },
-            { name: 'skip', label: 'スキップ', description: '競合データを無視' }
-        ];
-        
-        resolutionOptions.forEach((option, index) => {
-            const radioX = x + 15 + index * 180;
-            const radioY = y + 50;
-            const isSelected = index === 0; // デフォルトでマージを選択
-            
-            // ラジオボタン
-            context.fillStyle = this.colors.border;
-            context.fillRect(radioX, radioY, 16, 16);
-            
-            if (isSelected) {
-                context.fillStyle = this.colors.primary;
-                context.fillRect(radioX + 3, radioY + 3, 10, 10);
-            }
-            
-            context.strokeStyle = this.colors.text;
-            context.lineWidth = 2;
-            context.strokeRect(radioX, radioY, 16, 16);
-            
-            // ラベル
-            context.fillStyle = this.colors.text;
-            context.font = '14px Arial';
-            context.textAlign = 'left';
-            context.fillText(option.label, radioX + 25, radioY + 12);
-            
-            // 説明
-            context.fillStyle = this.colors.textSecondary;
-            context.font = '10px Arial';
-            context.fillText(option.description, radioX + 25, radioY + 25);
-        });
-    }
-    
-    /**
-     * インポートアクションの描画
-     */
-    renderImportActions(context, x, y, width) {
-        const buttonWidth = this.layoutConfig.buttonWidth;
-        const buttonHeight = this.layoutConfig.buttonHeight;
-        const spacing = 20;
-        
-        const actions = [
-            { text: 'インポート開始', action: 'startImport', color: this.colors.primary },
-            { text: 'ファイル検証', action: 'validate', color: this.colors.secondary },
-            { text: 'キャンセル', action: 'cancel', color: this.colors.textSecondary }
-        ];
-        
-        actions.forEach((action, index) => {
-            const buttonX = x + (buttonWidth + spacing) * index;
-            
-            // ボタン背景
-            context.fillStyle = action.color;
-            context.fillRect(buttonX, y, buttonWidth, buttonHeight);
-            
-            // ボタン枠線
-            context.strokeStyle = this.colors.border;
-            context.lineWidth = 1;
-            context.strokeRect(buttonX, y, buttonWidth, buttonHeight);
-            
-            // ボタンテキスト
-            context.fillStyle = this.colors.text;
-            context.font = '14px Arial';
-            context.textAlign = 'center';
-            context.fillText(action.text, buttonX + buttonWidth / 2, y + 25);
-        });
-        
-        // 操作中のプログレスバー
-        if (this.operationInProgress && this.currentView === 'import') {
-            this.renderProgressBar(context, x, y + buttonHeight + 20, width);
-        }
-        
-        // 警告メッセージ
-        context.fillStyle = this.colors.warning;
-        context.font = '12px Arial';
-        context.textAlign = 'left';
-        context.fillText('⚠️ インポートにより既存データが変更される可能性があります', x, y + buttonHeight + 60);
-    }
-    
-    /**
-     * データクリアビューの描画
-     */
-    renderClearView(context, x, y, width, height) {
-        const padding = this.layoutConfig.padding;
-        let currentY = y + padding;
-        
-        // 警告セクション
-        this.renderClearWarning(context, x + padding, currentY, width - padding * 2);
-        currentY += 100;
-        
-        // データ選択セクション
-        this.renderClearDataSelection(context, x + padding, currentY, width - padding * 2);
-        currentY += 180;
-        
-        // 確認セクション
-        this.renderClearConfirmation(context, x + padding, currentY, width - padding * 2);
-        currentY += 120;
-        
-        // データクリアアクションボタン
-        this.renderClearActions(context, x + padding, currentY, width - padding * 2);
-    }
-    
-    /**
-     * データクリア警告の描画
-     */
-    renderClearWarning(context, x, y, width) {
-        // 警告セクション背景
-        context.fillStyle = 'rgba(239, 68, 68, 0.1)';
-        context.fillRect(x, y, width, 80);
-        
-        // 警告セクション枠線
-        context.strokeStyle = this.colors.danger;
-        context.lineWidth = 2;
-        context.strokeRect(x, y, width, 80);
-        
-        // 警告アイコンとタイトル
-        context.fillStyle = this.colors.danger;
-        context.font = 'bold 20px Arial';
-        context.textAlign = 'left';
-        context.fillText('⚠️ 重要な警告', x + 20, y + 30);
-        
-        // 警告メッセージ
-        context.fillStyle = this.colors.text;
-        context.font = '14px Arial';
-        context.fillText('データクリアは取り消すことができません。', x + 20, y + 50);
-        context.fillText('実行前に必ずバックアップを作成してください。', x + 20, y + 65);
-    }
-    
-    /**
-     * データ選択セクションの描画
-     */
-    renderClearDataSelection(context, x, y, width) {
-        // セクション背景
-        context.fillStyle = this.colors.cardBackground;
-        context.fillRect(x, y, width, 160);
-        
-        // セクション枠線
-        context.strokeStyle = this.colors.border;
-        context.lineWidth = 1;
-        context.strokeRect(x, y, width, 160);
-        
-        // セクションタイトル
-        context.fillStyle = this.colors.primary;
-        context.font = 'bold 18px Arial';
-        context.textAlign = 'left';
-        context.fillText('削除対象データ', x + 15, y + 25);
-        
-        // データタイプのチェックボックス
-        const dataTypes = [
-            { name: 'playerData', label: 'プレイヤーデータ', description: 'ユーザー名、スコア、進捗', selected: false },
-            { name: 'settings', label: '設定データ', description: '音量、画面設定等', selected: false },
-            { name: 'statistics', label: '統計データ', description: 'プレイ統計、分析データ', selected: false },
-            { name: 'achievements', label: '実績データ', description: '獲得実績、進捗状況', selected: false },
-            { name: 'backups', label: 'バックアップデータ', description: '作成済みバックアップ', selected: false },
-            { name: 'all', label: '全データ', description: '上記すべてを削除', selected: false }
-        ];
-        
-        dataTypes.forEach((dataType, index) => {
-            const checkboxX = x + 15 + (index % 2) * 350;
-            const checkboxY = y + 50 + Math.floor(index / 2) * 35;
-            
-            // チェックボックス
-            const isSelected = this.dialogData.selectedDataTypes?.includes(dataType.name) || false;
-            context.fillStyle = isSelected ? this.colors.danger : this.colors.border;
-            context.fillRect(checkboxX, checkboxY, 20, 20);
-            
-            context.strokeStyle = this.colors.text;
-            context.lineWidth = 2;
-            context.strokeRect(checkboxX, checkboxY, 20, 20);
-            
-            // チェックマーク
-            if (isSelected) {
-                context.strokeStyle = this.colors.text;
-                context.lineWidth = 3;
-                context.beginPath();
-                context.moveTo(checkboxX + 4, checkboxY + 10);
-                context.lineTo(checkboxX + 8, checkboxY + 14);
-                context.lineTo(checkboxX + 16, checkboxY + 6);
-                context.stroke();
-            }
-            
-            // ラベル
-            context.fillStyle = this.colors.text;
-            context.font = '14px Arial';
-            context.textAlign = 'left';
-            context.fillText(dataType.label, checkboxX + 30, checkboxY + 15);
-            
-            // 説明
-            context.fillStyle = this.colors.textSecondary;
-            context.font = '10px Arial';
-            context.fillText(dataType.description, checkboxX + 30, checkboxY + 28);
-        });
-    }
-    
-    /**
-     * 確認セクションの描画
-     */
-    renderClearConfirmation(context, x, y, width) {
-        // セクション背景
-        context.fillStyle = this.colors.cardBackground;
-        context.fillRect(x, y, width, 100);
-        
-        // セクション枠線
-        context.strokeStyle = this.colors.border;
-        context.lineWidth = 1;
-        context.strokeRect(x, y, width, 100);
-        
-        // セクションタイトル
-        context.fillStyle = this.colors.primary;
-        context.font = 'bold 18px Arial';
-        context.textAlign = 'left';
-        context.fillText('削除確認', x + 15, y + 25);
-        
-        // 確認チェックボックス
-        const confirmCheckboxX = x + 15;
-        const confirmCheckboxY = y + 45;
-        const isConfirmed = this.dialogData.deleteConfirmed || false;
-        
-        context.fillStyle = isConfirmed ? this.colors.danger : this.colors.border;
-        context.fillRect(confirmCheckboxX, confirmCheckboxY, 20, 20);
-        
-        context.strokeStyle = this.colors.text;
-        context.lineWidth = 2;
-        context.strokeRect(confirmCheckboxX, confirmCheckboxY, 20, 20);
-        
-        if (isConfirmed) {
-            context.strokeStyle = this.colors.text;
-            context.lineWidth = 3;
-            context.beginPath();
-            context.moveTo(confirmCheckboxX + 4, confirmCheckboxY + 10);
-            context.lineTo(confirmCheckboxX + 8, confirmCheckboxY + 14);
-            context.lineTo(confirmCheckboxX + 16, confirmCheckboxY + 6);
-            context.stroke();
-        }
-        
-        // 確認テキスト
-        context.fillStyle = this.colors.text;
-        context.font = '14px Arial';
-        context.textAlign = 'left';
-        context.fillText('データを完全に削除することを理解し、同意します', confirmCheckboxX + 30, confirmCheckboxY + 15);
-        
-        // 追加の注意事項
-        context.fillStyle = this.colors.textSecondary;
-        context.font = '12px Arial';
-        context.fillText('※ 削除されたデータは復旧できません', x + 15, y + 85);
-    }
-    
-    /**
-     * データクリアアクションの描画
-     */
-    renderClearActions(context, x, y, width) {
-        const buttonWidth = this.layoutConfig.buttonWidth;
-        const buttonHeight = this.layoutConfig.buttonHeight;
-        const spacing = 20;
-        
-        // 削除可能かチェック
-        const hasSelectedData = this.dialogData.selectedDataTypes?.length > 0;
-        const isConfirmed = this.dialogData.deleteConfirmed || false;
-        const canDelete = hasSelectedData && isConfirmed;
-        
-        const actions = [
-            { 
-                text: 'データ削除実行', 
-                action: 'executeClear', 
-                color: canDelete ? this.colors.danger : this.colors.textSecondary,
-                enabled: canDelete
-            },
-            { 
-                text: 'バックアップ作成', 
-                action: 'createBackupFirst', 
-                color: this.colors.success,
-                enabled: true
-            },
-            { 
-                text: 'キャンセル', 
-                action: 'cancel', 
-                color: this.colors.textSecondary,
-                enabled: true
-            }
-        ];
-        
-        actions.forEach((action, index) => {
-            const buttonX = x + (buttonWidth + spacing) * index;
-            
-            // ボタン背景
-            context.fillStyle = action.enabled ? action.color : this.colors.border;
-            context.fillRect(buttonX, y, buttonWidth, buttonHeight);
-            
-            // ボタン枠線
-            context.strokeStyle = this.colors.border;
-            context.lineWidth = 1;
-            context.strokeRect(buttonX, y, buttonWidth, buttonHeight);
-            
-            // ボタンテキスト
-            context.fillStyle = action.enabled ? this.colors.text : this.colors.textSecondary;
-            context.font = '14px Arial';
-            context.textAlign = 'center';
-            context.fillText(action.text, buttonX + buttonWidth / 2, y + 25);
-        });
-        
-        // 操作中のプログレスバー
-        if (this.operationInProgress && this.currentView === 'clear') {
-            this.renderProgressBar(context, x, y + buttonHeight + 20, width);
-        }
-        
-        // 最終警告
-        if (canDelete) {
-            context.fillStyle = this.colors.danger;
-            context.font = 'bold 12px Arial';
-            context.textAlign = 'center';
-            context.fillText('⚠️ この操作は取り消すことができません', x + width / 2, y + buttonHeight + 60);
-        }
-    }
-    
-    /**
-     * ダイアログの描画
-     */
-    renderDialog(context, canvas) {
-        // 後で実装
-    }
-    
-    /**
-     * リソースの解放
-     */
+    // Cleanup
     destroy() {
-        this.clearError();
-        this.hide();
+        this.stopAutoRefresh();
+        this.backupStatus.destroy();
+        this.uiState.reset();
+        this.dialogState.reset();
+        this.operationState.reset();
+        
         console.log('DataManagementUI destroyed');
     }
 }

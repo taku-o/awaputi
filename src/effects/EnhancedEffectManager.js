@@ -3,13 +3,23 @@ import { getEffectsConfig } from '../config/EffectsConfig.js';
 import { getErrorHandler } from '../utils/ErrorHandler.js';
 import { AccessibilityEffectIntegrator } from './accessibility/AccessibilityEffectIntegrator.js';
 
+// サブコンポーネントのインポート
+import { EffectTransitionRenderer } from './enhanced-effect-manager/EffectTransitionRenderer.js';
+import { LightingSystemRenderer } from './enhanced-effect-manager/LightingSystemRenderer.js';
+import { ReflectionRenderer } from './enhanced-effect-manager/ReflectionRenderer.js';
+import { BackgroundEffectRenderer } from './enhanced-effect-manager/BackgroundEffectRenderer.js';
+import { PostProcessingRenderer } from './enhanced-effect-manager/PostProcessingRenderer.js';
+
 /**
- * 拡張画面効果管理クラス
+ * 拡張画面効果管理クラス (Refactored)
  * 既存のEffectManagerを拡張し、より高度な視覚効果を実現
- * - 画面遷移効果（フェード、スライド、ズーム）
- * - 光源効果システム（動的光源、影、反射）
- * - 背景環境効果（パーティクル、天候、雰囲気）
- * - 高度な画面効果（深度ブラー、色調補正、歪み）
+ * 
+ * サブコンポーネント化により責任を分離：
+ * - EffectTransitionRenderer: 画面遷移効果（フェード、スライド、ズーム、ワイプ、ディゾルブ）
+ * - LightingSystemRenderer: 光源効果システム（動的光源、影処理）
+ * - ReflectionRenderer: 反射効果（水面、鏡面、バブル反射）
+ * - BackgroundEffectRenderer: 背景環境効果（パーティクル、天候、環境）
+ * - PostProcessingRenderer: ポストプロセッシング（ビネット、ノイズ、グリッチ等）
  */
 export class EnhancedEffectManager extends EffectManager {
     constructor(canvas) {
@@ -25,6 +35,9 @@ export class EnhancedEffectManager extends EffectManager {
         // アクセシビリティ統合（初期化時に設定）
         this.accessibilityIntegrator = null;
         this.accessibilityEnabled = false;
+        
+        // サブコンポーネントの初期化
+        this._initializeRenderers();
         
         // 拡張変換状態
         this.enhancedTransform = {
@@ -56,6 +69,25 @@ export class EnhancedEffectManager extends EffectManager {
         };
         
         console.log('[EnhancedEffectManager] 拡張画面効果管理システムを初期化しました');
+    }
+    
+    /**
+     * サブコンポーネントレンダラーの初期化
+     */
+    _initializeRenderers() {
+        try {
+            this.transitionRenderer = new EffectTransitionRenderer(this.canvas);
+            this.lightingRenderer = new LightingSystemRenderer(this.canvas);
+            this.reflectionRenderer = new ReflectionRenderer(this.canvas);
+            this.backgroundRenderer = new BackgroundEffectRenderer(this.canvas);
+            this.postProcessingRenderer = new PostProcessingRenderer(this.canvas);
+            
+            console.log('[EnhancedEffectManager] サブコンポーネントレンダラーを初期化しました');
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'EnhancedEffectManager._initializeRenderers'
+            });
+        }
     }
     
     /**
@@ -578,31 +610,12 @@ export class EnhancedEffectManager extends EffectManager {
                 }
             }
             
-            // エフェクトタイプ別の更新処理
-            this.updateBackgroundEffect(effect, deltaTime);
+            // エフェクトタイプ別の更新処理（サブコンポーネントに委譲）
+            this.backgroundRenderer.updateBackgroundEffect(effect, deltaTime);
         });
         
         // 無効な効果を削除
         this.backgroundEffects = this.backgroundEffects.filter(effect => effect.enabled);
-    }
-    
-    /**
-     * 個別背景効果の更新
-     */
-    updateBackgroundEffect(effect, deltaTime) {
-        switch (effect.effectType) {
-            case 'particles':
-                // パーティクル位置更新などの処理
-                break;
-            case 'rain':
-            case 'snow':
-                // 天候エフェクトの更新
-                break;
-            case 'fog':
-            case 'clouds':
-                // 雲・霧エフェクトの更新
-                break;
-        }
     }
     
     /**
@@ -692,38 +705,38 @@ export class EnhancedEffectManager extends EffectManager {
         // 親クラスの変換を適用
         this.applyTransform(context);
         
-        // 拡張変換を適用
-        this.applyEnhancedTransform(context);
+        // 拡張変換を適用（サブコンポーネントに委譲）
+        this.postProcessingRenderer.applyEnhancedTransform(context, this.enhancedTransform);
     }
     
     /**
      * 後処理エフェクトを描画（オーバーライド）
      */
     renderPostEffects(context) {
-        // 光源効果をレンダリング
+        // 光源効果をレンダリング（サブコンポーネントに委譲）
         if (this.renderSettings.enableLighting) {
-            this.renderLighting(context);
+            this.lightingRenderer.renderLighting(context, this.lightSources);
         }
         
-        // 影をレンダリング
+        // 影をレンダリング（サブコンポーネントに委譲）
         if (this.renderSettings.enableShadows) {
             this.renderShadows(context);
         }
         
-        // 反射をレンダリング
+        // 反射をレンダリング（サブコンポーネントに委譲）
         if (this.renderSettings.enableReflections) {
-            this.renderReflections(context);
+            this.reflectionRenderer.renderReflections(context, this.reflectionSurfaces, this.renderSettings);
         }
         
-        // 背景効果をレンダリング
-        this.renderBackgroundEffects(context);
+        // 背景効果をレンダリング（サブコンポーネントに委譲）
+        this.backgroundRenderer.renderBackgroundEffects(context, this.backgroundEffects);
         
-        // 遷移効果をレンダリング
+        // 遷移効果をレンダリング（サブコンポーネントに委譲）
         this.renderTransitionEffects(context);
         
-        // ポストプロセッシング効果
+        // ポストプロセッシング効果（サブコンポーネントに委譲）
         if (this.renderSettings.enablePostProcessing) {
-            this.renderPostProcessingEffects(context);
+            this.postProcessingRenderer.renderPostProcessingEffects(context, this.enhancedTransform, this.renderSettings);
         }
         
         // 親クラスのオーバーレイ
@@ -733,61 +746,10 @@ export class EnhancedEffectManager extends EffectManager {
         context.restore();
     }
     
-    /**
-     * 拡張変換を適用
-     */
-    applyEnhancedTransform(context) {
-        // モーションブラーフィルター
-        if (this.enhancedTransform.motionBlur.intensity > 0) {
-            const blur = this.enhancedTransform.motionBlur.intensity;
-            context.filter += ` blur(${blur}px)`;
-        }
-        
-        // 色収差は後処理で実装
-    }
+    // レンダリング処理はサブコンポーネントに移行済み
     
     /**
-     * 光源効果をレンダリング
-     */
-    renderLighting(context) {
-        if (this.lightSources.length === 0) return;
-        
-        // 光源に基づいた照明効果を描画
-        const canvas = this.canvas;
-        
-        // 簡単な光源効果（本格的な実装では専用のライティングシステムが必要）
-        this.lightSources.forEach(light => {
-            if (!light.enabled) return;
-            
-            context.save();
-            
-            // 放射状グラデーション
-            const gradient = context.createRadialGradient(
-                light.x, light.y, 0,
-                light.x, light.y, light.radius
-            );
-            
-            const intensity = light.currentIntensity || light.intensity;
-            const alpha = Math.min(intensity, 1.0);
-            
-            gradient.addColorStop(0, `rgba(${light.color.r}, ${light.color.g}, ${light.color.b}, ${alpha})`);
-            gradient.addColorStop(1, `rgba(${light.color.r}, ${light.color.g}, ${light.color.b}, 0)`);
-            
-            context.globalCompositeOperation = 'screen';
-            context.fillStyle = gradient;
-            context.fillRect(
-                light.x - light.radius,
-                light.y - light.radius,
-                light.radius * 2,
-                light.radius * 2
-            );
-            
-            context.restore();
-        });
-    }
-    
-    /**
-     * 影をレンダリング
+     * 影をレンダリング（サブコンポーネントに委譲）
      */
     renderShadows(context) {
         if (this.shadowCasters.length === 0 || this.lightSources.length === 0) return;
@@ -800,760 +762,28 @@ export class EnhancedEffectManager extends EffectManager {
         
         // 影マップ生成（高品質時）
         if (this.renderSettings.qualityLevel === 'ultra' || this.renderSettings.qualityLevel === 'high') {
-            this.renderAdvancedShadows(context);
+            this.lightingRenderer.renderAdvancedShadows(context, this.shadowCasters, this.lightSources);
         } else {
-            this.renderBasicShadows(context);
+            this.lightingRenderer.renderBasicShadows(context, this.shadowCasters, this.lightSources);
         }
     }
     
-    /**
-     * 基本的な影レンダリング
-     */
-    renderBasicShadows(context) {
-        this.shadowCasters.forEach(caster => {
-            if (!caster.enabled) return;
-            
-            this.lightSources.forEach(light => {
-                if (!light.enabled || !light.castShadows) return;
-                
-                // 影の方向を計算
-                const dx = caster.object.x - light.x;
-                const dy = caster.object.y - light.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                
-                if (distance > light.radius) return;
-                
-                const shadowLength = 100 * (1 - distance / light.radius);
-                const shadowX = caster.object.x + (dx / distance) * shadowLength;
-                const shadowY = caster.object.y + (dy / distance) * shadowLength;
-                
-                context.save();
-                context.globalAlpha = caster.opacity * (1 - distance / light.radius);
-                
-                // 影のソフトネス
-                if (caster.shadowType === 'soft') {
-                    context.filter = `blur(${caster.blur}px)`;
-                }
-                
-                context.fillStyle = '#000000';
-                context.globalCompositeOperation = 'multiply';
-                
-                // 対象オブジェクトの形状に基づいた影
-                this.renderObjectShadow(context, caster.object, shadowX, shadowY, dx / distance, dy / distance);
-                
-                context.restore();
-            });
-        });
-    }
+    // 影・反射・背景効果のレンダリング処理はサブコンポーネントに移行済み
     
     /**
-     * 高度な影レンダリング
-     */
-    renderAdvancedShadows(context) {
-        // バブル専用の影レンダリング
-        this.shadowCasters.forEach(caster => {
-            if (!caster.enabled) return;
-            
-            this.lightSources.forEach(light => {
-                if (!light.enabled || !light.castShadows) return;
-                
-                const dx = caster.object.x - light.x;
-                const dy = caster.object.y - light.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                
-                if (distance > light.radius) return;
-                
-                // 高品質バブル影
-                this.renderBubbleShadow(context, caster.object, light, distance);
-            });
-        });
-    }
-    
-    /**
-     * オブジェクトの形状に基づいた影を描画
-     */
-    renderObjectShadow(context, object, shadowX, shadowY, dirX, dirY) {
-        if (object.type === 'bubble') {
-            // バブル用の楕円影
-            const radius = object.size || 20;
-            const scaleX = 1 + Math.abs(dirX) * 0.5;
-            const scaleY = 0.3 + Math.abs(dirY) * 0.3;
-            
-            context.save();
-            context.translate(shadowX, shadowY + radius * 0.8);
-            context.scale(scaleX, scaleY);
-            
-            context.beginPath();
-            context.arc(0, 0, radius * 0.8, 0, Math.PI * 2);
-            context.fill();
-            
-            context.restore();
-        } else {
-            // 一般的な円形影
-            context.beginPath();
-            context.arc(shadowX, shadowY, 15, 0, Math.PI * 2);
-            context.fill();
-        }
-    }
-    
-    /**
-     * バブル専用の高品質影
-     */
-    renderBubbleShadow(context, bubble, light, distance) {
-        const radius = bubble.size || 20;
-        const intensity = light.currentIntensity || light.intensity;
-        const shadowOpacity = 0.6 * intensity * (1 - distance / light.radius);
-        
-        if (shadowOpacity < 0.1) return;
-        
-        // 影の位置計算
-        const lightAngle = Math.atan2(bubble.y - light.y, bubble.x - light.x);
-        const shadowDistance = radius * 2.5;
-        const shadowX = bubble.x + Math.cos(lightAngle) * shadowDistance;
-        const shadowY = bubble.y + Math.sin(lightAngle) * shadowDistance + radius * 0.5;
-        
-        context.save();
-        context.globalAlpha = shadowOpacity;
-        context.globalCompositeOperation = 'multiply';
-        
-        // グラデーション影
-        const gradient = context.createRadialGradient(
-            shadowX, shadowY, 0,
-            shadowX, shadowY, radius * 1.2
-        );
-        gradient.addColorStop(0, 'rgba(0, 0, 0, 0.8)');
-        gradient.addColorStop(0.6, 'rgba(0, 0, 0, 0.3)');
-        gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-        
-        context.fillStyle = gradient;
-        
-        // 楕円形の影
-        context.save();
-        context.translate(shadowX, shadowY);
-        context.scale(1, 0.4);
-        context.beginPath();
-        context.arc(0, 0, radius * 1.2, 0, Math.PI * 2);
-        context.fill();
-        context.restore();
-        
-        context.restore();
-    }
-    
-    /**
-     * 反射をレンダリング
-     */
-    renderReflections(context) {
-        if (this.reflectionSurfaces.length === 0) return;
-        
-        // 品質に基づいて反射レンダリングを調整
-        if (this.renderSettings.qualityLevel === 'low') {
-            return; // 低品質では反射を描画しない
-        }
-        
-        this.reflectionSurfaces.forEach(surface => {
-            if (!surface.enabled) return;
-            
-            // 反射面のタイプに基づいて処理
-            switch (surface.surface.type) {
-                case 'water':
-                    this.renderWaterReflection(context, surface);
-                    break;
-                case 'mirror':
-                    this.renderMirrorReflection(context, surface);
-                    break;
-                case 'bubble':
-                    this.renderBubbleReflection(context, surface);
-                    break;
-                default:
-                    this.renderGenericReflection(context, surface);
-                    break;
-            }
-        });
-    }
-    
-    /**
-     * 水面反射をレンダリング
-     */
-    renderWaterReflection(context, surface) {
-        const waterLevel = surface.surface.y;
-        const reflectivity = surface.reflectivity;
-        
-        context.save();
-        context.globalAlpha = reflectivity * 0.6;
-        context.globalCompositeOperation = 'multiply';
-        
-        // クリッピング領域を設定
-        context.beginPath();
-        context.rect(0, waterLevel, this.canvas.width, this.canvas.height - waterLevel);
-        context.clip();
-        
-        // 反射変換
-        context.scale(1, -1);
-        context.translate(0, -waterLevel * 2);
-        
-        // 波紋効果
-        const time = Date.now() * 0.001;
-        const waveOffset = Math.sin(time * 2) * 2;
-        context.translate(waveOffset, 0);
-        
-        // ここで反射させたいオブジェクトを描画
-        // （実際の実装では、描画リストを受け取る必要がある）
-        
-        context.restore();
-    }
-    
-    /**
-     * 鏡面反射をレンダリング
-     */
-    renderMirrorReflection(context, surface) {
-        const mirror = surface.surface;
-        const reflectivity = surface.reflectivity;
-        
-        context.save();
-        context.globalAlpha = reflectivity;
-        context.globalCompositeOperation = 'screen';
-        
-        // 鏡面の角度に基づいた反射変換
-        const angle = mirror.angle || 0;
-        const centerX = mirror.x + mirror.width / 2;
-        const centerY = mirror.y + mirror.height / 2;
-        
-        context.translate(centerX, centerY);
-        context.rotate(angle);
-        context.scale(1, -1);
-        context.rotate(-angle);
-        context.translate(-centerX, -centerY);
-        
-        // 反射領域のクリッピング
-        context.beginPath();
-        context.rect(mirror.x, mirror.y, mirror.width, mirror.height);
-        context.clip();
-        
-        context.restore();
-    }
-    
-    /**
-     * バブル反射をレンダリング
-     */
-    renderBubbleReflection(context, surface) {
-        const bubble = surface.surface;
-        const reflectivity = surface.reflectivity;
-        
-        if (!bubble.x || !bubble.y || !bubble.size) return;
-        
-        context.save();
-        
-        // バブルの光沢効果
-        this.renderBubbleGloss(context, bubble, reflectivity);
-        
-        // 環境反射
-        if (this.renderSettings.qualityLevel === 'ultra' || this.renderSettings.qualityLevel === 'high') {
-            this.renderBubbleEnvironmentReflection(context, bubble, reflectivity);
-        }
-        
-        context.restore();
-    }
-    
-    /**
-     * バブルの光沢効果
-     */
-    renderBubbleGloss(context, bubble, reflectivity) {
-        const radius = bubble.size || 20;
-        const glossSize = radius * 0.3;
-        const glossX = bubble.x - radius * 0.2;
-        const glossY = bubble.y - radius * 0.3;
-        
-        // 主要な光沢
-        const gradient = context.createRadialGradient(
-            glossX, glossY, 0,
-            glossX, glossY, glossSize
-        );
-        gradient.addColorStop(0, `rgba(255, 255, 255, ${reflectivity * 0.8})`);
-        gradient.addColorStop(0.5, `rgba(255, 255, 255, ${reflectivity * 0.4})`);
-        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-        
-        context.fillStyle = gradient;
-        context.globalCompositeOperation = 'screen';
-        context.beginPath();
-        context.arc(glossX, glossY, glossSize, 0, Math.PI * 2);
-        context.fill();
-        
-        // 二次光沢
-        const secondaryGlossSize = radius * 0.15;
-        const secondaryGlossX = bubble.x + radius * 0.3;
-        const secondaryGlossY = bubble.y + radius * 0.1;
-        
-        const secondaryGradient = context.createRadialGradient(
-            secondaryGlossX, secondaryGlossY, 0,
-            secondaryGlossX, secondaryGlossY, secondaryGlossSize
-        );
-        secondaryGradient.addColorStop(0, `rgba(255, 255, 255, ${reflectivity * 0.4})`);
-        secondaryGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-        
-        context.fillStyle = secondaryGradient;
-        context.beginPath();
-        context.arc(secondaryGlossX, secondaryGlossY, secondaryGlossSize, 0, Math.PI * 2);
-        context.fill();
-    }
-    
-    /**
-     * バブルの環境反射
-     */
-    renderBubbleEnvironmentReflection(context, bubble, reflectivity) {
-        const radius = bubble.size || 20;
-        
-        // バブル表面での環境光反射
-        this.lightSources.forEach(light => {
-            if (!light.enabled) return;
-            
-            const dx = light.x - bubble.x;
-            const dy = light.y - bubble.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            
-            if (distance > light.radius + radius) return;
-            
-            // 反射点の計算
-            const reflectionAngle = Math.atan2(dy, dx);
-            const reflectionX = bubble.x + Math.cos(reflectionAngle) * radius * 0.8;
-            const reflectionY = bubble.y + Math.sin(reflectionAngle) * radius * 0.8;
-            
-            // 光源からの反射光
-            const intensity = (light.currentIntensity || light.intensity) * reflectivity;
-            const lightInfluence = Math.max(0, 1 - distance / light.radius);
-            
-            const reflectionGradient = context.createRadialGradient(
-                reflectionX, reflectionY, 0,
-                reflectionX, reflectionY, radius * 0.4
-            );
-            
-            const alpha = intensity * lightInfluence * 0.3;
-            reflectionGradient.addColorStop(0, `rgba(${light.color.r}, ${light.color.g}, ${light.color.b}, ${alpha})`);
-            reflectionGradient.addColorStop(1, `rgba(${light.color.r}, ${light.color.g}, ${light.color.b}, 0)`);
-            
-            context.fillStyle = reflectionGradient;
-            context.globalCompositeOperation = 'screen';
-            context.beginPath();
-            context.arc(reflectionX, reflectionY, radius * 0.4, 0, Math.PI * 2);
-            context.fill();
-        });
-    }
-    
-    /**
-     * 汎用反射をレンダリング
-     */
-    renderGenericReflection(context, surface) {
-        context.save();
-        context.globalAlpha = surface.reflectivity;
-        context.globalCompositeOperation = 'multiply';
-        
-        // ぼかし効果
-        if (surface.blur > 0) {
-            context.filter = `blur(${surface.blur}px)`;
-        }
-        
-        // 簡単な反射効果
-        const obj = surface.surface;
-        if (obj.x !== undefined && obj.y !== undefined) {
-            const gradient = context.createRadialGradient(
-                obj.x, obj.y, 0,
-                obj.x, obj.y, 50
-            );
-            gradient.addColorStop(0, 'rgba(255, 255, 255, 0.3)');
-            gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-            
-            context.fillStyle = gradient;
-            context.beginPath();
-            context.arc(obj.x, obj.y, 50, 0, Math.PI * 2);
-            context.fill();
-        }
-        
-        context.restore();
-    }
-    
-    /**
-     * 背景効果をレンダリング
-     */
-    renderBackgroundEffects(context) {
-        this.backgroundEffects.forEach(effect => {
-            if (!effect.enabled) return;
-            
-            switch (effect.effectType) {
-                case 'particles':
-                    this.renderParticleBackground(context, effect);
-                    break;
-                case 'rain':
-                    this.renderRainEffect(context, effect);
-                    break;
-                case 'snow':
-                    this.renderSnowEffect(context, effect);
-                    break;
-                case 'fog':
-                    this.renderFogEffect(context, effect);
-                    break;
-                case 'stars':
-                    this.renderStarsEffect(context, effect);
-                    break;
-            }
-        });
-    }
-    
-    /**
-     * パーティクル背景をレンダリング
-     */
-    renderParticleBackground(context, effect) {
-        const particleCount = Math.floor(effect.intensity * effect.options.density * 50);
-        const time = Date.now() * 0.001;
-        
-        context.save();
-        context.globalAlpha = effect.options.opacity;
-        context.fillStyle = effect.options.color;
-        
-        for (let i = 0; i < particleCount; i++) {
-            const x = (i * 123.456 + time * effect.options.speed * 10) % this.canvas.width;
-            const y = (i * 78.9 + time * effect.options.speed * 5) % this.canvas.height;
-            const size = effect.options.size * (0.5 + Math.sin(i + time) * 0.5);
-            
-            context.beginPath();
-            context.arc(x, y, size, 0, Math.PI * 2);
-            context.fill();
-        }
-        
-        context.restore();
-    }
-    
-    /**
-     * 雨効果をレンダリング
-     */
-    renderRainEffect(context, effect) {
-        const dropCount = Math.floor(effect.intensity * 100);
-        const time = Date.now() * 0.001;
-        
-        context.save();
-        context.globalAlpha = 0.7;
-        context.strokeStyle = effect.options.color;
-        context.lineWidth = 1;
-        
-        for (let i = 0; i < dropCount; i++) {
-            const x = (i * 73.2 + time * effect.options.speed * 200) % (this.canvas.width + 100);
-            const y = (i * 41.7 + time * effect.options.speed * 300) % (this.canvas.height + 100);
-            const length = 10 + Math.sin(i) * 5;
-            
-            context.beginPath();
-            context.moveTo(x, y);
-            context.lineTo(x - length * 0.3, y + length);
-            context.stroke();
-        }
-        
-        context.restore();
-    }
-    
-    /**
-     * 雪効果をレンダリング
-     */
-    renderSnowEffect(context, effect) {
-        const flakeCount = Math.floor(effect.intensity * 50);
-        const time = Date.now() * 0.001;
-        
-        context.save();
-        context.globalAlpha = 0.8;
-        context.fillStyle = effect.options.color;
-        
-        for (let i = 0; i < flakeCount; i++) {
-            const x = (i * 91.3 + time * effect.options.speed * 20 + Math.sin(time + i) * 20) % this.canvas.width;
-            const y = (i * 67.1 + time * effect.options.speed * 50) % (this.canvas.height + 20);
-            const size = 2 + Math.sin(i) * 2;
-            
-            context.beginPath();
-            context.arc(x, y, size, 0, Math.PI * 2);
-            context.fill();
-        }
-        
-        context.restore();
-    }
-    
-    /**
-     * 霧効果をレンダリング
-     */
-    renderFogEffect(context, effect) {
-        context.save();
-        context.globalAlpha = effect.options.opacity * effect.intensity;
-        context.fillStyle = effect.options.color;
-        context.globalCompositeOperation = 'multiply';
-        
-        // 簡単な霧効果
-        const gradient = context.createLinearGradient(0, 0, this.canvas.width, this.canvas.height);
-        gradient.addColorStop(0, `rgba(200, 200, 200, ${effect.intensity * 0.1})`);
-        gradient.addColorStop(0.5, `rgba(200, 200, 200, ${effect.intensity * 0.3})`);
-        gradient.addColorStop(1, `rgba(200, 200, 200, ${effect.intensity * 0.1})`);
-        
-        context.fillStyle = gradient;
-        context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        
-        context.restore();
-    }
-    
-    /**
-     * 星効果をレンダリング
-     */
-    renderStarsEffect(context, effect) {
-        const starCount = Math.floor(effect.intensity * 100);
-        const time = Date.now() * 0.001;
-        
-        context.save();
-        context.fillStyle = effect.options.color;
-        
-        for (let i = 0; i < starCount; i++) {
-            const x = (i * 113.7) % this.canvas.width;
-            const y = (i * 89.3) % this.canvas.height;
-            const twinkle = Math.sin(time * 2 + i) * 0.5 + 0.5;
-            const size = effect.options.size * twinkle;
-            
-            context.globalAlpha = effect.options.opacity * twinkle;
-            context.beginPath();
-            context.arc(x, y, size, 0, Math.PI * 2);
-            context.fill();
-        }
-        
-        context.restore();
-    }
-    
-    /**
-     * 遷移効果をレンダリング
+     * 遷移効果をレンダリング（サブコンポーネントに委譲）
      */
     renderTransitionEffects(context) {
         this.transitionEffects.forEach(effect => {
             const progress = effect.currentProgress || 0;
-            
-            switch (effect.transitionType) {
-                case 'fade':
-                    this.renderFadeTransition(context, effect, progress);
-                    break;
-                case 'slide':
-                    this.renderSlideTransition(context, effect, progress);
-                    break;
-                case 'zoom':
-                    this.renderZoomTransition(context, effect, progress);
-                    break;
-                case 'wipe':
-                    this.renderWipeTransition(context, effect, progress);
-                    break;
-                case 'dissolve':
-                    this.renderDissolveTransition(context, effect, progress);
-                    break;
-            }
+            this.transitionRenderer.renderTransition(context, effect, progress);
         });
     }
     
-    /**
-     * フェード遷移をレンダリング
-     */
-    renderFadeTransition(context, effect, progress) {
-        const alpha = effect.options.direction === 'in' ? progress : (1 - progress);
-        
-        context.save();
-        context.globalAlpha = alpha;
-        context.fillStyle = effect.options.color;
-        context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        context.restore();
-    }
+    // 遷移効果・ポストプロセッシング効果のレンダリング処理はサブコンポーネントに移行済み
     
     /**
-     * スライド遷移をレンダリング
-     */
-    renderSlideTransition(context, effect, progress) {
-        const canvas = this.canvas;
-        let offsetX = 0, offsetY = 0;
-        
-        switch (effect.options.slideDirection) {
-            case 'left':
-                offsetX = -canvas.width * progress;
-                break;
-            case 'right':
-                offsetX = canvas.width * progress;
-                break;
-            case 'up':
-                offsetY = -canvas.height * progress;
-                break;
-            case 'down':
-                offsetY = canvas.height * progress;
-                break;
-        }
-        
-        context.save();
-        context.fillStyle = effect.options.color || '#000000';
-        context.fillRect(
-            offsetX,
-            offsetY,
-            canvas.width,
-            canvas.height
-        );
-        context.restore();
-    }
-    
-    /**
-     * ズーム遷移をレンダリング
-     */
-    renderZoomTransition(context, effect, progress) {
-        const scale = effect.options.zoomType === 'in' ? progress : (1 - progress);
-        const center = effect.options.center;
-        
-        context.save();
-        context.translate(center.x, center.y);
-        context.scale(scale, scale);
-        context.translate(-center.x, -center.y);
-        
-        context.globalAlpha = 1 - progress;
-        context.fillStyle = effect.options.color || '#000000';
-        context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        
-        context.restore();
-    }
-    
-    /**
-     * ワイプ遷移をレンダリング
-     */
-    renderWipeTransition(context, effect, progress) {
-        const canvas = this.canvas;
-        
-        context.save();
-        context.fillStyle = effect.options.color || '#000000';
-        
-        switch (effect.options.pattern) {
-            case 'horizontal':
-                const width = canvas.width * progress;
-                context.fillRect(0, 0, width, canvas.height);
-                break;
-            case 'vertical':
-                const height = canvas.height * progress;
-                context.fillRect(0, 0, canvas.width, height);
-                break;
-            case 'circular':
-                const radius = Math.max(canvas.width, canvas.height) * progress;
-                context.beginPath();
-                context.arc(canvas.width / 2, canvas.height / 2, radius, 0, Math.PI * 2);
-                context.fill();
-                break;
-        }
-        
-        context.restore();
-    }
-    
-    /**
-     * ディゾルブ遷移をレンダリング
-     */
-    renderDissolveTransition(context, effect, progress) {
-        // ノイズベースのディゾルブ効果（簡易版）
-        const canvas = this.canvas;
-        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-        const data = imageData.data;
-        
-        for (let i = 0; i < data.length; i += 4) {
-            const noise = Math.random();
-            if (noise < progress * effect.options.threshold) {
-                data[i + 3] = 0; // アルファ値を0に
-            }
-        }
-        
-        context.putImageData(imageData, 0, 0);
-    }
-    
-    /**
-     * ポストプロセッシング効果をレンダリング
-     */
-    renderPostProcessingEffects(context) {
-        const canvas = this.canvas;
-        
-        // ビネット効果
-        if (this.enhancedTransform.vignette > 0) {
-            context.save();
-            const gradient = context.createRadialGradient(
-                canvas.width / 2, canvas.height / 2, 0,
-                canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height) / 2
-            );
-            gradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
-            gradient.addColorStop(1, `rgba(0, 0, 0, ${this.enhancedTransform.vignette})`);
-            
-            context.globalCompositeOperation = 'multiply';
-            context.fillStyle = gradient;
-            context.fillRect(0, 0, canvas.width, canvas.height);
-            context.restore();
-        }
-        
-        // ノイズ効果
-        if (this.enhancedTransform.noise > 0) {
-            this.renderNoiseEffect(context);
-        }
-        
-        // スキャンライン効果
-        if (this.enhancedTransform.scanlines > 0) {
-            this.renderScanlinesEffect(context);
-        }
-        
-        // グリッチ効果
-        if (this.enhancedTransform.glitch.intensity > 0) {
-            this.renderGlitchEffect(context);
-        }
-    }
-    
-    /**
-     * ノイズ効果をレンダリング
-     */
-    renderNoiseEffect(context) {
-        const canvas = this.canvas;
-        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-        const data = imageData.data;
-        const intensity = this.enhancedTransform.noise * 50;
-        
-        for (let i = 0; i < data.length; i += 4) {
-            const noise = (Math.random() - 0.5) * intensity;
-            data[i] += noise;     // R
-            data[i + 1] += noise; // G
-            data[i + 2] += noise; // B
-        }
-        
-        context.putImageData(imageData, 0, 0);
-    }
-    
-    /**
-     * スキャンライン効果をレンダリング
-     */
-    renderScanlinesEffect(context) {
-        const canvas = this.canvas;
-        context.save();
-        context.globalAlpha = this.enhancedTransform.scanlines;
-        context.globalCompositeOperation = 'multiply';
-        
-        for (let y = 0; y < canvas.height; y += 4) {
-            context.fillStyle = 'rgba(0, 0, 0, 0.1)';
-            context.fillRect(0, y, canvas.width, 2);
-        }
-        
-        context.restore();
-    }
-    
-    /**
-     * グリッチ効果をレンダリング
-     */
-    renderGlitchEffect(context) {
-        const canvas = this.canvas;
-        const intensity = this.enhancedTransform.glitch.intensity;
-        
-        if (Math.random() < intensity) {
-            // 水平ずれ
-            const sliceHeight = 10;
-            const offset = (Math.random() - 0.5) * intensity * 20;
-            
-            for (let y = 0; y < canvas.height; y += sliceHeight) {
-                if (Math.random() < intensity) {
-                    const imageData = context.getImageData(0, y, canvas.width, sliceHeight);
-                    context.putImageData(imageData, offset, y);
-                }
-            }
-        }
-    }
-    
-    /**
-     * 深度ブラー効果を適用
+     * 深度ブラー効果を適用（サブコンポーネントに委譲）
      */
     addDepthBlurEffect(focusPoint, blurRadius, duration) {
         const effect = {
@@ -1584,22 +814,10 @@ export class EnhancedEffectManager extends EffectManager {
     }
     
     /**
-     * バブル表面の光沢とリフレクションを統合描画
+     * バブル表面の光沢とリフレクションを統合描画（サブコンポーネントに委譲）
      */
     renderBubbleCompleteReflectionSystem(context, bubble) {
-        if (!this.renderSettings.enableReflections || this.renderSettings.qualityLevel === 'low') {
-            return;
-        }
-        
-        // バブル反射面を自動追加
-        const reflectionSurface = {
-            surface: { ...bubble, type: 'bubble' },
-            reflectivity: 0.7,
-            blur: 0,
-            enabled: true
-        };
-        
-        this.renderBubbleReflection(context, reflectionSurface);
+        this.reflectionRenderer.renderBubbleCompleteReflectionSystem(context, bubble, this.renderSettings);
     }
     
     /**
