@@ -6,12 +6,12 @@
 import { jest } from '@jest/globals';
 
 // 分割されたコンポーネントのインポート
-import { PerformanceTestSuite } from '../../src/tests/performance/PerformanceTestSuite.js';
+import { PerformanceTestSuite } from '../../src/utils/PerformanceTestSuite.js';
 import { PerformanceWarningSystem } from '../../src/utils/PerformanceWarningSystem.js';
 import { PerformanceMonitoringSystem } from '../../src/utils/PerformanceMonitoringSystem.js';
-import { PerformanceIntegrationTesting } from '../../src/tests/integration/PerformanceIntegrationTesting.js';
-import { BenchmarkSuite } from '../../src/tests/performance/BenchmarkSuite.js';
-import { TestResultVisualizer } from '../../src/tests/utils/TestResultVisualizer.js';
+import { PerformanceIntegrationTesting } from '../../src/utils/PerformanceIntegrationTesting.js';
+import { BenchmarkSuite } from '../../src/debug/BenchmarkSuite.js';
+import { TestResultVisualizer } from '../../src/utils/TestResultVisualizer.js';
 import { ErrorReporter } from '../../src/utils/ErrorReporter.js';
 import { MobileTestSuite } from '../../src/tests/mobile/MobileTestSuite.js';
 import { MobileAccessibilityManager } from '../../src/core/MobileAccessibilityManager.js';
