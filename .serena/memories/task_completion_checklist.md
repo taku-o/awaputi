@@ -1,78 +1,113 @@
 # タスク完了時のチェックリスト
 
-## 必須実行項目
+## コード変更後の必須確認事項
 
 ### 1. テスト実行
 ```bash
-# 全テストスイート実行（必須）
-npm run test:all
+# ユニットテストを実行して既存機能が壊れていないか確認
+npm test
 
-# 個別テスト確認
-npm test                    # Jestテスト
-npm run test:e2e            # E2Eテスト
-npm run test:performance    # パフォーマンステスト
+# 変更したファイルに関連するテストを実行
+npm test -- [テストファイル名]
+
+# 統合テストも必要に応じて実行
+npm run test:integration
 ```
 
-### 2. 設定検証
+### 2. ファイルサイズチェック
 ```bash
-# 設定ファイル整合性チェック
+# MCPツール互換性のため、ファイルサイズをチェック
+npm run filesize:check
+
+# 2,500語を超えるファイルがある場合は分割を検討
+```
+
+### 3. 設定検証
+```bash
+# 設定ファイルの整合性を確認
 npm run validate:config
-
-# 国際化設定チェック（i18n関連変更時）
-npm run i18n:validate
 ```
 
-### 3. ビルド検証
+### 4. リンター実行（現在は未設定だが推奨）
 ```bash
-# 本番ビルド実行
+# ESLint等が設定されている場合
+# npm run lint
+```
+
+### 5. ビルド確認
+```bash
+# ビルドが正常に完了するか確認
 npm run build
 
-# バンドルサイズチェック
-npm run size-check
-
-# プレビュー確認
-npm run preview
+# ビルドエラーがある場合は修正
 ```
 
-### 4. 品質チェック（推奨）
+### 6. ローカル動作確認
 ```bash
-# Lighthouseスコア確認
-npm run lighthouse
+# 開発サーバーを起動
+python -m http.server 8000
 
-# パフォーマンス最適化
-npm run optimize
+# ブラウザで動作確認
+# http://localhost:8000
 ```
 
-## コード品質確認
+### 7. Git コミット前の確認
+```bash
+# 変更内容を確認
+git status
+git diff
 
-### 1. ES6構文・規約準拠
-- [x] ES6 modules (import/export)
-- [x] 適切な命名規則 (camelCase, PascalCase)
-- [x] JSDocコメント
-- [x] エラーハンドリング
+# 不要なファイルが含まれていないか確認
+# console.logなどのデバッグコードが残っていないか確認
+```
 
-### 2. アーキテクチャ準拠
-- [x] コンポーネント責任分離
-- [x] 依存注入パターン
-- [x] ConfigurationManager使用
-- [x] 非同期処理（async/await）
+### 8. コミットメッセージの規約
+```
+# 形式: <type>: <description>
 
-### 3. パフォーマンス
-- [x] メモリ使用量最適化
-- [x] オブジェクトプール活用
-- [x] イベントリスナークリーンアップ
+feat: 新機能追加
+fix: バグ修正
+refactor: リファクタリング
+docs: ドキュメント更新
+test: テスト追加・修正
+style: コードスタイルの変更
+perf: パフォーマンス改善
+chore: その他の変更
 
-## デプロイ前確認
+# 例:
+git commit -m "feat: Add new bubble type for special events"
+git commit -m "fix: Resolve memory leak in ParticleManager"
+```
 
-### 1. ブラウザ互換性
-- [x] Chrome, Firefox, Safari, Edge確認
-- [x] モバイル端末動作確認
+### 9. プロジェクト固有の確認事項
 
-### 2. アクセシビリティ
-- [x] キーボードナビゲーション
-- [x] スクリーンリーダー対応
-- [x] カラーコントラスト確認
+#### MCPツール互換性
+- ファイルサイズが2,500語以下であることを確認
+- 大きなファイルはMain Controller Patternで分割
 
-### 3. 多言語対応（該当時）
-- [x] 翻訳ファイル更新
-- [x] 言語切り替え動作確認
+#### 多言語対応
+- 新しいUIテキストは LocalizationManager を使用
+- 翻訳キーを適切に追加
+
+#### アクセシビリティ
+- WCAG 2.1 AA準拠を維持
+- ARIAラベル、キーボードナビゲーション対応
+
+#### パフォーマンス
+- 60FPS維持を目指す
+- メモリリークがないか確認
+
+### 10. ドキュメント更新
+```bash
+# APIドキュメントを更新（必要に応じて）
+npm run docs:generate
+
+# プロジェクトドキュメントの更新
+# - CLAUDE.md の更新（必要に応じて）
+# - 関連するIssueのドキュメント更新
+```
+
+### 推奨される追加確認
+- コードレビューのためのPR作成
+- 関連するIssueへのコメント追加
+- チームメンバーへの共有（必要に応じて）
