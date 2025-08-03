@@ -425,3 +425,50 @@ MCPツール（find_symbol）が25,000トークン制限を超過してエラー
 - バックアップレコードによる削除履歴保持
 - 誤削除時のロールバック機能
 - 対応する現在ファイルの存在確認
+
+### コアファイル分割プロジェクト Phase E.1（Issue #82対応）
+**目標**: 重要なコアファイル7件をMain Controller Patternで分割し、MCPツール互換性（2,500語以下）を実現
+
+#### 分割対象ファイル
+1. **LeaderboardManager.js** (3,489語) → 4コンポーネント（DataProcessor、RankingManager、StorageManager）
+2. **PWAManager.js** (2,968語) → 3コンポーネント（ServiceWorkerManager、InstallationManager）
+3. **SettingsManager.js** (2,798語) → 3コンポーネント（Validator、StorageManager）
+4. **ParticleManager.js** (2,728語) → 3コンポーネント（Renderer、LifecycleManager）
+5. **StatisticsDashboard.js** (2,596語) → 2コンポーネント（ChartRenderer）
+6. **DataManager.js** (2,578語) → 2コンポーネント（StorageManager）
+7. **StageSelectScene.js** (2,573語) → 2コンポーネント（DataManager）
+
+#### Main Controller Pattern設計
+- **Main Controller**: 軽量オーケストレーター（<2,500語）、公開API維持
+- **Sub-Components**: 機能特化クラス、単一責任原則
+- **Dependency Injection**: サブコンポーネントの注入による統制
+- **API Preservation**: 後方互換性のため既存インターフェース保持
+
+#### ディレクトリ構造
+```
+src/
+├── core/
+│   ├── LeaderboardManager.js + leaderboard/
+│   ├── PWAManager.js + pwa/
+│   ├── SettingsManager.js + settings/
+│   ├── DataManager.js + data/
+│   └── StatisticsDashboard.js + statistics/
+├── effects/
+│   └── ParticleManager.js + particles/
+└── scenes/
+    └── StageSelectScene.js + stage-select/
+```
+
+#### 実装フェーズ（12大タスク）
+- **Task 1**: プロジェクト準備・ディレクトリ構造作成
+- **Task 2-8**: 各ファイルの分割実装（LeaderboardManager → StageSelectScene）
+- **Task 9**: 統合テスト・検証
+- **Task 10**: MCPツール互換性検証
+- **Task 11**: ドキュメント更新・クリーンアップ
+- **Task 12**: 最終検証・プロジェクト健全性チェック
+
+#### パフォーマンス目標
+- **ファイルサイズ**: 全ターゲットファイル2,500語以下
+- **MCPツール**: find_symbol等のトークン制限エラー解消
+- **サイズ削減**: メインコントローラー70%削減目標
+- **API互換性**: 既存公開インターフェース完全保持
