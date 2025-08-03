@@ -550,3 +550,16 @@ export class PWAManager {
         }
     }
 }
+
+// シングルトンインスタンス
+let pwaManagerInstance = null;
+
+/**
+ * PWAManagerシングルトンインスタンスの取得
+ */
+export function getPWAManager() {
+    if (!pwaManagerInstance) {
+        pwaManagerInstance = new PWAManager();
+    }
+    return pwaManagerInstance;
+}

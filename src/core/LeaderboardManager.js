@@ -397,3 +397,16 @@ export class LeaderboardManager {
         }
     }
 }
+
+// シングルトンインスタンス
+let leaderboardManagerInstance = null;
+
+/**
+ * LeaderboardManagerシングルトンインスタンスの取得
+ */
+export function getLeaderboardManager() {
+    if (!leaderboardManagerInstance) {
+        leaderboardManagerInstance = new LeaderboardManager();
+    }
+    return leaderboardManagerInstance;
+}

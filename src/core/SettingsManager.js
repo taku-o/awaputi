@@ -1268,3 +1268,16 @@ export class SettingsManager {
         console.log('[SettingsManager] Main Controller cleanup completed');
     }
 }
+
+// シングルトンインスタンス
+let settingsManagerInstance = null;
+
+/**
+ * SettingsManagerシングルトンインスタンスの取得
+ */
+export function getSettingsManager(gameEngine) {
+    if (!settingsManagerInstance && gameEngine) {
+        settingsManagerInstance = new SettingsManager(gameEngine);
+    }
+    return settingsManagerInstance;
+}
