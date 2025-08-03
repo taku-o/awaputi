@@ -376,3 +376,24 @@ MCPツール（find_symbol）が25,000トークン制限を超過してエラー
 - **Task 7**: MCPツール互換性検証（2サブタスク）
 - **Task 8**: ドキュメント・クリーンアップ（2サブタスク）
 - **Task 9**: 最終検証・プロジェクト健全性チェック（2サブタスク）
+
+### 古いファイルクリーンアップ（Issue #76対応）
+**目標**: プロジェクト内の不要な`_old`や`_original`ファイルを安全に削除し、プロジェクトの整理とメンテナンス性向上を実現
+
+#### 対象ファイル
+- `src/core/AchievementManager_old.js` (80,507 bytes)
+- `src/utils/AdvancedRenderingOptimizer_old.js` (14,106 bytes)  
+- `src/scenes/MainMenuScene_original.js` (52,374 bytes)
+
+#### 実装アプローチ
+1. **FileScanner**: パターンマッチによるファイル検出、フィルタリング
+2. **ReferenceChecker**: import文・文字列参照の検証
+3. **SafetyValidator**: 削除安全性の多段階検証
+4. **FileRemover**: バックアップ機能付き安全削除
+5. **ReportGenerator**: 包括的な削除レポート生成
+
+#### セキュリティ機能
+- 削除前の複数段階安全性確認
+- バックアップレコードによる削除履歴保持
+- 誤削除時のロールバック機能
+- 対応する現在ファイルの存在確認

@@ -104,5 +104,8 @@
     "javascript"
   ],
   "author": "BubblePop Team",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "glob": "^11.0.3"
+  }
 }
