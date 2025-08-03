@@ -67,6 +67,34 @@ npm run test:all
 - **統合テスト**: 適切な依存関係初期化
 - **性能テスト**: キャッシュ改善閾値5%→2%、分散許容値設定
 
+### Jest設定エラー修正プロジェクト（Issue #79対応）
+**目標**: Jest設定エラー「jest is not defined」を解決し、テストスイートが正常に実行できるようにする
+
+#### 問題の概要
+ES Modules環境でJestを使用する際の互換性問題により、テストセットアップファイルでJest関数（jest.fn()等）が未定義エラーとなり、全103個のテストスイートが失敗している。
+
+#### 修正対象の問題
+1. **ES Modules + Jest互換性問題**: `"type": "module"`設定とJestの`setupFilesAfterEnv`の組み合わせでJestグローバル未定義
+2. **jest-canvas-mock依存関係**: 手動Canvas mockでJest関数が利用できない
+3. **NODE_OPTIONS設定**: `--experimental-vm-modules`フラグ使用時の初期化タイミング問題
+
+#### 実装アプローチ（9タスク）
+- **Task 1**: Jest設定にES Modules互換性設定追加（extensionsToTreatAsEsm）
+- **Task 2**: セットアップファイルでjest-canvas-mockインポート、手動モック削除
+- **Task 3**: package.jsonスクリプトのNODE_OPTIONS調整、警告抑制
+- **Task 4**: 基本テスト実行、「jest is not defined」エラー解消確認
+- **Task 5**: 全既存テストファイルの実行確認、エラー修正
+- **Task 6**: GitHub Actions等CI/CD環境でのテスト実行確認
+- **Task 7**: Jest設定変更の文書化、トラブルシューティングガイド作成
+- **Task 8**: テスト実行時間・カバレッジ比較、設定安定性確認
+- **Task 9**: 不要コード削除、設定最適化、最終テスト実行確認
+
+#### 推奨解決策
+jest-canvas-mockパッケージ利用による解決：
+- 既存パッケージでES Modules対応済み
+- 設定が簡潔でコミュニティサポート充実
+- 手動モック実装・メンテナンスコスト削減
+
 ### UserInfoScene実装プロジェクト（Issue #18対応）
 **目標**: プレースホルダー状態のUserInfoSceneを完全な機能に拡張
 

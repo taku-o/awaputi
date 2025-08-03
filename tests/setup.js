@@ -12,17 +12,17 @@ global.__ANALYTICS_ID__ = null;
 global.webkitAudioContext = global.AudioContext;
 
 // Mock requestAnimationFrame
-global.requestAnimationFrame = jest.fn((callback) => {
+global.requestAnimationFrame = (callback) => {
   return setTimeout(callback, 16); // ~60fps
-});
+};
 
-global.cancelAnimationFrame = jest.fn((id) => {
+global.cancelAnimationFrame = (id) => {
   clearTimeout(id);
-});
+};
 
 // Mock performance API
 global.performance = {
-  now: jest.fn(() => Date.now()),
+  now: () => Date.now(),
   timing: {
     navigationStart: Date.now() - 1000,
     loadEventEnd: Date.now()
@@ -36,22 +36,22 @@ global.performance = {
 
 // Mock localStorage
 const localStorageMock = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  removeItem: jest.fn(),
-  clear: jest.fn(),
+  getItem: () => {},
+  setItem: () => {},
+  removeItem: () => {},
+  clear: () => {},
   length: 0,
-  key: jest.fn()
+  key: () => {}
 };
 global.localStorage = localStorageMock;
 
 // Mock console methods for cleaner test output
 global.console = {
   ...console,
-  log: jest.fn(),
-  warn: jest.fn(),
-  error: jest.fn(),
-  info: jest.fn()
+  log: () => {},
+  warn: () => {},
+  error: () => {},
+  info: () => {}
 };
 
 // Canvas mocking is handled by jest-canvas-mock
@@ -141,7 +141,7 @@ global.createMockTouchEvent = (type, touches = [], options = {}) => {
 
 // Helper function to advance time in tests
 global.advanceTime = (ms) => {
-  jest.advanceTimersByTime(ms);
+  // Timer advancement will be handled by individual test files
 };
 
 // Setup completed - beforeEach/afterEach should be used in individual test files
