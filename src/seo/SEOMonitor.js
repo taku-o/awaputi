@@ -1,12 +1,18 @@
 /**
- * SEO Monitor - SEOパフォーマンス監視システム
+ * SEOMonitor - SEOパフォーマンス監視システム（メインコントローラー）
  * 
+ * Main Controller Patternにより、専門化されたコンポーネントを統制します。
  * Google Search Console統合準備、ソーシャルメディア分析、
  * SEOパフォーマンスダッシュボード、自動健全性チェックを提供
  */
 
 import { seoLogger } from './SEOLogger.js';
 import { seoErrorHandler } from './SEOErrorHandler.js';
+import { SEOMonitoringEngine } from './seo-monitor/SEOMonitoringEngine.js';
+import { SocialEngagementAnalyzer } from './seo-monitor/SocialEngagementAnalyzer.js';
+import { SearchConsoleIntegrator } from './seo-monitor/SearchConsoleIntegrator.js';
+import { HealthChecker } from './seo-monitor/HealthChecker.js';
+import { MetaTagAnalyzer } from './seo-monitor/MetaTagAnalyzer.js';
 
 export class SEOMonitor {
     constructor() {
@@ -50,6 +56,13 @@ export class SEOMonitor {
             }
         };
         
+        // 専門化されたコンポーネントを初期化
+        this.monitoringEngine = new SEOMonitoringEngine(this.config, this.monitoringData);
+        this.socialAnalyzer = new SocialEngagementAnalyzer(this.config, this.monitoringData);
+        this.searchConsoleIntegrator = new SearchConsoleIntegrator(this.config, this.monitoringData);
+        this.healthChecker = new HealthChecker(this.config, this.monitoringData, seoLogger, this.alertCallbacks);
+        this.metaTagAnalyzer = new MetaTagAnalyzer(this.thresholds);
+        
         this._initialize();
     }
     
@@ -61,7 +74,7 @@ export class SEOMonitor {
         try {
             // パフォーマンス監視の設定
             if (typeof window !== 'undefined' && 'PerformanceObserver' in window) {
-                this._setupPerformanceObserver();
+                this.monitoringEngine.setupPerformanceObserver();
             }
             
             // ページビジビリティAPI対応
@@ -163,7 +176,40 @@ export class SEOMonitor {
     }
     
     /**
-     * 監視チェックの実行
+     * 監視サイクルの実行
+     */
+    async performMonitoringCycle() {
+        try {
+            seoLogger.debug('Starting monitoring cycle');
+
+            // Lighthouse SEOスコア監視
+            if (this.config.includeLighthouse) {
+                await this.monitorLighthouseScore();
+            }
+
+            // Core Web Vitals追跡
+            await this.trackCoreWebVitals();
+
+            // ソーシャルメディア分析
+            if (this.config.includeSocialMedia) {
+                await this.analyzeSocialEngagement();
+            }
+
+            // Search Console データ準備
+            if (this.config.includeSearchConsole) {
+                await this.prepareSearchConsoleIntegration();
+            }
+
+            seoLogger.debug('Monitoring cycle completed');
+
+        } catch (error) {
+            seoLogger.error('Error in monitoring cycle', error);
+            this.createAlert('monitoring_cycle_error', 'critical', error.message);
+        }
+    }
+    
+    /**
+     * 監視チェックの実行（レガシー互換性）
      * @private
      */
     async _performMonitoringCheck(options) {
@@ -178,7 +224,7 @@ export class SEOMonitor {
             
             // Lighthouseスコア監視
             if (options.includeLighthouse) {
-                checkResults.lighthouse = await this._checkLighthouseScore();
+                checkResults.lighthouse = await this.monitoringEngine.checkLighthouseScore();
                 this.monitoringData.lighthouse.push(checkResults.lighthouse);
                 
                 if (options.enableAlerts) {
@@ -188,7 +234,7 @@ export class SEOMonitor {
             
             // Core Web Vitals監視
             if (options.includeCoreWebVitals) {
-                checkResults.coreWebVitals = await this._checkCoreWebVitals();
+                checkResults.coreWebVitals = await this.monitoringEngine.checkCoreWebVitals();
                 this.monitoringData.coreWebVitals.push(checkResults.coreWebVitals);
                 
                 if (options.enableAlerts) {
@@ -198,10 +244,10 @@ export class SEOMonitor {
             
             // メタタグ監視
             if (options.includeMetaTags) {
-                checkResults.metaTags = await this._checkMetaTags();
+                checkResults.metaTags = await this.metaTagAnalyzer.checkMetaTags();
                 
                 if (options.enableAlerts) {
-                    this._checkMetaTagAlerts(checkResults.metaTags, checkResults.alerts);
+                    this.metaTagAnalyzer.checkMetaTagAlerts(checkResults.metaTags, checkResults.alerts);
                 }
             }
             
@@ -224,86 +270,6 @@ export class SEOMonitor {
             
         } catch (error) {
             seoErrorHandler.handle(error, '_performMonitoringCheck', options);
-        }
-    }
-    
-    /**
-     * Lighthouseスコアのチェック
-     * @private
-     */
-    async _checkLighthouseScore() {
-        try {
-            // 実際の実装では Lighthouse CI API やPuppeteerを使用
-            // ここではモックデータを生成
-            const score = {
-                performance: this._generateRealisticScore(85, 100),
-                accessibility: this._generateRealisticScore(88, 100),
-                bestPractices: this._generateRealisticScore(80, 95),
-                seo: this._generateRealisticScore(90, 100),
-                timestamp: new Date().toISOString()
-            };
-            
-            return score;
-            
-        } catch (error) {
-            seoLogger.error('Failed to check Lighthouse score', error);
-            return null;
-        }
-    }
-    
-    /**
-     * Core Web Vitalsのチェック
-     * @private
-     */
-    async _checkCoreWebVitals() {
-        try {
-            const vitals = {
-                LCP: this._generateRealisticMetric(1000, 3000), // ms
-                FID: this._generateRealisticMetric(10, 150),    // ms
-                CLS: this._generateRealisticMetric(0.01, 0.2),  // score
-                timestamp: new Date().toISOString()
-            };
-            
-            // 実際の実装では web-vitals ライブラリを使用
-            if (typeof window !== 'undefined' && 'PerformanceObserver' in window) {
-                // Performance Observer APIでリアルデータを取得
-                try {
-                    vitals.LCP = await this._measureLCP();
-                    vitals.FID = await this._measureFID();
-                    vitals.CLS = await this._measureCLS();
-                } catch (error) {
-                    seoLogger.warning('Failed to measure real Core Web Vitals, using mock data');
-                }
-            }
-            
-            return vitals;
-            
-        } catch (error) {
-            seoLogger.error('Failed to check Core Web Vitals', error);
-            return null;
-        }
-    }
-    
-    /**
-     * メタタグのチェック
-     * @private
-     */
-    async _checkMetaTags() {
-        try {
-            const metaTags = {
-                title: this._extractTitleTag(),
-                description: this._extractDescriptionTag(),
-                keywords: this._extractKeywordsTag(),
-                ogTags: this._extractOGTags(),
-                twitterTags: this._extractTwitterTags(),
-                timestamp: new Date().toISOString()
-            };
-            
-            return metaTags;
-            
-        } catch (error) {
-            seoLogger.error('Failed to check meta tags', error);
-            return null;
         }
     }
     
@@ -353,66 +319,6 @@ export class SEOMonitor {
     }
     
     /**
-     * メタタグアラートのチェック
-     * @private
-     */
-    _checkMetaTagAlerts(metaTags, alerts) {
-        if (!metaTags) return;
-        
-        // タイトル長のチェック
-        if (metaTags.title) {
-            const titleLength = metaTags.title.length;
-            const { min, max } = this.thresholds.metaTags.titleLength;
-            
-            if (titleLength < min || titleLength > max) {
-                alerts.push({
-                    type: 'metaTags',
-                    severity: 'warning',
-                    metric: 'title_length',
-                    current: titleLength,
-                    threshold: `${min}-${max}`,
-                    message: `Title length (${titleLength}) is outside optimal range (${min}-${max})`,
-                    timestamp: new Date().toISOString()
-                });
-            }
-        } else {
-            alerts.push({
-                type: 'metaTags',
-                severity: 'critical',
-                metric: 'title_missing',
-                message: 'Title tag is missing',
-                timestamp: new Date().toISOString()
-            });
-        }
-        
-        // 説明文長のチェック
-        if (metaTags.description) {
-            const descLength = metaTags.description.length;
-            const { min, max } = this.thresholds.metaTags.descriptionLength;
-            
-            if (descLength < min || descLength > max) {
-                alerts.push({
-                    type: 'metaTags',
-                    severity: 'warning',
-                    metric: 'description_length',
-                    current: descLength,
-                    threshold: `${min}-${max}`,
-                    message: `Description length (${descLength}) is outside optimal range (${min}-${max})`,
-                    timestamp: new Date().toISOString()
-                });
-            }
-        } else {
-            alerts.push({
-                type: 'metaTags',
-                severity: 'critical',
-                metric: 'description_missing',
-                message: 'Description meta tag is missing',
-                timestamp: new Date().toISOString()
-            });
-        }
-    }
-    
-    /**
      * アラートの処理
      * @private
      */
@@ -439,45 +345,6 @@ export class SEOMonitor {
     }
     
     /**
-     * Performance Observerの設定
-     * @private
-     */
-    _setupPerformanceObserver() {
-        try {
-            // Largest Contentful Paint
-            const lcpObserver = new PerformanceObserver((list) => {
-                const entries = list.getEntries();
-                const lastEntry = entries[entries.length - 1];
-                this._recordLCP(lastEntry.startTime);
-            });
-            lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
-            
-            // First Input Delay
-            const fidObserver = new PerformanceObserver((list) => {
-                const entries = list.getEntries();
-                entries.forEach(entry => {
-                    this._recordFID(entry.processingStart - entry.startTime);
-                });
-            });
-            fidObserver.observe({ entryTypes: ['first-input'] });
-            
-            // Cumulative Layout Shift
-            const clsObserver = new PerformanceObserver((list) => {
-                const entries = list.getEntries();
-                entries.forEach(entry => {
-                    if (!entry.hadRecentInput) {
-                        this._recordCLS(entry.value);
-                    }
-                });
-            });
-            clsObserver.observe({ entryTypes: ['layout-shift'] });
-            
-        } catch (error) {
-            seoLogger.warning('Failed to setup Performance Observer', error);
-        }
-    }
-    
-    /**
      * データ保持期間の制限
      * @private
      */
@@ -497,168 +364,57 @@ export class SEOMonitor {
         }
     }
     
+    // パブリックAPI - 専門コンポーネントへのデリゲート
+    
     /**
-     * 現実的なスコアの生成
-     * @private
+     * Lighthouse SEOスコア監視
      */
-    _generateRealisticScore(min, max) {
-        // 前回のスコアから大きく変動しないように調整
-        const base = min + Math.random() * (max - min);
-        const variation = (Math.random() - 0.5) * 10; // ±5ポイントの変動
-        return Math.max(min, Math.min(max, Math.round(base + variation)));
+    async monitorLighthouseScore() {
+        return await this.monitoringEngine.monitorLighthouseScore();
     }
     
     /**
-     * 現実的なメトリクスの生成
-     * @private
+     * Core Web Vitals追跡
      */
-    _generateRealisticMetric(min, max) {
-        return min + Math.random() * (max - min);
+    async trackCoreWebVitals() {
+        return await this.monitoringEngine.trackCoreWebVitals();
     }
     
     /**
-     * LCPの測定
-     * @private
+     * ソーシャルメディア分析
      */
-    async _measureLCP() {
-        return new Promise((resolve) => {
-            // 実際の実装では Performance Observer を使用
-            setTimeout(() => resolve(Math.random() * 2500), 100);
-        });
+    async analyzeSocialEngagement() {
+        return await this.socialAnalyzer.analyzeSocialEngagement();
     }
     
     /**
-     * FIDの測定
-     * @private
+     * Google Search Console統合準備
      */
-    async _measureFID() {
-        return new Promise((resolve) => {
-            // 実際の実装では Performance Observer を使用
-            setTimeout(() => resolve(Math.random() * 100), 100);
-        });
+    async prepareSearchConsoleIntegration() {
+        return await this.searchConsoleIntegrator.prepareSearchConsoleIntegration();
     }
     
     /**
-     * CLSの測定
-     * @private
+     * 健全性チェックの実行
      */
-    async _measureCLS() {
-        return new Promise((resolve) => {
-            // 実際の実装では Performance Observer を使用
-            setTimeout(() => resolve(Math.random() * 0.1), 100);
-        });
+    async runHealthCheck() {
+        const result = await this.healthChecker.runHealthCheck();
+        this.lastHealthCheck = result;
+        return result;
     }
     
     /**
-     * LCPの記録
-     * @private
+     * SEOパフォーマンスダッシュボードデータの生成
      */
-    _recordLCP(value) {
-        // 実際の実装では収集したデータを保存
-        seoLogger.performance('LCP recorded', value);
+    generateDashboardData() {
+        return this.healthChecker.generateDashboardData();
     }
     
     /**
-     * FIDの記録
-     * @private
+     * アラートの作成
      */
-    _recordFID(value) {
-        // 実際の実装では収集したデータを保存
-        seoLogger.performance('FID recorded', value);
-    }
-    
-    /**
-     * CLSの記録
-     * @private
-     */
-    _recordCLS(value) {
-        // 実際の実装では収集したデータを保存
-        seoLogger.performance('CLS recorded', value);
-    }
-    
-    /**
-     * タイトルタグの抽出
-     * @private
-     */
-    _extractTitleTag() {
-        if (typeof document !== 'undefined') {
-            return document.title || null;
-        }
-        return 'BubblePop - 泡割りゲーム'; // モックデータ
-    }
-    
-    /**
-     * 説明メタタグの抽出
-     * @private
-     */
-    _extractDescriptionTag() {
-        if (typeof document !== 'undefined') {
-            const meta = document.querySelector('meta[name="description"]');
-            return meta ? meta.getAttribute('content') : null;
-        }
-        return 'HTML5 Canvas を使用したバブルポップゲーム'; // モックデータ
-    }
-    
-    /**
-     * キーワードメタタグの抽出
-     * @private
-     */
-    _extractKeywordsTag() {
-        if (typeof document !== 'undefined') {
-            const meta = document.querySelector('meta[name="keywords"]');
-            return meta ? meta.getAttribute('content') : null;
-        }
-        return 'バブルポップ,ゲーム,HTML5'; // モックデータ
-    }
-    
-    /**
-     * Open Graphタグの抽出
-     * @private
-     */
-    _extractOGTags() {
-        const ogTags = {};
-        
-        if (typeof document !== 'undefined') {
-            const ogMetas = document.querySelectorAll('meta[property^="og:"]');
-            ogMetas.forEach(meta => {
-                const property = meta.getAttribute('property');
-                const content = meta.getAttribute('content');
-                if (property && content) {
-                    ogTags[property] = content;
-                }
-            });
-        }
-        
-        return Object.keys(ogTags).length > 0 ? ogTags : {
-            'og:title': 'BubblePop',
-            'og:description': 'HTML5 Canvas を使用したバブルポップゲーム',
-            'og:type': 'website'
-        };
-    }
-    
-    /**
-     * Twitterタグの抽出
-     * @private
-     */
-    _extractTwitterTags() {
-        const twitterTags = {};
-        
-        if (typeof document !== 'undefined') {
-            const twitterMetas = document.querySelectorAll('meta[name^="twitter:"]');
-            twitterMetas.forEach(meta => {
-                const name = meta.getAttribute('name');
-                const content = meta.getAttribute('content');
-                if (name && content) {
-                    twitterTags[name] = content;
-                }
-            });
-        }
-        
-        return Object.keys(twitterTags).length > 0 ? twitterTags : {
-            'twitter:card': 'summary_large_image',
-            'twitter:title': 'BubblePop',
-            'twitter:description': 'HTML5 Canvas を使用したバブルポップゲーム'
-        };
+    createAlert(type, severity, message, metadata = {}) {
+        return this.healthChecker.createAlert(type, severity, message, metadata);
     }
     
     /**
@@ -667,7 +423,7 @@ export class SEOMonitor {
      */
     addAlertCallback(callback) {
         if (typeof callback === 'function') {
-            this.alertCallbacks.add(callback);
+            this.alertCallbacks.push(callback);
             seoLogger.info('Alert callback added');
         } else {
             throw new Error('Alert callback must be a function');
@@ -679,8 +435,9 @@ export class SEOMonitor {
      * @param {Function} callback - アラートコールバック関数
      */
     removeAlertCallback(callback) {
-        if (this.alertCallbacks.has(callback)) {
-            this.alertCallbacks.delete(callback);
+        const index = this.alertCallbacks.indexOf(callback);
+        if (index !== -1) {
+            this.alertCallbacks.splice(index, 1);
             seoLogger.info('Alert callback removed');
         }
     }
@@ -832,416 +589,6 @@ export class SEOMonitor {
     }
     
     /**
-     * 監視サイクルの実行
-     */
-    async performMonitoringCycle() {
-        try {
-            seoLogger.debug('Starting monitoring cycle');
-
-            // Lighthouse SEOスコア監視
-            if (this.config.includeLighthouse) {
-                await this.monitorLighthouseScore();
-            }
-
-            // Core Web Vitals追跡
-            await this.trackCoreWebVitals();
-
-            // ソーシャルメディア分析
-            if (this.config.includeSocialMedia) {
-                await this.analyzeSocialEngagement();
-            }
-
-            // Search Console データ準備
-            if (this.config.includeSearchConsole) {
-                await this.prepareSearchConsoleIntegration();
-            }
-
-            seoLogger.debug('Monitoring cycle completed');
-
-        } catch (error) {
-            seoLogger.error('Error in monitoring cycle', error);
-            this.createAlert('monitoring_cycle_error', 'critical', error.message);
-        }
-    }
-
-    /**
-     * Lighthouse SEOスコア監視
-     */
-    async monitorLighthouseScore() {
-        try {
-            // Performance Observer APIを使用してメトリクスを収集
-            if ('PerformanceObserver' in window) {
-                const observer = new PerformanceObserver((list) => {
-                    const entries = list.getEntries();
-                    entries.forEach(entry => {
-                        if (entry.entryType === 'navigation') {
-                            this.recordNavigationMetrics(entry);
-                        }
-                    });
-                });
-                
-                observer.observe({ entryTypes: ['navigation'] });
-            }
-
-            // 簡易SEOスコア計算
-            const seoScore = await this.calculateSEOScore();
-            
-            this.monitoringData.lighthouseScores.push({
-                timestamp: Date.now(),
-                score: seoScore,
-                details: await this.getSEOScoreDetails()
-            });
-
-            // 閾値チェック
-            if (seoScore < this.config.lighthouseThreshold) {
-                this.createAlert(
-                    'lighthouse_score_low',
-                    'warning',
-                    `Lighthouse SEO score (${seoScore}) is below threshold (${this.config.lighthouseThreshold})`
-                );
-            }
-
-            // データサイズ制限（最新100件のみ保持）
-            if (this.monitoringData.lighthouseScores.length > 100) {
-                this.monitoringData.lighthouseScores = this.monitoringData.lighthouseScores.slice(-100);
-            }
-
-            return { seo: seoScore };
-
-        } catch (error) {
-            seoLogger.error('Failed to monitor Lighthouse score', error);
-            this.createAlert('lighthouse_monitoring_error', 'critical', error.message);
-            return { seo: 0, error: error.message };
-        }
-    }
-
-    /**
-     * SEOスコアの簡易計算
-     */
-    async calculateSEOScore() {
-        let score = 100;
-        const penalties = [];
-
-        try {
-            // メタタグチェック
-            const requiredMetaTags = ['title', 'description', 'og:title', 'og:description'];
-            for (const tagName of requiredMetaTags) {
-                const tag = document.querySelector(`meta[${tagName.includes(':') ? 'property' : 'name'}="${tagName}"]`) 
-                    || (tagName === 'title' ? document.querySelector('title') : null);
-                
-                if (!tag || !tag.content) {
-                    score -= 10;
-                    penalties.push(`Missing ${tagName}`);
-                }
-            }
-
-            // 構造化データチェック
-            const structuredDataScripts = document.querySelectorAll('script[type="application/ld+json"]');
-            if (structuredDataScripts.length === 0) {
-                score -= 15;
-                penalties.push('No structured data found');
-            }
-
-            // 画像alt属性チェック
-            const images = document.querySelectorAll('img');
-            let imagesWithoutAlt = 0;
-            images.forEach(img => {
-                if (!img.alt) imagesWithoutAlt++;
-            });
-            if (imagesWithoutAlt > 0) {
-                score -= Math.min(20, imagesWithoutAlt * 5);
-                penalties.push(`${imagesWithoutAlt} images without alt text`);
-            }
-
-            // リンクチェック
-            const links = document.querySelectorAll('a[href]');
-            let externalLinksWithoutNofollow = 0;
-            links.forEach(link => {
-                const href = link.getAttribute('href');
-                if (href && href.startsWith('http') && !link.rel.includes('nofollow')) {
-                    externalLinksWithoutNofollow++;
-                }
-            });
-
-            seoLogger.debug('SEO score calculated', { score, penalties });
-            return Math.max(0, score);
-
-        } catch (error) {
-            seoLogger.error('Error calculating SEO score', error);
-            return 0;
-        }
-    }
-
-    /**
-     * ソーシャルメディア分析
-     */
-    async analyzeSocialEngagement() {
-        try {
-            const socialData = {
-                timestamp: Date.now(),
-                platforms: {},
-                totalShares: 0,
-                engagementRate: 0
-            };
-
-            // ソーシャルメディアボタンのクリックトラッキング
-            this.trackSocialSharing(socialData);
-
-            // OGタグの分析
-            socialData.ogTags = this.analyzeOGTags();
-
-            // Twitter Card分析
-            socialData.twitterCard = this.analyzeTwitterCard();
-
-            this.monitoringData.socialEngagement.push(socialData);
-
-            // データサイズ制限
-            if (this.monitoringData.socialEngagement.length > 50) {
-                this.monitoringData.socialEngagement = this.monitoringData.socialEngagement.slice(-50);
-            }
-
-            return socialData;
-
-        } catch (error) {
-            seoLogger.error('Failed to analyze social engagement', error);
-            return null;
-        }
-    }
-
-    /**
-     * Google Search Console統合準備
-     */
-    async prepareSearchConsoleIntegration() {
-        try {
-            const integrationData = {
-                timestamp: Date.now(),
-                sitemap: await this.validateSitemap(),
-                robots: await this.validateRobotsTxt(),
-                structuredData: this.validateStructuredData(),
-                pages: this.getIndexablePages(),
-                readyForIntegration: true
-            };
-
-            // Google Search Console verification準備
-            integrationData.verificationMethods = [
-                'HTML file upload',
-                'HTML tag',
-                'Domain name provider',
-                'Google Analytics'
-            ];
-
-            // API準備状況の確認
-            integrationData.apiReady = this.checkSearchConsoleAPIReadiness();
-
-            this.monitoringData.searchConsoleMetrics.push(integrationData);
-            
-            seoLogger.info('Search Console integration prepared', integrationData);
-            return integrationData;
-
-        } catch (error) {
-            seoLogger.error('Failed to prepare Search Console integration', error);
-            return null;
-        }
-    }
-
-    /**
-     * 健全性チェックの実行
-     */
-    async runHealthCheck() {
-        try {
-            const healthCheck = {
-                timestamp: Date.now(),
-                status: 'healthy',
-                checks: {},
-                issues: [],
-                recommendations: []
-            };
-
-            // SEOシステムコンポーネントの確認
-            healthCheck.checks.seoMetaManager = !!window.seoMetaManager;
-            healthCheck.checks.structuredDataEngine = !!window.structuredDataEngine;
-            healthCheck.checks.socialMediaOptimizer = !!window.socialMediaOptimizer;
-
-            // 重要なメタタグの確認
-            healthCheck.checks.titleTag = !!document.querySelector('title');
-            healthCheck.checks.descriptionTag = !!document.querySelector('meta[name="description"]');
-            healthCheck.checks.ogTags = document.querySelectorAll('meta[property^="og:"]').length > 0;
-            healthCheck.checks.twitterCard = !!document.querySelector('meta[name="twitter:card"]');
-
-            // 構造化データの確認
-            const structuredDataScripts = document.querySelectorAll('script[type="application/ld+json"]');
-            healthCheck.checks.structuredData = structuredDataScripts.length > 0;
-
-            // 問題の特定
-            Object.entries(healthCheck.checks).forEach(([check, passed]) => {
-                if (!passed) {
-                    healthCheck.status = 'warning';
-                    healthCheck.issues.push(`Failed check: ${check}`);
-                    healthCheck.recommendations.push(this.getRecommendation(check));
-                }
-            });
-
-            // エラーログの確認
-            const recentErrors = this.getRecentSEOErrors();
-            if (recentErrors.length > 0) {
-                healthCheck.status = 'critical';
-                healthCheck.issues.push(`${recentErrors.length} recent SEO errors`);
-                healthCheck.recommendations.push('Check SEO error logs and resolve issues');
-            }
-
-            this.monitoringData.healthChecks.push(healthCheck);
-            this.lastHealthCheck = healthCheck;
-
-            // 重要な問題がある場合はアラートを作成
-            if (healthCheck.status === 'critical') {
-                this.createAlert('health_check_critical', 'critical', 
-                    `Health check failed: ${healthCheck.issues.join(', ')}`);
-            }
-
-            // データサイズ制限
-            if (this.monitoringData.healthChecks.length > 50) {
-                this.monitoringData.healthChecks = this.monitoringData.healthChecks.slice(-50);
-            }
-
-            seoLogger.debug('Health check completed', healthCheck);
-            return healthCheck;
-
-        } catch (error) {
-            seoLogger.error('Health check failed', error);
-            this.createAlert('health_check_error', 'critical', error.message);
-            return {
-                timestamp: Date.now(),
-                status: 'error',
-                error: error.message
-            };
-        }
-    }
-
-    /**
-     * SEOパフォーマンスダッシュボードデータの生成
-     */
-    generateDashboardData() {
-        try {
-            const now = Date.now();
-            const dayAgo = now - (24 * 60 * 60 * 1000);
-            const weekAgo = now - (7 * 24 * 60 * 60 * 1000);
-
-            return {
-                overview: {
-                    currentSEOScore: this.getCurrentSEOScore(),
-                    healthStatus: this.lastHealthCheck?.status || 'unknown',
-                    totalAlerts: this.monitoringData.alerts.length,
-                    criticalAlerts: this.monitoringData.alerts.filter(a => a.severity === 'critical').length,
-                    lastUpdate: now
-                },
-                performance: {
-                    lighthouseScores: this.getRecentData('lighthouseScores', weekAgo),
-                    coreWebVitals: this.getRecentData('coreWebVitals', dayAgo),
-                    trends: this.calculateTrends()
-                },
-                social: {
-                    totalShares: this.getTotalSocialShares(),
-                    platformBreakdown: this.getSocialPlatformBreakdown(),
-                    engagementTrend: this.getSocialEngagementTrend()
-                },
-                health: {
-                    recentChecks: this.getRecentData('healthChecks', dayAgo),
-                    systemStatus: this.getSystemStatus(),
-                    recommendations: this.getActiveRecommendations()
-                },
-                alerts: {
-                    recent: this.getRecentAlerts(dayAgo),
-                    byType: this.getAlertsByType(),
-                    bySeverity: this.getAlertsBySeverity()
-                }
-            };
-
-        } catch (error) {
-            seoLogger.error('Failed to generate dashboard data', error);
-            return {
-                error: error.message,
-                timestamp: Date.now()
-            };
-        }
-    }
-
-    /**
-     * アラートの作成
-     */
-    createAlert(type, severity, message, metadata = {}) {
-        const alert = {
-            id: `alert_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-            type,
-            severity, // 'info', 'warning', 'critical'
-            message,
-            metadata,
-            timestamp: Date.now(),
-            resolved: false
-        };
-
-        this.monitoringData.alerts.push(alert);
-
-        // アラートコールバックの実行
-        if (this.config.alertsEnabled) {
-            this.alertCallbacks.forEach(callback => {
-                try {
-                    callback(alert);
-                } catch (error) {
-                    seoLogger.error('Alert callback failed', error);
-                }
-            });
-        }
-
-        seoLogger.warn(`SEO Alert [${severity}]: ${message}`, alert);
-
-        // データサイズ制限
-        if (this.monitoringData.alerts.length > 200) {
-            this.monitoringData.alerts = this.monitoringData.alerts.slice(-200);
-        }
-
-        return alert;
-    }
-
-    // ユーティリティメソッド
-    getCurrentSEOScore() {
-        const scores = this.monitoringData.lighthouseScores;
-        return scores.length > 0 ? scores[scores.length - 1].score : 0;
-    }
-
-    getRecentData(type, since) {
-        return this.monitoringData[type].filter(item => item.timestamp >= since);
-    }
-
-    getRecentAlerts(since) {
-        return this.monitoringData.alerts.filter(alert => alert.timestamp >= since);
-    }
-
-    getTotalSocialShares() {
-        return this.monitoringData.socialEngagement.reduce((total, data) => total + data.totalShares, 0);
-    }
-
-    getRecentSEOErrors() {
-        try {
-            const errorLog = JSON.parse(localStorage.getItem('seo_error_log') || '[]');
-            const dayAgo = Date.now() - (24 * 60 * 60 * 1000);
-            return errorLog.filter(error => error.timestamp >= dayAgo);
-        } catch (error) {
-            return [];
-        }
-    }
-
-    getRecommendation(checkType) {
-        const recommendations = {
-            titleTag: 'Add a title tag to improve SEO',
-            descriptionTag: 'Add a meta description tag',
-            ogTags: 'Add Open Graph meta tags for social sharing',
-            twitterCard: 'Add Twitter Card meta tags',
-            structuredData: 'Add structured data markup'
-        };
-        return recommendations[checkType] || 'Review SEO configuration';
-    }
-
-    /**
      * リソースのクリーンアップ
      */
     cleanup() {
@@ -1260,194 +607,12 @@ export class SEOMonitor {
             healthChecks: []
         };
         
+        // 専門コンポーネントのクリーンアップ
+        if (this.monitoringEngine) {
+            this.monitoringEngine.destroy();
+        }
+        
         seoLogger.info('SEOMonitor cleaned up');
-    }
-
-    // Additional missing methods that were referenced
-    
-    trackSocialSharing(socialData) {
-        // Set up social sharing tracking
-        const platforms = ['twitter', 'facebook', 'linkedin', 'pinterest'];
-        
-        platforms.forEach(platform => {
-            const buttons = document.querySelectorAll(`[data-share="${platform}"], .share-${platform}`);
-            buttons.forEach(button => {
-                if (!button.hasAttribute('data-tracked')) {
-                    button.addEventListener('click', () => {
-                        socialData.platforms[platform] = (socialData.platforms[platform] || 0) + 1;
-                        socialData.totalShares++;
-                        seoLogger.debug(`Social share tracked: ${platform}`);
-                    });
-                    button.setAttribute('data-tracked', 'true');
-                }
-            });
-        });
-    }
-
-    async validateSitemap() {
-        try {
-            const response = await fetch('/sitemap.xml');
-            return {
-                exists: response.ok,
-                status: response.status,
-                lastModified: response.headers.get('last-modified')
-            };
-        } catch (error) {
-            return { exists: false, error: error.message };
-        }
-    }
-
-    async validateRobotsTxt() {
-        try {
-            const response = await fetch('/robots.txt');
-            return {
-                exists: response.ok,
-                status: response.status,
-                content: response.ok ? await response.text() : null
-            };
-        } catch (error) {
-            return { exists: false, error: error.message };
-        }
-    }
-
-    validateStructuredData() {
-        const scripts = document.querySelectorAll('script[type="application/ld+json"]');
-        const results = [];
-        
-        scripts.forEach(script => {
-            try {
-                const data = JSON.parse(script.textContent);
-                results.push({ valid: true, type: data['@type'], data });
-            } catch (error) {
-                results.push({ valid: false, error: error.message });
-            }
-        });
-        
-        return results;
-    }
-
-    getIndexablePages() {
-        return [
-            { url: '/', title: document.title, priority: 1.0 },
-            { url: '/help', title: 'Help - BubblePop', priority: 0.8 }
-        ];
-    }
-
-    checkSearchConsoleAPIReadiness() {
-        return {
-            hasVerificationTag: !!document.querySelector('meta[name="google-site-verification"]'),
-            hasGoogleAnalytics: !!window.gtag || !!window.ga,
-            hasSitemap: true,
-            hasRobotsTxt: true
-        };
-    }
-
-    async getSEOScoreDetails() {
-        return {
-            metaTags: this.analyzeMetaTags(),
-            structuredData: this.validateStructuredData(),
-            images: this.analyzeImages(),
-            performance: await this.getPerformanceMetrics(),
-            timestamp: Date.now()
-        };
-    }
-
-    analyzeMetaTags() {
-        const tags = {};
-        const metaTags = document.querySelectorAll('meta');
-        metaTags.forEach(tag => {
-            const name = tag.getAttribute('name') || tag.getAttribute('property');
-            if (name) {
-                tags[name] = tag.getAttribute('content');
-            }
-        });
-        return tags;
-    }
-
-    analyzeImages() {
-        const images = document.querySelectorAll('img');
-        return {
-            total: images.length,
-            withAlt: Array.from(images).filter(img => img.alt).length,
-            withoutAlt: Array.from(images).filter(img => !img.alt).length
-        };
-    }
-
-    async getPerformanceMetrics() {
-        if (performance.getEntriesByType) {
-            const navigation = performance.getEntriesByType('navigation')[0];
-            return {
-                domContentLoaded: navigation?.domContentLoadedEventEnd - navigation?.domContentLoadedEventStart,
-                loadComplete: navigation?.loadEventEnd - navigation?.loadEventStart,
-                ttfb: navigation?.responseStart - navigation?.requestStart
-            };
-        }
-        return {};
-    }
-
-    recordNavigationMetrics(entry) {
-        seoLogger.debug('Navigation metrics recorded', {
-            domContentLoaded: entry.domContentLoadedEventEnd - entry.domContentLoadedEventStart,
-            loadComplete: entry.loadEventEnd - entry.loadEventStart
-        });
-    }
-
-    async trackCoreWebVitals() {
-        try {
-            const vitals = {
-                timestamp: Date.now(),
-                lcp: null, // Largest Contentful Paint
-                fid: null, // First Input Delay
-                cls: null, // Cumulative Layout Shift
-                fcp: null, // First Contentful Paint
-                ttfb: null // Time to First Byte
-            };
-
-            // Use existing implementation from the original file
-            if (typeof window !== 'undefined' && 'PerformanceObserver' in window) {
-                try {
-                    vitals.LCP = await this._measureLCP();
-                    vitals.FID = await this._measureFID();
-                    vitals.CLS = await this._measureCLS();
-                } catch (error) {
-                    seoLogger.warning('Failed to measure real Core Web Vitals, using mock data');
-                }
-            }
-
-            this.monitoringData.coreWebVitals.push(vitals);
-
-            // データサイズ制限
-            if (this.monitoringData.coreWebVitals.length > 100) {
-                this.monitoringData.coreWebVitals = this.monitoringData.coreWebVitals.slice(-100);
-            }
-
-            return vitals;
-
-        } catch (error) {
-            seoLogger.error('Failed to track Core Web Vitals', error);
-            return null;
-        }
-    }
-
-    // Stub methods for dashboard data methods that may not be implemented yet
-    calculateTrends() { return {}; }
-    getSocialPlatformBreakdown() { return {}; }
-    getSocialEngagementTrend() { return []; }
-    getSystemStatus() { return 'operational'; }
-    getActiveRecommendations() { return []; }
-    getAlertsByType() { 
-        const types = {};
-        this.monitoringData.alerts.forEach(alert => {
-            types[alert.type] = (types[alert.type] || 0) + 1;
-        });
-        return types;
-    }
-    getAlertsBySeverity() { 
-        const severities = {};
-        this.monitoringData.alerts.forEach(alert => {
-            severities[alert.severity] = (severities[alert.severity] || 0) + 1;
-        });
-        return severities;
     }
 }
 

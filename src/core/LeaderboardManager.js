@@ -203,6 +203,56 @@ export class LeaderboardManager {
     }
 
     /**
+     * スコア追加 (テスト互換用エイリアス)
+     * @param {string} leaderboardId - リーダーボードID
+     * @param {Object} scoreData - スコアデータ
+     * @returns {Object} 結果オブジェクト
+     */
+    async addScore(leaderboardId, scoreData) {
+        try {
+            // デフォルト値を設定
+            const data = {
+                playerId: scoreData.playerId || 'unknown',
+                playerName: scoreData.playerName || 'Unknown Player',
+                score: scoreData.score || 0,
+                stageId: scoreData.stage || scoreData.stageId || 'normal',
+                gameData: scoreData.gameData || {}
+            };
+
+            // recordScoreメソッドを呼び出し
+            const result = await this.recordScore(
+                data.playerId,
+                data.playerName,
+                data.score,
+                data.stageId,
+                data.gameData
+            );
+
+            if (result.success) {
+                // テストで期待される形式に変換
+                const leaderboard = this.getLeaderboard(leaderboardId);
+                const playerEntry = leaderboard.find(entry => entry.playerId === data.playerId);
+                const rank = playerEntry ? leaderboard.indexOf(playerEntry) + 1 : -1;
+                const isNewRecord = rank === 1 || (leaderboard.length === 1);
+
+                return {
+                    success: true,
+                    rank: rank,
+                    isNewRecord: isNewRecord,
+                    score: data.score
+                };
+            } else {
+                return result;
+            }
+        } catch (error) {
+            getErrorHandler().handleError(error, 'ADD_SCORE_ERROR', {
+                leaderboardId, scoreData
+            });
+            return { success: false, error: error.message };
+        }
+    }
+
+    /**
      * リーダーボード更新
      */
     async updateLeaderboards(scoreEntry) {

@@ -6,8 +6,19 @@ export default {
   // Test environment
   testEnvironment: 'jsdom',
   
+  // Enable ES modules support
+  preset: null,
+  
   // Transform configuration - use default for ES modules
   transform: {},
+  
+  // Transform ignore patterns for ES modules
+  transformIgnorePatterns: [
+    "node_modules/(?!(.*\\.mjs$))"
+  ],
+  
+  // Module path mapping
+  moduleFileExtensions: ['js', 'json'],
   
   // Setup files
   setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],

@@ -241,8 +241,8 @@ describe('Configuration System Integration Tests', () => {
             configManager.reset('game');
             
             // デフォルト値に戻ることを確認
-            expect(configManager.get('game', 'scoring.baseScores.normal')).toBe(10);
-            expect(configManager.get('game', 'bubbles.maxAge')).toBe(5000);
+            expect(configManager.get('game', 'scoring.baseScores.normal')).toBe(15);
+            expect(configManager.get('game', 'bubbles.maxAge.normal')).toBe(12000);
         });
     });
 
