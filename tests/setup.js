@@ -2,12 +2,8 @@
  * Jest setup file for BubblePop game tests
  */
 
-// Jest globals are automatically available
-// No need to import separately in setup
-
-// Canvas mock (replacing jest-canvas-mock)
-HTMLCanvasElement.prototype.getContext = jest.fn();
-global.Path2D = jest.fn();
+// Use jest-canvas-mock for ES Modules compatibility
+import 'jest-canvas-mock';
 
 // Set up global environment variables
 global.__PROD__ = false;
@@ -58,45 +54,7 @@ global.console = {
   info: jest.fn()
 };
 
-// Mock Canvas API methods
-HTMLCanvasElement.prototype.getContext = jest.fn((contextType) => {
-  if (contextType === '2d') {
-    return {
-      fillRect: jest.fn(),
-      clearRect: jest.fn(),
-      getImageData: jest.fn(() => ({ data: new Array(4) })),
-      putImageData: jest.fn(),
-      createImageData: jest.fn(() => ({ data: new Array(4) })),
-      setTransform: jest.fn(),
-      drawImage: jest.fn(),
-      save: jest.fn(),
-      restore: jest.fn(),
-      beginPath: jest.fn(),
-      moveTo: jest.fn(),
-      lineTo: jest.fn(),
-      closePath: jest.fn(),
-      stroke: jest.fn(),
-      fill: jest.fn(),
-      arc: jest.fn(),
-      fillText: jest.fn(),
-      measureText: jest.fn(() => ({ width: 0 })),
-      translate: jest.fn(),
-      scale: jest.fn(),
-      rotate: jest.fn(),
-      createLinearGradient: jest.fn(() => ({
-        addColorStop: jest.fn()
-      })),
-      createRadialGradient: jest.fn(() => ({
-        addColorStop: jest.fn()
-      })),
-      canvas: {
-        width: 800,
-        height: 600
-      }
-    };
-  }
-  return null;
-});
+// Canvas mocking is handled by jest-canvas-mock
 
 // Mock touch events
 global.TouchEvent = class TouchEvent extends Event {
