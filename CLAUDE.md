@@ -234,6 +234,43 @@ jest-canvas-mockパッケージ利用による解決：
 - **効率性**: メモリ使用量20%削減、レンダリング性能15%向上、自動回復機能
 - **ユーザビリティ**: 2秒以内警告表示、1秒以内品質調整、モバイル性能デスクトップ10%以内
 
+### パフォーマンス・デバッグファイル分割プロジェクト Phase E.2（Issue #83対応）
+**目標**: パフォーマンス・デバッグ関連の大容量ファイル（10ファイル）をMain Controller Patternで分割し、MCPツール互換性（2,500語以下）を実現
+
+#### 問題の概要
+MCPツール（find_symbol）が25,000トークン制限を超過してエラーになる。パフォーマンス・デバッグ関連の大容量ファイル（2,500語超）が原因。対象：
+- PerformanceTestSuite.js（3,218語） - パフォーマンステストシステム
+- PerformanceWarningSystem.js（3,211語） - パフォーマンス警告システム
+- PerformanceMonitoringSystem.js（3,204語） - パフォーマンス監視システム
+- PerformanceIntegrationTesting.js（2,938語） - 統合テストシステム
+- BenchmarkSuite.js（3,373語） - ベンチマーク実行システム
+- TestResultVisualizer.js（3,334語） - テスト結果可視化システム
+- ErrorReporter.js（3,216語） - エラー報告システム
+- MobileTestSuite.js（3,215語） - モバイルテストシステム
+- MobileAccessibilityManager.js（2,618語） - モバイルアクセシビリティ管理
+- MobileSystemIntegrator.js（2,472語） - モバイルシステム統合
+
+#### 分割戦略（Main Controller Pattern）
+1. **Main Controller Pattern**: 元クラスは軽量コントローラーとしてサブコンポーネントを統制
+2. **機能分離**: 関連メソッドを専門クラスにグループ化（実行・収集・報告・分析など）
+3. **API保持**: 後方互換性のため公開インターフェース維持
+4. **依存注入**: サブコンポーネントをメインコントローラーに注入
+
+#### 実装フェーズ（15大タスク）
+- **Task 1**: プロジェクト準備・分析
+- **Task 2-10**: 各ファイルの分割実装（PerformanceTestSuite → MobileAccessibilityManager）
+- **Task 11**: 統合テスト・検証
+- **Task 12**: MCPツール互換性検証
+- **Task 13**: ドキュメント更新・クリーンアップ
+- **Task 14**: 最終検証・プロジェクト健全性チェック
+- **Task 15**: パフォーマンス効率性検証
+
+#### パフォーマンス目標
+- **ファイルサイズ**: 全ターゲットファイル2,500語以下
+- **MCPツール**: find_symbol等のトークン制限エラー解消
+- **サイズ削減**: メインコントローラー70%削減目標
+- **API互換性**: 既存公開インターフェース完全保持
+
 ### 視覚効果強化プロジェクト（Issue #24対応）
 **目標**: 既存のParticleManagerとEffectManagerを拡張し、より多様で魅力的な視覚効果を実現する包括的なシステムを実装
 
