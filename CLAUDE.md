@@ -442,6 +442,53 @@ MCPツール（find_symbol）が25,000トークン制限を超過してエラー
 - **Task 8**: ドキュメント・クリーンアップ（2サブタスク）
 - **Task 9**: 最終検証・プロジェクト健全性チェック（2サブタスク）
 
+### アクセシビリティファイル分割プロジェクト Phase E.3（Issue #84対応）
+**目標**: アクセシビリティ関連の大容量ファイル（6ファイル）をMain Controller Patternで分割し、MCPツール互換性（2,500語以下）を実現し、WCAG 2.1 AA準拠レベルを完全維持
+
+#### 問題の概要
+MCPツール（find_symbol）が25,000トークン制限を超過してエラーになる。アクセシビリティ関連の大容量ファイル（2,500語超）が原因。対象：
+- KeyboardNavigationTester.js（3,116語） - キーボードナビゲーションテストシステム
+- WCAGValidator.js（2,931語） - WCAG準拠検証システム
+- ScreenReaderSimulator.js（2,872語） - スクリーンリーダーシミュレーションシステム
+- AccessibilityOnboarding.js（2,775語） - アクセシビリティオンボーディングシステム
+- ColorContrastAnalyzer.js（2,719語） - 色彩コントラスト分析システム
+- AccessibilitySettingsUI.js（2,697語） - アクセシビリティ設定UIシステム
+
+#### 分割戦略（Main Controller Pattern + アクセシビリティ対応）
+1. **Main Controller Pattern**: 元クラスは軽量オーケストレーター（<2,500語）、公開API維持
+2. **アクセシビリティ保持**: WCAG 2.1 AA準拠レベルを分割後も完全維持
+3. **支援技術互換性**: スクリーンリーダー・キーボードナビゲーション対応保持
+4. **機能分離**: 関連メソッドをアクセシビリティ要件別に専門クラス化
+5. **依存注入**: サブコンポーネントをメインコントローラーに注入
+6. **エラー処理**: アクセシビリティ機能の優雅な劣化と代替手段提供
+
+#### 主要コンポーネント分割設計
+- **KeyboardNavigationTester**: EventHandler、StateManager、AccessibilityReporter（4コンポーネント）
+- **WCAGValidator**: RuleEngine、AccessibilityAuditor、ComplianceReporter（4コンポーネント）
+- **ScreenReaderSimulator**: ScreenReaderEngine、ARIAProcessor、TextToSpeechController（4コンポーネント）
+- **AccessibilityOnboarding**: FlowManager、Tutorial、ProgressTracker（4コンポーネント）
+- **ColorContrastAnalyzer**: ContrastCalculator、AnalysisEngine、ColorBlindnessSimulator（4コンポーネント）
+- **AccessibilitySettingsUI**: SettingsPanel、Validator、PreferencesManager（4コンポーネント）
+
+#### 実装フェーズ（9大タスク）
+- **Task 1**: プロジェクト準備・アクセシビリティ分析
+- **Task 2-7**: 各ファイルの分割実装（KeyboardNavigationTester → AccessibilitySettingsUI）
+- **Task 8**: 包括的アクセシビリティテスト・検証（WCAG 2.1 AA、スクリーンリーダー、キーボード）
+- **Task 9**: ドキュメント更新・デプロイメント準備
+
+#### アクセシビリティ保証要件
+- **WCAG 2.1 AA準拠**: 分割後も完全維持、自動テスト・手動検証実施
+- **支援技術互換性**: NVDA、JAWS、VoiceOver対応保持
+- **キーボードナビゲーション**: マウス依存なしでの完全操作性
+- **色彩アクセシビリティ**: コントラスト比AA/AAA基準準拠
+- **エラー処理**: アクセシビリティ機能失敗時の代替手段提供
+
+#### パフォーマンス目標
+- **ファイルサイズ**: 全ターゲットファイル2,500語以下
+- **MCPツール**: find_symbol等のトークン制限エラー解消
+- **アクセシビリティ**: 100ms以内の応答時間、メモリ最適化
+- **API互換性**: 既存公開インターフェース完全保持
+
 ### 古いファイルクリーンアップ（Issue #76対応）
 **目標**: プロジェクト内の不要な`_old`や`_original`ファイルを安全に削除し、プロジェクトの整理とメンテナンス性向上を実現
 
