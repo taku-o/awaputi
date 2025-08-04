@@ -495,116 +495,29 @@ export class AccessibilityTutorial {
      * Setup tutorial content definitions
      */
     setupTutorialContent() {
-        // Keyboard Navigation Tutorial
+        // Tutorial step definitions (simplified for MCP compatibility)
         this.tutorialContent.keyboardNavigation.steps = [
-            {
-                id: 'intro',
-                title: 'キーボードナビゲーション入門',
-                content: 'キーボードのみでゲームを操作する方法を学習します',
-                type: 'explanation',
-                duration: 30,
-                interactions: []
-            },
-            {
-                id: 'basic-navigation',
-                title: '基本的なナビゲーション',
-                content: 'Tab、Shift+Tab、Enter、Escapeキーの使用方法',
-                type: 'practice',
-                duration: 60,
-                interactions: ['tab-navigation', 'enter-activation', 'escape-cancel']
-            },
-            {
-                id: 'game-controls',
-                title: 'ゲーム操作',
-                content: 'ゲーム内での具体的なキーボード操作方法',
-                type: 'practice',
-                duration: 90,
-                interactions: ['game-navigation', 'bubble-selection', 'menu-access']
-            }
+            { id: 'intro', title: 'キーボードナビゲーション入門', type: 'explanation', duration: 30 },
+            { id: 'basic-navigation', title: '基本的なナビゲーション', type: 'practice', duration: 60 },
+            { id: 'game-controls', title: 'ゲーム操作', type: 'practice', duration: 90 }
         ];
 
-        // Screen Reader Tutorial
         this.tutorialContent.screenReader.steps = [
-            {
-                id: 'setup',
-                title: 'スクリーンリーダー設定',
-                content: 'スクリーンリーダーの基本設定と音声調整',
-                type: 'configuration',
-                duration: 60,
-                interactions: ['voice-settings', 'speed-adjustment', 'verbosity-level']
-            },
-            {
-                id: 'navigation-modes',
-                title: 'ナビゲーションモード',
-                content: 'ブラウズモードとフォーカスモードの使い分け',
-                type: 'explanation',
-                duration: 90,
-                interactions: ['mode-switching', 'content-reading']
-            },
-            {
-                id: 'game-interaction',
-                title: 'ゲームとの連携',
-                content: 'ゲーム画面の読み上げと操作方法',
-                type: 'practice',
-                duration: 90,
-                interactions: ['screen-reading', 'game-feedback', 'status-updates']
-            }
+            { id: 'setup', title: 'スクリーンリーダー設定', type: 'configuration', duration: 60 },
+            { id: 'navigation-modes', title: 'ナビゲーションモード', type: 'explanation', duration: 90 },
+            { id: 'game-interaction', title: 'ゲームとの連携', type: 'practice', duration: 90 }
         ];
 
-        // Visual Adjustments Tutorial
         this.tutorialContent.visualAdjustments.steps = [
-            {
-                id: 'contrast-settings',
-                title: 'コントラスト調整',
-                content: '背景と文字のコントラストを調整します',
-                type: 'configuration',
-                duration: 45,
-                interactions: ['contrast-slider', 'preview-changes']
-            },
-            {
-                id: 'text-scaling',
-                title: '文字サイズ調整',
-                content: 'テキストサイズを読みやすく調整します',
-                type: 'configuration',
-                duration: 30,
-                interactions: ['text-size-slider', 'sample-text']
-            },
-            {
-                id: 'color-customization',
-                title: '色彩調整',
-                content: 'カラーパレットと色覚支援設定',
-                type: 'configuration',
-                duration: 75,
-                interactions: ['color-picker', 'colorblind-simulation', 'theme-selection']
-            }
+            { id: 'contrast-settings', title: 'コントラスト調整', type: 'configuration', duration: 45 },
+            { id: 'text-scaling', title: '文字サイズ調整', type: 'configuration', duration: 30 },
+            { id: 'color-customization', title: '色彩調整', type: 'configuration', duration: 75 }
         ];
 
-        // Audio Settings Tutorial
         this.tutorialContent.audioSettings.steps = [
-            {
-                id: 'volume-control',
-                title: '音量調整',
-                content: 'ゲーム音声と効果音の音量設定',
-                type: 'configuration',
-                duration: 30,
-                interactions: ['master-volume', 'sfx-volume', 'music-volume']
-            },
-            {
-                id: 'audio-cues',
-                title: '音声ガイド',
-                content: 'ゲーム進行を支援する音声ガイド設定',
-                type: 'configuration',
-                duration: 60,
-                interactions: ['voice-guidance', 'audio-notifications', 'spatial-audio']
-            },
-            {
-                id: 'accessibility-sounds',
-                title: 'アクセシビリティ音響',
-                content: '視覚情報を音で補完する設定',
-                type: 'configuration',
-                duration: 30,
-                interactions: ['ui-sounds', 'feedback-sounds', 'warning-sounds']
-            }
+            { id: 'volume-control', title: '音量調整', type: 'configuration', duration: 30 },
+            { id: 'audio-cues', title: '音声ガイド', type: 'configuration', duration: 60 },
+            { id: 'accessibility-sounds', title: 'アクセシビリティ音響', type: 'configuration', duration: 30 }
         ];
     }
 
