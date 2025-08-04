@@ -1,74 +1,142 @@
-# 推奨コマンド
+# 推奨コマンド一覧
 
 ## 開発サーバー起動
 ```bash
-# ローカル開発サーバー（推奨）
+# ローカル開発サーバー起動（推奨）
 python -m http.server 8000
 # または
 npx serve .
-
-# Vite開発サーバー
+# または
 npm run dev
+
+# メインゲームアクセス
+# http://localhost:8000
+
+# テスト環境アクセス
+# http://localhost:8000/test.html
+
+# デバッグモード
+# http://localhost:8000?debug=true
+# キーボードショートカット: Ctrl+Shift+D
 ```
 
 ## テスト実行
 ```bash
+# ユニット・統合テスト
+npm test
+
+# テストをウォッチモードで実行
+npm run test:watch
+
+# カバレッジ付きテスト
+npm run test:coverage
+
+# E2Eテスト
+npm run test:e2e
+
+# パフォーマンステスト
+npm run test:performance
+
 # 全テストスイート
 npm run test:all
-
-# 個別テストタイプ
-npm test                    # Jestユニット・統合テスト
-npm run test:e2e            # Playwrightテスト  
-npm run test:performance    # パフォーマンステスト
-npm run test:quality        # 品質テスト
-
-# テスト関連
-npm run test:watch          # ウォッチモード
-npm run test:coverage       # カバレッジ付き
-npm run test:i18n-performance # 国際化パフォーマンステスト
 ```
 
 ## ビルド・デプロイ
 ```bash
-# ビルド
-npm run build               # 本番ビルド
-npm run build:dev           # 開発ビルド
-npm run build:staging       # ステージングビルド
-npm run build:gh-pages      # GitHub Pages用
+# 本番用ビルド
+npm run build
 
-# プレビュー
-npm run preview             # ビルド結果プレビュー
-npm run preview:dist        # 分散プレビュー
+# 開発用ビルド
+npm run build:dev
 
-# デプロイ
-npm run deploy:netlify      # Netlifyデプロイ
-npm run deploy:vercel       # Vercelデプロイ
-npm run deploy:gh-pages     # GitHub Pagesデプロイ
-npm run deploy:all          # 全環境デプロイ
+# ビルドプレビュー
+npm run preview
+
+# ビルドファイルクリーン
+npm run clean
+
+# デプロイ（各プラットフォーム）
+npm run deploy:netlify
+npm run deploy:vercel
+npm run deploy:gh-pages
 ```
 
-## 品質・最適化
+## 検証・チェック
 ```bash
 # 設定検証
-npm run validate:config     # 設定ファイル検証
-npm run validate:config:verbose # 詳細検証
+npm run validate:config
+npm run validate:config:verbose
 
-# 国際化
-npm run i18n:setup          # i18n環境構築
-npm run i18n:validate       # i18n検証
-npm run i18n:quality-report # 翻訳品質レポート
+# ファイルサイズチェック
+npm run filesize:check
+npm run filesize:watch
+npm run filesize:report
 
-# パフォーマンス
-npm run lighthouse          # Lighthouseテスト
-npm run size-check          # バンドルサイズチェック
-npm run optimize            # 最適化実行
+# i18n関連
+npm run i18n:validate
+npm run i18n:quality-report
+npm run validate:i18n-requirements
+
+# Lighthouse監査
+npm run lighthouse
+npm run lighthouse:ci
 ```
 
-## Darwin/macOS 固有コマンド
+## ドキュメント生成
 ```bash
-# ファイル・ディレクトリ操作
-ls -la                      # ファイル一覧（詳細）
-find . -name "*.js"         # JavaScript ファイル検索
-grep -r "pattern" src/      # テキスト検索
-open index.html             # デフォルトブラウザで開く
+# APIドキュメント生成
+npm run docs:generate
+npm run docs:generate:private  # プライベートメソッド含む
+npm run docs:clean
+
+# ドキュメント検証
+npm run docs:validate
+npm run docs:check-links
+npm run docs:quality
+
+# ドキュメントサーバー起動
+npm run docs:serve
+```
+
+## Git フック設定
+```bash
+# Gitフック設定
+npm run setup:hooks
+npm run setup:hooks:force
+```
+
+## 一般的なGitワークフロー
+```bash
+# 現在の状態確認
+git status
+
+# 差分確認
+git diff
+
+# ファイルをステージング
+git add [ファイル名]
+git add .  # 全ファイル
+
+# コミット
+git commit -m "コミットメッセージ"
+
+# リモートにプッシュ
+git push origin [ブランチ名]
+
+# ブランチ作成・切り替え
+git checkout -b [新しいブランチ名]
+git checkout [既存ブランチ名]
+
+# コミット履歴確認
+git log --oneline
+```
+
+## 便利なエイリアス
+```bash
+# package.jsonに定義済みのスクリプトを活用
+npm run [スクリプト名]
+
+# よく使うコマンドの組み合わせ
+npm test && npm run build  # テスト後ビルド
+npm run filesize:check && npm run validate:config  # サイズと設定チェック
 ```
