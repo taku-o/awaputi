@@ -12,6 +12,12 @@ export default {
   // Transform configuration - use default for ES modules
   transform: {},
   
+  
+  // Jest globals for ES modules
+  globals: {
+    'jest': true
+  },
+  
   // Transform ignore patterns for ES modules
   transformIgnorePatterns: [
     "node_modules/(?!(.*\\.mjs$))"
@@ -20,8 +26,11 @@ export default {
   // Module path mapping
   moduleFileExtensions: ['js', 'json'],
   
-  // Setup files
-  setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
+  // Setup files - add global Jest setup
+  setupFilesAfterEnv: [
+    '<rootDir>/tests/setup.js',
+    '<rootDir>/tests/jest-globals.js'
+  ],
   
   // Module name mapping for ES6 imports
   moduleNameMapper: {

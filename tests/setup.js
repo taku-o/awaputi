@@ -5,6 +5,9 @@
 // Use jest-canvas-mock for ES Modules compatibility
 import 'jest-canvas-mock';
 
+// Import standardized MockFactory for consistent mocking
+import { MockFactory } from './mocks/MockFactory.js';
+
 // Set up global environment variables
 global.__PROD__ = false;
 global.__ANALYTICS_ID__ = null;
@@ -20,30 +23,10 @@ global.cancelAnimationFrame = (id) => {
   clearTimeout(id);
 };
 
-// Mock performance API
-global.performance = {
-  now: () => Date.now(),
-  timing: {
-    navigationStart: Date.now() - 1000,
-    loadEventEnd: Date.now()
-  },
-  memory: {
-    usedJSHeapSize: 1024 * 1024 * 50, // 50MB
-    totalJSHeapSize: 1024 * 1024 * 100, // 100MB
-    jsHeapSizeLimit: 1024 * 1024 * 200 // 200MB
-  }
-};
-
-// Mock localStorage
-const localStorageMock = {
-  getItem: () => {},
-  setItem: () => {},
-  removeItem: () => {},
-  clear: () => {},
-  length: 0,
-  key: () => {}
-};
-global.localStorage = localStorageMock;
+// Use MockFactory for enhanced performance and storage mocking
+// (MockFactory.setupGlobalMocks() is called automatically on import)
+// Performance API is now environment-aware (CI vs local development)
+// localStorage mock is now fully functional with jest.fn() methods
 
 // Mock console methods for cleaner test output
 global.console = {
