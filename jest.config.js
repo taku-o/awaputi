@@ -1,5 +1,7 @@
 /**
- * Jest configuration for BubblePop game tests
+ * Jest configuration for BubblePop game tests (Default - All Tests)
+ * This configuration runs all tests except E2E tests
+ * For specific test types, use jest.unit.config.js or jest.performance.config.js
  */
 
 export default {
@@ -9,9 +11,9 @@ export default {
   // Enable ES modules support
   preset: null,
   
-  // Transform configuration - use default for ES modules
+  // Transform configuration for ES modules
+  extensionsToTreatAsEsm: ['.js'],
   transform: {},
-  
   
   // Jest globals for ES modules
   globals: {
@@ -28,59 +30,111 @@ export default {
   
   // Setup files - add global Jest setup
   setupFilesAfterEnv: [
-    '<rootDir>/tests/setup.js',
-    '<rootDir>/tests/jest-globals.js'
+    '<rootDir>/tests/jest-globals.js',
+    '<rootDir>/tests/setup.js'
   ],
   
-  // Module name mapping for ES6 imports
+  // Enhanced module name mapping
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1'
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '^@tests/(.*)$': '<rootDir>/tests/$1',
+    '^@utils/(.*)$': '<rootDir>/src/utils/$1',
+    '^@core/(.*)$': '<rootDir>/src/core/$1',
+    '^@scenes/(.*)$': '<rootDir>/src/scenes/$1',
+    '^@effects/(.*)$': '<rootDir>/src/effects/$1',
+    '^@audio/(.*)$': '<rootDir>/src/audio/$1',
+    '^@ui/(.*)$': '<rootDir>/src/ui/$1'
   },
   
-  // Test match patterns
+  // Test match patterns - all tests except E2E
   testMatch: [
-    '<rootDir>/tests/**/*.test.js'
+    '<rootDir>/tests/**/*.test.js',
+    '<rootDir>/tests/**/*.spec.js'
+  ],
+  
+  // Exclude E2E and Playwright tests
+  testPathIgnorePatterns: [
+    '<rootDir>/node_modules/',
+    '<rootDir>/dist/',
+    '<rootDir>/coverage/',
+    '<rootDir>/tests/e2e/',
+    '<rootDir>/playwright-tests/',
+    '/tests/**/*e2e*.test.js'
   ],
   
   // Coverage configuration
+  collectCoverage: false, // Disable by default for performance
   collectCoverageFrom: [
     'src/**/*.js',
     '!src/main.js',
-    '!src/**/*.test.js'
+    '!src/**/*.test.js',
+    '!src/**/*.spec.js',
+    '!src/test/**',
+    '!src/examples/**',
+    '!src/deprecated/**'
   ],
   
-  // Coverage thresholds (lowered for initial run)
+  // Coverage thresholds
   coverageThreshold: {
     global: {
-      branches: 50,
-      functions: 50,
-      lines: 50,
-      statements: 50
+      branches: 60,
+      functions: 65,
+      lines: 70,
+      statements: 70
     }
   },
   
   // Coverage reporters
   coverageReporters: [
     'text',
-    'text-summary'
+    'text-summary',
+    'lcov',
+    'html'
   ],
+  coverageDirectory: '<rootDir>/coverage',
   
-  // Test timeout
-  testTimeout: 10000,
+  // Test timeout - balanced for unit and performance tests
+  testTimeout: 15000,
   
-  // Clear mocks between tests
+  // Mock handling
   clearMocks: true,
+  restoreMocks: true,
+  resetMocks: false,
   
-  // Ignore patterns
-  testPathIgnorePatterns: [
-    '<rootDir>/node_modules/',
-    '<rootDir>/dist/',
-    '<rootDir>/coverage/'
-  ],
+  // Execution configuration
+  maxWorkers: '50%', // Use 50% of available cores
+  runInBand: false, // Allow parallel execution
   
   // Force exit after tests complete
-  forceExit: true,
+  forceExit: false,
+  detectOpenHandles: true,
   
-  // Disable open handles detection for faster execution
-  detectOpenHandles: false
+  // Verbose output
+  verbose: false,
+  
+  // Error handling
+  errorOnDeprecated: false,
+  
+  // Cache configuration
+  cache: true,
+  cacheDirectory: '<rootDir>/.jest-cache',
+  
+  // Reporters
+  reporters: [
+    'default',
+    [
+      'jest-junit',
+      {
+        outputDirectory: '<rootDir>/test-results',
+        outputName: 'test-results.xml',
+        suiteName: 'All Tests (Unit + Performance)'
+      }
+    ]
+  ],
+  
+  // Display name
+  displayName: {
+    name: 'All Tests',
+    color: 'cyan'
+  }
 };
