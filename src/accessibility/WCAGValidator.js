@@ -1,10 +1,12 @@
 /**
- * WCAGValidator - WCAG 2.1 AA準拠自動テストスイート
- * リアルタイムアクセシビリティ問題検出・報告・スコア計算システム
- * 包括的なWCAGガイドライン検証とトレンド分析機能
+ * WCAGValidator - Main Controller for WCAG 2.1 AA compliance
+ * Orchestrates rule engine, auditor, and reporter components
  */
 
 import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { WCAGRuleEngine } from './wcag-validation/WCAGRuleEngine.js';
+import { AccessibilityAuditor } from './wcag-validation/AccessibilityAuditor.js';
+import { ComplianceReporter } from './wcag-validation/ComplianceReporter.js';
 
 export class WCAGValidator {
     constructor(accessibilityManager) {
@@ -22,98 +24,15 @@ export class WCAGValidator {
             trendAnalysis: true
         };
         
-        // WCAG 2.1ガイドライン定義
-        this.guidelines = {
-            // 1. Perceivable（知覚可能）
-            perceivable: {
-                '1.1': { // 非テキストコンテンツ
-                    name: 'Non-text Content',
-                    level: 'A',
-                    tests: ['altText', 'imageLabels', 'decorativeImages']
-                },
-                '1.2': { // 時間依存メディア
-                    name: 'Time-based Media',
-                    level: 'A',
-                    tests: ['captions', 'audioDescriptions', 'transcripts']
-                },
-                '1.3': { // 適応可能
-                    name: 'Adaptable',
-                    level: 'A',
-                    tests: ['headingStructure', 'meaningfulSequence', 'sensoryCues']
-                },
-                '1.4': { // 識別可能
-                    name: 'Distinguishable',
-                    level: 'AA',
-                    tests: ['colorContrast', 'audioControl', 'textResize', 'textImages']
-                }
-            },
-            
-            // 2. Operable（操作可能）
-            operable: {
-                '2.1': { // キーボードアクセシブル
-                    name: 'Keyboard Accessible',
-                    level: 'A',
-                    tests: ['keyboardNavigation', 'noKeyboardTrap', 'characterKeyShortcuts']
-                },
-                '2.2': { // 十分な時間
-                    name: 'Enough Time',
-                    level: 'A',
-                    tests: ['timingAdjustable', 'pauseStopHide', 'interruptions']
-                },
-                '2.3': { // 発作とその他の身体反応
-                    name: 'Seizures and Physical Reactions',
-                    level: 'A',
-                    tests: ['flashingThreshold', 'motionAnimation']
-                },
-                '2.4': { // ナビゲーション可能
-                    name: 'Navigable',
-                    level: 'AA',
-                    tests: ['bypassBlocks', 'pageTitle', 'focusOrder', 'linkPurpose']
-                },
-                '2.5': { // 入力モダリティ
-                    name: 'Input Modalities',
-                    level: 'A',
-                    tests: ['pointerGestures', 'pointerCancellation', 'labelInName', 'motionActuation']
-                }
-            },
-            
-            // 3. Understandable（理解可能）
-            understandable: {
-                '3.1': { // 読みやすい
-                    name: 'Readable',
-                    level: 'A',
-                    tests: ['languageOfPage', 'languageOfParts', 'unusualWords']
-                },
-                '3.2': { // 予測可能
-                    name: 'Predictable',
-                    level: 'A',
-                    tests: ['onFocus', 'onInput', 'consistentNavigation', 'consistentIdentification']
-                },
-                '3.3': { // 入力支援
-                    name: 'Input Assistance',
-                    level: 'AA',
-                    tests: ['errorIdentification', 'labelsInstructions', 'errorSuggestion', 'errorPrevention']
-                }
-            },
-            
-            // 4. Robust（堅牢）
-            robust: {
-                '4.1': { // 互換性
-                    name: 'Compatible',
-                    level: 'A',
-                    tests: ['parsing', 'nameRoleValue', 'statusMessages']
-                }
-            }
-        };
-        
-        // テスト結果とスコア
+        // 検証結果の保持
         this.results = {
             lastValidation: null,
             overallScore: 0,
             categoryScores: {},
-            failedTests: [],
-            passedTests: [],
+            issues: [],
             warnings: [],
+            passedTests: [],
+            failedTests: [],
             history: [],
             trends: {
                 weekly: [],
@@ -123,723 +42,250 @@ export class WCAGValidator {
             }
         };
         
-        // リアルタイム監視
-        this.monitoring = {
-            enabled: false,
-            interval: null,
-            observers: new Map(),
-            mutationObserver: null,
-            performanceObserver: null
-        };
-        
         // 統計情報
         this.stats = {
             totalValidations: 0,
-            totalIssuesFound: 0,
-            totalIssuesFixed: 0,
             averageScore: 0,
-            validationTime: [],
-            sessionStart: Date.now()
+            mostCommonIssues: new Map(),
+            fixedIssues: new Map()
         };
         
-        console.log('WCAGValidator initialized');
-        this.initialize();
+        // Initialize sub-components
+        this.ruleEngine = new WCAGRuleEngine({
+            enabled: this.config.enabled,
+            level: this.config.level,
+            autoFixEnabled: this.config.autoFix
+        });
+        
+        this.auditor = new AccessibilityAuditor({
+            enabled: this.config.enabled,
+            autoAudit: this.config.realTimeValidation
+        });
+        
+        this.reporter = new ComplianceReporter({
+            enabled: this.config.reportGeneration,
+            trackTrends: this.config.trendAnalysis
+        });
+        
+        // 自動検証タイマー
+        this.validationTimer = null;
+        this.validationInterval = 60000; // 1分ごと
+        
+        this.initialized = false;
     }
     
     /**
      * 初期化
      */
     initialize() {
-        try {
-            this.loadValidationHistory();
+        if (this.initialized) return;
+        
+        // Initialize sub-components
+        this.auditor.initialize(this.ruleEngine);
+        
+        // 保存された履歴を読み込み
+        this.loadValidationHistory();
+        
+        // イベントのバインド
+        this.bindEvents();
+        
+        // リアルタイム監視の設定
+        if (this.config.realTimeValidation) {
             this.setupRealTimeMonitoring();
-            this.bindEvents();
-            
-            // 初回検証の実行
-            if (this.config.enabled) {
-                setTimeout(() => this.runFullValidation(), 1000);
-            }
-            
-            console.log('WCAGValidator initialized successfully');
-        } catch (error) {
-            getErrorHandler().handleError(error, 'WCAG_VALIDATOR_ERROR', {
-                operation: 'initialize'
-            });
         }
+        
+        this.initialized = true;
+        console.log('WCAGValidator initialized');
     }
     
     /**
-     * 包括的WCAG検証の実行
+     * 完全なWCAG検証を実行
      */
     async runFullValidation() {
-        const startTime = performance.now();
-        console.log('Starting full WCAG validation...');
+        console.log('Running full WCAG validation...');
+        this.results.lastValidation = Date.now();
+        this.stats.totalValidations++;
         
         try {
-            this.results.lastValidation = new Date().toISOString();
-            this.results.failedTests = [];
-            this.results.passedTests = [];
-            this.results.warnings = [];
+            // Run full audit
+            const auditResults = await this.auditor.runFullAudit({
+                level: this.config.level
+            });
             
-            // 各カテゴリの検証実行
-            const categoryResults = {};
-            
-            for (const [category, guidelines] of Object.entries(this.guidelines)) {
-                console.log(`Validating ${category} guidelines...`);
-                categoryResults[category] = await this.validateCategory(category, guidelines);
+            if (!auditResults) {
+                console.error('WCAGValidator: Audit failed');
+                return null;
             }
             
-            // 総合スコアの計算
-            this.calculateOverallScore(categoryResults);
+            // Process results
+            this.processAuditResults(auditResults);
             
-            // 結果の保存と履歴更新
-            this.saveValidationResults();
+            // Generate report
+            const report = this.reporter.generateReport(auditResults, {
+                type: 'detailed',
+                format: 'json'
+            });
+            
+            // Update trends
             this.updateTrends();
             
-            // レポート生成
-            if (this.config.reportGeneration) {
-                await this.generateValidationReport();
-            }
+            // Save results
+            this.saveValidationResults();
             
-            const endTime = performance.now();
-            const validationTime = endTime - startTime;
-            this.stats.validationTime.push(validationTime);
-            this.stats.totalValidations++;
+            // Notify completion
+            this.notifyValidationComplete(report);
             
-            console.log(`WCAG validation completed in ${validationTime.toFixed(2)}ms`);
-            console.log(`Overall accessibility score: ${this.results.overallScore}%`);
-            
-            // イベント発火
-            this.accessibilityManager?.eventSystem?.emit('wcagValidationCompleted', {
-                score: this.results.overallScore,
-                results: this.results,
-                validationTime
-            });
-            
-            return this.results;
-            
+            return report;
         } catch (error) {
-            getErrorHandler().handleError(error, 'WCAG_VALIDATION_ERROR', {
-                operation: 'runFullValidation'
-            });
+            console.error('WCAGValidator: Full validation error:', error);
+            getErrorHandler().logError('WCAG validation failed', { error });
             return null;
         }
     }
     
     /**
-     * カテゴリ別検証
+     * Process audit results
      */
-    async validateCategory(category, guidelines) {
-        const categoryResults = {
-            score: 0,
-            passed: 0,
-            failed: 0,
-            warnings: 0,
-            tests: {}
-        };
+    processAuditResults(auditResults) {
+        // Clear previous results
+        this.results.issues = [];
+        this.results.warnings = [];
+        this.results.passedTests = [];
+        this.results.failedTests = [];
         
-        for (const [guidelineId, guideline] of Object.entries(guidelines)) {
-            // レベルチェック（AA以下のみ実行）
-            if (!this.shouldRunGuideline(guideline.level)) {
-                continue;
+        // Process each category
+        for (const [categoryId, category] of Object.entries(auditResults.categories)) {
+            this.results.categoryScores[categoryId] = category.score;
+            
+            // Collect issues and warnings
+            this.results.issues.push(...category.issues);
+            this.results.warnings.push(...category.warnings);
+            
+            // Track test results
+            for (const guideline of Object.values(category.guidelines)) {
+                for (const [testName, test] of Object.entries(guideline.tests)) {
+                    if (test.passed) {
+                        this.results.passedTests.push(testName);
+                    } else {
+                        this.results.failedTests.push(testName);
+                    }
+                }
             }
-            
-            const guidelineResults = await this.validateGuideline(category, guidelineId, guideline);
-            categoryResults.tests[guidelineId] = guidelineResults;
-            
-            // 結果の集計
-            categoryResults.passed += guidelineResults.passed;
-            categoryResults.failed += guidelineResults.failed;
-            categoryResults.warnings += guidelineResults.warnings;
         }
         
-        // カテゴリスコアの計算
-        const totalTests = categoryResults.passed + categoryResults.failed;
-        categoryResults.score = totalTests > 0 ? (categoryResults.passed / totalTests) * 100 : 100;
+        // Calculate overall score
+        this.results.overallScore = auditResults.summary.overallScore;
         
-        this.results.categoryScores[category] = categoryResults.score;
-        
-        return categoryResults;
+        // Update statistics
+        this.updateStatistics(auditResults);
     }
     
     /**
-     * ガイドライン検証
+     * Update statistics
      */
-    async validateGuideline(category, guidelineId, guideline) {
-        const results = {
-            passed: 0,
-            failed: 0,
-            warnings: 0,
-            issues: [],
-            elements: []
-        };
+    updateStatistics(auditResults) {
+        // Update average score
+        const allScores = this.results.history
+            .map(h => h.overallScore)
+            .concat(this.results.overallScore);
+        this.stats.averageScore = allScores.reduce((a, b) => a + b, 0) / allScores.length;
         
-        for (const testName of guideline.tests) {
-            try {
-                const testResult = await this.runTest(testName, guideline.level);
-                
-                if (testResult.passed) {
-                    results.passed++;
-                    this.results.passedTests.push({
-                        category,
-                        guideline: guidelineId,
-                        test: testName,
-                        level: guideline.level,
-                        timestamp: Date.now()
-                    });
-                } else {
-                    results.failed++;
-                    results.issues.push(...testResult.issues);
-                    this.results.failedTests.push({
-                        category,
-                        guideline: guidelineId,
-                        test: testName,
-                        level: guideline.level,
-                        issues: testResult.issues,
-                        timestamp: Date.now()
-                    });
-                    this.stats.totalIssuesFound += testResult.issues.length;
-                }
-                
-                if (testResult.warnings) {
-                    results.warnings += testResult.warnings.length;
-                    this.results.warnings.push(...testResult.warnings.map(warning => ({
-                        category,
-                        guideline: guidelineId,
-                        test: testName,
-                        warning,
-                        level: guideline.level,
-                        timestamp: Date.now()
-                    })));
-                }
-                
-            } catch (error) {
-                console.warn(`Test ${testName} failed with error:`, error);
-                results.failed++;
-            }
+        // Track most common issues
+        for (const issue of this.results.issues) {
+            const guideline = issue.guideline || 'unknown';
+            this.stats.mostCommonIssues.set(
+                guideline,
+                (this.stats.mostCommonIssues.get(guideline) || 0) + 1
+            );
         }
-        
-        return results;
+    }
+    
+    /**
+     * カテゴリーの検証
+     */
+    async validateCategory(categoryId) {
+        return await this.auditor.auditCategory(categoryId);
+    }
+    
+    /**
+     * ガイドラインの検証
+     */
+    async validateGuideline(categoryId, guidelineId, guideline) {
+        return await this.auditor.auditGuideline(guidelineId, guideline);
     }
     
     /**
      * 個別テストの実行
      */
     async runTest(testName, level) {
-        const testMethods = {
-            // 1.1 非テキストコンテンツ
-            altText: () => this.testAltText(),
-            imageLabels: () => this.testImageLabels(),
-            decorativeImages: () => this.testDecorativeImages(),
-            
-            // 1.3 適応可能
-            headingStructure: () => this.testHeadingStructure(),
-            meaningfulSequence: () => this.testMeaningfulSequence(),
-            sensoryCues: () => this.testSensoryCues(),
-            
-            // 1.4 識別可能
-            colorContrast: () => this.testColorContrast(),
-            audioControl: () => this.testAudioControl(),
-            textResize: () => this.testTextResize(),
-            
-            // 2.1 キーボードアクセシブル
-            keyboardNavigation: () => this.testKeyboardNavigation(),
-            noKeyboardTrap: () => this.testNoKeyboardTrap(),
-            
-            // 2.4 ナビゲーション可能
-            bypassBlocks: () => this.testBypassBlocks(),
-            pageTitle: () => this.testPageTitle(),
-            focusOrder: () => this.testFocusOrder(),
-            linkPurpose: () => this.testLinkPurpose(),
-            
-            // 3.1 読みやすい
-            languageOfPage: () => this.testLanguageOfPage(),
-            
-            // 3.2 予測可能
-            onFocus: () => this.testOnFocus(),
-            onInput: () => this.testOnInput(),
-            consistentNavigation: () => this.testConsistentNavigation(),
-            
-            // 3.3 入力支援
-            errorIdentification: () => this.testErrorIdentification(),
-            labelsInstructions: () => this.testLabelsInstructions(),
-            
-            // 4.1 互換性
-            parsing: () => this.testParsing(),
-            nameRoleValue: () => this.testNameRoleValue(),
-            statusMessages: () => this.testStatusMessages()
+        return await this.ruleEngine.runTest(testName, { level });
+    }
+    
+    /**
+     * Quick validation
+     */
+    async runQuickValidation() {
+        return await this.auditor.runQuickAudit();
+    }
+    
+    /**
+     * Generate validation report
+     */
+    generateValidationReport(type = 'summary', format = 'json') {
+        const auditResults = {
+            categories: this.results.categoryScores,
+            summary: {
+                overallScore: this.results.overallScore,
+                totalIssues: this.results.issues.length,
+                criticalIssues: this.results.issues.filter(i => i.severity === 'critical').length,
+                highIssues: this.results.issues.filter(i => i.severity === 'high').length,
+                mediumIssues: this.results.issues.filter(i => i.severity === 'medium').length,
+                lowIssues: this.results.issues.filter(i => i.severity === 'low').length
+            }
         };
         
-        const testMethod = testMethods[testName];
-        if (!testMethod) {
-            console.warn(`Unknown test: ${testName}`);
-            return { passed: false, issues: [`Test ${testName} not implemented`] };
-        }
-        
-        return await testMethod();
-    }
-    
-    /**
-     * 1.1.1 非テキストコンテンツ - Alt属性テスト
-     */
-    testAltText() {
-        const issues = [];
-        const warnings = [];
-        
-        // すべての画像要素をチェック
-        const images = document.querySelectorAll('img');
-        
-        images.forEach((img, index) => {
-            const alt = img.getAttribute('alt');
-            const src = img.getAttribute('src');
-            
-            // Alt属性の存在チェック
-            if (alt === null) {
-                issues.push({
-                    element: img,
-                    issue: 'Image missing alt attribute',
-                    severity: 'error',
-                    guideline: '1.1.1',
-                    suggestion: 'Add meaningful alt text or empty alt="" for decorative images'
-                });
-            }
-            // 意味のないalt属性のチェック
-            else if (alt && (alt.toLowerCase().includes('image') || alt.toLowerCase().includes('picture'))) {
-                warnings.push({
-                    element: img,
-                    issue: 'Alt text may not be descriptive enough',
-                    severity: 'warning',
-                    guideline: '1.1.1',
-                    suggestion: 'Use more descriptive alt text that conveys the image content'
-                });
-            }
-            // 長すぎるalt属性のチェック
-            else if (alt && alt.length > 125) {
-                warnings.push({
-                    element: img,
-                    issue: 'Alt text is very long',
-                    severity: 'warning', 
-                    guideline: '1.1.1',
-                    suggestion: 'Consider using shorter alt text or longdesc attribute'
-                });
-            }
-        });
-        
-        // Canvas要素のチェック
-        const canvases = document.querySelectorAll('canvas');
-        canvases.forEach(canvas => {
-            const hasLabel = canvas.getAttribute('aria-label') || 
-                           canvas.getAttribute('aria-labelledby') ||
-                           canvas.textContent.trim();
-            
-            if (!hasLabel) {
-                issues.push({
-                    element: canvas,
-                    issue: 'Canvas element missing accessible name',
-                    severity: 'error',
-                    guideline: '1.1.1',
-                    suggestion: 'Add aria-label or provide alternative content'
-                });
-            }
-        });
-        
-        return {
-            passed: issues.length === 0,
-            issues,
-            warnings
-        };
-    }
-    
-    /**
-     * 1.4.3 色のコントラスト（最小）テスト
-     */
-    testColorContrast() {
-        const issues = [];
-        const warnings = [];
-        
-        // テキスト要素の色コントラストをチェック
-        const textElements = document.querySelectorAll('*');
-        
-        textElements.forEach(element => {
-            const styles = window.getComputedStyle(element);
-            const textContent = element.textContent?.trim();
-            
-            if (!textContent || textContent.length === 0) return;
-            
-            const color = styles.color;
-            const backgroundColor = styles.backgroundColor;
-            const fontSize = parseFloat(styles.fontSize);
-            const fontWeight = styles.fontWeight;
-            
-            if (color && backgroundColor) {
-                const contrast = this.calculateContrastRatio(color, backgroundColor);
-                const isLargeText = fontSize >= 18 || (fontSize >= 14 && (fontWeight === 'bold' || parseInt(fontWeight) >= 700));
-                
-                const requiredContrast = isLargeText ? 3.0 : 4.5; // AA レベル
-                
-                if (contrast < requiredContrast) {
-                    issues.push({
-                        element,
-                        issue: `Insufficient color contrast: ${contrast.toFixed(2)}:1 (required: ${requiredContrast}:1)`,
-                        severity: 'error',
-                        guideline: '1.4.3',
-                        suggestion: `Increase contrast between text and background colors`,
-                        details: {
-                            currentContrast: contrast,
-                            requiredContrast,
-                            textColor: color,
-                            backgroundColor,
-                            isLargeText
-                        }
-                    });
-                } else if (contrast < requiredContrast * 1.2) {
-                    warnings.push({
-                        element,
-                        issue: `Color contrast is close to minimum threshold: ${contrast.toFixed(2)}:1`,
-                        severity: 'warning',
-                        guideline: '1.4.3',
-                        suggestion: 'Consider increasing contrast for better accessibility'
-                    });
-                }
-            }
-        });
-        
-        return {
-            passed: issues.length === 0,
-            issues,
-            warnings
-        };
-    }
-    
-    /**
-     * 2.1.1 キーボードナビゲーションテスト
-     */
-    testKeyboardNavigation() {
-        const issues = [];
-        const warnings = [];
-        
-        // フォーカス可能な要素をチェック
-        const focusableElements = document.querySelectorAll(
-            'a[href], button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])'
-        );
-        
-        focusableElements.forEach(element => {
-            // tabindex値のチェック
-            const tabIndex = element.getAttribute('tabindex');
-            if (tabIndex && parseInt(tabIndex) > 0) {
-                warnings.push({
-                    element,
-                    issue: 'Positive tabindex found',
-                    severity: 'warning',
-                    guideline: '2.1.1',
-                    suggestion: 'Use tabindex="0" or rely on natural tab order'
-                });
-            }
-            
-            // クリックハンドラーがあるがキーボードイベントがない要素
-            const hasClickHandler = element.onclick || 
-                                  element.addEventListener.toString().includes('click');
-            const hasKeyHandler = element.onkeydown || element.onkeyup ||
-                                element.addEventListener.toString().includes('key');
-            
-            if (hasClickHandler && !hasKeyHandler && !['button', 'a', 'input'].includes(element.tagName.toLowerCase())) {
-                issues.push({
-                    element,
-                    issue: 'Interactive element missing keyboard event handler',
-                    severity: 'error',
-                    guideline: '2.1.1',
-                    suggestion: 'Add keyboard event handlers (keydown/keyup) for interactive elements'
-                });
-            }
-        });
-        
-        // カスタムコントロールのキーボードサポートチェック
-        const customControls = document.querySelectorAll('[role="button"], [role="tab"], [role="menuitem"]');
-        customControls.forEach(control => {
-            if (!control.hasAttribute('tabindex')) {
-                issues.push({
-                    element: control,
-                    issue: 'Custom control missing tabindex',
-                    severity: 'error',
-                    guideline: '2.1.1',
-                    suggestion: 'Add appropriate tabindex for keyboard navigation'
-                });
-            }
-        });
-        
-        return {
-            passed: issues.length === 0,
-            issues,
-            warnings
-        };
-    }
-    
-    /**
-     * 4.1.2 名前、役割、値テスト
-     */
-    testNameRoleValue() {
-        const issues = [];
-        const warnings = [];
-        
-        // フォーム要素のラベルチェック
-        const formControls = document.querySelectorAll('input, textarea, select');
-        formControls.forEach(control => {
-            const id = control.getAttribute('id');
-            const ariaLabel = control.getAttribute('aria-label');
-            const ariaLabelledBy = control.getAttribute('aria-labelledby');
-            const label = id ? document.querySelector(`label[for="${id}"]`) : null;
-            
-            if (!ariaLabel && !ariaLabelledBy && !label) {
-                issues.push({
-                    element: control,
-                    issue: 'Form control missing accessible name',
-                    severity: 'error',
-                    guideline: '4.1.2',
-                    suggestion: 'Add label, aria-label, or aria-labelledby'
-                });
-            }
-        });
-        
-        // ARIA要素の検証
-        const ariaElements = document.querySelectorAll('[role]');
-        ariaElements.forEach(element => {
-            const role = element.getAttribute('role');
-            const ariaRequired = this.getRequiredAriaProperties(role);
-            
-            ariaRequired.forEach(prop => {
-                if (!element.hasAttribute(prop)) {
-                    issues.push({
-                        element,
-                        issue: `Missing required ARIA property: ${prop}`,
-                        severity: 'error',
-                        guideline: '4.1.2',
-                        suggestion: `Add ${prop} attribute for ${role} role`
-                    });
-                }
-            });
-        });
-        
-        return {
-            passed: issues.length === 0,
-            issues,
-            warnings
-        };
-    }
-    
-    /**
-     * 色のコントラスト比を計算
-     */
-    calculateContrastRatio(color1, color2) {
-        const rgb1 = this.parseColor(color1);
-        const rgb2 = this.parseColor(color2);
-        
-        if (!rgb1 || !rgb2) return 21; // エラー時は最高値を返す
-        
-        const l1 = this.getRelativeLuminance(rgb1);
-        const l2 = this.getRelativeLuminance(rgb2);
-        
-        const lighter = Math.max(l1, l2);
-        const darker = Math.min(l1, l2);
-        
-        return (lighter + 0.05) / (darker + 0.05);
-    }
-    
-    /**
-     * 色文字列をRGB値に変換
-     */
-    parseColor(colorStr) {
-        if (!colorStr || colorStr === 'transparent') return null;
-        
-        // rgb(), rgba()形式
-        const rgbMatch = colorStr.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
-        if (rgbMatch) {
-            return {
-                r: parseInt(rgbMatch[1]),
-                g: parseInt(rgbMatch[2]),
-                b: parseInt(rgbMatch[3])
-            };
-        }
-        
-        // 16進数形式
-        const hexMatch = colorStr.match(/^#([0-9a-f]{6}|[0-9a-f]{3})$/i);
-        if (hexMatch) {
-            const hex = hexMatch[1];
-            if (hex.length === 3) {
-                return {
-                    r: parseInt(hex[0] + hex[0], 16),
-                    g: parseInt(hex[1] + hex[1], 16),
-                    b: parseInt(hex[2] + hex[2], 16)
-                };
-            } else {
-                return {
-                    r: parseInt(hex.substr(0, 2), 16),
-                    g: parseInt(hex.substr(2, 2), 16),
-                    b: parseInt(hex.substr(4, 2), 16)
-                };
-            }
-        }
-        
-        return null;
-    }
-    
-    /**
-     * 相対輝度を計算
-     */
-    getRelativeLuminance(rgb) {
-        const { r, g, b } = rgb;
-        
-        const rsRGB = r / 255;
-        const gsRGB = g / 255;
-        const bsRGB = b / 255;
-        
-        const rLinear = rsRGB <= 0.03928 ? rsRGB / 12.92 : Math.pow((rsRGB + 0.055) / 1.055, 2.4);
-        const gLinear = gsRGB <= 0.03928 ? gsRGB / 12.92 : Math.pow((gsRGB + 0.055) / 1.055, 2.4);
-        const bLinear = bsRGB <= 0.03928 ? bsRGB / 12.92 : Math.pow((bsRGB + 0.055) / 1.055, 2.4);
-        
-        return 0.2126 * rLinear + 0.7152 * gLinear + 0.0722 * bLinear;
-    }
-    
-    /**
-     * ARIA roleに必要なプロパティを取得
-     */
-    getRequiredAriaProperties(role) {
-        const requiredProps = {
-            'button': [],
-            'checkbox': ['aria-checked'],
-            'radio': ['aria-checked'],
-            'slider': ['aria-valuenow', 'aria-valuemin', 'aria-valuemax'],
-            'spinbutton': ['aria-valuenow'],
-            'tab': ['aria-selected'],
-            'tabpanel': ['aria-labelledby'],
-            'progressbar': ['aria-valuenow'],
-            'alert': [],
-            'dialog': ['aria-labelledby'],
-            'menuitem': [],
-            'option': ['aria-selected']
-        };
-        
-        return requiredProps[role] || [];
-    }
-    
-    /**
-     * ガイドラインレベルの実行判定
-     */
-    shouldRunGuideline(level) {
-        const levels = { 'A': 1, 'AA': 2, 'AAA': 3 };
-        const configLevel = levels[this.config.level];
-        const guidelineLevel = levels[level];
-        
-        return guidelineLevel <= configLevel;
-    }
-    
-    /**
-     * 総合スコアの計算
-     */
-    calculateOverallScore(categoryResults) {
-        const categories = Object.keys(categoryResults);
-        if (categories.length === 0) {
-            this.results.overallScore = 0;
-            return;
-        }
-        
-        const totalScore = categories.reduce((sum, category) => {
-            return sum + categoryResults[category].score;
-        }, 0);
-        
-        this.results.overallScore = Math.round(totalScore / categories.length);
+        return this.reporter.generateReport(auditResults, { type, format });
     }
     
     /**
      * リアルタイム監視の設定
      */
     setupRealTimeMonitoring() {
-        if (!this.config.realTimeValidation) return;
-        
         // DOM変更の監視
-        this.monitoring.mutationObserver = new MutationObserver((mutations) => {
-            let shouldRevalidate = false;
-            
-            mutations.forEach(mutation => {
-                if (mutation.type === 'childList' || 
-                    (mutation.type === 'attributes' && 
-                     ['aria-label', 'aria-labelledby', 'alt', 'role', 'tabindex'].includes(mutation.attributeName))) {
-                    shouldRevalidate = true;
-                }
+        if (typeof MutationObserver !== 'undefined') {
+            this.observer = new MutationObserver((mutations) => {
+                this.scheduleRevalidation();
             });
             
-            if (shouldRevalidate) {
-                this.scheduleRevalidation();
-            }
-        });
+            this.observer.observe(document.body, {
+                childList: true,
+                subtree: true,
+                attributes: true,
+                attributeFilter: ['alt', 'aria-label', 'aria-labelledby', 'role']
+            });
+        }
         
-        this.monitoring.mutationObserver.observe(document.body, {
-            childList: true,
-            subtree: true,
-            attributes: true,
-            attributeFilter: ['aria-label', 'aria-labelledby', 'alt', 'role', 'tabindex', 'class', 'style']
-        });
-        
-        this.monitoring.enabled = true;
-        console.log('Real-time WCAG monitoring enabled');
+        // 定期的な検証
+        this.validationTimer = setInterval(() => {
+            this.runQuickValidation();
+        }, this.validationInterval);
     }
     
     /**
-     * 再検証のスケジューリング
+     * 再検証のスケジュール
      */
     scheduleRevalidation() {
-        if (this.monitoring.revalidationTimeout) {
-            clearTimeout(this.monitoring.revalidationTimeout);
+        if (this.revalidationTimeout) {
+            clearTimeout(this.revalidationTimeout);
         }
         
-        this.monitoring.revalidationTimeout = setTimeout(() => {
+        this.revalidationTimeout = setTimeout(() => {
             this.runQuickValidation();
-        }, 2000); // 2秒後に実行
+        }, 5000); // 5秒後に実行
     }
     
     /**
-     * 簡易検証の実行
-     */
-    async runQuickValidation() {
-        console.log('Running quick WCAG validation...');
-        
-        // 重要なテストのみ実行
-        const quickTests = ['altText', 'colorContrast', 'keyboardNavigation', 'nameRoleValue'];
-        const results = {
-            issues: [],
-            warnings: [],
-            passed: 0,
-            failed: 0
-        };
-        
-        for (const testName of quickTests) {
-            try {
-                const testResult = await this.runTest(testName, 'AA');
-                if (testResult.passed) {
-                    results.passed++;
-                } else {
-                    results.failed++;
-                    results.issues.push(...testResult.issues);
-                }
-                if (testResult.warnings) {
-                    results.warnings.push(...testResult.warnings);
-                }
-            } catch (error) {
-                console.warn(`Quick test ${testName} failed:`, error);
-            }
-        }
-        
-        // 新しい問題が見つかった場合のみ通知
-        if (results.issues.length > 0) {
-            this.accessibilityManager?.eventSystem?.emit('wcagIssuesDetected', {
-                issues: results.issues,
-                warnings: results.warnings,
-                timestamp: Date.now()
-            });
-        }
-    }
-    
-    /**
-     * トレンド分析の更新
+     * トレンドの更新
      */
     updateTrends() {
         const now = Date.now();
@@ -923,7 +369,7 @@ export class WCAGValidator {
                 const data = JSON.parse(saved);
                 this.results.history = data.history || [];
                 this.results.trends = data.trends || { weekly: [], monthly: [], improvements: [], regressions: [] };
-                Object.assign(this.stats, data.stats || {});
+                this.stats = data.stats || { totalValidations: 0, averageScore: 0, mostCommonIssues: new Map(), fixedIssues: new Map() };
             }
         } catch (error) {
             console.warn('Failed to load WCAG validation history:', error);
@@ -931,25 +377,34 @@ export class WCAGValidator {
     }
     
     /**
-     * イベントバインディング
+     * イベントバインド
      */
     bindEvents() {
-        // ページ読み込み完了後の検証
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
-                setTimeout(() => this.runFullValidation(), 500);
+        // アクセシビリティマネージャーのイベントを監視
+        if (this.accessibilityManager?.eventSystem) {
+            this.accessibilityManager.eventSystem.on('accessibility-change', () => {
+                this.scheduleRevalidation();
             });
-        }
-        
-        // ゲームイベントでの検証
-        if (this.gameEngine) {
-            this.gameEngine.addEventListener?.('sceneChanged', () => {
-                setTimeout(() => this.runQuickValidation(), 1000);
+            
+            this.accessibilityManager.eventSystem.on('screen-reader-enabled', () => {
+                this.runQuickValidation();
             });
         }
     }
     
-    // パブリックAPI
+    /**
+     * 検証完了の通知
+     */
+    notifyValidationComplete(report) {
+        if (this.accessibilityManager?.eventSystem) {
+            this.accessibilityManager.eventSystem.emit('wcag-validation-complete', {
+                score: report.score.adjusted,
+                issues: this.results.issues.length,
+                warnings: this.results.warnings.length,
+                report
+            });
+        }
+    }
     
     /**
      * 検証レベルの設定
@@ -957,10 +412,9 @@ export class WCAGValidator {
     setValidationLevel(level) {
         if (['A', 'AA', 'AAA'].includes(level)) {
             this.config.level = level;
+            this.ruleEngine.updateConfig({ level });
             console.log(`WCAG validation level set to ${level}`);
-            return true;
         }
-        return false;
     }
     
     /**
@@ -969,14 +423,16 @@ export class WCAGValidator {
     toggleRealTimeValidation(enabled) {
         this.config.realTimeValidation = enabled;
         
-        if (enabled && !this.monitoring.enabled) {
+        if (enabled) {
             this.setupRealTimeMonitoring();
-        } else if (!enabled && this.monitoring.enabled) {
-            this.monitoring.mutationObserver?.disconnect();
-            this.monitoring.enabled = false;
+        } else {
+            if (this.observer) {
+                this.observer.disconnect();
+            }
+            if (this.validationTimer) {
+                clearInterval(this.validationTimer);
+            }
         }
-        
-        console.log(`Real-time WCAG validation ${enabled ? 'enabled' : 'disabled'}`);
     }
     
     /**
@@ -984,228 +440,91 @@ export class WCAGValidator {
      */
     getValidationResults() {
         return {
-            ...this.results,
-            stats: this.stats
+            lastValidation: this.results.lastValidation,
+            overallScore: this.results.overallScore,
+            categoryScores: this.results.categoryScores,
+            issues: this.results.issues,
+            warnings: this.results.warnings,
+            passedTests: this.results.passedTests.length,
+            failedTests: this.results.failedTests.length
         };
     }
     
     /**
      * スコア履歴の取得
      */
-    getScoreHistory(days = 30) {
-        const cutoff = Date.now() - (days * 24 * 60 * 60 * 1000);
-        return this.results.history.filter(entry => 
-            new Date(entry.timestamp).getTime() > cutoff
-        );
-    }
-    
-    /**
-     * 問題の自動修正
-     */
-    async autoFixIssues() {
-        if (!this.config.autoFix) {
-            console.warn('Auto-fix is disabled');
-            return false;
-        }
-        
-        let fixedCount = 0;
-        
-        for (const failedTest of this.results.failedTests) {
-            for (const issue of failedTest.issues) {
-                if (await this.tryAutoFix(issue)) {
-                    fixedCount++;
-                }
-            }
-        }
-        
-        if (fixedCount > 0) {
-            this.stats.totalIssuesFixed += fixedCount;
-            console.log(`Auto-fixed ${fixedCount} accessibility issues`);
-            
-            // 修正後の再検証
-            setTimeout(() => this.runFullValidation(), 1000);
-        }
-        
-        return fixedCount;
-    }
-    
-    /**
-     * 個別問題の自動修正試行
-     */
-    async tryAutoFix(issue) {
-        try {
-            const element = issue.element;
-            if (!element || !element.parentNode) return false;
-            
-            // Alt属性の自動追加
-            if (issue.issue.includes('missing alt attribute') && element.tagName === 'IMG') {
-                element.setAttribute('alt', '');
-                return true;
-            }
-            
-            // ARIAラベルの自動追加
-            if (issue.issue.includes('missing accessible name') && !element.getAttribute('aria-label')) {
-                const text = element.textContent?.trim() || 'Interactive element';
-                element.setAttribute('aria-label', text);
-                return true;
-            }
-            
-            // tabindexの修正
-            if (issue.issue.includes('Positive tabindex')) {
-                element.setAttribute('tabindex', '0');
-                return true;
-            }
-            
-        } catch (error) {
-            console.warn('Auto-fix failed for issue:', issue, error);
-        }
-        
-        return false;
+    getScoreHistory() {
+        return this.results.history.map(entry => ({
+            timestamp: entry.timestamp,
+            score: entry.overallScore
+        }));
     }
     
     /**
      * 設定の適用
      */
     applyConfig(config) {
-        if (config.wcag) {
-            Object.assign(this.config, config.wcag);
-            
-            if (config.wcag.realTimeValidation !== undefined) {
-                this.toggleRealTimeValidation(config.wcag.realTimeValidation);
-            }
-        }
+        this.config = {
+            ...this.config,
+            ...config
+        };
         
-        console.log('WCAGValidator configuration applied');
+        // Update sub-components
+        this.ruleEngine.updateConfig({
+            enabled: this.config.enabled,
+            level: this.config.level,
+            autoFixEnabled: this.config.autoFix
+        });
+        
+        this.auditor.updateConfig({
+            enabled: this.config.enabled,
+            autoAudit: this.config.realTimeValidation
+        });
+        
+        this.reporter.updateConfig({
+            enabled: this.config.reportGeneration,
+            trackTrends: this.config.trendAnalysis
+        });
     }
     
     /**
-     * 有効状態の設定
+     * 有効/無効の設定
      */
     setEnabled(enabled) {
         this.config.enabled = enabled;
         
-        if (enabled) {
-            this.runFullValidation();
-        } else {
+        if (!enabled) {
             this.toggleRealTimeValidation(false);
         }
         
-        console.log(`WCAGValidator ${enabled ? 'enabled' : 'disabled'}`);
+        this.applyConfig({ enabled });
     }
     
     /**
      * クリーンアップ
      */
     destroy() {
-        console.log('Destroying WCAGValidator...');
-        
-        // 監視の停止
-        if (this.monitoring.mutationObserver) {
-            this.monitoring.mutationObserver.disconnect();
+        // リアルタイム監視の停止
+        if (this.observer) {
+            this.observer.disconnect();
         }
         
-        if (this.monitoring.revalidationTimeout) {
-            clearTimeout(this.monitoring.revalidationTimeout);
+        if (this.validationTimer) {
+            clearInterval(this.validationTimer);
         }
+        
+        if (this.revalidationTimeout) {
+            clearTimeout(this.revalidationTimeout);
+        }
+        
+        // Sub-components cleanup
+        this.ruleEngine.destroy();
+        this.auditor.destroy();
+        this.reporter.destroy();
         
         // 結果の保存
         this.saveValidationResults();
         
-        // データのクリア
-        this.results.failedTests = [];
-        this.results.passedTests = [];
-        this.results.warnings = [];
-        this.monitoring.observers.clear();
-        
         console.log('WCAGValidator destroyed');
     }
 }
-
-// 不足しているテストメソッドの実装
-Object.assign(WCAGValidator.prototype, {
-    testImageLabels() {
-        return { passed: true, issues: [], warnings: [] };
-    },
-    
-    testDecorativeImages() {
-        return { passed: true, issues: [], warnings: [] };
-    },
-    
-    testHeadingStructure() {
-        return { passed: true, issues: [], warnings: [] };
-    },
-    
-    testMeaningfulSequence() {
-        return { passed: true, issues: [], warnings: [] };
-    },
-    
-    testSensoryCues() {
-        return { passed: true, issues: [], warnings: [] };
-    },
-    
-    testAudioControl() {
-        return { passed: true, issues: [], warnings: [] };
-    },
-    
-    testTextResize() {
-        return { passed: true, issues: [], warnings: [] };
-    },
-    
-    testNoKeyboardTrap() {
-        return { passed: true, issues: [], warnings: [] };
-    },
-    
-    testBypassBlocks() {
-        return { passed: true, issues: [], warnings: [] };
-    },
-    
-    testPageTitle() {
-        return { passed: true, issues: [], warnings: [] };
-    },
-    
-    testFocusOrder() {
-        return { passed: true, issues: [], warnings: [] };
-    },
-    
-    testLinkPurpose() {
-        return { passed: true, issues: [], warnings: [] };
-    },
-    
-    testLanguageOfPage() {
-        return { passed: true, issues: [], warnings: [] };
-    },
-    
-    testOnFocus() {
-        return { passed: true, issues: [], warnings: [] };
-    },
-    
-    testOnInput() {
-        return { passed: true, issues: [], warnings: [] };
-    },
-    
-    testConsistentNavigation() {
-        return { passed: true, issues: [], warnings: [] };
-    },
-    
-    testErrorIdentification() {
-        return { passed: true, issues: [], warnings: [] };
-    },
-    
-    testLabelsInstructions() {
-        return { passed: true, issues: [], warnings: [] };
-    },
-    
-    testParsing() {
-        return { passed: true, issues: [], warnings: [] };
-    },
-    
-    testStatusMessages() {
-        return { passed: true, issues: [], warnings: [] };
-    },
-    
-    async generateValidationReport() {
-        // レポート生成の実装（簡略版）
-        console.log('Generating WCAG validation report...');
-        return true;
-    }
-});
