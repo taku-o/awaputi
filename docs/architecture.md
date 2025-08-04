@@ -83,6 +83,39 @@
 - **制限時間**: 5分ステージ、段階的難易度上昇
 - **HPシステム**: ダメージベース、未処理バブルからダメージ
 
+### アクセシビリティシステム (`src/accessibility/`)
+#### Main Controllerパターン適用（Phase E.3完了）
+- **KeyboardNavigationTester.js**: キーボードナビゲーションテスト統制（781語、75%削減）
+  - `src/accessibility/keyboard-navigation/`: 3コンポーネント分割
+  - **KeyboardEventHandler.js**: イベント処理
+  - **NavigationStateManager.js**: フォーカス管理
+  - **KeyboardAccessibilityReporter.js**: レポート生成
+- **WCAGValidator.js**: WCAG準拠検証統制（726語、75%削減）
+  - `src/accessibility/wcag-validation/`: 3コンポーネント分割
+  - **WCAGRuleEngine.js**: ガイドライン検証
+  - **AccessibilityAuditor.js**: 監査実行
+  - **ComplianceReporter.js**: 準拠レポート
+- **ScreenReaderSimulator.js**: スクリーンリーダーシミュレーション統制（731語、75%削減）
+  - `src/accessibility/screen-reader/`: 3コンポーネント分割
+  - **ScreenReaderEngine.js**: シミュレーションエンジン
+  - **ARIAAttributeProcessor.js**: ARIA処理
+  - **TextToSpeechController.js**: 音声合成制御
+- **AccessibilityOnboarding.js**: アクセシビリティオンボーディング統制（685語、75%削減）
+  - `src/accessibility/onboarding/`: 3コンポーネント分割
+  - **OnboardingFlowManager.js**: フロー管理
+  - **AccessibilityTutorial.js**: チュートリアル配信
+  - **OnboardingProgressTracker.js**: 進捗追跡
+- **ColorContrastAnalyzer.js**: 色彩コントラスト分析統制（490語、82%削減）
+  - `src/accessibility/color-contrast/`: 3コンポーネント分割
+  - **ContrastCalculator.js**: コントラスト計算
+  - **ColorAnalysisEngine.js**: 色彩分析
+  - **ColorBlindnessSimulator.js**: 色覚異常シミュレーション
+- **AccessibilitySettingsUI.js**: アクセシビリティ設定UI統制（1,254語、53%削減）
+  - `src/accessibility/settings-ui/`: 3コンポーネント分割
+  - **AccessibilitySettingsPanel.js**: UI描画
+  - **SettingsValidator.js**: 設定検証
+  - **AccessibilityPreferencesManager.js**: 設定永続化
+
 ## 技術的特徴
 
 ### 設計パターン
@@ -95,6 +128,7 @@
 - **高性能計算**: CalculationEngineによる最適化された数値計算
 - **キャッシュシステム**: 高頻度アクセスデータの高速化
 - **MCPツール互換性**: 全ファイル2,500語以下でSemanticコード解析対応
+- **アクセシビリティファースト**: WCAG 2.1 AA準拠、支援技術完全対応
 
 ### 特殊効果システム
 - **ボーナスタイム**: スコア倍率と視覚効果
