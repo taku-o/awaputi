@@ -53,7 +53,7 @@ export class ChallengeUI {
             }
         };
         
-        // 状态管理
+        // 状態管理
         this.state = {
             visible: false,
             challenges: [],
