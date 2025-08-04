@@ -334,6 +334,71 @@ VisualEffectsSystem
 - **メモリ使用**: オブジェクトプール活用、20%メモリ削減目標
 - **モバイル対応**: デスクトップ性能の80%以上、バッテリー効率考慮
 
+### バックアップツールファイル最適化プロジェクト（Issue #85対応）
+**目標**: Issue #77のsub issueとして、大容量ファイル分割プロジェクト Phase E.4を実装し、プロジェクト整理とMCPツール互換性向上を実現
+
+#### 問題の概要
+MCPツール（find_symbol）が25,000トークン制限を超過してエラーになる。残存する大容量ツール・テストファイル（2,500語超）の分割・最適化が必要。対象：
+- `tools/api-doc-generator.js`（3,727語） - API文書生成ツール
+- `tests/analytics/ComparisonEngine.test.js`（3,494語） - 比較エンジンテストスイート
+
+#### 実装対象の機能
+1. **バックアップファイル確認**: 既存バックアップファイル（*_old.js、*_original.js）の完全削除確認
+2. **ツールファイル分割**: API文書生成ツールのMain Controller Pattern分割
+3. **テストファイル最適化**: 比較エンジンテストの機能別分割・組織化
+4. **プロジェクト構造最適化**: MCPツール互換性確保、不要ファイル削除
+
+#### 分割戦略（Main Controller Pattern）
+1. **Main Controller Pattern**: 元ファイルは軽量オーケストレーター（<2,500語）として機能
+2. **機能分離**: 関連メソッドを単一責任の専門クラスにグループ化
+3. **API保持**: 後方互換性のため公開インターフェース完全維持
+4. **依存注入**: サブコンポーネントをメインコントローラーに注入
+
+#### API文書生成ツール分割設計
+```
+tools/
+├── api-doc-generator.js (Main Controller)
+└── api-doc-generator/
+    ├── APIDocParser.js         // ソースコード解析、JSDoc抽出
+    ├── DocumentationGenerator.js // 文書構造生成、多言語対応
+    ├── TemplateRenderer.js     // Markdown template処理、出力生成
+    └── APIDocValidator.js      // 文書検証、整合性チェック
+```
+
+#### 比較エンジンテスト分割設計
+```
+tests/analytics/
+├── ComparisonEngine.test.js (Main Test Suite)
+└── comparison-engine-tests/
+    ├── ComparisonEngineBasicTests.js      // 基本機能テスト
+    ├── ComparisonEngineAdvancedTests.js   // 高度機能・エッジケース
+    ├── ComparisonEnginePerformanceTests.js // パフォーマンス・スケーラビリティ
+    └── ComparisonEngineIntegrationTests.js // 統合・システムテスト
+```
+
+#### 実装フェーズ（20大タスク）
+- **Task 1**: バックアップファイル状況確認・完了
+- **Task 2-8**: API文書生成ツール分割（分析・準備→4コンポーネント実装→統合→テスト）
+- **Task 9-15**: 比較エンジンテスト分割（分析・準備→4テストスイート実装→統合→検証）
+- **Task 16**: プロジェクト構造最適化・クリーンアップ
+- **Task 17**: MCPツール互換性検証
+- **Task 18**: 最終システム統合テスト
+- **Task 19**: ドキュメント・変更履歴更新
+- **Task 20**: 最終検証・プロジェクトコミット
+
+#### 主要コンポーネント
+- **APIDocParser**: ソースコード解析、クラス・メソッド抽出、JSDoc処理
+- **DocumentationGenerator**: 文書構造生成、クロスリファレンス、多言語対応
+- **TemplateRenderer**: Markdownテンプレート処理、スタイリング、出力生成
+- **APIDocValidator**: 文書検証、リンク検証、整合性レポート
+- **分割テストスイート**: 機能別テスト組織化、実行時間改善、保守性向上
+
+#### パフォーマンス目標
+- **ファイルサイズ**: 全ターゲットファイル2,500語以下
+- **MCPツール**: find_symbol等のトークン制限エラー解消
+- **後方互換性**: 既存API・CLI・ビルドプロセス完全保持
+- **テスト効率**: 実行時間短縮、保守性向上、カバレッジ維持
+
 ## プロジェクト情報
 
 詳細なプロジェクト情報は以下のドキュメントを参照してください：
