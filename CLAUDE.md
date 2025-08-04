@@ -450,6 +450,62 @@ find_symbolツールが25,000トークン制限を超過してエラーになる
 - **監視**: pre-commitフックとCIで自動チェック
 - **分割基準**: 単一責任の原則に従ったコンポーネント分離
 
+### コアファイル分割プロジェクト Phase F.1（Issue #93対応）
+**目標**: 最重要コアファイル7件をMain Controller Patternで分割し、MCPツール互換性（2,500語以下）を実現
+
+#### 問題の概要
+MCPツール（find_symbol）が25,000トークン制限を超過してエラーになる。最重要コアファイル（2,535-2,812語）が原因。対象：
+- SettingsManager.js（2,812語） - 設定管理システム
+- StatisticsDataRecovery.js（2,772語） - データ復旧・検証システム
+- FocusManager.js（2,765語） - フォーカス管理・アクセシビリティ
+- HelpEffectivenessAnalyzer.js（2,757語） - ヘルプ分析・効果測定
+- MotionManager.js（2,754語） - モーション・アニメーション管理
+- ChallengeUI.js（2,644語） - チャレンジユーザーインターフェース
+- TimingAdjustmentManager.js（2,535語） - タイミング調整・キャリブレーション
+
+#### 分割戦略（Main Controller Pattern）
+1. **Main Controller Pattern**: 元クラスは軽量オーケストレーター（<2,500語）、公開API維持
+2. **機能分離**: 関連メソッドを専門クラスにグループ化（データ管理、UI制御、検証、設定など）
+3. **依存注入**: サブコンポーネントをメインコントローラーに注入
+4. **API保持**: 後方互換性のため既存インターフェース完全保持
+
+#### 主要コンポーネント分割設計
+- **SettingsManager**: DataManager、UIController、ExportImport（4コンポーネント）
+- **StatisticsDataRecovery**: RecoveryStrategies、RecoveryValidation、RecoveryUserGuidance（4コンポーネント）
+- **FocusManager**: FocusNavigation、FocusRingRenderer、FocusTrapManager（4コンポーネント）
+- **HelpEffectivenessAnalyzer**: MetricsCollector、DataAnalyzer、ReportGenerator（4コンポーネント）
+- **MotionManager**: ConfigManager、AnimationController、VestibularSafetyManager（4コンポーネント）
+- **ChallengeUI**: UIRenderer、InteractionHandler、DataController（4コンポーネント）
+- **TimingAdjustmentManager**: Calibrator、AdjustmentAlgorithms、FeedbackSystem（4コンポーネント）
+
+#### ディレクトリ構造
+```
+src/core/
+├── settings/
+│   ├── SettingsManager.js (Main Controller)
+│   ├── SettingsDataManager.js
+│   ├── SettingsUIController.js
+│   └── SettingsExportImport.js
+├── statistics/
+│   ├── StatisticsDataRecovery.js (Main Controller)
+│   ├── RecoveryStrategies.js
+│   ├── RecoveryValidation.js
+│   └── RecoveryUserGuidance.js
+└── [他のコンポーネント]/
+```
+
+#### 実装フェーズ（10大タスク）
+- **Task 1**: プロジェクト構造準備・ディレクトリ作成
+- **Task 2-8**: 各ファイルの分割実装（SettingsManager → TimingAdjustmentManager）
+- **Task 9**: 包括的統合テスト・検証（全テスト、MCP互換性、パフォーマンス、エラー処理）
+- **Task 10**: ドキュメント・最終検証（アーキテクチャ文書、API文書、開発ガイドライン）
+
+#### パフォーマンス目標
+- **ファイルサイズ**: 全ターゲットファイル2,500語以下
+- **MCPツール**: find_symbol等のトークン制限エラー解消
+- **サイズ削減**: メインコントローラー70%削減目標
+- **API互換性**: 既存公開インターフェース完全保持
+
 ### ChallengeUIインポート修正プロジェクト（Issue #71対応）
 **目標**: ChallengeUI関連コンポーネントのインポートエラーを修正し、ビルドの安定化を実現
 

@@ -1,6 +1,11 @@
+import { RecoveryStrategies } from './statistics/RecoveryStrategies.js';
+import { RecoveryValidation } from './statistics/RecoveryValidation.js';
+import { RecoveryUserGuidance } from './statistics/RecoveryUserGuidance.js';
+
 /**
- * 統計データ復旧クラス
+ * 統計データ復旧クラス（Main Controller）
  * データ破損時の自動復旧、バックアップからの復元、ユーザーガイダンス機能を提供する
+ * Main Controller Patternによる軽量オーケストレーター
  */
 export class StatisticsDataRecovery {
     constructor(statisticsManager, errorHandler) {
@@ -40,47 +45,22 @@ export class StatisticsDataRecovery {
             failedAttempts: 0
         };
         
-        // 復旧戦略
-        this.recoveryStrategies = new Map([
-            ['corruption', this.recoverFromCorruption.bind(this)],
-            ['partial_loss', this.recoverFromPartialLoss.bind(this)],
-            ['version_mismatch', this.recoverFromVersionMismatch.bind(this)],
-            ['checksum_failure', this.recoverFromChecksumFailure.bind(this)],
-            ['structure_damage', this.recoverFromStructureDamage.bind(this)],
-            ['complete_loss', this.recoverFromCompleteLoss.bind(this)]
-        ]);
+        // サブコンポーネントの初期化（依存注入）
+        this.strategies = new RecoveryStrategies(this);
+        this.validation = new RecoveryValidation(this);
+        this.userGuidance = new RecoveryUserGuidance(this);
         
-        // データ検証規則
-        this.validationRules = new Map([
-            ['gamePlayStats', this.validateGamePlayStats.bind(this)],
-            ['scoreStats', this.validateScoreStats.bind(this)],
-            ['bubbleStats', this.validateBubbleStats.bind(this)],
-            ['comboStats', this.validateComboStats.bind(this)],
-            ['timeStats', this.validateTimeStats.bind(this)]
-        ]);
-        
-        // 復旧優先度（高い順）
-        this.recoveryPriority = [
-            'gamePlayStats',
-            'scoreStats', 
-            'bubbleStats',
-            'comboStats',
-            'achievementStats',
-            'timeStats',
-            'sessionStats'
-        ];
-        
-        // ユーザー通知システム
-        this.notificationCallbacks = new Set();
-        
+        // 初期化
         this.initialize();
+        
+        console.log('[StatisticsDataRecovery] Main Controller initialized with sub-components');
     }
     
     /**
      * 初期化
      */
     initialize() {
-        this.loadRecoveryHistory();
+        this.userGuidance.initialize();
         this.setupAutomaticRecovery();
     }
     
@@ -101,1203 +81,444 @@ export class StatisticsDataRecovery {
     }
     
     /**
-     * 自動復旧トリガーの判定
+     * 自動復旧をトリガーするかチェック
+     * @param {Object} errorDetails エラー詳細
+     * @param {string} severity 重要度
+     * @returns {boolean} 自動復旧を実行するか
      */
     shouldTriggerAutoRecovery(errorDetails, severity) {
-        // 重大度が高い場合のみ自動復旧
-        if (severity < this.errorHandler.config.severityLevels.HIGH) {
+        // 既に復旧中の場合はスキップ
+        if (this.recoveryState.isRecovering) {
             return false;
         }
         
-        // データ関連エラーの場合のみ
-        const dataRelatedErrors = [
-            this.errorHandler.config.errorTypes.DATA_CORRUPTION,
-            this.errorHandler.config.errorTypes.STORAGE_FULL
-        ];
+        // 重要度が低い場合はスキップ
+        if (severity === 'low') {
+            return false;
+        }
         
-        return dataRelatedErrors.includes(errorDetails.type);
+        // 最大試行回数を超えている場合はスキップ
+        if (this.recoveryState.failedAttempts >= this.config.recovery.maxRetryAttempts) {
+            return false;
+        }
+        
+        // データ関連のエラーのみ対象
+        const dataErrorTypes = ['corruption', 'checksum_failure', 'structure_damage', 'partial_loss'];
+        return dataErrorTypes.some(type => errorDetails.type === type || errorDetails.message?.includes(type));
     }
     
     /**
-     * メイン復旧処理
+     * 自動復旧を実行
+     * @param {Object} errorDetails エラー詳細
+     * @returns {Promise<Object>} 復旧結果
      */
-    async performRecovery(options = {}) {
-        if (this.recoveryState.isRecovering) {
-            throw new Error('Recovery already in progress');
-        }
-        
-        this.recoveryState.isRecovering = true;
-        this.recoveryState.currentStep = 'initialization';
-        this.recoveryState.progress = 0;
-        
+    async performAutoRecovery(errorDetails) {
         try {
-            const recoveryOptions = {
-                strategy: 'auto', // 'auto', 'corruption', 'partial_loss', etc.
-                preserveUserData: true,
-                validateResult: true,
-                createBackup: true,
-                showProgress: true,
-                ...options
-            };
+            console.log('[StatisticsDataRecovery] Starting automatic recovery for:', errorDetails);
             
-            await this.notifyRecoveryStart(recoveryOptions);
+            this.recoveryState.isRecovering = true;
+            this.recoveryState.currentStep = 'analyzing';
+            this.recoveryState.progress = 0;
             
-            // 事前バックアップの作成
-            if (recoveryOptions.createBackup) {
-                await this.createPreRecoveryBackup();
+            // データを取得
+            const currentData = await this.statisticsManager.getAllStatistics();
+            
+            // データ分析
+            const analysis = await this.analyzeData(currentData);
+            
+            // 復旧戦略を決定
+            const strategy = this.determineRecoveryStrategy(analysis);
+            
+            // 復旧を実行
+            const result = await this.initiateRecovery(strategy, { autoRecovery: true });
+            
+            if (result.success) {
+                this.recoveryState.failedAttempts = 0;
+                this.recordRecoverySuccess(strategy, result);
+            } else {
+                this.recoveryState.failedAttempts++;
+                this.recordRecoveryFailure(result.error);
             }
             
-            // 現在のデータ状態の分析
-            const dataAnalysis = await this.analyzeDataState();
-            
-            // 復旧戦略の決定
-            const strategy = recoveryOptions.strategy === 'auto' ? 
-                this.determineRecoveryStrategy(dataAnalysis) : 
-                recoveryOptions.strategy;
-            
-            // 復旧処理の実行
-            const recoveryResult = await this.executeRecoveryStrategy(strategy, dataAnalysis, recoveryOptions);
-            
-            // 復旧結果の検証
-            if (recoveryOptions.validateResult) {
-                const validationResult = await this.validateRecoveredData(recoveryResult.data);
-                if (!validationResult.isValid) {
-                    throw new Error(`Recovery validation failed: ${validationResult.errors.join(', ')}`);
-                }
-            }
-            
-            // 復旧したデータの適用
-            await this.applyRecoveredData(recoveryResult.data);
-            
-            // 復旧履歴の記録
-            this.recordRecoverySuccess(strategy, recoveryResult);
-            
-            await this.notifyRecoverySuccess(recoveryResult);
-            
-            return {
-                success: true,
-                strategy: strategy,
-                recoveredData: recoveryResult.data,
-                metrics: recoveryResult.metrics,
-                timestamp: Date.now()
-            };
+            return result;
             
         } catch (error) {
+            this.recoveryState.failedAttempts++;
             this.recordRecoveryFailure(error);
-            await this.notifyRecoveryFailure(error);
             throw error;
         } finally {
             this.recoveryState.isRecovering = false;
             this.recoveryState.currentStep = null;
-            this.recoveryState.progress = 100;
+            this.recoveryState.progress = 0;
         }
     }
     
+    // ========== 公開API（後方互換性維持） ==========
+    
     /**
-     * 自動復旧処理
+     * 復旧を開始
+     * @param {string} strategy 復旧戦略
+     * @param {Object} options オプション
+     * @returns {Promise<Object>} 復旧結果
      */
-    async performAutoRecovery(errorDetails) {
+    async initiateRecovery(strategy, options = {}) {
         try {
-            console.info('Starting automatic recovery for error:', errorDetails.id);
+            console.log(`[StatisticsDataRecovery] Initiating recovery with strategy: ${strategy}`);
             
-            const recoveryResult = await this.performRecovery({
-                strategy: 'auto',
-                showProgress: false,
-                createBackup: true
+            this.recoveryState.isRecovering = true;
+            this.recoveryState.lastRecoveryTime = Date.now();
+            
+            // ユーザーガイダンスに復旧開始を通知
+            this.userGuidance.notifyRecoveryStart({
+                strategy,
+                totalSteps: 5,
+                options
             });
             
-            console.info('Automatic recovery completed successfully');
-            return recoveryResult;
+            // データ取得・分析
+            this.updateProgress('analyzing', 20);
+            const currentData = await this.statisticsManager.getAllStatistics();
+            const analysis = await this.analyzeData(currentData);
+            
+            // 復旧戦略を実行
+            this.updateProgress('recovering', 40);
+            const result = await this.strategies.executeStrategy(strategy, analysis, options);
+            
+            // 結果を検証
+            this.updateProgress('validating', 80);
+            if (result.success && result.data) {
+                const validationResult = await this.validation.analyzeDataIntegrity(result.data);
+                result.validationPassed = validationResult.isValid;
+                
+                if (validationResult.isValid) {
+                    // 統計マネージャーにデータを適用
+                    await this.statisticsManager.loadStatistics(result.data);
+                }
+            }
+            
+            this.updateProgress('completed', 100);
+            
+            // ユーザーガイダンスに完了を通知
+            this.userGuidance.notifyRecoveryComplete(result);
+            
+            return result;
             
         } catch (error) {
-            console.error('Automatic recovery failed:', error);
+            this.errorHandler.handleError(error, 'RECOVERY_INITIATION_ERROR', { strategy, options });
             
-            // 自動復旧失敗時は手動復旧のガイダンスを表示
-            await this.showManualRecoveryGuidance(errorDetails, error);
+            const errorResult = {
+                success: false,
+                error: error.message,
+                strategy
+            };
+            
+            this.userGuidance.notifyRecoveryComplete(errorResult);
+            return errorResult;
+            
+        } finally {
+            this.recoveryState.isRecovering = false;
         }
     }
     
     /**
-     * データ状態の分析
+     * データを分析
+     * @param {Object} data 分析対象データ
+     * @returns {Promise<Object>} 分析結果
      */
-    async analyzeDataState() {
-        this.updateProgress('analyzing_data', 10);
+    async analyzeData(data) {
+        const analysis = {};
         
-        const analysis = {
-            hasData: false,
-            dataSize: 0,
-            corruption: {
-                level: 0, // 0-100%
-                areas: [],
-                recoverable: false
-            },
-            availability: {
-                main: false,
-                backup: false,
-                legacy: false,
-                minimal: false
-            },
-            integrity: {
-                checksum: null,
-                structure: null,
-                ranges: null
-            }
-        };
+        // データ破損分析
+        analysis.corruption = await this.validation.analyzeDataCorruption(data);
         
-        try {
-            // メインデータの分析
-            const mainData = await this.analyzeMainData();
-            if (mainData.exists) {
-                analysis.hasData = true;
-                analysis.dataSize = mainData.size;
-                analysis.availability.main = true;
-                analysis.integrity = mainData.integrity;
-                analysis.corruption = mainData.corruption;
-            }
-            
-            // バックアップデータの分析
-            const backupAnalysis = await this.analyzeBackupData();
-            analysis.availability.backup = backupAnalysis.hasValidBackups;
-            
-            // レガシーデータの分析
-            const legacyAnalysis = await this.analyzeLegacyData();
-            analysis.availability.legacy = legacyAnalysis.exists;
-            
-            // 最小バックアップの分析
-            const minimalAnalysis = await this.analyzeMinimalBackup();
-            analysis.availability.minimal = minimalAnalysis.exists;
-            
-        } catch (error) {
-            console.error('Data analysis failed:', error);
-            analysis.corruption.level = 100;
+        // データ整合性分析
+        analysis.integrity = await this.validation.analyzeDataIntegrity(data);
+        
+        // 構造検証
+        analysis.structure = this.validation.validateDataStructure(data);
+        
+        // 範囲検証
+        analysis.ranges = this.validation.validateDataRanges(data);
+        
+        // チェックサム検証
+        if (this.config.validation.validateChecksums) {
+            const expectedChecksum = await this.statisticsManager.getStoredChecksum();
+            const actualChecksum = this.validation.calculateChecksum(data);
+            analysis.checksum = {
+                expected: expectedChecksum,
+                actual: actualChecksum,
+                matches: expectedChecksum === actualChecksum
+            };
         }
         
         return analysis;
     }
     
     /**
-     * メインデータの分析
-     */
-    async analyzeMainData() {
-        try {
-            const savedData = localStorage.getItem('bubblePop_statistics_v2');
-            if (!savedData) {
-                return { exists: false };
-            }
-            
-            const data = JSON.parse(savedData);
-            const corruption = this.analyzeDataCorruption(data);
-            const integrity = this.analyzeDataIntegrity(data);
-            
-            return {
-                exists: true,
-                size: savedData.length,
-                corruption: corruption,
-                integrity: integrity,
-                data: data
-            };
-            
-        } catch (error) {
-            return {
-                exists: true,
-                corruption: { level: 100, areas: ['parse_error'], recoverable: false },
-                integrity: { checksum: false, structure: false, ranges: false }
-            };
-        }
-    }
-    
-    /**
-     * データ破損の分析
-     */
-    analyzeDataCorruption(data) {
-        const corruption = {
-            level: 0,
-            areas: [],
-            recoverable: false
-        };
-        
-        try {
-            if (!data || typeof data !== 'object') {
-                corruption.level = 100;
-                corruption.areas.push('root_structure');
-                return corruption;
-            }
-            
-            if (!data.statistics) {
-                corruption.level = 90;
-                corruption.areas.push('missing_statistics');
-                return corruption;
-            }
-            
-            const stats = data.statistics;
-            const totalFields = this.recoveryPriority.length;
-            let corruptedFields = 0;
-            
-            // 各重要フィールドの確認
-            for (const field of this.recoveryPriority) {
-                if (!stats[field] || typeof stats[field] !== 'object') {
-                    corruption.areas.push(field);
-                    corruptedFields++;
-                } else {
-                    // フィールド内部の検証
-                    const fieldValidation = this.validateField(field, stats[field]);
-                    if (!fieldValidation.isValid) {
-                        corruption.areas.push(`${field}_internal`);
-                        corruptedFields += 0.5; // 部分的な破損
-                    }
-                }
-            }
-            
-            corruption.level = Math.round((corruptedFields / totalFields) * 100);
-            corruption.recoverable = corruption.level < (100 - this.config.recovery.corruptionThreshold * 100);
-            
-        } catch (error) {
-            corruption.level = 100;
-            corruption.areas.push('analysis_error');
-        }
-        
-        return corruption;
-    }
-    
-    /**
-     * データ整合性の分析
-     */
-    analyzeDataIntegrity(data) {
-        const integrity = {
-            checksum: false,
-            structure: false,
-            ranges: false
-        };
-        
-        try {
-            // チェックサム検証
-            if (data.metadata && data.metadata.integrity) {
-                const currentChecksum = this.calculateChecksum(data.statistics);
-                integrity.checksum = currentChecksum === data.metadata.integrity;
-            }
-            
-            // 構造検証
-            integrity.structure = this.validateDataStructure(data.statistics);
-            
-            // 範囲検証
-            integrity.ranges = this.validateDataRanges(data.statistics);
-            
-        } catch (error) {
-            console.warn('Integrity analysis failed:', error);
-        }
-        
-        return integrity;
-    }
-    
-    /**
-     * バックアップデータの分析
-     */
-    async analyzeBackupData() {
-        try {
-            const backupHistory = this.statisticsManager.getBackupHistory();
-            let validBackups = 0;
-            
-            for (const backup of backupHistory) {
-                try {
-                    const backupData = localStorage.getItem(backup.key);
-                    if (backupData) {
-                        const data = JSON.parse(backupData);
-                        const corruption = this.analyzeDataCorruption(data);
-                        if (corruption.level < 50) { // 50%未満の破損なら有効
-                            validBackups++;
-                        }
-                    }
-                } catch (error) {
-                    // このバックアップは破損している
-                }
-            }
-            
-            return {
-                total: backupHistory.length,
-                valid: validBackups,
-                hasValidBackups: validBackups > 0
-            };
-            
-        } catch (error) {
-            return { total: 0, valid: 0, hasValidBackups: false };
-        }
-    }
-    
-    /**
-     * レガシーデータの分析
-     */
-    async analyzeLegacyData() {
-        try {
-            const legacyData = localStorage.getItem('bubblePop_statistics');
-            if (legacyData) {
-                JSON.parse(legacyData); // パース可能かチェック
-                return { exists: true, data: legacyData };
-            }
-        } catch (error) {
-            // レガシーデータが破損
-        }
-        
-        return { exists: false };
-    }
-    
-    /**
-     * 最小バックアップの分析
-     */
-    async analyzeMinimalBackup() {
-        try {
-            const minimalData = localStorage.getItem('bubblePop_minimal_backup');
-            if (minimalData) {
-                const data = JSON.parse(minimalData);
-                if (data.gamePlayStats && data.scoreStats) {
-                    return { exists: true, data: data };
-                }
-            }
-        } catch (error) {
-            // 最小バックアップが破損
-        }
-        
-        return { exists: false };
-    }
-    
-    /**
-     * 復旧戦略の決定
+     * 復旧戦略を決定
+     * @param {Object} analysis 分析結果
+     * @returns {string} 推奨される復旧戦略
      */
     determineRecoveryStrategy(analysis) {
         // 完全なデータ損失
-        if (!analysis.hasData && !analysis.availability.backup && !analysis.availability.legacy) {
+        if (!analysis.integrity || analysis.integrity.validFieldsRatio === 0) {
             return 'complete_loss';
         }
         
-        // メインデータが使用可能
-        if (analysis.hasData && analysis.corruption.level < 30) {
-            if (!analysis.integrity.checksum) {
-                return 'checksum_failure';
-            }
-            if (!analysis.integrity.structure) {
-                return 'structure_damage';
-            }
-            return 'partial_loss'; // 軽微な問題
+        // チェックサム失敗
+        if (analysis.checksum && !analysis.checksum.matches) {
+            return 'checksum_failure';
         }
         
-        // 重大な破損
-        if (analysis.corruption.level > 70) {
-            if (analysis.availability.backup) {
+        // 構造破損
+        if (analysis.structure && !analysis.structure.isValid) {
+            return 'structure_damage';
+        }
+        
+        // データ破損
+        if (analysis.corruption && analysis.corruption.isCorrupted) {
+            if (analysis.corruption.corruptionLevel > 0.7) {
                 return 'corruption';
             } else {
-                return 'complete_loss';
+                return 'partial_loss';
             }
         }
         
-        // 中程度の破損
-        if (analysis.corruption.level > 30) {
-            return 'corruption';
+        // バージョン不一致の可能性をチェック
+        const currentVersion = this.statisticsManager.getDataVersion();
+        const dataVersion = this.statisticsManager.getStoredDataVersion();
+        if (currentVersion !== dataVersion) {
+            return 'version_mismatch';
         }
         
-        // バージョンの問題
-        return 'version_mismatch';
+        // デフォルトは部分損失として処理
+        return 'partial_loss';
     }
     
+    // ========== 委譲メソッド ==========
+    
     /**
-     * 復旧戦略の実行
+     * データ破損を分析
+     * @param {Object} data 分析対象データ
+     * @returns {Promise<Object>} 破損分析結果
      */
-    async executeRecoveryStrategy(strategy, analysis, options) {
-        this.updateProgress(`executing_${strategy}`, 30);
-        
-        const recoveryFunction = this.recoveryStrategies.get(strategy);
-        if (!recoveryFunction) {
-            throw new Error(`Unknown recovery strategy: ${strategy}`);
-        }
-        
-        return await recoveryFunction(analysis, options);
+    async analyzeDataCorruption(data) {
+        return await this.validation.analyzeDataCorruption(data);
     }
     
     /**
-     * データ破損からの復旧
+     * データ整合性を分析
+     * @param {Object} data 検証対象データ
+     * @returns {Promise<Object>} 整合性分析結果
      */
-    async recoverFromCorruption(analysis, options) {
-        this.updateProgress('recovering_from_corruption', 40);
-        
-        // バックアップから復元を試行
-        const backupResult = await this.tryBackupRestore();
-        if (backupResult.success) {
-            return {
-                data: backupResult.data,
-                method: 'backup_restore',
-                confidence: 0.9,
-                metrics: {
-                    restoredFields: Object.keys(backupResult.data),
-                    dataSource: 'backup'
-                }
-            };
-        }
-        
-        // 部分復旧を試行
-        const partialResult = await this.tryPartialRecovery(analysis);
-        if (partialResult.success) {
-            return {
-                data: partialResult.data,
-                method: 'partial_recovery',
-                confidence: 0.7,
-                metrics: {
-                    restoredFields: partialResult.restoredFields,
-                    corruptedFields: partialResult.corruptedFields
-                }
-            };
-        }
-        
-        throw new Error('Unable to recover from corruption');
+    async analyzeDataIntegrity(data) {
+        return await this.validation.analyzeDataIntegrity(data);
     }
     
     /**
-     * 部分データ損失からの復旧
+     * チェックサムを計算
+     * @param {Object} data データオブジェクト
+     * @returns {string} チェックサム
      */
-    async recoverFromPartialLoss(analysis, options) {
-        this.updateProgress('recovering_partial_data', 50);
-        
-        try {
-            const currentData = analysis.hasData ? 
-                JSON.parse(localStorage.getItem('bubblePop_statistics_v2')).statistics :
-                {};
-            
-            // 欠損フィールドを補完
-            const recoveredData = await this.fillMissingFields(currentData);
-            
-            // データ範囲の修正
-            const correctedData = this.correctDataRanges(recoveredData);
-            
-            return {
-                data: correctedData,
-                method: 'field_completion',
-                confidence: 0.8,
-                metrics: {
-                    originalFields: Object.keys(currentData),
-                    recoveredFields: Object.keys(correctedData),
-                    addedFields: Object.keys(correctedData).filter(k => !currentData[k])
-                }
-            };
-            
-        } catch (error) {
-            throw new Error(`Partial recovery failed: ${error.message}`);
-        }
+    calculateChecksum(data) {
+        return this.validation.calculateChecksum(data);
     }
     
     /**
-     * バージョン不一致からの復旧
+     * データ構造を検証
+     * @param {Object} data データオブジェクト
+     * @returns {Object} 検証結果
      */
-    async recoverFromVersionMismatch(analysis, options) {
-        this.updateProgress('migrating_version', 60);
-        
-        try {
-            // レガシーデータの読み込み
-            const legacyData = localStorage.getItem('bubblePop_statistics');
-            if (legacyData) {
-                const data = JSON.parse(legacyData);
-                const migratedData = await this.migrateDataVersion(data);
-                
-                return {
-                    data: migratedData,
-                    method: 'version_migration',
-                    confidence: 0.9,
-                    metrics: {
-                        sourceVersion: 'legacy',
-                        targetVersion: '2.0',
-                        migratedFields: Object.keys(migratedData)
-                    }
-                };
-            }
-            
-            throw new Error('No legacy data available for migration');
-            
-        } catch (error) {
-            throw new Error(`Version migration failed: ${error.message}`);
-        }
+    validateDataStructure(data) {
+        return this.validation.validateDataStructure(data);
     }
     
     /**
-     * チェックサム失敗からの復旧
+     * データ範囲を検証
+     * @param {Object} data データオブジェクト
+     * @returns {Object} 検証結果
      */
-    async recoverFromChecksumFailure(analysis, options) {
-        this.updateProgress('fixing_checksum', 70);
-        
-        try {
-            const data = JSON.parse(localStorage.getItem('bubblePop_statistics_v2'));
-            
-            // データ構造が正常であればチェックサムを再計算
-            if (this.validateDataStructure(data.statistics)) {
-                data.metadata.integrity = this.calculateChecksum(data.statistics);
-                
-                return {
-                    data: data.statistics,
-                    method: 'checksum_recalculation',
-                    confidence: 0.95,
-                    metrics: {
-                        oldChecksum: analysis.integrity.checksum,
-                        newChecksum: data.metadata.integrity
-                    }
-                };
-            }
-            
-            throw new Error('Data structure invalid, cannot fix checksum');
-            
-        } catch (error) {
-            throw new Error(`Checksum recovery failed: ${error.message}`);
-        }
+    validateDataRanges(data) {
+        return this.validation.validateDataRanges(data);
     }
     
     /**
-     * 構造破損からの復旧
-     */
-    async recoverFromStructureDamage(analysis, options) {
-        this.updateProgress('repairing_structure', 80);
-        
-        try {
-            const data = JSON.parse(localStorage.getItem('bubblePop_statistics_v2'));
-            
-            // 構造の修復
-            const repairedData = await this.repairDataStructure(data.statistics);
-            
-            return {
-                data: repairedData,
-                method: 'structure_repair',
-                confidence: 0.7,
-                metrics: {
-                    repairedFields: this.getRepairedFields(data.statistics, repairedData)
-                }
-            };
-            
-        } catch (error) {
-            throw new Error(`Structure repair failed: ${error.message}`);
-        }
-    }
-    
-    /**
-     * 完全データ損失からの復旧
-     */
-    async recoverFromCompleteLoss(analysis, options) {
-        this.updateProgress('initializing_new_data', 90);
-        
-        // 最小バックアップがあるか確認
-        const minimalAnalysis = await this.analyzeMinimalBackup();
-        if (minimalAnalysis.exists) {
-            const expandedData = await this.expandMinimalData(minimalAnalysis.data);
-            
-            return {
-                data: expandedData,
-                method: 'minimal_expansion',
-                confidence: 0.6,
-                metrics: {
-                    sourceFields: Object.keys(minimalAnalysis.data),
-                    expandedFields: Object.keys(expandedData)
-                }
-            };
-        }
-        
-        // 新しいデータの初期化
-        const newData = this.statisticsManager.initializeStatistics();
-        
-        return {
-            data: newData,
-            method: 'clean_initialization',
-            confidence: 0.5,
-            metrics: {
-                initializedFields: Object.keys(newData)
-            }
-        };
-    }
-    
-    /**
-     * バックアップからの復元試行
-     */
-    async tryBackupRestore() {
-        try {
-            const restoreResult = await this.statisticsManager.restoreFromBackup();
-            if (restoreResult.success) {
-                return {
-                    success: true,
-                    data: this.statisticsManager.statistics
-                };
-            }
-        } catch (error) {
-            console.warn('Backup restore failed:', error);
-        }
-        
-        return { success: false };
-    }
-    
-    /**
-     * 部分復旧の試行
-     */
-    async tryPartialRecovery(analysis) {
-        try {
-            const data = JSON.parse(localStorage.getItem('bubblePop_statistics_v2'));
-            const recoveredData = {};
-            const restoredFields = [];
-            const corruptedFields = [];
-            
-            // 優先度順に各フィールドを復旧
-            for (const field of this.recoveryPriority) {
-                if (data.statistics[field] && this.validateField(field, data.statistics[field]).isValid) {
-                    recoveredData[field] = data.statistics[field];
-                    restoredFields.push(field);
-                } else {
-                    // デフォルト値で補完
-                    const defaultStats = this.statisticsManager.initializeStatistics();
-                    recoveredData[field] = defaultStats[field];
-                    corruptedFields.push(field);
-                }
-            }
-            
-            return {
-                success: true,
-                data: recoveredData,
-                restoredFields,
-                corruptedFields
-            };
-            
-        } catch (error) {
-            return { success: false, error: error.message };
-        }
-    }
-    
-    /**
-     * 欠損フィールドの補完
-     */
-    async fillMissingFields(currentData) {
-        const defaultStats = this.statisticsManager.initializeStatistics();
-        const filledData = { ...currentData };
-        
-        // 欠損フィールドをデフォルト値で補完
-        Object.keys(defaultStats).forEach(key => {
-            if (filledData[key] === undefined) {
-                filledData[key] = defaultStats[key];
-            } else if (typeof defaultStats[key] === 'object' && !Array.isArray(defaultStats[key])) {
-                // ネストされたオブジェクトの補完
-                filledData[key] = { ...defaultStats[key], ...filledData[key] };
-            }
-        });
-        
-        return filledData;
-    }
-    
-    /**
-     * データ範囲の修正
-     */
-    correctDataRanges(data) {
-        const correctedData = { ...data };
-        
-        // 数値フィールドの範囲チェックと修正
-        if (correctedData.gamePlayStats) {
-            correctedData.gamePlayStats.totalGames = Math.max(0, correctedData.gamePlayStats.totalGames || 0);
-            correctedData.gamePlayStats.totalPlayTime = Math.max(0, correctedData.gamePlayStats.totalPlayTime || 0);
-        }
-        
-        if (correctedData.scoreStats) {
-            correctedData.scoreStats.totalScore = Math.max(0, correctedData.scoreStats.totalScore || 0);
-            correctedData.scoreStats.highestScore = Math.max(0, correctedData.scoreStats.highestScore || 0);
-        }
-        
-        if (correctedData.bubbleStats) {
-            correctedData.bubbleStats.accuracy = Math.min(1, Math.max(0, correctedData.bubbleStats.accuracy || 0));
-            correctedData.bubbleStats.totalPopped = Math.max(0, correctedData.bubbleStats.totalPopped || 0);
-        }
-        
-        return correctedData;
-    }
-    
-    /**
-     * データバージョンの移行
-     */
-    async migrateDataVersion(legacyData) {
-        // レガシーフォーマットから新フォーマットへの変換
-        const migratedData = this.statisticsManager.initializeStatistics();
-        
-        // 基本統計の移行
-        if (legacyData.gamePlayStats) {
-            Object.assign(migratedData.gamePlayStats, legacyData.gamePlayStats);
-        }
-        
-        if (legacyData.scoreStats) {
-            Object.assign(migratedData.scoreStats, legacyData.scoreStats);
-        }
-        
-        if (legacyData.bubbleStats) {
-            Object.assign(migratedData.bubbleStats, legacyData.bubbleStats);
-        }
-        
-        // 新機能の初期化
-        migratedData.migrationInfo = {
-            migratedFrom: 'legacy',
-            migrationDate: Date.now(),
-            originalVersion: '1.0'
-        };
-        
-        return migratedData;
-    }
-    
-    /**
-     * データ構造の修復
-     */
-    async repairDataStructure(data) {
-        const repairedData = { ...data };
-        const defaultStats = this.statisticsManager.initializeStatistics();
-        
-        // 各フィールドの型と構造をチェック・修復
-        Object.keys(defaultStats).forEach(key => {
-            if (typeof repairedData[key] !== typeof defaultStats[key]) {
-                repairedData[key] = defaultStats[key];
-            } else if (typeof defaultStats[key] === 'object' && !Array.isArray(defaultStats[key])) {
-                // オブジェクトの内部構造修復
-                repairedData[key] = this.repairObjectStructure(repairedData[key], defaultStats[key]);
-            }
-        });
-        
-        return repairedData;
-    }
-    
-    /**
-     * オブジェクト構造の修復
+     * オブジェクト構造を修復
+     * @param {Object} obj 修復対象オブジェクト
+     * @param {Object} template テンプレートオブジェクト
+     * @returns {Object} 修復されたオブジェクト
      */
     repairObjectStructure(obj, template) {
-        const repaired = { ...obj };
+        const repaired = {};
         
-        Object.keys(template).forEach(key => {
-            if (repaired[key] === undefined) {
-                repaired[key] = template[key];
-            } else if (typeof repaired[key] !== typeof template[key]) {
-                repaired[key] = template[key];
+        // テンプレートに基づいてオブジェクトを修復
+        for (const [key, value] of Object.entries(template)) {
+            if (obj && obj.hasOwnProperty(key)) {
+                if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+                    repaired[key] = this.repairObjectStructure(obj[key], value);
+                } else {
+                    repaired[key] = obj[key];
+                }
+            } else {
+                repaired[key] = value;
             }
-        });
+        }
         
         return repaired;
     }
     
     /**
-     * 最小データの拡張
+     * 進捗を更新
+     * @param {string} step 現在のステップ
+     * @param {number} progress 進捗（0-100）
+     * @param {Object} details 詳細情報
      */
-    async expandMinimalData(minimalData) {
-        const expandedData = this.statisticsManager.initializeStatistics();
-        
-        // 最小データの情報を保持
-        if (minimalData.gamePlayStats) {
-            Object.assign(expandedData.gamePlayStats, minimalData.gamePlayStats);
-        }
-        
-        if (minimalData.scoreStats) {
-            Object.assign(expandedData.scoreStats, minimalData.scoreStats);
-        }
-        
-        // 復旧情報の追加
-        expandedData.recoveryInfo = {
-            recoveredFrom: 'minimal_backup',
-            recoveryDate: Date.now(),
-            confidence: 0.6
-        };
-        
-        return expandedData;
-    }
-    
-    /**
-     * 復旧データの検証
-     */
-    async validateRecoveredData(data) {
-        const validation = {
-            isValid: true,
-            errors: [],
-            warnings: []
-        };
-        
-        try {
-            // 基本構造の検証
-            if (!data || typeof data !== 'object') {
-                validation.isValid = false;
-                validation.errors.push('Invalid data structure');
-                return validation;
-            }
-            
-            // 各フィールドの検証
-            for (const [field, validator] of this.validationRules) {
-                if (data[field]) {
-                    const fieldValidation = validator(data[field]);
-                    if (!fieldValidation.isValid) {
-                        validation.warnings.push(`${field}: ${fieldValidation.errors.join(', ')}`);
-                    }
-                }
-            }
-            
-            // JSON serialization test
-            JSON.stringify(data);
-            
-        } catch (error) {
-            validation.isValid = false;
-            validation.errors.push(`Validation error: ${error.message}`);
-        }
-        
-        return validation;
-    }
-    
-    /**
-     * 復旧データの適用
-     */
-    async applyRecoveredData(data) {
-        this.updateProgress('applying_recovered_data', 95);
-        
-        try {
-            // 統計マネージャーにデータを設定
-            this.statisticsManager.statistics = data;
-            
-            // データの保存
-            await this.statisticsManager.save({
-                createBackup: true,
-                validateIntegrity: true
-            });
-            
-            console.info('Recovered data applied successfully');
-            
-        } catch (error) {
-            throw new Error(`Failed to apply recovered data: ${error.message}`);
-        }
-    }
-    
-    /**
-     * フィールド検証
-     */
-    validateField(fieldName, fieldData) {
-        const validator = this.validationRules.get(fieldName);
-        if (validator) {
-            return validator(fieldData);
-        }
-        
-        return { isValid: true, errors: [] };
-    }
-    
-    /**
-     * ゲームプレイ統計の検証
-     */
-    validateGamePlayStats(data) {
-        const validation = { isValid: true, errors: [] };
-        
-        if (typeof data.totalGames !== 'number' || data.totalGames < 0) {
-            validation.errors.push('Invalid totalGames');
-        }
-        
-        if (typeof data.totalPlayTime !== 'number' || data.totalPlayTime < 0) {
-            validation.errors.push('Invalid totalPlayTime');
-        }
-        
-        validation.isValid = validation.errors.length === 0;
-        return validation;
-    }
-    
-    /**
-     * スコア統計の検証
-     */
-    validateScoreStats(data) {
-        const validation = { isValid: true, errors: [] };
-        
-        if (typeof data.totalScore !== 'number' || data.totalScore < 0) {
-            validation.errors.push('Invalid totalScore');
-        }
-        
-        if (typeof data.highestScore !== 'number' || data.highestScore < 0) {
-            validation.errors.push('Invalid highestScore');
-        }
-        
-        validation.isValid = validation.errors.length === 0;
-        return validation;
-    }
-    
-    /**
-     * バブル統計の検証
-     */
-    validateBubbleStats(data) {
-        const validation = { isValid: true, errors: [] };
-        
-        if (typeof data.totalPopped !== 'number' || data.totalPopped < 0) {
-            validation.errors.push('Invalid totalPopped');
-        }
-        
-        if (typeof data.accuracy !== 'number' || data.accuracy < 0 || data.accuracy > 1) {
-            validation.errors.push('Invalid accuracy');
-        }
-        
-        validation.isValid = validation.errors.length === 0;
-        return validation;
-    }
-    
-    /**
-     * コンボ統計の検証
-     */
-    validateComboStats(data) {
-        const validation = { isValid: true, errors: [] };
-        
-        if (typeof data.maxCombo !== 'number' || data.maxCombo < 0) {
-            validation.errors.push('Invalid maxCombo');
-        }
-        
-        validation.isValid = validation.errors.length === 0;
-        return validation;
-    }
-    
-    /**
-     * 時間統計の検証
-     */
-    validateTimeStats(data) {
-        const validation = { isValid: true, errors: [] };
-        
-        if (Array.isArray(data.playTimeByHour) && data.playTimeByHour.length !== 24) {
-            validation.errors.push('Invalid playTimeByHour length');
-        }
-        
-        validation.isValid = validation.errors.length === 0;
-        return validation;
-    }
-    
-    /**
-     * ヘルパーメソッド
-     */
-    
-    updateProgress(step, progress) {
+    updateProgress(step, progress, details = {}) {
         this.recoveryState.currentStep = step;
         this.recoveryState.progress = progress;
         
-        if (this.config.notification.showRecoveryProgress) {
-            this.notifyProgress(step, progress);
-        }
+        // ユーザーガイダンスに委譲
+        this.userGuidance.updateProgress(step, progress, details);
     }
     
-    calculateChecksum(data) {
-        const dataString = JSON.stringify(data);
-        let hash = 0;
-        for (let i = 0; i < dataString.length; i++) {
-            const char = dataString.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash;
-        }
-        return hash.toString(16);
-    }
-    
-    validateDataStructure(data) {
-        try {
-            return data && 
-                   typeof data === 'object' && 
-                   data.gamePlayStats && 
-                   data.scoreStats && 
-                   data.bubbleStats;
-        } catch {
-            return false;
-        }
-    }
-    
-    validateDataRanges(data) {
-        try {
-            if (data.bubbleStats && (data.bubbleStats.accuracy < 0 || data.bubbleStats.accuracy > 1)) {
-                return false;
-            }
-            if (data.gamePlayStats && data.gamePlayStats.totalGames < 0) {
-                return false;
-            }
-            return true;
-        } catch {
-            return false;
-        }
-    }
-    
-    getRepairedFields(original, repaired) {
-        const repairedFields = [];
-        Object.keys(repaired).forEach(key => {
-            if (JSON.stringify(original[key]) !== JSON.stringify(repaired[key])) {
-                repairedFields.push(key);
-            }
-        });
-        return repairedFields;
-    }
+    // ========== 復旧履歴管理 ==========
     
     /**
-     * 通知機能
+     * 復旧成功を記録
+     * @param {string} strategy 使用した戦略
+     * @param {Object} result 復旧結果
      */
-    
-    async notifyRecoveryStart(options) {
-        const notification = {
-            type: 'recovery_started',
-            message: 'データ復旧を開始しています...',
-            options: options,
-            timestamp: Date.now()
-        };
-        
-        await this.broadcastNotification(notification);
-    }
-    
-    async notifyRecoverySuccess(result) {
-        const notification = {
-            type: 'recovery_success',
-            message: `データ復旧が完了しました（方法: ${result.method}）`,
-            result: result,
-            timestamp: Date.now()
-        };
-        
-        await this.broadcastNotification(notification);
-    }
-    
-    async notifyRecoveryFailure(error) {
-        const notification = {
-            type: 'recovery_failure',
-            message: `データ復旧に失敗しました: ${error.message}`,
-            error: error,
-            timestamp: Date.now()
-        };
-        
-        await this.broadcastNotification(notification);
-    }
-    
-    async notifyProgress(step, progress) {
-        const notification = {
-            type: 'recovery_progress',
-            step: step,
-            progress: progress,
-            timestamp: Date.now()
-        };
-        
-        await this.broadcastNotification(notification);
-    }
-    
-    async broadcastNotification(notification) {
-        for (const callback of this.notificationCallbacks) {
-            try {
-                await callback(notification);
-            } catch (error) {
-                console.error('Notification callback failed:', error);
-            }
-        }
-    }
-    
-    async showManualRecoveryGuidance(errorDetails, recoveryError) {
-        const guidance = {
-            type: 'manual_recovery_guidance',
-            title: 'データ復旧のガイダンス',
-            message: '自動復旧に失敗しました。以下の手順を試してください：',
-            steps: [
-                '1. ページを再読み込みしてください',
-                '2. ブラウザのキャッシュをクリアしてください',
-                '3. 別のブラウザでアクセスしてみてください',
-                '4. 問題が続く場合は、新しいゲームを始めることを検討してください'
-            ],
-            errorDetails: errorDetails,
-            recoveryError: recoveryError,
-            timestamp: Date.now()
-        };
-        
-        await this.broadcastNotification(guidance);
-    }
-    
-    /**
-     * 履歴管理
-     */
-    
     recordRecoverySuccess(strategy, result) {
         const record = {
-            id: `recovery_${Date.now()}`,
-            timestamp: Date.now(),
-            strategy: strategy,
+            timestamp: new Date().toISOString(),
+            strategy,
             success: true,
-            method: result.method,
-            confidence: result.confidence,
-            metrics: result.metrics
+            result,
+            duration: this.recoveryState.lastRecoveryTime ? 
+                     Date.now() - this.recoveryState.lastRecoveryTime : null
         };
         
         this.recoveryState.recoveryHistory.push(record);
-        this.recoveryState.lastRecoveryTime = Date.now();
-        this.recoveryState.failedAttempts = 0;
+        this._trimRecoveryHistory();
         
-        this.saveRecoveryHistory();
+        console.log('[StatisticsDataRecovery] Recovery success recorded');
     }
     
+    /**
+     * 復旧失敗を記録
+     * @param {Error} error 発生したエラー
+     */
     recordRecoveryFailure(error) {
         const record = {
-            id: `recovery_${Date.now()}`,
-            timestamp: Date.now(),
+            timestamp: new Date().toISOString(),
             success: false,
             error: error.message,
-            stack: error.stack
+            duration: this.recoveryState.lastRecoveryTime ? 
+                     Date.now() - this.recoveryState.lastRecoveryTime : null
         };
         
         this.recoveryState.recoveryHistory.push(record);
-        this.recoveryState.failedAttempts++;
+        this._trimRecoveryHistory();
         
-        this.saveRecoveryHistory();
+        console.log('[StatisticsDataRecovery] Recovery failure recorded');
     }
     
-    loadRecoveryHistory() {
-        try {
-            const saved = localStorage.getItem('bubblePop_recovery_history');
-            if (saved) {
-                const data = JSON.parse(saved);
-                this.recoveryState.recoveryHistory = data.history || [];
-                this.recoveryState.lastRecoveryTime = data.lastRecoveryTime;
-                this.recoveryState.failedAttempts = data.failedAttempts || 0;
-            }
-        } catch (error) {
-            console.warn('Failed to load recovery history:', error);
+    /**
+     * 復旧履歴を取得
+     * @param {number} limit 取得件数制限
+     * @returns {Array} 復旧履歴
+     */
+    getRecoveryHistory(limit = 50) {
+        return this.userGuidance.getRecoveryHistory(limit);
+    }
+    
+    // ========== 通知システム連携 ==========
+    
+    /**
+     * 通知コールバックを登録
+     * @param {Function} callback 通知コールバック関数
+     */
+    registerNotificationCallback(callback) {
+        this.userGuidance.registerNotificationCallback(callback);
+    }
+    
+    /**
+     * 通知コールバックを解除
+     * @param {Function} callback 通知コールバック関数
+     */
+    unregisterNotificationCallback(callback) {
+        this.userGuidance.unregisterNotificationCallback(callback);
+    }
+    
+    // ========== 状態・設定管理 ==========
+    
+    /**
+     * 復旧ステータスを取得
+     * @returns {Object} 復旧ステータス
+     */
+    getRecoveryStatus() {
+        return {
+            ...this.recoveryState,
+            config: { ...this.config },
+            strategies: this.strategies.getStrategyStats(),
+            validation: this.validation.getValidationStats(),
+            guidance: this.userGuidance.getStats()
+        };
+    }
+    
+    /**
+     * 設定を更新
+     * @param {Object} newConfig 新しい設定
+     */
+    updateConfig(newConfig) {
+        Object.assign(this.config, newConfig);
+        
+        // サブコンポーネントにも設定を適用
+        if (newConfig.validation) {
+            this.validation.updateValidationConfig(newConfig.validation);
         }
-    }
-    
-    saveRecoveryHistory() {
-        try {
-            const data = {
-                history: this.recoveryState.recoveryHistory.slice(-50), // 最新50件
-                lastRecoveryTime: this.recoveryState.lastRecoveryTime,
-                failedAttempts: this.recoveryState.failedAttempts,
-                timestamp: Date.now()
-            };
-            
-            localStorage.setItem('bubblePop_recovery_history', JSON.stringify(data));
-        } catch (error) {
-            console.warn('Failed to save recovery history:', error);
+        
+        if (newConfig.notification) {
+            this.userGuidance.updateNotificationConfig(newConfig.notification);
         }
+        
+        console.log('[StatisticsDataRecovery] Configuration updated');
     }
     
-    async createPreRecoveryBackup() {
-        try {
-            const backupData = {
-                timestamp: Date.now(),
-                purpose: 'pre_recovery_backup',
-                originalData: localStorage.getItem('bubblePop_statistics_v2')
-            };
-            
-            localStorage.setItem(`bubblePop_pre_recovery_${Date.now()}`, JSON.stringify(backupData));
-        } catch (error) {
-            console.warn('Failed to create pre-recovery backup:', error);
+    /**
+     * 復旧履歴を整理
+     * @private
+     */
+    _trimRecoveryHistory() {
+        const maxHistory = 100;
+        if (this.recoveryState.recoveryHistory.length > maxHistory) {
+            this.recoveryState.recoveryHistory = this.recoveryState.recoveryHistory.slice(-maxHistory);
         }
     }
     
     /**
-     * 外部インターフェース
+     * クリーンアップ
      */
-    
-    registerNotificationCallback(callback) {
-        this.notificationCallbacks.add(callback);
-    }
-    
-    unregisterNotificationCallback(callback) {
-        this.notificationCallbacks.delete(callback);
-    }
-    
-    getRecoveryStatus() {
-        return {
-            isRecovering: this.recoveryState.isRecovering,
-            currentStep: this.recoveryState.currentStep,
-            progress: this.recoveryState.progress,
-            lastRecoveryTime: this.recoveryState.lastRecoveryTime,
-            failedAttempts: this.recoveryState.failedAttempts,
-            historyCount: this.recoveryState.recoveryHistory.length
-        };
-    }
-    
-    updateConfig(newConfig) {
-        Object.assign(this.config, newConfig);
-    }
-    
     destroy() {
-        this.notificationCallbacks.clear();
-        this.recoveryState.recoveryHistory = [];
+        // サブコンポーネントのクリーンアップ
+        if (this.userGuidance) {
+            this.userGuidance.clearRecoveryHistory();
+        }
+        
+        if (this.validation) {
+            this.validation.resetValidationStats();
+        }
+        
+        // 状態をリセット
+        this.recoveryState = {
+            isRecovering: false,
+            currentStep: null,
+            progress: 0,
+            lastRecoveryTime: null,
+            recoveryHistory: [],
+            failedAttempts: 0
+        };
+        
+        console.log('[StatisticsDataRecovery] Main Controller cleanup completed');
     }
 }

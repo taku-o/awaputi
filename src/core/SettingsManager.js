@@ -3,10 +3,14 @@ import { getConfigurationManager } from './ConfigurationManager.js';
 import { getSettingsNotificationSystem } from './SettingsNotificationSystem.js';
 import { SettingsValidator } from './settings/SettingsValidator.js';
 import { SettingsStorageManager } from './settings/SettingsStorageManager.js';
+import { SettingsDataManager } from './settings/SettingsDataManager.js';
+import { SettingsUIController } from './settings/SettingsUIController.js';
+import { SettingsExportImport } from './settings/SettingsExportImport.js';
 
 /**
  * 設定管理クラス（Main Controller）
  * ゲーム設定の統合管理システム - 検証、保存、通知の統合制御
+ * Main Controller Patternによる軽量オーケストレーター
  */
 export class SettingsManager {
     constructor(gameEngine) {
@@ -15,125 +19,22 @@ export class SettingsManager {
         this.notificationSystem = getSettingsNotificationSystem();
         this.errorHandler = getErrorHandler();
         this.listeners = new Map();
+        this.configWatchers = new Map();
         
-        // サブコンポーネントの初期化
+        // サブコンポーネントの初期化（依存注入）
         this.validator = new SettingsValidator(this);
         this.storageManager = new SettingsStorageManager(this);
+        this.dataManager = new SettingsDataManager(this);
+        this.uiController = new SettingsUIController(this);
+        this.exportImport = new SettingsExportImport(this);
         
-        // ConfigurationManagerに検証ルールとデフォルト値を設定
+        // ConfigurationManagerのセットアップ
         this._setupConfigurationManager();
         
+        // 設定を読み込み
         this.load();
         
-        console.log('[SettingsManager] Main Controller initialized');
-    }
-    
-    /**
-     * デフォルト設定を取得
-     */
-    getDefaultSettings() {
-        return {
-            // 音響設定
-            masterVolume: 0.7,
-            sfxVolume: 0.8,
-            bgmVolume: 0.5,
-            isMuted: false,
-            
-            // 言語設定
-            language: this.detectSystemLanguage(),
-            
-            // 品質設定
-            quality: 'auto',
-            
-            // アクセシビリティ設定
-            accessibility: {
-                highContrast: false,
-                reducedMotion: false,
-                largeText: false,
-                screenReader: false,
-                colorBlindSupport: false
-            },
-            
-            // 操作設定
-            controls: {
-                keyboardEnabled: true,
-                mouseEnabled: true,
-                touchEnabled: true
-            },
-            
-            // キーボードショートカット
-            keyboardShortcuts: {
-                pause: ['Space'],
-                menu: ['Escape'],
-                fullscreen: ['KeyF'],
-                mute: ['KeyM'],
-                settings: ['KeyS'],
-                help: ['KeyH', 'F1']
-            },
-            
-            // UI設定
-            ui: {
-                showFPS: false,
-                showDebugInfo: false,
-                animationSpeed: 1.0,
-                uiScale: 1.0
-            },
-            
-            // ソーシャル共有設定
-            social: {
-                enableSharing: true,
-                autoPromptHighScore: true,
-                autoPromptAchievements: true,
-                defaultPlatform: 'auto', // 'auto', 'twitter', 'facebook', 'native'
-                includeScreenshot: true,
-                screenshotQuality: 'high', // 'low', 'medium', 'high'
-                privacyLevel: 'public', // 'public', 'friends', 'private'
-                customMessage: '',
-                showWatermark: true
-            },
-            
-            // 通知設定
-            notifications: {
-                challenges: {
-                    enabled: true,
-                    newChallenge: true,
-                    challengeComplete: true,
-                    dailyReminder: true,
-                    weeklyReminder: true
-                },
-                achievements: {
-                    enabled: true,
-                    unlocked: true,
-                    progress: false,
-                    rare: true
-                },
-                leaderboard: {
-                    enabled: true,
-                    newRecord: true,
-                    rankChange: false
-                },
-                system: {
-                    enabled: true,
-                    updates: true,
-                    maintenance: true
-                }
-            }
-        };
-    }
-    
-    /**
-     * システム言語を検出
-     */
-    detectSystemLanguage() {
-        const browserLang = navigator.language || navigator.userLanguage || 'en';
-        
-        // 日本語の場合
-        if (browserLang.startsWith('ja')) {
-            return 'ja';
-        }
-        
-        // デフォルトは英語
-        return 'en';
+        console.log('[SettingsManager] Main Controller initialized with sub-components');
     }
     
     /**
@@ -141,23 +42,23 @@ export class SettingsManager {
      * @private
      */
     _setupConfigurationManager() {
-        const defaultSettings = this.getDefaultSettings();
+        const defaultSettings = this.dataManager.getDefaultSettings();
         
         // 音響設定
-        this._setupSettingsCategory('audio', {
+        this.dataManager.setupSettingsCategory('audio', {
             masterVolume: defaultSettings.masterVolume,
             sfxVolume: defaultSettings.sfxVolume,
             bgmVolume: defaultSettings.bgmVolume,
             isMuted: defaultSettings.isMuted
         }, {
-            masterVolume: this.validationRules.masterVolume,
-            sfxVolume: this.validationRules.sfxVolume,
-            bgmVolume: this.validationRules.bgmVolume,
+            masterVolume: this.validator.validationRules.masterVolume,
+            sfxVolume: this.validator.validationRules.sfxVolume,
+            bgmVolume: this.validator.validationRules.bgmVolume,
             isMuted: { type: 'boolean' }
         });
         
         // UI設定
-        this._setupSettingsCategory('ui', {
+        this.dataManager.setupSettingsCategory('ui', {
             language: defaultSettings.language,
             quality: defaultSettings.quality,
             ...defaultSettings.ui
@@ -176,8 +77,8 @@ export class SettingsManager {
             uiScale: { type: 'number', min: 0.5, max: 2.0 }
         });
         
-        // アクセシビリティ設定
-        this._setupSettingsCategory('accessibility', defaultSettings.accessibility, {
+        // その他の設定カテゴリもセットアップ
+        this.dataManager.setupSettingsCategory('accessibility', defaultSettings.accessibility, {
             highContrast: { type: 'boolean' },
             reducedMotion: { type: 'boolean' },
             largeText: { type: 'boolean' },
@@ -185,1055 +86,455 @@ export class SettingsManager {
             colorBlindSupport: { type: 'boolean' }
         });
         
-        // コントロール設定
-        this._setupSettingsCategory('controls', defaultSettings.controls, {
+        this.dataManager.setupSettingsCategory('controls', defaultSettings.controls, {
             keyboardEnabled: { type: 'boolean' },
             mouseEnabled: { type: 'boolean' },
             touchEnabled: { type: 'boolean' }
         });
         
-        // キーボードショートカット設定
-        this._setupSettingsCategory('keyboard', defaultSettings.keyboardShortcuts, {});
-        
-        // ソーシャル共有設定
-        this._setupSettingsCategory('social', defaultSettings.social, {
-            enableSharing: { type: 'boolean' },
-            autoPromptHighScore: { type: 'boolean' },
-            autoPromptAchievements: { type: 'boolean' },
-            defaultPlatform: { 
-                type: 'string', 
-                validator: (value) => ['auto', 'twitter', 'facebook', 'native'].includes(value)
-            },
-            includeScreenshot: { type: 'boolean' },
-            screenshotQuality: { 
-                type: 'string', 
-                validator: (value) => ['low', 'medium', 'high'].includes(value)
-            },
-            privacyLevel: { 
-                type: 'string', 
-                validator: (value) => ['public', 'friends', 'private'].includes(value)
-            },
-            customMessage: { type: 'string' },
-            showWatermark: { type: 'boolean' }
-        });
-        
-        // 通知設定
-        this._setupSettingsCategory('notifications', defaultSettings.notifications, {});
+        this.dataManager.setupSettingsCategory('keyboard', defaultSettings.keyboardShortcuts, {});
+        this.dataManager.setupSettingsCategory('social', defaultSettings.social, {});
+        this.dataManager.setupSettingsCategory('notifications', defaultSettings.notifications, {});
+    }
+    
+    // ========== 公開API（後方互換性維持） ==========
+    
+    /**
+     * デフォルト設定を取得
+     */
+    getDefaultSettings() {
+        return this.dataManager.getDefaultSettings();
     }
     
     /**
-     * 設定カテゴリをセットアップ
-     * @private
+     * システム言語を検出
      */
-    _setupSettingsCategory(category, defaultValues, validationRules) {
-        for (const [key, value] of Object.entries(defaultValues)) {
-            if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-                // ネストされたオブジェクトの場合
-                for (const [subKey, subValue] of Object.entries(value)) {
-                    this.configManager.setDefaultValue(category, `${key}.${subKey}`, subValue);
-                    // 実際の値も設定
-                    this.configManager.set(category, `${key}.${subKey}`, subValue);
-                    if (validationRules[subKey]) {
-                        this.configManager.setValidationRule(category, `${key}.${subKey}`, validationRules[subKey]);
-                    }
-                }
-            } else {
-                this.configManager.setDefaultValue(category, key, value);
-                // 実際の値も設定
-                this.configManager.set(category, key, value);
-                if (validationRules[key]) {
-                    this.configManager.setValidationRule(category, key, validationRules[key]);
-                }
-            }
-        }
+    detectSystemLanguage() {
+        return this.dataManager.detectSystemLanguage();
     }
-
+    
     /**
-     * 設定を取得
+     * 設定値を取得
+     * @param {string} key 設定キー
+     * @returns {*} 設定値
      */
     get(key) {
         try {
-            const { category, settingKey } = this._parseSettingKey(key);
+            const parsed = this.dataManager.parseSettingKey(key);
             
-            // ConfigurationManagerから取得を試行
-            const value = this.configManager.get(category, settingKey);
-            if (value !== null && value !== undefined) {
-                return value;
+            if (parsed.isLegacy) {
+                return this.dataManager.getLegacyValue(key);
             }
             
-            // フォールバック: 従来の方式で取得
-            return this._getLegacyValue(key);
-            
+            return this.configManager.get(key);
         } catch (error) {
-            getErrorHandler().handleError(error, 'SETTINGS_ERROR', {
-                operation: 'get',
-                key: key
-            });
-            return this._getLegacyValue(key);
+            this.errorHandler.handleError(error, 'SETTINGS_GET_ERROR', { key });
+            return this.dataManager.getDefaultValue(key);
         }
     }
     
     /**
-     * 従来の方式で設定値を取得（フォールバック用）
-     * @private
-     */
-    _getLegacyValue(key) {
-        const keys = key.split('.');
-        let value = this.settings || this.getDefaultSettings();
-        
-        for (const k of keys) {
-            if (value && typeof value === 'object' && k in value) {
-                value = value[k];
-            } else {
-                return undefined;
-            }
-        }
-        
-        return value;
-    }
-    
-    /**
-     * 設定キーをカテゴリと設定キーに分解
-     * @private
-     */
-    _parseSettingKey(key) {
-        // 音響設定
-        if (['masterVolume', 'sfxVolume', 'bgmVolume', 'isMuted'].includes(key)) {
-            return { category: 'audio', settingKey: key };
-        }
-        
-        // UI設定
-        if (['language', 'quality'].includes(key) || key.startsWith('ui.')) {
-            const settingKey = key.startsWith('ui.') ? key.substring(3) : key;
-            return { category: 'ui', settingKey };
-        }
-        
-        // アクセシビリティ設定
-        if (key.startsWith('accessibility.')) {
-            return { category: 'accessibility', settingKey: key.substring(14) };
-        }
-        
-        // コントロール設定
-        if (key.startsWith('controls.')) {
-            return { category: 'controls', settingKey: key.substring(9) };
-        }
-        
-        // キーボードショートカット
-        if (key.startsWith('keyboardShortcuts.')) {
-            return { category: 'keyboard', settingKey: key.substring(18) };
-        }
-        
-        // デフォルト: ui カテゴリ
-        return { category: 'ui', settingKey: key };
-    }
-    
-    /**
-     * 設定を更新
+     * 設定値を設定
+     * @param {string} key 設定キー
+     * @param {*} value 設定値
+     * @returns {boolean} 設定成功可否
      */
     set(key, value) {
         try {
-            const { category, settingKey } = this._parseSettingKey(key);
-            
-            // ConfigurationManagerで設定を更新
-            const success = this.configManager.set(category, settingKey, value);
-            
-            if (success) {
-                // 従来のsettingsオブジェクトも更新（互換性のため）
-                this._updateLegacySettings(key, value);
-                
-                // 変更を通知
-                const oldValue = this._getLegacyValue(key);
-                this.notifyChange(key, value, oldValue);
-                
-                // 設定を保存
-                this.save();
-                
-                return true;
-            } else {
-                // ConfigurationManagerでの設定が失敗した場合、従来の方式で試行
-                return this._setLegacyValue(key, value);
+            // 検証
+            if (!this.validator.validateSetting(key, value)) {
+                console.warn(`[SettingsManager] Invalid value for ${key}: ${value}`);
+                return false;
             }
             
-        } catch (error) {
-            getErrorHandler().handleError(error, 'SETTINGS_ERROR', {
-                operation: 'set',
-                key: key,
-                value: value
-            });
-            return this._setLegacyValue(key, value);
-        }
-    }
-    
-    /**
-     * 従来の方式で設定値を更新（フォールバック用）
-     * @private
-     */
-    _setLegacyValue(key, value) {
-        try {
-            // 入力値を検証
-            const validation = this.validateSetting(key, value);
-            if (!validation.isValid) {
-                throw new Error(`Invalid setting value for ${key}: ${validation.errors.join(', ')}`);
-            }
+            const oldValue = this.get(key);
             
-            // 設定を更新
-            const keys = key.split('.');
-            let target = this.settings || this.getDefaultSettings();
+            // ConfigurationManagerに設定
+            this.configManager.set(key, value);
             
-            for (let i = 0; i < keys.length - 1; i++) {
-                const k = keys[i];
-                if (!(k in target) || typeof target[k] !== 'object') {
-                    target[k] = {};
-                }
-                target = target[k];
-            }
-            
-            const lastKey = keys[keys.length - 1];
-            const oldValue = target[lastKey];
-            target[lastKey] = validation.sanitizedValue;
-            
-            // 変更を通知
-            this.notifyChange(key, validation.sanitizedValue, oldValue);
-            
-            // 設定を保存
-            this.save();
+            // 変更通知
+            this.notifyChange(key, value, oldValue);
             
             return true;
         } catch (error) {
-            getErrorHandler().handleError(error, 'SETTINGS_ERROR', {
-                operation: '_setLegacyValue',
-                key: key,
-                value: value
-            });
+            this.errorHandler.handleError(error, 'SETTINGS_SET_ERROR', { key, value });
             return false;
         }
     }
     
     /**
-     * 従来のsettingsオブジェクトを更新
-     * @private
-     */
-    _updateLegacySettings(key, value) {
-        if (!this.settings) {
-            this.settings = this.getDefaultSettings();
-        }
-        
-        const keys = key.split('.');
-        let target = this.settings;
-        
-        for (let i = 0; i < keys.length - 1; i++) {
-            const k = keys[i];
-            if (!(k in target) || typeof target[k] !== 'object') {
-                target[k] = {};
-            }
-            target = target[k];
-        }
-        
-        const lastKey = keys[keys.length - 1];
-        target[lastKey] = value;
-    }
-    
-    /**
-     * 設定値を検証
+     * 設定を検証
+     * @param {string} key 設定キー
+     * @param {*} value 設定値
+     * @returns {boolean} 検証結果
      */
     validateSetting(key, value) {
         return this.validator.validateSetting(key, value);
     }
     
     /**
-     * 複数の設定を一括更新
+     * 複数の設定を一度に設定
+     * @param {Object} settings 設定オブジェクト
+     * @returns {boolean} 設定成功可否
      */
     setMultiple(settings) {
-        const results = {};
+        const results = [];
         
         for (const [key, value] of Object.entries(settings)) {
-            results[key] = this.set(key, value);
+            results.push(this.set(key, value));
         }
         
-        return results;
+        return results.every(result => result === true);
     }
     
     /**
      * 設定をリセット
+     * @param {string} key リセットする設定キー（nullで全設定）
      */
     reset(key = null) {
         try {
-            if (key) {
-                // 特定の設定をリセット
-                const defaultValue = this.getDefaultValue(key);
-                if (defaultValue !== undefined) {
-                    this.set(key, defaultValue);
-                }
-            } else {
+            if (key === null) {
                 // 全設定をリセット
-                this.configManager.reset();
-                this.settings = this.getDefaultSettings();
-                
-                // ConfigurationManagerも再セットアップ
-                this._setupConfigurationManager();
-                
-                this.save();
-                this.notifyChange('*', this.settings, null);
+                const defaultSettings = this.dataManager.getDefaultSettings();
+                for (const [settingKey, defaultValue] of Object.entries(defaultSettings)) {
+                    this.set(settingKey, defaultValue);
+                }
+                console.log('[SettingsManager] All settings reset to defaults');
+            } else {
+                // 特定の設定をリセット
+                const defaultValue = this.dataManager.getDefaultValue(key);
+                this.set(key, defaultValue);
+                console.log(`[SettingsManager] Setting '${key}' reset to default`);
             }
         } catch (error) {
-            getErrorHandler().handleError(error, 'SETTINGS_ERROR', {
-                operation: 'reset',
-                key: key
-            });
+            this.errorHandler.handleError(error, 'SETTINGS_RESET_ERROR', { key });
         }
     }
     
     /**
      * デフォルト値を取得
+     * @param {string} key 設定キー
+     * @returns {*} デフォルト値
      */
     getDefaultValue(key) {
-        const keys = key.split('.');
-        let value = this.getDefaultSettings();
-        
-        for (const k of keys) {
-            if (value && typeof value === 'object' && k in value) {
-                value = value[k];
-            } else {
-                return undefined;
-            }
-        }
-        
-        return value;
+        return this.dataManager.getDefaultValue(key);
     }
+    
+    // ========== リスナー管理 ==========
     
     /**
      * 設定変更リスナーを追加
+     * @param {string} key 監視する設定キー
+     * @param {Function} callback コールバック関数
+     * @param {Object} options オプション
+     * @returns {string} リスナーID
      */
     addListener(key, callback, options = {}) {
-        try {
-            // 新しい通知システムを使用
-            const listenerId = this.notificationSystem.addListener(key, callback, {
-                ...options,
-                context: options.context || 'SettingsManager'
-            });
-            
-            // 従来のリスナーシステムにも追加（互換性のため）
-            if (!this.listeners.has(key)) {
-                this.listeners.set(key, new Set());
-            }
-            this.listeners.get(key).add(callback);
-            
-            // ConfigurationManagerの監視機能も使用
-            const { category, settingKey } = this._parseSettingKey(key);
-            const watchId = this.configManager.watch(category, settingKey, (newValue, oldValue) => {
-                // 直接コールバックを呼び出し（重複通知を避けるため）
-                callback(newValue, oldValue, key);
-            });
-            
-            // 監視IDを保存（削除時に使用）
-            if (!this.configWatchers) {
-                this.configWatchers = new Map();
-            }
-            this.configWatchers.set(`${key}_${callback}`, watchId);
-            
-            return listenerId;
-            
-        } catch (error) {
-            getErrorHandler().handleError(error, 'SETTINGS_ERROR', {
-                operation: 'addListener',
-                key: key
-            });
-            return null;
+        const listenerId = options.id || `listener_${Date.now()}_${Math.random()}`;
+        const priority = options.priority || 'normal';
+        
+        if (!this.listeners.has(key)) {
+            this.listeners.set(key, []);
         }
+        
+        this.listeners.get(key).push({
+            id: listenerId,
+            callback,
+            priority,
+            once: options.once || false,
+            addedAt: Date.now()
+        });
+        
+        // 優先度でソート
+        this.listeners.get(key).sort((a, b) => {
+            const priorities = { high: 3, normal: 2, low: 1 };
+            return priorities[b.priority] - priorities[a.priority];
+        });
+        
+        return listenerId;
     }
     
     /**
      * 設定変更リスナーを削除
+     * @param {string} key 設定キー
+     * @param {Function} callback コールバック関数
      */
     removeListener(key, callback) {
-        try {
-            // 従来のリスナーシステムから削除
-            if (this.listeners.has(key)) {
-                this.listeners.get(key).delete(callback);
-            }
-            
-            // ConfigurationManagerの監視も解除
-            if (this.configWatchers) {
-                const watcherKey = `${key}_${callback}`;
-                const watchId = this.configWatchers.get(watcherKey);
-                if (watchId) {
-                    this.configManager.unwatch(watchId);
-                    this.configWatchers.delete(watcherKey);
+        if (this.listeners.has(key)) {
+            const listeners = this.listeners.get(key);
+            const index = listeners.findIndex(listener => listener.callback === callback);
+            if (index !== -1) {
+                listeners.splice(index, 1);
+                if (listeners.length === 0) {
+                    this.listeners.delete(key);
                 }
             }
-            
-        } catch (error) {
-            getErrorHandler().handleError(error, 'SETTINGS_ERROR', {
-                operation: 'removeListener',
-                key: key
-            });
         }
     }
     
     /**
-     * リスナーIDでリスナーを削除
+     * リスナーIDで削除
+     * @param {string} listenerId リスナーID
      */
     removeListenerById(listenerId) {
-        return this.notificationSystem.removeListener(listenerId);
+        for (const [key, listeners] of this.listeners.entries()) {
+            const index = listeners.findIndex(listener => listener.id === listenerId);
+            if (index !== -1) {
+                listeners.splice(index, 1);
+                if (listeners.length === 0) {
+                    this.listeners.delete(key);
+                }
+                break;
+            }
+        }
     }
     
     /**
      * 設定変更を通知
+     * @param {string} key 設定キー
+     * @param {*} newValue 新しい値
+     * @param {*} oldValue 古い値
      */
     notifyChange(key, newValue, oldValue) {
-        // 新しい通知システムを使用
-        this.notificationSystem.notifyChange(key, newValue, oldValue, {
-            source: 'SettingsManager',
-            timestamp: Date.now()
-        });
-        
-        // 従来のリスナーシステムにも通知（互換性のため）
-        this._notifyLegacyListeners(key, newValue, oldValue);
-        
-        // ゲームエンジンに設定変更を適用
-        this.applySettingChange(key, newValue, oldValue);
-    }
-    
-    /**
-     * 従来のリスナーシステムに通知
-     * @private
-     */
-    _notifyLegacyListeners(key, newValue, oldValue) {
-        // 特定のキーのリスナーに通知
-        if (this.listeners.has(key)) {
-            this.listeners.get(key).forEach(callback => {
-                try {
-                    callback(newValue, oldValue, key);
-                } catch (error) {
-                    getErrorHandler().handleError(error, 'SETTINGS_ERROR', {
-                        operation: 'notifyChange',
-                        key: key,
-                        callback: callback.name
-                    });
-                }
-            });
-        }
-        
-        // 全体変更リスナーに通知
-        if (this.listeners.has('*')) {
-            this.listeners.get('*').forEach(callback => {
-                try {
-                    callback(newValue, oldValue, key);
-                } catch (error) {
-                    getErrorHandler().handleError(error, 'SETTINGS_ERROR', {
-                        operation: 'notifyChange',
-                        key: '*',
-                        callback: callback.name
-                    });
-                }
-            });
-        }
-    }
-    
-    /**
-     * 設定変更をゲームエンジンに適用
-     */
-    applySettingChange(key, newValue, oldValue) {
         try {
-            switch (key) {
-                case 'masterVolume':
-                case 'sfxVolume':
-                case 'bgmVolume':
-                    if (this.gameEngine.audioManager) {
-                        const volumeType = key.replace('Volume', '');
-                        this.gameEngine.audioManager.setVolume(volumeType, newValue);
-                    }
-                    break;
-                    
-                case 'isMuted':
-                    if (this.gameEngine.audioManager) {
-                        if (newValue) {
-                            this.gameEngine.audioManager.stopAllSounds();
+            // 通知システムに通知
+            this.notificationSystem.notifySettingChange(key, newValue, oldValue);
+            
+            // リスナーに通知
+            if (this.listeners.has(key)) {
+                const listeners = [...this.listeners.get(key)];
+                for (const listener of listeners) {
+                    try {
+                        listener.callback(newValue, oldValue, key);
+                        
+                        // onceオプションの処理
+                        if (listener.once) {
+                            this.removeListenerById(listener.id);
                         }
+                    } catch (error) {
+                        console.error('[SettingsManager] Listener error:', error);
                     }
-                    break;
-                    
-                case 'language':
-                    // 言語変更の処理（非同期）
-                    this.applyLanguageChange(newValue).catch(error => {
-                        console.error('Language change failed:', error);
-                    });
-                    break;
-                    
-                case 'quality':
-                    // 品質設定の変更
-                    this.applyQualityChange(newValue);
-                    break;
-                    
-                case 'accessibility.highContrast':
-                    this.applyHighContrastMode(newValue);
-                    break;
-                    
-                case 'accessibility.reducedMotion':
-                    this.applyReducedMotionMode(newValue);
-                    break;
-                    
-                case 'accessibility.largeText':
-                    this.applyLargeTextMode(newValue);
-                    break;
-                    
-                case 'ui.uiScale':
-                    this.applyUIScale(newValue);
-                    break;
-            }
-        } catch (error) {
-            getErrorHandler().handleError(error, 'SETTINGS_ERROR', {
-                operation: 'applySettingChange',
-                key: key,
-                newValue: newValue
-            });
-        }
-    }
-    
-    /**
-     * 言語変更を適用（非同期）
-     */
-    async applyLanguageChange(language) {
-        try {
-            // ローカライゼーションマネージャーで言語を設定（非同期）
-            if (this.gameEngine.localizationManager) {
-                const success = await this.gameEngine.localizationManager.setLanguage(language);
-                if (success) {
-                    console.log(`Language successfully changed to: ${language}`);
-                } else {
-                    console.warn(`Failed to change language to: ${language}`);
                 }
             }
+            
+            // UI設定の適用
+            this.uiController.applySettingChange(key, newValue, oldValue);
+            
         } catch (error) {
-            console.error('Language change error:', error);
+            this.errorHandler.handleError(error, 'SETTINGS_NOTIFY_ERROR', { key, newValue, oldValue });
         }
     }
     
-    /**
-     * 品質設定を適用
-     */
-    applyQualityChange(quality) {
-        if (this.gameEngine.performanceOptimizer) {
-            switch (quality) {
-                case 'low':
-                    this.gameEngine.performanceOptimizer.setQualityLevel('low');
-                    break;
-                case 'medium':
-                    this.gameEngine.performanceOptimizer.setQualityLevel('medium');
-                    break;
-                case 'high':
-                    this.gameEngine.performanceOptimizer.setQualityLevel('high');
-                    break;
-                case 'auto':
-                    this.gameEngine.performanceOptimizer.enableAutoQuality();
-                    break;
-            }
-        }
-        
-        console.log(`Quality setting changed to: ${quality}`);
-    }
+    // ========== 設定適用 ==========
     
     /**
-     * ハイコントラストモードを適用
+     * 全ての設定を適用
      */
-    applyHighContrastMode(enabled) {
-        const body = document.body;
-        if (enabled) {
-            body.classList.add('high-contrast');
-        } else {
-            body.classList.remove('high-contrast');
+    applyAllSettings() {
+        try {
+            console.log('[SettingsManager] Applying all settings');
+            
+            // UI設定の適用
+            this.uiController.applyAllUISettings();
+            
+            console.log('[SettingsManager] All settings applied successfully');
+        } catch (error) {
+            this.errorHandler.handleError(error, 'SETTINGS_APPLY_ALL_ERROR');
         }
-        
-        console.log(`High contrast mode: ${enabled ? 'enabled' : 'disabled'}`);
     }
     
-    /**
-     * モーション軽減モードを適用
-     */
-    applyReducedMotionMode(enabled) {
-        const body = document.body;
-        if (enabled) {
-            body.classList.add('reduced-motion');
-        } else {
-            body.classList.remove('reduced-motion');
-        }
-        
-        // パフォーマンス最適化にも反映
-        if (this.gameEngine.performanceOptimizer) {
-            this.gameEngine.performanceOptimizer.setReducedMotion(enabled);
-        }
-        
-        console.log(`Reduced motion mode: ${enabled ? 'enabled' : 'disabled'}`);
-    }
-    
-    /**
-     * 大きなテキストモードを適用
-     */
-    applyLargeTextMode(enabled) {
-        const body = document.body;
-        if (enabled) {
-            body.classList.add('large-text');
-        } else {
-            body.classList.remove('large-text');
-        }
-        
-        console.log(`Large text mode: ${enabled ? 'enabled' : 'disabled'}`);
-    }
-    
-    /**
-     * UIスケールを適用
-     */
-    applyUIScale(scale) {
-        const gameUI = document.getElementById('gameUI');
-        if (gameUI) {
-            gameUI.style.transform = `scale(${scale})`;
-            gameUI.style.transformOrigin = 'top left';
-        }
-        
-        console.log(`UI scale changed to: ${scale}`);
-    }
+    // ========== 保存・読み込み ==========
     
     /**
      * 設定を保存
+     * @returns {boolean} 保存成功可否
      */
     save() {
         try {
-            // 設定データを保存
-            const saveSuccess = this.storageManager.saveSettings(this.settings);
-            
-            // ConfigurationManagerの設定も保存
-            if (saveSuccess) {
-                const configData = this._getConfigurationManagerData();
-                this.storageManager.saveConfigurationManagerData(configData);
-            }
-            
-            return saveSuccess;
-            
+            const configData = this.configManager.exportConfig();
+            return this.storageManager.saveSettings(configData);
         } catch (error) {
-            this.errorHandler.handleError(error, 'STORAGE_ERROR', {
-                operation: 'save',
-                component: 'SettingsManager'
-            });
+            this.errorHandler.handleError(error, 'SETTINGS_SAVE_ERROR');
             return false;
         }
-    }
-    
-    /**
-     * ConfigurationManagerのデータを取得
-     * @private
-     */
-    _getConfigurationManagerData() {
-        return {
-            ui: this.configManager.getCategory('ui'),
-            audio: this.configManager.getCategory('audio'),
-            accessibility: this.configManager.getCategory('accessibility'),
-            controls: this.configManager.getCategory('controls'),
-            keyboard: this.configManager.getCategory('keyboard'),
-            social: this.configManager.getCategory('social'),
-            notifications: this.configManager.getCategory('notifications')
-        };
     }
     
     /**
      * 設定を読み込み
+     * @returns {boolean} 読み込み成功可否
      */
     load() {
         try {
-            // 設定データを読み込み
             const loadedSettings = this.storageManager.loadSettings();
-            
             if (loadedSettings) {
                 // デフォルト設定とマージ
-                this.settings = this.mergeSettings(this.getDefaultSettings(), loadedSettings);
-            } else {
-                this.settings = this.getDefaultSettings();
-            }
-            
-            // ConfigurationManagerのデータを読み込み
-            this._loadConfigurationManagerData();
-            
-            // 読み込み後に設定を適用
-            this.applyAllSettings();
-            
-        } catch (error) {
-            this.errorHandler.handleError(error, 'STORAGE_ERROR', {
-                operation: 'load',
-                component: 'SettingsManager'
-            });
-            
-            // エラーの場合はデフォルト設定を使用
-            this.settings = this.getDefaultSettings();
-        }
-    }
-    
-    /**
-     * ConfigurationManagerのデータを読み込み
-     * @private
-     */
-    _loadConfigurationManagerData() {
-        try {
-            const loadedConfig = this.storageManager.loadConfigurationManagerData();
-            
-            if (loadedConfig) {
-                // 各カテゴリのデータをConfigurationManagerに設定
-                for (const [category, settings] of Object.entries(loadedConfig)) {
-                    if (settings && typeof settings === 'object') {
-                        for (const [key, value] of Object.entries(settings)) {
-                            this.configManager.set(category, key, value);
-                        }
-                    }
-                }
-            }
-        } catch (error) {
-            this.errorHandler.handleError(error, 'STORAGE_ERROR', {
-                operation: '_loadConfigurationManagerData',
-                component: 'SettingsManager'
-            });
-        }
-    }
-    
-    /**
-     * 設定をマージ
-     */
-    mergeSettings(defaultSettings, loadedSettings) {
-        const merged = { ...defaultSettings };
-        
-        for (const [key, value] of Object.entries(loadedSettings)) {
-            if (key in defaultSettings) {
-                if (typeof defaultSettings[key] === 'object' && defaultSettings[key] !== null) {
-                    merged[key] = { ...defaultSettings[key], ...value };
-                } else {
-                    merged[key] = value;
-                }
-            }
-        }
-        
-        return merged;
-    }
-    
-    /**
-     * 全設定を適用
-     */
-    applyAllSettings() {
-        // 音響設定
-        this.applySettingChange('masterVolume', this.settings.masterVolume);
-        this.applySettingChange('sfxVolume', this.settings.sfxVolume);
-        this.applySettingChange('bgmVolume', this.settings.bgmVolume);
-        
-        // 言語設定
-        this.applySettingChange('language', this.settings.language);
-        
-        // 品質設定
-        this.applySettingChange('quality', this.settings.quality);
-        
-        // アクセシビリティ設定
-        this.applySettingChange('accessibility.highContrast', this.settings.accessibility.highContrast);
-        this.applySettingChange('accessibility.reducedMotion', this.settings.accessibility.reducedMotion);
-        this.applySettingChange('accessibility.largeText', this.settings.accessibility.largeText);
-        
-        // UI設定
-        this.applySettingChange('ui.uiScale', this.settings.ui.uiScale);
-    }
-    
-    /**
-     * 設定のエクスポート
-     */
-    export() {
-        return this.storageManager.exportSettings();
-    }
-    
-    /**
-     * 設定のインポート
-     */
-    import(settingsJson) {
-        const success = this.storageManager.importSettings(settingsJson);
-        
-        if (success) {
-            // 設定を再読み込み
-            this.load();
-            this.notifyChange('*', this.settings, null);
-        }
-        
-        return success;
-    }
-    
-    /**
-     * 設定の統計情報を取得
-     */
-    getStats() {
-        const storageStats = this.storageManager.getSyncStats();
-        const validationStats = this.validator.getValidationStats();
-        
-        return {
-            totalSettings: Object.keys(this.settings).length,
-            listeners: this.listeners.size,
-            language: this.settings.language,
-            quality: this.settings.quality,
-            accessibility: Object.values(this.settings.accessibility).filter(Boolean).length,
-            storageStats,
-            validationStats,
-            componentStats: {
-                validator: !!this.validator,
-                storageManager: !!this.storageManager,
-                configManager: !!this.configManager,
-                notificationSystem: !!this.notificationSystem
-            }
-        };
-    }
-    
-    /**
-     * ConfigurationManagerとの統合状態を取得
-     */
-    getIntegrationStatus() {
-        return {
-            configManagerActive: !!this.configManager,
-            watchersCount: this.configWatchers ? this.configWatchers.size : 0,
-            categoriesInConfig: this.configManager ? [
-                'ui', 'audio', 'accessibility', 'controls', 'keyboard'
-            ].map(cat => ({
-                category: cat,
-                settingsCount: Object.keys(this.configManager.getCategory(cat)).length
-            })) : [],
-            legacySettingsCount: this.settings ? Object.keys(this.settings).length : 0
-        };
-    }
-    
-    /**
-     * 設定の同期状態をチェック
-     */
-    checkSyncStatus() {
-        const status = {
-            synchronized: true,
-            differences: []
-        };
-        
-        try {
-            // 主要設定の同期状態をチェック
-            const keyMappings = [
-                { legacy: 'masterVolume', config: { category: 'audio', key: 'masterVolume' } },
-                { legacy: 'sfxVolume', config: { category: 'audio', key: 'sfxVolume' } },
-                { legacy: 'bgmVolume', config: { category: 'audio', key: 'bgmVolume' } },
-                { legacy: 'language', config: { category: 'ui', key: 'language' } },
-                { legacy: 'quality', config: { category: 'ui', key: 'quality' } }
-            ];
-            
-            for (const mapping of keyMappings) {
-                const legacyValue = this._getLegacyValue(mapping.legacy);
-                const configValue = this.configManager.get(mapping.config.category, mapping.config.key);
+                const defaultSettings = this.dataManager.getDefaultSettings();
+                const mergedSettings = this.dataManager.mergeSettings(defaultSettings, loadedSettings);
                 
-                if (legacyValue !== configValue) {
-                    status.synchronized = false;
-                    status.differences.push({
-                        key: mapping.legacy,
-                        legacyValue,
-                        configValue
-                    });
+                // ConfigurationManagerに設定
+                for (const [key, value] of Object.entries(mergedSettings)) {
+                    this.configManager.set(key, value);
                 }
+                
+                // 設定を適用
+                this.applyAllSettings();
+                
+                console.log('[SettingsManager] Settings loaded and applied successfully');
+                return true;
             }
             
+            return false;
         } catch (error) {
-            getErrorHandler().handleError(error, 'SETTINGS_ERROR', {
-                operation: 'checkSyncStatus'
-            });
-            status.synchronized = false;
-        }
-        
-        return status;
-    }
-    
-    /**
-     * 設定を強制同期
-     */
-    forceSynchronization() {
-        try {
-            // 従来の設定をConfigurationManagerに同期
-            if (this.settings) {
-                this._syncLegacyToConfig();
-            }
-            
-            // ConfigurationManagerの設定を従来の形式に同期
-            this._syncConfigToLegacy();
-            
-            // 保存
-            this.save();
-            
-            return true;
-        } catch (error) {
-            getErrorHandler().handleError(error, 'SETTINGS_ERROR', {
-                operation: 'forceSynchronization'
-            });
+            this.errorHandler.handleError(error, 'SETTINGS_LOAD_ERROR');
             return false;
         }
     }
     
+    // ========== エクスポート・インポート ==========
+    
     /**
-     * 従来の設定をConfigurationManagerに同期
-     * @private
+     * 設定をエクスポート
+     * @param {Object} options エクスポートオプション
+     * @returns {string} JSON形式の設定データ
      */
-    _syncLegacyToConfig() {
-        const mappings = [
-            { legacy: 'masterVolume', config: { category: 'audio', key: 'masterVolume' } },
-            { legacy: 'sfxVolume', config: { category: 'audio', key: 'sfxVolume' } },
-            { legacy: 'bgmVolume', config: { category: 'audio', key: 'bgmVolume' } },
-            { legacy: 'isMuted', config: { category: 'audio', key: 'isMuted' } },
-            { legacy: 'language', config: { category: 'ui', key: 'language' } },
-            { legacy: 'quality', config: { category: 'ui', key: 'quality' } }
-        ];
-        
-        for (const mapping of mappings) {
-            const value = this._getLegacyValue(mapping.legacy);
-            if (value !== undefined) {
-                this.configManager.set(mapping.config.category, mapping.config.key, value);
-            }
-        }
-        
-        // ネストされた設定の同期
-        if (this.settings.accessibility) {
-            for (const [key, value] of Object.entries(this.settings.accessibility)) {
-                this.configManager.set('accessibility', key, value);
-            }
-        }
-        
-        if (this.settings.controls) {
-            for (const [key, value] of Object.entries(this.settings.controls)) {
-                this.configManager.set('controls', key, value);
-            }
-        }
-        
-        if (this.settings.ui) {
-            for (const [key, value] of Object.entries(this.settings.ui)) {
-                this.configManager.set('ui', key, value);
-            }
-        }
+    export(options = {}) {
+        return this.exportImport.export(options);
     }
     
     /**
-     * ConfigurationManagerの設定を従来の形式に同期
-     * @private
+     * 設定をインポート
+     * @param {string} settingsJson JSON形式の設定データ
+     * @param {Object} options インポートオプション
+     * @returns {Promise<Object>} インポート結果
      */
-    _syncConfigToLegacy() {
-        if (!this.settings) {
-            this.settings = this.getDefaultSettings();
-        }
-        
-        // 音響設定
-        const audioConfig = this.configManager.getCategory('audio');
-        for (const [key, value] of Object.entries(audioConfig)) {
-            if (key in this.settings) {
-                this.settings[key] = value;
-            }
-        }
-        
-        // UI設定
-        const uiConfig = this.configManager.getCategory('ui');
-        for (const [key, value] of Object.entries(uiConfig)) {
-            if (key === 'language' || key === 'quality') {
-                this.settings[key] = value;
-            } else if (this.settings.ui) {
-                this.settings.ui[key] = value;
-            }
-        }
-        
-        // アクセシビリティ設定
-        const accessibilityConfig = this.configManager.getCategory('accessibility');
-        if (this.settings.accessibility) {
-            Object.assign(this.settings.accessibility, accessibilityConfig);
-        }
-        
-        // コントロール設定
-        const controlsConfig = this.configManager.getCategory('controls');
-        if (this.settings.controls) {
-            Object.assign(this.settings.controls, controlsConfig);
-        }
+    async import(settingsJson, options = {}) {
+        return await this.exportImport.import(settingsJson, options);
+    }
+    
+    // ========== 統計・状態取得 ==========
+    
+    /**
+     * 統計情報を取得
+     * @returns {Object} 統計情報
+     */
+    getStats() {
+        return {
+            dataManager: this.dataManager.getStats(),
+            uiController: this.uiController.getUIStats(),
+            exportImport: this.exportImport.getStats(),
+            validator: this.validator.getValidationStats(),
+            storageManager: this.storageManager.getSyncStats(),
+            listeners: this.getActiveListeners(),
+            watchers: this.getActiveWatchers()
+        };
     }
     
     /**
-     * コンポーネント監視を追加
-     * @param {string} componentName - コンポーネント名
-     * @param {Object} component - コンポーネントオブジェクト
-     * @param {Array} watchedSettings - 監視する設定のリスト
-     * @returns {string} 監視ID
+     * アクティブなリスナーを取得
+     * @returns {Object} アクティブリスナー情報
+     */
+    getActiveListeners() {
+        const listenerStats = {};
+        for (const [key, listeners] of this.listeners.entries()) {
+            listenerStats[key] = listeners.length;
+        }
+        return listenerStats;
+    }
+    
+    /**
+     * アクティブなウォッチャーを取得
+     * @returns {Object} アクティブウォッチャー情報
+     */
+    getActiveWatchers() {
+        return Object.fromEntries(this.configWatchers.entries());
+    }
+    
+    /**
+     * 統合ステータスを取得
+     * @returns {Object} 統合ステータス
+     */
+    getIntegrationStatus() {
+        return {
+            configManager: !!this.configManager,
+            notificationSystem: !!this.notificationSystem,
+            validator: !!this.validator,
+            storageManager: !!this.storageManager,
+            dataManager: !!this.dataManager,
+            uiController: !!this.uiController,
+            exportImport: !!this.exportImport,
+            gameEngine: !!this.gameEngine
+        };
+    }
+    
+    // ========== コンポーネント管理 ==========
+    
+    /**
+     * コンポーネントウォッチャーを追加
+     * @param {string} componentName コンポーネント名
+     * @param {Object} component コンポーネントオブジェクト
+     * @param {Array} watchedSettings 監視する設定のリスト
+     * @returns {string} ウォッチャーID
      */
     addComponentWatcher(componentName, component, watchedSettings) {
-        return this.notificationSystem.addComponentWatcher(componentName, component, watchedSettings);
+        return this.uiController.addComponentWatcher(componentName, component, watchedSettings);
     }
     
     /**
-     * コンポーネント監視を削除
-     * @param {string} watcherId - 監視ID
-     * @returns {boolean} 削除成功フラグ
+     * コンポーネントウォッチャーを削除
+     * @param {string} watcherId ウォッチャーID
      */
     removeComponentWatcher(watcherId) {
-        return this.notificationSystem.removeComponentWatcher(watcherId);
+        this.uiController.removeComponentWatcher(watcherId);
+    }
+    
+    // ========== バックアップ・復元 ==========
+    
+    /**
+     * バックアップを作成
+     * @returns {Promise<Object>} バックアップ情報
+     */
+    async createBackup() {
+        return await this.exportImport.createBackup();
     }
     
     /**
-     * 通知システムの統計情報を取得
-     * @returns {Object} 統計情報
+     * バックアップから復元
+     * @param {number} backupIndex バックアップインデックス
+     * @returns {Promise<Object>} 復元結果
+     */
+    async restoreFromBackup(backupIndex = -1) {
+        return await this.exportImport.restoreFromBackup(backupIndex);
+    }
+    
+    /**
+     * バックアップ履歴を取得
+     * @returns {Array} バックアップ履歴
+     */
+    getBackupHistory() {
+        return this.exportImport.getBackupHistory();
+    }
+    
+    // ========== 通知システム連携 ==========
+    
+    /**
+     * 通知統計を取得
+     * @returns {Object} 通知統計
      */
     getNotificationStats() {
         return this.notificationSystem.getStats();
     }
     
     /**
-     * アクティブなリスナー情報を取得
-     * @returns {Object} リスナー情報
-     */
-    getActiveListeners() {
-        return this.notificationSystem.getActiveListeners();
-    }
-    
-    /**
-     * アクティブなコンポーネント監視情報を取得
-     * @returns {Array} 監視情報
-     */
-    getActiveWatchers() {
-        return this.notificationSystem.getActiveWatchers();
-    }
-    
-    /**
      * 通知履歴を取得
-     * @param {number} limit - 取得する履歴の数
+     * @param {number} limit 取得件数制限
      * @returns {Array} 通知履歴
      */
     getNotificationHistory(limit = 50) {
         return this.notificationSystem.getNotificationHistory(limit);
     }
-
-    /**
-     * バックアップを作成
-     * @returns {boolean} バックアップ成功可否
-     */
-    createBackup() {
-        return this.storageManager.createBackup();
-    }
-
-    /**
-     * バックアップから復旧
-     * @param {number} backupIndex バックアップのインデックス
-     * @returns {boolean} 復旧成功可否
-     */
-    restoreFromBackup(backupIndex = -1) {
-        const restoredSettings = this.storageManager.restoreFromBackup(backupIndex);
-        
-        if (restoredSettings) {
-            this.settings = this.mergeSettings(this.getDefaultSettings(), restoredSettings);
-            this.applyAllSettings();
-            this.notifyChange('*', this.settings, null);
-            return true;
-        }
-        
-        return false;
-    }
-
-    /**
-     * バックアップ履歴を取得
-     * @returns {Array} バックアップ履歴
-     */
-    getBackupHistory() {
-        return this.storageManager.getBackupHistory();
-    }
-
+    
+    // ========== ストレージ健全性 ==========
+    
     /**
      * ストレージの健全性をチェック
      * @returns {Object} 健全性レポート
@@ -1241,6 +542,8 @@ export class SettingsManager {
     checkStorageHealth() {
         return this.storageManager.checkStorageHealth();
     }
+    
+    // ========== クリーンアップ ==========
     
     /**
      * クリーンアップ
@@ -1251,7 +554,15 @@ export class SettingsManager {
             this.storageManager.cleanup();
         }
         
-        // 従来のリスナーをクリア
+        if (this.uiController) {
+            this.uiController.reset();
+        }
+        
+        if (this.exportImport) {
+            this.exportImport.resetStats();
+        }
+        
+        // リスナーをクリア
         this.listeners.clear();
         
         // ConfigurationManagerの監視をクリア
@@ -1263,7 +574,9 @@ export class SettingsManager {
         }
         
         // 通知システムをクリーンアップ
-        this.notificationSystem.cleanup();
+        if (this.notificationSystem) {
+            this.notificationSystem.cleanup();
+        }
         
         console.log('[SettingsManager] Main Controller cleanup completed');
     }
