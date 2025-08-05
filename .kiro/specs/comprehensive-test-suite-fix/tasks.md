@@ -140,7 +140,7 @@
     - Add proper mock setup for performance testing
     - _Requirements: 2.1, 4.1, 4.2, 4.3, 4.4_
 
-  - [ ] 8.3 Update remaining failing test files
+  - [x] 8.3 Update remaining failing test files
     - Systematically fix jest.fn() usage across all test files
     - Update mock implementations to use MockFactory
     - Fix API method calls to match actual implementations

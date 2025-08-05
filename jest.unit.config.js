@@ -11,7 +11,7 @@ export default {
   preset: null,
   
   // Transform configuration for ES modules
-  extensionsToTreatAsEsm: ['.js'],
+  // Note: '.js' is automatically inferred from package.json type: "module"
   transform: {},
   
   // Global setup
@@ -121,7 +121,7 @@ export default {
   
   // Test execution configuration
   randomize: false, // Maintain test order for consistency
-  runInBand: false, // Allow parallel execution
+  // Parallel execution is default, runInBand option removed
   
   // Reporters
   reporters: [
