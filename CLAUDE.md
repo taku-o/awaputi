@@ -310,6 +310,56 @@ MCPツール（find_symbol）が25,000トークン制限を超過してエラー
 - **サイズ削減**: メインコントローラー70%削減目標
 - **API互換性**: 既存公開インターフェース完全保持
 
+### デバッグ・テストファイル分割プロジェクト Phase F.2（Issue #94対応）
+**目標**: デバッグ・テスト関連の大容量ファイル（7ファイル）をMain Controller Patternで分割し、MCPツール互換性（2,500語以下）を実現
+
+#### 問題の概要
+MCPツール（find_symbol）が25,000トークン制限を超過してエラーになる。デバッグ・テスト関連の大容量ファイル（2,500語超）が原因。対象：
+- MockDataGenerator.js（3,038語） - モックデータ生成システム
+- EnhancedDebugInterface.js（2,766語） - 高度デバッグインターフェース
+- TestConfigurationGenerator.js（2,756語） - テスト設定生成システム
+- TestDataGenerationCommands.js（2,621語） - テストデータ生成コマンド
+- TestFailureAnalyzer.js（2,618語） - テスト失敗分析システム
+- TestSupportTools.js（2,527語） - テストサポートツール
+- GameStateCommands.js（2,523語） - ゲーム状態操作コマンド
+
+#### 分割戦略（Main Controller Pattern）
+1. **Main Controller Pattern**: 元クラスは軽量オーケストレーター（<2,500語）、公開API維持
+2. **機能分離**: 関連メソッドをデータ生成・テスト支援・分析別に専門クラス化
+3. **依存注入**: サブコンポーネントをメインコントローラーに注入
+4. **API保持**: 後方互換性のため既存インターフェース完全保持
+
+#### ディレクトリ構造
+```
+src/debug/
+├── mock/                           # MockDataGenerator components
+├── interface/                      # EnhancedDebugInterface components  
+├── commands/                       # TestDataGenerationCommands components
+├── analysis/                       # TestFailureAnalyzer components
+├── support/                        # TestSupportTools components
+└── state/                          # GameStateCommands components
+
+src/utils/test-configuration/       # TestConfigurationGenerator components
+```
+
+#### 実装フェーズ（10大タスク）
+- **Task 1**: プロジェクト構造準備・ディレクトリ作成
+- **Task 2**: MockDataGenerator分割（最大3,038語→4コンポーネント）
+- **Task 3**: EnhancedDebugInterface分割（2,766語→4コンポーネント）
+- **Task 4**: TestConfigurationGenerator分割（2,756語→4コンポーネント）
+- **Task 5**: TestDataGenerationCommands分割（2,621語→4コンポーネント）
+- **Task 6**: TestFailureAnalyzer分割（2,618語→4コンポーネント）
+- **Task 7**: TestSupportTools分割（2,527語→4コンポーネント）
+- **Task 8**: GameStateCommands分割（2,523語→4コンポーネント）
+- **Task 9**: 包括的統合テスト・検証（全テスト、MCP互換性、パフォーマンス、後方互換性）
+- **Task 10**: ドキュメント・最終検証（コンポーネント文書、API文書、開発ガイドライン）
+
+#### パフォーマンス目標
+- **ファイルサイズ**: 全ターゲットファイル2,500語以下
+- **MCPツール**: find_symbol等のトークン制限エラー解消
+- **サイズ削減**: メインコントローラー70%削減目標
+- **API互換性**: 既存公開インターフェース完全保持
+
 ### 視覚効果強化プロジェクト（Issue #24対応）
 **目標**: 既存のParticleManagerとEffectManagerを拡張し、より多様で魅力的な視覚効果を実現する包括的なシステムを実装
 
