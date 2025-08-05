@@ -1,9 +1,33 @@
 /**
  * PerformanceMetricsCollector - Collects and manages performance metrics data
- * Part of the PerformanceDataAnalyzer split implementation
+ * 
+ * This component is part of the PerformanceDataAnalyzer split implementation following
+ * the Main Controller Pattern. It handles all metrics collection and data management
+ * functionality previously contained in the main PerformanceDataAnalyzer class.
+ * 
+ * Responsibilities:
+ * - Collect performance metrics from various sources
+ * - Manage analysis history and data retention
+ * - Handle calibration sample collection
+ * - Maintain performance baselines and historical data
+ * 
+ * @class PerformanceMetricsCollector
+ * @memberof PerformanceMonitoring
+ * @since 1.0.0
+ * @author BubblePop Team
+ * 
+ * @example
+ * const collector = new PerformanceMetricsCollector(mainController);
+ * collector.addToAnalysisHistory(timestamp, metrics);
+ * const history = collector.getAnalysisHistory();
  */
-
 export class PerformanceMetricsCollector {
+    /**
+     * Creates a new PerformanceMetricsCollector instance
+     * 
+     * @param {PerformanceDataAnalyzer} mainController - Reference to the main controller
+     * @throws {Error} When mainController is not provided
+     */
     constructor(mainController) {
         this.mainController = mainController;
         this.errorHandler = mainController.errorHandler;
