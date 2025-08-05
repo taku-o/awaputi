@@ -1,113 +1,212 @@
-# タスク完了時のチェックリスト
+# タスク完了時の実行チェックリスト
 
-## コード変更後の必須確認事項
+## 基本チェックリスト（すべてのタスクで実行）
 
-### 1. テスト実行
+### 1. ファイルサイズ制限チェック（必須）
 ```bash
-# ユニットテストを実行して既存機能が壊れていないか確認
-npm test
-
-# 変更したファイルに関連するテストを実行
-npm test -- [テストファイル名]
-
-# 統合テストも必要に応じて実行
-npm run test:integration
-```
-
-### 2. ファイルサイズチェック
-```bash
-# MCPツール互換性のため、ファイルサイズをチェック
+# MCPトークン制限対応（2,500語以下）
 npm run filesize:check
+# または
+node tools/file-size-monitor.js src
 
-# 2,500語を超えるファイルがある場合は分割を検討
+# 問題があれば Main Controller Pattern で分割
 ```
 
-### 3. 設定検証
+### 2. テスト実行（必須）
 ```bash
-# 設定ファイルの整合性を確認
+# 基本テスト実行
+npm run test:unit              # 単体テスト
+npm run test:integration       # 統合テスト
+
+# 該当する場合は追加テスト
+npm run test:performance       # パフォーマンス関連の変更時
+npm run test:e2e              # UI/UX変更時
+npm run test:quality          # 品質関連の変更時
+```
+
+### 3. 設定検証（設定変更時）
+```bash
+npm run validate:config        # 設定ファイル変更時
+npm run validate:i18n-requirements  # 多言語関連変更時
+```
+
+## 変更内容別チェックリスト
+
+### コア機能変更時
+```bash
+# 1. 単体テスト
+npm run test:unit
+
+# 2. 統合テスト（必須）
+npm run test:integration
+
+# 3. パフォーマンステスト
+npm run test:performance
+
+# 4. 設定検証
 npm run validate:config
 ```
 
-### 4. リンター実行（現在は未設定だが推奨）
+### UI/UX変更時
 ```bash
-# ESLint等が設定されている場合
-# npm run lint
+# 1. 基本テスト
+npm run test:unit
+
+# 2. E2Eテスト（必須）
+npm run test:e2e
+
+# 3. アクセシビリティテスト
+npm run test:quality
+
+# 4. i18n対応確認
+npm run test:i18n-usability
 ```
 
-### 5. ビルド確認
+### 多言語対応変更時
 ```bash
-# ビルドが正常に完了するか確認
+# 1. i18n検証（必須）
+npm run validate:i18n-requirements
+npm run i18n:validate
+
+# 2. 翻訳品質テスト
+npm run test:translation-quality
+npm run test:i18n-usability
+
+# 3. i18nパフォーマンステスト
+npm run test:i18n-performance
+
+# 4. 品質レポート生成
+npm run i18n:quality-report
+```
+
+### パフォーマンス最適化時
+```bash
+# 1. パフォーマンステスト（必須）
+npm run test:performance
+npm run test:performance:verbose
+
+# 2. バンドルサイズチェック
+npm run size-check
+
+# 3. ビルドテスト
+npm run build
+npm run build:analyze
+
+# 4. Lighthouse分析
+npm run lighthouse
+```
+
+### アクセシビリティ変更時
+```bash
+# 1. 品質テスト（必須）
+npm run test:quality
+
+# 2. アクセシビリティ特化テスト
+# WCAG 2.1 AA準拠確認（手動）
+# キーボードナビゲーション確認
+# スクリーンリーダー確認
+
+# 3. E2Eテスト
+npm run test:e2e
+```
+
+### デバッグツール変更時
+```bash
+# 1. デバッグツール単体テスト
+npm run test:unit -- tests/debug/
+
+# 2. 統合テスト
+npm run test:integration
+
+# 3. 開発環境での動作確認
+http://localhost:8000?debug=true
+```
+
+## ドキュメント更新（該当時）
+
+### API変更時
+```bash
+# 1. API文書生成
+npm run docs:generate
+
+# 2. 文書検証
+npm run docs:validate
+
+# 3. リンクチェック
+npm run docs:check-links
+```
+
+### 大きな機能追加時
+```bash
+# 1. 開発ガイド更新確認
+# docs/development-guide.md
+
+# 2. アーキテクチャ文書更新
+# docs/architecture.md
+
+# 3. README更新（必要に応じて）
+```
+
+## 最終確認（本番デプロイ前）
+
+### ビルド確認
+```bash
+# 1. クリーンビルド
+npm run clean
 npm run build
 
-# ビルドエラーがある場合は修正
+# 2. プレビュー確認
+npm run preview
+# http://localhost:4173 で動作確認
+
+# 3. 全テスト実行
+npm run test:all
 ```
 
-### 6. ローカル動作確認
+### 品質確認
 ```bash
-# 開発サーバーを起動
-python -m http.server 8000
+# 1. 全体品質チェック
+npm run docs:quality
 
-# ブラウザで動作確認
-# http://localhost:8000
+# 2. パフォーマンス最終確認
+npm run lighthouse
+
+# 3. i18n最終確認
+npm run i18n:quality-report
 ```
 
-### 7. Git コミット前の確認
+## エラー対応ガイド
+
+### テスト失敗時
+1. **単体テスト失敗**: 該当コンポーネントの修正
+2. **統合テスト失敗**: コンポーネント間の依存関係確認
+3. **E2Eテスト失敗**: ブラウザでの手動確認後修正
+4. **パフォーマンステスト失敗**: プロファイリング後最適化
+
+### ファイルサイズ制限違反時
+1. **Main Controller Pattern**で分割実装
+2. 機能別コンポーネント分離
+3. 公開API維持で後方互換性確保
+
+### ビルド失敗時
+1. 依存関係確認: `npm install`
+2. TypeScript型エラー確認
+3. モジュールインポートパス確認
+
+## コミット前の最終チェック
+
 ```bash
-# 変更内容を確認
+# 1. ファイルサイズ
+npm run filesize:check
+
+# 2. 基本テスト
+npm run test:unit
+
+# 3. Git状態確認
 git status
 git diff
 
-# 不要なファイルが含まれていないか確認
-# console.logなどのデバッグコードが残っていないか確認
+# 4. コミット
+git add .
+git commit -m "適切なコミットメッセージ"
 ```
-
-### 8. コミットメッセージの規約
-```
-# 形式: <type>: <description>
-
-feat: 新機能追加
-fix: バグ修正
-refactor: リファクタリング
-docs: ドキュメント更新
-test: テスト追加・修正
-style: コードスタイルの変更
-perf: パフォーマンス改善
-chore: その他の変更
-
-# 例:
-git commit -m "feat: Add new bubble type for special events"
-git commit -m "fix: Resolve memory leak in ParticleManager"
-```
-
-### 9. プロジェクト固有の確認事項
-
-#### MCPツール互換性
-- ファイルサイズが2,500語以下であることを確認
-- 大きなファイルはMain Controller Patternで分割
-
-#### 多言語対応
-- 新しいUIテキストは LocalizationManager を使用
-- 翻訳キーを適切に追加
-
-#### アクセシビリティ
-- WCAG 2.1 AA準拠を維持
-- ARIAラベル、キーボードナビゲーション対応
-
-#### パフォーマンス
-- 60FPS維持を目指す
-- メモリリークがないか確認
-
-### 10. ドキュメント更新
-```bash
-# APIドキュメントを更新（必要に応じて）
-npm run docs:generate
-
-# プロジェクトドキュメントの更新
-# - CLAUDE.md の更新（必要に応じて）
-# - 関連するIssueのドキュメント更新
-```
-
-### 推奨される追加確認
-- コードレビューのためのPR作成
-- 関連するIssueへのコメント追加
-- チームメンバーへの共有（必要に応じて）

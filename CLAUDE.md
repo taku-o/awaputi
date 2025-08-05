@@ -310,6 +310,62 @@ MCPツール（find_symbol）が25,000トークン制限を超過してエラー
 - **サイズ削減**: メインコントローラー70%削減目標
 - **API互換性**: 既存公開インターフェース完全保持
 
+### デバッグ・テストファイル分割プロジェクト Phase F.2（Issue #94対応）✅ 完了
+**目標**: デバッグ・テスト関連の大容量ファイル（7ファイル）をMain Controller Patternで分割し、MCPツール互換性（2,500語以下）を実現
+
+#### 完了した分割対象ファイル
+MCPツール（find_symbol）の25,000トークン制限問題を解決。全7ファイルの分割が完了：
+- MockDataGenerator.js（3,038語 → 1,095語） - モックデータ生成システム ✅ 完了
+- EnhancedDebugInterface.js（2,766語 → 1,426語） - 高度デバッグインターフェース ✅ 完了
+- TestConfigurationGenerator.js（2,756語 → 821語） - テスト設定生成システム ✅ 完了
+- TestDataGenerationCommands.js（2,621語 → 1,276語） - テストデータ生成コマンド ✅ 完了
+- TestFailureAnalyzer.js（2,618語 → 1,929語） - テスト失敗分析システム ✅ 完了
+- TestSupportTools.js（2,527語 → 497語） - テストサポートツール ✅ 完了
+- GameStateCommands.js（2,523語 → 924語） - ゲーム状態操作コマンド ✅ 完了
+
+#### 達成された成果
+- **平均サイズ削減**: 57%（18,569語 → 7,968語）
+- **MCPツール互換性**: 全ファイル2,500語以下を達成
+- **後方互換性**: 既存API完全保持
+- **アーキテクチャ**: Main Controller Pattern統一適用
+
+#### 分割戦略（Main Controller Pattern）
+1. **Main Controller Pattern**: 元クラスは軽量オーケストレーター（<2,500語）、公開API維持
+2. **機能分離**: 関連メソッドをデータ生成・テスト支援・分析別に専門クラス化
+3. **依存注入**: サブコンポーネントをメインコントローラーに注入
+4. **API保持**: 後方互換性のため既存インターフェース完全保持
+
+#### ディレクトリ構造
+```
+src/debug/
+├── mock/                           # MockDataGenerator components
+├── interface/                      # EnhancedDebugInterface components  
+├── commands/                       # TestDataGenerationCommands components
+├── analysis/                       # TestFailureAnalyzer components
+├── support/                        # TestSupportTools components
+└── state/                          # GameStateCommands components
+
+src/utils/test-configuration/       # TestConfigurationGenerator components
+```
+
+#### 実装フェーズ（10大タスク）
+- **Task 1**: プロジェクト構造準備・ディレクトリ作成
+- **Task 2**: MockDataGenerator分割（最大3,038語→4コンポーネント）
+- **Task 3**: EnhancedDebugInterface分割（2,766語→4コンポーネント）
+- **Task 4**: TestConfigurationGenerator分割（2,756語→4コンポーネント）
+- **Task 5**: TestDataGenerationCommands分割（2,621語→4コンポーネント）
+- **Task 6**: TestFailureAnalyzer分割（2,618語→4コンポーネント）
+- **Task 7**: TestSupportTools分割（2,527語→4コンポーネント）
+- **Task 8**: GameStateCommands分割（2,523語→4コンポーネント）
+- **Task 9**: 包括的統合テスト・検証（全テスト、MCP互換性、パフォーマンス、後方互換性）
+- **Task 10**: ドキュメント・最終検証（コンポーネント文書、API文書、開発ガイドライン）
+
+#### パフォーマンス目標
+- **ファイルサイズ**: 全ターゲットファイル2,500語以下
+- **MCPツール**: find_symbol等のトークン制限エラー解消
+- **サイズ削減**: メインコントローラー70%削減目標
+- **API互換性**: 既存公開インターフェース完全保持
+
 ### 視覚効果強化プロジェクト（Issue #24対応）
 **目標**: 既存のParticleManagerとEffectManagerを拡張し、より多様で魅力的な視覚効果を実現する包括的なシステムを実装
 
