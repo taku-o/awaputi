@@ -12,7 +12,7 @@ export default {
   preset: null,
   
   // Transform configuration for ES modules
-  extensionsToTreatAsEsm: ['.js'],
+  // Note: '.js' is automatically inferred from package.json type: "module"
   transform: {},
   
   // Jest globals for ES modules
@@ -54,12 +54,12 @@ export default {
   
   // Exclude E2E and Playwright tests
   testPathIgnorePatterns: [
-    '<rootDir>/node_modules/',
-    '<rootDir>/dist/',
-    '<rootDir>/coverage/',
-    '<rootDir>/tests/e2e/',
-    '<rootDir>/playwright-tests/',
-    '/tests/**/*e2e*.test.js'
+    '/node_modules/',
+    '/dist/',
+    '/coverage/',
+    '/tests/e2e/',
+    '/playwright-tests/',
+    'e2e.*\\.test\\.js$'
   ],
   
   // Coverage configuration
@@ -103,7 +103,6 @@ export default {
   
   // Execution configuration
   maxWorkers: '50%', // Use 50% of available cores
-  runInBand: false, // Allow parallel execution
   
   // Force exit after tests complete
   forceExit: false,
@@ -121,15 +120,7 @@ export default {
   
   // Reporters
   reporters: [
-    'default',
-    [
-      'jest-junit',
-      {
-        outputDirectory: '<rootDir>/test-results',
-        outputName: 'test-results.xml',
-        suiteName: 'All Tests (Unit + Performance)'
-      }
-    ]
+    'default'
   ],
   
   // Display name

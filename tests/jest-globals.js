@@ -16,11 +16,7 @@ global.afterEach = afterEach;
 global.beforeAll = beforeAll;
 global.afterAll = afterAll;
 
-// Additional Jest utilities
-global.beforeEach = beforeEach;
-global.afterEach = afterEach;
-global.beforeAll = beforeAll;
-global.afterAll = afterAll;
+// Additional Jest utilities already defined above
 
 // Mock utilities
 global.spyOn = jest.spyOn;
