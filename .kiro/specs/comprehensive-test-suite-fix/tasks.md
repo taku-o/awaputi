@@ -133,7 +133,7 @@
     - Add proper error handling and test isolation
     - _Requirements: 1.1, 1.2, 2.1, 3.1, 3.2_
 
-  - [ ] 8.2 Update performance test files
+  - [x] 8.2 Update performance test files
     - Fix StatisticsPerformance.test.js mock usage
     - Update performance thresholds to use environment-aware values
     - Implement retry logic for flaky performance tests
