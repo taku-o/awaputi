@@ -1,22 +1,36 @@
 /**
- * エラーハンドリングクラス
+ * ErrorHandler - Main Controller for error handling system
+ * Refactored to use the Main Controller Pattern with sub-components
  * グレースフルデグラデーション、入力値検証、異常状態からの復旧処理を提供
  */
+
+import { ErrorLogger } from './error/ErrorLogger.js';
+import { ErrorReporter } from './error/ErrorReporter.js';
+import { ErrorRecovery } from './error/ErrorRecovery.js';
+import { ErrorAnalyzer } from './error/ErrorAnalyzer.js';
+
 class ErrorHandler {
     constructor() {
+        // Environment detection
+        this.isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
+        this.isNode = typeof process !== 'undefined' && process.versions && process.versions.node;
+        
+        // Main controller state
+        this.isInitialized = false;
+        
+        // Initialize sub-components with dependency injection
+        this.logger = new ErrorLogger(this);
+        this.reporter = new ErrorReporter(this);
+        this.recovery = new ErrorRecovery(this);
+        this.analyzer = new ErrorAnalyzer(this);
+        
+        // Legacy compatibility properties - delegated to sub-components
         this.errorLog = [];
         this.maxLogSize = 100;
         this.criticalErrors = new Set();
         this.recoveryAttempts = new Map();
         this.maxRecoveryAttempts = 3;
         this.fallbackModes = new Map();
-        this.isInitialized = false;
-        
-        // 環境判定
-        this.isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
-        this.isNode = typeof process !== 'undefined' && process.versions && process.versions.node;
-        
-        // エラー統計
         this.errorStats = {
             total: 0,
             byType: new Map(),
@@ -25,11 +39,8 @@ class ErrorHandler {
             recovered: 0
         };
         
-        // 復旧戦略
+        // Delegated properties from sub-components
         this.recoveryStrategies = new Map();
-        this.setupRecoveryStrategies();
-        
-        // フォールバック状態
         this.fallbackState = {
             audioDisabled: false,
             canvasDisabled: false,
@@ -42,7 +53,7 @@ class ErrorHandler {
     }
     
     /**
-     * エラーハンドラーを初期化
+     * Initialize error handler
      */
     initialize() {
         if (this.isInitialized) return;
@@ -51,25 +62,25 @@ class ErrorHandler {
             this.setupGlobalErrorHandlers();
             this.setupPerformanceMonitoring();
             this.isInitialized = true;
-            console.log('ErrorHandler initialized successfully');
+            console.log('[ErrorHandler] Main controller initialized successfully');
         } catch (error) {
-            console.error('Failed to initialize ErrorHandler:', error);
-            // 最小限の機能で動作
+            console.error('[ErrorHandler] Failed to initialize:', error);
+            // Fallback to safe mode
             this.enableSafeMode();
         }
     }
     
     /**
-     * グローバルエラーハンドラーを設定
+     * Setup global error handlers
      */
     setupGlobalErrorHandlers() {
-        // ブラウザ環境でのみグローバルエラーハンドラーを設定
+        // Browser environment only
         if (!this.isBrowser) {
-            console.log('ErrorHandler: Skipping global error handlers in non-browser environment');
+            console.log('[ErrorHandler] Skipping global error handlers in non-browser environment');
             return;
         }
         
-        // 未処理のJavaScriptエラー
+        // Unhandled JavaScript errors
         window.addEventListener('error', (event) => {
             this.handleError(event.error, 'GLOBAL_ERROR', {
                 filename: event.filename,
@@ -79,15 +90,15 @@ class ErrorHandler {
             });
         });
         
-        // 未処理のPromise拒否
+        // Unhandled Promise rejections
         window.addEventListener('unhandledrejection', (event) => {
             this.handleError(event.reason, 'PROMISE_REJECTION', {
                 promise: event.promise
             });
-            event.preventDefault(); // デフォルトのコンソール出力を防ぐ
+            event.preventDefault(); // Prevent default console output
         });
         
-        // リソース読み込みエラー
+        // Resource loading errors
         window.addEventListener('error', (event) => {
             if (event.target !== window) {
                 this.handleError(new Error(`Resource load failed: ${event.target.src || event.target.href}`), 'RESOURCE_ERROR', {
@@ -99,23 +110,23 @@ class ErrorHandler {
     }
     
     /**
-     * パフォーマンス監視を設定
+     * Setup performance monitoring
      */
     setupPerformanceMonitoring() {
-        // ブラウザ環境でのみパフォーマンス監視を設定
+        // Browser environment only
         if (!this.isBrowser) {
-            console.log('ErrorHandler: Skipping performance monitoring in non-browser environment');
+            console.log('[ErrorHandler] Skipping performance monitoring in non-browser environment');
             return;
         }
         
-        // メモリ使用量の監視
+        // Memory usage monitoring
         if (window.performance && window.performance.memory) {
             setInterval(() => {
                 const memory = window.performance.memory;
                 const usedMB = memory.usedJSHeapSize / 1024 / 1024;
                 const limitMB = memory.jsHeapSizeLimit / 1024 / 1024;
                 
-                // メモリ使用量が80%を超えた場合
+                // Memory usage over 80%
                 if (usedMB / limitMB > 0.8) {
                     this.handleError(new Error(`High memory usage: ${Math.round(usedMB)}MB / ${Math.round(limitMB)}MB`), 'MEMORY_WARNING', {
                         usedMB: Math.round(usedMB),
@@ -123,10 +134,10 @@ class ErrorHandler {
                         percentage: Math.round((usedMB / limitMB) * 100)
                     });
                 }
-            }, 10000); // 10秒ごと
+            }, 10000); // Every 10 seconds
         }
         
-        // フレームレート監視
+        // Frame rate monitoring
         let frameCount = 0;
         let lastTime = performance.now();
         
@@ -139,7 +150,7 @@ class ErrorHandler {
                 frameCount = 0;
                 lastTime = currentTime;
                 
-                // FPSが30を下回った場合
+                // FPS below 30
                 if (fps < 30) {
                     this.handleError(new Error(`Low FPS detected: ${fps}`), 'PERFORMANCE_WARNING', {
                         fps: fps,
@@ -155,619 +166,211 @@ class ErrorHandler {
     }
     
     /**
-     * 復旧戦略を設定
-     */
-    setupRecoveryStrategies() {
-        // Canvas関連エラーの復旧
-        this.recoveryStrategies.set('CANVAS_ERROR', {
-            attempts: 0,
-            maxAttempts: 2,
-            strategy: (error, context) => {
-                console.warn('Canvas error detected, attempting recovery:', error.message);
-                
-                // Canvas要素を再作成
-                const canvas = document.getElementById('gameCanvas');
-                if (canvas) {
-                    const parent = canvas.parentNode;
-                    const newCanvas = document.createElement('canvas');
-                    newCanvas.id = 'gameCanvas';
-                    newCanvas.width = canvas.width;
-                    newCanvas.height = canvas.height;
-                    newCanvas.className = canvas.className;
-                    
-                    parent.replaceChild(newCanvas, canvas);
-                    
-                    return { success: true, message: 'Canvas recreated' };
-                }
-                
-                return { success: false, message: 'Canvas element not found' };
-            },
-            fallback: () => {
-                this.showFallbackUI();
-                this.fallbackState.canvasDisabled = true;
-            }
-        });
-        
-        // Audio関連エラーの復旧
-        this.recoveryStrategies.set('AUDIO_ERROR', {
-            attempts: 0,
-            maxAttempts: 1,
-            strategy: (error, context) => {
-                console.warn('Audio error detected, disabling audio:', error.message);
-                this.fallbackState.audioDisabled = true;
-                return { success: true, message: 'Audio disabled' };
-            },
-            fallback: () => {
-                this.fallbackState.audioDisabled = true;
-            }
-        });
-        
-        // Storage関連エラーの復旧
-        this.recoveryStrategies.set('STORAGE_ERROR', {
-            attempts: 0,
-            maxAttempts: 1,
-            strategy: (error, context) => {
-                console.warn('Storage error detected, using memory storage:', error.message);
-                this.useMemoryStorage();
-                return { success: true, message: 'Switched to memory storage' };
-            },
-            fallback: () => {
-                this.fallbackState.storageDisabled = true;
-            }
-        });
-        
-        // メモリ関連エラーの復旧
-        this.recoveryStrategies.set('MEMORY_WARNING', {
-            attempts: 0,
-            maxAttempts: 1,
-            strategy: (error, context) => {
-                console.warn('Memory warning detected, reducing effects:', error.message);
-                this.reduceEffects();
-                this.performGarbageCollection();
-                return { success: true, message: 'Effects reduced, garbage collection performed' };
-            },
-            fallback: () => {
-                this.fallbackState.reducedEffects = true;
-                this.enableSafeMode();
-            }
-        });
-        
-        // パフォーマンス関連エラーの復旧
-        this.recoveryStrategies.set('PERFORMANCE_WARNING', {
-            attempts: 0,
-            maxAttempts: 2,
-            strategy: (error, context) => {
-                console.warn('Performance warning detected, optimizing:', error.message);
-                this.optimizePerformance();
-                return { success: true, message: 'Performance optimized' };
-            },
-            fallback: () => {
-                this.fallbackState.reducedEffects = true;
-            }
-        });
-    }
-    
-    /**
-     * エラーを処理
-     * @param {Error} error - エラーオブジェクト
-     * @param {string} context - エラーが発生したコンテキスト
-     * @param {Object} metadata - 追加のメタデータ
+     * Handle error - Main orchestration method
+     * @param {Error} error - Error object
+     * @param {string} context - Error context
+     * @param {Object} metadata - Additional metadata
      */
     handleError(error, context = 'UNKNOWN', metadata = {}) {
         try {
-            // エラー情報を正規化
-            const errorInfo = this.normalizeError(error, context, metadata);
+            // Normalize error using analyzer
+            const errorInfo = this.analyzer.normalizeError(error, context, metadata);
             
-            // エラーログに追加
-            this.addToErrorLog(errorInfo);
+            // Add to error log using logger
+            this.logger.addToErrorLog(errorInfo);
             
-            // 統計を更新
-            this.updateErrorStats(errorInfo);
+            // Update statistics using logger
+            this.logger.updateErrorStats(errorInfo);
             
-            // 重要度を判定
-            const severity = this.determineSeverity(errorInfo);
+            // Determine severity using analyzer
+            const severity = this.analyzer.determineSeverity(errorInfo);
             
-            // コンソールに出力
-            this.logError(errorInfo, severity);
+            // Log error using logger
+            this.logger.logStructuredError(errorInfo, severity);
             
-            // 復旧を試行
+            // Attempt recovery using recovery system
             if (severity !== 'LOW') {
-                this.attemptRecovery(errorInfo);
+                this.recovery.attemptRecovery(errorInfo);
             }
             
-            // ユーザーに通知（重要なエラーの場合）
+            // Notify user using reporter (for critical errors)
             if (severity === 'CRITICAL') {
-                this.notifyUser(errorInfo);
+                this.reporter.notifyUser(errorInfo);
             }
+            
+            // Update legacy compatibility properties
+            this.syncLegacyProperties();
             
         } catch (handlerError) {
-            // エラーハンドラー自体でエラーが発生した場合
-            console.error('Error in error handler:', handlerError);
-            console.error('Original error:', error);
+            // Error handler itself failed
+            console.error('[ErrorHandler] Error in error handler:', handlerError);
+            console.error('[ErrorHandler] Original error:', error);
             this.enableSafeMode();
         }
     }
     
     /**
-     * エラーを正規化
+     * Sync legacy properties for backward compatibility
+     */
+    syncLegacyProperties() {
+        // Sync errorLog
+        this.errorLog = this.logger.getErrorLog();
+        
+        // Sync errorStats
+        this.errorStats = this.logger.getErrorStats();
+        
+        // Sync fallbackState
+        this.fallbackState = this.recovery.getFallbackState();
+        
+        // Sync recoveryStrategies
+        this.recoveryStrategies = this.recovery.recoveryStrategies;
+    }
+    
+    // ===== DELEGATED METHODS - Maintain backward compatibility =====
+    
+    /**
+     * Normalize error - delegated to analyzer
      */
     normalizeError(error, context, metadata) {
-        const timestamp = new Date().toISOString();
-        const id = this.generateErrorId();
-        
-        // エラーオブジェクトを安全に処理
-        let message = 'Unknown error';
-        let stack = null;
-        let name = 'Error';
-        
-        if (error instanceof Error) {
-            message = error.message || 'Unknown error';
-            stack = error.stack;
-            name = error.name;
-        } else if (typeof error === 'string') {
-            message = error;
-        } else if (error && typeof error === 'object') {
-            message = error.message || error.toString() || 'Unknown error';
-            stack = error.stack;
-            name = error.name || 'Error';
-        }
-        
-        // 環境別の情報収集
-        const browserInfo = this.isBrowser ? {
-            userAgent: navigator.userAgent,
-            url: window.location.href
-        } : {
-            userAgent: 'Node.js',
-            url: 'N/A'
-        };
-        
-        return {
-            id,
-            timestamp,
-            message,
-            stack,
-            name,
-            context,
-            metadata: { ...metadata },
-            ...browserInfo,
-            recovered: false
-        };
+        return this.analyzer.normalizeError(error, context, metadata);
     }
     
     /**
-     * エラーIDを生成
+     * Generate error ID - delegated to logger
      */
     generateErrorId() {
-        return `err_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        return this.logger.generateErrorId();
     }
     
     /**
-     * エラーログに追加
+     * Add to error log - delegated to logger
      */
     addToErrorLog(errorInfo) {
-        this.errorLog.push(errorInfo);
-        
-        // ログサイズを制限
-        if (this.errorLog.length > this.maxLogSize) {
-            this.errorLog.shift();
-        }
+        this.logger.addToErrorLog(errorInfo);
+        this.syncLegacyProperties();
     }
     
     /**
-     * エラー統計を更新
+     * Update error statistics - delegated to logger
      */
     updateErrorStats(errorInfo) {
-        this.errorStats.total++;
-        
-        // タイプ別統計
-        const type = errorInfo.name;
-        this.errorStats.byType.set(type, (this.errorStats.byType.get(type) || 0) + 1);
-        
-        // コンテキスト別統計
-        const context = errorInfo.context;
-        this.errorStats.byContext.set(context, (this.errorStats.byContext.get(context) || 0) + 1);
+        this.logger.updateErrorStats(errorInfo);
+        this.syncLegacyProperties();
     }
     
     /**
-     * エラーの重要度を判定
+     * Determine severity - delegated to analyzer
      */
     determineSeverity(errorInfo) {
-        const { message, context, name } = errorInfo;
-        
-        // 重要なエラーパターン
-        const criticalPatterns = [
-            /canvas/i,
-            /webgl/i,
-            /out of memory/i,
-            /script error/i,
-            /network error/i
-        ];
-        
-        const highPatterns = [
-            /audio/i,
-            /storage/i,
-            /permission/i,
-            /security/i
-        ];
-        
-        // コンテキストベースの判定
-        if (context === 'CANVAS_ERROR' || context === 'GLOBAL_ERROR') {
-            return 'CRITICAL';
-        }
-        
-        if (context === 'AUDIO_ERROR' || context === 'STORAGE_ERROR') {
-            return 'HIGH';
-        }
-        
-        if (context === 'MEMORY_WARNING' || context === 'PERFORMANCE_WARNING') {
-            return 'MEDIUM';
-        }
-        
-        // メッセージベースの判定
-        if (criticalPatterns.some(pattern => pattern.test(message))) {
-            return 'CRITICAL';
-        }
-        
-        if (highPatterns.some(pattern => pattern.test(message))) {
-            return 'HIGH';
-        }
-        
-        return 'LOW';
+        return this.analyzer.determineSeverity(errorInfo);
     }
     
     /**
-     * エラーをログに出力
+     * Log error - delegated to logger
      */
     logError(errorInfo, severity) {
-        const logMethod = severity === 'CRITICAL' ? 'error' : 
-                         severity === 'HIGH' ? 'warn' : 'log';
-        
-        console[logMethod](`[${severity}] ${errorInfo.context}: ${errorInfo.message}`, {
-            id: errorInfo.id,
-            timestamp: errorInfo.timestamp,
-            metadata: errorInfo.metadata,
-            stack: errorInfo.stack
-        });
+        this.logger.logError(errorInfo, severity);
     }
     
     /**
-     * 復旧を試行
+     * Attempt recovery - delegated to recovery
      */
     attemptRecovery(errorInfo) {
-        const strategy = this.recoveryStrategies.get(errorInfo.context);
-        
-        if (!strategy) {
-            console.warn(`No recovery strategy for context: ${errorInfo.context}`);
-            return false;
-        }
-        
-        // 最大試行回数をチェック
-        if (strategy.attempts >= strategy.maxAttempts) {
-            console.warn(`Max recovery attempts reached for ${errorInfo.context}, using fallback`);
-            strategy.fallback();
-            return false;
-        }
-        
-        try {
-            strategy.attempts++;
-            const result = strategy.strategy(errorInfo, errorInfo.context);
-            
-            if (result.success) {
-                console.log(`Recovery successful for ${errorInfo.context}: ${result.message}`);
-                errorInfo.recovered = true;
-                this.errorStats.recovered++;
-                return true;
-            } else {
-                console.warn(`Recovery failed for ${errorInfo.context}: ${result.message}`);
-                
-                // 最大試行回数に達した場合はフォールバック
-                if (strategy.attempts >= strategy.maxAttempts) {
-                    strategy.fallback();
-                }
-                return false;
-            }
-        } catch (recoveryError) {
-            console.error(`Recovery strategy failed for ${errorInfo.context}:`, recoveryError);
-            strategy.fallback();
-            return false;
-        }
+        const result = this.recovery.attemptRecovery(errorInfo);
+        this.syncLegacyProperties();
+        return result;
     }
     
     /**
-     * ユーザーに通知
+     * Notify user - delegated to reporter
      */
     notifyUser(errorInfo) {
-        // 重要なエラーのみユーザーに表示
-        if (this.shouldNotifyUser(errorInfo)) {
-            this.showErrorNotification(errorInfo);
-        }
+        this.reporter.notifyUser(errorInfo);
     }
     
     /**
-     * ユーザーに通知すべきかどうか
+     * Should notify user - delegated to reporter
      */
     shouldNotifyUser(errorInfo) {
-        const { context, message } = errorInfo;
-        
-        // Canvas関連の重要なエラー
-        if (context === 'CANVAS_ERROR' && message.includes('Canvas')) {
-            return true;
-        }
-        
-        // ブラウザ互換性の問題
-        if (message.includes('not supported') || message.includes('not available')) {
-            return true;
-        }
-        
-        // ネットワーク関連の問題
-        if (message.includes('network') || message.includes('fetch')) {
-            return true;
-        }
-        
-        return false;
+        return this.reporter.shouldNotifyUser(errorInfo);
     }
     
     /**
-     * エラー通知を表示
+     * Show error notification - delegated to reporter
      */
     showErrorNotification(errorInfo) {
-        const notification = document.createElement('div');
-        notification.className = 'error-notification';
-        notification.innerHTML = `
-            <div class="error-notification-content">
-                <h3>エラーが発生しました</h3>
-                <p>${this.getUserFriendlyMessage(errorInfo)}</p>
-                <div class="error-notification-actions">
-                    <button onclick="this.parentElement.parentElement.parentElement.remove()">閉じる</button>
-                    <button onclick="location.reload()">再読み込み</button>
-                </div>
-            </div>
-        `;
-        
-        // スタイルを適用
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 0, 0, 0.9);
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            z-index: 10000;
-            max-width: 300px;
-            font-family: Arial, sans-serif;
-        `;
-        
-        notification.querySelector('.error-notification-actions').style.cssText = `
-            margin-top: 10px;
-            display: flex;
-            gap: 10px;
-        `;
-        
-        notification.querySelectorAll('button').forEach(button => {
-            button.style.cssText = `
-                padding: 5px 10px;
-                border: none;
-                border-radius: 4px;
-                background: white;
-                color: red;
-                cursor: pointer;
-                font-size: 12px;
-            `;
-        });
-        
-        document.body.appendChild(notification);
-        
-        // 10秒後に自動で削除
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.remove();
-            }
-        }, 10000);
+        this.reporter.showErrorNotification(errorInfo);
     }
     
     /**
-     * ユーザーフレンドリーなメッセージを生成
+     * Get user friendly message - delegated to reporter
      */
     getUserFriendlyMessage(errorInfo) {
-        const { context, message } = errorInfo;
-        
-        if (context === 'CANVAS_ERROR') {
-            return 'グラフィック機能に問題が発生しました。ブラウザを更新してください。';
-        }
-        
-        if (context === 'AUDIO_ERROR') {
-            return '音声機能が利用できません。ゲームは音声なしで続行されます。';
-        }
-        
-        if (context === 'STORAGE_ERROR') {
-            return 'データの保存に問題が発生しました。進行状況が保存されない可能性があります。';
-        }
-        
-        if (context === 'MEMORY_WARNING') {
-            return 'メモリ使用量が多くなっています。パフォーマンスが低下する可能性があります。';
-        }
-        
-        if (context === 'PERFORMANCE_WARNING') {
-            return 'パフォーマンスが低下しています。設定を調整することをお勧めします。';
-        }
-        
-        return '技術的な問題が発生しました。ページを再読み込みしてください。';
+        return this.reporter.getUserFriendlyMessage(errorInfo);
     }
     
     /**
-     * フォールバックUIを表示
+     * Show fallback UI - delegated to reporter
      */
     showFallbackUI() {
-        const fallbackDiv = document.createElement('div');
-        fallbackDiv.id = 'fallbackUI';
-        fallbackDiv.innerHTML = `
-            <div style="
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: white;
-                padding: 30px;
-                border-radius: 10px;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-                text-align: center;
-                z-index: 9999;
-                font-family: Arial, sans-serif;
-            ">
-                <h2>互換性の問題が発生しました</h2>
-                <p>お使いのブラウザではゲームを正常に実行できません。</p>
-                <p>以下のブラウザでお試しください：</p>
-                <ul style="text-align: left; margin: 20px 0;">
-                    <li>Google Chrome (推奨)</li>
-                    <li>Mozilla Firefox</li>
-                    <li>Microsoft Edge</li>
-                    <li>Safari (iOS/macOS)</li>
-                </ul>
-                <button onclick="location.reload()" style="
-                    padding: 10px 20px;
-                    background: #007bff;
-                    color: white;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                    font-size: 16px;
-                ">再試行</button>
-            </div>
-        `;
-        
-        document.body.appendChild(fallbackDiv);
+        this.reporter.showFallbackUI();
     }
     
     /**
-     * メモリストレージを使用
+     * Use memory storage - delegated to recovery
      */
     useMemoryStorage() {
-        // LocalStorageの代替としてメモリストレージを実装
-        window.memoryStorage = new Map();
-        
-        // LocalStorageのAPIを模倣
-        const memoryStorageAPI = {
-            getItem: (key) => window.memoryStorage.get(key) || null,
-            setItem: (key, value) => window.memoryStorage.set(key, value),
-            removeItem: (key) => window.memoryStorage.delete(key),
-            clear: () => window.memoryStorage.clear(),
-            get length() { return window.memoryStorage.size; },
-            key: (index) => Array.from(window.memoryStorage.keys())[index] || null
-        };
-        
-        // グローバルに公開
-        window.fallbackStorage = memoryStorageAPI;
-        
-        console.log('Memory storage enabled as LocalStorage fallback');
+        this.recovery.useMemoryStorage();
+        this.syncLegacyProperties();
     }
     
     /**
-     * エフェクトを削減
+     * Reduce effects - delegated to recovery
      */
     reduceEffects() {
-        // パフォーマンス最適化のためエフェクトを削減
-        if (window.gameEngine) {
-            // パーティクル数を削減
-            if (window.gameEngine.particleManager) {
-                window.gameEngine.particleManager.setMaxParticles(50);
-            }
-            
-            // エフェクトの品質を下げる
-            if (window.gameEngine.effectManager) {
-                window.gameEngine.effectManager.setQuality('low');
-            }
-            
-            // 音響エフェクトを削減
-            if (window.gameEngine.audioManager) {
-                window.gameEngine.audioManager.setMaxConcurrentSounds(5);
-            }
-        }
-        
-        console.log('Effects reduced for performance optimization');
+        this.recovery.reduceEffects();
+        this.syncLegacyProperties();
     }
     
     /**
-     * ガベージコレクションを実行
+     * Perform garbage collection - delegated to recovery
      */
     performGarbageCollection() {
-        // 手動でのメモリクリーンアップ
-        if (window.gameEngine) {
-            // オブジェクトプールをクリア
-            if (window.gameEngine.poolManager) {
-                window.gameEngine.poolManager.clearUnused();
-            }
-            
-            // 不要なリスナーを削除
-            if (window.gameEngine.memoryManager) {
-                window.gameEngine.memoryManager.performCleanup();
-            }
-        }
-        
-        // ブラウザのGCを促す（可能であれば）
-        if (window.gc && typeof window.gc === 'function') {
-            window.gc();
-        }
-        
-        console.log('Garbage collection performed');
+        this.recovery.performGarbageCollection();
     }
     
     /**
-     * パフォーマンスを最適化
+     * Optimize performance - delegated to recovery
      */
     optimizePerformance() {
-        if (window.gameEngine && window.gameEngine.performanceOptimizer) {
-            // パフォーマンスレベルを下げる
-            window.gameEngine.performanceOptimizer.setPerformanceLevel('low');
-            
-            // フレームレートを制限
-            window.gameEngine.performanceOptimizer.setTargetFPS(30);
-            
-            // レンダリング品質を下げる
-            window.gameEngine.performanceOptimizer.setRenderQuality('low');
-        }
-        
-        this.reduceEffects();
-        this.performGarbageCollection();
-        
-        console.log('Performance optimized');
+        this.recovery.optimizePerformance();
+        this.syncLegacyProperties();
     }
     
     /**
-     * セーフモードを有効化
+     * Enable safe mode - delegated to recovery
      */
     enableSafeMode() {
-        this.fallbackState.safeMode = true;
-        this.fallbackState.reducedEffects = true;
-        
-        // ブラウザ環境でのみゲームエンジンの操作を実行
-        if (this.isBrowser && typeof window !== 'undefined' && window.gameEngine) {
-            // すべてのエフェクトを無効化
-            if (window.gameEngine.effectManager) {
-                window.gameEngine.effectManager.disable();
-            }
-            
-            // パーティクルを無効化
-            if (window.gameEngine.particleManager) {
-                window.gameEngine.particleManager.disable();
-            }
-            
-            // 音響を無効化
-            if (window.gameEngine.audioManager) {
-                window.gameEngine.audioManager.disable();
-            }
-        }
-        
-        console.warn('Safe mode enabled - running with minimal features');
+        this.recovery.enableSafeMode();
+        this.syncLegacyProperties();
     }
     
     /**
-     * 入力値を検証
-     * @param {*} value - 検証する値
-     * @param {string} type - 期待する型
-     * @param {Object} constraints - 制約条件
-     * @returns {Object} 検証結果
+     * Setup recovery strategies - delegated to recovery
+     */
+    setupRecoveryStrategies() {
+        this.recovery.setupRecoveryStrategies();
+        this.syncLegacyProperties();
+    }
+    
+    // ===== INPUT VALIDATION METHODS - Maintained for compatibility =====
+    
+    /**
+     * Validate input
+     * @param {*} value - Value to validate
+     * @param {string} type - Expected type
+     * @param {Object} constraints - Constraint conditions
+     * @returns {Object} Validation result
      */
     validateInput(value, type, constraints = {}) {
         const result = {
@@ -777,7 +380,7 @@ class ErrorHandler {
         };
         
         try {
-            // null/undefined チェック
+            // null/undefined check
             if (constraints.required && (value === null || value === undefined)) {
                 result.isValid = false;
                 result.errors.push('Value is required');
@@ -785,10 +388,10 @@ class ErrorHandler {
             }
             
             if (value === null || value === undefined) {
-                return result; // null/undefinedは許可されている場合はそのまま返す
+                return result; // null/undefined allowed if not required
             }
             
-            // 型チェック
+            // Type checking
             switch (type) {
                 case 'string':
                     result.sanitizedValue = this.validateString(value, constraints, result);
@@ -823,11 +426,10 @@ class ErrorHandler {
     }
     
     /**
-     * 文字列を検証
+     * Validate string
      */
     validateString(value, constraints, result) {
         if (typeof value !== 'string') {
-            // 文字列に変換を試行
             try {
                 value = String(value);
             } catch (error) {
@@ -837,7 +439,7 @@ class ErrorHandler {
             }
         }
         
-        // 長さチェック
+        // Length check
         if (constraints.minLength && value.length < constraints.minLength) {
             result.isValid = false;
             result.errors.push(`String too short (min: ${constraints.minLength})`);
@@ -846,17 +448,16 @@ class ErrorHandler {
         if (constraints.maxLength && value.length > constraints.maxLength) {
             result.isValid = false;
             result.errors.push(`String too long (max: ${constraints.maxLength})`);
-            // 切り詰める
             value = value.substring(0, constraints.maxLength);
         }
         
-        // パターンチェック
+        // Pattern check
         if (constraints.pattern && !constraints.pattern.test(value)) {
             result.isValid = false;
             result.errors.push('String does not match required pattern');
         }
         
-        // HTMLエスケープ
+        // HTML escaping
         if (constraints.escapeHtml) {
             value = value
                 .replace(/&/g, '&amp;')
@@ -870,11 +471,10 @@ class ErrorHandler {
     }
     
     /**
-     * 数値を検証
+     * Validate number
      */
     validateNumber(value, constraints, result) {
         if (typeof value !== 'number') {
-            // 数値に変換を試行
             const converted = Number(value);
             if (isNaN(converted)) {
                 result.isValid = false;
@@ -884,7 +484,7 @@ class ErrorHandler {
             value = converted;
         }
         
-        // NaN/Infinityチェック
+        // NaN/Infinity check
         if (isNaN(value)) {
             result.isValid = false;
             result.errors.push('Value is NaN');
@@ -897,7 +497,7 @@ class ErrorHandler {
             return constraints.max || constraints.min || 0;
         }
         
-        // 範囲チェック
+        // Range check
         if (constraints.min !== undefined && value < constraints.min) {
             result.isValid = false;
             result.errors.push(`Number too small (min: ${constraints.min})`);
@@ -910,7 +510,7 @@ class ErrorHandler {
             value = constraints.max;
         }
         
-        // 整数チェック
+        // Integer check
         if (constraints.integer && !Number.isInteger(value)) {
             result.isValid = false;
             result.errors.push('Number must be integer');
@@ -921,11 +521,10 @@ class ErrorHandler {
     }
     
     /**
-     * ブール値を検証
+     * Validate boolean
      */
     validateBoolean(value, constraints, result) {
         if (typeof value !== 'boolean') {
-            // ブール値に変換を試行
             if (value === 'true' || value === 1 || value === '1') {
                 value = true;
             } else if (value === 'false' || value === 0 || value === '0') {
@@ -941,7 +540,7 @@ class ErrorHandler {
     }
     
     /**
-     * オブジェクトを検証
+     * Validate object
      */
     validateObject(value, constraints, result) {
         if (typeof value !== 'object' || value === null) {
@@ -950,7 +549,7 @@ class ErrorHandler {
             return {};
         }
         
-        // プロパティの検証
+        // Property validation
         if (constraints.properties) {
             const validatedObject = {};
             
@@ -972,7 +571,7 @@ class ErrorHandler {
     }
     
     /**
-     * 配列を検証
+     * Validate array
      */
     validateArray(value, constraints, result) {
         if (!Array.isArray(value)) {
@@ -981,7 +580,7 @@ class ErrorHandler {
             return [];
         }
         
-        // 長さチェック
+        // Length check
         if (constraints.minLength && value.length < constraints.minLength) {
             result.isValid = false;
             result.errors.push(`Array too short (min: ${constraints.minLength})`);
@@ -993,7 +592,7 @@ class ErrorHandler {
             value = value.slice(0, constraints.maxLength);
         }
         
-        // 要素の検証
+        // Element validation
         if (constraints.itemType) {
             const validatedArray = [];
             
@@ -1015,7 +614,7 @@ class ErrorHandler {
     }
     
     /**
-     * 関数を検証
+     * Validate function
      */
     validateFunction(value, constraints, result) {
         if (typeof value !== 'function') {
@@ -1027,71 +626,103 @@ class ErrorHandler {
         return value;
     }
     
+    // ===== PUBLIC API METHODS - Maintained for compatibility =====
+    
     /**
-     * エラー統計を取得
+     * Get error statistics
      */
     getErrorStats() {
-        return {
-            ...this.errorStats,
-            byType: Object.fromEntries(this.errorStats.byType),
-            byContext: Object.fromEntries(this.errorStats.byContext)
-        };
+        return this.logger.getErrorStats();
     }
     
     /**
-     * エラーログを取得
+     * Get error log
      */
     getErrorLog() {
-        return [...this.errorLog];
+        return this.logger.getErrorLog();
     }
     
     /**
-     * フォールバック状態を取得
+     * Get fallback state
      */
     getFallbackState() {
-        return { ...this.fallbackState };
+        return this.recovery.getFallbackState();
     }
     
     /**
-     * エラーハンドラーをリセット
+     * Reset error handler
      */
     reset() {
-        this.errorLog = [];
-        this.errorStats = {
-            total: 0,
-            byType: new Map(),
-            byContext: new Map(),
-            critical: 0,
-            recovered: 0
-        };
-        
-        // 復旧試行回数をリセット
-        for (const strategy of this.recoveryStrategies.values()) {
-            strategy.attempts = 0;
-        }
-        
-        console.log('ErrorHandler reset');
+        this.logger.clearErrorLog();
+        this.logger.clearErrorStats();
+        this.recovery.resetAllRecoveryAttempts();
+        this.syncLegacyProperties();
+        console.log('[ErrorHandler] Main controller reset');
     }
     
     /**
-     * エラーハンドラーを破棄
+     * Configure components
+     * @param {object} config - Configuration options
+     */
+    configure(config) {
+        if (config.logger) {
+            this.logger.configure(config.logger);
+        }
+        
+        if (config.reporter) {
+            this.reporter.configure(config.reporter);
+        }
+        
+        if (config.recovery) {
+            this.recovery.configure(config.recovery);
+        }
+        
+        if (config.analyzer) {
+            this.analyzer.configure(config.analyzer);
+        }
+        
+        console.log('[ErrorHandler] Configuration updated');
+    }
+    
+    /**
+     * Get component references for advanced usage
+     */
+    getComponents() {
+        return {
+            logger: this.logger,
+            reporter: this.reporter,
+            recovery: this.recovery,
+            analyzer: this.analyzer
+        };
+    }
+    
+    /**
+     * Destroy error handler
      */
     destroy() {
-        // イベントリスナーを削除
-        window.removeEventListener('error', this.handleError);
-        window.removeEventListener('unhandledrejection', this.handleError);
+        // Remove event listeners
+        if (this.isBrowser) {
+            window.removeEventListener('error', this.handleError);
+            window.removeEventListener('unhandledrejection', this.handleError);
+        }
         
-        // リソースをクリア
+        // Destroy sub-components
+        this.logger.destroy();
+        this.reporter.destroy();
+        this.recovery.destroy();
+        this.analyzer.destroy();
+        
+        // Clear legacy properties
         this.errorLog = [];
         this.recoveryStrategies.clear();
         this.fallbackModes.clear();
         
         this.isInitialized = false;
-        console.log('ErrorHandler destroyed');
+        console.log('[ErrorHandler] Main controller destroyed');
     }
 }
 
-// シングルトンインスタンス（遅延初期化）
+// Singleton instance (lazy initialization)
 let _errorHandler = null;
 
 function getErrorHandler() {
@@ -1101,10 +732,10 @@ function getErrorHandler() {
     return _errorHandler;
 }
 
-// 後方互換性のため
+// Backward compatibility
 const errorHandler = getErrorHandler;
 
-// グローバルに公開（デバッグ用）
+// Global exposure (for debugging)
 if (typeof window !== 'undefined') {
     window.errorHandler = errorHandler;
 }

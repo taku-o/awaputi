@@ -3,7 +3,7 @@
  * Makes Jest functions globally available in ES Modules context
  */
 
-import { jest } from '@jest/globals';
+import { jest, expect, describe, test, it, beforeEach, afterEach, beforeAll, afterAll } from '@jest/globals';
 
 // Make jest globally available for ES Modules
 global.jest = jest;

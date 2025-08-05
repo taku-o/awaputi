@@ -28,12 +28,12 @@ export default {
   
   // Explicitly exclude performance and E2E tests
   testPathIgnorePatterns: [
-    '/node_modules/',
-    '/tests/e2e/',
-    '/tests/performance/',
-    '/tests/**/*performance*.test.js',
-    '/tests/**/*e2e*.test.js',
-    '/playwright-tests/'
+    'node_modules',
+    'tests/e2e',
+    'tests/performance',
+    'tests/.*performance.*\\.test\\.js',
+    'tests/.*e2e.*\\.test\\.js',
+    'playwright-tests'
   ],
   
   // Module file extensions
@@ -108,12 +108,12 @@ export default {
   
   // Watch mode configuration
   watchPathIgnorePatterns: [
-    '/node_modules/',
-    '/coverage/',
-    '/dist/',
-    '/build/',
-    '/tests/e2e/',
-    '/playwright-tests/'
+    'node_modules',
+    'coverage',
+    'dist',
+    'build',
+    'tests/e2e',
+    'playwright-tests'
   ],
   
   // Max workers for parallel execution
