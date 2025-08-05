@@ -429,6 +429,64 @@ VisualEffectsSystem
 - **メモリ使用**: オブジェクトプール活用、20%メモリ削減目標
 - **モバイル対応**: デスクトップ性能の80%以上、バッテリー効率考慮
 
+### パフォーマンス・ユーティリティファイル分割プロジェクト Phase F.3（Issue #95対応）
+**目標**: Issue #77のsub issueとして、パフォーマンス・ユーティリティ関連の大容量ファイル（5ファイル）をMain Controller Patternで分割し、MCPツール互換性（2,500語以下）を実現
+
+#### 問題の概要
+MCPツール（find_symbol）が25,000トークン制限を超過してエラーになる。パフォーマンス・ユーティリティ関連の大容量ファイル（2,500語超）の分割が必要。対象：
+- PerformanceDataAnalyzer.js（2,871語） - パフォーマンスデータ分析システム
+- BalanceAdjustmentValidationRules.js（2,705語） - バランス調整検証ルール
+- PerformanceDiagnostics.js（2,644語） - パフォーマンス診断システム
+- PerformanceConfigurationIntegration.js（2,531語） - パフォーマンス設定統合
+- ErrorHandler.js（2,520語） - エラーハンドリングシステム
+
+#### 分割戦略（Main Controller Pattern）
+1. **Main Controller Pattern**: 元クラスは軽量オーケストレーター（<500語）として機能
+2. **機能分離**: 関連メソッドを専門クラスにグループ化（メトリクス収集・データ処理・報告・分析）
+3. **API保持**: 後方互換性のため公開インターフェース完全維持
+4. **依存注入**: サブコンポーネントをメインコントローラーに注入
+
+#### 主要コンポーネント分割設計
+- **PerformanceDataAnalyzer**: MetricsCollector、DataProcessor、ReportGenerator、ThresholdManager（4コンポーネント）
+- **ErrorHandler**: Logger、Reporter、Recovery、Analyzer（4コンポーネント）
+- **BalanceAdjustmentValidationRules**: RuleEngine、RuleDefinitions、ResultProcessor（3コンポーネント）
+- **PerformanceDiagnostics**: DataCollector、Analyzer、Reporter（3コンポーネント）
+- **PerformanceConfigurationIntegration**: Validator、Applier、Monitor（3コンポーネント）
+
+#### ディレクトリ構造
+```
+src/utils/
+├── performance-monitoring/
+│   ├── PerformanceDataAnalyzer.js (Main Controller)
+│   ├── PerformanceMetricsCollector.js
+│   ├── PerformanceDataProcessor.js
+│   ├── PerformanceReportGenerator.js
+│   └── PerformanceThresholdManager.js
+├── error/
+│   ├── ErrorHandler.js (Main Controller)
+│   ├── ErrorLogger.js
+│   ├── ErrorReporter.js
+│   ├── ErrorRecovery.js
+│   └── ErrorAnalyzer.js
+├── balance-validation/
+├── performance-diagnostics/
+└── performance-config/
+```
+
+#### 実装フェーズ（10大タスク）
+- **Task 1**: プロジェクト構造準備・ディレクトリ作成
+- **Task 2-6**: 各ファイルの分割実装（PerformanceDataAnalyzer → PerformanceConfigurationIntegration）
+- **Task 7**: テストファイル分割（PWATestFramework、StatisticsPerformance.test）
+- **Task 8**: インポート・依存関係更新
+- **Task 9**: 包括的テスト・検証（ユニット、統合、パフォーマンス、ファイルサイズ）
+- **Task 10**: ドキュメント更新・最終検証
+
+#### パフォーマンス目標
+- **ファイルサイズ**: 全ターゲットファイル2,500語以下
+- **MCPツール**: find_symbol等のトークン制限エラー解消
+- **サイズ削減**: メインコントローラー80%削減目標（500語以下）
+- **API互換性**: 既存公開インターフェース完全保持
+
 ### バックアップツールファイル最適化プロジェクト（Issue #85対応）
 **目標**: Issue #77のsub issueとして、大容量ファイル分割プロジェクト Phase E.4を実装し、プロジェクト整理とMCPツール互換性向上を実現
 
