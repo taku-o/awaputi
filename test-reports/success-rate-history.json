@@ -1,0 +1,19 @@
+{
+  "runs": [
+    {
+      "totalSuites": 0,
+      "passedSuites": 0,
+      "failedSuites": 0,
+      "totalTests": 0,
+      "passedTests": 0,
+      "failedTests": 0,
+      "skippedTests": 0,
+      "successRate": 0,
+      "errors": [],
+      "exitCode": 1,
+      "duration": 262,
+      "timestamp": "2025-08-05T03:39:29.784Z",
+      "testType": "unit"
+    }
+  ]
+}

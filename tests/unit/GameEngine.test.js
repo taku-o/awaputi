@@ -2,26 +2,22 @@
  * Unit tests for GameEngine class
  */
 
+import { jest } from '@jest/globals';
+import { MockFactory } from '../mocks/MockFactory.js';
 import { GameEngine } from '../../src/core/GameEngine.js';
 
-// Mock all the dependencies
-jest.mock('../../src/core/PlayerData.js');
-jest.mock('../../src/managers/BubbleManager.js');
-jest.mock('../../src/managers/ScoreManager.js');
-jest.mock('../../src/core/StageManager.js');
-jest.mock('../../src/core/SceneManager.js');
-jest.mock('../../src/core/ItemSystem.js');
-jest.mock('../../src/audio/AudioManager.js');
-jest.mock('../../src/effects/ParticleManager.js');
-jest.mock('../../src/effects/EffectManager.js');
-jest.mock('../../src/utils/ResponsiveCanvasManager.js');
+// Note: Mock imports removed to avoid path resolution issues
+// Mocks will be created manually in test setup
 
 describe('GameEngine', () => {
   let gameEngine;
   let mockCanvas;
 
   beforeEach(() => {
-    mockCanvas = createMockCanvas();
+    // Create a real canvas element for DOM operations
+    mockCanvas = document.createElement('canvas');
+    mockCanvas.width = 800;
+    mockCanvas.height = 600;
     document.body.appendChild(mockCanvas);
     
     // Reset all mocks
@@ -35,7 +31,9 @@ describe('GameEngine', () => {
       gameEngine.stop();
       gameEngine.destroy();
     }
-    document.body.removeChild(mockCanvas);
+    if (mockCanvas && mockCanvas.parentNode) {
+      document.body.removeChild(mockCanvas);
+    }
   });
 
   describe('Constructor', () => {
@@ -46,10 +44,13 @@ describe('GameEngine', () => {
     });
 
     test('should throw error if canvas context cannot be created', () => {
-      const badCanvas = createMockCanvas();
+      const badCanvas = document.createElement('canvas');
+      const originalGetContext = badCanvas.getContext;
       badCanvas.getContext = jest.fn(() => null);
       
       expect(() => new GameEngine(badCanvas)).toThrow('Failed to get 2D rendering context');
+      
+      badCanvas.getContext = originalGetContext;
     });
 
     test('should initialize all managers', () => {
@@ -326,40 +327,47 @@ describe('GameEngine', () => {
 
   describe('Debug Mode', () => {
     test('should detect debug mode from localStorage', () => {
-      localStorage.getItem.mockReturnValue('true');
+      global.localStorage.getItem = jest.fn().mockReturnValue('true');
       expect(gameEngine.isDebugMode()).toBe(true);
       
-      localStorage.getItem.mockReturnValue('false');
+      global.localStorage.getItem = jest.fn().mockReturnValue('false');
       expect(gameEngine.isDebugMode()).toBe(false);
       
-      localStorage.getItem.mockReturnValue(null);
+      global.localStorage.getItem = jest.fn().mockReturnValue(null);
       expect(gameEngine.isDebugMode()).toBe(false);
     });
   });
 
   describe('Object Pool Integration', () => {
-    test('should get bubble from pool', () => {
+    test('should get bubble from pool', async () => {
       const mockBubble = { type: 'normal' };
-      require('../../src/utils/ObjectPool.js').poolManager.get.mockReturnValue(mockBubble);
+      const ObjectPoolModule = await import('../../src/utils/ObjectPool.js');
+      ObjectPoolModule.poolManager.get = jest.fn().mockReturnValue(mockBubble);
       
       const bubble = gameEngine.getBubbleFromPool();
       expect(bubble).toBe(mockBubble);
     });
 
-    test('should return bubble to pool', () => {
+    test('should return bubble to pool', async () => {
       const mockBubble = { type: 'normal' };
+      const ObjectPoolModule = await import('../../src/utils/ObjectPool.js');
+      ObjectPoolModule.poolManager.return = jest.fn();
+      
       gameEngine.returnBubbleToPool(mockBubble);
       
-      expect(require('../../src/utils/ObjectPool.js').poolManager.return).toHaveBeenCalledWith('bubbles', mockBubble);
+      expect(ObjectPoolModule.poolManager.return).toHaveBeenCalledWith('bubbles', mockBubble);
     });
   });
 
   describe('Error Handling', () => {
     test('should handle canvas context creation failure', () => {
-      const badCanvas = createMockCanvas();
+      const badCanvas = document.createElement('canvas');
+      const originalGetContext = badCanvas.getContext;
       badCanvas.getContext = jest.fn(() => null);
       
       expect(() => new GameEngine(badCanvas)).toThrow();
+      
+      badCanvas.getContext = originalGetContext;
     });
 
     test('should continue running after non-critical errors', () => {

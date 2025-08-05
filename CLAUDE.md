@@ -95,6 +95,45 @@ jest-canvas-mockパッケージ利用による解決：
 - 設定が簡潔でコミュニティサポート充実
 - 手動モック実装・メンテナンスコスト削減
 
+### 包括的テストスイート修正プロジェクト（Issue #97対応）
+**目標**: 676/1338の失敗テスト（50%失敗率）を修正し、テストスイートの信頼性を95%以上に向上させる
+
+#### 問題の概要
+Jest設定問題、モック関数問題、API不整合、パフォーマンステスト不安定、E2Eテスト実行問題により、全体の50%のテストが失敗している。CI/CD安定化、開発効率向上、コード品質保証のために包括的修正が必要。
+
+#### 主要問題カテゴリ
+1. **Jest設定・ES Modules互換性**: "jest is not defined"エラー、モジュール依存関係解決
+2. **モック関数標準化**: jest.fn()の一貫性、Canvas/Audio/Performance API模擬
+3. **API整合性**: テスト期待値と実装の不一致（audioManager.getStatus()、analyticsAPI.evaluateCondition()等）
+4. **パフォーマンステスト安定化**: 現実的な閾値設定、環境依存対応
+5. **E2E環境分離**: Jest/Playwright実行環境の分離、テストタイプ別設定
+
+#### 実装フェーズ（11段階）
+- **Phase 1**: Jest設定・ES Modules互換性修正（jest-globals.js、設定更新）
+- **Phase 2**: モック工場システム実装（MockFactory、Canvas/Audio/Performance標準化）
+- **Phase 3**: API整合性修正（AnalyticsAPI、AudioManager実装同期）
+- **Phase 4**: パフォーマンステスト安定化（環境対応閾値、再試行機能）
+- **Phase 5**: E2Eテスト分離（Jest設定分割、npm script更新）
+- **Phase 6**: クロス環境互換性（browser/console環境対応）
+- **Phase 7**: エラー処理・回復システム（Jest/Mock/Performance エラー対応）
+- **Phase 8**: テストファイル移行（AnalyticsAPI、Performance、全体）
+- **Phase 9**: 検証・品質保証（成功率監視、整合性確認、環境テスト）
+- **Phase 10**: ドキュメント・開発者体験（ガイドライン、ワークフロー統合）
+- **Phase 11**: 最終統合・テスト（包括検証、安定性確認）
+
+#### 技術アーキテクチャ
+- **MockFactory System**: 標準化されたモック生成（Canvas、Audio、Performance、Analytics）
+- **InterfaceValidator**: API実装とテスト期待値の整合性検証
+- **PerformanceTestUtils**: 環境対応パフォーマンステスト（CI/Local/Production閾値）
+- **JestErrorRecovery**: Jest設定エラーの自動回復・フォールバック
+- **CrossEnvironmentManager**: ブラウザ/コンソール環境での一貫性保証
+
+#### パフォーマンス目標
+- **成功率**: 50%→95%以上（676失敗→67以下）
+- **実行安定性**: CI/CD環境での一貫した結果
+- **開発効率**: 設定問題による中断の排除
+- **品質保証**: 実コード問題のみをテストで検出
+
 ### UserInfoScene実装プロジェクト（Issue #18対応）
 **目標**: プレースホルダー状態のUserInfoSceneを完全な機能に拡張
 

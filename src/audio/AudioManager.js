@@ -412,6 +412,69 @@ export class AudioManager {
     }
 
     /**
+     * ステータス取得（テストで期待されるメソッド）
+     * @returns {Object} ステータス情報
+     */
+    getStatus() {
+        return {
+            isEnabled: this.isEnabled,
+            masterVolume: this.masterVolume,
+            soundEffectVolume: this.sfxVolume,
+            backgroundMusicVolume: this.bgmVolume,
+            activeSounds: this.activeSources.size,
+            isLoading: false,
+            initialized: this.isInitialized,
+            muted: this.isMuted,
+            contextState: this.state,
+            supportedFormats: ['wav', 'mp3', 'ogg']
+        };
+    }
+
+    /**
+     * 音量取得（汎用メソッド）
+     * @param {string} category - 音量カテゴリ ('master', 'sfx', 'bgm')
+     * @returns {number} 音量値 (0.0-1.0)
+     */
+    getVolume(category = 'master') {
+        switch (category.toLowerCase()) {
+            case 'master':
+                return this.masterVolume;
+            case 'sfx':
+            case 'soundeffect':
+                return this.sfxVolume;
+            case 'bgm':
+            case 'backgroundmusic':
+                return this.bgmVolume;
+            default:
+                return this.masterVolume;
+        }
+    }
+
+    /**
+     * マスター音量取得
+     * @returns {number} マスター音量
+     */
+    getMasterVolume() {
+        return this.masterVolume;
+    }
+
+    /**
+     * 音響効果音量取得
+     * @returns {number} 音響効果音量
+     */
+    getSoundEffectVolume() {
+        return this.sfxVolume;
+    }
+
+    /**
+     * 背景音楽音量取得
+     * @returns {number} 背景音楽音量
+     */
+    getBackgroundMusicVolume() {
+        return this.bgmVolume;
+    }
+
+    /**
      * 利用可能な音響一覧取得
      * @returns {Array<string>} 音響名配列
      */
