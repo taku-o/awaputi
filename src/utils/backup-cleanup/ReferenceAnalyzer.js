@@ -14,7 +14,10 @@ export class ReferenceAnalyzer {
             /dist/,
             /build/,
             /coverage/,
-            /file-size-report\.json$/
+            /file-size-report\.json$/,
+            /CLAUDE\.md$/,
+            /backup-cleanup/,
+            /debug-investigation\.js$/
         ];
         
         this.searchExtensions = ['.js', '.ts', '.jsx', '.tsx', '.mjs', '.json', '.md'];
