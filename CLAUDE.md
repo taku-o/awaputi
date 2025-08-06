@@ -429,16 +429,22 @@ VisualEffectsSystem
 - **メモリ使用**: オブジェクトプール活用、20%メモリ削減目標
 - **モバイル対応**: デスクトップ性能の80%以上、バッテリー効率考慮
 
-### パフォーマンス・ユーティリティファイル分割プロジェクト Phase F.3（Issue #95対応）
+### パフォーマンス・ユーティリティファイル分割プロジェクト Phase F.3（Issue #95対応）✅ 完了
 **目標**: Issue #77のsub issueとして、パフォーマンス・ユーティリティ関連の大容量ファイル（5ファイル）をMain Controller Patternで分割し、MCPツール互換性（2,500語以下）を実現
 
-#### 問題の概要
-MCPツール（find_symbol）が25,000トークン制限を超過してエラーになる。パフォーマンス・ユーティリティ関連の大容量ファイル（2,500語超）の分割が必要。対象：
-- PerformanceDataAnalyzer.js（2,871語） - パフォーマンスデータ分析システム
-- BalanceAdjustmentValidationRules.js（2,705語） - バランス調整検証ルール
-- PerformanceDiagnostics.js（2,644語） - パフォーマンス診断システム
-- PerformanceConfigurationIntegration.js（2,531語） - パフォーマンス設定統合
-- ErrorHandler.js（2,520語） - エラーハンドリングシステム
+#### 完了した分割対象ファイル
+MCPツール（find_symbol）の25,000トークン制限問題を解決。全5ファイルの分割が完了：
+- PerformanceDataAnalyzer.js（2,871語 → 512語） - パフォーマンスデータ分析システム ✅ 完了
+- BalanceAdjustmentValidationRules.js（2,705語 → 498語） - バランス調整検証ルール ✅ 完了
+- PerformanceDiagnostics.js（2,644語 → 487語） - パフォーマンス診断システム ✅ 完了
+- PerformanceConfigurationIntegration.js（2,531語 → 495語） - パフォーマンス設定統合 ✅ 完了
+- ErrorHandler.js（2,520語 → 523語） - エラーハンドリングシステム ✅ 完了
+
+#### 達成された成果
+- **平均サイズ削減**: 81%（13,271語 → 2,515語）
+- **MCPツール互換性**: 全ファイル2,500語以下を達成
+- **後方互換性**: 既存API完全保持
+- **アーキテクチャ**: Main Controller Pattern統一適用
 
 #### 分割戦略（Main Controller Pattern）
 1. **Main Controller Pattern**: 元クラスは軽量オーケストレーター（<500語）として機能
@@ -446,45 +452,99 @@ MCPツール（find_symbol）が25,000トークン制限を超過してエラー
 3. **API保持**: 後方互換性のため公開インターフェース完全維持
 4. **依存注入**: サブコンポーネントをメインコントローラーに注入
 
+### 周辺ファイル分割プロジェクト Phase F.4（Issue #96対応）
+**目標**: Issue #77のsub issueとして、周辺ファイル・ツール関連の大容量ファイル（7ファイル）をMain Controller Patternで分割し、MCPツール互換性（2,500語以下）を実現
+
+#### 問題の概要
+MCPツール（find_symbol）が25,000トークン制限を超過してエラーになる。周辺ファイル・ツール関連の大容量ファイル（2,500語超）の分割が必要。対象：
+- tools/balance-adjuster.js（3,168語） - バランス調整ツール
+- src/audio/AudioAccessibilitySupport.js（2,582語） - 音響アクセシビリティサポート
+- src/seo/SEOTester.js（2,576語） - SEOテストシステム
+- src/audio/AudioCacheManager.js（2,550語） - 音響キャッシュ管理
+- tools/dashboard/dashboard.js（2,543語） - 開発ダッシュボード
+- scripts/performance-impact-assessment.js（2,543語） - パフォーマンス影響評価
+- src/scenes/components/ImportDialog.js（2,536語） - インポートダイアログ
+
+#### 分割戦略（Main Controller Pattern）
+1. **Main Controller Pattern**: 元ファイルは軽量オーケストレーター（<500語）として機能
+2. **機能分離**: 関連メソッドを単一責任の専門クラスにグループ化
+3. **ツール機能保持**: CLI・Web インターフェース完全保持
+4. **API保持**: 後方互換性のため公開インターフェース完全維持
+5. **依存注入**: サブコンポーネントをメインコントローラーに注入
+
 #### 主要コンポーネント分割設計
-- **PerformanceDataAnalyzer**: MetricsCollector、DataProcessor、ReportGenerator、ThresholdManager（4コンポーネント）
-- **ErrorHandler**: Logger、Reporter、Recovery、Analyzer（4コンポーネント）
-- **BalanceAdjustmentValidationRules**: RuleEngine、RuleDefinitions、ResultProcessor（3コンポーネント）
-- **PerformanceDiagnostics**: DataCollector、Analyzer、Reporter（3コンポーネント）
-- **PerformanceConfigurationIntegration**: Validator、Applier、Monitor（3コンポーネント）
+- **balance-adjuster.js**: BalanceDataLoader、BalanceCalculator、BalanceValidator、BalanceExporter（4コンポーネント）
+- **AudioAccessibilitySupport.js**: AudioDescriptionManager、AudioCueManager、AudioFeedbackManager、AudioSettingsManager（4コンポーネント）
+- **SEOTester.js**: MetaTagValidator、StructuredDataValidator、PerformanceValidator、SEOReportGenerator（4コンポーネント）
+- **AudioCacheManager.js**: LRUCacheImplementation、CacheMemoryManager、CacheDataLoader、CacheStatistics（4コンポーネント）
+- **dashboard.js**: DashboardDataManager、DashboardVisualization、DashboardValidation、DashboardReporting（4コンポーネント）
+- **performance-impact-assessment.js**: ResponseTimeAnalyzer、MemoryUsageAnalyzer、CPUImpactAnalyzer、PerformanceReporter（4コンポーネント）
+- **ImportDialog.js**: ImportMethodSelector、ImportDataProcessor、ImportProgressManager、ImportResultHandler（4コンポーネント）
 
 #### ディレクトリ構造
 ```
-src/utils/
-├── performance-monitoring/
-│   ├── PerformanceDataAnalyzer.js (Main Controller)
-│   ├── PerformanceMetricsCollector.js
-│   ├── PerformanceDataProcessor.js
-│   ├── PerformanceReportGenerator.js
-│   └── PerformanceThresholdManager.js
-├── error/
-│   ├── ErrorHandler.js (Main Controller)
-│   ├── ErrorLogger.js
-│   ├── ErrorReporter.js
-│   ├── ErrorRecovery.js
-│   └── ErrorAnalyzer.js
-├── balance-validation/
-├── performance-diagnostics/
-└── performance-config/
+tools/
+├── balance/
+│   ├── balance-adjuster.js (Main Controller)
+│   ├── BalanceDataLoader.js
+│   ├── BalanceCalculator.js
+│   ├── BalanceValidator.js
+│   └── BalanceExporter.js
+├── dashboard/
+│   ├── dashboard.js (Main Controller)
+│   ├── DashboardDataManager.js
+│   ├── DashboardVisualization.js
+│   ├── DashboardValidation.js
+│   └── DashboardReporting.js
+
+scripts/performance-assessment/
+├── performance-impact-assessment.js (Main Controller)
+├── ResponseTimeAnalyzer.js
+├── MemoryUsageAnalyzer.js
+├── CPUImpactAnalyzer.js
+└── PerformanceReporter.js
+
+src/audio/
+├── accessibility/
+│   ├── AudioAccessibilitySupport.js (Main Controller)
+│   ├── AudioDescriptionManager.js
+│   ├── AudioCueManager.js
+│   ├── AudioFeedbackManager.js
+│   └── AudioSettingsManager.js
+├── cache/
+│   ├── AudioCacheManager.js (Main Controller)
+│   ├── LRUCacheImplementation.js
+│   ├── CacheMemoryManager.js
+│   ├── CacheDataLoader.js
+│   └── CacheStatistics.js
+
+src/seo/testing/
+├── SEOTester.js (Main Controller)
+├── MetaTagValidator.js
+├── StructuredDataValidator.js
+├── PerformanceValidator.js
+└── SEOReportGenerator.js
+
+src/scenes/components/dialogs/
+├── ImportDialog.js (Main Controller)
+├── ImportMethodSelector.js
+├── ImportDataProcessor.js
+├── ImportProgressManager.js
+└── ImportResultHandler.js
 ```
 
-#### 実装フェーズ（10大タスク）
+#### 実装フェーズ（11大タスク）
 - **Task 1**: プロジェクト構造準備・ディレクトリ作成
-- **Task 2-6**: 各ファイルの分割実装（PerformanceDataAnalyzer → PerformanceConfigurationIntegration）
-- **Task 7**: テストファイル分割（PWATestFramework、StatisticsPerformance.test）
-- **Task 8**: インポート・依存関係更新
-- **Task 9**: 包括的テスト・検証（ユニット、統合、パフォーマンス、ファイルサイズ）
-- **Task 10**: ドキュメント更新・最終検証
+- **Task 2-8**: 各ファイルの分割実装（balance-adjuster → ImportDialog）
+- **Task 9**: インポート・依存関係更新
+- **Task 10**: 包括的テスト・検証（ユニット、統合、ツール機能、アクセシビリティ、SEO、UI）
+- **Task 11**: ドキュメント更新・最終検証
 
 #### パフォーマンス目標
 - **ファイルサイズ**: 全ターゲットファイル2,500語以下
 - **MCPツール**: find_symbol等のトークン制限エラー解消
-- **サイズ削減**: メインコントローラー80%削減目標（500語以下）
+- **サイズ削減**: メインコントローラー85%削減目標（500語以下）
+- **ツール機能**: CLI・Web インターフェース完全保持
 - **API互換性**: 既存公開インターフェース完全保持
 
 ### バックアップツールファイル最適化プロジェクト（Issue #85対応）
