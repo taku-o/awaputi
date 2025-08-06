@@ -39,8 +39,53 @@ const PROJECT_ROOT = join(__dirname, '../..');
 /**
  * インタラクティブバランス調整ツール - Main Controller
  * Main Controller Patternを採用し、各専門コンポーネントを統制
+ * 
+ * **Architecture**: Main Controller Pattern
+ * - **BalanceDataLoader**: 設定データの読み込み・解析機能
+ * - **BalanceCalculator**: 影響分析・数学的計算機能  
+ * - **BalanceValidator**: 検証ルール・テスト実行機能
+ * - **BalanceExporter**: データエクスポート・保存機能
+ * 
+ * **Usage Examples**:
+ * ```javascript
+ * // Interactive mode
+ * const tool = new BalanceAdjuster();
+ * await tool.run();
+ * 
+ * // Batch mode
+ * node balance-adjuster.js --batch changes.json
+ * 
+ * // Analysis mode  
+ * node balance-adjuster.js --analyze-current
+ * ```
+ * 
+ * **Component Dependencies**:
+ * - Requires sub-components in tools/balance/ directory
+ * - Integrates with BalanceGuidelinesManager, ConfigurationSynchronizer
+ * - CLI interface maintained through delegation methods
+ * 
+ * @class BalanceAdjuster
+ * @version 1.0.0 (Phase F.4 - Main Controller Pattern)
+ * @since Task 8.2 - Balance adjuster tool implementation
  */
 class BalanceAdjuster {
+    /**
+     * Main Controller constructor - initializes sub-components and session
+     * 
+     * **Dependency Injection Pattern**:
+     * - Instantiates and injects all sub-components
+     * - Maintains references for delegation methods
+     * - Preserves backward compatibility with existing CLI interface
+     * 
+     * **Sub-components initialized**:
+     * - BalanceDataLoader: Configuration loading and parsing
+     * - BalanceCalculator: Impact analysis and calculations  
+     * - BalanceValidator: Testing and validation rules
+     * - BalanceExporter: Data export and file operations
+     * 
+     * @constructor
+     * @since Phase F.4 - Main Controller Pattern implementation
+     */
     constructor() {
         // Project configuration
         this.projectRoot = PROJECT_ROOT;

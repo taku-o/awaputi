@@ -4,6 +4,45 @@ import { getLocalizationManager } from '../core/LocalizationManager.js';
 
 /**
  * 音響アクセシビリティ支援クラス - 聴覚障害者向け支援機能
+ * Main Controller Pattern実装 - サブコンポーネントを統制して包括的なアクセシビリティサポートを提供
+ * 
+ * **Architecture**: Main Controller Pattern
+ * - **AudioDescriptionManager**: 音声説明生成・管理機能
+ * - **AudioCueManager**: 音響キュー生成・パターン認識機能
+ * - **AudioFeedbackManager**: 視覚通知・ユーザーフィードバック機能
+ * - **AudioSettingsManager**: アクセシビリティ設定・永続化機能
+ * 
+ * **Accessibility Features**:
+ * - Visual notifications for audio events
+ * - Haptic feedback integration (vibration patterns)
+ * - Color-coded audio level indicators  
+ * - Caption system for audio descriptions
+ * - Pattern recognition for complex audio sequences
+ * 
+ * **Usage Examples**:
+ * ```javascript
+ * const accessibilitySupport = new AudioAccessibilitySupport(audioManager);
+ * await accessibilitySupport.initialize();
+ * 
+ * // Show visual notification for audio event
+ * accessibilitySupport.showVisualNotification({
+ *   type: 'bubble_pop', 
+ *   data: { bubbleType: 'special', score: 100 }
+ * });
+ * 
+ * // Trigger haptic feedback
+ * accessibilitySupport.triggerHapticFeedback('bubble_pop', { intensity: 0.8 });
+ * ```
+ * 
+ * **WCAG 2.1 AA Compliance**:
+ * - Provides alternative audio representations
+ * - Supports assistive technology integration
+ * - Maintains keyboard navigation compatibility
+ * - Ensures color contrast accessibility
+ * 
+ * @class AudioAccessibilitySupport  
+ * @version 2.0.0 (Phase F.4 - Main Controller Pattern)
+ * @since Original implementation - Enhanced with component architecture
  */
 export class AudioAccessibilitySupport {
     constructor(audioManager) {
@@ -1073,106 +1112,16 @@ export class AudioAccessibilitySupport {
         }
     }
     
-    /**
-     * BGMリズムに同期した触覚フィードバック
-     * @param {Object} rhythmData - リズムデータ
-     */
-    synchronizeWithBGMRhythm(rhythmData) {
-        if (!this.vibrationManager || !this.hapticSettings.enabled) {
-            return;
-        }
-        
-        try {
-            const { bpm, beat, intensity } = rhythmData;
-            
-            if (beat % 4 === 0) { // 4拍子の1拍目で振動
-                this.vibrationManager.triggerVibration('heartbeat', {
-                    intensity: intensity * this.hapticSettings.vibrationIntensity * 0.3, // BGMは控えめに
-                    category: 'accessibility',
-                    eventData: rhythmData
-                });
-            }
-        } catch (error) {
-            console.warn('Failed to synchronize vibration with BGM:', error);
-        }
-    }
+    // Vibration methods delegated to AudioFeedbackManager
+    synchronizeWithBGMRhythm(rhythmData) { return this.audioFeedbackManager.synchronizeWithBGMRhythm(rhythmData); }
+    triggerSpecialEffectVibration(effectType, effectData) { return this.audioFeedbackManager.triggerSpecialEffectVibration(effectType, effectData); }
     
-    /**
-     * 特殊効果に対応した触覚フィードバック
-     * @param {string} effectType - エフェクトタイプ
-     * @param {Object} effectData - エフェクトデータ
-     */
-    triggerSpecialEffectVibration(effectType, effectData) {
-        if (!this.vibrationManager || !this.hapticSettings.enabled) {
-            return;
-        }
-        
-        try {
-            const mapping = this.hapticSettings.audioToVibrationMapping.specialEffects[effectType];
-            if (mapping) {
-                this.vibrationManager.triggerVibration(mapping, {
-                    intensity: this.hapticSettings.vibrationIntensity,
-                    category: 'accessibility',
-                    eventData: effectData
-                });
-            }
-        } catch (error) {
-            console.warn(`Failed to trigger special effect vibration for ${effectType}:`, error);
-        }
-    }
+    // Settings management delegated to AudioSettingsManager
+    updateHapticSettings(settings) { return this.audioSettingsManager.updateHapticSettings(settings); }
     
-    /**
-     * 触覚フィードバック設定を更新
-     * @param {Object} settings - 新しい設定
-     */
-    updateHapticSettings(settings) {
-        Object.assign(this.hapticSettings, settings);
-        this.updateVibrationManagerSettings();
-        
-        // 設定をConfigurationManagerに保存
-        this.configManager.set('audio.accessibility.hapticFeedback', this.hapticSettings.enabled);
-        this.configManager.set('audio.accessibility.vibrationIntensity', this.hapticSettings.vibrationIntensity);
-        
-        console.log('Haptic settings updated:', this.hapticSettings);
-    }
-    
-    /**
-     * イベント履歴を取得
-     * @returns {Array} イベント履歴
-     */
-    getEventHistory() {
-        return this.eventHistory.slice(); // コピーを返す
-    }
-    
-    /**
-     * 統計情報を取得
-     * @returns {Object} 統計情報
-     */
-    getStatistics() {
-        const eventCounts = {};
-        this.eventHistory.forEach(event => {
-            eventCounts[event.type] = (eventCounts[event.type] || 0) + 1;
-        });
-        
-        return {
-            settings: { ...this.settings },
-            hapticSettings: { ...this.hapticSettings },
-            eventHistory: this.eventHistory.length,
-            eventCounts: eventCounts,
-            activeNotifications: this.visualNotifications.length,
-            captionQueue: this.captionQueue.length,
-            patternRecognition: {
-                enabled: this.patternRecognition.enabled,
-                patterns: this.patternRecognition.patterns.size,
-                currentPatternLength: this.patternRecognition.currentPattern ? 
-                    this.patternRecognition.currentPattern.length : 0
-            },
-            vibrationManager: {
-                available: !!this.vibrationManager,
-                enabled: this.vibrationManager ? this.vibrationManager.config.enabled : false
-            }
-        };
-    }
+    // Statistics methods delegated to AudioEventManager  
+    getEventHistory() { return this.audioEventManager.getEventHistory(); }
+    getStatistics() { return this.audioEventManager.getStatistics(); }
     
     /**
      * リソースの解放

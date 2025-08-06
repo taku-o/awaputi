@@ -5,6 +5,45 @@
  * LRU（Least Recently Used）キャッシュの実装、メモリ使用量監視と自動クリーンアップ、
  * 音響データの段階的読み込み機能を提供します。
  * 
+ * **Architecture**: Main Controller Pattern
+ * - **LRUCacheImplementation**: LRUキャッシュアルゴリズム・ノード管理
+ * - **CacheMemoryManager**: メモリ使用量監視・最適化機能
+ * - **CacheDataLoader**: 音響データ読み込み・前処理機能  
+ * - **CacheStatistics**: キャッシュパフォーマンス・メトリクス統計
+ * 
+ * **Cache Features**:
+ * - LRU (Least Recently Used) eviction policy
+ * - Memory usage monitoring and automatic cleanup
+ * - Progressive loading for large audio files
+ * - Hit/miss ratio tracking and performance analytics
+ * - Automatic garbage collection and memory pressure detection
+ * 
+ * **Usage Examples**:
+ * ```javascript
+ * const cacheManager = new AudioCacheManager(audioContext);
+ * await cacheManager.initialize();
+ * 
+ * // Cache audio buffer
+ * await cacheManager.cacheAudio('bgm_001', audioBuffer);
+ * 
+ * // Retrieve cached audio
+ * const cachedAudio = await cacheManager.getAudio('bgm_001');
+ * 
+ * // Get cache statistics
+ * const stats = cacheManager.getStatistics();
+ * console.log(`Cache hit rate: ${stats.hitRate}%`);
+ * ```
+ * 
+ * **Performance Optimization**:
+ * - Memory pressure detection and proactive cleanup
+ * - Streaming support for large audio files  
+ * - Format conversion and compression optimization
+ * - Real-time performance monitoring
+ * 
+ * @class AudioCacheManager
+ * @version 1.5.0 (Phase F.4 - Main Controller Pattern)
+ * @since Audio system implementation - Enhanced with component architecture
+ * 
  * Refactored: Phase F.4 - Main Controller Pattern
  */
 

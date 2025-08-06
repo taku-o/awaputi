@@ -4,6 +4,41 @@
  * アクセシビリティ機能のレスポンス時間、メモリ使用量、CPU影響を測定
  * Main Controller Patternを採用し、各専門コンポーネントを統制
  * 
+ * **Architecture**: Main Controller Pattern
+ * - **ResponseTimeAnalyzer**: レスポンス時間分析（コンポーネント応答測定、タイミング分析）
+ * - **MemoryUsageAnalyzer**: メモリ使用量分析（メモリ影響評価、使用量追跡）
+ * - **CPUImpactAnalyzer**: CPU影響分析（CPU使用量測定、パフォーマンス影響）
+ * - **PerformanceReporter**: パフォーマンスレポート生成（評価コンパイル、結果フォーマット）
+ * 
+ * **Performance Assessment Features**:
+ * - Comprehensive accessibility component performance testing
+ * - Response time measurement (<100ms target)
+ * - Memory usage impact analysis (<20% increase target)
+ * - CPU utilization monitoring (<15% impact target)
+ * - Battery efficiency assessment (<10% impact target)
+ * 
+ * **Usage Examples**:
+ * ```bash
+ * # Run full performance assessment
+ * node scripts/performance-impact-assessment.js
+ * 
+ * # Specific component analysis
+ * node scripts/performance-impact-assessment.js --component AccessibilitySettingsUI
+ * 
+ * # Export detailed report
+ * node scripts/performance-impact-assessment.js --export-report performance-report.json
+ * ```
+ * 
+ * **Assessment Targets**:
+ * - Response Time: <100ms for accessibility interactions
+ * - Memory Impact: <20% increase over baseline
+ * - CPU Usage: <15% additional CPU utilization
+ * - Battery Efficiency: <10% battery life impact
+ * 
+ * @class PerformanceImpactAssessment
+ * @version 1.4.0 (Phase F.4 - Main Controller Pattern)
+ * @since Phase E.3 - Accessibility enhancement
+ * 
  * Phase E.3 - Accessibility File Splitting Project
  * Refactored: Phase F.4 - Main Controller Pattern
  */

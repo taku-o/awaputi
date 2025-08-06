@@ -4,6 +4,44 @@
  * SEO包括テストスイート - Main Controller Pattern実装
  * メタタグ、構造化データ、パフォーマンスの自動検証機能を提供
  * 
+ * **Architecture**: Main Controller Pattern
+ * - **MetaTagValidator**: メタタグ検証（title、description、OG、Twitter Card）
+ * - **StructuredDataValidator**: 構造化データ・schema.org準拠検証
+ * - **PerformanceValidator**: パフォーマンス最適化・アクセシビリティ準拠検証
+ * - **SEOReportGenerator**: テスト結果コンパイル・レポート生成
+ * 
+ * **SEO Testing Features**:
+ * - Automated meta tag validation (Open Graph, Twitter Card, basic meta)
+ * - Structured data compliance (JSON-LD, Schema.org)
+ * - Core Web Vitals performance analysis
+ * - Accessibility compliance verification (WCAG 2.1 AA)
+ * - Multi-format reporting (HTML, JSON, CSV)
+ * 
+ * **Usage Examples**:
+ * ```javascript
+ * const seoTester = new SEOTester();
+ * await seoTester.initialize();
+ * 
+ * // Run comprehensive SEO audit
+ * const results = await seoTester.runComprehensiveTest();
+ * 
+ * // Generate HTML report  
+ * await seoTester.exportResults('html', 'seo-report.html');
+ * 
+ * // Validate specific meta tags
+ * const metaResults = await seoTester.validateMetaTags();
+ * ```
+ * 
+ * **Standards Compliance**:
+ * - Google Search Console integration
+ * - Core Web Vitals monitoring
+ * - Schema.org vocabulary validation
+ * - WCAG 2.1 AA accessibility standards
+ * 
+ * @class SEOTester
+ * @version 1.2.0 (Phase F.4 - Main Controller Pattern)
+ * @since SEO system implementation - Enhanced with component architecture
+ * 
  * Refactored: Phase F.4 - Main Controller Pattern
  */
 

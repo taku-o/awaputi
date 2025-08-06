@@ -2,6 +2,49 @@
  * データインポートダイアログ - Main Controller
  * 
  * Main Controller Patternを採用し、各専門コンポーネントを統制
+ * 多様なデータ形式に対応した包括的インポート機能を提供
+ * 
+ * **Architecture**: Main Controller Pattern
+ * - **ImportMethodSelector**: インポート方法選択UI（ファイル選択、UI描画、ユーザー操作）
+ * - **ImportDataProcessor**: データ処理・検証（データ解析、検証、形式検出、処理）
+ * - **ImportProgressManager**: 進捗追跡（プログレス監視、ステップ管理、ステータス追跡）
+ * - **ImportResultHandler**: 結果処理・フィードバック（結果処理、ユーザーフィードバック、エラー処理、完了）
+ * 
+ * **Import Features**:
+ * - Multi-format data support (JSON, CSV, XML, binary)
+ * - Step-by-step import wizard interface  
+ * - Real-time progress tracking and feedback
+ * - Data validation and integrity checking
+ * - Error handling with user-friendly messages
+ * - Rollback capability for failed imports
+ * 
+ * **Usage Examples**:
+ * ```javascript
+ * const importDialog = new ImportDialog(gameEngine, eventBus, state);
+ * 
+ * // Show import dialog
+ * const result = await importDialog.show({
+ *   allowedFormats: ['json', 'csv'],
+ *   maxFileSize: 10 * 1024 * 1024 // 10MB
+ * });
+ * 
+ * // Handle import result  
+ * if (result.success) {
+ *   console.log('Import completed:', result.data);
+ * }
+ * ```
+ * 
+ * **Supported Import Methods**:
+ * - File upload (drag & drop, file picker)
+ * - Direct paste from clipboard
+ * - URL import from remote sources
+ * - QR code scanning (mobile)
+ * 
+ * @class ImportDialog
+ * @extends BaseDialog  
+ * @version 1.2.0 (Phase F.4 - Main Controller Pattern)
+ * @since UserInfoScene component implementation
+ * 
  * Phase F.4 - Peripheral File Splitting Project
  */
 import { BaseDialog } from './BaseDialog.js';

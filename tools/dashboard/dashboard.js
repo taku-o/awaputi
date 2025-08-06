@@ -4,6 +4,44 @@
  * リアルタイム設定監視、整合性チェック、変更履歴の可視化
  * Main Controller Patternを採用し、各専門コンポーネントを統制
  * 
+ * **Architecture**: Main Controller Pattern
+ * - **DashboardDataManager**: データ取得・管理機能（設定データ、変更履歴、データ更新）
+ * - **DashboardVisualization**: チャート・視覚コンポーネント機能（グラフ初期化、データ可視化、UI描画）
+ * - **DashboardValidation**: 検証・分析機能（検証ステータス更新、影響分析、設定比較）
+ * - **DashboardReporting**: レポート生成機能（レポート生成、比較レポート、エクスポート）
+ * 
+ * **Dashboard Features**:
+ * - Real-time configuration monitoring
+ * - Interactive data visualizations (charts, graphs, metrics)
+ * - Configuration validation and integrity checking  
+ * - Change history tracking and comparison
+ * - Multi-format report generation (HTML, JSON, PDF)
+ * 
+ * **Usage Examples**:
+ * ```javascript
+ * // Initialize dashboard (automatically starts on page load)
+ * const dashboard = new ConfigurationDashboard();
+ * 
+ * // Switch tabs programmatically
+ * dashboard.switchTab('performance');
+ * 
+ * // Manually trigger data refresh
+ * await dashboard.refreshData();
+ * 
+ * // Generate validation report
+ * await dashboard.generateValidationReport();
+ * ```
+ * 
+ * **Web Interface**:
+ * - Responsive design with tab navigation
+ * - Real-time data visualization with Chart.js
+ * - Interactive filtering and search capabilities
+ * - Export functionality for reports and data
+ * 
+ * @class ConfigurationDashboard
+ * @version 1.3.0 (Phase F.4 - Main Controller Pattern)  
+ * @since Task 8.3 - Configuration dashboard implementation
+ * 
  * Created: 2025-07-27 (Task 8.3)
  * Refactored: Phase F.4 - Main Controller Pattern
  */
