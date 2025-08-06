@@ -471,44 +471,46 @@ export class GameEngineInitializer {
      * ブラウザ互換性をチェック
      */
     checkBrowserCompatibility() {
-        const { getBrowserCompatibility } = require('../utils/BrowserCompatibility.js');
-        const browserCompatibility = getBrowserCompatibility();
-        const report = browserCompatibility.generateCompatibilityReport();
+        try {
+            // 動的インポートではなく、ブラウザ機能を直接チェック
+            const canvasSupported = !!window.HTMLCanvasElement;
+            const audioContextSupported = !!(window.AudioContext || window.webkitAudioContext);
+            const localStorageSupported = !!window.localStorage;
+            
+            const report = {
+                features: {
+                    canvas: canvasSupported,
+                    audioContext: audioContextSupported,
+                    localStorage: localStorageSupported
+                }
+            };
         
-        // 重要な機能が利用できない場合は警告
-        if (!report.features.canvas) {
-            console.error('Canvas API is not supported');
-            browserCompatibility.showFallbackUI();
-            return false;
+            // 重要な機能が利用できない場合は警告
+            if (!report.features.canvas) {
+                console.error('Canvas API is not supported');
+                return false;
+            }
+            
+            if (!report.features.audioContext) {
+                console.warn('Audio Context is not fully supported');
+            }
+            
+            if (!report.features.localStorage) {
+                console.warn('LocalStorage is not supported, progress will not be saved');
+            }
+            
+            // デバッグ情報を出力（ブラウザ環境でのみ）
+            if (typeof window !== 'undefined' && this.gameEngine.isDebugMode()) {
+                console.log('Browser compatibility report:', report);
+            }
+            
+            return true;
+            
+        } catch (error) {
+            console.error('Browser compatibility check failed:', error);
+            // フォールバック: 基本的なブラウザ環境では続行
+            return typeof window !== 'undefined' && !!window.HTMLCanvasElement;
         }
-        
-        if (!report.features.requestAnimationFrame) {
-            console.warn('requestAnimationFrame is not supported, using fallback');
-        }
-        
-        if (!report.features.webAudio) {
-            console.warn('Web Audio API is not supported, audio will be disabled');
-        }
-        
-        if (!report.features.localStorage) {
-            console.warn('LocalStorage is not supported, progress will not be saved');
-        }
-        
-        // デバッグ情報を出力
-        if (this.gameEngine.isDebugMode()) {
-            browserCompatibility.logDebugInfo();
-        }
-        
-        // 推奨事項と警告を表示
-        if (report.recommendations.length > 0) {
-            console.warn('Browser compatibility recommendations:', report.recommendations);
-        }
-        
-        if (report.warnings.length > 0) {
-            console.warn('Browser compatibility warnings:', report.warnings);
-        }
-        
-        return true;
     }
     
     /**
