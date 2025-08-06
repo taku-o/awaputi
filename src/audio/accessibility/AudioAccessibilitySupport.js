@@ -16,6 +16,8 @@ import { AudioDescriptionManager } from './AudioDescriptionManager.js';
 import { AudioCueManager } from './AudioCueManager.js';
 import { AudioFeedbackManager } from './AudioFeedbackManager.js';
 import { AudioSettingsManager } from './AudioSettingsManager.js';
+import { AudioEventManager } from './AudioEventManager.js';
+import { AudioLegacyAdapter } from './AudioLegacyAdapter.js';
 
 /**
  * 音響アクセシビリティ支援クラス - Main Controller
@@ -33,15 +35,12 @@ export class AudioAccessibilitySupport {
         this.cueManager = new AudioCueManager(this);
         this.feedbackManager = new AudioFeedbackManager(this);
         this.settingsManager = new AudioSettingsManager(this);
+        this.eventManager = new AudioEventManager(this);
+        this.legacyAdapter = new AudioLegacyAdapter(this);
         
         // Legacy compatibility properties
-        this.vibrationManager = null; // Managed by feedbackManager
+        this.vibrationManager = this.legacyAdapter.getVibrationManager();
         this.visualNotifications = []; // Managed by feedbackManager
-        this.eventHistory = [];
-        this.maxHistorySize = 50;
-        
-        // Initialize legacy compatibility
-        this.initializeLegacyCompatibility();
         
         console.log('AudioAccessibilitySupport initialized with Main Controller Pattern');
     }
@@ -53,6 +52,9 @@ export class AudioAccessibilitySupport {
         try {
             // Settings initialization
             await this.settingsManager.initializeSettings();
+            
+            // Setup event listeners
+            this.setupEventListeners();
             
             // Sub-components are already initialized in constructor
             console.log('Audio accessibility support fully initialized');
@@ -69,21 +71,12 @@ export class AudioAccessibilitySupport {
     }
 
     /**
-     * レガシー互換性の初期化
+     * 初期化後の設定
      */
-    initializeLegacyCompatibility() {
-        // VibrationManagerの互換性設定
-        this.vibrationManager = {
-            vibrate: (pattern) => {
-                const cue = { pattern: 'custom', vibrationPattern: pattern };
-                this.feedbackManager.applyTactileFeedback(cue);
-            },
-            isSupported: () => 'vibrate' in navigator
-        };
-        
+    setupEventListeners() {
         // 設定変更の監視
         this.settingsManager.addChangeListener((event) => {
-            this.handleSettingsChange(event);
+            this.legacyAdapter.handleSettingsChange(event);
         });
     }
 
@@ -101,7 +94,7 @@ export class AudioAccessibilitySupport {
         this.feedbackManager.showVisualNotification(message, type, options);
         
         // イベント履歴に記録
-        this.recordEvent('visual_notification', { message, type, options });
+        this.eventManager.recordEvent('visual_notification', { message, type, options });
     }
 
     /**
@@ -111,7 +104,7 @@ export class AudioAccessibilitySupport {
      */
     showCaption(text, options = {}) {
         this.feedbackManager.showCaption(text, options);
-        this.recordEvent('caption', { text, options });
+        this.eventManager.recordEvent('caption', { text, options });
     }
 
     /**
@@ -123,7 +116,7 @@ export class AudioAccessibilitySupport {
      */
     addAudioDescription(category, type, params = {}, priority = 3) {
         this.descriptionManager.addDescription(category, type, params, priority);
-        this.recordEvent('audio_description', { category, type, params, priority });
+        this.eventManager.recordEvent('audio_description', { category, type, params, priority });
     }
 
     /**
@@ -134,7 +127,7 @@ export class AudioAccessibilitySupport {
      */
     processAudioEvent(eventType, eventData = {}, audioData = {}) {
         this.cueManager.processAudioEvent(eventType, eventData, audioData);
-        this.recordEvent('audio_event', { eventType, eventData, audioData });
+        this.eventManager.recordEvent('audio_event', { eventType, eventData, audioData });
     }
 
     /**
@@ -144,7 +137,7 @@ export class AudioAccessibilitySupport {
      */
     updateColorIndicator(level, options = {}) {
         this.feedbackManager.updateColorIndicator(level, options);
-        this.recordEvent('color_indicator', { level, options });
+        this.eventManager.recordEvent('color_indicator', { level, options });
     }
 
     /**
@@ -153,7 +146,7 @@ export class AudioAccessibilitySupport {
      */
     triggerHapticFeedback(type) {
         this.feedbackManager.triggerVibration(type);
-        this.recordEvent('haptic_feedback', { type });
+        this.eventManager.recordEvent('haptic_feedback', { type });
     }
 
     // ========================================
@@ -194,7 +187,7 @@ export class AudioAccessibilitySupport {
     }
 
     // ========================================
-    // Legacy Compatibility Methods
+    // Legacy Compatibility Methods (delegated)
     // ========================================
 
     /**
@@ -202,9 +195,7 @@ export class AudioAccessibilitySupport {
      * @param {Array|number} pattern - 振動パターン
      */
     vibrate(pattern) {
-        if (this.vibrationManager) {
-            this.vibrationManager.vibrate(pattern);
-        }
+        this.legacyAdapter.vibrate(pattern);
     }
 
     /**
@@ -212,8 +203,7 @@ export class AudioAccessibilitySupport {
      * @param {number} intensity - 強度 (0-1)
      */
     setAudioIntensity(intensity) {
-        const level = this.mapIntensityToLevel(intensity);
-        this.updateColorIndicator(level);
+        this.legacyAdapter.setAudioIntensity(intensity);
     }
 
     /**
@@ -221,7 +211,7 @@ export class AudioAccessibilitySupport {
      * @param {boolean} enabled - 有効化フラグ
      */
     enablePatternRecognition(enabled) {
-        this.updateSetting('patternRecognition', enabled);
+        this.legacyAdapter.enablePatternRecognition(enabled);
     }
 
     /**
@@ -229,41 +219,12 @@ export class AudioAccessibilitySupport {
      * @param {boolean} enabled - 有効化フラグ
      */
     async enableAccessibilityFeatures(enabled) {
-        const settings = {
-            visualFeedback: enabled,
-            captioning: enabled,
-            colorIndication: enabled,
-            hapticFeedback: enabled && 'vibrate' in navigator,
-            descriptionEnabled: enabled && 'speechSynthesis' in window
-        };
-        
-        await this.updateSettings(settings);
+        await this.legacyAdapter.enableAccessibilityFeatures(enabled);
     }
 
     // ========================================
-    // Event and History Management
+    // Event Management (delegated)
     // ========================================
-
-    /**
-     * イベントの記録
-     * @param {string} eventType - イベントタイプ
-     * @param {Object} eventData - イベントデータ
-     */
-    recordEvent(eventType, eventData) {
-        const event = {
-            id: this.generateEventId(),
-            type: eventType,
-            data: eventData,
-            timestamp: Date.now()
-        };
-        
-        this.eventHistory.push(event);
-        
-        // 履歴サイズの制限
-        if (this.eventHistory.length > this.maxHistorySize) {
-            this.eventHistory.shift();
-        }
-    }
 
     /**
      * イベント履歴の取得
@@ -271,15 +232,14 @@ export class AudioAccessibilitySupport {
      * @returns {Array} イベント履歴
      */
     getEventHistory(limit = null) {
-        const history = [...this.eventHistory];
-        return limit ? history.slice(-limit) : history;
+        return this.eventManager.getEventHistory(limit);
     }
 
     /**
      * イベント履歴のクリア
      */
     clearEventHistory() {
-        this.eventHistory = [];
+        this.eventManager.clearEventHistory();
     }
 
     // ========================================
@@ -297,9 +257,11 @@ export class AudioAccessibilitySupport {
                 descriptionManager: this.descriptionManager.getStatus(),
                 cueManager: this.cueManager.getStatus(),
                 feedbackManager: this.feedbackManager.getStatus(),
-                settingsManager: this.settingsManager.getStatus()
+                settingsManager: this.settingsManager.getStatus(),
+                eventManager: this.eventManager.getStatus(),
+                legacyAdapter: this.legacyAdapter.getStatus()
             },
-            eventHistorySize: this.eventHistory.length,
+            eventHistorySize: this.eventManager.getEventHistory().length,
             capabilities: this.getCapabilities(),
             settings: this.getSettings()
         };
@@ -310,13 +272,7 @@ export class AudioAccessibilitySupport {
      * @returns {Object} デバイス機能情報
      */
     getCapabilities() {
-        return {
-            vibrationSupported: 'vibrate' in navigator,
-            speechSynthesisSupported: 'speechSynthesis' in window,
-            visualFeedbackSupported: typeof document !== 'undefined',
-            highContrastSupported: window.matchMedia && window.matchMedia('(prefers-contrast: high)').matches,
-            reducedMotionSupported: window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
-        };
+        return this.legacyAdapter.getCapabilities();
     }
 
     /**
@@ -324,57 +280,15 @@ export class AudioAccessibilitySupport {
      * @returns {Object} 使用統計
      */
     getStatistics() {
-        const eventsByType = {};
-        this.eventHistory.forEach(event => {
-            eventsByType[event.type] = (eventsByType[event.type] || 0) + 1;
-        });
+        const eventStats = this.eventManager.getStatistics();
         
         return {
-            totalEvents: this.eventHistory.length,
-            eventsByType: eventsByType,
-            uptime: Date.now() - this.initializationTime,
-            componentsActive: 4,
+            ...eventStats,
+            componentsActive: 6,
             settingsConfigured: Object.keys(this.getSettings()).length
         };
     }
 
-    // ========================================
-    // Private Helper Methods
-    // ========================================
-
-    /**
-     * 設定変更の処理
-     * @param {Object} event - 設定変更イベント
-     */
-    handleSettingsChange(event) {
-        this.recordEvent('settings_change', event);
-        
-        // 必要に応じて追加の処理
-        if (event.type === 'single' && event.key === 'vibrationIntensity') {
-            // 振動強度変更時の即座テスト
-            this.triggerHapticFeedback('notification');
-        }
-    }
-
-    /**
-     * 強度からレベルへのマッピング
-     * @param {number} intensity - 強度 (0-1)
-     * @returns {string} レベル
-     */
-    mapIntensityToLevel(intensity) {
-        if (intensity >= 0.9) return 'critical';
-        if (intensity >= 0.7) return 'high';
-        if (intensity >= 0.4) return 'medium';
-        return 'low';
-    }
-
-    /**
-     * イベントIDの生成
-     * @returns {string} ユニークなイベントID
-     */
-    generateEventId() {
-        return `event_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    }
 
     // ========================================
     // Lifecycle Management
@@ -401,8 +315,13 @@ export class AudioAccessibilitySupport {
             this.settingsManager.destroy();
         }
         
-        // Clear event history
-        this.eventHistory = [];
+        if (this.eventManager) {
+            this.eventManager.destroy();
+        }
+        
+        if (this.legacyAdapter) {
+            this.legacyAdapter.destroy();
+        }
         
         console.log('AudioAccessibilitySupport destroyed');
     }
