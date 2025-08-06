@@ -844,6 +844,39 @@ MCPツール（find_symbol）が25,000トークン制限を超過してエラー
 - 誤削除時のロールバック機能
 - 対応する現在ファイルの存在確認
 
+### バックアップファイル削除プロジェクト（Issue #104対応）
+**目標**: Issue #77の大容量ファイル分割プロジェクトで作成された不要なバックアップファイル5件を安全に削除し、リポジトリサイズ削減とメンテナンス性向上を実現
+
+#### 削除対象ファイル
+大容量ファイル分割プロジェクト（Issue #77, #103）の過程で作成されたバックアップファイル：
+- `src/utils/TestConfigurationGenerator_old.js`（3,288語） - Task 4完了時のバックアップ
+- `src/utils/performance-monitoring/PerformanceDataAnalyzer_Original.js`（2,871語） - Task 2完了時のオリジナル保存
+- `src/debug/TestDataGenerationCommands_old.js`（2,621語） - 分割プロジェクトでのバックアップ
+- `src/debug/TestDataGenerationCommands_backup.js`（2,621語） - 重複バックアップ
+- `src/seo/SEOTester_original.js`（2,576語） - 分割プロジェクトでのオリジナル保存
+
+**合計削除予定サイズ**: 13,977語（推定55-70KB）
+
+#### 実装アプローチ
+1. **Phase 1**: 調査・分析（1日）
+   - 対象ファイルの存在確認と対応する現在ファイルの確認
+   - 参照関係の分析（import文、文字列参照）
+   - Git履歴の調査
+2. **Phase 2**: 削除実行（0.5日）
+   - 段階的な安全削除（1ファイルずつ確認しながら）
+   - 削除後の動作確認
+3. **Phase 3**: 検証（0.5日）
+   - ビルド・テスト成功確認
+   - 削除結果のドキュメント化
+
+#### 主要コンポーネント
+- **BackupFileInvestigator**: 対象ファイルの詳細調査
+- **ReferenceAnalyzer**: ファイル参照関係の分析
+- **SafetyVerifier**: 削除安全性の検証
+- **SequentialFileRemover**: 段階的ファイル削除
+- **IntegrityValidator**: 削除後の整合性確認
+- **CleanupReporter**: 作業結果の詳細レポート
+
 ### コアファイル分割プロジェクト Phase E.1（Issue #82対応）
 **目標**: 重要なコアファイル7件をMain Controller Patternで分割し、MCPツール互換性（2,500語以下）を実現
 
