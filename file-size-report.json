@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-08-05T14:02:33.833Z",
+  "timestamp": "2025-08-06T18:50:40.301Z",
   "config": {
     "WORD_LIMIT": 2500,
     "TOKEN_LIMIT": 20000,
@@ -20,10 +20,11 @@
     "ERROR_THRESHOLD": 2500
   },
   "summary": {
-    "totalFiles": 1712,
+    "totalFiles": 1708,
     "warningFiles": 181,
     "errorFiles": 177,
-    "averageWordCount": 1720
+    "averageWordCount": 1720,
+    "lastUpdated": "2025-08-06T18:50:40.297Z"
   },
   "results": [
     {
@@ -1366,19 +1367,6 @@
       ]
     },
     {
-      "filePath": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/TestConfigurationGenerator_old.js",
-      "relativePath": "src/utils/TestConfigurationGenerator_old.js",
-      "fileName": "TestConfigurationGenerator_old.js",
-      "wordCount": 3279,
-      "limit": 2500,
-      "status": "error",
-      "lastChecked": "2025-08-05T14:02:33.733Z",
-      "suggestions": [
-        "緊急: ファイルを複数のモジュールに分割してください",
-        "単一責任の原則に従ってクラス/機能を分離してください"
-      ]
-    },
-    {
       "filePath": "/Users/taku-o/Documents/workspaces/awaputi/docs/api-reference/WCAGValidator.md",
       "relativePath": "docs/api-reference/WCAGValidator.md",
       "fileName": "WCAGValidator.md",
@@ -1769,19 +1757,6 @@
       ]
     },
     {
-      "filePath": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-monitoring/PerformanceDataAnalyzer_Original.js",
-      "relativePath": "src/utils/performance-monitoring/PerformanceDataAnalyzer_Original.js",
-      "fileName": "PerformanceDataAnalyzer_Original.js",
-      "wordCount": 2871,
-      "limit": 2500,
-      "status": "error",
-      "lastChecked": "2025-08-05T14:02:33.743Z",
-      "suggestions": [
-        "緊急: ファイルを複数のモジュールに分割してください",
-        "単一責任の原則に従ってクラス/機能を分離してください"
-      ]
-    },
-    {
       "filePath": "/Users/taku-o/Documents/workspaces/awaputi/docs/api-reference/ContextManager.md",
       "relativePath": "docs/api-reference/ContextManager.md",
       "fileName": "ContextManager.md",
@@ -2062,32 +2037,6 @@
       "limit": 2500,
       "status": "error",
       "lastChecked": "2025-08-05T14:02:33.447Z",
-      "suggestions": [
-        "緊急: ファイルを複数のモジュールに分割してください",
-        "単一責任の原則に従ってクラス/機能を分離してください"
-      ]
-    },
-    {
-      "filePath": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/TestDataGenerationCommands_backup.js",
-      "relativePath": "src/debug/TestDataGenerationCommands_backup.js",
-      "fileName": "TestDataGenerationCommands_backup.js",
-      "wordCount": 2617,
-      "limit": 2500,
-      "status": "error",
-      "lastChecked": "2025-08-05T14:02:33.666Z",
-      "suggestions": [
-        "緊急: ファイルを複数のモジュールに分割してください",
-        "単一責任の原則に従ってクラス/機能を分離してください"
-      ]
-    },
-    {
-      "filePath": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/TestDataGenerationCommands_old.js",
-      "relativePath": "src/debug/TestDataGenerationCommands_old.js",
-      "fileName": "TestDataGenerationCommands_old.js",
-      "wordCount": 2617,
-      "limit": 2500,
-      "status": "error",
-      "lastChecked": "2025-08-05T14:02:33.667Z",
       "suggestions": [
         "緊急: ファイルを複数のモジュールに分割してください",
         "単一責任の原則に従ってクラス/機能を分離してください"
