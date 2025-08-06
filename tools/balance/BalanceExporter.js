@@ -421,4 +421,36 @@ export class BalanceExporter {
     async saveExportResults(exportResult) {
         writeFileSync(exportResult.exportPath, JSON.stringify(exportResult, null, 2));
     }
+
+    /**
+     * バッチファイルの読み込み
+     * @param {string} filename - バッチファイル名
+     * @returns {Array} バッチ変更リスト
+     */
+    loadBatchFile(filename) {
+        try {
+            const filePath = join(this.mainController.projectRoot, filename);
+            if (!existsSync(filePath)) {
+                throw new Error(`バッチファイルが見つかりません: ${filename}`);
+            }
+
+            const content = readFileSync(filePath, 'utf8');
+            const batchData = JSON.parse(content);
+
+            // バッチデータの検証
+            if (!Array.isArray(batchData) && typeof batchData !== 'object') {
+                throw new Error('無効なバッチファイル形式');
+            }
+
+            // オブジェクトの場合は配列に変換
+            if (!Array.isArray(batchData)) {
+                return [batchData];
+            }
+
+            return batchData;
+        } catch (error) {
+            console.error(chalk.red(`バッチファイル読み込みエラー: ${error.message}`));
+            return [];
+        }
+    }
 }

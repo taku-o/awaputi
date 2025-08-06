@@ -20,7 +20,6 @@ import { dirname, join } from 'path';
 import { program } from 'commander';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
-import Table from 'cli-table3';
 
 // Import sub-components
 import { BalanceDataLoader } from './BalanceDataLoader.js';
@@ -364,7 +363,7 @@ class BalanceAdjuster {
     }
 
     // ========================================
-    // Utility Methods
+    // Utility Methods (delegated to sub-components)
     // ========================================
 
     /**
@@ -373,8 +372,7 @@ class BalanceAdjuster {
      */
     async runBatchMode(batchFile) {
         console.log(chalk.blue(`🔄 バッチモード: ${batchFile}`));
-        // Implementation delegated to Exporter
-        const batchChanges = this.loadBatchFile(batchFile);
+        const batchChanges = this.exporter.loadBatchFile(batchFile);
         await this.exporter.exportBatchChanges(batchChanges);
     }
 
@@ -392,53 +390,7 @@ class BalanceAdjuster {
      * @param {string} category - カテゴリ名
      */
     displayConfigurationCategory(category) {
-        const config = this.currentConfig[category];
-        if (!config) {
-            console.log(chalk.yellow(`カテゴリ '${category}' が見つかりません`));
-            return;
-        }
-
-        const table = new Table({
-            head: ['設定項目', '現在の値', '変更予定', '状態'],
-            colWidths: [30, 15, 15, 10]
-        });
-
-        this.addConfigToTable(table, config, category);
-        console.log('\n' + table.toString());
-
-        const pendingInCategory = Object.keys(this.pendingChanges)
-            .filter(key => key.startsWith(category)).length;
-        
-        if (pendingInCategory > 0) {
-            console.log(chalk.yellow(`\n${pendingInCategory}件の変更が保留中です`));
-        }
-    }
-
-    /**
-     * テーブルに設定を追加
-     * @param {Table} table - テーブルオブジェクト
-     * @param {Object} config - 設定オブジェクト
-     * @param {string} prefix - キープレフィックス
-     */
-    addConfigToTable(table, config, prefix = '') {
-        for (const [key, value] of Object.entries(config)) {
-            const fullKey = prefix ? `${prefix}.${key}` : key;
-            
-            if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-                this.addConfigToTable(table, value, fullKey);
-            } else {
-                const pendingChange = this.pendingChanges[fullKey];
-                const status = pendingChange ? '🔄' : '✅';
-                const newValue = pendingChange ? pendingChange.newValue : '-';
-                
-                table.push([
-                    key,
-                    String(value).substring(0, 12),
-                    String(newValue).substring(0, 12),
-                    status
-                ]);
-            }
-        }
+        this.dataLoader.displayConfigurationCategory(category, this.pendingChanges);
     }
 
     /**
@@ -463,7 +415,6 @@ class BalanceAdjuster {
     async showGuidelines() { console.log('ガイドライン表示'); await this.pressAnyKey(); }
     async compareConfigurations() { console.log('設定比較機能'); await this.pressAnyKey(); }
     async handleExit() { console.log(chalk.green('ツールを終了します')); process.exit(0); }
-    loadBatchFile(filename) { return []; }
 }
 
 // ========================================

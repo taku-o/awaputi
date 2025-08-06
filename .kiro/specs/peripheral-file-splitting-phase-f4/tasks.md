@@ -6,7 +6,7 @@
   - Set up testing framework for split validation and tool functionality testing
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8_
 
-- [x] 2. Split balance-adjuster.js (highest priority - 3,168 words)
+- [x] 2. Split balance-adjuster.js (highest priority - 3,168 words → 990 words)
 - [x] 2.1 Create BalanceDataLoader component
   - Extract configuration loading and parsing functionality from balance-adjuster.js
   - Implement loadCurrentConfiguration, createConfigurationBackup, and file discovery methods
@@ -36,6 +36,12 @@
   - Implement delegation methods to maintain CLI interface compatibility
   - Verify all existing tool functionality works through the new architecture
   - _Requirements: 6.1, 6.6, 2.1, 2.2, 9.1, 9.4_
+
+- [x] 2.6 Additional refactoring to reduce size below 2,500 words
+  - Move displayConfigurationCategory to BalanceDataLoader
+  - Move loadBatchFile to BalanceExporter
+  - Remove unnecessary methods and imports
+  - _Result: 3,168 words → 990 words (69% reduction)_
 
 - [x] 3. Split AudioAccessibilitySupport.js (2,582 words)
 - [x] 3.1 Create AudioDescriptionManager component

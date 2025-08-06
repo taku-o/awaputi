@@ -8,6 +8,7 @@
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { join } from 'path';
 import chalk from 'chalk';
+import Table from 'cli-table3';
 
 export class BalanceDataLoader {
     constructor(mainController) {
@@ -228,5 +229,61 @@ export class BalanceDataLoader {
         }
         
         return results;
+    }
+
+    /**
+     * 設定カテゴリの表示
+     * @param {string} category - カテゴリ名
+     * @param {Object} pendingChanges - 保留中の変更
+     */
+    displayConfigurationCategory(category, pendingChanges = {}) {
+        const config = this.mainController.currentConfig[category];
+        if (!config) {
+            console.log(chalk.yellow(`カテゴリ '${category}' が見つかりません`));
+            return;
+        }
+
+        const table = new Table({
+            head: ['設定項目', '現在の値', '変更予定', '状態'],
+            colWidths: [30, 15, 15, 10]
+        });
+
+        this.addConfigToTable(table, config, category, pendingChanges);
+        console.log('\n' + table.toString());
+
+        const pendingInCategory = Object.keys(pendingChanges)
+            .filter(key => key.startsWith(category)).length;
+        
+        if (pendingInCategory > 0) {
+            console.log(chalk.yellow(`\n${pendingInCategory}件の変更が保留中です`));
+        }
+    }
+
+    /**
+     * テーブルに設定を追加
+     * @param {Table} table - テーブルオブジェクト
+     * @param {Object} config - 設定オブジェクト
+     * @param {string} prefix - キープレフィックス
+     * @param {Object} pendingChanges - 保留中の変更
+     */
+    addConfigToTable(table, config, prefix = '', pendingChanges = {}) {
+        for (const [key, value] of Object.entries(config)) {
+            const fullKey = prefix ? `${prefix}.${key}` : key;
+            
+            if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+                this.addConfigToTable(table, value, fullKey, pendingChanges);
+            } else {
+                const pendingChange = pendingChanges[fullKey];
+                const status = pendingChange ? '🔄' : '✅';
+                const newValue = pendingChange ? pendingChange.newValue : '-';
+                
+                table.push([
+                    key,
+                    String(value).substring(0, 12),
+                    String(newValue).substring(0, 12),
+                    status
+                ]);
+            }
+        }
     }
 }
