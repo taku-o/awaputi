@@ -263,6 +263,14 @@ export class AudioManager {
     }
 
     /**
+     * 泡破壊音を再生
+     * Issue #106: テスト互換性のため追加
+     */
+    playPopSound() {
+        return this.playBubbleSound('pop');
+    }
+
+    /**
      * 全音響停止
      */
     stopAllSounds() {

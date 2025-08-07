@@ -530,6 +530,26 @@ export class AchievementNotificationSystem {
     }
 
     /**
+     * フレーム毎の更新処理
+     * Issue #106: テスト互換性のため追加
+     */
+    update(deltaTime) {
+        try {
+            // 通知キューの処理
+            if (this.notificationQueue.length > 0 && !this.isProcessingQueue) {
+                this.processNotificationQueue();
+            }
+            
+            // アクティブな通知の更新（表示時間管理など）
+            if (this.activeNotifications) {
+                // 通知の自動非表示処理など
+            }
+        } catch (error) {
+            console.error('[AchievementNotificationSystem] Error during update:', error);
+        }
+    }
+
+    /**
      * 通知システムを破棄
      */
     destroy() {
