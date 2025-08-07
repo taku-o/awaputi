@@ -2,7 +2,7 @@
  * AchievementNotificationSystem単体テスト
  */
 
-import { AchievementNotificationSystem } from '../../src/core/achievements/AchievementNotificationSystem.js';
+import { AchievementNotificationSystem } from '../../src/core/AchievementNotificationSystem.js';
 
 // Mock AudioManagerクラス
 class MockAudioManager {

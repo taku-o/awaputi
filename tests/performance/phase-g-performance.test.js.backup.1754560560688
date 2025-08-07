@@ -9,7 +9,7 @@ import { performance } from 'perf_hooks';
 // 分割後のクラス
 import AudioAccessibilitySupport from '../../src/audio/accessibility/AudioAccessibilitySupport.js';
 import VisualFocusManager from '../../src/core/VisualFocusManager.js';
-import VisualFeedbackManager from '../../src/core/VisualFeedbackManager.js';
+import VisualFeedbackManager from '../../src/core/visual/feedback/VisualFeedbackManager.js';
 
 describe('Phase G Performance Tests', () => {
     const iterations = 1000;

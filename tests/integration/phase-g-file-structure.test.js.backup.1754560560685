@@ -246,9 +246,9 @@ describe('Phase G ファイル構造統合テスト', () => {
                 
                 // サブコンポーネントのインポートを確認
                 expect(content).toContain("import { AudioDescriptionManager } from '../../src/audio/accessibility/AudioDescriptionManager.js'");
-                expect(content).toContain("import { AudioCueManager } from '../../src/audio/accessibility/AudioCueManager.js'");
-                expect(content).toContain("import { AudioFeedbackManager } from '../../src/audio/accessibility/AudioFeedbackManager.js'");
-                expect(content).toContain("import { AudioSettingsManager } from '../../src/audio/accessibility/AudioSettingsManager.js'");
+                expect(content).toContain("import { AudioCueManager } from './AudioCueManager.js'");
+                expect(content).toContain("import { AudioFeedbackManager } from './AudioFeedbackManager.js'");
+                expect(content).toContain("import { AudioSettingsManager } from './AudioSettingsManager.js'");
                 
                 // コンストラクターでのコンポーネント初期化を確認
                 expect(content).toContain('this.descriptionManager = new AudioDescriptionManager');

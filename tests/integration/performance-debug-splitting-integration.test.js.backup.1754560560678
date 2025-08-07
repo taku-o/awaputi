@@ -11,8 +11,8 @@ import { PerformanceWarningSystem } from '../../src/utils/PerformanceWarningSyst
 import { PerformanceMonitoringSystem } from '../../src/utils/PerformanceMonitoringSystem.js';
 import { PerformanceIntegrationTesting } from '../../src/utils/PerformanceIntegrationTesting.js';
 import { BenchmarkSuite } from '../../src/debug/BenchmarkSuite.js';
-import { TestResultVisualizer } from '../../src/debug/TestResultVisualizer.js';
-import { ErrorReporter } from '../../src/debug/ErrorReporter.js';
+import { TestResultVisualizer } from '../../src/utils/TestResultVisualizer.js';
+import { ErrorReporter } from '../../src/utils/ErrorReporter.js';
 import { MobileTestSuite } from '../../src/tests/mobile/MobileTestSuite.js';
 import { MobileAccessibilityManager } from '../../src/core/MobileAccessibilityManager.js';
 import { MobileSystemIntegrator } from '../../src/core/MobileSystemIntegrator.js';
