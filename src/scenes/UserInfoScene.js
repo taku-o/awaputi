@@ -1,9 +1,10 @@
 /**
- * ユーザー情報画面シーン
+ * ユーザー情報画面シーン (Main Controller Pattern)
+ * 既存コンポーネントシステムを活用し、軽量なコントローラーとして機能
  */
 import { Scene } from '../core/Scene.js';
 
-// 新しいダイアログシステム
+// コンポーネントシステム
 import { DialogManager } from './components/DialogManager.js';
 import { ComponentEventBus } from './components/ComponentEventBus.js';
 import { SceneState } from './components/SceneState.js';
@@ -11,7 +12,7 @@ import { UsernameDialog } from './components/UsernameDialog.js';
 import { ExportDialog } from './components/ExportDialog.js';
 import { ImportDialog } from './components/ImportDialog.js';
 
-// 分離されたコンポーネント
+// 既存の分離コンポーネント
 import { UserProfileManager } from './components/user-info/UserProfileManager.js';
 import { UserStatisticsRenderer } from './components/user-info/UserStatisticsRenderer.js';
 import { UserAchievementDisplay } from './components/user-info/UserAchievementDisplay.js';
@@ -21,32 +22,46 @@ import { UserInfoTabManager } from './components/user-info/UserInfoTabManager.js
 import { UserInfoRenderer } from './components/user-info/UserInfoRenderer.js';
 import { UserInfoEventHandler } from './components/user-info/UserInfoEventHandler.js';
 
+// 新しいサブコンポーネント
+import { UserInterfaceController } from './user-info-scene/UserInterfaceController.js';
+import { UserDataManager } from './user-info-scene/UserDataManager.js';
+
 export class UserInfoScene extends Scene {
     constructor(gameEngine) {
         super(gameEngine);
         
-        // 新しいコンポーネントシステムの初期化
+        // Main Controller Pattern - サブコンポーネント初期化
+        this.initializeControllers();
         this.initializeComponentSystem();
-        
-        // 分離されたコンポーネントの初期化
         this.initializeUserComponents();
         
-        // テスト互換性プロパティ
+        // レガシー互換性プロパティ
         this.lastCleanupTime = Date.now();
         this.CLEANUP_INTERVAL = 30000; // 30秒
         this.COMPONENT_TIMEOUT = 60000; // 60秒
+        
+        console.log('[UserInfoScene] Main Controller Pattern初期化完了');
     }
     
     /**
-     * 新しいコンポーネントシステムの初期化
+     * メインコントローラーの初期化
      */
-    initializeComponentSystem() {
-        // イベントバス作成
+    initializeControllers() {
+        // イベントバスの作成（他のコンポーネントより先に）
         this.eventBus = new ComponentEventBus();
-        
-        // 共有状態作成
         this.sceneState = new SceneState(this.gameEngine);
         
+        // サブコントローラーの初期化
+        this.uiController = new UserInterfaceController(this.gameEngine, this.eventBus, this.sceneState);
+        this.dataManager = new UserDataManager(this.gameEngine, this.eventBus, this.sceneState);
+        
+        console.log('[UserInfoScene] メインコントローラーを初期化しました');
+    }
+    
+    /**
+     * コンポーネントシステムの初期化
+     */
+    initializeComponentSystem() {
         // ダイアログマネージャー作成
         this.dialogManager = new DialogManager(this.gameEngine, this.eventBus, this.sceneState);
         
@@ -55,1154 +70,233 @@ export class UserInfoScene extends Scene {
         this.dialogManager.registerDialog('export', ExportDialog);
         this.dialogManager.registerDialog('import', ImportDialog);
         
-        // 新しい専用コンポーネントの初期化
+        // 専用コンポーネントの初期化
         this.tabManager = new UserInfoTabManager(this.gameEngine, this.eventBus, this.sceneState);
         this.renderer = new UserInfoRenderer(this.gameEngine, this.eventBus, this.sceneState);
         this.eventHandler = new UserInfoEventHandler(this.gameEngine, this.eventBus, this.sceneState);
         
-        // レガシープロパティとの互換性維持
+        // レガシー互換性の設定
         this.setupLegacyCompatibility();
     }
     
-    
     /**
-     * 分離されたユーザーコンポーネントの初期化
+     * ユーザーコンポーネントの初期化
      */
     initializeUserComponents() {
-        // プロフィール管理コンポーネント
+        // 既存の分離コンポーネント
         this.userProfileManager = new UserProfileManager(this.gameEngine, this.eventBus, this.sceneState);
-        
-        // 統計描画コンポーネント
         this.userStatisticsRenderer = new UserStatisticsRenderer(this.gameEngine, this.eventBus, this.sceneState);
-        
-        // 実績表示コンポーネント
         this.userAchievementDisplay = new UserAchievementDisplay(this.gameEngine, this.eventBus, this.sceneState);
-        
-        // データエクスポートコンポーネント
         this.userDataExporter = new UserDataExporter(this.gameEngine, this.eventBus, this.sceneState);
-        
-        // ヘルプ統合コンポーネント
         this.userHelpIntegration = new UserHelpIntegration(this.gameEngine, this.eventBus, this.sceneState);
-        
-        // 初期化完了
-        this.userProfileManager.initialize();
-        
-        console.log('User components initialized successfully');
-    }
-    
-    
-    /**
-     * イベントリスナーをセットアップ
-     */
-    setupEventListeners() {
-        // ダイアログイベントの監視
-        this.eventBus.on('dialog-opened', (data) => {
-            console.log('Dialog opened:', data.type);
-        });
-        
-        this.eventBus.on('dialog-closed', (data) => {
-            console.log('Dialog closed:', data.type);
-        });
-        
-        // エラーイベントの監視
-        this.eventBus.on('component-error', (error) => {
-            console.error('Component error:', error);
-            this.showError('コンポーネントエラーが発生しました');
-        });
-        
-        // 状態変更の監視
-        this.sceneState.onChange('currentTab', (newTab, oldTab) => {
-            console.log(`Tab changed from ${oldTab} to ${newTab}`);
-            this.handleTabChange(newTab, oldTab);
-        });
     }
     
     /**
-     * レガシー互換性をセットアップ
+     * レガシー互換性のセットアップ
      */
     setupLegacyCompatibility() {
-        // 既存プロパティを新システムと同期
-        Object.defineProperty(this, 'showingDialog', {
-            get: () => this.sceneState.showingDialog,
-            set: (value) => this.sceneState.set('showingDialog', value)
+        // 既存のテストが期待するプロパティを設定
+        this.currentTab = 'profile';
+        this.isDialogOpen = false;
+        this.activeDialog = null;
+        
+        // UIコントローラーとの同期
+        this.eventBus.on('tabSwitched', (tabId) => {
+            this.currentTab = tabId;
         });
         
-        Object.defineProperty(this, 'dialogData', {
-            get: () => this.sceneState.dialogData,
-            set: (value) => this.sceneState.set('dialogData', value)
+        this.eventBus.on('dialogOpened', (dialogType) => {
+            this.isDialogOpen = true;
+            this.activeDialog = dialogType;
         });
         
-        Object.defineProperty(this, 'currentTab', {
-            get: () => this.sceneState.currentTab,
-            set: (value) => this.sceneState.set('currentTab', value)
+        this.eventBus.on('dialogClosed', () => {
+            this.isDialogOpen = false;
+            this.activeDialog = null;
         });
-        
-        Object.defineProperty(this, 'currentAchievementCategory', {
-            get: () => this.sceneState.currentAchievementCategory,
-            set: (value) => this.sceneState.set('currentAchievementCategory', value)
-        });
-        
-        // 配列プロパティの参照を維持
-        this.tabs = this.sceneState.tabs;
-        this.tabLabels = this.sceneState.tabLabels;
-        this.achievementCategories = this.sceneState.achievementCategories;
-        this.achievementCategoryLabels = this.sceneState.achievementCategoryLabels;
-        
-        // アクセシビリティ設定の参照
-        this.accessibilitySettings = this.sceneState.accessibilitySettings;
     }
     
-    /**
-     * タブ変更処理
-     * @param {string} newTab - 新しいタブ
-     * @param {string} oldTab - 古いタブ
-     */
-    handleTabChange(newTab, oldTab) {
-        // 古いタブコンポーネントを非アクティブ化
-        if (oldTab && this.tabComponents.has(oldTab)) {
-            this.tabComponents.get(oldTab).deactivate();
-        }
-        
-        // 新しいタブコンポーネントをアクティブ化
-        if (newTab && this.tabComponents.has(newTab)) {
-            this.tabComponents.get(newTab).activate();
-        }
-        
-        // ヘルプタブ特有の処理
-        if (newTab === 'help' && this.helpTabComponent) {
-            this.helpTabComponent.activate();
-        }
-    }
-
-    async enter() {
-        console.log('User info scene entered');
-        
-        try {
-            // データを初期化（非同期処理）
-            await this.loadUserData();
-            
-            // フォーカスをリセット
-            this.focusedElement = 0;
-            this.scrollPosition = 0;
-            
-            // 初期タブをアクティブ化
-            this.activateCurrentTab();
-        } catch (error) {
-            console.error('[UserInfoScene] Scene enter エラー:', error);
-            this.showError('シーンの初期化に失敗しました');
-        }
-    }
+    // ========================================
+    // Scene基底クラスのオーバーライド
+    // ========================================
     
-    // ========== コンポーネント統合メソッド（後方互換性用） ==========
-    
-    /**
-     * タブコンポーネントを取得（後方互換性用）
-     */
-    getTabComponent(tabName) {
-        return this.tabManager.getTabComponent(tabName);
-    }
-    
-    /**
-     * キー入力処理（後方互換性用）
-     */
-    handleKeyPress(event) {
-        return this.eventHandler.handleKeyboardInput(event, this.dialogManager);
-    }
-    
-    /**
-     * エラーメッセージ設定（後方互換性用）
-     */
-    setErrorMessage(message) {
-        this.eventHandler.showErrorMessage(message);
-        this.errorMessage = message;
-    }
-    
-    /**
-     * ダイアログクリック処理（後方互換性用）
-     */
-    handleDialogClick(x, y) {
-        return this.dialogManager.handleClick(x, y);
-    }
-    
-    /**
-     * タブナビゲーション（後方互換性用）
-     */
-    navigateTab(direction) {
-        if (!this.tabManager) return;
-        
-        const tabs = this.tabManager.getTabs();
-        const currentIndex = tabs.findIndex(tab => tab.id === this.tabManager.activeTab);
-        
-        let newIndex = currentIndex + direction;
-        
-        // ラップアラウンド処理
-        if (newIndex < 0) {
-            newIndex = tabs.length - 1;
-        } else if (newIndex >= tabs.length) {
-            newIndex = 0;
-        }
-        
-        if (tabs[newIndex]) {
-            this.tabManager.switchTab(tabs[newIndex].id);
-        }
-    }
-    
-    /**
-     * タブ切り替え（後方互換性用）
-     */
-    switchTab(tabId) {
-        if (this.tabManager) {
-            this.tabManager.switchTab(tabId);
-        }
-    }
-    
-    /**
-     * 共有状態同期（後方互換性用）
-     */
-    synchronizeSharedState() {
-        // アクセシビリティ設定を同期
-        const accessibilitySettings = this.gameEngine.settingsManager?.getAccessibilitySettings?.() || {};
-        this.sceneState.set('accessibilitySettings', accessibilitySettings);
-        
-        // 必要な状態を同期
-        this.sceneState.markDirty(['accessibilitySettings']);
-    }
-    
-    /**
-     * 未使用コンポーネントクリーンアップ（後方互換性用）
-     */
-    cleanupUnusedComponents() {
-        if (this.tabManager && typeof this.tabManager.cleanupUnusedComponents === 'function') {
-            return this.tabManager.cleanupUnusedComponents();
-        }
-        return 0;
-    }
-    
-    /**
-     * コンポーネント協調更新（後方互換性用）
-     */
-    updateComponentCoordination(deltaTime) {
-        // アクティブなコンポーネントの更新
-        if (this.tabManager) {
-            const activeComponent = this.tabManager.getActiveTabComponent();
-            if (activeComponent && typeof activeComponent.update === 'function') {
-                activeComponent.update(deltaTime);
-            }
-        }
-    }
-    
-    // ========== プロパティアクセサー（後方互換性用） ==========
-    
-    /**
-     * 現在のタブを取得
-     */
-    get currentTab() {
-        return this.tabManager ? this.tabManager.activeTab : 'statistics';
-    }
-    
-    /**
-     * 現在のタブを設定
-     */
-    set currentTab(tabId) {
-        if (this.tabManager) {
-            this.tabManager.activeTab = tabId;
-        }
-    }
-    
-    /**
-     * タブコンポーネント一覧を取得
-     */
-    get tabComponents() {
-        return this.tabManager ? this.tabManager.tabComponents : new Map();
-    }
-    
-    /**
-     * エラーメッセージを取得
-     */
-    get errorMessage() {
-        return this.sceneState ? this.sceneState.get('errorMessage') : null;
-    }
-    
-    /**
-     * エラーメッセージを設定
-     */
-    set errorMessage(message) {
-        if (this.sceneState) {
-            this.sceneState.set('errorMessage', message);
-        }
-    }
-    
-    /**
-     * エラータイムアウトを取得
-     */
-    get errorTimeout() {
-        return this.sceneState ? this.sceneState.get('errorTimeout') : null;
-    }
-    
-    /**
-     * エラータイムアウトを設定
-     */
-    set errorTimeout(timeout) {
-        if (this.sceneState) {
-            this.sceneState.set('errorTimeout', timeout);
-        }
-    }
-
-    update(deltaTime) {
-        try {
-            // コンポーネント協調更新
-            this.updateComponentCoordination(deltaTime);
-            
-            // 定期クリーンアップ
-            const now = Date.now();
-            if (now - this.lastCleanupTime > this.CLEANUP_INTERVAL) {
-                this.cleanupUnusedComponents();
-                this.lastCleanupTime = now;
-            }
-        } catch (error) {
-            console.error('[UserInfoScene] Update エラー:', error);
-        }
-    }
-
-    exit() {
-        console.log('User info scene exited');
-        
-        // エラータイマーをクリア
-        if (this.errorTimeout) {
-            clearTimeout(this.errorTimeout);
-            this.errorTimeout = null;
-        }
-        
-        // 新しいコンポーネントシステムのクリーンアップ
-        if (this.dialogManager) {
-            this.dialogManager.cleanup();
-        }
-        
-        if (this.eventBus) {
-            this.eventBus.cleanup();
-        }
-        
-        if (this.sceneState) {
-            this.sceneState.cleanup();
-        }
-        
-        // タブコンポーネントのクリーンアップ
-        if (this.helpTabComponent) {
-            this.helpTabComponent.cleanup();
-        }
-        
-        if (this.helpSectionSelector) {
-            this.helpSectionSelector.cleanup();
-        }
-        
-        if (this.tabComponents) {
-            for (const component of this.tabComponents.values()) {
-                if (component.cleanup) {
-                    component.cleanup();
-                }
-            }
-            this.tabComponents.clear();
-        }
-    }
-
-    update(deltaTime) {
-        // 定期的にデータを更新（5秒間隔）
-        if (!this.lastDataUpdate || Date.now() - this.lastDataUpdate > 5000) {
-            this.loadUserData();
-            this.lastDataUpdate = Date.now();
-        }
-        
-        // Component coordination handled by individual components
-        
-        // リーダーボードタブが表示中の場合、コンポーネントを更新
-        if (this.currentTab === 'leaderboard') {
-            const component = this.getTabComponent('leaderboard');
-            if (component && component.update) {
-                component.update(deltaTime);
-            }
-        }
-    }
-
     render(context) {
         try {
-            // レンダリングを新しいUserInfoRendererコンポーネントに委譲
-            this.renderer.render(context, this.tabManager, this.userProfileManager, this.helpSystem, this.dialogManager);
-        } catch (error) {
-            console.error('UserInfoScene render error:', error);
-            this.showError('描画エラーが発生しました');
-        }
-    }
-
-    handleInput(event) {
-        try {
-            // 入力処理を新しいUserInfoEventHandlerコンポーネントに委譲
-            return this.eventHandler.handleInput(event, this.tabManager, this.userProfileManager, this.helpSystem, this.dialogManager, this.renderer);
-        } catch (error) {
-            console.error('UserInfoScene input error:', error);
-            this.showError('入力処理エラーが発生しました');
-            return false;
-        }
-    }
-
-    /**
-     * マウス移動処理
-     */
-    handleMouseMove(event) {
-        try {
-            const canvas = this.gameEngine.canvas;
-            const rect = canvas.getBoundingClientRect();
-            const x = event.clientX - rect.left;
-            const y = event.clientY - rect.top;
+            // 基底クラスのレンダリング
+            super.render(context);
             
-            // リーダーボードタブでのマウスホバー処理
-            if (this.currentTab === 'leaderboard') {
-                const component = this.getTabComponent('leaderboard');
-                if (component) {
-                    const contentY = this.headerHeight;
-                    const contentHeight = canvas.height - contentY - 80;
-                    component.handleHover(x, y, contentY, contentHeight);
-                }
+            // メインレンダラーに処理を委譲
+            this.renderer.render(context);
+            
+            // ダイアログレンダリング
+            if (this.isDialogOpen && this.activeDialog) {
+                this.dialogManager.render(context);
             }
-        } catch (error) {
-            console.error('[UserInfoScene] マウス移動処理エラー:', error);
-        }
-    }
-
-    /**
-     * ホイール処理
-     */
-    handleWheel(event) {
-        try {
-            // デフォルトのスクロール動作を無効化
-            event.preventDefault();
-            
-            // リーダーボードタブでのスクロール処理
-            if (this.currentTab === 'leaderboard') {
-                const component = this.getTabComponent('leaderboard');
-                if (component) {
-                    component.handleScroll(event.deltaY);
-                }
-                return;
-            }
-            
-            // その他のタブでもスクロール処理があれば追加
             
         } catch (error) {
-            console.error('[UserInfoScene] ホイール処理エラー:', error);
+            console.error('[UserInfoScene] レンダリングエラー:', error);
         }
     }
-
-    /**
-     * ユーザーデータを読み込む
-     */
-    async loadUserData() {
-        try {
-            // StatisticsManagerから統計データを取得
-            if (this.gameEngine.statisticsManager) {
-                try {
-                    const statisticsResult = this.gameEngine.statisticsManager.getDetailedStatistics();
-                    // Promise かどうかをチェック
-                    if (statisticsResult && typeof statisticsResult.then === 'function') {
-                        this.statisticsData = await statisticsResult;
-                    } else {
-                        this.statisticsData = statisticsResult;
-                    }
-                } catch (statisticsError) {
-                    console.warn('[UserInfoScene] Statistics loading failed:', statisticsError);
-                    this.statisticsData = null; // デフォルト値を設定
-                    // Promise拒否エラーを再スロー
-                    throw statisticsError;
-                }
-            }
-            
-            // AchievementManagerから実績データを取得
-            if (this.gameEngine.achievementManager) {
-                this.achievementsData = this.gameEngine.achievementManager.getAchievements();
-                this.achievementsByCategory = this.gameEngine.achievementManager.getAchievementsByCategory();
-                
-                // 実績統計UIを初期化（遅延初期化）
-                if (!this.achievementStatsUI) {
-                    this.achievementStatsUI = new AchievementStatsUI(this.gameEngine.achievementManager);
-                }
-            }
-            
-            this.errorMessage = null;
-        } catch (error) {
-            console.error('Failed to load user data:', error);
-            this.showError('データの読み込みに失敗しました');
-            
-            // エラーハンドラーを呼び出し（テスト期待値対応）
-            if (this.gameEngine.errorHandler && this.gameEngine.errorHandler.handleError) {
-                this.gameEngine.errorHandler.handleError(error, 'UserInfoScene', {
-                    method: 'loadUserData',
-                    context: 'データ読み込み処理'
-                });
-            }
-        }
-    }
-
-    /**
-     * タイトルを描画
-     */
-    renderTitle(context) {
-        const canvas = this.gameEngine.canvas;
-        
-        context.fillStyle = '#ffffff';
-        context.font = 'bold 32px Arial';
-        context.textAlign = 'center';
-        context.fillText('ユーザー情報', canvas.width / 2, 50);
-    }
-
-    /**
-     * タブを描画
-     */
-    renderTabs(context) {
-        const canvas = this.gameEngine.canvas;
-        const tabWidth = canvas.width / this.tabs.length;
-        const tabY = this.headerHeight - this.tabHeight;
-        
-        for (let i = 0; i < this.tabs.length; i++) {
-            const tabX = i * tabWidth;
-            const isActive = this.tabs[i] === this.currentTab;
-            const isFocused = this.focusedElement === i;
-            
-            // タブ背景
-            context.fillStyle = isActive ? '#4a90e2' : '#1a1a2e';
-            if (isFocused) {
-                context.fillStyle = isActive ? '#6bb0ff' : '#2a2a3e';
-            }
-            context.fillRect(tabX, tabY, tabWidth, this.tabHeight);
-            
-            // タブ枠線
-            context.strokeStyle = '#333';
-            context.lineWidth = 1;
-            context.strokeRect(tabX, tabY, tabWidth, this.tabHeight);
-            
-            // タブテキスト
-            context.fillStyle = '#ffffff';
-            context.font = '18px Arial';
-            context.textAlign = 'center';
-            context.fillText(
-                this.tabLabels[i], 
-                tabX + tabWidth / 2, 
-                tabY + this.tabHeight / 2 + 6
-            );
-        }
-    }
-
-    /**
-     * コンテンツを描画
-     */
-    renderContent(context) {
-        const canvas = this.gameEngine.canvas;
-        const contentY = this.headerHeight;
-        const contentHeight = canvas.height - contentY - 80; // 戻るボタン分を除く
-        
-        // コンテンツエリアの背景
-        context.fillStyle = '#1a1a2e';
-        context.fillRect(0, contentY, canvas.width, contentHeight);
-        
-        // 現在のタブに応じてコンテンツを描画
-        switch (this.currentTab) {
-            case 'statistics':
-                this.renderStatisticsWithComponent(context, contentY, contentHeight);
-                break;
-            case 'achievements':
-                this.renderAchievementsWithComponent(context, contentY, contentHeight);
-                break;
-            case 'leaderboard':
-                this.renderLeaderboardWithComponent(context, contentY, contentHeight);
-                break;
-            case 'challenges':
-                this.renderChallengesWithComponent(context, contentY, contentHeight);
-                break;
-            case 'management':
-                this.renderManagementWithComponent(context, contentY, contentHeight);
-                break;
-            case 'help':
-                this.renderHelpWithComponent(context, contentY, contentHeight);
-                break;
-        }
-    }
-
-    /**
-     * 統計データをコンポーネントで描画
-     */
-    renderStatisticsWithComponent(context, y, height) {
-        return this.userStatisticsRenderer.renderStatisticsWithComponent(context, y, height, this.statisticsTabComponent);
-    }
-
-    // Responsive layout methods moved to components
-
-
-
-
-
-    /**
-     * 実績データを描画（コンポーネントに委譲）
-     */
-    renderAchievements(context, y, height) {
-        return this.userAchievementDisplay.renderAchievements(context, y, height);
-    }
-
-    // Achievement rendering methods moved to UserAchievementDisplay component
     
-    // Achievement stats methods moved to UserAchievementDisplay component
+    update(deltaTime) {
+        try {
+            // 基底クラスの更新
+            super.update(deltaTime);
+            
+            // 各コンポーネントの更新
+            this.updateComponents(deltaTime);
+            
+            // 定期クリーンアップ
+            this.performPeriodicCleanup();
+            
+        } catch (error) {
+            console.error('[UserInfoScene] 更新エラー:', error);
+        }
+    }
     
-    // Achievement filter methods moved to UserAchievementDisplay component
-
-    // Achievement item rendering moved to UserAchievementDisplay component
-
-    // Progress bar rendering moved to UserAchievementDisplay component
+    handleClick(x, y) {
+        try {
+            // UIコントローラーに処理を委譲
+            const handled = this.uiController.handleClick(x, y);
+            
+            // 処理されなかった場合は他のコンポーネントに委譲
+            if (!handled) {
+                this.eventHandler.handleClick(x, y);
+            }
+            
+        } catch (error) {
+            console.error('[UserInfoScene] クリック処理エラー:', error);
+        }
+    }
     
-    /**
-     * 実績カテゴリフィルターのクリック処理（コンポーネントに委譲）
-     */
-    handleAchievementCategoryClick(x, y) {
-        return this.userAchievementDisplay.handleAchievementCategoryClick(x, y);
-    }
-
-    /**
-     * ユーザー管理画面を描画（コンポーネントに委譲）
-     */
-    renderUserManagement(context, y, height) {
-        return this.userProfileManager.renderUserManagement(context, y, height);
-    }
-
-    // User management rendering methods moved to UserProfileManager and UserDataExporter components
-
-    // Dialog rendering handled by DialogManager
-
-
-
-
-
-
-
-
-
-    /**
-     * 戻るボタンを描画
-     */
-    renderBackButton(context) {
-        const canvas = this.gameEngine.canvas;
-        const buttonY = canvas.height - 70;
-        const isFocused = this.focusedElement === this.tabs.length;
-        
-        context.fillStyle = isFocused ? '#6bb0ff' : '#4a90e2';
-        context.fillRect(50, buttonY, 120, 50);
-        
-        context.fillStyle = '#ffffff';
-        context.font = '18px Arial';
-        context.textAlign = 'center';
-        context.fillText('戻る', 110, buttonY + 30);
-    }
-
-    /**
-     * エラーメッセージを描画
-     */
-    renderErrorMessage(context) {
-        const canvas = this.gameEngine.canvas;
-        
-        // 背景
-        context.fillStyle = 'rgba(204, 0, 0, 0.8)';
-        context.fillRect(0, 0, canvas.width, 60);
-        
-        // エラーテキスト
-        context.fillStyle = '#ffffff';
-        context.font = '16px Arial';
-        context.textAlign = 'center';
-        context.fillText(this.errorMessage, canvas.width / 2, 35);
-    }
-
-    /**
-     * クリック処理
-     */
-    handleClick(event) {
-        const canvas = this.gameEngine.canvas;
-        const rect = canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
-        
-        // ダイアログが表示されている場合はダイアログの処理を優先
-        if (this.showingDialog) {
-            this.handleDialogClick(x, y);
-            return;
-        }
-        
-        // タブクリック処理
-        if (y >= this.headerHeight - this.tabHeight && y <= this.headerHeight) {
-            const tabIndex = Math.floor(x / (canvas.width / this.tabs.length));
-            if (tabIndex >= 0 && tabIndex < this.tabs.length) {
-                this.switchTab(this.tabs[tabIndex]);
-                this.focusedElement = tabIndex;
-                return;
-            }
-        }
-        
-        // 統計画面のフィルター・モード切り替えクリック処理
-        if (this.currentTab === 'statistics') {
-            this.handleStatisticsClickWithComponent(x, y);
-        }
-        
-        // 実績画面のカテゴリフィルタークリック処理
-        if (this.currentTab === 'achievements') {
-            this.handleAchievementCategoryClick(x, y);
-        }
-        
-        // リーダーボード画面のクリック処理
-        if (this.currentTab === 'leaderboard') {
-            this.handleLeaderboardClick(x, y);
-        }
-        
-        // チャレンジ画面のクリック処理
-        if (this.currentTab === 'challenges') {
-            this.handleChallengesClick(x, y);
-        }
-        
-        // ユーザー管理画面のボタンクリック処理
-        if (this.currentTab === 'management') {
-            this.handleManagementClick(x, y);
-        }
-        
-        // ヘルプ画面のセクション選択クリック処理
-        if (this.currentTab === 'help') {
-            this.handleHelpTabClick(x, y);
-        }
-        
-        // 戻るボタンクリック処理
-        if (x >= 50 && x <= 170 && y >= canvas.height - 70 && y <= canvas.height - 20) {
-            this.sceneManager.switchScene('menu');
-            return;
-        }
-    }
-
-    /**
-     * ユーザー管理画面のクリック処理（コンポーネントに委譲）
-     */
-    handleManagementClick(x, y) {
-        return this.userProfileManager.handleManagementClick(x, y);
-    }
-
-    /**
-     * リーダーボードクリック処理
-     */
-    handleLeaderboardClick(x, y) {
+    handleKeyDown(key) {
         try {
-            // コンポーネントのクリック処理に委譲
-            const component = this.getTabComponent('leaderboard');
-            if (component) {
-                const canvas = this.gameEngine.canvas;
-                const contentY = this.headerHeight;
-                const contentHeight = canvas.height - contentY - 80;
-                
-                const handled = component.handleClick(x, y, contentY, contentHeight);
-                if (handled) {
-                    return;
-                }
-            }
-        } catch (error) {
-            console.error('[UserInfoScene] リーダーボードクリック処理エラー:', error);
-        }
-    }
-
-    /**
-     * チャレンジ画面のクリック処理
-     */
-    handleChallengesClick(x, y) {
-        try {
-            const component = this.getTabComponent('challenges');
-            if (component && typeof component.handleClick === 'function') {
-                const canvas = this.gameEngine.canvas;
-                const contentY = this.headerHeight;
-                const contentHeight = canvas.height - contentY - 80;
-                const contentX = this.contentPadding;
-                const contentWidth = canvas.width - this.contentPadding * 2;
-                
-                // コンポーネントのクリック処理を呼び出し
-                const handled = component.handleClick(x, y, contentX, contentY, contentWidth, contentHeight);
-                
-                if (handled) {
-                    return;
-                }
+            // UIコントローラーに処理を委譲
+            const handled = this.uiController.handleKeyDown(key);
+            
+            // 処理されなかった場合は他のコンポーネントに委譲
+            if (!handled) {
+                this.eventHandler.handleKeyDown(key);
             }
             
-            // コンポーネントで処理されなかった場合の代替処理
-            console.log('[UserInfoScene] チャレンジクリック - 代替処理');
-            
         } catch (error) {
-            console.error('[UserInfoScene] チャレンジクリック処理エラー:', error);
+            console.error('[UserInfoScene] キー処理エラー:', error);
         }
     }
-
-    // Dialog click handling moved to DialogManager
-
-
-    /**
-     * ユーザー名変更ダイアログを表示
-     */
-    async showUsernameChangeDialog() {
-        try {
-            const result = await this.dialogManager.showDialog('username');
-            
-            if (result.action === 'change') {
-                console.log('Username changed:', result.data);
-                this.showMessage('ユーザー名が変更されました');
-                this.loadUserData(); // データを再読み込み
-            }
-        } catch (error) {
-            console.error('Username change dialog error:', error);
-            this.showError('ユーザー名変更ダイアログでエラーが発生しました');
-        }
+    
+    // ========================================
+    // 公開API（レガシー互換性）
+    // ========================================
+    
+    switchTab(tabId) {
+        this.uiController.switchTab(tabId);
     }
-
-    /**
-     * データエクスポートダイアログを表示
-     */
-    async showDataExportDialog() {
-        try {
-            const result = await this.dialogManager.showDialog('export', {
-                exportType: 'playerData',
-                format: 'json'
-            });
-            
-            if (result.action === 'download') {
-                console.log('Data exported and downloaded:', result.data);
-                this.showMessage('データがダウンロードされました');
-            } else if (result.action === 'copy') {
-                console.log('Data copied to clipboard:', result.data);
-                this.showMessage('データがクリップボードにコピーされました');
-            }
-        } catch (error) {
-            console.error('Export dialog error:', error);
-            this.showError('エクスポートダイアログでエラーが発生しました');
-        }
+    
+    openDialog(dialogType) {
+        this.eventBus.emit('openDialog', dialogType);
     }
-
-    /**
-     * データインポートダイアログを表示
-     */
-    async showDataImportDialog() {
-        try {
-            const result = await this.dialogManager.showDialog('import');
-            
-            if (result.action === 'import' && result.data.success) {
-                console.log('Data imported successfully:', result.data);
-                this.showMessage('データが正常にインポートされました');
-                this.loadUserData(); // データを再読み込み
-            } else if (result.data.error) {
-                this.showError(`インポートエラー: ${result.data.error}`);
-            }
-        } catch (error) {
-            console.error('Import dialog error:', error);
-            this.showError('インポートダイアログでエラーが発生しました');
-        }
-    }
-
-    /**
-     * ダイアログを閉じる（レガシー互換）
-     */
+    
     closeDialog() {
-        if (this.dialogManager) {
-            this.dialogManager.closeDialog();
-        } else {
-            // フォールバック
-            this.showingDialog = null;
-            this.dialogData = {};
-        }
+        this.eventBus.emit('closeDialog');
     }
-
-    /**
-     * ダイアログのOKボタン処理
-     */
-    handleDialogOK() {
-        switch (this.showingDialog) {
-            case 'username':
-                this.processUsernameChange();
-                break;
-            case 'export':
-                this.closeDialog();
-                break;
-            case 'import':
-                this.processDataImport();
-                break;
-        }
+    
+    async getUserProfile() {
+        return await this.dataManager.getUserProfile();
     }
-
-    // Username processing methods moved to UserProfileManager component
-
-    // Data export methods moved to UserDataExporter component
-
-
-
-
-
-
-    // Data restoration methods moved to UserDataExporter component
-
+    
+    async getUserStatistics() {
+        return await this.dataManager.getUserStatistics();
+    }
+    
+    async getUserAchievements() {
+        return await this.dataManager.getUserAchievements();
+    }
+    
+    async updateUsername(newUsername) {
+        return await this.dataManager.updateUsername(newUsername);
+    }
+    
+    async exportUserData() {
+        return await this.dataManager.exportUserData();
+    }
+    
+    async importUserData(importData) {
+        return await this.dataManager.importUserData(importData);
+    }
+    
+    // ========================================
+    // 内部メソッド
+    // ========================================
+    
     /**
-     * キーボード処理
+     * コンポーネントの更新
      */
-    handleKeyboard(event) {
-        // ダイアログが表示されている場合
-        if (this.showingDialog) {
-            this.handleDialogKeyboard(event);
-            return;
+    updateComponents(deltaTime) {
+        // タブマネージャーの更新
+        if (this.tabManager && this.tabManager.update) {
+            this.tabManager.update(deltaTime);
         }
         
-        // 基本的なナビゲーション
-        switch (event.key) {
-            case 'Escape':
-                this.sceneManager.switchScene('menu');
-                break;
-            case 'ArrowLeft':
-                this.navigateTab(-1);
-                break;
-            case 'ArrowRight':
-                this.navigateTab(1);
-                break;
-            case 'Enter':
-                this.activateFocusedElement();
-                break;
-        }
-    }
-
-    /**
-     * ダイアログのキーボード処理
-     */
-    handleDialogKeyboard(event) {
-        switch (event.key) {
-            case 'Escape':
-                this.closeDialog();
-                break;
-            case 'Enter':
-                this.handleDialogOK();
-                break;
-        }
-    }
-
-
-
-    /**
-     * タブを切り替える
-     */
-    switchTab(tabName) {
-        if (this.tabs.includes(tabName)) {
-            // 既存のタブを非アクティブ化
-            this.deactivateAllTabs();
-            
-            // 新しいタブに切り替え
-            this.currentTab = tabName;
-            this.scrollPosition = 0;
-            this.selectedItem = -1;
-            
-            // 新しいタブをアクティブ化
-            this.activateCurrentTab();
+        // ダイアログマネージャーの更新
+        if (this.dialogManager && this.dialogManager.update) {
+            this.dialogManager.update(deltaTime);
         }
     }
     
     /**
-     * 全タブコンポーネントを非アクティブ化
+     * 定期クリーンアップ処理
      */
-    deactivateAllTabs() {
-        if (this.tabComponents) {
-            this.tabComponents.forEach(component => {
-                if (component && component.deactivate) {
-                    component.deactivate();
-                }
-            });
+    performPeriodicCleanup() {
+        const now = Date.now();
+        if (now - this.lastCleanupTime > this.CLEANUP_INTERVAL) {
+            this.cleanup();
+            this.lastCleanupTime = now;
         }
     }
     
     /**
-     * 現在のタブコンポーネントをアクティブ化
+     * クリーンアップ処理
      */
-    activateCurrentTab() {
-        const component = this.getTabComponent(this.currentTab);
-        if (component && component.activate) {
-            component.activate();
-            // アクセス時間を記録（メモリ管理用）
-            component.lastAccessTime = Date.now();
-        }
-    }
-    
-    
-    
-    
-
-    /**
-     * タブナビゲーション
-     */
-    navigateTab(direction) {
-        if (this.focusedElement < this.tabs.length) {
-            const currentIndex = this.tabs.indexOf(this.currentTab);
-            const newIndex = (currentIndex + direction + this.tabs.length) % this.tabs.length;
-            this.switchTab(this.tabs[newIndex]);
-            this.focusedElement = newIndex;
-        }
-    }
-
-    /**
-     * フォーカスナビゲーション
-     */
-    navigateFocus(direction) {
-        let maxFocus = this.tabs.length; // タブ数 + 戻るボタン
-        
-        // ユーザー管理画面では追加のフォーカス可能要素がある
-        if (this.currentTab === 'management') {
-            maxFocus += 3; // ユーザー名変更、エクスポート、インポートボタン
-        }
-        
-        this.focusedElement = (this.focusedElement + direction + maxFocus + 1) % (maxFocus + 1);
-    }
-
-    /**
-     * フォーカスされた要素を実行
-     */
-    activateFocusedElement() {
-        if (this.focusedElement < this.tabs.length) {
-            this.switchTab(this.tabs[this.focusedElement]);
-        } else if (this.currentTab === 'management') {
-            // ユーザー管理画面のボタン処理
-            const buttonIndex = this.focusedElement - this.tabs.length;
-            switch (buttonIndex) {
-                case 0: // 戻るボタン
-                    this.sceneManager.switchScene('menu');
-                    break;
-                case 1: // ユーザー名変更ボタン
-                    this.showUsernameChangeDialog();
-                    break;
-                case 2: // エクスポートボタン
-                    this.showDataExportDialog();
-                    break;
-                case 3: // インポートボタン
-                    this.showDataImportDialog();
-                    break;
-            }
-        } else if (this.focusedElement === this.tabs.length) {
-            this.sceneManager.switchScene('menu');
-        }
-    }
-
-    /**
-     * エラーメッセージを表示
-     */
-    showError(message) {
-        this.errorMessage = message;
-        
-        if (this.errorTimeout) {
-            clearTimeout(this.errorTimeout);
-        }
-        
-        this.errorTimeout = setTimeout(() => {
-            this.errorMessage = null;
-            this.errorTimeout = null;
-        }, 3000);
-    }
-
-    // Accessibility methods moved to components
-    
-
-
-    /**
-     * 統計データフィルタリング完了時のハンドラ
-     */
-    onStatisticsDataFiltered(data) {
-        // フィルタリングされたデータでUI更新
-        this.statisticsData = data.statistics;
-        
-        // 必要に応じて再描画をトリガー
-        if (this.currentTab === 'statistics') {
-            // 再描画フラグを設定（次のrenderループで反映）
-            this.needsRedraw = true;
-        }
-    }
-
-    /**
-     * 統計フィルターエラー時のハンドラ
-     */
-    onStatisticsFilterError(error) {
-        this.setErrorMessage(`統計データの取得に失敗しました: ${error.message}`);
-    }
-
-
-
-
-
-    /**
-     * データなしメッセージの描画
-     */
-    renderNoDataMessage(context, y, height, message) {
-        context.fillStyle = '#9CA3AF';
-        context.font = '16px system-ui, -apple-system, sans-serif';
-        context.textAlign = 'center';
-        context.fillText(message, this.gameEngine.canvas.width / 2, y + height / 2);
-    }
-
-    // Chart rendering and statistics methods moved to UserStatisticsRenderer component
-    
-    renderHelpWithComponent(context, y, height) {
-        return this.userHelpIntegration.renderHelpWithComponent(context, y, height, this.helpTabComponent);
-    }
-    
-    renderManagementWithComponent(context, y, height) {
-        const canvas = this.gameEngine.canvas;
-        const contentWidth = canvas.width - this.contentPadding * 2;
-        const contentX = this.contentPadding;
-        
-        if (this.managementTabComponent && this.managementTabComponent.isActive) {
-            this.managementTabComponent.render(context, contentX, y, contentWidth, height);
-        } else {
-            this.renderUserManagement(context, y, height);
-        }
-    }
-    
-    renderAchievementsWithComponent(context, y, height) {
-        return this.userAchievementDisplay.renderAchievementsWithComponent(context, y, height, this.achievementsTabComponent);
-    }
-
-    /**
-     * リーダーボードタブをコンポーネントで描画
-     */
-    renderLeaderboardWithComponent(context, contentY, contentHeight) {
+    cleanup() {
         try {
-            const component = this.getTabComponent('leaderboard');
-            if (component) {
-                component.render(context, contentY, contentHeight);
-            } else {
-                this.renderLeaderboardLoadingState(context, contentY, contentHeight);
+            // ダイアログのクリーンアップ
+            if (this.dialogManager) {
+                this.dialogManager.cleanup();
             }
+            
+            // コントローラーのクリーンアップ
+            if (this.uiController) {
+                this.uiController.cleanup();
+            }
+            
+            if (this.dataManager) {
+                this.dataManager.cleanup();
+            }
+            
+            console.log('[UserInfoScene] 定期クリーンアップ完了');
+            
         } catch (error) {
-            console.error('[UserInfoScene] リーダーボードコンポーネント描画エラー:', error);
-            this.renderLeaderboardErrorState(context, contentY, contentHeight);
+            console.error('[UserInfoScene] クリーンアップエラー:', error);
         }
     }
-
+    
     /**
-     * チャレンジコンポーネントを使用した描画
+     * シーン終了時のクリーンアップ
      */
-    renderChallengesWithComponent(context, contentY, contentHeight) {
+    destroy() {
         try {
-            const component = this.getTabComponent('challenges');
-            if (component) {
-                const canvas = this.gameEngine.canvas;
-                const contentX = this.contentPadding;
-                const contentWidth = canvas.width - this.contentPadding * 2;
-                component.render(context, contentX, contentY, contentWidth, contentHeight);
-            } else {
-                this.renderChallengesLoadingState(context, contentY, contentHeight);
+            // 全コンポーネントのクリーンアップ
+            this.cleanup();
+            
+            // イベントリスナーの削除
+            if (this.eventBus) {
+                this.eventBus.removeAllListeners();
             }
+            
+            console.log('[UserInfoScene] シーン破棄完了');
+            
         } catch (error) {
-            console.error('[UserInfoScene] チャレンジコンポーネント描画エラー:', error);
-            this.renderChallengesErrorState(context, contentY, contentHeight);
+            console.error('[UserInfoScene] シーン破棄エラー:', error);
         }
     }
-    
-    // Loading and error state rendering moved to component classes
-    
-    // Help rendering methods moved to UserHelpIntegration component
-    
-    
-    
-    
 }
