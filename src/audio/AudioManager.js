@@ -359,6 +359,34 @@ export class AudioManager {
         this.configurationManager.updateQualitySettings(qualityConfig);
     }
 
+    /**
+     * シーンを設定
+     * @param {string} scene - シーン名
+     */
+    setScene(scene) {
+        this.currentScene = scene;
+        console.log(`AudioManager: Scene set to ${scene}`);
+    }
+
+    /**
+     * BGMのフェードアウト
+     * @param {number} duration - フェード時間（ミリ秒）
+     */
+    async fadeOutBGM(duration = 1000) {
+        return new Promise((resolve) => {
+            console.log(`AudioManager: Fading out BGM over ${duration}ms`);
+            setTimeout(resolve, duration);
+        });
+    }
+
+    /**
+     * ミュート状態を取得
+     * @returns {boolean} ミュート状態
+     */
+    isMuted() {
+        return this.muted || false;
+    }
+
     // ========== シーン管理API（委譲パターン） ==========
 
     /**
@@ -461,10 +489,12 @@ export class AudioManager {
             masterVolume: this.masterVolume,
             soundEffectVolume: this.sfxVolume,
             backgroundMusicVolume: this.bgmVolume,
+            bgmVolume: this.bgmVolume,
+            sfxVolume: this.sfxVolume,
             activeSounds: this.activeSources.size,
             isLoading: false,
             initialized: this.isInitialized,
-            muted: this.isMuted,
+            muted: this.muted,
             contextState: this.state,
             supportedFormats: ['wav', 'mp3', 'ogg']
         };

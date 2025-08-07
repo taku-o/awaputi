@@ -7,7 +7,7 @@ import { jest } from '@jest/globals';
 import { performance } from 'perf_hooks';
 
 // 分割後のクラス
-import AudioAccessibilitySupport from '../../src/audio/accessibility/AudioAccessibilitySupport.js';
+import { AudioAccessibilitySupport } from '../../src/audio/accessibility/AudioAccessibilitySupport.js';
 import VisualFocusManager from '../../src/core/VisualFocusManager.js';
 import VisualFeedbackManager from '../../src/core/VisualFeedbackManager.js';
 
