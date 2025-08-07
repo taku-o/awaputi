@@ -1,11 +1,28 @@
 /**
- * generate-favicons.js
- * Favicon files を生成するスクリプト
- * ブラウザタブアイコン、ショートカットアイコン用のファビコンを生成
+ * generate-favicons.js - Enhanced Favicon Generation Tool
+ * 
+ * Enhanced favicon generation script for Issue #63 local execution support.
+ * Generates all required favicon formats with automatic validation and ICO creation.
+ * 
+ * Features:
+ * - Generate multiple PNG sizes (16x16, 32x32, 192x192, 512x512)
+ * - Create favicon.ico with embedded multiple sizes
+ * - Validate existing favicon files
+ * - Support for both automated and manual generation
+ * - Integration with local execution FaviconGenerator
+ * 
+ * Requirements: 6.1, 6.2, 6.3
+ * 
+ * @author Claude Code
+ * @version 1.1.0 (Enhanced for Issue #63)
  */
 
 import fs from 'fs/promises';
 import path from 'path';
+import { exec } from 'child_process';
+import { promisify } from 'util';
+
+const execAsync = promisify(exec);
 
 /**
  * Favicon用のSVGを生成
@@ -296,5 +313,252 @@ Alternative: Use online ICO generator with generated PNG files
     console.log('  Manual Step: favicon.ico creation required');
 }
 
+/**
+ * Enhanced favicon validation for Issue #63
+ * Validates existing favicon files and provides detailed status
+ */
+async function validateExistingFavicons() {
+    console.log('\n🔍 Validating existing favicon files...');
+    
+    const rootDir = process.cwd();
+    const requiredFavicons = [
+        { file: 'favicon.ico', description: 'Legacy ICO favicon', critical: true },
+        { file: 'favicon-16x16.png', description: '16px PNG favicon', critical: true },
+        { file: 'favicon-32x32.png', description: '32px PNG favicon', critical: true },
+        { file: 'icon-192x192.png', description: 'Apple touch icon 192px', critical: false },
+        { file: 'icon-512x512.png', description: 'Apple touch icon 512px', critical: false },
+        { file: 'favicon.svg', description: 'SVG source file', critical: false }
+    ];
+    
+    const validationResults = {
+        existing: [],
+        missing: [],
+        critical_missing: []
+    };
+    
+    for (const favicon of requiredFavicons) {
+        try {
+            const filePath = path.join(rootDir, favicon.file);
+            const stats = await fs.stat(filePath);
+            
+            validationResults.existing.push({
+                ...favicon,
+                size: stats.size,
+                modified: stats.mtime
+            });
+            
+            console.log(`  ✅ ${favicon.file} - ${favicon.description} (${stats.size} bytes)`);
+        } catch (error) {
+            validationResults.missing.push(favicon);
+            
+            if (favicon.critical) {
+                validationResults.critical_missing.push(favicon);
+                console.log(`  ❌ ${favicon.file} - ${favicon.description} [CRITICAL]`);
+            } else {
+                console.log(`  ⚠️  ${favicon.file} - ${favicon.description} [OPTIONAL]`);
+            }
+        }
+    }
+    
+    console.log('\n📊 Validation Summary:');
+    console.log(`  Existing: ${validationResults.existing.length}/${requiredFavicons.length} files`);
+    console.log(`  Missing: ${validationResults.missing.length} files`);
+    console.log(`  Critical Missing: ${validationResults.critical_missing.length} files`);
+    
+    if (validationResults.critical_missing.length > 0) {
+        console.log('\n⚠️  Critical favicon files are missing!');
+        console.log('   This will cause console errors and affect local file execution.');
+        console.log('   Run this script to generate missing favicons.');
+    } else {
+        console.log('\n✅ All critical favicon files are present.');
+    }
+    
+    return validationResults;
+}
+
+/**
+ * Generate favicon.ico from existing PNG files using ImageMagick or online converter
+ * Enhanced for Issue #63 - automatic ICO generation when possible
+ */
+async function generateFaviconICO() {
+    console.log('\n🎯 Attempting automatic favicon.ico generation...');
+    
+    const rootDir = process.cwd();
+    const requiredPNGs = [
+        'favicon-16x16.png',
+        'favicon-32x32.png',
+        'favicon-48x48.png'
+    ];
+    
+    // Check if required PNG files exist
+    const existingPNGs = [];
+    for (const pngFile of requiredPNGs) {
+        try {
+            await fs.stat(path.join(rootDir, pngFile));
+            existingPNGs.push(pngFile);
+        } catch (error) {
+            console.log(`  ⚠️  Missing: ${pngFile}`);
+        }
+    }
+    
+    if (existingPNGs.length === 0) {
+        console.log('  ❌ No PNG source files found. Generate PNGs first.');
+        return false;
+    }
+    
+    console.log(`  Found ${existingPNGs.length}/${requiredPNGs.length} source PNG files`);
+    
+    // Try ImageMagick conversion
+    try {
+        const pngPaths = existingPNGs.map(png => path.join(rootDir, png));
+        const icoPath = path.join(rootDir, 'favicon.ico');
+        
+        const command = `magick ${pngPaths.join(' ')} "${icoPath}"`;
+        
+        console.log('  🔄 Attempting ImageMagick conversion...');
+        await execAsync(command);
+        
+        // Verify the generated ICO file
+        const stats = await fs.stat(icoPath);
+        console.log(`  ✅ Successfully generated favicon.ico (${stats.size} bytes)`);
+        
+        return true;
+        
+    } catch (error) {
+        console.log('  ⚠️  ImageMagick not available or conversion failed');
+        console.log('     Using fallback approach...');
+        
+        // Fallback: provide instructions for manual creation
+        console.log('\n📋 Manual ICO Creation Instructions:');
+        console.log('  1. Visit: https://favicon.io/favicon-converter/');
+        console.log('  2. Upload your PNG files:');
+        existingPNGs.forEach(png => {
+            console.log(`     - ${png}`);
+        });
+        console.log('  3. Download the generated favicon.ico');
+        console.log('  4. Place it in your project root directory');
+        
+        return false;
+    }
+}
+
+/**
+ * Comprehensive favicon status check for debugging
+ * Useful for Issue #63 local execution troubleshooting
+ */
+async function debugFaviconStatus() {
+    console.log('\n🐛 Debug: Comprehensive favicon status...');
+    
+    // Check HTML integration
+    console.log('\n1. HTML Integration Status:');
+    try {
+        const indexPath = path.join(process.cwd(), 'index.html');
+        const indexContent = await fs.readFile(indexPath, 'utf-8');
+        
+        const faviconPatterns = [
+            { pattern: /favicon\.ico/, name: 'favicon.ico reference' },
+            { pattern: /favicon-16x16\.png/, name: '16x16 PNG reference' },
+            { pattern: /favicon-32x32\.png/, name: '32x32 PNG reference' },
+            { pattern: /icon-192x192\.png/, name: 'Apple touch 192px' },
+            { pattern: /icon-512x512\.png/, name: 'Apple touch 512px' }
+        ];
+        
+        faviconPatterns.forEach(({ pattern, name }) => {
+            if (pattern.test(indexContent)) {
+                console.log(`   ✅ ${name} - found in HTML`);
+            } else {
+                console.log(`   ❌ ${name} - missing from HTML`);
+            }
+        });
+        
+    } catch (error) {
+        console.log('   ⚠️  Could not read index.html');
+    }
+    
+    // Check browser console errors (simulated)
+    console.log('\n2. Potential Browser Console Errors:');
+    const validation = await validateExistingFavicons();
+    
+    validation.missing.forEach(favicon => {
+        if (favicon.critical) {
+            console.log(`   🚨 404 Error: GET ${favicon.file} (favicon not found)`);
+        }
+    });
+    
+    if (validation.critical_missing.length === 0) {
+        console.log('   ✅ No favicon-related console errors expected');
+    }
+    
+    // Check Local Execution compatibility
+    console.log('\n3. Local Execution Compatibility:');
+    console.log('   📄 file:// protocol status: Compatible with proper favicon setup');
+    console.log('   🌐 CORS restrictions: Favicons load from same origin (no issues)');
+    console.log('   🎯 FaviconGenerator fallback: Available for missing favicons');
+    
+    if (validation.existing.length >= 2) {
+        console.log('   ✅ Local execution favicon support: Ready');
+    } else {
+        console.log('   ⚠️  Local execution favicon support: Needs improvement');
+        console.log('      Generate missing favicons to ensure proper local execution');
+    }
+}
+
+/**
+ * Main execution with enhanced command line interface
+ */
+async function main() {
+    const args = process.argv.slice(2);
+    const command = args[0] || 'generate';
+    
+    console.log('🎨 Enhanced Favicon Generator v1.1.0 (Issue #63)');
+    console.log('   Local execution CORS issue support\n');
+    
+    switch (command) {
+        case 'generate':
+        case 'g':
+            await generateFavicons();
+            break;
+            
+        case 'validate':
+        case 'v':
+            await validateExistingFavicons();
+            break;
+            
+        case 'ico':
+        case 'i':
+            await generateFaviconICO();
+            break;
+            
+        case 'debug':
+        case 'd':
+            await debugFaviconStatus();
+            break;
+            
+        case 'all':
+        case 'a':
+            console.log('🔄 Running full favicon workflow...\n');
+            await generateFavicons();
+            await generateFaviconICO();
+            await validateExistingFavicons();
+            break;
+            
+        default:
+            console.log('Usage: node tools/generate-favicons.js [command]');
+            console.log('Commands:');
+            console.log('  generate, g    Generate favicon SVG and PNG files (default)');
+            console.log('  validate, v    Validate existing favicon files');
+            console.log('  ico, i         Generate favicon.ico from existing PNGs');
+            console.log('  debug, d       Debug favicon status and HTML integration');
+            console.log('  all, a         Run full workflow (generate + ico + validate)');
+            console.log('');
+            console.log('Examples:');
+            console.log('  node tools/generate-favicons.js');
+            console.log('  node tools/generate-favicons.js validate');
+            console.log('  node tools/generate-favicons.js all');
+    }
+}
+
 // 実行
-generateFavicons().catch(console.error);
+if (import.meta.url === `file://${process.argv[1]}`) {
+    main().catch(console.error);
+}

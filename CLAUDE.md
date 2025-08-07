@@ -701,6 +701,7 @@ tests/analytics/
 - SEO最適化（Issue #34）✅
 
 ### 進行中プロジェクト
+- **ローカルファイル実行CORS問題修正（Issue #63）** 🔄 - 進行中
 - MCPトークン制限問題修正（Issue #70）🔄
 - 多言語対応強化（Issue #27）🔄
 - イベントステージシステム（Issue #28）🔄
@@ -735,6 +736,34 @@ find_symbolツールが25,000トークン制限を超過してエラーになる
 - **制限値**: 1ファイル2,500語以下を推奨
 - **監視**: pre-commitフックとCIで自動チェック
 - **分割基準**: 単一責任の原則に従ったコンポーネント分離
+
+### ローカルファイル実行CORS問題修正プロジェクト（Issue #63対応）🔄
+**目標**: ローカル環境でindex.htmlを直接ブラウザで開いた際に発生するCORSエラーとリソース読み込み問題を解決し、開発体験を改善
+
+#### 問題の概要
+現在、ローカルファイル実行時に以下の問題が発生：
+1. **ES6モジュールのCORSエラー**: `file://`プロトコルでのモジュール読み込み制限
+2. **X-Frame-Optionsメタタグエラー**: メタタグでの設定が適切ではない
+3. **ファビコンファイルの不足**: 必要なファビコンファイル（favicon.ico、各サイズPNG）が存在しない
+4. **開発サーバー使用の推奨不足**: README.mdでの開発サーバー使用方法の説明不足
+
+#### 実装アプローチ（16タスク）
+- **Phase 1**: Core Detection and Optimization (Tasks 1-2)
+- **Phase 2**: Favicon Generation System (Tasks 3, 9)  
+- **Phase 3**: Developer Guidance System (Tasks 4, 10)
+- **Phase 4**: Integration and Management (Tasks 5-8)
+- **Phase 5**: Testing and Optimization (Tasks 11-13)
+- **Phase 6**: Final Integration (Tasks 14-16)
+
+#### 主要コンポーネント
+- **LocalExecutionDetector**: ローカル実行環境検出（`file://`プロトコル判定）
+- **FaviconGenerator**: Canvas APIベースの動的ファビコン生成
+- **MetaTagOptimizer**: ローカル実行時のセキュリティメタタグ最適化
+- **DeveloperGuidanceSystem**: 非侵入的な開発者ガイダンス表示
+- **LocalModeManager**: ローカル実行モード統合管理
+
+#### 詳細仕様
+詳細な仕様とタスクリストは `docs/projects/local-file-execution-cors-issue-63.md` および `.kiro/specs/local-file-execution-cors-issue-63/` を参照
 
 ### コアファイル分割プロジェクト Phase F.1（Issue #93対応）
 **目標**: 最重要コアファイル7件をMain Controller Patternで分割し、MCPツール互換性（2,500語以下）を実現

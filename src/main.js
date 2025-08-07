@@ -1,6 +1,9 @@
 import { GameEngine } from './core/GameEngine.js';
 import { getBrowserCompatibility } from './utils/BrowserCompatibility.js';
 import { getErrorHandler } from './utils/ErrorHandler.js';
+import LocalExecutionDetector from './utils/local-execution/LocalExecutionDetector.js';
+import LocalModeManager from './utils/local-execution/LocalModeManager.js';
+import LocalExecutionErrorHandler from './utils/local-execution/LocalExecutionErrorHandler.js';
 
 /**
  * ローディング画面を管理
@@ -9,6 +12,7 @@ class LoadingManager {
     constructor() {
         this.loadingScreen = document.getElementById('loadingScreen');
         this.loadingSteps = [
+            'ローカル実行環境チェック中...',
             'ブラウザ互換性チェック中...',
             'ゲームエンジン初期化中...',
             'リソース読み込み中...',
@@ -131,6 +135,52 @@ async function initGame() {
     debugLogger.showLogs();
     
     try {
+        // ステップ0: ローカル実行環境チェック
+        debugLogger.log('🔍 ステップ0: ローカル実行環境チェック開始');
+        loadingManager.nextStep();
+        
+        // ローカル実行検出
+        const isLocalExecution = LocalExecutionDetector.isLocalExecution();
+        const executionContext = LocalExecutionDetector.getExecutionContext();
+        debugLogger.log('🌐 実行環境情報', {
+            isLocal: isLocalExecution,
+            protocol: executionContext.protocol,
+            canUseModules: executionContext.canUseModules,
+            supportedFeatures: executionContext.supportedFeatures
+        });
+
+        // ローカル実行エラーハンドラーを初期化
+        LocalExecutionErrorHandler.initialize({
+            enableGlobalHandling: true,
+            enableUserNotifications: true,
+            enableDebugLogging: localStorage.getItem('debug') === 'true',
+            enableFallbacks: true
+        });
+        debugLogger.log('✅ ローカル実行エラーハンドラー初期化完了');
+
+        // ローカルモードマネージャーを初期化
+        let localModeManager = null;
+        if (isLocalExecution) {
+            debugLogger.log('📁 ローカルファイル実行を検出、ローカルモード初期化中...');
+            localModeManager = new LocalModeManager({
+                enableMetaTagOptimization: true,
+                enableFaviconGeneration: true,
+                enableDeveloperGuidance: true,
+                debugMode: localStorage.getItem('debug') === 'true'
+            });
+            
+            const initSuccess = await localModeManager.initialize();
+            if (initSuccess) {
+                debugLogger.log('✅ ローカルモード初期化完了');
+            } else {
+                debugLogger.log('⚠️ ローカルモード初期化に問題が発生（続行）');
+            }
+        } else {
+            debugLogger.log('🌐 サーバー実行環境を検出');
+        }
+
+        await new Promise(resolve => setTimeout(resolve, 300));
+        
         // ステップ1: ブラウザ互換性チェック
         debugLogger.log('📋 ステップ1: ブラウザ互換性チェック開始');
         loadingManager.nextStep();
