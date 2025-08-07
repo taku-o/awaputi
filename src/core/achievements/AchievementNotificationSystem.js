@@ -9,14 +9,20 @@
  * - 通知履歴管理
  */
 export class AchievementNotificationSystem {
-    constructor(gameEngine = null) {
+    constructor(gameEngineOrAudioManager = null) {
         // 通知管理
         this.notifications = [];
         this.notificationQueue = [];
         this.activeNotifications = new Set();
         
         // AudioManager初期化（テスト互換性用）
-        this._audioManager = gameEngine?.audioManager || null;
+        // 第一引数がaudioManagerっぽい場合（playedSoundsプロパティがある、またはplaySound メソッドがある）
+        if (gameEngineOrAudioManager && (gameEngineOrAudioManager.playedSounds !== undefined || gameEngineOrAudioManager.playSound)) {
+            this._audioManager = gameEngineOrAudioManager;
+        } else {
+            // gameEngineオブジェクトの場合
+            this._audioManager = gameEngineOrAudioManager?.audioManager || null;
+        }
         
         // 通知設定
         this.config = {
