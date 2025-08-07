@@ -115,37 +115,37 @@
   - キーボードナビゲーションと視覚的フィードバックが正常に動作することを確認
   - _Requirements: 3.2, 3.3, 5.4_
 
-- [ ] 4. Phase G.4: ビジュアルフィードバック管理分割（VisualFeedbackManager.js）
+- [x] 4. Phase G.4: ビジュアルフィードバック管理分割（VisualFeedbackManager.js）
   - VisualFeedbackManager.jsをMain Controller Patternで分割
   - src/core/visual/feedback/ディレクトリ構造で整理し、各ファイルを2,500語以下に制限
   - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
 
-- [ ] 4.1 FeedbackAnimationManager.jsの作成
+- [x] 4.1 FeedbackAnimationManager.jsの作成
   - createFlashEffect、createGlowEffect、createPulseEffect、createRippleEffect、createShakeEffectメソッドを抽出
   - アニメーション管理機能を独立したクラスとして実装
   - _Requirements: 4.1, 4.2, 4.3_
 
-- [ ] 4.2 FeedbackEffectRenderer.jsの作成
+- [x] 4.2 FeedbackEffectRenderer.jsの作成
   - createColorEffect、createBorderEffect、createScaleEffect、startAudioVisualizationメソッドを抽出
   - エフェクト描画機能を独立したクラスとして実装
   - _Requirements: 4.1, 4.2, 4.3_
 
-- [ ] 4.3 FeedbackTriggerHandler.jsの作成
+- [x] 4.3 FeedbackTriggerHandler.jsの作成
   - setupEventListeners、selectFeedbackTarget、triggerVolumeBasedFeedback、triggerEdgeFeedbackメソッドを抽出
   - トリガー処理機能を独立したクラスとして実装
   - _Requirements: 4.1, 4.2, 4.3_
 
-- [ ] 4.4 FeedbackConfigManager.jsの作成
+- [x] 4.4 FeedbackConfigManager.jsの作成
   - loadUserPreferences、saveUserPreferences、createFeedbackElements、setupAudioAnalysisメソッドを抽出
   - 設定管理機能を独立したクラスとして実装
   - _Requirements: 4.1, 4.2, 4.3_
 
-- [ ] 4.5 VisualFeedbackManager.jsメインコントローラーのリファクタリング
+- [x] 4.5 VisualFeedbackManager.jsメインコントローラーのリファクタリング
   - 分割したクラスをインポートし、Main Controller Patternを適用
   - メインファイルを1,200語以下に削減し、サブコンポーネントの統制機能のみを保持
   - _Requirements: 4.1, 4.4, 6.1, 6.2_
 
-- [ ] 4.6 ビジュアルフィードバック分割の統合テスト
+- [x] 4.6 ビジュアルフィードバック分割の統合テスト
   - 分割後のビジュアルフィードバック管理機能をテスト
   - 視覚的フィードバックとゲーム体験が正常に維持されることを確認
   - _Requirements: 4.2, 4.3, 5.4_
