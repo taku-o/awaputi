@@ -125,13 +125,72 @@
 - **後方互換性維持:** 既存APIは完全保持
 - **モジュラー設計強化:** 単一責任の原則に基づく構造
 
+### 開発環境の構築
+
+#### 推奨: 開発サーバーの使用
+
+最適な開発体験のため、開発サーバーの使用を推奨します：
+
+```bash
+# Node.js開発サーバー（推奨）
+npm run dev
+
+# または代替の簡易HTTPサーバー
+python -m http.server 8000
+python3 -m http.server 8000
+npx serve .
+npx http-server
+```
+
+#### ローカルファイル実行について
+
+**⚠️ 重要:** ローカルファイル（`file://`プロトコル）での実行には制限があります。
+
+**制限事項:**
+- ES6モジュールが正常に読み込まれない場合があります
+- 一部のセキュリティ機能が制限されます
+- ServiceWorker機能は利用できません
+- パフォーマンスが最適ではない可能性があります
+
+**ローカルファイル実行時の対応:**
+- ゲーム起動時に自動的にローカル実行モードが有効になります
+- 開発サーバー使用を推奨する通知が表示されます
+- 不足しているファビコンは自動生成されます
+- CORS制限によるエラーは自動的に処理されます
+
+**トラブルシューティング:**
+- モジュール読み込みエラーが発生した場合は開発サーバーを使用してください
+- コンソールにCORSエラーが表示される場合は正常動作です（自動処理されます）
+- ファビコン404エラーは自動的に解決されます
+
 ### 利用可能なスクリプト
-- `npm run dev` - 開発サーバー起動
+- `npm run dev` - 開発サーバー起動（推奨）
 - `npm run build` - 本番用ビルド
 - `npm run preview` - 本番ビルドのプレビュー
 - `npm test` - 単体テスト実行
 - `npm run test:e2e` - E2Eテスト実行
 - `npm run lint` - リンター実行
+
+### ファビコン生成ツール
+
+不足しているファビコンファイルを生成するツールが利用できます：
+
+```bash
+# ファビコン生成（SVG + PNG）
+node tools/generate-favicons.js
+
+# 既存ファビコンの検証
+node tools/generate-favicons.js validate
+
+# favicon.ico自動生成
+node tools/generate-favicons.js ico
+
+# 包括的なファビコンデバッグ
+node tools/generate-favicons.js debug
+
+# 全工程を一括実行
+node tools/generate-favicons.js all
+```
 
 ## ライセンス
 
