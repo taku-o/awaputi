@@ -122,12 +122,12 @@ export class SyncManager {
         try {
             // クラウドストレージの認証確認
             if (!this.cloudStorage.isAuthenticated()) {
-                throw new Error('クラウドストレージが認証されていません');
+                throw new Error('Cloud storage not authenticated');
             }
             
             // オンライン状態の確認
             if (!navigator.onLine && !options.forceOffline) {
-                throw new Error('オフライン状態のため同期できません');
+                throw new Error('Offline - cannot sync');
             }
             
             // ローカルキーとクラウドキーの取得

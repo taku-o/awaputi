@@ -75,7 +75,7 @@ describe('AnalyticsPerformanceOptimizer', () => {
             }
             
             // 少し待って処理完了を確認
-            await new Promise(resolve => setTimeout(resolve, 10));
+            await new Promise(resolve => setTimeout(resolve, 5));
             
             expect(optimizer.eventQueue.length).toBe(0);
             expect(handler).toHaveBeenCalledTimes(5);
@@ -316,11 +316,12 @@ describe('AnalyticsPerformanceOptimizer', () => {
             const originalBatchSize = optimizer.config.batchSize;
             const originalBatchTimeout = optimizer.config.batchTimeout;
             
+            // fpsThreshold（30）より低い値で警告をトリガー
             optimizer.handlePerformanceWarning('Low FPS detected', { fps: 20 });
             
             expect(optimizer.config.batchSize).toBeLessThan(originalBatchSize);
             expect(optimizer.config.batchTimeout).toBeGreaterThan(originalBatchTimeout);
-            expect(optimizer.optimizationStats.performanceWarnings).toBeGreaterThan(0);
+            expect(optimizer.optimizationStats.performanceWarnings).toBe(1);
         });
     });
 
@@ -364,7 +365,7 @@ describe('AnalyticsPerformanceOptimizer', () => {
             optimizer.destroy();
             
             // 少し待って処理完了を確認
-            await new Promise(resolve => setTimeout(resolve, 10));
+            await new Promise(resolve => setTimeout(resolve, 5));
             
             expect(handler).toHaveBeenCalledWith('final_event', { final: true });
         });

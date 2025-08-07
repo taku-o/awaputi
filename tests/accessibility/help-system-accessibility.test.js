@@ -3,9 +3,9 @@
  */
 
 import { jest } from '@jest/globals';
-import { HelpScene } from '../../../src/scenes/HelpScene.js';
-import { TutorialOverlay } from '../../../src/core/help/TutorialOverlay.js';
-import { TooltipSystem } from '../../../src/core/help/TooltipSystem.js';
+import { HelpScene } from '../../src/scenes/HelpScene.js';
+import { TutorialOverlay } from '../../src/core/help/TutorialOverlay.js';
+import { TooltipSystem } from '../../src/core/help/TooltipSystem.js';
 
 // ARIA属性検証ヘルパー
 const validateARIA = (element) => {

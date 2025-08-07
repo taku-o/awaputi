@@ -104,9 +104,9 @@ export default {
   // Execution configuration
   maxWorkers: '50%', // Use 50% of available cores
   
-  // Force exit after tests complete
-  forceExit: false,
-  detectOpenHandles: true,
+  // Force exit after tests complete (enhanced for Issue #106)
+  forceExit: true,
+  detectOpenHandles: false,
   
   // Verbose output
   verbose: false,

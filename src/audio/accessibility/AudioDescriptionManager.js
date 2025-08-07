@@ -21,6 +21,15 @@ export class AudioDescriptionManager {
         this.mainController = mainController;
         this.errorHandler = mainController.errorHandler;
         
+        // デフォルト設定を初期化
+        if (!this.mainController.settings) {
+            this.mainController.settings = {
+                visualFeedback: true,
+                captioning: true,
+                audioDescriptions: true
+            };
+        }
+        
         // 視覚的通知システム
         this.visualNotifications = [];
         this.notificationContainer = null;
@@ -284,6 +293,101 @@ export class AudioDescriptionManager {
         };
         
         return colorMap[rarity] || '#ffffff';
+    }
+
+    /**
+     * 音声説明の有効/無効を設定
+     * @param {boolean} enabled - 有効化フラグ
+     */
+    setEnabled(enabled) {
+        this.enabled = enabled;
+        console.log(`AudioDescriptionManager: ${enabled ? 'enabled' : 'disabled'}`);
+    }
+
+    /**
+     * テキストのアナウンス（スクリーンリーダー向け）
+     * @param {string} text - アナウンスするテキスト
+     * @param {Object} options - アナウンスオプション
+     */
+    announce(text, options = {}) {
+        const {
+            priority = 'polite',
+            visualNotification = true,
+            caption = false
+        } = options;
+        
+        // ARIAライブリージョンでのアナウンス
+        if (this.notificationContainer) {
+            this.notificationContainer.setAttribute('aria-live', priority);
+            const announceElement = document.createElement('div');
+            announceElement.className = 'sr-only';
+            announceElement.style.cssText = 'position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden;';
+            announceElement.textContent = text;
+            this.notificationContainer.appendChild(announceElement);
+            
+            // 短時間後に削除（スクリーンリーダーが読み取った後）
+            setTimeout(() => {
+                if (announceElement.parentNode) {
+                    announceElement.remove();
+                }
+            }, 1000);
+        }
+        
+        // 視覚的通知も表示する場合
+        if (visualNotification) {
+            this.showVisualNotification({
+                type: 'announcement',
+                title: 'アナウンス',
+                message: text,
+                icon: '📢',
+                ...options
+            });
+        }
+        
+        // 字幕表示する場合
+        if (caption) {
+            this.showCaption(text);
+        }
+        
+        console.log('AudioDescriptionManager: Announced text:', text);
+    }
+
+    /**
+     * 音声説明を追加
+     * @param {string} category - カテゴリ
+     * @param {string} type - タイプ
+     * @param {Object} params - パラメータ
+     * @param {number} priority - 優先度
+     */
+    addDescription(category, type, params = {}, priority = 3) {
+        if (!this.enabled) return;
+        
+        const description = {
+            category,
+            type,
+            params,
+            priority,
+            timestamp: Date.now()
+        };
+        
+        console.log('AudioDescriptionManager: Added description:', description);
+        
+        // 視覚的な説明を表示
+        if (description.category === 'game' && description.type === 'bubblePop') {
+            this.showVisualNotification(`${params.bubbleType}泡が弾けました`, 'info');
+        }
+    }
+
+    /**
+     * ステータス取得
+     * @returns {Object} ステータス情報
+     */
+    getStatus() {
+        return {
+            enabled: this.enabled || false,
+            activeDescriptions: 0,
+            initialized: true
+        };
     }
 
     /**

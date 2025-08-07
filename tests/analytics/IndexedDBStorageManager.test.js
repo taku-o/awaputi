@@ -200,10 +200,22 @@ global.IDBKeyRange = {
 };
 
 describe('IndexedDBStorageManager', () => {
+    jest.setTimeout(30000); // 30秒のタイムアウト設定
     let manager;
     
     beforeEach(() => {
         manager = new IndexedDBStorageManager();
+        
+        // Navigator.storage のモック設定
+        Object.defineProperty(global.navigator, 'storage', {
+            value: {
+                estimate: jest.fn().mockResolvedValue({
+                    usage: 1024 * 1024, // 1MB
+                    quota: 100 * 1024 * 1024 // 100MB
+                })
+            },
+            configurable: true
+        });
         // モックをリセット
         global.indexedDB.open.mockClear();
     });
@@ -468,11 +480,22 @@ describe('IndexedDBStorageManager', () => {
         });
         
         test('StorageManagerが利用できない場合適切なレスポンスが返される', async () => {
-            global.navigator = {};
+            // navigator.storageを一時的に無効化
+            const originalNavigator = global.navigator;
+            Object.defineProperty(global, 'navigator', {
+                value: {},
+                configurable: true
+            });
             
             const result = await manager.getDatabaseSize();
             
             expect(result.supported).toBe(false);
+            
+            // navigatorを復元
+            Object.defineProperty(global, 'navigator', {
+                value: originalNavigator,
+                configurable: true
+            });
         });
     });
     

@@ -2,6 +2,7 @@
  * Performance Threshold Monitor
  * パフォーマンス閾値監視・警告システム
  */
+import { getErrorHandler } from '../utils/ErrorHandler.js';
 
 export class PerformanceThresholdMonitor {
     constructor(monitor) {
@@ -66,7 +67,7 @@ export class PerformanceThresholdMonitor {
      */
     setupErrorHandler() {
         try {
-            const { getErrorHandler } = require('../utils/ErrorHandler.js');
+            // Removed require: const { getErrorHandler } = require('../utils/ErrorHandler.js');
             this.errorHandler = getErrorHandler();
         } catch (error) {
             console.warn('[PerformanceThresholdMonitor] ErrorHandler not available:', error.message);

@@ -3,7 +3,7 @@
  * Canvasキャプチャ、画像フォーマット変換、品質・サイズ最適化を行う
  */
 
-import { ErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler } from '../utils/ErrorHandler.js';
 
 export class ScreenshotCapture {
     constructor(gameEngine) {
@@ -164,6 +164,11 @@ export class ScreenshotCapture {
             
             // スクリーンショットの作成
             const captureOptions = {
+                format: this.config.defaultFormat,
+                quality: 'high',
+                maxWidth: this.config.maxWidth,
+                maxHeight: this.config.maxHeight,
+                optimize: true,
                 ...options,
                 filename: options.filename || this.generateFilename('region')
             };
@@ -249,30 +254,48 @@ export class ScreenshotCapture {
      * スコア情報付きスクリーンショットの取得
      */
     async captureWithScore(scoreData, options = {}) {
-        return await this.captureWithOverlay({
+        const result = await this.captureWithOverlay({
             type: 'score',
             data: scoreData
         }, options);
+        
+        return {
+            ...result,
+            overlayType: 'score',
+            hasOverlay: true
+        };
     }
     
     /**
      * 実績情報付きスクリーンショットの取得
      */
     async captureWithAchievement(achievementData, options = {}) {
-        return await this.captureWithOverlay({
+        const result = await this.captureWithOverlay({
             type: 'achievement',
             data: achievementData
         }, options);
+        
+        return {
+            ...result,
+            overlayType: 'achievement',
+            hasOverlay: true
+        };
     }
     
     /**
      * カスタムオーバーレイ付きスクリーンショットの取得
      */
     async captureWithCustomOverlay(customData, options = {}) {
-        return await this.captureWithOverlay({
+        const result = await this.captureWithOverlay({
             type: 'custom',
             data: customData
         }, options);
+        
+        return {
+            ...result,
+            overlayType: 'custom',
+            hasOverlay: true
+        };
     }
     
     /**
@@ -622,6 +645,10 @@ export class ScreenshotCapture {
      * 品質値の取得
      */
     getQualityValue(qualityLevel, format) {
+        if (!format || typeof format !== 'string') {
+            return this.config.quality[qualityLevel] || this.config.quality.high;
+        }
+        
         const formatConfig = this.config.compression[format.toLowerCase()];
         if (!formatConfig) {
             return this.config.quality[qualityLevel] || this.config.quality.high;
@@ -721,8 +748,10 @@ export class ScreenshotCapture {
         };
         
         // ErrorHandlerユーティリティの使用
-        if (ErrorHandler) {
-            ErrorHandler.handleError(error, 'ScreenshotCapture', context);
+        try {
+            getErrorHandler().handleError(error, 'ScreenshotCapture', context);
+        } catch (handlerError) {
+            console.warn('[ScreenshotCapture] ErrorHandler利用でエラー:', handlerError);
         }
         
         // ローカルログの記録

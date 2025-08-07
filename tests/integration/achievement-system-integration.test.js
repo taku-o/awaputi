@@ -4,7 +4,7 @@
 
 import { AchievementManager } from '../../src/core/AchievementManager.js';
 import { AchievementEventIntegrator } from '../../src/core/AchievementEventIntegrator.js';
-import { AchievementNotificationSystem } from '../../src/core/AchievementNotificationSystem.js';
+import { AchievementNotificationSystem } from '../../src/core/achievements/AchievementNotificationSystem.js';
 import { AchievementStatsUI } from '../../src/core/AchievementStatsUI.js';
 
 // Mock dependencies

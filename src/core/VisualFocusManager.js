@@ -457,6 +457,39 @@ export class VisualFocusManager {
     setHighContrastMode(enabled) {
         return this.focusStateManager.setHighContrastMode(enabled);
     }
+
+    /**
+     * フォーカス要素の設定
+     * @param {string} elementId - 要素ID
+     * @param {Object} bounds - 要素の境界 {x, y, width, height}
+     */
+    setFocusedElement(elementId, bounds) {
+        this.currentFocusedElement = {
+            id: elementId,
+            bounds: bounds,
+            timestamp: Date.now()
+        };
+        this.handleFocusChange();
+    }
+
+    /**
+     * フォーカス表示のレンダリング
+     * @param {CanvasRenderingContext2D} context - レンダリングコンテキスト
+     */
+    render(context) {
+        if (!this.currentFocusedElement || !context) return;
+
+        const { bounds } = this.currentFocusedElement;
+        
+        context.save();
+        context.strokeStyle = this.config?.focusColor || '#0066cc';
+        context.lineWidth = 2;
+        context.setLineDash([5, 5]);
+        
+        context.strokeRect(bounds.x, bounds.y, bounds.width, bounds.height);
+        
+        context.restore();
+    }
     
     /**
      * 設定の適用
@@ -517,6 +550,49 @@ export class VisualFocusManager {
         }
         
         console.log(`VisualFocusManager ${enabled ? 'enabled' : 'disabled'}`);
+    }
+    
+    /**
+     * フォーカススタイルの更新
+     * @param {Object} style - スタイル設定オブジェクト
+     */
+    updateStyle(style = {}) {
+        // スタイル設定を更新
+        if (style.color) {
+            this.config.focusRing.color = style.color;
+        }
+        if (style.width) {
+            this.config.focusRing.width = style.width;
+        }
+        if (style.offset !== undefined) {
+            this.config.focusRing.offset = style.offset;
+        }
+        if (style.borderRadius !== undefined) {
+            this.config.focusRing.borderRadius = style.borderRadius;
+        }
+        
+        // CSSスタイルを再生成して適用
+        this.setupVisualStyles();
+        
+        // 現在のフォーカスがある場合は再描画
+        if (this.state.currentFocusElement && this.focusEffectRenderer) {
+            this.focusEffectRenderer.render(this.state.currentFocusElement);
+        }
+        
+        console.log('Visual focus style updated:', style);
+    }
+    
+    /**
+     * キー押下の処理
+     * @param {string} key - 押されたキー
+     */
+    handleKeyPress(key) {
+        // イベントハンドラーに委譲
+        if (this.focusEventHandler) {
+            this.focusEventHandler.handleKeyPress(key);
+        }
+        
+        console.log('Visual focus key press handled:', key);
     }
     
     /**

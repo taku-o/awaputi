@@ -465,6 +465,14 @@ export class StatisticsCollector {
     }
     
     /**
+     * バッチ処理メソッド（後方互換性のため）
+     * processEventBatch への alias
+     */
+    async processBatch() {
+        return this.processEventBatch();
+    }
+    
+    /**
      * リソースのクリーンアップ
      */
     destroy() {

@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 import { AnalyticsAPI } from '../../src/analytics/AnalyticsAPI.js';
-import { mockFactory } from '../utils/MockFactory.js';
+import { MockFactory } from '../mocks/MockFactory.js';
 
 // Mock Storage Manager
 class MockStorageManager {

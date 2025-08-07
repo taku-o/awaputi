@@ -171,7 +171,7 @@ export class OfflineManager {
      */
     async recordOfflineOperation(operation) {
         if (!this.config.enableOfflineMode) {
-            throw new Error('オフラインモードが無効になっています');
+            throw new Error('Offline mode is disabled');
         }
         
         try {

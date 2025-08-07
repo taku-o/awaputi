@@ -794,3 +794,35 @@ export class TutorialOverlay extends BaseDialog {
         }
     }
 }
+
+// シングルトンインスタンス管理
+let tutorialOverlayInstance = null;
+
+/**
+ * TutorialOverlayのシングルトンインスタンスを取得
+ * @param {Object} gameEngine - ゲームエンジン
+ * @param {Object} eventBus - イベントバス
+ * @param {Object} state - 状態オブジェクト
+ * @returns {TutorialOverlay} TutorialOverlayインスタンス
+ */
+export function getTutorialOverlay(gameEngine, eventBus, state) {
+    if (!tutorialOverlayInstance) {
+        tutorialOverlayInstance = new TutorialOverlay(gameEngine, eventBus, state);
+    }
+    return tutorialOverlayInstance;
+}
+
+/**
+ * TutorialOverlayインスタンスを再初期化
+ * @param {Object} gameEngine - ゲームエンジン
+ * @param {Object} eventBus - イベントバス
+ * @param {Object} state - 状態オブジェクト
+ * @returns {TutorialOverlay} 新しいTutorialOverlayインスタンス
+ */
+export function reinitializeTutorialOverlay(gameEngine, eventBus, state) {
+    if (tutorialOverlayInstance) {
+        tutorialOverlayInstance.dispose();
+    }
+    tutorialOverlayInstance = new TutorialOverlay(gameEngine, eventBus, state);
+    return tutorialOverlayInstance;
+}

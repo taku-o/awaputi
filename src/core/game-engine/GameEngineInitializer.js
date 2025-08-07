@@ -2,6 +2,20 @@
  * Game Engine Initializer
  * ゲームエンジンの初期化・設定・SEO統合機能を担当
  */
+import { getSEOMonitor } from '../../seo/SEOMonitor.js';
+import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { getPerformanceOptimizer } from '../../utils/PerformanceOptimizer.js';
+import { getMemoryManager } from '../../utils/MemoryManager.js';
+import { getPoolManager } from '../../utils/ObjectPool.js';
+import { MainMenuScene } from '../../scenes/MainMenuScene.js';
+import { StageSelectScene } from '../../scenes/StageSelectScene.js';
+import { GameScene } from '../../scenes/GameScene.js';
+import { ShopScene } from '../../scenes/ShopScene.js';
+import { UserInfoScene } from '../../scenes/UserInfoScene.js';
+import { SettingsScene } from '../../scenes/SettingsScene.js';
+import { HelpScene } from '../../scenes/HelpScene.js';
+import { SocialSharingManager } from '../SocialSharingManager.js';
+
 export class GameEngineInitializer {
     constructor(gameEngine) {
         this.gameEngine = gameEngine;
@@ -17,7 +31,7 @@ export class GameEngineInitializer {
             // SEOシステムが利用可能な場合のみ統合
             if (window.seoMetaManager && window.structuredDataEngine) {
                 // SEO監視システムの初期化
-                const { getSEOMonitor } = require('../seo/SEOMonitor.js');
+                // Removed: const { getSEOMonitor } = require('../seo/SEOMonitor.js');
                 this.seoMonitor = getSEOMonitor();
                 
                 // SEO監視システムを開始
@@ -262,7 +276,7 @@ export class GameEngineInitializer {
             this.refreshAllScenes();
             
         } catch (error) {
-            const { getErrorHandler } = require('../utils/ErrorHandler.js');
+            // Removed: const { getErrorHandler } = require('../utils/ErrorHandler.js');
             getErrorHandler().handleError(error, 'LANGUAGE_CHANGE_ERROR', {
                 newLanguage: newLanguage,
                 oldLanguage: oldLanguage
@@ -297,7 +311,7 @@ export class GameEngineInitializer {
             }
             
         } catch (error) {
-            const { getErrorHandler } = require('../utils/ErrorHandler.js');
+            // Removed: const { getErrorHandler } = require('../utils/ErrorHandler.js');
             getErrorHandler().handleError(error, 'SCENE_REFRESH_ERROR', {
                 operation: 'refreshAllScenes'
             });
@@ -308,14 +322,16 @@ export class GameEngineInitializer {
      * パフォーマンス最適化を初期化
      */
     initializePerformanceOptimization() {
-        const { getPerformanceOptimizer } = require('../utils/PerformanceOptimizer.js');
-        const { getMemoryManager } = require('../utils/MemoryManager.js');
+        // Removed: const { getPerformanceOptimizer } = require('../utils/PerformanceOptimizer.js');
+        // Removed: const { getMemoryManager } = require('../utils/MemoryManager.js');
         
-        // レンダリングコンテキストを最適化
-        getPerformanceOptimizer().optimizeRenderingContext(this.gameEngine.context);
+        // レンダリング最適化を初期化
+        // Note: optimizeRenderingContext は現在のPerformanceOptimizerに実装されていないため削除
         
         // メモリマネージャーでCanvasコンテキストを追跡
-        getMemoryManager().trackCanvasContext(this.gameEngine.context);
+        // Note: trackCanvasContext は現在のMemoryManagerに実装されていないため、
+        // 一般的なオブジェクト追跡メソッドを使用
+        getMemoryManager().trackObject(this.gameEngine.context, 'canvas_context', 8192);
         
         // 定期的な最適化処理
         setInterval(() => {
@@ -327,9 +343,9 @@ export class GameEngineInitializer {
      * 定期的な最適化処理
      */
     performOptimization() {
-        const { getPoolManager } = require('../utils/ObjectPool.js');
-        const { getMemoryManager } = require('../utils/MemoryManager.js');
-        const { getPerformanceOptimizer } = require('../utils/PerformanceOptimizer.js');
+        // Removed: const { getPoolManager } = require('../utils/ObjectPool.js');
+        // Removed: const { getMemoryManager } = require('../utils/MemoryManager.js');
+        // Removed: const { getPerformanceOptimizer } = require('../utils/PerformanceOptimizer.js');
         
         // オブジェクトプールの最適化
         getPoolManager().optimize();
@@ -361,13 +377,13 @@ export class GameEngineInitializer {
      */
     async initializeScenes() {
         try {
-            const { MainMenuScene } = require('../scenes/MainMenuScene.js');
-            const { StageSelectScene } = require('../scenes/StageSelectScene.js');
-            const { GameScene } = require('../scenes/GameScene.js');
-            const { ShopScene } = require('../scenes/ShopScene.js');
-            const { UserInfoScene } = require('../scenes/UserInfoScene.js');
-            const { SettingsScene } = require('../scenes/SettingsScene.js');
-            const { HelpScene } = require('../scenes/HelpScene.js');
+            // Removed: const { MainMenuScene } = require('../scenes/MainMenuScene.js');
+            // Removed: const { StageSelectScene } = require('../scenes/StageSelectScene.js');
+            // Removed: const { GameScene } = require('../scenes/GameScene.js');
+            // Removed: const { ShopScene } = require('../scenes/ShopScene.js');
+            // Removed: const { UserInfoScene } = require('../scenes/UserInfoScene.js');
+            // Removed: const { SettingsScene } = require('../scenes/SettingsScene.js');
+            // Removed: const { HelpScene } = require('../scenes/HelpScene.js');
             
             // シーンを作成
             const mainMenuScene = new MainMenuScene(this.gameEngine);
@@ -391,7 +407,7 @@ export class GameEngineInitializer {
             try {
                 this.gameEngine.playerData.load();
             } catch (error) {
-                const { getErrorHandler } = require('../utils/ErrorHandler.js');
+                // Removed: const { getErrorHandler } = require('../utils/ErrorHandler.js');
                 getErrorHandler().handleError(error, 'STORAGE_ERROR', { operation: 'load', data: 'playerData' });
                 // フォールバック: デフォルトデータで続行
                 this.gameEngine.playerData.reset();
@@ -400,7 +416,7 @@ export class GameEngineInitializer {
             try {
                 this.gameEngine.itemManager.initialize();
             } catch (error) {
-                const { getErrorHandler } = require('../utils/ErrorHandler.js');
+                // Removed: const { getErrorHandler } = require('../utils/ErrorHandler.js');
                 getErrorHandler().handleError(error, 'INITIALIZATION_ERROR', { component: 'itemManager' });
                 // フォールバック: アイテムシステムなしで続行
             }
@@ -426,7 +442,7 @@ export class GameEngineInitializer {
                 // ウィークリーチャレンジシステムの初期化
                 await this.gameEngine.weeklyChallengeManager.initialize();
             } catch (error) {
-                const { getErrorHandler } = require('../utils/ErrorHandler.js');
+                // Removed: const { getErrorHandler } = require('../utils/ErrorHandler.js');
                 getErrorHandler().handleError(error, 'INITIALIZATION_ERROR', { component: 'additionalSystems' });
                 // フォールバック: 新システムなしで続行
             }
@@ -435,7 +451,7 @@ export class GameEngineInitializer {
             this.gameEngine.sceneManager.switchScene('menu');
             
         } catch (error) {
-            const { getErrorHandler } = require('../utils/ErrorHandler.js');
+            // Removed: const { getErrorHandler } = require('../utils/ErrorHandler.js');
             getErrorHandler().handleError(error, 'INITIALIZATION_ERROR', { component: 'scenes' });
             throw error;
         }
@@ -447,7 +463,7 @@ export class GameEngineInitializer {
     async initializeSocialSharingManager() {
         try {
             if (!this.gameEngine.socialSharingManager) {
-                const { SocialSharingManager } = require('./SocialSharingManager.js');
+                // Removed: const { SocialSharingManager } = require('./SocialSharingManager.js');
                 this.gameEngine.socialSharingManager = new SocialSharingManager(this.gameEngine);
                 await this.gameEngine.socialSharingManager.initialize();
                 
@@ -459,7 +475,7 @@ export class GameEngineInitializer {
                 console.log('[GameEngine] SocialSharingManager初期化完了');
             }
         } catch (error) {
-            const { getErrorHandler } = require('../utils/ErrorHandler.js');
+            // Removed: const { getErrorHandler } = require('../utils/ErrorHandler.js');
             getErrorHandler().handleError(error, 'INITIALIZATION_ERROR', { 
                 component: 'SocialSharingManager' 
             });
@@ -537,7 +553,7 @@ export class GameEngineInitializer {
             console.log('[GameEngine] システム統合設定完了');
             
         } catch (error) {
-            const { getErrorHandler } = require('../utils/ErrorHandler.js');
+            // Removed: const { getErrorHandler } = require('../utils/ErrorHandler.js');
             getErrorHandler().handleError(error, 'GameEngine._setupSystemIntegration');
         }
     }

@@ -6,9 +6,9 @@ import { jest } from '@jest/globals';
 
 // ErrorHandlerとLoggingSystemをモック
 jest.mock('../../src/utils/ErrorHandler.js', () => ({
-    ErrorHandler: {
+    getErrorHandler: jest.fn(() => ({
         handleError: jest.fn()
-    }
+    }))
 }));
 
 jest.mock('../../src/core/LoggingSystem.js', () => ({

@@ -442,6 +442,33 @@ export class AudioCueManager {
     }
 
     /**
+     * 音響キューの再生
+     * @param {string} cueType - キューの種類
+     * @param {Object} options - 再生オプション
+     */
+    playCue(cueType, options = {}) {
+        console.log(`AudioCueManager: Playing cue ${cueType}`, options);
+        
+        // 適切な音響キューをトリガー
+        this.triggerAudioEvent(cueType, {
+            type: cueType,
+            ...options
+        });
+    }
+
+    /**
+     * ステータス取得
+     * @returns {Object} ステータス情報
+     */
+    getStatus() {
+        return {
+            initialized: true,
+            activeListeners: this.eventHistory ? this.eventHistory.length : 0,
+            patternsActive: Object.keys(this.recognitionPatterns || {}).length
+        };
+    }
+
+    /**
      * リソースの解放
      */
     dispose() {

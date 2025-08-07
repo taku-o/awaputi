@@ -18,11 +18,11 @@ const mockConfigManager = {
 
 // モックの設定
 jest.mock('../../src/utils/ErrorHandler.js', () => ({
-    getErrorHandler: () => mockErrorHandler
+    getErrorHandler: jest.fn(() => mockErrorHandler)
 }));
 
 jest.mock('../../src/core/ConfigurationManager.js', () => ({
-    getConfigurationManager: () => mockConfigManager
+    getConfigurationManager: jest.fn(() => mockConfigManager)
 }));
 
 describe('ConfigurationSynchronizer', () => {

@@ -2,27 +2,32 @@
  * AnalyticsDashboard のテスト
  */
 
+// 手動でモック
+const mockChartRenderer = {
+    createLineChart: jest.fn(() => ({ id: 'mock-line-chart' })),
+    createBarChart: jest.fn(() => ({ id: 'mock-bar-chart' })),
+    createPieChart: jest.fn(() => ({ id: 'mock-pie-chart' })),
+    createDoughnutChart: jest.fn(() => ({ id: 'mock-doughnut-chart' })),
+    updateChartData: jest.fn(() => true),
+    destroy: jest.fn()
+};
+
+const mockDataVisualizer = {
+    createScatterPlot: jest.fn(),
+    createHeatmap: jest.fn(),
+    destroy: jest.fn()
+};
+
+// モジュールを手動でモック
+jest.doMock('../../src/analytics/ChartRenderer.js', () => ({
+    ChartRenderer: jest.fn(() => mockChartRenderer)
+}));
+
+jest.doMock('../../src/analytics/DataVisualizer.js', () => ({
+    DataVisualizer: jest.fn(() => mockDataVisualizer)
+}));
+
 import { AnalyticsDashboard } from '../../src/analytics/AnalyticsDashboard.js';
-
-// ChartRenderer と DataVisualizer のモック
-jest.mock('../../src/analytics/ChartRenderer.js', () => ({
-    ChartRenderer: jest.fn(() => ({
-        createLineChart: jest.fn(() => ({ id: 'mock-line-chart' })),
-        createBarChart: jest.fn(() => ({ id: 'mock-bar-chart' })),
-        createPieChart: jest.fn(() => ({ id: 'mock-pie-chart' })),
-        createDoughnutChart: jest.fn(() => ({ id: 'mock-doughnut-chart' })),
-        updateChartData: jest.fn(() => true),
-        destroy: jest.fn()
-    }))
-}));
-
-jest.mock('../../src/analytics/DataVisualizer.js', () => ({
-    DataVisualizer: jest.fn(() => ({
-        createScatterPlot: jest.fn(),
-        createHeatmap: jest.fn(),
-        destroy: jest.fn()
-    }))
-}));
 
 // DOM のモック
 Object.defineProperty(global, 'document', {

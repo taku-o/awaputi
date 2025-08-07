@@ -20,7 +20,8 @@ const CONFIG = {
         '.git/**',
         'coverage/**',
         'docs/**',           // ドキュメント全体を除外
-        'CLAUDE.md'          // プロジェクト情報ファイルを除外
+        'CLAUDE.md',         // プロジェクト情報ファイルを除外
+        '.kiro/**'           // 仕様・タスクファイルを除外
     ],
     TARGET_EXTENSIONS: ['.js', '.md'],
     WARNING_THRESHOLD: 2000, // 警告閾値

@@ -176,6 +176,26 @@ export class UserInfoTabManager {
     }
     
     /**
+     * 指定されたタブのコンポーネントを取得（後方互換性用）
+     */
+    getTabComponent(tabName) {
+        if (!this.componentFactory.has(tabName)) {
+            console.warn(`No factory found for tab: ${tabName}`);
+            return null;
+        }
+        
+        // コンポーネントを生成/取得
+        const component = this.componentFactory.get(tabName)();
+        
+        // アクセス時間を記録（メモリ管理用）
+        if (component) {
+            component.lastAccessTime = Date.now();
+        }
+        
+        return component;
+    }
+    
+    /**
      * すべてのタブのリストを取得
      */
     getTabs() {
