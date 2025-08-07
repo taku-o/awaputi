@@ -505,7 +505,8 @@ export class AudioManager {
             initialized: this.isInitialized,
             muted: this.muted,
             contextState: this.state,
-            supportedFormats: ['wav', 'mp3', 'ogg']
+            supportedFormats: ['wav', 'mp3', 'ogg'],
+            qualityMode: this.qualityMode || 'medium'
         };
     }
 

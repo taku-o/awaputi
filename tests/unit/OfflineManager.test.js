@@ -79,7 +79,7 @@ describe('OfflineManager', () => {
         
         test('オンライン状態が正しく初期化される', async () => {
             // 初期化完了を待つ
-            await new Promise(resolve => setTimeout(resolve, 100));
+            await new Promise(resolve => setTimeout(resolve, 50));
             
             expect(offlineManager.state.isOnline).toBe(true);
             expect(offlineManager.state.offlineOperations).toEqual([]);
@@ -333,6 +333,9 @@ describe('OfflineManager', () => {
         });
         
         test('オフライン状態では接続チェックしない', async () => {
+            // fetchモックをリセット
+            mockFetch.mockClear();
+            
             // navigator.onLineをオフラインに設定
             Object.defineProperty(navigator, 'onLine', {
                 writable: true,
