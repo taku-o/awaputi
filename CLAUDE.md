@@ -44,6 +44,25 @@ npm run test:performance
 npm run test:all
 ```
 
+### テストスイート修復プロジェクト（Issue #106対応）
+**目標**: Phase G完了後のテスト失敗（15/114ファイル失敗、13%失敗率）を修正し、95%以上の成功率を実現
+
+#### 主要問題カテゴリ
+1. **モジュールパス不整合**: Phase G分割後のインポートパス破損
+2. **API メソッド不一致**: enhancedParticleManager.enableBatchRendering等の未実装メソッド
+3. **依存関係不足**: fake-indexeddb、inquirer等のパッケージ不足
+4. **Jest環境不安定**: ES Modules + Jest環境teardown問題
+5. **Phase G互換性**: 新アーキテクチャとの非互換性
+
+#### 修正アプローチ（9フェーズ）
+- **Phase 1**: モジュールパス解析・修正（TestPathResolver、パス検証）
+- **Phase 2**: APIメソッド一貫性修正（不足メソッド実装、期待値調整）
+- **Phase 3**: 依存関係解決（パッケージインストール、モック代替）
+- **Phase 4**: Jest環境安定化（teardown修正、分離改善）
+- **Phase 5**: Phase G互換性確保（アーキテクチャ検証、インターフェース修正）
+- **Phase 6-8**: 特定テストファイル修正（PerformanceConfig、EnhancedEffectManager等）
+- **Phase 9**: 最終統合・品質保証（95%成功率達成、回帰防止）
+
 ### テスト修正プロジェクト（Issue #17対応）
 **目標**: 136個の失敗テストを体系的に修正してCI/CD安定化
 

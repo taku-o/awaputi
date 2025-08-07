@@ -705,6 +705,24 @@ export class EnhancedParticleManager extends ParticleManager {
     }
     
     /**
+     * Enable or disable batch rendering for performance optimization
+     * @param {boolean} enabled - Whether to enable batch rendering
+     */
+    enableBatchRendering(enabled) {
+        this.batchRendering = enabled;
+        console.log(`[EnhancedParticleManager] Batch rendering ${enabled ? 'enabled' : 'disabled'}`);
+    }
+
+    /**
+     * Enable or disable aggressive culling for performance optimization
+     * @param {boolean} enabled - Whether to enable aggressive culling
+     */
+    setAggressiveCulling(enabled) {
+        this.aggressiveCulling = enabled;
+        console.log(`[EnhancedParticleManager] Aggressive culling ${enabled ? 'enabled' : 'disabled'}`);
+    }
+    
+    /**
      * 使用していないリソースをクリーンアップ
      */
     cleanupUnusedResources() {

@@ -863,6 +863,45 @@ export class EnhancedEffectManager extends EffectManager {
     }
     
     /**
+     * Enable or disable optimized rendering for performance optimization
+     * @param {boolean} enabled - Whether to enable optimized rendering
+     */
+    enableOptimizedRendering(enabled) {
+        this.optimizedRendering = enabled;
+        if (enabled) {
+            this.renderSettings.enableBatching = true;
+            this.renderSettings.reducedEffects = false;
+            this.renderSettings.qualityLevel = 'high';
+        } else {
+            this.renderSettings.enableBatching = false;
+            this.renderSettings.reducedEffects = true;
+        }
+        console.log(`[EnhancedEffectManager] Optimized rendering ${enabled ? 'enabled' : 'disabled'}`);
+    }
+    
+    /**
+     * Enable or disable transition smoothing
+     * @param {boolean} enabled - Whether to enable transition smoothing
+     */
+    setTransitionSmoothing(enabled) {
+        this.transitionSmoothing = enabled;
+        if (enabled) {
+            this.renderSettings.transitionSmoothing = true;
+        }
+        console.log(`[EnhancedEffectManager] Transition smoothing ${enabled ? 'enabled' : 'disabled'}`);
+    }
+    
+    /**
+     * Set transition duration in milliseconds
+     * @param {number} duration - Duration in milliseconds
+     */
+    setTransitionDuration(duration) {
+        this.transitionDuration = duration;
+        this.renderSettings.transitionDuration = duration;
+        console.log(`[EnhancedEffectManager] Transition duration set to ${duration}ms`);
+    }
+    
+    /**
      * 品質レベルを設定
      */
     setQualityLevel(level) {

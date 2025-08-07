@@ -732,6 +732,27 @@ function getErrorHandler() {
     return _errorHandler;
 }
 
+// Static methods for backward compatibility
+ErrorHandler.handleError = (error, context, metadata) => {
+    return getErrorHandler().handleError(error, context, metadata);
+};
+
+ErrorHandler.validateInput = (value, type, constraints) => {
+    return getErrorHandler().validateInput(value, type, constraints);
+};
+
+ErrorHandler.getErrorStats = () => {
+    return getErrorHandler().getErrorStats();
+};
+
+ErrorHandler.getErrorLog = () => {
+    return getErrorHandler().getErrorLog();
+};
+
+ErrorHandler.reset = () => {
+    return getErrorHandler().reset();
+};
+
 // Backward compatibility
 const errorHandler = getErrorHandler;
 
