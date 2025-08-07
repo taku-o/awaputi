@@ -43,6 +43,8 @@
     "validate:favicon:verbose": "node scripts/favicon-validator.js --verbose",
     "check:browser-compatibility": "node scripts/browser-compatibility-checker.js",
     "check:browser-compatibility:verbose": "node scripts/browser-compatibility-checker.js --verbose",
+    "test:local-execution-flow": "node scripts/test-local-execution-flow.js",
+    "test:local-execution-flow:verbose": "node scripts/test-local-execution-flow.js --verbose",
     "generate:tests:validate": "node scripts/generate-tests.js --validate-only",
     "prebuild": "npm run validate:config && npm run i18n:setup",
     "i18n:setup": "node scripts/i18n-deployment-setup.js",
