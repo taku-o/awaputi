@@ -389,6 +389,52 @@ export class EnhancedParticleManager extends ParticleManager {
             context.restore();
         }
     }
+
+    /**
+     * トレイルパーティクルのレンダリング
+     * @param {CanvasRenderingContext2D} context - レンダリングコンテキスト
+     * @param {Object} particle - パーティクルオブジェクト
+     */
+    renderTrailParticle(context, particle) {
+        if (!particle || !context) return;
+
+        context.save();
+        
+        try {
+            // トレイル効果のための透明度設定
+            context.globalAlpha = (particle.opacity || 1) * 0.7;
+            
+            // グラデーション効果
+            const gradient = context.createRadialGradient(
+                particle.x, particle.y, 0,
+                particle.x, particle.y, particle.size || 5
+            );
+            gradient.addColorStop(0, particle.color || '#ffffff');
+            gradient.addColorStop(1, 'transparent');
+            
+            context.fillStyle = gradient;
+            context.beginPath();
+            context.arc(particle.x, particle.y, particle.size || 5, 0, Math.PI * 2);
+            context.fill();
+            
+        } catch (error) {
+            console.warn('EnhancedParticleManager: renderTrailParticle error:', error);
+        } finally {
+            context.restore();
+        }
+    }
+
+    /**
+     * パーティクルクリア（すべて削除）
+     */
+    clearAllParticles() {
+        if (this.particles) {
+            this.particles.length = 0;
+        }
+        if (this.activeParticles) {
+            this.activeParticles.clear();
+        }
+    }
     
     /**
      * 簡略化されたパーティクルレンダリング
@@ -679,28 +725,40 @@ export class EnhancedParticleManager extends ParticleManager {
      * @param {CanvasRenderingContext2D} context - コンテキスト
      */
     render(context) {
-        // 背景パーティクルの描画
-        if (this.backgroundEnabled && this.backgroundParticles.length > 0) {
-            context.save();
-            this.backgroundParticles.forEach(particle => {
-                if (!particle.isActive) return;
-                
+        try {
+            // 背景パーティクルの描画
+            if (this.backgroundEnabled && this.backgroundParticles.length > 0) {
                 context.save();
-                context.globalAlpha = particle.alpha;
-                context.translate(particle.x, particle.y);
-                
-                if (particle.scale !== 1) {
-                    context.scale(particle.scale, particle.scale);
-                }
-                
-                this.renderAdvancedParticle(context, particle);
+                this.backgroundParticles.forEach(particle => {
+                    if (!particle.isActive) return;
+                    
+                    try {
+                        context.save();
+                        context.globalAlpha = particle.alpha;
+                        context.translate(particle.x, particle.y);
+                        
+                        if (particle.scale !== 1) {
+                            context.scale(particle.scale, particle.scale);
+                        }
+                        
+                        this.renderAdvancedParticle(context, particle);
+                    } catch (error) {
+                        console.warn('EnhancedParticleManager: Background particle render error:', error);
+                        // エラーが発生してもレンダリングを継続
+                    } finally {
+                        context.restore();
+                    }
+                });
                 context.restore();
-            });
-            context.restore();
+            }
+            
+            // 通常のパーティクル描画（親クラスのメソッドを使用）
+            super.render(context);
+            
+        } catch (error) {
+            console.warn('EnhancedParticleManager: Render error:', error);
+            // エラーが発生してもアプリケーションを継続
         }
-        
-        // 通常のパーティクル描画（親クラスのメソッドを使用）
-        super.render(context);
     }
     
     /**

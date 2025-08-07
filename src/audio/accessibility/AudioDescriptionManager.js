@@ -287,6 +287,53 @@ export class AudioDescriptionManager {
     }
 
     /**
+     * 音声説明の有効/無効を設定
+     * @param {boolean} enabled - 有効化フラグ
+     */
+    setEnabled(enabled) {
+        this.enabled = enabled;
+        console.log(`AudioDescriptionManager: ${enabled ? 'enabled' : 'disabled'}`);
+    }
+
+    /**
+     * 音声説明を追加
+     * @param {string} category - カテゴリ
+     * @param {string} type - タイプ
+     * @param {Object} params - パラメータ
+     * @param {number} priority - 優先度
+     */
+    addDescription(category, type, params = {}, priority = 3) {
+        if (!this.enabled) return;
+        
+        const description = {
+            category,
+            type,
+            params,
+            priority,
+            timestamp: Date.now()
+        };
+        
+        console.log('AudioDescriptionManager: Added description:', description);
+        
+        // 視覚的な説明を表示
+        if (description.category === 'game' && description.type === 'bubblePop') {
+            this.showVisualNotification(`${params.bubbleType}泡が弾けました`, 'info');
+        }
+    }
+
+    /**
+     * ステータス取得
+     * @returns {Object} ステータス情報
+     */
+    getStatus() {
+        return {
+            enabled: this.enabled || false,
+            activeDescriptions: 0,
+            initialized: true
+        };
+    }
+
+    /**
      * リソースの解放
      */
     dispose() {
