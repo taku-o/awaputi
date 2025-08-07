@@ -36,6 +36,13 @@ export class EnhancedParticleManager extends ParticleManager {
         this.backgroundDensity = 0.1;
         this.backgroundTheme = 'default';
         
+        // パフォーマンス最適化設定
+        this.batchRendering = false;
+        this.aggressiveCulling = false;
+        this.smoothTransitions = false;
+        this.interpolation = false;
+        this.easingEnabled = false;
+        
         // エフェクトレンダラーの初期化
         this.bubbleRenderer = new BubbleEffectRenderer(this);
         this.comboRenderer = new ComboEffectRenderer(this);
@@ -720,6 +727,55 @@ export class EnhancedParticleManager extends ParticleManager {
     setAggressiveCulling(enabled) {
         this.aggressiveCulling = enabled;
         console.log(`[EnhancedParticleManager] Aggressive culling ${enabled ? 'enabled' : 'disabled'}`);
+    }
+    
+    /**
+     * Enable or disable smooth transitions for particle effects
+     * @param {boolean} enabled - Whether to enable smooth transitions
+     */
+    enableSmoothTransitions(enabled) {
+        this.smoothTransitions = enabled;
+        if (enabled) {
+            this.interpolation = true;
+            this.easingEnabled = true;
+        } else {
+            this.interpolation = false;
+            this.easingEnabled = false;
+        }
+        console.log(`[EnhancedParticleManager] Smooth transitions ${enabled ? 'enabled' : 'disabled'}`);
+    }
+    
+    /**
+     * Set timing profiles for particle effects
+     * @param {object} profiles - Timing profiles for different effects
+     */
+    setTimingProfiles(profiles) {
+        this.timingProfiles = profiles;
+        console.log(`[EnhancedParticleManager] Timing profiles set:`, profiles);
+    }
+    
+    /**
+     * Set easing functions for particle animations
+     * @param {object} easingFunctions - Easing functions for animations
+     */
+    setEasingFunctions(easingFunctions) {
+        this.easingFunctions = easingFunctions;
+        console.log(`[EnhancedParticleManager] Easing functions set:`, Object.keys(easingFunctions));
+    }
+    
+    /**
+     * Apply visual polish settings
+     * @param {object} settings - Visual polish settings
+     */
+    applyVisualPolishSettings(settings) {
+        this.visualPolishSettings = settings;
+        if (settings.smoothTransitions) {
+            this.enableSmoothTransitions(true);
+        }
+        if (settings.batchRendering) {
+            this.enableBatchRendering(true);
+        }
+        console.log(`[EnhancedParticleManager] Visual polish settings applied`);
     }
     
     /**

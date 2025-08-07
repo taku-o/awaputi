@@ -57,8 +57,17 @@ export class EnhancedEffectManager extends EffectManager {
             enableShadows: true,
             enableReflections: true,
             enablePostProcessing: true,
-            qualityLevel: 'high' // 'low', 'medium', 'high', 'ultra'
+            qualityLevel: 'high', // 'low', 'medium', 'high', 'ultra'
+            enableBatching: false,
+            reducedEffects: false,
+            transitionSmoothing: false,
+            transitionDuration: 300
         };
+        
+        // パフォーマンス最適化設定
+        this.optimizedRendering = false;
+        this.transitionSmoothing = false;
+        this.transitionDuration = 300;
         
         // パフォーマンス監視
         this.performanceMetrics = {
