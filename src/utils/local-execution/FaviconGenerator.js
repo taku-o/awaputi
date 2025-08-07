@@ -254,7 +254,7 @@ class FaviconGenerator {
     }
     
     /**
-     * 単一ファビコンの生成（最適化版）
+     * 単一ファビコンの生成（最適化版・ブラウザ互換性対応）
      * @private
      */
     static async _generateSingleFavicon(size, config) {
@@ -264,6 +264,79 @@ class FaviconGenerator {
             return { success: true, size, fromCache: true, dataUrl: cached };
         }
         
+        try {
+            // ブラウザ互換性チェックとフォールバック
+            if (config.enableBrowserCompatibility !== false) {
+                const compatibilityResult = await this._generateWithCompatibilityCheck(size, config);
+                if (compatibilityResult) {
+                    return compatibilityResult;
+                }
+            }
+            
+            // 標準のCanvas生成
+            return await this._generateStandardCanvasFavicon(size, config);
+            
+        } catch (error) {
+            console.error(`FaviconGenerator: Standard generation failed for ${size}px`, error);
+            
+            // フォールバック生成を試行
+            return await this._generateFallbackFavicon(size, config, error);
+        }
+    }
+    
+    /**
+     * ブラウザ互換性チェック付き生成
+     * @private
+     */
+    static async _generateWithCompatibilityCheck(size, config) {
+        try {
+            // BrowserCompatibilityManagerが利用可能かチェック
+            if (typeof BrowserCompatibilityManager === 'undefined') {
+                return null; // 標準生成にフォールバック
+            }
+            
+            const canvasSupport = BrowserCompatibilityManager.getCanvasSupport();
+            
+            // Canvas APIが完全にサポートされていない場合
+            if (!canvasSupport.available || !canvasSupport.context2d || !canvasSupport.toDataURL) {
+                console.log(`FaviconGenerator: Canvas limitations detected, using fallback for ${size}px`);
+                const fallbackResult = await BrowserCompatibilityManager.implementCanvasFallback(size, config);
+                
+                if (fallbackResult.success) {
+                    // キャッシュに保存
+                    if (config.cacheEnabled) {
+                        this._setCachedFavicon(size, fallbackResult.dataUrl);
+                    }
+                    
+                    // DOM注入
+                    if (config.injectIntoDOM !== false) {
+                        this._injectFaviconToDOM(size, fallbackResult.dataUrl);
+                    }
+                    
+                    return {
+                        success: true,
+                        size,
+                        fromCache: false,
+                        dataUrl: fallbackResult.dataUrl,
+                        compatibilityFallback: true,
+                        fallbackMethod: fallbackResult.method
+                    };
+                }
+            }
+            
+            return null; // 標準生成を続行
+            
+        } catch (error) {
+            console.warn('FaviconGenerator: Compatibility check failed', error);
+            return null; // 標準生成にフォールバック
+        }
+    }
+    
+    /**
+     * 標準のCanvas favicon生成
+     * @private
+     */
+    static async _generateStandardCanvasFavicon(size, config) {
         // Canvas要素をプールから取得または作成
         const canvas = this._getCanvasFromPool(size);
         const context = canvas.getContext('2d');
@@ -299,6 +372,55 @@ class FaviconGenerator {
         } finally {
             // Canvas要素をプールに戻す
             this._returnCanvasToPool(canvas);
+        }
+    }
+    
+    /**
+     * フォールバックfavicon生成
+     * @private
+     */
+    static async _generateFallbackFavicon(size, config, originalError) {
+        console.log(`FaviconGenerator: Attempting fallback generation for ${size}px`);
+        
+        try {
+            // BrowserCompatibilityManagerを使用したフォールバック
+            if (typeof BrowserCompatibilityManager !== 'undefined') {
+                const fallbackResult = await BrowserCompatibilityManager.implementCanvasFallback(size, config);
+                
+                if (fallbackResult.success) {
+                    return {
+                        success: true,
+                        size,
+                        fromCache: false,
+                        dataUrl: fallbackResult.dataUrl,
+                        fallbackUsed: true,
+                        fallbackMethod: fallbackResult.method,
+                        originalError: originalError.message
+                    };
+                }
+            }
+            
+            // 最終フォールバック: 空のデータURL
+            const emptyDataUrl = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==';
+            
+            return {
+                success: true,
+                size,
+                fromCache: false,
+                dataUrl: emptyDataUrl,
+                fallbackUsed: true,
+                fallbackMethod: 'empty-image',
+                originalError: originalError.message,
+                warning: 'Using minimal fallback favicon due to Canvas API limitations'
+            };
+            
+        } catch (fallbackError) {
+            return {
+                success: false,
+                size,
+                error: `Both standard and fallback generation failed: ${originalError.message}`,
+                fallbackError: fallbackError.message
+            };
         }
     }
     

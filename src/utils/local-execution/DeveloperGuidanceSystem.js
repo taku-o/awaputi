@@ -10,6 +10,8 @@
  * @version 1.0.0
  */
 
+import BrowserCompatibilityManager from './BrowserCompatibilityManager.js';
+
 class DeveloperGuidanceSystem {
     /**
      * ガイダンスのデフォルト設定
@@ -29,7 +31,8 @@ class DeveloperGuidanceSystem {
                 'npx serve .',
                 'npx http-server'
             ]
-        }
+        },
+        enableBrowserCompatibility: true
     };
 
     /**
@@ -76,10 +79,45 @@ class DeveloperGuidanceSystem {
             title: 'Development Server Recommended',
             message: 'For the best development experience, please use a development server.',
             showCommands: true,
-            showTroubleshooting: true
+            showTroubleshooting: true,
+            showBrowserSpecificInfo: true
         };
         
         this.showLocalExecutionWarning(guidanceConfig);
+    }
+
+    /**
+     * ブラウザ互換性チェック付きガイダンスを表示
+     * @param {Object} config - 設定オプション
+     */
+    static showCompatibilityGuidance(config = {}) {
+        try {
+            const compatibility = BrowserCompatibilityManager.getComprehensiveSupport();
+            const mergedConfig = { 
+                ...this.DEFAULT_CONFIG, 
+                ...config,
+                compatibilityInfo: compatibility,
+                showBrowserSpecificInfo: true
+            };
+            
+            // ブラウザ固有のメッセージ生成
+            const customMessage = this._generateBrowserSpecificMessage(compatibility);
+            
+            const guidanceConfig = {
+                ...mergedConfig,
+                title: `Browser Compatibility: ${compatibility.browser.name} ${compatibility.browser.version}`,
+                message: customMessage,
+                showCommands: true,
+                showTroubleshooting: true
+            };
+            
+            this.showLocalExecutionWarning(guidanceConfig);
+            
+        } catch (error) {
+            console.warn('DeveloperGuidanceSystem: Compatibility guidance failed', error);
+            // フォールバック: 標準のガイダンスを表示
+            this.showDeveloperServerGuidance(config);
+        }
     }
 
     /**
@@ -116,6 +154,7 @@ class DeveloperGuidanceSystem {
                     
                     ${this._createCommandsSection(mergedConfig)}
                     ${this._createLimitationsSection()}
+                    ${this._createCompatibilitySection(mergedConfig)}
                     ${this._createTroubleshootingSection(mergedConfig)}
                 </div>
                 
@@ -236,6 +275,69 @@ class DeveloperGuidanceSystem {
                 </ul>
             </div>
         `;
+    }
+
+    /**
+     * ブラウザ互換性セクションを作成
+     * @param {Object} config - 設定
+     * @returns {string} HTMLコンテンツ
+     * @private
+     */
+    static _createCompatibilitySection(config) {
+        if (!config.showBrowserSpecificInfo || !config.compatibilityInfo) {
+            return '';
+        }
+
+        const compatibility = config.compatibilityInfo;
+        const browserInfo = compatibility.browser;
+        const recommendations = compatibility.recommendations;
+
+        let content = `
+            <div class="awaputi-guidance-section awaputi-guidance-compatibility">
+                <h4>📊 Browser Compatibility:</h4>
+                <div class="awaputi-compatibility-info">
+                    <span class="awaputi-browser-info">
+                        ${browserInfo.name} ${browserInfo.version} 
+                        <span class="awaputi-support-badge awaputi-support-${browserInfo.isSupported ? 'good' : 'limited'}">${browserInfo.isSupported ? 'Supported' : 'Limited'}</span>
+                    </span>
+                </div>
+        `;
+
+        // 機能サポート状況
+        if (browserInfo.supportedFeatures && browserInfo.supportedFeatures.length > 0) {
+            content += `
+                <div class="awaputi-features-support">
+                    <strong>Supported features:</strong> ${browserInfo.supportedFeatures.join(', ')}
+                </div>
+            `;
+        }
+
+        // 制限事項
+        if (browserInfo.restrictions && browserInfo.restrictions.length > 0) {
+            content += `
+                <div class="awaputi-restrictions">
+                    <strong>Restrictions:</strong> ${browserInfo.restrictions.join(', ')}
+                </div>
+            `;
+        }
+
+        // 推奨事項
+        if (recommendations && recommendations.length > 0) {
+            const highPriorityRecs = recommendations.filter(r => r.priority === 'high');
+            if (highPriorityRecs.length > 0) {
+                content += `
+                    <div class="awaputi-recommendations">
+                        <strong>Recommendations:</strong>
+                        <ul>
+                            ${highPriorityRecs.map(rec => `<li>${rec.message}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+        }
+
+        content += `</div>`;
+        return content;
     }
 
     /**
@@ -560,6 +662,67 @@ class DeveloperGuidanceSystem {
                 color: #666;
             }
             
+            .awaputi-guidance-compatibility {
+                background-color: #f8f9fa;
+                padding: 12px;
+                border-radius: 4px;
+                border-left: 3px solid #17a2b8;
+            }
+            
+            .awaputi-compatibility-info {
+                margin-bottom: 8px;
+            }
+            
+            .awaputi-browser-info {
+                display: flex;
+                align-items: center;
+                font-weight: 600;
+                color: #333;
+            }
+            
+            .awaputi-support-badge {
+                margin-left: 8px;
+                padding: 2px 8px;
+                border-radius: 12px;
+                font-size: 11px;
+                font-weight: 500;
+                text-transform: uppercase;
+            }
+            
+            .awaputi-support-good {
+                background-color: #d4edda;
+                color: #155724;
+            }
+            
+            .awaputi-support-limited {
+                background-color: #fff3cd;
+                color: #856404;
+            }
+            
+            .awaputi-features-support,
+            .awaputi-restrictions,
+            .awaputi-recommendations {
+                margin-top: 8px;
+                font-size: 13px;
+                color: #666;
+            }
+            
+            .awaputi-features-support strong,
+            .awaputi-restrictions strong,
+            .awaputi-recommendations strong {
+                color: #333;
+            }
+            
+            .awaputi-recommendations ul {
+                margin: 4px 0 0 0;
+                padding-left: 16px;
+            }
+            
+            .awaputi-recommendations li {
+                margin-bottom: 4px;
+                color: #856404;
+            }
+            
             .awaputi-guidance-footer {
                 display: flex;
                 justify-content: flex-end;
@@ -623,6 +786,49 @@ class DeveloperGuidanceSystem {
     }
 
     /**
+     * ブラウザ固有メッセージ生成
+     * @param {Object} compatibility - 互換性情報
+     * @returns {string} ブラウザ固有メッセージ
+     * @private
+     */
+    static _generateBrowserSpecificMessage(compatibility) {
+        const browserInfo = compatibility.browser;
+        const canvasSupport = compatibility.canvas;
+        const storageSupport = compatibility.localStorage;
+        const modulesSupport = compatibility.modules;
+
+        let message = `Running on ${browserInfo.name} ${browserInfo.version}. `;
+
+        // ブラウザ固有の問題を特定
+        if (browserInfo.name === 'safari') {
+            message += 'Safari has some restrictions with local file execution. ';
+            if (!storageSupport.writable) {
+                message += 'Private browsing mode detected - some features may not work correctly. ';
+            }
+        } else if (browserInfo.name === 'firefox') {
+            if (window.location && window.location.protocol === 'file:') {
+                message += 'Firefox restricts localStorage access for local files. ';
+            }
+        } else if (browserInfo.name === 'ie') {
+            message += 'Internet Explorer has limited support. Consider upgrading to a modern browser. ';
+        }
+
+        // Canvas API問題
+        if (!canvasSupport.available) {
+            message += 'Canvas API is not available - favicon generation will use fallbacks. ';
+        }
+
+        // ES6 modules問題
+        if (!modulesSupport.available && window.location.protocol === 'file:') {
+            message += 'ES6 modules are restricted in local file mode. ';
+        }
+
+        message += 'For the best experience, please use a development server.';
+
+        return message;
+    }
+
+    /**
      * デバッグ情報を取得
      * @returns {Object} デバッグ情報
      */
@@ -631,8 +837,25 @@ class DeveloperGuidanceSystem {
             isPermanentlyDismissed: this.isPermanentlyDismissed(),
             hasExistingGuidance: !!document.getElementById('awaputi-local-execution-guidance'),
             config: this.DEFAULT_CONFIG,
-            dismissalInfo: this._getDismissalInfo()
+            dismissalInfo: this._getDismissalInfo(),
+            browserCompatibility: this._getBrowserCompatibilityInfo()
         };
+    }
+
+    /**
+     * ブラウザ互換性情報を取得
+     * @returns {Object} 互換性情報
+     * @private
+     */
+    static _getBrowserCompatibilityInfo() {
+        try {
+            return BrowserCompatibilityManager.getComprehensiveSupport();
+        } catch (error) {
+            return {
+                error: error.message,
+                available: false
+            };
+        }
     }
 
     /**

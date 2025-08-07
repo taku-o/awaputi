@@ -11,6 +11,7 @@
  */
 
 import DeveloperGuidanceSystem from './DeveloperGuidanceSystem.js';
+import BrowserCompatibilityManager from './BrowserCompatibilityManager.js';
 
 class LocalExecutionErrorHandler {
     /**
@@ -129,11 +130,16 @@ class LocalExecutionErrorHandler {
     static handleCompatibilityError(error, feature) {
         this._log('Handling compatibility error:', error, feature);
 
+        // ブラウザ互換性情報を取得
+        const compatibility = this._getBrowserCompatibilityInfo();
+        
         const errorInfo = {
             category: this.ERROR_CATEGORIES.BROWSER_COMPATIBILITY,
             feature,
-            userMessage: this._generateCompatibilityMessage(feature),
-            fallbackAvailable: this._checkFallbackAvailability(feature)
+            browserInfo: compatibility.browser,
+            supportInfo: compatibility[feature] || {},
+            userMessage: this._generateCompatibilityMessage(feature, compatibility),
+            fallbackAvailable: this._checkFallbackAvailability(feature, compatibility)
         };
 
         // ユーザー通知
@@ -143,7 +149,28 @@ class LocalExecutionErrorHandler {
 
         // フォールバック処理
         if (errorInfo.fallbackAvailable && this.config.enableFallbacks) {
-            this._enableFeatureFallback(feature);
+            this._enableFeatureFallback(feature, compatibility);
+        }
+
+        return errorInfo;
+    }
+
+    /**
+     * ブラウザ互換性情報を取得
+     * @returns {Object} 互換性情報
+     * @private
+     */
+    static _getBrowserCompatibilityInfo() {
+        try {
+            return BrowserCompatibilityManager.getComprehensiveSupport();
+        } catch (error) {
+            this._log('Failed to get browser compatibility info:', error);
+            return {
+                browser: { name: 'unknown', version: 0, isSupported: false },
+                canvas: { available: false },
+                localStorage: { available: false },
+                modules: { available: false }
+            };
         }
     }
 

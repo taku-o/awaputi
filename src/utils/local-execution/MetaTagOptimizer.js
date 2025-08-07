@@ -10,6 +10,8 @@
  * @version 1.0.0
  */
 
+import BrowserCompatibilityManager from './BrowserCompatibilityManager.js';
+
 class MetaTagOptimizer {
     /**
      * ローカル実行用にメタタグを最適化
@@ -20,8 +22,39 @@ class MetaTagOptimizer {
         this.removeProblematicMetaTags();
         this.addLocalExecutionMetaTags();
         this.optimizeContentSecurityPolicy();
+        this.addBrowserSpecificOptimizations();
         
         console.log('MetaTagOptimizer: Meta tag optimization completed');
+    }
+
+    /**
+     * ブラウザ固有の最適化を追加
+     */
+    static addBrowserSpecificOptimizations() {
+        try {
+            const browserInfo = BrowserCompatibilityManager.getBrowserInfo();
+            
+            // Safari固有の最適化
+            if (browserInfo.name === 'safari') {
+                this._addSafariSpecificMetas();
+            }
+            
+            // Firefox固有の最適化
+            else if (browserInfo.name === 'firefox') {
+                this._addFirefoxSpecificMetas();
+            }
+            
+            // Internet Explorer固有の最適化
+            else if (browserInfo.name === 'ie') {
+                this._addIESpecificMetas();
+            }
+            
+            // 互換性情報をメタタグとして記録
+            this._addCompatibilityInfoMeta(browserInfo);
+            
+        } catch (error) {
+            console.warn('MetaTagOptimizer: Browser-specific optimization failed', error);
+        }
     }
 
     /**
@@ -248,6 +281,63 @@ class MetaTagOptimizer {
         });
 
         return metaTagInfo;
+    }
+
+    /**
+     * Safari固有のメタタグ最適化
+     * @private
+     */
+    static _addSafariSpecificMetas() {
+        // Safari のプライベートブラウジング対応
+        this._addOrUpdateMetaTag('name', 'local-execution-safari-private-browsing', 
+            'local-storage-fallback-enabled');
+            
+        // Safari の Canvas 制限対応
+        this._addOrUpdateMetaTag('name', 'local-execution-safari-canvas', 
+            'fallback-enabled');
+    }
+
+    /**
+     * Firefox固有のメタタグ最適化
+     * @private
+     */
+    static _addFirefoxSpecificMetas() {
+        // Firefox の file:// プロトコル localStorage 制限対応
+        if (window.location && window.location.protocol === 'file:') {
+            this._addOrUpdateMetaTag('name', 'local-execution-firefox-storage', 
+                'localStorage-restricted');
+        }
+    }
+
+    /**
+     * Internet Explorer固有のメタタグ最適化
+     * @private
+     */
+    static _addIESpecificMetas() {
+        // IE のレガシーブラウザ互換性
+        this._addOrUpdateMetaTag('name', 'local-execution-ie-compatibility', 
+            'legacy-fallbacks-enabled');
+            
+        // IE の X-UA-Compatible 設定
+        this._addOrUpdateMetaTag('http-equiv', 'X-UA-Compatible', 'IE=edge');
+    }
+
+    /**
+     * 互換性情報をメタタグとして記録
+     * @param {Object} browserInfo - ブラウザ情報
+     * @private
+     */
+    static _addCompatibilityInfoMeta(browserInfo) {
+        this._addOrUpdateMetaTag('name', 'local-execution-browser', 
+            `${browserInfo.name}-${browserInfo.version}`);
+            
+        this._addOrUpdateMetaTag('name', 'local-execution-supported-features', 
+            browserInfo.supportedFeatures.join(','));
+            
+        if (browserInfo.restrictions && browserInfo.restrictions.length > 0) {
+            this._addOrUpdateMetaTag('name', 'local-execution-restrictions', 
+                browserInfo.restrictions.join(','));
+        }
     }
 
     /**

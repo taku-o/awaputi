@@ -14,6 +14,7 @@ import LocalExecutionDetector from './LocalExecutionDetector.js';
 import MetaTagOptimizer from './MetaTagOptimizer.js';
 import FaviconGenerator from './FaviconGenerator.js';
 import DeveloperGuidanceSystem from './DeveloperGuidanceSystem.js';
+import BrowserCompatibilityManager from './BrowserCompatibilityManager.js';
 
 class LocalModeManager {
     /**
@@ -695,19 +696,78 @@ class LocalModeManager {
             
             // 永続的に非表示設定されていない場合のみ表示
             if (!DeveloperGuidanceSystem.isPermanentlyDismissed()) {
-                // 少し遅延してから表示（ページ読み込みの邪魔にならないように）
+                // ブラウザ互換性チェック付きガイダンスを表示
                 setTimeout(() => {
-                    DeveloperGuidanceSystem.showLocalExecutionWarning({
-                        autoHide: false,
-                        showCommands: true,
-                        showTroubleshooting: false
-                    });
+                    // 互換性問題があるかチェック
+                    const hasCompatibilityIssues = this._checkCompatibilityIssues();
+                    
+                    if (hasCompatibilityIssues) {
+                        // 互換性問題がある場合は詳細ガイダンスを表示
+                        DeveloperGuidanceSystem.showCompatibilityGuidance({
+                            autoHide: false,
+                            showCommands: true,
+                            showTroubleshooting: true
+                        });
+                    } else {
+                        // 標準のガイダンスを表示
+                        DeveloperGuidanceSystem.showLocalExecutionWarning({
+                            autoHide: false,
+                            showCommands: true,
+                            showTroubleshooting: false,
+                            showBrowserSpecificInfo: true
+                        });
+                    }
                 }, 1000);
             }
             
             this.log('Developer guidance initialized');
         } catch (error) {
             this.log('Developer guidance initialization failed', error);
+        }
+    }
+
+    /**
+     * ブラウザ互換性問題をチェック
+     * @returns {boolean} 互換性問題がある場合 true
+     * @private
+     */
+    _checkCompatibilityIssues() {
+        try {
+            const compatibility = BrowserCompatibilityManager.getComprehensiveSupport();
+            
+            // 高優先度の推奨事項がある場合
+            if (compatibility.recommendations && compatibility.recommendations.length > 0) {
+                const highPriorityIssues = compatibility.recommendations.filter(r => r.priority === 'high');
+                if (highPriorityIssues.length > 0) {
+                    return true;
+                }
+            }
+            
+            // ブラウザがサポートされていない場合
+            if (!compatibility.browser.isSupported) {
+                return true;
+            }
+            
+            // Canvas APIが利用できない場合
+            if (!compatibility.canvas.available) {
+                return true;
+            }
+            
+            // localStorage が書き込み不可の場合
+            if (!compatibility.localStorage.writable) {
+                return true;
+            }
+            
+            // ES6 modules が利用できずfile://プロトコルの場合
+            if (!compatibility.modules.available && window.location.protocol === 'file:') {
+                return true;
+            }
+            
+            return false;
+            
+        } catch (error) {
+            this.log('Compatibility check failed', error);
+            return false; // エラー時はデフォルトガイダンスを使用
         }
     }
 
