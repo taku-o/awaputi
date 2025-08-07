@@ -6,7 +6,7 @@
  */
 
 import { AudioManager } from '../../src/audio/AudioManager.js';
-import { AudioAccessibilitySupport } from '../../src/audio/AudioAccessibilitySupport.js';
+import { AudioAccessibilitySupport } from '../../src/audio/accessibility/AudioAccessibilitySupport.js';
 import { VibrationManager } from '../../src/core/VibrationManager.js';
 import { getConfigurationManager } from '../../src/core/ConfigurationManager.js';
 
