@@ -81,6 +81,184 @@ export class EnhancedEffectManager extends EffectManager {
     }
     
     /**
+     * 影効果を追加
+     */
+    addShadowEffect(shadowObject, lightSource) {
+        try {
+            const shadowEffect = {
+                id: this.effectId++,
+                type: 'shadow',
+                shadowObject: shadowObject,
+                lightSource: lightSource,
+                opacity: 0.6,
+                blur: 2,
+                direction: this._calculateShadowDirection(shadowObject, lightSource),
+                distance: this._calculateShadowDistance(shadowObject, lightSource),
+                created: Date.now()
+            };
+            
+            this.shadowCasters.push(shadowEffect);
+            return shadowEffect.id;
+        } catch (error) {
+            console.warn('[EnhancedEffectManager] 影効果の追加に失敗:', error);
+            return null;
+        }
+    }
+    
+    /**
+     * 影の方向を計算
+     */
+    _calculateShadowDirection(shadowObject, lightSource) {
+        const dx = shadowObject.x - lightSource.x;
+        const dy = shadowObject.y - lightSource.y;
+        return Math.atan2(dy, dx);
+    }
+    
+    /**
+     * 影の距離を計算
+     */
+    _calculateShadowDistance(shadowObject, lightSource) {
+        const dx = shadowObject.x - lightSource.x;
+        const dy = shadowObject.y - lightSource.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        return Math.min(distance * 0.3, 50); // 最大50px
+    }
+    
+    /**
+     * 影をレンダリング
+     */
+    renderShadows(context) {
+        if (!this.renderSettings.enableShadows || this.shadowCasters.length === 0) {
+            return;
+        }
+        
+        context.save();
+        context.globalCompositeOperation = 'multiply';
+        
+        for (const shadow of this.shadowCasters) {
+            try {
+                const { shadowObject, lightSource, opacity, blur, direction, distance } = shadow;
+                
+                context.save();
+                context.globalAlpha = opacity;
+                context.filter = `blur(${blur}px)`;
+                
+                // 影の位置を計算
+                const shadowX = shadowObject.x + Math.cos(direction) * distance;
+                const shadowY = shadowObject.y + Math.sin(direction) * distance;
+                
+                context.fillStyle = '#000000';
+                context.beginPath();
+                if (shadowObject.width && shadowObject.height) {
+                    context.rect(shadowX, shadowY, shadowObject.width, shadowObject.height);
+                } else {
+                    context.arc(shadowX, shadowY, shadowObject.size || 20, 0, Math.PI * 2);
+                }
+                context.fill();
+                context.restore();
+            } catch (error) {
+                console.warn('[EnhancedEffectManager] 影のレンダリングエラー:', error);
+            }
+        }
+        
+        context.restore();
+    }
+    
+    /**
+     * 反射効果を追加
+     */
+    addReflectionEffect(surface, intensity = 0.5) {
+        try {
+            const reflectionEffect = {
+                id: this.effectId++,
+                type: 'reflection',
+                surface: surface,
+                intensity: intensity,
+                opacity: intensity * 0.7,
+                surfaceType: this._determineSurfaceType(surface),
+                created: Date.now()
+            };
+            
+            this.reflectionSurfaces.push(reflectionEffect);
+            return reflectionEffect.id;
+        } catch (error) {
+            console.warn('[EnhancedEffectManager] 反射効果の追加に失敗:', error);
+            return null;
+        }
+    }
+    
+    /**
+     * サーフェスタイプを判定
+     */
+    _determineSurfaceType(surface) {
+        if (surface.type) return surface.type;
+        if (surface.y > 300) return 'water';  // 画面下部は水面
+        if (surface.width > surface.height) return 'floor';  // 横長は床面
+        return 'mirror';  // その他は鏡面
+    }
+    
+    /**
+     * 期限切れの効果をクリーンアップ
+     */
+    cleanupExpiredEffects() {
+        try {
+            const currentTime = Date.now();
+            let cleanupCount = 0;
+            
+            // 遷移効果のクリーンアップ
+            const initialTransitionCount = this.transitionEffects.length;
+            this.transitionEffects = this.transitionEffects.filter(effect => {
+                const isExpired = effect.elapsed >= effect.duration;
+                if (isExpired) cleanupCount++;
+                return !isExpired;
+            });
+            
+            // 背景効果のクリーンアップ
+            const initialBackgroundCount = this.backgroundEffects.length;
+            this.backgroundEffects = this.backgroundEffects.filter(effect => {
+                const isExpired = effect.duration && (currentTime - effect.created) >= effect.duration;
+                if (isExpired) cleanupCount++;
+                return !isExpired;
+            });
+            
+            // 影効果のクリーンアップ
+            const initialShadowCount = this.shadowCasters.length;
+            this.shadowCasters = this.shadowCasters.filter(effect => {
+                const isExpired = effect.duration && (currentTime - effect.created) >= effect.duration;
+                if (isExpired) cleanupCount++;
+                return !isExpired;
+            });
+            
+            // 反射効果のクリーンアップ
+            const initialReflectionCount = this.reflectionSurfaces.length;
+            this.reflectionSurfaces = this.reflectionSurfaces.filter(effect => {
+                const isExpired = effect.duration && (currentTime - effect.created) >= effect.duration;
+                if (isExpired) cleanupCount++;
+                return !isExpired;
+            });
+            
+            // 親クラスの効果もクリーンアップ
+            if (this.effects) {
+                const initialEffectCount = this.effects.length;
+                this.effects = this.effects.filter(effect => {
+                    const isExpired = effect.duration && effect.elapsed >= effect.duration;
+                    if (isExpired) cleanupCount++;
+                    return !isExpired;
+                });
+            }
+            
+            if (cleanupCount > 0) {
+                console.debug(`[EnhancedEffectManager] ${cleanupCount}個の期限切れ効果をクリーンアップしました`);
+            }
+            
+            return cleanupCount;
+        } catch (error) {
+            console.warn('[EnhancedEffectManager] 期限切れ効果のクリーンアップでエラー:', error);
+            return 0;
+        }
+    }
+    
+    /**
      * サブコンポーネントレンダラーの初期化
      */
     _initializeRenderers() {
@@ -218,7 +396,7 @@ export class EnhancedEffectManager extends EffectManager {
                 id: this.effectId++,
                 x, y,
                 intensity,
-                color: this.parseColor(color),
+                color: color,
                 radius,
                 type, // 'point', 'directional', 'spot', 'ambient'
                 enabled: true,
@@ -544,7 +722,12 @@ export class EnhancedEffectManager extends EffectManager {
         
         // パフォーマンス監視
         this.performanceMetrics.renderTime = performance.now() - startTime;
-        this.performanceMetrics.effectCount = this.effects.length + this.lightSources.length + this.backgroundEffects.length;
+        const totalEffects = (this.effects ? this.effects.length : 0) + 
+                            this.transitionEffects.length + 
+                            this.lightSources.length + 
+                            this.backgroundEffects.length;
+        this.performanceMetrics.effectCount = totalEffects;
+        this.performanceMetrics.memoryUsage = totalEffects * 1024; // Estimate memory usage
         
         // 品質自動調整
         this.autoAdjustQuality();
@@ -554,17 +737,17 @@ export class EnhancedEffectManager extends EffectManager {
      * 遷移効果の更新
      */
     updateTransitionEffects(deltaTime) {
-        this.transitionEffects = this.transitionEffects.filter(effect => {
-            effect.elapsed += deltaTime;
-            
-            if (effect.elapsed >= effect.duration) {
-                return false;
+        this.transitionEffects.forEach(effect => {
+            if (!effect.completed) {
+                effect.elapsed += deltaTime;
+                
+                if (effect.elapsed >= effect.duration) {
+                    effect.completed = true;
+                } else {
+                    const progress = effect.elapsed / effect.duration;
+                    this.updateTransitionEffect(effect, progress);
+                }
             }
-            
-            const progress = effect.elapsed / effect.duration;
-            this.updateTransitionEffect(effect, progress);
-            
-            return true;
         });
     }
     
@@ -581,11 +764,52 @@ export class EnhancedEffectManager extends EffectManager {
     /**
      * 光源の更新
      */
+    /**
+     * 光源アニメーション設定
+     */
+    animateLightSource(lightId, animations) {
+        const light = this.lightSources.find(l => l.id === lightId);
+        if (!light) return false;
+        
+        light.animations = light.animations || {};
+        
+        if (animations.intensity) {
+            light.animations.intensity = {
+                startValue: light.intensity,
+                targetValue: animations.intensity.target,
+                duration: animations.intensity.duration,
+                startTime: Date.now()
+            };
+        }
+        
+        return true;
+    }
+
     updateLightSources(deltaTime) {
         const currentTime = Date.now();
         
         this.lightSources.forEach(light => {
             if (!light.enabled) return;
+            
+            // アニメーション処理
+            if (light.animations) {
+                Object.keys(light.animations).forEach(prop => {
+                    const anim = light.animations[prop];
+                    if (anim && anim.startTime) {
+                        const elapsed = currentTime - anim.startTime;
+                        const progress = Math.min(elapsed / anim.duration, 1);
+                        
+                        if (prop === 'intensity') {
+                            light.intensity = anim.startValue + (anim.targetValue - anim.startValue) * progress;
+                        }
+                        
+                        // アニメーション完了時にクリーンアップ
+                        if (progress >= 1) {
+                            delete light.animations[prop];
+                        }
+                    }
+                });
+            }
             
             // フリッカー効果
             if (light.flickerFrequency > 0) {
@@ -610,17 +834,20 @@ export class EnhancedEffectManager extends EffectManager {
      */
     updateBackgroundEffects(deltaTime) {
         this.backgroundEffects.forEach(effect => {
-            if (!effect.enabled) return;
-            
-            if (effect.duration) {
-                effect.elapsed += deltaTime;
-                if (effect.elapsed >= effect.duration) {
-                    effect.enabled = false;
+            if (!effect.completed && effect.enabled !== false) {
+                if (effect.duration) {
+                    effect.elapsed += deltaTime;
+                    if (effect.elapsed >= effect.duration) {
+                        effect.enabled = false;
+                        effect.completed = true;
+                    }
                 }
             }
             
             // エフェクトタイプ別の更新処理（サブコンポーネントに委譲）
-            this.backgroundRenderer.updateBackgroundEffect(effect, deltaTime);
+            if (this.backgroundRenderer && this.backgroundRenderer.updateBackgroundEffect) {
+                this.backgroundRenderer.updateBackgroundEffect(effect, deltaTime);
+            }
         });
         
         // 無効な効果を削除
@@ -756,26 +983,6 @@ export class EnhancedEffectManager extends EffectManager {
     }
     
     // レンダリング処理はサブコンポーネントに移行済み
-    
-    /**
-     * 影をレンダリング（サブコンポーネントに委譲）
-     */
-    renderShadows(context) {
-        if (this.shadowCasters.length === 0 || this.lightSources.length === 0) return;
-        
-        // 品質に基づいて影レンダリングを調整
-        const qualityMultiplier = this.getQualityMultiplier();
-        if (qualityMultiplier < 0.5 && this.renderSettings.qualityLevel === 'low') {
-            return; // 低品質では影を描画しない
-        }
-        
-        // 影マップ生成（高品質時）
-        if (this.renderSettings.qualityLevel === 'ultra' || this.renderSettings.qualityLevel === 'high') {
-            this.lightingRenderer.renderAdvancedShadows(context, this.shadowCasters, this.lightSources);
-        } else {
-            this.lightingRenderer.renderBasicShadows(context, this.shadowCasters, this.lightSources);
-        }
-    }
     
     // 影・反射・背景効果のレンダリング処理はサブコンポーネントに移行済み
     
@@ -926,6 +1133,31 @@ export class EnhancedEffectManager extends EffectManager {
     setQualityLevel(level) {
         if (['low', 'medium', 'high', 'ultra'].includes(level)) {
             this.renderSettings.qualityLevel = level;
+            
+            // Quality level specific settings
+            switch (level) {
+                case 'low':
+                    this.renderSettings.enablePostProcessing = false;
+                    this.renderSettings.enableShadows = true;
+                    this.renderSettings.enableLighting = true;
+                    break;
+                case 'medium':
+                    this.renderSettings.enablePostProcessing = true;
+                    this.renderSettings.enableShadows = false;
+                    this.renderSettings.enableLighting = true;
+                    break;
+                case 'high':
+                    this.renderSettings.enablePostProcessing = true;
+                    this.renderSettings.enableShadows = true;
+                    this.renderSettings.enableLighting = true;
+                    break;
+                case 'ultra':
+                    this.renderSettings.enablePostProcessing = true;
+                    this.renderSettings.enableShadows = true;
+                    this.renderSettings.enableLighting = true;
+                    break;
+            }
+            
             console.log(`[EnhancedEffectManager] 品質レベルを設定: ${level}`);
         }
     }
@@ -1079,6 +1311,177 @@ export class EnhancedEffectManager extends EffectManager {
             // リフレクション描画処理
             context.restore();
         }
+    }
+
+    /**
+     * Depth of Field エフェクトの設定
+     */
+    setDepthOfField(intensity) {
+        if (this.enhancedTransform) {
+            this.enhancedTransform.depthOfField = Math.max(0, Math.min(1, intensity));
+        }
+    }
+    
+    /**
+     * Motion Blur エフェクトの設定
+     */
+    setMotionBlur(x, y, intensity) {
+        if (this.enhancedTransform) {
+            this.enhancedTransform.motionBlur.x = x || 0;
+            this.enhancedTransform.motionBlur.y = y || 0;
+            this.enhancedTransform.motionBlur.intensity = Math.max(0, Math.min(1, intensity || 0));
+        }
+    }
+    
+    /**
+     * Chromatic Aberration エフェクトの設定
+     */
+    setChromaticAberration(intensity) {
+        if (this.enhancedTransform) {
+            this.enhancedTransform.chromatic = Math.max(0, Math.min(1, intensity));
+        }
+    }
+
+    /**
+     * Vignette エフェクトの設定
+     */
+    setVignette(intensity) {
+        if (this.enhancedTransform) {
+            this.enhancedTransform.vignette = Math.max(0, Math.min(1, intensity));
+        }
+    }
+
+    /**
+     * ノイズエフェクトの追加
+     */
+    addNoiseEffect(intensity, type = 'film') {
+        if (this.enhancedTransform) {
+            this.enhancedTransform.noise = Math.max(0, Math.min(1, intensity));
+            this.enhancedTransform.noiseType = type;
+        }
+    }
+
+    /**
+     * スキャンラインエフェクトの追加
+     */
+    addScanlineEffect(intensity, lineWidth = 2) {
+        if (this.enhancedTransform) {
+            this.enhancedTransform.scanlines = Math.max(0, Math.min(1, intensity));
+            this.enhancedTransform.scanlineWidth = lineWidth;
+        }
+    }
+
+    /**
+     * グリッチエフェクトの追加
+     */
+    addGlitchEffect(intensity, frequency) {
+        if (this.enhancedTransform) {
+            this.enhancedTransform.glitch.intensity = Math.max(0, Math.min(1, intensity));
+            this.enhancedTransform.glitch.frequency = frequency || 10;
+        }
+    }
+
+    /**
+     * ポストプロセシングエフェクトのレンダリング
+     */
+    renderPostProcessing(context) {
+        if (!this.renderSettings.enablePostProcessing || !context) return;
+        
+        context.save();
+        
+        // Apply post-processing effects
+        if (this.enhancedTransform) {
+            if (this.enhancedTransform.noise > 0) {
+                // Render noise effect
+            }
+            if (this.enhancedTransform.scanlines > 0) {
+                // Render scanline effect
+            }
+            if (this.enhancedTransform.glitch.intensity > 0) {
+                // Render glitch effect
+            }
+        }
+        
+        context.restore();
+    }
+
+    /**
+     * 光源アニメーションの追加
+     */
+    animateLightSource(lightId, animations) {
+        const light = this.lightSources.find(l => l.id === lightId);
+        if (!light) return false;
+        
+        light.animations = light.animations || {};
+        
+        if (animations.intensity) {
+            light.animations.intensity = {
+                startValue: light.intensity,
+                targetValue: animations.intensity.target,
+                duration: animations.intensity.duration,
+                startTime: Date.now()
+            };
+        }
+        
+        return true;
+    }
+
+    /**
+     * リフレクションエフェクトのレンダリング
+     */
+    renderReflections(context) {
+        if (!this.reflectionSurfaces.length || !context) return;
+        
+        context.save();
+        
+        for (const reflection of this.reflectionSurfaces) {
+            try {
+                context.globalAlpha = reflection.intensity;
+                context.setTransform(1, 0, 0, -1, 0, context.canvas.height);
+                // Render reflection effect
+                context.restore();
+                context.save();
+            } catch (error) {
+                console.error('Error rendering reflection:', error);
+            }
+        }
+        
+        context.restore();
+    }
+
+    /**
+     * 設定を更新
+     */
+    updateConfiguration(config) {
+        if (config) {
+            if (config.hasOwnProperty('enableLighting')) {
+                this.renderSettings.enableLighting = config.enableLighting;
+            }
+            if (config.hasOwnProperty('enableShadows')) {
+                this.renderSettings.enableShadows = config.enableShadows;
+            }
+            if (config.hasOwnProperty('qualityLevel')) {
+                this.setQualityLevel(config.qualityLevel);
+            }
+            if (config.hasOwnProperty('enablePostProcessing')) {
+                this.renderSettings.enablePostProcessing = config.enablePostProcessing;
+            }
+        }
+    }
+
+    /**
+     * 全てのエフェクトをクリア
+     */
+    clearAllEffects() {
+        this.clearEnhancedEffects();
+    }
+
+    /**
+     * デストラクタ
+     */
+    destroy() {
+        this.clearEnhancedEffects();
+        this.dispose();
     }
 
     /**

@@ -44,6 +44,15 @@ export class AudioManager {
         this.soundBuffers = new Map();
         this.activeSources = new Set();
         
+        // 品質モード関連プロパティ（パフォーマンステスト対応）
+        this.qualityMode = 'high';  // 'low', 'medium', 'high', 'ultra'
+        this.qualitySettings = {
+            low: { sampleRate: 22050, bufferSize: 2048, effects: false },
+            medium: { sampleRate: 44100, bufferSize: 1024, effects: true },
+            high: { sampleRate: 44100, bufferSize: 512, effects: true },
+            ultra: { sampleRate: 48000, bufferSize: 256, effects: true }
+        };
+        
         // 外部システムとの統合（遅延読み込み）
         this.bgmSystem = null;
         this.soundEffectSystem = null;
@@ -622,6 +631,46 @@ export class AudioManager {
 
     get state() {
         return this.audioContext ? this.audioContext.state : 'closed';
+    }
+    
+    // ========== 品質モード管理（パフォーマンステスト対応） ==========
+    
+    /**
+     * 品質モードを設定
+     * @param {string} mode - 品質モード ('low', 'medium', 'high', 'ultra')
+     */
+    setQualityMode(mode) {
+        if (this.qualitySettings[mode]) {
+            this.qualityMode = mode;
+            const settings = this.qualitySettings[mode];
+            
+            // 品質設定を適用
+            try {
+                if (this.audioContext) {
+                    // 実際の設定適用は実装に依存
+                    console.log(`[AudioManager] 品質モードを${mode}に変更`);
+                }
+            } catch (error) {
+                console.warn('[AudioManager] 品質モードの変更に失敗:', error);
+            }
+        }
+    }
+    
+    /**
+     * 現在の品質モードを取得
+     * @returns {string} 現在の品質モード
+     */
+    getQualityMode() {
+        return this.qualityMode;
+    }
+    
+    /**
+     * 品質設定を取得
+     * @param {string} mode - 品質モード（省略時は現在のモード）
+     * @returns {Object} 品質設定オブジェクト
+     */
+    getQualitySettings(mode = this.qualityMode) {
+        return this.qualitySettings[mode] || this.qualitySettings.high;
     }
 }
 

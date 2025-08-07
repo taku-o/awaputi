@@ -89,7 +89,7 @@ export class IndexedDBStorageManager {
                 for (const [key, storeConfig] of Object.entries(this.stores)) {
                     let store;
                     
-                    if (!db.objectStoreNames.contains(storeConfig.name)) {
+                    if (!Array.from(db.objectStoreNames).includes(storeConfig.name)) {
                         const options = { keyPath: storeConfig.keyPath };
                         if (storeConfig.autoIncrement) {
                             options.autoIncrement = true;
@@ -103,7 +103,7 @@ export class IndexedDBStorageManager {
                     // インデックスの作成
                     if (storeConfig.indexes) {
                         for (const index of storeConfig.indexes) {
-                            if (!store.indexNames.contains(index.name)) {
+                            if (!Array.from(store.indexNames).includes(index.name)) {
                                 store.createIndex(index.name, index.keyPath, { unique: index.unique });
                             }
                         }
