@@ -177,7 +177,7 @@ export class EnvironmentManager {
                     };
                     
                     // contextをマップに保存（cleanup用）
-                    this.mockReferences.set(this, mockContext);
+                    EnvironmentManager.mockReferences.set(this, mockContext);
                     return mockContext;
                 }
                 

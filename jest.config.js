@@ -10,7 +10,6 @@ export default {
   
   // Enable ES modules support
   preset: null,
-  extensionsToTreatAsEsm: ['.js'],
   
   // Transform configuration for ES modules
   // Note: '.js' is automatically inferred from package.json type: "module"
