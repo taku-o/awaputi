@@ -553,6 +553,49 @@ export class VisualFocusManager {
     }
     
     /**
+     * フォーカススタイルの更新
+     * @param {Object} style - スタイル設定オブジェクト
+     */
+    updateStyle(style = {}) {
+        // スタイル設定を更新
+        if (style.color) {
+            this.config.focusRing.color = style.color;
+        }
+        if (style.width) {
+            this.config.focusRing.width = style.width;
+        }
+        if (style.offset !== undefined) {
+            this.config.focusRing.offset = style.offset;
+        }
+        if (style.borderRadius !== undefined) {
+            this.config.focusRing.borderRadius = style.borderRadius;
+        }
+        
+        // CSSスタイルを再生成して適用
+        this.setupVisualStyles();
+        
+        // 現在のフォーカスがある場合は再描画
+        if (this.state.currentFocusElement && this.focusEffectRenderer) {
+            this.focusEffectRenderer.render(this.state.currentFocusElement);
+        }
+        
+        console.log('Visual focus style updated:', style);
+    }
+    
+    /**
+     * キー押下の処理
+     * @param {string} key - 押されたキー
+     */
+    handleKeyPress(key) {
+        // イベントハンドラーに委譲
+        if (this.focusEventHandler) {
+            this.focusEventHandler.handleKeyPress(key);
+        }
+        
+        console.log('Visual focus key press handled:', key);
+    }
+    
+    /**
      * クリーンアップ（Main Controller Pattern）
      */
     destroy() {

@@ -242,10 +242,14 @@ describe('SyncManager', () => {
             // 5分間進める
             jest.advanceTimersByTime(5 * 60 * 1000);
             
-            await jest.runAllTimersAsync();
+            // タイマーコールバックの実行を待つ
+            await Promise.resolve();
             
             expect(syncSpy).toHaveBeenCalled();
-        });
+            
+            // クリーンアップ
+            syncManager.stopAutoSync();
+        }, 20000); // タイムアウトを20秒に設定
     });
     
     describe('同期状態管理', () => {

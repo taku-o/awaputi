@@ -241,6 +241,16 @@ export class AudioAccessibilitySupport {
         this.eventManager.recordEvent('audio_cue_played', { cueType, options });
     }
 
+    /**
+     * テキストのアナウンス（スクリーンリーダー向け）
+     * @param {string} text - アナウンスするテキスト
+     * @param {Object} options - アナウンスオプション
+     */
+    announceText(text, options = {}) {
+        this.descriptionManager.announce(text, options);
+        this.eventManager.recordEvent('text_announced', { text, options });
+    }
+
     // ========================================
     // Event Management (delegated)
     // ========================================

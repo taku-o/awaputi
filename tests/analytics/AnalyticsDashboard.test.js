@@ -5,7 +5,7 @@
 import { AnalyticsDashboard } from '../../src/analytics/AnalyticsDashboard.js';
 
 // ChartRenderer と DataVisualizer のモック
-jest.mock('../../src/analytics/ChartRenderer.js', () => ({
+jest.mock('../../src/core/ChartRenderer.js', () => ({
     ChartRenderer: jest.fn(() => ({
         createLineChart: jest.fn(() => ({ id: 'mock-line-chart' })),
         createBarChart: jest.fn(() => ({ id: 'mock-bar-chart' })),
