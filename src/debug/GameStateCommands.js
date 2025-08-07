@@ -3,6 +3,7 @@ import { StateManipulationCommands } from './state/StateManipulationCommands.js'
 import { SafetyValidator } from './state/SafetyValidator.js';
 import { CommandHistoryManager } from './state/CommandHistoryManager.js';
 import { UndoOperationManager } from './state/UndoOperationManager.js';
+import { getErrorHandler } from '../utils/ErrorHandler.js';
 
 /**
  * Game State Commands (Main Controller)
@@ -57,7 +58,7 @@ export class GameStateCommands extends BaseComponent {
      */
     setupErrorHandler() {
         try {
-            const { getErrorHandler } = require('../utils/ErrorHandler.js');
+            // Removed require: const { getErrorHandler } = require('../utils/ErrorHandler.js');
             this.errorHandler = getErrorHandler();
         } catch (error) {
             console.warn('[GameStateCommands] ErrorHandler not available:', error.message);

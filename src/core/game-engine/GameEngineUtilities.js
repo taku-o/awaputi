@@ -2,6 +2,11 @@
  * Game Engine Utilities
  * ユーティリティ・レスポンシブ・クリーンアップ機能を担当
  */
+import { getPerformanceOptimizer } from '../../utils/PerformanceOptimizer.js';
+import { getBrowserCompatibility } from '../../utils/BrowserCompatibility.js';
+import { getPoolManager } from '../../utils/ObjectPool.js';
+import { getMemoryManager } from '../../utils/MemoryManager.js';
+
 export class GameEngineUtilities {
     constructor(gameEngine) {
         this.gameEngine = gameEngine;
@@ -19,7 +24,7 @@ export class GameEngineUtilities {
      */
     updatePerformanceStats() {
         const perfStats = this.gameEngine.performanceMonitor.getStats();
-        const { getPerformanceOptimizer } = require('../utils/PerformanceOptimizer.js');
+        // Removed: const { getPerformanceOptimizer } = require('../utils/PerformanceOptimizer.js');
         const optimizerStats = getPerformanceOptimizer().getStats();
         
         this.gameEngine.performanceStats = {
@@ -41,7 +46,7 @@ export class GameEngineUtilities {
         this.gameEngine.renderOptimizer.setViewport(0, 0, canvasInfo.actualWidth, canvasInfo.actualHeight);
         
         // パフォーマンス最適化システムに通知
-        const { getPerformanceOptimizer } = require('../utils/PerformanceOptimizer.js');
+        // Removed: const { getPerformanceOptimizer } = require('../utils/PerformanceOptimizer.js');
         getPerformanceOptimizer().onCanvasResize(canvasInfo);
         
         // シーンマネージャーに通知
@@ -87,7 +92,7 @@ export class GameEngineUtilities {
             gameUI.style.transformOrigin = 'top left';
             
             // モバイルデバイスでの調整
-            const { getBrowserCompatibility } = require('../utils/BrowserCompatibility.js');
+            // Removed: const { getBrowserCompatibility } = require('../utils/BrowserCompatibility.js');
             const browserCompatibility = getBrowserCompatibility();
             if (browserCompatibility.deviceInfo.isMobile) {
                 gameUI.style.fontSize = `${14 * scale}px`;
@@ -109,7 +114,7 @@ export class GameEngineUtilities {
      * デバイス固有の最適化を取得
      */
     getDeviceOptimizations() {
-        const { getBrowserCompatibility } = require('../utils/BrowserCompatibility.js');
+        // Removed: const { getBrowserCompatibility } = require('../utils/BrowserCompatibility.js');
         const browserCompatibility = getBrowserCompatibility();
         const deviceInfo = browserCompatibility.deviceInfo;
         const browserInfo = browserCompatibility.browserInfo;
@@ -175,8 +180,8 @@ export class GameEngineUtilities {
      * クリーンアップ処理
      */
     cleanup() {
-        const { getPoolManager } = require('../utils/ObjectPool.js');
-        const { getMemoryManager } = require('../utils/MemoryManager.js');
+        // Removed: const { getPoolManager } = require('../utils/ObjectPool.js');
+        // Removed: const { getMemoryManager } = require('../utils/MemoryManager.js');
         
         // すべてのプールをクリア
         getPoolManager().clearAll();
@@ -258,11 +263,11 @@ export class GameEngineUtilities {
         }
         
         // イベントリスナーを削除
-        const { getMemoryManager } = require('../utils/MemoryManager.js');
+        // Removed: const { getMemoryManager } = require('../utils/MemoryManager.js');
         getMemoryManager().removeAllEventListeners();
         
         // パフォーマンス最適化システムをリセット
-        const { getPerformanceOptimizer } = require('../utils/PerformanceOptimizer.js');
+        // Removed: const { getPerformanceOptimizer } = require('../utils/PerformanceOptimizer.js');
         getPerformanceOptimizer().reset();
         
         // 音響システムを停止

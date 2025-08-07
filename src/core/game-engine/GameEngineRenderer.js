@@ -2,6 +2,9 @@
  * Game Engine Renderer
  * 描画・レンダリング・エフェクト処理を担当
  */
+import { getPerformanceOptimizer } from '../../utils/PerformanceOptimizer.js';
+import { getPoolManager } from '../../utils/ObjectPool.js';
+
 export class GameEngineRenderer {
     constructor(gameEngine) {
         this.gameEngine = gameEngine;
@@ -70,7 +73,7 @@ export class GameEngineRenderer {
      * 画面揺れ効果を適用
      */
     applyScreenShake() {
-        const { getPerformanceOptimizer } = require('../utils/PerformanceOptimizer.js');
+        // const { getPerformanceOptimizer } = require('../utils/PerformanceOptimizer.js'); // Already imported at top
         
         if (!getPerformanceOptimizer().shouldRunEffect('shake')) {
             return; // 低品質モードでは画面揺れをスキップ
@@ -111,7 +114,7 @@ export class GameEngineRenderer {
         }
         
         // プール統計
-        const { getPoolManager } = require('../utils/ObjectPool.js');
+        // const { getPoolManager } = require('../utils/ObjectPool.js'); // Already imported at top
         const poolStats = getPoolManager().getAllStats();
         let line = 6;
         Object.entries(poolStats).forEach(([name, stat]) => {
@@ -133,7 +136,7 @@ export class GameEngineRenderer {
      * コンボ表示
      */
     renderCombo() {
-        const { getPerformanceOptimizer } = require('../utils/PerformanceOptimizer.js');
+        // const { getPerformanceOptimizer } = require('../utils/PerformanceOptimizer.js'); // Already imported at top
         
         if (!getPerformanceOptimizer().shouldRunEffect('ui')) {
             return; // 低品質モードではUIエフェクトをスキップ
@@ -183,7 +186,7 @@ export class GameEngineRenderer {
      * 特殊効果の背景表示
      */
     renderSpecialEffectBackground() {
-        const { getPerformanceOptimizer } = require('../utils/PerformanceOptimizer.js');
+        // const { getPerformanceOptimizer } = require('../utils/PerformanceOptimizer.js'); // Already imported at top
         
         if (!getPerformanceOptimizer().shouldRunEffect('background')) {
             return; // 低品質モードでは背景エフェクトをスキップ
@@ -212,7 +215,7 @@ export class GameEngineRenderer {
      * 特殊効果の表示
      */
     renderSpecialEffects() {
-        const { getPerformanceOptimizer } = require('../utils/PerformanceOptimizer.js');
+        // const { getPerformanceOptimizer } = require('../utils/PerformanceOptimizer.js'); // Already imported at top
         
         if (!getPerformanceOptimizer().shouldRunEffect('ui')) {
             return; // 低品質モードではUIエフェクトをスキップ
@@ -369,7 +372,7 @@ export class GameEngineRenderer {
      * バブルをプールから取得
      */
     getBubbleFromPool() {
-        const { getPoolManager } = require('../utils/ObjectPool.js');
+        // const { getPoolManager } = require('../utils/ObjectPool.js'); // Already imported at top
         return getPoolManager().get('bubbles');
     }
     
@@ -377,7 +380,7 @@ export class GameEngineRenderer {
      * バブルをプールに返却
      */
     returnBubbleToPool(bubble) {
-        const { getPoolManager } = require('../utils/ObjectPool.js');
+        // const { getPoolManager } = require('../utils/ObjectPool.js'); // Already imported at top
         getPoolManager().return('bubbles', bubble);
     }
     
@@ -385,7 +388,7 @@ export class GameEngineRenderer {
      * パーティクルをプールから取得
      */
     getParticleFromPool() {
-        const { getPoolManager } = require('../utils/ObjectPool.js');
+        // const { getPoolManager } = require('../utils/ObjectPool.js'); // Already imported at top
         return getPoolManager().get('particles');
     }
     
@@ -393,7 +396,7 @@ export class GameEngineRenderer {
      * パーティクルをプールに返却
      */
     returnParticleToPool(particle) {
-        const { getPoolManager } = require('../utils/ObjectPool.js');
+        // const { getPoolManager } = require('../utils/ObjectPool.js'); // Already imported at top
         getPoolManager().return('particles', particle);
     }
     
@@ -401,7 +404,7 @@ export class GameEngineRenderer {
      * フローティングテキストをプールから取得
      */
     getFloatingTextFromPool() {
-        const { getPoolManager } = require('../utils/ObjectPool.js');
+        // const { getPoolManager } = require('../utils/ObjectPool.js'); // Already imported at top
         return getPoolManager().get('floatingText');
     }
     
@@ -409,7 +412,7 @@ export class GameEngineRenderer {
      * フローティングテキストをプールに返却
      */
     returnFloatingTextToPool(text) {
-        const { getPoolManager } = require('../utils/ObjectPool.js');
+        // const { getPoolManager } = require('../utils/ObjectPool.js'); // Already imported at top
         getPoolManager().return('floatingText', text);
     }
 }

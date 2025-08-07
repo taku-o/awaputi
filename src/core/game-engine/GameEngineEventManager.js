@@ -2,6 +2,8 @@
  * Game Engine Event Manager
  * イベント管理・入力処理・統合機能を担当
  */
+import { getMemoryManager } from '../../utils/MemoryManager.js';
+
 export class GameEngineEventManager {
     constructor(gameEngine) {
         this.gameEngine = gameEngine;
@@ -56,7 +58,6 @@ export class GameEngineEventManager {
      * イベントリスナーを設定
      */
     setupEventListeners() {
-        const { getMemoryManager } = require('../utils/MemoryManager.js');
         
         // マウスクリック
         const clickHandler = (event) => {
