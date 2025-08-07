@@ -893,4 +893,63 @@ export class EnhancedParticleManager extends ParticleManager {
         // 親クラスのクリア
         super.clear();
     }
+    
+    /**
+     * EnhancedParticleManagerのリソースを完全に破棄
+     * Issue #106 Task 4対応: テスト環境でのクリーンアップ
+     */
+    dispose() {
+        try {
+            // 全パーティクルのクリア
+            this.clear();
+            
+            // パーティクルプールの完全クリア
+            if (this.particlePool) {
+                this.particlePool = [];
+            }
+            
+            // 背景パーティクルの完全クリア
+            this.backgroundParticles = [];
+            
+            // レンダラーの破棄
+            if (this.bubbleRenderer && typeof this.bubbleRenderer.dispose === 'function') {
+                this.bubbleRenderer.dispose();
+            }
+            if (this.comboRenderer && typeof this.comboRenderer.dispose === 'function') {
+                this.comboRenderer.dispose();
+            }
+            if (this.specialRenderer && typeof this.specialRenderer.dispose === 'function') {
+                this.specialRenderer.dispose();
+            }
+            if (this.seasonalRenderer && typeof this.seasonalRenderer.dispose === 'function') {
+                this.seasonalRenderer.dispose();
+            }
+            
+            // 品質制御システムの破棄
+            if (this.qualityController && typeof this.qualityController.dispose === 'function') {
+                this.qualityController.dispose();
+            }
+            
+            // イベントリスナーのクリーンアップ
+            if (this.configManager && typeof this.configManager.removeEventListener === 'function') {
+                this.configManager.removeEventListener('quality-changed', this._onQualityChanged);
+            }
+            
+            // パフォーマンス監視の停止
+            if (this._performanceMonitorInterval) {
+                clearInterval(this._performanceMonitorInterval);
+                this._performanceMonitorInterval = null;
+            }
+            
+            // 親クラスのdisposeメソッドがあれば呼び出し
+            if (super.dispose && typeof super.dispose === 'function') {
+                super.dispose();
+            }
+            
+            console.debug('[EnhancedParticleManager] Successfully disposed');
+            
+        } catch (error) {
+            console.error('[EnhancedParticleManager] Error during disposal:', error);
+        }
+    }
 }

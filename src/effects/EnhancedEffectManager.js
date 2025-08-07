@@ -988,6 +988,100 @@ export class EnhancedEffectManager extends EffectManager {
     }
     
     /**
+     * エフェクトをレンダリング
+     * Issue #106 Task 6対応: 不足しているrenderメソッドの実装
+     * @param {CanvasRenderingContext2D} context - キャンバスコンテキスト
+     */
+    render(context) {
+        try {
+            // 親クラスのrenderメソッドを呼び出し
+            if (super.render && typeof super.render === 'function') {
+                super.render(context);
+            }
+            
+            // 拡張エフェクトのレンダリング
+            this.renderEnhancedEffects(context);
+            
+        } catch (error) {
+            console.error('[EnhancedEffectManager] Render error:', error);
+        }
+    }
+    
+    /**
+     * 拡張エフェクトの描画
+     * @param {CanvasRenderingContext2D} context - キャンバスコンテキスト
+     */
+    renderEnhancedEffects(context) {
+        if (!context) return;
+        
+        try {
+            context.save();
+            
+            // 画面遷移エフェクトの描画
+            if (this.transitionManager) {
+                this.transitionManager.render(context);
+            }
+            
+            // ライティング エフェクトの描画
+            if (this.lightingManager) {
+                this.lightingManager.render(context);
+            }
+            
+            // 背景エフェクトの描画
+            if (this.backgroundManager) {
+                this.backgroundManager.render(context);
+            }
+            
+            // シャドウ エフェクトの描画
+            this.renderShadowEffects(context);
+            
+            // リフレクション エフェクトの描画
+            this.renderReflectionEffects(context);
+            
+            context.restore();
+            
+        } catch (error) {
+            context.restore();
+            console.error('[EnhancedEffectManager] Enhanced effects render error:', error);
+        }
+    }
+    
+    /**
+     * シャドウ エフェクトの描画
+     * @param {CanvasRenderingContext2D} context - キャンバスコンテキスト
+     */
+    renderShadowEffects(context) {
+        // シャドウ エフェクトの基本実装
+        // 実際の実装は後で追加される予定
+        if (this.currentEffects && this.currentEffects.shadow) {
+            context.save();
+            context.globalAlpha = 0.3;
+            context.shadowColor = 'rgba(0, 0, 0, 0.5)';
+            context.shadowBlur = 10;
+            context.shadowOffsetX = 2;
+            context.shadowOffsetY = 2;
+            // シャドウ描画処理
+            context.restore();
+        }
+    }
+    
+    /**
+     * リフレクション エフェクトの描画
+     * @param {CanvasRenderingContext2D} context - キャンバスコンテキスト
+     */
+    renderReflectionEffects(context) {
+        // リフレクション エフェクトの基本実装
+        // 実際の実装は後で追加される予定
+        if (this.currentEffects && this.currentEffects.reflection) {
+            context.save();
+            context.globalAlpha = 0.2;
+            context.setTransform(1, 0, 0, -1, 0, context.canvas.height);
+            // リフレクション描画処理
+            context.restore();
+        }
+    }
+
+    /**
      * リソースクリーンアップ
      */
     dispose() {

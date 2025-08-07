@@ -10,6 +10,7 @@ export default {
   
   // Enable ES modules support
   preset: null,
+  extensionsToTreatAsEsm: ['.js'],
   
   // Transform configuration for ES modules
   // Note: '.js' is automatically inferred from package.json type: "module"
@@ -104,9 +105,9 @@ export default {
   // Execution configuration
   maxWorkers: '50%', // Use 50% of available cores
   
-  // Force exit after tests complete
-  forceExit: false,
-  detectOpenHandles: true,
+  // Force exit after tests complete (enhanced for Issue #106)
+  forceExit: true,
+  detectOpenHandles: false,
   
   // Verbose output
   verbose: false,

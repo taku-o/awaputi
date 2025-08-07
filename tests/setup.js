@@ -1,12 +1,26 @@
 /**
  * Jest setup file for BubblePop game tests
+ * Enhanced with Environment Manager for Issue #106 stability fixes
  */
+
+// Import environment stabilization (Issue #106 Task 4)
+import { EnvironmentManager } from './utils/EnvironmentManager.js';
+import { ModuleLoadingOptimizer } from './utils/ModuleLoadingOptimizer.js';
 
 // Use jest-canvas-mock for ES Modules compatibility
 import 'jest-canvas-mock';
 
 // Import standardized MockFactory for consistent mocking
 import { MockFactory } from './mocks/MockFactory.js';
+
+// Initialize environment manager for test stability
+try {
+    EnvironmentManager.setupTestEnvironment();
+    ModuleLoadingOptimizer.optimizeESModuleLoading();
+    console.debug('[Setup] Environment stabilization initialized');
+} catch (error) {
+    console.error('[Setup] Environment stabilization failed:', error);
+}
 
 // Set up global environment variables
 global.__PROD__ = false;
@@ -184,3 +198,32 @@ global.advanceTime = (ms) => {
 };
 
 // Setup completed - beforeEach/afterEach should be used in individual test files
+
+// Environment cleanup registration (Issue #106 Task 4)
+if (typeof afterAll !== 'undefined') {
+    afterAll(async () => {
+        try {
+            await EnvironmentManager.handleAsyncOperationCleanup();
+            EnvironmentManager.cleanupTestEnvironment();
+            EnvironmentManager.preventMemoryLeaks();
+            
+            await ModuleLoadingOptimizer.handleAsyncModuleCleanup();
+            ModuleLoadingOptimizer.cleanup();
+            
+            console.debug('[Setup] Global cleanup completed');
+        } catch (error) {
+            console.error('[Setup] Global cleanup failed:', error);
+        }
+    });
+}
+
+// Per-test cleanup (Issue #106 Task 4)
+if (typeof afterEach !== 'undefined') {
+    afterEach(async () => {
+        try {
+            ModuleLoadingOptimizer.preventModuleCacheLeaks();
+        } catch (error) {
+            console.warn('[Setup] Per-test cleanup failed:', error);
+        }
+    });
+}
