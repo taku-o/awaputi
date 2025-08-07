@@ -272,6 +272,6 @@ export class GameEngineUtilities {
         getPerformanceOptimizer().reset();
         
         // 音響システムを停止
-        this.gameEngine.audioManager.stopAll();
+        this.gameEngine.audioManager.stopAllSounds();
     }
 }

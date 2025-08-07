@@ -702,6 +702,17 @@ export class GameEngine {
         // シーンマネージャーに更新を委譲
         this.sceneManager.update(adjustedDeltaTime);
     }
+
+    /**
+     * 特殊効果の更新（テスト互換性のため）
+     * Issue #106: テストで期待されるメソッド
+     */
+    updateSpecialEffects(deltaTime) {
+        // eventManagerのupdateSpecialEffectsを呼び出す
+        if (this.eventManager && typeof this.eventManager.updateSpecialEffects === 'function') {
+            this.eventManager.updateSpecialEffects(deltaTime);
+        }
+    }
     
     /**
      * 描画処理

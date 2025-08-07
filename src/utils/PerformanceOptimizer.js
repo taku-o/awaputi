@@ -218,6 +218,26 @@ export class PerformanceOptimizer {
             this.errorHandler.logError('Error in startFrame', error);
         }
     }
+
+    /**
+     * 更新頻度を調整（テスト互換性のため）
+     * Issue #106: テストで期待されるメソッド
+     */
+    adjustUpdateFrequency(deltaTime) {
+        try {
+            // フレームレートに基づいてデルタタイムを調整
+            const targetFrameTime = 1000 / this.config.targetFPS;
+            const adjustmentFactor = Math.min(deltaTime / targetFrameTime, 2); // 最大2倍まで
+            
+            // パフォーマンスレベルに基づく調整
+            const performanceFactor = this.stats.performanceLevel >= 0.8 ? 1 : 0.5;
+            
+            return deltaTime * adjustmentFactor * performanceFactor;
+        } catch (error) {
+            this.errorHandler?.logError('Error adjusting update frequency', error);
+            return deltaTime; // フォールバック
+        }
+    }
     
     /**
      * 最適化を実行

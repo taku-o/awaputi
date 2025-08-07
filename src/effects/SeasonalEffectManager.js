@@ -406,6 +406,44 @@ export class SeasonalEffectManager {
     clearAllEffects() {
         this.particleRenderer.clearAllEffects();
     }
+
+    /**
+     * リソースのクリーンアップと破棄
+     * Issue #106: テスト環境での適切なクリーンアップ対応
+     */
+    dispose() {
+        try {
+            // エフェクトのクリア
+            this.clearAllEffects();
+            
+            // パーティクルレンダラーの破棄
+            if (this.particleRenderer && typeof this.particleRenderer.dispose === 'function') {
+                this.particleRenderer.dispose();
+            }
+            
+            // 内部状態のクリーンアップ
+            this.currentTheme = null;
+            this.customThemes.clear();
+            this.effectStats = {
+                particlesCreated: 0,
+                effectsTriggered: 0,
+                themeChanges: 0,
+                customThemesLoaded: 0
+            };
+            
+            // 設定のリセット
+            this.seasonalSettings = {
+                enableSeasonalEffects: false,
+                autoDetectSeason: false,
+                enableEventEffects: false,
+                backgroundEffects: false
+            };
+            
+            console.debug('[SeasonalEffectManager] Successfully disposed');
+        } catch (error) {
+            console.error('[SeasonalEffectManager] Error during disposal:', error);
+        }
+    }
     
     /**
      * デバッグ情報を取得

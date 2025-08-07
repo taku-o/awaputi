@@ -239,6 +239,30 @@ export class AudioManager {
     }
 
     /**
+     * ボーナス効果音を再生
+     * Issue #106: テスト互換性のため追加
+     */
+    playBonusSound() {
+        return this.playGameStateSound('bonus');
+    }
+
+    /**
+     * 時間停止効果音を再生
+     * Issue #106: テスト互換性のため追加
+     */
+    playTimeStopSound() {
+        return this.playGameStateSound('timeStop');
+    }
+
+    /**
+     * 電気効果音を再生
+     * Issue #106: テスト互換性のため追加
+     */
+    playElectricSound() {
+        return this.playGameStateSound('electric');
+    }
+
+    /**
      * 全音響停止
      */
     stopAllSounds() {
