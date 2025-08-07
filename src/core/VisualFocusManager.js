@@ -457,6 +457,39 @@ export class VisualFocusManager {
     setHighContrastMode(enabled) {
         return this.focusStateManager.setHighContrastMode(enabled);
     }
+
+    /**
+     * フォーカス要素の設定
+     * @param {string} elementId - 要素ID
+     * @param {Object} bounds - 要素の境界 {x, y, width, height}
+     */
+    setFocusedElement(elementId, bounds) {
+        this.currentFocusedElement = {
+            id: elementId,
+            bounds: bounds,
+            timestamp: Date.now()
+        };
+        this.handleFocusChange();
+    }
+
+    /**
+     * フォーカス表示のレンダリング
+     * @param {CanvasRenderingContext2D} context - レンダリングコンテキスト
+     */
+    render(context) {
+        if (!this.currentFocusedElement || !context) return;
+
+        const { bounds } = this.currentFocusedElement;
+        
+        context.save();
+        context.strokeStyle = this.config?.focusColor || '#0066cc';
+        context.lineWidth = 2;
+        context.setLineDash([5, 5]);
+        
+        context.strokeRect(bounds.x, bounds.y, bounds.width, bounds.height);
+        
+        context.restore();
+    }
     
     /**
      * 設定の適用

@@ -222,6 +222,25 @@ export class AudioAccessibilitySupport {
         await this.legacyAdapter.enableAccessibilityFeatures(enabled);
     }
 
+    /**
+     * 音声説明の有効化
+     * @param {boolean} enabled - 有効化フラグ
+     */
+    enableAudioDescriptions(enabled = true) {
+        this.descriptionManager.setEnabled(enabled);
+        this.eventManager.recordEvent('audio_descriptions_enabled', { enabled });
+    }
+
+    /**
+     * 音響キューの再生
+     * @param {string} cueType - キューの種類
+     * @param {Object} options - 再生オプション
+     */
+    playAudioCue(cueType, options = {}) {
+        this.cueManager.playCue(cueType, options);
+        this.eventManager.recordEvent('audio_cue_played', { cueType, options });
+    }
+
     // ========================================
     // Event Management (delegated)
     // ========================================

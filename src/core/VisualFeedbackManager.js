@@ -368,6 +368,24 @@ export class VisualFeedbackManager {
     triggerManualFeedback(type, options = {}) {
         return this.triggerHandler.triggerManualFeedback(type, options);
     }
+
+    /**
+     * フィードバックの表示
+     * @param {string} type - フィードバックタイプ
+     * @param {Object} position - 位置 {x, y}
+     */
+    showFeedback(type, position) {
+        this.triggerVisualFeedback(type, position);
+    }
+
+    /**
+     * フィードバックの更新
+     * @param {number} deltaTime - 経過時間
+     */
+    update(deltaTime) {
+        this.processEffectQueue();
+        // エフェクトの時間経過処理などを実行
+    }
     
     /**
      * 設定の適用

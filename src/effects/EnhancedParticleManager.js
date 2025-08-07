@@ -359,6 +359,36 @@ export class EnhancedParticleManager extends ParticleManager {
             this.renderParticle(context, particle);
         }
     }
+
+    /**
+     * 基本パーティクルのレンダリング
+     * @param {CanvasRenderingContext2D} context - レンダリングコンテキスト
+     * @param {Object} particle - パーティクルオブジェクト
+     */
+    renderParticle(context, particle) {
+        if (!particle || !context) return;
+
+        context.save();
+        
+        try {
+            // 透明度設定
+            context.globalAlpha = particle.opacity || 1;
+            
+            // 色設定
+            const color = particle.color || '#ffffff';
+            context.fillStyle = color;
+            
+            // 基本形状の描画（円）
+            context.beginPath();
+            context.arc(particle.x, particle.y, particle.size || 2, 0, Math.PI * 2);
+            context.fill();
+            
+        } catch (error) {
+            console.warn('EnhancedParticleManager: renderParticle error:', error);
+        } finally {
+            context.restore();
+        }
+    }
     
     /**
      * 簡略化されたパーティクルレンダリング
