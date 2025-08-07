@@ -923,3 +923,74 @@ src/
 - **MCPツール**: find_symbol等のトークン制限エラー解消
 - **サイズ削減**: メインコントローラー70%削減目標
 - **API互換性**: 既存公開インターフェース完全保持
+
+### 最終残存ファイル分割プロジェクト Phase G（Issue #103対応）
+**目標**: Issue #77の最終フェーズとして、Phase F完了後も残存する4つの大容量ファイル（2,500語超過）を分割し、MCPツール完全互換（全ファイル2,500語以下）の目標達成を実現
+
+#### 分割対象ファイル
+MCPツール（find_symbol）の25,000トークン制限問題を解決するため、残存する大容量ファイルを分割：
+- tools/balance-adjuster.js（3,168語） - ゲームバランス調整ツール
+- src/audio/AudioAccessibilitySupport.js（2,558語） - オーディオアクセシビリティサポート
+- src/core/VisualFocusManager.js（2,520語） - ビジュアルフォーカス管理
+- src/core/VisualFeedbackManager.js（2,501語） - ビジュアルフィードバック管理
+
+#### 分割戦略（Main Controller Pattern）
+1. **Main Controller Pattern**: 元クラスは軽量オーケストレーター（<2,500語）として機能
+2. **機能分離**: 関連メソッドを単一責任の専門クラスにグループ化
+3. **ツール機能保持**: CLI・Web インターフェース完全保持
+4. **API保持**: 後方互換性のため公開インターフェース完全維持
+5. **依存注入**: サブコンポーネントをメインコントローラーに注入
+
+#### 主要コンポーネント分割設計
+- **balance-adjuster.js**: BalanceDataLoader、BalanceCalculator、BalanceValidator、BalanceExporter、BalanceConfigManager（5コンポーネント）
+- **AudioAccessibilitySupport.js**: AudioDescriptionManager、AudioCueManager、AudioFeedbackProcessor、AudioSettingsManager、AudioCompatibilityChecker（5コンポーネント）
+- **VisualFocusManager.js**: FocusStateManager、FocusEffectRenderer、FocusEventHandler、FocusAccessibilitySupport（4コンポーネント）
+- **VisualFeedbackManager.js**: FeedbackAnimationManager、FeedbackEffectRenderer、FeedbackTriggerHandler、FeedbackConfigManager（4コンポーネント）
+
+#### ディレクトリ構造
+```
+tools/balance/
+├── balance-adjuster.js (Main Tool)
+├── BalanceDataLoader.js
+├── BalanceCalculator.js
+├── BalanceValidator.js
+├── BalanceExporter.js
+└── BalanceConfigManager.js
+
+src/audio/accessibility/
+├── AudioAccessibilitySupport.js (Main Controller)
+├── AudioDescriptionManager.js
+├── AudioCueManager.js
+├── AudioFeedbackProcessor.js
+├── AudioSettingsManager.js
+└── AudioCompatibilityChecker.js
+
+src/core/visual/focus/
+├── VisualFocusManager.js (Main Controller)
+├── FocusStateManager.js
+├── FocusEffectRenderer.js
+├── FocusEventHandler.js
+└── FocusAccessibilitySupport.js
+
+src/core/visual/feedback/
+├── VisualFeedbackManager.js (Main Controller)
+├── FeedbackAnimationManager.js
+├── FeedbackEffectRenderer.js
+├── FeedbackTriggerHandler.js
+└── FeedbackConfigManager.js
+```
+
+#### 実装フェーズ（7大フェーズ）
+- **Phase G.1**: ツールファイル分割（balance-adjuster.js → 5コンポーネント）
+- **Phase G.2**: オーディオアクセシビリティ分割（AudioAccessibilitySupport.js → 5コンポーネント）
+- **Phase G.3**: ビジュアルフォーカス管理分割（VisualFocusManager.js → 4コンポーネント）
+- **Phase G.4**: ビジュアルフィードバック管理分割（VisualFeedbackManager.js → 4コンポーネント）
+- **Phase G.5**: 品質保証と最終検証（ファイルサイズ検証、統合テスト、パフォーマンステスト）
+- **Phase G.6**: ドキュメント更新と完了処理（JSDoc、README、アーキテクチャ文書）
+- **Phase G.7**: 最終コミットと完了（Issue #103クローズ準備）
+
+#### パフォーマンス目標
+- **ファイルサイズ**: 全ファイル2,500語以下（メインファイルは1,800語以下目標）
+- **MCPツール**: find_symbol等のトークン制限エラー完全解消
+- **ツール機能**: CLI・アクセシビリティ機能完全保持
+- **品質基準**: WCAG 2.1 AA準拠維持、パフォーマンス劣化5%以内

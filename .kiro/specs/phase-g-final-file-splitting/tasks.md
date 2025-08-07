@@ -1,41 +1,41 @@
 # Implementation Plan
 
-- [ ] 1. Phase G.1: ツールファイル分割（balance-adjuster.js）
+- [x] 1. Phase G.1: ツールファイル分割（balance-adjuster.js）
   - balance-adjuster.jsを機能別に分割し、tools/balance/ディレクトリ構造で整理する
   - 既存の全機能を保持しながら、各ファイルを2,000語以下に制限する
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5_
 
-- [ ] 1.1 BalanceDataLoader.jsの作成
+- [x] 1.1 BalanceDataLoader.jsの作成
   - loadCurrentConfiguration、getConfigValue、configKeyExists、validateInputメソッドを抽出
   - 設定ファイルの読み込みと検証機能を独立したクラスとして実装
   - _Requirements: 1.1, 1.2_
 
-- [ ] 1.2 BalanceCalculator.jsの作成
+- [x] 1.2 BalanceCalculator.jsの作成
   - previewBalanceImpact、performDetailedImpactAnalysis、convertPendingChangesToAnalysisFormatメソッドを抽出
   - バランス計算とインパクト分析機能を独立したクラスとして実装
   - _Requirements: 1.1, 1.2_
 
-- [ ] 1.3 BalanceValidator.jsの作成
+- [x] 1.3 BalanceValidator.jsの作成
   - runQuickTests、runBalanceTests、testBubbleConfiguration、testScoringConfigurationメソッドを抽出
   - テスト実行と検証機能を独立したクラスとして実装
   - _Requirements: 1.1, 1.2_
 
-- [ ] 1.4 BalanceExporter.jsの作成
+- [x] 1.4 BalanceExporter.jsの作成
   - saveChanges、createConfigurationBackup、applyChangesToConfigurationFiles、recordSessionメソッドを抽出
   - 設定保存とエクスポート機能を独立したクラスとして実装
   - _Requirements: 1.1, 1.2_
 
-- [ ] 1.5 BalanceConfigManager.jsの作成
+- [x] 1.5 BalanceConfigManager.jsの作成
   - viewCurrentConfiguration、modifySettings、selectConfigurationKey、compareConfigurationsメソッドを抽出
   - 設定管理UI機能を独立したクラスとして実装
   - _Requirements: 1.1, 1.2_
 
-- [ ] 1.6 balance-adjuster.jsメインファイルのリファクタリング
+- [x] 1.6 balance-adjuster.jsメインファイルのリファクタリング
   - 分割したクラスをインポートし、メインロジックを1,800語以下に削減
   - CLIインターフェースとメインメニュー機能のみを保持
   - _Requirements: 1.1, 1.2, 1.3_
 
-- [ ] 1.7 ツール分割の統合テスト
+- [x] 1.7 ツール分割の統合テスト
   - 分割後のbalance-adjusterツールの全機能をテスト
   - 既存のCLIコマンドが正常に動作することを確認
   - _Requirements: 1.2, 1.5_
