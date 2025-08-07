@@ -1,8 +1,19 @@
 /**
  * Balance Data Loader Component
  * 
- * バランス設定データの読み込み・解析・バックアップを担当
- * Main Controller Patternの一部として設計
+ * Phase G.1で分割されたBalanceAdjusterのサブコンポーネント
+ * バランス設定データの読み込み・解析・バックアップを専門に担当します。
+ * 
+ * 主な責任：
+ * - ゲーム設定ファイルの読み込みと解析
+ * - 設定値の検証とエラーハンドリング  
+ * - 設定ファイルのバックアップと復元
+ * - 設定データの構造化と正規化
+ * 
+ * @class BalanceDataLoader
+ * @memberof BalanceAdjuster
+ * @since Phase G.1
+ * @author Claude Code
  */
 
 import { readFileSync, writeFileSync, existsSync } from 'fs';

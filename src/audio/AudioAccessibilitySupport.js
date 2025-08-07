@@ -1,6 +1,10 @@
 import { getErrorHandler } from '../utils/ErrorHandler.js';
 import { getConfigurationManager } from '../core/ConfigurationManager.js';
 import { getLocalizationManager } from '../core/LocalizationManager.js';
+import { AudioDescriptionManager } from './accessibility/AudioDescriptionManager.js';
+import { AudioCueManager } from './accessibility/AudioCueManager.js';
+import { AudioFeedbackManager } from './accessibility/AudioFeedbackManager.js';
+import { AudioSettingsManager } from './accessibility/AudioSettingsManager.js';
 
 /**
  * 音響アクセシビリティ支援クラス - 聴覚障害者向け支援機能
@@ -51,109 +55,38 @@ export class AudioAccessibilitySupport {
         this.localizationManager = getLocalizationManager();
         this.errorHandler = getErrorHandler();
         
-        // VibrationManagerとの連携
-        this.vibrationManager = null;
+        // Main Controller Pattern: サブコンポーネント管理
+        this.audioDescriptionManager = new AudioDescriptionManager(this);
+        this.audioCueManager = new AudioCueManager(this);
+        this.audioFeedbackManager = new AudioFeedbackManager(this);
+        this.audioSettingsManager = new AudioSettingsManager(this);
         
-        // 視覚的通知システム
-        this.visualNotifications = [];
-        this.notificationContainer = null;
-        this.maxNotifications = 5;
+        // 下位互換性のためのプロパティ（Component delegationで管理）
+        this.settings = this.audioSettingsManager.settings;
         
-        // 音響イベント履歴
-        this.eventHistory = [];
-        this.maxHistorySize = 50;
-        
-        // 字幕システム
-        this.captionContainer = null;
-        this.captionQueue = [];
-        this.captionDuration = 3000; // 3秒間表示
-        
-        // 音響強度の色彩表現
-        this.colorIndicator = null;
-        this.colorMappings = {
-            low: { color: '#00ff00', label: '低音量' },
-            medium: { color: '#ffff00', label: '中音量' },
-            high: { color: '#ff8000', label: '高音量' },
-            critical: { color: '#ff0000', label: '最大音量' }
-        };
-        
-        // パターン認識
-        this.patternRecognition = {
-            enabled: false,
-            patterns: new Map(),
-            currentPattern: null,
-            patternTimeout: null
-        };
-        
-        // アクセシビリティ設定
-        this.settings = {
-            visualFeedback: false,
-            captioning: false,
-            colorIndication: false,
-            patternRecognition: false,
-            highContrast: false,
-            largeFonts: false,
-            reduceMotion: false,
-            hapticFeedback: false, // 触覚フィードバック設定
-            vibrationIntensity: 0.8 // 振動強度
-        };
-        
-        // 触覚フィードバック設定
-        this.hapticSettings = {
-            enabled: false,
-            vibrationIntensity: 0.8,
-            audioToVibrationMapping: {
-                bubblePop: 'bubblePop',
-                comboAchieved: 'combo',
-                achievementUnlocked: 'bonus',
-                gameStateChange: {
-                    gameOver: 'gameOver',
-                    levelUp: 'levelUp',
-                    warning: 'warning'
-                },
-                backgroundMusic: 'heartbeat', // BGMのリズムに合わせた振動
-                specialEffects: {
-                    electric: 'electric',
-                    explosion: 'explosion',
-                    freeze: 'freeze',
-                    magnetic: 'magnetic'
-                }
-            }
-        };
-        
-        // 音響イベントリスナー
-        this.audioEventListeners = new Map();
-        
-        // 初期化
+        // コンポーネント初期化
         this.initialize();
     }
     
     /**
-     * 初期化
+     * 初期化（Main Controller Pattern）
      */
     initialize() {
         try {
-            // DOM要素を作成
-            this.createNotificationContainer();
-            this.createCaptionContainer();
-            this.createColorIndicator();
+            // コンポーネント初期化
+            this.audioDescriptionManager.createNotificationContainer();
+            this.audioDescriptionManager.createCaptionContainer();
+            this.audioFeedbackManager.createColorIndicator();
+            this.audioFeedbackManager.initializeVibrationManager();
             
-            // 設定を読み込み
-            this.loadSettings();
+            // 設定管理コンポーネント初期化
+            this.audioSettingsManager.loadSettings();
+            this.audioSettingsManager.setupConfigWatchers();
             
-            // 設定変更を監視
-            this.setupConfigWatchers();
+            // オーディオキュー管理初期化
+            this.audioCueManager.setupAudioEventListeners();
             
-            // 音響イベントを監視
-            this.setupAudioEventListeners();
-            
-            // 音響パターンを初期化
-            this.initializePatterns();
-            
-            // VibrationManagerとの連携を初期化
-            this.initializeVibrationManager();
-            
-            console.log('AudioAccessibilitySupport initialized');
+            console.log('AudioAccessibilitySupport initialized with component architecture');
         } catch (error) {
             this.errorHandler.handleError(error, 'ACCESSIBILITY_ERROR', {
                 component: 'AudioAccessibilitySupport',
@@ -162,227 +95,11 @@ export class AudioAccessibilitySupport {
         }
     }
     
-    /**
-     * 通知コンテナを作成
-     * @private
-     */
-    createNotificationContainer() {
-        this.notificationContainer = document.createElement('div');
-        this.notificationContainer.className = 'audio-accessibility-notifications';
-        this.notificationContainer.style.cssText = `
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            z-index: 10000;
-            pointer-events: none;
-        `;
-        this.notificationContainer.setAttribute('aria-live', 'polite');
-        this.notificationContainer.setAttribute('aria-label', '音響通知エリア');
-        
-        document.body.appendChild(this.notificationContainer);
-    }
+    // DOM Creation methods delegated to components
+    // createNotificationContainer, createCaptionContainer, createColorIndicator are now handled by respective components
     
-    /**
-     * 字幕コンテナを作成
-     * @private
-     */
-    createCaptionContainer() {
-        this.captionContainer = document.createElement('div');
-        this.captionContainer.className = 'audio-accessibility-captions';
-        this.captionContainer.style.cssText = `
-            position: fixed;
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.8);
-            color: #ffffff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 16px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            text-align: center;
-            z-index: 10000;
-            display: none;
-            max-width: 80%;
-            word-wrap: break-word;
-        `;
-        this.captionContainer.setAttribute('role', 'status');
-        this.captionContainer.setAttribute('aria-live', 'assertive');
-        
-        document.body.appendChild(this.captionContainer);
-    }
-    
-    /**
-     * 色彩インジケーターを作成
-     * @private
-     */
-    createColorIndicator() {
-        this.colorIndicator = document.createElement('div');
-        this.colorIndicator.className = 'audio-accessibility-color-indicator';
-        this.colorIndicator.style.cssText = `
-            position: fixed;
-            top: 50%;
-            right: 10px;
-            transform: translateY(-50%);
-            width: 30px;
-            height: 200px;
-            background: linear-gradient(to top, #00ff00, #ffff00, #ff8000, #ff0000);
-            border: 2px solid #ffffff;
-            border-radius: 15px;
-            z-index: 10000;
-            display: none;
-            transition: all 0.3s ease;
-        `;
-        this.colorIndicator.setAttribute('role', 'progressbar');
-        this.colorIndicator.setAttribute('aria-label', '音響レベルインジケーター');
-        
-        // インジケーター内にレベル表示を追加
-        const levelIndicator = document.createElement('div');
-        levelIndicator.className = 'level-marker';
-        levelIndicator.style.cssText = `
-            position: absolute;
-            left: -5px;
-            width: 40px;
-            height: 4px;
-            background-color: #ffffff;
-            border-radius: 2px;
-            transition: bottom 0.1s ease;
-            bottom: 0px;
-        `;
-        this.colorIndicator.appendChild(levelIndicator);
-        
-        document.body.appendChild(this.colorIndicator);
-    }
-    
-    /**
-     * 設定を読み込み
-     * @private
-     */
-    loadSettings() {
-        Object.keys(this.settings).forEach(key => {
-            const value = this.configManager.get(`audio.accessibility.${key}`);
-            if (value !== undefined) {
-                this.settings[key] = value;
-            }
-        });
-        
-        this.applySettings();
-    }
-    
-    /**
-     * 設定を適用
-     * @private
-     */
-    applySettings() {
-        // 視覚的フィードバック
-        if (this.settings.visualFeedback) {
-            this.notificationContainer.style.display = 'block';
-            this.colorIndicator.style.display = 'block';
-        } else {
-            this.notificationContainer.style.display = 'none';
-            this.colorIndicator.style.display = 'none';
-        }
-        
-        // 字幕
-        if (this.settings.captioning) {
-            // 字幕機能は個別に表示制御
-        }
-        
-        // 高コントラスト
-        if (this.settings.highContrast) {
-            this.applyHighContrastMode();
-        }
-        
-        // 大きなフォント
-        if (this.settings.largeFonts) {
-            this.applyLargeFonts();
-        }
-        
-        // パターン認識
-        this.patternRecognition.enabled = this.settings.patternRecognition;
-    }
-    
-    /**
-     * 高コントラストモードを適用
-     * @private
-     */
-    applyHighContrastMode() {
-        const style = document.createElement('style');
-        style.id = 'audio-accessibility-high-contrast';
-        style.textContent = `
-            .audio-accessibility-notifications .notification {
-                background-color: #000000 !important;
-                color: #ffffff !important;
-                border: 2px solid #ffffff !important;
-            }
-            .audio-accessibility-captions {
-                background-color: #000000 !important;
-                color: #ffffff !important;
-                border: 2px solid #ffffff !important;
-            }
-        `;
-        
-        // 既存のスタイルを削除してから追加
-        const existingStyle = document.getElementById('audio-accessibility-high-contrast');
-        if (existingStyle) {
-            existingStyle.remove();
-        }
-        
-        if (this.settings.highContrast) {
-            document.head.appendChild(style);
-        }
-    }
-    
-    /**
-     * 大きなフォントを適用
-     * @private
-     */
-    applyLargeFonts() {
-        const style = document.createElement('style');
-        style.id = 'audio-accessibility-large-fonts';
-        style.textContent = `
-            .audio-accessibility-notifications .notification {
-                font-size: 18px !important;
-            }
-            .audio-accessibility-captions {
-                font-size: 22px !important;
-            }
-        `;
-        
-        // 既存のスタイルを削除してから追加
-        const existingStyle = document.getElementById('audio-accessibility-large-fonts');
-        if (existingStyle) {
-            existingStyle.remove();
-        }
-        
-        if (this.settings.largeFonts) {
-            document.head.appendChild(style);
-        }
-    }
-    
-    /**
-     * 設定変更を監視
-     * @private
-     */
-    setupConfigWatchers() {
-        Object.keys(this.settings).forEach(key => {
-            this.configManager.watch('audio', `accessibility.${key}`, (newValue) => {
-                this.settings[key] = newValue;
-                this.applySettings();
-            });
-        });
-        
-        // 触覚フィードバック設定の監視
-        this.configManager.watch('audio', 'accessibility.hapticFeedback', (newValue) => {
-            this.hapticSettings.enabled = newValue;
-            this.updateVibrationManagerSettings();
-        });
-        
-        this.configManager.watch('audio', 'accessibility.vibrationIntensity', (newValue) => {
-            this.hapticSettings.vibrationIntensity = newValue;
-            this.updateVibrationManagerSettings();
-        });
-    }
+    // Settings methods delegated to AudioSettingsManager component
+    // loadSettings, applySettings, setupConfigWatchers are now handled by AudioSettingsManager
     
     /**
      * 音響イベントリスナーを設定
@@ -633,531 +350,80 @@ export class AudioAccessibilitySupport {
     }
     
     /**
-     * 視覚的通知を表示
-     * @private
+     * 視覚的通知を表示（AudioDescriptionManagerへ委託）
      * @param {Object} options - 通知オプション
      */
     showVisualNotification(options) {
-        if (!this.settings.visualFeedback) return;
-        
-        const {
-            type,
-            title,
-            message,
-            icon = '🔊',
-            color = '#00ffff',
-            position = null,
-            duration = 3000
-        } = options;
-        
-        // 通知要素を作成
-        const notification = document.createElement('div');
-        notification.className = `notification notification-${type}`;
-        notification.style.cssText = `
-            background-color: rgba(0, 0, 0, 0.9);
-            border: 2px solid ${color};
-            border-radius: 8px;
-            padding: 10px 15px;
-            margin-bottom: 10px;
-            color: ${color};
-            font-size: 14px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            box-shadow: 0 0 10px ${color}33;
-            animation: slideInLeft 0.3s ease-out;
-            max-width: 300px;
-        `;
-        
-        const content = document.createElement('div');
-        content.innerHTML = `
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <span style="font-size: 20px;">${icon}</span>
-                <div>
-                    <div style="font-weight: bold;">${title}</div>
-                    ${message ? `<div style="font-size: 12px; opacity: 0.8;">${message}</div>` : ''}
-                </div>
-            </div>
-        `;
-        notification.appendChild(content);
-        
-        // アクセシビリティ属性
-        notification.setAttribute('role', 'status');
-        notification.setAttribute('aria-live', 'polite');
-        
-        // アニメーションスタイルを追加
-        if (!document.querySelector('#audio-accessibility-animations')) {
-            const style = document.createElement('style');
-            style.id = 'audio-accessibility-animations';
-            style.textContent = `
-                @keyframes slideInLeft {
-                    from {
-                        transform: translateX(-100%);
-                        opacity: 0;
-                    }
-                    to {
-                        transform: translateX(0);
-                        opacity: 1;
-                    }
-                }
-                @keyframes slideOutLeft {
-                    from {
-                        transform: translateX(0);
-                        opacity: 1;
-                    }
-                    to {
-                        transform: translateX(-100%);
-                        opacity: 0;
-                    }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-        
-        // コンテナに追加
-        this.notificationContainer.appendChild(notification);
-        this.visualNotifications.push(notification);
-        
-        // 最大数を超えた場合は古い通知を削除
-        while (this.visualNotifications.length > this.maxNotifications) {
-            const oldNotification = this.visualNotifications.shift();
-            if (oldNotification.parentNode) {
-                this.removeNotification(oldNotification);
-            }
-        }
-        
-        // 自動削除
-        setTimeout(() => {
-            if (notification.parentNode) {
-                this.removeNotification(notification);
-            }
-        }, duration);
+        return this.audioDescriptionManager.showVisualNotification(options);
     }
     
     /**
-     * 通知を削除
-     * @private
-     * @param {HTMLElement} notification - 通知要素
-     */
-    removeNotification(notification) {
-        notification.style.animation = 'slideOutLeft 0.3s ease-in';
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
-            }
-            const index = this.visualNotifications.indexOf(notification);
-            if (index > -1) {
-                this.visualNotifications.splice(index, 1);
-            }
-        }, 300);
-    }
-    
-    /**
-     * 字幕を表示
-     * @private
+     * 字幕を表示（AudioDescriptionManagerへ委託）
      * @param {string} text - 字幕テキスト
      */
     showCaption(text) {
-        if (!this.settings.captioning) return;
-        
-        // 字幕をキューに追加
-        this.captionQueue.push(text);
-        
-        // 現在表示中でなければ表示開始
-        if (this.captionContainer.style.display === 'none') {
-            this.displayNextCaption();
-        }
+        return this.audioDescriptionManager.showCaption(text);
     }
     
-    /**
-     * 次の字幕を表示
-     * @private
-     */
-    displayNextCaption() {
-        if (this.captionQueue.length === 0) {
-            this.captionContainer.style.display = 'none';
-            return;
-        }
-        
-        const text = this.captionQueue.shift();
-        this.captionContainer.textContent = text;
-        this.captionContainer.style.display = 'block';
-        
-        // アクセシビリティ属性を更新
-        this.captionContainer.setAttribute('aria-label', `字幕: ${text}`);
-        
-        // 次の字幕表示までの時間
-        setTimeout(() => {
-            this.displayNextCaption();
-        }, this.captionDuration);
-    }
+    // Color indicator methods delegated to AudioDescriptionManager
+    getBubbleColor(bubbleType) { return this.audioDescriptionManager.getBubbleColor(bubbleType); }
+    getRarityColor(rarity) { return this.audioDescriptionManager.getRarityColor(rarity); }
     
     /**
-     * 泡の種類に応じた色を取得
-     * @private
-     * @param {string} bubbleType - 泡の種類
-     * @returns {string} 色コード
-     */
-    getBubbleColor(bubbleType) {
-        const colorMap = {
-            normal: '#00ffff',
-            stone: '#808080',
-            iron: '#c0c0c0',
-            diamond: '#b9f2ff',
-            rainbow: '#ff00ff',
-            pink: '#ff69b4',
-            clock: '#ffd700',
-            electric: '#ffff00',
-            poison: '#800080',
-            spiky: '#ff4500',
-            boss: '#ff0000',
-            golden: '#ffd700',
-            frozen: '#87ceeb',
-            magnetic: '#ff8c00',
-            explosive: '#dc143c'
-        };
-        
-        return colorMap[bubbleType] || '#00ffff';
-    }
-    
-    /**
-     * レアリティに応じた色を取得
-     * @private
-     * @param {string} rarity - レアリティ
-     * @returns {string} 色コード
-     */
-    getRarityColor(rarity) {
-        const colorMap = {
-            common: '#ffffff',
-            rare: '#0080ff',
-            epic: '#8000ff',
-            legendary: '#ff8000'
-        };
-        
-        return colorMap[rarity] || '#ffffff';
-    }
-    
-    /**
-     * イベント履歴に追加
-     * @private
-     * @param {string} eventType - イベントタイプ
-     * @param {Object} eventData - イベントデータ
-     */
-    addToEventHistory(eventType, eventData) {
-        const historyEntry = {
-            timestamp: Date.now(),
-            type: eventType,
-            data: eventData
-        };
-        
-        this.eventHistory.push(historyEntry);
-        
-        // 履歴サイズを制限
-        while (this.eventHistory.length > this.maxHistorySize) {
-            this.eventHistory.shift();
-        }
-    }
-    
-    /**
-     * 音響パターンを初期化
-     * @private
-     */
-    initializePatterns() {
-        // よくある音響パターンを定義
-        this.patternRecognition.patterns.set('rapidPops', {
-            name: '連続泡破壊',
-            description: '短時間で多くの泡を破壊',
-            pattern: ['bubblePop', 'bubblePop', 'bubblePop'],
-            timeWindow: 1000, // 1秒以内
-            notification: '連続破壊中！'
-        });
-        
-        this.patternRecognition.patterns.set('comboChain', {
-            name: 'コンボ連鎖',
-            description: '連続してコンボを達成',
-            pattern: ['comboAchieved', 'comboAchieved'],
-            timeWindow: 2000, // 2秒以内
-            notification: 'コンボ連鎖発生！'
-        });
-        
-        this.patternRecognition.patterns.set('achievementBurst', {
-            name: '実績連続解除',
-            description: '短時間で複数の実績を解除',
-            pattern: ['achievementUnlocked', 'achievementUnlocked'],
-            timeWindow: 5000, // 5秒以内
-            notification: '実績ラッシュ！'
-        });
-    }
-    
-    /**
-     * イベントパターンを処理
-     * @private
-     * @param {string} eventType - イベントタイプ
-     * @param {Object} eventData - イベントデータ
-     */
-    processEventPattern(eventType, eventData) {
-        // 現在のパターンを更新
-        if (!this.patternRecognition.currentPattern) {
-            this.patternRecognition.currentPattern = [];
-        }
-        
-        this.patternRecognition.currentPattern.push({
-            type: eventType,
-            timestamp: Date.now(),
-            data: eventData
-        });
-        
-        // 古いイベントを削除（5秒より古い）
-        const now = Date.now();
-        this.patternRecognition.currentPattern = this.patternRecognition.currentPattern.filter(
-            event => now - event.timestamp < 5000
-        );
-        
-        // パターンマッチングを実行
-        this.checkPatternMatches();
-    }
-    
-    /**
-     * パターンマッチングをチェック
-     * @private
-     */
-    checkPatternMatches() {
-        this.patternRecognition.patterns.forEach((pattern, patternName) => {
-            if (this.matchesPattern(pattern)) {
-                this.handlePatternMatch(patternName, pattern);
-            }
-        });
-    }
-    
-    /**
-     * パターンが一致するかチェック
-     * @private
-     * @param {Object} pattern - パターン定義
-     * @returns {boolean} 一致するかどうか
-     */
-    matchesPattern(pattern) {
-        const events = this.patternRecognition.currentPattern;
-        const patternTypes = pattern.pattern;
-        
-        if (events.length < patternTypes.length) {
-            return false;
-        }
-        
-        // 最新のイベントから逆順でチェック
-        const recentEvents = events.slice(-patternTypes.length);
-        const timeSpan = recentEvents[recentEvents.length - 1].timestamp - recentEvents[0].timestamp;
-        
-        if (timeSpan > pattern.timeWindow) {
-            return false;
-        }
-        
-        // パターンタイプが一致するかチェック
-        return recentEvents.every((event, index) => 
-            event.type === patternTypes[index]
-        );
-    }
-    
-    /**
-     * パターンマッチを処理
-     * @private
-     * @param {string} patternName - パターン名
-     * @param {Object} pattern - パターン定義
-     */
-    handlePatternMatch(patternName, pattern) {
-        // 重複通知を防ぐため、少し待機
-        if (this.patternRecognition.patternTimeout) {
-            clearTimeout(this.patternRecognition.patternTimeout);
-        }
-        
-        this.patternRecognition.patternTimeout = setTimeout(() => {
-            // パターン認識通知
-            this.showVisualNotification({
-                type: 'pattern',
-                title: 'パターン認識',
-                message: pattern.notification,
-                icon: '🎯',
-                color: '#ff00ff',
-                duration: 4000
-            });
-            
-            // 字幕
-            if (this.settings.captioning) {
-                this.showCaption(pattern.notification);
-            }
-            
-            console.log(`Pattern recognized: ${patternName}`);
-        }, 500);
-    }
-    
-    /**
-     * VibrationManagerを初期化
-     * @private
-     */
-    initializeVibrationManager() {
-        // VibrationManagerのインスタンスを遅延初期化
-        if (this.audioManager?.accessibilityManager?.vibrationManager) {
-            this.vibrationManager = this.audioManager.accessibilityManager.vibrationManager;
-        } else {
-            // AudioManagerまたはAccessibilityManagerが存在しない場合は動的にインポート
-            this.loadVibrationManager();
-        }
-    }
-    
-    /**
-     * VibrationManagerを動的に読み込み
-     * @private
-     */
-    async loadVibrationManager() {
-        try {
-            const { VibrationManager } = await import('../core/VibrationManager.js');
-            this.vibrationManager = new VibrationManager(this);
-            this.updateVibrationManagerSettings();
-            console.log('VibrationManager loaded dynamically');
-        } catch (error) {
-            console.warn('Failed to load VibrationManager:', error);
-            this.settings.hapticFeedback = false; // フォールバック
-        }
-    }
-    
-    /**
-     * VibrationManagerの設定を更新
-     * @private
-     */
-    updateVibrationManagerSettings() {
-        if (!this.vibrationManager) return;
-        
-        this.vibrationManager.setEnabled(this.hapticSettings.enabled);
-        this.vibrationManager.setGlobalIntensity(this.hapticSettings.vibrationIntensity);
-        
-        // アクセシビリティモードを有効化
-        if (this.vibrationManager.userPreferences) {
-            this.vibrationManager.userPreferences.accessibilityEnhanced = true;
-        }
-    }
-    
-    /**
-     * 触覚フィードバックをトリガー
-     * @private
+     * 触覚フィードバックをトリガー（AudioFeedbackManagerへ委託）
      * @param {string} eventType - イベントタイプ
      * @param {Object} eventData - イベントデータ
      */
     triggerHapticFeedback(eventType, eventData) {
-        if (!this.vibrationManager || !this.hapticSettings.enabled) {
-            return;
-        }
-        
-        try {
-            const mapping = this.hapticSettings.audioToVibrationMapping[eventType];
-            
-            if (typeof mapping === 'string') {
-                // 直接マッピング
-                this.vibrationManager.triggerVibration(mapping, {
-                    intensity: this.hapticSettings.vibrationIntensity,
-                    category: 'accessibility',
-                    eventData: eventData
-                });
-            } else if (typeof mapping === 'object' && eventData.state) {
-                // 状態ベースマッピング（gameStateChangeなど）
-                const stateMapping = mapping[eventData.state];
-                if (stateMapping) {
-                    this.vibrationManager.triggerVibration(stateMapping, {
-                        intensity: this.hapticSettings.vibrationIntensity,
-                        category: 'accessibility',
-                        eventData: eventData
-                    });
-                }
-            }
-            
-            console.log(`Haptic feedback triggered for: ${eventType}`);
-        } catch (error) {
-            this.errorHandler.handleError(error, 'ACCESSIBILITY_ERROR', {
-                component: 'AudioAccessibilitySupport',
-                operation: 'triggerHapticFeedback',
-                eventType: eventType
-            });
-        }
+        return this.audioFeedbackManager.triggerHapticFeedback(eventType, eventData);
     }
     
     /**
-     * 音響レベルに基づく触覚フィードバック
-     * @private
+     * 音響レベルに基づく触覚フィードバック（AudioFeedbackManagerへ委託）
      * @param {number} audioLevel - 音響レベル (0-1)
      * @param {string} audioType - 音響タイプ
      */
     triggerAudioLevelVibration(audioLevel, audioType = 'general') {
-        if (!this.vibrationManager || !this.hapticSettings.enabled) {
-            return;
-        }
-        
-        // 音響レベルが一定以上の場合のみ振動
-        if (audioLevel < 0.3) return;
-        
-        try {
-            // 音響レベルに応じた振動パターンを生成
-            let vibrationPattern;
-            
-            if (audioLevel < 0.5) {
-                vibrationPattern = 'pulse'; // 弱いパルス
-            } else if (audioLevel < 0.8) {
-                vibrationPattern = 'heartbeat'; // 心拍パターン
-            } else {
-                vibrationPattern = 'wave'; // 波パターン
-            }
-            
-            this.vibrationManager.triggerVibration(vibrationPattern, {
-                intensity: audioLevel * this.hapticSettings.vibrationIntensity,
-                category: 'accessibility',
-                eventData: { audioLevel, audioType }
-            });
-        } catch (error) {
-            console.warn('Failed to trigger audio level vibration:', error);
-        }
+        return this.audioFeedbackManager.triggerAudioLevelVibration(audioLevel, audioType);
     }
     
-    // Vibration methods delegated to AudioFeedbackManager
+    // Additional delegation methods for component integration
     synchronizeWithBGMRhythm(rhythmData) { return this.audioFeedbackManager.synchronizeWithBGMRhythm(rhythmData); }
     triggerSpecialEffectVibration(effectType, effectData) { return this.audioFeedbackManager.triggerSpecialEffectVibration(effectType, effectData); }
+    updateHapticSettings(settings) { return this.audioFeedbackManager.updateHapticSettings(settings); }
+    getEventHistory() { return this.audioCueManager.getEventHistory(); }
+    getStatistics() { return this.audioCueManager.getStatistics(); }
     
-    // Settings management delegated to AudioSettingsManager
-    updateHapticSettings(settings) { return this.audioSettingsManager.updateHapticSettings(settings); }
-    
-    // Statistics methods delegated to AudioEventManager  
-    getEventHistory() { return this.audioEventManager.getEventHistory(); }
-    getStatistics() { return this.audioEventManager.getStatistics(); }
+    // Settings Management - Delegated to AudioSettingsManager
+    updateSetting(key, value) { return this.audioSettingsManager.updateSetting(key, value); }
+    getSetting(key) { return this.audioSettingsManager.getSetting(key); }
+    getAllSettings() { return this.audioSettingsManager.getAllSettings(); }
+    resetSettings() { return this.audioSettingsManager.resetSettings(); }
+    exportSettings() { return this.audioSettingsManager.exportSettings(); }
+    importSettings(settingsData) { return this.audioSettingsManager.importSettings(settingsData); }
+    validateSettings(settings) { return this.audioSettingsManager.validateSettings(settings); }
     
     /**
-     * リソースの解放
+     * リソースの解放（Main Controller Pattern）
      */
     dispose() {
-        // DOM要素を削除
-        if (this.notificationContainer && this.notificationContainer.parentNode) {
-            this.notificationContainer.parentNode.removeChild(this.notificationContainer);
+        // コンポーネントの解放
+        if (this.audioDescriptionManager) {
+            this.audioDescriptionManager.dispose();
         }
         
-        if (this.captionContainer && this.captionContainer.parentNode) {
-            this.captionContainer.parentNode.removeChild(this.captionContainer);
+        if (this.audioCueManager) {
+            this.audioCueManager.dispose();
         }
         
-        if (this.colorIndicator && this.colorIndicator.parentNode) {
-            this.colorIndicator.parentNode.removeChild(this.colorIndicator);
+        if (this.audioFeedbackManager) {
+            this.audioFeedbackManager.dispose();
         }
         
-        // タイムアウトをクリア
-        if (this.patternRecognition.patternTimeout) {
-            clearTimeout(this.patternRecognition.patternTimeout);
+        if (this.audioSettingsManager) {
+            this.audioSettingsManager.dispose();
         }
         
-        // VibrationManagerの解放
-        if (this.vibrationManager && typeof this.vibrationManager.destroy === 'function') {
-            this.vibrationManager.destroy();
-        }
-        
-        // データをクリア
-        this.visualNotifications = [];
-        this.eventHistory = [];
-        this.captionQueue = [];
-        this.audioEventListeners.clear();
-        this.patternRecognition.patterns.clear();
-        this.vibrationManager = null;
-        
-        console.log('AudioAccessibilitySupport disposed');
+        console.log('AudioAccessibilitySupport disposed with component architecture');
     }
 }

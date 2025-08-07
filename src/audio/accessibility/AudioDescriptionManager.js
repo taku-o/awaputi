@@ -1,353 +1,306 @@
 /**
- * Audio Description Manager Component
+ * Audio Description Manager
  * 
- * 音声説明の生成・管理を担当
- * AudioAccessibilitySupport のサブコンポーネント
+ * Phase G.2で分割されたAudioAccessibilitySupportのサブコンポーネント
+ * 音声説明生成・管理機能を専門に担当します。
+ * 
+ * 主な責任：
+ * - 音声イベントに対する視覚的通知の表示
+ * - キューイング機能付きキャプションシステム
+ * - WCAG 2.1 AA準拠のスクリーンリーダー対応
+ * - カスタマイズ可能な表示時間とスタイリング
+ * 
+ * @class AudioDescriptionManager
+ * @memberof AudioAccessibilitySupport
+ * @since Phase G.2
+ * @author Claude Code
  */
-
-import { getLocalizationManager } from '../../core/LocalizationManager.js';
-import { getConfigurationManager } from '../../core/ConfigurationManager.js';
 
 export class AudioDescriptionManager {
     constructor(mainController) {
         this.mainController = mainController;
-        this.localizationManager = getLocalizationManager();
-        this.configManager = getConfigurationManager();
+        this.errorHandler = mainController.errorHandler;
         
-        // 音声説明設定
-        this.descriptionSettings = {
-            enabled: false,
-            language: 'ja',
-            speed: 1.0,
-            volume: 0.8,
-            voice: 'default',
-            detailLevel: 'normal' // minimal, normal, detailed
-        };
+        // 視覚的通知システム
+        this.visualNotifications = [];
+        this.notificationContainer = null;
+        this.maxNotifications = 5;
         
-        // 説明キュー
-        this.descriptionQueue = [];
-        this.isPlaying = false;
-        this.currentDescription = null;
-        
-        // 説明テンプレート
-        this.templates = {
-            gameState: {
-                start: 'ゲームが開始されました',
-                pause: 'ゲームが一時停止されました', 
-                resume: 'ゲームが再開されました',
-                gameOver: 'ゲームオーバーです',
-                victory: 'ステージクリアです'
-            },
-            bubble: {
-                pop: '{color}の泡を破壊しました',
-                spawn: '{color}の泡が出現しました',
-                special: '特殊な{type}泡が出現しました'
-            },
-            score: {
-                increase: 'スコアが{score}になりました',
-                combo: '{combo}コンボを達成しました',
-                achievement: '実績「{name}」を解除しました'
-            },
-            system: {
-                warning: '警告: {message}',
-                error: 'エラーが発生しました: {message}',
-                success: '操作が完了しました'
-            }
-        };
-        
-        // 音声合成設定
-        this.speechSynthesis = null;
-        this.voices = [];
-        this.initializeSpeechSynthesis();
+        // 字幕システム
+        this.captionContainer = null;
+        this.captionQueue = [];
+        this.captionDuration = 3000; // 3秒間表示
     }
 
     /**
-     * 音声合成の初期化
+     * 通知コンテナを作成
      */
-    initializeSpeechSynthesis() {
-        if ('speechSynthesis' in window) {
-            this.speechSynthesis = window.speechSynthesis;
-            
-            // 利用可能な音声を取得
-            this.speechSynthesis.onvoiceschanged = () => {
-                this.voices = this.speechSynthesis.getVoices();
-                this.updateVoiceSettings();
-            };
-            
-            // 初期音声リスト取得
-            this.voices = this.speechSynthesis.getVoices();
-            if (this.voices.length > 0) {
-                this.updateVoiceSettings();
-            }
-        }
-    }
-
-    /**
-     * 音声設定の更新
-     */
-    updateVoiceSettings() {
-        // 日本語音声を優先選択
-        const japaneseVoice = this.voices.find(voice => 
-            voice.lang.startsWith('ja') || voice.name.includes('Japanese')
-        );
+    createNotificationContainer() {
+        this.notificationContainer = document.createElement('div');
+        this.notificationContainer.className = 'audio-accessibility-notifications';
+        this.notificationContainer.style.cssText = `
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 10000;
+            pointer-events: none;
+        `;
+        this.notificationContainer.setAttribute('aria-live', 'polite');
+        this.notificationContainer.setAttribute('aria-label', '音響通知エリア');
         
-        if (japaneseVoice) {
-            this.descriptionSettings.voice = japaneseVoice;
-        } else {
-            // フォールバック: デフォルト音声
-            this.descriptionSettings.voice = this.voices[0] || 'default';
-        }
+        document.body.appendChild(this.notificationContainer);
     }
 
     /**
-     * 音声説明の追加
-     * @param {string} category - 説明カテゴリ
-     * @param {string} type - 説明タイプ
-     * @param {Object} params - パラメータ
-     * @param {number} priority - 優先度 (1-5, 5が最高)
+     * 字幕コンテナを作成
      */
-    addDescription(category, type, params = {}, priority = 3) {
-        if (!this.descriptionSettings.enabled) {
-            return;
-        }
-
-        const template = this.getTemplate(category, type);
-        if (!template) {
-            console.warn(`Unknown description template: ${category}.${type}`);
-            return;
-        }
-
-        const description = {
-            id: this.generateDescriptionId(),
-            category: category,
-            type: type,
-            text: this.formatTemplate(template, params),
-            priority: priority,
-            timestamp: Date.now(),
-            params: params
-        };
-
-        this.enqueueDescription(description);
-    }
-
-    /**
-     * テンプレートの取得
-     * @param {string} category - カテゴリ
-     * @param {string} type - タイプ
-     * @returns {string|null} テンプレート文字列
-     */
-    getTemplate(category, type) {
-        const categoryTemplates = this.templates[category];
-        if (!categoryTemplates) {
-            return null;
-        }
-
-        if (typeof categoryTemplates[type] === 'string') {
-            return categoryTemplates[type];
-        }
-
-        // ネストされたテンプレートの場合
-        if (typeof categoryTemplates[type] === 'object') {
-            const subType = type.split('.').pop();
-            return categoryTemplates[type][subType] || null;
-        }
-
-        return null;
-    }
-
-    /**
-     * テンプレートのフォーマット
-     * @param {string} template - テンプレート文字列
-     * @param {Object} params - パラメータ
-     * @returns {string} フォーマット済み文字列
-     */
-    formatTemplate(template, params) {
-        let formatted = template;
+    createCaptionContainer() {
+        this.captionContainer = document.createElement('div');
+        this.captionContainer.className = 'audio-accessibility-captions';
+        this.captionContainer.style.cssText = `
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            z-index: 10000;
+            display: none;
+            max-width: 80%;
+            word-wrap: break-word;
+        `;
+        this.captionContainer.setAttribute('role', 'status');
+        this.captionContainer.setAttribute('aria-live', 'assertive');
         
-        for (const [key, value] of Object.entries(params)) {
-            const placeholder = `{${key}}`;
-            formatted = formatted.replace(new RegExp(placeholder, 'g'), value);
-        }
-        
-        return formatted;
+        document.body.appendChild(this.captionContainer);
     }
 
     /**
-     * 説明をキューに追加
-     * @param {Object} description - 説明オブジェクト
+     * 視覚的通知を表示
+     * @param {Object} options - 通知オプション
      */
-    enqueueDescription(description) {
-        // 優先度に基づいて挿入位置を決定
-        let insertIndex = this.descriptionQueue.length;
+    showVisualNotification(options) {
+        if (!this.mainController.settings.visualFeedback) return;
         
-        for (let i = 0; i < this.descriptionQueue.length; i++) {
-            if (this.descriptionQueue[i].priority < description.priority) {
-                insertIndex = i;
-                break;
+        const {
+            type,
+            title,
+            message,
+            icon = '🔊',
+            color = '#00ffff',
+            position = null,
+            duration = 3000
+        } = options;
+        
+        // 通知要素を作成
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.style.cssText = `
+            background-color: rgba(0, 0, 0, 0.9);
+            border: 2px solid ${color};
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            color: ${color};
+            font-size: 14px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            box-shadow: 0 0 10px ${color}33;
+            animation: slideInLeft 0.3s ease-out;
+            max-width: 300px;
+        `;
+        
+        const content = document.createElement('div');
+        content.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 20px;">${icon}</span>
+                <div>
+                    <div style="font-weight: bold;">${title}</div>
+                    ${message ? `<div style="font-size: 12px; opacity: 0.8;">${message}</div>` : ''}
+                </div>
+            </div>
+        `;
+        notification.appendChild(content);
+        
+        // アクセシビリティ属性
+        notification.setAttribute('role', 'status');
+        notification.setAttribute('aria-live', 'polite');
+        
+        // アニメーションスタイルを追加
+        this.ensureAnimationStyles();
+        
+        // コンテナに追加
+        this.notificationContainer.appendChild(notification);
+        this.visualNotifications.push(notification);
+        
+        // 最大数を超えた場合は古い通知を削除
+        while (this.visualNotifications.length > this.maxNotifications) {
+            const oldNotification = this.visualNotifications.shift();
+            if (oldNotification.parentNode) {
+                this.removeNotification(oldNotification);
             }
         }
         
-        this.descriptionQueue.splice(insertIndex, 0, description);
-        
-        // キューサイズの制限
-        if (this.descriptionQueue.length > 10) {
-            this.descriptionQueue = this.descriptionQueue.slice(0, 10);
-        }
-        
-        // 再生を開始
-        if (!this.isPlaying) {
-            this.playNextDescription();
-        }
-    }
-
-    /**
-     * 次の説明を再生
-     */
-    async playNextDescription() {
-        if (this.descriptionQueue.length === 0) {
-            this.isPlaying = false;
-            return;
-        }
-
-        this.isPlaying = true;
-        const description = this.descriptionQueue.shift();
-        this.currentDescription = description;
-
-        try {
-            await this.playDescription(description);
-        } catch (error) {
-            console.error('Description playback error:', error);
-        }
-
-        // 次の説明を再生
+        // 自動削除
         setTimeout(() => {
-            this.playNextDescription();
-        }, 100); // 短い間隔
-    }
-
-    /**
-     * 説明の再生
-     * @param {Object} description - 説明オブジェクト
-     * @returns {Promise} 再生完了Promise
-     */
-    playDescription(description) {
-        return new Promise((resolve, reject) => {
-            if (!this.speechSynthesis) {
-                resolve();
-                return;
+            if (notification.parentNode) {
+                this.removeNotification(notification);
             }
-
-            const utterance = new SpeechSynthesisUtterance(description.text);
-            
-            // 音声設定の適用
-            utterance.voice = this.descriptionSettings.voice !== 'default' ? 
-                this.descriptionSettings.voice : null;
-            utterance.rate = this.descriptionSettings.speed;
-            utterance.volume = this.descriptionSettings.volume;
-            utterance.lang = this.descriptionSettings.language;
-
-            // イベントハンドラー
-            utterance.onend = () => {
-                this.currentDescription = null;
-                resolve();
-            };
-
-            utterance.onerror = (event) => {
-                console.error('Speech synthesis error:', event);
-                this.currentDescription = null;
-                resolve(); // エラーでも続行
-            };
-
-            // 再生開始
-            this.speechSynthesis.speak(utterance);
-        });
+        }, duration);
     }
 
     /**
-     * 説明の中断
+     * アニメーションスタイルを確保
+     * @private
      */
-    stopCurrentDescription() {
-        if (this.speechSynthesis && this.speechSynthesis.speaking) {
-            this.speechSynthesis.cancel();
-        }
-        
-        this.currentDescription = null;
-        this.isPlaying = false;
-    }
-
-    /**
-     * キューのクリア
-     */
-    clearDescriptionQueue() {
-        this.descriptionQueue = [];
-        this.stopCurrentDescription();
-    }
-
-    /**
-     * 設定の更新
-     * @param {Object} newSettings - 新しい設定
-     */
-    updateSettings(newSettings) {
-        Object.assign(this.descriptionSettings, newSettings);
-        
-        // 音声設定の再適用
-        if (newSettings.language || newSettings.voice) {
-            this.updateVoiceSettings();
+    ensureAnimationStyles() {
+        if (!document.querySelector('#audio-accessibility-animations')) {
+            const style = document.createElement('style');
+            style.id = 'audio-accessibility-animations';
+            style.textContent = `
+                @keyframes slideInLeft {
+                    from {
+                        transform: translateX(-100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+                @keyframes slideOutLeft {
+                    from {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                    to {
+                        transform: translateX(-100%);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
         }
     }
 
     /**
-     * 詳細レベルに基づく説明フィルター
-     * @param {string} category - カテゴリ
-     * @param {string} type - タイプ
-     * @returns {boolean} 説明するかどうか
+     * 通知を削除
+     * @private
+     * @param {HTMLElement} notification - 通知要素
      */
-    shouldDescribe(category, type) {
-        const level = this.descriptionSettings.detailLevel;
-        
-        // 最小レベル: 重要なイベントのみ
-        if (level === 'minimal') {
-            return ['gameState', 'system'].includes(category);
-        }
-        
-        // 通常レベル: ゲーム進行に関連するイベント
-        if (level === 'normal') {
-            return ['gameState', 'score', 'system'].includes(category);
-        }
-        
-        // 詳細レベル: すべてのイベント
-        return true;
+    removeNotification(notification) {
+        notification.style.animation = 'slideOutLeft 0.3s ease-in';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+            const index = this.visualNotifications.indexOf(notification);
+            if (index > -1) {
+                this.visualNotifications.splice(index, 1);
+            }
+        }, 300);
     }
 
     /**
-     * 状態の取得
-     * @returns {Object} 現在の状態
+     * 字幕を表示
+     * @param {string} text - 字幕テキスト
      */
-    getStatus() {
-        return {
-            enabled: this.descriptionSettings.enabled,
-            isPlaying: this.isPlaying,
-            queueLength: this.descriptionQueue.length,
-            currentDescription: this.currentDescription,
-            settings: { ...this.descriptionSettings }
+    showCaption(text) {
+        if (!this.mainController.settings.captioning) return;
+        
+        // 字幕をキューに追加
+        this.captionQueue.push(text);
+        
+        // 現在表示中でなければ表示開始
+        if (this.captionContainer.style.display === 'none') {
+            this.displayNextCaption();
+        }
+    }
+
+    /**
+     * 次の字幕を表示
+     */
+    displayNextCaption() {
+        if (this.captionQueue.length === 0) {
+            this.captionContainer.style.display = 'none';
+            return;
+        }
+        
+        const text = this.captionQueue.shift();
+        this.captionContainer.textContent = text;
+        this.captionContainer.style.display = 'block';
+        
+        // アクセシビリティ属性を更新
+        this.captionContainer.setAttribute('aria-label', `字幕: ${text}`);
+        
+        // 次の字幕表示までの時間
+        setTimeout(() => {
+            this.displayNextCaption();
+        }, this.captionDuration);
+    }
+
+    /**
+     * 泡の種類に応じた色を取得
+     * @param {string} bubbleType - 泡の種類
+     * @returns {string} 色コード
+     */
+    getBubbleColor(bubbleType) {
+        const colorMap = {
+            normal: '#00ffff',
+            stone: '#808080',
+            iron: '#c0c0c0',
+            diamond: '#b9f2ff',
+            rainbow: '#ff00ff',
+            pink: '#ff69b4',
+            clock: '#ffd700',
+            electric: '#ffff00',
+            poison: '#800080',
+            spiky: '#ff4500',
+            boss: '#ff0000',
+            golden: '#ffd700',
+            frozen: '#87ceeb',
+            magnetic: '#ff8c00',
+            explosive: '#dc143c'
         };
+        
+        return colorMap[bubbleType] || '#00ffff';
     }
 
     /**
-     * 説明IDの生成
-     * @returns {string} ユニークなID
+     * レアリティに応じた色を取得
+     * @param {string} rarity - レアリティ
+     * @returns {string} 色コード
      */
-    generateDescriptionId() {
-        return `desc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    getRarityColor(rarity) {
+        const colorMap = {
+            common: '#ffffff',
+            rare: '#0080ff',
+            epic: '#8000ff',
+            legendary: '#ff8000'
+        };
+        
+        return colorMap[rarity] || '#ffffff';
     }
 
     /**
-     * クリーンアップ
+     * リソースの解放
      */
-    destroy() {
-        this.stopCurrentDescription();
-        this.clearDescriptionQueue();
-        this.speechSynthesis = null;
-        this.voices = [];
+    dispose() {
+        // DOM要素を削除
+        if (this.notificationContainer && this.notificationContainer.parentNode) {
+            this.notificationContainer.parentNode.removeChild(this.notificationContainer);
+        }
+        
+        if (this.captionContainer && this.captionContainer.parentNode) {
+            this.captionContainer.parentNode.removeChild(this.captionContainer);
+        }
+        
+        // データをクリア
+        this.visualNotifications = [];
+        this.captionQueue = [];
     }
 }
