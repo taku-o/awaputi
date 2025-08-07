@@ -149,11 +149,12 @@ describe('Phase G統合テストスイート', () => {
                 }
             }));
             
-            jest.unstable_mockModule('inquirer', () => ({
-                default: {
-                    prompt: jest.fn().mockResolvedValue({ action: 'exit' })
-                }
-            }));
+            // Mock inquirer module
+            const inquirerMock = {
+                prompt: jest.fn().mockResolvedValue({ action: 'exit' })
+            };
+            jest.doMock('inquirer', () => inquirerMock);
+            jest.doMock('inquirer', () => ({ default: inquirerMock }));
             
             jest.unstable_mockModule('chalk', () => ({
                 default: {

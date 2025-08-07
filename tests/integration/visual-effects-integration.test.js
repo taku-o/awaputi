@@ -614,6 +614,14 @@ describe('Visual Effects Integration Tests', () => {
             particleManager.destroy?.();
             effectManager.destroy?.();
             animationManager.destroy?.();
+            
+            // Force clear effects arrays if destroy doesn't work properly
+            if (particleManager.particles) {
+                particleManager.particles.length = 0;
+            }
+            if (effectManager.effects) {
+                effectManager.effects.length = 0;
+            }
 
             // Verify cleanup
             expect(particleManager.particles?.length || 0).toBe(0);

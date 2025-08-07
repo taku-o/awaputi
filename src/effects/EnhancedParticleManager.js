@@ -490,42 +490,7 @@ export class EnhancedParticleManager extends ParticleManager {
         context.fill();
     }
     
-    /**
-     * トレイルパーティクルレンダリング
-     * @param {CanvasRenderingContext2D} context - コンテキスト
-     * @param {Object} particle - パーティクル
-     */
-    renderTrailParticle(context, particle) {
-        // トレイルの描画
-        if (particle.trail && particle.trail.length > 1) {
-            context.strokeStyle = particle.color;
-            context.lineWidth = particle.size * 0.8;
-            context.lineCap = 'round';
-            context.globalCompositeOperation = 'screen';
-            
-            for (let i = 1; i < particle.trail.length; i++) {
-                const alpha = (i / particle.trail.length) * particle.alpha * 0.6;
-                context.globalAlpha = alpha;
-                
-                const curr = particle.trail[i];
-                const prev = particle.trail[i - 1];
-                
-                context.beginPath();
-                context.moveTo(prev.x - particle.x, prev.y - particle.y);
-                context.lineTo(curr.x - particle.x, curr.y - particle.y);
-                context.stroke();
-            }
-            
-            context.globalCompositeOperation = 'source-over';
-            context.globalAlpha = particle.alpha;
-        }
-        
-        // メインパーティクルの描画
-        context.fillStyle = particle.color;
-        context.beginPath();
-        context.arc(0, 0, particle.size, 0, Math.PI * 2);
-        context.fill();
-    }
+
     
     /**
      * 六角形レンダリング

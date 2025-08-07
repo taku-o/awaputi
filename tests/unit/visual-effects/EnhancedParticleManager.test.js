@@ -525,7 +525,12 @@ describe('EnhancedParticleManager', () => {
 
     describe('Cleanup and Memory Management', () => {
         test('should properly cleanup when destroyed', () => {
-            particleManager.createAdvancedBubbleEffect?.(100, 100, 'normal', 15);
+            // Manually add particles for testing cleanup
+            if (!particleManager.particles) {
+                particleManager.particles = [];
+            }
+            particleManager.particles.push({ x: 100, y: 100, size: 5, color: '#ff0000' });
+            particleManager.particles.push({ x: 200, y: 200, size: 3, color: '#00ff00' });
             
             const initialParticleCount = particleManager.particles.length;
             expect(initialParticleCount).toBeGreaterThan(0);
@@ -539,9 +544,12 @@ describe('EnhancedParticleManager', () => {
         });
 
         test('should clear all particles when requested', () => {
-            // Create multiple effects
+            // Manually add particles for testing clear functionality
+            if (!particleManager.particles) {
+                particleManager.particles = [];
+            }
             for (let i = 0; i < 10; i++) {
-                particleManager.createAdvancedBubbleEffect?.(i * 20, i * 20, 'normal', 5);
+                particleManager.particles.push({ x: i * 20, y: i * 20, size: 5, color: '#ff0000' });
             }
             
             expect(particleManager.particles.length).toBeGreaterThan(0);
