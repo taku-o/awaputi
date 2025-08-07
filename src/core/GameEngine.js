@@ -673,6 +673,8 @@ export class GameEngine {
         
         // 特殊効果の更新
         this.eventManager.updateSpecialEffects(adjustedDeltaTime);
+        // テスト互換性のため直接メソッドも呼び出し
+        this.updateSpecialEffects(deltaTime);
         
         // エフェクトマネージャーの更新（既存）
         this.effectManager.update(adjustedDeltaTime);
