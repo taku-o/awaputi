@@ -759,4 +759,26 @@ export class GameEngine {
     gameOver() {
         return this.eventManager.gameOver();
     }
+    
+    /**
+     * パフォーマンス最適化処理（Issue #106: テスト用）
+     */
+    performOptimization() {
+        try {
+            // パフォーマンス最適化システムに最適化実行を指示
+            getPerformanceOptimizer().performOptimization();
+            
+            // エフェクト品質の調整
+            if (this.effectQualityController) {
+                this.effectQualityController.optimizeQualityLevel();
+            }
+            
+            // メモリクリーンアップ
+            getMemoryManager().performIntelligentCleanup();
+            
+            console.log('[GameEngine] Performance optimization completed');
+        } catch (error) {
+            console.error('[GameEngine] Error during performance optimization:', error);
+        }
+    }
 }
