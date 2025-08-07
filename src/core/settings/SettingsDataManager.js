@@ -139,8 +139,8 @@ export class SettingsDataManager {
             for (const [key, value] of Object.entries(defaultValues)) {
                 const fullKey = `${category}.${key}`;
                 
-                // デフォルト値を設定
-                this.configManager.setDefault(fullKey, value);
+                // デフォルト値を設定（正しいメソッド名を使用）
+                this.configManager.setDefaultValue(fullKey, value);
                 
                 // 検証ルールを設定
                 if (validationRules[key]) {

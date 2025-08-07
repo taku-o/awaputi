@@ -762,6 +762,47 @@ export class EnhancedParticleManager extends ParticleManager {
         this.easingFunctions = easingFunctions;
         console.log(`[EnhancedParticleManager] Easing functions set:`, Object.keys(easingFunctions));
     }
+
+    
+    /**
+     * Set color palettes for different particle types
+     * @param {object} colorPalettes - Object containing color palettes for different particle types
+     */
+    setColorPalettes(colorPalettes) {
+        this.colorPalettes = colorPalettes;
+        console.log('[EnhancedParticleManager] Color palettes set:', Object.keys(colorPalettes));
+    }
+    
+    /**
+     * Set physics enhancements for particle behavior
+     * @param {object} physicsEnhancements - Object containing physics enhancement settings
+     */
+    setPhysicsEnhancements(physicsEnhancements) {
+        this.physicsEnhancements = physicsEnhancements;
+        
+        // Apply physics enhancements
+        if (physicsEnhancements.particle_physics) {
+            this.gravity = physicsEnhancements.particle_physics.gravity || 0.3;
+            this.airResistance = physicsEnhancements.particle_physics.airResistance || 0.95;
+            this.bounce = physicsEnhancements.particle_physics.bounce || 0.7;
+            this.spinEnabled = physicsEnhancements.particle_physics.spin || true;
+            this.tumbleEnabled = physicsEnhancements.particle_physics.tumble || true;
+        }
+        
+        if (physicsEnhancements.bubble_physics) {
+            this.floatiness = physicsEnhancements.bubble_physics.floatiness || 0.8;
+            this.wobble = physicsEnhancements.bubble_physics.wobble || 0.2;
+            this.surfaceTension = physicsEnhancements.bubble_physics.surface_tension || 0.1;
+        }
+        
+        if (physicsEnhancements.effect_physics) {
+            this.wavePropagation = physicsEnhancements.effect_physics.wave_propagation || true;
+            this.energyConservation = physicsEnhancements.effect_physics.energy_conservation || true;
+            this.momentumTransfer = physicsEnhancements.effect_physics.momentum_transfer || true;
+        }
+        
+        console.log('[EnhancedParticleManager] Physics enhancements applied:', Object.keys(physicsEnhancements));
+    }
     
     /**
      * Apply visual polish settings

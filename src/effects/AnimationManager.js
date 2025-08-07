@@ -35,6 +35,9 @@ export class AnimationManager {
         // 設定システムとの連携
         this.effectsConfig = getEffectsConfig();
         
+        // イージング関数の設定
+        this.easingFunctions = {};
+        
         // サブコンポーネントの初期化
         this._initializeSubComponents();
         
@@ -101,6 +104,30 @@ export class AnimationManager {
                 context: 'AnimationManager._initializeFromConfig'
             });
         }
+    }
+    
+    /**
+     * Set easing functions for animations
+     * @param {object} easingFunctions - Object containing easing functions
+     */
+    setEasingFunctions(easingFunctions) {
+        this.easingFunctions = { ...this.easingFunctions, ...easingFunctions };
+        
+        // エンジンコアにも反映
+        if (this.engineCore && this.engineCore.setEasingFunctions) {
+            this.engineCore.setEasingFunctions(easingFunctions);
+        }
+        
+        console.log('[AnimationManager] イージング関数を設定しました:', Object.keys(easingFunctions));
+    }
+    
+    /**
+     * Set subtle animations for enhanced visual polish
+     * @param {object} subtleAnimations - Object containing subtle animation settings
+     */
+    setSubtleAnimations(subtleAnimations) {
+        this.subtleAnimations = subtleAnimations;
+        console.log('[AnimationManager] 繊細なアニメーション設定を適用しました:', Object.keys(subtleAnimations));
     }
     
     // ========================================

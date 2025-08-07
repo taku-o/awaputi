@@ -909,6 +909,16 @@ export class EnhancedEffectManager extends EffectManager {
         this.renderSettings.transitionDuration = duration;
         console.log(`[EnhancedEffectManager] Transition duration set to ${duration}ms`);
     }
+
+    
+    /**
+     * Set gradient profiles for various visual effects
+     * @param {object} gradientProfiles - Object containing gradient profile definitions
+     */
+    setGradientProfiles(gradientProfiles) {
+        this.gradientProfiles = gradientProfiles;
+        console.log('[EnhancedEffectManager] Gradient profiles set:', Object.keys(gradientProfiles));
+    }
     
     /**
      * 品質レベルを設定

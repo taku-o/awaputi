@@ -10,8 +10,7 @@ import { ComparisonEngine } from '../../src/analytics/ComparisonEngine.js';
 import { ExportManager } from '../../src/analytics/ExportManager.js';
 import { AnalyticsAPI } from '../../src/analytics/AnalyticsAPI.js';
 
-// フェイクIndexedDB実装
-import 'fake-indexeddb/auto';
+// IndexedDB mock is provided by Jest setup
 
 /**
  * 最終統合検証テスト

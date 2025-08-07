@@ -91,6 +91,62 @@ Object.defineProperty(global.window, 'devicePixelRatio', {
   writable: true
 });
 
+// Mock IndexedDB
+const mockIDBDatabase = {
+  createObjectStore: jest.fn(() => ({
+    add: jest.fn(() => Promise.resolve()),
+    get: jest.fn(() => Promise.resolve(undefined)),
+    put: jest.fn(() => Promise.resolve()),
+    delete: jest.fn(() => Promise.resolve()),
+    clear: jest.fn(() => Promise.resolve()),
+    count: jest.fn(() => Promise.resolve(0)),
+    openCursor: jest.fn(() => Promise.resolve(null))
+  })),
+  transaction: jest.fn(() => ({
+    objectStore: jest.fn(() => mockIDBDatabase.createObjectStore()),
+    oncomplete: null,
+    onerror: null,
+    onabort: null
+  })),
+  close: jest.fn(),
+  version: 1,
+  name: 'test'
+};
+
+const mockIDBRequest = {
+  result: mockIDBDatabase,
+  error: null,
+  onsuccess: null,
+  onerror: null,
+  onupgradeneeded: null
+};
+
+global.indexedDB = {
+  open: jest.fn(() => {
+    const request = { ...mockIDBRequest };
+    // Simulate async behavior
+    setTimeout(() => {
+      if (request.onsuccess) request.onsuccess({ target: request });
+      if (request.onupgradeneeded) request.onupgradeneeded({ target: request });
+    }, 0);
+    return request;
+  }),
+  deleteDatabase: jest.fn(() => mockIDBRequest),
+  cmp: jest.fn()
+};
+
+global.IDBDatabase = function() { return mockIDBDatabase; };
+global.IDBTransaction = function() {};
+global.IDBRequest = function() { return mockIDBRequest; };
+global.IDBObjectStore = function() { return mockIDBDatabase.createObjectStore(); };
+global.IDBCursor = function() {};
+global.IDBKeyRange = {
+  bound: jest.fn(),
+  lowerBound: jest.fn(),
+  upperBound: jest.fn(),
+  only: jest.fn()
+};
+
 // Helper function to create mock canvas element
 global.createMockCanvas = (width = 800, height = 600) => {
   const canvas = document.createElement('canvas');
