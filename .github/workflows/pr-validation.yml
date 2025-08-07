@@ -7,6 +7,12 @@ on:
   pull_request:
     branches: [ main, master ]
 
+# GitHub Actions の権限設定
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
 env:
   NODE_VERSION: '18'
 
@@ -113,6 +119,10 @@ jobs:
   file-size-monitoring:
     name: File Size Monitoring
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
     
     steps:
       - name: Checkout repository
