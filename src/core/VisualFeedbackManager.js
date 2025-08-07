@@ -6,8 +6,31 @@ import { FeedbackTriggerHandler } from './visual/feedback/FeedbackTriggerHandler
 
 /**
  * 視覚フィードバック管理クラス（Main Controller）
- * 聴覚情報の視覚的表現とカスタマイズ可能なフィードバックパターン
- * Main Controller Pattern: サブコンポーネントを統制する軽量なオーケストレーター
+ * 
+ * Phase G.4で分割されたMain Controller Pattern実装
+ * 聴覚情報の視覚的表現とカスタマイズ可能なフィードバックパターンを統制します。
+ * 
+ * アーキテクチャ構成：
+ * - FeedbackAnimationManager: アニメーション効果の管理
+ * - FeedbackEffectRenderer: 視覚効果の描画処理
+ * - FeedbackTriggerHandler: トリガーとイベント処理
+ * - FeedbackConfigManager: 設定と要素管理
+ * 
+ * 主な責任：
+ * - サブコンポーネントの統制と調整
+ * - 公開APIの維持（後方互換性保証）
+ * - アクセシビリティ機能との統合
+ * - リアルタイム音響データの視覚化
+ * 
+ * @class VisualFeedbackManager
+ * @implements {MainControllerPattern}
+ * @since Phase G.4
+ * @author Claude Code
+ * 
+ * @example
+ * const manager = new VisualFeedbackManager(audioAccessibilityManager);
+ * await manager.initialize();
+ * manager.showFeedback('bubble_pop', { intensity: 0.8 });
  */
 export class VisualFeedbackManager {
     constructor(audioAccessibilityManager) {

@@ -2,7 +2,20 @@ import { getErrorHandler } from '../../../utils/ErrorHandler.js';
 
 /**
  * フィードバックアニメーション管理クラス
- * 視覚フィードバック効果のアニメーション制御を専門に扱うクラス
+ * 
+ * Phase G.4で分割されたVisualFeedbackManagerのサブコンポーネント
+ * 視覚フィードバック効果のアニメーション制御を専門に扱います。
+ * 
+ * 主な責任：
+ * - フラッシュ、グロー、パルス、リップル、シェイクエフェクトの管理
+ * - アニメーション設定とタイミング制御
+ * - アクティブアニメーションの追跡と管理
+ * - パフォーマンス最適化されたアニメーション実行
+ * 
+ * @class FeedbackAnimationManager
+ * @memberof VisualFeedbackManager
+ * @since Phase G.4
+ * @author Claude Code
  */
 export class FeedbackAnimationManager {
     /**
@@ -46,8 +59,26 @@ export class FeedbackAnimationManager {
     
     /**
      * フラッシュエフェクトの作成
+     * 
+     * 指定された要素に対してフラッシュ（点滅）エフェクトを適用します。
+     * 背景色を瞬時に変更し、徐々にフェードアウトすることで注意を引く効果を実現します。
+     * 
      * @param {Object} options - エフェクトオプション
-     * @returns {Object} エフェクトオブジェクト
+     * @param {string} options.id - エフェクトの一意識別子
+     * @param {HTMLElement} options.target - エフェクトを適用する対象要素
+     * @param {string} options.color - フラッシュの色（CSS色値）
+     * @param {number} options.intensity - フラッシュの強度（0.0-1.0）
+     * @param {number} [options.duration=300] - エフェクトの継続時間（ミリ秒）
+     * @returns {Object} エフェクトオブジェクト（アニメーション制御用）
+     * @throws {Error} target または color が指定されていない場合
+     * @example
+     * manager.createFlashEffect({
+     *   id: 'score-flash',
+     *   target: scoreElement,
+     *   color: '#FFD700',
+     *   intensity: 0.8,
+     *   duration: 500
+     * });
      */
     createFlashEffect({ id, target, color, intensity, duration }) {
         try {

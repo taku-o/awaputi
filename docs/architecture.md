@@ -29,6 +29,21 @@
 - **AnimationReducer.js**: アニメーション削減
 - **ContentOptimizer.js**: コンテンツ最適化
 
+#### Phase G分割システム（Issue #103対応）
+**視覚フォーカス管理** (`src/core/visual/focus/`)
+- **VisualFocusManager.js**: フォーカス管理統制（1,264語、50%削減）
+- **FocusStateManager.js**: フォーカス状態管理
+- **FocusEffectRenderer.js**: フォーカス効果描画
+- **FocusEventHandler.js**: フォーカスイベント処理
+- **FocusAccessibilitySupport.js**: アクセシビリティサポート
+
+**視覚フィードバック管理** (`src/core/visual/feedback/`)
+- **VisualFeedbackManager.js**: フィードバック管理統制（1,006語、60%削減）
+- **FeedbackAnimationManager.js**: アニメーション効果管理
+- **FeedbackEffectRenderer.js**: エフェクト描画処理
+- **FeedbackTriggerHandler.js**: トリガーとイベント処理
+- **FeedbackConfigManager.js**: 設定と要素管理
+
 ### ゲームシーン (`src/scenes/`)
 #### シーンコントローラー（Main Controller Pattern）
 - **MainMenuScene.js**: メインメニュー統制（931語、78%削減）
@@ -82,6 +97,17 @@
 - **操作**: クリックでポップ、ドラッグで押し退け
 - **制限時間**: 5分ステージ、段階的難易度上昇
 - **HPシステム**: ダメージベース、未処理バブルからダメージ
+
+### 音響システム (`src/audio/`)
+#### Phase G分割システム（Issue #103対応）
+**アクセシビリティ音響管理** (`src/audio/accessibility/`)
+- **AudioAccessibilitySupport.js**: 音響アクセシビリティ統制（336語、87%削減）
+- **AudioDescriptionManager.js**: 音声説明と視覚通知管理
+- **AudioCueManager.js**: 音響キューとイベント処理
+- **AudioFeedbackManager.js**: 音響フィードバックと触覚処理
+- **AudioSettingsManager.js**: アクセシビリティ設定管理
+- **AudioEventManager.js**: 音響イベントの統一管理
+- **AudioLegacyAdapter.js**: 既存システムとの互換性維持
 
 ### アクセシビリティシステム (`src/accessibility/`)
 #### Main Controllerパターン適用（Phase E.3完了）
@@ -211,6 +237,15 @@
 - **テスト環境**: `test.html` でバブルタイプの個別テストが可能
 - **高度な設定管理**: ConfigurationManagerによる統一設定システム
 - **包括的アクセシビリティ**: WCAG 2.1 AA準拠、支援技術対応、多様なニーズ支援
+
+## 開発ツールシステム (`tools/`)
+### Phase G分割システム（Issue #103対応）
+**バランス調整ツール** (`tools/balance/`)
+- **balance-adjuster.js**: バランス調整ツール統制（463語、85%削減）
+- **BalanceDataLoader.js**: 設定ファイル読み込みと解析
+- **BalanceCalculator.js**: バランス計算とインパクト分析
+- **BalanceValidator.js**: テスト実行と検証機能
+- **BalanceExporter.js**: 設定保存とエクスポート機能
 
 ## 利用可能ツール
 - **GitHub CLI (gh)**: GitHubリポジトリ操作、プルリクエスト管理、Issue管理

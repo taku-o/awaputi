@@ -1,7 +1,19 @@
 /**
  * フィードバックエフェクト描画クラス
- * 視覚フィードバックの描画・エフェクト処理を担当
- * Main Controller Pattern: VisualFeedbackManagerから描画機能を分離
+ * 
+ * Phase G.4で分割されたVisualFeedbackManagerのサブコンポーネント
+ * 視覚フィードバックの描画・エフェクト処理を専門に担当します。
+ * 
+ * 主な責任：
+ * - カラー、ボーダー、スケールエフェクトの描画
+ * - 音響可視化エフェクトの管理
+ * - Canvas 2D API を使用した視覚効果の実装
+ * - リアルタイム音響データの視覚的表現
+ * 
+ * @class FeedbackEffectRenderer
+ * @memberof VisualFeedbackManager
+ * @since Phase G.4
+ * @author Claude Code
  */
 export class FeedbackEffectRenderer {
     /**

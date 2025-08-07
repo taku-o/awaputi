@@ -78,16 +78,52 @@
 
 ### プロジェクト構造
 ```
-├── src/                 # ソースコード
-│   ├── core/           # コアゲームエンジン
-│   ├── scenes/         # ゲームシーン
-│   ├── bubbles/        # 泡の種類
-│   ├── managers/       # ゲームマネージャー
-│   └── utils/          # ユーティリティ関数
-├── docs/               # ドキュメント
-├── tests/              # テストファイル
-└── dist/               # ビルドファイル
+├── src/                           # ソースコード
+│   ├── core/                     # コアゲームエンジン
+│   │   ├── visual/               # 視覚管理コンポーネント（Phase G分割）
+│   │   │   ├── focus/           # フォーカス管理（Phase G.3）
+│   │   │   └── feedback/        # フィードバック管理（Phase G.4）
+│   │   ├── VisualFocusManager.js        # メインコントローラー
+│   │   └── VisualFeedbackManager.js     # メインコントローラー
+│   ├── audio/                    # 音響システム
+│   │   └── accessibility/        # アクセシビリティ（Phase G.2分割）
+│   │       ├── AudioAccessibilitySupport.js  # メインコントローラー
+│   │       ├── AudioDescriptionManager.js
+│   │       ├── AudioCueManager.js
+│   │       ├── AudioFeedbackManager.js
+│   │       ├── AudioSettingsManager.js
+│   │       ├── AudioEventManager.js
+│   │       └── AudioLegacyAdapter.js
+│   ├── scenes/                   # ゲームシーン
+│   ├── bubbles/                  # 泡の種類
+│   ├── effects/                  # 視覚効果・パーティクル
+│   ├── ui/                       # UIコンポーネント
+│   ├── utils/                    # ユーティリティ関数
+│   ├── config/                   # 設定ファイル
+│   ├── locales/                  # 多言語リソース
+│   ├── accessibility/            # アクセシビリティ機能
+│   └── debug/                    # デバッグ・テストツール
+├── tools/                        # 開発ツール
+│   └── balance/                  # バランス調整ツール（Phase G.1分割）
+│       ├── balance-adjuster.js   # メインツール
+│       ├── BalanceDataLoader.js
+│       ├── BalanceCalculator.js
+│       ├── BalanceValidator.js
+│       └── BalanceExporter.js
+├── docs/                         # ドキュメント
+├── tests/                        # テストファイル
+│   └── integration/              # 統合テスト
+│       ├── phase-g-file-structure.test.js
+│       ├── phase-g-end-to-end.test.js
+│       └── phase-g-functionality.test.js
+└── dist/                         # ビルドファイル
 ```
+
+**Phase G分割後の主要変更点:**
+- **Main Controller Pattern適用:** 大容量ファイルを軽量コントローラー + サブコンポーネントに分割
+- **MCPツール互換性:** 全ファイルが2,500語以下を達成
+- **後方互換性維持:** 既存APIは完全保持
+- **モジュラー設計強化:** 単一責任の原則に基づく構造
 
 ### 利用可能なスクリプト
 - `npm run dev` - 開発サーバー起動

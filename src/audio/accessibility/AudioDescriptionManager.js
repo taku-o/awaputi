@@ -1,17 +1,19 @@
 /**
  * Audio Description Manager
  * 
- * 音声説明生成・管理機能を担当
- * Main Controller Patternの一部として設計
+ * Phase G.2で分割されたAudioAccessibilitySupportのサブコンポーネント
+ * 音声説明生成・管理機能を専門に担当します。
  * 
- * **Features**:
- * - Visual notifications for audio events
- * - Caption system with queue management
- * - WCAG 2.1 AA compliant screen reader support
- * - Customizable display duration and styling
+ * 主な責任：
+ * - 音声イベントに対する視覚的通知の表示
+ * - キューイング機能付きキャプションシステム
+ * - WCAG 2.1 AA準拠のスクリーンリーダー対応
+ * - カスタマイズ可能な表示時間とスタイリング
  * 
- * @module AudioDescriptionManager
- * Created: Phase G.2 (Issue #103)
+ * @class AudioDescriptionManager
+ * @memberof AudioAccessibilitySupport
+ * @since Phase G.2
+ * @author Claude Code
  */
 
 export class AudioDescriptionManager {
