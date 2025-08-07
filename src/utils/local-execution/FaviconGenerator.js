@@ -17,6 +17,18 @@ class FaviconGenerator {
     static CACHE_PREFIX = 'awaputi_favicon_';
     
     /**
+     * パフォーマンス最適化用の設定
+     */
+    static PERFORMANCE_CONFIG = {
+        lazyLoadingEnabled: true,
+        batchProcessing: true,
+        memoryCleanupEnabled: true,
+        maxConcurrentGeneration: 3,
+        cacheCompressionEnabled: true,
+        debounceDelay: 100
+    };
+    
+    /**
      * デフォルトのファビコン設定
      */
     static DEFAULT_CONFIG = {
@@ -25,48 +37,512 @@ class FaviconGenerator {
         textColor: '#FFFFFF',
         fontFamily: 'Arial, sans-serif',
         text: 'B',
-        cacheEnabled: true
+        cacheEnabled: true,
+        enablePerformanceOptimizations: true
+    };
+    
+    /**
+     * リソース管理用のプライベートストレージ
+     */
+    static _resourcePool = {
+        canvasElements: [],
+        contexts: [],
+        generationQueue: [],
+        isProcessing: false
     };
 
     /**
-     * 不足しているファビコンを生成
+     * 不足しているファビコンを生成（パフォーマンス最適化版）
      * @param {Object} config - 設定オプション
-     * @returns {Promise<void>}
+     * @returns {Promise<Object>} 生成結果
      */
     static async generateMissingFavicons(config = {}) {
         const mergedConfig = { ...this.DEFAULT_CONFIG, ...config };
+        const startTime = performance.now();
         
-        console.log('FaviconGenerator: Starting favicon generation');
+        console.log('FaviconGenerator: Starting optimized favicon generation');
         
         try {
-            const missingFavicons = this.checkMissingFavicons();
-            
-            if (missingFavicons.length === 0) {
-                console.log('FaviconGenerator: All favicons already exist');
-                return;
+            // パフォーマンス最適化が有効な場合
+            if (mergedConfig.enablePerformanceOptimizations) {
+                return await this._generateWithOptimizations(mergedConfig, startTime);
             }
-
-            console.log('FaviconGenerator: Missing favicons:', missingFavicons);
             
-            // Canvas API サポートチェック
-            if (!this._supportsCanvas()) {
-                console.warn('FaviconGenerator: Canvas API not supported');
-                return;
-            }
-
-            // 各サイズのPNGファビコンを生成
-            for (const size of mergedConfig.sizes) {
-                await this._generatePNGFavicon(size, mergedConfig);
-            }
-
-            // favicon.ico を生成
-            await this._generateICOFavicon(mergedConfig);
-            
-            console.log('FaviconGenerator: Favicon generation completed');
+            // 従来の方法（後方互換性のため）
+            return await this._generateLegacy(mergedConfig, startTime);
             
         } catch (error) {
             console.error('FaviconGenerator: Generation failed', error);
-            throw error;
+            return {
+                success: false,
+                error: error.message,
+                generated: 0,
+                cached: 0,
+                executionTime: performance.now() - startTime
+            };
+        }
+    }
+    
+    /**
+     * パフォーマンス最適化を適用した生成処理
+     * @private
+     */
+    static async _generateWithOptimizations(config, startTime) {
+        // 1. Lazy loading - 必要な場合のみ生成
+        if (this.PERFORMANCE_CONFIG.lazyLoadingEnabled) {
+            const needsGeneration = await this._checkIfGenerationNeeded(config);
+            if (!needsGeneration.required) {
+                console.log('FaviconGenerator: Generation not needed, using cached resources');
+                return {
+                    success: true,
+                    generated: 0,
+                    cached: needsGeneration.cachedCount,
+                    fromCache: needsGeneration.cachedCount,
+                    executionTime: performance.now() - startTime
+                };
+            }
+        }
+        
+        // 2. バッチ処理 - 複数のファビコンを効率的に生成
+        let result;
+        if (this.PERFORMANCE_CONFIG.batchProcessing) {
+            result = await this._generateBatch(config);
+        } else {
+            result = await this._generateSequential(config);
+        }
+        
+        // 3. メモリクリーンアップ
+        if (this.PERFORMANCE_CONFIG.memoryCleanupEnabled) {
+            await this._cleanupResources();
+        }
+        
+        const executionTime = performance.now() - startTime;
+        console.log(`FaviconGenerator: Optimized generation completed in ${executionTime.toFixed(2)}ms`);
+        
+        return {
+            ...result,
+            executionTime,
+            optimizationsApplied: true
+        };
+    }
+    
+    /**
+     * 生成が必要かチェック（Lazy loading用）
+     * @private
+     */
+    static async _checkIfGenerationNeeded(config) {
+        try {
+            // キャッシュの確認
+            const cached = this._getCachedFavicons();
+            if (cached && cached.data) {
+                const cachedSizes = Object.keys(cached.data);
+                const requestedSizes = config.sizes.map(s => s.toString());
+                const allCached = requestedSizes.every(size => cachedSizes.includes(size));
+                
+                // キャッシュの有効性確認
+                const cacheAge = Date.now() - (cached.timestamp || 0);
+                const cacheExpiry = config.cacheExpiry || (24 * 60 * 60 * 1000); // 24時間
+                
+                if (allCached && cacheAge < cacheExpiry) {
+                    return {
+                        required: false,
+                        cachedCount: cachedSizes.length
+                    };
+                }
+            }
+            
+            // DOM内の既存ファビコンの確認
+            if (typeof document !== 'undefined') {
+                const existingLinks = document.querySelectorAll('link[rel*="icon"]');
+                if (existingLinks.length >= config.sizes.length) {
+                    return {
+                        required: false,
+                        cachedCount: existingLinks.length
+                    };
+                }
+            }
+            
+            return { required: true, cachedCount: 0 };
+            
+        } catch (error) {
+            console.warn('FaviconGenerator: Generation necessity check failed', error);
+            return { required: true, cachedCount: 0 };
+        }
+    }
+    
+    /**
+     * バッチ処理でファビコンを生成
+     * @private
+     */
+    static async _generateBatch(config) {
+        const sizes = config.sizes;
+        const maxConcurrent = this.PERFORMANCE_CONFIG.maxConcurrentGeneration;
+        
+        console.log(`FaviconGenerator: Batch processing ${sizes.length} sizes (max concurrent: ${maxConcurrent})`);
+        
+        let generated = 0;
+        let cached = 0;
+        const errors = [];
+        
+        // サイズをバッチに分割
+        for (let i = 0; i < sizes.length; i += maxConcurrent) {
+            const batch = sizes.slice(i, i + maxConcurrent);
+            
+            // 並列処理
+            const batchPromises = batch.map(async (size) => {
+                try {
+                    const result = await this._generateSingleFavicon(size, config);
+                    if (result.fromCache) {
+                        cached++;
+                    } else {
+                        generated++;
+                    }
+                    return result;
+                } catch (error) {
+                    errors.push({ size, error: error.message });
+                    return null;
+                }
+            });
+            
+            await Promise.all(batchPromises);
+            
+            // バッチ間の短い休憩（ブラウザへの負荷軽減）
+            if (i + maxConcurrent < sizes.length) {
+                await this._sleep(this.PERFORMANCE_CONFIG.debounceDelay);
+            }
+        }
+        
+        return {
+            success: true,
+            generated,
+            cached,
+            errors,
+            batchProcessed: true
+        };
+    }
+    
+    /**
+     * 順次処理でファビコンを生成
+     * @private
+     */
+    static async _generateSequential(config) {
+        console.log('FaviconGenerator: Sequential processing');
+        
+        let generated = 0;
+        let cached = 0;
+        const errors = [];
+        
+        for (const size of config.sizes) {
+            try {
+                const result = await this._generateSingleFavicon(size, config);
+                if (result.fromCache) {
+                    cached++;
+                } else {
+                    generated++;
+                }
+            } catch (error) {
+                errors.push({ size, error: error.message });
+            }
+        }
+        
+        return {
+            success: true,
+            generated,
+            cached,
+            errors
+        };
+    }
+    
+    /**
+     * 単一ファビコンの生成（最適化版）
+     * @private
+     */
+    static async _generateSingleFavicon(size, config) {
+        // キャッシュから確認
+        const cached = this._getCachedFavicon(size);
+        if (cached && config.cacheEnabled) {
+            return { success: true, size, fromCache: true, dataUrl: cached };
+        }
+        
+        // Canvas要素をプールから取得または作成
+        const canvas = this._getCanvasFromPool(size);
+        const context = canvas.getContext('2d');
+        
+        if (!context) {
+            throw new Error(`Canvas context creation failed for size ${size}`);
+        }
+        
+        try {
+            // 高効率な描画処理
+            await this._drawOptimizedFavicon(context, size, config);
+            
+            // データURL生成
+            const dataUrl = canvas.toDataURL('image/png', 0.8); // 軽微な圧縮
+            
+            // キャッシュに保存
+            if (config.cacheEnabled) {
+                this._setCachedFavicon(size, dataUrl);
+            }
+            
+            // DOM注入
+            if (config.injectIntoDOM !== false) {
+                this._injectFaviconToDOM(size, dataUrl);
+            }
+            
+            return {
+                success: true,
+                size,
+                fromCache: false,
+                dataUrl
+            };
+            
+        } finally {
+            // Canvas要素をプールに戻す
+            this._returnCanvasToPool(canvas);
+        }
+    }
+    
+    /**
+     * 最適化された描画処理
+     * @private
+     */
+    static async _drawOptimizedFavicon(context, size, config) {
+        const canvas = context.canvas;
+        
+        // キャンバスをクリア（効率的な方法）
+        canvas.width = canvas.width; // これが最も高速
+        
+        // 高解像度対応
+        const devicePixelRatio = window.devicePixelRatio || 1;
+        if (devicePixelRatio > 1 && size <= 48) { // 小さいサイズのみ高解像度対応
+            const scaledSize = size * devicePixelRatio;
+            canvas.width = scaledSize;
+            canvas.height = scaledSize;
+            context.scale(devicePixelRatio, devicePixelRatio);
+            canvas.style.width = size + 'px';
+            canvas.style.height = size + 'px';
+        }
+        
+        // 効率的なバブルデザイン描画
+        await this._drawBubbleDesign(context, size, config);
+    }
+    
+    /**
+     * バブルデザイン描画（最適化版）
+     * @private
+     */
+    static async _drawBubbleDesign(context, size, config) {
+        const center = size / 2;
+        const bubbleRadius = size * 0.4;
+        
+        // グラデーション作成（キャッシュ可能）
+        const gradient = this._createCachedGradient(context, center, bubbleRadius, config);
+        
+        // メインバブル描画
+        context.fillStyle = gradient;
+        context.beginPath();
+        context.arc(center, center, bubbleRadius, 0, Math.PI * 2);
+        context.fill();
+        
+        // ハイライト効果（小さいサイズでは省略）
+        if (size >= 32) {
+            this._drawHighlight(context, center, bubbleRadius * 0.6);
+        }
+        
+        // 装飾的な小さなバブル（大きいサイズのみ）
+        if (size >= 48) {
+            this._drawDecoratinBubbles(context, center, bubbleRadius);
+        }
+    }
+    
+    /**
+     * キャッシュ可能なグラデーション作成
+     * @private
+     */
+    static _createCachedGradient(context, centerX, centerY, radius, config) {
+        const gradient = context.createRadialGradient(
+            centerX * 0.7, centerY * 0.7, 0,
+            centerX, centerY, radius
+        );
+        
+        gradient.addColorStop(0, '#E3F2FD');
+        gradient.addColorStop(0.3, '#BBDEFB');
+        gradient.addColorStop(0.7, config.backgroundColor || '#2196F3');
+        gradient.addColorStop(1, '#1565C0');
+        
+        return gradient;
+    }
+    
+    /**
+     * Canvas要素プールから取得
+     * @private
+     */
+    static _getCanvasFromPool(size) {
+        let canvas = this._resourcePool.canvasElements.pop();
+        
+        if (!canvas || canvas.width !== size || canvas.height !== size) {
+            canvas = document.createElement('canvas');
+        }
+        
+        canvas.width = size;
+        canvas.height = size;
+        
+        return canvas;
+    }
+    
+    /**
+     * Canvas要素をプールに戻す
+     * @private
+     */
+    static _returnCanvasToPool(canvas) {
+        // プールサイズ制限
+        if (this._resourcePool.canvasElements.length < 5) {
+            // コンテキストをクリア
+            const context = canvas.getContext('2d');
+            if (context) {
+                context.clearRect(0, 0, canvas.width, canvas.height);
+            }
+            
+            this._resourcePool.canvasElements.push(canvas);
+        }
+    }
+    
+    /**
+     * リソースクリーンアップ
+     * @private
+     */
+    static async _cleanupResources() {
+        try {
+            // Canvas要素プールをクリア
+            this._resourcePool.canvasElements.forEach(canvas => {
+                const context = canvas.getContext('2d');
+                if (context) {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            });
+            this._resourcePool.canvasElements = [];
+            
+            // ガベージコレクションの促進（可能であれば）
+            if (window.gc) {
+                window.gc();
+            }
+            
+            console.log('FaviconGenerator: Resource cleanup completed');
+        } catch (error) {
+            console.warn('FaviconGenerator: Resource cleanup failed', error);
+        }
+    }
+    
+    /**
+     * スリープ処理（非同期）
+     * @private
+     */
+    static _sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    
+    /**
+     * 圧縮されたキャッシュデータの処理
+     * @private
+     */
+    static _getCachedFavicons() {
+        try {
+            if (!localStorage) return null;
+            
+            const compressed = localStorage.getItem(this.CACHE_PREFIX + 'compressed');
+            if (compressed) {
+                // 簡単な圧縮解除（Base64デコード）
+                return JSON.parse(atob(compressed));
+            }
+            
+            // 非圧縮キャッシュをフォールバック
+            return JSON.parse(localStorage.getItem(this.CACHE_PREFIX + 'data') || 'null');
+            
+        } catch (error) {
+            console.warn('FaviconGenerator: Cache retrieval failed', error);
+            return null;
+        }
+    }
+    
+    /**
+     * 圧縮キャッシュの保存
+     * @private
+     */
+    static _setCachedFavicons(data) {
+        try {
+            if (!localStorage) return;
+            
+            if (this.PERFORMANCE_CONFIG.cacheCompressionEnabled) {
+                // 簡単な圧縮（Base64エンコード）
+                const compressed = btoa(JSON.stringify(data));
+                localStorage.setItem(this.CACHE_PREFIX + 'compressed', compressed);
+            } else {
+                localStorage.setItem(this.CACHE_PREFIX + 'data', JSON.stringify(data));
+            }
+            
+        } catch (error) {
+            console.warn('FaviconGenerator: Cache storage failed', error);
+        }
+    }
+    
+    /**
+     * 従来の生成方法（後方互換性）
+     * @private
+     */
+    static async _generateLegacy(config, startTime) {
+        try {
+            // Canvas API サポートチェック
+            if (!this._supportsCanvas()) {
+                console.warn('FaviconGenerator: Canvas API not supported');
+                return {
+                    success: false,
+                    error: 'Canvas API not supported',
+                    generated: 0,
+                    cached: 0,
+                    executionTime: performance.now() - startTime
+                };
+            }
+
+            let generated = 0;
+            const errors = [];
+
+            // 各サイズのPNGファビコンを生成
+            for (const size of config.sizes) {
+                try {
+                    await this._generatePNGFavicon(size, config);
+                    generated++;
+                } catch (error) {
+                    errors.push({ size, error: error.message });
+                }
+            }
+
+            // favicon.ico を生成
+            try {
+                await this._generateICOFavicon(config);
+            } catch (error) {
+                errors.push({ task: 'ICO generation', error: error.message });
+            }
+            
+            console.log('FaviconGenerator: Legacy favicon generation completed');
+            
+            return {
+                success: true,
+                generated,
+                cached: 0,
+                errors,
+                executionTime: performance.now() - startTime,
+                legacyMode: true
+            };
+            
+        } catch (error) {
+            console.error('FaviconGenerator: Legacy generation failed', error);
+            return {
+                success: false,
+                error: error.message,
+                generated: 0,
+                cached: 0,
+                executionTime: performance.now() - startTime
+            };
         }
     }
 

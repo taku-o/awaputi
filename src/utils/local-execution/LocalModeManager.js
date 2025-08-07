@@ -17,6 +17,21 @@ import DeveloperGuidanceSystem from './DeveloperGuidanceSystem.js';
 
 class LocalModeManager {
     /**
+     * パフォーマンス最適化設定
+     */
+    static PERFORMANCE_CONFIG = {
+        enableLazyInitialization: true,
+        enableComponentCaching: true,
+        enableBatchProcessing: true,
+        enableResourcePreloading: true,
+        enableMemoryOptimization: true,
+        initializationTimeout: 30000, // 30秒
+        componentInitDelay: 50, // 50ms間隔
+        retryAttempts: 3,
+        maxConcurrentTasks: 3
+    };
+    
+    /**
      * デフォルト設定
      */
     static DEFAULT_CONFIG = {
@@ -26,7 +41,8 @@ class LocalModeManager {
         enableErrorHandling: true,
         enableFallbackResources: true,
         autoInitialize: true,
-        debugMode: false
+        debugMode: false,
+        enablePerformanceOptimizations: true
     };
 
     /**
@@ -39,19 +55,426 @@ class LocalModeManager {
         this.executionContext = null;
         this.initializationPromise = null;
         
+        // パフォーマンス最適化用のプライベートストレージ
+        this._componentCache = new Map();
+        this._initializationMetrics = {
+            startTime: null,
+            endTime: null,
+            componentTimes: {},
+            totalExecutionTime: 0,
+            optimizationsApplied: []
+        };
+        this._resourcePreloadPromises = new Map();
+        
         this.log('LocalModeManager instance created');
     }
 
     /**
-     * ローカルモードを初期化
+     * ローカルモードを初期化（パフォーマンス最適化版）
      * @returns {Promise<boolean>} 初期化が成功した場合 true
      */
     async initialize() {
         if (this.initializationPromise) {
             return this.initializationPromise;
         }
-
+        
+        // パフォーマンス測定開始
+        this._initializationMetrics.startTime = performance.now();
+        
         this.initializationPromise = this._performInitialization();
+        return this.initializationPromise;
+    }
+    
+    /**
+     * 実際の初期化処理（最適化版）
+     * @private
+     */
+    async _performInitialization() {
+        try {
+            this.log('Starting optimized local mode initialization');
+            
+            // パフォーマンス最適化が有効な場合
+            if (this.config.enablePerformanceOptimizations) {
+                return await this._initializeWithOptimizations();
+            }
+            
+            // 従来の初期化方法
+            return await this._initializeLegacy();
+            
+        } catch (error) {
+            console.error('LocalModeManager: Initialization failed', error);
+            return false;
+        } finally {
+            this._initializationMetrics.endTime = performance.now();
+            this._initializationMetrics.totalExecutionTime = 
+                this._initializationMetrics.endTime - this._initializationMetrics.startTime;
+            
+            if (this.config.debugMode) {
+                this._logPerformanceMetrics();
+            }
+        }
+    }
+    
+    /**
+     * パフォーマンス最適化を適用した初期化
+     * @private
+     */
+    async _initializeWithOptimizations() {
+        const config = this.config;
+        const perfConfig = LocalModeManager.PERFORMANCE_CONFIG;
+        
+        // 1. Lazy initialization - 必要な場合のみ初期化
+        if (perfConfig.enableLazyInitialization) {
+            const needsInit = await this._checkInitializationNecessity();
+            if (!needsInit) {
+                this.log('Initialization not needed, using cached state');
+                this._initializationMetrics.optimizationsApplied.push('lazy-init-skipped');
+                return true;
+            }
+        }
+        
+        // 2. 実行コンテキストの取得（キャッシュ対応）
+        this.executionContext = this._getCachedExecutionContext() || 
+            LocalExecutionDetector.getExecutionContext();
+        
+        if (!this.executionContext.isLocal) {
+            this.log('Not running in local execution mode, skipping initialization');
+            return true;
+        }
+        
+        // 3. Resource preloading
+        if (perfConfig.enableResourcePreloading) {
+            await this._preloadResources();
+            this._initializationMetrics.optimizationsApplied.push('resource-preloading');
+        }
+        
+        // 4. バッチ処理または並列処理での初期化
+        const initTasks = this._createInitializationTasks();
+        let results;
+        
+        if (perfConfig.enableBatchProcessing) {
+            results = await this._executeBatchInitialization(initTasks);
+            this._initializationMetrics.optimizationsApplied.push('batch-processing');
+        } else {
+            results = await this._executeSequentialInitialization(initTasks);
+        }
+        
+        // 5. メモリ最適化
+        if (perfConfig.enableMemoryOptimization) {
+            await this._optimizeMemoryUsage();
+            this._initializationMetrics.optimizationsApplied.push('memory-optimization');
+        }
+        
+        // 6. 結果の検証と完了処理
+        const success = results.every(result => result.success);
+        this.isInitialized = success;
+        
+        this.log(`Optimized initialization completed: ${success ? 'Success' : 'Failed'}`);
+        return success;
+    }
+    
+    /**
+     * 初期化が必要かチェック
+     * @private
+     */
+    async _checkInitializationNecessity() {
+        try {
+            // キャッシュから前回の初期化状態を確認
+            const cachedState = this._getCachedInitializationState();
+            if (cachedState && cachedState.isValid) {
+                return false;
+            }
+            
+            // DOM状態の確認
+            const hasRequiredElements = this._checkRequiredDOMElements();
+            if (hasRequiredElements) {
+                return false;
+            }
+            
+            return true;
+            
+        } catch (error) {
+            this.log('Initialization necessity check failed, proceeding with init');
+            return true;
+        }
+    }
+    
+    /**
+     * リソースの先読み
+     * @private
+     */
+    async _preloadResources() {
+        const preloadTasks = [];
+        
+        // Canvas API の準備チェック
+        if (this.config.enableFaviconGeneration) {
+            preloadTasks.push(this._preloadCanvasResources());
+        }
+        
+        // localStorage アクセステスト
+        preloadTasks.push(this._preloadStorageResources());
+        
+        // DOM要素の準備確認
+        preloadTasks.push(this._preloadDOMResources());
+        
+        const results = await Promise.allSettled(preloadTasks);
+        const successfulPreloads = results.filter(r => r.status === 'fulfilled').length;
+        
+        this.log(`Resource preloading completed: ${successfulPreloads}/${preloadTasks.length} successful`);
+    }
+    
+    /**
+     * 初期化タスクの作成
+     * @private
+     */
+    _createInitializationTasks() {
+        const tasks = [];
+        
+        if (this.config.enableMetaTagOptimization) {
+            tasks.push({
+                name: 'MetaTagOptimization',
+                priority: 1, // 高優先度
+                fn: () => this._initializeMetaTagOptimization()
+            });
+        }
+        
+        if (this.config.enableFaviconGeneration) {
+            tasks.push({
+                name: 'FaviconGeneration',
+                priority: 2, // 中優先度
+                fn: () => this._initializeFaviconGeneration()
+            });
+        }
+        
+        if (this.config.enableDeveloperGuidance) {
+            tasks.push({
+                name: 'DeveloperGuidance',
+                priority: 3, // 低優先度（最後に実行）
+                fn: () => this._initializeDeveloperGuidance()
+            });
+        }
+        
+        // 優先度でソート
+        return tasks.sort((a, b) => a.priority - b.priority);
+    }
+    
+    /**
+     * バッチ処理での初期化実行
+     * @private
+     */
+    async _executeBatchInitialization(tasks) {
+        const maxConcurrent = LocalModeManager.PERFORMANCE_CONFIG.maxConcurrentTasks;
+        const results = [];
+        
+        // タスクをバッチに分割
+        for (let i = 0; i < tasks.length; i += maxConcurrent) {
+            const batch = tasks.slice(i, i + maxConcurrent);
+            
+            // バッチ内のタスクを並列実行
+            const batchPromises = batch.map(async (task) => {
+                const startTime = performance.now();
+                try {
+                    const result = await task.fn();
+                    const endTime = performance.now();
+                    
+                    this._initializationMetrics.componentTimes[task.name] = endTime - startTime;
+                    
+                    return {
+                        name: task.name,
+                        success: true,
+                        result,
+                        executionTime: endTime - startTime
+                    };
+                } catch (error) {
+                    const endTime = performance.now();
+                    this._initializationMetrics.componentTimes[task.name] = endTime - startTime;
+                    
+                    return {
+                        name: task.name,
+                        success: false,
+                        error: error.message,
+                        executionTime: endTime - startTime
+                    };
+                }
+            });
+            
+            const batchResults = await Promise.all(batchPromises);
+            results.push(...batchResults);
+            
+            // バッチ間の遅延
+            if (i + maxConcurrent < tasks.length) {
+                await this._sleep(LocalModeManager.PERFORMANCE_CONFIG.componentInitDelay);
+            }
+        }
+        
+        return results;
+    }
+    
+    /**
+     * 順次実行での初期化
+     * @private
+     */
+    async _executeSequentialInitialization(tasks) {
+        const results = [];
+        
+        for (const task of tasks) {
+            const startTime = performance.now();
+            try {
+                const result = await task.fn();
+                const endTime = performance.now();
+                
+                this._initializationMetrics.componentTimes[task.name] = endTime - startTime;
+                
+                results.push({
+                    name: task.name,
+                    success: true,
+                    result,
+                    executionTime: endTime - startTime
+                });
+                
+                // タスク間の遅延
+                await this._sleep(LocalModeManager.PERFORMANCE_CONFIG.componentInitDelay);
+                
+            } catch (error) {
+                const endTime = performance.now();
+                this._initializationMetrics.componentTimes[task.name] = endTime - startTime;
+                
+                results.push({
+                    name: task.name,
+                    success: false,
+                    error: error.message,
+                    executionTime: endTime - startTime
+                });
+            }
+        }
+        
+        return results;
+    }
+    
+    /**
+     * メモリ使用量の最適化
+     * @private
+     */
+    async _optimizeMemoryUsage() {
+        try {
+            // 不要なキャッシュエントリをクリーンアップ
+            this._cleanupComponentCache();
+            
+            // リソースプールの整理
+            if (FaviconGenerator._resourcePool) {
+                // FaviconGeneratorのリソースクリーンアップを呼び出し
+                await FaviconGenerator._cleanupResources();
+            }
+            
+            // ガベージコレクションの促進（可能であれば）
+            if (window.gc) {
+                window.gc();
+            }
+            
+            this.log('Memory optimization completed');
+            
+        } catch (error) {
+            this.log('Memory optimization failed:', error);
+        }
+    }
+    
+    /**
+     * コンポーネントキャッシュのクリーンアップ
+     * @private
+     */
+    _cleanupComponentCache() {
+        const maxCacheSize = 10; // 最大キャッシュエントリ数
+        
+        if (this._componentCache.size > maxCacheSize) {
+            // 最も古いエントリから削除
+            const entries = Array.from(this._componentCache.entries());
+            const entriesToRemove = entries.slice(0, this._componentCache.size - maxCacheSize);
+            
+            entriesToRemove.forEach(([key]) => {
+                this._componentCache.delete(key);
+            });
+            
+            this.log(`Component cache cleaned up: removed ${entriesToRemove.length} entries`);
+        }
+    }
+    
+    /**
+     * パフォーマンスメトリクスのログ出力
+     * @private
+     */
+    _logPerformanceMetrics() {
+        const metrics = this._initializationMetrics;
+        
+        console.group('LocalModeManager Performance Metrics');
+        console.log(`Total execution time: ${metrics.totalExecutionTime.toFixed(2)}ms`);
+        console.log('Component execution times:');
+        
+        Object.entries(metrics.componentTimes).forEach(([component, time]) => {
+            console.log(`  ${component}: ${time.toFixed(2)}ms`);
+        });
+        
+        console.log('Optimizations applied:', metrics.optimizationsApplied);
+        console.groupEnd();
+    }
+    
+    /**
+     * スリープ処理
+     * @private
+     */
+    _sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    
+    /**
+     * キャッシュされた実行コンテキストの取得
+     * @private
+     */
+    _getCachedExecutionContext() {
+        return this._componentCache.get('executionContext');
+    }
+    
+    /**
+     * 従来の初期化方法（後方互換性）
+     * @private
+     */
+    async _initializeLegacy() {
+        this.log('Using legacy initialization method');
+        
+        // 実行コンテキストの取得
+        this.executionContext = LocalExecutionDetector.getExecutionContext();
+        
+        if (!this.executionContext.isLocal) {
+            this.log('Not running in local execution mode, skipping initialization');
+            this.isInitialized = true;
+            return true;
+        }
+        
+        const tasks = [];
+        
+        // MetaTagOptimizer の初期化
+        if (this.config.enableMetaTagOptimization) {
+            tasks.push(this._initializeMetaTagOptimization());
+        }
+        
+        // FaviconGenerator の初期化
+        if (this.config.enableFaviconGeneration) {
+            tasks.push(this._initializeFaviconGeneration());
+        }
+        
+        // DeveloperGuidanceSystem の初期化
+        if (this.config.enableDeveloperGuidance) {
+            tasks.push(this._initializeDeveloperGuidance());
+        }
+        
+        // 全タスクを並列実行
+        const results = await Promise.allSettled(tasks);
+        const successes = results.filter(r => r.status === 'fulfilled').length;
+        
+        this.log(`Legacy initialization completed: ${successes}/${results.length} components successful`);
+        
+        this.isInitialized = successes > 0; // 少なくとも1つ成功すれば初期化成功
+        return this.isInitialized;
+    }
         return this.initializationPromise;
     }
 
