@@ -1,0 +1,167 @@
+{
+  "timestamp": "2025-08-07T09:53:51.316Z",
+  "scannedFiles": 134,
+  "brokenPathsCount": 17,
+  "brokenPaths": [
+    {
+      "sourceFile": "tests/accessibility/help-system-accessibility.test.js",
+      "importPath": "../../../src/scenes/HelpScene.js",
+      "resolvedPath": "../src/scenes/HelpScene.js",
+      "suggestedCorrection": "src/scenes/HelpScene.js"
+    },
+    {
+      "sourceFile": "tests/accessibility/help-system-accessibility.test.js",
+      "importPath": "../../../src/core/help/TutorialOverlay.js",
+      "resolvedPath": "../src/core/help/TutorialOverlay.js",
+      "suggestedCorrection": "src/core/help/TutorialOverlay.js"
+    },
+    {
+      "sourceFile": "tests/accessibility/help-system-accessibility.test.js",
+      "importPath": "../../../src/core/help/TooltipSystem.js",
+      "resolvedPath": "../src/core/help/TooltipSystem.js",
+      "suggestedCorrection": "src/core/help/TooltipSystem.js"
+    },
+    {
+      "sourceFile": "tests/integration/achievement-system-integration.test.js",
+      "importPath": "../../src/core/AchievementNotificationSystem.js",
+      "resolvedPath": "src/core/AchievementNotificationSystem.js",
+      "suggestedCorrection": "src/core/achievements/AchievementNotificationSystem.js"
+    },
+    {
+      "sourceFile": "tests/integration/performance-debug-splitting-integration.test.js",
+      "importPath": "../../src/utils/TestResultVisualizer.js",
+      "resolvedPath": "src/utils/TestResultVisualizer.js",
+      "suggestedCorrection": "src/debug/TestResultVisualizer.js"
+    },
+    {
+      "sourceFile": "tests/integration/performance-debug-splitting-integration.test.js",
+      "importPath": "../../src/utils/ErrorReporter.js",
+      "resolvedPath": "src/utils/ErrorReporter.js",
+      "suggestedCorrection": "src/debug/ErrorReporter.js"
+    },
+    {
+      "sourceFile": "tests/integration/phase-g-file-structure.test.js",
+      "importPath": "./BalanceDataLoader.js",
+      "resolvedPath": "tests/integration/BalanceDataLoader.js",
+      "suggestedCorrection": null
+    },
+    {
+      "sourceFile": "tests/integration/phase-g-file-structure.test.js",
+      "importPath": "./BalanceCalculator.js",
+      "resolvedPath": "tests/integration/BalanceCalculator.js",
+      "suggestedCorrection": "src/core/BalanceCalculator.js"
+    },
+    {
+      "sourceFile": "tests/integration/phase-g-file-structure.test.js",
+      "importPath": "./BalanceValidator.js",
+      "resolvedPath": "tests/integration/BalanceValidator.js",
+      "suggestedCorrection": null
+    },
+    {
+      "sourceFile": "tests/integration/phase-g-file-structure.test.js",
+      "importPath": "./BalanceExporter.js",
+      "resolvedPath": "tests/integration/BalanceExporter.js",
+      "suggestedCorrection": null
+    },
+    {
+      "sourceFile": "tests/integration/phase-g-file-structure.test.js",
+      "importPath": "./AudioDescriptionManager.js",
+      "resolvedPath": "tests/integration/AudioDescriptionManager.js",
+      "suggestedCorrection": "src/audio/accessibility/AudioDescriptionManager.js"
+    },
+    {
+      "sourceFile": "tests/integration/phase-g-file-structure.test.js",
+      "importPath": "./AudioCueManager.js",
+      "resolvedPath": "tests/integration/AudioCueManager.js",
+      "suggestedCorrection": "src/audio/accessibility/AudioCueManager.js"
+    },
+    {
+      "sourceFile": "tests/integration/phase-g-file-structure.test.js",
+      "importPath": "./AudioFeedbackManager.js",
+      "resolvedPath": "tests/integration/AudioFeedbackManager.js",
+      "suggestedCorrection": "src/audio/accessibility/AudioFeedbackManager.js"
+    },
+    {
+      "sourceFile": "tests/integration/phase-g-file-structure.test.js",
+      "importPath": "./AudioSettingsManager.js",
+      "resolvedPath": "tests/integration/AudioSettingsManager.js",
+      "suggestedCorrection": "src/audio/accessibility/AudioSettingsManager.js"
+    },
+    {
+      "sourceFile": "tests/performance/phase-g-performance.test.js",
+      "importPath": "../../src/core/visual/focus/VisualFocusManager.js",
+      "resolvedPath": "src/core/visual/focus/VisualFocusManager.js",
+      "suggestedCorrection": "src/core/VisualFocusManager.js"
+    },
+    {
+      "sourceFile": "tests/performance/phase-g-performance.test.js",
+      "importPath": "../../src/core/visual/feedback/VisualFeedbackManager.js",
+      "resolvedPath": "src/core/visual/feedback/VisualFeedbackManager.js",
+      "suggestedCorrection": "src/core/VisualFeedbackManager.js"
+    },
+    {
+      "sourceFile": "tests/unit/AchievementNotificationSystem.test.js",
+      "importPath": "../../src/core/AchievementNotificationSystem.js",
+      "resolvedPath": "src/core/AchievementNotificationSystem.js",
+      "suggestedCorrection": "src/core/achievements/AchievementNotificationSystem.js"
+    }
+  ],
+  "corrections": [
+    [
+      "tests/accessibility/help-system-accessibility.test.js:../../../src/scenes/HelpScene.js",
+      "src/scenes/HelpScene.js"
+    ],
+    [
+      "tests/accessibility/help-system-accessibility.test.js:../../../src/core/help/TutorialOverlay.js",
+      "src/core/help/TutorialOverlay.js"
+    ],
+    [
+      "tests/accessibility/help-system-accessibility.test.js:../../../src/core/help/TooltipSystem.js",
+      "src/core/help/TooltipSystem.js"
+    ],
+    [
+      "tests/integration/achievement-system-integration.test.js:../../src/core/AchievementNotificationSystem.js",
+      "src/core/achievements/AchievementNotificationSystem.js"
+    ],
+    [
+      "tests/integration/performance-debug-splitting-integration.test.js:../../src/utils/TestResultVisualizer.js",
+      "src/debug/TestResultVisualizer.js"
+    ],
+    [
+      "tests/integration/performance-debug-splitting-integration.test.js:../../src/utils/ErrorReporter.js",
+      "src/debug/ErrorReporter.js"
+    ],
+    [
+      "tests/integration/phase-g-file-structure.test.js:./BalanceCalculator.js",
+      "src/core/BalanceCalculator.js"
+    ],
+    [
+      "tests/integration/phase-g-file-structure.test.js:./AudioDescriptionManager.js",
+      "src/audio/accessibility/AudioDescriptionManager.js"
+    ],
+    [
+      "tests/integration/phase-g-file-structure.test.js:./AudioCueManager.js",
+      "src/audio/accessibility/AudioCueManager.js"
+    ],
+    [
+      "tests/integration/phase-g-file-structure.test.js:./AudioFeedbackManager.js",
+      "src/audio/accessibility/AudioFeedbackManager.js"
+    ],
+    [
+      "tests/integration/phase-g-file-structure.test.js:./AudioSettingsManager.js",
+      "src/audio/accessibility/AudioSettingsManager.js"
+    ],
+    [
+      "tests/performance/phase-g-performance.test.js:../../src/core/visual/focus/VisualFocusManager.js",
+      "src/core/VisualFocusManager.js"
+    ],
+    [
+      "tests/performance/phase-g-performance.test.js:../../src/core/visual/feedback/VisualFeedbackManager.js",
+      "src/core/VisualFeedbackManager.js"
+    ],
+    [
+      "tests/unit/AchievementNotificationSystem.test.js:../../src/core/AchievementNotificationSystem.js",
+      "src/core/achievements/AchievementNotificationSystem.js"
+    ]
+  ]
+}
