@@ -2,8 +2,6 @@
  * Game Engine Event Manager
  * イベント管理・入力処理・統合機能を担当
  */
-import { getMemoryManager } from '../../utils/MemoryManager.js';
-
 export class GameEngineEventManager {
     constructor(gameEngine) {
         this.gameEngine = gameEngine;
@@ -63,33 +61,33 @@ export class GameEngineEventManager {
         const clickHandler = (event) => {
             this.gameEngine.sceneManager.handleInput(event);
         };
-        getMemoryManager().addEventListener(this.gameEngine.canvas, 'click', clickHandler);
+        this.gameEngine.canvas.addEventListener('click', clickHandler);
         
         // マウス移動
         const mouseMoveHandler = (event) => {
             this.gameEngine.sceneManager.handleInput(event);
         };
-        getMemoryManager().addEventListener(this.gameEngine.canvas, 'mousemove', mouseMoveHandler);
+        this.gameEngine.canvas.addEventListener('mousemove', mouseMoveHandler);
         
         // タッチイベント
         const touchStartHandler = (event) => {
             event.preventDefault();
             this.gameEngine.sceneManager.handleInput(event);
         };
-        getMemoryManager().addEventListener(this.gameEngine.canvas, 'touchstart', touchStartHandler);
+        this.gameEngine.canvas.addEventListener('touchstart', touchStartHandler);
         
         // タッチ移動
         const touchMoveHandler = (event) => {
             event.preventDefault();
             this.gameEngine.sceneManager.handleInput(event);
         };
-        getMemoryManager().addEventListener(this.gameEngine.canvas, 'touchmove', touchMoveHandler);
+        this.gameEngine.canvas.addEventListener('touchmove', touchMoveHandler);
         
         // キーボードイベント
         const keyDownHandler = (event) => {
             this.gameEngine.sceneManager.handleInput(event);
         };
-        getMemoryManager().addEventListener(document, 'keydown', keyDownHandler);
+        document.addEventListener('keydown', keyDownHandler);
     }
     
     /**
@@ -231,13 +229,13 @@ export class GameEngineEventManager {
         
         // クリックで再開
         const restartHandler = () => {
-            const { getMemoryManager } = require('../utils/MemoryManager.js');
-            getMemoryManager().removeEventListener(this.gameEngine.canvas, 'click', restartHandler);
+            // Removed require: const { getMemoryManager } = require('../utils/MemoryManager.js');
+            this.gameEngine.canvas.removeEventListener('click', restartHandler);
             this.gameEngine.start();
         };
         
-        const { getMemoryManager } = require('../utils/MemoryManager.js');
-        getMemoryManager().addEventListener(this.gameEngine.canvas, 'click', restartHandler);
+        // Removed require: const { getMemoryManager } = require('../utils/MemoryManager.js');
+        this.gameEngine.canvas.addEventListener('click', restartHandler);
     }
     
     /**
