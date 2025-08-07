@@ -271,6 +271,14 @@ export class AudioManager {
     }
 
     /**
+     * ゲームオーバー音を再生
+     * Issue #106: テスト互換性のため追加
+     */
+    playGameOverSound() {
+        return this.playGameStateSound('gameOver');
+    }
+
+    /**
      * 全音響停止
      */
     stopAllSounds() {

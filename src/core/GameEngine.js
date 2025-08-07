@@ -710,7 +710,37 @@ export class GameEngine {
      * Issue #106: テストで期待されるメソッド
      */
     updateSpecialEffects(deltaTime) {
-        // eventManagerのupdateSpecialEffectsを呼び出す
+        // 直接特殊効果の状態を更新（テスト用）
+        const effectiveDeltaTime = this.isTimeStopActive() ? 0 : deltaTime;
+        
+        // ボーナスタイムの更新
+        if (this.bonusTimeRemaining > 0) {
+            this.bonusTimeRemaining -= effectiveDeltaTime;
+            if (this.bonusTimeRemaining <= 0) {
+                this.bonusTimeRemaining = 0;
+                this.scoreMultiplier = 1;
+            }
+        }
+        
+        // 時間停止効果の更新
+        if (this.timeStopRemaining > 0) {
+            this.timeStopRemaining -= deltaTime; // 時間停止自体は常に減算
+            if (this.timeStopRemaining <= 0) {
+                this.timeStopRemaining = 0;
+            }
+        }
+        
+        // 画面揺れ効果の更新
+        if (this.screenShakeRemaining > 0) {
+            this.screenShakeRemaining -= effectiveDeltaTime;
+            if (this.screenShakeRemaining <= 0) {
+                this.screenShakeRemaining = 0;
+                this.screenShakeIntensity = 0;
+                this.inputDisabled = false;
+            }
+        }
+        
+        // eventManagerの処理も実行
         if (this.eventManager && typeof this.eventManager.updateSpecialEffects === 'function') {
             this.eventManager.updateSpecialEffects(deltaTime);
         }

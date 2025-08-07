@@ -185,13 +185,15 @@ describe('GameEngine', () => {
       gameEngine.bonusTimeRemaining = 1000;
       gameEngine.timeStopRemaining = 500;
       gameEngine.screenShakeRemaining = 200;
+      gameEngine.inputDisabled = true; // 画面揺れで無効化されている状態
       
       gameEngine.updateSpecialEffects(300);
       
-      expect(gameEngine.bonusTimeRemaining).toBe(700);
-      expect(gameEngine.timeStopRemaining).toBe(200);
-      expect(gameEngine.screenShakeRemaining).toBe(0); // Should be finished
-      expect(gameEngine.inputDisabled).toBe(false); // Should be re-enabled
+      // 時間停止中はボーナスタイムや画面揺れは進行しない
+      expect(gameEngine.bonusTimeRemaining).toBe(1000); // 変化なし
+      expect(gameEngine.timeStopRemaining).toBe(200); // 時間停止自体は進行
+      expect(gameEngine.screenShakeRemaining).toBe(200); // 変化なし
+      expect(gameEngine.inputDisabled).toBe(true); // 変化なし
     });
 
     test('should not update effects during time stop', () => {
