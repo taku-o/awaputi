@@ -30,6 +30,11 @@ export class UserInfoScene extends Scene {
         
         // 分離されたコンポーネントの初期化
         this.initializeUserComponents();
+        
+        // テスト互換性プロパティ
+        this.lastCleanupTime = Date.now();
+        this.CLEANUP_INTERVAL = 30000; // 30秒
+        this.COMPONENT_TIMEOUT = 60000; // 60秒
     }
     
     /**
@@ -169,18 +174,194 @@ export class UserInfoScene extends Scene {
         }
     }
 
-    enter() {
+    async enter() {
         console.log('User info scene entered');
         
-        // データを初期化
-        this.loadUserData();
+        try {
+            // データを初期化（非同期処理）
+            await this.loadUserData();
+            
+            // フォーカスをリセット
+            this.focusedElement = 0;
+            this.scrollPosition = 0;
+            
+            // 初期タブをアクティブ化
+            this.activateCurrentTab();
+        } catch (error) {
+            console.error('[UserInfoScene] Scene enter エラー:', error);
+            this.showError('シーンの初期化に失敗しました');
+        }
+    }
+    
+    // ========== コンポーネント統合メソッド（後方互換性用） ==========
+    
+    /**
+     * タブコンポーネントを取得（後方互換性用）
+     */
+    getTabComponent(tabName) {
+        return this.tabManager.getTabComponent(tabName);
+    }
+    
+    /**
+     * キー入力処理（後方互換性用）
+     */
+    handleKeyPress(event) {
+        return this.eventHandler.handleKeyboardInput(event, this.dialogManager);
+    }
+    
+    /**
+     * エラーメッセージ設定（後方互換性用）
+     */
+    setErrorMessage(message) {
+        this.eventHandler.showErrorMessage(message);
+        this.errorMessage = message;
+    }
+    
+    /**
+     * ダイアログクリック処理（後方互換性用）
+     */
+    handleDialogClick(x, y) {
+        return this.dialogManager.handleClick(x, y);
+    }
+    
+    /**
+     * タブナビゲーション（後方互換性用）
+     */
+    navigateTab(direction) {
+        if (!this.tabManager) return;
         
-        // フォーカスをリセット
-        this.focusedElement = 0;
-        this.scrollPosition = 0;
+        const tabs = this.tabManager.getTabs();
+        const currentIndex = tabs.findIndex(tab => tab.id === this.tabManager.activeTab);
         
-        // 初期タブをアクティブ化
-        this.activateCurrentTab();
+        let newIndex = currentIndex + direction;
+        
+        // ラップアラウンド処理
+        if (newIndex < 0) {
+            newIndex = tabs.length - 1;
+        } else if (newIndex >= tabs.length) {
+            newIndex = 0;
+        }
+        
+        if (tabs[newIndex]) {
+            this.tabManager.switchTab(tabs[newIndex].id);
+        }
+    }
+    
+    /**
+     * タブ切り替え（後方互換性用）
+     */
+    switchTab(tabId) {
+        if (this.tabManager) {
+            this.tabManager.switchTab(tabId);
+        }
+    }
+    
+    /**
+     * 共有状態同期（後方互換性用）
+     */
+    synchronizeSharedState() {
+        // アクセシビリティ設定を同期
+        const accessibilitySettings = this.gameEngine.settingsManager?.getAccessibilitySettings?.() || {};
+        this.sceneState.set('accessibilitySettings', accessibilitySettings);
+        
+        // 必要な状態を同期
+        this.sceneState.markDirty(['accessibilitySettings']);
+    }
+    
+    /**
+     * 未使用コンポーネントクリーンアップ（後方互換性用）
+     */
+    cleanupUnusedComponents() {
+        if (this.tabManager && typeof this.tabManager.cleanupUnusedComponents === 'function') {
+            return this.tabManager.cleanupUnusedComponents();
+        }
+        return 0;
+    }
+    
+    /**
+     * コンポーネント協調更新（後方互換性用）
+     */
+    updateComponentCoordination(deltaTime) {
+        // アクティブなコンポーネントの更新
+        if (this.tabManager) {
+            const activeComponent = this.tabManager.getActiveTabComponent();
+            if (activeComponent && typeof activeComponent.update === 'function') {
+                activeComponent.update(deltaTime);
+            }
+        }
+    }
+    
+    // ========== プロパティアクセサー（後方互換性用） ==========
+    
+    /**
+     * 現在のタブを取得
+     */
+    get currentTab() {
+        return this.tabManager ? this.tabManager.activeTab : 'statistics';
+    }
+    
+    /**
+     * 現在のタブを設定
+     */
+    set currentTab(tabId) {
+        if (this.tabManager) {
+            this.tabManager.activeTab = tabId;
+        }
+    }
+    
+    /**
+     * タブコンポーネント一覧を取得
+     */
+    get tabComponents() {
+        return this.tabManager ? this.tabManager.tabComponents : new Map();
+    }
+    
+    /**
+     * エラーメッセージを取得
+     */
+    get errorMessage() {
+        return this.sceneState ? this.sceneState.get('errorMessage') : null;
+    }
+    
+    /**
+     * エラーメッセージを設定
+     */
+    set errorMessage(message) {
+        if (this.sceneState) {
+            this.sceneState.set('errorMessage', message);
+        }
+    }
+    
+    /**
+     * エラータイムアウトを取得
+     */
+    get errorTimeout() {
+        return this.sceneState ? this.sceneState.get('errorTimeout') : null;
+    }
+    
+    /**
+     * エラータイムアウトを設定
+     */
+    set errorTimeout(timeout) {
+        if (this.sceneState) {
+            this.sceneState.set('errorTimeout', timeout);
+        }
+    }
+
+    update(deltaTime) {
+        try {
+            // コンポーネント協調更新
+            this.updateComponentCoordination(deltaTime);
+            
+            // 定期クリーンアップ
+            const now = Date.now();
+            if (now - this.lastCleanupTime > this.CLEANUP_INTERVAL) {
+                this.cleanupUnusedComponents();
+                this.lastCleanupTime = now;
+            }
+        } catch (error) {
+            console.error('[UserInfoScene] Update エラー:', error);
+        }
     }
 
     exit() {
@@ -314,11 +495,24 @@ export class UserInfoScene extends Scene {
     /**
      * ユーザーデータを読み込む
      */
-    loadUserData() {
+    async loadUserData() {
         try {
             // StatisticsManagerから統計データを取得
             if (this.gameEngine.statisticsManager) {
-                this.statisticsData = this.gameEngine.statisticsManager.getDetailedStatistics();
+                try {
+                    const statisticsResult = this.gameEngine.statisticsManager.getDetailedStatistics();
+                    // Promise かどうかをチェック
+                    if (statisticsResult && typeof statisticsResult.then === 'function') {
+                        this.statisticsData = await statisticsResult;
+                    } else {
+                        this.statisticsData = statisticsResult;
+                    }
+                } catch (statisticsError) {
+                    console.warn('[UserInfoScene] Statistics loading failed:', statisticsError);
+                    this.statisticsData = null; // デフォルト値を設定
+                    // Promise拒否エラーを再スロー
+                    throw statisticsError;
+                }
             }
             
             // AchievementManagerから実績データを取得
@@ -336,6 +530,14 @@ export class UserInfoScene extends Scene {
         } catch (error) {
             console.error('Failed to load user data:', error);
             this.showError('データの読み込みに失敗しました');
+            
+            // エラーハンドラーを呼び出し（テスト期待値対応）
+            if (this.gameEngine.errorHandler && this.gameEngine.errorHandler.handleError) {
+                this.gameEngine.errorHandler.handleError(error, 'UserInfoScene', {
+                    method: 'loadUserData',
+                    context: 'データ読み込み処理'
+                });
+            }
         }
     }
 
