@@ -1,40 +1,213 @@
 /**
- * Audio Settings Manager Component
+ * Audio Settings Manager
  * 
- * アクセシビリティ設定・設定管理を担当
- * AudioAccessibilitySupport のサブコンポーネント
+ * アクセシビリティ設定・永続化機能を担当
+ * Main Controller Patternの一部として設計
+ * 
+ * **Features**:
+ * - Settings loading and persistence
+ * - Configuration change monitoring
+ * - High contrast mode support
+ * - Large fonts accessibility feature
+ * - Real-time settings application
+ * 
+ * @module AudioSettingsManager
+ * Created: Phase G.2 (Issue #103)
  */
-
-import { getConfigurationManager } from '../../core/ConfigurationManager.js';
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
 
 export class AudioSettingsManager {
     constructor(mainController) {
         this.mainController = mainController;
-        this.configManager = getConfigurationManager();
-        this.errorHandler = getErrorHandler();
+        this.configManager = mainController.configManager;
         
-        // 設定のキー定義
-        this.settingsKeys = {
-            VISUAL_FEEDBACK: 'audioAccessibility.visualFeedback',
-            CAPTIONING: 'audioAccessibility.captioning', 
-            COLOR_INDICATION: 'audioAccessibility.colorIndication',
-            PATTERN_RECOGNITION: 'audioAccessibility.patternRecognition',
-            HIGH_CONTRAST: 'audioAccessibility.highContrast',
-            LARGE_FONTS: 'audioAccessibility.largeFonts',
-            REDUCE_MOTION: 'audioAccessibility.reduceMotion',
-            HAPTIC_FEEDBACK: 'audioAccessibility.hapticFeedback',
-            VIBRATION_INTENSITY: 'audioAccessibility.vibrationIntensity',
-            DESCRIPTION_ENABLED: 'audioAccessibility.descriptionEnabled',
-            DESCRIPTION_SPEED: 'audioAccessibility.descriptionSpeed',
-            DESCRIPTION_VOLUME: 'audioAccessibility.descriptionVolume',
-            DESCRIPTION_DETAIL_LEVEL: 'audioAccessibility.descriptionDetailLevel',
-            CUE_SPATIAL_AUDIO: 'audioAccessibility.cueSpatialAudio',
-            CUE_FREQUENCY_MAPPING: 'audioAccessibility.cueFrequencyMapping'
+        // アクセシビリティ設定
+        this.settings = {
+            visualFeedback: false,
+            captioning: false,
+            colorIndication: false,
+            patternRecognition: false,
+            highContrast: false,
+            largeFonts: false,
+            reduceMotion: false,
+            hapticFeedback: false, // 触覚フィードバック設定
+            vibrationIntensity: 0.8 // 振動強度
         };
+    }
+
+    /**
+     * 設定を読み込み
+     */
+    loadSettings() {
+        Object.keys(this.settings).forEach(key => {
+            const value = this.configManager.get(`audio.accessibility.${key}`);
+            if (value !== undefined) {
+                this.settings[key] = value;
+            }
+        });
         
-        // デフォルト設定
-        this.defaultSettings = {
+        this.applySettings();
+    }
+
+    /**
+     * 設定を適用
+     */
+    applySettings() {
+        // 視覚的フィードバック
+        if (this.settings.visualFeedback) {
+            this.mainController.audioDescriptionManager.notificationContainer.style.display = 'block';
+            this.mainController.audioFeedbackManager.updateColorIndicatorVisibility(this.settings.colorIndication);
+        } else {
+            this.mainController.audioDescriptionManager.notificationContainer.style.display = 'none';
+            this.mainController.audioFeedbackManager.updateColorIndicatorVisibility(false);
+        }
+        
+        // 字幕
+        if (this.settings.captioning) {
+            // 字幕機能は個別に表示制御
+        }
+        
+        // 高コントラスト
+        if (this.settings.highContrast) {
+            this.applyHighContrastMode();
+        }
+        
+        // 大きなフォント
+        if (this.settings.largeFonts) {
+            this.applyLargeFonts();
+        }
+        
+        // パターン認識
+        this.mainController.audioCueManager.patternRecognition.enabled = this.settings.patternRecognition;
+        
+        // 触覚フィードバック設定
+        if (this.mainController.audioFeedbackManager) {
+            this.mainController.audioFeedbackManager.hapticSettings.enabled = this.settings.hapticFeedback;
+            this.mainController.audioFeedbackManager.hapticSettings.vibrationIntensity = this.settings.vibrationIntensity;
+        }
+    }
+
+    /**
+     * 高コントラストモードを適用
+     */
+    applyHighContrastMode() {
+        const style = document.createElement('style');
+        style.id = 'audio-accessibility-high-contrast';
+        style.textContent = `
+            .audio-accessibility-notifications .notification {
+                background-color: #000000 !important;
+                color: #ffffff !important;
+                border: 2px solid #ffffff !important;
+            }
+            .audio-accessibility-captions {
+                background-color: #000000 !important;
+                color: #ffffff !important;
+                border: 2px solid #ffffff !important;
+            }
+        `;
+        
+        // 既存のスタイルを削除してから追加
+        const existingStyle = document.getElementById('audio-accessibility-high-contrast');
+        if (existingStyle) {
+            existingStyle.remove();
+        }
+        
+        if (this.settings.highContrast) {
+            document.head.appendChild(style);
+        }
+    }
+
+    /**
+     * 大きなフォントを適用
+     */
+    applyLargeFonts() {
+        const style = document.createElement('style');
+        style.id = 'audio-accessibility-large-fonts';
+        style.textContent = `
+            .audio-accessibility-notifications .notification {
+                font-size: 18px !important;
+            }
+            .audio-accessibility-captions {
+                font-size: 22px !important;
+            }
+        `;
+        
+        // 既存のスタイルを削除してから追加
+        const existingStyle = document.getElementById('audio-accessibility-large-fonts');
+        if (existingStyle) {
+            existingStyle.remove();
+        }
+        
+        if (this.settings.largeFonts) {
+            document.head.appendChild(style);
+        }
+    }
+
+    /**
+     * 設定変更を監視
+     */
+    setupConfigWatchers() {
+        Object.keys(this.settings).forEach(key => {
+            this.configManager.watch('audio', `accessibility.${key}`, (newValue) => {
+                this.settings[key] = newValue;
+                this.applySettings();
+            });
+        });
+        
+        // 触覚フィードバック設定の監視
+        this.configManager.watch('audio', 'accessibility.hapticFeedback', (newValue) => {
+            this.settings.hapticFeedback = newValue;
+            if (this.mainController.audioFeedbackManager) {
+                this.mainController.audioFeedbackManager.hapticSettings.enabled = newValue;
+                this.mainController.audioFeedbackManager.updateVibrationManagerSettings();
+            }
+        });
+        
+        this.configManager.watch('audio', 'accessibility.vibrationIntensity', (newValue) => {
+            this.settings.vibrationIntensity = newValue;
+            if (this.mainController.audioFeedbackManager) {
+                this.mainController.audioFeedbackManager.hapticSettings.vibrationIntensity = newValue;
+                this.mainController.audioFeedbackManager.updateVibrationManagerSettings();
+            }
+        });
+    }
+
+    /**
+     * 設定値を更新
+     * @param {string} key - 設定キー
+     * @param {*} value - 設定値
+     */
+    updateSetting(key, value) {
+        if (key in this.settings) {
+            this.settings[key] = value;
+            this.configManager.set(`audio.accessibility.${key}`, value);
+            this.applySettings();
+            
+            console.log(`Audio accessibility setting updated: ${key} = ${value}`);
+        }
+    }
+
+    /**
+     * 設定値を取得
+     * @param {string} key - 設定キー
+     * @returns {*} 設定値
+     */
+    getSetting(key) {
+        return this.settings[key];
+    }
+
+    /**
+     * 全設定を取得
+     * @returns {Object} 全設定
+     */
+    getAllSettings() {
+        return { ...this.settings };
+    }
+
+    /**
+     * 設定をリセット
+     */
+    resetSettings() {
+        const defaultSettings = {
             visualFeedback: false,
             captioning: false,
             colorIndication: false,
@@ -43,575 +216,114 @@ export class AudioSettingsManager {
             largeFonts: false,
             reduceMotion: false,
             hapticFeedback: false,
-            vibrationIntensity: 0.8,
-            descriptionEnabled: false,
-            descriptionSpeed: 1.0,
-            descriptionVolume: 0.8,
-            descriptionDetailLevel: 'normal',
-            cueSpatialAudio: false,
-            cueFrequencyMapping: true,
-            notificationTimeout: 5000,
-            captionFontSize: 16,
-            captionPosition: 'bottom'
+            vibrationIntensity: 0.8
         };
         
-        // 現在の設定
-        this.currentSettings = { ...this.defaultSettings };
+        Object.assign(this.settings, defaultSettings);
         
-        // 設定変更リスナー
-        this.changeListeners = new Set();
+        // 設定を永続化
+        Object.keys(this.settings).forEach(key => {
+            this.configManager.set(`audio.accessibility.${key}`, this.settings[key]);
+        });
         
-        // 設定の検証ルール
-        this.validationRules = new Map();
-        this.initializeValidationRules();
-        
-        // 設定の初期化
-        this.initializeSettings();
+        this.applySettings();
+        console.log('Audio accessibility settings reset to defaults');
     }
 
     /**
-     * 設定の初期化
+     * 設定をエクスポート
+     * @returns {Object} エクスポート用設定データ
      */
-    async initializeSettings() {
+    exportSettings() {
+        return {
+            version: '1.0.0',
+            timestamp: new Date().toISOString(),
+            settings: { ...this.settings }
+        };
+    }
+
+    /**
+     * 設定をインポート
+     * @param {Object} settingsData - インポートする設定データ
+     * @returns {boolean} インポート成功かどうか
+     */
+    importSettings(settingsData) {
         try {
-            // 保存済み設定の読み込み
-            await this.loadSettings();
+            if (!settingsData.settings) {
+                throw new Error('Invalid settings data structure');
+            }
             
-            // ブラウザのアクセシビリティ設定を検出
-            await this.detectBrowserAccessibilitySettings();
+            // 有効な設定のみをインポート
+            Object.keys(settingsData.settings).forEach(key => {
+                if (key in this.settings) {
+                    this.settings[key] = settingsData.settings[key];
+                    this.configManager.set(`audio.accessibility.${key}`, this.settings[key]);
+                }
+            });
             
-            // 設定の適用
             this.applySettings();
-            
-            console.log('Audio accessibility settings initialized');
-            
+            console.log('Audio accessibility settings imported successfully');
+            return true;
         } catch (error) {
-            this.errorHandler.handleError(error, {
-                context: 'AudioSettingsManager.initializeSettings',
-                severity: 'medium'
-            });
-            
-            // フォールバック: デフォルト設定を使用
-            this.currentSettings = { ...this.defaultSettings };
+            console.error('Failed to import settings:', error);
+            return false;
         }
-    }
-
-    /**
-     * 検証ルールの初期化
-     */
-    initializeValidationRules() {
-        this.validationRules.set('vibrationIntensity', {
-            validate: (value) => typeof value === 'number' && value >= 0 && value <= 1,
-            message: 'Vibration intensity must be between 0 and 1'
-        });
-        
-        this.validationRules.set('descriptionSpeed', {
-            validate: (value) => typeof value === 'number' && value >= 0.5 && value <= 2.0,
-            message: 'Description speed must be between 0.5 and 2.0'
-        });
-        
-        this.validationRules.set('descriptionVolume', {
-            validate: (value) => typeof value === 'number' && value >= 0 && value <= 1,
-            message: 'Description volume must be between 0 and 1'
-        });
-        
-        this.validationRules.set('descriptionDetailLevel', {
-            validate: (value) => ['minimal', 'normal', 'detailed'].includes(value),
-            message: 'Description detail level must be minimal, normal, or detailed'
-        });
-        
-        this.validationRules.set('captionFontSize', {
-            validate: (value) => typeof value === 'number' && value >= 12 && value <= 32,
-            message: 'Caption font size must be between 12 and 32'
-        });
-        
-        this.validationRules.set('captionPosition', {
-            validate: (value) => ['top', 'middle', 'bottom'].includes(value),
-            message: 'Caption position must be top, middle, or bottom'
-        });
-        
-        this.validationRules.set('notificationTimeout', {
-            validate: (value) => typeof value === 'number' && value >= 1000 && value <= 30000,
-            message: 'Notification timeout must be between 1000 and 30000 milliseconds'
-        });
-    }
-
-    /**
-     * 設定の読み込み
-     */
-    async loadSettings() {
-        try {
-            // ConfigurationManagerから設定を取得
-            const savedSettings = {};
-            
-            for (const [settingName, configKey] of Object.entries(this.settingsKeys)) {
-                try {
-                    const value = this.configManager.get(configKey);
-                    if (value !== undefined) {
-                        const camelCaseKey = this.toCamelCase(settingName);
-                        savedSettings[camelCaseKey] = value;
-                    }
-                } catch (error) {
-                    // 個別設定の読み込みエラーは警告レベル
-                    console.warn(`Failed to load setting ${configKey}:`, error);
-                }
-            }
-            
-            // LocalStorageからも読み込み（フォールバック）
-            const localSettings = this.loadFromLocalStorage();
-            
-            // 設定をマージ（ConfigurationManager > LocalStorage > Default）
-            this.currentSettings = {
-                ...this.defaultSettings,
-                ...localSettings,
-                ...savedSettings
-            };
-            
-        } catch (error) {
-            console.error('Failed to load audio accessibility settings:', error);
-            this.currentSettings = { ...this.defaultSettings };
-        }
-    }
-
-    /**
-     * LocalStorageからの設定読み込み
-     * @returns {Object} 読み込まれた設定
-     */
-    loadFromLocalStorage() {
-        try {
-            const saved = localStorage.getItem('audioAccessibilitySettings');
-            return saved ? JSON.parse(saved) : {};
-        } catch (error) {
-            console.warn('Failed to load settings from localStorage:', error);
-            return {};
-        }
-    }
-
-    /**
-     * ブラウザのアクセシビリティ設定検出
-     */
-    async detectBrowserAccessibilitySettings() {
-        try {
-            // prefer-reduced-motion の検出
-            if (window.matchMedia) {
-                const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-                if (reducedMotionQuery.matches) {
-                    this.currentSettings.reduceMotion = true;
-                }
-                
-                // リスナーを追加してリアルタイム変更に対応
-                reducedMotionQuery.addEventListener('change', (e) => {
-                    this.updateSetting('reduceMotion', e.matches);
-                });
-            }
-            
-            // prefer-contrast の検出
-            if (window.matchMedia) {
-                const highContrastQuery = window.matchMedia('(prefers-contrast: high)');
-                if (highContrastQuery.matches) {
-                    this.currentSettings.highContrast = true;
-                }
-                
-                highContrastQuery.addEventListener('change', (e) => {
-                    this.updateSetting('highContrast', e.matches);
-                });
-            }
-            
-            // VibrationAPI のサポート検出
-            if (!('vibrate' in navigator)) {
-                this.currentSettings.hapticFeedback = false;
-            }
-            
-            // SpeechSynthesis のサポート検出
-            if (!('speechSynthesis' in window)) {
-                this.currentSettings.descriptionEnabled = false;
-            }
-            
-        } catch (error) {
-            console.warn('Failed to detect browser accessibility settings:', error);
-        }
-    }
-
-    /**
-     * 設定の保存
-     */
-    async saveSettings() {
-        try {
-            // ConfigurationManagerに保存
-            for (const [settingName, configKey] of Object.entries(this.settingsKeys)) {
-                const camelCaseKey = this.toCamelCase(settingName);
-                const value = this.currentSettings[camelCaseKey];
-                
-                if (value !== undefined) {
-                    this.configManager.set(configKey, value);
-                }
-            }
-            
-            // LocalStorageにもバックアップ保存
-            this.saveToLocalStorage();
-            
-            console.log('Audio accessibility settings saved');
-            
-        } catch (error) {
-            this.errorHandler.handleError(error, {
-                context: 'AudioSettingsManager.saveSettings',
-                severity: 'medium'
-            });
-        }
-    }
-
-    /**
-     * LocalStorageへの設定保存
-     */
-    saveToLocalStorage() {
-        try {
-            localStorage.setItem('audioAccessibilitySettings', JSON.stringify(this.currentSettings));
-        } catch (error) {
-            console.warn('Failed to save settings to localStorage:', error);
-        }
-    }
-
-    /**
-     * 単一設定の更新
-     * @param {string} key - 設定キー
-     * @param {*} value - 設定値
-     * @param {boolean} save - 即座に保存するかどうか
-     */
-    async updateSetting(key, value, save = true) {
-        // 検証の実行
-        if (!this.validateSetting(key, value)) {
-            throw new Error(`Invalid value for setting ${key}: ${value}`);
-        }
-        
-        const oldValue = this.currentSettings[key];
-        this.currentSettings[key] = value;
-        
-        // 設定の適用
-        this.applySingleSetting(key, value);
-        
-        // 保存
-        if (save) {
-            await this.saveSettings();
-        }
-        
-        // リスナーに通知
-        this.notifySettingChanged(key, value, oldValue);
-    }
-
-    /**
-     * 複数設定の一括更新
-     * @param {Object} settings - 更新する設定オブジェクト
-     * @param {boolean} save - 即座に保存するかどうか
-     */
-    async updateSettings(settings, save = true) {
-        const changedSettings = {};
-        
-        // 各設定を検証・適用
-        for (const [key, value] of Object.entries(settings)) {
-            if (this.validateSetting(key, value)) {
-                const oldValue = this.currentSettings[key];
-                this.currentSettings[key] = value;
-                changedSettings[key] = { oldValue, newValue: value };
-                
-                this.applySingleSetting(key, value);
-            } else {
-                console.warn(`Invalid setting value ignored: ${key} = ${value}`);
-            }
-        }
-        
-        // 保存
-        if (save && Object.keys(changedSettings).length > 0) {
-            await this.saveSettings();
-        }
-        
-        // リスナーに通知
-        this.notifySettingsChanged(changedSettings);
     }
 
     /**
      * 設定の検証
-     * @param {string} key - 設定キー
-     * @param {*} value - 設定値
-     * @returns {boolean} 有効かどうか
+     * @param {Object} settings - 検証する設定
+     * @returns {Object} 検証結果
      */
-    validateSetting(key, value) {
-        const rule = this.validationRules.get(key);
+    validateSettings(settings) {
+        const errors = [];
+        const warnings = [];
         
-        if (rule) {
-            if (!rule.validate(value)) {
-                console.error(`Validation failed for ${key}: ${rule.message}`);
-                return false;
+        Object.keys(settings).forEach(key => {
+            if (!(key in this.settings)) {
+                warnings.push(`Unknown setting: ${key}`);
+                return;
             }
-        }
-        
-        // 基本的な型チェック
-        const expectedType = typeof this.defaultSettings[key];
-        if (expectedType !== 'undefined' && typeof value !== expectedType) {
-            console.error(`Type mismatch for ${key}: expected ${expectedType}, got ${typeof value}`);
-            return false;
-        }
-        
-        return true;
-    }
-
-    /**
-     * 設定の適用
-     */
-    applySettings() {
-        for (const [key, value] of Object.entries(this.currentSettings)) {
-            this.applySingleSetting(key, value);
-        }
-    }
-
-    /**
-     * 単一設定の適用
-     * @param {string} key - 設定キー
-     * @param {*} value - 設定値
-     */
-    applySingleSetting(key, value) {
-        try {
-            switch (key) {
-                case 'visualFeedback':
-                    if (this.mainController.feedbackManager) {
-                        this.mainController.feedbackManager.updateFeedbackSettings({ visualEnabled: value });
-                    }
-                    break;
-                    
-                case 'captioning':
-                    if (this.mainController.feedbackManager) {
-                        this.mainController.feedbackManager.updateFeedbackSettings({ captionEnabled: value });
-                    }
-                    break;
-                    
-                case 'colorIndication':
-                    if (this.mainController.feedbackManager) {
-                        this.mainController.feedbackManager.updateFeedbackSettings({ colorIndicatorEnabled: value });
-                    }
-                    break;
-                    
-                case 'hapticFeedback':
-                    if (this.mainController.feedbackManager) {
-                        this.mainController.feedbackManager.updateFeedbackSettings({ vibrationEnabled: value });
-                    }
-                    break;
-                    
-                case 'descriptionEnabled':
-                    if (this.mainController.descriptionManager) {
-                        this.mainController.descriptionManager.updateSettings({ enabled: value });
-                    }
-                    break;
-                    
-                case 'descriptionSpeed':
-                    if (this.mainController.descriptionManager) {
-                        this.mainController.descriptionManager.updateSettings({ speed: value });
-                    }
-                    break;
-                    
-                case 'descriptionVolume':
-                    if (this.mainController.descriptionManager) {
-                        this.mainController.descriptionManager.updateSettings({ volume: value });
-                    }
-                    break;
-                    
-                case 'descriptionDetailLevel':
-                    if (this.mainController.descriptionManager) {
-                        this.mainController.descriptionManager.updateSettings({ detailLevel: value });
-                    }
-                    break;
-                    
-                case 'patternRecognition':
-                    if (this.mainController.cueManager) {
-                        this.mainController.cueManager.updateSettings({ patternRecognition: value });
-                    }
-                    break;
-                    
-                case 'cueSpatialAudio':
-                    if (this.mainController.cueManager) {
-                        this.mainController.cueManager.updateSettings({ spatialAudio: value });
-                    }
-                    break;
-                    
-                case 'cueFrequencyMapping':
-                    if (this.mainController.cueManager) {
-                        this.mainController.cueManager.updateSettings({ frequencyMapping: value });
-                    }
-                    break;
-                    
-                case 'highContrast':
-                case 'largeFonts':
-                case 'reduceMotion':
-                    if (this.mainController.feedbackManager) {
-                        this.mainController.feedbackManager.updateFeedbackSettings({ [key]: value });
-                    }
-                    break;
-            }
-        } catch (error) {
-            console.error(`Failed to apply setting ${key}:`, error);
-        }
-    }
-
-    /**
-     * 設定リセット
-     * @param {Array<string>} keys - リセットするキー（未指定の場合は全て）
-     */
-    async resetSettings(keys = null) {
-        if (keys) {
-            // 指定されたキーのみリセット
-            const resetValues = {};
-            keys.forEach(key => {
-                if (this.defaultSettings.hasOwnProperty(key)) {
-                    resetValues[key] = this.defaultSettings[key];
-                }
-            });
-            await this.updateSettings(resetValues);
-        } else {
-            // 全設定をリセット
-            this.currentSettings = { ...this.defaultSettings };
-            this.applySettings();
-            await this.saveSettings();
-            this.notifySettingsChanged({});
-        }
-    }
-
-    /**
-     * 設定変更リスナーの追加
-     * @param {Function} listener - リスナー関数
-     */
-    addChangeListener(listener) {
-        this.changeListeners.add(listener);
-    }
-
-    /**
-     * 設定変更リスナーの削除
-     * @param {Function} listener - リスナー関数
-     */
-    removeChangeListener(listener) {
-        this.changeListeners.delete(listener);
-    }
-
-    /**
-     * 単一設定変更の通知
-     * @param {string} key - 変更されたキー
-     * @param {*} newValue - 新しい値
-     * @param {*} oldValue - 古い値
-     */
-    notifySettingChanged(key, newValue, oldValue) {
-        const event = {
-            type: 'single',
-            key: key,
-            newValue: newValue,
-            oldValue: oldValue,
-            timestamp: Date.now()
-        };
-        
-        this.changeListeners.forEach(listener => {
-            try {
-                listener(event);
-            } catch (error) {
-                console.error('Settings change listener error:', error);
-            }
-        });
-    }
-
-    /**
-     * 複数設定変更の通知
-     * @param {Object} changedSettings - 変更された設定
-     */
-    notifySettingsChanged(changedSettings) {
-        const event = {
-            type: 'multiple',
-            changes: changedSettings,
-            currentSettings: { ...this.currentSettings },
-            timestamp: Date.now()
-        };
-        
-        this.changeListeners.forEach(listener => {
-            try {
-                listener(event);
-            } catch (error) {
-                console.error('Settings change listener error:', error);
-            }
-        });
-    }
-
-    /**
-     * 現在の設定取得
-     * @returns {Object} 現在の設定
-     */
-    getSettings() {
-        return { ...this.currentSettings };
-    }
-
-    /**
-     * 特定設定の取得
-     * @param {string} key - 設定キー
-     * @returns {*} 設定値
-     */
-    getSetting(key) {
-        return this.currentSettings[key];
-    }
-
-    /**
-     * 設定のエクスポート
-     * @returns {string} JSON形式の設定
-     */
-    exportSettings() {
-        return JSON.stringify({
-            version: '1.0.0',
-            timestamp: Date.now(),
-            settings: this.currentSettings
-        }, null, 2);
-    }
-
-    /**
-     * 設定のインポート
-     * @param {string} jsonString - JSON形式の設定
-     */
-    async importSettings(jsonString) {
-        try {
-            const data = JSON.parse(jsonString);
             
-            if (data.settings && typeof data.settings === 'object') {
-                await this.updateSettings(data.settings);
-                console.log('Settings imported successfully');
-            } else {
-                throw new Error('Invalid settings format');
+            const value = settings[key];
+            
+            // 型チェック
+            switch (key) {
+                case 'vibrationIntensity':
+                    if (typeof value !== 'number' || value < 0 || value > 1) {
+                        errors.push(`${key} must be a number between 0 and 1`);
+                    }
+                    break;
+                default:
+                    if (typeof value !== 'boolean') {
+                        errors.push(`${key} must be a boolean value`);
+                    }
+                    break;
             }
-        } catch (error) {
-            throw new Error(`Failed to import settings: ${error.message}`);
-        }
-    }
-
-    /**
-     * 状態の取得
-     * @returns {Object} 現在の状態
-     */
-    getStatus() {
+        });
+        
         return {
-            initialized: true,
-            settingsCount: Object.keys(this.currentSettings).length,
-            changeListenersCount: this.changeListeners.size,
-            lastSaved: this.lastSaved || null,
-            settings: { ...this.currentSettings }
+            valid: errors.length === 0,
+            errors,
+            warnings
         };
     }
 
     /**
-     * キャメルケース変換
-     * @param {string} str - 変換する文字列
-     * @returns {string} キャメルケース文字列
+     * リソースの解放
      */
-    toCamelCase(str) {
-        return str.toLowerCase().split('_').map((word, index) => {
-            return index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1);
-        }).join('');
-    }
-
-    /**
-     * クリーンアップ
-     */
-    destroy() {
-        this.changeListeners.clear();
-        this.validationRules.clear();
+    dispose() {
+        // スタイルシートを削除
+        const highContrastStyle = document.getElementById('audio-accessibility-high-contrast');
+        if (highContrastStyle) {
+            highContrastStyle.remove();
+        }
+        
+        const largeFontsStyle = document.getElementById('audio-accessibility-large-fonts');
+        if (largeFontsStyle) {
+            largeFontsStyle.remove();
+        }
+        
+        console.log('AudioSettingsManager disposed');
     }
 }

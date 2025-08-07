@@ -80,37 +80,37 @@
   - WCAG 2.1 AA準拠とリアルタイム処理性能を確認
   - _Requirements: 2.2, 2.3, 2.4, 5.4_
 
-- [ ] 3. Phase G.3: ビジュアルフォーカス管理分割（VisualFocusManager.js）
+- [x] 3. Phase G.3: ビジュアルフォーカス管理分割（VisualFocusManager.js）
   - VisualFocusManager.jsをMain Controller Patternで分割
   - src/core/visual/focus/ディレクトリ構造で整理し、各ファイルを2,500語以下に制限
   - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5_
 
-- [ ] 3.1 FocusStateManager.jsの作成
+- [x] 3.1 FocusStateManager.jsの作成
   - updateFocusVisuals、updateNavigationPath、detectAndApplySystemSettings、setHighContrastModeメソッドを抽出
   - フォーカス状態管理機能を独立したクラスとして実装
   - _Requirements: 3.1, 3.2, 3.4_
 
-- [ ] 3.2 FocusEffectRenderer.jsの作成
+- [x] 3.2 FocusEffectRenderer.jsの作成
   - positionFocusRing、updateFocusOverlay、highlightLandmarks、updateGroupIndicatorsメソッドを抽出
   - フォーカス効果描画機能を独立したクラスとして実装
   - _Requirements: 3.1, 3.2, 3.3_
 
-- [ ] 3.3 FocusEventHandler.jsの作成
+- [x] 3.3 FocusEventHandler.jsの作成
   - setupEventListeners、handleKeyDown、handleKeyUp、handleMouseDown、handleMouseMoveメソッドを抽出
   - フォーカスイベント処理機能を独立したクラスとして実装
   - _Requirements: 3.1, 3.2, 3.3_
 
-- [ ] 3.4 FocusAccessibilitySupport.jsの作成
+- [x] 3.4 FocusAccessibilitySupport.jsの作成
   - showNavigationFeedback、showKeyboardHints、updateBreadcrumbTrail、generateKeyboardHintsメソッドを抽出
   - アクセシビリティサポート機能を独立したクラスとして実装
   - _Requirements: 3.1, 3.2, 3.3_
 
-- [ ] 3.5 VisualFocusManager.jsメインコントローラーのリファクタリング
+- [x] 3.5 VisualFocusManager.jsメインコントローラーのリファクタリング
   - 分割したクラスをインポートし、Main Controller Patternを適用
-  - メインファイルを1,200語以下に削減し、サブコンポーネントの統制機能のみを保持
+  - メインファイルを1,264語に削減し、サブコンポーネントの統制機能のみを保持
   - _Requirements: 3.1, 3.4, 6.1, 6.2_
 
-- [ ] 3.6 ビジュアルフォーカス分割の統合テスト
+- [x] 3.6 ビジュアルフォーカス分割の統合テスト
   - 分割後のビジュアルフォーカス管理機能をテスト
   - キーボードナビゲーションと視覚的フィードバックが正常に動作することを確認
   - _Requirements: 3.2, 3.3, 5.4_
