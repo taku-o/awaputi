@@ -2,6 +2,8 @@
  * Game Engine Event Manager
  * イベント管理・入力処理・統合機能を担当
  */
+import { getPerformanceOptimizer } from '../../utils/PerformanceOptimizer.js';
+
 export class GameEngineEventManager {
     constructor(gameEngine) {
         this.gameEngine = gameEngine;
@@ -123,7 +125,7 @@ export class GameEngineEventManager {
      * 画面揺れを開始
      */
     startScreenShake(duration, intensity = 10) {
-        const { getPerformanceOptimizer } = require('../utils/PerformanceOptimizer.js');
+        // getPerformanceOptimizer is imported at the top
         
         if (!getPerformanceOptimizer().shouldRunEffect('shake')) {
             return; // 低品質モードでは画面揺れをスキップ

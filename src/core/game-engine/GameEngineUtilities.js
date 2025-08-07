@@ -245,7 +245,7 @@ export class GameEngineUtilities {
         }
         
         // メモリ最適化を実行
-        getMemoryManager().performCleanup();
+        getMemoryManager().performIntelligentCleanup();
         
         console.log('Game cleanup completed (with enhanced effects)');
     }
@@ -262,9 +262,10 @@ export class GameEngineUtilities {
             this.gameEngine.responsiveCanvasManager.cleanup();
         }
         
-        // イベントリスナーを削除
-        // Removed: const { getMemoryManager } = require('../utils/MemoryManager.js');
-        getMemoryManager().removeAllEventListeners();
+        // メモリ最適化を実行（イベントリスナー削除は個別に管理）
+        // Note: removeAllEventListeners は現在のMemoryManagerに実装されていないため、
+        // forceCleanup を使用してメモリクリーンアップを実行
+        getMemoryManager().forceCleanup('comprehensive');
         
         // パフォーマンス最適化システムをリセット
         // Removed: const { getPerformanceOptimizer } = require('../utils/PerformanceOptimizer.js');

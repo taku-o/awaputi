@@ -325,11 +325,13 @@ export class GameEngineInitializer {
         // Removed: const { getPerformanceOptimizer } = require('../utils/PerformanceOptimizer.js');
         // Removed: const { getMemoryManager } = require('../utils/MemoryManager.js');
         
-        // レンダリングコンテキストを最適化
-        getPerformanceOptimizer().optimizeRenderingContext(this.gameEngine.context);
+        // レンダリング最適化を初期化
+        // Note: optimizeRenderingContext は現在のPerformanceOptimizerに実装されていないため削除
         
         // メモリマネージャーでCanvasコンテキストを追跡
-        getMemoryManager().trackCanvasContext(this.gameEngine.context);
+        // Note: trackCanvasContext は現在のMemoryManagerに実装されていないため、
+        // 一般的なオブジェクト追跡メソッドを使用
+        getMemoryManager().trackObject(this.gameEngine.context, 'canvas_context', 8192);
         
         // 定期的な最適化処理
         setInterval(() => {
