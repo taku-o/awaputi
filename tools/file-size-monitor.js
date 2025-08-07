@@ -18,7 +18,9 @@ const CONFIG = {
         'test-results/**',
         'playwright-report/**',
         '.git/**',
-        'coverage/**'
+        'coverage/**',
+        'docs/**',           // ドキュメント全体を除外
+        'CLAUDE.md'          // プロジェクト情報ファイルを除外
     ],
     TARGET_EXTENSIONS: ['.js', '.md'],
     WARNING_THRESHOLD: 2000, // 警告閾値
@@ -57,14 +59,14 @@ class FileSizeMonitor {
         for (const item of items) {
             const fullPath = path.join(dir, item);
             const relativePath = path.join(basePath, item);
-            
+
             // 除外パターンをチェック
             if (this.isExcluded(relativePath)) {
                 continue;
             }
 
             const stat = fs.statSync(fullPath);
-            
+
             if (stat.isDirectory()) {
                 files.push(...this.scanDirectory(fullPath, relativePath));
             } else if (this.isTargetFile(item)) {
@@ -106,7 +108,7 @@ class FileSizeMonitor {
     checkFileSize(filePath, relativePath, fileName) {
         const wordCount = this.countWords(filePath);
         const status = this.getStatus(wordCount);
-        
+
         const result = {
             filePath,
             relativePath,
@@ -144,7 +146,7 @@ class FileSizeMonitor {
      */
     generateSuggestions(wordCount, fileName) {
         const suggestions = [];
-        
+
         if (wordCount >= CONFIG.ERROR_THRESHOLD) {
             suggestions.push('緊急: ファイルを複数のモジュールに分割してください');
             suggestions.push('単一責任の原則に従ってクラス/機能を分離してください');
@@ -173,7 +175,7 @@ class FileSizeMonitor {
      */
     checkAllFiles(rootDir) {
         console.log('ファイルサイズ監視を開始します...\n');
-        
+
         const files = this.scanDirectory(rootDir);
         console.log(`対象ファイル数: ${files.length}\n`);
 
@@ -235,14 +237,14 @@ class FileSizeMonitor {
         console.log('-'.repeat(60));
         const top10 = this.results.slice(0, 10);
         top10.forEach((result, index) => {
-            const statusIcon = result.status === 'error' ? '🚨' : 
-                             result.status === 'warning' ? '⚠️' : '✅';
+            const statusIcon = result.status === 'error' ? '🚨' :
+                result.status === 'warning' ? '⚠️' : '✅';
             console.log(`${index + 1}. ${statusIcon} ${result.relativePath}`);
             console.log(`   ワード数: ${result.wordCount}`);
         });
 
         console.log('\n' + '='.repeat(60));
-        
+
         return {
             totalFiles: this.results.length,
             warnings: this.warnings.length,
@@ -278,14 +280,14 @@ class FileSizeMonitor {
 if (import.meta.url === `file://${process.argv[1]}`) {
     const monitor = new FileSizeMonitor();
     const rootDir = process.argv[2] || process.cwd();
-    
+
     monitor.checkAllFiles(rootDir);
     const summary = monitor.generateReport();
-    
+
     // JSONレポート出力
     const reportPath = path.join(rootDir, 'file-size-report.json');
     monitor.exportReport(reportPath);
-    
+
     // 制限超過ファイルがある場合は終了コード1で終了
     if (summary.errors > 0) {
         console.log('\n❌ 制限超過ファイルが検出されました。');

@@ -16,7 +16,9 @@ const EXCLUDE_PATTERNS = [
     '.git',
     'test-integration.mjs',
     'check-file-sizes.mjs',
-    '.backup'
+    '.backup',
+    'docs',      // ドキュメント全体を除外
+    'CLAUDE.md'  // プロジェクト情報ファイルを除外
 ];
 
 async function countWords(filePath) {
