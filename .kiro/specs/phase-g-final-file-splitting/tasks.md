@@ -40,42 +40,42 @@
   - 既存のCLIコマンドが正常に動作することを確認
   - _Requirements: 1.2, 1.5_
 
-- [ ] 2. Phase G.2: オーディオアクセシビリティ分割（AudioAccessibilitySupport.js）
+- [x] 2. Phase G.2: オーディオアクセシビリティ分割（AudioAccessibilitySupport.js）
   - AudioAccessibilitySupport.jsをMain Controller Patternで分割
   - src/audio/accessibility/ディレクトリ構造で整理し、各ファイルを2,500語以下に制限
   - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5_
 
-- [ ] 2.1 AudioDescriptionManager.jsの作成
+- [x] 2.1 AudioDescriptionManager.jsの作成
   - showVisualNotification、showCaption、displayNextCaption、createNotificationContainerメソッドを抽出
   - 音声説明と視覚通知機能を独立したクラスとして実装
   - _Requirements: 2.1, 2.2, 2.4_
 
-- [ ] 2.2 AudioCueManager.jsの作成
+- [x] 2.2 AudioCueManager.jsの作成
   - handleBubblePopEvent、handleComboEvent、handleAchievementEvent、handleGameStateEventメソッドを抽出
   - 音響キューとイベント処理機能を独立したクラスとして実装
   - _Requirements: 2.1, 2.2, 2.4_
 
-- [ ] 2.3 AudioFeedbackProcessor.jsの作成
+- [x] 2.3 AudioFeedbackManager.jsの作成 (名前変更: AudioFeedbackProcessor.js → AudioFeedbackManager.js)
   - monitorAudioLevels、updateColorIndicator、processEventPattern、checkPatternMatchesメソッドを抽出
   - 音響フィードバック処理とパターン認識機能を独立したクラスとして実装
   - _Requirements: 2.1, 2.2, 2.3_
 
-- [ ] 2.4 AudioSettingsManager.jsの作成
+- [x] 2.4 AudioSettingsManager.jsの作成
   - loadSettings、applySettings、setupConfigWatchers、applyHighContrastMode、applyLargeFontsメソッドを抽出
   - アクセシビリティ設定管理機能を独立したクラスとして実装
   - _Requirements: 2.1, 2.2, 2.4_
 
-- [ ] 2.5 AudioCompatibilityChecker.jsの作成
-  - initializeVibrationManager、updateVibrationManagerSettings、triggerHapticFeedbackメソッドを抽出
-  - 互換性チェックと触覚フィードバック機能を独立したクラスとして実装
+- [x] 2.5 AudioFeedbackManager.jsの作成 (AudioCompatibilityChecker.jsの機能統合)
+  - initializeVibrationManager、updateVibrationManagerSettings、triggerHapticFeedbackメソッドを統合
+  - 音響フィードバック・触覚フィードバック機能を統合したクラスとして実装
   - _Requirements: 2.1, 2.2, 2.4_
 
-- [ ] 2.6 AudioAccessibilitySupport.jsメインコントローラーのリファクタリング
+- [x] 2.6 AudioAccessibilitySupport.jsメインコントローラーのリファクタリング
   - 分割したクラスをインポートし、Main Controller Patternを適用
-  - メインファイルを1,200語以下に削減し、サブコンポーネントの統制機能のみを保持
+  - メインファイルを1,102語に削減し、サブコンポーネントの統制機能のみを保持
   - _Requirements: 2.1, 2.4, 6.1, 6.2_
 
-- [ ] 2.7 オーディオアクセシビリティ分割の統合テスト
+- [x] 2.7 オーディオアクセシビリティ分割の統合テスト
   - 分割後のオーディオアクセシビリティ機能をテスト
   - WCAG 2.1 AA準拠とリアルタイム処理性能を確認
   - _Requirements: 2.2, 2.3, 2.4, 5.4_
