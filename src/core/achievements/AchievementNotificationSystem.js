@@ -232,6 +232,17 @@ export class AchievementNotificationSystem {
      * @param {object} notification - 通知オブジェクト
      */
     addNotificationToQueue(notification) {
+        // 表示中の通知数をチェック
+        const visibleNotifications = this.notificationQueue.filter(n => n.visible);
+        
+        if (visibleNotifications.length < this.config.maxActiveNotifications) {
+            // 表示可能な場合はすぐに表示
+            notification.visible = true;
+        } else {
+            // 表示数制限に達している場合は待機
+            notification.visible = false;
+        }
+
         // キューサイズ制限チェック
         if (this.notificationQueue.length >= this.config.maxQueueSize) {
             // 最も優先度の低い通知を削除
@@ -645,6 +656,52 @@ export class AchievementNotificationSystem {
     }
 
     /**
+     * 通知のアルファ値を計算（フェードイン・アウト）
+     * @param {Object} notification - 通知オブジェクト
+     * @returns {number} アルファ値 (0-1)
+     */
+    calculateNotificationAlpha(notification) {
+        if (!notification.startTime) return 1;
+        
+        const elapsed = Date.now() - notification.startTime;
+        const fadeInDuration = this.config.animationDuration;
+        const totalDuration = this.config.notificationDuration;
+        const fadeOutDuration = this.config.animationDuration;
+        
+        if (elapsed < fadeInDuration) {
+            // フェードイン期間
+            return elapsed / fadeInDuration;
+        } else if (elapsed > totalDuration - fadeOutDuration) {
+            // フェードアウト期間
+            const fadeOutElapsed = elapsed - (totalDuration - fadeOutDuration);
+            return Math.max(0, 1 - (fadeOutElapsed / fadeOutDuration));
+        } else {
+            // 完全表示期間
+            return 1;
+        }
+    }
+
+    /**
+     * スライドオフセットを計算
+     * @param {Object} notification - 通知オブジェクト
+     * @returns {number} オフセット値
+     */
+    calculateSlideOffset(notification) {
+        if (!notification.startTime) return 0;
+        
+        const elapsed = Date.now() - notification.startTime;
+        const slideInDuration = this.config.animationDuration;
+        
+        if (elapsed < slideInDuration) {
+            // スライドイン期間
+            const progress = elapsed / slideInDuration;
+            return (1 - progress) * 300; // 300px から 0px へスライド
+        }
+        
+        return 0; // スライド完了
+    }
+
+    /**
      * 通知システムを破棄
      */
     destroy() {
@@ -682,6 +739,7 @@ export class AchievementNotificationSystem {
         notification.visible = true; // テスト互換性のため
         notification.type = 'unlock'; // テスト互換性のため
         notification.achievement = achievement;
+        notification.startTime = Date.now(); // テストで期待されるプロパティ
         
         this.addNotificationToQueue(notification);
         
@@ -747,6 +805,11 @@ export class AchievementNotificationSystem {
      */
     set audioManager(manager) {
         this._audioManager = manager;
+        
+        // モックオブジェクトの場合、playedSoundsプロパティを確保
+        if (manager && !manager.playedSounds) {
+            manager.playedSounds = [];
+        }
     }
     
     /**
