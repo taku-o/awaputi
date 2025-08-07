@@ -179,7 +179,7 @@ export class AsyncOperationQueue {
         
         // 次の操作を処理
         if (this.queue.length > 0) {
-            setImmediate(() => this.processQueue());
+            setTimeout(() => this.processQueue(), 0);
         }
     }
     

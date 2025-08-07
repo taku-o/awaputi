@@ -105,6 +105,27 @@ Object.defineProperty(global.window, 'devicePixelRatio', {
   writable: true
 });
 
+// Mock Notification API
+global.Notification = class Notification {
+  static permission = 'granted';
+  static requestPermission = jest.fn(() => Promise.resolve('granted'));
+  
+  constructor(title, options = {}) {
+    this.title = title;
+    this.body = options.body || '';
+    this.icon = options.icon || '';
+    this.badge = options.badge || '';
+    this.onclick = null;
+    this.onclose = null;
+    this.onerror = null;
+    this.onshow = null;
+  }
+  
+  close() {
+    if (this.onclose) this.onclose();
+  }
+};
+
 // Mock IndexedDB
 const mockIDBDatabase = {
   createObjectStore: jest.fn(() => ({

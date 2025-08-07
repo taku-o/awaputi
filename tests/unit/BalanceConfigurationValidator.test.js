@@ -11,7 +11,7 @@ const mockErrorHandler = {
 
 // モックの設定
 jest.mock('../../src/utils/ErrorHandler.js', () => ({
-    getErrorHandler: () => mockErrorHandler
+    getErrorHandler: jest.fn(() => mockErrorHandler)
 }));
 
 describe('BalanceConfigurationValidator', () => {
