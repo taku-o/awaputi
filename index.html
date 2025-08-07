@@ -28,8 +28,26 @@
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; font-src 'self'; worker-src 'self';">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="X-Frame-Options" content="DENY">
+    <!-- X-Frame-Options removed for local execution compatibility -->
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    
+    <!-- Local Execution Detection Script -->
+    <script>
+        // Early local execution detection before main scripts load
+        (function() {
+            if (window.location.protocol === 'file:') {
+                // Add local execution class to html element
+                document.documentElement.classList.add('awaputi-local-execution');
+                
+                // Store detection result for main script
+                window.AWAPUTI_LOCAL_EXECUTION = true;
+                
+                console.log('🏠 Local file execution detected - optimizing for local mode');
+            } else {
+                window.AWAPUTI_LOCAL_EXECUTION = false;
+            }
+        })();
+    </script>
     
     <!-- Performance Hints -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -541,6 +559,69 @@
             console.log('[PWA] オフライン状態に移行');
         });
     </script>
-    <script type="module" src="src/main.js"></script>
+    <!-- Main Application Script with Local Execution Fallback -->
+    <script type="module" src="src/main.js" onerror="handleModuleLoadError(event)"></script>
+    
+    <!-- Fallback Script for Local Execution -->
+    <script>
+        function handleModuleLoadError(event) {
+            console.warn('ES6 module loading failed, this is expected in local file execution');
+            
+            // Show user-friendly message for local execution
+            if (window.location.protocol === 'file:') {
+                const fallbackDiv = document.createElement('div');
+                fallbackDiv.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: #fff3cd;
+                    color: #856404;
+                    padding: 20px;
+                    border: 1px solid #ffeaa7;
+                    border-radius: 8px;
+                    max-width: 500px;
+                    z-index: 10000;
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                `;
+                
+                fallbackDiv.innerHTML = `
+                    <h3 style="margin: 0 0 15px 0; color: #721c24;">⚠️ Local File Execution Detected</h3>
+                    <p style="margin: 0 0 15px 0;">
+                        This game is running from a local file. For the best experience, please use a development server:
+                    </p>
+                    <div style="background: #f8f9fa; padding: 10px; border-radius: 4px; margin: 10px 0;">
+                        <strong>Recommended:</strong><br>
+                        <code style="background: #e9ecef; padding: 2px 4px; border-radius: 3px;">npm run dev</code>
+                    </div>
+                    <div style="background: #f8f9fa; padding: 10px; border-radius: 4px; margin: 10px 0;">
+                        <strong>Alternatives:</strong><br>
+                        <code style="background: #e9ecef; padding: 2px 4px; border-radius: 3px;">python -m http.server 8000</code><br>
+                        <code style="background: #e9ecef; padding: 2px 4px; border-radius: 3px;">npx serve .</code>
+                    </div>
+                    <button onclick="this.parentElement.remove()" style="
+                        background: #007bff;
+                        color: white;
+                        border: none;
+                        padding: 8px 16px;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        margin-top: 10px;
+                    ">Continue Anyway</button>
+                `;
+                
+                document.body.appendChild(fallbackDiv);
+            }
+        }
+        
+        // Hide loading screen after a timeout if modules fail to load
+        setTimeout(() => {
+            const loadingScreen = document.getElementById('loadingScreen');
+            if (loadingScreen && !loadingScreen.classList.contains('hidden')) {
+                loadingScreen.style.display = 'none';
+            }
+        }, 5000);
+    </script>
 </body>
 </html>
