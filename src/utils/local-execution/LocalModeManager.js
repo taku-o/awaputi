@@ -15,6 +15,8 @@ import MetaTagOptimizer from './MetaTagOptimizer.js';
 import FaviconGenerator from './FaviconGenerator.js';
 import DeveloperGuidanceSystem from './DeveloperGuidanceSystem.js';
 import BrowserCompatibilityManager from './BrowserCompatibilityManager.js';
+import LocalExecutionErrorHandler from './LocalExecutionErrorHandler.js';
+import { ErrorHandler } from '../ErrorHandler.js';
 
 class LocalModeManager {
     /**
@@ -141,6 +143,12 @@ class LocalModeManager {
         if (!this.executionContext.isLocal) {
             this.log('Not running in local execution mode, skipping initialization');
             return true;
+        }
+        
+        // 2.5. エラーハンドリングシステムの統合初期化
+        if (config.enableErrorHandling) {
+            await this._initializeIntegratedErrorHandling();
+            this._initializationMetrics.optimizationsApplied.push('integrated-error-handling');
         }
         
         // 3. Resource preloading
@@ -1057,8 +1065,152 @@ class LocalModeManager {
                 localExecutionDetector: LocalExecutionDetector.getDebugInfo(),
                 metaTagOptimizer: MetaTagOptimizer.getMetaTagInfo(),
                 faviconGenerator: FaviconGenerator.getDebugInfo(),
-                developerGuidanceSystem: DeveloperGuidanceSystem.getDebugInfo()
+                developerGuidanceSystem: DeveloperGuidanceSystem.getDebugInfo(),
+                localExecutionErrorHandler: LocalExecutionErrorHandler.getDebugInfo(),
+                browserCompatibilityManager: BrowserCompatibilityManager.getDebugInfo()
             }
+        };
+    }
+
+    // ========== INTEGRATED ERROR HANDLING METHODS ==========
+
+    /**
+     * 統合エラーハンドリングシステムを初期化
+     * @private
+     */
+    async _initializeIntegratedErrorHandling() {
+        try {
+            this.log('Initializing integrated error handling system');
+
+            // メインのErrorHandlerインスタンスを取得または作成
+            const mainErrorHandler = new ErrorHandler();
+            
+            // LocalExecutionErrorHandlerを初期化（統合モード）
+            LocalExecutionErrorHandler.initialize({
+                enableGlobalHandling: this.config.enableErrorHandling,
+                enableUserNotifications: this.config.enableDeveloperGuidance,
+                enableDebugLogging: this.config.debugMode,
+                enableFallbacks: this.config.enableFallbackResources,
+                enableMainErrorHandlerIntegration: true
+            }, mainErrorHandler);
+
+            // エラーハンドリングシステムのインスタンスを保存
+            this.errorHandler = mainErrorHandler;
+            this.localErrorHandler = LocalExecutionErrorHandler;
+
+            this.log('Integrated error handling system initialized successfully');
+            
+        } catch (error) {
+            console.error('LocalModeManager: Failed to initialize integrated error handling', error);
+            
+            // フォールバック：統合なしでLocalExecutionErrorHandlerのみ初期化
+            try {
+                LocalExecutionErrorHandler.initialize({
+                    enableGlobalHandling: this.config.enableErrorHandling,
+                    enableUserNotifications: this.config.enableDeveloperGuidance,
+                    enableDebugLogging: this.config.debugMode,
+                    enableFallbacks: this.config.enableFallbackResources,
+                    enableMainErrorHandlerIntegration: false
+                });
+                
+                this.localErrorHandler = LocalExecutionErrorHandler;
+                this.log('Fallback: Local error handler initialized without main integration');
+                
+            } catch (fallbackError) {
+                console.error('LocalModeManager: Failed to initialize even fallback error handling', fallbackError);
+                throw fallbackError;
+            }
+        }
+    }
+
+    /**
+     * エラーを処理（統合エラーハンドリングシステム経由）
+     * @param {Error} error - エラーオブジェクト
+     * @param {string} context - エラーコンテキスト
+     * @param {Object} metadata - メタデータ
+     */
+    handleError(error, context = 'LOCAL_MODE_MANAGER', metadata = {}) {
+        try {
+            const enhancedMetadata = {
+                ...metadata,
+                localMode: true,
+                executionContext: this.executionContext,
+                componentState: this.getStatus(),
+                timestamp: new Date().toISOString()
+            };
+
+            // メインのErrorHandlerが利用可能な場合はそれを使用
+            if (this.errorHandler) {
+                this.errorHandler.handleError(error, context, enhancedMetadata);
+            } 
+            // フォールバック：LocalExecutionErrorHandlerを直接使用
+            else if (this.localErrorHandler) {
+                this.localErrorHandler.handleResourceError(error, context);
+            }
+            // 最終フォールバック：コンソールログ
+            else {
+                console.error(`LocalModeManager Error [${context}]:`, error, enhancedMetadata);
+            }
+
+        } catch (handlingError) {
+            console.error('LocalModeManager: Error in error handling system', handlingError);
+            console.error('Original error:', error);
+        }
+    }
+
+    /**
+     * ブラウザ互換性エラーを処理
+     * @param {Error} error - エラーオブジェクト
+     * @param {string} feature - 機能名
+     */
+    handleCompatibilityError(error, feature) {
+        try {
+            if (this.localErrorHandler && typeof this.localErrorHandler.handleCompatibilityError === 'function') {
+                return this.localErrorHandler.handleCompatibilityError(error, feature);
+            } else {
+                // フォールバック処理
+                this.handleError(error, 'COMPATIBILITY_ERROR', { feature });
+            }
+        } catch (handlingError) {
+            console.error('LocalModeManager: Failed to handle compatibility error', handlingError);
+            console.error('Original compatibility error:', error);
+        }
+    }
+
+    /**
+     * セキュリティポリシーエラーを処理
+     * @param {Error} error - エラーオブジェクト
+     * @param {string} policy - ポリシー名
+     */
+    handleSecurityError(error, policy) {
+        try {
+            if (this.localErrorHandler && typeof this.localErrorHandler.handleSecurityError === 'function') {
+                return this.localErrorHandler.handleSecurityError(error, policy);
+            } else {
+                // フォールバック処理
+                this.handleError(error, 'SECURITY_ERROR', { policy });
+            }
+        } catch (handlingError) {
+            console.error('LocalModeManager: Failed to handle security error', handlingError);
+            console.error('Original security error:', error);
+        }
+    }
+
+    /**
+     * エラー統計を取得
+     * @returns {Object} エラー統計情報
+     */
+    getErrorStats() {
+        if (this.errorHandler && typeof this.errorHandler.getErrorStats === 'function') {
+            return {
+                mainErrorHandler: this.errorHandler.getErrorStats(),
+                localErrorHandler: this.localErrorHandler ? this.localErrorHandler.getDebugInfo() : null
+            };
+        }
+
+        return {
+            mainErrorHandler: null,
+            localErrorHandler: this.localErrorHandler ? this.localErrorHandler.getDebugInfo() : null
         };
     }
 }
