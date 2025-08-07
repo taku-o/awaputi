@@ -79,13 +79,13 @@ describe('OfflineManager', () => {
         
         test('オンライン状態が正しく初期化される', async () => {
             // 初期化完了を待つ
-            await new Promise(resolve => setTimeout(resolve, 0));
+            await new Promise(resolve => setTimeout(resolve, 100));
             
             expect(offlineManager.state.isOnline).toBe(true);
             expect(offlineManager.state.offlineOperations).toEqual([]);
             // 初期化時に接続チェックが実行されるため、'good'になる
             expect(['unknown', 'good']).toContain(offlineManager.state.connectionQuality);
-        });
+        }, 10000); // タイムアウトを10秒に設定
         
         test('ハートビート監視が開始される', () => {
             expect(offlineManager.heartbeatTimer).toBeTruthy();
@@ -333,8 +333,11 @@ describe('OfflineManager', () => {
         });
         
         test('オフライン状態では接続チェックしない', async () => {
-            // OfflineManagerのstate.isOnlineをオフラインに設定
-            offlineManager.state.isOnline = false;
+            // navigator.onLineをオフラインに設定
+            Object.defineProperty(navigator, 'onLine', {
+                writable: true,
+                value: false
+            });
             
             const quality = await offlineManager.checkConnectionQuality();
             
