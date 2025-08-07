@@ -127,11 +127,12 @@
     - Progress: Fixed AudioAccessibilitySupport import issues, verified component structure
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
 
-  - [ ] 5.2 Update tests for split module structure
+  - [x] 5.2 Update tests for split module structure
     - Update tests that reference modules split during Phase G
     - Ensure test coverage is maintained for split functionality
     - Update integration tests for new module interactions
     - Validate that split modules work correctly together
+    - Progress: Fixed EnhancedParticleManager duplicate methods, test cleanup issues, inquirer mocking
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
 
   - [ ] 5.3 Fix interface compatibility issues

@@ -149,12 +149,21 @@ describe('Phase G統合テストスイート', () => {
                 }
             }));
             
-            // Mock inquirer module
-            const inquirerMock = {
+            // Mock inquirer module by creating a global mock
+            global.mockInquirer = {
                 prompt: jest.fn().mockResolvedValue({ action: 'exit' })
             };
-            jest.doMock('inquirer', () => inquirerMock);
-            jest.doMock('inquirer', () => ({ default: inquirerMock }));
+            
+            // Override module resolution for inquirer
+            const originalResolve = require.resolve;
+            require.resolve = jest.fn((id) => {
+                if (id === 'inquirer') return '/mock/inquirer';
+                return originalResolve(id);
+            });
+            
+            require.cache['/mock/inquirer'] = {
+                exports: global.mockInquirer
+            };
             
             jest.unstable_mockModule('chalk', () => ({
                 default: {
@@ -168,7 +177,7 @@ describe('Phase G統合テストスイート', () => {
             }));
 
             // Mock all BalanceAdjuster sub-components
-            jest.unstable_mockModule('../../tools/balance/BalanceDataLoader.js', () => ({
+            jest.unstable_mockModule('../../../tools/balance/BalanceDataLoader.js', () => ({
                 BalanceDataLoader: class BalanceDataLoader {
                     constructor(controller) { this.controller = controller; }
                     loadCurrentConfiguration() { return { scoring: { normal: 10 } }; }
@@ -177,7 +186,7 @@ describe('Phase G統合テストスイート', () => {
                 }
             }));
             
-            jest.unstable_mockModule('../../tools/balance/BalanceCalculator.js', () => ({
+            jest.unstable_mockModule('../../../tools/balance/BalanceCalculator.js', () => ({
                 BalanceCalculator: class BalanceCalculator {
                     constructor(controller) { this.controller = controller; }
                     previewBalanceImpact(changes) { return { impact: 'moderate' }; }
@@ -185,7 +194,7 @@ describe('Phase G統合テストスイート', () => {
                 }
             }));
             
-            jest.unstable_mockModule('../../tools/balance/BalanceValidator.js', () => ({
+            jest.unstable_mockModule('../../../tools/balance/BalanceValidator.js', () => ({
                 BalanceValidator: class BalanceValidator {
                     constructor(controller) { this.controller = controller; }
                     runQuickTests(changes) { return Promise.resolve({ passed: 5, failed: 0 }); }
@@ -194,7 +203,7 @@ describe('Phase G統合テストスイート', () => {
                 }
             }));
             
-            jest.unstable_mockModule('../../tools/balance/BalanceExporter.js', () => ({
+            jest.unstable_mockModule('../../../tools/balance/BalanceExporter.js', () => ({
                 BalanceExporter: class BalanceExporter {
                     constructor(controller) { this.controller = controller; }
                     saveChanges(changes, options) { return Promise.resolve({ success: true, appliedChanges: [] }); }
@@ -204,26 +213,26 @@ describe('Phase G統合テストスイート', () => {
             }));
 
             // Mock utility classes
-            jest.unstable_mockModule('../../src/utils/BalanceGuidelinesManager.js', () => ({
+            jest.unstable_mockModule('../../../src/utils/BalanceGuidelinesManager.js', () => ({
                 BalanceGuidelinesManager: class BalanceGuidelinesManager {
                     constructor() {}
                 }
             }));
 
-            jest.unstable_mockModule('../../src/utils/BalanceConfigurationValidator.js', () => ({
+            jest.unstable_mockModule('../../../src/utils/BalanceConfigurationValidator.js', () => ({
                 BalanceConfigurationValidator: class BalanceConfigurationValidator {
                     constructor() {}
                 }
             }));
 
-            jest.unstable_mockModule('../../src/utils/ConfigurationSynchronizer.js', () => ({
+            jest.unstable_mockModule('../../../src/utils/ConfigurationSynchronizer.js', () => ({
                 ConfigurationSynchronizer: class ConfigurationSynchronizer {
                     constructor() {}
                 }
             }));
 
             try {
-                const module = await import('../../tools/balance/balance-adjuster.js');
+                const module = await import('../../../tools/balance/balance-adjuster.js');
                 BalanceAdjuster = module.BalanceAdjuster;
             } catch (error) {
                 console.warn('BalanceAdjuster import failed, using mock:', error.message);
@@ -279,25 +288,22 @@ describe('Phase G統合テストスイート', () => {
         let mockAudioManager;
         
         beforeAll(async () => {
-            // Mock utility functions
-            jest.unstable_mockModule('../../src/utils/ErrorHandler.js', () => ({
-                getErrorHandler: jest.fn(() => ({
-                    handleError: jest.fn()
-                }))
-            }));
+            // Mock utility functions with global mocks
+            global.mockErrorHandler = {
+                handleError: jest.fn()
+            };
+            global.getErrorHandler = jest.fn(() => global.mockErrorHandler);
             
-            jest.unstable_mockModule('../../src/core/ConfigurationManager.js', () => ({
-                getConfigurationManager: jest.fn(() => ({
-                    getConfig: jest.fn(() => ({})),
-                    updateConfig: jest.fn()
-                }))
-            }));
+            global.mockConfigurationManager = {
+                getConfig: jest.fn(() => ({})),
+                updateConfig: jest.fn()
+            };
+            global.getConfigurationManager = jest.fn(() => global.mockConfigurationManager);
             
-            jest.unstable_mockModule('../../src/core/LocalizationManager.js', () => ({
-                getLocalizationManager: jest.fn(() => ({
-                    translate: jest.fn(key => key)
-                }))
-            }));
+            global.mockLocalizationManager = {
+                translate: jest.fn(key => key)
+            };
+            global.getLocalizationManager = jest.fn(() => global.mockLocalizationManager);
 
             // Mock all sub-components
             const createMockComponent = (name) => class MockComponent {
@@ -332,32 +338,32 @@ describe('Phase G統合テストスイート', () => {
                 getVibrationManager() { return { vibrate: jest.fn() }; }
             };
 
-            jest.unstable_mockModule('../../src/audio/accessibility/AudioDescriptionManager.js', () => ({
+            jest.unstable_mockModule('../../../src/audio/accessibility/AudioDescriptionManager.js', () => ({
                 AudioDescriptionManager: createMockComponent('AudioDescriptionManager')
             }));
             
-            jest.unstable_mockModule('../../src/audio/accessibility/AudioCueManager.js', () => ({
+            jest.unstable_mockModule('../../../src/audio/accessibility/AudioCueManager.js', () => ({
                 AudioCueManager: createMockComponent('AudioCueManager')
             }));
             
-            jest.unstable_mockModule('../../src/audio/accessibility/AudioFeedbackManager.js', () => ({
+            jest.unstable_mockModule('../../../src/audio/accessibility/AudioFeedbackManager.js', () => ({
                 AudioFeedbackManager: createMockComponent('AudioFeedbackManager')
             }));
             
-            jest.unstable_mockModule('../../src/audio/accessibility/AudioSettingsManager.js', () => ({
+            jest.unstable_mockModule('../../../src/audio/accessibility/AudioSettingsManager.js', () => ({
                 AudioSettingsManager: createMockComponent('AudioSettingsManager')
             }));
             
-            jest.unstable_mockModule('../../src/audio/accessibility/AudioEventManager.js', () => ({
+            jest.unstable_mockModule('../../../src/audio/accessibility/AudioEventManager.js', () => ({
                 AudioEventManager: createMockComponent('AudioEventManager')
             }));
             
-            jest.unstable_mockModule('../../src/audio/accessibility/AudioLegacyAdapter.js', () => ({
+            jest.unstable_mockModule('../../../src/audio/accessibility/AudioLegacyAdapter.js', () => ({
                 AudioLegacyAdapter: createMockComponent('AudioLegacyAdapter')
             }));
 
             try {
-                const module = await import('../../src/audio/accessibility/AudioAccessibilitySupport.js');
+                const module = await import('../../../src/audio/accessibility/AudioAccessibilitySupport.js');
                 AudioAccessibilitySupport = module.AudioAccessibilitySupport;
             } catch (error) {
                 console.warn('AudioAccessibilitySupport import failed, using mock:', error.message);
