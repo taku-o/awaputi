@@ -243,7 +243,7 @@ export class EffectPerformanceOptimizer {
         const enhancedEffectManager = this.gameEngine.enhancedEffectManager;
         if (enhancedEffectManager) {
             // エフェクト最適化
-            enhancedEffectManager.enableOptimizedRendering(true);
+            enhancedEffectManager.enableOptimization(true);
         }
     }
 

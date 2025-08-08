@@ -153,7 +153,7 @@ export class SEOMetaManager {
             title: dynamicTitle,
             description: dynamicDescription,
             gameState: gameSession,
-            url: this._generateUrl()
+            url: this._generateUrl({})
         };
     }
 
@@ -811,7 +811,7 @@ export class SEOMetaManager {
      * URLの生成
      * @private
      */
-    _generateUrl(context) {
+    _generateUrl(context = {}) {
         const path = context.path || window.location.pathname;
         return getLocalizedUrl(this.currentLang, path);
     }
