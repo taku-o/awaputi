@@ -849,6 +849,27 @@ class ConfigurationManager {
         
         this._logDebug('検証ルール設定完了');
     }
+    
+    /**
+     * 検証ルールを追加
+     * @param {string} category - 設定カテゴリ
+     * @param {string} key - 設定キー
+     * @param {Object} rule - 検証ルール
+     */
+    addValidationRule(category, key, rule) {
+        try {
+            const ruleKey = `${category}.${key}`;
+            this.validationRules.set(ruleKey, rule);
+            this._logDebug(`検証ルール追加: ${ruleKey}`);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'CONFIGURATION_ERROR', {
+                context: 'ConfigurationManager.addValidationRule',
+                category,
+                key,
+                rule
+            });
+        }
+    }
 }
 
 // シングルトンインスタンス
