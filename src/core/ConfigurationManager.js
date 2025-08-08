@@ -68,6 +68,46 @@ class ConfigurationManager {
         this.configurations.set('effects', new Map());
         this.configurations.set('performance', new Map());
         
+        // 基本パフォーマンス設定のデフォルト値を設定
+        this.setDefaultValue('performance', 'targetFPS', 60);
+        this.setDefaultValue('performance', 'adaptiveMode', true);
+        this.setDefaultValue('performance', 'performanceLevel', 'high');
+        this.setDefaultValue('performance', 'maxBubbles', 20);
+        this.setDefaultValue('performance', 'maxParticles', 500);
+        
+        // パフォーマンス最適化設定のデフォルト値を設定
+        this.setDefaultValue('performance', 'optimization.targetFPS', 60);
+        this.setDefaultValue('performance', 'optimization.adaptiveMode', true);
+        this.setDefaultValue('performance', 'optimization.optimizationInterval', 1000);
+        this.setDefaultValue('performance', 'optimization.maxHistorySize', 30);
+        this.setDefaultValue('performance', 'optimization.performanceLevel', 'high');
+        this.setDefaultValue('performance', 'optimization.maxBubbles', 20);
+        this.setDefaultValue('performance', 'optimization.maxParticles', 500);
+        this.setDefaultValue('performance', 'optimization.workloadDistribution', true);
+        this.setDefaultValue('performance', 'optimization.maxTimePerFrame', 8);
+        
+        // エフェクト設定のデフォルト値を設定
+        this.setDefaultValue('effects', 'quality.level', 'high');
+        this.setDefaultValue('effects', 'quality.autoAdjust', true);
+        this.setDefaultValue('effects', 'seasonal.enabled', true);
+        this.setDefaultValue('effects', 'seasonal.autoDetection', true);
+        this.setDefaultValue('effects', 'seasonal.currentSeason', 'spring');
+        this.setDefaultValue('effects', 'audio.enabled', true);
+        this.setDefaultValue('effects', 'audio.volumeSync', true);
+        this.setDefaultValue('effects', 'particles.maxCount', 500);
+        this.setDefaultValue('effects', 'particles.quality', 'high');
+        
+        // オーディオ設定のデフォルト値を設定
+        this.setDefaultValue('audio', 'volumes.master', 0.8);
+        this.setDefaultValue('audio', 'volumes.effects', 0.7);
+        this.setDefaultValue('audio', 'volumes.music', 0.6);
+        this.setDefaultValue('audio', 'enabled', true);
+        
+        // ゲーム設定のデフォルト値を設定
+        this.setDefaultValue('game', 'scoring.baseScores', {});
+        this.setDefaultValue('game', 'bubbles.maxAge', 30000);
+        this.setDefaultValue('game', 'difficulty', 'normal');
+        
         // 非同期でキャッシュウォームアップを実行
         setTimeout(() => {
             this.warmupCache();

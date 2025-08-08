@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>最終修正確認</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            background: #f0f0f0;
+        }
+        .log-container {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            max-height: 500px;
+            overflow-y: auto;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        .error { color: red; font-weight: bold; }
+        .success { color: green; }
+        .info { color: blue; }
+        .warning { color: orange; }
+        .step { margin: 10px 0; padding: 10px; background: #f9f9f9; border-left: 3px solid #007cba; }
+        .code-snippet { background: #f8f8f8; padding: 10px; border-radius: 4px; margin: 5px 0; font-family: monospace; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <h1>最終修正確認ツール</h1>
+    
+    <div class="step">
+        <h3>🔍 テスト</h3>
+        <button onclick="testMainJsContent()">main.js詳細内容確認</button>
+        <button onclick="testConfigurationManager()">ConfigurationManager動作確認</button>
+        <button onclick="testGameEngineImport()">GameEngine動作確認</button>
+        <button onclick="clearLogs()">ログクリア</button>
+    </div>
+    
+    <div class="log-container" id="logs">
+        <div>最終修正確認ツール準備完了。</div>
+    </div>
+
+    <script>
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logElement = document.createElement('div');
+            logElement.className = type;
+            logElement.textContent = `[${timestamp}] ${message}`;
+            document.getElementById('logs').appendChild(logElement);
+            console.log(message);
+            
+            // 自動スクロール
+            const container = document.getElementById('logs');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function logCode(code, description = 'コード') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logElement = document.createElement('div');
+            logElement.innerHTML = `<strong>[${timestamp}] ${description}:</strong><div class="code-snippet">${code}</div>`;
+            document.getElementById('logs').appendChild(logElement);
+            
+            // 自動スクロール
+            const container = document.getElementById('logs');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function clearLogs() {
+            document.getElementById('logs').innerHTML = '<div>ログクリア完了</div>';
+        }
+
+        // main.jsの詳細内容確認
+        async function testMainJsContent() {
+            log('🧪 main.js詳細内容確認開始');
+            
+            try {
+                // キャッシュを回避するためにタイムスタンプを追加
+                const timestamp = Date.now();
+                log('🔄 main.js読み込み中（キャッシュ回避）...');
+                const response = await fetch(`./src/main.js?t=${timestamp}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const content = await response.text();
+                log(`✅ main.js読み込み成功 (${content.length} 文字)`, 'success');
+                
+                // インポート文の確認
+                log('📦 インポート文確認中...');
+                const imports = content.match(/^import.*$/gm) || [];
+                for (const imp of imports) {
+                    if (imp.includes('getConfigurationManager')) {
+                        log(`✅ ConfigurationManagerインポート発見`, 'success');
+                        logCode(imp.trim(), 'インポート文');
+                    } else if (imp.includes('GameEngine')) {
+                        log(`✅ GameEngineインポート発見`, 'success');
+                        logCode(imp.trim(), 'インポート文');
+                    }
+                }
+                
+                // 初期化コードの確認
+                log('🔧 初期化コード確認中...');
+                const initLines = content.split('\n').filter((line, index) => {
+                    const trimmed = line.trim();
+                    return trimmed.includes('ステップ') || 
+                           trimmed.includes('ConfigurationManager') ||
+                           trimmed.includes('GameEngine') ||
+                           trimmed.includes('getConfigurationManager()');
+                });
+                
+                log(`📋 重要な初期化コード（${initLines.length}行見つかりました）:`);
+                initLines.forEach((line, index) => {
+                    logCode(line.trim(), `初期化コード ${index + 1}`);
+                });
+                
+                // 具体的な修正項目チェック
+                const checks = {
+                    'getConfigurationManagerインポート': /import.*getConfigurationManager.*from/,
+                    'getConfigurationManager呼び出し': /getConfigurationManager\(\)/,
+                    'ステップ2ConfigurationManager': /ステップ2.*ConfigurationManager.*初期化/,
+                    'ステップ3GameEngine': /ステップ3.*ゲームエンジン.*初期化/,
+                    'LoadingManagerステップ配列': /設定システム初期化中/
+                };
+                
+                log('✅ 詳細修正チェック結果:');
+                Object.entries(checks).forEach(([checkName, regex]) => {
+                    const found = regex.test(content);
+                    log(`  ${checkName}: ${found ? '✅ 発見' : '❌ 未発見'}`, found ? 'success' : 'error');
+                    
+                    if (found) {
+                        const match = content.match(regex);
+                        if (match) {
+                            logCode(match[0], `${checkName} マッチ部分`);
+                        }
+                    }
+                });
+                
+            } catch (error) {
+                log(`❌ main.js内容確認失敗: ${error.message}`, 'error');
+                console.error('Main.js content check error:', error);
+            }
+        }
+
+        // ConfigurationManager動作確認
+        async function testConfigurationManager() {
+            log('🧪 ConfigurationManager動作確認開始');
+            
+            try {
+                log('🔄 ConfigurationManager動的インポート中...');
+                const configModule = await import(`./src/core/ConfigurationManager.js?t=${Date.now()}`);
+                log('✅ ConfigurationManagerインポート成功', 'success');
+                
+                if (configModule.getConfigurationManager) {
+                    log('✅ getConfigurationManager関数存在確認', 'success');
+                    
+                    const configManager = configModule.getConfigurationManager();
+                    log('✅ ConfigurationManagerインスタンス取得成功', 'success');
+                    
+                    // APIメソッド確認
+                    const methods = ['get', 'set', 'has', 'reset'];
+                    methods.forEach(method => {
+                        if (typeof configManager[method] === 'function') {
+                            log(`✅ ${method}メソッド確認`, 'success');
+                        } else {
+                            log(`❌ ${method}メソッド不在`, 'error');
+                        }
+                    });
+                    
+                    // 重要設定値のテスト
+                    const testConfigs = [
+                        { category: 'performance', key: 'targetFPS', expected: 60 },
+                        { category: 'performance', key: 'optimization.targetFPS', expected: 60 }
+                    ];
+                    
+                    for (const config of testConfigs) {
+                        try {
+                            const value = configManager.get(config.category, config.key);
+                            const isCorrect = value === config.expected;
+                            log(`${isCorrect ? '✅' : '⚠️'} ${config.category}.${config.key} = ${value} (期待値: ${config.expected})`, isCorrect ? 'success' : 'warning');
+                        } catch (error) {
+                            log(`❌ ${config.category}.${config.key} 取得エラー: ${error.message}`, 'error');
+                        }
+                    }
+                    
+                } else {
+                    log('❌ getConfigurationManager関数が存在しません', 'error');
+                }
+                
+            } catch (error) {
+                log(`❌ ConfigurationManager動作確認失敗: ${error.message}`, 'error');
+                console.error('ConfigurationManager test error:', error);
+            }
+        }
+
+        // GameEngine動作確認
+        async function testGameEngineImport() {
+            log('🧪 GameEngine動作確認開始');
+            
+            try {
+                log('🔄 GameEngine動的インポート中...');
+                const gameEngineModule = await import(`./src/core/GameEngine.js?t=${Date.now()}`);
+                log('✅ GameEngineインポート成功', 'success');
+                
+                if (gameEngineModule.GameEngine) {
+                    log('✅ GameEngineクラス存在確認', 'success');
+                    
+                    // テスト用Canvas要素作成
+                    const testCanvas = document.createElement('canvas');
+                    testCanvas.width = 800;
+                    testCanvas.height = 600;
+                    
+                    log('🔄 GameEngineインスタンス作成テスト...');
+                    
+                    try {
+                        const gameEngine = new gameEngineModule.GameEngine(testCanvas);
+                        log('✅ GameEngineインスタンス作成成功', 'success');
+                        
+                        // 基本プロパティ確認
+                        const props = ['canvas', 'context', 'isRunning'];
+                        props.forEach(prop => {
+                            if (gameEngine[prop] !== undefined) {
+                                log(`✅ ${prop}プロパティ確認`, 'success');
+                            } else {
+                                log(`❌ ${prop}プロパティ不在`, 'error');
+                            }
+                        });
+                        
+                        // configManagerプロパティ確認
+                        if (gameEngine.configManager) {
+                            log('✅ GameEngine.configManagerプロパティ確認', 'success');
+                        } else {
+                            log('❌ GameEngine.configManagerプロパティ不在', 'error');
+                        }
+                        
+                    } catch (error) {
+                        log(`❌ GameEngineインスタンス作成失敗: ${error.message}`, 'error');
+                        console.error('GameEngine instantiation error:', error);
+                    }
+                    
+                } else {
+                    log('❌ GameEngineクラスが存在しません', 'error');
+                }
+                
+            } catch (error) {
+                log(`❌ GameEngine動作確認失敗: ${error.message}`, 'error');
+                console.error('GameEngine test error:', error);
+            }
+        }
+
+        // 初期実行
+        document.addEventListener('DOMContentLoaded', function() {
+            log('🚀 最終修正確認ツール準備完了');
+            
+            // 自動でテスト実行
+            setTimeout(() => {
+                testMainJsContent();
+            }, 500);
+        });
+    </script>
+</body>
+</html>
