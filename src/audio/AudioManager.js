@@ -673,6 +673,51 @@ export class AudioManager {
     getQualitySettings(mode = this.qualityMode) {
         return this.qualitySettings[mode] || this.qualitySettings.high;
     }
+    
+    /**
+     * オーディオシステムを無効化
+     * エラー復旧やセーフモード時に使用
+     */
+    disable() {
+        try {
+            // 全ての再生中音声を停止
+            this.stopAll();
+            
+            // BGMを停止
+            this.stopBGM();
+            
+            // ミュート状態にする
+            this.setMuted(true);
+            
+            // AudioContextを中断
+            if (this.audioContext && this.audioContext.state !== 'closed') {
+                this.audioContext.suspend();
+            }
+            
+            console.log('[AudioManager] オーディオシステムを無効化しました');
+        } catch (error) {
+            console.warn('[AudioManager] 無効化中にエラー:', error);
+        }
+    }
+    
+    /**
+     * オーディオシステムを有効化
+     */
+    enable() {
+        try {
+            // AudioContextを再開
+            if (this.audioContext && this.audioContext.state === 'suspended') {
+                this.audioContext.resume();
+            }
+            
+            // ミュート解除
+            this.setMuted(false);
+            
+            console.log('[AudioManager] オーディオシステムを有効化しました');
+        } catch (error) {
+            console.warn('[AudioManager] 有効化中にエラー:', error);
+        }
+    }
 }
 
 // シングルトンインスタンス管理

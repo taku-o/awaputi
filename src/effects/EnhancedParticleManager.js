@@ -35,6 +35,9 @@ export class EnhancedParticleManager extends ParticleManager {
         this.qualityController = getEffectQualityController();
         this.performanceMonitor = getEffectPerformanceMonitor();
         
+        // パフォーマンス監視用
+        this.lastPerformanceCheck = null;
+        
         // 既存エフェクトレンダラーの初期化
         this.bubbleRenderer = new BubbleEffectRenderer(this);
         this.comboRenderer = new ComboEffectRenderer(this);
@@ -194,7 +197,20 @@ export class EnhancedParticleManager extends ParticleManager {
     _monitorPerformance() {
         try {
             // フレームレートに基づく品質自動調整
-            const currentFPS = this.performanceMonitor ? this.performanceMonitor.getCurrentFPS() : 60;
+            let currentFPS = 60; // デフォルト値
+            
+            if (this.performanceMonitor && typeof this.performanceMonitor.getCurrentFPS === 'function') {
+                currentFPS = this.performanceMonitor.getCurrentFPS();
+            } else if (typeof window !== 'undefined' && window.performance && window.performance.now) {
+                // フォールバック: 簡易FPS計算
+                const now = window.performance.now();
+                if (this.lastPerformanceCheck) {
+                    const deltaTime = now - this.lastPerformanceCheck;
+                    currentFPS = Math.min(60, 1000 / deltaTime);
+                }
+                this.lastPerformanceCheck = now;
+            }
+            
             this.qualityManager.adjustQualityBasedOnPerformance(currentFPS);
             
         } catch (error) {
