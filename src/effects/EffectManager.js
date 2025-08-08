@@ -933,4 +933,46 @@ export class EffectManager {
         // ビネット効果は色調効果として実装
         return this.addTint('#000000', intensity, duration);
     }
+    
+    /**
+     * エフェクトシステムを無効化
+     * エラー復旧やセーフモード時に使用
+     */
+    disable() {
+        try {
+            // 全ての効果をクリア
+            this.clearEffects();
+            
+            // 変換状態をリセット
+            this.currentTransform = {
+                shake: { x: 0, y: 0 },
+                zoom: 1,
+                rotation: 0,
+                flash: { r: 0, g: 0, b: 0, a: 0 },
+                tint: { r: 0, g: 0, b: 0, a: 0 },
+                blur: 0,
+                contrast: 1,
+                brightness: 1,
+                saturation: 1
+            };
+            
+            // 積算用配列をクリア
+            Object.keys(this.transforms).forEach(key => {
+                this.transforms[key] = [];
+            });
+            
+            console.log('[EffectManager] エフェクトシステムを無効化しました');
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'EffectManager.disable'
+            });
+        }
+    }
+    
+    /**
+     * エフェクトシステムを有効化
+     */
+    enable() {
+        console.log('[EffectManager] エフェクトシステムを有効化しました');
+    }
 }

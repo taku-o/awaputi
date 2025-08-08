@@ -480,4 +480,28 @@ export class ParticleManager {
         });
         return distribution;
     }
+    
+    /**
+     * パーティクルシステムを無効化
+     * エラー復旧やセーフモード時に使用
+     */
+    disable() {
+        try {
+            this.enabled = false;
+            this.clear();
+            console.log('[ParticleManager] パーティクルシステムを無効化しました');
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'ParticleManager.disable'
+            });
+        }
+    }
+    
+    /**
+     * パーティクルシステムを有効化
+     */
+    enable() {
+        this.enabled = true;
+        console.log('[ParticleManager] パーティクルシステムを有効化しました');
+    }
 }
