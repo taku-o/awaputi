@@ -108,6 +108,13 @@ class ConfigurationManager {
         this.setDefaultValue('game', 'bubbles.maxAge', 30000);
         this.setDefaultValue('game', 'difficulty', 'normal');
         
+        // ゲームバブル詳細設定のデフォルト値を設定
+        this.setDefaultValue('game', 'bubbles.normal.health', 1);
+        this.setDefaultValue('game', 'bubbles.normal.size', 30);
+        this.setDefaultValue('game', 'bubbles.normal.maxAge', 30000);
+        this.setDefaultValue('game', 'bubbles.normal.score', 10);
+        this.setDefaultValue('game', 'bubbles.normal.color', '#4a9eff');
+        
         // 検証ルールを設定
         this._setupValidationRules();
         

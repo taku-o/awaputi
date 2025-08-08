@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Service Worker Cache Clear</title>
+</head>
+<body>
+    <h1>Service Worker キャッシュクリア</h1>
+    <p>テスト用にService Workerとキャッシュをクリアします...</p>
+    <div id="log"></div>
+
+    <script>
+        async function clearServiceWorkerCache() {
+            const log = document.getElementById('log');
+            
+            function addLog(message) {
+                const p = document.createElement('p');
+                p.textContent = message;
+                log.appendChild(p);
+                console.log(message);
+            }
+
+            try {
+                addLog('Service Worker登録をクリア中...');
+                
+                // Service Worker登録を取得してアンレジスター
+                if ('serviceWorker' in navigator) {
+                    const registrations = await navigator.serviceWorker.getRegistrations();
+                    for (const registration of registrations) {
+                        await registration.unregister();
+                        addLog(`Service Worker登録解除: ${registration.scope}`);
+                    }
+                }
+
+                // キャッシュをクリア
+                if ('caches' in window) {
+                    addLog('キャッシュストレージをクリア中...');
+                    const cacheNames = await caches.keys();
+                    for (const cacheName of cacheNames) {
+                        await caches.delete(cacheName);
+                        addLog(`キャッシュ削除: ${cacheName}`);
+                    }
+                }
+
+                // ローカルストレージもクリア
+                addLog('ローカルストレージをクリア中...');
+                localStorage.clear();
+                sessionStorage.clear();
+
+                addLog('✅ クリア完了！');
+                addLog('ページをリロードして新しいポートでテストしてください。');
+
+                // 3秒後にリロード
+                setTimeout(() => {
+                    window.location.reload();
+                }, 3000);
+
+            } catch (error) {
+                addLog(`❌ エラー: ${error.message}`);
+            }
+        }
+
+        // 自動実行
+        clearServiceWorkerCache();
+    </script>
+</body>
+</html>

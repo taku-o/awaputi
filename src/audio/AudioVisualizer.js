@@ -294,6 +294,9 @@ export class AudioVisualizer {
      * @private
      */
     render() {
+        // 一時的にAudioVisualizer renderを無効化（Issue #113修正中）
+        return;
+        
         // 必要な要素の存在確認
         if (!this.ctx || !this.canvas) {
             console.warn('[AudioVisualizer] Canvas context not available for rendering');

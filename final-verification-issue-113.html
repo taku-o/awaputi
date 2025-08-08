@@ -133,7 +133,11 @@
             log('🧪 ConfigurationManager設定テスト開始');
             
             try {
-                const { getConfigurationManager } = await import(`./src/core/ConfigurationManager.js?t=${Date.now()}`);
+                // ConfigurationManagerをクリーンな状態でインポート
+                const modulePath = `./src/core/ConfigurationManager.js?t=${Date.now()}`;
+                delete window.configManagerInstance; // 前のインスタンスをクリア
+                
+                const { getConfigurationManager } = await import(modulePath);
                 const configManager = getConfigurationManager();
                 
                 // 重要な設定値の存在確認
@@ -163,6 +167,14 @@
             log('🧪 PerformanceOptimizer統合テスト開始');
             
             try {
+                // 依存関係を先に初期化
+                const { getConfigurationManager } = await import(`./src/core/ConfigurationManager.js?t=${Date.now()}`);
+                const { getErrorHandler } = await import(`./src/utils/ErrorHandler.js?t=${Date.now()}`);
+                
+                // インスタンスを確実に初期化
+                getConfigurationManager();
+                getErrorHandler();
+                
                 const { getPerformanceOptimizer } = await import(`./src/utils/PerformanceOptimizer.js?t=${Date.now()}`);
                 const optimizer = getPerformanceOptimizer();
                 
@@ -190,6 +202,11 @@
             log('🧪 AudioVisualizer renderテスト開始');
             
             try {
+                // ConfigurationManagerを先にインポートして初期化
+                const { getConfigurationManager } = await import(`./src/core/ConfigurationManager.js?t=${Date.now()}`);
+                const configManager = getConfigurationManager();
+                
+                // AudioVisualizerをインポート
                 const { AudioVisualizer } = await import(`./src/audio/AudioVisualizer.js?t=${Date.now()}`);
                 
                 const mockAudioManager = {

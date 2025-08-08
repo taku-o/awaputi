@@ -291,8 +291,38 @@ PerformanceOptimizer修正:
 - **保守性向上**: 設定の一元化、適切なエラーハンドリング
 - **デバッグ効率向上**: ブラウザキャッシュ回避、詳細ログ出力
 
+## 🔄 追加修正（継続作業 2025-08-08）
+
+### 4. PerformanceOptimizer API修正
+```bash
+git commit -a4f3408 "🐛 fix: PerformanceOptimizer logErrorエラー修正完了"
+```
+- adjustUpdateFrequency()のlogError呼び出しをhandleError()に修正
+- this.config.targetFPS → this.targetFPSプロパティ参照修正
+- PerformanceOptimizerテスト失敗問題解消
+
+### 5. ConfigurationManager メソッド順序修正  
+```bash
+git commit -aca1ba2 "ConfigurationManager addValidationRule メソッド追加"
+```
+- **根本問題**: addValidationRuleメソッドが_setupValidationRules()より後に定義
+- **解決**: addValidationRuleを_setupValidationRules()の前に移動
+- PWA初期化エラー「this.addValidationRule is not a function」を修正
+- AudioVisualizerテスト失敗問題解消
+
+### ✅ 修正完了項目
+- [x] targetFPS undefined無限ループエラー（根本修正）
+- [x] メインゲーム黒画面問題（画面表示成功）
+- [x] ConfigurationManager初期化・設定不足問題
+- [x] AudioVisualizer setCanvas・render問題
+- [x] PerformanceOptimizer設定統合・API問題
+- [x] ErrorHandler setRetryHandlerメソッド不足
+- [x] HelpScene title undefined エラー
+- [x] ConfigurationManager addValidationRuleメソッド順序問題
+
 ---
 
 **作業完了日**: 2025-08-08  
 **ブランチ**: awaputi-debug-targetfps/warm-lioness  
-**次回引き継ぎ**: 最終確認後、Issue #113クローズ準備
+**最新コミット**: aca1ba2 (ConfigurationManager addValidationRule メソッド追加)  
+**次回引き継ぎ**: 最終検証実行 → Issue #113クローズ判定
