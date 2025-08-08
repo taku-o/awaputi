@@ -245,6 +245,66 @@ export class HelpManager {
     }
 
     /**
+     * カテゴリ別トピック一覧を取得
+     * @param {string} category - カテゴリ名
+     * @param {string} language - 言語コード
+     * @returns {Array} トピック一覧
+     */
+    getCategoryTopics(category, language = null) {
+        try {
+            const lang = language || this.localizationManager.getCurrentLanguage();
+            
+            // カテゴリ別のトピック定義
+            const categoryTopics = {
+                gameplay: [
+                    { id: 'basics', title: '基本操作' },
+                    { id: 'bubble_types', title: '泡の種類' },
+                    { id: 'combo_system', title: 'コンボシステム' },
+                    { id: 'power_ups', title: 'パワーアップ' },
+                    { id: 'scoring', title: 'スコアシステム' }
+                ],
+                bubbles: [
+                    { id: 'normal_bubbles', title: '通常の泡' },
+                    { id: 'special_bubbles', title: '特殊な泡' },
+                    { id: 'boss_bubbles', title: 'ボス泡' },
+                    { id: 'poison_bubbles', title: '毒泡' },
+                    { id: 'healing_bubbles', title: '回復泡' }
+                ],
+                stages: [
+                    { id: 'stage_types', title: 'ステージタイプ' },
+                    { id: 'difficulty', title: '難易度設定' },
+                    { id: 'time_limits', title: '制限時間' },
+                    { id: 'objectives', title: 'クリア条件' }
+                ],
+                menu: [
+                    { id: 'navigation', title: 'メニュー操作' },
+                    { id: 'settings', title: '設定項目' },
+                    { id: 'profile', title: 'プロフィール' },
+                    { id: 'achievements', title: '実績システム' }
+                ]
+            };
+            
+            const topics = categoryTopics[category] || [];
+            
+            // 各トピックに詳細情報を付加
+            return topics.map(topic => ({
+                ...topic,
+                category,
+                language: lang,
+                content: this.getHelpSection(`${category}.${topic.id}`, lang) || {
+                    title: topic.title,
+                    content: 'コンテンツを読み込み中...',
+                    isEmpty: true
+                }
+            }));
+            
+        } catch (error) {
+            this.loggingSystem.error('HelpManager', `Failed to get category topics: ${category}`, error);
+            return [];
+        }
+    }
+
+    /**
      * ツールチップの表示
      * @param {HTMLElement} element - 対象要素
      * @param {string} content - ツールチップ内容

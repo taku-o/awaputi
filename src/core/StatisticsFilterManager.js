@@ -426,6 +426,53 @@ export class StatisticsFilterManager {
     }
     
     /**
+     * 期間別フィルタリング
+     * @param {Object} statisticsData - 統計データ
+     * @param {string} period - フィルター期間
+     * @returns {Object} フィルタリングされた統計データ
+     */
+    filterByPeriod(statisticsData, period) {
+        try {
+            if (!statisticsData || period === 'all' || period === 'allTime') {
+                return statisticsData;
+            }
+            
+            const now = new Date();
+            let startDate = null;
+            
+            const filterConfig = this.filterPeriods[period];
+            if (filterConfig && filterConfig.days !== null) {
+                startDate = new Date(now);
+                startDate.setDate(now.getDate() - filterConfig.days);
+                
+                if (filterConfig.offset) {
+                    startDate.setDate(startDate.getDate() - filterConfig.offset);
+                }
+            }
+            
+            // セッションデータのフィルタリング
+            const filteredSessions = statisticsData.sessions ? 
+                statisticsData.sessions.filter(session => {
+                    if (!session.timestamp || !startDate) return true;
+                    const sessionDate = new Date(session.timestamp);
+                    return sessionDate >= startDate;
+                }) : [];
+            
+            return {
+                ...statisticsData,
+                sessions: filteredSessions,
+                filteredPeriod: period,
+                filterStartDate: startDate,
+                sessionCount: filteredSessions.length
+            };
+            
+        } catch (error) {
+            console.error('Error filtering statistics by period:', error);
+            return statisticsData;
+        }
+    }
+    
+    /**
      * キャッシュキーの生成
      */
     generateCacheKey() {
