@@ -68,7 +68,6 @@ export class SEOMetaManager {
      * @param {Object} context 更新コンテキスト
      * @returns {Promise<void>}
      */
-    @measurePerformance('SEOMetaManager')
     async updateMetaTags(context = {}) {
         if (!this.initialized) {
             seoLogger.warn('SEOMetaManager not initialized');
