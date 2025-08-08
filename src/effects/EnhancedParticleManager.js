@@ -92,6 +92,11 @@ export class EnhancedParticleManager extends ParticleManager {
         this.qualityManager.setPhysicsEnhancements(enabled);
     }
     
+    getActiveParticleCount() {
+        // ParticleManagerの基本メソッドを使用
+        return this.getParticleCount();
+    }
+    
     // ========================================
     // 物理演算API - Physics Engineにデリゲート
     // ========================================

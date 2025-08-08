@@ -34,8 +34,7 @@ export class VisualPolishEnhancements {
         // エフェクト遷移の滑らかさを改善
         const enhancedEffectManager = this.gameEngine.enhancedEffectManager;
         if (enhancedEffectManager) {
-            enhancedEffectManager.setTransitionSmoothing(true);
-            enhancedEffectManager.setTransitionDuration(300); // 300ms
+            enhancedEffectManager.setTransitionSmoothing(true, 300); // 300ms duration
         }
         
         // パーティクル遷移の改善
