@@ -281,9 +281,14 @@ class BrowserCompatibilityManager {
             }
 
             // 動的インポートサポート
-            if (typeof import === 'function') {
-                support.dynamicImport = true;
-                support.available = true;
+            try {
+                if (typeof eval('import') === 'function') {
+                    support.dynamicImport = true;
+                    support.available = true;
+                }
+            } catch (e) {
+                // import は予約語のため、この方法で検出
+                support.dynamicImport = false;
             }
 
             // ワーカーでのモジュールサポート（基本的な検出）
