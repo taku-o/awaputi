@@ -351,7 +351,7 @@ export class GameEngineInitializer {
         getPoolManager().optimize();
         
         // メモリ使用量チェック
-        const memoryStats = getMemoryManager().getStats();
+        const memoryStats = getMemoryManager().getMemoryStats();
         const performanceStats = getPerformanceOptimizer().getStats();
         
         console.log('Performance Stats:', {
@@ -364,7 +364,7 @@ export class GameEngineInitializer {
         // 警告チェック
         const warnings = [
             ...getPerformanceOptimizer().getWarnings(),
-            ...getMemoryManager().getStats().detectedIssues
+            ...getMemoryManager().getWarnings()
         ];
         
         if (warnings.length > 0) {

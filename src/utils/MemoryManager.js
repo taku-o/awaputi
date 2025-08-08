@@ -272,6 +272,50 @@ export class MemoryManager {
     }
     
     /**
+     * Get memory-related warnings
+     * @returns {string[]} Array of warning messages
+     */
+    getWarnings() {
+        const warnings = [];
+        const riskAssessment = this.getRiskAssessment();
+        const memoryInfo = this._getCurrentMemoryInfo();
+        
+        // Memory pressure warnings
+        if (memoryInfo.pressure > 0.9) {
+            warnings.push('Critical memory pressure detected');
+        } else if (memoryInfo.pressure > 0.8) {
+            warnings.push('High memory pressure detected');
+        } else if (memoryInfo.pressure > 0.6) {
+            warnings.push('Moderate memory pressure detected');
+        }
+        
+        // Leak warnings
+        if (riskAssessment.leakRisk === 'critical') {
+            warnings.push('Critical memory leak risk detected');
+        } else if (riskAssessment.leakRisk === 'high' || riskAssessment.leakRisk === 'medium') {
+            warnings.push('Memory leak risk detected');
+        }
+        
+        // Usage warnings
+        if (riskAssessment.usageRisk === 'critical') {
+            warnings.push('Critical memory usage pattern detected');
+        } else if (riskAssessment.usageRisk === 'high') {
+            warnings.push('High memory usage pattern detected');
+        }
+        
+        // Leak detection stats warnings
+        if (this.stats.memoryLeaksDetected > 0) {
+            warnings.push(`${this.stats.memoryLeaksDetected} memory leak(s) detected`);
+        }
+        
+        if (this.stats.memoryLeaksSuspected > 5) {
+            warnings.push(`${this.stats.memoryLeaksSuspected} suspected memory leaks`);
+        }
+        
+        return warnings;
+    }
+    
+    /**
      * Force immediate cleanup
      * @param {string} strategy - Cleanup strategy
      * @returns {object} Cleanup results
