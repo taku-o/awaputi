@@ -46,7 +46,14 @@ export class PerformanceOptimizer {
             console.log('[PerformanceOptimizer] サブコンポーネント統合版で初期化完了');
             
         } catch (error) {
-            this.errorHandler.logError('Failed to initialize PerformanceOptimizer', error);
+            if (this.errorHandler && this.errorHandler.handleError) {
+                this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', {
+                    component: 'PerformanceOptimizer',
+                    operation: 'constructor'
+                });
+            } else {
+                console.error('[PerformanceOptimizer] Failed to initialize:', error);
+            }
             this._setFallbackSettings();
         }
     }
@@ -77,7 +84,10 @@ export class PerformanceOptimizer {
             console.log('[PerformanceOptimizer] All sub-components initialized successfully');
             
         } catch (error) {
-            this.errorHandler.logError('Failed to initialize sub-components', error);
+            this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', {
+                component: 'PerformanceOptimizer',
+                operation: 'initializeSubComponents'
+            });
             throw error;
         }
     }
@@ -145,7 +155,7 @@ export class PerformanceOptimizer {
             };
             
         } catch (error) {
-            this.errorHandler.logError('Failed to initialize from config', error);
+            this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', { component: 'PerformanceOptimizer', context: 'Failed to initialize from config' });
             this._setFallbackSettings();
         }
     }
@@ -214,7 +224,7 @@ export class PerformanceOptimizer {
             console.log('[PerformanceOptimizer] Configuration watchers setup skipped (methods not available)');
             
         } catch (error) {
-            this.errorHandler.logError('Failed to setup config watchers', error);
+            this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', { component: 'PerformanceOptimizer', context: 'Failed to setup config watchers' });
         }
     }
     
@@ -246,7 +256,7 @@ export class PerformanceOptimizer {
             this._aggregateStats();
             
         } catch (error) {
-            this.errorHandler.logError('Error in startFrame', error);
+            this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', { component: 'PerformanceOptimizer', context: 'Error in startFrame' });
         }
     }
 
@@ -257,7 +267,7 @@ export class PerformanceOptimizer {
     adjustUpdateFrequency(deltaTime) {
         try {
             // フレームレートに基づいてデルタタイムを調整
-            const targetFrameTime = 1000 / this.config.targetFPS;
+            const targetFrameTime = 1000 / this.targetFPS;
             const adjustmentFactor = Math.min(deltaTime / targetFrameTime, 2); // 最大2倍まで
             
             // パフォーマンスレベルに基づく調整
@@ -265,7 +275,10 @@ export class PerformanceOptimizer {
             
             return deltaTime * adjustmentFactor * performanceFactor;
         } catch (error) {
-            this.errorHandler?.logError('Error adjusting update frequency', error);
+            this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', {
+                component: 'PerformanceOptimizer',
+                operation: 'adjustUpdateFrequency'
+            });
             return deltaTime; // フォールバック
         }
     }
@@ -314,7 +327,7 @@ export class PerformanceOptimizer {
             }
             
         } catch (error) {
-            this.errorHandler.logError('Failed to perform optimization', error);
+            this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', { component: 'PerformanceOptimizer', context: 'Failed to perform optimization' });
         }
     }
     
@@ -340,7 +353,7 @@ export class PerformanceOptimizer {
             }
             
         } catch (error) {
-            this.errorHandler.logError('Failed to integrate frame stabilizer', error);
+            this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', { component: 'PerformanceOptimizer', context: 'Failed to integrate frame stabilizer' });
         }
     }
     
@@ -374,7 +387,7 @@ export class PerformanceOptimizer {
             }
             
         } catch (error) {
-            this.errorHandler.logError('Failed to update basic stats', error);
+            this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', { component: 'PerformanceOptimizer', context: 'Failed to update basic stats' });
         }
     }
     
@@ -398,7 +411,7 @@ export class PerformanceOptimizer {
             this.stats.performanceHealthScore = this._calculateHealthScore();
             
         } catch (error) {
-            this.errorHandler.logError('Failed to aggregate stats', error);
+            this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', { component: 'PerformanceOptimizer', context: 'Failed to aggregate stats' });
         }
     }
     
@@ -416,7 +429,7 @@ export class PerformanceOptimizer {
             return (fpsScore * 0.4 + stabilityScore * 0.4 + varianceScore * 0.2);
             
         } catch (error) {
-            this.errorHandler.logError('Failed to calculate health score', error);
+            this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', { component: 'PerformanceOptimizer', context: 'Failed to calculate health score' });
             return 0.5;
         }
     }
@@ -457,7 +470,7 @@ export class PerformanceOptimizer {
             };
             
         } catch (error) {
-            this.errorHandler.logError('Failed to analyze performance', error);
+            this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', { component: 'PerformanceOptimizer', context: 'Failed to analyze performance' });
             return { error: true, timestamp: Date.now() };
         }
     }
@@ -481,7 +494,7 @@ export class PerformanceOptimizer {
             };
             
         } catch (error) {
-            this.errorHandler.logError('Failed to get detailed metrics', error);
+            this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', { component: 'PerformanceOptimizer', context: 'Failed to get detailed metrics' });
             return { error: true, timestamp: Date.now() };
         }
     }
@@ -494,7 +507,7 @@ export class PerformanceOptimizer {
         try {
             return this.stabilizerIntegrator.getFrameStabilityAnalysis();
         } catch (error) {
-            this.errorHandler.logError('Failed to get frame stability analysis', error);
+            this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', { component: 'PerformanceOptimizer', context: 'Failed to get frame stability analysis' });
             return { error: true, timestamp: Date.now() };
         }
     }
@@ -509,7 +522,7 @@ export class PerformanceOptimizer {
         try {
             return this.stabilizerIntegrator.forceFrameStabilization(targetFPS, mode);
         } catch (error) {
-            this.errorHandler.logError('Failed to force frame stabilization', error);
+            this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', { component: 'PerformanceOptimizer', context: 'Failed to force frame stabilization' });
             return { forced: false, error: true };
         }
     }
@@ -529,7 +542,7 @@ export class PerformanceOptimizer {
             console.log(`[PerformanceOptimizer] Performance level set to: ${level}`);
             
         } catch (error) {
-            this.errorHandler.logError('Failed to set performance level', error);
+            this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', { component: 'PerformanceOptimizer', context: 'Failed to set performance level' });
         }
     }
     
@@ -545,7 +558,7 @@ export class PerformanceOptimizer {
             console.log(`[PerformanceOptimizer] Adaptive mode ${enabled ? 'enabled' : 'disabled'}`);
             
         } catch (error) {
-            this.errorHandler.logError('Failed to set adaptive mode', error);
+            this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', { component: 'PerformanceOptimizer', context: 'Failed to set adaptive mode' });
         }
     }
     
@@ -654,7 +667,7 @@ export class PerformanceOptimizer {
             console.log('[PerformanceOptimizer] Reset completed');
             
         } catch (error) {
-            this.errorHandler.logError('Failed to reset PerformanceOptimizer', error);
+            this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', { component: 'PerformanceOptimizer', context: 'Failed to reset PerformanceOptimizer' });
         }
     }
     
@@ -666,7 +679,7 @@ export class PerformanceOptimizer {
             this._initializeFromConfig();
             console.log('[PerformanceOptimizer] Synchronized with config');
         } catch (error) {
-            this.errorHandler.logError('Failed to sync with config', error);
+            this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', { component: 'PerformanceOptimizer', context: 'Failed to sync with config' });
         }
     }
     
@@ -705,7 +718,7 @@ export class PerformanceOptimizer {
             }
             
         } catch (error) {
-            this.errorHandler.logError('Failed to handle canvas resize', error);
+            this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', { component: 'PerformanceOptimizer', context: 'Failed to handle canvas resize' });
         }
     }
     
