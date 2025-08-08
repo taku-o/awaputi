@@ -1,6 +1,7 @@
 import { getPerformanceConfig } from '../config/PerformanceConfig.js';
 import { getErrorHandler } from './ErrorHandler.js';
 import { getFrameStabilizer } from './FrameStabilizer.js';
+import { getConfigurationManager } from '../core/ConfigurationManager.js';
 
 // 新しいサブコンポーネントのインポート
 import { PerformanceAnalyzer } from './performance-optimizer/PerformanceAnalyzer.js';
@@ -154,26 +155,53 @@ export class PerformanceOptimizer {
      * @private
      */
     _setFallbackSettings() {
-        this.targetFPS = 60;
-        this.targetFrameTime = 16.67;
-        this.maxHistorySize = 120;
-        this.performanceLevel = 'medium';
-        this.adaptiveMode = true;
-        this.optimizationInterval = 1000;
-        
-        this.settings = {
-            maxBubbles: 50,
-            maxParticles: 200,
-            renderQuality: 'medium',
-            particleQuality: 'medium',
-            effectQuality: 'medium',
-            audioQuality: 'medium',
-            shadowsEnabled: false,
-            blurEnabled: false,
-            antiAliasingEnabled: false
-        };
-        
-        console.warn('[PerformanceOptimizer] Using fallback settings due to configuration error');
+        try {
+            // ConfigurationManagerから設定を取得を試行
+            const configManager = getConfigurationManager();
+            
+            this.targetFPS = configManager.get('performance', 'optimization.targetFPS', 60);
+            this.targetFrameTime = 1000 / this.targetFPS;
+            this.maxHistorySize = configManager.get('performance', 'optimization.maxHistorySize', 120);
+            this.performanceLevel = configManager.get('performance', 'optimization.performanceLevel', 'medium');
+            this.adaptiveMode = configManager.get('performance', 'optimization.adaptiveMode', true);
+            this.optimizationInterval = configManager.get('performance', 'optimization.optimizationInterval', 1000);
+            
+            this.settings = {
+                maxBubbles: configManager.get('performance', 'optimization.maxBubbles', 50),
+                maxParticles: configManager.get('performance', 'optimization.maxParticles', 200),
+                renderQuality: configManager.get('performance', 'quality.renderQuality', 0.8),
+                particleQuality: configManager.get('performance', 'quality.particleQuality', 0.8),
+                effectQuality: configManager.get('performance', 'quality.effectQuality', 0.8),
+                audioQuality: configManager.get('performance', 'quality.audioQuality', 0.8),
+                shadowsEnabled: configManager.get('performance', 'quality.enableShadows', false),
+                blurEnabled: configManager.get('performance', 'quality.enableBlur', false),
+                antiAliasingEnabled: configManager.get('performance', 'quality.enableAntiAliasing', false)
+            };
+            
+            console.log('[PerformanceOptimizer] Using ConfigurationManager fallback settings');
+        } catch (error) {
+            // 最終フォールバック
+            this.targetFPS = 60;
+            this.targetFrameTime = 16.67;
+            this.maxHistorySize = 120;
+            this.performanceLevel = 'medium';
+            this.adaptiveMode = true;
+            this.optimizationInterval = 1000;
+            
+            this.settings = {
+                maxBubbles: 50,
+                maxParticles: 200,
+                renderQuality: 0.8,
+                particleQuality: 0.8,
+                effectQuality: 0.8,
+                audioQuality: 0.8,
+                shadowsEnabled: false,
+                blurEnabled: false,
+                antiAliasingEnabled: false
+            };
+            
+            console.warn('[PerformanceOptimizer] Using hard-coded fallback settings due to configuration error:', error);
+        }
     }
     
     /**

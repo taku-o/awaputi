@@ -777,6 +777,58 @@ export class AudioVisualizer {
     }
     
     /**
+     * Canvasを設定
+     * @param {HTMLCanvasElement} canvas - Canvas要素
+     */
+    setCanvas(canvas) {
+        if (!canvas || !(canvas instanceof HTMLCanvasElement)) {
+            console.warn('[AudioVisualizer] Invalid canvas element provided');
+            return false;
+        }
+        
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        
+        if (!this.ctx) {
+            console.error('[AudioVisualizer] Failed to get 2D context from canvas');
+            return false;
+        }
+        
+        // Canvas サイズを更新
+        this.updateCanvasSize();
+        
+        console.log('[AudioVisualizer] Canvas set successfully');
+        return true;
+    }
+    
+    /**
+     * Canvas サイズを更新
+     * @private
+     */
+    updateCanvasSize() {
+        if (!this.canvas) return;
+        
+        // デフォルトサイズまたは親要素のサイズに合わせる
+        const rect = this.canvas.getBoundingClientRect();
+        this.width = rect.width || 300;
+        this.height = rect.height || 200;
+        
+        // デバイスピクセル比を考慮
+        const dpr = window.devicePixelRatio || 1;
+        this.canvas.width = this.width * dpr;
+        this.canvas.height = this.height * dpr;
+        
+        // CSS サイズを設定
+        this.canvas.style.width = this.width + 'px';
+        this.canvas.style.height = this.height + 'px';
+        
+        // コンテキストのスケールを調整
+        if (this.ctx) {
+            this.ctx.scale(dpr, dpr);
+        }
+    }
+    
+    /**
      * リソースの解放
      */
     dispose() {

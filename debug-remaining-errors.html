@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>残存エラー診断</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            background: #f0f0f0;
+        }
+        .log-container {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            max-height: 500px;
+            overflow-y: auto;
+            font-size: 14px;
+        }
+        .error { color: red; font-weight: bold; }
+        .success { color: green; }
+        .info { color: blue; }
+        .warning { color: orange; }
+        .step { margin: 10px 0; padding: 10px; background: #f9f9f9; border-left: 3px solid #007cba; }
+        .code-snippet { 
+            background: #f8f8f8; 
+            padding: 10px; 
+            border-radius: 4px; 
+            margin: 5px 0; 
+            font-family: monospace; 
+            font-size: 12px; 
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>残存エラー診断ツール</h1>
+    
+    <div class="step">
+        <h3>🔍 診断メニュー</h3>
+        <button onclick="analyzePerformanceOptimizer()">PerformanceOptimizer分析</button>
+        <button onclick="analyzeAudioManager()">AudioManager分析</button>
+        <button onclick="testConfigurationPaths()">設定パス検証</button>
+        <button onclick="clearLogs()">ログクリア</button>
+    </div>
+    
+    <div class="log-container" id="logs">
+        <div>残存エラー診断ツール準備完了。</div>
+    </div>
+
+    <script>
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logElement = document.createElement('div');
+            logElement.className = type;
+            logElement.textContent = `[${timestamp}] ${message}`;
+            document.getElementById('logs').appendChild(logElement);
+            console.log(message);
+            
+            const container = document.getElementById('logs');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function logCode(code, description = 'コード') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logElement = document.createElement('div');
+            logElement.innerHTML = `<strong>[${timestamp}] ${description}:</strong><div class="code-snippet">${code}</div>`;
+            document.getElementById('logs').appendChild(logElement);
+            
+            const container = document.getElementById('logs');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function clearLogs() {
+            document.getElementById('logs').innerHTML = '<div>ログクリア完了</div>';
+        }
+
+        // PerformanceOptimizer分析
+        async function analyzePerformanceOptimizer() {
+            log('🧪 PerformanceOptimizer分析開始');
+            
+            try {
+                log('🔄 PerformanceOptimizer.js読み込み中...');
+                const response = await fetch(`./src/utils/PerformanceOptimizer.js?t=${Date.now()}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const content = await response.text();
+                log(`✅ PerformanceOptimizer.js読み込み成功 (${content.length} 文字)`, 'success');
+                
+                // targetFPS関連のコードを検索
+                log('🔍 targetFPS関連コード検索中...');
+                const lines = content.split('\n');
+                const targetFPSLines = lines.filter((line, index) => {
+                    const trimmed = line.trim();
+                    return trimmed.includes('targetFPS') && !trimmed.startsWith('//');
+                }).slice(0, 10); // 最初の10件
+                
+                if (targetFPSLines.length > 0) {
+                    log(`📋 targetFPS関連コード (${targetFPSLines.length}件発見):`);
+                    targetFPSLines.forEach((line, index) => {
+                        logCode(line.trim(), `targetFPS コード ${index + 1}`);
+                    });
+                } else {
+                    log('❌ targetFPS関連コードが見つかりません', 'error');
+                }
+                
+                // ConfigurationManager使用箇所を検索
+                log('🔍 ConfigurationManager使用箇所検索中...');
+                const configLines = lines.filter((line, index) => {
+                    const trimmed = line.trim();
+                    return (trimmed.includes('configManager') || trimmed.includes('getConfigurationManager')) 
+                           && !trimmed.startsWith('//');
+                }).slice(0, 5);
+                
+                if (configLines.length > 0) {
+                    log(`📋 ConfigurationManager使用箇所 (${configLines.length}件発見):`);
+                    configLines.forEach((line, index) => {
+                        logCode(line.trim(), `Config使用 ${index + 1}`);
+                    });
+                } else {
+                    log('❌ ConfigurationManager使用箇所が見つかりません', 'error');
+                }
+                
+            } catch (error) {
+                log(`❌ PerformanceOptimizer分析失敗: ${error.message}`, 'error');
+                console.error('PerformanceOptimizer analysis error:', error);
+            }
+        }
+
+        // AudioManager分析
+        async function analyzeAudioManager() {
+            log('🧪 AudioManager分析開始');
+            
+            try {
+                log('🔄 AudioManager.js読み込み中...');
+                const response = await fetch(`./src/audio/AudioManager.js?t=${Date.now()}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const content = await response.text();
+                log(`✅ AudioManager.js読み込み成功 (${content.length} 文字)`, 'success');
+                
+                // render関連のメソッドを検索
+                log('🔍 render関連メソッド検索中...');
+                const renderMatches = content.match(/render\s*\([^)]*\)\s*{[^}]*}/g) || [];
+                
+                if (renderMatches.length > 0) {
+                    log(`📋 renderメソッド (${renderMatches.length}件発見):`);
+                    renderMatches.forEach((match, index) => {
+                        logCode(match, `render メソッド ${index + 1}`);
+                    });
+                } else {
+                    log('❌ renderメソッドが見つかりません', 'warning');
+                }
+                
+                // エラーを引き起こしている可能性のある箇所を検索
+                const suspiciousPatterns = [
+                    /\.render\(/g,
+                    /render\s*:/g,
+                    /render\s*=/g
+                ];
+                
+                suspiciousPatterns.forEach((pattern, index) => {
+                    const matches = content.match(pattern) || [];
+                    if (matches.length > 0) {
+                        log(`🔍 render関連パターン ${index + 1}: ${matches.length}件発見`);
+                        
+                        // より詳細な行を特定
+                        const lines = content.split('\n');
+                        const matchingLines = lines.filter(line => pattern.test(line));
+                        matchingLines.slice(0, 3).forEach((line, lineIndex) => {
+                            logCode(line.trim(), `パターン${index + 1} 行${lineIndex + 1}`);
+                        });
+                    }
+                });
+                
+            } catch (error) {
+                log(`❌ AudioManager分析失敗: ${error.message}`, 'error');
+                console.error('AudioManager analysis error:', error);
+            }
+        }
+
+        // 設定パス検証
+        async function testConfigurationPaths() {
+            log('🧪 設定パス検証開始');
+            
+            try {
+                log('🔄 ConfigurationManager動的インポート...');
+                const configModule = await import(`./src/core/ConfigurationManager.js?t=${Date.now()}`);
+                const configManager = configModule.getConfigurationManager();
+                log('✅ ConfigurationManager取得成功', 'success');
+                
+                // 問題となっている設定パスをテスト
+                const testPaths = [
+                    { category: 'performance', key: 'targetFPS', description: 'Performance Target FPS' },
+                    { category: 'performance', key: 'optimization.targetFPS', description: 'Performance Optimization Target FPS' },
+                    { category: 'effects', key: 'quality.level', description: 'Effects Quality Level' },
+                    { category: 'effects', key: 'quality.autoAdjust', description: 'Effects Quality Auto Adjust' },
+                    { category: 'audio', key: 'volumes.master', description: 'Audio Master Volume' }
+                ];
+                
+                log('🔍 設定値検証中...');
+                for (const testPath of testPaths) {
+                    try {
+                        const value = configManager.get(testPath.category, testPath.key);
+                        const status = value !== undefined ? '✅' : '❌';
+                        log(`${status} ${testPath.description}: ${value}`, value !== undefined ? 'success' : 'error');
+                    } catch (error) {
+                        log(`❌ ${testPath.description} エラー: ${error.message}`, 'error');
+                    }
+                }
+                
+                // デフォルト値の存在確認
+                log('🔍 デフォルト値確認中...');
+                if (configManager.defaultValues) {
+                    const defaultKeys = Array.from(configManager.defaultValues.keys()).slice(0, 10);
+                    log(`📋 デフォルト値キー (最初の10件):`);
+                    defaultKeys.forEach(key => {
+                        const value = configManager.defaultValues.get(key);
+                        logCode(`${key} = ${JSON.stringify(value)}`, 'デフォルト値');
+                    });
+                } else {
+                    log('❌ デフォルト値Mapにアクセスできません', 'error');
+                }
+                
+            } catch (error) {
+                log(`❌ 設定パス検証失敗: ${error.message}`, 'error');
+                console.error('Configuration path test error:', error);
+            }
+        }
+
+        // 初期実行
+        document.addEventListener('DOMContentLoaded', function() {
+            log('🚀 残存エラー診断ツール準備完了');
+        });
+    </script>
+</body>
+</html>

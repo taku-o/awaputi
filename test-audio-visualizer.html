@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AudioVisualizer テスト</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            background: #f0f0f0;
+        }
+        .log-container {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-size: 14px;
+        }
+        .error { color: red; font-weight: bold; }
+        .success { color: green; }
+        .info { color: blue; }
+        .warning { color: orange; }
+        .step { margin: 10px 0; padding: 10px; background: #f9f9f9; border-left: 3px solid #007cba; }
+    </style>
+</head>
+<body>
+    <h1>AudioVisualizer render エラー テスト</h1>
+    
+    <div class="step">
+        <h3>🔍 テスト</h3>
+        <button onclick="testAudioVisualizer()">AudioVisualizer テスト</button>
+        <button onclick="testAudioSubsystemCoordinator()">AudioSubsystemCoordinator テスト</button>
+        <button onclick="clearLogs()">ログクリア</button>
+    </div>
+    
+    <div class="log-container" id="logs">
+        <div>AudioVisualizer render エラー テスト準備完了。</div>
+    </div>
+
+    <script>
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logElement = document.createElement('div');
+            logElement.className = type;
+            logElement.textContent = `[${timestamp}] ${message}`;
+            document.getElementById('logs').appendChild(logElement);
+            console.log(message);
+            
+            const container = document.getElementById('logs');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function clearLogs() {
+            document.getElementById('logs').innerHTML = '<div>ログクリア完了</div>';
+        }
+
+        // AudioVisualizerテスト
+        async function testAudioVisualizer() {
+            log('🧪 AudioVisualizer テスト開始');
+            
+            try {
+                log('🔄 AudioVisualizer インポート中...');
+                const { AudioVisualizer } = await import(`./src/audio/AudioVisualizer.js?t=${Date.now()}`);
+                log('✅ AudioVisualizer インポート成功', 'success');
+                
+                // モック AudioManager を作成
+                const mockAudioManager = {
+                    audioContext: null,
+                    initialized: false
+                };
+                
+                log('🔄 AudioVisualizer インスタンス作成中...');
+                const visualizer = new AudioVisualizer(mockAudioManager);
+                log('✅ AudioVisualizer インスタンス作成成功', 'success');
+                
+                // render メソッドの存在確認
+                if (typeof visualizer.render === 'function') {
+                    log('✅ render メソッド存在確認', 'success');
+                    
+                    // render メソッドのテスト呼び出し
+                    try {
+                        visualizer.render();
+                        log('✅ render メソッド呼び出し成功', 'success');
+                    } catch (error) {
+                        log(`❌ render メソッド呼び出し失敗: ${error.message}`, 'error');
+                        console.error('Render method error:', error);
+                    }
+                } else {
+                    log('❌ render メソッドが存在しません', 'error');
+                }
+                
+                // その他のメソッドの確認
+                const methods = ['initialize', 'start', 'stop', 'setCanvas'];
+                methods.forEach(method => {
+                    if (typeof visualizer[method] === 'function') {
+                        log(`✅ ${method} メソッド確認`, 'success');
+                    } else {
+                        log(`❌ ${method} メソッド不在`, 'warning');
+                    }
+                });
+                
+            } catch (error) {
+                log(`❌ AudioVisualizer テスト失敗: ${error.message}`, 'error');
+                console.error('AudioVisualizer test error:', error);
+            }
+        }
+
+        // AudioSubsystemCoordinatorテスト
+        async function testAudioSubsystemCoordinator() {
+            log('🧪 AudioSubsystemCoordinator テスト開始');
+            
+            try {
+                log('🔄 AudioSubsystemCoordinator インポート中...');
+                const { AudioSubsystemCoordinator } = await import(`./src/audio/AudioSubsystemCoordinator.js?t=${Date.now()}`);
+                log('✅ AudioSubsystemCoordinator インポート成功', 'success');
+                
+                // AudioVisualizer 初期化部分のコードを解析
+                log('🔍 AudioVisualizer 初期化コード解析中...');
+                const response = await fetch(`./src/audio/AudioSubsystemCoordinator.js?t=${Date.now()}`);
+                const content = await response.text();
+                
+                // AudioVisualizer に関連するコードを検索
+                const lines = content.split('\n');
+                const visualizerLines = lines.filter((line, index) => {
+                    return line.includes('AudioVisualizer') || line.includes('render');
+                }).slice(0, 10);
+                
+                if (visualizerLines.length > 0) {
+                    log('📋 AudioVisualizer関連コード:');
+                    visualizerLines.forEach((line, index) => {
+                        log(`  ${index + 1}. ${line.trim()}`, 'info');
+                    });
+                } else {
+                    log('❌ AudioVisualizer関連コードが見つかりません', 'error');
+                }
+                
+                // エラー部分の特定
+                const errorPattern = /render.*not.*function|\.render.*error/i;
+                const errorLines = lines.filter(line => errorPattern.test(line));
+                
+                if (errorLines.length > 0) {
+                    log('🚨 render エラー関連コード:');
+                    errorLines.forEach((line, index) => {
+                        log(`  ${index + 1}. ${line.trim()}`, 'error');
+                    });
+                } else {
+                    log('✅ render エラー関連コードは見つかりませんでした', 'success');
+                }
+                
+            } catch (error) {
+                log(`❌ AudioSubsystemCoordinator テスト失敗: ${error.message}`, 'error');
+                console.error('AudioSubsystemCoordinator test error:', error);
+            }
+        }
+
+        // 初期実行
+        document.addEventListener('DOMContentLoaded', function() {
+            log('🚀 AudioVisualizer render エラー テスト準備完了');
+        });
+    </script>
+</body>
+</html>
