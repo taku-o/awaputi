@@ -720,6 +720,40 @@ class ErrorHandler {
         this.isInitialized = false;
         console.log('[ErrorHandler] Main controller destroyed');
     }
+    
+    /**
+     * リトライハンドラーを設定（SocialSharingManager互換性用）
+     * @param {Function} handler - リトライハンドラー関数
+     */
+    setRetryHandler(handler) {
+        try {
+            if (typeof handler !== 'function') {
+                console.warn('[ErrorHandler] Invalid retry handler - must be a function');
+                return;
+            }
+            
+            this.retryHandler = handler;
+            console.log('[ErrorHandler] Retry handler set successfully');
+        } catch (error) {
+            console.error('[ErrorHandler] Failed to set retry handler:', error);
+        }
+    }
+    
+    /**
+     * リトライハンドラーを呼び出し
+     * @param {Object} errorInfo - エラー情報
+     */
+    executeRetryHandler(errorInfo) {
+        try {
+            if (this.retryHandler && typeof this.retryHandler === 'function') {
+                this.retryHandler(errorInfo);
+            } else {
+                console.warn('[ErrorHandler] No retry handler registered');
+            }
+        } catch (error) {
+            console.error('[ErrorHandler] Retry handler execution failed:', error);
+        }
+    }
 }
 
 // Singleton instance (lazy initialization)

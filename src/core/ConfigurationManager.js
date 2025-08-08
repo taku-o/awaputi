@@ -108,6 +108,9 @@ class ConfigurationManager {
         this.setDefaultValue('game', 'bubbles.maxAge', 30000);
         this.setDefaultValue('game', 'difficulty', 'normal');
         
+        // 検証ルールを設定
+        this._setupValidationRules();
+        
         // 非同期でキャッシュウォームアップを実行
         setTimeout(() => {
             this.warmupCache();
@@ -128,6 +131,16 @@ class ConfigurationManager {
      */
     get(category, key, defaultValue = null) {
         try {
+            // 引数の検証：undefinedキーを防ぐ
+            if (!category || category === 'undefined' || typeof category !== 'string') {
+                this._logWarning(`無効なカテゴリ: ${category}`);
+                return defaultValue;
+            }
+            if (key === undefined || key === 'undefined' || typeof key !== 'string') {
+                this._logWarning(`無効なキー: ${key} (カテゴリ: ${category})`);
+                return defaultValue;
+            }
+            
             const fullKey = `${category}.${key}`;
             
             // アクセス統計を更新
@@ -307,6 +320,14 @@ class ConfigurationManager {
                 }
                 if (rule.max !== undefined && value > rule.max) {
                     this._logWarning(`値が最大値を上回る: ${ruleKey} - 最大値: ${rule.max}, 実際: ${value}`);
+                    return false;
+                }
+            }
+            
+            // 選択肢制限チェック（文字列の場合）
+            if (rule.allowedValues && Array.isArray(rule.allowedValues)) {
+                if (!rule.allowedValues.includes(value)) {
+                    this._logWarning(`許可されていない値: ${ruleKey} - 許可値: [${rule.allowedValues.join(', ')}], 実際: ${value}`);
                     return false;
                 }
             }
@@ -768,6 +789,65 @@ class ConfigurationManager {
         const clearedCount = this.cache.clear(prefix);
         this._logDebug(`キャッシュクリア: ${clearedCount}エントリを削除`);
         return clearedCount;
+    }
+    
+    /**
+     * 検証ルールを設定
+     * @private
+     */
+    _setupValidationRules() {
+        // boolean型の設定項目
+        this.addValidationRule('effects', 'quality.autoAdjust', { type: 'boolean' });
+        this.addValidationRule('effects', 'seasonal.enabled', { type: 'boolean' });
+        this.addValidationRule('effects', 'seasonal.autoDetection', { type: 'boolean' });
+        this.addValidationRule('effects', 'audio.enabled', { type: 'boolean' });
+        this.addValidationRule('effects', 'audio.volumeSync', { type: 'boolean' });
+        this.addValidationRule('performance', 'adaptiveMode', { type: 'boolean' });
+        this.addValidationRule('performance', 'optimization.adaptiveMode', { type: 'boolean' });
+        this.addValidationRule('performance', 'optimization.workloadDistribution', { type: 'boolean' });
+        this.addValidationRule('audio', 'enabled', { type: 'boolean' });
+        
+        // number型の設定項目（範囲チェック付き）
+        this.addValidationRule('performance', 'targetFPS', { type: 'number', min: 15, max: 144 });
+        this.addValidationRule('performance', 'optimization.targetFPS', { type: 'number', min: 15, max: 144 });
+        this.addValidationRule('performance', 'optimization.optimizationInterval', { type: 'number', min: 100, max: 10000 });
+        this.addValidationRule('performance', 'optimization.maxHistorySize', { type: 'number', min: 10, max: 1000 });
+        this.addValidationRule('performance', 'optimization.maxBubbles', { type: 'number', min: 1, max: 100 });
+        this.addValidationRule('performance', 'optimization.maxParticles', { type: 'number', min: 10, max: 10000 });
+        this.addValidationRule('performance', 'optimization.maxTimePerFrame', { type: 'number', min: 1, max: 50 });
+        this.addValidationRule('effects', 'particles.maxCount', { type: 'number', min: 10, max: 10000 });
+        this.addValidationRule('audio', 'volumes.master', { type: 'number', min: 0, max: 1 });
+        this.addValidationRule('audio', 'volumes.effects', { type: 'number', min: 0, max: 1 });
+        this.addValidationRule('audio', 'volumes.music', { type: 'number', min: 0, max: 1 });
+        this.addValidationRule('game', 'bubbles.maxAge', { type: 'number', min: 1000, max: 300000 });
+        
+        // string型の設定項目（選択肢制限付き）
+        this.addValidationRule('effects', 'quality.level', { 
+            type: 'string', 
+            allowedValues: ['low', 'medium', 'high', 'ultra'] 
+        });
+        this.addValidationRule('effects', 'seasonal.currentSeason', { 
+            type: 'string', 
+            allowedValues: ['spring', 'summer', 'autumn', 'winter'] 
+        });
+        this.addValidationRule('effects', 'particles.quality', { 
+            type: 'string', 
+            allowedValues: ['low', 'medium', 'high'] 
+        });
+        this.addValidationRule('performance', 'performanceLevel', { 
+            type: 'string', 
+            allowedValues: ['low', 'medium', 'high'] 
+        });
+        this.addValidationRule('performance', 'optimization.performanceLevel', { 
+            type: 'string', 
+            allowedValues: ['low', 'medium', 'high'] 
+        });
+        this.addValidationRule('game', 'difficulty', { 
+            type: 'string', 
+            allowedValues: ['easy', 'normal', 'hard'] 
+        });
+        
+        this._logDebug('検証ルール設定完了');
     }
 }
 

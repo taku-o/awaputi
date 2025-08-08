@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>メインゲームデバッグ</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            background: #f0f0f0;
+        }
+        .log-container {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .error { color: red; font-weight: bold; }
+        .success { color: green; }
+        .info { color: blue; }
+        .step { margin: 10px 0; padding: 10px; background: #f9f9f9; border-left: 3px solid #007cba; }
+    </style>
+</head>
+<body>
+    <h1>BubblePop メインゲーム診断ツール（修正版）</h1>
+    
+    <div class="step">
+        <h3>🔍 診断ステップ</h3>
+        <button onclick="DebugTool.testBasicLoad()">1. 基本読み込みテスト</button>
+        <button onclick="DebugTool.testModuleImports()">2. モジュールインポートテスト</button>
+        <button onclick="DebugTool.testMainGameInit()">3. メインゲーム初期化テスト</button>
+        <button onclick="DebugTool.checkMainGameErrors()">4. メインゲームエラー確認</button>
+        <button onclick="DebugTool.clearLogs()">ログクリア</button>
+    </div>
+    
+    <div class="log-container" id="logs">
+        <div>診断ツール準備完了。上のボタンで順次テストしてください。</div>
+    </div>
+
+    <script>
+        // グローバル名前空間で関数定義
+        window.DebugTool = {
+            log: function(message, type = 'info') {
+                const timestamp = new Date().toLocaleTimeString();
+                const logElement = document.createElement('div');
+                logElement.className = type;
+                logElement.textContent = `[${timestamp}] ${message}`;
+                document.getElementById('logs').appendChild(logElement);
+                console.log(message);
+                
+                // 自動スクロール
+                const container = document.getElementById('logs');
+                container.scrollTop = container.scrollHeight;
+            },
+
+            clearLogs: function() {
+                document.getElementById('logs').innerHTML = '<div>ログクリア完了</div>';
+            },
+
+            // 基本読み込みテスト
+            testBasicLoad: function() {
+                this.log('🧪 基本読み込みテスト開始');
+                
+                // HTML要素確認
+                const canvas = document.querySelector('canvas');
+                this.log(`Canvas要素: ${canvas ? '✅ 存在' : '❌ 不在'}`, canvas ? 'success' : 'error');
+                
+                // 基本JavaScript機能確認
+                try {
+                    const testArray = [1, 2, 3];
+                    const testMap = new Map();
+                    testMap.set('test', 'value');
+                    this.log('✅ 基本JavaScript機能OK', 'success');
+                } catch (error) {
+                    this.log(`❌ 基本JavaScript機能エラー: ${error.message}`, 'error');
+                }
+
+                // ブラウザ互換性確認
+                const features = {
+                    'ES6 Classes': typeof class {} === 'function',
+                    'Canvas 2D': !!document.createElement('canvas').getContext,
+                    'RequestAnimationFrame': !!window.requestAnimationFrame,
+                    'LocalStorage': !!window.localStorage,
+                    'WebAudio': !!(window.AudioContext || window.webkitAudioContext),
+                    'Fetch API': !!window.fetch
+                };
+                
+                Object.entries(features).forEach(([feature, supported]) => {
+                    this.log(`${feature}: ${supported ? '✅ サポート' : '❌ 未サポート'}`, supported ? 'success' : 'error');
+                });
+                
+                // index.htmlの基本構造確認
+                this.log('🔄 index.html構造確認中...');
+                const gameCanvas = document.getElementById('gameCanvas');
+                const gameContainer = document.querySelector('.game-container');
+                const loadingStatus = document.querySelector('.loading-status');
+                
+                this.log(`gameCanvas: ${gameCanvas ? '✅ 存在' : '❌ 不在'}`, gameCanvas ? 'success' : 'error');
+                this.log(`game-container: ${gameContainer ? '✅ 存在' : '❌ 不在'}`, gameContainer ? 'success' : 'error');
+                this.log(`loading-status: ${loadingStatus ? '✅ 存在' : '❌ 不在'}`, loadingStatus ? 'success' : 'error');
+            },
+
+            // モジュールインポートテスト（動的インポート使用）
+            testModuleImports: async function() {
+                this.log('🧪 モジュールインポートテスト開始');
+                
+                const modules = [
+                    { path: './src/main.js', name: 'Main' },
+                    { path: './src/core/ConfigurationManager.js', name: 'ConfigurationManager' },
+                    { path: './src/config/PerformanceConfig.js', name: 'PerformanceConfig' },
+                    { path: './src/utils/PerformanceOptimizer.js', name: 'PerformanceOptimizer' },
+                    { path: './src/core/GameEngine.js', name: 'GameEngine' }
+                ];
+                
+                for (const module of modules) {
+                    try {
+                        this.log(`🔄 ${module.name} (${module.path}) 読み込み中...`);
+                        
+                        // まずファイルの存在確認
+                        const response = await fetch(module.path);
+                        if (!response.ok) {
+                            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                        }
+                        
+                        const content = await response.text();
+                        this.log(`✅ ${module.name} ファイル読み込み成功 (${content.length} 文字)`, 'success');
+                        
+                        // 動的インポート試行
+                        const moduleObj = await import(module.path);
+                        this.log(`✅ ${module.name} モジュールインポート成功`, 'success');
+                        
+                        // エクスポート内容確認
+                        const exports = Object.keys(moduleObj);
+                        this.log(`📦 ${module.name} エクスポート: ${exports.join(', ') || 'なし'}`);
+                        
+                    } catch (error) {
+                        this.log(`❌ ${module.name} 読み込み失敗: ${error.message}`, 'error');
+                        console.error(`Module import error for ${module.path}:`, error);
+                    }
+                }
+            },
+
+            // メインゲーム初期化テスト
+            testMainGameInit: async function() {
+                this.log('🧪 メインゲーム初期化テスト開始');
+                
+                try {
+                    this.log('🔄 index.html内容確認中...');
+                    
+                    // index.htmlの読み込み
+                    const response = await fetch('./index.html');
+                    if (!response.ok) {
+                        throw new Error(`index.html読み込み失敗: ${response.status}`);
+                    }
+                    
+                    const htmlContent = await response.text();
+                    this.log(`✅ index.html読み込み成功 (${htmlContent.length} 文字)`, 'success');
+                    
+                    // index.htmlの重要な要素確認
+                    const checks = {
+                        'Canvas要素': htmlContent.includes('<canvas'),
+                        'main.js読み込み': htmlContent.includes('src/main.js') || htmlContent.includes('main.js'),
+                        'ES6モジュール指定': htmlContent.includes('type="module"'),
+                        'CSS読み込み': htmlContent.includes('.css'),
+                        'ゲームコンテナ': htmlContent.includes('game-container') || htmlContent.includes('gameContainer')
+                    };
+                    
+                    Object.entries(checks).forEach(([check, found]) => {
+                        this.log(`${check}: ${found ? '✅ 存在' : '❌ 不在'}`, found ? 'success' : 'error');
+                    });
+                    
+                    // main.jsの内容確認
+                    this.log('🔄 main.js内容確認中...');
+                    const mainResponse = await fetch('./src/main.js');
+                    if (mainResponse.ok) {
+                        const mainContent = await mainResponse.text();
+                        this.log(`✅ main.js読み込み成功 (${mainContent.length} 文字)`, 'success');
+                        
+                        const mainChecks = {
+                            'DOMContentLoaded': mainContent.includes('DOMContentLoaded'),
+                            'GameEngine': mainContent.includes('GameEngine'),
+                            'ConfigurationManager': mainContent.includes('ConfigurationManager'),
+                            'Error handling': mainContent.includes('catch') || mainContent.includes('error'),
+                            'Canvas取得': mainContent.includes('canvas') || mainContent.includes('Canvas')
+                        };
+                        
+                        Object.entries(mainChecks).forEach(([check, found]) => {
+                            this.log(`main.js - ${check}: ${found ? '✅ 存在' : '❌ 不在'}`, found ? 'success' : 'error');
+                        });
+                    } else {
+                        this.log(`❌ main.js読み込み失敗: ${mainResponse.status}`, 'error');
+                    }
+                    
+                } catch (error) {
+                    this.log(`❌ メインゲーム初期化テスト失敗: ${error.message}`, 'error');
+                    console.error('Main game init test error:', error);
+                }
+            },
+
+            // メインゲームの具体的エラー確認
+            checkMainGameErrors: async function() {
+                this.log('🧪 メインゲームエラー確認開始');
+                
+                try {
+                    // 現在のページでコンソールエラーをキャプチャ
+                    this.log('🔄 現在のコンソールエラーを確認中...');
+                    
+                    // エラーハンドラーを設定してメインゲームを読み込み試行
+                    const originalError = window.onerror;
+                    const errors = [];
+                    
+                    window.onerror = function(message, source, lineno, colno, error) {
+                        errors.push({
+                            message: message,
+                            source: source,
+                            line: lineno,
+                            column: colno,
+                            error: error
+                        });
+                        return false;
+                    };
+                    
+                    // 未処理のPromise拒否もキャプチャ
+                    window.addEventListener('unhandledrejection', function(event) {
+                        errors.push({
+                            message: 'Unhandled Promise rejection: ' + event.reason,
+                            source: 'Promise',
+                            error: event.reason
+                        });
+                    });
+                    
+                    this.log('🔄 main.jsを動的に読み込んでエラーチェック...');
+                    
+                    // 一定時間待ってからエラー結果を表示
+                    setTimeout(() => {
+                        if (errors.length === 0) {
+                            this.log('✅ エラーは検出されませんでした', 'success');
+                        } else {
+                            this.log(`❌ ${errors.length}個のエラーを検出:`, 'error');
+                            errors.forEach((err, index) => {
+                                this.log(`  ${index + 1}. ${err.message} (${err.source}:${err.line || '?'})`, 'error');
+                            });
+                        }
+                        
+                        // 元のエラーハンドラーを復元
+                        window.onerror = originalError;
+                    }, 2000);
+                    
+                } catch (error) {
+                    this.log(`❌ エラー確認テスト失敗: ${error.message}`, 'error');
+                    console.error('Error check test error:', error);
+                }
+            }
+        };
+
+        // 初期診断
+        document.addEventListener('DOMContentLoaded', function() {
+            DebugTool.log('🚀 診断ツール準備完了');
+            
+            // 自動で基本テスト実行
+            setTimeout(() => {
+                DebugTool.testBasicLoad();
+            }, 500);
+        });
+    </script>
+</body>
+</html>
