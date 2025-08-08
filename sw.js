@@ -288,7 +288,7 @@ self.addEventListener('fetch', (event) => {
     
     // PWA対応の改善されたリクエスト処理
     event.respondWith(handlePWARequest(request));
-};);
+});
 
 // メッセージイベントの処理
 self.addEventListener('message', (event) => {

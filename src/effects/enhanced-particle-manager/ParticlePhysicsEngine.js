@@ -378,6 +378,15 @@ export class ParticlePhysicsEngine {
     }
     
     /**
+     * スムーズトランジションを有効化
+     */
+    enableSmoothTransitions(enabled) {
+        this.animationSettings.interpolation = enabled;
+        this.animationSettings.easingEnabled = enabled;
+        console.log(`[ParticlePhysicsEngine] スムーズトランジション: ${enabled ? '有効' : '無効'}`);
+    }
+    
+    /**
      * 物理設定を更新
      */
     updatePhysicsSettings(newSettings) {

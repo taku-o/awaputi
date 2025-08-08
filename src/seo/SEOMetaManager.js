@@ -789,7 +789,7 @@ export class SEOMetaManager {
      * ゲーム状態で説明文を強化
      * @private
      */
-    async _enhanceDescriptionWithGameState(description, gameState) {
+    async _enhanceDescriptionWithGameState(description, gameState = {}) {
         const additions = [];
         
         if (gameState.highScore) {

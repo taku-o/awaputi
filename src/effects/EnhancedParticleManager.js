@@ -97,6 +97,11 @@ export class EnhancedParticleManager extends ParticleManager {
         return this.getParticleCount();
     }
     
+    enableSmoothTransitions(enabled) {
+        this.physicsEngine.enableSmoothTransitions(enabled);
+        console.log(`[EnhancedParticleManager] スムーズトランジションを${enabled ? '有効化' : '無効化'}しました`);
+    }
+    
     // ========================================
     // 物理演算API - Physics Engineにデリゲート
     // ========================================
