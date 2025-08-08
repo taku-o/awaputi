@@ -258,6 +258,20 @@ class PerformanceConfig {
                 maxParticles: 500,
                 workloadDistribution: true,
                 maxTimePerFrame: 8
+        } catch (error) {
+            console.error("[PerformanceConfig] Error getting optimization config:", error);
+            return {
+                targetFPS: 60,
+                adaptiveMode: true,
+                optimizationInterval: 1000,
+                maxHistorySize: 30,
+                performanceLevel: "high",
+                maxBubbles: 20,
+                maxParticles: 500,
+                workloadDistribution: true,
+                maxTimePerFrame: 8
+            };
+        }
             };
         }
         try {
