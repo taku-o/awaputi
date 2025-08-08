@@ -245,6 +245,66 @@ export class HelpManager {
     }
 
     /**
+     * カテゴリ別トピック一覧を取得
+     * @param {string} category - カテゴリ名
+     * @param {string} language - 言語コード
+     * @returns {Array} トピック一覧
+     */
+    getCategoryTopics(category, language = null) {
+        try {
+            const lang = language || this.localizationManager.getCurrentLanguage();
+            
+            // カテゴリ別のトピック定義
+            const categoryTopics = {
+                gameplay: [
+                    { id: 'basics', title: '基本操作' },
+                    { id: 'bubble_types', title: '泡の種類' },
+                    { id: 'combo_system', title: 'コンボシステム' },
+                    { id: 'power_ups', title: 'パワーアップ' },
+                    { id: 'scoring', title: 'スコアシステム' }
+                ],
+                bubbles: [
+                    { id: 'normal_bubbles', title: '通常の泡' },
+                    { id: 'special_bubbles', title: '特殊な泡' },
+                    { id: 'boss_bubbles', title: 'ボス泡' },
+                    { id: 'poison_bubbles', title: '毒泡' },
+                    { id: 'healing_bubbles', title: '回復泡' }
+                ],
+                stages: [
+                    { id: 'stage_types', title: 'ステージタイプ' },
+                    { id: 'difficulty', title: '難易度設定' },
+                    { id: 'time_limits', title: '制限時間' },
+                    { id: 'objectives', title: 'クリア条件' }
+                ],
+                menu: [
+                    { id: 'navigation', title: 'メニュー操作' },
+                    { id: 'settings', title: '設定項目' },
+                    { id: 'profile', title: 'プロフィール' },
+                    { id: 'achievements', title: '実績システム' }
+                ]
+            };
+            
+            const topics = categoryTopics[category] || [];
+            
+            // 各トピックに詳細情報を付加
+            return topics.map(topic => ({
+                ...topic,
+                category,
+                language: lang,
+                content: this.getHelpSection(`${category}.${topic.id}`, lang) || {
+                    title: topic.title,
+                    content: 'コンテンツを読み込み中...',
+                    isEmpty: true
+                }
+            }));
+            
+        } catch (error) {
+            this.loggingSystem.error('HelpManager', `Failed to get category topics: ${category}`, error);
+            return [];
+        }
+    }
+
+    /**
      * ツールチップの表示
      * @param {HTMLElement} element - 対象要素
      * @param {string} content - ツールチップ内容
@@ -525,6 +585,59 @@ export class HelpManager {
         } catch (error) {
             this.loggingSystem.error('HelpManager', `Failed to get help content for ${topicId}`, error);
             return null;
+        }
+    }
+    
+    /**
+     * 特定のトピックコンテンツを取得（getHelpContentのエイリアス）
+     * @param {string} topicId - トピックID
+     * @param {string} categoryId - カテゴリID（オプション）
+     * @param {string} language - 言語コード
+     * @returns {Promise<Object>} トピックコンテンツ
+     */
+    async getTopicContent(topicId, categoryId = null, language = null) {
+        try {
+            const content = await this.getHelpContent(topicId, categoryId, language);
+            
+            if (content) {
+                // 使用履歴を記録
+                this.trackHelpUsage(`${categoryId || 'unknown'}.${topicId}`);
+                this.loggingSystem.debug('HelpManager', `Topic content retrieved: ${topicId}`);
+                return content;
+            }
+            
+            // フォールバック: デフォルトコンテンツを返す
+            this.loggingSystem.warn('HelpManager', `Topic content not found: ${topicId}, returning fallback`);
+            return {
+                id: topicId,
+                title: 'コンテンツが見つかりません',
+                description: '申し訳ございませんが、このトピックのコンテンツが見つかりませんでした。',
+                content: 'このヘルプトピックは現在利用できません。後でもう一度お試しください。',
+                difficulty: 'beginner',
+                estimatedReadTime: '1分',
+                tags: ['error', 'not-found'],
+                category: categoryId || 'general',
+                language: language || 'ja',
+                isEmpty: true
+            };
+            
+        } catch (error) {
+            this.loggingSystem.error('HelpManager', `Failed to get topic content for ${topicId}`, error);
+            
+            // エラー時のフォールバックコンテンツ
+            return {
+                id: topicId,
+                title: 'エラーが発生しました',
+                description: 'コンテンツの読み込み中にエラーが発生しました。',
+                content: 'ヘルプコンテンツの読み込みに失敗しました。ページを更新してもう一度お試しください。',
+                difficulty: 'beginner',
+                estimatedReadTime: '1分',
+                tags: ['error'],
+                category: categoryId || 'general',
+                language: language || 'ja',
+                isEmpty: true,
+                error: true
+            };
         }
     }
     

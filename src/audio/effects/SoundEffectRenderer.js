@@ -75,6 +75,21 @@ export class SoundEffectRenderer {
                 waveType: 'sine',
                 envelope: { attack: 0.2, decay: 0.1, sustain: 0.1, release: 0.2 },
                 filterSweep: { start: 2000, end: 200 }
+            },
+            boss: { 
+                baseFreq: 150, 
+                duration: 1.0, 
+                waveType: 'square',
+                envelope: { attack: 0.15, decay: 0.3, sustain: 0.4, release: 0.4 },
+                harmonics: [1, 0.5, 0.25, 0.125],
+                modulation: { rate: 5, depth: 0.2 }
+            },
+            escaping: { 
+                baseFreq: 1200, 
+                duration: 0.15, 
+                waveType: 'sine',
+                envelope: { attack: 0.01, decay: 0.05, sustain: 0.05, release: 0.05 },
+                pitchSlide: { start: 1200, end: 1800 }
             }
         };
         

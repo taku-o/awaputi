@@ -61,7 +61,6 @@ export class SEOPerformanceOptimizer {
      * @param {Object} options - 最適化オプション
      * @returns {Promise<string>}
      */
-    @measurePerformance('SEOPerformanceOptimizer')
     async optimizeImage(imageUrl, options = {}) {
         try {
             const {

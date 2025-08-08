@@ -135,6 +135,12 @@ export class EffectQualityController {
      * @param {string} level - 品質レベル (low, medium, high, ultra)
      */
     setQualityLevel(level) {
+        // null または undefined の場合はデフォルト値を使用
+        if (level == null) {
+            level = 'high';
+            console.log('[EffectQualityController] Quality level was null, using default: high');
+        }
+        
         if (!this.qualityLevels[level]) {
             this.errorHandler.handleError(
                 new Error(`Invalid quality level: ${level}`),

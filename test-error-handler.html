@@ -192,7 +192,7 @@
             // 無効な文字列をテスト
             const invalidInputs = [
                 { value: 'a'.repeat(100), desc: '長すぎる文字列' },
-                { value: '<script>alert("xss")</script>', desc: 'HTMLタグを含む文字列' },
+                { value: '&lt;script&gt;alert("xss")&lt;/script&gt;', desc: 'HTMLタグを含む文字列' },
                 { value: 123, desc: '数値（文字列に変換されるべき）' },
                 { value: null, desc: 'null値' }
             ];

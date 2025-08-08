@@ -44,7 +44,9 @@ const CACHE_CONFIG = {
         mediumPriority: [
             /^\/src\/core\//,                 // コアJS
             /^\/src\/scenes\//,               // シーン
-            /^\/src\/managers\//,             // マネージャー
+            /^\/src\/audio\//,                // 音響マネージャー
+            /^\/src\/effects\//,              // エフェクトマネージャー
+            /^\/src\/ui\//,                   // UIマネージャー
             /^\/src\/config\//                // 設定
         ],
         
@@ -83,14 +85,14 @@ const STATIC_ASSETS = [
     '/src/scenes/UserInfoScene.js',
     '/src/scenes/GameInputManager.js',
     
-    // マネージャー
+    // マネージャー（実際のファイル位置に修正）
     '/src/managers/BubbleManager.js',
     '/src/managers/ScoreManager.js',
-    '/src/managers/StatisticsManager.js',
-    '/src/managers/AchievementManager.js',
-    '/src/managers/FloatingTextManager.js',
-    '/src/managers/EffectManager.js',
-    '/src/managers/AudioManager.js',
+    '/src/core/StatisticsManager.js',
+    '/src/core/AchievementManager.js',
+    '/src/ui/FloatingTextManager.js',
+    '/src/effects/EffectManager.js',
+    '/src/audio/AudioManager.js',
     
     // バブル関連
     '/src/bubbles/Bubble.js',
@@ -109,9 +111,9 @@ const STATIC_ASSETS = [
     '/src/utils/ErrorHandler.js',
     '/src/utils/BrowserCompatibility.js',
     '/src/utils/ResponsiveCanvasManager.js',
-    '/src/utils/SettingsManager.js',
+    '/src/core/SettingsManager.js',
     '/src/core/LocalizationManager.js',
-    '/src/utils/KeyboardShortcutManager.js',
+    '/src/core/KeyboardShortcutManager.js',
     '/src/utils/Analytics.js',
     '/src/utils/MobilePerformanceOptimizer.js',
     '/src/utils/ObjectPool.js',
@@ -167,7 +169,7 @@ const STATIC_ASSETS = [
     // '/assets/screenshots/' files are loaded on demand
     
     // CSS（実在するもののみ）
-    '/styles/main.css'
+    '/src/styles/accessibility.css'
 ];;
 
 // ネットワーク優先のパターン
@@ -288,7 +290,7 @@ self.addEventListener('fetch', (event) => {
     
     // PWA対応の改善されたリクエスト処理
     event.respondWith(handlePWARequest(request));
-};);
+});
 
 // メッセージイベントの処理
 self.addEventListener('message', (event) => {

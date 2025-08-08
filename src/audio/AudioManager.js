@@ -34,7 +34,7 @@ export class AudioManager {
         this.masterVolume = 0.8;
         this.sfxVolume = 0.7;
         this.bgmVolume = 0.5;
-        this.isMuted = false;
+        this._isMuted = false;
         
         // 従来のプロパティとの互換性維持
         this.audioContext = null;
@@ -59,6 +59,9 @@ export class AudioManager {
         this.audioController = null;
         this.audioVisualizer = null;
         this.accessibilitySupport = null;
+        
+        // ログ制御用
+        this.lastLoggedDisableState = null;
     }
 
     /**
@@ -172,7 +175,7 @@ export class AudioManager {
      * @returns {AudioBufferSourceNode|null} 音源ノード
      */
     playSound(soundName, options = {}) {
-        if (!this.isEnabled || this.isMuted) return null;
+        if (!this.isEnabled || this._isMuted) return null;
         return this.playbackController.playSound(soundName, options);
     }
 
@@ -329,9 +332,9 @@ export class AudioManager {
      */
     toggleMute() {
         const newMutedState = this.configurationManager.toggleMute();
-        this.isMuted = newMutedState; // ローカルキャッシュ更新
+        this._isMuted = newMutedState; // ローカルキャッシュ更新
         
-        if (this.isMuted) {
+        if (this._isMuted) {
             this.stopAllSounds();
         }
         
@@ -344,9 +347,9 @@ export class AudioManager {
      */
     setMuted(muted) {
         this.configurationManager.setMuted(muted);
-        this.isMuted = muted; // ローカルキャッシュ更新
+        this._isMuted = muted; // ローカルキャッシュ更新
         
-        if (this.isMuted) {
+        if (this._isMuted) {
             this.stopAllSounds();
         }
     }
@@ -393,7 +396,7 @@ export class AudioManager {
      * @returns {boolean} ミュート状態
      */
     isMuted() {
-        return this.muted || false;
+        return this._isMuted || false;
     }
 
     // ========== シーン管理API（委譲パターン） ==========
@@ -478,7 +481,7 @@ export class AudioManager {
                 master: this.masterVolume,
                 sfx: this.sfxVolume,
                 bgm: this.bgmVolume,
-                muted: this.isMuted
+                muted: this._isMuted
             },
             context: this.contextManager.getContextStatus(),
             playback: this.playbackController.getPlaybackStats(),
@@ -672,6 +675,55 @@ export class AudioManager {
      */
     getQualitySettings(mode = this.qualityMode) {
         return this.qualitySettings[mode] || this.qualitySettings.high;
+    }
+    
+    /**
+     * オーディオシステムを無効化
+     * エラー復旧やセーフモード時に使用
+     */
+    disable() {
+        try {
+            // 全ての再生中音声を停止
+            this.stopAllSounds();
+            
+            // BGMを停止
+            this.stopBGM();
+            
+            // ミュート状態にする
+            this.setMuted(true);
+            
+            // AudioContextを中断
+            if (this.audioContext && this.audioContext.state !== 'closed') {
+                this.audioContext.suspend();
+            }
+            
+            // ログ出力頻度を制御（前回と異なる状態の場合のみ）
+            if (this.lastLoggedDisableState !== true) {
+                console.log('[AudioManager] オーディオシステムを無効化しました');
+                this.lastLoggedDisableState = true;
+            }
+        } catch (error) {
+            console.warn('[AudioManager] 無効化中にエラー:', error);
+        }
+    }
+    
+    /**
+     * オーディオシステムを有効化
+     */
+    enable() {
+        try {
+            // AudioContextを再開
+            if (this.audioContext && this.audioContext.state === 'suspended') {
+                this.audioContext.resume();
+            }
+            
+            // ミュート解除
+            this.setMuted(false);
+            
+            console.log('[AudioManager] オーディオシステムを有効化しました');
+        } catch (error) {
+            console.warn('[AudioManager] 有効化中にエラー:', error);
+        }
     }
 }
 

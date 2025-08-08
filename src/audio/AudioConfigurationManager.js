@@ -47,6 +47,9 @@ export class AudioConfigurationManager {
         // 設定変更リスナー
         this.changeListeners = new Map();
         
+        // ログ制御用
+        this.lastLoggedMuteState = null;
+        
         // 設定同期状態
         this.syncState = {
             isInitialized: false,
@@ -190,14 +193,25 @@ export class AudioConfigurationManager {
      */
     onMuteChange(newValue) {
         try {
-            this.currentConfig.volumes.muted = Boolean(newValue);
+            const newMuteState = Boolean(newValue);
+            
+            // 値が変更されていない場合は早期リターン
+            if (this.currentConfig.volumes.muted === newMuteState) {
+                return;
+            }
+            
+            this.currentConfig.volumes.muted = newMuteState;
             
             if (this.currentConfig.volumes.muted) {
                 // ミュート時は全音響停止
                 this.notifyListeners('mute', { muted: true });
             }
             
-            console.log(`[AudioConfig] Mute state changed to ${this.currentConfig.volumes.muted}`);
+            // ログ出力頻度を制御（前回と異なる状態の場合のみ）
+            if (this.lastLoggedMuteState !== this.currentConfig.volumes.muted) {
+                console.log(`[AudioConfig] Mute state changed to ${this.currentConfig.volumes.muted}`);
+                this.lastLoggedMuteState = this.currentConfig.volumes.muted;
+            }
             
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {

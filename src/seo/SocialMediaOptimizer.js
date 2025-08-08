@@ -112,7 +112,6 @@ export class SocialMediaOptimizer {
      * @param {Object} content 
      * @returns {Promise<Object>}
      */
-    @measurePerformance('SocialMediaOptimizer')
     async generateOptimizedContent(platform, content = {}) {
         try {
             const specs = this.platformSpecs.get(platform);

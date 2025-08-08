@@ -480,4 +480,54 @@ export class ParticleManager {
         });
         return distribution;
     }
+    
+    /**
+     * パーティクルシステムを無効化
+     * エラー復旧やセーフモード時に使用
+     */
+    disable() {
+        try {
+            this.enabled = false;
+            this.clear();
+            console.log('[ParticleManager] パーティクルシステムを無効化しました');
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'ParticleManager.disable'
+            });
+        }
+    }
+    
+    /**
+     * パーティクルシステムを有効化
+     */
+    enable() {
+        this.enabled = true;
+        console.log('[ParticleManager] パーティクルシステムを有効化しました');
+    }
+    
+    /**
+     * 最大パーティクル数を設定
+     * @param {number} maxCount - 最大パーティクル数
+     */
+    setMaxParticles(maxCount) {
+        try {
+            const oldMax = this.maxParticles;
+            this.maxParticles = maxCount;
+            
+            // 現在のパーティクル数が新しい制限を超えている場合は削除
+            if (this.particles.length > maxCount) {
+                const excessCount = this.particles.length - maxCount;
+                for (let i = 0; i < excessCount; i++) {
+                    const particle = this.particles.shift();
+                    this.returnParticleToPool(particle);
+                }
+            }
+            
+            console.log(`[ParticleManager] 最大パーティクル数を設定: ${oldMax} → ${maxCount}`);
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'ParticleManager.setMaxParticles'
+            });
+        }
+    }
 }

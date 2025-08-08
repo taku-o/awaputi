@@ -209,7 +209,7 @@ export class ErrorReporter {
         }
         
         if (context === 'BROWSER_COMPATIBILITY') {
-            return 'お使いのブラウザではサポートされていない機能があります。';
+            return 'お使いのブラウザでは一部機能が制限される可能性がありますが、ゲームは続行できます。';
         }
         
         return '技術的な問題が発生しました。ページを再読み込みしてください。';
@@ -483,9 +483,9 @@ export class ErrorReporter {
                 font-family: Arial, sans-serif;
                 max-width: 500px;
             ">
-                <h2>互換性の問題が発生しました</h2>
-                <p>お使いのブラウザではゲームを正常に実行できません。</p>
-                <p>以下のブラウザでお試しください：</p>
+                <h2>ブラウザの互換性について</h2>
+                <p>お使いのブラウザでは一部機能が制限される可能性があります。</p>
+                <p>最適な体験のために、以下のブラウザを推奨します：</p>
                 <ul style="text-align: left; margin: 20px 0;">
                     <li>Google Chrome (推奨)</li>
                     <li>Mozilla Firefox</li>
@@ -493,6 +493,16 @@ export class ErrorReporter {
                     <li>Safari (iOS/macOS)</li>
                 </ul>
                 <div style="margin-top: 20px;">
+                    <button onclick="this.parentElement.parentElement.remove(); console.log('[Game] Continuing with limited compatibility mode');" style="
+                        padding: 10px 20px;
+                        background: #28a745;
+                        color: white;
+                        border: none;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        font-size: 16px;
+                        margin-right: 10px;
+                    ">このまま続行</button>
                     <button onclick="location.reload()" style="
                         padding: 10px 20px;
                         background: #007bff;

@@ -135,7 +135,6 @@ export class SEOTester {
      * @param {Object} options - テストオプション
      * @returns {Promise<Object>}
      */
-    @measurePerformance('SEOTester')
     async runComprehensiveTest(options = {}) {
         try {
             const {

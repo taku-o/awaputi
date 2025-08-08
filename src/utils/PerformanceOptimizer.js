@@ -27,6 +27,9 @@ export class PerformanceOptimizer {
             this.lastFrameTime = null;
             this.lastOptimizationTime = 0;
             
+            // ログ制御用
+            this.lastLoggedStabilizerZone = null;
+            
             // Frame Stabilizer統合
             this.frameStabilizer = getFrameStabilizer(this.targetFPS);
             
@@ -295,12 +298,16 @@ export class PerformanceOptimizer {
         try {
             if (!this.frameStabilizer) return;
             
-            const stabilizerStatus = this.frameStabilizer.getStatus();
+            const stabilizerStatus = this.frameStabilizer.getStabilizationStatus();
             if (stabilizerStatus) {
                 const integrationResult = this.stabilizerIntegrator.integrateStabilizerRecommendations(stabilizerStatus);
                 
                 if (integrationResult.integrated) {
-                    console.log(`[PerformanceOptimizer] Stabilizer integration completed: ${integrationResult.currentZone} zone`);
+                    // ログ出力頻度を制御（前回と異なるゾーンの場合のみ）
+                    if (this.lastLoggedStabilizerZone !== integrationResult.currentZone) {
+                        console.log(`[PerformanceOptimizer] Stabilizer integration completed: ${integrationResult.currentZone} zone`);
+                        this.lastLoggedStabilizerZone = integrationResult.currentZone;
+                    }
                 }
             }
             

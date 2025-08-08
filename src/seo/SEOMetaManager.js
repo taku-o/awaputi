@@ -68,7 +68,6 @@ export class SEOMetaManager {
      * @param {Object} context 更新コンテキスト
      * @returns {Promise<void>}
      */
-    @measurePerformance('SEOMetaManager')
     async updateMetaTags(context = {}) {
         if (!this.initialized) {
             seoLogger.warn('SEOMetaManager not initialized');
@@ -138,7 +137,7 @@ export class SEOMetaManager {
         }
 
         // 動的説明文生成
-        let dynamicDescription = this._getLocalizedDescription();
+        let dynamicDescription = await this._getLocalizedDescription(context);
         if (gameSession.scene === 'game' && gameSession.score > 0) {
             const gameplayText = this.localizationManager ?
                 this.localizationManager.get('seo.gameplayDescription', {
@@ -154,7 +153,7 @@ export class SEOMetaManager {
             title: dynamicTitle,
             description: dynamicDescription,
             gameState: gameSession,
-            url: this._generateUrl()
+            url: this._generateUrl({})
         };
     }
 
@@ -267,7 +266,7 @@ export class SEOMetaManager {
      * ローカライズされた説明文生成
      * @private
      */
-    async _getLocalizedDescription(context) {
+    async _getLocalizedDescription(context = {}) {
         if (!this.localizationManager) {
             return context.description || 'HTML5 Canvas を使用したバブルポップゲーム。泡を割って高スコアを目指そう！';
         }
@@ -790,7 +789,7 @@ export class SEOMetaManager {
      * ゲーム状態で説明文を強化
      * @private
      */
-    async _enhanceDescriptionWithGameState(description, gameState) {
+    async _enhanceDescriptionWithGameState(description, gameState = {}) {
         const additions = [];
         
         if (gameState.highScore) {
@@ -812,7 +811,7 @@ export class SEOMetaManager {
      * URLの生成
      * @private
      */
-    _generateUrl(context) {
+    _generateUrl(context = {}) {
         const path = context.path || window.location.pathname;
         return getLocalizedUrl(this.currentLang, path);
     }

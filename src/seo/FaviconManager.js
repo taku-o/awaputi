@@ -122,7 +122,6 @@ export class FaviconManager {
      * @param {Object} options 
      * @returns {Promise<Object>}
      */
-    @measurePerformance('FaviconManager')
     async generateAllFavicons(options = {}) {
         try {
             const results = {

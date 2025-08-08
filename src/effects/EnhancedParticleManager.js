@@ -35,6 +35,9 @@ export class EnhancedParticleManager extends ParticleManager {
         this.qualityController = getEffectQualityController();
         this.performanceMonitor = getEffectPerformanceMonitor();
         
+        // パフォーマンス監視用
+        this.lastPerformanceCheck = null;
+        
         // 既存エフェクトレンダラーの初期化
         this.bubbleRenderer = new BubbleEffectRenderer(this);
         this.comboRenderer = new ComboEffectRenderer(this);
@@ -75,12 +78,36 @@ export class EnhancedParticleManager extends ParticleManager {
         console.log('[EnhancedParticleManager] アグレッシブカリングを有効化しました');
     }
     
+    setAggressiveCulling(enabled) {
+        if (enabled) {
+            this.qualityManager.enableAggressiveCulling();
+        } else {
+            this.qualityManager.disableAggressiveCulling();
+        }
+        console.log(`[EnhancedParticleManager] アグレッシブカリングを${enabled ? '有効化' : '無効化'}しました`);
+    }
+    
     setColorPalettes(paletteName) {
         this.qualityManager.setColorPalettes(paletteName);
     }
     
     setPhysicsEnhancements(enabled) {
         this.qualityManager.setPhysicsEnhancements(enabled);
+    }
+    
+    getActiveParticleCount() {
+        // ParticleManagerの基本メソッドを使用
+        return this.getParticleCount();
+    }
+    
+    enableSmoothTransitions(enabled) {
+        this.physicsEngine.enableSmoothTransitions(enabled);
+        console.log(`[EnhancedParticleManager] スムーズトランジションを${enabled ? '有効化' : '無効化'}しました`);
+    }
+    
+    setTimingProfiles(profiles) {
+        this.physicsEngine.setTimingProfiles(profiles);
+        console.log('[EnhancedParticleManager] タイミングプロファイルを設定しました');
     }
     
     // ========================================
@@ -170,7 +197,20 @@ export class EnhancedParticleManager extends ParticleManager {
     _monitorPerformance() {
         try {
             // フレームレートに基づく品質自動調整
-            const currentFPS = this.performanceMonitor ? this.performanceMonitor.getCurrentFPS() : 60;
+            let currentFPS = 60; // デフォルト値
+            
+            if (this.performanceMonitor && typeof this.performanceMonitor.getCurrentFPS === 'function') {
+                currentFPS = this.performanceMonitor.getCurrentFPS();
+            } else if (typeof window !== 'undefined' && window.performance && window.performance.now) {
+                // フォールバック: 簡易FPS計算
+                const now = window.performance.now();
+                if (this.lastPerformanceCheck) {
+                    const deltaTime = now - this.lastPerformanceCheck;
+                    currentFPS = Math.min(60, 1000 / deltaTime);
+                }
+                this.lastPerformanceCheck = now;
+            }
+            
             this.qualityManager.adjustQualityBasedOnPerformance(currentFPS);
             
         } catch (error) {

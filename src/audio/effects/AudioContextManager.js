@@ -98,7 +98,11 @@ export class AudioContextManager {
     async _doInitialize() {
         try {
             if (!this.browserSupport.audioContext) {
-                throw new Error('AudioContext is not supported in this browser');
+                console.warn('[AudioContextManager] AudioContext is not supported in this browser - audio context manager disabled');
+                this.disabled = true;
+                this.isInitialized = false;
+                this.contextState = 'unavailable';
+                return false;
             }
             
             // AudioContext を作成
@@ -155,6 +159,11 @@ export class AudioContextManager {
      * オーディオノードを設定
      */
     setupAudioNodes() {
+        if (this.disabled || !this.audioContext) {
+            console.warn('[AudioContextManager] Audio context manager is disabled or context unavailable - setupAudioNodes skipped');
+            return;
+        }
+        
         try {
             // マスターゲインノード
             this.masterGainNode = this.audioContext.createGain();
@@ -359,6 +368,11 @@ export class AudioContextManager {
      * 音量を設定
      */
     setVolume(type, volume) {
+        if (this.disabled) {
+            console.warn('[AudioContextManager] Audio context manager is disabled - setVolume ignored');
+            return;
+        }
+        
         const clampedVolume = Math.max(0, Math.min(1, volume));
         
         try {
@@ -396,6 +410,11 @@ export class AudioContextManager {
      * 音量を取得
      */
     getVolume(type) {
+        if (this.disabled) {
+            console.warn('[AudioContextManager] Audio context manager is disabled - getVolume returning 0');
+            return 0;
+        }
+        
         try {
             switch (type) {
                 case 'master':
@@ -418,6 +437,11 @@ export class AudioContextManager {
      * オーディオ分析データを取得
      */
     getAnalyserData() {
+        if (this.disabled) {
+            console.warn('[AudioContextManager] Audio context manager is disabled - getAnalyserData returning null');
+            return null;
+        }
+        
         if (!this.analyser) {
             return null;
         }

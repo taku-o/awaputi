@@ -26,6 +26,9 @@ export class ErrorRecovery {
         // Fallback modes
         this.fallbackModes = new Map();
         
+        // ログ制御用
+        this.lastLoggedAudioDisableState = null;
+        
         this.setupRecoveryStrategies();
         
         console.log('[ErrorRecovery] Error recovery component initialized');
@@ -308,7 +311,11 @@ export class ErrorRecovery {
     disableAudioFeatures() {
         if (typeof window !== 'undefined' && window.gameEngine && window.gameEngine.audioManager) {
             window.gameEngine.audioManager.disable();
-            console.log('Audio features disabled');
+            // ログ出力頻度を制御（前回と異なる状態の場合のみ）
+            if (this.lastLoggedAudioDisableState !== true) {
+                console.log('Audio features disabled');
+                this.lastLoggedAudioDisableState = true;
+            }
         }
     }
     

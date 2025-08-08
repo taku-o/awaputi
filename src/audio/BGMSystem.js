@@ -25,6 +25,9 @@ export class BGMSystem {
         // 設定監視のID管理
         this.configWatchers = new Set();
         
+        // ログ制御用
+        this.lastLoggedStopState = null;
+        
         // BGMタイプ定義
         this.bgmTypes = {
             menu: { style: 'ambient', tempo: 60, key: 'C', duration: 45 },
@@ -47,7 +50,9 @@ export class BGMSystem {
     initialize() {
         try {
             if (!this.audioContext) {
-                throw new Error('AudioContext is not available');
+                console.warn('[BGMSystem] AudioContext not available - BGM system disabled');
+                this.disabled = true;
+                return false;
             }
             
             // BGM生成器を初期化
@@ -165,9 +170,15 @@ export class BGMSystem {
      * @param {Object} options - 再生オプション
      */
     async playBGM(trackName, options = {}) {
+        if (this.disabled) {
+            console.warn('[BGMSystem] BGM system is disabled - playBGM ignored');
+            return false;
+        }
+        
         try {
             if (!this.bgmPlayer) {
-                throw new Error('BGMPlayer is not initialized');
+                console.warn('[BGMSystem] BGMPlayer is not initialized');
+                return false;
             }
             
             // トラックを取得または生成
@@ -247,6 +258,11 @@ export class BGMSystem {
      * @param {Object} options - 停止オプション
      */
     async stopBGM(options = {}) {
+        if (this.disabled) {
+            console.warn('[BGMSystem] BGM system is disabled - stopBGM ignored');
+            return;
+        }
+        
         try {
             if (!this.bgmPlayer) {
                 return;
@@ -260,7 +276,11 @@ export class BGMSystem {
             this.isPaused = playerState.isPaused;
             this.currentTrack = playerState.currentTrack;
             
-            console.log('BGM stopped via BGMPlayer');
+            // ログ出力頻度を制御（状態変化時のみ）
+            if (this.lastLoggedStopState !== 'stopped') {
+                console.log('BGM stopped via BGMPlayer');
+                this.lastLoggedStopState = 'stopped';
+            }
         } catch (error) {
             getErrorHandler().handleError(error, 'BGM_ERROR', {
                 operation: 'stopBGM',
@@ -273,6 +293,11 @@ export class BGMSystem {
      * BGMを一時停止
      */
     pause() {
+        if (this.disabled) {
+            console.warn('[BGMSystem] BGM system is disabled - pause ignored');
+            return;
+        }
+        
         try {
             if (!this.bgmPlayer) {
                 return;
@@ -297,6 +322,11 @@ export class BGMSystem {
      * BGMを再開
      */
     resume() {
+        if (this.disabled) {
+            console.warn('[BGMSystem] BGM system is disabled - resume ignored');
+            return;
+        }
+        
         try {
             if (!this.bgmPlayer) {
                 return;
@@ -349,6 +379,11 @@ export class BGMSystem {
      * @param {number} fadeTime - フェード時間（秒）
      */
     setVolume(volume, fadeTime = 0) {
+        if (this.disabled) {
+            console.warn('[BGMSystem] BGM system is disabled - setVolume ignored');
+            return;
+        }
+        
         try {
             if (this.bgmPlayer) {
                 this.bgmPlayer.setVolume(volume, fadeTime);
@@ -368,6 +403,11 @@ export class BGMSystem {
      * @param {boolean} enabled - ループ有効フラグ
      */
     setLoop(enabled) {
+        if (this.disabled) {
+            console.warn('[BGMSystem] BGM system is disabled - setLoop ignored');
+            return;
+        }
+        
         try {
             if (this.bgmPlayer) {
                 this.bgmPlayer.setLoop(enabled);
@@ -386,6 +426,11 @@ export class BGMSystem {
      * @param {Object} options - 再生オプション
      */
     async queueNext(trackName, options = {}) {
+        if (this.disabled) {
+            console.warn('[BGMSystem] BGM system is disabled - queueNext ignored');
+            return;
+        }
+        
         try {
             if (!this.bgmPlayer) {
                 throw new Error('BGMPlayer is not initialized');

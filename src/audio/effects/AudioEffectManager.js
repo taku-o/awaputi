@@ -11,6 +11,13 @@ export class AudioEffectManager {
     constructor(audioContext, sfxGainNode) {
         this.audioContext = audioContext;
         this.sfxGainNode = sfxGainNode;
+        
+        // AudioContextが利用できない場合は無効化
+        if (!this.audioContext) {
+            console.warn('[AudioEffectManager] AudioContext not available - effects disabled');
+            this.disabled = true;
+            return;
+        }
         this.configManager = getConfigurationManager();
         this.errorHandler = getErrorHandler();
         
@@ -101,57 +108,111 @@ export class AudioEffectManager {
      * リバーブエフェクトを作成
      */
     createReverbEffect() {
-        const convolver = this.audioContext.createConvolver();
-        const impulseResponse = this.createImpulseResponse(2, 44100, false);
-        convolver.buffer = impulseResponse;
+        if (this.disabled || !this.audioContext) {
+            console.warn('[AudioEffectManager] Cannot create reverb effect - audio context not available');
+            return;
+        }
         
-        const wetGain = this.audioContext.createGain();
-        const dryGain = this.audioContext.createGain();
-        const outputGain = this.audioContext.createGain();
-        
-        wetGain.gain.value = 0.3;
-        dryGain.gain.value = 0.7;
-        
-        this.effectNodes.set('reverb', {
-            input: this.audioContext.createGain(),
-            convolver,
-            wetGain,
-            dryGain,
-            output: outputGain,
-            type: 'reverb'
-        });
-        
-        // ルーティング設定
-        const reverbEffect = this.effectNodes.get('reverb');
-        reverbEffect.input.connect(convolver);
-        reverbEffect.input.connect(dryGain);
-        convolver.connect(wetGain);
-        wetGain.connect(outputGain);
-        dryGain.connect(outputGain);
+        try {
+            const convolver = this.audioContext.createConvolver();
+            const sampleRate = this.audioContext.sampleRate || 44100; // Use AudioContext sample rate
+            const impulseResponse = this.createImpulseResponse(2, sampleRate, false);
+            convolver.buffer = impulseResponse;
+            
+            const wetGain = this.audioContext.createGain();
+            const dryGain = this.audioContext.createGain();
+            const outputGain = this.audioContext.createGain();
+            
+            wetGain.gain.value = 0.3;
+            dryGain.gain.value = 0.7;
+            
+            this.effectNodes.set('reverb', {
+                input: this.audioContext.createGain(),
+                convolver,
+                wetGain,
+                dryGain,
+                output: outputGain,
+                type: 'reverb'
+            });
+            
+            // ルーティング設定
+            const reverbEffect = this.effectNodes.get('reverb');
+            reverbEffect.input.connect(convolver);
+            reverbEffect.input.connect(dryGain);
+            convolver.connect(wetGain);
+            wetGain.connect(outputGain);
+            dryGain.connect(outputGain);
+            
+        } catch (error) {
+            console.error('[AudioEffectManager] Failed to create reverb effect:', error);
+            this.errorHandler.handleError(error, 'AUDIO_ERROR', {
+                operation: 'createReverbEffect',
+                component: 'AudioEffectManager',
+                context: 'ConvolverNode buffer creation',
+                sampleRate: this.audioContext.sampleRate
+            });
+            
+            // Create a fallback bypass effect
+            const inputGain = this.audioContext.createGain();
+            const outputGain = this.audioContext.createGain();
+            inputGain.connect(outputGain);
+            
+            this.effectNodes.set('reverb', {
+                input: inputGain,
+                output: outputGain,
+                type: 'reverb',
+                disabled: true
+            });
+        }
     }
     
     /**
      * インパルスレスポンスを作成
      */
     createImpulseResponse(duration, sampleRate, reverse) {
-        const length = sampleRate * duration;
-        const impulse = this.audioContext.createBuffer(2, length, sampleRate);
-        
-        for (let channel = 0; channel < 2; channel++) {
-            const channelData = impulse.getChannelData(channel);
-            for (let i = 0; i < length; i++) {
-                const n = reverse ? length - i : i;
-                channelData[i] = (Math.random() * 2 - 1) * Math.pow(1 - n / length, 2);
+        try {
+            // Ensure valid parameters
+            const validSampleRate = Math.max(sampleRate, 8000); // Minimum sample rate
+            const validDuration = Math.max(Math.min(duration, 60), 0.1); // Between 0.1 and 60 seconds
+            const length = Math.floor(validSampleRate * validDuration);
+            
+            console.log(`[AudioEffectManager] Creating impulse response: sampleRate=${validSampleRate}, duration=${validDuration}, length=${length}`);
+            
+            const impulse = this.audioContext.createBuffer(2, length, validSampleRate);
+            
+            for (let channel = 0; channel < 2; channel++) {
+                const channelData = impulse.getChannelData(channel);
+                for (let i = 0; i < length; i++) {
+                    const n = reverse ? length - i : i;
+                    channelData[i] = (Math.random() * 2 - 1) * Math.pow(1 - n / length, 2);
+                }
+            }
+            
+            return impulse;
+        } catch (error) {
+            console.error('[AudioEffectManager] Failed to create impulse response:', error);
+            console.error('Parameters:', { duration, sampleRate, reverse });
+            
+            // Create a minimal fallback buffer
+            try {
+                const fallbackBuffer = this.audioContext.createBuffer(2, 1024, this.audioContext.sampleRate || 44100);
+                return fallbackBuffer;
+            } catch (fallbackError) {
+                console.error('[AudioEffectManager] Fallback buffer creation also failed:', fallbackError);
+                throw error; // Re-throw original error
             }
         }
-        
-        return impulse;
     }
     
     /**
      * ディレイエフェクトを作成
      */
     createDelayEffect() {
+        if (this.disabled || !this.audioContext) {
+            console.warn('[AudioEffectManager] Cannot create delay effect - audio context not available');
+            return;
+        }
+        
         const delay = this.audioContext.createDelay(1.0);
         const feedback = this.audioContext.createGain();
         const wetGain = this.audioContext.createGain();
@@ -221,7 +282,7 @@ export class AudioEffectManager {
      * ディストーションカーブを作成
      */
     createDistortionCurve(amount) {
-        const samples = 44100;
+        const samples = Math.max(this.audioContext.sampleRate || 44100, 44100);
         const curve = new Float32Array(samples);
         const deg = Math.PI / 180;
         
@@ -237,6 +298,11 @@ export class AudioEffectManager {
      * コーラスエフェクトを作成
      */
     createChorusEffect() {
+        if (this.disabled || !this.audioContext) {
+            console.warn('[AudioEffectManager] Cannot create chorus effect - audio context not available');
+            return;
+        }
+        
         const delay = this.audioContext.createDelay(0.05);
         const lfo = this.audioContext.createOscillator();
         const lfoGain = this.audioContext.createGain();

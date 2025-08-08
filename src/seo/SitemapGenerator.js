@@ -43,7 +43,6 @@ export class SitemapGenerator {
      * @param {Object} options 
      * @returns {Promise<string>}
      */
-    @measurePerformance('SitemapGenerator')
     async generateSitemap(options = {}) {
         try {
             const startTime = performance.now();

@@ -334,6 +334,35 @@ export class AchievementManager {
     }
     
     /**
+     * データを読み込み
+     */
+    load() {
+        try {
+            console.log('[AchievementManager] Loading achievement data...');
+            
+            // 進捗データを読み込み
+            if (this.progressTracker && typeof this.progressTracker.loadProgress === 'function') {
+                this.progressTracker.loadProgress();
+            }
+            
+            // 通知履歴を読み込み（もし必要なら）
+            if (this.notificationSystem && typeof this.notificationSystem.loadHistory === 'function') {
+                this.notificationSystem.loadHistory();
+            }
+            
+            // パフォーマンス統計を読み込み（もし必要なら）
+            if (this.performanceOptimizer && typeof this.performanceOptimizer.loadStats === 'function') {
+                this.performanceOptimizer.loadStats();
+            }
+            
+            console.log('[AchievementManager] Achievement data loaded successfully');
+        } catch (error) {
+            console.error('[AchievementManager] Failed to load achievement data:', error);
+            // エラーが発生しても続行できるようにする
+        }
+    }
+
+    /**
      * 実績管理システムを破棄
      */
     destroy() {

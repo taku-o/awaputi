@@ -60,7 +60,6 @@ export class StructuredDataEngine {
      * @param {Object} context 
      * @returns {Promise<Array>}
      */
-    @measurePerformance('StructuredDataEngine')
     async generateStructuredData(context = {}) {
         if (!this.initialized) {
             seoLogger.warn('StructuredDataEngine not initialized');

@@ -82,11 +82,11 @@ export class UserStatisticsRenderer {
             if (this.gameEngine.statisticsManager) {
                 this.statisticsFilterManager = new StatisticsFilterManager(this.gameEngine.statisticsManager);
                 
-                // StatisticsDashboardの初期化
+                // StatisticsDashboardの初期化（widgetRendererは自動で作成される）
                 this.statisticsDashboard = new StatisticsDashboard(
                     this.gameEngine.statisticsManager,
-                    this.chartRenderer,
-                    this.statisticsFilterManager
+                    this.chartRenderer
+                    // 第3引数のwidgetRendererは省略し、DashboardWidgetRendererが自動で作成される
                 );
                 
                 // StatisticsExporterの初期化

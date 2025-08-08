@@ -53,7 +53,6 @@ export class SEOI18nManager {
      * @param {Object} options - オプション設定
      * @returns {Promise<string>}
      */
-    @measurePerformance('SEOI18nManager')
     async generateHreflangTags(currentPath = '/', options = {}) {
         try {
             const cacheKey = generateCacheKey('hreflang', { currentPath, ...options });

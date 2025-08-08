@@ -378,6 +378,20 @@ export class ParticlePhysicsEngine {
     }
     
     /**
+     * スムーズトランジションを有効化
+     */
+    enableSmoothTransitions(enabled) {
+        this.animationSettings.interpolation = enabled;
+        this.animationSettings.easingEnabled = enabled;
+        console.log(`[ParticlePhysicsEngine] スムーズトランジション: ${enabled ? '有効' : '無効'}`);
+    }
+    
+    setTimingProfiles(profiles) {
+        this.timingProfiles = profiles;
+        console.log('[ParticlePhysicsEngine] タイミングプロファイルを設定しました:', profiles);
+    }
+    
+    /**
      * 物理設定を更新
      */
     updatePhysicsSettings(newSettings) {

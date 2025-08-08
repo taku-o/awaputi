@@ -205,17 +205,36 @@ export class I18nRenderOptimizer {
      */
     _loadFontCSS(fontFamily) {
         return new Promise((resolve, reject) => {
+            // Check if font is already loaded
+            const existingLink = document.querySelector(`link[href*="${encodeURIComponent(fontFamily)}"]`);
+            if (existingLink) {
+                console.log(`[I18nRenderOptimizer] Font ${fontFamily} already loaded`);
+                resolve(true);
+                return;
+            }
+            
             const link = document.createElement('link');
             link.rel = 'stylesheet';
             link.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(fontFamily)}:wght@400;500;700&display=swap`;
             
-            link.onload = () => resolve(true);
-            link.onerror = () => reject(new Error(`Failed to load font: ${fontFamily}`));
+            link.onload = () => {
+                console.log(`[I18nRenderOptimizer] Successfully loaded font: ${fontFamily}`);
+                resolve(true);
+            };
+            
+            link.onerror = () => {
+                console.warn(`[I18nRenderOptimizer] Failed to load font: ${fontFamily}, using fallback`);
+                // Don't reject - just resolve with false and continue with fallback fonts
+                resolve(false);
+            };
             
             document.head.appendChild(link);
             
-            // タイムアウト設定
-            setTimeout(() => reject(new Error('Font load timeout')), 5000);
+            // タイムアウト設定 - but don't reject, just resolve with false
+            setTimeout(() => {
+                console.warn(`[I18nRenderOptimizer] Font load timeout for: ${fontFamily}, using fallback`);
+                resolve(false);
+            }, 5000);
         });
     }
     
@@ -790,6 +809,171 @@ export class I18nRenderOptimizer {
                 isPaused: this.renderingPaused
             }
         };
+    }
+    
+    /**
+     * レイアウトキャッシュを無効化
+     */
+    invalidateLayoutCache() {
+        this.layoutCache.clear();
+        this.measurementCache.clear();
+        console.log('Layout cache invalidated');
+    }
+    
+    /**
+     * 要素の属性を取得
+     */
+    getElementAttributes(element) {
+        const attrs = {};
+        for (const attr of element.attributes) {
+            attrs[attr.name] = attr.value;
+        }
+        return attrs;
+    }
+    
+    /**
+     * 新しい属性を計算
+     */
+    calculateNewAttributes(element, layoutInfo) {
+        const attrs = this.getElementAttributes(element);
+        
+        // レイアウト情報に基づいて属性を調整
+        if (layoutInfo.textDirection === 'rtl') {
+            attrs['dir'] = 'rtl';
+        } else {
+            attrs['dir'] = 'ltr';
+        }
+        
+        return attrs;
+    }
+    
+    /**
+     * 属性が等しいかチェック
+     */
+    attributesEqual(attrs1, attrs2) {
+        const keys1 = Object.keys(attrs1);
+        const keys2 = Object.keys(attrs2);
+        
+        if (keys1.length !== keys2.length) {
+            return false;
+        }
+        
+        return keys1.every(key => attrs1[key] === attrs2[key]);
+    }
+    
+    /**
+     * 要素レイアウトを計算
+     */
+    calculateElementLayout(element, newText, layoutInfo) {
+        return {
+            adjustments: layoutInfo.layoutAdjustments,
+            textMetrics: {
+                estimatedWidth: newText.length * 8, // 簡易推定
+                estimatedHeight: 20
+            }
+        };
+    }
+    
+    /**
+     * 更新を優先度順にソート
+     */
+    sortUpdatesByPriority(updates) {
+        return updates.sort((a, b) => {
+            // 可視領域の要素を優先
+            const aVisible = this.isElementVisible(a.element);
+            const bVisible = this.isElementVisible(b.element);
+            
+            if (aVisible && !bVisible) return -1;
+            if (!aVisible && bVisible) return 1;
+            
+            // サイズが大きい要素を優先
+            const aSize = a.element.offsetWidth * a.element.offsetHeight;
+            const bSize = b.element.offsetWidth * b.element.offsetHeight;
+            
+            return bSize - aSize;
+        });
+    }
+    
+    /**
+     * 要素が可視かチェック
+     */
+    isElementVisible(element) {
+        const rect = element.getBoundingClientRect();
+        return rect.width > 0 && rect.height > 0 && 
+               rect.top < window.innerHeight && rect.bottom > 0;
+    }
+    
+    /**
+     * レイアウト調整を適用
+     */
+    applyLayoutAdjustments(element, adjustments) {
+        if (adjustments.lineHeight) {
+            element.style.lineHeight = adjustments.lineHeight;
+        }
+        if (adjustments.letterSpacing) {
+            element.style.letterSpacing = adjustments.letterSpacing;
+        }
+        if (adjustments.textAlign) {
+            element.style.textAlign = adjustments.textAlign;
+        }
+        if (adjustments.direction) {
+            element.style.direction = adjustments.direction;
+        }
+    }
+    
+    /**
+     * レイアウトを強制実行
+     */
+    forceLayout() {
+        // レイアウトを強制実行するためにoffsetHeightを読み取り
+        document.body.offsetHeight;
+    }
+    
+    /**
+     * バッチレンダー更新を処理
+     */
+    processBatchedRenderUpdates(updates) {
+        const fragment = document.createDocumentFragment();
+        
+        updates.forEach(update => {
+            if (update.element && update.operation) {
+                this.processRenderUpdate(update);
+            }
+        });
+    }
+    
+    /**
+     * 個別レンダー更新を処理
+     */
+    processIndividualRenderUpdates(updates) {
+        updates.forEach(update => {
+            if (update.element && update.operation) {
+                this.processRenderUpdate(update);
+            }
+        });
+    }
+    
+    /**
+     * レンダー更新を処理
+     */
+    processRenderUpdate(update) {
+        try {
+            switch (update.operation) {
+                case 'setText':
+                    update.element.textContent = update.value;
+                    break;
+                case 'setAttribute':
+                    update.element.setAttribute(update.attr, update.value);
+                    break;
+                case 'setStyle':
+                    update.element.style[update.property] = update.value;
+                    break;
+                default:
+                    console.warn('Unknown render operation:', update.operation);
+            }
+        } catch (error) {
+            console.warn('Failed to process render update:', error);
+        }
     }
     
     /**
