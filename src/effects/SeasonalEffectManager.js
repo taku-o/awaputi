@@ -30,6 +30,7 @@ export class SeasonalEffectManager {
         this.currentEvent = null;
         this.activeTheme = null;
         this.customTheme = null;
+        this.lastLoggedTheme = null; // ログ出力制御用
         
         // 設定
         this.seasonalEffectsEnabled = true;
@@ -108,7 +109,11 @@ export class SeasonalEffectManager {
             this.activeTheme = this.themeManager.getSeasonalTheme(this.currentSeason);
         }
         
-        console.log(`[SeasonalEffectManager] テーマ更新: ${this.activeTheme.name}`);
+        // ログ出力頻度を制御（前回と異なるテーマの場合のみ）
+        if (!this.lastLoggedTheme || this.lastLoggedTheme !== this.activeTheme.name) {
+            console.log(`[SeasonalEffectManager] テーマ更新: ${this.activeTheme.name}`);
+            this.lastLoggedTheme = this.activeTheme.name;
+        }
     }
     
     /**
@@ -150,9 +155,15 @@ export class SeasonalEffectManager {
      */
     update(deltaTime) {
         try {
-            // 季節チェック
+            // 季節チェック（頻度制御を追加）
             if (this.seasonDetector.shouldCheckSeason()) {
+                const previousTheme = this.activeTheme?.name;
                 this._updateCurrentTheme();
+                
+                // テーマが実際に変更された場合のみ処理
+                if (previousTheme !== this.activeTheme?.name) {
+                    this.seasonDetector.updateLastSeasonCheck();
+                }
             }
             
             // パーティクルの更新

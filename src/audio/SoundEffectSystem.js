@@ -64,7 +64,9 @@ export class SoundEffectSystem {
     async initialize() {
         try {
             if (!this.audioContext) {
-                throw new Error('AudioContext is not available');
+                console.warn('[SoundEffectSystem] AudioContext not available - sound effect system disabled');
+                this.disabled = true;
+                return false;
             }
             
             // 専用コンポーネントを初期化
@@ -80,8 +82,11 @@ export class SoundEffectSystem {
             await this.generateAllSounds();
             
             console.log('[SoundEffectSystem] Sound effect system initialized successfully');
+            return true;
         } catch (error) {
             this.errorHandler.handleError(error, 'SoundEffectSystem.initialize');
+            this.disabled = true;
+            return false;
         }
     }
     
@@ -275,6 +280,11 @@ export class SoundEffectSystem {
      * 泡破壊音を再生
      */
     playBubbleSound(bubbleType, options = {}) {
+        if (this.disabled) {
+            console.warn('[SoundEffectSystem] Sound effect system is disabled - playBubbleSound ignored');
+            return null;
+        }
+        
         try {
             if (!this.soundCategories.bubble.enabled) return null;
             
@@ -306,6 +316,11 @@ export class SoundEffectSystem {
      * UI音を再生
      */
     playUISound(uiType, options = {}) {
+        if (this.disabled) {
+            console.warn('[SoundEffectSystem] Sound effect system is disabled - playUISound ignored');
+            return null;
+        }
+        
         try {
             if (!this.soundCategories.ui.enabled) return null;
             
@@ -334,6 +349,11 @@ export class SoundEffectSystem {
      * コンボ音を再生
      */
     playComboSound(level, options = {}) {
+        if (this.disabled) {
+            console.warn('[SoundEffectSystem] Sound effect system is disabled - playComboSound ignored');
+            return null;
+        }
+        
         try {
             if (!this.soundCategories.combo.enabled) return null;
             
@@ -362,6 +382,11 @@ export class SoundEffectSystem {
      * 実績音を再生
      */
     playAchievementSound(rarity, options = {}) {
+        if (this.disabled) {
+            console.warn('[SoundEffectSystem] Sound effect system is disabled - playAchievementSound ignored');
+            return null;
+        }
+        
         try {
             if (!this.soundCategories.achievement.enabled) return null;
             
@@ -389,6 +414,11 @@ export class SoundEffectSystem {
      * ゲーム状態音を再生
      */
     playGameStateSound(state, options = {}) {
+        if (this.disabled) {
+            console.warn('[SoundEffectSystem] Sound effect system is disabled - playGameStateSound ignored');
+            return null;
+        }
+        
         try {
             if (!this.soundCategories.gamestate.enabled) return null;
             
@@ -429,6 +459,11 @@ export class SoundEffectSystem {
      * 全サウンドを停止
      */
     stopAllSounds() {
+        if (this.disabled) {
+            console.warn('[SoundEffectSystem] Sound effect system is disabled - stopAllSounds ignored');
+            return 0;
+        }
+        
         try {
             return this.poolManager.stopAllSounds();
         } catch (error) {
@@ -441,6 +476,11 @@ export class SoundEffectSystem {
      * カテゴリ内のサウンドを停止
      */
     stopCategorySounds(category) {
+        if (this.disabled) {
+            console.warn('[SoundEffectSystem] Sound effect system is disabled - stopCategorySounds ignored');
+            return 0;
+        }
+        
         try {
             return this.poolManager.stopCategory(category);
         } catch (error) {

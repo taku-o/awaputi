@@ -26,7 +26,7 @@
     
     <!-- Security and Privacy -->
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; font-src 'self'; worker-src 'self';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' data: blob: fonts.googleapis.com *.googleapis.com *.gstatic.com; style-src-elem 'self' 'unsafe-inline' data: blob: fonts.googleapis.com *.googleapis.com *.gstatic.com; img-src 'self' data: blob:; connect-src 'self' fonts.gstatic.com *.gstatic.com; font-src 'self' data: blob: fonts.gstatic.com *.gstatic.com; worker-src 'self';">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <!-- X-Frame-Options removed for local execution compatibility -->
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
@@ -42,10 +42,10 @@
                 // Store detection result for main script
                 window.AWAPUTI_LOCAL_EXECUTION = true;
                 
-                // Remove restrictive CSP for local execution
+                // Remove restrictive CSP for local execution and allow Google Fonts
                 const cspMeta = document.querySelector('meta[http-equiv="Content-Security-Policy"]');
                 if (cspMeta) {
-                    cspMeta.setAttribute('content', 'default-src * data: blob: filesystem:; script-src * data: blob: \'unsafe-inline\' \'unsafe-eval\'; style-src * data: blob: \'unsafe-inline\'; img-src * data: blob: filesystem:; connect-src * data: blob: filesystem:; font-src * data: blob: filesystem:; worker-src * data: blob: filesystem:;');
+                    cspMeta.setAttribute('content', 'default-src * data: blob: filesystem:; script-src * data: blob: \'unsafe-inline\' \'unsafe-eval\'; style-src * data: blob: \'unsafe-inline\' fonts.googleapis.com *.googleapis.com *.gstatic.com; style-src-elem * data: blob: \'unsafe-inline\' fonts.googleapis.com *.googleapis.com *.gstatic.com; img-src * data: blob: filesystem:; connect-src * data: blob: filesystem: fonts.gstatic.com *.gstatic.com; font-src * data: blob: filesystem: fonts.gstatic.com *.gstatic.com; worker-src * data: blob: filesystem:;');
                 }
                 
                 console.log('🏠 Local file execution detected - optimizing for local mode');

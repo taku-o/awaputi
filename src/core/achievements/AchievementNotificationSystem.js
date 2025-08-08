@@ -234,6 +234,80 @@ export class AchievementNotificationSystem {
     }
 
     /**
+     * 汎用的な通知をキューに追加（queueNotificationメソッド）
+     * @param {object} notificationData - 通知データ（title, message, type, icon, duration等）
+     */
+    queueNotification(notificationData) {
+        try {
+            // 汎用通知オブジェクトを内部形式に変換
+            const now = Date.now();
+            const notification = {
+                id: `notification_${now}_${Math.random().toString(36).substr(2, 9)}`,
+                type: notificationData.type || 'info',
+                timestamp: now,
+                displayTime: now,
+                expiryTime: now + (notificationData.duration || this.config.notificationDuration),
+                priority: this.getTypePriority(notificationData.type),
+                title: notificationData.title || 'Notification',
+                message: notificationData.message || '',
+                icon: notificationData.icon || this.getTypeIcon(notificationData.type),
+                visible: false,
+                achievement: {
+                    name: notificationData.title || 'Notification',
+                    description: notificationData.message || '',
+                    icon: notificationData.icon || this.getTypeIcon(notificationData.type),
+                    reward: { ap: 0 } // デフォルト報酬
+                },
+                options: {
+                    duration: notificationData.duration || this.config.notificationDuration,
+                    sound: notificationData.sound !== false,
+                    vibration: notificationData.vibration !== false
+                }
+            };
+            
+            this.addNotificationToQueue(notification);
+            console.log(`[AchievementNotificationSystem] Queued notification: ${notification.title}`);
+            
+        } catch (error) {
+            console.error('[AchievementNotificationSystem] Error queueing notification:', error);
+        }
+    }
+
+    /**
+     * 通知タイプから優先度を取得
+     * @param {string} type - 通知タイプ
+     * @returns {number} 優先度
+     */
+    getTypePriority(type) {
+        const priorities = {
+            'error': 5,
+            'warning': 4,
+            'success': 3,
+            'info': 2,
+            'achievement': 4,
+            'ranking': 3
+        };
+        return priorities[type] || 1;
+    }
+
+    /**
+     * 通知タイプからアイコンを取得
+     * @param {string} type - 通知タイプ
+     * @returns {string} アイコン
+     */
+    getTypeIcon(type) {
+        const icons = {
+            'error': '❌',
+            'warning': '⚠️',
+            'success': '✅',
+            'info': 'ℹ️',
+            'achievement': '🏆',
+            'ranking': '🏅'
+        };
+        return icons[type] || 'ℹ️';
+    }
+
+    /**
      * 通知をキューに追加
      * @param {object} notification - 通知オブジェクト
      */

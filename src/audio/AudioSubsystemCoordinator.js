@@ -150,10 +150,29 @@ export class AudioSubsystemCoordinator {
     async initializeAudioVisualizer() {
         try {
             const { AudioVisualizer } = await import('./AudioVisualizer.js');
+            
+            // AudioManagerが利用可能かチェック
+            if (!this.audioManager) {
+                console.warn('[AudioSubsystemCoordinator] AudioManager not available for AudioVisualizer');
+                this.subsystemStates.visualizer.initialized = false;
+                this.subsystemStates.visualizer.error = new Error('AudioManager not available');
+                return;
+            }
+            
             this.audioVisualizer = new AudioVisualizer(this.audioManager);
-            this.subsystemStates.visualizer.initialized = true;
-            this.subsystemStates.visualizer.error = null;
+            
+            // 初期化後の確認
+            if (this.audioVisualizer && typeof this.audioVisualizer.render === 'function') {
+                this.subsystemStates.visualizer.initialized = true;
+                this.subsystemStates.visualizer.error = null;
+                console.log('[AudioSubsystemCoordinator] AudioVisualizer initialized successfully');
+            } else {
+                throw new Error('AudioVisualizer initialization failed - render method not available');
+            }
         } catch (error) {
+            console.warn('[AudioSubsystemCoordinator] AudioVisualizer initialization failed:', error);
+            this.audioVisualizer = null;
+            this.subsystemStates.visualizer.initialized = false;
             this.subsystemStates.visualizer.error = error;
             getErrorHandler().handleError(error, 'AUDIO_ERROR', { 
                 component: 'audioVisualizer',
@@ -350,26 +369,39 @@ export class AudioSubsystemCoordinator {
      */
     delegateToVisualizer(method, args = []) {
         try {
-            if (!this.audioVisualizer || !this.subsystemStates.visualizer.initialized) {
-                console.warn('AudioVisualizer is not available');
+            // より厳密な初期化チェック
+            if (!this.audioVisualizer) {
+                console.warn('[AudioSubsystemCoordinator] AudioVisualizer instance not available');
                 return null;
             }
             
-            if (typeof this.audioVisualizer[method] !== 'function') {
-                console.warn(`AudioVisualizer method '${method}' not found`);
+            if (!this.subsystemStates.visualizer.initialized) {
+                console.warn('[AudioSubsystemCoordinator] AudioVisualizer not initialized');
+                return null;
+            }
+            
+            // メソッドの存在確認
+            if (!this.audioVisualizer[method] || typeof this.audioVisualizer[method] !== 'function') {
+                console.warn(`[AudioSubsystemCoordinator] AudioVisualizer method '${method}' not found or not a function`);
                 return null;
             }
             
             this.performanceMetrics.delegatedCalls++;
-            return this.audioVisualizer[method](...args);
+            
+            // メソッド呼び出し前の追加チェック
+            const result = this.audioVisualizer[method](...args);
+            return result;
             
         } catch (error) {
             this.performanceMetrics.errors++;
+            console.error(`[AudioSubsystemCoordinator] Error calling AudioVisualizer.${method}:`, error);
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {
                 component: 'AudioSubsystemCoordinator',
                 operation: 'delegateToVisualizer',
                 method,
-                args
+                args,
+                visualizerAvailable: !!this.audioVisualizer,
+                visualizerInitialized: this.subsystemStates.visualizer.initialized
             });
             return null;
         }

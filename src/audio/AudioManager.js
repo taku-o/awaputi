@@ -59,6 +59,9 @@ export class AudioManager {
         this.audioController = null;
         this.audioVisualizer = null;
         this.accessibilitySupport = null;
+        
+        // ログ制御用
+        this.lastLoggedDisableState = null;
     }
 
     /**
@@ -694,7 +697,11 @@ export class AudioManager {
                 this.audioContext.suspend();
             }
             
-            console.log('[AudioManager] オーディオシステムを無効化しました');
+            // ログ出力頻度を制御（前回と異なる状態の場合のみ）
+            if (this.lastLoggedDisableState !== true) {
+                console.log('[AudioManager] オーディオシステムを無効化しました');
+                this.lastLoggedDisableState = true;
+            }
         } catch (error) {
             console.warn('[AudioManager] 無効化中にエラー:', error);
         }

@@ -103,6 +103,17 @@ class AudioConfig {
         this.configManager.set('audio', 'environmental.currentBiome', null);
         this.configManager.set('audio', 'environmental.currentWeather', null);
         this.configManager.set('audio', 'environmental.currentTimeOfDay', null);
+        
+        // アクセシビリティ設定
+        this.configManager.set('audio', 'accessibility.visualFeedback', true);
+        this.configManager.set('audio', 'accessibility.captioning', false);
+        this.configManager.set('audio', 'accessibility.colorIndication', false);
+        this.configManager.set('audio', 'accessibility.patternRecognition', true);
+        this.configManager.set('audio', 'accessibility.highContrast', false);
+        this.configManager.set('audio', 'accessibility.largeFonts', false);
+        this.configManager.set('audio', 'accessibility.reduceMotion', false);
+        this.configManager.set('audio', 'accessibility.hapticFeedback', true);
+        this.configManager.set('audio', 'accessibility.vibrationIntensity', 0.5);
     }
 
     /**

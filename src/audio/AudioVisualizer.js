@@ -294,36 +294,49 @@ export class AudioVisualizer {
      * @private
      */
     render() {
-        if (!this.ctx) return;
-        
-        // 背景をクリア
-        this.clearCanvas();
-        
-        // 現在の視覚化タイプに応じて描画
-        switch (this.currentVisualization) {
-            case 'frequencyBars':
-                this.renderFrequencyBars();
-                break;
-            case 'waveform':
-                this.renderWaveform();
-                break;
-            case 'spectrogram':
-                this.renderSpectrogram();
-                break;
-            case 'volumeIndicator':
-                this.renderVolumeIndicator();
-                break;
-            case 'stereoScope':
-                this.renderStereoScope();
-                break;
+        // 必要な要素の存在確認
+        if (!this.ctx || !this.canvas) {
+            console.warn('[AudioVisualizer] Canvas context not available for rendering');
+            return;
         }
         
-        // 音響イベントを描画
-        this.renderAudioEvents();
+        if (!this.isRunning) {
+            return;
+        }
         
-        // アクセシビリティ情報を描画
-        if (this.accessibilityMode) {
-            this.renderAccessibilityInfo();
+        try {
+            // 背景をクリア
+            this.clearCanvas();
+            
+            // 現在の視覚化タイプに応じて描画
+            switch (this.currentVisualization) {
+                case 'frequencyBars':
+                    this.renderFrequencyBars();
+                    break;
+                case 'waveform':
+                    this.renderWaveform();
+                    break;
+                case 'spectrogram':
+                    this.renderSpectrogram();
+                    break;
+                case 'volumeIndicator':
+                    this.renderVolumeIndicator();
+                    break;
+                case 'stereoScope':
+                    this.renderStereoScope();
+                    break;
+            }
+            
+            // 音響イベントを描画
+            this.renderAudioEvents();
+            
+            // アクセシビリティ情報を描画
+            if (this.accessibilityMode) {
+                this.renderAccessibilityInfo();
+            }
+        } catch (error) {
+            console.error('[AudioVisualizer] Error during rendering:', error);
+            // レンダリングエラーが発生してもシステムを停止しない
         }
     }
     

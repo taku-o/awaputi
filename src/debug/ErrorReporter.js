@@ -245,12 +245,25 @@ export class ErrorReporter extends ErrorHandler {
         if (!this.gameEngine) return null;
         
         try {
+            if (!this.gameEngine) {
+                return {
+                    currentScene: 'unknown',
+                    gameTime: 0,
+                    isRunning: false,
+                    isPaused: false,
+                    fps: 0,
+                    bubbleCount: 0,
+                    score: 0,
+                    playerHP: 0
+                };
+            }
+            
             return {
-                currentScene: this.gameEngine.sceneManager?.currentScene?.constructor.name,
-                gameTime: this.gameEngine.gameTime,
-                isRunning: this.gameEngine.isRunning,
-                isPaused: this.gameEngine.isPaused,
-                fps: this.gameEngine.targetFPS,
+                currentScene: this.gameEngine.sceneManager?.currentScene?.constructor.name || 'unknown',
+                gameTime: this.gameEngine.gameTime || 0,
+                isRunning: this.gameEngine.isRunning || false,
+                isPaused: this.gameEngine.isPaused || false,
+                fps: this.gameEngine.performanceOptimizer?.getTargetFPS?.() || this.gameEngine.configurationManager?.get('performance.targetFPS') || 60,
                 bubbleCount: this.gameEngine.bubbleManager?.bubbles?.length || 0,
                 score: this.gameEngine.scoreManager?.score || 0,
                 playerHP: this.gameEngine.playerData?.currentHP || 0

@@ -589,6 +589,59 @@ export class HelpManager {
     }
     
     /**
+     * 特定のトピックコンテンツを取得（getHelpContentのエイリアス）
+     * @param {string} topicId - トピックID
+     * @param {string} categoryId - カテゴリID（オプション）
+     * @param {string} language - 言語コード
+     * @returns {Promise<Object>} トピックコンテンツ
+     */
+    async getTopicContent(topicId, categoryId = null, language = null) {
+        try {
+            const content = await this.getHelpContent(topicId, categoryId, language);
+            
+            if (content) {
+                // 使用履歴を記録
+                this.trackHelpUsage(`${categoryId || 'unknown'}.${topicId}`);
+                this.loggingSystem.debug('HelpManager', `Topic content retrieved: ${topicId}`);
+                return content;
+            }
+            
+            // フォールバック: デフォルトコンテンツを返す
+            this.loggingSystem.warn('HelpManager', `Topic content not found: ${topicId}, returning fallback`);
+            return {
+                id: topicId,
+                title: 'コンテンツが見つかりません',
+                description: '申し訳ございませんが、このトピックのコンテンツが見つかりませんでした。',
+                content: 'このヘルプトピックは現在利用できません。後でもう一度お試しください。',
+                difficulty: 'beginner',
+                estimatedReadTime: '1分',
+                tags: ['error', 'not-found'],
+                category: categoryId || 'general',
+                language: language || 'ja',
+                isEmpty: true
+            };
+            
+        } catch (error) {
+            this.loggingSystem.error('HelpManager', `Failed to get topic content for ${topicId}`, error);
+            
+            // エラー時のフォールバックコンテンツ
+            return {
+                id: topicId,
+                title: 'エラーが発生しました',
+                description: 'コンテンツの読み込み中にエラーが発生しました。',
+                content: 'ヘルプコンテンツの読み込みに失敗しました。ページを更新してもう一度お試しください。',
+                difficulty: 'beginner',
+                estimatedReadTime: '1分',
+                tags: ['error'],
+                category: categoryId || 'general',
+                language: language || 'ja',
+                isEmpty: true,
+                error: true
+            };
+        }
+    }
+    
+    /**
      * カテゴリ内でコンテンツを検索
      * @param {string} topicId - トピックID
      * @param {string} categoryId - カテゴリID

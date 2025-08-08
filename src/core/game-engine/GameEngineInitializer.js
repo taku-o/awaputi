@@ -50,7 +50,7 @@ export class GameEngineInitializer {
                     
                     // 重要なアラートはゲーム内通知として表示
                     if (alert.severity === 'critical' && this.gameEngine.achievementNotificationSystem) {
-                        this.gameEngine.achievementNotificationSystem.showNotification({
+                        this.gameEngine.achievementNotificationSystem.queueNotification({
                             title: 'SEO Alert',
                             message: alert.message,
                             type: 'warning',
@@ -423,9 +423,15 @@ export class GameEngineInitializer {
             
             // 新しいシステムの初期化
             try {
-                this.gameEngine.achievementManager.load();
-                this.gameEngine.statisticsManager.load();
-                this.gameEngine.eventStageManager.load();
+                if (this.gameEngine.achievementManager && typeof this.gameEngine.achievementManager.load === 'function') {
+                    this.gameEngine.achievementManager.load();
+                }
+                if (this.gameEngine.statisticsManager && typeof this.gameEngine.statisticsManager.load === 'function') {
+                    this.gameEngine.statisticsManager.load();
+                }
+                if (this.gameEngine.eventStageManager && typeof this.gameEngine.eventStageManager.load === 'function') {
+                    this.gameEngine.eventStageManager.load();
+                }
                 
                 // ソーシャル機能システムの初期化
                 await this.initializeSocialSharingManager();
@@ -465,7 +471,7 @@ export class GameEngineInitializer {
             if (!this.gameEngine.socialSharingManager) {
                 // Removed: const { SocialSharingManager } = require('./SocialSharingManager.js');
                 this.gameEngine.socialSharingManager = new SocialSharingManager(this.gameEngine);
-                await this.gameEngine.socialSharingManager.initialize();
+                await this.gameEngine.socialSharingManager.init();
                 
                 // SEOシステムとの連携
                 if (this.gameEngine.seoMetaManager) {
@@ -488,10 +494,10 @@ export class GameEngineInitializer {
      */
     checkBrowserCompatibility() {
         try {
-            // 動的インポートではなく、ブラウザ機能を直接チェック
-            const canvasSupported = !!window.HTMLCanvasElement;
+            // より包括的なブラウザ機能チェック
+            const canvasSupported = this._checkCanvasSupport();
             const audioContextSupported = !!(window.AudioContext || window.webkitAudioContext);
-            const localStorageSupported = !!window.localStorage;
+            const localStorageSupported = this._checkLocalStorageSupport();
             
             const report = {
                 features: {
@@ -501,31 +507,91 @@ export class GameEngineInitializer {
                 }
             };
         
-            // 重要な機能が利用できない場合は警告
+            // Canvas APIが利用できない場合のみエラーとする（他は警告のみ）
             if (!report.features.canvas) {
                 console.error('Canvas API is not supported');
+                // より詳細なエラー情報を提供
+                console.error('Canvas support details:', {
+                    HTMLCanvasElement: !!window.HTMLCanvasElement,
+                    createElement: !!document.createElement,
+                    getContext2d: this._testCanvasContext()
+                });
                 return false;
             }
             
             if (!report.features.audioContext) {
-                console.warn('Audio Context is not fully supported');
+                console.warn('Audio Context is not fully supported - audio features may be limited');
             }
             
             if (!report.features.localStorage) {
-                console.warn('LocalStorage is not supported, progress will not be saved');
+                console.warn('LocalStorage is not supported - progress will not be saved');
             }
             
-            // デバッグ情報を出力（ブラウザ環境でのみ）
-            if (typeof window !== 'undefined' && this.gameEngine.isDebugMode()) {
-                console.log('Browser compatibility report:', report);
-            }
+            // デバッグ情報を出力（常に出力するよう変更し、問題を特定しやすくする）
+            console.log('Browser compatibility check passed:', report);
             
             return true;
             
         } catch (error) {
             console.error('Browser compatibility check failed:', error);
-            // フォールバック: 基本的なブラウザ環境では続行
-            return typeof window !== 'undefined' && !!window.HTMLCanvasElement;
+            // より寛大なフォールバック: 基本的なDOM環境があれば続行を許可
+            const hasBasicSupport = typeof window !== 'undefined' && 
+                                  typeof document !== 'undefined' && 
+                                  document.createElement;
+            
+            if (hasBasicSupport) {
+                console.warn('Using fallback compatibility mode');
+                return true;
+            }
+            
+            return false;
+        }
+    }
+    
+    /**
+     * Canvas サポートをより厳密にチェック
+     * @private
+     */
+    _checkCanvasSupport() {
+        try {
+            if (!window.HTMLCanvasElement) return false;
+            
+            const canvas = document.createElement('canvas');
+            if (!canvas) return false;
+            
+            const context = canvas.getContext('2d');
+            return !!context;
+        } catch (error) {
+            console.error('Canvas support check error:', error);
+            return false;
+        }
+    }
+    
+    /**
+     * Canvas コンテキスト取得をテスト
+     * @private
+     */
+    _testCanvasContext() {
+        try {
+            const canvas = document.createElement('canvas');
+            return !!canvas.getContext('2d');
+        } catch (error) {
+            return false;
+        }
+    }
+    
+    /**
+     * LocalStorage サポートをより厳密にチェック
+     * @private
+     */
+    _checkLocalStorageSupport() {
+        try {
+            const test = 'browserCompatibilityTest';
+            localStorage.setItem(test, test);
+            localStorage.removeItem(test);
+            return true;
+        } catch (error) {
+            return false;
         }
     }
     

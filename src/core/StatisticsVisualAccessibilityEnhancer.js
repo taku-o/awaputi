@@ -744,7 +744,8 @@ export class StatisticsVisualAccessibilityEnhancer {
         const sourceHeight = Math.min(100, this.canvas.height - sourceY);
         
         try {
-            const imageData = this.canvas.getContext('2d').getImageData(sourceX, sourceY, sourceWidth, sourceHeight);
+            const canvasContext = this.canvas.getContext('2d');
+            const imageData = canvasContext.getImageData(sourceX, sourceY, sourceWidth, sourceHeight);
             
             // 拡大して描画
             ctx.clearRect(0, 0, magnifierCanvas.width, magnifierCanvas.height);

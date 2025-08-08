@@ -55,6 +55,12 @@ export class EventNotificationSystem {
             return;
         }
         
+        // notification が null または undefined の場合は早期リターン
+        if (!notification) {
+            console.warn('[EventNotificationSystem] Invalid notification object');
+            return;
+        }
+        
         const notificationData = {
             id: this.generateNotificationId(),
             type: notification.type || 'info',

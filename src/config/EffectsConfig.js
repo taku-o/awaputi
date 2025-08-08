@@ -29,6 +29,9 @@ class EffectsConfig {
             // アニメーション設定の初期化
             this._initializeAnimationConfig();
             
+            // 品質設定の初期化
+            this._initializeQualityConfig();
+            
             // 検証ルールの設定
             this._setupValidationRules();
             
@@ -123,6 +126,55 @@ class EffectsConfig {
     }
 
     /**
+     * 品質設定の初期化
+     * @private
+     */
+    _initializeQualityConfig() {
+        // デフォルト品質設定
+        this.configManager.set('effects', 'quality.level', 'high'); // 'low', 'medium', 'high', 'ultra'
+        this.configManager.set('effects', 'quality.autoAdjust', true);
+        this.configManager.set('effects', 'quality.targetFPS', 60);
+        this.configManager.set('effects', 'quality.memoryThreshold', 104857600); // 100MB
+        
+        // 品質レベル別設定
+        this.configManager.set('effects', 'quality.levels.low', {
+            particleQuality: 0.3,
+            maxParticles: 100,
+            particleCount: 5,
+            screenEffects: false,
+            complexAnimations: false,
+            highQualityTextures: false
+        });
+        
+        this.configManager.set('effects', 'quality.levels.medium', {
+            particleQuality: 0.6,
+            maxParticles: 250,
+            particleCount: 10,
+            screenEffects: true,
+            complexAnimations: false,
+            highQualityTextures: false
+        });
+        
+        this.configManager.set('effects', 'quality.levels.high', {
+            particleQuality: 1.0,
+            maxParticles: 500,
+            particleCount: 15,
+            screenEffects: true,
+            complexAnimations: true,
+            highQualityTextures: true
+        });
+        
+        this.configManager.set('effects', 'quality.levels.ultra', {
+            particleQuality: 1.5,
+            maxParticles: 1000,
+            particleCount: 20,
+            screenEffects: true,
+            complexAnimations: true,
+            highQualityTextures: true
+        });
+    }
+
+    /**
      * 検証ルールの設定
      * @private
      */
@@ -187,6 +239,28 @@ class EffectsConfig {
         
         this.configManager.setValidationRule('effects', 'animations.enabled', {
             type: 'boolean'
+        });
+        
+        // 品質設定の検証ルール
+        this.configManager.setValidationRule('effects', 'quality.level', {
+            type: 'string',
+            validator: (value) => ['low', 'medium', 'high', 'ultra'].includes(value)
+        });
+        
+        this.configManager.setValidationRule('effects', 'quality.autoAdjust', {
+            type: 'boolean'
+        });
+        
+        this.configManager.setValidationRule('effects', 'quality.targetFPS', {
+            type: 'number',
+            min: 15,
+            max: 144
+        });
+        
+        this.configManager.setValidationRule('effects', 'quality.memoryThreshold', {
+            type: 'number',
+            min: 52428800, // 50MB
+            max: 536870912 // 512MB
         });
     }
 
@@ -581,6 +655,96 @@ class EffectsConfig {
                 context: 'EffectsConfig.syncFromEffectManager'
             });
         }
+    }
+
+    /**
+     * 品質設定を取得
+     * @returns {Object} 品質設定
+     */
+    getQualityConfig() {
+        return {
+            level: this.configManager.get('effects', 'quality.level', 'high'),
+            autoAdjust: this.configManager.get('effects', 'quality.autoAdjust', true),
+            targetFPS: this.configManager.get('effects', 'quality.targetFPS', 60),
+            memoryThreshold: this.configManager.get('effects', 'quality.memoryThreshold', 104857600)
+        };
+    }
+
+    /**
+     * 品質レベルを取得
+     * @returns {string} 品質レベル ('low', 'medium', 'high', 'ultra')
+     */
+    getQualityLevel() {
+        return this.configManager.get('effects', 'quality.level', 'high');
+    }
+
+    /**
+     * 自動品質調整有効状態を取得
+     * @returns {boolean} 自動品質調整有効状態
+     */
+    isAutoAdjustEnabled() {
+        return this.configManager.get('effects', 'quality.autoAdjust', true);
+    }
+
+    /**
+     * ターゲットFPSを取得
+     * @returns {number} ターゲットFPS
+     */
+    getTargetFPS() {
+        return this.configManager.get('effects', 'quality.targetFPS', 60);
+    }
+
+    /**
+     * メモリ閾値を取得
+     * @returns {number} メモリ閾値 (bytes)
+     */
+    getMemoryThreshold() {
+        return this.configManager.get('effects', 'quality.memoryThreshold', 104857600);
+    }
+
+    /**
+     * 品質レベルを設定
+     * @param {string} level - 品質レベル ('low', 'medium', 'high', 'ultra')
+     * @returns {boolean} 設定成功フラグ
+     */
+    setQualityLevel(level) {
+        return this.configManager.set('effects', 'quality.level', level);
+    }
+
+    /**
+     * 自動品質調整有効状態を設定
+     * @param {boolean} enabled - 自動品質調整有効状態
+     * @returns {boolean} 設定成功フラグ
+     */
+    setAutoAdjustEnabled(enabled) {
+        return this.configManager.set('effects', 'quality.autoAdjust', enabled);
+    }
+
+    /**
+     * ターゲットFPSを設定
+     * @param {number} fps - ターゲットFPS
+     * @returns {boolean} 設定成功フラグ
+     */
+    setTargetFPS(fps) {
+        return this.configManager.set('effects', 'quality.targetFPS', fps);
+    }
+
+    /**
+     * メモリ閾値を設定
+     * @param {number} threshold - メモリ閾値 (bytes)
+     * @returns {boolean} 設定成功フラグ
+     */
+    setMemoryThreshold(threshold) {
+        return this.configManager.set('effects', 'quality.memoryThreshold', threshold);
+    }
+
+    /**
+     * 指定品質レベルの設定を取得
+     * @param {string} level - 品質レベル ('low', 'medium', 'high', 'ultra')
+     * @returns {Object} 品質レベル設定
+     */
+    getQualityLevelSettings(level) {
+        return this.configManager.get('effects', `quality.levels.${level}`, {});
     }
 }
 

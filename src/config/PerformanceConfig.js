@@ -57,6 +57,11 @@ class PerformanceConfig {
         this.configManager.set('performance', 'optimization.maxParticles', 500);
         this.configManager.set('performance', 'optimization.workloadDistribution', true);
         this.configManager.set('performance', 'optimization.maxTimePerFrame', 8); // ms
+        
+        // 追加の性能設定（エラー修正用）
+        this.configManager.set('performance', 'level', 'high');
+        this.configManager.set('performance', 'adaptive', true);
+        this.configManager.set('performance', 'quality.audioQuality', 1.0);
     }
 
     /**
