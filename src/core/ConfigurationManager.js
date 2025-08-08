@@ -173,13 +173,21 @@ class ConfigurationManager {
     
     /**
      * 設定値を設定（最適化版）
-     * @param {string} category - 設定カテゴリ
-     * @param {string} key - 設定キー
-     * @param {*} value - 設定値
+     * @param {string} category - 設定カテゴリまたはドット記法のキー
+     * @param {string} key - 設定キーまたは設定値
+     * @param {*} value - 設定値（オプション）
      * @returns {boolean} 設定成功フラグ
      */
     set(category, key, value) {
         try {
+            // ドット記法のサポート（valueが未定義の場合）
+            if (value === undefined && typeof category === 'string' && category.includes('.')) {
+                const parts = category.split('.');
+                const actualCategory = parts.slice(0, -1).join('.');
+                const actualKey = parts[parts.length - 1];
+                const actualValue = key; // この場合、keyが実際のvalueになる
+                return this.set(actualCategory, actualKey, actualValue);
+            }
             // 検証実行
             if (!this.validate(category, key, value)) {
                 this._logWarning(`設定値の検証に失敗: ${category}.${key} = ${value}`);
@@ -406,11 +414,21 @@ class ConfigurationManager {
     
     /**
      * 設定の存在確認
-     * @param {string} category - 設定カテゴリ
-     * @param {string} key - 設定キー
+     * @param {string} category - 設定カテゴリまたはドット記法のキー
+     * @param {string} key - 設定キー（オプション）
      * @returns {boolean} 存在フラグ
      */
     has(category, key) {
+        // ドット記法のサポート（keyが未定義の場合）
+        if (key === undefined && typeof category === 'string' && category.includes('.')) {
+            const parts = category.split('.');
+            const actualCategory = parts.slice(0, -1).join('.');
+            const actualKey = parts[parts.length - 1];
+            return this.configurations.has(actualCategory) && 
+                   this.configurations.get(actualCategory).has(actualKey);
+        }
+        
+        // 従来の形式
         return this.configurations.has(category) && 
                this.configurations.get(category).has(key);
     }
