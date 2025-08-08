@@ -295,7 +295,7 @@ export class PerformanceOptimizer {
         try {
             if (!this.frameStabilizer) return;
             
-            const stabilizerStatus = this.frameStabilizer.getStatus();
+            const stabilizerStatus = this.frameStabilizer.getStabilizationStatus();
             if (stabilizerStatus) {
                 const integrationResult = this.stabilizerIntegrator.integrateStabilizerRecommendations(stabilizerStatus);
                 

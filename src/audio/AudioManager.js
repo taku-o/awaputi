@@ -34,7 +34,7 @@ export class AudioManager {
         this.masterVolume = 0.8;
         this.sfxVolume = 0.7;
         this.bgmVolume = 0.5;
-        this.isMuted = false;
+        this._isMuted = false;
         
         // 従来のプロパティとの互換性維持
         this.audioContext = null;
@@ -172,7 +172,7 @@ export class AudioManager {
      * @returns {AudioBufferSourceNode|null} 音源ノード
      */
     playSound(soundName, options = {}) {
-        if (!this.isEnabled || this.isMuted) return null;
+        if (!this.isEnabled || this._isMuted) return null;
         return this.playbackController.playSound(soundName, options);
     }
 
@@ -329,9 +329,9 @@ export class AudioManager {
      */
     toggleMute() {
         const newMutedState = this.configurationManager.toggleMute();
-        this.isMuted = newMutedState; // ローカルキャッシュ更新
+        this._isMuted = newMutedState; // ローカルキャッシュ更新
         
-        if (this.isMuted) {
+        if (this._isMuted) {
             this.stopAllSounds();
         }
         
@@ -344,9 +344,9 @@ export class AudioManager {
      */
     setMuted(muted) {
         this.configurationManager.setMuted(muted);
-        this.isMuted = muted; // ローカルキャッシュ更新
+        this._isMuted = muted; // ローカルキャッシュ更新
         
-        if (this.isMuted) {
+        if (this._isMuted) {
             this.stopAllSounds();
         }
     }
@@ -393,7 +393,7 @@ export class AudioManager {
      * @returns {boolean} ミュート状態
      */
     isMuted() {
-        return this.muted || false;
+        return this._isMuted || false;
     }
 
     // ========== シーン管理API（委譲パターン） ==========
@@ -478,7 +478,7 @@ export class AudioManager {
                 master: this.masterVolume,
                 sfx: this.sfxVolume,
                 bgm: this.bgmVolume,
-                muted: this.isMuted
+                muted: this._isMuted
             },
             context: this.contextManager.getContextStatus(),
             playback: this.playbackController.getPlaybackStats(),
@@ -681,7 +681,7 @@ export class AudioManager {
     disable() {
         try {
             // 全ての再生中音声を停止
-            this.stopAll();
+            this.stopAllSounds();
             
             // BGMを停止
             this.stopBGM();
