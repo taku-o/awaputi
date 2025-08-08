@@ -129,7 +129,7 @@ export class PerformanceOptimizer {
             this.maxHistorySize = optimizationConfig ? optimizationConfig.maxHistorySize || 30 : 30;
             this.performanceLevel = optimizationConfig ? optimizationConfig.performanceLevel || "medium" : "medium";
             this.adaptiveMode = optimizationConfig ? (optimizationConfig.adaptiveMode !== undefined ? optimizationConfig.adaptiveMode : true) : true;
-            this.optimizationInterval = optimizationConfig.optimizationInterval;
+            this.optimizationInterval = optimizationConfig ? optimizationConfig.optimizationInterval || 1000 : 1000;
             
             this.settings = {
                 maxBubbles: optimizationConfig.maxBubbles,
