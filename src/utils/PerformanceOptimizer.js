@@ -118,30 +118,55 @@ export class PerformanceOptimizer {
     /**
      * 設定から初期値を設定
      * @private
-     */
-    _initializeFromConfig() {
+     */    _initializeFromConfig() {
         try {
             const optimizationConfig = this.performanceConfig.getOptimizationConfig();
             const qualityConfig = this.performanceConfig.getQualityConfig();
             
-            this.targetFPS = optimizationConfig.targetFPS;
+            // Add null safety for optimizationConfig
+            if (!optimizationConfig || typeof optimizationConfig !== 'object') {
+                console.warn("[PerformanceOptimizer] Invalid optimization config, using fallback");
+                this._setFallbackSettings();
+                return;
+            }
+            
+            if (!qualityConfig || typeof qualityConfig !== 'object') {
+                console.warn("[PerformanceOptimizer] Invalid quality config, using fallback");
+                this._setFallbackSettings();
+                return;
+            }
+            
+            // Safe property access with fallback values
+            this.targetFPS = optimizationConfig.targetFPS || 60;
             this.targetFrameTime = 1000 / this.targetFPS;
-            this.maxHistorySize = optimizationConfig.maxHistorySize;
-            this.performanceLevel = optimizationConfig.performanceLevel;
-            this.adaptiveMode = optimizationConfig.adaptiveMode;
-            this.optimizationInterval = optimizationConfig.optimizationInterval;
+            this.maxHistorySize = optimizationConfig.maxHistorySize || 30;
+            this.performanceLevel = optimizationConfig.performanceLevel || "high";
+            this.adaptiveMode = optimizationConfig.adaptiveMode !== undefined ? optimizationConfig.adaptiveMode : true;
+            this.optimizationInterval = optimizationConfig.optimizationInterval || 1000;
             
             this.settings = {
-                maxBubbles: optimizationConfig.maxBubbles,
-                maxParticles: optimizationConfig.maxParticles,
-                renderQuality: qualityConfig.renderQuality,
-                particleQuality: qualityConfig.particleQuality,
-                effectQuality: qualityConfig.effectQuality,
-                audioQuality: qualityConfig.audioQuality,
-                shadowsEnabled: qualityConfig.enableShadows,
-                blurEnabled: qualityConfig.enableBlur,
-                antiAliasingEnabled: qualityConfig.enableAntiAliasing
+                maxBubbles: optimizationConfig.maxBubbles || 20,
+                maxParticles: optimizationConfig.maxParticles || 500,
+                renderQuality: qualityConfig.renderQuality || 1.0,
+                particleQuality: qualityConfig.particleQuality || 1.0,
+                effectQuality: qualityConfig.effectQuality || 1.0,
+                audioQuality: qualityConfig.audioQuality || 1.0,
+                shadowsEnabled: qualityConfig.enableShadows !== undefined ? qualityConfig.enableShadows : false,
+                blurEnabled: qualityConfig.enableBlur !== undefined ? qualityConfig.enableBlur : false,
+                antiAliasingEnabled: qualityConfig.enableAntiAliasing !== undefined ? qualityConfig.enableAntiAliasing : false
             };
+            
+            console.log("[PerformanceOptimizer] Configuration loaded successfully:", {
+                targetFPS: this.targetFPS,
+                performanceLevel: this.performanceLevel
+            });
+            
+        } catch (error) {
+            console.error("[PerformanceOptimizer] Error in _initializeFromConfig:", error);
+            this.errorHandler.logError('Failed to initialize from config', error);
+            this._setFallbackSettings();
+        }
+    };
             
         } catch (error) {
             this.errorHandler.logError('Failed to initialize from config', error);
