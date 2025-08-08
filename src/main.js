@@ -1,6 +1,7 @@
 import { GameEngine } from './core/GameEngine.js';
 import { getBrowserCompatibility } from './utils/BrowserCompatibility.js';
 import { getErrorHandler } from './utils/ErrorHandler.js';
+import { getConfigurationManager } from './core/ConfigurationManager.js';
 import LocalExecutionDetector from './utils/local-execution/LocalExecutionDetector.js';
 import LocalModeManager from './utils/local-execution/LocalModeManager.js';
 import LocalExecutionErrorHandler from './utils/local-execution/LocalExecutionErrorHandler.js';
@@ -14,6 +15,7 @@ class LoadingManager {
         this.loadingSteps = [
             'ローカル実行環境チェック中...',
             'ブラウザ互換性チェック中...',
+            '設定システム初期化中...',
             'ゲームエンジン初期化中...',
             'リソース読み込み中...',
             'ゲーム開始準備中...'
@@ -216,8 +218,13 @@ async function initGame() {
             style: canvas.style.cssText 
         });
         
-        // ステップ2: ゲームエンジン初期化
-        debugLogger.log('⚙️ ステップ2: ゲームエンジン初期化開始');
+        // ステップ2: ConfigurationManager初期化
+        debugLogger.log('⚙️ ステップ2: ConfigurationManager初期化開始');
+        const configManager = getConfigurationManager();
+        debugLogger.log('✅ ConfigurationManager初期化成功');
+        
+        // ステップ3: ゲームエンジン初期化
+        debugLogger.log('⚙️ ステップ3: ゲームエンジン初期化開始');
         loadingManager.nextStep();
         await new Promise(resolve => setTimeout(resolve, 300));
         
@@ -225,7 +232,7 @@ async function initGame() {
         const gameEngine = new GameEngine(canvas);
         debugLogger.log('✅ GameEngine インスタンス作成成功', gameEngine);
         
-        // ステップ3: リソース読み込み
+        // ステップ4: リソース読み込み
         loadingManager.nextStep();
         await new Promise(resolve => setTimeout(resolve, 500));
         
@@ -238,8 +245,8 @@ async function initGame() {
             }
         }
         
-        // ステップ4: ゲーム開始準備
-        debugLogger.log('🚀 ステップ4: ゲーム開始準備');
+        // ステップ5: ゲーム開始準備
+        debugLogger.log('🚀 ステップ5: ゲーム開始準備');
         loadingManager.nextStep();
         await new Promise(resolve => setTimeout(resolve, 300));
         

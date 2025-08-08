@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConfigurationManager修正テスト</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            background: #f0f0f0;
+        }
+        .log-container {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .error { color: red; font-weight: bold; }
+        .success { color: green; }
+        .info { color: blue; }
+        .step { margin: 10px 0; padding: 10px; background: #f9f9f9; border-left: 3px solid #007cba; }
+    </style>
+</head>
+<body>
+    <h1>ConfigurationManager修正後テスト</h1>
+    
+    <div class="step">
+        <h3>🔍 テスト</h3>
+        <button onclick="testConfigManagerImport()">ConfigurationManager インポートテスト</button>
+        <button onclick="testMainJsFixed()">修正後main.jsテスト</button>
+        <button onclick="clearLogs()">ログクリア</button>
+    </div>
+    
+    <div class="log-container" id="logs">
+        <div>修正後のテストツール準備完了。</div>
+    </div>
+
+    <script>
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logElement = document.createElement('div');
+            logElement.className = type;
+            logElement.textContent = `[${timestamp}] ${message}`;
+            document.getElementById('logs').appendChild(logElement);
+            console.log(message);
+            
+            // 自動スクロール
+            const container = document.getElementById('logs');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function clearLogs() {
+            document.getElementById('logs').innerHTML = '<div>ログクリア完了</div>';
+        }
+
+        // ConfigurationManagerインポートテスト
+        async function testConfigManagerImport() {
+            log('🧪 ConfigurationManagerインポートテスト開始');
+            
+            try {
+                log('🔄 ConfigurationManager.js 読み込み中...');
+                const configModule = await import('./src/core/ConfigurationManager.js');
+                log('✅ ConfigurationManager.js 読み込み成功', 'success');
+                
+                // エクスポート内容確認
+                const exports = Object.keys(configModule);
+                log(`📦 エクスポート: ${exports.join(', ')}`);
+                
+                if (configModule.getConfigurationManager) {
+                    log('✅ getConfigurationManager関数が存在', 'success');
+                    
+                    // 実際に関数を呼び出してみる
+                    const configManager = configModule.getConfigurationManager();
+                    log('✅ ConfigurationManagerインスタンス取得成功', 'success');
+                    
+                    // 重要な設定キーをテスト
+                    const testKeys = [
+                        { key: 'performance.targetFPS', category: 'performance', name: 'targetFPS' },
+                        { key: 'performance.optimization.targetFPS', category: 'performance', name: 'optimization.targetFPS' }
+                    ];
+                    
+                    for (const testKey of testKeys) {
+                        try {
+                            const value = configManager.get(testKey.category, testKey.name);
+                            log(`✅ ${testKey.key} = ${value}`, 'success');
+                        } catch (error) {
+                            log(`❌ ${testKey.key} 取得失敗: ${error.message}`, 'error');
+                        }
+                    }
+                } else {
+                    log('❌ getConfigurationManager関数が存在しません', 'error');
+                }
+                
+            } catch (error) {
+                log(`❌ ConfigurationManager読み込み失敗: ${error.message}`, 'error');
+                console.error('ConfigurationManager import error:', error);
+            }
+        }
+
+        // 修正後のmain.jsテスト
+        async function testMainJsFixed() {
+            log('🧪 修正後main.jsテスト開始');
+            
+            try {
+                log('🔄 修正後のmain.js内容確認中...');
+                const response = await fetch('./src/main.js');
+                if (!response.ok) {
+                    throw new Error(`main.js読み込み失敗: ${response.status}`);
+                }
+                
+                const content = await response.text();
+                log(`✅ main.js読み込み成功 (${content.length} 文字)`, 'success');
+                
+                // 修正が適用されているか確認
+                const fixes = {
+                    'ConfigurationManagerインポート': content.includes("import { getConfigurationManager }"),
+                    'ConfigurationManager初期化': content.includes("getConfigurationManager()"),
+                    'ステップ順序修正': content.includes("ステップ2: ConfigurationManager初期化"),
+                    'ゲームエンジン初期化': content.includes("ステップ3: ゲームエンジン初期化"),
+                    'エラーハンドリング': content.includes("try") && content.includes("catch")
+                };
+                
+                Object.entries(fixes).forEach(([fix, applied]) => {
+                    log(`${fix}: ${applied ? '✅ 適用済み' : '❌ 未適用'}`, applied ? 'success' : 'error');
+                });
+                
+                // GameEngineインポート確認
+                if (content.includes("import { GameEngine }")) {
+                    log('✅ GameEngineインポート確認', 'success');
+                } else {
+                    log('❌ GameEngineインポートなし', 'error');
+                }
+                
+            } catch (error) {
+                log(`❌ main.jsテスト失敗: ${error.message}`, 'error');
+                console.error('Main.js test error:', error);
+            }
+        }
+
+        // 初期実行
+        document.addEventListener('DOMContentLoaded', function() {
+            log('🚀 修正後テストツール準備完了');
+            
+            // 自動で基本テスト実行
+            setTimeout(() => {
+                testConfigManagerImport();
+            }, 500);
+        });
+    </script>
+</body>
+</html>
