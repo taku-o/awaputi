@@ -142,6 +142,14 @@ export class ParticleQualityManager {
     }
     
     /**
+     * アグレッシブカリングを無効化
+     */
+    disableAggressiveCulling() {
+        this.optimizationSettings.aggressiveCulling = false;
+        console.log('[ParticleQualityManager] アグレッシブカリングを無効化しました');
+    }
+    
+    /**
      * スムース遷移を有効化
      */
     enableSmoothTransitions() {

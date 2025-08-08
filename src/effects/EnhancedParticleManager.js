@@ -75,6 +75,15 @@ export class EnhancedParticleManager extends ParticleManager {
         console.log('[EnhancedParticleManager] アグレッシブカリングを有効化しました');
     }
     
+    setAggressiveCulling(enabled) {
+        if (enabled) {
+            this.qualityManager.enableAggressiveCulling();
+        } else {
+            this.qualityManager.disableAggressiveCulling();
+        }
+        console.log(`[EnhancedParticleManager] アグレッシブカリングを${enabled ? '有効化' : '無効化'}しました`);
+    }
+    
     setColorPalettes(paletteName) {
         this.qualityManager.setColorPalettes(paletteName);
     }

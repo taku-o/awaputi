@@ -455,9 +455,8 @@
                 const metaInjectionPoint = document.getElementById('seo-meta-injection-point');
                 if (metaInjectionPoint) {
                     try {
-                        const metaTags = await seoMetaManager.generateDynamicMetaTags();
-                        metaInjectionPoint.innerHTML = metaTags;
-                        seoLogger.info('Dynamic meta tags injected successfully');
+                        await seoMetaManager.updateDynamicContent({});
+                        seoLogger.info('Dynamic meta tags updated successfully');
                     } catch (error) {
                         seoLogger.error('Failed to inject dynamic meta tags', error);
                         // フォールバック: 基本的なメタタグを手動で追加
