@@ -128,7 +128,7 @@ export class PerformanceOptimizer {
             this.targetFrameTime = 1000 / this.targetFPS;
             this.maxHistorySize = optimizationConfig ? optimizationConfig.maxHistorySize || 30 : 30;
             this.performanceLevel = optimizationConfig ? optimizationConfig.performanceLevel || "medium" : "medium";
-            this.adaptiveMode = optimizationConfig.adaptiveMode;
+            this.adaptiveMode = optimizationConfig ? (optimizationConfig.adaptiveMode !== undefined ? optimizationConfig.adaptiveMode : true) : true;
             this.optimizationInterval = optimizationConfig.optimizationInterval;
             
             this.settings = {
