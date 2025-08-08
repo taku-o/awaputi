@@ -386,6 +386,11 @@ export class ParticlePhysicsEngine {
         console.log(`[ParticlePhysicsEngine] スムーズトランジション: ${enabled ? '有効' : '無効'}`);
     }
     
+    setTimingProfiles(profiles) {
+        this.timingProfiles = profiles;
+        console.log('[ParticlePhysicsEngine] タイミングプロファイルを設定しました:', profiles);
+    }
+    
     /**
      * 物理設定を更新
      */

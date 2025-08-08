@@ -137,7 +137,7 @@ export class SEOMetaManager {
         }
 
         // 動的説明文生成
-        let dynamicDescription = this._getLocalizedDescription();
+        let dynamicDescription = await this._getLocalizedDescription(context);
         if (gameSession.scene === 'game' && gameSession.score > 0) {
             const gameplayText = this.localizationManager ?
                 this.localizationManager.get('seo.gameplayDescription', {
@@ -266,7 +266,7 @@ export class SEOMetaManager {
      * ローカライズされた説明文生成
      * @private
      */
-    async _getLocalizedDescription(context) {
+    async _getLocalizedDescription(context = {}) {
         if (!this.localizationManager) {
             return context.description || 'HTML5 Canvas を使用したバブルポップゲーム。泡を割って高スコアを目指そう！';
         }

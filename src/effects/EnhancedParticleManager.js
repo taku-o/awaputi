@@ -102,6 +102,11 @@ export class EnhancedParticleManager extends ParticleManager {
         console.log(`[EnhancedParticleManager] スムーズトランジションを${enabled ? '有効化' : '無効化'}しました`);
     }
     
+    setTimingProfiles(profiles) {
+        this.physicsEngine.setTimingProfiles(profiles);
+        console.log('[EnhancedParticleManager] タイミングプロファイルを設定しました');
+    }
+    
     // ========================================
     // 物理演算API - Physics Engineにデリゲート
     // ========================================
