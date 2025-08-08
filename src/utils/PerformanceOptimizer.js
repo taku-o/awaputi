@@ -124,7 +124,7 @@ export class PerformanceOptimizer {
             const optimizationConfig = this.performanceConfig.getOptimizationConfig();
             const qualityConfig = this.performanceConfig.getQualityConfig();
             
-            this.targetFPS = optimizationConfig.targetFPS;
+            this.targetFPS = optimizationConfig ? optimizationConfig.targetFPS || 60 : 60;
             this.targetFrameTime = 1000 / this.targetFPS;
             this.maxHistorySize = optimizationConfig.maxHistorySize;
             this.performanceLevel = optimizationConfig.performanceLevel;
