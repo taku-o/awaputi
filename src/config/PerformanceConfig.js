@@ -294,7 +294,16 @@ class PerformanceConfig {
      * @returns {number} 目標FPS
      */
     getTargetFPS() {
-        return this.configManager.get('performance', 'optimization.targetFPS', 60);
+        if (!this.configManager) {
+            console.warn("[PerformanceConfig] ConfigurationManager not initialized, returning fallback targetFPS");
+            return 60;
+        }
+        try {
+            return this.configManager.get("performance", "optimization.targetFPS", 60);
+        } catch (error) {
+            console.error("[PerformanceConfig] Error getting targetFPS:", error);
+            return 60;
+        }
     }
 
     /**
