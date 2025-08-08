@@ -245,17 +245,48 @@ class PerformanceConfig {
      * @returns {Object} 最適化設定
      */
     getOptimizationConfig() {
-        return {
-            targetFPS: this.configManager.get('performance', 'optimization.targetFPS', 60),
-            adaptiveMode: this.configManager.get('performance', 'optimization.adaptiveMode', true),
-            optimizationInterval: this.configManager.get('performance', 'optimization.optimizationInterval', 1000),
-            maxHistorySize: this.configManager.get('performance', 'optimization.maxHistorySize', 30),
-            performanceLevel: this.configManager.get('performance', 'optimization.performanceLevel', 'high'),
-            maxBubbles: this.configManager.get('performance', 'optimization.maxBubbles', 20),
-            maxParticles: this.configManager.get('performance', 'optimization.maxParticles', 500),
-            workloadDistribution: this.configManager.get('performance', 'optimization.workloadDistribution', true),
-            maxTimePerFrame: this.configManager.get('performance', 'optimization.maxTimePerFrame', 8)
-        };
+        // Emergency null safety check
+        if (!this.configManager) {
+            console.warn("[PerformanceConfig] ConfigurationManager not initialized, using fallback");
+            return {
+                targetFPS: 60,
+                adaptiveMode: true,
+                optimizationInterval: 1000,
+                maxHistorySize: 30,
+                performanceLevel: "high",
+                maxBubbles: 20,
+                maxParticles: 500,
+                workloadDistribution: true,
+                maxTimePerFrame: 8
+            };
+        }
+        
+        try {
+            return {
+                targetFPS: this.configManager.get('performance', 'optimization.targetFPS', 60),
+                adaptiveMode: this.configManager.get('performance', 'optimization.adaptiveMode', true),
+                optimizationInterval: this.configManager.get('performance', 'optimization.optimizationInterval', 1000),
+                maxHistorySize: this.configManager.get('performance', 'optimization.maxHistorySize', 30),
+                performanceLevel: this.configManager.get('performance', 'optimization.performanceLevel', 'high'),
+                maxBubbles: this.configManager.get('performance', 'optimization.maxBubbles', 20),
+                maxParticles: this.configManager.get('performance', 'optimization.maxParticles', 500),
+                workloadDistribution: this.configManager.get('performance', 'optimization.workloadDistribution', true),
+                maxTimePerFrame: this.configManager.get('performance', 'optimization.maxTimePerFrame', 8)
+            };
+        } catch (error) {
+            console.error("[PerformanceConfig] Error getting optimization config:", error);
+            return {
+                targetFPS: 60,
+                adaptiveMode: true,
+                optimizationInterval: 1000,
+                maxHistorySize: 30,
+                performanceLevel: "high",
+                maxBubbles: 20,
+                maxParticles: 500,
+                workloadDistribution: true,
+                maxTimePerFrame: 8
+            };
+        }
     }
 
     /**
