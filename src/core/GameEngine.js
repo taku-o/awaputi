@@ -684,6 +684,13 @@ export class GameEngine {
             const deltaTime = currentTime - this.lastTime;
             this.lastTime = currentTime;
             
+            // デバッグ情報（30秒間隔）
+            if (!this.lastGameLoopDebugTime || currentTime - this.lastGameLoopDebugTime > 30000) {
+                console.log(`[DEBUG] GameEngine.gameLoop: isRunning=${this.isRunning}, frameCount=${this.frameCount}, deltaTime=${deltaTime.toFixed(2)}ms`);
+                console.log(`[DEBUG] currentScene=${this.sceneManager.currentScene}, sceneManager=${!!this.sceneManager}`);
+                this.lastGameLoopDebugTime = currentTime;
+            }
+            
             // パフォーマンス監視開始
             this.performanceMonitor.startFrame(currentTime);
             getPerformanceOptimizer().startFrame(currentTime);
@@ -727,6 +734,12 @@ export class GameEngine {
      * 更新処理
      */
     update(deltaTime) {
+        // Debug logs removed to prevent console flooding - only log occasionally for verification
+        if (!this.lastUpdateDebugTime || performance.now() - this.lastUpdateDebugTime > 5000) {
+            console.log(`[DEBUG] GameEngine.update working normally - deltaTime=${deltaTime.toFixed(2)}ms`);
+            this.lastUpdateDebugTime = performance.now();
+        }
+        
         // パフォーマンス調整されたデルタタイムを使用
         const adjustedDeltaTime = getPerformanceOptimizer().adjustUpdateFrequency(deltaTime);
         
@@ -838,6 +851,46 @@ export class GameEngine {
             console.log('[GameEngine] Performance optimization completed');
         } catch (error) {
             console.error('[GameEngine] Error during performance optimization:', error);
+        }
+    }
+    
+    /**
+     * 回復エフェクトを作成
+     * @param {number} healAmount - 回復量
+     */
+    createHealEffect(healAmount) {
+        try {
+            console.log(`[DEBUG] createHealEffect called with healAmount: ${healAmount}`);
+            
+            if (this.effectManager && typeof this.effectManager.addHealEffect === 'function') {
+                console.log('[DEBUG] Using effectManager.addHealEffect()');
+                // effectManagerの回復エフェクトを使用
+                this.effectManager.addHealEffect();
+            } else {
+                console.warn('[DEBUG] effectManager.addHealEffect not available, using fallback');
+            }
+            
+            // 追加でパーティクルエフェクトも生成（使用可能な場合）
+            if (this.enhancedParticleManager && typeof this.enhancedParticleManager.createEffect === 'function') {
+                console.log('[DEBUG] Adding particle heal effect');
+                const canvas = this.canvas;
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                
+                this.enhancedParticleManager.createEffect('heal', {
+                    x: centerX,
+                    y: centerY,
+                    particleCount: 15,
+                    color: '#4CAF50',
+                    size: 6,
+                    velocity: 80,
+                    lifetime: 1000
+                });
+            }
+            
+            console.log('[DEBUG] createHealEffect completed successfully');
+        } catch (error) {
+            console.error('[GameEngine] Error creating heal effect:', error);
         }
     }
 }

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>最小動作テスト</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #2c3e50;
+            color: white;
+            font-family: monospace;
+        }
+        
+        canvas {
+            border: 2px solid #e74c3c;
+            background: #34495e;
+            display: block;
+            margin: 20px 0;
+        }
+        
+        button {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            font-family: monospace;
+        }
+        
+        #log {
+            background: #1a1a1a;
+            padding: 10px;
+            border: 1px solid #555;
+            height: 200px;
+            overflow-y: auto;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎮 最小動作テスト</h1>
+    
+    <canvas id="gameCanvas" width="600" height="400"></canvas>
+    
+    <div>
+        <button onclick="testGameEngine()">GameEngineテスト</button>
+        <button onclick="spawnTestBubbles()">バブル生成テスト</button>
+        <button onclick="clearLog()">ログクリア</button>
+    </div>
+    
+    <div id="log">ログ出力...<br></div>
+
+    <script type="module">
+        let gameEngine = null;
+        const logDiv = document.getElementById('log');
+        
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.innerHTML += `[${timestamp}] ${message}<br>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+        
+        window.clearLog = function() {
+            logDiv.innerHTML = 'ログクリア<br>';
+        };
+        
+        window.testGameEngine = async function() {
+            try {
+                log('=== GameEngineテスト開始 ===');
+                
+                // ES6モジュールインポートテスト
+                log('GameEngineクラスをインポート中...');
+                const { GameEngine } = await import('./src/core/GameEngine.js');
+                log('✓ GameEngineインポート成功');
+                
+                // GameEngine初期化テスト
+                log('GameEngine初期化中...');
+                const canvas = document.getElementById('gameCanvas');
+                gameEngine = new GameEngine(canvas);
+                log('✓ GameEngineインスタンス作成成功');
+                
+                // start()メソッドテスト
+                log('GameEngine.start()実行中...');
+                gameEngine.start();
+                log('✓ GameEngine開始成功');
+                
+                // 基本状態確認
+                log(`- isRunning: ${gameEngine.isRunning}`);
+                log(`- canvas: ${!!gameEngine.canvas}`);
+                log(`- bubbleManager: ${!!gameEngine.bubbleManager}`);
+                
+                log('=== GameEngineテスト完了 ===');
+                
+            } catch (error) {
+                log(`❌ GameEngineテストエラー: ${error.message}`);
+                console.error('GameEngineテスト詳細:', error);
+            }
+        };
+        
+        window.spawnTestBubbles = function() {
+            try {
+                log('=== バブル生成テスト開始 ===');
+                
+                if (!gameEngine) {
+                    log('❌ GameEngineが初期化されていません');
+                    return;
+                }
+                
+                if (!gameEngine.bubbleManager) {
+                    log('❌ BubbleManagerが利用できません');
+                    return;
+                }
+                
+                // 単純なバブル生成テスト
+                log('バブル生成中...');
+                
+                for (let i = 0; i < 3; i++) {
+                    const x = 100 + (i * 150);
+                    const y = 100 + (Math.random() * 200);
+                    
+                    try {
+                        const bubble = gameEngine.bubbleManager.spawnBubble('normal', { x, y });
+                        if (bubble) {
+                            log(`✓ バブル${i+1}生成成功 (${x}, ${y})`);
+                        } else {
+                            log(`⚠ バブル${i+1}生成失敗 (戻り値null)`);
+                        }
+                    } catch (bubbleError) {
+                        log(`❌ バブル${i+1}生成エラー: ${bubbleError.message}`);
+                    }
+                }
+                
+                // バブル数確認
+                try {
+                    const bubbleCount = gameEngine.bubbleManager.getBubbleCount();
+                    log(`現在のバブル数: ${bubbleCount}`);
+                } catch (countError) {
+                    log(`バブル数取得エラー: ${countError.message}`);
+                }
+                
+                log('=== バブル生成テスト完了 ===');
+                
+            } catch (error) {
+                log(`❌ バブル生成テスト全体エラー: ${error.message}`);
+                console.error('バブル生成テスト詳細:', error);
+            }
+        };
+        
+        // ページ読み込み時の初期メッセージ
+        log('ページ読み込み完了 - テストボタンを押してください');
+    </script>
+</body>
+</html>

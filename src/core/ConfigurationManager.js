@@ -71,6 +71,9 @@ class ConfigurationManager {
         this.configurations.set('audio', new Map());
         this.configurations.set('effects', new Map());
         this.configurations.set('performance', new Map());
+        this.configurations.set('ui', new Map());
+        this.configurations.set('accessibility', new Map());
+        this.configurations.set('controls', new Map());
         
         // 基本パフォーマンス設定のデフォルト値を設定
         this.setDefaultValue('performance', 'targetFPS', 60);
@@ -106,6 +109,34 @@ class ConfigurationManager {
         this.setDefaultValue('audio', 'volumes.effects', 0.7);
         this.setDefaultValue('audio', 'volumes.music', 0.6);
         this.setDefaultValue('audio', 'enabled', true);
+        
+        // テスト互換性のため、SettingsManagerで使用される設定キーも設定
+        this.setDefaultValue('audio', 'masterVolume', 0.7);
+        this.setDefaultValue('audio', 'sfxVolume', 0.8);
+        this.setDefaultValue('audio', 'bgmVolume', 0.5);
+        
+        // UI設定のデフォルト値を設定
+        this.setDefaultValue('ui', 'language', 'en');
+        this.setDefaultValue('ui', 'quality', 'auto');
+        this.setDefaultValue('ui', 'theme', 'default');
+        this.setDefaultValue('ui', 'reducedMotion', false);
+        this.setDefaultValue('ui', 'highContrast', false);
+        this.setDefaultValue('ui', 'showFPS', false);
+        this.setDefaultValue('ui', 'showDebugInfo', false);
+        this.setDefaultValue('ui', 'animationSpeed', 1.0);
+        this.setDefaultValue('ui', 'uiScale', 1.0);
+        
+        // アクセシビリティ設定のデフォルト値を設定
+        this.setDefaultValue('accessibility', 'highContrast', false);
+        this.setDefaultValue('accessibility', 'reducedMotion', false);
+        this.setDefaultValue('accessibility', 'largeText', false);
+        this.setDefaultValue('accessibility', 'screenReader', false);
+        this.setDefaultValue('accessibility', 'colorBlindSupport', false);
+        
+        // 操作設定のデフォルト値を設定
+        this.setDefaultValue('controls', 'keyboardEnabled', true);
+        this.setDefaultValue('controls', 'mouseEnabled', true);
+        this.setDefaultValue('controls', 'touchEnabled', true);
         
         // ゲーム設定のデフォルト値を設定
         this.setDefaultValue('game', 'scoring.baseScores', {});
@@ -204,6 +235,14 @@ class ConfigurationManager {
      * @private
      */
     _getDirectValue(category, key, defaultValue = null) {
+        // まずデフォルト値を確認（バブル設定などで使用）
+        const defaultKey = `${category}.${key}`;
+        if (this.defaultValues.has(defaultKey)) {
+            const value = this.defaultValues.get(defaultKey);
+            this._logDebug(`デフォルト値を使用: ${category}.${key} = ${value}`);
+            return value;
+        }
+        
         // カテゴリの存在確認
         if (!this.configurations.has(category)) {
             this._logWarning(`カテゴリが存在しません: ${category}`);
@@ -212,29 +251,21 @@ class ConfigurationManager {
         
         const categoryConfig = this.configurations.get(category);
         
-        // キーの存在確認
-        if (!categoryConfig.has(key)) {
-            // デフォルト値を確認
-            const defaultKey = `${category}.${key}`;
-            if (this.defaultValues.has(defaultKey)) {
-                const value = this.defaultValues.get(defaultKey);
-                this._logDebug(`デフォルト値を使用: ${category}.${key} = ${value}`);
-                return value;
-            }
-            
-            // より詳細な警告メッセージ（バブル設定の場合は特別な説明を追加）
-            if (category === 'game' && key.startsWith('bubbles.')) {
-                const bubbleType = key.split('.')[1];
-                this._logWarning(`バブル設定が見つかりません: ${category}.${key} (バブル種類: ${bubbleType})`);
-            } else {
-                this._logWarning(`設定キーが存在しません: ${category}.${key}`);
-            }
-            return defaultValue;
+        // 設定されたカスタム値を確認
+        if (categoryConfig.has(key)) {
+            const value = categoryConfig.get(key);
+            this._logDebug(`設定値取得: ${category}.${key} = ${value}`);
+            return value;
         }
         
-        const value = categoryConfig.get(key);
-        this._logDebug(`設定値取得: ${category}.${key} = ${value}`);
-        return value;
+        // どちらにも存在しない場合は警告
+        if (category === 'game' && key.startsWith('bubbles.')) {
+            const bubbleType = key.split('.')[1];
+            this._logWarning(`バブル設定が見つかりません: ${category}.${key} (バブル種類: ${bubbleType})`);
+        } else {
+            this._logWarning(`設定キーが存在しません: ${category}.${key}`);
+        }
+        return defaultValue;
     }
     
     /**
@@ -1075,6 +1106,43 @@ class ConfigurationManager {
             type: 'string', 
             allowedValues: ['easy', 'normal', 'hard'] 
         });
+        
+        // SettingsManager互換性のためのオーディオ設定検証ルール
+        this.addValidationRule('audio', 'masterVolume', { type: 'number', min: 0, max: 1 });
+        this.addValidationRule('audio', 'sfxVolume', { type: 'number', min: 0, max: 1 });
+        this.addValidationRule('audio', 'bgmVolume', { type: 'number', min: 0, max: 1 });
+        
+        // UI設定の検証ルール
+        this.addValidationRule('ui', 'language', { 
+            type: 'string', 
+            allowedValues: ['en', 'ja', 'es', 'fr', 'de', 'zh', 'ko'] 
+        });
+        this.addValidationRule('ui', 'quality', { 
+            type: 'string', 
+            allowedValues: ['low', 'medium', 'high', 'auto'] 
+        });
+        this.addValidationRule('ui', 'theme', { 
+            type: 'string', 
+            allowedValues: ['default', 'dark', 'light', 'high-contrast'] 
+        });
+        this.addValidationRule('ui', 'reducedMotion', { type: 'boolean' });
+        this.addValidationRule('ui', 'highContrast', { type: 'boolean' });
+        this.addValidationRule('ui', 'showFPS', { type: 'boolean' });
+        this.addValidationRule('ui', 'showDebugInfo', { type: 'boolean' });
+        this.addValidationRule('ui', 'animationSpeed', { type: 'number', min: 0.1, max: 3.0 });
+        this.addValidationRule('ui', 'uiScale', { type: 'number', min: 0.5, max: 2.0 });
+        
+        // アクセシビリティ設定の検証ルール
+        this.addValidationRule('accessibility', 'highContrast', { type: 'boolean' });
+        this.addValidationRule('accessibility', 'reducedMotion', { type: 'boolean' });
+        this.addValidationRule('accessibility', 'largeText', { type: 'boolean' });
+        this.addValidationRule('accessibility', 'screenReader', { type: 'boolean' });
+        this.addValidationRule('accessibility', 'colorBlindSupport', { type: 'boolean' });
+        
+        // 操作設定の検証ルール
+        this.addValidationRule('controls', 'keyboardEnabled', { type: 'boolean' });
+        this.addValidationRule('controls', 'mouseEnabled', { type: 'boolean' });
+        this.addValidationRule('controls', 'touchEnabled', { type: 'boolean' });
         
         this._logDebug('検証ルール設定完了');
     }

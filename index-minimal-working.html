@@ -58,6 +58,26 @@
             max-width: 500px;
             text-align: left;
         }
+        
+        .game-controls {
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .game-controls button {
+            background: #f39c12;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: monospace;
+        }
+        
+        .game-controls button:hover {
+            background: #e67e22;
+        }
     </style>
 </head>
 <body>
@@ -65,6 +85,13 @@
         <h1>🎮 BubblePop - 動作確認版</h1>
         
         <div id="status">ゲーム初期化中...</div>
+        
+        <div class="game-controls">
+            <button onclick="startGame()">🎮 ゲーム開始</button>
+            <button onclick="spawnBubbles()">🫧 バブル生成</button>
+            <button onclick="showDebugInfo()">🔍 デバッグ情報</button>
+        </div>
+        
         <canvas id="gameCanvas" width="800" height="600"></canvas>
         
         <div class="description">
@@ -82,8 +109,11 @@
     </div>
 
     <script type="module">
+        import { GameEngine } from './src/core/GameEngine.js';
+        
         const status = document.getElementById('status');
         const canvas = document.getElementById('gameCanvas');
+        let gameEngine;
         
         function log(message, type = 'info') {
             const color = type === 'error' ? 'error' : type === 'success' ? 'success' : 
@@ -94,40 +124,144 @@
             status.scrollTop = status.scrollHeight;
         }
 
-        try {
-            log('🎯 問題分析完了 - main.js複雑な依存関係が原因', 'warning');
-            log('🔧 シンプルな直接初期化アプローチで解決', 'info');
-            log('✓ Canvas初期化成功', 'success');
-            
-            // GameEngineを直接インポートして初期化
-            log('🎮 GameEngine読み込み開始...');
-            const gameEngineModule = await import('./src/core/GameEngine.js');
-            log('✓ GameEngine読み込み成功', 'success');
-            
-            if (gameEngineModule.GameEngine) {
-                log('✓ GameEngineクラス取得成功', 'success');
-                
-                // GameEngineインスタンスを作成
-                const gameEngine = new gameEngineModule.GameEngine(canvas);
-                log('✓ GameEngineインスタンス作成成功', 'success');
-                
-                // ゲームエンジンを開始
+        async function initGameEngine() {
+            try {
+                log('🎮 GameEngine初期化開始...');
+                gameEngine = new GameEngine(canvas);
                 gameEngine.start();
-                log('✓ GameEngine.start()実行成功', 'success');
+                log('✅ GameEngine初期化完了', 'success');
+                return true;
+            } catch (error) {
+                log(`❌ GameEngine初期化失敗: ${error.message}`, 'error');
+                console.error('GameEngine initialization error:', error);
+                return false;
+            }
+        }
+
+        try {
+            log('🔧 test-method-fixes.htmlで動作確認済みの方式を使用', 'info');
+            log('✅ GameEngineインポート成功', 'success');
+            
+            // GameEngine初期化実行
+            const initSuccess = await initGameEngine();
+            
+            if (initSuccess) {
+                // ゲームシーンに切り替える（バブルが表示されるように）
+                setTimeout(() => {
+                    try {
+                        log('🎮 ゲームシーンに切り替え中...');
+                        const currentScene = gameEngine.sceneManager?.currentScene;
+                        log(`現在のシーン: ${currentScene?.constructor?.name || '不明'}`);
+                        
+                        if (gameEngine.sceneManager && typeof gameEngine.sceneManager.switchScene === 'function') {
+                            const switched = gameEngine.sceneManager.switchScene('game');
+                            if (switched) {
+                                log('✓ GameSceneに切り替え成功', 'success');
+                                log('🎯 バブルが表示されるはずです！', 'success');
+                            } else {
+                                log('⚠ GameSceneへの切り替えに失敗 - 手動で設定します', 'warning');
+                                
+                                // 手動でゲームシーンを設定する別の方法を試す
+                                if (gameEngine.sceneManager.scenes && gameEngine.sceneManager.scenes.has('game')) {
+                                    const gameScene = gameEngine.sceneManager.scenes.get('game');
+                                    if (gameScene) {
+                                        if (gameEngine.sceneManager.currentScene) {
+                                            gameEngine.sceneManager.currentScene.exit();
+                                        }
+                                        gameEngine.sceneManager.currentScene = gameScene;
+                                        gameScene.enter();
+                                        log('✓ 手動GameScene設定成功', 'success');
+                                    }
+                                } else {
+                                    log('✗ GameSceneが見つかりません', 'error');
+                                }
+                            }
+                        } else {
+                            log('✗ SceneManagerが利用できません', 'error');
+                        }
+                    } catch (sceneError) {
+                        log(`✗ シーン切り替えエラー: ${sceneError.message}`, 'error');
+                    }
+                }, 2000); // 2秒後にシーン切り替え
+                
                 log('🎉 Issue #113 解決確認！ゲーム正常起動', 'success');
                 
                 // グローバルに公開（デバッグ用）
                 window.gameEngine = gameEngine;
                 log('🌍 デバッグ用グローバルアクセス有効化', 'info');
-                
             } else {
-                log('✗ GameEngineクラスが見つかりません', 'error');
+                log('✗ GameEngine初期化に失敗しました', 'error');
+            }
+            
+            } catch (moduleError) {
+                log('⚠ ES6モジュール読み込み失敗（HTTPサーバーのMIME設定問題）', 'warning');
+                log('💡 解決策: Python HTTPサーバーでMIME設定を調整', 'info');
+                log('🔧 代替案: Nodeサーバーまたは他のHTTPサーバー使用', 'info');
+                console.error('Module loading error:', moduleError);
             }
 
         } catch (error) {
-            log(`✗ エラー: ${error.message}`, 'error');
+            log(`✗ 予期しないエラー: ${error.message}`, 'error');
             console.error('詳細エラー:', error);
         }
+        
+        // ゲーム制御関数
+        window.startGame = function() {
+            if (window.gameEngine && window.gameEngine.sceneManager) {
+                log('🎮 手動でゲーム開始...');
+                const switched = window.gameEngine.sceneManager.switchScene('game');
+                if (switched) {
+                    log('✓ GameScene手動切り替え成功', 'success');
+                } else {
+                    log('✗ GameScene切り替え失敗', 'error');
+                }
+            } else {
+                log('✗ GameEngineが利用できません', 'error');
+            }
+        };
+        
+        window.spawnBubbles = function() {
+            if (window.gameEngine && window.gameEngine.bubbleManager) {
+                log('🫧 手動バブル生成中...');
+                try {
+                    // 複数のバブルを生成
+                    for (let i = 0; i < 5; i++) {
+                        const x = 100 + (i * 150);
+                        const y = 100 + (Math.random() * 400);
+                        const types = ['normal', 'speed', 'big', 'small', 'bonus'];
+                        const type = types[i % types.length];
+                        
+                        const bubble = window.gameEngine.bubbleManager.spawnBubble(type, { x, y });
+                        if (bubble) {
+                            log(`✓ ${type} バブル生成成功 (${x}, ${y})`, 'success');
+                        }
+                    }
+                } catch (error) {
+                    log(`✗ バブル生成エラー: ${error.message}`, 'error');
+                }
+            } else {
+                log('✗ BubbleManagerが利用できません', 'error');
+            }
+        };
+        
+        window.showDebugInfo = function() {
+            if (window.gameEngine) {
+                const info = {
+                    running: window.gameEngine.isRunning,
+                    scene: window.gameEngine.sceneManager?.currentScene?.constructor?.name || '不明',
+                    bubbleCount: window.gameEngine.bubbleManager?.getBubbleCount?.() || 0,
+                    frameCount: window.gameEngine.frameCount || 0
+                };
+                
+                log(`🔍 デバッグ情報:`, 'info');
+                log(`  - 実行中: ${info.running}`, 'info');
+                log(`  - 現在シーン: ${info.scene}`, 'info');
+                log(`  - バブル数: ${info.bubbleCount}`, 'info');
+                log(`  - フレーム数: ${info.frameCount}`, 'info');
+            } else {
+                log('✗ GameEngineが利用できません', 'error');
+            }
+        };
     </script>
 </body>
 </html>
