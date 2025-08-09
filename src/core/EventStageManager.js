@@ -482,6 +482,28 @@ export class EventStageManager {
     }
     
     /**
+     * イベント通知をチェック
+     * 互換性のためのメソッド（EventStageDataManager用）
+     */
+    checkEventNotifications() {
+        try {
+            console.log('[DEBUG] EventStageManager.checkEventNotifications() 実行');
+            
+            // 通知システムから通知をチェック
+            if (this.notificationSystem && typeof this.notificationSystem.checkNotifications === 'function') {
+                return this.notificationSystem.checkNotifications();
+            }
+            
+            // フォールバック: 空の通知配列を返す
+            return [];
+            
+        } catch (error) {
+            console.error('[DEBUG] EventStageManager.checkEventNotifications() エラー:', error);
+            return [];
+        }
+    }
+    
+    /**
      * リソースクリーンアップ
      */
     dispose() {

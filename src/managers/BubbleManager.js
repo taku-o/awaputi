@@ -88,8 +88,17 @@ export class BubbleManager {
      * 更新処理（統合版）
      */
     update(deltaTime) {
+        // デバッグ情報（10秒間隔）
+        if (!this.lastUpdateDebugTime || performance.now() - this.lastUpdateDebugTime > 10000) {
+            console.log(`[DEBUG] BubbleManager.update: バブル数=${this.bubbles.length}, deltaTime=${deltaTime.toFixed(2)}ms`);
+            console.log(`[DEBUG] spawner=${!!this.spawner}, physicsEngine=${!!this.physicsEngine}`);
+            this.lastUpdateDebugTime = performance.now();
+        }
+        
         // 自動生成チェック
-        if (this.spawner.updateSpawnTimer(deltaTime, this.bubbles.length)) {
+        const shouldSpawn = this.spawner.updateSpawnTimer(deltaTime, this.bubbles.length);
+        if (shouldSpawn) {
+            console.log(`[DEBUG] Spawning bubble - current count: ${this.bubbles.length}`);
             this.spawnBubble();
         }
         
@@ -109,6 +118,8 @@ export class BubbleManager {
         for (let i = this.bubbles.length - 1; i >= 0; i--) {
             const bubble = this.bubbles[i];
             if (!bubble.isAlive) {
+                console.log(`[DEBUG] Removing bubble: age=${bubble.age}, maxAge=${bubble.maxAge}`);
+                
                 // 破裂した泡はダメージを与える
                 if (bubble.age >= bubble.maxAge) {
                     this.gameEngine.playerData.takeDamage(5);
@@ -212,12 +223,25 @@ export class BubbleManager {
         const performanceOptimizer = getPerformanceOptimizer();
         const renderQuality = performanceOptimizer.getRenderQuality();
         
+        // デバッグ情報を出力（5秒間隔）
+        if (!this.lastDebugTime || performance.now() - this.lastDebugTime > 5000) {
+            console.log(`[DEBUG] BubbleManager.render: 泡の数=${this.bubbles.length}, renderQuality=${renderQuality}`);
+            if (this.bubbles.length > 0) {
+                const bubble = this.bubbles[0];
+                console.log(`[DEBUG] 最初の泡: type=${bubble.type}, position=(${bubble.x}, ${bubble.y}), visible=${this.physicsEngine.isBubbleVisible(bubble)}`);
+            }
+            this.lastDebugTime = performance.now();
+        }
+        
+        let renderedCount = 0;
+        
         // 低品質モードでは一部の泡のみレンダリング
         if (renderQuality < 0.8) {
             const step = Math.ceil(1 / renderQuality);
             this.bubbles.forEach((bubble, index) => {
                 if (index % step === 0 && this.physicsEngine.isBubbleVisible(bubble)) {
                     bubble.render(context);
+                    renderedCount++;
                 }
             });
         } else {
@@ -225,8 +249,14 @@ export class BubbleManager {
             this.bubbles.forEach(bubble => {
                 if (this.physicsEngine.isBubbleVisible(bubble)) {
                     bubble.render(context);
+                    renderedCount++;
                 }
             });
+        }
+        
+        // レンダリング統計
+        if (!this.lastDebugTime || performance.now() - this.lastDebugTime > 5000) {
+            console.log(`[DEBUG] レンダリングした泡の数: ${renderedCount}/${this.bubbles.length}`);
         }
         
         // ドラッグ軌跡の描画（デバッグ用、高品質モードのみ）

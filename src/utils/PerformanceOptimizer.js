@@ -443,7 +443,11 @@ export class PerformanceOptimizer {
      * @returns {object} 統計データ
      */
     getStats() {
-        return { ...this.stats };
+        return { 
+            ...this.stats,
+            performanceLevel: this.performanceLevel,  // GameEngineInitializer.jsで期待される
+            level: this.performanceLevel              // 下位互換性のため
+        };
     }
     
     /**

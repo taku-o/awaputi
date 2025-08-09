@@ -227,6 +227,7 @@ export class MemoryManager {
                 memoryHealthScore: this._calculateHealthScore(memoryInfo, leakStats)
             },
             memory: memoryInfo,
+            memoryUsage: memoryInfo.current || memoryInfo.used || this.stats.memoryUsage || 0,  // GameEngineInitializer.jsで期待される
             leakDetection: leakStats,
             cleanup: cleanupStats,
             analysis: analysisStats,
