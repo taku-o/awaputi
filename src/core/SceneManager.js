@@ -51,8 +51,20 @@ export class SceneManager {
      * 更新処理
      */
     update(deltaTime) {
+        // Debug logs throttled to prevent console flooding - only log occasionally
+        if (!this.lastUpdateDebugTime || performance.now() - this.lastUpdateDebugTime > 5000) {
+            console.log(`[DEBUG] SceneManager.update working - scene: ${this.currentScene?.constructor?.name || 'null'}`);
+            this.lastUpdateDebugTime = performance.now();
+        }
+        
         if (this.currentScene) {
             this.currentScene.update(deltaTime);
+        } else {
+            // Only warn occasionally about missing scene
+            if (!this.lastSceneWarnTime || performance.now() - this.lastSceneWarnTime > 10000) {
+                console.warn(`[DEBUG] No current scene to update`);
+                this.lastSceneWarnTime = performance.now();
+            }
         }
     }
     

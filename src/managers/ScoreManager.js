@@ -28,6 +28,14 @@ export class ScoreManager {
     }
     
     /**
+     * 現在のコンボ数を取得
+     * @returns {number} コンボ数
+     */
+    getCombo() {
+        return this.combo || 0;
+    }
+    
+    /**
      * スコアを追加（泡をクリック/ポップした時）
      */
     addScore(bubble, x, y) {

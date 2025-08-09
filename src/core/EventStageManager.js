@@ -1,7 +1,8 @@
 /**
- * EventStageManager.js (リファクタリング版)
+ * EventStageManager.js (リファクタリング版 + loadメソッド追加版)
  * イベントステージ管理クラス - メインコントローラー
  * 各種イベントコンポーネントを統合管理
+ * Updated: 2024 with load() method for GameEngineInitializer compatibility
  */
 import { EventRankingManager } from './EventRankingManager.js';
 import { SeasonalEventManager } from './events/SeasonalEventManager.js';
@@ -26,6 +27,7 @@ export class EventStageManager {
         this.eventHistory = []; // 互換性のため保持
         
         console.log('EventStageManager initialized with new component architecture');
+        console.log('[DEBUG] EventStageManager VERSION: v2024-with-load-method');
     }
     
     /**
@@ -447,6 +449,57 @@ export class EventStageManager {
             
         } catch (error) {
             console.error('EventStageManager update error:', error);
+        }
+    }
+    
+    /**
+     * データを読み込み（GameEngineInitializer互換性用）
+     */
+    load() {
+        try {
+            console.log('[DEBUG] EventStageManager.load() 開始');
+            
+            // 各サブコンポーネントのloadメソッドを呼び出し（存在する場合）
+            if (this.seasonalEventManager && typeof this.seasonalEventManager.load === 'function') {
+                this.seasonalEventManager.load();
+            }
+            
+            if (this.historyManager && typeof this.historyManager.load === 'function') {
+                this.historyManager.load();
+            }
+            
+            if (this.rankingSystem && typeof this.rankingSystem.load === 'function') {
+                this.rankingSystem.load();
+            }
+            
+            console.log('[DEBUG] EventStageManager.load() 完了');
+            return true;
+            
+        } catch (error) {
+            console.error('[DEBUG] EventStageManager.load() エラー:', error);
+            return false;
+        }
+    }
+    
+    /**
+     * イベント通知をチェック
+     * 互換性のためのメソッド（EventStageDataManager用）
+     */
+    checkEventNotifications() {
+        try {
+            console.log('[DEBUG] EventStageManager.checkEventNotifications() 実行');
+            
+            // 通知システムから通知をチェック
+            if (this.notificationSystem && typeof this.notificationSystem.checkNotifications === 'function') {
+                return this.notificationSystem.checkNotifications();
+            }
+            
+            // フォールバック: 空の通知配列を返す
+            return [];
+            
+        } catch (error) {
+            console.error('[DEBUG] EventStageManager.checkEventNotifications() エラー:', error);
+            return [];
         }
     }
     

@@ -128,7 +128,7 @@ export class SEOMetaManager {
         const { gameSession } = context;
         
         // 動的タイトル生成
-        let dynamicTitle = this._getLocalizedTitle();
+        let dynamicTitle = await this._getLocalizedTitle();
         if (gameSession.score > 0) {
             const scoreText = this.localizationManager ? 
                 this.localizationManager.get('seo.titleWithScore', { score: gameSession.score.toLocaleString() }) :
@@ -236,7 +236,7 @@ export class SEOMetaManager {
      * ローカライズされたタイトル生成
      * @private
      */
-    async _getLocalizedTitle(context) {
+    async _getLocalizedTitle(context = {}) {
         if (!this.localizationManager) {
             return context.title || 'BubblePop - 泡割りゲーム';
         }
@@ -520,8 +520,22 @@ export class SEOMetaManager {
      * @private
      */
     _updateBasicMetaTags(metadata) {
-        // タイトル
-        document.title = metadata.title;
+        // タイトル - Promiseチェック
+        if (metadata.title && typeof metadata.title.then === 'function') {
+            // Promiseの場合は即座にデフォルトタイトルを設定し、非同期で更新
+            document.title = 'BubblePop - 泡を割って高スコアを目指そう！';
+            metadata.title.then(title => {
+                document.title = title || 'BubblePop - 泡を割って高スコアを目指そう！';
+            }).catch(() => {
+                document.title = 'BubblePop - 泡を割って高スコアを目指そう！';
+            });
+        } else if (typeof metadata.title === 'string') {
+            // 文字列の場合は直接設定
+            document.title = metadata.title || 'BubblePop - 泡を割って高スコアを目指そう！';
+        } else {
+            // その他の場合（undefinedやオブジェクト）はデフォルトタイトルを使用
+            document.title = 'BubblePop - 泡を割って高スコアを目指そう！';
+        }
         
         // 説明
         this._updateMetaTag('description', metadata.description);

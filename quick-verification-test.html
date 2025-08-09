@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Quick Verification - Issue #113</title>
+    <style>
+        body { 
+            font-family: monospace; 
+            margin: 20px; 
+            background: #f0f0f0; 
+        }
+        .log { 
+            background: white; 
+            padding: 10px; 
+            margin: 5px 0; 
+            border-left: 4px solid #007acc; 
+            border-radius: 4px;
+        }
+        .success { border-color: #28a745; color: #28a745; }
+        .warning { border-color: #ffc107; color: #856404; }
+        .error { border-color: #dc3545; color: #dc3545; }
+        .checklist {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .status-pass { color: #28a745; }
+        .status-warning { color: #ffc107; }
+        .status-fail { color: #dc3545; }
+    </style>
+</head>
+<body>
+    <h1>🔧 Issue #113 Quick Verification Test</h1>
+    <p>Service Worker影響を回避したクイックテスト</p>
+
+    <div class="checklist">
+        <h3>📋 検証チェックリスト</h3>
+        <div id="checklist">
+            <div id="config-test">⏳ ConfigurationManager初期化テスト</div>
+            <div id="performance-test">⏳ PerformanceOptimizer統合テスト</div>
+            <div id="audio-test">⏳ AudioVisualizer動作テスト</div>
+            <div id="error-handler-test">⏳ ErrorHandler機能テスト</div>
+            <div id="main-game-test">⏳ メインゲーム読み込みテスト</div>
+        </div>
+    </div>
+
+    <div id="log-container"></div>
+
+    <script type="module">
+        function log(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `log ${type}`;
+            div.innerHTML = `<strong>[${new Date().toLocaleTimeString()}]</strong> ${message}`;
+            document.getElementById('log-container').appendChild(div);
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+
+        function updateChecklist(id, status, message) {
+            const element = document.getElementById(id);
+            if (element) {
+                const statusIcon = status === 'pass' ? '✅' : status === 'warning' ? '⚠️' : '❌';
+                element.innerHTML = `${statusIcon} ${element.innerText.replace('⏳', '').trim()}: ${message}`;
+                element.className = `status-${status}`;
+            }
+        }
+
+        async function runQuickTests() {
+            log('🚀 Issue #113 Quick Verification Test開始', 'info');
+
+            try {
+                // 1. ConfigurationManagerテスト
+                log('🧪 ConfigurationManager初期化テスト開始', 'info');
+                try {
+                    const { getConfigurationManager } = await import('./src/core/ConfigurationManager.js');
+                    const configManager = getConfigurationManager();
+                    
+                    // addValidationRuleメソッド存在確認
+                    if (typeof configManager.addValidationRule === 'function') {
+                        log('✅ addValidationRuleメソッド存在確認', 'success');
+                        
+                        // targetFPS設定確認
+                        const targetFPS = configManager.get('performance', 'targetFPS', 60);
+                        log(`✅ targetFPS設定取得: ${targetFPS}`, 'success');
+                        
+                        updateChecklist('config-test', 'pass', 'addValidationRule・targetFPS正常');
+                    } else {
+                        throw new Error('addValidationRuleメソッドが存在しません');
+                    }
+                } catch (error) {
+                    log(`❌ ConfigurationManagerテスト失敗: ${error.message}`, 'error');
+                    updateChecklist('config-test', 'fail', error.message);
+                }
+
+                // 2. PerformanceOptimizerテスト
+                log('🧪 PerformanceOptimizer統合テスト開始', 'info');
+                try {
+                    const { PerformanceOptimizer } = await import('./src/utils/PerformanceOptimizer.js');
+                    
+                    const mockGameEngine = {
+                        canvas: document.createElement('canvas'),
+                        ctx: null,
+                        getStats: () => ({ fps: 60, avgFrameTime: 16.67 })
+                    };
+                    mockGameEngine.ctx = mockGameEngine.canvas.getContext('2d');
+                    
+                    const optimizer = new PerformanceOptimizer(mockGameEngine);
+                    
+                    if (typeof optimizer.handleError === 'function' && optimizer.targetFPS) {
+                        log(`✅ PerformanceOptimizer正常: targetFPS=${optimizer.targetFPS}`, 'success');
+                        updateChecklist('performance-test', 'pass', `targetFPS=${optimizer.targetFPS}、handleError正常`);
+                    } else {
+                        throw new Error('PerformanceOptimizerプロパティ不足');
+                    }
+                } catch (error) {
+                    log(`❌ PerformanceOptimizerテスト失敗: ${error.message}`, 'error');
+                    updateChecklist('performance-test', 'fail', error.message);
+                }
+
+                // 3. AudioVisualizerテスト
+                log('🧪 AudioVisualizer動作テスト開始', 'info');
+                try {
+                    const { AudioVisualizer } = await import('./src/audio/AudioVisualizer.js');
+                    
+                    const mockAudioManager = {
+                        audioContext: null,
+                        initialized: false,
+                        masterGainNode: null
+                    };
+                    
+                    const visualizer = new AudioVisualizer(mockAudioManager);
+                    
+                    if (typeof visualizer.render === 'function' && typeof visualizer.setCanvas === 'function') {
+                        log('✅ AudioVisualizer render・setCanvasメソッド確認', 'success');
+                        updateChecklist('audio-test', 'pass', 'render・setCanvasメソッド正常');
+                    } else {
+                        throw new Error('AudioVisualizerメソッド不足');
+                    }
+                } catch (error) {
+                    log(`❌ AudioVisualizerテスト失敗: ${error.message}`, 'error');
+                    updateChecklist('audio-test', 'fail', error.message);
+                }
+
+                // 4. ErrorHandlerテスト
+                log('🧪 ErrorHandler機能テスト開始', 'info');
+                try {
+                    const { getErrorHandler } = await import('./src/utils/ErrorHandler.js');
+                    const errorHandler = getErrorHandler();
+                    
+                    if (typeof errorHandler.setRetryHandler === 'function' && typeof errorHandler.handleError === 'function') {
+                        log('✅ ErrorHandler setRetryHandler・handleErrorメソッド確認', 'success');
+                        updateChecklist('error-handler-test', 'pass', 'setRetryHandler・handleError正常');
+                    } else {
+                        throw new Error('ErrorHandlerメソッド不足');
+                    }
+                } catch (error) {
+                    log(`❌ ErrorHandlerテスト失敗: ${error.message}`, 'error');
+                    updateChecklist('error-handler-test', 'fail', error.message);
+                }
+
+                // 5. メインゲーム読み込みテスト（iframe使用）
+                log('🧪 メインゲーム読み込みテスト開始', 'info');
+                try {
+                    const iframe = document.createElement('iframe');
+                    iframe.style.cssText = 'width: 1px; height: 1px; opacity: 0; position: absolute;';
+                    iframe.src = './index.html';
+                    document.body.appendChild(iframe);
+                    
+                    // 5秒待機してiframe読み込み確認
+                    await new Promise((resolve) => {
+                        setTimeout(() => {
+                            try {
+                                // iframeが読み込まれているかをチェック
+                                if (iframe.contentWindow && iframe.contentDocument) {
+                                    log('✅ メインゲーム読み込み成功', 'success');
+                                    updateChecklist('main-game-test', 'pass', 'index.html正常読み込み');
+                                } else {
+                                    log('⚠️ メインゲーム読み込み（部分的）', 'warning');
+                                    updateChecklist('main-game-test', 'warning', 'index.html読み込み中');
+                                }
+                                document.body.removeChild(iframe);
+                            } catch (e) {
+                                log('⚠️ メインゲームアクセス制限（CORS/Same-Origin）', 'warning');
+                                updateChecklist('main-game-test', 'warning', 'Same-Origin制約');
+                            }
+                            resolve();
+                        }, 5000);
+                    });
+                } catch (error) {
+                    log(`❌ メインゲームテスト失敗: ${error.message}`, 'error');
+                    updateChecklist('main-game-test', 'fail', error.message);
+                }
+
+                log('🎉 Quick Verification Test完了', 'success');
+
+            } catch (error) {
+                log(`💥 テスト実行エラー: ${error.message}`, 'error');
+            }
+        }
+
+        // テスト開始
+        runQuickTests();
+    </script>
+</body>
+</html>

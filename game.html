@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>バブルゲーム</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #f39c12;
+            margin-bottom: 20px;
+        }
+        
+        canvas {
+            border: 3px solid #f39c12;
+            background: #1a1a2e;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            cursor: crosshair;
+        }
+        
+        .controls {
+            margin: 20px 0;
+        }
+        
+        button {
+            background: #f39c12;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            margin: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        button:hover {
+            background: #e67e22;
+            transform: scale(1.05);
+        }
+        
+        button:active {
+            transform: scale(0.95);
+        }
+        
+        #info {
+            background: rgba(0,0,0,0.7);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px auto;
+            max-width: 600px;
+            font-size: 18px;
+        }
+        
+        .score {
+            color: #f39c12;
+            font-weight: bold;
+        }
+        
+        .status-running {
+            color: #27ae60;
+        }
+        
+        .status-stopped {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <h1>🫧 バブルゲーム</h1>
+    
+    <div class="controls">
+        <button onclick="startGame()">🎮 ゲーム開始</button>
+        <button onclick="spawnBubbles()">🫧 バブル生成</button>
+        <button onclick="clearAll()">🗑️ リセット</button>
+        <button onclick="toggleAutoSpawn()">⚡ 自動生成</button>
+    </div>
+    
+    <canvas id="gameCanvas" width="800" height="500"></canvas>
+    
+    <div id="info">
+        <div>スコア: <span id="score" class="score">0</span></div>
+        <div>バブル数: <span id="bubbleCount">0</span></div>
+        <div>ステータス: <span id="status" class="status-stopped">停止中</span></div>
+        <div>自動生成: <span id="autoSpawnStatus">OFF</span></div>
+    </div>
+    
+    <p style="margin-top: 30px; opacity: 0.8;">
+        💡 バブルをクリックしてポイントを獲得！<br>
+        🎯 大きなバブルほど高得点！
+    </p>
+
+    <script>
+        // グローバル変数
+        var canvas, ctx;
+        var bubbles = [];
+        var score = 0;
+        var isGameRunning = false;
+        var isAutoSpawn = false;
+        var animationId;
+        var lastSpawnTime = 0;
+        
+        // バブルクラス
+        function Bubble(x, y, radius, color, speedX, speedY, points) {
+            this.x = x;
+            this.y = y;
+            this.radius = radius;
+            this.color = color;
+            this.speedX = speedX;
+            this.speedY = speedY;
+            this.alpha = 1.0;
+            this.points = points;
+            this.rotation = 0;
+            this.rotationSpeed = (Math.random() - 0.5) * 0.1;
+        }
+        
+        Bubble.prototype.update = function() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            this.rotation += this.rotationSpeed;
+            
+            // 重力効果
+            this.speedY += 0.1;
+            
+            // 壁での反射
+            if (this.x - this.radius <= 0 || this.x + this.radius >= canvas.width) {
+                this.speedX *= -0.7;
+                this.x = Math.max(this.radius, Math.min(canvas.width - this.radius, this.x));
+            }
+            if (this.y - this.radius <= 0 || this.y + this.radius >= canvas.height) {
+                this.speedY *= -0.7;
+                this.y = Math.max(this.radius, Math.min(canvas.height - this.radius, this.y));
+            }
+            
+            // 摩擦
+            this.speedX *= 0.999;
+            this.speedY *= 0.999;
+            
+            // 徐々に透明になる
+            this.alpha *= 0.9995;
+        };
+        
+        Bubble.prototype.draw = function() {
+            ctx.save();
+            ctx.globalAlpha = this.alpha;
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.rotation);
+            
+            // グラデーション
+            var gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, this.radius);
+            gradient.addColorStop(0, this.color);
+            gradient.addColorStop(0.7, this.color + '80');
+            gradient.addColorStop(1, this.color + '20');
+            
+            ctx.beginPath();
+            ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            
+            // ハイライト
+            ctx.beginPath();
+            ctx.arc(-this.radius * 0.3, -this.radius * 0.3, this.radius * 0.3, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255,255,255,0.3)';
+            ctx.fill();
+            
+            // 境界線
+            ctx.beginPath();
+            ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            ctx.restore();
+        };
+        
+        Bubble.prototype.isClicked = function(mouseX, mouseY) {
+            var distance = Math.sqrt((mouseX - this.x) * (mouseX - this.x) + (mouseY - this.y) * (mouseY - this.y));
+            return distance <= this.radius;
+        };
+        
+        // 初期化
+        function init() {
+            canvas = document.getElementById('gameCanvas');
+            ctx = canvas.getContext('2d');
+            
+            // クリックイベント
+            canvas.addEventListener('click', onCanvasClick);
+            
+            updateInfo();
+            console.log('ゲーム初期化完了');
+        }
+        
+        // ゲーム開始
+        function startGame() {
+            isGameRunning = !isGameRunning;
+            if (isGameRunning) {
+                gameLoop();
+                console.log('ゲーム開始');
+            } else {
+                cancelAnimationFrame(animationId);
+                console.log('ゲーム停止');
+            }
+            updateInfo();
+        }
+        
+        // ゲームループ
+        function gameLoop() {
+            if (!isGameRunning) return;
+            
+            var currentTime = Date.now();
+            
+            // 自動バブル生成
+            if (isAutoSpawn && currentTime - lastSpawnTime > 2000) {
+                spawnRandomBubble();
+                lastSpawnTime = currentTime;
+            }
+            
+            // 背景クリア
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // バブル更新と描画
+            bubbles = bubbles.filter(function(bubble) {
+                bubble.update();
+                bubble.draw();
+                return bubble.alpha > 0.1; // 透明度が低くなったら削除
+            });
+            
+            updateInfo();
+            animationId = requestAnimationFrame(gameLoop);
+        }
+        
+        // バブル生成
+        function spawnBubbles() {
+            var colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8', '#FF8A80', '#82B1FF'];
+            
+            for (var i = 0; i < 3; i++) {
+                spawnRandomBubble();
+            }
+            
+            if (!isGameRunning) {
+                drawStaticFrame();
+            }
+            
+            updateInfo();
+            console.log('バブルを生成しました。現在のバブル数: ' + bubbles.length);
+        }
+        
+        // ランダムバブル生成
+        function spawnRandomBubble() {
+            var colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8'];
+            var x = 50 + Math.random() * (canvas.width - 100);
+            var y = 50 + Math.random() * (canvas.height - 200);
+            var radius = 15 + Math.random() * 40;
+            var color = colors[Math.floor(Math.random() * colors.length)];
+            var speedX = (Math.random() - 0.5) * 6;
+            var speedY = (Math.random() - 0.5) * 6;
+            var points = Math.floor(radius / 5);
+            
+            bubbles.push(new Bubble(x, y, radius, color, speedX, speedY, points));
+        }
+        
+        // 静的フレーム描画
+        function drawStaticFrame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            bubbles.forEach(function(bubble) {
+                bubble.draw();
+            });
+        }
+        
+        // 全クリア
+        function clearAll() {
+            bubbles = [];
+            score = 0;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            updateInfo();
+            console.log('すべてクリアしました');
+        }
+        
+        // 自動生成切り替え
+        function toggleAutoSpawn() {
+            isAutoSpawn = !isAutoSpawn;
+            updateInfo();
+            console.log('自動生成: ' + (isAutoSpawn ? 'ON' : 'OFF'));
+        }
+        
+        // キャンバスクリック処理
+        function onCanvasClick(event) {
+            var rect = canvas.getBoundingClientRect();
+            var mouseX = event.clientX - rect.left;
+            var mouseY = event.clientY - rect.top;
+            
+            // クリックされたバブルを探す（後ろから検索で手前のバブルを優先）
+            for (var i = bubbles.length - 1; i >= 0; i--) {
+                if (bubbles[i].isClicked(mouseX, mouseY)) {
+                    score += bubbles[i].points;
+                    
+                    // パーティクル効果（簡易版）
+                    createClickEffect(bubbles[i].x, bubbles[i].y, bubbles[i].color);
+                    
+                    bubbles.splice(i, 1);
+                    updateInfo();
+                    console.log('バブルクリック！ スコア: ' + score);
+                    break;
+                }
+            }
+        }
+        
+        // クリックエフェクト
+        function createClickEffect(x, y, color) {
+            for (var i = 0; i < 5; i++) {
+                var angle = (i / 5) * Math.PI * 2;
+                var speed = 3 + Math.random() * 3;
+                var vx = Math.cos(angle) * speed;
+                var vy = Math.sin(angle) * speed;
+                var effectBubble = new Bubble(x, y, 5 + Math.random() * 10, color, vx, vy, 0);
+                effectBubble.alpha = 0.7;
+                bubbles.push(effectBubble);
+            }
+        }
+        
+        // 情報更新
+        function updateInfo() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('bubbleCount').textContent = bubbles.length;
+            
+            var statusElement = document.getElementById('status');
+            if (isGameRunning) {
+                statusElement.textContent = '実行中';
+                statusElement.className = 'status-running';
+            } else {
+                statusElement.textContent = '停止中';
+                statusElement.className = 'status-stopped';
+            }
+            
+            document.getElementById('autoSpawnStatus').textContent = isAutoSpawn ? 'ON' : 'OFF';
+        }
+        
+        // ページ読み込み時に初期化
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>

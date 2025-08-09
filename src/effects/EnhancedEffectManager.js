@@ -184,8 +184,11 @@ export class EnhancedEffectManager extends EffectManager {
         try {
             const startTime = Date.now();
             
-            // 基底クラスのレンダリング
-            super.render(context, deltaTime);
+            // 基底クラスのレンダリングは存在しないため削除
+            // super.render(context, deltaTime); // この行が無限ループエラーの原因
+            
+            // 基底クラスの効果を更新
+            this.update(deltaTime);
             
             // 拡張効果のレンダリング
             this._renderEnhancedEffects(context, deltaTime);
@@ -239,7 +242,7 @@ export class EnhancedEffectManager extends EffectManager {
             
             // ポストプロセッシング
             if (this.apiManager.renderSettings.enablePostProcessing) {
-                this.postProcessingRenderer.renderPostProcessing(context, this.apiManager.enhancedTransform);
+                this.postProcessingRenderer.renderPostProcessingEffects(context, this.apiManager.enhancedTransform, this.apiManager.renderSettings);
             }
             
         } catch (error) {

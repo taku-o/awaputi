@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ゲームコア機能デバッグ - Issue #113</title>
+    <style>
+        body { font-family: monospace; margin: 20px; background: #f0f0f0; }
+        .debug-panel { background: #fff; padding: 15px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; }
+        .log { background: #f8f9fa; padding: 8px; margin: 3px 0; border-left: 3px solid #007acc; font-size: 12px; }
+        .success { border-color: #28a745; color: #155724; }
+        .warning { border-color: #ffc107; color: #856404; }
+        .error { border-color: #dc3545; color: #721c24; }
+        button { padding: 8px 16px; margin: 5px; background: #007acc; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        button:hover { background: #005a9e; }
+        .status { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; margin: 0 5px; }
+        .status-ok { background: #d4edda; color: #155724; }
+        .status-warn { background: #fff3cd; color: #856404; }
+        .status-error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>🔬 Issue #113 ゲームコア機能デバッグ</h1>
+    <p>ゲームの基本機能が動作しているかを段階的に確認します</p>
+
+    <div class="debug-panel">
+        <h3>🎛️ デバッグコントロール</h3>
+        <button onclick="testGameEngine()">GameEngine テスト</button>
+        <button onclick="testBubbleManager()">BubbleManager テスト</button>
+        <button onclick="testInputManager()">InputManager テスト</button>
+        <button onclick="testGameLoop()">ゲームループ テスト</button>
+        <button onclick="simulateGameplay()">ゲームプレイ シミュレーション</button>
+        <button onclick="clearLogs()">ログクリア</button>
+    </div>
+
+    <div class="debug-panel">
+        <h3>📊 システム状態</h3>
+        <div id="system-status">
+            <span class="status status-warn">GameEngine: 未確認</span>
+            <span class="status status-warn">BubbleManager: 未確認</span>
+            <span class="status status-warn">InputManager: 未確認</span>
+            <span class="status status-warn">ScoreManager: 未確認</span>
+            <span class="status status-warn">ゲームループ: 未確認</span>
+        </div>
+    </div>
+
+    <div class="debug-panel">
+        <h3>📋 デバッグログ</h3>
+        <div id="debug-log" style="max-height: 300px; overflow-y: auto;"></div>
+    </div>
+
+    <script type="module">
+        let gameEngine = null;
+        
+        function log(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `log ${type}`;
+            div.innerHTML = `<strong>[${new Date().toLocaleTimeString()}]</strong> ${message}`;
+            document.getElementById('debug-log').appendChild(div);
+            div.scrollIntoView();
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+
+        function updateStatus(component, status) {
+            const statusContainer = document.getElementById('system-status');
+            const statusClass = status === 'ok' ? 'status-ok' : status === 'warn' ? 'status-warn' : 'status-error';
+            const statusText = status === 'ok' ? '正常' : status === 'warn' ? '警告' : 'エラー';
+            
+            // 既存の状態を更新
+            const spans = statusContainer.querySelectorAll('span');
+            let updated = false;
+            
+            spans.forEach(span => {
+                if (span.textContent.includes(component)) {
+                    span.className = `status ${statusClass}`;
+                    span.textContent = `${component}: ${statusText}`;
+                    updated = true;
+                }
+            });
+            
+            if (!updated) {
+                const newSpan = document.createElement('span');
+                newSpan.className = `status ${statusClass}`;
+                newSpan.textContent = `${component}: ${statusText}`;
+                statusContainer.appendChild(newSpan);
+            }
+        }
+
+        window.clearLogs = function() {
+            document.getElementById('debug-log').innerHTML = '';
+        };
+
+        window.testGameEngine = async function() {
+            log('🚀 GameEngine読み込みテスト開始', 'info');
+            
+            try {
+                const { GameEngine } = await import('./src/core/GameEngine.js');
+                log('✅ GameEngineクラス読み込み成功', 'success');
+                
+                // Canvas要素を作成
+                let canvas = document.getElementById('testCanvas');
+                if (!canvas) {
+                    canvas = document.createElement('canvas');
+                    canvas.id = 'testCanvas';
+                    canvas.width = 800;
+                    canvas.height = 600;
+                    canvas.style.cssText = 'border: 1px solid #ccc; display: none;';
+                    document.body.appendChild(canvas);
+                }
+                
+                log('🎯 Canvas要素準備完了', 'info');
+                
+                // GameEngineインスタンス作成
+                gameEngine = new GameEngine(canvas);
+                log('✅ GameEngineインスタンス作成成功', 'success');
+                
+                // 初期化テスト
+                await gameEngine.initialize();
+                log('✅ GameEngine初期化完了', 'success');
+                
+                updateStatus('GameEngine', 'ok');
+                
+                // サブシステム確認
+                if (gameEngine.bubbleManager) {
+                    log('✅ BubbleManager統合確認', 'success');
+                    updateStatus('BubbleManager', 'ok');
+                }
+                
+                if (gameEngine.inputManager) {
+                    log('✅ InputManager統合確認', 'success');
+                    updateStatus('InputManager', 'ok');
+                }
+                
+                if (gameEngine.scoreManager) {
+                    log('✅ ScoreManager統合確認', 'success');
+                    updateStatus('ScoreManager', 'ok');
+                }
+                
+            } catch (error) {
+                log(`❌ GameEngineテスト失敗: ${error.message}`, 'error');
+                log(`📚 スタック: ${error.stack}`, 'error');
+                updateStatus('GameEngine', 'error');
+            }
+        };
+
+        window.testBubbleManager = function() {
+            log('🫧 BubbleManagerテスト開始', 'info');
+            
+            if (!gameEngine) {
+                log('⚠️ GameEngineが初期化されていません。先にGameEngineテストを実行してください', 'warning');
+                return;
+            }
+            
+            try {
+                const bubbleManager = gameEngine.bubbleManager;
+                if (!bubbleManager) {
+                    throw new Error('BubbleManagerが見つかりません');
+                }
+                
+                log(`📊 初期バブル数: ${bubbleManager.bubbles ? bubbleManager.bubbles.length : 0}`, 'info');
+                
+                // バブル生成テスト
+                if (typeof bubbleManager.spawnBubble === 'function') {
+                    const initialCount = bubbleManager.bubbles ? bubbleManager.bubbles.length : 0;
+                    
+                    bubbleManager.spawnBubble(400, 300, 'normal');
+                    
+                    const newCount = bubbleManager.bubbles ? bubbleManager.bubbles.length : 0;
+                    
+                    if (newCount > initialCount) {
+                        log(`✅ バブル生成成功: ${initialCount} → ${newCount}`, 'success');
+                        updateStatus('BubbleManager', 'ok');
+                    } else {
+                        log('⚠️ バブル生成が確認できません', 'warning');
+                        updateStatus('BubbleManager', 'warn');
+                    }
+                } else {
+                    throw new Error('spawnBubbleメソッドが見つかりません');
+                }
+                
+            } catch (error) {
+                log(`❌ BubbleManagerテスト失敗: ${error.message}`, 'error');
+                updateStatus('BubbleManager', 'error');
+            }
+        };
+
+        window.testInputManager = function() {
+            log('🖱️ InputManagerテスト開始', 'info');
+            
+            if (!gameEngine) {
+                log('⚠️ GameEngineが初期化されていません', 'warning');
+                return;
+            }
+            
+            try {
+                const inputManager = gameEngine.inputManager;
+                if (!inputManager) {
+                    throw new Error('InputManagerが見つかりません');
+                }
+                
+                // クリックイベントシミュレーション
+                const canvas = document.getElementById('testCanvas');
+                if (canvas) {
+                    const clickEvent = new MouseEvent('click', {
+                        clientX: 400,
+                        clientY: 300,
+                        bubbles: true
+                    });
+                    
+                    canvas.dispatchEvent(clickEvent);
+                    log('✅ クリックイベント送信', 'success');
+                    
+                    // InputManagerの応答確認
+                    if (typeof inputManager.handleClick === 'function') {
+                        log('✅ InputManager クリックハンドラー確認', 'success');
+                        updateStatus('InputManager', 'ok');
+                    } else {
+                        log('⚠️ クリックハンドラーが見つかりません', 'warning');
+                        updateStatus('InputManager', 'warn');
+                    }
+                } else {
+                    throw new Error('テスト用Canvasが見つかりません');
+                }
+                
+            } catch (error) {
+                log(`❌ InputManagerテスト失敗: ${error.message}`, 'error');
+                updateStatus('InputManager', 'error');
+            }
+        };
+
+        window.testGameLoop = function() {
+            log('🔄 ゲームループテスト開始', 'info');
+            
+            if (!gameEngine) {
+                log('⚠️ GameEngineが初期化されていません', 'warning');
+                return;
+            }
+            
+            try {
+                // ゲームループ開始
+                if (typeof gameEngine.start === 'function') {
+                    gameEngine.start();
+                    log('✅ ゲームループ開始', 'success');
+                    
+                    // 3秒後にループ状態確認
+                    setTimeout(() => {
+                        if (gameEngine.isRunning) {
+                            log('✅ ゲームループ動作中', 'success');
+                            updateStatus('ゲームループ', 'ok');
+                            
+                            // FPS確認
+                            if (gameEngine.performanceMonitor) {
+                                const fps = gameEngine.performanceMonitor.stats?.fps || 0;
+                                log(`📊 現在のFPS: ${Math.round(fps)}`, 'info');
+                            }
+                        } else {
+                            log('⚠️ ゲームループが停止しています', 'warning');
+                            updateStatus('ゲームループ', 'warn');
+                        }
+                    }, 3000);
+                    
+                } else {
+                    throw new Error('ゲームループstartメソッドが見つかりません');
+                }
+                
+            } catch (error) {
+                log(`❌ ゲームループテスト失敗: ${error.message}`, 'error');
+                updateStatus('ゲームループ', 'error');
+            }
+        };
+
+        window.simulateGameplay = function() {
+            log('🎮 ゲームプレイシミュレーション開始', 'info');
+            
+            if (!gameEngine || !gameEngine.isRunning) {
+                log('⚠️ ゲームが動作していません。先にGameEngineとゲームループのテストを実行してください', 'warning');
+                return;
+            }
+            
+            try {
+                const canvas = document.getElementById('testCanvas');
+                let clickCount = 0;
+                const maxClicks = 10;
+                
+                const simulateClick = () => {
+                    if (clickCount >= maxClicks) {
+                        log(`🎉 ゲームプレイシミュレーション完了: ${maxClicks}回クリック実行`, 'success');
+                        return;
+                    }
+                    
+                    // ランダムな位置をクリック
+                    const x = Math.random() * canvas.width;
+                    const y = Math.random() * canvas.height;
+                    
+                    const clickEvent = new MouseEvent('click', {
+                        clientX: x,
+                        clientY: y,
+                        bubbles: true
+                    });
+                    
+                    canvas.dispatchEvent(clickEvent);
+                    clickCount++;
+                    
+                    log(`🖱️ クリック ${clickCount}/${maxClicks}: (${Math.round(x)}, ${Math.round(y)})`, 'info');
+                    
+                    // 次のクリックを0.5秒後に実行
+                    setTimeout(simulateClick, 500);
+                };
+                
+                simulateClick();
+                
+            } catch (error) {
+                log(`❌ ゲームプレイシミュレーション失敗: ${error.message}`, 'error');
+            }
+        };
+
+        // 初期メッセージ
+        log('🔬 Issue #113 ゲームコア機能デバッグツール起動', 'info');
+        log('👆 上のボタンを順番にクリックしてゲーム機能をテストしてください', 'info');
+        log('📝 推奨順序: GameEngine → BubbleManager → InputManager → ゲームループ → ゲームプレイシミュレーション', 'info');
+    </script>
+</body>
+</html>

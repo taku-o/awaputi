@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug - Bubble Visibility Issue</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        
+        #gameCanvas {
+            border: 2px solid #333;
+            background: linear-gradient(135deg, #87CEEB, #E0F6FF);
+            display: block;
+            margin: 20px auto;
+        }
+        
+        .debug-panel {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .debug-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            margin: 5px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        .status.success { background: #d4edda; color: #155724; }
+        .status.warning { background: #fff3cd; color: #856404; }
+        .status.error { background: #f8d7da; color: #721c24; }
+        
+        .log-output {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+        }
+        
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        button:hover {
+            background: #0056b3;
+        }
+        
+        button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="debug-panel">
+        <h1>🔍 Debug - Bubble Visibility Issue</h1>
+        <p><strong>目的:</strong> バブルが表示されない問題の根本原因を特定</p>
+        
+        <div class="debug-section">
+            <h3>実行状況</h3>
+            <div id="executionStatus">
+                <span class="status warning">待機中</span>
+            </div>
+            <button onclick="startDebugging()">デバッグ開始</button>
+            <button onclick="clearLogs()">ログクリア</button>
+            <button onclick="manualSpawnBubble()">手動バブル生成</button>
+        </div>
+        
+        <div class="debug-section">
+            <h3>🎯 重要フロー チェックポイント</h3>
+            <div id="flowCheckpoints">
+                <div>1. GameEngine.gameLoop() 実行中: <span id="checkpoint1" class="status warning">未確認</span></div>
+                <div>2. GameEngine.update() 呼び出し: <span id="checkpoint2" class="status warning">未確認</span></div>
+                <div>3. SceneManager.update() 呼び出し: <span id="checkpoint3" class="status warning">未確認</span></div>
+                <div>4. GameScene.update() 呼び出し: <span id="checkpoint4" class="status warning">未確認</span></div>
+                <div>5. BubbleManager.update() 呼び出し: <span id="checkpoint5" class="status warning">未確認</span></div>
+                <div>6. バブル生成処理実行: <span id="checkpoint6" class="status warning">未確認</span></div>
+                <div>7. バブルレンダリング実行: <span id="checkpoint7" class="status warning">未確認</span></div>
+            </div>
+        </div>
+        
+        <div class="debug-section">
+            <h3>📊 ゲーム状態</h3>
+            <div id="gameState">
+                <div>Game Running: <span id="gameRunning">未確認</span></div>
+                <div>Scene: <span id="currentScene">未確認</span></div>
+                <div>Paused: <span id="gamePaused">未確認</span></div>
+                <div>Game Over: <span id="gameOver">未確認</span></div>
+                <div>Bubble Count: <span id="bubbleCount">未確認</span></div>
+                <div>Frame Count: <span id="frameCount">未確認</span></div>
+            </div>
+        </div>
+        
+        <div class="debug-section">
+            <h3>📝 リアルタイムログ</h3>
+            <div id="debugLog" class="log-output">ログ待機中...\n</div>
+        </div>
+    </div>
+    
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+    <script type="module">
+        import { GameEngine } from './src/core/GameEngine.js';
+        
+        let gameEngine;
+        let debugInterval;
+        let logBuffer = '';
+        
+        // ログキャプチャ機能
+        const originalConsoleLog = console.log;
+        const originalConsoleError = console.error;
+        const originalConsoleWarn = console.warn;
+        
+        function captureLog(level, ...args) {
+            const timestamp = new Date().toLocaleTimeString();
+            const message = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg).join(' ');
+            logBuffer += `[${timestamp}] ${level.toUpperCase()}: ${message}\n`;
+            
+            // ログ出力も保持
+            if (level === 'log') originalConsoleLog(...args);
+            if (level === 'error') originalConsoleError(...args);
+            if (level === 'warn') originalConsoleWarn(...args);
+            
+            // ログ表示を更新
+            updateLogDisplay();
+            
+            // チェックポイント更新
+            updateCheckpoints(message);
+        }
+        
+        console.log = (...args) => captureLog('log', ...args);
+        console.error = (...args) => captureLog('error', ...args);
+        console.warn = (...args) => captureLog('warn', ...args);
+        
+        function updateLogDisplay() {
+            const logElement = document.getElementById('debugLog');
+            logElement.textContent = logBuffer;
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+        
+        function updateCheckpoints(message) {
+            // チェックポイント1: GameEngine.gameLoop実行
+            if (message.includes('GameEngine.gameLoop')) {
+                setCheckpoint('checkpoint1', 'success', '実行中');
+            }
+            
+            // チェックポイント2: GameEngine.update呼び出し
+            if (message.includes('GameEngine') && message.includes('update') && !message.includes('gameLoop')) {
+                setCheckpoint('checkpoint2', 'success', '実行中');
+            }
+            
+            // チェックポイント3: SceneManager.update呼び出し
+            if (message.includes('SceneManager.update')) {
+                setCheckpoint('checkpoint3', 'success', '実行中');
+            }
+            
+            // チェックポイント4: GameScene.update呼び出し
+            if (message.includes('GameScene.update')) {
+                setCheckpoint('checkpoint4', 'success', '実行中');
+            }
+            
+            // チェックポイント5: BubbleManager.update呼び出し
+            if (message.includes('BubbleManager.update') || message.includes('bubbleManager.update')) {
+                setCheckpoint('checkpoint5', 'success', '実行中');
+            }
+            
+            // チェックポイント6: バブル生成
+            if (message.includes('Spawning bubble') || message.includes('spawnBubble')) {
+                setCheckpoint('checkpoint6', 'success', '生成中');
+            }
+            
+            // チェックポイント7: バブルレンダリング
+            if (message.includes('BubbleManager.render') || message.includes('レンダリングした泡の数')) {
+                setCheckpoint('checkpoint7', 'success', 'レンダリング中');
+            }
+        }
+        
+        function setCheckpoint(id, status, text) {
+            const element = document.getElementById(id);
+            element.className = `status ${status}`;
+            element.textContent = text;
+        }
+        
+        function updateGameState() {
+            if (!gameEngine) return;
+            
+            try {
+                document.getElementById('gameRunning').textContent = gameEngine.isRunning || '不明';
+                document.getElementById('currentScene').textContent = gameEngine.sceneManager?.currentScene?.constructor?.name || '不明';
+                document.getElementById('gamePaused').textContent = gameEngine.sceneManager?.currentScene?.isPaused || '不明';
+                document.getElementById('gameOver').textContent = gameEngine.isGameOver || '不明';
+                document.getElementById('bubbleCount').textContent = gameEngine.bubbleManager?.getBubbleCount() || '不明';
+                document.getElementById('frameCount').textContent = gameEngine.frameCount || '不明';
+            } catch (error) {
+                console.error('ゲーム状態更新エラー:', error);
+            }
+        }
+        
+        window.startDebugging = async function() {
+            try {
+                document.getElementById('executionStatus').innerHTML = '<span class="status warning">初期化中...</span>';
+                
+                const canvas = document.getElementById('gameCanvas');
+                gameEngine = new GameEngine(canvas);
+                
+                console.log('=== Debug Session Start ===');
+                console.log('GameEngine created, starting game...');
+                
+                // ゲーム開始
+                gameEngine.start();
+                
+                document.getElementById('executionStatus').innerHTML = '<span class="status success">実行中</span>';
+                
+                // 定期的なゲーム状態更新
+                debugInterval = setInterval(() => {
+                    updateGameState();
+                }, 1000);
+                
+                console.log('Debug session started successfully');
+                
+            } catch (error) {
+                console.error('Debug session start failed:', error);
+                document.getElementById('executionStatus').innerHTML = '<span class="status error">エラー発生</span>';
+            }
+        };
+        
+        window.clearLogs = function() {
+            logBuffer = '';
+            updateLogDisplay();
+            console.log('=== Logs Cleared ===');
+        };
+        
+        window.manualSpawnBubble = function() {
+            if (!gameEngine || !gameEngine.bubbleManager) {
+                console.error('GameEngine or BubbleManager not available');
+                return;
+            }
+            
+            try {
+                console.log('=== Manual Bubble Spawn Test ===');
+                const bubble = gameEngine.bubbleManager.spawnBubble('normal', { x: 400, y: 300 });
+                console.log('Manual spawn result:', !!bubble);
+                
+                if (bubble) {
+                    console.log(`Manual bubble created: type=${bubble.type}, position=(${bubble.x}, ${bubble.y})`);
+                }
+            } catch (error) {
+                console.error('Manual spawn failed:', error);
+            }
+        };
+        
+        // ページ読み込み完了時の初期化
+        console.log('Debug page loaded, ready to start debugging');
+    </script>
+</body>
+</html>

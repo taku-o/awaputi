@@ -25,6 +25,10 @@ class ConfigurationManager {
         // 変更履歴（デバッグ用）
         this.changeHistory = [];
         
+        // 警告ログレート制限（同じキーの警告は1秒以内は1回のみ）
+        this.warningCache = new Map();
+        this.warningRateLimit = 1000; // 1秒
+        
         // 高速アクセス用キャッシュシステム
         this.cache = getCacheSystem({
             maxSize: 500,
@@ -67,6 +71,83 @@ class ConfigurationManager {
         this.configurations.set('audio', new Map());
         this.configurations.set('effects', new Map());
         this.configurations.set('performance', new Map());
+        this.configurations.set('ui', new Map());
+        this.configurations.set('accessibility', new Map());
+        this.configurations.set('controls', new Map());
+        
+        // 基本パフォーマンス設定のデフォルト値を設定
+        this.setDefaultValue('performance', 'targetFPS', 60);
+        this.setDefaultValue('performance', 'adaptiveMode', true);
+        this.setDefaultValue('performance', 'performanceLevel', 'high');
+        this.setDefaultValue('performance', 'maxBubbles', 20);
+        this.setDefaultValue('performance', 'maxParticles', 500);
+        
+        // パフォーマンス最適化設定のデフォルト値を設定
+        this.setDefaultValue('performance', 'optimization.targetFPS', 60);
+        this.setDefaultValue('performance', 'optimization.adaptiveMode', true);
+        this.setDefaultValue('performance', 'optimization.optimizationInterval', 1000);
+        this.setDefaultValue('performance', 'optimization.maxHistorySize', 30);
+        this.setDefaultValue('performance', 'optimization.performanceLevel', 'high');
+        this.setDefaultValue('performance', 'optimization.maxBubbles', 20);
+        this.setDefaultValue('performance', 'optimization.maxParticles', 500);
+        this.setDefaultValue('performance', 'optimization.workloadDistribution', true);
+        this.setDefaultValue('performance', 'optimization.maxTimePerFrame', 8);
+        
+        // エフェクト設定のデフォルト値を設定
+        this.setDefaultValue('effects', 'quality.level', 'high');
+        this.setDefaultValue('effects', 'quality.autoAdjust', true);
+        this.setDefaultValue('effects', 'seasonal.enabled', true);
+        this.setDefaultValue('effects', 'seasonal.autoDetection', true);
+        this.setDefaultValue('effects', 'seasonal.currentSeason', 'spring');
+        this.setDefaultValue('effects', 'audio.enabled', true);
+        this.setDefaultValue('effects', 'audio.volumeSync', true);
+        this.setDefaultValue('effects', 'particles.maxCount', 500);
+        this.setDefaultValue('effects', 'particles.quality', 'high');
+        
+        // オーディオ設定のデフォルト値を設定
+        this.setDefaultValue('audio', 'volumes.master', 0.8);
+        this.setDefaultValue('audio', 'volumes.effects', 0.7);
+        this.setDefaultValue('audio', 'volumes.music', 0.6);
+        this.setDefaultValue('audio', 'enabled', true);
+        
+        // テスト互換性のため、SettingsManagerで使用される設定キーも設定
+        this.setDefaultValue('audio', 'masterVolume', 0.7);
+        this.setDefaultValue('audio', 'sfxVolume', 0.8);
+        this.setDefaultValue('audio', 'bgmVolume', 0.5);
+        
+        // UI設定のデフォルト値を設定
+        this.setDefaultValue('ui', 'language', 'en');
+        this.setDefaultValue('ui', 'quality', 'auto');
+        this.setDefaultValue('ui', 'theme', 'default');
+        this.setDefaultValue('ui', 'reducedMotion', false);
+        this.setDefaultValue('ui', 'highContrast', false);
+        this.setDefaultValue('ui', 'showFPS', false);
+        this.setDefaultValue('ui', 'showDebugInfo', false);
+        this.setDefaultValue('ui', 'animationSpeed', 1.0);
+        this.setDefaultValue('ui', 'uiScale', 1.0);
+        
+        // アクセシビリティ設定のデフォルト値を設定
+        this.setDefaultValue('accessibility', 'highContrast', false);
+        this.setDefaultValue('accessibility', 'reducedMotion', false);
+        this.setDefaultValue('accessibility', 'largeText', false);
+        this.setDefaultValue('accessibility', 'screenReader', false);
+        this.setDefaultValue('accessibility', 'colorBlindSupport', false);
+        
+        // 操作設定のデフォルト値を設定
+        this.setDefaultValue('controls', 'keyboardEnabled', true);
+        this.setDefaultValue('controls', 'mouseEnabled', true);
+        this.setDefaultValue('controls', 'touchEnabled', true);
+        
+        // ゲーム設定のデフォルト値を設定
+        this.setDefaultValue('game', 'scoring.baseScores', {});
+        this.setDefaultValue('game', 'bubbles.maxAge', 30000);
+        this.setDefaultValue('game', 'difficulty', 'normal');
+        
+        // ゲームバブル詳細設定のデフォルト値を設定
+        this._setupBubbleDefaults();
+        
+        // 検証ルールを設定
+        this._setupValidationRules();
         
         // 非同期でキャッシュウォームアップを実行
         setTimeout(() => {
@@ -88,6 +169,16 @@ class ConfigurationManager {
      */
     get(category, key, defaultValue = null) {
         try {
+            // 引数の検証：undefinedキーを防ぐ
+            if (!category || category === 'undefined' || typeof category !== 'string') {
+                this._logWarning(`無効なカテゴリ: ${category}`);
+                return defaultValue;
+            }
+            if (key === undefined || key === 'undefined' || typeof key !== 'string') {
+                this._logWarning(`無効なキー: ${key} (カテゴリ: ${category})`);
+                return defaultValue;
+            }
+            
             const fullKey = `${category}.${key}`;
             
             // アクセス統計を更新
@@ -144,6 +235,14 @@ class ConfigurationManager {
      * @private
      */
     _getDirectValue(category, key, defaultValue = null) {
+        // まずデフォルト値を確認（バブル設定などで使用）
+        const defaultKey = `${category}.${key}`;
+        if (this.defaultValues.has(defaultKey)) {
+            const value = this.defaultValues.get(defaultKey);
+            this._logDebug(`デフォルト値を使用: ${category}.${key} = ${value}`);
+            return value;
+        }
+        
         // カテゴリの存在確認
         if (!this.configurations.has(category)) {
             this._logWarning(`カテゴリが存在しません: ${category}`);
@@ -152,23 +251,21 @@ class ConfigurationManager {
         
         const categoryConfig = this.configurations.get(category);
         
-        // キーの存在確認
-        if (!categoryConfig.has(key)) {
-            // デフォルト値を確認
-            const defaultKey = `${category}.${key}`;
-            if (this.defaultValues.has(defaultKey)) {
-                const value = this.defaultValues.get(defaultKey);
-                this._logDebug(`デフォルト値を使用: ${category}.${key} = ${value}`);
-                return value;
-            }
-            
-            this._logWarning(`設定キーが存在しません: ${category}.${key}`);
-            return defaultValue;
+        // 設定されたカスタム値を確認
+        if (categoryConfig.has(key)) {
+            const value = categoryConfig.get(key);
+            this._logDebug(`設定値取得: ${category}.${key} = ${value}`);
+            return value;
         }
         
-        const value = categoryConfig.get(key);
-        this._logDebug(`設定値取得: ${category}.${key} = ${value}`);
-        return value;
+        // どちらにも存在しない場合は警告
+        if (category === 'game' && key.startsWith('bubbles.')) {
+            const bubbleType = key.split('.')[1];
+            this._logWarning(`バブル設定が見つかりません: ${category}.${key} (バブル種類: ${bubbleType})`);
+        } else {
+            this._logWarning(`設定キーが存在しません: ${category}.${key}`);
+        }
+        return defaultValue;
     }
     
     /**
@@ -267,6 +364,14 @@ class ConfigurationManager {
                 }
                 if (rule.max !== undefined && value > rule.max) {
                     this._logWarning(`値が最大値を上回る: ${ruleKey} - 最大値: ${rule.max}, 実際: ${value}`);
+                    return false;
+                }
+            }
+            
+            // 選択肢制限チェック（文字列の場合）
+            if (rule.allowedValues && Array.isArray(rule.allowedValues)) {
+                if (!rule.allowedValues.includes(value)) {
+                    this._logWarning(`許可されていない値: ${ruleKey} - 許可値: [${rule.allowedValues.join(', ')}], 実際: ${value}`);
                     return false;
                 }
             }
@@ -530,11 +635,31 @@ class ConfigurationManager {
     }
     
     /**
-     * 警告ログ出力
+     * 警告ログ出力（レート制限付き）
      * @private
      */
     _logWarning(message) {
-        console.warn(`[ConfigurationManager] ${message}`);
+        // 毎フレームの大量ログを防ぐため、同じメッセージの警告は制限
+        const now = Date.now();
+        const lastWarningTime = this.warningCache.get(message);
+        
+        if (!lastWarningTime || (now - lastWarningTime) >= this.warningRateLimit) {
+            console.warn(`[ConfigurationManager] ${message}`);
+            this.warningCache.set(message, now);
+            
+            // キャッシュサイズ制限（メモリリーク防止）
+            if (this.warningCache.size > 100) {
+                // 古い警告記録を削除
+                const sortedEntries = Array.from(this.warningCache.entries())
+                    .sort((a, b) => b[1] - a[1]) // 時刻で降順ソート
+                    .slice(0, 50); // 最新50件のみ保持
+                
+                this.warningCache.clear();
+                sortedEntries.forEach(([msg, time]) => {
+                    this.warningCache.set(msg, time);
+                });
+            }
+        }
     }
     
     /**
@@ -729,6 +854,299 @@ class ConfigurationManager {
         this._logDebug(`キャッシュクリア: ${clearedCount}エントリを削除`);
         return clearedCount;
     }
+    
+    /**
+     * バブルのデフォルト値を設定
+     * @private
+     */
+    _setupBubbleDefaults() {
+        // Bubble.jsの_getHardcodedConfig()と同じ設定値を使用
+        const bubbleConfigs = {
+            normal: {
+                health: 1,
+                size: 50,
+                maxAge: 12000,
+                color: '#87CEEB',
+                score: 15
+            },
+            stone: {
+                health: 2,
+                size: 55,
+                maxAge: 16000,
+                color: '#696969',
+                score: 25
+            },
+            iron: {
+                health: 3,
+                size: 60,
+                maxAge: 20000,
+                color: '#708090',
+                score: 40
+            },
+            diamond: {
+                health: 4,
+                size: 65,
+                maxAge: 22000,
+                color: '#B0E0E6',
+                score: 60
+            },
+            pink: {
+                health: 1,
+                size: 45,
+                maxAge: 10000,
+                color: '#FFB6C1',
+                score: 20,
+                healAmount: 25
+            },
+            poison: {
+                health: 1,
+                size: 48,
+                maxAge: 14000,
+                color: '#9370DB',
+                score: 30,
+                damageAmount: 8
+            },
+            spiky: {
+                health: 1,
+                size: 52,
+                maxAge: 13000,
+                color: '#FF6347',
+                score: 35,
+                chainRadius: 120
+            },
+            rainbow: {
+                health: 1,
+                size: 55,
+                maxAge: 16000,
+                color: '#FF69B4',
+                score: 400,
+                bonusTimeMs: 8000
+            },
+            clock: {
+                health: 1,
+                size: 50,
+                maxAge: 20000,
+                color: '#FFD700',
+                score: 180,
+                timeStopMs: 2500
+            },
+            score: {
+                health: 1,
+                size: 48,
+                maxAge: 9000,
+                color: '#32CD32',
+                score: 250,
+                bonusScore: 80
+            },
+            electric: {
+                health: 1,
+                size: 50,
+                maxAge: 13000,
+                color: '#FFFF00',
+                score: 20,
+                shakeIntensity: 15,
+                disableDuration: 1500
+            },
+            escaping: {
+                health: 1,
+                size: 45,
+                maxAge: 16000,
+                color: '#FF8C00',
+                score: 50,
+                escapeSpeed: 180,
+                escapeRadius: 90
+            },
+            cracked: {
+                health: 1,
+                size: 52,
+                maxAge: 6000,
+                color: '#8B4513',
+                score: 30
+            },
+            boss: {
+                health: 8,
+                size: 90,
+                maxAge: 35000,
+                color: '#8B0000',
+                score: 100
+            },
+            golden: {
+                health: 1,
+                size: 55,
+                maxAge: 8000,
+                color: '#FFD700',
+                score: 500,
+                multiplier: 2.0
+            },
+            frozen: {
+                health: 2,
+                size: 50,
+                maxAge: 25000,
+                color: '#87CEEB',
+                score: 100,
+                slowEffect: 0.5
+            },
+            magnetic: {
+                health: 1,
+                size: 48,
+                maxAge: 15000,
+                color: '#FF1493',
+                score: 150,
+                magnetRadius: 100
+            },
+            explosive: {
+                health: 1,
+                size: 52,
+                maxAge: 10000,
+                color: '#FF4500',
+                score: 200,
+                explosionRadius: 150
+            },
+            phantom: {
+                health: 1,
+                size: 45,
+                maxAge: 12000,
+                color: '#9370DB',
+                score: 300,
+                phaseChance: 0.3
+            },
+            multiplier: {
+                health: 1,
+                size: 50,
+                maxAge: 18000,
+                color: '#32CD32',
+                score: 100,
+                scoreMultiplier: 3.0
+            }
+        };
+
+        // 全バブル種類のデフォルト値を設定
+        for (const [bubbleType, config] of Object.entries(bubbleConfigs)) {
+            for (const [property, value] of Object.entries(config)) {
+                this.setDefaultValue('game', `bubbles.${bubbleType}.${property}`, value);
+            }
+        }
+        
+        this._logDebug(`バブルデフォルト値設定完了: ${Object.keys(bubbleConfigs).length}種類`);
+    }
+
+    /**
+     * 検証ルールを追加
+     * @param {string} category - 設定カテゴリ
+     * @param {string} key - 設定キー
+     * @param {Object} rule - 検証ルール
+     */
+    addValidationRule(category, key, rule) {
+        try {
+            const ruleKey = `${category}.${key}`;
+            this.validationRules.set(ruleKey, rule);
+            this._logDebug(`検証ルール追加: ${ruleKey}`);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'CONFIGURATION_ERROR', {
+                context: 'ConfigurationManager.addValidationRule',
+                category,
+                key,
+                rule
+            });
+        }
+    }
+    
+    /**
+     * 検証ルールを設定
+     * @private
+     */
+    _setupValidationRules() {
+        // boolean型の設定項目
+        this.addValidationRule('effects', 'quality.autoAdjust', { type: 'boolean' });
+        this.addValidationRule('effects', 'seasonal.enabled', { type: 'boolean' });
+        this.addValidationRule('effects', 'seasonal.autoDetection', { type: 'boolean' });
+        this.addValidationRule('effects', 'audio.enabled', { type: 'boolean' });
+        this.addValidationRule('effects', 'audio.volumeSync', { type: 'boolean' });
+        this.addValidationRule('performance', 'adaptiveMode', { type: 'boolean' });
+        this.addValidationRule('performance', 'optimization.adaptiveMode', { type: 'boolean' });
+        this.addValidationRule('performance', 'optimization.workloadDistribution', { type: 'boolean' });
+        this.addValidationRule('audio', 'enabled', { type: 'boolean' });
+        
+        // number型の設定項目（範囲チェック付き）
+        this.addValidationRule('performance', 'targetFPS', { type: 'number', min: 15, max: 144 });
+        this.addValidationRule('performance', 'optimization.targetFPS', { type: 'number', min: 15, max: 144 });
+        this.addValidationRule('performance', 'optimization.optimizationInterval', { type: 'number', min: 100, max: 10000 });
+        this.addValidationRule('performance', 'optimization.maxHistorySize', { type: 'number', min: 10, max: 1000 });
+        this.addValidationRule('performance', 'optimization.maxBubbles', { type: 'number', min: 1, max: 100 });
+        this.addValidationRule('performance', 'optimization.maxParticles', { type: 'number', min: 10, max: 10000 });
+        this.addValidationRule('performance', 'optimization.maxTimePerFrame', { type: 'number', min: 1, max: 50 });
+        this.addValidationRule('effects', 'particles.maxCount', { type: 'number', min: 10, max: 10000 });
+        this.addValidationRule('audio', 'volumes.master', { type: 'number', min: 0, max: 1 });
+        this.addValidationRule('audio', 'volumes.effects', { type: 'number', min: 0, max: 1 });
+        this.addValidationRule('audio', 'volumes.music', { type: 'number', min: 0, max: 1 });
+        this.addValidationRule('game', 'bubbles.maxAge', { type: 'number', min: 1000, max: 300000 });
+        
+        // string型の設定項目（選択肢制限付き）
+        this.addValidationRule('effects', 'quality.level', { 
+            type: 'string', 
+            allowedValues: ['low', 'medium', 'high', 'ultra'] 
+        });
+        this.addValidationRule('effects', 'seasonal.currentSeason', { 
+            type: 'string', 
+            allowedValues: ['spring', 'summer', 'autumn', 'winter'] 
+        });
+        this.addValidationRule('effects', 'particles.quality', { 
+            type: 'string', 
+            allowedValues: ['low', 'medium', 'high'] 
+        });
+        this.addValidationRule('performance', 'performanceLevel', { 
+            type: 'string', 
+            allowedValues: ['low', 'medium', 'high'] 
+        });
+        this.addValidationRule('performance', 'optimization.performanceLevel', { 
+            type: 'string', 
+            allowedValues: ['low', 'medium', 'high'] 
+        });
+        this.addValidationRule('game', 'difficulty', { 
+            type: 'string', 
+            allowedValues: ['easy', 'normal', 'hard'] 
+        });
+        
+        // SettingsManager互換性のためのオーディオ設定検証ルール
+        this.addValidationRule('audio', 'masterVolume', { type: 'number', min: 0, max: 1 });
+        this.addValidationRule('audio', 'sfxVolume', { type: 'number', min: 0, max: 1 });
+        this.addValidationRule('audio', 'bgmVolume', { type: 'number', min: 0, max: 1 });
+        
+        // UI設定の検証ルール
+        this.addValidationRule('ui', 'language', { 
+            type: 'string', 
+            allowedValues: ['en', 'ja', 'es', 'fr', 'de', 'zh', 'ko'] 
+        });
+        this.addValidationRule('ui', 'quality', { 
+            type: 'string', 
+            allowedValues: ['low', 'medium', 'high', 'auto'] 
+        });
+        this.addValidationRule('ui', 'theme', { 
+            type: 'string', 
+            allowedValues: ['default', 'dark', 'light', 'high-contrast'] 
+        });
+        this.addValidationRule('ui', 'reducedMotion', { type: 'boolean' });
+        this.addValidationRule('ui', 'highContrast', { type: 'boolean' });
+        this.addValidationRule('ui', 'showFPS', { type: 'boolean' });
+        this.addValidationRule('ui', 'showDebugInfo', { type: 'boolean' });
+        this.addValidationRule('ui', 'animationSpeed', { type: 'number', min: 0.1, max: 3.0 });
+        this.addValidationRule('ui', 'uiScale', { type: 'number', min: 0.5, max: 2.0 });
+        
+        // アクセシビリティ設定の検証ルール
+        this.addValidationRule('accessibility', 'highContrast', { type: 'boolean' });
+        this.addValidationRule('accessibility', 'reducedMotion', { type: 'boolean' });
+        this.addValidationRule('accessibility', 'largeText', { type: 'boolean' });
+        this.addValidationRule('accessibility', 'screenReader', { type: 'boolean' });
+        this.addValidationRule('accessibility', 'colorBlindSupport', { type: 'boolean' });
+        
+        // 操作設定の検証ルール
+        this.addValidationRule('controls', 'keyboardEnabled', { type: 'boolean' });
+        this.addValidationRule('controls', 'mouseEnabled', { type: 'boolean' });
+        this.addValidationRule('controls', 'touchEnabled', { type: 'boolean' });
+        
+        this._logDebug('検証ルール設定完了');
+    }
+    
 }
 
 // シングルトンインスタンス

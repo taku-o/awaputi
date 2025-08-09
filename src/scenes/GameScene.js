@@ -66,6 +66,12 @@ export class GameScene extends Scene {
      * 更新処理
      */
     update(deltaTime) {
+        // Debug logs throttled to prevent console flooding - only log occasionally
+        if (!this.lastUpdateDebugTime || performance.now() - this.lastUpdateDebugTime > 5000) {
+            console.log(`[DEBUG] GameScene.update working - paused: ${this.isPaused}, gameOver: ${this.gameEngine.isGameOver}`);
+            this.lastUpdateDebugTime = performance.now();
+        }
+        
         // パフォーマンス測定
         this.performanceMonitor.updatePerformanceMetrics(deltaTime);
         
@@ -85,7 +91,15 @@ export class GameScene extends Scene {
         this.uiManager.updateUIState(deltaTime);
         
         // 泡の更新
-        this.gameEngine.bubbleManager.update(deltaTime);
+        if (this.gameEngine.bubbleManager && typeof this.gameEngine.bubbleManager.update === 'function') {
+            this.gameEngine.bubbleManager.update(deltaTime);
+        } else {
+            // Only log this error occasionally
+            if (!this.lastBubbleErrorTime || performance.now() - this.lastBubbleErrorTime > 5000) {
+                console.error(`[DEBUG] bubbleManager.update is not available: manager=${!!this.gameEngine.bubbleManager}`);
+                this.lastBubbleErrorTime = performance.now();
+            }
+        }
         
         // ドラッグビジュアライゼーションの更新
         this.visualizationManager.updateDragVisualization(deltaTime);
@@ -224,6 +238,53 @@ export class GameScene extends Scene {
      */
     endDrag() {
         this.visualizationManager.endDrag();
+    }
+    
+    /**
+     * ドラッグパーティクルを生成
+     * @param {number} x - X座標
+     * @param {number} y - Y座標  
+     * @param {number} intensity - パーティクルの強度（数）
+     */
+    createDragParticles(x, y, intensity = 10) {
+        try {
+            console.log(`[DEBUG] createDragParticles called: x=${x}, y=${y}, intensity=${intensity}`);
+            
+            // 基本パーティクルマネージャーでクリックエフェクトを作成
+            if (this.gameEngine.particleManager && typeof this.gameEngine.particleManager.createComboEffect === 'function') {
+                console.log('[DEBUG] Using particleManager.createComboEffect');
+                this.gameEngine.particleManager.createComboEffect(x, y, 1); // コンボ1としてエフェクト生成
+            } else {
+                console.warn('[DEBUG] particleManager.createComboEffect not available');
+            }
+            
+            // 拡張パーティクルマネージャーでパーティクルを個別生成
+            if (this.gameEngine.enhancedParticleManager && typeof this.gameEngine.enhancedParticleManager.createParticle === 'function') {
+                console.log('[DEBUG] Using enhancedParticleManager.createParticle');
+                
+                // 複数のパーティクルを放射状に生成
+                for (let i = 0; i < Math.min(intensity, 15); i++) {
+                    const angle = (i / intensity) * Math.PI * 2;
+                    const speed = 50 + Math.random() * 30;
+                    const vx = Math.cos(angle) * speed;
+                    const vy = Math.sin(angle) * speed;
+                    
+                    this.gameEngine.enhancedParticleManager.createParticle(x, y, vx, vy, {
+                        color: '#FFD700',
+                        size: 3 + Math.random() * 2,
+                        lifetime: 500 + Math.random() * 300,
+                        fadeOut: true
+                    });
+                }
+            } else {
+                console.warn('[DEBUG] enhancedParticleManager.createParticle not available');
+            }
+            
+            console.log('[DEBUG] createDragParticles completed');
+            
+        } catch (error) {
+            console.error('[GameScene] Error creating drag particles:', error);
+        }
     }
     
     /**

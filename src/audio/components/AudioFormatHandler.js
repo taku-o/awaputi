@@ -31,6 +31,7 @@ export class AudioFormatHandler {
             adjustmentInProgress: false,
             monitoringEnabled: false,
             adjustmentTimer: null,
+            settingFromWatcher: false, // 循環参照防止フラグ
             qualityLevels: {
                 low: 0.25,
                 medium: 0.6,
@@ -135,9 +136,18 @@ export class AudioFormatHandler {
      */
     setupQualityWatchers() {
         try {
+            // watcherの設定時フラグを追加して循環参照を防止
+            this.qualityManager.settingFromWatcher = false;
+            
             const audioQualityWatcher = this.configManager.watch('performance', 'quality.audioQuality', (newValue) => {
-                if (newValue !== undefined) {
-                    this.setAudioQuality(newValue);
+                if (newValue !== undefined && !this.qualityManager.settingFromWatcher) {
+                    // 現在値と異なる場合のみ処理
+                    if (Math.abs(this.qualityManager.currentQuality - newValue) >= 0.01) {
+                        this.qualityManager.settingFromWatcher = true;
+                        this.setAudioQuality(newValue).finally(() => {
+                            this.qualityManager.settingFromWatcher = false;
+                        });
+                    }
                 }
             });
             
@@ -634,6 +644,11 @@ export class AudioFormatHandler {
                 throw new Error(`Audio quality must be between 0 and 1, got: ${quality}`);
             }
             
+            // 同じ値の場合は処理をスキップ（無限ループ防止）
+            if (Math.abs(this.qualityManager.currentQuality - quality) < 0.01) {
+                return;
+            }
+            
             await this.adjustAudioQuality(quality);
             
             this.loggingSystem.info('AudioFormatHandler', `Audio quality set to: ${quality}`);
@@ -779,8 +794,9 @@ export class AudioFormatHandler {
                 }
             }
             
-            // 品質変更が必要かチェック
-            if (Math.abs(targetQuality - this.qualityManager.currentQuality) > 0.1) {
+            // 品質変更が必要かチェック（調整中でない場合のみ）
+            if (Math.abs(targetQuality - this.qualityManager.currentQuality) > 0.1 && 
+                !this.qualityManager.adjustmentInProgress) {
                 this.adjustAudioQuality(targetQuality);
             }
         } catch (error) {
@@ -819,9 +835,18 @@ export class AudioFormatHandler {
                 }
             }
             
-            // 最終的な品質を設定に保存
-            this.configManager.set('performance', 'quality.audioQuality', targetQuality);
+            // 最終的な品質を設定に保存（循環参照を避けるため先に値を更新）
             this.qualityManager.currentQuality = targetQuality;
+            
+            // watcherによる循環参照を防ぐためフラグを設定
+            const wasSettingFromWatcher = this.qualityManager.settingFromWatcher;
+            this.qualityManager.settingFromWatcher = true;
+            
+            try {
+                this.configManager.set('performance', 'quality.audioQuality', targetQuality);
+            } finally {
+                this.qualityManager.settingFromWatcher = wasSettingFromWatcher;
+            }
             
             this.loggingSystem.info('AudioFormatHandler', `Audio quality adjustment completed: ${targetQuality.toFixed(2)}`);
         } catch (error) {

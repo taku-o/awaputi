@@ -213,7 +213,7 @@ export class HelpScene extends Scene {
                 // 詳細フィードバックダイアログ
                 feedbackSystem.showFeedbackDialog(data.topic.id, data.content, {
                     category: data.category,
-                    topicTitle: data.topic.title
+                    topicTitle: data.topic && data.topic.title ? data.topic.title : 'Unknown Topic'
                 });
             }
             

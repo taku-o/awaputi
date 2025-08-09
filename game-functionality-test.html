@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ゲーム動作確認テスト - Issue #113</title>
+    <style>
+        body { 
+            font-family: monospace; 
+            margin: 20px; 
+            background: #f0f0f0; 
+        }
+        .log { 
+            background: white; 
+            padding: 10px; 
+            margin: 5px 0; 
+            border-left: 4px solid #007acc; 
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .success { border-color: #28a745; color: #28a745; }
+        .warning { border-color: #ffc107; color: #856404; }
+        .error { border-color: #dc3545; color: #dc3545; }
+        .info { border-color: #17a2b8; color: #0c5460; }
+        .test-section {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-pass { background-color: #28a745; }
+        .status-warning { background-color: #ffc107; }
+        .status-fail { background-color: #dc3545; }
+        .status-running { background-color: #17a2b8; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0.5; } }
+        iframe {
+            width: 100%;
+            height: 400px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎮 Issue #113 ゲーム動作確認テスト</h1>
+    <p><strong>目標</strong>: ゲームが実際にプレイ可能な状態まで動作することを確認</p>
+
+    <div class="test-section">
+        <h3>📋 ゲーム動作チェックリスト</h3>
+        <div id="checklist">
+            <div id="game-load"><span class="status-indicator status-running"></span>ゲーム画面読み込み</div>
+            <div id="canvas-render"><span class="status-indicator status-running"></span>Canvas描画確認</div>
+            <div id="bubble-spawn"><span class="status-indicator status-running"></span>バブル生成確認</div>
+            <div id="user-interaction"><span class="status-indicator status-running"></span>ユーザー操作応答</div>
+            <div id="game-mechanics"><span class="status-indicator status-running"></span>ゲームメカニクス動作</div>
+            <div id="performance-stable"><span class="status-indicator status-running"></span>パフォーマンス安定性</div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h3>🎯 ゲーム画面（動作確認用）</h3>
+        <iframe id="gameFrame" src="./index.html" onload="startGameFunctionalityTest()"></iframe>
+    </div>
+
+    <div id="log-container"></div>
+
+    <script>
+        let testStartTime = Date.now();
+        let gameFrame = null;
+        let testInterval = null;
+        let testResults = {
+            gameLoad: false,
+            canvasRender: false,
+            bubbleSpawn: false,
+            userInteraction: false,
+            gameMechanics: false,
+            performanceStable: false
+        };
+
+        function log(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `log ${type}`;
+            div.innerHTML = `<strong>[${new Date().toLocaleTimeString()}]</strong> ${message}`;
+            document.getElementById('log-container').appendChild(div);
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+
+        function updateStatus(id, status, message = '') {
+            const element = document.getElementById(id);
+            if (element) {
+                const indicator = element.querySelector('.status-indicator');
+                const text = element.childNodes[1] ? element.childNodes[1].textContent : id;
+                
+                indicator.className = `status-indicator status-${status}`;
+                element.innerHTML = `<span class="status-indicator status-${status}"></span>${text}${message ? ': ' + message : ''}`;
+                
+                testResults[id.replace('-', '')] = (status === 'pass');
+            }
+        }
+
+        function startGameFunctionalityTest() {
+            log('🚀 ゲーム動作確認テスト開始', 'info');
+            gameFrame = document.getElementById('gameFrame');
+            
+            // 定期的にゲーム状態をチェック
+            testInterval = setInterval(checkGameFunctionality, 2000);
+            
+            // 30秒後にタイムアウト
+            setTimeout(() => {
+                if (testInterval) {
+                    clearInterval(testInterval);
+                    generateFinalReport();
+                }
+            }, 30000);
+        }
+
+        function checkGameFunctionality() {
+            try {
+                const frameWindow = gameFrame.contentWindow;
+                const frameDocument = gameFrame.contentDocument;
+                
+                if (!frameDocument || !frameWindow) {
+                    log('⚠️ iframe アクセス制限（Same-Origin Policy）', 'warning');
+                    return;
+                }
+
+                // 1. ゲーム画面読み込み確認
+                if (!testResults.gameload) {
+                    const canvas = frameDocument.getElementById('gameCanvas');
+                    if (canvas) {
+                        log('✅ ゲームCanvas要素検出', 'success');
+                        updateStatus('game-load', 'pass', 'Canvas要素正常');
+                    }
+                }
+
+                // 2. Canvas描画確認
+                if (!testResults.canvasrender && frameDocument.getElementById('gameCanvas')) {
+                    const canvas = frameDocument.getElementById('gameCanvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Canvas にデータが描画されているかチェック
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const hasDrawing = Array.from(imageData.data).some((pixel, index) => 
+                        index % 4 !== 3 && pixel !== 0  // アルファ値以外で0以外の値があるか
+                    );
+                    
+                    if (hasDrawing) {
+                        log('✅ Canvas描画データ検出', 'success');
+                        updateStatus('canvas-render', 'pass', '描画確認');
+                    } else if (Date.now() - testStartTime > 10000) {
+                        log('⚠️ Canvas描画データなし（10秒経過）', 'warning');
+                        updateStatus('canvas-render', 'warning', '描画データなし');
+                    }
+                }
+
+                // 3. バブル生成確認（GameEngineアクセス試行）
+                if (!testResults.bubblespawn && frameWindow.gameEngine) {
+                    const gameEngine = frameWindow.gameEngine;
+                    if (gameEngine.bubbleManager && gameEngine.bubbleManager.bubbles) {
+                        const bubbleCount = gameEngine.bubbleManager.bubbles.length;
+                        if (bubbleCount > 0) {
+                            log(`✅ バブル生成確認: ${bubbleCount}個`, 'success');
+                            updateStatus('bubble-spawn', 'pass', `${bubbleCount}個生成`);
+                        } else if (Date.now() - testStartTime > 8000) {
+                            log('⚠️ バブル未生成（8秒経過）', 'warning');
+                            updateStatus('bubble-spawn', 'warning', 'バブル未生成');
+                        }
+                    }
+                }
+
+                // 4. ユーザー操作応答確認
+                if (!testResults.userinteraction && frameWindow.gameEngine) {
+                    // クリックイベントをシミュレート
+                    const canvas = frameDocument.getElementById('gameCanvas');
+                    if (canvas) {
+                        const rect = canvas.getBoundingClientRect();
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        
+                        const clickEvent = new MouseEvent('click', {
+                            clientX: centerX,
+                            clientY: centerY,
+                            bubbles: true
+                        });
+                        
+                        canvas.dispatchEvent(clickEvent);
+                        
+                        // クリック後の状態変化を確認
+                        setTimeout(() => {
+                            if (frameWindow.gameEngine && frameWindow.gameEngine.inputManager) {
+                                log('✅ ユーザー操作システム応答', 'success');
+                                updateStatus('user-interaction', 'pass', 'クリック応答');
+                            }
+                        }, 1000);
+                    }
+                }
+
+                // 5. ゲームメカニクス動作確認
+                if (!testResults.gamemechanics && frameWindow.gameEngine) {
+                    const gameEngine = frameWindow.gameEngine;
+                    if (gameEngine.scoreManager && gameEngine.sceneManager) {
+                        const currentScene = gameEngine.sceneManager.currentScene;
+                        if (currentScene && currentScene.constructor.name === 'GameScene') {
+                            log('✅ ゲームシーン動作確認', 'success');
+                            updateStatus('game-mechanics', 'pass', 'GameScene動作中');
+                        }
+                    }
+                }
+
+                // 6. パフォーマンス安定性確認
+                if (!testResults.performancestable && frameWindow.gameEngine) {
+                    const gameEngine = frameWindow.gameEngine;
+                    if (gameEngine.performanceMonitor || gameEngine.performanceOptimizer) {
+                        const perfMonitor = gameEngine.performanceMonitor || gameEngine.performanceOptimizer;
+                        if (perfMonitor.stats && perfMonitor.stats.fps > 30) {
+                            log(`✅ パフォーマンス安定: ${Math.round(perfMonitor.stats.fps)}FPS`, 'success');
+                            updateStatus('performance-stable', 'pass', `${Math.round(perfMonitor.stats.fps)}FPS`);
+                        }
+                    }
+                }
+
+                // 全テスト完了チェック
+                const completedTests = Object.values(testResults).filter(Boolean).length;
+                if (completedTests === Object.keys(testResults).length) {
+                    clearInterval(testInterval);
+                    generateFinalReport();
+                }
+
+            } catch (error) {
+                log(`🔍 テスト実行エラー: ${error.message}`, 'warning');
+            }
+        }
+
+        function generateFinalReport() {
+            const completedTests = Object.values(testResults).filter(Boolean).length;
+            const totalTests = Object.keys(testResults).length;
+            const successRate = Math.round((completedTests / totalTests) * 100);
+            
+            log('', 'info');
+            log('📊 === 最終レポート ===', 'info');
+            log(`✅ 完了テスト: ${completedTests}/${totalTests} (${successRate}%)`, successRate >= 80 ? 'success' : 'warning');
+            
+            if (successRate >= 80) {
+                log('🎉 Issue #113 目標達成: ゲームは動作可能状態です！', 'success');
+                log('🎮 ゲームプレイ可能 - バブルをクリックしてプレイしてください', 'success');
+            } else if (successRate >= 50) {
+                log('⚠️ Issue #113 部分達成: ゲームは基本的に動作しますが改善の余地があります', 'warning');
+                log('🔧 追加修正が必要な項目があります', 'warning');
+            } else {
+                log('❌ Issue #113 未達成: ゲーム動作に重要な問題があります', 'error');
+                log('🛠️ さらなる修正が必要です', 'error');
+            }
+            
+            log(`⏱️ テスト実行時間: ${Math.round((Date.now() - testStartTime) / 1000)}秒`, 'info');
+        }
+
+        log('🎯 ゲーム機能テスト準備完了', 'info');
+        log('📱 iframeでゲーム読み込み中...', 'info');
+    </script>
+</body>
+</html>

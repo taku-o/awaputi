@@ -35,6 +35,16 @@ export class GameStateManager {
         // 特殊効果をリセット
         this.resetSpecialEffects();
         
+        // デフォルトステージを開始（バブル生成に必要）
+        if (this.gameEngine.stageManager) {
+            const stageStarted = this.gameEngine.stageManager.startStage('normal');
+            if (stageStarted) {
+                console.log('Default stage (normal) started for bubble spawning');
+            } else {
+                console.warn('Failed to start default stage - bubbles may not spawn');
+            }
+        }
+        
         // 状態管理の更新
         this.gameState.isGameStarted = true;
         this.gameState.gameStartTime = Date.now();

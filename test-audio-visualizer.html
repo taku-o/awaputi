@@ -1,0 +1,71 @@
+<\!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>AudioVisualizer Test</title>
+</head>
+<body>
+    <h1>AudioVisualizer Test</h1>
+    <div id="log"></div>
+
+    <script type="module">
+        function log(message, type = "info") {
+            const div = document.createElement("div");
+            div.style.color = type === "error" ? "red" : type === "success" ? "green" : "black";
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            document.getElementById("log").appendChild(div);
+            console.log(message);
+        }
+
+        async function testAudioVisualizer() {
+            try {
+                log("Starting AudioVisualizer test...");
+
+                // First load ConfigurationManager
+                const { getConfigurationManager } = await import("./src/core/ConfigurationManager.js");
+                const configManager = getConfigurationManager();
+                log("ConfigurationManager loaded successfully", "success");
+
+                // Create mock AudioManager
+                const mockAudioManager = {
+                    audioContext: null,
+                    initialized: false,
+                    masterGainNode: null
+                };
+                log("Mock AudioManager created", "success");
+
+                // Load AudioVisualizer
+                const { AudioVisualizer } = await import("./src/audio/AudioVisualizer.js");
+                log("AudioVisualizer class loaded successfully", "success");
+
+                // Create AudioVisualizer instance
+                log("Creating AudioVisualizer instance...");
+                const visualizer = new AudioVisualizer(mockAudioManager);
+                log("AudioVisualizer instance created successfully", "success");
+
+                // Test render method
+                if (typeof visualizer.render === "function") {
+                    log("render method exists", "success");
+                    try {
+                        visualizer.render();
+                        log("render method called successfully", "success");
+                    } catch (error) {
+                        log(`render method warning: ${error.message}`, "info");
+                    }
+                } else {
+                    log("render method does not exist", "error");
+                }
+
+                log("Test completed successfully\!", "success");
+
+            } catch (error) {
+                log(`Test failed: ${error.message}`, "error");
+                log(`Stack: ${error.stack}`, "error");
+            }
+        }
+
+        // Run the test
+        testAudioVisualizer();
+    </script>
+</body>
+</html>

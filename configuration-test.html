@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuration Manager テスト</title>
+</head>
+<body>
+    <h1>Configuration Manager テスト</h1>
+    <div id="test-results"></div>
+    <script type="module">
+        // ErrorHandlerを先にモックします
+        const mockErrorHandler = {
+            handleError: (error, type, context) => {
+                console.error('Mock ErrorHandler:', error, type, context);
+            }
+        };
+        
+        window.ErrorHandler = mockErrorHandler;
+        
+        // モック用のmodule systemを作成
+        if (!window.process) window.process = { env: {} };
+        
+        try {
+            const { getConfigurationManager } = await import('./src/core/ConfigurationManager.js');
+            
+            const config = getConfigurationManager();
+            const results = document.getElementById('test-results');
+        
+        // テスト結果を表示する関数
+        function addResult(test, result, expected = null) {
+            const div = document.createElement('div');
+            div.style.padding = '5px';
+            div.style.border = '1px solid #ccc';
+            div.style.margin = '5px 0';
+            
+            if (expected !== null) {
+                const passed = result === expected;
+                div.style.backgroundColor = passed ? '#d4edda' : '#f8d7da';
+                div.innerHTML = `<strong>${test}:</strong> ${result} ${passed ? '✓' : '✗ (期待値: ' + expected + ')'}`;
+            } else {
+                div.innerHTML = `<strong>${test}:</strong> ${result}`;
+            }
+            
+            results.appendChild(div);
+        }
+        
+        console.log('Configuration Manager テスト開始');
+        
+        // テスト開始
+        try {
+            // 1. 各バブル種類の設定値を確認
+            const bubbleTypes = ['normal', 'stone', 'iron', 'diamond', 'boss', 'pink', 'poison', 'spiky', 'rainbow', 'clock', 'score', 'electric'];
+            
+            addResult('テスト開始', '初期化完了');
+            
+            for (const type of bubbleTypes) {
+                const health = config.get('game', `bubbles.${type}.health`);
+                const score = config.get('game', `bubbles.${type}.score`);
+                const color = config.get('game', `bubbles.${type}.color`);
+                const size = config.get('game', `bubbles.${type}.size`);
+                const maxAge = config.get('game', `bubbles.${type}.maxAge`);
+                
+                addResult(`${type}バブル - Health`, health);
+                addResult(`${type}バブル - Score`, score);
+                addResult(`${type}バブル - Color`, color);
+                addResult(`${type}バブル - Size`, size);
+                addResult(`${type}バブル - MaxAge`, maxAge);
+            }
+            
+            // 2. パフォーマンス統計を確認
+            const perfStats = config.getPerformanceStats();
+            addResult('パフォーマンス統計', `総アクセス: ${perfStats.totalAccesses}, ヒット率: ${perfStats.hitRate}`);
+            
+            // 3. 存在しないキーのテスト（警告制限テスト）
+            console.log('存在しないキーのテスト開始（警告ログ制限テスト）');
+            for (let i = 0; i < 5; i++) {
+                const result = config.get('game', 'bubbles.nonexistent.health');
+                addResult(`存在しないキー テスト ${i + 1}`, result || 'null');
+            }
+            
+            addResult('テスト完了', '全て正常終了');
+            
+        } catch (error) {
+            console.error('テストエラー:', error);
+            addResult('エラー', error.message);
+        }
+        
+        } catch (error) {
+            console.error('Import error:', error);
+            const results = document.getElementById('test-results');
+            const div = document.createElement('div');
+            div.style.color = 'red';
+            div.innerHTML = `<strong>インポートエラー:</strong> ${error.message}`;
+            results.appendChild(div);
+        }
+    </script>
+</body>
+</html>
