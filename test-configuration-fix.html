@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConfigurationManager修正テスト - 簡易版</title>
+    <style>
+        body {
+            font-family: monospace;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1e1e1e;
+            color: #fff;
+        }
+        .container {
+            background: #2d2d2d;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        h1 { text-align: center; color: #4caf50; }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background: #4caf50;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover { background: #45a049; }
+        .log {
+            background: #000;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            min-height: 200px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        .success { color: #4caf50; }
+        .error { color: #f44336; }
+        .warning { color: #ff9800; }
+        .info { color: #2196f3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ConfigurationManager修正テスト</h1>
+        
+        <div>
+            <button onclick="quickTest()">簡易テスト実行</button>
+            <button onclick="detailTest()">詳細バブル設定テスト</button>
+            <button onclick="clearLog()">ログクリア</button>
+        </div>
+        
+        <div id="log" class="log">テスト準備完了 - ボタンをクリックしてテストを実行してください</div>
+    </div>
+
+    <script type="module">
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type;
+            logDiv.innerHTML += `<span class="${className}">[${timestamp}] ${message}</span>\n`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        async function quickTest() {
+            log('=== ConfigurationManager修正テスト開始 ===', 'info');
+            
+            try {
+                const configModule = await import('./src/core/ConfigurationManager.js');
+                const configManager = configModule.getConfigurationManager();
+                
+                log('✓ ConfigurationManager読み込み成功', 'success');
+                
+                // 基本的な設定をテスト
+                const targetFPS = configManager.get('performance', 'targetFPS');
+                log(`performance.targetFPS: ${targetFPS}`, targetFPS ? 'success' : 'error');
+                
+                // バブル設定をテスト（5種類）
+                const bubbleTypes = ['normal', 'stone', 'iron', 'diamond', 'boss'];
+                const properties = ['health', 'score', 'color', 'size', 'maxAge'];
+                
+                let successCount = 0;
+                let totalTests = bubbleTypes.length * properties.length;
+                
+                for (const bubbleType of bubbleTypes) {
+                    for (const prop of properties) {
+                        const value = configManager.get('game', `bubbles.${bubbleType}.${prop}`);
+                        if (value !== null && value !== undefined) {
+                            successCount++;
+                            log(`✓ bubbles.${bubbleType}.${prop}: ${value}`, 'success');
+                        } else {
+                            log(`✗ bubbles.${bubbleType}.${prop}: null/undefined`, 'error');
+                        }
+                    }
+                }
+                
+                const successRate = Math.round((successCount / totalTests) * 100);
+                
+                if (successRate === 100) {
+                    log(`🎉 修正成功！全設定取得可能: ${successCount}/${totalTests} (${successRate}%)`, 'success');
+                } else if (successRate >= 90) {
+                    log(`✅ 修正ほぼ成功: ${successCount}/${totalTests} (${successRate}%)`, 'success');
+                } else {
+                    log(`⚠️ 修正部分成功: ${successCount}/${totalTests} (${successRate}%)`, 'warning');
+                }
+                
+            } catch (error) {
+                log(`❌ テストエラー: ${error.message}`, 'error');
+                console.error(error);
+            }
+        }
+
+        async function detailTest() {
+            log('=== 詳細バブル設定テスト開始 ===', 'info');
+            
+            try {
+                const configModule = await import('./src/core/ConfigurationManager.js');
+                const configManager = configModule.getConfigurationManager();
+                
+                // 全20種類のバブル
+                const allBubbleTypes = [
+                    'normal', 'stone', 'iron', 'diamond', 'boss',
+                    'pink', 'poison', 'spiky', 'rainbow', 'clock', 
+                    'score', 'electric', 'escaping', 'cracked',
+                    'golden', 'frozen', 'magnetic', 'explosive',
+                    'phantom', 'multiplier'
+                ];
+                
+                const properties = ['health', 'score', 'color', 'size', 'maxAge'];
+                
+                let totalSuccess = 0;
+                let totalTests = allBubbleTypes.length * properties.length;
+                
+                log(`全${allBubbleTypes.length}種類のバブル設定をテスト中...`, 'info');
+                
+                for (const bubbleType of allBubbleTypes) {
+                    let bubbleSuccess = 0;
+                    log(`--- ${bubbleType}バブル ---`, 'info');
+                    
+                    for (const prop of properties) {
+                        const value = configManager.get('game', `bubbles.${bubbleType}.${prop}`);
+                        if (value !== null && value !== undefined) {
+                            totalSuccess++;
+                            bubbleSuccess++;
+                            log(`  ✓ ${prop}: ${value}`, 'success');
+                        } else {
+                            log(`  ✗ ${prop}: null/undefined`, 'error');
+                        }
+                    }
+                    
+                    const bubbleRate = Math.round((bubbleSuccess / properties.length) * 100);
+                    if (bubbleSuccess === properties.length) {
+                        log(`${bubbleType}: 完全成功 (${bubbleSuccess}/${properties.length})`, 'success');
+                    } else if (bubbleSuccess > 0) {
+                        log(`${bubbleType}: 部分成功 (${bubbleSuccess}/${properties.length})`, 'warning');
+                    } else {
+                        log(`${bubbleType}: 失敗 (${bubbleSuccess}/${properties.length})`, 'error');
+                    }
+                }
+                
+                const finalRate = Math.round((totalSuccess / totalTests) * 100);
+                log('', 'info'); // 空行
+                log(`=== 最終結果 ===`, 'info');
+                log(`成功: ${totalSuccess}/${totalTests} (${finalRate}%)`, finalRate === 100 ? 'success' : finalRate >= 90 ? 'warning' : 'error');
+                
+            } catch (error) {
+                log(`❌ 詳細テストエラー: ${error.message}`, 'error');
+            }
+        }
+
+        function clearLog() {
+            document.getElementById('log').innerHTML = 'ログクリア完了 - テストを実行してください\n';
+        }
+
+        // グローバル関数として公開
+        window.quickTest = quickTest;
+        window.detailTest = detailTest;
+        window.clearLog = clearLog;
+        
+        log('ConfigurationManager修正テスト準備完了');
+    </script>
+</body>
+</html>

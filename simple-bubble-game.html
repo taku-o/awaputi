@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>シンプルバブルゲーム</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        
+        canvas {
+            border: 3px solid #f39c12;
+            background: #1a1a2e;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .controls {
+            margin: 20px 0;
+        }
+        
+        button {
+            background: #f39c12;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            margin: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        button:hover {
+            background: #e67e22;
+        }
+        
+        #info {
+            background: rgba(0,0,0,0.7);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+        
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>🫧 シンプル バブルゲーム</h1>
+    
+    <div class="controls">
+        <button onclick="startGame()">🎮 ゲーム開始</button>
+        <button onclick="spawnBubbles()">🫧 バブル生成</button>
+        <button onclick="clearBubbles()">🗑️ バブル削除</button>
+    </div>
+    
+    <canvas id="gameCanvas" width="800" height="500"></canvas>
+    
+    <div id="info">
+        <div>スコア: <span id="score">0</span></div>
+        <div>バブル数: <span id="bubbleCount">0</span></div>
+        <div>ステータス: <span id="status">停止中</span></div>
+    </div>
+
+    <script>
+        // グローバル変数
+        let canvas, ctx;
+        let bubbles = [];
+        let score = 0;
+        let isGameRunning = false;
+        let animationId;
+        
+        // バブルクラス
+        class Bubble {
+            constructor(x, y, radius, color, speedX, speedY) {
+                this.x = x;
+                this.y = y;
+                this.radius = radius;
+                this.color = color;
+                this.speedX = speedX;
+                this.speedY = speedY;
+                this.alpha = 1.0;
+            }
+            
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                // 壁での反射
+                if (this.x - this.radius <= 0 || this.x + this.radius >= canvas.width) {
+                    this.speedX *= -0.8;
+                    this.x = Math.max(this.radius, Math.min(canvas.width - this.radius, this.x));
+                }
+                if (this.y - this.radius <= 0 || this.y + this.radius >= canvas.height) {
+                    this.speedY *= -0.8;
+                    this.y = Math.max(this.radius, Math.min(canvas.height - this.radius, this.y));
+                }
+                
+                // 徐々に透明になる
+                this.alpha *= 0.999;
+            }
+            
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.restore();
+            }
+            
+            isClicked(mouseX, mouseY) {
+                const distance = Math.sqrt((mouseX - this.x) ** 2 + (mouseY - this.y) ** 2);
+                return distance <= this.radius;
+            }
+        }
+        
+        // 初期化
+        function init() {
+            canvas = document.getElementById('gameCanvas');
+            ctx = canvas.getContext('2d');
+            
+            // クリックイベント
+            canvas.addEventListener('click', onCanvasClick);
+            
+            updateInfo();
+            console.log('ゲーム初期化完了');
+        }
+        
+        // ゲーム開始
+        function startGame() {
+            if (!isGameRunning) {
+                isGameRunning = true;
+                gameLoop();
+                updateInfo();
+                console.log('ゲーム開始');
+            }
+        }
+        
+        // ゲームループ
+        function gameLoop() {
+            if (!isGameRunning) return;
+            
+            // クリア
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // バブル更新と描画
+            bubbles = bubbles.filter(bubble => {
+                bubble.update();
+                bubble.draw();
+                return bubble.alpha > 0.1; // 透明度が低くなったら削除
+            });
+            
+            updateInfo();
+            animationId = requestAnimationFrame(gameLoop);
+        }
+        
+        // バブル生成
+        function spawnBubbles() {
+            const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8'];
+            
+            for (let i = 0; i < 5; i++) {
+                const x = 50 + Math.random() * (canvas.width - 100);
+                const y = 50 + Math.random() * (canvas.height - 100);
+                const radius = 20 + Math.random() * 30;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const speedX = (Math.random() - 0.5) * 4;
+                const speedY = (Math.random() - 0.5) * 4;
+                
+                bubbles.push(new Bubble(x, y, radius, color, speedX, speedY));
+            }
+            
+            if (!isGameRunning) {
+                // ゲームが停止中でも1回だけ描画
+                drawStaticFrame();
+            }
+            
+            updateInfo();
+            console.log(`バブルを生成しました。現在のバブル数: ${bubbles.length}`);
+        }
+        
+        // 静的フレーム描画（ゲーム停止中）
+        function drawStaticFrame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            bubbles.forEach(bubble => bubble.draw());
+        }
+        
+        // バブルクリア
+        function clearBubbles() {
+            bubbles = [];
+            score = 0;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            updateInfo();
+            console.log('バブルをクリアしました');
+        }
+        
+        // キャンバスクリック処理
+        function onCanvasClick(event) {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = event.clientX - rect.left;
+            const mouseY = event.clientY - rect.top;
+            
+            // クリックされたバブルを探す
+            for (let i = bubbles.length - 1; i >= 0; i--) {
+                if (bubbles[i].isClicked(mouseX, mouseY)) {
+                    score += 10;
+                    bubbles.splice(i, 1);
+                    updateInfo();
+                    console.log(`バブルクリック！ スコア: ${score}`);
+                    break;
+                }
+            }
+        }
+        
+        // 情報更新
+        function updateInfo() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('bubbleCount').textContent = bubbles.length;
+            document.getElementById('status').textContent = isGameRunning ? '実行中' : '停止中';
+        }
+        
+        // ページ読み込み時に初期化
+        window.onload = init;
+    </script>
+</body>
+</html>
