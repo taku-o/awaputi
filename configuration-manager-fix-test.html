@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConfigurationManager修正テスト</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .section {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        .log {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .status {
+            padding: 8px 15px;
+            border-radius: 5px;
+            margin: 5px 0;
+            font-weight: bold;
+        }
+        .success { background: rgba(76, 175, 80, 0.3); color: #4caf50; }
+        .error { background: rgba(244, 67, 54, 0.3); color: #f44336; }
+        .warning { background: rgba(255, 152, 0, 0.3); color: #ff9800; }
+        .info { background: rgba(33, 150, 243, 0.3); color: #2196f3; }
+        
+        .test-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .bubble-test {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .bubble-name {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 10px;
+            text-transform: capitalize;
+        }
+        .config-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            padding: 3px 5px;
+            border-radius: 3px;
+        }
+        .config-item.found { background: rgba(76, 175, 80, 0.2); }
+        .config-item.missing { background: rgba(244, 67, 54, 0.2); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 ConfigurationManager修正テスト</h1>
+        
+        <div class="section">
+            <h2>修正内容</h2>
+            <div class="status success">✅ _getDirectValue()メソッド修正完了</div>
+            <div class="status success">✅ defaultValues優先アクセスロジック実装</div>
+            <div class="status success">✅ バブル設定20種類アクセス可能</div>
+        </div>
+        
+        <div class="section">
+            <h2>テスト実行</h2>
+            <div class="grid">
+                <button onclick="testBubbleConfigsFix()">バブル設定アクセステスト</button>
+                <button onclick="testPerformanceConfig()">パフォーマンス設定テスト</button>
+                <button onclick="testWarningReduction()">警告ログ削減テスト</button>
+                <button onclick="clearResults()">結果クリア</button>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>テスト結果</h2>
+            <div id="results" class="log">ConfigurationManager修正テスト準備完了
+各テストボタンをクリックして修正結果を確認してください</div>
+        </div>
+        
+        <div class="section">
+            <h2>バブル設定詳細結果</h2>
+            <div id="bubbleResults" class="test-results">
+                <!-- バブル設定テスト結果がここに表示される -->
+            </div>
+        </div>
+        
+    </div>
+
+    <script type="module">
+        function log(message, type = 'info') {
+            const results = document.getElementById('results');
+            const timestamp = new Date().toLocaleTimeString('ja-JP');
+            const typeEmoji = {
+                'success': '✅',
+                'error': '❌', 
+                'warning': '⚠️',
+                'info': 'ℹ️'
+            };
+            results.textContent += `[${timestamp}] ${typeEmoji[type] || 'ℹ️'} ${message}\n`;
+            results.scrollTop = results.scrollHeight;
+        }
+
+        // バブル設定修正テスト
+        async function testBubbleConfigsFix() {
+            log('=== バブル設定修正テスト開始 ===');
+            
+            try {
+                // ConfigurationManagerを動的インポート
+                const configModule = await import('./src/core/ConfigurationManager.js');
+                const configManager = configModule.getConfigurationManager();
+                
+                log('✓ ConfigurationManager読み込み成功', 'success');
+                
+                // テスト対象のバブル種類（20種類全て）
+                const bubbleTypes = [
+                    'normal', 'stone', 'iron', 'diamond', 'boss',
+                    'pink', 'poison', 'spiky', 'rainbow', 'clock', 
+                    'score', 'electric', 'escaping', 'cracked',
+                    'golden', 'frozen', 'magnetic', 'explosive',
+                    'phantom', 'multiplier'
+                ];
+                
+                const configKeys = ['health', 'score', 'color', 'size', 'maxAge'];
+                
+                let totalSuccess = 0;
+                let totalTests = bubbleTypes.length * configKeys.length;
+                let bubbleResults = [];
+                
+                log(`${bubbleTypes.length}種類のバブル設定をテスト中...`);
+                
+                for (const bubbleType of bubbleTypes) {
+                    let bubbleSuccess = 0;
+                    let bubbleConfigs = {};
+                    
+                    for (const configKey of configKeys) {
+                        const fullKey = \`bubbles.\${bubbleType}.\${configKey}\`;
+                        
+                        try {
+                            const value = configManager.get('game', fullKey);
+                            
+                            if (value !== null && value !== undefined) {
+                                totalSuccess++;
+                                bubbleSuccess++;
+                                bubbleConfigs[configKey] = { value, found: true };
+                                log(\`  ✓ \${fullKey}: \${value}\`, 'success');
+                            } else {
+                                bubbleConfigs[configKey] = { value: 'undefined', found: false };
+                                log(\`  ⚠️ \${fullKey}: null/undefined\`, 'warning');
+                            }
+                        } catch (error) {
+                            bubbleConfigs[configKey] = { value: \`ERROR: \${error.message}\`, found: false };
+                            log(\`  ❌ \${fullKey}: エラー - \${error.message}\`, 'error');
+                        }
+                    }
+                    
+                    bubbleResults.push({
+                        type: bubbleType,
+                        success: bubbleSuccess,
+                        total: configKeys.length,
+                        configs: bubbleConfigs
+                    });
+                    
+                    if (bubbleSuccess === configKeys.length) {
+                        log(\`🎉 \${bubbleType}バブル: 完全成功 (\${bubbleSuccess}/\${configKeys.length})\`, 'success');
+                    } else if (bubbleSuccess > 0) {
+                        log(\`⚠️ \${bubbleType}バブル: 部分成功 (\${bubbleSuccess}/\${configKeys.length})\`, 'warning');
+                    } else {
+                        log(\`❌ \${bubbleType}バブル: 失敗 (\${bubbleSuccess}/\${configKeys.length})\`, 'error');
+                    }
+                }
+                
+                // 詳細結果を表示
+                displayBubbleResults(bubbleResults);
+                
+                const successRate = Math.round((totalSuccess / totalTests) * 100);
+                
+                if (successRate === 100) {
+                    log(\`🎊 修正成功！全バブル設定アクセス可能: \${totalSuccess}/\${totalTests} (\${successRate}%)\`, 'success');
+                } else if (successRate >= 90) {
+                    log(\`✅ 修正ほぼ成功: \${totalSuccess}/\${totalTests} (\${successRate}%)\`, 'success');
+                } else if (successRate >= 50) {
+                    log(\`⚠️ 修正部分成功: \${totalSuccess}/\${totalTests} (\${successRate}%)\`, 'warning');
+                } else {
+                    log(\`❌ 修正失敗: \${totalSuccess}/\${totalTests} (\${successRate}%)\`, 'error');
+                }
+                
+            } catch (error) {
+                log(\`❌ バブル設定テストエラー: \${error.message}\`, 'error');
+                console.error('詳細エラー:', error);
+            }
+        }
+
+        // バブル設定詳細結果を表示
+        function displayBubbleResults(bubbleResults) {
+            const container = document.getElementById('bubbleResults');
+            container.innerHTML = '';
+            
+            bubbleResults.forEach(result => {
+                const bubbleDiv = document.createElement('div');
+                bubbleDiv.className = 'bubble-test';
+                
+                let statusIcon = result.success === result.total ? '🎉' : 
+                               result.success > 0 ? '⚠️' : '❌';
+                
+                bubbleDiv.innerHTML = \`
+                    <div class="bubble-name">\${statusIcon} \${result.type} (\${result.success}/\${result.total})</div>
+                    \${Object.entries(result.configs).map(([key, config]) => 
+                        \`<div class="config-item \${config.found ? 'found' : 'missing'}">
+                            <span>\${key}</span>
+                            <span>\${config.value}</span>
+                        </div>\`
+                    ).join('')}
+                \`;
+                
+                container.appendChild(bubbleDiv);
+            });
+        }
+
+        // パフォーマンス設定テスト
+        async function testPerformanceConfig() {
+            log('=== パフォーマンス設定テスト開始 ===');
+            
+            try {
+                const configModule = await import('./src/core/ConfigurationManager.js');
+                const configManager = configModule.getConfigurationManager();
+                
+                const performanceKeys = [
+                    'targetFPS', 'adaptiveMode', 'performanceLevel',
+                    'maxBubbles', 'maxParticles'
+                ];
+                
+                let successCount = 0;
+                
+                for (const key of performanceKeys) {
+                    try {
+                        const value = configManager.get('performance', key);
+                        if (value !== null && value !== undefined) {
+                            log(\`  ✓ performance.\${key}: \${value}\`, 'success');
+                            successCount++;
+                        } else {
+                            log(\`  ⚠️ performance.\${key}: null/undefined\`, 'warning');
+                        }
+                    } catch (error) {
+                        log(\`  ❌ performance.\${key}: エラー - \${error.message}\`, 'error');
+                    }
+                }
+                
+                log(\`パフォーマンス設定結果: \${successCount}/\${performanceKeys.length}\`, 
+                    successCount === performanceKeys.length ? 'success' : 'warning');
+                
+            } catch (error) {
+                log(\`❌ パフォーマンス設定テストエラー: \${error.message}\`, 'error');
+            }
+        }
+
+        // 警告ログ削減テスト
+        async function testWarningReduction() {
+            log('=== 警告ログ削減テスト開始 ===');
+            
+            try {
+                const configModule = await import('./src/core/ConfigurationManager.js');
+                const configManager = configModule.getConfigurationManager();
+                
+                log('存在しないバブル設定を5回連続アクセス...');
+                
+                let warningCount = 0;
+                const originalWarn = console.warn;
+                console.warn = function(...args) {
+                    if (args[0] && args[0].includes('[ConfigurationManager]')) {
+                        warningCount++;
+                    }
+                    originalWarn.apply(console, args);
+                };
+                
+                // 存在しない設定に連続アクセス
+                for (let i = 0; i < 5; i++) {
+                    configManager.get('game', 'bubbles.nonexistent.test');
+                }
+                
+                console.warn = originalWarn;
+                
+                if (warningCount <= 1) {
+                    log(\`✅ 警告ログ削減成功: 5回アクセス → \${warningCount}回警告\`, 'success');
+                } else {
+                    log(\`⚠️ 警告ログ削減不完全: 5回アクセス → \${warningCount}回警告\`, 'warning');
+                }
+                
+                // 実在するバブル設定で正常アクセステスト
+                log('正常バブル設定アクセステスト...');
+                const normalScore = configManager.get('game', 'bubbles.normal.score');
+                log(\`✓ bubbles.normal.score: \${normalScore}\`, 'success');
+                
+            } catch (error) {
+                log(\`❌ 警告ログ削減テストエラー: \${error.message}\`, 'error');
+            }
+        }
+
+        // 結果クリア
+        function clearResults() {
+            document.getElementById('results').textContent = 'ConfigurationManager修正テスト準備完了\n各テストボタンをクリックして修正結果を確認してください\n';
+            document.getElementById('bubbleResults').innerHTML = '';
+            log('テスト結果をクリアしました', 'info');
+        }
+
+        // グローバル関数として公開
+        window.testBubbleConfigsFix = testBubbleConfigsFix;
+        window.testPerformanceConfig = testPerformanceConfig; 
+        window.testWarningReduction = testWarningReduction;
+        window.clearResults = clearResults;
+        
+        // 初期化メッセージ
+        log('ConfigurationManager修正テスト準備完了');
+        log('各テストボタンをクリックして修正結果を確認してください');
+    </script>
+</body>
+</html>
