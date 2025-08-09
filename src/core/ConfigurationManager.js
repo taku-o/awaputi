@@ -25,6 +25,10 @@ class ConfigurationManager {
         // 変更履歴（デバッグ用）
         this.changeHistory = [];
         
+        // 警告ログレート制限（同じキーの警告は1秒以内は1回のみ）
+        this.warningCache = new Map();
+        this.warningRateLimit = 1000; // 1秒
+        
         // 高速アクセス用キャッシュシステム
         this.cache = getCacheSystem({
             maxSize: 500,
@@ -109,11 +113,7 @@ class ConfigurationManager {
         this.setDefaultValue('game', 'difficulty', 'normal');
         
         // ゲームバブル詳細設定のデフォルト値を設定
-        this.setDefaultValue('game', 'bubbles.normal.health', 1);
-        this.setDefaultValue('game', 'bubbles.normal.size', 30);
-        this.setDefaultValue('game', 'bubbles.normal.maxAge', 30000);
-        this.setDefaultValue('game', 'bubbles.normal.score', 10);
-        this.setDefaultValue('game', 'bubbles.normal.color', '#4a9eff');
+        this._setupBubbleDefaults();
         
         // 検証ルールを設定
         this._setupValidationRules();
@@ -222,7 +222,13 @@ class ConfigurationManager {
                 return value;
             }
             
-            this._logWarning(`設定キーが存在しません: ${category}.${key}`);
+            // より詳細な警告メッセージ（バブル設定の場合は特別な説明を追加）
+            if (category === 'game' && key.startsWith('bubbles.')) {
+                const bubbleType = key.split('.')[1];
+                this._logWarning(`バブル設定が見つかりません: ${category}.${key} (バブル種類: ${bubbleType})`);
+            } else {
+                this._logWarning(`設定キーが存在しません: ${category}.${key}`);
+            }
             return defaultValue;
         }
         
@@ -598,11 +604,31 @@ class ConfigurationManager {
     }
     
     /**
-     * 警告ログ出力
+     * 警告ログ出力（レート制限付き）
      * @private
      */
     _logWarning(message) {
-        console.warn(`[ConfigurationManager] ${message}`);
+        // 毎フレームの大量ログを防ぐため、同じメッセージの警告は制限
+        const now = Date.now();
+        const lastWarningTime = this.warningCache.get(message);
+        
+        if (!lastWarningTime || (now - lastWarningTime) >= this.warningRateLimit) {
+            console.warn(`[ConfigurationManager] ${message}`);
+            this.warningCache.set(message, now);
+            
+            // キャッシュサイズ制限（メモリリーク防止）
+            if (this.warningCache.size > 100) {
+                // 古い警告記録を削除
+                const sortedEntries = Array.from(this.warningCache.entries())
+                    .sort((a, b) => b[1] - a[1]) // 時刻で降順ソート
+                    .slice(0, 50); // 最新50件のみ保持
+                
+                this.warningCache.clear();
+                sortedEntries.forEach(([msg, time]) => {
+                    this.warningCache.set(msg, time);
+                });
+            }
+        }
     }
     
     /**
@@ -798,6 +824,181 @@ class ConfigurationManager {
         return clearedCount;
     }
     
+    /**
+     * バブルのデフォルト値を設定
+     * @private
+     */
+    _setupBubbleDefaults() {
+        // Bubble.jsの_getHardcodedConfig()と同じ設定値を使用
+        const bubbleConfigs = {
+            normal: {
+                health: 1,
+                size: 50,
+                maxAge: 12000,
+                color: '#87CEEB',
+                score: 15
+            },
+            stone: {
+                health: 2,
+                size: 55,
+                maxAge: 16000,
+                color: '#696969',
+                score: 25
+            },
+            iron: {
+                health: 3,
+                size: 60,
+                maxAge: 20000,
+                color: '#708090',
+                score: 40
+            },
+            diamond: {
+                health: 4,
+                size: 65,
+                maxAge: 22000,
+                color: '#B0E0E6',
+                score: 60
+            },
+            pink: {
+                health: 1,
+                size: 45,
+                maxAge: 10000,
+                color: '#FFB6C1',
+                score: 20,
+                healAmount: 25
+            },
+            poison: {
+                health: 1,
+                size: 48,
+                maxAge: 14000,
+                color: '#9370DB',
+                score: 30,
+                damageAmount: 8
+            },
+            spiky: {
+                health: 1,
+                size: 52,
+                maxAge: 13000,
+                color: '#FF6347',
+                score: 35,
+                chainRadius: 120
+            },
+            rainbow: {
+                health: 1,
+                size: 55,
+                maxAge: 16000,
+                color: '#FF69B4',
+                score: 400,
+                bonusTimeMs: 8000
+            },
+            clock: {
+                health: 1,
+                size: 50,
+                maxAge: 20000,
+                color: '#FFD700',
+                score: 180,
+                timeStopMs: 2500
+            },
+            score: {
+                health: 1,
+                size: 48,
+                maxAge: 9000,
+                color: '#32CD32',
+                score: 250,
+                bonusScore: 80
+            },
+            electric: {
+                health: 1,
+                size: 50,
+                maxAge: 13000,
+                color: '#FFFF00',
+                score: 20,
+                shakeIntensity: 15,
+                disableDuration: 1500
+            },
+            escaping: {
+                health: 1,
+                size: 45,
+                maxAge: 16000,
+                color: '#FF8C00',
+                score: 50,
+                escapeSpeed: 180,
+                escapeRadius: 90
+            },
+            cracked: {
+                health: 1,
+                size: 52,
+                maxAge: 6000,
+                color: '#8B4513',
+                score: 30
+            },
+            boss: {
+                health: 8,
+                size: 90,
+                maxAge: 35000,
+                color: '#8B0000',
+                score: 100
+            },
+            golden: {
+                health: 1,
+                size: 55,
+                maxAge: 8000,
+                color: '#FFD700',
+                score: 500,
+                multiplier: 2.0
+            },
+            frozen: {
+                health: 2,
+                size: 50,
+                maxAge: 25000,
+                color: '#87CEEB',
+                score: 100,
+                slowEffect: 0.5
+            },
+            magnetic: {
+                health: 1,
+                size: 48,
+                maxAge: 15000,
+                color: '#FF1493',
+                score: 150,
+                magnetRadius: 100
+            },
+            explosive: {
+                health: 1,
+                size: 52,
+                maxAge: 10000,
+                color: '#FF4500',
+                score: 200,
+                explosionRadius: 150
+            },
+            phantom: {
+                health: 1,
+                size: 45,
+                maxAge: 12000,
+                color: '#9370DB',
+                score: 300,
+                phaseChance: 0.3
+            },
+            multiplier: {
+                health: 1,
+                size: 50,
+                maxAge: 18000,
+                color: '#32CD32',
+                score: 100,
+                scoreMultiplier: 3.0
+            }
+        };
+
+        // 全バブル種類のデフォルト値を設定
+        for (const [bubbleType, config] of Object.entries(bubbleConfigs)) {
+            for (const [property, value] of Object.entries(config)) {
+                this.setDefaultValue('game', `bubbles.${bubbleType}.${property}`, value);
+            }
+        }
+        
+        this._logDebug(`バブルデフォルト値設定完了: ${Object.keys(bubbleConfigs).length}種類`);
+    }
+
     /**
      * 検証ルールを追加
      * @param {string} category - 設定カテゴリ

@@ -53,17 +53,21 @@ import { GameEngineEventManager } from './game-engine/GameEngineEventManager.js'
 import { GameEngineRenderer } from './game-engine/GameEngineRenderer.js';
 import { GameEngineUtilities } from './game-engine/GameEngineUtilities.js';
 
+// Top-level console.log removed due to ES Modules caching behavior
+
 /**
  * ゲームエンジンクラス - 統合版（パフォーマンス最適化 + 音響・視覚効果）
  * Main Controller Pattern: サブコンポーネントに処理を委譲し、公開APIを維持
  */
 export class GameEngine {
     constructor(canvas) {
+        console.log('[DEBUG] GameEngine: コンストラクター開始');
         try {
             this.canvas = canvas;
             this.context = canvas.getContext('2d');
             this.isRunning = false;
             this.lastTime = 0;
+            console.log('[DEBUG] GameEngine: 基本プロパティ設定完了');
             
             // シンプルなイベントエミッター機能
             this.eventListeners = new Map();
@@ -74,7 +78,9 @@ export class GameEngine {
             }
             
             // サブコンポーネントの初期化
+            console.log('[DEBUG] GameEngine: サブコンポーネント初期化開始');
             this._initializeSubComponents();
+            console.log('[DEBUG] GameEngine: サブコンポーネント初期化完了');
             
             // ブラウザ互換性チェック
             this.initializer.checkBrowserCompatibility();
@@ -135,12 +141,19 @@ export class GameEngine {
         this.visualPolishEnhancements = new VisualPolishEnhancements(this);
         
         // コアシステム
+        console.log('[DEBUG] GameEngine: コアシステム初期化開始');
         this.playerData = new PlayerData(this);
+        console.log('[DEBUG] GameEngine: PlayerData初期化完了');
         this.itemManager = new ItemManager(this);
+        console.log('[DEBUG] GameEngine: ItemManager初期化完了');
         this.scoreManager = new ScoreManager(this);
+        console.log('[DEBUG] GameEngine: ScoreManager初期化完了');
         this.bubbleManager = new BubbleManager(this);
+        console.log('[DEBUG] GameEngine: BubbleManager初期化完了');
         this.stageManager = new StageManager(this);
+        console.log('[DEBUG] GameEngine: StageManager初期化完了');
         this.sceneManager = new SceneManager(this);
+        console.log('[DEBUG] GameEngine: SceneManager初期化完了');
         
         // 新しいUI改善システム
         this.settingsManager = new SettingsManager(this);
@@ -148,9 +161,51 @@ export class GameEngine {
         this.keyboardShortcutManager = new KeyboardShortcutManager(this);
         
         // 追加コンテンツシステム
+        console.log('[DEBUG] GameEngine: 追加コンテンツシステム初期化開始');
         this.achievementManager = new AchievementManager(this);
+        console.log('[DEBUG] GameEngine: AchievementManager初期化完了');
         this.statisticsManager = new StatisticsManager(this);
+        console.log('[DEBUG] GameEngine: StatisticsManager初期化完了');
+        // EventStageManager初期化（loadメソッド問題対応）
+        console.log('[DEBUG] GameEngine: EventStageManager初期化開始');
         this.eventStageManager = new EventStageManager(this);
+        
+        // loadメソッドが存在しない場合の動的修正
+        if (typeof this.eventStageManager.load !== 'function') {
+            console.warn('[DEBUG] GameEngine: EventStageManager.loadメソッド不足 - 動的追加中');
+            
+            // loadメソッドを動的に追加
+            this.eventStageManager.load = function() {
+                try {
+                    console.log('[DEBUG] EventStageManager.load() 動的実行開始');
+                    
+                    // 各サブコンポーネントのloadメソッドを呼び出し（存在する場合）
+                    if (this.seasonalEventManager && typeof this.seasonalEventManager.load === 'function') {
+                        this.seasonalEventManager.load();
+                    }
+                    
+                    if (this.historyManager && typeof this.historyManager.load === 'function') {
+                        this.historyManager.load();
+                    }
+                    
+                    if (this.rankingSystem && typeof this.rankingSystem.load === 'function') {
+                        this.rankingSystem.load();
+                    }
+                    
+                    console.log('[DEBUG] EventStageManager.load() 動的実行完了');
+                    return true;
+                    
+                } catch (error) {
+                    console.error('[DEBUG] EventStageManager.load() 動的実行エラー:', error);
+                    return false;
+                }
+            }.bind(this.eventStageManager);
+            
+            console.log('[DEBUG] GameEngine: EventStageManager.loadメソッド動的追加完了');
+        }
+        
+        console.log('[DEBUG] GameEngine: EventStageManager初期化完了');
+        console.log('[DEBUG] GameEngine: EventStageManager.loadメソッド存在:', typeof this.eventStageManager.load === 'function');
         
         // 実績イベント統合システム
         this.achievementEventIntegrator = new AchievementEventIntegrator(this);
@@ -181,8 +236,12 @@ export class GameEngine {
         this.isGameOver = false;
         
         // シーンを初期化（非同期）
-        this.initializer.initializeScenes().catch(error => {
-            console.error('Scene initialization failed:', error);
+        console.log('[DEBUG] GameEngine: initializeScenes呼び出し開始');
+        this.initializer.initializeScenes().then(() => {
+            console.log('[DEBUG] GameEngine: initializeScenes完了');
+        }).catch(error => {
+            console.error('[DEBUG] GameEngine: initializeScenes失敗:', error);
+            console.error('[DEBUG] エラースタック:', error.stack);
         });
         
         // 特殊効果状態

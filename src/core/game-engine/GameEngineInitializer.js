@@ -376,6 +376,7 @@ export class GameEngineInitializer {
      * シーンを初期化
      */
     async initializeScenes() {
+        console.log('[DEBUG] GameEngineInitializer: initializeScenes開始');
         try {
             // Removed: const { MainMenuScene } = require('../scenes/MainMenuScene.js');
             // Removed: const { StageSelectScene } = require('../scenes/StageSelectScene.js');
@@ -386,13 +387,21 @@ export class GameEngineInitializer {
             // Removed: const { HelpScene } = require('../scenes/HelpScene.js');
             
             // シーンを作成
+            console.log('[DEBUG] GameEngineInitializer: シーン作成開始');
             const mainMenuScene = new MainMenuScene(this.gameEngine);
+            console.log('[DEBUG] MainMenuScene作成完了');
             const stageSelectScene = new StageSelectScene(this.gameEngine);
+            console.log('[DEBUG] StageSelectScene作成完了');
             const gameScene = new GameScene(this.gameEngine);
+            console.log('[DEBUG] GameScene作成完了');
             const shopScene = new ShopScene(this.gameEngine);
+            console.log('[DEBUG] ShopScene作成完了');
             const userInfoScene = new UserInfoScene(this.gameEngine);
+            console.log('[DEBUG] UserInfoScene作成完了');
             const settingsScene = new SettingsScene(this.gameEngine);
+            console.log('[DEBUG] SettingsScene作成完了');
             const helpScene = new HelpScene(this.gameEngine);
+            console.log('[DEBUG] HelpScene作成完了');
             
             // シーンを登録
             this.gameEngine.sceneManager.addScene('menu', mainMenuScene);
@@ -405,7 +414,17 @@ export class GameEngineInitializer {
             
             // データを読み込み
             try {
-                this.gameEngine.playerData.load();
+                console.log('[DEBUG] GameEngineInitializer: playerData load開始');
+                console.log('[DEBUG] this.gameEngine:', !!this.gameEngine);
+                console.log('[DEBUG] this.gameEngine.playerData:', !!this.gameEngine.playerData);
+                console.log('[DEBUG] typeof this.gameEngine.playerData.load:', typeof (this.gameEngine.playerData && this.gameEngine.playerData.load));
+                
+                if (this.gameEngine.playerData && typeof this.gameEngine.playerData.load === 'function') {
+                    this.gameEngine.playerData.load();
+                    console.log('[DEBUG] playerData.load() 呼び出し成功');
+                } else {
+                    console.warn('[DEBUG] playerData.load() メソッドが利用できません');
+                }
             } catch (error) {
                 // Removed: const { getErrorHandler } = require('../utils/ErrorHandler.js');
                 getErrorHandler().handleError(error, 'STORAGE_ERROR', { operation: 'load', data: 'playerData' });
@@ -423,14 +442,68 @@ export class GameEngineInitializer {
             
             // 新しいシステムの初期化
             try {
+                console.log('[DEBUG] GameEngineInitializer: 新しいシステムの初期化開始');
+                
+                console.log('[DEBUG] achievementManager存在確認:', !!this.gameEngine.achievementManager);
                 if (this.gameEngine.achievementManager && typeof this.gameEngine.achievementManager.load === 'function') {
+                    console.log('[DEBUG] achievementManager.load() 呼び出し開始');
                     this.gameEngine.achievementManager.load();
+                    console.log('[DEBUG] achievementManager.load() 呼び出し完了');
+                } else {
+                    console.warn('[DEBUG] achievementManager.load() 利用不可');
                 }
+                
+                console.log('[DEBUG] statisticsManager存在確認:', !!this.gameEngine.statisticsManager);
                 if (this.gameEngine.statisticsManager && typeof this.gameEngine.statisticsManager.load === 'function') {
+                    console.log('[DEBUG] statisticsManager.load() 呼び出し開始');
                     this.gameEngine.statisticsManager.load();
+                    console.log('[DEBUG] statisticsManager.load() 呼び出し完了');
+                } else {
+                    console.warn('[DEBUG] statisticsManager.load() 利用不可');
                 }
+                
+                console.log('[DEBUG] eventStageManager存在確認:', !!this.gameEngine.eventStageManager);
+                
+                // eventStageManagerのloadメソッド動的修正（キャッシュ問題対応）
+                if (this.gameEngine.eventStageManager && typeof this.gameEngine.eventStageManager.load !== 'function') {
+                    console.warn('[DEBUG] GameEngineInitializer: eventStageManager.loadメソッド不足 - 動的追加中');
+                    
+                    // loadメソッドを動的に追加
+                    this.gameEngine.eventStageManager.load = function() {
+                        try {
+                            console.log('[DEBUG] EventStageManager.load() 動的実行開始（Initializer内）');
+                            
+                            // 各サブコンポーネントのloadメソッドを呼び出し（存在する場合）
+                            if (this.seasonalEventManager && typeof this.seasonalEventManager.load === 'function') {
+                                this.seasonalEventManager.load();
+                            }
+                            
+                            if (this.historyManager && typeof this.historyManager.load === 'function') {
+                                this.historyManager.load();
+                            }
+                            
+                            if (this.rankingSystem && typeof this.rankingSystem.load === 'function') {
+                                this.rankingSystem.load();
+                            }
+                            
+                            console.log('[DEBUG] EventStageManager.load() 動的実行完了（Initializer内）');
+                            return true;
+                            
+                        } catch (error) {
+                            console.error('[DEBUG] EventStageManager.load() 動的実行エラー（Initializer内）:', error);
+                            return false;
+                        }
+                    }.bind(this.gameEngine.eventStageManager);
+                    
+                    console.log('[DEBUG] GameEngineInitializer: eventStageManager.loadメソッド動的追加完了');
+                }
+                
                 if (this.gameEngine.eventStageManager && typeof this.gameEngine.eventStageManager.load === 'function') {
+                    console.log('[DEBUG] eventStageManager.load() 呼び出し開始');
                     this.gameEngine.eventStageManager.load();
+                    console.log('[DEBUG] eventStageManager.load() 呼び出し完了');
+                } else {
+                    console.warn('[DEBUG] eventStageManager.load() 利用不可');
                 }
                 
                 // ソーシャル機能システムの初期化

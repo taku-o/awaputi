@@ -42,10 +42,31 @@ export class BubbleManager {
      * 泡を生成
      */
     spawnBubble(type = null, position = null) {
-        const bubble = this.spawner.spawnBubble(type, position);
-        if (bubble) {
-            this.bubbles.push(bubble);
+        console.log('[DEBUG] BubbleManager.spawnBubble 呼び出し開始');
+        console.log('[DEBUG] this.spawner:', !!this.spawner);
+        console.log('[DEBUG] typeof this.spawner.spawnBubble:', typeof (this.spawner && this.spawner.spawnBubble));
+        console.log('[DEBUG] type:', type, 'position:', position);
+        
+        if (!this.spawner) {
+            console.error('[DEBUG] spawnerがnullです');
+            return null;
         }
+        
+        if (typeof this.spawner.spawnBubble !== 'function') {
+            console.error('[DEBUG] spawner.spawnBubbleメソッドが存在しません');
+            return null;
+        }
+        
+        const bubble = this.spawner.spawnBubble(type, position);
+        console.log('[DEBUG] spawner.spawnBubble結果:', !!bubble);
+        
+        if (bubble) {
+            console.log('[DEBUG] バブルをbubblesに追加:', bubble.id || 'ID不明');
+            this.bubbles.push(bubble);
+        } else {
+            console.warn('[DEBUG] spawnerからnullのバブルが返されました');
+        }
+        
         return bubble;
     }
     

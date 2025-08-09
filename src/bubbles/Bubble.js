@@ -17,8 +17,19 @@ export class Bubble {
         this.effects = [];
         this.clickCount = 0; // 硬い泡用のクリック回数
         
+        // ユニークIDを生成（泡識別用）
+        this.id = this._generateUniqueId();
+        
         // 泡の種類別設定を適用
         this.applyTypeConfig();
+    }
+    
+    /**
+     * ユニークIDを生成
+     * @private
+     */
+    _generateUniqueId() {
+        return `bubble_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
     }
     
     /**

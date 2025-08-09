@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>GameEngine詳細デバッグ - Issue #113</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+        }
+        
+        #debugContainer {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        
+        #log {
+            margin-top: 20px;
+            background: #f8f8f8;
+            padding: 10px;
+            border-radius: 5px;
+            max-height: 500px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        
+        .log-info { color: #0066cc; }
+        .log-error { color: #cc0000; font-weight: bold; }
+        .log-success { color: #006600; }
+        .log-warning { color: #cc6600; }
+    </style>
+</head>
+<body>
+    <div id="debugContainer">
+        <h1>🔍 GameEngine詳細デバッグ</h1>
+        <p>GameEngine初期化の詳細なステップを追跡します</p>
+        
+        <canvas id="gameCanvas" width="800" height="600" style="border: 2px solid #333;"></canvas>
+        
+        <div>
+            <button onclick="debugStep1()">詳細デバッグ開始</button>
+            <button onclick="clearLog()">ログクリア</button>
+        </div>
+        
+        <div id="log"></div>
+    </div>
+
+    <script type="module">
+        // ===== ログ機能 =====
+        function log(message, type = 'info') {
+            const logElement = document.getElementById('log');
+            const div = document.createElement('div');
+            div.className = `log-${type}`;
+            div.innerHTML = `<strong>[${new Date().toLocaleTimeString()}]</strong> ${message}`;
+            logElement.appendChild(div);
+            logElement.scrollTop = logElement.scrollHeight;
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+        
+        window.clearLog = function() {
+            document.getElementById('log').innerHTML = '';
+        };
+        
+        window.debugStep1 = async function() {
+            log('=== GameEngine詳細初期化デバッグ開始 ===', 'info');
+            
+            try {
+                // 1. ConfigurationManager
+                log('Step 1: ConfigurationManager初期化', 'info');
+                const { getConfigurationManager } = await import('./src/core/ConfigurationManager.js');
+                const configManager = getConfigurationManager();
+                log('✅ ConfigurationManager OK', 'success');
+                
+                // 2. GameEngineクラスのインポート
+                log('Step 2: GameEngineクラスインポート', 'info');
+                const { GameEngine } = await import('./src/core/GameEngine.js');
+                log('✅ GameEngineクラス インポート成功', 'success');
+                
+                // 3. Canvas要素の確認
+                log('Step 3: Canvas要素確認', 'info');
+                const canvas = document.getElementById('gameCanvas');
+                if (!canvas) {
+                    throw new Error('Canvas要素が見つかりません');
+                }
+                log(`✅ Canvas要素 OK (${canvas.width}x${canvas.height})`, 'success');
+                
+                // 4. GameEngineコンストラクター
+                log('Step 4: GameEngineコンストラクター実行', 'info');
+                let gameEngine;
+                try {
+                    gameEngine = new GameEngine(canvas);
+                    log('✅ GameEngineコンストラクター 成功', 'success');
+                } catch (error) {
+                    log(`❌ GameEngineコンストラクターでエラー: ${error.message}`, 'error');
+                    log(`スタック: ${error.stack}`, 'error');
+                    throw error;
+                }
+                
+                // 5. GameEngine初期化の詳細追跡
+                log('Step 5: GameEngine初期化詳細追跡', 'info');
+                
+                // エラーをキャッチするためにinitializeメソッドを分解して呼び出し
+                try {
+                    log('5-1: initialize()メソッド呼び出し開始', 'info');
+                    await gameEngine.initialize();
+                    log('✅ GameEngine初期化完全成功', 'success');
+                    
+                    // 初期化後の状態確認
+                    log('=== 初期化後の状態確認 ===', 'info');
+                    log(`bubbleManager: ${gameEngine.bubbleManager ? 'あり' : 'なし'}`, 'info');
+                    log(`stageManager: ${gameEngine.stageManager ? 'あり' : 'なし'}`, 'info');
+                    log(`sceneManager: ${gameEngine.sceneManager ? 'あり' : 'なし'}`, 'info');
+                    log(`scoreManager: ${gameEngine.scoreManager ? 'あり' : 'なし'}`, 'info');
+                    log(`playerData: ${gameEngine.playerData ? 'あり' : 'なし'}`, 'info');
+                    
+                } catch (initError) {
+                    log(`❌ GameEngine初期化でエラー: ${initError.message}`, 'error');
+                    log(`エラースタック: ${initError.stack}`, 'error');
+                    
+                    // どの部分で失敗したかを詳しく調べる
+                    await debugGameEngineInitialization(gameEngine);
+                }
+                
+            } catch (error) {
+                log(`❌ 全体エラー: ${error.message}`, 'error');
+                log(`スタック: ${error.stack}`, 'error');
+            }
+        };
+        
+        async function debugGameEngineInitialization(gameEngine) {
+            log('=== GameEngine初期化の詳細デバッグ ===', 'warning');
+            
+            try {
+                // GameEngineの基本プロパティを確認
+                log('基本プロパティ確認:', 'info');
+                log(`canvas: ${gameEngine.canvas ? 'OK' : 'NG'}`, 'info');
+                log(`context: ${gameEngine.context ? 'OK' : 'NG'}`, 'info');
+                
+                // 各マネージャーの初期化を個別にテスト
+                log('各マネージャーの初期化テスト:', 'info');
+                
+                // BubbleManagerの初期化を単体テスト
+                try {
+                    log('BubbleManager単体テスト...', 'info');
+                    const { BubbleManager } = await import('./src/managers/BubbleManager.js');
+                    const testBubbleManager = new BubbleManager(gameEngine);
+                    log('✅ BubbleManager単体作成成功', 'success');
+                } catch (bubbleError) {
+                    log(`❌ BubbleManager単体エラー: ${bubbleError.message}`, 'error');
+                }
+                
+                // StageManagerの初期化を単体テスト
+                try {
+                    log('StageManager単体テスト...', 'info');
+                    const { StageManager } = await import('./src/core/StageManager.js');
+                    const testStageManager = new StageManager(gameEngine);
+                    log('✅ StageManager単体作成成功', 'success');
+                } catch (stageError) {
+                    log(`❌ StageManager単体エラー: ${stageError.message}`, 'error');
+                }
+                
+                // SceneManagerの初期化を単体テスト
+                try {
+                    log('SceneManager単体テスト...', 'info');
+                    const { SceneManager } = await import('./src/core/SceneManager.js');
+                    const testSceneManager = new SceneManager(gameEngine);
+                    log('✅ SceneManager単体作成成功', 'success');
+                } catch (sceneError) {
+                    log(`❌ SceneManager単体エラー: ${sceneError.message}`, 'error');
+                    log(`SceneManagerスタック: ${sceneError.stack}`, 'error');
+                }
+                
+                // PlayerDataの初期化を単体テスト
+                try {
+                    log('PlayerData単体テスト...', 'info');
+                    const { PlayerData } = await import('./src/data/PlayerData.js');
+                    const testPlayerData = new PlayerData();
+                    log('✅ PlayerData単体作成成功', 'success');
+                } catch (playerError) {
+                    log(`❌ PlayerData単体エラー: ${playerError.message}`, 'error');
+                    log(`PlayerDataスタック: ${playerError.stack}`, 'error');
+                }
+                
+                // ScoreManagerの初期化を単体テスト
+                try {
+                    log('ScoreManager単体テスト...', 'info');
+                    const { ScoreManager } = await import('./src/managers/ScoreManager.js');
+                    const testScoreManager = new ScoreManager(gameEngine);
+                    log('✅ ScoreManager単体作成成功', 'success');
+                } catch (scoreError) {
+                    log(`❌ ScoreManager単体エラー: ${scoreError.message}`, 'error');
+                    log(`ScoreManagerスタック: ${scoreError.stack}`, 'error');
+                }
+                
+            } catch (debugError) {
+                log(`❌ デバッグ中にエラー: ${debugError.message}`, 'error');
+            }
+        }
+        
+        // ===== 初期化 =====
+        log('GameEngine詳細デバッグツール準備完了', 'info');
+        log('「詳細デバッグ開始」ボタンをクリックしてください', 'info');
+    </script>
+</body>
+</html>

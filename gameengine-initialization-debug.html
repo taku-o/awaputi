@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>GameEngine Initialization Debug - Issue #113</title>
+    <style>
+        body {
+            margin: 20px;
+            font-family: monospace;
+            background: #f0f0f0;
+        }
+        
+        #container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background: #007bff;
+            color: white;
+        }
+        
+        #log {
+            margin-top: 20px;
+            background: #f8f8f8;
+            padding: 10px;
+            border-radius: 5px;
+            max-height: 500px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        
+        .log-info { color: #0066cc; }
+        .log-error { color: #cc0000; font-weight: bold; }
+        .log-success { color: #006600; }
+        .log-warning { color: #cc6600; }
+        .log-critical { color: #800080; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>🔍 GameEngine Initialization Debug</h1>
+        <p>GameEngine内でのEventStageManager初期化過程を詳細調査</p>
+        
+        <canvas id="gameCanvas" width="400" height="300" style="border: 2px solid #333; background: #e8f4f8;"></canvas>
+        
+        <div>
+            <button onclick="debugGameEngineInitialization()">🔍 GameEngine初期化デバッグ</button>
+            <button onclick="clearLog()">🗑️ ログクリア</button>
+        </div>
+        
+        <div id="log"></div>
+    </div>
+
+    <script type="module">
+        // ===== ログ機能 =====
+        function log(message, type = 'info') {
+            const logElement = document.getElementById('log');
+            const div = document.createElement('div');
+            div.className = `log-${type}`;
+            div.innerHTML = `<strong>[${new Date().toLocaleTimeString()}]</strong> ${message}`;
+            logElement.appendChild(div);
+            logElement.scrollTop = logElement.scrollHeight;
+            console.log(`[${type}] ${message}`);
+        }
+        
+        window.clearLog = function() {
+            document.getElementById('log').innerHTML = '';
+        };
+        
+        window.debugGameEngineInitialization = async function() {
+            log('=== GameEngine初期化デバッグ開始 ===', 'critical');
+            
+            try {
+                // キャッシュ回避でGameEngineをインポート
+                const timestamp = Date.now();
+                const { GameEngine } = await import(`./src/core/GameEngine.js?t=${timestamp}`);
+                log('✅ GameEngineクラスインポート成功', 'success');
+                
+                const canvas = document.getElementById('gameCanvas');
+                
+                // GameEngineコンストラクター実行前にログ監視開始
+                const originalConsoleLog = console.log;
+                const capturedInitLogs = [];
+                
+                console.log = function(...args) {
+                    const message = args.join(' ');
+                    originalConsoleLog.apply(console, args);
+                    
+                    // EventStageManager関連のログを特にキャプチャ
+                    if (message.includes('EventStageManager') || 
+                        message.includes('eventStageManager') ||
+                        message.includes('[DEBUG]')) {
+                        capturedInitLogs.push(message);
+                    }
+                };
+                
+                log('GameEngineコンストラクター実行開始...', 'info');
+                
+                // コンストラクターを段階的に監視
+                const gameEngine = new GameEngine(canvas);
+                
+                log('✅ GameEngineコンストラクター完了', 'success');
+                
+                // ログ監視終了
+                console.log = originalConsoleLog;
+                
+                // キャプチャしたログを表示
+                log('=== 初期化中にキャプチャしたEventStageManager関連ログ ===', 'critical');
+                if (capturedInitLogs.length > 0) {
+                    capturedInitLogs.forEach((logMsg, i) => {
+                        log(`${i+1}. ${logMsg}`, 'info');
+                    });
+                } else {
+                    log('❌ EventStageManager関連のログがキャプチャされませんでした', 'error');
+                }
+                
+                // EventStageManagerの詳細確認
+                log('=== EventStageManager詳細確認 ===', 'critical');
+                
+                if (gameEngine.eventStageManager) {
+                    log('✅ gameEngine.eventStageManager存在', 'success');
+                    
+                    // EventStageManagerのプロパティ詳細確認
+                    const esm = gameEngine.eventStageManager;
+                    log(`constructor.name: ${esm.constructor.name}`, 'info');
+                    log(`toString(): ${esm.toString()}`, 'info');
+                    
+                    // プロトタイプチェーン確認
+                    const prototype = Object.getPrototypeOf(esm);
+                    const protoMethods = Object.getOwnPropertyNames(prototype)
+                        .filter(name => typeof prototype[name] === 'function');
+                    log(`プロトタイプメソッド: ${protoMethods.join(', ')}`, 'info');
+                    
+                    // loadメソッドの詳細確認
+                    const hasLoad = 'load' in esm;
+                    const loadType = typeof esm.load;
+                    log(`loadプロパティ存在: ${hasLoad}`, hasLoad ? 'success' : 'error');
+                    log(`loadタイプ: ${loadType}`, loadType === 'function' ? 'success' : 'error');
+                    
+                    // prototypeにloadメソッドがあるか確認
+                    const protoHasLoad = 'load' in prototype;
+                    log(`プロトタイプにloadメソッド: ${protoHasLoad}`, protoHasLoad ? 'success' : 'error');
+                    
+                    // 実際にloadメソッドを呼び出しテスト
+                    if (typeof esm.load === 'function') {
+                        log('loadメソッド実行テスト...', 'info');
+                        try {
+                            const result = esm.load();
+                            log(`✅ loadメソッド実行成功: ${result}`, 'success');
+                        } catch (loadError) {
+                            log(`❌ loadメソッド実行エラー: ${loadError.message}`, 'error');
+                        }
+                    } else {
+                        log('❌ loadメソッドが関数ではない', 'error');
+                        
+                        // デバッグ情報: loadプロパティの詳細
+                        if ('load' in esm) {
+                            log(`loadプロパティの内容: ${esm.load}`, 'warning');
+                            log(`loadプロパティのconstructor: ${esm.load?.constructor?.name}`, 'warning');
+                        }
+                    }
+                    
+                    // GameEngineInitializerでの確認方法をシミュレート
+                    log('=== GameEngineInitializerでの確認方法シミュレート ===', 'critical');
+                    const initializerCheck = gameEngine.eventStageManager && 
+                                           typeof gameEngine.eventStageManager.load === 'function';
+                    log(`Initializer判定: ${initializerCheck}`, initializerCheck ? 'success' : 'error');
+                    
+                } else {
+                    log('❌ gameEngine.eventStageManagerがnull/undefined', 'error');
+                }
+                
+            } catch (error) {
+                log(`❌ GameEngine初期化デバッグエラー: ${error.message}`, 'error');
+                log(`エラースタック: ${error.stack}`, 'error');
+            }
+        };
+        
+        // ===== 初期化 =====
+        log('GameEngine初期化デバッグ準備完了', 'info');
+        log('EventStageManagerの初期化過程を詳細に追跡します', 'info');
+        log('⚠️ ブラウザコンソール（F12）も確認してください', 'warning');
+    </script>
+</body>
+</html>

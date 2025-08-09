@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Cache Clear Test - Issue #113</title>
+    <style>
+        body {
+            margin: 20px;
+            font-family: monospace;
+            background: #f0f0f0;
+        }
+        
+        #container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background: #007bff;
+            color: white;
+        }
+        
+        #log {
+            margin-top: 20px;
+            background: #f8f8f8;
+            padding: 10px;
+            border-radius: 5px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        
+        .log-info { color: #0066cc; }
+        .log-error { color: #cc0000; font-weight: bold; }
+        .log-success { color: #006600; }
+        .log-warning { color: #cc6600; }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>🔄 Cache Clear Test</h1>
+        <p>キャッシュを回避してEventStageManagerの最新版をテスト</p>
+        
+        <canvas id="gameCanvas" width="400" height="300" style="border: 2px solid #333; background: #e8f4f8;"></canvas>
+        
+        <div>
+            <button onclick="testWithCacheBust()">🔄 キャッシュ回避テスト</button>
+            <button onclick="testEventStageManagerDirect()">🎯 EventStageManager直接テスト</button>
+            <button onclick="clearLog()">🗑️ ログクリア</button>
+        </div>
+        
+        <div id="log"></div>
+    </div>
+
+    <script type="module">
+        // ===== ログ機能 =====
+        function log(message, type = 'info') {
+            const logElement = document.getElementById('log');
+            const div = document.createElement('div');
+            div.className = `log-${type}`;
+            div.innerHTML = `<strong>[${new Date().toLocaleTimeString()}]</strong> ${message}`;
+            logElement.appendChild(div);
+            logElement.scrollTop = logElement.scrollHeight;
+            console.log(`[${type}] ${message}`);
+        }
+        
+        window.clearLog = function() {
+            document.getElementById('log').innerHTML = '';
+        };
+        
+        window.testWithCacheBust = async function() {
+            log('=== キャッシュ回避GameEngineテスト ===', 'info');
+            
+            try {
+                // タイムスタンプを追加してキャッシュを回避
+                const timestamp = Date.now();
+                const gameEngineUrl = `./src/core/GameEngine.js?t=${timestamp}`;
+                
+                log(`キャッシュ回避URL: ${gameEngineUrl}`, 'info');
+                
+                // GameEngineをキャッシュ回避でインポート
+                const { GameEngine } = await import(gameEngineUrl);
+                log('✅ GameEngine キャッシュ回避インポート成功', 'success');
+                
+                const canvas = document.getElementById('gameCanvas');
+                const gameEngine = new GameEngine(canvas);
+                
+                log('✅ GameEngine作成成功', 'success');
+                
+                // EventStageManagerの確認
+                if (gameEngine.eventStageManager) {
+                    log('✅ eventStageManager存在', 'success');
+                    log(`constructor: ${gameEngine.eventStageManager.constructor.name}`, 'info');
+                    
+                    const hasLoad = typeof gameEngine.eventStageManager.load === 'function';
+                    log(`load()メソッド: ${hasLoad ? '✅ 存在' : '❌ 不存在'}`, hasLoad ? 'success' : 'error');
+                    
+                    if (hasLoad) {
+                        log('load()メソッド実行テスト...', 'info');
+                        try {
+                            const result = gameEngine.eventStageManager.load();
+                            log(`✅ load()実行成功: ${result}`, 'success');
+                        } catch (error) {
+                            log(`❌ load()実行エラー: ${error.message}`, 'error');
+                        }
+                    }
+                } else {
+                    log('❌ eventStageManagerがnull', 'error');
+                }
+                
+            } catch (error) {
+                log(`❌ キャッシュ回避テストエラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.testEventStageManagerDirect = async function() {
+            log('=== EventStageManager直接テスト ===', 'info');
+            
+            try {
+                // EventStageManagerを直接インポート（キャッシュ回避）
+                const timestamp = Date.now();
+                const eventStageManagerUrl = `./src/core/EventStageManager.js?t=${timestamp}`;
+                
+                log(`EventStageManager直接インポート: ${eventStageManagerUrl}`, 'info');
+                
+                const { EventStageManager } = await import(eventStageManagerUrl);
+                log('✅ EventStageManager直接インポート成功', 'success');
+                
+                // モックGameEngineで初期化
+                const mockGameEngine = { 
+                    canvas: document.getElementById('gameCanvas'),
+                    context: document.getElementById('gameCanvas').getContext('2d')
+                };
+                
+                const eventStageManager = new EventStageManager(mockGameEngine);
+                log('✅ EventStageManagerインスタンス作成成功', 'success');
+                
+                // loadメソッドの確認
+                const hasLoad = typeof eventStageManager.load === 'function';
+                log(`loadメソッド存在: ${hasLoad ? '✅ YES' : '❌ NO'}`, hasLoad ? 'success' : 'error');
+                
+                if (hasLoad) {
+                    log('loadメソッド実行テスト...', 'info');
+                    try {
+                        const result = eventStageManager.load();
+                        log(`✅ loadメソッド実行成功: ${result}`, 'success');
+                        log('コンソールでEventStageManager.load()のDEBUGログを確認してください', 'warning');
+                    } catch (error) {
+                        log(`❌ loadメソッド実行エラー: ${error.message}`, 'error');
+                    }
+                }
+                
+                // クラスのメソッド一覧表示
+                const methods = Object.getOwnPropertyNames(EventStageManager.prototype)
+                    .filter(name => typeof EventStageManager.prototype[name] === 'function');
+                log(`EventStageManagerメソッド一覧: ${methods.join(', ')}`, 'info');
+                
+            } catch (error) {
+                log(`❌ EventStageManager直接テストエラー: ${error.message}`, 'error');
+            }
+        };
+        
+        // ===== 初期化 =====
+        log('Cache Clear Test 準備完了', 'info');
+        log('📋 テスト手順:', 'info');
+        log('1. キャッシュ回避テスト: GameEngine全体でテスト', 'info');
+        log('2. EventStageManager直接テスト: EventStageManagerのみテスト', 'info');
+        log('⚠️ ブラウザコンソール（F12）も確認してください', 'warning');
+    </script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>File Content Debug - Issue #113</title>
+    <style>
+        body {
+            margin: 20px;
+            font-family: monospace;
+            background: #f0f0f0;
+        }
+        
+        #container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background: #007bff;
+            color: white;
+        }
+        
+        #log {
+            margin-top: 20px;
+            background: #f8f8f8;
+            padding: 10px;
+            border-radius: 5px;
+            max-height: 500px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 11px;
+            white-space: pre-wrap;
+        }
+        
+        .log-info { color: #0066cc; }
+        .log-error { color: #cc0000; font-weight: bold; }
+        .log-success { color: #006600; }
+        .log-warning { color: #cc6600; }
+        .log-critical { color: #800080; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>🔍 File Content Debug</h1>
+        <p>ブラウザが実際に読み込んでいるファイル内容を確認</p>
+        
+        <div>
+            <button onclick="fetchEventStageManagerContent()">📄 EventStageManagerファイル内容確認</button>
+            <button onclick="clearLog()">🗑️ ログクリア</button>
+        </div>
+        
+        <div id="log"></div>
+    </div>
+
+    <script>
+        // ===== ログ機能 =====
+        function log(message, type = 'info') {
+            const logElement = document.getElementById('log');
+            const div = document.createElement('div');
+            div.className = `log-${type}`;
+            div.innerHTML = `<strong>[${new Date().toLocaleTimeString()}]</strong> ${message}`;
+            logElement.appendChild(div);
+            logElement.scrollTop = logElement.scrollHeight;
+            console.log(`[${type}] ${message}`);
+        }
+        
+        window.clearLog = function() {
+            document.getElementById('log').innerHTML = '';
+        };
+        
+        window.fetchEventStageManagerContent = async function() {
+            log('=== EventStageManagerファイル内容確認開始 ===', 'critical');
+            
+            try {
+                // EventStageManagerファイルを直接fetch
+                const timestamp = Date.now();
+                const response = await fetch(`./src/core/EventStageManager.js?t=${timestamp}`);
+                
+                if (!response.ok) {
+                    log(`❌ ファイル取得エラー: ${response.status} ${response.statusText}`, 'error');
+                    return;
+                }
+                
+                const fileContent = await response.text();
+                log('✅ EventStageManagerファイル内容取得成功', 'success');
+                log(`ファイルサイズ: ${fileContent.length} 文字`, 'info');
+                
+                // loadメソッドの存在確認
+                const hasLoadMethod = fileContent.includes('load() {');
+                log(`loadメソッド存在: ${hasLoadMethod ? '✅ YES' : '❌ NO'}`, hasLoadMethod ? 'success' : 'error');
+                
+                // バージョン識別子の確認
+                const hasVersionId = fileContent.includes('v2024-with-load-method');
+                log(`バージョン識別子存在: ${hasVersionId ? '✅ YES' : '❌ NO'}`, hasVersionId ? 'success' : 'error');
+                
+                // loadメソッド周辺のコードを抽出
+                const loadMethodMatch = fileContent.match(/load\(\)\s*\{[\s\S]*?\n\s*\}/);
+                if (loadMethodMatch) {
+                    log('=== loadメソッドコード ===', 'critical');
+                    log(loadMethodMatch[0], 'info');
+                } else {
+                    log('❌ loadメソッドコードが見つかりません', 'error');
+                }
+                
+                // コンストラクター部分を抽出してバージョンログを確認
+                const constructorMatch = fileContent.match(/constructor\([\s\S]*?\n\s*\}/);
+                if (constructorMatch) {
+                    log('=== コンストラクター部分 ===', 'critical');
+                    const constructorCode = constructorMatch[0];
+                    log(constructorCode, 'info');
+                    
+                    const hasVersionLog = constructorCode.includes('v2024-with-load-method');
+                    log(`コンストラクター内バージョンログ: ${hasVersionLog ? '✅ YES' : '❌ NO'}`, hasVersionLog ? 'success' : 'error');
+                }
+                
+                // ファイルの最初の20行を表示
+                log('=== ファイル先頭部分 ===', 'critical');
+                const lines = fileContent.split('\n');
+                const firstLines = lines.slice(0, 20).join('\n');
+                log(firstLines, 'info');
+                
+                // ファイルの最後の10行を表示
+                log('=== ファイル末尾部分 ===', 'critical');
+                const lastLines = lines.slice(-10).join('\n');
+                log(lastLines, 'info');
+                
+            } catch (error) {
+                log(`❌ EventStageManagerファイル内容確認エラー: ${error.message}`, 'error');
+            }
+        };
+        
+        // ===== 初期化 =====
+        log('File Content Debug 準備完了', 'info');
+        log('ブラウザが実際に読み込むファイル内容を確認します', 'info');
+    </script>
+</body>
+</html>

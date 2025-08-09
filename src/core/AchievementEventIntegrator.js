@@ -124,7 +124,11 @@ export class AchievementEventIntegrator {
     integrateGameScene() {
         const gameScene = this.gameEngine.sceneManager?.scenes?.game;
         if (!gameScene) {
-            console.warn('GameScene not found during integration');
+            console.debug('GameScene not found during integration - will retry later');
+            // 遅延統合：1秒後に再試行
+            setTimeout(() => {
+                this.integrateGameScene();
+            }, 1000);
             return;
         }
         

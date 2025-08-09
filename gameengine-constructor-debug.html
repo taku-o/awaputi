@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>GameEngine Constructor Debug - Issue #113</title>
+    <style>
+        body {
+            margin: 20px;
+            font-family: monospace;
+            background: #f0f0f0;
+        }
+        
+        #container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background: #007bff;
+            color: white;
+        }
+        
+        #log {
+            margin-top: 20px;
+            background: #f8f8f8;
+            padding: 10px;
+            border-radius: 5px;
+            max-height: 600px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        
+        .log-info { color: #0066cc; }
+        .log-error { color: #cc0000; font-weight: bold; }
+        .log-success { color: #006600; }
+        .log-warning { color: #cc6600; }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>🔧 GameEngine Constructor Debug</h1>
+        <p>GameEngineコンストラクター内のDEBUGログに焦点を当てた調査</p>
+        
+        <canvas id="gameCanvas" width="400" height="300" style="border: 2px solid #333; background: #e8f4f8;"></canvas>
+        
+        <div>
+            <button onclick="debugGameEngineConstructor()">🔍 GameEngineコンストラクター実行</button>
+            <button onclick="clearLog()">🗑️ ログクリア</button>
+        </div>
+        
+        <div id="log"></div>
+    </div>
+
+    <script type="module">
+        // ===== ログ機能 =====
+        function log(message, type = 'info') {
+            const logElement = document.getElementById('log');
+            const div = document.createElement('div');
+            div.className = `log-${type}`;
+            div.innerHTML = `<strong>[${new Date().toLocaleTimeString()}]</strong> ${message}`;
+            logElement.appendChild(div);
+            logElement.scrollTop = logElement.scrollHeight;
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+        
+        window.clearLog = function() {
+            document.getElementById('log').innerHTML = '';
+        };
+        
+        window.debugGameEngineConstructor = async function() {
+            log('=== GameEngineコンストラクターデバッグ開始 ===', 'info');
+            
+            // より詳細なログキャプチャ
+            const originalConsoleLog = console.log;
+            const originalConsoleError = console.error;
+            const originalConsoleWarn = console.warn;
+            
+            const capturedLogs = {
+                log: [],
+                error: [],
+                warn: []
+            };
+            
+            console.log = function(...args) {
+                const message = args.join(' ');
+                capturedLogs.log.push(message);
+                originalConsoleLog.apply(console, args);
+                
+                // [DEBUG]ログは特別に表示
+                if (message.includes('[DEBUG]')) {
+                    log(`✅ キャプチャ: ${message}`, 'success');
+                }
+            };
+            
+            console.error = function(...args) {
+                const message = args.join(' ');
+                capturedLogs.error.push(message);
+                originalConsoleError.apply(console, args);
+                log(`❌ エラー: ${message}`, 'error');
+            };
+            
+            console.warn = function(...args) {
+                const message = args.join(' ');
+                capturedLogs.warn.push(message);
+                originalConsoleWarn.apply(console, args);
+                log(`⚠️ 警告: ${message}`, 'warning');
+            };
+            
+            try {
+                log('GameEngineクラスのインポート中...', 'info');
+                const { GameEngine } = await import('./src/core/GameEngine.js');
+                log('✅ GameEngineクラスインポート成功', 'success');
+                
+                log('GameEngineコンストラクター呼び出し開始...', 'info');
+                const canvas = document.getElementById('gameCanvas');
+                
+                // コンストラクター実行
+                const gameEngine = new GameEngine(canvas);
+                
+                log('✅ GameEngineコンストラクター完了', 'success');
+                
+                // 主要プロパティの状況確認
+                const components = [
+                    { name: 'canvas', obj: gameEngine.canvas },
+                    { name: 'context', obj: gameEngine.context },
+                    { name: 'initializer', obj: gameEngine.initializer },
+                    { name: 'eventManager', obj: gameEngine.eventManager },
+                    { name: 'renderer', obj: gameEngine.renderer },
+                    { name: 'utilities', obj: gameEngine.utilities },
+                    { name: 'playerData', obj: gameEngine.playerData },
+                    { name: 'bubbleManager', obj: gameEngine.bubbleManager },
+                    { name: 'stageManager', obj: gameEngine.stageManager },
+                    { name: 'sceneManager', obj: gameEngine.sceneManager },
+                    { name: 'scoreManager', obj: gameEngine.scoreManager }
+                ];
+                
+                log('=== 主要コンポーネント状況 ===', 'info');
+                components.forEach(comp => {
+                    if (comp.obj) {
+                        log(`✅ ${comp.name}: 正常`, 'success');
+                    } else {
+                        log(`❌ ${comp.name}: NULL/UNDEFINED`, 'error');
+                    }
+                });
+                
+                // initializeScenes() の状況確認
+                log('=== initializeScenes()の実行状況確認 ===', 'info');
+                if (gameEngine.initializer && typeof gameEngine.initializer.initializeScenes === 'function') {
+                    log('initializeScenes()は非同期で実行中です。コンソールで[DEBUG]ログを確認してください。', 'info');
+                } else {
+                    log('❌ initializeScenes()メソッドが利用できません', 'error');
+                }
+                
+            } catch (error) {
+                log(`❌ GameEngineコンストラクターエラー: ${error.message}`, 'error');
+                log(`エラータイプ: ${error.name}`, 'error');
+                log(`エラースタック: ${error.stack}`, 'error');
+            } finally {
+                // ログ機能を復元
+                console.log = originalConsoleLog;
+                console.error = originalConsoleError;
+                console.warn = originalConsoleWarn;
+                
+                // キャプチャしたログの要約
+                setTimeout(() => {
+                    log('=== キャプチャしたログ統計 ===', 'info');
+                    log(`通常ログ: ${capturedLogs.log.length}件`, 'info');
+                    log(`エラー: ${capturedLogs.error.length}件`, capturedLogs.error.length > 0 ? 'error' : 'success');
+                    log(`警告: ${capturedLogs.warn.length}件`, capturedLogs.warn.length > 0 ? 'warning' : 'success');
+                    
+                    // DEBUGログの詳細表示
+                    const debugLogs = capturedLogs.log.filter(msg => msg.includes('[DEBUG]'));
+                    log(`[DEBUG]ログ: ${debugLogs.length}件`, debugLogs.length > 0 ? 'success' : 'warning');
+                    
+                    // 最初の数件のDEBUGログを表示
+                    if (debugLogs.length > 0) {
+                        log('最初の5件の[DEBUG]ログ:', 'info');
+                        debugLogs.slice(0, 5).forEach((debugLog, i) => {
+                            log(`  ${i+1}. ${debugLog}`, 'info');
+                        });
+                        
+                        if (debugLogs.length > 5) {
+                            log(`  ... 他${debugLogs.length - 5}件`, 'info');
+                        }
+                    }
+                    
+                    // エラーの詳細表示
+                    if (capturedLogs.error.length > 0) {
+                        log('キャプチャしたエラー:', 'error');
+                        capturedLogs.error.forEach((errorLog, i) => {
+                            log(`  ${i+1}. ${errorLog}`, 'error');
+                        });
+                    }
+                }, 2000);
+            }
+        };
+        
+        // ===== 初期化 =====
+        log('GameEngineコンストラクターデバッグ準備完了', 'info');
+        log('「GameEngineコンストラクター実行」をクリックしてデバッグ開始', 'info');
+        log('ブラウザコンソールでも[DEBUG]ログを確認してください', 'warning');
+    </script>
+</body>
+</html>

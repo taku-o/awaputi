@@ -44,9 +44,22 @@ export class Equalizer {
      */
     initialize() {
         try {
+            // AudioContextの存在確認
+            if (!this.audioContext) {
+                throw new Error('AudioContext not provided');
+            }
+            
             // バイパス制御用のゲインノード
             this.bypassGain = this.audioContext.createGain();
             this.eqGain = this.audioContext.createGain();
+            
+            // ゲインノードの初期設定
+            if (this.bypassGain) {
+                this.bypassGain.gain.value = 1.0;
+            }
+            if (this.eqGain) {
+                this.eqGain.gain.value = 0.0;
+            }
             
             // 各周波数帯域のフィルターを作成
             this.filters = this.bands.map((band, index) => {
@@ -86,17 +99,28 @@ export class Equalizer {
      */
     connectFilters() {
         try {
+            // AudioNode の存在確認
+            if (!this.inputNode || !this.eqGain || !this.bypassGain) {
+                console.warn('Equalizer: Required AudioNodes not initialized');
+                return;
+            }
+            
             // 入力 -> 最初のフィルター
             if (this.filters.length > 0) {
                 this.inputNode.connect(this.filters[0].filter);
                 
                 // フィルター間の接続
                 for (let i = 0; i < this.filters.length - 1; i++) {
-                    this.filters[i].filter.connect(this.filters[i + 1].filter);
+                    if (this.filters[i].filter && this.filters[i + 1].filter) {
+                        this.filters[i].filter.connect(this.filters[i + 1].filter);
+                    }
                 }
                 
                 // 最後のフィルター -> EQゲイン -> 出力
-                this.filters[this.filters.length - 1].filter.connect(this.eqGain);
+                const lastFilter = this.filters[this.filters.length - 1];
+                if (lastFilter && lastFilter.filter) {
+                    lastFilter.filter.connect(this.eqGain);
+                }
             } else {
                 // フィルターがない場合は直接接続
                 this.inputNode.connect(this.eqGain);
@@ -211,14 +235,18 @@ export class Equalizer {
             
             if (this.isEnabled) {
                 // イコライザー有効: EQ経路を使用
-                this.eqGain.gain.value = 1.0;
-                this.bypassGain.gain.value = 0.0;
-                this.eqGain.connect(this.outputNode);
+                if (this.eqGain && this.outputNode) {
+                    this.eqGain.gain.value = 1.0;
+                    this.bypassGain.gain.value = 0.0;
+                    this.eqGain.connect(this.outputNode);
+                }
             } else {
                 // イコライザー無効: バイパス経路を使用
-                this.eqGain.gain.value = 0.0;
-                this.bypassGain.gain.value = 1.0;
-                this.bypassGain.connect(this.outputNode);
+                if (this.bypassGain && this.outputNode) {
+                    this.eqGain.gain.value = 0.0;
+                    this.bypassGain.gain.value = 1.0;
+                    this.bypassGain.connect(this.outputNode);
+                }
             }
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {
@@ -525,22 +553,42 @@ export class Equalizer {
             // 設定監視の解除
             if (this.configWatchers) {
                 this.configWatchers.forEach(watchId => {
-                    this.configManager.unwatch(watchId);
+                    try {
+                        this.configManager.unwatch(watchId);
+                    } catch (error) {
+                        console.warn('Failed to unwatch config:', error.message);
+                    }
                 });
                 this.configWatchers.clear();
             }
             
             // フィルターを切断
-            this.filters.forEach(filterData => {
-                filterData.filter.disconnect();
-            });
+            if (this.filters && Array.isArray(this.filters)) {
+                this.filters.forEach(filterData => {
+                    try {
+                        if (filterData && filterData.filter) {
+                            filterData.filter.disconnect();
+                        }
+                    } catch (error) {
+                        console.warn('Failed to disconnect filter:', error.message);
+                    }
+                });
+            }
             
             // ゲインノードを切断
             if (this.bypassGain) {
-                this.bypassGain.disconnect();
+                try {
+                    this.bypassGain.disconnect();
+                } catch (error) {
+                    console.warn('Failed to disconnect bypassGain:', error.message);
+                }
             }
             if (this.eqGain) {
-                this.eqGain.disconnect();
+                try {
+                    this.eqGain.disconnect();
+                } catch (error) {
+                    console.warn('Failed to disconnect eqGain:', error.message);
+                }
             }
             
             this.filters = [];

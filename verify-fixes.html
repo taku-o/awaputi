@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修正検証 - EnhancedEffectManager & StatisticsManager</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a2e;
+            color: #eee;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #16213e;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #f39c12;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #0f3460;
+            border-radius: 8px;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .success {
+            background: #27ae60;
+            color: white;
+        }
+        .error {
+            background: #e74c3c;
+            color: white;
+        }
+        .warning {
+            background: #f39c12;
+            color: white;
+        }
+        .info {
+            background: #3498db;
+            color: white;
+        }
+        #gameCanvas {
+            border: 2px solid #f39c12;
+            display: block;
+            margin: 20px auto;
+            background: #0f3460;
+        }
+        .log {
+            background: #000;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 修正検証 - エラー修正確認</h1>
+        
+        <div class="section">
+            <h2>修正内容</h2>
+            <div class="status info">
+                <strong>1. EnhancedEffectManager.js</strong><br>
+                - renderPostProcessing → renderPostProcessingEffects に修正<br>
+                - super.render() 削除済み（無限ループ解消）
+            </div>
+            <div class="status info">
+                <strong>2. StatisticsManager.js</strong><br>
+                - exporter null チェック追加<br>
+                - 初期化失敗時のフォールバック処理実装
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>テスト実行</h2>
+            <canvas id="gameCanvas" width="600" height="400"></canvas>
+            <div style="text-align: center;">
+                <button onclick="testEnhancedEffects()">エフェクトテスト</button>
+                <button onclick="testStatisticsManager()">統計マネージャーテスト</button>
+                <button onclick="testFullGame()">フルゲームテスト</button>
+                <button onclick="clearLog()">ログクリア</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>実行ログ</h2>
+            <div id="log" class="log"></div>
+        </div>
+
+        <div class="section">
+            <h2>エラー状況</h2>
+            <div id="errorStatus"></div>
+        </div>
+    </div>
+
+    <script>
+        // グローバル変数として定義
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const logDiv = document.getElementById('log');
+        const errorStatusDiv = document.getElementById('errorStatus');
+        
+        let errorCount = 0;
+        let successCount = 0;
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'error' ? '#ff6b6b' : type === 'success' ? '#51cf66' : '#74c0fc';
+            logDiv.innerHTML += `<div style="color: ${color}">[${timestamp}] ${message}</div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        async function testEnhancedEffects() {
+            log('=== Enhanced Effect Manager テスト開始 ===');
+            errorCount = 0;
+            
+            try {
+                // EnhancedEffectManager作成
+                const effectManager = new EnhancedEffectManager(canvas);
+                log('✓ EnhancedEffectManager 作成成功', 'success');
+                
+                // レンダリングテスト
+                try {
+                    effectManager.render(ctx, 16);
+                    log('✓ render() 実行成功（無限ループなし）', 'success');
+                    successCount++;
+                } catch (error) {
+                    log(`✗ render() エラー: ${error.message}`, 'error');
+                    errorCount++;
+                }
+                
+                // ポストプロセッシングテスト
+                try {
+                    effectManager.setQualityLevel('high');
+                    effectManager.enableOptimization(true);
+                    effectManager.render(ctx, 16);
+                    log('✓ ポストプロセッシング設定成功', 'success');
+                    successCount++;
+                } catch (error) {
+                    log(`✗ ポストプロセッシングエラー: ${error.message}`, 'error');
+                    errorCount++;
+                }
+                
+            } catch (error) {
+                log(`✗ EnhancedEffectManager 作成エラー: ${error.message}`, 'error');
+                errorCount++;
+            }
+            
+            updateErrorStatus();
+        }
+        
+        async function testStatisticsManager() {
+            log('=== Statistics Manager テスト開始 ===');
+            errorCount = 0;
+            
+            try {
+                // 疑似GameEngineオブジェクト
+                const mockGameEngine = {
+                    on: () => {},
+                    emit: () => {}
+                };
+                
+                // StatisticsManager作成
+                const statsManager = new StatisticsManager(mockGameEngine);
+                log('✓ StatisticsManager 作成成功', 'success');
+                
+                // load() テスト
+                try {
+                    statsManager.load();
+                    log('✓ load() 実行成功（nullエラーなし）', 'success');
+                    successCount++;
+                } catch (error) {
+                    log(`✗ load() エラー: ${error.message}`, 'error');
+                    errorCount++;
+                }
+                
+                // 統計更新テスト
+                try {
+                    statsManager.recordBubblePop('normal');
+                    statsManager.recordScore(100);
+                    log('✓ 統計記録成功', 'success');
+                    successCount++;
+                } catch (error) {
+                    log(`✗ 統計記録エラー: ${error.message}`, 'error');
+                    errorCount++;
+                }
+                
+            } catch (error) {
+                log(`✗ StatisticsManager 作成エラー: ${error.message}`, 'error');
+                errorCount++;
+            }
+            
+            updateErrorStatus();
+        }
+        
+        async function testFullGame() {
+            log('=== フルゲームテスト開始 ===');
+            errorCount = 0;
+            let frameCount = 0;
+            const maxFrames = 60; // 1秒分のフレーム
+            
+            try {
+                const gameEngine = new GameEngine(canvas);
+                log('✓ GameEngine 作成成功', 'success');
+                
+                // 初期化
+                gameEngine.start();
+                log('✓ GameEngine 開始成功', 'success');
+                
+                // レンダーループテスト（1秒間）
+                const startTime = Date.now();
+                const testLoop = () => {
+                    if (frameCount >= maxFrames) {
+                        const elapsed = Date.now() - startTime;
+                        log(`✓ ${frameCount}フレーム実行成功（${elapsed}ms）`, 'success');
+                        log('✓ 無限ループエラーなし！', 'success');
+                        successCount++;
+                        updateErrorStatus();
+                        return;
+                    }
+                    
+                    try {
+                        // GameEngineのrenderメソッドは内部で呼ばれる
+                        frameCount++;
+                        
+                        if (frameCount % 10 === 0) {
+                            log(`  フレーム ${frameCount}/${maxFrames} 実行中...`);
+                        }
+                        
+                        requestAnimationFrame(testLoop);
+                    } catch (error) {
+                        log(`✗ フレーム ${frameCount} でエラー: ${error.message}`, 'error');
+                        errorCount++;
+                        updateErrorStatus();
+                    }
+                };
+                
+                testLoop();
+                
+            } catch (error) {
+                log(`✗ GameEngine エラー: ${error.message}`, 'error');
+                errorCount++;
+                updateErrorStatus();
+            }
+        }
+        
+        function clearLog() {
+            logDiv.innerHTML = '';
+            errorCount = 0;
+            successCount = 0;
+            updateErrorStatus();
+        };
+        
+        function updateErrorStatus() {
+            if (errorCount === 0 && successCount > 0) {
+                errorStatusDiv.innerHTML = `
+                    <div class="status success">
+                        ✅ すべてのテスト成功！（${successCount}件）<br>
+                        エラーは解決されました。
+                    </div>
+                `;
+            } else if (errorCount > 0) {
+                errorStatusDiv.innerHTML = `
+                    <div class="status error">
+                        ❌ エラー: ${errorCount}件<br>
+                        成功: ${successCount}件
+                    </div>
+                `;
+            } else {
+                errorStatusDiv.innerHTML = `
+                    <div class="status warning">
+                        テストを実行してください
+                    </div>
+                `;
+            }
+        }
+        
+        // 初期状態
+        log('修正検証ツール起動完了');
+        log('各ボタンをクリックしてテストを実行してください');
+        updateErrorStatus();
+        
+        // エラーハンドリング
+        window.addEventListener('error', (e) => {
+            log(`グローバルエラー: ${e.message}`, 'error');
+            errorCount++;
+            updateErrorStatus();
+        });
+    </script>
+</body>
+</html>

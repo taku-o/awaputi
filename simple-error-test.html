@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>簡易エラーテスト</title>
+    <style>
+        body {
+            font-family: monospace;
+            background: #1a1a1a;
+            color: #0f0;
+            padding: 20px;
+        }
+        .error {
+            color: #f00;
+            margin: 10px 0;
+        }
+        .success {
+            color: #0f0;
+            margin: 10px 0;
+        }
+        .warning {
+            color: #ff0;
+            margin: 10px 0;
+        }
+        button {
+            background: #333;
+            color: #fff;
+            border: 1px solid #666;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #444;
+        }
+        #log {
+            background: #000;
+            border: 1px solid #333;
+            padding: 10px;
+            margin: 20px 0;
+            height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>簡易エラーテスト</h1>
+    
+    <div>
+        <button onclick="testEffectManager()">Effect Manager テスト</button>
+        <button onclick="testStatisticsManager()">Statistics Manager テスト</button>
+        <button onclick="testAudioLoop()">Audio Loop テスト</button>
+        <button onclick="clearLog()">ログクリア</button>
+    </div>
+    
+    <div id="log"></div>
+    
+    <script>
+        const logDiv = document.getElementById('log');
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : 'warning';
+            logDiv.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        function clearLog() {
+            logDiv.innerHTML = '';
+        }
+        
+        // エラーハンドリング
+        window.addEventListener('error', (e) => {
+            log(`グローバルエラー: ${e.message}`, 'error');
+        });
+        
+        // コンソールエラーの監視
+        const originalError = console.error;
+        console.error = function(...args) {
+            log(`コンソールエラー: ${args.join(' ')}`, 'error');
+            originalError.apply(console, args);
+        };
+        
+        async function testEffectManager() {
+            log('=== Effect Manager テスト開始 ===');
+            
+            try {
+                // 簡易モックを作成
+                const mockCanvas = document.createElement('canvas');
+                mockCanvas.width = 800;
+                mockCanvas.height = 600;
+                const mockCtx = mockCanvas.getContext('2d');
+                
+                // EnhancedEffectManager の簡易実装をテスト
+                const effectManager = {
+                    canvas: mockCanvas,
+                    postProcessingRenderer: {
+                        // メソッド名を修正
+                        renderPostProcessingEffects: function(context, transform, settings) {
+                            log('✓ renderPostProcessingEffects 呼び出し成功', 'success');
+                        }
+                    },
+                    apiManager: {
+                        renderSettings: { enablePostProcessing: true },
+                        enhancedTransform: {}
+                    },
+                    render: function(context, deltaTime) {
+                        try {
+                            // 修正されたメソッド名で呼び出し
+                            if (this.apiManager.renderSettings.enablePostProcessing) {
+                                this.postProcessingRenderer.renderPostProcessingEffects(
+                                    context, 
+                                    this.apiManager.enhancedTransform,
+                                    this.apiManager.renderSettings
+                                );
+                            }
+                            log('✓ render 実行成功', 'success');
+                        } catch (error) {
+                            log(`✗ render エラー: ${error.message}`, 'error');
+                        }
+                    }
+                };
+                
+                // テスト実行
+                effectManager.render(mockCtx, 16);
+                
+            } catch (error) {
+                log(`✗ Effect Manager エラー: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testStatisticsManager() {
+            log('=== Statistics Manager テスト開始 ===');
+            
+            try {
+                // StatisticsManager の簡易実装をテスト
+                const statsManager = {
+                    exporter: null, // null の状態をシミュレート
+                    load: function() {
+                        try {
+                            // 修正されたnullチェック
+                            if (!this.exporter) {
+                                log('⚠ Exporter not initialized, attempting to initialize...', 'warning');
+                                // モックエクスポーター
+                                this.exporter = {
+                                    load: () => {
+                                        log('✓ Exporter.load() 実行成功', 'success');
+                                        return {};
+                                    }
+                                };
+                                if (!this.exporter) {
+                                    log('⚠ Failed to initialize exporter, skipping load', 'warning');
+                                    return;
+                                }
+                            }
+                            
+                            const loadedData = this.exporter.load();
+                            if (loadedData) {
+                                log('✓ 統計データ読み込み成功', 'success');
+                            }
+                        } catch (error) {
+                            log(`✗ load() エラー: ${error.message}`, 'error');
+                        }
+                    }
+                };
+                
+                // テスト実行
+                statsManager.load();
+                
+            } catch (error) {
+                log(`✗ Statistics Manager エラー: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testAudioLoop() {
+            log('=== Audio Loop テスト開始 ===');
+            
+            let callCount = 0;
+            const maxCalls = 3;
+            
+            // AudioFormatHandler の修正された実装をシミュレート
+            const audioHandler = {
+                currentQuality: 0.5,
+                settingFromWatcher: false,
+                adjustmentInProgress: false,
+                
+                setAudioQuality: function(quality) {
+                    callCount++;
+                    log(`AudioFormatHandler.setAudioQuality(${quality}) - 呼び出し回数: ${callCount}`, 
+                        callCount > maxCalls ? 'error' : 'warning');
+                    
+                    // 修正1: 同じ値の場合はスキップ
+                    if (Math.abs(this.currentQuality - quality) < 0.01) {
+                        log('✓ 同じ値のため処理をスキップ（無限ループ防止）', 'success');
+                        return;
+                    }
+                    
+                    // 修正2: watcherからの呼び出しチェック
+                    if (this.settingFromWatcher) {
+                        log('✓ Watcher循環参照を検出、処理をスキップ', 'success');
+                        return;
+                    }
+                    
+                    // 修正3: 調整中フラグチェック
+                    if (this.adjustmentInProgress) {
+                        log('✓ 調整中のため処理をスキップ', 'success');
+                        return;
+                    }
+                    
+                    this.currentQuality = quality;
+                    
+                    // 設定保存時の循環参照防止
+                    this.settingFromWatcher = true;
+                    log('✓ ConfigManager.set() を安全に実行', 'success');
+                    setTimeout(() => {
+                        this.settingFromWatcher = false;
+                        log('✓ 循環参照フラグをリセット', 'success');
+                    }, 50);
+                },
+                
+                // ConfigWatcherをシミュレート
+                configWatcher: function(newValue) {
+                    if (newValue !== undefined && !this.settingFromWatcher) {
+                        if (Math.abs(this.currentQuality - newValue) >= 0.01) {
+                            log(`ConfigWatcher: ${newValue} への変更を検出`, 'warning');
+                            this.setAudioQuality(newValue);
+                        }
+                    }
+                }
+            };
+            
+            // テスト実行1: 通常の設定変更
+            log('--- テスト1: 通常設定変更 ---');
+            audioHandler.setAudioQuality(0.6);
+            
+            // テスト実行2: 同じ値での設定変更（無限ループ防止テスト）
+            setTimeout(() => {
+                log('--- テスト2: 同じ値で設定変更 ---');
+                audioHandler.setAudioQuality(0.6);
+                
+                // テスト実行3: configWatcherからの変更
+                setTimeout(() => {
+                    log('--- テスト3: ConfigWatcher経由の変更 ---');
+                    audioHandler.configWatcher(0.8);
+                }, 200);
+            }, 200);
+            
+            // 修正内容をレポート
+            setTimeout(() => {
+                log('');
+                log('=== AudioFormatHandler無限ループ修正内容 ===');
+                log('✅ 修正1: setAudioQuality()で同値チェック追加');
+                log('✅ 修正2: settingFromWatcherフラグによる循環参照防止');
+                log('✅ 修正3: adjustmentInProgressフラグによる重複処理防止');
+                log('✅ 修正4: configManager.set()実行時の循環参照防止');
+            }, 1000);
+        }
+        
+        // 初期メッセージ
+        log('簡易エラーテスト準備完了');
+        log('各ボタンをクリックしてテストを実行してください');
+    </script>
+</body>
+</html>

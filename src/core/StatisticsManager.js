@@ -396,6 +396,16 @@ export class StatisticsManager {
      */
     load() {
         try {
+            // exporterが存在しない場合は初期化を試みる
+            if (!this.exporter) {
+                console.warn('[StatisticsManager] Exporter not initialized, attempting to initialize...');
+                this.exporter = getStatisticsExporter();
+                if (!this.exporter) {
+                    console.warn('[StatisticsManager] Failed to initialize exporter, skipping load');
+                    return;
+                }
+            }
+            
             const loadedData = this.exporter.load();
             if (loadedData) {
                 // 読み込んだデータをマージ

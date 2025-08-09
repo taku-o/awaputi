@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>最小ゲームテスト</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #1a1a2e;
+            color: white;
+            font-family: monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        canvas {
+            border: 2px solid #f39c12;
+            background: #16213e;
+        }
+        #status {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.8);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+        .success { color: #27ae60; }
+        .error { color: #e74c3c; }
+        .warning { color: #f39c12; }
+    </style>
+</head>
+<body>
+    <div id="status">最小ゲーム初期化中...</div>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+    <script type="module">
+        const status = document.getElementById('status');
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function log(message, type = 'info') {
+            const color = type === 'error' ? 'error' : type === 'success' ? 'success' : 'warning';
+            status.innerHTML += `<div class="${color}">[${new Date().toLocaleTimeString()}] ${message}</div>`;
+            console.log(message);
+        }
+
+        try {
+            log('✓ Canvas初期化成功', 'success');
+            log('✓ Context取得成功', 'success');
+
+            // GameEngineを動的インポート
+            log('GameEngine読み込み開始...');
+            const gameEngineModule = await import('./src/core/GameEngine.js');
+            log('✓ GameEngine読み込み成功', 'success');
+
+            if (gameEngineModule.GameEngine) {
+                log('✓ GameEngineクラス取得成功', 'success');
+                
+                const gameEngine = new gameEngineModule.GameEngine(canvas);
+                log('✓ GameEngineインスタンス作成成功', 'success');
+                
+                gameEngine.start();
+                log('✓ GameEngine.start()実行成功', 'success');
+                log('🎮 ゲーム起動完了！', 'success');
+                
+            } else {
+                log('✗ GameEngineクラスが見つかりません', 'error');
+            }
+
+        } catch (error) {
+            log(`✗ エラー: ${error.message}`, 'error');
+            console.error('詳細エラー:', error);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Step 2: 座標変換修正版</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+        }
+        
+        #gameContainer {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        #gameCanvas {
+            border: 2px solid #333;
+            background: #e8f4f8;
+            cursor: crosshair;
+        }
+        
+        #gameInfo {
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background: #007bff;
+            color: white;
+        }
+        
+        button:hover {
+            background: #0056b3;
+        }
+        
+        #log {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            max-height: 150px;
+            overflow-y: auto;
+            text-align: left;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        
+        .hit { color: #28a745; font-weight: bold; }
+        .miss { color: #dc3545; }
+        .info { color: #007bff; }
+        .success { color: #28a745; font-weight: bold; }
+        .coordinate { color: #6f42c1; }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <h1>🎯 Step 2: 座標変換修正版</h1>
+        <p>座標変換問題を修正したバブル当たり判定</p>
+        
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        
+        <div id="gameInfo">
+            <div>スコア: <span id="score">0</span></div>
+            <div>バブル数: <span id="bubbleCount">0</span></div>
+            <div>命中率: <span id="hitRate">0%</span></div>
+            <div>座標テスト: <span id="coordTest">マウスを動かして確認</span></div>
+        </div>
+        
+        <div>
+            <button onclick="startGame()">ゲーム開始</button>
+            <button onclick="stopGame()">ゲーム停止</button>
+            <button onclick="spawnBubble()">バブル生成</button>
+            <button onclick="clearAll()">全クリア</button>
+            <button onclick="testCoordinates()">座標テスト</button>
+        </div>
+        
+        <div id="log"></div>
+    </div>
+
+    <script>
+        // ===== グローバル変数 =====
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreElement = document.getElementById('score');
+        const bubbleCountElement = document.getElementById('bubbleCount');
+        const hitRateElement = document.getElementById('hitRate');
+        const coordTestElement = document.getElementById('coordTest');
+        const logElement = document.getElementById('log');
+        
+        let bubbles = [];
+        let score = 0;
+        let totalClicks = 0;
+        let totalHits = 0;
+        let gameRunning = false;
+        let gameLoop = null;
+        
+        // ===== ログ機能 =====
+        function log(message, type = 'info') {
+            const time = new Date().toLocaleTimeString();
+            const div = document.createElement('div');
+            div.className = type;
+            div.textContent = `[${time}] ${message}`;
+            logElement.appendChild(div);
+            logElement.scrollTop = logElement.scrollHeight;
+            console.log(`[${type}] ${message}`);
+        }
+        
+        // ===== 座標変換修正関数 =====
+        function getCanvasCoordinates(event) {
+            const rect = canvas.getBoundingClientRect();
+            
+            // Canvas要素の実際のサイズ
+            const canvasWidth = canvas.clientWidth;
+            const canvasHeight = canvas.clientHeight;
+            
+            // Canvas内部解像度
+            const canvasInternalWidth = canvas.width;
+            const canvasInternalHeight = canvas.height;
+            
+            // スケール比を計算
+            const scaleX = canvasInternalWidth / canvasWidth;
+            const scaleY = canvasInternalHeight / canvasHeight;
+            
+            // マウス座標をCanvas相対座標に変換
+            const x = (event.clientX - rect.left) * scaleX;
+            const y = (event.clientY - rect.top) * scaleY;
+            
+            log(`座標変換詳細: clientX=${event.clientX}, clientY=${event.clientY}`, 'coordinate');
+            log(`Canvas rect: left=${Math.round(rect.left)}, top=${Math.round(rect.top)}`, 'coordinate');
+            log(`Canvas size: clientW=${canvasWidth}, clientH=${canvasHeight}`, 'coordinate');
+            log(`Canvas internal: W=${canvasInternalWidth}, H=${canvasInternalHeight}`, 'coordinate');
+            log(`Scale: X=${scaleX.toFixed(3)}, Y=${scaleY.toFixed(3)}`, 'coordinate');
+            log(`最終座標: x=${Math.round(x)}, y=${Math.round(y)}`, 'coordinate');
+            
+            return { x: x, y: y };
+        }
+        
+        // ===== 座標テスト機能 =====
+        function testCoordinates() {
+            log('=== 座標変換テスト開始 ===', 'success');
+            
+            // テストポイントを生成
+            const testPoints = [
+                { x: 100, y: 100 },
+                { x: 400, y: 300 },
+                { x: 700, y: 500 }
+            ];
+            
+            testPoints.forEach((point, index) => {
+                // テスト用バブルを作成
+                const testBubble = new SimpleBubble(point.x, point.y);
+                testBubble.color = '#ff0000';
+                testBubble.showHitbox = true;
+                bubbles.push(testBubble);
+                
+                log(`テストバブル${index + 1}: 位置=(${point.x}, ${point.y})`, 'success');
+            });
+            
+            updateBubbleCount();
+            log('テストバブル生成完了 - クリックして座標確認', 'success');
+        }
+        
+        // ===== バブルクラス =====
+        class SimpleBubble {
+            static nextId = 0;
+            
+            constructor(x, y) {
+                this.id = SimpleBubble.nextId++;
+                this.x = x;
+                this.y = y;
+                this.radius = 20 + Math.random() * 30;
+                this.color = this.getRandomColor();
+                this.age = 0;
+                this.maxAge = 8000 + Math.random() * 4000;
+                this.isVisible = true;
+                this.showHitbox = true;
+            }
+            
+            getRandomColor() {
+                const colors = [
+                    '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', 
+                    '#feca57', '#ff9ff3', '#54a0ff', '#5f27cd'
+                ];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+            
+            update() {
+                this.age += 16;
+                return this.age < this.maxAge;
+            }
+            
+            render() {
+                if (!this.isVisible) return;
+                
+                ctx.save();
+                
+                const ageRatio = this.age / this.maxAge;
+                const opacity = Math.max(0.3, 1 - ageRatio * 0.7);
+                
+                // メインバブル描画
+                ctx.globalAlpha = opacity;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // 枠線
+                ctx.strokeStyle = this.darkenColor(this.color);
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // 光沢効果
+                ctx.fillStyle = 'rgba(255,255,255,0.6)';
+                ctx.beginPath();
+                ctx.arc(this.x - this.radius/3, this.y - this.radius/3, this.radius/4, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // 当たり判定範囲表示
+                if (this.showHitbox) {
+                    ctx.globalAlpha = 0.3;
+                    ctx.strokeStyle = '#ff0000';
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([5, 5]);
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                }
+                
+                // ID表示
+                ctx.globalAlpha = 1;
+                ctx.fillStyle = '#333';
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(`ID:${this.id}`, this.x, this.y);
+                
+                // 座標表示
+                ctx.font = '10px Arial';
+                ctx.fillText(`(${Math.round(this.x)},${Math.round(this.y)})`, this.x, this.y + 15);
+                
+                ctx.restore();
+            }
+            
+            darkenColor(color) {
+                const hex = color.replace('#', '');
+                const r = Math.max(0, parseInt(hex.substr(0, 2), 16) - 50);
+                const g = Math.max(0, parseInt(hex.substr(2, 2), 16) - 50);
+                const b = Math.max(0, parseInt(hex.substr(4, 2), 16) - 50);
+                return `rgb(${r},${g},${b})`;
+            }
+            
+            containsPoint(x, y) {
+                const dx = x - this.x;
+                const dy = y - this.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                return distance <= this.radius;
+            }
+        }
+        
+        // ===== ゲーム機能 =====
+        function updateScore() {
+            scoreElement.textContent = score;
+        }
+        
+        function updateBubbleCount() {
+            bubbleCountElement.textContent = bubbles.length;
+        }
+        
+        function updateHitRate() {
+            const rate = totalClicks > 0 ? Math.round((totalHits / totalClicks) * 100) : 0;
+            hitRateElement.textContent = `${rate}%`;
+        }
+        
+        function spawnBubble() {
+            const margin = 60;
+            const x = margin + Math.random() * (canvas.width - margin * 2);
+            const y = margin + Math.random() * (canvas.height - margin * 2);
+            const bubble = new SimpleBubble(x, y);
+            bubbles.push(bubble);
+            log(`バブル生成: ID=${bubble.id}, 位置=(${Math.round(x)}, ${Math.round(y)})`, 'info');
+            updateBubbleCount();
+        }
+        
+        function clearAll() {
+            bubbles = [];
+            updateBubbleCount();
+            log('全バブルクリア', 'info');
+        }
+        
+        function startGame() {
+            if (gameRunning) {
+                log('ゲームは既に開始されています', 'info');
+                return;
+            }
+            
+            gameRunning = true;
+            score = 0;
+            totalClicks = 0;
+            totalHits = 0;
+            updateScore();
+            updateHitRate();
+            
+            // 初期バブルを3個生成
+            for (let i = 0; i < 3; i++) {
+                spawnBubble();
+            }
+            
+            // ゲームループ開始
+            gameLoop = setInterval(() => {
+                update();
+                render();
+                
+                // 自動でバブル生成
+                if (Math.random() < 0.02 && bubbles.length < 8) {
+                    spawnBubble();
+                }
+            }, 16);
+            
+            log('ゲーム開始 - 座標変換修正版', 'success');
+        }
+        
+        function stopGame() {
+            if (!gameRunning) {
+                log('ゲームは停止中です', 'info');
+                return;
+            }
+            
+            gameRunning = false;
+            if (gameLoop) {
+                clearInterval(gameLoop);
+                gameLoop = null;
+            }
+            log('ゲーム停止', 'info');
+        }
+        
+        function update() {
+            bubbles = bubbles.filter(bubble => bubble.update());
+            updateBubbleCount();
+        }
+        
+        function render() {
+            // 背景クリア
+            ctx.fillStyle = '#e8f4f8';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // バブル描画
+            bubbles.forEach(bubble => bubble.render());
+            
+            // デバッグ情報
+            ctx.fillStyle = '#333';
+            ctx.font = '12px monospace';
+            ctx.textAlign = 'left';
+            ctx.fillText(`バブル数: ${bubbles.length} | スコア: ${score} | クリック: ${totalClicks} | 命中: ${totalHits}`, 10, 20);
+        }
+        
+        // ===== イベントハンドラー（修正版） =====
+        canvas.addEventListener('click', (event) => {
+            const coords = getCanvasCoordinates(event);
+            const x = coords.x;
+            const y = coords.y;
+            
+            totalClicks++;
+            
+            log(`=== クリック #${totalClicks} ===`, 'info');
+            log(`修正後Canvas座標: (${Math.round(x)}, ${Math.round(y)})`, 'success');
+            
+            // クリックされたバブルを探す
+            let hitBubble = null;
+            for (let i = bubbles.length - 1; i >= 0; i--) {
+                const bubble = bubbles[i];
+                const distance = Math.sqrt((x - bubble.x) ** 2 + (y - bubble.y) ** 2);
+                
+                log(`バブルID:${bubble.id} 距離:${Math.round(distance)} 判定:${distance <= bubble.radius ? 'HIT' : 'MISS'}`, 'info');
+                
+                if (bubble.containsPoint(x, y)) {
+                    hitBubble = bubble;
+                    break;
+                }
+            }
+            
+            if (hitBubble) {
+                // バブル命中
+                const bubbleIndex = bubbles.indexOf(hitBubble);
+                bubbles.splice(bubbleIndex, 1);
+                score += 10;
+                totalHits++;
+                
+                updateScore();
+                updateBubbleCount();
+                updateHitRate();
+                
+                log(`🎯 HIT! バブルID:${hitBubble.id} 破壊! スコア+10`, 'hit');
+                createPopEffect(hitBubble.x, hitBubble.y, hitBubble.color);
+            } else {
+                log(`💨 MISS! 空振り`, 'miss');
+                updateHitRate();
+            }
+        });
+        
+        // マウス移動で座標確認
+        canvas.addEventListener('mousemove', (event) => {
+            if (event.shiftKey) {
+                const coords = getCanvasCoordinates(event);
+                coordTestElement.textContent = `マウス座標: (${Math.round(coords.x)}, ${Math.round(coords.y)})`;
+            }
+        });
+        
+        // ===== エフェクト =====
+        function createPopEffect(x, y, color) {
+            ctx.save();
+            ctx.fillStyle = color;
+            ctx.globalAlpha = 0.7;
+            for (let i = 0; i < 8; i++) {
+                const angle = (Math.PI * 2 * i) / 8;
+                const distance = 30 + Math.random() * 20;
+                const particleX = x + Math.cos(angle) * distance;
+                const particleY = y + Math.sin(angle) * distance;
+                
+                ctx.beginPath();
+                ctx.arc(particleX, particleY, 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.restore();
+        }
+        
+        // ===== 初期化 =====
+        log('Step 2: 座標変換修正版 準備完了', 'success');
+        log('修正内容: Canvas要素サイズと内部解像度のスケール補正', 'success');
+        log('Shiftキー+マウス移動で座標確認可能', 'info');
+        log('「座標テスト」ボタンでテストバブル生成', 'info');
+    </script>
+</body>
+</html>

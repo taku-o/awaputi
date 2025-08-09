@@ -75,9 +75,12 @@ export class SocialSharingManager {
      * エラーハンドラーの設定
      */
     setupErrorHandler() {
-        this.errorHandler.setRetryHandler((errorInfo) => {
-            this.handleRetryAction(errorInfo);
-        });
+        // setRetryHandlerメソッドが存在する場合のみ設定
+        if (typeof this.errorHandler.setRetryHandler === 'function') {
+            this.errorHandler.setRetryHandler((errorInfo) => {
+                this.handleRetryAction(errorInfo);
+            });
+        }
     }
 
     /**
