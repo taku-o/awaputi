@@ -2,297 +2,631 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BubblePop - バブルゲーム</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <!-- PWA Core Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#4CAF50">
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#4CAF50">
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2E7D32">
+    <meta name="background-color" content="#ffffff">
+    <meta name="description" content="BubblePop - 泡を割って高スコアを目指すアクションゲーム">
+    <meta name="keywords" content="ゲーム,泡,アクション,HTML5,Canvas">
+    
+    <!-- Additional PWA Meta Tags -->
+    <meta name="format-detection" content="telephone=no">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="MobileOptimized" content="width">
+    <meta name="orientation" content="portrait-primary">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="full-screen" content="yes">
+    <meta name="browsermode" content="application">
+    
+    <!-- Security and Privacy -->
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' data: blob: fonts.googleapis.com *.googleapis.com *.gstatic.com; style-src-elem 'self' 'unsafe-inline' data: blob: fonts.googleapis.com *.googleapis.com *.gstatic.com; img-src 'self' data: blob:; connect-src 'self' fonts.gstatic.com *.gstatic.com; font-src 'self' data: blob: fonts.gstatic.com *.gstatic.com; worker-src 'self';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <!-- X-Frame-Options removed for local execution compatibility -->
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    
+    <!-- Local Execution Detection Script -->
+    <script>
+        // Early local execution detection before main scripts load
+        (function() {
+            if (window.location.protocol === 'file:') {
+                // Add local execution class to html element
+                document.documentElement.classList.add('awaputi-local-execution');
+                
+                // Store detection result for main script
+                window.AWAPUTI_LOCAL_EXECUTION = true;
+                
+                // Remove restrictive CSP for local execution and allow Google Fonts
+                const cspMeta = document.querySelector('meta[http-equiv="Content-Security-Policy"]');
+                if (cspMeta) {
+                    cspMeta.setAttribute('content', 'default-src * data: blob: filesystem:; script-src * data: blob: \'unsafe-inline\' \'unsafe-eval\'; style-src * data: blob: \'unsafe-inline\' fonts.googleapis.com *.googleapis.com *.gstatic.com; style-src-elem * data: blob: \'unsafe-inline\' fonts.googleapis.com *.googleapis.com *.gstatic.com; img-src * data: blob: filesystem:; connect-src * data: blob: filesystem: fonts.gstatic.com *.gstatic.com; font-src * data: blob: filesystem: fonts.gstatic.com *.gstatic.com; worker-src * data: blob: filesystem:;');
+                }
+                
+                console.log('🏠 Local file execution detected - optimizing for local mode');
+            } else {
+                window.AWAPUTI_LOCAL_EXECUTION = false;
+            }
+        })();
+    </script>
+    
+    <!-- Performance Hints -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    
+    <!-- SEO Meta Tags will be dynamically injected by SEOMetaManager -->
+    <div id="seo-meta-injection-point"></div>
+    
+    <!-- Structured Data will be dynamically injected by StructuredDataEngine -->
+    <div id="structured-data-injection-point"></div>
+    <title>BubblePop - 泡割りゲーム</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- PWA関連メタタグ -->
+    <meta name="application-name" content="BubblePop">
+    <meta name="msapplication-TileColor" content="#4CAF50">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <!-- Apple PWA メタタグ -->
+    <meta name="apple-mobile-web-app-title" content="BubblePop">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-orientations" content="portrait">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
+    
+    <!-- Apple Splash Screens -->
+    <link rel="apple-touch-startup-image" href="/assets/splash-screens/apple-splash-1024x1366.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="/assets/splash-screens/apple-splash-834x1194.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="/assets/splash-screens/apple-splash-768x1024.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="/assets/splash-screens/apple-splash-375x812.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="/assets/splash-screens/apple-splash-414x896.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="/assets/splash-screens/apple-splash-375x667.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="/assets/splash-screens/apple-splash-320x568.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    
+    <!-- Latest iPhone Models -->
+    <link rel="apple-touch-startup-image" href="/assets/splash-screens/apple-splash-390x844.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="/assets/splash-screens/apple-splash-393x852.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="/assets/splash-screens/apple-splash-430x932.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    
+    <!-- Additional Apple Device Support -->
+    <link rel="apple-touch-startup-image" href="/assets/splash-screens/apple-splash-896x414.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="/assets/splash-screens/apple-splash-812x375.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="/assets/splash-screens/apple-splash-1366x1024.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="/assets/splash-screens/apple-splash-1194x834.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="/assets/splash-screens/apple-splash-1024x768.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    
+    <!-- Latest iPhone Models Landscape -->
+    <link rel="apple-touch-startup-image" href="/assets/splash-screens/apple-splash-844x390.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="/assets/splash-screens/apple-splash-852x393.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="/assets/splash-screens/apple-splash-932x430.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    
+    <!-- Microsoft PWA メタタグ -->
+    <meta name="msapplication-starturl" content="/">
+    <meta name="msapplication-tooltip" content="BubblePop - 泡割りゲーム">
+    <meta name="msapplication-navbutton-color" content="#4CAF50">
+    <meta name="msapplication-window" content="width=1024;height=768">
+    <meta name="msapplication-task" content="name=ゲーム開始;action-uri=/;icon-uri=/assets/icons/favicon-32x32.png">
+    <meta name="msapplication-task" content="name=統計;action-uri=/?action=stats;icon-uri=/assets/icons/favicon-32x32.png">
+    <meta name="msapplication-allowDomainApiCalls" content="true">
+    <meta name="msapplication-allowDomainMetaTags" content="true">
+    
+    <!-- Windows 8/10 Tiles -->
+    <meta name="msapplication-square70x70logo" content="/assets/icons/mstile-70x70.png">
+    <meta name="msapplication-square150x150logo" content="/assets/icons/mstile-150x150.png">
+    <meta name="msapplication-wide310x150logo" content="/assets/icons/mstile-310x150.png">
+    <meta name="msapplication-square310x310logo" content="/assets/icons/mstile-310x310.png">
+    
+    <!-- Favicon and Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#4CAF50">
+    
+    <!-- Additional PWA Icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/icons/icon-512x512.png">
+    <link rel="stylesheet" href="src/styles/accessibility.css">
     <style>
-        body {
+        /* リセットCSS */
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html, body {
             margin: 0;
             padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        body {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            font-family: 'Arial', sans-serif;
+            background-attachment: fixed;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            min-height: -webkit-fill-available; /* iOS Safari対応 */
+            position: relative;
         }
         
-        .game-container {
-            text-align: center;
-            padding: 20px;
+        /* ゲームコンテナ */
+        #gameContainer {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            max-width: 100vw;
+            max-height: 100vh;
         }
         
-        h1 {
-            color: #f39c12;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        canvas {
-            border: 3px solid #f39c12;
-            background: #1a1a2e;
+        /* Canvas スタイル */
+        #gameCanvas {
+            border: 2px solid #fff;
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            background: #000;
             display: block;
-            margin: 20px auto;
+            max-width: 100%;
+            max-height: 100%;
+            
+            /* タッチ操作の最適化 */
+            touch-action: none;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            
+            /* ハードウェアアクセラレーション */
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            will-change: transform;
         }
         
-        .controls {
-            margin: 20px 0;
-        }
-        
-        button {
-            background: #f39c12;
+        /* UI オーバーレイ */
+        #gameUI {
+            position: absolute;
+            top: 10px;
+            left: 10px;
             color: white;
-            border: none;
-            padding: 15px 25px;
-            margin: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-        
-        button:hover {
-            background: #e67e22;
-            transform: scale(1.05);
-        }
-        
-        button:active {
-            transform: scale(0.95);
-        }
-        
-        .game-info {
-            background: rgba(0,0,0,0.7);
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px auto;
-            max-width: 600px;
             font-size: 18px;
-        }
-        
-        .score {
-            color: #f39c12;
+            z-index: 10;
+            pointer-events: none;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
             font-weight: bold;
+            line-height: 1.4;
         }
         
-        .status {
-            margin: 10px 0;
+        #gameUI > div {
+            margin-bottom: 5px;
+            background: rgba(0,0,0,0.3);
+            padding: 4px 8px;
+            border-radius: 4px;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
         }
         
-        .loading {
-            color: #3498db;
+        /* レスポンシブ対応 */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+            
+            #gameCanvas {
+                border-radius: 5px;
+                border-width: 1px;
+            }
+            
+            #gameUI {
+                font-size: 14px;
+                top: 5px;
+                left: 5px;
+            }
         }
         
-        .success {
-            color: #27ae60;
+        @media screen and (max-width: 480px) {
+            #gameUI {
+                font-size: 12px;
+                top: 2px;
+                left: 2px;
+            }
+            
+            #gameUI > div {
+                padding: 2px 6px;
+                margin-bottom: 3px;
+            }
         }
         
-        .error {
-            color: #e74c3c;
+        /* 横向き対応 */
+        @media screen and (orientation: landscape) and (max-height: 500px) {
+            #gameUI {
+                font-size: 12px;
+                top: 2px;
+                left: 2px;
+            }
         }
         
-        #log {
-            background: #1a1a1a;
-            padding: 10px;
-            border: 1px solid #555;
-            border-radius: 5px;
-            height: 150px;
-            overflow-y: auto;
-            font-size: 12px;
-            font-family: monospace;
-            margin-top: 10px;
-            text-align: left;
+        /* 高DPI対応 */
+        @media screen and (-webkit-min-device-pixel-ratio: 2),
+               screen and (min-resolution: 192dpi) {
+            #gameCanvas {
+                image-rendering: -webkit-optimize-contrast;
+                image-rendering: crisp-edges;
+            }
+        }
+        
+        /* ダークモード対応 */
+        @media (prefers-color-scheme: dark) {
+            #gameUI {
+                color: #f0f0f0;
+            }
+        }
+        
+        /* フルスクリーン対応 */
+        #gameCanvas:fullscreen {
+            border: none;
+            border-radius: 0;
+        }
+        
+        #gameCanvas:-webkit-full-screen {
+            border: none;
+            border-radius: 0;
+        }
+        
+        #gameCanvas:-moz-full-screen {
+            border: none;
+            border-radius: 0;
+        }
+        
+        /* ローディング画面 */
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            color: white;
+            font-size: 24px;
+            text-align: center;
+        }
+        
+        #loadingScreen.hidden {
+            display: none;
+        }
+        
+        /* エラー画面 */
+        .error-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 0, 0, 0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            z-index: 2000;
+            max-width: 90%;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        
+        /* ブラウザ固有の調整 */
+        
+        /* Safari 固有 */
+        @supports (-webkit-appearance: none) {
+            body {
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            #gameCanvas {
+                -webkit-backface-visibility: hidden;
+                backface-visibility: hidden;
+            }
+        }
+        
+        /* Firefox 固有 */
+        @-moz-document url-prefix() {
+            #gameCanvas {
+                image-rendering: -moz-crisp-edges;
+            }
+        }
+        
+        /* Edge/IE 固有 */
+        @supports (-ms-ime-align: auto) {
+            #gameCanvas {
+                -ms-interpolation-mode: nearest-neighbor;
+            }
+        }
+        
+        /* アクセシビリティ */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* 印刷対応 */
+        @media print {
+            body {
+                background: white;
+            }
+            
+            #gameCanvas {
+                border: 1px solid black;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="game-container">
-        <h1>🫧 BubblePop</h1>
-        
-        <canvas id="gameCanvas" width="800" height="600"></canvas>
-        
-        <div class="controls">
-            <button onclick="startGame()">🎮 ゲーム開始</button>
-            <button onclick="spawnBubbles()">🫧 バブル生成</button>
-            <button onclick="showDebugInfo()">🔍 デバッグ情報</button>
+    <!-- ローディング画面 -->
+    <div id="loadingScreen" role="status" aria-live="polite" aria-label="ゲーム読み込み中">
+        <div>
+            <div>BubblePop</div>
+            <div style="font-size: 16px; margin-top: 10px;">読み込み中...</div>
+            <div class="loading-spinner" aria-hidden="true"></div>
         </div>
-        
-        <div class="game-info">
-            <div>スコア: <span id="score" class="score">0</span></div>
-            <div>バブル数: <span id="bubbleCount">0</span></div>
-            <div class="status" id="gameStatus">ゲーム準備中...</div>
-        </div>
-        
-        <div id="log">ゲーム読み込み中...<br></div>
     </div>
-
+    
+    <!-- スクリーンリーダー用の説明 -->
+    <div class="screen-reader-only">
+        <h1>BubblePop - 泡割りゲーム</h1>
+        <p>画面に現れる泡をクリックまたはタップして割り、高スコアを目指すアクションゲームです。</p>
+        <p>キーボードショートカット: スペースキーで一時停止、Escキーでメニュー、Fキーでフルスクリーン</p>
+    </div>
+    
+    <!-- ゲームコンテナ -->
+    <div id="gameContainer" role="main">
+        <canvas id="gameCanvas" 
+                width="800" 
+                height="600" 
+                role="img" 
+                aria-label="ゲーム画面"
+                tabindex="0"
+                aria-describedby="gameInstructions"></canvas>
+        
+        <!-- ゲーム状態表示 -->
+        <div id="gameUI" role="status" aria-live="polite" aria-label="ゲーム状態">
+            <div aria-label="現在のスコア">スコア: <span id="score">0</span></div>
+            <div aria-label="残りHP">HP: <span id="hp">100</span></div>
+            <div aria-label="残り時間">時間: <span id="time">5:00</span></div>
+        </div>
+        
+        <!-- ゲーム説明（スクリーンリーダー用） -->
+        <div id="gameInstructions" class="screen-reader-only">
+            <p>泡をクリックまたはタップして割ってください。ドラッグで泡を吹き飛ばすこともできます。</p>
+            <p>ピンクの泡はHPを回復し、毒の泡はダメージを与えます。</p>
+            <p>時間内にできるだけ多くの泡を割って高スコアを目指しましょう。</p>
+        </div>
+    </div>
+    
+    <!-- キーボードナビゲーション用のフォーカス表示 -->
+    <div id="focusIndicator" class="screen-reader-only" aria-live="polite"></div>
+    
     <script type="module">
-        let gameEngine = null;
-        const logDiv = document.getElementById('log');
+        // SEO システム初期化
+        import { SEOMetaManager } from './src/seo/SEOMetaManager.js';
+        import { StructuredDataEngine } from './src/seo/StructuredDataEngine.js';
+        import { seoLogger } from './src/seo/SEOLogger.js';
+        import { seoErrorHandler } from './src/seo/SEOErrorHandler.js';
         
-        function log(message, type = 'info') {
-            const timestamp = new Date().toLocaleTimeString();
-            const colors = {
-                info: '#3498db',
-                success: '#27ae60',
-                error: '#e74c3c',
-                warning: '#f39c12'
-            };
-            const color = colors[type] || colors.info;
-            logDiv.innerHTML += `<span style="color: ${color}">[${timestamp}] ${message}</span><br>`;
-            logDiv.scrollTop = logDiv.scrollHeight;
-            console.log(message);
-        }
+        // PWA初期化スクリプト
+        import { getPWAManager } from './src/core/PWAManager.js';
         
-        function updateGameInfo() {
-            if (gameEngine && gameEngine.bubbleManager) {
-                try {
-                    const bubbleCount = gameEngine.bubbleManager.getBubbleCount() || 0;
-                    document.getElementById('bubbleCount').textContent = bubbleCount;
-                } catch (error) {
-                    // Silent fail for now
-                }
-            }
-        }
-        
-        window.startGame = async function() {
+        // SEOシステムの初期化
+        document.addEventListener('DOMContentLoaded', async () => {
             try {
-                if (!gameEngine) {
-                    log('GameEngineを初期化してください', 'warning');
-                    await initializeGame();
-                }
+                seoLogger.info('SEO system initialization started');
                 
-                if (gameEngine && gameEngine.isRunning) {
-                    log('ゲーム開始！', 'success');
-                    document.getElementById('gameStatus').textContent = '実行中';
-                    document.getElementById('gameStatus').className = 'status success';
-                } else {
-                    log('GameEngineの起動に失敗しました', 'error');
-                }
+                // SEOMetaManagerの初期化
+                const seoMetaManager = new SEOMetaManager();
                 
-            } catch (error) {
-                log(`ゲーム開始エラー: ${error.message}`, 'error');
-            }
-        };
-        
-        window.spawnBubbles = function() {
-            try {
-                if (!gameEngine || !gameEngine.bubbleManager) {
-                    log('GameEngineが初期化されていません', 'warning');
-                    return;
-                }
-                
-                log('バブル生成中...', 'info');
-                
-                // バブル生成数を10個に増加
-                for (let i = 0; i < 10; i++) {
-                    const x = 80 + (i * 70);  // より密に配置
-                    const y = 80 + (Math.random() * 450);
-                    const position = { x: x, y: y };
-                    
-                    log(`バブル${i+1}: 座標(${x}, ${y})で生成中`, 'info');
-                    
+                // 動的メタタグの生成と注入
+                const metaInjectionPoint = document.getElementById('seo-meta-injection-point');
+                if (metaInjectionPoint) {
                     try {
-                        const bubble = gameEngine.bubbleManager.spawnBubble('normal', position);
-                        if (bubble) {
-                            log(`✓ バブル${i+1}生成成功 - 座標(${x}, ${y})`, 'success');
-                            // バブルの実際の位置を確認
-                            if (bubble.position) {
-                                log(`  実際の座標: (${bubble.position.x}, ${bubble.position.y})`, 'info');
-                            } else {
-                                log(`  ⚠ バブルのpositionがありません`, 'warning');
-                            }
-                        } else {
-                            log(`⚠ バブル${i+1}生成失敗 - nullが返されました`, 'warning');
-                        }
-                    } catch (bubbleError) {
-                        log(`❌ バブル${i+1}生成エラー: ${bubbleError.message}`, 'error');
+                        await seoMetaManager.updateDynamicContent({});
+                        seoLogger.info('Dynamic meta tags updated successfully');
+                    } catch (error) {
+                        seoLogger.error('Failed to inject dynamic meta tags', error);
+                        // フォールバック: 基本的なメタタグを手動で追加
+                        metaInjectionPoint.innerHTML = `
+                            <!-- Basic SEO Meta Tags (Fallback) -->
+                            <meta name="author" content="BubblePop Game Team">
+                            <meta name="robots" content="index, follow">
+                            <meta name="rating" content="general">
+                            <meta property="og:type" content="website">
+                            <meta property="og:title" content="BubblePop - 泡割りゲーム">
+                            <meta property="og:description" content="HTML5 Canvas を使用したバブルポップゲーム">
+                            <meta name="twitter:card" content="summary_large_image">
+                            <meta name="twitter:title" content="BubblePop - 泡割りゲーム">
+                        `;
                     }
                 }
                 
-                updateGameInfo();
-                log('バブル生成完了', 'success');
+                // StructuredDataEngineの初期化
+                const structuredDataEngine = new StructuredDataEngine();
                 
-            } catch (error) {
-                log(`バブル生成エラー: ${error.message}`, 'error');
-            }
-        };
-        
-        window.showDebugInfo = function() {
-            if (!gameEngine) {
-                log('GameEngineが初期化されていません', 'warning');
-                return;
-            }
-            
-            log('=== デバッグ情報 ===', 'info');
-            log(`- isRunning: ${gameEngine.isRunning}`, 'info');
-            log(`- canvas: ${!!gameEngine.canvas}`, 'info');
-            log(`- bubbleManager: ${!!gameEngine.bubbleManager}`, 'info');
-            
-            if (gameEngine.bubbleManager) {
-                try {
-                    const bubbleCount = gameEngine.bubbleManager.getBubbleCount();
-                    log(`- バブル数: ${bubbleCount}`, 'info');
-                } catch (error) {
-                    log(`- バブル数取得エラー: ${error.message}`, 'error');
+                // 構造化データの生成と注入
+                const structuredDataInjectionPoint = document.getElementById('structured-data-injection-point');
+                if (structuredDataInjectionPoint) {
+                    try {
+                        const structuredData = await structuredDataEngine.generateVideoGameSchema();
+                        const scriptTag = document.createElement('script');
+                        scriptTag.type = 'application/ld+json';
+                        scriptTag.textContent = JSON.stringify(structuredData, null, 2);
+                        structuredDataInjectionPoint.appendChild(scriptTag);
+                        seoLogger.info('Structured data injected successfully');
+                    } catch (error) {
+                        seoLogger.error('Failed to inject structured data', error);
+                        // フォールバック: 基本的な構造化データを手動で追加
+                        const fallbackScript = document.createElement('script');
+                        fallbackScript.type = 'application/ld+json';
+                        fallbackScript.textContent = JSON.stringify({
+                            "@context": "https://schema.org",
+                            "@type": "VideoGame",
+                            "name": "BubblePop",
+                            "description": "HTML5 Canvas を使用したバブルポップゲーム",
+                            "genre": ["Action", "Casual"],
+                            "applicationCategory": "Game",
+                            "operatingSystem": "Web Browser",
+                            "isAccessibleForFree": true
+                        }, null, 2);
+                        structuredDataInjectionPoint.appendChild(fallbackScript);
+                    }
                 }
-            }
-            
-            log('=== デバッグ情報終了 ===', 'info');
-        };
-        
-        async function initializeGame() {
-            try {
-                log('=== ゲーム初期化開始 ===', 'info');
-                document.getElementById('gameStatus').textContent = '初期化中...';
-                document.getElementById('gameStatus').className = 'status loading';
                 
-                // ES6モジュールインポート
-                log('GameEngineクラスをインポート中...', 'info');
-                const { GameEngine } = await import('./src/core/GameEngine.js');
-                log('✓ GameEngineインポート成功', 'success');
+                // グローバルにアクセス可能にする
+                window.seoMetaManager = seoMetaManager;
+                window.structuredDataEngine = structuredDataEngine;
                 
-                // GameEngine初期化
-                log('GameEngine初期化中...', 'info');
-                const canvas = document.getElementById('gameCanvas');
-                gameEngine = new GameEngine(canvas);
-                log('✓ GameEngineインスタンス作成成功', 'success');
-                
-                // ゲーム開始
-                log('GameEngine.start()実行中...', 'info');
-                gameEngine.start();
-                log('✓ GameEngine開始成功', 'success');
-                
-                // 基本状態確認
-                log(`- isRunning: ${gameEngine.isRunning}`, 'info');
-                log(`- bubbleManager: ${!!gameEngine.bubbleManager}`, 'info');
-                
-                document.getElementById('gameStatus').textContent = '準備完了';
-                document.getElementById('gameStatus').className = 'status success';
-                
-                log('=== ゲーム初期化完了 ===', 'success');
-                
-                // 定期的な情報更新
-                setInterval(updateGameInfo, 1000);
-                
-                return true;
+                seoLogger.info('SEO system initialization completed');
                 
             } catch (error) {
-                log(`❌ ゲーム初期化エラー: ${error.message}`, 'error');
-                document.getElementById('gameStatus').textContent = '初期化失敗';
-                document.getElementById('gameStatus').className = 'status error';
-                console.error('ゲーム初期化詳細:', error);
-                return false;
+                seoErrorHandler.handle(error, 'seoSystemInit');
+            }
+        });
+        
+        // PWA機能の初期化
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', async () => {
+                try {
+                    console.log('[PWA] PWA機能を初期化中...');
+                    
+                    // PWAManagerを初期化
+                    const pwaManager = getPWAManager();
+                    await pwaManager.initialize();
+                    
+                    console.log('[PWA] PWA機能初期化完了');
+                    
+                    // グローバルにアクセス可能にする
+                    window.pwaManager = pwaManager;
+                    
+                } catch (error) {
+                    console.error('[PWA] PWA初期化エラー:', error);
+                }
+            });
+        } else {
+            console.log('[PWA] Service Workerはサポートされていません');
+        }
+        
+        // PWA関連のUIイベント処理
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('[PWA] インストールプロンプト準備完了');
+        });
+        
+        window.addEventListener('appinstalled', (e) => {
+            console.log('[PWA] アプリがインストールされました');
+        });
+        
+        // オンライン/オフライン状態の監視
+        window.addEventListener('online', () => {
+            console.log('[PWA] オンライン状態に復帰');
+        });
+        
+        window.addEventListener('offline', () => {
+            console.log('[PWA] オフライン状態に移行');
+        });
+    </script>
+    <!-- Main Application Script with Local Execution Fallback -->
+    <script type="module" src="src/main.js" onerror="handleModuleLoadError(event)"></script>
+    
+    <!-- Fallback Script for Local Execution -->
+    <script>
+        function handleModuleLoadError(event) {
+            console.warn('ES6 module loading failed, this is expected in local file execution');
+            
+            // Show user-friendly message for local execution
+            if (window.location.protocol === 'file:') {
+                const fallbackDiv = document.createElement('div');
+                fallbackDiv.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: #fff3cd;
+                    color: #856404;
+                    padding: 20px;
+                    border: 1px solid #ffeaa7;
+                    border-radius: 8px;
+                    max-width: 500px;
+                    z-index: 10000;
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                `;
+                
+                fallbackDiv.innerHTML = `
+                    <h3 style="margin: 0 0 15px 0; color: #721c24;">⚠️ Local File Execution Detected</h3>
+                    <p style="margin: 0 0 15px 0;">
+                        This game is running from a local file. For the best experience, please use a development server:
+                    </p>
+                    <div style="background: #f8f9fa; padding: 10px; border-radius: 4px; margin: 10px 0;">
+                        <strong>Recommended:</strong><br>
+                        <code style="background: #e9ecef; padding: 2px 4px; border-radius: 3px;">npm run dev</code>
+                    </div>
+                    <div style="background: #f8f9fa; padding: 10px; border-radius: 4px; margin: 10px 0;">
+                        <strong>Alternatives:</strong><br>
+                        <code style="background: #e9ecef; padding: 2px 4px; border-radius: 3px;">python -m http.server 8000</code><br>
+                        <code style="background: #e9ecef; padding: 2px 4px; border-radius: 3px;">npx serve .</code>
+                    </div>
+                    <button onclick="this.parentElement.remove()" style="
+                        background: #007bff;
+                        color: white;
+                        border: none;
+                        padding: 8px 16px;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        margin-top: 10px;
+                    ">Continue Anyway</button>
+                `;
+                
+                document.body.appendChild(fallbackDiv);
             }
         }
         
-        // ページ読み込み時に自動初期化
-        window.addEventListener('load', async () => {
-            log('BubblePop読み込み完了', 'success');
-            await initializeGame();
-        });
+        // Hide loading screen after a timeout if modules fail to load
+        setTimeout(() => {
+            const loadingScreen = document.getElementById('loadingScreen');
+            if (loadingScreen && !loadingScreen.classList.contains('hidden')) {
+                loadingScreen.style.display = 'none';
+            }
+        }, 5000);
     </script>
 </body>
 </html>
