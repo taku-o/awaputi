@@ -236,7 +236,8 @@ async function initGame() {
         loadingManager.nextStep();
         await new Promise(resolve => setTimeout(resolve, 500));
         
-        // 音声リソースの初期化（非同期）
+        // 音声リソースの初期化（非同期） - 一時的に無効化（ゲーム開始をブロックするため）
+        /*
         if (compatibilityReport.features.webAudio) {
             try {
                 await gameEngine.audioManager.initialize();
@@ -244,6 +245,7 @@ async function initGame() {
                 getErrorHandler().handleError(error, 'AUDIO_ERROR', { feature: 'webAudio' });
             }
         }
+        */
         
         // ステップ5: ゲーム開始準備
         debugLogger.log('🚀 ステップ5: ゲーム開始準備');

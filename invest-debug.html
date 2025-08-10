@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BubblePop - Debug Mode</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        #gameContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        #gameCanvas {
+            border: 2px solid #fff;
+            border-radius: 10px;
+            background: #000;
+        }
+        #debugLog {
+            background: rgba(0,0,0,0.8);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <h1>BubblePop - Debug Mode</h1>
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <div id="debugLog"></div>
+    </div>
+
+    <script>
+        // デバッグログ機能
+        const debugLog = document.getElementById('debugLog');
+        function addDebugLog(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            debugLog.textContent += `[${timestamp}] ${message}\n`;
+            debugLog.scrollTop = debugLog.scrollHeight;
+            console.log(message);
+        }
+
+        // 段階的テスト
+        addDebugLog('=== デバッグモード開始 ===');
+        
+        // ステップ1: Canvas要素の確認
+        addDebugLog('ステップ1: Canvas要素の確認');
+        const canvas = document.getElementById('gameCanvas');
+        if (canvas) {
+            addDebugLog('✅ Canvas要素が見つかりました');
+            addDebugLog(`Canvas サイズ: ${canvas.width}x${canvas.height}`);
+            
+            const context = canvas.getContext('2d');
+            if (context) {
+                addDebugLog('✅ 2Dコンテキストの取得成功');
+                
+                // テスト描画
+                context.fillStyle = '#4CAF50';
+                context.fillRect(10, 10, 100, 50);
+                context.fillStyle = '#fff';
+                context.font = '16px Arial';
+                context.fillText('Canvas Test', 20, 35);
+                addDebugLog('✅ テスト描画完了');
+                
+            } else {
+                addDebugLog('❌ 2Dコンテキストの取得失敗');
+            }
+        } else {
+            addDebugLog('❌ Canvas要素が見つかりません');
+        }
+
+        // ステップ2: ES6モジュールの基本テスト
+        addDebugLog('ステップ2: ES6モジュールテスト開始...');
+        
+    </script>
+
+    <script type="module">
+        // ES6モジュールテスト
+        try {
+            // デバッグログに追加
+            function addDebugLog(message) {
+                const debugLog = document.getElementById('debugLog');
+                const timestamp = new Date().toLocaleTimeString();
+                debugLog.textContent += `[${timestamp}] ${message}\n`;
+                debugLog.scrollTop = debugLog.scrollHeight;
+                console.log(message);
+            }
+
+            addDebugLog('✅ ES6モジュール実行開始');
+
+            // 段階的にモジュールをインポートしてテスト
+            addDebugLog('ステップ3: GameEngine インポートテスト...');
+            
+            import('./src/core/GameEngine.js').then(module => {
+                addDebugLog('✅ GameEngine モジュールのインポート成功');
+                
+                const { GameEngine } = module;
+                if (GameEngine) {
+                    addDebugLog('✅ GameEngine クラスが利用可能');
+                    
+                    try {
+                        addDebugLog('ステップ4: GameEngine インスタンス作成テスト...');
+                        const canvas = document.getElementById('gameCanvas');
+                        const gameEngine = new GameEngine(canvas);
+                        addDebugLog('✅ GameEngine インスタンス作成成功');
+                        
+                        // グローバルに公開
+                        window.gameEngine = gameEngine;
+                        addDebugLog('✅ GameEngine をwindow.gameEngineに公開');
+                        
+                        // 開始テスト
+                        addDebugLog('ステップ5: GameEngine 開始テスト...');
+                        gameEngine.start();
+                        addDebugLog('✅ GameEngine 開始処理完了');
+                        
+                    } catch (error) {
+                        addDebugLog(`❌ GameEngine処理エラー: ${error.message}`);
+                        addDebugLog(`❌ エラースタック: ${error.stack}`);
+                    }
+                } else {
+                    addDebugLog('❌ GameEngine クラスが見つかりません');
+                }
+            }).catch(error => {
+                addDebugLog(`❌ GameEngine モジュールインポートエラー: ${error.message}`);
+                addDebugLog(`❌ エラースタック: ${error.stack}`);
+            });
+
+        } catch (error) {
+            console.error('Module script error:', error);
+            document.getElementById('debugLog').textContent += `[ERROR] Module script error: ${error.message}\n`;
+        }
+    </script>
+
+    <script>
+        // エラーハンドリング
+        window.addEventListener('error', (event) => {
+            const debugLog = document.getElementById('debugLog');
+            const timestamp = new Date().toLocaleTimeString();
+            debugLog.textContent += `[${timestamp}] ❌ Global Error: ${event.message}\n`;
+            debugLog.textContent += `[${timestamp}] ❌ File: ${event.filename}:${event.lineno}\n`;
+            debugLog.scrollTop = debugLog.scrollHeight;
+        });
+
+        window.addEventListener('unhandledrejection', (event) => {
+            const debugLog = document.getElementById('debugLog');
+            const timestamp = new Date().toLocaleTimeString();
+            debugLog.textContent += `[${timestamp}] ❌ Unhandled Promise Rejection: ${event.reason}\n`;
+            debugLog.scrollTop = debugLog.scrollHeight;
+        });
+    </script>
+</body>
+</html>
