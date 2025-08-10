@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Step 4: 時間制限システム</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+        }
+        
+        #gameContainer {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        #gameCanvas {
+            border: 2px solid #333;
+            background: #e8f4f8;
+            cursor: crosshair;
+        }
+        
+        #gameInfo {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+        
+        #timeDisplay {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .time-warning { color: #ff6600 !important; }
+        .time-danger { color: #dc3545 !important; animation: pulse 1s infinite; }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background: #007bff;
+            color: white;
+        }
+        
+        button:hover {
+            background: #0056b3;
+        }
+        
+        button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        #log {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            max-height: 100px;
+            overflow-y: auto;
+            text-align: left;
+            font-family: monospace;
+            font-size: 11px;
+        }
+        
+        .hit { color: #28a745; font-weight: bold; }
+        .miss { color: #dc3545; }
+        .info { color: #007bff; }
+        .success { color: #28a745; font-weight: bold; }
+        .special { color: #ff6600; font-weight: bold; }
+        .warning { color: #ff6600; font-weight: bold; }
+        .danger { color: #dc3545; font-weight: bold; }
+        
+        #bubbleTypes {
+            margin: 10px 0;
+            font-size: 11px;
+            text-align: left;
+            background: #f8f9fa;
+            padding: 8px;
+            border-radius: 5px;
+        }
+        
+        #gameResult {
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .result-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .result-failure {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <h1>⏰ Step 4: 時間制限システム</h1>
+        <p>制限時間内にできるだけ多くのスコアを稼ごう！</p>
+        
+        <div id="timeDisplay">準備中...</div>
+        
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        
+        <div id="gameInfo">
+            <div>スコア: <span id="score">0</span></div>
+            <div>HP: <span id="hp">100</span></div>
+            <div>バブル数: <span id="bubbleCount">0</span></div>
+            <div>命中率: <span id="hitRate">0%</span></div>
+            <div>破壊数: <span id="destroyedCount">0</span></div>
+            <div>残り時間ボーナス: <span id="timeBonus">0</span></div>
+        </div>
+        
+        <div id="gameResult"></div>
+        
+        <div id="bubbleTypes">
+            <strong>🫧 バブル種類:</strong>
+            🔵 Normal(+10) | 🟢 Bonus(+25) | 🔴 Hard(2hit, +20) | 🟡 Speed(+15) | 🟣 Big(+30)
+        </div>
+        
+        <div>
+            <button onclick="startGame(60)" id="start60">60秒ゲーム</button>
+            <button onclick="startGame(120)" id="start120">2分ゲーム</button>
+            <button onclick="startGame(30)" id="start30">30秒チャレンジ</button>
+            <button onclick="stopGame()" id="stopBtn" disabled>ゲーム停止</button>
+            <button onclick="spawnRandomBubble()">テストバブル</button>
+            <button onclick="clearAll()">全クリア</button>
+        </div>
+        
+        <div id="log"></div>
+    </div>
+
+    <script>
+        // ===== グローバル変数 =====
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreElement = document.getElementById('score');
+        const hpElement = document.getElementById('hp');
+        const bubbleCountElement = document.getElementById('bubbleCount');
+        const hitRateElement = document.getElementById('hitRate');
+        const destroyedCountElement = document.getElementById('destroyedCount');
+        const timeBonusElement = document.getElementById('timeBonus');
+        const timeDisplayElement = document.getElementById('timeDisplay');
+        const gameResultElement = document.getElementById('gameResult');
+        const logElement = document.getElementById('log');
+        
+        let bubbles = [];
+        let score = 0;
+        let hp = 100;
+        let totalClicks = 0;
+        let totalHits = 0;
+        let destroyedBubbles = 0;
+        let gameRunning = false;
+        let gameLoop = null;
+        
+        // 時間制限システム
+        let gameTimeLimit = 60; // 秒
+        let gameTimeRemaining = 0;
+        let gameStartTime = 0;
+        
+        // バブル種類定義
+        const BUBBLE_TYPES = {
+            normal: {
+                name: 'Normal',
+                color: '#4A90E2',
+                size: 30,
+                score: 10,
+                health: 1,
+                speed: 0,
+                emoji: '🔵'
+            },
+            bonus: {
+                name: 'Bonus', 
+                color: '#7ED321',
+                size: 25,
+                score: 25,
+                health: 1,
+                speed: 0,
+                emoji: '🟢'
+            },
+            hard: {
+                name: 'Hard',
+                color: '#D0021B', 
+                size: 35,
+                score: 20,
+                health: 2,
+                speed: 0,
+                emoji: '🔴'
+            },
+            speed: {
+                name: 'Speed',
+                color: '#F5A623',
+                size: 20,
+                score: 15, 
+                health: 1,
+                speed: 50,
+                emoji: '🟡'
+            },
+            big: {
+                name: 'Big',
+                color: '#9013FE',
+                size: 50,
+                score: 30,
+                health: 1,
+                speed: 0,
+                emoji: '🟣'
+            }
+        };
+        
+        // ===== ログ機能 =====
+        function log(message, type = 'info') {
+            const time = new Date().toLocaleTimeString();
+            const div = document.createElement('div');
+            div.className = type;
+            div.textContent = `[${time}] ${message}`;
+            logElement.appendChild(div);
+            logElement.scrollTop = logElement.scrollHeight;
+            console.log(`[${type}] ${message}`);
+        }
+        
+        // ===== 時間管理システム =====
+        function updateTimeDisplay() {
+            const minutes = Math.floor(gameTimeRemaining / 60);
+            const seconds = Math.floor(gameTimeRemaining % 60);
+            const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            timeDisplayElement.textContent = `⏰ 残り時間: ${timeString}`;
+            
+            // 時間による警告色変更
+            if (gameTimeRemaining <= 10) {
+                timeDisplayElement.className = 'time-danger';
+            } else if (gameTimeRemaining <= 30) {
+                timeDisplayElement.className = 'time-warning';
+            } else {
+                timeDisplayElement.className = '';
+            }
+        }
+        
+        function calculateTimeBonus() {
+            // 残り時間に応じたボーナス計算
+            const remainingRatio = gameTimeRemaining / gameTimeLimit;
+            let bonus = 0;
+            
+            if (remainingRatio > 0.5) {
+                bonus = Math.floor(gameTimeRemaining * 2); // 高ボーナス
+            } else if (remainingRatio > 0.2) {
+                bonus = Math.floor(gameTimeRemaining * 1); // 中ボーナス
+            } else {
+                bonus = Math.floor(gameTimeRemaining * 0.5); // 低ボーナス
+            }
+            
+            return bonus;
+        }
+        
+        function endGame(reason = 'time_up') {
+            gameRunning = false;
+            if (gameLoop) {
+                clearInterval(gameLoop);
+                gameLoop = null;
+            }
+            
+            // 最終スコア計算
+            const timeBonus = calculateTimeBonus();
+            const finalScore = score + timeBonus;
+            
+            // 結果表示
+            let resultMessage = '';
+            let resultClass = '';
+            
+            if (reason === 'time_up') {
+                resultMessage = `⏰ 時間終了！ 最終スコア: ${finalScore} (基本: ${score} + 時間ボーナス: ${timeBonus})`;
+                resultClass = 'result-success';
+                log('⏰ 時間終了！', 'special');
+            } else if (reason === 'hp_zero') {
+                resultMessage = `💀 HP 0でゲームオーバー！ スコア: ${finalScore}`;
+                resultClass = 'result-failure';
+                log('💀 HP 0 - ゲームオーバー！', 'danger');
+            } else if (reason === 'manual_stop') {
+                resultMessage = `⏹️ ゲーム中断 スコア: ${finalScore}`;
+                resultClass = 'result-success';
+                log('⏹️ ゲーム手動停止', 'info');
+            }
+            
+            gameResultElement.textContent = resultMessage;
+            gameResultElement.className = resultClass;
+            gameResultElement.style.display = 'block';
+            
+            // ボタン状態更新
+            updateButtonStates(false);
+            
+            // 統計ログ
+            log(`📊 ゲーム統計: 破壊数${destroyedBubbles}, 命中率${Math.round((totalHits/Math.max(totalClicks,1))*100)}%`, 'info');
+        }
+        
+        function updateButtonStates(gameActive) {
+            document.getElementById('start60').disabled = gameActive;
+            document.getElementById('start120').disabled = gameActive;
+            document.getElementById('start30').disabled = gameActive;
+            document.getElementById('stopBtn').disabled = !gameActive;
+        }
+        
+        // ===== 座標変換関数 =====
+        function getCanvasCoordinates(event) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / canvas.clientWidth;
+            const scaleY = canvas.height / canvas.clientHeight;
+            const x = (event.clientX - rect.left) * scaleX;
+            const y = (event.clientY - rect.top) * scaleY;
+            return { x: x, y: y };
+        }
+        
+        // ===== 多様なバブルクラス =====
+        class TypedBubble {
+            static nextId = 0;
+            
+            constructor(x, y, type = 'normal') {
+                this.id = TypedBubble.nextId++;
+                this.x = x;
+                this.y = y;
+                this.type = type;
+                this.config = BUBBLE_TYPES[type];
+                
+                this.radius = this.config.size;
+                this.color = this.config.color;
+                this.maxHealth = this.config.health;
+                this.health = this.config.health;
+                this.baseScore = this.config.score;
+                
+                this.vx = (Math.random() - 0.5) * this.config.speed / 10;
+                this.vy = (Math.random() - 0.5) * this.config.speed / 10;
+                
+                this.age = 0;
+                this.maxAge = this.getMaxAge();
+                this.isVisible = true;
+            }
+            
+            getMaxAge() {
+                // 時間制限に応じて生存時間を調整
+                const baseAge = {
+                    speed: 8000,
+                    bonus: 10000,
+                    hard: 15000,
+                    big: 12000,
+                    normal: 12000
+                }[this.type];
+                
+                // 残り時間が少ないほど短命に
+                const timeRatio = gameTimeRemaining / gameTimeLimit;
+                const ageMultiplier = Math.max(0.5, timeRatio);
+                
+                return Math.floor(baseAge * ageMultiplier);
+            }
+            
+            update(deltaTime) {
+                this.age += deltaTime;
+                
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                this.handleBoundaryCollision();
+                
+                return this.age < this.maxAge;
+            }
+            
+            handleBoundaryCollision() {
+                const margin = this.radius;
+                if (this.x - margin <= 0 || this.x + margin >= canvas.width) {
+                    this.vx *= -0.8;
+                    this.x = Math.max(margin, Math.min(canvas.width - margin, this.x));
+                }
+                if (this.y - margin <= 0 || this.y + margin >= canvas.height) {
+                    this.vy *= -0.8;
+                    this.y = Math.max(margin, Math.min(canvas.height - margin, this.y));
+                }
+            }
+            
+            render() {
+                if (!this.isVisible) return;
+                
+                ctx.save();
+                
+                const ageRatio = this.age / this.maxAge;
+                const opacity = Math.max(0.4, 1 - ageRatio * 0.6);
+                ctx.globalAlpha = opacity;
+                
+                // 時間制限による緊急感の演出
+                if (gameTimeRemaining <= 10 && Math.floor(Date.now() / 200) % 2) {
+                    ctx.globalAlpha *= 0.7; // 点滅効果
+                }
+                
+                ctx.shadowColor = 'rgba(0,0,0,0.3)';
+                ctx.shadowBlur = 8;
+                ctx.shadowOffsetX = 3;
+                ctx.shadowOffsetY = 3;
+                
+                const gradient = ctx.createRadialGradient(
+                    this.x - this.radius/3, this.y - this.radius/3, 0,
+                    this.x, this.y, this.radius
+                );
+                gradient.addColorStop(0, this.lightenColor(this.color));
+                gradient.addColorStop(1, this.color);
+                
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.shadowColor = 'transparent';
+                ctx.strokeStyle = this.darkenColor(this.color);
+                ctx.lineWidth = this.type === 'hard' ? 4 : 2;
+                ctx.stroke();
+                
+                ctx.fillStyle = 'rgba(255,255,255,0.6)';
+                ctx.beginPath();
+                ctx.arc(
+                    this.x - this.radius/3, 
+                    this.y - this.radius/3, 
+                    this.radius/4, 
+                    0, Math.PI * 2
+                );
+                ctx.fill();
+                
+                this.renderSpecialEffects();
+                
+                if (this.type === 'hard' && this.health > 0) {
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.font = 'bold 16px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(this.health.toString(), this.x, this.y + 5);
+                }
+                
+                ctx.restore();
+            }
+            
+            renderSpecialEffects() {
+                ctx.save();
+                ctx.globalAlpha = 1;
+                
+                switch(this.type) {
+                    case 'speed':
+                        ctx.strokeStyle = this.color;
+                        ctx.lineWidth = 2;
+                        ctx.globalAlpha = 0.3;
+                        ctx.beginPath();
+                        ctx.moveTo(this.x - this.vx * 5, this.y - this.vy * 5);
+                        ctx.lineTo(this.x, this.y);
+                        ctx.stroke();
+                        break;
+                        
+                    case 'bonus':
+                        ctx.fillStyle = '#FFD700';
+                        const sparkles = 3;
+                        for(let i = 0; i < sparkles; i++) {
+                            const angle = (Date.now() / 1000 + i * 2) % (Math.PI * 2);
+                            const sparkleX = this.x + Math.cos(angle) * (this.radius * 0.7);
+                            const sparkleY = this.y + Math.sin(angle) * (this.radius * 0.7);
+                            ctx.beginPath();
+                            ctx.arc(sparkleX, sparkleY, 2, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                        break;
+                        
+                    case 'big':
+                        ctx.strokeStyle = this.lightenColor(this.color);
+                        ctx.lineWidth = 3;
+                        ctx.globalAlpha = 0.5;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.radius * 0.6, 0, Math.PI * 2);
+                        ctx.stroke();
+                        break;
+                }
+                
+                ctx.restore();
+            }
+            
+            lightenColor(color) {
+                const hex = color.replace('#', '');
+                const r = Math.min(255, parseInt(hex.substr(0, 2), 16) + 40);
+                const g = Math.min(255, parseInt(hex.substr(2, 2), 16) + 40);
+                const b = Math.min(255, parseInt(hex.substr(4, 2), 16) + 40);
+                return `rgb(${r},${g},${b})`;
+            }
+            
+            darkenColor(color) {
+                const hex = color.replace('#', '');
+                const r = Math.max(0, parseInt(hex.substr(0, 2), 16) - 50);
+                const g = Math.max(0, parseInt(hex.substr(2, 2), 16) - 50);
+                const b = Math.max(0, parseInt(hex.substr(4, 2), 16) - 50);
+                return `rgb(${r},${g},${b})`;
+            }
+            
+            containsPoint(x, y) {
+                const dx = x - this.x;
+                const dy = y - this.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                return distance <= this.radius;
+            }
+            
+            takeDamage() {
+                this.health--;
+                
+                if (this.health <= 0) {
+                    this.destroy();
+                    return true;
+                }
+                return false;
+            }
+            
+            destroy() {
+                this.isVisible = false;
+                destroyedBubbles++;
+            }
+            
+            getScore() {
+                let finalScore = this.baseScore;
+                
+                const ageRatio = this.age / this.maxAge;
+                if (ageRatio < 0.1) {
+                    finalScore *= 1.5;
+                } else if (ageRatio > 0.8) {
+                    finalScore *= 2;
+                }
+                
+                // 時間制限による緊急ボーナス
+                if (gameTimeRemaining <= 10) {
+                    finalScore *= 1.5; // ラスト10秒は1.5倍
+                } else if (gameTimeRemaining <= 30) {
+                    finalScore *= 1.2; // ラスト30秒は1.2倍
+                }
+                
+                return Math.floor(finalScore);
+            }
+        }
+        
+        // ===== ゲーム機能 =====
+        function updateUI() {
+            scoreElement.textContent = score;
+            hpElement.textContent = hp;
+            bubbleCountElement.textContent = bubbles.length;
+            destroyedCountElement.textContent = destroyedBubbles;
+            timeBonusElement.textContent = calculateTimeBonus();
+            
+            const rate = totalClicks > 0 ? Math.round((totalHits / totalClicks) * 100) : 0;
+            hitRateElement.textContent = `${rate}%`;
+        }
+        
+        function spawnRandomBubble() {
+            const types = Object.keys(BUBBLE_TYPES);
+            const randomType = types[Math.floor(Math.random() * types.length)];
+            
+            const margin = 80;
+            const x = margin + Math.random() * (canvas.width - margin * 2);
+            const y = margin + Math.random() * (canvas.height - margin * 2);
+            
+            const bubble = new TypedBubble(x, y, randomType);
+            bubbles.push(bubble);
+            updateUI();
+        }
+        
+        function clearAll() {
+            bubbles = [];
+            updateUI();
+            log('全バブルクリア', 'info');
+        }
+        
+        function startGame(timeLimit) {
+            if (gameRunning) return;
+            
+            gameRunning = true;
+            gameTimeLimit = timeLimit;
+            gameTimeRemaining = timeLimit;
+            gameStartTime = Date.now();
+            
+            score = 0;
+            hp = 100;
+            totalClicks = 0;
+            totalHits = 0;
+            destroyedBubbles = 0;
+            
+            bubbles = [];
+            gameResultElement.style.display = 'none';
+            
+            updateUI();
+            updateTimeDisplay();
+            updateButtonStates(true);
+            
+            // 初期バブル生成
+            for (let i = 0; i < 5; i++) {
+                spawnRandomBubble();
+            }
+            
+            gameLoop = setInterval(() => {
+                update();
+                render();
+                
+                // 時間更新
+                gameTimeRemaining = Math.max(0, gameTimeLimit - (Date.now() - gameStartTime) / 1000);
+                updateTimeDisplay();
+                
+                // 時間切れチェック
+                if (gameTimeRemaining <= 0) {
+                    endGame('time_up');
+                    return;
+                }
+                
+                // 自動バブル生成（時間に応じて頻度調整）
+                const spawnChance = gameTimeRemaining <= 30 ? 0.025 : 0.015;
+                if (Math.random() < spawnChance && bubbles.length < 8) {
+                    spawnRandomBubble();
+                }
+            }, 16);
+            
+            log(`🎮 ${timeLimit}秒ゲーム開始!`, 'success');
+        }
+        
+        function stopGame() {
+            if (!gameRunning) return;
+            endGame('manual_stop');
+        }
+        
+        function update() {
+            bubbles = bubbles.filter(bubble => {
+                const alive = bubble.update(16);
+                if (!alive) {
+                    hp -= 3; // 時間制限中は少しダメージ軽減
+                    log(`バブル消滅 HP-3 (残りHP:${hp})`, 'warning');
+                    updateUI();
+                }
+                return alive;
+            });
+            
+            if (hp <= 0 && gameRunning) {
+                endGame('hp_zero');
+            }
+        }
+        
+        function render() {
+            ctx.fillStyle = '#e8f4f8';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            bubbles.forEach(bubble => bubble.render());
+            
+            // ゲーム情報表示
+            ctx.fillStyle = '#333';
+            ctx.font = '12px monospace';
+            ctx.textAlign = 'left';
+            ctx.fillText(
+                `時間: ${Math.ceil(gameTimeRemaining)}s | スコア: ${score} | HP: ${hp} | 破壊: ${destroyedBubbles}`, 
+                10, 20
+            );
+            
+            // 緊急時の画面エフェクト
+            if (gameTimeRemaining <= 10) {
+                ctx.fillStyle = `rgba(255, 0, 0, ${0.1 * Math.sin(Date.now() / 100)})`;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+        
+        // ===== イベントハンドラー =====
+        canvas.addEventListener('click', (event) => {
+            if (!gameRunning) return;
+            
+            const coords = getCanvasCoordinates(event);
+            const x = coords.x;
+            const y = coords.y;
+            
+            totalClicks++;
+            
+            let hitBubble = null;
+            for (let i = bubbles.length - 1; i >= 0; i--) {
+                const bubble = bubbles[i];
+                if (bubble.containsPoint(x, y)) {
+                    hitBubble = bubble;
+                    break;
+                }
+            }
+            
+            if (hitBubble) {
+                totalHits++;
+                
+                const destroyed = hitBubble.takeDamage();
+                
+                if (destroyed) {
+                    const bubbleIndex = bubbles.indexOf(hitBubble);
+                    bubbles.splice(bubbleIndex, 1);
+                    
+                    const earnedScore = hitBubble.getScore();
+                    score += earnedScore;
+                    
+                    log(`🎯 ${hitBubble.config.name} +${earnedScore}点`, 'hit');
+                    createPopEffect(hitBubble.x, hitBubble.y, hitBubble.color);
+                }
+                
+                updateUI();
+            } else {
+                updateUI();
+            }
+        });
+        
+        // ===== エフェクト =====
+        function createPopEffect(x, y, color) {
+            ctx.save();
+            ctx.fillStyle = color;
+            ctx.globalAlpha = 0.8;
+            for (let i = 0; i < 12; i++) {
+                const angle = (Math.PI * 2 * i) / 12;
+                const distance = 20 + Math.random() * 30;
+                const particleX = x + Math.cos(angle) * distance;
+                const particleY = y + Math.sin(angle) * distance;
+                
+                ctx.beginPath();
+                ctx.arc(particleX, particleY, 2 + Math.random() * 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.restore();
+        }
+        
+        // ===== 初期化 =====
+        updateUI();
+        timeDisplayElement.textContent = '⏰ ゲーム時間を選択してください';
+        log('Step 4: 時間制限システム 準備完了', 'success');
+        log('60秒・2分・30秒から選択してゲーム開始！', 'info');
+    </script>
+</body>
+</html>

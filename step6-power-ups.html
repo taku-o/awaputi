@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Step 6: パワーアップアイテム</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+        }
+        
+        #gameContainer {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        #gameCanvas {
+            border: 2px solid #333;
+            background: #e8f4f8;
+            cursor: crosshair;
+        }
+        
+        #gameInfo {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+        
+        #stageInfo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #007bff;
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 5px solid #007bff;
+        }
+        
+        #powerUpStatus {
+            margin: 10px 0;
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 14px;
+        }
+        
+        .active-powerup {
+            background: #d4edda !important;
+            border-color: #c3e6cb !important;
+            animation: powerup-glow 2s ease-in-out infinite;
+        }
+        
+        @keyframes powerup-glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); }
+            50% { box-shadow: 0 0 15px rgba(40, 167, 69, 0.8); }
+        }
+        
+        #levelProgress {
+            margin: 10px 0;
+            background: #f8f9fa;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        
+        #progressBar {
+            width: 100%;
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        #progressFill {
+            height: 100%;
+            background: linear-gradient(to right, #28a745, #20c997);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        #timeDisplay {
+            font-size: 18px;
+            font-weight: bold;
+            color: #007bff;
+            margin: 5px 0;
+        }
+        
+        .time-warning { color: #ff6600 !important; }
+        .time-danger { color: #dc3545 !important; animation: pulse 1s infinite; }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background: #007bff;
+            color: white;
+        }
+        
+        button:hover {
+            background: #0056b3;
+        }
+        
+        button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        #log {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            max-height: 80px;
+            overflow-y: auto;
+            text-align: left;
+            font-family: monospace;
+            font-size: 11px;
+        }
+        
+        .hit { color: #28a745; font-weight: bold; }
+        .miss { color: #dc3545; }
+        .info { color: #007bff; }
+        .success { color: #28a745; font-weight: bold; }
+        .special { color: #ff6600; font-weight: bold; }
+        .level { color: #9013FE; font-weight: bold; }
+        .powerup { color: #e74c3c; font-weight: bold; }
+        
+        #powerUpTypes {
+            margin: 10px 0;
+            font-size: 11px;
+            text-align: left;
+            background: #fff3cd;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ffeaa7;
+        }
+        
+        #stageResult {
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .stage-complete {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .stage-failed {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <h1>⚡ Step 6: パワーアップアイテム</h1>
+        <p>パワーアップアイテムを取ってゲームを有利に進めよう！</p>
+        
+        <div id="stageInfo">🎯 ステージを選択してください</div>
+        
+        <div id="powerUpStatus">
+            🔋 パワーアップ: なし
+        </div>
+        
+        <div id="levelProgress">
+            <div>レベル進行度:</div>
+            <div id="progressBar">
+                <div id="progressFill"></div>
+            </div>
+            <div id="progressText">0 / 100 XP</div>
+        </div>
+        
+        <div id="timeDisplay">⏰ 準備中...</div>
+        
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        
+        <div id="gameInfo">
+            <div>スコア: <span id="score">0</span></div>
+            <div>HP: <span id="hp">100</span></div>
+            <div>レベル: <span id="level">1</span></div>
+            <div>XP: <span id="experience">0</span></div>
+            <div>破壊数: <span id="destroyedCount">0</span></div>
+            <div>目標: <span id="stageTarget">-</span></div>
+        </div>
+        
+        <div id="stageResult"></div>
+        
+        <div id="powerUpTypes">
+            <strong>⚡ パワーアップアイテム:</strong><br>
+            ⭐ <strong>スコアブースト</strong>: 30秒間スコア2倍<br>
+            💉 <strong>HP回復</strong>: HP50回復<br>
+            ⏰ <strong>時間延長</strong>: 残り時間+30秒<br>
+            🎯 <strong>オートターゲット</strong>: 15秒間自動命中<br>
+            💣 <strong>スーパーボム</strong>: 画面上の全バブルを破壊<br>
+            🛡️ <strong>シールド</strong>: 20秒間HP減少無効
+        </div>
+        
+        <div>
+            <button onclick="startStage(1)" id="stage1">ステージ1: 初心者</button>
+            <button onclick="startStage(2)" id="stage2">ステージ2: 中級者</button>
+            <button onclick="startStage(3)" id="stage3">ステージ3: 上級者</button>
+            <button onclick="startStage(4)" id="stage4">ステージ4: エキスパート</button>
+            <button onclick="startStage(5)" id="stage5">ステージ5: マスター</button>
+        </div>
+        
+        <div>
+            <button onclick="stopGame()" id="stopBtn" disabled>ゲーム停止</button>
+            <button onclick="spawnTestPowerUp()">テストパワーアップ</button>
+            <button onclick="clearAll()">全クリア</button>
+        </div>
+        
+        <div id="log"></div>
+    </div>
+
+    <script>
+        // ===== グローバル変数 =====
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreElement = document.getElementById('score');
+        const hpElement = document.getElementById('hp');
+        const levelElement = document.getElementById('level');
+        const experienceElement = document.getElementById('experience');
+        const destroyedCountElement = document.getElementById('destroyedCount');
+        const stageTargetElement = document.getElementById('stageTarget');
+        const stageInfoElement = document.getElementById('stageInfo');
+        const timeDisplayElement = document.getElementById('timeDisplay');
+        const stageResultElement = document.getElementById('stageResult');
+        const powerUpStatusElement = document.getElementById('powerUpStatus');
+        const progressFillElement = document.getElementById('progressFill');
+        const progressTextElement = document.getElementById('progressText');
+        const logElement = document.getElementById('log');
+        
+        let bubbles = [];
+        let powerUps = [];
+        let score = 0;
+        let hp = 100;
+        let playerLevel = 1;
+        let experience = 0;
+        let totalClicks = 0;
+        let totalHits = 0;
+        let destroyedBubbles = 0;
+        let gameRunning = false;
+        let gameLoop = null;
+        
+        // ステージシステム
+        let currentStage = 0;
+        let stageTimeLimit = 60;
+        let stageTimeRemaining = 0;
+        let stageStartTime = 0;
+        let stageTarget = { type: 'score', value: 100 };
+        
+        // パワーアップシステム
+        let activePowerUps = new Map();
+        
+        // レベルシステム
+        const LEVEL_THRESHOLDS = [0, 100, 250, 450, 700, 1000, 1400, 1900, 2500, 3200, 4000];
+        
+        // パワーアップ定義
+        const POWERUP_TYPES = {
+            scoreBoost: {
+                name: 'スコアブースト',
+                color: '#FFD700',
+                icon: '⭐',
+                duration: 30000, // 30秒
+                effect: 'scoreMultiplier',
+                value: 2,
+                rarity: 0.3
+            },
+            healthRestore: {
+                name: 'HP回復',
+                color: '#FF69B4',
+                icon: '💉',
+                duration: 0, // 即時
+                effect: 'heal',
+                value: 50,
+                rarity: 0.4
+            },
+            timeExtension: {
+                name: '時間延長',
+                color: '#00CED1',
+                icon: '⏰',
+                duration: 0, // 即時
+                effect: 'addTime',
+                value: 30,
+                rarity: 0.25
+            },
+            autoTarget: {
+                name: 'オートターゲット',
+                color: '#FF4500',
+                icon: '🎯',
+                duration: 15000, // 15秒
+                effect: 'autoHit',
+                value: true,
+                rarity: 0.15
+            },
+            superBomb: {
+                name: 'スーパーボム',
+                color: '#DC143C',
+                icon: '💣',
+                duration: 0, // 即時
+                effect: 'destroyAll',
+                value: true,
+                rarity: 0.1
+            },
+            shield: {
+                name: 'シールド',
+                color: '#4169E1',
+                icon: '🛡️',
+                duration: 20000, // 20秒
+                effect: 'noDamage',
+                value: true,
+                rarity: 0.2
+            }
+        };
+        
+        // ステージ設定
+        const STAGE_CONFIGS = {
+            1: {
+                name: '初心者ステージ',
+                description: 'スコア200点を目指そう',
+                timeLimit: 90,
+                target: { type: 'score', value: 200 },
+                bubbleSpawnRate: 0.01,
+                powerUpSpawnRate: 0.008,
+                maxBubbles: 4,
+                bubbleTypes: ['normal', 'bonus'],
+                background: '#e8f4f8',
+                xpReward: 50
+            },
+            2: {
+                name: '中級者ステージ',
+                description: 'バブル15個を破壊しよう',
+                timeLimit: 75,
+                target: { type: 'destroy', value: 15 },
+                bubbleSpawnRate: 0.015,
+                powerUpSpawnRate: 0.01,
+                maxBubbles: 5,
+                bubbleTypes: ['normal', 'bonus', 'hard'],
+                background: '#f0f8e8',
+                xpReward: 80
+            },
+            3: {
+                name: '上級者ステージ',
+                description: 'スコア500点・命中率70%以上',
+                timeLimit: 60,
+                target: { type: 'combo', score: 500, hitRate: 70 },
+                bubbleSpawnRate: 0.02,
+                powerUpSpawnRate: 0.012,
+                maxBubbles: 6,
+                bubbleTypes: ['normal', 'bonus', 'hard', 'speed'],
+                background: '#f8f0e8',
+                xpReward: 120
+            },
+            4: {
+                name: 'エキスパートステージ',
+                description: 'HP80以上でバブル25個破壊',
+                timeLimit: 45,
+                target: { type: 'survival', destroy: 25, minHP: 80 },
+                bubbleSpawnRate: 0.025,
+                powerUpSpawnRate: 0.015,
+                maxBubbles: 7,
+                bubbleTypes: ['normal', 'bonus', 'hard', 'speed', 'big'],
+                background: '#f0e8f8',
+                xpReward: 150
+            },
+            5: {
+                name: 'マスターステージ',
+                description: 'スコア1000点・完璧なプレイ',
+                timeLimit: 30,
+                target: { type: 'master', score: 1000, hitRate: 85, minHP: 90 },
+                bubbleSpawnRate: 0.03,
+                powerUpSpawnRate: 0.018,
+                maxBubbles: 8,
+                bubbleTypes: ['normal', 'bonus', 'hard', 'speed', 'big'],
+                background: '#ffe8e8',
+                xpReward: 200
+            }
+        };
+        
+        // バブル種類定義
+        const BUBBLE_TYPES = {
+            normal: {
+                name: 'Normal',
+                color: '#4A90E2',
+                size: 30,
+                score: 10,
+                health: 1,
+                speed: 0,
+                emoji: '🔵'
+            },
+            bonus: {
+                name: 'Bonus', 
+                color: '#7ED321',
+                size: 25,
+                score: 25,
+                health: 1,
+                speed: 0,
+                emoji: '🟢'
+            },
+            hard: {
+                name: 'Hard',
+                color: '#D0021B', 
+                size: 35,
+                score: 20,
+                health: 2,
+                speed: 0,
+                emoji: '🔴'
+            },
+            speed: {
+                name: 'Speed',
+                color: '#F5A623',
+                size: 20,
+                score: 15, 
+                health: 1,
+                speed: 50,
+                emoji: '🟡'
+            },
+            big: {
+                name: 'Big',
+                color: '#9013FE',
+                size: 50,
+                score: 30,
+                health: 1,
+                speed: 0,
+                emoji: '🟣'
+            }
+        };
+        
+        // ===== ログ機能 =====
+        function log(message, type = 'info') {
+            const time = new Date().toLocaleTimeString();
+            const div = document.createElement('div');
+            div.className = type;
+            div.textContent = `[${time}] ${message}`;
+            logElement.appendChild(div);
+            logElement.scrollTop = logElement.scrollHeight;
+            console.log(`[${type}] ${message}`);
+        }
+        
+        // ===== パワーアップシステム =====
+        class PowerUp {
+            static nextId = 0;
+            
+            constructor(x, y, type) {
+                this.id = PowerUp.nextId++;
+                this.x = x;
+                this.y = y;
+                this.type = type;
+                this.config = POWERUP_TYPES[type];
+                
+                this.radius = 25;
+                this.color = this.config.color;
+                this.icon = this.config.icon;
+                
+                // 浮遊エフェクト
+                this.floatOffset = 0;
+                this.floatSpeed = 0.05;
+                
+                // 生存時間
+                this.age = 0;
+                this.maxAge = 20000; // 20秒で消滅
+                this.isVisible = true;
+                
+                log(`${this.icon} ${this.config.name}パワーアップ出現!`, 'powerup');
+            }
+            
+            update(deltaTime) {
+                this.age += deltaTime;
+                this.floatOffset += this.floatSpeed;
+                
+                return this.age < this.maxAge;
+            }
+            
+            render() {
+                if (!this.isVisible) return;
+                
+                ctx.save();
+                
+                // 浮遊エフェクト
+                const floatY = this.y + Math.sin(this.floatOffset) * 5;
+                
+                // 点滅エフェクト（後半）
+                const ageRatio = this.age / this.maxAge;
+                let opacity = 1;
+                if (ageRatio > 0.7) {
+                    opacity = 0.5 + 0.5 * Math.sin(this.age / 100);
+                }
+                
+                ctx.globalAlpha = opacity;
+                
+                // 光輪エフェクト
+                const gradient = ctx.createRadialGradient(
+                    this.x, floatY, 0,
+                    this.x, floatY, this.radius * 1.5
+                );
+                gradient.addColorStop(0, this.color);
+                gradient.addColorStop(0.7, this.color + '80');
+                gradient.addColorStop(1, this.color + '00');
+                
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(this.x, floatY, this.radius * 1.5, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // メインアイコン背景
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, floatY, this.radius, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // 枠線
+                ctx.strokeStyle = '#FFFFFF';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                
+                // アイコン表示
+                ctx.fillStyle = '#FFFFFF';
+                ctx.font = 'bold 20px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(this.icon, this.x, floatY);
+                
+                ctx.restore();
+            }
+            
+            containsPoint(x, y) {
+                const dx = x - this.x;
+                const dy = y - this.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                return distance <= this.radius;
+            }
+            
+            activate() {
+                this.isVisible = false;
+                log(`⚡ ${this.config.name}発動!`, 'powerup');
+                
+                switch(this.config.effect) {
+                    case 'scoreMultiplier':
+                        activatePowerUp('scoreBoost', this.config.duration, this.config.value);
+                        break;
+                        
+                    case 'heal':
+                        hp = Math.min(100, hp + this.config.value);
+                        log(`💉 HP+${this.config.value} 回復!`, 'success');
+                        break;
+                        
+                    case 'addTime':
+                        stageTimeRemaining += this.config.value;
+                        log(`⏰ 時間+${this.config.value}秒 延長!`, 'success');
+                        break;
+                        
+                    case 'autoHit':
+                        activatePowerUp('autoTarget', this.config.duration, this.config.value);
+                        break;
+                        
+                    case 'destroyAll':
+                        destroyAllBubbles();
+                        break;
+                        
+                    case 'noDamage':
+                        activatePowerUp('shield', this.config.duration, this.config.value);
+                        break;
+                }
+                
+                updatePowerUpStatus();
+            }
+        }
+        
+        function activatePowerUp(type, duration, value) {
+            activePowerUps.set(type, {
+                endTime: Date.now() + duration,
+                value: value
+            });
+        }
+        
+        function updatePowerUps(deltaTime) {
+            const now = Date.now();
+            
+            // 期限切れのパワーアップを削除
+            for (let [type, powerUp] of activePowerUps.entries()) {
+                if (now >= powerUp.endTime) {
+                    activePowerUps.delete(type);
+                    log(`⚡ ${POWERUP_TYPES[type].name}効果終了`, 'info');
+                }
+            }
+            
+            updatePowerUpStatus();
+        }
+        
+        function updatePowerUpStatus() {
+            if (activePowerUps.size === 0) {
+                powerUpStatusElement.textContent = '🔋 パワーアップ: なし';
+                powerUpStatusElement.className = '';
+                return;
+            }
+            
+            const activeEffects = [];
+            for (let [type, powerUp] of activePowerUps.entries()) {
+                const remaining = Math.ceil((powerUp.endTime - Date.now()) / 1000);
+                activeEffects.push(`${POWERUP_TYPES[type].icon}${remaining}s`);
+            }
+            
+            powerUpStatusElement.textContent = `⚡ アクティブ: ${activeEffects.join(' | ')}`;
+            powerUpStatusElement.className = 'active-powerup';
+        }
+        
+        function destroyAllBubbles() {
+            let totalScore = 0;
+            let totalXP = 0;
+            
+            bubbles.forEach(bubble => {
+                const earnedScore = bubble.getScore() * 2; // ボム使用時はスコア2倍
+                const earnedXP = Math.floor(earnedScore / 5);
+                totalScore += earnedScore;
+                totalXP += earnedXP;
+                destroyedBubbles++;
+                
+                // エフェクト生成
+                createPopEffect(bubble.x, bubble.y, bubble.color);
+            });
+            
+            bubbles = [];
+            score += totalScore;
+            addExperience(totalXP);
+            
+            log(`💣 スーパーボム! 全バブル破壊 +${totalScore}点 +${totalXP}XP`, 'powerup');
+            
+            // 画面フラッシュエフェクト
+            createScreenFlash('#FFD700');
+        }
+        
+        function createScreenFlash(color) {
+            ctx.save();
+            ctx.fillStyle = color;
+            ctx.globalAlpha = 0.3;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.restore();
+        }
+        
+        function spawnRandomPowerUp() {
+            const powerUpTypes = Object.keys(POWERUP_TYPES);
+            
+            // レア度に基づいた選択
+            const rand = Math.random();
+            let selectedType = null;
+            
+            for (let type of powerUpTypes) {
+                if (rand < POWERUP_TYPES[type].rarity) {
+                    selectedType = type;
+                    break;
+                }
+            }
+            
+            if (!selectedType) {
+                selectedType = powerUpTypes[Math.floor(Math.random() * powerUpTypes.length)];
+            }
+            
+            const margin = 60;
+            const x = margin + Math.random() * (canvas.width - margin * 2);
+            const y = margin + Math.random() * (canvas.height - margin * 2);
+            
+            const powerUp = new PowerUp(x, y, selectedType);
+            powerUps.push(powerUp);
+        }
+        
+        function spawnTestPowerUp() {
+            const powerUpTypes = Object.keys(POWERUP_TYPES);
+            const randomType = powerUpTypes[Math.floor(Math.random() * powerUpTypes.length)];
+            
+            const margin = 80;
+            const x = margin + Math.random() * (canvas.width - margin * 2);
+            const y = margin + Math.random() * (canvas.height - margin * 2);
+            
+            const powerUp = new PowerUp(x, y, randomType);
+            powerUps.push(powerUp);
+        }
+        
+        // ===== レベル・経験値システム =====
+        function addExperience(xp) {
+            experience += xp;
+            
+            const currentLevelThreshold = LEVEL_THRESHOLDS[playerLevel - 1] || 0;
+            const nextLevelThreshold = LEVEL_THRESHOLDS[playerLevel] || currentLevelThreshold + 500;
+            
+            if (experience >= nextLevelThreshold && playerLevel < LEVEL_THRESHOLDS.length - 1) {
+                playerLevel++;
+                log(`🎉 レベルアップ! レベル${playerLevel}になりました`, 'level');
+                
+                hp = Math.min(100, hp + 20);
+                score += playerLevel * 50;
+                
+                updateUI();
+                updateLevelProgress();
+                
+                setTimeout(() => {
+                    updateLevelProgress();
+                }, 100);
+            } else {
+                updateLevelProgress();
+            }
+        }
+        
+        function updateLevelProgress() {
+            const currentThreshold = LEVEL_THRESHOLDS[playerLevel - 1] || 0;
+            const nextThreshold = LEVEL_THRESHOLDS[playerLevel] || (currentThreshold + 500);
+            const progress = Math.max(0, experience - currentThreshold);
+            const needed = nextThreshold - currentThreshold;
+            const percentage = Math.min(100, (progress / needed) * 100);
+            
+            progressFillElement.style.width = `${percentage}%`;
+            progressTextElement.textContent = `${progress} / ${needed} XP`;
+        }
+        
+        // ===== ステージ管理システム =====
+        function updateStageInfo() {
+            if (!currentStage) {
+                stageInfoElement.textContent = '🎯 ステージを選択してください';
+                return;
+            }
+            
+            const config = STAGE_CONFIGS[currentStage];
+            stageInfoElement.textContent = `🎮 ${config.name}: ${config.description}`;
+            
+            let targetText = '';
+            switch(config.target.type) {
+                case 'score':
+                    targetText = `${config.target.value}点`;
+                    break;
+                case 'destroy':
+                    targetText = `${config.target.value}個破壊`;
+                    break;
+                case 'combo':
+                    targetText = `${config.target.score}点 & 命中率${config.target.hitRate}%`;
+                    break;
+                case 'survival':
+                    targetText = `${config.target.destroy}個破壊 & HP${config.target.minHP}以上`;
+                    break;
+                case 'master':
+                    targetText = `${config.target.score}点 & 命中率${config.target.hitRate}% & HP${config.target.minHP}以上`;
+                    break;
+            }
+            stageTargetElement.textContent = targetText;
+        }
+        
+        function checkStageComplete() {
+            if (!currentStage) return false;
+            
+            const config = STAGE_CONFIGS[currentStage];
+            const target = config.target;
+            const hitRate = totalClicks > 0 ? Math.round((totalHits / totalClicks) * 100) : 0;
+            
+            switch(target.type) {
+                case 'score':
+                    return score >= target.value;
+                case 'destroy':
+                    return destroyedBubbles >= target.value;
+                case 'combo':
+                    return score >= target.score && hitRate >= target.hitRate;
+                case 'survival':
+                    return destroyedBubbles >= target.destroy && hp >= target.minHP;
+                case 'master':
+                    return score >= target.score && hitRate >= target.hitRate && hp >= target.minHP;
+                default:
+                    return false;
+            }
+        }
+        
+        function updateTimeDisplay() {
+            const minutes = Math.floor(stageTimeRemaining / 60);
+            const seconds = Math.floor(stageTimeRemaining % 60);
+            const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            timeDisplayElement.textContent = `⏰ ${timeString}`;
+            
+            if (stageTimeRemaining <= 10) {
+                timeDisplayElement.className = 'time-danger';
+            } else if (stageTimeRemaining <= 30) {
+                timeDisplayElement.className = 'time-warning';
+            } else {
+                timeDisplayElement.className = '';
+            }
+        }
+        
+        function endStage(reason = 'complete') {
+            gameRunning = false;
+            if (gameLoop) {
+                clearInterval(gameLoop);
+                gameLoop = null;
+            }
+            
+            const config = STAGE_CONFIGS[currentStage];
+            let resultMessage = '';
+            let resultClass = '';
+            
+            if (reason === 'complete') {
+                resultMessage = `🎉 ステージ${currentStage}クリア！ XP+${config.xpReward}`;
+                resultClass = 'stage-complete';
+                addExperience(config.xpReward);
+                log(`🎉 ステージ${currentStage}クリア！`, 'success');
+            } else if (reason === 'time_up') {
+                resultMessage = `⏰ 時間切れ！ ステージ${currentStage}失敗`;
+                resultClass = 'stage-failed';
+                log(`⏰ ステージ${currentStage}時間切れ`, 'special');
+            } else if (reason === 'hp_zero') {
+                resultMessage = `💀 HP 0！ ステージ${currentStage}失敗`;
+                resultClass = 'stage-failed';
+                log(`💀 ステージ${currentStage}失敗`, 'miss');
+            }
+            
+            stageResultElement.textContent = resultMessage;
+            stageResultElement.className = resultClass;
+            stageResultElement.style.display = 'block';
+            
+            // パワーアップリセット
+            activePowerUps.clear();
+            updatePowerUpStatus();
+            
+            updateButtonStates(false);
+            updateUI();
+        }
+        
+        function updateButtonStates(gameActive) {
+            document.getElementById('stage1').disabled = gameActive;
+            document.getElementById('stage2').disabled = gameActive;
+            document.getElementById('stage3').disabled = gameActive;
+            document.getElementById('stage4').disabled = gameActive;
+            document.getElementById('stage5').disabled = gameActive;
+            document.getElementById('stopBtn').disabled = !gameActive;
+        }
+        
+        // ===== 座標変換関数 =====
+        function getCanvasCoordinates(event) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / canvas.clientWidth;
+            const scaleY = canvas.height / canvas.clientHeight;
+            const x = (event.clientX - rect.left) * scaleX;
+            const y = (event.clientY - rect.top) * scaleY;
+            return { x: x, y: y };
+        }
+        
+        // ===== バブルクラス =====
+        class StageTypedBubble {
+            static nextId = 0;
+            
+            constructor(x, y, type = 'normal') {
+                this.id = StageTypedBubble.nextId++;
+                this.x = x;
+                this.y = y;
+                this.type = type;
+                this.config = BUBBLE_TYPES[type];
+                
+                this.radius = this.config.size;
+                this.color = this.config.color;
+                this.maxHealth = this.config.health;
+                this.health = this.config.health;
+                this.baseScore = this.config.score;
+                
+                const levelMultiplier = 1 + (playerLevel - 1) * 0.1;
+                this.baseScore = Math.floor(this.baseScore * levelMultiplier);
+                
+                this.vx = (Math.random() - 0.5) * this.config.speed / 10;
+                this.vy = (Math.random() - 0.5) * this.config.speed / 10;
+                
+                this.age = 0;
+                this.maxAge = this.getMaxAge();
+                this.isVisible = true;
+            }
+            
+            getMaxAge() {
+                const stageConfig = STAGE_CONFIGS[currentStage];
+                const baseAge = {
+                    speed: 6000,
+                    bonus: 8000,
+                    hard: 12000,
+                    big: 10000,
+                    normal: 10000
+                }[this.type];
+                
+                const stageMultiplier = stageConfig ? (1 + (currentStage - 1) * 0.1) : 1;
+                return Math.floor(baseAge * stageMultiplier);
+            }
+            
+            update(deltaTime) {
+                this.age += deltaTime;
+                
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                this.handleBoundaryCollision();
+                
+                return this.age < this.maxAge;
+            }
+            
+            handleBoundaryCollision() {
+                const margin = this.radius;
+                if (this.x - margin <= 0 || this.x + margin >= canvas.width) {
+                    this.vx *= -0.8;
+                    this.x = Math.max(margin, Math.min(canvas.width - margin, this.x));
+                }
+                if (this.y - margin <= 0 || this.y + margin >= canvas.height) {
+                    this.vy *= -0.8;
+                    this.y = Math.max(margin, Math.min(canvas.height - margin, this.y));
+                }
+            }
+            
+            render() {
+                if (!this.isVisible) return;
+                
+                ctx.save();
+                
+                const ageRatio = this.age / this.maxAge;
+                let opacity = Math.max(0.4, 1 - ageRatio * 0.6);
+                
+                if (currentStage >= 4 && stageTimeRemaining <= 15) {
+                    opacity *= 0.8 + 0.2 * Math.sin(Date.now() / 100);
+                }
+                
+                ctx.globalAlpha = opacity;
+                
+                ctx.shadowColor = 'rgba(0,0,0,0.3)';
+                ctx.shadowBlur = 8;
+                ctx.shadowOffsetX = 3;
+                ctx.shadowOffsetY = 3;
+                
+                const gradient = ctx.createRadialGradient(
+                    this.x - this.radius/3, this.y - this.radius/3, 0,
+                    this.x, this.y, this.radius
+                );
+                gradient.addColorStop(0, this.lightenColor(this.color));
+                gradient.addColorStop(1, this.color);
+                
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.shadowColor = 'transparent';
+                ctx.strokeStyle = this.darkenColor(this.color);
+                ctx.lineWidth = this.type === 'hard' ? 4 : 2;
+                ctx.stroke();
+                
+                ctx.fillStyle = 'rgba(255,255,255,0.6)';
+                ctx.beginPath();
+                ctx.arc(
+                    this.x - this.radius/3, 
+                    this.y - this.radius/3, 
+                    this.radius/4, 
+                    0, Math.PI * 2
+                );
+                ctx.fill();
+                
+                this.renderSpecialEffects();
+                
+                if (this.type === 'hard' && this.health > 0) {
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.font = 'bold 16px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(this.health.toString(), this.x, this.y + 5);
+                }
+                
+                ctx.restore();
+            }
+            
+            renderSpecialEffects() {
+                ctx.save();
+                ctx.globalAlpha = 1;
+                
+                switch(this.type) {
+                    case 'speed':
+                        ctx.strokeStyle = this.color;
+                        ctx.lineWidth = 2;
+                        ctx.globalAlpha = 0.3;
+                        ctx.beginPath();
+                        ctx.moveTo(this.x - this.vx * 5, this.y - this.vy * 5);
+                        ctx.lineTo(this.x, this.y);
+                        ctx.stroke();
+                        break;
+                        
+                    case 'bonus':
+                        ctx.fillStyle = '#FFD700';
+                        const sparkles = 3;
+                        for(let i = 0; i < sparkles; i++) {
+                            const angle = (Date.now() / 1000 + i * 2) % (Math.PI * 2);
+                            const sparkleX = this.x + Math.cos(angle) * (this.radius * 0.7);
+                            const sparkleY = this.y + Math.sin(angle) * (this.radius * 0.7);
+                            ctx.beginPath();
+                            ctx.arc(sparkleX, sparkleY, 2, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                        break;
+                        
+                    case 'big':
+                        ctx.strokeStyle = this.lightenColor(this.color);
+                        ctx.lineWidth = 3;
+                        ctx.globalAlpha = 0.5;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.radius * 0.6, 0, Math.PI * 2);
+                        ctx.stroke();
+                        break;
+                }
+                
+                ctx.restore();
+            }
+            
+            lightenColor(color) {
+                const hex = color.replace('#', '');
+                const r = Math.min(255, parseInt(hex.substr(0, 2), 16) + 40);
+                const g = Math.min(255, parseInt(hex.substr(2, 2), 16) + 40);
+                const b = Math.min(255, parseInt(hex.substr(4, 2), 16) + 40);
+                return `rgb(${r},${g},${b})`;
+            }
+            
+            darkenColor(color) {
+                const hex = color.replace('#', '');
+                const r = Math.max(0, parseInt(hex.substr(0, 2), 16) - 50);
+                const g = Math.max(0, parseInt(hex.substr(2, 2), 16) - 50);
+                const b = Math.max(0, parseInt(hex.substr(4, 2), 16) - 50);
+                return `rgb(${r},${g},${b})`;
+            }
+            
+            containsPoint(x, y) {
+                const dx = x - this.x;
+                const dy = y - this.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                return distance <= this.radius;
+            }
+            
+            takeDamage() {
+                this.health--;
+                
+                if (this.health <= 0) {
+                    this.destroy();
+                    return true;
+                }
+                return false;
+            }
+            
+            destroy() {
+                this.isVisible = false;
+                destroyedBubbles++;
+            }
+            
+            getScore() {
+                let finalScore = this.baseScore;
+                
+                const ageRatio = this.age / this.maxAge;
+                if (ageRatio < 0.1) {
+                    finalScore *= 1.5;
+                } else if (ageRatio > 0.8) {
+                    finalScore *= 2;
+                }
+                
+                if (currentStage >= 3) {
+                    finalScore *= (1 + currentStage * 0.1);
+                }
+                
+                // スコアブーストパワーアップの適用
+                if (activePowerUps.has('scoreBoost')) {
+                    finalScore *= activePowerUps.get('scoreBoost').value;
+                }
+                
+                return Math.floor(finalScore);
+            }
+        }
+        
+        // ===== ゲーム機能 =====
+        function updateUI() {
+            scoreElement.textContent = score;
+            hpElement.textContent = hp;
+            levelElement.textContent = playerLevel;
+            experienceElement.textContent = experience;
+            destroyedCountElement.textContent = destroyedBubbles;
+            
+            updateStageInfo();
+        }
+        
+        function spawnStageAppropriateBlubble() {
+            const stageConfig = STAGE_CONFIGS[currentStage];
+            if (!stageConfig) return;
+            
+            const availableTypes = stageConfig.bubbleTypes;
+            const randomType = availableTypes[Math.floor(Math.random() * availableTypes.length)];
+            
+            const margin = 80;
+            const x = margin + Math.random() * (canvas.width - margin * 2);
+            const y = margin + Math.random() * (canvas.height - margin * 2);
+            
+            const bubble = new StageTypedBubble(x, y, randomType);
+            bubbles.push(bubble);
+            updateUI();
+        }
+        
+        function clearAll() {
+            bubbles = [];
+            powerUps = [];
+            updateUI();
+            log('全バブル・パワーアップクリア', 'info');
+        }
+        
+        function startStage(stageNumber) {
+            if (gameRunning) return;
+            
+            currentStage = stageNumber;
+            const config = STAGE_CONFIGS[stageNumber];
+            if (!config) return;
+            
+            gameRunning = true;
+            stageTimeLimit = config.timeLimit;
+            stageTimeRemaining = config.timeLimit;
+            stageStartTime = Date.now();
+            stageTarget = config.target;
+            
+            score = 0;
+            hp = 100;
+            totalClicks = 0;
+            totalHits = 0;
+            destroyedBubbles = 0;
+            
+            bubbles = [];
+            powerUps = [];
+            activePowerUps.clear();
+            
+            stageResultElement.style.display = 'none';
+            
+            canvas.style.background = config.background;
+            
+            updateUI();
+            updateTimeDisplay();
+            updatePowerUpStatus();
+            updateButtonStates(true);
+            
+            const initialBubbles = Math.min(config.maxBubbles - 2, 3);
+            for (let i = 0; i < initialBubbles; i++) {
+                spawnStageAppropriateBlubble();
+            }
+            
+            gameLoop = setInterval(() => {
+                update();
+                render();
+                
+                stageTimeRemaining = Math.max(0, config.timeLimit - (Date.now() - stageStartTime) / 1000);
+                updateTimeDisplay();
+                
+                if (checkStageComplete()) {
+                    endStage('complete');
+                    return;
+                }
+                
+                if (stageTimeRemaining <= 0) {
+                    endStage('time_up');
+                    return;
+                }
+                
+                // バブル生成
+                if (Math.random() < config.bubbleSpawnRate && bubbles.length < config.maxBubbles) {
+                    spawnStageAppropriateBlubble();
+                }
+                
+                // パワーアップ生成
+                if (Math.random() < config.powerUpSpawnRate && powerUps.length < 2) {
+                    spawnRandomPowerUp();
+                }
+            }, 16);
+            
+            log(`🎮 ステージ${stageNumber}「${config.name}」開始!`, 'level');
+        }
+        
+        function stopGame() {
+            if (!gameRunning) return;
+            
+            gameRunning = false;
+            if (gameLoop) {
+                clearInterval(gameLoop);
+                gameLoop = null;
+            }
+            
+            updateButtonStates(false);
+            log('ゲーム停止', 'info');
+        }
+        
+        function update() {
+            // バブル更新
+            bubbles = bubbles.filter(bubble => {
+                const alive = bubble.update(16);
+                if (!alive) {
+                    let damage = currentStage >= 4 ? 4 : 3;
+                    
+                    // シールドパワーアップチェック
+                    if (activePowerUps.has('shield')) {
+                        damage = 0;
+                        log(`🛡️ シールドでダメージ無効!`, 'success');
+                    }
+                    
+                    hp -= damage;
+                    if (damage > 0) {
+                        log(`バブル消滅 HP-${damage}`, 'miss');
+                    }
+                    updateUI();
+                }
+                return alive;
+            });
+            
+            // パワーアップ更新
+            powerUps = powerUps.filter(powerUp => powerUp.update(16));
+            updatePowerUps(16);
+            
+            if (hp <= 0 && gameRunning) {
+                endStage('hp_zero');
+            }
+        }
+        
+        function render() {
+            const config = STAGE_CONFIGS[currentStage];
+            ctx.fillStyle = config ? config.background : '#e8f4f8';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            bubbles.forEach(bubble => bubble.render());
+            powerUps.forEach(powerUp => powerUp.render());
+            
+            // UI情報
+            ctx.fillStyle = '#333';
+            ctx.font = '12px monospace';
+            ctx.textAlign = 'left';
+            
+            const hitRate = totalClicks > 0 ? Math.round((totalHits / totalClicks) * 100) : 0;
+            ctx.fillText(
+                `ステージ${currentStage} | 時間:${Math.ceil(stageTimeRemaining)}s | スコア:${score} | パワーアップ:${powerUps.length}`, 
+                10, 20
+            );
+        }
+        
+        // ===== イベントハンドラー =====
+        canvas.addEventListener('click', (event) => {
+            if (!gameRunning) return;
+            
+            const coords = getCanvasCoordinates(event);
+            const x = coords.x;
+            const y = coords.y;
+            
+            totalClicks++;
+            
+            // パワーアップクリック判定
+            let hitPowerUp = null;
+            for (let i = powerUps.length - 1; i >= 0; i--) {
+                const powerUp = powerUps[i];
+                if (powerUp.containsPoint(x, y)) {
+                    hitPowerUp = powerUp;
+                    break;
+                }
+            }
+            
+            if (hitPowerUp) {
+                const powerUpIndex = powerUps.indexOf(hitPowerUp);
+                powerUps.splice(powerUpIndex, 1);
+                hitPowerUp.activate();
+                updateUI();
+                return;
+            }
+            
+            // バブルクリック判定
+            let hitBubble = null;
+            
+            // オートターゲットパワーアップチェック
+            if (activePowerUps.has('autoTarget')) {
+                // 最も近いバブルを自動選択
+                let minDistance = Infinity;
+                for (let bubble of bubbles) {
+                    const distance = Math.sqrt((x - bubble.x) ** 2 + (y - bubble.y) ** 2);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        hitBubble = bubble;
+                    }
+                }
+                
+                if (hitBubble) {
+                    log('🎯 オートターゲット発動!', 'powerup');
+                }
+            } else {
+                // 通常のクリック判定
+                for (let i = bubbles.length - 1; i >= 0; i--) {
+                    const bubble = bubbles[i];
+                    if (bubble.containsPoint(x, y)) {
+                        hitBubble = bubble;
+                        break;
+                    }
+                }
+            }
+            
+            if (hitBubble) {
+                totalHits++;
+                
+                const destroyed = hitBubble.takeDamage();
+                
+                if (destroyed) {
+                    const bubbleIndex = bubbles.indexOf(hitBubble);
+                    bubbles.splice(bubbleIndex, 1);
+                    
+                    const earnedScore = hitBubble.getScore();
+                    const earnedXP = Math.floor(earnedScore / 5);
+                    
+                    score += earnedScore;
+                    addExperience(earnedXP);
+                    
+                    log(`🎯 ${hitBubble.config.name} +${earnedScore}点 +${earnedXP}XP`, 'hit');
+                    createPopEffect(hitBubble.x, hitBubble.y, hitBubble.color);
+                }
+                
+                updateUI();
+            } else {
+                updateUI();
+            }
+        });
+        
+        // ===== エフェクト =====
+        function createPopEffect(x, y, color) {
+            ctx.save();
+            ctx.fillStyle = color;
+            ctx.globalAlpha = 0.8;
+            for (let i = 0; i < 12; i++) {
+                const angle = (Math.PI * 2 * i) / 12;
+                const distance = 20 + Math.random() * 30;
+                const particleX = x + Math.cos(angle) * distance;
+                const particleY = y + Math.sin(angle) * distance;
+                
+                ctx.beginPath();
+                ctx.arc(particleX, particleY, 2 + Math.random() * 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.restore();
+        }
+        
+        // ===== 初期化 =====
+        updateUI();
+        updateLevelProgress();
+        updatePowerUpStatus();
+        timeDisplayElement.textContent = '⏰ ステージを選択してください';
+        log('Step 6: パワーアップアイテム 準備完了', 'powerup');
+        log('パワーアップを取ってゲームを有利に進めよう！', 'info');
+    </script>
+</body>
+</html>
