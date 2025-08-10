@@ -137,10 +137,11 @@ async function initGame() {
     debugLogger.showLogs();
     
     try {
-        // ステップ0: ローカル実行環境チェック
-        debugLogger.log('🔍 ステップ0: ローカル実行環境チェック開始');
+        // ステップ0: ローカル実行環境チェック（問題特定のため一時的に無効化）
+        debugLogger.log('🔍 ステップ0: ローカル実行環境チェック開始（簡易版）');
         loadingManager.nextStep();
         
+        /*
         // ローカル実行検出
         const isLocalExecution = LocalExecutionDetector.isLocalExecution();
         const executionContext = LocalExecutionDetector.getExecutionContext();
@@ -180,9 +181,43 @@ async function initGame() {
         } else {
             debugLogger.log('🌐 サーバー実行環境を検出');
         }
+        */
+        
+        debugLogger.log('⚠️ LocalExecutionDetector関連を一時的に無効化');
 
         await new Promise(resolve => setTimeout(resolve, 300));
         
+        // 【テスト4】最小限の初期化のみでテスト
+        debugLogger.log('⚙️ 最小限初期化: Canvas要素取得中...');
+        const canvas = document.getElementById('gameCanvas');
+        
+        if (!canvas) {
+            debugLogger.log('❌ Canvas要素が見つかりません');
+            throw new Error('Canvas要素が見つかりません。');
+        }
+        debugLogger.log('✅ Canvas要素取得成功');
+        
+        debugLogger.log('🎮 GameEngine インスタンス作成中...');
+        const gameEngine = new GameEngine(canvas);
+        debugLogger.log('✅ GameEngine インスタンス作成成功');
+        
+        debugLogger.log('🚀 GameEngine 開始中...');
+        gameEngine.start();
+        debugLogger.log('✅ GameEngine 開始完了');
+        
+        // ローディング画面を非表示
+        loadingManager.hide();
+        debugLogger.log('✅ ローディング画面非表示完了');
+        
+        // グローバルに公開
+        window.gameEngine = gameEngine;
+        debugLogger.log('🌐 グローバルに gameEngine を公開');
+        
+        debugLogger.log('🎉 最小限ゲーム初期化完了');
+        return; // 以降の処理をスキップ
+        
+        /*
+        // 以下の処理を一時的に無効化
         // ステップ1: ブラウザ互換性チェック
         debugLogger.log('📋 ステップ1: ブラウザ互換性チェック開始');
         loadingManager.nextStep();
@@ -231,6 +266,7 @@ async function initGame() {
         debugLogger.log('🎮 GameEngine インスタンス作成中...');
         const gameEngine = new GameEngine(canvas);
         debugLogger.log('✅ GameEngine インスタンス作成成功', gameEngine);
+        */
         
         // ステップ4: リソース読み込み
         loadingManager.nextStep();
