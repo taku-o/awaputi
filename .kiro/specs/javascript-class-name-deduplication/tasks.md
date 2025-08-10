@@ -5,13 +5,13 @@
   - 重複の優先度付けと分類を行う
   - _Requirements: 1.1, 2.1_
 
-- [ ] 1.1 DuplicationAnalyzerクラスの実装
+- [x] 1.1 DuplicationAnalyzerクラスの実装
   - ファイルシステム走査機能を実装
   - クラス定義抽出のためのAST解析を追加
   - 重複検出ロジックを構築
   - _Requirements: 1.1, 2.1_
 
-- [ ] 1.2 ConflictInfoデータモデルの作成
+- [x] 1.2 ConflictInfoデータモデルの作成
   - 重複情報を構造化して保存するクラスを実装
   - 優先度付けアルゴリズムを追加
   - JSON形式での出力機能を実装
