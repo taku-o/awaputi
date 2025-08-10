@@ -387,9 +387,13 @@ function initApp() {
     initGame();
 }
 
-// DOM読み込み完了後に初期化
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initApp);
-} else {
-    initApp();
-}
+// initApp関数をグローバルに公開（エントリーページから呼び出し可能にする）
+window.initApp = initApp;
+
+// DOM読み込み完了後の自動初期化を無効化（エントリーページ実装のため）
+// エントリーページからの手動実行に変更
+// if (document.readyState === 'loading') {
+//     document.addEventListener('DOMContentLoaded', initApp);
+// } else {
+//     initApp();
+// }
