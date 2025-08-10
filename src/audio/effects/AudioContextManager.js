@@ -67,6 +67,14 @@ export class AudioContextManager {
             
             // AudioWorklet サポート
             this.browserSupport.audioWorklet = !!(window.AudioContext && AudioContext.prototype.audioWorklet);
+            // 修正箇所: インスタンスを作成してからプロパティをチェック
+            if (this.browserSupport.audioContext) {
+                const tempAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+                this.browserSupport.audioWorklet = !!tempAudioContext.audioWorklet;
+                tempAudioContext.close(); // インスタンスを閉じる
+            } else {
+                this.browserSupport.audioWorklet = false;
+            }
             
             // MediaDevices サポート
             this.browserSupport.mediaDevices = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
