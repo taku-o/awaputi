@@ -439,7 +439,6 @@
     <!-- キーボードナビゲーション用のフォーカス表示 -->
     <div id="focusIndicator" class="screen-reader-only" aria-live="polite"></div>
     
-    <!-- 【テスト2】SEO/PWA初期化を有効にして問題箇所を特定 -->
     <script type="module">
         // SEO システム初期化
         import { SEOMetaManager } from './src/seo/SEOMetaManager.js';
@@ -564,49 +563,8 @@
         window.addEventListener('offline', () => {
             console.log('[PWA] オフライン状態に移行');
         });
-        
-        // 【テスト3】LocalExecutionDetector関連を無効化したmain.jsをテスト
-        /*
-        console.log('[DEBUG] シンプル初期化開始 - SEO/PWAは有効');
-        
-        import('./src/core/GameEngine.js').then(module => {
-            console.log('[DEBUG] GameEngine モジュール読み込み成功');
-            
-            const { GameEngine } = module;
-            if (GameEngine) {
-                try {
-                    console.log('[DEBUG] GameEngine インスタンス作成中...');
-                    const canvas = document.getElementById('gameCanvas');
-                    const gameEngine = new GameEngine(canvas);
-                    
-                    console.log('[DEBUG] GameEngine 開始中...');
-                    gameEngine.start();
-                    
-                    // グローバルに公開
-                    window.gameEngine = gameEngine;
-                    console.log('[DEBUG] GameEngine 初期化完了');
-                    
-                    // ローディング画面を非表示
-                    const loadingScreen = document.getElementById('loadingScreen');
-                    if (loadingScreen) {
-                        loadingScreen.style.display = 'none';
-                    }
-                    
-                } catch (error) {
-                    console.error('[DEBUG] GameEngine 初期化エラー:', error);
-                    console.error('[DEBUG] エラースタック:', error.stack);
-                }
-            } else {
-                console.error('[DEBUG] GameEngine クラスが見つかりません');
-            }
-        }).catch(error => {
-            console.error('[DEBUG] GameEngine モジュール読み込みエラー:', error);
-            console.error('[DEBUG] エラースタック:', error.stack);
-        });
-        */
-        
     </script>
-    <!-- 【テスト3】LocalExecutionDetector関連を無効化したmain.jsをテスト -->
+    <!-- Main Application Script with Local Execution Fallback -->
     <script type="module" src="src/main.js" onerror="handleModuleLoadError(event)"></script>
     
     <!-- Fallback Script for Local Execution -->
