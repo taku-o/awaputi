@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Step 7: サウンド効果システム</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+        }
+        
+        #gameContainer {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        #gameCanvas {
+            border: 2px solid #333;
+            background: #e8f4f8;
+            cursor: crosshair;
+        }
+        
+        #gameInfo {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+        
+        #timeDisplay {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .time-warning { color: #ff6600 !important; }
+        .time-danger { color: #dc3545 !important; animation: pulse 1s infinite; }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background: #007bff;
+            color: white;
+        }
+        
+        button:hover {
+            background: #0056b3;
+        }
+        
+        button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        #log {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            max-height: 120px;
+            overflow-y: auto;
+            text-align: left;
+            font-family: monospace;
+            font-size: 11px;
+        }
+        
+        .hit { color: #28a745; font-weight: bold; }
+        .miss { color: #dc3545; }
+        .info { color: #007bff; }
+        .success { color: #28a745; font-weight: bold; }
+        .special { color: #ff6600; font-weight: bold; }
+        .warning { color: #ff6600; font-weight: bold; }
+        .danger { color: #dc3545; font-weight: bold; }
+        
+        #bubbleTypes {
+            margin: 10px 0;
+            font-size: 11px;
+            text-align: left;
+            background: #f8f9fa;
+            padding: 8px;
+            border-radius: 5px;
+        }
+        
+        #gameResult {
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .result-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .result-failure {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        #powerupsDisplay {
+            margin: 10px 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .powerup-status {
+            background: #e9ecef;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            border: 2px solid transparent;
+        }
+        
+        .powerup-active {
+            background: #d4edda;
+            border-color: #28a745;
+            animation: glow 2s infinite;
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(40, 167, 69, 0.3); }
+            50% { box-shadow: 0 0 15px rgba(40, 167, 69, 0.8); }
+        }
+        
+        #soundControls {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .sound-control {
+            margin: 5px;
+            padding: 5px 10px;
+            font-size: 12px;
+            background: #6c757d;
+        }
+        
+        .sound-control.enabled {
+            background: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <h1>🔊 Step 7: サウンド効果システム</h1>
+        <p>パワーアップとサウンド効果で臨場感のあるゲーム体験！</p>
+        
+        <div id="timeDisplay">準備中...</div>
+        
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        
+        <div id="gameInfo">
+            <div>スコア: <span id="score">0</span></div>
+            <div>HP: <span id="hp">100</span></div>
+            <div>レベル: <span id="level">1</span></div>
+            <div>経験値: <span id="experience">0</span></div>
+            <div>ステージ: <span id="stage">1</span></div>
+            <div>バブル数: <span id="bubbleCount">0</span></div>
+            <div>命中率: <span id="hitRate">0%</span></div>
+            <div>破壊数: <span id="destroyedCount">0</span></div>
+            <div>残り時間ボーナス: <span id="timeBonus">0</span></div>
+        </div>
+        
+        <div id="powerupsDisplay"></div>
+        
+        <div id="gameResult"></div>
+        
+        <div id="bubbleTypes">
+            <strong>🫧 バブル種類:</strong>
+            🔵 Normal(+10) | 🟢 Bonus(+25) | 🔴 Hard(2hit, +20) | 🟡 Speed(+15) | 🟣 Big(+30)<br>
+            <strong>💎 パワーアップ:</strong>
+            ⭐ スコア2倍 | 💉 HP回復 | ⏰ 時間延長 | 🎯 オート命中 | 💣 全消去 | 🛡️ ダメージ無効
+        </div>
+        
+        <div id="soundControls">
+            <strong>🔊 サウンド設定:</strong>
+            <button class="sound-control enabled" onclick="toggleSound('bgm')" id="bgmToggle">BGM: ON</button>
+            <button class="sound-control enabled" onclick="toggleSound('sfx')" id="sfxToggle">効果音: ON</button>
+            <button onclick="testAllSounds()">サウンドテスト</button>
+        </div>
+        
+        <div>
+            <button onclick="startGame(60)" id="start60">60秒ゲーム</button>
+            <button onclick="startGame(120)" id="start120">2分ゲーム</button>
+            <button onclick="startGame(30)" id="start30">30秒チャレンジ</button>
+            <button onclick="stopGame()" id="stopBtn" disabled>ゲーム停止</button>
+            <button onclick="spawnRandomBubble()">テストバブル</button>
+            <button onclick="spawnRandomPowerup()">テストパワーアップ</button>
+            <button onclick="clearAll()">全クリア</button>
+        </div>
+        
+        <div id="log"></div>
+    </div>
+
+    <script>
+        // ===== グローバル変数 =====
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreElement = document.getElementById('score');
+        const hpElement = document.getElementById('hp');
+        const levelElement = document.getElementById('level');
+        const experienceElement = document.getElementById('experience');
+        const stageElement = document.getElementById('stage');
+        const bubbleCountElement = document.getElementById('bubbleCount');
+        const hitRateElement = document.getElementById('hitRate');
+        const destroyedCountElement = document.getElementById('destroyedCount');
+        const timeBonusElement = document.getElementById('timeBonus');
+        const timeDisplayElement = document.getElementById('timeDisplay');
+        const gameResultElement = document.getElementById('gameResult');
+        const powerupsDisplayElement = document.getElementById('powerupsDisplay');
+        const logElement = document.getElementById('log');
+        
+        let bubbles = [];
+        let powerups = [];
+        let score = 0;
+        let hp = 100;
+        let playerLevel = 1;
+        let experience = 0;
+        let currentStage = 1;
+        let totalClicks = 0;
+        let totalHits = 0;
+        let destroyedBubbles = 0;
+        let gameRunning = false;
+        let gameLoop = null;
+        
+        // 時間制限システム
+        let gameTimeLimit = 60;
+        let gameTimeRemaining = 0;
+        let gameStartTime = 0;
+        
+        // パワーアップシステム
+        let activePowerups = new Map();
+        
+        // サウンドシステム
+        let soundEnabled = {
+            bgm: true,
+            sfx: true
+        };
+        
+        // Web Audio API初期化
+        let audioContext = null;
+        let bgmGain = null;
+        let sfxGain = null;
+        
+        function initAudio() {
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // BGM用ゲインノード
+                bgmGain = audioContext.createGain();
+                bgmGain.connect(audioContext.destination);
+                bgmGain.gain.value = 0.3;
+                
+                // 効果音用ゲインノード
+                sfxGain = audioContext.createGain();
+                sfxGain.connect(audioContext.destination);
+                sfxGain.gain.value = 0.8;
+                
+                log('🔊 Audio Context初期化完了', 'success');
+            } catch (error) {
+                log('⚠️ Audio Context初期化失敗: ' + error.message, 'warning');
+                soundEnabled.bgm = false;
+                soundEnabled.sfx = false;
+            }
+        }
+        
+        // サウンド生成関数
+        function createTone(frequency, duration, type = 'sine', gainNode = sfxGain) {
+            if (!audioContext || !gainNode || !soundEnabled.sfx) return;
+            
+            try {
+                const oscillator = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                
+                oscillator.connect(gain);
+                gain.connect(gainNode);
+                
+                oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+                oscillator.type = type;
+                
+                gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + duration);
+            } catch (error) {
+                log('サウンド生成エラー: ' + error.message, 'warning');
+            }
+        }
+        
+        function createChord(frequencies, duration, type = 'sine') {
+            frequencies.forEach(freq => createTone(freq, duration, type));
+        }
+        
+        // 各種サウンド効果
+        const SoundEffects = {
+            // バブル破壊音（種類別）
+            normal: () => createTone(440, 0.2, 'sine'),
+            bonus: () => createChord([440, 554, 659], 0.3, 'sine'),
+            hard: () => createTone(220, 0.3, 'square'),
+            speed: () => createTone(880, 0.1, 'triangle'),
+            big: () => createTone(110, 0.5, 'sine'),
+            
+            // パワーアップ音
+            powerupAppear: () => createChord([523, 659, 784], 0.5, 'sine'),
+            powerupCollect: () => createChord([523, 659, 784, 988], 0.4, 'sine'),
+            
+            // ゲーム音
+            levelUp: () => {
+                createTone(523, 0.2, 'sine');
+                setTimeout(() => createTone(659, 0.2, 'sine'), 100);
+                setTimeout(() => createTone(784, 0.3, 'sine'), 200);
+            },
+            stageComplete: () => {
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => createTone(523 + i * 110, 0.2, 'sine'), i * 100);
+                }
+            },
+            warning: () => createTone(200, 0.8, 'sawtooth'),
+            gameOver: () => {
+                createTone(220, 0.5, 'square');
+                setTimeout(() => createTone(185, 0.5, 'square'), 200);
+                setTimeout(() => createTone(165, 0.8, 'square'), 400);
+            },
+            victory: () => {
+                const melody = [523, 659, 784, 1047, 784, 659, 523];
+                melody.forEach((freq, i) => {
+                    setTimeout(() => createTone(freq, 0.3, 'sine'), i * 200);
+                });
+            }
+        };
+        
+        // BGM生成（簡単なループ）
+        let bgmInterval = null;
+        function startBGM() {
+            if (!soundEnabled.bgm || bgmInterval || !audioContext || !bgmGain) return;
+            
+            const bgmNotes = [262, 294, 330, 349, 392, 440, 494, 523];
+            let noteIndex = 0;
+            
+            log('🎵 BGM開始', 'success');
+            
+            bgmInterval = setInterval(() => {
+                if (soundEnabled.bgm && gameRunning && audioContext && bgmGain) {
+                    try {
+                        const oscillator = audioContext.createOscillator();
+                        const gain = audioContext.createGain();
+                        
+                        oscillator.connect(gain);
+                        gain.connect(bgmGain);
+                        
+                        oscillator.frequency.setValueAtTime(bgmNotes[noteIndex], audioContext.currentTime);
+                        oscillator.type = 'sine';
+                        
+                        gain.gain.setValueAtTime(0.1, audioContext.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.5);
+                        
+                        oscillator.start(audioContext.currentTime);
+                        oscillator.stop(audioContext.currentTime + 1.5);
+                        
+                        noteIndex = (noteIndex + 1) % bgmNotes.length;
+                    } catch (error) {
+                        log('BGM生成エラー: ' + error.message, 'warning');
+                    }
+                }
+            }, 1600);
+        }
+        
+        function stopBGM() {
+            if (bgmInterval) {
+                clearInterval(bgmInterval);
+                bgmInterval = null;
+                log('🎵 BGM停止', 'info');
+            }
+        }
+        
+        function toggleSound(type) {
+            soundEnabled[type] = !soundEnabled[type];
+            const button = document.getElementById(type + 'Toggle');
+            
+            if (soundEnabled[type]) {
+                button.textContent = `${type.toUpperCase()}: ON`;
+                button.classList.add('enabled');
+                if (type === 'bgm' && gameRunning) startBGM();
+            } else {
+                button.textContent = `${type.toUpperCase()}: OFF`;
+                button.classList.remove('enabled');
+                if (type === 'bgm') stopBGM();
+            }
+            
+            log(`🔊 ${type.toUpperCase()}: ${soundEnabled[type] ? 'ON' : 'OFF'}`, 'info');
+        }
+        
+        function testAllSounds() {
+            log('🔊 サウンドテスト開始', 'success');
+            
+            setTimeout(() => { SoundEffects.normal(); log('Normal バブル音', 'info'); }, 0);
+            setTimeout(() => { SoundEffects.bonus(); log('Bonus バブル音', 'info'); }, 500);
+            setTimeout(() => { SoundEffects.hard(); log('Hard バブル音', 'info'); }, 1000);
+            setTimeout(() => { SoundEffects.speed(); log('Speed バブル音', 'info'); }, 1500);
+            setTimeout(() => { SoundEffects.big(); log('Big バブル音', 'info'); }, 2000);
+            setTimeout(() => { SoundEffects.powerupAppear(); log('パワーアップ出現音', 'info'); }, 2500);
+            setTimeout(() => { SoundEffects.powerupCollect(); log('パワーアップ取得音', 'info'); }, 3000);
+            setTimeout(() => { SoundEffects.levelUp(); log('レベルアップ音', 'info'); }, 3500);
+        }
+        
+        // レベル・ステージシステム
+        const LEVEL_THRESHOLDS = [0, 100, 250, 450, 700, 1000, 1400, 1850, 2350, 2900, 3500];
+        const STAGE_OBJECTIVES = {
+            1: { target: 500, description: "500点を目指そう！" },
+            2: { target: 1000, description: "1000点突破！" },
+            3: { target: 1500, description: "1500点の壁を越えろ！" },
+            4: { target: 2500, description: "2500点でマスター級！" },
+            5: { target: 4000, description: "4000点で伝説への道！" }
+        };
+        
+        // バブル・パワーアップ定義
+        const BUBBLE_TYPES = {
+            normal: { name: 'Normal', color: '#4A90E2', size: 30, score: 10, health: 1, speed: 0, emoji: '🔵' },
+            bonus: { name: 'Bonus', color: '#7ED321', size: 25, score: 25, health: 1, speed: 0, emoji: '🟢' },
+            hard: { name: 'Hard', color: '#D0021B', size: 35, score: 20, health: 2, speed: 0, emoji: '🔴' },
+            speed: { name: 'Speed', color: '#F5A623', size: 20, score: 15, health: 1, speed: 50, emoji: '🟡' },
+            big: { name: 'Big', color: '#9013FE', size: 50, score: 30, health: 1, speed: 0, emoji: '🟣' }
+        };
+        
+        const POWERUP_TYPES = {
+            scoreBoost: { icon: '⭐', name: 'スコア2倍', duration: 30000, effect: 'scoreMultiplier', value: 2 },
+            healthRestore: { icon: '💉', name: 'HP回復', duration: 0, effect: 'heal', value: 50 },
+            timeExtension: { icon: '⏰', name: '時間延長', duration: 0, effect: 'addTime', value: 30 },
+            autoTarget: { icon: '🎯', name: 'オート命中', duration: 15000, effect: 'autoHit', value: true },
+            superBomb: { icon: '💣', name: '全消去', duration: 0, effect: 'destroyAll', value: true },
+            shield: { icon: '🛡️', name: 'ダメージ無効', duration: 20000, effect: 'noDamage', value: true }
+        };
+        
+        // ===== ログ機能 =====
+        function log(message, type = 'info') {
+            const time = new Date().toLocaleTimeString();
+            const div = document.createElement('div');
+            div.className = type;
+            div.textContent = `[${time}] ${message}`;
+            logElement.appendChild(div);
+            logElement.scrollTop = logElement.scrollHeight;
+            console.log(`[${type}] ${message}`);
+        }
+        
+        // ===== 座標変換関数 =====
+        function getCanvasCoordinates(event) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / canvas.clientWidth;
+            const scaleY = canvas.height / canvas.clientHeight;
+            const x = (event.clientX - rect.left) * scaleX;
+            const y = (event.clientY - rect.top) * scaleY;
+            return { x: x, y: y };
+        }
+        
+        // ===== TypedBubble クラス =====
+        class TypedBubble {
+            static nextId = 0;
+            
+            constructor(x, y, type = 'normal') {
+                this.id = TypedBubble.nextId++;
+                this.x = x;
+                this.y = y;
+                this.type = type;
+                this.config = BUBBLE_TYPES[type];
+                
+                this.radius = this.config.size;
+                this.color = this.config.color;
+                this.maxHealth = this.config.health;
+                this.health = this.config.health;
+                this.baseScore = this.config.score;
+                
+                this.vx = (Math.random() - 0.5) * this.config.speed / 10;
+                this.vy = (Math.random() - 0.5) * this.config.speed / 10;
+                
+                this.age = 0;
+                this.maxAge = this.getMaxAge();
+                this.isVisible = true;
+            }
+            
+            getMaxAge() {
+                const baseAge = {
+                    speed: 8000, bonus: 10000, hard: 15000, 
+                    big: 12000, normal: 12000
+                }[this.type];
+                
+                const timeRatio = gameTimeRemaining / gameTimeLimit;
+                const ageMultiplier = Math.max(0.5, timeRatio);
+                
+                return Math.floor(baseAge * ageMultiplier);
+            }
+            
+            update(deltaTime) {
+                this.age += deltaTime;
+                this.x += this.vx;
+                this.y += this.vy;
+                this.handleBoundaryCollision();
+                return this.age < this.maxAge;
+            }
+            
+            handleBoundaryCollision() {
+                const margin = this.radius;
+                if (this.x - margin <= 0 || this.x + margin >= canvas.width) {
+                    this.vx *= -0.8;
+                    this.x = Math.max(margin, Math.min(canvas.width - margin, this.x));
+                }
+                if (this.y - margin <= 0 || this.y + margin >= canvas.height) {
+                    this.vy *= -0.8;
+                    this.y = Math.max(margin, Math.min(canvas.height - margin, this.y));
+                }
+            }
+            
+            render() {
+                if (!this.isVisible) return;
+                
+                ctx.save();
+                
+                const ageRatio = this.age / this.maxAge;
+                const opacity = Math.max(0.4, 1 - ageRatio * 0.6);
+                ctx.globalAlpha = opacity;
+                
+                if (gameTimeRemaining <= 10 && Math.floor(Date.now() / 200) % 2) {
+                    ctx.globalAlpha *= 0.7;
+                }
+                
+                ctx.shadowColor = 'rgba(0,0,0,0.3)';
+                ctx.shadowBlur = 8;
+                ctx.shadowOffsetX = 3;
+                ctx.shadowOffsetY = 3;
+                
+                const gradient = ctx.createRadialGradient(
+                    this.x - this.radius/3, this.y - this.radius/3, 0,
+                    this.x, this.y, this.radius
+                );
+                gradient.addColorStop(0, this.lightenColor(this.color));
+                gradient.addColorStop(1, this.color);
+                
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.shadowColor = 'transparent';
+                ctx.strokeStyle = this.darkenColor(this.color);
+                ctx.lineWidth = this.type === 'hard' ? 4 : 2;
+                ctx.stroke();
+                
+                ctx.fillStyle = 'rgba(255,255,255,0.6)';
+                ctx.beginPath();
+                ctx.arc(
+                    this.x - this.radius/3, 
+                    this.y - this.radius/3, 
+                    this.radius/4, 
+                    0, Math.PI * 2
+                );
+                ctx.fill();
+                
+                this.renderSpecialEffects();
+                
+                if (this.type === 'hard' && this.health > 0) {
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.font = 'bold 16px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(this.health.toString(), this.x, this.y + 5);
+                }
+                
+                ctx.restore();
+            }
+            
+            renderSpecialEffects() {
+                ctx.save();
+                ctx.globalAlpha = 1;
+                
+                switch(this.type) {
+                    case 'speed':
+                        ctx.strokeStyle = this.color;
+                        ctx.lineWidth = 2;
+                        ctx.globalAlpha = 0.3;
+                        ctx.beginPath();
+                        ctx.moveTo(this.x - this.vx * 5, this.y - this.vy * 5);
+                        ctx.lineTo(this.x, this.y);
+                        ctx.stroke();
+                        break;
+                        
+                    case 'bonus':
+                        ctx.fillStyle = '#FFD700';
+                        const sparkles = 3;
+                        for(let i = 0; i < sparkles; i++) {
+                            const angle = (Date.now() / 1000 + i * 2) % (Math.PI * 2);
+                            const sparkleX = this.x + Math.cos(angle) * (this.radius * 0.7);
+                            const sparkleY = this.y + Math.sin(angle) * (this.radius * 0.7);
+                            ctx.beginPath();
+                            ctx.arc(sparkleX, sparkleY, 2, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                        break;
+                        
+                    case 'big':
+                        ctx.strokeStyle = this.lightenColor(this.color);
+                        ctx.lineWidth = 3;
+                        ctx.globalAlpha = 0.5;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.radius * 0.6, 0, Math.PI * 2);
+                        ctx.stroke();
+                        break;
+                }
+                
+                ctx.restore();
+            }
+            
+            lightenColor(color) {
+                const hex = color.replace('#', '');
+                const r = Math.min(255, parseInt(hex.substr(0, 2), 16) + 40);
+                const g = Math.min(255, parseInt(hex.substr(2, 2), 16) + 40);
+                const b = Math.min(255, parseInt(hex.substr(4, 2), 16) + 40);
+                return `rgb(${r},${g},${b})`;
+            }
+            
+            darkenColor(color) {
+                const hex = color.replace('#', '');
+                const r = Math.max(0, parseInt(hex.substr(0, 2), 16) - 50);
+                const g = Math.max(0, parseInt(hex.substr(2, 2), 16) - 50);
+                const b = Math.max(0, parseInt(hex.substr(4, 2), 16) - 50);
+                return `rgb(${r},${g},${b})`;
+            }
+            
+            containsPoint(x, y) {
+                const dx = x - this.x;
+                const dy = y - this.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                return distance <= this.radius;
+            }
+            
+            takeDamage() {
+                this.health--;
+                
+                if (this.health <= 0) {
+                    this.destroy();
+                    return true;
+                }
+                return false;
+            }
+            
+            destroy() {
+                this.isVisible = false;
+                destroyedBubbles++;
+                
+                // 破壊音再生
+                if (SoundEffects[this.type]) {
+                    SoundEffects[this.type]();
+                }
+            }
+            
+            getScore() {
+                let finalScore = this.baseScore;
+                
+                const ageRatio = this.age / this.maxAge;
+                if (ageRatio < 0.1) {
+                    finalScore *= 1.5;
+                } else if (ageRatio > 0.8) {
+                    finalScore *= 2;
+                }
+                
+                if (gameTimeRemaining <= 10) {
+                    finalScore *= 1.5;
+                } else if (gameTimeRemaining <= 30) {
+                    finalScore *= 1.2;
+                }
+                
+                // スコアブースト適用
+                if (activePowerups.has('scoreBoost')) {
+                    finalScore *= 2;
+                }
+                
+                return Math.floor(finalScore);
+            }
+        }
+        
+        // ===== PowerUp クラス =====
+        class PowerUp {
+            static nextId = 0;
+            
+            constructor(x, y, type) {
+                this.id = PowerUp.nextId++;
+                this.x = x;
+                this.y = y;
+                this.type = type;
+                this.config = POWERUP_TYPES[type];
+                
+                this.radius = 25;
+                this.age = 0;
+                this.maxAge = 15000;
+                this.floatOffset = Math.random() * Math.PI * 2;
+                this.isVisible = true;
+                
+                // 出現音再生
+                SoundEffects.powerupAppear();
+            }
+            
+            update(deltaTime) {
+                this.age += deltaTime;
+                this.y += Math.sin(Date.now() / 500 + this.floatOffset) * 0.5;
+                
+                return this.age < this.maxAge;
+            }
+            
+            render() {
+                if (!this.isVisible) return;
+                
+                ctx.save();
+                
+                const ageRatio = this.age / this.maxAge;
+                const opacity = Math.max(0.4, 1 - ageRatio * 0.6);
+                ctx.globalAlpha = opacity;
+                
+                // 光る効果
+                ctx.shadowColor = '#FFD700';
+                ctx.shadowBlur = 15;
+                
+                // メインアイコン背景
+                ctx.fillStyle = '#FFD700';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.shadowColor = 'transparent';
+                ctx.strokeStyle = '#FFA500';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                
+                // アイコン表示
+                ctx.fillStyle = '#333';
+                ctx.font = 'bold 24px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(this.config.icon, this.x, this.y + 8);
+                
+                // 名前表示
+                ctx.font = '10px Arial';
+                ctx.fillStyle = '#333';
+                ctx.fillText(this.config.name, this.x, this.y + this.radius + 15);
+                
+                ctx.restore();
+            }
+            
+            containsPoint(x, y) {
+                const dx = x - this.x;
+                const dy = y - this.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                return distance <= this.radius;
+            }
+            
+            activate() {
+                SoundEffects.powerupCollect();
+                
+                switch(this.config.effect) {
+                    case 'scoreMultiplier':
+                        activePowerups.set('scoreBoost', Date.now() + this.config.duration);
+                        log(`⭐ スコア2倍効果発動! (${this.config.duration/1000}秒間)`, 'special');
+                        break;
+                        
+                    case 'heal':
+                        hp = Math.min(100, hp + this.config.value);
+                        log(`💉 HP回復! +${this.config.value} (現在HP:${hp})`, 'success');
+                        break;
+                        
+                    case 'addTime':
+                        gameTimeRemaining += this.config.value;
+                        log(`⏰ 時間延長! +${this.config.value}秒`, 'success');
+                        break;
+                        
+                    case 'autoHit':
+                        activePowerups.set('autoHit', Date.now() + this.config.duration);
+                        log(`🎯 オート命中発動! (${this.config.duration/1000}秒間)`, 'special');
+                        break;
+                        
+                    case 'destroyAll':
+                        const destroyedCount = bubbles.length;
+                        bubbles.forEach(bubble => {
+                            score += bubble.getScore();
+                            bubble.destroy();
+                        });
+                        bubbles = [];
+                        log(`💣 全バブル破壊! ${destroyedCount}個破壊`, 'special');
+                        break;
+                        
+                    case 'noDamage':
+                        activePowerups.set('shield', Date.now() + this.config.duration);
+                        log(`🛡️ シールド発動! (${this.config.duration/1000}秒間)`, 'special');
+                        break;
+                }
+            }
+        }
+        
+        // ===== ゲーム機能 =====
+        function updateUI() {
+            scoreElement.textContent = score;
+            hpElement.textContent = hp;
+            levelElement.textContent = playerLevel;
+            experienceElement.textContent = experience;
+            stageElement.textContent = currentStage;
+            bubbleCountElement.textContent = bubbles.length;
+            destroyedCountElement.textContent = destroyedBubbles;
+            timeBonusElement.textContent = calculateTimeBonus();
+            
+            const rate = totalClicks > 0 ? Math.round((totalHits / totalClicks) * 100) : 0;
+            hitRateElement.textContent = `${rate}%`;
+            
+            updatePowerupsDisplay();
+        }
+        
+        function updatePowerupsDisplay() {
+            powerupsDisplayElement.innerHTML = '';
+            
+            Object.entries(POWERUP_TYPES).forEach(([type, config]) => {
+                const div = document.createElement('div');
+                div.className = 'powerup-status';
+                
+                const endTime = activePowerups.get(type);
+                if (endTime && endTime > Date.now()) {
+                    div.classList.add('powerup-active');
+                    const remaining = Math.ceil((endTime - Date.now()) / 1000);
+                    div.textContent = `${config.icon} ${config.name} (${remaining}s)`;
+                } else {
+                    div.textContent = `${config.icon} ${config.name}`;
+                }
+                
+                powerupsDisplayElement.appendChild(div);
+            });
+            
+            // 期限切れのパワーアップを削除
+            for (let [type, endTime] of activePowerups) {
+                if (endTime <= Date.now()) {
+                    activePowerups.delete(type);
+                    const powerupConfig = POWERUP_TYPES[type];
+                    if (powerupConfig) {
+                        log(`効果終了: ${powerupConfig.name}`, 'info');
+                    }
+                }
+            }
+        }
+        
+        function addExperience(xp) {
+            experience += xp;
+            const currentLevelThreshold = LEVEL_THRESHOLDS[playerLevel - 1] || 0;
+            const nextLevelThreshold = LEVEL_THRESHOLDS[playerLevel] || currentLevelThreshold + 500;
+            
+            if (experience >= nextLevelThreshold && playerLevel < LEVEL_THRESHOLDS.length - 1) {
+                playerLevel++;
+                SoundEffects.levelUp();
+                log(`🎉 レベルアップ! レベル ${playerLevel} に到達!`, 'success');
+                updateLevelProgress();
+            }
+        }
+        
+        function updateLevelProgress() {
+            // レベルプログレスバー更新処理
+            const currentLevelThreshold = LEVEL_THRESHOLDS[playerLevel - 1] || 0;
+            const nextLevelThreshold = LEVEL_THRESHOLDS[playerLevel] || currentLevelThreshold + 500;
+            const progress = ((experience - currentLevelThreshold) / (nextLevelThreshold - currentLevelThreshold)) * 100;
+            // プログレスバー表示は簡略化
+        }
+        
+        function checkStageProgress() {
+            const objective = STAGE_OBJECTIVES[currentStage];
+            if (objective && score >= objective.target && currentStage < Object.keys(STAGE_OBJECTIVES).length) {
+                currentStage++;
+                SoundEffects.stageComplete();
+                log(`🏆 ステージ${currentStage-1}クリア! 次のステージ: ${STAGE_OBJECTIVES[currentStage]?.description || '最終ステージ突入!'}`, 'success');
+            }
+        }
+        
+        function spawnRandomBubble() {
+            const types = Object.keys(BUBBLE_TYPES);
+            const randomType = types[Math.floor(Math.random() * types.length)];
+            
+            const margin = 80;
+            const x = margin + Math.random() * (canvas.width - margin * 2);
+            const y = margin + Math.random() * (canvas.height - margin * 2);
+            
+            const bubble = new TypedBubble(x, y, randomType);
+            bubbles.push(bubble);
+            updateUI();
+        }
+        
+        function spawnRandomPowerup() {
+            const types = Object.keys(POWERUP_TYPES);
+            const randomType = types[Math.floor(Math.random() * types.length)];
+            
+            const margin = 60;
+            const x = margin + Math.random() * (canvas.width - margin * 2);
+            const y = margin + Math.random() * (canvas.height - margin * 2);
+            
+            const powerup = new PowerUp(x, y, randomType);
+            powerups.push(powerup);
+            updateUI();
+        }
+        
+        function clearAll() {
+            bubbles = [];
+            powerups = [];
+            updateUI();
+            log('全アイテムクリア', 'info');
+        }
+        
+        function updateTimeDisplay() {
+            const minutes = Math.floor(gameTimeRemaining / 60);
+            const seconds = Math.floor(gameTimeRemaining % 60);
+            const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            timeDisplayElement.textContent = `⏰ 残り時間: ${timeString}`;
+            
+            if (gameTimeRemaining <= 10) {
+                timeDisplayElement.className = 'time-danger';
+                if (Math.floor(gameTimeRemaining) !== Math.floor(gameTimeRemaining + 0.1)) {
+                    SoundEffects.warning();
+                }
+            } else if (gameTimeRemaining <= 30) {
+                timeDisplayElement.className = 'time-warning';
+            } else {
+                timeDisplayElement.className = '';
+            }
+        }
+        
+        function calculateTimeBonus() {
+            const remainingRatio = gameTimeRemaining / gameTimeLimit;
+            let bonus = 0;
+            
+            if (remainingRatio > 0.5) {
+                bonus = Math.floor(gameTimeRemaining * 2);
+            } else if (remainingRatio > 0.2) {
+                bonus = Math.floor(gameTimeRemaining * 1);
+            } else {
+                bonus = Math.floor(gameTimeRemaining * 0.5);
+            }
+            
+            return bonus;
+        }
+        
+        function endGame(reason = 'time_up') {
+            gameRunning = false;
+            if (gameLoop) {
+                clearInterval(gameLoop);
+                gameLoop = null;
+            }
+            
+            stopBGM();
+            
+            const timeBonus = calculateTimeBonus();
+            const finalScore = score + timeBonus;
+            
+            let resultMessage = '';
+            let resultClass = '';
+            
+            if (reason === 'time_up') {
+                resultMessage = `⏰ 時間終了！ 最終スコア: ${finalScore} (基本: ${score} + 時間ボーナス: ${timeBonus})`;
+                resultClass = 'result-success';
+                SoundEffects.victory();
+                log('⏰ 時間終了！', 'special');
+            } else if (reason === 'hp_zero') {
+                resultMessage = `💀 HP 0でゲームオーバー！ スコア: ${finalScore}`;
+                resultClass = 'result-failure';
+                SoundEffects.gameOver();
+                log('💀 HP 0 - ゲームオーバー！', 'danger');
+            } else if (reason === 'manual_stop') {
+                resultMessage = `⏹️ ゲーム中断 スコア: ${finalScore}`;
+                resultClass = 'result-success';
+                log('⏹️ ゲーム手動停止', 'info');
+            }
+            
+            gameResultElement.textContent = resultMessage;
+            gameResultElement.className = resultClass;
+            gameResultElement.style.display = 'block';
+            
+            updateButtonStates(false);
+            
+            log(`📊 ゲーム統計: 破壊数${destroyedBubbles}, 命中率${Math.round((totalHits/Math.max(totalClicks,1))*100)}%`, 'info');
+        }
+        
+        function updateButtonStates(gameActive) {
+            document.getElementById('start60').disabled = gameActive;
+            document.getElementById('start120').disabled = gameActive;
+            document.getElementById('start30').disabled = gameActive;
+            document.getElementById('stopBtn').disabled = !gameActive;
+        }
+        
+        function startGame(timeLimit) {
+            if (gameRunning) return;
+            
+            // Audio Context初期化（ユーザーアクション後）
+            if (!audioContext) {
+                initAudio();
+            }
+            
+            gameRunning = true;
+            gameTimeLimit = timeLimit;
+            gameTimeRemaining = timeLimit;
+            gameStartTime = Date.now();
+            
+            score = 0;
+            hp = 100;
+            playerLevel = 1;
+            experience = 0;
+            currentStage = 1;
+            totalClicks = 0;
+            totalHits = 0;
+            destroyedBubbles = 0;
+            
+            bubbles = [];
+            powerups = [];
+            activePowerups.clear();
+            gameResultElement.style.display = 'none';
+            
+            updateUI();
+            updateTimeDisplay();
+            updateButtonStates(true);
+            
+            // BGM開始
+            setTimeout(() => {
+                if (audioContext && audioContext.state === 'running') {
+                    startBGM();
+                } else if (audioContext && audioContext.state === 'suspended') {
+                    audioContext.resume().then(() => {
+                        startBGM();
+                    });
+                } else {
+                    log('⚠️ Audio Context未初期化 - BGMをスキップ', 'warning');
+                }
+            }, 500);
+            
+            // 初期アイテム生成
+            for (let i = 0; i < 5; i++) {
+                spawnRandomBubble();
+            }
+            
+            gameLoop = setInterval(() => {
+                update();
+                render();
+                
+                gameTimeRemaining = Math.max(0, gameTimeLimit - (Date.now() - gameStartTime) / 1000);
+                updateTimeDisplay();
+                
+                if (gameTimeRemaining <= 0) {
+                    endGame('time_up');
+                    return;
+                }
+                
+                // 自動アイテム生成
+                const bubbleSpawnChance = gameTimeRemaining <= 30 ? 0.025 : 0.015;
+                if (Math.random() < bubbleSpawnChance && bubbles.length < 8) {
+                    spawnRandomBubble();
+                }
+                
+                const powerupSpawnChance = 0.008;
+                if (Math.random() < powerupSpawnChance && powerups.length < 3) {
+                    spawnRandomPowerup();
+                }
+            }, 16);
+            
+            log(`🎮 ${timeLimit}秒ゲーム開始! 🔊サウンド効果付き`, 'success');
+        }
+        
+        function stopGame() {
+            if (!gameRunning) return;
+            endGame('manual_stop');
+        }
+        
+        function update() {
+            // バブル更新
+            bubbles = bubbles.filter(bubble => {
+                const alive = bubble.update(16);
+                if (!alive) {
+                    const damage = activePowerups.has('shield') ? 0 : 3;
+                    hp -= damage;
+                    if (damage > 0) {
+                        log(`バブル消滅 HP-${damage} (残りHP:${hp})`, 'warning');
+                    }
+                    updateUI();
+                }
+                return alive;
+            });
+            
+            // パワーアップ更新
+            powerups = powerups.filter(powerup => powerup.update(16));
+            
+            // オート命中処理
+            if (activePowerups.has('autoHit') && Math.random() < 0.05 && bubbles.length > 0) {
+                const randomBubble = bubbles[Math.floor(Math.random() * bubbles.length)];
+                const destroyed = randomBubble.takeDamage();
+                
+                if (destroyed) {
+                    const bubbleIndex = bubbles.indexOf(randomBubble);
+                    bubbles.splice(bubbleIndex, 1);
+                    
+                    const earnedScore = randomBubble.getScore();
+                    score += earnedScore;
+                    addExperience(Math.floor(earnedScore * 0.5));
+                    
+                    log(`🎯 オート命中! ${randomBubble.config.name} +${earnedScore}点`, 'hit');
+                    createPopEffect(randomBubble.x, randomBubble.y, randomBubble.color);
+                }
+            }
+            
+            checkStageProgress();
+            updateUI();
+            
+            if (hp <= 0 && gameRunning) {
+                endGame('hp_zero');
+            }
+        }
+        
+        function render() {
+            ctx.fillStyle = '#e8f4f8';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            bubbles.forEach(bubble => bubble.render());
+            powerups.forEach(powerup => powerup.render());
+            
+            ctx.fillStyle = '#333';
+            ctx.font = '12px monospace';
+            ctx.textAlign = 'left';
+            ctx.fillText(
+                `時間: ${Math.ceil(gameTimeRemaining)}s | スコア: ${score} | HP: ${hp} | Lv: ${playerLevel} | Stage: ${currentStage}`, 
+                10, 20
+            );
+            
+            // 緊急時の画面エフェクト
+            if (gameTimeRemaining <= 10) {
+                ctx.fillStyle = `rgba(255, 0, 0, ${0.1 * Math.sin(Date.now() / 100)})`;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+        
+        // ===== イベントハンドラー =====
+        canvas.addEventListener('click', (event) => {
+            if (!gameRunning) return;
+            
+            const coords = getCanvasCoordinates(event);
+            const x = coords.x;
+            const y = coords.y;
+            
+            totalClicks++;
+            
+            // パワーアップクリック判定
+            let hitPowerup = null;
+            for (let i = powerups.length - 1; i >= 0; i--) {
+                const powerup = powerups[i];
+                if (powerup.containsPoint(x, y)) {
+                    hitPowerup = powerup;
+                    break;
+                }
+            }
+            
+            if (hitPowerup) {
+                const powerupIndex = powerups.indexOf(hitPowerup);
+                powerups.splice(powerupIndex, 1);
+                hitPowerup.activate();
+                updateUI();
+                return;
+            }
+            
+            // バブルクリック判定
+            let hitBubble = null;
+            for (let i = bubbles.length - 1; i >= 0; i--) {
+                const bubble = bubbles[i];
+                if (bubble.containsPoint(x, y)) {
+                    hitBubble = bubble;
+                    break;
+                }
+            }
+            
+            if (hitBubble) {
+                totalHits++;
+                
+                const destroyed = hitBubble.takeDamage();
+                
+                if (destroyed) {
+                    const bubbleIndex = bubbles.indexOf(hitBubble);
+                    bubbles.splice(bubbleIndex, 1);
+                    
+                    const earnedScore = hitBubble.getScore();
+                    score += earnedScore;
+                    addExperience(Math.floor(earnedScore * 0.5));
+                    
+                    log(`🎯 ${hitBubble.config.name} +${earnedScore}点`, 'hit');
+                    createPopEffect(hitBubble.x, hitBubble.y, hitBubble.color);
+                }
+                
+                updateUI();
+            } else {
+                updateUI();
+            }
+        });
+        
+        // ===== エフェクト =====
+        function createPopEffect(x, y, color) {
+            ctx.save();
+            ctx.fillStyle = color;
+            ctx.globalAlpha = 0.8;
+            for (let i = 0; i < 12; i++) {
+                const angle = (Math.PI * 2 * i) / 12;
+                const distance = 20 + Math.random() * 30;
+                const particleX = x + Math.cos(angle) * distance;
+                const particleY = y + Math.sin(angle) * distance;
+                
+                ctx.beginPath();
+                ctx.arc(particleX, particleY, 2 + Math.random() * 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.restore();
+        }
+        
+        // ===== 初期化 =====
+        updateUI();
+        timeDisplayElement.textContent = '⏰ ゲーム時間を選択してください';
+        log('Step 7: サウンド効果システム 準備完了', 'success');
+        log('BGM・効果音付きでより臨場感のあるゲーム体験！', 'info');
+        log('ゲーム開始でAudio Context自動初期化', 'info');
+    </script>
+</body>
+</html>

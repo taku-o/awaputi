@@ -1,0 +1,1854 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Step 9: ハイスコアランキングシステム</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+        }
+        
+        #gameContainer {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        #gameCanvas {
+            border: 2px solid #333;
+            background: #e8f4f8;
+            cursor: crosshair;
+        }
+        
+        #rankingSection {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .ranking-panel {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #dee2e6;
+        }
+        
+        .ranking-panel h3 {
+            margin: 0 0 15px 0;
+            font-size: 16px;
+            color: #495057;
+        }
+        
+        .ranking-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 12px;
+        }
+        
+        .ranking-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 10px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 5px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .ranking-list li.rank-1 {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            font-weight: bold;
+            color: #8b5a00;
+        }
+        
+        .ranking-list li.rank-2 {
+            background: linear-gradient(135deg, #c0c0c0, #e8e8e8);
+            font-weight: bold;
+            color: #555;
+        }
+        
+        .ranking-list li.rank-3 {
+            background: linear-gradient(135deg, #cd7f32, #deb887);
+            font-weight: bold;
+            color: #654321;
+        }
+        
+        .ranking-list li.current-score {
+            background: linear-gradient(135deg, #28a745, #5cbf60);
+            color: white;
+            font-weight: bold;
+            animation: highlight 2s ease-in-out infinite;
+        }
+        
+        @keyframes highlight {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .rank-number {
+            font-weight: bold;
+            margin-right: 10px;
+            min-width: 20px;
+        }
+        
+        .player-name {
+            flex-grow: 1;
+            text-align: left;
+        }
+        
+        .score-value {
+            font-weight: bold;
+        }
+        
+        .date-info {
+            font-size: 10px;
+            color: #6c757d;
+            margin-left: 5px;
+        }
+        
+        #timeDisplay {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .time-warning { color: #ff6600 !important; }
+        .time-danger { color: #dc3545 !important; animation: pulse 1s infinite; }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        #gameInfo {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background: #007bff;
+            color: white;
+        }
+        
+        button:hover {
+            background: #0056b3;
+        }
+        
+        button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        #log {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            max-height: 120px;
+            overflow-y: auto;
+            text-align: left;
+            font-family: monospace;
+            font-size: 11px;
+        }
+        
+        .hit { color: #28a745; font-weight: bold; }
+        .miss { color: #dc3545; }
+        .info { color: #007bff; }
+        .success { color: #28a745; font-weight: bold; }
+        .special { color: #ff6600; font-weight: bold; }
+        .warning { color: #ff6600; font-weight: bold; }
+        .danger { color: #dc3545; font-weight: bold; }
+        .ranking { color: #6f42c1; font-weight: bold; }
+        
+        #bubbleTypes {
+            margin: 10px 0;
+            font-size: 11px;
+            text-align: left;
+            background: #f8f9fa;
+            padding: 8px;
+            border-radius: 5px;
+        }
+        
+        #gameResult {
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .result-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .result-failure {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        #powerupsDisplay {
+            margin: 10px 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .powerup-status {
+            background: #e9ecef;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            border: 2px solid transparent;
+        }
+        
+        .powerup-active {
+            background: #d4edda;
+            border-color: #28a745;
+            animation: glow 2s infinite;
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(40, 167, 69, 0.3); }
+            50% { box-shadow: 0 0 15px rgba(40, 167, 69, 0.8); }
+        }
+        
+        #soundControls {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .sound-control {
+            margin: 5px;
+            padding: 5px 10px;
+            font-size: 12px;
+            background: #6c757d;
+        }
+        
+        .sound-control.enabled {
+            background: #28a745;
+        }
+        
+        #nameInputDialog {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 2000;
+            display: none;
+            text-align: center;
+        }
+        
+        #nameInputDialog h3 {
+            margin: 0 0 20px 0;
+            color: #333;
+        }
+        
+        #nameInputDialog input {
+            width: 200px;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            margin: 10px;
+        }
+        
+        #nameInputDialog button {
+            margin: 10px 5px;
+            padding: 10px 20px;
+        }
+        
+        .dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1999;
+            display: none;
+        }
+        
+        #statisticsPanel {
+            margin: 15px 0;
+            padding: 15px;
+            background: #e3f2fd;
+            border-radius: 10px;
+            border: 1px solid #bbdefb;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            font-size: 14px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+        }
+        
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1976d2;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <h1>🏆 Step 9: ハイスコアランキングシステム</h1>
+        <p>あなたのベストスコアを記録して、ランキングで競争しよう！</p>
+        
+        <div id="timeDisplay">準備中...</div>
+        
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        
+        <div id="rankingSection">
+            <div class="ranking-panel">
+                <h3>🥇 歴代ハイスコア TOP10</h3>
+                <ul class="ranking-list" id="allTimeRanking"></ul>
+            </div>
+            
+            <div class="ranking-panel">
+                <h3>📅 今日のランキング</h3>
+                <ul class="ranking-list" id="todayRanking"></ul>
+            </div>
+            
+            <div class="ranking-panel">
+                <h3>📈 個人ベスト記録</h3>
+                <ul class="ranking-list" id="personalBest"></ul>
+            </div>
+        </div>
+        
+        <div id="statisticsPanel">
+            <h3>📊 プレイ統計</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value" id="totalGames">0</div>
+                    <div class="stat-label">総ゲーム数</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="averageScore">0</div>
+                    <div class="stat-label">平均スコア</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="totalPlayTime">0h 0m</div>
+                    <div class="stat-label">総プレイ時間</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="highestCombo">0</div>
+                    <div class="stat-label">最高コンボ</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="totalBubblesDestroyed">0</div>
+                    <div class="stat-label">総破壊数</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="winRate">0%</div>
+                    <div class="stat-label">勝率</div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="gameInfo">
+            <div>スコア: <span id="score">0</span></div>
+            <div>HP: <span id="hp">100</span></div>
+            <div>レベル: <span id="level">1</span></div>
+            <div>経験値: <span id="experience">0</span></div>
+            <div>ステージ: <span id="stage">1</span></div>
+            <div>バブル数: <span id="bubbleCount">0</span></div>
+            <div>命中率: <span id="hitRate">0%</span></div>
+            <div>破壊数: <span id="destroyedCount">0</span></div>
+            <div>コンボ: <span id="combo">0</span></div>
+            <div>残り時間ボーナス: <span id="timeBonus">0</span></div>
+        </div>
+        
+        <div id="powerupsDisplay"></div>
+        
+        <div id="gameResult"></div>
+        
+        <div id="bubbleTypes">
+            <strong>🫧 バブル種類:</strong>
+            🔵 Normal(+10) | 🟢 Bonus(+25) | 🔴 Hard(2hit, +20) | 🟡 Speed(+15) | 🟣 Big(+30)<br>
+            <strong>💎 パワーアップ:</strong>
+            ⭐ スコア2倍 | 💉 HP回復 | ⏰ 時間延長 | 🎯 オート命中 | 💣 全消去 | 🛡️ ダメージ無効<br>
+            <strong>🏆 ランキング:</strong>
+            ハイスコア更新時に自動記録 | 今日のスコア比較 | 個人記録追跡
+        </div>
+        
+        <div id="soundControls">
+            <strong>🔊 サウンド設定:</strong>
+            <button class="sound-control enabled" onclick="toggleSound('bgm')" id="bgmToggle">BGM: ON</button>
+            <button class="sound-control enabled" onclick="toggleSound('sfx')" id="sfxToggle">効果音: ON</button>
+            <button onclick="testAllSounds()">サウンドテスト</button>
+        </div>
+        
+        <div>
+            <button onclick="startRankingGame(60)" id="start60">60秒ランキングゲーム</button>
+            <button onclick="startRankingGame(120)" id="start120">2分ランキングゲーム</button>
+            <button onclick="startRankingGame(180)" id="start180">3分ランキングゲーム</button>
+            <button onclick="stopGame()" id="stopBtn" disabled>ゲーム停止</button>
+            <button onclick="resetRankings()">ランキング初期化</button>
+            <button onclick="exportRankings()">ランキングエクスポート</button>
+            <button onclick="clearAll()">全クリア</button>
+        </div>
+        
+        <div id="log"></div>
+    </div>
+    
+    <!-- 名前入力ダイアログ -->
+    <div class="dialog-overlay" id="dialogOverlay"></div>
+    <div id="nameInputDialog">
+        <h3>🎉 新記録達成！</h3>
+        <p>ランキングに登録するお名前を入力してください：</p>
+        <input type="text" id="playerNameInput" placeholder="プレイヤー名" maxlength="12">
+        <br>
+        <button onclick="submitHighScore()">登録</button>
+        <button onclick="cancelHighScore()">スキップ</button>
+    </div>
+
+    <script>
+        // ===== グローバル変数 =====
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const logElement = document.getElementById('log');
+        
+        // ゲーム変数
+        let bubbles = [];
+        let powerups = [];
+        let score = 0;
+        let hp = 100;
+        let playerLevel = 1;
+        let experience = 0;
+        let currentStage = 1;
+        let totalClicks = 0;
+        let totalHits = 0;
+        let destroyedBubbles = 0;
+        let maxCombo = 0;
+        let currentCombo = 0;
+        let gameRunning = false;
+        let gameLoop = null;
+        
+        // 時間制限システム
+        let gameTimeLimit = 60;
+        let gameTimeRemaining = 0;
+        let gameStartTime = 0;
+        let timeExtensionAccumulated = 0; // 累計の時間延長
+        
+        // パワーアップシステム
+        let activePowerups = new Map();
+        
+        // サウンドシステム
+        let soundEnabled = { bgm: true, sfx: true };
+        let audioContext = null;
+        let bgmGain = null;
+        let sfxGain = null;
+        let bgmInterval = null;
+        
+        // ランキングシステム
+        let currentGameScore = 0;
+        let pendingScoreEntry = null;
+        let playerStats = {
+            totalGames: 0,
+            totalScore: 0,
+            totalPlayTime: 0,
+            highestCombo: 0,
+            totalBubblesDestroyed: 0,
+            wins: 0
+        };
+        
+        // ===== ランキングシステム =====
+        class HighScoreManager {
+            constructor() {
+                this.STORAGE_KEY_SCORES = 'bubblePopHighScores';
+                this.STORAGE_KEY_STATS = 'bubblePopPlayerStats';
+                this.MAX_ENTRIES = 10;
+                
+                this.loadData();
+            }
+            
+            loadData() {
+                // ハイスコアデータ読み込み
+                try {
+                    const savedScores = localStorage.getItem(this.STORAGE_KEY_SCORES);
+                    this.allTimeScores = savedScores ? JSON.parse(savedScores) : [];
+                } catch (error) {
+                    log('ハイスコアデータの読み込みに失敗', 'warning');
+                    this.allTimeScores = [];
+                }
+                
+                // プレイヤー統計データ読み込み
+                try {
+                    const savedStats = localStorage.getItem(this.STORAGE_KEY_STATS);
+                    if (savedStats) {
+                        Object.assign(playerStats, JSON.parse(savedStats));
+                    }
+                } catch (error) {
+                    log('統計データの読み込みに失敗', 'warning');
+                }
+            }
+            
+            saveData() {
+                try {
+                    localStorage.setItem(this.STORAGE_KEY_SCORES, JSON.stringify(this.allTimeScores));
+                    localStorage.setItem(this.STORAGE_KEY_STATS, JSON.stringify(playerStats));
+                    log('🏆 ランキングデータ保存完了', 'success');
+                } catch (error) {
+                    log('ランキングデータの保存に失敗: ' + error.message, 'warning');
+                }
+            }
+            
+            addScore(playerName, score, gameTime, stats = {}) {
+                const now = new Date();
+                const scoreEntry = {
+                    name: playerName || 'Anonymous',
+                    score: score,
+                    gameTime: gameTime,
+                    date: now.toISOString(),
+                    dateString: now.toLocaleDateString('ja-JP'),
+                    timeString: now.toLocaleTimeString('ja-JP', { 
+                        hour: '2-digit', 
+                        minute: '2-digit' 
+                    }),
+                    combo: stats.maxCombo || 0,
+                    destroyed: stats.destroyed || 0,
+                    hitRate: stats.hitRate || 0,
+                    level: stats.level || 1
+                };
+                
+                this.allTimeScores.push(scoreEntry);
+                this.allTimeScores.sort((a, b) => b.score - a.score);
+                this.allTimeScores = this.allTimeScores.slice(0, this.MAX_ENTRIES);
+                
+                // 統計更新
+                playerStats.totalGames++;
+                playerStats.totalScore += score;
+                playerStats.totalPlayTime += gameTime;
+                playerStats.highestCombo = Math.max(playerStats.highestCombo, stats.maxCombo || 0);
+                playerStats.totalBubblesDestroyed += stats.destroyed || 0;
+                
+                if (score > 0) {
+                    playerStats.wins++;
+                }
+                
+                this.saveData();
+                this.updateRankingDisplays();
+                
+                return this.getRank(score);
+            }
+            
+            getRank(score) {
+                const rank = this.allTimeScores.findIndex(entry => entry.score === score) + 1;
+                return rank <= this.MAX_ENTRIES ? rank : -1;
+            }
+            
+            isHighScore(score) {
+                if (this.allTimeScores.length < this.MAX_ENTRIES) {
+                    return true;
+                }
+                return score > this.allTimeScores[this.MAX_ENTRIES - 1].score;
+            }
+            
+            getTodayScores() {
+                const today = new Date().toLocaleDateString('ja-JP');
+                return this.allTimeScores.filter(entry => entry.dateString === today)
+                    .slice(0, 5);
+            }
+            
+            getPersonalBest() {
+                const playerName = this.getLastPlayerName();
+                return this.allTimeScores.filter(entry => 
+                    entry.name === playerName
+                ).slice(0, 5);
+            }
+            
+            getLastPlayerName() {
+                if (this.allTimeScores.length > 0) {
+                    return this.allTimeScores[0].name;
+                }
+                return 'Player';
+            }
+            
+            updateRankingDisplays() {
+                this.updateAllTimeRanking();
+                this.updateTodayRanking();
+                this.updatePersonalBest();
+                this.updateStatistics();
+            }
+            
+            updateAllTimeRanking() {
+                const list = document.getElementById('allTimeRanking');
+                list.innerHTML = '';
+                
+                this.allTimeScores.forEach((entry, index) => {
+                    const li = document.createElement('li');
+                    li.className = `rank-${index + 1}`;
+                    
+                    const isCurrentScore = pendingScoreEntry && 
+                        entry.score === pendingScoreEntry.score &&
+                        Math.abs(new Date(entry.date) - new Date()) < 5000;
+                    
+                    if (isCurrentScore) {
+                        li.classList.add('current-score');
+                    }
+                    
+                    li.innerHTML = `
+                        <span class="rank-number">#${index + 1}</span>
+                        <span class="player-name">${entry.name}</span>
+                        <span class="score-value">${entry.score.toLocaleString()}</span>
+                        <span class="date-info">${entry.dateString}</span>
+                    `;
+                    
+                    list.appendChild(li);
+                });
+                
+                if (this.allTimeScores.length === 0) {
+                    const li = document.createElement('li');
+                    li.innerHTML = '<span class="player-name">まだ記録がありません</span>';
+                    list.appendChild(li);
+                }
+            }
+            
+            updateTodayRanking() {
+                const list = document.getElementById('todayRanking');
+                list.innerHTML = '';
+                
+                const todayScores = this.getTodayScores();
+                
+                todayScores.forEach((entry, index) => {
+                    const li = document.createElement('li');
+                    li.className = `rank-${index + 1}`;
+                    
+                    li.innerHTML = `
+                        <span class="rank-number">#${index + 1}</span>
+                        <span class="player-name">${entry.name}</span>
+                        <span class="score-value">${entry.score.toLocaleString()}</span>
+                        <span class="date-info">${entry.timeString}</span>
+                    `;
+                    
+                    list.appendChild(li);
+                });
+                
+                if (todayScores.length === 0) {
+                    const li = document.createElement('li');
+                    li.innerHTML = '<span class="player-name">今日はまだプレイしていません</span>';
+                    list.appendChild(li);
+                }
+            }
+            
+            updatePersonalBest() {
+                const list = document.getElementById('personalBest');
+                list.innerHTML = '';
+                
+                const personalScores = this.getPersonalBest();
+                
+                personalScores.forEach((entry, index) => {
+                    const li = document.createElement('li');
+                    li.className = `rank-${index + 1}`;
+                    
+                    li.innerHTML = `
+                        <span class="rank-number">#${index + 1}</span>
+                        <span class="score-value">${entry.score.toLocaleString()}</span>
+                        <span class="date-info">コンボ${entry.combo} 命中${entry.hitRate}%</span>
+                    `;
+                    
+                    list.appendChild(li);
+                });
+                
+                if (personalScores.length === 0) {
+                    const li = document.createElement('li');
+                    li.innerHTML = '<span class="player-name">個人記録がありません</span>';
+                    list.appendChild(li);
+                }
+            }
+            
+            updateStatistics() {
+                document.getElementById('totalGames').textContent = playerStats.totalGames.toLocaleString();
+                
+                const averageScore = playerStats.totalGames > 0 ? 
+                    Math.round(playerStats.totalScore / playerStats.totalGames) : 0;
+                document.getElementById('averageScore').textContent = averageScore.toLocaleString();
+                
+                const hours = Math.floor(playerStats.totalPlayTime / 3600);
+                const minutes = Math.floor((playerStats.totalPlayTime % 3600) / 60);
+                document.getElementById('totalPlayTime').textContent = `${hours}h ${minutes}m`;
+                
+                document.getElementById('highestCombo').textContent = playerStats.highestCombo.toLocaleString();
+                document.getElementById('totalBubblesDestroyed').textContent = playerStats.totalBubblesDestroyed.toLocaleString();
+                
+                const winRate = playerStats.totalGames > 0 ? 
+                    Math.round((playerStats.wins / playerStats.totalGames) * 100) : 0;
+                document.getElementById('winRate').textContent = `${winRate}%`;
+            }
+            
+            exportData() {
+                const data = {
+                    scores: this.allTimeScores,
+                    stats: playerStats,
+                    exportDate: new Date().toISOString()
+                };
+                
+                const blob = new Blob([JSON.stringify(data, null, 2)], {
+                    type: 'application/json'
+                });
+                
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `bubble-pop-rankings-${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                log('📁 ランキングデータをエクスポート完了', 'success');
+            }
+            
+            resetAll() {
+                if (confirm('本当にすべてのランキングデータを削除しますか？この操作は元に戻せません。')) {
+                    this.allTimeScores = [];
+                    Object.keys(playerStats).forEach(key => {
+                        playerStats[key] = 0;
+                    });
+                    
+                    this.saveData();
+                    this.updateRankingDisplays();
+                    
+                    log('🗑️ ランキングデータを初期化しました', 'warning');
+                }
+            }
+        }
+        
+        const highScoreManager = new HighScoreManager();
+        
+        // ===== Web Audio API関連 =====
+        function initAudio() {
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                bgmGain = audioContext.createGain();
+                bgmGain.connect(audioContext.destination);
+                bgmGain.gain.value = 0.3;
+                
+                sfxGain = audioContext.createGain();
+                sfxGain.connect(audioContext.destination);
+                sfxGain.gain.value = 0.8;
+                
+                log('🔊 Audio Context初期化完了', 'success');
+            } catch (error) {
+                log('⚠️ Audio Context初期化失敗: ' + error.message, 'warning');
+                soundEnabled.bgm = false;
+                soundEnabled.sfx = false;
+            }
+        }
+        
+        function createTone(frequency, duration, type = 'sine', gainNode = sfxGain) {
+            if (!audioContext || !gainNode || !soundEnabled.sfx) return;
+            
+            try {
+                const oscillator = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                
+                oscillator.connect(gain);
+                gain.connect(gainNode);
+                
+                oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+                oscillator.type = type;
+                
+                gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + duration);
+            } catch (error) {
+                log('サウンド生成エラー: ' + error.message, 'warning');
+            }
+        }
+        
+        function createChord(frequencies, duration, type = 'sine') {
+            frequencies.forEach(freq => createTone(freq, duration, type));
+        }
+        
+        // サウンド効果
+        const SoundEffects = {
+            normal: () => createTone(440, 0.2, 'sine'),
+            bonus: () => createChord([440, 554, 659], 0.3, 'sine'),
+            hard: () => createTone(220, 0.3, 'square'),
+            speed: () => createTone(880, 0.1, 'triangle'),
+            big: () => createTone(110, 0.5, 'sine'),
+            
+            powerupAppear: () => createChord([523, 659, 784], 0.5, 'sine'),
+            powerupCollect: () => createChord([523, 659, 784, 988], 0.4, 'sine'),
+            
+            levelUp: () => {
+                createTone(523, 0.2, 'sine');
+                setTimeout(() => createTone(659, 0.2, 'sine'), 100);
+                setTimeout(() => createTone(784, 0.3, 'sine'), 200);
+            },
+            newRecord: () => {
+                const melody = [523, 659, 784, 988, 1175, 1397];
+                melody.forEach((freq, i) => {
+                    setTimeout(() => createTone(freq, 0.4, 'sine'), i * 150);
+                });
+            },
+            victory: () => {
+                const melody = [523, 659, 784, 1047, 784, 659, 523];
+                melody.forEach((freq, i) => {
+                    setTimeout(() => createTone(freq, 0.3, 'sine'), i * 200);
+                });
+            }
+        };
+        
+        function startBGM() {
+            if (!soundEnabled.bgm || bgmInterval || !audioContext || !bgmGain) return;
+            
+            const bgmNotes = [262, 294, 330, 349, 392, 440, 494, 523];
+            let noteIndex = 0;
+            
+            log('🎵 BGM開始', 'success');
+            
+            bgmInterval = setInterval(() => {
+                if (soundEnabled.bgm && gameRunning && audioContext && bgmGain) {
+                    try {
+                        const oscillator = audioContext.createOscillator();
+                        const gain = audioContext.createGain();
+                        
+                        oscillator.connect(gain);
+                        gain.connect(bgmGain);
+                        
+                        oscillator.frequency.setValueAtTime(bgmNotes[noteIndex], audioContext.currentTime);
+                        oscillator.type = 'sine';
+                        
+                        gain.gain.setValueAtTime(0.1, audioContext.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.5);
+                        
+                        oscillator.start(audioContext.currentTime);
+                        oscillator.stop(audioContext.currentTime + 1.5);
+                        
+                        noteIndex = (noteIndex + 1) % bgmNotes.length;
+                    } catch (error) {
+                        log('BGM生成エラー: ' + error.message, 'warning');
+                    }
+                }
+            }, 1600);
+        }
+        
+        function stopBGM() {
+            if (bgmInterval) {
+                clearInterval(bgmInterval);
+                bgmInterval = null;
+                log('🎵 BGM停止', 'info');
+            }
+        }
+        
+        function toggleSound(type) {
+            soundEnabled[type] = !soundEnabled[type];
+            const button = document.getElementById(type + 'Toggle');
+            
+            if (soundEnabled[type]) {
+                button.textContent = `${type.toUpperCase()}: ON`;
+                button.classList.add('enabled');
+                if (type === 'bgm' && gameRunning) startBGM();
+            } else {
+                button.textContent = `${type.toUpperCase()}: OFF`;
+                button.classList.remove('enabled');
+                if (type === 'bgm') stopBGM();
+            }
+            
+            log(`🔊 ${type.toUpperCase()}: ${soundEnabled[type] ? 'ON' : 'OFF'}`, 'info');
+        }
+        
+        function testAllSounds() {
+            log('🔊 ランキングサウンドテスト開始', 'success');
+            
+            setTimeout(() => { SoundEffects.normal(); log('Normal バブル音', 'info'); }, 0);
+            setTimeout(() => { SoundEffects.newRecord(); log('新記録音', 'ranking'); }, 500);
+            setTimeout(() => { SoundEffects.victory(); log('勝利音', 'info'); }, 2000);
+        }
+        
+        // ===== バブル・パワーアップクラス =====
+        const BUBBLE_TYPES = {
+            normal: { name: 'Normal', color: '#4A90E2', size: 30, score: 10, health: 1, speed: 0, emoji: '🔵' },
+            bonus: { name: 'Bonus', color: '#7ED321', size: 25, score: 25, health: 1, speed: 0, emoji: '🟢' },
+            hard: { name: 'Hard', color: '#D0021B', size: 35, score: 20, health: 2, speed: 0, emoji: '🔴' },
+            speed: { name: 'Speed', color: '#F5A623', size: 20, score: 15, health: 1, speed: 50, emoji: '🟡' },
+            big: { name: 'Big', color: '#9013FE', size: 50, score: 30, health: 1, speed: 0, emoji: '🟣' }
+        };
+        
+        const POWERUP_TYPES = {
+            scoreBoost: { icon: '⭐', name: 'スコア2倍', duration: 20000, effect: 'scoreMultiplier', value: 2 },
+            healthRestore: { icon: '💉', name: 'HP回復', duration: 0, effect: 'heal', value: 30 },
+            timeExtension: { icon: '⏰', name: '時間延長', duration: 0, effect: 'addTime', value: 3 },
+            autoTarget: { icon: '🎯', name: 'オート命中', duration: 10000, effect: 'autoHit', value: true },
+            superBomb: { icon: '💣', name: '全消去', duration: 0, effect: 'destroyAll', value: true },
+            shield: { icon: '🛡️', name: 'ダメージ無効', duration: 15000, effect: 'noDamage', value: true }
+        };
+        
+        // レベル・ステージシステム
+        const LEVEL_THRESHOLDS = [0, 100, 250, 450, 700, 1000, 1400, 1850, 2350, 2900, 3500];
+        const STAGE_OBJECTIVES = {
+            1: { target: 500, description: "500点を目指そう！" },
+            2: { target: 1000, description: "1000点突破！" },
+            3: { target: 1500, description: "1500点の壁を越えろ！" },
+            4: { target: 2500, description: "2500点でマスター級！" },
+            5: { target: 4000, description: "4000点で伝説への道！" }
+        };
+        
+        class TypedBubble {
+            static nextId = 0;
+            
+            constructor(x, y, type = 'normal') {
+                this.id = TypedBubble.nextId++;
+                this.x = x;
+                this.y = y;
+                this.type = type;
+                this.config = BUBBLE_TYPES[type];
+                
+                this.radius = this.config.size;
+                this.color = this.config.color;
+                this.maxHealth = this.config.health;
+                this.health = this.config.health;
+                this.baseScore = this.config.score;
+                
+                this.vx = (Math.random() - 0.5) * this.config.speed / 10;
+                this.vy = (Math.random() - 0.5) * this.config.speed / 10;
+                
+                this.age = 0;
+                this.maxAge = this.getMaxAge();
+                this.isVisible = true;
+            }
+            
+            getMaxAge() {
+                const baseAge = {
+                    speed: 8000, bonus: 10000, hard: 15000,
+                    big: 12000, normal: 12000
+                }[this.type];
+                
+                const timeRatio = gameTimeRemaining / gameTimeLimit;
+                const ageMultiplier = Math.max(0.5, timeRatio);
+                
+                return Math.floor(baseAge * ageMultiplier);
+            }
+            
+            update(deltaTime) {
+                this.age += deltaTime;
+                this.x += this.vx;
+                this.y += this.vy;
+                this.handleBoundaryCollision();
+                return this.age < this.maxAge;
+            }
+            
+            handleBoundaryCollision() {
+                const margin = this.radius;
+                if (this.x - margin <= 0 || this.x + margin >= canvas.width) {
+                    this.vx *= -0.8;
+                    this.x = Math.max(margin, Math.min(canvas.width - margin, this.x));
+                }
+                if (this.y - margin <= 0 || this.y + margin >= canvas.height) {
+                    this.vy *= -0.8;
+                    this.y = Math.max(margin, Math.min(canvas.height - margin, this.y));
+                }
+            }
+            
+            render() {
+                if (!this.isVisible) return;
+                
+                ctx.save();
+                
+                const ageRatio = this.age / this.maxAge;
+                const opacity = Math.max(0.4, 1 - ageRatio * 0.6);
+                ctx.globalAlpha = opacity;
+                
+                if (gameTimeRemaining <= 10 && Math.floor(Date.now() / 200) % 2) {
+                    ctx.globalAlpha *= 0.7;
+                }
+                
+                ctx.shadowColor = 'rgba(0,0,0,0.3)';
+                ctx.shadowBlur = 8;
+                ctx.shadowOffsetX = 3;
+                ctx.shadowOffsetY = 3;
+                
+                const gradient = ctx.createRadialGradient(
+                    this.x - this.radius/3, this.y - this.radius/3, 0,
+                    this.x, this.y, this.radius
+                );
+                gradient.addColorStop(0, this.lightenColor(this.color));
+                gradient.addColorStop(1, this.color);
+                
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.shadowColor = 'transparent';
+                ctx.strokeStyle = this.darkenColor(this.color);
+                ctx.lineWidth = this.type === 'hard' ? 4 : 2;
+                ctx.stroke();
+                
+                ctx.fillStyle = 'rgba(255,255,255,0.6)';
+                ctx.beginPath();
+                ctx.arc(
+                    this.x - this.radius/3,
+                    this.y - this.radius/3,
+                    this.radius/4,
+                    0, Math.PI * 2
+                );
+                ctx.fill();
+                
+                this.renderSpecialEffects();
+                
+                if (this.type === 'hard' && this.health > 0) {
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.font = 'bold 16px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(this.health.toString(), this.x, this.y + 5);
+                }
+                
+                ctx.restore();
+            }
+            
+            renderSpecialEffects() {
+                ctx.save();
+                ctx.globalAlpha = 1;
+                
+                switch(this.type) {
+                    case 'speed':
+                        ctx.strokeStyle = this.color;
+                        ctx.lineWidth = 2;
+                        ctx.globalAlpha = 0.3;
+                        ctx.beginPath();
+                        ctx.moveTo(this.x - this.vx * 5, this.y - this.vy * 5);
+                        ctx.lineTo(this.x, this.y);
+                        ctx.stroke();
+                        break;
+                        
+                    case 'bonus':
+                        ctx.fillStyle = '#FFD700';
+                        const sparkles = 3;
+                        for(let i = 0; i < sparkles; i++) {
+                            const angle = (Date.now() / 1000 + i * 2) % (Math.PI * 2);
+                            const sparkleX = this.x + Math.cos(angle) * (this.radius * 0.7);
+                            const sparkleY = this.y + Math.sin(angle) * (this.radius * 0.7);
+                            ctx.beginPath();
+                            ctx.arc(sparkleX, sparkleY, 2, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                        break;
+                        
+                    case 'big':
+                        ctx.strokeStyle = this.lightenColor(this.color);
+                        ctx.lineWidth = 3;
+                        ctx.globalAlpha = 0.5;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.radius * 0.6, 0, Math.PI * 2);
+                        ctx.stroke();
+                        break;
+                }
+                
+                ctx.restore();
+            }
+            
+            lightenColor(color) {
+                const hex = color.replace('#', '');
+                const r = Math.min(255, parseInt(hex.substr(0, 2), 16) + 40);
+                const g = Math.min(255, parseInt(hex.substr(2, 2), 16) + 40);
+                const b = Math.min(255, parseInt(hex.substr(4, 2), 16) + 40);
+                return `rgb(${r},${g},${b})`;
+            }
+            
+            darkenColor(color) {
+                const hex = color.replace('#', '');
+                const r = Math.max(0, parseInt(hex.substr(0, 2), 16) - 50);
+                const g = Math.max(0, parseInt(hex.substr(2, 2), 16) - 50);
+                const b = Math.max(0, parseInt(hex.substr(4, 2), 16) - 50);
+                return `rgb(${r},${g},${b})`;
+            }
+            
+            containsPoint(x, y) {
+                const dx = x - this.x;
+                const dy = y - this.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                return distance <= this.radius;
+            }
+            
+            takeDamage() {
+                this.health--;
+                
+                if (this.health <= 0) {
+                    this.destroy();
+                    return true;
+                }
+                return false;
+            }
+            
+            destroy() {
+                this.isVisible = false;
+                destroyedBubbles++;
+                
+                if (SoundEffects[this.type]) {
+                    SoundEffects[this.type]();
+                }
+            }
+            
+            getScore() {
+                let finalScore = this.baseScore;
+                
+                const ageRatio = this.age / this.maxAge;
+                if (ageRatio < 0.1) {
+                    finalScore *= 1.5;
+                } else if (ageRatio > 0.8) {
+                    finalScore *= 2;
+                }
+                
+                if (gameTimeRemaining <= 10) {
+                    finalScore *= 1.5;
+                } else if (gameTimeRemaining <= 30) {
+                    finalScore *= 1.2;
+                }
+                
+                if (activePowerups.has('scoreBoost')) {
+                    finalScore *= 2;
+                }
+                
+                // コンボボーナス
+                if (currentCombo >= 5) {
+                    finalScore *= (1 + currentCombo * 0.1);
+                }
+                
+                return Math.floor(finalScore);
+            }
+        }
+        
+        class PowerUp {
+            static nextId = 0;
+            
+            constructor(x, y, type) {
+                this.id = PowerUp.nextId++;
+                this.x = x;
+                this.y = y;
+                this.type = type;
+                this.config = POWERUP_TYPES[type];
+                
+                this.radius = 25;
+                this.age = 0;
+                this.maxAge = 15000;
+                this.floatOffset = Math.random() * Math.PI * 2;
+                this.isVisible = true;
+                
+                SoundEffects.powerupAppear();
+            }
+            
+            update(deltaTime) {
+                this.age += deltaTime;
+                this.y += Math.sin(Date.now() / 500 + this.floatOffset) * 0.5;
+                
+                return this.age < this.maxAge;
+            }
+            
+            render() {
+                if (!this.isVisible) return;
+                
+                ctx.save();
+                
+                const ageRatio = this.age / this.maxAge;
+                const opacity = Math.max(0.4, 1 - ageRatio * 0.6);
+                ctx.globalAlpha = opacity;
+                
+                ctx.shadowColor = '#FFD700';
+                ctx.shadowBlur = 15;
+                
+                ctx.fillStyle = '#FFD700';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.shadowColor = 'transparent';
+                ctx.strokeStyle = '#FFA500';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                
+                ctx.fillStyle = '#333';
+                ctx.font = 'bold 24px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(this.config.icon, this.x, this.y + 8);
+                
+                ctx.font = '10px Arial';
+                ctx.fillStyle = '#333';
+                ctx.fillText(this.config.name, this.x, this.y + this.radius + 15);
+                
+                ctx.restore();
+            }
+            
+            containsPoint(x, y) {
+                const dx = x - this.x;
+                const dy = y - this.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                return distance <= this.radius;
+            }
+            
+            activate() {
+                SoundEffects.powerupCollect();
+                
+                switch(this.config.effect) {
+                    case 'scoreMultiplier':
+                        activePowerups.set('scoreBoost', Date.now() + this.config.duration);
+                        log(`⭐ スコア2倍効果発動! (${this.config.duration/1000}秒間)`, 'special');
+                        break;
+                        
+                    case 'heal':
+                        hp = Math.min(100, hp + this.config.value);
+                        log(`💉 HP回復! +${this.config.value} (現在HP:${hp})`, 'success');
+                        break;
+                        
+                    case 'addTime':
+                        const oldTime = gameTimeRemaining;
+                        timeExtensionAccumulated += this.config.value;
+                        log(`⏰ 時間延長! +${this.config.value}秒 (累計延長:${timeExtensionAccumulated}秒)`, 'success');
+                        break;
+                        
+                    case 'autoHit':
+                        activePowerups.set('autoHit', Date.now() + this.config.duration);
+                        log(`🎯 オート命中発動! (${this.config.duration/1000}秒間)`, 'special');
+                        break;
+                        
+                    case 'destroyAll':
+                        const destroyedCount = bubbles.length;
+                        bubbles.forEach(bubble => {
+                            score += bubble.getScore();
+                            bubble.destroy();
+                        });
+                        bubbles = [];
+                        currentCombo += destroyedCount;
+                        log(`💣 全バブル破壊! ${destroyedCount}個破壊`, 'special');
+                        break;
+                        
+                    case 'noDamage':
+                        activePowerups.set('shield', Date.now() + this.config.duration);
+                        log(`🛡️ シールド発動! (${this.config.duration/1000}秒間)`, 'special');
+                        break;
+                }
+            }
+        }
+        
+        // ===== ログ機能 =====
+        function log(message, type = 'info') {
+            const time = new Date().toLocaleTimeString();
+            const div = document.createElement('div');
+            div.className = type;
+            div.textContent = `[${time}] ${message}`;
+            logElement.appendChild(div);
+            logElement.scrollTop = logElement.scrollHeight;
+            console.log(`[${type}] ${message}`);
+        }
+        
+        // ===== 座標変換関数 =====
+        function getCanvasCoordinates(event) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / canvas.clientWidth;
+            const scaleY = canvas.height / canvas.clientHeight;
+            const x = (event.clientX - rect.left) * scaleX;
+            const y = (event.clientY - rect.top) * scaleY;
+            return { x: x, y: y };
+        }
+        
+        // ===== UI更新関数 =====
+        function updateUI() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('hp').textContent = hp;
+            document.getElementById('level').textContent = playerLevel;
+            document.getElementById('experience').textContent = experience;
+            document.getElementById('stage').textContent = currentStage;
+            document.getElementById('bubbleCount').textContent = bubbles.length;
+            document.getElementById('destroyedCount').textContent = destroyedBubbles;
+            document.getElementById('combo').textContent = currentCombo;
+            document.getElementById('timeBonus').textContent = calculateTimeBonus();
+            
+            const rate = totalClicks > 0 ? Math.round((totalHits / totalClicks) * 100) : 0;
+            document.getElementById('hitRate').textContent = `${rate}%`;
+            
+            updatePowerupsDisplay();
+        }
+        
+        function updatePowerupsDisplay() {
+            const display = document.getElementById('powerupsDisplay');
+            display.innerHTML = '';
+            
+            for (let [type, endTime] of activePowerups) {
+                if (endTime > Date.now()) {
+                    const config = POWERUP_TYPES[type];
+                    if (config) {
+                        const div = document.createElement('div');
+                        div.className = 'powerup-status powerup-active';
+                        const remaining = Math.ceil((endTime - Date.now()) / 1000);
+                        div.textContent = `${config.icon} ${config.name} (${remaining}s)`;
+                        display.appendChild(div);
+                    }
+                }
+            }
+            
+            // 期限切れのパワーアップを削除
+            for (let [type, endTime] of activePowerups) {
+                if (endTime <= Date.now()) {
+                    activePowerups.delete(type);
+                    const powerupConfig = POWERUP_TYPES[type];
+                    if (powerupConfig) {
+                        log(`効果終了: ${powerupConfig.name}`, 'info');
+                    }
+                }
+            }
+        }
+        
+        function addExperience(xp) {
+            experience += xp;
+            const currentLevelThreshold = LEVEL_THRESHOLDS[playerLevel - 1] || 0;
+            const nextLevelThreshold = LEVEL_THRESHOLDS[playerLevel] || currentLevelThreshold + 500;
+            
+            if (experience >= nextLevelThreshold && playerLevel < LEVEL_THRESHOLDS.length - 1) {
+                playerLevel++;
+                SoundEffects.levelUp();
+                log(`🎉 レベルアップ! レベル ${playerLevel} に到達!`, 'success');
+            }
+        }
+        
+        function checkStageProgress() {
+            const objective = STAGE_OBJECTIVES[currentStage];
+            if (objective && score >= objective.target && currentStage < Object.keys(STAGE_OBJECTIVES).length) {
+                currentStage++;
+                log(`🏆 ステージ${currentStage-1}クリア! 次のステージ: ${STAGE_OBJECTIVES[currentStage]?.description || '最終ステージ突入!'}`, 'success');
+            }
+        }
+        
+        function updateTimeDisplay() {
+            const minutes = Math.floor(gameTimeRemaining / 60);
+            const seconds = Math.floor(gameTimeRemaining % 60);
+            const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            const timeDisplay = document.getElementById('timeDisplay');
+            timeDisplay.textContent = `⏰ 残り時間: ${timeString}`;
+            
+            if (gameTimeRemaining <= 10) {
+                timeDisplay.className = 'time-danger';
+            } else if (gameTimeRemaining <= 30) {
+                timeDisplay.className = 'time-warning';
+            } else {
+                timeDisplay.className = '';
+            }
+        }
+        
+        function calculateTimeBonus() {
+            const remainingRatio = gameTimeRemaining / gameTimeLimit;
+            let bonus = 0;
+            
+            if (remainingRatio > 0.5) {
+                bonus = Math.floor(gameTimeRemaining * 2);
+            } else if (remainingRatio > 0.2) {
+                bonus = Math.floor(gameTimeRemaining * 1);
+            } else {
+                bonus = Math.floor(gameTimeRemaining * 0.5);
+            }
+            
+            return bonus;
+        }
+        
+        // ===== ゲーム機能 =====
+        function spawnRandomBubble() {
+            const types = Object.keys(BUBBLE_TYPES);
+            const randomType = types[Math.floor(Math.random() * types.length)];
+            
+            const margin = 80;
+            const x = margin + Math.random() * (canvas.width - margin * 2);
+            const y = margin + Math.random() * (canvas.height - margin * 2);
+            
+            const bubble = new TypedBubble(x, y, randomType);
+            bubbles.push(bubble);
+        }
+        
+        function spawnRandomPowerup() {
+            const types = Object.keys(POWERUP_TYPES);
+            const randomType = types[Math.floor(Math.random() * types.length)];
+            
+            const margin = 60;
+            const x = margin + Math.random() * (canvas.width - margin * 2);
+            const y = margin + Math.random() * (canvas.height - margin * 2);
+            
+            const powerup = new PowerUp(x, y, randomType);
+            powerups.push(powerup);
+        }
+        
+        function clearAll() {
+            bubbles = [];
+            powerups = [];
+            updateUI();
+            log('全アイテムクリア', 'info');
+        }
+        
+        function startRankingGame(timeLimit) {
+            if (gameRunning) return;
+            
+            if (!audioContext) {
+                initAudio();
+            }
+            
+            gameRunning = true;
+            gameTimeLimit = timeLimit;
+            gameTimeRemaining = timeLimit;
+            gameStartTime = Date.now();
+            timeExtensionAccumulated = 0; // 時間延長リセット
+            
+            // ゲーム状態リセット
+            score = 0;
+            hp = 100;
+            playerLevel = 1;
+            experience = 0;
+            currentStage = 1;
+            totalClicks = 0;
+            totalHits = 0;
+            destroyedBubbles = 0;
+            currentCombo = 0;
+            maxCombo = 0;
+            
+            bubbles = [];
+            powerups = [];
+            activePowerups.clear();
+            currentGameScore = 0;
+            pendingScoreEntry = null;
+            
+            document.getElementById('gameResult').style.display = 'none';
+            
+            updateUI();
+            updateTimeDisplay();
+            updateButtonStates(true);
+            
+            // BGM開始
+            setTimeout(() => {
+                if (audioContext && audioContext.state === 'running') {
+                    startBGM();
+                } else if (audioContext && audioContext.state === 'suspended') {
+                    audioContext.resume().then(() => {
+                        startBGM();
+                    });
+                }
+            }, 500);
+            
+            // 初期アイテム生成
+            for (let i = 0; i < 6; i++) {
+                spawnRandomBubble();
+            }
+            
+            gameLoop = setInterval(() => {
+                update();
+                render();
+                
+                // gameTimeRemainingは直接更新せず、基準時間から計算
+                const baseTimeRemaining = gameTimeLimit - (Date.now() - gameStartTime) / 1000;
+                // 時間延長分を加算
+                const currentTime = baseTimeRemaining + timeExtensionAccumulated;
+                gameTimeRemaining = Math.max(0, currentTime);
+                updateTimeDisplay();
+                
+                if (gameTimeRemaining <= 0) {
+                    endRankingGame('time_up');
+                    return;
+                }
+                
+                // 自動アイテム生成
+                const bubbleSpawnChance = gameTimeRemaining <= 30 ? 0.025 : 0.015;
+                if (Math.random() < bubbleSpawnChance && bubbles.length < 10) {
+                    spawnRandomBubble();
+                }
+                
+                const powerupSpawnChance = 0.008;
+                if (Math.random() < powerupSpawnChance && powerups.length < 4) {
+                    spawnRandomPowerup();
+                }
+            }, 16);
+            
+            log(`🏆 ${timeLimit}秒ランキングゲーム開始!`, 'ranking');
+        }
+        
+        function stopGame() {
+            if (!gameRunning) return;
+            endRankingGame('manual_stop');
+        }
+        
+        function endRankingGame(reason = 'time_up') {
+            gameRunning = false;
+            if (gameLoop) {
+                clearInterval(gameLoop);
+                gameLoop = null;
+            }
+            
+            stopBGM();
+            
+            const timeBonus = calculateTimeBonus();
+            const finalScore = score + timeBonus;
+            currentGameScore = finalScore;
+            
+            let resultMessage = '';
+            let resultClass = 'result-success';
+            
+            if (reason === 'time_up') {
+                resultMessage = `⏰ 時間終了！ 最終スコア: ${finalScore.toLocaleString()} (基本: ${score.toLocaleString()} + 時間ボーナス: ${timeBonus.toLocaleString()})`;
+                log('⏰ 時間終了！', 'special');
+            } else if (reason === 'hp_zero') {
+                resultMessage = `💀 HP 0でゲームオーバー！ スコア: ${finalScore.toLocaleString()}`;
+                resultClass = 'result-failure';
+                log('💀 HP 0 - ゲームオーバー！', 'danger');
+            } else if (reason === 'manual_stop') {
+                resultMessage = `⏹️ ゲーム中断 スコア: ${finalScore.toLocaleString()}`;
+                log('⏹️ ゲーム手動停止', 'info');
+            }
+            
+            const gameResult = document.getElementById('gameResult');
+            gameResult.textContent = resultMessage;
+            gameResult.className = resultClass;
+            gameResult.style.display = 'block';
+            
+            updateButtonStates(false);
+            
+            // ハイスコア判定
+            if (highScoreManager.isHighScore(finalScore)) {
+                SoundEffects.newRecord();
+                log(`🎉 ハイスコア更新! スコア: ${finalScore.toLocaleString()}`, 'ranking');
+                showNameInputDialog(finalScore);
+            } else {
+                // ハイスコアでない場合も統計は更新
+                recordGameStats(finalScore, false);
+                SoundEffects.victory();
+            }
+            
+            log(`📊 ゲーム統計: 破壊数${destroyedBubbles}, 命中率${Math.round((totalHits/Math.max(totalClicks,1))*100)}%, 最高コンボ${maxCombo}`, 'info');
+        }
+        
+        function showNameInputDialog(score) {
+            pendingScoreEntry = {
+                score: score,
+                gameTime: gameTimeLimit,
+                stats: {
+                    maxCombo: maxCombo,
+                    destroyed: destroyedBubbles,
+                    hitRate: Math.round((totalHits/Math.max(totalClicks,1))*100),
+                    level: playerLevel
+                }
+            };
+            
+            document.getElementById('playerNameInput').value = highScoreManager.getLastPlayerName();
+            document.getElementById('dialogOverlay').style.display = 'block';
+            document.getElementById('nameInputDialog').style.display = 'block';
+            document.getElementById('playerNameInput').focus();
+            document.getElementById('playerNameInput').select();
+        }
+        
+        function submitHighScore() {
+            const playerName = document.getElementById('playerNameInput').value.trim() || 'Anonymous';
+            
+            if (pendingScoreEntry && pendingScoreEntry.score !== undefined) {
+                // 安全のためpendingScoreEntryを一時的にコピー
+                const scoreData = {
+                    score: pendingScoreEntry.score,
+                    gameTime: pendingScoreEntry.gameTime,
+                    stats: pendingScoreEntry.stats
+                };
+                
+                const rank = highScoreManager.addScore(
+                    playerName,
+                    scoreData.score,
+                    scoreData.gameTime,
+                    scoreData.stats
+                );
+                
+                hideNameInputDialog();
+                
+                if (rank > 0) {
+                    log(`🏆 第${rank}位にランクイン! おめでとうございます！`, 'ranking');
+                } else {
+                    log(`🏆 ハイスコア記録完了!`, 'ranking');
+                }
+                
+                recordGameStats(scoreData.score, true);
+                pendingScoreEntry = null; // クリア
+            } else {
+                log('⚠️ ハイスコア記録エラー: スコア情報が見つかりません', 'warning');
+                hideNameInputDialog();
+                pendingScoreEntry = null;
+            }
+        }
+        
+        function cancelHighScore() {
+            if (pendingScoreEntry && pendingScoreEntry.score !== undefined) {
+                const scoreValue = pendingScoreEntry.score;
+                recordGameStats(scoreValue, false);
+            }
+            hideNameInputDialog();
+            pendingScoreEntry = null; // クリア
+        }
+        
+        function hideNameInputDialog() {
+            document.getElementById('dialogOverlay').style.display = 'none';
+            document.getElementById('nameInputDialog').style.display = 'none';
+            pendingScoreEntry = null;
+        }
+        
+        function recordGameStats(score, isHighScore) {
+            // ゲーム統計の更新（ハイスコアでない場合も記録）
+            if (typeof score !== 'number' || score < 0) {
+                log('⚠️ 無効なスコア値でstatistics記録をスキップします', 'warning');
+                return;
+            }
+            
+            if (!isHighScore) {
+                playerStats.totalGames++;
+                playerStats.totalScore += score;
+                playerStats.totalPlayTime += gameTimeLimit;
+                playerStats.highestCombo = Math.max(playerStats.highestCombo, maxCombo);
+                playerStats.totalBubblesDestroyed += destroyedBubbles;
+                
+                if (score > 0) {
+                    playerStats.wins++;
+                }
+                
+                highScoreManager.saveData();
+                highScoreManager.updateStatistics();
+            }
+        }
+        
+        function updateButtonStates(gameActive) {
+            document.getElementById('start60').disabled = gameActive;
+            document.getElementById('start120').disabled = gameActive;
+            document.getElementById('start180').disabled = gameActive;
+            document.getElementById('stopBtn').disabled = !gameActive;
+        }
+        
+        function resetRankings() {
+            highScoreManager.resetAll();
+        }
+        
+        function exportRankings() {
+            highScoreManager.exportData();
+        }
+        
+        function update() {
+            // バブル更新
+            bubbles = bubbles.filter(bubble => {
+                const alive = bubble.update(16);
+                if (!alive) {
+                    const damage = activePowerups.has('shield') ? 0 : 3;
+                    hp -= damage;
+                    currentCombo = 0; // バブル消滅でコンボリセット
+                    if (damage > 0) {
+                        log(`バブル消滅 HP-${damage} (残りHP:${hp})`, 'warning');
+                    }
+                    updateUI();
+                }
+                return alive;
+            });
+            
+            // パワーアップ更新
+            powerups = powerups.filter(powerup => powerup.update(16));
+            
+            // オート命中処理
+            if (activePowerups.has('autoHit') && Math.random() < 0.05 && bubbles.length > 0) {
+                const randomBubble = bubbles[Math.floor(Math.random() * bubbles.length)];
+                const destroyed = randomBubble.takeDamage();
+                
+                if (destroyed) {
+                    const bubbleIndex = bubbles.indexOf(randomBubble);
+                    bubbles.splice(bubbleIndex, 1);
+                    
+                    const earnedScore = randomBubble.getScore();
+                    score += earnedScore;
+                    addExperience(Math.floor(earnedScore * 0.5));
+                    currentCombo++;
+                    maxCombo = Math.max(maxCombo, currentCombo);
+                    
+                    log(`🎯 オート命中! ${randomBubble.config.name} +${earnedScore}点`, 'hit');
+                }
+            }
+            
+            checkStageProgress();
+            updateUI();
+            
+            if (hp <= 0 && gameRunning) {
+                endRankingGame('hp_zero');
+            }
+        }
+        
+        function render() {
+            ctx.fillStyle = '#e8f4f8';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            bubbles.forEach(bubble => bubble.render());
+            powerups.forEach(powerup => powerup.render());
+            
+            ctx.fillStyle = '#333';
+            ctx.font = '12px monospace';
+            ctx.textAlign = 'left';
+            ctx.fillText(
+                `時間: ${Math.ceil(gameTimeRemaining)}s | スコア: ${score.toLocaleString()} | HP: ${hp} | コンボ: ${currentCombo}`,
+                10, 20
+            );
+            
+            // ランキング表示
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#1976d2';
+            ctx.fillText('🏆 ハイスコアを目指せ！', canvas.width / 2, 45);
+            
+            // 緊急時の画面エフェクト
+            if (gameTimeRemaining <= 10) {
+                ctx.fillStyle = `rgba(255, 0, 0, ${0.1 * Math.sin(Date.now() / 100)})`;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+        
+        // ===== イベントハンドラー =====
+        canvas.addEventListener('click', (event) => {
+            if (!gameRunning) return;
+            
+            const coords = getCanvasCoordinates(event);
+            const x = coords.x;
+            const y = coords.y;
+            
+            totalClicks++;
+            
+            // パワーアップクリック判定
+            let hitPowerup = null;
+            for (let i = powerups.length - 1; i >= 0; i--) {
+                const powerup = powerups[i];
+                if (powerup.containsPoint(x, y)) {
+                    hitPowerup = powerup;
+                    break;
+                }
+            }
+            
+            if (hitPowerup) {
+                const powerupIndex = powerups.indexOf(hitPowerup);
+                powerups.splice(powerupIndex, 1);
+                hitPowerup.activate();
+                totalHits++;
+                currentCombo++;
+                maxCombo = Math.max(maxCombo, currentCombo);
+                updateUI();
+                return;
+            }
+            
+            // バブルクリック判定
+            let hitBubble = null;
+            for (let i = bubbles.length - 1; i >= 0; i--) {
+                const bubble = bubbles[i];
+                if (bubble.containsPoint(x, y)) {
+                    hitBubble = bubble;
+                    break;
+                }
+            }
+            
+            if (hitBubble) {
+                totalHits++;
+                
+                const destroyed = hitBubble.takeDamage();
+                
+                if (destroyed) {
+                    const bubbleIndex = bubbles.indexOf(hitBubble);
+                    bubbles.splice(bubbleIndex, 1);
+                    
+                    const earnedScore = hitBubble.getScore();
+                    score += earnedScore;
+                    addExperience(Math.floor(earnedScore * 0.5));
+                    currentCombo++;
+                    maxCombo = Math.max(maxCombo, currentCombo);
+                    
+                    log(`🎯 ${hitBubble.config.name} +${earnedScore}点 (コンボ×${currentCombo})`, 'hit');
+                } else {
+                    currentCombo = Math.floor(currentCombo / 2);
+                    log(`${hitBubble.config.name} ダメージ (残りHP:${hitBubble.health})`, 'info');
+                }
+                
+                updateUI();
+            } else {
+                currentCombo = 0;
+                log(`💨 MISS! コンボリセット`, 'miss');
+                updateUI();
+            }
+        });
+        
+        // キーボードショートカット
+        document.addEventListener('keydown', (event) => {
+            if (event.target.tagName === 'INPUT') return;
+            
+            switch(event.code) {
+                case 'Enter':
+                    if (document.getElementById('nameInputDialog').style.display === 'block') {
+                        event.preventDefault();
+                        submitHighScore();
+                    }
+                    break;
+                case 'Escape':
+                    if (document.getElementById('nameInputDialog').style.display === 'block') {
+                        event.preventDefault();
+                        cancelHighScore();
+                    }
+                    break;
+            }
+        });
+        
+        // ===== 初期化 =====
+        function init() {
+            updateUI();
+            document.getElementById('timeDisplay').textContent = '⏰ ゲーム時間を選択してください';
+            
+            // ランキング表示更新
+            highScoreManager.updateRankingDisplays();
+            
+            log('Step 9: ハイスコアランキングシステム 準備完了', 'success');
+            log('🏆 ローカルストレージでスコア記録・ランキング表示対応', 'info');
+            log('🎯 新記録達成時に名前入力ダイアログ表示', 'info');
+            log('📊 プレイ統計・今日のランキング・個人ベスト記録', 'info');
+        }
+        
+        init();
+    </script>
+</body>
+</html>
