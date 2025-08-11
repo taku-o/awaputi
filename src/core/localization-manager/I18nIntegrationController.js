@@ -116,9 +116,12 @@ export class I18nIntegrationController {
             this.performanceMonitor = new I18nPerformanceMonitor();
             this.initializationState.performanceMonitor = true;
             
-            // レンダリング最適化
+            // レンダリング最適化（非同期初期化）
             const { I18nRenderOptimizer } = await import('../i18n/I18nRenderOptimizer.js');
             this.renderOptimizer = new I18nRenderOptimizer();
+            
+            // I18nRenderOptimizerの非同期初期化を実行
+            await this.renderOptimizer.initialize();
             this.initializationState.renderOptimizer = true;
             
             console.log('Performance components initialized');

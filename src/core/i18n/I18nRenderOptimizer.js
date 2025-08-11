@@ -68,7 +68,7 @@ export class I18nRenderOptimizer {
             const { FontLoadingManager } = await import('./font-loading/FontLoadingManager.js');
             
             const config = {
-                enabledSources: ['system', 'google'],
+                enabledSources: ['system', 'google'], // Google Fontsを再有効化（CSP修正済み）
                 timeouts: {
                     google: 3000,
                     local: 1000,
@@ -85,7 +85,7 @@ export class I18nRenderOptimizer {
                     maxErrorsPerSource: 3
                 },
                 development: {
-                    disableExternalFonts: false,
+                    disableExternalFonts: false, // CSP修正によりGoogle Fontsを許可
                     verboseLogging: false
                 }
             };
@@ -93,9 +93,9 @@ export class I18nRenderOptimizer {
             this.fontLoadingManager = new FontLoadingManager(config);
             await this.fontLoadingManager.initialize();
             
-            console.log('FontLoadingManager initialized successfully');
+            console.log('[I18nRenderOptimizer] FontLoadingManager initialized with Google Fonts support');
         } catch (error) {
-            console.warn('Failed to load FontLoadingManager, using fallback:', error);
+            console.warn('[I18nRenderOptimizer] Failed to load FontLoadingManager, using fallback:', error);
             this.fontLoadingManager = null;
         }
     }
@@ -103,7 +103,10 @@ export class I18nRenderOptimizer {
     /**
      * 初期化
      */
-    initialize() {
+    async initialize() {
+        // フォント読み込みマネージャーの初期化
+        await this._loadFontLoadingManager();
+        
         // レンダリング最適化の設定
         this.setupRenderingOptimization();
         
@@ -771,6 +774,28 @@ export class I18nRenderOptimizer {
      * 共通フォントの事前読み込み
      */
     async preloadCommonFonts() {
+        // FontLoadingManagerを使用する場合
+        if (this.fontLoadingManager) {
+            const commonFonts = [
+                'Noto Sans JP',      // 日本語（Google Fonts）
+                'Noto Sans SC',      // 中国語簡体字（Google Fonts）
+                'Noto Sans TC',      // 中国語繁体字（Google Fonts）
+                'Noto Sans KR',      // 韓国語（Google Fonts）
+                'Arial',             // 英語（システムフォント）
+                'Helvetica'          // 英語（システムフォント）
+            ];
+            
+            try {
+                const results = await this.fontLoadingManager.preloadFonts(commonFonts, 'default');
+                const successful = results.filter(r => r.success).length;
+                console.log(`[I18nRenderOptimizer] Preloaded ${successful}/${commonFonts.length} fonts`);
+                return;
+            } catch (error) {
+                console.warn('[I18nRenderOptimizer] FontLoadingManager preload failed, using fallback:', error);
+            }
+        }
+
+        // フォールバック：従来のプリロード処理
         const commonFonts = [
             'Noto Sans JP',      // 日本語
             'Noto Sans SC',      // 中国語（簡体字）
@@ -786,7 +811,7 @@ export class I18nRenderOptimizer {
         
         try {
             await Promise.allSettled(preloadPromises);
-            console.log('Common fonts preloaded');
+            console.log('Common fonts preloaded (fallback method)');
         } catch (error) {
             console.warn('Font preloading partially failed:', error);
         }
