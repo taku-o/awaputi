@@ -33,9 +33,16 @@ export class FontErrorHandler {
 
     handleFontError(error, context) {
         const errorInfo = this._categorizeError(error, context);
+        const errorKey = `${context.source}:${errorInfo.type}:${context.fontFamily || 'unknown'}`;
+        
+        // warn_once チェック
         const shouldSuppress = this.shouldSuppressError(errorInfo.type, context.source);
-
-        if (shouldSuppress === 'suppress') {
+        if (shouldSuppress === 'warn_once') {
+            if (this.suppressedErrors.has(errorKey)) {
+                return false; // 既に警告済みなので抑制
+            }
+            this.suppressedErrors.add(errorKey);
+        } else if (shouldSuppress === 'suppress') {
             return false;
         }
 
