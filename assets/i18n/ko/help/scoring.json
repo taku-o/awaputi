@@ -1,0 +1,127 @@
+{
+  "category": "scoring",
+  "title": "점수 가이드",
+  "description": "점수 시스템과 포인트 계산의 완전 가이드",
+  "language": "ko",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-27",
+  "topics": [
+    {
+      "id": "scoring_system",
+      "title": "점수 시스템",
+      "description": "점수 계산과 콤보 시스템의 세부사항",
+      "content": {
+        "base_scoring": {
+          "description": "기본 점수 계산",
+          "normal_bubble": 15,
+          "special_bubbles": {
+            "rainbow": 50,
+            "pink": 25,
+            "clock": 30,
+            "golden": 75,
+            "stone": 30,
+            "iron": 45,
+            "diamond": 60
+          }
+        },
+        "combo_system": {
+          "description": "콤보 시스템의 세부사항",
+          "mechanics": [
+            "연속으로 버블을 터뜨리면 콤보 카운트가 증가",
+            "콤보 수에 따라 점수 배율이 상승",
+            "일정 시간 조작이 없으면 콤보가 리셋",
+            "최대 콤보 수에 따라 특별 보너스"
+          ],
+          "multipliers": {
+            "2-5 combo": "1.2배",
+            "6-10 combo": "1.5배",
+            "11-20 combo": "2.0배",
+            "21+ combo": "2.5배"
+          }
+        },
+        "bonus_scoring": {
+          "perfect_timing": "파열 직전에 터뜨리면 1.5배 보너스",
+          "chain_reaction": "연쇄 반응으로 인한 추가 보너스",
+          "time_bonus": "남은 시간에 기반한 클리어 보너스",
+          "hp_bonus": "남은 HP에 기반한 보너스"
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 300,
+      "tags": ["점수", "콤보", "보너스", "계산"]
+    },
+    {
+      "id": "high_score_strategies",
+      "title": "고득점 전략",
+      "description": "최고 점수 달성을 위한 고급 기법",
+      "content": {
+        "combo_maintenance": {
+          "description": "긴 콤보를 유지하기 위한 기법",
+          "strategies": [
+            "버블 처리 순서를 사전에 계획",
+            "특수 버블을 사용해 콤보 체인 연장",
+            "밀집된 버블을 우선하여 연속 처리를 쉽게",
+            "버블 처리 중단을 피해 리듬 유지"
+          ]
+        },
+        "multiplier_optimization": {
+          "description": "점수 배율 최대화",
+          "techniques": [
+            "최대 2.5배 배율을 위해 21+콤보 목표",
+            "높은 콤보 중에 시간 정지 버블 사용",
+            "퍼펙트 타이밍과 높은 콤보 배율 결합",
+            "고득점 버블을 콤보 정점 시기에 사용"
+          ]
+        },
+        "bonus_maximization": {
+          "description": "보너스 점수 최대화",
+          "methods": [
+            "위험한 버블을 자연 파열 직전에 처리",
+            "폭발 버블로 연쇄 반응 생성",
+            "엔드게임 보너스를 위해 HP 보존",
+            "최대 시간 보너스를 위해 남은 시간 최적화"
+          ]
+        }
+      },
+      "difficulty": "advanced",
+      "estimatedReadTime": 240,
+      "tags": ["전략", "고득점", "최적화", "고급"]
+    },
+    {
+      "id": "score_calculation",
+      "title": "점수 계산 세부사항",
+      "description": "점수 계산의 수학적 분석",
+      "content": {
+        "formula_breakdown": {
+          "base_formula": "점수 = (기본 포인트 × 콤보 배율) + 보너스",
+          "combo_multiplier_formula": "배율 = min(2.5, 1.0 + (콤보 수 / 10))",
+          "time_bonus_formula": "시간 보너스 = 남은 초 × 10",
+          "hp_bonus_formula": "HP 보너스 = 남은 HP × 5"
+        },
+        "example_calculations": [
+          {
+            "scenario": "금색 버블(75pt) + 15콤보",
+            "calculation": "75 × 2.0 + 보너스 = 150+포인트"
+          },
+          {
+            "scenario": "퍼펙트 타이밍 무지개 버블(50pt) + 25콤보",
+            "calculation": "50 × 1.5 × 2.5 + 보너스 = 187.5+포인트"
+          },
+          {
+            "scenario": "연쇄 반응(5버블, 평균 30pt) + 10콤보",
+            "calculation": "150 × 1.5 + 연쇄 보너스 = 225+포인트"
+          }
+        ],
+        "scoring_tips": [
+          "콤보 배율은 2.5배가 상한 (21+콤보)",
+          "퍼펙트 타이밍은 콤보 배율 전에 50% 추가",
+          "연쇄 반응은 연쇄 내 버블 수에 따라 보너스 추가",
+          "시간·HP 보너스는 모든 배율 적용 후 가산"
+        ]
+      },
+      "difficulty": "advanced",
+      "estimatedReadTime": 360,
+      "tags": ["계산", "공식", "수학", "상세"]
+    }
+  ]
+}

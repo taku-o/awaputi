@@ -8,7 +8,7 @@ export class TranslationLoader {
         this.loadedTranslations = new Map();
         this.loadingPromises = new Map();
         this.cache = new Map();
-        this.baseURL = '/src/locales/';
+        this.baseURL = '/assets/i18n/';
         
         // ロード対象ファイル
         this.translationFiles = [
@@ -96,13 +96,10 @@ export class TranslationLoader {
                 .then(data => {
                     if (data) {
                         translations[file] = data.translations || data;
-                        console.log(`TranslationLoader: Successfully loaded ${file}.json for ${language}`, data.translations ? 'with translations wrapper' : 'direct data');
-                    } else {
-                        console.log(`TranslationLoader: No data returned for ${file}.json in ${language}`);
                     }
                 })
                 .catch(error => {
-                    console.warn(`TranslationLoader: Failed to load ${file}.json for ${language}:`, error);
+                    console.warn(`Failed to load ${file}.json for ${language}:`, error);
                     // ファイルが見つからない場合はエラーを無視して続行
                 });
             
@@ -185,20 +182,14 @@ export class TranslationLoader {
     _flattenTranslations(categorizedTranslations) {
         const flattened = {};
         
-        console.log('TranslationLoader: Flattening translations:', Object.keys(categorizedTranslations));
-        
         for (const [category, translations] of Object.entries(categorizedTranslations)) {
             if (translations && typeof translations === 'object') {
-                console.log(`TranslationLoader: Processing category ${category} with ${Object.keys(translations).length} keys`);
                 for (const [key, value] of Object.entries(translations)) {
                     flattened[key] = value;
                 }
-            } else {
-                console.log(`TranslationLoader: Skipping invalid category ${category}:`, translations);
             }
         }
         
-        console.log(`TranslationLoader: Flattened to ${Object.keys(flattened).length} total keys`);
         return flattened;
     }
     

@@ -178,7 +178,6 @@ export class I18nIntegrationController {
         if (this.translationLoader) {
             try {
                 const result = await this.translationLoader.loadLanguage(language);
-                console.log(`Successfully loaded translations for ${language} using standard loader:`, Object.keys(result || {}).length, 'categories');
                 return result;
             } catch (error) {
                 console.warn(`Standard loader failed for ${language}:`, error);
@@ -189,7 +188,6 @@ export class I18nIntegrationController {
         if (this.optimizedLoader) {
             try {
                 const result = await this.optimizedLoader.loadLanguage(language);
-                console.log(`Successfully loaded translations for ${language} using optimized loader:`, Object.keys(result || {}).length, 'categories');
                 return result;
             } catch (error) {
                 console.error(`Both loaders failed for ${language}:`, error);

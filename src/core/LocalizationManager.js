@@ -60,8 +60,6 @@ export class LocalizationManager {
             const translations = await this.integrationController.loadLanguageData(language);
             
             if (translations && Object.keys(translations).length > 0) {
-                console.log(`LocalizationManager: Received translations for ${language}:`, Object.keys(translations));
-                
                 // セキュリティ検証
                 const securityResult = this.integrationController.validateTranslationSecurity(
                     JSON.stringify(translations), 
@@ -75,11 +73,10 @@ export class LocalizationManager {
                 
                 // 翻訳データを設定
                 this.translationDataManager.setLanguageData(language, translations);
-                console.log(`LocalizationManager: Successfully loaded and validated language data for: ${language}`);
+                console.log(`Loaded and validated language data for: ${language}`);
                 return true;
             } else {
-                console.warn(`LocalizationManager: No translations found for: ${language}`);
-                console.log(`LocalizationManager: Received translations object:`, translations);
+                console.warn(`No translations found for: ${language}`);
                 return false;
             }
         } catch (error) {

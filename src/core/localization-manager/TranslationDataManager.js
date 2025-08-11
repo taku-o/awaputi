@@ -441,13 +441,10 @@ export class TranslationDataManager {
      * @returns {string|Array} 翻訳テキスト
      */
     getTranslation(language, key, fallbackLanguage = 'en') {
-        console.log(`TranslationDataManager: Looking for key "${key}" in language "${language}"`);
-        
         // メイン翻訳から取得
         if (this.translations.has(language)) {
             const langTranslations = this.translations.get(language);
             if (langTranslations[key] !== undefined) {
-                console.log(`TranslationDataManager: Found key "${key}" in main translations for ${language}`);
                 return langTranslations[key];
             }
         }
@@ -456,7 +453,6 @@ export class TranslationDataManager {
         if (this.accessibilityTranslations.has(language)) {
             const accessibilityLangTranslations = this.accessibilityTranslations.get(language);
             if (accessibilityLangTranslations[key] !== undefined) {
-                console.log(`TranslationDataManager: Found key "${key}" in accessibility translations for ${language}`);
                 return accessibilityLangTranslations[key];
             }
         }
@@ -466,7 +462,6 @@ export class TranslationDataManager {
             if (this.translations.has(fallbackLanguage)) {
                 const fallbackTranslations = this.translations.get(fallbackLanguage);
                 if (fallbackTranslations[key] !== undefined) {
-                    console.log(`TranslationDataManager: Found key "${key}" in main translations for fallback ${fallbackLanguage}`);
                     return fallbackTranslations[key];
                 }
             }
@@ -474,18 +469,9 @@ export class TranslationDataManager {
             if (this.accessibilityTranslations.has(fallbackLanguage)) {
                 const fallbackAccessibilityTranslations = this.accessibilityTranslations.get(fallbackLanguage);
                 if (fallbackAccessibilityTranslations[key] !== undefined) {
-                    console.log(`TranslationDataManager: Found key "${key}" in accessibility translations for fallback ${fallbackLanguage}`);
                     return fallbackAccessibilityTranslations[key];
                 }
             }
-        }
-        
-        // デバッグ情報を出力
-        console.log(`TranslationDataManager: Available languages:`, Array.from(this.translations.keys()));
-        if (this.translations.has(language)) {
-            const langKeys = Object.keys(this.translations.get(language));
-            console.log(`TranslationDataManager: Available keys in ${language}:`, langKeys.length, 'keys');
-            console.log(`TranslationDataManager: First 10 keys in ${language}:`, langKeys.slice(0, 10));
         }
         
         // 翻訳が見つからない場合はキーをそのまま返す
@@ -501,11 +487,6 @@ export class TranslationDataManager {
     setLanguageData(language, translationData) {
         const existingTranslations = this.translations.get(language) || {};
         const mergedTranslations = { ...existingTranslations, ...translationData };
-        
-        console.log(`TranslationDataManager: Setting language data for ${language}`);
-        console.log(`TranslationDataManager: Existing keys: ${Object.keys(existingTranslations).length}`);
-        console.log(`TranslationDataManager: New keys: ${Object.keys(translationData || {}).length}`);
-        console.log(`TranslationDataManager: Merged keys: ${Object.keys(mergedTranslations).length}`);
         
         this.translations.set(language, mergedTranslations);
         this.loadedLanguages.add(language);
