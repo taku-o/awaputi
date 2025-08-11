@@ -123,6 +123,10 @@ describe('Username Input Performance Tests', () => {
     }
 
     beforeEach(() => {
+        // Use fake timers for consistent timing in tests
+        jest.useFakeTimers();
+        jest.spyOn(performance, 'now').mockImplementation(() => Date.now());
+
         // Setup performance observer mock
         performanceObserver = {
             observe: jest.fn(),
@@ -151,6 +155,11 @@ describe('Username Input Performance Tests', () => {
         usernameInputManager = new PerformanceOptimizedUsernameInputManager(mockGameEngine);
     });
 
+    afterEach(() => {
+        // Restore real timers
+        jest.useRealTimers();
+    });
+
     describe('Canvas Info Caching', () => {
         it('should cache canvas info to avoid repeated calls', () => {
             // First call should hit ResponsiveCanvasManager
@@ -172,16 +181,12 @@ describe('Username Input Performance Tests', () => {
             usernameInputManager.getCanvasInfo();
             expect(mockResponsiveCanvasManager.getCanvasInfo).toHaveBeenCalledTimes(1);
             
-            // Wait for cache to expire (mock timing)
-            const originalNow = performance.now;
-            performance.now = jest.fn().mockReturnValue(originalNow() + 20);
+            // Advance time beyond cache expiration (16ms + buffer)
+            jest.advanceTimersByTime(20);
             
             // Second call should refresh cache
             usernameInputManager.getCanvasInfo();
             expect(mockResponsiveCanvasManager.getCanvasInfo).toHaveBeenCalledTimes(2);
-            
-            // Restore original performance.now
-            performance.now = originalNow;
         });
     });
 
