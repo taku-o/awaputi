@@ -17,7 +17,7 @@ import {
     ProgressBarRenderer 
 } from './chart-renderer/ChartUtilities.js';
 
-export class ChartRenderer {
+export class CoreChartRenderer {
     constructor() {
         // 専門化されたレンダラーを初期化
         this.chartTypes = {

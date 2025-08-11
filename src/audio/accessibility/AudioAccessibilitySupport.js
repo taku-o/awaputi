@@ -23,7 +23,7 @@ import { AudioLegacyAdapter } from './AudioLegacyAdapter.js';
  * 音響アクセシビリティ支援クラス - Main Controller
  * Main Controller Patternを採用し、各専門コンポーネントを統制
  */
-export class AudioAccessibilitySupport {
+export class ComponentAudioAccessibilitySupport {
     constructor(audioManager) {
         this.audioManager = audioManager;
         this.configManager = getConfigurationManager();

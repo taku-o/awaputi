@@ -112,7 +112,7 @@
   - オーディオドメイン内での一貫した命名を実現
   - _Requirements: 1.2, 1.4, 2.2, 2.4_
 
-- [ ] 8.1 AudioAccessibilitySupport重複の解決
+- [x] 8.1 AudioAccessibilitySupport重複の解決
   - メインクラスとコンポーネントクラスの分離
   - MainAudioAccessibilitySupportとComponentAudioAccessibilitySupportに命名
   - 関連するインポートの更新
@@ -135,7 +135,7 @@
   - 分析ドメインとコアドメインの明確な分離
   - _Requirements: 1.2, 1.4, 2.2, 2.4_
 
-- [ ] 9.1 ChartRenderer重複の解決
+- [x] 9.1 ChartRenderer重複の解決
   - AnalyticsChartRendererとCoreChartRendererに分離
   - 機能の重複確認と統合可能性の検討
   - 関連するインポートとエクスポートの更新

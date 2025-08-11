@@ -4,7 +4,7 @@
  * UserInfoSceneから分離された統計表示機能を提供
  */
 
-import { ChartRenderer } from '../../../core/ChartRenderer.js';
+import { CoreChartRenderer } from '../../../core/ChartRenderer.js';
 import { StatisticsDashboard } from '../../../core/StatisticsDashboard.js';
 import { StatisticsFilterManager } from '../../../core/StatisticsFilterManager.js';
 import { StatisticsExporter } from '../../../core/StatisticsExporter.js';
@@ -76,7 +76,7 @@ export class UserStatisticsRenderer {
     initializeExtendedStatistics() {
         try {
             // ChartRendererの初期化
-            this.chartRenderer = new ChartRenderer();
+            this.chartRenderer = new CoreChartRenderer();
             
             // StatisticsFilterManagerの初期化
             if (this.gameEngine.statisticsManager) {
@@ -99,7 +99,7 @@ export class UserStatisticsRenderer {
             console.error('Failed to initialize extended statistics:', error);
             
             // フォールバック: 基本的な初期化のみ
-            this.chartRenderer = new ChartRenderer();
+            this.chartRenderer = new CoreChartRenderer();
         }
     }
     

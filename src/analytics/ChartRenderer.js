@@ -3,7 +3,7 @@
  * 線グラフ、棒グラフ、円グラフの基本テンプレートとリアルタイムグラフ更新機能
  */
 
-export class ChartRenderer {
+export class AnalyticsChartRenderer {
     constructor(options = {}) {
         this.options = {
             enableResponsive: true,
