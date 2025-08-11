@@ -452,6 +452,14 @@ export class TranslationDataManager {
                 console.log(`TranslationDataManager: Total keys in ${language}:`, Object.keys(langTranslations || {}).length);
                 console.log(`TranslationDataManager: Key exists in data:`, key in langTranslations);
                 console.log(`TranslationDataManager: Key value:`, langTranslations[key]);
+                
+                // Map直接確認
+                const directMapData = this.translations.get(language);
+                console.log(`TranslationDataManager: Direct map data exists:`, !!directMapData);
+                console.log(`TranslationDataManager: Direct map total keys:`, Object.keys(directMapData || {}).length);
+                console.log(`TranslationDataManager: Direct map has key:`, key in (directMapData || {}));
+                console.log(`TranslationDataManager: Reference equality:`, langTranslations === directMapData);
+                
                 console.log(`TranslationDataManager: Keys starting with 'menu':`, 
                     Object.keys(langTranslations || {}).filter(k => k.startsWith('menu')).slice(0, 5));
                 console.log(`TranslationDataManager: Keys starting with 'help.accessibility':`, 
@@ -510,6 +518,12 @@ export class TranslationDataManager {
         
         this.translations.set(language, mergedTranslations);
         this.loadedLanguages.add(language);
+        
+        // 設定直後の確認
+        const storedData = this.translations.get(language);
+        console.log(`TranslationDataManager: After setting - stored keys:`, Object.keys(storedData || {}).length);
+        console.log(`TranslationDataManager: After setting - has menu.help:`, 'menu.help' in (storedData || {}));
+        console.log(`TranslationDataManager: After setting - memory reference same:`, storedData === mergedTranslations);
     }
     
     /**
