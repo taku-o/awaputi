@@ -91,6 +91,26 @@ npm run test:all
 
 **現状**: 仕様書作成完了、実装開始段階
 
+#### Username Input Positioning修正プロジェクト（Issue #143対応）🔄
+**目標**: ゲーム開始時のユーザー名入力フォームが画面右下に表示される問題を修正し、中央位置に正しく配置する
+
+**問題の概要**: 
+- UsernameInputManagerの座標変換とResponsiveCanvasManagerの座標システムの不整合
+- 高DPI対応でpixelRatio変換が考慮されていない
+- Canvas座標系（内部解像度 vs 表示サイズ）の混乱
+
+**解決アプローチ**:
+- ResponsiveCanvasManagerの座標システムを使用
+- 座標変換ユーティリティの実装
+- フォールバック機能付きの堅牢な実装
+
+**仕様書**: `.kiro/specs/username-input-positioning-fix/`
+- requirements.md: 4つの要件定義（中央配置、座標システム統合、視覚一貫性、保守性）
+- design.md: 詳細なアーキテクチャ設計と座標変換システム
+- tasks.md: 18段階の実装タスク（座標変換→統合→テスト→最適化）
+
+**現状**: 作業開始、タスクリストに従って順次実装中
+
 #### テストスイート修復プロジェクト（Issue #106対応）🔄
 **目標**: Phase G完了後のテスト失敗（15/114ファイル失敗、13%失敗率）を修正し、95%以上の成功率を実現
 

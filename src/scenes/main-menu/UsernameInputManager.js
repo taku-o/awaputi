@@ -11,6 +11,66 @@ export class UsernameInputManager {
         this.usernameInput = '';
         this.isEditingUsername = false;
     }
+    /**
+     * ResponsiveCanvasManagerから座標情報を安全に取得
+     */
+    getCanvasInfo() {
+        try {
+            const responsiveCanvasManager = this.gameEngine.responsiveCanvasManager;
+            if (responsiveCanvasManager && typeof responsiveCanvasManager.getCanvasInfo === 'function') {
+                const canvasInfo = responsiveCanvasManager.getCanvasInfo();
+                if (canvasInfo && typeof canvasInfo.scale === 'number' && canvasInfo.scale > 0) {
+                    return canvasInfo;
+                }
+            }
+        } catch (error) {
+            if (this.gameEngine.debug) {
+                console.warn('ResponsiveCanvasManager access failed:', error);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * ベース座標をCanvas座標に変換
+     */
+    transformCoordinates(baseX, baseY, canvasInfo) {
+        if (!canvasInfo) return null;
+
+        const { scale } = canvasInfo;
+        return {
+            x: baseX * scale,
+            y: baseY * scale
+        };
+    }
+
+    /**
+     * 座標境界チェック
+     */
+    validateCoordinates(x, y, canvasInfo) {
+        if (!canvasInfo) return false;
+        
+        const { actualWidth, actualHeight } = canvasInfo;
+        return x >= 0 && x <= actualWidth && y >= 0 && y <= actualHeight;
+    }
+
+    /**
+     * デバッグ用座標情報ログ
+     */
+    logCoordinateDebug(context, canvasInfo, transformedCoords) {
+        if (this.gameEngine.debug) {
+            console.log('Username input coordinate debug:', {
+                canvasInfo: {
+                    scale: canvasInfo?.scale,
+                    displaySize: canvasInfo ? `${canvasInfo.displayWidth}x${canvasInfo.displayHeight}` : 'N/A',
+                    actualSize: canvasInfo ? `${canvasInfo.actualWidth}x${canvasInfo.actualHeight}` : 'N/A',
+                    pixelRatio: canvasInfo?.pixelRatio
+                },
+                transformedCoordinates: transformedCoords,
+                fallbackMode: !canvasInfo
+            });
+        }
+    }
     
     /**
      * ユーザー名入力画面を描画
