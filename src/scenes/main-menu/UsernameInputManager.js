@@ -10,16 +10,35 @@ export class UsernameInputManager {
         this.errorHandler = getErrorHandler();
         this.usernameInput = '';
         this.isEditingUsername = false;
+        
+        // Performance optimization: Canvas info cache
+        this._canvasInfoCache = null;
+        this._canvasInfoCacheTime = 0;
+        this._cacheValidDuration = 16; // ~1 frame at 60fps
+        
+        // Coordinate transformation cache
+        this._coordinateCache = new Map();
+        this._maxCacheSize = 50;
     }
     /**
      * ResponsiveCanvasManagerから座標情報を安全に取得
      */
     getCanvasInfo() {
+        const now = performance.now();
+        
+        // Return cached canvas info if still valid
+        if (this._canvasInfoCache && (now - this._canvasInfoCacheTime) < this._cacheValidDuration) {
+            return this._canvasInfoCache;
+        }
+
         try {
             const responsiveCanvasManager = this.gameEngine.responsiveCanvasManager;
             if (responsiveCanvasManager && typeof responsiveCanvasManager.getCanvasInfo === 'function') {
                 const canvasInfo = responsiveCanvasManager.getCanvasInfo();
                 if (canvasInfo && typeof canvasInfo.scale === 'number' && canvasInfo.scale > 0) {
+                    // Cache the canvas info
+                    this._canvasInfoCache = canvasInfo;
+                    this._canvasInfoCacheTime = now;
                     return canvasInfo;
                 }
             }
@@ -28,6 +47,10 @@ export class UsernameInputManager {
                 console.warn('ResponsiveCanvasManager access failed:', error);
             }
         }
+        
+        // Clear cache on failure
+        this._canvasInfoCache = null;
+        this._canvasInfoCacheTime = 0;
         return null;
     }
 
@@ -37,11 +60,30 @@ export class UsernameInputManager {
     transformCoordinates(baseX, baseY, canvasInfo) {
         if (!canvasInfo) return null;
 
+        // Create cache key
+        const cacheKey = `${baseX},${baseY},${canvasInfo.scale}`;
+        
+        // Check cache first
+        if (this._coordinateCache.has(cacheKey)) {
+            return this._coordinateCache.get(cacheKey);
+        }
+
+        // Calculate transformation
         const { scale } = canvasInfo;
-        return {
+        const result = {
             x: baseX * scale,
             y: baseY * scale
         };
+
+        // Cache result (with size limit)
+        if (this._coordinateCache.size >= this._maxCacheSize) {
+            // Remove oldest entry (first added)
+            const firstKey = this._coordinateCache.keys().next().value;
+            this._coordinateCache.delete(firstKey);
+        }
+        this._coordinateCache.set(cacheKey, result);
+
+        return result;
     }
 
     /**
@@ -70,6 +112,38 @@ export class UsernameInputManager {
                 fallbackMode: !canvasInfo
             });
         }
+    }
+
+    /**
+     * バッチ座標変換（パフォーマンス最適化）
+     */
+    transformCoordinatesBatch(coordinates, canvasInfo) {
+        if (!canvasInfo || !Array.isArray(coordinates)) return [];
+        
+        return coordinates.map(coord => 
+            this.transformCoordinates(coord.x, coord.y, canvasInfo)
+        ).filter(result => result !== null);
+    }
+
+    /**
+     * キャッシュクリア（リサイズ時などに使用）
+     */
+    clearCache() {
+        this._canvasInfoCache = null;
+        this._canvasInfoCacheTime = 0;
+        this._coordinateCache.clear();
+    }
+
+    /**
+     * キャッシュ統計取得（デバッグ用）
+     */
+    getCacheStats() {
+        return {
+            canvasInfoCached: !!this._canvasInfoCache,
+            canvasInfoCacheAge: this._canvasInfoCacheTime > 0 ? performance.now() - this._canvasInfoCacheTime : 0,
+            coordinateCacheSize: this._coordinateCache.size,
+            coordinateCacheMaxSize: this._maxCacheSize
+        };
     }
     
     /**
