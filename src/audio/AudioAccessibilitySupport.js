@@ -48,7 +48,7 @@ import { AudioSettingsManager } from './accessibility/AudioSettingsManager.js';
  * @version 2.0.0 (Phase F.4 - Main Controller Pattern)
  * @since Original implementation - Enhanced with component architecture
  */
-export class AudioAccessibilitySupport {
+export class MainAudioAccessibilitySupport {
     constructor(audioManager) {
         this.audioManager = audioManager;
         this.configManager = getConfigurationManager();

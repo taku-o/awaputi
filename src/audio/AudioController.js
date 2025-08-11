@@ -10,7 +10,7 @@ import { Equalizer } from './Equalizer.js';
 import { AudioChannelManager } from './components/AudioChannelManager.js';
 import { AudioVolumeController } from './components/AudioVolumeController.js';
 import { AudioFormatHandler } from './components/AudioFormatHandler.js';
-import { AudioPerformanceMonitor } from './components/AudioPerformanceMonitor.js';
+import { AudioComponentPerformanceMonitor } from './components/AudioComponentPerformanceMonitor.js';
 
 /**
  * AudioController - 高度な音響制御システムのメインコントローラー
@@ -98,7 +98,7 @@ export class AudioController {
             this.formatHandler = new AudioFormatHandler(this.audioContext, this.audioManager);
             
             // パフォーマンス監視を初期化
-            this.performanceMonitor = new AudioPerformanceMonitor(this.audioContext, this.audioManager);
+            this.performanceMonitor = new AudioComponentPerformanceMonitor(this.audioContext, this.audioManager);
             
             console.log('Audio components initialized successfully');
         } catch (error) {

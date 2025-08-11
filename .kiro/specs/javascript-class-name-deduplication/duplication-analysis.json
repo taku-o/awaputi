@@ -1,0 +1,345 @@
+{
+  "analysis_date": "2025-01-10",
+  "project": "awaputi",
+  "total_files_analyzed": 456,
+  "total_classes_found": 638,
+  "duplications": {
+    "class_name_duplications": [
+      {
+        "class_name": "DialogManager",
+        "duplicate_count": 3,
+        "priority": "high",
+        "risk_level": "high",
+        "locations": [
+          {
+            "file": "src/scenes/main-menu/DialogManager.js",
+            "line": 7,
+            "type": "export class DialogManager"
+          },
+          {
+            "file": "src/scenes/components/DialogManager.js",
+            "line": 5,
+            "type": "export class DialogManager"
+          },
+          {
+            "file": "src/ui/data-management-ui/DataManagementDialogs.js",
+            "line": 10,
+            "type": "export class DialogManager"
+          }
+        ],
+        "impact_analysis": {
+          "scope": "ui_components",
+          "potential_conflicts": "namespace_collision",
+          "maintenance_difficulty": "high",
+          "testing_complexity": "high"
+        },
+        "recommendations": [
+          "Rename to domain-specific names (MainMenuDialogManager, ComponentDialogManager, DataManagementDialogManager)",
+          "Create a unified base DialogManager with specialized implementations",
+          "Use namespace or module pattern to avoid conflicts"
+        ]
+      },
+      {
+        "class_name": "BaseDialog",
+        "duplicate_count": 3,
+        "priority": "high",
+        "risk_level": "medium",
+        "locations": [
+          {
+            "file": "src/scenes/components/BaseDialog.js",
+            "line": 5,
+            "type": "export class BaseDialog"
+          },
+          {
+            "file": "src/ui/data-management-ui/DataManagementDialogs.js",
+            "line": 54,
+            "type": "export class BaseDialog"
+          },
+          {
+            "file": "src/core/help/HelpFeedbackSystem.js",
+            "line": 419,
+            "type": "class HelpFeedbackDialog extends BaseDialog"
+          }
+        ],
+        "impact_analysis": {
+          "scope": "base_components",
+          "potential_conflicts": "inheritance_conflicts",
+          "maintenance_difficulty": "high",
+          "testing_complexity": "medium"
+        },
+        "recommendations": [
+          "Consolidate into a single BaseDialog in a shared location",
+          "Create domain-specific base classes that extend a common BaseDialog",
+          "Review inheritance hierarchies to eliminate conflicts"
+        ]
+      },
+      {
+        "class_name": "ChartRenderer",
+        "duplicate_count": 3,
+        "priority": "medium",
+        "risk_level": "medium",
+        "locations": [
+          {
+            "file": "src/core/ChartRenderer.js",
+            "line": 20,
+            "type": "export class ChartRenderer"
+          },
+          {
+            "file": "src/analytics/ChartRenderer.js",
+            "line": 6,
+            "type": "export class ChartRenderer"
+          }
+        ],
+        "impact_analysis": {
+          "scope": "data_visualization",
+          "potential_conflicts": "feature_overlap",
+          "maintenance_difficulty": "medium",
+          "testing_complexity": "medium"
+        },
+        "recommendations": [
+          "Rename to specific purposes (CoreChartRenderer, AnalyticsChartRenderer)",
+          "Create a unified ChartRenderer with plugin architecture",
+          "Consolidate functionality into a single implementation"
+        ]
+      },
+      {
+        "class_name": "PerformanceMonitor",
+        "duplicate_count": 4,
+        "priority": "high",
+        "risk_level": "high",
+        "locations": [
+          {
+            "file": "src/analytics/enhanced-analytics-manager/PerformanceMonitor.js",
+            "line": 5,
+            "type": "export class PerformanceMonitor"
+          },
+          {
+            "file": "src/utils/RenderOptimizer.js",
+            "line": 416,
+            "type": "export class PerformanceMonitor"
+          },
+          {
+            "file": "src/debug/DocumentationSystem.js",
+            "line": 407,
+            "type": "class PerformanceMonitor"
+          },
+          {
+            "file": "src/core/MobileSystemIntegrator.js",
+            "line": 1116,
+            "type": "class MobilePerformanceMonitor"
+          }
+        ],
+        "impact_analysis": {
+          "scope": "performance_monitoring",
+          "potential_conflicts": "functionality_overlap",
+          "maintenance_difficulty": "high",
+          "testing_complexity": "high"
+        },
+        "recommendations": [
+          "Create specialized monitors (AnalyticsPerformanceMonitor, RenderPerformanceMonitor, DebugPerformanceMonitor)",
+          "Implement a centralized PerformanceMonitoringSystem with domain-specific adapters",
+          "Use composition over inheritance to reduce duplication"
+        ]
+      },
+      {
+        "class_name": "DataManager",
+        "duplicate_count": 2,
+        "priority": "medium",
+        "risk_level": "medium",
+        "locations": [
+          {
+            "file": "src/core/DataManager.js",
+            "line": 15,
+            "type": "export class DataManager"
+          },
+          {
+            "file": "src/scenes/user-info-scene/UserDataManager.js",
+            "line": 5,
+            "type": "export class UserDataManager"
+          }
+        ],
+        "impact_analysis": {
+          "scope": "data_management",
+          "potential_conflicts": "naming_confusion",
+          "maintenance_difficulty": "medium",
+          "testing_complexity": "medium"
+        },
+        "recommendations": [
+          "Rename UserDataManager to UserInfoDataManager for clarity",
+          "Create clear separation between general and specific data managers",
+          "Establish naming conventions for domain-specific managers"
+        ]
+      },
+      {
+        "class_name": "ErrorHandler",
+        "duplicate_count": 2,
+        "priority": "medium",
+        "risk_level": "medium",
+        "locations": [
+          {
+            "file": "src/utils/ErrorHandler.js",
+            "line": 12,
+            "type": "class ErrorHandler"
+          },
+          {
+            "file": "src/debug/ErrorReporter.js",
+            "line": 17,
+            "type": "export class ErrorReporter extends ErrorHandler"
+          }
+        ],
+        "impact_analysis": {
+          "scope": "error_management",
+          "potential_conflicts": "inheritance_dependency",
+          "maintenance_difficulty": "low",
+          "testing_complexity": "low"
+        },
+        "recommendations": [
+          "This appears to be proper inheritance - no action needed",
+          "Consider making ErrorHandler exported if used elsewhere",
+          "Document the relationship between ErrorHandler and ErrorReporter"
+        ]
+      },
+      {
+        "class_name": "SearchEngine",
+        "duplicate_count": 2,
+        "priority": "low",
+        "risk_level": "low",
+        "locations": [
+          {
+            "file": "src/core/help/components/SearchEngine.js",
+            "line": 6,
+            "type": "export class SearchEngine"
+          },
+          {
+            "file": "src/core/help/SearchEngine.js",
+            "line": 13,
+            "type": "export class SearchEngine"
+          }
+        ],
+        "impact_analysis": {
+          "scope": "help_system",
+          "potential_conflicts": "functionality_duplication",
+          "maintenance_difficulty": "medium",
+          "testing_complexity": "medium"
+        },
+        "recommendations": [
+          "Consolidate into a single SearchEngine implementation",
+          "Review if both implementations are actually needed",
+          "Consider renaming one to be more specific (HelpContentSearchEngine)"
+        ]
+      }
+    ],
+    "filename_pattern_analysis": [
+      {
+        "pattern": "*Manager.js",
+        "count": 89,
+        "potential_conflicts": "naming_pattern_overuse",
+        "recommendations": [
+          "Consider more specific naming patterns",
+          "Group related managers under common namespaces",
+          "Use composition patterns to reduce the number of manager classes"
+        ]
+      },
+      {
+        "pattern": "*Renderer.js",
+        "count": 31,
+        "potential_conflicts": "rendering_responsibility_scattered",
+        "recommendations": [
+          "Consolidate rendering logic where possible",
+          "Create a rendering engine with specialized renderers",
+          "Use strategy pattern for different rendering approaches"
+        ]
+      },
+      {
+        "pattern": "*Controller.js",
+        "count": 23,
+        "potential_conflicts": "control_logic_scattered",
+        "recommendations": [
+          "Review MVC pattern implementation",
+          "Consider using a centralized controller pattern",
+          "Group related controllers under feature modules"
+        ]
+      }
+    ],
+    "similar_functionality_classes": [
+      {
+        "functionality": "Performance Monitoring",
+        "classes": [
+          "PerformanceMonitor",
+          "PerformanceProfiler",
+          "PerformanceOptimizer",
+          "PerformanceAnalyzer",
+          "PerformanceDiagnostics"
+        ],
+        "recommendation": "Consider creating a unified performance monitoring architecture"
+      },
+      {
+        "functionality": "Data Management",
+        "classes": [
+          "DataManager",
+          "DataStorage",
+          "DataCache",
+          "DataCollector",
+          "DataExporter"
+        ],
+        "recommendation": "Implement a cohesive data layer architecture"
+      },
+      {
+        "functionality": "Audio Management",
+        "classes": [
+          "AudioManager",
+          "AudioController",
+          "AudioContextManager",
+          "AudioCacheManager",
+          "AudioConfigurationManager"
+        ],
+        "recommendation": "Consolidate audio subsystem classes into a clear hierarchy"
+      }
+    ]
+  },
+  "statistics": {
+    "high_priority_duplications": 3,
+    "medium_priority_duplications": 3,
+    "low_priority_duplications": 1,
+    "total_duplicate_classes": 7,
+    "duplication_percentage": 1.1,
+    "files_with_multiple_classes": 42,
+    "average_classes_per_file": 1.4
+  },
+  "recommendations": {
+    "immediate_actions": [
+      "Resolve DialogManager naming conflicts by creating domain-specific names",
+      "Consolidate BaseDialog implementations into a single shared base class",
+      "Address PerformanceMonitor duplications with specialized naming"
+    ],
+    "architectural_improvements": [
+      "Implement namespace patterns to reduce naming conflicts",
+      "Create clearer separation between core, UI, and utility classes",
+      "Establish naming conventions document for the project",
+      "Consider using TypeScript for better type safety and namespace management"
+    ],
+    "long_term_strategies": [
+      "Refactor towards a more modular architecture with clear boundaries",
+      "Implement dependency injection to reduce tight coupling",
+      "Create a unified plugin system for similar functionality classes",
+      "Establish code review guidelines to prevent future duplications"
+    ]
+  },
+  "analysis_metadata": {
+    "tool_used": "serena_search_for_pattern",
+    "search_pattern": "class [A-Z]\\w+",
+    "directories_analyzed": [
+      "src/core",
+      "src/scenes", 
+      "src/ui",
+      "src/managers",
+      "src/utils",
+      "src/effects",
+      "src/audio",
+      "src/analytics",
+      "src/debug"
+    ],
+    "analysis_completeness": "comprehensive",
+    "confidence_level": "high"
+  }
+}

@@ -1,9 +1,9 @@
 /**
  * ユーザー名変更ダイアログ
  */
-import { BaseDialog } from './BaseDialog.js';
+import { ScenesBaseDialog } from './ScenesBaseDialog.js';
 
-export class UsernameDialog extends BaseDialog {
+export class UsernameDialog extends ScenesBaseDialog {
     constructor(gameEngine, eventBus, state) {
         super(gameEngine, eventBus, state);
         

@@ -51,7 +51,7 @@ export class DialogManager {
  * Base Dialog
  * ベースダイアログクラス - 共通ダイアログ機能
  */
-export class BaseDialog {
+export class DataManagementBaseDialog {
     constructor(renderer, layoutManager) {
         this.renderer = renderer;
         this.layoutManager = layoutManager;
@@ -136,7 +136,7 @@ export class BaseDialog {
  * Backup Dialog
  * バックアップダイアログ - バックアップ作成の確認と設定
  */
-export class BackupDialog extends BaseDialog {
+export class BackupDialog extends DataManagementBaseDialog {
     renderDialog(bounds, data) {
         const contentBounds = this.renderDialogFrame(bounds, 'Create Backup');
         const colors = this.layoutManager.getColors();
@@ -178,7 +178,7 @@ export class BackupDialog extends BaseDialog {
  * Export Dialog
  * エクスポートダイアログ - データエクスポートの設定
  */
-export class ExportDialog extends BaseDialog {
+export class DataManagementExportDialog extends DataManagementBaseDialog {
     renderDialog(bounds, data) {
         const contentBounds = this.renderDialogFrame(bounds, 'Export Data');
         const colors = this.layoutManager.getColors();
@@ -251,7 +251,7 @@ export class ExportDialog extends BaseDialog {
  * Import Dialog
  * インポートダイアログ - データインポートの設定
  */
-export class ImportDialog extends BaseDialog {
+export class DataManagementImportDialog extends DataManagementBaseDialog {
     renderDialog(bounds, data) {
         const contentBounds = this.renderDialogFrame(bounds, 'Import Data');
         const colors = this.layoutManager.getColors();
@@ -335,7 +335,7 @@ export class ImportDialog extends BaseDialog {
  * Clear Data Dialog
  * データクリアダイアログ - データ削除の確認
  */
-export class ClearDataDialog extends BaseDialog {
+export class ClearDataDialog extends DataManagementBaseDialog {
     renderDialog(bounds, data) {
         const contentBounds = this.renderDialogFrame(bounds, 'Clear Data');
         const colors = this.layoutManager.getColors();
@@ -422,7 +422,7 @@ export class ClearDataDialog extends BaseDialog {
  * Progress Dialog
  * プログレスダイアログ - 操作進行状況の表示
  */
-export class ProgressDialog extends BaseDialog {
+export class ProgressDialog extends DataManagementBaseDialog {
     renderDialog(bounds, data) {
         const contentBounds = this.renderDialogFrame(bounds, data.title || 'Processing');
         const colors = this.layoutManager.getColors();
@@ -474,7 +474,7 @@ export class ProgressDialog extends BaseDialog {
  * Confirm Dialog
  * 確認ダイアログ - 一般的な確認操作
  */
-export class ConfirmDialog extends BaseDialog {
+export class ConfirmDialog extends DataManagementBaseDialog {
     renderDialog(bounds, data) {
         const title = data.title || 'Confirm';
         const contentBounds = this.renderDialogFrame(bounds, title);
@@ -526,7 +526,7 @@ export class ConfirmDialog extends BaseDialog {
  * Alert Dialog
  * アラートダイアログ - 情報表示とエラー通知
  */
-export class AlertDialog extends BaseDialog {
+export class AlertDialog extends DataManagementBaseDialog {
     renderDialog(bounds, data) {
         const title = data.title || 'Notice';
         const contentBounds = this.renderDialogFrame(bounds, title);

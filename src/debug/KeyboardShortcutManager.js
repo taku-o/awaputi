@@ -3,7 +3,7 @@
  * デバッグツール専用のキーボードショートカット管理システム
  */
 
-export class KeyboardShortcutManager {
+export class DebugKeyboardShortcutManager {
     constructor(debugInterface) {
         this.debugInterface = debugInterface;
         

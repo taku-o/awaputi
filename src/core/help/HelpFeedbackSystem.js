@@ -1,6 +1,6 @@
 import { LoggingSystem } from '../LoggingSystem.js';
 import { ErrorHandler } from '../../utils/ErrorHandler.js';
-import { BaseDialog } from '../../scenes/components/BaseDialog.js';
+import { ScenesBaseDialog } from '../../scenes/components/ScenesBaseDialog.js';
 
 /**
  * ヘルプコンテンツに対するフィードバック収集システム
@@ -416,7 +416,7 @@ export class HelpFeedbackSystem {
 /**
  * フィードバックダイアログクラス
  */
-class HelpFeedbackDialog extends BaseDialog {
+class HelpFeedbackDialog extends ScenesBaseDialog {
     constructor(gameEngine, feedbackSystem) {
         super(gameEngine);
         this.feedbackSystem = feedbackSystem;
@@ -734,7 +734,7 @@ class QuickFeedbackWidget {
 /**
  * フィードバック感謝ダイアログ
  */
-class FeedbackThankYouDialog extends BaseDialog {
+class FeedbackThankYouDialog extends ScenesBaseDialog {
     constructor(gameEngine) {
         super(gameEngine);
     }

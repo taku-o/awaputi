@@ -8,7 +8,7 @@ import { getErrorHandler } from '../utils/ErrorHandler.js';
 import { getConfigurationManager } from '../core/ConfigurationManager.js';
 import { AudioEffectManager } from './effects/AudioEffectManager.js';
 import { SoundPoolManager } from './effects/SoundPoolManager.js';
-import { AudioContextManager } from './effects/AudioContextManager.js';
+import { AudioEffectContextManager } from './effects/AudioEffectContextManager.js';
 import { SoundEffectRenderer } from './effects/SoundEffectRenderer.js';
 
 export class SoundEffectSystem {
@@ -98,7 +98,7 @@ export class SoundEffectSystem {
             console.log('[SoundEffectSystem] Initializing audio components...');
             
             // AudioContextManagerは既存のコンテキストを使用
-            this.audioContextManager = new AudioContextManager();
+            this.audioContextManager = new AudioEffectContextManager();
             if (this.audioContext) {
                 this.audioContextManager.audioContext = this.audioContext;
                 this.audioContextManager.sfxGainNode = this.sfxGainNode;

@@ -67,7 +67,7 @@ class MockPlayerData {
     }
 }
 
-class MockStatisticsManager {
+class SocialSystemsMockStatisticsManager {
     constructor() {
         this.stats = {
             sessions: [],
@@ -133,7 +133,7 @@ class MockStatisticsManager {
     }
 }
 
-class MockAchievementManager {
+class SocialSystemsMockAchievementManager {
     constructor() {
         this.achievements = new Map([
             ['first_win', { 
@@ -257,8 +257,8 @@ describe('SocialSystemsIntegration', () => {
     beforeEach(async () => {
         // モックオブジェクトを初期化
         mockPlayerData = new MockPlayerData();
-        mockStatisticsManager = new MockStatisticsManager();
-        mockAchievementManager = new MockAchievementManager();
+        mockStatisticsManager = new SocialSystemsMockStatisticsManager();
+        mockAchievementManager = new SocialSystemsMockAchievementManager();
 
         // LocalStorageモック
         global.localStorage = {

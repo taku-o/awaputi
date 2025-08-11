@@ -4,7 +4,7 @@
  * 各専用コンポーネントを統合管理
  */
 
-import { BaseDialog } from '../../scenes/components/BaseDialog.js';
+import { ScenesBaseDialog } from '../../scenes/components/ScenesBaseDialog.js';
 import { LoggingSystem } from '../LoggingSystem.js';
 import { getErrorHandler } from '../../utils/ErrorHandler.js';
 import { TutorialStepManager } from './components/TutorialStepManager.js';
@@ -15,7 +15,7 @@ import { TutorialProgressTracker } from './components/TutorialProgressTracker.js
 /**
  * チュートリアルオーバーレイクラス
  */
-export class TutorialOverlay extends BaseDialog {
+export class TutorialOverlay extends ScenesBaseDialog {
     constructor(gameEngine, eventBus, state) {
         super(gameEngine, eventBus, state);
         

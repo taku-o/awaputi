@@ -1,7 +1,7 @@
 import { Scene } from '../core/Scene.js';
 import { ErrorHandler } from '../utils/ErrorHandler.js';
 import { LoggingSystem } from '../core/LoggingSystem.js';
-import { AccessibilityManager } from '../core/AccessibilityManager.js';
+import { CoreAccessibilityManager } from '../core/AccessibilityManager.js';
 
 // サブコンポーネントのインポート
 import { HelpAccessibilityManager } from './help-scene/HelpAccessibilityManager.js';
@@ -42,7 +42,7 @@ export class HelpScene extends Scene {
     _initializeSubComponents() {
         try {
             // アクセシビリティ管理
-            const accessibilityManager = this.gameEngine.accessibilityManager || new AccessibilityManager(this.gameEngine);
+            const accessibilityManager = this.gameEngine.accessibilityManager || new CoreAccessibilityManager(this.gameEngine);
             this.helpAccessibilityManager = new HelpAccessibilityManager(this.gameEngine, accessibilityManager);
             
             // コンテンツ管理

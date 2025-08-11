@@ -3,7 +3,7 @@
  * データ可視化のメインインターフェース
  */
 
-import { ChartRenderer } from './ChartRenderer.js';
+import { AnalyticsChartRenderer } from './ChartRenderer.js';
 import { DataVisualizer } from './DataVisualizer.js';
 
 export class AnalyticsDashboard {
@@ -47,7 +47,7 @@ export class AnalyticsDashboard {
         }
 
         // Chart.jsとD3.jsレンダラーの初期化
-        this.chartRenderer = new ChartRenderer({
+        this.chartRenderer = new AnalyticsChartRenderer({
             theme: this.options.theme,
             defaultWidth: this.options.chartDefaults.width,
             defaultHeight: this.options.chartDefaults.height,

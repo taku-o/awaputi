@@ -6,7 +6,7 @@
  * サブコンポーネント化により責任を分離：
  * - PlayerBehaviorAnalyzer: プレイヤー行動分析とパターン検出
  * - GameBalanceAnalyzer: ゲームバランス分析と警告生成
- * - PerformanceMonitor: パフォーマンス監視とメトリクス収集
+ * - AnalyticsPerformanceMonitor: 分析用パフォーマンス監視とメトリクス収集
  * - SessionManager: セッション管理と統計収集
  */
 
@@ -20,7 +20,7 @@ import { AnalyticsPerformanceOptimizer } from './AnalyticsPerformanceOptimizer.j
 // サブコンポーネントのインポート
 import { PlayerBehaviorAnalyzer } from './enhanced-analytics-manager/PlayerBehaviorAnalyzer.js';
 import { GameBalanceAnalyzer } from './enhanced-analytics-manager/GameBalanceAnalyzer.js';
-import { PerformanceMonitor } from './enhanced-analytics-manager/PerformanceMonitor.js';
+import { AnalyticsPerformanceMonitor } from './enhanced-analytics-manager/AnalyticsPerformanceMonitor.js';
 import { SessionManager } from './enhanced-analytics-manager/SessionManager.js';
 
 export class EnhancedAnalyticsManager {
@@ -64,7 +64,7 @@ export class EnhancedAnalyticsManager {
         try {
             this.playerBehaviorAnalyzer = new PlayerBehaviorAnalyzer();
             this.gameBalanceAnalyzer = new GameBalanceAnalyzer();
-            this.performanceMonitor = new PerformanceMonitor();
+            this.performanceMonitor = new AnalyticsPerformanceMonitor();
             this.sessionManager = new SessionManager();
             
             console.log('[EnhancedAnalyticsManager] サブコンポーネントを初期化しました');

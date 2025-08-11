@@ -5,9 +5,9 @@
  */
 
 import { ErrorLogger } from './error/ErrorLogger.js';
-import { ErrorReporter } from './error/ErrorReporter.js';
+import { UtilsErrorReporter } from './error/UtilsErrorReporter.js';
 import { ErrorRecovery } from './error/ErrorRecovery.js';
-import { ErrorAnalyzer } from './error/ErrorAnalyzer.js';
+import { UtilsErrorAnalyzer } from './error/UtilsErrorAnalyzer.js';
 
 class ErrorHandler {
     constructor() {
@@ -20,9 +20,9 @@ class ErrorHandler {
         
         // Initialize sub-components with dependency injection
         this.logger = new ErrorLogger(this);
-        this.reporter = new ErrorReporter(this);
+        this.reporter = new UtilsErrorReporter(this);
         this.recovery = new ErrorRecovery(this);
-        this.analyzer = new ErrorAnalyzer(this);
+        this.analyzer = new UtilsErrorAnalyzer(this);
         
         // Legacy compatibility properties - delegated to sub-components
         this.errorLog = [];

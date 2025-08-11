@@ -3,7 +3,7 @@ import { getErrorHandler } from '../utils/ErrorHandler.js';
 /**
  * キーボードショートカット管理クラス
  */
-export class KeyboardShortcutManager {
+export class CoreKeyboardShortcutManager {
     constructor(gameEngine) {
         this.gameEngine = gameEngine;
         this.shortcuts = new Map();

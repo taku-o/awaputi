@@ -5,7 +5,7 @@ import { getErrorHandler } from '../utils/ErrorHandler.js';
 import { MainMenuRenderer } from './main-menu/MainMenuRenderer.js';
 import { UsernameInputManager } from './main-menu/UsernameInputManager.js';
 import { SettingsRenderer } from './main-menu/SettingsRenderer.js';
-import { DialogManager } from './main-menu/DialogManager.js';
+import { MainMenuDialogManager } from './main-menu/MainMenuDialogManager.js';
 import { MenuInputHandler } from './main-menu/MenuInputHandler.js';
 
 /**
@@ -55,7 +55,7 @@ export class MainMenuScene extends Scene {
             this.mainMenuRenderer = new MainMenuRenderer(this.gameEngine);
             this.usernameInputManager = new UsernameInputManager(this.gameEngine);
             this.settingsRenderer = new SettingsRenderer(this.gameEngine);
-            this.dialogManager = new DialogManager(this.gameEngine);
+            this.dialogManager = new MainMenuDialogManager(this.gameEngine);
             this.menuInputHandler = new MenuInputHandler(this.gameEngine);
             
             console.log('[MainMenuScene] サブコンポーネントを初期化しました');
