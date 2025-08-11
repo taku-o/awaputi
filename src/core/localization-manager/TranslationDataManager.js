@@ -444,6 +444,20 @@ export class TranslationDataManager {
         // メイン翻訳から取得
         if (this.translations.has(language)) {
             const langTranslations = this.translations.get(language);
+            
+            // 特定のキーのデバッグ（menu.help と help.accessibility.categoryList のみ）
+            if (key === 'menu.help' || key === 'help.accessibility.categoryList') {
+                console.log(`TranslationDataManager: Searching for key "${key}" in ${language}`);
+                console.log(`TranslationDataManager: Language data exists:`, !!langTranslations);
+                console.log(`TranslationDataManager: Total keys in ${language}:`, Object.keys(langTranslations || {}).length);
+                console.log(`TranslationDataManager: Key exists in data:`, key in langTranslations);
+                console.log(`TranslationDataManager: Key value:`, langTranslations[key]);
+                console.log(`TranslationDataManager: Keys starting with 'menu':`, 
+                    Object.keys(langTranslations || {}).filter(k => k.startsWith('menu')).slice(0, 5));
+                console.log(`TranslationDataManager: Keys starting with 'help.accessibility':`, 
+                    Object.keys(langTranslations || {}).filter(k => k.startsWith('help.accessibility')).slice(0, 5));
+            }
+            
             if (langTranslations[key] !== undefined) {
                 return langTranslations[key];
             }
@@ -487,6 +501,12 @@ export class TranslationDataManager {
     setLanguageData(language, translationData) {
         const existingTranslations = this.translations.get(language) || {};
         const mergedTranslations = { ...existingTranslations, ...translationData };
+        
+        console.log(`TranslationDataManager: Setting ${Object.keys(translationData || {}).length} new keys for ${language}`);
+        console.log(`TranslationDataManager: Sample new keys:`, Object.keys(translationData || {}).slice(0, 10));
+        console.log(`TranslationDataManager: Total merged keys:`, Object.keys(mergedTranslations).length);
+        console.log(`TranslationDataManager: Has menu.help:`, 'menu.help' in mergedTranslations);
+        console.log(`TranslationDataManager: Has help.accessibility.categoryList:`, 'help.accessibility.categoryList' in mergedTranslations);
         
         this.translations.set(language, mergedTranslations);
         this.loadedLanguages.add(language);
