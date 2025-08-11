@@ -41,13 +41,13 @@
  * - QR code scanning (mobile)
  * 
  * @class ImportDialog
- * @extends BaseDialog  
+ * @extends ScenesBaseDialog  
  * @version 1.2.0 (Phase F.4 - Main Controller Pattern)
  * @since UserInfoScene component implementation
  * 
  * Phase F.4 - Peripheral File Splitting Project
  */
-import { BaseDialog } from './BaseDialog.js';
+import { ScenesBaseDialog } from './ScenesBaseDialog.js';
 
 // Import sub-components
 import { ImportMethodSelector } from './dialogs/ImportMethodSelector.js';
@@ -55,7 +55,7 @@ import { ImportDataProcessor } from './dialogs/ImportDataProcessor.js';
 import { ImportProgressManager } from './dialogs/ImportProgressManager.js';
 import { ImportResultHandler } from './dialogs/ImportResultHandler.js';
 
-export class ImportDialog extends BaseDialog {
+export class ImportDialog extends ScenesBaseDialog {
     constructor(gameEngine, eventBus, state) {
         super(gameEngine, eventBus, state);
         

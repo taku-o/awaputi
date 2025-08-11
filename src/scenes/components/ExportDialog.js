@@ -1,9 +1,9 @@
 /**
  * データエクスポートダイアログ
  */
-import { BaseDialog } from './BaseDialog.js';
+import { ScenesBaseDialog } from './ScenesBaseDialog.js';
 
-export class ExportDialog extends BaseDialog {
+export class ExportDialog extends ScenesBaseDialog {
     constructor(gameEngine, eventBus, state) {
         super(gameEngine, eventBus, state);
         
