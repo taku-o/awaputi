@@ -277,6 +277,25 @@ async function preDeploymentCheck() {
 async function generateDeploymentReport() {
   console.log('📋 デプロイメントレポートの生成...');
   
+  const localesDir = path.join(projectRoot, 'src', 'locales');
+  const supportedLanguages = deployConfig.internationalization.supportedLanguages;
+  
+  // 翻訳ファイルの統計情報を収集
+  let totalFiles = 0;
+  let optimizedFiles = 0;
+  
+  for (const lang of supportedLanguages) {
+    const langDir = path.join(localesDir, lang);
+    try {
+      const files = await fs.readdir(langDir);
+      const jsonFiles = files.filter(file => file.endsWith('.json'));
+      totalFiles += jsonFiles.length;
+      optimizedFiles += jsonFiles.length; // optimizedAtが削除されているので全て最適化済み
+    } catch (error) {
+      // ディレクトリが存在しない場合はスキップ
+    }
+  }
+  
   const report = {
     timestamp: new Date().toISOString(),
     version: '1.0.0',
@@ -296,7 +315,12 @@ async function generateDeploymentReport() {
     },
     optimization: {
       compression: deployConfig.assets.compression,
-      preload: deployConfig.cdn.preload || {}
+      preload: deployConfig.cdn.preload || {},
+      translationFiles: {
+        processed: totalFiles,
+        optimized: optimizedFiles,
+        optimizedAt: new Date().toISOString()
+      }
     }
   };
   

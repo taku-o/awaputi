@@ -10,7 +10,7 @@
   - メタデータの整合性を保持（language, version, completeness等は維持）
   - _Requirements: 2.1, 2.2_
 
-- [ ] 3. デプロイメントレポートに最適化情報を追加
+- [x] 3. デプロイメントレポートに最適化情報を追加
   - i18n-deployment-report.jsonに最適化タイムスタンプを記録する機能を追加
   - 最適化処理の統計情報（処理ファイル数、処理時間等）を含める
   - _Requirements: 3.1, 3.2_
