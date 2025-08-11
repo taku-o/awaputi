@@ -283,10 +283,6 @@ export class SystemFontSource {
 
     async load(fontFamily, options = {}) {
         if (!this._isFontAvailable(fontFamily)) {
-            // Noto Sansファミリーは通常システムにインストールされていないので、静かに失敗
-            if (fontFamily.startsWith('Noto Sans')) {
-                throw new Error(`Expected system font not available: ${fontFamily}`);
-            }
             throw new Error(`System font not available: ${fontFamily}`);
         }
 

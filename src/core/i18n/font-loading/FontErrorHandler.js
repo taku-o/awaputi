@@ -24,6 +24,7 @@ export class FontErrorHandler {
                     'TimeoutError': 'warn_once'
                 },
                 'system': {
+                    'FileNotFoundError': 'warn_once',  // システムフォント不在は一度だけ警告
                     'ConfigurationError': 'error'
                 }
             }
@@ -109,10 +110,9 @@ export class FontErrorHandler {
             return 'error';
         }
 
-        // Noto Sansシステムフォントエラーは debug レベルに
-        const fontFamily = context.fontFamily || '';
-        if (fontFamily.startsWith('Noto Sans') && context.source === 'system') {
-            return 'debug';
+        // システムフォントエラーは一般的により低いログレベルに
+        if (context.source === 'system' && errorType === 'FileNotFoundError') {
+            return 'info';
         }
 
         return this.config.logLevel || 'warn';
@@ -138,7 +138,6 @@ export class FontErrorHandler {
 
     _getSuggestion(error, context) {
         const errorMessage = error.message || error.toString().toLowerCase();
-        const fontFamily = context.fontFamily || '';
         
         if (context.source === 'google' && errorMessage.includes('network')) {
             return 'Check network connectivity or consider using local fonts as fallback.';
@@ -152,9 +151,9 @@ export class FontErrorHandler {
             return 'Font loading is taking too long. Using system fonts as fallback.';
         }
 
-        // Noto Sansフォントは期待される動作として、より控えめなメッセージ
-        if (fontFamily.startsWith('Noto Sans') && context.source === 'system') {
-            return 'Using system fallback fonts for international text.';
+        // システムフォントが見つからない場合は、より一般的なメッセージ
+        if (context.source === 'system') {
+            return 'Using system fallback fonts.';
         }
 
         return 'Using fallback fonts. Check font configuration.';
