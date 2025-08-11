@@ -252,15 +252,21 @@ export class I18nSecurityManager {
             return false;
         }
         
-        // 危険なパターンのチェック
+        // 危険なパターンのチェック（より精密に）
         const dangerousPatterns = [
             '__proto__', 'constructor', 'prototype',
-            'eval', 'function', 'script'
+            'eval', 'function'
         ];
         
-        return !dangerousPatterns.some(pattern => 
+        // 'script'は単語境界で検証（'description'を除外するため）
+        const scriptPattern = /\bscript\b/i;
+        const hasScript = scriptPattern.test(key);
+        
+        const hasOtherDangerousPatterns = dangerousPatterns.some(pattern => 
             key.toLowerCase().includes(pattern)
         );
+        
+        return !(hasScript || hasOtherDangerousPatterns);
     }
     
     /**
