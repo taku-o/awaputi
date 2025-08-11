@@ -2,7 +2,7 @@
  * トレンド分析クラス
  * 統計データの時系列分析とトレンド検出を行う
  */
-export class TrendAnalyzer {
+export class CoreTrendAnalyzer {
     constructor() {
         this.analysisConfigs = {
             // トレンド検出の閾値設定

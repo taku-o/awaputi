@@ -1,6 +1,6 @@
 /**
  * 統計分析エンジンクラス
- * TrendAnalyzer、ComparisonEngine、InsightGeneratorを統合し、
+ * CoreTrendAnalyzer、CoreComparisonEngine、InsightGeneratorを統合し、
  * 包括的な統計分析機能を提供する
  */
 export class StatisticsAnalyzer {
@@ -61,17 +61,17 @@ export class StatisticsAnalyzer {
     async initializeAnalysisComponents() {
         try {
             const [
-                { TrendAnalyzer },
-                { ComparisonEngine },
+                { CoreTrendAnalyzer },
+                { CoreComparisonEngine },
                 { InsightGenerator }
             ] = await Promise.all([
-                import('./TrendAnalyzer.js'),
-                import('./ComparisonEngine.js'),
+                import('./CoreTrendAnalyzer.js'),
+                import('./CoreComparisonEngine.js'),
                 import('./InsightGenerator.js')
             ]);
             
-            this.trendAnalyzer = new TrendAnalyzer();
-            this.comparisonEngine = new ComparisonEngine();
+            this.trendAnalyzer = new CoreTrendAnalyzer();
+            this.comparisonEngine = new CoreComparisonEngine();
             this.insightGenerator = new InsightGenerator();
             
         } catch (error) {
@@ -203,7 +203,7 @@ export class StatisticsAnalyzer {
      */
     async performComparisonAnalysis(options = {}) {
         if (!this.comparisonEngine) {
-            return { error: 'ComparisonEngine not available' };
+            return { error: 'CoreComparisonEngine not available' };
         }
         
         const comparisonResults = {};

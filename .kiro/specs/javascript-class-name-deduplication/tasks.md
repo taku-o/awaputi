@@ -130,7 +130,7 @@
   - パフォーマンス監視機能の統合検討
   - _Requirements: 1.2, 1.4_
 
-- [ ] 9. 分析・レポートシステム重複の解決
+- [x] 9. 分析・レポートシステム重複の解決
   - ChartRenderer, ComparisonEngine, TrendAnalyzerなどの重複を処理
   - 分析ドメインとコアドメインの明確な分離
   - _Requirements: 1.2, 1.4, 2.2, 2.4_
@@ -141,14 +141,16 @@
   - 関連するインポートとエクスポートの更新
   - _Requirements: 1.2, 1.4_
 
-- [ ] 9.2 ComparisonEngine重複の解決
+- [x] 9.2 ComparisonEngine重複の解決
   - 分析用とコア用の比較エンジンを明確に分離
-  - 共通機能の基底クラス化を検討
+  - AnalyticsComparisonEngineとCoreComparisonEngineに命名
+  - 関連するインポートとエラーメッセージを更新
   - _Requirements: 1.2, 1.4_
 
-- [ ] 9.3 TrendAnalyzer重複の解決
+- [x] 9.3 TrendAnalyzer重複の解決
   - ドメイン固有の機能に基づく命名
-  - 分析機能の統合可能性を評価
+  - AnalyticsTrendAnalyzerとCoreTrendAnalyzerに分離
+  - StatisticsAnalyzer.jsの参照を更新
   - _Requirements: 1.2, 1.4_
 
 - [ ] 10. エラーハンドリング重複の解決

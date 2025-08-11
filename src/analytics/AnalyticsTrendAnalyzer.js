@@ -1,8 +1,8 @@
 /**
- * トレンド分析システム
- * 時系列データの分析とトレンド検出を行います
+ * 分析用トレンド分析システム
+ * ゲーム固有の時系列データの分析とトレンド検出を行います
  */
-export class TrendAnalyzer {
+export class AnalyticsTrendAnalyzer {
     constructor(storageManager) {
         this.storageManager = storageManager;
         this.analysisCache = new Map();

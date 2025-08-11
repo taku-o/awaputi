@@ -1,13 +1,13 @@
 /**
- * 比較分析エンジン
- * プレイヤーのパフォーマンスを過去データやベンチマークと比較する機能を提供します
+ * 分析用比較エンジン
+ * プレイヤーのパフォーマンスを過去データやベンチマークと比較する分析機能を提供します
  * 分割されたコンポーネントを統合管理するメインクラス
  */
 import { DataComparator } from './comparison/DataComparator.js';
 import { ComparisonAlgorithms } from './comparison/ComparisonAlgorithms.js';
 import { ComparisonResultRenderer } from './comparison/ComparisonResultRenderer.js';
 
-export class ComparisonEngine {
+export class AnalyticsComparisonEngine {
     constructor(storageManager) {
         this.storageManager = storageManager;
         
@@ -34,7 +34,7 @@ export class ComparisonEngine {
         try {
             return await this.dataComparator.compareWithPastData(options, this.storageManager);
         } catch (error) {
-            console.error('ComparisonEngine.compareWithPastData error:', error);
+            console.error('AnalyticsComparisonEngine.compareWithPastData error:', error);
             return {
                 success: false,
                 error: error.message
@@ -51,7 +51,7 @@ export class ComparisonEngine {
         try {
             return await this.dataComparator.benchmarkComparison(options, this.storageManager);
         } catch (error) {
-            console.error('ComparisonEngine.benchmarkComparison error:', error);
+            console.error('AnalyticsComparisonEngine.benchmarkComparison error:', error);
             return {
                 success: false,
                 error: error.message
@@ -68,7 +68,7 @@ export class ComparisonEngine {
         try {
             return await this.dataComparator.stageComparison(options, this.storageManager);
         } catch (error) {
-            console.error('ComparisonEngine.stageComparison error:', error);
+            console.error('AnalyticsComparisonEngine.stageComparison error:', error);
             return {
                 success: false,
                 error: error.message
@@ -86,7 +86,7 @@ export class ComparisonEngine {
         try {
             return this.algorithms.generateImprovementSuggestions(comparisonResult, options);
         } catch (error) {
-            console.error('ComparisonEngine.generateImprovementSuggestions error:', error);
+            console.error('AnalyticsComparisonEngine.generateImprovementSuggestions error:', error);
             return {
                 success: false,
                 error: error.message
@@ -104,7 +104,7 @@ export class ComparisonEngine {
         try {
             return await this.algorithms.trendAnalysis(period, metrics, this.storageManager);
         } catch (error) {
-            console.error('ComparisonEngine.trendAnalysis error:', error);
+            console.error('AnalyticsComparisonEngine.trendAnalysis error:', error);
             return {
                 success: false,
                 error: error.message
@@ -122,7 +122,7 @@ export class ComparisonEngine {
         try {
             return this.renderer.renderResults(comparisonResult, options);
         } catch (error) {
-            console.error('ComparisonEngine.renderResults error:', error);
+            console.error('AnalyticsComparisonEngine.renderResults error:', error);
             return {
                 success: false,
                 error: error.message
@@ -140,7 +140,7 @@ export class ComparisonEngine {
         try {
             return this.renderer.generateSummaryReport(comparisonResult, options);
         } catch (error) {
-            console.error('ComparisonEngine.generateSummaryReport error:', error);
+            console.error('AnalyticsComparisonEngine.generateSummaryReport error:', error);
             return {
                 success: false,
                 error: error.message
@@ -158,7 +158,7 @@ export class ComparisonEngine {
         try {
             return this.renderer.generateDetailedReport(comparisonResult, options);
         } catch (error) {
-            console.error('ComparisonEngine.generateDetailedReport error:', error);
+            console.error('AnalyticsComparisonEngine.generateDetailedReport error:', error);
             return {
                 success: false,
                 error: error.message

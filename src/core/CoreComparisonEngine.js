@@ -8,7 +8,7 @@ import { ComparisonDataProcessor } from './comparison-engine/ComparisonDataProce
  * 期間別データ比較、A/Bテスト分析、統計的有意性検定を行う
  * サブコンポーネント化により保守性と可読性を向上
  */
-export class ComparisonEngine {
+export class CoreComparisonEngine {
     constructor() {
         try {
             // 比較タイプ定義
@@ -51,10 +51,10 @@ export class ComparisonEngine {
             // サブコンポーネント初期化
             this._initializeSubComponents();
             
-            console.log('[ComparisonEngine] サブコンポーネント統合版で初期化完了');
+            console.log('[CoreComparisonEngine] サブコンポーネント統合版で初期化完了');
             
         } catch (error) {
-            console.error('Failed to initialize ComparisonEngine:', error);
+            console.error('Failed to initialize CoreComparisonEngine:', error);
             this._initializeFallbackMode();
         }
     }
@@ -73,7 +73,7 @@ export class ComparisonEngine {
         // データ処理コンポーネント
         this.dataProcessor = new ComparisonDataProcessor();
         
-        console.log('[ComparisonEngine] All sub-components initialized successfully');
+        console.log('[CoreComparisonEngine] All sub-components initialized successfully');
     }
     
     /**
@@ -81,7 +81,7 @@ export class ComparisonEngine {
      * @private
      */
     _initializeFallbackMode() {
-        console.warn('[ComparisonEngine] Initializing in fallback mode due to sub-component error');
+        console.warn('[CoreComparisonEngine] Initializing in fallback mode due to sub-component error');
         this.statisticalAnalyzer = null;
         this.stageComparisonAnalyzer = null;
         this.dataProcessor = null;
@@ -633,4 +633,4 @@ export class ComparisonEngine {
 }
 
 // デフォルトエクスポート
-export default ComparisonEngine;
+export default CoreComparisonEngine;
