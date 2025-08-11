@@ -1,0 +1,468 @@
+{
+  "category": "settings",
+  "title": "設定ガイド",
+  "description": "ゲーム設定とカスタマイズオプション",
+  "language": "ja",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-27",
+  "topics": [
+    {
+      "id": "audio_settings",
+      "title": "音声設定",
+      "description": "BGM、効果音、音量の詳細設定",
+      "content": {
+        "volume_controls": {
+          "master_volume": {
+            "description": "全体音量の調整",
+            "range": "0% - 100%",
+            "default": "80%",
+            "note": "他の音量設定のベースとなります"
+          },
+          "bgm_volume": {
+            "description": "背景音楽の音量",
+            "range": "0% - 100%",
+            "default": "60%",
+            "tracks": [
+              "メインメニューBGM",
+              "ゲームプレイBGM",
+              "ボーナスタイムBGM",
+              "ゲームオーバーBGM"
+            ]
+          },
+          "sfx_volume": {
+            "description": "効果音の音量",
+            "range": "0% - 100%",
+            "default": "70%",
+            "sound_types": [
+              "泡が割れる音",
+              "特殊効果音",
+              "警告音",
+              "UI操作音"
+            ]
+          }
+        },
+        "audio_quality": {
+          "sample_rate": {
+            "description": "音声サンプリングレート",
+            "options": ["22kHz", "44kHz", "48kHz"],
+            "default": "44kHz",
+            "impact": "高品質ほどCPU使用量が増加"
+          },
+          "audio_buffer": {
+            "description": "音声バッファサイズ",
+            "options": ["小（低遅延）", "中（標準）", "大（安定）"],
+            "default": "中",
+            "recommendation": "音声が途切れる場合は「大」を選択"
+          }
+        },
+        "accessibility_audio": {
+          "visual_audio_cues": {
+            "description": "音声の視覚化",
+            "features": [
+              "音量に応じた画面フラッシュ",
+              "重要な音の字幕表示",
+              "振動フィードバック（対応デバイス）"
+            ]
+          },
+          "audio_descriptions": {
+            "description": "音声解説機能",
+            "content": "画面状況の音声による説明",
+            "activation": "設定 → アクセシビリティ → 音声解説"
+          }
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 180,
+      "tags": ["音声", "音量", "BGM", "効果音"]
+    },
+    {
+      "id": "display_settings",
+      "title": "表示設定",
+      "description": "画面表示と視覚効果の設定",
+      "content": {
+        "resolution_settings": {
+          "canvas_resolution": {
+            "description": "ゲーム画面解像度",
+            "options": [
+              "800x600 (4:3)",
+              "1024x768 (4:3)",
+              "1280x720 (16:9)",
+              "1920x1080 (16:9)",
+              "自動調整"
+            ],
+            "default": "自動調整",
+            "note": "ブラウザウィンドウサイズに合わせて調整"
+          },
+          "ui_scaling": {
+            "description": "UI表示スケール",
+            "range": "50% - 200%",
+            "default": "100%",
+            "impact": "テキストやボタンのサイズを変更"
+          }
+        },
+        "visual_effects": {
+          "particle_effects": {
+            "description": "パーティクル効果設定",
+            "quality_levels": {
+              "off": "パーティクル効果を無効",
+              "low": "最小限のパーティクル",
+              "medium": "標準パーティクル",
+              "high": "豊富なパーティクル効果",
+              "ultra": "最高品質パーティクル"
+            },
+            "default": "medium",
+            "performance_impact": "高品質ほどGPU使用量が増加"
+          },
+          "animation_quality": {
+            "description": "アニメーション品質",
+            "options": ["シンプル", "標準", "スムーズ", "最大"],
+            "default": "標準",
+            "features": [
+              "泡の動きの滑らかさ",
+              "UIトランジションの美しさ",
+              "特殊効果の詳細度"
+            ]
+          },
+          "screen_effects": {
+            "description": "画面効果",
+            "options": {
+              "screen_shake": "画面揺れ効果",
+              "flash_effects": "フラッシュ効果",
+              "blur_effects": "ブラー効果",
+              "glow_effects": "グロー効果"
+            },
+            "customization": "個別に有効・無効を設定可能"
+          }
+        },
+        "color_settings": {
+          "color_theme": {
+            "description": "カラーテーマ",
+            "options": [
+              "標準（カラフル）",
+              "パステル（柔らかい色調）",
+              "ダーク（暗い色）",
+              "ハイコントラスト（明瞭）",
+              "色覚特性対応"
+            ],
+            "default": "標準"
+          },
+          "brightness": {
+            "description": "画面明度",
+            "range": "50% - 150%",
+            "default": "100%",
+            "note": "暗い環境でのプレイ時に調整"
+          },
+          "contrast": {
+            "description": "コントラスト調整",
+            "range": "50% - 200%",
+            "default": "100%",
+            "benefit": "泡と背景の明確な区別"
+          }
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 240,
+      "tags": ["表示", "視覚", "解像度", "エフェクト"]
+    },
+    {
+      "id": "performance_settings",
+      "title": "パフォーマンス設定",
+      "description": "ゲーム速度と安定性の最適化",
+      "content": {
+        "frame_rate": {
+          "target_fps": {
+            "description": "目標フレームレート",
+            "options": ["30 FPS", "60 FPS", "120 FPS", "無制限"],
+            "default": "60 FPS",
+            "recommendation": "標準ディスプレイには60 FPSが最適"
+          },
+          "vsync": {
+            "description": "垂直同期",
+            "options": ["オフ", "オン", "アダプティブ"],
+            "default": "アダプティブ",
+            "benefits": "画面ティアリングを防ぎ、フレームレートを安定化"
+          },
+          "frame_skip": {
+            "description": "フレームスキップ",
+            "options": ["オフ", "軽度", "積極的"],
+            "default": "軽度",
+            "usage": "低性能デバイスでパフォーマンスを改善"
+          }
+        },
+        "memory_management": {
+          "texture_quality": {
+            "description": "テクスチャ品質",
+            "options": ["低", "中", "高", "最大"],
+            "default": "高",
+            "memory_usage": "高品質ほどVRAM使用量が増加"
+          },
+          "memory_cleanup": {
+            "description": "メモリクリーンアップ",
+            "frequency": ["なし", "軽度", "標準", "積極的"],
+            "default": "標準",
+            "effect": "定期的に未使用メモリを解放"
+          },
+          "preload_assets": {
+            "description": "アセットの事前読み込み",
+            "options": ["最小限", "標準", "全て"],
+            "default": "標準",
+            "tradeoff": "読み込み時間 vs ゲーム中の快適性"
+          }
+        },
+        "cpu_optimization": {
+          "background_processing": {
+            "description": "バックグラウンド処理",
+            "options": ["最小限", "標準", "完全"],
+            "default": "標準",
+            "includes": [
+              "統計計算",
+              "AI処理",
+              "ネットワーク通信",
+              "ファイル保存"
+            ]
+          },
+          "multithreading": {
+            "description": "マルチスレッド",
+            "options": ["シングル", "デュアル", "マルチ", "自動"],
+            "default": "自動",
+            "benefit": "複数CPUコアの効率的活用"
+          }
+        },
+        "battery_optimization": {
+          "power_saving": {
+            "description": "省電力モード",
+            "activation": "バッテリー残量に応じて自動有効化",
+            "adjustments": [
+              "フレームレートを30 FPSに制限",
+              "パーティクル効果を軽減",
+              "バックグラウンド処理を最小化",
+              "画面明度を自動調整"
+            ]
+          },
+          "thermal_management": {
+            "description": "熱管理",
+            "monitoring": "CPU・GPU温度監視",
+            "throttling": "過熱時の自動パフォーマンス制限",
+            "alert": "高温警告とクールダウン推奨"
+          }
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 300,
+      "tags": ["パフォーマンス", "FPS", "最適化", "メモリ"]
+    },
+    {
+      "id": "gameplay_settings",
+      "title": "ゲームプレイ設定",
+      "description": "ゲーム体験をカスタマイズする設定",
+      "content": {
+        "difficulty_settings": {
+          "game_speed": {
+            "description": "ゲーム速度",
+            "range": "50% - 150%",
+            "default": "100%",
+            "effect": "泡の出現頻度と移動速度に影響"
+          },
+          "bubble_density": {
+            "description": "泡密度",
+            "options": ["疎", "標準", "密", "超密"],
+            "default": "標準",
+            "impact": "同時表示される泡の最大数"
+          },
+          "special_bubble_rate": {
+            "description": "特殊泡出現率",
+            "range": "0% - 200%",
+            "default": "100%",
+            "note": "0%で特殊泡を完全無効化"
+          }
+        },
+        "assistance_settings": {
+          "auto_pause": {
+            "description": "自動一時停止",
+            "triggers": [
+              "ウィンドウがフォーカスを失った時",
+              "一定時間操作がない時",
+              "バッテリー低下時",
+              "着信時（モバイル）"
+            ],
+            "customization": "各トリガーを個別設定可能"
+          },
+          "hint_system": {
+            "description": "ヒントシステム",
+            "types": [
+              "次に処理すべき泡をハイライト",
+              "危険な状況への警告",
+              "特殊泡の効果説明",
+              "戦略的アドバイス"
+            ],
+            "frequency": ["オフ", "まれ", "標準", "頻繁"]
+          },
+          "difficulty_adjustment": {
+            "description": "動的難易度調整",
+            "modes": [
+              "固定（選択した難易度を維持）",
+              "適応（プレイヤースキルに応じて調整）",
+              "学習（プレイ履歴から最適化）"
+            ],
+            "default": "適応"
+          }
+        },
+        "scoring_preferences": {
+          "score_display": {
+            "description": "スコア表示オプション",
+            "elements": [
+              "現在スコア",
+              "コンボカウンター",
+              "スコア増加アニメーション",
+              "最高スコア比較",
+              "リアルタイムランキング"
+            ]
+          },
+          "achievement_notifications": {
+            "description": "実績通知",
+            "styles": ["ポップアップ", "バナー", "音のみ", "オフ"],
+            "default": "ポップアップ",
+            "timing": "即座 / ゲーム終了時 / 次回起動時"
+          }
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 240,
+      "tags": ["ゲームプレイ", "難易度", "支援", "カスタマイズ"]
+    },
+    {
+      "id": "data_privacy_settings",
+      "title": "データとプライバシー設定",
+      "description": "個人データ管理とプライバシー保護",
+      "content": {
+        "data_storage": {
+          "local_storage": {
+            "description": "ローカルデータ保存",
+            "stored_data": [
+              "ゲーム進行状況",
+              "設定情報",
+              "統計データ",
+              "実績記録",
+              "ハイスコア"
+            ],
+            "management": "データの閲覧、エクスポート、削除が可能"
+          },
+          "cloud_sync": {
+            "description": "クラウド同期（今後実装予定）",
+            "benefits": [
+              "複数デバイス間でのデータ同期",
+              "データバックアップ",
+              "デバイス変更時のデータ移行"
+            ],
+            "privacy": "暗号化されたデータのみ送信"
+          }
+        },
+        "analytics_settings": {
+          "usage_analytics": {
+            "description": "使用状況分析",
+            "collected_data": [
+              "プレイ時間",
+              "ゲーム進行状況",
+              "機能使用頻度",
+              "パフォーマンス指標"
+            ],
+            "purpose": "ゲーム改善とバグ修正のため",
+            "opt_out": "いつでも無効化可能"
+          },
+          "error_reporting": {
+            "description": "エラー報告",
+            "automatic": "クラッシュ時の自動送信",
+            "manual": "手動バグ報告の送信",
+            "anonymization": "個人情報は送信されません"
+          }
+        },
+        "privacy_controls": {
+          "data_minimization": {
+            "description": "データ最小化",
+            "principle": "必要最小限のデータのみ収集",
+            "user_control": "収集項目の個別選択"
+          },
+          "data_retention": {
+            "description": "データ保持期間",
+            "local_data": "ユーザー削除まで保持",
+            "analytics_data": "匿名化データで最大1年間",
+            "user_rights": "データ削除要求の権利"
+          },
+          "third_party_services": {
+            "description": "第三者サービス",
+            "used_services": "現在使用していません",
+            "future_integration": "統合時は事前通知",
+            "opt_in_basis": "全てオプトインベース"
+          }
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 200,
+      "tags": ["データ", "プライバシー", "設定", "管理"]
+    }
+  ],
+  "settings_optimization_guide": {
+    "device_specific_recommendations": {
+      "high_end_pc": {
+        "display": "ウルトラ品質、60+ FPS",
+        "audio": "48kHz、大バッファ",
+        "effects": "全エフェクト有効"
+      },
+      "standard_pc": {
+        "display": "高品質、60 FPS",
+        "audio": "44kHz、中バッファ",
+        "effects": "標準エフェクト"
+      },
+      "low_end_pc": {
+        "display": "中品質、30 FPS",
+        "audio": "22kHz、小バッファ",
+        "effects": "軽量エフェクトのみ"
+      },
+      "mobile_device": {
+        "display": "低品質、30 FPS",
+        "audio": "22kHz、省電力モード",
+        "effects": "最小エフェクト"
+      }
+    },
+    "troubleshooting_settings": {
+      "performance_issues": [
+        "フレームレートを30 FPSに制限",
+        "パーティクル効果を「低」に設定",
+        "アニメーション品質を「シンプル」に変更",
+        "メモリクリーンアップを「積極的」に設定"
+      ],
+      "audio_problems": [
+        "音声バッファを「大」に変更",
+        "サンプリングレートを下げる",
+        "他のアプリの音声を停止",
+        "音声ドライバーを更新"
+      ],
+      "display_issues": [
+        "解像度を下げる",
+        "ブラウザのハードウェアアクセラレーションを確認",
+        "フルスクリーンモードを試す",
+        "ズームを100%にリセット"
+      ]
+    }
+  },
+  "backup_and_restore": {
+    "creating_backups": {
+      "automatic": "ゲーム終了時の自動バックアップ",
+      "manual": "設定 → データ管理 → バックアップ作成",
+      "scheduled": "指定間隔での自動バックアップ"
+    },
+    "restoring_data": {
+      "from_backup": "バックアップファイルからの復元",
+      "selective_restore": "特定データのみ復元",
+      "merge_option": "既存データとの結合"
+    },
+    "export_import": {
+      "formats": ["JSON", "CSV", "プレーンテキスト"],
+      "use_cases": [
+        "他デバイスへの移行",
+        "データ分析",
+        "長期保存"
+      ]
+    }
+  }
+}
