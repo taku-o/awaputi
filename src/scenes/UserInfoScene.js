@@ -5,12 +5,12 @@
 import { Scene } from '../core/Scene.js';
 
 // コンポーネントシステム
-import { DialogManager } from './components/DialogManager.js';
+import { ScenesDialogManager } from './components/ScenesDialogManager.js';
 import { ComponentEventBus } from './components/ComponentEventBus.js';
 import { SceneState } from './components/SceneState.js';
 import { UsernameDialog } from './components/UsernameDialog.js';
-import { ExportDialog } from './components/ExportDialog.js';
-import { ImportDialog } from './components/ImportDialog.js';
+import { ScenesExportDialog } from './components/ScenesExportDialog.js';
+import { ScenesImportDialog } from './components/ScenesImportDialog.js';
 
 // 既存の分離コンポーネント
 import { UserProfileManager } from './components/user-info/UserProfileManager.js';
@@ -63,12 +63,12 @@ export class UserInfoScene extends Scene {
      */
     initializeComponentSystem() {
         // ダイアログマネージャー作成
-        this.dialogManager = new DialogManager(this.gameEngine, this.eventBus, this.sceneState);
+        this.dialogManager = new ScenesDialogManager(this.gameEngine, this.eventBus, this.sceneState);
         
         // ダイアログコンポーネントを登録
         this.dialogManager.registerDialog('username', UsernameDialog);
-        this.dialogManager.registerDialog('export', ExportDialog);
-        this.dialogManager.registerDialog('import', ImportDialog);
+        this.dialogManager.registerDialog('export', ScenesExportDialog);
+        this.dialogManager.registerDialog('import', ScenesImportDialog);
         
         // 専用コンポーネントの初期化
         this.tabManager = new UserInfoTabManager(this.gameEngine, this.eventBus, this.sceneState);
