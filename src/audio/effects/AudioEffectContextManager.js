@@ -1,13 +1,13 @@
 /**
- * AudioContextManager.js
- * オーディオコンテキスト管理システム
- * SoundEffectSystemから分離されたオーディオコンテキスト管理機能
+ * AudioEffectContextManager.js
+ * エフェクト専用オーディオコンテキスト管理システム
+ * SoundEffectSystemから分離されたエフェクト用オーディオコンテキスト管理機能
  */
 
 import { getErrorHandler } from '../../utils/ErrorHandler.js';
 import { getConfigurationManager } from '../../core/ConfigurationManager.js';
 
-export class AudioContextManager {
+export class AudioEffectContextManager {
     constructor() {
         this.configManager = getConfigurationManager();
         this.errorHandler = getErrorHandler();

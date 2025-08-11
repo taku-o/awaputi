@@ -107,7 +107,7 @@
   - 依存関係の更新
   - _Requirements: 1.2, 1.4, 2.2, 2.4_
 
-- [ ] 8. オーディオシステム重複の解決
+- [x] 8. オーディオシステム重複の解決
   - AudioAccessibilitySupport, AudioContextManager, AudioPerformanceMonitorの重複を処理
   - オーディオドメイン内での一貫した命名を実現
   - _Requirements: 1.2, 1.4, 2.2, 2.4_
@@ -118,13 +118,13 @@
   - 関連するインポートの更新
   - _Requirements: 1.2, 1.4_
 
-- [ ] 8.2 AudioContextManager重複の解決
+- [x] 8.2 AudioContextManager重複の解決
   - メインマネージャーとエフェクト専用マネージャーの分離
   - AudioContextManagerとAudioEffectContextManagerに命名
   - 機能の重複確認と統合検討
   - _Requirements: 1.2, 1.4_
 
-- [ ] 8.3 AudioPerformanceMonitor重複の解決
+- [x] 8.3 AudioPerformanceMonitor重複の解決
   - メインモニターとコンポーネントモニターの分離
   - 適切な機能分担の確認
   - パフォーマンス監視機能の統合検討

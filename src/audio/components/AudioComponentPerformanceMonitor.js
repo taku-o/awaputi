@@ -1,14 +1,14 @@
 /**
- * AudioPerformanceMonitor.js
- * オーディオパフォーマンス監視・分析システム
- * AudioControllerから分離されたパフォーマンス監視・自動最適化機能
+ * AudioComponentPerformanceMonitor.js
+ * オーディオコンポーネント専用パフォーマンス監視・分析システム
+ * AudioControllerから分離されたコンポーネント用パフォーマンス監視・自動最適化機能
  */
 
 import { getErrorHandler } from '../../utils/ErrorHandler.js';
 import { getConfigurationManager } from '../../core/ConfigurationManager.js';
 import { LoggingSystem } from '../../core/LoggingSystem.js';
 
-export class AudioPerformanceMonitor {
+export class AudioComponentPerformanceMonitor {
     constructor(audioContext, audioManager) {
         this.audioContext = audioContext;
         this.audioManager = audioManager;
