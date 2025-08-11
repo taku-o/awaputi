@@ -7,7 +7,7 @@ import { VisualFocusManager } from './VisualFocusManager.js';
  * アクセシビリティ管理システムの中核クラス
  * WCAG 2.1 AA準拠の包括的なアクセシビリティサポートを提供
  */
-export class AccessibilityManager {
+export class CoreAccessibilityManager {
     constructor(gameEngine) {
         this.gameEngine = gameEngine;
         this.managers = new Map();

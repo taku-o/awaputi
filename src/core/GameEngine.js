@@ -6,7 +6,7 @@ import { SceneManager } from './SceneManager.js';
 import { ItemManager } from './ItemSystem.js';
 import { SettingsManager } from './SettingsManager.js';
 import { LocalizationManager } from './LocalizationManager.js';
-import { KeyboardShortcutManager } from './KeyboardShortcutManager.js';
+import { CoreKeyboardShortcutManager } from './KeyboardShortcutManager.js';
 import { AchievementManager } from './AchievementManager.js';
 import { AchievementEventIntegrator } from './AchievementEventIntegrator.js';
 import { AchievementNotificationSystem } from './achievements/AchievementNotificationSystem.js';
@@ -158,7 +158,7 @@ export class GameEngine {
         // 新しいUI改善システム
         this.settingsManager = new SettingsManager(this);
         this.localizationManager = new LocalizationManager();
-        this.keyboardShortcutManager = new KeyboardShortcutManager(this);
+        this.keyboardShortcutManager = new CoreKeyboardShortcutManager(this);
         
         // 追加コンテンツシステム
         console.log('[DEBUG] GameEngine: 追加コンテンツシステム初期化開始');

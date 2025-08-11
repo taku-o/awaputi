@@ -90,18 +90,18 @@
   - メインファイルとの統合または分離
   - _Requirements: 1.2, 1.4_
 
-- [ ] 7. コアシステム重複の解決（Phase 1）
+- [x] 7. コアシステム重複の解決（Phase 1）
   - AccessibilityManager, KeyboardShortcutManagerの重複を解決
   - コアとデバッグ版の明確な分離
   - _Requirements: 1.2, 1.4, 2.2, 2.4_
 
-- [ ] 7.1 AccessibilityManager重複の解決
+- [x] 7.1 AccessibilityManager重複の解決
   - src/core/とsrc/debug/のAccessibilityManager重複を処理
   - CoreAccessibilityManagerとDebugAccessibilityManagerに分離
   - 全インポート文の更新
   - _Requirements: 1.2, 1.4, 2.2, 2.4_
 
-- [ ] 7.2 KeyboardShortcutManager重複の解決
+- [x] 7.2 KeyboardShortcutManager重複の解決
   - コア機能とデバッグ機能の明確な分離
   - 適切なプレフィックスの適用
   - 依存関係の更新

@@ -1,7 +1,7 @@
 /**
  * Accessibility Manager - デバッグインターフェースのアクセシビリティ管理
  */
-export class AccessibilityManager {
+export class DebugAccessibilityManager {
     constructor(debugInterface) {
         this.debugInterface = debugInterface;
         this.isScreenReaderDetected = false;
