@@ -143,14 +143,11 @@ export class UsernameInputManager {
             context.fillText('ユーザー名を入力してください（最大10文字）', descCoords.x, descCoords.y);
         }
 
-        // 入力ボックスの描画（新しいResponsive座標システム使用）
+        // 入力ボックスの描画
         this.renderInputBoxWithResponsiveCoords(context, canvasInfo, LAYOUT);
 
-        // TODO: ボタン（次のタスクで実装）
-        // 一時的に従来の描画メソッドを呼び出し
-        const tempScaleX = canvasInfo.actualWidth / 800;
-        const tempScaleY = canvasInfo.actualHeight / 600;
-        this.renderUsernameInputButtons(context, tempScaleX, tempScaleY);
+        // ボタンの描画（新しいResponsive座標システム使用）
+        this.renderButtonsWithResponsiveCoords(context, canvasInfo, LAYOUT);
 
         // ヘルプテキストの描画
         const helpCoords = this.transformCoordinates(LAYOUT.helpText.x, LAYOUT.helpText.y, canvasInfo);
@@ -347,6 +344,63 @@ export class UsernameInputManager {
         } catch (error) {
             this.errorHandler.handleError(error, {
                 context: 'UsernameInputManager.renderUsernameInputButtons'
+            });
+        }
+    }
+
+    /**
+     * ResponsiveCanvasManager座標システムを使用したボタン描画
+     */
+    renderButtonsWithResponsiveCoords(context, canvasInfo, layout) {
+        try {
+            // OKボタンの描画
+            const okCoords = this.transformCoordinates(layout.buttons.ok.x, layout.buttons.ok.y, canvasInfo);
+            const okWidth = layout.buttons.ok.width * canvasInfo.scale;
+            const okHeight = layout.buttons.ok.height * canvasInfo.scale;
+            
+            if (okCoords && this.validateCoordinates(okCoords.x, okCoords.y, canvasInfo)) {
+                // OKボタン背景
+                context.fillStyle = this.usernameInput.length > 0 ? '#00AA00' : '#666666';
+                context.fillRect(okCoords.x, okCoords.y, okWidth, okHeight);
+                
+                // OKボタン枠線
+                context.strokeStyle = '#FFFFFF';
+                context.lineWidth = 2 * canvasInfo.scale;
+                context.strokeRect(okCoords.x, okCoords.y, okWidth, okHeight);
+                
+                // OKボタンテキスト
+                context.fillStyle = '#FFFFFF';
+                context.font = `bold ${16 * canvasInfo.scale}px Arial`;
+                context.textAlign = 'center';
+                context.textBaseline = 'middle';
+                context.fillText('OK', okCoords.x + okWidth / 2, okCoords.y + okHeight / 2);
+            }
+            
+            // キャンセルボタンの描画
+            const cancelCoords = this.transformCoordinates(layout.buttons.cancel.x, layout.buttons.cancel.y, canvasInfo);
+            const cancelWidth = layout.buttons.cancel.width * canvasInfo.scale;
+            const cancelHeight = layout.buttons.cancel.height * canvasInfo.scale;
+            
+            if (cancelCoords && this.validateCoordinates(cancelCoords.x, cancelCoords.y, canvasInfo)) {
+                // キャンセルボタン背景
+                context.fillStyle = '#AA0000';
+                context.fillRect(cancelCoords.x, cancelCoords.y, cancelWidth, cancelHeight);
+                
+                // キャンセルボタン枠線
+                context.strokeStyle = '#FFFFFF';
+                context.lineWidth = 2 * canvasInfo.scale;
+                context.strokeRect(cancelCoords.x, cancelCoords.y, cancelWidth, cancelHeight);
+                
+                // キャンセルボタンテキスト
+                context.fillStyle = '#FFFFFF';
+                context.font = `bold ${16 * canvasInfo.scale}px Arial`;
+                context.textAlign = 'center';
+                context.textBaseline = 'middle';
+                context.fillText('キャンセル', cancelCoords.x + cancelWidth / 2, cancelCoords.y + cancelHeight / 2);
+            }
+        } catch (error) {
+            this.errorHandler.handleError(error, {
+                context: 'UsernameInputManager.renderButtonsWithResponsiveCoords'
             });
         }
     }
