@@ -25,7 +25,7 @@
   - メタデータ検証機能（_validateMetadata）の動作確認
   - _Requirements: 2.2, 5.1, 5.2_
 
-- [ ] 6. ビルドプロセス全体のintegration テストを作成
+- [x] 6. ビルドプロセス全体のintegration テストを作成
   - npm run buildの複数回実行でファイル変更が発生しないことを検証
   - prebuildプロセス全体の動作確認
   - _Requirements: 1.1, 1.2, 1.3, 4.3_
