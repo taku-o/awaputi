@@ -109,8 +109,13 @@ export class TranslationLoader {
         // 全ファイルの読み込み完了を待つ
         await Promise.all(loadPromises);
         
+        console.log(`TranslationLoader: Loaded categories for ${language}:`, Object.keys(translations));
+        
         // 翻訳データをフラット化
-        return this._flattenTranslations(translations);
+        const flattened = this._flattenTranslations(translations);
+        console.log(`TranslationLoader: Flattened ${Object.keys(flattened).length} keys for ${language}`);
+        
+        return flattened;
     }
     
     /**
@@ -184,12 +189,14 @@ export class TranslationLoader {
         
         for (const [category, translations] of Object.entries(categorizedTranslations)) {
             if (translations && typeof translations === 'object') {
+                console.log(`TranslationLoader: Processing category ${category} with keys:`, Object.keys(translations));
                 for (const [key, value] of Object.entries(translations)) {
                     flattened[key] = value;
                 }
             }
         }
         
+        console.log(`TranslationLoader: Final flattened keys:`, Object.keys(flattened).slice(0, 10), '...');
         return flattened;
     }
     

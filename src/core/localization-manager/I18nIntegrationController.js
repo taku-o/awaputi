@@ -174,6 +174,15 @@ export class I18nIntegrationController {
      * @returns {Promise<Object|null>} 翻訳データまたはnull
      */
     async loadLanguageData(language) {
+        // ローダーが初期化されるまで待機
+        let attempts = 0;
+        const maxAttempts = 20; // 2秒間待機
+        
+        while ((!this.translationLoader && !this.optimizedLoader) && attempts < maxAttempts) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+            attempts++;
+        }
+        
         // 標準ローダーを優先（安定性重視）
         if (this.translationLoader) {
             try {
@@ -194,7 +203,7 @@ export class I18nIntegrationController {
             }
         }
         
-        console.error(`No translation loaders available for ${language}`);
+        console.error(`No translation loaders available for ${language} after ${attempts} attempts`);
         return null;
     }
     
