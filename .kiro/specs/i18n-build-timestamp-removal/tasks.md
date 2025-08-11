@@ -1,6 +1,6 @@
 # Implementation Plan
 
-- [ ] 1. i18n-deployment-setup.jsスクリプトの修正
+- [x] 1. i18n-deployment-setup.jsスクリプトの修正
   - optimizeTranslationFiles()関数からoptimizedAtタイムスタンプ更新処理を削除
   - ファイル書き込み処理をidempotentに変更（内容が同じ場合は書き込みをスキップ）
   - _Requirements: 1.1, 1.2, 4.1, 4.2_

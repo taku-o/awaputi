@@ -43,19 +43,30 @@ async function optimizeTranslationFiles() {
           // JSONの妥当性チェック
           const parsed = JSON.parse(content);
           
-          // メタデータの追加/更新
+          // メタデータの更新（optimizedAtを削除）
           const optimized = {
             ...parsed,
             meta: {
               ...parsed.meta,
-              optimizedAt: new Date().toISOString(),
+              // optimizedAt フィールドを削除してidempotentに
               version: parsed.meta?.version || '1.0.0',
               size: Buffer.byteLength(content, 'utf8')
             }
           };
           
-          // 最適化されたファイルを書き戻し（プリティプリント無し）
-          await fs.writeFile(filePath, JSON.stringify(optimized), 'utf-8');
+          // 既存のoptimizedAtフィールドがある場合は削除
+          if (optimized.meta.optimizedAt) {
+            delete optimized.meta.optimizedAt;
+          }
+          
+          // 内容が変更された場合のみファイルを書き込み（idempotent処理）
+          const newContent = JSON.stringify(optimized);
+          if (newContent !== JSON.stringify(parsed)) {
+            await fs.writeFile(filePath, newContent, 'utf-8');
+            console.log(`    ✅ ${file}: 最適化完了`);
+          } else {
+            console.log(`    ⏭️  ${file}: 既に最適化済み`);
+          }
           
         } catch (error) {
           console.error(`    ❌ ${file}: JSON解析エラー`, error.message);
