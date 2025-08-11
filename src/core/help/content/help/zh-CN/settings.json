@@ -52,7 +52,7 @@
             "description": "音频缓冲区大小",
             "options": ["小（低延迟）", "中等（标准）", "大（稳定）"],
             "default": "中等",
-            "recommendation": "如果音频跳跃请选择"大""
+            "recommendation": "如果音频跳跃请选择\"大\""
           }
         },
         "accessibility_audio": {

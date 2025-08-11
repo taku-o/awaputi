@@ -14,7 +14,7 @@
         "game_not_loading": {
           "symptoms": [
             "白屏保持不变",
-            "卡在"加载中..."",
+            "卡在\"加载中...\"",
             "显示错误消息"
           ],
           "common_causes": [
