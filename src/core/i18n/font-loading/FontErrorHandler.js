@@ -38,7 +38,7 @@ export class FontErrorHandler {
             return false;
         }
 
-        const logLevel = this._getLogLevel(shouldSuppress, errorInfo.type);
+        const logLevel = this._getLogLevel(shouldSuppress, errorInfo.type, context);
         this.logFontError(error, logLevel, context);
 
         this._updateErrorHistory(errorInfo, context);
@@ -100,13 +100,19 @@ export class FontErrorHandler {
         return false;
     }
 
-    _getLogLevel(suppressionType, errorType) {
+    _getLogLevel(suppressionType, errorType, context = {}) {
         if (suppressionType === 'warn_once') {
             return 'warn';
         }
         
         if (errorType === 'ConfigurationError') {
             return 'error';
+        }
+
+        // Noto Sansシステムフォントエラーは debug レベルに
+        const fontFamily = context.fontFamily || '';
+        if (fontFamily.startsWith('Noto Sans') && context.source === 'system') {
+            return 'debug';
         }
 
         return this.config.logLevel || 'warn';
@@ -132,6 +138,7 @@ export class FontErrorHandler {
 
     _getSuggestion(error, context) {
         const errorMessage = error.message || error.toString().toLowerCase();
+        const fontFamily = context.fontFamily || '';
         
         if (context.source === 'google' && errorMessage.includes('network')) {
             return 'Check network connectivity or consider using local fonts as fallback.';
@@ -143,6 +150,11 @@ export class FontErrorHandler {
 
         if (errorMessage.includes('timeout')) {
             return 'Font loading is taking too long. Using system fonts as fallback.';
+        }
+
+        // Noto Sansフォントは期待される動作として、より控えめなメッセージ
+        if (fontFamily.startsWith('Noto Sans') && context.source === 'system') {
+            return 'Using system fallback fonts for international text.';
         }
 
         return 'Using fallback fonts. Check font configuration.';
@@ -162,7 +174,14 @@ export class FontErrorHandler {
     }
 
     _logSimpleError(message, level) {
-        console[level](`[FontErrorHandler] ${message}`);
+        // debugレベルは本番環境では表示しない
+        if (level === 'debug' && !this.config.development?.verboseLogging) {
+            return;
+        }
+        
+        // consoleにdebugメソッドがない場合はlogを使用
+        const logMethod = console[level] || console.log;
+        logMethod(`[FontErrorHandler] ${message}`);
     }
 
     _updateErrorHistory(errorInfo, context) {
