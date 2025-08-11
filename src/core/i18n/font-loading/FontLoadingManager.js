@@ -3,7 +3,7 @@ import { FontFallbackHandler } from './FontFallbackHandler.js';
 import { FontErrorHandler } from './FontErrorHandler.js';
 
 export class FontLoadingManager {
-    constructor(config = {}) {
+    constructor(config = {}, globalErrorHandler = null) {
         this.config = this._mergeWithDefaults(config);
         this.sourceManager = new FontSourceManager(this.config);
         this.fallbackHandler = new FontFallbackHandler(this.config);
@@ -13,6 +13,32 @@ export class FontLoadingManager {
         this.failedSources = new Set();
         this.successfulLoads = new Set();
         this.initialized = false;
+
+        // ErrorHandler統合の設定
+        this.globalErrorHandler = globalErrorHandler;
+        this.errorIntegration = null;
+        
+        if (globalErrorHandler) {
+            this._setupErrorIntegration();
+        }
+    }
+    async _setupErrorIntegration() {
+        try {
+            const { FontErrorIntegration } = await import('./FontErrorIntegration.js');
+            this.errorIntegration = new FontErrorIntegration(this.globalErrorHandler, this.errorHandler);
+            
+            if (this.errorIntegration.initialize()) {
+                if (this.config.development?.verboseLogging) {
+                    console.log('[FontLoadingManager] ErrorHandler integration initialized');
+                }
+            } else {
+                console.warn('[FontLoadingManager] ErrorHandler integration failed to initialize');
+                this.errorIntegration = null;
+            }
+        } catch (error) {
+            console.warn('[FontLoadingManager] Failed to setup ErrorHandler integration:', error);
+            this.errorIntegration = null;
+        }
     }
 
     _mergeWithDefaults(config) {
