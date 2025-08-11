@@ -7,7 +7,7 @@
   "lastUpdated": "2025-01-27",
   "topics": [
     {
-      "id": "game_basics",
+      "id": "basics",
       "title": "게임 기본 사항",
       "description": "게임의 목적과 기본적인 규칙",
       "content": {
@@ -57,6 +57,44 @@
       "difficulty": "beginner",
       "estimatedReadTime": 180,
       "tags": ["조작", "마우스", "키보드", "단축키"]
+    },
+    {
+      "id": "game_mechanics",
+      "title": "게임 메커니즘",
+      "description": "HP, 타이머, 난이도를 포함한 시스템 세부사항",
+      "content": {
+        "hp_system": {
+          "description": "플레이어 HP (체력) 시스템",
+          "mechanics": [
+            "초기 HP: 100",
+            "버블이 자연적으로 터질 때 데미지를 받음",
+            "데미지 양은 버블 종류에 따라 다름",
+            "핑크 버블로 HP 회복 가능",
+            "HP가 0이 되면 게임 오버"
+          ]
+        },
+        "timer_system": {
+          "description": "시간 제한 및 타이머 시스템",
+          "mechanics": [
+            "각 스테이지마다 시간 제한 설정",
+            "제한 시간 내에 최대한 많은 점수 획득",
+            "시계 버블로 시간 정지 효과 발동",
+            "남은 시간에 따른 보너스 점수"
+          ]
+        },
+        "difficulty_scaling": {
+          "description": "점진적 난이도 증가",
+          "mechanics": [
+            "시간이 지남에 따라 버블 생성 빈도 증가",
+            "특수 버블 출현율 변화",
+            "버블 이동 속도 점진적 증가",
+            "새로운 버블 종류 점진적 해금"
+          ]
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 240,
+      "tags": ["HP", "타이머", "난이도", "시스템"]
     },
     {
       "id": "scoring_system",
@@ -147,6 +185,34 @@
       "무지개색 버블 (보너스 타임)",
       "금색 버블 (고득점)",
       "특수 효과 버블 (전략적 가치)"
+    ]
+  },
+  "troubleshooting": {
+    "common_problems": [
+      {
+        "problem": "버블이 클릭에 반응하지 않음",
+        "solutions": [
+          "마우스가 버블 위에 정확히 위치하는지 확인",
+          "브라우저 확대율을 100%로 설정",
+          "다른 애플리케이션이 입력을 차단하고 있는지 확인"
+        ]
+      },
+      {
+        "problem": "게임이 느리거나 끊김",
+        "solutions": [
+          "설정에서 시각 효과 낮추기",
+          "다른 브라우저 탭 닫기",
+          "파티클 수를 줄이는 설정으로 변경"
+        ]
+      },
+      {
+        "problem": "고득점을 달성할 수 없음",
+        "solutions": [
+          "콤보 시스템 활용하기",
+          "특수 버블 효과 이해하고 사용하기",
+          "HP 보존을 위해 위험한 버블 조기 처리"
+        ]
+      }
     ]
   }
 }

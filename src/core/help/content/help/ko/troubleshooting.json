@@ -128,6 +128,262 @@
       "difficulty": "intermediate",
       "estimatedReadTime": 180,
       "tags": ["음성", "음량", "노이즈", "동기화"]
+    },
+    {
+      "id": "input_problems",
+      "title": "입력 문제",
+      "description": "마우스 및 키보드 조작 관련 문제",
+      "content": {
+        "mouse_issues": {
+          "click_not_working": {
+            "description": "마우스 클릭이 응답하지 않음",
+            "solutions": [
+              "마우스 버튼 물리적으로 확인",
+              "마우스 드라이버 업데이트",
+              "다른 마우스로 테스트",
+              "브라우저 설정 확인",
+              "보안 소프트웨어 간섭 확인"
+            ]
+          },
+          "cursor_offset": {
+            "description": "클릭 위치와 커서 위치가 맞지 않음",
+            "causes": [
+              "브라우저 확대/축소 설정",
+              "DPI 설정 문제",
+              "멀티 모니터 환경",
+              "고해상도 디스플레이"
+            ],
+            "solutions": [
+              "브라우저 확대율을 100%로 설정",
+              "Windows 디스플레이 배율을 100%로 변경",
+              "전체화면 모드로 전환",
+              "설정에서 마우스 DPI 조정"
+            ]
+          },
+          "drag_problems": {
+            "description": "드래그 조작이 제대로 작동하지 않음",
+            "troubleshooting": [
+              "드래그 감도 설정 조정",
+              "마우스 버튼 누르는 방법 확인",
+              "충분한 거리로 드래그",
+              "게임 설정에서 드래그 임계값 조정"
+            ]
+          }
+        },
+        "keyboard_issues": {
+          "shortcuts_not_working": {
+            "description": "키보드 단축키가 작동하지 않음",
+            "solutions": [
+              "게임 창에 포커스 맞추기",
+              "한글 입력 끄기",
+              "다른 앱과의 단축키 충돌 확인",
+              "브라우저 단축키 설정 확인",
+              "고정키 등 유사 기능 비활성화"
+            ]
+          },
+          "key_repeat": {
+            "description": "키가 연속 입력되거나 응답하지 않음",
+            "fixes": [
+              "키보드 드라이버 업데이트",
+              "키보드 물리적 청소",
+              "다른 키보드로 테스트",
+              "Windows 키보드 설정 확인"
+            ]
+          }
+        },
+        "touch_issues": {
+          "touch_not_responsive": {
+            "description": "터치 조작이 응답하지 않음 (모바일)",
+            "solutions": [
+              "화면 청소",
+              "브라우저 재시작",
+              "다른 손가락으로 테스트",
+              "터치 감도 설정 확인",
+              "화면 보호필름 확인"
+            ]
+          },
+          "multi_touch_problems": {
+            "description": "멀티터치가 올바르게 작동하지 않음",
+            "troubleshooting": [
+              "동시 터치 제한 확인",
+              "브라우저 터치 지원 확인",
+              "장치 멀티터치 기능 확인"
+            ]
+          }
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 240,
+      "tags": ["input", "mouse", "keyboard", "touch"]
+    },
+    {
+      "id": "data_issues", 
+      "title": "데이터 문제",
+      "description": "저장 데이터 손실이나 손상 관련 문제",
+      "content": {
+        "data_loss": {
+          "symptoms": [
+            "게임 진행도 사라짐",
+            "설정 초기화",
+            "도전과제 기록 손실"
+          ],
+          "common_causes": [
+            "브라우저 프라이빗 모드 사용",
+            "쿠키/로컬 스토리지 삭제",
+            "브라우저 초기화",
+            "보안 소프트웨어 삭제",
+            "저장 공간 부족"
+          ],
+          "recovery_methods": [
+            {
+              "method": "자동 백업에서 복원",
+              "steps": [
+                "설정 → 데이터 관리 → 백업 목록",
+                "최신 백업 선택",
+                "'복원' 버튼 클릭",
+                "데이터 무결성 확인"
+              ]
+            },
+            {
+              "method": "수동 백업 파일 사용",
+              "steps": [
+                "내보낸 JSON 파일 준비",
+                "설정 → 데이터 관리 → 가져오기",
+                "파일 선택 및 업로드",
+                "데이터 병합 또는 덮어쓰기 선택"
+              ]
+            }
+          ],
+          "prevention": [
+            "정기적인 수동 백업 생성",
+            "클라우드 저장소에 데이터 저장",
+            "여러 브라우저에 데이터 복제",
+            "프라이빗 모드 사용 피하기"
+          ]
+        },
+        "data_corruption": {
+          "symptoms": [
+            "게임 시작시 오류",
+            "설정이 제대로 로드되지 않음",
+            "비정상적인 점수 값 표시"
+          ],
+          "diagnostic_tools": [
+            "디버그 모드에서 데이터 검증",
+            "브라우저 개발자 도구에서 스토리지 확인",
+            "데이터 무결성 검사 기능 사용"
+          ],
+          "repair_options": [
+            "손상된 데이터 자동 복구",
+            "기본값으로 대체",
+            "백업에서 선택적 복원",
+            "완전 데이터 재설정 (최후 수단)"
+          ]
+        },
+        "sync_problems": {
+          "description": "장치 간 데이터 동기화 문제",
+          "issues": [
+            "장치별로 다른 점수",
+            "설정이 동기화되지 않음",
+            "도전과제 중복 또는 누락"
+          ],
+          "solutions": [
+            "수동 강제 동기화 실행",
+            "충돌하는 데이터 수동 해결",
+            "마스터 데이터 선택 후 동기화",
+            "동기화 비활성화 및 수동 관리"
+          ]
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 280,
+      "tags": ["data", "backup", "restore", "sync"]
+    },
+    {
+      "id": "browser_compatibility",
+      "title": "브라우저 호환성",
+      "description": "브라우저별 특정 문제 및 해결책",
+      "content": {
+        "supported_browsers": {
+          "recommended": [
+            {
+              "name": "Google Chrome",
+              "version": "90+",
+              "performance": "우수",
+              "notes": "가장 안정적인 성능"
+            },
+            {
+              "name": "Mozilla Firefox", 
+              "version": "88+",
+              "performance": "매우 좋음",
+              "notes": "뛰어난 오디오 처리"
+            },
+            {
+              "name": "Microsoft Edge",
+              "version": "90+", 
+              "performance": "좋음",
+              "notes": "Windows 환경에 최적화"
+            },
+            {
+              "name": "Safari",
+              "version": "14+",
+              "performance": "좋음",
+              "notes": "macOS/iOS 환경에서 사용"
+            }
+          ],
+          "limited_support": [
+            "Internet Explorer (지원 종료)",
+            "구버전 브라우저",
+            "모바일 경량 브라우저"
+          ]
+        },
+        "chrome_issues": {
+          "common_problems": [
+            "하드웨어 가속 비활성화시 성능 저하",
+            "확장 프로그램 간섭",
+            "자동 업데이트로 인한 설정 초기화"
+          ],
+          "solutions": [
+            "chrome://settings/system에서 하드웨어 가속 활성화",
+            "시크릿 모드에서 테스트",
+            "Chrome 플래그 설정 최적화"
+          ]
+        },
+        "firefox_issues": {
+          "common_problems": [
+            "오디오 지연 발생",
+            "WebGL 성능 제한",
+            "개인정보 설정으로 인한 기능 제한"
+          ],
+          "solutions": [
+            "about:config에서 오디오 설정 조정",
+            "WebGL 설정 확인 및 활성화",
+            "향상된 추적 방지 기능 조정"
+          ]
+        },
+        "safari_issues": {
+          "common_problems": [
+            "Web Audio API 제한사항",
+            "전체화면 모드 제약",
+            "터치 이벤트 처리 차이"
+          ],
+          "solutions": [
+            "Safari 전용 오디오 초기화 과정",
+            "대체 전체화면 방법 사용",
+            "터치 이벤트 핸들러 조정"
+          ]
+        },
+        "mobile_browsers": {
+          "optimization_tips": [
+            "화면 터치 최적화",
+            "세로/가로 방향 지원",
+            "배터리 소모 최소화",
+            "네트워크 사용량 절약"
+          ]
+        }
+      },
+      "difficulty": "advanced",
+      "estimatedReadTime": 200,
+      "tags": ["browser", "compatibility", "Chrome", "Firefox", "Safari"]
     }
   ],
   "emergency_procedures": {
@@ -135,18 +391,84 @@
       "immediate_actions": [
         "브라우저 탭 새로고침 (F5)",
         "브라우저 완전 재시작",
-        "메모리 해제를 위해 다른 애플리케이션 종료",
-        "PC 재시작 (필요한 경우)"
+        "다른 애플리케이션 종료로 메모리 확보",
+        "PC 재시작 (필요시)"
+      ],
+      "data_protection": [
+        "자동 백업 확인",
+        "내보내기 기능으로 수동 백업",
+        "여러 곳에 분산 저장"
+      ]
+    },
+    "performance_emergency": {
+      "quick_fixes": [
+        "디버그 모드에서 문제 확인",
+        "임시로 최저 품질로 설정 변경",
+        "불필요한 백그라운드 프로세스 종료",
+        "브라우저 캐시 정리"
+      ]
+    },
+    "data_emergency": {
+      "backup_recovery": [
+        "최신 백업 파일 위치 확인",
+        "백업으로부터 응급 복원 절차",
+        "수동 부분 데이터 재구성 방법"
       ]
     }
   },
   "contact_support": {
+    "before_contacting": {
+      "information_to_gather": [
+        "사용 중인 브라우저와 버전",
+        "운영체제",
+        "문제 상황 상세 설명",
+        "문제 재현 단계",
+        "오류 메시지 스크린샷"
+      ]
+    },
     "support_channels": {
       "github_issues": {
         "url": "https://github.com/taku-o/awaputi/issues",
-        "description": "버그 신고와 기능 요청에 최적",
+        "description": "버그 리포트 및 기능 요청에 최적",
         "response_time": "1-3 영업일"
+      },
+      "community_forum": {
+        "description": "사용자 간 정보 교환",
+        "topics": [
+          "전략 정보",
+          "기술적 질문",
+          "개선 제안"
+        ]
       }
+    },
+    "bug_report_template": {
+      "required_fields": [
+        "문제 요약",
+        "재현 단계",
+        "예상 동작",
+        "실제 동작",
+        "환경 정보",
+        "첨부 파일 (필요시)"
+      ]
     }
+  },
+  "diagnostic_tools": {
+    "built_in_tools": [
+      "디버그 모드 (Ctrl+Shift+D)",
+      "성능 모니터링 화면",
+      "데이터 무결성 검사",
+      "시스템 정보 표시"
+    ],
+    "browser_tools": [
+      "개발자 도구 (F12)",
+      "콘솔 로그 확인",
+      "네트워크 탭 통신 확인",
+      "성능 프로파일러"
+    ],
+    "external_tools": [
+      "시스템 리소스 모니터링 도구",
+      "네트워크 진단 도구",
+      "브라우저 벤치마크 도구"
+    ]
   }
 }

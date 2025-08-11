@@ -27,7 +27,11 @@
       },
       "difficulty": "beginner",
       "estimatedReadTime": 120,
-      "tags": ["基礎", "規則", "目標"]
+      "tags": [
+        "基礎",
+        "規則",
+        "目標"
+      ]
     },
     {
       "id": "controls_guide",
@@ -56,7 +60,12 @@
       },
       "difficulty": "beginner",
       "estimatedReadTime": 180,
-      "tags": ["操作", "滑鼠", "鍵盤", "快捷鍵"]
+      "tags": [
+        "操作",
+        "滑鼠",
+        "鍵盤",
+        "快捷鍵"
+      ]
     },
     {
       "id": "game_mechanics",
@@ -94,7 +103,12 @@
       },
       "difficulty": "intermediate",
       "estimatedReadTime": 240,
-      "tags": ["HP", "計時器", "難度", "系統"]
+      "tags": [
+        "HP",
+        "計時器",
+        "難度",
+        "系統"
+      ]
     },
     {
       "id": "scoring_system",
@@ -138,7 +152,12 @@
       },
       "difficulty": "intermediate",
       "estimatedReadTime": 300,
-      "tags": ["分數", "連擊", "獎勵", "計算"]
+      "tags": [
+        "分數",
+        "連擊",
+        "獎勵",
+        "計算"
+      ]
     },
     {
       "id": "game_strategies",
@@ -190,7 +209,12 @@
       },
       "difficulty": "advanced",
       "estimatedReadTime": 420,
-      "tags": ["策略", "技巧", "高分", "優先順序"]
+      "tags": [
+        "策略",
+        "技巧",
+        "高分",
+        "優先順序"
+      ]
     }
   ],
   "quick_reference": {

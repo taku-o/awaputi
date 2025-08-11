@@ -35,9 +35,9 @@ export class HelpManager {
         try {
             this.loggingSystem.info('HelpManager', 'Initializing help system...');
             
-            // デフォルト言語のヘルプコンテンツを読み込み
+            // 基本ヘルプカテゴリを読み込み
             const currentLanguage = this.localizationManager.getCurrentLanguage();
-            await this.loadHelpContent('default', currentLanguage);
+            await this.loadHelpContent('gameplay', currentLanguage);
             
             // ユーザー進捗の復元
             this.loadUserProgress();
@@ -253,12 +253,12 @@ export class HelpManager {
             const contentKey = `${category}_${language}`;
             const content = this.helpContent.get(contentKey);
             
-            if (!content || !content.sections) {
+            if (!content || !content.topics) {
                 this.loggingSystem.warn('HelpManager', `Help content not found: ${contentKey}`);
                 return null;
             }
 
-            const sectionData = content.sections.find(s => s.id === section);
+            const sectionData = content.topics.find(s => s.id === section);
             if (sectionData) {
                 // 閲覧履歴に追加
                 this.trackHelpUsage(sectionId);
@@ -299,8 +299,8 @@ export class HelpManager {
             for (const [key, content] of this.helpContent.entries()) {
                 if (!key.endsWith(`_${language}`)) continue;
 
-                if (content.sections) {
-                    for (const section of content.sections) {
+                if (content.topics) {
+                    for (const section of content.topics) {
                         const score = this.calculateSearchScore(section, query);
                         if (score > 0) {
                             results.push({
@@ -644,7 +644,7 @@ export class HelpManager {
         return {
             version: '1.0.0',
             category,
-            sections: [{
+            topics: [{
                 id: 'default',
                 title: 'ヘルプが利用できません',
                 content: 'このセクションのヘルプコンテンツを読み込めませんでした。',
@@ -726,8 +726,8 @@ export class HelpManager {
     getTotalSectionCount() {
         let total = 0;
         for (const content of this.helpContent.values()) {
-            if (content.sections) {
-                total += content.sections.length;
+            if (content.topics) {
+                total += content.topics.length;
             }
         }
         return total;

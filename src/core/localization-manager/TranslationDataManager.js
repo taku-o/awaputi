@@ -485,7 +485,9 @@ export class TranslationDataManager {
      * @param {Object} translationData - 翻訳データ
      */
     setLanguageData(language, translationData) {
-        this.translations.set(language, translationData);
+        const existingTranslations = this.translations.get(language) || {};
+        const mergedTranslations = { ...existingTranslations, ...translationData };
+        this.translations.set(language, mergedTranslations);
         this.loadedLanguages.add(language);
     }
     

@@ -25,7 +25,7 @@ const HELP_CONTENT_DIR = path.join(__dirname, '..', 'src', 'core', 'help', 'cont
 const SUPPORTED_LANGUAGES = ['en', 'ja', 'ko', 'zh-CN', 'zh-TW'];
 
 // Required help file categories
-const REQUIRED_CATEGORIES = ['bubbles', 'controls', 'settings', 'troubleshooting', 'gameplay'];
+const REQUIRED_CATEGORIES = ['bubbles', 'controls', 'settings', 'troubleshooting', 'gameplay', 'scoring'];
 
 // Reference language for structure comparison
 const REFERENCE_LANGUAGE = 'en';
