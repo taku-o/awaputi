@@ -1,0 +1,563 @@
+{
+  "category": "troubleshooting",
+  "title": "Troubleshooting Guide",
+  "description": "Solutions for common problems and support information",
+  "language": "en",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-27",
+  "topics": [
+    {
+      "id": "loading_issues",
+      "title": "Loading Issues",
+      "description": "Solutions when the game fails to load properly",
+      "content": {
+        "game_not_loading": {
+          "symptoms": [
+            "White screen remains unchanged",
+            "Stuck at 'Loading...'",
+            "Error messages displayed"
+          ],
+          "common_causes": [
+            "JavaScript is disabled",
+            "Browser cache issues",
+            "Network connection problems",
+            "Browser compatibility issues"
+          ],
+          "solutions": [
+            {
+              "step": 1,
+              "action": "Refresh browser",
+              "description": "Press F5 or Ctrl+R to refresh page"
+            },
+            {
+              "step": 2,
+              "action": "Check JavaScript",
+              "description": "Verify JavaScript is enabled in browser settings"
+            },
+            {
+              "step": 3,
+              "action": "Clear cache",
+              "description": "Hard reload with Ctrl+Shift+R or clear cache"
+            },
+            {
+              "step": 4,
+              "action": "Try different browser",
+              "description": "Test with Chrome, Firefox, Safari, Edge"
+            },
+            {
+              "step": 5,
+              "action": "Check extensions",
+              "description": "Temporarily disable ad blockers and security extensions"
+            }
+          ]
+        },
+        "slow_loading": {
+          "symptoms": [
+            "Loading takes abnormally long time",
+            "Freezing during asset loading",
+            "Progress bar stops midway"
+          ],
+          "optimization_steps": [
+            "Close other tabs to free memory",
+            "Exit background applications",
+            "Check network connection stability",
+            "Restart browser",
+            "Restart PC"
+          ]
+        },
+        "partial_loading": {
+          "symptoms": [
+            "Images not displaying",
+            "Audio not playing",
+            "Some features unavailable"
+          ],
+          "solutions": [
+            "Check security software settings",
+            "Verify firewall settings",
+            "Check proxy settings",
+            "Reset DNS settings"
+          ]
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 240,
+      "tags": ["loading", "startup", "error", "initialization"]
+    },
+    {
+      "id": "performance_issues",
+      "title": "Performance Issues",
+      "description": "Solutions for slow or choppy game performance",
+      "content": {
+        "low_fps": {
+          "symptoms": [
+            "Frame rate below 30 FPS",
+            "Choppy movement",
+            "Slow response to input"
+          ],
+          "diagnostic_steps": [
+            "Check FPS in debug mode (Ctrl+Shift+D)",
+            "Check CPU/GPU usage",
+            "Check memory usage",
+            "Check other running applications"
+          ],
+          "optimization_solutions": [
+            {
+              "category": "Game Settings",
+              "actions": [
+                "Set particle effects to 'Low'",
+                "Change animation quality to 'Simple'",
+                "Limit target FPS to 30",
+                "Disable screen effects"
+              ]
+            },
+            {
+              "category": "Browser Settings",
+              "actions": [
+                "Enable hardware acceleration",
+                "Close other tabs",
+                "Disable unnecessary extensions",
+                "Check browser memory usage"
+              ]
+            },
+            {
+              "category": "System Settings",
+              "actions": [
+                "Change power setting to 'High Performance'",
+                "Close background applications",
+                "Temporarily pause virus scan",
+                "Update graphics drivers"
+              ]
+            }
+          ]
+        },
+        "memory_issues": {
+          "symptoms": [
+            "Browser crashes during game",
+            "'Out of memory' errors",
+            "Gradually degrading performance"
+          ],
+          "prevention_measures": [
+            "Set memory cleanup to 'Aggressive'",
+            "Lower texture quality",
+            "Restart browser periodically during long sessions",
+            "Consider RAM upgrade (if below 4GB)"
+          ]
+        },
+        "input_lag": {
+          "symptoms": [
+            "Delay between click and response",
+            "Mouse movement offset",
+            "Poor keyboard responsiveness"
+          ],
+          "solutions": [
+            "Switch to fullscreen mode",
+            "Increase mouse polling rate in settings",
+            "Adjust VSync settings",
+            "Reset browser zoom to 100%"
+          ]
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 300,
+      "tags": ["performance", "FPS", "lag", "optimization"]
+    },
+    {
+      "id": "audio_issues",
+      "title": "Audio Issues",
+      "description": "Solutions for no sound or poor audio quality",
+      "content": {
+        "no_sound": {
+          "symptoms": [
+            "BGM not playing",
+            "Sound effects not audible",
+            "Complete audio silence"
+          ],
+          "basic_checks": [
+            "Check system volume",
+            "Check browser volume settings",
+            "Check in-game volume settings",
+            "Check mute status"
+          ],
+          "advanced_solutions": [
+            "Update audio drivers",
+            "Check Windows audio settings",
+            "Verify audio device selection",
+            "Check browser audio permissions",
+            "Check for conflicts with other applications"
+          ]
+        },
+        "distorted_audio": {
+          "symptoms": [
+            "Audio cutting out",
+            "Noise interference",
+            "Distorted sound"
+          ],
+          "solutions": [
+            "Change audio buffer size to 'Large'",
+            "Lower sampling rate",
+            "Close other audio applications",
+            "Disable Exclusive Mode",
+            "Reinstall audio drivers"
+          ]
+        },
+        "sync_issues": {
+          "symptoms": [
+            "Audio and video out of sync",
+            "Sound effect timing off",
+            "BGM interruptions"
+          ],
+          "fixes": [
+            "Adjust audio delay settings",
+            "Check frame rate settings",
+            "Change audio processing priority",
+            "Enable real-time audio processing"
+          ]
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 180,
+      "tags": ["audio", "volume", "noise", "sync"]
+    },
+    {
+      "id": "input_problems",
+      "title": "Input Problems",
+      "description": "Issues with mouse and keyboard operations",
+      "content": {
+        "mouse_issues": {
+          "click_not_working": {
+            "description": "Mouse clicks not responding",
+            "solutions": [
+              "Check mouse button physically",
+              "Update mouse drivers",
+              "Test with different mouse",
+              "Check browser settings",
+              "Check security software interference"
+            ]
+          },
+          "cursor_offset": {
+            "description": "Click position and cursor position misaligned",
+            "causes": [
+              "Browser zoom settings",
+              "DPI setting issues",
+              "Multi-monitor environment",
+              "High resolution display"
+            ],
+            "solutions": [
+              "Set browser zoom to 100%",
+              "Change Windows display scale to 100%",
+              "Switch to fullscreen mode",
+              "Adjust mouse DPI in settings"
+            ]
+          },
+          "drag_problems": {
+            "description": "Drag operations not working properly",
+            "troubleshooting": [
+              "Adjust drag sensitivity settings",
+              "Check mouse button press method",
+              "Drag sufficient distance",
+              "Adjust drag threshold in game settings"
+            ]
+          }
+        },
+        "keyboard_issues": {
+          "shortcuts_not_working": {
+            "description": "Keyboard shortcuts not functioning",
+            "solutions": [
+              "Focus on game window",
+              "Turn off Japanese input",
+              "Check for hotkey conflicts with other apps",
+              "Check browser shortcut settings",
+              "Disable Sticky Keys and similar features"
+            ]
+          },
+          "key_repeat": {
+            "description": "Key repeating or not responding",
+            "fixes": [
+              "Update keyboard drivers",
+              "Clean keyboard physically",
+              "Test with different keyboard",
+              "Check Windows keyboard settings"
+            ]
+          }
+        },
+        "touch_issues": {
+          "touch_not_responsive": {
+            "description": "Touch operations not responding (mobile)",
+            "solutions": [
+              "Clean screen",
+              "Restart browser",
+              "Test with different finger",
+              "Check touch sensitivity settings",
+              "Check screen protector"
+            ]
+          },
+          "multi_touch_problems": {
+            "description": "Multi-touch not working correctly",
+            "troubleshooting": [
+              "Check simultaneous touch limit",
+              "Verify browser touch support",
+              "Check device multi-touch capability"
+            ]
+          }
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 240,
+      "tags": ["input", "mouse", "keyboard", "touch"]
+    },
+    {
+      "id": "data_issues",
+      "title": "Data Issues",
+      "description": "Problems with save data loss or corruption",
+      "content": {
+        "data_loss": {
+          "symptoms": [
+            "Game progress disappeared",
+            "Settings reset",
+            "Achievement records lost"
+          ],
+          "common_causes": [
+            "Using browser private mode",
+            "Deleted cookies/local storage",
+            "Browser reset",
+            "Security software deletion",
+            "Insufficient storage space"
+          ],
+          "recovery_methods": [
+            {
+              "method": "Restore from automatic backup",
+              "steps": [
+                "Settings → Data Management → Backup List",
+                "Select latest backup",
+                "Click 'Restore' button",
+                "Verify data integrity"
+              ]
+            },
+            {
+              "method": "Use manual backup file",
+              "steps": [
+                "Prepare exported JSON file",
+                "Settings → Data Management → Import",
+                "Select and upload file",
+                "Choose data merge or overwrite"
+              ]
+            }
+          ],
+          "prevention": [
+            "Create regular manual backups",
+            "Save data to cloud storage",
+            "Duplicate data across multiple browsers",
+            "Avoid private mode"
+          ]
+        },
+        "data_corruption": {
+          "symptoms": [
+            "Error on game startup",
+            "Settings not loading properly",
+            "Abnormal score value display"
+          ],
+          "diagnostic_tools": [
+            "Data verification in debug mode",
+            "Check storage in browser developer tools",
+            "Use data integrity check feature"
+          ],
+          "repair_options": [
+            "Automatic corrupted data repair",
+            "Replace with default values",
+            "Selective restore from backup",
+            "Complete data reset (last resort)"
+          ]
+        },
+        "sync_problems": {
+          "description": "Data synchronization issues between devices",
+          "issues": [
+            "Different scores between devices",
+            "Settings not synchronized",
+            "Achievement duplication or missing"
+          ],
+          "solutions": [
+            "Execute manual force sync",
+            "Manually resolve conflicting data",
+            "Select and sync master data",
+            "Disable sync and manage manually"
+          ]
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 280,
+      "tags": ["data", "backup", "restore", "sync"]
+    },
+    {
+      "id": "browser_compatibility",
+      "title": "Browser Compatibility",
+      "description": "Browser-specific issues and solutions",
+      "content": {
+        "supported_browsers": {
+          "recommended": [
+            {
+              "name": "Google Chrome",
+              "version": "90+",
+              "performance": "Excellent",
+              "notes": "Most stable performance"
+            },
+            {
+              "name": "Mozilla Firefox",
+              "version": "88+",
+              "performance": "Very Good",
+              "notes": "Excellent audio processing"
+            },
+            {
+              "name": "Microsoft Edge",
+              "version": "90+",
+              "performance": "Good",
+              "notes": "Optimal for Windows environment"
+            },
+            {
+              "name": "Safari",
+              "version": "14+",
+              "performance": "Good",
+              "notes": "Use in macOS/iOS environment"
+            }
+          ],
+          "limited_support": [
+            "Internet Explorer (support ended)",
+            "Older browser versions",
+            "Mobile lightweight browsers"
+          ]
+        },
+        "chrome_issues": {
+          "common_problems": [
+            "Performance degradation when hardware acceleration disabled",
+            "Extension interference",
+            "Settings reset due to auto-updates"
+          ],
+          "solutions": [
+            "Enable hardware acceleration in chrome://settings/system",
+            "Test in incognito mode",
+            "Optimize Chrome flags settings"
+          ]
+        },
+        "firefox_issues": {
+          "common_problems": [
+            "Audio delay occurrence",
+            "WebGL performance limitations",
+            "Feature restrictions due to privacy settings"
+          ],
+          "solutions": [
+            "Adjust audio settings in about:config",
+            "Check and enable WebGL settings",
+            "Adjust Enhanced Tracking Protection"
+          ]
+        },
+        "safari_issues": {
+          "common_problems": [
+            "Web Audio API limitations",
+            "Fullscreen mode constraints",
+            "Touch event processing differences"
+          ],
+          "solutions": [
+            "Safari-specific audio initialization process",
+            "Use alternative fullscreen methods",
+            "Adjust touch event handlers"
+          ]
+        },
+        "mobile_browsers": {
+          "optimization_tips": [
+            "Screen touch optimization",
+            "Portrait/landscape orientation support",
+            "Minimize battery consumption",
+            "Reduce network usage"
+          ]
+        }
+      },
+      "difficulty": "advanced",
+      "estimatedReadTime": 200,
+      "tags": ["browser", "compatibility", "Chrome", "Firefox", "Safari"]
+    }
+  ],
+  "emergency_procedures": {
+    "game_crash": {
+      "immediate_actions": [
+        "Reload browser tab (F5)",
+        "Complete browser restart",
+        "Close other applications to free memory",
+        "Restart PC (if necessary)"
+      ],
+      "data_protection": [
+        "Check automatic backups",
+        "Manual backup using export function",
+        "Distributed storage in multiple locations"
+      ]
+    },
+    "performance_emergency": {
+      "quick_fixes": [
+        "Identify issues in debug mode",
+        "Temporarily change settings to lowest quality",
+        "End unnecessary background processes",
+        "Clear browser cache"
+      ]
+    },
+    "data_emergency": {
+      "backup_recovery": [
+        "Confirm latest backup file location",
+        "Emergency restore procedure from backup",
+        "Manual partial data reconstruction method"
+      ]
+    }
+  },
+  "contact_support": {
+    "before_contacting": {
+      "information_to_gather": [
+        "Browser and version in use",
+        "Operating system",
+        "Detailed problem description",
+        "Steps to reproduce problem",
+        "Screenshots of error messages"
+      ]
+    },
+    "support_channels": {
+      "github_issues": {
+        "url": "https://github.com/taku-o/awaputi/issues",
+        "description": "Best for bug reports and feature requests",
+        "response_time": "1-3 business days"
+      },
+      "community_forum": {
+        "description": "User-to-user information exchange",
+        "topics": [
+          "Strategy information",
+          "Technical questions",
+          "Improvement suggestions"
+        ]
+      }
+    },
+    "bug_report_template": {
+      "required_fields": [
+        "Problem summary",
+        "Steps to reproduce",
+        "Expected behavior",
+        "Actual behavior",
+        "Environment information",
+        "Attachments (if needed)"
+      ]
+    }
+  },
+  "diagnostic_tools": {
+    "built_in_tools": [
+      "Debug mode (Ctrl+Shift+D)",
+      "Performance monitoring screen",
+      "Data integrity check",
+      "System information display"
+    ],
+    "browser_tools": [
+      "Developer tools (F12)",
+      "Console log check",
+      "Network tab communication check",
+      "Performance profiler"
+    ],
+    "external_tools": [
+      "System resource monitoring tools",
+      "Network diagnostic tools",
+      "Browser benchmark tools"
+    ]
+  }
+}

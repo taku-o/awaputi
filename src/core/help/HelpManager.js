@@ -5,7 +5,7 @@
  */
 
 import { ErrorHandler } from '../../utils/ErrorHandler.js';
-import { LocalizationManager } from '../LocalizationManager.js';
+import { getLocalizationManager } from '../LocalizationManager.js';
 import { CacheSystem } from '../CacheSystem.js';
 import { LoggingSystem } from '../LoggingSystem.js';
 
@@ -15,7 +15,7 @@ import { LoggingSystem } from '../LoggingSystem.js';
 export class HelpManager {
     constructor(gameEngine) {
         this.gameEngine = gameEngine;
-        this.localizationManager = new LocalizationManager();
+        this.localizationManager = getLocalizationManager();
         this.cacheSystem = CacheSystem.getInstance ? CacheSystem.getInstance() : new CacheSystem();
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
         this.helpContent = new Map();
@@ -35,9 +35,9 @@ export class HelpManager {
         try {
             this.loggingSystem.info('HelpManager', 'Initializing help system...');
             
-            // デフォルト言語のヘルプコンテンツを読み込み
+            // 基本ヘルプカテゴリを読み込み
             const currentLanguage = this.localizationManager.getCurrentLanguage();
-            await this.loadHelpContent('default', currentLanguage);
+            await this.loadHelpContent('gameplay', currentLanguage);
             
             // ユーザー進捗の復元
             this.loadUserProgress();
@@ -66,30 +66,18 @@ export class HelpManager {
                 return content;
             }
 
-            // コンテンツファイルの読み込み（多言語対応パス）
-            let contentPath = `./src/core/help/content/help/${language}/${category}.json`;
-            let response = await fetch(contentPath);
+            // 新しい強化されたコンテンツ読み込み
+            content = await this.tryLoadContent(category, language);
             
-            // フォールバック: 言語固有ファイルが見つからない場合、デフォルト（日本語）を試行
-            if (!response.ok && language !== 'ja') {
-                contentPath = `./src/core/help/content/help/${category}.json`;
-                response = await fetch(contentPath);
+            if (!content) {
+                // フォールバック機能付きの安全な読み込み
+                content = await this.loadWithFallback(category, language);
             }
-            
-            if (!response.ok) {
-                // フォールバック: 日本語版を試行
-                if (language !== 'ja') {
-                    this.loggingSystem.warn('HelpManager', `Help content not found for ${language}, falling back to Japanese`);
-                    return await this.loadHelpContent(category, 'ja');
-                }
-                throw new Error(`Failed to load help content: ${contentPath}`);
-            }
-
-            content = await response.json();
             
             // バリデーション
             if (!this.validateHelpContent(content)) {
-                throw new Error('Invalid help content format');
+                this.loggingSystem.warn('HelpManager', `Invalid content format for ${category}, generating placeholder`);
+                content = await this.generatePlaceholderContent(category, language);
             }
 
             // キャッシュに保存
@@ -101,8 +89,153 @@ export class HelpManager {
             
         } catch (error) {
             this.loggingSystem.error('HelpManager', `Failed to load help content: ${category}`, error);
-            return this.getDefaultHelpContent(category);
+            return await this.generatePlaceholderContent(category, language);
         }
+    }
+
+    /**
+     * 静かにコンテンツの読み込みを試行（404エラーを生成しない）
+     * @param {string} category - カテゴリ
+     * @param {string} language - 言語コード
+     * @returns {Object|null} コンテンツまたはnull
+     */
+    async tryLoadContent(category, language) {
+        try {
+            const contentPath = `./src/core/help/content/help/${language}/${category}.json`;
+            
+            // HEADリクエストでファイル存在確認（404エラーを避ける）
+            const headResponse = await fetch(contentPath, { method: 'HEAD' });
+            if (!headResponse.ok) {
+                return null;
+            }
+            
+            // ファイルが存在する場合のみGETリクエストを実行
+            const response = await fetch(contentPath);
+            if (!response.ok) {
+                return null;
+            }
+            
+            const content = await response.json();
+            this.loggingSystem.debug('HelpManager', `Successfully loaded content: ${contentPath}`);
+            return content;
+            
+        } catch (error) {
+            // エラーを静かに処理（ログに出力しない）
+            return null;
+        }
+    }
+
+    /**
+     * フォールバック機能付きの安全なコンテンツ読み込み
+     * @param {string} category - カテゴリ
+     * @param {string} language - 言語コード
+     * @returns {Object} コンテンツ
+     */
+    async loadWithFallback(category, language) {
+        // フォールバックチェーン: 指定言語 → 日本語 → 英語 → プレースホルダー
+        const fallbackChain = [
+            language,
+            'ja',
+            'en'
+        ].filter((lang, index, array) => array.indexOf(lang) === index); // 重複除去
+
+        for (const fallbackLang of fallbackChain) {
+            const content = await this.tryLoadContent(category, fallbackLang);
+            if (content) {
+                if (fallbackLang !== language) {
+                    this.loggingSystem.info('HelpManager', 
+                        `Content not found for ${language}/${category}, using fallback: ${fallbackLang}`);
+                }
+                return content;
+            }
+        }
+
+        // レガシーパスの確認
+        const legacyContent = await this.tryLoadLegacyContent(category);
+        if (legacyContent) {
+            this.loggingSystem.info('HelpManager', 
+                `Using legacy content for ${category}`);
+            return legacyContent;
+        }
+
+        // 全てのフォールバックが失敗した場合はプレースホルダーを生成
+        this.loggingSystem.warn('HelpManager', 
+            `All fallbacks failed for ${category}, generating placeholder content`);
+        return await this.generatePlaceholderContent(category, language);
+    }
+
+    /**
+     * レガシーパスからのコンテンツ読み込み試行
+     * @param {string} category - カテゴリ
+     * @returns {Object|null} コンテンツまたはnull
+     */
+    async tryLoadLegacyContent(category) {
+        try {
+            const legacyPath = `./src/core/help/content/help/${category}.json`;
+            const headResponse = await fetch(legacyPath, { method: 'HEAD' });
+            if (!headResponse.ok) {
+                return null;
+            }
+            
+            const response = await fetch(legacyPath);
+            if (!response.ok) {
+                return null;
+            }
+            
+            return await response.json();
+        } catch (error) {
+            return null;
+        }
+    }
+
+    /**
+     * プレースホルダーコンテンツの生成
+     * @param {string} category - カテゴリ
+     * @param {string} language - 言語コード
+     * @returns {Object} プレースホルダーコンテンツ
+     */
+    async generatePlaceholderContent(category, language) {
+        const placeholderMessages = {
+            ja: {
+                title: `${category}ヘルプ（準備中）`,
+                description: `${category}に関するヘルプコンテンツは現在準備中です。`,
+                content: '申し訳ございませんが、このヘルプコンテンツは現在利用できません。しばらくしてから再度お試しください。',
+                fallbackNote: '最新の情報については、メインメニューの他のヘルプセクションをご確認ください。'
+            },
+            en: {
+                title: `${category} Help (Coming Soon)`,
+                description: `Help content for ${category} is currently being prepared.`,
+                content: 'Sorry, this help content is currently unavailable. Please try again later.',
+                fallbackNote: 'For the latest information, please check other help sections in the main menu.'
+            }
+        };
+
+        const messages = placeholderMessages[language] || placeholderMessages['en'];
+        
+        return {
+            category: category,
+            title: messages.title,
+            description: messages.description,
+            language: language,
+            version: "0.0.1-placeholder",
+            lastUpdated: new Date().toISOString().split('T')[0],
+            isPlaceholder: true,
+            topics: [
+                {
+                    id: 'placeholder_info',
+                    title: messages.title,
+                    description: messages.description,
+                    content: {
+                        message: messages.content,
+                        note: messages.fallbackNote,
+                        troubleshooting: '問題が続く場合は、ページを再読み込みするか、サポートにお問い合わせください。'
+                    },
+                    difficulty: 'beginner',
+                    estimatedReadTime: 30,
+                    tags: ['placeholder', 'info']
+                }
+            ]
+        };
     }
 
     /**
@@ -120,12 +253,12 @@ export class HelpManager {
             const contentKey = `${category}_${language}`;
             const content = this.helpContent.get(contentKey);
             
-            if (!content || !content.sections) {
+            if (!content || !content.topics) {
                 this.loggingSystem.warn('HelpManager', `Help content not found: ${contentKey}`);
                 return null;
             }
 
-            const sectionData = content.sections.find(s => s.id === section);
+            const sectionData = content.topics.find(s => s.id === section);
             if (sectionData) {
                 // 閲覧履歴に追加
                 this.trackHelpUsage(sectionId);
@@ -166,8 +299,8 @@ export class HelpManager {
             for (const [key, content] of this.helpContent.entries()) {
                 if (!key.endsWith(`_${language}`)) continue;
 
-                if (content.sections) {
-                    for (const section of content.sections) {
+                if (content.topics) {
+                    for (const section of content.topics) {
                         const score = this.calculateSearchScore(section, query);
                         if (score > 0) {
                             results.push({
@@ -250,48 +383,35 @@ export class HelpManager {
      * @param {string} language - 言語コード
      * @returns {Array} トピック一覧
      */
-    getCategoryTopics(category, language = null) {
+    async getCategoryTopics(category, language = null) {
         try {
             const lang = language || this.localizationManager.getCurrentLanguage();
             
-            // カテゴリ別のトピック定義
-            const categoryTopics = {
-                gameplay: [
-                    { id: 'basics', title: '基本操作' },
-                    { id: 'bubble_types', title: '泡の種類' },
-                    { id: 'combo_system', title: 'コンボシステム' },
-                    { id: 'power_ups', title: 'パワーアップ' },
-                    { id: 'scoring', title: 'スコアシステム' }
-                ],
-                bubbles: [
-                    { id: 'normal_bubbles', title: '通常の泡' },
-                    { id: 'special_bubbles', title: '特殊な泡' },
-                    { id: 'boss_bubbles', title: 'ボス泡' },
-                    { id: 'poison_bubbles', title: '毒泡' },
-                    { id: 'healing_bubbles', title: '回復泡' }
-                ],
-                stages: [
-                    { id: 'stage_types', title: 'ステージタイプ' },
-                    { id: 'difficulty', title: '難易度設定' },
-                    { id: 'time_limits', title: '制限時間' },
-                    { id: 'objectives', title: 'クリア条件' }
-                ],
-                menu: [
-                    { id: 'navigation', title: 'メニュー操作' },
-                    { id: 'settings', title: '設定項目' },
-                    { id: 'profile', title: 'プロフィール' },
-                    { id: 'achievements', title: '実績システム' }
-                ]
-            };
+            // コンテンツを直接読み込み
+            const contentKey = `${category}_${lang}`;
+            let content = this.helpContent.get(contentKey);
             
-            const topics = categoryTopics[category] || [];
+            if (!content) {
+                // コンテンツが未読み込みの場合は読み込み
+                content = await this.loadHelpContent(category, lang);
+            }
+            
+            if (!content || !content.topics) {
+                this.loggingSystem.warn('HelpManager', `No topics found for category: ${category} in ${lang}`);
+                return [];
+            }
+            
+            // 実際のコンテンツからトピックリストを取得
+            const topics = content.topics || [];
             
             // 各トピックに詳細情報を付加
             return topics.map(topic => ({
-                ...topic,
+                id: topic.id,
+                title: topic.title,
+                description: topic.description || '',
                 category,
                 language: lang,
-                content: this.getHelpSection(`${category}.${topic.id}`, lang) || {
+                content: topic.content || {
                     title: topic.title,
                     content: 'コンテンツを読み込み中...',
                     isEmpty: true
@@ -384,25 +504,134 @@ export class HelpManager {
      * @returns {boolean} バリデーション結果
      */
     validateHelpContent(content) {
-        if (!content || typeof content !== 'object') return false;
-        if (!content.version || !content.sections) return false;
-        if (!Array.isArray(content.sections)) return false;
-        
-        return content.sections.every(section => 
-            section.id && section.title && section.content
-        );
+        try {
+            // 基本構造チェック
+            if (!content || typeof content !== 'object') {
+                this.loggingSystem.debug('HelpManager', 'Content validation failed: Invalid object structure');
+                return false;
+            }
+
+            // 必須フィールドチェック
+            const requiredFields = ['category', 'title', 'description', 'language', 'version', 'topics'];
+            for (const field of requiredFields) {
+                if (!(field in content)) {
+                    this.loggingSystem.debug('HelpManager', `Content validation failed: Missing required field: ${field}`);
+                    return false;
+                }
+            }
+
+            // topics配列チェック
+            if (!Array.isArray(content.topics)) {
+                this.loggingSystem.debug('HelpManager', 'Content validation failed: Topics must be an array');
+                return false;
+            }
+
+            // 各トピックの詳細バリデーション
+            for (let i = 0; i < content.topics.length; i++) {
+                const topic = content.topics[i];
+                if (!this.validateTopic(topic, i)) {
+                    return false;
+                }
+            }
+
+            // 言語コードの検証
+            if (!this.validateLanguageCode(content.language)) {
+                this.loggingSystem.debug('HelpManager', `Content validation failed: Invalid language code: ${content.language}`);
+                return false;
+            }
+
+            // バージョン形式の検証
+            if (!this.validateVersion(content.version)) {
+                this.loggingSystem.debug('HelpManager', `Content validation failed: Invalid version format: ${content.version}`);
+                return false;
+            }
+
+            return true;
+        } catch (error) {
+            this.loggingSystem.error('HelpManager', 'Content validation error:', error);
+            return false;
+        }
     }
 
     /**
-     * デフォルトヘルプコンテンツの取得
-     * @param {string} category - カテゴリ
-     * @returns {Object} デフォルトコンテンツ
+     * トピックのバリデーション
+     * @param {Object} topic - トピック
+     * @param {number} index - インデックス
+     * @returns {boolean} バリデーション結果
      */
+    validateTopic(topic, index) {
+        // トピックの必須フィールド
+        const requiredTopicFields = ['id', 'title', 'description', 'content', 'difficulty', 'estimatedReadTime', 'tags'];
+        
+        for (const field of requiredTopicFields) {
+            if (!(field in topic)) {
+                this.loggingSystem.debug('HelpManager', `Topic validation failed at index ${index}: Missing field: ${field}`);
+                return false;
+            }
+        }
+
+        // ID形式の検証
+        if (typeof topic.id !== 'string' || topic.id.trim().length === 0) {
+            this.loggingSystem.debug('HelpManager', `Topic validation failed at index ${index}: Invalid ID format`);
+            return false;
+        }
+
+        // 難易度レベルの検証
+        const validDifficulties = ['beginner', 'intermediate', 'advanced'];
+        if (!validDifficulties.includes(topic.difficulty)) {
+            this.loggingSystem.debug('HelpManager', `Topic validation failed at index ${index}: Invalid difficulty: ${topic.difficulty}`);
+            return false;
+        }
+
+        // 推定読み時間の検証
+        if (typeof topic.estimatedReadTime !== 'number' || topic.estimatedReadTime <= 0) {
+            this.loggingSystem.debug('HelpManager', `Topic validation failed at index ${index}: Invalid estimatedReadTime`);
+            return false;
+        }
+
+        // タグの検証
+        if (!Array.isArray(topic.tags) || topic.tags.length === 0) {
+            this.loggingSystem.debug('HelpManager', `Topic validation failed at index ${index}: Invalid tags array`);
+            return false;
+        }
+
+        // コンテンツ構造の検証
+        if (typeof topic.content !== 'object' || topic.content === null) {
+            this.loggingSystem.debug('HelpManager', `Topic validation failed at index ${index}: Invalid content structure`);
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * 言語コードの検証
+     * @param {string} languageCode - 言語コード
+     * @returns {boolean} 検証結果
+     */
+    validateLanguageCode(languageCode) {
+        const validLanguages = ['ja', 'en', 'ko', 'zh-CN', 'zh-TW'];
+        return validLanguages.includes(languageCode);
+    }
+
+    /**
+     * バージョン形式の検証
+     * @param {string} version - バージョン文字列
+     * @returns {boolean} 検証結果
+     */
+    validateVersion(version) {
+        // セマンティックバージョニング形式またはプレースホルダー形式をサポート
+        const semverPattern = /^\d+\.\d+\.\d+(-[a-zA-Z0-9.-]+)?$/;
+        const placeholderPattern = /^\d+\.\d+\.\d+-placeholder$/;
+        
+        return semverPattern.test(version) || placeholderPattern.test(version);
+    }
+
     getDefaultHelpContent(category) {
         return {
             version: '1.0.0',
             category,
-            sections: [{
+            topics: [{
                 id: 'default',
                 title: 'ヘルプが利用できません',
                 content: 'このセクションのヘルプコンテンツを読み込めませんでした。',
@@ -484,8 +713,8 @@ export class HelpManager {
     getTotalSectionCount() {
         let total = 0;
         for (const content of this.helpContent.values()) {
-            if (content.sections) {
-                total += content.sections.length;
+            if (content.topics) {
+                total += content.topics.length;
             }
         }
         return total;

@@ -5,7 +5,7 @@
  */
 
 import { ErrorHandler } from '../../utils/ErrorHandler.js';
-import { LocalizationManager } from '../LocalizationManager.js';
+import { getLocalizationManager } from '../LocalizationManager.js';
 import { CacheSystem } from '../CacheSystem.js';
 import { LoggingSystem } from '../LoggingSystem.js';
 import { HelpContentModel, TutorialModel, FAQModel, UserProgressModel } from './DataModels.js';
@@ -15,7 +15,7 @@ import { HelpContentModel, TutorialModel, FAQModel, UserProgressModel } from './
  */
 export class ContentLoader {
     constructor(localizationManager = null) {
-        this.localizationManager = localizationManager || new LocalizationManager();
+        this.localizationManager = localizationManager || getLocalizationManager();
         this.cacheSystem = CacheSystem.getInstance ? CacheSystem.getInstance() : new CacheSystem();
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
         

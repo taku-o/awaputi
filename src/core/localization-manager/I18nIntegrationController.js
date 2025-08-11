@@ -174,24 +174,37 @@ export class I18nIntegrationController {
      * @returns {Promise<Object|null>} 翻訳データまたはnull
      */
     async loadLanguageData(language) {
-        // 最適化ローダーを優先
-        if (this.optimizedLoader) {
-            try {
-                return await this.optimizedLoader.loadLanguage(language);
-            } catch (error) {
-                console.warn(`Optimized loader failed for ${language}, trying standard loader:`, error);
-            }
+        // ローダーが初期化されるまで待機
+        let attempts = 0;
+        const maxAttempts = 20; // 2秒間待機
+        
+        while ((!this.translationLoader && !this.optimizedLoader) && attempts < maxAttempts) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+            attempts++;
         }
         
-        // 標準ローダーをフォールバック
+        // 標準ローダーを優先（安定性重視）
         if (this.translationLoader) {
             try {
-                return await this.translationLoader.loadLanguage(language);
+                const result = await this.translationLoader.loadLanguage(language);
+                console.log(`I18nIntegrationController: Standard loader returned ${result ? Object.keys(result).length : 'null'} keys for ${language}`);
+                return result;
             } catch (error) {
-                console.error(`Failed to load language data for ${language}:`, error);
+                console.warn(`Standard loader failed for ${language}:`, error);
             }
         }
         
+        // 最適化ローダーをフォールバック
+        if (this.optimizedLoader) {
+            try {
+                const result = await this.optimizedLoader.loadLanguage(language);
+                return result;
+            } catch (error) {
+                console.error(`Both loaders failed for ${language}:`, error);
+            }
+        }
+        
+        console.error(`No translation loaders available for ${language} after ${attempts} attempts`);
         return null;
     }
     
@@ -267,14 +280,34 @@ export class I18nIntegrationController {
      * @returns {Object} 検証結果
      */
     validateTranslationSecurity(text, language) {
+        console.log(`I18nIntegrationController: Security manager available:`, !!this.securityManager);
+        
         if (!this.securityManager) {
+            console.log(`I18nIntegrationController: No security manager, allowing translations for ${language}`);
             return { isSecure: true, warnings: [] };
         }
         
         try {
-            return this.securityManager.validateText(text, language);
+            // validateTextメソッドがない場合、JSONパースしてvalidateTranslationDataを使用
+            let data;
+            try {
+                data = JSON.parse(text);
+            } catch (parseError) {
+                console.error(`I18nIntegrationController: JSON parse error for ${language}:`, parseError);
+                return { isSecure: false, warnings: ['Invalid JSON format'] };
+            }
+            
+            const result = this.securityManager.validateTranslationData(data, language);
+            console.log(`I18nIntegrationController: Security validation result for ${language}:`, result);
+            
+            // 結果を統一フォーマットに変換
+            return {
+                isSecure: result.isValid,
+                warnings: result.violations ? result.violations.map(v => v.message) : []
+            };
         } catch (error) {
             console.error('Failed to validate translation security:', error);
+            console.log(`I18nIntegrationController: Security validation failed, rejecting translations for ${language}`);
             return { isSecure: false, warnings: ['Security validation failed'] };
         }
     }

@@ -8,7 +8,7 @@ export class TranslationLoader {
         this.loadedTranslations = new Map();
         this.loadingPromises = new Map();
         this.cache = new Map();
-        this.baseURL = '/src/locales/';
+        this.baseURL = '/assets/i18n/';
         
         // ロード対象ファイル
         this.translationFiles = [
@@ -95,7 +95,15 @@ export class TranslationLoader {
             const promise = this._loadTranslationFile(language, file)
                 .then(data => {
                     if (data) {
-                        translations[file] = data.translations || data;
+                        // 翻訳データがネストされている場合は展開
+                        const translationData = data.translations || data;
+                        
+                        // ファイルごとに適切にデータを格納
+                        // menu.jsonの場合: {"menu": {...}, "shortcuts": {...}}のように格納される
+                        for (const [key, value] of Object.entries(translationData)) {
+                            translations[key] = value;
+                        }
+                        
                     }
                 })
                 .catch(error => {
@@ -110,7 +118,9 @@ export class TranslationLoader {
         await Promise.all(loadPromises);
         
         // 翻訳データをフラット化
-        return this._flattenTranslations(translations);
+        const flattened = this._flattenTranslations(translations);
+        
+        return flattened;
     }
     
     /**
@@ -184,13 +194,29 @@ export class TranslationLoader {
         
         for (const [category, translations] of Object.entries(categorizedTranslations)) {
             if (translations && typeof translations === 'object') {
-                for (const [key, value] of Object.entries(translations)) {
-                    flattened[key] = value;
-                }
+                // 各カテゴリのネストされた構造をフラット化
+                this._flattenNestedObject(translations, '', flattened);
             }
         }
         
         return flattened;
+    }
+    
+    /**
+     * ネストされたオブジェクトを再帰的にフラット化
+     */
+    _flattenNestedObject(obj, prefix, result) {
+        for (const [key, value] of Object.entries(obj)) {
+            const newKey = prefix ? `${prefix}.${key}` : key;
+            
+            if (value && typeof value === 'object' && !Array.isArray(value)) {
+                // オブジェクトの場合は再帰的に処理
+                this._flattenNestedObject(value, newKey, result);
+            } else {
+                // プリミティブ値または配列の場合はそのまま設定
+                result[newKey] = value;
+            }
+        }
     }
     
     /**

@@ -25,6 +25,7 @@ export class TranslationDataManager {
             'menu.subtitle': '泡割りゲーム',
             'menu.start': 'ゲーム開始',
             'menu.settings': '設定',
+            'menu.help': 'ヘルプ',
             'menu.userInfo': 'ユーザー情報',
             'menu.controls': '↑↓: 選択  Enter: 決定  ESC: 終了',
             'menu.clickInfo': 'クリックでも操作できます',
@@ -131,6 +132,18 @@ export class TranslationDataManager {
             ],
             'help.bubbles': '普通(青) 石(灰) 鉄(茶) ダイヤ(白) ピンク(回復) 毒(緑) とげとげ(連鎖) 虹色(ボーナス) 時計(時停) S字(得点) ビリビリ(妨害) 逃げる(移動)',
             
+            // ヘルプアクセシビリティ
+            'help.accessibility.searchBar': 'ヘルプ検索',
+            'help.accessibility.searchBarDesc': 'キーワードを入力してヘルプコンテンツを検索',
+            'help.accessibility.categoryList': 'ヘルプカテゴリ一覧',
+            'help.accessibility.categoryListDesc': '矢印キーで移動、Enterで選択',
+            'help.accessibility.topicList': 'トピック一覧',
+            'help.accessibility.topicListDesc': '選択されたカテゴリのトピック一覧',
+            'help.accessibility.contentArea': 'ヘルプコンテンツ表示エリア',
+            'help.accessibility.contentAreaDesc': '選択されたトピックの詳細情報',
+            'help.accessibility.backButton': '戻るボタン',
+            'help.accessibility.backButtonDesc': 'メインメニューに戻ります',
+            
             // キーボードショートカット
             'shortcuts.title': 'キーボードショートカット',
             'shortcuts.pause': '一時停止',
@@ -161,6 +174,7 @@ export class TranslationDataManager {
             'menu.subtitle': 'Bubble Popping Game',
             'menu.start': 'Start Game',
             'menu.settings': 'Settings',
+            'menu.help': 'Help',
             'menu.userInfo': 'User Info',
             'menu.controls': '↑↓: Select  Enter: Confirm  ESC: Exit',
             'menu.clickInfo': 'You can also use clicks',
@@ -266,6 +280,18 @@ export class TranslationDataManager {
                 'Push special bubbles off screen'
             ],
             'help.bubbles': 'Normal(Blue) Stone(Gray) Iron(Brown) Diamond(White) Pink(Heal) Poison(Green) Spiky(Chain) Rainbow(Bonus) Clock(Time) S-shape(Score) Electric(Hinder) Escape(Move)',
+            
+            // Help Accessibility
+            'help.accessibility.searchBar': 'Help Search',
+            'help.accessibility.searchBarDesc': 'Enter keywords to search help content',
+            'help.accessibility.categoryList': 'Help Category List',
+            'help.accessibility.categoryListDesc': 'Use arrow keys to navigate, Enter to select',
+            'help.accessibility.topicList': 'Topic List',
+            'help.accessibility.topicListDesc': 'List of topics in the selected category',
+            'help.accessibility.contentArea': 'Help Content Display Area',
+            'help.accessibility.contentAreaDesc': 'Detailed information for the selected topic',
+            'help.accessibility.backButton': 'Back Button',
+            'help.accessibility.backButtonDesc': 'Return to main menu',
             
             // Shortcuts
             'shortcuts.title': 'Keyboard Shortcuts',
@@ -444,6 +470,7 @@ export class TranslationDataManager {
         // メイン翻訳から取得
         if (this.translations.has(language)) {
             const langTranslations = this.translations.get(language);
+            
             if (langTranslations[key] !== undefined) {
                 return langTranslations[key];
             }
@@ -485,7 +512,10 @@ export class TranslationDataManager {
      * @param {Object} translationData - 翻訳データ
      */
     setLanguageData(language, translationData) {
-        this.translations.set(language, translationData);
+        const existingTranslations = this.translations.get(language) || {};
+        const mergedTranslations = { ...existingTranslations, ...translationData };
+        
+        this.translations.set(language, mergedTranslations);
         this.loadedLanguages.add(language);
     }
     

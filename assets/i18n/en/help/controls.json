@@ -1,0 +1,382 @@
+{
+  "category": "controls",
+  "title": "Controls Guide",
+  "description": "Operation methods and keyboard shortcuts for awaputi",
+  "language": "en",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-27",
+  "topics": [
+    {
+      "id": "mouse_controls",
+      "title": "Mouse Controls",
+      "description": "Basic operations using mouse",
+      "content": {
+        "left_click": {
+          "action": "Click bubbles to pop them",
+          "description": "The most basic operation. Left-click on a bubble to pop it.",
+          "tips": [
+            "Adjust mouse sensitivity for accurate clicking",
+            "Aim for combos with consecutive clicks",
+            "Hardened bubbles require multiple clicks"
+          ]
+        },
+        "drag_action": {
+          "action": "Drag bubbles to move them",
+          "description": "You can move bubbles to safe locations by dragging them.",
+          "how_to": [
+            "Press and hold mouse button on a bubble",
+            "Move mouse while holding button down",
+            "Release mouse button at destination"
+          ],
+          "strategy": [
+            "Move dangerous bubbles to screen edges",
+            "Store beneficial bubbles in safe locations",
+            "Gather bubbles for combo preparation"
+          ]
+        },
+        "right_click": {
+          "action": "Not used",
+          "description": "Right-click has no special function in awaputi.",
+          "note": "If right-click menu appears accidentally, close it with Esc key."
+        },
+        "mouse_wheel": {
+          "action": "Zoom (Debug mode only)",
+          "description": "Mouse wheel can zoom in/out when debug mode is active.",
+          "usage": "Enable debug mode with Ctrl+Shift+D first"
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 120,
+      "tags": ["mouse", "click", "drag", "basic-controls"]
+    },
+    {
+      "id": "keyboard_shortcuts",
+      "title": "Keyboard Shortcuts",
+      "description": "Keyboard operations for efficient gameplay",
+      "content": {
+        "game_controls": {
+          "esc": {
+            "action": "Open/close menu",
+            "description": "Return to main menu during game, or close current menu.",
+            "context": "Available in all scenes"
+          },
+          "space": {
+            "action": "Pause game",
+            "description": "Toggle pause/resume during gameplay.",
+            "context": "During gameplay only"
+          },
+          "p": {
+            "action": "Pause",
+            "description": "Same as Space key, pauses the game.",
+            "context": "During gameplay only"
+          },
+          "r": {
+            "action": "Resume game",
+            "description": "Resume game from pause.",
+            "context": "While paused only"
+          }
+        },
+        "help_and_info": {
+          "h": {
+            "action": "Show help",
+            "description": "Display contextual help.",
+            "context": "Available in all scenes"
+          },
+          "f1": {
+            "action": "Quick help",
+            "description": "Show brief operation guide for current screen.",
+            "context": "Available in all scenes"
+          },
+          "i": {
+            "action": "User info screen",
+            "description": "Open user information, statistics, and achievements screen.",
+            "context": "Available in menu screens"
+          }
+        },
+        "display_controls": {
+          "f": {
+            "action": "Toggle fullscreen",
+            "description": "Switch between fullscreen and windowed mode.",
+            "note": "May not work in some browsers"
+          },
+          "ctrl_shift_d": {
+            "action": "Toggle debug mode",
+            "description": "Show/hide developer debug information.",
+            "features": [
+              "FPS display",
+              "Memory usage",
+              "Bubble details",
+              "Collision visualization"
+            ]
+          }
+        },
+        "audio_controls": {
+          "m": {
+            "action": "Toggle music mute",
+            "description": "Turn BGM on/off.",
+            "note": "Sound effects adjusted separately in settings"
+          },
+          "ctrl_m": {
+            "action": "Mute all audio",
+            "description": "Mute/unmute both BGM and sound effects together.",
+            "shortcut": "Useful for emergency audio stop"
+          }
+        },
+        "navigation": {
+          "tab": {
+            "action": "Move focus",
+            "description": "Move focus between menu items.",
+            "context": "Used in menu screens"
+          },
+          "shift_tab": {
+            "action": "Move focus backward",
+            "description": "Move focus to previous menu item.",
+            "context": "Used in menu screens"
+          },
+          "enter": {
+            "action": "Confirm/select",
+            "description": "Select focused item.",
+            "context": "Used in menu screens"
+          },
+          "arrow_keys": {
+            "action": "Menu navigation",
+            "description": "Navigate menu items with arrow keys.",
+            "details": {
+              "up_down": "Move up/down menu items",
+              "left_right": "Switch tabs, increase/decrease values"
+            }
+          }
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 300,
+      "tags": ["keyboard", "shortcuts", "efficiency", "navigation"]
+    },
+    {
+      "id": "advanced_techniques",
+      "title": "Advanced Techniques",
+      "description": "High-level operation techniques for efficient play",
+      "content": {
+        "mouse_techniques": {
+          "rapid_clicking": {
+            "name": "Rapid Clicking",
+            "description": "Technique for quickly clicking consecutive bubbles to build combos",
+            "tips": [
+              "Keep wrist steady and use only fingers for rapid clicks",
+              "Maintain consistent rhythm",
+              "Take breaks to avoid fatigue"
+            ],
+            "practice": "Practice when normal bubbles are densely packed"
+          },
+          "precision_dragging": {
+            "name": "Precision Dragging",
+            "description": "Technique for moving bubbles to exact positions",
+            "techniques": [
+              "Make small movements for fine adjustments",
+              "Clearly visualize target position",
+              "Utilize screen edges and corners for placement"
+            ],
+            "applications": [
+              "Moving dangerous bubbles to safe zones",
+              "Adjusting special bubble effect ranges",
+              "Gathering bubbles for combos"
+            ]
+          },
+          "multi_target_selection": {
+            "name": "Multiple Target Processing",
+            "description": "Procedures for efficiently processing multiple bubbles",
+            "strategy": [
+              "Pre-plan processing order",
+              "Minimize mouse movement distance",
+              "Determine order considering chain reactions"
+            ]
+          }
+        },
+        "keyboard_mastery": {
+          "hotkey_combinations": {
+            "name": "Hotkey Combinations",
+            "combinations": [
+              "H → I: Quick transition from help to info screen",
+              "Esc → Space: Return to game from menu",
+              "Ctrl+Shift+D → F: Fullscreen in debug mode"
+            ]
+          },
+          "context_switching": {
+            "name": "Context Switching",
+            "description": "Selecting optimal key operations based on screen",
+            "guidelines": [
+              "During game: Use Space/P for pause frequently",
+              "In menus: Quick navigation with arrow keys and Enter",
+              "In settings: Skip fields with Tab key"
+            ]
+          }
+        },
+        "hybrid_techniques": {
+          "mouse_keyboard_combo": {
+            "name": "Mouse-Keyboard Combination",
+            "description": "High-efficiency operation using mouse and keyboard simultaneously",
+            "examples": [
+              "Play with mouse + H key for quick help reference",
+              "Space for pause during drag to consider strategy",
+              "M key for music adjustment during click sequences"
+            ]
+          },
+          "situational_adaptation": {
+            "name": "Situational Adaptation",
+            "description": "Changing operation methods based on game situation",
+            "scenarios": [
+              "High density: Mainly use drag for organization",
+              "Low density: Precision clicking for high scores",
+              "Emergency: Shortcuts for immediate pause"
+            ]
+          }
+        }
+      },
+      "difficulty": "advanced",
+      "estimatedReadTime": 240,
+      "tags": ["advanced", "techniques", "efficiency", "mastery"]
+    },
+    {
+      "id": "accessibility_options",
+      "title": "Accessibility Options",
+      "description": "Settings to ensure comfortable play for various players",
+      "content": {
+        "visual_assistance": {
+          "high_contrast": {
+            "description": "Improve visibility with high contrast mode",
+            "activation": "Settings → Accessibility → High Contrast",
+            "effects": "Enhanced bubble borders, improved background contrast"
+          },
+          "text_scaling": {
+            "description": "Adjust UI text size",
+            "options": ["Small (90%)", "Standard (100%)", "Large (120%)", "Extra Large (150%)"],
+            "note": "Applied to menu text and score display"
+          },
+          "color_blind_support": {
+            "description": "Considerations for color vision deficiencies",
+            "features": [
+              "Add identification elements beyond color (shapes, patterns)",
+              "Alternative color palette options",
+              "Text label display options"
+            ]
+          }
+        },
+        "motor_assistance": {
+          "click_hold_duration": {
+            "description": "Adjust click recognition time",
+            "range": "50ms to 500ms",
+            "benefit": "Accommodation for those who have difficulty with quick clicks"
+          },
+          "drag_sensitivity": {
+            "description": "Adjust drag operation sensitivity",
+            "options": ["Low sensitivity", "Standard", "High sensitivity"],
+            "recommendation": "Low sensitivity recommended for those with hand tremors"
+          },
+          "pause_assistance": {
+            "description": "Auto-pause function",
+            "trigger": "Automatically pause when no operation detected for certain time",
+            "timing": "Selectable: 5 seconds, 10 seconds, 30 seconds"
+          }
+        },
+        "cognitive_assistance": {
+          "simplified_ui": {
+            "description": "UI simplification options",
+            "features": [
+              "Remove unnecessary decorations",
+              "Display only important information",
+              "Use clear, understandable icons"
+            ]
+          },
+          "tutorial_replay": {
+            "description": "Repeat tutorial playback",
+            "access": "Always accessible from help menu",
+            "benefit": "Can review operation methods any number of times"
+          },
+          "context_help": {
+            "description": "Situational help display",
+            "activation": "F1 key or ? button",
+            "content": "Display optimal advice for current situation"
+          }
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 180,
+      "tags": ["accessibility", "settings", "assistance", "universal"]
+    }
+  ],
+  "quick_reference_card": {
+    "essential_shortcuts": {
+      "Esc": "Menu",
+      "Space/P": "Pause",
+      "H": "Help",
+      "F": "Fullscreen",
+      "M": "Music mute"
+    },
+    "mouse_actions": {
+      "Left click": "Pop bubbles",
+      "Drag": "Move bubbles",
+      "Wheel": "Zoom (debug mode)"
+    },
+    "emergency_controls": {
+      "Ctrl+M": "Stop all audio",
+      "Esc": "Immediate menu access",
+      "Space": "Emergency pause"
+    }
+  },
+  "troubleshooting": {
+    "common_issues": [
+      {
+        "problem": "Clicks not responding",
+        "causes": [
+          "Mouse sensitivity too low",
+          "Browser zoom settings",
+          "Interference from other applications"
+        ],
+        "solutions": [
+          "Check mouse settings",
+          "Set browser zoom to 100%",
+          "Close other applications"
+        ]
+      },
+      {
+        "problem": "Drag operation not working properly",
+        "causes": [
+          "Drag distance too short",
+          "Releasing mouse button too early",
+          "Sensitivity settings inappropriate"
+        ],
+        "solutions": [
+          "Ensure adequate drag distance",
+          "Drag firmly to destination",
+          "Adjust drag sensitivity in settings"
+        ]
+      },
+      {
+        "problem": "Keyboard shortcuts not working",
+        "causes": [
+          "Other app occupying keys",
+          "Browser settings",
+          "Language input issues"
+        ],
+        "solutions": [
+          "Focus on the game",
+          "Reload page with F5",
+          "Turn off Japanese input"
+        ]
+      }
+    ]
+  },
+  "customization_guide": {
+    "personal_optimization": [
+      "Adjust mouse settings based on dominant hand",
+      "Change key bindings to match play style",
+      "Adjust UI scale for screen resolution",
+      "Set sensitivity to match reaction speed"
+    ],
+    "performance_tuning": [
+      "Settings for maintaining high frame rate",
+      "Settings to minimize input lag",
+      "Display settings to reduce CPU load"
+    ]
+  }
+}

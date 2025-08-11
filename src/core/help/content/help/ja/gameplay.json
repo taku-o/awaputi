@@ -1,0 +1,243 @@
+{
+  "category": "gameplay",
+  "title": "ゲームプレイガイド",
+  "description": "awaputiの基本的なゲームプレイ方法とルールについて",
+  "language": "ja",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-27",
+  "topics": [
+    {
+      "id": "basics",
+      "title": "ゲームの基本",
+      "description": "ゲームの目的と基本的なルール",
+      "content": {
+        "overview": "awaputiは画面に現れる泡を割って高スコアを目指すアクションゲームです。",
+        "objective": "制限時間内にできるだけ多くの泡を割り、高いスコアを獲得することが目的です。",
+        "basic_rules": [
+          "泡は時間が経つと自然に破裂し、HPにダメージを与えます",
+          "HPが0になるとゲームオーバーです",
+          "連続して泡を割るとコンボが発生し、スコアボーナスが得られます",
+          "特殊な泡にはそれぞれ異なる効果があります"
+        ],
+        "tips": [
+          "危険な泡（赤く点滅）を優先的に処理しましょう",
+          "特殊泡の効果を理解して戦略的に活用しましょう",
+          "コンボを維持してスコアを最大化しましょう"
+        ]
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 120,
+      "tags": ["基本", "ルール", "目的"]
+    },
+    {
+      "id": "controls_guide",
+      "title": "操作方法",
+      "description": "マウス・キーボード操作の詳細ガイド",
+      "content": {
+        "mouse_controls": {
+          "left_click": "泡をクリックして割る",
+          "drag": "泡をドラッグして押し退ける",
+          "double_click": "硬い泡（石泡・鉄泡）の連続クリック"
+        },
+        "keyboard_shortcuts": {
+          "esc": "メニューを開く/閉じる",
+          "h": "ヘルプを表示",
+          "p": "ゲームを一時停止",
+          "space": "ゲームを一時停止（ゲーム中のみ）",
+          "ctrl_shift_d": "デバッグモードの切り替え",
+          "f": "フルスクリーン切り替え",
+          "m": "音楽のミュート切り替え"
+        },
+        "advanced_techniques": [
+          "ドラッグ操作で泡を安全な場所に移動させる",
+          "複数の泡を同時に処理するための配置調整",
+          "特殊泡の効果範囲を考慮した戦略的配置"
+        ]
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 180,
+      "tags": ["操作", "マウス", "キーボード", "ショートカット"]
+    },
+    {
+      "id": "game_mechanics",
+      "title": "ゲームメカニクス",
+      "description": "HP、タイマー、難易度などのシステム詳細",
+      "content": {
+        "hp_system": {
+          "description": "プレイヤーのHP（体力）システム",
+          "mechanics": [
+            "初期HP: 100",
+            "泡の自然破裂でダメージを受ける",
+            "ダメージ量は泡の種類によって異なる",
+            "ピンク泡でHP回復が可能",
+            "HP0でゲームオーバー"
+          ]
+        },
+        "timer_system": {
+          "description": "時間制限とタイマーシステム",
+          "mechanics": [
+            "ステージごとに制限時間が設定",
+            "時間内にできるだけ多くのポイントを獲得",
+            "時計泡で時間停止効果が発動",
+            "残り時間によるボーナススコア"
+          ]
+        },
+        "difficulty_scaling": {
+          "description": "難易度の段階的上昇",
+          "mechanics": [
+            "時間経過とともに泡の出現頻度が増加",
+            "特殊泡の出現率が変化",
+            "泡の移動速度が徐々に上昇",
+            "新しい泡タイプが段階的に解放"
+          ]
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 240,
+      "tags": ["HP", "タイマー", "難易度", "システム"]
+    },
+    {
+      "id": "scoring_system",
+      "title": "スコアリングシステム",
+      "description": "スコア計算とコンボシステムの詳細",
+      "content": {
+        "base_scoring": {
+          "description": "基本スコア計算",
+          "normal_bubble": 15,
+          "special_bubbles": {
+            "rainbow": 50,
+            "pink": 25,
+            "clock": 30,
+            "golden": 75,
+            "stone": 30,
+            "iron": 45,
+            "diamond": 60
+          }
+        },
+        "combo_system": {
+          "description": "コンボシステムの詳細",
+          "mechanics": [
+            "連続して泡を割るとコンボカウントが増加",
+            "コンボ数に応じてスコア倍率が上昇",
+            "一定時間操作がないとコンボがリセット",
+            "最大コンボ数に応じて特別ボーナス"
+          ],
+          "multipliers": {
+            "2-5 combo": "1.2倍",
+            "6-10 combo": "1.5倍",
+            "11-20 combo": "2.0倍",
+            "21+ combo": "2.5倍"
+          }
+        },
+        "bonus_scoring": {
+          "perfect_timing": "泡が破裂直前に割ると1.5倍ボーナス",
+          "chain_reaction": "連鎖反応による追加ボーナス",
+          "time_bonus": "残り時間に応じたクリアボーナス",
+          "hp_bonus": "残りHPに応じたボーナス"
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 300,
+      "tags": ["スコア", "コンボ", "ボーナス", "計算"]
+    },
+    {
+      "id": "game_strategies",
+      "title": "ゲーム戦略",
+      "description": "高スコア獲得のための戦略とテクニック",
+      "content": {
+        "priority_management": {
+          "description": "泡の処理優先度",
+          "high_priority": [
+            "破裂直前の危険な泡（赤く点滅）",
+            "毒泡（HP減少を避けるため早期処理）",
+            "電気泡（画面震動の妨害を最小化）"
+          ],
+          "medium_priority": [
+            "虹色泡（ボーナスタイム発動）",
+            "金色泡（高得点獲得）",
+            "時計泡（時間停止効果）"
+          ],
+          "low_priority": [
+            "通常泡（基本得点）",
+            "石泡・鉄泡（時間に余裕がある時）"
+          ]
+        },
+        "combo_strategies": {
+          "description": "効率的なコンボ維持戦略",
+          "techniques": [
+            "密集した泡エリアから処理開始",
+            "特殊泡の効果を活用した連鎖",
+            "ドラッグで泡を集めてから一気に処理",
+            "爆発泡を使った大量処理"
+          ]
+        },
+        "special_bubble_tactics": {
+          "description": "特殊泡の戦略的活用",
+          "tactics": [
+            "虹色泡: 高得点泡が多い時に使用",
+            "時計泡: 画面が混雑した時の整理用",
+            "磁石泡: 泡を集めてコンボ準備",
+            "爆発泡: 危険な泡の一括処理",
+            "氷泡: 時間稼ぎと戦略立案"
+          ]
+        },
+        "advanced_techniques": [
+          "画面端を活用した泡の誘導",
+          "特殊効果の重ね合わせによる相乗効果",
+          "リスク管理（HP温存 vs 高得点狙い）",
+          "エンドゲーム戦略（残り時間の活用）"
+        ]
+      },
+      "difficulty": "advanced",
+      "estimatedReadTime": 420,
+      "tags": ["戦略", "テクニック", "高得点", "優先度"]
+    }
+  ],
+  "quick_reference": {
+    "essential_controls": {
+      "click": "泡を割る",
+      "drag": "泡を移動",
+      "esc": "メニュー",
+      "h": "ヘルプ",
+      "p": "ポーズ"
+    },
+    "danger_signs": [
+      "赤く点滅する泡（破裂直前）",
+      "毒泡の紫色オーラ",
+      "HP低下の警告音"
+    ],
+    "high_value_targets": [
+      "虹色泡（ボーナスタイム）",
+      "金色泡（高得点）",
+      "特殊効果泡（戦略的価値）"
+    ]
+  },
+  "troubleshooting": {
+    "common_problems": [
+      {
+        "problem": "泡をクリックしても反応しない",
+        "solutions": [
+          "マウスが正確に泡の上にあるか確認",
+          "ブラウザのズーム設定を100%に設定",
+          "他のアプリケーションが入力を阻害していないか確認"
+        ]
+      },
+      {
+        "problem": "ゲームが遅い・カクつく",
+        "solutions": [
+          "設定で視覚効果を下げる",
+          "他のブラウザタブを閉じる",
+          "パーティクル数を減らす設定に変更"
+        ]
+      },
+      {
+        "problem": "スコアが上がらない",
+        "solutions": [
+          "コンボシステムを活用する",
+          "特殊泡の効果を理解して使う",
+          "危険な泡を早めに処理してHPを温存"
+        ]
+      }
+    ]
+  }
+}

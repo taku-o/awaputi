@@ -5,7 +5,7 @@ import { StageManager } from './StageManager.js';
 import { SceneManager } from './SceneManager.js';
 import { ItemManager } from './ItemSystem.js';
 import { SettingsManager } from './SettingsManager.js';
-import { LocalizationManager } from './LocalizationManager.js';
+import { getLocalizationManager } from './LocalizationManager.js';
 import { CoreKeyboardShortcutManager } from './KeyboardShortcutManager.js';
 import { AchievementManager } from './AchievementManager.js';
 import { AchievementEventIntegrator } from './AchievementEventIntegrator.js';
@@ -157,7 +157,7 @@ export class GameEngine {
         
         // 新しいUI改善システム
         this.settingsManager = new SettingsManager(this);
-        this.localizationManager = new LocalizationManager();
+        this.localizationManager = getLocalizationManager();
         this.keyboardShortcutManager = new CoreKeyboardShortcutManager(this);
         
         // 追加コンテンツシステム

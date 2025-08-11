@@ -226,7 +226,7 @@ export class OptimizedTranslationLoader {
      * 単一ファイルの読み込み
      */
     async _loadSingleFile(language, file, options) {
-        const url = `/src/locales/${language}/${file}.json`;
+        const url = `/assets/i18n/${language}/${file}.json`;
         const startTime = performance.now();
         
         try {

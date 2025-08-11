@@ -378,6 +378,12 @@ export class GameEngineInitializer {
     async initializeScenes() {
         console.log('[DEBUG] GameEngineInitializer: initializeScenes開始');
         try {
+            // LocalizationManagerの初期化を待機
+            if (this.gameEngine.localizationManager && this.gameEngine.localizationManager.waitForInitialization) {
+                console.log('[DEBUG] GameEngineInitializer: LocalizationManager初期化を待機中...');
+                await this.gameEngine.localizationManager.waitForInitialization();
+                console.log('[DEBUG] GameEngineInitializer: LocalizationManager初期化完了');
+            }
             // Removed: const { MainMenuScene } = require('../scenes/MainMenuScene.js');
             // Removed: const { StageSelectScene } = require('../scenes/StageSelectScene.js');
             // Removed: const { GameScene } = require('../scenes/GameScene.js');

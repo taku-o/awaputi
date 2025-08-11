@@ -1,0 +1,127 @@
+{
+  "category": "scoring",
+  "title": "スコアガイド",
+  "description": "スコアシステムとポイント計算の完全ガイド",
+  "language": "ja",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-27",
+  "topics": [
+    {
+      "id": "scoring_system",
+      "title": "スコアシステム",
+      "description": "スコア計算とコンボシステムの詳細",
+      "content": {
+        "base_scoring": {
+          "description": "基本スコア計算",
+          "normal_bubble": 15,
+          "special_bubbles": {
+            "rainbow": 50,
+            "pink": 25,
+            "clock": 30,
+            "golden": 75,
+            "stone": 30,
+            "iron": 45,
+            "diamond": 60
+          }
+        },
+        "combo_system": {
+          "description": "コンボシステムの詳細",
+          "mechanics": [
+            "連続してバブルを割るとコンボカウントが増加",
+            "コンボ数に基づいてスコア倍率が上昇",
+            "操作が途切れるとコンボがリセット",
+            "最大コンボ数に応じて特別ボーナス"
+          ],
+          "multipliers": {
+            "2-5 combo": "1.2倍",
+            "6-10 combo": "1.5倍",
+            "11-20 combo": "2.0倍",
+            "21+ combo": "2.5倍"
+          }
+        },
+        "bonus_scoring": {
+          "perfect_timing": "破裂直前に割ると1.5倍ボーナス",
+          "chain_reaction": "連鎖反応による追加ボーナス",
+          "time_bonus": "残り時間に基づくクリアボーナス",
+          "hp_bonus": "残りHPに基づくボーナス"
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 300,
+      "tags": ["スコア", "コンボ", "ボーナス", "計算"]
+    },
+    {
+      "id": "high_score_strategies",
+      "title": "ハイスコア戦略",
+      "description": "最高スコア達成のための上級テクニック",
+      "content": {
+        "combo_maintenance": {
+          "description": "長いコンボを維持するためのテクニック",
+          "strategies": [
+            "バブル処理順序を事前に計画",
+            "特殊バブルを使ってコンボチェーンを延長",
+            "密集したバブルを優先して連続処理を容易に",
+            "バブル処理の途切れを避けてリズムを維持"
+          ]
+        },
+        "multiplier_optimization": {
+          "description": "スコア倍率の最大化",
+          "techniques": [
+            "最大2.5倍倍率のため21+コンボを目指す",
+            "高コンボ中に時間停止バブルを使用",
+            "パーフェクトタイミングと高コンボ倍率を組み合わせ",
+            "高得点バブルをコンボピーク時に使用"
+          ]
+        },
+        "bonus_maximization": {
+          "description": "ボーナススコアの最大化",
+          "methods": [
+            "危険なバブルを自然破裂直前に処理",
+            "爆発バブルで連鎖反応を作成",
+            "エンドゲームボーナスのためHPを保持",
+            "最大時間ボーナスのため残り時間を最適化"
+          ]
+        }
+      },
+      "difficulty": "advanced",
+      "estimatedReadTime": 240,
+      "tags": ["戦略", "ハイスコア", "最適化", "上級"]
+    },
+    {
+      "id": "score_calculation",
+      "title": "スコア計算詳細",
+      "description": "スコア計算の数学的内訳",
+      "content": {
+        "formula_breakdown": {
+          "base_formula": "スコア = (基本ポイント × コンボ倍率) + ボーナス",
+          "combo_multiplier_formula": "倍率 = min(2.5, 1.0 + (コンボ数 / 10))",
+          "time_bonus_formula": "時間ボーナス = 残り秒数 × 10",
+          "hp_bonus_formula": "HPボーナス = 残りHP × 5"
+        },
+        "example_calculations": [
+          {
+            "scenario": "金色バブル(75pt) + 15コンボ",
+            "calculation": "75 × 2.0 + ボーナス = 150+ポイント"
+          },
+          {
+            "scenario": "パーフェクトタイミング虹バブル(50pt) + 25コンボ",
+            "calculation": "50 × 1.5 × 2.5 + ボーナス = 187.5+ポイント"
+          },
+          {
+            "scenario": "連鎖反応(5バブル、平均30pt) + 10コンボ",
+            "calculation": "150 × 1.5 + 連鎖ボーナス = 225+ポイント"
+          }
+        ],
+        "scoring_tips": [
+          "コンボ倍率は2.5倍が上限（21+コンボ）",
+          "パーフェクトタイミングはコンボ倍率前に50%追加",
+          "連鎖反応は連鎖内バブル数に応じてボーナス追加",
+          "時間・HPボーナスは全倍率適用後に加算"
+        ]
+      },
+      "difficulty": "advanced",
+      "estimatedReadTime": 360,
+      "tags": ["計算", "公式", "数学", "詳細"]
+    }
+  ]
+}
