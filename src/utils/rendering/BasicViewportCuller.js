@@ -8,7 +8,7 @@
  * - 可視性キャッシュによる性能最適化
  * - 詳細なカリング統計収集
  */
-export class ViewportCuller {
+export class BasicViewportCuller {
     constructor(canvas) {
         this.canvas = canvas;
         

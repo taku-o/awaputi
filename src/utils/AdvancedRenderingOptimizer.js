@@ -1,8 +1,8 @@
 import { getErrorHandler } from './ErrorHandler.js';
 import { getConfigurationManager } from '../core/ConfigurationManager.js';
-import { DirtyRegionManager } from './rendering/DirtyRegionManager.js';
-import { ViewportCuller } from './rendering/ViewportCuller.js';
-import { LayerManager } from './rendering/LayerManager.js';
+import { BasicDirtyRegionManager } from './rendering/BasicDirtyRegionManager.js';
+import { BasicViewportCuller } from './rendering/BasicViewportCuller.js';
+import { BasicLayerManager } from './rendering/BasicLayerManager.js';
 import { RenderingPerformanceMonitor } from './rendering/RenderingPerformanceMonitor.js';
 import { QuadTree } from './rendering/QuadTree.js';
 
@@ -50,9 +50,9 @@ export class AdvancedRenderingOptimizer {
         };
         
         // Initialize component managers
-        this.dirtyRegionManager = new DirtyRegionManager();
-        this.viewportCuller = new ViewportCuller(canvas);
-        this.layerManager = new LayerManager(canvas);
+        this.dirtyRegionManager = new BasicDirtyRegionManager();
+        this.viewportCuller = new BasicViewportCuller(canvas);
+        this.layerManager = new BasicLayerManager(canvas);
         this.performanceMonitor = new RenderingPerformanceMonitor();
         
         // Rendering pipeline optimization

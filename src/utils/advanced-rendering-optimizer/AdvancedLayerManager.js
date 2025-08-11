@@ -4,7 +4,7 @@ import { getErrorHandler } from '../ErrorHandler.js';
  * Layer Management System
  * レイヤー管理システム - 効率的なレイヤー合成とキャッシング
  */
-export class LayerManager {
+export class AdvancedLayerManager {
     constructor(mainCanvas, config = {}) {
         this.errorHandler = getErrorHandler();
         this.mainCanvas = mainCanvas;

@@ -4,7 +4,7 @@ import { getErrorHandler } from '../ErrorHandler.js';
  * Dirty Region Management System
  * ダーティリージョン管理システム - 効率的な部分再描画のための領域管理
  */
-export class DirtyRegionManager {
+export class AdvancedDirtyRegionManager {
     constructor(config = {}) {
         this.errorHandler = getErrorHandler();
         

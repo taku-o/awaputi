@@ -8,7 +8,7 @@
  * - 領域サイズ最適化アルゴリズム
  * - パフォーマンス統計収集
  */
-export class DirtyRegionManager {
+export class BasicDirtyRegionManager {
     constructor() {
         // Dirty region management
         this.config = {

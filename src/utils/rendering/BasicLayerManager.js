@@ -8,7 +8,7 @@
  * - レイヤー合成最適化
  * - バッチレンダリング対応
  */
-export class LayerManager {
+export class BasicLayerManager {
     constructor(canvas) {
         this.canvas = canvas;
         

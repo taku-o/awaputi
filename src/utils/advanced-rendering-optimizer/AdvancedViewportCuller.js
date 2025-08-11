@@ -4,7 +4,7 @@ import { getErrorHandler } from '../ErrorHandler.js';
  * Viewport Culling System
  * ビューポートカリングシステム - 画面外オブジェクトの描画スキップによる最適化
  */
-export class ViewportCuller {
+export class AdvancedViewportCuller {
     constructor(config = {}) {
         this.errorHandler = getErrorHandler();
         
