@@ -83,17 +83,17 @@ async function generateFontPreloadConfig() {
   console.log('🔤 フォントプリロード設定の生成...');
   
   const fontConfig = deployConfig.assets.fonts;
-  const preloadLinks = [];
+  const configPath = path.join(projectRoot, 'src', 'config', 'FontPreloadConfig.js');
   
   // 各言語のフォント設定を確認
   for (const [lang, fonts] of Object.entries(fontConfig.fallbacks)) {
     console.log(`  📝 ${lang}: ${fonts.join(', ')}`);
   }
   
-  // HTMLヘッドに追加するプリロードリンクを生成
+  // 新しい設定内容を生成（タイムスタンプなし）
   const configContent = `/**
  * フォントプリロード設定（自動生成）
- * 生成日時: ${new Date().toISOString()}
+ * 最終更新: 2025-01-28T00:00:00Z
  */
 
 export const fontPreloadConfig = ${JSON.stringify(fontConfig, null, 2)};
@@ -105,11 +105,20 @@ export const generatePreloadLinks = (language) => {
 
 export default fontPreloadConfig;
 `;
+
+  // 既存ファイルの内容と比較してidempotentに
+  try {
+    const existingContent = await fs.readFile(configPath, 'utf-8');
+    if (existingContent === configContent) {
+      console.log('  ⏭️  FontPreloadConfig.js: 既に最新');
+      return;
+    }
+  } catch (error) {
+    // ファイルが存在しない場合は新規作成
+  }
   
-  await fs.writeFile(
-    path.join(projectRoot, 'src', 'config', 'FontPreloadConfig.js'),
-    configContent
-  );
+  await fs.writeFile(configPath, configContent);
+  console.log('  ✅ FontPreloadConfig.js: 設定更新完了');
   
   console.log('✅ フォントプリロード設定生成完了\n');
 }
@@ -153,6 +162,8 @@ async function validateCDNConfig() {
 async function generatePerformanceMonitoringConfig() {
   console.log('📊 パフォーマンス監視設定の生成...');
   
+  const configPath = path.join(projectRoot, 'src', 'config', 'I18nPerformanceConfig.js');
+  
   const monitoringConfig = {
     enabled: true,
     metrics: {
@@ -176,24 +187,33 @@ async function generatePerformanceMonitoringConfig() {
     alerts: {
       email: process.env.DEPLOY_ALERT_EMAIL,
       webhook: process.env.DEPLOY_ALERT_WEBHOOK
-    },
-    generatedAt: new Date().toISOString()
+    }
+    // generatedAtフィールドを削除してidempotentに
   };
   
   const configContent = `/**
  * 多言語対応パフォーマンス監視設定（自動生成）
- * 生成日時: ${new Date().toISOString()}
+ * 最終更新: 2025-01-28T00:00:00Z
  */
 
 export const i18nPerformanceConfig = ${JSON.stringify(monitoringConfig, null, 2)};
 
 export default i18nPerformanceConfig;
 `;
+
+  // 既存ファイルの内容と比較してidempotentに
+  try {
+    const existingContent = await fs.readFile(configPath, 'utf-8');
+    if (existingContent === configContent) {
+      console.log('  ⏭️  I18nPerformanceConfig.js: 既に最新');
+      return;
+    }
+  } catch (error) {
+    // ファイルが存在しない場合は新規作成
+  }
   
-  await fs.writeFile(
-    path.join(projectRoot, 'src', 'config', 'I18nPerformanceConfig.js'),
-    configContent
-  );
+  await fs.writeFile(configPath, configContent);
+  console.log('  ✅ I18nPerformanceConfig.js: 設定更新完了');
   
   console.log('✅ パフォーマンス監視設定生成完了\n');
 }
