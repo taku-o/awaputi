@@ -1,6 +1,6 @@
 /**
  * 多言語対応パフォーマンス監視設定（自動生成）
- * 生成日時: 2025-08-07T00:45:58.244Z
+ * 最終更新: 2025-01-28T00:00:00Z
  */
 
 export const i18nPerformanceConfig = {
@@ -23,8 +23,7 @@ export const i18nPerformanceConfig = {
       "track": true
     }
   },
-  "alerts": {},
-  "generatedAt": "2025-08-07T00:45:58.244Z"
+  "alerts": {}
 };
 
 export default i18nPerformanceConfig;

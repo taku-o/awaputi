@@ -1,1 +1,110 @@
-{"meta":{"language":"en","region":"US","version":"1.0.0","lastUpdated":"2025-01-28T00:00:00Z","completeness":100,"quality":95,"optimizedAt":"2025-08-07T00:45:58.236Z","size":2901},"translations":{"settings":{"title":"Settings","audio":"Audio Settings","masterVolume":"Master Volume","sfxVolume":"SFX Volume","bgmVolume":"BGM Volume","mute":"Mute","language":"Language","quality":"Quality","accessibility":"Accessibility","controls":"Controls","back":"Back","reset":"Reset","apply":"Apply"},"accessibility":{"highContrast":"High Contrast","reducedMotion":"Reduced Motion","largeText":"Large Text","screenReader":{"title":"Screen Reader","enabled":"Screen Reader Support Enabled","ariaLabels":"ARIA Labels","liveRegions":"Live Regions","gameDescriptions":"Game State Descriptions","bubbleDescriptions":"Bubble Descriptions","announcements":"Announcement Settings","speechSynthesis":"Speech Synthesis","voiceSettings":"Voice Settings","rate":"Speech Rate","pitch":"Pitch","volume":"Volume"},"colorBlindSupport":"Color Blind Support","manager":{"title":"Accessibility Settings","description":"Providing inclusive gaming experience for all users","enabled":"Accessibility Features Enabled","disabled":"Accessibility Features Disabled"},"keyboard":{"title":"Keyboard Navigation","enabled":"Keyboard Navigation Enabled","focusRing":"Focus Ring Display","skipLinks":"Skip Links","shortcuts":"Keyboard Shortcuts","customization":"Shortcut Customization","navigation":"Navigation Settings","tabOrder":"Tab Order","announcement":"Keyboard Navigation Announcements"},"visual":{"title":"Visual Assistance","contrast":"Contrast Adjustment","textScaling":"Text Size Adjustment","colorBlindness":"Color Vision Support","motionReduction":"Motion Reduction","focusIndicators":"Focus Indicators","colorScheme":"Color Scheme","fontFamily":"Font Selection","animationSettings":"Animation Settings"},"audio":{"title":"Audio Assistance","visualFeedback":"Visual Audio Feedback","captions":"Caption Display","soundVisualization":"Sound Visualization","vibrationFeedback":"Vibration Feedback","flashAlerts":"Flash Alerts","captionStyle":"Caption Style","captionSize":"Caption Size","captionPosition":"Caption Position"},"motor":{"title":"Motor Assistance","alternativeInput":"Alternative Input Methods","switchInput":"Switch Input","eyeTracking":"Eye Tracking","voiceControl":"Voice Control","gestureCustomization":"Gesture Customization","timingAdjustments":"Timing Adjustments","sensitivity":"Sensitivity Settings","dwellTime":"Dwell Time","oneHandedMode":"One-handed Mode"},"cognitive":{"title":"Cognitive Support","simplification":"UI Simplification","contextualHelp":"Contextual Help","errorRecovery":"Error Recovery Assistance","memoryAids":"Memory Aids","distractionReduction":"Distraction Reduction","clearLanguage":"Clear Language","progressIndicators":"Progress Indicators","confirmations":"Confirmation Dialogs"}}}}
+{
+  "meta": {
+    "language": "en",
+    "region": "US",
+    "version": "1.0.0",
+    "lastUpdated": "2025-01-28T00:00:00Z",
+    "completeness": 100,
+    "quality": 95,
+    "size": 2901
+  },
+  "translations": {
+    "settings": {
+      "title": "Settings",
+      "audio": "Audio Settings",
+      "masterVolume": "Master Volume",
+      "sfxVolume": "SFX Volume",
+      "bgmVolume": "BGM Volume",
+      "mute": "Mute",
+      "language": "Language",
+      "quality": "Quality",
+      "accessibility": "Accessibility",
+      "controls": "Controls",
+      "back": "Back",
+      "reset": "Reset",
+      "apply": "Apply"
+    },
+    "accessibility": {
+      "highContrast": "High Contrast",
+      "reducedMotion": "Reduced Motion",
+      "largeText": "Large Text",
+      "screenReader": {
+        "title": "Screen Reader",
+        "enabled": "Screen Reader Support Enabled",
+        "ariaLabels": "ARIA Labels",
+        "liveRegions": "Live Regions",
+        "gameDescriptions": "Game State Descriptions",
+        "bubbleDescriptions": "Bubble Descriptions",
+        "announcements": "Announcement Settings",
+        "speechSynthesis": "Speech Synthesis",
+        "voiceSettings": "Voice Settings",
+        "rate": "Speech Rate",
+        "pitch": "Pitch",
+        "volume": "Volume"
+      },
+      "colorBlindSupport": "Color Blind Support",
+      "manager": {
+        "title": "Accessibility Settings",
+        "description": "Providing inclusive gaming experience for all users",
+        "enabled": "Accessibility Features Enabled",
+        "disabled": "Accessibility Features Disabled"
+      },
+      "keyboard": {
+        "title": "Keyboard Navigation",
+        "enabled": "Keyboard Navigation Enabled",
+        "focusRing": "Focus Ring Display",
+        "skipLinks": "Skip Links",
+        "shortcuts": "Keyboard Shortcuts",
+        "customization": "Shortcut Customization",
+        "navigation": "Navigation Settings",
+        "tabOrder": "Tab Order",
+        "announcement": "Keyboard Navigation Announcements"
+      },
+      "visual": {
+        "title": "Visual Assistance",
+        "contrast": "Contrast Adjustment",
+        "textScaling": "Text Size Adjustment",
+        "colorBlindness": "Color Vision Support",
+        "motionReduction": "Motion Reduction",
+        "focusIndicators": "Focus Indicators",
+        "colorScheme": "Color Scheme",
+        "fontFamily": "Font Selection",
+        "animationSettings": "Animation Settings"
+      },
+      "audio": {
+        "title": "Audio Assistance",
+        "visualFeedback": "Visual Audio Feedback",
+        "captions": "Caption Display",
+        "soundVisualization": "Sound Visualization",
+        "vibrationFeedback": "Vibration Feedback",
+        "flashAlerts": "Flash Alerts",
+        "captionStyle": "Caption Style",
+        "captionSize": "Caption Size",
+        "captionPosition": "Caption Position"
+      },
+      "motor": {
+        "title": "Motor Assistance",
+        "alternativeInput": "Alternative Input Methods",
+        "switchInput": "Switch Input",
+        "eyeTracking": "Eye Tracking",
+        "voiceControl": "Voice Control",
+        "gestureCustomization": "Gesture Customization",
+        "timingAdjustments": "Timing Adjustments",
+        "sensitivity": "Sensitivity Settings",
+        "dwellTime": "Dwell Time",
+        "oneHandedMode": "One-handed Mode"
+      },
+      "cognitive": {
+        "title": "Cognitive Support",
+        "simplification": "UI Simplification",
+        "contextualHelp": "Contextual Help",
+        "errorRecovery": "Error Recovery Assistance",
+        "memoryAids": "Memory Aids",
+        "distractionReduction": "Distraction Reduction",
+        "clearLanguage": "Clear Language",
+        "progressIndicators": "Progress Indicators",
+        "confirmations": "Confirmation Dialogs"
+      }
+    }
+  }
+}

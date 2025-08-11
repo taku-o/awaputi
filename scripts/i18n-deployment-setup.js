@@ -43,19 +43,26 @@ async function optimizeTranslationFiles() {
           // JSONの妥当性チェック
           const parsed = JSON.parse(content);
           
-          // メタデータの追加/更新
+          // optimizedAtフィールドが存在しない場合はスキップ（既に最適化済み）
+          if (!parsed.meta || !parsed.meta.optimizedAt) {
+            console.log(`    ⏭️  ${file}: 既に最適化済み`);
+            continue;
+          }
+          
+          // optimizedAtフィールドを削除
           const optimized = {
             ...parsed,
             meta: {
-              ...parsed.meta,
-              optimizedAt: new Date().toISOString(),
-              version: parsed.meta?.version || '1.0.0',
-              size: Buffer.byteLength(content, 'utf8')
+              ...parsed.meta
             }
           };
           
-          // 最適化されたファイルを書き戻し（プリティプリント無し）
-          await fs.writeFile(filePath, JSON.stringify(optimized), 'utf-8');
+          delete optimized.meta.optimizedAt;
+          
+          // 元のフォーマットを保持してファイルを更新
+          const formattedContent = JSON.stringify(optimized, null, 2);
+          await fs.writeFile(filePath, formattedContent, 'utf-8');
+          console.log(`    ✅ ${file}: optimizedAtフィールドを削除`);
           
         } catch (error) {
           console.error(`    ❌ ${file}: JSON解析エラー`, error.message);
@@ -76,17 +83,17 @@ async function generateFontPreloadConfig() {
   console.log('🔤 フォントプリロード設定の生成...');
   
   const fontConfig = deployConfig.assets.fonts;
-  const preloadLinks = [];
+  const configPath = path.join(projectRoot, 'src', 'config', 'FontPreloadConfig.js');
   
   // 各言語のフォント設定を確認
   for (const [lang, fonts] of Object.entries(fontConfig.fallbacks)) {
     console.log(`  📝 ${lang}: ${fonts.join(', ')}`);
   }
   
-  // HTMLヘッドに追加するプリロードリンクを生成
+  // 新しい設定内容を生成（タイムスタンプなし）
   const configContent = `/**
  * フォントプリロード設定（自動生成）
- * 生成日時: ${new Date().toISOString()}
+ * 最終更新: 2025-01-28T00:00:00Z
  */
 
 export const fontPreloadConfig = ${JSON.stringify(fontConfig, null, 2)};
@@ -98,11 +105,20 @@ export const generatePreloadLinks = (language) => {
 
 export default fontPreloadConfig;
 `;
+
+  // 既存ファイルの内容と比較してidempotentに
+  try {
+    const existingContent = await fs.readFile(configPath, 'utf-8');
+    if (existingContent === configContent) {
+      console.log('  ⏭️  FontPreloadConfig.js: 既に最新');
+      return;
+    }
+  } catch (error) {
+    // ファイルが存在しない場合は新規作成
+  }
   
-  await fs.writeFile(
-    path.join(projectRoot, 'src', 'config', 'FontPreloadConfig.js'),
-    configContent
-  );
+  await fs.writeFile(configPath, configContent);
+  console.log('  ✅ FontPreloadConfig.js: 設定更新完了');
   
   console.log('✅ フォントプリロード設定生成完了\n');
 }
@@ -146,6 +162,8 @@ async function validateCDNConfig() {
 async function generatePerformanceMonitoringConfig() {
   console.log('📊 パフォーマンス監視設定の生成...');
   
+  const configPath = path.join(projectRoot, 'src', 'config', 'I18nPerformanceConfig.js');
+  
   const monitoringConfig = {
     enabled: true,
     metrics: {
@@ -169,24 +187,33 @@ async function generatePerformanceMonitoringConfig() {
     alerts: {
       email: process.env.DEPLOY_ALERT_EMAIL,
       webhook: process.env.DEPLOY_ALERT_WEBHOOK
-    },
-    generatedAt: new Date().toISOString()
+    }
+    // generatedAtフィールドを削除してidempotentに
   };
   
   const configContent = `/**
  * 多言語対応パフォーマンス監視設定（自動生成）
- * 生成日時: ${new Date().toISOString()}
+ * 最終更新: 2025-01-28T00:00:00Z
  */
 
 export const i18nPerformanceConfig = ${JSON.stringify(monitoringConfig, null, 2)};
 
 export default i18nPerformanceConfig;
 `;
+
+  // 既存ファイルの内容と比較してidempotentに
+  try {
+    const existingContent = await fs.readFile(configPath, 'utf-8');
+    if (existingContent === configContent) {
+      console.log('  ⏭️  I18nPerformanceConfig.js: 既に最新');
+      return;
+    }
+  } catch (error) {
+    // ファイルが存在しない場合は新規作成
+  }
   
-  await fs.writeFile(
-    path.join(projectRoot, 'src', 'config', 'I18nPerformanceConfig.js'),
-    configContent
-  );
+  await fs.writeFile(configPath, configContent);
+  console.log('  ✅ I18nPerformanceConfig.js: 設定更新完了');
   
   console.log('✅ パフォーマンス監視設定生成完了\n');
 }
@@ -270,6 +297,25 @@ async function preDeploymentCheck() {
 async function generateDeploymentReport() {
   console.log('📋 デプロイメントレポートの生成...');
   
+  const localesDir = path.join(projectRoot, 'src', 'locales');
+  const supportedLanguages = deployConfig.internationalization.supportedLanguages;
+  
+  // 翻訳ファイルの統計情報を収集
+  let totalFiles = 0;
+  let optimizedFiles = 0;
+  
+  for (const lang of supportedLanguages) {
+    const langDir = path.join(localesDir, lang);
+    try {
+      const files = await fs.readdir(langDir);
+      const jsonFiles = files.filter(file => file.endsWith('.json'));
+      totalFiles += jsonFiles.length;
+      optimizedFiles += jsonFiles.length; // optimizedAtが削除されているので全て最適化済み
+    } catch (error) {
+      // ディレクトリが存在しない場合はスキップ
+    }
+  }
+  
   const report = {
     timestamp: new Date().toISOString(),
     version: '1.0.0',
@@ -289,7 +335,12 @@ async function generateDeploymentReport() {
     },
     optimization: {
       compression: deployConfig.assets.compression,
-      preload: deployConfig.cdn.preload || {}
+      preload: deployConfig.cdn.preload || {},
+      translationFiles: {
+        processed: totalFiles,
+        optimized: optimizedFiles,
+        optimizedAt: new Date().toISOString()
+      }
     }
   };
   
