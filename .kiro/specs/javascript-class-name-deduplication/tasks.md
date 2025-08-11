@@ -79,12 +79,12 @@
   - 欠落インポートの自動検出
   - _Requirements: 4.3_
 
-- [ ] 6. 設定ファイル重複の解決
+- [x] 6. 設定ファイル重複の解決
   - PerformanceConfigクラスの重複を解決
   - バックアップファイルとの競合を処理
   - _Requirements: 1.2, 1.4, 2.2, 2.4_
 
-- [ ] 6.1 PerformanceConfig重複の解決
+- [x] 6.1 PerformanceConfig重複の解決
   - src/config/内のPerformanceConfig重複を分析
   - バックアップファイルの適切な処理
   - メインファイルとの統合または分離
