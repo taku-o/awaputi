@@ -46,7 +46,7 @@ class MockGameEngine {
     }
 }
 
-class MockStatisticsManager {
+class GameEngineMockStatisticsManager {
     constructor() {
         this.gameStats = {
             totalScore: 50000,
@@ -74,7 +74,7 @@ class MockStatisticsManager {
     }
 }
 
-class MockAchievementManager {
+class GameEngineMockAchievementManager {
     constructor() {
         this.achievements = [
             { id: 'first_win', name: '初勝利', description: '初めてゲームをクリア', unlocked: true, rare: false },
@@ -118,8 +118,8 @@ describe('SocialGameEngineIntegration', () => {
     beforeEach(async () => {
         // モックオブジェクトを初期化
         mockGameEngine = new MockGameEngine();
-        mockStatisticsManager = new MockStatisticsManager();
-        mockAchievementManager = new MockAchievementManager();
+        mockStatisticsManager = new GameEngineMockStatisticsManager();
+        mockAchievementManager = new GameEngineMockAchievementManager();
 
         // SocialSharingManagerを動的にインポート
         const module = await import('../../core/SocialSharingManager.js');
