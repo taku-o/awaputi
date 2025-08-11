@@ -20,7 +20,7 @@
   - git statusでの変更検出がないことを確認するテスト
   - _Requirements: 4.1, 4.2, 4.3_
 
-- [ ] 5. TranslationLoaderとの互換性テストを作成
+- [x] 5. TranslationLoaderとの互換性テストを作成
   - 修正後の翻訳ファイル構造でTranslationLoaderが正常動作することを検証
   - メタデータ検証機能（_validateMetadata）の動作確認
   - _Requirements: 2.2, 5.1, 5.2_
