@@ -77,57 +77,88 @@ export class UsernameInputManager {
      */
     renderUsernameInput(context) {
         try {
-            const canvas = this.gameEngine.canvas;
+            const canvasInfo = this.getCanvasInfo();
             
-            // Canvas実際の解像度を取得
-            const canvasWidth = canvas.width;
-            const canvasHeight = canvas.height;
-            
-            // ベース座標系（800x600）からCanvas座標系への変換比率
-            const scaleX = canvasWidth / 800;
-            const scaleY = canvasHeight / 600;
-            
-            // ベース座標系でのレイアウト
-            const baseWidth = 800;
-            const baseHeight = 600;
-            
-            // 半透明オーバーレイ
-            context.save();
-            context.fillStyle = 'rgba(0,0,0,0.8)';
-            context.fillRect(0, 0, canvasWidth, canvasHeight);
-            
-            // タイトル
-            context.fillStyle = '#FFFFFF';
-            context.font = `bold ${32 * Math.min(scaleX, scaleY)}px Arial`;
-            context.textAlign = 'center';
-            context.textBaseline = 'middle';
-            
-            const title = this.isEditingUsername ? 'ユーザー名変更' : 'ユーザー名登録';
-            context.fillText(title, (baseWidth / 2) * scaleX, 200 * scaleY);
-            
-            // 説明文
-            context.font = `${18 * Math.min(scaleX, scaleY)}px Arial`;
-            context.fillStyle = '#CCCCCC';
-            context.fillText('ユーザー名を入力してください（最大10文字）', (baseWidth / 2) * scaleX, 240 * scaleY);
-            
-            // 入力ボックス
-            this.renderInputBox(context, scaleX, scaleY);
-            
-            // ボタン
-            this.renderUsernameInputButtons(context, scaleX, scaleY);
-            
-            // 操作説明
-            context.fillStyle = '#AAAAAA';
-            context.font = `${14 * Math.min(scaleX, scaleY)}px Arial`;
-            context.textAlign = 'center';
-            context.fillText('文字を入力してEnterで決定、ESCでキャンセル', (baseWidth / 2) * scaleX, 450 * scaleY);
-            
-            context.restore();
+            if (canvasInfo) {
+                this.renderWithResponsiveCoordinates(context, canvasInfo);
+            } else {
+                this.renderWithFallbackCoordinates(context);
+            }
         } catch (error) {
             this.errorHandler.handleError(error, {
                 context: 'UsernameInputManager.renderUsernameInput'
             });
         }
+    }
+
+    /**
+     * ResponsiveCanvasManager座標システムを使用した描画
+     */
+    renderWithResponsiveCoordinates(context, canvasInfo) {
+        // TODO: 実装予定（次のタスクで実装）
+        if (this.gameEngine.debug) {
+            console.log('Using ResponsiveCanvasManager coordinate system');
+        }
+        this.logCoordinateDebug(context, canvasInfo, null);
+        
+        // 一時的にフォールバック使用
+        this.renderWithFallbackCoordinates(context);
+    }
+
+    /**
+     * フォールバック座標システムを使用した描画
+     */
+    renderWithFallbackCoordinates(context) {
+        if (this.gameEngine.debug) {
+            console.warn('ResponsiveCanvasManager not available, using fallback coordinates');
+        }
+
+        const canvas = this.gameEngine.canvas;
+        
+        // Canvas実際の解像度を取得
+        const canvasWidth = canvas.width;
+        const canvasHeight = canvas.height;
+        
+        // ベース座標系（800x600）からCanvas座標系への変換比率
+        const scaleX = canvasWidth / 800;
+        const scaleY = canvasHeight / 600;
+        
+        // ベース座標系でのレイアウト
+        const baseWidth = 800;
+        const baseHeight = 600;
+        
+        // 半透明オーバーレイ
+        context.save();
+        context.fillStyle = 'rgba(0,0,0,0.8)';
+        context.fillRect(0, 0, canvasWidth, canvasHeight);
+        
+        // タイトル
+        context.fillStyle = '#FFFFFF';
+        context.font = `bold ${32 * Math.min(scaleX, scaleY)}px Arial`;
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        
+        const title = this.isEditingUsername ? 'ユーザー名変更' : 'ユーザー名登録';
+        context.fillText(title, (baseWidth / 2) * scaleX, 200 * scaleY);
+        
+        // 説明文
+        context.font = `${18 * Math.min(scaleX, scaleY)}px Arial`;
+        context.fillStyle = '#CCCCCC';
+        context.fillText('ユーザー名を入力してください（最大10文字）', (baseWidth / 2) * scaleX, 240 * scaleY);
+        
+        // 入力ボックス
+        this.renderInputBox(context, scaleX, scaleY);
+        
+        // ボタン
+        this.renderUsernameInputButtons(context, scaleX, scaleY);
+        
+        // 操作説明
+        context.fillStyle = '#AAAAAA';
+        context.font = `${14 * Math.min(scaleX, scaleY)}px Arial`;
+        context.textAlign = 'center';
+        context.fillText('文字を入力してEnterで決定、ESCでキャンセル', (baseWidth / 2) * scaleX, 450 * scaleY);
+        
+        context.restore();
     }
     
     /**
