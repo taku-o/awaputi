@@ -187,6 +187,7 @@ export class I18nIntegrationController {
         if (this.translationLoader) {
             try {
                 const result = await this.translationLoader.loadLanguage(language);
+                console.log(`I18nIntegrationController: Standard loader returned ${result ? Object.keys(result).length : 'null'} keys for ${language}`);
                 return result;
             } catch (error) {
                 console.warn(`Standard loader failed for ${language}:`, error);

@@ -114,6 +114,7 @@ export class TranslationLoader {
         // 翻訳データをフラット化
         const flattened = this._flattenTranslations(translations);
         console.log(`TranslationLoader: Flattened ${Object.keys(flattened).length} keys for ${language}`);
+        console.log(`TranslationLoader: Returning flattened object with keys:`, Object.keys(flattened).slice(0, 5));
         
         return flattened;
     }

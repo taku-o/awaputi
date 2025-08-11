@@ -59,6 +59,8 @@ export class LocalizationManager {
             // ファイルベース翻訳データの読み込み
             const translations = await this.integrationController.loadLanguageData(language);
             
+            console.log(`LocalizationManager: Received data for ${language}:`, translations ? Object.keys(translations).length : 'null');
+            
             if (translations && Object.keys(translations).length > 0) {
                 // セキュリティ検証
                 const securityResult = this.integrationController.validateTranslationSecurity(
@@ -77,6 +79,7 @@ export class LocalizationManager {
                 return true;
             } else {
                 console.warn(`No translations found for: ${language}`);
+                console.log(`LocalizationManager: Translations object:`, translations);
                 return false;
             }
         } catch (error) {
