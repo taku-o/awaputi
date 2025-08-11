@@ -1,0 +1,551 @@
+{
+  "category": "troubleshooting",
+  "title": "故障排除指南",
+  "description": "常见问题的解决方案和支持信息",
+  "language": "zh-CN",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-27",
+  "topics": [
+    {
+      "id": "loading_issues",
+      "title": "加载问题",
+      "description": "游戏无法正常加载时的解决方案",
+      "content": {
+        "game_not_loading": {
+          "symptoms": [
+            "白屏保持不变",
+            "卡在"加载中..."",
+            "显示错误消息"
+          ],
+          "common_causes": [
+            "JavaScript被禁用",
+            "浏览器缓存问题",
+            "网络连接问题",
+            "浏览器兼容性问题"
+          ],
+          "solutions": [
+            {
+              "step": 1,
+              "action": "刷新浏览器",
+              "description": "按F5或Ctrl+R刷新页面"
+            },
+            {
+              "step": 2,
+              "action": "检查JavaScript",
+              "description": "在浏览器设置中确认JavaScript已启用"
+            },
+            {
+              "step": 3,
+              "action": "清除缓存",
+              "description": "用Ctrl+Shift+R强制刷新或清除缓存"
+            },
+            {
+              "step": 4,
+              "action": "尝试其他浏览器",
+              "description": "用Chrome、Firefox、Safari、Edge测试"
+            },
+            {
+              "step": 5,
+              "action": "检查扩展程序",
+              "description": "临时禁用广告拦截器和安全扩展"
+            }
+          ]
+        },
+        "slow_loading": {
+          "symptoms": [
+            "加载花费异常长时间",
+            "资源加载过程中冻结",
+            "进度条中途停止"
+          ],
+          "optimization_steps": [
+            "关闭其他标签页释放内存",
+            "退出后台应用程序",
+            "检查网络连接稳定性",
+            "重启浏览器",
+            "重启电脑"
+          ]
+        },
+        "partial_loading": {
+          "symptoms": [
+            "图片无法显示",
+            "音频无法播放",
+            "某些功能不可用"
+          ],
+          "solutions": [
+            "检查安全软件设置",
+            "确认防火墙设置",
+            "检查代理设置",
+            "重置DNS设置"
+          ]
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 240,
+      "tags": ["加载", "启动", "错误", "初始化"]
+    },
+    {
+      "id": "performance_issues",
+      "title": "性能问题",
+      "description": "游戏运行缓慢或卡顿时的解决方案",
+      "content": {
+        "low_fps": {
+          "symptoms": [
+            "帧率低于30 FPS",
+            "动作不流畅",
+            "输入反应缓慢"
+          ],
+          "diagnostic_steps": [
+            "在调试模式下检查FPS（Ctrl+Shift+D）",
+            "检查CPU/GPU使用率",
+            "检查内存使用情况",
+            "检查其他运行的应用程序"
+          ],
+          "optimization_solutions": [
+            {
+              "category": "游戏设置",
+              "actions": [
+                "粒子效果设为"低"",
+                "动画品质改为"简单"",
+                "目标FPS限制为30",
+                "禁用屏幕效果"
+              ]
+            },
+            {
+              "category": "浏览器设置",
+              "actions": [
+                "启用硬件加速",
+                "关闭其他标签页",
+                "禁用不必要的扩展",
+                "检查浏览器内存使用"
+              ]
+            },
+            {
+              "category": "系统设置",
+              "actions": [
+                "电源设置改为"高性能"",
+                "关闭后台应用程序",
+                "暂停病毒扫描",
+                "更新显卡驱动"
+              ]
+            }
+          ]
+        },
+        "memory_issues": {
+          "symptoms": [
+            "游戏中浏览器崩溃",
+            ""内存不足"错误",
+            "性能逐渐下降"
+          ],
+          "prevention_measures": [
+            "内存清理设为"积极"",
+            "降低纹理品质",
+            "长时间游戏期间定期重启浏览器",
+            "考虑RAM升级（如果低于4GB）"
+          ]
+        },
+        "input_lag": {
+          "symptoms": [
+            "点击和响应之间有延迟",
+            "鼠标移动偏移",
+            "键盘反应差"
+          ],
+          "solutions": [
+            "切换到全屏模式",
+            "在设置中提高鼠标轮询率",
+            "调整垂直同步设置",
+            "浏览器缩放重置为100%"
+          ]
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 300,
+      "tags": ["性能", "FPS", "延迟", "优化"]
+    },
+    {
+      "id": "audio_issues",
+      "title": "音频问题",
+      "description": "无声音或音质不佳时的解决方案",
+      "content": {
+        "no_sound": {
+          "symptoms": [
+            "BGM不播放",
+            "音效听不见",
+            "完全静音"
+          ],
+          "basic_checks": [
+            "检查系统音量",
+            "检查浏览器音量设置",
+            "检查游戏内音量设置",
+            "检查静音状态"
+          ],
+          "advanced_solutions": [
+            "更新音频驱动",
+            "检查Windows音频设置",
+            "确认音频设备选择",
+            "检查浏览器音频权限",
+            "检查与其他应用的冲突"
+          ]
+        },
+        "distorted_audio": {
+          "symptoms": [
+            "音频中断",
+            "噪音干扰",
+            "声音失真"
+          ],
+          "solutions": [
+            "音频缓冲区改为"大"",
+            "降低采样率",
+            "关闭其他音频应用",
+            "禁用独占模式",
+            "重新安装音频驱动"
+          ]
+        },
+        "sync_issues": {
+          "symptoms": [
+            "音频和视频不同步",
+            "音效时机偏差",
+            "BGM中断"
+          ],
+          "fixes": [
+            "调整音频延迟设置",
+            "检查帧率设置",
+            "改变音频处理优先级",
+            "启用实时音频处理"
+          ]
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 180,
+      "tags": ["音频", "音量", "噪音", "同步"]
+    },
+    {
+      "id": "input_problems",
+      "title": "输入问题",
+      "description": "鼠标和键盘操作的问题",
+      "content": {
+        "mouse_issues": {
+          "click_not_working": {
+            "description": "鼠标点击无反应",
+            "solutions": [
+              "检查鼠标按键物理状态",
+              "更新鼠标驱动",
+              "用其他鼠标测试",
+              "检查浏览器设置",
+              "检查安全软件干扰"
+            ]
+          },
+          "cursor_offset": {
+            "description": "点击位置和光标位置不对齐",
+            "causes": [
+              "浏览器缩放设置",
+              "DPI设置问题",
+              "多显示器环境",
+              "高分辨率显示"
+            ],
+            "solutions": [
+              "浏览器缩放设为100%",
+              "Windows显示比例改为100%",
+              "切换到全屏模式",
+              "在设置中调整鼠标DPI"
+            ]
+          },
+          "drag_problems": {
+            "description": "拖拽操作无法正常工作",
+            "troubleshooting": [
+              "调整拖拽敏感度设置",
+              "检查鼠标按键按法",
+              "拖拽足够距离",
+              "在游戏设置中调整拖拽阈值"
+            ]
+          }
+        },
+        "keyboard_issues": {
+          "shortcuts_not_working": {
+            "description": "键盘快捷键无效",
+            "solutions": [
+              "将焦点对准游戏窗口",
+              "关闭中文输入法",
+              "检查与其他应用的热键冲突",
+              "检查浏览器快捷键设置",
+              "禁用粘滞键等类似功能"
+            ]
+          },
+          "key_repeat": {
+            "description": "按键重复或无响应",
+            "fixes": [
+              "更新键盘驱动",
+              "物理清洁键盘",
+              "用其他键盘测试",
+              "检查Windows键盘设置"
+            ]
+          }
+        },
+        "touch_issues": {
+          "touch_not_responsive": {
+            "description": "触摸操作无响应（手机）",
+            "solutions": [
+              "清洁屏幕",
+              "重启浏览器",
+              "用不同手指测试",
+              "检查触摸敏感度设置",
+              "检查屏幕保护膜"
+            ]
+          },
+          "multi_touch_problems": {
+            "description": "多点触摸工作不正常",
+            "troubleshooting": [
+              "检查同时触摸限制",
+              "确认浏览器触摸支持",
+              "检查设备多点触摸能力"
+            ]
+          }
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 240,
+      "tags": ["输入", "鼠标", "键盘", "触摸"]
+    },
+    {
+      "id": "data_issues",
+      "title": "数据问题",
+      "description": "存档数据丢失或损坏的问题",
+      "content": {
+        "data_loss": {
+          "symptoms": [
+            "游戏进度消失",
+            "设置重置",
+            "成就记录丢失"
+          ],
+          "common_causes": [
+            "使用浏览器隐私模式",
+            "删除Cookie/本地存储",
+            "浏览器重置",
+            "安全软件删除",
+            "存储空间不足"
+          ],
+          "recovery_methods": [
+            {
+              "method": "从自动备份恢复",
+              "steps": [
+                "设置 → 数据管理 → 备份列表",
+                "选择最新备份",
+                "点击"恢复"按钮",
+                "验证数据完整性"
+              ]
+            },
+            {
+              "method": "使用手动备份文件",
+              "steps": [
+                "准备导出的JSON文件",
+                "设置 → 数据管理 → 导入",
+                "选择并上传文件",
+                "选择数据合并或覆盖"
+              ]
+            }
+          ],
+          "prevention": [
+            "定期创建手动备份",
+            "保存数据到云存储",
+            "在多个浏览器中复制数据",
+            "避免使用隐私模式"
+          ]
+        },
+        "data_corruption": {
+          "symptoms": [
+            "游戏启动错误",
+            "设置无法正常加载",
+            "分数值显示异常"
+          ],
+          "diagnostic_tools": [
+            "调试模式下的数据验证",
+            "在浏览器开发者工具中检查存储",
+            "使用数据完整性检查功能"
+          ],
+          "repair_options": [
+            "自动损坏数据修复",
+            "替换为默认值",
+            "从备份选择性恢复",
+            "完全数据重置（最后手段）"
+          ]
+        },
+        "sync_problems": {
+          "description": "设备间数据同步问题",
+          "issues": [
+            "设备间分数不同",
+            "设置未同步",
+            "成就重复或缺失"
+          ],
+          "solutions": [
+            "执行手动强制同步",
+            "手动解决冲突数据",
+            "选择并同步主数据",
+            "禁用同步手动管理"
+          ]
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 280,
+      "tags": ["数据", "备份", "恢复", "同步"]
+    },
+    {
+      "id": "browser_compatibility",
+      "title": "浏览器兼容性",
+      "description": "浏览器特定问题和解决方案",
+      "content": {
+        "supported_browsers": {
+          "recommended": [
+            {
+              "name": "Google Chrome",
+              "version": "90+",
+              "performance": "优秀",
+              "notes": "最稳定的性能"
+            },
+            {
+              "name": "Mozilla Firefox",
+              "version": "88+",
+              "performance": "很好",
+              "notes": "出色的音频处理"
+            },
+            {
+              "name": "Microsoft Edge",
+              "version": "90+",
+              "performance": "良好",
+              "notes": "Windows环境最佳"
+            },
+            {
+              "name": "Safari",
+              "version": "14+",
+              "performance": "良好",
+              "notes": "macOS/iOS环境使用"
+            }
+          ],
+          "limited_support": [
+            "Internet Explorer（已停止支持）",
+            "旧版本浏览器",
+            "手机轻量级浏览器"
+          ]
+        },
+        "chrome_issues": {
+          "common_problems": [
+            "禁用硬件加速时性能下降",
+            "扩展程序干扰",
+            "自动更新导致设置重置"
+          ],
+          "solutions": [
+            "在chrome://settings/system启用硬件加速",
+            "在无痕模式下测试",
+            "优化Chrome flags设置"
+          ]
+        },
+        "firefox_issues": {
+          "common_problems": [
+            "音频延迟发生",
+            "WebGL性能限制",
+            "隐私设置导致的功能限制"
+          ],
+          "solutions": [
+            "在about:config中调整音频设置",
+            "检查并启用WebGL设置",
+            "调整增强追踪保护"
+          ]
+        },
+        "mobile_browsers": {
+          "optimization_tips": [
+            "屏幕触摸优化",
+            "横屏/竖屏方向支持",
+            "最小化电池消耗",
+            "减少网络使用"
+          ]
+        }
+      },
+      "difficulty": "advanced",
+      "estimatedReadTime": 200,
+      "tags": ["浏览器", "兼容性", "Chrome", "Firefox", "Safari"]
+    }
+  ],
+  "emergency_procedures": {
+    "game_crash": {
+      "immediate_actions": [
+        "重新加载浏览器标签页（F5）",
+        "完全重启浏览器",
+        "关闭其他应用释放内存",
+        "重启电脑（如有必要）"
+      ],
+      "data_protection": [
+        "检查自动备份",
+        "使用导出功能手动备份",
+        "在多个位置分布式存储"
+      ]
+    },
+    "performance_emergency": {
+      "quick_fixes": [
+        "在调试模式下识别问题",
+        "临时将设置改为最低品质",
+        "结束不必要的后台进程",
+        "清除浏览器缓存"
+      ]
+    },
+    "data_emergency": {
+      "backup_recovery": [
+        "确认最新备份文件位置",
+        "从备份紧急恢复程序",
+        "手动部分数据重建方法"
+      ]
+    }
+  },
+  "contact_support": {
+    "before_contacting": {
+      "information_to_gather": [
+        "使用的浏览器和版本",
+        "操作系统",
+        "详细问题描述",
+        "重现问题的步骤",
+        "错误消息截图"
+      ]
+    },
+    "support_channels": {
+      "github_issues": {
+        "url": "https://github.com/taku-o/awaputi/issues",
+        "description": "错误报告和功能请求的最佳选择",
+        "response_time": "1-3个工作日"
+      },
+      "community_forum": {
+        "description": "用户间信息交流",
+        "topics": [
+          "策略信息",
+          "技术问题",
+          "改进建议"
+        ]
+      }
+    },
+    "bug_report_template": {
+      "required_fields": [
+        "问题摘要",
+        "重现步骤",
+        "预期行为",
+        "实际行为",
+        "环境信息",
+        "附件（如需要）"
+      ]
+    }
+  },
+  "diagnostic_tools": {
+    "built_in_tools": [
+      "调试模式（Ctrl+Shift+D）",
+      "性能监控界面",
+      "数据完整性检查",
+      "系统信息显示"
+    ],
+    "browser_tools": [
+      "开发者工具（F12）",
+      "控制台日志检查",
+      "网络标签通信检查",
+      "性能分析器"
+    ],
+    "external_tools": [
+      "系统资源监控工具",
+      "网络诊断工具",
+      "浏览器基准测试工具"
+    ]
+  }
+}
