@@ -143,11 +143,13 @@ export class UsernameInputManager {
             context.fillText('ユーザー名を入力してください（最大10文字）', descCoords.x, descCoords.y);
         }
 
-        // TODO: 入力ボックス、ボタン、ヘルプテキスト（次のタスクで実装）
+        // 入力ボックスの描画（新しいResponsive座標システム使用）
+        this.renderInputBoxWithResponsiveCoords(context, canvasInfo, LAYOUT);
+
+        // TODO: ボタン（次のタスクで実装）
         // 一時的に従来の描画メソッドを呼び出し
         const tempScaleX = canvasInfo.actualWidth / 800;
         const tempScaleY = canvasInfo.actualHeight / 600;
-        this.renderInputBox(context, tempScaleX, tempScaleY);
         this.renderUsernameInputButtons(context, tempScaleX, tempScaleY);
 
         // ヘルプテキストの描画
@@ -253,6 +255,49 @@ export class UsernameInputManager {
         } catch (error) {
             this.errorHandler.handleError(error, {
                 context: 'UsernameInputManager.renderInputBox'
+            });
+        }
+    }
+
+    /**
+     * ResponsiveCanvasManager座標システムを使用した入力ボックス描画
+     */
+    renderInputBoxWithResponsiveCoords(context, canvasInfo, layout) {
+        try {
+            const inputCoords = this.transformCoordinates(layout.inputBox.x, layout.inputBox.y, canvasInfo);
+            const inputWidth = layout.inputBox.width * canvasInfo.scale;
+            const inputHeight = layout.inputBox.height * canvasInfo.scale;
+            
+            if (!inputCoords || !this.validateCoordinates(inputCoords.x, inputCoords.y, canvasInfo)) {
+                if (this.gameEngine.debug) {
+                    console.warn('Invalid input box coordinates, skipping render');
+                }
+                return;
+            }
+            
+            // 入力ボックス背景
+            context.fillStyle = '#FFFFFF';
+            context.fillRect(inputCoords.x, inputCoords.y, inputWidth, inputHeight);
+            
+            // 入力ボックス枠線
+            context.strokeStyle = '#0066CC';
+            context.lineWidth = 3 * canvasInfo.scale;
+            context.strokeRect(inputCoords.x, inputCoords.y, inputWidth, inputHeight);
+            
+            // 入力テキスト
+            context.fillStyle = '#000000';
+            context.font = `${20 * canvasInfo.scale}px Arial`;
+            context.textAlign = 'left';
+            context.textBaseline = 'middle';
+            
+            const displayText = this.usernameInput + (Date.now() % 1000 < 500 ? '|' : ''); // カーソル点滅
+            const textX = inputCoords.x + (10 * canvasInfo.scale);
+            const textY = inputCoords.y + inputHeight / 2;
+            
+            context.fillText(displayText, textX, textY);
+        } catch (error) {
+            this.errorHandler.handleError(error, {
+                context: 'UsernameInputManager.renderInputBoxWithResponsiveCoords'
             });
         }
     }
