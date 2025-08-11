@@ -193,28 +193,34 @@
   - 重複問題なし、現状維持
   - _Requirements: 1.2, 1.4_
 
-- [ ] 12. UIコンポーネント重複の解決
+- [x] 12. UIコンポーネント重複の解決
   - BaseDialog, DialogManager, ImportDialog, ExportDialogの重複を処理
   - UIコンポーネントの一貫した階層構造を構築
   - _Requirements: 1.2, 1.4, 2.2, 2.4_
 
-- [ ] 12.1 BaseDialog重複の解決
-  - ScenesBaseDialogとUIBaseDialogに分離
+- [x] 12.1 BaseDialog重複の解決
+  - ScenesBaseDialogとDataManagementBaseDialogに分離
   - 共通機能の抽象化を検討
   - ダイアログシステムの統合可能性を評価
   - _Requirements: 1.2, 1.4_
 
-- [ ] 12.2 DialogManager重複の解決
+- [x] 12.2 DialogManager重複の解決
   - 各コンテキスト固有のダイアログマネージャーに分離
-  - ScenesDialogManager, MenuDialogManager, UIDialogManagerに命名
+  - MainMenuDialogManager, ScenesDialogManagerに命名
   - _Requirements: 1.2, 1.4_
 
-- [ ] 13. レンダリングシステム重複の解決
+- [x] 12.3 ImportDialog/ExportDialog重複の解決
+  - シーン用とデータ管理用のダイアログを分離
+  - ScenesImportDialog, ScenesExportDialog, DataManagementImportDialog, DataManagementExportDialogに命名
+  - 機能特化と責任分離を実現
+  - _Requirements: 1.2, 1.4_
+
+- [x] 13. レンダリングシステム重複の解決
   - DirtyRegionManager, LayerManager, ViewportCullerの重複を処理
   - レンダリング最適化システムの統合設計を実現
   - _Requirements: 1.2, 1.4, 2.2, 2.4_
 
-- [ ] 13.1 レンダリング最適化クラス重複の解決
+- [x] 13.1 レンダリング最適化クラス重複の解決
   - AdvancedとBasicレンダリングマネージャーに分離
   - 機能レベルに基づく適切な命名
   - レンダリングパイプラインの整理
