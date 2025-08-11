@@ -64,7 +64,7 @@ export class EventStageManager {
                 availability: {
                     startDate: null,
                     endDate: null,
-                    recurring: 'daily'  // テスト用に毎日表示に変更
+                    recurring: 'weekly'
                 }
             },
             
@@ -180,10 +180,9 @@ export class EventStageManager {
                 return dayOfMonth <= 7;
                 
             case 'daily':
-                // テスト用：常にアクティブ（本来は19時〜23時）
-                return true;
-                // const hour = now.getHours();
-                // return hour >= 19 && hour <= 23;
+                // 毎日特定の時間帯にアクティブ
+                const hour = now.getHours();
+                return hour >= 19 && hour <= 23;
                 
             default:
                 return true;
