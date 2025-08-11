@@ -178,7 +178,7 @@ export class BackupDialog extends DataManagementBaseDialog {
  * Export Dialog
  * エクスポートダイアログ - データエクスポートの設定
  */
-export class ExportDialog extends DataManagementBaseDialog {
+export class DataManagementExportDialog extends DataManagementBaseDialog {
     renderDialog(bounds, data) {
         const contentBounds = this.renderDialogFrame(bounds, 'Export Data');
         const colors = this.layoutManager.getColors();
@@ -251,7 +251,7 @@ export class ExportDialog extends DataManagementBaseDialog {
  * Import Dialog
  * インポートダイアログ - データインポートの設定
  */
-export class ImportDialog extends DataManagementBaseDialog {
+export class DataManagementImportDialog extends DataManagementBaseDialog {
     renderDialog(bounds, data) {
         const contentBounds = this.renderDialogFrame(bounds, 'Import Data');
         const colors = this.layoutManager.getColors();
