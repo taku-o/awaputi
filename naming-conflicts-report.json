@@ -1,0 +1,5653 @@
+{
+  "timestamp": "2025-08-11T00:53:01.549Z",
+  "summary": {
+    "totalFiles": 825,
+    "totalClasses": 1186,
+    "totalFunctions": 1240,
+    "duplicateFiles": 24,
+    "duplicateClasses": 205,
+    "duplicateFunctions": 66
+  },
+  "conflicts": {
+    "files": [
+      {
+        "name": "MemoryUsageAnalyzer.js",
+        "files": [
+          "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-assessment/MemoryUsageAnalyzer.js",
+          "/Users/taku-o/Documents/workspaces/awaputi/src/utils/memory-manager/MemoryUsageAnalyzer.js"
+        ],
+        "count": 2
+      },
+      {
+        "name": "SettingsValidator.js",
+        "files": [
+          "/Users/taku-o/Documents/workspaces/awaputi/src/accessibility/settings-ui/SettingsValidator.js",
+          "/Users/taku-o/Documents/workspaces/awaputi/src/core/settings/SettingsValidator.js"
+        ],
+        "count": 2
+      },
+      {
+        "name": "ChartRenderer.js",
+        "files": [
+          "/Users/taku-o/Documents/workspaces/awaputi/src/analytics/ChartRenderer.js",
+          "/Users/taku-o/Documents/workspaces/awaputi/src/core/ChartRenderer.js"
+        ],
+        "count": 2
+      },
+      {
+        "name": "ExportManager.js",
+        "files": [
+          "/Users/taku-o/Documents/workspaces/awaputi/src/analytics/ExportManager.js",
+          "/Users/taku-o/Documents/workspaces/awaputi/src/core/ExportManager.js"
+        ],
+        "count": 2
+      },
+      {
+        "name": "PerformanceWarningSystem.js",
+        "files": [
+          "/Users/taku-o/Documents/workspaces/awaputi/src/analytics/PerformanceWarningSystem.js",
+          "/Users/taku-o/Documents/workspaces/awaputi/src/utils/PerformanceWarningSystem.js"
+        ],
+        "count": 2
+      },
+      {
+        "name": "AudioAccessibilitySupport.js",
+        "files": [
+          "/Users/taku-o/Documents/workspaces/awaputi/src/audio/AudioAccessibilitySupport.js",
+          "/Users/taku-o/Documents/workspaces/awaputi/src/audio/accessibility/AudioAccessibilitySupport.js"
+        ],
+        "count": 2
+      },
+      {
+        "name": "CleanupOrchestrator.js",
+        "files": [
+          "/Users/taku-o/Documents/workspaces/awaputi/src/cleanup/CleanupOrchestrator.js",
+          "/Users/taku-o/Documents/workspaces/awaputi/src/utils/backup-cleanup/CleanupOrchestrator.js"
+        ],
+        "count": 2
+      },
+      {
+        "name": "ReportGenerator.js",
+        "files": [
+          "/Users/taku-o/Documents/workspaces/awaputi/src/cleanup/ReportGenerator.js",
+          "/Users/taku-o/Documents/workspaces/awaputi/src/utils/validation/ReportGenerator.js"
+        ],
+        "count": 2
+      },
+      {
+        "name": "SafetyValidator.js",
+        "files": [
+          "/Users/taku-o/Documents/workspaces/awaputi/src/cleanup/SafetyValidator.js",
+          "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/SafetyValidator.js"
+        ],
+        "count": 2
+      },
+      {
+        "name": "AccessibilityManager.js",
+        "files": [
+          "/Users/taku-o/Documents/workspaces/awaputi/src/core/AccessibilityManager.js",
+          "/Users/taku-o/Documents/workspaces/awaputi/src/debug/AccessibilityManager.js"
+        ],
+        "count": 2
+      },
+      {
+        "name": "BackupManager.js",
+        "files": [
+          "/Users/taku-o/Documents/workspaces/awaputi/src/core/BackupManager.js",
+          "/Users/taku-o/Documents/workspaces/awaputi/src/utils/BackupManager.js"
+        ],
+        "count": 2
+      },
+      {
+        "name": "BalanceCalculator.js",
+        "files": [
+          "/Users/taku-o/Documents/workspaces/awaputi/src/core/BalanceCalculator.js",
+          "/Users/taku-o/Documents/workspaces/awaputi/tools/balance/BalanceCalculator.js"
+        ],
+        "count": 2
+      },
+      {
+        "name": "KeyboardShortcutManager.js",
+        "files": [
+          "/Users/taku-o/Documents/workspaces/awaputi/src/core/KeyboardShortcutManager.js",
+          "/Users/taku-o/Documents/workspaces/awaputi/src/debug/KeyboardShortcutManager.js"
+        ],
+        "count": 2
+      },
+      {
+        "name": "RenderingOptimizer.js",
+        "files": [
+          "/Users/taku-o/Documents/workspaces/awaputi/src/core/RenderingOptimizer.js",
+          "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/RenderingOptimizer.js"
+        ],
+        "count": 2
+      },
+      {
+        "name": "HelpContentManager.js",
+        "files": [
+          "/Users/taku-o/Documents/workspaces/awaputi/src/core/contextual-help-manager/HelpContentManager.js",
+          "/Users/taku-o/Documents/workspaces/awaputi/src/scenes/help-scene/HelpContentManager.js"
+        ],
+        "count": 2
+      },
+      {
+        "name": "ContentLoader.js",
+        "files": [
+          "/Users/taku-o/Documents/workspaces/awaputi/src/core/help/ContentLoader.js",
+          "/Users/taku-o/Documents/workspaces/awaputi/src/core/help/components/ContentLoader.js"
+        ],
+        "count": 2
+      },
+      {
+        "name": "SearchEngine.js",
+        "files": [
+          "/Users/taku-o/Documents/workspaces/awaputi/src/core/help/SearchEngine.js",
+          "/Users/taku-o/Documents/workspaces/awaputi/src/core/help/components/SearchEngine.js"
+        ],
+        "count": 2
+      },
+      {
+        "name": "PerformanceThresholdMonitor.js",
+        "files": [
+          "/Users/taku-o/Documents/workspaces/awaputi/src/debug/PerformanceThresholdMonitor.js",
+          "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-warning/PerformanceThresholdMonitor.js"
+        ],
+        "count": 2
+      },
+      {
+        "name": "ThemeManager.js",
+        "files": [
+          "/Users/taku-o/Documents/workspaces/awaputi/src/debug/ThemeManager.js",
+          "/Users/taku-o/Documents/workspaces/awaputi/src/effects/seasonal-effect-manager/ThemeManager.js"
+        ],
+        "count": 2
+      },
+      {
+        "name": "ParticleQualityManager.js",
+        "files": [
+          "/Users/taku-o/Documents/workspaces/awaputi/src/effects/enhanced-particle-manager/ParticleQualityManager.js",
+          "/Users/taku-o/Documents/workspaces/awaputi/src/utils/particle-performance-optimizer/ParticleQualityManager.js"
+        ],
+        "count": 2
+      },
+      {
+        "name": "MobileResourceManager.js",
+        "files": [
+          "/Users/taku-o/Documents/workspaces/awaputi/src/effects/mobile/MobileResourceManager.js",
+          "/Users/taku-o/Documents/workspaces/awaputi/src/utils/mobile/MobileResourceManager.js"
+        ],
+        "count": 2
+      },
+      {
+        "name": "ConfigurationValidator.js",
+        "files": [
+          "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-config/ConfigurationValidator.js",
+          "/Users/taku-o/Documents/workspaces/awaputi/src/utils/test-configuration/ConfigurationValidator.js"
+        ],
+        "count": 2
+      },
+      {
+        "name": "PerformanceMetricsCollector.js",
+        "files": [
+          "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-monitoring/PerformanceMetricsCollector.js",
+          "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-testing/PerformanceMetricsCollector.js"
+        ],
+        "count": 2
+      },
+      {
+        "name": "balance-adjuster.js",
+        "files": [
+          "/Users/taku-o/Documents/workspaces/awaputi/tools/balance/balance-adjuster.js",
+          "/Users/taku-o/Documents/workspaces/awaputi/tools/balance-adjuster.js"
+        ],
+        "count": 2
+      }
+    ],
+    "classes": [
+      {
+        "name": "CacheSystem",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/CacheSystem.js",
+            "line": 10
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "ConfigurationManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/ConfigurationManager.js",
+            "line": 11
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "PWAServiceWorkerManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/pwa/PWAServiceWorkerManager.js",
+            "line": 5
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "PWAInstallationManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/pwa/PWAInstallationManager.js",
+            "line": 5
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "PWAManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/PWAManager.js",
+            "line": 11
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "PlayerData",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/PlayerData.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "StageManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/StageManager.js",
+            "line": 4
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "SceneManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/SceneManager.js",
+            "line": 4
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "ItemManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/ItemSystem.js",
+            "line": 91
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "SettingsNotificationSystem",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/SettingsNotificationSystem.js",
+            "line": 11
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "SettingsValidator",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/accessibility/settings-ui/SettingsValidator.js",
+            "line": 5
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/settings/SettingsValidator.js",
+            "line": 5
+          }
+        ],
+        "count": 3
+      },
+      {
+        "name": "SettingsStorageManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/settings/SettingsStorageManager.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "SettingsDataManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/settings/SettingsDataManager.js",
+            "line": 5
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "SettingsUIController",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/settings/SettingsUIController.js",
+            "line": 5
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "SettingsExportImport",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/settings/SettingsExportImport.js",
+            "line": 5
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "SettingsManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/SettingsManager.js",
+            "line": 15
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "TranslationDataManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/localization-manager/TranslationDataManager.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "CulturalAdaptationHandler",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/localization-manager/CulturalAdaptationHandler.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "I18nIntegrationController",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/localization-manager/I18nIntegrationController.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "LocalizationManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/LocalizationManager.js",
+            "line": 11
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "AchievementDefinitions",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/achievements/AchievementDefinitions.js",
+            "line": 16
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "AchievementNotificationSystem",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/achievements/AchievementNotificationSystem.js",
+            "line": 11
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "AchievementProgressTracker",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/achievements/AchievementProgressTracker.js",
+            "line": 11
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "AchievementPerformanceOptimizer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/achievements/AchievementPerformanceOptimizer.js",
+            "line": 11
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "AchievementManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/AchievementManager.js",
+            "line": 11
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "AchievementEventIntegrator",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/AchievementEventIntegrator.js",
+            "line": 4
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "StatisticsDataManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/StatisticsDataManager.js",
+            "line": 12
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "StatisticsEventHandler",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/StatisticsEventHandler.js",
+            "line": 12
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "StatisticsCalculator",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/StatisticsCalculator.js",
+            "line": 12
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "StatisticsTimeSeriesManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/StatisticsTimeSeriesManager.js",
+            "line": 12
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "StatisticsManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/StatisticsManager.js",
+            "line": 17
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "EventRankingManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/EventRankingManager.js",
+            "line": 5
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "SeasonalEventManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/events/SeasonalEventManager.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "EventNotificationSystem",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/events/EventNotificationSystem.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "EventHistoryManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/events/EventHistoryManager.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "EventRankingSystem",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/events/EventRankingSystem.js",
+            "line": 9
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "EventStageManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/EventStageManager.js",
+            "line": 13
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "ChallengeSystem",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/ChallengeSystem.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "DailyChallengeManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/DailyChallengeManager.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "WeeklyChallengeManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/WeeklyChallengeManager.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "CalculationEngine",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/CalculationEngine.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "ComponentErrorHandler",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/ComponentErrorHandler.js",
+            "line": 4
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "BaseComponent",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/BaseComponent.js",
+            "line": 5
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "DebugPanelManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/interface/DebugPanelManager.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "DebugCommandProcessor",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/interface/DebugCommandProcessor.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "DebugVisualization",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/interface/DebugVisualization.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "DebugDataExporter",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/interface/DebugDataExporter.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "EnhancedDebugInterface",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/DocumentationSystem.js",
+            "line": 389
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/EnhancedDebugInterface.js",
+            "line": 14
+          }
+        ],
+        "count": 3
+      },
+      {
+        "name": "LoggingSystem",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/LoggingSystem.js",
+            "line": 10
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "HelpManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/help/HelpManager.js",
+            "line": 15
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "LeaderboardDataProcessor",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/leaderboard/LeaderboardDataProcessor.js",
+            "line": 5
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "LeaderboardRankingManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/leaderboard/LeaderboardRankingManager.js",
+            "line": 5
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "LeaderboardStorageManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/leaderboard/LeaderboardStorageManager.js",
+            "line": 5
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "LeaderboardManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/LeaderboardManager.js",
+            "line": 10
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "GameEngineInitializer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/game-engine/GameEngineInitializer.js",
+            "line": 19
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "GameEngineEventManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/game-engine/GameEngineEventManager.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "GameEngineRenderer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/game-engine/GameEngineRenderer.js",
+            "line": 8
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "GameEngineUtilities",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/game-engine/GameEngineUtilities.js",
+            "line": 10
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "GameEngine",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/GameEngine.js",
+            "line": 62
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "FontManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/FontManager.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "ScoreCalculator",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/ScoreCalculator.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "BalanceCalculator",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/BalanceCalculator.js",
+            "line": 7
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/tools/balance/BalanceCalculator.js",
+            "line": 10
+          }
+        ],
+        "count": 3
+      },
+      {
+        "name": "EffectsCalculator",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/EffectsCalculator.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "StatisticalAnalyzer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/comparison-engine/StatisticalAnalyzer.js",
+            "line": 11
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "StageComparisonAnalyzer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/comparison-engine/StageComparisonAnalyzer.js",
+            "line": 11
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "ComparisonDataProcessor",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/comparison-engine/ComparisonDataProcessor.js",
+            "line": 11
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "ProceduralSoundGenerator",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/ProceduralSoundGenerator.js",
+            "line": 12
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "AudioPlaybackController",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/AudioPlaybackController.js",
+            "line": 12
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "AudioConfigurationManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/AudioConfigurationManager.js",
+            "line": 12
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "AudioSubsystemCoordinator",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/AudioSubsystemCoordinator.js",
+            "line": 12
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "AudioManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/AudioManager.js",
+            "line": 17
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "EffectsConfig",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/config/EffectsConfig.js",
+            "line": 11
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "ParticleRenderer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/particles/ParticleRenderer.js",
+            "line": 5
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "ParticleLifecycleManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/particles/ParticleLifecycleManager.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "ParticleManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/ParticleManager.js",
+            "line": 10
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "EffectManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/EffectManager.js",
+            "line": 8
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "BubbleEffectRenderer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/renderers/BubbleEffectRenderer.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "ComboEffectRenderer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/renderers/ComboEffectRenderer.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "SpecialEffectRenderer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/renderers/SpecialEffectRenderer.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "SeasonalEffectRenderer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/renderers/SeasonalEffectRenderer.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "EffectQualityController",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/EffectQualityController.js",
+            "line": 10
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "EffectPerformanceMonitor",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/EffectPerformanceMonitor.js",
+            "line": 10
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "EnhancedParticleManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/EnhancedParticleManager.js",
+            "line": 25
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "VisualEffectAccessibilityManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/accessibility/VisualEffectAccessibilityManager.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "AlternativeFeedbackManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/accessibility/AlternativeFeedbackManager.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "AccessibilityEffectIntegrator",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/accessibility/AccessibilityEffectIntegrator.js",
+            "line": 9
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "EffectTransitionRenderer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/enhanced-effect-manager/EffectTransitionRenderer.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "LightingSystemRenderer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/enhanced-effect-manager/LightingSystemRenderer.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "ReflectionRenderer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/enhanced-effect-manager/ReflectionRenderer.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "BackgroundEffectRenderer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/enhanced-effect-manager/BackgroundEffectRenderer.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "PostProcessingRenderer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/enhanced-effect-manager/PostProcessingRenderer.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "EnhancedEffectManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/EnhancedEffectManager.js",
+            "line": 28
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "ThemeManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/ThemeManager.js",
+            "line": 4
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/seasonal-effect-manager/ThemeManager.js",
+            "line": 7
+          }
+        ],
+        "count": 3
+      },
+      {
+        "name": "SeasonDetector",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/seasonal-effect-manager/SeasonDetector.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "CustomThemeManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/seasonal-effect-manager/CustomThemeManager.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "SeasonalParticleRenderer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/seasonal-effect-manager/SeasonalParticleRenderer.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "SeasonalEffectManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/SeasonalEffectManager.js",
+            "line": 16
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "EffectConfigurationIntegrator",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/EffectConfigurationIntegrator.js",
+            "line": 12
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "AudioVisualSynchronizer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/AudioVisualSynchronizer.js",
+            "line": 10
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "EffectDebugInterface",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/EffectDebugInterface.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "EffectProfiler",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/EffectProfiler.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "EffectOptimizationAdvisor",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/EffectOptimizationAdvisor.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "EffectPerformanceOptimizer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/EffectPerformanceOptimizer.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "EffectErrorHandler",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/EffectErrorHandler.js",
+            "line": 8
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "VisualPolishEnhancements",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/VisualPolishEnhancements.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "AnimationEngineCore",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/animation-manager/AnimationEngineCore.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "AnimationQualityController",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/animation-manager/AnimationEngineCore.js",
+            "line": 231
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "BubbleAnimationHandler",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/animation-manager/AnimationTypeHandlers.js",
+            "line": 12
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "UIAnimationHandler",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/animation-manager/AnimationTypeHandlers.js",
+            "line": 292
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "MenuAnimationHandler",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/animation-manager/AnimationTypeHandlers.js",
+            "line": 512
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "LoadingAnimationHandler",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/animation-manager/AnimationTypeHandlers.js",
+            "line": 641
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "LoadingAnimationRenderer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/animation-manager/AnimationRenderers.js",
+            "line": 10
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "InteractiveEffectRenderer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/animation-manager/AnimationRenderers.js",
+            "line": 165
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "AnimationManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/AnimationManager.js",
+            "line": 29
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "BGMGenerator",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/BGMGenerator.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "BGMPlayer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/BGMPlayer.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "BGMTransitionManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/BGMTransitionManager.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "AudioEffectManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/effects/AudioEffectManager.js",
+            "line": 10
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "SoundPoolManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/effects/SoundPoolManager.js",
+            "line": 10
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "SoundEffectRenderer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/effects/SoundEffectRenderer.js",
+            "line": 10
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "Equalizer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/Equalizer.js",
+            "line": 8
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "AudioChannelManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/components/AudioChannelManager.js",
+            "line": 11
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "AudioVolumeController",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/components/AudioVolumeController.js",
+            "line": 11
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "PresetManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/PresetManager.js",
+            "line": 10
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "BiomeDefinitionManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/environmental-audio-manager/BiomeDefinitionManager.js",
+            "line": 8
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "EnvironmentalSoundGenerator",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/environmental-audio-manager/EnvironmentalSoundGenerator.js",
+            "line": 8
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "BiomeTransitionController",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/environmental-audio-manager/BiomeTransitionController.js",
+            "line": 8
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "EnvironmentalAudioSettings",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/environmental-audio-manager/EnvironmentalAudioSettings.js",
+            "line": 8
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "EnvironmentalAudioManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/EnvironmentalAudioManager.js",
+            "line": 15
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "AudioFormatHandler",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/components/AudioFormatHandler.js",
+            "line": 13
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "AudioPerformanceMonitor",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/AudioPerformanceMonitor.js",
+            "line": 96
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "AudioDescriptionManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/accessibility/AudioDescriptionManager.js",
+            "line": 13
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/accessibility/AudioDescriptionManager.js",
+            "line": 19
+          }
+        ],
+        "count": 3
+      },
+      {
+        "name": "AudioCueManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/accessibility/AudioCueManager.js",
+            "line": 17
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "AudioFeedbackManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/accessibility/AudioFeedbackManager.js",
+            "line": 17
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/MobileUIUXManager.js",
+            "line": 1133
+          }
+        ],
+        "count": 3
+      },
+      {
+        "name": "AudioSettingsManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/accessibility/AudioSettingsManager.js",
+            "line": 18
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "Bubble",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-managers-ddLov6ig.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/bubbles/Bubble.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "BubbleSpawner",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-managers-ddLov6ig.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/managers/bubble-manager/BubbleSpawner.js",
+            "line": 10
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "BubblePhysicsEngine",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-managers-ddLov6ig.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/managers/bubble-manager/BubblePhysicsEngine.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "BubbleDragSystem",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-managers-ddLov6ig.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/managers/bubble-manager/BubbleDragSystem.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "BubbleEffectProcessor",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-managers-ddLov6ig.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/managers/bubble-manager/BubbleEffectProcessor.js",
+            "line": 8
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "BubbleManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-managers-ddLov6ig.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/managers/BubbleManager.js",
+            "line": 14
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "ScoreManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-managers-ddLov6ig.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/managers/ScoreManager.js",
+            "line": 4
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "ErrorLogger",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/error/ErrorLogger.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "ErrorRecovery",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/error/ErrorRecovery.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "ErrorHandler",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/ErrorHandler.js",
+            "line": 12
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "BrowserCompatibility",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/BrowserCompatibility.js",
+            "line": 4
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "PerformanceConfig",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/config/PerformanceConfig.js",
+            "line": 11
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "FrameStabilizer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/FrameStabilizer.js",
+            "line": 13
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "PerformanceAnalyzer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/AdvancedPerformanceMonitor.js",
+            "line": 496
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-optimizer/PerformanceAnalyzer.js",
+            "line": 13
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-profiler/PerformanceAnalysisSystem.js",
+            "line": 10
+          }
+        ],
+        "count": 4
+      },
+      {
+        "name": "PerformanceAdaptiveController",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-optimizer/PerformanceAdaptiveController.js",
+            "line": 14
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "PerformanceStabilizerIntegrator",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-optimizer/PerformanceStabilizerIntegrator.js",
+            "line": 13
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "PerformanceOptimizer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/PerformanceOptimizer.js",
+            "line": 16
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "RenderOptimizer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/PerformanceTestSuite.js",
+            "line": 464
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/RenderOptimizer.js",
+            "line": 5
+          }
+        ],
+        "count": 3
+      },
+      {
+        "name": "PerformanceMonitor",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/DocumentationSystem.js",
+            "line": 407
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/RenderOptimizer.js",
+            "line": 416
+          }
+        ],
+        "count": 3
+      },
+      {
+        "name": "ResponsiveCanvasManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/ResponsiveCanvasManager.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "SEOMetaManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/main-DYUOqgPH.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/seo/SEOMetaManager.js",
+            "line": 19
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "StructuredDataEngine",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/main-DYUOqgPH.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/seo/StructuredDataEngine.js",
+            "line": 16
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "LoadingManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/main-DYUOqgPH.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/main.js",
+            "line": 12
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "name",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/generate-final-report.js",
+            "line": 147
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/validation/ReportGenerator.js",
+            "line": 300
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/validation/ReportGenerator.js",
+            "line": 308
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/validation/ReportGenerator.js",
+            "line": 362
+          }
+        ],
+        "count": 4
+      },
+      {
+        "name": "KeyboardNavigationTester",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/keyboard-navigation-test.js",
+            "line": 10
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/accessibility/KeyboardNavigationTester.js",
+            "line": 14
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "MemoryUsageAnalyzer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-assessment/MemoryUsageAnalyzer.js",
+            "line": 11
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/memory-manager/MemoryUsageAnalyzer.js",
+            "line": 5
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "PerformanceReporter",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-assessment/PerformanceReporter.js",
+            "line": 8
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-profiler/PerformanceAnalysisSystem.js",
+            "line": 503
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "PerformanceImpactAssessment",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-impact-assessment.js",
+            "line": 38
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-impact-assessment.js",
+            "line": 55
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "ReportGenerator",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/validate-configuration.js",
+            "line": 465
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/cleanup/ReportGenerator.js",
+            "line": 4
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/validation/ReportGenerator.js",
+            "line": 9
+          }
+        ],
+        "count": 3
+      },
+      {
+        "name": "AnomalyDetector",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/analytics/AnomalyDetector.js",
+            "line": 5
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-diagnostics/DiagnosticAnalyzer.js",
+            "line": 379
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "ExportManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/analytics/ExportManager.js",
+            "line": 12
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/ExportManager.js",
+            "line": 12
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "PerformanceWarningSystem",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/analytics/PerformanceWarningSystem.js",
+            "line": 6
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/PerformanceWarningSystem.js",
+            "line": 18
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "PrivacyManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/analytics/PrivacyManager.js",
+            "line": 5
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/SecurityManager.js",
+            "line": 768
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "AudioCacheManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/AudioCacheManager.js",
+            "line": 43
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/AudioCacheManager.js",
+            "line": 59
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "CleanupOrchestrator",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/cleanup/CleanupOrchestrator.js",
+            "line": 9
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/backup-cleanup/CleanupOrchestrator.js",
+            "line": 12
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "SafetyValidator",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/cleanup/SafetyValidator.js",
+            "line": 4
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/SafetyValidator.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "BackupManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/BackupManager.js",
+            "line": 12
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/BackupManager.js",
+            "line": 10
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "DataArchiveManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/DataArchiveManager.js",
+            "line": 5
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/TimeSeriesDataManager.js",
+            "line": 631
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "DataCompressionManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/DataCompressionManager.js",
+            "line": 5
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/TimeSeriesDataManager.js",
+            "line": 603
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "IntegrityValidator",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/ImportManager.js",
+            "line": 767
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/backup-cleanup/IntegrityValidator.js",
+            "line": 8
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "VisualFeedbackManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/MobileUIUXManager.js",
+            "line": 1105
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/VisualFeedbackManager.js",
+            "line": 25
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/VisualFeedbackManager.js",
+            "line": 35
+          }
+        ],
+        "count": 3
+      },
+      {
+        "name": "RenderingOptimizer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/RenderingOptimizer.js",
+            "line": 5
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/RenderingOptimizer.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "VisualFocusManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/VisualFocusManager.js",
+            "line": 30
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/VisualFocusManager.js",
+            "line": 34
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "HelpContentManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/contextual-help-manager/HelpContentManager.js",
+            "line": 7
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/scenes/help-scene/HelpContentManager.js",
+            "line": 10
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "ContentLoader",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/help/ContentLoader.js",
+            "line": 16
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/help/components/ContentLoader.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "SearchEngine",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/help/SearchEngine.js",
+            "line": 13
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/help/components/SearchEngine.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "SystemIntegrationTester",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/testing/SystemIntegrationTester.js",
+            "line": 10
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/PerformanceIntegrationTesting.js",
+            "line": 858
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "FeedbackAnimationManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/visual/feedback/FeedbackAnimationManager.js",
+            "line": 15
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/visual/feedback/FeedbackAnimationManager.js",
+            "line": 20
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "FeedbackEffectRenderer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/visual/feedback/FeedbackEffectRenderer.js",
+            "line": 13
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/visual/feedback/FeedbackEffectRenderer.js",
+            "line": 18
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "BenchmarkSuite",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/BenchmarkSuite.js",
+            "line": 12
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/support/BenchmarkManager.js",
+            "line": 206
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "DeveloperConsole",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/DeveloperConsole.js",
+            "line": 13
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/DocumentationSystem.js",
+            "line": 425
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "TestSupportTools",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/DocumentationSystem.js",
+            "line": 441
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/TestSupportTools.js",
+            "line": 11
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "MockDataGenerator",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/MockDataGenerator.js",
+            "line": 13
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/support/MockDataManager.js",
+            "line": 122
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "PerformanceThresholdMonitor",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/PerformanceThresholdMonitor.js",
+            "line": 7
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-warning/PerformanceThresholdMonitor.js",
+            "line": 8
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "PerformanceChart",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/PerformanceVisualizer.js",
+            "line": 513
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/charts/PerformanceChart.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "TestRunner",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/support/TestExecutionManager.js",
+            "line": 391
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/test-runner.js",
+            "line": 16
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "ParticleQualityManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/enhanced-particle-manager/ParticleQualityManager.js",
+            "line": 7
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/particle-performance-optimizer/ParticleQualityManager.js",
+            "line": 5
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "MobileResourceManager",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/mobile/MobileResourceManager.js",
+            "line": 7
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/mobile/MobileResourceManager.js",
+            "line": 10
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "UserInfoRenderer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/scenes/components/ManagementTab.js",
+            "line": 296
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/scenes/components/user-info/UserInfoRenderer.js",
+            "line": 7
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "SEOTester",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/seo/SEOTester.js",
+            "line": 41
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/seo/SEOTester.js",
+            "line": 59
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "ConflictInfo",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/ConflictInfo.js",
+            "line": 6
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/DuplicationAnalyzer.js",
+            "line": 272
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "ConfigurationValidator",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-config/ConfigurationValidator.js",
+            "line": 6
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/test-configuration/ConfigurationValidator.js",
+            "line": 6
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "PerformanceDataAnalyzer",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-monitoring/PerformanceDataAnalyzer.js",
+            "line": 21
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-monitoring/PerformanceDataAnalyzer.js",
+            "line": 44
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "PerformanceDashboard",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-monitoring/PerformanceLegacyComponents.js",
+            "line": 9
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-profiler/PerformanceAnalysisSystem.js",
+            "line": 776
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "PerformanceMetricsCollector",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-monitoring/PerformanceMetricsCollector.js",
+            "line": 14
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-monitoring/PerformanceMetricsCollector.js",
+            "line": 24
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-testing/PerformanceMetricsCollector.js",
+            "line": 5
+          }
+        ],
+        "count": 3
+      },
+      {
+        "name": "names",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/validation/NamingConflictDetector.js",
+            "line": 618
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/validation/ReportGenerator.js",
+            "line": 518
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "BalanceDataLoader",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/tools/balance/BalanceDataLoader.js",
+            "line": 13
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/tools/balance/BalanceDataLoader.js",
+            "line": 24
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "BalanceAdjuster",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/tools/balance/balance-adjuster.js",
+            "line": 67
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/tools/balance/balance-adjuster.js",
+            "line": 71
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/tools/balance-adjuster.js",
+            "line": 43
+          }
+        ],
+        "count": 3
+      },
+      {
+        "name": "ConfigurationDashboard",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/tools/dashboard/dashboard.js",
+            "line": 41
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/tools/dashboard/dashboard.js",
+            "line": 55
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "goes",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/vite.config.js",
+            "line": 67
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/vite.config.js",
+            "line": 72
+          }
+        ],
+        "count": 2
+      }
+    ],
+    "functions": [
+      {
+        "name": "scanDirectory",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/check-file-sizes.mjs",
+            "line": 36
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/check-file-sizes.js",
+            "line": 58
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/ImportUpdater.js",
+            "line": 351
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/backup-cleanup/ReferenceAnalyzer.js",
+            "line": 207
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/tools/doc-update-notifier.js",
+            "line": 746
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/tools/doc-update-notifier.js",
+            "line": 781
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/tools/doc-validator.js",
+            "line": 173
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/tools/link-checker.js",
+            "line": 153
+          }
+        ],
+        "count": 8
+      },
+      {
+        "name": "main",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/check-file-sizes.mjs",
+            "line": 69
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/api-consistency-validator.js",
+            "line": 429
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/archive-completed-specs.js",
+            "line": 114
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/check-file-sizes.js",
+            "line": 181
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/cross-environment-tester.js",
+            "line": 409
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/generate-standard-icons.js",
+            "line": 155
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/generate-tests.js",
+            "line": 332
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/generate-translation-quality-report.js",
+            "line": 413
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/i18n-deployment-setup.js",
+            "line": 310
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/migrate-bubble-configs.js",
+            "line": 9
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/prepare-i18n-release.js",
+            "line": 459
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/run-i18n-performance-tests.js",
+            "line": 473
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/run-phase-g-performance.js",
+            "line": 424
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/setup-git-hooks.js",
+            "line": 318
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/test-success-monitor.js",
+            "line": 379
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/validate-configuration.js",
+            "line": 601
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/validate-i18n-requirements.js",
+            "line": 465
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/cleanup/index.js",
+            "line": 5
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/backup-cleanup/cleanup-main.js",
+            "line": 11
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/tools/generate-favicons.js",
+            "line": 509
+          }
+        ],
+        "count": 20
+      },
+      {
+        "name": "action",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/events/EventNotificationSystem.js",
+            "line": 105
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/events/EventNotificationSystem.js",
+            "line": 109
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/events/EventNotificationSystem.js",
+            "line": 135
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/events/EventNotificationSystem.js",
+            "line": 157
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/events/EventNotificationSystem.js",
+            "line": 183
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/help/HelpFeedbackSystem.js",
+            "line": 445
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/help/HelpFeedbackSystem.js",
+            "line": 450
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/help/HelpFeedbackSystem.js",
+            "line": 454
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/help/HelpFeedbackSystem.js",
+            "line": 760
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/ContextualHelpSystem.js",
+            "line": 242
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/ContextualHelpSystem.js",
+            "line": 248
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/ContextualHelpSystem.js",
+            "line": 254
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/ContextualHelpSystem.js",
+            "line": 260
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/ContextualHelpSystem.js",
+            "line": 277
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/PerformanceThresholdMonitor.js",
+            "line": 449
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/PerformanceThresholdMonitor.js",
+            "line": 453
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/scenes/MainMenuScene.js",
+            "line": 30
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/scenes/MainMenuScene.js",
+            "line": 31
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/scenes/MainMenuScene.js",
+            "line": 32
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/scenes/MainMenuScene.js",
+            "line": 33
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/scenes/components/UsernameDialog.js",
+            "line": 50
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/scenes/components/UsernameDialog.js",
+            "line": 58
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/PerformanceWarningSystem.js",
+            "line": 177
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/PerformanceWarningSystem.js",
+            "line": 183
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/PerformanceWarningSystem.js",
+            "line": 189
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/PerformanceWarningSystem.js",
+            "line": 195
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/PerformanceWarningSystem.js",
+            "line": 201
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/PerformanceWarningSystem.js",
+            "line": 207
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/PerformanceWarningSystem.js",
+            "line": 213
+          }
+        ],
+        "count": 34
+      },
+      {
+        "name": "render",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/ComponentErrorHandler.js",
+            "line": 75
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/PerformanceVisualizer.js",
+            "line": 166
+          }
+        ],
+        "count": 3
+      },
+      {
+        "name": "execute",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/ComponentErrorHandler.js",
+            "line": 76
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/GameStateCommands.js",
+            "line": 141
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/GameStateCommands.js",
+            "line": 159
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/StateManipulationCommands.js",
+            "line": 20
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/StateManipulationCommands.js",
+            "line": 43
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/StateManipulationCommands.js",
+            "line": 65
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/StateManipulationCommands.js",
+            "line": 95
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/StateManipulationCommands.js",
+            "line": 126
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/StateManipulationCommands.js",
+            "line": 156
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/StateManipulationCommands.js",
+            "line": 190
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/StateManipulationCommands.js",
+            "line": 222
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/StateManipulationCommands.js",
+            "line": 247
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/StateManipulationCommands.js",
+            "line": 273
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/StateManipulationCommands.js",
+            "line": 318
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/StateManipulationCommands.js",
+            "line": 349
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/StateManipulationCommands.js",
+            "line": 385
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/StateManipulationCommands.js",
+            "line": 421
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/StateManipulationCommands.js",
+            "line": 460
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/StateManipulationCommands.js",
+            "line": 486
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/StateManipulationCommands.js",
+            "line": 533
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/StateManipulationCommands.js",
+            "line": 567
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/StateManipulationCommands.js",
+            "line": 589
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/UndoOperationManager.js",
+            "line": 428
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/UndoOperationManager.js",
+            "line": 438
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/UndoOperationManager.js",
+            "line": 448
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/EffectOptimizationAdvisor.js",
+            "line": 22
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/EffectOptimizationAdvisor.js",
+            "line": 29
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/EffectOptimizationAdvisor.js",
+            "line": 36
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/EffectOptimizationAdvisor.js",
+            "line": 43
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/EffectOptimizationAdvisor.js",
+            "line": 50
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/EffectOptimizationAdvisor.js",
+            "line": 57
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-error-recovery-system/RecoveryExecutionSystem.js",
+            "line": 34
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-error-recovery-system/RecoveryExecutionSystem.js",
+            "line": 40
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-error-recovery-system/RecoveryExecutionSystem.js",
+            "line": 46
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-error-recovery-system/RecoveryExecutionSystem.js",
+            "line": 56
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-error-recovery-system/RecoveryExecutionSystem.js",
+            "line": 62
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-error-recovery-system/RecoveryExecutionSystem.js",
+            "line": 68
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-error-recovery-system/RecoveryExecutionSystem.js",
+            "line": 78
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-error-recovery-system/RecoveryExecutionSystem.js",
+            "line": 84
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-error-recovery-system/RecoveryExecutionSystem.js",
+            "line": 94
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-error-recovery-system/RecoveryExecutionSystem.js",
+            "line": 100
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-error-recovery-system/RecoveryExecutionSystem.js",
+            "line": 110
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-error-recovery-system/RecoveryExecutionSystem.js",
+            "line": 116
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-error-recovery-system/RecoveryExecutionSystem.js",
+            "line": 126
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-error-recovery-system/RecoveryExecutionSystem.js",
+            "line": 132
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-integration/IntegrationTestOrchestrator.js",
+            "line": 55
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-integration/IntegrationTestOrchestrator.js",
+            "line": 68
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-integration/IntegrationTestOrchestrator.js",
+            "line": 81
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-integration/IntegrationTestOrchestrator.js",
+            "line": 94
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-integration/IntegrationTestOrchestrator.js",
+            "line": 107
+          }
+        ],
+        "count": 51
+      },
+      {
+        "name": "onActivate",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-core-BZz1z4iG.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/interface/DebugPanelManager.js",
+            "line": 266
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/interface/DebugPanelManager.js",
+            "line": 276
+          }
+        ],
+        "count": 4
+      },
+      {
+        "name": "error",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/generate-tests.js",
+            "line": 24
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/setup-git-hooks.js",
+            "line": 25
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/validate-configuration.js",
+            "line": 67
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/AnimationManager.js",
+            "line": 625
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/particles/ParticleRenderer.js",
+            "line": 355
+          }
+        ],
+        "count": 6
+      },
+      {
+        "name": "success",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/generate-tests.js",
+            "line": 25
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/setup-git-hooks.js",
+            "line": 26
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/validate-configuration.js",
+            "line": 68
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/AnimationManager.js",
+            "line": 626
+          }
+        ],
+        "count": 5
+      },
+      {
+        "name": "monitorLoop",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-effects-C_HmX-vN.js",
+            "line": 2
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/AudioAccessibilitySupport.js",
+            "line": 140
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/audio/accessibility/AudioCueManager.js",
+            "line": 77
+          }
+        ],
+        "count": 4
+      },
+      {
+        "name": "strategy",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/ConfigurationErrorHandler.js",
+            "line": 75
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/ConfigurationErrorHandler.js",
+            "line": 111
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/ConfigurationErrorHandler.js",
+            "line": 164
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/ConfigurationErrorHandler.js",
+            "line": 210
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/ConfigurationErrorHandler.js",
+            "line": 231
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/ConfigurationErrorHandler.js",
+            "line": 252
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/error/ErrorRecovery.js",
+            "line": 45
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/error/ErrorRecovery.js",
+            "line": 75
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/error/ErrorRecovery.js",
+            "line": 91
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/error/ErrorRecovery.js",
+            "line": 106
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/error/ErrorRecovery.js",
+            "line": 122
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/error/ErrorRecovery.js",
+            "line": 137
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/error/ErrorRecovery.js",
+            "line": 150
+          }
+        ],
+        "count": 20
+      },
+      {
+        "name": "fallback",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/MobileSystemIntegrator.js",
+            "line": 654
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/MobileSystemIntegrator.js",
+            "line": 660
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/MobileSystemIntegrator.js",
+            "line": 666
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/MobileSystemIntegrator.js",
+            "line": 672
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/error/ErrorRecovery.js",
+            "line": 65
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/error/ErrorRecovery.js",
+            "line": 81
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/error/ErrorRecovery.js",
+            "line": 96
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/error/ErrorRecovery.js",
+            "line": 112
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/error/ErrorRecovery.js",
+            "line": 127
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/error/ErrorRecovery.js",
+            "line": 141
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/error/ErrorRecovery.js",
+            "line": 154
+          }
+        ],
+        "count": 18
+      },
+      {
+        "name": "setItem",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/error/ErrorRecovery.js",
+            "line": 222
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/local-execution/BrowserCompatibilityManager.js",
+            "line": 470
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/local-execution/BrowserCompatibilityManager.js",
+            "line": 501
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/local-execution/BrowserCompatibilityManager.js",
+            "line": 515
+          }
+        ],
+        "count": 5
+      },
+      {
+        "name": "clear",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/dist/assets/game-utils--yF5NsNh.js",
+            "line": 1
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/accessibility/settings-ui/AccessibilityPreferencesManager.js",
+            "line": 151
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/accessibility/settings-ui/AccessibilityPreferencesManager.js",
+            "line": 161
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/error/ErrorRecovery.js",
+            "line": 224
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/local-execution/BrowserCompatibilityManager.js",
+            "line": 503
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/local-execution/BrowserCompatibilityManager.js",
+            "line": 517
+          }
+        ],
+        "count": 6
+      },
+      {
+        "name": "generateFinalReport",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/generate-final-report.js",
+            "line": 16
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/validate-i18n-requirements.js",
+            "line": 400
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "info",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/generate-tests.js",
+            "line": 22
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/setup-git-hooks.js",
+            "line": 23
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/validate-configuration.js",
+            "line": 65
+          }
+        ],
+        "count": 3
+      },
+      {
+        "name": "warn",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/generate-tests.js",
+            "line": 23
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/setup-git-hooks.js",
+            "line": 24
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/validate-configuration.js",
+            "line": 66
+          }
+        ],
+        "count": 3
+      },
+      {
+        "name": "section",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/generate-tests.js",
+            "line": 26
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/validate-configuration.js",
+            "line": 69
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "showUsage",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/generate-tests.js",
+            "line": 36
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/setup-git-hooks.js",
+            "line": 284
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "parseArguments",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/generate-tests.js",
+            "line": 74
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/validate-syntax.js",
+            "line": 244
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "generateHTMLReport",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/generate-translation-quality-report.js",
+            "line": 275
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/run-i18n-performance-tests.js",
+            "line": 316
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "check",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/i18n-deployment-setup.js",
+            "line": 203
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/i18n-deployment-setup.js",
+            "line": 222
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/i18n-deployment-setup.js",
+            "line": 238
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/MobileSystemIntegrator.js",
+            "line": 881
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/balance-validation/ValidationRuleDefinitions.js",
+            "line": 48
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/balance-validation/ValidationRuleDefinitions.js",
+            "line": 77
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/balance-validation/ValidationRuleDefinitions.js",
+            "line": 103
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/balance-validation/ValidationRuleDefinitions.js",
+            "line": 145
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/balance-validation/ValidationRuleDefinitions.js",
+            "line": 178
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/balance-validation/ValidationRuleDefinitions.js",
+            "line": 220
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/balance-validation/ValidationRuleDefinitions.js",
+            "line": 264
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/balance-validation/ValidationRuleDefinitions.js",
+            "line": 317
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/balance-validation/ValidationRuleDefinitions.js",
+            "line": 365
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/balance-validation/ValidationRuleDefinitions.js",
+            "line": 407
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/balance-validation/ValidationRuleDefinitions.js",
+            "line": 445
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/balance-validation/ValidationRuleDefinitions.js",
+            "line": 487
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/balance-validation/ValidationRuleDefinitions.js",
+            "line": 527
+          }
+        ],
+        "count": 17
+      },
+      {
+        "name": "connect",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/memory-usage-test.js",
+            "line": 170
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/memory-usage-test.js",
+            "line": 176
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "scanInDir",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-assessment/CPUImpactAnalyzer.js",
+            "line": 67
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-assessment/CPUImpactAnalyzer.js",
+            "line": 122
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-assessment/CPUImpactAnalyzer.js",
+            "line": 172
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-assessment/CPUImpactAnalyzer.js",
+            "line": 227
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-assessment/CPUImpactAnalyzer.js",
+            "line": 278
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-assessment/CPUImpactAnalyzer.js",
+            "line": 324
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-assessment/CPUImpactAnalyzer.js",
+            "line": 363
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-assessment/CPUImpactAnalyzer.js",
+            "line": 402
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-assessment/CPUImpactAnalyzer.js",
+            "line": 752
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-assessment/CPUImpactAnalyzer.js",
+            "line": 788
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-assessment/MemoryUsageAnalyzer.js",
+            "line": 138
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-assessment/ResponseTimeAnalyzer.js",
+            "line": 275
+          }
+        ],
+        "count": 12
+      },
+      {
+        "name": "analyzeInDir",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-assessment/CPUImpactAnalyzer.js",
+            "line": 477
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-assessment/CPUImpactAnalyzer.js",
+            "line": 552
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-assessment/CPUImpactAnalyzer.js",
+            "line": 618
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-assessment/CPUImpactAnalyzer.js",
+            "line": 684
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-assessment/MemoryUsageAnalyzer.js",
+            "line": 277
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-assessment/MemoryUsageAnalyzer.js",
+            "line": 321
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-assessment/MemoryUsageAnalyzer.js",
+            "line": 367
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-assessment/ResponseTimeAnalyzer.js",
+            "line": 234
+          }
+        ],
+        "count": 8
+      },
+      {
+        "name": "countInDir",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-assessment/ResponseTimeAnalyzer.js",
+            "line": 175
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/scripts/performance-assessment/ResponseTimeAnalyzer.js",
+            "line": 206
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "get",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/accessibility/settings-ui/AccessibilityPreferencesManager.js",
+            "line": 148
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/accessibility/settings-ui/AccessibilityPreferencesManager.js",
+            "line": 158
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/TestConfigurationGenerator.js",
+            "line": 34
+          }
+        ],
+        "count": 3
+      },
+      {
+        "name": "set",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/accessibility/settings-ui/AccessibilityPreferencesManager.js",
+            "line": 149
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/accessibility/settings-ui/AccessibilityPreferencesManager.js",
+            "line": 159
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "remove",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/accessibility/settings-ui/AccessibilityPreferencesManager.js",
+            "line": 150
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/accessibility/settings-ui/AccessibilityPreferencesManager.js",
+            "line": 160
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/DataManager.js",
+            "line": 161
+          }
+        ],
+        "count": 3
+      },
+      {
+        "name": "updateProgress",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/analytics/AnalyticsErrorNotificationSystem.js",
+            "line": 575
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/analytics/PerformanceWarningSystem.js",
+            "line": 401
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "detect",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/analytics/AnomalyDetector.js",
+            "line": 41
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/analytics/AnomalyDetector.js",
+            "line": 48
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/analytics/AnomalyDetector.js",
+            "line": 55
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/analytics/AnomalyDetector.js",
+            "line": 62
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/analytics/AnomalyDetector.js",
+            "line": 69
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/analytics/AnomalyDetector.js",
+            "line": 76
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/analytics/AnomalyDetector.js",
+            "line": 83
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/analytics/AnomalyDetector.js",
+            "line": 90
+          }
+        ],
+        "count": 8
+      },
+      {
+        "name": "format",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/analytics/comparison/DataComparator.js",
+            "line": 22
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/analytics/comparison/DataComparator.js",
+            "line": 28
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/analytics/comparison/DataComparator.js",
+            "line": 34
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/analytics/comparison/DataComparator.js",
+            "line": 40
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/analytics/comparison/DataComparator.js",
+            "line": 46
+          }
+        ],
+        "count": 5
+      },
+      {
+        "name": "validator",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/config/AudioConfig.js",
+            "line": 150
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/config/AudioConfig.js",
+            "line": 155
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/config/EffectsConfig.js",
+            "line": 237
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/config/EffectsConfig.js",
+            "line": 247
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/config/PerformanceConfig.js",
+            "line": 167
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/SettingsManager.js",
+            "line": 68
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/SettingsManager.js",
+            "line": 72
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/settings/SettingsValidator.js",
+            "line": 296
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/settings/SettingsValidator.js",
+            "line": 300
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 38
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 44
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 50
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 56
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 62
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 72
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 78
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 84
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 90
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 100
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 106
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 112
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 118
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 128
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 134
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 140
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 146
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 156
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 162
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 168
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 174
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 180
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 190
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 196
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 202
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 208
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 218
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 224
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 230
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/RequirementsValidationSuite.js",
+            "line": 236
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/ConfigurationSynchronizer.js",
+            "line": 41
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/ConfigurationSynchronizer.js",
+            "line": 49
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/ConfigurationSynchronizer.js",
+            "line": 57
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/ConfigurationSynchronizer.js",
+            "line": 65
+          }
+        ],
+        "count": 43
+      },
+      {
+        "name": "calculate",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/AchievementProgressEngine.js",
+            "line": 41
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/AchievementProgressEngine.js",
+            "line": 51
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/AchievementProgressEngine.js",
+            "line": 61
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/AchievementProgressEngine.js",
+            "line": 75
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/AchievementProgressEngine.js",
+            "line": 85
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-monitoring/PerformanceDataProcessor.js",
+            "line": 32
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-monitoring/PerformanceDataProcessor.js",
+            "line": 42
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-monitoring/PerformanceDataProcessor.js",
+            "line": 48
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-monitoring/PerformanceDataProcessor.js",
+            "line": 55
+          }
+        ],
+        "count": 9
+      },
+      {
+        "name": "getPercentage",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/AchievementProgressEngine.js",
+            "line": 44
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/AchievementProgressEngine.js",
+            "line": 54
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/AchievementProgressEngine.js",
+            "line": 68
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/AchievementProgressEngine.js",
+            "line": 78
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/AchievementProgressEngine.js",
+            "line": 96
+          }
+        ],
+        "count": 5
+      },
+      {
+        "name": "executedFunction",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/AdvancedResponsiveLayoutManager.js",
+            "line": 803
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/ContrastManager.js",
+            "line": 781
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/seo/SEOUtils.js",
+            "line": 244
+          }
+        ],
+        "count": 3
+      },
+      {
+        "name": "later",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/AdvancedResponsiveLayoutManager.js",
+            "line": 804
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/ContrastManager.js",
+            "line": 782
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/seo/SEOUtils.js",
+            "line": 245
+          }
+        ],
+        "count": 3
+      },
+      {
+        "name": "preventDefault",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/EnhancedTouchManager.js",
+            "line": 365
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/EnhancedTouchManager.js",
+            "line": 381
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/EnhancedTouchManager.js",
+            "line": 394
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/EnhancedTouchManager.js",
+            "line": 407
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/FinalValidationSuite.js",
+            "line": 253
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/support/TestExecutionManager.js",
+            "line": 332
+          }
+        ],
+        "count": 6
+      },
+      {
+        "name": "callback",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/KeyboardAccessibilityManager.js",
+            "line": 157
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/KeyboardAccessibilityManager.js",
+            "line": 164
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/KeyboardAccessibilityManager.js",
+            "line": 171
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/KeyboardAccessibilityManager.js",
+            "line": 178
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/scenes/components/ScenesBaseDialog.js",
+            "line": 290
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/scenes/components/ScenesBaseDialog.js",
+            "line": 291
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/scenes/components/ScenesExportDialog.js",
+            "line": 48
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/scenes/components/ScenesExportDialog.js",
+            "line": 49
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/scenes/components/ScenesExportDialog.js",
+            "line": 50
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/scenes/components/ScenesImportDialog.js",
+            "line": 81
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/scenes/components/ScenesImportDialog.js",
+            "line": 82
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/scenes/components/ScenesImportDialog.js",
+            "line": 83
+          }
+        ],
+        "count": 12
+      },
+      {
+        "name": "cleanup",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/MobileSocialOptimizer.js",
+            "line": 280
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/MobileSystemIntegrator.js",
+            "line": 317
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/visual/feedback/FeedbackAnimationManager.js",
+            "line": 122
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/visual/feedback/FeedbackAnimationManager.js",
+            "line": 181
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/visual/feedback/FeedbackAnimationManager.js",
+            "line": 244
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/visual/feedback/FeedbackAnimationManager.js",
+            "line": 324
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/visual/feedback/FeedbackAnimationManager.js",
+            "line": 399
+          }
+        ],
+        "count": 7
+      },
+      {
+        "name": "handle",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/MobileSystemIntegrator.js",
+            "line": 607
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/MobileSystemIntegrator.js",
+            "line": 614
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/MobileSystemIntegrator.js",
+            "line": 621
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/MobileSystemIntegrator.js",
+            "line": 628
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/MobileSystemIntegrator.js",
+            "line": 635
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/MobileSystemIntegrator.js",
+            "line": 642
+          }
+        ],
+        "count": 6
+      },
+      {
+        "name": "condition",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/MobileWebShareHandler.js",
+            "line": 307
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/MobileWebShareHandler.js",
+            "line": 314
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/MobileWebShareHandler.js",
+            "line": 326
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/MobileWebShareHandler.js",
+            "line": 338
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/MobileWebShareHandler.js",
+            "line": 345
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/advanced/AdvancedFormatterEngine.js",
+            "line": 157
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/advanced/AdvancedFormatterEngine.js",
+            "line": 161
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/advanced/AdvancedFormatterEngine.js",
+            "line": 171
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/advanced/AdvancedFormatterEngine.js",
+            "line": 175
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/advanced/AdvancedFormatterEngine.js",
+            "line": 185
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/advanced/AdvancedFormatterEngine.js",
+            "line": 189
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/ContextualHelpSystem.js",
+            "line": 28
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/ContextualHelpSystem.js",
+            "line": 55
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/ContextualHelpSystem.js",
+            "line": 95
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/ContextualHelpSystem.js",
+            "line": 131
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/ContextualHelpSystem.js",
+            "line": 171
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-monitoring/RealTimePerformanceMonitor.js",
+            "line": 82
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-monitoring/RealTimePerformanceMonitor.js",
+            "line": 91
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-monitoring/RealTimePerformanceMonitor.js",
+            "line": 99
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-monitoring/RealTimePerformanceMonitor.js",
+            "line": 106
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-monitoring/RealTimePerformanceMonitor.js",
+            "line": 113
+          }
+        ],
+        "count": 21
+      },
+      {
+        "name": "validate",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/StatisticsExporter.js",
+            "line": 639
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/CommandValidator.js",
+            "line": 27
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/CommandValidator.js",
+            "line": 51
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/CommandValidator.js",
+            "line": 78
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/CommandValidator.js",
+            "line": 107
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-integration/IntegrationTestOrchestrator.js",
+            "line": 60
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-integration/IntegrationTestOrchestrator.js",
+            "line": 73
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-integration/IntegrationTestOrchestrator.js",
+            "line": 86
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-integration/IntegrationTestOrchestrator.js",
+            "line": 99
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-integration/IntegrationTestOrchestrator.js",
+            "line": 112
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/tools/balance/BalanceConfigManager.js",
+            "line": 222
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/tools/balance/BalanceConfigManager.js",
+            "line": 317
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/tools/balance/BalanceValidator.js",
+            "line": 27
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/tools/balance/BalanceValidator.js",
+            "line": 34
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/tools/balance/BalanceValidator.js",
+            "line": 42
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/tools/balance/BalanceValidator.js",
+            "line": 49
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/tools/balance/BalanceValidator.js",
+            "line": 62
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/tools/balance/BalanceValidator.js",
+            "line": 75
+          }
+        ],
+        "count": 18
+      },
+      {
+        "name": "recognize",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/gesture-customizer/GestureRecognitionEngine.js",
+            "line": 163
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/gesture-customizer/GestureRecognitionEngine.js",
+            "line": 184
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/gesture-customizer/GestureRecognitionEngine.js",
+            "line": 205
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/gesture-customizer/GestureRecognitionEngine.js",
+            "line": 228
+          }
+        ],
+        "count": 4
+      },
+      {
+        "name": "animate",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/help/TooltipSystem.js",
+            "line": 461
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/help/TooltipSystem.js",
+            "line": 701
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/help/components/TutorialAnimationController.js",
+            "line": 103
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/ui/components/leaderboard/LeaderboardAnimationController.js",
+            "line": 97
+          }
+        ],
+        "count": 4
+      },
+      {
+        "name": "other",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/advanced/AdvancedFormatterEngine.js",
+            "line": 14
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/advanced/AdvancedFormatterEngine.js",
+            "line": 26
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/advanced/AdvancedFormatterEngine.js",
+            "line": 43
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/advanced/AdvancedFormatterEngine.js",
+            "line": 59
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/advanced/AdvancedFormatterEngine.js",
+            "line": 70
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/advanced/AdvancedFormatterEngine.js",
+            "line": 84
+          }
+        ],
+        "count": 6
+      },
+      {
+        "name": "one",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/advanced/AdvancedFormatterEngine.js",
+            "line": 25
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/advanced/AdvancedFormatterEngine.js",
+            "line": 39
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/advanced/AdvancedFormatterEngine.js",
+            "line": 81
+          }
+        ],
+        "count": 3
+      },
+      {
+        "name": "few",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/advanced/AdvancedFormatterEngine.js",
+            "line": 41
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/advanced/AdvancedFormatterEngine.js",
+            "line": 82
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "many",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/advanced/AdvancedFormatterEngine.js",
+            "line": 42
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/advanced/AdvancedFormatterEngine.js",
+            "line": 83
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "generate",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/advanced/AdvancedFormatterEngine.js",
+            "line": 158
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/advanced/AdvancedFormatterEngine.js",
+            "line": 162
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/advanced/AdvancedFormatterEngine.js",
+            "line": 172
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/advanced/AdvancedFormatterEngine.js",
+            "line": 176
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/advanced/AdvancedFormatterEngine.js",
+            "line": 186
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/core/i18n/advanced/AdvancedFormatterEngine.js",
+            "line": 190
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/MockDataGenerator.js",
+            "line": 59
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-monitoring/PerformanceReportGenerator.js",
+            "line": 31
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-monitoring/PerformanceReportGenerator.js",
+            "line": 39
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-monitoring/PerformanceReportGenerator.js",
+            "line": 47
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/performance-monitoring/PerformanceReportGenerator.js",
+            "line": 55
+          }
+        ],
+        "count": 11
+      },
+      {
+        "name": "handleError",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/GameStateCommands.js",
+            "line": 66
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/PerformanceThresholdMonitor.js",
+            "line": 75
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/TestDataGenerationCommands.js",
+            "line": 23
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/TestConfigurationGenerator.js",
+            "line": 24
+          }
+        ],
+        "count": 4
+      },
+      {
+        "name": "getCompletions",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/GameStateCommands.js",
+            "line": 151
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/StateManipulationCommands.js",
+            "line": 182
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/StateManipulationCommands.js",
+            "line": 302
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/StateManipulationCommands.js",
+            "line": 413
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/StateManipulationCommands.js",
+            "line": 451
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/StateManipulationCommands.js",
+            "line": 559
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/state/StateManipulationCommands.js",
+            "line": 621
+          }
+        ],
+        "count": 7
+      },
+      {
+        "name": "exporter",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/interface/DebugDataExporter.js",
+            "line": 33
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/interface/DebugDataExporter.js",
+            "line": 41
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/interface/DebugDataExporter.js",
+            "line": 49
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/interface/DebugDataExporter.js",
+            "line": 57
+          }
+        ],
+        "count": 4
+      },
+      {
+        "name": "test",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/support/TestExecutionManager.js",
+            "line": 71
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/support/TestExecutionManager.js",
+            "line": 76
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/support/TestExecutionManager.js",
+            "line": 81
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/support/TestExecutionManager.js",
+            "line": 94
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/support/TestExecutionManager.js",
+            "line": 99
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/support/TestExecutionManager.js",
+            "line": 104
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/support/TestExecutionManager.js",
+            "line": 117
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/support/TestExecutionManager.js",
+            "line": 122
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/support/TestExecutionManager.js",
+            "line": 127
+          }
+        ],
+        "count": 9
+      },
+      {
+        "name": "generator",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/BubbleGenerationCommands.js",
+            "line": 65
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/BubbleGenerationCommands.js",
+            "line": 70
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/BubbleGenerationCommands.js",
+            "line": 75
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/GameStateGenerationCommands.js",
+            "line": 112
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/GameStateGenerationCommands.js",
+            "line": 128
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/GameStateGenerationCommands.js",
+            "line": 144
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/GameStateGenerationCommands.js",
+            "line": 160
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/GameStateGenerationCommands.js",
+            "line": 174
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/GameStateGenerationCommands.js",
+            "line": 179
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/GameStateGenerationCommands.js",
+            "line": 184
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/GameStateGenerationCommands.js",
+            "line": 189
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/ScenarioCommands.js",
+            "line": 29
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/ScenarioCommands.js",
+            "line": 45
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/ScenarioCommands.js",
+            "line": 61
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/ScenarioCommands.js",
+            "line": 77
+          }
+        ],
+        "count": 15
+      },
+      {
+        "name": "setup",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/GameStateGenerationCommands.js",
+            "line": 28
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/GameStateGenerationCommands.js",
+            "line": 43
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/GameStateGenerationCommands.js",
+            "line": 59
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/GameStateGenerationCommands.js",
+            "line": 76
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/GameStateGenerationCommands.js",
+            "line": 92
+          }
+        ],
+        "count": 5
+      },
+      {
+        "name": "simulator",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/ScenarioCommands.js",
+            "line": 143
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/ScenarioCommands.js",
+            "line": 152
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/ScenarioCommands.js",
+            "line": 162
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/ScenarioCommands.js",
+            "line": 171
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/ScenarioCommands.js",
+            "line": 180
+          }
+        ],
+        "count": 5
+      },
+      {
+        "name": "runner",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/ScenarioCommands.js",
+            "line": 194
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/ScenarioCommands.js",
+            "line": 199
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/ScenarioCommands.js",
+            "line": 204
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/ScenarioCommands.js",
+            "line": 209
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/debug/test-data-generation/ScenarioCommands.js",
+            "line": 214
+          }
+        ],
+        "count": 5
+      },
+      {
+        "name": "onChange",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/effects/accessibility/AccessibilitySettingsIntegrator.js",
+            "line": 256
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/ui/audio-settings/AudioSettingsTabRenderers.js",
+            "line": 69
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/ui/audio-settings/AudioSettingsTabRenderers.js",
+            "line": 99
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/ui/audio-settings/AudioSettingsTabRenderers.js",
+            "line": 129
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/ui/audio-settings/AudioSettingsTabRenderers.js",
+            "line": 146
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/ui/audio-settings/AudioSettingsTabRenderers.js",
+            "line": 168
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/ui/audio-settings/AudioSettingsTabRenderers.js",
+            "line": 179
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/ui/audio-settings/AudioSettingsTabRenderers.js",
+            "line": 196
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/ui/audio-settings/AudioSettingsTabRenderers.js",
+            "line": 219
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/ui/audio-settings/AudioSettingsTabRenderers.js",
+            "line": 230
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/ui/audio-settings/AudioSettingsTabRenderers.js",
+            "line": 241
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/ui/audio-settings/AudioSettingsTabRenderers.js",
+            "line": 252
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/ui/audio-settings/AudioSettingsTabRenderers.js",
+            "line": 337
+          }
+        ],
+        "count": 13
+      },
+      {
+        "name": "loader",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/ConfigurationSynchronizer.js",
+            "line": 40
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/ConfigurationSynchronizer.js",
+            "line": 48
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/ConfigurationSynchronizer.js",
+            "line": 56
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/ConfigurationSynchronizer.js",
+            "line": 64
+          }
+        ],
+        "count": 4
+      },
+      {
+        "name": "scanDir",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/backup-cleanup/IntegrityValidator.js",
+            "line": 435
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/backup-cleanup/SequentialFileRemover.js",
+            "line": 363
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/tools/doc-validator.js",
+            "line": 907
+          }
+        ],
+        "count": 3
+      },
+      {
+        "name": "autoFixFn",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/balance-validation/ValidationRuleDefinitions.js",
+            "line": 168
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/balance-validation/ValidationRuleDefinitions.js",
+            "line": 252
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/balance-validation/ValidationRuleDefinitions.js",
+            "line": 354
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/balance-validation/ValidationRuleDefinitions.js",
+            "line": 436
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/balance-validation/ValidationRuleDefinitions.js",
+            "line": 512
+          }
+        ],
+        "count": 5
+      },
+      {
+        "name": "getItem",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/error/ErrorRecovery.js",
+            "line": 221
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/local-execution/BrowserCompatibilityManager.js",
+            "line": 452
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/local-execution/BrowserCompatibilityManager.js",
+            "line": 500
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/local-execution/BrowserCompatibilityManager.js",
+            "line": 514
+          }
+        ],
+        "count": 4
+      },
+      {
+        "name": "removeItem",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/error/ErrorRecovery.js",
+            "line": 223
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/local-execution/BrowserCompatibilityManager.js",
+            "line": 480
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/local-execution/BrowserCompatibilityManager.js",
+            "line": 502
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/local-execution/BrowserCompatibilityManager.js",
+            "line": 516
+          }
+        ],
+        "count": 4
+      },
+      {
+        "name": "task",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/local-execution/local-mode/LocalModeInitializer.js",
+            "line": 194
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/local-execution/local-mode/LocalModeInitializer.js",
+            "line": 202
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/local-execution/local-mode/LocalModeInitializer.js",
+            "line": 212
+          }
+        ],
+        "count": 3
+      },
+      {
+        "name": "names",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/validation/NamingConflictDetector.js",
+            "line": 627
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/src/utils/validation/ReportGenerator.js",
+            "line": 518
+          }
+        ],
+        "count": 2
+      },
+      {
+        "name": "addColorStop",
+        "occurrences": [
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/test-core-features.js",
+            "line": 82
+          },
+          {
+            "file": "/Users/taku-o/Documents/workspaces/awaputi/test-core-features.js",
+            "line": 85
+          }
+        ],
+        "count": 2
+      }
+    ]
+  },
+  "recommendations": [
+    {
+      "type": "file",
+      "priority": "high",
+      "message": "24 duplicate file names found",
+      "action": "Rename files using domain-specific prefixes"
+    },
+    {
+      "type": "class",
+      "priority": "high",
+      "message": "205 duplicate class names found",
+      "action": "Apply namespace prefixes or refactor into separate modules"
+    },
+    {
+      "type": "function",
+      "priority": "medium",
+      "message": "66 duplicate function names found",
+      "action": "Review function naming and scope"
+    }
+  ]
+}
