@@ -6,41 +6,41 @@ This implementation plan converts the multilingual help documentation design int
 
 ## Implementation Tasks
 
-- [ ] 1. Create Japanese help content files structure
+- [x] 1. Create Japanese help content files structure
   - Create the missing Japanese help content directory structure
   - Generate placeholder JSON files with proper structure
   - Implement basic content validation for Japanese files
   - _Requirements: 1.1, 1.2, 3.1_
 
-- [ ] 1.1 Create bubbles.json for Japanese language
+- [x] 1.1 Create bubbles.json for Japanese language
   - Translate English bubbles.json content to Japanese
   - Maintain consistent JSON structure with English version
   - Validate content structure and required fields
   - Test file loading through HelpManager
   - _Requirements: 1.1, 1.2, 4.2_
 
-- [ ] 1.2 Create controls.json for Japanese language
+- [x] 1.2 Create controls.json for Japanese language
   - Translate English controls.json content to Japanese
   - Adapt keyboard shortcuts and control descriptions for Japanese users
   - Ensure technical terminology consistency
   - Test integration with existing help system
   - _Requirements: 1.1, 1.2, 4.2_
 
-- [ ] 1.3 Create settings.json for Japanese language
+- [x] 1.3 Create settings.json for Japanese language
   - Translate English settings.json content to Japanese
   - Adapt settings descriptions and options for Japanese interface
   - Maintain structural consistency with English version
   - Validate content completeness and accuracy
   - _Requirements: 1.1, 1.2, 4.2_
 
-- [ ] 1.4 Create troubleshooting.json for Japanese language
+- [x] 1.4 Create troubleshooting.json for Japanese language
   - Translate English troubleshooting.json content to Japanese
   - Adapt technical solutions for Japanese user context
   - Include browser-specific instructions in Japanese
   - Test error scenario coverage
   - _Requirements: 1.1, 1.2, 4.2_
 
-- [ ] 1.5 Create gameplay.json for Japanese language
+- [x] 1.5 Create gameplay.json for Japanese language
   - Create Japanese version based on English gameplay.json structure
   - Translate game mechanics and rules explanations
   - Adapt strategy guides for Japanese gaming culture
