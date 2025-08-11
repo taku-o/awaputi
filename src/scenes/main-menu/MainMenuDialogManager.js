@@ -1,10 +1,10 @@
 import { getErrorHandler } from '../../utils/ErrorHandler.js';
 
 /**
- * Dialog Manager
- * ダイアログとヘルプ画面の管理を担当
+ * Main Menu Dialog Manager
+ * メインメニュー用ダイアログとヘルプ画面の管理を担当
  */
-export class DialogManager {
+export class MainMenuDialogManager {
     constructor(gameEngine) {
         this.gameEngine = gameEngine;
         this.errorHandler = getErrorHandler();

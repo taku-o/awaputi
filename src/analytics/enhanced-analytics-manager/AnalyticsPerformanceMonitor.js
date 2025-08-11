@@ -1,8 +1,8 @@
 /**
- * Performance Monitor
- * パフォーマンス監視と警告生成を担当
+ * Analytics Performance Monitor
+ * 分析用パフォーマンス監視と警告生成を担当
  */
-export class PerformanceMonitor {
+export class AnalyticsPerformanceMonitor {
     constructor() {
         // パフォーマンス監視
         this.performanceMetrics = {

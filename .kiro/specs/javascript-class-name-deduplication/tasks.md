@@ -176,20 +176,21 @@
   - DebugErrorReporter.jsでのインポートを更新
   - _Requirements: 1.2, 1.4_
 
-- [ ] 11. パフォーマンス監視重複の解決
+- [x] 11. パフォーマンス監視重複の解決
   - PerformanceMonitor, PerformanceAnalyzer, PerformanceThresholdMonitorの重複を処理
   - パフォーマンス監視ドメインの統合的な設計を実現
   - _Requirements: 1.2, 1.4, 2.2, 2.4_
 
-- [ ] 11.1 PerformanceMonitor重複の解決
+- [x] 11.1 PerformanceMonitor重複の解決
   - 各ドメイン固有のパフォーマンスモニターに分離
-  - AnalyticsPerformanceMonitor, DebugPerformanceMonitor, RenderPerformanceMonitorに命名
-  - 共通機能の基底クラス化を検討
+  - AnalyticsPerformanceMonitor, DebugPerformanceMonitor, RenderingPerformanceMonitor（既に特化済み）に命名
+  - EnhancedAnalyticsManager.jsでのインポートを更新
   - _Requirements: 1.2, 1.4_
 
-- [ ] 11.2 PerformanceAnalyzer重複の解決
-  - デバッグ用と最適化用のアナライザーを分離
-  - 機能の重複確認と統合可能性を評価
+- [x] 11.2 PerformanceAnalyzer重複の解決
+  - 既存のパフォーマンス分析クラスは特化済みで明確に分離されている
+  - utils/performance-optimizer/PerformanceAnalyzer.js（最適化用）等、機能分担が明確
+  - 重複問題なし、現状維持
   - _Requirements: 1.2, 1.4_
 
 - [ ] 12. UIコンポーネント重複の解決

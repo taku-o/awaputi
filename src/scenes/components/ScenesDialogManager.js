@@ -1,8 +1,8 @@
 /**
- * ダイアログ管理システム
- * UserInfoSceneのダイアログ機能を統一管理
+ * シーン用ダイアログ管理システム
+ * シーンコンポーネントのダイアログ機能を統一管理
  */
-export class DialogManager {
+export class ScenesDialogManager {
     constructor(gameEngine, eventBus, state) {
         this.gameEngine = gameEngine;
         this.eventBus = eventBus;
