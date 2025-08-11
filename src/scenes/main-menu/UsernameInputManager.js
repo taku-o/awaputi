@@ -10,6 +10,140 @@ export class UsernameInputManager {
         this.errorHandler = getErrorHandler();
         this.usernameInput = '';
         this.isEditingUsername = false;
+        
+        // Performance optimization: Canvas info cache
+        this._canvasInfoCache = null;
+        this._canvasInfoCacheTime = 0;
+        this._cacheValidDuration = 16; // ~1 frame at 60fps
+        
+        // Coordinate transformation cache
+        this._coordinateCache = new Map();
+        this._maxCacheSize = 50;
+    }
+    /**
+     * ResponsiveCanvasManagerから座標情報を安全に取得
+     */
+    getCanvasInfo() {
+        const now = performance.now();
+        
+        // Return cached canvas info if still valid
+        if (this._canvasInfoCache && (now - this._canvasInfoCacheTime) < this._cacheValidDuration) {
+            return this._canvasInfoCache;
+        }
+
+        try {
+            const responsiveCanvasManager = this.gameEngine.responsiveCanvasManager;
+            if (responsiveCanvasManager && typeof responsiveCanvasManager.getCanvasInfo === 'function') {
+                const canvasInfo = responsiveCanvasManager.getCanvasInfo();
+                if (canvasInfo && typeof canvasInfo.scale === 'number' && canvasInfo.scale > 0) {
+                    // Cache the canvas info
+                    this._canvasInfoCache = canvasInfo;
+                    this._canvasInfoCacheTime = now;
+                    return canvasInfo;
+                }
+            }
+        } catch (error) {
+            if (this.gameEngine.debug) {
+                console.warn('ResponsiveCanvasManager access failed:', error);
+            }
+        }
+        
+        // Clear cache on failure
+        this._canvasInfoCache = null;
+        this._canvasInfoCacheTime = 0;
+        return null;
+    }
+
+    /**
+     * ベース座標をCanvas座標に変換
+     */
+    transformCoordinates(baseX, baseY, canvasInfo) {
+        if (!canvasInfo) return null;
+
+        // Create cache key
+        const cacheKey = `${baseX},${baseY},${canvasInfo.scale}`;
+        
+        // Check cache first
+        if (this._coordinateCache.has(cacheKey)) {
+            return this._coordinateCache.get(cacheKey);
+        }
+
+        // Calculate transformation
+        const { scale } = canvasInfo;
+        const result = {
+            x: baseX * scale,
+            y: baseY * scale
+        };
+
+        // Cache result (with size limit)
+        if (this._coordinateCache.size >= this._maxCacheSize) {
+            // Remove oldest entry (first added)
+            const firstKey = this._coordinateCache.keys().next().value;
+            this._coordinateCache.delete(firstKey);
+        }
+        this._coordinateCache.set(cacheKey, result);
+
+        return result;
+    }
+
+    /**
+     * 座標境界チェック
+     */
+    validateCoordinates(x, y, canvasInfo) {
+        if (!canvasInfo) return false;
+        
+        const { actualWidth, actualHeight } = canvasInfo;
+        return x >= 0 && x <= actualWidth && y >= 0 && y <= actualHeight;
+    }
+
+    /**
+     * デバッグ用座標情報ログ
+     */
+    logCoordinateDebug(context, canvasInfo, transformedCoords) {
+        if (this.gameEngine.debug) {
+            console.log('Username input coordinate debug:', {
+                canvasInfo: {
+                    scale: canvasInfo?.scale,
+                    displaySize: canvasInfo ? `${canvasInfo.displayWidth}x${canvasInfo.displayHeight}` : 'N/A',
+                    actualSize: canvasInfo ? `${canvasInfo.actualWidth}x${canvasInfo.actualHeight}` : 'N/A',
+                    pixelRatio: canvasInfo?.pixelRatio
+                },
+                transformedCoordinates: transformedCoords,
+                fallbackMode: !canvasInfo
+            });
+        }
+    }
+
+    /**
+     * バッチ座標変換（パフォーマンス最適化）
+     */
+    transformCoordinatesBatch(coordinates, canvasInfo) {
+        if (!canvasInfo || !Array.isArray(coordinates)) return [];
+        
+        return coordinates.map(coord => 
+            this.transformCoordinates(coord.x, coord.y, canvasInfo)
+        ).filter(result => result !== null);
+    }
+
+    /**
+     * キャッシュクリア（リサイズ時などに使用）
+     */
+    clearCache() {
+        this._canvasInfoCache = null;
+        this._canvasInfoCacheTime = 0;
+        this._coordinateCache.clear();
+    }
+
+    /**
+     * キャッシュ統計取得（デバッグ用）
+     */
+    getCacheStats() {
+        return {
+            canvasInfoCached: !!this._canvasInfoCache,
+            canvasInfoCacheAge: this._canvasInfoCacheTime > 0 ? performance.now() - this._canvasInfoCacheTime : 0,
+            coordinateCacheSize: this._coordinateCache.size,
+            coordinateCacheMaxSize: this._maxCacheSize
+        };
     }
     
     /**
@@ -17,57 +151,145 @@ export class UsernameInputManager {
      */
     renderUsernameInput(context) {
         try {
-            const canvas = this.gameEngine.canvas;
+            const canvasInfo = this.getCanvasInfo();
             
-            // Canvas実際の解像度を取得
-            const canvasWidth = canvas.width;
-            const canvasHeight = canvas.height;
-            
-            // ベース座標系（800x600）からCanvas座標系への変換比率
-            const scaleX = canvasWidth / 800;
-            const scaleY = canvasHeight / 600;
-            
-            // ベース座標系でのレイアウト
-            const baseWidth = 800;
-            const baseHeight = 600;
-            
-            // 半透明オーバーレイ
-            context.save();
-            context.fillStyle = 'rgba(0,0,0,0.8)';
-            context.fillRect(0, 0, canvasWidth, canvasHeight);
-            
-            // タイトル
-            context.fillStyle = '#FFFFFF';
-            context.font = `bold ${32 * Math.min(scaleX, scaleY)}px Arial`;
-            context.textAlign = 'center';
-            context.textBaseline = 'middle';
-            
-            const title = this.isEditingUsername ? 'ユーザー名変更' : 'ユーザー名登録';
-            context.fillText(title, (baseWidth / 2) * scaleX, 200 * scaleY);
-            
-            // 説明文
-            context.font = `${18 * Math.min(scaleX, scaleY)}px Arial`;
-            context.fillStyle = '#CCCCCC';
-            context.fillText('ユーザー名を入力してください（最大10文字）', (baseWidth / 2) * scaleX, 240 * scaleY);
-            
-            // 入力ボックス
-            this.renderInputBox(context, scaleX, scaleY);
-            
-            // ボタン
-            this.renderUsernameInputButtons(context, scaleX, scaleY);
-            
-            // 操作説明
-            context.fillStyle = '#AAAAAA';
-            context.font = `${14 * Math.min(scaleX, scaleY)}px Arial`;
-            context.textAlign = 'center';
-            context.fillText('文字を入力してEnterで決定、ESCでキャンセル', (baseWidth / 2) * scaleX, 450 * scaleY);
-            
-            context.restore();
+            if (canvasInfo) {
+                this.renderWithResponsiveCoordinates(context, canvasInfo);
+            } else {
+                this.renderWithFallbackCoordinates(context);
+            }
         } catch (error) {
             this.errorHandler.handleError(error, {
                 context: 'UsernameInputManager.renderUsernameInput'
             });
         }
+    }
+
+    /**
+     * ResponsiveCanvasManager座標システムを使用した描画
+     */
+    renderWithResponsiveCoordinates(context, canvasInfo) {
+        if (this.gameEngine.debug) {
+            console.log('Using ResponsiveCanvasManager coordinate system');
+        }
+
+        // ベース座標系でのレイアウト定義
+        const BASE_WIDTH = 800;
+        const BASE_HEIGHT = 600;
+        const LAYOUT = {
+            title: { x: 400, y: 200 },
+            description: { x: 400, y: 240 },
+            inputBox: { x: 200, y: 280, width: 400, height: 50 },
+            buttons: {
+                ok: { x: 290, y: 360, width: 100, height: 40 },
+                cancel: { x: 410, y: 360, width: 100, height: 40 }
+            },
+            helpText: { x: 400, y: 450 }
+        };
+
+        // デバッグログ出力
+        this.logCoordinateDebug(context, canvasInfo, LAYOUT);
+
+        // 半透明オーバーレイ（Canvas全体をカバー）
+        context.save();
+        context.fillStyle = 'rgba(0,0,0,0.8)';
+        context.fillRect(0, 0, canvasInfo.actualWidth, canvasInfo.actualHeight);
+
+        // タイトルの描画
+        const titleCoords = this.transformCoordinates(LAYOUT.title.x, LAYOUT.title.y, canvasInfo);
+        if (titleCoords && this.validateCoordinates(titleCoords.x, titleCoords.y, canvasInfo)) {
+            context.fillStyle = '#FFFFFF';
+            context.font = `bold ${32 * canvasInfo.scale}px Arial`;
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            
+            const title = this.isEditingUsername ? 'ユーザー名変更' : 'ユーザー名登録';
+            context.fillText(title, titleCoords.x, titleCoords.y);
+        }
+
+        // 説明文の描画
+        const descCoords = this.transformCoordinates(LAYOUT.description.x, LAYOUT.description.y, canvasInfo);
+        if (descCoords && this.validateCoordinates(descCoords.x, descCoords.y, canvasInfo)) {
+            context.font = `${18 * canvasInfo.scale}px Arial`;
+            context.fillStyle = '#CCCCCC';
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            context.fillText('ユーザー名を入力してください（最大10文字）', descCoords.x, descCoords.y);
+        }
+
+        // 入力ボックスの描画
+        this.renderInputBoxWithResponsiveCoords(context, canvasInfo, LAYOUT);
+
+        // ボタンの描画（新しいResponsive座標システム使用）
+        this.renderButtonsWithResponsiveCoords(context, canvasInfo, LAYOUT);
+
+        // ヘルプテキストの描画
+        const helpCoords = this.transformCoordinates(LAYOUT.helpText.x, LAYOUT.helpText.y, canvasInfo);
+        if (helpCoords && this.validateCoordinates(helpCoords.x, helpCoords.y, canvasInfo)) {
+            context.fillStyle = '#AAAAAA';
+            context.font = `${14 * canvasInfo.scale}px Arial`;
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            context.fillText('文字を入力してEnterで決定、ESCでキャンセル', helpCoords.x, helpCoords.y);
+        }
+
+        context.restore();
+    }
+
+    /**
+     * フォールバック座標システムを使用した描画
+     */
+    renderWithFallbackCoordinates(context) {
+        if (this.gameEngine.debug) {
+            console.warn('ResponsiveCanvasManager not available, using fallback coordinates');
+        }
+
+        const canvas = this.gameEngine.canvas;
+        
+        // Canvas実際の解像度を取得
+        const canvasWidth = canvas.width;
+        const canvasHeight = canvas.height;
+        
+        // ベース座標系（800x600）からCanvas座標系への変換比率
+        const scaleX = canvasWidth / 800;
+        const scaleY = canvasHeight / 600;
+        
+        // ベース座標系でのレイアウト
+        const baseWidth = 800;
+        const baseHeight = 600;
+        
+        // 半透明オーバーレイ
+        context.save();
+        context.fillStyle = 'rgba(0,0,0,0.8)';
+        context.fillRect(0, 0, canvasWidth, canvasHeight);
+        
+        // タイトル
+        context.fillStyle = '#FFFFFF';
+        context.font = `bold ${32 * Math.min(scaleX, scaleY)}px Arial`;
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        
+        const title = this.isEditingUsername ? 'ユーザー名変更' : 'ユーザー名登録';
+        context.fillText(title, (baseWidth / 2) * scaleX, 200 * scaleY);
+        
+        // 説明文
+        context.font = `${18 * Math.min(scaleX, scaleY)}px Arial`;
+        context.fillStyle = '#CCCCCC';
+        context.fillText('ユーザー名を入力してください（最大10文字）', (baseWidth / 2) * scaleX, 240 * scaleY);
+        
+        // 入力ボックス
+        this.renderInputBox(context, scaleX, scaleY);
+        
+        // ボタン
+        this.renderUsernameInputButtons(context, scaleX, scaleY);
+        
+        // 操作説明
+        context.fillStyle = '#AAAAAA';
+        context.font = `${14 * Math.min(scaleX, scaleY)}px Arial`;
+        context.textAlign = 'center';
+        context.fillText('文字を入力してEnterで決定、ESCでキャンセル', (baseWidth / 2) * scaleX, 450 * scaleY);
+        
+        context.restore();
     }
     
     /**
@@ -104,6 +326,49 @@ export class UsernameInputManager {
         } catch (error) {
             this.errorHandler.handleError(error, {
                 context: 'UsernameInputManager.renderInputBox'
+            });
+        }
+    }
+
+    /**
+     * ResponsiveCanvasManager座標システムを使用した入力ボックス描画
+     */
+    renderInputBoxWithResponsiveCoords(context, canvasInfo, layout) {
+        try {
+            const inputCoords = this.transformCoordinates(layout.inputBox.x, layout.inputBox.y, canvasInfo);
+            const inputWidth = layout.inputBox.width * canvasInfo.scale;
+            const inputHeight = layout.inputBox.height * canvasInfo.scale;
+            
+            if (!inputCoords || !this.validateCoordinates(inputCoords.x, inputCoords.y, canvasInfo)) {
+                if (this.gameEngine.debug) {
+                    console.warn('Invalid input box coordinates, skipping render');
+                }
+                return;
+            }
+            
+            // 入力ボックス背景
+            context.fillStyle = '#FFFFFF';
+            context.fillRect(inputCoords.x, inputCoords.y, inputWidth, inputHeight);
+            
+            // 入力ボックス枠線
+            context.strokeStyle = '#0066CC';
+            context.lineWidth = 3 * canvasInfo.scale;
+            context.strokeRect(inputCoords.x, inputCoords.y, inputWidth, inputHeight);
+            
+            // 入力テキスト
+            context.fillStyle = '#000000';
+            context.font = `${20 * canvasInfo.scale}px Arial`;
+            context.textAlign = 'left';
+            context.textBaseline = 'middle';
+            
+            const displayText = this.usernameInput + (Date.now() % 1000 < 500 ? '|' : ''); // カーソル点滅
+            const textX = inputCoords.x + (10 * canvasInfo.scale);
+            const textY = inputCoords.y + inputHeight / 2;
+            
+            context.fillText(displayText, textX, textY);
+        } catch (error) {
+            this.errorHandler.handleError(error, {
+                context: 'UsernameInputManager.renderInputBoxWithResponsiveCoords'
             });
         }
     }
@@ -153,6 +418,63 @@ export class UsernameInputManager {
         } catch (error) {
             this.errorHandler.handleError(error, {
                 context: 'UsernameInputManager.renderUsernameInputButtons'
+            });
+        }
+    }
+
+    /**
+     * ResponsiveCanvasManager座標システムを使用したボタン描画
+     */
+    renderButtonsWithResponsiveCoords(context, canvasInfo, layout) {
+        try {
+            // OKボタンの描画
+            const okCoords = this.transformCoordinates(layout.buttons.ok.x, layout.buttons.ok.y, canvasInfo);
+            const okWidth = layout.buttons.ok.width * canvasInfo.scale;
+            const okHeight = layout.buttons.ok.height * canvasInfo.scale;
+            
+            if (okCoords && this.validateCoordinates(okCoords.x, okCoords.y, canvasInfo)) {
+                // OKボタン背景
+                context.fillStyle = this.usernameInput.length > 0 ? '#00AA00' : '#666666';
+                context.fillRect(okCoords.x, okCoords.y, okWidth, okHeight);
+                
+                // OKボタン枠線
+                context.strokeStyle = '#FFFFFF';
+                context.lineWidth = 2 * canvasInfo.scale;
+                context.strokeRect(okCoords.x, okCoords.y, okWidth, okHeight);
+                
+                // OKボタンテキスト
+                context.fillStyle = '#FFFFFF';
+                context.font = `bold ${16 * canvasInfo.scale}px Arial`;
+                context.textAlign = 'center';
+                context.textBaseline = 'middle';
+                context.fillText('OK', okCoords.x + okWidth / 2, okCoords.y + okHeight / 2);
+            }
+            
+            // キャンセルボタンの描画
+            const cancelCoords = this.transformCoordinates(layout.buttons.cancel.x, layout.buttons.cancel.y, canvasInfo);
+            const cancelWidth = layout.buttons.cancel.width * canvasInfo.scale;
+            const cancelHeight = layout.buttons.cancel.height * canvasInfo.scale;
+            
+            if (cancelCoords && this.validateCoordinates(cancelCoords.x, cancelCoords.y, canvasInfo)) {
+                // キャンセルボタン背景
+                context.fillStyle = '#AA0000';
+                context.fillRect(cancelCoords.x, cancelCoords.y, cancelWidth, cancelHeight);
+                
+                // キャンセルボタン枠線
+                context.strokeStyle = '#FFFFFF';
+                context.lineWidth = 2 * canvasInfo.scale;
+                context.strokeRect(cancelCoords.x, cancelCoords.y, cancelWidth, cancelHeight);
+                
+                // キャンセルボタンテキスト
+                context.fillStyle = '#FFFFFF';
+                context.font = `bold ${16 * canvasInfo.scale}px Arial`;
+                context.textAlign = 'center';
+                context.textBaseline = 'middle';
+                context.fillText('キャンセル', cancelCoords.x + cancelWidth / 2, cancelCoords.y + cancelHeight / 2);
+            }
+        } catch (error) {
+            this.errorHandler.handleError(error, {
+                context: 'UsernameInputManager.renderButtonsWithResponsiveCoords'
             });
         }
     }
