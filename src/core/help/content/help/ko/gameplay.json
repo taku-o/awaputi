@@ -1,0 +1,152 @@
+{
+  "category": "gameplay",
+  "title": "게임플레이 가이드",
+  "description": "awaputi의 기본적인 게임플레이 방법과 규칙",
+  "language": "ko",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-27",
+  "topics": [
+    {
+      "id": "game_basics",
+      "title": "게임 기본 사항",
+      "description": "게임의 목적과 기본적인 규칙",
+      "content": {
+        "overview": "awaputi는 화면에 나타나는 버블을 터뜨려서 높은 점수를 목표로 하는 액션 게임입니다.",
+        "objective": "제한 시간 내에 최대한 많은 버블을 터뜨려서 높은 점수를 획득하는 것이 목적입니다.",
+        "basic_rules": [
+          "버블은 시간이 지나면 자연적으로 파열되어 HP에 데미지를 줍니다",
+          "HP가 0이 되면 게임 오버입니다",
+          "연속으로 버블을 터뜨리면 콤보가 발생하여 점수 보너스를 얻습니다",
+          "특수한 버블에는 각각 다른 효과가 있습니다"
+        ],
+        "tips": [
+          "위험한 버블 (빨갛게 깜박임)을 우선적으로 처리하세요",
+          "특수 버블의 효과를 이해하고 전략적으로 활용하세요",
+          "콤보를 유지해서 점수를 최대화하세요"
+        ]
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 120,
+      "tags": ["기본", "규칙", "목적"]
+    },
+    {
+      "id": "controls_guide",
+      "title": "조작 방법",
+      "description": "마우스・키보드 조작의 상세 가이드",
+      "content": {
+        "mouse_controls": {
+          "left_click": "버블을 클릭해서 터뜨리기",
+          "drag": "버블을 드래그해서 밀어내기",
+          "double_click": "딱딱한 버블 (돌 버블・철 버블)의 연속 클릭"
+        },
+        "keyboard_shortcuts": {
+          "esc": "메뉴 열기/닫기",
+          "h": "도움말 표시",
+          "p": "게임 일시정지",
+          "space": "게임 일시정지 (게임 중에만)",
+          "ctrl_shift_d": "디버그 모드 전환",
+          "f": "전체화면 전환",
+          "m": "음악 음소거 전환"
+        },
+        "advanced_techniques": [
+          "드래그 조작으로 버블을 안전한 곳으로 이동시키기",
+          "여러 버블을 동시에 처리하기 위한 배치 조정",
+          "특수 버블의 효과 범위를 고려한 전략적 배치"
+        ]
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 180,
+      "tags": ["조작", "마우스", "키보드", "단축키"]
+    },
+    {
+      "id": "scoring_system",
+      "title": "점수 시스템",
+      "description": "점수 계산과 콤보 시스템의 세부사항",
+      "content": {
+        "base_scoring": {
+          "description": "기본 점수 계산",
+          "normal_bubble": 15,
+          "special_bubbles": {
+            "rainbow": 50,
+            "pink": 25,
+            "clock": 30,
+            "golden": 75,
+            "stone": 30,
+            "iron": 45,
+            "diamond": 60
+          }
+        },
+        "combo_system": {
+          "description": "콤보 시스템의 세부사항",
+          "mechanics": [
+            "연속으로 버블을 터뜨리면 콤보 카운트가 증가",
+            "콤보 수에 따라 점수 배율이 상승",
+            "일정 시간 조작이 없으면 콤보가 리셋",
+            "최대 콤보 수에 따라 특별 보너스"
+          ],
+          "multipliers": {
+            "2-5 combo": "1.2배",
+            "6-10 combo": "1.5배",
+            "11-20 combo": "2.0배",
+            "21+ combo": "2.5배"
+          }
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 300,
+      "tags": ["점수", "콤보", "보너스", "계산"]
+    },
+    {
+      "id": "game_strategies",
+      "title": "게임 전략",
+      "description": "높은 점수 획득을 위한 전략과 테크닉",
+      "content": {
+        "priority_management": {
+          "description": "버블 처리 우선순위",
+          "high_priority": [
+            "파열 직전의 위험한 버블 (빨갛게 깜박임)",
+            "독 버블 (HP 감소를 피하기 위한 조기 처리)",
+            "전기 버블 (화면 진동의 방해를 최소화)"
+          ],
+          "medium_priority": [
+            "무지개색 버블 (보너스 타임 발동)",
+            "금색 버블 (고득점 획득)",
+            "시계 버블 (시간 정지 효과)"
+          ],
+          "low_priority": [
+            "일반 버블 (기본 점수)",
+            "돌 버블・철 버블 (시간에 여유가 있을 때)"
+          ]
+        },
+        "advanced_techniques": [
+          "화면 가장자리를 활용한 버블 유도",
+          "특수 효과의 중첩에 의한 상승 효과",
+          "위험 관리 (HP 보존 vs 고득점 추구)",
+          "엔드게임 전략 (남은 시간의 활용)"
+        ]
+      },
+      "difficulty": "advanced",
+      "estimatedReadTime": 420,
+      "tags": ["전략", "테크닉", "고득점", "우선순위"]
+    }
+  ],
+  "quick_reference": {
+    "essential_controls": {
+      "click": "버블 터뜨리기",
+      "drag": "버블 이동",
+      "esc": "메뉴",
+      "h": "도움말",
+      "p": "일시정지"
+    },
+    "danger_signs": [
+      "빨갛게 깜박이는 버블 (파열 직전)",
+      "독 버블의 보라색 오라",
+      "HP 감소 경고음"
+    ],
+    "high_value_targets": [
+      "무지개색 버블 (보너스 타임)",
+      "금색 버블 (고득점)",
+      "특수 효과 버블 (전략적 가치)"
+    ]
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "category": "troubleshooting",
+  "title": "문제 해결 가이드",
+  "description": "일반적인 문제의 해결책과 지원 정보",
+  "language": "ko",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-27",
+  "topics": [
+    {
+      "id": "loading_issues",
+      "title": "로딩 문제",
+      "description": "게임이 제대로 로드되지 않을 때의 해결책",
+      "content": {
+        "game_not_loading": {
+          "symptoms": [
+            "하얀 화면이 그대로 유지됨",
+            "로딩 중... 에서 멈춤",
+            "오류 메시지가 표시됨"
+          ],
+          "common_causes": [
+            "JavaScript가 비활성화됨",
+            "브라우저 캐시 문제",
+            "네트워크 연결 문제",
+            "브라우저 호환성 문제"
+          ],
+          "solutions": [
+            {
+              "step": 1,
+              "action": "브라우저 새로고침",
+              "description": "F5 또는 Ctrl+R로 페이지 새로고침"
+            },
+            {
+              "step": 2,
+              "action": "JavaScript 확인",
+              "description": "브라우저 설정에서 JavaScript가 활성화되어 있는지 확인"
+            },
+            {
+              "step": 3,
+              "action": "캐시 삭제",
+              "description": "Ctrl+Shift+R로 하드 리로드하거나 캐시 클리어"
+            },
+            {
+              "step": 4,
+              "action": "다른 브라우저로 시도",
+              "description": "Chrome, Firefox, Safari, Edge로 테스트"
+            },
+            {
+              "step": 5,
+              "action": "확장 프로그램 확인",
+              "description": "광고 차단기와 보안 확장 프로그램을 일시적으로 비활성화"
+            }
+          ]
+        },
+        "slow_loading": {
+          "symptoms": [
+            "로딩에 비정상적으로 오랜 시간이 걸림",
+            "에셋 로딩 중 멈춤",
+            "진행 바가 중간에서 멈춤"
+          ],
+          "optimization_steps": [
+            "메모리 해제를 위해 다른 탭 닫기",
+            "백그라운드 애플리케이션 종료",
+            "네트워크 연결 안정성 확인",
+            "브라우저 재시작",
+            "PC 재시작"
+          ]
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 240,
+      "tags": ["로딩", "시작", "오류", "초기화"]
+    },
+    {
+      "id": "performance_issues", 
+      "title": "성능 문제",
+      "description": "게임이 느리거나 끊길 때의 해결책",
+      "content": {
+        "low_fps": {
+          "symptoms": [
+            "프레임 레이트가 30 FPS 미만",
+            "움직임이 끊김",
+            "입력 반응이 느림"
+          ],
+          "optimization_solutions": [
+            {
+              "category": "게임 설정",
+              "actions": [
+                "파티클 효과를 '낮음'으로 설정",
+                "애니메이션 품질을 '간단'으로 변경",
+                "목표 FPS를 30으로 제한",
+                "화면 효과 비활성화"
+              ]
+            },
+            {
+              "category": "시스템 설정",
+              "actions": [
+                "전원 설정을 '고성능'으로 변경",
+                "백그라운드 애플리케이션 종료",
+                "그래픽 드라이버 업데이트"
+              ]
+            }
+          ]
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 300,
+      "tags": ["성능", "FPS", "지연", "최적화"]
+    },
+    {
+      "id": "audio_issues",
+      "title": "음성 문제", 
+      "description": "소리가 나지 않거나 음질이 좋지 않을 때의 해결책",
+      "content": {
+        "no_sound": {
+          "symptoms": [
+            "BGM이 재생되지 않음",
+            "효과음이 들리지 않음",
+            "완전히 무음 상태"
+          ],
+          "basic_checks": [
+            "시스템 음량 확인",
+            "브라우저 음량 설정 확인",
+            "게임 내 음량 설정 확인",
+            "음소거 상태 확인"
+          ]
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 180,
+      "tags": ["음성", "음량", "노이즈", "동기화"]
+    }
+  ],
+  "emergency_procedures": {
+    "game_crash": {
+      "immediate_actions": [
+        "브라우저 탭 새로고침 (F5)",
+        "브라우저 완전 재시작",
+        "메모리 해제를 위해 다른 애플리케이션 종료",
+        "PC 재시작 (필요한 경우)"
+      ]
+    }
+  },
+  "contact_support": {
+    "support_channels": {
+      "github_issues": {
+        "url": "https://github.com/taku-o/awaputi/issues",
+        "description": "버그 신고와 기능 요청에 최적",
+        "response_time": "1-3 영업일"
+      }
+    }
+  }
+}
