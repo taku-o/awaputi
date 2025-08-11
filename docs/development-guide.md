@@ -7,8 +7,9 @@
 - **イベント型**: addEventListener パターンでのイベント処理
 - **命名規則**: 
   - 変数・関数名: English（camelCase）
-  - クラス名: PascalCase
+  - クラス名: PascalCase（ドメインプレフィックス付与 - 詳細は[命名規則ガイド](development/naming-conventions-guide.md)参照）
   - 定数: UPPER_SNAKE_CASE
+  - ファイル名: PascalCase（クラス名と一致、.js拡張子必須）
 - **エラーハンドリング**: 中央集権的ErrorHandlerユーティリティ使用
 - **非同期処理**: async/await パターン、適切なエラーバウンダリ実装
 
@@ -29,6 +30,64 @@
   # 特定ディレクトリチェック
   node tools/file-size-monitor.js src/scenes
   ```
+
+## 命名競合検出・防止システム（Issue #131対応）
+
+JavaScript クラス名とファイル名の重複を防ぐための検証ツール群が利用可能です。
+
+### 命名競合検出ツール
+
+```bash
+# 全体的な命名競合をチェック
+node scripts/check-naming-conflicts.js
+
+# 特定の名前の競合をチェック
+node scripts/check-naming-conflicts.js --name "MyClass" --type class
+node scripts/check-naming-conflicts.js --name "utils.js" --type file
+
+# ヘルプ表示
+node scripts/check-naming-conflicts.js --help
+```
+
+### プロジェクト検証ツール
+
+```bash
+# プロジェクト全体の整合性検証
+node scripts/validate-project.js
+
+# 特定ディレクトリの検証  
+node scripts/validate-project.js src/core/
+```
+
+### 包括レポート生成
+
+```bash
+# Issue #131の完全なプロジェクト状況レポート生成
+node scripts/generate-final-report.js
+```
+
+### Pre-commit Hook統合
+
+```bash
+# .git/hooks/pre-commit に追加
+#!/bin/sh
+echo "🔍 命名競合チェック実行中..."
+node scripts/check-naming-conflicts.js
+if [ $? -ne 0 ]; then
+    echo "❌ 命名競合が検出されました。修正してからコミットしてください。"
+    exit 1
+fi
+```
+
+### 命名規則
+
+Issue #131で確立された統一命名戦略：
+
+- **ドメインベース**: `Core*`, `Debug*`, `Utils*`, `Analytics*`
+- **機能レベル**: `Advanced*`, `Basic*`, `Enhanced*`  
+- **コンテキスト固有**: `Scenes*`, `DataManagement*`, `MainMenu*`
+
+詳細は [命名規則ガイド](development/naming-conventions-guide.md) を参照。
 
 ## ファイル構造パターン
 ```javascript
