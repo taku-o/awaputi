@@ -190,14 +190,32 @@ export class TranslationLoader {
         for (const [category, translations] of Object.entries(categorizedTranslations)) {
             if (translations && typeof translations === 'object') {
                 console.log(`TranslationLoader: Processing category ${category} with keys:`, Object.keys(translations));
-                for (const [key, value] of Object.entries(translations)) {
-                    flattened[key] = value;
-                }
+                
+                // 各カテゴリのネストされた構造をフラット化
+                this._flattenNestedObject(translations, '', flattened);
             }
         }
         
         console.log(`TranslationLoader: Final flattened keys:`, Object.keys(flattened).slice(0, 10), '...');
+        console.log(`TranslationLoader: Total keys: ${Object.keys(flattened).length}`);
         return flattened;
+    }
+    
+    /**
+     * ネストされたオブジェクトを再帰的にフラット化
+     */
+    _flattenNestedObject(obj, prefix, result) {
+        for (const [key, value] of Object.entries(obj)) {
+            const newKey = prefix ? `${prefix}.${key}` : key;
+            
+            if (value && typeof value === 'object' && !Array.isArray(value)) {
+                // オブジェクトの場合は再帰的に処理
+                this._flattenNestedObject(value, newKey, result);
+            } else {
+                // プリミティブ値または配列の場合はそのまま設定
+                result[newKey] = value;
+            }
+        }
     }
     
     /**
