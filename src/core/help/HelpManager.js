@@ -383,48 +383,35 @@ export class HelpManager {
      * @param {string} language - 言語コード
      * @returns {Array} トピック一覧
      */
-    getCategoryTopics(category, language = null) {
+    async getCategoryTopics(category, language = null) {
         try {
             const lang = language || this.localizationManager.getCurrentLanguage();
             
-            // カテゴリ別のトピック定義
-            const categoryTopics = {
-                gameplay: [
-                    { id: 'basics', title: '基本操作' },
-                    { id: 'bubble_types', title: '泡の種類' },
-                    { id: 'combo_system', title: 'コンボシステム' },
-                    { id: 'power_ups', title: 'パワーアップ' },
-                    { id: 'scoring', title: 'スコアシステム' }
-                ],
-                bubbles: [
-                    { id: 'normal_bubbles', title: '通常の泡' },
-                    { id: 'special_bubbles', title: '特殊な泡' },
-                    { id: 'boss_bubbles', title: 'ボス泡' },
-                    { id: 'poison_bubbles', title: '毒泡' },
-                    { id: 'healing_bubbles', title: '回復泡' }
-                ],
-                stages: [
-                    { id: 'stage_types', title: 'ステージタイプ' },
-                    { id: 'difficulty', title: '難易度設定' },
-                    { id: 'time_limits', title: '制限時間' },
-                    { id: 'objectives', title: 'クリア条件' }
-                ],
-                menu: [
-                    { id: 'navigation', title: 'メニュー操作' },
-                    { id: 'settings', title: '設定項目' },
-                    { id: 'profile', title: 'プロフィール' },
-                    { id: 'achievements', title: '実績システム' }
-                ]
-            };
+            // コンテンツを直接読み込み
+            const contentKey = `${category}_${lang}`;
+            let content = this.helpContent.get(contentKey);
             
-            const topics = categoryTopics[category] || [];
+            if (!content) {
+                // コンテンツが未読み込みの場合は読み込み
+                content = await this.loadHelpContent(category, lang);
+            }
+            
+            if (!content || !content.topics) {
+                this.loggingSystem.warn('HelpManager', `No topics found for category: ${category} in ${lang}`);
+                return [];
+            }
+            
+            // 実際のコンテンツからトピックリストを取得
+            const topics = content.topics || [];
             
             // 各トピックに詳細情報を付加
             return topics.map(topic => ({
-                ...topic,
+                id: topic.id,
+                title: topic.title,
+                description: topic.description || '',
                 category,
                 language: lang,
-                content: this.getHelpSection(`${category}.${topic.id}`, lang) || {
+                content: topic.content || {
                     title: topic.title,
                     content: 'コンテンツを読み込み中...',
                     isEmpty: true

@@ -174,24 +174,29 @@ export class I18nIntegrationController {
      * @returns {Promise<Object|null>} 翻訳データまたはnull
      */
     async loadLanguageData(language) {
-        // 最適化ローダーを優先
-        if (this.optimizedLoader) {
-            try {
-                return await this.optimizedLoader.loadLanguage(language);
-            } catch (error) {
-                console.warn(`Optimized loader failed for ${language}, trying standard loader:`, error);
-            }
-        }
-        
-        // 標準ローダーをフォールバック
+        // 標準ローダーを優先（安定性重視）
         if (this.translationLoader) {
             try {
-                return await this.translationLoader.loadLanguage(language);
+                const result = await this.translationLoader.loadLanguage(language);
+                console.log(`Successfully loaded translations for ${language} using standard loader:`, Object.keys(result || {}).length, 'categories');
+                return result;
             } catch (error) {
-                console.error(`Failed to load language data for ${language}:`, error);
+                console.warn(`Standard loader failed for ${language}:`, error);
             }
         }
         
+        // 最適化ローダーをフォールバック
+        if (this.optimizedLoader) {
+            try {
+                const result = await this.optimizedLoader.loadLanguage(language);
+                console.log(`Successfully loaded translations for ${language} using optimized loader:`, Object.keys(result || {}).length, 'categories');
+                return result;
+            } catch (error) {
+                console.error(`Both loaders failed for ${language}:`, error);
+            }
+        }
+        
+        console.error(`No translation loaders available for ${language}`);
         return null;
     }
     
