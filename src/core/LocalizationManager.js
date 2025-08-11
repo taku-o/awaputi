@@ -69,6 +69,7 @@ export class LocalizationManager {
                     language
                 );
                 console.log(`LocalizationManager: Security validation result:`, securityResult);
+                console.log(`LocalizationManager: Security warnings:`, securityResult.warnings);
                 
                 if (!securityResult.isSecure) {
                     console.error(`Security violations in ${language}, rejecting translation data`);

@@ -288,9 +288,23 @@ export class I18nIntegrationController {
         }
         
         try {
-            const result = this.securityManager.validateText(text, language);
+            // validateTextメソッドがない場合、JSONパースしてvalidateTranslationDataを使用
+            let data;
+            try {
+                data = JSON.parse(text);
+            } catch (parseError) {
+                console.error(`I18nIntegrationController: JSON parse error for ${language}:`, parseError);
+                return { isSecure: false, warnings: ['Invalid JSON format'] };
+            }
+            
+            const result = this.securityManager.validateTranslationData(data, language);
             console.log(`I18nIntegrationController: Security validation result for ${language}:`, result);
-            return result;
+            
+            // 結果を統一フォーマットに変換
+            return {
+                isSecure: result.isValid,
+                warnings: result.violations ? result.violations.map(v => v.message) : []
+            };
         } catch (error) {
             console.error('Failed to validate translation security:', error);
             console.log(`I18nIntegrationController: Security validation failed, rejecting translations for ${language}`);
