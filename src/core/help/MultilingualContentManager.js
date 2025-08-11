@@ -4,7 +4,7 @@
  * LocalizationManagerとの統合、言語フォールバック、コンテンツ同期を提供
  */
 
-import { LocalizationManager } from '../LocalizationManager.js';
+import { getLocalizationManager } from '../LocalizationManager.js';
 import { LoggingSystem } from '../LoggingSystem.js';
 import { ErrorHandler } from '../../utils/ErrorHandler.js';
 import { ContentLoader, getContentLoader } from './ContentLoader.js';
@@ -15,7 +15,7 @@ import { SearchEngine, getSearchEngine } from './SearchEngine.js';
  */
 export class MultilingualContentManager {
     constructor(localizationManager = null) {
-        this.localizationManager = localizationManager || new LocalizationManager();
+        this.localizationManager = localizationManager || getLocalizationManager();
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
         this.contentLoader = getContentLoader();
         this.searchEngine = getSearchEngine();

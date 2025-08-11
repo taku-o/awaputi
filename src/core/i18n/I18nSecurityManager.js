@@ -244,11 +244,13 @@ export class I18nSecurityManager {
         
         // 長さ制限
         if (key.length > 200) {
+            console.log(`I18nSecurityManager: Key too long: ${key} (${key.length} characters)`);
             return false;
         }
         
         // パターンマッチング
         if (!keyPattern.test(key)) {
+            console.log(`I18nSecurityManager: Invalid characters in key: ${key}`);
             return false;
         }
         
@@ -258,9 +260,25 @@ export class I18nSecurityManager {
             'eval', 'function'
         ];
         
-        // 'script'は単語境界で検証（'description'を除外するため）
-        const scriptPattern = /\bscript\b/i;
-        const hasScript = scriptPattern.test(key);
+        // 危険な'script'パターンのチェック（正当なキーワードを除外）
+        // 'description', 'screenReader', 'subscript' などの正当なキーワードに含まれるscriptは許可
+        // scriptが独立した単語として使われている場合のみ危険とみなす
+        const lowercaseKey = key.toLowerCase();
+        
+        // 正当なscriptを含むパターン（許可する）
+        const legitimateScriptPatterns = [
+            'description', 'descriptions', 'screenreader', 'subscript', 'manuscript',
+            'transcript', 'postscript', 'javascript'  // javascriptも正当な用途
+        ];
+        
+        // 正当なパターンに該当する場合は許可
+        const isLegitimateScriptUsage = legitimateScriptPatterns.some(pattern => 
+            lowercaseKey.includes(pattern)
+        );
+        
+        // 独立したscript（危険）- ドット、アンダースコア、ハイフンで区切られた場合のみ
+        const dangerousScriptPattern = /(?:^|[._-])script(?:[._-]|$)/i;
+        const hasScript = !isLegitimateScriptUsage && dangerousScriptPattern.test(key);
         
         const hasOtherDangerousPatterns = dangerousPatterns.some(pattern => 
             key.toLowerCase().includes(pattern)

@@ -21,8 +21,12 @@ export class LocalizationManager {
         // 言語変更イベントリスナー
         this.languageChangeListeners = new Set();
         
+        // 初期化完了を追跡
+        this.initializationPromise = null;
+        this.isInitialized = false;
+        
         // 非同期で初期化を完了
-        this.initializeAsync();
+        this.initializationPromise = this.initializeAsync();
     }
     
     /**
@@ -41,11 +45,27 @@ export class LocalizationManager {
             this.integrationController.startPerformanceMonitoring(this.currentLanguage);
             
             console.log('LocalizationManager initialized with optimized file-based translations');
+            this.isInitialized = true;
         } catch (error) {
             console.warn('Failed to initialize file-based translations, using fallback data:', error);
             this.integrationController.reportError(error, { 
                 operation: 'initializeAsync' 
             });
+            this.isInitialized = true; // エラーが発生してもフラグは立てる
+        }
+    }
+    
+    /**
+     * 初期化完了を待機
+     * @returns {Promise<void>}
+     */
+    async waitForInitialization() {
+        if (this.isInitialized) {
+            return;
+        }
+        
+        if (this.initializationPromise) {
+            await this.initializationPromise;
         }
     }
     
@@ -59,17 +79,12 @@ export class LocalizationManager {
             // ファイルベース翻訳データの読み込み
             const translations = await this.integrationController.loadLanguageData(language);
             
-            console.log(`LocalizationManager: Received data for ${language}:`, translations ? Object.keys(translations).length : 'null');
-            
             if (translations && Object.keys(translations).length > 0) {
                 // セキュリティ検証
-                console.log(`LocalizationManager: Starting security validation for ${language}`);
                 const securityResult = this.integrationController.validateTranslationSecurity(
                     JSON.stringify(translations), 
                     language
                 );
-                console.log(`LocalizationManager: Security validation result:`, securityResult);
-                console.log(`LocalizationManager: Security warnings:`, securityResult.warnings);
                 
                 if (!securityResult.isSecure) {
                     console.error(`Security violations in ${language}, rejecting translation data`);
@@ -77,13 +92,11 @@ export class LocalizationManager {
                 }
                 
                 // 翻訳データを設定
-                console.log(`LocalizationManager: Setting translation data for ${language}`);
                 this.translationDataManager.setLanguageData(language, translations);
                 console.log(`Loaded and validated language data for: ${language}`);
                 return true;
             } else {
                 console.warn(`No translations found for: ${language}`);
-                console.log(`LocalizationManager: Translations object:`, translations);
                 return false;
             }
         } catch (error) {
@@ -104,12 +117,22 @@ export class LocalizationManager {
      */
     t(key, params = {}) {
         try {
+            // 初期化されていない場合は警告
+            if (!this.isInitialized) {
+                console.warn(`LocalizationManager: Translation requested before initialization complete for key: ${key}`);
+            }
+            
             // 翻訳取得
             let translation = this.translationDataManager.getTranslation(
                 this.currentLanguage, 
                 key, 
                 this.fallbackLanguage
             );
+            
+            // デバッグ：翻訳が見つからない場合
+            if (translation === key) {
+                console.warn(`LocalizationManager: Translation not found for key: ${key} in language: ${this.currentLanguage}`);
+            }
             
             // パラメータ置換
             if (typeof translation === 'string' && Object.keys(params).length > 0) {
@@ -448,7 +471,10 @@ let localizationManagerInstance = null;
  */
 export function getLocalizationManager() {
     if (!localizationManagerInstance) {
+        console.log('LocalizationManager: Creating new singleton instance');
         localizationManagerInstance = new LocalizationManager();
+    } else {
+        console.log('LocalizationManager: Returning existing singleton instance');
     }
     return localizationManagerInstance;
 }

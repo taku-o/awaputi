@@ -5,7 +5,7 @@
  */
 
 import { ErrorHandler } from '../../utils/ErrorHandler.js';
-import { LocalizationManager } from '../LocalizationManager.js';
+import { getLocalizationManager } from '../LocalizationManager.js';
 import { CacheSystem } from '../CacheSystem.js';
 import { LoggingSystem } from '../LoggingSystem.js';
 
@@ -15,7 +15,7 @@ import { LoggingSystem } from '../LoggingSystem.js';
 export class HelpManager {
     constructor(gameEngine) {
         this.gameEngine = gameEngine;
-        this.localizationManager = new LocalizationManager();
+        this.localizationManager = getLocalizationManager();
         this.cacheSystem = CacheSystem.getInstance ? CacheSystem.getInstance() : new CacheSystem();
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
         this.helpContent = new Map();

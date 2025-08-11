@@ -95,7 +95,15 @@ export class TranslationLoader {
             const promise = this._loadTranslationFile(language, file)
                 .then(data => {
                     if (data) {
-                        translations[file] = data.translations || data;
+                        // 翻訳データがネストされている場合は展開
+                        const translationData = data.translations || data;
+                        
+                        // ファイルごとに適切にデータを格納
+                        // menu.jsonの場合: {"menu": {...}, "shortcuts": {...}}のように格納される
+                        for (const [key, value] of Object.entries(translationData)) {
+                            translations[key] = value;
+                        }
+                        
                     }
                 })
                 .catch(error => {
@@ -109,12 +117,8 @@ export class TranslationLoader {
         // 全ファイルの読み込み完了を待つ
         await Promise.all(loadPromises);
         
-        console.log(`TranslationLoader: Loaded categories for ${language}:`, Object.keys(translations));
-        
         // 翻訳データをフラット化
         const flattened = this._flattenTranslations(translations);
-        console.log(`TranslationLoader: Flattened ${Object.keys(flattened).length} keys for ${language}`);
-        console.log(`TranslationLoader: Returning flattened object with keys:`, Object.keys(flattened).slice(0, 5));
         
         return flattened;
     }
@@ -190,15 +194,11 @@ export class TranslationLoader {
         
         for (const [category, translations] of Object.entries(categorizedTranslations)) {
             if (translations && typeof translations === 'object') {
-                console.log(`TranslationLoader: Processing category ${category} with keys:`, Object.keys(translations));
-                
                 // 各カテゴリのネストされた構造をフラット化
                 this._flattenNestedObject(translations, '', flattened);
             }
         }
         
-        console.log(`TranslationLoader: Final flattened keys:`, Object.keys(flattened).slice(0, 10), '...');
-        console.log(`TranslationLoader: Total keys: ${Object.keys(flattened).length}`);
         return flattened;
     }
     

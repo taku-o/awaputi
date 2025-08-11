@@ -25,6 +25,7 @@ export class TranslationDataManager {
             'menu.subtitle': '泡割りゲーム',
             'menu.start': 'ゲーム開始',
             'menu.settings': '設定',
+            'menu.help': 'ヘルプ',
             'menu.userInfo': 'ユーザー情報',
             'menu.controls': '↑↓: 選択  Enter: 決定  ESC: 終了',
             'menu.clickInfo': 'クリックでも操作できます',
@@ -131,6 +132,18 @@ export class TranslationDataManager {
             ],
             'help.bubbles': '普通(青) 石(灰) 鉄(茶) ダイヤ(白) ピンク(回復) 毒(緑) とげとげ(連鎖) 虹色(ボーナス) 時計(時停) S字(得点) ビリビリ(妨害) 逃げる(移動)',
             
+            // ヘルプアクセシビリティ
+            'help.accessibility.searchBar': 'ヘルプ検索',
+            'help.accessibility.searchBarDesc': 'キーワードを入力してヘルプコンテンツを検索',
+            'help.accessibility.categoryList': 'ヘルプカテゴリ一覧',
+            'help.accessibility.categoryListDesc': '矢印キーで移動、Enterで選択',
+            'help.accessibility.topicList': 'トピック一覧',
+            'help.accessibility.topicListDesc': '選択されたカテゴリのトピック一覧',
+            'help.accessibility.contentArea': 'ヘルプコンテンツ表示エリア',
+            'help.accessibility.contentAreaDesc': '選択されたトピックの詳細情報',
+            'help.accessibility.backButton': '戻るボタン',
+            'help.accessibility.backButtonDesc': 'メインメニューに戻ります',
+            
             // キーボードショートカット
             'shortcuts.title': 'キーボードショートカット',
             'shortcuts.pause': '一時停止',
@@ -161,6 +174,7 @@ export class TranslationDataManager {
             'menu.subtitle': 'Bubble Popping Game',
             'menu.start': 'Start Game',
             'menu.settings': 'Settings',
+            'menu.help': 'Help',
             'menu.userInfo': 'User Info',
             'menu.controls': '↑↓: Select  Enter: Confirm  ESC: Exit',
             'menu.clickInfo': 'You can also use clicks',
@@ -266,6 +280,18 @@ export class TranslationDataManager {
                 'Push special bubbles off screen'
             ],
             'help.bubbles': 'Normal(Blue) Stone(Gray) Iron(Brown) Diamond(White) Pink(Heal) Poison(Green) Spiky(Chain) Rainbow(Bonus) Clock(Time) S-shape(Score) Electric(Hinder) Escape(Move)',
+            
+            // Help Accessibility
+            'help.accessibility.searchBar': 'Help Search',
+            'help.accessibility.searchBarDesc': 'Enter keywords to search help content',
+            'help.accessibility.categoryList': 'Help Category List',
+            'help.accessibility.categoryListDesc': 'Use arrow keys to navigate, Enter to select',
+            'help.accessibility.topicList': 'Topic List',
+            'help.accessibility.topicListDesc': 'List of topics in the selected category',
+            'help.accessibility.contentArea': 'Help Content Display Area',
+            'help.accessibility.contentAreaDesc': 'Detailed information for the selected topic',
+            'help.accessibility.backButton': 'Back Button',
+            'help.accessibility.backButtonDesc': 'Return to main menu',
             
             // Shortcuts
             'shortcuts.title': 'Keyboard Shortcuts',
@@ -445,27 +471,6 @@ export class TranslationDataManager {
         if (this.translations.has(language)) {
             const langTranslations = this.translations.get(language);
             
-            // 特定のキーのデバッグ（menu.help と help.accessibility.categoryList のみ）
-            if (key === 'menu.help' || key === 'help.accessibility.categoryList') {
-                console.log(`TranslationDataManager: Searching for key "${key}" in ${language}`);
-                console.log(`TranslationDataManager: Language data exists:`, !!langTranslations);
-                console.log(`TranslationDataManager: Total keys in ${language}:`, Object.keys(langTranslations || {}).length);
-                console.log(`TranslationDataManager: Key exists in data:`, key in langTranslations);
-                console.log(`TranslationDataManager: Key value:`, langTranslations[key]);
-                
-                // Map直接確認
-                const directMapData = this.translations.get(language);
-                console.log(`TranslationDataManager: Direct map data exists:`, !!directMapData);
-                console.log(`TranslationDataManager: Direct map total keys:`, Object.keys(directMapData || {}).length);
-                console.log(`TranslationDataManager: Direct map has key:`, key in (directMapData || {}));
-                console.log(`TranslationDataManager: Reference equality:`, langTranslations === directMapData);
-                
-                console.log(`TranslationDataManager: Keys starting with 'menu':`, 
-                    Object.keys(langTranslations || {}).filter(k => k.startsWith('menu')).slice(0, 5));
-                console.log(`TranslationDataManager: Keys starting with 'help.accessibility':`, 
-                    Object.keys(langTranslations || {}).filter(k => k.startsWith('help.accessibility')).slice(0, 5));
-            }
-            
             if (langTranslations[key] !== undefined) {
                 return langTranslations[key];
             }
@@ -510,20 +515,8 @@ export class TranslationDataManager {
         const existingTranslations = this.translations.get(language) || {};
         const mergedTranslations = { ...existingTranslations, ...translationData };
         
-        console.log(`TranslationDataManager: Setting ${Object.keys(translationData || {}).length} new keys for ${language}`);
-        console.log(`TranslationDataManager: Sample new keys:`, Object.keys(translationData || {}).slice(0, 10));
-        console.log(`TranslationDataManager: Total merged keys:`, Object.keys(mergedTranslations).length);
-        console.log(`TranslationDataManager: Has menu.help:`, 'menu.help' in mergedTranslations);
-        console.log(`TranslationDataManager: Has help.accessibility.categoryList:`, 'help.accessibility.categoryList' in mergedTranslations);
-        
         this.translations.set(language, mergedTranslations);
         this.loadedLanguages.add(language);
-        
-        // 設定直後の確認
-        const storedData = this.translations.get(language);
-        console.log(`TranslationDataManager: After setting - stored keys:`, Object.keys(storedData || {}).length);
-        console.log(`TranslationDataManager: After setting - has menu.help:`, 'menu.help' in (storedData || {}));
-        console.log(`TranslationDataManager: After setting - memory reference same:`, storedData === mergedTranslations);
     }
     
     /**
