@@ -1,9 +1,9 @@
 /**
- * ErrorAnalyzer - Handles error analysis and severity determination
+ * Utils Error Analyzer - Handles error analysis and severity determination
  * Part of the ErrorHandler split implementation
  */
 
-export class ErrorAnalyzer {
+export class UtilsErrorAnalyzer {
     constructor(mainController) {
         this.mainController = mainController;
         

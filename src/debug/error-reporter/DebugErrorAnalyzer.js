@@ -1,9 +1,9 @@
 /**
- * Error Analyzer
- * エラーパターン分析専用クラス
+ * Debug Error Analyzer
+ * デバッグ用エラーパターン分析専用クラス
  */
 
-export class ErrorAnalyzer {
+export class DebugErrorAnalyzer {
     constructor(errorReporter) {
         this.errorReporter = errorReporter;
         

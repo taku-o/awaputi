@@ -153,20 +153,27 @@
   - StatisticsAnalyzer.jsの参照を更新
   - _Requirements: 1.2, 1.4_
 
-- [ ] 10. エラーハンドリング重複の解決
+- [x] 10. エラーハンドリング重複の解決
   - ErrorReporter, ErrorNotificationSystem, ErrorAnalyzerの重複を処理
   - エラーハンドリングドメインの一貫した構造を構築
   - _Requirements: 1.2, 1.4, 2.2, 2.4_
 
-- [ ] 10.1 ErrorReporter重複の解決
+- [x] 10.1 ErrorReporter重複の解決
   - DebugErrorReporterとUtilsErrorReporterに分離
   - 機能の重複確認と統合検討
   - エラーレポート機能の一元化可能性を評価
   - _Requirements: 1.2, 1.4_
 
-- [ ] 10.2 ErrorNotificationSystem重複の解決
-  - 分析用とデバッグ用の通知システムを分離
+- [x] 10.2 ErrorNotificationSystem重複の解決
+  - DebugErrorNotificationSystemとAnalyticsErrorNotificationSystemに分離
   - 通知機能の共通化を検討
+  - 全てのインポート文と使用箇所を更新
+  - _Requirements: 1.2, 1.4_
+
+- [x] 10.3 ErrorAnalyzer重複の解決
+  - DebugErrorAnalyzerとUtilsErrorAnalyzerに分離
+  - デバッグ用パターン分析とユーティリティ用重要度判定に特化
+  - DebugErrorReporter.jsでのインポートを更新
   - _Requirements: 1.2, 1.4_
 
 - [ ] 11. パフォーマンス監視重複の解決

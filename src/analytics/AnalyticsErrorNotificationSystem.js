@@ -1,9 +1,9 @@
 /**
- * エラー通知システム
+ * 分析用エラー通知システム
  * エラー発生時の即座の通知表示とコンテキスト情報収集機能を提供
  */
 
-export class ErrorNotificationSystem {
+export class AnalyticsErrorNotificationSystem {
     constructor(options = {}) {
         this.options = {
             enableErrorNotifications: true,

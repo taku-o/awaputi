@@ -1,20 +1,20 @@
 /**
- * Error Reporter
- * 既存のErrorHandlerを拡張した包括的エラー収集・分析・レポートシステム（Main Controller）
+ * Debug Error Reporter
+ * 既存のErrorHandlerを拡張したデバッグ用包括的エラー収集・分析・レポートシステム（Main Controller）
  */
 
 import { ErrorHandler } from '../utils/ErrorHandler.js';
 import { ErrorScreenshotCapture } from './ErrorScreenshotCapture.js';
-import { ErrorNotificationSystem } from './ErrorNotificationSystem.js';
+import { DebugErrorNotificationSystem } from './DebugErrorNotificationSystem.js';
 import { ErrorRecoveryTracker } from './ErrorRecoveryTracker.js';
 
 // サブコンポーネントのインポート
 import { ErrorCollector } from './error-reporter/ErrorCollector.js';
-import { ErrorAnalyzer } from './error-reporter/ErrorAnalyzer.js';
+import { DebugErrorAnalyzer } from './error-reporter/DebugErrorAnalyzer.js';
 import { ErrorSubmissionManager } from './error-reporter/ErrorSubmissionManager.js';
 import { ErrorStorage } from './error-reporter/ErrorStorage.js';
 
-export class ErrorReporter extends ErrorHandler {
+export class DebugErrorReporter extends ErrorHandler {
     constructor(gameEngine) {
         super();
         this.gameEngine = gameEngine;
@@ -26,12 +26,12 @@ export class ErrorReporter extends ErrorHandler {
         // サブコンポーネントを初期化（依存性注入）
         this.errorStorage = new ErrorStorage(this);
         this.errorCollector = new ErrorCollector(this);
-        this.errorAnalyzer = new ErrorAnalyzer(this);
+        this.errorAnalyzer = new DebugErrorAnalyzer(this);
         this.submissionManager = new ErrorSubmissionManager(this);
         
         // 既存の統合コンポーネント
         this.screenshotCapture = new ErrorScreenshotCapture(gameEngine);
-        this.notificationSystem = new ErrorNotificationSystem(this);
+        this.notificationSystem = new DebugErrorNotificationSystem(this);
         this.recoveryTracker = new ErrorRecoveryTracker(this);
         
         // 通知システム設定

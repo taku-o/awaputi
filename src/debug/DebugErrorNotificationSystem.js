@@ -1,9 +1,9 @@
 /**
- * Error Notification System
- * エラー通知システム - リアルタイム通知・フィルタリング・設定可能閾値
+ * Debug Error Notification System
+ * デバッグ用エラー通知システム - リアルタイム通知・フィルタリング・設定可能閾値
  */
 
-export class ErrorNotificationSystem {
+export class DebugErrorNotificationSystem {
     constructor(errorReporter) {
         this.errorReporter = errorReporter;
         

@@ -1,9 +1,9 @@
 /**
- * ErrorReporter - Handles user notifications and error display
+ * Utils Error Reporter - Handles user notifications and error display
  * Part of the ErrorHandler split implementation
  */
 
-export class ErrorReporter {
+export class UtilsErrorReporter {
     constructor(mainController) {
         this.mainController = mainController;
         
