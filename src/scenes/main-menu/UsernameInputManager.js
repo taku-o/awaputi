@@ -95,14 +95,72 @@ export class UsernameInputManager {
      * ResponsiveCanvasManager座標システムを使用した描画
      */
     renderWithResponsiveCoordinates(context, canvasInfo) {
-        // TODO: 実装予定（次のタスクで実装）
         if (this.gameEngine.debug) {
             console.log('Using ResponsiveCanvasManager coordinate system');
         }
-        this.logCoordinateDebug(context, canvasInfo, null);
-        
-        // 一時的にフォールバック使用
-        this.renderWithFallbackCoordinates(context);
+
+        // ベース座標系でのレイアウト定義
+        const BASE_WIDTH = 800;
+        const BASE_HEIGHT = 600;
+        const LAYOUT = {
+            title: { x: 400, y: 200 },
+            description: { x: 400, y: 240 },
+            inputBox: { x: 200, y: 280, width: 400, height: 50 },
+            buttons: {
+                ok: { x: 290, y: 360, width: 100, height: 40 },
+                cancel: { x: 410, y: 360, width: 100, height: 40 }
+            },
+            helpText: { x: 400, y: 450 }
+        };
+
+        // デバッグログ出力
+        this.logCoordinateDebug(context, canvasInfo, LAYOUT);
+
+        // 半透明オーバーレイ（Canvas全体をカバー）
+        context.save();
+        context.fillStyle = 'rgba(0,0,0,0.8)';
+        context.fillRect(0, 0, canvasInfo.actualWidth, canvasInfo.actualHeight);
+
+        // タイトルの描画
+        const titleCoords = this.transformCoordinates(LAYOUT.title.x, LAYOUT.title.y, canvasInfo);
+        if (titleCoords && this.validateCoordinates(titleCoords.x, titleCoords.y, canvasInfo)) {
+            context.fillStyle = '#FFFFFF';
+            context.font = `bold ${32 * canvasInfo.scale}px Arial`;
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            
+            const title = this.isEditingUsername ? 'ユーザー名変更' : 'ユーザー名登録';
+            context.fillText(title, titleCoords.x, titleCoords.y);
+        }
+
+        // 説明文の描画
+        const descCoords = this.transformCoordinates(LAYOUT.description.x, LAYOUT.description.y, canvasInfo);
+        if (descCoords && this.validateCoordinates(descCoords.x, descCoords.y, canvasInfo)) {
+            context.font = `${18 * canvasInfo.scale}px Arial`;
+            context.fillStyle = '#CCCCCC';
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            context.fillText('ユーザー名を入力してください（最大10文字）', descCoords.x, descCoords.y);
+        }
+
+        // TODO: 入力ボックス、ボタン、ヘルプテキスト（次のタスクで実装）
+        // 一時的に従来の描画メソッドを呼び出し
+        const tempScaleX = canvasInfo.actualWidth / 800;
+        const tempScaleY = canvasInfo.actualHeight / 600;
+        this.renderInputBox(context, tempScaleX, tempScaleY);
+        this.renderUsernameInputButtons(context, tempScaleX, tempScaleY);
+
+        // ヘルプテキストの描画
+        const helpCoords = this.transformCoordinates(LAYOUT.helpText.x, LAYOUT.helpText.y, canvasInfo);
+        if (helpCoords && this.validateCoordinates(helpCoords.x, helpCoords.y, canvasInfo)) {
+            context.fillStyle = '#AAAAAA';
+            context.font = `${14 * canvasInfo.scale}px Arial`;
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            context.fillText('文字を入力してEnterで決定、ESCでキャンセル', helpCoords.x, helpCoords.y);
+        }
+
+        context.restore();
     }
 
     /**
