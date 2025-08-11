@@ -5,7 +5,7 @@
   - ファイル書き込み処理をidempotentに変更（内容が同じ場合は書き込みをスキップ）
   - _Requirements: 1.1, 1.2, 4.1, 4.2_
 
-- [ ] 2. 既存翻訳ファイルからoptimizedAtフィールドを削除
+- [x] 2. 既存翻訳ファイルからoptimizedAtフィールドを削除
   - 全35個の翻訳ファイル（5言語×7カテゴリ）からoptimizedAtフィールドを削除
   - メタデータの整合性を保持（language, version, completeness等は維持）
   - _Requirements: 2.1, 2.2_

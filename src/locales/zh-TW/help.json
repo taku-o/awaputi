@@ -1,1 +1,50 @@
-{"meta":{"language":"zh-TW","region":"TW","version":"1.0.0","lastUpdated":"2025-01-29T00:00:00Z","completeness":100,"quality":90,"optimizedAt":"2025-08-07T00:45:58.240Z","size":1190},"translations":{"help":{"title":"操作說明","basicControls":"基本操作","gameTips":"遊戲技巧","bubbleTypes":"泡泡類型","controls":["點選/觸控: 戳破泡泡","拖拽: 吹走泡泡","↑↓鍵: 選單選擇","Enter: 確認","ESC: 返回/離開","S: 商店（關卡選擇時）"],"tips":["泡泡隨時間變得危險","連續戳破獲得連擊獎勵","粉紅色泡泡恢復生命值","避開毒泡泡","硬泡泡需要多次點選","特殊泡泡可以推到螢幕外"],"bubbles":"普通(藍) 石頭(灰) 鐵(棕) 鑽石(白) 粉紅(恢復) 毒(綠) 刺刺(連鎖) 彩虹(獎勵) 時鐘(時停) S字(得分) 電擊(干擾) 逃跑(移動)","accessibility":{"searchBar":"搜尋說明內容","searchBarDesc":"輸入關鍵字搜尋說明內容","categoryList":"說明分類清單","categoryListDesc":"使用方向鍵移動，Enter鍵選擇","topicList":"主題清單","topicListDesc":"選定分類中的主題清單","contentArea":"說明內容顯示區域","contentAreaDesc":"選定主題的詳細資訊","backButton":"返回按鈕","backButtonDesc":"返回到主選單","screenReaderEnabled":"螢幕閱讀器支援已啟用","sceneEntered":"已進入說明場景。按F1查看鍵盤快速鍵。"}}}}
+{
+  "meta": {
+    "language": "zh-TW",
+    "region": "TW",
+    "version": "1.0.0",
+    "lastUpdated": "2025-01-29T00:00:00Z",
+    "completeness": 100,
+    "quality": 90,
+    "size": 1190
+  },
+  "translations": {
+    "help": {
+      "title": "操作說明",
+      "basicControls": "基本操作",
+      "gameTips": "遊戲技巧",
+      "bubbleTypes": "泡泡類型",
+      "controls": [
+        "點選/觸控: 戳破泡泡",
+        "拖拽: 吹走泡泡",
+        "↑↓鍵: 選單選擇",
+        "Enter: 確認",
+        "ESC: 返回/離開",
+        "S: 商店（關卡選擇時）"
+      ],
+      "tips": [
+        "泡泡隨時間變得危險",
+        "連續戳破獲得連擊獎勵",
+        "粉紅色泡泡恢復生命值",
+        "避開毒泡泡",
+        "硬泡泡需要多次點選",
+        "特殊泡泡可以推到螢幕外"
+      ],
+      "bubbles": "普通(藍) 石頭(灰) 鐵(棕) 鑽石(白) 粉紅(恢復) 毒(綠) 刺刺(連鎖) 彩虹(獎勵) 時鐘(時停) S字(得分) 電擊(干擾) 逃跑(移動)",
+      "accessibility": {
+        "searchBar": "搜尋說明內容",
+        "searchBarDesc": "輸入關鍵字搜尋說明內容",
+        "categoryList": "說明分類清單",
+        "categoryListDesc": "使用方向鍵移動，Enter鍵選擇",
+        "topicList": "主題清單",
+        "topicListDesc": "選定分類中的主題清單",
+        "contentArea": "說明內容顯示區域",
+        "contentAreaDesc": "選定主題的詳細資訊",
+        "backButton": "返回按鈕",
+        "backButtonDesc": "返回到主選單",
+        "screenReaderEnabled": "螢幕閱讀器支援已啟用",
+        "sceneEntered": "已進入說明場景。按F1查看鍵盤快速鍵。"
+      }
+    }
+  }
+}
