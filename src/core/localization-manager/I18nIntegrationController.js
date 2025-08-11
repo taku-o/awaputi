@@ -280,14 +280,20 @@ export class I18nIntegrationController {
      * @returns {Object} 検証結果
      */
     validateTranslationSecurity(text, language) {
+        console.log(`I18nIntegrationController: Security manager available:`, !!this.securityManager);
+        
         if (!this.securityManager) {
+            console.log(`I18nIntegrationController: No security manager, allowing translations for ${language}`);
             return { isSecure: true, warnings: [] };
         }
         
         try {
-            return this.securityManager.validateText(text, language);
+            const result = this.securityManager.validateText(text, language);
+            console.log(`I18nIntegrationController: Security validation result for ${language}:`, result);
+            return result;
         } catch (error) {
             console.error('Failed to validate translation security:', error);
+            console.log(`I18nIntegrationController: Security validation failed, rejecting translations for ${language}`);
             return { isSecure: false, warnings: ['Security validation failed'] };
         }
     }

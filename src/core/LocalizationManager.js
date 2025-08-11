@@ -63,10 +63,12 @@ export class LocalizationManager {
             
             if (translations && Object.keys(translations).length > 0) {
                 // セキュリティ検証
+                console.log(`LocalizationManager: Starting security validation for ${language}`);
                 const securityResult = this.integrationController.validateTranslationSecurity(
                     JSON.stringify(translations), 
                     language
                 );
+                console.log(`LocalizationManager: Security validation result:`, securityResult);
                 
                 if (!securityResult.isSecure) {
                     console.error(`Security violations in ${language}, rejecting translation data`);
@@ -74,6 +76,7 @@ export class LocalizationManager {
                 }
                 
                 // 翻訳データを設定
+                console.log(`LocalizationManager: Setting translation data for ${language}`);
                 this.translationDataManager.setLanguageData(language, translations);
                 console.log(`Loaded and validated language data for: ${language}`);
                 return true;
