@@ -175,6 +175,7 @@ export class MainMenuScene extends Scene {
             } else if (this.showingControlsHelp) {
                 this.dialogManager.renderControlsHelp(context);
             } else if (this.showingSettings) {
+                // NOTE: SettingsRenderer.renderSettingsは実際には呼ばれない。SettingsSceneで処理される。
                 this.settingsRenderer.renderSettings(context);
             } else if (this.showingUserInfo) {
                 this.dialogManager.renderUserInfo(context);
@@ -284,7 +285,8 @@ export class MainMenuScene extends Scene {
                 this.closeSettings();
             }
         } else if (event.type === 'click') {
-            const clickableElements = this.settingsRenderer.getClickableElements();
+            // NOTE: SettingsRenderer.getClickableElementsは実際には呼ばれない
+            // const clickableElements = this.settingsRenderer.getClickableElements();
             const settingsCallbacks = {
                 onChangeUsername: () => this.changeUsername(),
                 onShowDataClear: () => this.showDataClearConfirmation(),

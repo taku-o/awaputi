@@ -3,6 +3,10 @@ import { getErrorHandler } from '../../utils/ErrorHandler.js';
 /**
  * Settings Renderer
  * 設定画面の描画処理を担当
+ * 
+ * ⚠️  DEPRECATED: このクラスは現在使用されていません
+ * 実際の設定画面は SettingsScene.js で処理されています
+ * 将来的な削除候補 - 別のissueで対応予定
  */
 export class SettingsRenderer {
     constructor(gameEngine) {

@@ -28,7 +28,11 @@ export class MainMenuDialogManager {
             context.font = 'bold 32px Arial';
             context.textAlign = 'center';
             context.textBaseline = 'middle';
-            context.fillText('ユーザー情報', canvas.width / 2, 120);
+            
+            // Transform行列のスケールを考慮した中央位置
+            const transform = context.getTransform();
+            const centerX = (canvas.width / 2) / transform.a;
+            context.fillText('ユーザー情報', centerX, 120);
             
             // ユーザー情報
             this.renderUserInfoContent(context, playerData);
@@ -114,23 +118,27 @@ export class MainMenuDialogManager {
             context.fillStyle = 'rgba(0,0,0,0.9)';
             context.fillRect(0, 0, canvas.width, canvas.height);
             
+            // Transform行列のスケールを考慮した中央位置
+            const transform = context.getTransform();
+            const centerX = (canvas.width / 2) / transform.a;
+            
             // 警告アイコン
             context.fillStyle = '#FF6666';
             context.font = 'bold 48px Arial';
             context.textAlign = 'center';
             context.textBaseline = 'middle';
-            context.fillText('⚠️', canvas.width / 2, 150);
+            context.fillText('⚠️', centerX, 150);
             
             // タイトル
             context.fillStyle = '#FFFFFF';
             context.font = 'bold 28px Arial';
-            context.fillText('データクリア確認', canvas.width / 2, 200);
+            context.fillText('データクリア確認', centerX, 200);
             
             // 警告メッセージ
             context.font = '18px Arial';
             context.fillStyle = '#FFCCCC';
-            context.fillText('すべてのデータが削除されます。', canvas.width / 2, 250);
-            context.fillText('この操作は取り消せません。', canvas.width / 2, 280);
+            context.fillText('すべてのデータが削除されます。', centerX, 250);
+            context.fillText('この操作は取り消せません。', centerX, 280);
             
             // 削除データ詳細
             this.renderDataClearDetails(context);
@@ -235,12 +243,16 @@ export class MainMenuDialogManager {
             context.fillStyle = 'rgba(0,0,0,0.8)';
             context.fillRect(0, 0, canvas.width, canvas.height);
             
+            // Transform行列のスケールを考慮した中央位置
+            const transform = context.getTransform();
+            const centerX = (canvas.width / 2) / transform.a;
+            
             // タイトル
             context.fillStyle = '#FFFFFF';
             context.font = 'bold 32px Arial';
             context.textAlign = 'center';
             context.textBaseline = 'middle';
-            context.fillText('操作説明', canvas.width / 2, 80);
+            context.fillText('操作説明', centerX, 80);
             
             // 操作説明内容
             this.renderControlsHelpContent(context);

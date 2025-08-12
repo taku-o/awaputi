@@ -167,10 +167,14 @@ export class SettingsScene extends Scene {
      * タイトル描画
      */
     renderTitle(context, width) {
+        // Transform行列のスケールを考慮した中央位置
+        const transform = context.getTransform();
+        const centerX = (width / 2) / transform.a;
+        
         context.fillStyle = '#2c3e50';
-        context.font = 'bold 28px Arial, sans-serif';
+        context.font = 'bold 24px Arial, sans-serif';
         context.textAlign = 'center';
-        context.fillText('設定', width / 2, 40);
+        context.fillText('設定', centerX, 40);
         
         // 区切り線
         context.strokeStyle = '#bdc3c7';
