@@ -1,41 +1,41 @@
 # Implementation Plan
 
-- [ ] 1. Create coordinate calculation utility class
+- [x] 1. Create coordinate calculation utility class
   - Create `CoordinateCalculator` class with proper scaling and centering methods
   - Implement methods for transforming base coordinates to actual canvas coordinates
   - Add validation methods for text bounds and element positioning
   - Write unit tests for coordinate calculations
   - _Requirements: 6.1, 6.2, 6.3_
 
-- [ ] 2. Fix title rendering in MainMenuRenderer
+- [x] 2. Fix title rendering in MainMenuRenderer
   - Update title rendering to use proper center calculation
   - Fix font size scaling to prevent text truncation
   - Ensure title "BubblePop" displays completely
   - Add text bounds validation for title rendering
   - _Requirements: 1.1, 1.2, 1.4_
 
-- [ ] 3. Fix subtitle positioning and rendering
+- [x] 3. Fix subtitle positioning and rendering
   - Update subtitle "泡割りゲーム" positioning to use proper centering
   - Ensure subtitle is positioned correctly relative to main title
   - Implement proper scaling for subtitle text
   - Add validation for subtitle visibility
   - _Requirements: 3.1, 3.2, 3.4_
 
-- [ ] 4. Fix menu button positioning and layout
+- [x] 4. Fix menu button positioning and layout
   - Update menu button positioning to use proper center calculations
   - Ensure all menu buttons are horizontally centered
   - Fix vertical alignment and consistent spacing between buttons
   - Validate button click detection areas match visual positioning
   - _Requirements: 2.1, 2.2, 2.4_
 
-- [ ] 5. Fix player information display positioning
+- [x] 5. Fix player information display positioning
   - Update player info positioning to use proper centering
   - Ensure player info is correctly positioned below subtitle
   - Implement conditional display logic for when username is set
   - Add proper scaling for player information text
   - _Requirements: 4.1, 4.2, 4.4_
 
-- [ ] 6. Fix control instructions positioning
+- [x] 6. Fix control instructions positioning
   - Update control instructions to use proper bottom positioning
   - Ensure instructions remain centered horizontally
   - Implement proper scaling for instruction text

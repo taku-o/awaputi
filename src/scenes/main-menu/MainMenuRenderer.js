@@ -25,6 +25,13 @@ export class MainMenuRenderer {
     }
     
     /**
+     * キャンバスリサイズ時の処理
+     */
+    handleResize() {
+        this.updateCoordinateCalculator();
+    }
+    
+    /**
      * メインメニューを描画
      */
     renderMainMenu(context, selectedMenuIndex, menuItems) {
