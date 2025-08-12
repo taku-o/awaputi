@@ -22,7 +22,7 @@ export class StatisticsManager {
         this.dataManager = getStatisticsDataManager();
         this.calculator = getStatisticsCalculator();
         this.timeSeriesManager = getStatisticsTimeSeriesManager();
-        this.exporter = getStatisticsExporter();
+        this.exporter = getStatisticsExporter(this);
         
         // 統計データとセッション統計を初期化
         this.statistics = this.dataManager.initializeStatistics();
@@ -385,7 +385,15 @@ export class StatisticsManager {
      */
     save() {
         try {
-            this.exporter.save(this.statistics, this.sessionStats);
+            // localStorageに統計データを保存
+            if (typeof window !== 'undefined' && window.localStorage) {
+                const dataToSave = {
+                    statistics: this.statistics,
+                    sessionStats: this.sessionStats,
+                    timestamp: Date.now()
+                };
+                localStorage.setItem('awaputi_statistics', JSON.stringify(dataToSave));
+            }
         } catch (error) {
             ErrorHandler.handleError(error, 'StatisticsManager', 'save');
         }
@@ -396,20 +404,22 @@ export class StatisticsManager {
      */
     load() {
         try {
-            // exporterが存在しない場合は初期化を試みる
-            if (!this.exporter) {
-                console.warn('[StatisticsManager] Exporter not initialized, attempting to initialize...');
-                this.exporter = getStatisticsExporter();
-                if (!this.exporter) {
-                    console.warn('[StatisticsManager] Failed to initialize exporter, skipping load');
-                    return;
+            // localStorageから統計データを読み込み
+            if (typeof window !== 'undefined' && window.localStorage) {
+                const savedData = localStorage.getItem('awaputi_statistics');
+                if (savedData) {
+                    try {
+                        const loadedData = JSON.parse(savedData);
+                        if (loadedData) {
+                            // 読み込んだデータをマージ
+                            this.integrateLoadedData(loadedData);
+                        }
+                    } catch (parseError) {
+                        console.warn('[StatisticsManager] Failed to parse saved data:', parseError);
+                        // 破損したデータを削除
+                        localStorage.removeItem('awaputi_statistics');
+                    }
                 }
-            }
-            
-            const loadedData = this.exporter.load();
-            if (loadedData) {
-                // 読み込んだデータをマージ
-                this.integrateLoadedData(loadedData);
             }
         } catch (error) {
             ErrorHandler.handleError(error, 'StatisticsManager', 'load');
