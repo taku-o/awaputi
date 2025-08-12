@@ -27,10 +27,6 @@ export class FontLoadingManager {
         this.globalErrorHandler = globalErrorHandler;
         this.errorIntegration = null;
         
-        const instanceId = Math.random().toString(36).substr(2, 9);
-        console.log(`[FontLoadingManager Debug] New instance created. Instance ID: ${instanceId}`);
-        console.trace('[FontLoadingManager Debug] Creation stack trace:');
-        
         if (globalErrorHandler) {
             this._setupErrorIntegration();
         }
