@@ -86,14 +86,15 @@ export class MainMenuRenderer {
                 context.font = `bold ${smallerFontSize}px Arial, sans-serif`;
             }
             
-            context.fillText(titleText, canvas.width / 2, titleY);
+            context.fillText(titleText, titleX, titleY);
             
             // サブタイトル
             const subtitleFontSize = calc.scaleFontSize(28);
             context.font = `${subtitleFontSize}px Arial`;
             context.fillStyle = '#CCCCCC';
             const subtitleY = calc.toCanvasCoordinates(0, 220).y;
-            context.fillText('泡割りゲーム', canvas.width / 2, subtitleY);
+            const subtitleX = calc.getTextCenterX(context, '泡割りゲーム');
+            context.fillText('泡割りゲーム', subtitleX, subtitleY);
             context.restore();
             
             // プレイヤー情報表示
@@ -104,7 +105,9 @@ export class MainMenuRenderer {
                 context.font = `${playerFontSize}px Arial`;
                 context.textAlign = 'center';
                 const playerY = calc.toCanvasCoordinates(0, 280).y;
-                context.fillText(`プレイヤー: ${this.gameEngine.playerData.username}`, canvas.width / 2, playerY);
+                const playerText = `プレイヤー: ${this.gameEngine.playerData.username}`;
+                const playerX = calc.getTextCenterX(context, playerText);
+                context.fillText(playerText, playerX, playerY);
                 context.restore();
             }
             
@@ -206,8 +209,12 @@ export class MainMenuRenderer {
             const controlsY = canvas.height - bottomMargin;
             const lineSpacing = calc.toCanvasSize(0, 25).height;
             
-            context.fillText('↑↓: 選択  Enter: 決定  ESC: 終了', canvas.width / 2, controlsY);
-            context.fillText('クリックでも操作できます', canvas.width / 2, controlsY + lineSpacing);
+            const controlText1 = '↑↓: 選択  Enter: 決定  ESC: 終了';
+            const controlText2 = 'クリックでも操作できます';
+            const controlX1 = calc.getTextCenterX(context, controlText1);
+            const controlX2 = calc.getTextCenterX(context, controlText2);
+            context.fillText(controlText1, controlX1, controlsY);
+            context.fillText(controlText2, controlX2, controlsY + lineSpacing);
             
             context.restore();
         } catch (error) {

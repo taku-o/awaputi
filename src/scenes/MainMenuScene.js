@@ -108,8 +108,22 @@ export class MainMenuScene extends Scene {
                 this.gameEngine.responsiveCanvas.onResizeCallbacks.push(this.resizeCallback);
             }
             
+            // Playwright テスト用の裏道チェック
+            const testUsername = localStorage.getItem('testUsername');
+            const skipUsernameInput = localStorage.getItem('skipUsernameInput');
+            
+            if (testUsername && skipUsernameInput === 'true') {
+                // テスト用ユーザー名を設定
+                this.gameEngine.playerData.username = testUsername;
+                this.gameEngine.playerData.save();
+                console.log('[Test Mode] Username auto-set:', testUsername);
+                
+                // localStorageをクリア（一回限りの処理）
+                localStorage.removeItem('testUsername');
+                localStorage.removeItem('skipUsernameInput');
+            }
             // 初回起動時にユーザー名が未設定の場合、ユーザー名入力を表示
-            if (!this.gameEngine.playerData.username) {
+            else if (!this.gameEngine.playerData.username) {
                 this.showUsernameInput();
             }
         } catch (error) {

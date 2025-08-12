@@ -328,6 +328,16 @@ function setupDebugFeatures() {
         console.log('Debug mode enabled');
     }
     
+    // Playwright テスト用の裏道
+    if (urlParams.get('username')) {
+        localStorage.setItem('testUsername', urlParams.get('username'));
+        console.log('Test username set:', urlParams.get('username'));
+    }
+    if (urlParams.get('skipUsernameInput') === 'true') {
+        localStorage.setItem('skipUsernameInput', 'true');
+        console.log('Username input skip enabled');
+    }
+    
     // キーボードショートカットでデバッグ情報を表示
     document.addEventListener('keydown', (event) => {
         if (event.ctrlKey && event.shiftKey && event.code === 'KeyD') {

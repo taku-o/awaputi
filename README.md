@@ -171,6 +171,11 @@ npx http-server
 - `npm run test:e2e` - E2Eテスト実行
 - `npm run lint` - リンター実行
 
+### テスト・デバッグ情報
+- **[Playwright テストガイド](docs/playwright-testing-guide.md)** - ブラウザ自動化テストの実行手順
+- **デバッグモード**: `?debug=true` でコンソールログやデバッグ情報を表示
+- **テスト用URL**: `?username=TestUser&skipUsernameInput=true` でユーザー名入力をスキップ
+
 ### ファビコン生成ツール
 
 不足しているファビコンファイルを生成するツールが利用できます：
