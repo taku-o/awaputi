@@ -98,8 +98,32 @@ export class MainMenuScene extends Scene {
             // メニューラベルを現在の言語で更新
             this.updateMenuLabels();
             
+            // リサイズハンドラーを登録
+            if (this.gameEngine.responsiveCanvas) {
+                this.resizeCallback = () => {
+                    if (this.renderer) {
+                        this.renderer.handleResize();
+                    }
+                };
+                this.gameEngine.responsiveCanvas.onResizeCallbacks.push(this.resizeCallback);
+            }
+            
+            // Playwright テスト用の裏道チェック
+            const testUsername = localStorage.getItem('testUsername');
+            const skipUsernameInput = localStorage.getItem('skipUsernameInput');
+            
+            if (testUsername && skipUsernameInput === 'true') {
+                // テスト用ユーザー名を設定
+                this.gameEngine.playerData.username = testUsername;
+                this.gameEngine.playerData.save();
+                console.log('[Test Mode] Username auto-set:', testUsername);
+                
+                // localStorageをクリア（一回限りの処理）
+                localStorage.removeItem('testUsername');
+                localStorage.removeItem('skipUsernameInput');
+            }
             // 初回起動時にユーザー名が未設定の場合、ユーザー名入力を表示
-            if (!this.gameEngine.playerData.username) {
+            else if (!this.gameEngine.playerData.username) {
                 this.showUsernameInput();
             }
         } catch (error) {
@@ -110,8 +134,25 @@ export class MainMenuScene extends Scene {
     }
     
     /**
-     * 更新処理
+     * シーン終了時の処理
      */
+    exit() {
+        try {
+            // リサイズハンドラーを削除
+            if (this.gameEngine.responsiveCanvas && this.resizeCallback) {
+                const index = this.gameEngine.responsiveCanvas.onResizeCallbacks.indexOf(this.resizeCallback);
+                if (index > -1) {
+                    this.gameEngine.responsiveCanvas.onResizeCallbacks.splice(index, 1);
+                }
+                this.resizeCallback = null;
+            }
+        } catch (error) {
+            this.errorHandler.handleError(error, {
+                context: 'MainMenuScene.exit'
+            });
+        }
+    }
+    
     update(deltaTime) {
         // 特に更新処理は不要
     }

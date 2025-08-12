@@ -226,6 +226,24 @@ const config = PerformanceTestUtils.createPerformanceTestConfig(environment);
 const thresholds = PerformanceTestUtils.getEnvironmentThresholds(environment);
 ```
 
+## 🎭 ブラウザ自動化テスト（Playwright）
+
+BubblePopゲームでは、実際のブラウザ環境での動作を確認するため、Playwrightを使用したブラウザ自動化テストをサポートしています。
+
+### テストガイド
+詳細な操作手順とベストプラクティスは、**[Playwright テストガイド](playwright-testing-guide.md)** を参照してください。
+
+### 主な特徴
+- **URLパラメータによる裏道**: `?username=TestUser&skipUsernameInput=true` でユーザー名入力をスキップ
+- **Canvas操作対応**: ゲーム画面の自動操作とスクリーンショット撮影
+- **安定した手順**: 確実にメインメニューにアクセスできる方法を提供
+
+### 使用場面
+- レイアウト問題の検証
+- UI/UXの回帰テスト
+- 多言語対応の表示確認
+- パフォーマンス測定
+
 ## 🚨 トラブルシューティング
 
 ### よくある問題と解決法

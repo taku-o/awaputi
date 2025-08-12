@@ -220,6 +220,23 @@ const STAGE_CONFIGS = {
 - **アクセシビリティ・国際化**: 完全対応実装
 - **レガシー互換性**: 段階的移行システム
 
+## ブラウザ自動化テスト
+
+BubblePopゲームでは、Playwrightを使用したブラウザ自動化テストを導入しています。
+
+### テストガイド
+- **[Playwright テストガイド](playwright-testing-guide.md)** - 詳細な操作手順とベストプラクティス
+
+### 主な機能
+- **URLパラメータによるテスト用裏道**: `?username=TestUser&skipUsernameInput=true`
+- **Canvas操作対応**: ゲーム画面の自動操作とスクリーンショット撮影  
+- **レイアウト検証**: UI/UXの自動回帰テスト
+
+### 開発者向け情報
+テスト用裏道は以下のファイルで実装：
+- `src/main.js`: URLパラメータ解析
+- `src/scenes/MainMenuScene.js`: ユーザー名入力スキップ処理
+
 🔄 **残りのタスク（Phase 5最終仕上げ）**
 - [x] SEO最適化とメタデータ設定（Issue #34完了済み）
 - [ ] ゲーム分析機能の実装（Issue #35進行中）
