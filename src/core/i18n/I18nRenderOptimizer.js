@@ -9,9 +9,6 @@ import { getErrorHandler } from '../../utils/ErrorHandler.js';
 
 export class I18nRenderOptimizer {
     constructor() {
-        // Import font loading manager
-        this._loadFontLoadingManager();
-        
         // レンダリング最適化設定
         this.optimization = {
             batchUpdates: true,           // バッチ更新
@@ -64,6 +61,12 @@ export class I18nRenderOptimizer {
         this.initialize();
     }
     async _loadFontLoadingManager() {
+        // 既に初期化済みの場合はスキップ
+        if (this.fontLoadingManager) {
+            console.log('[I18nRenderOptimizer Debug] FontLoadingManager already exists, skipping');
+            return;
+        }
+        
         try {
             const { FontLoadingManager } = await import('./font-loading/FontLoadingManager.js');
             
