@@ -25,7 +25,7 @@ export class I18nRenderOptimizer {
         this.isRendering = false;
         this.renderRequestId = null;
         
-        // フォント管理
+        // フォント管理 - FontLoadingManagerに置き換え予定
         this.fontCache = new Map();
         this.fontLoadPromises = new Map();
         this.preloadedFonts = new Set();
@@ -54,14 +54,64 @@ export class I18nRenderOptimizer {
         // 要素プール
         this.elementPools = new Map();
         
+        // フォント読み込みマネージャー（非同期初期化）
+        this.fontLoadingManager = null;
+        
         // 初期化
         this.initialize();
+    }
+    async _loadFontLoadingManager() {
+        // 既に初期化済みの場合はスキップ
+        if (this.fontLoadingManager) {
+            return;
+        }
+        
+        try {
+            const { FontLoadingManager } = await import('./font-loading/FontLoadingManager.js');
+            
+            const config = {
+                enabledSources: ['system', 'google'], // Google Fontsを再有効化（CSP修正済み）
+                timeouts: {
+                    google: 3000,
+                    local: 1000,
+                    system: 500
+                },
+                fallbackBehavior: {
+                    useSystemFonts: true,
+                    suppressErrors: true,
+                    maxRetries: 1
+                },
+                logging: {
+                    level: 'warn',
+                    suppressRepeated: true,
+                    maxErrorsPerSource: 3
+                },
+                development: {
+                    disableExternalFonts: false, // CSP修正によりGoogle Fontsを許可
+                    verboseLogging: false
+                }
+            };
+            
+            this.fontLoadingManager = FontLoadingManager.getInstance(config);
+            
+            if (!this.fontLoadingManager.initialized) {
+                await this.fontLoadingManager.initialize();
+            }
+            
+            console.log('[I18nRenderOptimizer] FontLoadingManager initialized with Google Fonts support');
+        } catch (error) {
+            console.warn('[I18nRenderOptimizer] Failed to load FontLoadingManager, using fallback:', error);
+            this.fontLoadingManager = null;
+        }
     }
     
     /**
      * 初期化
      */
-    initialize() {
+    async initialize() {
+        // フォント読み込みマネージャーの初期化
+        await this._loadFontLoadingManager();
+        
         // レンダリング最適化の設定
         this.setupRenderingOptimization();
         
@@ -160,7 +210,22 @@ export class I18nRenderOptimizer {
         if (this.preloadedFonts.has(fontFamily)) {
             return true;
         }
-        
+
+        // FontLoadingManagerを使用する場合
+        if (this.fontLoadingManager) {
+            try {
+                const result = await this.fontLoadingManager.loadFont(fontFamily, language);
+                if (result.success) {
+                    this.preloadedFonts.add(fontFamily);
+                    console.log(`Font preloaded: ${fontFamily}`);
+                    return true;
+                }
+            } catch (error) {
+                console.warn(`Font preload failed: ${fontFamily}`, error);
+            }
+        }
+
+        // FontLoadingManagerが利用できない場合や失敗した場合のフォールバック
         if (this.fontLoadPromises.has(fontFamily)) {
             return await this.fontLoadPromises.get(fontFamily);
         }
@@ -186,8 +251,25 @@ export class I18nRenderOptimizer {
         if (!document.fonts) {
             return Promise.resolve();
         }
-        
-        // CSS Font Loading API を使用
+
+        // 新しいFontLoadingManagerを使用
+        if (this.fontLoadingManager) {
+            try {
+                const result = await this.fontLoadingManager.loadFont(fontFamily);
+                return result.success;
+            } catch (error) {
+                // FontLoadingManagerが失敗した場合のフォールバック
+                console.warn('[I18nRenderOptimizer] FontLoadingManager failed, using fallback:', error.message);
+                return this._loadFontFamilyFallback(fontFamily);
+            }
+        }
+
+        // FontLoadingManagerが利用できない場合のフォールバック
+        return this._loadFontFamilyFallback(fontFamily);
+    }
+
+    async _loadFontFamilyFallback(fontFamily) {
+        // 従来のフォント読み込み処理（フォールバック用）
         const fontFace = new FontFace(fontFamily, `url('/fonts/${fontFamily}.woff2')`);
         
         try {
@@ -195,7 +277,7 @@ export class I18nRenderOptimizer {
             document.fonts.add(fontFace);
             return true;
         } catch (error) {
-            // フォールバック: CSS による読み込み
+            // CSS による読み込み
             return this._loadFontCSS(fontFamily);
         }
     }
@@ -208,7 +290,10 @@ export class I18nRenderOptimizer {
             // Check if font is already loaded
             const existingLink = document.querySelector(`link[href*="${encodeURIComponent(fontFamily)}"]`);
             if (existingLink) {
-                console.log(`[I18nRenderOptimizer] Font ${fontFamily} already loaded`);
+                // FontLoadingManagerがある場合は詳細ログを抑制
+                if (!this.fontLoadingManager) {
+                    console.log(`[I18nRenderOptimizer] Font ${fontFamily} already loaded`);
+                }
                 resolve(true);
                 return;
             }
@@ -218,12 +303,18 @@ export class I18nRenderOptimizer {
             link.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(fontFamily)}:wght@400;500;700&display=swap`;
             
             link.onload = () => {
-                console.log(`[I18nRenderOptimizer] Successfully loaded font: ${fontFamily}`);
+                // FontLoadingManagerがある場合は詳細ログを抑制
+                if (!this.fontLoadingManager) {
+                    console.log(`[I18nRenderOptimizer] Successfully loaded font: ${fontFamily}`);
+                }
                 resolve(true);
             };
             
             link.onerror = () => {
-                console.warn(`[I18nRenderOptimizer] Failed to load font: ${fontFamily}, using fallback`);
+                // FontLoadingManagerがある場合は詳細ログを抑制（エラーハンドリングに任せる）
+                if (!this.fontLoadingManager) {
+                    console.warn(`[I18nRenderOptimizer] Failed to load font: ${fontFamily}, using fallback`);
+                }
                 // Don't reject - just resolve with false and continue with fallback fonts
                 resolve(false);
             };
@@ -232,7 +323,10 @@ export class I18nRenderOptimizer {
             
             // タイムアウト設定 - but don't reject, just resolve with false
             setTimeout(() => {
-                console.warn(`[I18nRenderOptimizer] Font load timeout for: ${fontFamily}, using fallback`);
+                // FontLoadingManagerがある場合は詳細ログを抑制
+                if (!this.fontLoadingManager) {
+                    console.warn(`[I18nRenderOptimizer] Font load timeout for: ${fontFamily}, using fallback`);
+                }
                 resolve(false);
             }, 5000);
         });
@@ -685,6 +779,28 @@ export class I18nRenderOptimizer {
      * 共通フォントの事前読み込み
      */
     async preloadCommonFonts() {
+        // FontLoadingManagerを使用する場合
+        if (this.fontLoadingManager) {
+            const commonFonts = [
+                'Noto Sans JP',      // 日本語（Google Fonts）
+                'Noto Sans SC',      // 中国語簡体字（Google Fonts）
+                'Noto Sans TC',      // 中国語繁体字（Google Fonts）
+                'Noto Sans KR',      // 韓国語（Google Fonts）
+                'Arial',             // 英語（システムフォント）
+                'Helvetica'          // 英語（システムフォント）
+            ];
+            
+            try {
+                const results = await this.fontLoadingManager.preloadFonts(commonFonts, 'default');
+                const successful = results.filter(r => r.success).length;
+                console.log(`[I18nRenderOptimizer] Preloaded ${successful}/${commonFonts.length} fonts`);
+                return;
+            } catch (error) {
+                console.warn('[I18nRenderOptimizer] FontLoadingManager preload failed, using fallback:', error);
+            }
+        }
+
+        // フォールバック：従来のプリロード処理
         const commonFonts = [
             'Noto Sans JP',      // 日本語
             'Noto Sans SC',      // 中国語（簡体字）
@@ -700,7 +816,7 @@ export class I18nRenderOptimizer {
         
         try {
             await Promise.allSettled(preloadPromises);
-            console.log('Common fonts preloaded');
+            console.log('Common fonts preloaded (fallback method)');
         } catch (error) {
             console.warn('Font preloading partially failed:', error);
         }

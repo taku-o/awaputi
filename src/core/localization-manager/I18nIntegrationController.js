@@ -116,9 +116,12 @@ export class I18nIntegrationController {
             this.performanceMonitor = new I18nPerformanceMonitor();
             this.initializationState.performanceMonitor = true;
             
-            // レンダリング最適化
+            // レンダリング最適化（非同期初期化）
             const { I18nRenderOptimizer } = await import('../i18n/I18nRenderOptimizer.js');
             this.renderOptimizer = new I18nRenderOptimizer();
+            
+            // I18nRenderOptimizerの非同期初期化を実行
+            await this.renderOptimizer.initialize();
             this.initializationState.renderOptimizer = true;
             
             console.log('Performance components initialized');
@@ -214,7 +217,37 @@ export class I18nIntegrationController {
      * @param {HTMLElement} element - 対象要素
      * @returns {boolean} 成功フラグ
      */
-    applyFontSettings(language, element = null) {
+    async applyFontSettings(language, element = null) {
+        // FontLoadingManagerがあるI18nRenderOptimizerを優先的に使用
+        if (this.renderOptimizer && this.renderOptimizer.fontLoadingManager) {
+            try {
+                if (element) {
+                    // 特定要素にフォントを適用
+                    const fontFamily = this.renderOptimizer.getLanguageFontFamily(language);
+                    const result = await this.renderOptimizer.fontLoadingManager.applyFontToElement(
+                        element, 
+                        fontFamily, 
+                        language
+                    );
+                    return result;
+                } else {
+                    // 全体にフォントを適用
+                    const fontFamily = this.renderOptimizer.getLanguageFontFamily(language);
+                    const selector = '[data-i18n], .i18n-text, .localized';
+                    const result = await this.renderOptimizer.fontLoadingManager.applyFontToElements(
+                        selector, 
+                        fontFamily, 
+                        language
+                    );
+                    return result.successful > 0;
+                }
+            } catch (error) {
+                console.warn('[I18nIntegrationController] FontLoadingManager failed, using fallback:', error);
+                // フォールバック処理を継続
+            }
+        }
+
+        // 従来のフォントマネージャーを使用（フォールバック）
         if (!this.fontManager) {
             return false;
         }
