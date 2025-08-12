@@ -38,15 +38,40 @@ export class MainMenuRenderer {
         try {
             const canvas = this.gameEngine.canvas;
             
+            // Canvas状態の保存（エラー時の復旧用）
+            context.save();
+            
             // 座標計算機を更新
             this.updateCoordinateCalculator();
             const calc = this.coordinateCalculator;
             
             // タイトル
             context.save();
-            context.fillStyle = '#FFFFFF';
+            
+            // フォント読み込みのフォールバック処理
             const titleFontSize = calc.scaleFontSize(72);
-            context.font = `bold ${titleFontSize}px Arial`;
+            const titleFonts = [
+                `bold ${titleFontSize}px 'Noto Sans JP', Arial, sans-serif`,
+                `bold ${titleFontSize}px Arial, sans-serif`,
+                `bold ${titleFontSize}px sans-serif`
+            ];
+            
+            let fontSet = false;
+            for (const font of titleFonts) {
+                try {
+                    context.font = font;
+                    fontSet = true;
+                    break;
+                } catch (e) {
+                    // フォント設定エラーを無視して次のフォントを試す
+                }
+            }
+            
+            if (!fontSet) {
+                context.font = `bold ${titleFontSize}px sans-serif`;
+            }
+            
+            context.fillStyle = '#FFFFFF';
             context.textAlign = 'center';
             context.textBaseline = 'middle';
             
@@ -57,7 +82,8 @@ export class MainMenuRenderer {
             // テキスト境界の検証
             if (!calc.validateTextBounds(context, titleText, titleX, titleY)) {
                 // テキストが切れる場合はフォントサイズを調整
-                context.font = `bold ${titleFontSize * 0.8}px Arial`;
+                const smallerFontSize = titleFontSize * 0.8;
+                context.font = `bold ${smallerFontSize}px Arial, sans-serif`;
             }
             
             context.fillText(titleText, canvas.width / 2, titleY);
@@ -87,9 +113,21 @@ export class MainMenuRenderer {
             
             // 操作説明
             this.renderControls(context);
+            
+            // Canvas状態の復元
+            context.restore();
         } catch (error) {
+            // エラー発生時もCanvas状態を復元
+            try {
+                context.restore();
+            } catch (restoreError) {
+                // 復元エラーは無視
+            }
+            
             this.errorHandler.handleError(error, {
-                context: 'MainMenuRenderer.renderMainMenu'
+                context: 'MainMenuRenderer.renderMainMenu',
+                canvasWidth: this.gameEngine.canvas?.width,
+                canvasHeight: this.gameEngine.canvas?.height
             });
         }
     }
