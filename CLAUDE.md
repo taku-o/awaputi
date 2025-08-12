@@ -86,6 +86,26 @@ npm run test:all
 
 **現状**: 実装開始、タスクリストに従って順次作業中
 
+#### ServiceWorker HEAD Request修正プロジェクト（Issue #149対応）🔄
+**目標**: ServiceWorkerでHEADリクエストがCache APIでサポートされていない問題を解決し、ゲーム再アクセス時のコンソールエラーを除去
+
+**問題の概要**: 
+- HelpManagerがファイル存在確認に使用するHEADリクエストがServiceWorkerでキャッシュできない
+- Cache API の `put()` メソッドがHEADリクエストを拒否してエラーが発生
+- ゲーム再アクセス時に "Failed to execute 'put' on 'Cache': Request method 'HEAD' is unsupported" エラー
+
+**解決アプローチ**:
+- ServiceWorkerレベルでHEADリクエストを検出し、キャッシュを試行せずにネットワークに直接パススルー
+- HEADリクエスト専用ハンドラーの実装
+- 適切なエラーハンドリングとグレースフルデグラデーション
+
+**仕様書**: `.kiro/specs/serviceworker-head-request-fix/`
+- requirements.md: 4つの要件定義（エラー解消、適切な処理、効率的動作、オフラインアクセス）
+- design.md: アーキテクチャ設計とHEADリクエスト処理フロー
+- tasks.md: 12段階の実装タスク（検出→ハンドラー→分岐→除外→テスト→監視）
+
+**現状**: 作業開始、タスクリストに従って順次実装中
+
 #### Debug Game Startup Issue修正プロジェクト（Issue #113対応）🔄
 **目標**: ゲーム起動時の複数のJavaScriptエラーとログ無限ループを修正
 
