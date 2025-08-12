@@ -9,6 +9,10 @@ import { getErrorHandler } from '../../utils/ErrorHandler.js';
 
 export class I18nRenderOptimizer {
     constructor() {
+        const instanceId = Math.random().toString(36).substr(2, 9);
+        console.log(`[I18nRenderOptimizer Debug] New instance created. Instance ID: ${instanceId}`);
+        console.trace('[I18nRenderOptimizer Debug] Creation stack trace:');
+        
         // レンダリング最適化設定
         this.optimization = {
             batchUpdates: true,           // バッチ更新
@@ -70,7 +74,7 @@ export class I18nRenderOptimizer {
         try {
             const { FontLoadingManager } = await import('./font-loading/FontLoadingManager.js');
             
-            console.log('[I18nRenderOptimizer Debug] Creating FontLoadingManager');
+            console.log('[I18nRenderOptimizer Debug] Getting FontLoadingManager singleton');
             
             const config = {
                 enabledSources: ['system', 'google'], // Google Fontsを再有効化（CSP修正済み）
@@ -95,8 +99,11 @@ export class I18nRenderOptimizer {
                 }
             };
             
-            this.fontLoadingManager = new FontLoadingManager(config);
-            await this.fontLoadingManager.initialize();
+            this.fontLoadingManager = FontLoadingManager.getInstance(config);
+            
+            if (!this.fontLoadingManager.initialized) {
+                await this.fontLoadingManager.initialize();
+            }
             
             console.log('[I18nRenderOptimizer] FontLoadingManager initialized with Google Fonts support');
         } catch (error) {

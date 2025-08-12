@@ -3,6 +3,15 @@ import { FontFallbackHandler } from './FontFallbackHandler.js';
 import { FontErrorHandler } from './FontErrorHandler.js';
 
 export class FontLoadingManager {
+    static _instance = null;
+    
+    static getInstance(config = {}, globalErrorHandler = null) {
+        if (!FontLoadingManager._instance) {
+            FontLoadingManager._instance = new FontLoadingManager(config, globalErrorHandler);
+        }
+        return FontLoadingManager._instance;
+    }
+    
     constructor(config = {}, globalErrorHandler = null) {
         this.config = this._mergeWithDefaults(config);
         this.sourceManager = new FontSourceManager(this.config);
