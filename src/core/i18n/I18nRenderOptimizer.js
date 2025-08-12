@@ -67,6 +67,8 @@ export class I18nRenderOptimizer {
         try {
             const { FontLoadingManager } = await import('./font-loading/FontLoadingManager.js');
             
+            console.log('[I18nRenderOptimizer Debug] Creating FontLoadingManager');
+            
             const config = {
                 enabledSources: ['system', 'google'], // Google Fontsを再有効化（CSP修正済み）
                 timeouts: {
