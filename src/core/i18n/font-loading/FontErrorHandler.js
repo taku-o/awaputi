@@ -5,6 +5,9 @@ export class FontErrorHandler {
         this.suppressedErrors = new Set();
         this.errorHistory = new Map();
         this.suppressionRules = this._initializeSuppressionRules();
+        
+        console.log(`[FontErrorHandler Debug] New instance created. Instance ID: ${Math.random().toString(36).substr(2, 9)}`);
+        console.log(`[FontErrorHandler Debug] Initial suppressedErrors:`, this.suppressedErrors);
     }
 
     _initializeSuppressionRules() {
@@ -35,14 +38,23 @@ export class FontErrorHandler {
         const errorInfo = this._categorizeError(error, context);
         const errorKey = `${context.source}:${errorInfo.type}:${context.fontFamily || 'unknown'}`;
         
+        console.log(`[FontErrorHandler Debug] Handling error for key: ${errorKey}`);
+        console.log(`[FontErrorHandler Debug] suppressedErrors size: ${this.suppressedErrors.size}`);
+        console.log(`[FontErrorHandler Debug] suppressedErrors contents:`, Array.from(this.suppressedErrors));
+        
         // warn_once チェック
         const shouldSuppress = this.shouldSuppressError(errorInfo.type, context.source);
+        console.log(`[FontErrorHandler Debug] shouldSuppress: ${shouldSuppress}`);
+        
         if (shouldSuppress === 'warn_once') {
             if (this.suppressedErrors.has(errorKey)) {
+                console.log(`[FontErrorHandler Debug] Already warned for ${errorKey}, suppressing`);
                 return false; // 既に警告済みなので抑制
             }
+            console.log(`[FontErrorHandler Debug] First warning for ${errorKey}, adding to suppressedErrors`);
             this.suppressedErrors.add(errorKey);
         } else if (shouldSuppress === 'suppress') {
+            console.log(`[FontErrorHandler Debug] Suppressing error for ${errorKey}`);
             return false;
         }
 
