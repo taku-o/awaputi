@@ -251,13 +251,80 @@ async function testBubblePopGameLegacy() {
 
 ## トラブルシューティング
 
-### 1. Canvas入力が反応しない → URLパラメータ方式を使用
-```javascript
-// ✅ 推奨：URLパラメータ方式
-await page.goto('http://localhost:8001?username=TestUser&skipUsernameInput=true');
+### 1. Canvas入力が反応しない → 裏道手法を使用
 
-// ❌ 非推奨：JavaScript直接操作（不安定）
-// await page.evaluate(() => { ... });
+#### 方法A: ESCキー + LocalStorage強制設定（最も確実）
+```javascript
+// ゲーム初期化後にESCキーでユーザー名入力をスキップし、LocalStorageを直接設定
+await page.goto('http://localhost:8001');
+await page.evaluate(() => {
+    localStorage.clear();
+    sessionStorage.clear();
+});
+await page.getByRole('button', { name: 'ゲームを開始する' }).click();
+await page.waitForTimeout(2000); // ゲーム初期化を待機
+
+// ESCキーでユーザー名入力をスキップ + LocalStorage直接設定
+await page.evaluate(() => {
+    // ユーザーデータを直接設定
+    window.localStorage.setItem('bubblePopPlayerData', JSON.stringify({
+        username: 'TestUser',
+        level: 1,
+        experience: 0,
+        totalScore: 0
+    }));
+    
+    // プレイヤーデータを強制読み込み
+    if (window.gameEngine && window.gameEngine.playerData) {
+        window.gameEngine.playerData.username = 'TestUser';
+        window.gameEngine.playerData.hasValidData = true;
+    }
+});
+await page.keyboard.press('Escape'); // ユーザー名入力をスキップ
+await page.waitForTimeout(1000);
+```
+
+#### 方法B: LocalStorage事前設定 + 再読み込み
+```javascript
+// 事前にLocalStorageを設定してからゲーム開始
+await page.goto('http://localhost:8001');
+await page.evaluate(() => {
+    localStorage.setItem('bubblePopPlayerData', JSON.stringify({
+        username: 'TestUser',
+        level: 1,
+        experience: 0,
+        totalScore: 0,
+        hasValidData: true
+    }));
+});
+await page.reload();
+await page.getByRole('button', { name: 'ゲームを開始する' }).click();
+await page.waitForTimeout(3000);
+```
+
+#### 方法C: デバッグモード強制スキップ
+```javascript
+// デバッグモードでシーン状態を強制変更
+await page.goto('http://localhost:8001?debug=true');
+await page.getByRole('button', { name: 'ゲームを開始する' }).click();
+await page.waitForTimeout(2000);
+
+await page.evaluate(() => {
+    // デバッグモードでシーン状態を直接制御
+    if (window.gameEngine && window.gameEngine.sceneManager) {
+        const scene = window.gameEngine.sceneManager.scenes.get('menu');
+        if (scene) {
+            // プレイヤーデータ設定
+            window.gameEngine.playerData.username = 'TestUser';
+            window.gameEngine.playerData.hasValidData = true;
+            
+            // メインメニューに強制遷移
+            window.gameEngine.sceneManager.switchScene('menu');
+            scene.state = 'mainMenu'; // ユーザー名入力状態をスキップ
+        }
+    }
+});
+await page.waitForTimeout(1000);
 ```
 
 ### 2. URLパラメータが効かない場合
@@ -282,12 +349,81 @@ await page.evaluate(() => {
 // より長い待機時間を設定
 await page.waitForTimeout(3000);
 
-// メインメニューの確認
+// メインメニューの確認（複数の条件で確認）
 await page.waitForFunction(() => {
     return window.gameEngine && 
            window.gameEngine.sceneManager && 
-           window.gameEngine.sceneManager.currentScene === 'menu';
+           (window.gameEngine.sceneManager.currentScene === 'menu' ||
+            window.gameEngine.sceneManager.currentScene === 'MainMenuScene') &&
+           window.gameEngine.playerData &&
+           window.gameEngine.playerData.username;
+}, { timeout: 10000 });
+```
+
+### 4. 【最終手段】シーン状態を安全に強制変更
+```javascript
+// 全ての手法が失敗した場合の最終手段（安全版）
+await page.evaluate(() => {
+    if (window.gameEngine && window.gameEngine.sceneManager) {
+        // プレイヤーデータを完全設定
+        window.gameEngine.playerData = {
+            username: 'TestUser',
+            level: 1,
+            experience: 0,
+            totalScore: 0,
+            hasValidData: true,
+            save: function() { return true; },
+            load: function() { return true; }
+        };
+        
+        // 現在のシーンインスタンスの状態のみ変更（安全）
+        const currentScene = window.gameEngine.sceneManager.currentSceneInstance;
+        if (currentScene && currentScene.state) {
+            currentScene.state = 'mainMenu';
+            console.log('Changed current scene state to mainMenu');
+            return 'Success: Scene state changed';
+        }
+        
+        // 代替案：switchSceneメソッドを使用
+        if (window.gameEngine.sceneManager.switchScene) {
+            try {
+                window.gameEngine.sceneManager.switchScene('menu');
+                return 'Success: Switched to menu scene';
+            } catch (e) {
+                console.error('switchScene failed:', e);
+            }
+        }
+        
+        return 'Warning: Could not change scene state safely';
+    }
+    return 'Error: Game engine not available';
 });
+```
+
+### 5. 【緊急時】ブラウザリフレッシュ + 事前設定
+```javascript
+// エラーが発生した場合の回復手順
+await page.evaluate(() => {
+    // LocalStorageに事前設定
+    localStorage.setItem('bubblePopPlayerData', JSON.stringify({
+        username: 'TestUser',
+        level: 1,
+        experience: 0,
+        totalScore: 0,
+        hasValidData: true
+    }));
+    localStorage.setItem('forceMainMenu', 'true');
+});
+
+// ページをリフレッシュしてクリーンな状態から開始
+await page.reload();
+await page.waitForTimeout(2000);
+
+// ゲーム開始
+await page.getByRole('button', { name: 'ゲームを開始する' }).click();
+await page.waitForTimeout(3000);
+
+// 事前設定されたデータでメインメニューに直接遷移することを期待
 ```
 
 ### 4. スクリーンショット撮影

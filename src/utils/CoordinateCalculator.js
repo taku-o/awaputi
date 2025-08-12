@@ -68,12 +68,18 @@ export class CoordinateCalculator {
     
     /**
      * テキストを水平中央に配置するためのX座標を計算
+     * textAlign = 'center'と併用することを想定
      * @param {CanvasRenderingContext2D} context - Canvas 2Dコンテキスト
      * @param {string} text - 描画するテキスト
      */
     getTextCenterX(context, text) {
-        const metrics = context.measureText(text);
-        return (this.canvasWidth - metrics.width) / 2;
+        // textAlign = 'center'の場合、Canvas表示領域の実際の中央座標を返す
+        // transform scaleに関係なく、常に表示領域の中央を指定
+        const canvas = context.canvas;
+        const displayWidth = canvas.clientWidth || this.canvasWidth;
+        
+        // 表示座標系での中央位置を計算
+        return displayWidth / 2;
     }
     
     /**
@@ -85,14 +91,19 @@ export class CoordinateCalculator {
     
     /**
      * テキストの境界を検証し、Canvas内に収まるか確認
+     * textAlign = 'center'を想定した境界チェック
      * @returns {boolean} テキストがCanvas内に収まる場合true
      */
     validateTextBounds(context, text, x, y, maxWidth = null) {
         const metrics = context.measureText(text);
         const textWidth = metrics.width;
         
+        // textAlign = 'center'の場合、xは中央座標なので左右に半分ずつ伸びる
+        const textLeft = x - textWidth / 2;
+        const textRight = x + textWidth / 2;
+        
         // 水平方向の検証
-        if (x < 0 || x + textWidth > this.canvasWidth) {
+        if (textLeft < 0 || textRight > this.canvasWidth) {
             return false;
         }
         

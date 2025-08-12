@@ -17,10 +17,14 @@ export class MainMenuRenderer {
      */
     updateCoordinateCalculator() {
         const canvas = this.gameEngine.canvas;
+        // Transform scaleの影響を考慮して実際の表示サイズを使用
+        const displayWidth = canvas.clientWidth || canvas.width;
+        const displayHeight = canvas.clientHeight || canvas.height;
+        
         if (!this.coordinateCalculator) {
-            this.coordinateCalculator = new CoordinateCalculator(canvas.width, canvas.height, 1920, 1080);
+            this.coordinateCalculator = new CoordinateCalculator(displayWidth, displayHeight, 800, 600);
         } else {
-            this.coordinateCalculator.updateCanvasDimensions(canvas.width, canvas.height);
+            this.coordinateCalculator.updateCanvasDimensions(displayWidth, displayHeight);
         }
     }
     
@@ -49,7 +53,7 @@ export class MainMenuRenderer {
             context.save();
             
             // フォント読み込みのフォールバック処理
-            const titleFontSize = calc.scaleFontSize(72);
+            const titleFontSize = calc.scaleFontSize(60);
             const titleFonts = [
                 `bold ${titleFontSize}px 'Noto Sans JP', Arial, sans-serif`,
                 `bold ${titleFontSize}px Arial, sans-serif`,
@@ -75,7 +79,7 @@ export class MainMenuRenderer {
             context.textAlign = 'center';
             context.textBaseline = 'middle';
             
-            const titleY = calc.toCanvasCoordinates(0, 150).y;
+            const titleY = calc.toCanvasCoordinates(0, 80).y;
             const titleText = 'BubblePop';
             const titleX = calc.getTextCenterX(context, titleText);
             
@@ -89,10 +93,10 @@ export class MainMenuRenderer {
             context.fillText(titleText, titleX, titleY);
             
             // サブタイトル
-            const subtitleFontSize = calc.scaleFontSize(28);
+            const subtitleFontSize = calc.scaleFontSize(22);
             context.font = `${subtitleFontSize}px Arial`;
             context.fillStyle = '#CCCCCC';
-            const subtitleY = calc.toCanvasCoordinates(0, 220).y;
+            const subtitleY = calc.toCanvasCoordinates(0, 120).y;
             const subtitleX = calc.getTextCenterX(context, '泡割りゲーム');
             context.fillText('泡割りゲーム', subtitleX, subtitleY);
             context.restore();
@@ -101,10 +105,10 @@ export class MainMenuRenderer {
             if (this.gameEngine.playerData.username) {
                 context.save();
                 context.fillStyle = '#AAAAAA';
-                const playerFontSize = calc.scaleFontSize(20);
+                const playerFontSize = calc.scaleFontSize(16);
                 context.font = `${playerFontSize}px Arial`;
                 context.textAlign = 'center';
-                const playerY = calc.toCanvasCoordinates(0, 280).y;
+                const playerY = calc.toCanvasCoordinates(0, 160).y;
                 const playerText = `プレイヤー: ${this.gameEngine.playerData.username}`;
                 const playerX = calc.getTextCenterX(context, playerText);
                 context.fillText(playerText, playerX, playerY);
@@ -144,9 +148,9 @@ export class MainMenuRenderer {
             
             // ベース座標系での寸法定義
             const baseItemWidth = 400;
-            const baseItemHeight = 60;
-            const baseStartY = 350;
-            const baseSpacing = 20;
+            const baseItemHeight = 45;
+            const baseStartY = 200;
+            const baseSpacing = 10;
             
             // Canvas座標系に変換
             const itemSize = calc.toCanvasSize(baseItemWidth, baseItemHeight);
@@ -170,7 +174,7 @@ export class MainMenuRenderer {
                 
                 // テキスト
                 context.fillStyle = '#FFFFFF';
-                const menuFontSize = calc.scaleFontSize(24);
+                const menuFontSize = calc.scaleFontSize(20);
                 context.font = `bold ${menuFontSize}px Arial`;
                 context.textAlign = 'center';
                 context.textBaseline = 'middle';
