@@ -227,3 +227,168 @@ describe('Service Worker Integration', () => {
         expect(true).toBe(true); // プレースホルダー
     });
 });
+
+describe('HEAD Request Handling', () => {
+    let isHeadRequest;
+    let handleHeadRequest;
+    let consoleSpy;
+    
+    beforeEach(() => {
+        // Web API モック
+        global.Request = jest.fn().mockImplementation((url, options = {}) => ({
+            url,
+            method: options.method || 'GET',
+            headers: options.headers || {}
+        }));
+        
+        global.Response = jest.fn().mockImplementation((body, options = {}) => ({
+            body,
+            status: options.status || 200,
+            statusText: options.statusText || 'OK',
+            headers: new Map(Object.entries(options.headers || {})),
+            ok: (options.status || 200) >= 200 && (options.status || 200) < 300
+        }));
+        
+        // Responseのheadersにget()メソッドを追加
+        global.Response.mockImplementation((body, options = {}) => {
+            const headers = new Map(Object.entries(options.headers || {}));
+            return {
+                body,
+                status: options.status || 200,
+                statusText: options.statusText || 'OK',
+                headers: {
+                    get: (key) => headers.get(key),
+                    has: (key) => headers.has(key),
+                    set: (key, value) => headers.set(key, value),
+                    entries: () => headers.entries(),
+                    keys: () => headers.keys(),
+                    values: () => headers.values()
+                },
+                ok: (options.status || 200) >= 200 && (options.status || 200) < 300
+            };
+        });
+        
+        // コンソールログをモック
+        consoleSpy = {
+            log: jest.spyOn(console, 'log').mockImplementation(() => {}),
+            error: jest.spyOn(console, 'error').mockImplementation(() => {})
+        };
+        
+        // fetchのモックをリセット
+        global.fetch.mockClear();
+        
+        // HEADリクエスト検出機能を定義（SW.jsから抽出）
+        isHeadRequest = function(request) {
+            return request.method === 'HEAD';
+        };
+        
+        // HEADリクエストハンドラーを定義（SW.jsから抽出）
+        handleHeadRequest = async function(request) {
+            try {
+                console.log(`[ServiceWorker] HEADリクエスト処理: ${request.url}`);
+                const response = await fetch(request);
+                return response;
+            } catch (error) {
+                console.log(`[ServiceWorker] HEADリクエストエラー: ${request.url}`, error);
+                return new Response(null, {
+                    status: 503,
+                    statusText: 'Service Unavailable',
+                    headers: {
+                        'Content-Type': 'text/plain',
+                        'Cache-Control': 'no-cache'
+                    }
+                });
+            }
+        };
+    });
+    
+    afterEach(() => {
+        consoleSpy.log.mockRestore();
+        consoleSpy.error.mockRestore();
+    });
+    
+    describe('isHeadRequest function', () => {
+        test('should return true for HEAD requests', () => {
+            const headRequest = new Request('https://example.com', { method: 'HEAD' });
+            expect(isHeadRequest(headRequest)).toBe(true);
+        });
+        
+        test('should return false for GET requests', () => {
+            const getRequest = new Request('https://example.com', { method: 'GET' });
+            expect(isHeadRequest(getRequest)).toBe(false);
+        });
+        
+        test('should return false for POST requests', () => {
+            const postRequest = new Request('https://example.com', { method: 'POST' });
+            expect(isHeadRequest(postRequest)).toBe(false);
+        });
+        
+        test('should return false for PUT requests', () => {
+            const putRequest = new Request('https://example.com', { method: 'PUT' });
+            expect(isHeadRequest(putRequest)).toBe(false);
+        });
+        
+        test('should return false for DELETE requests', () => {
+            const deleteRequest = new Request('https://example.com', { method: 'DELETE' });
+            expect(isHeadRequest(deleteRequest)).toBe(false);
+        });
+        
+        test('should handle case sensitivity correctly', () => {
+            const headRequest = new Request('https://example.com', { method: 'head' });
+            expect(isHeadRequest(headRequest)).toBe(false); // HTTPメソッドは大文字小文字を区別する
+        });
+    });
+    
+    describe('handleHeadRequest function', () => {
+        test('should handle successful HEAD request', async () => {
+            const mockResponse = new Response(null, { status: 200, statusText: 'OK' });
+            global.fetch.mockResolvedValue(mockResponse);
+            
+            const headRequest = new Request('https://example.com/test.json', { method: 'HEAD' });
+            const result = await handleHeadRequest(headRequest);
+            
+            expect(global.fetch).toHaveBeenCalledWith(headRequest);
+            expect(result).toBe(mockResponse);
+            expect(consoleSpy.log).toHaveBeenCalledWith('[ServiceWorker] HEADリクエスト処理: https://example.com/test.json');
+        });
+        
+        test('should handle network error with fallback response', async () => {
+            const networkError = new Error('Network error');
+            global.fetch.mockRejectedValue(networkError);
+            
+            const headRequest = new Request('https://example.com/test.json', { method: 'HEAD' });
+            const result = await handleHeadRequest(headRequest);
+            
+            expect(global.fetch).toHaveBeenCalledWith(headRequest);
+            expect(result.status).toBe(503);
+            expect(result.statusText).toBe('Service Unavailable');
+            expect(result.headers.get('Content-Type')).toBe('text/plain');
+            expect(result.headers.get('Cache-Control')).toBe('no-cache');
+            expect(consoleSpy.log).toHaveBeenCalledWith('[ServiceWorker] HEADリクエストエラー: https://example.com/test.json', networkError);
+        });
+        
+        test('should handle 404 response correctly', async () => {
+            const notFoundResponse = new Response(null, { status: 404, statusText: 'Not Found' });
+            global.fetch.mockResolvedValue(notFoundResponse);
+            
+            const headRequest = new Request('https://example.com/missing.json', { method: 'HEAD' });
+            const result = await handleHeadRequest(headRequest);
+            
+            expect(global.fetch).toHaveBeenCalledWith(headRequest);
+            expect(result).toBe(notFoundResponse);
+            expect(result.status).toBe(404);
+        });
+        
+        test('should handle timeout error', async () => {
+            const timeoutError = new Error('Request timeout');
+            timeoutError.name = 'AbortError';
+            global.fetch.mockRejectedValue(timeoutError);
+            
+            const headRequest = new Request('https://example.com/slow.json', { method: 'HEAD' });
+            const result = await handleHeadRequest(headRequest);
+            
+            expect(result.status).toBe(503);
+            expect(consoleSpy.log).toHaveBeenCalledWith('[ServiceWorker] HEADリクエストエラー: https://example.com/slow.json', timeoutError);
+        });
+    });
+});
