@@ -471,6 +471,11 @@ function getPWAStrategy(request) {
  * キャッシュがあれば即座に返し、同時にネットワークから更新
  */
 async function staleWhileRevalidateStrategy(request) {
+    // HEADリクエストはキャッシュしない（安全チェック）
+    if (isHeadRequest(request)) {
+        return await handleHeadRequest(request);
+    }
+    
     const cache = await caches.open(CACHE_CONFIG.staticCacheName);
     
     // キャッシュから即座に応答
@@ -508,8 +513,39 @@ async function staleWhileRevalidateStrategy(request) {
 /**
  * 改善されたリクエストハンドラー（PWA対応）
  */
+// HEADリクエスト検出機能
+function isHeadRequest(request) {
+    return request.method === 'HEAD';
+}
+
+// HEADリクエスト専用ハンドラー
+async function handleHeadRequest(request) {
+    try {
+        console.log(`[ServiceWorker] HEADリクエスト処理: ${request.url}`);
+        // HEADリクエストはキャッシュせずに直接ネットワークに送信
+        const response = await fetch(request);
+        return response;
+    } catch (error) {
+        console.log(`[ServiceWorker] HEADリクエストエラー: ${request.url}`, error);
+        // ネットワークエラーの場合は適切なレスポンスを返す
+        return new Response(null, {
+            status: 503,
+            statusText: 'Service Unavailable',
+            headers: {
+                'Content-Type': 'text/plain',
+                'Cache-Control': 'no-cache'
+            }
+        });
+    }
+}
+
 async function handlePWARequest(request) {
     try {
+        // HEADリクエストの早期検出と専用処理
+        if (isHeadRequest(request)) {
+            return await handleHeadRequest(request);
+        }
+        
         const strategy = getPWAStrategy(request);
         
         switch (strategy) {
@@ -541,6 +577,11 @@ async function handlePWARequest(request) {
  * キャッシュ優先戦略
  */
 async function cacheFirstStrategy(request) {
+    // HEADリクエストはキャッシュしない（安全チェック）
+    if (isHeadRequest(request)) {
+        return await handleHeadRequest(request);
+    }
+    
     const cachedResponse = await getCachedResponse(request);
     
     if (cachedResponse) {
@@ -567,6 +608,11 @@ async function cacheFirstStrategy(request) {
  * ネットワーク優先戦略
  */
 async function networkFirstStrategy(request) {
+    // HEADリクエストはキャッシュしない（安全チェック）
+    if (isHeadRequest(request)) {
+        return await handleHeadRequest(request);
+    }
+    
     try {
         const networkResponse = await fetch(request);
         
@@ -642,6 +688,12 @@ async function getCachedResponse(request) {
  * レスポンスをキャッシュ
  */
 async function cacheResponse(request, response) {
+    // HEADリクエストはキャッシュしない
+    if (isHeadRequest(request)) {
+        console.log(`[ServiceWorker] HEADリクエストはキャッシュをスキップ: ${request.url}`);
+        return;
+    }
+    
     const url = new URL(request.url);
     let cacheName;
     
