@@ -1,6 +1,6 @@
 import { Scene } from '../core/Scene.js';
 import { NavigationContextManager } from '../core/navigation/NavigationContextManager.js';
-import { LoggingSystem } from '../core/LoggingSystem.js';
+import { getLoggingSystem } from '../core/LoggingSystem.js';
 
 /**
  * 設定画面シーン
@@ -11,7 +11,7 @@ export class SettingsScene extends Scene {
         super(gameEngine);
         
         // LoggingSystemとNavigationContextManagerの初期化
-        this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
+        this.loggingSystem = getLoggingSystem();
         this.navigationContext = new NavigationContextManager(gameEngine);
         
         // 設定カテゴリと現在選択中のカテゴリ

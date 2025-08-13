@@ -1,6 +1,6 @@
 import { Scene } from '../core/Scene.js';
 import { ErrorHandler } from '../utils/ErrorHandler.js';
-import { LoggingSystem } from '../core/LoggingSystem.js';
+import { getLoggingSystem } from '../core/LoggingSystem.js';
 import { CoreAccessibilityManager } from '../core/AccessibilityManager.js';
 import { NavigationContextManager } from '../core/navigation/NavigationContextManager.js';
 
@@ -25,7 +25,7 @@ import { HelpEventManager } from './help-scene/HelpEventManager.js';
 export class HelpScene extends Scene {
     constructor(gameEngine) {
         super(gameEngine);
-        this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
+        this.loggingSystem = getLoggingSystem();
         
         // NavigationContextManagerの初期化
         this.navigationContext = new NavigationContextManager(gameEngine);

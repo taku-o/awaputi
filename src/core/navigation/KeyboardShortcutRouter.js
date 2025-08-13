@@ -9,7 +9,7 @@
  */
 
 import { NavigationContextManager } from './NavigationContextManager.js';
-import { LoggingSystem } from '../LoggingSystem.js';
+import { getLoggingSystem } from '../LoggingSystem.js';
 import { ErrorHandler } from '../../utils/ErrorHandler.js';
 
 /**
@@ -19,8 +19,8 @@ import { ErrorHandler } from '../../utils/ErrorHandler.js';
 export class KeyboardShortcutRouter {
     constructor(gameEngine) {
         this.gameEngine = gameEngine;
-        this.loggingSystem = LoggingSystem.getInstance();
-        this.errorHandler = ErrorHandler.getInstance();
+        this.loggingSystem = getLoggingSystem();
+        this.errorHandler = ErrorHandler.getInstance ? ErrorHandler.getInstance() : new ErrorHandler();
         
         // NavigationContextManagerのインスタンス
         this.navigationContext = new NavigationContextManager(gameEngine);

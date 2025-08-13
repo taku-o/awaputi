@@ -8,7 +8,7 @@
  * @since Issue #163 - Duplicate help/settings screen consolidation
  */
 
-import { LoggingSystem } from '../LoggingSystem.js';
+import { getLoggingSystem } from '../LoggingSystem.js';
 import { ErrorHandler } from '../../utils/ErrorHandler.js';
 
 /**
@@ -18,8 +18,8 @@ import { ErrorHandler } from '../../utils/ErrorHandler.js';
 export class NavigationContextManager {
     constructor(gameEngine) {
         this.gameEngine = gameEngine;
-        this.loggingSystem = LoggingSystem.getInstance();
-        this.errorHandler = ErrorHandler.getInstance();
+        this.loggingSystem = getLoggingSystem();
+        this.errorHandler = ErrorHandler.getInstance ? ErrorHandler.getInstance() : new ErrorHandler();
         
         // ナビゲーションスタック
         this.navigationStack = [];
