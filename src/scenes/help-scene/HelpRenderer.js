@@ -119,7 +119,11 @@ export class HelpRenderer {
         const t = this.gameEngine.localizationManager.t.bind(this.gameEngine.localizationManager);
         const title = t('help.title', 'ヘルプ');
         
-        ctx.fillText(title, ctx.canvas.width / 2, 10);
+        // Transform行列のスケールを考慮した中央位置
+        const transform = ctx.getTransform();
+        const centerX = (ctx.canvas.width / 2) / transform.a;
+        
+        ctx.fillText(title, centerX, 10);
     }
 
     /**
@@ -493,7 +497,12 @@ export class HelpRenderer {
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         
-        ctx.fillText(message, ctx.canvas.width / 2, ctx.canvas.height / 2);
+        // Transform行列のスケールを考慮した中央位置
+        const transform = ctx.getTransform();
+        const centerX = (ctx.canvas.width / 2) / transform.a;
+        const centerY = (ctx.canvas.height / 2) / transform.d;
+        
+        ctx.fillText(message, centerX, centerY);
     }
 
     /**

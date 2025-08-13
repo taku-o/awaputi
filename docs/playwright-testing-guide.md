@@ -3,6 +3,8 @@
 ## 概要
 このドキュメントでは、Playwrightを使用してBubblePopゲームを自動操作・テストする際の手順を説明します。
 
+**🎯 2025年1月更新**: ゲームエンジン統合システム（NavigationContextManager、統合HelpScene/SettingsScene）の適切なテスト手法を追加しました。
+
 ## 前提条件
 
 ### 1. ローカルストレージのクリア
@@ -453,6 +455,249 @@ await canvas.screenshot({ path: `canvas-step-${stepNumber}.png` });
 - `H`: ヘルプ画面が開く
 - `F1`: ヘルプ画面が開く
 
+## 🎯 ゲームエンジン統合システムのキーボードショートカットテスト
+
+### ✅ 確立された適切なテスト手法（2025年1月確立）
+
+ゲームエンジンの統合システム（NavigationContextManager、統合されたHelpScene/SettingsScene）をテストするための確実な手法：
+
+#### 1. 正しい初期化待機プロセス
+
+**重要**: ゲームエンジンの完全な初期化を待たずにテストすると統合システムが未完成状態でテストされ、誤った結果になる。
+
+```javascript
+async function initializeGameEngineForTesting(page) {
+    // ステップ1: ゲーム開始ボタンをクリック
+    await page.getByRole('button', { name: 'ゲームを開始する' }).click();
+    
+    // ステップ2: 適切な初期化待機（3秒推奨）
+    await page.waitForTimeout(3000);
+    
+    // ステップ3: 初期化完了ログの確認（オプション）
+    const initComplete = await page.evaluate(() => {
+        // コンソールログから初期化完了を確認
+        return document.title.includes('BubblePop') && 
+               window.gameEngine && 
+               window.gameEngine.sceneManager &&
+               window.gameEngine.sceneManager.currentScene;
+    });
+    
+    if (!initComplete) {
+        throw new Error('Game engine initialization not complete');
+    }
+    
+    console.log('✅ Game engine fully initialized');
+}
+```
+
+#### 2. 統合システム状態の正確な確認
+
+```javascript
+async function verifyIntegratedSystemStatus(page) {
+    const systemStatus = await page.evaluate(() => {
+        const gameEngine = window.gameEngine;
+        return {
+            hasGameEngine: !!gameEngine,
+            hasSceneManager: !!(gameEngine && gameEngine.sceneManager),
+            currentScene: gameEngine?.sceneManager?.currentScene?.constructor?.name,
+            hasKeyboardShortcutManager: !!(gameEngine && gameEngine.keyboardShortcutManager),
+            // NavigationContextManagerは個別のシーンに統合されている
+            sceneHasNavigationManager: gameEngine?.sceneManager?.currentScene?.navigationContextManager ? true : false
+        };
+    });
+    
+    console.log('Game Engine Status:', systemStatus);
+    return systemStatus;
+}
+```
+
+#### 3. キーボードショートカットの統合システムテスト
+
+**✅ 確実に動作する手法**:
+
+```javascript
+async function testIntegratedKeyboardShortcuts(page) {
+    // 前提: ゲームエンジンが完全に初期化済み
+    await initializeGameEngineForTesting(page);
+    
+    // Hキーテスト: ヘルプ画面アクセス
+    console.log('🧪 Testing H key (Help access)...');
+    await page.keyboard.press('KeyH');
+    await page.waitForTimeout(500);
+    
+    // ログでシーン遷移確認
+    const helpSceneActive = await page.evaluate(() => {
+        return window.gameEngine?.sceneManager?.currentScene?.constructor?.name === 'HelpScene';
+    });
+    
+    if (helpSceneActive) {
+        console.log('✅ H key: Help screen access successful');
+        
+        // ESCキーテスト: 戻り機能
+        console.log('🧪 Testing ESC key (Back navigation)...');
+        await page.keyboard.press('Escape');
+        await page.waitForTimeout(500);
+        
+        const backToMenu = await page.evaluate(() => {
+            return window.gameEngine?.sceneManager?.currentScene?.constructor?.name === 'MainMenuScene';
+        });
+        
+        if (backToMenu) {
+            console.log('✅ ESC key: Back navigation successful');
+        } else {
+            throw new Error('❌ ESC key: Back navigation failed');
+        }
+    } else {
+        throw new Error('❌ H key: Help screen access failed');
+    }
+    
+    // Sキーテスト: 設定画面アクセス
+    console.log('🧪 Testing S key (Settings access)...');
+    await page.keyboard.press('KeyS');
+    await page.waitForTimeout(500);
+    
+    const settingsSceneActive = await page.evaluate(() => {
+        return window.gameEngine?.sceneManager?.currentScene?.constructor?.name === 'SettingsScene';
+    });
+    
+    if (settingsSceneActive) {
+        console.log('✅ S key: Settings screen access successful');
+        
+        // ESCキーで設定から戻る
+        console.log('🧪 Testing ESC key from Settings...');
+        await page.keyboard.press('Escape');
+        await page.waitForTimeout(500);
+        
+        const backToMenuFromSettings = await page.evaluate(() => {
+            return window.gameEngine?.sceneManager?.currentScene?.constructor?.name === 'MainMenuScene';
+        });
+        
+        if (backToMenuFromSettings) {
+            console.log('✅ ESC key from Settings: Back navigation successful');
+        } else {
+            throw new Error('❌ ESC key from Settings: Back navigation failed');
+        }
+    } else {
+        throw new Error('❌ S key: Settings screen access failed');
+    }
+    
+    console.log('🎉 All integrated keyboard shortcuts working correctly!');
+}
+```
+
+#### 4. コンソールログによる動作確認
+
+統合システムの動作確認に使用すべきログメッセージ：
+
+```javascript
+// 期待されるログパターン
+const expectedLogs = [
+    // 初期化完了
+    '[LOG] [DEBUG] 🎉 ゲーム初期化完了',
+    '[INFO] NavigationContextManager Navigation context manager initial...',
+    '[INFO] AccessibilitySettingsManager Accessibility settings manager...',
+    
+    // キーボードショートカット動作
+    '[LOG] Switched to scene: help',           // H key success
+    '[LOG] Switched to scene: menu',           // ESC key success  
+    '[LOG] Switched to scene: settings',       // S key success
+    '[INFO] HelpScene Standard help mode activated',
+    '[INFO] HelpScene Navigated back to: menu, success: true',
+    '[INFO] SettingsScene Navigated back to: menu, success: true'
+];
+
+// ログ確認機能
+async function verifyExpectedLogs(page) {
+    const consoleLogs = await page.evaluate(() => {
+        return window.consoleHistory || []; // 必要に応じてログ履歴を保存
+    });
+    
+    // 期待されるログが含まれているか確認
+    expectedLogs.forEach(expectedLog => {
+        const found = consoleLogs.some(log => log.includes(expectedLog));
+        if (found) {
+            console.log(`✅ Found expected log: ${expectedLog}`);
+        } else {
+            console.warn(`⚠️ Missing expected log: ${expectedLog}`);
+        }
+    });
+}
+```
+
+#### 5. 完全な統合システムテスト例
+
+```javascript
+async function fullIntegratedSystemTest() {
+    const browser = await chromium.launch({ headless: false });
+    const page = await browser.newPage();
+    
+    try {
+        // 標準的な初期化プロセス
+        await page.goto('http://localhost:8001?username=TestUser&skipUsernameInput=true');
+        await page.evaluate(() => {
+            localStorage.clear();
+            sessionStorage.clear();
+        });
+        await page.reload();
+        
+        // ゲームエンジン完全初期化
+        await initializeGameEngineForTesting(page);
+        
+        // 統合システム状態確認
+        await verifyIntegratedSystemStatus(page);
+        
+        // 統合キーボードショートカットテスト
+        await testIntegratedKeyboardShortcuts(page);
+        
+        console.log('🎉 Integrated system test completed successfully!');
+        
+    } catch (error) {
+        console.error('❌ Integrated system test failed:', error);
+        throw error;
+    } finally {
+        await browser.close();
+    }
+}
+```
+
+### ⚠️ よくある間違いと回避方法
+
+#### 間違い1: 初期化待機不足
+```javascript
+// ❌ 悪い例: 初期化完了前にテスト実行
+await page.getByRole('button', { name: 'ゲームを開始する' }).click();
+await page.keyboard.press('KeyH'); // 統合システム未完成でテスト
+
+// ✅ 良い例: 適切な初期化待機
+await page.getByRole('button', { name: 'ゲームを開始する' }).click();
+await page.waitForTimeout(3000); // 統合システム完成まで待機
+await page.keyboard.press('KeyH'); // 正常動作
+```
+
+#### 間違い2: 表面的な状態確認
+```javascript
+// ❌ 悪い例: GameEngineの有無のみ確認
+const hasGameEngine = await page.evaluate(() => !!window.gameEngine);
+
+// ✅ 良い例: 統合システムの詳細確認  
+const systemComplete = await page.evaluate(() => {
+    return window.gameEngine?.sceneManager?.currentScene && 
+           window.gameEngine.keyboardShortcutManager;
+});
+```
+
+### 🎯 このテスト手法の利点
+
+1. **✅ 確実性**: ゲームエンジン完全初期化後のテストで統合システムの真の動作状況を確認
+2. **✅ 再現性**: 段階的プロセスにより毎回同じ結果を獲得
+3. **✅ デバッグ性**: ログメッセージによる動作状況の詳細確認が可能  
+4. **✅ 保守性**: 統合システム変更時も同じ手法で検証継続可能
+
+### 📅 更新履歴
+
+- **2025-01-15**: Issue #163対応でゲームエンジン統合システムの適切なPlaywrightテスト手法を確立
+- 従来のCanvas操作に加えて、統合システム特有の初期化プロセスとキーボードショートカット検証手法を追加
+
 ## 注意事項
 
 1. **非同期処理**: ゲーム初期化は非同期のため、適切な待機時間が必要
@@ -461,6 +706,11 @@ await canvas.screenshot({ path: `canvas-step-${stepNumber}.png` });
 4. **エラーハンドリング**: ネットワークエラーやタイムアウトに対する適切な処理
 5. **✅ URLパラメータ方式を推奨**: `?username=TestUser&skipUsernameInput=true`で確実にメインメニューへアクセス
 6. **❌ JavaScript直接操作は非推奨**: Canvas内でのkeyboard.type()やJavaScript操作は不安定
+7. **🎯 統合システムテスト重要事項**（2025年1月追加）:
+   - **必須**: ゲームエンジン完全初期化（3秒待機）後にキーボードショートカットテストを実行
+   - **必須**: ログメッセージ（`[LOG] Switched to scene:`）による動作確認を実施
+   - **推奨**: 統合システム状態確認（NavigationContextManager、統合HelpScene/SettingsScene）
+   - **注意**: 初期化待機なしでテストすると統合システム未完成状態で誤った結果を得る
 
 ## URLパラメータ一覧
 

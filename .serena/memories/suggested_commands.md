@@ -1,258 +1,142 @@
-# 推奨コマンド・開発ワークフロー
+# 推奨コマンド一覧
 
-## 日常開発コマンド
-
-### 開発サーバー
+## 開発サーバー
 ```bash
-# 開発サーバー起動（推奨：ローカル開発）
+# ローカル開発サーバー起動（推奨）
 python -m http.server 8000
 # または
 npx serve .
 
-# Vite開発サーバー（高度な機能使用時）
+# Vite開発サーバー
 npm run dev
 ```
 
-### アクセスURL
-```bash
-# メインゲーム
-http://localhost:8000
-
-# テスト環境
-http://localhost:8000/test.html
-
-# デバッグモード
-http://localhost:8000?debug=true
-# キーボードショートカット: Ctrl+Shift+D
-```
-
 ## テスト実行
-
-### 基本テスト
 ```bash
-# 全テストスイート実行
+# ユニットテスト
 npm test
-
-# 単体テスト（推奨：開発中）
 npm run test:unit
-
-# テスト監視モード
-npm run test:watch
 npm run test:unit:watch
-
-# カバレッジ付きテスト
-npm run test:coverage
-npm run test:unit:coverage
-```
-
-### 専門テスト
-```bash
-# パフォーマンステスト
-npm run test:performance
-npm run test:performance:verbose
 
 # E2Eテスト
 npm run test:e2e
-npm run test:e2e:ui        # UI表示付き
-npm run test:e2e:debug     # デバッグモード
+npm run test:e2e:ui  # UI付き
+
+# パフォーマンステスト
+npm run test:performance
 
 # 統合テスト
 npm run test:integration
-npm run test:integration:watch
 
-# 品質テスト
-npm run test:quality
-npm run test:translation-quality
-npm run test:i18n-usability
-
-# 全テスト実行（CI用）
+# 全テスト実行
 npm run test:all
+
+# テスト品質監視
+npm run test:quality-monitor
 ```
 
-## ビルド・デプロイメント
-
-### ビルド
+## ビルド
 ```bash
-# 本番ビルド
+# プロダクションビルド
 npm run build
 
 # 開発ビルド
 npm run build:dev
 
-# ステージングビルド
-npm run build:staging
-
 # GitHub Pages用ビルド
 npm run build:gh-pages
 
-# 強制ビルド（キャッシュクリア）
-npm run build:force
-
-# バンドル分析
-npm run build:analyze
-```
-
-### プレビュー・デプロイ
-```bash
-# ビルド結果のプレビュー
+# ビルド後プレビュー
 npm run preview
-npm run preview:dist
-
-# デプロイメント
-npm run deploy:netlify      # Netlify本番
-npm run deploy:vercel       # Vercel本番
-npm run deploy:gh-pages     # GitHub Pages
-npm run deploy:all          # 全プラットフォーム
-npm run deploy:staging      # ステージング環境
 ```
 
-## 設定・検証
-
-### 設定検証
-```bash
-# 設定ファイル検証
-npm run validate:config
-npm run validate:config:verbose
-
-# i18n設定検証
-npm run validate:i18n-requirements
-npm run i18n:validate
-```
-
-### ファイルサイズ監視（MCPトークン制限対応）
+## 品質チェック
 ```bash
 # ファイルサイズチェック
 npm run filesize:check
-
-# ファイルサイズ監視（リアルタイム）
-npm run filesize:watch
-
-# サイズレポート生成
-npm run filesize:report
-
-# 手動チェック
 node tools/file-size-monitor.js src
-node tools/file-size-monitor.js src/scenes  # 特定ディレクトリ
+
+# 設定検証
+npm run validate:config
+
+# ブラウザ互換性チェック
+npm run check:browser-compatibility
+
+# i18n検証
+npm run i18n:validate
 ```
 
-## 国際化（i18n）
-
-### i18n開発
+## ドキュメント
 ```bash
-# i18n環境セットアップ
-npm run i18n:setup
-
-# i18n最適化
-npm run i18n:optimize
-
-# 翻訳品質レポート
-npm run i18n:quality-report
-
-# i18nパフォーマンステスト
-npm run i18n:performance-test
-npm run test:i18n-performance
-
-# i18nリリース準備
-npm run prepare:i18n-release
-```
-
-## ドキュメント管理
-
-### API文書生成
-```bash
-# API文書生成
+# APIドキュメント生成
 npm run docs:generate
-npm run docs:generate:private      # private含む
-npm run docs:generate:no-examples  # 例なし
 
-# 文書検証
+# ドキュメント検証
 npm run docs:validate
-npm run docs:validate:quick        # 高速検証
-npm run docs:validate:full         # 完全検証
 
 # リンクチェック
 npm run docs:check-links
-npm run docs:check-links:internal  # 内部リンクのみ
-npm run docs:check-links:verbose   # 詳細出力
-
-# 文書監視
-npm run docs:watch
-npm run docs:monitor               # バックグラウンド監視
-
-# 文書品質チェック
-npm run docs:quality
 ```
 
-### 文書サーバー
+## デプロイ
 ```bash
-# 文書サーバー起動
-npm run docs:serve                 # http://localhost:8080
+# Netlifyデプロイ
+npm run deploy:netlify
 
-# 文書クリーンアップ
-npm run docs:clean
+# Vercelデプロイ
+npm run deploy:vercel
+
+# GitHub Pagesデプロイ
+npm run deploy:gh-pages
 ```
 
-## 品質・パフォーマンス
-
-### パフォーマンス監視
+## Git操作
 ```bash
-# Lighthouse分析
-npm run lighthouse
-npm run lighthouse:ci
-
-# バンドルサイズチェック
-npm run size-check
-```
-
-### プロジェクト最適化
-```bash
-# ビルド最適化
-npm run optimize
-
-# プロジェクトクリーンアップ
-npm run clean
-```
-
-## Git・開発環境
-
-### Git Hooks
-```bash
-# Git Hooks セットアップ
-npm run setup:hooks
-npm run setup:hooks:force
-```
-
-## Darwin (macOS) システムコマンド
-
-### 基本システムコマンド
-```bash
-# ファイル・ディレクトリ操作
-ls -la                    # ファイル一覧（詳細）
-find . -name "*.js"       # JavaScript ファイル検索
-grep -r "pattern" src/    # パターン検索
-cd path/to/directory      # ディレクトリ移動
-
-# プロセス管理
-ps aux | grep node        # Node.js プロセス確認
-kill -9 <PID>            # プロセス強制終了
-lsof -ti:8000            # ポート8000使用プロセス確認
-
-# ネットワーク
-netstat -an | grep 8000   # ポート8000の状態確認
-curl http://localhost:8000 # ローカルサーバーテスト
-```
-
-### Git操作
-```bash
-# 基本Git操作
-git status                # 変更状況確認
-git add .                 # 全変更をステージング
-git commit -m "message"   # コミット
-git push origin main      # プッシュ
-git pull origin main      # プル
+# 基本的なGitコマンド
+git status
+git diff
+git add .
+git commit -m "メッセージ"
+git push origin ブランチ名
 
 # ブランチ操作
-git checkout -b feature/new-feature  # 新ブランチ作成・切替
-git merge feature-branch             # マージ
-git branch -d feature-branch         # ブランチ削除
+git checkout -b feature/新機能名
+git checkout master
+git merge feature/新機能名
 ```
+
+## ユーティリティ
+```bash
+# 命名競合チェック
+node scripts/check-naming-conflicts.js
+
+# i18n品質レポート
+npm run i18n:quality-report
+
+# Lighthouse実行
+npm run lighthouse
+```
+
+## システムコマンド（Darwin）
+```bash
+# ファイル一覧
+ls -la
+
+# ディレクトリ移動
+cd ディレクトリ名
+
+# ファイル検索
+find . -name "*.js"
+
+# 内容検索
+grep -r "検索文字列" .
+
+# プロセス確認
+ps aux | grep node
+```
+
+## 注意事項
+- 現在Lintツールは未設定（npm run lintは使用不可）
+- コードフォーマッターも未設定
+- ファイルサイズ制限（2,500語）に注意
+- テスト実行時は`NODE_OPTIONS='--experimental-vm-modules --no-warnings'`が必要

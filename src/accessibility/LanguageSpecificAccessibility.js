@@ -383,19 +383,155 @@ export class LanguageSpecificAccessibility {
     
     /**
      * キーボードショートカットの更新
+     * 統一されたKeyboardShortcutRouterを使用
      */
     updateKeyboardShortcuts() {
         const shortcuts = this.currentLayout.shortcuts;
         const navigationKeys = this.currentLayout.navigationKeys;
         
-        // アクセシビリティマネージャーにショートカットを適用
-        if (this.accessibilityManager?.keyboardShortcutManager) {
-            Object.entries(shortcuts).forEach(([action, key]) => {
-                this.accessibilityManager.keyboardShortcutManager.updateShortcut(action, key);
+        try {
+            // KeyboardShortcutRouterまたはCoreKeyboardShortcutManagerを使用
+            const keyboardManager = this.gameEngine?.keyboardShortcutManager;
+            
+            if (keyboardManager) {
+                // 既存のショートカットを言語固有の設定で更新
+                Object.entries(shortcuts).forEach(([action, key]) => {
+                    // アクション名を統一されたシステムのものにマッピング
+                    const unifiedAction = this.mapToUnifiedAction(action);
+                    if (unifiedAction && keyboardManager.updateShortcut) {
+                        keyboardManager.updateShortcut(unifiedAction, key);
+                    }
+                });
+                
+                console.log(`Keyboard shortcuts updated for language: ${this.currentLanguage}`);
+            } else {
+                console.warn('KeyboardShortcutManager not available for language-specific updates');
+            }
+        } catch (error) {
+            console.error('Failed to update keyboard shortcuts:', error);
+            getErrorHandler().handleError(error, 'LANGUAGE_ACCESSIBILITY_ERROR', {
+                operation: 'updateKeyboardShortcuts',
+                language: this.currentLanguage
             });
         }
+    }
+    
+    /**
+     * 言語固有のアクション名を統一されたアクション名にマッピング
+     * @param {string} languageAction - 言語固有のアクション名
+     * @returns {string|null} 統一されたアクション名
+     */
+    mapToUnifiedAction(languageAction) {
+        const actionMapping = {
+            // 英語
+            'help': 'help',
+            'settings': 'settings',
+            'pause': 'pause',
+            'menu': 'menu',
+            'fullscreen': 'fullscreen',
+            
+            // ドイツ語
+            'hilfe': 'help',
+            'einstellungen': 'settings',
+            'vollbild': 'fullscreen',
+            
+            // フランス語
+            'aide': 'help',
+            'parametres': 'settings',
+            'pleinEcran': 'fullscreen',
+            
+            // 日本語
+            'ヘルプ': 'help',
+            '設定': 'settings',
+            'ポーズ': 'pause',
+            'メニュー': 'menu',
+            'フルスクリーン': 'fullscreen',
+            
+            // アラビア語
+            'مساعدة': 'help',
+            'اعدادات': 'settings',
+            'ايقاف': 'pause',
+            'قائمة': 'menu',
+            'ملء الشاشة': 'fullscreen',
+            
+            // ヘブライ語
+            'עזרה': 'help',
+            'הגדרות': 'settings',
+            'השהיה': 'pause',
+            'תפריט': 'menu',
+            'מסך מלא': 'fullscreen'
+        };
         
-        console.log('Keyboard shortcuts updated for language');
+        return actionMapping[languageAction] || null;
+    }
+    
+    /**
+     * キーボードレイアウトサポートの設定
+     * 統一されたキーボードショートカットシステムとの統合
+     */
+    setupKeyboardLayoutSupport() {
+        try {
+            // キーボードイベントリスナーの設定
+            if (typeof document !== 'undefined') {
+                this.keyboardEventHandler = this.handleLanguageSpecificKeyboard.bind(this);
+                document.addEventListener('keydown', this.keyboardEventHandler);
+            }
+            
+            // GameEngineのキーボードマネージャーとの統合確認
+            if (this.gameEngine && this.gameEngine.keyboardShortcutManager) {
+                console.log('Integrated with unified keyboard shortcut system');
+            }
+            
+            console.log('Keyboard layout support initialized');
+        } catch (error) {
+            console.error('Failed to setup keyboard layout support:', error);
+            getErrorHandler().handleError(error, 'LANGUAGE_ACCESSIBILITY_ERROR', {
+                operation: 'setupKeyboardLayoutSupport'
+            });
+        }
+    }
+    
+    /**
+     * 言語固有のキーボード処理
+     * @param {KeyboardEvent} event - キーボードイベント
+     */
+    handleLanguageSpecificKeyboard(event) {
+        try {
+            // RTL言語での方向キー処理の調整
+            if (this.isRTLLanguage(this.currentLanguage)) {
+                this.handleRTLKeyboardNavigation(event);
+            }
+            
+            // 言語固有のキーボード配置での調整
+            if (this.currentLayout && this.config.adaptKeyboardLayouts) {
+                this.adjustForKeyboardLayout(event);
+            }
+        } catch (error) {
+            console.error('Language-specific keyboard handling error:', error);
+        }
+    }
+    
+    /**
+     * RTL言語での方向キー処理
+     * @param {KeyboardEvent} event - キーボードイベント
+     */
+    handleRTLKeyboardNavigation(event) {
+        // RTL言語では左右の方向キーの意味が逆になる
+        if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+            // この処理は統一されたナビゲーションシステムで処理されるべき
+            // ここでは言語固有の調整のみを行う
+            console.debug(`RTL navigation adjustment for ${event.key} in ${this.currentLanguage}`);
+        }
+    }
+    
+    /**
+     * キーボードレイアウトでの調整
+     * @param {KeyboardEvent} event - キーボードイベント
+     */
+    adjustForKeyboardLayout(event) {
+        // 言語固有のキーマッピング調整
+        // 実際の調整は統一されたキーボードシステムが行う
+        console.debug(`Keyboard layout adjustment for ${event.code} in ${this.currentLanguage}`);
     }
     
     /**

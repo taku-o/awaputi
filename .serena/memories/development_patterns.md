@@ -1,66 +1,161 @@
-# 開発パターン・ガイドライン
+# 開発パターンとベストプラクティス
 
-## 設計パターン
+## アーキテクチャパターン
 
-### 1. モジュラー設計
-- **コンポーネントベース**: 単一責任原則
-- **依存注入**: コンストラクタで依存関係管理
-- **イベント駆動**: addEventListener パターン
-- **設定中央化**: ConfigurationManager統一アクセス
-
-### 2. データ管理パターン
+### シングルトンパターン
+多くのマネージャークラスで使用
 ```javascript
-// 設定アクセス例
-import { getConfigurationManager } from './core/ConfigurationManager.js';
-const config = getConfigurationManager();
-const baseScore = config.get('game.scoring.baseScores.normal');
-
-// 設定監視例
-config.watch('game.difficulty', (newValue, oldValue) => {
-    console.log(`難易度変更: ${oldValue} → ${newValue}`);
-});
-```
-
-### 3. パフォーマンスパターン
-- **オブジェクトプーリング**: バブル生成最適化
-- **キャッシュシステム**: 高頻度データ高速化
-- **非同期処理**: バックグラウンド処理
-- **メモリ管理**: 適切なクリーンアップ
-
-## アクセシビリティパターン
-
-### 1. WCAG 2.1 AA準拠
-- **キーボードナビゲーション**: Tab順序、矢印キー
-- **スクリーンリーダー**: ARIA属性、代替テキスト
-- **カラーアクセシビリティ**: 高コントラスト、色覚サポート
-
-### 2. 多言語対応
-- **LocalizationManager**: 翻訳キー管理
-- **動的言語切り替え**: リアルタイム更新
-- **文化的適応**: 地域別フォーマット
-
-## エラーハンドリングパターン
-
-### 1. 中央エラー管理
-```javascript
-import { ErrorHandler } from './utils/ErrorHandler.js';
-
-try {
-    // 処理
-} catch (error) {
-    ErrorHandler.handleError(error, 'ComponentName', 'methodName');
+class ConfigurationManager {
+  static instance = null;
+  
+  static getInstance() {
+    if (!ConfigurationManager.instance) {
+      ConfigurationManager.instance = new ConfigurationManager();
+    }
+    return ConfigurationManager.instance;
+  }
 }
 ```
 
-### 2. 回復戦略
-- **自動回復**: 設定値復元
-- **グレースフルデグラデーション**: 機能限定継続
-- **ユーザー通知**: わかりやすいエラーメッセージ
+### イベント駆動パターン
+カスタムイベントでコンポーネント間通信
+```javascript
+// イベント発火
+window.dispatchEvent(new CustomEvent('gameStateChanged', { 
+  detail: { state: 'playing' } 
+}));
 
-## テストパターン
+// イベントリスナー
+window.addEventListener('gameStateChanged', (event) => {
+  // 処理
+});
+```
 
-### 1. テスト階層
-- **ユニットテスト**: 個別コンポーネント
-- **統合テスト**: コンポーネント間連携  
-- **E2Eテスト**: ユーザーシナリオ
-- **パフォーマンステスト**: 速度・メモリ
+### モジュールパターン
+ES6モジュールでコード分離
+```javascript
+// 必ず.js拡張子を付ける
+import { GameEngine } from './core/GameEngine.js';
+export class BubbleManager { }
+```
+
+## エラーハンドリング
+
+### 中央集権的エラー処理
+```javascript
+import { ErrorHandler } from '../utils/ErrorHandler.js';
+
+try {
+  // 処理
+} catch (error) {
+  ErrorHandler.log(error, 'ComponentName');
+}
+```
+
+### 非同期エラー処理
+```javascript
+async function loadResource() {
+  try {
+    const data = await fetch(url);
+    return await data.json();
+  } catch (error) {
+    ErrorHandler.log(error, 'ResourceLoader');
+    return null; // フォールバック
+  }
+}
+```
+
+## パフォーマンス最適化
+
+### Canvas描画最適化
+- requestAnimationFrame使用
+- 必要な部分のみ再描画
+- オフスクリーンCanvas活用
+
+### メモリ管理
+- 不要なオブジェクトの適切な破棄
+- イベントリスナーのクリーンアップ
+- 大きな配列の効率的な管理
+
+## i18n実装パターン
+
+### 翻訳キー使用
+```javascript
+import { i18n } from '../locales/i18n.js';
+
+// テキスト取得
+const text = i18n.t('menu.startGame');
+
+// 動的値の挿入
+const message = i18n.t('game.score', { score: 1000 });
+```
+
+## アクセシビリティ
+
+### ARIA属性の適切な使用
+```javascript
+element.setAttribute('role', 'button');
+element.setAttribute('aria-label', i18n.t('accessibility.startButton'));
+```
+
+### キーボードナビゲーション
+```javascript
+element.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    // クリックと同じ処理
+  }
+});
+```
+
+## デバッグ機能
+
+### デバッグモード
+```javascript
+// URLパラメータでデバッグモード
+const urlParams = new URLSearchParams(window.location.search);
+const debugMode = urlParams.get('debug') === 'true';
+
+if (debugMode) {
+  console.log('デバッグ情報');
+}
+```
+
+### パフォーマンス計測
+```javascript
+const startTime = performance.now();
+// 処理
+const endTime = performance.now();
+console.log(`処理時間: ${endTime - startTime}ms`);
+```
+
+## コンポーネント設計
+
+### 責任の分離
+- 1クラス1責任
+- UIとロジックの分離
+- データとビューの分離
+
+### 依存性注入
+```javascript
+class GameScene {
+  constructor(sceneManager, audioManager, i18n) {
+    this.sceneManager = sceneManager;
+    this.audioManager = audioManager;
+    this.i18n = i18n;
+  }
+}
+```
+
+## ファイル構成
+
+### 命名規則
+- クラスファイル: `ClassName.js`
+- ユーティリティ: `utilityName.js`
+- 設定ファイル: `config-name.js`
+
+### インポート順序
+1. 外部ライブラリ（使用していない）
+2. コアモジュール
+3. マネージャー
+4. ユーティリティ
+5. 同一ディレクトリのファイル
