@@ -94,12 +94,13 @@
   - _Requirements: 3.1, 3.3_
   - ✅ **完了**: 重複実装ファイル削除（ContextualHelpSystem、AccessibilitySettingsUI、SettingsRenderer）、MainMenuSceneリファクタリング、削除検証テスト実装 (2025-01-15)
 
-- [ ] 14. Remove or refactor duplicate settings implementations
+- [x] 14. Remove or refactor duplicate settings implementations
   - Remove redundant settings display code from other components
   - Update references to use unified SettingsScene
   - Clean up unused settings-related files and methods
   - Verify no broken references remain
   - _Requirements: 3.2, 3.3_
+  - ✅ **完了**: タスク13で既に重複設定実装削除済み、統一SettingsScene正常動作、統合検証テスト実装 (2025-01-15)
 
 - [ ] 15. Create unit tests for NavigationContextManager
   - Test navigation stack push and pop operations
