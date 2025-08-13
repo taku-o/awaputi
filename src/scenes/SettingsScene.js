@@ -1,6 +1,7 @@
 import { Scene } from '../core/Scene.js';
 import { NavigationContextManager } from '../core/navigation/NavigationContextManager.js';
 import { getLoggingSystem } from '../core/LoggingSystem.js';
+import { AccessibilitySettingsManager } from './settings-scene/AccessibilitySettingsManager.js';
 
 /**
  * 設定画面シーン
@@ -13,6 +14,9 @@ export class SettingsScene extends Scene {
         // LoggingSystemとNavigationContextManagerの初期化
         this.loggingSystem = getLoggingSystem();
         this.navigationContext = new NavigationContextManager(gameEngine);
+        
+        // AccessibilitySettingsManagerの初期化
+        this.accessibilitySettingsManager = new AccessibilitySettingsManager(gameEngine);
         
         // 設定カテゴリと現在選択中のカテゴリ
         this.categories = ['general', 'social', 'privacy', 'notifications', 'accessibility'];
@@ -101,13 +105,14 @@ export class SettingsScene extends Scene {
                 { key: 'notifications.leaderboard.enabled', label: 'ランキング通知', type: 'toggle', description: 'ランキング関連の通知を受け取ります' },
                 { key: 'notifications.leaderboard.newRecord', label: '新記録通知', type: 'toggle', description: '自己ベストを更新した時に通知します' }
             ],
-            accessibility: [
-                { key: 'accessibility.highContrast', label: 'ハイコントラスト', type: 'toggle', description: 'より見やすい高コントラスト表示にします' },
-                { key: 'accessibility.reducedMotion', label: 'アニメーション削減', type: 'toggle', description: 'アニメーションや動きを削減します' },
-                { key: 'accessibility.largeText', label: '大きな文字', type: 'toggle', description: 'UI の文字サイズを大きくします' },
-                { key: 'accessibility.screenReader', label: 'スクリーンリーダー対応', type: 'toggle', description: 'スクリーンリーダーでの読み上げに対応します' },
-                { key: 'accessibility.colorBlindSupport', label: '色覚サポート', type: 'toggle', description: '色覚に配慮した表示にします' }
-            ]
+            accessibility: this.accessibilitySettingsManager ? 
+                this.accessibilitySettingsManager.getExtendedAccessibilitySettings() : [
+                    { key: 'accessibility.highContrast', label: 'ハイコントラスト', type: 'toggle', description: 'より見やすい高コントラスト表示にします' },
+                    { key: 'accessibility.reducedMotion', label: 'アニメーション削減', type: 'toggle', description: 'アニメーションや動きを削減します' },
+                    { key: 'accessibility.largeText', label: '大きな文字', type: 'toggle', description: 'UI の文字サイズを大きくします' },
+                    { key: 'accessibility.screenReader', label: 'スクリーンリーダー対応', type: 'toggle', description: 'スクリーンリーダーでの読み上げに対応します' },
+                    { key: 'accessibility.colorBlindSupport', label: '色覚サポート', type: 'toggle', description: '色覚に配慮した表示にします' }
+                ]
         };
     }
     
@@ -665,6 +670,28 @@ export class SettingsScene extends Scene {
             case 'Escape':
                 this.goBack();
                 break;
+                
+            // アクセシビリティ設定の拡張機能
+            case 'p':
+            case 'P':
+                if (event.ctrlKey && this.currentCategory === 'accessibility') {
+                    this.showAccessibilityProfiles();
+                }
+                break;
+                
+            case 'e':
+            case 'E':
+                if (event.ctrlKey && this.currentCategory === 'accessibility') {
+                    this.exportAccessibilitySettings();
+                }
+                break;
+                
+            case 'i':
+            case 'I':
+                if (event.ctrlKey && this.currentCategory === 'accessibility') {
+                    this.importAccessibilitySettings();
+                }
+                break;
         }
     }
     
@@ -717,45 +744,88 @@ export class SettingsScene extends Scene {
         
         const currentValue = this.gameEngine.settingsManager.get(item.key);
         
-        switch (item.type) {
-            case 'toggle':
-                this.gameEngine.settingsManager.set(item.key, !currentValue);
-                break;
-                
-            case 'select':
-                this.cycleSelectValue(item, currentValue);
-                break;
-                
-            case 'slider':
-                this.adjustSliderValue(item, currentValue);
-                break;
-                
-            case 'text':
-                this.startTextEditing(currentValue);
-                break;
+        // アクセシビリティ設定の場合は専用マネージャーを使用
+        if (item.key.startsWith('accessibility.') && this.accessibilitySettingsManager) {
+            switch (item.type) {
+                case 'toggle':
+                    this.accessibilitySettingsManager.setSetting(item.key, !currentValue);
+                    break;
+                    
+                case 'select':
+                    const nextSelectValue = this.getNextSelectValue(item, currentValue);
+                    this.accessibilitySettingsManager.setSetting(item.key, nextSelectValue);
+                    break;
+                    
+                case 'slider':
+                    const nextSliderValue = this.getNextSliderValue(item, currentValue);
+                    this.accessibilitySettingsManager.setSetting(item.key, nextSliderValue);
+                    break;
+                    
+                case 'text':
+                    this.startTextEditing(currentValue);
+                    break;
+            }
+        } else {
+            // 通常の設定処理
+            switch (item.type) {
+                case 'toggle':
+                    this.gameEngine.settingsManager.set(item.key, !currentValue);
+                    break;
+                    
+                case 'select':
+                    this.cycleSelectValue(item, currentValue);
+                    break;
+                    
+                case 'slider':
+                    this.adjustSliderValue(item, currentValue);
+                    break;
+                    
+                case 'text':
+                    this.startTextEditing(currentValue);
+                    break;
+            }
         }
+    }
+    
+    /**
+     * 次のセレクト値を取得
+     */
+    getNextSelectValue(item, currentValue) {
+        const currentIndex = item.options.findIndex(opt => opt.value === currentValue);
+        const nextIndex = (currentIndex + 1) % item.options.length;
+        return item.options[nextIndex].value;
     }
     
     /**
      * セレクト値のサイクル
      */
     cycleSelectValue(item, currentValue) {
-        const currentIndex = item.options.findIndex(opt => opt.value === currentValue);
-        const nextIndex = (currentIndex + 1) % item.options.length;
-        const newValue = item.options[nextIndex].value;
-        
+        const newValue = this.getNextSelectValue(item, currentValue);
         this.gameEngine.settingsManager.set(item.key, newValue);
+    }
+    
+    /**
+     * 次のスライダー値を取得
+     */
+    getNextSliderValue(item, currentValue) {
+        const step = item.step || 0.1;
+        const min = item.min || 0;
+        const max = item.max || 1;
+        let newValue = currentValue + step;
+        
+        // 最大値を超えた場合は最小値に戻る
+        if (newValue > max) {
+            newValue = min;
+        }
+        
+        return Math.round(newValue * 100) / 100; // 小数点以下2桁で丸める
     }
     
     /**
      * スライダー値の調整
      */
     adjustSliderValue(item, currentValue) {
-        const step = item.step || 0.1;
-        const min = item.min || 0;
-        const max = item.max || 1;
-        const newValue = Math.min(max, currentValue + step);
-        
+        const newValue = this.getNextSliderValue(item, currentValue);
         this.gameEngine.settingsManager.set(item.key, newValue);
     }
     
@@ -800,7 +870,12 @@ export class SettingsScene extends Scene {
         const item = currentItems[this.selectedSettingIndex];
         
         if (item) {
-            this.gameEngine.settingsManager.set(item.key, this.tempValue);
+            // アクセシビリティ設定の場合は専用マネージャーを使用
+            if (item.key.startsWith('accessibility.') && this.accessibilitySettingsManager) {
+                this.accessibilitySettingsManager.setSetting(item.key, this.tempValue);
+            } else {
+                this.gameEngine.settingsManager.set(item.key, this.tempValue);
+            }
         }
         
         this.isEditingValue = false;
@@ -895,6 +970,98 @@ export class SettingsScene extends Scene {
     }
     
     /**
+     * アクセシビリティプロファイル表示
+     */
+    showAccessibilityProfiles() {
+        if (!this.accessibilitySettingsManager) return;
+        
+        const profiles = this.accessibilitySettingsManager.getAvailableProfiles();
+        console.log('[SettingsScene] Available Accessibility Profiles:', profiles);
+        
+        // 簡易的なプロファイル表示（実際の実装では専用UIを作成）
+        this.showingProfileDialog = true;
+        this.profileDialogData = {
+            profiles,
+            selectedIndex: 0
+        };
+        
+        this.loggingSystem.info('SettingsScene', 'Accessibility profiles dialog opened');
+    }
+    
+    /**
+     * アクセシビリティ設定のエクスポート
+     */
+    exportAccessibilitySettings() {
+        if (!this.accessibilitySettingsManager) return;
+        
+        try {
+            this.accessibilitySettingsManager.exportSettings('json', true);
+            this.loggingSystem.info('SettingsScene', 'Accessibility settings export initiated');
+        } catch (error) {
+            console.error('[SettingsScene] Export failed:', error);
+            this.loggingSystem.error('SettingsScene', 'Export failed', error);
+        }
+    }
+    
+    /**
+     * アクセシビリティ設定のインポート
+     */
+    importAccessibilitySettings() {
+        if (!this.accessibilitySettingsManager) return;
+        
+        try {
+            // ファイル選択ダイアログを作成
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.style.display = 'none';
+            
+            input.addEventListener('change', async (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    try {
+                        await this.accessibilitySettingsManager.importSettings(file);
+                        
+                        // 設定項目リストを更新
+                        this.settingItems.accessibility = this.accessibilitySettingsManager.getExtendedAccessibilitySettings();
+                        
+                        this.loggingSystem.info('SettingsScene', 'Accessibility settings imported successfully');
+                    } catch (error) {
+                        console.error('[SettingsScene] Import failed:', error);
+                        this.loggingSystem.error('SettingsScene', 'Import failed', error);
+                    }
+                }
+                
+                // 一時的な input 要素を削除
+                document.body.removeChild(input);
+            });
+            
+            document.body.appendChild(input);
+            input.click();
+            
+        } catch (error) {
+            console.error('[SettingsScene] Import setup failed:', error);
+            this.loggingSystem.error('SettingsScene', 'Import setup failed', error);
+        }
+    }
+    
+    /**
+     * アクセシビリティ機能の統合状態取得
+     */
+    getAccessibilityIntegrationStatus() {
+        if (!this.accessibilitySettingsManager) {
+            return { integrated: false, reason: 'AccessibilitySettingsManager not initialized' };
+        }
+        
+        return {
+            integrated: true,
+            stats: this.accessibilitySettingsManager.getStats(),
+            profileCount: this.accessibilitySettingsManager.getAvailableProfiles().length,
+            extendedSettings: this.accessibilitySettingsManager.getExtendedAccessibilitySettings().length
+        };
+    }
+    
+    /**
      * クリーンアップ処理
      */
     destroy() {
@@ -902,6 +1069,11 @@ export class SettingsScene extends Scene {
             // NavigationContextManagerのクリーンアップ
             if (this.navigationContext) {
                 this.navigationContext.cleanup();
+            }
+            
+            // AccessibilitySettingsManagerのクリーンアップ
+            if (this.accessibilitySettingsManager) {
+                this.accessibilitySettingsManager.cleanup();
             }
             
             // 設定の保存

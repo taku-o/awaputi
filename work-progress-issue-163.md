@@ -121,6 +121,28 @@
 - **統合機能**: ヘルプトリガー5種、ツールチップ4種、インタラクティブガイド2種を統合
 - **テスト**: 包括的なコンテキストヘルプ統合テストスイート（65ケース）実装完了
 
+### ✅ タスク10: AccessibilitySettingsUIの独自機能をSettingsSceneに統合
+- **実施日**: 2025-01-15
+- **成果物**: 
+  - `docs/accessibility-settings-features-analysis.md` (機能分析書)
+  - `src/scenes/settings-scene/AccessibilitySettingsManager.js` (新規作成)
+  - `src/scenes/SettingsScene.js` (更新)
+  - `tests/scenes/SettingsScene-accessibility.test.js` (統合テスト)
+- **実装内容**:
+  - AccessibilitySettingsUIの独自機能を分析・特定（プロファイル、エクスポート/インポート、検証、プレビュー機能）
+  - AccessibilitySettingsManagerクラスの新規実装（設定検証、プロファイル管理、エクスポート/インポート、リアルタイムプレビュー）
+  - SettingsSceneへのAccessibilitySettingsManager統合とimport追加
+  - 拡張されたアクセシビリティ設定項目（10項目）の統合
+  - 設定変更時の検証機能とエラーハンドリング強化
+  - キーボードショートカット追加（Ctrl+P: プロファイル、Ctrl+E: エクスポート、Ctrl+I: インポート）
+  - プロファイル機能（デフォルト、高コントラスト、運動機能配慮の3プロファイル）
+  - エクスポート/インポート機能（JSON形式）
+  - リアルタイムプレビュー機能（CSS クラス適用）
+  - 統計・アナリティクス機能
+  - destroy()メソッドにAccessibilitySettingsManagerクリーンアップ追加
+- **統合機能**: 設定検証5種、プロファイル3種、プレビューコールバック4種、統計追跡機能
+- **テスト**: 包括的なアクセシビリティ設定統合テストスイート（80ケース）実装完了
+
 ## 発見された重複実装
 
 ### ヘルプ機能
