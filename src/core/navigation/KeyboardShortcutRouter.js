@@ -9,8 +9,8 @@
  */
 
 import { NavigationContextManager } from './NavigationContextManager.js';
-import { LoggingSystem } from '../logging/LoggingSystem.js';
-import { ErrorHandler } from '../error/ErrorHandler.js';
+import { LoggingSystem } from '../LoggingSystem.js';
+import { ErrorHandler } from '../../utils/ErrorHandler.js';
 
 /**
  * キーボードショートカットルーター
