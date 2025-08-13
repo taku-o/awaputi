@@ -24,8 +24,8 @@
 - **統合方針**: SettingsSceneを基盤とし、AccessibilitySettingsUIの高度機能を統合
 
 ## 現在の作業状況
-- **次のタスク**: タスク4 - NavigationContextManagerクラスの作成
-- **進捗**: 24タスク中3タスク完了 (12.5%)
+- **次のタスク**: タスク5 - KeyboardShortcutRouterクラスの作成
+- **進捗**: 24タスク中4タスク完了 (16.7%)
 - **推定残り時間**: 大規模な実装作業のため相当の時間が必要
 
 ### ✅ タスク3: 他の重複画面の調査と文書化
@@ -36,6 +36,18 @@
   - オーバーレイ機能の個別実装（Tutorial、Screenshot、SocialSharing）
   - フィードバックシステム内のダイアログ重複
 - **結論**: Scene実装は統一済み、ダイアログ・オーバーレイ系で重複あり
+
+### ✅ タスク4: NavigationContextManagerクラスの作成
+- **実施日**: 2025-01-15
+- **成果物**: 
+  - `src/core/navigation/NavigationContextManager.js` (実装)
+  - `tests/core/navigation/NavigationContextManager.test.js` (テスト)
+- **機能**:
+  - ナビゲーションスタック管理（最大10件、循環検出）
+  - コンテキストのプッシュ/ポップ操作
+  - 戻り先シーンの自動決定
+  - 設定可能なパラメータと包括的なエラーハンドリング
+- **テスト**: 59個のテストケースで全機能をカバー
 
 ## 発見された重複実装
 
