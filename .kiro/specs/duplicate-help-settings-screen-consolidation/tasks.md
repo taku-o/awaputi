@@ -28,7 +28,7 @@
   - Write unit tests for navigation context management
   - _Requirements: 6.1, 6.2, 6.3, 6.4_
 
-- [ ] 5. Create KeyboardShortcutRouter class
+- [x] 5. Create KeyboardShortcutRouter class
   - Implement unified keyboard shortcut handling
   - Add methods for help and settings shortcut routing
   - Integrate with NavigationContextManager
