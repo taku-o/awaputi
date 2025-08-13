@@ -50,7 +50,7 @@ describe('NavigationContextManager', () => {
             const currentContext = navigationManager.getCurrentContext();
             expect(currentContext.scene).toBe('menu');
             expect(currentContext.method).toBe('keyboard_h');
-            expect(currentContext.timestamp).toBeInstanceOf(Number);
+            expect(typeof currentContext.timestamp).toBe('number');
             expect(currentContext.id).toMatch(/nav_\d+_[a-z0-9]+/);
         });
         
