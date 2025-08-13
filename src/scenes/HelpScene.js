@@ -109,7 +109,19 @@ export class HelpScene extends Scene {
     setupEventCallbacks() {
         // イベントマネージャーのコールバック設定
         this.helpEventManager.setCallback('onGoBack', () => {
-            this.gameEngine.scenes.mainMenu.enter();
+            try {
+                if (!this.gameEngine.sceneManager) {
+                    console.error('SceneManager not available');
+                    return;
+                }
+                const success = this.gameEngine.sceneManager.switchScene('menu');
+                if (!success) {
+                    console.error('Failed to navigate to main menu from help screen');
+                    // フォールバックロジックや用户通知をここに追加可能
+                }
+            } catch (error) {
+                console.error('Error navigating to main menu from help screen:', error);
+            }
         });
         
         this.helpEventManager.setCallback('onFeedbackRequest', (data) => {

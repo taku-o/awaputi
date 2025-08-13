@@ -48,6 +48,27 @@ npm run test:all
 
 ### 重要度: 高
 
+#### ヘルプ・設定画面ナビゲーション修正プロジェクト（Issue #166対応）🔄
+**目標**: ヘルプ画面と設定画面でESCキーを押した際にメインメニューに正常に戻れない問題を修正
+
+**問題の概要**: 
+- 設定画面でESCキーを押すと「Scene mainMenu not found」エラーが発生
+- ヘルプ画面でESCキーを押すと「Cannot read properties of undefined (reading 'mainMenu')」エラーが発生
+- 不正なシーン名参照（'mainMenu'）と不適切なシーンアクセス方法が原因
+
+**解決アプローチ**:
+- SettingsSceneのgoBack()メソッドでシーン名を'mainMenu'から'menu'に修正
+- HelpSceneで直接シーンアクセスを廃止し、SceneManager.switchScene()を使用
+- 一貫したシーンナビゲーションパターンの実装
+- 適切なエラーハンドリングの追加
+
+**仕様書**: `.kiro/specs/help-settings-navigation-fix/`
+- requirements.md: 4つの要件定義（設定画面修正、ヘルプ画面修正、一貫性、信頼性）
+- design.md: シーン名標準化とナビゲーション方法の一貫性確保
+- tasks.md: 10段階の実装タスク（修正→エラーハンドリング→テスト→検証）
+
+**現状**: 実装開始、tasks.mdのタスクリストに従って順次作業中
+
 #### フォント読み込みエラー修正プロジェクト（Issue #145対応）🔄
 **目標**: フォント読み込み時のエラーハンドリングを改善し、デバッグ作業の邪魔にならないよう適切なフォールバック機能を実装
 

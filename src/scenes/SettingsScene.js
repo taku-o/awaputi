@@ -741,7 +741,19 @@ export class SettingsScene extends Scene {
             this.closeConfirmDialog();
         } else {
             // メインメニューに戻る
-            this.sceneManager.switchScene('mainMenu');
+            try {
+                if (!this.gameEngine.sceneManager) {
+                    console.error('SceneManager not available');
+                    return;
+                }
+                const success = this.gameEngine.sceneManager.switchScene('menu');
+                if (!success) {
+                    console.error('Failed to navigate to main menu, attempting fallback');
+                    // フォールバックロジックや用户通知をここに追加可能
+                }
+            } catch (error) {
+                console.error('Error navigating to main menu:', error);
+            }
         }
     }
 }
