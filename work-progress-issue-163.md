@@ -169,6 +169,35 @@
 - **統合機能**: 4種類のヘルプルーティング、NavigationContextManager連携、多言語キーマッピング
 - **テスト**: 包括的なキーボードルーティング統合テストスイート（90ケース）実装完了
 
+### ✅ タスク12: MainMenuSceneの統一シーンルーティング対応
+- **実施日**: 2025-01-15
+- **現状**: MainMenuSceneのopenHelp()とopenSettings()メソッドは既にタスク11で更新済み
+- **確認項目**:
+  - ✅ openHelp()メソッドでNavigationContextManagerを使用（行426-447）
+  - ✅ openSettings()メソッドでNavigationContextManagerを使用（行393-413）
+  - ✅ メニューナビゲーションでのコンテキストデータ追加
+  - ✅ メニューベースのナビゲーションが統一シーンに正常にルーティング
+- **結論**: タスク11の実装により、タスク12の要件は既に満たされている
+
+### ✅ タスク13: 重複ヘルプ実装の削除またはリファクタリング
+- **実施日**: 2025-01-15
+- **成果物**: 
+  - `tests/integration/DuplicateImplementation-removal.test.js` (削除検証テスト)
+  - 重複実装ファイルの削除とMainMenuSceneのリファクタリング
+- **削除された重複実装**:
+  - `src/debug/ContextualHelpSystem.js` - ContextualHelpManagerに統合済み
+  - `src/accessibility/AccessibilitySettingsUI.js` - AccessibilitySettingsManagerに統合済み
+  - `src/scenes/main-menu/SettingsRenderer.js` - 統一されたSettingsSceneに置換済み（DEPRECATED）
+  - `src/accessibility/settings-ui/` - AccessibilitySettingsUIのサブコンポーネント群
+- **MainMenuSceneリファクタリング**:
+  - SettingsRendererのimport削除
+  - showingSettings状態変数削除（統一シーン使用のため不要）
+  - handleSettingsInput()メソッド削除
+  - closeSettings()メソッド削除
+  - 設定関連の古いナビゲーション処理を統一シーンルーティングに統合
+- **参照整合性**: broken referenceなし、全削除が安全に完了
+- **検証**: 包括的な削除検証テストスイート（8ケース）全て通過
+
 ## 発見された重複実装
 
 ### ヘルプ機能

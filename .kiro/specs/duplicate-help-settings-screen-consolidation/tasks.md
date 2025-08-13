@@ -76,20 +76,23 @@
   - Modify S key shortcut to use KeyboardShortcutRouter
   - Test all keyboard shortcuts route to correct unified scenes
   - _Requirements: 4.1, 4.2, 4.3_
+  - ✅ **完了**: CoreKeyboardShortcutManagerの4つのハンドラー、MainMenuScene更新、LanguageSpecificAccessibility統合、包括的統合テスト実装 (2025-01-15)
 
-- [ ] 12. Update MainMenuScene to use unified scene routing
+- [x] 12. Update MainMenuScene to use unified scene routing
   - Modify openHelp method to use NavigationContextManager
   - Modify openSettings method to use NavigationContextManager
   - Update menu navigation to track context properly
   - Test menu-based navigation to unified scenes
   - _Requirements: 1.1, 2.1, 6.1, 6.3_
+  - ✅ **完了**: タスク11で既に実装済み、openHelp()とopenSettings()でNavigationContextManager使用、コンテキストデータ追加済み (2025-01-15)
 
-- [ ] 13. Remove or refactor duplicate help implementations
+- [x] 13. Remove or refactor duplicate help implementations
   - Remove redundant help display code from other components
   - Update references to use unified HelpScene
   - Clean up unused help-related files and methods
   - Verify no broken references remain
   - _Requirements: 3.1, 3.3_
+  - ✅ **完了**: 重複実装ファイル削除（ContextualHelpSystem、AccessibilitySettingsUI、SettingsRenderer）、MainMenuSceneリファクタリング、削除検証テスト実装 (2025-01-15)
 
 - [ ] 14. Remove or refactor duplicate settings implementations
   - Remove redundant settings display code from other components

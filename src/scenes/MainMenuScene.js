@@ -4,7 +4,6 @@ import { getErrorHandler } from '../utils/ErrorHandler.js';
 // サブコンポーネントのインポート
 import { MainMenuRenderer } from './main-menu/MainMenuRenderer.js';
 import { UsernameInputManager } from './main-menu/UsernameInputManager.js';
-import { SettingsRenderer } from './main-menu/SettingsRenderer.js';
 import { MainMenuDialogManager } from './main-menu/MainMenuDialogManager.js';
 import { MenuInputHandler } from './main-menu/MenuInputHandler.js';
 
@@ -35,7 +34,6 @@ export class MainMenuScene extends Scene {
         
         // 表示状態管理
         this.showingUsernameInput = false;
-        this.showingSettings = false;
         this.showingUserInfo = false;
         this.showingDataClearConfirmation = false;
         this.showingControlsHelp = false;
@@ -54,7 +52,6 @@ export class MainMenuScene extends Scene {
         try {
             this.mainMenuRenderer = new MainMenuRenderer(this.gameEngine);
             this.usernameInputManager = new UsernameInputManager(this.gameEngine);
-            this.settingsRenderer = new SettingsRenderer(this.gameEngine);
             this.dialogManager = new MainMenuDialogManager(this.gameEngine);
             this.menuInputHandler = new MenuInputHandler(this.gameEngine);
             
@@ -90,7 +87,6 @@ export class MainMenuScene extends Scene {
         try {
             this.selectedMenuIndex = 0;
             this.showingUsernameInput = false;
-            this.showingSettings = false;
             this.showingUserInfo = false;
             this.showingDataClearConfirmation = false;
             this.showingControlsHelp = false;
@@ -174,9 +170,6 @@ export class MainMenuScene extends Scene {
                 this.dialogManager.renderDataClearConfirmation(context);
             } else if (this.showingControlsHelp) {
                 this.dialogManager.renderControlsHelp(context);
-            } else if (this.showingSettings) {
-                // NOTE: SettingsRenderer.renderSettingsは実際には呼ばれない。SettingsSceneで処理される。
-                this.settingsRenderer.renderSettings(context);
             } else if (this.showingUserInfo) {
                 this.dialogManager.renderUserInfo(context);
             } else {
@@ -200,8 +193,6 @@ export class MainMenuScene extends Scene {
                 this.handleDataClearConfirmationInput(event);
             } else if (this.showingControlsHelp) {
                 this.handleControlsHelpInput(event);
-            } else if (this.showingSettings) {
-                this.handleSettingsInput(event);
             } else if (this.showingUserInfo) {
                 this.handleUserInfoInput(event);
             } else {
@@ -276,27 +267,6 @@ export class MainMenuScene extends Scene {
         }
     }
     
-    /**
-     * 設定画面の入力処理
-     */
-    handleSettingsInput(event) {
-        if (event.type === 'keydown') {
-            if (event.code === 'Escape') {
-                this.closeSettings();
-            }
-        } else if (event.type === 'click') {
-            // NOTE: SettingsRenderer.getClickableElementsは実際には呼ばれない
-            // const clickableElements = this.settingsRenderer.getClickableElements();
-            const settingsCallbacks = {
-                onChangeUsername: () => this.changeUsername(),
-                onShowDataClear: () => this.showDataClearConfirmation(),
-                onShowControlsHelp: () => this.showControlsHelp(),
-                onCloseSettings: () => this.closeSettings()
-            };
-            
-            this.menuInputHandler.handleSettingsClick(event, clickableElements, settingsCallbacks);
-        }
-    }
     
     /**
      * データクリア確認画面の入力処理
@@ -478,25 +448,15 @@ export class MainMenuScene extends Scene {
         this.showingUsernameInput = false;
         this.usernameInputManager.clearInput();
         
-        if (this.showingSettings) {
-            this.showingSettings = true;
-        }
     }
     
     /**
      * ユーザー名変更
      */
     changeUsername() {
-        this.showingSettings = false;
         this.showUsernameInput();
     }
     
-    /**
-     * 設定画面を閉じる
-     */
-    closeSettings() {
-        this.showingSettings = false;
-    }
     
     /**
      * ユーザー情報画面を閉じる
@@ -509,7 +469,6 @@ export class MainMenuScene extends Scene {
      * データクリア確認画面を表示
      */
     showDataClearConfirmation() {
-        this.showingSettings = false;
         this.showingDataClearConfirmation = true;
     }
     
@@ -528,14 +487,12 @@ export class MainMenuScene extends Scene {
      */
     cancelDataClear() {
         this.showingDataClearConfirmation = false;
-        this.showingSettings = true;
     }
     
     /**
      * 操作説明画面を表示
      */
     showControlsHelp() {
-        this.showingSettings = false;
         this.showingControlsHelp = true;
     }
     
@@ -544,6 +501,5 @@ export class MainMenuScene extends Scene {
      */
     closeControlsHelp() {
         this.showingControlsHelp = false;
-        this.showingSettings = true;
     }
 }
