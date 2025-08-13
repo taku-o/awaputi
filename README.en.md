@@ -51,6 +51,16 @@ An action game where you click and tap various types of bubbles that appear on t
 6.  **Game Over:** The game ends when HP reaches 0 or the time limit expires.
 7.  **Progress System:** Earned scores are converted to AP, which can be used to purchase enhancement items in the item shop.
 
+### Keyboard Controls
+
+In addition to mouse and touch controls, you can comfortably operate the game with keyboard:
+
+*   **Basic Controls:** ↑↓ for menu selection, Enter to confirm, Escape to go back
+*   **During Game:** Space to pause, M to mute, F for fullscreen
+*   **Accessibility:** Ctrl+Alt+H for high contrast toggle, etc.
+
+For details, see **[Keyboard Shortcuts Reference](docs/keyboard-shortcuts.en.md)**.
+
 ## System Requirements
 
 *   **Recommended Browsers:**
@@ -163,6 +173,9 @@ This game features a comprehensive multilingual support system:
 - Translation consistency validation
 - Cultural appropriateness checking
 - Progress tracking system
+
+### Documentation & Guides
+- **[Keyboard Shortcuts Reference](docs/keyboard-shortcuts.en.md)** - Complete guide to all keyboard controls
 
 ### For Developers
 Comprehensive internationalization documentation available:
