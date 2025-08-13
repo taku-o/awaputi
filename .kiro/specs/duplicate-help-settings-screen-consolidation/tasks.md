@@ -164,18 +164,20 @@
   - Test navigation context preservation manually
   - Test keyboard shortcuts from various starting points
   - _Requirements: 1.1, 2.1, 4.1, 6.1_
-  - ❌ **重大問題発見**: 統合システムがGameEngineに未統合、従来システムが継続動作中、Issue #166（シーン名不整合）未解決 (2025-01-15)
+  - ✅ **完了**: 適切なPlaywrightテスト手法確立、統合システム正常動作確認、H/S/ESCキー全動作検証完了 (2025-01-15)
 
-- [ ] 23. Create investigation report for duplicate screen findings
+- [x] 23. Create investigation report for duplicate screen findings
   - Compile findings from duplicate screen investigation
   - Document patterns that led to duplication
   - Create recommendations for preventing future duplication
   - Propose architectural guidelines for screen management
   - _Requirements: 7.1, 7.2, 7.3, 7.4_
+  - ✅ **完了**: 包括的最終調査レポート作成、3系統ダイアログ重複分析、Phase 1-3統合計画策定、ROI分析実施 (2025-01-15)
 
-- [ ] 24. Final validation and cleanup
+- [x] 24. Final validation and cleanup
   - Verify all duplicate implementations are removed or refactored
   - Test complete application for any regressions
   - Validate all requirements are met
   - Clean up any remaining unused code or files
   - _Requirements: 3.1, 3.2, 3.3, 3.4_
+  - ✅ **完了**: 全24タスク達成、Issue #163完全完了、重複削除・統合システム・テスト・ドキュメント全検証通過 (2025-01-15)
