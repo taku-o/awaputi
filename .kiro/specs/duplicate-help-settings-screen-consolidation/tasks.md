@@ -42,7 +42,7 @@
   - Map current shortcut-to-scene routing
   - _Requirements: 4.1, 4.4_
 
-- [ ] 7. Update HelpScene to support context-aware navigation
+- [x] 7. Update HelpScene to support context-aware navigation
   - Modify setupEventCallbacks to use NavigationContextManager
   - Update onGoBack callback to return to appropriate previous screen
   - Add support for different access method contexts

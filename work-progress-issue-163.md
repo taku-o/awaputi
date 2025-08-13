@@ -24,8 +24,8 @@
 - **統合方針**: SettingsSceneを基盤とし、AccessibilitySettingsUIの高度機能を統合
 
 ## 現在の作業状況
-- **次のタスク**: タスク7 - HelpSceneのコンテキスト依存ナビゲーション対応
-- **進捗**: 24タスク中6タスク完了 (25.0%)
+- **次のタスク**: タスク8 - SettingsSceneのコンテキスト依存ナビゲーション対応
+- **進捗**: 24タスク中7タスク完了 (29.2%)
 - **推定残り時間**: 大規模な実装作業のため相当の時間が必要
 
 ### ✅ タスク3: 他の重複画面の調査と文書化
@@ -70,6 +70,21 @@
   - 6言語対応（日英独仏アラビア語ヘブライ語）、RTL言語の特別対応
   - 重複実装：H/Sキーが複数箇所で定義、統合が必要
 - **統合戦略**: KeyboardShortcutRouterを中心とした3層アーキテクチャ設計
+
+### ✅ タスク7: HelpSceneのコンテキスト依存ナビゲーション対応
+- **実施日**: 2025-01-15
+- **成果物**: 
+  - `src/scenes/HelpScene.js` (更新)
+  - `tests/scenes/HelpScene-navigation.test.js` (新規作成)
+- **実装内容**:
+  - NavigationContextManagerの統合とimport追加
+  - setupEventCallbacks()のonGoBackコールバック修正：固定'menu'から動的戻り先決定に変更
+  - enter()メソッドにcontextData引数追加、コンテキスト依存処理を実装
+  - 異なるアクセス方法の対応：contextual, documentation, quick, standard
+  - アナリティクス・アクセシビリティのコンテキスト対応
+  - エラーハンドリングとフォールバック機能追加
+  - destroy()メソッドにNavigationContextManagerクリーンアップ追加
+- **テスト**: 包括的なナビゲーションテストスイート（70ケース）実装完了
 
 ## 発見された重複実装
 
