@@ -150,12 +150,13 @@
   - _Requirements: 1.3, 2.3, 5.2, 5.3_
   - ✅ **完了**: 100%機能パリティ達成+機能強化、58/58統合テスト・28/28ナビゲーションテスト全成功、包括的検証レポート作成 (2025-01-15)
 
-- [ ] 21. Create comprehensive documentation for consolidated screens
+- [x] 21. Create comprehensive documentation for consolidated screens
   - Document unified help screen architecture and features
   - Document unified settings screen architecture and features
   - Document navigation context management system
   - Document keyboard shortcut routing system
   - _Requirements: 3.1, 3.2, 7.4_
+  - ✅ **完了**: 包括的アーキテクチャドキュメント作成(`consolidated-screens-architecture.md`)、全4システムの詳細設計・API・実装ガイド・トラブルシューティング含む (2025-01-15)
 
 - [ ] 22. Perform manual testing of all access methods
   - Test all help access methods manually
