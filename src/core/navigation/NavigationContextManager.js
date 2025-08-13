@@ -122,7 +122,7 @@ export class NavigationContextManager {
         try {
             if (this.navigationStack.length === 0) {
                 if (this.config.enableLogging) {
-                    this.loggingSystem.warn('NavigationContextManager', 'Cannot pop from empty stack');
+                    this.loggingSystem.debug('NavigationContextManager', 'No navigation context to pop - using default fallback');
                 }
                 return null;
             }
