@@ -1,4 +1,6 @@
 import { Scene } from '../core/Scene.js';
+import { NavigationContextManager } from '../core/navigation/NavigationContextManager.js';
+import { LoggingSystem } from '../core/LoggingSystem.js';
 
 /**
  * 設定画面シーン
@@ -7,6 +9,10 @@ import { Scene } from '../core/Scene.js';
 export class SettingsScene extends Scene {
     constructor(gameEngine) {
         super(gameEngine);
+        
+        // LoggingSystemとNavigationContextManagerの初期化
+        this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
+        this.navigationContext = new NavigationContextManager(gameEngine);
         
         // 設定カテゴリと現在選択中のカテゴリ
         this.categories = ['general', 'social', 'privacy', 'notifications', 'accessibility'];
@@ -108,15 +114,128 @@ export class SettingsScene extends Scene {
     /**
      * シーン開始時の処理
      */
-    enter() {
+    enter(contextData = {}) {
         this.currentCategory = 'social';
         this.selectedCategoryIndex = 1;
         this.selectedSettingIndex = 0;
         this.isEditingValue = false;
         this.showingConfirmDialog = false;
-        console.log('[SettingsScene] 設定画面に入りました');
+        
+        // コンテキストデータの処理
+        this.processEntryContext(contextData);
+        
+        console.log('[SettingsScene] 設定画面に入りました', {
+            contextData,
+            accessMethod: contextData.accessMethod
+        });
+        
+        this.loggingSystem.info('SettingsScene', 'Settings scene entered', {
+            contextData,
+            accessMethod: contextData.accessMethod
+        });
     }
     
+    /**
+     * エントリコンテキストの処理
+     * @param {Object} contextData - コンテキストデータ
+     */
+    processEntryContext(contextData) {
+        try {
+            // アクセス方法に応じた初期設定
+            if (contextData.accessMethod) {
+                if (contextData.accessMethod.includes('help')) {
+                    // ヘルプから設定に来た場合はアクセシビリティカテゴリを開く
+                    this.setAccessibilityFocusMode();
+                } else if (contextData.fromHelp) {
+                    // ヘルプ経由でのアクセス
+                    this.setHelpIntegratedMode();
+                } else if (contextData.quickAccess) {
+                    // クイックアクセスモード
+                    this.setQuickAccessMode(contextData.targetSetting);
+                }
+            }
+            
+            // ソースシーンに基づくカテゴリ設定
+            if (contextData.sourceScene) {
+                this.adjustCategoryForSourceScene(contextData.sourceScene);
+            }
+            
+            this.loggingSystem.debug('SettingsScene', 'Entry context processed', contextData);
+        } catch (error) {
+            this.loggingSystem.error('SettingsScene', 'Error processing entry context', error);
+        }
+    }
+    
+    /**
+     * アクセシビリティフォーカスモードの設定
+     */
+    setAccessibilityFocusMode() {
+        this.currentCategory = 'accessibility';
+        this.selectedCategoryIndex = this.categories.indexOf('accessibility');
+        this.selectedSettingIndex = 0;
+        this.loggingSystem.info('SettingsScene', 'Accessibility focus mode activated');
+    }
+    
+    /**
+     * ヘルプ統合モードの設定
+     */
+    setHelpIntegratedMode() {
+        // ヘルプからのアクセスの場合、一般設定から開始
+        this.currentCategory = 'general';
+        this.selectedCategoryIndex = 0;
+        this.loggingSystem.info('SettingsScene', 'Help integrated mode activated');
+    }
+    
+    /**
+     * クイックアクセスモードの設定
+     * @param {string} targetSetting - 対象設定項目
+     */
+    setQuickAccessMode(targetSetting) {
+        if (targetSetting) {
+            // 特定の設定項目に直接移動
+            this.navigateToSetting(targetSetting);
+        }
+        this.loggingSystem.info('SettingsScene', `Quick access mode for: ${targetSetting}`);
+    }
+    
+    /**
+     * ソースシーンに基づくカテゴリ調整
+     * @param {string} sourceScene - ソースシーン
+     */
+    adjustCategoryForSourceScene(sourceScene) {
+        switch (sourceScene) {
+            case 'game':
+                this.currentCategory = 'general';
+                this.selectedCategoryIndex = 0;
+                break;
+            case 'social':
+                this.currentCategory = 'social';
+                this.selectedCategoryIndex = 1;
+                break;
+            default:
+                // デフォルトはsocialのまま
+                break;
+        }
+    }
+    
+    /**
+     * 特定設定項目への直接ナビゲーション
+     * @param {string} settingKey - 設定キー
+     */
+    navigateToSetting(settingKey) {
+        // 設定キーからカテゴリを特定
+        for (const [categoryName, items] of Object.entries(this.settingItems)) {
+            const itemIndex = items.findIndex(item => item.key === settingKey);
+            if (itemIndex !== -1) {
+                this.currentCategory = categoryName;
+                this.selectedCategoryIndex = this.categories.indexOf(categoryName);
+                this.selectedSettingIndex = itemIndex;
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * シーン終了時の処理
      */
@@ -124,6 +243,8 @@ export class SettingsScene extends Scene {
         // 変更を保存
         this.saveSettings();
         console.log('[SettingsScene] 設定画面を終了します');
+        
+        this.loggingSystem.info('SettingsScene', 'Settings scene exited');
     }
     
     /**
@@ -740,20 +861,58 @@ export class SettingsScene extends Scene {
         } else if (this.showingConfirmDialog) {
             this.closeConfirmDialog();
         } else {
-            // メインメニューに戻る
+            // NavigationContextManagerを使用して適切な戻り先を決定
             try {
                 if (!this.gameEngine.sceneManager) {
                     console.error('SceneManager not available');
                     return;
                 }
-                const success = this.gameEngine.sceneManager.switchScene('menu');
+                
+                // NavigationContextManagerから戻り先を取得
+                const returnScene = this.navigationContext.getReturnDestination();
+                this.navigationContext.popContext();
+                
+                const targetScene = returnScene || 'menu'; // フォールバックとして'menu'を使用
+                const success = this.gameEngine.sceneManager.switchScene(targetScene);
+                
                 if (!success) {
-                    console.error('Failed to navigate to main menu, attempting fallback');
-                    // フォールバックロジックや用户通知をここに追加可能
+                    console.error(`Failed to navigate to ${targetScene} from settings screen`);
+                    // フォールバック: menuシーンに戻る試行
+                    if (targetScene !== 'menu') {
+                        const fallbackSuccess = this.gameEngine.sceneManager.switchScene('menu');
+                        if (!fallbackSuccess) {
+                            console.error('Failed to navigate to fallback menu scene');
+                        }
+                    }
                 }
+                
+                this.loggingSystem.info('SettingsScene', `Navigated back to: ${targetScene}, success: ${success}`);
             } catch (error) {
-                console.error('Error navigating to main menu:', error);
+                console.error('Error navigating back from settings screen:', error);
+                this.loggingSystem.error('SettingsScene', 'Navigation error', error);
             }
+        }
+    }
+    
+    /**
+     * クリーンアップ処理
+     */
+    destroy() {
+        try {
+            // NavigationContextManagerのクリーンアップ
+            if (this.navigationContext) {
+                this.navigationContext.cleanup();
+            }
+            
+            // 設定の保存
+            this.saveSettings();
+            
+            console.log('[SettingsScene] SettingsScene destroyed');
+            this.loggingSystem.info('SettingsScene', 'Settings scene destroyed');
+            
+        } catch (error) {
+            console.error('Error during SettingsScene destruction:', error);
+            this.loggingSystem.error('SettingsScene', 'Destruction error', error);
         }
     }
 }

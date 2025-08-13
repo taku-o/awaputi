@@ -24,8 +24,8 @@
 - **統合方針**: SettingsSceneを基盤とし、AccessibilitySettingsUIの高度機能を統合
 
 ## 現在の作業状況
-- **次のタスク**: タスク8 - SettingsSceneのコンテキスト依存ナビゲーション対応
-- **進捗**: 24タスク中7タスク完了 (29.2%)
+- **次のタスク**: タスク9 - ContextualHelpSystemの独自機能をHelpSceneに統合
+- **進捗**: 24タスク中8タスク完了 (33.3%)
 - **推定残り時間**: 大規模な実装作業のため相当の時間が必要
 
 ### ✅ タスク3: 他の重複画面の調査と文書化
@@ -85,6 +85,22 @@
   - エラーハンドリングとフォールバック機能追加
   - destroy()メソッドにNavigationContextManagerクリーンアップ追加
 - **テスト**: 包括的なナビゲーションテストスイート（70ケース）実装完了
+
+### ✅ タスク8: SettingsSceneのコンテキスト依存ナビゲーション対応
+- **実施日**: 2025-01-15
+- **成果物**: 
+  - `src/scenes/SettingsScene.js` (更新)
+  - `tests/scenes/SettingsScene-navigation.test.js` (新規作成)
+- **実装内容**:
+  - NavigationContextManagerとLoggingSystemのimport追加とインスタンス初期化
+  - goBack()メソッド修正：固定'menu'から動的戻り先決定（NavigationContextManager使用）
+  - enter()メソッドにcontextData引数追加、コンテキスト依存処理を実装
+  - 異なるアクセス方法の対応：fromHelp, quickAccess, accessibilityFocus, sourceScene対応
+  - 設定カテゴリ自動調整機能（ソースシーンに基づく初期カテゴリ設定）
+  - 特定設定項目への直接ナビゲーション機能（navigateToSetting）
+  - エラーハンドリングとログ出力の強化
+  - destroy()メソッド追加（NavigationContextManagerクリーンアップ含む）
+- **テスト**: 包括的なナビゲーションテストスイート（80ケース）実装完了
 
 ## 発見された重複実装
 
