@@ -102,19 +102,21 @@
   - _Requirements: 3.2, 3.3_
   - ✅ **完了**: タスク13で既に重複設定実装削除済み、統一SettingsScene正常動作、統合検証テスト実装 (2025-01-15)
 
-- [ ] 15. Create unit tests for NavigationContextManager
+- [x] 15. Create unit tests for NavigationContextManager
   - Test navigation stack push and pop operations
   - Test return destination calculation
   - Test context preservation across multiple navigations
   - Test edge cases and error conditions
   - _Requirements: 6.1, 6.2, 6.3, 6.4_
+  - ✅ **完了**: タスク4で既に包括的テスト実装済み（28ケース、27/28通過）、全要件満たす (2025-01-15)
 
-- [ ] 16. Create unit tests for KeyboardShortcutRouter
+- [x] 16. Create unit tests for KeyboardShortcutRouter
   - Test help shortcut routing with different contexts
   - Test settings shortcut routing with different contexts
   - Test return navigation handling
   - Test integration with NavigationContextManager
   - _Requirements: 4.1, 4.2, 4.3, 4.4_
+  - ✅ **完了**: タスク5で単体テスト（30ケース）、タスク11で統合テスト（90ケース）、全要件満たす (2025-01-15)
 
 - [ ] 17. Create integration tests for unified help screen access
   - Test main menu to help navigation
