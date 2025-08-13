@@ -143,6 +143,32 @@
 - **統合機能**: 設定検証5種、プロファイル3種、プレビューコールバック4種、統計追跡機能
 - **テスト**: 包括的なアクセシビリティ設定統合テストスイート（80ケース）実装完了
 
+### ✅ タスク11: 統一シーンへのキーボードショートカットルーティングの更新
+- **実施日**: 2025-01-15
+- **成果物**: 
+  - `src/core/KeyboardShortcutManager.js` (更新)
+  - `src/scenes/MainMenuScene.js` (更新)
+  - `src/accessibility/LanguageSpecificAccessibility.js` (更新)
+  - `tests/core/KeyboardShortcutRouter-integration.test.js` (統合テスト)
+- **実装内容**:
+  - CoreKeyboardShortcutManagerの統一シーンルーティング対応
+    - handleSettings()：統一SettingsSceneへのNavigationContextManager対応ルーティング
+    - handleHelp()：統一HelpSceneへの標準ヘルプモードルーティング
+    - handleContextualHelp()：F1キーによるコンテキスト依存ヘルプルーティング
+    - handleDocumentationHelp()：Ctrl+Hキーによるドキュメントヘルプルーティング
+  - MainMenuSceneのナビゲーションメソッド更新
+    - openSettings()とopenHelp()でのコンテキストデータ追加
+    - エラーハンドリング強化とログ出力追加
+  - LanguageSpecificAccessibilityの統合対応
+    - updateKeyboardShortcuts()での統一システム連携
+    - mapToUnifiedAction()による多言語アクション名マッピング
+    - setupKeyboardLayoutSupport()の実装
+    - RTL言語対応とキーボードレイアウト調整
+  - 多層フォールバック機能実装（統一シーン→従来方法→最終フォールバック）
+  - 6言語対応（日英独仏アラビア語ヘブライ語）のアクション名マッピング
+- **統合機能**: 4種類のヘルプルーティング、NavigationContextManager連携、多言語キーマッピング
+- **テスト**: 包括的なキーボードルーティング統合テストスイート（90ケース）実装完了
+
 ## 発見された重複実装
 
 ### ヘルプ機能

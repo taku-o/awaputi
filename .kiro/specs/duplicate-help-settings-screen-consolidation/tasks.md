@@ -70,7 +70,7 @@
   - Test accessibility settings functionality in unified implementation
   - _Requirements: 2.3, 5.3_
 
-- [ ] 11. Update keyboard shortcut handling to route to unified scenes
+- [x] 11. Update keyboard shortcut handling to route to unified scenes
   - Modify H key shortcut to use KeyboardShortcutRouter
   - Update F1 and Ctrl+H shortcuts to route to HelpScene
   - Modify S key shortcut to use KeyboardShortcutRouter

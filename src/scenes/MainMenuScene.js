@@ -388,9 +388,28 @@ export class MainMenuScene extends Scene {
     
     /**
      * 設定画面を開く
+     * NavigationContextManagerを使用してコンテキストを管理
      */
     openSettings() {
-        this.gameEngine.sceneManager.switchScene('settings');
+        try {
+            const contextData = {
+                accessMethod: 'menu_click',
+                sourceScene: 'MainMenuScene'
+            };
+            
+            const success = this.gameEngine.sceneManager.switchScene('settings', contextData);
+            
+            if (!success) {
+                console.error('[MainMenuScene] Failed to switch to settings scene');
+            }
+            
+            console.log('[MainMenuScene] Settings opened from menu');
+        } catch (error) {
+            console.error('[MainMenuScene] Error opening settings:', error);
+            this.errorHandler.handleError(error, {
+                context: 'MainMenuScene.openSettings'
+            });
+        }
     }
     
     /**
@@ -402,9 +421,29 @@ export class MainMenuScene extends Scene {
     
     /**
      * ヘルプ画面を開く
+     * NavigationContextManagerを使用してコンテキストを管理
      */
     openHelp() {
-        this.gameEngine.sceneManager.switchScene('help');
+        try {
+            const contextData = {
+                accessMethod: 'menu_click',
+                sourceScene: 'MainMenuScene',
+                standard: true // 標準ヘルプモード
+            };
+            
+            const success = this.gameEngine.sceneManager.switchScene('help', contextData);
+            
+            if (!success) {
+                console.error('[MainMenuScene] Failed to switch to help scene');
+            }
+            
+            console.log('[MainMenuScene] Help opened from menu');
+        } catch (error) {
+            console.error('[MainMenuScene] Error opening help:', error);
+            this.errorHandler.handleError(error, {
+                context: 'MainMenuScene.openHelp'
+            });
+        }
     }
     
     // ========================================
