@@ -132,8 +132,29 @@ export class HelpAccessibilityManager {
 
     announceToScreenReader(message, priority = 'polite') {
         if (this.screenReaderMode && this.accessibilityManager) {
-            this.accessibilityManager.announce(message, priority);
+            this.safeCall(this.accessibilityManager, 'announce', message, priority);
             this.announcementQueue.push({ message, priority, timestamp: Date.now() });
+        }
+    }
+
+    /**
+     * Safe method call - prevents errors from undefined methods
+     * @param {Object} obj - Object to call method on
+     * @param {string} methodName - Method name
+     * @param {...any} args - Arguments to pass to the method
+     * @returns {any} Method result or undefined if method doesn't exist
+     */
+    safeCall(obj, methodName, ...args) {
+        try {
+            if (obj && typeof obj[methodName] === 'function') {
+                return obj[methodName](...args);
+            } else {
+                console.warn(`HelpAccessibilityManager: Method ${methodName} does not exist on accessibility manager, skipping call`);
+                return undefined;
+            }
+        } catch (error) {
+            console.warn(`HelpAccessibilityManager: Error calling ${methodName}:`, error);
+            return undefined;
         }
     }
 
@@ -245,11 +266,12 @@ export class HelpAccessibilityManager {
     enableAccessibilityFeatures() {
         this.screenReaderMode = true;
         if (this.accessibilityManager) {
-            this.accessibilityManager.enableHighContrast();
-            this.accessibilityManager.enableLargeText();
-            this.accessibilityManager.enableAudioCues();
-            this.accessibilityManager.enableKeyboardNavigation();
-            this.accessibilityManager.enableScreenReaderSupport();
+            // Safe call mechanism - call methods only if they exist
+            this.safeCall(this.accessibilityManager, 'enableHighContrast');
+            this.safeCall(this.accessibilityManager, 'enableLargeText');
+            this.safeCall(this.accessibilityManager, 'enableAudioCues');
+            this.safeCall(this.accessibilityManager, 'enableKeyboardNavigation');
+            this.safeCall(this.accessibilityManager, 'enableScreenReaderSupport');
         }
         
         this.enableHighContrastMode();
@@ -262,9 +284,10 @@ export class HelpAccessibilityManager {
         this.screenReaderMode = false;
         
         if (this.accessibilityManager) {
-            this.accessibilityManager.disableHighContrast();
-            this.accessibilityManager.disableLargeText();
-            this.accessibilityManager.disableAudioCues();
+            // Safe call mechanism - call methods only if they exist
+            this.safeCall(this.accessibilityManager, 'disableHighContrast');
+            this.safeCall(this.accessibilityManager, 'disableLargeText');
+            this.safeCall(this.accessibilityManager, 'disableAudioCues');
         }
         
         this.disableHighContrastMode();

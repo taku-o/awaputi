@@ -50,6 +50,8 @@ export class TranslationLoader {
             return {};
         }
     }
+
+
     
     /**
      * 複数言語を並列でプリロード

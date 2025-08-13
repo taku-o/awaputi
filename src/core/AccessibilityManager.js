@@ -22,6 +22,9 @@ export class CoreAccessibilityManager {
         this.isInitialized = false;
         this.isEnabled = true;
         
+        // Pending configuration for early calls
+        this.pendingConfiguration = null;
+        
         console.log('AccessibilityManager initialized');
     }
     
@@ -51,6 +54,13 @@ export class CoreAccessibilityManager {
             
             this.isInitialized = true;
             console.log('Accessibility system initialized successfully');
+            
+            // Apply any pending configuration
+            if (this.pendingConfiguration) {
+                console.log('Applying pending configuration after initialization');
+                await this.applyConfiguration(this.pendingConfiguration);
+                this.pendingConfiguration = null;
+            }
             
             // 初期化完了イベントを発行
             this.emit('initialized', {
@@ -479,6 +489,10 @@ export class CoreAccessibilityManager {
     async applyConfiguration(config) {
         if (!this.isInitialized) {
             console.warn('AccessibilityManager not initialized, configuration will be applied after initialization');
+            this.pendingConfiguration = config;
+            if (config) {
+                this.config = { ...this.config, ...config };
+            }
             return;
         }
         
@@ -700,6 +714,93 @@ export class CoreAccessibilityManager {
         this.config.screenReader.enabled = enabled;
         this.applyConfiguration(this.config);
         console.log(`Screen reader ${enabled ? 'enabled' : 'disabled'}`);
+    }
+    
+    // HelpAccessibilityManagerから呼び出される具体的なメソッド
+    enableHighContrast() {
+        this.config.visual.highContrast.enabled = true;
+        this.applyConfiguration(this.config);
+        console.log('High contrast enabled');
+    }
+    
+    disableHighContrast() {
+        this.config.visual.highContrast.enabled = false;
+        this.applyConfiguration(this.config);
+        console.log('High contrast disabled');
+    }
+    
+    enableLargeText() {
+        this.config.visual.textScaling.enabled = true;
+        this.config.visual.textScaling.scale = Math.max(1.2, this.config.visual.textScaling.scale);
+        this.applyConfiguration(this.config);
+        console.log('Large text enabled');
+    }
+    
+    disableLargeText() {
+        this.config.visual.textScaling.enabled = false;
+        this.config.visual.textScaling.scale = 1.0;
+        this.applyConfiguration(this.config);
+        console.log('Large text disabled');
+    }
+    
+    enableAudioCues() {
+        this.config.audio.visualFeedback.enabled = true;
+        this.applyConfiguration(this.config);
+        console.log('Audio cues enabled');
+    }
+    
+    disableAudioCues() {
+        this.config.audio.visualFeedback.enabled = false;
+        this.applyConfiguration(this.config);
+        console.log('Audio cues disabled');
+    }
+    
+    enableKeyboardNavigation() {
+        this.config.keyboard.enabled = true;
+        this.config.keyboard.focusVisible = true;
+        this.applyConfiguration(this.config);
+        console.log('Keyboard navigation enabled');
+    }
+    
+    enableScreenReaderSupport() {
+        this.config.screenReader.enabled = true;
+        this.config.screenReader.verbosity = 'normal';
+        this.applyConfiguration(this.config);
+        console.log('Screen reader support enabled');
+    }
+    
+    announce(message, priority = 'polite') {
+        // スクリーンリーダー向けアナウンスの実装
+        if (this.config.screenReader.enabled) {
+            // ARIA live region を使用してアナウンス
+            this.createAriaLiveAnnouncement(message, priority);
+            console.log(`[Accessibility] Announced: ${message} (${priority})`);
+        }
+    }
+    
+    createAriaLiveAnnouncement(message, priority) {
+        // ARIA live region の作成とアナウンス
+        let liveRegion = document.getElementById('accessibility-live-region');
+        if (!liveRegion) {
+            liveRegion = document.createElement('div');
+            liveRegion.id = 'accessibility-live-region';
+            liveRegion.setAttribute('aria-live', priority);
+            liveRegion.setAttribute('aria-atomic', 'true');
+            liveRegion.style.cssText = `
+                position: absolute;
+                left: -10000px;
+                width: 1px;
+                height: 1px;
+                overflow: hidden;
+            `;
+            document.body.appendChild(liveRegion);
+        }
+        
+        // 既存のコンテンツをクリアして新しいメッセージを設定
+        liveRegion.textContent = '';
+        setTimeout(() => {
+            liveRegion.textContent = message;
+        }, 100);
     }
     
     adjustTextSize(delta) {
