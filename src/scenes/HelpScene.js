@@ -10,6 +10,7 @@ import { HelpContentManager } from './help-scene/HelpContentManager.js';
 import { HelpAnimationManager, HelpTransitionRenderer } from './help-scene/HelpAnimationManager.js';
 import { HelpRenderer } from './help-scene/HelpRenderer.js';
 import { HelpEventManager } from './help-scene/HelpEventManager.js';
+import { ContextualHelpManager } from './help-scene/ContextualHelpManager.js';
 
 /**
  * ヘルプシーン (Refactored)
@@ -66,6 +67,9 @@ export class HelpScene extends Scene {
                 this.helpAccessibilityManager,
                 this.helpAnimationManager
             );
+            
+            // コンテキスト依存ヘルプ管理
+            this.contextualHelpManager = new ContextualHelpManager(this.gameEngine);
             
             console.log('HelpScene sub-components initialized');
             
@@ -238,14 +242,35 @@ export class HelpScene extends Scene {
      * @param {string} sourceScene - 呼び出し元シーン
      */
     setContextualHelpMode(sourceScene) {
-        // ContextualHelpSystemの機能を統合予定
-        this.loggingSystem.info('HelpScene', `Contextual help mode for scene: ${sourceScene}`);
+        // ContextualHelpManagerを使用してコンテキスト依存ヘルプを分析
+        const contextualHelp = this.contextualHelpManager.analyzeContextAndGetHelp({
+            sourceScene,
+            accessMethod: 'keyboard_f1',
+            contextual: true
+        });
+        
+        if (contextualHelp) {
+            this.applyContextualHelp(contextualHelp);
+        }
+        
+        this.loggingSystem.info('HelpScene', `Contextual help mode for scene: ${sourceScene}`, {
+            hasContextualHelp: !!contextualHelp
+        });
     }
     
     /**
      * ドキュメントヘルプモードの設定
      */
     setDocumentationHelpMode() {
+        const documentationHelp = this.contextualHelpManager.analyzeContextAndGetHelp({
+            accessMethod: 'keyboard_ctrl_h',
+            documentation: true
+        });
+        
+        if (documentationHelp) {
+            this.applyContextualHelp(documentationHelp);
+        }
+        
         this.loggingSystem.info('HelpScene', 'Documentation help mode activated');
     }
     
@@ -253,6 +278,15 @@ export class HelpScene extends Scene {
      * クイックヘルプモードの設定
      */
     setQuickHelpMode() {
+        const quickHelp = this.contextualHelpManager.analyzeContextAndGetHelp({
+            accessMethod: 'keyboard_ctrl_slash',
+            quick: true
+        });
+        
+        if (quickHelp) {
+            this.applyContextualHelp(quickHelp);
+        }
+        
         this.loggingSystem.info('HelpScene', 'Quick help mode activated');
     }
     
@@ -260,7 +294,77 @@ export class HelpScene extends Scene {
      * 標準ヘルプモードの設定
      */
     setStandardHelpMode() {
+        const standardHelp = this.contextualHelpManager.analyzeContextAndGetHelp({
+            accessMethod: 'menu_click',
+            standard: true
+        });
+        
+        if (standardHelp) {
+            this.applyContextualHelp(standardHelp);
+        }
+        
         this.loggingSystem.info('HelpScene', 'Standard help mode activated');
+    }
+    
+    /**
+     * コンテキスト依存ヘルプの適用
+     * @param {Object} helpContent - ヘルプ内容
+     */
+    applyContextualHelp(helpContent) {
+        try {
+            // ヘルプ内容の設定
+            if (this.helpContentManager && helpContent.category) {
+                // カテゴリベースでヘルプ内容を設定する
+                this.setHelpCategory(helpContent.category);
+            }
+            
+            // タイトルと内容の設定
+            this.contextualHelpTitle = helpContent.title;
+            this.contextualHelpContent = helpContent.detailed;
+            this.contextualHelpActions = helpContent.actions || [];
+            
+            // UI更新フラグ
+            this.hasContextualHelp = true;
+            
+            this.loggingSystem.debug('HelpScene', 'Contextual help applied', {
+                title: helpContent.title,
+                category: helpContent.category,
+                actionsCount: this.contextualHelpActions.length
+            });
+        } catch (error) {
+            this.loggingSystem.error('HelpScene', 'Error applying contextual help', error);
+        }
+    }
+    
+    /**
+     * ヘルプカテゴリの設定
+     * @param {string} category - カテゴリ名
+     */
+    setHelpCategory(category) {
+        try {
+            if (this.helpContentManager && this.helpContentManager.setCategory) {
+                this.helpContentManager.setCategory(category);
+            }
+        } catch (error) {
+            this.loggingSystem.error('HelpScene', `Error setting help category: ${category}`, error);
+        }
+    }
+    
+    /**
+     * ヘルプアクションの実行
+     * @param {string} action - アクション名
+     */
+    executeHelpAction(action) {
+        try {
+            if (this.contextualHelpManager) {
+                this.contextualHelpManager.executeHelpAction(action, {
+                    scene: this,
+                    navigationContext: this.navigationContext
+                });
+            }
+        } catch (error) {
+            this.loggingSystem.error('HelpScene', `Error executing help action: ${action}`, error);
+        }
     }
 
     /**
@@ -482,6 +586,10 @@ export class HelpScene extends Scene {
             
             if (this.navigationContext) {
                 this.navigationContext.cleanup();
+            }
+            
+            if (this.contextualHelpManager) {
+                this.contextualHelpManager.cleanup();
             }
             
             this.initialized = false;

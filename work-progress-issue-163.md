@@ -24,8 +24,8 @@
 - **統合方針**: SettingsSceneを基盤とし、AccessibilitySettingsUIの高度機能を統合
 
 ## 現在の作業状況
-- **次のタスク**: タスク9 - ContextualHelpSystemの独自機能をHelpSceneに統合
-- **進捗**: 24タスク中8タスク完了 (33.3%)
+- **次のタスク**: タスク10 - AccessibilitySettingsUIの独自機能をSettingsSceneに統合
+- **進捗**: 24タスク中9タスク完了 (37.5%)
 - **推定残り時間**: 大規模な実装作業のため相当の時間が必要
 
 ### ✅ タスク3: 他の重複画面の調査と文書化
@@ -101,6 +101,25 @@
   - エラーハンドリングとログ出力の強化
   - destroy()メソッド追加（NavigationContextManagerクリーンアップ含む）
 - **テスト**: 包括的なナビゲーションテストスイート（80ケース）実装完了
+
+### ✅ タスク9: ContextualHelpSystemの独自機能をHelpSceneに統合
+- **実施日**: 2025-01-15
+- **成果物**: 
+  - `docs/contextual-help-features-analysis.md` (機能分析書)
+  - `src/scenes/help-scene/ContextualHelpManager.js` (新規作成)
+  - `src/scenes/HelpScene.js` (更新)
+  - `tests/scenes/HelpScene-contextual.test.js` (統合テスト)
+- **実装内容**:
+  - ContextualHelpSystemの5つの独自機能を分析・特定
+  - ContextualHelpManagerクラスの新規実装（動的ヘルプトリガー、ツールチップ、ガイド）
+  - HelpSceneへのContextualHelpManager統合とimport追加
+  - 各ヘルプモード（contextual, documentation, quick, standard）の拡張
+  - applyContextualHelp()とexecuteHelpAction()の実装
+  - F1/Ctrl+H/Ctrl+?キーボードショートカット対応
+  - エラーハンドリングとログ出力の強化
+  - destroy()メソッドにContextualHelpManagerクリーンアップ追加
+- **統合機能**: ヘルプトリガー5種、ツールチップ4種、インタラクティブガイド2種を統合
+- **テスト**: 包括的なコンテキストヘルプ統合テストスイート（65ケース）実装完了
 
 ## 発見された重複実装
 
