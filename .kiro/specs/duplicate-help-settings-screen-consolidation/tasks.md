@@ -118,26 +118,29 @@
   - _Requirements: 4.1, 4.2, 4.3, 4.4_
   - ✅ **完了**: タスク5で単体テスト（30ケース）、タスク11で統合テスト（90ケース）、全要件満たす (2025-01-15)
 
-- [ ] 17. Create integration tests for unified help screen access
+- [x] 17. Create integration tests for unified help screen access
   - Test main menu to help navigation
   - Test H key shortcut from different scenes
   - Test F1 contextual help access
   - Test return navigation to correct previous screen
   - _Requirements: 1.1, 1.2, 1.4, 4.1_
+  - ✅ **完了**: 25/25統合テスト全成功、NavigationContextManager・KeyboardShortcutRouter完全統合、全要件カバー完了 (2025-01-15)
 
-- [ ] 18. Create integration tests for unified settings screen access
+- [x] 18. Create integration tests for unified settings screen access
   - Test main menu to settings navigation
   - Test S key shortcut from different scenes
   - Test ESC from help to settings navigation
   - Test return navigation to correct previous screen
   - _Requirements: 2.1, 2.2, 2.4, 4.3_
+  - ✅ **完了**: 33/33統合テスト全成功、設定アクセス統合機能完全検証、エラーハンドリング・パフォーマンステスト実装 (2025-01-15)
 
-- [ ] 19. Create Playwright E2E tests for consolidated screen workflows
+- [x] 19. Create Playwright E2E tests for consolidated screen workflows
   - Test complete help access workflows using URL parameters
   - Test complete settings access workflows using URL parameters
   - Test keyboard shortcuts work correctly in browser
   - Verify no JavaScript errors in console during navigation
   - _Requirements: 1.1, 2.1, 4.1, 4.3_
+  - ✅ **完了**: 592行包括的E2Eテスト実装、URLパラメータ・クロスブラウザ対応、JSエラー監視・パフォーマンス検証完了 (2025-01-15)
 
 - [ ] 20. Validate feature parity between original and consolidated implementations
   - Compare help screen features before and after consolidation
