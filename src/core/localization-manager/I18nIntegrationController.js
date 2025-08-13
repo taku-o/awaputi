@@ -210,6 +210,7 @@ export class I18nIntegrationController {
         console.error(`No translation loaders available for ${language} after ${attempts} attempts`);
         return null;
     }
+
     
     /**
      * フォント設定を適用

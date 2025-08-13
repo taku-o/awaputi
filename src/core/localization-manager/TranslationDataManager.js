@@ -132,6 +132,14 @@ export class TranslationDataManager {
             ],
             'help.bubbles': '普通(青) 石(灰) 鉄(茶) ダイヤ(白) ピンク(回復) 毒(緑) とげとげ(連鎖) 虹色(ボーナス) 時計(時停) S字(得点) ビリビリ(妨害) 逃げる(移動)',
             
+            // ヘルプカテゴリ（新しく追加）
+            'help.categories.gameplay': 'ゲームの基本',
+            'help.categories.bubbles': '泡の種類',
+            'help.categories.controls': '操作方法',
+            'help.categories.scoring': 'スコアシステム',
+            'help.categories.settings': '設定',
+            'help.categories.troubleshooting': 'トラブルシューティング',
+            
             // ヘルプアクセシビリティ
             'help.accessibility.searchBar': 'ヘルプ検索',
             'help.accessibility.searchBarDesc': 'キーワードを入力してヘルプコンテンツを検索',
@@ -143,6 +151,7 @@ export class TranslationDataManager {
             'help.accessibility.contentAreaDesc': '選択されたトピックの詳細情報',
             'help.accessibility.backButton': '戻るボタン',
             'help.accessibility.backButtonDesc': 'メインメニューに戻ります',
+            'help.accessibility.sceneEntered': 'ヘルプシーンに入りました。F1キーでキーボードショートカットを確認できます。',
             
             // キーボードショートカット
             'shortcuts.title': 'キーボードショートカット',
@@ -159,6 +168,9 @@ export class TranslationDataManager {
             'error.canvasNotSupported': 'お使いのブラウザはCanvas APIに対応していません。モダンブラウザでお試しください。',
             'error.audioNotSupported': '音声機能が利用できません。',
             'error.storageNotSupported': 'データの保存ができません。',
+            
+            // 共通要素（新しく追加）
+            'common.back': '戻る',
             
             // 確認メッセージ
             'confirm.yes': 'はい',
@@ -281,6 +293,14 @@ export class TranslationDataManager {
             ],
             'help.bubbles': 'Normal(Blue) Stone(Gray) Iron(Brown) Diamond(White) Pink(Heal) Poison(Green) Spiky(Chain) Rainbow(Bonus) Clock(Time) S-shape(Score) Electric(Hinder) Escape(Move)',
             
+            // Help Categories (newly added)
+            'help.categories.gameplay': 'Game Basics',
+            'help.categories.bubbles': 'Bubble Types',
+            'help.categories.controls': 'Controls',
+            'help.categories.scoring': 'Scoring System',
+            'help.categories.settings': 'Settings',
+            'help.categories.troubleshooting': 'Troubleshooting',
+            
             // Help Accessibility
             'help.accessibility.searchBar': 'Help Search',
             'help.accessibility.searchBarDesc': 'Enter keywords to search help content',
@@ -292,6 +312,7 @@ export class TranslationDataManager {
             'help.accessibility.contentAreaDesc': 'Detailed information for the selected topic',
             'help.accessibility.backButton': 'Back Button',
             'help.accessibility.backButtonDesc': 'Return to main menu',
+            'help.accessibility.sceneEntered': 'Entered help scene. Press F1 for keyboard shortcuts.',
             
             // Shortcuts
             'shortcuts.title': 'Keyboard Shortcuts',
@@ -308,6 +329,9 @@ export class TranslationDataManager {
             'error.canvasNotSupported': 'Your browser does not support Canvas API. Please try with a modern browser.',
             'error.audioNotSupported': 'Audio features are not available.',
             'error.storageNotSupported': 'Data storage is not available.',
+            
+            // Common (newly added)
+            'common.back': 'Back',
             
             // Confirm
             'confirm.yes': 'Yes',
@@ -574,6 +598,8 @@ export class TranslationDataManager {
         
         return stats;
     }
+
+    
     
     /**
      * 翻訳データをクリア
