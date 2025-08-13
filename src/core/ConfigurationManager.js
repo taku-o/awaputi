@@ -559,6 +559,48 @@ class ConfigurationManager {
     }
     
     /**
+     * 全ての設定データをエクスポート
+     * @returns {Object} 全設定データ
+     */
+    exportConfig() {
+        try {
+            const result = {};
+            
+            // 全カテゴリの設定をエクスポート
+            for (const [category, categoryConfig] of this.configurations) {
+                result[category] = {};
+                for (const [key, value] of categoryConfig) {
+                    result[category][key] = value;
+                }
+            }
+            
+            // デフォルト値も含める（設定されていないキーの場合）
+            for (const [defaultKey, defaultValue] of this.defaultValues) {
+                const [category, key] = defaultKey.split('.');
+                
+                // カテゴリが存在しない場合は作成
+                if (!result[category]) {
+                    result[category] = {};
+                }
+                
+                // 設定されていない場合のみデフォルト値を追加
+                if (result[category][key] === undefined) {
+                    result[category][key] = defaultValue;
+                }
+            }
+            
+            this._logDebug(`設定データをエクスポート: ${Object.keys(result).length}カテゴリ`);
+            return result;
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'CONFIGURATION_ERROR', {
+                context: 'ConfigurationManager.exportConfig'
+            });
+            return {};
+        }
+    }
+    
+    /**
      * 変更履歴を取得
      * @returns {Array} 変更履歴
      */
