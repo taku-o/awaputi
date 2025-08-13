@@ -158,12 +158,13 @@
   - _Requirements: 3.1, 3.2, 7.4_
   - ✅ **完了**: 包括的アーキテクチャドキュメント作成(`consolidated-screens-architecture.md`)、全4システムの詳細設計・API・実装ガイド・トラブルシューティング含む (2025-01-15)
 
-- [ ] 22. Perform manual testing of all access methods
+- [x] 22. Perform manual testing of all access methods
   - Test all help access methods manually
   - Test all settings access methods manually
   - Test navigation context preservation manually
   - Test keyboard shortcuts from various starting points
   - _Requirements: 1.1, 2.1, 4.1, 6.1_
+  - ❌ **重大問題発見**: 統合システムがGameEngineに未統合、従来システムが継続動作中、Issue #166（シーン名不整合）未解決 (2025-01-15)
 
 - [ ] 23. Create investigation report for duplicate screen findings
   - Compile findings from duplicate screen investigation
