@@ -41,9 +41,9 @@ export class CoreKeyboardShortcutManager {
         this.addShortcut('largeText', ['ControlLeft+AltLeft+KeyT'], () => this.handleLargeText());
         this.addShortcut('reducedMotion', ['ControlLeft+AltLeft+KeyM'], () => this.handleReducedMotion());
         
-        // ゲーム内操作
-        this.addShortcut('giveUp', ['KeyG'], () => this.handleGiveUp());
-        this.addShortcut('restart', ['KeyR'], () => this.handleRestart());
+        // ゲーム内操作（UIボタンから実行）
+        // GキーとRキーのショートカットは削除されました（Issue #172）
+        // Give UpとRestartはゲーム画面のUIボタンから利用可能です
         
         // 音量調整
         this.addShortcut('volumeUp', ['ArrowUp+ControlLeft'], () => this.handleVolumeUp());
@@ -435,29 +435,8 @@ export class CoreKeyboardShortcutManager {
         }
     }
     
-    /**
-     * ギブアップ処理
-     */
-    handleGiveUp() {
-        const currentScene = this.gameEngine.sceneManager.getCurrentScene();
-        if (currentScene && currentScene.constructor.name === 'GameScene') {
-            if (confirm('ゲームを終了しますか？')) {
-                currentScene.giveUp?.();
-            }
-        }
-    }
-    
-    /**
-     * リスタート処理
-     */
-    handleRestart() {
-        const currentScene = this.gameEngine.sceneManager.getCurrentScene();
-        if (currentScene && currentScene.constructor.name === 'GameScene') {
-            if (confirm('ゲームを再開始しますか？')) {
-                currentScene.restart?.();
-            }
-        }
-    }
+    // handleGiveUp() と handleRestart() メソッドは削除されました（Issue #172）
+    // これらの機能はゲーム画面のUIボタンから利用できます
     
     /**
      * 音量アップ処理

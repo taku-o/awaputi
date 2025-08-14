@@ -41,8 +41,12 @@ For Arabic and Hebrew languages, navigation keys are automatically adjusted:
 | **Escape** | Return to Menu/Close Screen | Returns to main menu during game or closes settings screens |
 | **F** | Toggle Fullscreen | Toggles fullscreen mode on/off |
 | **M** | Toggle Audio Mute | Toggles mute/unmute for all audio |
-| **G** | Give Up | Available during gameplay only. Shows confirmation dialog |
-| **R** | Restart Game | Available during gameplay only. Shows confirmation dialog |
+
+### 🎮 Game Control Features
+Give Up and Restart functions are now available through UI buttons in the top-right corner of the screen:
+- **Give Up Button**: Displayed during gameplay. Click to show confirmation dialog
+- **Restart Game Button**: Displayed during gameplay and game over. Click to show confirmation dialog  
+- **Accessibility Support**: Keyboard navigation (Tab, Enter, Escape) and touch interaction supported
 
 ## UI & Menu Navigation
 

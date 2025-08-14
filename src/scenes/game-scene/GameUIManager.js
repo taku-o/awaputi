@@ -4,6 +4,9 @@
  * UI状態、フィードバック、アニメーション、フローティングテキストなどの専門的な管理を行います
  */
 
+import { GameControlButtons } from './GameControlButtons.js';
+import { ConfirmationDialog } from './ConfirmationDialog.js';
+
 export class GameUIManager {
     constructor(gameEngine, floatingTextManager) {
         this.gameEngine = gameEngine;
@@ -19,6 +22,223 @@ export class GameUIManager {
             scoreAnimationTimer: 0,
             lastScore: 0
         };
+        
+        // ゲーム状態監視（ボタン表示制御用）
+        this.lastGameState = {
+            isGameStarted: false,
+            isGameOver: false,
+            isPaused: false,
+            isPreGame: true
+        };
+        
+        // ゲームコントロールボタンとダイアログを初期化
+        this.initializeControlButtons();
+    }
+    
+    /**
+     * コントロールボタンとダイアログの初期化
+     */
+    initializeControlButtons() {
+        this.gameControlButtons = new GameControlButtons(this.gameEngine, this);
+        this.confirmationDialog = new ConfirmationDialog(this.gameEngine);
+    }
+    
+    /**
+     * コントロールボタンのレンダリング
+     * @param {CanvasRenderingContext2D} context - 描画コンテキスト
+     */
+    renderControlButtons(context) {
+        // ダイアログが表示されている場合はボタンを無効にする
+        const dialogVisible = this.confirmationDialog.isVisible();
+        this.gameControlButtons.setButtonsEnabled(!dialogVisible);
+        
+        // ボタンのレンダリング
+        this.gameControlButtons.render(context);
+        
+        // ダイアログのレンダリング（ボタンの上に描画）
+        this.confirmationDialog.render(context);
+    }
+    
+    /**
+     * コントロールボタンのクリック処理
+     * @param {number} x - X座標
+     * @param {number} y - Y座標
+     * @returns {boolean} クリックが処理されたかどうか
+     */
+    handleControlButtonClick(x, y) {
+        // まずダイアログのクリック処理を試行
+        if (this.confirmationDialog.handleClick(x, y)) {
+            return true;
+        }
+        
+        // ダイアログが表示されている場合はボタンクリックを無視
+        if (this.confirmationDialog.isVisible()) {
+            return false;
+        }
+        
+        // ボタンのクリック処理
+        const buttonType = this.gameControlButtons.handleClick(x, y);
+        if (buttonType) {
+            this.showConfirmationDialog(buttonType);
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * マウス位置の更新（ホバー状態管理）
+     * @param {number} x - X座標
+     * @param {number} y - Y座標
+     */
+    updateMousePosition(x, y) {
+        // マウス使用時はキーボードナビゲーションをクリア
+        this.gameControlButtons.clearKeyboardFocus();
+        
+        this.gameControlButtons.updateMousePosition(x, y);
+        this.confirmationDialog.updateMousePosition(x, y);
+    }
+    
+    /**
+     * キーボードイベント処理
+     * @param {KeyboardEvent} event - キーボードイベント
+     * @returns {boolean} イベントが処理されたかどうか
+     */
+    handleKeyboard(event) {
+        // ダイアログが表示されている場合はダイアログに委譲
+        if (this.confirmationDialog.isVisible()) {
+            return this.confirmationDialog.handleKeyboard(event);
+        }
+        
+        // ボタンのキーボードナビゲーション処理
+        return this.gameControlButtons.handleKeyboardNavigation(event);
+    }
+    
+    /**
+     * タッチ開始処理
+     * @param {number} x - X座標
+     * @param {number} y - Y座標
+     * @returns {boolean} タッチが処理されたかどうか
+     */
+    handleTouchStart(x, y) {
+        // まずダイアログのタッチ処理を試行
+        if (this.confirmationDialog.handleClick(x, y)) {
+            return true;
+        }
+        
+        // ダイアログが表示されている場合はボタンタッチを無視
+        if (this.confirmationDialog.isVisible()) {
+            return false;
+        }
+        
+        // ボタンのタッチ開始処理
+        const touchedButton = this.gameControlButtons.handleTouchStart(x, y);
+        return touchedButton !== null;
+    }
+    
+    /**
+     * タッチ終了処理
+     * @param {number} x - X座標
+     * @param {number} y - Y座標
+     * @returns {boolean} タッチが処理されたかどうか
+     */
+    handleTouchEnd(x, y) {
+        // ダイアログが表示されている場合は何もしない
+        if (this.confirmationDialog.isVisible()) {
+            return false;
+        }
+        
+        // ボタンのタッチ終了処理
+        const completedButton = this.gameControlButtons.handleTouchEnd(x, y);
+        if (completedButton) {
+            this.showConfirmationDialog(completedButton);
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * タッチキャンセル処理
+     */
+    handleTouchCancel() {
+        this.gameControlButtons.handleTouchCancel();
+    }
+    
+    /**
+     * 確認ダイアログの表示
+     * @param {string} type - ダイアログタイプ（'giveUp' または 'restart'）
+     */
+    showConfirmationDialog(type) {
+        if (type === 'giveUp') {
+            this.confirmationDialog.show(
+                'giveUp',
+                () => this.executeGiveUp(),
+                () => this.cancelAction()
+            );
+        } else if (type === 'restart') {
+            this.confirmationDialog.show(
+                'restart',
+                () => this.executeRestart(),
+                () => this.cancelAction()
+            );
+        }
+    }
+    
+    /**
+     * 確認ダイアログの非表示
+     */
+    hideConfirmationDialog() {
+        this.confirmationDialog.hide();
+    }
+    
+    /**
+     * Give Up機能の実行
+     */
+    executeGiveUp() {
+        // ゲームエンジンのGive Up処理を呼び出し
+        if (this.gameEngine && typeof this.gameEngine.handleGiveUp === 'function') {
+            this.gameEngine.handleGiveUp();
+        } else {
+            // フォールバック: メインメニューに戻る
+            console.log('Give Up executed - returning to main menu');
+            if (this.gameEngine.sceneManager) {
+                this.gameEngine.sceneManager.switchScene('menu');
+            }
+        }
+    }
+    
+    /**
+     * Restart機能の実行
+     */
+    executeRestart() {
+        // ゲームエンジンのRestart処理を呼び出し
+        if (this.gameEngine && typeof this.gameEngine.handleRestart === 'function') {
+            this.gameEngine.handleRestart();
+        } else {
+            // フォールバック: ゲーム状態をリセット
+            console.log('Restart executed - resetting game state');
+            if (this.gameEngine.gameStateManager) {
+                this.gameEngine.gameStateManager.resetGame();
+            }
+        }
+    }
+    
+    /**
+     * アクションのキャンセル
+     */
+    cancelAction() {
+        // キャンセル時は特に何もしない（ダイアログが閉じるだけ）
+        console.log('Action cancelled');
+    }
+    
+    /**
+     * キーボード処理
+     * @param {string} key - キー名
+     * @returns {boolean} キーが処理されたかどうか
+     */
+    handleKeyboard(key) {
+        return this.confirmationDialog.handleKeyboard(key);
     }
     
     /**
@@ -43,6 +263,9 @@ export class GameUIManager {
      * @param {number} deltaTime - 経過時間
      */
     updateUIState(deltaTime) {
+        // ゲーム状態の監視とボタン表示状態の更新
+        this.updateGameStateAndButtons();
+        
         // コンボフラッシュタイマー
         if (this.uiState.comboFlashTimer > 0) {
             this.uiState.comboFlashTimer -= deltaTime;
@@ -60,6 +283,54 @@ export class GameUIManager {
         
         // フローティングテキストの更新
         this.floatingTextManager.update(deltaTime);
+    }
+    
+    /**
+     * ゲーム状態の監視とボタン表示状態の更新
+     */
+    updateGameStateAndButtons() {
+        // 現在のゲーム状態を取得
+        const currentGameState = this.getCurrentGameState();
+        
+        // 状態が変化した場合のみボタン表示を更新
+        if (this.hasGameStateChanged(currentGameState)) {
+            this.gameControlButtons.updateButtonVisibility(currentGameState);
+            this.lastGameState = { ...currentGameState };
+        }
+    }
+    
+    /**
+     * 現在のゲーム状態を取得
+     * @returns {Object} ゲーム状態オブジェクト
+     */
+    getCurrentGameState() {
+        // GameSceneから状態を取得
+        const scene = this.gameEngine.sceneManager?.getCurrentScene();
+        
+        // GameStateManagerから正しい状態を取得
+        const stateManager = scene?.stateManager;
+        const gameStats = stateManager?.getGameStats();
+        
+        return {
+            isGameStarted: gameStats?.isGameStarted || false,
+            isGameOver: this.gameEngine.isGameOver || false,
+            isPaused: scene?.isPaused || false,
+            isPreGame: !(gameStats?.isGameStarted || false)
+        };
+    }
+    
+    /**
+     * ゲーム状態が変化したかどうかを確認
+     * @param {Object} currentState - 現在の状態
+     * @returns {boolean} 変化があったかどうか
+     */
+    hasGameStateChanged(currentState) {
+        return (
+            this.lastGameState.isGameStarted !== currentState.isGameStarted ||
+            this.lastGameState.isGameOver !== currentState.isGameOver ||
+            this.lastGameState.isPaused !== currentState.isPaused ||
+            this.lastGameState.isPreGame !== currentState.isPreGame
+        );
     }
     
     /**
@@ -230,6 +501,9 @@ export class GameUIManager {
         
         // 特殊効果状態表示
         this.renderSpecialEffectsStatus(context);
+        
+        // ゲームコントロールボタンとダイアログ
+        this.renderControlButtons(context);
         
         // 詳細情報表示
         if (this.uiState.showingDetailedInfo) {
