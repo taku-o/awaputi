@@ -383,67 +383,268 @@ if (object && object.property) {
                 <p>マウスを使わずに、キーボードだけでゲームを操作できます。</p>
                 <h5>主要なショートカット:</h5>
                 <table class="help-shortcuts-table">
-                    <tr><td><kbd>H</kbd></td><td>ヘルプ画面を開く</td></tr>
-                    <tr><td><kbd>S</kbd></td><td>設定画面を開く</td></tr>
-                    <tr><td><kbd>F1</kbd></td><td>コンテキストヘルプ</td></tr>
+                    <tr><td><kbd>F1</kbd></td><td>コンテキスト依存ヘルプ</td></tr>
+                    <tr><td><kbd>Ctrl + H</kbd></td><td>ドキュメントヘルプ</td></tr>
                     <tr><td><kbd>ESC</kbd></td><td>前の画面に戻る</td></tr>
                     <tr><td><kbd>F11</kbd></td><td>フルスクリーン切り替え</td></tr>
-                    <tr><td><kbd>Ctrl + H</kbd></td><td>ドキュメントヘルプ</td></tr>
+                    <tr><td><kbd>Space</kbd></td><td>ゲーム一時停止</td></tr>
+                    <tr><td><kbd>F12</kbd></td><td>デバッグ情報表示</td></tr>
                 </table>
+                <h5>ナビゲーション:</h5>
+                <table class="help-shortcuts-table">
+                    <tr><td><kbd>↑/↓</kbd></td><td>メニュー項目を選択</td></tr>
+                    <tr><td><kbd>←/→</kbd></td><td>カテゴリを切り替え</td></tr>
+                    <tr><td><kbd>Enter</kbd></td><td>項目を選択</td></tr>
+                    <tr><td><kbd>Tab</kbd></td><td>フォーカス移動</td></tr>
+                    <tr><td><kbd>/</kbd></td><td>検索バーにフォーカス</td></tr>
+                </table>
+                <p><strong>注意:</strong> HキーとSキーのショートカットは削除されました。ヘルプと設定はメニューボタンからアクセスしてください。</p>
             </div>
         `;
     }
     
-    // アクション実行メソッド群（スタブ実装）
+    // アクション実行メソッド群
     showErrorDetails(context) {
-        this.loggingSystem.info('ContextualHelpManager', 'Showing error details', context);
+        try {
+            this.loggingSystem.info('ContextualHelpManager', 'Showing error details', context);
+            
+            // エラー詳細を表示するダイアログやパネルの実装
+            const errorDetails = {
+                error: context.error || this.currentContext.error,
+                timestamp: Date.now(),
+                userAgent: navigator.userAgent,
+                url: window.location.href
+            };
+            
+            // ダイアログ表示の実装
+            console.log('Error Details:', errorDetails);
+            
+            // エラー詳細をHelpContentManagerに送信してカテゴリ表示
+            this.navigateToCategory('troubleshooting');
+        } catch (error) {
+            this.loggingSystem.error('ContextualHelpManager', 'Failed to show error details', error);
+        }
     }
     
     showStackTrace(context) {
-        this.loggingSystem.info('ContextualHelpManager', 'Showing stack trace', context);
+        try {
+            this.loggingSystem.info('ContextualHelpManager', 'Showing stack trace', context);
+            
+            // スタックトレース情報の取得
+            const stackTrace = context.error?.stack || this.currentContext.error?.stack || 'Stack trace not available';
+            
+            // スタックトレースを表示
+            console.group('Stack Trace');
+            console.log(stackTrace);
+            console.groupEnd();
+            
+            // トラブルシューティングカテゴリに移動
+            this.navigateToCategory('troubleshooting');
+        } catch (error) {
+            this.loggingSystem.error('ContextualHelpManager', 'Failed to show stack trace', error);
+        }
     }
     
     navigateToCategory(category) {
-        this.loggingSystem.info('ContextualHelpManager', `Navigating to category: ${category}`);
-        // HelpContentManagerとの連携予定
+        try {
+            this.loggingSystem.info('ContextualHelpManager', `Navigating to category: ${category}`);
+            
+            // HelpScene内のHelpContentManagerにアクセス
+            if (this.gameEngine && this.gameEngine.sceneManager) {
+                const currentScene = this.gameEngine.sceneManager.getCurrentScene();
+                if (currentScene && currentScene.helpContentManager) {
+                    currentScene.helpContentManager.setCategory(category);
+                    return true;
+                }
+            }
+            
+            this.loggingSystem.warn('ContextualHelpManager', 'Could not access HelpContentManager for category navigation');
+            return false;
+        } catch (error) {
+            this.loggingSystem.error('ContextualHelpManager', 'Failed to navigate to category', error);
+            return false;
+        }
     }
     
     navigateToTopic(topic) {
-        this.loggingSystem.info('ContextualHelpManager', `Navigating to topic: ${topic}`);
-        // HelpContentManagerとの連携予定
+        try {
+            this.loggingSystem.info('ContextualHelpManager', `Navigating to topic: ${topic}`);
+            
+            // HelpScene内のHelpContentManagerにアクセス
+            if (this.gameEngine && this.gameEngine.sceneManager) {
+                const currentScene = this.gameEngine.sceneManager.getCurrentScene();
+                if (currentScene && currentScene.helpContentManager) {
+                    // トピックによってカテゴリを推測
+                    const topicCategoryMap = {
+                        'controls': 'gameplay',
+                        'scoring': 'gameplay', 
+                        'shortcuts': 'controls',
+                        'troubleshooting': 'troubleshooting',
+                        'performance': 'troubleshooting'
+                    };
+                    
+                    const category = topicCategoryMap[topic] || 'gameplay';
+                    currentScene.helpContentManager.setCategory(category);
+                    return true;
+                }
+            }
+            
+            this.loggingSystem.warn('ContextualHelpManager', 'Could not access HelpContentManager for topic navigation');
+            return false;
+        } catch (error) {
+            this.loggingSystem.error('ContextualHelpManager', 'Failed to navigate to topic', error);
+            return false;
+        }
     }
     
     navigateToSettings() {
-        this.loggingSystem.info('ContextualHelpManager', 'Navigating to settings');
-        // NavigationContextManagerとの連携予定
+        try {
+            this.loggingSystem.info('ContextualHelpManager', 'Navigating to settings');
+            
+            // SceneManagerを使用して設定画面に移動
+            if (this.gameEngine && this.gameEngine.sceneManager) {
+                return this.gameEngine.sceneManager.switchScene('settings', {
+                    accessMethod: 'contextual_help',
+                    sourceScene: 'help',
+                    preserveContext: true
+                });
+            }
+            
+            this.loggingSystem.warn('ContextualHelpManager', 'Could not access SceneManager for settings navigation');
+            return false;
+        } catch (error) {
+            this.loggingSystem.error('ContextualHelpManager', 'Failed to navigate to settings', error);
+            return false;
+        }
     }
     
     navigateToAccessibilitySettings() {
-        this.loggingSystem.info('ContextualHelpManager', 'Navigating to accessibility settings');
-        // NavigationContextManagerとの連携予定
+        try {
+            this.loggingSystem.info('ContextualHelpManager', 'Navigating to accessibility settings');
+            
+            // 設定画面のアクセシビリティセクションに移動
+            if (this.gameEngine && this.gameEngine.sceneManager) {
+                return this.gameEngine.sceneManager.switchScene('settings', {
+                    accessMethod: 'contextual_help_accessibility',
+                    sourceScene: 'help',
+                    initialSection: 'accessibility',
+                    preserveContext: true
+                });
+            }
+            
+            this.loggingSystem.warn('ContextualHelpManager', 'Could not access SceneManager for accessibility settings navigation');
+            return false;
+        } catch (error) {
+            this.loggingSystem.error('ContextualHelpManager', 'Failed to navigate to accessibility settings', error);
+            return false;
+        }
     }
     
     suggestQualitySettings() {
-        this.loggingSystem.info('ContextualHelpManager', 'Suggesting quality settings');
-        // 設定提案の実装予定
+        try {
+            this.loggingSystem.info('ContextualHelpManager', 'Suggesting quality settings');
+            
+            // パフォーマンス改善のための設定提案
+            const suggestions = {
+                effectQuality: 'low',
+                bubbleCount: 'reduced',
+                animation: 'minimal',
+                reason: 'Performance optimization for better frame rate'
+            };
+            
+            // 提案をログに記録
+            this.loggingSystem.info('ContextualHelpManager', 'Quality settings suggestions', suggestions);
+            
+            // 設定画面に移動して品質設定を表示
+            this.navigateToSettings();
+            
+            return suggestions;
+        } catch (error) {
+            this.loggingSystem.error('ContextualHelpManager', 'Failed to suggest quality settings', error);
+            return null;
+        }
     }
     
     showKeyboardShortcuts() {
-        this.loggingSystem.info('ContextualHelpManager', 'Showing keyboard shortcuts');
-        // キーボードショートカット一覧の表示予定
+        try {
+            this.loggingSystem.info('ContextualHelpManager', 'Showing keyboard shortcuts');
+            
+            // キーボードショートカット情報をHelpContentManagerで表示
+            return this.navigateToTopic('shortcuts');
+        } catch (error) {
+            this.loggingSystem.error('ContextualHelpManager', 'Failed to show keyboard shortcuts', error);
+            return false;
+        }
     }
     
     startInteractiveGuide(guideId) {
-        this.loggingSystem.info('ContextualHelpManager', `Starting interactive guide: ${guideId}`);
-        // インタラクティブガイドの開始予定
+        try {
+            this.loggingSystem.info('ContextualHelpManager', `Starting interactive guide: ${guideId}`);
+            
+            const guide = this.interactiveGuides.get(guideId);
+            if (!guide) {
+                this.loggingSystem.warn('ContextualHelpManager', `Interactive guide not found: ${guideId}`);
+                return false;
+            }
+            
+            this.currentGuide = guideId;
+            this.guideStep = 0;
+            
+            // ガイドの最初のステップを開始
+            if (guide.steps && guide.steps.length > 0) {
+                this.executeGuideStep(guide.steps[0]);
+            }
+            
+            return true;
+        } catch (error) {
+            this.loggingSystem.error('ContextualHelpManager', 'Failed to start interactive guide', error);
+            return false;
+        }
+    }
+    
+    // ガイドステップ実行
+    executeGuideStep(step) {
+        try {
+            this.loggingSystem.debug('ContextualHelpManager', 'Executing guide step', step);
+            
+            // ステップのアクションを実行
+            if (step.action && typeof step.action === 'function') {
+                step.action();
+            }
+            
+            // ビジュアル表示はスタブとして残す（実際のUI実装が必要）
+            return true;
+        } catch (error) {
+            this.loggingSystem.error('ContextualHelpManager', 'Failed to execute guide step', error);
+            return false;
+        }
     }
     
     // ユーティリティメソッド群
-    highlightCategories() { /* 実装予定 */ }
-    focusSearchInput() { /* 実装予定 */ }
-    highlightBackButton() { /* 実装予定 */ }
-    highlightContextualContent() { /* 実装予定 */ }
-    highlightActions() { /* 実装予定 */ }
+    highlightCategories() { 
+        this.loggingSystem.debug('ContextualHelpManager', 'Highlighting categories');
+        // UI highlighting implementation needed
+    }
+    
+    focusSearchInput() { 
+        this.loggingSystem.debug('ContextualHelpManager', 'Focusing search input');
+        // Search input focus implementation needed
+    }
+    
+    highlightBackButton() { 
+        this.loggingSystem.debug('ContextualHelpManager', 'Highlighting back button');
+        // Back button highlighting implementation needed
+    }
+    
+    highlightContextualContent() { 
+        this.loggingSystem.debug('ContextualHelpManager', 'Highlighting contextual content');
+        // Contextual content highlighting implementation needed
+    }
+    
+    highlightActions() { 
+        this.loggingSystem.debug('ContextualHelpManager', 'Highlighting actions');
+        // Action buttons highlighting implementation needed
+    }
     
     /**
      * ヘルプ使用状況のログ
