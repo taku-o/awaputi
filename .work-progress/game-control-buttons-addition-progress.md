@@ -37,9 +37,15 @@ Issue #172対応: ゲーム画面にGive Up（ギブアップ）とRestart（ゲ
   - イベント処理委譲（handleControlButtonClick、updateMousePosition、handleKeyboard）
   - Give Up/Restart機能の実行メソッド追加
 
+- [x] タスク7-8: Give UpとRestartボタン機能接続
+  - GameUIManagerで基本的な機能実装済み
+- [x] タスク9: キーボードショートカット削除
+  - KeyboardShortcutManagerからG、Rキー登録削除
+  - handleGiveUp()、handleRestart()メソッド削除
+  - 適切なコメント追加でUIボタン使用を促進
+
 ### 次のタスク
-- [ ] タスク7: Give Upボタン機能接続
-- [ ] タスク8: Restartボタン機能接続
+- [ ] タスク10: GameSceneにイベント処理追加
 
 ## コミットログ
 - (作業開始時点)

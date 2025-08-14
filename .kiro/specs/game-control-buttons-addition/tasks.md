@@ -41,21 +41,21 @@
   - Add event handling delegation from GameUIManager to button components
   - _Requirements: 1.1, 2.1, 4.5_
 
-- [ ] 7. Connect Give Up button functionality
+- [x] 7. Connect Give Up button functionality
   - Implement give up confirmation dialog trigger
   - Connect dialog confirmation to existing game state management
   - Add proper game termination logic that returns to main menu
   - Ensure give up works in all game states (playing, paused)
   - _Requirements: 1.1, 1.2, 1.3, 1.5_
 
-- [ ] 8. Connect Restart button functionality
+- [x] 8. Connect Restart button functionality
   - Implement restart confirmation dialog trigger
   - Connect dialog confirmation to game state reset logic
   - Add proper game restart functionality that resets all game variables
   - Ensure restart works in all game states (playing, paused, game over)
   - _Requirements: 2.1, 2.2, 2.3, 2.5_
 
-- [ ] 9. Remove keyboard shortcuts from KeyboardShortcutManager
+- [x] 9. Remove keyboard shortcuts from KeyboardShortcutManager
   - Modify `src/core/KeyboardShortcutManager.js` to remove G and R key registrations
   - Remove `handleGiveUp()` and `handleRestart()` method calls from key handlers
   - Remove shortcut definitions from `initializeDefaultShortcuts()` method
