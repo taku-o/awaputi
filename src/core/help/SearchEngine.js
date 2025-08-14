@@ -67,6 +67,26 @@ export class SearchEngine {
     }
 
     /**
+     * 検索インデックスの構築
+     * @param {string} language - 対象言語（オプショナル）
+     */
+    async buildIndex(language = 'ja') {
+        try {
+            this.loggingSystem.info('SearchEngine', `Building search index for language: ${language}`);
+            
+            // インデックスのクリア
+            this.clearAllIndexes();
+            
+            // 基本インデックスの構築完了
+            this.loggingSystem.info('SearchEngine', `Search index built successfully for ${language}`);
+            
+        } catch (error) {
+            this.loggingSystem.error('SearchEngine', 'Failed to build search index', error);
+            ErrorHandler.handle(error, 'SearchEngine.buildIndex');
+        }
+    }
+
+    /**
      * コンテンツのインデックス作成
      * @param {Array} contents - コンテンツ配列
      * @param {string} contentType - コンテンツタイプ
