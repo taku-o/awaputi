@@ -6,7 +6,7 @@
   - Create unit tests for coordinate conversion accuracy
   - _Requirements: 1.1, 1.4, 5.1, 5.2_
 
-- [ ] 1.1 Implement ScaledCoordinateManager base class
+- [x] 1.1 Implement ScaledCoordinateManager base class
   - Create src/utils/ScaledCoordinateManager.js with constructor and basic properties
   - Implement getScaledPosition() and getScaledSize() methods
   - Add getCanvasInfo() and getScaleFactor() methods for accessing scale information

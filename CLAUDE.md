@@ -48,6 +48,31 @@ npm run test:all
 
 ### 重要度: 高
 
+#### Canvas Scale UI Positioning修正プロジェクト（Issue #177対応）🔄
+**目標**: UIエレメントがキャンバススケーリングを適切に考慮せず、正しくない位置に表示される問題を修正
+
+**問題の概要**: 
+- GameUIManagerの全UIエレメント（スコア、HP、時間、コンボ）が固定座標でハードコード
+- ResponsiveCanvasManagerによるスケーリングが考慮されていない
+- 異なるスクリーンサイズやデバイスピクセル比でUI要素が見えない・クリックできない問題
+- インタラクティブ要素（ボタン、バブル）の座標変換が不正確
+
+**解決アプローチ**:
+- ScaledCoordinateManagerによる統合座標管理システムの実装
+- UIPositionCalculatorによる一貫したUI要素配置計算
+- ScaledRenderingContextによる自動スケーリング描画ラッパー
+- InputCoordinateConverterによる入力座標変換システム
+- ResponsiveCanvasManagerとの完全統合
+
+**仕様書**: `.kiro/specs/canvas-scale-ui-positioning-fix/`
+- requirements.md: 6つの要件定義（UIスケーリング、ゲーム情報表示、コントロールボタン、インタラクティブ要素、座標システム、デバイス対応）
+- design.md: 詳細なアーキテクチャ設計（5コンポーネント、データモデル、エラーハンドリング、テスト戦略）
+- tasks.md: 12段階65サブタスクの実装計画（インフラ→レンダリング→入力処理→統合→テスト→最適化）
+
+**作業記録ファイル**: `.kiro/specs/canvas-scale-ui-positioning-fix/work-progress.md`
+
+**現状**: 実装開始、問題調査完了、tasks.mdのタスクリストに従って順次作業中
+
 #### キーボードショートカット設定UI移行プロジェクト（Issue #170対応）🔄
 **目標**: 不要なキーボードショートカットを削除し、機能を設定画面UIに移行してカジュアルゲームユーザーの利便性を向上
 
