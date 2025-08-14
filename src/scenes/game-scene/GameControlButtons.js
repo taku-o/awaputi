@@ -81,7 +81,12 @@ export class GameControlButtons {
             });
             console.log('Canvas info:', { baseWidth, actualWidth: canvas.width });
             console.log('Button positions - Base:', { baseGiveUpX, baseGiveUpY }, 'Scaled:', { giveUpX, giveUpY });
-            console.log('Button right edge (scaled):', giveUpX + this.buttonConfig.giveUp.size.width);
+            // ボタンサイズもスケールする必要がある
+            const scaledButtonWidth = this.buttonConfig.giveUp.size.width * canvasInfo.scale;
+            const scaledButtonHeight = this.buttonConfig.giveUp.size.height * canvasInfo.scale;
+            
+            console.log('Button right edge (scaled):', giveUpX + scaledButtonWidth);
+            console.log('Scaled button size:', { width: scaledButtonWidth, height: scaledButtonHeight });
         } else {
             // フォールバック: 左上に配置（デバッグ用）
             giveUpX = rightMargin;
@@ -183,11 +188,18 @@ export class GameControlButtons {
             return { x: 0, y: 0, width: 0, height: 0 };
         }
         
+        // スケールファクターを取得
+        let scaleFactor = 1;
+        if (this.gameEngine.responsiveCanvasManager) {
+            const canvasInfo = this.gameEngine.responsiveCanvasManager.getCanvasInfo();
+            scaleFactor = canvasInfo ? canvasInfo.scale : 1;
+        }
+        
         return {
             x: config.position.x,
             y: config.position.y,
-            width: config.size.width,
-            height: config.size.height
+            width: config.size.width * scaleFactor,
+            height: config.size.height * scaleFactor
         };
     }
     
