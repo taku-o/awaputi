@@ -47,25 +47,47 @@ export class GameControlButtons {
      */
     updateButtonPositions() {
         const canvas = this.gameEngine.canvas;
-        const margin = 10;
+        const margin = 20;
         const buttonSpacing = 10;
         
-        // デバッグ用ログ
+        // ResponsiveCanvasManagerを使用して適切な座標を取得
+        let giveUpX, giveUpY, restartX, restartY;
+        
+        if (this.gameEngine.responsiveCanvasManager && typeof this.gameEngine.responsiveCanvasManager.getScaledCoordinates === 'function') {
+            // 右上角の基準座標を計算（スケール前）
+            const baseGiveUpX = canvas.width - this.buttonConfig.giveUp.size.width - margin;
+            const baseGiveUpY = margin;
+            const baseRestartX = canvas.width - this.buttonConfig.restart.size.width - margin;
+            const baseRestartY = margin + this.buttonConfig.giveUp.size.height + buttonSpacing;
+            
+            // ResponsiveCanvasManagerでスケール座標を取得
+            const scaledGiveUp = this.gameEngine.responsiveCanvasManager.getScaledCoordinates(baseGiveUpX, baseGiveUpY);
+            const scaledRestart = this.gameEngine.responsiveCanvasManager.getScaledCoordinates(baseRestartX, baseRestartY);
+            
+            giveUpX = scaledGiveUp.x;
+            giveUpY = scaledGiveUp.y;
+            restartX = scaledRestart.x;
+            restartY = scaledRestart.y;
+            
+            console.log('Using ResponsiveCanvasManager coordinates');
+            console.log('Base coordinates:', { baseGiveUpX, baseGiveUpY, baseRestartX, baseRestartY });
+            console.log('Scaled coordinates:', { giveUpX, giveUpY, restartX, restartY });
+        } else {
+            // フォールバック: 左上に配置（デバッグ用）
+            giveUpX = margin;
+            giveUpY = margin + 80;
+            restartX = margin;
+            restartY = margin + 80 + this.buttonConfig.giveUp.size.height + buttonSpacing;
+            
+            console.warn('ResponsiveCanvasManager not available, using fallback coordinates');
+        }
+        
+        // ボタン位置を設定
+        this.buttonConfig.giveUp.position = { x: giveUpX, y: giveUpY };
+        this.buttonConfig.restart.position = { x: restartX, y: restartY };
+        
         console.log('Canvas dimensions:', canvas.width, 'x', canvas.height);
-        
-        // Give Upボタン位置（左上角に変更してテスト）
-        this.buttonConfig.giveUp.position = {
-            x: margin,
-            y: margin + 80  // スコア表示の下に配置
-        };
-        
-        // Restartボタン位置（Give Upボタンの下）
-        this.buttonConfig.restart.position = {
-            x: margin,
-            y: margin + 80 + this.buttonConfig.giveUp.size.height + buttonSpacing
-        };
-        
-        console.log('Button positions:', {
+        console.log('Final button positions:', {
             giveUp: this.buttonConfig.giveUp.position,
             restart: this.buttonConfig.restart.position
         });
