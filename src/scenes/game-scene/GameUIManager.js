@@ -92,8 +92,26 @@ export class GameUIManager {
      * @param {number} y - Y座標
      */
     updateMousePosition(x, y) {
+        // マウス使用時はキーボードナビゲーションをクリア
+        this.gameControlButtons.clearKeyboardFocus();
+        
         this.gameControlButtons.updateMousePosition(x, y);
         this.confirmationDialog.updateMousePosition(x, y);
+    }
+    
+    /**
+     * キーボードイベント処理
+     * @param {KeyboardEvent} event - キーボードイベント
+     * @returns {boolean} イベントが処理されたかどうか
+     */
+    handleKeyboard(event) {
+        // ダイアログが表示されている場合はダイアログに委譲
+        if (this.confirmationDialog.isVisible()) {
+            return this.confirmationDialog.handleKeyboard(event);
+        }
+        
+        // ボタンのキーボードナビゲーション処理
+        return this.gameControlButtons.handleKeyboardNavigation(event);
     }
     
     /**

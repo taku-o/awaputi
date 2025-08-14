@@ -84,12 +84,16 @@ export class GameScene extends Scene {
         this.handleTouchMove = this.handleTouchMove.bind(this);
         this.handleTouchEnd = this.handleTouchEnd.bind(this);
         
+        // キーボードイベント
+        this.handleKeyDown = this.handleKeyDown.bind(this);
+        
         // イベントリスナーを追加
         this.canvas.addEventListener('click', this.handleMouseClick);
         this.canvas.addEventListener('mousemove', this.handleMouseMove);
         this.canvas.addEventListener('touchstart', this.handleTouchStart, { passive: false });
         this.canvas.addEventListener('touchmove', this.handleTouchMove, { passive: false });
         this.canvas.addEventListener('touchend', this.handleTouchEnd);
+        document.addEventListener('keydown', this.handleKeyDown);
     }
     
     /**
@@ -103,6 +107,7 @@ export class GameScene extends Scene {
             this.canvas.removeEventListener('touchmove', this.handleTouchMove);
             this.canvas.removeEventListener('touchend', this.handleTouchEnd);
         }
+        document.removeEventListener('keydown', this.handleKeyDown);
     }
     
     /**
@@ -178,6 +183,19 @@ export class GameScene extends Scene {
     handleTouchEnd(event) {
         event.preventDefault();
         // タッチ終了時の処理（必要に応じて実装）
+    }
+    
+    /**
+     * キーボード処理
+     * @param {KeyboardEvent} event - キーボードイベント
+     */
+    handleKeyDown(event) {
+        // UIManagerのキーボード処理に委譲
+        if (this.uiManager.handleKeyboard(event)) {
+            return; // UIで処理された場合は他の処理をしない
+        }
+        
+        // 他のゲーム固有のキーボード処理があればここに追加
     }
     
     /**

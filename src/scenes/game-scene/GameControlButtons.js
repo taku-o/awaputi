@@ -44,6 +44,12 @@ export class GameControlButtons {
             restart: false   // 初期状態では非表示
         };
         
+        // アクセシビリティ状態
+        this.accessibilityState = {
+            focusedButton: null,    // 現在フォーカスされているボタン
+            keyboardNavigation: false  // キーボードナビゲーション中かどうか
+        };
+        
         // ボタン位置を計算
         this.updateButtonPositions();
     }
@@ -148,6 +154,104 @@ export class GameControlButtons {
      */
     isButtonVisible(buttonType) {
         return this.buttonVisibility[buttonType] || false;
+    }
+    
+    /**
+     * キーボードナビゲーション処理
+     * @param {KeyboardEvent} event - キーボードイベント
+     * @returns {boolean} イベントが処理されたかどうか
+     */
+    handleKeyboardNavigation(event) {
+        if (!this.buttonState.enabled) {
+            return false;
+        }
+        
+        const visibleButtons = this.getVisibleButtons();
+        if (visibleButtons.length === 0) {
+            return false;
+        }
+        
+        switch (event.key) {
+            case 'Tab':
+                this.accessibilityState.keyboardNavigation = true;
+                const direction = event.shiftKey ? -1 : 1;
+                this.navigateButtons(direction, visibleButtons);
+                event.preventDefault();
+                return true;
+                
+            case 'Enter':
+            case ' ':  // スペースキー
+                if (this.accessibilityState.focusedButton) {
+                    this.handleButtonActivation(this.accessibilityState.focusedButton);
+                    event.preventDefault();
+                    return true;
+                }
+                break;
+                
+            case 'Escape':
+                this.clearKeyboardFocus();
+                return true;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * 表示されているボタンの一覧を取得
+     * @returns {string[]} 表示されているボタンタイプの配列
+     */
+    getVisibleButtons() {
+        const buttons = [];
+        if (this.isButtonVisible('giveUp')) buttons.push('giveUp');
+        if (this.isButtonVisible('restart')) buttons.push('restart');
+        return buttons;
+    }
+    
+    /**
+     * ボタン間のナビゲーション
+     * @param {number} direction - 方向 (1: 次へ, -1: 前へ)
+     * @param {string[]} visibleButtons - 表示されているボタンの配列
+     */
+    navigateButtons(direction, visibleButtons) {
+        if (visibleButtons.length === 0) return;
+        
+        let currentIndex = -1;
+        if (this.accessibilityState.focusedButton) {
+            currentIndex = visibleButtons.indexOf(this.accessibilityState.focusedButton);
+        }
+        
+        const nextIndex = (currentIndex + direction + visibleButtons.length) % visibleButtons.length;
+        this.setKeyboardFocus(visibleButtons[nextIndex]);
+    }
+    
+    /**
+     * キーボードフォーカスを設定
+     * @param {string} buttonType - フォーカスするボタンタイプ
+     */
+    setKeyboardFocus(buttonType) {
+        this.accessibilityState.focusedButton = buttonType;
+        this.accessibilityState.keyboardNavigation = true;
+    }
+    
+    /**
+     * キーボードフォーカスをクリア
+     */
+    clearKeyboardFocus() {
+        this.accessibilityState.focusedButton = null;
+        this.accessibilityState.keyboardNavigation = false;
+    }
+    
+    /**
+     * ボタンアクティベーション処理
+     * @param {string} buttonType - アクティベートするボタンタイプ
+     */
+    handleButtonActivation(buttonType) {
+        if (this.isButtonVisible(buttonType)) {
+            // UIManagerのボタンクリック処理を呼び出し
+            if (this.uiManager && typeof this.uiManager.showConfirmationDialog === 'function') {
+                this.uiManager.showConfirmationDialog(buttonType);
+            }
+        }
     }
     
     /**
@@ -272,6 +376,7 @@ export class GameControlButtons {
     renderButton(context, buttonType) {
         const config = this.buttonConfig[buttonType];
         const isHovered = this.buttonState.hoveredButton === buttonType;
+        const isFocused = this.accessibilityState.focusedButton === buttonType;
         const bounds = this.getButtonBounds(buttonType);
         
         if (bounds.width === 0 || bounds.height === 0) {
@@ -289,6 +394,11 @@ export class GameControlButtons {
         context.strokeStyle = config.style.borderColor;
         context.lineWidth = 2;
         context.strokeRect(bounds.x, bounds.y, bounds.width, bounds.height);
+        
+        // キーボードフォーカス表示
+        if (isFocused && this.accessibilityState.keyboardNavigation) {
+            this.renderFocusIndicator(context, bounds);
+        }
         
         // ボタンテキストの描画
         context.fillStyle = config.style.textColor;
@@ -311,6 +421,31 @@ export class GameControlButtons {
         context.shadowOffsetX = 0;
         context.shadowOffsetY = 0;
         context.shadowBlur = 0;
+    }
+    
+    /**
+     * フォーカスインジケーターの描画
+     * @param {CanvasRenderingContext2D} context - 描画コンテキスト
+     * @param {Object} bounds - ボタンの境界情報
+     */
+    renderFocusIndicator(context, bounds) {
+        const focusOffset = 3;
+        const focusLineWidth = 3;
+        
+        context.save();
+        context.strokeStyle = '#007BFF'; // アクセシブルな青色
+        context.lineWidth = focusLineWidth;
+        context.setLineDash([5, 3]); // 点線スタイル
+        
+        // フォーカス枠を描画
+        context.strokeRect(
+            bounds.x - focusOffset,
+            bounds.y - focusOffset,
+            bounds.width + focusOffset * 2,
+            bounds.height + focusOffset * 2
+        );
+        
+        context.restore();
     }
     
     /**
