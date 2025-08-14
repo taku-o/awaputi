@@ -850,32 +850,74 @@ export class GameUIManager {
      * @param {CanvasRenderingContext2D} context - 描画コンテキスト
      */
     renderSpecialEffectsStatus(context) {
-        let statusY = 170;
-        
-        // ボーナスタイム表示
-        if (this.gameEngine.bonusTimeRemaining > 0) {
-            context.fillStyle = '#FFD700';
-            context.font = 'bold 18px Arial';
+        try {
+            const scaledContext = this.getScaledRenderingContext(context);
+            const margins = this.uiPositionCalculator.getResponsiveMargins();
+            
+            // HP表示の下から特殊効果表示を開始
+            const hpPosition = this.uiPositionCalculator.getStatusPosition('hp');
+            let baseY = (hpPosition.y / this.scaledCoordinateManager.getScaleFactor()) + 60; // HPバーの下
+            const baseX = margins.left;
+            const lineSpacing = 25;
+            
             context.textAlign = 'left';
-            const bonusSeconds = Math.ceil(this.gameEngine.bonusTimeRemaining / 1000);
-            context.fillText(`ボーナスタイム: ${bonusSeconds}秒`, 20, statusY);
-            statusY += 25;
-        }
-        
-        // 時間停止表示
-        if (this.gameEngine.timeStopRemaining > 0) {
-            context.fillStyle = '#00BFFF';
-            context.font = 'bold 18px Arial';
-            const stopSeconds = Math.ceil(this.gameEngine.timeStopRemaining / 1000);
-            context.fillText(`時間停止: ${stopSeconds}秒`, 20, statusY);
-            statusY += 25;
-        }
-        
-        // スコア倍率表示
-        if (this.gameEngine.scoreMultiplier > 1) {
-            context.fillStyle = '#FF69B4';
-            context.font = 'bold 18px Arial';
-            context.fillText(`スコア倍率: x${this.gameEngine.scoreMultiplier}`, 20, statusY);
+            context.textBaseline = 'top';
+            context.shadowColor = 'rgba(0, 0, 0, 0.8)';
+            context.shadowOffsetX = 1;
+            context.shadowOffsetY = 1;
+            context.shadowBlur = 2;
+            
+            // スケーリング対応フォント設定
+            scaledContext.setScaledFont(18, 'bold Arial');
+            
+            // ボーナスタイム表示
+            if (this.gameEngine.bonusTimeRemaining > 0) {
+                context.fillStyle = '#FFD700';
+                const bonusSeconds = Math.ceil(this.gameEngine.bonusTimeRemaining / 1000);
+                scaledContext.fillText(`ボーナスタイム: ${bonusSeconds}秒`, baseX, baseY);
+                baseY += lineSpacing;
+            }
+            
+            // 時間停止表示
+            if (this.gameEngine.timeStopRemaining > 0) {
+                context.fillStyle = '#00BFFF';
+                const stopSeconds = Math.ceil(this.gameEngine.timeStopRemaining / 1000);
+                scaledContext.fillText(`時間停止: ${stopSeconds}秒`, baseX, baseY);
+                baseY += lineSpacing;
+            }
+            
+            // スコア倍率表示
+            if (this.gameEngine.scoreMultiplier > 1) {
+                context.fillStyle = '#FF69B4';
+                scaledContext.fillText(`スコア倍率: x${this.gameEngine.scoreMultiplier}`, baseX, baseY);
+            }
+        } catch (error) {
+            console.warn('GameUIManager: renderSpecialEffectsStatus failed, using fallback', error);
+            // フォールバック: 元の実装
+            let statusY = 170;
+            
+            if (this.gameEngine.bonusTimeRemaining > 0) {
+                context.fillStyle = '#FFD700';
+                context.font = 'bold 18px Arial';
+                context.textAlign = 'left';
+                const bonusSeconds = Math.ceil(this.gameEngine.bonusTimeRemaining / 1000);
+                context.fillText(`ボーナスタイム: ${bonusSeconds}秒`, 20, statusY);
+                statusY += 25;
+            }
+            
+            if (this.gameEngine.timeStopRemaining > 0) {
+                context.fillStyle = '#00BFFF';
+                context.font = 'bold 18px Arial';
+                const stopSeconds = Math.ceil(this.gameEngine.timeStopRemaining / 1000);
+                context.fillText(`時間停止: ${stopSeconds}秒`, 20, statusY);
+                statusY += 25;
+            }
+            
+            if (this.gameEngine.scoreMultiplier > 1) {
+                context.fillStyle = '#FF69B4';
+                context.font = 'bold 18px Arial';
+                context.fillText(`スコア倍率: x${this.gameEngine.scoreMultiplier}`, 20, statusY);
+            }
         }
     }
     

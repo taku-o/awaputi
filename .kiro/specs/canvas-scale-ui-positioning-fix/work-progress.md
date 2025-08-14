@@ -79,7 +79,18 @@ tasks.mdの12段階65サブタスクに従って実装を進行：
   - renderHPDisplay()&renderHPBar()修正: HP表示とバーのスケーリング対応
 - **12:45** Task 5.1 完了 - コンボ表示修正完了
   - renderComboDisplay()修正: 右寄せ配置のスケーリング対応
-  - 次は 特殊効果表示とInputCoordinateConverter実装
+- **13:00** Task 5.2 完了 - 特殊効果表示修正完了
+  - renderSpecialEffectsStatus()修正: HP表示下への動的配置
+  - ボーナスタイム、時間停止、スコア倍率表示のスケーリング対応
+- **13:15** Task 6.1 完了 - InputCoordinateConverter実装完了
+  - マウス・タッチイベント座標変換システム実装
+  - 矩形・円形ヒットテスト機能実装
+  - 座標境界検証とマルチタッチ対応実装
+- **13:30** Task 7.1 完了 - GameControlButtons位置修正完了
+  - UIPositionCalculatorとの統合実装
+  - InputCoordinateConverter初期化実装
+  - ボタン配置のスケーリング対応完了
+  - 次は クリック検出とバブル相互作用の修正
 
 ## 技術メモ
 

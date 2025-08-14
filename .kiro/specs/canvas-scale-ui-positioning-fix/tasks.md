@@ -108,7 +108,7 @@
   - Ensure combo flash animations work with scaled rendering
   - _Requirements: 2.1, 2.4, 2.5_
 
-- [ ] 5.2 Update special effects status display
+- [x] 5.2 Update special effects status display
   - Modify renderSpecialEffectsStatus() to use scaled coordinate system
   - Fix bonus time and time stop display positioning
   - Ensure all status effects render at correct scaled positions
@@ -120,7 +120,7 @@
   - Add hit testing methods that account for canvas scaling
   - _Requirements: 3.2, 3.3, 4.1, 4.2, 4.3_
 
-- [ ] 6.1 Create InputCoordinateConverter base class
+- [x] 6.1 Create InputCoordinateConverter base class
   - Create src/utils/InputCoordinateConverter.js with coordinate conversion methods
   - Implement convertMouseEvent() method for mouse input scaling
   - Add convertTouchEvent() method for touch input on mobile devices
@@ -144,7 +144,7 @@
   - Ensure hover states work correctly with scaled coordinates
   - _Requirements: 3.1, 3.2, 3.3, 3.4_
 
-- [ ] 7.1 Fix GameControlButtons positioning
+- [x] 7.1 Fix GameControlButtons positioning
   - Update GameControlButtons.js to use UIPositionCalculator for button positions
   - Replace hardcoded button coordinates with scaled positioning system
   - Ensure button spacing and alignment work across different screen sizes

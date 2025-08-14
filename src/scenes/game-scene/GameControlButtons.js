@@ -1,3 +1,5 @@
+import { InputCoordinateConverter } from '../../utils/InputCoordinateConverter.js';
+
 /**
  * ゲームコントロールボタン管理クラス
  * Give Up（ギブアップ）とRestart（ゲーム再開始）ボタンを管理
@@ -59,8 +61,37 @@ export class GameControlButtons {
             keyboardNavigation: false  // キーボードナビゲーション中かどうか
         };
         
+        // 座標変換システムを初期化
+        this.initializeCoordinateSystem();
+        
         // ボタン位置を計算
         this.updateButtonPositions();
+    }
+    
+    /**
+     * 座標変換システムを初期化
+     */
+    initializeCoordinateSystem() {
+        try {
+            // UIManagerからUIPositionCalculatorとScaledCoordinateManagerを取得
+            if (this.uiManager && this.uiManager.uiPositionCalculator) {
+                this.uiPositionCalculator = this.uiManager.uiPositionCalculator;
+                this.scaledCoordinateManager = this.uiManager.scaledCoordinateManager;
+                
+                // InputCoordinateConverterを初期化
+                this.inputCoordinateConverter = new InputCoordinateConverter(this.scaledCoordinateManager);
+            } else {
+                console.warn('GameControlButtons: UIManager coordinate system not available, using fallback');
+                this.uiPositionCalculator = null;
+                this.scaledCoordinateManager = null;
+                this.inputCoordinateConverter = null;
+            }
+        } catch (error) {
+            console.error('GameControlButtons: Failed to initialize coordinate system', error);
+            this.uiPositionCalculator = null;
+            this.scaledCoordinateManager = null;
+            this.inputCoordinateConverter = null;
+        }
     }
     
     /**
@@ -83,66 +114,62 @@ export class GameControlButtons {
      * ボタン位置の更新（レスポンシブ対応）
      */
     updateButtonPositions() {
-        const canvas = this.gameEngine.canvas;
-        const rightMargin = 5;   // 右側のマージン（上のマージンと統一）
-        const topMargin = 5;     // 上側のマージン（5pxに戻す）
-        const buttonSpacing = 10;
-        
-        // ResponsiveCanvasManagerを使用して適切な座標を取得
-        let giveUpX, giveUpY, restartX, restartY;
-        
-        if (this.gameEngine.responsiveCanvasManager && typeof this.gameEngine.responsiveCanvasManager.getScaledCoordinates === 'function') {
-            // ResponsiveCanvasManagerから正しい基準サイズを取得
-            const canvasInfo = this.gameEngine.responsiveCanvasManager.getCanvasInfo();
-            const baseWidth = canvasInfo ? canvasInfo.baseWidth : canvas.width;
-            const baseHeight = canvasInfo ? canvasInfo.baseHeight : canvas.height;
-            
-            // 右上角の基準座標を計算（正しい基準サイズで）
-            const baseGiveUpX = baseWidth - this.buttonConfig.giveUp.size.width - rightMargin;
-            const baseGiveUpY = topMargin;
-            const baseRestartX = baseWidth - this.buttonConfig.restart.size.width - rightMargin;
-            const baseRestartY = topMargin + this.buttonConfig.giveUp.size.height + buttonSpacing;
-            
-            // ResponsiveCanvasManagerでスケール座標を取得
-            const scaledGiveUp = this.gameEngine.responsiveCanvasManager.getScaledCoordinates(baseGiveUpX, baseGiveUpY);
-            const scaledRestart = this.gameEngine.responsiveCanvasManager.getScaledCoordinates(baseRestartX, baseRestartY);
-            
-            giveUpX = scaledGiveUp.x;
-            giveUpY = scaledGiveUp.y;
-            restartX = scaledRestart.x;
-            restartY = scaledRestart.y;
-            
-            console.log('Button dimensions:', { 
-                width: this.buttonConfig.giveUp.size.width,
-                height: this.buttonConfig.giveUp.size.height 
-            });
-            console.log('Canvas info:', { baseWidth, actualWidth: canvas.width });
-            console.log('Button positions - Base:', { baseGiveUpX, baseGiveUpY }, 'Scaled:', { giveUpX, giveUpY });
-            // ボタンサイズもスケールする必要がある
-            const scaledButtonWidth = this.buttonConfig.giveUp.size.width * canvasInfo.scale;
-            const scaledButtonHeight = this.buttonConfig.giveUp.size.height * canvasInfo.scale;
-            
-            console.log('Button right edge (scaled):', giveUpX + scaledButtonWidth);
-            console.log('Scaled button size:', { width: scaledButtonWidth, height: scaledButtonHeight });
-        } else {
-            // フォールバック: 左上に配置（デバッグ用）
-            giveUpX = rightMargin;
-            giveUpY = topMargin + 80;
-            restartX = rightMargin;
-            restartY = topMargin + 80 + this.buttonConfig.giveUp.size.height + buttonSpacing;
-            
-            console.warn('ResponsiveCanvasManager not available, using fallback coordinates');
+        try {
+            if (this.uiPositionCalculator) {
+                // UIPositionCalculatorを使用した新しい実装
+                const giveUpPosition = this.uiPositionCalculator.getButtonPosition('giveup', 0);
+                const restartPosition = this.uiPositionCalculator.getButtonPosition('restart', 1);
+                
+                // ベース座標系に戻す（ボタンレンダリングで使用するため）
+                const giveUpBase = this.scaledCoordinateManager.getBasePosition(giveUpPosition.x, giveUpPosition.y);
+                const restartBase = this.scaledCoordinateManager.getBasePosition(restartPosition.x, restartPosition.y);
+                
+                this.buttonConfig.giveUp.position = giveUpBase;
+                this.buttonConfig.restart.position = restartBase;
+            } else {
+                // フォールバック: 既存のResponsiveCanvasManager実装
+                const canvas = this.gameEngine.canvas;
+                const rightMargin = 5;
+                const topMargin = 5;
+                const buttonSpacing = 10;
+                
+                let giveUpX, giveUpY, restartX, restartY;
+                
+                if (this.gameEngine.responsiveCanvasManager && typeof this.gameEngine.responsiveCanvasManager.getScaledCoordinates === 'function') {
+                    const canvasInfo = this.gameEngine.responsiveCanvasManager.getCanvasInfo();
+                    const baseWidth = canvasInfo ? canvasInfo.baseWidth : canvas.width;
+                    
+                    const baseGiveUpX = baseWidth - this.buttonConfig.giveUp.size.width - rightMargin;
+                    const baseGiveUpY = topMargin;
+                    const baseRestartX = baseWidth - this.buttonConfig.restart.size.width - rightMargin;
+                    const baseRestartY = topMargin + this.buttonConfig.giveUp.size.height + buttonSpacing;
+                    
+                    const scaledGiveUp = this.gameEngine.responsiveCanvasManager.getScaledCoordinates(baseGiveUpX, baseGiveUpY);
+                    const scaledRestart = this.gameEngine.responsiveCanvasManager.getScaledCoordinates(baseRestartX, baseRestartY);
+                    
+                    // スケール済み座標をベース座標に戻す
+                    const scale = canvasInfo.scale;
+                    giveUpX = scaledGiveUp.x / scale;
+                    giveUpY = scaledGiveUp.y / scale;
+                    restartX = scaledRestart.x / scale;
+                    restartY = scaledRestart.y / scale;
+                } else {
+                    console.warn('GameControlButtons: No coordinate system available, using default positions');
+                    giveUpX = rightMargin;
+                    giveUpY = topMargin + 80;
+                    restartX = rightMargin;
+                    restartY = topMargin + 80 + this.buttonConfig.giveUp.size.height + buttonSpacing;
+                }
+                
+                this.buttonConfig.giveUp.position = { x: giveUpX, y: giveUpY };
+                this.buttonConfig.restart.position = { x: restartX, y: restartY };
+            }
+        } catch (error) {
+            console.warn('GameControlButtons: Button position update failed', error);
+            // 最終フォールバック
+            this.buttonConfig.giveUp.position = { x: 10, y: 90 };
+            this.buttonConfig.restart.position = { x: 10, y: 140 };
         }
-        
-        // ボタン位置を設定
-        this.buttonConfig.giveUp.position = { x: giveUpX, y: giveUpY };
-        this.buttonConfig.restart.position = { x: restartX, y: restartY };
-        
-        console.log('Canvas dimensions:', canvas.width, 'x', canvas.height);
-        console.log('Final button positions:', {
-            giveUp: this.buttonConfig.giveUp.position,
-            restart: this.buttonConfig.restart.position
-        });
     }
     
     /**
