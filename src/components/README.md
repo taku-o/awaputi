@@ -12,6 +12,10 @@
 
 アクセシビリティプロファイル切り替えのためのUIコンポーネントです。プリセットされたアクセシビリティ設定を選択・適用できます。
 
+### SettingsImportExportComponent
+
+設定のインポート・エクスポート機能を提供するUIコンポーネントです。設定をJSONファイルでエクスポート・インポートできます。
+
 ---
 
 ## VolumeControlComponent
@@ -463,3 +467,305 @@ element.addEventListener('accessibilityProfileChanged', (event) => {
 - 3つのプリセットプロファイル実装
 - ドロップダウンUIとアクセシビリティ対応
 - エラーハンドリングと視覚的フィードバック
+
+---
+
+## SettingsImportExportComponent
+
+設定のインポート・エクスポート機能を提供するUIコンポーネントです。KeyboardShortcutManagerから設定管理機能を移行し、ユーザーフレンドリーなファイル操作UIを提供します。
+
+### 特徴
+
+- **設定エクスポート**: JSONファイルでの設定ダウンロード
+- **設定インポート**: ファイル選択と検証機能
+- **包括的な検証**: ファイルサイズ、形式、データ整合性チェック
+- **エラーハンドリング**: 適切なユーザーフィードバックとエラー処理
+- **視覚的フィードバック**: プログレスバーとステータス表示
+- **統計機能**: 操作履歴と使用統計の追跡
+
+### 基本的な使用方法
+
+```javascript
+import { SettingsImportExportComponent } from './SettingsImportExportComponent.js';
+
+// コンポーネントの作成
+const importExportComponent = new SettingsImportExportComponent(gameEngine);
+
+// 初期化と表示
+const container = document.getElementById('settings-management');
+importExportComponent.initialize(container);
+```
+
+### API リファレンス
+
+#### Constructor
+
+```javascript
+const importExportComponent = new SettingsImportExportComponent(gameEngine);
+```
+
+- `gameEngine`: GameEngineインスタンス（settingsManager、sceneManagerを含む）
+
+#### メソッド
+
+##### initialize(parentElement)
+コンポーネントを初期化してDOMに追加します。
+
+```javascript
+const element = importExportComponent.initialize(parentElement);
+```
+
+- `parentElement`: HTMLElement - 親コンテナ要素
+- **返り値**: HTMLElement - 作成されたコンテナ要素
+
+##### handleExportSettings()
+設定をJSONファイルとしてエクスポートします。
+
+```javascript
+await importExportComponent.handleExportSettings();
+```
+
+##### handleImportSettings()
+ファイル選択ダイアログを開き、設定をインポートします。
+
+```javascript
+importExportComponent.handleImportSettings();
+```
+
+##### validateImportFile(file)
+インポートファイルの妥当性を検証します。
+
+```javascript
+const result = await importExportComponent.validateImportFile(file);
+// { valid: boolean, error?: string }
+```
+
+##### validateImportData(data)
+インポートデータの構造を検証します。
+
+```javascript
+const result = await importExportComponent.validateImportData(data);
+// { valid: boolean, error?: string }
+```
+
+##### getStats()
+コンポーネントの使用統計を取得します。
+
+```javascript
+const stats = importExportComponent.getStats();
+```
+
+##### setVisible(visible)
+コンポーネントの表示/非表示を切り替えます。
+
+```javascript
+importExportComponent.setVisible(false); // 非表示
+importExportComponent.setVisible(true);  // 表示
+```
+
+##### isEnabled()
+コンポーネントが有効かどうかを確認します。
+
+```javascript
+if (importExportComponent.isEnabled()) {
+    // コンポーネントが利用可能
+}
+```
+
+##### destroy()
+コンポーネントをクリーンアップします。
+
+```javascript
+importExportComponent.destroy();
+```
+
+### SettingsSceneでの統合例
+
+```javascript
+import { SettingsImportExportComponent } from '../components/SettingsImportExportComponent.js';
+
+export class SettingsScene extends Scene {
+    constructor(gameEngine) {
+        super(gameEngine);
+        this.settingsImportExportComponent = null;
+    }
+    
+    initializeSettingItems() {
+        return {
+            accessibility: [
+                // 既存の設定項目...
+                { 
+                    key: 'settings.importExport', 
+                    label: '設定のインポート・エクスポート', 
+                    type: 'custom',
+                    component: 'SettingsImportExportComponent',
+                    description: '設定をJSONファイルでエクスポート・インポートできます'
+                }
+            ]
+        };
+    }
+    
+    handleCustomComponent(settingItem, parentElement) {
+        if (settingItem.component === 'SettingsImportExportComponent') {
+            if (!this.settingsImportExportComponent) {
+                this.settingsImportExportComponent = new SettingsImportExportComponent(this.gameEngine);
+            }
+            
+            const element = this.settingsImportExportComponent.initialize(parentElement);
+            
+            // イベントリスナーの設定
+            element.addEventListener('settingsExported', (event) => {
+                this.handleSettingsExported(event.detail);
+            });
+            
+            element.addEventListener('settingsImported', (event) => {
+                this.handleSettingsImported(event.detail);
+            });
+            
+            return element;
+        }
+    }
+    
+    cleanup() {
+        if (this.settingsImportExportComponent) {
+            this.settingsImportExportComponent.destroy();
+        }
+        super.cleanup();
+    }
+}
+```
+
+### イベント
+
+#### settingsExported
+設定がエクスポートされた時に発火されるカスタムイベントです。
+
+```javascript
+element.addEventListener('settingsExported', (event) => {
+    console.log('Export details:', event.detail);
+    // { filename: string, timestamp: number, dataSize: number }
+});
+```
+
+#### settingsImported
+設定がインポートされた時に発火されるカスタムイベントです。
+
+```javascript
+element.addEventListener('settingsImported', (event) => {
+    console.log('Import details:', event.detail);
+    // { filename: string, timestamp: number, settingsCount: number, warnings: string[] }
+});
+```
+
+### エクスポートデータ形式
+
+```json
+{
+    "timestamp": "2025-01-14T10:30:00.000Z",
+    "version": "1.0.0",
+    "gameVersion": "1.0.0",
+    "source": "SettingsImportExportComponent",
+    "settings": {
+        "ui.language": "ja",
+        "ui.quality": "high",
+        "audio.masterVolume": 0.8
+    },
+    "accessibility": {
+        "accessibility.highContrast": false,
+        "accessibility.largeText": true,
+        "currentProfile": "default",
+        "stats": { ... }
+    },
+    "metadata": {
+        "userAgent": "...",
+        "language": "ja-JP",
+        "exportedBy": "awaputi-bubble-pop-game"
+    }
+}
+```
+
+### ファイル検証
+
+#### サポートされる形式
+- JSON (.json)
+
+#### 制限事項
+- 最大ファイルサイズ: 5MB
+- 必須フィールド: timestamp, version, settings または accessibility
+
+#### 検証項目
+1. ファイルサイズ制限
+2. ファイル形式チェック
+3. JSON構文チェック
+4. データ構造検証
+5. バージョン互換性確認
+
+### スタイリング
+
+コンポーネントは以下のCSSクラスを使用します：
+
+- `.settings-import-export-component`: メインコンテナ
+- `.export-settings-button`: エクスポートボタン
+- `.import-settings-button`: インポートボタン
+- `.status-indicator`: ステータス表示
+- `.progress-bar`: プログレスバー
+
+### アクセシビリティ
+
+- **キーボード操作**: Tab、Enter、Spaceキーによる操作
+- **ARIA属性**: role、aria-labelの設定
+- **スクリーンリーダー**: ボタンとステータスの読み上げ対応
+- **フォーカス管理**: 適切なフォーカス表示
+
+### エラーハンドリング
+
+- **ファイルサイズエラー**: 5MB制限超過時の適切なメッセージ
+- **形式エラー**: サポートされていない形式の明確な説明
+- **データ破損エラー**: JSON解析失敗時のユーザーフレンドリーなメッセージ
+- **設定適用エラー**: 個別設定項目の適用失敗時の詳細フィードバック
+
+### パフォーマンス
+
+- **非同期処理**: ファイル操作の非ブロッキング実行
+- **進行状況表示**: 長時間処理の視覚的フィードバック
+- **メモリ効率**: 大きなファイルの適切な処理
+- **エラー復旧**: 処理失敗時の状態復元
+
+### セキュリティ
+
+- **ファイル検証**: 悪意のあるファイルの検出
+- **データサニタイゼーション**: 設定値の安全な検証
+- **設定制限**: 不正な設定値の拒否
+- **入力制限**: ファイルサイズと形式の厳格な制限
+
+### テスト
+
+```bash
+# テスト実行
+npm test src/components/__tests__/SettingsImportExportComponent.test.js
+```
+
+### Requirements満足
+
+このコンポーネントは以下のRequirementsを満たしています：
+
+- **Requirement 5.5**: 設定エクスポートボタンの実装
+- **Requirement 5.6**: 設定インポートボタンの実装
+- **Requirement 5.8**: JSONファイルでのエクスポート機能
+- **Requirement 5.9**: ファイル検証とエラーハンドリング
+
+### 依存関係
+
+- `../utils/ErrorHandler.js`: エラーハンドリング
+- `../core/LocalizationManager.js`: 多言語対応
+- `gameEngine.settingsManager`: 設定管理
+- `gameEngine.sceneManager.currentScene.accessibilitySettingsManager`: アクセシビリティ設定管理
+
+### 変更履歴
+
+#### v1.0.0 (2025-01-14)
+- 初期実装
+- Issue #170 Task 1.3 対応
+- エクスポート・インポート機能実装
+- ファイル検証とエラーハンドリング
+- 統計機能と視覚的フィードバック
