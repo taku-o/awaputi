@@ -975,4 +975,34 @@ export class EffectManager {
     enable() {
         console.log('[EffectManager] エフェクトシステムを有効化しました');
     }
+    
+    /**
+     * エフェクトの品質レベルを設定（ErrorRecovery用）
+     * @param {string} level - 品質レベル ('high', 'medium', 'low')
+     */
+    setQualityLevel(level) {
+        try {
+            switch (level) {
+                case 'low':
+                    // 低品質: エフェクトを無効化または大幅削減
+                    this.disable();
+                    console.log('[EffectManager] 品質レベルを低に設定: エフェクトを無効化');
+                    break;
+                case 'medium':
+                    // 中品質: 一部のエフェクトを削減
+                    this.clearEffects();
+                    // パフォーマンスの高いエフェクトのみ維持
+                    console.log('[EffectManager] 品質レベルを中に設定: エフェクトを削減');
+                    break;
+                case 'high':
+                default:
+                    // 高品質: 全エフェクト有効（デフォルト）
+                    this.enable();
+                    console.log('[EffectManager] 品質レベルを高に設定: 全エフェクト有効');
+                    break;
+            }
+        } catch (error) {
+            console.warn('EffectManager: setQualityLevel failed', error);
+        }
+    }
 }
