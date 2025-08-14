@@ -7,26 +7,28 @@ export class GameControlButtons {
         this.gameEngine = gameEngine;
         this.uiManager = uiManager;
         
-        // ボタン設定
+        // ボタン設定（モバイル対応：最小44pxタッチターゲット）
         this.buttonConfig = {
             giveUp: {
                 text: 'ギブアップ',
-                size: { width: 100, height: 35 },
+                size: { width: 120, height: 44 },  // モバイル最適化：タッチフレンドリーサイズ
                 style: {
                     backgroundColor: '#FF6B6B',
                     textColor: '#FFFFFF',
                     borderColor: '#FF5252',
-                    hoverColor: '#FF8A80'
+                    hoverColor: '#FF8A80',
+                    activeColor: '#FF5252'  // タッチ時のフィードバック色
                 }
             },
             restart: {
                 text: 'ゲーム再開始',
-                size: { width: 100, height: 35 },
+                size: { width: 120, height: 44 },  // モバイル最適化：タッチフレンドリーサイズ
                 style: {
                     backgroundColor: '#4CAF50',
                     textColor: '#FFFFFF',
                     borderColor: '#45A049',
-                    hoverColor: '#66BB6A'
+                    hoverColor: '#66BB6A',
+                    activeColor: '#45A049'  // タッチ時のフィードバック色
                 }
             }
         };
@@ -35,7 +37,14 @@ export class GameControlButtons {
         this.buttonState = {
             enabled: true,
             hoveredButton: null,
+            activeButton: null,  // タッチ/クリック中のボタン
             lastMousePosition: { x: 0, y: 0 }
+        };
+        
+        // モバイルデバイス検出
+        this.deviceInfo = {
+            isTouchDevice: this.detectTouchDevice(),
+            isMobile: this.detectMobileDevice()
         };
         
         // ボタン表示状態（ゲーム状態に応じて制御）
@@ -52,6 +61,22 @@ export class GameControlButtons {
         
         // ボタン位置を計算
         this.updateButtonPositions();
+    }
+    
+    /**
+     * タッチデバイスの検出
+     * @returns {boolean} タッチデバイスかどうか
+     */
+    detectTouchDevice() {
+        return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    }
+    
+    /**
+     * モバイルデバイスの検出
+     * @returns {boolean} モバイルデバイスかどうか
+     */
+    detectMobileDevice() {
+        return /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
     }
     
     /**
@@ -255,6 +280,58 @@ export class GameControlButtons {
     }
     
     /**
+     * タッチ開始処理
+     * @param {number} x - X座標
+     * @param {number} y - Y座標
+     * @returns {string|null} タッチされたボタンタイプ
+     */
+    handleTouchStart(x, y) {
+        if (!this.buttonState.enabled) {
+            return null;
+        }
+        
+        // 表示されているボタンのみタッチ処理
+        if (this.isButtonVisible('giveUp') && this.isButtonClicked(x, y, 'giveUp')) {
+            this.buttonState.activeButton = 'giveUp';
+            return 'giveUp';
+        } else if (this.isButtonVisible('restart') && this.isButtonClicked(x, y, 'restart')) {
+            this.buttonState.activeButton = 'restart';
+            return 'restart';
+        }
+        
+        return null;
+    }
+    
+    /**
+     * タッチ終了処理
+     * @param {number} x - X座標
+     * @param {number} y - Y座標
+     * @returns {string|null} 完了したボタンタイプ
+     */
+    handleTouchEnd(x, y) {
+        const activeButton = this.buttonState.activeButton;
+        this.buttonState.activeButton = null;
+        
+        if (!this.buttonState.enabled || !activeButton) {
+            return null;
+        }
+        
+        // タッチ終了位置が同じボタン内であれば実行
+        if (this.isButtonClicked(x, y, activeButton)) {
+            return activeButton;
+        }
+        
+        return null;
+    }
+    
+    /**
+     * タッチキャンセル処理
+     */
+    handleTouchCancel() {
+        this.buttonState.activeButton = null;
+    }
+    
+    /**
      * マウス座標の更新（ホバー状態管理用）
      * @param {number} x - X座標
      * @param {number} y - Y座標
@@ -377,14 +454,20 @@ export class GameControlButtons {
         const config = this.buttonConfig[buttonType];
         const isHovered = this.buttonState.hoveredButton === buttonType;
         const isFocused = this.accessibilityState.focusedButton === buttonType;
+        const isActive = this.buttonState.activeButton === buttonType;
         const bounds = this.getButtonBounds(buttonType);
         
         if (bounds.width === 0 || bounds.height === 0) {
             return;
         }
         
-        // ボタン背景色
-        const backgroundColor = isHovered ? config.style.hoverColor : config.style.backgroundColor;
+        // ボタン背景色（優先度：アクティブ > ホバー > 通常）
+        let backgroundColor = config.style.backgroundColor;
+        if (isActive) {
+            backgroundColor = config.style.activeColor || config.style.borderColor;
+        } else if (isHovered && !this.deviceInfo.isTouchDevice) {
+            backgroundColor = config.style.hoverColor;
+        }
         
         // ボタンの背景描画
         context.fillStyle = backgroundColor;
@@ -400,9 +483,15 @@ export class GameControlButtons {
             this.renderFocusIndicator(context, bounds);
         }
         
-        // ボタンテキストの描画
+        // タッチフィードバック（アクティブ状態の視覚効果）
+        if (isActive) {
+            this.renderTouchFeedback(context, bounds);
+        }
+        
+        // ボタンテキストの描画（モバイル対応でフォントサイズ調整）
         context.fillStyle = config.style.textColor;
-        context.font = 'bold 14px Arial';
+        const fontSize = this.deviceInfo.isMobile ? 13 : 14;
+        context.font = `bold ${fontSize}px Arial`;
         context.textAlign = 'center';
         context.textBaseline = 'middle';
         
@@ -421,6 +510,28 @@ export class GameControlButtons {
         context.shadowOffsetX = 0;
         context.shadowOffsetY = 0;
         context.shadowBlur = 0;
+    }
+    
+    /**
+     * タッチフィードバックの描画
+     * @param {CanvasRenderingContext2D} context - 描画コンテキスト
+     * @param {Object} bounds - ボタンの境界情報
+     */
+    renderTouchFeedback(context, bounds) {
+        context.save();
+        
+        // 内側に少し明るいハイライト効果
+        const gradient = context.createLinearGradient(
+            bounds.x, bounds.y, 
+            bounds.x, bounds.y + bounds.height
+        );
+        gradient.addColorStop(0, 'rgba(255, 255, 255, 0.3)');
+        gradient.addColorStop(1, 'rgba(255, 255, 255, 0.1)');
+        
+        context.fillStyle = gradient;
+        context.fillRect(bounds.x + 1, bounds.y + 1, bounds.width - 2, bounds.height - 2);
+        
+        context.restore();
     }
     
     /**

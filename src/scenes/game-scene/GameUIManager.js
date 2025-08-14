@@ -115,6 +115,57 @@ export class GameUIManager {
     }
     
     /**
+     * タッチ開始処理
+     * @param {number} x - X座標
+     * @param {number} y - Y座標
+     * @returns {boolean} タッチが処理されたかどうか
+     */
+    handleTouchStart(x, y) {
+        // まずダイアログのタッチ処理を試行
+        if (this.confirmationDialog.handleClick(x, y)) {
+            return true;
+        }
+        
+        // ダイアログが表示されている場合はボタンタッチを無視
+        if (this.confirmationDialog.isVisible()) {
+            return false;
+        }
+        
+        // ボタンのタッチ開始処理
+        const touchedButton = this.gameControlButtons.handleTouchStart(x, y);
+        return touchedButton !== null;
+    }
+    
+    /**
+     * タッチ終了処理
+     * @param {number} x - X座標
+     * @param {number} y - Y座標
+     * @returns {boolean} タッチが処理されたかどうか
+     */
+    handleTouchEnd(x, y) {
+        // ダイアログが表示されている場合は何もしない
+        if (this.confirmationDialog.isVisible()) {
+            return false;
+        }
+        
+        // ボタンのタッチ終了処理
+        const completedButton = this.gameControlButtons.handleTouchEnd(x, y);
+        if (completedButton) {
+            this.showConfirmationDialog(completedButton);
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * タッチキャンセル処理
+     */
+    handleTouchCancel() {
+        this.gameControlButtons.handleTouchCancel();
+    }
+    
+    /**
      * 確認ダイアログの表示
      * @param {string} type - ダイアログタイプ（'giveUp' または 'restart'）
      */

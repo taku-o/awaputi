@@ -87,12 +87,16 @@ export class GameScene extends Scene {
         // キーボードイベント
         this.handleKeyDown = this.handleKeyDown.bind(this);
         
+        // タッチキャンセルイベント
+        this.handleTouchCancel = this.handleTouchCancel.bind(this);
+        
         // イベントリスナーを追加
         this.canvas.addEventListener('click', this.handleMouseClick);
         this.canvas.addEventListener('mousemove', this.handleMouseMove);
         this.canvas.addEventListener('touchstart', this.handleTouchStart, { passive: false });
         this.canvas.addEventListener('touchmove', this.handleTouchMove, { passive: false });
         this.canvas.addEventListener('touchend', this.handleTouchEnd);
+        this.canvas.addEventListener('touchcancel', this.handleTouchCancel);
         document.addEventListener('keydown', this.handleKeyDown);
     }
     
@@ -106,6 +110,7 @@ export class GameScene extends Scene {
             this.canvas.removeEventListener('touchstart', this.handleTouchStart);
             this.canvas.removeEventListener('touchmove', this.handleTouchMove);
             this.canvas.removeEventListener('touchend', this.handleTouchEnd);
+            this.canvas.removeEventListener('touchcancel', this.handleTouchCancel);
         }
         document.removeEventListener('keydown', this.handleKeyDown);
     }
@@ -152,8 +157,8 @@ export class GameScene extends Scene {
         const x = touch.clientX - rect.left;
         const y = touch.clientY - rect.top;
         
-        // UIボタンのタッチ処理
-        if (this.uiManager.handleControlButtonClick(x, y)) {
+        // UIボタンのタッチ開始処理
+        if (this.uiManager.handleTouchStart(x, y)) {
             return;
         }
         
@@ -182,7 +187,31 @@ export class GameScene extends Scene {
      */
     handleTouchEnd(event) {
         event.preventDefault();
-        // タッチ終了時の処理（必要に応じて実装）
+        
+        // changedTouchesから座標を取得（touchesは空になることがある）
+        const touch = event.changedTouches[0];
+        const rect = this.canvas.getBoundingClientRect();
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+        
+        // UIボタンのタッチ終了処理
+        if (this.uiManager.handleTouchEnd(x, y)) {
+            return;
+        }
+        
+        // 通常のゲームタッチ終了処理
+        // 既存のゲームロジック...
+    }
+    
+    /**
+     * タッチキャンセル処理
+     * @param {TouchEvent} event - タッチイベント
+     */
+    handleTouchCancel(event) {
+        event.preventDefault();
+        
+        // UIマネージャーのタッチキャンセル処理
+        this.uiManager.handleTouchCancel();
     }
     
     /**
