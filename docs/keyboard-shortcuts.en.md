@@ -39,8 +39,11 @@ For Arabic and Hebrew languages, navigation keys are automatically adjusted:
 |-----|----------|-------------|
 | **Space** | Pause/Resume Game | Pauses or resumes the game during gameplay |
 | **Escape** | Return to Menu/Close Screen | Returns to main menu during game or closes settings screens |
-| **F** | Toggle Fullscreen | Toggles fullscreen mode on/off |
-| **M** | Toggle Audio Mute | Toggles mute/unmute for all audio |
+
+### 🆕 Settings Screen UI Features
+The following functions are available through settings screen UI buttons:
+- **Toggle Fullscreen**: Available in General Settings category
+- **Toggle Audio Mute**: Available in General Settings category
 
 ### 🎮 Game Control Features
 Give Up and Restart functions are now available through UI buttons in the top-right corner of the screen:
@@ -95,29 +98,27 @@ For Arabic and Hebrew languages, navigation keys are automatically adjusted:
 
 ## Volume Control
 
-| Key | Function | Description |
-|-----|----------|-------------|
-| **Ctrl + ↑** | Volume Up | Increases master volume by 10% |
-| **Ctrl + ↓** | Volume Down | Decreases master volume by 10% |
+### 🆕 Settings Screen UI Available
+Volume control functions are available through settings screen UI buttons:
+- **Volume Control Buttons**: Use volume up/down buttons in General Settings category
 
 ## Accessibility Features
 
 ### 🆕 Integrated Accessibility Settings
 Accessibility features have been integrated into the unified settings screen.
 
-| Key | Function | Description |
-|-----|----------|-------------|
-| **Settings → Accessibility** | Unified Settings Screen | Open settings via UI, navigate to accessibility category for comprehensive settings |
-| **Ctrl + Alt + H** | Toggle High Contrast | Toggles high contrast mode on/off |
-| **Ctrl + Alt + T** | Toggle Large Text | Toggles between large and standard text size |
-| **Ctrl + Alt + M** | Toggle Reduced Motion | Toggles between reduced and standard animation effects |
+### 🆕 Settings Screen UI Available Functions
+The following functions are available through the Accessibility category in settings screen:
 
-### 🆕 Settings Screen Accessibility Features
-| Key | Function | Description |
-|-----|----------|-------------|
-| **Ctrl + P** | Profile Switching | Switch between Default, High Contrast, and Motor Accessibility profiles |
-| **Ctrl + E** | Export Settings | Export accessibility settings in JSON format |
-| **Ctrl + I** | Import Settings | Import previously exported settings |
+#### Individual Accessibility Settings
+- **Toggle High Contrast**: High contrast mode on/off
+- **Toggle Large Text**: Large and standard text size
+- **Toggle Reduced Motion**: Reduced and standard animation effects
+
+#### Profile Management
+- **Profile Switching**: Switch between Default, High Contrast, and Motor Accessibility profiles
+- **Export Settings**: Export accessibility settings in JSON format
+- **Import Settings**: Import previously exported settings
 
 ## Debug & Developer Tools
 
@@ -182,7 +183,7 @@ Accessibility features have been integrated into the unified settings screen.
 - **🆕 Context Retention**: No matter which screen you open help/settings from, you'll return to the appropriate location
 - **Efficient Navigation**: Combine arrow keys with Enter for complete mouse-free operation
 - **Accessibility**: Use integrated accessibility settings for comprehensive visual and motor accessibility support
-- **Volume Control**: Quickly adjust volume during gameplay with Ctrl+arrow keys
+- **Settings Screen UI**: Fullscreen, mute, volume control, and accessibility functions are available through settings screen UI
 - **🆕 Multilingual**: Shortcuts automatically adjust based on your selected language
 
 ## Technical Details
