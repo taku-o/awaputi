@@ -57,8 +57,22 @@ Issue #172対応: ゲーム画面にGive Up（ギブアップ）とRestart（ゲ
 - 確認ダイアログ付きで安全な操作
 - キーボードショートカット（G、R）削除済み
 
+### ボタン位置調整作業
+- **課題**: ボタンが表示されない、または画面外に配置される問題
+- **原因**: ResponsiveCanvasManagerのスケール係数が考慮されていない
+- **解決**: canvas.widthではなくcanvasInfo.baseWidthを使用
+- **追加修正**: ボタンサイズもスケール係数を適用する必要があった
+- **最終調整**: マージンを統一（上: 5px、右: 5px）
+
 ## コミットログ
-- (作業開始時点)
+1. `7ca48b2` - Add spec for game control buttons addition (Issue #172)
+2. `f7b9bdb` - feat: reduce button right margin to 8px for improved visibility
+3. `2c64fa9` - feat: unify button margins to 5px for consistent spacing
+
+## 現在の状況
+- タスク1-10完了（メイン機能実装完了）
+- ボタン表示・位置調整完了
+- 残りタスク11-20: アクセシビリティ、テスト、ドキュメント更新
 
 ## メモ
 - Container-useは使用しない
