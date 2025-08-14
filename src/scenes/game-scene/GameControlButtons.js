@@ -11,7 +11,7 @@ export class GameControlButtons {
         this.buttonConfig = {
             giveUp: {
                 text: 'ギブアップ',
-                size: { width: 120, height: 40 },
+                size: { width: 100, height: 35 },
                 style: {
                     backgroundColor: '#FF6B6B',
                     textColor: '#FFFFFF',
@@ -21,7 +21,7 @@ export class GameControlButtons {
             },
             restart: {
                 text: 'ゲーム再開始',
-                size: { width: 120, height: 40 },
+                size: { width: 100, height: 35 },
                 style: {
                     backgroundColor: '#4CAF50',
                     textColor: '#FFFFFF',
@@ -48,7 +48,7 @@ export class GameControlButtons {
     updateButtonPositions() {
         const canvas = this.gameEngine.canvas;
         const rightMargin = 15;  // 右側のマージン
-        const topMargin = 10;    // 上側のマージン
+        const topMargin = 5;     // 上側のマージン（5pxに戻す）
         const buttonSpacing = 10;
         
         // ResponsiveCanvasManagerを使用して適切な座標を取得
@@ -75,7 +75,13 @@ export class GameControlButtons {
             restartX = scaledRestart.x;
             restartY = scaledRestart.y;
             
+            console.log('Button dimensions:', { 
+                width: this.buttonConfig.giveUp.size.width,
+                height: this.buttonConfig.giveUp.size.height 
+            });
+            console.log('Canvas info:', { baseWidth, actualWidth: canvas.width });
             console.log('Button positions - Base:', { baseGiveUpX, baseGiveUpY }, 'Scaled:', { giveUpX, giveUpY });
+            console.log('Button right edge (scaled):', giveUpX + this.buttonConfig.giveUp.size.width);
         } else {
             // フォールバック: 左上に配置（デバッグ用）
             giveUpX = rightMargin;
