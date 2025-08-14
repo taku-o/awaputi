@@ -47,7 +47,8 @@ export class GameControlButtons {
      */
     updateButtonPositions() {
         const canvas = this.gameEngine.canvas;
-        const margin = 10;  // 上と右のマージン
+        const rightMargin = 15;  // 右側のマージン
+        const topMargin = 10;    // 上側のマージン
         const buttonSpacing = 10;
         
         // ResponsiveCanvasManagerを使用して適切な座標を取得
@@ -60,10 +61,10 @@ export class GameControlButtons {
             const baseHeight = canvasInfo ? canvasInfo.baseHeight : canvas.height;
             
             // 右上角の基準座標を計算（正しい基準サイズで）
-            const baseGiveUpX = baseWidth - this.buttonConfig.giveUp.size.width - margin;
-            const baseGiveUpY = 5;  // 上端にぴったり近づける
-            const baseRestartX = baseWidth - this.buttonConfig.restart.size.width - margin;
-            const baseRestartY = 5 + this.buttonConfig.giveUp.size.height + buttonSpacing;
+            const baseGiveUpX = baseWidth - this.buttonConfig.giveUp.size.width - rightMargin;
+            const baseGiveUpY = topMargin;
+            const baseRestartX = baseWidth - this.buttonConfig.restart.size.width - rightMargin;
+            const baseRestartY = topMargin + this.buttonConfig.giveUp.size.height + buttonSpacing;
             
             // ResponsiveCanvasManagerでスケール座標を取得
             const scaledGiveUp = this.gameEngine.responsiveCanvasManager.getScaledCoordinates(baseGiveUpX, baseGiveUpY);
@@ -77,10 +78,10 @@ export class GameControlButtons {
             console.log('Button positions - Base:', { baseGiveUpX, baseGiveUpY }, 'Scaled:', { giveUpX, giveUpY });
         } else {
             // フォールバック: 左上に配置（デバッグ用）
-            giveUpX = margin;
-            giveUpY = margin + 80;
-            restartX = margin;
-            restartY = margin + 80 + this.buttonConfig.giveUp.size.height + buttonSpacing;
+            giveUpX = rightMargin;
+            giveUpY = topMargin + 80;
+            restartX = rightMargin;
+            restartY = topMargin + 80 + this.buttonConfig.giveUp.size.height + buttonSpacing;
             
             console.warn('ResponsiveCanvasManager not available, using fallback coordinates');
         }
