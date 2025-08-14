@@ -104,14 +104,14 @@
   - Test UI updates and state consistency throughout workflows
   - _Requirements: 1.1, 1.2, 1.3, 2.1, 2.2, 2.3, 3.3, 3.4_
 
-- [ ] 16. Update keyboard shortcuts documentation
+- [x] 16. Update keyboard shortcuts documentation
   - Modify `docs/keyboard-shortcuts.md` to remove G and R key references
   - Update `docs/keyboard-shortcuts.en.md` with same changes
   - Add note about UI button availability for game controls
   - Remove give up and restart entries from shortcut tables
   - _Requirements: 5.1, 5.2, 5.3_
 
-- [ ] 17. Update help system content
+- [x] 17. Update help system content
   - Modify in-game help content to reflect new button controls
   - Remove references to removed keyboard shortcuts
   - Add instructions for using the new UI buttons
