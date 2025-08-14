@@ -430,15 +430,15 @@ export class HelpContentManager {
     setSearchQuery(query) {
         this.currentSearchQuery = query.trim();
         
-        // 状態更新
-        this.state.searchQuery = this.currentSearchQuery;
+        // 検索クエリを更新
+        this.searchQuery = this.currentSearchQuery;
         
         // 空の検索クエリの場合は検索結果をクリア
         if (!this.currentSearchQuery) {
-            this.state.searchResults = [];
-            this.state.isSearchActive = false;
+            this.searchResults = [];
+            this.isSearching = false;
         } else {
-            this.state.isSearchActive = true;
+            this.isSearching = true;
         }
     }
 

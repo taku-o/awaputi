@@ -8,6 +8,7 @@ import { ErrorHandler } from '../../utils/ErrorHandler.js';
 import { getLocalizationManager } from '../LocalizationManager.js';
 import { CacheSystem } from '../CacheSystem.js';
 import { LoggingSystem } from '../LoggingSystem.js';
+import { SearchEngine } from './SearchEngine.js';
 
 /**
  * ヘルプシステムの中央管理クラス
@@ -18,6 +19,7 @@ export class HelpManager {
         this.localizationManager = getLocalizationManager();
         this.cacheSystem = CacheSystem.getInstance ? CacheSystem.getInstance() : new CacheSystem();
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
+        this.searchEngine = new SearchEngine();
         this.helpContent = new Map();
         this.userProgress = {
             viewedSections: new Set(),

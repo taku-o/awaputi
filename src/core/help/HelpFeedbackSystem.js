@@ -35,7 +35,8 @@ export class HelpFeedbackSystem {
             contentViewTimes: new Map(),
             viewStartTimes: new Map(),
             suppressedContent: new Set(),
-            lastFeedbackTime: 0
+            lastFeedbackTime: 0,
+            feedbackData: new Map()
         };
         
         this.initialize();
