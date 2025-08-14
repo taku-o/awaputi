@@ -477,7 +477,7 @@ export class GameControlButtons {
     }
     
     /**
-     * ボタンの境界情報を取得
+     * ボタンの境界情報を取得（ベース座標系）
      * @param {string} buttonType - ボタンタイプ
      * @returns {Object} 境界情報
      */
@@ -487,19 +487,63 @@ export class GameControlButtons {
             return { x: 0, y: 0, width: 0, height: 0 };
         }
         
-        // スケールファクターを取得
-        let scaleFactor = 1;
-        if (this.gameEngine.responsiveCanvasManager) {
-            const canvasInfo = this.gameEngine.responsiveCanvasManager.getCanvasInfo();
-            scaleFactor = canvasInfo ? canvasInfo.scale : 1;
-        }
-        
+        // ベース座標系での境界情報を返す
+        // これによりisButtonClicked()での座標判定が正確になる
         return {
             x: config.position.x,
             y: config.position.y,
-            width: config.size.width * scaleFactor,
-            height: config.size.height * scaleFactor
+            width: config.size.width,
+            height: config.size.height
         };
+    }
+    
+    /**
+     * スケーリングされたボタンの境界情報を取得（描画用）
+     * @param {string} buttonType - ボタンタイプ
+     * @returns {Object} スケーリングされた境界情報
+     */
+    getScaledButtonBounds(buttonType) {
+        const config = this.buttonConfig[buttonType];
+        if (!config || !config.position) {
+            return { x: 0, y: 0, width: 0, height: 0 };
+        }
+        
+        try {
+            if (this.scaledCoordinateManager) {
+                // 新しい座標システムを使用
+                const scaledPosition = this.scaledCoordinateManager.getScaledPosition(config.position.x, config.position.y);
+                const scaledSize = this.scaledCoordinateManager.getScaledSize(config.size.width, config.size.height);
+                
+                return {
+                    x: scaledPosition.x,
+                    y: scaledPosition.y,
+                    width: scaledSize.width,
+                    height: scaledSize.height
+                };
+            } else {
+                // フォールバック: 既存のResponsiveCanvasManagerを使用
+                let scaleFactor = 1;
+                if (this.gameEngine && this.gameEngine.responsiveCanvasManager) {
+                    const canvasInfo = this.gameEngine.responsiveCanvasManager.getCanvasInfo();
+                    scaleFactor = canvasInfo ? canvasInfo.scale : 1;
+                }
+                
+                return {
+                    x: config.position.x,
+                    y: config.position.y,
+                    width: config.size.width * scaleFactor,
+                    height: config.size.height * scaleFactor
+                };
+            }
+        } catch (error) {
+            console.warn('GameControlButtons: Failed to get scaled button bounds', error);
+            return {
+                x: config.position.x,
+                y: config.position.y,
+                width: config.size.width,
+                height: config.size.height
+            };
+        }
     }
     
     /**
@@ -539,7 +583,7 @@ export class GameControlButtons {
         const isHovered = this.buttonState.hoveredButton === buttonType;
         const isFocused = this.accessibilityState.focusedButton === buttonType;
         const isActive = this.buttonState.activeButton === buttonType;
-        const bounds = this.getButtonBounds(buttonType);
+        const bounds = this.getScaledButtonBounds(buttonType); // 描画にはスケーリングされた境界を使用
         
         if (bounds.width === 0 || bounds.height === 0) {
             return;

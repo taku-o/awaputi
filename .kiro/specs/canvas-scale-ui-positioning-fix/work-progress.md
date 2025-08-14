@@ -95,6 +95,11 @@ tasks.mdの12段階65サブタスクに従って実装を進行：
   - updateMousePosition()メソッドでホバー状態のスケーリング対応実装
   - handleTouchStart()とhandleTouchEnd()メソッドでタッチ処理のスケーリング対応実装
   - 全てのボタンインタラクションが座標変換に対応
+- **14:00** Task 7.3 完了 - ボタンホバー・視覚状態修正完了
+  - getButtonBounds()をベース座標系用に修正（判定用）
+  - getScaledButtonBounds()を新規追加（描画用）
+  - renderButton()でスケーリングされた境界を使用
+  - ホバー・フォーカス・アクティブ状態の視覚フィードバックが正確に動作
 
 ## 技術メモ
 
