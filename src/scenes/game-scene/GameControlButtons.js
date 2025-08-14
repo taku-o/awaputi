@@ -54,10 +54,15 @@ export class GameControlButtons {
         let giveUpX, giveUpY, restartX, restartY;
         
         if (this.gameEngine.responsiveCanvasManager && typeof this.gameEngine.responsiveCanvasManager.getScaledCoordinates === 'function') {
-            // 右上角の基準座標を計算（スケール前）
-            const baseGiveUpX = canvas.width - this.buttonConfig.giveUp.size.width - margin;
+            // canvas.widthはスケール後の値なので、スケール前の基準サイズを取得する必要がある
+            const canvasInfo = this.gameEngine.responsiveCanvasManager.getCanvasInfo();
+            const baseWidth = canvasInfo ? (canvas.width / canvasInfo.scale) : canvas.width;
+            const baseHeight = canvasInfo ? (canvas.height / canvasInfo.scale) : canvas.height;
+            
+            // 右上角の基準座標を計算（スケール前の基準サイズで）
+            const baseGiveUpX = baseWidth - this.buttonConfig.giveUp.size.width - margin;
             const baseGiveUpY = margin;
-            const baseRestartX = canvas.width - this.buttonConfig.restart.size.width - margin;
+            const baseRestartX = baseWidth - this.buttonConfig.restart.size.width - margin;
             const baseRestartY = margin + this.buttonConfig.giveUp.size.height + buttonSpacing;
             
             // ResponsiveCanvasManagerでスケール座標を取得
@@ -69,7 +74,10 @@ export class GameControlButtons {
             restartX = scaledRestart.x;
             restartY = scaledRestart.y;
             
-            console.log('Using ResponsiveCanvasManager coordinates');
+            console.log('Using ResponsiveCanvasManager coordinates (CORRECT CALCULATION)');
+            console.log('Scale info:', canvasInfo);
+            console.log('Base canvas size:', { baseWidth, baseHeight });
+            console.log('Actual canvas size:', { width: canvas.width, height: canvas.height });
             console.log('Base coordinates:', { baseGiveUpX, baseGiveUpY, baseRestartX, baseRestartY });
             console.log('Scaled coordinates:', { giveUpX, giveUpY, restartX, restartY });
         } else {
