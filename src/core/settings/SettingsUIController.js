@@ -67,7 +67,7 @@ export class SettingsUIController {
             
             // UIの再描画をトリガー
             if (this.gameEngine && this.gameEngine.sceneManager) {
-                this.gameEngine.sceneManager.requestUIRefresh();
+                this.gameEngine.refreshAllScenes();
             }
             
             // 統計更新
@@ -129,7 +129,10 @@ export class SettingsUIController {
             
             // アニメーションマネージャーに通知
             if (this.gameEngine && this.gameEngine.animationManager) {
-                this.gameEngine.animationManager.setReducedMotion(enabled);
+                this.gameEngine.animationManager.updateSettings({
+                    enabled: !enabled,  // When reduced motion is enabled, disable animations
+                    globalSpeed: enabled ? 0.5 : 1.0  // Reduce animation speed when reduced motion is enabled
+                });
             }
             
             // パーティクルシステムに通知
