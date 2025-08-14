@@ -310,20 +310,40 @@ export class GameControlButtons {
      * タッチ開始処理
      * @param {number} x - X座標
      * @param {number} y - Y座標
+     * @param {TouchEvent} event - タッチイベント（オプション）
      * @returns {string|null} タッチされたボタンタイプ
      */
-    handleTouchStart(x, y) {
+    handleTouchStart(x, y, event = null) {
         if (!this.buttonState.enabled) {
             return null;
         }
         
-        // 表示されているボタンのみタッチ処理
-        if (this.isButtonVisible('giveUp') && this.isButtonClicked(x, y, 'giveUp')) {
-            this.buttonState.activeButton = 'giveUp';
-            return 'giveUp';
-        } else if (this.isButtonVisible('restart') && this.isButtonClicked(x, y, 'restart')) {
-            this.buttonState.activeButton = 'restart';
-            return 'restart';
+        try {
+            let convertedCoords = { x, y };
+            
+            // InputCoordinateConverterが利用可能な場合は座標変換を実行
+            if (this.inputCoordinateConverter && event) {
+                convertedCoords = this.inputCoordinateConverter.convertTouchEvent(event);
+            }
+            
+            // 表示されているボタンのみタッチ処理（変換された座標でテスト）
+            if (this.isButtonVisible('giveUp') && this.isButtonClicked(convertedCoords.x, convertedCoords.y, 'giveUp')) {
+                this.buttonState.activeButton = 'giveUp';
+                return 'giveUp';
+            } else if (this.isButtonVisible('restart') && this.isButtonClicked(convertedCoords.x, convertedCoords.y, 'restart')) {
+                this.buttonState.activeButton = 'restart';
+                return 'restart';
+            }
+        } catch (error) {
+            console.warn('GameControlButtons: Touch start failed, using fallback', error);
+            // フォールバック: 元の座標でタッチ判定
+            if (this.isButtonVisible('giveUp') && this.isButtonClicked(x, y, 'giveUp')) {
+                this.buttonState.activeButton = 'giveUp';
+                return 'giveUp';
+            } else if (this.isButtonVisible('restart') && this.isButtonClicked(x, y, 'restart')) {
+                this.buttonState.activeButton = 'restart';
+                return 'restart';
+            }
         }
         
         return null;
@@ -333,9 +353,10 @@ export class GameControlButtons {
      * タッチ終了処理
      * @param {number} x - X座標
      * @param {number} y - Y座標
+     * @param {TouchEvent} event - タッチイベント（オプション）
      * @returns {string|null} 完了したボタンタイプ
      */
-    handleTouchEnd(x, y) {
+    handleTouchEnd(x, y, event = null) {
         const activeButton = this.buttonState.activeButton;
         this.buttonState.activeButton = null;
         
@@ -343,9 +364,24 @@ export class GameControlButtons {
             return null;
         }
         
-        // タッチ終了位置が同じボタン内であれば実行
-        if (this.isButtonClicked(x, y, activeButton)) {
-            return activeButton;
+        try {
+            let convertedCoords = { x, y };
+            
+            // InputCoordinateConverterが利用可能な場合は座標変換を実行
+            if (this.inputCoordinateConverter && event) {
+                convertedCoords = this.inputCoordinateConverter.convertTouchEvent(event);
+            }
+            
+            // タッチ終了位置が同じボタン内であれば実行（変換された座標でテスト）
+            if (this.isButtonClicked(convertedCoords.x, convertedCoords.y, activeButton)) {
+                return activeButton;
+            }
+        } catch (error) {
+            console.warn('GameControlButtons: Touch end failed, using fallback', error);
+            // フォールバック: 元の座標でタッチ判定
+            if (this.isButtonClicked(x, y, activeButton)) {
+                return activeButton;
+            }
         }
         
         return null;
@@ -386,16 +422,37 @@ export class GameControlButtons {
      * @param {number} y - Y座標
      * @returns {string|null} クリックされたボタンタイプ
      */
-    handleClick(x, y) {
+    handleClick(x, y, event = null) {
         if (!this.buttonState.enabled) {
             return null;
         }
         
-        // 表示されているボタンのみクリック処理
-        if (this.isButtonVisible('giveUp') && this.isButtonClicked(x, y, 'giveUp')) {
-            return 'giveUp';
-        } else if (this.isButtonVisible('restart') && this.isButtonClicked(x, y, 'restart')) {
-            return 'restart';
+        try {
+            let convertedCoords = { x, y };
+            
+            // InputCoordinateConverterが利用可能な場合は座標変換を実行
+            if (this.inputCoordinateConverter && event) {
+                if (event.type && event.type.includes('touch')) {
+                    convertedCoords = this.inputCoordinateConverter.convertTouchEvent(event);
+                } else {
+                    convertedCoords = this.inputCoordinateConverter.convertMouseEvent(event);
+                }
+            }
+            
+            // 変換された座標でボタンクリック判定
+            if (this.isButtonVisible('giveUp') && this.isButtonClicked(convertedCoords.x, convertedCoords.y, 'giveUp')) {
+                return 'giveUp';
+            } else if (this.isButtonVisible('restart') && this.isButtonClicked(convertedCoords.x, convertedCoords.y, 'restart')) {
+                return 'restart';
+            }
+        } catch (error) {
+            console.warn('GameControlButtons: Click detection failed, using fallback', error);
+            // フォールバック: 元の座標でテスト
+            if (this.isButtonVisible('giveUp') && this.isButtonClicked(x, y, 'giveUp')) {
+                return 'giveUp';
+            } else if (this.isButtonVisible('restart') && this.isButtonClicked(x, y, 'restart')) {
+                return 'restart';
+            }
         }
         
         return null;
