@@ -23,6 +23,14 @@ export class GameUIManager {
             lastScore: 0
         };
         
+        // ゲーム状態監視（ボタン表示制御用）
+        this.lastGameState = {
+            isGameStarted: false,
+            isGameOver: false,
+            isPaused: false,
+            isPreGame: true
+        };
+        
         // ゲームコントロールボタンとダイアログを初期化
         this.initializeControlButtons();
     }
@@ -186,6 +194,9 @@ export class GameUIManager {
      * @param {number} deltaTime - 経過時間
      */
     updateUIState(deltaTime) {
+        // ゲーム状態の監視とボタン表示状態の更新
+        this.updateGameStateAndButtons();
+        
         // コンボフラッシュタイマー
         if (this.uiState.comboFlashTimer > 0) {
             this.uiState.comboFlashTimer -= deltaTime;
@@ -203,6 +214,50 @@ export class GameUIManager {
         
         // フローティングテキストの更新
         this.floatingTextManager.update(deltaTime);
+    }
+    
+    /**
+     * ゲーム状態の監視とボタン表示状態の更新
+     */
+    updateGameStateAndButtons() {
+        // 現在のゲーム状態を取得
+        const currentGameState = this.getCurrentGameState();
+        
+        // 状態が変化した場合のみボタン表示を更新
+        if (this.hasGameStateChanged(currentGameState)) {
+            this.gameControlButtons.updateButtonVisibility(currentGameState);
+            this.lastGameState = { ...currentGameState };
+        }
+    }
+    
+    /**
+     * 現在のゲーム状態を取得
+     * @returns {Object} ゲーム状態オブジェクト
+     */
+    getCurrentGameState() {
+        // GameSceneから状態を取得（ハードコーディングを避けるため）
+        const scene = this.gameEngine.sceneManager?.getCurrentScene();
+        
+        return {
+            isGameStarted: this.gameEngine.gameStarted || false,
+            isGameOver: this.gameEngine.isGameOver || false,
+            isPaused: scene?.isPaused || false,
+            isPreGame: !this.gameEngine.gameStarted || false
+        };
+    }
+    
+    /**
+     * ゲーム状態が変化したかどうかを確認
+     * @param {Object} currentState - 現在の状態
+     * @returns {boolean} 変化があったかどうか
+     */
+    hasGameStateChanged(currentState) {
+        return (
+            this.lastGameState.isGameStarted !== currentState.isGameStarted ||
+            this.lastGameState.isGameOver !== currentState.isGameOver ||
+            this.lastGameState.isPaused !== currentState.isPaused ||
+            this.lastGameState.isPreGame !== currentState.isPreGame
+        );
     }
     
     /**

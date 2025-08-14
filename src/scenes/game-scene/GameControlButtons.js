@@ -38,6 +38,12 @@ export class GameControlButtons {
             lastMousePosition: { x: 0, y: 0 }
         };
         
+        // ボタン表示状態（ゲーム状態に応じて制御）
+        this.buttonVisibility = {
+            giveUp: false,   // 初期状態では非表示
+            restart: false   // 初期状態では非表示
+        };
+        
         // ボタン位置を計算
         this.updateButtonPositions();
     }
@@ -118,6 +124,38 @@ export class GameControlButtons {
     }
     
     /**
+     * ゲーム状態に基づいてボタンの表示状態を更新
+     * @param {Object} gameState - ゲーム状態
+     * @param {boolean} gameState.isGameStarted - ゲーム開始フラグ
+     * @param {boolean} gameState.isGameOver - ゲームオーバーフラグ
+     * @param {boolean} gameState.isPaused - ポーズフラグ
+     * @param {boolean} gameState.isPreGame - ゲーム開始前フラグ
+     */
+    updateButtonVisibility(gameState) {
+        const { isGameStarted = false, isGameOver = false, isPaused = false, isPreGame = false } = gameState;
+        
+        // Give Upボタンの表示条件: (ゲーム進行中 OR ポーズ中) AND ゲームオーバーでない AND ゲーム開始前でない
+        this.buttonVisibility.giveUp = (isGameStarted && !isGameOver && !isPreGame);
+        
+        // Restartボタンの表示条件: (ゲーム進行中 OR ポーズ中 OR ゲームオーバー) AND ゲーム開始前でない
+        this.buttonVisibility.restart = ((isGameStarted && !isPreGame) || isGameOver) && !isPreGame;
+        
+        console.log('[GameControlButtons] Button visibility updated:', {
+            gameState,
+            visibility: this.buttonVisibility
+        });
+    }
+    
+    /**
+     * 指定されたボタンが表示状態かどうかを確認
+     * @param {string} buttonType - ボタンタイプ ('giveUp' または 'restart')
+     * @returns {boolean} 表示状態
+     */
+    isButtonVisible(buttonType) {
+        return this.buttonVisibility[buttonType] || false;
+    }
+    
+    /**
      * マウス座標の更新（ホバー状態管理用）
      * @param {number} x - X座標
      * @param {number} y - Y座標
@@ -130,11 +168,11 @@ export class GameControlButtons {
             return;
         }
         
-        // ホバー状態の更新
+        // ホバー状態の更新（表示されているボタンのみ）
         this.buttonState.hoveredButton = null;
-        if (this.isButtonClicked(x, y, 'giveUp')) {
+        if (this.isButtonVisible('giveUp') && this.isButtonClicked(x, y, 'giveUp')) {
             this.buttonState.hoveredButton = 'giveUp';
-        } else if (this.isButtonClicked(x, y, 'restart')) {
+        } else if (this.isButtonVisible('restart') && this.isButtonClicked(x, y, 'restart')) {
             this.buttonState.hoveredButton = 'restart';
         }
     }
@@ -150,9 +188,10 @@ export class GameControlButtons {
             return null;
         }
         
-        if (this.isButtonClicked(x, y, 'giveUp')) {
+        // 表示されているボタンのみクリック処理
+        if (this.isButtonVisible('giveUp') && this.isButtonClicked(x, y, 'giveUp')) {
             return 'giveUp';
-        } else if (this.isButtonClicked(x, y, 'restart')) {
+        } else if (this.isButtonVisible('restart') && this.isButtonClicked(x, y, 'restart')) {
             return 'restart';
         }
         
@@ -217,11 +256,15 @@ export class GameControlButtons {
         
         context.save();
         
-        // Give Upボタンの描画
-        this.renderButton(context, 'giveUp');
+        // Give Upボタンの描画（表示状態の場合のみ）
+        if (this.isButtonVisible('giveUp')) {
+            this.renderButton(context, 'giveUp');
+        }
         
-        // Restartボタンの描画
-        this.renderButton(context, 'restart');
+        // Restartボタンの描画（表示状態の場合のみ）
+        if (this.isButtonVisible('restart')) {
+            this.renderButton(context, 'restart');
+        }
         
         context.restore();
     }
@@ -288,6 +331,9 @@ export class GameControlButtons {
      * @returns {Object} ボタン状態
      */
     getButtonState() {
-        return { ...this.buttonState };
+        return { 
+            ...this.buttonState,
+            visibility: { ...this.buttonVisibility }
+        };
     }
 }
