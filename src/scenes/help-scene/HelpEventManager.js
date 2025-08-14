@@ -99,6 +99,16 @@ export class HelpEventManager {
         }
         this.lastInputTime = now;
 
+        // 検索バーがフォーカスされている場合の特別処理
+        if (this.searchFocused) {
+            // 制御キーとファンクションキー以外はテキスト入力として処理
+            if (event.key === 'Backspace' || event.key === 'Delete' || 
+                (event.key.length === 1 && !event.ctrlKey && !event.altKey && !event.metaKey)) {
+                this.handleTextInput(event);
+                return;
+            }
+        }
+
         // アクセシビリティキーの優先処理
         if (this.accessibilityManager.handleAccessibilityKeys(event)) {
             return;
