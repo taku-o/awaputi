@@ -126,7 +126,7 @@ export class SettingsManager {
                 return this.dataManager.getLegacyValue(key);
             }
             
-            return this.configManager.get(key);
+            return this.configManager.get(parsed.category, parsed.settingName);
         } catch (error) {
             this.errorHandler.handleError(error, 'SETTINGS_GET_ERROR', { key });
             return this.dataManager.getDefaultValue(key);
@@ -148,9 +148,15 @@ export class SettingsManager {
             }
             
             const oldValue = this.get(key);
+            const parsed = this.dataManager.parseSettingKey(key);
             
             // ConfigurationManagerに設定
-            this.configManager.set(key, value);
+            if (parsed.isLegacy) {
+                // レガシーキーの場合は特別処理が必要かもしれない
+                this.configManager.set('legacy', parsed.settingName, value);
+            } else {
+                this.configManager.set(parsed.category, parsed.settingName, value);
+            }
             
             // 変更通知
             this.notifyChange(key, value, oldValue);

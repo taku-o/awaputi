@@ -11,11 +11,15 @@
   "translations": {
     "settings": {
       "title": "설정",
-      "audio": "오디오 설정",
-      "masterVolume": "마스터 볼륨",
-      "sfxVolume": "효과음 볼륨",
-      "bgmVolume": "배경음악 볼륨",
-      "mute": "음소거",
+      "audio": {
+        "title": "오디오 설정",
+        "masterVolume": "마스터 볼륨",
+        "volumeUp": "볼륨 증가",
+        "volumeDown": "볼륨 감소",
+        "sfxVolume": "효과음 볼륨",
+        "bgmVolume": "배경음악 볼륨",
+        "mute": "음소거"
+      },
       "language": "언어",
       "quality": "화질 설정",
       "accessibility": "접근성",

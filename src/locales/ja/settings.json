@@ -11,11 +11,15 @@
   "translations": {
     "settings": {
       "title": "設定",
-      "audio": "音響設定",
-      "masterVolume": "マスター音量",
-      "sfxVolume": "効果音音量",
-      "bgmVolume": "BGM音量",
-      "mute": "ミュート",
+      "audio": {
+        "title": "音響設定",
+        "masterVolume": "マスター音量",
+        "volumeUp": "音量を上げる",
+        "volumeDown": "音量を下げる",
+        "sfxVolume": "効果音音量",
+        "bgmVolume": "BGM音量",
+        "mute": "ミュート"
+      },
       "language": "言語",
       "quality": "品質設定",
       "accessibility": "アクセシビリティ",
