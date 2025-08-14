@@ -54,12 +54,12 @@ export class GameControlButtons {
         let giveUpX, giveUpY, restartX, restartY;
         
         if (this.gameEngine.responsiveCanvasManager && typeof this.gameEngine.responsiveCanvasManager.getScaledCoordinates === 'function') {
-            // canvas.widthはスケール後の値なので、スケール前の基準サイズを取得する必要がある
+            // ResponsiveCanvasManagerから正しい基準サイズを取得
             const canvasInfo = this.gameEngine.responsiveCanvasManager.getCanvasInfo();
-            const baseWidth = canvasInfo ? (canvas.width / canvasInfo.scale) : canvas.width;
-            const baseHeight = canvasInfo ? (canvas.height / canvasInfo.scale) : canvas.height;
+            const baseWidth = canvasInfo ? canvasInfo.baseWidth : canvas.width;
+            const baseHeight = canvasInfo ? canvasInfo.baseHeight : canvas.height;
             
-            // 右上角の基準座標を計算（スケール前の基準サイズで）
+            // 右上角の基準座標を計算（正しい基準サイズで）
             const baseGiveUpX = baseWidth - this.buttonConfig.giveUp.size.width - margin;
             const baseGiveUpY = margin;
             const baseRestartX = baseWidth - this.buttonConfig.restart.size.width - margin;
