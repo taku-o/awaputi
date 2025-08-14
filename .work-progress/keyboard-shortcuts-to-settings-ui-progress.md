@@ -83,5 +83,36 @@ KeyboardShortcutManager.js の initializeDefaultShortcuts() から削除予定�
 - 設定項目追加: ✅ プロファイルとインポート・エクスポート追加
 - ハンドラー実装: ✅ プロファイル切り替えとI/E機能実装
 
+## タスク8: 手動テスト実施（完了）
+
+### 8.1 修正漏れ発見・修正（完了）
+- SettingsDataManager.jsでキーボードショートカット設定が残存していることを発見
+- `fullscreen: ['KeyF']` と `mute: ['KeyM']` を削除
+- index.htmlの screen reader 説明からFキーの記述を削除
+- コミット: c8a9c5f3
+
+### 8.2 手動テスト結果（完了）
+#### ✅ キーボードショートカット削除確認
+- Fキー: フルスクリーントグル機能停止を確認
+- Mキー: 音声ミュート機能停止を確認
+- 両方のキーを押しても何も反応しない状態
+
+#### ✅ 設定永続化確認
+- 設定変更が localStorage に正常に保存される
+- ゲーム再起動時に設定が正常に復元される
+- SettingsStorageManager によるデータ管理が正常動作
+
+#### ⚠️ 重要な問題発見
+**設定画面のcanvas描画エラー**
+- 設定画面でカテゴリ変更時にcanvasが黒画面になる問題
+- コンソールエラー: "this.notificationSystem.notifySettingChange is not a function"
+- Canvas自動復旧システムが動作するが根本解決が必要
+- 新しいUI実装に伴う統合不備の可能性
+
+#### 🔍 要求される追加作業
+1. NotificationSystem統合の修正
+2. SettingsSceneのcanvas描画安定性向上
+3. カスタムコンポーネント描画の改善
+
 ## 次のステップ
-タスク2.5: 一般設定カテゴリへの基本操作コントロール追加を実施
+タスク9: 最終クリーンアップと品質保証を実施

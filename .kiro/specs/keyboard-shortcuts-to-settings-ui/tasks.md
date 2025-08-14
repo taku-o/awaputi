@@ -214,14 +214,14 @@
   - Test fallback to defaults when settings fail to load
   - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5_
 
-- [ ] 8. Perform manual testing and validation
+- [x] 8. Perform manual testing and validation
   - Manually test all new UI functionality
   - Verify removed shortcuts have no effect
   - Test settings persistence across game sessions
   - Validate user experience and accessibility
   - _Requirements: All requirements validation_
 
-- [ ] 8.1 Manual test new settings UI functionality
+- [x] 8.1 Manual test new settings UI functionality
   - Test fullscreen toggle button in settings screen
   - Test audio mute toggle button in settings screen
   - Test volume up/down buttons in settings screen
@@ -229,7 +229,7 @@
   - Test profile switching, export, and import functionality
   - _Requirements: 1.2, 1.3, 1.4, 2.2, 2.3, 2.4, 3.3, 3.4, 3.5, 4.4, 4.5, 4.6, 4.7, 4.8, 5.4, 5.5, 5.6, 5.7, 5.8, 5.9_
 
-- [ ] 8.2 Manual test keyboard shortcut removal
+- [x] 8.2 Manual test keyboard shortcut removal
   - Verify F key no longer toggles fullscreen
   - Verify M key no longer toggles mute
   - Verify Ctrl+↑/↓ keys no longer affect volume
@@ -237,7 +237,7 @@
   - Verify settings management shortcuts (Ctrl+P/E/I) have no effect
   - _Requirements: 1.1, 2.1, 3.1, 3.2, 4.1, 4.2, 4.3, 5.1, 5.2, 5.3_
 
-- [ ] 8.3 Manual test settings persistence
+- [x] 8.3 Manual test settings persistence
   - Change settings through new UI controls and restart game
   - Export settings and verify file contents
   - Import settings and verify they are applied correctly

@@ -58,12 +58,12 @@ export class SettingsDataManager {
                 touchEnabled: true
             },
             
-            // キーボードショートカット
+            // キーボードショートカット（Issue #170で削除されたもの以外）
             keyboardShortcuts: {
                 pause: ['Space'],
                 menu: ['Escape'],
-                fullscreen: ['KeyF'],
-                mute: ['KeyM'],
+                // 注記: fullscreen (KeyF)、mute (KeyM) は削除済み（Issue #170）
+                // これらの機能は設定画面UIから利用できます
                 settings: ['KeyS'],
                 help: ['KeyH', 'F1']
             },
