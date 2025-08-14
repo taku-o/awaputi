@@ -23,7 +23,7 @@
   - Add proper error handling for file operations
   - _Requirements: 5.5, 5.6, 5.8, 5.9_
 
-- [ ] 2. Add new setting items to SettingsScene configuration
+- [x] 2. Add new setting items to SettingsScene configuration
   - Extend settingItems configuration to include new UI controls
   - Organize controls in appropriate categories (general, accessibility)
   - Ensure proper labeling and descriptions in Japanese
@@ -47,7 +47,7 @@
   - Ensure proper positioning and sizing within settings layout
   - _Requirements: 3.3, 3.4, 3.5, 3.6, 3.7_
 
-- [ ] 2.4 Add accessibility controls to accessibility settings category
+- [x] 2.4 Add accessibility controls to accessibility settings category
   - Add high contrast, large text, and reduced motion toggles if not present
   - Integrate AccessibilityProfileComponent for profile switching
   - Integrate SettingsImportExportComponent for settings management
