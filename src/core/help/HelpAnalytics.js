@@ -75,6 +75,9 @@ export class HelpAnalytics {
             // ローカルストレージからデータを復元
             this.loadAnalyticsData();
             
+            // Mapオブジェクトの確実な初期化（復元データが壊れている場合の対策）
+            this.ensureMapInitialization();
+            
             // セッション管理の開始
             this.startSessionTracking();
             
@@ -88,6 +91,70 @@ export class HelpAnalytics {
         } catch (error) {
             this.loggingSystem.error('HelpAnalytics', 'Failed to initialize help analytics', error);
             ErrorHandler.handle(error, 'HelpAnalytics.initialize');
+        }
+    }
+    
+    /**
+     * Mapオブジェクトの確実な初期化
+     */
+    ensureMapInitialization() {
+        try {
+            // helpUsageセクション
+            if (!(this.analytics.helpUsage.topHelpCategories instanceof Map)) {
+                this.analytics.helpUsage.topHelpCategories = new Map();
+            }
+            if (!(this.analytics.helpUsage.topHelpTopics instanceof Map)) {
+                this.analytics.helpUsage.topHelpTopics = new Map();
+            }
+            if (!(this.analytics.helpUsage.searchQueries instanceof Map)) {
+                this.analytics.helpUsage.searchQueries = new Map();
+            }
+            if (!(this.analytics.helpUsage.exitPoints instanceof Map)) {
+                this.analytics.helpUsage.exitPoints = new Map();
+            }
+            
+            // contentセクション
+            if (!this.analytics.content || typeof this.analytics.content !== 'object') {
+                this.analytics.content = {};
+            }
+            if (!(this.analytics.content.topicViews instanceof Map)) {
+                this.analytics.content.topicViews = new Map();
+            }
+            if (!(this.analytics.content.categoryViews instanceof Map)) {
+                this.analytics.content.categoryViews = new Map();
+            }
+            
+            // 他の必要なMapオブジェクト
+            if (!(this.analytics.tutorialUsage.dropOffPoints instanceof Map)) {
+                this.analytics.tutorialUsage.dropOffPoints = new Map();
+            }
+            if (!(this.analytics.tutorialUsage.skipRates instanceof Map)) {
+                this.analytics.tutorialUsage.skipRates = new Map();
+            }
+            if (!(this.analytics.tutorialUsage.retryRates instanceof Map)) {
+                this.analytics.tutorialUsage.retryRates = new Map();
+            }
+            
+            if (!(this.analytics.userBehavior.navigationPatterns instanceof Map)) {
+                this.analytics.userBehavior.navigationPatterns = new Map();
+            }
+            if (!(this.analytics.userBehavior.timeSpentBySection instanceof Map)) {
+                this.analytics.userBehavior.timeSpentBySection = new Map();
+            }
+            if (!(this.analytics.userBehavior.commonUserJourneys instanceof Map)) {
+                this.analytics.userBehavior.commonUserJourneys = new Map();
+            }
+            
+            if (!(this.analytics.effectiveness.helpfulnessRatings instanceof Map)) {
+                this.analytics.effectiveness.helpfulnessRatings = new Map();
+            }
+            if (!(this.analytics.effectiveness.contentGaps instanceof Map)) {
+                this.analytics.effectiveness.contentGaps = new Map();
+            }
+            
+            this.loggingSystem.debug('HelpAnalytics', 'Map initialization completed');
+        } catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to ensure map initialization', error);
         }
     }
     
