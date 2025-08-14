@@ -85,16 +85,29 @@ export class HelpEventManager {
         console.log('HelpEventManager: creating new hidden input element');
         this.hiddenInput = document.createElement('input');
         this.hiddenInput.type = 'text';
-        this.hiddenInput.style.position = 'absolute';
-        this.hiddenInput.style.left = '-9999px';
-        this.hiddenInput.style.top = '-9999px';
-        this.hiddenInput.style.opacity = '0';
-        this.hiddenInput.style.pointerEvents = 'none';
-        this.hiddenInput.style.zIndex = '-1';
+        this.hiddenInput.style.position = 'fixed';
+        this.hiddenInput.style.left = '50px';
+        this.hiddenInput.style.top = '30px';
+        this.hiddenInput.style.width = '720px';
+        this.hiddenInput.style.height = '40px';
+        this.hiddenInput.style.fontSize = '16px';
+        this.hiddenInput.style.padding = '5px 10px';
+        this.hiddenInput.style.border = '2px solid #ccc';
+        this.hiddenInput.style.borderRadius = '4px';
+        this.hiddenInput.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+        this.hiddenInput.style.color = '#333';
+        this.hiddenInput.style.zIndex = '1000';
+        this.hiddenInput.style.fontFamily = 'Arial, sans-serif';
+        this.hiddenInput.placeholder = '検索...';
         this.hiddenInput.autocomplete = 'off';
         this.hiddenInput.autocorrect = 'off';
         this.hiddenInput.autocapitalize = 'off';
         this.hiddenInput.spellcheck = false;
+        
+        // IME対応設定
+        this.hiddenInput.style.imeMode = 'active';
+        this.hiddenInput.setAttribute('lang', 'ja');
+        this.hiddenInput.setAttribute('inputmode', 'text');
         
         console.log('HelpEventManager: setting up input event listeners');
         // 入力イベントハンドラーを設定
@@ -107,6 +120,18 @@ export class HelpEventManager {
         this.hiddenInput.addEventListener('compositionend', () => {
             console.log('HelpEventManager: composition ended');
             this.isComposing = false;
+            // コンポジション終了時に検索を実行
+            this.handleIMEInput({ target: this.hiddenInput });
+        });
+        
+        // フォーカス・ブラーイベント
+        this.hiddenInput.addEventListener('focus', () => {
+            console.log('HelpEventManager: input focused');
+            this.searchFocused = true;
+        });
+        this.hiddenInput.addEventListener('blur', () => {
+            console.log('HelpEventManager: input blurred');
+            this.searchFocused = false;
         });
         
         console.log('HelpEventManager: appending hidden input to document.body');
@@ -143,6 +168,8 @@ export class HelpEventManager {
      * イベントリスナーの削除
      */
     removeEventListeners() {
+        console.log('HelpEventManager: removeEventListeners() called');
+        
         if (this.boundKeyHandler) {
             document.removeEventListener('keydown', this.boundKeyHandler);
             this.boundKeyHandler = null;
@@ -160,10 +187,18 @@ export class HelpEventManager {
         
         // 隠し入力フィールドのクリーンアップ
         if (this.hiddenInput) {
+            console.log('HelpEventManager: cleaning up hidden input');
+            
             if (this.boundInputHandler) {
                 this.hiddenInput.removeEventListener('input', this.boundInputHandler);
                 this.boundInputHandler = null;
             }
+            
+            // compositionイベントリスナーも削除
+            this.hiddenInput.removeEventListener('compositionstart', null);
+            this.hiddenInput.removeEventListener('compositionend', null);
+            this.hiddenInput.removeEventListener('focus', null);
+            this.hiddenInput.removeEventListener('blur', null);
             
             if (this.hiddenInput.parentNode) {
                 this.hiddenInput.parentNode.removeChild(this.hiddenInput);
@@ -370,7 +405,7 @@ export class HelpEventManager {
     goBack() {
         const state = this.contentManager.getState();
         
-        if (state.isSearching) {
+        if (state.isSearching || this.searchFocused) {
             // 検索モードを終了
             this.searchFocused = false;
             this.currentSearchQuery = '';
@@ -397,13 +432,19 @@ export class HelpEventManager {
      * 検索バーフォーカス
      */
     focusSearchBar() {
+        console.log('HelpEventManager: focusSearchBar() called');
         this.searchFocused = true;
         this.accessibilityManager.setFocusIndex(0); // 検索バーのインデックス
         
         // 隠し入力フィールドにフォーカスを当ててIMEを有効化
         if (this.hiddenInput) {
-            this.hiddenInput.focus();
+            console.log('HelpEventManager: focusing hidden input');
             this.hiddenInput.value = this.currentSearchQuery || '';
+            this.hiddenInput.focus();
+            // カーソルを最後に移動
+            this.hiddenInput.setSelectionRange(this.hiddenInput.value.length, this.hiddenInput.value.length);
+        } else {
+            console.error('HelpEventManager: hiddenInput not available for focus');
         }
         
         if (this.callbacks.onSearchFocus) {
