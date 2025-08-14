@@ -51,7 +51,6 @@ For Arabic and Hebrew languages, navigation keys are automatically adjusted:
 | **↑** | Move Up | Moves selection up in menus or lists |
 | **↓** | Move Down | Moves selection down in menus or lists |
 | **Enter** | Confirm/Execute | Executes the currently selected item |
-| **I** | Open User Info | Opens player statistics screen |
 
 ## Help & Settings Access
 
@@ -59,8 +58,6 @@ For Arabic and Hebrew languages, navigation keys are automatically adjusted:
 
 | Key | Function | Description | Return Behavior |
 |-----|----------|-------------|----------------|
-| **S** | Open Settings | Opens the unified settings screen | Automatically returns to originating screen |
-| **H** | Standard Help | Opens general help and operation guide | Automatically returns to originating screen |
 | **F1** | Contextual Help | Opens help specific to current screen | Automatically returns to originating screen |
 | **Ctrl+H** | Documentation Help | Opens detailed documentation and API reference | Automatically returns to originating screen |
 
@@ -73,14 +70,14 @@ For Arabic and Hebrew languages, navigation keys are automatically adjusted:
 
 ### 🌍 Supported Languages and Key Mappings
 
-| Language | Help Key | Settings Key | Notes |
+| Language | Contextual Help | Documentation Help | Notes |
 |----------|----------|--------------|-------|
-| **Japanese** | H (ヘルプ) | S (設定) | Standard QWERTY layout |
-| **English** | H (help) | S (settings) | Standard QWERTY layout |
-| **German** | H (hilfe) | E (einstellungen) | Optimized for QWERTZ layout |
-| **French** | A (aide) | P (paramètres) | Optimized for AZERTY layout |
-| **Arabic** | H (مساعدة) | S (اعدادات) | RTL support, auto-adjusted direction keys |
-| **Hebrew** | H (עזרה) | S (הגדרות) | RTL support, auto-adjusted direction keys |
+| **Japanese** | F1 (ヘルプ) | Ctrl+H (詳細ヘルプ) | Standard QWERTY layout |
+| **English** | F1 (help) | Ctrl+H (documentation) | Standard QWERTY layout |
+| **German** | F1 (hilfe) | Ctrl+H (dokumentation) | Optimized for QWERTZ layout |
+| **French** | F1 (aide) | Ctrl+H (documentation) | Optimized for AZERTY layout |
+| **Arabic** | F1 (مساعدة) | Ctrl+H (وثائق) | RTL support, auto-adjusted direction keys |
+| **Hebrew** | F1 (עזרה) | Ctrl+H (תיעוד) | RTL support, auto-adjusted direction keys |
 
 ### ⚙️ Automatic Language Detection
 - Automatic detection from system language settings
@@ -106,7 +103,7 @@ Accessibility features have been integrated into the unified settings screen.
 
 | Key | Function | Description |
 |-----|----------|-------------|
-| **S → Accessibility** | Unified Settings Screen | Open settings with S key, navigate to accessibility category for comprehensive settings |
+| **Settings → Accessibility** | Unified Settings Screen | Open settings via UI, navigate to accessibility category for comprehensive settings |
 | **Ctrl + Alt + H** | Toggle High Contrast | Toggles high contrast mode on/off |
 | **Ctrl + Alt + T** | Toggle Large Text | Toggles between large and standard text size |
 | **Ctrl + Alt + M** | Toggle Reduced Motion | Toggles between reduced and standard animation effects |
@@ -133,7 +130,6 @@ Accessibility features have been integrated into the unified settings screen.
 |-----|----------|-------------|
 | **↑↓** | Navigate Stages | Moves between available stages |
 | **Enter** | Select Stage | Starts the game with the selected stage |
-| **S** | Open Shop | Navigates to the item shop screen |
 
 ### Shop Screen
 
@@ -165,7 +161,7 @@ Accessibility features have been integrated into the unified settings screen.
    - **Key Mapping**: Shortcuts optimized for each language's keyboard layout
 
 3. **Username Input Limitations**
-   - During username input, some shortcuts (especially the **S** key) may trigger unintended actions
+   - During username input, some shortcuts may trigger unintended actions
    - Focus on text input and avoid using shortcuts during username entry
 
 4. **Context-Dependent**
@@ -178,7 +174,7 @@ Accessibility features have been integrated into the unified settings screen.
 
 ### 💡 Usage Tips
 
-- **🆕 Unified Access**: Use H, S, F1, Ctrl+H keys to access help and settings from any screen
+- **🆕 Unified Access**: Use F1, Ctrl+H keys to access help from any screen
 - **🆕 Context Retention**: No matter which screen you open help/settings from, you'll return to the appropriate location
 - **Efficient Navigation**: Combine arrow keys with Enter for complete mouse-free operation
 - **Accessibility**: Use integrated accessibility settings for comprehensive visual and motor accessibility support
