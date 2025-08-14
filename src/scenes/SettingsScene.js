@@ -169,7 +169,16 @@ export class SettingsScene extends Scene {
             description: 'アクセシビリティ設定をファイルとして保存・読み込みします'
         });
         
-        return accessibilityItems;
+        // 項目の有効性を検証
+        const validItems = accessibilityItems.filter(item => {
+            if (!item || !item.key || !item.label) {
+                console.warn('[SettingsScene] Invalid accessibility item filtered out:', item);
+                return false;
+            }
+            return true;
+        });
+        
+        return validItems;
     }
     
     /**
@@ -414,6 +423,13 @@ export class SettingsScene extends Scene {
         const itemStartY = startY + 50;
         for (let i = 0; i < currentItems.length; i++) {
             const item = currentItems[i];
+            
+            // デバッグ: 無効な項目をチェック
+            if (!item || !item.key) {
+                console.warn('[SettingsScene] Invalid setting item at index:', i, 'category:', this.categories[this.selectedCategoryIndex], 'item:', item);
+                continue;
+            }
+            
             const y = itemStartY + i * this.layout.itemHeight;
             const isSelected = i === this.selectedSettingIndex && !this.showingConfirmDialog;
             
@@ -447,6 +463,12 @@ export class SettingsScene extends Scene {
         }
         
         // 現在の値を取得
+        // キーの有効性をチェック
+        if (!item || !item.key) {
+            console.warn('[SettingsScene] Invalid setting item:', item);
+            return;
+        }
+
         let currentValue;
         if (item.key === 'display.fullscreen') {
             // フルスクリーン状態を実際のDOM状態から取得
@@ -455,7 +477,12 @@ export class SettingsScene extends Scene {
             // ミュート状態をAudioManagerから取得
             currentValue = this.gameEngine.audioManager ? this.gameEngine.audioManager.isMuted() : false;
         } else {
-            currentValue = this.gameEngine.settingsManager.get(item.key);
+            try {
+                currentValue = this.gameEngine.settingsManager.get(item.key);
+            } catch (error) {
+                console.warn('[SettingsScene] Failed to get setting value for key:', item.key, error);
+                currentValue = item.default || false;
+            }
         }
         
         // 値の表示
