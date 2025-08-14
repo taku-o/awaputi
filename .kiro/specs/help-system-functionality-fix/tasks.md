@@ -40,27 +40,36 @@
   - Add proper search result processing and display
   - Add empty search query handling to return to normal view
   - Add "no results found" message display
+  - Add missing recordSearchQuery method to HelpAnalytics class
   - _Requirements: 2.3, 2.4, 2.6_
 
 - [x] 7. Fix keyboard shortcut registration for help access
-  - Verify H key shortcut is properly registered in KeyboardShortcutManager
-  - Add proper scene switching logic for help access
-  - Add context preservation for return navigation
-  - Add error handling for scene switching failures
+  - ~~Verify H key shortcut is properly registered in KeyboardShortcutManager~~
+  - ~~Add proper scene switching logic for help access~~
+  - ~~Add context preservation for return navigation~~
+  - ~~Add error handling for scene switching failures~~
+  - **Note: H key shortcut was previously removed (Issue #169)**
+  - Existing F1 and Ctrl+H shortcuts confirmed working correctly
   - _Requirements: 1.1, 1.2, 1.4_
 
-- [ ] 8. Implement proper scene navigation in HelpScene
+- [x] 8. Implement proper scene navigation in HelpScene
   - Add NavigationContextManager integration for proper return paths
-  - Add ESC key handling to return to previous scene
-  - Add fallback navigation when context is unavailable
-  - Add scene transition error handling
+  - Add ESC key handling to return to previous scene (already implemented in HelpEventManager)
+  - Add fallback navigation when context is unavailable (already in HelpScene)
+  - Add scene transition error handling (already in HelpScene)
+  - Add missing setReturnContext method to NavigationContextManager
+  - Add hasScene method to SceneManager for scene validation
+  - Update SceneManager.switchScene to support contextData parameter
   - _Requirements: 1.3, 1.4, 6.3_
 
-- [ ] 9. Add contextual help functionality
-  - Implement context analysis based on source scene
-  - Add contextual content highlighting and prioritization
-  - Add visual indicators for contextual help mode
-  - Add fallback to standard help when context analysis fails
+- [x] 9. Add contextual help functionality
+  - Implement context analysis based on source scene (analyzeContextAndGetHelp method)
+  - Add contextual content highlighting and prioritization (priority-based help selection)
+  - Add visual indicators for contextual help mode (stub methods for UI highlighting)
+  - Add fallback to standard help when context analysis fails (null return handling)
+  - Implement actual functionality for all contextual help actions
+  - Connect ContextualHelpManager with SceneManager and HelpContentManager
+  - Update keyboard shortcuts content to reflect removed H/S keys
   - _Requirements: 6.1, 6.2, 6.4, 6.5_
 
 - [ ] 10. Implement comprehensive error handling

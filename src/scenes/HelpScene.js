@@ -45,30 +45,38 @@ export class HelpScene extends Scene {
      * @private
      */
     _initializeSubComponents() {
+        console.log('HelpScene: _initializeSubComponents() called');
         try {
             // アクセシビリティ管理
+            console.log('HelpScene: Creating HelpAccessibilityManager');
             const accessibilityManager = this.gameEngine.accessibilityManager || new CoreAccessibilityManager(this.gameEngine);
             this.helpAccessibilityManager = new HelpAccessibilityManager(this.gameEngine, accessibilityManager);
             
             // コンテンツ管理
+            console.log('HelpScene: Creating HelpContentManager');
             this.helpContentManager = new HelpContentManager(this.gameEngine);
             
             // アニメーション管理
+            console.log('HelpScene: Creating HelpAnimationManager');
             this.helpAnimationManager = new HelpAnimationManager();
             this.helpTransitionRenderer = new HelpTransitionRenderer(this.helpAnimationManager);
             
             // レンダリング管理
+            console.log('HelpScene: Creating HelpRenderer');
             this.helpRenderer = new HelpRenderer(this.gameEngine);
             
             // イベント管理
+            console.log('HelpScene: Creating HelpEventManager');
             this.helpEventManager = new HelpEventManager(
                 this.gameEngine,
                 this.helpContentManager,
                 this.helpAccessibilityManager,
                 this.helpAnimationManager
             );
+            console.log('HelpScene: HelpEventManager created, instance:', !!this.helpEventManager);
             
             // コンテキスト依存ヘルプ管理
+            console.log('HelpScene: Creating ContextualHelpManager');
             this.contextualHelpManager = new ContextualHelpManager(this.gameEngine);
             
             console.log('HelpScene sub-components initialized');
@@ -166,6 +174,7 @@ export class HelpScene extends Scene {
      * シーン開始時の処理
      */
     enter(contextData = {}) {
+        console.log('HelpScene: enter() called');
         if (!this.initialized) {
             console.warn('HelpScene not initialized, attempting to initialize...');
             this.initialize();
@@ -175,7 +184,13 @@ export class HelpScene extends Scene {
         this.processEntryContext(contextData);
         
         // イベントリスナーの設定
-        this.helpEventManager.setupEventListeners();
+        console.log('HelpScene: enter() - helpEventManager exists:', !!this.helpEventManager);
+        if (this.helpEventManager) {
+            console.log('HelpScene: enter() - calling setupEventListeners()');
+            this.helpEventManager.setupEventListeners();
+        } else {
+            console.error('HelpScene: enter() - helpEventManager is not available!');
+        }
         
         // アクセシビリティ機能の有効化
         this.helpAccessibilityManager.enableAccessibilityFeatures();
