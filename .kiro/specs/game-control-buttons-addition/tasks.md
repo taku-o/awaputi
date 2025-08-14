@@ -34,7 +34,7 @@
   - Create dialog state management (show/hide/cleanup)
   - _Requirements: 1.2, 1.3, 1.4, 2.2, 2.3, 2.4, 6.5_
 
-- [ ] 6. Integrate components with GameUIManager
+- [x] 6. Integrate components with GameUIManager
   - Modify `src/scenes/game-scene/GameUIManager.js` to include new components
   - Add initialization methods for buttons and dialog systems
   - Integrate button rendering into existing UI render pipeline

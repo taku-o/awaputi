@@ -30,8 +30,16 @@ Issue #172対応: ゲーム画面にGive Up（ギブアップ）とRestart（ゲ
   - コールバックシステム（確認/キャンセル）
   - キーボードサポート（Enter/Escape）
 
+- [x] タスク6: GameUIManagerとの統合
+  - GameUIManagerに新しいコンポーネントを統合完了
+  - 初期化メソッド追加（initializeControlButtons）
+  - UI描画パイプラインに統合（renderControlButtons）
+  - イベント処理委譲（handleControlButtonClick、updateMousePosition、handleKeyboard）
+  - Give Up/Restart機能の実行メソッド追加
+
 ### 次のタスク
-- [ ] タスク6: GameUIManagerとの統合
+- [ ] タスク7: Give Upボタン機能接続
+- [ ] タスク8: Restartボタン機能接続
 
 ## コミットログ
 - (作業開始時点)

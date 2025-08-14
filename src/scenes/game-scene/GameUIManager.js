@@ -4,6 +4,9 @@
  * UI状態、フィードバック、アニメーション、フローティングテキストなどの専門的な管理を行います
  */
 
+import { GameControlButtons } from './GameControlButtons.js';
+import { ConfirmationDialog } from './ConfirmationDialog.js';
+
 export class GameUIManager {
     constructor(gameEngine, floatingTextManager) {
         this.gameEngine = gameEngine;
@@ -19,6 +22,146 @@ export class GameUIManager {
             scoreAnimationTimer: 0,
             lastScore: 0
         };
+        
+        // ゲームコントロールボタンとダイアログを初期化
+        this.initializeControlButtons();
+    }
+    
+    /**
+     * コントロールボタンとダイアログの初期化
+     */
+    initializeControlButtons() {
+        this.gameControlButtons = new GameControlButtons(this.gameEngine, this);
+        this.confirmationDialog = new ConfirmationDialog(this.gameEngine);
+    }
+    
+    /**
+     * コントロールボタンのレンダリング
+     * @param {CanvasRenderingContext2D} context - 描画コンテキスト
+     */
+    renderControlButtons(context) {
+        // ダイアログが表示されている場合はボタンを無効にする
+        const dialogVisible = this.confirmationDialog.isVisible();
+        this.gameControlButtons.setButtonsEnabled(!dialogVisible);
+        
+        // ボタンのレンダリング
+        this.gameControlButtons.render(context);
+        
+        // ダイアログのレンダリング（ボタンの上に描画）
+        this.confirmationDialog.render(context);
+    }
+    
+    /**
+     * コントロールボタンのクリック処理
+     * @param {number} x - X座標
+     * @param {number} y - Y座標
+     * @returns {boolean} クリックが処理されたかどうか
+     */
+    handleControlButtonClick(x, y) {
+        // まずダイアログのクリック処理を試行
+        if (this.confirmationDialog.handleClick(x, y)) {
+            return true;
+        }
+        
+        // ダイアログが表示されている場合はボタンクリックを無視
+        if (this.confirmationDialog.isVisible()) {
+            return false;
+        }
+        
+        // ボタンのクリック処理
+        const buttonType = this.gameControlButtons.handleClick(x, y);
+        if (buttonType) {
+            this.showConfirmationDialog(buttonType);
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * マウス位置の更新（ホバー状態管理）
+     * @param {number} x - X座標
+     * @param {number} y - Y座標
+     */
+    updateMousePosition(x, y) {
+        this.gameControlButtons.updateMousePosition(x, y);
+        this.confirmationDialog.updateMousePosition(x, y);
+    }
+    
+    /**
+     * 確認ダイアログの表示
+     * @param {string} type - ダイアログタイプ（'giveUp' または 'restart'）
+     */
+    showConfirmationDialog(type) {
+        if (type === 'giveUp') {
+            this.confirmationDialog.show(
+                'giveUp',
+                () => this.executeGiveUp(),
+                () => this.cancelAction()
+            );
+        } else if (type === 'restart') {
+            this.confirmationDialog.show(
+                'restart',
+                () => this.executeRestart(),
+                () => this.cancelAction()
+            );
+        }
+    }
+    
+    /**
+     * 確認ダイアログの非表示
+     */
+    hideConfirmationDialog() {
+        this.confirmationDialog.hide();
+    }
+    
+    /**
+     * Give Up機能の実行
+     */
+    executeGiveUp() {
+        // ゲームエンジンのGive Up処理を呼び出し
+        if (this.gameEngine && typeof this.gameEngine.handleGiveUp === 'function') {
+            this.gameEngine.handleGiveUp();
+        } else {
+            // フォールバック: メインメニューに戻る
+            console.log('Give Up executed - returning to main menu');
+            if (this.gameEngine.sceneManager) {
+                this.gameEngine.sceneManager.switchScene('menu');
+            }
+        }
+    }
+    
+    /**
+     * Restart機能の実行
+     */
+    executeRestart() {
+        // ゲームエンジンのRestart処理を呼び出し
+        if (this.gameEngine && typeof this.gameEngine.handleRestart === 'function') {
+            this.gameEngine.handleRestart();
+        } else {
+            // フォールバック: ゲーム状態をリセット
+            console.log('Restart executed - resetting game state');
+            if (this.gameEngine.gameStateManager) {
+                this.gameEngine.gameStateManager.resetGame();
+            }
+        }
+    }
+    
+    /**
+     * アクションのキャンセル
+     */
+    cancelAction() {
+        // キャンセル時は特に何もしない（ダイアログが閉じるだけ）
+        console.log('Action cancelled');
+    }
+    
+    /**
+     * キーボード処理
+     * @param {string} key - キー名
+     * @returns {boolean} キーが処理されたかどうか
+     */
+    handleKeyboard(key) {
+        return this.confirmationDialog.handleKeyboard(key);
     }
     
     /**
@@ -230,6 +373,9 @@ export class GameUIManager {
         
         // 特殊効果状態表示
         this.renderSpecialEffectsStatus(context);
+        
+        // ゲームコントロールボタンとダイアログ
+        this.renderControlButtons(context);
         
         // 詳細情報表示
         if (this.uiState.showingDetailedInfo) {
