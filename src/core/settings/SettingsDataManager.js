@@ -142,13 +142,16 @@ export class SettingsDataManager {
                 // デフォルト値を設定（正しいメソッド名を使用）
                 this.configManager.setDefaultValue(fullKey, value);
                 
+                // カテゴリと設定値を初期化（カテゴリが確実に作成されるようにする）
+                this.configManager.set(category, key, value);
+                
                 // 検証ルールを設定
                 if (validationRules[key]) {
                     this.configManager.setValidationRule(fullKey, validationRules[key]);
                 }
             }
             
-            console.log(`[SettingsDataManager] Category '${category}' setup completed`);
+            console.log(`[SettingsDataManager] Category '${category}' setup completed with ${Object.keys(defaultValues).length} settings`);
         } catch (error) {
             console.error(`[SettingsDataManager] Failed to setup category '${category}':`, error);
             throw error;
