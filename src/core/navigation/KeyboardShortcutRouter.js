@@ -27,8 +27,6 @@ export class KeyboardShortcutRouter {
         
         // ショートカットマッピング
         this.shortcuts = new Map([
-            ['KeyH', { action: 'help', scene: 'help', description: 'Open help screen' }],
-            ['KeyS', { action: 'settings', scene: 'settings', description: 'Open settings screen' }],
             ['F1', { action: 'contextualHelp', scene: 'help', description: 'Show contextual help' }],
             ['Escape', { action: 'goBack', scene: null, description: 'Go back to previous screen' }],
             ['F11', { action: 'fullscreen', scene: null, description: 'Toggle fullscreen mode' }]
@@ -242,11 +240,6 @@ export class KeyboardShortcutRouter {
             }
             
             switch (shortcut.action) {
-                case 'help':
-                    return this.handleHelpShortcut(currentScene);
-                    
-                case 'settings':
-                    return this.handleSettingsShortcut(currentScene);
                     
                 case 'contextualHelp':
                     return this.handleContextualHelp(currentScene);
@@ -275,33 +268,6 @@ export class KeyboardShortcutRouter {
         }
     }
     
-    /**
-     * ヘルプショートカットの処理
-     * @param {string} currentScene - 現在のシーン
-     * @returns {boolean} 処理されたかどうか
-     */
-    handleHelpShortcut(currentScene) {
-        if (currentScene === 'help') {
-            // 既にヘルプ画面にいる場合は戻る
-            return this.handleGoBack();
-        }
-        
-        return this.navigateToScene('help', currentScene, 'keyboard_h');
-    }
-    
-    /**
-     * 設定ショートカットの処理
-     * @param {string} currentScene - 現在のシーン
-     * @returns {boolean} 処理されたかどうか
-     */
-    handleSettingsShortcut(currentScene) {
-        if (currentScene === 'settings') {
-            // 既に設定画面にいる場合は戻る
-            return this.handleGoBack();
-        }
-        
-        return this.navigateToScene('settings', currentScene, 'keyboard_s');
-    }
     
     /**
      * コンテキストヘルプの処理
