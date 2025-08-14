@@ -19,8 +19,13 @@
         "Drag: Blow bubbles away",
         "↑↓ Keys: Menu selection",
         "Enter: Confirm",
-        "ESC: Back/Exit",
-        "S: Shop (in stage select)"
+        "ESC: Back/Exit"
+      ],
+      "gameControls": [
+        "Give Up Button: Top-right button displayed during gameplay",
+        "Restart Game Button: Top-right button displayed during gameplay and game over",
+        "Keyboard Navigation: Tab to select, Enter to execute, Escape to cancel",
+        "Touch Operation: Tap buttons directly to operate"
       ],
       "tips": [
         "Bubbles become dangerous over time",
