@@ -48,6 +48,31 @@ npm run test:all
 
 ### 重要度: 高
 
+#### ゲームコントロールボタン追加プロジェクト（Issue #172対応）🔄
+**目標**: ゲーム画面にGive Up（ギブアップ）とRestart（ゲーム再開始）ボタンを追加し、キーボードショートカット（G、Rキー）を削除してアクセシビリティを向上
+
+**問題の概要**: 
+- Issue #164のsub issue、キーボードショートカット再編成の一環
+- Give Up（Gキー）とRestart（Rキー）がキーボードのみでアクセス困難
+- カジュアルゲームとして明確なUIボタンによる操作性の向上が必要
+- 確認ダイアログ付きの安全な操作実装
+
+**解決アプローチ**:
+- GameControlButtonsコンポーネント作成（Give Up、Restartボタン）
+- ConfirmationDialogコンポーネント作成（確認ダイアログ）
+- GameUIManagerとの統合によるシームレスなUI実装
+- KeyboardShortcutManagerからG、Rキーの削除
+- アクセシビリティとレスポンシブ対応
+
+**仕様書**: `.kiro/specs/game-control-buttons-addition/`
+- requirements.md: 6つの要件定義（Give Upボタン、Restartボタン、キーボードショートカット削除、UI設計、ドキュメント更新、アクセシビリティ）
+- design.md: アーキテクチャ設計（コンポーネント統合、確認ダイアログ、エラーハンドリング、テスト戦略）
+- tasks.md: 20段階の実装タスク（コンポーネント作成→統合→機能実装→ショートカット削除→テスト→ドキュメント更新）
+
+**作業記録ファイル**: `/Users/taku-o/Documents/workspaces/awaputi/.work-progress/game-control-buttons-addition-progress.md`
+
+**現状**: 実装開始、tasks.mdのタスクリストに従って順次作業中
+
 #### キーボードショートカット削除プロジェクト（Issue #169対応）🔄
 **目標**: 不要なキーボードショートカット（I、S、Hキー）を削除し、カジュアルゲームに適したUIを実現
 
