@@ -82,31 +82,23 @@ export class SettingsDataManager {
                 showWatermark: true
             },
             
-            // 通知設定
+            // 通知設定（平坦化構造）
             notifications: {
-                challenges: {
-                    enabled: true,
-                    newChallenge: true,
-                    challengeComplete: true,
-                    dailyReminder: true,
-                    weeklyReminder: true
-                },
-                achievements: {
-                    enabled: true,
-                    unlocked: true,
-                    progress: false,
-                    rare: true
-                },
-                leaderboard: {
-                    enabled: true,
-                    newRecord: true,
-                    rankChange: false
-                },
-                system: {
-                    enabled: true,
-                    updates: true,
-                    maintenance: true
-                }
+                'challenges.enabled': true,
+                'challenges.newChallenge': true,
+                'challenges.challengeComplete': true,
+                'challenges.dailyReminder': true,
+                'challenges.weeklyReminder': true,
+                'achievements.enabled': true,
+                'achievements.unlocked': true,
+                'achievements.progress': false,
+                'achievements.rare': true,
+                'leaderboard.enabled': true,
+                'leaderboard.newRecord': true,
+                'leaderboard.rankChange': false,
+                'system.enabled': true,
+                'system.updates': true,
+                'system.maintenance': true
             }
         };
     }
