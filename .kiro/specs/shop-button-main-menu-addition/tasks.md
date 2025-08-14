@@ -1,16 +1,16 @@
 # Implementation Plan
 
-- [ ] 1. 翻訳ファイルにショップメニューキーを追加
+- [x] 1. 翻訳ファイルにショップメニューキーを追加
   - 日本語と英語の翻訳ファイルにmenu.shopキーを追加
   - 他の言語ファイルにも対応する翻訳を追加
   - _Requirements: 2.1, 4.2_
 
-- [ ] 2. MainMenuSceneにショップメニュー項目を追加
+- [x] 2. MainMenuSceneにショップメニュー項目を追加
   - menuItems配列にショップ項目を適切な位置（インデックス1）に挿入
   - メニュー項目の順序を要件通りに調整
   - _Requirements: 2.1, 3.1_
 
-- [ ] 3. MainMenuSceneにopenShopメソッドを実装
+- [x] 3. MainMenuSceneにopenShopメソッドを実装
   - ショップシーンへの遷移処理を実装
   - エラーハンドリングを含む適切な実装
   - _Requirements: 2.2, 2.4, 5.1_
@@ -21,12 +21,12 @@
   - メニューナビゲーションの正常動作テスト
   - _Requirements: 2.1, 2.2, 2.3, 2.4_
 
-- [ ] 5. StageSelectDataManagerからSキーショートカットを削除
+- [x] 5. StageSelectDataManagerからSキーショートカットを削除
   - handleStageKeyInputメソッドからKeyS caseを削除
   - Sキー処理の完全な除去
   - _Requirements: 1.1_
 
-- [ ] 6. StageSelectDataManagerのUI表示からSキー説明を削除
+- [x] 6. StageSelectDataManagerのUI表示からSキー説明を削除
   - renderControlsメソッドからSキーの説明文を削除
   - ショップボタンの描画処理を削除（オプション）
   - _Requirements: 1.2_
@@ -36,15 +36,17 @@
   - 他のキーボードショートカットが正常動作することを確認するテスト
   - _Requirements: 1.1, 5.2, 5.3_
 
-- [ ] 8. キーボードショートカットドキュメントを更新（日本語版）
+- [x] 8. キーボードショートカットドキュメントを更新（日本語版）
   - docs/keyboard-shortcuts.mdからSキーショートカットの記述を削除
   - ステージ選択画面セクションの更新
   - _Requirements: 1.3, 4.1, 4.3_
+  - ✅ **No Action Required**: Documentation already correct - no S key shortcut mentioned
 
-- [ ] 9. キーボードショートカットドキュメントを更新（英語版）
+- [x] 9. キーボードショートカットドキュメントを更新（英語版）
   - docs/keyboard-shortcuts.en.mdからSキーショートカットの記述を削除
   - ステージ選択画面セクションの更新
   - _Requirements: 1.3, 4.1, 4.3_
+  - ✅ **No Action Required**: Documentation already correct - no S key shortcut mentioned
 
 - [ ] 10. 統合テストを実装
   - メインメニューからショップへの遷移テスト（キーボード・マウス両方）
