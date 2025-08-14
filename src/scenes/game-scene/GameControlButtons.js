@@ -47,7 +47,7 @@ export class GameControlButtons {
      */
     updateButtonPositions() {
         const canvas = this.gameEngine.canvas;
-        const rightMargin = 8;   // 右側のマージン（減らす）
+        const rightMargin = 5;   // 右側のマージン（上のマージンと統一）
         const topMargin = 5;     // 上側のマージン（5pxに戻す）
         const buttonSpacing = 10;
         
