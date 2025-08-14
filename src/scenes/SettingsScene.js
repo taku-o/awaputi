@@ -411,6 +411,27 @@ export class SettingsScene extends Scene {
         const startX = this.layout.categoryWidth + 30;
         const startY = 80;
         const settingsWidth = width - startX - 20;
+        
+        // デバッグ: カテゴリと設定項目の状態を確認（1秒に1回のみ）
+        if (!this.lastDebugTime || Date.now() - this.lastDebugTime > 1000) {
+            console.log('[SettingsScene] Current category:', this.currentCategory);
+            console.log('[SettingsScene] Available categories:', Object.keys(this.settingItems || {}));
+            
+            const currentItems = this.settingItems[this.currentCategory] || [];
+            console.log('[SettingsScene] Current items count:', currentItems.length);
+            
+            // 各項目の有効性をログ出力
+            currentItems.forEach((item, index) => {
+                if (!item || !item.key) {
+                    console.warn('[SettingsScene] Invalid item at index:', index, 'item:', item);
+                } else {
+                    console.log(`[SettingsScene] Item ${index}: key="${item.key}", type="${item.type}"`);
+                }
+            });
+            
+            this.lastDebugTime = Date.now();
+        }
+        
         const currentItems = this.settingItems[this.currentCategory] || [];
         
         // カテゴリタイトル
