@@ -56,26 +56,33 @@ export class HelpEventManager {
      * イベントリスナーの設定
      */
     setupEventListeners() {
+        console.log('HelpEventManager: setupEventListeners() called');
         this.boundKeyHandler = (event) => this.handleKeyPress(event);
         this.boundClickHandler = (event) => this.handleClick(event);
         this.boundContextMenuHandler = (event) => this.handleContextMenu(event);
         
         // IME対応の隠し入力フィールドを作成
+        console.log('HelpEventManager: calling createHiddenInput()');
         this.createHiddenInput();
         
         document.addEventListener('keydown', this.boundKeyHandler);
         document.addEventListener('click', this.boundClickHandler);
         document.addEventListener('contextmenu', this.boundContextMenuHandler);
+        console.log('HelpEventManager: event listeners setup completed');
     }
     
     /**
      * IME対応の隠し入力フィールドを作成
      */
     createHiddenInput() {
+        console.log('HelpEventManager: createHiddenInput() called, hiddenInput exists:', !!this.hiddenInput);
+        
         if (this.hiddenInput) {
+            console.log('HelpEventManager: hidden input already exists, skipping creation');
             return; // 既に作成済み
         }
         
+        console.log('HelpEventManager: creating new hidden input element');
         this.hiddenInput = document.createElement('input');
         this.hiddenInput.type = 'text';
         this.hiddenInput.style.position = 'absolute';
@@ -89,17 +96,22 @@ export class HelpEventManager {
         this.hiddenInput.autocapitalize = 'off';
         this.hiddenInput.spellcheck = false;
         
+        console.log('HelpEventManager: setting up input event listeners');
         // 入力イベントハンドラーを設定
         this.boundInputHandler = (event) => this.handleIMEInput(event);
         this.hiddenInput.addEventListener('input', this.boundInputHandler);
         this.hiddenInput.addEventListener('compositionstart', () => {
+            console.log('HelpEventManager: composition started');
             this.isComposing = true;
         });
         this.hiddenInput.addEventListener('compositionend', () => {
+            console.log('HelpEventManager: composition ended');
             this.isComposing = false;
         });
         
+        console.log('HelpEventManager: appending hidden input to document.body');
         document.body.appendChild(this.hiddenInput);
+        console.log('HelpEventManager: hidden input element created and added to DOM');
     }
     
     /**
