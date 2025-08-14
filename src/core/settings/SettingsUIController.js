@@ -137,7 +137,9 @@ export class SettingsUIController {
             
             // パーティクルシステムに通知
             if (this.gameEngine && this.gameEngine.particleManager) {
-                this.gameEngine.particleManager.setReducedEffects(enabled);
+                this.gameEngine.particleManager.updateConfiguration({
+                    quality: enabled ? 0.3 : 1.0  // Reduce quality when "reduced effects" is enabled
+                });
             }
             
             console.log(`[SettingsUIController] Reduced motion mode applied: ${enabled}`);
