@@ -2,6 +2,7 @@ import { Scene } from '../core/Scene.js';
 import { NavigationContextManager } from '../core/navigation/NavigationContextManager.js';
 import { getLoggingSystem } from '../core/LoggingSystem.js';
 import { AccessibilitySettingsManager } from './settings-scene/AccessibilitySettingsManager.js';
+import { VolumeControlComponent } from '../components/VolumeControlComponent.js';
 
 /**
  * 設定画面シーン
@@ -17,6 +18,9 @@ export class SettingsScene extends Scene {
         
         // AccessibilitySettingsManagerの初期化
         this.accessibilitySettingsManager = new AccessibilitySettingsManager(gameEngine);
+        
+        // VolumeControlComponentの初期化
+        this.volumeControlComponent = new VolumeControlComponent(gameEngine);
         
         // 設定カテゴリと現在選択中のカテゴリ
         this.categories = ['general', 'social', 'privacy', 'notifications', 'accessibility'];
@@ -61,7 +65,9 @@ export class SettingsScene extends Scene {
                     { value: 'high', label: '高' },
                     { value: 'auto', label: '自動' }
                 ]},
-                { key: 'audio.masterVolume', label: 'マスター音量', type: 'slider', min: 0, max: 1, step: 0.1 },
+                { key: 'display.fullscreen', label: 'フルスクリーン', type: 'toggle', description: 'フルスクリーンモードを有効にします' },
+                { key: 'audio.muted', label: '音声ミュート', type: 'toggle', description: 'すべての音声をミュートにします' },
+                { key: 'audio.masterVolume', label: 'マスター音量', type: 'custom', component: 'VolumeControlComponent', description: '音量を調整します' },
                 { key: 'audio.sfxVolume', label: '効果音音量', type: 'slider', min: 0, max: 1, step: 0.1 },
                 { key: 'audio.bgmVolume', label: 'BGM音量', type: 'slider', min: 0, max: 1, step: 0.1 }
             ],
@@ -391,7 +397,16 @@ export class SettingsScene extends Scene {
         }
         
         // 現在の値を取得
-        const currentValue = this.gameEngine.settingsManager.get(item.key);
+        let currentValue;
+        if (item.key === 'display.fullscreen') {
+            // フルスクリーン状態を実際のDOM状態から取得
+            currentValue = !!document.fullscreenElement;
+        } else if (item.key === 'audio.muted') {
+            // ミュート状態をAudioManagerから取得
+            currentValue = this.gameEngine.audioManager ? this.gameEngine.audioManager.isMuted() : false;
+        } else {
+            currentValue = this.gameEngine.settingsManager.get(item.key);
+        }
         
         // 値の表示
         this.renderSettingValue(context, item, currentValue, x + width - 200, y, 180, isSelected);
@@ -419,6 +434,10 @@ export class SettingsScene extends Scene {
                 
             case 'text':
                 this.renderTextInput(context, value, x, centerY, width, isSelected);
+                break;
+                
+            case 'custom':
+                this.renderCustomControl(context, item, value, x, centerY, width, isSelected);
                 break;
         }
     }
@@ -507,6 +526,85 @@ export class SettingsScene extends Scene {
         context.font = '14px Arial, sans-serif';
         context.textAlign = 'right';
         context.fillText(Math.round(value * 100) / 100, x + width, y + 5);
+    }
+    
+    /**
+     * カスタムコントロール描画
+     */
+    renderCustomControl(context, item, value, x, y, width, isSelected) {
+        if (item.component === 'VolumeControlComponent') {
+            this.renderVolumeControl(context, value, x, y, width, isSelected);
+        } else {
+            // フォールバック：不明なカスタムコンポーネントの場合はテキスト表示
+            context.fillStyle = '#7f8c8d';
+            context.font = '14px Arial, sans-serif';
+            context.textAlign = 'center';
+            context.fillText('カスタムコンポーネント', x + width / 2, y + 5);
+        }
+    }
+    
+    /**
+     * ボリュームコントロール描画
+     */
+    renderVolumeControl(context, value, x, y, width, isSelected) {
+        const controlWidth = width - 20;
+        const controlHeight = 30;
+        const controlY = y - controlHeight / 2;
+        
+        // 背景
+        context.fillStyle = isSelected ? '#e8f4fd' : '#f8f9fa';
+        context.fillRect(x, controlY, controlWidth, controlHeight);
+        
+        // 枠線
+        context.strokeStyle = isSelected ? '#3498db' : '#bdc3c7';
+        context.lineWidth = isSelected ? 2 : 1;
+        context.strokeRect(x, controlY, controlWidth, controlHeight);
+        
+        // ボタン部分のレイアウト
+        const buttonWidth = 30;
+        const buttonHeight = 24;
+        const buttonY = controlY + 3;
+        const progressBarWidth = controlWidth - (buttonWidth * 2) - 40;
+        const progressBarX = x + buttonWidth + 10;
+        const progressBarY = y - 4;
+        const progressBarHeight = 8;
+        
+        // 音量ダウンボタン
+        context.fillStyle = (value > 0) ? '#3498db' : '#95a5a6';
+        context.fillRect(x + 5, buttonY, buttonWidth, buttonHeight);
+        context.fillStyle = '#ffffff';
+        context.font = '14px Arial, sans-serif';
+        context.textAlign = 'center';
+        context.fillText('🔉', x + 5 + buttonWidth / 2, buttonY + 16);
+        
+        // プログレスバー背景
+        context.fillStyle = '#bdc3c7';
+        context.fillRect(progressBarX, progressBarY, progressBarWidth, progressBarHeight);
+        
+        // プログレスバー進行部分
+        const progress = value || 0;
+        context.fillStyle = '#3498db';
+        context.fillRect(progressBarX, progressBarY, progressBarWidth * progress, progressBarHeight);
+        
+        // 音量アップボタン
+        context.fillStyle = (value < 1) ? '#3498db' : '#95a5a6';
+        context.fillRect(x + controlWidth - buttonWidth - 5, buttonY, buttonWidth, buttonHeight);
+        context.fillStyle = '#ffffff';
+        context.fillText('🔊', x + controlWidth - buttonWidth / 2 - 5, buttonY + 16);
+        
+        // 音量パーセンテージ表示
+        context.fillStyle = '#2c3e50';
+        context.font = '12px Arial, sans-serif';
+        context.textAlign = 'right';
+        context.fillText(`${Math.round((value || 0) * 100)}%`, x + controlWidth - 5, y + 15);
+        
+        // 選択時の追加表示
+        if (isSelected) {
+            context.fillStyle = '#3498db';
+            context.font = '10px Arial, sans-serif';
+            context.textAlign = 'center';
+            context.fillText('Enter: 音量アップ', x + controlWidth / 2, controlY + controlHeight + 12);
+        }
     }
     
     /**
@@ -769,7 +867,14 @@ export class SettingsScene extends Scene {
             // 通常の設定処理
             switch (item.type) {
                 case 'toggle':
-                    this.gameEngine.settingsManager.set(item.key, !currentValue);
+                    // 特別な処理が必要な設定項目
+                    if (item.key === 'display.fullscreen') {
+                        this.handleFullscreenToggle();
+                    } else if (item.key === 'audio.muted') {
+                        this.handleAudioMuteToggle();
+                    } else {
+                        this.gameEngine.settingsManager.set(item.key, !currentValue);
+                    }
                     break;
                     
                 case 'select':
@@ -782,6 +887,13 @@ export class SettingsScene extends Scene {
                     
                 case 'text':
                     this.startTextEditing(currentValue);
+                    break;
+                    
+                case 'custom':
+                    // カスタムコンポーネント（VolumeControlComponent）の処理
+                    if (item.component === 'VolumeControlComponent') {
+                        this.handleVolumeControl();
+                    }
                     break;
             }
         }
@@ -924,6 +1036,66 @@ export class SettingsScene extends Scene {
             console.log('[SettingsScene] 設定を保存しました');
         } catch (error) {
             console.error('[SettingsScene] 設定保存エラー:', error);
+        }
+    }
+    
+    /**
+     * フルスクリーン切り替え処理
+     */
+    handleFullscreenToggle() {
+        try {
+            if (this.gameEngine.responsiveCanvasManager) {
+                this.gameEngine.responsiveCanvasManager.toggleFullscreen();
+                
+                // フルスクリーン状態を設定に保存
+                const isFullscreen = !!document.fullscreenElement;
+                this.gameEngine.settingsManager.set('display.fullscreen', isFullscreen);
+                
+                console.log(`[SettingsScene] Fullscreen toggled: ${isFullscreen}`);
+                this.loggingSystem.info('SettingsScene', `Fullscreen toggled: ${isFullscreen}`);
+            }
+        } catch (error) {
+            console.error('[SettingsScene] Error toggling fullscreen:', error);
+            this.loggingSystem.error('SettingsScene', 'Fullscreen toggle error', error);
+        }
+    }
+    
+    /**
+     * 音声ミュート切り替え処理
+     */
+    handleAudioMuteToggle() {
+        try {
+            if (this.gameEngine.audioManager) {
+                const newMutedState = this.gameEngine.audioManager.toggleMute();
+                
+                // ミュート状態を設定に保存
+                this.gameEngine.settingsManager.set('audio.muted', newMutedState);
+                
+                console.log(`[SettingsScene] Audio mute toggled: ${newMutedState}`);
+                this.loggingSystem.info('SettingsScene', `Audio mute toggled: ${newMutedState}`);
+            }
+        } catch (error) {
+            console.error('[SettingsScene] Error toggling audio mute:', error);
+            this.loggingSystem.error('SettingsScene', 'Audio mute toggle error', error);
+        }
+    }
+    
+    /**
+     * ボリュームコントロール処理
+     */
+    handleVolumeControl() {
+        try {
+            // VolumeControlComponentを使用した音量調整
+            // このメソッドは現在選択されているときに音量アップを実行
+            if (this.volumeControlComponent) {
+                this.volumeControlComponent.handleVolumeUp();
+                
+                console.log('[SettingsScene] Volume control activated');
+                this.loggingSystem.info('SettingsScene', 'Volume control activated');
+            }
+        } catch (error) {
+            console.error('[SettingsScene] Error handling volume control:', error);
+            this.loggingSystem.error('SettingsScene', 'Volume control error', error);
         }
     }
     
@@ -1074,6 +1246,11 @@ export class SettingsScene extends Scene {
             // AccessibilitySettingsManagerのクリーンアップ
             if (this.accessibilitySettingsManager) {
                 this.accessibilitySettingsManager.cleanup();
+            }
+            
+            // VolumeControlComponentのクリーンアップ
+            if (this.volumeControlComponent) {
+                this.volumeControlComponent.dispose();
             }
             
             // 設定の保存

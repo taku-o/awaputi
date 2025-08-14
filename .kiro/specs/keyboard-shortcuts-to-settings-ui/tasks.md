@@ -29,19 +29,19 @@
   - Ensure proper labeling and descriptions in Japanese
   - _Requirements: 1.2, 2.2, 4.4, 4.5, 4.6, 5.4, 5.5, 5.6_
 
-- [ ] 2.1 Add fullscreen toggle to general settings category
+- [x] 2.1 Add fullscreen toggle to general settings category
   - Add fullscreen toggle setting item with proper configuration
   - Implement toggle functionality that calls ResponsiveCanvasManager
   - Add visual state indication for current fullscreen status
   - _Requirements: 1.2, 1.3, 1.4_
 
-- [ ] 2.2 Add audio mute toggle to general settings category
+- [x] 2.2 Add audio mute toggle to general settings category
   - Add audio mute toggle setting item with proper configuration
   - Implement toggle functionality that calls AudioManager
   - Add visual state indication for current mute status
   - _Requirements: 2.2, 2.3, 2.4_
 
-- [ ] 2.3 Add volume control buttons to general settings category
+- [x] 2.3 Add volume control buttons to general settings category
   - Add custom volume control setting item
   - Integrate VolumeControlComponent into settings rendering
   - Ensure proper positioning and sizing within settings layout
