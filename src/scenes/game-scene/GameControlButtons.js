@@ -135,13 +135,27 @@ export class GameControlButtons {
         const { isGameStarted = false, isGameOver = false, isPaused = false, isPreGame = false } = gameState;
         
         // Give Upボタンの表示条件: (ゲーム進行中 OR ポーズ中) AND ゲームオーバーでない AND ゲーム開始前でない
-        this.buttonVisibility.giveUp = (isGameStarted && !isGameOver && !isPreGame);
+        const giveUpCondition = (isGameStarted && !isGameOver && !isPreGame);
+        this.buttonVisibility.giveUp = giveUpCondition;
         
         // Restartボタンの表示条件: (ゲーム進行中 OR ポーズ中 OR ゲームオーバー) AND ゲーム開始前でない
-        this.buttonVisibility.restart = ((isGameStarted && !isPreGame) || isGameOver) && !isPreGame;
+        const restartCondition = ((isGameStarted && !isPreGame) || isGameOver) && !isPreGame;
+        this.buttonVisibility.restart = restartCondition;
         
-        console.log('[GameControlButtons] Button visibility updated:', {
+        console.log('[GameControlButtons] Button visibility logic:', {
             gameState,
+            conditions: {
+                giveUp: {
+                    formula: '(isGameStarted && !isGameOver && !isPreGame)',
+                    calculation: `(${isGameStarted} && !${isGameOver} && !${isPreGame})`,
+                    result: giveUpCondition
+                },
+                restart: {
+                    formula: '((isGameStarted && !isPreGame) || isGameOver) && !isPreGame',
+                    calculation: `((${isGameStarted} && !${isPreGame}) || ${isGameOver}) && !${isPreGame}`,
+                    result: restartCondition
+                }
+            },
             visibility: this.buttonVisibility
         });
     }

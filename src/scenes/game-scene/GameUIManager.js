@@ -238,12 +238,23 @@ export class GameUIManager {
         // GameSceneから状態を取得（ハードコーディングを避けるため）
         const scene = this.gameEngine.sceneManager?.getCurrentScene();
         
-        return {
+        // デバッグ用：実際の状態を確認
+        console.log('[GameUIManager] Debug - Game Engine State:', {
+            gameStarted: this.gameEngine.gameStarted,
+            isGameOver: this.gameEngine.isGameOver,
+            sceneName: scene?.constructor?.name,
+            sceneIsPaused: scene?.isPaused
+        });
+        
+        const gameState = {
             isGameStarted: this.gameEngine.gameStarted || false,
             isGameOver: this.gameEngine.isGameOver || false,
             isPaused: scene?.isPaused || false,
-            isPreGame: !this.gameEngine.gameStarted || false
+            isPreGame: !this.gameEngine.gameStarted  // 修正: || false を削除
         };
+        
+        console.log('[GameUIManager] Current Game State:', gameState);
+        return gameState;
     }
     
     /**
