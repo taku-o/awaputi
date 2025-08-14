@@ -6,28 +6,28 @@
   - Define button configuration constants for positioning, sizing, and styling
   - _Requirements: 1.1, 2.1, 4.1, 4.2, 4.3, 4.4_
 
-- [ ] 2. Implement button rendering system
+- [x] 2. Implement button rendering system
   - Add button drawing methods using Canvas 2D API
   - Implement hover state visual feedback
   - Add proper text rendering with Japanese font support
   - Create responsive positioning logic based on canvas dimensions
   - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
 
-- [ ] 3. Create click detection and event handling
+- [x] 3. Create click detection and event handling
   - Implement precise click detection using button boundaries
   - Add mouse and touch event support for cross-platform compatibility
   - Create event delegation system for button interactions
   - Add hover state management for desktop users
   - _Requirements: 1.1, 2.1, 6.2, 6.1_
 
-- [ ] 4. Build ConfirmationDialog component
+- [x] 4. Build ConfirmationDialog component
   - Create new file `src/scenes/game-scene/ConfirmationDialog.js`
   - Implement modal dialog rendering with overlay background
   - Add dialog positioning and sizing logic
   - Create dialog button rendering (Yes/No buttons)
   - _Requirements: 1.2, 1.4, 2.2, 2.4_
 
-- [ ] 5. Implement dialog interaction system
+- [x] 5. Implement dialog interaction system
   - Add click detection for dialog buttons
   - Implement callback system for confirm/cancel actions
   - Add keyboard support (Enter/Escape) for dialog navigation
