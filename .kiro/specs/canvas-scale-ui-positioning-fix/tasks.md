@@ -18,7 +18,7 @@
   - Add updateScale() method to refresh scale calculations when canvas changes
   - _Requirements: 1.2, 1.4, 5.2_
 
-- [ ] 1.3 Create coordinate conversion utilities
+- [x] 1.3 Create coordinate conversion utilities
   - Implement getBasePosition() method for reverse coordinate conversion
   - Add coordinate validation and error handling for invalid inputs
   - Create debugging utilities for coordinate system troubleshooting
@@ -30,7 +30,7 @@
   - Add responsive layout calculations based on screen size breakpoints
   - _Requirements: 2.1, 2.2, 2.3, 6.1, 6.2, 6.3_
 
-- [ ] 2.1 Create UIPositionCalculator base structure
+- [x] 2.1 Create UIPositionCalculator base structure
   - Create src/utils/UIPositionCalculator.js with constructor and dependencies
   - Implement getStatusPosition() method for score, HP, and time display positioning
   - Add getButtonPosition() method for control button positioning
