@@ -44,8 +44,18 @@ Issue #172対応: ゲーム画面にGive Up（ギブアップ）とRestart（ゲ
   - handleGiveUp()、handleRestart()メソッド削除
   - 適切なコメント追加でUIボタン使用を促進
 
-### 次のタスク
-- [ ] タスク10: GameSceneにイベント処理追加
+- [x] タスク10: GameSceneにイベント処理追加
+  - setupEventListeners()とremoveEventListeners()メソッド追加
+  - マウス/タッチイベント処理実装（click、mousemove、touchstart、touchmove、touchend）
+  - 座標変換とイベント委譲をuiManager.handleControlButtonClick()に実装
+  - 適切なイベント防止とゲームロジックとの競合回避
+
+### 主要機能完成！
+**ボタンが表示され、クリック可能になりました！**
+- Give Up（ギブアップ）ボタン: 右上角
+- Restart（ゲーム再開始）ボタン: Give Upボタンの下
+- 確認ダイアログ付きで安全な操作
+- キーボードショートカット（G、R）削除済み
 
 ## コミットログ
 - (作業開始時点)

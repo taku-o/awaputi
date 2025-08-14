@@ -62,7 +62,7 @@
   - Verify no residual keyboard shortcut functionality remains
   - _Requirements: 3.1, 3.2, 3.3, 3.4_
 
-- [ ] 10. Add input event handling to GameScene
+- [x] 10. Add input event handling to GameScene
   - Modify `src/scenes/GameScene.js` to handle mouse/touch events for buttons
   - Add event listener setup and cleanup in enter/exit methods
   - Implement coordinate transformation for canvas-relative positioning

@@ -44,6 +44,9 @@ export class GameScene extends Scene {
         // 同期状態の更新
         this.isPaused = this.stateManager.isPaused;
         
+        // イベントリスナーの設定
+        this.setupEventListeners();
+        
         // ゲーム開始メッセージ
         this.uiManager.showGameStartMessage();
         
@@ -54,12 +57,127 @@ export class GameScene extends Scene {
      * シーン終了時の処理
      */
     exit() {
+        // イベントリスナーの削除
+        this.removeEventListeners();
+        
         this.stateManager.endGame();
         this.uiManager.resetUIState();
         this.visualizationManager.resetDragVisualization();
         this.performanceMonitor.stopMonitoring();
         
         console.log('Game scene exited');
+    }
+
+    
+    /**
+     * イベントリスナーの設定
+     */
+    setupEventListeners() {
+        this.canvas = this.gameEngine.canvas;
+        
+        // マウスイベント
+        this.handleMouseClick = this.handleMouseClick.bind(this);
+        this.handleMouseMove = this.handleMouseMove.bind(this);
+        
+        // タッチイベント
+        this.handleTouchStart = this.handleTouchStart.bind(this);
+        this.handleTouchMove = this.handleTouchMove.bind(this);
+        this.handleTouchEnd = this.handleTouchEnd.bind(this);
+        
+        // イベントリスナーを追加
+        this.canvas.addEventListener('click', this.handleMouseClick);
+        this.canvas.addEventListener('mousemove', this.handleMouseMove);
+        this.canvas.addEventListener('touchstart', this.handleTouchStart, { passive: false });
+        this.canvas.addEventListener('touchmove', this.handleTouchMove, { passive: false });
+        this.canvas.addEventListener('touchend', this.handleTouchEnd);
+    }
+    
+    /**
+     * イベントリスナーの削除
+     */
+    removeEventListeners() {
+        if (this.canvas) {
+            this.canvas.removeEventListener('click', this.handleMouseClick);
+            this.canvas.removeEventListener('mousemove', this.handleMouseMove);
+            this.canvas.removeEventListener('touchstart', this.handleTouchStart);
+            this.canvas.removeEventListener('touchmove', this.handleTouchMove);
+            this.canvas.removeEventListener('touchend', this.handleTouchEnd);
+        }
+    }
+    
+    /**
+     * マウスクリック処理
+     * @param {MouseEvent} event - マウスイベント
+     */
+    handleMouseClick(event) {
+        const rect = this.canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        
+        // UIボタンのクリック処理
+        if (this.uiManager.handleControlButtonClick(x, y)) {
+            return; // ボタンがクリックされた場合は他の処理をしない
+        }
+        
+        // 通常のゲームクリック処理（バブルクリックなど）
+        // 既存のゲームロジック...
+    }
+    
+    /**
+     * マウス移動処理
+     * @param {MouseEvent} event - マウスイベント
+     */
+    handleMouseMove(event) {
+        const rect = this.canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        
+        // ボタンのホバー状態更新
+        this.uiManager.updateMousePosition(x, y);
+    }
+    
+    /**
+     * タッチ開始処理
+     * @param {TouchEvent} event - タッチイベント
+     */
+    handleTouchStart(event) {
+        event.preventDefault();
+        const touch = event.touches[0];
+        const rect = this.canvas.getBoundingClientRect();
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+        
+        // UIボタンのタッチ処理
+        if (this.uiManager.handleControlButtonClick(x, y)) {
+            return;
+        }
+        
+        // 通常のゲームタッチ処理
+        // 既存のゲームロジック...
+    }
+    
+    /**
+     * タッチ移動処理
+     * @param {TouchEvent} event - タッチイベント
+     */
+    handleTouchMove(event) {
+        event.preventDefault();
+        const touch = event.touches[0];
+        const rect = this.canvas.getBoundingClientRect();
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+        
+        // ボタンのホバー状態更新（タッチでは通常不要だが、一貫性のため）
+        this.uiManager.updateMousePosition(x, y);
+    }
+    
+    /**
+     * タッチ終了処理
+     * @param {TouchEvent} event - タッチイベント
+     */
+    handleTouchEnd(event) {
+        event.preventDefault();
+        // タッチ終了時の処理（必要に応じて実装）
     }
     
     /**
