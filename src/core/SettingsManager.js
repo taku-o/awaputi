@@ -305,7 +305,7 @@ export class SettingsManager {
     notifyChange(key, newValue, oldValue) {
         try {
             // 通知システムに通知
-            this.notificationSystem.notifySettingChange(key, newValue, oldValue);
+            this.notificationSystem.notifyChange(key, newValue, oldValue);
             
             // リスナーに通知
             if (this.listeners.has(key)) {
