@@ -168,13 +168,13 @@
   - Ensure drag interactions work correctly with coordinate conversion
   - _Requirements: 4.1, 4.2, 4.3_
 
-- [ ] 8.1 Fix bubble hit detection
+- [x] 8.1 Fix bubble hit detection
   - Update bubble click detection in relevant managers to use InputCoordinateConverter
   - Ensure bubble touch interactions work correctly on mobile devices
   - Add coordinate validation for bubble interaction boundaries
   - _Requirements: 4.1, 4.2_
 
-- [ ] 8.2 Update bubble rendering positions
+- [x] 8.2 Update bubble rendering positions
   - Modify BubbleManager to use ScaledRenderingContext for bubble positioning
   - Ensure bubble animations and effects respect canvas scaling
   - Fix bubble spawn positions to use scaled coordinate system

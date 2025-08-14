@@ -113,9 +113,10 @@ export class GameUIManager {
      * コントロールボタンのクリック処理
      * @param {number} x - X座標
      * @param {number} y - Y座標
+     * @param {Event} event - マウス/タッチイベント（オプション）
      * @returns {boolean} クリックが処理されたかどうか
      */
-    handleControlButtonClick(x, y) {
+    handleControlButtonClick(x, y, event = null) {
         // まずダイアログのクリック処理を試行
         if (this.confirmationDialog.handleClick(x, y)) {
             return true;
@@ -126,8 +127,8 @@ export class GameUIManager {
             return false;
         }
         
-        // ボタンのクリック処理
-        const buttonType = this.gameControlButtons.handleClick(x, y);
+        // ボタンのクリック処理（イベントを渡して座標変換を有効化）
+        const buttonType = this.gameControlButtons.handleClick(x, y, event);
         if (buttonType) {
             this.showConfirmationDialog(buttonType);
             return true;
@@ -140,12 +141,14 @@ export class GameUIManager {
      * マウス位置の更新（ホバー状態管理）
      * @param {number} x - X座標
      * @param {number} y - Y座標
+     * @param {MouseEvent} event - マウスイベント（オプション）
      */
-    updateMousePosition(x, y) {
+    updateMousePosition(x, y, event = null) {
         // マウス使用時はキーボードナビゲーションをクリア
         this.gameControlButtons.clearKeyboardFocus();
         
-        this.gameControlButtons.updateMousePosition(x, y);
+        // イベントを渡して座標変換を有効化
+        this.gameControlButtons.updateMousePosition(x, y, event);
         this.confirmationDialog.updateMousePosition(x, y);
     }
     

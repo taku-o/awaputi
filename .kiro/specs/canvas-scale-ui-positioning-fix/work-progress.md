@@ -100,6 +100,12 @@ tasks.mdの12段階65サブタスクに従って実装を進行：
   - getScaledButtonBounds()を新規追加（描画用）
   - renderButton()でスケーリングされた境界を使用
   - ホバー・フォーカス・アクティブ状態の視覚フィードバックが正確に動作
+- **14:15** Task 8.1-8.2 完了 - バブルインタラクション座標変換対応完了
+  - GameInputManagerでInputCoordinateConverter統合実装
+  - クリック・ドラッグ・ポインター移動の全処理でcanvas scalingを考慮
+  - InputManagerのgetPointerPosition()でoriginalEventプロパティ追加
+  - GameUIManagerのhandleControlButtonClick()とupdateMousePosition()でEvent引数対応
+  - 全入力処理が統一的な座標変換システムで動作
 
 ## 技術メモ
 

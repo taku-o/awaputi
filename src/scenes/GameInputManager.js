@@ -11,9 +11,34 @@ export class GameInputManager extends InputManager {
         this.gameScene = gameScene;
         this.gameEngine = gameScene.gameEngine;
         
+        // 座標変換システムの初期化
+        this.initializeCoordinateConverter();
+        
         // モバイルデバイスの場合はEnhancedTouchManagerを使用
         if (getBrowserCompatibility().deviceInfo.isMobile) {
             this.setupEnhancedTouch();
+        }
+    }
+    
+    /**
+     * 座標変換システムの初期化
+     */
+    initializeCoordinateConverter() {
+        try {
+            // GameEngineからResponsiveCanvasManagerとScaledCoordinateManagerを取得
+            const responsiveCanvasManager = this.gameEngine?.responsiveCanvasManager;
+            if (responsiveCanvasManager && responsiveCanvasManager.scaledCoordinateManager) {
+                this.inputCoordinateConverter = new InputCoordinateConverter(
+                    responsiveCanvasManager.scaledCoordinateManager
+                );
+                console.log('GameInputManager: InputCoordinateConverter initialized');
+            } else {
+                console.warn('GameInputManager: ScaledCoordinateManager not available, coordinate conversion disabled');
+                this.inputCoordinateConverter = null;
+            }
+        } catch (error) {
+            console.error('GameInputManager: Failed to initialize coordinate converter', error);
+            this.inputCoordinateConverter = null;
         }
     }
     
@@ -25,12 +50,26 @@ export class GameInputManager extends InputManager {
             return;
         }
         
-        // 泡のクリック処理
-        const bubbleClicked = this.gameEngine.bubbleManager.handleClick(position.x, position.y);
+        // 座標変換（InputCoordinateConverterが利用可能な場合）
+        let convertedPosition = position;
+        try {
+            if (this.inputCoordinateConverter && position.originalEvent) {
+                const converted = this.inputCoordinateConverter.convertMouseEvent(position.originalEvent);
+                convertedPosition = {
+                    x: converted.x,
+                    y: converted.y
+                };
+            }
+        } catch (error) {
+            console.warn('GameInputManager: Coordinate conversion failed for click, using original position', error);
+        }
         
-        // クリック位置にフィードバック
+        // 泡のクリック処理（変換された座標を使用）
+        const bubbleClicked = this.gameEngine.bubbleManager.handleClick(convertedPosition.x, convertedPosition.y);
+        
+        // クリック位置にフィードバック（変換された座標を使用）
         if (bubbleClicked) {
-            this.gameScene.createDragParticles(position.x, position.y, 20);
+            this.gameScene.createDragParticles(convertedPosition.x, convertedPosition.y, 20);
         }
     }
     
@@ -42,8 +81,22 @@ export class GameInputManager extends InputManager {
             return;
         }
         
-        // マウス位置の更新
-        this.gameEngine.bubbleManager.updateMousePosition(position.x, position.y);
+        // 座標変換（InputCoordinateConverterが利用可能な場合）
+        let convertedPosition = position;
+        try {
+            if (this.inputCoordinateConverter && position.originalEvent) {
+                const converted = this.inputCoordinateConverter.convertMouseEvent(position.originalEvent);
+                convertedPosition = {
+                    x: converted.x,
+                    y: converted.y
+                };
+            }
+        } catch (error) {
+            console.warn('GameInputManager: Coordinate conversion failed for pointer move, using original position', error);
+        }
+        
+        // マウス位置の更新（変換された座標を使用）
+        this.gameEngine.bubbleManager.updateMousePosition(convertedPosition.x, convertedPosition.y);
     }
     
     /**
@@ -54,11 +107,25 @@ export class GameInputManager extends InputManager {
             return;
         }
         
-        // ドラッグ対象の泡を検索
-        const targetBubble = this.gameEngine.bubbleManager.handleDragStart(startPosition.x, startPosition.y);
+        // 座標変換（InputCoordinateConverterが利用可能な場合）
+        let convertedPosition = startPosition;
+        try {
+            if (this.inputCoordinateConverter && startPosition.originalEvent) {
+                const converted = this.inputCoordinateConverter.convertMouseEvent(startPosition.originalEvent);
+                convertedPosition = {
+                    x: converted.x,
+                    y: converted.y
+                };
+            }
+        } catch (error) {
+            console.warn('GameInputManager: Coordinate conversion failed for drag start, using original position', error);
+        }
         
-        // ビジュアルフィードバックを開始
-        this.gameScene.startDragVisualization(startPosition, targetBubble);
+        // ドラッグ対象の泡を検索（変換された座標を使用）
+        const targetBubble = this.gameEngine.bubbleManager.handleDragStart(convertedPosition.x, convertedPosition.y);
+        
+        // ビジュアルフィードバックを開始（変換された座標を使用）
+        this.gameScene.startDragVisualization(convertedPosition, targetBubble);
     }
     
     /**
@@ -69,11 +136,25 @@ export class GameInputManager extends InputManager {
             return;
         }
         
-        // ビジュアルフィードバックを更新
-        this.gameScene.updateDragVisualizationPosition(currentPosition);
+        // 座標変換（InputCoordinateConverterが利用可能な場合）
+        let convertedPosition = currentPosition;
+        try {
+            if (this.inputCoordinateConverter && currentPosition.originalEvent) {
+                const converted = this.inputCoordinateConverter.convertMouseEvent(currentPosition.originalEvent);
+                convertedPosition = {
+                    x: converted.x,
+                    y: converted.y
+                };
+            }
+        } catch (error) {
+            console.warn('GameInputManager: Coordinate conversion failed for drag move, using original position', error);
+        }
         
-        // BubbleManagerのドラッグ移動も呼び出し
-        this.gameEngine.bubbleManager.handleDragMove(currentPosition.x, currentPosition.y);
+        // ビジュアルフィードバックを更新（変換された座標を使用）
+        this.gameScene.updateDragVisualizationPosition(convertedPosition);
+        
+        // BubbleManagerのドラッグ移動も呼び出し（変換された座標を使用）
+        this.gameEngine.bubbleManager.handleDragMove(convertedPosition.x, convertedPosition.y);
     }
     
     /**
@@ -84,18 +165,47 @@ export class GameInputManager extends InputManager {
             return;
         }
         
-        // 泡を吹き飛ばす処理
-        const success = this.gameEngine.bubbleManager.handleDragEnd(startPosition.x, startPosition.y, endPosition.x, endPosition.y);
+        // 座標変換（InputCoordinateConverterが利用可能な場合）
+        let convertedStartPosition = startPosition;
+        let convertedEndPosition = endPosition;
+        try {
+            if (this.inputCoordinateConverter) {
+                if (startPosition.originalEvent) {
+                    const convertedStart = this.inputCoordinateConverter.convertMouseEvent(startPosition.originalEvent);
+                    convertedStartPosition = {
+                        x: convertedStart.x,
+                        y: convertedStart.y
+                    };
+                }
+                if (endPosition.originalEvent) {
+                    const convertedEnd = this.inputCoordinateConverter.convertMouseEvent(endPosition.originalEvent);
+                    convertedEndPosition = {
+                        x: convertedEnd.x,
+                        y: convertedEnd.y
+                    };
+                }
+            }
+        } catch (error) {
+            console.warn('GameInputManager: Coordinate conversion failed for drag end, using original positions', error);
+        }
+        
+        // 泡を吹き飛ばす処理（変換された座標を使用）
+        const success = this.gameEngine.bubbleManager.handleDragEnd(
+            convertedStartPosition.x, 
+            convertedStartPosition.y, 
+            convertedEndPosition.x, 
+            convertedEndPosition.y
+        );
         
         if (success) {
-            // パーティクル効果を生成
+            // パーティクル効果を生成（変換された座標を使用）
             const force = Math.sqrt(dragVector.x * dragVector.x + dragVector.y * dragVector.y);
-            this.gameScene.createDragParticles(endPosition.x, endPosition.y, force / 5);
+            this.gameScene.createDragParticles(convertedEndPosition.x, convertedEndPosition.y, force / 5);
             
-            // ドラッグ成功のフローティングテキスト
+            // ドラッグ成功のフローティングテキスト（変換された座標を使用）
             this.gameScene.floatingTextManager.addAnimatedText(
-                endPosition.x,
-                endPosition.y - 30,
+                convertedEndPosition.x,
+                convertedEndPosition.y - 30,
                 'FLICK!',
                 'gentle'
             );
