@@ -53,103 +53,103 @@
   - Integrate SettingsImportExportComponent for settings management
   - _Requirements: 4.4, 4.5, 4.6, 4.7, 4.8, 5.4, 5.5, 5.6, 5.7, 5.8, 5.9_
 
-- [ ] 3. Implement custom rendering methods in SettingsScene
+- [x] 3. Implement custom rendering methods in SettingsScene
   - Add custom rendering support for new UI components
   - Ensure components integrate properly with existing settings UI
   - Handle mouse/touch interactions for custom components
   - _Requirements: 1.3, 2.3, 3.4, 3.5, 4.7, 5.7, 5.8, 5.9_
 
-- [ ] 3.1 Implement renderVolumeControls method
+- [x] 3.1 Implement renderVolumeControls method
   - Create custom rendering method for volume control buttons
   - Handle button positioning, sizing, and visual states
   - Implement click detection and volume adjustment logic
   - _Requirements: 3.3, 3.4, 3.5, 3.6, 3.7_
 
-- [ ] 3.2 Implement renderAccessibilityProfiles method
+- [x] 3.2 Implement renderAccessibilityProfiles method
   - Create custom rendering method for profile switching UI
   - Display available profiles and highlight current selection
   - Handle profile switching interactions and state updates
   - _Requirements: 5.4, 5.7_
 
-- [ ] 3.3 Implement renderSettingsImportExport method
+- [x] 3.3 Implement renderSettingsImportExport method
   - Create custom rendering method for import/export buttons
   - Handle file operations and provide user feedback
   - Implement proper error handling and success notifications
   - _Requirements: 5.5, 5.6, 5.8, 5.9_
 
-- [ ] 4. Migrate functionality from KeyboardShortcutManager to SettingsScene
+- [x] 4. Migrate functionality from KeyboardShortcutManager to SettingsScene
   - Move keyboard shortcut logic to appropriate UI handlers
   - Preserve existing functionality while removing keyboard triggers
   - Ensure proper error handling and state management
   - _Requirements: 1.3, 2.3, 3.4, 3.5, 4.7, 5.7, 5.8, 5.9_
 
-- [ ] 4.1 Migrate fullscreen toggle functionality
+- [x] 4.1 Migrate fullscreen toggle functionality
   - Move handleFullscreen logic to SettingsScene.handleFullscreenToggle
   - Ensure ResponsiveCanvasManager integration works correctly
   - Add proper error handling for fullscreen API failures
   - _Requirements: 1.3, 1.4_
 
-- [ ] 4.2 Migrate audio mute toggle functionality
+- [x] 4.2 Migrate audio mute toggle functionality
   - Move handleMute logic to SettingsScene.handleMuteToggle
   - Ensure AudioManager integration and settings persistence
   - Add proper error handling for audio system failures
   - _Requirements: 2.3, 2.4_
 
-- [ ] 4.3 Migrate volume control functionality
+- [x] 4.3 Migrate volume control functionality
   - Move handleVolumeUp and handleVolumeDown logic to SettingsScene
   - Implement proper volume bounds checking and button state management
   - Ensure settings persistence and immediate audio feedback
   - _Requirements: 3.4, 3.5, 3.6, 3.7_
 
-- [ ] 4.4 Migrate accessibility toggle functionality
+- [x] 4.4 Migrate accessibility toggle functionality
   - Move handleHighContrast, handleLargeText, handleReducedMotion logic
   - Ensure AccessibilitySettingsManager integration works correctly
   - Add immediate visual feedback for accessibility changes
   - _Requirements: 4.7, 4.8_
 
-- [ ] 4.5 Migrate settings management functionality
+- [x] 4.5 Migrate settings management functionality
   - Move profile switching, export, and import logic to SettingsScene
   - Ensure proper file handling and data validation
   - Add comprehensive error handling and user feedback
   - _Requirements: 5.7, 5.8, 5.9_
 
-- [ ] 5. Remove keyboard shortcuts from KeyboardShortcutManager
+- [x] 5. Remove keyboard shortcuts from KeyboardShortcutManager
   - Remove shortcut registrations and handler methods
   - Clean up any references to removed shortcuts
   - Update help text generation to exclude removed shortcuts
   - _Requirements: 1.1, 2.1, 3.1, 3.2, 4.1, 4.2, 4.3, 5.1, 5.2, 5.3_
 
-- [ ] 5.1 Remove fullscreen and audio keyboard shortcuts
+- [x] 5.1 Remove fullscreen and audio keyboard shortcuts
   - Remove 'fullscreen' and 'mute' shortcut registrations from initializeDefaultShortcuts
   - Delete handleFullscreen and handleMute methods completely
   - Clean up any references in help text or documentation
   - _Requirements: 1.1, 2.1_
 
-- [ ] 5.2 Remove volume control keyboard shortcuts
+- [x] 5.2 Remove volume control keyboard shortcuts
   - Remove 'volumeUp' and 'volumeDown' shortcut registrations
   - Delete handleVolumeUp and handleVolumeDown methods completely
   - Update help text generation to exclude volume shortcuts
   - _Requirements: 3.1, 3.2_
 
-- [ ] 5.3 Remove accessibility keyboard shortcuts
+- [x] 5.3 Remove accessibility keyboard shortcuts
   - Remove 'highContrast', 'largeText', 'reducedMotion' shortcut registrations
   - Delete corresponding handler methods completely
   - Clean up any accessibility shortcut references
   - _Requirements: 4.1, 4.2, 4.3_
 
-- [ ] 5.4 Remove settings management keyboard shortcuts
+- [x] 5.4 Remove settings management keyboard shortcuts
   - Remove any Ctrl+P, Ctrl+E, Ctrl+I shortcut registrations if present
   - Delete corresponding handler methods from SettingsScene
   - Clean up any settings management shortcut references
   - _Requirements: 5.1, 5.2, 5.3_
 
-- [ ] 6. Update documentation to reflect changes
+- [x] 6. Update documentation to reflect changes
   - Remove references to deleted keyboard shortcuts
   - Update both Japanese and English documentation
   - Maintain references to remaining valid shortcuts
   - _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 6.7_
 
-- [ ] 6.1 Update Japanese keyboard shortcuts documentation
+- [x] 6.1 Update Japanese keyboard shortcuts documentation
   - Remove F key fullscreen shortcut from docs/keyboard-shortcuts.md
   - Remove M key mute shortcut from basic game operations section
   - Remove Ctrl+↑/↓ volume shortcuts from volume control section
@@ -157,7 +157,7 @@
   - Remove settings management shortcuts (Ctrl+P/E/I) from settings section
   - _Requirements: 6.1, 6.3, 6.4, 6.5, 6.7_
 
-- [ ] 6.2 Update English keyboard shortcuts documentation
+- [x] 6.2 Update English keyboard shortcuts documentation
   - Remove F key fullscreen shortcut from docs/keyboard-shortcuts.en.md
   - Remove M key mute shortcut from basic game operations section
   - Remove Ctrl+↑/↓ volume shortcuts from volume control section
@@ -165,7 +165,7 @@
   - Remove settings management shortcuts (Ctrl+P/E/I) from settings section
   - _Requirements: 6.2, 6.3, 6.4, 6.5, 6.7_
 
-- [ ] 6.3 Update documentation to reference settings UI
+- [x] 6.3 Update documentation to reference settings UI
   - Add notes about accessing functionality through settings screen
   - Update any usage examples to reference UI controls instead of shortcuts
   - Ensure documentation accurately reflects current available shortcuts
