@@ -41,7 +41,14 @@ export class SettingsDataManager {
                 reducedMotion: false,
                 largeText: false,
                 screenReader: false,
-                colorBlindSupport: false
+                colorBlindSupport: false,
+                fontSize: 'medium',
+                contrastLevel: 'normal',
+                keyboardNavigation: true,
+                voiceGuidance: false,
+                subtitles: false,
+                profiles: 'default',
+                importExport: false
             },
             
             // 操作設定
@@ -99,6 +106,13 @@ export class SettingsDataManager {
                 'system.enabled': true,
                 'system.updates': true,
                 'system.maintenance': true
+            },
+
+            // プライバシー設定
+            privacy: {
+                dataCollection: true,
+                analytics: true,
+                crashReports: true
             }
         };
     }

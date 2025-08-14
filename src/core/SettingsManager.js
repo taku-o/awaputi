@@ -95,6 +95,7 @@ export class SettingsManager {
         this.dataManager.setupSettingsCategory('keyboard', defaultSettings.keyboardShortcuts, {});
         this.dataManager.setupSettingsCategory('social', defaultSettings.social, {});
         this.dataManager.setupSettingsCategory('notifications', defaultSettings.notifications, {});
+        this.dataManager.setupSettingsCategory('privacy', defaultSettings.privacy, {});
     }
     
     // ========== 公開API（後方互換性維持） ==========
