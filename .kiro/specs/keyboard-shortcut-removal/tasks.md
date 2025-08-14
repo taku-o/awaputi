@@ -27,34 +27,34 @@
   - Clean up any console log messages that reference removed shortcuts
   - _Requirements: 2.3, 3.3_
 
-- [ ] 4. Update Japanese keyboard shortcuts documentation
-  - [ ] 4.1 Remove S key entry from docs/keyboard-shortcuts.md
+- [x] 4. Update Japanese keyboard shortcuts documentation
+  - [x] 4.1 Remove S key entry from docs/keyboard-shortcuts.md
     - Remove S key entry from "ヘルプ・設定アクセス" section
     - Update any statistics or counts if mentioned
     - _Requirements: 3.1, 3.3_
 
-  - [ ] 4.2 Remove H key entry from docs/keyboard-shortcuts.md
+  - [x] 4.2 Remove H key entry from docs/keyboard-shortcuts.md
     - Remove H key entry from "ヘルプ・設定アクセス" section  
     - Update any related examples or usage notes
     - _Requirements: 3.1, 3.3_
 
-  - [ ] 4.3 Remove I key entry from docs/keyboard-shortcuts.md
+  - [x] 4.3 Remove I key entry from docs/keyboard-shortcuts.md
     - Remove I key entry from "UI・メニュー操作" section
     - Clean up any orphaned table rows or formatting
     - _Requirements: 3.1, 3.3_
 
-- [ ] 5. Update English keyboard shortcuts documentation
-  - [ ] 5.1 Remove S key entry from docs/keyboard-shortcuts.en.md
+- [x] 5. Update English keyboard shortcuts documentation
+  - [x] 5.1 Remove S key entry from docs/keyboard-shortcuts.en.md
     - Remove S key entry from "Help & Settings Access" section
     - Update any statistics or counts if mentioned
     - _Requirements: 3.2, 3.3_
 
-  - [ ] 5.2 Remove H key entry from docs/keyboard-shortcuts.en.md
+  - [x] 5.2 Remove H key entry from docs/keyboard-shortcuts.en.md
     - Remove H key entry from "Help & Settings Access" section
     - Update any related examples or usage notes  
     - _Requirements: 3.2, 3.3_
 
-  - [ ] 5.3 Remove I key entry from docs/keyboard-shortcuts.en.md
+  - [x] 5.3 Remove I key entry from docs/keyboard-shortcuts.en.md
     - Remove I key entry from "UI & Menu Navigation" section
     - Clean up any orphaned table rows or formatting
     - _Requirements: 3.2, 3.3_
