@@ -35,6 +35,10 @@ export class HelpAnalytics {
                 searchQueries: new Map(),
                 exitPoints: new Map()
             },
+            content: {
+                topicViews: new Map(),
+                categoryViews: new Map()
+            },
             tutorialUsage: {
                 totalStarts: 0,
                 totalCompletions: 0,
@@ -353,6 +357,138 @@ export class HelpAnalytics {
             this.loggingSystem.debug('HelpAnalytics', `User feedback tracked: ${contentId} (rating: ${rating})`);
         } catch (error) {
             this.loggingSystem.error('HelpAnalytics', 'Failed to track user feedback', error);
+        }
+    }
+
+    /**
+     * カテゴリ選択を記録
+     * @param {string} categoryId - 選択されたカテゴリのID
+     * @param {Object} context - 選択時のコンテキスト情報
+     */
+    recordCategorySelection(categoryId, context = {}) {
+        try {
+            const selectionData = {
+                categoryId: categoryId,
+                context: context,
+                timestamp: Date.now(),
+                sessionId: this.currentSession?.id || 'unknown'
+            };
+            
+            // カテゴリ統計の更新
+            this.updateCategoryStatistics(categoryId);
+            
+            // イベント記録
+            this.trackEvent('category_selection', selectionData);
+            
+            this.loggingSystem.debug('HelpAnalytics', `Category selection tracked: ${categoryId}`);
+        } catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to record category selection', error);
+        }
+    }
+
+    /**
+     * トピック終了を記録
+     * @param {string} topicId - 終了したトピックのID
+     * @param {Object} content - トピックのコンテンツ情報
+     * @param {Object} exitContext - 終了時のコンテキスト情報
+     */
+    recordTopicExit(topicId, content, exitContext = {}) {
+        try {
+            const exitData = {
+                topicId: topicId,
+                content: content,
+                exitContext: exitContext,
+                timestamp: Date.now(),
+                sessionId: this.currentSession?.id || 'unknown'
+            };
+            
+            // トピック統計の更新
+            if (!this.analytics.content.topicViews.has(topicId)) {
+                this.analytics.content.topicViews.set(topicId, {
+                    viewCount: 0,
+                    totalViewTime: 0,
+                    exitCount: 0
+                });
+            }
+            
+            const topicStats = this.analytics.content.topicViews.get(topicId);
+            topicStats.exitCount++;
+            
+            // イベント記録
+            this.trackEvent('topic_exit', exitData);
+            
+            this.loggingSystem.debug('HelpAnalytics', `Topic exit tracked: ${topicId}`);
+        } catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to record topic exit', error);
+        }
+    }
+
+    /**
+     * トピック表示を記録
+     * @param {string} topicId - 表示されたトピックのID
+     * @param {Object} content - トピックのコンテンツ情報
+     * @param {Object} viewContext - 表示時のコンテキスト情報
+     */
+    recordTopicView(topicId, content, viewContext = {}) {
+        try {
+            const viewData = {
+                topicId: topicId,
+                content: content,
+                viewContext: viewContext,
+                timestamp: Date.now(),
+                sessionId: this.currentSession?.id || 'unknown'
+            };
+            
+            // トピック統計の更新
+            if (!this.analytics.content.topicViews.has(topicId)) {
+                this.analytics.content.topicViews.set(topicId, {
+                    viewCount: 0,
+                    totalViewTime: 0,
+                    exitCount: 0
+                });
+            }
+            
+            const topicStats = this.analytics.content.topicViews.get(topicId);
+            topicStats.viewCount++;
+            
+            // イベント記録
+            this.trackEvent('topic_view', viewData);
+            
+            this.loggingSystem.debug('HelpAnalytics', `Topic view tracked: ${topicId}`);
+        } catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to record topic view', error);
+        }
+    }
+
+    /**
+     * フィードバックを記録
+     * @param {string} topicId - フィードバック対象のトピックID
+     * @param {Object} content - トピックのコンテンツ情報
+     * @param {Object} feedback - フィードバック内容
+     */
+    recordFeedback(topicId, content, feedback) {
+        try {
+            const feedbackData = {
+                topicId: topicId,
+                content: content,
+                feedback: feedback,
+                timestamp: Date.now(),
+                sessionId: this.currentSession?.id || 'unknown'
+            };
+            
+            // フィードバック統計の更新
+            if (feedback.rating) {
+                this.trackUserFeedback(topicId, feedback.rating, feedback.comment || '', {
+                    content: content
+                });
+            }
+            
+            // イベント記録
+            this.trackEvent('topic_feedback', feedbackData);
+            
+            this.loggingSystem.debug('HelpAnalytics', `Topic feedback tracked: ${topicId}`);
+        } catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to record topic feedback', error);
         }
     }
     

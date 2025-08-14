@@ -224,8 +224,12 @@ export class HelpContentManager {
         await this.loadCategoryContent(categoryId);
 
         // アナリティクス記録
-        if (this.helpAnalytics) {
-            this.helpAnalytics.recordCategorySelection(categoryId);
+        if (this.helpAnalytics && typeof this.helpAnalytics.recordCategorySelection === 'function') {
+            try {
+                this.helpAnalytics.recordCategorySelection(categoryId);
+            } catch (error) {
+                console.warn('Failed to record category selection:', error);
+            }
         }
 
         return { fromIndex, toIndex };
@@ -241,9 +245,13 @@ export class HelpContentManager {
         }
 
         // 前のコンテンツのフィードバック記録
-        if (this.helpFeedbackSystem && this.currentContent && category.topics[this.selectedTopicIndex]) {
-            const currentTopic = category.topics[this.selectedTopicIndex];
-            this.helpFeedbackSystem.recordTopicExit(currentTopic.id, this.currentContent);
+        if (this.helpFeedbackSystem && typeof this.helpFeedbackSystem.recordTopicExit === 'function' && this.currentContent && category.topics[this.selectedTopicIndex]) {
+            try {
+                const currentTopic = category.topics[this.selectedTopicIndex];
+                this.helpFeedbackSystem.recordTopicExit(currentTopic.id, this.currentContent);
+            } catch (error) {
+                console.warn('Failed to record topic exit:', error);
+            }
         }
 
         this.selectedTopicIndex = index;
