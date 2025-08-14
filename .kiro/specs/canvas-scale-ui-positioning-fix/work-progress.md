@@ -69,7 +69,17 @@ tasks.mdの12段階65サブタスクに従って実装を進行：
   - getButtonPosition()でボタン位置計算実装
   - getResponsiveMargins()でレスポンシブマージン実装
   - デバイス適応的レイアウト計算システム実装
-  - 次は Task 2.2 - レイアウト計算メソッド追加
+- **12:15** Task 3.1 完了 - ScaledRenderingContext実装完了
+  - 自動座標変換機能付きキャンバス描画ラッパー実装
+  - fillText(), fillRect(), strokeRect(), drawImage()等の主要メソッド実装
+  - スケーリング対応フォントと線幅設定機能実装
+- **12:30** Task 4.1-4.3 完了 - GameUIManagerステータス表示修正完了
+  - renderAnimatedScore()修正: スケーリング対応スコア表示
+  - renderTimeDisplay()修正: レスポンシブ時間表示と点滅効果
+  - renderHPDisplay()&renderHPBar()修正: HP表示とバーのスケーリング対応
+- **12:45** Task 5.1 完了 - コンボ表示修正完了
+  - renderComboDisplay()修正: 右寄せ配置のスケーリング対応
+  - 次は 特殊効果表示とInputCoordinateConverter実装
 
 ## 技術メモ
 

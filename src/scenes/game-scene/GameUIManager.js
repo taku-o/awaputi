@@ -6,11 +6,17 @@
 
 import { GameControlButtons } from './GameControlButtons.js';
 import { ConfirmationDialog } from './ConfirmationDialog.js';
+import { ScaledCoordinateManager } from '../../utils/ScaledCoordinateManager.js';
+import { UIPositionCalculator } from '../../utils/UIPositionCalculator.js';
+import { ScaledRenderingContext } from '../../utils/ScaledRenderingContext.js';
 
 export class GameUIManager {
     constructor(gameEngine, floatingTextManager) {
         this.gameEngine = gameEngine;
         this.floatingTextManager = floatingTextManager;
+        
+        // スケーリング座標システムを初期化
+        this.initializeCoordinateSystem();
         
         // UI状態管理
         this.uiState = {
@@ -33,6 +39,50 @@ export class GameUIManager {
         
         // ゲームコントロールボタンとダイアログを初期化
         this.initializeControlButtons();
+    }
+    
+    /**
+     * スケーリング座標システムを初期化
+     */
+    initializeCoordinateSystem() {
+        try {
+            // ResponsiveCanvasManagerから座標システムを取得
+            const responsiveCanvasManager = this.gameEngine?.responsiveCanvasManager;
+            
+            if (responsiveCanvasManager) {
+                // 既存のScaledCoordinateManagerを使用
+                this.scaledCoordinateManager = responsiveCanvasManager.scaledCoordinateManager;
+            } else {
+                // フォールバック: 独自にScaledCoordinateManagerを作成
+                console.warn('GameUIManager: ResponsiveCanvasManager not available, creating fallback coordinate system');
+                this.scaledCoordinateManager = new ScaledCoordinateManager(null);
+            }
+            
+            // UIPositionCalculatorを初期化
+            this.uiPositionCalculator = new UIPositionCalculator(this.scaledCoordinateManager);
+            
+            // ScaledRenderingContextは描画時に初期化
+            this.scaledRenderingContext = null;
+            
+        } catch (error) {
+            console.error('GameUIManager: Failed to initialize coordinate system', error);
+            // フォールバック処理
+            this.scaledCoordinateManager = new ScaledCoordinateManager(null);
+            this.uiPositionCalculator = new UIPositionCalculator(this.scaledCoordinateManager);
+            this.scaledRenderingContext = null;
+        }
+    }
+    
+    /**
+     * ScaledRenderingContextを取得（遅延初期化）
+     * @param {CanvasRenderingContext2D} context - キャンバスコンテキスト
+     * @returns {ScaledRenderingContext} スケーリング対応コンテキスト
+     */
+    getScaledRenderingContext(context) {
+        if (!this.scaledRenderingContext || this.scaledRenderingContext.getOriginalContext() !== context) {
+            this.scaledRenderingContext = new ScaledRenderingContext(context, this.scaledCoordinateManager);
+        }
+        return this.scaledRenderingContext;
     }
     
     /**
@@ -519,19 +569,48 @@ export class GameUIManager {
      * @param {Object} playerData - プレイヤーデータ
      */
     renderAnimatedScore(context, playerData) {
-        const scoreScale = this.uiState.scoreAnimationTimer > 0 ? 1.2 : 1;
-        context.save();
-        context.scale(scoreScale, scoreScale);
-        context.fillStyle = '#FFFFFF';
-        context.font = 'bold 28px Arial';
-        context.textAlign = 'left';
-        context.textBaseline = 'top';
-        context.shadowColor = 'rgba(0, 0, 0, 0.8)';
-        context.shadowOffsetX = 2;
-        context.shadowOffsetY = 2;
-        context.shadowBlur = 4;
-        context.fillText(`スコア: ${playerData.currentScore.toLocaleString()}`, 20 / scoreScale, 20 / scoreScale);
-        context.restore();
+        try {
+            const scaledContext = this.getScaledRenderingContext(context);
+            const scorePosition = this.uiPositionCalculator.getStatusPosition('score');
+            
+            const scoreScale = this.uiState.scoreAnimationTimer > 0 ? 1.2 : 1;
+            
+            scaledContext.save();
+            context.scale(scoreScale, scoreScale);
+            context.fillStyle = '#FFFFFF';
+            context.textAlign = 'left';
+            context.textBaseline = 'top';
+            context.shadowColor = 'rgba(0, 0, 0, 0.8)';
+            context.shadowOffsetX = 2;
+            context.shadowOffsetY = 2;
+            context.shadowBlur = 4;
+            
+            // スケーリング対応フォント設定
+            scaledContext.setScaledFont(28, 'bold Arial');
+            
+            // スケーリング対応座標でテキストを描画
+            const baseX = scorePosition.x / this.scaledCoordinateManager.getScaleFactor() / scoreScale;
+            const baseY = scorePosition.y / this.scaledCoordinateManager.getScaleFactor() / scoreScale;
+            scaledContext.fillText(`スコア: ${playerData.currentScore.toLocaleString()}`, baseX, baseY);
+            
+            scaledContext.restore();
+        } catch (error) {
+            console.warn('GameUIManager: renderAnimatedScore failed, using fallback', error);
+            // フォールバック: 元の実装
+            const scoreScale = this.uiState.scoreAnimationTimer > 0 ? 1.2 : 1;
+            context.save();
+            context.scale(scoreScale, scoreScale);
+            context.fillStyle = '#FFFFFF';
+            context.font = 'bold 28px Arial';
+            context.textAlign = 'left';
+            context.textBaseline = 'top';
+            context.shadowColor = 'rgba(0, 0, 0, 0.8)';
+            context.shadowOffsetX = 2;
+            context.shadowOffsetY = 2;
+            context.shadowBlur = 4;
+            context.fillText(`スコア: ${playerData.currentScore.toLocaleString()}`, 20 / scoreScale, 20 / scoreScale);
+            context.restore();
+        }
     }
     
     /**
@@ -539,22 +618,60 @@ export class GameUIManager {
      * @param {CanvasRenderingContext2D} context - 描画コンテキスト
      */
     renderTimeDisplay(context) {
-        const minutes = Math.floor(this.gameEngine.timeRemaining / 60000);
-        const seconds = Math.floor((this.gameEngine.timeRemaining % 60000) / 1000);
-        const timeColor = this.gameEngine.timeRemaining > 30000 ? '#FFFFFF' : 
-                         this.gameEngine.timeRemaining > 10000 ? '#FFFF00' : '#FF0000';
-        
-        context.fillStyle = timeColor;
-        context.font = 'bold 24px Arial';
-        
-        if (this.gameEngine.timeRemaining <= 10000) {
-            // 緊急時は点滅
-            const flash = Math.sin(Date.now() * 0.01) > 0;
-            if (flash) {
+        try {
+            const scaledContext = this.getScaledRenderingContext(context);
+            const timePosition = this.uiPositionCalculator.getStatusPosition('time');
+            
+            const minutes = Math.floor(this.gameEngine.timeRemaining / 60000);
+            const seconds = Math.floor((this.gameEngine.timeRemaining % 60000) / 1000);
+            const timeColor = this.gameEngine.timeRemaining > 30000 ? '#FFFFFF' : 
+                             this.gameEngine.timeRemaining > 10000 ? '#FFFF00' : '#FF0000';
+            
+            context.fillStyle = timeColor;
+            context.textAlign = 'left';
+            context.textBaseline = 'top';
+            context.shadowColor = 'rgba(0, 0, 0, 0.8)';
+            context.shadowOffsetX = 2;
+            context.shadowOffsetY = 2;
+            context.shadowBlur = 4;
+            
+            // スケーリング対応フォント設定
+            scaledContext.setScaledFont(24, 'bold Arial');
+            
+            const timeText = `時間: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (this.gameEngine.timeRemaining <= 10000) {
+                // 緊急時は点滅
+                const flash = Math.sin(Date.now() * 0.01) > 0;
+                if (flash) {
+                    const baseX = timePosition.x / this.scaledCoordinateManager.getScaleFactor();
+                    const baseY = timePosition.y / this.scaledCoordinateManager.getScaleFactor();
+                    scaledContext.fillText(timeText, baseX, baseY);
+                }
+            } else {
+                const baseX = timePosition.x / this.scaledCoordinateManager.getScaleFactor();
+                const baseY = timePosition.y / this.scaledCoordinateManager.getScaleFactor();
+                scaledContext.fillText(timeText, baseX, baseY);
+            }
+        } catch (error) {
+            console.warn('GameUIManager: renderTimeDisplay failed, using fallback', error);
+            // フォールバック: 元の実装
+            const minutes = Math.floor(this.gameEngine.timeRemaining / 60000);
+            const seconds = Math.floor((this.gameEngine.timeRemaining % 60000) / 1000);
+            const timeColor = this.gameEngine.timeRemaining > 30000 ? '#FFFFFF' : 
+                             this.gameEngine.timeRemaining > 10000 ? '#FFFF00' : '#FF0000';
+            
+            context.fillStyle = timeColor;
+            context.font = 'bold 24px Arial';
+            
+            if (this.gameEngine.timeRemaining <= 10000) {
+                const flash = Math.sin(Date.now() * 0.01) > 0;
+                if (flash) {
+                    context.fillText(`時間: ${minutes}:${seconds.toString().padStart(2, '0')}`, 20, 60);
+                }
+            } else {
                 context.fillText(`時間: ${minutes}:${seconds.toString().padStart(2, '0')}`, 20, 60);
             }
-        } else {
-            context.fillText(`時間: ${minutes}:${seconds.toString().padStart(2, '0')}`, 20, 60);
         }
     }
     
@@ -564,18 +681,49 @@ export class GameUIManager {
      * @param {Object} playerData - プレイヤーデータ
      */
     renderHPDisplay(context, playerData) {
-        const hpRatio = playerData.currentHP / playerData.maxHP;
-        const hpFlash = this.uiState.hpFlashTimer > 0;
-        const hpColor = hpFlash ? '#FFFFFF' : 
-                       hpRatio > 0.5 ? '#00FF00' : 
-                       hpRatio > 0.25 ? '#FFFF00' : '#FF0000';
-        
-        context.fillStyle = hpColor;
-        context.font = 'bold 22px Arial';
-        context.fillText(`HP: ${playerData.currentHP}/${playerData.maxHP}`, 20, 100);
-        
-        // HPバー（グラデーション）
-        this.renderHPBar(context, hpRatio);
+        try {
+            const scaledContext = this.getScaledRenderingContext(context);
+            const hpPosition = this.uiPositionCalculator.getStatusPosition('hp');
+            
+            const hpRatio = playerData.currentHP / playerData.maxHP;
+            const hpFlash = this.uiState.hpFlashTimer > 0;
+            const hpColor = hpFlash ? '#FFFFFF' : 
+                           hpRatio > 0.5 ? '#00FF00' : 
+                           hpRatio > 0.25 ? '#FFFF00' : '#FF0000';
+            
+            context.fillStyle = hpColor;
+            context.textAlign = 'left';
+            context.textBaseline = 'top';
+            context.shadowColor = 'rgba(0, 0, 0, 0.8)';
+            context.shadowOffsetX = 2;
+            context.shadowOffsetY = 2;
+            context.shadowBlur = 4;
+            
+            // スケーリング対応フォント設定
+            scaledContext.setScaledFont(22, 'bold Arial');
+            
+            const baseX = hpPosition.x / this.scaledCoordinateManager.getScaleFactor();
+            const baseY = hpPosition.y / this.scaledCoordinateManager.getScaleFactor();
+            scaledContext.fillText(`HP: ${playerData.currentHP}/${playerData.maxHP}`, baseX, baseY);
+            
+            // HPバー（グラデーション）
+            this.renderHPBar(context, hpRatio);
+        } catch (error) {
+            console.warn('GameUIManager: renderHPDisplay failed, using fallback', error);
+            // フォールバック: 元の実装
+            const hpRatio = playerData.currentHP / playerData.maxHP;
+            const hpFlash = this.uiState.hpFlashTimer > 0;
+            const hpColor = hpFlash ? '#FFFFFF' : 
+                           hpRatio > 0.5 ? '#00FF00' : 
+                           hpRatio > 0.25 ? '#FFFF00' : '#FF0000';
+            
+            context.fillStyle = hpColor;
+            context.font = 'bold 22px Arial';
+            context.fillText(`HP: ${playerData.currentHP}/${playerData.maxHP}`, 20, 100);
+            
+            // HPバー（グラデーション）
+            this.renderHPBar(context, hpRatio);
+        }
     }
     
     /**
@@ -584,35 +732,73 @@ export class GameUIManager {
      * @param {number} hpRatio - HP比率
      */
     renderHPBar(context, hpRatio) {
-        const hpBarX = 20;
-        const hpBarY = 130;
-        const hpBarWidth = 250;
-        const hpBarHeight = 25;
-        
-        // HPバー背景
-        context.fillStyle = 'rgba(255, 255, 255, 0.2)';
-        context.fillRect(hpBarX, hpBarY, hpBarWidth, hpBarHeight);
-        
-        // HPバーグラデーション
-        const hpGradient = context.createLinearGradient(hpBarX, 0, hpBarX + hpBarWidth, 0);
-        if (hpRatio > 0.5) {
-            hpGradient.addColorStop(0, '#00FF00');
-            hpGradient.addColorStop(1, '#88FF88');
-        } else if (hpRatio > 0.25) {
-            hpGradient.addColorStop(0, '#FFFF00');
-            hpGradient.addColorStop(1, '#FFAA00');
-        } else {
-            hpGradient.addColorStop(0, '#FF0000');
-            hpGradient.addColorStop(1, '#FF4444');
+        try {
+            const scaledContext = this.getScaledRenderingContext(context);
+            const hpPosition = this.uiPositionCalculator.getStatusPosition('hp');
+            
+            // HPバーの位置をHP表示の下に配置
+            const baseBarX = hpPosition.x / this.scaledCoordinateManager.getScaleFactor();
+            const baseBarY = (hpPosition.y / this.scaledCoordinateManager.getScaleFactor()) + 30;
+            const baseBarWidth = 250;
+            const baseBarHeight = 25;
+            
+            // HPバー背景
+            context.fillStyle = 'rgba(255, 255, 255, 0.2)';
+            scaledContext.fillRect(baseBarX, baseBarY, baseBarWidth, baseBarHeight);
+            
+            // HPバーグラデーション（スケーリング対応）
+            const scaledBarPosition = this.scaledCoordinateManager.getScaledPosition(baseBarX, baseBarY);
+            const scaledBarSize = this.scaledCoordinateManager.getScaledSize(baseBarWidth, baseBarHeight);
+            
+            const hpGradient = context.createLinearGradient(scaledBarPosition.x, 0, scaledBarPosition.x + scaledBarSize.width, 0);
+            if (hpRatio > 0.5) {
+                hpGradient.addColorStop(0, '#00FF00');
+                hpGradient.addColorStop(1, '#88FF88');
+            } else if (hpRatio > 0.25) {
+                hpGradient.addColorStop(0, '#FFFF00');
+                hpGradient.addColorStop(1, '#FFAA00');
+            } else {
+                hpGradient.addColorStop(0, '#FF0000');
+                hpGradient.addColorStop(1, '#FF4444');
+            }
+            
+            context.fillStyle = hpGradient;
+            scaledContext.fillRect(baseBarX, baseBarY, baseBarWidth * hpRatio, baseBarHeight);
+            
+            // HPバー枠線
+            context.strokeStyle = '#FFFFFF';
+            scaledContext.setScaledLineWidth(2);
+            scaledContext.strokeRect(baseBarX, baseBarY, baseBarWidth, baseBarHeight);
+        } catch (error) {
+            console.warn('GameUIManager: renderHPBar failed, using fallback', error);
+            // フォールバック: 元の実装
+            const hpBarX = 20;
+            const hpBarY = 130;
+            const hpBarWidth = 250;
+            const hpBarHeight = 25;
+            
+            context.fillStyle = 'rgba(255, 255, 255, 0.2)';
+            context.fillRect(hpBarX, hpBarY, hpBarWidth, hpBarHeight);
+            
+            const hpGradient = context.createLinearGradient(hpBarX, 0, hpBarX + hpBarWidth, 0);
+            if (hpRatio > 0.5) {
+                hpGradient.addColorStop(0, '#00FF00');
+                hpGradient.addColorStop(1, '#88FF88');
+            } else if (hpRatio > 0.25) {
+                hpGradient.addColorStop(0, '#FFFF00');
+                hpGradient.addColorStop(1, '#FFAA00');
+            } else {
+                hpGradient.addColorStop(0, '#FF0000');
+                hpGradient.addColorStop(1, '#FF4444');
+            }
+            
+            context.fillStyle = hpGradient;
+            context.fillRect(hpBarX, hpBarY, hpBarWidth * hpRatio, hpBarHeight);
+            
+            context.strokeStyle = '#FFFFFF';
+            context.lineWidth = 2;
+            context.strokeRect(hpBarX, hpBarY, hpBarWidth, hpBarHeight);
         }
-        
-        context.fillStyle = hpGradient;
-        context.fillRect(hpBarX, hpBarY, hpBarWidth * hpRatio, hpBarHeight);
-        
-        // HPバー枠線
-        context.strokeStyle = '#FFFFFF';
-        context.lineWidth = 2;
-        context.strokeRect(hpBarX, hpBarY, hpBarWidth, hpBarHeight);
     }
     
     /**
@@ -620,13 +806,42 @@ export class GameUIManager {
      * @param {CanvasRenderingContext2D} context - 描画コンテキスト
      */
     renderComboDisplay(context) {
-        const combo = this.gameEngine.scoreManager.getCombo();
-        if (combo > 1) {
-            const comboFlash = this.uiState.comboFlashTimer > 0;
-            context.fillStyle = comboFlash ? '#FFFF00' : '#FFFFFF';
-            context.font = 'bold 20px Arial';
-            context.textAlign = 'right';
-            context.fillText(`コンボ: ${combo}`, this.gameEngine.canvas.width - 20, 20);
+        try {
+            const combo = this.gameEngine.scoreManager.getCombo();
+            if (combo > 1) {
+                const scaledContext = this.getScaledRenderingContext(context);
+                const canvasInfo = this.scaledCoordinateManager.getCanvasInfo();
+                const margins = this.uiPositionCalculator.getResponsiveMargins();
+                
+                // 右上配置（ベース座標系で計算）
+                const baseX = canvasInfo.baseWidth - margins.right;
+                const baseY = margins.top;
+                
+                const comboFlash = this.uiState.comboFlashTimer > 0;
+                context.fillStyle = comboFlash ? '#FFFF00' : '#FFFFFF';
+                context.textAlign = 'right';
+                context.textBaseline = 'top';
+                context.shadowColor = 'rgba(0, 0, 0, 0.8)';
+                context.shadowOffsetX = 2;
+                context.shadowOffsetY = 2;
+                context.shadowBlur = 4;
+                
+                // スケーリング対応フォント設定
+                scaledContext.setScaledFont(20, 'bold Arial');
+                
+                scaledContext.fillText(`コンボ: ${combo}`, baseX, baseY);
+            }
+        } catch (error) {
+            console.warn('GameUIManager: renderComboDisplay failed, using fallback', error);
+            // フォールバック: 元の実装
+            const combo = this.gameEngine.scoreManager.getCombo();
+            if (combo > 1) {
+                const comboFlash = this.uiState.comboFlashTimer > 0;
+                context.fillStyle = comboFlash ? '#FFFF00' : '#FFFFFF';
+                context.font = 'bold 20px Arial';
+                context.textAlign = 'right';
+                context.fillText(`コンボ: ${combo}`, this.gameEngine.canvas.width - 20, 20);
+            }
         }
     }
     
