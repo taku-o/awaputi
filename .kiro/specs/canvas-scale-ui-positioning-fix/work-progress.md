@@ -56,7 +56,11 @@ tasks.mdの12段階65サブタスクに従って実装を進行：
   - ResponsiveCanvasManagerとの統合機能実装
   - getScaledPosition(), getScaledSize()メソッド実装
   - エラーハンドリングとフォールバック機能実装
-  - 次は Task 1.2 - ResponsiveCanvasManager統合強化
+- **11:30** Task 1.2 完了 - ResponsiveCanvasManager統合強化完了
+  - ScaledCoordinateManagerのimportと初期化を追加
+  - updateCanvasSize()でスケール変更イベントブロードキャスト実装
+  - cleanup()でScaledCoordinateManagerのクリーンアップ追加
+  - 次は Task 1.3 - 座標変換ユーティリティ実装
 
 ## 技術メモ
 
