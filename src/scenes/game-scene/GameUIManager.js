@@ -223,10 +223,21 @@ export class GameUIManager {
         // 現在のゲーム状態を取得
         const currentGameState = this.getCurrentGameState();
         
+        console.log('[GameUIManager] updateGameStateAndButtons called');
+        
         // 状態が変化した場合のみボタン表示を更新
-        if (this.hasGameStateChanged(currentGameState)) {
+        const hasChanged = this.hasGameStateChanged(currentGameState);
+        console.log('[GameUIManager] State changed:', hasChanged, {
+            previous: this.lastGameState,
+            current: currentGameState
+        });
+        
+        if (hasChanged) {
+            console.log('[GameUIManager] Updating button visibility...');
             this.gameControlButtons.updateButtonVisibility(currentGameState);
             this.lastGameState = { ...currentGameState };
+        } else {
+            console.log('[GameUIManager] No state change, skipping button update');
         }
     }
     
@@ -235,22 +246,33 @@ export class GameUIManager {
      * @returns {Object} ゲーム状態オブジェクト
      */
     getCurrentGameState() {
-        // GameSceneから状態を取得（ハードコーディングを避けるため）
+        // GameSceneから状態を取得
         const scene = this.gameEngine.sceneManager?.getCurrentScene();
         
+        // GameStateManagerから正しい状態を取得
+        const stateManager = scene?.stateManager;
+        const gameStats = stateManager?.getGameStats();
+        
         // デバッグ用：実際の状態を確認
-        console.log('[GameUIManager] Debug - Game Engine State:', {
-            gameStarted: this.gameEngine.gameStarted,
-            isGameOver: this.gameEngine.isGameOver,
-            sceneName: scene?.constructor?.name,
-            sceneIsPaused: scene?.isPaused
+        console.log('[GameUIManager] Debug - Game State Sources:', {
+            gameEngine: {
+                isGameOver: this.gameEngine.isGameOver
+            },
+            scene: {
+                name: scene?.constructor?.name,
+                isPaused: scene?.isPaused
+            },
+            stateManager: {
+                available: !!stateManager,
+                gameStats: gameStats
+            }
         });
         
         const gameState = {
-            isGameStarted: this.gameEngine.gameStarted || false,
+            isGameStarted: gameStats?.isGameStarted || false,
             isGameOver: this.gameEngine.isGameOver || false,
             isPaused: scene?.isPaused || false,
-            isPreGame: !this.gameEngine.gameStarted  // 修正: || false を削除
+            isPreGame: !(gameStats?.isGameStarted || false)
         };
         
         console.log('[GameUIManager] Current Game State:', gameState);
