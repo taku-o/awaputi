@@ -29,6 +29,7 @@ export class CoreKeyboardShortcutManager {
         // UI操作
         this.addShortcut('fullscreen', ['F11'], () => this.handleFullscreen());
         this.addShortcut('contextualHelp', ['F1'], () => this.handleContextualHelp());
+        this.addShortcut('help', ['KeyH'], () => this.handleHelp());
         this.addShortcut('documentationHelp', ['ControlLeft+KeyH'], () => this.handleDocumentationHelp());
         
         // デバッグ操作（開発時のみ）
@@ -339,6 +340,62 @@ export class CoreKeyboardShortcutManager {
             console.log('[KeyboardShortcutManager] Contextual help opened via F1 key');
         } catch (error) {
             console.error('[KeyboardShortcutManager] Failed to open contextual help:', error);
+        }
+    }
+    
+    /**
+     * 標準ヘルプ処理（Hキー）
+     */
+    handleHelp() {
+        try {
+            const currentScene = this.gameEngine.sceneManager.getCurrentScene();
+            const contextData = {
+                accessMethod: 'keyboard_h',
+                sourceScene: currentScene?.constructor.name || 'unknown',
+                returnScene: currentScene?.constructor.name || 'menu',
+                preserveContext: true // コンテキスト保持
+            };
+            
+            // 統一されたHelpSceneに遷移（標準モード）
+            const success = this.gameEngine.sceneManager.switchScene('help', contextData);
+            
+            if (!success) {
+                console.warn('Help navigation failed, attempting fallback');
+                // フォールバック: 直接HelpSceneに遷移を試行
+                try {
+                    const fallbackSuccess = this.gameEngine.sceneManager.switchScene('help');
+                    if (!fallbackSuccess) {
+                        console.error('Help navigation fallback also failed');
+                        // エラーハンドリング: ユーザーに通知
+                        this.notifyNavigationError('ヘルプ画面への移動に失敗しました');
+                    }
+                } catch (fallbackError) {
+                    console.error('[KeyboardShortcutManager] Help navigation fallback error:', fallbackError);
+                }
+            }
+            
+            console.log('[KeyboardShortcutManager] Help opened via H key');
+        } catch (error) {
+            console.error('[KeyboardShortcutManager] Failed to open help:', error);
+            // エラーハンドリング
+            this.notifyNavigationError('ヘルプ機能でエラーが発生しました');
+        }
+    }
+    
+    /**
+     * ナビゲーションエラーをユーザーに通知
+     */
+    notifyNavigationError(message) {
+        try {
+            // GameEngineのUIシステムを使用してエラーメッセージを表示
+            if (this.gameEngine && this.gameEngine.uiManager) {
+                this.gameEngine.uiManager.showNotification(message, 'error');
+            } else {
+                // フォールバック: アラートで表示
+                alert(message);
+            }
+        } catch (error) {
+            console.error('[KeyboardShortcutManager] Failed to notify navigation error:', error);
         }
     }
     

@@ -220,6 +220,21 @@ export class HelpScene extends Scene {
      */
     processEntryContext(contextData) {
         try {
+            // コンテキスト情報の保存（戻りナビゲーション用）
+            this.currentContext = {
+                ...contextData,
+                entryTime: Date.now()
+            };
+            
+            // NavigationContextManagerにコンテキストを設定
+            if (contextData.preserveContext && contextData.returnScene) {
+                this.navigationContext.setReturnContext({
+                    targetScene: contextData.returnScene,
+                    contextData: contextData,
+                    preserveState: true
+                });
+            }
+            
             // コンテキスト依存のヘルプ内容設定
             if (contextData.contextual && contextData.sourceScene) {
                 this.setContextualHelpMode(contextData.sourceScene);
