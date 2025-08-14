@@ -47,7 +47,7 @@ export class GameControlButtons {
      */
     updateButtonPositions() {
         const canvas = this.gameEngine.canvas;
-        const margin = 20;
+        const margin = 10;  // 上と右のマージン
         const buttonSpacing = 10;
         
         // ResponsiveCanvasManagerを使用して適切な座標を取得
@@ -61,9 +61,9 @@ export class GameControlButtons {
             
             // 右上角の基準座標を計算（正しい基準サイズで）
             const baseGiveUpX = baseWidth - this.buttonConfig.giveUp.size.width - margin;
-            const baseGiveUpY = margin;
+            const baseGiveUpY = 5;  // 上端にぴったり近づける
             const baseRestartX = baseWidth - this.buttonConfig.restart.size.width - margin;
-            const baseRestartY = margin + this.buttonConfig.giveUp.size.height + buttonSpacing;
+            const baseRestartY = 5 + this.buttonConfig.giveUp.size.height + buttonSpacing;
             
             // ResponsiveCanvasManagerでスケール座標を取得
             const scaledGiveUp = this.gameEngine.responsiveCanvasManager.getScaledCoordinates(baseGiveUpX, baseGiveUpY);
@@ -74,12 +74,7 @@ export class GameControlButtons {
             restartX = scaledRestart.x;
             restartY = scaledRestart.y;
             
-            console.log('Using ResponsiveCanvasManager coordinates (CORRECT CALCULATION)');
-            console.log('Scale info:', canvasInfo);
-            console.log('Base canvas size:', { baseWidth, baseHeight });
-            console.log('Actual canvas size:', { width: canvas.width, height: canvas.height });
-            console.log('Base coordinates:', { baseGiveUpX, baseGiveUpY, baseRestartX, baseRestartY });
-            console.log('Scaled coordinates:', { giveUpX, giveUpY, restartX, restartY });
+            console.log('Button positions - Base:', { baseGiveUpX, baseGiveUpY }, 'Scaled:', { giveUpX, giveUpY });
         } else {
             // フォールバック: 左上に配置（デバッグ用）
             giveUpX = margin;
@@ -194,10 +189,7 @@ export class GameControlButtons {
      * @param {CanvasRenderingContext2D} context - 描画コンテキスト
      */
     render(context) {
-        console.log('GameControlButtons.render called, enabled:', this.buttonState.enabled);
-        
         if (!this.buttonState.enabled) {
-            console.log('Buttons disabled, skipping render');
             return;
         }
         
@@ -207,15 +199,12 @@ export class GameControlButtons {
         context.save();
         
         // Give Upボタンの描画
-        console.log('Rendering Give Up button');
         this.renderButton(context, 'giveUp');
         
         // Restartボタンの描画
-        console.log('Rendering Restart button');
         this.renderButton(context, 'restart');
         
         context.restore();
-        console.log('GameControlButtons.render completed');
     }
     
     /**
