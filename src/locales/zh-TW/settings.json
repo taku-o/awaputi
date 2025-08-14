@@ -11,11 +11,15 @@
   "translations": {
     "settings": {
       "title": "設定",
-      "audio": "音訊設定",
-      "masterVolume": "主音量",
-      "sfxVolume": "音效音量",
-      "bgmVolume": "背景音樂音量",
-      "mute": "靜音",
+      "audio": {
+        "title": "音訊設定",
+        "masterVolume": "主音量",
+        "volumeUp": "音量增加",
+        "volumeDown": "音量減少",
+        "sfxVolume": "音效音量",
+        "bgmVolume": "背景音樂音量",
+        "mute": "靜音"
+      },
       "language": "語言",
       "quality": "畫質設定",
       "accessibility": "無障礙",

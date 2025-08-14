@@ -95,6 +95,7 @@ export class SettingsManager {
         this.dataManager.setupSettingsCategory('keyboard', defaultSettings.keyboardShortcuts, {});
         this.dataManager.setupSettingsCategory('social', defaultSettings.social, {});
         this.dataManager.setupSettingsCategory('notifications', defaultSettings.notifications, {});
+        this.dataManager.setupSettingsCategory('privacy', defaultSettings.privacy, {});
     }
     
     // ========== 公開API（後方互換性維持） ==========
@@ -126,7 +127,7 @@ export class SettingsManager {
                 return this.dataManager.getLegacyValue(key);
             }
             
-            return this.configManager.get(key);
+            return this.configManager.get(parsed.category, parsed.settingName);
         } catch (error) {
             this.errorHandler.handleError(error, 'SETTINGS_GET_ERROR', { key });
             return this.dataManager.getDefaultValue(key);
@@ -148,9 +149,15 @@ export class SettingsManager {
             }
             
             const oldValue = this.get(key);
+            const parsed = this.dataManager.parseSettingKey(key);
             
             // ConfigurationManagerに設定
-            this.configManager.set(key, value);
+            if (parsed.isLegacy) {
+                // レガシーキーの場合は特別処理が必要かもしれない
+                this.configManager.set('legacy', parsed.settingName, value);
+            } else {
+                this.configManager.set(parsed.category, parsed.settingName, value);
+            }
             
             // 変更通知
             this.notifyChange(key, value, oldValue);
@@ -298,7 +305,7 @@ export class SettingsManager {
     notifyChange(key, newValue, oldValue) {
         try {
             // 通知システムに通知
-            this.notificationSystem.notifySettingChange(key, newValue, oldValue);
+            this.notificationSystem.notifyChange(key, newValue, oldValue);
             
             // リスナーに通知
             if (this.listeners.has(key)) {

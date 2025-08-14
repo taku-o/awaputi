@@ -2,6 +2,9 @@ import { Scene } from '../core/Scene.js';
 import { NavigationContextManager } from '../core/navigation/NavigationContextManager.js';
 import { getLoggingSystem } from '../core/LoggingSystem.js';
 import { AccessibilitySettingsManager } from './settings-scene/AccessibilitySettingsManager.js';
+import { VolumeControlComponent } from '../components/VolumeControlComponent.js';
+import { AccessibilityProfileComponent } from '../components/AccessibilityProfileComponent.js';
+import { SettingsImportExportComponent } from '../components/SettingsImportExportComponent.js';
 
 /**
  * 設定画面シーン
@@ -17,6 +20,9 @@ export class SettingsScene extends Scene {
         
         // AccessibilitySettingsManagerの初期化
         this.accessibilitySettingsManager = new AccessibilitySettingsManager(gameEngine);
+        
+        // VolumeControlComponentの初期化
+        this.volumeControlComponent = new VolumeControlComponent(gameEngine);
         
         // 設定カテゴリと現在選択中のカテゴリ
         this.categories = ['general', 'social', 'privacy', 'notifications', 'accessibility'];
@@ -61,7 +67,8 @@ export class SettingsScene extends Scene {
                     { value: 'high', label: '高' },
                     { value: 'auto', label: '自動' }
                 ]},
-                { key: 'audio.masterVolume', label: 'マスター音量', type: 'slider', min: 0, max: 1, step: 0.1 },
+                { key: 'audio.muted', label: '音声ミュート', type: 'toggle', description: 'すべての音声をミュートにします' },
+                { key: 'audio.masterVolume', label: 'マスター音量', type: 'custom', component: 'VolumeControlComponent', description: '音量を調整します' },
                 { key: 'audio.sfxVolume', label: '効果音音量', type: 'slider', min: 0, max: 1, step: 0.1 },
                 { key: 'audio.bgmVolume', label: 'BGM音量', type: 'slider', min: 0, max: 1, step: 0.1 }
             ],
@@ -105,15 +112,72 @@ export class SettingsScene extends Scene {
                 { key: 'notifications.leaderboard.enabled', label: 'ランキング通知', type: 'toggle', description: 'ランキング関連の通知を受け取ります' },
                 { key: 'notifications.leaderboard.newRecord', label: '新記録通知', type: 'toggle', description: '自己ベストを更新した時に通知します' }
             ],
-            accessibility: this.accessibilitySettingsManager ? 
-                this.accessibilitySettingsManager.getExtendedAccessibilitySettings() : [
-                    { key: 'accessibility.highContrast', label: 'ハイコントラスト', type: 'toggle', description: 'より見やすい高コントラスト表示にします' },
-                    { key: 'accessibility.reducedMotion', label: 'アニメーション削減', type: 'toggle', description: 'アニメーションや動きを削減します' },
-                    { key: 'accessibility.largeText', label: '大きな文字', type: 'toggle', description: 'UI の文字サイズを大きくします' },
-                    { key: 'accessibility.screenReader', label: 'スクリーンリーダー対応', type: 'toggle', description: 'スクリーンリーダーでの読み上げに対応します' },
-                    { key: 'accessibility.colorBlindSupport', label: '色覚サポート', type: 'toggle', description: '色覚に配慮した表示にします' }
-                ]
+            accessibility: this.getAccessibilitySettingsItems()
         };
+    }
+    
+    /**
+     * アクセシビリティ設定項目の取得
+     */
+    getAccessibilitySettingsItems() {
+        // 基本設定項目を取得
+        let accessibilityItems = [];
+        
+        if (this.accessibilitySettingsManager) {
+            accessibilityItems = this.accessibilitySettingsManager.getExtendedAccessibilitySettings();
+        } else {
+            // フォールバック設定項目
+            accessibilityItems = [
+                { key: 'accessibility.highContrast', label: 'ハイコントラスト', type: 'toggle', description: 'より見やすい高コントラスト表示にします' },
+                { key: 'accessibility.reducedMotion', label: 'アニメーション削減', type: 'toggle', description: 'アニメーションや動きを削減します' },
+                { key: 'accessibility.largeText', label: '大きな文字', type: 'toggle', description: 'UI の文字サイズを大きくします' },
+                { key: 'accessibility.screenReader', label: 'スクリーンリーダー対応', type: 'toggle', description: 'スクリーンリーダーでの読み上げに対応します' },
+                { key: 'accessibility.colorBlindSupport', label: '色覚サポート', type: 'toggle', description: '色覚に配慮した表示にします' }
+            ];
+        }
+        
+        // 不足している基本アクセシビリティ設定の確認・追加
+        const requiredBasicSettings = [
+            { key: 'accessibility.highContrast', label: 'ハイコントラスト', type: 'toggle', description: 'より見やすい高コントラスト表示にします' },
+            { key: 'accessibility.largeText', label: '大きな文字', type: 'toggle', description: 'UI の文字サイズを大きくします' },
+            { key: 'accessibility.reducedMotion', label: 'アニメーション削減', type: 'toggle', description: 'アニメーションや動きを削減します' }
+        ];
+        
+        for (const requiredSetting of requiredBasicSettings) {
+            const exists = accessibilityItems.some(item => item.key === requiredSetting.key);
+            if (!exists) {
+                accessibilityItems.push(requiredSetting);
+            }
+        }
+        
+        // AccessibilityProfileComponentの追加
+        accessibilityItems.push({
+            key: 'accessibility.profiles',
+            label: 'アクセシビリティプロファイル',
+            type: 'custom',
+            component: 'AccessibilityProfileComponent',
+            description: 'プリセットされたアクセシビリティ設定プロファイルを適用します'
+        });
+        
+        // SettingsImportExportComponentの追加
+        accessibilityItems.push({
+            key: 'accessibility.importExport',
+            label: '設定のインポート・エクスポート',
+            type: 'custom',
+            component: 'SettingsImportExportComponent',
+            description: 'アクセシビリティ設定をファイルとして保存・読み込みします'
+        });
+        
+        // 項目の有効性を検証
+        const validItems = accessibilityItems.filter(item => {
+            if (!item || !item.key || !item.label) {
+                console.warn('[SettingsScene] Invalid accessibility item filtered out:', item);
+                return false;
+            }
+            return true;
+        });
+        
+        return validItems;
     }
     
     /**
@@ -346,6 +410,8 @@ export class SettingsScene extends Scene {
         const startX = this.layout.categoryWidth + 30;
         const startY = 80;
         const settingsWidth = width - startX - 20;
+        
+        
         const currentItems = this.settingItems[this.currentCategory] || [];
         
         // カテゴリタイトル
@@ -358,6 +424,11 @@ export class SettingsScene extends Scene {
         const itemStartY = startY + 50;
         for (let i = 0; i < currentItems.length; i++) {
             const item = currentItems[i];
+            
+            if (!item || !item.key) {
+                continue;
+            }
+            
             const y = itemStartY + i * this.layout.itemHeight;
             const isSelected = i === this.selectedSettingIndex && !this.showingConfirmDialog;
             
@@ -391,7 +462,22 @@ export class SettingsScene extends Scene {
         }
         
         // 現在の値を取得
-        const currentValue = this.gameEngine.settingsManager.get(item.key);
+        if (!item || !item.key) {
+            return;
+        }
+
+        let currentValue;
+        if (item.key === 'audio.muted') {
+            // ミュート状態をAudioManagerから取得
+            currentValue = this.gameEngine.audioManager ? this.gameEngine.audioManager.isMuted() : false;
+        } else {
+            try {
+                currentValue = this.gameEngine.settingsManager.get(item.key);
+            } catch (error) {
+                console.warn('[SettingsScene] Failed to get setting value for key:', item.key, error);
+                currentValue = item.default || false;
+            }
+        }
         
         // 値の表示
         this.renderSettingValue(context, item, currentValue, x + width - 200, y, 180, isSelected);
@@ -419,6 +505,10 @@ export class SettingsScene extends Scene {
                 
             case 'text':
                 this.renderTextInput(context, value, x, centerY, width, isSelected);
+                break;
+                
+            case 'custom':
+                this.renderCustomControl(context, item, value, x, centerY, width, isSelected);
                 break;
         }
     }
@@ -507,6 +597,195 @@ export class SettingsScene extends Scene {
         context.font = '14px Arial, sans-serif';
         context.textAlign = 'right';
         context.fillText(Math.round(value * 100) / 100, x + width, y + 5);
+    }
+    
+    /**
+     * カスタムコントロール描画
+     */
+    renderCustomControl(context, item, value, x, y, width, isSelected) {
+        switch (item.component) {
+            case 'VolumeControlComponent':
+                this.renderVolumeControl(context, value, x, y, width, isSelected);
+                break;
+                
+            case 'AccessibilityProfileComponent':
+                this.renderAccessibilityProfileControl(context, value, x, y, width, isSelected);
+                break;
+                
+            case 'SettingsImportExportComponent':
+                this.renderSettingsImportExportControl(context, value, x, y, width, isSelected);
+                break;
+                
+            default:
+                // フォールバック：不明なカスタムコンポーネントの場合はテキスト表示
+                context.fillStyle = '#7f8c8d';
+                context.font = '14px Arial, sans-serif';
+                context.textAlign = 'center';
+                context.fillText('カスタムコンポーネント', x + width / 2, y + 5);
+                break;
+        }
+    }
+    
+    /**
+     * ボリュームコントロール描画
+     */
+    renderVolumeControl(context, value, x, y, width, isSelected) {
+        const controlWidth = width - 20;
+        const controlHeight = 30;
+        const controlY = y - controlHeight / 2;
+        
+        // 背景
+        context.fillStyle = isSelected ? '#e8f4fd' : '#f8f9fa';
+        context.fillRect(x, controlY, controlWidth, controlHeight);
+        
+        // 枠線
+        context.strokeStyle = isSelected ? '#3498db' : '#bdc3c7';
+        context.lineWidth = isSelected ? 2 : 1;
+        context.strokeRect(x, controlY, controlWidth, controlHeight);
+        
+        // ボタン部分のレイアウト
+        const buttonWidth = 30;
+        const buttonHeight = 24;
+        const buttonY = controlY + 3;
+        const progressBarWidth = controlWidth - (buttonWidth * 2) - 40;
+        const progressBarX = x + buttonWidth + 10;
+        const progressBarY = y - 4;
+        const progressBarHeight = 8;
+        
+        // 音量ダウンボタン
+        context.fillStyle = (value > 0) ? '#3498db' : '#95a5a6';
+        context.fillRect(x + 5, buttonY, buttonWidth, buttonHeight);
+        context.fillStyle = '#ffffff';
+        context.font = '14px Arial, sans-serif';
+        context.textAlign = 'center';
+        context.fillText('🔉', x + 5 + buttonWidth / 2, buttonY + 16);
+        
+        // プログレスバー背景
+        context.fillStyle = '#bdc3c7';
+        context.fillRect(progressBarX, progressBarY, progressBarWidth, progressBarHeight);
+        
+        // プログレスバー進行部分
+        const progress = value || 0;
+        context.fillStyle = '#3498db';
+        context.fillRect(progressBarX, progressBarY, progressBarWidth * progress, progressBarHeight);
+        
+        // 音量アップボタン
+        context.fillStyle = (value < 1) ? '#3498db' : '#95a5a6';
+        context.fillRect(x + controlWidth - buttonWidth - 5, buttonY, buttonWidth, buttonHeight);
+        context.fillStyle = '#ffffff';
+        context.fillText('🔊', x + controlWidth - buttonWidth / 2 - 5, buttonY + 16);
+        
+        // 音量パーセンテージ表示
+        context.fillStyle = '#2c3e50';
+        context.font = '12px Arial, sans-serif';
+        context.textAlign = 'right';
+        context.fillText(`${Math.round((value || 0) * 100)}%`, x + controlWidth - 5, y + 15);
+        
+        // 選択時の追加表示
+        if (isSelected) {
+            context.fillStyle = '#3498db';
+            context.font = '10px Arial, sans-serif';
+            context.textAlign = 'center';
+            context.fillText('Enter: 音量アップ', x + controlWidth / 2, controlY + controlHeight + 12);
+        }
+    }
+    
+    /**
+     * アクセシビリティプロファイルコントロール描画
+     */
+    renderAccessibilityProfileControl(context, value, x, y, width, isSelected) {
+        const controlWidth = width - 20;
+        const controlHeight = 30;
+        const controlY = y - controlHeight / 2;
+        
+        // 背景
+        context.fillStyle = isSelected ? '#e8f4fd' : '#f8f9fa';
+        context.fillRect(x, controlY, controlWidth, controlHeight);
+        
+        // 枠線
+        context.strokeStyle = isSelected ? '#3498db' : '#bdc3c7';
+        context.lineWidth = isSelected ? 2 : 1;
+        context.strokeRect(x, controlY, controlWidth, controlHeight);
+        
+        // プロファイル情報
+        const currentProfile = this.accessibilitySettingsManager ? 
+            this.accessibilitySettingsManager.getCurrentProfile() : null;
+        const profileName = currentProfile ? currentProfile.name : '標準';
+        
+        // プロファイル名表示
+        context.fillStyle = '#2c3e50';
+        context.font = '14px Arial, sans-serif';
+        context.textAlign = 'left';
+        context.fillText(`現在: ${profileName}`, x + 10, y + 5);
+        
+        // プロファイル切り替えボタン
+        const buttonWidth = 60;
+        const buttonHeight = 24;
+        const buttonY = controlY + 3;
+        const buttonX = x + controlWidth - buttonWidth - 5;
+        
+        context.fillStyle = isSelected ? '#3498db' : '#95a5a6';
+        context.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
+        context.fillStyle = '#ffffff';
+        context.font = '12px Arial, sans-serif';
+        context.textAlign = 'center';
+        context.fillText('変更', buttonX + buttonWidth / 2, buttonY + 16);
+        
+        // 選択時の操作説明
+        if (isSelected) {
+            context.fillStyle = '#3498db';
+            context.font = '10px Arial, sans-serif';
+            context.textAlign = 'center';
+            context.fillText('Enter: プロファイル選択', x + controlWidth / 2, controlY + controlHeight + 12);
+        }
+    }
+    
+    /**
+     * 設定インポート・エクスポートコントロール描画
+     */
+    renderSettingsImportExportControl(context, value, x, y, width, isSelected) {
+        const controlWidth = width - 20;
+        const controlHeight = 30;
+        const controlY = y - controlHeight / 2;
+        
+        // 背景
+        context.fillStyle = isSelected ? '#e8f4fd' : '#f8f9fa';
+        context.fillRect(x, controlY, controlWidth, controlHeight);
+        
+        // 枠線
+        context.strokeStyle = isSelected ? '#3498db' : '#bdc3c7';
+        context.lineWidth = isSelected ? 2 : 1;
+        context.strokeRect(x, controlY, controlWidth, controlHeight);
+        
+        // ボタンレイアウト
+        const buttonWidth = 50;
+        const buttonHeight = 24;
+        const buttonY = controlY + 3;
+        const spacing = 10;
+        
+        // エクスポートボタン
+        const exportButtonX = x + 10;
+        context.fillStyle = '#2ecc71';
+        context.fillRect(exportButtonX, buttonY, buttonWidth, buttonHeight);
+        context.fillStyle = '#ffffff';
+        context.font = '12px Arial, sans-serif';
+        context.textAlign = 'center';
+        context.fillText('保存', exportButtonX + buttonWidth / 2, buttonY + 16);
+        
+        // インポートボタン
+        const importButtonX = exportButtonX + buttonWidth + spacing;
+        context.fillStyle = '#e74c3c';
+        context.fillRect(importButtonX, buttonY, buttonWidth, buttonHeight);
+        context.fillStyle = '#ffffff';
+        context.fillText('読込', importButtonX + buttonWidth / 2, buttonY + 16);
+        
+        // 選択時の操作説明
+        if (isSelected) {
+            context.fillStyle = '#3498db';
+            context.font = '10px Arial, sans-serif';
+            context.textAlign = 'center';
+            context.fillText('Enter: インポート/エクスポート選択', x + controlWidth / 2, controlY + controlHeight + 12);
+        }
     }
     
     /**
@@ -769,7 +1048,12 @@ export class SettingsScene extends Scene {
             // 通常の設定処理
             switch (item.type) {
                 case 'toggle':
-                    this.gameEngine.settingsManager.set(item.key, !currentValue);
+                    // 特別な処理が必要な設定項目
+                    if (item.key === 'audio.muted') {
+                        this.handleAudioMuteToggle();
+                    } else {
+                        this.gameEngine.settingsManager.set(item.key, !currentValue);
+                    }
                     break;
                     
                 case 'select':
@@ -782,6 +1066,11 @@ export class SettingsScene extends Scene {
                     
                 case 'text':
                     this.startTextEditing(currentValue);
+                    break;
+                    
+                case 'custom':
+                    // カスタムコンポーネントの処理
+                    this.handleCustomComponent(item);
                     break;
             }
         }
@@ -925,6 +1214,140 @@ export class SettingsScene extends Scene {
         } catch (error) {
             console.error('[SettingsScene] 設定保存エラー:', error);
         }
+    }
+    
+    /**
+     * 音声ミュート切り替え処理
+     */
+    handleAudioMuteToggle() {
+        try {
+            if (this.gameEngine.audioManager) {
+                const newMutedState = this.gameEngine.audioManager.toggleMute();
+                
+                // ミュート状態を設定に保存
+                this.gameEngine.settingsManager.set('audio.muted', newMutedState);
+                
+                console.log(`[SettingsScene] Audio mute toggled: ${newMutedState}`);
+                this.loggingSystem.info('SettingsScene', `Audio mute toggled: ${newMutedState}`);
+            }
+        } catch (error) {
+            console.error('[SettingsScene] Error toggling audio mute:', error);
+            this.loggingSystem.error('SettingsScene', 'Audio mute toggle error', error);
+        }
+    }
+    
+    /**
+     * カスタムコンポーネント処理の統一ハンドラー
+     */
+    handleCustomComponent(item) {
+        switch (item.component) {
+            case 'VolumeControlComponent':
+                this.handleVolumeControl();
+                break;
+                
+            case 'AccessibilityProfileComponent':
+                this.handleAccessibilityProfileComponent();
+                break;
+                
+            case 'SettingsImportExportComponent':
+                this.handleSettingsImportExportComponent();
+                break;
+                
+            default:
+                console.warn('[SettingsScene] Unknown custom component:', item.component);
+                this.loggingSystem.warn('SettingsScene', `Unknown custom component: ${item.component}`);
+                break;
+        }
+    }
+    
+    /**
+     * ボリュームコントロール処理
+     */
+    handleVolumeControl() {
+        try {
+            // VolumeControlComponentを使用した音量調整
+            // このメソッドは現在選択されているときに音量アップを実行
+            if (this.volumeControlComponent) {
+                this.volumeControlComponent.handleVolumeUp();
+                
+                console.log('[SettingsScene] Volume control activated');
+                this.loggingSystem.info('SettingsScene', 'Volume control activated');
+            }
+        } catch (error) {
+            console.error('[SettingsScene] Error handling volume control:', error);
+            this.loggingSystem.error('SettingsScene', 'Volume control error', error);
+        }
+    }
+    
+    /**
+     * アクセシビリティプロファイルコンポーネント処理
+     */
+    handleAccessibilityProfileComponent() {
+        if (!this.accessibilitySettingsManager) {
+            console.warn('[SettingsScene] AccessibilitySettingsManager not available');
+            return;
+        }
+        
+        try {
+            // プロファイル選択ダイアログを表示
+            this.showAccessibilityProfileDialog();
+            this.loggingSystem.info('SettingsScene', 'Accessibility profile component activated');
+        } catch (error) {
+            console.error('[SettingsScene] Error handling accessibility profile component:', error);
+            this.loggingSystem.error('SettingsScene', 'Accessibility profile component error', error);
+        }
+    }
+    
+    /**
+     * アクセシビリティプロファイル選択ダイアログ表示
+     */
+    showAccessibilityProfileDialog() {
+        const profiles = this.accessibilitySettingsManager.getAvailableProfiles();
+        const currentProfile = this.accessibilitySettingsManager.getCurrentProfile();
+        
+        console.log('[SettingsScene] Available Accessibility Profiles:', profiles);
+        console.log('[SettingsScene] Current Profile:', currentProfile);
+        
+        // 簡易プロファイル選択（実際の実装では専用UIを作成）
+        const profileNames = profiles.map(p => p.name);
+        const currentIndex = profiles.findIndex(p => p.id === (currentProfile ? currentProfile.id : null));
+        const nextIndex = (currentIndex + 1) % profiles.length;
+        const nextProfile = profiles[nextIndex];
+        
+        // 次のプロファイルに切り替え
+        this.accessibilitySettingsManager.applyProfile(nextProfile.id);
+        
+        console.log(`[SettingsScene] Switched to profile: ${nextProfile.name}`);
+        this.loggingSystem.info('SettingsScene', `Profile switched to: ${nextProfile.name}`);
+        
+        // 設定項目を更新
+        this.settingItems.accessibility = this.getAccessibilitySettingsItems();
+    }
+    
+    /**
+     * 設定インポート・エクスポートコンポーネント処理
+     */
+    handleSettingsImportExportComponent() {
+        try {
+            // エクスポート/インポート選択ダイアログを表示
+            this.showImportExportDialog();
+            this.loggingSystem.info('SettingsScene', 'Settings import/export component activated');
+        } catch (error) {
+            console.error('[SettingsScene] Error handling settings import/export component:', error);
+            this.loggingSystem.error('SettingsScene', 'Settings import/export component error', error);
+        }
+    }
+    
+    /**
+     * インポート・エクスポートダイアログ表示
+     */
+    showImportExportDialog() {
+        // 簡易選択（実際の実装では専用UIを作成）
+        // デフォルトでエクスポートを実行
+        this.exportAccessibilitySettings();
+        
+        console.log('[SettingsScene] Import/Export dialog activated (Export executed)');
+        this.loggingSystem.info('SettingsScene', 'Import/Export dialog activated');
     }
     
     /**
@@ -1074,6 +1497,11 @@ export class SettingsScene extends Scene {
             // AccessibilitySettingsManagerのクリーンアップ
             if (this.accessibilitySettingsManager) {
                 this.accessibilitySettingsManager.cleanup();
+            }
+            
+            // VolumeControlComponentのクリーンアップ
+            if (this.volumeControlComponent) {
+                this.volumeControlComponent.dispose();
             }
             
             // 設定の保存

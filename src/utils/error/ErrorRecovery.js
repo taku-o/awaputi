@@ -246,7 +246,7 @@ export class ErrorRecovery {
             
             // Lower effect quality
             if (window.gameEngine.effectManager) {
-                window.gameEngine.effectManager.setQuality('low');
+                window.gameEngine.effectManager.setQualityLevel('low');
             }
             
             // Reduce audio effects

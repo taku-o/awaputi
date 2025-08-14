@@ -25,10 +25,9 @@ export class CoreKeyboardShortcutManager {
         // ゲーム操作
         this.addShortcut('pause', ['Space'], () => this.handlePause());
         this.addShortcut('menu', ['Escape'], () => this.handleMenu());
-        this.addShortcut('fullscreen', ['KeyF'], () => this.handleFullscreen());
-        this.addShortcut('mute', ['KeyM'], () => this.handleMute());
         
         // UI操作
+        this.addShortcut('fullscreen', ['F11'], () => this.handleFullscreen());
         this.addShortcut('contextualHelp', ['F1'], () => this.handleContextualHelp());
         this.addShortcut('documentationHelp', ['ControlLeft+KeyH'], () => this.handleDocumentationHelp());
         
@@ -36,18 +35,16 @@ export class CoreKeyboardShortcutManager {
         this.addShortcut('debug', ['F12'], () => this.handleDebug());
         this.addShortcut('debugToggle', ['ControlLeft+ShiftLeft+KeyD'], () => this.handleDebugToggle());
         
-        // アクセシビリティ
-        this.addShortcut('highContrast', ['ControlLeft+AltLeft+KeyH'], () => this.handleHighContrast());
-        this.addShortcut('largeText', ['ControlLeft+AltLeft+KeyT'], () => this.handleLargeText());
-        this.addShortcut('reducedMotion', ['ControlLeft+AltLeft+KeyM'], () => this.handleReducedMotion());
-        
         // ゲーム内操作（UIボタンから実行）
         // GキーとRキーのショートカットは削除されました（Issue #172）
         // Give UpとRestartはゲーム画面のUIボタンから利用可能です
         
-        // 音量調整
-        this.addShortcut('volumeUp', ['ArrowUp+ControlLeft'], () => this.handleVolumeUp());
-        this.addShortcut('volumeDown', ['ArrowDown+ControlLeft'], () => this.handleVolumeDown());
+        // 注記: 以下の機能は設定画面のUIから利用できます（Issue #170）
+        // - 音声ミュート（元Mキー）
+        // - 音量調整（元Ctrl+↑/↓キー）
+        // - アクセシビリティ機能（元Ctrl+Alt+H/T/Mキー）
+        // 
+        // フルスクリーン機能はF11キーで復活しました
     }
     
     /**
@@ -301,29 +298,22 @@ export class CoreKeyboardShortcutManager {
     }
     
     /**
-     * フルスクリーン処理
+     * フルスクリーン切り替え処理（F11キー）
      */
     handleFullscreen() {
-        if (this.gameEngine.responsiveCanvasManager) {
-            this.gameEngine.responsiveCanvasManager.toggleFullscreen();
+        try {
+            if (this.gameEngine && this.gameEngine.responsiveCanvasManager) {
+                this.gameEngine.responsiveCanvasManager.toggleFullscreen();
+            } else {
+                console.warn('[KeyboardShortcutManager] ResponsiveCanvasManager not available');
+            }
+        } catch (error) {
+            console.error('[KeyboardShortcutManager] Error toggling fullscreen:', error);
         }
     }
     
-    /**
-     * ミュート処理
-     */
-    handleMute() {
-        if (this.gameEngine.audioManager) {
-            const isMuted = this.gameEngine.audioManager.toggleMute();
-            
-            // 設定に反映
-            if (this.gameEngine.settingsManager) {
-                this.gameEngine.settingsManager.set('isMuted', isMuted);
-            }
-            
-            console.log(`Audio ${isMuted ? 'muted' : 'unmuted'}`);
-        }
-    }
+    // handleMute() メソッドは削除されました（Issue #170）
+    // 音声ミュート機能は設定画面のUIから利用できます
     
     
     
@@ -405,62 +395,14 @@ export class CoreKeyboardShortcutManager {
         }
     }
     
-    /**
-     * ハイコントラスト切り替え
-     */
-    handleHighContrast() {
-        if (this.gameEngine.settingsManager) {
-            const current = this.gameEngine.settingsManager.get('accessibility.highContrast');
-            this.gameEngine.settingsManager.set('accessibility.highContrast', !current);
-        }
-    }
-    
-    /**
-     * 大きなテキスト切り替え
-     */
-    handleLargeText() {
-        if (this.gameEngine.settingsManager) {
-            const current = this.gameEngine.settingsManager.get('accessibility.largeText');
-            this.gameEngine.settingsManager.set('accessibility.largeText', !current);
-        }
-    }
-    
-    /**
-     * モーション軽減切り替え
-     */
-    handleReducedMotion() {
-        if (this.gameEngine.settingsManager) {
-            const current = this.gameEngine.settingsManager.get('accessibility.reducedMotion');
-            this.gameEngine.settingsManager.set('accessibility.reducedMotion', !current);
-        }
-    }
+    // handleHighContrast(), handleLargeText(), handleReducedMotion() メソッドは削除されました（Issue #170）
+    // これらの機能は設定画面のアクセシビリティUIから利用できます
     
     // handleGiveUp() と handleRestart() メソッドは削除されました（Issue #172）
     // これらの機能はゲーム画面のUIボタンから利用できます
     
-    /**
-     * 音量アップ処理
-     */
-    handleVolumeUp() {
-        if (this.gameEngine.settingsManager) {
-            const current = this.gameEngine.settingsManager.get('masterVolume');
-            const newVolume = Math.min(1, current + 0.1);
-            this.gameEngine.settingsManager.set('masterVolume', newVolume);
-            console.log(`Volume: ${Math.round(newVolume * 100)}%`);
-        }
-    }
-    
-    /**
-     * 音量ダウン処理
-     */
-    handleVolumeDown() {
-        if (this.gameEngine.settingsManager) {
-            const current = this.gameEngine.settingsManager.get('masterVolume');
-            const newVolume = Math.max(0, current - 0.1);
-            this.gameEngine.settingsManager.set('masterVolume', newVolume);
-            console.log(`Volume: ${Math.round(newVolume * 100)}%`);
-        }
-    }
+    // handleVolumeUp() と handleVolumeDown() メソッドは削除されました（Issue #170）
+    // これらの機能は設定画面の音量調整UIから利用できます
     
     /**
      * ショートカット一覧を取得
@@ -496,12 +438,12 @@ export class CoreKeyboardShortcutManager {
             const keyText = shortcut.keys.join(' または ');
             const description = shortcut.description || name;
             
-            if (['pause', 'giveUp', 'restart'].includes(name)) {
+            if (['pause'].includes(name)) {
                 helpSections['ゲーム操作'].push(`${keyText}: ${description}`);
-            } else if (['menu', 'fullscreen'].includes(name)) {
+            } else if (['menu', 'contextualHelp', 'documentationHelp'].includes(name)) {
                 helpSections['UI操作'].push(`${keyText}: ${description}`);
-            } else if (name.startsWith('accessibility') || ['highContrast', 'largeText', 'reducedMotion'].includes(name)) {
-                helpSections['アクセシビリティ'].push(`${keyText}: ${description}`);
+            } else if (name.startsWith('debug')) {
+                helpSections['その他'].push(`${keyText}: ${description}`);
             } else {
                 helpSections['その他'].push(`${keyText}: ${description}`);
             }

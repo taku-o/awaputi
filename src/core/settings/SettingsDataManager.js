@@ -41,7 +41,14 @@ export class SettingsDataManager {
                 reducedMotion: false,
                 largeText: false,
                 screenReader: false,
-                colorBlindSupport: false
+                colorBlindSupport: false,
+                fontSize: 'medium',
+                contrastLevel: 'normal',
+                keyboardNavigation: true,
+                voiceGuidance: false,
+                subtitles: false,
+                profiles: 'default',
+                importExport: false
             },
             
             // 操作設定
@@ -51,12 +58,12 @@ export class SettingsDataManager {
                 touchEnabled: true
             },
             
-            // キーボードショートカット
+            // キーボードショートカット（Issue #170で削除されたもの以外）
             keyboardShortcuts: {
                 pause: ['Space'],
                 menu: ['Escape'],
-                fullscreen: ['KeyF'],
-                mute: ['KeyM'],
+                // 注記: fullscreen (KeyF)、mute (KeyM) は削除済み（Issue #170）
+                // これらの機能は設定画面UIから利用できます
                 settings: ['KeyS'],
                 help: ['KeyH', 'F1']
             },
@@ -82,31 +89,30 @@ export class SettingsDataManager {
                 showWatermark: true
             },
             
-            // 通知設定
+            // 通知設定（平坦化構造）
             notifications: {
-                challenges: {
-                    enabled: true,
-                    newChallenge: true,
-                    challengeComplete: true,
-                    dailyReminder: true,
-                    weeklyReminder: true
-                },
-                achievements: {
-                    enabled: true,
-                    unlocked: true,
-                    progress: false,
-                    rare: true
-                },
-                leaderboard: {
-                    enabled: true,
-                    newRecord: true,
-                    rankChange: false
-                },
-                system: {
-                    enabled: true,
-                    updates: true,
-                    maintenance: true
-                }
+                'challenges.enabled': true,
+                'challenges.newChallenge': true,
+                'challenges.challengeComplete': true,
+                'challenges.dailyReminder': true,
+                'challenges.weeklyReminder': true,
+                'achievements.enabled': true,
+                'achievements.unlocked': true,
+                'achievements.progress': false,
+                'achievements.rare': true,
+                'leaderboard.enabled': true,
+                'leaderboard.newRecord': true,
+                'leaderboard.rankChange': false,
+                'system.enabled': true,
+                'system.updates': true,
+                'system.maintenance': true
+            },
+
+            // プライバシー設定
+            privacy: {
+                dataCollection: true,
+                analytics: true,
+                crashReports: true
             }
         };
     }
@@ -142,13 +148,16 @@ export class SettingsDataManager {
                 // デフォルト値を設定（正しいメソッド名を使用）
                 this.configManager.setDefaultValue(fullKey, value);
                 
+                // カテゴリと設定値を初期化（カテゴリが確実に作成されるようにする）
+                this.configManager.set(category, key, value);
+                
                 // 検証ルールを設定
                 if (validationRules[key]) {
                     this.configManager.setValidationRule(fullKey, validationRules[key]);
                 }
             }
             
-            console.log(`[SettingsDataManager] Category '${category}' setup completed`);
+            console.log(`[SettingsDataManager] Category '${category}' setup completed with ${Object.keys(defaultValues).length} settings`);
         } catch (error) {
             console.error(`[SettingsDataManager] Failed to setup category '${category}':`, error);
             throw error;

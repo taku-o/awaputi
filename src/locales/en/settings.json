@@ -11,11 +11,15 @@
   "translations": {
     "settings": {
       "title": "Settings",
-      "audio": "Audio Settings",
-      "masterVolume": "Master Volume",
-      "sfxVolume": "SFX Volume",
-      "bgmVolume": "BGM Volume",
-      "mute": "Mute",
+      "audio": {
+        "title": "Audio Settings",
+        "masterVolume": "Master Volume",
+        "volumeUp": "Volume Up",
+        "volumeDown": "Volume Down",
+        "sfxVolume": "SFX Volume",
+        "bgmVolume": "BGM Volume",
+        "mute": "Mute"
+      },
       "language": "Language",
       "quality": "Quality",
       "accessibility": "Accessibility",

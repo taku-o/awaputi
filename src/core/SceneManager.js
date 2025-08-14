@@ -48,6 +48,15 @@ export class SceneManager {
     }
     
     /**
+     * 指定された名前のシーンを取得
+     * @param {string} name - シーン名
+     * @returns {Object|null} シーンオブジェクト、存在しない場合はnull
+     */
+    getScene(name) {
+        return this.scenes.get(name) || null;
+    }
+    
+    /**
      * 更新処理
      */
     update(deltaTime) {

@@ -698,4 +698,38 @@ export class AccessibilitySettingsManager {
         
         this.loggingSystem.info('AccessibilitySettingsManager', 'Accessibility settings manager cleaned up');
     }
+    
+    /**
+     * 現在のプロファイルを取得
+     * @returns {Object} 現在のプロファイル
+     */
+    getCurrentProfile() {
+        if (this.profiles.has(this.currentProfile)) {
+            return this.profiles.get(this.currentProfile);
+        }
+        
+        // デフォルトプロファイルを返す
+        return {
+            id: 'default',
+            name: '標準',
+            description: 'デフォルトのアクセシビリティ設定',
+            settings: {}
+        };
+    }
+    
+    /**
+     * 利用可能なプロファイル一覧を取得
+     * @returns {Array} プロファイル一覧
+     */
+    getAvailableProfiles() {
+        return Array.from(this.profiles.values());
+    }
+    
+    /**
+     * 統計情報を取得
+     * @returns {Object} 統計情報
+     */
+    getStats() {
+        return { ...this.stats };
+    }
 }
