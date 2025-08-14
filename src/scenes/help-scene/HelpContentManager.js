@@ -184,7 +184,8 @@ export class HelpContentManager {
                 this.searchResults = this.searchCache.get(trimmedQuery);
             } else {
                 // 新しい検索実行
-                this.searchResults = await this.searchEngine.search(trimmedQuery);
+                const searchResult = await this.searchEngine.search(trimmedQuery);
+                this.searchResults = searchResult.results || [];
                 this.setSearchCache(trimmedQuery, this.searchResults);
             }
 
@@ -396,12 +397,15 @@ export class HelpContentManager {
      * 状態取得
      */
     getState() {
+        // Ensure searchResults is always an array
+        const searchResults = Array.isArray(this.searchResults) ? this.searchResults : [];
+        
         return {
             selectedCategory: this.selectedCategory,
             selectedTopicIndex: this.selectedTopicIndex,
             currentContent: this.currentContent,
             searchQuery: this.searchQuery,
-            searchResults: [...this.searchResults],
+            searchResults: [...searchResults],
             isSearching: this.isSearching,
             categories: this.categories.map(cat => ({
                 ...cat,
