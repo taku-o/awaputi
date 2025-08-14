@@ -1,6 +1,20 @@
-# VolumeControlComponent
+# Components
+
+このディレクトリには、ゲーム設定UIで使用される再利用可能なコンポーネントが含まれています。
+
+## コンポーネント一覧
+
+### VolumeControlComponent
 
 音量制御のためのUIコンポーネントです。音量アップ/ダウンボタンと現在音量レベルの視覚的フィードバックを提供します。
+
+### AccessibilityProfileComponent
+
+アクセシビリティプロファイル切り替えのためのUIコンポーネントです。プリセットされたアクセシビリティ設定を選択・適用できます。
+
+---
+
+## VolumeControlComponent
 
 ## 特徴
 
@@ -240,3 +254,212 @@ npm test src/components/__tests__/VolumeControlComponent.test.js
 - KeyboardShortcutManagerからの音量制御ロジック移行
 - アクセシビリティ対応
 - 包括的なテストスイート
+
+---
+
+## AccessibilityProfileComponent
+
+アクセシビリティプロファイル切り替えのためのUIコンポーネントです。3つのプリセットプロファイル（Default, High Contrast, Motor Accessibility）から選択し、即座に設定を適用できます。
+
+### 特徴
+
+- **プリセットプロファイル**: 3つの事前定義されたアクセシビリティプロファイル
+- **即座の反映**: プロファイル適用時の即座の視覚的フィードバック
+- **ドロップダウンUI**: 直感的なプロファイル選択インターフェース
+- **アクセシビリティ対応**: キーボード操作、ARIA属性、スクリーンリーダー対応
+- **エラーハンドリング**: 包括的なエラー処理とユーザーフィードバック
+
+### 基本的な使用方法
+
+```javascript
+import { AccessibilityProfileComponent } from './AccessibilityProfileComponent.js';
+
+// コンポーネントの作成
+const profileComponent = new AccessibilityProfileComponent(gameEngine);
+
+// 初期化と表示
+const container = document.getElementById('accessibility-settings');
+profileComponent.initialize(container);
+```
+
+### API リファレンス
+
+#### Constructor
+
+```javascript
+const profileComponent = new AccessibilityProfileComponent(gameEngine);
+```
+
+- `gameEngine`: GameEngineインスタンス（settingsManager、sceneManagerを含む）
+
+#### メソッド
+
+##### initialize(parentElement)
+コンポーネントを初期化してDOMに追加します。
+
+```javascript
+const element = profileComponent.initialize(parentElement);
+```
+
+- `parentElement`: HTMLElement - 親コンテナ要素
+- **返り値**: HTMLElement - 作成されたコンテナ要素
+
+##### getCurrentProfile()
+現在選択されているプロファイルIDを取得します。
+
+```javascript
+const profileId = profileComponent.getCurrentProfile(); // 'default', 'highContrast', 'motorAccessibility'
+```
+
+##### setProfile(profileId)
+プログラムでプロファイルを設定します。
+
+```javascript
+const success = profileComponent.setProfile('highContrast');
+```
+
+- `profileId`: string - プロファイルID
+- **返り値**: boolean - 設定の成功/失敗
+
+##### getAvailableProfiles()
+利用可能なプロファイル一覧を取得します。
+
+```javascript
+const profiles = profileComponent.getAvailableProfiles();
+// [{ id: 'default', name: 'デフォルト', description: '標準設定', icon: '🎮' }, ...]
+```
+
+##### destroy()
+コンポーネントをクリーンアップします。
+
+```javascript
+profileComponent.destroy();
+```
+
+### プロファイル一覧
+
+#### Default（デフォルト）
+- **アイコン**: 🎮
+- **説明**: 標準設定
+- **設定内容**: すべてのアクセシビリティ機能を無効
+
+#### High Contrast（ハイコントラスト）
+- **アイコン**: 🔆
+- **説明**: 見やすい高コントラスト表示
+- **設定内容**: ハイコントラスト、大きな文字、スクリーンリーダー、色覚サポート有効
+
+#### Motor Accessibility（モビリティ対応）
+- **アイコン**: ♿
+- **説明**: モーション削減とナビゲーション支援
+- **設定内容**: モーション削減、大きな文字有効
+
+### SettingsSceneでの統合例
+
+```javascript
+import { AccessibilityProfileComponent } from '../components/AccessibilityProfileComponent.js';
+
+export class SettingsScene extends Scene {
+    constructor(gameEngine) {
+        super(gameEngine);
+        this.accessibilityProfileComponent = null;
+    }
+    
+    initializeSettingItems() {
+        return {
+            accessibility: [
+                // 既存の設定項目...
+                { 
+                    key: 'accessibility.profile', 
+                    label: 'アクセシビリティプロファイル', 
+                    type: 'custom',
+                    component: 'AccessibilityProfileComponent',
+                    description: 'プリセットされたアクセシビリティ設定を選択できます'
+                }
+            ]
+        };
+    }
+    
+    handleCustomComponent(settingItem, parentElement) {
+        if (settingItem.component === 'AccessibilityProfileComponent') {
+            if (!this.accessibilityProfileComponent) {
+                this.accessibilityProfileComponent = new AccessibilityProfileComponent(this.gameEngine);
+            }
+            
+            const element = this.accessibilityProfileComponent.initialize(parentElement);
+            
+            // プロファイル変更イベントのリスナーを設定
+            element.addEventListener('accessibilityProfileChanged', (event) => {
+                this.handleProfileChanged(event.detail);
+            });
+            
+            return element;
+        }
+    }
+    
+    cleanup() {
+        if (this.accessibilityProfileComponent) {
+            this.accessibilityProfileComponent.destroy();
+        }
+        super.cleanup();
+    }
+}
+```
+
+### イベント
+
+#### accessibilityProfileChanged
+プロファイルが変更された時に発火されるカスタムイベントです。
+
+```javascript
+element.addEventListener('accessibilityProfileChanged', (event) => {
+    console.log('Profile changed:', event.detail.profileId);
+    console.log('Timestamp:', event.detail.timestamp);
+});
+```
+
+### スタイリング
+
+コンポーネントは以下のCSSクラスを使用します：
+
+- `.accessibility-profile-component`: メインコンテナ
+- `.profile-dropdown-button`: ドロップダウンボタン
+- `.dropdown-options`: ドロップダウンオプション
+- `.profile-apply-button`: 適用ボタン
+- `.profile-status-indicator`: ステータス表示
+
+### アクセシビリティ
+
+- **キーボード操作**: Tab、Enter、矢印キー、Escapeによる操作
+- **ARIA属性**: role、aria-label、aria-expanded、aria-selectedの設定
+- **スクリーンリーダー**: プロファイル名と説明の読み上げ対応
+- **フォーカス管理**: 適切なフォーカスの移動とトラップ
+
+### エラーハンドリング
+
+- AccessibilitySettingsManagerエラー時のフォールバック
+- プロファイル適用失敗時のユーザー通知
+- DOM操作エラーの安全な処理
+- ネットワーク障害時の適切な対応
+
+### Requirements満足
+
+このコンポーネントは以下のRequirementsを満たしています：
+
+- **Requirement 5.4**: プロファイル切り替えUIの実装
+- **Requirement 5.7**: プロファイル切り替えの即座の反映
+
+### 依存関係
+
+- `../utils/ErrorHandler.js`: エラーハンドリング
+- `../core/LocalizationManager.js`: 多言語対応
+- `gameEngine.settingsManager`: 設定管理
+- `gameEngine.sceneManager.currentScene.accessibilitySettingsManager`: アクセシビリティ設定管理
+
+### 変更履歴
+
+#### v1.0.0 (2025-01-14)
+- 初期実装
+- Issue #170 Task 1.2 対応
+- 3つのプリセットプロファイル実装
+- ドロップダウンUIとアクセシビリティ対応
+- エラーハンドリングと視覚的フィードバック

@@ -11,7 +11,7 @@
   - Handle edge cases (min/max volume) with appropriate button disabling
   - _Requirements: 3.3, 3.4, 3.5, 3.6, 3.7_
 
-- [ ] 1.2 Create AccessibilityProfileComponent for profile switching
+- [x] 1.2 Create AccessibilityProfileComponent for profile switching
   - Implement profile selection UI (dropdown or button set)
   - Display current active profile clearly
   - Handle profile switching with immediate visual feedback
