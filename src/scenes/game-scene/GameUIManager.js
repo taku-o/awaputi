@@ -9,6 +9,7 @@ import { ConfirmationDialog } from './ConfirmationDialog.js';
 import { ScaledCoordinateManager } from '../../utils/ScaledCoordinateManager.js';
 import { UIPositionCalculator } from '../../utils/UIPositionCalculator.js';
 import { ScaledRenderingContext } from '../../utils/ScaledRenderingContext.js';
+import { CoordinateSystemDebugger } from '../../utils/CoordinateSystemDebugger.js';
 
 export class GameUIManager {
     constructor(gameEngine, floatingTextManager) {
@@ -64,12 +65,31 @@ export class GameUIManager {
             // ScaledRenderingContextは描画時に初期化
             this.scaledRenderingContext = null;
             
+            // デバッグユーティリティを初期化（開発時のみ）
+            if (window.location.search.includes('debug=true') || localStorage.getItem('coordinateDebug') === 'true') {
+                this.coordinateDebugger = new CoordinateSystemDebugger(
+                    this.scaledCoordinateManager,
+                    this.uiPositionCalculator,
+                    null // InputCoordinateConverter は必要に応じて後で設定
+                );
+                console.log('Coordinate system debugger initialized. Press Ctrl+Shift+C to toggle.');
+            }
+            
         } catch (error) {
             console.error('GameUIManager: Failed to initialize coordinate system', error);
             // フォールバック処理
             this.scaledCoordinateManager = new ScaledCoordinateManager(null);
             this.uiPositionCalculator = new UIPositionCalculator(this.scaledCoordinateManager);
             this.scaledRenderingContext = null;
+            
+            // デバッグユーティリティ（フォールバック）
+            if (window.location.search.includes('debug=true') || localStorage.getItem('coordinateDebug') === 'true') {
+                this.coordinateDebugger = new CoordinateSystemDebugger(
+                    this.scaledCoordinateManager,
+                    this.uiPositionCalculator,
+                    null
+                );
+            }
         }
     }
     
@@ -595,6 +615,11 @@ export class GameUIManager {
             const baseX = scorePosition.x / this.scaledCoordinateManager.getScaleFactor() / scoreScale;
             const baseY = scorePosition.y / this.scaledCoordinateManager.getScaleFactor() / scoreScale;
             scaledContext.fillText(`スコア: ${playerData.currentScore.toLocaleString()}`, baseX, baseY);
+            
+            // デバッグ用エレメントトラッキング
+            if (this.coordinateDebugger) {
+                this.coordinateDebugger.trackElement('score', scorePosition.x, scorePosition.y, 150, 30, '#4CAF50');
+            }
             
             scaledContext.restore();
         } catch (error) {

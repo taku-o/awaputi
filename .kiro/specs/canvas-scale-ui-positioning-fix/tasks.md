@@ -192,19 +192,19 @@
   - Ensure coordinate system updates when canvas size or scale changes
   - _Requirements: 1.2, 1.4, 5.2_
 
-- [ ] 9.2 Add canvas resize handling
+- [x] 9.2 Add canvas resize handling
   - Update onCanvasResize callback to trigger coordinate system refresh
   - Ensure all UI elements reposition correctly during resize events
   - Add debouncing for rapid resize events to improve performance
   - _Requirements: 1.2, 5.5_
 
-- [ ] 10. Create comprehensive test suite
+- [x] 10. Create comprehensive test suite
   - Write unit tests for all coordinate conversion methods
   - Create integration tests for UI positioning across different screen sizes
   - Add visual regression tests to ensure consistent rendering
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 6.1, 6.2, 6.3, 6.4, 6.5_
 
-- [ ] 10.1 Write unit tests for coordinate system
+- [x] 10.1 Write unit tests for coordinate system
   - Create tests for ScaledCoordinateManager coordinate conversion accuracy
   - Add tests for UIPositionCalculator layout calculations
   - Write tests for InputCoordinateConverter event handling
@@ -228,7 +228,7 @@
   - Implement logging for coordinate conversion issues
   - _Requirements: 5.4_
 
-- [ ] 11.1 Implement debugging utilities
+- [x] 11.1 Implement debugging utilities
   - Create coordinate system debug panel showing scale factors and positions
   - Add visual overlays to show UI element boundaries and positions
   - Implement console logging for coordinate conversion debugging
