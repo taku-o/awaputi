@@ -285,7 +285,12 @@ export class InputManager {
             y = event.clientY - rect.top;
         }
         
-        return { x, y };
+        // 座標変換システムで使用できるよう元のイベントも含める
+        return { 
+            x, 
+            y, 
+            originalEvent: event 
+        };
     }
     
     /**

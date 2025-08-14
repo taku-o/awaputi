@@ -1,4 +1,5 @@
 import { getBrowserCompatibility } from './BrowserCompatibility.js';
+import { ScaledCoordinateManager } from './ScaledCoordinateManager.js';
 
 /**
  * レスポンシブCanvas管理クラス
@@ -23,6 +24,9 @@ export class ResponsiveCanvasManager {
         
         this.resizeTimeout = null;
         this.isInitialized = false;
+        
+        // ScaledCoordinateManager を初期化
+        this.scaledCoordinateManager = new ScaledCoordinateManager(this);
         
         this.setupResponsiveCanvas();
         this.setupEventListeners();
@@ -110,7 +114,10 @@ export class ResponsiveCanvasManager {
             this.gameEngine.onCanvasResize?.(this.currentSize);
         }
         
-        console.log('Canvas resized:', this.currentSize);
+        // ScaledCoordinateManagerにスケール変更を通知
+        if (this.scaledCoordinateManager) {
+            this.scaledCoordinateManager.updateScale();
+        }
     }
     
     /**
@@ -370,6 +377,11 @@ export class ResponsiveCanvasManager {
         
         if (screen.orientation) {
             screen.orientation.removeEventListener('change', this.handleOrientationChange);
+        }
+        
+        // ScaledCoordinateManagerのクリーンアップ
+        if (this.scaledCoordinateManager) {
+            this.scaledCoordinateManager.cleanup();
         }
     }
 }

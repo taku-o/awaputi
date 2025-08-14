@@ -124,8 +124,8 @@ export class GameScene extends Scene {
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
         
-        // UIボタンのクリック処理
-        if (this.uiManager.handleControlButtonClick(x, y)) {
+        // UIボタンのクリック処理（eventパラメータも渡して座標変換を有効化）
+        if (this.uiManager.handleControlButtonClick(x, y, event)) {
             return; // ボタンがクリックされた場合は他の処理をしない
         }
         
