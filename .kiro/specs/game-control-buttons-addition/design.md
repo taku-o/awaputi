@@ -57,8 +57,18 @@ class GameControlButtons {
 **Key Properties:**
 - Button positions and dimensions
 - Button states (enabled/disabled, hover effects)
+- Button visibility states (show/hide based on game state)
 - Click detection areas
 - Visual styling configuration
+
+**Button Visibility Logic:**
+```javascript
+// Give Up Button Visibility
+showGiveUp = (isGameStarted && !isGameOver && !isPreGame)
+
+// Restart Button Visibility  
+showRestart = ((isGameStarted && !isPreGame) || isGameOver) && !isPreGame
+```
 
 ### 2. ConfirmationDialog Component
 
@@ -95,8 +105,21 @@ class GameUIManager {
     handleControlButtonClick(x, y)
     showConfirmationDialog(type)
     hideConfirmationDialog()
+    
+    // Game state monitoring for button visibility
+    updateGameStateAndButtons()
+    getCurrentGameState()
+    hasGameStateChanged(currentState)
 }
 ```
+
+**Game State Monitoring:**
+The GameUIManager continuously monitors game state changes and automatically updates button visibility. This ensures buttons only appear when their actions are logically appropriate:
+
+- **Pre-game**: No buttons shown (game hasn't started)
+- **Playing**: Both Give Up and Restart available  
+- **Paused**: Both Give Up and Restart available
+- **Game Over**: Only Restart available (Give Up is meaningless)
 
 ### 4. Modified KeyboardShortcutManager
 

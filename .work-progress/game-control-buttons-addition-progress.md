@@ -69,9 +69,22 @@ Issue #172対応: ゲーム画面にGive Up（ギブアップ）とRestart（ゲ
 2. `f7b9bdb` - feat: reduce button right margin to 8px for improved visibility
 3. `2c64fa9` - feat: unify button margins to 5px for consistent spacing
 
+### ボタン表示条件機能追加（2025-08-14）
+- **機能**: ゲーム状態に応じたボタンの表示/非表示制御
+- **課題**: 論理的におかしいタイミング（ゲームオーバー時のGive Up等）でボタンが利用可能
+- **解決策**: 
+  - GameControlButtonsに`buttonVisibility`状態管理追加
+  - GameUIManagerでゲーム状態監視機能実装
+  - 適切な表示条件に基づく自動表示制御
+- **仕様書**: `button-visibility-specification.md`作成
+- **表示条件**: 
+  - Give Up: ゲーム進行中・ポーズ中のみ
+  - Restart: ゲーム進行中・ポーズ中・ゲームオーバー時
+
 ## 現在の状況
 - タスク1-10完了（メイン機能実装完了）
 - ボタン表示・位置調整完了
+- ✅ ボタン表示条件機能完了
 - 残りタスク11-20: アクセシビリティ、テスト、ドキュメント更新
 
 ## メモ
