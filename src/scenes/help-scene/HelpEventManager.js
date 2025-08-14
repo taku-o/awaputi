@@ -35,6 +35,7 @@ export class HelpEventManager {
         
         // 状態管理
         this.searchFocused = false;
+        this.currentSearchQuery = '';
         this.lastInputTime = 0;
         this.inputThrottleMs = 50; // 入力スロットリング
         
@@ -54,8 +55,10 @@ export class HelpEventManager {
         this.boundKeyHandler = (event) => this.handleKeyPress(event);
         this.boundClickHandler = (event) => this.handleClick(event);
         this.boundContextMenuHandler = (event) => this.handleContextMenu(event);
+        this.boundKeyPressHandler = (event) => this.handleTextInput(event);
         
         document.addEventListener('keydown', this.boundKeyHandler);
+        document.addEventListener('keypress', this.boundKeyPressHandler);
         document.addEventListener('click', this.boundClickHandler);
         document.addEventListener('contextmenu', this.boundContextMenuHandler);
     }
@@ -67,6 +70,11 @@ export class HelpEventManager {
         if (this.boundKeyHandler) {
             document.removeEventListener('keydown', this.boundKeyHandler);
             this.boundKeyHandler = null;
+        }
+        
+        if (this.boundKeyPressHandler) {
+            document.removeEventListener('keypress', this.boundKeyPressHandler);
+            this.boundKeyPressHandler = null;
         }
         
         if (this.boundClickHandler) {
@@ -111,6 +119,62 @@ export class HelpEventManager {
                 console.error('Error handling key press:', error);
             }
         }
+    }
+
+    /**
+     * テキスト入力処理（検索用）
+     */
+    handleTextInput(event) {
+        // 検索バーがフォーカスされていない場合は無視
+        if (!this.searchFocused) {
+            return;
+        }
+
+        // 制御文字やファンクションキーは無視
+        if (event.key.length > 1 && !['Backspace', 'Delete'].includes(event.key)) {
+            return;
+        }
+
+        event.preventDefault();
+
+        try {
+            let newQuery = this.currentSearchQuery;
+
+            if (event.key === 'Backspace') {
+                newQuery = newQuery.slice(0, -1);
+            } else if (event.key === 'Delete') {
+                newQuery = '';
+            } else if (event.key.length === 1) {
+                newQuery += event.key;
+            }
+
+            // 検索クエリを更新
+            this.currentSearchQuery = newQuery;
+            
+            // 検索実行（デバウンス付き）
+            this.debounceSearch(newQuery);
+            
+            // 状態更新通知
+            if (this.contentManager) {
+                this.contentManager.setSearchQuery(newQuery);
+            }
+
+        } catch (error) {
+            console.error('Error handling text input:', error);
+        }
+    }
+
+    /**
+     * 検索のデバウンス処理
+     */
+    debounceSearch(query) {
+        if (this.searchTimeout) {
+            clearTimeout(this.searchTimeout);
+        }
+        
+        this.searchTimeout = setTimeout(() => {
+            this.handleSearchInput(query);
+        }, 300); // 300ms のデバウンス
     }
 
     /**

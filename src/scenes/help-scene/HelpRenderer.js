@@ -160,7 +160,23 @@ export class HelpRenderer {
         const textColor = searchQuery ? this.colors.text : this.colors.textSecondary;
         
         ctx.fillStyle = textColor;
-        ctx.fillText(displayText, searchBar.x + 15, searchBar.y + searchBar.height / 2);
+        const textX = searchBar.x + 15;
+        const textY = searchBar.y + searchBar.height / 2;
+        ctx.fillText(displayText, textX, textY);
+        
+        // フォーカス時のカーソル描画
+        if (focused && searchQuery) {
+            const textWidth = ctx.measureText(searchQuery).width;
+            const cursorX = textX + textWidth + 2;
+            
+            // 点滅カーソル（簡易実装）
+            ctx.strokeStyle = this.colors.text;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(cursorX, textY - 8);
+            ctx.lineTo(cursorX, textY + 8);
+            ctx.stroke();
+        }
         
         // 検索アイコン
         ctx.fillStyle = this.colors.textSecondary;

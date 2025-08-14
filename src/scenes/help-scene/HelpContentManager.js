@@ -18,6 +18,7 @@ export class HelpContentManager {
         this.selectedTopicIndex = 0;
         this.currentContent = null;
         this.searchQuery = '';
+        this.currentSearchQuery = '';
         this.searchResults = [];
         this.isSearching = false;
         
@@ -420,6 +421,25 @@ export class HelpContentManager {
 
     getSearchResults() {
         return [...this.searchResults];
+    }
+
+    /**
+     * 検索クエリを設定
+     * @param {string} query - 検索クエリ
+     */
+    setSearchQuery(query) {
+        this.currentSearchQuery = query.trim();
+        
+        // 状態更新
+        this.state.searchQuery = this.currentSearchQuery;
+        
+        // 空の検索クエリの場合は検索結果をクリア
+        if (!this.currentSearchQuery) {
+            this.state.searchResults = [];
+            this.state.isSearchActive = false;
+        } else {
+            this.state.isSearchActive = true;
+        }
     }
 
     // Analytics getters
