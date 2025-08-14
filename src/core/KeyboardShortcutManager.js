@@ -29,11 +29,8 @@ export class CoreKeyboardShortcutManager {
         this.addShortcut('mute', ['KeyM'], () => this.handleMute());
         
         // UI操作
-        this.addShortcut('settings', ['KeyS'], () => this.handleSettings());
-        this.addShortcut('help', ['KeyH'], () => this.handleHelp());
         this.addShortcut('contextualHelp', ['F1'], () => this.handleContextualHelp());
         this.addShortcut('documentationHelp', ['ControlLeft+KeyH'], () => this.handleDocumentationHelp());
-        this.addShortcut('userInfo', ['KeyI'], () => this.handleUserInfo());
         
         // デバッグ操作（開発時のみ）
         this.addShortcut('debug', ['F12'], () => this.handleDebug());
@@ -299,9 +296,6 @@ export class CoreKeyboardShortcutManager {
             } else if (currentScene.showingSettings) {
                 // 設定画面を閉じる
                 currentScene.closeSettings?.();
-            } else if (currentScene.showingUserInfo) {
-                // ユーザー情報画面を閉じる
-                currentScene.closeUserInfo?.();
             }
         }
     }
@@ -331,80 +325,7 @@ export class CoreKeyboardShortcutManager {
         }
     }
     
-    /**
-     * 設定画面処理
-     * 統一されたSettingsSceneを使用
-     */
-    handleSettings() {
-        try {
-            // NavigationContextManagerを使用してコンテキストを追加
-            const currentScene = this.gameEngine.sceneManager.getCurrentScene();
-            const contextData = {
-                accessMethod: 'keyboard_s',
-                sourceScene: currentScene?.constructor.name || 'unknown'
-            };
-            
-            // 統一されたSettingsSceneに直接遷移
-            const success = this.gameEngine.sceneManager.switchScene('settings', contextData);
-            
-            if (!success) {
-                // フォールバック: 従来の方法
-                if (currentScene && typeof currentScene.openSettings === 'function') {
-                    currentScene.openSettings();
-                } else {
-                    console.warn('Settings scene navigation failed and no fallback available');
-                }
-            }
-            
-            console.log('[KeyboardShortcutManager] Settings opened via keyboard shortcut');
-        } catch (error) {
-            console.error('[KeyboardShortcutManager] Failed to open settings:', error);
-            
-            // 最終フォールバック
-            const currentScene = this.gameEngine.sceneManager.getCurrentScene();
-            if (currentScene && typeof currentScene.openSettings === 'function') {
-                currentScene.openSettings();
-            }
-        }
-    }
     
-    /**
-     * ヘルプ処理
-     * 統一されたHelpSceneを使用
-     */
-    handleHelp() {
-        try {
-            // NavigationContextManagerを使用してコンテキストを追加
-            const currentScene = this.gameEngine.sceneManager.getCurrentScene();
-            const contextData = {
-                accessMethod: 'keyboard_h',
-                sourceScene: currentScene?.constructor.name || 'unknown',
-                standard: true // 標準ヘルプモード
-            };
-            
-            // 統一されたHelpSceneに直接遷移
-            const success = this.gameEngine.sceneManager.switchScene('help', contextData);
-            
-            if (!success) {
-                // フォールバック: 従来の方法
-                if (currentScene && typeof currentScene.showControlsHelp === 'function') {
-                    currentScene.showControlsHelp();
-                } else {
-                    console.warn('Help scene navigation failed and no fallback available');
-                }
-            }
-            
-            console.log('[KeyboardShortcutManager] Help opened via keyboard shortcut');
-        } catch (error) {
-            console.error('[KeyboardShortcutManager] Failed to open help:', error);
-            
-            // 最終フォールバック
-            const currentScene = this.gameEngine.sceneManager.getCurrentScene();
-            if (currentScene && typeof currentScene.showControlsHelp === 'function') {
-                currentScene.showControlsHelp();
-            }
-        }
-    }
     
     /**
      * コンテキスト依存ヘルプ処理（F1キー）
@@ -422,14 +343,12 @@ export class CoreKeyboardShortcutManager {
             const success = this.gameEngine.sceneManager.switchScene('help', contextData);
             
             if (!success) {
-                console.warn('Contextual help navigation failed, falling back to standard help');
-                this.handleHelp(); // 標準ヘルプにフォールバック
+                console.warn('Contextual help navigation failed');
             }
             
             console.log('[KeyboardShortcutManager] Contextual help opened via F1 key');
         } catch (error) {
             console.error('[KeyboardShortcutManager] Failed to open contextual help:', error);
-            this.handleHelp(); // エラー時は標準ヘルプにフォールバック
         }
     }
     
@@ -449,26 +368,15 @@ export class CoreKeyboardShortcutManager {
             const success = this.gameEngine.sceneManager.switchScene('help', contextData);
             
             if (!success) {
-                console.warn('Documentation help navigation failed, falling back to standard help');
-                this.handleHelp(); // 標準ヘルプにフォールバック
+                console.warn('Documentation help navigation failed');
             }
             
             console.log('[KeyboardShortcutManager] Documentation help opened via Ctrl+H keys');
         } catch (error) {
             console.error('[KeyboardShortcutManager] Failed to open documentation help:', error);
-            this.handleHelp(); // エラー時は標準ヘルプにフォールバック
         }
     }
 
-    /**
-     * ユーザー情報処理
-     */
-    handleUserInfo() {
-        const currentScene = this.gameEngine.sceneManager.getCurrentScene();
-        if (currentScene && typeof currentScene.openUserInfo === 'function') {
-            currentScene.openUserInfo();
-        }
-    }
     
     /**
      * デバッグ処理
@@ -611,7 +519,7 @@ export class CoreKeyboardShortcutManager {
             
             if (['pause', 'giveUp', 'restart'].includes(name)) {
                 helpSections['ゲーム操作'].push(`${keyText}: ${description}`);
-            } else if (['menu', 'settings', 'help', 'userInfo', 'fullscreen'].includes(name)) {
+            } else if (['menu', 'fullscreen'].includes(name)) {
                 helpSections['UI操作'].push(`${keyText}: ${description}`);
             } else if (name.startsWith('accessibility') || ['highContrast', 'largeText', 'reducedMotion'].includes(name)) {
                 helpSections['アクセシビリティ'].push(`${keyText}: ${description}`);
