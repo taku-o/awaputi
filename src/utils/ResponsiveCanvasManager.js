@@ -118,8 +118,6 @@ export class ResponsiveCanvasManager {
         if (this.scaledCoordinateManager) {
             this.scaledCoordinateManager.updateScale();
         }
-        
-        console.log('Canvas resized:', this.currentSize);
     }
     
     /**

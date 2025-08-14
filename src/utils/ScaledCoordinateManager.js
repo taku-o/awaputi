@@ -191,10 +191,8 @@ export class ScaledCoordinateManager {
      */
     updateScale() {
         try {
-            // ResponsiveCanvasManagerの更新を促す
-            if (this.responsiveCanvasManager && typeof this.responsiveCanvasManager.handleResize === 'function') {
-                this.responsiveCanvasManager.handleResize();
-            }
+            // ResponsiveCanvasManagerの直接呼び出しを避けて無限ループを防ぐ
+            // ResponsiveCanvasManager自体がupdateCanvasSizeでこのメソッドを呼んでいるため
             
             // 登録されたコールバックを実行
             this.scaleChangeCallbacks.forEach(callback => {
