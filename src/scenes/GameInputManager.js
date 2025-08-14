@@ -4,6 +4,7 @@
 import { InputManager } from '../core/InputManager.js';
 import { EnhancedTouchManager } from '../core/EnhancedTouchManager.js';
 import { getBrowserCompatibility } from '../utils/BrowserCompatibility.js';
+import { InputCoordinateConverter } from '../utils/InputCoordinateConverter.js';
 
 export class GameInputManager extends InputManager {
     constructor(canvas, gameScene) {

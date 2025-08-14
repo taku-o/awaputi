@@ -106,6 +106,47 @@ tasks.mdの12段階65サブタスクに従って実装を進行：
   - InputManagerのgetPointerPosition()でoriginalEventプロパティ追加
   - GameUIManagerのhandleControlButtonClick()とupdateMousePosition()でEvent引数対応
   - 全入力処理が統一的な座標変換システムで動作
+- **14:30** 重要な座標変換不整合修正完了 - ボタン表示位置とクリック判定位置の不一致解決
+  - GameControlButtons.updateMousePosition()に座標変換ロジック追加
+  - handleClick()と同様のInputCoordinateConverter統合実装
+  - ConfirmationDialog.updateMousePosition()に一貫性のためeventパラメータ追加
+  - GameUIManagerでevent引数の適切な伝播を確保
+  - レンダリング座標とホバー/クリック検出座標の完全な統一達成
+- **14:45** 座標変換システムの根本的問題修正完了
+  - GameScene.jsでhandleControlButtonClick()呼び出し時にeventパラメータ追加
+  - ScaledCoordinateManager.getScaleFactor()で'scale'プロパティも参照するよう修正
+  - GameInputManager.jsにInputCoordinateConverterのインポート追加
+  - 座標変換が正常に動作（scaleFactor: 0.8166666666666667）
+- **15:00** ボタン位置の最終調整完了
+  - UIPositionCalculatorがスケール済み座標を返していた問題を修正
+  - ベース座標を返すように変更（GameControlButtonsの期待に合わせる）
+  - ボタンを右上端に配置（マージン5px、サイズ100x36px）
+  - すべてのデバイスタイプで右上端配置を統一
+- **15:15** コメントと実装の矛盾修正完了
+  - UIPositionCalculatorのJSDocコメント「スケーリング済み位置」→「ベース座標系の位置」に修正
+  - 全メソッドでベース座標を返す実装に統一
+  - コメントと実際の処理内容の完全な一致を達成
+
+## プロジェクト完了
+
+Issue #177「Canvas Scale UI Positioning修正」の全要件が完了しました。
+
+### 主要成果
+1. **座標変換システム構築**: ScaledCoordinateManager、UIPositionCalculator、ScaledRenderingContext、InputCoordinateConverter
+2. **UIエレメント修正**: スコア、時間、HP、コンボ表示のスケーリング対応
+3. **ボタンシステム修正**: ギブアップ・再開始ボタンの位置とクリック判定の統一
+4. **バブルインタラクション修正**: クリック・ドラッグ処理の座標変換対応
+5. **システム統合**: ResponsiveCanvasManagerとの完全統合
+
+### 解決した技術課題
+- UIエレメントの固定座標問題
+- キャンバススケーリング非対応問題
+- 座標変換不整合問題
+- レンダリング座標とクリック判定座標の不一致
+- ボタン位置の誤配置問題
+- コメントと実装の矛盾問題
+
+**結果**: 全デバイスサイズとピクセル比でUIエレメントが正しく表示・動作
 
 ## 技術メモ
 

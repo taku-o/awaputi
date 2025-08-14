@@ -169,7 +169,8 @@ export class ScaledCoordinateManager {
     getScaleFactor() {
         try {
             const canvasInfo = this.getCanvasInfo();
-            return canvasInfo.scaleFactor || 1;
+            // ResponsiveCanvasManagerは'scale'プロパティを使用するので、それを優先
+            return canvasInfo.scale || canvasInfo.scaleFactor || 1;
         } catch (error) {
             console.warn('ScaledCoordinateManager: Scale factor retrieval failed, using 1.0', error);
             return 1;

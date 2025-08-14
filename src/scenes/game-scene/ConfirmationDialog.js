@@ -189,8 +189,9 @@ export class ConfirmationDialog {
      * マウス座標の更新（ホバー状態管理用）
      * @param {number} x - X座標
      * @param {number} y - Y座標
+     * @param {Event} [event=null] - 元のイベントオブジェクト（座標変換用、将来の拡張用）
      */
-    updateMousePosition(x, y) {
+    updateMousePosition(x, y, event = null) {
         if (!this.dialogState.visible) {
             return;
         }

@@ -9,8 +9,8 @@ export class UIPositionCalculator {
         
         // デフォルトマージン（ベース座標系）
         this.defaultMargins = {
-            top: 20,
-            right: 20,
+            top: 5,  // ボタンを上端により近く
+            right: 5, // ボタンを右端により近く
             bottom: 20,
             left: 20
         };
@@ -29,7 +29,7 @@ export class UIPositionCalculator {
     /**
      * ステータス要素の位置を取得
      * @param {string} element - 要素名 ('score', 'time', 'hp')
-     * @returns {Object} {x, y} - スケーリング済み位置
+     * @returns {Object} {x, y} - ベース座標系の位置
      */
     getStatusPosition(element) {
         try {
@@ -52,8 +52,8 @@ export class UIPositionCalculator {
                     baseY = margins.top;
             }
             
-            // ベース座標をスケーリング済み座標に変換
-            return this.scaledCoordinateManager.getScaledPosition(margins.left, baseY);
+            // ベース座標をそのまま返す（他のメソッドとの一貫性のため）
+            return { x: margins.left, y: baseY };
         } catch (error) {
             console.warn('UIPositionCalculator: Status position calculation failed, using fallback', error);
             return { x: 20, y: 20 };
@@ -64,7 +64,7 @@ export class UIPositionCalculator {
      * ボタンの位置を取得
      * @param {string} buttonType - ボタンタイプ ('giveup', 'restart', etc.)
      * @param {number} index - ボタンのインデックス
-     * @returns {Object} {x, y} - スケーリング済み位置
+     * @returns {Object} {x, y} - ベース座標系の位置
      */
     getButtonPosition(buttonType, index = 0) {
         try {
@@ -72,10 +72,12 @@ export class UIPositionCalculator {
             const margins = this.getResponsiveMargins();
             
             // 右上配置（ベース座標系）
-            const baseX = canvasInfo.baseWidth - margins.right - 120; // ボタン幅を考慮
-            const baseY = margins.top + (index * 50); // ボタン間隔
+            const baseX = canvasInfo.baseWidth - margins.right - 100; // ボタン幅100pxを考慮
+            const baseY = margins.top + (index * 42); // ボタン間隔も縮小（36px + 6px余白）
             
-            return this.scaledCoordinateManager.getScaledPosition(baseX, baseY);
+            // ベース座標をそのまま返す（GameControlButtonsがスケーリングを行うため）
+            
+            return { x: baseX, y: baseY };
         } catch (error) {
             console.warn('UIPositionCalculator: Button position calculation failed, using fallback', error);
             return { x: 600, y: 20 + (index * 50) };
@@ -85,7 +87,7 @@ export class UIPositionCalculator {
     /**
      * ダイアログの位置を取得
      * @param {string} dialogType - ダイアログタイプ
-     * @returns {Object} {x, y} - スケーリング済み位置（中央配置）
+     * @returns {Object} {x, y} - ベース座標系の位置（中央配置）
      */
     getDialogPosition(dialogType) {
         try {
@@ -95,7 +97,8 @@ export class UIPositionCalculator {
             const baseX = canvasInfo.baseWidth / 2;
             const baseY = canvasInfo.baseHeight / 2;
             
-            return this.scaledCoordinateManager.getScaledPosition(baseX, baseY);
+            // ベース座標をそのまま返す（他のメソッドとの一貫性のため）
+            return { x: baseX, y: baseY };
         } catch (error) {
             console.warn('UIPositionCalculator: Dialog position calculation failed, using fallback', error);
             return { x: 400, y: 300 };
@@ -114,15 +117,15 @@ export class UIPositionCalculator {
             switch (deviceType) {
                 case 'mobile':
                     return {
-                        top: 15,
-                        right: 15,
+                        top: 5,   // すべてのデバイスで右上端配置
+                        right: 5,
                         bottom: 15,
                         left: 15
                     };
                 case 'tablet':
                     return {
-                        top: 18,
-                        right: 18,
+                        top: 5,   // すべてのデバイスで右上端配置
+                        right: 5,
                         bottom: 18,
                         left: 18
                     };
@@ -157,10 +160,10 @@ export class UIPositionCalculator {
                 } else if (element.type === 'dialog') {
                     position = this.getDialogPosition(element.name);
                 } else {
-                    // カスタム配置ロジック
+                    // カスタム配置ロジック（ベース座標）
                     const baseX = margins.left + (element.offset?.x || 0);
                     const baseY = margins.top + (element.offset?.y || 0);
-                    position = this.scaledCoordinateManager.getScaledPosition(baseX, baseY);
+                    position = { x: baseX, y: baseY };
                 }
                 
                 positions.push({
@@ -181,7 +184,7 @@ export class UIPositionCalculator {
      * @param {Object} element - 要素情報
      * @param {string} edge - 端の位置 ('top', 'right', 'bottom', 'left')
      * @param {number} margin - マージン値
-     * @returns {Object} {x, y} - スケーリング済み位置
+     * @returns {Object} {x, y} - ベース座標系の位置
      */
     alignToEdge(element, edge, margin = 20) {
         try {
@@ -211,10 +214,12 @@ export class UIPositionCalculator {
                     baseY = canvasInfo.baseHeight / 2;
             }
             
-            return this.scaledCoordinateManager.getScaledPosition(baseX, baseY);
+            // ベース座標をそのまま返す（一貫性のため）
+            return { x: baseX, y: baseY };
         } catch (error) {
             console.warn('UIPositionCalculator: Edge alignment failed, using center', error);
-            return this.scaledCoordinateManager.getScaledPosition(400, 300);
+            // フォールバック: ベース座標
+            return { x: 400, y: 300 };
         }
     }
     
@@ -222,7 +227,7 @@ export class UIPositionCalculator {
      * 要素を中央に配置
      * @param {Object} element - 要素情報
      * @param {Object} container - コンテナ情報
-     * @returns {Object} {x, y} - スケーリング済み位置
+     * @returns {Object} {x, y} - ベース座標系の位置
      */
     centerElement(element, container = null) {
         try {
@@ -237,10 +242,12 @@ export class UIPositionCalculator {
             const baseX = containerX + (containerWidth / 2);
             const baseY = containerY + (containerHeight / 2);
             
-            return this.scaledCoordinateManager.getScaledPosition(baseX, baseY);
+            // ベース座標をそのまま返す（一貫性のため）
+            return { x: baseX, y: baseY };
         } catch (error) {
             console.warn('UIPositionCalculator: Center alignment failed, using default center', error);
-            return this.scaledCoordinateManager.getScaledPosition(400, 300);
+            // フォールバック: ベース座標
+            return { x: 400, y: 300 };
         }
     }
     

@@ -149,7 +149,7 @@ export class GameUIManager {
         
         // イベントを渡して座標変換を有効化
         this.gameControlButtons.updateMousePosition(x, y, event);
-        this.confirmationDialog.updateMousePosition(x, y);
+        this.confirmationDialog.updateMousePosition(x, y, event);
     }
     
     /**

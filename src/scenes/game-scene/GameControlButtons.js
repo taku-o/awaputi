@@ -13,7 +13,7 @@ export class GameControlButtons {
         this.buttonConfig = {
             giveUp: {
                 text: 'ギブアップ',
-                size: { width: 120, height: 44 },  // モバイル最適化：タッチフレンドリーサイズ
+                size: { width: 100, height: 36 },  // 右上端配置用にコンパクト化
                 style: {
                     backgroundColor: '#FF6B6B',
                     textColor: '#FFFFFF',
@@ -24,7 +24,7 @@ export class GameControlButtons {
             },
             restart: {
                 text: 'ゲーム再開始',
-                size: { width: 120, height: 44 },  // モバイル最適化：タッチフレンドリーサイズ
+                size: { width: 100, height: 36 },  // 右上端配置用にコンパクト化
                 style: {
                     backgroundColor: '#4CAF50',
                     textColor: '#FFFFFF',
@@ -120,12 +120,10 @@ export class GameControlButtons {
                 const giveUpPosition = this.uiPositionCalculator.getButtonPosition('giveup', 0);
                 const restartPosition = this.uiPositionCalculator.getButtonPosition('restart', 1);
                 
-                // ベース座標系に戻す（ボタンレンダリングで使用するため）
-                const giveUpBase = this.scaledCoordinateManager.getBasePosition(giveUpPosition.x, giveUpPosition.y);
-                const restartBase = this.scaledCoordinateManager.getBasePosition(restartPosition.x, restartPosition.y);
-                
-                this.buttonConfig.giveUp.position = giveUpBase;
-                this.buttonConfig.restart.position = restartBase;
+                // UIPositionCalculatorはすでにベース座標系で計算されているので、
+                // 追加の変換は不要。直接使用する。
+                this.buttonConfig.giveUp.position = giveUpPosition;
+                this.buttonConfig.restart.position = restartPosition;
             } else {
                 // フォールバック: 既存のResponsiveCanvasManager実装
                 const canvas = this.gameEngine.canvas;
@@ -398,8 +396,9 @@ export class GameControlButtons {
      * マウス座標の更新（ホバー状態管理用）
      * @param {number} x - X座標
      * @param {number} y - Y座標
+     * @param {Event} [event=null] - 元のイベントオブジェクト（座標変換用）
      */
-    updateMousePosition(x, y) {
+    updateMousePosition(x, y, event = null) {
         this.buttonState.lastMousePosition = { x, y };
         
         if (!this.buttonState.enabled) {
@@ -407,12 +406,35 @@ export class GameControlButtons {
             return;
         }
         
-        // ホバー状態の更新（表示されているボタンのみ）
-        this.buttonState.hoveredButton = null;
-        if (this.isButtonVisible('giveUp') && this.isButtonClicked(x, y, 'giveUp')) {
-            this.buttonState.hoveredButton = 'giveUp';
-        } else if (this.isButtonVisible('restart') && this.isButtonClicked(x, y, 'restart')) {
-            this.buttonState.hoveredButton = 'restart';
+        try {
+            let convertedCoords = { x, y };
+            
+            // InputCoordinateConverterが利用可能な場合は座標変換を実行
+            // クリック検出と同じ座標システムを使用することで一貫性を保つ
+            if (this.inputCoordinateConverter && event) {
+                if (event.type && event.type.includes('touch')) {
+                    convertedCoords = this.inputCoordinateConverter.convertTouchEvent(event);
+                } else {
+                    convertedCoords = this.inputCoordinateConverter.convertMouseEvent(event);
+                }
+            }
+            
+            // ホバー状態の更新（表示されているボタンのみ、変換された座標を使用）
+            this.buttonState.hoveredButton = null;
+            if (this.isButtonVisible('giveUp') && this.isButtonClicked(convertedCoords.x, convertedCoords.y, 'giveUp')) {
+                this.buttonState.hoveredButton = 'giveUp';
+            } else if (this.isButtonVisible('restart') && this.isButtonClicked(convertedCoords.x, convertedCoords.y, 'restart')) {
+                this.buttonState.hoveredButton = 'restart';
+            }
+        } catch (error) {
+            console.warn('GameControlButtons: Mouse position update failed, using fallback', error);
+            // フォールバック: 元の座標でテスト
+            this.buttonState.hoveredButton = null;
+            if (this.isButtonVisible('giveUp') && this.isButtonClicked(x, y, 'giveUp')) {
+                this.buttonState.hoveredButton = 'giveUp';
+            } else if (this.isButtonVisible('restart') && this.isButtonClicked(x, y, 'restart')) {
+                this.buttonState.hoveredButton = 'restart';
+            }
         }
     }
     
