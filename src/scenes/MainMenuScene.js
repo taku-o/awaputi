@@ -27,6 +27,7 @@ export class MainMenuScene extends Scene {
         this.selectedMenuIndex = 0;
         this.menuItems = [
             { id: 'start', key: 'menu.start', action: () => this.startGame() },
+            { id: 'shop', key: 'menu.shop', action: () => this.openShop() },
             { id: 'settings', key: 'menu.settings', action: () => this.openSettings() },
             { id: 'userInfo', key: 'menu.userInfo', action: () => this.openUserInfo() },
             { id: 'help', key: 'menu.help', action: () => this.openHelp() }
@@ -387,6 +388,23 @@ export class MainMenuScene extends Scene {
      */
     openUserInfo() {
         this.showingUserInfo = true;
+    }
+    
+    /**
+     * ショップ画面を開く
+     */
+    openShop() {
+        try {
+            const success = this.gameEngine.sceneManager.switchScene('shop');
+            if (!success) {
+                console.error('[MainMenuScene] Failed to switch to shop scene');
+                // フォールバック: エラーメッセージ表示
+            }
+        } catch (error) {
+            this.errorHandler.handleError(error, {
+                context: 'MainMenuScene.openShop'
+            });
+        }
     }
     
     /**
