@@ -87,7 +87,7 @@ export class HelpEventManager {
         this.hiddenInput.type = 'text';
         this.hiddenInput.style.position = 'fixed';
         this.hiddenInput.style.left = '50px';
-        this.hiddenInput.style.top = '30px';
+        this.hiddenInput.style.top = '60px';  // タイトルの下に配置
         this.hiddenInput.style.width = '720px';
         this.hiddenInput.style.height = '40px';
         this.hiddenInput.style.fontSize = '16px';
@@ -141,6 +141,9 @@ export class HelpEventManager {
             this.hiddenInput.style.borderColor = '#ccc';
             this.hiddenInput.style.boxShadow = 'none';
         });
+        
+        // 初期状態では非表示
+        this.hiddenInput.style.display = 'none';
         
         console.log('HelpEventManager: appending hidden input to document.body');
         document.body.appendChild(this.hiddenInput);
@@ -466,6 +469,8 @@ export class HelpEventManager {
             if (this.hiddenInput) {
                 this.hiddenInput.value = '';
                 this.hiddenInput.blur();
+                // 検索終了時は入力フィールドを一時的に隠す
+                this.hiddenInput.style.display = 'none';
             }
             
             this.contentManager.performSearch('');
@@ -491,6 +496,8 @@ export class HelpEventManager {
         // 隠し入力フィールドにフォーカスを当ててIMEを有効化
         if (this.hiddenInput) {
             console.log('HelpEventManager: focusing hidden input');
+            // 検索フィールドを表示
+            this.hiddenInput.style.display = 'block';
             this.hiddenInput.value = this.currentSearchQuery || '';
             this.hiddenInput.focus();
             // カーソルを最後に移動
@@ -565,12 +572,12 @@ export class HelpEventManager {
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
 
-        // 検索バークリック処理
-        if (this.isPointInSearchBar(x, y)) {
-            event.preventDefault();
-            this.focusSearchBar();
-            return;
-        }
+        // 検索バークリック処理（HTML input要素を直接クリックするので不要）
+        // if (this.isPointInSearchBar(x, y)) {
+        //     event.preventDefault();
+        //     this.focusSearchBar();
+        //     return;
+        // }
 
         // 入力フィールド外をクリックした場合
         if (this.searchFocused && event.target !== this.hiddenInput) {
@@ -716,9 +723,9 @@ export class HelpEventManager {
     getLayout() {
         // レンダラーからレイアウトを取得（仮実装）
         return {
-            searchBar: { x: 50, y: 30, width: 720, height: 40 },
-            sidebar: { x: 50, y: 80, width: 250, height: 400 },
-            content: { x: 320, y: 80, width: 450, height: 400 },
+            searchBar: { x: 50, y: 60, width: 720, height: 40 },  // タイトルの下に配置
+            sidebar: { x: 50, y: 110, width: 250, height: 370 },  // 検索バーの下に配置
+            content: { x: 320, y: 110, width: 450, height: 370 },
             backButton: { x: 50, y: 500, width: 100, height: 40 }
         };
     }

@@ -15,19 +15,19 @@ export class HelpRenderer {
         this.layout = {
             sidebar: {
                 x: 50,
-                y: 80,
+                y: 110,  // 検索バーの下に配置
                 width: 250,
-                height: 400
+                height: 370  // 高さ調整
             },
             content: {
                 x: 320,
-                y: 80,
+                y: 110,  // 検索バーの下に配置
                 width: 450,
-                height: 400
+                height: 370  // 高さ調整
             },
             searchBar: {
                 x: 50,
-                y: 30,
+                y: 60,  // タイトルの下に配置
                 width: 720,
                 height: 40
             },
@@ -77,8 +77,8 @@ export class HelpRenderer {
             // タイトル描画
             this.renderTitle(ctx);
 
-            // 検索バー描画
-            this.renderSearchBar(ctx, state.searchQuery, accessibilityManager.getCurrentFocusIndex() === 0);
+            // 検索バー描画（HTML input要素を使用するため、Canvas描画は無効化）
+            // this.renderSearchBar(ctx, state.searchQuery, accessibilityManager.getCurrentFocusIndex() === 0);
 
             // サイドバー描画
             this.renderSidebar(ctx, state, accessibilityManager.getCurrentFocusIndex() === 1, animationManager);
