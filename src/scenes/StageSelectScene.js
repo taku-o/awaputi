@@ -71,8 +71,6 @@ export class StageSelectScene extends Scene {
         // 通常ステージリスト（ステージ選択データマネージャーに委譲）
         this.stageSelectDataManager.renderStageList(context);
         
-        // ショップボタン（ステージ選択データマネージャーに委譲）
-        this.stageSelectDataManager.renderShopButton(context);
         
         // 操作説明（ステージ選択データマネージャーに委譲）
         this.stageSelectDataManager.renderControls(context);
@@ -116,10 +114,6 @@ export class StageSelectScene extends Scene {
             return;
         }
         
-        // ショップボタンのクリック判定
-        if (this.stageSelectDataManager.handleShopButtonClick(x, y)) {
-            return;
-        }
         
         // イベントステージのクリック判定
         const eventSectionY = 120;

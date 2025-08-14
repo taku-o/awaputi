@@ -221,37 +221,6 @@ export class StageSelectDataManager {
     }
 
     /**
-     * ショップボタンを描画
-     */
-    renderShopButton(context) {
-        const canvas = this.gameEngine.canvas;
-        const buttonWidth = 120;
-        const buttonHeight = 40;
-        const buttonX = canvas.width - buttonWidth - 20;
-        const buttonY = 70;
-        
-        context.save();
-        
-        // ボタン背景
-        context.fillStyle = '#0066CC';
-        context.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
-        
-        // ボタン枠線
-        context.strokeStyle = '#FFFFFF';
-        context.lineWidth = 2;
-        context.strokeRect(buttonX, buttonY, buttonWidth, buttonHeight);
-        
-        // ボタンテキスト
-        context.fillStyle = '#FFFFFF';
-        context.font = 'bold 16px Arial';
-        context.textAlign = 'center';
-        context.textBaseline = 'middle';
-        context.fillText('ショップ (S)', buttonX + buttonWidth / 2, buttonY + buttonHeight / 2);
-        
-        context.restore();
-    }
-
-    /**
      * 操作説明を描画
      */
     renderControls(context) {
@@ -264,28 +233,10 @@ export class StageSelectDataManager {
         context.textBaseline = 'bottom';
         
         const controlsY = canvas.height - 40;
-        context.fillText('↑↓: 選択  Enter: 決定  S: ショップ  H: ヘルプ  ESC: 戻る', canvas.width / 2, controlsY);
+        context.fillText('↑↓: 選択  Enter: 決定  H: ヘルプ  ESC: 戻る', canvas.width / 2, controlsY);
         context.fillText('クリックでも操作できます', canvas.width / 2, controlsY + 20);
         
         context.restore();
-    }
-
-    /**
-     * ショップボタンクリック処理
-     */
-    handleShopButtonClick(x, y) {
-        const canvas = this.gameEngine.canvas;
-        const buttonWidth = 120;
-        const buttonHeight = 40;
-        const buttonX = canvas.width - buttonWidth - 20;
-        const buttonY = 70;
-        
-        if (x >= buttonX && x <= buttonX + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight) {
-            this.stageSelectScene.sceneManager.switchScene('shop');
-            return true;
-        }
-        
-        return false;
     }
 
     /**
@@ -326,9 +277,6 @@ export class StageSelectDataManager {
                 return true;
             case 'Enter':
                 this.selectStage();
-                return true;
-            case 'KeyS':
-                this.stageSelectScene.sceneManager.switchScene('shop');
                 return true;
             default:
                 return false;
