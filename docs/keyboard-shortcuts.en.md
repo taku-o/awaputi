@@ -39,10 +39,10 @@ For Arabic and Hebrew languages, navigation keys are automatically adjusted:
 |-----|----------|-------------|
 | **Space** | Pause/Resume Game | Pauses or resumes the game during gameplay |
 | **Escape** | Return to Menu/Close Screen | Returns to main menu during game or closes settings screens |
+| **F11** | Toggle Fullscreen | Toggles between fullscreen and windowed mode |
 
 ### 🆕 Settings Screen UI Features
 The following functions are available through settings screen UI buttons:
-- **Toggle Fullscreen**: Available in General Settings category
 - **Toggle Audio Mute**: Available in General Settings category
 
 ### 🎮 Game Control Features

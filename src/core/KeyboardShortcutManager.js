@@ -27,6 +27,7 @@ export class CoreKeyboardShortcutManager {
         this.addShortcut('menu', ['Escape'], () => this.handleMenu());
         
         // UI操作
+        this.addShortcut('fullscreen', ['F11'], () => this.handleFullscreen());
         this.addShortcut('contextualHelp', ['F1'], () => this.handleContextualHelp());
         this.addShortcut('documentationHelp', ['ControlLeft+KeyH'], () => this.handleDocumentationHelp());
         
@@ -39,10 +40,11 @@ export class CoreKeyboardShortcutManager {
         // Give UpとRestartはゲーム画面のUIボタンから利用可能です
         
         // 注記: 以下の機能は設定画面のUIから利用できます（Issue #170）
-        // - フルスクリーン切り替え（元Fキー）
         // - 音声ミュート（元Mキー）
         // - 音量調整（元Ctrl+↑/↓キー）
         // - アクセシビリティ機能（元Ctrl+Alt+H/T/Mキー）
+        // 
+        // フルスクリーン機能はF11キーで復活しました
     }
     
     /**
@@ -295,8 +297,23 @@ export class CoreKeyboardShortcutManager {
         }
     }
     
-    // handleFullscreen() と handleMute() メソッドは削除されました（Issue #170）
-    // これらの機能は設定画面のUIから利用できます
+    /**
+     * フルスクリーン切り替え処理（F11キー）
+     */
+    handleFullscreen() {
+        try {
+            if (this.gameEngine && this.gameEngine.responsiveCanvasManager) {
+                this.gameEngine.responsiveCanvasManager.toggleFullscreen();
+            } else {
+                console.warn('[KeyboardShortcutManager] ResponsiveCanvasManager not available');
+            }
+        } catch (error) {
+            console.error('[KeyboardShortcutManager] Error toggling fullscreen:', error);
+        }
+    }
+    
+    // handleMute() メソッドは削除されました（Issue #170）
+    // 音声ミュート機能は設定画面のUIから利用できます
     
     
     

@@ -67,7 +67,6 @@ export class SettingsScene extends Scene {
                     { value: 'high', label: '高' },
                     { value: 'auto', label: '自動' }
                 ]},
-                { key: 'display.fullscreen', label: 'フルスクリーン', type: 'toggle', description: 'フルスクリーンモードを有効にします' },
                 { key: 'audio.muted', label: '音声ミュート', type: 'toggle', description: 'すべての音声をミュートにします' },
                 { key: 'audio.masterVolume', label: 'マスター音量', type: 'custom', component: 'VolumeControlComponent', description: '音量を調整します' },
                 { key: 'audio.sfxVolume', label: '効果音音量', type: 'slider', min: 0, max: 1, step: 0.1 },
@@ -468,10 +467,7 @@ export class SettingsScene extends Scene {
         }
 
         let currentValue;
-        if (item.key === 'display.fullscreen') {
-            // フルスクリーン状態を実際のDOM状態から取得
-            currentValue = !!document.fullscreenElement;
-        } else if (item.key === 'audio.muted') {
+        if (item.key === 'audio.muted') {
             // ミュート状態をAudioManagerから取得
             currentValue = this.gameEngine.audioManager ? this.gameEngine.audioManager.isMuted() : false;
         } else {
@@ -1053,9 +1049,7 @@ export class SettingsScene extends Scene {
             switch (item.type) {
                 case 'toggle':
                     // 特別な処理が必要な設定項目
-                    if (item.key === 'display.fullscreen') {
-                        this.handleFullscreenToggle();
-                    } else if (item.key === 'audio.muted') {
+                    if (item.key === 'audio.muted') {
                         this.handleAudioMuteToggle();
                     } else {
                         this.gameEngine.settingsManager.set(item.key, !currentValue);
@@ -1219,27 +1213,6 @@ export class SettingsScene extends Scene {
             console.log('[SettingsScene] 設定を保存しました');
         } catch (error) {
             console.error('[SettingsScene] 設定保存エラー:', error);
-        }
-    }
-    
-    /**
-     * フルスクリーン切り替え処理
-     */
-    handleFullscreenToggle() {
-        try {
-            if (this.gameEngine.responsiveCanvasManager) {
-                this.gameEngine.responsiveCanvasManager.toggleFullscreen();
-                
-                // フルスクリーン状態を設定に保存
-                const isFullscreen = !!document.fullscreenElement;
-                this.gameEngine.settingsManager.set('display.fullscreen', isFullscreen);
-                
-                console.log(`[SettingsScene] Fullscreen toggled: ${isFullscreen}`);
-                this.loggingSystem.info('SettingsScene', `Fullscreen toggled: ${isFullscreen}`);
-            }
-        } catch (error) {
-            console.error('[SettingsScene] Error toggling fullscreen:', error);
-            this.loggingSystem.error('SettingsScene', 'Fullscreen toggle error', error);
         }
     }
     
