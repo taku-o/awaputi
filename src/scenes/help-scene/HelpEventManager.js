@@ -98,6 +98,8 @@ export class HelpEventManager {
         this.hiddenInput.style.color = '#333';
         this.hiddenInput.style.zIndex = '1000';
         this.hiddenInput.style.fontFamily = 'Arial, sans-serif';
+        this.hiddenInput.style.transition = 'border-color 0.3s, box-shadow 0.3s';
+        this.hiddenInput.style.outline = 'none';
         this.hiddenInput.placeholder = '検索...';
         this.hiddenInput.autocomplete = 'off';
         this.hiddenInput.autocorrect = 'off';
@@ -128,10 +130,16 @@ export class HelpEventManager {
         this.hiddenInput.addEventListener('focus', () => {
             console.log('HelpEventManager: input focused');
             this.searchFocused = true;
+            // フォーカス時のスタイル
+            this.hiddenInput.style.borderColor = '#4A90E2';
+            this.hiddenInput.style.boxShadow = '0 0 0 3px rgba(74, 144, 226, 0.3)';
         });
         this.hiddenInput.addEventListener('blur', () => {
             console.log('HelpEventManager: input blurred');
             this.searchFocused = false;
+            // ブラー時のスタイル
+            this.hiddenInput.style.borderColor = '#ccc';
+            this.hiddenInput.style.boxShadow = 'none';
         });
         
         console.log('HelpEventManager: appending hidden input to document.body');
@@ -220,6 +228,26 @@ export class HelpEventManager {
 
         // 検索バーがフォーカスされている場合の特別処理
         if (this.searchFocused) {
+            // 矢印キーは検索バー内のカーソル移動に使用
+            if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
+                // デフォルトの動作を許可（カーソル移動）
+                return;
+            }
+            
+            // Enterキーで検索実行
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                this.executeSearch();
+                return;
+            }
+            
+            // Escapeキーで検索終了
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                this.goBack();
+                return;
+            }
+            
             // 制御キーとファンクションキー以外はテキスト入力として処理
             if (event.key === 'Backspace' || event.key === 'Delete' || 
                 (event.key.length === 1 && !event.ctrlKey && !event.altKey && !event.metaKey)) {
@@ -307,6 +335,18 @@ export class HelpEventManager {
     }
 
     /**
+     * 検索実行
+     */
+    executeSearch() {
+        if (this.hiddenInput && this.hiddenInput.value.trim()) {
+            console.log('HelpEventManager: executing search for:', this.hiddenInput.value);
+            // 検索結果にフォーカスを移動
+            this.searchFocused = false;
+            this.hiddenInput.blur();
+        }
+    }
+
+    /**
      * ナビゲーション変更のアナウンス
      */
     announceNavigationChange(key) {
@@ -384,11 +424,23 @@ export class HelpEventManager {
     async selectCurrentItem() {
         const state = this.contentManager.getState();
         
+        console.log('HelpEventManager: selectCurrentItem - isSearching:', state.isSearching, 'searchResults:', state.searchResults.length);
+        
         if (state.isSearching && state.searchResults.length > 0) {
             // 検索結果から選択
+            console.log('HelpEventManager: selecting search result at index:', state.selectedTopicIndex);
             const result = await this.contentManager.selectSearchResult(state.selectedTopicIndex);
-            if (result && this.animationManager) {
-                this.animationManager.startContentTransition(result.newContent, 'fade');
+            if (result) {
+                console.log('HelpEventManager: search result selected successfully');
+                if (this.animationManager) {
+                    this.animationManager.startContentTransition(result.newContent, 'fade');
+                }
+                // 検索終了
+                this.searchFocused = false;
+                this.currentSearchQuery = '';
+                if (this.hiddenInput) {
+                    this.hiddenInput.value = '';
+                }
             }
         } else {
             // 通常のトピック選択
@@ -515,8 +567,14 @@ export class HelpEventManager {
 
         // 検索バークリック処理
         if (this.isPointInSearchBar(x, y)) {
+            event.preventDefault();
             this.focusSearchBar();
             return;
+        }
+
+        // 入力フィールド外をクリックした場合
+        if (this.searchFocused && event.target !== this.hiddenInput) {
+            this.hiddenInput.blur();
         }
 
         // サイドバークリック処理

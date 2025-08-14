@@ -294,6 +294,11 @@ export class HelpContentManager {
 
         const result = this.searchResults[index];
         if (result) {
+            // 検索モードを終了
+            this.isSearching = false;
+            this.searchQuery = '';
+            this.searchResults = [];
+            
             // カテゴリとトピックを設定
             await this.selectCategory(result.categoryId);
             const topicIndex = this.categories
