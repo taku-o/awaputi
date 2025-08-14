@@ -47,20 +47,28 @@ export class GameControlButtons {
      */
     updateButtonPositions() {
         const canvas = this.gameEngine.canvas;
-        const margin = 20;
+        const margin = 10;
         const buttonSpacing = 10;
         
-        // Give Upボタン位置（右上角）
+        // デバッグ用ログ
+        console.log('Canvas dimensions:', canvas.width, 'x', canvas.height);
+        
+        // Give Upボタン位置（左上角に変更してテスト）
         this.buttonConfig.giveUp.position = {
-            x: canvas.width - this.buttonConfig.giveUp.size.width - margin,
-            y: margin
+            x: margin,
+            y: margin + 80  // スコア表示の下に配置
         };
         
         // Restartボタン位置（Give Upボタンの下）
         this.buttonConfig.restart.position = {
-            x: canvas.width - this.buttonConfig.restart.size.width - margin,
-            y: margin + this.buttonConfig.giveUp.size.height + buttonSpacing
+            x: margin,
+            y: margin + 80 + this.buttonConfig.giveUp.size.height + buttonSpacing
         };
+        
+        console.log('Button positions:', {
+            giveUp: this.buttonConfig.giveUp.position,
+            restart: this.buttonConfig.restart.position
+        });
     }
     
     /**
@@ -156,7 +164,10 @@ export class GameControlButtons {
      * @param {CanvasRenderingContext2D} context - 描画コンテキスト
      */
     render(context) {
+        console.log('GameControlButtons.render called, enabled:', this.buttonState.enabled);
+        
         if (!this.buttonState.enabled) {
+            console.log('Buttons disabled, skipping render');
             return;
         }
         
@@ -166,12 +177,15 @@ export class GameControlButtons {
         context.save();
         
         // Give Upボタンの描画
+        console.log('Rendering Give Up button');
         this.renderButton(context, 'giveUp');
         
         // Restartボタンの描画
+        console.log('Rendering Restart button');
         this.renderButton(context, 'restart');
         
         context.restore();
+        console.log('GameControlButtons.render completed');
     }
     
     /**
