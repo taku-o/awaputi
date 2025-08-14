@@ -19,6 +19,10 @@ export class HelpEventManager {
         this.boundClickHandler = null;
         this.boundContextMenuHandler = null;
         
+        // IME対応のための隠し入力フィールド
+        this.hiddenInput = null;
+        this.boundInputHandler = null;
+        
         // キーボードショートカット
         this.keyboardHandlers = {
             'ArrowUp': () => this.navigateUp(),
@@ -55,12 +59,72 @@ export class HelpEventManager {
         this.boundKeyHandler = (event) => this.handleKeyPress(event);
         this.boundClickHandler = (event) => this.handleClick(event);
         this.boundContextMenuHandler = (event) => this.handleContextMenu(event);
-        this.boundKeyPressHandler = (event) => this.handleTextInput(event);
+        
+        // IME対応の隠し入力フィールドを作成
+        this.createHiddenInput();
         
         document.addEventListener('keydown', this.boundKeyHandler);
-        document.addEventListener('keypress', this.boundKeyPressHandler);
         document.addEventListener('click', this.boundClickHandler);
         document.addEventListener('contextmenu', this.boundContextMenuHandler);
+    }
+    
+    /**
+     * IME対応の隠し入力フィールドを作成
+     */
+    createHiddenInput() {
+        if (this.hiddenInput) {
+            return; // 既に作成済み
+        }
+        
+        this.hiddenInput = document.createElement('input');
+        this.hiddenInput.type = 'text';
+        this.hiddenInput.style.position = 'absolute';
+        this.hiddenInput.style.left = '-9999px';
+        this.hiddenInput.style.top = '-9999px';
+        this.hiddenInput.style.opacity = '0';
+        this.hiddenInput.style.pointerEvents = 'none';
+        this.hiddenInput.style.zIndex = '-1';
+        this.hiddenInput.autocomplete = 'off';
+        this.hiddenInput.autocorrect = 'off';
+        this.hiddenInput.autocapitalize = 'off';
+        this.hiddenInput.spellcheck = false;
+        
+        // 入力イベントハンドラーを設定
+        this.boundInputHandler = (event) => this.handleIMEInput(event);
+        this.hiddenInput.addEventListener('input', this.boundInputHandler);
+        this.hiddenInput.addEventListener('compositionstart', () => {
+            this.isComposing = true;
+        });
+        this.hiddenInput.addEventListener('compositionend', () => {
+            this.isComposing = false;
+        });
+        
+        document.body.appendChild(this.hiddenInput);
+    }
+    
+    /**
+     * IME入力の処理
+     */
+    handleIMEInput(event) {
+        if (!this.searchFocused) {
+            return;
+        }
+        
+        try {
+            const newQuery = event.target.value;
+            this.currentSearchQuery = newQuery;
+            
+            // 検索実行（デバウンス付き）
+            this.debounceSearch(newQuery);
+            
+            // 状態更新通知
+            if (this.contentManager) {
+                this.contentManager.setSearchQuery(newQuery);
+            }
+            
+        } catch (error) {
+            console.error('Error handling IME input:', error);
+        }
     }
 
     /**
@@ -72,11 +136,6 @@ export class HelpEventManager {
             this.boundKeyHandler = null;
         }
         
-        if (this.boundKeyPressHandler) {
-            document.removeEventListener('keypress', this.boundKeyPressHandler);
-            this.boundKeyPressHandler = null;
-        }
-        
         if (this.boundClickHandler) {
             document.removeEventListener('click', this.boundClickHandler);
             this.boundClickHandler = null;
@@ -85,6 +144,19 @@ export class HelpEventManager {
         if (this.boundContextMenuHandler) {
             document.removeEventListener('contextmenu', this.boundContextMenuHandler);
             this.boundContextMenuHandler = null;
+        }
+        
+        // 隠し入力フィールドのクリーンアップ
+        if (this.hiddenInput) {
+            if (this.boundInputHandler) {
+                this.hiddenInput.removeEventListener('input', this.boundInputHandler);
+                this.boundInputHandler = null;
+            }
+            
+            if (this.hiddenInput.parentNode) {
+                this.hiddenInput.parentNode.removeChild(this.hiddenInput);
+            }
+            this.hiddenInput = null;
         }
     }
 
@@ -288,6 +360,15 @@ export class HelpEventManager {
         
         if (state.isSearching) {
             // 検索モードを終了
+            this.searchFocused = false;
+            this.currentSearchQuery = '';
+            
+            // 隠し入力フィールドをクリア
+            if (this.hiddenInput) {
+                this.hiddenInput.value = '';
+                this.hiddenInput.blur();
+            }
+            
             this.contentManager.performSearch('');
             if (this.animationManager) {
                 this.animationManager.startSearchTransition(false);
@@ -306,6 +387,12 @@ export class HelpEventManager {
     focusSearchBar() {
         this.searchFocused = true;
         this.accessibilityManager.setFocusIndex(0); // 検索バーのインデックス
+        
+        // 隠し入力フィールドにフォーカスを当ててIMEを有効化
+        if (this.hiddenInput) {
+            this.hiddenInput.focus();
+            this.hiddenInput.value = this.currentSearchQuery || '';
+        }
         
         if (this.callbacks.onSearchFocus) {
             this.callbacks.onSearchFocus();
