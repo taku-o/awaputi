@@ -558,6 +558,22 @@ export class HelpAnalytics {
             this.loggingSystem.error('HelpAnalytics', 'Failed to record topic feedback', error);
         }
     }
+
+    /**
+     * 検索クエリを記録
+     * @param {string} query - 検索クエリ
+     * @param {number} resultCount - 検索結果数
+     */
+    recordSearchQuery(query, resultCount = 0) {
+        try {
+            // 既存のtrackSearchQueryメソッドを内部的に呼び出し
+            this.trackSearchQuery(query, [], resultCount);
+            
+            this.loggingSystem.debug('HelpAnalytics', `Search query recorded: "${query}" (${resultCount} results)`);
+        } catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to record search query', error);
+        }
+    }
     
     /**
      * イベントの追跡
