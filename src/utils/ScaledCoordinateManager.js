@@ -12,6 +12,12 @@ export class ScaledCoordinateManager {
         this.baseWidth = 800;
         this.baseHeight = 600;
         
+        // パフォーマンス最適化: 座標変換キャッシュ
+        this.coordinateCache = new Map();
+        this.sizeCache = new Map();
+        this.cacheMaxSize = 1000;
+        this.lastScaleFactor = null;
+        
         this.setupEventListeners();
     }
     
@@ -23,16 +29,38 @@ export class ScaledCoordinateManager {
      */
     getScaledPosition(baseX, baseY) {
         try {
-            if (this.responsiveCanvasManager && this.responsiveCanvasManager.getScaledCoordinates) {
-                return this.responsiveCanvasManager.getScaledCoordinates(baseX, baseY);
+            // キャッシュキーを生成
+            const cacheKey = `${baseX},${baseY}`;
+            const currentScaleFactor = this.getScaleFactor();
+            
+            // スケールファクターが変更された場合、キャッシュをクリア
+            if (this.lastScaleFactor !== currentScaleFactor) {
+                this.coordinateCache.clear();
+                this.lastScaleFactor = currentScaleFactor;
             }
             
-            // フォールバック: スケール係数を直接計算
-            const scaleFactor = this.getScaleFactor();
-            return {
-                x: baseX * scaleFactor,
-                y: baseY * scaleFactor
-            };
+            // キャッシュから結果を確認
+            if (this.coordinateCache.has(cacheKey)) {
+                return this.coordinateCache.get(cacheKey);
+            }
+            
+            let result;
+            if (this.responsiveCanvasManager && this.responsiveCanvasManager.getScaledCoordinates) {
+                result = this.responsiveCanvasManager.getScaledCoordinates(baseX, baseY);
+            } else {
+                // フォールバック: スケール係数を直接計算
+                result = {
+                    x: baseX * currentScaleFactor,
+                    y: baseY * currentScaleFactor
+                };
+            }
+            
+            // 結果をキャッシュに保存（サイズ制限を考慮）
+            if (this.coordinateCache.size < this.cacheMaxSize) {
+                this.coordinateCache.set(cacheKey, result);
+            }
+            
+            return result;
         } catch (error) {
             console.warn('ScaledCoordinateManager: Position conversion failed, using base coordinates', error);
             return { x: baseX, y: baseY };
@@ -47,16 +75,37 @@ export class ScaledCoordinateManager {
      */
     getScaledSize(baseWidth, baseHeight) {
         try {
-            if (this.responsiveCanvasManager && this.responsiveCanvasManager.getScaledSize) {
-                return this.responsiveCanvasManager.getScaledSize(baseWidth, baseHeight);
+            // キャッシュキーを生成
+            const cacheKey = `${baseWidth}x${baseHeight}`;
+            const currentScaleFactor = this.getScaleFactor();
+            
+            // スケールファクターが変更された場合、キャッシュをクリア
+            if (this.lastScaleFactor !== currentScaleFactor) {
+                this.sizeCache.clear();
             }
             
-            // フォールバック: スケール係数を直接計算
-            const scaleFactor = this.getScaleFactor();
-            return {
-                width: baseWidth * scaleFactor,
-                height: baseHeight * scaleFactor
-            };
+            // キャッシュから結果を確認
+            if (this.sizeCache.has(cacheKey)) {
+                return this.sizeCache.get(cacheKey);
+            }
+            
+            let result;
+            if (this.responsiveCanvasManager && this.responsiveCanvasManager.getScaledSize) {
+                result = this.responsiveCanvasManager.getScaledSize(baseWidth, baseHeight);
+            } else {
+                // フォールバック: スケール係数を直接計算
+                result = {
+                    width: baseWidth * currentScaleFactor,
+                    height: baseHeight * currentScaleFactor
+                };
+            }
+            
+            // 結果をキャッシュに保存（サイズ制限を考慮）
+            if (this.sizeCache.size < this.cacheMaxSize) {
+                this.sizeCache.set(cacheKey, result);
+            }
+            
+            return result;
         } catch (error) {
             console.warn('ScaledCoordinateManager: Size conversion failed, using base size', error);
             return { width: baseWidth, height: baseHeight };
