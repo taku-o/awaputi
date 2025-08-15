@@ -431,15 +431,20 @@ export class HelpRenderer {
                 this.roundRect(ctx, contentArea.x + 10, currentY - 5, contentArea.width - 20, itemHeight, 4, true);
             }
             
+            // SearchEngineの結果構造に対応
+            const resultData = result.content || result;
+            const title = resultData.title || result.title || 'Untitled';
+            const categoryName = resultData.categoryName || result.categoryName || resultData.category || 'Unknown';
+            
             // 結果タイトル
             ctx.fillStyle = isSelected ? this.colors.text : this.colors.textSecondary;
             ctx.font = `${isSelected ? 'bold ' : ''}${this.fontSizes.normal}px Arial, sans-serif`;
-            ctx.fillText(result.title, contentArea.x + 20, currentY + 5);
+            ctx.fillText(title, contentArea.x + 20, currentY + 5);
             
             // カテゴリ情報
             ctx.fillStyle = this.colors.textSecondary;
             ctx.font = `${this.fontSizes.small}px Arial, sans-serif`;
-            ctx.fillText(`カテゴリ: ${result.categoryName}`, contentArea.x + 20, currentY + 25);
+            ctx.fillText(`カテゴリ: ${categoryName}`, contentArea.x + 20, currentY + 25);
             
             currentY += itemHeight + 5;
             

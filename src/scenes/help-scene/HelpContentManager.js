@@ -62,6 +62,9 @@ export class HelpContentManager {
             // 検索インデックスの構築
             if (this.searchEngine) {
                 await this.searchEngine.buildIndex();
+                
+                // ヘルプコンテンツをインデックスに追加
+                await this.indexHelpContentForSearch();
             }
             
             console.log('HelpContentManager initialized successfully');
@@ -87,6 +90,65 @@ export class HelpContentManager {
             
         } catch (error) {
             console.warn('Some analytics systems failed to initialize:', error);
+        }
+    }
+
+    /**
+     * ヘルプコンテンツを検索エンジンにインデックス
+     */
+    async indexHelpContentForSearch() {
+        if (!this.searchEngine) {
+            return;
+        }
+
+        try {\n            console.log('Indexing help content for search...');\n            
+            // 全カテゴリのトピックを収集してインデックス化
+            const allContent = [];
+            
+            for (const category of this.categories) {
+                for (const topic of category.topics) {
+                    try {
+                        // トピックの詳細コンテンツを取得
+                        let content = null;
+                        if (this.helpManager) {
+                            content = await this.helpManager.getTopicContent(topic.id);
+                        }
+                        
+                        // 検索用データ構造を作成
+                        const searchItem = {
+                            id: `${category.id}:${topic.id}`,
+                            categoryId: category.id,
+                            topicId: topic.id,
+                            title: topic.title || topic.question || '',
+                            content: content ? (content.content || content.answer || content.description || '') : '',
+                            category: category.id,
+                            categoryName: this.gameEngine.localizationManager?.t(category.key, category.id) || category.id,
+                            tags: topic.tags || [],
+                            language: 'ja',
+                            difficulty: topic.difficulty || 'beginner',
+                            popularity: topic.popularity || 0,
+                            lastUpdated: Date.now(),
+                            searchKeywords: topic.searchKeywords || []
+                        };
+                        
+                        allContent.push(searchItem);
+                        
+                    } catch (error) {
+                        console.warn(`Failed to index topic ${topic.id}:`, error);
+                    }
+                }
+            }
+            
+            // SearchEngineにコンテンツをインデックス
+            if (allContent.length > 0) {
+                this.searchEngine.indexContent(allContent, 'help');
+                console.log(`Successfully indexed ${allContent.length} help topics for search`);
+            } else {
+                console.warn('No help content found to index');
+            }
+            
+        } catch (error) {
+            console.error('Failed to index help content for search:', error);
         }
     }
 
@@ -294,16 +356,26 @@ export class HelpContentManager {
 
         const result = this.searchResults[index];
         if (result) {
+            // SearchEngineの結果構造に対応
+            const resultData = result.content || result;
+            const categoryId = resultData.categoryId || result.categoryId;
+            const topicId = resultData.topicId || result.topicId;
+            
+            if (!categoryId || !topicId) {
+                console.error('Invalid search result structure:', result);
+                return null;
+            }
+            
             // 検索モードを終了
             this.isSearching = false;
             this.searchQuery = '';
             this.searchResults = [];
             
             // カテゴリとトピックを設定
-            await this.selectCategory(result.categoryId);
+            await this.selectCategory(categoryId);
             const topicIndex = this.categories
-                .find(c => c.id === result.categoryId)?.topics
-                .findIndex(t => t.id === result.topicId) || 0;
+                .find(c => c.id === categoryId)?.topics
+                .findIndex(t => t.id === topicId) || 0;
             
             return await this.selectTopic(topicIndex);
         }
