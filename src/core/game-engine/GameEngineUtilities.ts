@@ -14,6 +14,7 @@ interface GameEngine {
     memoryManager?: any;
     audioManager?: any;
     errorHandler?: any;
+    eventListeners?: Map<string, any[]>;
 }
 
 export class GameEngineUtilities {

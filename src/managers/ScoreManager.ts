@@ -189,7 +189,7 @@ export class ScoreManager implements IScoreManager {
     /**
      * コンボボーナス通知
      */
-    notifyComboBonus(bonusScore: number, x: number, y: number, combo: number): void {
+    notifyComboBonus(bonusScore: number, x: number, y: number, _combo: number): void {
         const gameScene = this.gameEngine.sceneManager.getCurrentScene();
         if (gameScene && gameScene.floatingTextManager) {
             gameScene.floatingTextManager.addEffectText(

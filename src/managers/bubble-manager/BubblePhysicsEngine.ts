@@ -288,7 +288,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine {
             Math.pow(endPos.y - startPos.y, 2)
         );
         
-        const direction = {
+        const _direction = {
             x: (endPos.x - startPos.x) / pathLength,
             y: (endPos.y - startPos.y) / pathLength
         };
@@ -347,5 +347,40 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine {
         const dy = point.y - yy;
         
         return Math.sqrt(dx * dx + dy * dy);
+    }
+    
+    /**
+     * バブルに物理的な力を適用
+     * @param bubble - 対象のバブル
+     * @param forceDirection - 力の方向
+     * @param strength - 力の強さ
+     */
+    applyForceToBubble(bubble: any, forceDirection: Vector2, strength: number): void {
+        if (!bubble || !bubble.isAlive) return;
+        
+        // 速度ベクトルを計算
+        const velocity = {
+            x: forceDirection.x * strength * 0.1, // スケール調整
+            y: forceDirection.y * strength * 0.1
+        };
+        
+        // バブルの速度を更新
+        if (bubble.velocity) {
+            bubble.velocity.x += velocity.x;
+            bubble.velocity.y += velocity.y;
+        } else {
+            bubble.velocity = velocity;
+        }
+        
+        // 最大速度制限
+        const maxSpeed = 15;
+        const currentSpeed = Math.sqrt(bubble.velocity.x ** 2 + bubble.velocity.y ** 2);
+        if (currentSpeed > maxSpeed) {
+            const scale = maxSpeed / currentSpeed;
+            bubble.velocity.x *= scale;
+            bubble.velocity.y *= scale;
+        }
+        
+        console.log(`Applied force to bubble: velocity=(${bubble.velocity.x.toFixed(2)}, ${bubble.velocity.y.toFixed(2)})`);
     }
 }

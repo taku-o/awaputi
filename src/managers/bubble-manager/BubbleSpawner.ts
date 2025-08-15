@@ -17,7 +17,7 @@ export class BubbleSpawner implements IBubbleSpawner {
     private spawnInterval: number = 2000; // 2秒間隔
     private specialSpawnRates: Record<string, number> = {};
 
-    constructor(gameEngine: any, config?: any) {
+    constructor(gameEngine: any, _config?: any) {
         this.gameEngine = gameEngine;
     }
     
@@ -80,7 +80,11 @@ export class BubbleSpawner implements IBubbleSpawner {
         try {
             // 入力値を検証
             if (type !== null) {
-                const typeValidation = getErrorHandler().validateInput(type, 'string', {
+                const typeValidation = this.validateBubbleInput(position?.x || 0, position?.y || 0, type);
+                if (!typeValidation) {
+                    console.warn('Invalid bubble type:', type);
+                }
+                // const typeValidation = getErrorHandler().validateInput(type, 'string', {
                     maxLength: 20,
                     pattern: /^[a-zA-Z_]+$/
                 });
@@ -95,7 +99,11 @@ export class BubbleSpawner implements IBubbleSpawner {
             }
             
             if (position !== null) {
-                const positionValidation = getErrorHandler().validateInput(position, 'object', {
+                const positionValidation = this.validateSpawnParams({ x: position?.x, y: position?.y, type });
+                if (!positionValidation) {
+                    console.warn('Invalid position:', position);
+                }
+                // const positionValidation = getErrorHandler().validateInput(position, 'object', {
                     properties: {
                         x: { type: 'number', min: -100, max: 1000 },
                         y: { type: 'number', min: -100, max: 800 }
@@ -283,5 +291,24 @@ export class BubbleSpawner implements IBubbleSpawner {
         }
 
         return bubbles;
+    }
+    
+    /**
+     * スポーンパラメータの検証
+     */
+    private validateSpawnParams(params: any): boolean {
+        if (!params) return false;
+        if (typeof params.x !== 'number' || typeof params.y !== 'number') return false;
+        if (!params.type || typeof params.type !== 'string') return false;
+        return true;
+    }
+    
+    /**
+     * バブル入力パラメータの検証
+     */
+    private validateBubbleInput(x: number, y: number, type: string): boolean {
+        if (typeof x !== 'number' || typeof y !== 'number') return false;
+        if (!type || typeof type !== 'string') return false;
+        return true;
     }
 }

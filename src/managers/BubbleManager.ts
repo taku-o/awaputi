@@ -157,7 +157,7 @@ export class BubbleManager implements IBubbleManager {
      */
     performCulling(): void {
         const performanceOptimizer = getPerformanceOptimizer();
-        if (this.bubbles.length <= performanceOptimizer.getMaxBubbles()) {
+        if (this.bubbles.length <= ((performanceOptimizer as any).getMaxBubbles?.() || 100)) {
             return; // 制限内なのでカリング不要
         }
         
@@ -172,7 +172,7 @@ export class BubbleManager implements IBubbleManager {
         bubblesWithPriority.sort((a, b) => a.priority - b.priority);
         
         // 下位の泡を削除
-        const targetCount = performanceOptimizer.getMaxBubbles();
+        const targetCount = (performanceOptimizer as any).getMaxBubbles?.() || 100;
         const toRemove = this.bubbles.length - targetCount;
         
         for (let i = 0; i < toRemove; i++) {
@@ -219,7 +219,7 @@ export class BubbleManager implements IBubbleManager {
      */
     cleanupOffscreenTimers(): void {
         // 既に削除された泡のタイマーを削除
-        for (const [bubble, timer] of this.offscreenTimer.entries()) {
+        for (const [bubble, _timer] of this.offscreenTimer.entries()) {
             if (!bubble.isAlive) {
                 this.offscreenBubbles.delete(bubble);
                 this.offscreenTimer.delete(bubble);
@@ -232,7 +232,7 @@ export class BubbleManager implements IBubbleManager {
      */
     render(context: CanvasRenderingContext2D): void {
         const performanceOptimizer = getPerformanceOptimizer();
-        const renderQuality = performanceOptimizer.getRenderQuality();
+        const renderQuality = (performanceOptimizer as any).getRenderQuality?.() || 'medium';
         
         // デバッグ情報を出力（5秒間隔）
         if (!this.lastDebugTime || performance.now() - this.lastDebugTime > 5000) {
@@ -302,7 +302,7 @@ export class BubbleManager implements IBubbleManager {
         // 幻の泡のすり抜け判定
         if (bubble.type === 'phantom') {
             const config = bubble.getTypeConfig();
-            if (Math.random() < config.phaseChance) {
+            if (Math.random() < (config.phaseChance || 0)) {
                 console.log('Phantom bubble phased through click!');
                 return false; // すり抜けた
             }

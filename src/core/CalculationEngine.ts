@@ -8,10 +8,10 @@
  * スコア計算、ダメージ計算、物理演算などのゲーム内計算を統括
  */
 export class CalculationEngine {
-    private _initialized: boolean;
+    private __initialized: boolean;
     
     constructor() {
-        this._initialized = false;
+        this.__initialized = false;
         this.initialize();
     }
     
@@ -20,7 +20,7 @@ export class CalculationEngine {
      */
     private initialize(): void {
         // 初期化処理（将来的に実装）
-        this._initialized = true;
+        this.__initialized = true;
         console.log('[CalculationEngine] Initialized');
     }
     
@@ -118,7 +118,7 @@ export class CalculationEngine {
      * リソースのクリーンアップ
      */
     destroy(): void {
-        this._initialized = false;
+        this.__initialized = false;
         console.log('[CalculationEngine] Destroyed');
     }
 }

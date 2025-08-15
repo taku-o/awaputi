@@ -83,7 +83,7 @@ export class GameEngineInitializer {
             ]);
             
             // シーンを登録
-            this.gameEngine.sceneManager.addScene('menu', new MainMenuScene());
+            this.gameEngine.sceneManager.addScene('menu', new MainMenuScene(this.gameEngine));
             this.gameEngine.sceneManager.addScene('stageSelect', new StageSelectScene(this.gameEngine));
             this.gameEngine.sceneManager.addScene('game', new GameScene(this.gameEngine));
             this.gameEngine.sceneManager.addScene('shop', new ShopScene());
@@ -129,7 +129,7 @@ export class GameEngineInitializer {
     /**
      * SEOシステムとの統合機能を設定
      */
-    private _setupSEOIntegration(): void {
+    private __setupSEOIntegration(): void {
         try {
             // SEOシステムが利用可能な場合のみ統合
             if ((window as any).seoMetaManager && (window as any).structuredDataEngine) {
