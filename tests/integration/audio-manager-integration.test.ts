@@ -1,78 +1,110 @@
 /**
  * AudioManager統合テスト
+ * TypeScript移行 - Task 25対応
  * 
  * AudioManagerと新しいAudioConfigシステムの統合をテストします。
  * 音量設定の動的変更機能と設定システムとの連携を検証します。
  */
 
+import { jest } from '@jest/globals';
 import { AudioManager } from '../../src/audio/AudioManager.js';
 import { getAudioConfig } from '../../src/config/AudioConfig.js';
 import { getConfigurationManager } from '../../src/core/ConfigurationManager.js';
+import { MockAudioContext, MockAudioNode } from '../../src/types/test.js';
+
+interface MockFunction<T = any> extends Function {
+    mockReturnValue: (value: T) => MockFunction<T>;
+    mockImplementation: (impl: Function) => MockFunction<T>;
+}
+
+interface AudioManagerStatus {
+    masterVolume: number;
+    sfxVolume: number;
+    bgmVolume: number;
+    isMuted: boolean;
+    configSync: {
+        audioConfig: boolean;
+        configManager: boolean;
+    };
+}
 
 // 簡単なモック関数
-const mockFn = (returnValue) => {
-    const fn = (...args) => returnValue;
-    fn.mockReturnValue = (value) => { returnValue = value; return fn; };
-    fn.mockImplementation = (impl) => { fn = impl; return fn; };
-    return fn;
+const mockFn = <T = any>(returnValue?: T): MockFunction<T> => {
+    let currentReturnValue = returnValue;
+    const fn = (...args: any[]) => currentReturnValue;
+    (fn as any).mockReturnValue = (value: T) => { 
+        currentReturnValue = value; 
+        return fn as MockFunction<T>; 
+    };
+    (fn as any).mockImplementation = (impl: Function) => { 
+        Object.assign(fn, impl); 
+        return fn as MockFunction<T>; 
+    };
+    return fn as MockFunction<T>;
 };
 
 describe('AudioManager統合テスト', () => {
-    let audioManager;
-    let audioConfig;
-    let configManager;
+    let audioManager: AudioManager;
+    let audioConfig: any;
+    let configManager: any;
 
     beforeAll(() => {
         // Web Audio API の基本的なモック
-        global.AudioContext = function() {
-            return {
-                createGain: () => ({
-                    gain: { value: 0 },
-                    connect: mockFn(),
-                    disconnect: mockFn()
-                }),
-                createDynamicsCompressor: () => ({
-                    threshold: { value: 0 },
-                    knee: { value: 0 },
-                    ratio: { value: 0 },
-                    attack: { value: 0 },
-                    release: { value: 0 },
-                    connect: mockFn(),
-                    disconnect: mockFn()
-                }),
-                createConvolver: () => ({
-                    buffer: null,
-                    connect: mockFn(),
-                    disconnect: mockFn()
-                }),
-                createBufferSource: () => ({
-                    buffer: null,
-                    playbackRate: { value: 1 },
-                    start: mockFn(),
-                    stop: mockFn(),
-                    connect: mockFn(),
-                    addEventListener: mockFn()
-                }),
-                createStereoPanner: () => ({
-                    pan: { value: 0 },
-                    connect: mockFn()
-                }),
-                createBuffer: () => ({
-                    getChannelData: () => new Float32Array(1024)
-                }),
-                destination: {},
-                sampleRate: 44100,
-                currentTime: 0,
-                state: 'running',
-                resume: mockFn(),
-                close: mockFn()
-            };
-        };
+        (global as any).AudioContext = function(this: MockAudioContext) {
+            this.createGain = () => ({
+                gain: { value: 0 },
+                connect: mockFn(),
+                disconnect: mockFn()
+            } as any);
+            
+            this.createDynamicsCompressor = () => ({
+                threshold: { value: 0 },
+                knee: { value: 0 },
+                ratio: { value: 0 },
+                attack: { value: 0 },
+                release: { value: 0 },
+                connect: mockFn(),
+                disconnect: mockFn()
+            } as any);
+            
+            this.createConvolver = () => ({
+                buffer: null,
+                connect: mockFn(),
+                disconnect: mockFn()
+            } as any);
+            
+            this.createBufferSource = () => ({
+                buffer: null,
+                playbackRate: { value: 1 },
+                start: mockFn(),
+                stop: mockFn(),
+                connect: mockFn(),
+                addEventListener: mockFn()
+            } as any);
+            
+            this.createStereoPanner = () => ({
+                pan: { value: 0 },
+                connect: mockFn()
+            } as any);
+            
+            this.createBuffer = () => ({
+                getChannelData: () => new Float32Array(1024)
+            } as any);
+            
+            this.destination = {} as any;
+            this.sampleRate = 44100;
+            this.currentTime = 0;
+            this.state = 'running' as AudioContextState;
+            this.resume = mockFn();
+            this.close = mockFn();
+            
+            return this;
+        } as any;
         
-        global.webkitAudioContext = global.AudioContext;
+        (global as any).webkitAudioContext = (global as any).AudioContext;
         
         // コンソールのモック
-        global.console = {
+        (global as any).console = {
             log: mockFn(),
             warn: mockFn(),
             error: mockFn(),
@@ -89,7 +121,7 @@ describe('AudioManager統合テスト', () => {
 
     afterEach(() => {
         // リソースのクリーンアップ
-        if (audioManager) {
+        if (audioManager && typeof audioManager.dispose === 'function') {
             audioManager.dispose();
         }
     });
@@ -100,7 +132,7 @@ describe('AudioManager統合テスト', () => {
             expect(audioManager.configManager).toBeDefined();
             
             // 初期設定値が正しく取得されていること
-            const status = audioManager.getStatus();
+            const status: AudioManagerStatus = audioManager.getStatus();
             expect(typeof status.masterVolume).toBe('number');
             expect(typeof status.sfxVolume).toBe('number');
             expect(typeof status.bgmVolume).toBe('number');
@@ -108,7 +140,7 @@ describe('AudioManager統合テスト', () => {
         });
 
         test('設定監視が正しく設定されていること', () => {
-            const status = audioManager.getStatus();
+            const status: AudioManagerStatus = audioManager.getStatus();
             expect(status.configSync).toBeDefined();
             expect(status.configSync.audioConfig).toBe(true);
             expect(status.configSync.configManager).toBe(true);
@@ -136,7 +168,7 @@ describe('AudioManager統合テスト', () => {
 
         test('無効な音量タイプでエラーハンドリングが動作すること', () => {
             expect(() => {
-                audioManager.setVolume('invalid', 0.5);
+                audioManager.setVolume('invalid' as any, 0.5);
             }).not.toThrow();
         });
 
@@ -151,8 +183,8 @@ describe('AudioManager統合テスト', () => {
 
     describe('ミュート機能の動的変更', () => {
         test('ミュート切り替えが正しく動作すること', () => {
-            const initialState = audioConfig.isMuted();
-            const newState = audioManager.toggleMute();
+            const initialState: boolean = audioConfig.isMuted();
+            const newState: boolean = audioManager.toggleMute();
             expect(newState).toBe(!initialState);
             expect(audioConfig.isMuted()).toBe(newState);
         });
@@ -192,7 +224,7 @@ describe('AudioManager統合テスト', () => {
             
             audioManager.syncWithConfig();
             
-            const status = audioManager.getStatus();
+            const status: AudioManagerStatus = audioManager.getStatus();
             expect(status.masterVolume).toBe(0.3);
             expect(status.sfxVolume).toBe(0.4);
             expect(status.bgmVolume).toBe(0.6);
@@ -202,13 +234,13 @@ describe('AudioManager統合テスト', () => {
     describe('エラーハンドリング', () => {
         test('無効な音量値でエラーハンドリングが動作すること', () => {
             expect(() => {
-                audioManager.setVolume('master', 'invalid');
+                audioManager.setVolume('master', 'invalid' as any);
             }).not.toThrow();
         });
 
         test('無効な効果タイプでエラーハンドリングが動作すること', () => {
             expect(() => {
-                audioManager.setAudioEffect('invalid', true);
+                audioManager.setAudioEffect('invalid' as any, true);
             }).not.toThrow();
         });
     });

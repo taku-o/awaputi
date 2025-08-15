@@ -1,20 +1,89 @@
 /**
  * Integration tests for game flow
+ * TypeScript移行 - Task 25対応
  */
 
+import { jest } from '@jest/globals';
 import { GameEngine } from '../../src/core/GameEngine.js';
 import { Bubble } from '../../src/bubbles/Bubble.js';
+import { Position } from '../../src/types/bubble.js';
+import { MockCanvasRenderingContext2D } from '../../src/types/test.js';
+
+interface MockCanvas extends HTMLCanvasElement {
+  width: number;
+  height: number;
+}
+
+interface MockMouseEvent extends MouseEvent {
+  clientX: number;
+  clientY: number;
+}
+
+interface MockTouchEvent extends TouchEvent {
+  touches: Touch[];
+}
+
+// Mock helper functions
+const createMockCanvas = (): MockCanvas => {
+  const canvas = document.createElement('canvas') as MockCanvas;
+  canvas.width = 800;
+  canvas.height = 600;
+  Object.defineProperty(canvas, 'getContext', {
+    value: jest.fn().mockReturnValue({
+      arc: jest.fn(),
+      fill: jest.fn(),
+      stroke: jest.fn(),
+      beginPath: jest.fn(),
+      closePath: jest.fn(),
+      save: jest.fn(),
+      restore: jest.fn(),
+      translate: jest.fn(),
+      scale: jest.fn(),
+      rotate: jest.fn(),
+      fillStyle: '',
+      strokeStyle: '',
+      lineWidth: 1,
+      font: '',
+      textAlign: 'start' as CanvasTextAlign,
+      textBaseline: 'alphabetic' as CanvasTextBaseline,
+      globalAlpha: 1
+    })
+  });
+  return canvas;
+};
+
+const createMockMouseEvent = (type: string, x: number, y: number): MockMouseEvent => {
+  return {
+    type,
+    clientX: x,
+    clientY: y,
+    preventDefault: jest.fn(),
+    stopPropagation: jest.fn()
+  } as any;
+};
+
+const createMockTouchEvent = (type: string, touches: Array<{ clientX: number; clientY: number }>): MockTouchEvent => {
+  return {
+    type,
+    touches: touches.map(touch => ({
+      clientX: touch.clientX,
+      clientY: touch.clientY
+    })),
+    preventDefault: jest.fn(),
+    stopPropagation: jest.fn()
+  } as any;
+};
 
 describe('Game Flow Integration', () => {
-  let gameEngine;
-  let mockCanvas;
+  let gameEngine: GameEngine;
+  let mockCanvas: MockCanvas;
 
   beforeEach(() => {
     mockCanvas = createMockCanvas();
     document.body.appendChild(mockCanvas);
     
     // Mock localStorage to return some initial data
-    localStorage.getItem = jest.fn((key) => {
+    const mockGetItem = jest.fn((key: string) => {
       if (key === 'bubblePop_playerData') {
         return JSON.stringify({
           username: 'TestPlayer',
@@ -29,6 +98,10 @@ describe('Game Flow Integration', () => {
         });
       }
       return null;
+    });
+    
+    Object.defineProperty(global.localStorage, 'getItem', {
+      value: mockGetItem
     });
     
     gameEngine = new GameEngine(mockCanvas);
@@ -83,7 +156,8 @@ describe('Game Flow Integration', () => {
 
   describe('Bubble Lifecycle', () => {
     test('should spawn and manage bubbles', () => {
-      const bubble = new Bubble('normal', { x: 100, y: 100 });
+      const position: Position = { x: 100, y: 100 };
+      const bubble = new Bubble('normal', position);
       
       expect(bubble.isAlive).toBe(true);
       expect(bubble.health).toBe(1);
@@ -91,7 +165,8 @@ describe('Game Flow Integration', () => {
     });
 
     test('should handle bubble destruction and effects', () => {
-      const pinkBubble = new Bubble('pink', { x: 100, y: 100 });
+      const position: Position = { x: 100, y: 100 };
+      const pinkBubble = new Bubble('pink', position);
       pinkBubble.destroy();
       
       const effects = pinkBubble.getAndClearEffects();
@@ -100,7 +175,8 @@ describe('Game Flow Integration', () => {
     });
 
     test('should handle bubble aging and natural burst', () => {
-      const bubble = new Bubble('normal', { x: 100, y: 100 });
+      const position: Position = { x: 100, y: 100 };
+      const bubble = new Bubble('normal', position);
       bubble.age = bubble.maxAge - 100;
       bubble.update(200);
       
@@ -150,7 +226,8 @@ describe('Game Flow Integration', () => {
 
   describe('Score and Combo System', () => {
     test('should calculate scores with multipliers', () => {
-      const bubble = new Bubble('normal', { x: 100, y: 100 });
+      const position: Position = { x: 100, y: 100 };
+      const bubble = new Bubble('normal', position);
       const baseScore = bubble.getScore();
       
       gameEngine.startBonusTime(5000, 3);
@@ -160,7 +237,8 @@ describe('Game Flow Integration', () => {
     });
 
     test('should handle age-based score bonuses', () => {
-      const bubble = new Bubble('normal', { x: 100, y: 100 });
+      const position: Position = { x: 100, y: 100 };
+      const bubble = new Bubble('normal', position);
       
       // Young bubble (early destruction bonus)
       bubble.age = bubble.maxAge * 0.05;
@@ -174,9 +252,10 @@ describe('Game Flow Integration', () => {
 
   describe('Performance and Optimization', () => {
     test('should handle multiple bubbles without performance issues', () => {
-      const bubbles = [];
+      const bubbles: Bubble[] = [];
       for (let i = 0; i < 50; i++) {
-        bubbles.push(new Bubble('normal', { x: Math.random() * 800, y: Math.random() * 600 }));
+        const position: Position = { x: Math.random() * 800, y: Math.random() * 600 };
+        bubbles.push(new Bubble('normal', position));
       }
       
       // Update all bubbles
@@ -200,15 +279,18 @@ describe('Game Flow Integration', () => {
   describe('Error Recovery', () => {
     test('should recover from audio errors gracefully', () => {
       const audioError = new Error('Audio context creation failed');
-      gameEngine.audioManager.initialize.mockRejectedValue(audioError);
+      (gameEngine.audioManager.initialize as jest.Mock).mockRejectedValue(audioError);
       
       // Should not crash the game
       expect(() => gameEngine.start()).not.toThrow();
     });
 
     test('should handle storage errors with fallback', () => {
-      localStorage.setItem.mockImplementation(() => {
+      const mockSetItem = jest.fn().mockImplementation(() => {
         throw new Error('Storage quota exceeded');
+      });
+      Object.defineProperty(global.localStorage, 'setItem', {
+        value: mockSetItem
       });
       
       // Should continue working with memory storage
@@ -218,22 +300,30 @@ describe('Game Flow Integration', () => {
 
   describe('Game State Persistence', () => {
     test('should save game state correctly', () => {
+      const mockSetItem = jest.fn();
+      Object.defineProperty(global.localStorage, 'setItem', {
+        value: mockSetItem
+      });
+      
       gameEngine.playerData.currentScore = 1000;
       gameEngine.playerData.ap = 50;
       gameEngine.playerData.save();
       
-      expect(localStorage.setItem).toHaveBeenCalledWith(
+      expect(mockSetItem).toHaveBeenCalledWith(
         'bubblePop_playerData',
         expect.stringContaining('"currentScore":1000')
       );
     });
 
     test('should load game state correctly', () => {
-      localStorage.getItem.mockReturnValue(JSON.stringify({
+      const mockGetItem = jest.fn().mockReturnValue(JSON.stringify({
         username: 'LoadedPlayer',
         currentScore: 2000,
         ap: 75
       }));
+      Object.defineProperty(global.localStorage, 'getItem', {
+        value: mockGetItem
+      });
       
       gameEngine.playerData.load();
       

@@ -1,10 +1,12 @@
 /**
  * 設定システム全体の統合テスト
+ * TypeScript移行 - Task 25対応
  * 
  * 全コンポーネント間の連携、設定変更の全システム反映、
  * パフォーマンス統合テストを実施します。
  */
 
+import { jest } from '@jest/globals';
 import { ConfigurationManager } from '../../src/core/ConfigurationManager.js';
 import { CalculationEngine } from '../../src/core/CalculationEngine.js';
 import { GameConfig } from '../../src/config/GameConfig.js';
@@ -17,19 +19,44 @@ import { EffectsCalculator } from '../../src/core/EffectsCalculator.js';
 import { ValidationSystem } from '../../src/core/ValidationSystem.js';
 import { LoggingSystem } from '../../src/core/LoggingSystem.js';
 
+interface ConfigChangeEntry {
+    category: string;
+    key: string;
+    oldValue: any;
+    newValue: any;
+    timestamp: number;
+}
+
+interface AccessStats {
+    totalAccesses: number;
+    cacheHits: number;
+    frequentKeys: Map<string, number>;
+}
+
+interface CacheStats {
+    totalRequests: number;
+    hits: number;
+    misses: number;
+}
+
+interface PerformanceStats {
+    memoryUsage?: number;
+    cpuUsage?: number;
+}
+
 describe('Configuration System Integration Tests', () => {
-    let configManager;
-    let calculationEngine;
-    let gameConfig;
-    let audioConfig;
-    let effectsConfig;
-    let performanceConfig;
-    let scoreCalculator;
-    let balanceCalculator;
-    let effectsCalculator;
-    let validationSystem;
-    let loggingSystem;
-    let mockCanvas;
+    let configManager: ConfigurationManager;
+    let calculationEngine: CalculationEngine;
+    let gameConfig: GameConfig;
+    let audioConfig: AudioConfig;
+    let effectsConfig: EffectsConfig;
+    let performanceConfig: PerformanceConfig;
+    let scoreCalculator: ScoreCalculator;
+    let balanceCalculator: BalanceCalculator;
+    let effectsCalculator: EffectsCalculator;
+    let validationSystem: ValidationSystem;
+    let loggingSystem: LoggingSystem;
+    let mockCanvas: HTMLCanvasElement;
 
     beforeEach(() => {
         // 設定管理システムの初期化
@@ -104,7 +131,8 @@ describe('Configuration System Integration Tests', () => {
             });
             
             expect(cachedScore).toBe(score);
-            expect(calculationEngine.getCacheStats().hits).toBeGreaterThan(0);
+            const cacheStats: CacheStats = calculationEngine.getCacheStats();
+            expect(cacheStats.hits).toBeGreaterThan(0);
         });
 
         test('設定カテゴリクラス間の連携', () => {
@@ -145,8 +173,8 @@ describe('Configuration System Integration Tests', () => {
 
         test('設定監視機能の連携', () => {
             let callbackCalled = false;
-            let callbackArgs = null;
-            const callback = (...args) => {
+            let callbackArgs: any[] | null = null;
+            const callback = (...args: any[]) => {
                 callbackCalled = true;
                 callbackArgs = args;
             };
@@ -217,11 +245,11 @@ describe('Configuration System Integration Tests', () => {
             configManager.set('audio', 'volumes.master', 0.8);
             
             // 変更履歴を取得
-            const history = configManager.getChangeHistory();
+            const history: ConfigChangeEntry[] = configManager.getChangeHistory();
             
             // 履歴が記録されていることを確認
             expect(history.length).toBeGreaterThan(0);
-            expect(history.some(entry => 
+            expect(history.some((entry: ConfigChangeEntry) => 
                 entry.category === 'game' && 
                 entry.key === 'scoring.baseScores.normal' && 
                 entry.newValue === 18
@@ -264,7 +292,8 @@ describe('Configuration System Integration Tests', () => {
             expect(duration).toBeLessThan(500);
             
             // アクセス統計が記録されていることを確認
-            expect(configManager.accessStats.totalAccesses).toBeGreaterThan(0);
+            const accessStats: AccessStats = configManager.accessStats;
+            expect(accessStats.totalAccesses).toBeGreaterThan(0);
         });
 
         test('大量計算処理のパフォーマンス', () => {
@@ -285,7 +314,7 @@ describe('Configuration System Integration Tests', () => {
             expect(duration).toBeLessThan(1000);
             
             // キャッシュが効果的に動作することを確認
-            const cacheStats = calculationEngine.getCacheStats();
+            const cacheStats: CacheStats = calculationEngine.getCacheStats();
             expect(cacheStats.totalRequests).toBeGreaterThan(0);
         });
 
@@ -304,11 +333,12 @@ describe('Configuration System Integration Tests', () => {
             }
             
             // キャッシュヒットが発生していることを確認
-            expect(configManager.accessStats.cacheHits).toBeGreaterThan(0);
+            const accessStats: AccessStats = configManager.accessStats;
+            expect(accessStats.cacheHits).toBeGreaterThan(0);
         });
 
         test('同時アクセスの処理', async () => {
-            const promises = [];
+            const promises: Promise<any>[] = [];
             
             // 50個の同時アクセス（負荷を軽減）
             for (let i = 0; i < 50; i++) {
@@ -344,7 +374,7 @@ describe('Configuration System Integration Tests', () => {
             expect(result2).toBe(result1);
             
             // キャッシュヒットが発生していることを確認
-            const cacheStats = calculationEngine.getCacheStats();
+            const cacheStats: CacheStats = calculationEngine.getCacheStats();
             expect(cacheStats.hits).toBeGreaterThan(0);
         });
     });
@@ -435,8 +465,9 @@ describe('Configuration System Integration Tests', () => {
             }
             
             // アクセス統計が記録されることを確認
-            expect(configManager.accessStats.totalAccesses).toBeGreaterThan(0);
-            expect(configManager.accessStats.frequentKeys.size).toBeGreaterThan(0);
+            const accessStats: AccessStats = configManager.accessStats;
+            expect(accessStats.totalAccesses).toBeGreaterThan(0);
+            expect(accessStats.frequentKeys.size).toBeGreaterThan(0);
         });
 
         test('計算パフォーマンス統計', () => {
@@ -449,7 +480,7 @@ describe('Configuration System Integration Tests', () => {
             }
             
             // パフォーマンス統計が収集されることを確認
-            const cacheStats = calculationEngine.getCacheStats();
+            const cacheStats: CacheStats = calculationEngine.getCacheStats();
             expect(cacheStats.totalRequests).toBeGreaterThan(0);
         });
     });
@@ -508,8 +539,11 @@ describe('Configuration System Integration Tests', () => {
             }
             
             // システムが安定していることを確認
-            expect(configManager.accessStats.totalAccesses).toBeGreaterThan(0);
-            expect(calculationEngine.getCacheStats().totalRequests).toBeGreaterThan(0);
+            const accessStats: AccessStats = configManager.accessStats;
+            expect(accessStats.totalAccesses).toBeGreaterThan(0);
+            
+            const cacheStats: CacheStats = calculationEngine.getCacheStats();
+            expect(cacheStats.totalRequests).toBeGreaterThan(0);
         });
     });
 });
