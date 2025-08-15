@@ -279,6 +279,15 @@
 - 各フェーズでのテスト実行を重視
 - アクセシビリティファイルの文字化け問題は除外対応で解決
 
+## 発見した未実装機能
+TypeScript移行作業中に「将来実装する」「現時点では未実装」のコード箇所を多数発見。
+詳細は `unimplemented-features.md` に記録。主要項目：
+- **AchievementManager**: 実績システムの大部分がモック実装
+- **ConfigurationManager**: 遅延読み込み・プリロード機能未実装
+- **PlayerData**: 復活アイテムシステム統合未完成
+- **ProceduralSoundGenerator**: 音響生成機能が基本レベル
+これらはTypeScript移行完了後に順次実装予定
+
 ## 参考情報
 - 仕様書: `.kiro/specs/typescript-migration/`
 - Playwrightテストガイド: `docs/playwright-testing-guide.md`
