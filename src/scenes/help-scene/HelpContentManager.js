@@ -337,6 +337,11 @@ export class HelpContentManager {
      * トピック選択
      */
     async selectTopic(index) {
+        // 検索状態をクリア（メニューからトピック選択時）
+        this.isSearching = false;
+        this.searchQuery = '';
+        this.searchResults = [];
+        
         const category = this.categories.find(c => c.id === this.selectedCategory);
         if (!category || index < 0 || index >= category.topics.length) {
             return null;
