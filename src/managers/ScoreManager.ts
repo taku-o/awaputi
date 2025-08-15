@@ -1,19 +1,25 @@
+import type { ScoreManager as IScoreManager, Bubble, ScoreDebugInfo } from '../types/game';
+
 /**
- * スコア管理クラス
+ * ScoreManager - スコア管理システム
+ * 
+ * スコア計算、コンボ管理、倍率適用、UI通知を専門的に管理します
  */
-export class ScoreManager {
-    constructor(gameEngine) {
+export class ScoreManager implements IScoreManager {
+    public gameEngine: any;
+    public combo: number = 0;
+    public comboTimer: number = 0;
+    public comboTimeout: number = 2000; // 2秒でコンボリセット
+    public scoreMultipliers: number[] = []; // アイテムによるスコア倍率
+
+    constructor(gameEngine: any) {
         this.gameEngine = gameEngine;
-        this.combo = 0;
-        this.comboTimer = 0;
-        this.comboTimeout = 2000; // 2秒でコンボリセット
-        this.scoreMultipliers = []; // アイテムによるスコア倍率
     }
     
     /**
      * コンボタイムアウト時間を取得（アイテム効果を考慮）
      */
-    getComboTimeout() {
+    getComboTimeout(): number {
         let timeout = this.comboTimeout;
         
         // アイテム効果でコンボ継続時間を延長
@@ -31,14 +37,14 @@ export class ScoreManager {
      * 現在のコンボ数を取得
      * @returns {number} コンボ数
      */
-    getCombo() {
+    getCombo(): number {
         return this.combo || 0;
     }
     
     /**
      * スコアを追加（泡をクリック/ポップした時）
      */
-    addScore(bubble, x, y) {
+    addScore(bubble: Bubble, x: number, y: number): void {
         const baseScore = this.calculateBaseScore(bubble);
         let finalScore = baseScore;
         let totalMultiplier = 1;
@@ -85,8 +91,8 @@ export class ScoreManager {
     /**
      * 基本スコアを計算
      */
-    calculateBaseScore(bubble) {
-        const baseScores = {
+    calculateBaseScore(bubble: Bubble): number {
+        const baseScores: Record<string, number> = {
             'normal': 15,    // 10 -> 15 (基本スコア向上)
             'stone': 35,     // 25 -> 35 (硬い泡の価値向上)
             'iron': 65,      // 50 -> 65 (硬い泡の価値向上)
@@ -109,7 +115,7 @@ export class ScoreManager {
     /**
      * 年齢ボーナスを計算
      */
-    calculateAgeBonus(bubble) {
+    calculateAgeBonus(bubble: Bubble): number {
         const ageRatio = bubble.age / bubble.maxAge;
         
         if (ageRatio >= 0.9) {
@@ -126,7 +132,7 @@ export class ScoreManager {
     /**
      * アイテムによるスコア倍率を取得
      */
-    getItemScoreMultiplier() {
+    getItemScoreMultiplier(): number {
         let multiplier = 1;
         
         this.scoreMultipliers.forEach(mult => {
@@ -139,7 +145,7 @@ export class ScoreManager {
     /**
      * アイテムスコア倍率を追加
      */
-    addScoreMultiplier(multiplier) {
+    addScoreMultiplier(multiplier: number): void {
         this.scoreMultipliers.push(multiplier);
         console.log(`Score multiplier added: ${multiplier}x (total: ${this.getItemScoreMultiplier()}x)`);
     }
@@ -147,7 +153,7 @@ export class ScoreManager {
     /**
      * スコア獲得をGameSceneに通知
      */
-    notifyScoreGained(score, x, y, multiplier) {
+    notifyScoreGained(score: number, x: number, y: number, multiplier: number): void {
         // GameSceneのonScoreGainedメソッドを呼び出し
         const gameScene = this.gameEngine.sceneManager.getCurrentScene();
         if (gameScene && typeof gameScene.onScoreGained === 'function') {
@@ -158,7 +164,7 @@ export class ScoreManager {
     /**
      * コンボを更新
      */
-    updateCombo(x, y) {
+    updateCombo(x?: number, y?: number): void {
         this.combo++;
         this.comboTimer = 0;
         
@@ -168,20 +174,22 @@ export class ScoreManager {
             this.gameEngine.playerData.addScore(bonusScore);
             
             // ボーナス通知
-            this.notifyComboBonus(bonusScore, x, y, this.combo);
+            if (x !== undefined && y !== undefined) {
+                this.notifyComboBonus(bonusScore, x, y, this.combo);
+            }
         }
         
         // GameSceneに通知
         const gameScene = this.gameEngine.sceneManager.getCurrentScene();
         if (gameScene && typeof gameScene.onComboAchieved === 'function') {
-            gameScene.onComboAchieved(this.combo, x, y);
+            gameScene.onComboAchieved(this.combo, x || 0, y || 0);
         }
     }
     
     /**
      * コンボボーナス通知
      */
-    notifyComboBonus(bonusScore, x, y, combo) {
+    notifyComboBonus(bonusScore: number, x: number, y: number, combo: number): void {
         const gameScene = this.gameEngine.sceneManager.getCurrentScene();
         if (gameScene && gameScene.floatingTextManager) {
             gameScene.floatingTextManager.addEffectText(
@@ -195,7 +203,7 @@ export class ScoreManager {
     /**
      * コンボをリセット
      */
-    resetCombo() {
+    resetCombo(): void {
         if (this.combo > 0) {
             console.log(`Combo ended at ${this.combo}`);
         }
@@ -206,7 +214,7 @@ export class ScoreManager {
     /**
      * 更新処理
      */
-    update(deltaTime) {
+    update(deltaTime: number): void {
         // コンボタイマーの更新
         if (this.combo > 0) {
             this.comboTimer += deltaTime;
@@ -221,14 +229,14 @@ export class ScoreManager {
     /**
      * 現在のコンボ数を取得
      */
-    getCurrentCombo() {
+    getCurrentCombo(): number {
         return this.combo;
     }
     
     /**
      * コンボ倍率を取得
      */
-    getComboMultiplier() {
+    getComboMultiplier(): number {
         if (this.combo <= 1) return 1;
         return Math.min(1 + (this.combo - 1) * 0.1, 3.0);
     }
@@ -236,7 +244,7 @@ export class ScoreManager {
     /**
      * 総合倍率を取得
      */
-    getTotalMultiplier() {
+    getTotalMultiplier(): number {
         let total = 1;
         
         // コンボ倍率
@@ -254,7 +262,7 @@ export class ScoreManager {
     /**
      * スコア倍率をリセット（ゲーム開始時）
      */
-    resetMultipliers() {
+    resetMultipliers(): void {
         this.scoreMultipliers = [];
         this.resetCombo();
     }
@@ -262,7 +270,7 @@ export class ScoreManager {
     /**
      * デバッグ情報を取得
      */
-    getDebugInfo() {
+    getDebugInfo(): ScoreDebugInfo {
         return {
             combo: this.combo,
             comboMultiplier: this.getComboMultiplier(),

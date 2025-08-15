@@ -225,17 +225,38 @@ export interface InputManager {
 
 // Score and progression
 export interface ScoreManager {
-  currentScore: number;
-  highScore: number;
-  multiplier: number;
+  gameEngine: any;
   combo: number;
+  comboTimer: number;
+  comboTimeout: number;
+  scoreMultipliers: number[];
   
-  addScore(points: number): void;
-  resetScore(): void;
-  updateHighScore(): boolean;
-  getComboMultiplier(): number;
-  increaseCombo(): void;
+  getComboTimeout(): number;
+  getCombo(): number;
+  addScore(bubble: Bubble, x: number, y: number): void;
+  calculateBaseScore(bubble: Bubble): number;
+  calculateAgeBonus(bubble: Bubble): number;
+  getItemScoreMultiplier(): number;
+  addScoreMultiplier(multiplier: number): void;
+  notifyScoreGained(score: number, x: number, y: number, multiplier: number): void;
+  updateCombo(x?: number, y?: number): void;
+  notifyComboBonus(bonusScore: number, x: number, y: number, combo: number): void;
   resetCombo(): void;
+  update(deltaTime: number): void;
+  getCurrentCombo(): number;
+  getComboMultiplier(): number;
+  getTotalMultiplier(): number;
+  resetMultipliers(): void;
+  getDebugInfo(): ScoreDebugInfo;
+}
+
+export interface ScoreDebugInfo {
+  combo: number;
+  comboMultiplier: number;
+  itemMultiplier: number;
+  specialMultiplier: number;
+  totalMultiplier: number;
+  comboTimer: number;
 }
 
 export interface StageManager {
