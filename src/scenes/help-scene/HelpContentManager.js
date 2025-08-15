@@ -335,12 +335,16 @@ export class HelpContentManager {
 
     /**
      * トピック選択
+     * @param {number} index - トピックインデックス
+     * @param {boolean} fromSearchResult - 検索結果からの選択かどうか
      */
-    async selectTopic(index) {
-        // 検索状態をクリア（メニューからトピック選択時）
-        this.isSearching = false;
-        this.searchQuery = '';
-        this.searchResults = [];
+    async selectTopic(index, fromSearchResult = false) {
+        // 検索状態をクリア（メニューからの直接選択時のみ）
+        if (!fromSearchResult) {
+            this.isSearching = false;
+            this.searchQuery = '';
+            this.searchResults = [];
+        }
         
         const category = this.categories.find(c => c.id === this.selectedCategory);
         if (!category || index < 0 || index >= category.topics.length) {
@@ -421,7 +425,7 @@ export class HelpContentManager {
                 .find(c => c.id === categoryId)?.topics
                 .findIndex(t => t.id === topicId) || 0;
             
-            return await this.selectTopic(topicIndex);
+            return await this.selectTopic(topicIndex, true); // fromSearchResult = true
         }
         
         return null;
