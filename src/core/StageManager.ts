@@ -1,17 +1,32 @@
+import type { 
+    StageManager as IStageManager,
+    CurrentStage,
+    StageConfig,
+    UnlockCondition,
+    BossEvent,
+    UnlockedStageInfo,
+    LockedStageInfo
+} from '../types/game';
+
 /**
- * ステージ管理クラス
+ * StageManager - ステージ管理システム
+ * 
+ * ゲームステージの設定、開放条件、進行管理を専門的に処理します
  */
-export class StageManager {
-    constructor(gameEngine) {
+export class StageManager implements IStageManager {
+    public gameEngine: any;
+    public currentStage: CurrentStage | null = null;
+    public stageConfigs: Record<string, StageConfig>;
+
+    constructor(gameEngine: any) {
         this.gameEngine = gameEngine;
-        this.currentStage = null;
         this.stageConfigs = this.initializeStageConfigs();
     }
     
     /**
      * ステージ設定を初期化
      */
-    initializeStageConfigs() {
+    initializeStageConfigs(): Record<string, StageConfig> {
         return {
             tutorial: {
                 name: '1分ステージ',
@@ -123,7 +138,7 @@ export class StageManager {
     /**
      * ステージを開始
      */
-    startStage(stageId) {
+    startStage(stageId: string): boolean {
         console.log(`Starting stage: ${stageId}`);
         
         const config = this.stageConfigs[stageId];
@@ -179,7 +194,7 @@ export class StageManager {
     /**
      * ステージが開放されているかチェック
      */
-    isStageUnlocked(stageId) {
+    isStageUnlocked(stageId: string): boolean {
         const config = this.stageConfigs[stageId];
         if (!config || !config.unlockCondition) {
             return true; // 開放条件がない場合は開放済み
@@ -192,9 +207,9 @@ export class StageManager {
             case 'tap':
                 return playerData.tap >= condition.value;
             case 'highScore':
-                return (playerData.highScores[condition.stage] || 0) >= condition.value;
+                return (playerData.highScores[condition.stage || ''] || 0) >= condition.value;
             case 'stageComplete':
-                return playerData.unlockedStages.includes(condition.stage);
+                return playerData.unlockedStages.includes(condition.stage || '');
             default:
                 return false;
         }
@@ -203,8 +218,8 @@ export class StageManager {
     /**
      * 開放済みステージ一覧を取得
      */
-    getUnlockedStages() {
-        const unlockedStages = [];
+    getUnlockedStages(): UnlockedStageInfo[] {
+        const unlockedStages: UnlockedStageInfo[] = [];
         
         for (const [stageId, config] of Object.entries(this.stageConfigs)) {
             if (this.isStageUnlocked(stageId)) {
@@ -223,8 +238,8 @@ export class StageManager {
     /**
      * ロック済みステージ一覧を取得
      */
-    getLockedStages() {
-        const lockedStages = [];
+    getLockedStages(): LockedStageInfo[] {
+        const lockedStages: LockedStageInfo[] = [];
         
         for (const [stageId, config] of Object.entries(this.stageConfigs)) {
             if (!this.isStageUnlocked(stageId)) {
@@ -232,7 +247,7 @@ export class StageManager {
                     id: stageId,
                     name: config.name,
                     description: config.description,
-                    unlockMessage: config.unlockMessage
+                    unlockMessage: config.unlockMessage || ''
                 });
             }
         }
@@ -243,21 +258,21 @@ export class StageManager {
     /**
      * 現在のステージ設定を取得
      */
-    getCurrentStageConfig() {
+    getCurrentStageConfig(): StageConfig | null {
         return this.currentStage ? this.currentStage.config : null;
     }
     
     /**
      * 現在のステージIDを取得
      */
-    getCurrentStageId() {
+    getCurrentStageId(): string | null {
         return this.currentStage ? this.currentStage.id : null;
     }
     
     /**
      * ボスイベントをチェック
      */
-    checkBossEvents(timeRemaining) {
+    checkBossEvents(timeRemaining: number): void {
         if (!this.currentStage || !this.currentStage.config.bossEvents) {
             return;
         }
@@ -266,9 +281,9 @@ export class StageManager {
         const elapsedTime = config.duration - timeRemaining;
         
         config.bossEvents.forEach((event, index) => {
-            if (elapsedTime >= event.time && !this.currentStage.bossEventsTriggered.includes(index)) {
+            if (elapsedTime >= event.time && !this.currentStage!.bossEventsTriggered.includes(index)) {
                 this.triggerBossEvent(event);
-                this.currentStage.bossEventsTriggered.push(index);
+                this.currentStage!.bossEventsTriggered.push(index);
             }
         });
     }
@@ -276,7 +291,7 @@ export class StageManager {
     /**
      * ボスイベントを発動
      */
-    triggerBossEvent(event) {
+    triggerBossEvent(event: BossEvent): void {
         console.log(`Boss event triggered: ${event.type}, count: ${event.count}`);
         
         // ボス泡を強制生成
@@ -288,7 +303,7 @@ export class StageManager {
     /**
      * ステージ完了処理
      */
-    completeStage(finalScore) {
+    completeStage(finalScore: number): void {
         if (!this.currentStage) return;
         
         const stageId = this.currentStage.id;

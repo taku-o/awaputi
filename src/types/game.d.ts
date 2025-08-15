@@ -260,37 +260,65 @@ export interface ScoreDebugInfo {
 }
 
 export interface StageManager {
-  currentStage: number;
-  stageConfig: StageConfig;
-  isComplete: boolean;
-  objectives: StageObjective[];
+  gameEngine: any;
+  currentStage: CurrentStage | null;
+  stageConfigs: Record<string, StageConfig>;
   
-  loadStage(stageNumber: number): Promise<void>;
-  updateProgress(): void;
-  checkCompletion(): boolean;
-  getNextStage(): number | null;
-  reset(): void;
+  initializeStageConfigs(): Record<string, StageConfig>;
+  startStage(stageId: string): boolean;
+  isStageUnlocked(stageId: string): boolean;
+  getUnlockedStages(): UnlockedStageInfo[];
+  getLockedStages(): LockedStageInfo[];
+  getCurrentStageConfig(): StageConfig | null;
+  getCurrentStageId(): string | null;
+  checkBossEvents(timeRemaining: number): void;
+  triggerBossEvent(event: BossEvent): void;
+  completeStage(finalScore: number): void;
+}
+
+export interface CurrentStage {
+  id: string;
+  config: StageConfig;
+  startTime: number;
+  bossEventsTriggered: number[];
 }
 
 export interface StageConfig {
-  number: number;
   name: string;
-  timeLimit?: number;
-  scoreTarget?: number;
+  description: string;
+  duration: number;
   bubbleTypes: string[];
   spawnRate: number;
-  difficulty: number;
-  background?: string;
-  music?: string;
+  maxBubbles: number;
+  unlockCondition?: UnlockCondition | null;
+  unlockMessage?: string;
+  bossEvents?: BossEvent[];
 }
 
-export interface StageObjective {
-  id: string;
+export interface UnlockCondition {
+  type: 'tap' | 'highScore' | 'stageComplete';
+  value: number;
+  stage?: string;
+}
+
+export interface BossEvent {
+  time: number;
   type: string;
-  target: number;
-  current: number;
+  count: number;
+}
+
+export interface UnlockedStageInfo {
+  id: string;
+  name: string;
   description: string;
-  isComplete: boolean;
+  duration: number;
+}
+
+export interface LockedStageInfo {
+  id: string;
+  name: string;
+  description: string;
+  unlockMessage: string;
 }
 
 // Audio system
