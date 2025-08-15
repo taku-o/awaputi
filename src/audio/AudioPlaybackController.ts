@@ -406,6 +406,9 @@ export class AudioPlaybackController implements IAudioPlaybackController {
         distortion = false
       } = effects;
 
+      // エフェクト設定を記録（将来の実装で使用）
+      console.log('Audio effects configuration:', { reverb, delay, filter, distortion });
+      
       // Note: 高度なエフェクト実装は将来の拡張で対応
       // 現在は基本的なゲイン・パン・ピッチのみサポート
       

@@ -204,7 +204,7 @@ export class AudioSubsystemCoordinator {
     async initializeAccessibilitySupport() {
         try {
             const AudioAccessibilitySupportModule = await import('./AudioAccessibilitySupport.js');
-            const AudioAccessibilitySupport = AudioAccessibilitySupportModule.default || AudioAccessibilitySupportModule.AudioAccessibilitySupport;
+            const AudioAccessibilitySupport = AudioAccessibilitySupportModule.default || AudioAccessibilitySupportModule.MainAudioAccessibilitySupport;
             this.accessibilitySupport = new AudioAccessibilitySupport(this.audioManager);
             this.subsystemStates.accessibility.initialized = true;
             this.subsystemStates.accessibility.error = null;

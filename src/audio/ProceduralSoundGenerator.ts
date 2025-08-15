@@ -511,6 +511,9 @@ export class ProceduralSoundGenerator {
             timeStretch = 1.0,
             noiseLevel = 0.0
         } = variation;
+        
+        // pitchShiftは将来の実装で使用予定
+        console.log('Variation settings:', { pitchShift, volumeScale, timeStretch, noiseLevel });
 
         // バリエーション音響を生成
         const originalData = baseBuffer.getChannelData(0);
