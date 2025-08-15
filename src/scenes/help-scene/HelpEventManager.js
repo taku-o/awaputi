@@ -193,8 +193,10 @@ export class HelpEventManager {
             const newQuery = event.target.value;
             this.currentSearchQuery = newQuery;
             
-            // 検索実行（デバウンス付き）
-            this.debounceSearch(newQuery);
+            // IME確定時のみ検索実行（デバウンス付き）
+            if (!this.isComposing) {
+                this.debounceSearch(newQuery);
+            }
             
             // 状態更新通知
             if (this.contentManager) {
@@ -267,9 +269,8 @@ export class HelpEventManager {
 
         // 検索バーがフォーカスされている場合の特別処理
         if (this.searchFocused) {
-            // 矢印キーは検索バー内のカーソル移動に使用
+            // 矢印キーは検索バー内のカーソル移動に使用（デフォルト動作を許可）
             if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
-                // デフォルトの動作を許可（カーソル移動）
                 return;
             }
             
@@ -287,16 +288,20 @@ export class HelpEventManager {
                 return;
             }
             
-            // 制御キーとファンクションキー以外はテキスト入力として処理
-            if (event.key === 'Backspace' || event.key === 'Delete' || 
-                (event.key.length === 1 && !event.ctrlKey && !event.altKey && !event.metaKey)) {
-                this.handleTextInput(event);
-                return;
-            }
+            // その他のキーはブラウザのデフォルト動作に任せる
+            // （Backspace、Delete、文字入力など）
+            return;
         }
 
         // アクセシビリティキーの優先処理
         if (this.accessibilityManager.handleAccessibilityKeys(event)) {
+            return;
+        }
+
+        // `/` キーで検索フォーカス（特別処理）
+        if (event.key === '/' && !this.searchFocused) {
+            event.preventDefault();
+            this.focusSearchBar();
             return;
         }
 
@@ -331,32 +336,24 @@ export class HelpEventManager {
             return;
         }
 
-        event.preventDefault();
+        // event.preventDefaultは呼ばない（HTML input要素に任せる）
+        // event.preventDefault();
 
-        try {
-            let newQuery = this.currentSearchQuery;
-
-            if (event.key === 'Backspace') {
-                newQuery = newQuery.slice(0, -1);
-            } else if (event.key === 'Delete') {
-                newQuery = '';
-            } else if (event.key.length === 1) {
-                newQuery += event.key;
-            }
-
-            // 検索クエリを更新
-            this.currentSearchQuery = newQuery;
-            
-            // 検索実行（デバウンス付き）
-            this.debounceSearch(newQuery);
-            
-            // 状態更新通知
-            if (this.contentManager) {
-                this.contentManager.setSearchQuery(newQuery);
-            }
-
-        } catch (error) {
-            console.error('Error handling text input:', error);
+        // HTML input要素の値を直接使用
+        if (this.hiddenInput) {
+            // 少し遅延させてからinput要素の値を取得（キー入力が反映されるため）
+            setTimeout(() => {
+                const newQuery = this.hiddenInput.value;
+                this.currentSearchQuery = newQuery;
+                
+                // 検索実行（デバウンス付き）
+                this.debounceSearch(newQuery);
+                
+                // 状態更新通知
+                if (this.contentManager) {
+                    this.contentManager.setSearchQuery(newQuery);
+                }
+            }, 10);
         }
     }
 
