@@ -674,7 +674,7 @@ export class AudioManager implements IAudioManager {
       try {
         if (this.audioContext) {
           // 実際の設定適用は実装に依存
-          console.log(`[AudioManager] 品質モードを${mode}に変更`);
+          console.log(`[AudioManager] 品質モードを${mode}に変更`, settings);
         }
       } catch (error) {
         console.warn('[AudioManager] 品質モードの変更に失敗:', error);

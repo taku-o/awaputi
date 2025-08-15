@@ -116,37 +116,37 @@ export class AudioConfigurationManager {
             }
 
             // マスター音量の監視
-            const masterVolumeWatcher = this.configManager.watch('audio', 'volumes.master', (newValue) => {
+            const masterVolumeWatcher = this.configManager.watch('audio', 'volumes.master', (newValue: number) => {
                 this.onVolumeChange('master', newValue);
             });
             if (masterVolumeWatcher) this.configWatchers.add(masterVolumeWatcher);
             
             // SFX音量の監視
-            const sfxVolumeWatcher = this.configManager.watch('audio', 'volumes.sfx', (newValue) => {
+            const sfxVolumeWatcher = this.configManager.watch('audio', 'volumes.sfx', (newValue: number) => {
                 this.onVolumeChange('sfx', newValue);
             });
             if (sfxVolumeWatcher) this.configWatchers.add(sfxVolumeWatcher);
             
             // BGM音量の監視
-            const bgmVolumeWatcher = this.configManager.watch('audio', 'volumes.bgm', (newValue) => {
+            const bgmVolumeWatcher = this.configManager.watch('audio', 'volumes.bgm', (newValue: number) => {
                 this.onVolumeChange('bgm', newValue);
             });
             if (bgmVolumeWatcher) this.configWatchers.add(bgmVolumeWatcher);
             
             // ミュート状態の監視
-            const mutedWatcher = this.configManager.watch('audio', 'volumes.muted', (newValue) => {
+            const mutedWatcher = this.configManager.watch('audio', 'volumes.muted', (newValue: boolean) => {
                 this.onMuteChange(newValue);
             });
             if (mutedWatcher) this.configWatchers.add(mutedWatcher);
             
             // コンプレッサー設定の監視
-            const compressionWatcher = this.configManager.watch('audio', 'effects.compression', (newValue) => {
+            const compressionWatcher = this.configManager.watch('audio', 'effects.compression', (newValue: boolean) => {
                 this.onEffectChange('compression', newValue);
             });
             if (compressionWatcher) this.configWatchers.add(compressionWatcher);
             
             // リバーブ設定の監視
-            const reverbWatcher = this.configManager.watch('audio', 'effects.reverb', (newValue) => {
+            const reverbWatcher = this.configManager.watch('audio', 'effects.reverb', (newValue: boolean) => {
                 this.onEffectChange('reverb', newValue);
             });
             if (reverbWatcher) this.configWatchers.add(reverbWatcher);
@@ -170,7 +170,7 @@ export class AudioConfigurationManager {
      * @param {string} type - 音量タイプ
      * @param {number} newValue - 新しい値
      */
-    onVolumeChange(type, newValue) {
+    onVolumeChange(type: string, newValue: number) {
         try {
             const validatedValue = Math.max(0, Math.min(1, newValue));
             this.currentConfig.volumes[type] = validatedValue;
@@ -213,7 +213,7 @@ export class AudioConfigurationManager {
      * ミュート変更処理
      * @param {boolean} newValue - 新しいミュート状態
      */
-    onMuteChange(newValue) {
+    onMuteChange(newValue: boolean) {
         try {
             const newMuteState = Boolean(newValue);
             
@@ -249,7 +249,7 @@ export class AudioConfigurationManager {
      * @param {string} effectType - エフェクトタイプ
      * @param {boolean} newValue - 新しい有効状態
      */
-    onEffectChange(effectType, newValue) {
+    onEffectChange(effectType: string, newValue: boolean) {
         try {
             this.currentConfig.effects[effectType] = Boolean(newValue);
             
@@ -294,7 +294,7 @@ export class AudioConfigurationManager {
      * @param {string} type - 音量タイプ ('master', 'sfx', 'bgm')
      * @param {number} volume - 音量 (0-1)
      */
-    setVolume(type, volume) {
+    setVolume(type: string, volume: number) {
         try {
             // 入力値の検証
             if (typeof volume !== 'number' || isNaN(volume)) {
@@ -341,7 +341,7 @@ export class AudioConfigurationManager {
      * @param {string} type - 音量タイプ ('master', 'sfx', 'bgm')
      * @returns {number} 音量 (0-1)
      */
-    getVolume(type) {
+    getVolume(type: string) {
         try {
             if (this.audioConfig) {
                 switch (type) {
@@ -370,7 +370,7 @@ export class AudioConfigurationManager {
      * ミュート状態設定
      * @param {boolean} muted - ミュート状態
      */
-    setMuted(muted) {
+    setMuted(muted: boolean) {
         try {
             if (typeof muted !== 'boolean') {
                 throw new Error(`Invalid muted value: ${muted}`);
@@ -421,7 +421,7 @@ export class AudioConfigurationManager {
      * @param {string} effectType - エフェクトタイプ
      * @param {boolean} enabled - 有効フラグ
      */
-    setAudioEffect(effectType, enabled) {
+    setAudioEffect(effectType: string, enabled: boolean) {
         try {
             this.onEffectChange(effectType, enabled);
             
@@ -444,7 +444,7 @@ export class AudioConfigurationManager {
      * 品質設定更新
      * @param {Object} qualityConfig - 品質設定
      */
-    updateQualitySettings(qualityConfig) {
+    updateQualitySettings(qualityConfig: any) {
         try {
             const {
                 maxConcurrentSounds,
@@ -539,7 +539,7 @@ export class AudioConfigurationManager {
      * @param {string} eventType - イベントタイプ
      * @param {Function} listener - リスナー関数
      */
-    addChangeListener(eventType, listener) {
+    addChangeListener(eventType: string, listener: Function) {
         if (!this.changeListeners.has(eventType)) {
             this.changeListeners.set(eventType, new Set());
         }
@@ -551,7 +551,7 @@ export class AudioConfigurationManager {
      * @param {string} eventType - イベントタイプ
      * @param {Function} listener - リスナー関数
      */
-    removeChangeListener(eventType, listener) {
+    removeChangeListener(eventType: string, listener: Function) {
         if (this.changeListeners.has(eventType)) {
             this.changeListeners.get(eventType).delete(listener);
         }
@@ -562,7 +562,7 @@ export class AudioConfigurationManager {
      * @param {string} eventType - イベントタイプ
      * @param {Object} data - イベントデータ
      */
-    notifyListeners(eventType, data) {
+    notifyListeners(eventType: string, data: any) {
         if (this.changeListeners.has(eventType)) {
             this.changeListeners.get(eventType).forEach(listener => {
                 try {
@@ -654,7 +654,7 @@ export class AudioConfigurationManager {
 }
 
 // シングルトンインスタンス管理
-let audioConfigurationManagerInstance = null;
+let audioConfigurationManagerInstance: AudioConfigurationManager | null = null;
 
 /**
  * AudioConfigurationManagerのシングルトンインスタンスを取得

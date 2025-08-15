@@ -19,6 +19,9 @@ export class AudioSubsystemCoordinator {
     audioVisualizer: any;
     accessibilitySupport: any;
     subsystemStates: any;
+    currentScene: any;
+    sceneTransitionInProgress: boolean;
+    performanceMetrics: any;
 
     constructor() {
         // 初期化状態
@@ -60,7 +63,7 @@ export class AudioSubsystemCoordinator {
      * AudioManager参照設定
      * @param {Object} audioManager - AudioManagerインスタンス
      */
-    setAudioManager(audioManager) {
+    setAudioManager(audioManager: any) {
         this.audioManager = audioManager;
     }
 
