@@ -216,7 +216,8 @@ export class HelpEventManager {
         this.hiddenInput.style.width = `${searchBarLayout.width}px`;
         this.hiddenInput.style.height = `${searchBarLayout.height}px`;
         
-        console.log('HelpEventManager: Input position updated', { left, top, width: searchBarLayout.width, height: searchBarLayout.height });
+        // デバッグ用ログ（必要時のみコメントアウト）
+        // console.log('HelpEventManager: Input position updated', { left, top, width: searchBarLayout.width, height: searchBarLayout.height });
     }
     
     /**
