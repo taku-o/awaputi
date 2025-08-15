@@ -1,15 +1,26 @@
 /**
  * Developer Console Tests
  * DeveloperConsole クラスのユニットテスト
+ * TypeScript移行 - Task 27対応
  */
 
 import { jest } from '@jest/globals';
+import { JSDOM } from 'jsdom';
 
 // DOM environment setup
-import { JSDOM } from 'jsdom';
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
-global.document = dom.window.document;
-global.window = dom.window;
+(global as any).document = dom.window.document;
+(global as any).window = dom.window;
+
+// Mock function type
+interface MockFunction<T = any> extends Function {
+    mockReturnValue: (value: T) => MockFunction<T>;
+    mockImplementation: (impl: Function) => MockFunction<T>;
+    toHaveBeenCalledWith: (...args: any[]) => void;
+    toHaveBeenCalled: () => void;
+    mockRestore: () => void;
+    mockClear: () => void;
+}
 
 // Mock ErrorHandler
 jest.mock('../src/utils/ErrorHandler.js', () => ({
@@ -18,39 +29,157 @@ jest.mock('../src/utils/ErrorHandler.js', () => ({
     }))
 }));
 
+// Configuration interfaces
+interface ConfigurationManager {
+    get: MockFunction<any>;
+    set: MockFunction<boolean>;
+    getDefault: MockFunction<any>;
+    getAll: MockFunction<any>;
+    getAllDefaults: MockFunction<any>;
+    validate: MockFunction<boolean>;
+    validateAll: MockFunction<boolean>;
+}
+
+interface PerformanceOptimizer {
+    getCurrentFPS: MockFunction<number>;
+}
+
+// Game engine interface
+interface MockGameEngine {
+    canvas: { mock: string };
+    sceneManager: { mock: string };
+    inputManager: { mock: string };
+    performanceOptimizer: PerformanceOptimizer;
+    configurationManager: ConfigurationManager;
+}
+
+// Console interfaces
+interface ConsoleState {
+    visible: boolean;
+    focused: boolean;
+    history: string[];
+    historyIndex: number;
+    maxHistorySize?: number;
+}
+
+interface OutputLine {
+    text: string;
+    type: string;
+}
+
+interface ConsoleOutput {
+    lines: OutputLine[];
+    maxLines: number;
+    timestampFormat?: string;
+}
+
+interface CommandConfig {
+    description?: string;
+    usage?: string;
+    aliases?: string[];
+    category?: string;
+    hidden?: boolean;
+    execute: (args: string[]) => any;
+    getCompletions?: (args: string[]) => string[];
+}
+
+interface ParsedInput {
+    command: string | null;
+    args: string[];
+}
+
+interface ConsoleLike {
+    print: MockFunction<void>;
+    printError: MockFunction<void>;
+}
+
+interface DeveloperConsole {
+    gameEngine: MockGameEngine;
+    element: HTMLDivElement;
+    inputElement: HTMLInputElement;
+    outputElement: HTMLDivElement;
+    commandRegistry: CommandRegistry;
+    state: ConsoleState;
+    output: ConsoleOutput;
+    configurationCommands: { destroy: MockFunction<void> };
+    
+    show(): void;
+    hide(): void;
+    toggle(): void;
+    print(message: string): void;
+    printError(message: string): void;
+    printWarning(message: string): void;
+    printInfo(message: string): void;
+    printSuccess(message: string): void;
+    clear(): void;
+    formatTimestamp(date: Date): string;
+    executeCommand(): void;
+    navigateHistory(direction: number): void;
+    handleKeyDown(event: KeyboardEvent): void;
+    handleTabCompletion(): void;
+    updateSettings(settings: any): void;
+    getState(): any;
+    registerCommand(name: string, config: CommandConfig): boolean;
+    unregisterCommand(name: string): boolean;
+    execute(command: string): Promise<void>;
+    getCommands(): string[];
+    getOutput(): any[];
+    destroy(): void;
+}
+
+interface CommandRegistry {
+    commands: Map<string, CommandConfig>;
+    aliases: Map<string, string>;
+    middleware: Function[];
+    
+    register(name: string, config: CommandConfig): boolean;
+    unregister(name: string): boolean;
+    execute(input: string): any;
+    parseInput(input: string): ParsedInput;
+    getCompletions(input: string): string[];
+    getCommandList(): string;
+    getCommandHelp(name: string): string;
+    getCommandNames(): string[];
+    addMiddleware(middleware: Function): void;
+    destroy(): void;
+}
+
 // Mock game engine
-const mockGameEngine = {
+const mockGameEngine: MockGameEngine = {
     canvas: { mock: 'canvas' },
     sceneManager: { mock: 'sceneManager' },
     inputManager: { mock: 'inputManager' },
     performanceOptimizer: {
-        getCurrentFPS: jest.fn(() => 60)
+        getCurrentFPS: jest.fn(() => 60) as MockFunction<number>
     },
     configurationManager: {
-        get: jest.fn(),
-        set: jest.fn(),
-        getDefault: jest.fn(),
-        getAll: jest.fn(),
-        getAllDefaults: jest.fn(),
-        validate: jest.fn(),
-        validateAll: jest.fn()
+        get: jest.fn() as MockFunction<any>,
+        set: jest.fn() as MockFunction<boolean>,
+        getDefault: jest.fn() as MockFunction<any>,
+        getAll: jest.fn() as MockFunction<any>,
+        getAllDefaults: jest.fn() as MockFunction<any>,
+        validate: jest.fn() as MockFunction<boolean>,
+        validateAll: jest.fn() as MockFunction<boolean>
     }
 };
 
 // Import after mocking
-const { DeveloperConsole, CommandRegistry } = await import('../../src/debug/DeveloperConsole.js');
+const { DeveloperConsole, CommandRegistry } = await import('../../src/debug/DeveloperConsole.js') as {
+    DeveloperConsole: new (gameEngine: MockGameEngine) => DeveloperConsole;
+    CommandRegistry: new (console: ConsoleLike) => CommandRegistry;
+};
 
 describe('DeveloperConsole', () => {
-    let console;
-    let consoleLogSpy;
-    let consoleWarnSpy;
-    let consoleErrorSpy;
+    let devConsole: DeveloperConsole;
+    let consoleLogSpy: MockFunction<void>;
+    let consoleWarnSpy: MockFunction<void>;
+    let consoleErrorSpy: MockFunction<void>;
 
     beforeEach(() => {
         // Console spies
-        consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
-        consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-        consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {}) as MockFunction<void>;
+        consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {}) as MockFunction<void>;
+        consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {}) as MockFunction<void>;
 
         // Reset DOM
         document.body.innerHTML = '';
@@ -59,12 +188,12 @@ describe('DeveloperConsole', () => {
         jest.clearAllMocks();
 
         // Create instance
-        console = new DeveloperConsole(mockGameEngine);
+        devConsole = new DeveloperConsole(mockGameEngine);
     });
 
     afterEach(() => {
-        if (console) {
-            console.destroy();
+        if (devConsole) {
+            devConsole.destroy();
         }
 
         // Restore console
@@ -75,33 +204,33 @@ describe('DeveloperConsole', () => {
 
     describe('Initialization', () => {
         test('should initialize with default values', () => {
-            expect(console.gameEngine).toBe(mockGameEngine);
-            expect(console.element).toBeDefined();
-            expect(console.inputElement).toBeDefined();
-            expect(console.outputElement).toBeDefined();
-            expect(console.commandRegistry).toBeInstanceOf(CommandRegistry);
+            expect(devConsole.gameEngine).toBe(mockGameEngine);
+            expect(devConsole.element).toBeDefined();
+            expect(devConsole.inputElement).toBeDefined();
+            expect(devConsole.outputElement).toBeDefined();
+            expect(devConsole.commandRegistry).toBeDefined();
         });
 
         test('should create DOM elements', () => {
-            expect(console.element.className).toBe('developer-console');
-            expect(console.outputElement.className).toBe('console-output');
-            expect(console.inputElement.className).toBe('console-input');
-            expect(console.element.parentNode).toBe(document.body);
+            expect(devConsole.element.className).toBe('developer-console');
+            expect(devConsole.outputElement.className).toBe('console-output');
+            expect(devConsole.inputElement.className).toBe('console-input');
+            expect(devConsole.element.parentNode).toBe(document.body);
         });
 
         test('should have correct initial state', () => {
-            expect(console.state.visible).toBe(false);
-            expect(console.state.focused).toBe(false);
-            expect(console.state.history).toEqual([]);
-            expect(console.state.historyIndex).toBe(-1);
+            expect(devConsole.state.visible).toBe(false);
+            expect(devConsole.state.focused).toBe(false);
+            expect(devConsole.state.history).toEqual([]);
+            expect(devConsole.state.historyIndex).toBe(-1);
         });
 
         test('should be initially hidden', () => {
-            expect(console.element.style.display).toBe('none');
+            expect(devConsole.element.style.display).toBe('none');
         });
 
         test('should register default commands', () => {
-            const commandNames = console.commandRegistry.getCommandNames();
+            const commandNames: string[] = devConsole.commandRegistry.getCommandNames();
             expect(commandNames).toContain('help');
             expect(commandNames).toContain('clear');
             expect(commandNames).toContain('history');
@@ -113,50 +242,50 @@ describe('DeveloperConsole', () => {
 
     describe('Display Control', () => {
         test('should show console', () => {
-            console.show();
-            expect(console.element.style.display).toBe('block');
-            expect(console.state.visible).toBe(true);
+            devConsole.show();
+            expect(devConsole.element.style.display).toBe('block');
+            expect(devConsole.state.visible).toBe(true);
         });
 
         test('should hide console', () => {
-            console.show();
-            console.hide();
-            expect(console.element.style.display).toBe('none');
-            expect(console.state.visible).toBe(false);
+            devConsole.show();
+            devConsole.hide();
+            expect(devConsole.element.style.display).toBe('none');
+            expect(devConsole.state.visible).toBe(false);
         });
 
         test('should toggle console visibility', () => {
-            expect(console.state.visible).toBe(false);
+            expect(devConsole.state.visible).toBe(false);
             
-            console.toggle();
-            expect(console.state.visible).toBe(true);
+            devConsole.toggle();
+            expect(devConsole.state.visible).toBe(true);
             
-            console.toggle();
-            expect(console.state.visible).toBe(false);
+            devConsole.toggle();
+            expect(devConsole.state.visible).toBe(false);
         });
 
         test('should focus input when shown', () => {
-            const focusSpy = jest.spyOn(console.inputElement, 'focus');
-            console.show();
+            const focusSpy = jest.spyOn(devConsole.inputElement, 'focus');
+            devConsole.show();
             expect(focusSpy).toHaveBeenCalled();
         });
     });
 
     describe('Output System', () => {
         test('should print normal text', () => {
-            console.print('Test message');
-            expect(console.output.lines).toHaveLength(6); // 5 welcome messages + 1 test message
-            expect(console.output.lines[5].text).toBe('Test message');
-            expect(console.output.lines[5].type).toBe('normal');
+            devConsole.print('Test message');
+            expect(devConsole.output.lines).toHaveLength(6); // 5 welcome messages + 1 test message
+            expect(devConsole.output.lines[5].text).toBe('Test message');
+            expect(devConsole.output.lines[5].type).toBe('normal');
         });
 
         test('should print different message types', () => {
-            console.printError('Error message');
-            console.printWarning('Warning message');
-            console.printInfo('Info message');
-            console.printSuccess('Success message');
+            devConsole.printError('Error message');
+            devConsole.printWarning('Warning message');
+            devConsole.printInfo('Info message');
+            devConsole.printSuccess('Success message');
 
-            const lines = console.output.lines;
+            const lines: OutputLine[] = devConsole.output.lines;
             expect(lines[lines.length - 4].type).toBe('error');
             expect(lines[lines.length - 3].type).toBe('warning');
             expect(lines[lines.length - 2].type).toBe('info');
@@ -164,110 +293,110 @@ describe('DeveloperConsole', () => {
         });
 
         test('should limit output lines', () => {
-            console.output.maxLines = 3;
+            devConsole.output.maxLines = 3;
             
-            console.print('Line 1');
-            console.print('Line 2');
-            console.print('Line 3');
-            console.print('Line 4');
+            devConsole.print('Line 1');
+            devConsole.print('Line 2');
+            devConsole.print('Line 3');
+            devConsole.print('Line 4');
             
-            expect(console.output.lines).toHaveLength(3);
-            expect(console.output.lines[0].text).toBe('Line 2');
-            expect(console.output.lines[2].text).toBe('Line 4');
+            expect(devConsole.output.lines).toHaveLength(3);
+            expect(devConsole.output.lines[0].text).toBe('Line 2');
+            expect(devConsole.output.lines[2].text).toBe('Line 4');
         });
 
         test('should escape HTML in output', () => {
-            console.print('<script>alert("xss")</script>');
-            const html = console.outputElement.innerHTML;
+            devConsole.print('<script>alert("xss")</script>');
+            const html: string = devConsole.outputElement.innerHTML;
             expect(html).toContain('&lt;script&gt;');
             expect(html).not.toContain('<script>');
         });
 
         test('should clear output', () => {
-            console.print('Test message');
-            expect(console.output.lines.length).toBeGreaterThan(0);
+            devConsole.print('Test message');
+            expect(devConsole.output.lines.length).toBeGreaterThan(0);
             
-            console.clear();
-            expect(console.output.lines).toHaveLength(0);
-            expect(console.outputElement.innerHTML).toBe('');
+            devConsole.clear();
+            expect(devConsole.output.lines).toHaveLength(0);
+            expect(devConsole.outputElement.innerHTML).toBe('');
         });
 
         test('should format timestamps', () => {
             const date = new Date('2023-01-01T12:34:56Z');
-            const formatted = console.formatTimestamp(date);
+            const formatted: string = devConsole.formatTimestamp(date);
             expect(formatted).toMatch(/^\d{2}:\d{2}:\d{2}$/);
         });
     });
 
     describe('Command Execution', () => {
         test('should execute help command', () => {
-            console.inputElement.value = 'help';
-            console.executeCommand();
+            devConsole.inputElement.value = 'help';
+            devConsole.executeCommand();
             
-            const lastLine = console.output.lines[console.output.lines.length - 1];
+            const lastLine: OutputLine = devConsole.output.lines[devConsole.output.lines.length - 1];
             expect(lastLine.text).toContain('Available commands');
         });
 
         test('should execute clear command', () => {
-            console.print('Test message');
-            console.inputElement.value = 'clear';
-            console.executeCommand();
+            devConsole.print('Test message');
+            devConsole.inputElement.value = 'clear';
+            devConsole.executeCommand();
             
-            expect(console.output.lines).toHaveLength(0);
+            expect(devConsole.output.lines).toHaveLength(0);
         });
 
         test('should execute echo command', () => {
-            console.inputElement.value = 'echo Hello World';
-            console.executeCommand();
+            devConsole.inputElement.value = 'echo Hello World';
+            devConsole.executeCommand();
             
-            const lastLine = console.output.lines[console.output.lines.length - 1];
+            const lastLine: OutputLine = devConsole.output.lines[devConsole.output.lines.length - 1];
             expect(lastLine.text).toBe('Hello World');
         });
 
         test('should execute date command', () => {
-            console.inputElement.value = 'date';
-            console.executeCommand();
+            devConsole.inputElement.value = 'date';
+            devConsole.executeCommand();
             
-            const lastLine = console.output.lines[console.output.lines.length - 1];
+            const lastLine: OutputLine = devConsole.output.lines[devConsole.output.lines.length - 1];
             expect(lastLine.text).toMatch(/\d{4}/); // Should contain year
         });
 
         test('should execute engine command', () => {
-            console.inputElement.value = 'engine';
-            console.executeCommand();
+            devConsole.inputElement.value = 'engine';
+            devConsole.executeCommand();
             
-            const lastLine = console.output.lines[console.output.lines.length - 1];
+            const lastLine: OutputLine = devConsole.output.lines[devConsole.output.lines.length - 1];
             expect(lastLine.text).toContain('Game Engine Information');
         });
 
         test('should handle unknown command', () => {
-            console.inputElement.value = 'unknown';
-            console.executeCommand();
+            devConsole.inputElement.value = 'unknown';
+            devConsole.executeCommand();
             
-            const lastLine = console.output.lines[console.output.lines.length - 1];
+            const lastLine: OutputLine = devConsole.output.lines[devConsole.output.lines.length - 1];
             expect(lastLine.text).toContain('Unknown command');
             expect(lastLine.type).toBe('error');
         });
 
         test('should handle empty command', () => {
-            console.inputElement.value = '';
-            console.executeCommand();
+            devConsole.inputElement.value = '';
+            devConsole.executeCommand();
             
             // Should not add anything to output or history
-            expect(console.state.history).toHaveLength(0);
+            expect(devConsole.state.history).toHaveLength(0);
         });
 
         test('should handle command execution errors', () => {
-            console.commandRegistry.register('error-command', {
+            devConsole.commandRegistry.register('error-command', {
                 execute: () => {
                     throw new Error('Test error');
                 }
             });
             
-            console.inputElement.value = 'error-command';
-            console.executeCommand();
+            devConsole.inputElement.value = 'error-command';
+            devConsole.executeCommand();
             
-            const lastLine = console.output.lines[console.output.lines.length - 1];
+            const lastLine: OutputLine = devConsole.output.lines[devConsole.output.lines.length - 1];
             expect(lastLine.text).toContain('Command error');
             expect(lastLine.type).toBe('error');
         });
@@ -275,66 +404,66 @@ describe('DeveloperConsole', () => {
 
     describe('Command History', () => {
         test('should add commands to history', () => {
-            console.inputElement.value = 'test command';
-            console.executeCommand();
+            devConsole.inputElement.value = 'test command';
+            devConsole.executeCommand();
             
-            expect(console.state.history).toContain('test command');
+            expect(devConsole.state.history).toContain('test command');
         });
 
         test('should navigate history with arrow keys', () => {
-            console.inputElement.value = 'command1';
-            console.executeCommand();
-            console.inputElement.value = 'command2';
-            console.executeCommand();
+            devConsole.inputElement.value = 'command1';
+            devConsole.executeCommand();
+            devConsole.inputElement.value = 'command2';
+            devConsole.executeCommand();
             
             // Navigate up (to previous command)
-            console.navigateHistory(-1);
-            expect(console.inputElement.value).toBe('command2');
+            devConsole.navigateHistory(-1);
+            expect(devConsole.inputElement.value).toBe('command2');
             
-            console.navigateHistory(-1);
-            expect(console.inputElement.value).toBe('command1');
+            devConsole.navigateHistory(-1);
+            expect(devConsole.inputElement.value).toBe('command1');
             
             // Navigate down (to next command)
-            console.navigateHistory(1);
-            expect(console.inputElement.value).toBe('command2');
+            devConsole.navigateHistory(1);
+            expect(devConsole.inputElement.value).toBe('command2');
         });
 
         test('should limit history size', () => {
-            console.state.maxHistorySize = 3;
+            devConsole.state.maxHistorySize = 3;
             
-            console.inputElement.value = 'command1';
-            console.executeCommand();
-            console.inputElement.value = 'command2';
-            console.executeCommand();
-            console.inputElement.value = 'command3';
-            console.executeCommand();
-            console.inputElement.value = 'command4';
-            console.executeCommand();
+            devConsole.inputElement.value = 'command1';
+            devConsole.executeCommand();
+            devConsole.inputElement.value = 'command2';
+            devConsole.executeCommand();
+            devConsole.inputElement.value = 'command3';
+            devConsole.executeCommand();
+            devConsole.inputElement.value = 'command4';
+            devConsole.executeCommand();
             
-            expect(console.state.history).toHaveLength(3);
-            expect(console.state.history[0]).toBe('command2');
-            expect(console.state.history[2]).toBe('command4');
+            expect(devConsole.state.history).toHaveLength(3);
+            expect(devConsole.state.history[0]).toBe('command2');
+            expect(devConsole.state.history[2]).toBe('command4');
         });
 
         test('should remove duplicate history entries', () => {
-            console.inputElement.value = 'same command';
-            console.executeCommand();
-            console.inputElement.value = 'same command';
-            console.executeCommand();
+            devConsole.inputElement.value = 'same command';
+            devConsole.executeCommand();
+            devConsole.inputElement.value = 'same command';
+            devConsole.executeCommand();
             
-            expect(console.state.history.filter(cmd => cmd === 'same command')).toHaveLength(1);
+            expect(devConsole.state.history.filter(cmd => cmd === 'same command')).toHaveLength(1);
         });
 
         test('should show command history', () => {
-            console.inputElement.value = 'command1';
-            console.executeCommand();
-            console.inputElement.value = 'command2';
-            console.executeCommand();
+            devConsole.inputElement.value = 'command1';
+            devConsole.executeCommand();
+            devConsole.inputElement.value = 'command2';
+            devConsole.executeCommand();
             
-            console.inputElement.value = 'history';
-            console.executeCommand();
+            devConsole.inputElement.value = 'history';
+            devConsole.executeCommand();
             
-            const lastLine = console.output.lines[console.output.lines.length - 1];
+            const lastLine: OutputLine = devConsole.output.lines[devConsole.output.lines.length - 1];
             expect(lastLine.text).toContain('command1');
             expect(lastLine.text).toContain('command2');
         });
@@ -348,7 +477,7 @@ describe('DeveloperConsole', () => {
             document.dispatchEvent(event);
             
             expect(preventDefaultSpy).toHaveBeenCalled();
-            expect(console.state.visible).toBe(true);
+            expect(devConsole.state.visible).toBe(true);
         });
 
         test('should handle Ctrl+Shift+C to toggle console', () => {
@@ -362,11 +491,11 @@ describe('DeveloperConsole', () => {
             document.dispatchEvent(event);
             
             expect(preventDefaultSpy).toHaveBeenCalled();
-            expect(console.state.visible).toBe(true);
+            expect(devConsole.state.visible).toBe(true);
         });
 
         test('should handle Escape key to hide console', () => {
-            console.show();
+            devConsole.show();
             
             const event = new KeyboardEvent('keydown', { key: 'Escape' });
             const preventDefaultSpy = jest.spyOn(event, 'preventDefault');
@@ -374,56 +503,56 @@ describe('DeveloperConsole', () => {
             document.dispatchEvent(event);
             
             expect(preventDefaultSpy).toHaveBeenCalled();
-            expect(console.state.visible).toBe(false);
+            expect(devConsole.state.visible).toBe(false);
         });
 
         test('should handle Enter key to execute command', () => {
-            console.inputElement.value = 'echo test';
+            devConsole.inputElement.value = 'echo test';
             const event = new KeyboardEvent('keydown', { key: 'Enter' });
             const preventDefaultSpy = jest.spyOn(event, 'preventDefault');
             
-            console.handleKeyDown(event);
+            devConsole.handleKeyDown(event);
             
             expect(preventDefaultSpy).toHaveBeenCalled();
-            expect(console.inputElement.value).toBe('');
-            expect(console.state.history).toContain('echo test');
+            expect(devConsole.inputElement.value).toBe('');
+            expect(devConsole.state.history).toContain('echo test');
         });
 
         test('should handle Tab key for completion', () => {
-            console.inputElement.value = 'hel';
+            devConsole.inputElement.value = 'hel';
             const event = new KeyboardEvent('keydown', { key: 'Tab' });
             const preventDefaultSpy = jest.spyOn(event, 'preventDefault');
             
-            console.handleKeyDown(event);
+            devConsole.handleKeyDown(event);
             
             expect(preventDefaultSpy).toHaveBeenCalled();
-            expect(console.inputElement.value).toBe('help');
+            expect(devConsole.inputElement.value).toBe('help');
         });
     });
 
     describe('Tab Completion', () => {
         test('should complete single command', () => {
-            console.inputElement.value = 'hel';
-            console.handleTabCompletion();
+            devConsole.inputElement.value = 'hel';
+            devConsole.handleTabCompletion();
             
-            expect(console.inputElement.value).toBe('help');
+            expect(devConsole.inputElement.value).toBe('help');
         });
 
         test('should show multiple completions', () => {
-            console.inputElement.value = 'h';
-            console.handleTabCompletion();
+            devConsole.inputElement.value = 'h';
+            devConsole.handleTabCompletion();
             
-            const lastLines = console.output.lines.slice(-3);
+            const lastLines: OutputLine[] = devConsole.output.lines.slice(-3);
             expect(lastLines.some(line => line.text.includes('Available completions'))).toBe(true);
         });
 
         test('should handle no completions', () => {
-            console.inputElement.value = 'xyz';
-            const originalLines = console.output.lines.length;
+            devConsole.inputElement.value = 'xyz';
+            const originalLines = devConsole.output.lines.length;
             
-            console.handleTabCompletion();
+            devConsole.handleTabCompletion();
             
-            expect(console.output.lines.length).toBe(originalLines);
+            expect(devConsole.output.lines.length).toBe(originalLines);
         });
     });
 
@@ -438,16 +567,16 @@ describe('DeveloperConsole', () => {
                 }
             };
             
-            console.updateSettings(newSettings);
+            devConsole.updateSettings(newSettings);
             
-            expect(console.state.maxHistorySize).toBe(50);
-            expect(console.output.maxLines).toBe(200);
-            expect(console.output.timestampFormat).toBe('HH:mm');
-            expect(console.element.style.backgroundColor).toBe('red');
+            expect(devConsole.state.maxHistorySize).toBe(50);
+            expect(devConsole.output.maxLines).toBe(200);
+            expect(devConsole.output.timestampFormat).toBe('HH:mm');
+            expect(devConsole.element.style.backgroundColor).toBe('red');
         });
 
         test('should get console state', () => {
-            const state = console.getState();
+            const state = devConsole.getState();
             
             expect(state.visible).toBeDefined();
             expect(state.focused).toBeDefined();
@@ -460,66 +589,66 @@ describe('DeveloperConsole', () => {
 
     describe('Custom Commands', () => {
         test('should register custom command', () => {
-            const result = console.registerCommand('test', {
+            const result: boolean = devConsole.registerCommand('test', {
                 description: 'Test command',
-                execute: (args) => `Test result: ${args.join(' ')}`
+                execute: (args: string[]) => `Test result: ${args.join(' ')}`
             });
             
             expect(result).toBe(true);
-            expect(console.commandRegistry.getCommandNames()).toContain('test');
+            expect(devConsole.commandRegistry.getCommandNames()).toContain('test');
         });
 
         test('should execute custom command', () => {
-            console.registerCommand('custom', {
+            devConsole.registerCommand('custom', {
                 description: 'Custom command',
-                execute: (args) => `Custom: ${args[0]}`
+                execute: (args: string[]) => `Custom: ${args[0]}`
             });
             
-            console.inputElement.value = 'custom arg1';
-            console.executeCommand();
+            devConsole.inputElement.value = 'custom arg1';
+            devConsole.executeCommand();
             
-            const lastLine = console.output.lines[console.output.lines.length - 1];
+            const lastLine: OutputLine = devConsole.output.lines[devConsole.output.lines.length - 1];
             expect(lastLine.text).toBe('Custom: arg1');
         });
 
         test('should unregister command', () => {
-            console.registerCommand('temp', {
+            devConsole.registerCommand('temp', {
                 execute: () => 'temp'
             });
             
-            expect(console.commandRegistry.getCommandNames()).toContain('temp');
+            expect(devConsole.commandRegistry.getCommandNames()).toContain('temp');
             
-            const result = console.unregisterCommand('temp');
+            const result: boolean = devConsole.unregisterCommand('temp');
             expect(result).toBe(true);
-            expect(console.commandRegistry.getCommandNames()).not.toContain('temp');
+            expect(devConsole.commandRegistry.getCommandNames()).not.toContain('temp');
         });
     });
 
     describe('Cleanup', () => {
         test('should destroy cleanly', () => {
-            const element = console.element;
+            const element = devConsole.element;
             expect(element.parentNode).toBe(document.body);
             
-            console.destroy();
+            devConsole.destroy();
             
             expect(element.parentNode).toBeNull();
         });
 
         test('should log destruction', () => {
-            console.destroy();
+            devConsole.destroy();
             expect(consoleLogSpy).toHaveBeenCalledWith('[DeveloperConsole] Destroyed');
         });
     });
 });
 
 describe('CommandRegistry', () => {
-    let registry;
-    let mockConsole;
+    let registry: CommandRegistry;
+    let mockConsole: ConsoleLike;
 
     beforeEach(() => {
         mockConsole = {
-            print: jest.fn(),
-            printError: jest.fn()
+            print: jest.fn() as MockFunction<void>,
+            printError: jest.fn() as MockFunction<void>
         };
         registry = new CommandRegistry(mockConsole);
     });
@@ -532,7 +661,7 @@ describe('CommandRegistry', () => {
 
     describe('Command Registration', () => {
         test('should register command', () => {
-            const result = registry.register('test', {
+            const result: boolean = registry.register('test', {
                 description: 'Test command',
                 execute: () => 'test result'
             });
@@ -554,7 +683,7 @@ describe('CommandRegistry', () => {
 
         test('should fail to register invalid command', () => {
             expect(() => {
-                registry.register('invalid', { description: 'No execute function' });
+                registry.register('invalid', { description: 'No execute function' } as any);
             }).toThrow('Invalid command configuration');
         });
 
@@ -567,14 +696,14 @@ describe('CommandRegistry', () => {
             expect(registry.commands.has('temp')).toBe(true);
             expect(registry.aliases.has('tmp')).toBe(true);
             
-            const result = registry.unregister('temp');
+            const result: boolean = registry.unregister('temp');
             expect(result).toBe(true);
             expect(registry.commands.has('temp')).toBe(false);
             expect(registry.aliases.has('tmp')).toBe(false);
         });
 
         test('should fail to unregister non-existent command', () => {
-            const result = registry.unregister('nonexistent');
+            const result: boolean = registry.unregister('nonexistent');
             expect(result).toBe(false);
         });
     });
@@ -582,11 +711,11 @@ describe('CommandRegistry', () => {
     describe('Command Execution', () => {
         beforeEach(() => {
             registry.register('echo', {
-                execute: (args) => args.join(' ')
+                execute: (args: string[]) => args.join(' ')
             });
             
             registry.register('add', {
-                execute: (args) => {
+                execute: (args: string[]) => {
                     const a = parseInt(args[0]);
                     const b = parseInt(args[1]);
                     return a + b;
@@ -595,12 +724,12 @@ describe('CommandRegistry', () => {
         });
 
         test('should execute simple command', () => {
-            const result = registry.execute('echo hello world');
+            const result: string = registry.execute('echo hello world');
             expect(result).toBe('hello world');
         });
 
         test('should execute command with arguments', () => {
-            const result = registry.execute('add 5 3');
+            const result: number = registry.execute('add 5 3');
             expect(result).toBe(8);
         });
 
@@ -610,7 +739,7 @@ describe('CommandRegistry', () => {
                 execute: () => 'test executed'
             });
             
-            const result = registry.execute('t');
+            const result: string = registry.execute('t');
             expect(result).toBe('test executed');
         });
 
@@ -641,37 +770,37 @@ describe('CommandRegistry', () => {
 
     describe('Input Parsing', () => {
         test('should parse simple command', () => {
-            const parsed = registry.parseInput('help');
+            const parsed: ParsedInput = registry.parseInput('help');
             expect(parsed.command).toBe('help');
             expect(parsed.args).toEqual([]);
         });
 
         test('should parse command with arguments', () => {
-            const parsed = registry.parseInput('echo hello world');
+            const parsed: ParsedInput = registry.parseInput('echo hello world');
             expect(parsed.command).toBe('echo');
             expect(parsed.args).toEqual(['hello', 'world']);
         });
 
         test('should parse command with quoted arguments', () => {
-            const parsed = registry.parseInput('echo "hello world" test');
+            const parsed: ParsedInput = registry.parseInput('echo "hello world" test');
             expect(parsed.command).toBe('echo');
             expect(parsed.args).toEqual(['hello world', 'test']);
         });
 
         test('should parse command with single quotes', () => {
-            const parsed = registry.parseInput("echo 'hello world' test");
+            const parsed: ParsedInput = registry.parseInput("echo 'hello world' test");
             expect(parsed.command).toBe('echo');
             expect(parsed.args).toEqual(['hello world', 'test']);
         });
 
         test('should handle empty input', () => {
-            const parsed = registry.parseInput('');
+            const parsed: ParsedInput = registry.parseInput('');
             expect(parsed.command).toBeNull();
             expect(parsed.args).toEqual([]);
         });
 
         test('should handle whitespace-only input', () => {
-            const parsed = registry.parseInput('   ');
+            const parsed: ParsedInput = registry.parseInput('   ');
             expect(parsed.command).toBeNull();
             expect(parsed.args).toEqual([]);
         });
@@ -685,31 +814,31 @@ describe('CommandRegistry', () => {
             registry.register('test', { 
                 aliases: ['t'],
                 execute: () => {},
-                getCompletions: (args) => ['option1', 'option2']
+                getCompletions: (args: string[]) => ['option1', 'option2']
             });
         });
 
         test('should get command completions', () => {
-            const completions = registry.getCompletions('he');
+            const completions: string[] = registry.getCompletions('he');
             expect(completions).toContain('help');
             expect(completions).toContain('hello');
             expect(completions).not.toContain('history');
         });
 
         test('should get all commands when no input', () => {
-            const completions = registry.getCompletions('');
+            const completions: string[] = registry.getCompletions('');
             expect(completions.length).toBeGreaterThan(0);
             expect(completions).toContain('help');
             expect(completions).toContain('t'); // alias
         });
 
         test('should get argument completions', () => {
-            const completions = registry.getCompletions('test arg');
+            const completions: string[] = registry.getCompletions('test arg');
             expect(completions).toEqual(['option1', 'option2']);
         });
 
         test('should return empty array for unknown command arguments', () => {
-            const completions = registry.getCompletions('help arg');
+            const completions: string[] = registry.getCompletions('help arg');
             expect(completions).toEqual([]);
         });
     });
@@ -738,14 +867,14 @@ describe('CommandRegistry', () => {
         });
 
         test('should get command list', () => {
-            const list = registry.getCommandList();
+            const list: string = registry.getCommandList();
             expect(list).toContain('test1');
             expect(list).not.toContain('test2'); // hidden
             expect(list).toContain('TESTING:');
         });
 
         test('should get command help', () => {
-            const help = registry.getCommandHelp('help');
+            const help: string = registry.getCommandHelp('help');
             expect(help).toContain('Command: help');
             expect(help).toContain('Description: Help command');
             expect(help).toContain('Usage: help [command]');
@@ -753,12 +882,12 @@ describe('CommandRegistry', () => {
         });
 
         test('should handle help for unknown command', () => {
-            const help = registry.getCommandHelp('unknown');
+            const help: string = registry.getCommandHelp('unknown');
             expect(help).toBe('Unknown command: unknown');
         });
 
         test('should get command names', () => {
-            const names = registry.getCommandNames();
+            const names: string[] = registry.getCommandNames();
             expect(names).toContain('test1');
             expect(names).toContain('test2');
             expect(names).toContain('help');
@@ -768,7 +897,7 @@ describe('CommandRegistry', () => {
 
     describe('Middleware', () => {
         test('should add and execute middleware', () => {
-            const middleware = jest.fn((command, args) => {
+            const middleware = jest.fn((command: string, args: string[]) => {
                 return command !== 'blocked';
             });
             
@@ -776,7 +905,7 @@ describe('CommandRegistry', () => {
             registry.register('test', { execute: () => 'success' });
             registry.register('blocked', { execute: () => 'blocked' });
             
-            const result = registry.execute('test');
+            const result: string = registry.execute('test');
             expect(result).toBe('success');
             expect(middleware).toHaveBeenCalledWith('test', []);
             
@@ -801,10 +930,10 @@ describe('CommandRegistry', () => {
 
     describe('Configuration Commands Integration', () => {
         test('should register configuration commands', async () => {
-            const console = new DeveloperConsole(mockGameEngine);
+            const devConsole = new DeveloperConsole(mockGameEngine);
             
             // Check that config commands are registered
-            const commands = console.getCommands();
+            const commands: string[] = devConsole.getCommands();
             expect(commands).toContain('config.get');
             expect(commands).toContain('config.set');
             expect(commands).toContain('config.reset');
@@ -821,23 +950,23 @@ describe('CommandRegistry', () => {
         test('should execute config.get command', async () => {
             mockGameEngine.configurationManager.get.mockReturnValue(25);
             
-            const console = new DeveloperConsole(mockGameEngine);
+            const devConsole = new DeveloperConsole(mockGameEngine);
             
-            await console.execute('config.get game.scoring.baseScores.normal');
+            await devConsole.execute('config.get game.scoring.baseScores.normal');
             
             expect(mockGameEngine.configurationManager.get).toHaveBeenCalledWith('game.scoring.baseScores.normal');
             
-            const output = console.getOutput();
-            expect(output.some(line => line.message.includes('game.scoring.baseScores.normal = 25'))).toBe(true);
+            const output = devConsole.getOutput();
+            expect(output.some((line: any) => line.message.includes('game.scoring.baseScores.normal = 25'))).toBe(true);
         });
 
         test('should execute config.set command', async () => {
             mockGameEngine.configurationManager.get.mockReturnValue(10); // original value
             mockGameEngine.configurationManager.set.mockReturnValue(true);
             
-            const console = new DeveloperConsole(mockGameEngine);
+            const devConsole = new DeveloperConsole(mockGameEngine);
             
-            await console.execute('config.set game.scoring.baseScores.normal 25');
+            await devConsole.execute('config.set game.scoring.baseScores.normal 25');
             
             expect(mockGameEngine.configurationManager.set).toHaveBeenCalledWith(
                 'game.scoring.baseScores.normal', 
@@ -845,17 +974,17 @@ describe('CommandRegistry', () => {
                 { validate: true, saveToStorage: false }
             );
             
-            const output = console.getOutput();
-            expect(output.some(line => line.message.includes('Set game.scoring.baseScores.normal = 25'))).toBe(true);
+            const output = devConsole.getOutput();
+            expect(output.some((line: any) => line.message.includes('Set game.scoring.baseScores.normal = 25'))).toBe(true);
         });
 
         test('should execute config.template command', async () => {
             mockGameEngine.configurationManager.get.mockReturnValue(30); // original value
             mockGameEngine.configurationManager.set.mockReturnValue(true);
             
-            const console = new DeveloperConsole(mockGameEngine);
+            const devConsole = new DeveloperConsole(mockGameEngine);
             
-            await console.execute('config.template development');
+            await devConsole.execute('config.template development');
             
             // development テンプレートの設定が適用されることを確認
             expect(mockGameEngine.configurationManager.set).toHaveBeenCalledWith(
@@ -869,8 +998,8 @@ describe('CommandRegistry', () => {
                 { validate: true, saveToStorage: false }
             );
             
-            const output = console.getOutput();
-            expect(output.some(line => line.message.includes("Applied template 'development'"))).toBe(true);
+            const output = devConsole.getOutput();
+            expect(output.some((line: any) => line.message.includes("Applied template 'development'"))).toBe(true);
         });
 
         test('should handle config command errors gracefully', async () => {
@@ -878,22 +1007,22 @@ describe('CommandRegistry', () => {
                 throw new Error('Validation failed');
             });
             
-            const console = new DeveloperConsole(mockGameEngine);
+            const devConsole = new DeveloperConsole(mockGameEngine);
             
-            await console.execute('config.set invalid.path invalidValue');
+            await devConsole.execute('config.set invalid.path invalidValue');
             
-            const output = console.getOutput();
-            expect(output.some(line => 
+            const output = devConsole.getOutput();
+            expect(output.some((line: any) => 
                 line.type === 'result' && 
                 line.message.includes('Error setting configuration: Validation failed')
             )).toBe(true);
         });
 
         test('should clean up configuration commands on destroy', () => {
-            const console = new DeveloperConsole(mockGameEngine);
-            const destroySpy = jest.spyOn(console.configurationCommands, 'destroy');
+            const devConsole = new DeveloperConsole(mockGameEngine);
+            const destroySpy = jest.spyOn(devConsole.configurationCommands, 'destroy');
             
-            console.destroy();
+            devConsole.destroy();
             
             expect(destroySpy).toHaveBeenCalled();
         });
