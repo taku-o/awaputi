@@ -19,6 +19,9 @@ export class HelpEventManager {
         this.boundClickHandler = null;
         this.boundContextMenuHandler = null;
         this.boundResizeHandler = null;
+        this.boundWheelHandler = null;
+        this.boundMouseMoveHandler = null;
+        this.boundMouseUpHandler = null;
         
         // IME対応のための隠し入力フィールド
         this.hiddenInput = null;
@@ -62,6 +65,9 @@ export class HelpEventManager {
         this.boundClickHandler = (event) => this.handleClick(event);
         this.boundContextMenuHandler = (event) => this.handleContextMenu(event);
         this.boundResizeHandler = () => this.updateInputPosition();
+        this.boundWheelHandler = (event) => this.handleWheel(event);
+        this.boundMouseMoveHandler = (event) => this.handleMouseMove(event);
+        this.boundMouseUpHandler = (event) => this.handleMouseUp(event);
         
         // IME対応の隠し入力フィールドを作成
         console.log('HelpEventManager: calling createHiddenInput()');
@@ -70,6 +76,9 @@ export class HelpEventManager {
         document.addEventListener('keydown', this.boundKeyHandler);
         document.addEventListener('click', this.boundClickHandler);
         document.addEventListener('contextmenu', this.boundContextMenuHandler);
+        document.addEventListener('wheel', this.boundWheelHandler, { passive: false });
+        document.addEventListener('mousemove', this.boundMouseMoveHandler);
+        document.addEventListener('mouseup', this.boundMouseUpHandler);
         window.addEventListener('resize', this.boundResizeHandler);
         console.log('HelpEventManager: event listeners setup completed');
     }
@@ -244,6 +253,21 @@ export class HelpEventManager {
         if (this.boundResizeHandler) {
             window.removeEventListener('resize', this.boundResizeHandler);
             this.boundResizeHandler = null;
+        }
+        
+        if (this.boundWheelHandler) {
+            document.removeEventListener('wheel', this.boundWheelHandler);
+            this.boundWheelHandler = null;
+        }
+        
+        if (this.boundMouseMoveHandler) {
+            document.removeEventListener('mousemove', this.boundMouseMoveHandler);
+            this.boundMouseMoveHandler = null;
+        }
+        
+        if (this.boundMouseUpHandler) {
+            document.removeEventListener('mouseup', this.boundMouseUpHandler);
+            this.boundMouseUpHandler = null;
         }
         
         // 隠し入力フィールドのクリーンアップ
@@ -422,6 +446,12 @@ export class HelpEventManager {
                 this.accessibilityManager.getCurrentFocusIndex()
             );
         }
+        
+        // 選択項目にスクロール
+        if (this.gameEngine.helpRenderer) {
+            const state = this.contentManager.getState();
+            this.gameEngine.helpRenderer.scrollToSelectedItem(state);
+        }
     }
 
     async navigateDown() {
@@ -433,6 +463,12 @@ export class HelpEventManager {
                 this.accessibilityManager.getCurrentFocusIndex(),
                 this.accessibilityManager.getCurrentFocusIndex()
             );
+        }
+        
+        // 選択項目にスクロール
+        if (this.gameEngine.helpRenderer) {
+            const state = this.contentManager.getState();
+            this.gameEngine.helpRenderer.scrollToSelectedItem(state);
         }
     }
 
@@ -449,6 +485,11 @@ export class HelpEventManager {
         if (this.animationManager && fromIndex !== toIndex) {
             this.animationManager.startCategoryTransition(fromIndex, toIndex);
         }
+        
+        // 選択項目にスクロール
+        if (this.gameEngine.helpRenderer) {
+            this.gameEngine.helpRenderer.scrollToSelectedItem(newState);
+        }
     }
 
     async navigateRight() {
@@ -463,6 +504,11 @@ export class HelpEventManager {
         // カテゴリ遷移アニメーション
         if (this.animationManager && fromIndex !== toIndex) {
             this.animationManager.startCategoryTransition(fromIndex, toIndex);
+        }
+        
+        // 選択項目にスクロール
+        if (this.gameEngine.helpRenderer) {
+            this.gameEngine.helpRenderer.scrollToSelectedItem(newState);
         }
     }
 
@@ -629,6 +675,41 @@ export class HelpEventManager {
             this.hiddenInput.blur();
         }
 
+        // スクロールバー処理（レンダラーが存在する場合）
+        if (this.gameEngine.helpRenderer) {
+            const renderer = this.gameEngine.helpRenderer;
+            
+            // スクロールバーハンドルのドラッグ開始
+            if (renderer.isPointInScrollbarHandle(x, y)) {
+                event.preventDefault();
+                renderer.startScrollbarDrag(y);
+                // ドラッグ中のカーソル変更
+                if (this.gameEngine.canvas) {
+                    this.gameEngine.canvas.style.cursor = 'grabbing';
+                }
+                return;
+            }
+            
+            // スクロールバートラックのクリック（ページスクロール）
+            if (renderer.isPointInScrollbarTrack(x, y)) {
+                event.preventDefault();
+                const sidebar = this.getLayout().sidebar;
+                const trackY = sidebar.y + 10;
+                const trackHeight = sidebar.height - 20;
+                const handleHeight = Math.max(20, (renderer.sidebarScroll.viewHeight / renderer.sidebarScroll.contentHeight) * trackHeight);
+                const currentHandleY = trackY + (renderer.sidebarScroll.offset / renderer.sidebarScroll.maxOffset) * (trackHeight - handleHeight);
+                
+                if (y < currentHandleY) {
+                    // 上方向にページスクロール
+                    renderer.scrollSidebar(-renderer.sidebarScroll.viewHeight * 0.8);
+                } else {
+                    // 下方向にページスクロール
+                    renderer.scrollSidebar(renderer.sidebarScroll.viewHeight * 0.8);
+                }
+                return;
+            }
+        }
+
         // サイドバークリック処理
         if (this.isPointInSidebar(x, y)) {
             this.handleSidebarClick(x, y);
@@ -643,26 +724,113 @@ export class HelpEventManager {
     }
 
     /**
+     * マウスホイール処理
+     */
+    handleWheel(event) {
+        const canvas = this.gameEngine.canvas;
+        if (!canvas) return;
+
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+
+        // サイドバー内でのホイールスクロール
+        if (this.isPointInSidebar(x, y) && this.gameEngine.helpRenderer) {
+            event.preventDefault();
+            const deltaY = event.deltaY * 0.5; // スクロール感度を調整
+            this.gameEngine.helpRenderer.scrollSidebar(deltaY);
+        }
+    }
+
+    /**
+     * マウス移動処理
+     */
+    handleMouseMove(event) {
+        const canvas = this.gameEngine.canvas;
+        if (!canvas || !this.gameEngine.helpRenderer) return;
+
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+
+        // スクロールバードラッグ中の処理
+        if (this.gameEngine.helpRenderer.sidebarScroll.isDragging) {
+            event.preventDefault();
+            this.gameEngine.helpRenderer.updateScrollbarDrag(y);
+            return;
+        }
+
+        // カーソルの変更
+        const renderer = this.gameEngine.helpRenderer;
+        let cursor = 'default';
+
+        // スクロールバー上でのカーソル変更
+        if (renderer.isPointInScrollbarHandle(x, y)) {
+            cursor = 'grab';
+        } else if (renderer.isPointInScrollbarTrack(x, y)) {
+            cursor = 'pointer';
+        } else if (this.isPointInSidebar(x, y)) {
+            // サイドバー内のクリック可能エリア
+            cursor = 'pointer';
+        } else if (this.isPointInBackButton(x, y)) {
+            // 戻るボタン
+            cursor = 'pointer';
+        }
+
+        // Canvasのカーソルを変更
+        canvas.style.cursor = cursor;
+    }
+
+    /**
+     * マウスアップ処理
+     */
+    handleMouseUp(event) {
+        if (this.gameEngine.helpRenderer && this.gameEngine.helpRenderer.sidebarScroll.isDragging) {
+            event.preventDefault();
+            this.gameEngine.helpRenderer.endScrollbarDrag();
+            
+            // カーソルをリセット
+            if (this.gameEngine.canvas) {
+                this.gameEngine.canvas.style.cursor = 'default';
+            }
+        }
+    }
+
+    /**
      * サイドバークリック処理
      */
     async handleSidebarClick(x, y) {
         const layout = this.getLayout();
         const sidebar = layout.sidebar;
         
+        // スクロールオフセットを適用した相対Y座標を計算
         const relativeY = y - sidebar.y;
+        const scrollOffset = this.gameEngine.helpRenderer ? this.gameEngine.helpRenderer.sidebarScroll.offset : 0;
+        const adjustedY = relativeY + scrollOffset; // スクロール分を補正
+        
         const itemHeight = 40;
-        let currentY = 10;
+        let currentY = 10; // 上部マージン
 
         const state = this.contentManager.getState();
         
         // カテゴリクリック判定
         for (let i = 0; i < state.categories.length; i++) {
-            if (relativeY >= currentY && relativeY < currentY + itemHeight) {
-                const categoryId = state.categories[i].id;
+            const category = state.categories[i];
+            const isSelected = category.id === state.selectedCategory;
+            
+            // カテゴリ項目の判定
+            if (adjustedY >= currentY && adjustedY < currentY + itemHeight) {
+                const categoryId = category.id;
                 const result = await this.contentManager.selectCategory(categoryId);
                 
                 if (result && this.animationManager) {
                     this.animationManager.startCategoryTransition(result.fromIndex, result.toIndex);
+                }
+                
+                // 選択項目にスクロール
+                if (this.gameEngine.helpRenderer) {
+                    const newState = this.contentManager.getState();
+                    this.gameEngine.helpRenderer.scrollToSelectedItem(newState);
                 }
                 return;
             }
@@ -670,17 +838,25 @@ export class HelpEventManager {
             currentY += itemHeight;
             
             // 選択されたカテゴリのトピック判定
-            if (state.categories[i].id === state.selectedCategory) {
-                for (let j = 0; j < state.categories[i].topics.length; j++) {
-                    if (relativeY >= currentY && relativeY < currentY + itemHeight - 5) {
+            if (isSelected && category.topics.length > 0) {
+                for (let j = 0; j < category.topics.length; j++) {
+                    const topicHeight = 30;
+                    
+                    if (adjustedY >= currentY && adjustedY < currentY + topicHeight - 5) {
                         const result = await this.contentManager.selectTopic(j);
                         
                         if (result && this.animationManager) {
                             this.animationManager.startContentTransition(result.newContent, 'slide');
                         }
+                        
+                        // 選択項目にスクロール
+                        if (this.gameEngine.helpRenderer) {
+                            const newState = this.contentManager.getState();
+                            this.gameEngine.helpRenderer.scrollToSelectedItem(newState);
+                        }
                         return;
                     }
-                    currentY += 30;
+                    currentY += topicHeight;
                 }
             }
         }
@@ -800,6 +976,11 @@ export class HelpEventManager {
      */
     destroy() {
         this.removeEventListeners();
+        
+        // カーソルをリセット
+        if (this.gameEngine.canvas) {
+            this.gameEngine.canvas.style.cursor = 'default';
+        }
         
         // コールバッククリア
         Object.keys(this.callbacks).forEach(key => {

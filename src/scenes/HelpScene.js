@@ -65,6 +65,9 @@ export class HelpScene extends Scene {
             console.log('HelpScene: Creating HelpRenderer');
             this.helpRenderer = new HelpRenderer(this.gameEngine);
             
+            // GameEngineにレンダラーの参照を設定（イベント管理で使用）
+            this.gameEngine.helpRenderer = this.helpRenderer;
+            
             // イベント管理
             console.log('HelpScene: Creating HelpEventManager');
             this.helpEventManager = new HelpEventManager(

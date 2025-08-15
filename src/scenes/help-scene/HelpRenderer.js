@@ -27,7 +27,10 @@ export class HelpRenderer {
             selected: '#2d5aa0',
             searchBackground: '#16213e',
             buttonBackground: '#2d5aa0',
-            buttonHover: '#3d6ab0'
+            buttonHover: '#3d6ab0',
+            scrollbar: '#555',
+            scrollbarHover: '#777',
+            scrollbarTrack: '#333'
         };
 
         this.fontSizes = {
@@ -36,6 +39,18 @@ export class HelpRenderer {
             normal: 16,
             small: 14,
             tiny: 12
+        };
+        
+        // サイドバースクロール状態
+        this.sidebarScroll = {
+            offset: 0,           // 現在のスクロールオフセット
+            maxOffset: 0,       // 最大スクロールオフセット
+            contentHeight: 0,   // 実際のコンテンツ高さ
+            viewHeight: 0,      // 表示可能な高さ
+            scrollbarWidth: 8,  // スクロールバーの幅
+            isDragging: false,  // ドラッグ中フラグ
+            dragStartY: 0,      // ドラッグ開始Y座標
+            dragStartOffset: 0  // ドラッグ開始時のオフセット
         };
         
         // レイアウトは動的に計算する
@@ -267,16 +282,39 @@ export class HelpRenderer {
             ctx.setLineDash([]);
         }
 
+        // スクロール可能コンテンツの計算
+        this.calculateSidebarScrollMetrics(state);
+        
+        // スクロール領域のクリッピング設定
+        const contentArea = {
+            x: sidebar.x + 5,
+            y: sidebar.y + 10,
+            width: sidebar.width - 10 - (this.sidebarScroll.maxOffset > 0 ? this.sidebarScroll.scrollbarWidth + 5 : 0),
+            height: sidebar.height - 20
+        };
+        
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(contentArea.x, contentArea.y, contentArea.width, contentArea.height);
+        ctx.clip();
+
         // カテゴリ遷移アニメーション処理
         const hasCategoryTransition = animationManager && 
             animationManager.getAnimationState('categoryTransition')?.isActive;
 
-        let currentY = sidebar.y + 10;
+        let currentY = sidebar.y + 10 - this.sidebarScroll.offset;
         
         // カテゴリリスト描画
         for (let catIndex = 0; catIndex < state.categories.length; catIndex++) {
             const category = state.categories[catIndex];
             const isSelected = category.id === state.selectedCategory;
+            
+            // 表示範囲外のアイテムはスキップ（最適化）
+            const itemHeight = 40 + (isSelected ? category.topics.length * 30 : 0);
+            if (currentY + itemHeight < sidebar.y || currentY > sidebar.y + sidebar.height) {
+                currentY += itemHeight;
+                continue;
+            }
             
             // アニメーション中のカテゴリ特別処理
             let alpha = 1;
@@ -303,7 +341,7 @@ export class HelpRenderer {
             // カテゴリ項目の背景
             if (isSelected) {
                 ctx.fillStyle = this.colors.selected;
-                this.roundRect(ctx, sidebar.x + 5 + offsetX, currentY - 2, sidebar.width - 10, 35, 4, true);
+                this.roundRect(ctx, sidebar.x + 5 + offsetX, currentY - 2, contentArea.width - 5, 35, 4, true);
             }
             
             // カテゴリ名
@@ -326,7 +364,7 @@ export class HelpRenderer {
                     // トピック項目の背景
                     if (isTopicSelected) {
                         ctx.fillStyle = this.colors.primary;
-                        this.roundRect(ctx, sidebar.x + 15 + offsetX, currentY - 2, sidebar.width - 30, 25, 4, true);
+                        this.roundRect(ctx, sidebar.x + 15 + offsetX, currentY - 2, contentArea.width - 15, 25, 4, true);
                     }
                     
                     // トピック名
@@ -335,14 +373,67 @@ export class HelpRenderer {
                     ctx.fillText(`  • ${topic.title}`, sidebar.x + 25 + offsetX, currentY + 10);
                     
                     currentY += 30;
-                    
-                    if (currentY > sidebar.y + sidebar.height - 30) {
-                        break; // スペース不足
-                    }
                 }
             }
             
             ctx.restore();
+        }
+        
+        ctx.restore(); // クリッピング解除
+        
+        // スクロールバーの描画
+        if (this.sidebarScroll.maxOffset > 0) {
+            this.renderScrollbar(ctx, sidebar);
+        }
+    }
+
+    /**
+     * サイドバーのスクロール範囲を計算
+     */
+    calculateSidebarScrollMetrics(state) {
+        const sidebar = this.layout.sidebar;
+        let totalContentHeight = 10; // 上部マージン
+        
+        // 全カテゴリとトピックの高さを計算
+        for (const category of state.categories) {
+            totalContentHeight += 40; // カテゴリの高さ
+            
+            // 選択されたカテゴリのトピック高さを追加
+            if (category.id === state.selectedCategory && category.topics.length > 0) {
+                totalContentHeight += category.topics.length * 30;
+            }
+        }
+        
+        totalContentHeight += 10; // 下部マージン
+        
+        this.sidebarScroll.contentHeight = totalContentHeight;
+        this.sidebarScroll.viewHeight = sidebar.height - 20;
+        this.sidebarScroll.maxOffset = Math.max(0, totalContentHeight - this.sidebarScroll.viewHeight);
+        
+        // スクロールオフセットの調整
+        this.sidebarScroll.offset = Math.max(0, Math.min(this.sidebarScroll.offset, this.sidebarScroll.maxOffset));
+    }
+
+    /**
+     * スクロールバーの描画
+     */
+    renderScrollbar(ctx, sidebar) {
+        const scrollbar = this.sidebarScroll;
+        const trackX = sidebar.x + sidebar.width - scrollbar.scrollbarWidth - 3;
+        const trackY = sidebar.y + 10;
+        const trackHeight = sidebar.height - 20;
+        
+        // スクロールバートラック
+        ctx.fillStyle = this.colors.scrollbarTrack;
+        this.roundRect(ctx, trackX, trackY, scrollbar.scrollbarWidth, trackHeight, 4, true);
+        
+        // スクロールバーハンドル
+        if (scrollbar.contentHeight > scrollbar.viewHeight) {
+            const handleHeight = Math.max(20, (scrollbar.viewHeight / scrollbar.contentHeight) * trackHeight);
+            const handleY = trackY + (scrollbar.offset / scrollbar.maxOffset) * (trackHeight - handleHeight);
+            
+            ctx.fillStyle = scrollbar.isDragging ? this.colors.scrollbarHover : this.colors.scrollbar;
+            this.roundRect(ctx, trackX, handleY, scrollbar.scrollbarWidth, handleHeight, 4, true);
         }
     }
 
@@ -693,6 +784,133 @@ export class HelpRenderer {
 
     updateLayout(newLayout) {
         Object.assign(this.layout, newLayout);
+    }
+
+    /**
+     * サイドバースクロール操作
+     */
+    scrollSidebar(deltaY) {
+        const newOffset = this.sidebarScroll.offset + deltaY;
+        this.sidebarScroll.offset = Math.max(0, Math.min(newOffset, this.sidebarScroll.maxOffset));
+    }
+
+    /**
+     * サイドバーをスムーズにスクロール
+     */
+    smoothScrollSidebar(targetOffset, duration = 300) {
+        const startOffset = this.sidebarScroll.offset;
+        const deltaOffset = targetOffset - startOffset;
+        const startTime = Date.now();
+
+        const animateScroll = () => {
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easeProgress = 1 - Math.pow(1 - progress, 3); // イーズアウト
+            
+            this.sidebarScroll.offset = startOffset + deltaOffset * easeProgress;
+            
+            if (progress < 1) {
+                requestAnimationFrame(animateScroll);
+            }
+        };
+        
+        requestAnimationFrame(animateScroll);
+    }
+
+    /**
+     * 選択された項目が見えるようにスクロール
+     */
+    scrollToSelectedItem(state) {
+        if (!state.categories || state.categories.length === 0) return;
+        
+        let targetY = 10; // 上部マージン
+        
+        // 選択されたカテゴリまでの高さを計算
+        const selectedCategoryIndex = state.categories.findIndex(c => c.id === state.selectedCategory);
+        for (let i = 0; i < selectedCategoryIndex; i++) {
+            targetY += 40; // カテゴリの高さ
+        }
+        
+        // 選択されたトピックまでの高さを追加
+        if (selectedCategoryIndex >= 0) {
+            targetY += 40; // 選択されたカテゴリの高さ
+            targetY += state.selectedTopicIndex * 30; // トピックの高さ
+        }
+        
+        // 表示範囲の中央に配置
+        const viewCenter = this.sidebarScroll.viewHeight / 2;
+        const targetOffset = Math.max(0, Math.min(targetY - viewCenter, this.sidebarScroll.maxOffset));
+        
+        this.smoothScrollSidebar(targetOffset);
+    }
+
+    /**
+     * スクロールバーのハンドル領域チェック
+     */
+    isPointInScrollbarHandle(x, y) {
+        if (this.sidebarScroll.maxOffset <= 0) return false;
+        
+        const sidebar = this.layout.sidebar;
+        const scrollbar = this.sidebarScroll;
+        const trackX = sidebar.x + sidebar.width - scrollbar.scrollbarWidth - 3;
+        const trackY = sidebar.y + 10;
+        const trackHeight = sidebar.height - 20;
+        
+        const handleHeight = Math.max(20, (scrollbar.viewHeight / scrollbar.contentHeight) * trackHeight);
+        const handleY = trackY + (scrollbar.offset / scrollbar.maxOffset) * (trackHeight - handleHeight);
+        
+        return x >= trackX && x <= trackX + scrollbar.scrollbarWidth &&
+               y >= handleY && y <= handleY + handleHeight;
+    }
+
+    /**
+     * スクロールバートラック領域チェック
+     */
+    isPointInScrollbarTrack(x, y) {
+        if (this.sidebarScroll.maxOffset <= 0) return false;
+        
+        const sidebar = this.layout.sidebar;
+        const scrollbar = this.sidebarScroll;
+        const trackX = sidebar.x + sidebar.width - scrollbar.scrollbarWidth - 3;
+        const trackY = sidebar.y + 10;
+        const trackHeight = sidebar.height - 20;
+        
+        return x >= trackX && x <= trackX + scrollbar.scrollbarWidth &&
+               y >= trackY && y <= trackY + trackHeight;
+    }
+
+    /**
+     * ドラッグ開始
+     */
+    startScrollbarDrag(y) {
+        this.sidebarScroll.isDragging = true;
+        this.sidebarScroll.dragStartY = y;
+        this.sidebarScroll.dragStartOffset = this.sidebarScroll.offset;
+    }
+
+    /**
+     * ドラッグ更新
+     */
+    updateScrollbarDrag(y) {
+        if (!this.sidebarScroll.isDragging) return;
+        
+        const sidebar = this.layout.sidebar;
+        const trackHeight = sidebar.height - 20;
+        const handleHeight = Math.max(20, (this.sidebarScroll.viewHeight / this.sidebarScroll.contentHeight) * trackHeight);
+        const usableTrackHeight = trackHeight - handleHeight;
+        
+        const deltaY = y - this.sidebarScroll.dragStartY;
+        const scrollRatio = deltaY / usableTrackHeight;
+        const newOffset = this.sidebarScroll.dragStartOffset + scrollRatio * this.sidebarScroll.maxOffset;
+        
+        this.sidebarScroll.offset = Math.max(0, Math.min(newOffset, this.sidebarScroll.maxOffset));
+    }
+
+    /**
+     * ドラッグ終了
+     */
+    endScrollbarDrag() {
+        this.sidebarScroll.isDragging = false;
     }
 
     /**
