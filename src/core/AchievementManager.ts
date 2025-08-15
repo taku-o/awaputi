@@ -133,11 +133,11 @@ export class AchievementManager implements IAchievementManager {
      */
     private createMockProgressTracker(): any {
         return {
-            addEventListener: (event: string, callback: (data: any) => void) => {},
-            updateProgress: (eventType: string, data: any) => {},
-            evaluateAchievementCondition: (achievement: Achievement) => null,
-            isAchievementUnlocked: (achievementId: string) => false,
-            unlockAchievement: (achievementId: string, achievement: Achievement) => {},
+            addEventListener: (_event: string, _callback: (data: any) => void) => {},
+            updateProgress: (_eventType: string, _data: any) => {},
+            evaluateAchievementCondition: (_achievement: Achievement) => null,
+            isAchievementUnlocked: (_achievementId: string) => false,
+            unlockAchievement: (_achievementId: string, _achievement: Achievement) => {},
             getUnlockedAchievements: () => [],
             getProgressData: () => ({}),
             loadProgress: () => {},

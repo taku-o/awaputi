@@ -28,6 +28,9 @@ export class ProceduralSoundGenerator {
         // 生成済み音響バッファ
         this.soundBuffers = new Map();
         
+        // 最後の生成時間
+        this.lastGenerationTime = 0;
+        
         // 音響パラメーター
         this.soundParams = {
             pop: { baseFreq: 400, duration: 0.1, decay: 8 },
@@ -106,6 +109,7 @@ export class ProceduralSoundGenerator {
             
             this.isGenerating = false;
             this.generationProgress = 100;
+            this.lastGenerationTime = Date.now();
             
             console.log(`Generated ${this.soundBuffers.size} procedural sounds`);
             return true;
@@ -564,10 +568,10 @@ export class ProceduralSoundGenerator {
      */
     getGenerationStatus() {
         return {
-            isGenerating: this.isGenerating,
-            progress: this.generationProgress,
-            totalSounds: this.soundBuffers.size,
-            availableSounds: this.getAvailableSounds()
+            isGenerated: this.soundBuffers.size > 0,
+            soundCount: this.soundBuffers.size,
+            generationTime: Date.now() - this.lastGenerationTime,
+            lastGenerated: this.lastGenerationTime > 0 ? new Date(this.lastGenerationTime) : null
         };
     }
 

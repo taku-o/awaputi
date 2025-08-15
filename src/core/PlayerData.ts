@@ -149,7 +149,7 @@ export class PlayerData {
     /**
      * ダメージを受ける
      */
-    takeDamage(amount: number): boolean {
+    takeDamage(amount: number): { died: boolean } {
         try {
             // 入力値を検証
             const validation = validateInput(amount, 'number', {
@@ -174,18 +174,18 @@ export class PlayerData {
                 try {
                     if (this.gameEngine && this.gameEngine.itemManager && this.gameEngine.itemManager.useRevival()) {
                         console.log('Revival item activated!');
-                        return false; // 復活したのでゲームオーバーではない
+                        return { died: false }; // 復活したのでゲームオーバーではない
                     }
                 } catch (error) {
                     getErrorHandler().handleError(error, 'ITEM_SYSTEM_ERROR', { operation: 'useRevival' });
                 }
-                return true; // ゲームオーバー
+                return { died: true }; // ゲームオーバー
             }
-            return false;
+            return { died: false };
             
         } catch (error) {
             getErrorHandler().handleError(error, 'PLAYER_DATA_ERROR', { operation: 'takeDamage', amount });
-            return false;
+            return { died: false };
         }
     }
     
@@ -475,5 +475,43 @@ export class PlayerData {
             return true;
         }
         return false;
+    }
+    
+    /**
+     * ハイスコアを更新
+     */
+    updateHighScore(stageName: string, score: number): void {
+        if (!this.highScores[stageName] || this.highScores[stageName] < score) {
+            this.highScores[stageName] = score;
+            this.save();
+        }
+    }
+    
+    /**
+     * ステージが解放されているかチェック
+     */
+    isStageUnlocked(stageName: string): boolean {
+        return this.unlockedStages.includes(stageName);
+    }
+    
+    /**
+     * ゲーム状態をリセット
+     */
+    resetGameState(): void {
+        this.ap = 0;
+        this.save();
+    }
+    
+    /**
+     * 全データをリセット
+     */
+    resetAllData(): void {
+        this.username = '';
+        this.ap = 0;
+        this.tap = 0;
+        this.highScores = {};
+        this.unlockedStages = [];
+        this.ownedItems = [];
+        this.save();
     }
 }

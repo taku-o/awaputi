@@ -69,11 +69,11 @@ export class Bubble implements BubbleInterface {
             const configManager = getConfigurationManager();
             
             // ConfigurationManagerから設定を取得を試行
-            const health = configManager.get('game', `bubbles.${this.type}.health`) as number | undefined;
-            const size = configManager.get('game', `bubbles.${this.type}.size`) as number | undefined;
-            const maxAge = configManager.get('game', `bubbles.${this.type}.maxAge`) as number | undefined;
-            const score = configManager.get('game', `bubbles.${this.type}.score`) as number | undefined;
-            const color = configManager.get('game', `bubbles.${this.type}.color`) as string | undefined;
+            const health = configManager.get(`game:bubbles.${this.type}.health`) as number | undefined;
+            const size = configManager.get(`game:bubbles.${this.type}.size`) as number | undefined;
+            const maxAge = configManager.get(`game:bubbles.${this.type}.maxAge`) as number | undefined;
+            const score = configManager.get(`game:bubbles.${this.type}.score`) as number | undefined;
+            const color = configManager.get(`game:bubbles.${this.type}.color`) as string | undefined;
             
             // 設定が見つかった場合はそれを使用
             if (health !== undefined || size !== undefined || maxAge !== undefined || score !== undefined || color !== undefined) {

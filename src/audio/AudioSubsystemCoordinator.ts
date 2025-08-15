@@ -91,7 +91,6 @@ export class AudioSubsystemCoordinator {
             await this.initializeAccessibilitySupport();
             
             console.log('Audio subsystems initialization completed');
-            return true;
             
         } catch (error) {
             this.performanceMetrics.errors++;
@@ -99,7 +98,7 @@ export class AudioSubsystemCoordinator {
                 component: 'AudioSubsystemCoordinator',
                 operation: 'initializeSubsystems'
             });
-            return false;
+            throw error;
         }
     }
 
@@ -203,9 +202,8 @@ export class AudioSubsystemCoordinator {
      */
     async initializeAccessibilitySupport() {
         try {
-            const AudioAccessibilitySupportModule = await import('./AudioAccessibilitySupport.js');
-            const AudioAccessibilitySupport = AudioAccessibilitySupportModule.default || AudioAccessibilitySupportModule.MainAudioAccessibilitySupport;
-            this.accessibilitySupport = new AudioAccessibilitySupport(this.audioManager);
+            const { MainAudioAccessibilitySupport } = await import('./AudioAccessibilitySupport.js');
+            this.accessibilitySupport = new MainAudioAccessibilitySupport(this.audioManager);
             this.subsystemStates.accessibility.initialized = true;
             this.subsystemStates.accessibility.error = null;
         } catch (error) {
