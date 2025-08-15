@@ -10,6 +10,22 @@ import { getErrorHandler } from '../utils/ErrorHandler.js';
  * 音響設定管理クラス
  */
 export class AudioConfigurationManager {
+    // プロパティ宣言
+    configManager: any;
+    audioConfig: any;
+    masterGainNode: any;
+    sfxGainNode: any;
+    bgmGainNode: any;
+    compressor: any;
+    reverbConvolver: any;
+    audioNodes: any;
+    settings: any;
+    configWatchers: Set<any>;
+    currentConfig: any;
+    changeListeners: Map<string, any>;
+    lastLoggedMuteState: any;
+    syncState: any;
+
     constructor() {
         // 設定管理（外部から注入される）
         this.configManager = null;
@@ -21,6 +37,12 @@ export class AudioConfigurationManager {
         this.bgmGainNode = null;
         this.compressor = null;
         this.reverbConvolver = null;
+        
+        // AudioNodes統合インターフェース
+        this.audioNodes = null;
+        
+        // 設定オブジェクト
+        this.settings = null;
         
         // 設定監視
         this.configWatchers = new Set();
@@ -64,7 +86,7 @@ export class AudioConfigurationManager {
      * @param {Object} audioConfig - 音響設定オブジェクト
      * @param {Object} audioNodes - オーディオノード群
      */
-    setDependencies(configManager, audioConfig, audioNodes = {}) {
+    setDependencies(configManager: any, audioConfig: any, audioNodes: any = {}) {
         this.configManager = configManager;
         this.audioConfig = audioConfig;
         

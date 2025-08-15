@@ -110,7 +110,8 @@ export class AudioManager implements IAudioManager {
       
       // AudioConfiguration設定
       this.contextManager.setAudioConfig(this.audioConfig);
-      this.configurationManager.setDependencies(this.configManager, this.audioConfig, {});
+      // AudioNodesは後で設定される
+      this.configurationManager.setDependencies(this.configManager, this.audioConfig, null as any);
       
       // AudioContextの初期化
       const contextInitialized = await this.contextManager.initializeAudioContext();

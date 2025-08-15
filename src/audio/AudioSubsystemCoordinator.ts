@@ -10,7 +10,20 @@ import { getErrorHandler } from '../utils/ErrorHandler.js';
  * サブシステム統合・委譲クラス
  */
 export class AudioSubsystemCoordinator {
+    // プロパティ宣言
+    isInitialized: boolean;
+    audioManager: any;
+    bgmSystem: any;
+    soundEffectSystem: any;
+    audioController: any;
+    audioVisualizer: any;
+    accessibilitySupport: any;
+    subsystemStates: any;
+
     constructor() {
+        // 初期化状態
+        this.isInitialized = false;
+        
         // メインAudioManagerへの参照（外部から注入される）
         this.audioManager = null;
         

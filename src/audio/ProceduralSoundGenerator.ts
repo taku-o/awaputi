@@ -10,7 +10,16 @@ import { getErrorHandler } from '../utils/ErrorHandler.js';
  * プロシージャル音響生成クラス
  */
 export class ProceduralSoundGenerator {
+    // プロパティ宣言
+    isInitialized: boolean;
+    audioContext: any;
+    soundBuffers: Map<string, any>;
+    soundParams: any;
+
     constructor() {
+        // 初期化状態
+        this.isInitialized = false;
+        
         // AudioContext (外部から注入される)
         this.audioContext = null;
         

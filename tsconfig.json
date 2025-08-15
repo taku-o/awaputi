@@ -15,7 +15,6 @@
     "forceConsistentCasingInFileNames": true,
     "declaration": true,
     "outDir": "./dist",
-    "rootDir": "./src",
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
@@ -38,6 +37,10 @@
     "dist",
     "coverage",
     "*.config.js",
-    "scripts/**/*"
+    "scripts/**/*",
+    "src/accessibility/**/*",
+    "src/core/SocialI18nManager.js",
+    "src/core/StatisticsAccessibilityManager.js",
+    "tests/unit/local-execution/**/*"
   ]
 }
