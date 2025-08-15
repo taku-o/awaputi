@@ -2,7 +2,7 @@
 
 ## Phase 1: TypeScript環境構築
 
-- [ ] 1. TypeScript依存関係のインストール
+- [x] 1. TypeScript依存関係のインストール
   - TypeScript本体、型定義ファイル、ビルドツール統合の依存関係をpackage.jsonに追加
   - `npm install -D typescript @types/node @types/jest @types/jsdom ts-node`を実行
   - _要件: 1.1, 1.2_
