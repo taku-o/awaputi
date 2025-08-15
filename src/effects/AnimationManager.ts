@@ -33,6 +33,7 @@ export interface AnimationOptions {
     color?: string;
     animateScale?: boolean;
     gap?: number;
+    duration?: number;
 }
 
 export interface Animation {
@@ -200,12 +201,12 @@ export class AnimationManager {
                     averageFrameTime: 16.67,
                     maxFrameTime: 33.33
                 }),
-                setEasingFunctions: (functions: any) => {},
+                setEasingFunctions: (_functions: any) => {},
                 dispose: () => {}
             };
             
             this.qualityController = {
-                recordFrameTime: (frameTime: number) => {},
+                recordFrameTime: (_frameTime: number) => {},
                 getCurrentQualitySettings: (): QualitySettings => ({
                     quality: 'high',
                     maxAnimations: 50,
@@ -281,7 +282,7 @@ export class AnimationManager {
             
         } catch (error) {
             console.error('AnimationManager サブコンポーネント初期化に失敗:', error);
-            getErrorHandler().handleError(error, {
+            getErrorHandler().handleError(error, 'ANIMATION_INIT_ERROR', {
                 context: 'AnimationManager._initializeSubComponents'
             });
         }
@@ -400,7 +401,7 @@ export class AnimationManager {
                 this.engineCore.updateSettings(settings);
             }
         } catch (error) {
-            getErrorHandler().handleError(error, {
+            getErrorHandler().handleError(error, 'ANIMATION_CONFIG_ERROR', {
                 context: 'AnimationManager._initializeFromConfig'
             });
         }
@@ -557,7 +558,7 @@ export class AnimationManager {
         const animations = this.menuHandler.createMenuTransitionAnimations(fromMenu, toMenu, transitionType, options);
         const animationIds: number[] = [];
         
-        animations.forEach((animation) => {
+        animations.forEach((animation: any) => {
             animation.id = this.animationId++;
             animationIds.push(animation.id);
             
@@ -747,7 +748,7 @@ export class AnimationManager {
         
         // 個別アニメーション更新
         this.animations.forEach(animation => {
-            const { progress, easedProgress } = this.engineCore.calculateAnimationProgress(animation);
+            const { progress: _progress, easedProgress } = this.engineCore.calculateAnimationProgress(animation);
             this._updateAnimation(animation, easedProgress);
         });
         

@@ -2,7 +2,7 @@
  * Game Engine Renderer
  * 描画・レンダリング・エフェクト処理を担当
  */
-import { getPerformanceOptimizer } from '../../utils/PerformanceOptimizer.js';
+// import { getPerformanceOptimizer } from '../../utils/PerformanceOptimizer.js';
 
 interface GameEngine {
     context: CanvasRenderingContext2D;

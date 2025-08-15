@@ -58,8 +58,8 @@ class ConfigurationManager {
     private cache: any; // CacheSystem type would be defined elsewhere
     private accessStats: AccessStats;
     // 将来の拡張機能用 - 現在は未使用
-    private _lazyLoaders: Map<string, () => ConfigurationValue>;
-    private _preloadKeys: Set<string>;
+    private __lazyLoaders: Map<string, () => ConfigurationValue>;
+    private __preloadKeys: Set<string>;
     private errorHandler: any;
     
     constructor() {

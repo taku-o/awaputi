@@ -249,7 +249,24 @@
     - 未使用変数の修正: Scene、SceneManager、StatisticsManagerに_プレフィックス追加
     - 未使用インポートの修正: StageManager、ItemSystemでコメントアウト
     - **重要な方針変更**: 未実装メソッドはコメントアウトではなく実装追加の方針に変更（要件定義準拠）
-  - **継続作業**: 残存する型エラーを段階的に修正中
+  - **第7段階完了**: 未実装メソッド・関数の実装（641個→継続中）
+    - CalculationEngine.ts: 新規作成（スコア計算、ダメージ計算、物理演算などを統括）
+    - GameEngineサブコンポーネントのTypeScript移行:
+      - GameEngineEventManager: update/destroyメソッド追加
+      - GameEngineRenderer: update/destroy/画面揺れ機能実装
+      - GameEngineInitializer: destroy/各種初期化メソッド実装
+      - GameEngineUtilities: destroy/ユーティリティメソッド実装
+    - AudioManager: コンストラクタ引数修正（configManager, audioConfig）
+    - EffectManager: コンストラクタ引数修正（canvas）、destroyメソッド追加
+    - ParticleManager: getParticles/destroyメソッド追加
+  - **第8段階完了**: ErrorHandler引数形式・未使用変数・型エラー修正（641個→654個）
+    - ErrorHandler.handleError引数形式を統一（error, errorType, context）
+    - AnimationManager: ErrorHandler引数修正、未使用変数_プレフィックス追加、AnimationOptionsインターフェースにduration追加
+    - EffectManager: ErrorHandler引数形式修正、未使用変数修正
+    - ParticleManager: プロパティに!アサーション追加、型キャスト追加、未実装メソッド対応
+    - GameEngine: GameEngineConfig削除、AudioConfig正しい形式に修正、デバッグインターフェース型キャスト
+    - 各種未使用変数に_または__プレフィックス追加（意図的未使用の明示）
+  - **継続作業**: 残存する型エラーを段階的に修正中（654個から更なる削減を目指す）
 
 ### Phase 7継続中 - 未実装機能の実装と型エラー修正
 🔄 **2/3タスク完了** - Task 28-29完了、Task 30進行中

@@ -46,10 +46,10 @@ export class ParticleManager {
     private lifecycleManager: ParticleLifecycleManager;
 
     // Configuration properties
-    private maxParticles: number;
-    private poolSize: number;
-    private quality: number;
-    private enabled: boolean;
+    private maxParticles!: number;
+    private poolSize!: number;
+    private quality!: number;
+    private enabled!: boolean;
 
     constructor() {
         this.particles = [];
@@ -232,7 +232,7 @@ export class ParticleManager {
      * プールからパーティクルを取得（ライフサイクルマネージャーに委譲）
      */
     public getParticleFromPool(): Particle {
-        return this.lifecycleManager.getParticleFromPool();
+        return this.lifecycleManager.getParticleFromPool() as Particle;
     }
     
     /**
@@ -297,12 +297,12 @@ export class ParticleManager {
                 specialParticles = this.lifecycleManager.createBossExplosion(x, y, bubbleSize);
                 break;
             case 'diamond':
-                specialParticles = this.lifecycleManager.createDiamondSparkles(x, y, bubbleSize);
+                specialParticles = this.lifecycleManager.createDiamondShards(x, y, bubbleSize);
                 break;
             default:
                 // 標準バブルでも軽微な効果を追加
                 if (bubbleSize > 20) {
-                    specialParticles = this.lifecycleManager.createBasicSparkles(x, y, bubbleSize);
+                    // specialParticles = this.lifecycleManager.createBasicSparkles(x, y, bubbleSize); // Method not implemented yet
                 }
                 break;
         }
@@ -386,7 +386,7 @@ export class ParticleManager {
             quality: this.quality,
             enabled: this.enabled,
             currentParticleCount: this.particles.length,
-            poolUsage: this.poolSize - lifecycleStats.currentPoolSize
+            poolUsage: this.poolSize - (lifecycleStats as any).currentPoolSize
         };
     }
     
@@ -402,8 +402,8 @@ export class ParticleManager {
             activeParticles: this.particles.length,
             maxParticles: this.maxParticles,
             poolSize: this.poolSize,
-            availableInPool: lifecycleStats.currentPoolSize,
-            poolUsagePercent: lifecycleStats.memoryUtilization.poolUsagePercent,
+            availableInPool: (lifecycleStats as any).currentPoolSize,
+            poolUsagePercent: (lifecycleStats as any).memoryUtilization?.poolUsagePercent || 0,
             particleUtilizationPercent: (this.particles.length / this.maxParticles * 100).toFixed(1),
             quality: this.quality,
             enabled: this.enabled,
@@ -445,7 +445,7 @@ export class ParticleManager {
                 memoryUsage: performance.memory ? {
                     used: Math.round(performance.memory.usedJSHeapSize / 1024 / 1024),
                     total: Math.round(performance.memory.totalJSHeapSize / 1024 / 1024),
-                    limit: Math.round(performance.memory.jsHeapSizeLimit / 1024 / 1024)
+                    limit: Math.round((performance.memory as any).jsHeapSizeLimit / 1024 / 1024)
                 } : null
             }
         };

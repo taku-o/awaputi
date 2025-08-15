@@ -2,7 +2,7 @@
  * Game Engine Event Manager
  * イベント管理・入力処理・統合機能を担当
  */
-import { getPerformanceOptimizer } from '../../utils/PerformanceOptimizer.js';
+// import { getPerformanceOptimizer } from '../../utils/PerformanceOptimizer.js';
 
 interface GameEngine {
     eventListeners: Map<string, Function[]>;
@@ -65,7 +65,7 @@ export class GameEngineEventManager {
      * 更新処理
      * @param deltaTime - 前フレームからの経過時間
      */
-    update(deltaTime: number): void {
+    update(_deltaTime: number): void {
         // イベントシステムの更新処理
         // 現時点では特に処理なし（将来的に実装）
     }

@@ -211,7 +211,7 @@ export class EffectManager {
             this.configWatchers.set('enabled', enabledWatcher);
             
         } catch (error) {
-            getErrorHandler().handleError(error, {
+            getErrorHandler().handleError(error, 'EFFECT_ERROR', {
                 context: 'EffectManager._setupConfigWatchers'
             });
         }
@@ -240,7 +240,7 @@ export class EffectManager {
                 tint: screenConfig.tint
             };
         } catch (error) {
-            getErrorHandler().handleError(error, {
+            getErrorHandler().handleError(error, 'EFFECT_ERROR', {
                 context: 'EffectManager._getEffectParameters'
             });
             // エラーの場合もnullを返す
@@ -283,7 +283,7 @@ export class EffectManager {
             this.effects.push(effect);
             return effect.id;
         } catch (error) {
-            getErrorHandler().handleError(error, {
+            getErrorHandler().handleError(error, 'EFFECT_ERROR', {
                 context: 'EffectManager.addScreenShake'
             });
             return -1;
@@ -325,7 +325,7 @@ export class EffectManager {
             this.effects.push(effect);
             return effect.id;
         } catch (error) {
-            getErrorHandler().handleError(error, {
+            getErrorHandler().handleError(error, 'EFFECT_ERROR', {
                 context: 'EffectManager.addFlash'
             });
             return -1;
@@ -366,7 +366,7 @@ export class EffectManager {
             this.effects.push(effect);
             return effect.id;
         } catch (error) {
-            getErrorHandler().handleError(error, {
+            getErrorHandler().handleError(error, 'EFFECT_ERROR', {
                 context: 'EffectManager.addTint'
             });
             return -1;
@@ -402,7 +402,7 @@ export class EffectManager {
             this.effects.push(effect);
             return effect.id;
         } catch (error) {
-            getErrorHandler().handleError(error, {
+            getErrorHandler().handleError(error, 'EFFECT_ERROR', {
                 context: 'EffectManager.addZoom'
             });
             return -1;
@@ -698,7 +698,7 @@ export class EffectManager {
             this.effects.push(effect);
             return effect.id;
         } catch (error) {
-            getErrorHandler().handleError(error, {
+            getErrorHandler().handleError(error, 'EFFECT_ERROR', {
                 context: 'EffectManager.addRotation'
             });
             return -1;
@@ -729,7 +729,7 @@ export class EffectManager {
             this.effects.push(effect);
             return effect.id;
         } catch (error) {
-            getErrorHandler().handleError(error, {
+            getErrorHandler().handleError(error, 'EFFECT_ERROR', {
                 context: 'EffectManager.addBlur'
             });
             return -1;
@@ -774,7 +774,7 @@ export class EffectManager {
             this.effects.push(effect);
             return effect.id;
         } catch (error) {
-            getErrorHandler().handleError(error, {
+            getErrorHandler().handleError(error, 'EFFECT_ERROR', {
                 context: 'EffectManager.addFilter'
             });
             return -1;
@@ -940,7 +940,7 @@ export class EffectManager {
                 this.addBlur(0, duration - 200, 'easeIn');
             }, 200);
         } catch (error) {
-            getErrorHandler().handleError(error, {
+            getErrorHandler().handleError(error, 'EFFECT_ERROR', {
                 context: 'EffectManager.addTimeStopEffect'
             });
         }
@@ -967,7 +967,7 @@ export class EffectManager {
             // 金色の色調
             this.addTint('#FFD700', 0.15, duration, 'easeInOut');
         } catch (error) {
-            getErrorHandler().handleError(error, {
+            getErrorHandler().handleError(error, 'EFFECT_ERROR', {
                 context: 'EffectManager.addBonusTimeEffect'
             });
         }
@@ -976,7 +976,7 @@ export class EffectManager {
     /**
      * 爆発効果
      */
-    public addExplosionEffect(x: number, y: number, intensity: number = 1): void {
+    public addExplosionEffect(_x: number, _y: number, intensity: number = 1): void {
         try {
             // 中心からの画面揺れ
             this.addScreenShake(15 * intensity, 500, 'circular');
@@ -990,7 +990,7 @@ export class EffectManager {
                 this.addZoom(1.0, 200, 'easeOut');
             }, 100);
         } catch (error) {
-            getErrorHandler().handleError(error, {
+            getErrorHandler().handleError(error, 'EFFECT_ERROR', {
                 context: 'EffectManager.addExplosionEffect'
             });
         }
@@ -1010,7 +1010,7 @@ export class EffectManager {
             // 一瞬の赤い色調
             this.addTint('#FF0000', 0.3, 400, 'easeOut');
         } catch (error) {
-            getErrorHandler().handleError(error, {
+            getErrorHandler().handleError(error, 'EFFECT_ERROR', {
                 context: 'EffectManager.addDamageEffect'
             });
         }
@@ -1033,7 +1033,7 @@ export class EffectManager {
             // 緑の色調
             this.addTint('#00FF88', 0.2, 600, 'easeInOut');
         } catch (error) {
-            getErrorHandler().handleError(error, {
+            getErrorHandler().handleError(error, 'EFFECT_ERROR', {
                 context: 'EffectManager.addHealEffect'
             });
         }
@@ -1057,7 +1057,7 @@ export class EffectManager {
             // 軽い回転
             this.addRotation((Math.random() - 0.5) * 0.1, 200, 'easeOut');
         } catch (error) {
-            getErrorHandler().handleError(error, {
+            getErrorHandler().handleError(error, 'EFFECT_ERROR', {
                 context: 'EffectManager.addElectricEffect'
             });
         }
@@ -1122,7 +1122,7 @@ export class EffectManager {
             
             console.log('[EffectManager] エフェクトシステムを無効化しました');
         } catch (error) {
-            getErrorHandler().handleError(error, {
+            getErrorHandler().handleError(error, 'EFFECT_ERROR', {
                 context: 'EffectManager.disable'
             });
         }
@@ -1198,7 +1198,7 @@ export class EffectManager {
             
             return true;
         } catch (error) {
-            getErrorHandler().handleError(error, {
+            getErrorHandler().handleError(error, 'EFFECT_ERROR', {
                 context: 'EffectManager.setConfigValue'
             });
             return false;
@@ -1224,7 +1224,7 @@ export class EffectManager {
                     return null;
             }
         } catch (error) {
-            getErrorHandler().handleError(error, {
+            getErrorHandler().handleError(error, 'EFFECT_ERROR', {
                 context: 'EffectManager.getConfigValue'
             });
             return null;
@@ -1247,7 +1247,7 @@ export class EffectManager {
             
             console.log('[EffectManager] 設定システムとの連携を適用しました');
         } catch (error) {
-            getErrorHandler().handleError(error, {
+            getErrorHandler().handleError(error, 'EFFECT_ERROR', {
                 context: 'EffectManager.applyConfiguration'
             });
         }
@@ -1300,7 +1300,7 @@ export class EffectManager {
             
             console.log('[EffectManager] 設定を更新しました');
         } catch (error) {
-            getErrorHandler().handleError(error, {
+            getErrorHandler().handleError(error, 'EFFECT_ERROR', {
                 context: 'EffectManager.updateConfiguration'
             });
         }
@@ -1313,7 +1313,7 @@ export class EffectManager {
         this.clearEffects();
         
         // 設定変更の監視を停止
-        this.configWatchers.forEach((watcher, key) => {
+        this.configWatchers.forEach((watcher, _key) => {
             if (this.effectsConfig?.configManager?.unwatch) {
                 this.effectsConfig.configManager.unwatch(watcher);
             }

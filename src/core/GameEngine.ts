@@ -53,14 +53,7 @@ import { GameEngineEventManager } from './game-engine/GameEngineEventManager.js'
 import { GameEngineRenderer } from './game-engine/GameEngineRenderer.js';
 import { GameEngineUtilities } from './game-engine/GameEngineUtilities.js';
 
-// Type definitions
-interface GameEngineConfig {
-    targetFPS?: number;
-    enableAudio?: boolean;
-    enableEffects?: boolean;
-    enableDebug?: boolean;
-    performanceLevel?: 'low' | 'medium' | 'high';
-}
+// Type definitions - GameEngineConfig removed (unused)
 
 interface GameStats {
     fps: number;
@@ -292,12 +285,21 @@ export class GameEngine {
         try {
             // Audio system
             const audioConfig = {
-                enabled: true,
                 volumes: {
                     master: 0.8,
+                    sfx: 0.8,
                     bgm: 0.7,
-                    effects: 0.8
-                }
+                    muted: false
+                },
+                effects: {
+                    compression: false,
+                    reverb: false
+                },
+                quality: 'medium' as const,
+                getCompressorConfig: () => ({ threshold: -24, knee: 30, ratio: 12, attack: 0.003, release: 0.25 }),
+                getReverbConfig: () => ({ duration: 2, decay: 2, reverse: false }),
+                isCompressionEnabled: () => false,
+                isReverbEnabled: () => false
             };
             this.audioManager = new AudioManager(this.configManager, audioConfig);
             
@@ -522,8 +524,8 @@ export class GameEngine {
             this.renderer.render();
             
             // Render debug info if available
-            if (this.debugInterface && this.debugInterface.render) {
-                this.debugInterface.render(this.context);
+            if (this.debugInterface && (this.debugInterface as any).render) {
+                (this.debugInterface as any).render(this.context);
             }
             
             // Emit render event

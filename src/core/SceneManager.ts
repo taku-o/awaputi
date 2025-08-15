@@ -14,18 +14,18 @@ interface SceneContextData {
 }
 
 export class SceneManager {
-    private _gameEngine: any; // GameEngine type would be defined elsewhere - prefixed with _ as unused
+    private __gameEngine: any; // GameEngine type would be defined elsewhere - prefixed with __ as unused
     private scenes: Map<string, ExtendedScene>;
     private currentScene: ExtendedScene | null;
-    private _nextScene: ExtendedScene | null; // prefixed with _ as unused
+    private __nextScene: ExtendedScene | null; // prefixed with __ as unused
     private lastUpdateDebugTime?: number;
     private lastSceneWarnTime?: number;
     
     constructor(gameEngine: any) {
-        this._gameEngine = gameEngine;
+        this.__gameEngine = gameEngine;
         this.scenes = new Map<string, ExtendedScene>();
         this.currentScene = null;
-        this._nextScene = null;
+        this.__nextScene = null;
     }
     
     /**
@@ -170,7 +170,7 @@ export class SceneManager {
     destroy(): void {
         this.stop();
         this.scenes.clear();
-        this.nextScene = null;
+        this.__nextScene = null;
         console.log('[SceneManager] Destroyed');
     }
 }

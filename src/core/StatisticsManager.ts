@@ -167,7 +167,7 @@ interface GameEngine {
 }
 
 export class StatisticsManager {
-    private _gameEngine: GameEngine; // prefixed with _ as unused
+    private __gameEngine: GameEngine; // prefixed with __ as unused
     private dataManager: StatisticsDataManager;
     private calculator: StatisticsCalculator;
     private timeSeriesManager: StatisticsTimeSeriesManager;
@@ -179,7 +179,7 @@ export class StatisticsManager {
     private sessionStats: SessionStats;
     
     constructor(gameEngine: GameEngine) {
-        this._gameEngine = gameEngine;
+        this.__gameEngine = gameEngine;
         
         // 分割されたコンポーネントを初期化（スタブ実装）
         this.dataManager = this.createStubDataManager();

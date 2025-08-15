@@ -3,7 +3,7 @@
  * ユーティリティ・レスポンシブ・クリーンアップ機能を担当
  */
 import { getPerformanceOptimizer } from '../../utils/PerformanceOptimizer.js';
-import { getMemoryManager } from '../../utils/MemoryManager.js';
+// import { getMemoryManager } from '../../utils/MemoryManager.js';
 
 interface GameEngine {
     performanceMonitor?: any;
@@ -46,7 +46,7 @@ export class GameEngineUtilities {
             renderTime: this.gameEngine.performanceStats?.renderTime || 0,
             updateTime: this.gameEngine.performanceStats?.updateTime || 0,
             memoryUsage: perfStats.memoryUsage?.usedJSHeapSize || 0,
-            performanceLevel: optimizerStats.performanceLevel || 'medium'
+            performanceLevel: (optimizerStats as any).performanceLevel || 'medium'
         };
     }
     

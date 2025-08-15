@@ -2,9 +2,9 @@
  * Game Engine Initializer
  * ゲームエンジンの初期化・設定・統合機能を担当
  */
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
-import { getPerformanceOptimizer } from '../../utils/PerformanceOptimizer.js';
-import { getMemoryManager } from '../../utils/MemoryManager.js';
+// import { getErrorHandler } from '../../utils/ErrorHandler.js';
+// import { getPerformanceOptimizer } from '../../utils/PerformanceOptimizer.js';
+// import { getMemoryManager } from '../../utils/MemoryManager.js';
 // import { getPoolManager } from '../../utils/ObjectPool.js';
 // import { getSEOMonitor } from '../../seo/SEOMonitor.js';
 
@@ -84,12 +84,12 @@ export class GameEngineInitializer {
             
             // シーンを登録
             this.gameEngine.sceneManager.addScene('menu', new MainMenuScene());
-            this.gameEngine.sceneManager.addScene('stageSelect', new StageSelectScene());
-            this.gameEngine.sceneManager.addScene('game', new GameScene());
+            this.gameEngine.sceneManager.addScene('stageSelect', new StageSelectScene(this.gameEngine));
+            this.gameEngine.sceneManager.addScene('game', new GameScene(this.gameEngine));
             this.gameEngine.sceneManager.addScene('shop', new ShopScene());
             this.gameEngine.sceneManager.addScene('userInfo', new UserInfoScene());
-            this.gameEngine.sceneManager.addScene('settings', new SettingsScene());
-            this.gameEngine.sceneManager.addScene('help', new HelpScene());
+            this.gameEngine.sceneManager.addScene('settings', new SettingsScene(this.gameEngine));
+            this.gameEngine.sceneManager.addScene('help', new HelpScene(this.gameEngine));
             
             console.log('[GameEngineInitializer] All scenes initialized');
         } catch (error) {
@@ -129,7 +129,7 @@ export class GameEngineInitializer {
     /**
      * SEOシステムとの統合機能を設定
      */
-    private setupSEOIntegration(): void {
+    private _setupSEOIntegration(): void {
         try {
             // SEOシステムが利用可能な場合のみ統合
             if ((window as any).seoMetaManager && (window as any).structuredDataEngine) {
