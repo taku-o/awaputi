@@ -1,5 +1,6 @@
 /**
  * ConfigurationManager 基本テスト
+ * TypeScript移行 - Task 24対応
  */
 
 import { ConfigurationManager, getConfigurationManager } from '../../src/core/ConfigurationManager.js';
