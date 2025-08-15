@@ -11,34 +11,10 @@ export class HelpRenderer {
     constructor(gameEngine) {
         this.gameEngine = gameEngine;
         
-        // レイアウト設定
-        this.layout = {
-            sidebar: {
-                x: 50,
-                y: 110,  // 検索バーの下に配置
-                width: 250,
-                height: 370  // 高さ調整
-            },
-            content: {
-                x: 320,
-                y: 110,  // 検索バーの下に配置
-                width: 450,
-                height: 370  // 高さ調整
-            },
-            searchBar: {
-                x: 50,
-                y: 60,  // タイトルの下に配置
-                width: 720,
-                height: 40
-            },
-            backButton: {
-                x: 50,
-                y: 500,
-                width: 100,
-                height: 40
-            }
-        };
-
+        // 基準サイズ（800x600を前提とした設計）
+        this.baseWidth = 800;
+        this.baseHeight = 600;
+        
         // 色設定
         this.colors = {
             background: '#0f0f1a',
@@ -61,6 +37,77 @@ export class HelpRenderer {
             small: 14,
             tiny: 12
         };
+        
+        // レイアウトは動的に計算する
+        this.calculateLayout();
+    }
+    
+    /**
+     * 動的レイアウト計算
+     */
+    calculateLayout() {
+        // キャンバスサイズを取得
+        let canvasWidth = this.baseWidth;
+        let canvasHeight = this.baseHeight;
+        
+        if (this.gameEngine && this.gameEngine.canvas) {
+            canvasWidth = this.gameEngine.canvas.width;
+            canvasHeight = this.gameEngine.canvas.height;
+        }
+        
+        // ResponsiveCanvasManagerのスケール情報も考慮
+        let scale = 1;
+        if (this.gameEngine && this.gameEngine.responsiveCanvasManager) {
+            try {
+                const canvasInfo = this.gameEngine.responsiveCanvasManager.getCanvasInfo();
+                if (canvasInfo && canvasInfo.scale) {
+                    scale = canvasInfo.scale;
+                    canvasWidth = canvasInfo.displayWidth || canvasWidth;
+                    canvasHeight = canvasInfo.displayHeight || canvasHeight;
+                }
+            } catch (error) {
+                // フォールバック
+            }
+        }
+        
+        // マージンを計算（キャンバス幅の比例）
+        const margin = 50;
+        const spacing = 20;
+        
+        // サイドバー幅（最大250px、キャンバス幅の30%まで）
+        const sidebarWidth = Math.min(250, canvasWidth * 0.3);
+        
+        // コンテンツ幅（残りスペースから計算、最小300px）
+        const availableWidth = canvasWidth - margin - sidebarWidth - spacing - margin;
+        const contentWidth = Math.max(300, availableWidth);
+        
+        // レイアウト設定
+        this.layout = {
+            sidebar: {
+                x: margin,
+                y: 110,
+                width: sidebarWidth,
+                height: Math.max(300, canvasHeight - 200)
+            },
+            content: {
+                x: margin + sidebarWidth + spacing,
+                y: 110,
+                width: contentWidth,
+                height: Math.max(300, canvasHeight - 200)
+            },
+            searchBar: {
+                x: margin,
+                y: 60,
+                width: Math.min(720, canvasWidth - margin * 2),
+                height: 40
+            },
+            backButton: {
+                x: margin,
+                y: Math.max(480, canvasHeight - 80),
+                width: 100,
+                height: 40
+            }
+        };
     }
 
     /**
@@ -68,6 +115,9 @@ export class HelpRenderer {
      */
     render(ctx, state, accessibilityManager, animationManager, transitionRenderer) {
         ctx.save();
+        
+        // レイアウトを再計算（キャンバスサイズ変更に対応）
+        this.calculateLayout();
         
         // 背景クリア
         ctx.fillStyle = this.colors.background;
