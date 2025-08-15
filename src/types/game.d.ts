@@ -87,17 +87,6 @@ export interface Bubble {
   getAndClearEffects(): BubbleEffect[];
 }
 
-export interface BubbleType {
-  name: string;
-  color: Color;
-  size: number;
-  maxAge: number;
-  points: number;
-  speed: number;
-  special: boolean;
-  effects?: BubbleEffect[];
-}
-
 export interface BubbleTypeConfig {
   phaseChance?: number;
   [key: string]: any;

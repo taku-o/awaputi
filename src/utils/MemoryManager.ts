@@ -97,7 +97,7 @@ export class MemoryManager {
         // Main cleanup interval
         this.cleanupInterval = setInterval(() => {
             this.performIntelligentCleanup();
-        }, config.cleanupInterval || 30000);
+        }, config.cleanupInterval || 30000) as any;
         
         this.bindMethods();
         this.initializeMemoryMonitoring();
@@ -380,3 +380,19 @@ export class MemoryManager {
         }
     }
 }
+
+// Singleton instance
+let memoryManagerInstance: MemoryManager | null = null;
+
+/**
+ * Get singleton MemoryManager instance
+ * @returns MemoryManager instance
+ */
+export function getMemoryManager(): MemoryManager {
+    if (!memoryManagerInstance) {
+        memoryManagerInstance = new MemoryManager();
+    }
+    return memoryManagerInstance;
+}
+
+export { MemoryManager };

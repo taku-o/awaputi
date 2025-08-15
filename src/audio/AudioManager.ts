@@ -110,7 +110,7 @@ export class AudioManager implements IAudioManager {
       
       // AudioConfiguration設定
       this.contextManager.setAudioConfig(this.audioConfig);
-      this.configurationManager.setDependencies(this.configManager, this.audioConfig);
+      this.configurationManager.setDependencies(this.configManager, this.audioConfig, {});
       
       // AudioContextの初期化
       const contextInitialized = await this.contextManager.initializeAudioContext();
@@ -744,6 +744,59 @@ export class AudioManager implements IAudioManager {
       console.log('[AudioManager] オーディオシステムを有効化しました');
     } catch (error) {
       console.warn('[AudioManager] 有効化中にエラー:', error);
+    }
+  }
+  
+  /**
+   * オーディオシステムを開始
+   * ゲームエンジンから呼ばれる初期開始処理
+   */
+  start(): void {
+    try {
+      if (!this.isInitialized) {
+        this.initialize();
+      }
+      this.enable();
+      console.log('[AudioManager] オーディオシステムを開始しました');
+    } catch (error) {
+      console.error('[AudioManager] 開始中にエラー:', error);
+    }
+  }
+  
+  /**
+   * オーディオシステムを停止
+   * ゲームエンジンから呼ばれる停止処理
+   */
+  stop(): void {
+    try {
+      this.disable();
+      console.log('[AudioManager] オーディオシステムを停止しました');
+    } catch (error) {
+      console.error('[AudioManager] 停止中にエラー:', error);
+    }
+  }
+  
+  /**
+   * オーディオシステムを破棄
+   * リソースの完全なクリーンアップ
+   */
+  destroy(): void {
+    try {
+      // 全ての音声を停止
+      this.stopAllSounds();
+      this.stopBGM();
+      
+      // AudioContextを閉じる
+      if (this.audioContext && this.audioContext.state !== 'closed') {
+        this.audioContext.close();
+      }
+      
+      // 初期化フラグをリセット
+      this.isInitialized = false;
+      
+      console.log('[AudioManager] オーディオシステムを破棄しました');
+    } catch (error) {
+      console.error('[AudioManager] 破棄中にエラー:', error);
     }
   }
 }

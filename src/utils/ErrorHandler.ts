@@ -81,7 +81,7 @@ class ErrorHandler {
     constructor() {
         // Environment detection
         this.isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
-        this.isNode = typeof process !== 'undefined' && process.versions && process.versions.node;
+        this.isNode = typeof process !== 'undefined' && !!process.versions && !!process.versions.node;
         
         // Main controller state
         this.isInitialized = false;
@@ -169,7 +169,7 @@ class ErrorHandler {
         // Resource loading errors
         window.addEventListener('error', (event: Event) => {
             const target = event.target as HTMLElement & { src?: string; href?: string; tagName?: string };
-            if (target && target !== window) {
+            if (target && target !== (window as any)) {
                 this.handleError(
                     new Error(`Resource load failed: ${target.src || target.href}`), 
                     'RESOURCE_ERROR', 
@@ -355,6 +355,20 @@ class ErrorHandler {
             console.log('[ErrorHandler] Error handling test completed');
         }
     }
+}
+
+// Singleton instance
+let errorHandlerInstance: ErrorHandler | null = null;
+
+/**
+ * Get singleton ErrorHandler instance
+ * @returns ErrorHandler instance
+ */
+export function getErrorHandler(): ErrorHandler {
+    if (!errorHandlerInstance) {
+        errorHandlerInstance = new ErrorHandler();
+    }
+    return errorHandlerInstance;
 }
 
 export default ErrorHandler;

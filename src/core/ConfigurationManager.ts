@@ -302,7 +302,7 @@ class ConfigurationManager {
     /**
      * 設定値を設定
      */
-    set<T = ConfigurationValue>(key: string, value: T): boolean {
+    set<T extends ConfigurationValue = ConfigurationValue>(key: string, value: T): boolean {
         try {
             // 検証
             if (!this._validateValue(key, value)) {
@@ -324,17 +324,17 @@ class ConfigurationManager {
             const oldValue = categoryMap.get(path);
             
             // 値を設定
-            categoryMap.set(path, value);
+            categoryMap.set(path, value as ConfigurationValue);
             
             // キャッシュを無効化
             const cacheKey = `config:${key}`;
             this.cache.delete(cacheKey);
             
             // 変更履歴を記録
-            this._recordChange(key, oldValue, value);
+            this._recordChange(key, oldValue, value as ConfigurationValue);
             
             // ウォッチャーに通知
-            this._notifyWatchers(key, value, oldValue);
+            this._notifyWatchers(key, value as ConfigurationValue, oldValue);
             
             return true;
             
@@ -474,7 +474,8 @@ class ConfigurationManager {
     }
     
     private _validateValue(key: string, value: ConfigurationValue): boolean {
-        for (const [ruleKey, rule] of this.validationRules) {
+        for (const ruleEntry of Array.from(this.validationRules.entries())) {
+            const [ruleKey, rule] = ruleEntry;
             if (this._matchesPattern(key, ruleKey)) {
                 if (!rule.validate(value)) {
                     this._logWarning(`Validation failed for ${key}: ${rule.errorMessage || 'Invalid value'}`, key);
@@ -569,4 +570,5 @@ export function getConfigurationManager(): ConfigurationManager {
     return configurationManagerInstance;
 }
 
+export { ConfigurationManager };
 export default ConfigurationManager;

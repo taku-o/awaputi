@@ -385,3 +385,19 @@ export class PerformanceOptimizer {
         }
     }
 }
+
+// Singleton instance
+let performanceOptimizerInstance: PerformanceOptimizer | null = null;
+
+/**
+ * Get singleton PerformanceOptimizer instance
+ * @returns PerformanceOptimizer instance
+ */
+export function getPerformanceOptimizer(): PerformanceOptimizer {
+    if (!performanceOptimizerInstance) {
+        performanceOptimizerInstance = new PerformanceOptimizer();
+    }
+    return performanceOptimizerInstance;
+}
+
+export { PerformanceOptimizer };
