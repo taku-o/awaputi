@@ -363,6 +363,9 @@ export class HelpContentManager {
                 const topic = category.topics[index];
                 newContent = await this.helpManager.getTopicContent(topic.id);
                 
+                // 重要: currentContentを更新
+                this.currentContent = newContent;
+                
                 // アナリティクス記録
                 if (this.helpAnalytics) {
                     this.helpAnalytics.recordTopicView(topic.id, this.selectedCategory);

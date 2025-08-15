@@ -616,22 +616,34 @@ export class HelpRenderer {
     }
 
     /**
-     * テキストの自動改行
+     * テキストの自動改行（日本語対応）
      */
     wrapText(ctx, text, maxWidth) {
-        const words = text.split(' ');
+        if (!text) return [];
+        
         const lines = [];
         let currentLine = '';
         
-        for (const word of words) {
-            const testLine = currentLine + (currentLine ? ' ' : '') + word;
+        // 日本語対応: 文字単位で処理
+        for (let i = 0; i < text.length; i++) {
+            const char = text[i];
+            const testLine = currentLine + char;
             const metrics = ctx.measureText(testLine);
             
             if (metrics.width > maxWidth && currentLine) {
                 lines.push(currentLine);
-                currentLine = word;
+                currentLine = char;
             } else {
                 currentLine = testLine;
+                
+                // 句読点や改行で自然に改行
+                if (char === '。' || char === '、' || char === '\n') {
+                    const nextChar = text[i + 1];
+                    if (nextChar && ctx.measureText(currentLine + nextChar).width > maxWidth) {
+                        lines.push(currentLine);
+                        currentLine = '';
+                    }
+                }
             }
         }
         
