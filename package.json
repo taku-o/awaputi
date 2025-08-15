@@ -106,10 +106,12 @@
     "jsdom": "^26.1.0",
     "lighthouse": "^11.0.0",
     "terser": "^5.43.1",
+    "ts-jest": "^29.4.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2",
     "vite": "^5.0.0",
-    "vite-bundle-analyzer": "^0.7.0"
+    "vite-bundle-analyzer": "^0.7.0",
+    "vite-plugin-checker": "^0.10.2"
   },
   "bundlesize": [
     {

@@ -7,25 +7,25 @@
   - `npm install -D typescript @types/node @types/jest @types/jsdom ts-node`を実行
   - _要件: 1.1, 1.2_
 
-- [ ] 2. TypeScript設定ファイルの作成
+- [x] 2. TypeScript設定ファイルの作成
   - tsconfig.jsonをプロジェクトルートに作成し、strict modeを有効化
   - tsconfig.build.jsonとtsconfig.test.jsonを作成して用途別設定を分離
   - パスマッピング設定を追加（@/*, @tests/*, @utils/*, @core/*）
   - _要件: 1.1, 1.3_
 
-- [ ] 3. Vite設定の更新
+- [x] 3. Vite設定の更新
   - vite.config.jsでTypeScriptファイルの処理を有効化
   - ビルド対象に.tsファイルを含める設定を追加
   - 型チェックプラグインの設定を追加
   - _要件: 1.3_
 
-- [ ] 4. Jest設定の更新
+- [x] 4. Jest設定の更新
   - jest.config.jsでTypeScriptファイルのテスト実行を有効化
   - ts-jestトランスフォーマーの設定を追加
   - 型定義ファイルのセットアップを追加
   - _要件: 1.4_
 
-- [ ] 5. 基本型定義ファイルの作成
+- [x] 5. 基本型定義ファイルの作成
   - src/types/global.d.tsを作成してグローバル型定義を追加
   - src/types/game.d.tsを作成してゲーム関連の基本型定義を追加
   - src/types/components.d.tsを作成してコンポーネント型定義を追加

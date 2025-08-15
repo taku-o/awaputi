@@ -11,9 +11,14 @@ export default {
   // Enable ES modules support
   preset: null,
   
-  // Transform configuration for ES modules
-  // Note: '.js' is automatically inferred from package.json type: "module"
-  transform: {},
+  // Transform configuration for ES modules and TypeScript
+  transform: {
+    '^.+\\.ts$': ['ts-jest', {
+      useESM: true,
+      tsconfig: 'tsconfig.test.json'
+    }],
+    '^.+\\.js$': 'ts-jest'
+  },
   
   // Jest globals for ES modules
   globals: {
@@ -25,8 +30,8 @@ export default {
     "node_modules/(?!(.*\\.mjs$))"
   ],
   
-  // Module path mapping
-  moduleFileExtensions: ['js', 'json'],
+  // Module path mapping - include TypeScript extensions
+  moduleFileExtensions: ['ts', 'js', 'json'],
   
   // Setup files - add global Jest setup
   setupFilesAfterEnv: [
@@ -46,10 +51,12 @@ export default {
     '^@ui/(.*)$': '<rootDir>/src/ui/$1'
   },
   
-  // Test match patterns - all tests except E2E
+  // Test match patterns - all tests except E2E (include TypeScript)
   testMatch: [
     '<rootDir>/tests/**/*.test.js',
-    '<rootDir>/tests/**/*.spec.js'
+    '<rootDir>/tests/**/*.spec.js',
+    '<rootDir>/tests/**/*.test.ts',
+    '<rootDir>/tests/**/*.spec.ts'
   ],
   
   // Exclude E2E and Playwright tests
@@ -66,9 +73,12 @@ export default {
   collectCoverage: false, // Disable by default for performance
   collectCoverageFrom: [
     'src/**/*.js',
+    'src/**/*.ts',
     '!src/main.js',
     '!src/**/*.test.js',
     '!src/**/*.spec.js',
+    '!src/**/*.test.ts',
+    '!src/**/*.spec.ts',
     '!src/test/**',
     '!src/examples/**',
     '!src/deprecated/**'
