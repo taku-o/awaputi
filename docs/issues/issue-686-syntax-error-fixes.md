@@ -53,9 +53,9 @@
 
 ## 関連ファイル
 
-- 要件定義: `.kiro/specs/syntax-error-fixes/requirements.md`
-- タスクリスト: `.kiro/specs/syntax-error-fixes/tasks.md`
-- 設計書: `.kiro/specs/syntax-error-fixes/design.md`
+- 要件定義: `.kiro/specs/completed/2025/Q3/syntax-error-fixes/requirements.md`
+- タスクリスト: `.kiro/specs/completed/2025/Q3/syntax-error-fixes/tasks.md`
+- 設計書: `.kiro/specs/completed/2025/Q3/syntax-error-fixes/design.md`
 - 対象ファイル: 
   - `test-error-handler.html`
   - `src/core/LocalizationManager.js`

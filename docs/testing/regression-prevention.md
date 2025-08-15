@@ -132,6 +132,6 @@ const targetMet = overallSuccessRate >= 95;
 ## 関連リソース
 
 - **Issue #106**: [Test Suite Repair Specification](.kiro/specs/test-suite-repair-issue-106/)
-- **Tasks進捗**: [tasks.md](.kiro/specs/test-suite-repair-issue-106/tasks.md)
+- **Tasks進捗**: [tasks.md](.kiro/specs/completed/2025/Q3/test-suite-repair-issue-106/tasks.md)
 - **CI/CD設定**: [.github/workflows/pr-validation.yml](.github/workflows/pr-validation.yml)
 - **ファイルサイズ監視**: [tools/file-size-monitor.js](../../tools/file-size-monitor.js)

@@ -158,6 +158,6 @@ src/utils/local-execution/
 ## 関連ファイル
 
 - 仕様: `.kiro/specs/local-file-execution-cors-issue-63/`
-- タスクリスト: `.kiro/specs/local-file-execution-cors-issue-63/tasks.md`
-- 要件定義: `.kiro/specs/local-file-execution-cors-issue-63/requirements.md`
-- 設計文書: `.kiro/specs/local-file-execution-cors-issue-63/design.md`
+- タスクリスト: `.kiro/specs/completed/2025/Q3/local-file-execution-cors-issue-63/tasks.md`
+- 要件定義: `.kiro/specs/completed/2025/Q3/local-file-execution-cors-issue-63/requirements.md`
+- 設計文書: `.kiro/specs/completed/2025/Q3/local-file-execution-cors-issue-63/design.md`

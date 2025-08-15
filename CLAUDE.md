@@ -64,12 +64,12 @@ npm run test:all
 - InputCoordinateConverterによる入力座標変換システム
 - ResponsiveCanvasManagerとの完全統合
 
-**仕様書**: `.kiro/specs/canvas-scale-ui-positioning-fix/`
+**仕様書**: `.kiro/specs/completed/2025/Q3/canvas-scale-ui-positioning-fix/`
 - requirements.md: 6つの要件定義（UIスケーリング、ゲーム情報表示、コントロールボタン、インタラクティブ要素、座標システム、デバイス対応）
 - design.md: 詳細なアーキテクチャ設計（5コンポーネント、データモデル、エラーハンドリング、テスト戦略）
 - tasks.md: 12段階65サブタスクの実装計画（インフラ→レンダリング→入力処理→統合→テスト→最適化）
 
-**作業記録ファイル**: `.kiro/specs/canvas-scale-ui-positioning-fix/work-progress.md`
+**作業記録ファイル**: `.kiro/specs/completed/2025/Q3/canvas-scale-ui-positioning-fix/work-progress.md`
 
 **現状**: 実装開始、問題調査完了、tasks.mdのタスクリストに従って順次作業中
 
@@ -88,7 +88,7 @@ npm run test:all
 - KeyboardShortcutManagerから対象ショートカットの削除
 - 既存機能の保持と設定永続化の確保
 
-**仕様書**: `.kiro/specs/keyboard-shortcuts-to-settings-ui/`
+**仕様書**: `.kiro/specs/completed/2025/Q3/keyboard-shortcuts-to-settings-ui/`
 - requirements.md: 7つの要件定義（ショートカット削除、UI追加、設定永続化、ドキュメント更新）
 - design.md: アーキテクチャ設計（UI統合、カスタムコンポーネント、エラーハンドリング、テスト戦略）
 - tasks.md: 9段階73サブタスクの詳細実装計画（UIコンポーネント→機能移行→ショートカット削除→テスト→品質保証）
@@ -112,7 +112,7 @@ npm run test:all
 - 検索バー機能の修復と入力処理の実装
 - 堅牢なエラーハンドリングとフォールバック機能の追加
 
-**仕様書**: `.kiro/specs/help-system-functionality-fix/`
+**仕様書**: `.kiro/specs/completed/2025/Q3/help-system-functionality-fix/`
 - requirements.md: 6つの要件定義（ショートカットアクセス、検索機能、ナビゲーション、アナリティクス、表示機能、コンテクスト機能）
 - design.md: アーキテクチャ設計（不足メソッド実装、検索機能復旧、エラーハンドリング、テスト戦略）
 - tasks.md: 18段階の詳細実装計画（メソッド修正→検索復旧→ナビゲーション→テスト→最適化）
@@ -135,7 +135,7 @@ npm run test:all
 - KeyboardShortcutManagerからG、Rキーの削除
 - アクセシビリティとレスポンシブ対応
 
-**仕様書**: `.kiro/specs/game-control-buttons-addition/`
+**仕様書**: `.kiro/specs/completed/2025/Q3/game-control-buttons-addition/`
 - requirements.md: 6つの要件定義（Give Upボタン、Restartボタン、キーボードショートカット削除、UI設計、ドキュメント更新、アクセシビリティ）
 - design.md: アーキテクチャ設計（コンポーネント統合、確認ダイアログ、エラーハンドリング、テスト戦略）
 - tasks.md: 20段階の実装タスク（コンポーネント作成→統合→機能実装→ショートカット削除→テスト→ドキュメント更新）
@@ -158,7 +158,7 @@ npm run test:all
 - ドキュメント（日本語・英語）から削除されたショートカットの記述を除去
 - 包括的なテストで削除後の動作確認
 
-**仕様書**: `.kiro/specs/keyboard-shortcut-removal/`
+**仕様書**: `.kiro/specs/completed/2025/Q3/keyboard-shortcut-removal/`
 - requirements.md: 5つの要件定義（ショートカット削除、コード整合性、ドキュメント更新、機能維持、テスト）
 - design.md: アーキテクチャ設計（削除対象、実装アプローチ、テスト戦略）
 - tasks.md: 12段階の実装タスク（コード削除→ドキュメント更新→テスト→検証）
@@ -179,7 +179,7 @@ npm run test:all
 - 一貫したシーンナビゲーションパターンの実装
 - 適切なエラーハンドリングの追加
 
-**仕様書**: `.kiro/specs/help-settings-navigation-fix/`
+**仕様書**: `.kiro/specs/completed/2025/Q3/help-settings-navigation-fix/`
 - requirements.md: 4つの要件定義（設定画面修正、ヘルプ画面修正、一貫性、信頼性）
 - design.md: シーン名標準化とナビゲーション方法の一貫性確保
 - tasks.md: 10段階の実装タスク（修正→エラーハンドリング→テスト→検証）
@@ -200,7 +200,7 @@ npm run test:all
 - KeyboardShortcutRouterによる統一的なショートカット処理
 - 重複実装の削除と単一実装への統合
 
-**仕様書**: `.kiro/specs/duplicate-help-settings-screen-consolidation/`
+**仕様書**: `.kiro/specs/completed/2025/Q3/duplicate-help-settings-screen-consolidation/`
 - requirements.md: 7つの要件定義（ヘルプ統合、設定統合、重複削除、ショートカット、機能保持、ナビゲーション、調査）
 - design.md: アーキテクチャ設計（統合戦略、コンポーネント設計、エラー処理、テスト戦略）
 - tasks.md: 24タスクの詳細実装計画（機能監査→アーキテクチャ→統合→テスト→検証）
@@ -222,7 +222,7 @@ npm run test:all
 - 言語別フォールバックチェーンの実装
 - 設定可能な読み込み制御システム
 
-**仕様書**: `.kiro/specs/font-loading-error-fix/`
+**仕様書**: `.kiro/specs/completed/2025/Q3/font-loading-error-fix/`
 - requirements.md: 4つの要件定義（エラー処理、フォールバック、ログ改善、設定制御）
 - design.md: 5段階のアーキテクチャ設計（エラーハンドリング→フォールバック→ソース管理→統合→設定）
 - tasks.md: 12メインタスクの詳細実装計画（コンポーネント作成→統合→テスト）
@@ -243,7 +243,7 @@ npm run test:all
 - 翻訳ファイルに`menu.shop`キーを追加
 - ドキュメントの更新（keyboard-shortcuts.md）
 
-**仕様書**: `.kiro/specs/shop-button-main-menu-addition/`
+**仕様書**: `.kiro/specs/completed/2025/Q3/shop-button-main-menu-addition/`
 - requirements.md: 5つの要件定義（Sキー削除、ショップボタン追加、メニュー順序、ドキュメント更新、既存機能保持）
 - design.md: アーキテクチャ設計と実装フェーズ
 - tasks.md: 12段階の実装タスク（翻訳→メニュー追加→ショートカット削除→ドキュメント→テスト）
@@ -259,7 +259,7 @@ npm run test:all
 - 既存コードの変更なし、追加のみの実装
 - レスポンシブ対応とアクセシビリティ確保
 
-**仕様書**: `.kiro/specs/minimal-entry-page/`
+**仕様書**: `.kiro/specs/completed/2025/Q3/minimal-entry-page/`
 - requirements.md: 5つの要件定義
 - design.md: シンプルアプローチの設計
 - tasks.md: 12段階の実装タスク
@@ -279,7 +279,7 @@ npm run test:all
 - HEADリクエスト専用ハンドラーの実装
 - 適切なエラーハンドリングとグレースフルデグラデーション
 
-**仕様書**: `.kiro/specs/serviceworker-head-request-fix/`
+**仕様書**: `.kiro/specs/completed/2025/Q3/serviceworker-head-request-fix/`
 - requirements.md: 4つの要件定義（エラー解消、適切な処理、効率的動作、オフラインアクセス）
 - design.md: アーキテクチャ設計とHEADリクエスト処理フロー
 - tasks.md: 12段階の実装タスク（検出→ハンドラー→分岐→除外→テスト→監視）
@@ -306,7 +306,7 @@ npm run test:all
 - 開発時の混乱やメンテナンス性低下の原因
 - テストファイル、設定ファイル、コアシステム等で広範囲に重複発生
 
-**仕様書**: `.kiro/specs/javascript-class-name-deduplication/`
+**仕様書**: `.kiro/specs/completed/2025/Q3/javascript-class-name-deduplication/`
 - requirements.md: 6つの要件定義（ユニーク性、命名戦略、自動更新、検証、文書化）
 - design.md: 7段階のアーキテクチャ設計（分析→戦略→リネーム→検証→レポート）
 - tasks.md: 17メインタスク、62サブタスクの詳細実装計画
@@ -328,7 +328,7 @@ npm run test:all
 - 一貫性のある座標変換の実装
 - 包括的なテストカバレッジの追加
 
-**仕様書**: `.kiro/specs/main-menu-layout-fix/`
+**仕様書**: `.kiro/specs/completed/2025/Q3/main-menu-layout-fix/`
 - requirements.md: 5つの要件定義（レイアウト修正、座標計算統一、レスポンシブ対応、品質保証、保守性）
 - design.md: 詳細なアーキテクチャ設計と座標変換システム
 - tasks.md: 11段階の実装タスク（座標計算→統合→テスト→最適化）
@@ -348,7 +348,7 @@ npm run test:all
 - 座標変換ユーティリティの実装
 - フォールバック機能付きの堅牢な実装
 
-**仕様書**: `.kiro/specs/username-input-positioning-fix/`
+**仕様書**: `.kiro/specs/completed/2025/Q3/username-input-positioning-fix/`
 - requirements.md: 4つの要件定義（中央配置、座標システム統合、視覚一貫性、保守性）
 - design.md: 詳細なアーキテクチャ設計と座標変換システム
 - tasks.md: 18段階の実装タスク（座標変換→統合→テスト→最適化）
@@ -378,7 +378,7 @@ npm run test:all
 - 必要な場合は静的な場所で最適化情報を管理
 - 既存のi18n機能との後方互換性を保持
 
-**仕様書**: `.kiro/specs/i18n-build-timestamp-removal/`
+**仕様書**: `.kiro/specs/completed/2025/Q3/i18n-build-timestamp-removal/`
 - requirements.md: 5つの要件定義（ファイル変更防止、メタデータ保持、最適化情報管理、idempotency、後方互換性）
 - design.md: アーキテクチャ設計と翻訳ファイル構造変更
 - tasks.md: 11段階の実装タスク（スクリプト修正→テスト→文書更新）
@@ -399,7 +399,7 @@ npm run test:all
 - 強化されたエラーハンドリングとフォールバック機能
 - コンテンツ検証とモニタリングシステム
 
-**仕様書**: `.kiro/specs/help-documentation-multilingual-support/`
+**仕様書**: `.kiro/specs/completed/2025/Q3/help-documentation-multilingual-support/`
 - requirements.md: 6つの要件定義（コンテンツ作成、エラー処理、拡張性、品質保証、パフォーマンス、保守性）
 - design.md: 5段階のアーキテクチャ設計（コンテンツ→エラー処理→検証→テスト→運用）
 - tasks.md: 8メインタスク、37サブタスクの詳細実装計画（日本語→韓国語→中国語→システム強化）

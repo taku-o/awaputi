@@ -384,8 +384,8 @@ class EmergencyHelpManager {
 
 ## 関連ドキュメント
 
-- [ヘルプシステム要件定義](.kiro/specs/documentation-enhancement-issue-31/requirements.md)
-- [ヘルプシステム設計書](.kiro/specs/documentation-enhancement-issue-31/design.md)
+- [ヘルプシステム要件定義](.kiro/specs/completed/2025/Q3/documentation-enhancement-issue-31/requirements.md)
+- [ヘルプシステム設計書](.kiro/specs/completed/2025/Q3/documentation-enhancement-issue-31/design.md)
 - [多言語対応ガイド](docs/internationalization-guide.md)
 - [アクセシビリティガイド](docs/accessibility-guide.md)
 

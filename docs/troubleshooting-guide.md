@@ -1081,4 +1081,4 @@ console.log(collectDiagnosticLogs());
 - [API ドキュメント](./configuration-system-api.md)
 - [移行ガイド](./migration-guide.md)
 - [詳細設計書](./system-design-detailed.md)
-- [要件定義書](../.kiro/specs/configuration-refactoring/requirements.md)
+- [要件定義書](../.kiro/specs/completed/2025/Q3/configuration-refactoring/requirements.md)
