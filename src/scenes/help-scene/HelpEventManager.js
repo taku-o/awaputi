@@ -734,6 +734,12 @@ export class HelpEventManager {
             return;
         }
 
+        // コンテンツエリアクリック処理（検索結果選択など）
+        if (this.isPointInContent(x, y)) {
+            this.handleContentClick(x, y);
+            return;
+        }
+
         // 戻るボタンクリック処理
         if (this.isPointInBackButton(x, y)) {
             this.goBack();
@@ -878,6 +884,37 @@ export class HelpEventManager {
                 }
             }
         }
+    }
+
+    /**
+     * コンテンツエリアクリック処理
+     */
+    async handleContentClick(x, y) {
+        const layout = this.getLayout();
+        const content = layout.content;
+        const state = this.contentManager.getState();
+        
+        // 検索結果表示中の場合
+        if (state.isSearching && state.searchResults.length > 0) {
+            const relativeY = y - content.y;
+            const itemHeight = 40; // 検索結果の各項目の高さ（HelpRendererと一致）
+            const itemSpacing = 5; // 項目間のスペース
+            let currentY = 80; // 上部マージン（検索バー分）
+            
+            // どの検索結果がクリックされたかを判定
+            for (let i = 0; i < state.searchResults.length; i++) {
+                if (relativeY >= currentY && relativeY < currentY + itemHeight) {
+                    // 検索結果を選択
+                    const result = await this.contentManager.selectSearchResult(i);
+                    if (result && this.animationManager) {
+                        this.animationManager.startContentTransition(result.newContent, 'fade');
+                    }
+                    return;
+                }
+                currentY += itemHeight + itemSpacing;
+            }
+        }
+        // 通常のコンテンツ表示時は特に処理なし（スクロールなど）
     }
 
     /**
