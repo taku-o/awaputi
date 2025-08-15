@@ -57,8 +57,8 @@ class ConfigurationManager {
     private warningRateLimit: number;
     private cache: any; // CacheSystem type would be defined elsewhere
     private accessStats: AccessStats;
-    private lazyLoaders: Map<string, () => ConfigurationValue>;
-    private preloadKeys: Set<string>;
+    private _lazyLoaders: Map<string, () => ConfigurationValue>;
+    private _preloadKeys: Set<string>;
     private errorHandler: any;
     
     constructor() {
@@ -98,10 +98,10 @@ class ConfigurationManager {
         };
         
         // 遅延読み込み用の設定ローダー
-        this.lazyLoaders = new Map<string, () => ConfigurationValue>();
+        this._lazyLoaders = new Map<string, () => ConfigurationValue>();
         
         // 頻繁にアクセスされるキーのプリロード設定
-        this.preloadKeys = new Set([
+        this._preloadKeys = new Set([
             'game.scoring.baseScores',
             'game.bubbles.maxAge',
             'performance.optimization.maxBubbles',
@@ -289,7 +289,7 @@ class ConfigurationManager {
             }
             
             // キャッシュに保存
-            this.cache.set(cacheKey, value);
+            this.cache.set(cacheKey, value as ConfigurationValue);
             
             return value as T;
             

@@ -231,7 +231,13 @@
     - PlayerData: 不足メソッド実装（updateHighScore, isStageUnlocked, resetGameState, resetAllData）
     - PlayerData: takeDamageメソッドの戻り値を{died: boolean}型に修正
     - AchievementManager: 未使用変数警告を回避（引数名に_プレフィックス）
-  - **継続作業**: 残存する705個の型エラーを段階的に修正中（2.6%改善）
+  - **第4段階完了**: プロパティ・インポート・未使用変数修正（705個→694個、11個修正）
+    - ProceduralSoundGenerator: 型定義にlastGenerationTimeプロパティ追加
+    - AchievementManager: 全未使用変数に_プレフィックス追加（getProgressHistory, getFromCache, setCache, updateConfig等）
+    - AchievementManager: updateAchievementProgressAdvanced, checkAchievementConditionOptimized引数修正
+    - ConfigurationManager: キャッシュ保存時の型キャスト修正、未使用プロパティ_lazyLoaders, _preloadKeys修正
+    - GameEngine: 未使用インポート削除（getLocalizationManager, AchievementEventIntegrator, AchievementNotificationSystem）
+  - **継続作業**: 残存する694個の型エラーを段階的に修正中（1.6%改善）
 
 ### Phase 7継続中 - 未実装機能の実装と型エラー修正
 🔄 **2/3タスク完了** - Task 28-29完了、Task 30進行中

@@ -142,7 +142,7 @@ export class AchievementManager implements IAchievementManager {
             getProgressData: () => ({}),
             loadProgress: () => {},
             resetProgress: () => {},
-            getProgressHistory: (limit: number) => []
+            getProgressHistory: (_limit: number) => []
         };
     }
     
@@ -155,10 +155,10 @@ export class AchievementManager implements IAchievementManager {
             processUpdate: (eventType: string, data: any, callback: (type: string, data: any) => any) => {
                 return callback(eventType, data);
             },
-            getFromCache: (key: string) => null,
-            setCache: (key: string, value: any) => {},
+            getFromCache: (_key: string) => null,
+            setCache: (_key: string, _value: any) => {},
             getPerformanceStats: () => ({}),
-            updateConfig: (config: any) => {},
+            updateConfig: (_config: any) => {},
             resetPerformanceStats: () => {},
             loadStats: () => {},
             destroy: () => {}
@@ -301,7 +301,7 @@ export class AchievementManager implements IAchievementManager {
     /**
      * 実績進捗を高度に更新（既存メソッドとの互換性）
      */
-    updateAchievementProgressAdvanced(achievement: Achievement, eventType: string, data: any): AchievementProgressResult | null {
+    updateAchievementProgressAdvanced(achievement: Achievement, _eventType: string, _data: any): AchievementProgressResult | null {
         if (!this.progressTracker) return null;
         
         const progressResult = this.progressTracker.evaluateAchievementCondition(achievement);
@@ -316,7 +316,7 @@ export class AchievementManager implements IAchievementManager {
     /**
      * 実績条件を最適化チェック（既存メソッドとの互換性）
      */
-    checkAchievementConditionOptimized(achievement: Achievement, eventType: string, data: any): boolean {
+    checkAchievementConditionOptimized(achievement: Achievement, _eventType: string, _data: any): boolean {
         if (!this.progressTracker) return false;
         
         const progressResult = this.progressTracker.evaluateAchievementCondition(achievement);

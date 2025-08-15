@@ -517,6 +517,7 @@ export interface ProceduralSoundGenerator {
   audioContext: AudioContext | null;
   soundBuffers: Map<string, AudioBuffer>;
   isInitialized: boolean;
+  lastGenerationTime: number;
   
   setAudioContext(audioContext: AudioContext): void;
   generateAllSounds(): Promise<boolean>;
