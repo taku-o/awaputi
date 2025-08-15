@@ -134,9 +134,17 @@
 ### Phase 4完了 - UI・シーンシステムのTypeScript移行
 ✅ **全5タスク完了** - 基本シーン、メインメニュー、ゲームシーン、設定・ヘルプシーン、UIコンポーネントの移行完了
 
+### Phase 5開始（2025-01-15）
+- ✅ Task 20: パーティクルシステムの移行完了
+  - ParticleManager.ts: パーティクル効果管理完全型付け、設定変更監視・特殊効果生成型安全化
+  - ParticleManagerConfig, PerformanceStats, ParticleManagerConfiguration インターフェース定義
+  - ParticleRenderer.ts: パーティクル描画・視覚効果完全型付け、カスタム描画機能型安全化
+  - Particle, TrailPoint, Viewport, DrawFunction インターフェース定義、最適化描画機能実装
+  - エフェクト生成・更新・描画メソッドの完全な型注釈追加、パフォーマンス統計取得型安全化
+
 ### 次回作業予定
-- Task 20: パーティクルシステムの移行（Phase 5開始）
-- エフェクト・オーディオシステムの包括的移行
+- Task 21: エフェクト管理システムの移行（Phase 5継続）
+- オーディオシステムの包括的移行
 
 ## 課題・メモ
 - 大規模なプロジェクト（1000+ファイル）のため、段階的な移行が重要
