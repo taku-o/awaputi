@@ -18,6 +18,7 @@ export class HelpEventManager {
         this.boundKeyHandler = null;
         this.boundClickHandler = null;
         this.boundContextMenuHandler = null;
+        this.boundResizeHandler = null;
         
         // IME対応のための隠し入力フィールド
         this.hiddenInput = null;
@@ -60,6 +61,7 @@ export class HelpEventManager {
         this.boundKeyHandler = (event) => this.handleKeyPress(event);
         this.boundClickHandler = (event) => this.handleClick(event);
         this.boundContextMenuHandler = (event) => this.handleContextMenu(event);
+        this.boundResizeHandler = () => this.updateInputPosition();
         
         // IME対応の隠し入力フィールドを作成
         console.log('HelpEventManager: calling createHiddenInput()');
@@ -68,6 +70,7 @@ export class HelpEventManager {
         document.addEventListener('keydown', this.boundKeyHandler);
         document.addEventListener('click', this.boundClickHandler);
         document.addEventListener('contextmenu', this.boundContextMenuHandler);
+        window.addEventListener('resize', this.boundResizeHandler);
         console.log('HelpEventManager: event listeners setup completed');
     }
     
@@ -85,9 +88,11 @@ export class HelpEventManager {
         console.log('HelpEventManager: creating new hidden input element');
         this.hiddenInput = document.createElement('input');
         this.hiddenInput.type = 'text';
-        this.hiddenInput.style.position = 'fixed';
-        this.hiddenInput.style.left = '50px';
-        this.hiddenInput.style.top = '60px';  // タイトルの下に配置
+        this.hiddenInput.style.position = 'absolute';
+        
+        // Canvas要素の位置を基準に計算
+        this.updateInputPosition();
+        
         this.hiddenInput.style.width = '720px';
         this.hiddenInput.style.height = '40px';
         this.hiddenInput.style.fontSize = '16px';
@@ -151,6 +156,32 @@ export class HelpEventManager {
     }
     
     /**
+     * 入力フィールドの位置を更新
+     */
+    updateInputPosition() {
+        if (!this.hiddenInput || !this.gameEngine.canvas) {
+            return;
+        }
+        
+        const canvas = this.gameEngine.canvas;
+        const canvasRect = canvas.getBoundingClientRect();
+        
+        // Canvasの位置を基準に検索バーの位置を計算
+        const searchBarLayout = { x: 50, y: 60, width: 720, height: 40 }; // タイトルの下に配置
+        
+        // Canvas内の座標をページ座標に変換
+        const left = canvasRect.left + searchBarLayout.x;
+        const top = canvasRect.top + searchBarLayout.y;
+        
+        this.hiddenInput.style.left = `${left}px`;
+        this.hiddenInput.style.top = `${top}px`;
+        this.hiddenInput.style.width = `${searchBarLayout.width}px`;
+        this.hiddenInput.style.height = `${searchBarLayout.height}px`;
+        
+        console.log('HelpEventManager: Input position updated', { left, top, width: searchBarLayout.width, height: searchBarLayout.height });
+    }
+    
+    /**
      * IME入力の処理
      */
     handleIMEInput(event) {
@@ -194,6 +225,11 @@ export class HelpEventManager {
         if (this.boundContextMenuHandler) {
             document.removeEventListener('contextmenu', this.boundContextMenuHandler);
             this.boundContextMenuHandler = null;
+        }
+        
+        if (this.boundResizeHandler) {
+            window.removeEventListener('resize', this.boundResizeHandler);
+            this.boundResizeHandler = null;
         }
         
         // 隠し入力フィールドのクリーンアップ
@@ -496,6 +532,8 @@ export class HelpEventManager {
         // 隠し入力フィールドにフォーカスを当ててIMEを有効化
         if (this.hiddenInput) {
             console.log('HelpEventManager: focusing hidden input');
+            // 位置を更新
+            this.updateInputPosition();
             // 検索フィールドを表示
             this.hiddenInput.style.display = 'block';
             this.hiddenInput.value = this.currentSearchQuery || '';
