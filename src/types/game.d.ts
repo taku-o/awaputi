@@ -410,6 +410,60 @@ export interface GameUI {
   handleClick(position: Position): boolean;
 }
 
+// Main Menu System
+export interface MenuItem {
+  id: string;
+  key: string;
+  label?: string;
+  action: () => void;
+}
+
+export interface MainMenuScene {
+  gameEngine: any;
+  errorHandler: any;
+  selectedMenuIndex: number;
+  menuItems: MenuItem[];
+  showingUsernameInput: boolean;
+  showingUserInfo: boolean;
+  showingDataClearConfirmation: boolean;
+  showingControlsHelp: boolean;
+  resizeCallback?: () => void;
+  
+  // Sub-components
+  mainMenuRenderer: any;
+  usernameInputManager: any;
+  dialogManager: any;
+  menuInputHandler: any;
+  
+  updateMenuLabels(): void;
+  moveSelection(direction: number): void;
+  selectMenuItem(): void;
+  startGame(): void;
+  openSettings(): void;
+  openUserInfo(): void;
+  openShop(): void;
+  openHelp(): void;
+  
+  // Dialog management
+  showUsernameInput(): void;
+  confirmUsername(): void;
+  cancelUsernameInput(): void;
+  changeUsername(): void;
+  closeUserInfo(): void;
+  showDataClearConfirmation(): void;
+  executeDataClear(): void;
+  cancelDataClear(): void;
+  showControlsHelp(): void;
+  closeControlsHelp(): void;
+  
+  // Input handling
+  handleMainMenuInput(event: Event): void;
+  handleUsernameInput(event: Event): void;
+  handleDataClearConfirmationInput(event: Event): void;
+  handleControlsHelpInput(event: Event): void;
+  handleUserInfoInput(event: Event): void;
+}
+
 export interface UIElement {
   position: Position;
   size: Size;

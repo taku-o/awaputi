@@ -1,5 +1,6 @@
 import { Scene } from '../core/Scene.js';
 import { getErrorHandler } from '../utils/ErrorHandler.js';
+import type { MenuItem, MainMenuScene as IMainMenuScene } from '../types/game';
 
 // サブコンポーネントのインポート
 import { MainMenuRenderer } from './main-menu/MainMenuRenderer.js';
@@ -18,8 +19,23 @@ import { MenuInputHandler } from './main-menu/MenuInputHandler.js';
  * - DialogManager: 確認ダイアログ、ヘルプ画面の管理
  * - MenuInputHandler: 入力処理とクリック判定の統制
  */
-export class MainMenuScene extends Scene {
-    constructor(gameEngine) {
+export class MainMenuScene extends Scene implements IMainMenuScene {
+    public errorHandler: any;
+    public selectedMenuIndex: number = 0;
+    public menuItems: MenuItem[];
+    public showingUsernameInput: boolean = false;
+    public showingUserInfo: boolean = false;
+    public showingDataClearConfirmation: boolean = false;
+    public showingControlsHelp: boolean = false;
+    public resizeCallback?: () => void;
+    
+    // Sub-components
+    public mainMenuRenderer: any;
+    public usernameInputManager: any;
+    public dialogManager: any;
+    public menuInputHandler: any;
+
+    constructor(gameEngine: any) {
         super(gameEngine);
         this.errorHandler = getErrorHandler();
         
@@ -49,7 +65,7 @@ export class MainMenuScene extends Scene {
     /**
      * サブコンポーネントの初期化
      */
-    _initializeSubComponents() {
+    private _initializeSubComponents(): void {
         try {
             this.mainMenuRenderer = new MainMenuRenderer(this.gameEngine);
             this.usernameInputManager = new UsernameInputManager(this.gameEngine);
@@ -67,7 +83,7 @@ export class MainMenuScene extends Scene {
     /**
      * メニューラベルを現在の言語で更新
      */
-    updateMenuLabels() {
+    updateMenuLabels(): void {
         try {
             const t = this.gameEngine.localizationManager.t.bind(this.gameEngine.localizationManager);
             
@@ -84,7 +100,8 @@ export class MainMenuScene extends Scene {
     /**
      * シーン開始時の処理
      */
-    enter() {
+    enter(): void {
+        super.enter();
         try {
             this.selectedMenuIndex = 0;
             this.showingUsernameInput = false;
@@ -98,8 +115,8 @@ export class MainMenuScene extends Scene {
             // リサイズハンドラーを登録
             if (this.gameEngine.responsiveCanvas) {
                 this.resizeCallback = () => {
-                    if (this.renderer) {
-                        this.renderer.handleResize();
+                    if (this.mainMenuRenderer && typeof this.mainMenuRenderer.handleResize === 'function') {
+                        this.mainMenuRenderer.handleResize();
                     }
                 };
                 this.gameEngine.responsiveCanvas.onResizeCallbacks.push(this.resizeCallback);
@@ -133,7 +150,8 @@ export class MainMenuScene extends Scene {
     /**
      * シーン終了時の処理
      */
-    exit() {
+    exit(): void {
+        super.exit();
         try {
             // リサイズハンドラーを削除
             if (this.gameEngine.responsiveCanvas && this.resizeCallback) {
@@ -141,7 +159,7 @@ export class MainMenuScene extends Scene {
                 if (index > -1) {
                     this.gameEngine.responsiveCanvas.onResizeCallbacks.splice(index, 1);
                 }
-                this.resizeCallback = null;
+                this.resizeCallback = undefined;
             }
         } catch (error) {
             this.errorHandler.handleError(error, {
@@ -150,14 +168,17 @@ export class MainMenuScene extends Scene {
         }
     }
     
-    update(deltaTime) {
+    /**
+     * 更新処理
+     */
+    update(deltaTime: number): void {
         // 特に更新処理は不要
     }
     
     /**
      * 描画処理
      */
-    render(context) {
+    render(context: CanvasRenderingContext2D): void {
         try {
             const canvas = this.gameEngine.canvas;
             
@@ -186,7 +207,7 @@ export class MainMenuScene extends Scene {
     /**
      * 入力処理（統制）
      */
-    handleInput(event) {
+    handleInput(event: Event): boolean | void {
         try {
             if (this.showingUsernameInput) {
                 this.handleUsernameInput(event);
@@ -209,9 +230,12 @@ export class MainMenuScene extends Scene {
     /**
      * メインメニューの入力処理
      */
-    handleMainMenuInput(event) {
+    handleMainMenuInput(event: Event): void {
+        const keyboardEvent = event as KeyboardEvent;
+        const mouseEvent = event as MouseEvent;
+        
         if (event.type === 'keydown') {
-            switch (event.code) {
+            switch (keyboardEvent.code) {
                 case 'ArrowUp':
                     this.moveSelection(-1);
                     break;
@@ -227,10 +251,10 @@ export class MainMenuScene extends Scene {
             }
         } else if (event.type === 'click') {
             this.menuInputHandler.handleMainMenuClick(
-                event, 
+                mouseEvent, 
                 this.selectedMenuIndex, 
                 this.menuItems, 
-                (index) => {
+                (index: number) => {
                     this.selectedMenuIndex = index;
                     this.selectMenuItem();
                 }
@@ -241,9 +265,12 @@ export class MainMenuScene extends Scene {
     /**
      * ユーザー名入力の入力処理
      */
-    handleUsernameInput(event) {
+    handleUsernameInput(event: Event): void {
+        const keyboardEvent = event as KeyboardEvent;
+        const mouseEvent = event as MouseEvent;
+        
         if (event.type === 'keydown') {
-            switch (event.code) {
+            switch (keyboardEvent.code) {
                 case 'Enter':
                     this.confirmUsername();
                     break;
@@ -254,32 +281,34 @@ export class MainMenuScene extends Scene {
                     this.usernameInputManager.handleBackspace();
                     break;
                 default:
-                    if (event.key.length === 1) {
-                        this.usernameInputManager.handleTextInput(event.key);
+                    if (keyboardEvent.key.length === 1) {
+                        this.usernameInputManager.handleTextInput(keyboardEvent.key);
                     }
                     break;
             }
         } else if (event.type === 'click') {
             this.menuInputHandler.handleUsernameInputClick(
-                event,
+                mouseEvent,
                 () => this.confirmUsername(),
                 () => this.cancelUsernameInput()
             );
         }
     }
     
-    
     /**
      * データクリア確認画面の入力処理
      */
-    handleDataClearConfirmationInput(event) {
+    handleDataClearConfirmationInput(event: Event): void {
+        const keyboardEvent = event as KeyboardEvent;
+        const mouseEvent = event as MouseEvent;
+        
         if (event.type === 'keydown') {
-            if (event.code === 'Escape') {
+            if (keyboardEvent.code === 'Escape') {
                 this.cancelDataClear();
             }
         } else if (event.type === 'click') {
             this.menuInputHandler.handleDataClearConfirmationClick(
-                event,
+                mouseEvent,
                 () => this.executeDataClear(),
                 () => this.cancelDataClear()
             );
@@ -289,14 +318,17 @@ export class MainMenuScene extends Scene {
     /**
      * 操作説明画面の入力処理
      */
-    handleControlsHelpInput(event) {
+    handleControlsHelpInput(event: Event): void {
+        const keyboardEvent = event as KeyboardEvent;
+        const mouseEvent = event as MouseEvent;
+        
         if (event.type === 'keydown') {
-            if (event.code === 'Escape') {
+            if (keyboardEvent.code === 'Escape') {
                 this.closeControlsHelp();
             }
         } else if (event.type === 'click') {
             this.menuInputHandler.handleBackButtonClick(
-                event,
+                mouseEvent,
                 () => this.closeControlsHelp(),
                 this.gameEngine.canvas.height - 80
             );
@@ -306,14 +338,17 @@ export class MainMenuScene extends Scene {
     /**
      * ユーザー情報画面の入力処理
      */
-    handleUserInfoInput(event) {
+    handleUserInfoInput(event: Event): void {
+        const keyboardEvent = event as KeyboardEvent;
+        const mouseEvent = event as MouseEvent;
+        
         if (event.type === 'keydown') {
-            if (event.code === 'Escape') {
+            if (keyboardEvent.code === 'Escape') {
                 this.closeUserInfo();
             }
         } else if (event.type === 'click') {
             this.menuInputHandler.handleBackButtonClick(
-                event,
+                mouseEvent,
                 () => this.closeUserInfo()
             );
         }
@@ -326,7 +361,7 @@ export class MainMenuScene extends Scene {
     /**
      * 選択を移動
      */
-    moveSelection(direction) {
+    moveSelection(direction: number): void {
         this.selectedMenuIndex += direction;
         
         if (this.selectedMenuIndex < 0) {
@@ -339,7 +374,7 @@ export class MainMenuScene extends Scene {
     /**
      * メニュー項目を選択
      */
-    selectMenuItem() {
+    selectMenuItem(): void {
         if (this.selectedMenuIndex >= 0 && this.selectedMenuIndex < this.menuItems.length) {
             this.menuItems[this.selectedMenuIndex].action();
         }
@@ -348,7 +383,7 @@ export class MainMenuScene extends Scene {
     /**
      * ゲーム開始
      */
-    startGame() {
+    startGame(): void {
         if (!this.gameEngine.playerData.username) {
             this.showUsernameInput();
             return;
@@ -361,7 +396,7 @@ export class MainMenuScene extends Scene {
      * 設定画面を開く
      * NavigationContextManagerを使用してコンテキストを管理
      */
-    openSettings() {
+    openSettings(): void {
         try {
             const contextData = {
                 accessMethod: 'menu_click',
@@ -386,14 +421,14 @@ export class MainMenuScene extends Scene {
     /**
      * ユーザー情報画面を開く
      */
-    openUserInfo() {
+    openUserInfo(): void {
         this.showingUserInfo = true;
     }
     
     /**
      * ショップ画面を開く
      */
-    openShop() {
+    openShop(): void {
         try {
             const success = this.gameEngine.sceneManager.switchScene('shop');
             if (!success) {
@@ -411,7 +446,7 @@ export class MainMenuScene extends Scene {
      * ヘルプ画面を開く
      * NavigationContextManagerを使用してコンテキストを管理
      */
-    openHelp() {
+    openHelp(): void {
         try {
             const contextData = {
                 accessMethod: 'menu_click',
@@ -441,7 +476,7 @@ export class MainMenuScene extends Scene {
     /**
      * ユーザー名入力を表示
      */
-    showUsernameInput() {
+    showUsernameInput(): void {
         this.showingUsernameInput = true;
         this.usernameInputManager.setUsernameInput(this.gameEngine.playerData.username);
     }
@@ -449,7 +484,7 @@ export class MainMenuScene extends Scene {
     /**
      * ユーザー名を確定
      */
-    confirmUsername() {
+    confirmUsername(): void {
         if (this.usernameInputManager.confirmUsername()) {
             this.showingUsernameInput = false;
         }
@@ -458,42 +493,40 @@ export class MainMenuScene extends Scene {
     /**
      * ユーザー名入力をキャンセル
      */
-    cancelUsernameInput() {
+    cancelUsernameInput(): void {
         if (!this.gameEngine.playerData.username && !this.usernameInputManager.isEditingUsername) {
             return;
         }
         
         this.showingUsernameInput = false;
         this.usernameInputManager.clearInput();
-        
     }
     
     /**
      * ユーザー名変更
      */
-    changeUsername() {
+    changeUsername(): void {
         this.showUsernameInput();
     }
-    
     
     /**
      * ユーザー情報画面を閉じる
      */
-    closeUserInfo() {
+    closeUserInfo(): void {
         this.showingUserInfo = false;
     }
     
     /**
      * データクリア確認画面を表示
      */
-    showDataClearConfirmation() {
+    showDataClearConfirmation(): void {
         this.showingDataClearConfirmation = true;
     }
     
     /**
      * データクリアを実行
      */
-    executeDataClear() {
+    executeDataClear(): void {
         if (this.dialogManager.executeDataClear()) {
             this.showingDataClearConfirmation = false;
             this.showUsernameInput();
@@ -503,21 +536,21 @@ export class MainMenuScene extends Scene {
     /**
      * データクリアをキャンセル
      */
-    cancelDataClear() {
+    cancelDataClear(): void {
         this.showingDataClearConfirmation = false;
     }
     
     /**
      * 操作説明画面を表示
      */
-    showControlsHelp() {
+    showControlsHelp(): void {
         this.showingControlsHelp = true;
     }
     
     /**
      * 操作説明画面を閉じる
      */
-    closeControlsHelp() {
+    closeControlsHelp(): void {
         this.showingControlsHelp = false;
     }
 }
