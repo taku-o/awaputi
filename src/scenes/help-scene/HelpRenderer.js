@@ -81,19 +81,28 @@ export class HelpRenderer {
         const availableWidth = canvasWidth - margin - sidebarWidth - spacing - margin;
         const contentWidth = Math.max(300, availableWidth);
         
+        // 戻るボタンの高さを考慮してコンテンツ領域を計算
+        const backButtonHeight = 40;
+        const backButtonMargin = 15; // 戻るボタンの上側マージン
+        const backButtonY = canvasHeight - backButtonHeight - 10; // キャンバス下端から10px上
+        
+        // コンテンツ領域は戻るボタンの上まで伸ばす
+        const contentBottom = backButtonY - backButtonMargin;
+        const contentHeight = Math.max(300, contentBottom - 110);
+        
         // レイアウト設定
         this.layout = {
             sidebar: {
                 x: margin,
                 y: 110,
                 width: sidebarWidth,
-                height: Math.max(300, canvasHeight - 200)
+                height: contentHeight
             },
             content: {
                 x: margin + sidebarWidth + spacing,
                 y: 110,
                 width: contentWidth,
-                height: Math.max(300, canvasHeight - 200)
+                height: contentHeight
             },
             searchBar: {
                 x: margin,
@@ -103,9 +112,9 @@ export class HelpRenderer {
             },
             backButton: {
                 x: margin,
-                y: Math.max(480, canvasHeight - 80),
+                y: backButtonY,
                 width: 100,
-                height: 40
+                height: backButtonHeight
             }
         };
     }
