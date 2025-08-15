@@ -142,9 +142,18 @@
   - Particle, TrailPoint, Viewport, DrawFunction インターフェース定義、最適化描画機能実装
   - エフェクト生成・更新・描画メソッドの完全な型注釈追加、パフォーマンス統計取得型安全化
 
+### Phase 5継続（2025-01-15）
+- ✅ Task 21: エフェクト管理システムの移行完了
+  - EffectManager.ts: 視覚効果管理システム完全型付け、画面揺れ・フラッシュ・ズーム・色調効果型安全化
+  - ColorRGBA, CurrentTransform, Transforms, EffectParameters インターフェース定義
+  - Effect, ShakeEffect, FlashEffect, TintEffect, ZoomEffect, RotationEffect, BlurEffect, FilterEffect 型定義
+  - 特殊効果メソッド完全実装: 時間停止・ボーナス・爆発・ダメージ・回復・電気効果、品質管理機能実装
+  - AnimationManager.ts: アニメーション管理システム完全型付け、バブル・UI・メニュー・ローディングアニメーション型安全化
+  - Animation, AnimationTarget, AnimationOptions, PerformanceMetrics インターフェース定義、イージング関数・チェーン・並列アニメーション実装
+
 ### 次回作業予定
-- Task 21: エフェクト管理システムの移行（Phase 5継続）
-- オーディオシステムの包括的移行
+- Task 22: オーディオシステムの移行（Phase 5継続）
+- バブルシステムの包括的移行
 
 ## 課題・メモ
 - 大規模なプロジェクト（1000+ファイル）のため、段階的な移行が重要
