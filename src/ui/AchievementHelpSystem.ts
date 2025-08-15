@@ -1,8 +1,72 @@
+// UI component types
+export interface HelpColors {
+    background: string;
+    panel: string;
+    text: string;
+    subtext: string;
+    accent: string;
+    highlight: string;
+    border: string;
+    button: string;
+    buttonHover: string;
+}
+
+export interface HelpContent {
+    title: string;
+    icon: string;
+    content: string[];
+}
+
+export interface HelpContentMap {
+    [key: string]: HelpContent;
+}
+
+export interface TutorialHighlight {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
+export interface TutorialStep {
+    title: string;
+    content: string;
+    target: string;
+    highlight: TutorialHighlight;
+}
+
+export interface HelpState {
+    isVisible: boolean;
+    currentSection: string;
+    tutorialProgress: number;
+}
+
 /**
  * 実績システムヘルプ・チュートリアルクラス
  */
 export class AchievementHelpSystem {
-    constructor(achievementManager) {
+    private achievementManager: any;
+    
+    // ヘルプ表示状態
+    private isHelpVisible: boolean;
+    private currentHelpSection: string;
+    private tutorialProgress: number;
+    
+    // UI設定
+    private padding: number;
+    private lineHeight: number;
+    private sectionSpacing: number;
+    
+    // 色設定
+    private colors: HelpColors;
+    
+    // ヘルプコンテンツ
+    private helpContent: HelpContentMap;
+    
+    // チュートリアルステップ
+    private tutorialSteps: TutorialStep[];
+
+    constructor(achievementManager: any) {
         this.achievementManager = achievementManager;
         
         // ヘルプ表示状態
@@ -40,14 +104,14 @@ export class AchievementHelpSystem {
     /**
      * ヘルプシステムを初期化
      */
-    initialize() {
+    private initialize(): void {
         console.log('Achievement Help System initialized');
     }
     
     /**
      * ヘルプコンテンツを初期化
      */
-    initializeHelpContent() {
+    private initializeHelpContent(): HelpContentMap {
         return {
             overview: {
                 title: '実績システム概要',
@@ -228,7 +292,7 @@ export class AchievementHelpSystem {
     /**
      * チュートリアルステップを初期化
      */
-    initializeTutorialSteps() {
+    private initializeTutorialSteps(): TutorialStep[] {
         return [
             {
                 title: 'ようこそ実績システムへ！',
@@ -266,7 +330,7 @@ export class AchievementHelpSystem {
     /**
      * ヘルプを表示
      */
-    showHelp(section = 'overview') {
+    public showHelp(section: string = 'overview'): void {
         this.isHelpVisible = true;
         this.currentHelpSection = section;
     }
@@ -274,14 +338,14 @@ export class AchievementHelpSystem {
     /**
      * ヘルプを非表示
      */
-    hideHelp() {
+    public hideHelp(): void {
         this.isHelpVisible = false;
     }
     
     /**
      * チュートリアルを開始
      */
-    startTutorial() {
+    public startTutorial(): void {
         this.tutorialProgress = 0;
         this.showHelp('tutorial');
     }
@@ -289,7 +353,7 @@ export class AchievementHelpSystem {
     /**
      * チュートリアルを次のステップに進める
      */
-    nextTutorialStep() {
+    public nextTutorialStep(): void {
         this.tutorialProgress++;
         if (this.tutorialProgress >= this.tutorialSteps.length) {
             this.completeTutorial();
@@ -299,7 +363,7 @@ export class AchievementHelpSystem {
     /**
      * チュートリアルを完了
      */
-    completeTutorial() {
+    public completeTutorial(): void {
         this.hideHelp();
         this.tutorialProgress = 0;
         
@@ -312,7 +376,7 @@ export class AchievementHelpSystem {
     /**
      * ヘルプセクションを変更
      */
-    changeHelpSection(section) {
+    public changeHelpSection(section: string): void {
         if (this.helpContent[section]) {
             this.currentHelpSection = section;
         }
@@ -321,7 +385,7 @@ export class AchievementHelpSystem {
     /**
      * ヘルプシステムを描画
      */
-    render(context, canvas) {
+    public render(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement): void {
         if (!this.isHelpVisible) return;
         
         context.save();
@@ -342,7 +406,7 @@ export class AchievementHelpSystem {
     /**
      * ヘルプコンテンツを描画
      */
-    renderHelpContent(context, canvas) {
+    private renderHelpContent(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement): void {
         const panelWidth = Math.min(700, canvas.width - 40);
         const panelHeight = Math.min(500, canvas.height - 40);
         const panelX = (canvas.width - panelWidth) / 2;
@@ -370,7 +434,7 @@ export class AchievementHelpSystem {
     /**
      * ヘルプナビゲーションを描画
      */
-    renderHelpNavigation(context, x, y, width) {
+    private renderHelpNavigation(context: CanvasRenderingContext2D, x: number, y: number, width: number): void {
         const navHeight = 50;
         const buttonWidth = width / Object.keys(this.helpContent).length;
         
@@ -404,7 +468,7 @@ export class AchievementHelpSystem {
     /**
      * ヘルプテキストを描画
      */
-    renderHelpText(context, x, y, width, height) {
+    private renderHelpText(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void {
         const content = this.helpContent[this.currentHelpSection];
         if (!content) return;
         
@@ -456,7 +520,7 @@ export class AchievementHelpSystem {
     /**
      * チュートリアルを描画
      */
-    renderTutorial(context, canvas) {
+    private renderTutorial(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement): void {
         if (this.tutorialProgress >= this.tutorialSteps.length) return;
         
         const step = this.tutorialSteps[this.tutorialProgress];
@@ -526,7 +590,7 @@ export class AchievementHelpSystem {
     /**
      * チュートリアルボタンを描画
      */
-    renderTutorialButton(context, x, y, text) {
+    private renderTutorialButton(context: CanvasRenderingContext2D, x: number, y: number, text: string): void {
         const buttonWidth = 60;
         const buttonHeight = 25;
         
@@ -550,7 +614,7 @@ export class AchievementHelpSystem {
     /**
      * 閉じるボタンを描画
      */
-    renderCloseButton(context, x, y) {
+    private renderCloseButton(context: CanvasRenderingContext2D, x: number, y: number): void {
         const buttonSize = 20;
         
         // ボタン背景
@@ -571,7 +635,7 @@ export class AchievementHelpSystem {
     /**
      * 文字列の折り返し描画
      */
-    renderWrappedText(context, text, x, y, maxWidth) {
+    private renderWrappedText(context: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number): void {
         const words = text.split(' ');
         let line = '';
         let currentY = y;
@@ -595,7 +659,7 @@ export class AchievementHelpSystem {
     /**
      * マウスクリック処理
      */
-    handleClick(x, y, canvas) {
+    public handleClick(x: number, y: number, canvas: HTMLCanvasElement): boolean {
         if (!this.isHelpVisible) return false;
         
         if (this.currentHelpSection === 'tutorial') {
@@ -608,7 +672,7 @@ export class AchievementHelpSystem {
     /**
      * ヘルプクリック処理
      */
-    handleHelpClick(x, y, canvas) {
+    private handleHelpClick(x: number, y: number, canvas: HTMLCanvasElement): boolean {
         const panelWidth = Math.min(700, canvas.width - 40);
         const panelHeight = Math.min(500, canvas.height - 40);
         const panelX = (canvas.width - panelWidth) / 2;
@@ -642,7 +706,7 @@ export class AchievementHelpSystem {
     /**
      * チュートリアルクリック処理
      */
-    handleTutorialClick(x, y, canvas) {
+    private handleTutorialClick(x: number, y: number, canvas: HTMLCanvasElement): boolean {
         const panelWidth = 350;
         const panelHeight = 150;
         const panelX = canvas.width - panelWidth - 20;
@@ -669,7 +733,7 @@ export class AchievementHelpSystem {
     /**
      * ヘルプの状態を取得
      */
-    getHelpState() {
+    public getHelpState(): HelpState {
         return {
             isVisible: this.isHelpVisible,
             currentSection: this.currentHelpSection,
@@ -680,13 +744,13 @@ export class AchievementHelpSystem {
     /**
      * コンテキストヘルプを表示
      */
-    showContextHelp(achievementId) {
+    public showContextHelp(achievementId: string): void {
         const achievement = this.achievementManager?.getAchievement(achievementId);
         if (!achievement) return;
         
         // 該当実績のカテゴリに応じたヘルプセクションを表示
         const category = this.achievementManager.getAchievementCategory(achievementId);
-        const sectionMap = {
+        const sectionMap: { [key: string]: string } = {
             'score': 'categories',
             'play': 'categories',
             'technique': 'tips',

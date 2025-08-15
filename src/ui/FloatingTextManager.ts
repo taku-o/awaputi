@@ -1,8 +1,79 @@
+// Floating Text types
+export interface FloatingTextOptions {
+    duration?: number;
+    color?: string;
+    fontSize?: number;
+    fontWeight?: string;
+    fontFamily?: string;
+    velocityX?: number;
+    velocityY?: number;
+    gravity?: number;
+    fadeOut?: boolean;
+    scaleAnimation?: boolean;
+    bounceAnimation?: boolean;
+    pulseAnimation?: boolean;
+    rotation?: number;
+    rotationSpeed?: number;
+    shadow?: boolean;
+    outline?: boolean;
+    outlineColor?: string;
+    easing?: string;
+}
+
+export interface FloatingText {
+    id: number;
+    x: number;
+    y: number;
+    originalY: number;
+    text: string;
+    life: number;
+    maxLife: number;
+    color: string;
+    fontSize: number;
+    fontWeight: string;
+    fontFamily: string;
+    velocityX: number;
+    velocityY: number;
+    gravity: number;
+    fadeOut: boolean;
+    scaleAnimation: boolean;
+    bounceAnimation: boolean;
+    pulseAnimation: boolean;
+    alpha: number;
+    scale: number;
+    rotation: number;
+    rotationSpeed: number;
+    shadow: boolean;
+    outline: boolean;
+    outlineColor: string;
+    easing: string;
+}
+
+export interface AnimationConfig {
+    color: string;
+    fontSize: number;
+    velocityX?: number;
+    velocityY: number;
+    gravity?: number;
+    duration: number;
+    scaleAnimation?: boolean;
+    bounceAnimation?: boolean;
+    pulseAnimation?: boolean;
+    rotationSpeed?: number;
+}
+
+export interface AnimationConfigMap {
+    [key: string]: AnimationConfig;
+}
+
 /**
  * フローティングテキスト管理クラス
  * スコア表示、ダメージ表示、効果通知などのアニメーションテキストを管理
  */
 export class FloatingTextManager {
+    private texts: FloatingText[];
+    private textId: number;
+
     constructor() {
         this.texts = [];
         this.textId = 0;
@@ -11,8 +82,8 @@ export class FloatingTextManager {
     /**
      * フローティングテキストを追加
      */
-    addText(x, y, text, options = {}) {
-        const floatingText = {
+    public addText(x: number, y: number, text: string, options: FloatingTextOptions = {}): number {
+        const floatingText: FloatingText = {
             id: this.textId++,
             x: x,
             y: y,
@@ -48,7 +119,7 @@ export class FloatingTextManager {
     /**
      * スコア表示用のフローティングテキスト
      */
-    addScoreText(x, y, score, multiplier = 1) {
+    public addScoreText(x: number, y: number, score: number, multiplier: number = 1): number {
         const color = multiplier > 1 ? '#FFD700' : '#00FF00';
         const text = multiplier > 1 ? `+${score} x${multiplier}` : `+${score}`;
         
@@ -66,7 +137,7 @@ export class FloatingTextManager {
     /**
      * ダメージ表示用のフローティングテキスト
      */
-    addDamageText(x, y, damage) {
+    public addDamageText(x: number, y: number, damage: number): number {
         return this.addText(x, y, `-${damage}`, {
             color: '#FF4444',
             fontSize: 28,
@@ -82,7 +153,7 @@ export class FloatingTextManager {
     /**
      * 回復表示用のフローティングテキスト
      */
-    addHealText(x, y, heal) {
+    public addHealText(x: number, y: number, heal: number): number {
         return this.addText(x, y, `+${heal} HP`, {
             color: '#44FF44',
             fontSize: 26,
@@ -97,7 +168,7 @@ export class FloatingTextManager {
     /**
      * コンボ表示用のフローティングテキスト
      */
-    addComboText(x, y, combo) {
+    public addComboText(x: number, y: number, combo: number): number {
         const colors = ['#FFD700', '#FF8C00', '#FF4500', '#DC143C', '#8B0000'];
         const colorIndex = Math.min(Math.floor(combo / 5), colors.length - 1);
         
@@ -117,8 +188,8 @@ export class FloatingTextManager {
     /**
      * 特殊効果表示用のフローティングテキスト
      */
-    addEffectText(x, y, effect, type = 'normal') {
-        const configs = {
+    public addEffectText(x: number, y: number, effect: string, type: string = 'normal'): number {
+        const configs: AnimationConfigMap = {
             bonus: {
                 color: '#FFD700',
                 fontSize: 36,
@@ -148,6 +219,12 @@ export class FloatingTextManager {
                 velocityY: -80,
                 duration: 2200,
                 scaleAnimation: true
+            },
+            normal: {
+                color: '#FFFFFF',
+                fontSize: 24,
+                velocityY: -50,
+                duration: 2000
             }
         };
         
@@ -164,8 +241,8 @@ export class FloatingTextManager {
     /**
      * カスタムアニメーション付きテキスト
      */
-    addAnimatedText(x, y, text, animationType) {
-        const animations = {
+    public addAnimatedText(x: number, y: number, text: string, animationType: string): number {
+        const animations: AnimationConfigMap = {
             rainbow: {
                 color: '#FF0000', // 虹色は更新で変更
                 fontSize: 28,
@@ -203,7 +280,7 @@ export class FloatingTextManager {
     /**
      * 更新処理
      */
-    update(deltaTime) {
+    public update(deltaTime: number): void {
         this.texts = this.texts.filter(text => {
             text.life -= deltaTime;
             
@@ -240,7 +317,7 @@ export class FloatingTextManager {
     /**
      * アニメーション更新
      */
-    updateAnimations(text, deltaTime) {
+    private updateAnimations(text: FloatingText, deltaTime: number): void {
         const progress = 1 - (text.life / text.maxLife);
         const time = Date.now() * 0.001;
         
@@ -277,7 +354,7 @@ export class FloatingTextManager {
     /**
      * 描画処理
      */
-    render(context) {
+    public render(context: CanvasRenderingContext2D): void {
         this.texts.forEach(text => {
             context.save();
             
@@ -324,28 +401,28 @@ export class FloatingTextManager {
     /**
      * 特定のテキストを削除
      */
-    removeText(id) {
+    public removeText(id: number): void {
         this.texts = this.texts.filter(text => text.id !== id);
     }
     
     /**
      * 全てのテキストをクリア
      */
-    clear() {
+    public clear(): void {
         this.texts = [];
     }
     
     /**
      * テキスト数を取得
      */
-    getTextCount() {
+    public getTextCount(): number {
         return this.texts.length;
     }
     
     /**
      * 画面上のテキストを取得
      */
-    getTextsInArea(x, y, width, height) {
+    public getTextsInArea(x: number, y: number, width: number, height: number): FloatingText[] {
         return this.texts.filter(text => 
             text.x >= x && text.x <= x + width &&
             text.y >= y && text.y <= y + height
