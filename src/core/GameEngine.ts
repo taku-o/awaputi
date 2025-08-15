@@ -11,39 +11,39 @@ import { AchievementManager } from './AchievementManager.js';
 // import { AchievementEventIntegrator } from './AchievementEventIntegrator.js';
 // import { AchievementNotificationSystem } from './achievements/AchievementNotificationSystem.js';
 import { StatisticsManager } from './StatisticsManager.js';
-import { EventStageManager } from './EventStageManager.js';
-import { ChallengeSystem } from './ChallengeSystem.js';
-import { DailyChallengeManager } from './DailyChallengeManager.js';
-import { WeeklyChallengeManager } from './WeeklyChallengeManager.js';
+// import { EventStageManager } from './EventStageManager.js';
+// import { ChallengeSystem } from './ChallengeSystem.js';
+// import { DailyChallengeManager } from './DailyChallengeManager.js';
+// import { WeeklyChallengeManager } from './WeeklyChallengeManager.js';
 import { AudioManager } from '../audio/AudioManager.js';
 import { ParticleManager } from '../effects/ParticleManager.js';
 import { EffectManager } from '../effects/EffectManager.js';
 import { EnhancedParticleManager } from '../effects/EnhancedParticleManager.js';
 import { EnhancedEffectManager } from '../effects/EnhancedEffectManager.js';
-import { getSeasonalEffectManager } from '../effects/SeasonalEffectManager.js';
-import { getEffectQualityController } from '../effects/EffectQualityController.js';
-import { getEffectPerformanceMonitor } from '../effects/EffectPerformanceMonitor.js';
-import { getEffectConfigurationIntegrator } from '../effects/EffectConfigurationIntegrator.js';
-import { getAudioVisualSynchronizer } from '../effects/AudioVisualSynchronizer.js';
-import { getPoolManager } from '../utils/ObjectPool.js';
+// import { getSeasonalEffectManager } from '../effects/SeasonalEffectManager.js';
+// import { getEffectQualityController } from '../effects/EffectQualityController.js';
+// import { getEffectPerformanceMonitor } from '../effects/EffectPerformanceMonitor.js';
+// import { getEffectConfigurationIntegrator } from '../effects/EffectConfigurationIntegrator.js';
+// import { getAudioVisualSynchronizer } from '../effects/AudioVisualSynchronizer.js';
+// import { getPoolManager } from '../utils/ObjectPool.js';
 import { RenderOptimizer, PerformanceMonitor } from '../utils/RenderOptimizer.js';
 import { getMemoryManager } from '../utils/MemoryManager.js';
 import { getPerformanceOptimizer } from '../utils/PerformanceOptimizer.js';
-import { getBrowserCompatibility } from '../utils/BrowserCompatibility.js';
+// import { getBrowserCompatibility } from '../utils/BrowserCompatibility.js';
 import { ResponsiveCanvasManager } from '../utils/ResponsiveCanvasManager.js';
 import { getErrorHandler } from '../utils/ErrorHandler.js';
 import { getConfigurationManager } from './ConfigurationManager.js';
-import { getCalculationEngine } from './CalculationEngine.js';
-import { EffectDebugInterface } from '../effects/EffectDebugInterface.js';
+// import { getCalculationEngine } from './CalculationEngine.js';
+// import { EffectDebugInterface } from '../effects/EffectDebugInterface.js';
 import { EnhancedDebugInterface } from '../debug/EnhancedDebugInterface.js';
-import { EffectProfiler } from '../effects/EffectProfiler.js';
-import { EffectOptimizationAdvisor } from '../effects/EffectOptimizationAdvisor.js';
-import { EffectPerformanceOptimizer } from '../effects/EffectPerformanceOptimizer.js';
-import { EffectErrorHandler } from '../effects/EffectErrorHandler.js';
-import { VisualPolishEnhancements } from '../effects/VisualPolishEnhancements.js';
-import { AnimationManager } from '../effects/AnimationManager.js';
-import { getHelpManager } from './help/HelpManager.js';
-import { getSEOMonitor } from '../seo/SEOMonitor.js';
+// import { EffectProfiler } from '../effects/EffectProfiler.js';
+// import { EffectOptimizationAdvisor } from '../effects/EffectOptimizationAdvisor.js';
+// import { EffectPerformanceOptimizer } from '../effects/EffectPerformanceOptimizer.js';
+// import { EffectErrorHandler } from '../effects/EffectErrorHandler.js';
+// import { VisualPolishEnhancements } from '../effects/VisualPolishEnhancements.js';
+// import { AnimationManager } from '../effects/AnimationManager.js';
+// import { getHelpManager } from './help/HelpManager.js';
+// import { getSEOMonitor } from '../seo/SEOMonitor.js';
 import { SocialSharingManager } from './SocialSharingManager.js';
 import { LeaderboardManager } from './LeaderboardManager.js';
 
@@ -54,13 +54,13 @@ import { GameEngineRenderer } from './game-engine/GameEngineRenderer.js';
 import { GameEngineUtilities } from './game-engine/GameEngineUtilities.js';
 
 // Type definitions
-interface GameEngineConfig {
-    targetFPS?: number;
-    enableAudio?: boolean;
-    enableEffects?: boolean;
-    enableDebug?: boolean;
-    performanceLevel?: 'low' | 'medium' | 'high';
-}
+// interface GameEngineConfig {
+//     targetFPS?: number;
+//     enableAudio?: boolean;
+//     enableEffects?: boolean;
+//     enableDebug?: boolean;
+//     performanceLevel?: 'low' | 'medium' | 'high';
+// }
 
 interface GameStats {
     fps: number;
@@ -97,10 +97,10 @@ export class GameEngine {
     private eventListeners: Map<string, Set<EventListenerCallback>>;
     
     // Sub-components
-    private initializer: GameEngineInitializer;
-    private eventManager: GameEngineEventManager;
-    private renderer: GameEngineRenderer;
-    private utilities: GameEngineUtilities;
+    private initializer!: GameEngineInitializer;
+    private eventManager!: GameEngineEventManager;
+    private renderer!: GameEngineRenderer;
+    private utilities!: GameEngineUtilities;
     
     // Core managers
     public configManager: any; // ConfigurationManager type
@@ -111,35 +111,35 @@ export class GameEngine {
     public performanceOptimizer: any; // PerformanceOptimizer type
     
     // Game systems
-    public playerData: PlayerData;
-    public bubbleManager: BubbleManager;
-    public scoreManager: ScoreManager;
-    public stageManager: StageManager;
-    public sceneManager: SceneManager;
-    public itemManager: ItemManager;
-    public settingsManager: SettingsManager;
-    public statisticsManager: StatisticsManager;
+    public playerData!: PlayerData;
+    public bubbleManager!: BubbleManager;
+    public scoreManager!: ScoreManager;
+    public stageManager!: StageManager;
+    public sceneManager!: SceneManager;
+    public itemManager!: ItemManager;
+    public settingsManager!: SettingsManager;
+    public statisticsManager!: StatisticsManager;
     
     // Audio and effects
-    public audioManager: AudioManager;
-    public particleManager: ParticleManager;
-    public effectManager: EffectManager;
-    public enhancedParticleManager: EnhancedParticleManager;
-    public enhancedEffectManager: EnhancedEffectManager;
+    public audioManager!: AudioManager;
+    public particleManager!: ParticleManager;
+    public effectManager!: EffectManager;
+    public enhancedParticleManager!: EnhancedParticleManager;
+    public enhancedEffectManager!: EnhancedEffectManager;
     
     // Other managers
-    public achievementManager: AchievementManager;
-    public keyboardShortcutManager: CoreKeyboardShortcutManager;
-    public socialSharingManager: SocialSharingManager;
-    public leaderboardManager: LeaderboardManager;
+    public achievementManager!: AchievementManager;
+    public keyboardShortcutManager!: CoreKeyboardShortcutManager;
+    public socialSharingManager!: SocialSharingManager;
+    public leaderboardManager!: LeaderboardManager;
     
     // Performance and debug
-    public renderOptimizer: RenderOptimizer;
-    public performanceMonitor: PerformanceMonitor;
+    public renderOptimizer!: RenderOptimizer;
+    public performanceMonitor!: PerformanceMonitor;
     public debugInterface?: EnhancedDebugInterface;
     
     // Game state
-    private gameState: GameState;
+    private gameState!: GameState;
     
     constructor(canvas: HTMLCanvasElement) {
         console.log('[DEBUG] GameEngine: コンストラクター開始');

@@ -17,6 +17,7 @@ export class ProceduralSoundGenerator {
     soundParams: any;
     isGenerating: boolean;
     generationProgress: number;
+    lastGenerationTime: number;
 
     constructor() {
         // 初期化状態
