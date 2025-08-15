@@ -439,47 +439,118 @@ export interface TextStyle {
   italic?: boolean;
 }
 
-// Game progression and achievements
+// Item System
+export interface ItemDefinition {
+  id: string;
+  name: string;
+  description: string;
+  cost: number;
+  maxLevel: number;
+  effect: ItemEffect;
+}
+
+export interface ItemEffect {
+  type: 'scoreMultiplier' | 'revival' | 'rareRate' | 'hpBoost' | 'timeExtension' | 'comboBoost' | 'reset';
+  value: number;
+}
+
+export interface ItemInfo extends ItemDefinition {
+  currentLevel: number;
+  cost: number;
+  canPurchase: boolean;
+  isMaxLevel: boolean;
+}
+
+export interface ItemManager {
+  gameEngine: any;
+  ownedItems: Map<string, number>;
+  activeEffects: Map<string, number>;
+  
+  initialize(): void;
+  loadOwnedItems(): void;
+  saveOwnedItems(): void;
+  purchaseItem(itemId: string): boolean;
+  resetAllItems(): boolean;
+  applyItemEffect(itemId: string): void;
+  applyAllEffects(): void;
+  getEffectValue(effectType: string): number;
+  getItemLevel(itemId: string): number;
+  getItemCost(itemId: string): number;
+  canPurchaseItem(itemId: string): boolean;
+  useRevival(): boolean;
+  getAvailableItems(): ItemDefinition[];
+  getItemInfo(itemId: string): ItemInfo | null;
+}
+
+// Achievement System
 export interface Achievement {
   id: string;
   name: string;
   description: string;
-  icon: string;
-  unlocked: boolean;
-  progress: number;
-  maxProgress: number;
-  rewards?: Reward[];
+  category?: string;
+  rewards?: AchievementReward[];
 }
 
-export interface Reward {
+export interface AchievementReward {
   type: string;
   value: number;
   description: string;
 }
 
-export interface ItemSystem {
-  items: Map<string, Item>;
-  inventory: string[];
-  
-  addItem(itemId: string): boolean;
-  removeItem(itemId: string): boolean;
-  useItem(itemId: string): boolean;
-  hasItem(itemId: string): boolean;
-  getItem(itemId: string): Item | null;
+export interface AchievementProgressResult {
+  isComplete: boolean;
+  progress: number;
+  maxProgress: number;
 }
 
-export interface Item {
-  id: string;
-  name: string;
-  description: string;
-  icon: string;
-  type: string;
-  rarity: number;
-  stackable: boolean;
-  maxStack: number;
+export interface AchievementStatistics {
+  total: number;
+  unlocked: number;
+  unlockedPercentage: number;
+  categories: Record<string, number>;
+  performance: any;
+  byCategory: Record<string, number>;
+}
+
+export interface AchievementManager {
+  gameEngine: any;
+  definitions: any;
+  notificationSystem: any;
+  progressTracker: any;
+  performanceOptimizer: any;
+  config: AchievementConfig;
   
-  use(context: any): boolean;
-  canUse(context: any): boolean;
+  initializeAchievementManager(): void;
+  setupEventListeners(): void;
+  configureNotificationSystem(): void;
+  initializeAchievements(): Record<string, Achievement>;
+  updateProgress(eventType: string, data: any): void;
+  processUpdateEvent(eventType: string, data: any): Promise<void>;
+  unlockAchievement(achievement: Achievement): void;
+  handleAchievementUnlocked(data: any): void;
+  handleProgressUpdated(data: any): void;
+  updateAchievementProgressAdvanced(achievement: Achievement, eventType: string, data: any): AchievementProgressResult | null;
+  checkAchievementConditionOptimized(achievement: Achievement, eventType: string, data: any): boolean;
+  getAchievements(): Record<string, Achievement>;
+  getAchievementsByCategory(category: string): Achievement[];
+  getAchievementProgress(achievementId: string): AchievementProgressResult | null;
+  getUnlockedAchievements(): string[];
+  isUnlocked(achievementId: string): boolean;
+  getStatistics(): AchievementStatistics;
+  getNotificationHistory(limit?: number): any[];
+  getProgressData(): any;
+  updateConfig(config: Partial<AchievementConfig>): void;
+  getDebugInfo(): any;
+  resetData(): void;
+  load(): void;
+  destroy(): void;
+}
+
+export interface AchievementConfig {
+  enableNotifications: boolean;
+  enablePerformanceOptimization: boolean;
+  autoSave: boolean;
+  debugMode: boolean;
 }
 
 // Game settings and preferences

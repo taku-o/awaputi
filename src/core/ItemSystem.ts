@@ -1,11 +1,14 @@
-/**
- * アイテムシステム
- */
+import type { 
+    ItemDefinition, 
+    ItemEffect, 
+    ItemInfo, 
+    ItemManager as IItemManager 
+} from '../types/game';
 
 /**
  * アイテム定義
  */
-export const ITEM_DEFINITIONS = {
+export const ITEM_DEFINITIONS: Record<string, ItemDefinition> = {
     scoreMultiplier: {
         id: 'scoreMultiplier',
         name: 'スコア倍率アップ',
@@ -86,19 +89,23 @@ export const ITEM_DEFINITIONS = {
 };
 
 /**
- * アイテム管理クラス
+ * ItemManager - アイテム管理システム
+ * 
+ * アイテムの購入、効果適用、進捗管理を専門的に処理します
  */
-export class ItemManager {
-    constructor(gameEngine) {
+export class ItemManager implements IItemManager {
+    public gameEngine: any;
+    public ownedItems: Map<string, number> = new Map();
+    public activeEffects: Map<string, number> = new Map();
+
+    constructor(gameEngine: any) {
         this.gameEngine = gameEngine;
-        this.ownedItems = new Map(); // アイテムID -> レベル
-        this.activeEffects = new Map(); // エフェクトタイプ -> 値
     }
     
     /**
      * 初期化
      */
-    initialize() {
+    initialize(): void {
         this.loadOwnedItems();
         this.applyAllEffects();
     }
@@ -106,12 +113,12 @@ export class ItemManager {
     /**
      * 所持アイテムを読み込み
      */
-    loadOwnedItems() {
+    loadOwnedItems(): void {
         const playerData = this.gameEngine.playerData;
         this.ownedItems.clear();
         
         if (playerData.ownedItems) {
-            playerData.ownedItems.forEach(item => {
+            playerData.ownedItems.forEach((item: any) => {
                 this.ownedItems.set(item.id, item.level || 1);
             });
         }
@@ -120,7 +127,7 @@ export class ItemManager {
     /**
      * 所持アイテムを保存
      */
-    saveOwnedItems() {
+    saveOwnedItems(): void {
         const playerData = this.gameEngine.playerData;
         playerData.ownedItems = Array.from(this.ownedItems.entries()).map(([id, level]) => ({
             id,
@@ -132,7 +139,7 @@ export class ItemManager {
     /**
      * アイテムを購入
      */
-    purchaseItem(itemId) {
+    purchaseItem(itemId: string): boolean {
         const itemDef = ITEM_DEFINITIONS[itemId];
         if (!itemDef) {
             console.error(`Unknown item: ${itemId}`);
@@ -171,7 +178,7 @@ export class ItemManager {
     /**
      * アイテム効果をリセット
      */
-    resetAllItems() {
+    resetAllItems(): boolean {
         if (!this.purchaseItem('reset')) {
             return false;
         }
@@ -188,7 +195,7 @@ export class ItemManager {
     /**
      * 単一アイテムの効果を適用
      */
-    applyItemEffect(itemId) {
+    applyItemEffect(itemId: string): void {
         const itemDef = ITEM_DEFINITIONS[itemId];
         const level = this.ownedItems.get(itemId) || 0;
         
@@ -241,7 +248,7 @@ export class ItemManager {
     /**
      * 全アイテム効果を適用
      */
-    applyAllEffects() {
+    applyAllEffects(): void {
         this.activeEffects.clear();
         
         // 基本値を設定
@@ -261,21 +268,21 @@ export class ItemManager {
     /**
      * 効果値を取得
      */
-    getEffectValue(effectType) {
+    getEffectValue(effectType: string): number {
         return this.activeEffects.get(effectType) || 0;
     }
     
     /**
      * アイテムの所持レベルを取得
      */
-    getItemLevel(itemId) {
+    getItemLevel(itemId: string): number {
         return this.ownedItems.get(itemId) || 0;
     }
     
     /**
      * アイテムの購入コストを取得
      */
-    getItemCost(itemId) {
+    getItemCost(itemId: string): number {
         const itemDef = ITEM_DEFINITIONS[itemId];
         if (!itemDef) return 0;
         
@@ -286,7 +293,7 @@ export class ItemManager {
     /**
      * アイテムが購入可能かチェック
      */
-    canPurchaseItem(itemId) {
+    canPurchaseItem(itemId: string): boolean {
         const itemDef = ITEM_DEFINITIONS[itemId];
         if (!itemDef) return false;
         
@@ -300,7 +307,7 @@ export class ItemManager {
     /**
      * 復活効果を使用
      */
-    useRevival() {
+    useRevival(): boolean {
         const revivalCount = this.getEffectValue('revival');
         if (revivalCount > 0) {
             // 復活効果を1回分消費
@@ -319,14 +326,14 @@ export class ItemManager {
     /**
      * 購入可能なアイテム一覧を取得
      */
-    getAvailableItems() {
+    getAvailableItems(): ItemDefinition[] {
         return Object.values(ITEM_DEFINITIONS).filter(item => item.id !== 'reset');
     }
     
     /**
      * アイテム情報を取得
      */
-    getItemInfo(itemId) {
+    getItemInfo(itemId: string): ItemInfo | null {
         const itemDef = ITEM_DEFINITIONS[itemId];
         if (!itemDef) return null;
         
