@@ -26,17 +26,20 @@ export interface GameEngine {
 
 // Scene management
 export interface Scene {
-  name: string;
-  isActive: boolean;
-  isLoaded: boolean;
+  gameEngine: any; // GameEngine type will be defined in a circular dependency fix
+  sceneManager: any; // SceneManager type will be defined in a circular dependency fix
+  name?: string;
+  isActive?: boolean;
+  isLoaded?: boolean;
   
-  init(): Promise<void>;
+  setSceneManager(sceneManager: any): void;
   enter(): void;
   exit(): void;
   update(deltaTime: number): void;
   render(context: CanvasRenderingContext2D): void;
-  handleInput(input: InputEvent): boolean;
-  destroy(): void;
+  handleInput(event: Event): boolean | void;
+  init?(): Promise<void>;
+  destroy?(): void;
 }
 
 export interface SceneManager {
