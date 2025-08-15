@@ -493,4 +493,19 @@ export class ParticleManager {
             });
         }
     }
+    
+    /**
+     * パーティクル配列を取得
+     * @returns パーティクル配列
+     */
+    getParticles(): Particle[] {
+        return this.particles;
+    }
+    
+    /**
+     * リソースの破棄（destroy エイリアス）
+     */
+    destroy(): void {
+        this.dispose();
+    }
 }

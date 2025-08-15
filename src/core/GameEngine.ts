@@ -33,7 +33,7 @@ import { getPerformanceOptimizer } from '../utils/PerformanceOptimizer.js';
 import { ResponsiveCanvasManager } from '../utils/ResponsiveCanvasManager.js';
 import { getErrorHandler } from '../utils/ErrorHandler.js';
 import { getConfigurationManager } from './ConfigurationManager.js';
-// import { getCalculationEngine } from './CalculationEngine.js';
+import { getCalculationEngine } from './CalculationEngine.js';
 // import { EffectDebugInterface } from '../effects/EffectDebugInterface.js';
 import { EnhancedDebugInterface } from '../debug/EnhancedDebugInterface.js';
 // import { EffectProfiler } from '../effects/EffectProfiler.js';
@@ -291,11 +291,19 @@ export class GameEngine {
     private _initializeAudioAndEffects(): void {
         try {
             // Audio system
-            this.audioManager = new AudioManager();
+            const audioConfig = {
+                enabled: true,
+                volumes: {
+                    master: 0.8,
+                    bgm: 0.7,
+                    effects: 0.8
+                }
+            };
+            this.audioManager = new AudioManager(this.configManager, audioConfig);
             
             // Effect systems
             this.particleManager = new ParticleManager();
-            this.effectManager = new EffectManager();
+            this.effectManager = new EffectManager(this.canvas);
             this.enhancedParticleManager = new EnhancedParticleManager();
             this.enhancedEffectManager = new EnhancedEffectManager();
             

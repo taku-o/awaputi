@@ -1322,4 +1322,11 @@ export class EffectManager {
         
         console.log('[EffectManager] Disposed successfully');
     }
+    
+    /**
+     * リソースの破棄（destroy エイリアス）
+     */
+    public destroy(): void {
+        this.dispose();
+    }
 }
