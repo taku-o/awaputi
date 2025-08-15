@@ -99,13 +99,13 @@ export class HelpEventManager {
         this.hiddenInput.style.padding = '5px 10px';
         this.hiddenInput.style.border = '2px solid #ccc';
         this.hiddenInput.style.borderRadius = '4px';
-        this.hiddenInput.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+        this.hiddenInput.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
         this.hiddenInput.style.color = '#333';
         this.hiddenInput.style.zIndex = '1000';
         this.hiddenInput.style.fontFamily = 'Arial, sans-serif';
         this.hiddenInput.style.transition = 'border-color 0.3s, box-shadow 0.3s';
         this.hiddenInput.style.outline = 'none';
-        this.hiddenInput.placeholder = '検索...';
+        this.hiddenInput.placeholder = 'ヘルプを検索... （/ キーまたはクリックで検索開始）';
         this.hiddenInput.autocomplete = 'off';
         this.hiddenInput.autocorrect = 'off';
         this.hiddenInput.autocapitalize = 'off';
@@ -115,6 +115,18 @@ export class HelpEventManager {
         this.hiddenInput.style.imeMode = 'active';
         this.hiddenInput.setAttribute('lang', 'ja');
         this.hiddenInput.setAttribute('inputmode', 'text');
+        
+        // Placeholderスタイル（CSS）
+        const style = document.createElement('style');
+        style.textContent = `
+            .help-search-input::placeholder {
+                color: #999;
+                font-style: italic;
+                opacity: 0.8;
+            }
+        `;
+        document.head.appendChild(style);
+        this.hiddenInput.className = 'help-search-input';
         
         console.log('HelpEventManager: setting up input event listeners');
         // 入力イベントハンドラーを設定
@@ -147,8 +159,8 @@ export class HelpEventManager {
             this.hiddenInput.style.boxShadow = 'none';
         });
         
-        // 初期状態では非表示
-        this.hiddenInput.style.display = 'none';
+        // 常時表示（非検索時も表示してレイアウトを保持）
+        this.hiddenInput.style.display = 'block';
         
         console.log('HelpEventManager: appending hidden input to document.body');
         document.body.appendChild(this.hiddenInput);
@@ -502,8 +514,7 @@ export class HelpEventManager {
             if (this.hiddenInput) {
                 this.hiddenInput.value = '';
                 this.hiddenInput.blur();
-                // 検索終了時は入力フィールドを一時的に隠す
-                this.hiddenInput.style.display = 'none';
+                // フィールドは表示したまま（レイアウト保持のため）
             }
             
             this.contentManager.performSearch('');
@@ -531,8 +542,7 @@ export class HelpEventManager {
             console.log('HelpEventManager: focusing hidden input');
             // 位置を更新
             this.updateInputPosition();
-            // 検索フィールドを表示
-            this.hiddenInput.style.display = 'block';
+            // フォーカスを当てる（既に表示済み）
             this.hiddenInput.value = this.currentSearchQuery || '';
             this.hiddenInput.focus();
             // カーソルを最後に移動
