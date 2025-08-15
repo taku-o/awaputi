@@ -1,0 +1,479 @@
+import ErrorHandler from '../utils/ErrorHandler.js';
+
+// Create a singleton instance for compatibility
+let errorHandlerInstance: ErrorHandler | null = null;
+function getErrorHandler(): ErrorHandler {
+    if (!errorHandlerInstance) {
+        errorHandlerInstance = new ErrorHandler();
+    }
+    return errorHandlerInstance;
+}
+
+// Simple validation for PlayerData (fallback implementation)
+function validateInput(value: any, type: string, constraints: any = {}): ValidationResult {
+    const result: ValidationResult = {
+        isValid: false,
+        sanitizedValue: value,
+        errors: []
+    };
+
+    if (type === 'number') {
+        const num = Number(value);
+        if (isNaN(num)) {
+            result.errors.push('Value must be a number');
+            result.sanitizedValue = 0;
+        } else {
+            result.sanitizedValue = num;
+            if (constraints.integer && !Number.isInteger(num)) {
+                result.sanitizedValue = Math.floor(num);
+            }
+            if (constraints.min !== undefined && num < constraints.min) {
+                result.errors.push(`Value must be at least ${constraints.min}`);
+                result.sanitizedValue = constraints.min;
+            }
+            if (constraints.max !== undefined && num > constraints.max) {
+                result.errors.push(`Value must be at most ${constraints.max}`);
+                result.sanitizedValue = constraints.max;
+            }
+        }
+    } else if (type === 'string') {
+        const str = String(value);
+        result.sanitizedValue = str;
+        if (constraints.maxLength && str.length > constraints.maxLength) {
+            result.errors.push(`String too long (max ${constraints.maxLength})`);
+            result.sanitizedValue = str.substring(0, constraints.maxLength);
+        }
+        if (constraints.escapeHtml) {
+            result.sanitizedValue = result.sanitizedValue
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+    } else if (type === 'object' || type === 'array') {
+        if (type === 'array' && !Array.isArray(value)) {
+            result.errors.push('Value must be an array');
+            result.sanitizedValue = [];
+        }
+        // Basic validation for objects and arrays
+    }
+
+    result.isValid = result.errors.length === 0;
+    return result;
+}
+
+/**
+ * プレイヤーデータクラス
+ */
+
+// Type definitions
+interface PlayerDataSave {
+    username: string;
+    ap: number;
+    tap: number;
+    highScores: Record<string, number>;
+    unlockedStages: string[];
+    ownedItems: string[];
+}
+
+interface ValidationResult {
+    isValid: boolean;
+    sanitizedValue: any;
+    errors: string[];
+}
+
+interface ItemManager {
+    useRevival(): boolean;
+}
+
+interface GameEngine {
+    itemManager?: ItemManager;
+}
+
+export class PlayerData {
+    public gameEngine: GameEngine | null;
+    public username: string;
+    public currentHP: number;
+    public maxHP: number;
+    public currentScore: number;
+    public ap: number;
+    public tap: number;
+    public combo: number;
+    public highScores: Record<string, number>;
+    public unlockedStages: string[];
+    public ownedItems: string[];
+    
+    constructor(gameEngine: GameEngine | null = null) {
+        this.gameEngine = gameEngine;
+        this.username = '';
+        this.currentHP = 100;
+        this.maxHP = 100;
+        this.currentScore = 0;
+        this.ap = 0;
+        this.tap = 0;
+        this.combo = 0;
+        this.highScores = {};
+        this.unlockedStages = ['tutorial', 'normal'];
+        this.ownedItems = [];
+    }
+    
+    /**
+     * スコアを追加
+     */
+    addScore(points: number): void {
+        try {
+            // 入力値を検証
+            const validation = validateInput(points, 'number', {
+                min: 0,
+                max: 1000000,
+                integer: true
+            });
+            
+            if (!validation.isValid) {
+                getErrorHandler().handleError(new Error(`Invalid score points: ${validation.errors.join(', ')}`), 'VALIDATION_ERROR', {
+                    input: points,
+                    errors: validation.errors
+                });
+                return;
+            }
+            
+            this.currentScore += validation.sanitizedValue;
+            this.updateUI();
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'PLAYER_DATA_ERROR', { operation: 'addScore', points });
+        }
+    }
+    
+    /**
+     * ダメージを受ける
+     */
+    takeDamage(amount: number): boolean {
+        try {
+            // 入力値を検証
+            const validation = validateInput(amount, 'number', {
+                min: 0,
+                max: this.maxHP,
+                integer: true
+            });
+            
+            if (!validation.isValid) {
+                getErrorHandler().handleError(new Error(`Invalid damage amount: ${validation.errors.join(', ')}`), 'VALIDATION_ERROR', {
+                    input: amount,
+                    errors: validation.errors
+                });
+                return false;
+            }
+            
+            this.currentHP = Math.max(0, this.currentHP - validation.sanitizedValue);
+            this.updateUI();
+            
+            if (this.currentHP <= 0) {
+                // 復活アイテムをチェック
+                try {
+                    if (this.gameEngine && this.gameEngine.itemManager && this.gameEngine.itemManager.useRevival()) {
+                        console.log('Revival item activated!');
+                        return false; // 復活したのでゲームオーバーではない
+                    }
+                } catch (error) {
+                    getErrorHandler().handleError(error, 'ITEM_SYSTEM_ERROR', { operation: 'useRevival' });
+                }
+                return true; // ゲームオーバー
+            }
+            return false;
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'PLAYER_DATA_ERROR', { operation: 'takeDamage', amount });
+            return false;
+        }
+    }
+    
+    /**
+     * HPを回復
+     */
+    heal(amount: number): void {
+        try {
+            // 入力値を検証
+            const validation = validateInput(amount, 'number', {
+                min: 0,
+                max: this.maxHP,
+                integer: true
+            });
+            
+            if (!validation.isValid) {
+                getErrorHandler().handleError(new Error(`Invalid heal amount: ${validation.errors.join(', ')}`), 'VALIDATION_ERROR', {
+                    input: amount,
+                    errors: validation.errors
+                });
+                return;
+            }
+            
+            this.currentHP = Math.min(this.maxHP, this.currentHP + validation.sanitizedValue);
+            this.updateUI();
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'PLAYER_DATA_ERROR', { operation: 'heal', amount });
+        }
+    }
+    
+    /**
+     * UIを更新
+     */
+    updateUI(): void {
+        const scoreElement = document.getElementById('score');
+        const hpElement = document.getElementById('hp');
+        
+        if (scoreElement) {
+            scoreElement.textContent = this.currentScore.toString();
+        }
+        
+        if (hpElement) {
+            hpElement.textContent = this.currentHP.toString();
+        }
+    }
+    
+    /**
+     * データをリセット
+     */
+    reset(): void {
+        this.currentHP = this.maxHP;
+        this.currentScore = 0;
+        this.combo = 0;
+        this.updateUI();
+    }
+    
+    /**
+     * データを保存
+     */
+    save(): void {
+        try {
+            // データを検証
+            const validation = validateInput(this.username, 'string', {
+                maxLength: 50,
+                escapeHtml: true
+            });
+            
+            if (!validation.isValid) {
+                getErrorHandler().handleError(new Error(`Invalid username: ${validation.errors.join(', ')}`), 'VALIDATION_ERROR', {
+                    input: this.username,
+                    errors: validation.errors
+                });
+                // サニタイズされた値を使用
+                this.username = validation.sanitizedValue;
+            }
+            
+            const data: PlayerDataSave = {
+                username: this.username,
+                ap: Math.max(0, Math.floor(this.ap)),
+                tap: Math.max(0, Math.floor(this.tap)),
+                highScores: this.highScores || {},
+                unlockedStages: Array.isArray(this.unlockedStages) ? this.unlockedStages : ['tutorial', 'normal'],
+                ownedItems: Array.isArray(this.ownedItems) ? this.ownedItems : []
+            };
+            
+            // LocalStorageに保存を試行
+            try {
+                localStorage.setItem('bubblePop_playerData', JSON.stringify(data));
+            } catch (storageError) {
+                // LocalStorageが利用できない場合はフォールバックストレージを使用
+                const fallbackStorage = (window as any).fallbackStorage;
+                if (fallbackStorage) {
+                    fallbackStorage.setItem('bubblePop_playerData', JSON.stringify(data));
+                } else {
+                    throw storageError;
+                }
+            }
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'STORAGE_ERROR', { 
+                operation: 'save',
+                data: 'playerData',
+                username: this.username,
+                ap: this.ap,
+                tap: this.tap
+            });
+        }
+    }
+    
+    /**
+     * データを読み込み
+     */
+    load(): void {
+        try {
+            let savedData: string | null = null;
+            
+            // LocalStorageから読み込みを試行
+            try {
+                savedData = localStorage.getItem('bubblePop_playerData');
+            } catch (storageError) {
+                // LocalStorageが利用できない場合はフォールバックストレージを使用
+                const fallbackStorage = (window as any).fallbackStorage;
+                if (fallbackStorage) {
+                    savedData = fallbackStorage.getItem('bubblePop_playerData');
+                } else {
+                    throw storageError;
+                }
+            }
+            
+            if (savedData) {
+                let data: PlayerDataSave;
+                try {
+                    data = JSON.parse(savedData);
+                } catch (parseError) {
+                    getErrorHandler().handleError(parseError, 'STORAGE_ERROR', { 
+                        operation: 'parse',
+                        data: 'playerData',
+                        savedData: savedData.substring(0, 100) // 最初の100文字のみログ
+                    });
+                    return; // パースエラーの場合はデフォルト値を使用
+                }
+                
+                // データを検証して読み込み
+                this.loadValidatedData(data);
+            }
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'STORAGE_ERROR', { 
+                operation: 'load',
+                data: 'playerData'
+            });
+            // エラーの場合はデフォルト値を使用
+        }
+    }
+    
+    /**
+     * 検証済みデータを読み込み
+     */
+    private loadValidatedData(data: Partial<PlayerDataSave>): void {
+        try {
+            // ユーザー名を検証
+            const usernameValidation = validateInput(data.username, 'string', {
+                maxLength: 50,
+                escapeHtml: true
+            });
+            this.username = usernameValidation.isValid ? usernameValidation.sanitizedValue : '';
+            
+            // APを検証
+            const apValidation = validateInput(data.ap, 'number', {
+                min: 0,
+                max: 999999999,
+                integer: true
+            });
+            this.ap = apValidation.isValid ? apValidation.sanitizedValue : 0;
+            
+            // TAPを検証
+            const tapValidation = validateInput(data.tap, 'number', {
+                min: 0,
+                max: 999999999,
+                integer: true
+            });
+            this.tap = tapValidation.isValid ? tapValidation.sanitizedValue : 0;
+            
+            // ハイスコアを検証
+            const highScoresValidation = validateInput(data.highScores, 'object', {});
+            this.highScores = highScoresValidation.isValid ? highScoresValidation.sanitizedValue : {};
+            
+            // 開放済みステージを検証
+            const stagesValidation = validateInput(data.unlockedStages, 'array', {
+                itemType: 'string',
+                itemConstraints: { maxLength: 20 }
+            });
+            this.unlockedStages = stagesValidation.isValid ? 
+                stagesValidation.sanitizedValue : ['tutorial', 'normal'];
+            
+            // 所持アイテムを検証
+            const itemsValidation = validateInput(data.ownedItems, 'array', {
+                itemType: 'string',
+                itemConstraints: { maxLength: 30 }
+            });
+            this.ownedItems = itemsValidation.isValid ? itemsValidation.sanitizedValue : [];
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'VALIDATION_ERROR', { 
+                operation: 'loadValidatedData',
+                data: data
+            });
+            // エラーの場合はデフォルト値を使用
+            this.resetToDefaults();
+        }
+    }
+    
+    /**
+     * デフォルト値にリセット
+     */
+    private resetToDefaults(): void {
+        this.username = '';
+        this.ap = 0;
+        this.tap = 0;
+        this.highScores = {};
+        this.unlockedStages = ['tutorial', 'normal'];
+        this.ownedItems = [];
+    }
+    
+    /**
+     * プレイヤーの統計情報を取得
+     */
+    getStats(): {
+        username: string;
+        currentHP: number;
+        maxHP: number;
+        currentScore: number;
+        ap: number;
+        tap: number;
+        combo: number;
+        totalHighScore: number;
+        unlockedStagesCount: number;
+        itemsCount: number;
+    } {
+        const totalHighScore = Object.values(this.highScores).reduce((sum, score) => sum + score, 0);
+        
+        return {
+            username: this.username,
+            currentHP: this.currentHP,
+            maxHP: this.maxHP,
+            currentScore: this.currentScore,
+            ap: this.ap,
+            tap: this.tap,
+            combo: this.combo,
+            totalHighScore,
+            unlockedStagesCount: this.unlockedStages.length,
+            itemsCount: this.ownedItems.length
+        };
+    }
+    
+    /**
+     * ステージをアンロック
+     */
+    unlockStage(stageName: string): boolean {
+        if (!this.unlockedStages.includes(stageName)) {
+            this.unlockedStages.push(stageName);
+            this.save();
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * アイテムを追加
+     */
+    addItem(itemName: string): void {
+        if (!this.ownedItems.includes(itemName)) {
+            this.ownedItems.push(itemName);
+            this.save();
+        }
+    }
+    
+    /**
+     * アイテムを削除
+     */
+    removeItem(itemName: string): boolean {
+        const index = this.ownedItems.indexOf(itemName);
+        if (index !== -1) {
+            this.ownedItems.splice(index, 1);
+            this.save();
+            return true;
+        }
+        return false;
+    }
+}
