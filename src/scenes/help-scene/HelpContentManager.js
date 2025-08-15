@@ -101,7 +101,9 @@ export class HelpContentManager {
             return;
         }
 
-        try {\n            console.log('Indexing help content for search...');\n            
+        try {
+            console.log('Indexing help content for search...');
+            
             // 全カテゴリのトピックを収集してインデックス化
             const allContent = [];
             
