@@ -6,12 +6,102 @@ import { VolumeControlComponent } from '../components/VolumeControlComponent.js'
 import { AccessibilityProfileComponent } from '../components/AccessibilityProfileComponent.js';
 import { SettingsImportExportComponent } from '../components/SettingsImportExportComponent.js';
 
+// Settings Scene specific types
+export interface SettingOption {
+    value: string;
+    label: string;
+}
+
+export interface SettingItem {
+    key: string;
+    label: string;
+    type: 'toggle' | 'select' | 'slider' | 'text' | 'custom';
+    description?: string;
+    options?: SettingOption[];
+    component?: string;
+    min?: number;
+    max?: number;
+    step?: number;
+    default?: any;
+}
+
+export interface SettingsLayout {
+    categoryWidth: number;
+    settingsPadding: number;
+    itemHeight: number;
+    titleHeight: number;
+}
+
+export interface ConfirmDialogData {
+    message: string;
+    onConfirm?: () => void;
+    onCancel?: () => void;
+}
+
+export interface ProfileDialogData {
+    profiles: any[];
+    selectedIndex: number;
+}
+
+export interface SettingsSceneState {
+    currentCategory: string;
+    selectedCategoryIndex: number;
+    selectedSettingIndex: number;
+    isEditingValue: boolean;
+    tempValue: string | null;
+    showingConfirmDialog: boolean;
+    confirmDialogData: ConfirmDialogData | null;
+    showingProfileDialog?: boolean;
+    profileDialogData?: ProfileDialogData | null;
+    hasContextualHelp?: boolean;
+    contextualHelpTitle?: string;
+    contextualHelpContent?: string;
+    contextualHelpActions?: string[];
+    currentContext?: any;
+}
+
+export interface ContextData {
+    accessMethod?: string;
+    fromHelp?: boolean;
+    quickAccess?: boolean;
+    targetSetting?: string;
+    sourceScene?: string;
+    preserveContext?: boolean;
+    returnScene?: string;
+}
+
 /**
  * 設定画面シーン
  * ソーシャル共有設定、プライバシー設定、通知設定を管理
  */
-export class SettingsScene extends Scene {
-    constructor(gameEngine) {
+export class SettingsScene extends Scene implements SettingsSceneState {
+    // Component properties
+    public loggingSystem: any;
+    public navigationContext: NavigationContextManager;
+    public accessibilitySettingsManager: AccessibilitySettingsManager;
+    public volumeControlComponent: VolumeControlComponent;
+
+    // Categories and UI state
+    public categories: string[];
+    public categoryLabels: string[];
+    public currentCategory: string;
+    public selectedCategoryIndex: number;
+    public selectedSettingIndex: number;
+    public settingItems: Record<string, SettingItem[]>;
+    public isEditingValue: boolean;
+    public tempValue: string | null;
+    public showingConfirmDialog: boolean;
+    public confirmDialogData: ConfirmDialogData | null;
+    public showingProfileDialog?: boolean;
+    public profileDialogData?: ProfileDialogData | null;
+    public hasContextualHelp?: boolean;
+    public contextualHelpTitle?: string;
+    public contextualHelpContent?: string;
+    public contextualHelpActions?: string[];
+    public currentContext?: any;
+    public layout: SettingsLayout;
+
+    constructor(gameEngine: any) {
         super(gameEngine);
         
         // LoggingSystemとNavigationContextManagerの初期化
@@ -54,7 +144,7 @@ export class SettingsScene extends Scene {
     /**
      * 設定項目の初期化
      */
-    initializeSettingItems() {
+    initializeSettingItems(): Record<string, SettingItem[]> {
         return {
             general: [
                 { key: 'ui.language', label: '言語', type: 'select', options: [
@@ -119,7 +209,7 @@ export class SettingsScene extends Scene {
     /**
      * アクセシビリティ設定項目の取得
      */
-    getAccessibilitySettingsItems() {
+    getAccessibilitySettingsItems(): SettingItem[] {
         // 基本設定項目を取得
         let accessibilityItems = [];
         
@@ -183,7 +273,7 @@ export class SettingsScene extends Scene {
     /**
      * シーン開始時の処理
      */
-    enter(contextData = {}) {
+    enter(contextData: ContextData = {}): void {
         this.currentCategory = 'social';
         this.selectedCategoryIndex = 1;
         this.selectedSettingIndex = 0;
@@ -206,9 +296,9 @@ export class SettingsScene extends Scene {
     
     /**
      * エントリコンテキストの処理
-     * @param {Object} contextData - コンテキストデータ
+     * @param contextData - コンテキストデータ
      */
-    processEntryContext(contextData) {
+    processEntryContext(contextData: ContextData): void {
         try {
             // アクセス方法に応じた初期設定
             if (contextData.accessMethod) {
@@ -238,7 +328,7 @@ export class SettingsScene extends Scene {
     /**
      * アクセシビリティフォーカスモードの設定
      */
-    setAccessibilityFocusMode() {
+    setAccessibilityFocusMode(): void {
         this.currentCategory = 'accessibility';
         this.selectedCategoryIndex = this.categories.indexOf('accessibility');
         this.selectedSettingIndex = 0;
@@ -319,14 +409,14 @@ export class SettingsScene extends Scene {
     /**
      * 更新処理
      */
-    update(deltaTime) {
+    update(deltaTime: number): void {
         // 必要に応じて動的な処理を追加
     }
     
     /**
      * 描画処理
      */
-    render(context) {
+    render(context: CanvasRenderingContext2D): void {
         const canvas = context.canvas;
         const width = canvas.width;
         const height = canvas.height;
@@ -900,9 +990,9 @@ export class SettingsScene extends Scene {
     /**
      * 入力処理
      */
-    handleInput(event) {
+    handleInput(event: Event): boolean | void {
         if (event.type === 'keydown') {
-            this.handleKeyInput(event);
+            this.handleKeyInput(event as KeyboardEvent);
         } else if (event.type === 'click' || event.type === 'touchstart') {
             this.handleMouseInput(event);
         }
@@ -911,7 +1001,7 @@ export class SettingsScene extends Scene {
     /**
      * キーボード入力処理
      */
-    handleKeyInput(event) {
+    handleKeyInput(event: KeyboardEvent): void {
         if (this.showingConfirmDialog) {
             this.handleConfirmDialogInput(event);
             return;
@@ -1440,7 +1530,8 @@ export class SettingsScene extends Scene {
             input.style.display = 'none';
             
             input.addEventListener('change', async (event) => {
-                const file = event.target.files[0];
+                const target = event.target as HTMLInputElement;
+                const file = target.files?.[0];
                 if (file) {
                     try {
                         await this.accessibilitySettingsManager.importSettings(file);

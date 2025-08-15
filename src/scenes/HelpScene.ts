@@ -1,5 +1,5 @@
 import { Scene } from '../core/Scene.js';
-import { ErrorHandler } from '../utils/ErrorHandler.js';
+import ErrorHandler from '../utils/ErrorHandler.js';
 import { getLoggingSystem } from '../core/LoggingSystem.js';
 import { CoreAccessibilityManager } from '../core/AccessibilityManager.js';
 import { NavigationContextManager } from '../core/navigation/NavigationContextManager.js';
@@ -12,6 +12,69 @@ import { HelpRenderer } from './help-scene/HelpRenderer.js';
 import { HelpEventManager } from './help-scene/HelpEventManager.js';
 import { ContextualHelpManager } from './help-scene/ContextualHelpManager.js';
 
+// Help Scene specific types
+export interface HelpContextData {
+    contextual?: boolean;
+    documentation?: boolean;
+    quick?: boolean;
+    standard?: boolean;
+    sourceScene?: string;
+    accessMethod?: string;
+    preserveContext?: boolean;
+    returnScene?: string;
+}
+
+export interface HelpSceneState {
+    initialized: boolean;
+    currentContext?: any;
+    contextualHelpTitle?: string;
+    contextualHelpContent?: string;
+    contextualHelpActions?: string[];
+    hasContextualHelp?: boolean;
+}
+
+export interface HelpSceneComponents {
+    helpAccessibilityManager: HelpAccessibilityManager;
+    helpContentManager: HelpContentManager;
+    helpAnimationManager: HelpAnimationManager;
+    helpTransitionRenderer: HelpTransitionRenderer;
+    helpRenderer: HelpRenderer;
+    helpEventManager: HelpEventManager;
+    contextualHelpManager: ContextualHelpManager;
+}
+
+export interface AccessibilityOptions {
+    highContrast?: boolean;
+    largeText?: boolean;
+}
+
+export interface AnimationOptions {
+    enabled?: boolean;
+}
+
+export interface LayoutOptions {
+    [key: string]: any;
+}
+
+export interface ColorOptions {
+    [key: string]: any;
+}
+
+export interface ConfigureOptions {
+    accessibility?: AccessibilityOptions;
+    animations?: AnimationOptions;
+    layout?: LayoutOptions;
+    colors?: ColorOptions;
+}
+
+export interface HelpSceneStatus {
+    initialized: boolean;
+    contentState?: any;
+    accessibilityState?: any;
+    animationState?: any;
+    eventState?: any;
+}
+
 /**
  * ヘルプシーン (Refactored)
  * ヘルプシーンメインコントローラー - 包括的なヘルプ表示とナビゲーション機能
@@ -23,8 +86,29 @@ import { ContextualHelpManager } from './help-scene/ContextualHelpManager.js';
  * - HelpRenderer: 描画統合システム
  * - HelpEventManager: イベント処理統合システム
  */
-export class HelpScene extends Scene {
-    constructor(gameEngine) {
+export class HelpScene extends Scene implements HelpSceneState {
+    // Core component properties
+    public loggingSystem: any;
+    public navigationContext: NavigationContextManager;
+
+    // Sub-component properties
+    public helpAccessibilityManager: HelpAccessibilityManager;
+    public helpContentManager: HelpContentManager;
+    public helpAnimationManager: HelpAnimationManager;
+    public helpTransitionRenderer: HelpTransitionRenderer;
+    public helpRenderer: HelpRenderer;
+    public helpEventManager: HelpEventManager;
+    public contextualHelpManager: ContextualHelpManager;
+
+    // State properties
+    public initialized: boolean;
+    public currentContext?: any;
+    public contextualHelpTitle?: string;
+    public contextualHelpContent?: string;
+    public contextualHelpActions?: string[];
+    public hasContextualHelp?: boolean;
+
+    constructor(gameEngine: any) {
         super(gameEngine);
         this.loggingSystem = getLoggingSystem();
         
@@ -44,7 +128,7 @@ export class HelpScene extends Scene {
      * Initialize sub-component systems
      * @private
      */
-    _initializeSubComponents() {
+    private _initializeSubComponents(): void {
         console.log('HelpScene: _initializeSubComponents() called');
         try {
             // アクセシビリティ管理
@@ -93,7 +177,7 @@ export class HelpScene extends Scene {
     /**
      * 初期化処理
      */
-    async initialize() {
+    async initialize(): Promise<void> {
         try {
             // サブコンポーネントの初期化待機
             await this.waitForSubComponentInitialization();
@@ -110,7 +194,7 @@ export class HelpScene extends Scene {
         }
     }
     
-    async waitForSubComponentInitialization() {
+    async waitForSubComponentInitialization(): Promise<void> {
         // 各サブコンポーネントの初期化完了を待機
         const initPromises = [];
         
@@ -125,7 +209,7 @@ export class HelpScene extends Scene {
         await Promise.all(initPromises);
     }
     
-    setupEventCallbacks() {
+    setupEventCallbacks(): void {
         // イベントマネージャーのコールバック設定
         this.helpEventManager.setCallback('onGoBack', () => {
             try {
@@ -176,7 +260,7 @@ export class HelpScene extends Scene {
     /**
      * シーン開始時の処理
      */
-    enter(contextData = {}) {
+    enter(contextData: HelpContextData = {}): void {
         console.log('HelpScene: enter() called');
         if (!this.initialized) {
             console.warn('HelpScene not initialized, attempting to initialize...');
@@ -234,9 +318,9 @@ export class HelpScene extends Scene {
     
     /**
      * エントリコンテキストの処理
-     * @param {Object} contextData - コンテキストデータ
+     * @param contextData - コンテキストデータ
      */
-    processEntryContext(contextData) {
+    processEntryContext(contextData: HelpContextData): void {
         try {
             // コンテキスト情報の保存（戻りナビゲーション用）
             this.currentContext = {
@@ -499,7 +583,7 @@ export class HelpScene extends Scene {
     /**
      * 描画処理
      */
-    render(ctx) {
+    render(ctx: CanvasRenderingContext2D): void {
         if (!this.initialized) return;
 
         try {
@@ -531,7 +615,7 @@ export class HelpScene extends Scene {
     /**
      * フレーム更新処理
      */
-    update(deltaTime) {
+    update(deltaTime: number): void {
         if (!this.initialized) return;
 
         try {
@@ -547,7 +631,7 @@ export class HelpScene extends Scene {
     /**
      * 状態取得（デバッグ・診断用）
      */
-    getStatus() {
+    getStatus(): HelpSceneStatus {
         if (!this.initialized) {
             return { initialized: false };
         }
@@ -564,7 +648,7 @@ export class HelpScene extends Scene {
     /**
      * 設定変更
      */
-    configure(options = {}) {
+    configure(options: ConfigureOptions = {}): void {
         if (options.accessibility && this.helpAccessibilityManager) {
             // アクセシビリティ設定の更新
             if (options.accessibility.highContrast !== undefined) {
