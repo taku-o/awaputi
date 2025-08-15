@@ -584,7 +584,11 @@ export class HelpRenderer {
             // SearchEngineの結果構造に対応
             const resultData = result.content || result;
             const title = resultData.title || result.title || 'Untitled';
-            const categoryName = resultData.categoryName || result.categoryName || resultData.category || 'Unknown';
+            const categoryId = resultData.categoryId || result.categoryId || resultData.category || 'unknown';
+            
+            // カテゴリ名を翻訳
+            const categoryKey = `help.categories.${categoryId}`;
+            const categoryName = this.gameEngine.localizationManager.t(categoryKey, categoryId);
             
             // 結果タイトル
             ctx.fillStyle = isSelected ? this.colors.text : this.colors.textSecondary;
