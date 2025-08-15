@@ -148,6 +148,19 @@ export class AnimationManager {
         this.animationQueue = [];
         this.maxConcurrentAnimations = 50;
         
+        // サブトルアニメーション設定を初期化
+        this.subtleAnimations = {
+            enabled: true,
+            intensity: 0.5,
+            types: ['fade', 'scale', 'slide']
+        };
+        
+        console.log('Animation configuration:', { 
+            queueSize: this.animationQueue.length, 
+            maxConcurrent: this.maxConcurrentAnimations,
+            subtleConfig: this.subtleAnimations 
+        });
+        
         console.log('[AnimationManager] アニメーション管理システムを初期化しました');
         this._initializeFromConfig();
     }

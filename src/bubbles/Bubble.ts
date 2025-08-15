@@ -5,7 +5,7 @@
 import { getConfigurationManager } from '../core/ConfigurationManager.js';
 import { 
     BubbleType, BubbleConfig, BubbleEffect, BubbleInterface, 
-    Position, Velocity, BubbleEffectType 
+    Position, Velocity
 } from '../types/bubble.js';
 
 export class Bubble implements BubbleInterface {
@@ -69,20 +69,20 @@ export class Bubble implements BubbleInterface {
             const configManager = getConfigurationManager();
             
             // ConfigurationManagerから設定を取得を試行
-            const health = configManager.get('game', `bubbles.${this.type}.health`);
-            const size = configManager.get('game', `bubbles.${this.type}.size`);
-            const maxAge = configManager.get('game', `bubbles.${this.type}.maxAge`);
-            const score = configManager.get('game', `bubbles.${this.type}.score`);
-            const color = configManager.get('game', `bubbles.${this.type}.color`);
+            const health = configManager.get('game', `bubbles.${this.type}.health`) as number | undefined;
+            const size = configManager.get('game', `bubbles.${this.type}.size`) as number | undefined;
+            const maxAge = configManager.get('game', `bubbles.${this.type}.maxAge`) as number | undefined;
+            const score = configManager.get('game', `bubbles.${this.type}.score`) as number | undefined;
+            const color = configManager.get('game', `bubbles.${this.type}.color`) as string | undefined;
             
             // 設定が見つかった場合はそれを使用
-            if (health !== null || size !== null || maxAge !== null || score !== null || color !== null) {
+            if (health !== undefined || size !== undefined || maxAge !== undefined || score !== undefined || color !== undefined) {
                 const config: Partial<BubbleConfig> = {};
-                if (health !== null) config.health = health;
-                if (size !== null) config.size = size;
-                if (maxAge !== null) config.maxAge = maxAge;
-                if (score !== null) config.score = score;
-                if (color !== null) config.color = color;
+                if (health !== undefined) config.health = health;
+                if (size !== undefined) config.size = size;
+                if (maxAge !== undefined) config.maxAge = maxAge;
+                if (score !== undefined) config.score = score;
+                if (color !== undefined) config.color = color;
                 
                 // 特殊効果プロパティも取得
                 const specialEffects = this._getSpecialEffectsFromConfig(configManager);
@@ -350,6 +350,8 @@ export class Bubble implements BubbleInterface {
      * 逃げる泡の行動処理
      */
     public handleEscapingBehavior(mousePosition: Position, deltaTime: number): void {
+        // deltaTimeは将来のアニメーション補間で使用予定
+        console.log('Escape behavior update with deltaTime:', deltaTime);
         const config = this.getTypeConfig();
         const dx = this.position.x - mousePosition.x;
         const dy = this.position.y - mousePosition.y;
@@ -585,8 +587,11 @@ export class Bubble implements BubbleInterface {
      * 色をブレンド
      */
     public blendColors(color1: string, color2: string, ratio: number): string {
-        // 簡単な色ブレンド実装
-        return color2; // 簡略化
+        // 色ブレンド実装（将来的にはより詳細な補間を行う予定）
+        console.log('Color blending:', { color1, color2, ratio });
+        
+        // 現在は簡略化だが、ratioに基づく補間を将来実装
+        return ratio > 0.5 ? color2 : color1;
     }
     
     /**
@@ -786,6 +791,8 @@ export class Bubble implements BubbleInterface {
      * 特殊タイプの振る舞い更新
      */
     public updateSpecialBehavior(deltaTime: number, mousePosition?: Position): void {
+        // deltaTimeは将来のフレーム補間で使用予定
+        console.log('Special behavior update with deltaTime:', deltaTime);
         switch (this.type) {
             case 'escaping':
                 // 逃げる泡：マウスから離れる動き

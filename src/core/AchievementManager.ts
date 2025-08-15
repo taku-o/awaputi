@@ -95,8 +95,14 @@ export class AchievementManager implements IAchievementManager {
     private createMockDefinitions(): any {
         return {
             getAllAchievements: () => ({}),
-            getAchievementsByCategory: (category: string) => [],
-            getAchievement: (id: string) => null,
+            getAchievementsByCategory: (category: string) => {
+                console.log('Mock getAchievementsByCategory called with:', category);
+                return [];
+            },
+            getAchievement: (id: string) => {
+                console.log('Mock getAchievement called with:', id);
+                return null;
+            },
             getStatistics: () => ({ total: 0, byCategory: {} })
         };
     }
@@ -106,9 +112,16 @@ export class AchievementManager implements IAchievementManager {
      */
     private createMockNotificationSystem(): any {
         return {
-            updateConfig: (config: any) => {},
-            createAchievementNotification: (achievement: Achievement) => {},
-            getNotificationHistory: (limit: number) => [],
+            updateConfig: (config: any) => {
+                console.log('Mock updateConfig called with:', config);
+            },
+            createAchievementNotification: (achievement: Achievement) => {
+                console.log('Mock createAchievementNotification called with:', achievement);
+            },
+            getNotificationHistory: (limit: number) => {
+                console.log('Mock getNotificationHistory called with limit:', limit);
+                return [];
+            },
             clearAllNotifications: () => {},
             loadHistory: () => {},
             destroy: () => {}
