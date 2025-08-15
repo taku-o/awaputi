@@ -1,27 +1,30 @@
-import { Bubble } from '../../bubbles/Bubble.js';
-import { getPerformanceOptimizer } from '../../utils/PerformanceOptimizer.js';
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { Bubble } from '../../bubbles/Bubble';
+import { getPerformanceOptimizer } from '../../utils/PerformanceOptimizer';
+import { getErrorHandler } from '../../utils/ErrorHandler';
+import type { BubbleSpawner as IBubbleSpawner, Position } from '../../types/game';
 
 /**
  * BubbleSpawner - 泡生成システム
  * 
  * 泡の生成、ランダム位置・タイプ生成、特殊生成率管理を専門的に管理します
  */
-export class BubbleSpawner {
-    constructor(gameEngine, config) {
+export class BubbleSpawner implements IBubbleSpawner {
+    public gameEngine: any;
+    private stageConfig: any = null;
+    private maxBubbles: number = 20;
+    private baseSpawnRate: number = 1.0;
+    private spawnTimer: number = 0;
+    private spawnInterval: number = 2000; // 2秒間隔
+    private specialSpawnRates: Record<string, number> = {};
+
+    constructor(gameEngine: any, config?: any) {
         this.gameEngine = gameEngine;
-        this.stageConfig = null;
-        this.maxBubbles = 20;
-        this.baseSpawnRate = 1.0;
-        this.spawnTimer = 0;
-        this.spawnInterval = 2000; // 2秒間隔
-        this.specialSpawnRates = {};
     }
     
     /**
      * ステージ設定を適用
      */
-    setStageConfig(config) {
+    setStageConfig(config: any): boolean {
         console.log('BubbleSpawner.setStageConfig called with:', config);
         
         if (!config) {
@@ -43,7 +46,7 @@ export class BubbleSpawner {
     /**
      * 自動生成処理
      */
-    updateSpawnTimer(deltaTime, currentBubbleCount) {
+    updateSpawnTimer(deltaTime: number, currentBubbleCount: number): boolean {
         // 時間停止中は泡の生成を停止
         if (this.gameEngine.isTimeStopActive && this.gameEngine.isTimeStopActive()) {
             return false;
@@ -73,7 +76,7 @@ export class BubbleSpawner {
     /**
      * 泡を生成
      */
-    spawnBubble(type = null, position = null) {
+    spawnBubble(type: string | null = null, position: Position | null = null): Bubble | null {
         try {
             // 入力値を検証
             if (type !== null) {
@@ -119,7 +122,7 @@ export class BubbleSpawner {
             }
             
             // 新しいBubbleインスタンスを作成
-            const bubble = new Bubble(type, position);
+            const bubble = new (Bubble as any)(type, position);
             
             return bubble;
             
@@ -135,7 +138,7 @@ export class BubbleSpawner {
     /**
      * 特定の泡を強制生成
      */
-    spawnSpecificBubble(type, position = null) {
+    spawnSpecificBubble(type: string, position: Position | null = null): Bubble | null {
         if (!position) {
             position = this.getRandomPosition();
         }
@@ -150,7 +153,7 @@ export class BubbleSpawner {
     /**
      * ランダムな泡の種類を取得
      */
-    getRandomBubbleType() {
+    getRandomBubbleType(): string {
         if (!this.stageConfig || !this.stageConfig.bubbleTypes) {
             return 'normal';
         }
@@ -162,7 +165,7 @@ export class BubbleSpawner {
     /**
      * ランダムな位置を取得
      */
-    getRandomPosition() {
+    getRandomPosition(): Position {
         const canvas = this.gameEngine.canvas;
         const margin = 50;
         
@@ -175,7 +178,7 @@ export class BubbleSpawner {
     /**
      * 特殊な泡の生成率を設定
      */
-    setSpecialSpawnRate(bubbleType, rate) {
+    setSpecialSpawnRate(bubbleType: string, rate: number): void {
         this.specialSpawnRates[bubbleType] = rate;
         console.log(`Special spawn rate set for ${bubbleType}: ${rate}`);
     }
@@ -183,7 +186,7 @@ export class BubbleSpawner {
     /**
      * 特殊生成率を考慮したランダム泡タイプを取得
      */
-    getRandomBubbleTypeWithSpecialRates() {
+    getRandomBubbleTypeWithSpecialRates(): string {
         // 特殊生成率をチェック
         for (const [bubbleType, rate] of Object.entries(this.specialSpawnRates)) {
             if (Math.random() < rate) {
@@ -198,8 +201,8 @@ export class BubbleSpawner {
     /**
      * 泡の種類による初期体力を取得
      */
-    getBubbleHealthByType(type) {
-        const healthMap = {
+    getBubbleHealthByType(type: string): number {
+        const healthMap: Record<string, number> = {
             'normal': 1,
             'stone': 2,
             'iron': 3,
@@ -212,16 +215,16 @@ export class BubbleSpawner {
     /**
      * テスト用バブルの追加（デバッグツール用）
      */
-    addTestBubble(bubbleData) {
+    addTestBubble(bubbleData: any): Bubble | null {
         try {
             // バブルデータの検証
             if (!bubbleData || !bubbleData.type) {
                 console.warn('Invalid bubble data provided to addTestBubble');
-                return false;
+                return null;
             }
 
             // 新しいバブルを作成
-            const bubble = new Bubble(
+            const bubble = new (Bubble as any)(
                 bubbleData.type,
                 {
                     x: bubbleData.x || Math.random() * 800,
@@ -265,13 +268,13 @@ export class BubbleSpawner {
     /**
      * 複数のテストバブルを一度に作成
      */
-    addTestBubbles(bubblesData) {
+    addTestBubbles(bubblesData: any[]): Bubble[] {
         if (!Array.isArray(bubblesData)) {
             console.warn('bubblesData must be an array');
             return [];
         }
 
-        const bubbles = [];
+        const bubbles: Bubble[] = [];
         for (const bubbleData of bubblesData) {
             const bubble = this.addTestBubble(bubbleData);
             if (bubble) {

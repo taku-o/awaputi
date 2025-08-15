@@ -1,19 +1,26 @@
-import { getPerformanceOptimizer } from '../../utils/PerformanceOptimizer.js';
+import { getPerformanceOptimizer } from '../../utils/PerformanceOptimizer';
+import type { 
+    BubbleEffectProcessor as IBubbleEffectProcessor, 
+    Bubble, 
+    Position 
+} from '../../types/game';
 
 /**
  * BubbleEffectProcessor - 泡特殊効果処理システム
  * 
- * 特殊効果処理、連鎖反応、爆発、スロー・磁力効果を専門的に管理します
+ * 泡の特殊効果、連鎖反応、自動破裂処理を専門的に管理します
  */
-export class BubbleEffectProcessor {
-    constructor(gameEngine) {
+export class BubbleEffectProcessor implements IBubbleEffectProcessor {
+    public gameEngine: any;
+
+    constructor(gameEngine: any) {
         this.gameEngine = gameEngine;
     }
     
     /**
      * 泡の効果を処理
      */
-    processBubbleEffect(bubble, x, y) {
+    processBubbleEffect(bubble: Bubble, x: number, y: number): void {
         // パフォーマンス最適化: エフェクトの実行可否を判定
         if (!getPerformanceOptimizer().shouldRunEffect('bubble_effect')) {
             return;
@@ -103,26 +110,24 @@ export class BubbleEffectProcessor {
     /**
      * 自動破裂チェック
      */
-    checkAutoBurst(bubble) {
+    checkAutoBurst(bubble: Bubble): void {
         // ひび割れ泡は早期破裂
         if (bubble.type === 'cracked' && bubble.age > bubble.maxAge * 0.5) {
             this.burstBubble(bubble);
-            return true;
+            return;
         }
         
         // 通常の自動破裂
         if (bubble.age >= bubble.maxAge) {
             this.burstBubble(bubble);
-            return true;
+            return;
         }
-        
-        return false;
     }
     
     /**
      * 泡を破裂させる
      */
-    burstBubble(bubble) {
+    private burstBubble(bubble: Bubble): void {
         console.log(`${bubble.type} bubble burst automatically`);
         
         // プレイヤーにダメージ
@@ -141,8 +146,8 @@ export class BubbleEffectProcessor {
     /**
      * 破裂ダメージを計算
      */
-    calculateBurstDamage(bubble) {
-        const baseDamage = {
+    private calculateBurstDamage(bubble: Bubble): number {
+        const baseDamage: Record<string, number> = {
             'normal': 5,
             'stone': 8,
             'iron': 12,
@@ -160,7 +165,7 @@ export class BubbleEffectProcessor {
     /**
      * 特殊効果通知
      */
-    notifySpecialEffect(effectType, x, y) {
+    private notifySpecialEffect(effectType: string, x: number, y: number): void {
         const gameScene = this.gameEngine.sceneManager.getCurrentScene();
         if (gameScene && typeof gameScene.onSpecialEffect === 'function') {
             gameScene.onSpecialEffect(effectType, x, y);
@@ -170,7 +175,7 @@ export class BubbleEffectProcessor {
     /**
      * ダメージ通知
      */
-    notifyDamage(damage, source) {
+    private notifyDamage(damage: number, source: string): void {
         const gameScene = this.gameEngine.sceneManager.getCurrentScene();
         if (gameScene && typeof gameScene.onDamageTaken === 'function') {
             gameScene.onDamageTaken(damage, source);
@@ -180,7 +185,7 @@ export class BubbleEffectProcessor {
     /**
      * 回復通知
      */
-    notifyHeal(healAmount) {
+    private notifyHeal(healAmount: number): void {
         const gameScene = this.gameEngine.sceneManager.getCurrentScene();
         if (gameScene && typeof gameScene.onHealed === 'function') {
             gameScene.onHealed(healAmount);
@@ -190,11 +195,11 @@ export class BubbleEffectProcessor {
     /**
      * 連鎖反応（とげとげ泡用）
      */
-    chainReaction(centerX, centerY, radius) {
+    private chainReaction(centerX: number, centerY: number, radius: number): void {
         const bubbles = this.gameEngine.bubbleManager.bubbles;
-        const affectedBubbles = [];
+        const affectedBubbles: Bubble[] = [];
         
-        bubbles.forEach(bubble => {
+        bubbles.forEach((bubble: Bubble) => {
             const dx = bubble.position.x - centerX;
             const dy = bubble.position.y - centerY;
             const distance = Math.sqrt(dx * dx + dy * dy);
@@ -219,11 +224,11 @@ export class BubbleEffectProcessor {
     /**
      * スロー効果を適用（氷の泡用）
      */
-    applySlowEffect(centerX, centerY, radius, slowFactor, duration) {
+    private applySlowEffect(centerX: number, centerY: number, radius: number, slowFactor: number, duration: number): void {
         const bubbles = this.gameEngine.bubbleManager.bubbles;
-        const affectedBubbles = [];
+        const affectedBubbles: Bubble[] = [];
         
-        bubbles.forEach(bubble => {
+        bubbles.forEach((bubble: Bubble) => {
             const dx = bubble.position.x - centerX;
             const dy = bubble.position.y - centerY;
             const distance = Math.sqrt(dx * dx + dy * dy);
@@ -235,7 +240,7 @@ export class BubbleEffectProcessor {
         
         // 影響を受けた泡にスロー効果を適用
         affectedBubbles.forEach(bubble => {
-            bubble.slowEffect = {
+            (bubble as any).slowEffect = {
                 factor: slowFactor,
                 endTime: Date.now() + duration
             };
@@ -247,10 +252,10 @@ export class BubbleEffectProcessor {
     /**
      * 磁力効果を適用（磁石の泡用）
      */
-    applyMagneticPull(centerX, centerY, radius, strength) {
+    private applyMagneticPull(centerX: number, centerY: number, radius: number, strength: number): void {
         const bubbles = this.gameEngine.bubbleManager.bubbles;
         
-        bubbles.forEach(bubble => {
+        bubbles.forEach((bubble: Bubble) => {
             const dx = bubble.position.x - centerX;
             const dy = bubble.position.y - centerY;
             const distance = Math.sqrt(dx * dx + dy * dy);
@@ -273,11 +278,11 @@ export class BubbleEffectProcessor {
     /**
      * 大爆発効果（爆発の泡用）
      */
-    bigExplosion(centerX, centerY, radius, damage) {
+    private bigExplosion(centerX: number, centerY: number, radius: number, damage: number): void {
         const bubbles = this.gameEngine.bubbleManager.bubbles;
-        const affectedBubbles = [];
+        const affectedBubbles: Array<{ bubble: Bubble; distance: number }> = [];
         
-        bubbles.forEach(bubble => {
+        bubbles.forEach((bubble: Bubble) => {
             const dx = bubble.position.x - centerX;
             const dy = bubble.position.y - centerY;
             const distance = Math.sqrt(dx * dx + dy * dy);

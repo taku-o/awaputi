@@ -1,24 +1,33 @@
+import type { 
+    BubblePhysicsEngine as IBubblePhysicsEngine, 
+    Bubble, 
+    Position, 
+    Vector2 
+} from '../../types/game';
+
 /**
- * BubblePhysicsEngine - 泡物理計算システム
+ * BubblePhysicsEngine - 泡物理演算エンジン
  * 
- * 物理計算、境界衝突、重力/摩擦、逃げる泡の動作を専門的に管理します
+ * 泡の物理計算、力学、特殊効果、境界処理を専門的に管理します
  */
-export class BubblePhysicsEngine {
-    constructor(gameEngine) {
+export class BubblePhysicsEngine implements IBubblePhysicsEngine {
+    public gameEngine: any;
+    public mousePosition: Position = { x: 0, y: 0 };
+    private dragPhysics = {
+        friction: 0.98,    // 空気抵抗
+        bounce: 0.7,       // 跳ね返り係数
+        gravity: 50,       // 重力加速度
+        minVelocity: 5     // 最小速度（これ以下で停止）
+    };
+
+    constructor(gameEngine: any) {
         this.gameEngine = gameEngine;
-        this.mousePosition = { x: 0, y: 0 };
-        this.dragPhysics = {
-            friction: 0.98, // 空気抵抗
-            bounce: 0.7,    // 跳ね返り係数
-            gravity: 50,    // 重力加速度
-            minVelocity: 5  // 最小速度（これ以下で停止）
-        };
     }
     
     /**
      * マウス位置を更新
      */
-    updateMousePosition(x, y) {
+    updateMousePosition(x: number, y: number): void {
         this.mousePosition.x = x;
         this.mousePosition.y = y;
     }
@@ -26,7 +35,7 @@ export class BubblePhysicsEngine {
     /**
      * 個別泡の更新処理（物理計算を含む）
      */
-    updateBubble(bubble, deltaTime) {
+    updateBubble(bubble: Bubble, deltaTime: number): void {
         const deltaSeconds = deltaTime / 1000;
         
         // 逃げる泡の特殊処理
@@ -44,7 +53,7 @@ export class BubblePhysicsEngine {
     /**
      * 物理計算を適用
      */
-    applyPhysics(bubble, deltaSeconds) {
+    applyPhysics(bubble: Bubble, deltaSeconds: number): void {
         // 重力の適用（上向きの速度がある場合のみ）
         if (bubble.velocity.y < 0) {
             bubble.velocity.y += this.dragPhysics.gravity * deltaSeconds;
@@ -72,7 +81,7 @@ export class BubblePhysicsEngine {
     /**
      * 境界との衝突判定
      */
-    handleBoundaryCollision(bubble) {
+    handleBoundaryCollision(bubble: Bubble): void {
         const canvas = this.gameEngine.canvas;
         const radius = bubble.size / 2;
         
@@ -102,7 +111,7 @@ export class BubblePhysicsEngine {
     /**
      * 逃げる泡の更新処理
      */
-    updateEscapingBubble(bubble, deltaSeconds) {
+    updateEscapingBubble(bubble: Bubble, deltaSeconds: number): void {
         const dx = bubble.position.x - this.mousePosition.x;
         const dy = bubble.position.y - this.mousePosition.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
@@ -132,21 +141,22 @@ export class BubblePhysicsEngine {
     /**
      * スロー効果の適用
      */
-    applySlowEffect(bubble) {
-        if (bubble.slowEffect && bubble.slowEffect.endTime > Date.now()) {
+    applySlowEffect(bubble: Bubble): void {
+        const slowEffect = (bubble as any).slowEffect;
+        if (slowEffect && slowEffect.endTime > Date.now()) {
             // スロー効果が有効
-            bubble.velocity.x *= bubble.slowEffect.factor;
-            bubble.velocity.y *= bubble.slowEffect.factor;
-        } else if (bubble.slowEffect) {
+            bubble.velocity.x *= slowEffect.factor;
+            bubble.velocity.y *= slowEffect.factor;
+        } else if (slowEffect) {
             // スロー効果の時間が切れた
-            delete bubble.slowEffect;
+            delete (bubble as any).slowEffect;
         }
     }
     
     /**
      * 泡に力を適用
      */
-    applyForceToBubble(bubble, direction, strength) {
+    applyForceToBubble(bubble: Bubble, direction: Vector2, strength: number): void {
         bubble.velocity.x = direction.x * strength;
         bubble.velocity.y = direction.y * strength;
         
@@ -181,7 +191,7 @@ export class BubblePhysicsEngine {
     /**
      * 泡が画面内にあるかチェック（パフォーマンス最適化用）
      */
-    isBubbleVisible(bubble) {
+    isBubbleVisible(bubble: Bubble): boolean {
         const margin = 100;
         return (
             bubble.position.x > -margin &&
@@ -194,7 +204,7 @@ export class BubblePhysicsEngine {
     /**
      * 画面外の泡の処理
      */
-    handleOffscreenBubble(bubble, deltaTime, offscreenBubbles, offscreenTimer) {
+    handleOffscreenBubble(bubble: Bubble, deltaTime: number, offscreenBubbles: Set<Bubble>, offscreenTimer: Map<Bubble, number>): boolean {
         const canvas = this.gameEngine.canvas;
         const margin = bubble.size; // マージンを設けて判定
         
@@ -219,7 +229,7 @@ export class BubblePhysicsEngine {
                 offscreenTimer.set(bubble, 0);
             }
             
-            const timer = offscreenTimer.get(bubble) + deltaTime;
+            const timer = (offscreenTimer.get(bubble) || 0) + deltaTime;
             offscreenTimer.set(bubble, timer);
             
             if (timer >= 3000) { // 3秒で消滅
@@ -241,7 +251,7 @@ export class BubblePhysicsEngine {
     /**
      * 特定の泡タイプが画面外で即座に消滅するかどうか
      */
-    shouldDisappearOffscreen(bubbleType) {
+    shouldDisappearOffscreen(bubbleType: string): boolean {
         const disappearTypes = ['rainbow', 'pink', 'clock', 'score', 'electric', 'poison'];
         return disappearTypes.includes(bubbleType);
     }
@@ -249,8 +259,8 @@ export class BubblePhysicsEngine {
     /**
      * 指定範囲内のバブルを取得
      */
-    getBubblesInRadius(bubbles, x, y, radius) {
-        const nearbyBubbles = [];
+    getBubblesInRadius(bubbles: Bubble[], x: number, y: number, radius: number): Bubble[] {
+        const nearbyBubbles: Bubble[] = [];
         
         bubbles.forEach(bubble => {
             if (!bubble.isAlive) return;
@@ -271,8 +281,8 @@ export class BubblePhysicsEngine {
     /**
      * パス上のバブルを取得
      */
-    getBubblesAlongPath(bubbles, startPos, endPos) {
-        const pathBubbles = [];
+    getBubblesAlongPath(bubbles: Bubble[], startPos: Position, endPos: Position): Bubble[] {
+        const pathBubbles: Bubble[] = [];
         const pathLength = Math.sqrt(
             Math.pow(endPos.x - startPos.x, 2) + 
             Math.pow(endPos.y - startPos.y, 2)
@@ -306,7 +316,7 @@ export class BubblePhysicsEngine {
     /**
      * 点と線分の最短距離を計算
      */
-    pointToLineDistance(point, lineStart, lineEnd) {
+    pointToLineDistance(point: Position, lineStart: Position, lineEnd: Position): number {
         const A = point.x - lineStart.x;
         const B = point.y - lineStart.y;
         const C = lineEnd.x - lineStart.x;
@@ -320,7 +330,7 @@ export class BubblePhysicsEngine {
             param = dot / lenSq;
         }
         
-        let xx, yy;
+        let xx: number, yy: number;
         
         if (param < 0) {
             xx = lineStart.x;

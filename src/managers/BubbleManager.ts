@@ -5,43 +5,54 @@
  * 泡生成、物理計算、ドラッグ操作、特殊効果を統合管理
  */
 
-import { getPerformanceOptimizer } from '../utils/PerformanceOptimizer.js';
-import { BubbleSpawner } from './bubble-manager/BubbleSpawner.js';
-import { BubblePhysicsEngine } from './bubble-manager/BubblePhysicsEngine.js';
-import { BubbleDragSystem } from './bubble-manager/BubbleDragSystem.js';
-import { BubbleEffectProcessor } from './bubble-manager/BubbleEffectProcessor.js';
+import { getPerformanceOptimizer } from '../utils/PerformanceOptimizer';
+import { BubbleSpawner } from './bubble-manager/BubbleSpawner';
+import { BubblePhysicsEngine } from './bubble-manager/BubblePhysicsEngine';
+import { BubbleDragSystem } from './bubble-manager/BubbleDragSystem';
+import { BubbleEffectProcessor } from './bubble-manager/BubbleEffectProcessor';
+import type { 
+    BubbleManager as IBubbleManager, 
+    Bubble, 
+    Position, 
+    TestBubbleInfo 
+} from '../types/game';
 
-export class BubbleManager {
-    constructor(gameEngine) {
+export class BubbleManager implements IBubbleManager {
+    public gameEngine: any;
+    public bubbles: Bubble[] = [];
+    public spawner: BubbleSpawner;
+    public physicsEngine: BubblePhysicsEngine;
+    public dragSystem: BubbleDragSystem;
+    public effectProcessor: BubbleEffectProcessor;
+    public lastCullTime: number = 0;
+    public cullInterval: number = 500; // 0.5秒ごとにカリング
+    public offscreenBubbles: Set<Bubble> = new Set();
+    public offscreenTimer: Map<Bubble, number> = new Map();
+    
+    private lastDebugTime?: number;
+    private lastUpdateDebugTime?: number;
+
+    constructor(gameEngine: any) {
         this.gameEngine = gameEngine;
-        this.bubbles = [];
         
         // 専門化されたコンポーネントを初期化
         this.spawner = new BubbleSpawner(gameEngine);
         this.physicsEngine = new BubblePhysicsEngine(gameEngine);
         this.dragSystem = new BubbleDragSystem();
         this.effectProcessor = new BubbleEffectProcessor(gameEngine);
-        
-        // パフォーマンス最適化
-        this.lastCullTime = 0;
-        this.cullInterval = 500; // 0.5秒ごとにカリング
-        
-        // 画面外消滅処理用
-        this.offscreenBubbles = new Set();
-        this.offscreenTimer = new Map();
     }
     
     /**
      * ステージ設定を適用
      */
-    setStageConfig(config) {
+    setStageConfig(config: any): any {
         return this.spawner.setStageConfig(config);
     }
     
     /**
      * 泡を生成
      */
-    spawnBubble(type = null, position = null) {
+    spawnBubble(type: string | null = null, position: Position | null = null): Bubble | null {
         console.log('[DEBUG] BubbleManager.spawnBubble 呼び出し開始');
         console.log('[DEBUG] this.spawner:', !!this.spawner);
         console.log('[DEBUG] typeof this.spawner.spawnBubble:', typeof (this.spawner && this.spawner.spawnBubble));
@@ -61,7 +72,7 @@ export class BubbleManager {
         console.log('[DEBUG] spawner.spawnBubble結果:', !!bubble);
         
         if (bubble) {
-            console.log('[DEBUG] バブルをbubblesに追加:', bubble.id || 'ID不明');
+            console.log('[DEBUG] バブルをbubblesに追加:', (bubble as any).id || 'ID不明');
             this.bubbles.push(bubble);
         } else {
             console.warn('[DEBUG] spawnerからnullのバブルが返されました');
@@ -73,21 +84,21 @@ export class BubbleManager {
     /**
      * 特定の泡を強制生成
      */
-    spawnSpecificBubble(type, position = null) {
+    spawnSpecificBubble(type: string, position: Position | null = null): Bubble | null {
         return this.spawner.spawnSpecificBubble(type, position);
     }
     
     /**
      * マウス位置を更新
      */
-    updateMousePosition(x, y) {
+    updateMousePosition(x: number, y: number): void {
         this.physicsEngine.updateMousePosition(x, y);
     }
     
     /**
      * 更新処理（統合版）
      */
-    update(deltaTime) {
+    update(deltaTime: number): void {
         // デバッグ情報（10秒間隔）
         if (!this.lastUpdateDebugTime || performance.now() - this.lastUpdateDebugTime > 10000) {
             console.log(`[DEBUG] BubbleManager.update: バブル数=${this.bubbles.length}, deltaTime=${deltaTime.toFixed(2)}ms`);
@@ -144,7 +155,7 @@ export class BubbleManager {
     /**
      * パフォーマンス向上のためのカリング処理
      */
-    performCulling() {
+    performCulling(): void {
         const performanceOptimizer = getPerformanceOptimizer();
         if (this.bubbles.length <= performanceOptimizer.getMaxBubbles()) {
             return; // 制限内なのでカリング不要
@@ -176,7 +187,7 @@ export class BubbleManager {
     /**
      * 泡の優先度を計算（低いほど削除対象）
      */
-    calculateBubblePriority(bubble) {
+    calculateBubblePriority(bubble: Bubble): number {
         let priority = 0;
         
         // 画面内の泡は高優先度
@@ -206,7 +217,7 @@ export class BubbleManager {
     /**
      * 画面外タイマーのクリーンアップ
      */
-    cleanupOffscreenTimers() {
+    cleanupOffscreenTimers(): void {
         // 既に削除された泡のタイマーを削除
         for (const [bubble, timer] of this.offscreenTimer.entries()) {
             if (!bubble.isAlive) {
@@ -219,7 +230,7 @@ export class BubbleManager {
     /**
      * 泡を描画
      */
-    render(context) {
+    render(context: CanvasRenderingContext2D): void {
         const performanceOptimizer = getPerformanceOptimizer();
         const renderQuality = performanceOptimizer.getRenderQuality();
         
@@ -228,7 +239,7 @@ export class BubbleManager {
             console.log(`[DEBUG] BubbleManager.render: 泡の数=${this.bubbles.length}, renderQuality=${renderQuality}`);
             if (this.bubbles.length > 0) {
                 const bubble = this.bubbles[0];
-                console.log(`[DEBUG] 最初の泡: type=${bubble.type}, position=(${bubble.x}, ${bubble.y}), visible=${this.physicsEngine.isBubbleVisible(bubble)}`);
+                console.log(`[DEBUG] 最初の泡: type=${bubble.type}, position=(${(bubble as any).x}, ${(bubble as any).y}), visible=${this.physicsEngine.isBubbleVisible(bubble)}`);
             }
             this.lastDebugTime = performance.now();
         }
@@ -266,7 +277,7 @@ export class BubbleManager {
     /**
      * クリック処理
      */
-    handleClick(x, y) {
+    handleClick(x: number, y: number): boolean {
         // 最前面の泡を検索
         for (let i = this.bubbles.length - 1; i >= 0; i--) {
             const bubble = this.bubbles[i];
@@ -285,7 +296,7 @@ export class BubbleManager {
     /**
      * 泡を割る
      */
-    popBubble(bubble, x, y) {
+    popBubble(bubble: Bubble, x: number, y: number): boolean {
         console.log(`${bubble.type} bubble popped`);
         
         // 幻の泡のすり抜け判定
@@ -321,42 +332,42 @@ export class BubbleManager {
     /**
      * ドラッグ開始処理
      */
-    handleDragStart(x, y) {
+    handleDragStart(x: number, y: number): any {
         return this.dragSystem.handleDragStart(this.bubbles, x, y);
     }
     
     /**
      * ドラッグ移動処理
      */
-    handleDragMove(x, y) {
+    handleDragMove(x: number, y: number): any {
         return this.dragSystem.handleDragMove(x, y);
     }
     
     /**
      * ドラッグ終了処理
      */
-    handleDragEnd(startX, startY, endX, endY) {
+    handleDragEnd(startX: number, startY: number, endX: number, endY: number): any {
         return this.dragSystem.handleDragEnd(startX, startY, endX, endY, this.physicsEngine);
     }
     
     /**
      * パス上のバブルを取得
      */
-    getBubblesAlongPath(startPos, endPos) {
+    getBubblesAlongPath(startPos: Position, endPos: Position): Bubble[] {
         return this.physicsEngine.getBubblesAlongPath(this.bubbles, startPos, endPos);
     }
     
     /**
      * 指定範囲内のバブルを取得
      */
-    getBubblesInRadius(x, y, radius) {
+    getBubblesInRadius(x: number, y: number, radius: number): Bubble[] {
         return this.physicsEngine.getBubblesInRadius(this.bubbles, x, y, radius);
     }
     
     /**
      * 全ての泡をクリア
      */
-    clearAllBubbles() {
+    clearAllBubbles(): void {
         // すべての泡をプールに戻す
         this.bubbles.forEach(bubble => {
             this.gameEngine.returnBubbleToPool(bubble);
@@ -371,28 +382,28 @@ export class BubbleManager {
     /**
      * 泡の数を取得
      */
-    getBubbleCount() {
+    getBubbleCount(): number {
         return this.bubbles.length;
     }
     
     /**
      * アクティブな泡を取得
      */
-    getActiveBubbles() {
+    getActiveBubbles(): Bubble[] {
         return this.bubbles.filter(bubble => bubble.isAlive);
     }
     
     /**
      * 特殊な泡の生成率を設定
      */
-    setSpecialSpawnRate(bubbleType, rate) {
+    setSpecialSpawnRate(bubbleType: string, rate: number): void {
         this.spawner.setSpecialSpawnRate(bubbleType, rate);
     }
     
     /**
      * テスト用バブルの追加（デバッグツール用）
      */
-    addTestBubble(bubbleData) {
+    addTestBubble(bubbleData: any): boolean {
         const bubble = this.spawner.addTestBubble(bubbleData);
         if (bubble) {
             this.bubbles.push(bubble);
@@ -404,7 +415,7 @@ export class BubbleManager {
     /**
      * 複数のテストバブルを一度に追加
      */
-    addTestBubbles(bubblesData) {
+    addTestBubbles(bubblesData: any[]): number {
         const bubbles = this.spawner.addTestBubbles(bubblesData);
         this.bubbles.push(...bubbles);
         return bubbles.length;
@@ -413,13 +424,13 @@ export class BubbleManager {
     /**
      * テスト用バブルの削除（IDまたは条件による）
      */
-    removeTestBubbles(condition) {
+    removeTestBubbles(condition: string | ((bubble: Bubble) => boolean) | 'all'): number {
         let removedCount = 0;
         
         if (typeof condition === 'string') {
             // IDによる削除
             this.bubbles = this.bubbles.filter(bubble => {
-                if (bubble.id === condition) {
+                if ((bubble as any).id === condition) {
                     removedCount++;
                     return false;
                 }
@@ -446,15 +457,15 @@ export class BubbleManager {
     /**
      * テスト用バブル情報の取得
      */
-    getTestBubbleInfo() {
+    getTestBubbleInfo(): TestBubbleInfo {
         return {
             total: this.bubbles.length,
-            byType: this.bubbles.reduce((acc, bubble) => {
+            byType: this.bubbles.reduce((acc: Record<string, number>, bubble) => {
                 acc[bubble.type] = (acc[bubble.type] || 0) + 1;
                 return acc;
             }, {}),
             positions: this.bubbles.map(bubble => ({
-                id: bubble.id,
+                id: (bubble as any).id,
                 type: bubble.type,
                 x: bubble.position.x,
                 y: bubble.position.y,

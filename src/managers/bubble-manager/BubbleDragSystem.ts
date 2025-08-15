@@ -1,21 +1,37 @@
+import type { 
+    BubbleDragSystem as IBubbleDragSystem, 
+    BubblePhysicsEngine,
+    Bubble, 
+    Position,
+    Vector2 
+} from '../../types/game';
+
+interface DragHistoryEntry {
+    x: number;
+    y: number;
+    time: number;
+}
+
 /**
- * BubbleDragSystem - ドラッグ・フリック操作システム
+ * BubbleDragSystem - 泡ドラッグ操作システム
  * 
- * ドラッグ操作、フリック計算、軌跡履歴、速度計算を専門的に管理します
+ * 泡のドラッグ＆フリック操作、速度計算、軌跡描画を専門的に管理します
  */
-export class BubbleDragSystem {
+export class BubbleDragSystem implements IBubbleDragSystem {
+    private draggedBubble: Bubble | null = null;
+    private isDragging: boolean = false;
+    private dragStartPosition: Position = { x: 0, y: 0 };
+    private dragCurrentPosition: Position = { x: 0, y: 0 };
+    private dragHistory: DragHistoryEntry[] = []; // ドラッグ軌跡の履歴（速度計算用）
+
     constructor() {
-        this.draggedBubble = null;
-        this.isDragging = false;
-        this.dragStartPosition = { x: 0, y: 0 };
-        this.dragCurrentPosition = { x: 0, y: 0 };
-        this.dragHistory = []; // ドラッグ軌跡の履歴（速度計算用）
+        // 初期化済み
     }
     
     /**
      * ドラッグ開始処理
      */
-    handleDragStart(bubbles, x, y) {
+    handleDragStart(bubbles: Bubble[], x: number, y: number): Bubble | null {
         // ドラッグ対象の泡を検索（最前面から）
         for (let i = bubbles.length - 1; i >= 0; i--) {
             const bubble = bubbles[i];
@@ -38,7 +54,7 @@ export class BubbleDragSystem {
     /**
      * ドラッグ移動処理
      */
-    handleDragMove(x, y) {
+    handleDragMove(x: number, y: number): boolean {
         if (!this.isDragging || !this.draggedBubble) {
             return false;
         }
@@ -57,13 +73,13 @@ export class BubbleDragSystem {
     /**
      * ドラッグ終了処理
      */
-    handleDragEnd(startX, startY, endX, endY, physicsEngine) {
+    handleDragEnd(startX: number, startY: number, endX: number, endY: number, physicsEngine: BubblePhysicsEngine): boolean {
         if (!this.isDragging || !this.draggedBubble) {
             return false;
         }
         
         // ドラッグベクトルを計算
-        const dragVector = {
+        const dragVector: Vector2 = {
             x: endX - startX,
             y: endY - startY
         };
@@ -98,7 +114,7 @@ export class BubbleDragSystem {
     /**
      * ドラッグ履歴から速度を計算
      */
-    calculateVelocityFromHistory() {
+    calculateVelocityFromHistory(): Vector2 {
         if (this.dragHistory.length < 2) {
             return { x: 0, y: 0 };
         }
@@ -116,7 +132,7 @@ export class BubbleDragSystem {
     /**
      * フリック強度を計算
      */
-    calculateFlickStrength(dragVector, velocity) {
+    calculateFlickStrength(dragVector: Vector2, velocity: Vector2): number {
         const dragDistance = Math.sqrt(dragVector.x * dragVector.x + dragVector.y * dragVector.y);
         const velocityMagnitude = Math.sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
         
@@ -130,9 +146,9 @@ export class BubbleDragSystem {
     /**
      * 力の方向を計算
      */
-    calculateForceDirection(dragVector, velocity) {
+    calculateForceDirection(dragVector: Vector2, velocity: Vector2): Vector2 {
         // ドラッグベクトルと速度ベクトルを合成
-        const combinedVector = {
+        const combinedVector: Vector2 = {
             x: dragVector.x * 0.6 + velocity.x * 0.4,
             y: dragVector.y * 0.6 + velocity.y * 0.4
         };
@@ -151,7 +167,7 @@ export class BubbleDragSystem {
     /**
      * ドラッグ状態をリセット
      */
-    resetDrag() {
+    resetDrag(): void {
         this.isDragging = false;
         this.draggedBubble = null;
         this.dragStartPosition = { x: 0, y: 0 };
@@ -162,7 +178,7 @@ export class BubbleDragSystem {
     /**
      * ドラッグ軌跡の描画（デバッグ用）
      */
-    renderDragTrail(context, renderQuality) {
+    renderDragTrail(context: CanvasRenderingContext2D, renderQuality: number): void {
         if (renderQuality > 0.8 && this.isDragging && this.dragHistory.length > 1) {
             context.save();
             context.strokeStyle = 'rgba(255, 255, 0, 0.5)';
@@ -184,14 +200,14 @@ export class BubbleDragSystem {
     /**
      * ドラッグ中かどうか
      */
-    isDragInProgress() {
+    isDragInProgress(): boolean {
         return this.isDragging;
     }
     
     /**
      * ドラッグ中の泡を取得
      */
-    getDraggedBubble() {
+    getDraggedBubble(): Bubble | null {
         return this.draggedBubble;
     }
 }

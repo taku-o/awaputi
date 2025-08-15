@@ -64,6 +64,7 @@ export interface Bubble {
   age: number;
   maxAge: number;
   points: number;
+  health?: number;
   
   update(deltaTime: number, mousePosition: Position): void;
   render(context: CanvasRenderingContext2D): void;
@@ -71,6 +72,8 @@ export interface Bubble {
   pop(): void;
   grow(amount: number): void;
   shrink(amount: number): void;
+  getScore(): number;
+  getTypeConfig(): BubbleTypeConfig;
 }
 
 export interface BubbleType {
@@ -84,6 +87,11 @@ export interface BubbleType {
   effects?: BubbleEffect[];
 }
 
+export interface BubbleTypeConfig {
+  phaseChance?: number;
+  [key: string]: any;
+}
+
 export interface BubbleEffect {
   type: string;
   duration: number;
@@ -92,18 +100,90 @@ export interface BubbleEffect {
 }
 
 export interface BubbleManager {
+  gameEngine: any; // GameEngine type will be defined in a circular dependency fix
   bubbles: Bubble[];
-  spawnTimer: number;
-  spawnInterval: number;
-  maxBubbles: number;
+  spawner: BubbleSpawner;
+  physicsEngine: BubblePhysicsEngine;
+  dragSystem: BubbleDragSystem;
+  effectProcessor: BubbleEffectProcessor;
+  lastCullTime: number;
+  cullInterval: number;
+  offscreenBubbles: Set<Bubble>;
+  offscreenTimer: Map<Bubble, number>;
   
-  spawnBubble(type?: string, position?: Position): Bubble | null;
-  removeBubble(bubbleId: string): boolean;
-  popBubble(bubbleId: string): number;
+  setStageConfig(config: any): any;
+  spawnBubble(type?: string | null, position?: Position | null): Bubble | null;
+  spawnSpecificBubble(type: string, position?: Position | null): Bubble | null;
+  updateMousePosition(x: number, y: number): void;
   update(deltaTime: number): void;
+  performCulling(): void;
+  calculateBubblePriority(bubble: Bubble): number;
+  cleanupOffscreenTimers(): void;
   render(context: CanvasRenderingContext2D): void;
-  clear(): void;
-  getBubbleAt(position: Position): Bubble | null;
+  handleClick(x: number, y: number): boolean;
+  popBubble(bubble: Bubble, x: number, y: number): boolean;
+  handleDragStart(x: number, y: number): any;
+  handleDragMove(x: number, y: number): any;
+  handleDragEnd(startX: number, startY: number, endX: number, endY: number): any;
+  getBubblesAlongPath(startPos: Position, endPos: Position): Bubble[];
+  getBubblesInRadius(x: number, y: number, radius: number): Bubble[];
+  clearAllBubbles(): void;
+  getBubbleCount(): number;
+  getActiveBubbles(): Bubble[];
+  setSpecialSpawnRate(bubbleType: string, rate: number): void;
+  addTestBubble(bubbleData: any): boolean;
+  addTestBubbles(bubblesData: any[]): number;
+  removeTestBubbles(condition: string | ((bubble: Bubble) => boolean) | 'all'): number;
+  getTestBubbleInfo(): TestBubbleInfo;
+}
+
+export interface TestBubbleInfo {
+  total: number;
+  byType: Record<string, number>;
+  positions: Array<{
+    id: string;
+    type: string;
+    x: number;
+    y: number;
+    health?: number;
+  }>;
+}
+
+// BubbleManager sub-components
+export interface BubbleSpawner {
+  gameEngine: any;
+  setStageConfig(config: any): any;
+  spawnBubble(type?: string | null, position?: Position | null): Bubble | null;
+  spawnSpecificBubble(type: string, position?: Position | null): Bubble | null;
+  updateSpawnTimer(deltaTime: number, currentBubbleCount: number): boolean;
+  setSpecialSpawnRate(bubbleType: string, rate: number): void;
+  addTestBubble(bubbleData: any): Bubble | null;
+  addTestBubbles(bubblesData: any[]): Bubble[];
+}
+
+export interface BubblePhysicsEngine {
+  gameEngine: any;
+  mousePosition: Position;
+  updateMousePosition(x: number, y: number): void;
+  updateBubble(bubble: Bubble, deltaTime: number): void;
+  handleOffscreenBubble(bubble: Bubble, deltaTime: number, offscreenBubbles: Set<Bubble>, offscreenTimer: Map<Bubble, number>): void;
+  isBubbleVisible(bubble: Bubble): boolean;
+  getBubblesAlongPath(bubbles: Bubble[], startPos: Position, endPos: Position): Bubble[];
+  getBubblesInRadius(bubbles: Bubble[], x: number, y: number, radius: number): Bubble[];
+}
+
+export interface BubbleDragSystem {
+  handleDragStart(bubbles: Bubble[], x: number, y: number): any;
+  handleDragMove(x: number, y: number): any;
+  handleDragEnd(startX: number, startY: number, endX: number, endY: number, physicsEngine: BubblePhysicsEngine): any;
+  renderDragTrail(context: CanvasRenderingContext2D, renderQuality: number): void;
+  resetDrag(): void;
+}
+
+export interface BubbleEffectProcessor {
+  gameEngine: any;
+  checkAutoBurst(bubble: Bubble): void;
+  processBubbleEffect(bubble: Bubble, x: number, y: number): void;
 }
 
 // Input system
