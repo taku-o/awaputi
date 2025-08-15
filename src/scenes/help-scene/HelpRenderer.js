@@ -122,7 +122,7 @@ export class HelpRenderer {
             searchBar: {
                 x: margin,
                 y: 60,
-                width: Math.min(720, canvasWidth - margin * 2),
+                width: sidebarWidth + spacing + contentWidth, // サイドバー左端からコンテンツ右端まで
                 height: 40
             },
             backButton: {

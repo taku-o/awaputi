@@ -517,6 +517,11 @@ export class HelpScene extends Scene {
                 this.helpTransitionRenderer
             );
             
+            // レンダリング後に検索バーの位置を更新（レイアウト変更に対応）
+            if (this.helpEventManager && this.helpEventManager.updateInputPosition) {
+                this.helpEventManager.updateInputPosition();
+            }
+            
         } catch (error) {
             console.error('Render error in HelpScene:', error);
             this.loggingSystem.error('HelpScene', 'Render error', error);

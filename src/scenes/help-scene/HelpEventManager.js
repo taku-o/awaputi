@@ -187,8 +187,25 @@ export class HelpEventManager {
         const canvas = this.gameEngine.canvas;
         const canvasRect = canvas.getBoundingClientRect();
         
-        // Canvasの位置を基準に検索バーの位置を計算
-        const searchBarLayout = { x: 50, y: 60, width: 720, height: 40 }; // タイトルの下に配置
+        // HelpRendererから動的なレイアウト情報を取得
+        let searchBarLayout;
+        if (this.gameEngine.helpRenderer) {
+            const layout = this.gameEngine.helpRenderer.getLayout();
+            
+            // 検索バーをサイドバーの左端からコンテンツの右端まで伸ばす
+            const startX = layout.sidebar.x;
+            const endX = layout.content.x + layout.content.width;
+            
+            searchBarLayout = {
+                x: startX,
+                y: 60, // タイトルの下
+                width: endX - startX,
+                height: 40
+            };
+        } else {
+            // フォールバック: 固定値
+            searchBarLayout = { x: 50, y: 60, width: 720, height: 40 };
+        }
         
         // Canvas内の座標をページ座標に変換
         const left = canvasRect.left + searchBarLayout.x;
@@ -942,7 +959,12 @@ export class HelpEventManager {
     }
 
     getLayout() {
-        // レンダラーからレイアウトを取得（仮実装）
+        // レンダラーからレイアウトを取得
+        if (this.gameEngine.helpRenderer) {
+            return this.gameEngine.helpRenderer.getLayout();
+        }
+        
+        // フォールバック: 固定レイアウト
         return {
             searchBar: { x: 50, y: 60, width: 720, height: 40 },  // タイトルの下に配置
             sidebar: { x: 50, y: 110, width: 250, height: 370 },  // 検索バーの下に配置
