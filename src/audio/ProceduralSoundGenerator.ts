@@ -56,7 +56,7 @@ export class ProceduralSoundGenerator {
      * AudioContext設定
      * @param {AudioContext} audioContext - オーディオコンテキスト
      */
-    setAudioContext(audioContext) {
+    setAudioContext(audioContext: AudioContext): void {
         this.audioContext = audioContext;
     }
 
@@ -125,7 +125,7 @@ export class ProceduralSoundGenerator {
      * @param {number} current - 現在数
      * @param {number} total - 総数
      */
-    updateProgress(current, total) {
+    updateProgress(current: number, total: number): void {
         this.generationProgress = Math.floor((current / total) * 100);
     }
 
@@ -493,7 +493,12 @@ export class ProceduralSoundGenerator {
      * @param {Object} variation - バリエーション設定
      * @returns {AudioBuffer} バリエーション音響バッファ
      */
-    generateSoundVariation(baseSoundName, variation = {}) {
+    generateSoundVariation(baseSoundName: string, variation: {
+        pitchShift?: number;
+        volumeScale?: number;
+        timeStretch?: number;
+        noiseLevel?: number;
+    } = {}): AudioBuffer | null {
         const baseBuffer = this.soundBuffers.get(baseSoundName);
         if (!baseBuffer) {
             console.warn(`Base sound '${baseSoundName}' not found`);
@@ -538,7 +543,7 @@ export class ProceduralSoundGenerator {
      * @param {string} soundName - 音響名
      * @returns {AudioBuffer|null} 音響バッファ
      */
-    getSoundBuffer(soundName) {
+    getSoundBuffer(soundName: string): AudioBuffer | null {
         return this.soundBuffers.get(soundName) || null;
     }
 
@@ -568,7 +573,7 @@ export class ProceduralSoundGenerator {
      * @param {string} soundName - 音響名
      * @param {Object} newParams - 新パラメーター
      */
-    updateSoundParams(soundName, newParams) {
+    updateSoundParams(soundName: string, newParams: any): void {
         if (this.soundParams[soundName]) {
             Object.assign(this.soundParams[soundName], newParams);
         }
@@ -586,13 +591,13 @@ export class ProceduralSoundGenerator {
 }
 
 // シングルトンインスタンス管理
-let proceduralSoundGeneratorInstance = null;
+let proceduralSoundGeneratorInstance: ProceduralSoundGenerator | null = null;
 
 /**
  * ProceduralSoundGeneratorのシングルトンインスタンスを取得
  * @returns {ProceduralSoundGenerator} シングルトンインスタンス
  */
-export function getProceduralSoundGenerator() {
+export function getProceduralSoundGenerator(): ProceduralSoundGenerator {
     if (!proceduralSoundGeneratorInstance) {
         proceduralSoundGeneratorInstance = new ProceduralSoundGenerator();
     }
@@ -603,7 +608,7 @@ export function getProceduralSoundGenerator() {
  * ProceduralSoundGeneratorのシングルトンインスタンスを再初期化
  * @returns {ProceduralSoundGenerator} 新しいシングルトンインスタンス
  */
-export function reinitializeProceduralSoundGenerator() {
+export function reinitializeProceduralSoundGenerator(): ProceduralSoundGenerator {
     if (proceduralSoundGeneratorInstance) {
         proceduralSoundGeneratorInstance.dispose();
     }

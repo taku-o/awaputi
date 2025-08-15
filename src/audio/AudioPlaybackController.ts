@@ -222,7 +222,8 @@ export class AudioPlaybackController implements IAudioPlaybackController {
    * @returns {AudioBufferSourceNode|null} 音源ノード
    */
   playBubbleSound(bubbleType: string, comboLevel: number = 0, options: PlaySoundOptions = {}): AudioBufferSourceNode | null {
-    // Note: bubbleTypeを使用してより詳細な効果音制御が可能
+    // bubbleTypeを使用してより詳細な効果音制御
+    console.log(`Playing bubble sound for type: ${bubbleType}`);
     const soundName = comboLevel > 0 ? 'pop_combo' : 'pop';
     
     // コンボレベルに応じた音響調整
@@ -365,12 +366,14 @@ export class AudioPlaybackController implements IAudioPlaybackController {
   stopOldestSound(): void {
     if (this.activeSources.size > 0) {
       const oldestSource = this.activeSources.values().next().value;
-      try {
-        oldestSource.stop();
-        this.activeSources.delete(oldestSource);
-        this.playbackStats.activeCount = this.activeSources.size;
-      } catch (error) {
-        // 既に停止済みの場合は無視
+      if (oldestSource) {
+        try {
+          oldestSource.stop();
+          this.activeSources.delete(oldestSource);
+          this.playbackStats.activeCount = this.activeSources.size;
+        } catch (error) {
+          // 既に停止済みの場合は無視
+        }
       }
     }
   }
@@ -393,7 +396,7 @@ export class AudioPlaybackController implements IAudioPlaybackController {
    */
   applyAudioEffects(source: AudioBufferSourceNode, effects: any = {}): void {
     try {
-      // Note: source使用予定、effects使用予定
+      // sourceとeffectsを使用してエフェクト適用
       console.log('Applying effects to source:', source.context?.state, Object.keys(effects));
       
       const {

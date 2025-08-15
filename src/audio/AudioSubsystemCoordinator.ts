@@ -203,7 +203,8 @@ export class AudioSubsystemCoordinator {
      */
     async initializeAccessibilitySupport() {
         try {
-            const { AudioAccessibilitySupport } = await import('./AudioAccessibilitySupport.js');
+            const AudioAccessibilitySupportModule = await import('./AudioAccessibilitySupport.js');
+            const AudioAccessibilitySupport = AudioAccessibilitySupportModule.default || AudioAccessibilitySupportModule.AudioAccessibilitySupport;
             this.accessibilitySupport = new AudioAccessibilitySupport(this.audioManager);
             this.subsystemStates.accessibility.initialized = true;
             this.subsystemStates.accessibility.error = null;
@@ -223,7 +224,7 @@ export class AudioSubsystemCoordinator {
      * @param {Object} options - シーンオプション
      * @returns {Promise<boolean>} 処理成功フラグ
      */
-    async onSceneChange(sceneName, options = {}) {
+    async onSceneChange(sceneName: string, options: any = {}): Promise<boolean> {
         try {
             if (this.sceneTransitionInProgress) {
                 console.warn('Scene transition already in progress');
@@ -284,7 +285,7 @@ export class AudioSubsystemCoordinator {
      * @param {Array} args - 引数
      * @returns {*} 実行結果
      */
-    delegateToBGMSystem(method, args = []) {
+    delegateToBGMSystem(method: string, args: any[] = []): any {
         try {
             if (!this.bgmSystem || !this.subsystemStates.bgm.initialized) {
                 console.warn('BGMSystem is not available');
@@ -317,7 +318,7 @@ export class AudioSubsystemCoordinator {
      * @param {Array} args - 引数
      * @returns {*} 実行結果
      */
-    delegateToSoundEffectSystem(method, args = []) {
+    delegateToSoundEffectSystem(method: string, args: any[] = []): any {
         try {
             if (!this.soundEffectSystem || !this.subsystemStates.sfx.initialized) {
                 console.warn('SoundEffectSystem is not available');
@@ -350,7 +351,7 @@ export class AudioSubsystemCoordinator {
      * @param {Array} args - 引数
      * @returns {*} 実行結果
      */
-    delegateToController(method, args = []) {
+    delegateToController(method: string, args: any[] = []): any {
         try {
             if (!this.audioController || !this.subsystemStates.controller.initialized) {
                 console.warn('AudioController is not available');
@@ -383,7 +384,7 @@ export class AudioSubsystemCoordinator {
      * @param {Array} args - 引数
      * @returns {*} 実行結果
      */
-    delegateToVisualizer(method, args = []) {
+    delegateToVisualizer(method: string, args: any[] = []): any {
         try {
             // より厳密な初期化チェック
             if (!this.audioVisualizer) {
@@ -429,7 +430,7 @@ export class AudioSubsystemCoordinator {
      * @param {Array} args - 引数
      * @returns {*} 実行結果
      */
-    delegateToAccessibilitySupport(method, args = []) {
+    delegateToAccessibilitySupport(method: string, args: any[] = []): any {
         try {
             if (!this.accessibilitySupport || !this.subsystemStates.accessibility.initialized) {
                 console.warn('AudioAccessibilitySupport is not available');
@@ -493,7 +494,7 @@ export class AudioSubsystemCoordinator {
      * @param {string} subsystemName - サブシステム名
      * @returns {Promise<boolean>} 再初期化成功フラグ
      */
-    async reinitializeSubsystem(subsystemName) {
+    async reinitializeSubsystem(subsystemName: string): Promise<boolean> {
         try {
             // 既存サブシステムを破棄
             await this.disposeSubsystem(subsystemName);
@@ -535,7 +536,7 @@ export class AudioSubsystemCoordinator {
      * 個別サブシステム破棄
      * @param {string} subsystemName - サブシステム名
      */
-    async disposeSubsystem(subsystemName) {
+    async disposeSubsystem(subsystemName: string): Promise<void> {
         try {
             switch (subsystemName) {
                 case 'bgm':
@@ -647,13 +648,13 @@ export class AudioSubsystemCoordinator {
 }
 
 // シングルトンインスタンス管理
-let audioSubsystemCoordinatorInstance = null;
+let audioSubsystemCoordinatorInstance: AudioSubsystemCoordinator | null = null;
 
 /**
  * AudioSubsystemCoordinatorのシングルトンインスタンスを取得
  * @returns {AudioSubsystemCoordinator} シングルトンインスタンス
  */
-export function getAudioSubsystemCoordinator() {
+export function getAudioSubsystemCoordinator(): AudioSubsystemCoordinator {
     if (!audioSubsystemCoordinatorInstance) {
         audioSubsystemCoordinatorInstance = new AudioSubsystemCoordinator();
     }
@@ -664,7 +665,7 @@ export function getAudioSubsystemCoordinator() {
  * AudioSubsystemCoordinatorのシングルトンインスタンスを再初期化
  * @returns {AudioSubsystemCoordinator} 新しいシングルトンインスタンス
  */
-export function reinitializeAudioSubsystemCoordinator() {
+export function reinitializeAudioSubsystemCoordinator(): AudioSubsystemCoordinator {
     if (audioSubsystemCoordinatorInstance) {
         audioSubsystemCoordinatorInstance.dispose();
     }
