@@ -1,10 +1,28 @@
 /**
  * 基本泡クラス
+ * TypeScript移行 - Task 23対応
  */
 import { getConfigurationManager } from '../core/ConfigurationManager.js';
+import { 
+    BubbleType, BubbleConfig, BubbleEffect, BubbleInterface, 
+    Position, Velocity, BubbleEffectType 
+} from '../types/bubble.js';
 
-export class Bubble {
-    constructor(type, position) {
+export class Bubble implements BubbleInterface {
+    public id: string;
+    public type: BubbleType;
+    public position: Position;
+    public velocity: Velocity;
+    public size: number;
+    public health: number;
+    public maxHealth: number;
+    public age: number;
+    public maxAge: number;
+    public isAlive: boolean;
+    public effects: BubbleEffect[];
+    public clickCount: number;
+
+    constructor(type: BubbleType, position: Position) {
         this.type = type;
         this.position = { ...position };
         this.velocity = { x: 0, y: 0 };
@@ -26,16 +44,15 @@ export class Bubble {
     
     /**
      * ユニークIDを生成
-     * @private
      */
-    _generateUniqueId() {
+    private _generateUniqueId(): string {
         return `bubble_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
     }
     
     /**
      * 泡の種類別設定を適用
      */
-    applyTypeConfig() {
+    public applyTypeConfig(): void {
         const config = this.getTypeConfig();
         this.health = config.health;
         this.maxHealth = config.health;
@@ -47,7 +64,7 @@ export class Bubble {
      * 泡の種類別設定を取得
      * ConfigurationManagerから設定を取得し、フォールバックとしてハードコード値を使用
      */
-    getTypeConfig() {
+    public getTypeConfig(): BubbleConfig {
         try {
             const configManager = getConfigurationManager();
             
@@ -60,7 +77,7 @@ export class Bubble {
             
             // 設定が見つかった場合はそれを使用
             if (health !== null || size !== null || maxAge !== null || score !== null || color !== null) {
-                const config = {};
+                const config: Partial<BubbleConfig> = {};
                 if (health !== null) config.health = health;
                 if (size !== null) config.size = size;
                 if (maxAge !== null) config.maxAge = maxAge;
@@ -71,10 +88,10 @@ export class Bubble {
                 const specialEffects = this._getSpecialEffectsFromConfig(configManager);
                 Object.assign(config, specialEffects);
                 
-                return config;
+                return config as BubbleConfig;
             }
         } catch (error) {
-            console.warn(`[Bubble] ConfigurationManager利用失敗、フォールバック値を使用: ${error.message}`);
+            console.warn(`[Bubble] ConfigurationManager利用失敗、フォールバック値を使用: ${(error as Error).message}`);
         }
         
         // フォールバック: ハードコード設定
@@ -83,12 +100,9 @@ export class Bubble {
     
     /**
      * ConfigurationManagerから特殊効果設定を取得
-     * @param {Object} configManager - 設定管理インスタンス
-     * @returns {Object} 特殊効果設定
-     * @private
      */
-    _getSpecialEffectsFromConfig(configManager) {
-        const effects = {};
+    private _getSpecialEffectsFromConfig(configManager: any): Partial<BubbleConfig> {
+        const effects: Partial<BubbleConfig> = {};
         
         switch (this.type) {
             case 'pink':
@@ -141,11 +155,9 @@ export class Bubble {
     
     /**
      * ハードコード設定を取得（フォールバック）
-     * @returns {Object} 泡設定
-     * @private
      */
-    _getHardcodedConfig() {
-        const configs = {
+    private _getHardcodedConfig(): BubbleConfig {
+        const configs: { [key in BubbleType]: BubbleConfig } = {
             normal: {
                 health: 1,
                 size: 50,
@@ -311,7 +323,7 @@ export class Bubble {
     /**
      * 泡を更新
      */
-    update(deltaTime, mousePosition = null) {
+    public update(deltaTime: number, mousePosition: Position | null = null): void {
         if (!this.isAlive) return;
         
         this.age += deltaTime;
@@ -337,21 +349,21 @@ export class Bubble {
     /**
      * 逃げる泡の行動処理
      */
-    handleEscapingBehavior(mousePosition, deltaTime) {
+    public handleEscapingBehavior(mousePosition: Position, deltaTime: number): void {
         const config = this.getTypeConfig();
         const dx = this.position.x - mousePosition.x;
         const dy = this.position.y - mousePosition.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
         
         // マウスが近づいたら逃げる
-        if (distance < config.escapeRadius) {
+        if (distance < (config.escapeRadius || 90)) {
             // 正規化されたベクトルを計算
             const normalizedX = dx / distance;
             const normalizedY = dy / distance;
             
             // 逃げる方向に速度を設定
-            this.velocity.x = normalizedX * config.escapeSpeed;
-            this.velocity.y = normalizedY * config.escapeSpeed;
+            this.velocity.x = normalizedX * (config.escapeSpeed || 180);
+            this.velocity.y = normalizedY * (config.escapeSpeed || 180);
         } else {
             // 遠くにいる時は徐々に速度を減らす
             this.velocity.x *= 0.95;
@@ -362,7 +374,7 @@ export class Bubble {
     /**
      * 画面境界での衝突処理（強化版）
      */
-    handleBoundaryCollision() {
+    public handleBoundaryCollision(): void {
         const margin = this.size / 2; // 泡の半径を使用
         const canvasWidth = 800;
         const canvasHeight = 600;
@@ -425,7 +437,7 @@ export class Bubble {
     /**
      * 泡を描画
      */
-    render(context) {
+    public render(context: CanvasRenderingContext2D): void {
         if (!this.isAlive) return;
         
         const config = this.getTypeConfig();
@@ -486,7 +498,7 @@ export class Bubble {
     /**
      * 特殊泡のアイコンを描画
      */
-    renderSpecialIcon(context, centerX, centerY) {
+    public renderSpecialIcon(context: CanvasRenderingContext2D, centerX: number, centerY: number): void {
         context.fillStyle = '#FFFFFF';
         context.font = 'bold 20px Arial';
         context.textAlign = 'center';
@@ -572,7 +584,7 @@ export class Bubble {
     /**
      * 色をブレンド
      */
-    blendColors(color1, color2, ratio) {
+    public blendColors(color1: string, color2: string, ratio: number): string {
         // 簡単な色ブレンド実装
         return color2; // 簡略化
     }
@@ -580,7 +592,7 @@ export class Bubble {
     /**
      * ダメージを受ける
      */
-    takeDamage(amount = 1) {
+    public takeDamage(amount: number = 1): boolean {
         this.health -= amount;
         this.clickCount++;
         
@@ -594,7 +606,7 @@ export class Bubble {
     /**
      * 泡を破壊
      */
-    destroy() {
+    public destroy(): void {
         this.isAlive = false;
         this.triggerSpecialEffect();
     }
@@ -602,7 +614,7 @@ export class Bubble {
     /**
      * 泡が自然破裂
      */
-    burst() {
+    public burst(): void {
         this.isAlive = false;
         // 破裂時は特殊効果を発動しない（ダメージのみ）
     }
@@ -610,7 +622,7 @@ export class Bubble {
     /**
      * 特殊効果を発動
      */
-    triggerSpecialEffect() {
+    public triggerSpecialEffect(): void {
         const config = this.getTypeConfig();
         
         switch (this.type) {
@@ -618,7 +630,7 @@ export class Bubble {
                 // HP回復効果
                 this.effects.push({
                     type: 'heal',
-                    amount: config.healAmount
+                    amount: config.healAmount || 25
                 });
                 break;
                 
@@ -626,7 +638,7 @@ export class Bubble {
                 // ダメージ効果
                 this.effects.push({
                     type: 'damage',
-                    amount: config.damageAmount
+                    amount: config.damageAmount || 8
                 });
                 break;
                 
@@ -635,7 +647,7 @@ export class Bubble {
                 this.effects.push({
                     type: 'chain_destroy',
                     position: { ...this.position },
-                    radius: config.chainRadius
+                    radius: config.chainRadius || 120
                 });
                 break;
                 
@@ -643,7 +655,7 @@ export class Bubble {
                 // 虹色の泡：ボーナスタイム効果
                 this.effects.push({
                     type: 'bonus_time',
-                    duration: config.bonusTimeMs
+                    duration: config.bonusTimeMs || 8000
                 });
                 break;
                 
@@ -651,7 +663,7 @@ export class Bubble {
                 // 時計の泡：時間停止効果
                 this.effects.push({
                     type: 'time_stop',
-                    duration: config.timeStopMs
+                    duration: config.timeStopMs || 2500
                 });
                 break;
                 
@@ -659,7 +671,7 @@ export class Bubble {
                 // S字の泡：追加スコア効果
                 this.effects.push({
                     type: 'bonus_score',
-                    amount: config.bonusScore
+                    amount: config.bonusScore || 80
                 });
                 break;
                 
@@ -667,8 +679,8 @@ export class Bubble {
                 // ビリビリの泡：画面揺れ・操作不能効果
                 this.effects.push({
                     type: 'screen_shake',
-                    intensity: config.shakeIntensity,
-                    duration: config.disableDuration
+                    intensity: config.shakeIntensity || 15,
+                    duration: config.disableDuration || 1500
                 });
                 break;
                 
@@ -689,7 +701,7 @@ export class Bubble {
                 // 黄金の泡：スコア倍率効果
                 this.effects.push({
                     type: 'score_multiplier',
-                    multiplier: config.multiplier,
+                    multiplier: config.multiplier || 2.0,
                     duration: 5000 // 5秒間
                 });
                 break;
@@ -700,7 +712,7 @@ export class Bubble {
                     type: 'slow_area',
                     position: { ...this.position },
                     radius: 120,
-                    slowFactor: config.slowEffect,
+                    slowFactor: config.slowEffect || 0.5,
                     duration: 8000 // 8秒間
                 });
                 break;
@@ -710,7 +722,7 @@ export class Bubble {
                 this.effects.push({
                     type: 'magnetic_pull',
                     position: { ...this.position },
-                    radius: config.magnetRadius,
+                    radius: config.magnetRadius || 100,
                     strength: 150
                 });
                 break;
@@ -720,7 +732,7 @@ export class Bubble {
                 this.effects.push({
                     type: 'big_explosion',
                     position: { ...this.position },
-                    radius: config.explosionRadius,
+                    radius: config.explosionRadius || 150,
                     damage: 15
                 });
                 break;
@@ -733,7 +745,7 @@ export class Bubble {
                 // 倍率の泡：次の泡のスコアを倍増
                 this.effects.push({
                     type: 'next_score_multiplier',
-                    multiplier: config.scoreMultiplier,
+                    multiplier: config.scoreMultiplier || 3.0,
                     duration: 10000 // 10秒間
                 });
                 break;
@@ -743,7 +755,7 @@ export class Bubble {
     /**
      * 位置が範囲内かチェック
      */
-    containsPoint(x, y) {
+    public containsPoint(x: number, y: number): boolean {
         const dx = x - this.position.x;
         const dy = y - this.position.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
@@ -753,7 +765,7 @@ export class Bubble {
     /**
      * スコアを取得
      */
-    getScore() {
+    public getScore(): number {
         const config = this.getTypeConfig();
         let baseScore = config.score;
         
@@ -770,11 +782,10 @@ export class Bubble {
         return Math.floor(baseScore);
     }
     
-    
     /**
      * 特殊タイプの振る舞い更新
      */
-    updateSpecialBehavior(deltaTime, mousePosition) {
+    public updateSpecialBehavior(deltaTime: number, mousePosition?: Position): void {
         switch (this.type) {
             case 'escaping':
                 // 逃げる泡：マウスから離れる動き
@@ -806,7 +817,7 @@ export class Bubble {
     /**
      * 効果を取得してクリア
      */
-    getAndClearEffects() {
+    public getAndClearEffects(): BubbleEffect[] {
         const effects = [...this.effects];
         this.effects = [];
         return effects;

@@ -57,26 +57,34 @@ export interface SceneManager {
 // Bubble system types
 export interface Bubble {
   id: string;
-  type: string;
+  type: BubbleType;
   position: Position;
   velocity: Vector2;
   size: number;
-  maxSize: number;
-  color: Color;
-  isAlive: boolean;
+  health: number;
+  maxHealth: number;
   age: number;
   maxAge: number;
-  points: number;
-  health?: number;
+  isAlive: boolean;
+  effects: BubbleEffect[];
+  clickCount: number; // 硬い泡用のクリック回数
   
-  update(deltaTime: number, mousePosition: Position): void;
+  update(deltaTime: number, mousePosition?: Position | null): void;
   render(context: CanvasRenderingContext2D): void;
   containsPoint(x: number, y: number): boolean;
-  pop(): void;
-  grow(amount: number): void;
-  shrink(amount: number): void;
+  takeDamage(amount?: number): boolean;
+  destroy(): void;
+  burst(): void;
   getScore(): number;
-  getTypeConfig(): BubbleTypeConfig;
+  getTypeConfig(): BubbleConfiguration;
+  applyTypeConfig(): void;
+  handleEscapingBehavior(mousePosition: Position, deltaTime: number): void;
+  handleBoundaryCollision(): void;
+  renderSpecialIcon(context: CanvasRenderingContext2D, centerX: number, centerY: number): void;
+  blendColors(color1: string, color2: string, ratio: number): string;
+  triggerSpecialEffect(): void;
+  updateSpecialBehavior(deltaTime: number, mousePosition?: Position): void;
+  getAndClearEffects(): BubbleEffect[];
 }
 
 export interface BubbleType {
@@ -95,11 +103,48 @@ export interface BubbleTypeConfig {
   [key: string]: any;
 }
 
+export type BubbleType = 'normal' | 'stone' | 'iron' | 'diamond' | 'pink' | 'poison' | 'spiky' | 
+                         'rainbow' | 'clock' | 'score' | 'electric' | 'escaping' | 'cracked' | 'boss' |
+                         'golden' | 'frozen' | 'magnetic' | 'explosive' | 'phantom' | 'multiplier';
+
+export interface BubbleConfiguration {
+  health: number;
+  size: number;
+  maxAge: number;
+  color: string;
+  score: number;
+  // 特殊効果プロパティ
+  healAmount?: number;        // pink bubble
+  damageAmount?: number;      // poison bubble
+  shakeIntensity?: number;    // electric bubble
+  disableDuration?: number;   // electric bubble
+  bonusTimeMs?: number;       // rainbow bubble
+  timeStopMs?: number;        // clock bubble
+  bonusScore?: number;        // score bubble
+  chainRadius?: number;       // spiky bubble
+  escapeSpeed?: number;       // escaping bubble
+  escapeRadius?: number;      // escaping bubble
+  multiplier?: number;        // golden bubble
+  slowEffect?: number;        // frozen bubble
+  magnetRadius?: number;      // magnetic bubble
+  explosionRadius?: number;   // explosive bubble
+  phaseChance?: number;       // phantom bubble
+  scoreMultiplier?: number;   // multiplier bubble
+}
+
 export interface BubbleEffect {
-  type: string;
-  duration: number;
-  intensity: number;
-  apply(bubble: Bubble, deltaTime: number): void;
+  type: 'heal' | 'damage' | 'chain_destroy' | 'bonus_time' | 'time_stop' | 'bonus_score' | 
+        'screen_shake' | 'score_multiplier' | 'slow_area' | 'magnetic_pull' | 'big_explosion' | 
+        'next_score_multiplier';
+  amount?: number;
+  duration?: number;
+  position?: Position;
+  radius?: number;
+  intensity?: number;
+  multiplier?: number;
+  slowFactor?: number;
+  strength?: number;
+  damage?: number;
 }
 
 export interface BubbleManager {
