@@ -167,7 +167,7 @@ interface GameEngine {
 }
 
 export class StatisticsManager {
-    private gameEngine: GameEngine;
+    private _gameEngine: GameEngine; // prefixed with _ as unused
     private dataManager: StatisticsDataManager;
     private calculator: StatisticsCalculator;
     private timeSeriesManager: StatisticsTimeSeriesManager;
@@ -179,7 +179,7 @@ export class StatisticsManager {
     private sessionStats: SessionStats;
     
     constructor(gameEngine: GameEngine) {
-        this.gameEngine = gameEngine;
+        this._gameEngine = gameEngine;
         
         // 分割されたコンポーネントを初期化（スタブ実装）
         this.dataManager = this.createStubDataManager();
@@ -822,14 +822,14 @@ export class StatisticsManager {
 }
 
 // シングルトンインスタンス管理
-let statisticsManagerInstance = null;
+let statisticsManagerInstance: StatisticsManager | null = null;
 
 /**
  * StatisticsManagerのシングルトンインスタンスを取得
- * @param {Object} gameEngine - ゲームエンジン
- * @returns {StatisticsManager} シングルトンインスタンス
+ * @param gameEngine - ゲームエンジン
+ * @returns StatisticsManager シングルトンインスタンス
  */
-export function getStatisticsManager(gameEngine) {
+export function getStatisticsManager(gameEngine: any): StatisticsManager {
     if (!statisticsManagerInstance) {
         statisticsManagerInstance = new StatisticsManager(gameEngine);
     }
@@ -838,10 +838,10 @@ export function getStatisticsManager(gameEngine) {
 
 /**
  * StatisticsManagerのシングルトンインスタンスを再初期化
- * @param {Object} gameEngine - ゲームエンジン
- * @returns {StatisticsManager} 新しいシングルトンインスタンス
+ * @param gameEngine - ゲームエンジン
+ * @returns StatisticsManager 新しいシングルトンインスタンス
  */
-export function reinitializeStatisticsManager(gameEngine) {
+export function reinitializeStatisticsManager(gameEngine: any): StatisticsManager {
     if (statisticsManagerInstance) {
         // 既存インスタンスのクリーンアップ（必要に応じて）
     }

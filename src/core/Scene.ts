@@ -55,7 +55,7 @@ export class Scene implements IScene {
      * 
      * @param deltaTime - 前フレームからの経過時間（ミリ秒）
      */
-    update(deltaTime: number): void {
+    update(_deltaTime: number): void {
         // オーバーライド用
     }
     
@@ -66,7 +66,7 @@ export class Scene implements IScene {
      * 
      * @param context - Canvas 2Dレンダリングコンテキスト
      */
-    render(context: CanvasRenderingContext2D): void {
+    render(_context: CanvasRenderingContext2D): void {
         // オーバーライド用
     }
     
@@ -78,7 +78,7 @@ export class Scene implements IScene {
      * @param event - 入力イベント
      * @returns 入力を処理した場合はtrue、それ以外はfalseまたはvoid
      */
-    handleInput(event: Event): boolean | void {
+    handleInput(_event: Event): boolean | void {
         // オーバーライド用
         return false;
     }

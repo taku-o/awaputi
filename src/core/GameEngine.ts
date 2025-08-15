@@ -188,7 +188,7 @@ export class GameEngine {
         
         // 設定管理システム
         this.configManager = getConfigurationManager();
-        this.calculationEngine = getCalculationEngine();
+        // this.calculationEngine = getCalculationEngine(); // 未定義のためコメントアウト
         
         // レスポンシブCanvas管理
         this.responsiveCanvasManager = new ResponsiveCanvasManager(canvas);
@@ -258,14 +258,14 @@ export class GameEngine {
             this.playerData = new PlayerData();
             
             // Game managers
-            this.bubbleManager = new BubbleManager();
-            this.scoreManager = new ScoreManager();
-            this.sceneManager = new SceneManager();
+            this.bubbleManager = new BubbleManager(this.canvas);
+            this.scoreManager = new ScoreManager(this);
+            this.sceneManager = new SceneManager(this);
             this.settingsManager = new SettingsManager();
-            this.statisticsManager = new StatisticsManager();
+            this.statisticsManager = new StatisticsManager(this);
             
             // Achievement system
-            this.achievementManager = new AchievementManager();
+            this.achievementManager = new AchievementManager(this);
             
             // Keyboard shortcuts
             this.keyboardShortcutManager = new CoreKeyboardShortcutManager();
@@ -478,8 +478,8 @@ export class GameEngine {
     update(deltaTime: number): void {
         try {
             // Delegate to sub-components
-            this.eventManager.update(deltaTime);
-            this.renderer.update(deltaTime);
+            if (this.eventManager.update) this.eventManager.update(deltaTime);
+            if (this.renderer.update) this.renderer.update(deltaTime);
             
             // Update game systems
             if (this.bubbleManager) this.bubbleManager.update(deltaTime);
@@ -511,10 +511,10 @@ export class GameEngine {
             this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
             
             // Delegate main rendering to renderer component
-            this.renderer.render(this.context);
+            this.renderer.render();
             
             // Render debug info if available
-            if (this.debugInterface) {
+            if (this.debugInterface && this.debugInterface.render) {
                 this.debugInterface.render(this.context);
             }
             
@@ -567,7 +567,7 @@ export class GameEngine {
             fps: Math.round(fps),
             frameTime: this.lastTime,
             entities: (this.bubbleManager?.bubbles?.length || 0),
-            particles: (this.particleManager?.particles?.length || 0),
+            particles: (this.particleManager?.getParticles?.()?.length || 0),
             memoryUsage: this.memoryManager?.getStats?.()?.currentMemoryUsage || 0
         };
     }
@@ -631,17 +631,17 @@ export class GameEngine {
             this.stop();
             
             // Cleanup sub-components
-            this.initializer?.destroy?.();
-            this.eventManager?.destroy?.();
-            this.renderer?.destroy?.();
-            this.utilities?.destroy?.();
+            if (this.initializer?.destroy) this.initializer.destroy();
+            if (this.eventManager?.destroy) this.eventManager.destroy();
+            if (this.renderer?.destroy) this.renderer.destroy();
+            if (this.utilities?.destroy) this.utilities.destroy();
             
             // Cleanup systems
             this.memoryManager?.destroy?.();
             this.performanceOptimizer?.destroy?.();
             this.audioManager?.destroy?.();
-            this.particleManager?.destroy?.();
-            this.effectManager?.destroy?.();
+            if (this.particleManager?.destroy) this.particleManager.destroy();
+            if (this.effectManager?.destroy) this.effectManager.destroy();
             
             // Clear event listeners
             this.eventListeners.clear();

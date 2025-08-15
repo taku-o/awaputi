@@ -1,6 +1,6 @@
 import type { 
     ItemDefinition, 
-    ItemEffect, 
+    // ItemEffect, // 未使用のためコメントアウト
     ItemInfo, 
     ItemManager as IItemManager 
 } from '../types/game';

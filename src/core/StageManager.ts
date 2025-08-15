@@ -2,7 +2,7 @@ import type {
     StageManager as IStageManager,
     CurrentStage,
     StageConfig,
-    UnlockCondition,
+    // UnlockCondition, // 未使用のためコメントアウト
     BossEvent,
     UnlockedStageInfo,
     LockedStageInfo
@@ -280,7 +280,7 @@ export class StageManager implements IStageManager {
         const config = this.currentStage.config;
         const elapsedTime = config.duration - timeRemaining;
         
-        config.bossEvents.forEach((event, index) => {
+        config.bossEvents?.forEach((event, index) => {
             if (elapsedTime >= event.time && !this.currentStage!.bossEventsTriggered.includes(index)) {
                 this.triggerBossEvent(event);
                 this.currentStage!.bossEventsTriggered.push(index);

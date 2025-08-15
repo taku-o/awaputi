@@ -14,18 +14,18 @@ interface SceneContextData {
 }
 
 export class SceneManager {
-    private gameEngine: any; // GameEngine type would be defined elsewhere
+    private _gameEngine: any; // GameEngine type would be defined elsewhere - prefixed with _ as unused
     private scenes: Map<string, ExtendedScene>;
     private currentScene: ExtendedScene | null;
-    private nextScene: ExtendedScene | null;
+    private _nextScene: ExtendedScene | null; // prefixed with _ as unused
     private lastUpdateDebugTime?: number;
     private lastSceneWarnTime?: number;
     
     constructor(gameEngine: any) {
-        this.gameEngine = gameEngine;
+        this._gameEngine = gameEngine;
         this.scenes = new Map<string, ExtendedScene>();
         this.currentScene = null;
-        this.nextScene = null;
+        this._nextScene = null;
     }
     
     /**
@@ -56,7 +56,7 @@ export class SceneManager {
         
         // 新しいシーンを開始（コンテキストデータを渡す）
         this.currentScene = scene;
-        this.currentScene.enter(contextData);
+        this.currentScene.enter(contextData || {});
         
         console.log(`Switched to scene: ${name}`);
         return true;

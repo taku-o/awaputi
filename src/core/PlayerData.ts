@@ -163,7 +163,7 @@ export class PlayerData {
                     input: amount,
                     errors: validation.errors
                 });
-                return false;
+                return { died: false };
             }
             
             this.currentHP = Math.max(0, this.currentHP - validation.sanitizedValue);
