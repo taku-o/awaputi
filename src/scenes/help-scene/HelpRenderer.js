@@ -573,13 +573,7 @@ export class HelpRenderer {
         
         for (let i = 0; i < Math.min(state.searchResults.length, 8); i++) {
             const result = state.searchResults[i];
-            const isSelected = i === state.selectedTopicIndex;
-            
-            // 結果項目の背景
-            if (isSelected) {
-                ctx.fillStyle = this.colors.selected;
-                this.roundRect(ctx, contentArea.x + 10, currentY - 5, contentArea.width - 20, itemHeight, 4, true);
-            }
+            // 検索結果では選択状態を表示しない（クリックで直接選択）
             
             // SearchEngineの結果構造に対応
             const resultData = result.content || result;

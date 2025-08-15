@@ -281,7 +281,7 @@ export class HelpContentManager {
 
             this.isSearching = true;
             this.searchQuery = trimmedQuery;
-            this.selectedTopicIndex = 0; // 最初の結果を選択
+            // selectedTopicIndexはそのまま維持（検索結果の自動選択は行わない）
 
             // アナリティクス記録
             if (this.helpAnalytics && typeof this.helpAnalytics.recordSearchQuery === 'function') {
@@ -406,11 +406,28 @@ export class HelpContentManager {
         if (result) {
             // SearchEngineの結果構造に対応
             const resultData = result.content || result;
-            const categoryId = resultData.categoryId || result.categoryId;
-            const topicId = resultData.topicId || result.topicId;
+            
+            // categoryIdとtopicIdの取得を改善
+            let categoryId = resultData.categoryId || result.categoryId || resultData.category;
+            let topicId = resultData.topicId || result.topicId;
+            
+            // IDが 'category:topic' 形式の場合は分割
+            if (!categoryId || !topicId) {
+                const fullId = resultData.id || result.id;
+                if (fullId && fullId.includes(':')) {
+                    const parts = fullId.split(':');
+                    categoryId = categoryId || parts[0];
+                    topicId = topicId || parts[1];
+                } else {
+                    // カテゴリ情報のフォールバック
+                    categoryId = categoryId || resultData.category || 'gameplay';
+                    topicId = topicId || fullId;
+                }
+            }
             
             if (!categoryId || !topicId) {
-                console.error('Invalid search result structure:', result);
+                console.error('Invalid search result structure - missing categoryId or topicId:', result);
+                console.log('Extracted categoryId:', categoryId, 'topicId:', topicId);
                 return null;
             }
             
