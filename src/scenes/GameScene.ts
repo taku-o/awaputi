@@ -13,8 +13,79 @@ import { GameUIManager } from './game-scene/GameUIManager.js';
 import { GameVisualizationManager } from './game-scene/GameVisualizationManager.js';
 import { GamePerformanceMonitor } from './game-scene/GamePerformanceMonitor.js';
 
-export class GameScene extends Scene {
-    constructor(gameEngine) {
+// Game Scene specific types
+export interface GameSceneState {
+    isPaused: boolean;
+    isGameOver: boolean;
+    lastUpdateDebugTime?: number;
+    lastBubbleErrorTime?: number;
+    canvas?: HTMLCanvasElement;
+}
+
+export interface GameSceneComponents {
+    inputManager: GameInputManager;
+    floatingTextManager: FloatingTextManager;
+    stateManager: GameStateManager;
+    uiManager: GameUIManager;
+    visualizationManager: GameVisualizationManager;
+    performanceMonitor: GamePerformanceMonitor;
+}
+
+export interface GameSceneStats {
+    state: any;
+    ui: any;
+    visualization: any;
+    performance: any;
+}
+
+export interface GameSceneDebugInfo {
+    scene: string;
+    isPaused: boolean;
+    isGameOver: boolean;
+    components: {
+        stateManager: any;
+        uiManager: any;
+        visualizationManager: any;
+        performanceMonitor: any;
+    };
+    gameStats: GameSceneStats;
+}
+
+export interface TimeWarnings {
+    timeWarning: boolean;
+    urgentWarning: boolean;
+}
+
+export interface PerformanceSettings {
+    [key: string]: any;
+}
+
+export class GameScene extends Scene implements GameSceneState {
+    // State properties
+    public isPaused: boolean;
+    public isGameOver: boolean;
+    public lastUpdateDebugTime?: number;
+    public lastBubbleErrorTime?: number;
+    public canvas?: HTMLCanvasElement;
+
+    // Component properties
+    public inputManager: GameInputManager;
+    public floatingTextManager: FloatingTextManager;
+    public stateManager: GameStateManager;
+    public uiManager: GameUIManager;
+    public visualizationManager: GameVisualizationManager;
+    public performanceMonitor: GamePerformanceMonitor;
+
+    // Event handler references (bound methods)
+    private boundHandleMouseClick: (event: MouseEvent) => void;
+    private boundHandleMouseMove: (event: MouseEvent) => void;
+    private boundHandleTouchStart: (event: TouchEvent) => void;
+    private boundHandleTouchMove: (event: TouchEvent) => void;
+    private boundHandleTouchEnd: (event: TouchEvent) => void;
+    private boundHandleTouchCancel: (event: TouchEvent) => void;
+    private boundHandleKeyDown: (event: KeyboardEvent) => void;
+
+    constructor(gameEngine: any) {
         super(gameEngine);
         
         // 基本コンポーネント
@@ -29,12 +100,24 @@ export class GameScene extends Scene {
         
         // ポーズ状態の委譲
         this.isPaused = false;
+        this.isGameOver = false;
+
+        // Bind event handlers for proper removal
+        this.boundHandleMouseClick = this.handleMouseClick.bind(this);
+        this.boundHandleMouseMove = this.handleMouseMove.bind(this);
+        this.boundHandleTouchStart = this.handleTouchStart.bind(this);
+        this.boundHandleTouchMove = this.handleTouchMove.bind(this);
+        this.boundHandleTouchEnd = this.handleTouchEnd.bind(this);
+        this.boundHandleTouchCancel = this.handleTouchCancel.bind(this);
+        this.boundHandleKeyDown = this.handleKeyDown.bind(this);
     }
     
     /**
      * シーン開始時の処理
      */
-    enter() {
+    enter(): void {
+        super.enter();
+        
         // 各コンポーネントの初期化
         this.stateManager.startGame();
         this.uiManager.resetUIState();
@@ -56,7 +139,9 @@ export class GameScene extends Scene {
     /**
      * シーン終了時の処理
      */
-    exit() {
+    exit(): void {
+        super.exit();
+        
         // イベントリスナーの削除
         this.removeEventListeners();
         
@@ -72,55 +157,40 @@ export class GameScene extends Scene {
     /**
      * イベントリスナーの設定
      */
-    setupEventListeners() {
+    setupEventListeners(): void {
         this.canvas = this.gameEngine.canvas;
         
-        // マウスイベント
-        this.handleMouseClick = this.handleMouseClick.bind(this);
-        this.handleMouseMove = this.handleMouseMove.bind(this);
-        
-        // タッチイベント
-        this.handleTouchStart = this.handleTouchStart.bind(this);
-        this.handleTouchMove = this.handleTouchMove.bind(this);
-        this.handleTouchEnd = this.handleTouchEnd.bind(this);
-        
-        // キーボードイベント
-        this.handleKeyDown = this.handleKeyDown.bind(this);
-        
-        // タッチキャンセルイベント
-        this.handleTouchCancel = this.handleTouchCancel.bind(this);
-        
-        // イベントリスナーを追加
-        this.canvas.addEventListener('click', this.handleMouseClick);
-        this.canvas.addEventListener('mousemove', this.handleMouseMove);
-        this.canvas.addEventListener('touchstart', this.handleTouchStart, { passive: false });
-        this.canvas.addEventListener('touchmove', this.handleTouchMove, { passive: false });
-        this.canvas.addEventListener('touchend', this.handleTouchEnd);
-        this.canvas.addEventListener('touchcancel', this.handleTouchCancel);
-        document.addEventListener('keydown', this.handleKeyDown);
+        // イベントリスナーを追加（バインドされたメソッドを使用）
+        this.canvas.addEventListener('click', this.boundHandleMouseClick);
+        this.canvas.addEventListener('mousemove', this.boundHandleMouseMove);
+        this.canvas.addEventListener('touchstart', this.boundHandleTouchStart, { passive: false });
+        this.canvas.addEventListener('touchmove', this.boundHandleTouchMove, { passive: false });
+        this.canvas.addEventListener('touchend', this.boundHandleTouchEnd);
+        this.canvas.addEventListener('touchcancel', this.boundHandleTouchCancel);
+        document.addEventListener('keydown', this.boundHandleKeyDown);
     }
     
     /**
      * イベントリスナーの削除
      */
-    removeEventListeners() {
+    removeEventListeners(): void {
         if (this.canvas) {
-            this.canvas.removeEventListener('click', this.handleMouseClick);
-            this.canvas.removeEventListener('mousemove', this.handleMouseMove);
-            this.canvas.removeEventListener('touchstart', this.handleTouchStart);
-            this.canvas.removeEventListener('touchmove', this.handleTouchMove);
-            this.canvas.removeEventListener('touchend', this.handleTouchEnd);
-            this.canvas.removeEventListener('touchcancel', this.handleTouchCancel);
+            this.canvas.removeEventListener('click', this.boundHandleMouseClick);
+            this.canvas.removeEventListener('mousemove', this.boundHandleMouseMove);
+            this.canvas.removeEventListener('touchstart', this.boundHandleTouchStart);
+            this.canvas.removeEventListener('touchmove', this.boundHandleTouchMove);
+            this.canvas.removeEventListener('touchend', this.boundHandleTouchEnd);
+            this.canvas.removeEventListener('touchcancel', this.boundHandleTouchCancel);
         }
-        document.removeEventListener('keydown', this.handleKeyDown);
+        document.removeEventListener('keydown', this.boundHandleKeyDown);
     }
     
     /**
      * マウスクリック処理
-     * @param {MouseEvent} event - マウスイベント
+     * @param event - マウスイベント
      */
-    handleMouseClick(event) {
-        const rect = this.canvas.getBoundingClientRect();
+    private handleMouseClick(event: MouseEvent): void {
+        const rect = this.canvas!.getBoundingClientRect();
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
         
@@ -135,10 +205,10 @@ export class GameScene extends Scene {
     
     /**
      * マウス移動処理
-     * @param {MouseEvent} event - マウスイベント
+     * @param event - マウスイベント
      */
-    handleMouseMove(event) {
-        const rect = this.canvas.getBoundingClientRect();
+    private handleMouseMove(event: MouseEvent): void {
+        const rect = this.canvas!.getBoundingClientRect();
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
         
@@ -148,12 +218,12 @@ export class GameScene extends Scene {
     
     /**
      * タッチ開始処理
-     * @param {TouchEvent} event - タッチイベント
+     * @param event - タッチイベント
      */
-    handleTouchStart(event) {
+    private handleTouchStart(event: TouchEvent): void {
         event.preventDefault();
         const touch = event.touches[0];
-        const rect = this.canvas.getBoundingClientRect();
+        const rect = this.canvas!.getBoundingClientRect();
         const x = touch.clientX - rect.left;
         const y = touch.clientY - rect.top;
         
@@ -168,12 +238,12 @@ export class GameScene extends Scene {
     
     /**
      * タッチ移動処理
-     * @param {TouchEvent} event - タッチイベント
+     * @param event - タッチイベント
      */
-    handleTouchMove(event) {
+    private handleTouchMove(event: TouchEvent): void {
         event.preventDefault();
         const touch = event.touches[0];
-        const rect = this.canvas.getBoundingClientRect();
+        const rect = this.canvas!.getBoundingClientRect();
         const x = touch.clientX - rect.left;
         const y = touch.clientY - rect.top;
         
@@ -183,14 +253,14 @@ export class GameScene extends Scene {
     
     /**
      * タッチ終了処理
-     * @param {TouchEvent} event - タッチイベント
+     * @param event - タッチイベント
      */
-    handleTouchEnd(event) {
+    private handleTouchEnd(event: TouchEvent): void {
         event.preventDefault();
         
         // changedTouchesから座標を取得（touchesは空になることがある）
         const touch = event.changedTouches[0];
-        const rect = this.canvas.getBoundingClientRect();
+        const rect = this.canvas!.getBoundingClientRect();
         const x = touch.clientX - rect.left;
         const y = touch.clientY - rect.top;
         
@@ -205,9 +275,9 @@ export class GameScene extends Scene {
     
     /**
      * タッチキャンセル処理
-     * @param {TouchEvent} event - タッチイベント
+     * @param event - タッチイベント
      */
-    handleTouchCancel(event) {
+    private handleTouchCancel(event: TouchEvent): void {
         event.preventDefault();
         
         // UIマネージャーのタッチキャンセル処理
@@ -216,9 +286,9 @@ export class GameScene extends Scene {
     
     /**
      * キーボード処理
-     * @param {KeyboardEvent} event - キーボードイベント
+     * @param event - キーボードイベント
      */
-    handleKeyDown(event) {
+    private handleKeyDown(event: KeyboardEvent): void {
         // UIManagerのキーボード処理に委譲
         if (this.uiManager.handleKeyboard(event)) {
             return; // UIで処理された場合は他の処理をしない
@@ -230,7 +300,7 @@ export class GameScene extends Scene {
     /**
      * 更新処理
      */
-    update(deltaTime) {
+    update(deltaTime: number): void {
         // Debug logs throttled to prevent console flooding - only log occasionally
         if (!this.lastUpdateDebugTime || performance.now() - this.lastUpdateDebugTime > 5000) {
             console.log(`[DEBUG] GameScene.update working - paused: ${this.isPaused}, gameOver: ${this.gameEngine.isGameOver}`);
@@ -282,7 +352,7 @@ export class GameScene extends Scene {
     /**
      * スコア変化の処理
      */
-    handleScoreChange() {
+    private handleScoreChange(): void {
         if (this.stateManager.checkScoreChange()) {
             const newScore = this.gameEngine.playerData.currentScore;
             this.uiManager.onScoreChanged(newScore);
@@ -292,8 +362,8 @@ export class GameScene extends Scene {
     /**
      * 時間警告の処理
      */
-    handleTimeWarnings() {
-        const warnings = this.stateManager.checkTimeWarning();
+    private handleTimeWarnings(): void {
+        const warnings: TimeWarnings = this.stateManager.checkTimeWarning();
         if (warnings.timeWarning || warnings.urgentWarning) {
             this.uiManager.showTimeWarnings(warnings);
         }
@@ -302,7 +372,7 @@ export class GameScene extends Scene {
     /**
      * 描画処理
      */
-    render(context) {
+    render(context: CanvasRenderingContext2D): void {
         const renderStartTime = performance.now();
         
         // 背景描画
@@ -343,24 +413,24 @@ export class GameScene extends Scene {
     /**
      * ゲームオーバー処理
      */
-    gameOver() {
+    gameOver(): void {
         this.stateManager.triggerGameOver();
     }
     
     /**
      * ダメージ処理
-     * @param {number} damage - ダメージ量
+     * @param damage - ダメージ量
      */
-    onPlayerDamaged(damage) {
+    onPlayerDamaged(damage: number): void {
         this.stateManager.onPlayerDamaged(damage);
         this.uiManager.onPlayerDamaged(damage);
     }
     
     /**
      * 回復処理
-     * @param {number} heal - 回復量
+     * @param heal - 回復量
      */
-    onHealed(heal) {
+    onHealed(heal: number): void {
         const actualHeal = this.stateManager.onPlayerHealed(heal);
         this.uiManager.onPlayerHealed(actualHeal);
         
@@ -370,48 +440,48 @@ export class GameScene extends Scene {
     
     /**
      * 特殊効果発動時の処理
-     * @param {string} effectType - エフェクトタイプ
-     * @param {number} x - X座標
-     * @param {number} y - Y座標
+     * @param effectType - エフェクトタイプ
+     * @param x - X座標
+     * @param y - Y座標
      */
-    onSpecialEffect(effectType, x, y) {
+    onSpecialEffect(effectType: string, x: number, y: number): void {
         this.stateManager.onSpecialEffect(effectType, x, y);
         this.uiManager.onSpecialEffect(effectType, x, y);
     }
     
     /**
      * ドラッグ開始
-     * @param {number} x - 開始X座標
-     * @param {number} y - 開始Y座標
-     * @param {Object} targetBubble - 対象の泡
+     * @param x - 開始X座標
+     * @param y - 開始Y座標
+     * @param targetBubble - 対象の泡
      */
-    startDrag(x, y, targetBubble = null) {
+    startDrag(x: number, y: number, targetBubble: any = null): void {
         this.visualizationManager.startDrag(x, y, targetBubble);
     }
     
     /**
      * ドラッグ更新
-     * @param {number} x - 現在のX座標
-     * @param {number} y - 現在のY座標
+     * @param x - 現在のX座標
+     * @param y - 現在のY座標
      */
-    updateDrag(x, y) {
+    updateDrag(x: number, y: number): void {
         this.visualizationManager.updateDrag(x, y);
     }
     
     /**
      * ドラッグ終了
      */
-    endDrag() {
+    endDrag(): void {
         this.visualizationManager.endDrag();
     }
     
     /**
      * ドラッグパーティクルを生成
-     * @param {number} x - X座標
-     * @param {number} y - Y座標  
-     * @param {number} intensity - パーティクルの強度（数）
+     * @param x - X座標
+     * @param y - Y座標  
+     * @param intensity - パーティクルの強度（数）
      */
-    createDragParticles(x, y, intensity = 10) {
+    createDragParticles(x: number, y: number, intensity: number = 10): void {
         try {
             console.log(`[DEBUG] createDragParticles called: x=${x}, y=${y}, intensity=${intensity}`);
             
@@ -455,40 +525,40 @@ export class GameScene extends Scene {
     /**
      * ポーズ状態の切り替え
      */
-    togglePause() {
+    togglePause(): void {
         this.stateManager.togglePause();
         this.isPaused = this.stateManager.isPaused;
     }
     
     /**
      * ポーズ設定
-     * @param {boolean} paused - ポーズ状態
+     * @param paused - ポーズ状態
      */
-    setPaused(paused) {
+    setPaused(paused: boolean): void {
         this.stateManager.setPaused(paused);
         this.isPaused = this.stateManager.isPaused;
     }
     
     /**
      * 画面震動の開始
-     * @param {number} duration - 持続時間
-     * @param {number} intensity - 強度
+     * @param duration - 持続時間
+     * @param intensity - 強度
      */
-    startScreenShake(duration, intensity) {
+    startScreenShake(duration: number, intensity: number): void {
         this.visualizationManager.startScreenShake(duration, intensity);
     }
     
     /**
      * パフォーマンス表示の切り替え
      */
-    togglePerformanceDisplay() {
+    togglePerformanceDisplay(): void {
         this.performanceMonitor.toggleMetricsDisplay();
     }
     
     /**
      * 詳細情報表示の切り替え
      */
-    toggleDetailedInfo() {
+    toggleDetailedInfo(): void {
         this.uiManager.toggleDetailedInfo();
     }
     
@@ -496,9 +566,9 @@ export class GameScene extends Scene {
     
     /**
      * ゲーム統計の取得
-     * @returns {Object} 統計情報
+     * @returns 統計情報
      */
-    getGameStats() {
+    getGameStats(): GameSceneStats {
         return {
             state: this.stateManager.getGameStats(),
             ui: this.uiManager.getUIState(),
@@ -509,17 +579,17 @@ export class GameScene extends Scene {
     
     /**
      * パフォーマンス推奨事項の取得
-     * @returns {Array} 推奨事項配列
+     * @returns 推奨事項配列
      */
-    getPerformanceRecommendations() {
+    getPerformanceRecommendations(): any[] {
         return this.performanceMonitor.getPerformanceRecommendations();
     }
     
     /**
      * デバッグ情報の取得
-     * @returns {Object} デバッグ情報
+     * @returns デバッグ情報
      */
-    getDebugInfo() {
+    getDebugInfo(): GameSceneDebugInfo {
         return {
             scene: 'GameScene',
             isPaused: this.isPaused,
@@ -536,9 +606,9 @@ export class GameScene extends Scene {
     
     /**
      * 設定の更新
-     * @param {Object} settings - 設定オブジェクト
+     * @param settings - 設定オブジェクト
      */
-    updateSettings(settings) {
+    updateSettings(settings: { performance?: PerformanceSettings }): void {
         if (settings.performance) {
             this.performanceMonitor.updateSettings(settings.performance);
         }
@@ -548,9 +618,9 @@ export class GameScene extends Scene {
     
     /**
      * コンポーネント状態の検証
-     * @returns {boolean} 全コンポーネントが正常かどうか
+     * @returns 全コンポーネントが正常かどうか
      */
-    validateComponents() {
+    validateComponents(): boolean {
         const validations = [
             this.stateManager.validateGameState(),
             !!this.uiManager,
