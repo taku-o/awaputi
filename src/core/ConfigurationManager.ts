@@ -58,8 +58,8 @@ class ConfigurationManager {
     private cache: any; // CacheSystem type would be defined elsewhere
     private accessStats: AccessStats;
     // 将来の拡張機能用 - 現在は未使用
-    // private _lazyLoaders: Map<string, () => ConfigurationValue>;
-    // private _preloadKeys: Set<string>;
+    private _lazyLoaders: Map<string, () => ConfigurationValue>;
+    private _preloadKeys: Set<string>;
     private errorHandler: any;
     
     constructor() {
@@ -99,16 +99,16 @@ class ConfigurationManager {
         };
         
         // 遅延読み込み用の設定ローダー（将来の拡張機能用）
-        // this._lazyLoaders = new Map<string, () => ConfigurationValue>();
+        this._lazyLoaders = new Map<string, () => ConfigurationValue>();
         
         // 頻繁にアクセスされるキーのプリロード設定（将来の拡張機能用）
-        /* this._preloadKeys = new Set([
+        this._preloadKeys = new Set([
             'game.scoring.baseScores',
             'game.bubbles.maxAge',
             'performance.optimization.maxBubbles',
             'effects.particles.maxCount',
             'audio.volumes.master'
-        ]); */
+        ]);
         
         // 初期化
         this._initialize();

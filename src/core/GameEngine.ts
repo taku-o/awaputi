@@ -54,13 +54,13 @@ import { GameEngineRenderer } from './game-engine/GameEngineRenderer.js';
 import { GameEngineUtilities } from './game-engine/GameEngineUtilities.js';
 
 // Type definitions
-// interface GameEngineConfig {
-//     targetFPS?: number;
-//     enableAudio?: boolean;
-//     enableEffects?: boolean;
-//     enableDebug?: boolean;
-//     performanceLevel?: 'low' | 'medium' | 'high';
-// }
+interface GameEngineConfig {
+    targetFPS?: number;
+    enableAudio?: boolean;
+    enableEffects?: boolean;
+    enableDebug?: boolean;
+    performanceLevel?: 'low' | 'medium' | 'high';
+}
 
 interface GameStats {
     fps: number;
@@ -188,7 +188,7 @@ export class GameEngine {
         
         // 設定管理システム
         this.configManager = getConfigurationManager();
-        // this.calculationEngine = getCalculationEngine(); // 未定義のためコメントアウト
+        this.calculationEngine = getCalculationEngine();
         
         // レスポンシブCanvas管理
         this.responsiveCanvasManager = new ResponsiveCanvasManager(canvas);
