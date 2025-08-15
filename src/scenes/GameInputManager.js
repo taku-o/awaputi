@@ -126,7 +126,11 @@ export class GameInputManager extends InputManager {
         const targetBubble = this.gameEngine.bubbleManager.handleDragStart(convertedPosition.x, convertedPosition.y);
         
         // ビジュアルフィードバックを開始（変換された座標を使用）
-        this.gameScene.startDragVisualization(convertedPosition, targetBubble);
+        if (this.gameScene && typeof this.gameScene.startDragVisualization === 'function') {
+            this.gameScene.startDragVisualization(convertedPosition, targetBubble);
+        } else {
+            console.warn('GameInputManager: startDragVisualization method not available on current scene');
+        }
     }
     
     /**
@@ -152,7 +156,9 @@ export class GameInputManager extends InputManager {
         }
         
         // ビジュアルフィードバックを更新（変換された座標を使用）
-        this.gameScene.updateDragVisualizationPosition(convertedPosition);
+        if (this.gameScene && typeof this.gameScene.updateDragVisualizationPosition === 'function') {
+            this.gameScene.updateDragVisualizationPosition(convertedPosition);
+        }
         
         // BubbleManagerのドラッグ移動も呼び出し（変換された座標を使用）
         this.gameEngine.bubbleManager.handleDragMove(convertedPosition.x, convertedPosition.y);
@@ -213,7 +219,9 @@ export class GameInputManager extends InputManager {
         }
         
         // ビジュアルフィードバックをリセット
-        this.gameScene.resetDragVisualization();
+        if (this.gameScene && typeof this.gameScene.resetDragVisualization === 'function') {
+            this.gameScene.resetDragVisualization();
+        }
     }
     
     /**

@@ -342,6 +342,7 @@ export class CoreKeyboardShortcutManager {
         }
     }
     
+    
     /**
      * ドキュメントヘルプ処理（Ctrl+Hキー）
      */

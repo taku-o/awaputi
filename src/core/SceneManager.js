@@ -19,8 +19,11 @@ export class SceneManager {
     
     /**
      * シーンを切り替え
+     * @param {string} name - 切り替え先シーン名
+     * @param {Object} contextData - シーンに渡すコンテキストデータ（オプション）
+     * @returns {boolean} 切り替えが成功したかどうか
      */
-    switchScene(name) {
+    switchScene(name, contextData = null) {
         const scene = this.scenes.get(name);
         if (!scene) {
             console.error(`Scene ${name} not found`);
@@ -32,9 +35,9 @@ export class SceneManager {
             this.currentScene.exit();
         }
         
-        // 新しいシーンを開始
+        // 新しいシーンを開始（コンテキストデータを渡す）
         this.currentScene = scene;
-        this.currentScene.enter();
+        this.currentScene.enter(contextData);
         
         console.log(`Switched to scene: ${name}`);
         return true;
@@ -54,6 +57,15 @@ export class SceneManager {
      */
     getScene(name) {
         return this.scenes.get(name) || null;
+    }
+    
+    /**
+     * 指定された名前のシーンが存在するかチェック
+     * @param {string} name - シーン名
+     * @returns {boolean} シーンが存在するかどうか
+     */
+    hasScene(name) {
+        return this.scenes.has(name);
     }
     
     /**

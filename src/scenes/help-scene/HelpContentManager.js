@@ -18,6 +18,7 @@ export class HelpContentManager {
         this.selectedTopicIndex = 0;
         this.currentContent = null;
         this.searchQuery = '';
+        this.currentSearchQuery = '';
         this.searchResults = [];
         this.isSearching = false;
         
@@ -61,6 +62,9 @@ export class HelpContentManager {
             // 検索インデックスの構築
             if (this.searchEngine) {
                 await this.searchEngine.buildIndex();
+                
+                // ヘルプコンテンツをインデックスに追加
+                await this.indexHelpContentForSearch();
             }
             
             console.log('HelpContentManager initialized successfully');
@@ -76,6 +80,11 @@ export class HelpContentManager {
             const { getHelpAnalytics } = await import('../../core/help/HelpAnalytics.js');
             this.helpAnalytics = getHelpAnalytics(this.gameEngine);
             
+            // HelpManagerにanalyticsオブジェクトを設定
+            if (this.helpManager) {
+                this.helpManager.analytics = this.helpAnalytics;
+            }
+            
             // ヘルプフィードバックシステムの初期化
             const { getHelpFeedbackSystem } = await import('../../core/help/HelpFeedbackSystem.js');
             this.helpFeedbackSystem = getHelpFeedbackSystem(this.gameEngine);
@@ -84,8 +93,90 @@ export class HelpContentManager {
             const { getHelpEffectivenessAnalyzer } = await import('../../core/help/HelpEffectivenessAnalyzer.js');
             this.helpEffectivenessAnalyzer = getHelpEffectivenessAnalyzer(this.gameEngine);
             
+            console.log('HelpContentManager: Analytics systems initialized successfully');
+            
         } catch (error) {
             console.warn('Some analytics systems failed to initialize:', error);
+        }
+    }
+
+    /**
+     * ヘルプコンテンツを検索エンジンにインデックス
+     */
+    async indexHelpContentForSearch() {
+        if (!this.searchEngine) {
+            return;
+        }
+
+        try {
+            console.log('Indexing help content for search...');
+            
+            // 全カテゴリのトピックを収集してインデックス化
+            const allContent = [];
+            
+            for (const category of this.categories) {
+                for (const topic of category.topics) {
+                    try {
+                        // トピックの詳細コンテンツを取得
+                        let content = null;
+                        if (this.helpManager) {
+                            content = await this.helpManager.getTopicContent(topic.id);
+                        }
+                        
+                        // コンテンツテキストの抽出（オブジェクト構造に対応）
+                        let contentText = '';
+                        if (content) {
+                            if (typeof content.content === 'string') {
+                                // content.contentが文字列の場合
+                                contentText = content.content;
+                            } else if (content.content && typeof content.content === 'object') {
+                                // content.contentがオブジェクトの場合（overview, objective, basic_rules, tipsなど）
+                                const contentValues = Object.values(content.content).filter(val => typeof val === 'string');
+                                contentText = contentValues.join(' ');
+                            } else if (content.answer && typeof content.answer === 'string') {
+                                // フォールバック: answer
+                                contentText = content.answer;
+                            } else if (content.description && typeof content.description === 'string') {
+                                // フォールバック: description
+                                contentText = content.description;
+                            }
+                        }
+                        
+                        // 検索用データ構造を作成
+                        const searchItem = {
+                            id: `${category.id}:${topic.id}`,
+                            categoryId: category.id,
+                            topicId: topic.id,
+                            title: topic.title || topic.question || '',
+                            content: contentText,
+                            category: category.id,
+                            categoryName: this.gameEngine.localizationManager?.t(category.key, category.id) || category.id,
+                            tags: topic.tags || [],
+                            language: 'ja',
+                            difficulty: topic.difficulty || 'beginner',
+                            popularity: topic.popularity || 0,
+                            lastUpdated: Date.now(),
+                            searchKeywords: topic.searchKeywords || []
+                        };
+                        
+                        allContent.push(searchItem);
+                        
+                    } catch (error) {
+                        console.warn(`Failed to index topic ${topic.id}:`, error);
+                    }
+                }
+            }
+            
+            // SearchEngineにコンテンツをインデックス
+            if (allContent.length > 0) {
+                this.searchEngine.indexContent(allContent, 'help');
+                console.log(`Successfully indexed ${allContent.length} help topics for search`);
+            } else {
+                console.warn('No help content found to index');
+            }
+            
+        } catch (error) {
+            console.error('Failed to index help content for search:', error);
         }
     }
 
@@ -183,17 +274,22 @@ export class HelpContentManager {
                 this.searchResults = this.searchCache.get(trimmedQuery);
             } else {
                 // 新しい検索実行
-                this.searchResults = await this.searchEngine.search(trimmedQuery);
+                const searchResult = await this.searchEngine.search(trimmedQuery);
+                this.searchResults = searchResult.results || [];
                 this.setSearchCache(trimmedQuery, this.searchResults);
             }
 
             this.isSearching = true;
             this.searchQuery = trimmedQuery;
-            this.selectedTopicIndex = 0; // 最初の結果を選択
+            // selectedTopicIndexはそのまま維持（検索結果の自動選択は行わない）
 
             // アナリティクス記録
-            if (this.helpAnalytics) {
-                this.helpAnalytics.recordSearchQuery(trimmedQuery, this.searchResults.length);
+            if (this.helpAnalytics && typeof this.helpAnalytics.recordSearchQuery === 'function') {
+                try {
+                    this.helpAnalytics.recordSearchQuery(trimmedQuery, this.searchResults.length);
+                } catch (error) {
+                    console.warn('Failed to record search query analytics:', error);
+                }
             }
             
         } catch (error) {
@@ -224,8 +320,14 @@ export class HelpContentManager {
         await this.loadCategoryContent(categoryId);
 
         // アナリティクス記録
-        if (this.helpAnalytics) {
-            this.helpAnalytics.recordCategorySelection(categoryId);
+        if (this.helpAnalytics && typeof this.helpAnalytics.recordCategorySelection === 'function') {
+            try {
+                this.helpAnalytics.recordCategorySelection(categoryId);
+            } catch (error) {
+                console.warn('Failed to record category selection:', error);
+            }
+        } else if (this.helpAnalytics) {
+            console.warn('HelpAnalytics object exists but recordCategorySelection method is missing');
         }
 
         return { fromIndex, toIndex };
@@ -233,17 +335,32 @@ export class HelpContentManager {
 
     /**
      * トピック選択
+     * @param {number} index - トピックインデックス
+     * @param {boolean} fromSearchResult - 検索結果からの選択かどうか
      */
-    async selectTopic(index) {
+    async selectTopic(index, fromSearchResult = false) {
+        // 検索状態をクリア（メニューからの直接選択時のみ）
+        if (!fromSearchResult) {
+            this.isSearching = false;
+            this.searchQuery = '';
+            this.searchResults = [];
+        }
+        
         const category = this.categories.find(c => c.id === this.selectedCategory);
         if (!category || index < 0 || index >= category.topics.length) {
             return null;
         }
 
         // 前のコンテンツのフィードバック記録
-        if (this.helpFeedbackSystem && this.currentContent && category.topics[this.selectedTopicIndex]) {
-            const currentTopic = category.topics[this.selectedTopicIndex];
-            this.helpFeedbackSystem.recordTopicExit(currentTopic.id, this.currentContent);
+        if (this.helpFeedbackSystem && typeof this.helpFeedbackSystem.recordTopicExit === 'function' && this.currentContent && category.topics[this.selectedTopicIndex]) {
+            try {
+                const currentTopic = category.topics[this.selectedTopicIndex];
+                this.helpFeedbackSystem.recordTopicExit(currentTopic.id, this.currentContent);
+            } catch (error) {
+                console.warn('Failed to record topic exit:', error);
+            }
+        } else if (this.helpFeedbackSystem && this.currentContent && category.topics[this.selectedTopicIndex]) {
+            console.warn('HelpFeedbackSystem object exists but recordTopicExit method is missing');
         }
 
         this.selectedTopicIndex = index;
@@ -254,6 +371,9 @@ export class HelpContentManager {
             if (this.helpManager) {
                 const topic = category.topics[index];
                 newContent = await this.helpManager.getTopicContent(topic.id);
+                
+                // 重要: currentContentを更新
+                this.currentContent = newContent;
                 
                 // アナリティクス記録
                 if (this.helpAnalytics) {
@@ -284,13 +404,45 @@ export class HelpContentManager {
 
         const result = this.searchResults[index];
         if (result) {
-            // カテゴリとトピックを設定
-            await this.selectCategory(result.categoryId);
-            const topicIndex = this.categories
-                .find(c => c.id === result.categoryId)?.topics
-                .findIndex(t => t.id === result.topicId) || 0;
+            // SearchEngineの結果構造に対応
+            const resultData = result.content || result;
             
-            return await this.selectTopic(topicIndex);
+            // categoryIdとtopicIdの取得を改善
+            let categoryId = resultData.categoryId || result.categoryId || resultData.category;
+            let topicId = resultData.topicId || result.topicId;
+            
+            // IDが 'category:topic' 形式の場合は分割
+            if (!categoryId || !topicId) {
+                const fullId = resultData.id || result.id;
+                if (fullId && fullId.includes(':')) {
+                    const parts = fullId.split(':');
+                    categoryId = categoryId || parts[0];
+                    topicId = topicId || parts[1];
+                } else {
+                    // カテゴリ情報のフォールバック
+                    categoryId = categoryId || resultData.category || 'gameplay';
+                    topicId = topicId || fullId;
+                }
+            }
+            
+            if (!categoryId || !topicId) {
+                console.error('Invalid search result structure - missing categoryId or topicId:', result);
+                console.log('Extracted categoryId:', categoryId, 'topicId:', topicId);
+                return null;
+            }
+            
+            // 検索モードを終了
+            this.isSearching = false;
+            this.searchQuery = '';
+            this.searchResults = [];
+            
+            // カテゴリとトピックを設定
+            await this.selectCategory(categoryId);
+            const topicIndex = this.categories
+                .find(c => c.id === categoryId)?.topics
+                .findIndex(t => t.id === topicId) || 0;
+            
+            return await this.selectTopic(topicIndex, true); // fromSearchResult = true
         }
         
         return null;
@@ -387,12 +539,15 @@ export class HelpContentManager {
      * 状態取得
      */
     getState() {
+        // Ensure searchResults is always an array
+        const searchResults = Array.isArray(this.searchResults) ? this.searchResults : [];
+        
         return {
             selectedCategory: this.selectedCategory,
             selectedTopicIndex: this.selectedTopicIndex,
             currentContent: this.currentContent,
             searchQuery: this.searchQuery,
-            searchResults: [...this.searchResults],
+            searchResults: [...searchResults],
             isSearching: this.isSearching,
             categories: this.categories.map(cat => ({
                 ...cat,
@@ -412,6 +567,25 @@ export class HelpContentManager {
 
     getSearchResults() {
         return [...this.searchResults];
+    }
+
+    /**
+     * 検索クエリを設定
+     * @param {string} query - 検索クエリ
+     */
+    setSearchQuery(query) {
+        this.currentSearchQuery = query.trim();
+        
+        // 検索クエリを更新
+        this.searchQuery = this.currentSearchQuery;
+        
+        // 空の検索クエリの場合は検索結果をクリア
+        if (!this.currentSearchQuery) {
+            this.searchResults = [];
+            this.isSearching = false;
+        } else {
+            this.isSearching = true;
+        }
     }
 
     // Analytics getters

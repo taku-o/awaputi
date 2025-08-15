@@ -145,6 +145,56 @@ export class NavigationContextManager {
     }
     
     /**
+     * 戻り先コンテキストを設定
+     * @param {Object} returnContext - 戻り先コンテキスト情報
+     * @param {string} returnContext.targetScene - 戻り先シーン名
+     * @param {Object} returnContext.contextData - 戻る際のコンテキストデータ
+     * @param {boolean} returnContext.preserveState - 状態を保持するかどうか
+     */
+    setReturnContext(returnContext) {
+        try {
+            if (!returnContext || typeof returnContext !== 'object') {
+                throw new Error('Invalid return context parameter');
+            }
+            
+            if (!returnContext.targetScene || typeof returnContext.targetScene !== 'string') {
+                throw new Error('Invalid targetScene in return context');
+            }
+            
+            // 現在のコンテキストを上書きする形で戻り先を設定
+            const context = {
+                scene: returnContext.targetScene,
+                method: 'explicit_return',
+                timestamp: Date.now(),
+                data: {
+                    ...returnContext.contextData,
+                    preserveState: returnContext.preserveState || false
+                },
+                id: this.generateContextId()
+            };
+            
+            // スタックの最上位を置換（新しいコンテキストがない場合は追加）
+            if (this.navigationStack.length > 0) {
+                this.navigationStack[this.navigationStack.length - 1] = context;
+            } else {
+                this.navigationStack.push(context);
+            }
+            
+            this.currentContext = context;
+            
+            if (this.config.enableLogging) {
+                this.loggingSystem.debug('NavigationContextManager', 
+                    `Return context set: ${returnContext.targetScene} (ID: ${context.id})`);
+            }
+            
+            return true;
+        } catch (error) {
+            this.errorHandler.handleError(error, 'NavigationContextManager.setReturnContext');
+            return false;
+        }
+    }
+    
+    /**
      * 戻り先シーンを取得
      * @returns {string} 戻り先シーン名
      */

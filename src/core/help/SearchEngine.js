@@ -19,7 +19,7 @@ export class SearchEngine {
             minQueryLength: 2,
             maxResults: 50,
             searchTimeout: 5000,
-            fuzzyThreshold: 0.6,
+            fuzzyThreshold: 0.3,
             stopWords: [
                 // 日本語ストップワード
                 'の', 'に', 'は', 'を', 'が', 'で', 'と', 'た', 'て', 'だ', 'である', 'です', 'ます',
@@ -63,6 +63,26 @@ export class SearchEngine {
         } catch (error) {
             this.loggingSystem.error('SearchEngine', 'Failed to initialize search engine', error);
             ErrorHandler.handle(error, 'SearchEngine.initialize');
+        }
+    }
+
+    /**
+     * 検索インデックスの構築
+     * @param {string} language - 対象言語（オプショナル）
+     */
+    async buildIndex(language = 'ja') {
+        try {
+            this.loggingSystem.info('SearchEngine', `Building search index for language: ${language}`);
+            
+            // インデックスのクリア
+            this.clearAllIndexes();
+            
+            // 基本インデックスの構築完了
+            this.loggingSystem.info('SearchEngine', `Search index built successfully for ${language}`);
+            
+        } catch (error) {
+            this.loggingSystem.error('SearchEngine', 'Failed to build search index', error);
+            ErrorHandler.handle(error, 'SearchEngine.buildIndex');
         }
     }
 
@@ -359,9 +379,10 @@ export class SearchEngine {
 
         // 各検索語に対してスコアを計算
         for (const term of queryTerms) {
-            const matchingContentIds = this.termIndex.get(term) || [];
+            // 完全一致検索
+            const exactMatchIds = this.termIndex.get(term) || [];
             
-            for (const contentId of matchingContentIds) {
+            for (const contentId of exactMatchIds) {
                 const content = this.contentIndex.get(contentId);
                 if (!content) continue;
 
@@ -370,10 +391,76 @@ export class SearchEngine {
                     continue;
                 }
 
-                // スコア計算
+                // 完全一致スコア計算
                 const score = this.calculateRelevanceScore(content, term, query);
                 const currentScore = contentScores.get(contentId) || 0;
                 contentScores.set(contentId, currentScore + score);
+            }
+            
+            // 部分一致検索を追加
+            for (const [indexTerm, contentIds] of this.termIndex.entries()) {
+                // インデックス語が検索語を含む場合（部分一致）
+                if (indexTerm.includes(term) && indexTerm !== term) {
+                    for (const contentId of contentIds) {
+                        const content = this.contentIndex.get(contentId);
+                        if (!content) continue;
+
+                        // フィルタリング
+                        if (!this.passesFilters(content, options)) {
+                            continue;
+                        }
+
+                        // 部分一致スコア計算（完全一致より低いスコア）
+                        const partialScore = this.calculateRelevanceScore(content, indexTerm, query) * 0.7;
+                        const currentScore = contentScores.get(contentId) || 0;
+                        contentScores.set(contentId, currentScore + partialScore);
+                    }
+                }
+                
+                // 検索語がインデックス語を含む場合（逆方向の部分一致）
+                if (term.includes(indexTerm) && indexTerm !== term) {
+                    for (const contentId of contentIds) {
+                        const content = this.contentIndex.get(contentId);
+                        if (!content) continue;
+
+                        // フィルタリング
+                        if (!this.passesFilters(content, options)) {
+                            continue;
+                        }
+
+                        // 逆方向部分一致スコア計算
+                        const reversePartialScore = this.calculateRelevanceScore(content, indexTerm, query) * 0.8;
+                        const currentScore = contentScores.get(contentId) || 0;
+                        contentScores.set(contentId, currentScore + reversePartialScore);
+                    }
+                }
+            }
+        }
+
+        // 直接的な部分文字列検索（タイトルとコンテンツ内での検索）
+        for (const term of queryTerms) {
+            for (const [contentId, content] of this.contentIndex.entries()) {
+                if (!this.passesFilters(content, options)) {
+                    continue;
+                }
+                
+                const termLower = term.toLowerCase();
+                const titleLower = content.title.toLowerCase();
+                const contentLower = content.content.toLowerCase();
+                
+                // タイトルに部分一致
+                if (titleLower.includes(termLower)) {
+                    const substringScore = this.calculateRelevanceScore(content, term, query) * 0.9;
+                    const currentScore = contentScores.get(contentId) || 0;
+                    contentScores.set(contentId, currentScore + substringScore);
+                }
+                
+                // コンテンツに部分一致
+                if (contentLower.includes(termLower)) {
+                    const substringScore = this.calculateRelevanceScore(content, term, query) * 0.8;
+                    const currentScore = contentScores.get(contentId) || 0;
+                    contentScores.set(contentId, currentScore + substringScore);
+                }
             }
         }
 

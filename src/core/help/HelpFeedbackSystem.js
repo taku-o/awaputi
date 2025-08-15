@@ -35,7 +35,8 @@ export class HelpFeedbackSystem {
             contentViewTimes: new Map(),
             viewStartTimes: new Map(),
             suppressedContent: new Set(),
-            lastFeedbackTime: 0
+            lastFeedbackTime: 0,
+            feedbackData: new Map()
         };
         
         this.initialize();
@@ -254,6 +255,78 @@ export class HelpFeedbackSystem {
     suppressFeedbackForContent(contentId) {
         this.state.suppressedContent.add(contentId);
         this.loggingSystem.debug('HelpFeedbackSystem', `Feedback suppressed for: ${contentId}`);
+    }
+
+    /**
+     * トピック終了を記録
+     * @param {string} topicId - 終了したトピックのID
+     * @param {Object} content - トピックのコンテンツ情報
+     */
+    recordTopicExit(topicId, content) {
+        try {
+            // コンテンツ表示を終了
+            this.endContentView(topicId);
+            
+            // 終了ログ記録
+            this.loggingSystem.debug('HelpFeedbackSystem', `Topic exit recorded: ${topicId}`);
+        } catch (error) {
+            this.loggingSystem.error('HelpFeedbackSystem', 'Failed to record topic exit', error);
+        }
+    }
+
+    /**
+     * トピック表示を記録
+     * @param {string} topicId - 表示されたトピックのID
+     * @param {Object} content - トピックのコンテンツ情報
+     */
+    recordTopicView(topicId, content) {
+        try {
+            // コンテンツ表示を開始
+            this.startContentView(topicId);
+            
+            // 表示ログ記録
+            this.loggingSystem.debug('HelpFeedbackSystem', `Topic view recorded: ${topicId}`);
+        } catch (error) {
+            this.loggingSystem.error('HelpFeedbackSystem', 'Failed to record topic view', error);
+        }
+    }
+
+    /**
+     * フィードバックを記録
+     * @param {string} topicId - フィードバック対象のトピックID
+     * @param {Object} content - トピックのコンテンツ情報
+     * @param {Object} feedback - フィードバック内容
+     */
+    recordFeedback(topicId, content, feedback) {
+        try {
+            // フィードバック内容を統計に反映
+            if (!this.state.feedbackData.has(topicId)) {
+                this.state.feedbackData.set(topicId, {
+                    ratings: [],
+                    comments: [],
+                    totalFeedbacks: 0
+                });
+            }
+            
+            const feedbackStats = this.state.feedbackData.get(topicId);
+            
+            if (feedback.rating) {
+                feedbackStats.ratings.push(feedback.rating);
+            }
+            
+            if (feedback.comment) {
+                feedbackStats.comments.push(feedback.comment);
+            }
+            
+            feedbackStats.totalFeedbacks++;
+            
+            // データ保存
+            this.saveFeedbackData();
+            
+            this.loggingSystem.debug('HelpFeedbackSystem', `Feedback recorded: ${topicId}`);
+        } catch (error) {
+            this.loggingSystem.error('HelpFeedbackSystem', 'Failed to record feedback', error);
+        }
     }
     
     /**
