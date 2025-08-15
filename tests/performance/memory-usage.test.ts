@@ -1,13 +1,100 @@
 /**
  * メモリ使用量のテスト
+ * TypeScript移行 - Task 26対応
  * 
  * キャッシュシステムのメモリ使用量、リーク検出、自動クリーンアップ機能を測定します。
  */
 
+import { jest } from '@jest/globals';
 import { getCacheSystem } from '../../src/core/CacheSystem.js';
 
+interface CacheConfig {
+    maxSize: number;
+    ttl: number;
+    cleanupInterval: number;
+}
+
+interface CacheStats {
+    size: number;
+    hits: number;
+    misses: number;
+    hitRate: string;
+}
+
+interface MemoryOverview {
+    totalMemoryUsage: string;
+    averageEntrySize: string;
+}
+
+interface MemoryBreakdown {
+    keys: string;
+    values: string;
+    metadata: string;
+}
+
+interface MemoryEntry {
+    key: string;
+    size: string;
+    type: string;
+}
+
+interface MemoryReport {
+    overview: MemoryOverview;
+    breakdown: MemoryBreakdown;
+    topLargestEntries: MemoryEntry[];
+    recommendations: string[];
+}
+
+interface LeakEntry {
+    key: string;
+    age: number;
+    size: string;
+    lastAccessed: number;
+}
+
+interface MemoryLeakReport {
+    potentialLeaks: LeakEntry[];
+    memoryUsage: string;
+    cacheSize: number;
+    recommendations: string[];
+}
+
+interface MemoryFixResult {
+    success: boolean;
+    before: {
+        cacheSize: number;
+        memoryUsage: string;
+    };
+    after: {
+        cacheSize: number;
+        memoryUsage: string;
+    };
+    expiredEntriesRemoved: number;
+    memoryFreed: string;
+}
+
+interface CacheSystem {
+    config: CacheConfig;
+    clear(): void;
+    destroy(): void;
+    set(key: string, value: any, options?: { ttl?: number }): void;
+    get(key: string): any;
+    getStats(): CacheStats;
+    getMemoryReport(): MemoryReport;
+    cleanup(): number;
+    detectMemoryLeaks(): MemoryLeakReport;
+    fixMemoryLeaks(): MemoryFixResult;
+    _optimizeDuplicateData(): void;
+    forceGarbageCollection(): boolean;
+}
+
+interface TestDataItem {
+    key: string;
+    value: any;
+}
+
 describe('Memory Usage Tests', () => {
-    let cache;
+    let cache: CacheSystem;
     
     beforeEach(() => {
         cache = getCacheSystem({
@@ -24,7 +111,7 @@ describe('Memory Usage Tests', () => {
     
     test('基本的なメモリ使用量の測定', () => {
         // 様々なサイズのデータを追加
-        const testData = [
+        const testData: TestDataItem[] = [
             { key: 'small', value: 'test' },
             { key: 'medium', value: 'a'.repeat(1000) },
             { key: 'large', value: 'b'.repeat(10000) },
@@ -37,8 +124,8 @@ describe('Memory Usage Tests', () => {
             cache.set(key, value);
         });
         
-        const stats = cache.getStats();
-        const memoryReport = cache.getMemoryReport();
+        const stats: CacheStats = cache.getStats();
+        const memoryReport: MemoryReport = cache.getMemoryReport();
         
         console.log('基本メモリ使用量:');
         console.log('- キャッシュサイズ:', stats.size);
@@ -77,8 +164,8 @@ describe('Memory Usage Tests', () => {
         const endTime = Date.now();
         const addTime = endTime - startTime;
         
-        const stats = cache.getStats();
-        const memoryReport = cache.getMemoryReport();
+        const stats: CacheStats = cache.getStats();
+        const memoryReport: MemoryReport = cache.getMemoryReport();
         
         console.log('大量データメモリ効率性:');
         console.log('- データ追加時間:', `${addTime}ms`);
@@ -103,15 +190,15 @@ describe('Memory Usage Tests', () => {
         cache.set('expired2', 'value2', { ttl: 200 }); // 200ms後に期限切れ
         cache.set('persistent', 'value3', { ttl: 60000 }); // 1分後に期限切れ
         
-        const beforeCleanup = cache.getStats();
+        const beforeCleanup: CacheStats = cache.getStats();
         
         // 期限切れを待つ
         await new Promise(resolve => setTimeout(resolve, 300));
         
         // 手動クリーンアップを実行
-        const cleanedCount = cache.cleanup();
+        const cleanedCount: number = cache.cleanup();
         
-        const afterCleanup = cache.getStats();
+        const afterCleanup: CacheStats = cache.getStats();
         
         console.log('自動クリーンアップ:');
         console.log('- クリーンアップ前:', beforeCleanup.size);
@@ -128,7 +215,7 @@ describe('Memory Usage Tests', () => {
         expect(cache.get('expired2')).toBeNull();
     });
     
-    test('メモリリーク検出機能', () => {
+    test('メモリリーク検出機能', (done) => {
         // 古いデータを大量に追加（リークをシミュレート）
         for (let i = 0; i < 100; i++) {
             cache.set(`old-${i}`, `old-value-${i}`, { ttl: 1 }); // 1ms後に期限切れ
@@ -141,7 +228,7 @@ describe('Memory Usage Tests', () => {
         
         // 少し待機して期限切れにする
         setTimeout(() => {
-            const leakReport = cache.detectMemoryLeaks();
+            const leakReport: MemoryLeakReport = cache.detectMemoryLeaks();
             
             console.log('メモリリーク検出:');
             console.log('- 潜在的リーク数:', leakReport.potentialLeaks.length);
@@ -156,6 +243,8 @@ describe('Memory Usage Tests', () => {
             expect(leakReport.potentialLeaks.length).toBeGreaterThanOrEqual(0);
             expect(leakReport.memoryUsage).toBeDefined();
             expect(leakReport.cacheSize).toBeGreaterThan(0);
+            
+            done();
         }, 100);
     });
     
@@ -165,15 +254,15 @@ describe('Memory Usage Tests', () => {
             cache.set(`leak-${i}`, `leak-value-${i}`, { ttl: 50 }); // 50ms後に期限切れ
         }
         
-        const beforeFix = cache.getStats();
+        const beforeFix: CacheStats = cache.getStats();
         
         // 期限切れを待つ
         await new Promise(resolve => setTimeout(resolve, 100));
         
         // リーク修復を実行
-        const fixResult = cache.fixMemoryLeaks();
+        const fixResult: MemoryFixResult = cache.fixMemoryLeaks();
         
-        const afterFix = cache.getStats();
+        const afterFix: CacheStats = cache.getStats();
         
         console.log('メモリリーク修復:');
         console.log('- 修復前キャッシュサイズ:', fixResult.before.cacheSize);
@@ -200,12 +289,12 @@ describe('Memory Usage Tests', () => {
             cache.set(`unique-${i}`, { data: `unique-${i}`, size: i });
         }
         
-        const beforeOptimization = cache.getStats();
+        const beforeOptimization: CacheStats = cache.getStats();
         
         // 重複データ最適化を実行
         cache._optimizeDuplicateData();
         
-        const afterOptimization = cache.getStats();
+        const afterOptimization: CacheStats = cache.getStats();
         
         console.log('重複データ最適化:');
         console.log('- 最適化前:', beforeOptimization.size);
@@ -228,7 +317,7 @@ describe('Memory Usage Tests', () => {
     
     test('メモリ使用量の詳細レポート', () => {
         // 様々なサイズのデータを追加
-        const testData = [
+        const testData: TestDataItem[] = [
             { key: 'tiny', value: 'x' },
             { key: 'small', value: 'x'.repeat(100) },
             { key: 'medium', value: 'x'.repeat(1000) },
@@ -240,7 +329,7 @@ describe('Memory Usage Tests', () => {
             cache.set(key, value);
         });
         
-        const report = cache.getMemoryReport();
+        const report: MemoryReport = cache.getMemoryReport();
         
         console.log('詳細メモリレポート:');
         console.log('- 概要:', report.overview);
@@ -282,7 +371,7 @@ describe('Memory Usage Tests', () => {
         const endMemory = cache.getMemoryReport().overview.totalMemoryUsage;
         const totalTime = endTime - startTime;
         
-        const stats = cache.getStats();
+        const stats: CacheStats = cache.getStats();
         
         console.log('大量アクセス時のメモリ安定性:');
         console.log('- 処理時間:', `${totalTime}ms`);
@@ -314,12 +403,12 @@ describe('Memory Usage Tests', () => {
             });
         }
         
-        const beforeGC = cache.getMemoryReport();
+        const beforeGC: MemoryReport = cache.getMemoryReport();
         
         // ガベージコレクションを実行
-        const gcResult = cache.forceGarbageCollection();
+        const gcResult: boolean = cache.forceGarbageCollection();
         
-        const afterGC = cache.getMemoryReport();
+        const afterGC: MemoryReport = cache.getMemoryReport();
         
         console.log('ガベージコレクション:');
         console.log('- GC実行結果:', gcResult);
@@ -343,12 +432,12 @@ describe('Memory Usage Tests', () => {
             });
         }
         
-        const beforeDestroy = cache.getStats();
+        const beforeDestroy: CacheStats = cache.getStats();
         
         // リソースを破棄
         cache.destroy();
         
-        const afterDestroy = cache.getStats();
+        const afterDestroy: CacheStats = cache.getStats();
         
         console.log('リソース破棄時のクリーンアップ:');
         console.log('- 破棄前キャッシュサイズ:', beforeDestroy.size);

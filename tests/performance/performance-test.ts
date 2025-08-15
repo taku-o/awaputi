@@ -1,15 +1,85 @@
 /**
  * Performance tests for BubblePop game
+ * TypeScript移行 - Task 26対応
  */
 
 import { performance } from 'perf_hooks';
-import { createCanvas } from 'canvas';
+import { createCanvas, Canvas } from 'canvas';
 import { GameEngine } from '../../src/core/GameEngine.js';
 import { Bubble } from '../../src/bubbles/Bubble.js';
+import { Position, BubbleType } from '../../src/types/bubble.js';
+
+interface MockDocument {
+  createElement: (tag: string) => any;
+  getElementById: () => null;
+  addEventListener: () => void;
+  body: { appendChild: () => void };
+}
+
+interface MockWindow {
+  innerWidth: number;
+  innerHeight: number;
+  devicePixelRatio: number;
+  addEventListener: () => void;
+  requestAnimationFrame: (callback: () => void) => number;
+  performance: typeof performance;
+}
+
+interface MockLocalStorage {
+  getItem: () => null;
+  setItem: () => void;
+  removeItem: () => void;
+  clear: () => void;
+}
+
+interface MockNavigator {
+  userAgent: string;
+}
+
+interface PerformanceResult {
+  name: string;
+  iterations: number;
+  avgTime: number;
+  minTime: number;
+  maxTime: number;
+  medianTime: number;
+  opsPerSecond: number;
+  memoryDiff: {
+    heapUsed: number;
+    heapTotal: number;
+    external: number;
+  };
+}
+
+interface PerformanceReport {
+  timestamp: string;
+  nodeVersion: string;
+  platform: string;
+  arch: string;
+  results: PerformanceResult[];
+}
+
+interface RegressionResult {
+  test: string;
+  type: 'time' | 'memory';
+  regression: number;
+  current: number;
+  baseline: number;
+}
+
+interface SaveData {
+  username: string;
+  currentScore: number;
+  ap: number;
+  tap: number;
+  highScores: Record<string, number>;
+  unlockedStages: string[];
+  ownedItems: Array<{ id: string; level: number }>;
+}
 
 // Mock DOM environment for Node.js
-global.document = {
-  createElement: (tag) => {
+(global as any).document = {
+  createElement: (tag: string) => {
     if (tag === 'canvas') {
       return createCanvas(800, 600);
     }
@@ -18,38 +88,40 @@ global.document = {
   getElementById: () => null,
   addEventListener: () => {},
   body: { appendChild: () => {} }
-};
+} as MockDocument;
 
-global.window = {
+(global as any).window = {
   innerWidth: 1024,
   innerHeight: 768,
   devicePixelRatio: 1,
   addEventListener: () => {},
-  requestAnimationFrame: (callback) => setTimeout(callback, 16),
+  requestAnimationFrame: (callback: () => void) => setTimeout(callback, 16),
   performance: performance
-};
+} as MockWindow;
 
-global.localStorage = {
+(global as any).localStorage = {
   getItem: () => null,
   setItem: () => {},
   removeItem: () => {},
   clear: () => {}
-};
+} as MockLocalStorage;
 
-global.navigator = {
+(global as any).navigator = {
   userAgent: 'Node.js Performance Test'
-};
+} as MockNavigator;
 
 class PerformanceTest {
-  constructor() {
-    this.results = [];
-  }
+  private results: PerformanceResult[] = [];
 
-  async runTest(name, testFunction, iterations = 1000) {
+  async runTest(
+    name: string, 
+    testFunction: () => Promise<any> | any, 
+    iterations: number = 1000
+  ): Promise<PerformanceResult> {
     console.log(`\n🧪 Running ${name}...`);
     
-    const times = [];
-    let memoryBefore, memoryAfter;
+    const times: number[] = [];
+    let memoryBefore: NodeJS.MemoryUsage, memoryAfter: NodeJS.MemoryUsage;
     
     // Warm up
     for (let i = 0; i < 10; i++) {
@@ -57,8 +129,8 @@ class PerformanceTest {
     }
     
     // Measure memory before
-    if (global.gc) {
-      global.gc();
+    if ((global as any).gc) {
+      (global as any).gc();
     }
     memoryBefore = process.memoryUsage();
     
@@ -84,7 +156,7 @@ class PerformanceTest {
       external: memoryAfter.external - memoryBefore.external
     };
     
-    const result = {
+    const result: PerformanceResult = {
       name,
       iterations,
       avgTime: Math.round(avgTime * 1000) / 1000, // Round to 3 decimal places
@@ -104,7 +176,7 @@ class PerformanceTest {
     return result;
   }
 
-  printSummary() {
+  printSummary(): void {
     console.log('\n📋 Performance Test Summary');
     console.log('=' .repeat(60));
     
@@ -120,7 +192,7 @@ class PerformanceTest {
     // Performance thresholds
     console.log('\n🎯 Performance Analysis:');
     this.results.forEach(result => {
-      const warnings = [];
+      const warnings: string[] = [];
       
       if (result.avgTime > 16) { // 60fps = 16.67ms per frame
         warnings.push('⚠️  Average time exceeds 60fps budget (16.67ms)');
@@ -142,26 +214,32 @@ class PerformanceTest {
       }
     });
   }
+
+  getResults(): PerformanceResult[] {
+    return [...this.results];
+  }
 }
 
-async function runPerformanceTests() {
+async function runPerformanceTests(): Promise<PerformanceReport> {
   const tester = new PerformanceTest();
   
   console.log('🚀 Starting BubblePop Performance Tests');
   
   // Test 1: Bubble Creation Performance
   await tester.runTest('Bubble Creation', () => {
-    const bubble = new Bubble('normal', { x: 100, y: 100 });
+    const position: Position = { x: 100, y: 100 };
+    const bubble = new Bubble('normal', position);
     return bubble;
   }, 10000);
   
   // Test 2: Bubble Update Performance
-  let testBubbles = [];
+  const testBubbles: Bubble[] = [];
   for (let i = 0; i < 100; i++) {
-    testBubbles.push(new Bubble('normal', { 
+    const position: Position = { 
       x: Math.random() * 800, 
       y: Math.random() * 600 
-    }));
+    };
+    testBubbles.push(new Bubble('normal', position));
   }
   
   await tester.runTest('Bubble Update (100 bubbles)', () => {
@@ -169,7 +247,8 @@ async function runPerformanceTests() {
   }, 1000);
   
   // Test 3: Bubble Collision Detection
-  const testBubble = new Bubble('normal', { x: 400, y: 300 });
+  const testBubblePosition: Position = { x: 400, y: 300 };
+  const testBubble = new Bubble('normal', testBubblePosition);
   await tester.runTest('Bubble Collision Detection', () => {
     for (let i = 0; i < 100; i++) {
       testBubble.containsPoint(
@@ -194,7 +273,8 @@ async function runPerformanceTests() {
   }, 1000);
   
   // Test 5: Boundary Collision Performance
-  const movingBubble = new Bubble('normal', { x: 10, y: 10 });
+  const movingBubblePosition: Position = { x: 10, y: 10 };
+  const movingBubble = new Bubble('normal', movingBubblePosition);
   movingBubble.velocity = { x: -50, y: -50 };
   
   await tester.runTest('Boundary Collision', () => {
@@ -202,7 +282,8 @@ async function runPerformanceTests() {
   }, 5000);
   
   // Test 6: Escaping Bubble Behavior
-  const escapingBubble = new Bubble('escaping', { x: 400, y: 300 });
+  const escapingBubblePosition: Position = { x: 400, y: 300 };
+  const escapingBubble = new Bubble('escaping', escapingBubblePosition);
   await tester.runTest('Escaping Bubble AI', () => {
     escapingBubble.update(16, { x: 450, y: 350 });
   }, 2000);
@@ -210,12 +291,13 @@ async function runPerformanceTests() {
   // Test 7: Canvas Rendering (Mock)
   const mockCanvas = createCanvas(800, 600);
   const mockContext = mockCanvas.getContext('2d');
-  const renderBubbles = [];
+  const renderBubbles: Bubble[] = [];
   for (let i = 0; i < 50; i++) {
-    renderBubbles.push(new Bubble('normal', {
+    const position: Position = {
       x: Math.random() * 800,
       y: Math.random() * 600
-    }));
+    };
+    renderBubbles.push(new Bubble('normal', position));
   }
   
   await tester.runTest('Canvas Rendering (50 bubbles)', () => {
@@ -230,25 +312,28 @@ async function runPerformanceTests() {
   
   // Test 8: Memory Allocation Stress Test
   await tester.runTest('Memory Allocation Stress', () => {
-    const tempBubbles = [];
+    const tempBubbles: Bubble[] = [];
     for (let i = 0; i < 1000; i++) {
-      tempBubbles.push(new Bubble('normal', {
+      const position: Position = {
         x: Math.random() * 800,
         y: Math.random() * 600
-      }));
+      };
+      tempBubbles.push(new Bubble('normal', position));
     }
     // Let them be garbage collected
     tempBubbles.length = 0;
   }, 100);
   
   // Test 9: Complex Game State Update
-  const complexBubbles = [];
+  const complexBubbles: Bubble[] = [];
   for (let i = 0; i < 200; i++) {
-    const types = ['normal', 'stone', 'rainbow', 'electric', 'escaping'];
-    complexBubbles.push(new Bubble(
-      types[Math.floor(Math.random() * types.length)],
-      { x: Math.random() * 800, y: Math.random() * 600 }
-    ));
+    const types: BubbleType[] = ['normal', 'stone', 'rainbow', 'electric', 'escaping'];
+    const randomType = types[Math.floor(Math.random() * types.length)];
+    const position: Position = { 
+      x: Math.random() * 800, 
+      y: Math.random() * 600 
+    };
+    complexBubbles.push(new Bubble(randomType, position));
   }
   
   await tester.runTest('Complex Game State Update', () => {
@@ -262,7 +347,7 @@ async function runPerformanceTests() {
   }, 200);
   
   // Test 10: JSON Serialization (Save/Load)
-  const saveData = {
+  const saveData: SaveData = {
     username: 'PerformanceTestUser',
     currentScore: 50000,
     ap: 1000,
@@ -282,19 +367,19 @@ async function runPerformanceTests() {
   
   await tester.runTest('JSON Serialization', () => {
     const serialized = JSON.stringify(saveData);
-    const deserialized = JSON.parse(serialized);
+    const deserialized: SaveData = JSON.parse(serialized);
     return deserialized;
   }, 5000);
   
   tester.printSummary();
   
   // Generate performance report
-  const report = {
+  const report: PerformanceReport = {
     timestamp: new Date().toISOString(),
     nodeVersion: process.version,
     platform: process.platform,
     arch: process.arch,
-    results: tester.results
+    results: tester.getResults()
   };
   
   // Save report (in a real scenario, you might write to a file)
@@ -305,7 +390,10 @@ async function runPerformanceTests() {
 }
 
 // Automated performance regression detection
-function checkPerformanceRegression(currentResults, baselineResults) {
+function checkPerformanceRegression(
+  currentResults: PerformanceResult[], 
+  baselineResults?: PerformanceResult[]
+): boolean {
   console.log('\n🔍 Checking for Performance Regressions...');
   
   if (!baselineResults) {
@@ -313,7 +401,7 @@ function checkPerformanceRegression(currentResults, baselineResults) {
     return false;
   }
   
-  let regressions = [];
+  const regressions: RegressionResult[] = [];
   
   currentResults.forEach(current => {
     const baseline = baselineResults.find(b => b.name === current.name);
@@ -370,3 +458,4 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 }
 
 export { runPerformanceTests, checkPerformanceRegression };
+export type { PerformanceResult, PerformanceReport, RegressionResult };
