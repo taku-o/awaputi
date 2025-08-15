@@ -80,6 +80,11 @@ export class HelpContentManager {
             const { getHelpAnalytics } = await import('../../core/help/HelpAnalytics.js');
             this.helpAnalytics = getHelpAnalytics(this.gameEngine);
             
+            // HelpManagerにanalyticsオブジェクトを設定
+            if (this.helpManager) {
+                this.helpManager.analytics = this.helpAnalytics;
+            }
+            
             // ヘルプフィードバックシステムの初期化
             const { getHelpFeedbackSystem } = await import('../../core/help/HelpFeedbackSystem.js');
             this.helpFeedbackSystem = getHelpFeedbackSystem(this.gameEngine);
@@ -87,6 +92,8 @@ export class HelpContentManager {
             // ヘルプ効果測定ツールの初期化
             const { getHelpEffectivenessAnalyzer } = await import('../../core/help/HelpEffectivenessAnalyzer.js');
             this.helpEffectivenessAnalyzer = getHelpEffectivenessAnalyzer(this.gameEngine);
+            
+            console.log('HelpContentManager: Analytics systems initialized successfully');
             
         } catch (error) {
             console.warn('Some analytics systems failed to initialize:', error);
@@ -116,13 +123,32 @@ export class HelpContentManager {
                             content = await this.helpManager.getTopicContent(topic.id);
                         }
                         
+                        // コンテンツテキストの抽出（オブジェクト構造に対応）
+                        let contentText = '';
+                        if (content) {
+                            if (typeof content.content === 'string') {
+                                // content.contentが文字列の場合
+                                contentText = content.content;
+                            } else if (content.content && typeof content.content === 'object') {
+                                // content.contentがオブジェクトの場合（overview, objective, basic_rules, tipsなど）
+                                const contentValues = Object.values(content.content).filter(val => typeof val === 'string');
+                                contentText = contentValues.join(' ');
+                            } else if (content.answer && typeof content.answer === 'string') {
+                                // フォールバック: answer
+                                contentText = content.answer;
+                            } else if (content.description && typeof content.description === 'string') {
+                                // フォールバック: description
+                                contentText = content.description;
+                            }
+                        }
+                        
                         // 検索用データ構造を作成
                         const searchItem = {
                             id: `${category.id}:${topic.id}`,
                             categoryId: category.id,
                             topicId: topic.id,
                             title: topic.title || topic.question || '',
-                            content: content ? (content.content || content.answer || content.description || '') : '',
+                            content: contentText,
                             category: category.id,
                             categoryName: this.gameEngine.localizationManager?.t(category.key, category.id) || category.id,
                             tags: topic.tags || [],
@@ -258,8 +284,12 @@ export class HelpContentManager {
             this.selectedTopicIndex = 0; // 最初の結果を選択
 
             // アナリティクス記録
-            if (this.helpAnalytics) {
-                this.helpAnalytics.recordSearchQuery(trimmedQuery, this.searchResults.length);
+            if (this.helpAnalytics && typeof this.helpAnalytics.recordSearchQuery === 'function') {
+                try {
+                    this.helpAnalytics.recordSearchQuery(trimmedQuery, this.searchResults.length);
+                } catch (error) {
+                    console.warn('Failed to record search query analytics:', error);
+                }
             }
             
         } catch (error) {
@@ -296,6 +326,8 @@ export class HelpContentManager {
             } catch (error) {
                 console.warn('Failed to record category selection:', error);
             }
+        } else if (this.helpAnalytics) {
+            console.warn('HelpAnalytics object exists but recordCategorySelection method is missing');
         }
 
         return { fromIndex, toIndex };
@@ -318,6 +350,8 @@ export class HelpContentManager {
             } catch (error) {
                 console.warn('Failed to record topic exit:', error);
             }
+        } else if (this.helpFeedbackSystem && this.currentContent && category.topics[this.selectedTopicIndex]) {
+            console.warn('HelpFeedbackSystem object exists but recordTopicExit method is missing');
         }
 
         this.selectedTopicIndex = index;
