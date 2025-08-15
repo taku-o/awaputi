@@ -61,11 +61,13 @@ npm run test:all
 - 厳密な型チェック設定でany型の使用を最小化
 - 未実装機能の発見時はその場で実装
 - 全テストとE2Eテストでの継続的検証
+- **未実装機能の継続記録**: TypeScript移行中に「将来実装する」「現時点では未実装」のコード箇所を発見した場合、`.kiro/specs/typescript-migration/unimplemented-features.md`に記録する
 
 **仕様書**: `.kiro/specs/typescript-migration/`
 - requirements.md: 8つの要件定義（環境構築、ソース変換、テスト変換、型定義、設定除外、段階移行、未実装実装、継続性）
 - design.md: 詳細なアーキテクチャ設計（設定、型定義、移行戦略、エラーハンドリング、テスト戦略）
 - tasks.md: 9フェーズ40タスクの詳細実装計画（環境→コア→管理→UI→エフェクト→テスト→修正→検証→ドキュメント）
+- unimplemented-features.md: TypeScript移行中に発見した未実装機能一覧
 
 **作業記録ファイル**: `.kiro/specs/typescript-migration/work-progress.md`
 
