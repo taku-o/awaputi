@@ -585,8 +585,8 @@ export class HelpRenderer {
             const categoryName = this.gameEngine.localizationManager.t(categoryKey, categoryId);
             
             // 結果タイトル
-            ctx.fillStyle = isSelected ? this.colors.text : this.colors.textSecondary;
-            ctx.font = `${isSelected ? 'bold ' : ''}${this.fontSizes.normal}px Arial, sans-serif`;
+            ctx.fillStyle = this.colors.text;
+            ctx.font = `${this.fontSizes.normal}px Arial, sans-serif`;
             ctx.fillText(title, contentArea.x + 20, currentY + 5);
             
             // カテゴリ情報
