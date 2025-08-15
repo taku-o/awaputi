@@ -78,22 +78,34 @@ export class HelpAnalytics {
             // Mapオブジェクトの確実な初期化（復元データが壊れている場合の対策）
             this.ensureMapInitialization();
             
+            // ヘルプシステムの初期化検証
+            const validationResult = this.validateHelpSystemInitialization();
+            
             // コンテンツキャッシングの初期化
             this.initializeContentCaching();
             
             // パフォーマンス監視の初期化
             this.initializePerformanceMonitoring();
             
+            // フォールバックインターフェースの準備
+            if (!validationResult.isValid) {
+                this.initializeFallbackInterface();
+            }
+            
             // セッション管理の開始
             this.startSessionTracking();
             
-            // 定期的なデータ保存
+            // 定期的なデータ保存とメンテナンス
             this.setupPeriodicSave();
+            this.setupPeriodicMaintenance();
             
             // ページ離脱時の処理
             this.setupUnloadHandlers();
             
-            this.loggingSystem.info('HelpAnalytics', 'Help analytics initialized');
+            this.loggingSystem.info('HelpAnalytics', 'Help analytics initialized', {
+                validation: validationResult.isValid ? 'passed' : 'failed',
+                fallbackReady: !!this.fallbackInterface
+            });
         } catch (error) {
             this.loggingSystem.error('HelpAnalytics', 'Failed to initialize help analytics', error);
             ErrorHandler.handle(error, 'HelpAnalytics.initialize');
@@ -1355,6 +1367,337 @@ export class HelpAnalytics {
             }
         }
     }
+
+    /**
+     * フォールバック用テキストベースヘルプインターフェース
+     */
+    initializeFallbackInterface() {
+        try {
+            this.fallbackInterface = {
+                isActive: false,
+                container: null,
+                content: new Map()
+            };
+
+            // 基本的なヘルプコンテンツ
+            this.fallbackInterface.content.set('basic-help', {
+                title: 'ゲームヘルプ（簡易版）',
+                content: [
+                    '基本操作:',
+                    '- 泡をクリックまたはタップして割る',
+                    '- スペースキーでポーズ',
+                    '- ESCキーでメニューに戻る',
+                    '- F11キーでフルスクリーン切り替え',
+                    '',
+                    'スコアシステム:',
+                    '- 泡を割るとスコア獲得',
+                    '- 連続で割るとコンボボーナス',
+                    '- ピンクの泡でHP回復',
+                    '- 毒の泡でHPダメージ',
+                    '',
+                    '問題が発生した場合は、ページを再読み込みしてください。'
+                ]
+            });
+
+            this.loggingSystem.debug('HelpAnalytics', 'Fallback interface initialized');
+        } catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to initialize fallback interface', error);
+        }
+    }
+
+    /**
+     * フォールバックインターフェースを表示
+     */
+    showFallbackInterface() {
+        try {
+            if (this.fallbackInterface.isActive) return;
+
+            // コンテナ要素を作成
+            this.fallbackInterface.container = document.createElement('div');
+            this.fallbackInterface.container.id = 'help-fallback-interface';
+            this.fallbackInterface.container.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 80%;
+                max-width: 600px;
+                max-height: 80%;
+                background: rgba(0, 0, 0, 0.9);
+                color: white;
+                padding: 20px;
+                border-radius: 10px;
+                font-family: Arial, sans-serif;
+                font-size: 14px;
+                line-height: 1.4;
+                overflow-y: auto;
+                z-index: 10000;
+                border: 2px solid #4CAF50;
+            `;
+
+            // ヘルプコンテンツを追加
+            const helpContent = this.fallbackInterface.content.get('basic-help');
+            const contentDiv = document.createElement('div');
+            
+            const title = document.createElement('h2');
+            title.textContent = helpContent.title;
+            title.style.cssText = 'margin-top: 0; color: #4CAF50; text-align: center;';
+            contentDiv.appendChild(title);
+
+            helpContent.content.forEach(line => {
+                const p = document.createElement('p');
+                p.textContent = line;
+                p.style.cssText = 'margin: 5px 0; white-space: pre-line;';
+                contentDiv.appendChild(p);
+            });
+
+            // 閉じるボタンを追加
+            const closeButton = document.createElement('button');
+            closeButton.textContent = '閉じる (ESC)';
+            closeButton.style.cssText = `
+                display: block;
+                margin: 20px auto 0;
+                padding: 10px 20px;
+                background: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                font-size: 14px;
+                cursor: pointer;
+            `;
+            
+            closeButton.onclick = () => this.hideFallbackInterface();
+            contentDiv.appendChild(closeButton);
+
+            this.fallbackInterface.container.appendChild(contentDiv);
+
+            // キーボードイベント
+            const handleKeyDown = (event) => {
+                if (event.key === 'Escape') {
+                    this.hideFallbackInterface();
+                }
+            };
+
+            document.addEventListener('keydown', handleKeyDown);
+            this.fallbackInterface.keydownHandler = handleKeyDown;
+
+            // DOMに追加
+            document.body.appendChild(this.fallbackInterface.container);
+            this.fallbackInterface.isActive = true;
+
+            this.loggingSystem.info('HelpAnalytics', 'Fallback interface displayed');
+        } catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to show fallback interface', error);
+        }
+    }
+
+    /**
+     * フォールバックインターフェースを非表示
+     */
+    hideFallbackInterface() {
+        try {
+            if (!this.fallbackInterface.isActive || !this.fallbackInterface.container) return;
+
+            // イベントリスナーを削除
+            if (this.fallbackInterface.keydownHandler) {
+                document.removeEventListener('keydown', this.fallbackInterface.keydownHandler);
+                this.fallbackInterface.keydownHandler = null;
+            }
+
+            // DOMから削除
+            document.body.removeChild(this.fallbackInterface.container);
+            this.fallbackInterface.container = null;
+            this.fallbackInterface.isActive = false;
+
+            this.loggingSystem.debug('HelpAnalytics', 'Fallback interface hidden');
+        } catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to hide fallback interface', error);
+        }
+    }
+
+    /**
+     * ヘルプシステムの初期化検証
+     */
+    validateHelpSystemInitialization() {
+        try {
+            const validationResult = {
+                isValid: true,
+                errors: [],
+                warnings: [],
+                components: {
+                    analytics: false,
+                    feedback: false,
+                    search: false,
+                    content: false,
+                    accessibility: false
+                }
+            };
+
+            // アナリティクスコンポーネントの検証
+            if (this.analytics && this.validateAnalyticsStructure(this.analytics)) {
+                validationResult.components.analytics = true;
+            } else {
+                validationResult.errors.push('Analytics component validation failed');
+                validationResult.isValid = false;
+            }
+
+            // フィードバックシステムの検証
+            if (this.gameEngine && this.gameEngine.helpFeedbackSystem) {
+                validationResult.components.feedback = true;
+            } else {
+                validationResult.warnings.push('Feedback system not available');
+            }
+
+            // 検索エンジンの検証
+            if (this.gameEngine && this.gameEngine.helpManager && this.gameEngine.helpManager.searchEngine) {
+                validationResult.components.search = true;
+            } else {
+                validationResult.errors.push('Search engine not available');
+                validationResult.isValid = false;
+            }
+
+            // コンテンツマネージャーの検証
+            if (this.gameEngine && this.gameEngine.helpManager) {
+                validationResult.components.content = true;
+            } else {
+                validationResult.errors.push('Content manager not available');
+                validationResult.isValid = false;
+            }
+
+            // アクセシビリティの検証
+            if (this.gameEngine && this.gameEngine.accessibilityManager) {
+                validationResult.components.accessibility = true;
+            } else {
+                validationResult.warnings.push('Accessibility manager not available');
+            }
+
+            // 初期化の準備
+            if (!validationResult.isValid) {
+                this.initializeFallbackInterface();
+                validationResult.warnings.push('Fallback interface prepared due to validation failures');
+            }
+
+            this.loggingSystem.info('HelpAnalytics', 'Help system validation completed', {
+                isValid: validationResult.isValid,
+                errors: validationResult.errors.length,
+                warnings: validationResult.warnings.length
+            });
+
+            return validationResult;
+        } catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to validate help system initialization', error);
+            return {
+                isValid: false,
+                errors: [error.message],
+                warnings: [],
+                components: {}
+            };
+        }
+    }
+
+    /**
+     * ヘルプ使用統計レポートの生成
+     */
+    generateUsageReport() {
+        try {
+            const report = {
+                generatedAt: Date.now(),
+                period: {
+                    start: Date.now() - (7 * 24 * 60 * 60 * 1000), // 7日前
+                    end: Date.now()
+                },
+                usage: {
+                    totalSessions: this.analytics.helpUsage.totalSessions,
+                    totalPageViews: this.analytics.helpUsage.totalPageViews,
+                    averageSessionDuration: this.calculateAverageSessionDuration(),
+                    searchQueries: this.analytics.helpUsage.searchQueries.size,
+                    topCategories: this.getTopCategories(5),
+                    topSearches: this.getTopSearchQueries(10)
+                },
+                effectiveness: {
+                    averageRating: this.calculateAverageRating(),
+                    totalFeedbacks: this.getTotalFeedbackCount(),
+                    satisfactionScore: this.calculateSatisfactionScore(),
+                    problemAreas: this.identifyProblemAreas()
+                },
+                performance: {
+                    cacheHitRate: this.performanceMetrics ? this.performanceMetrics.cacheHitRate : 0,
+                    errorRate: this.performanceMetrics ? this.performanceMetrics.errorRate : 0,
+                    operationsCount: this.performanceMetrics ? this.performanceMetrics.operations.size : 0
+                },
+                recommendations: this.generateImprovementSuggestions()
+            };
+
+            // レポートの保存
+            this.saveUsageReport(report);
+
+            this.loggingSystem.info('HelpAnalytics', 'Usage report generated');
+            return report;
+        } catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to generate usage report', error);
+            return null;
+        }
+    }
+
+    /**
+     * 使用統計レポートの保存
+     */
+    saveUsageReport(report) {
+        try {
+            const reportKey = `help_usage_report_${new Date(report.generatedAt).toISOString().split('T')[0]}`;
+            localStorage.setItem(reportKey, JSON.stringify(report));
+
+            // 古いレポートのクリーンアップ（30日以上古いものを削除）
+            const cutoffDate = Date.now() - (30 * 24 * 60 * 60 * 1000);
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('help_usage_report_')) {
+                    const reportData = JSON.parse(localStorage.getItem(key));
+                    if (reportData.generatedAt < cutoffDate) {
+                        localStorage.removeItem(key);
+                    }
+                }
+            }
+
+            this.loggingSystem.debug('HelpAnalytics', `Usage report saved: ${reportKey}`);
+        } catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to save usage report', error);
+        }
+    }
+
+    /**
+     * アナリティクスデータのクリーンアップとメンテナンス
+     */
+    performDataMaintenance() {
+        try {
+            let cleanedItems = 0;
+
+            // 古いセッションデータのクリーンアップ
+            const sessionCutoff = Date.now() - (this.config.dataRetentionDays * 24 * 60 * 60 * 1000);
+            for (const [sessionId, session] of this.sessions.entries()) {
+                if (session.startTime < sessionCutoff) {
+                    this.sessions.delete(sessionId);
+                    cleanedItems++;
+                }
+            }
+
+            // 古いイベントデータのクリーンアップ
+            this.cleanupOldEvents();
+
+            // キャッシュの最適化
+            this.optimizeCache();
+
+            // データ構造の検証と修復
+            if (!this.validateAnalyticsStructure(this.analytics)) {
+                this.ensureMapInitialization();
+                cleanedItems++;
+            }
+
+            this.loggingSystem.info('HelpAnalytics', `Data maintenance completed, cleaned ${cleanedItems} items`);
+        } catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to perform data maintenance', error);
+        }
+    }
     
     /**
      * イベントの追跡
@@ -1595,6 +1938,18 @@ export class HelpAnalytics {
         setInterval(() => {
             this.saveAnalyticsData();
         }, 60000); // 1分間隔
+    }
+
+    setupPeriodicMaintenance() {
+        // データメンテナンスを24時間間隔で実行
+        setInterval(() => {
+            this.performDataMaintenance();
+        }, 24 * 60 * 60 * 1000);
+        
+        // 使用統計レポートを週次で生成
+        setInterval(() => {
+            this.generateUsageReport();
+        }, 7 * 24 * 60 * 60 * 1000);
     }
     
     setupUnloadHandlers() {
