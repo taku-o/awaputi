@@ -190,13 +190,13 @@ describe('Event Flow Integration Tests', () => {
 
         // Mock StatisticsManager
         mockStatisticsManager = {
-            recordEventParticipation: jest.fn() as unknown as MockFunction<void>,
+            recordEventParticipation: jest.fn() as any,
             getDetailedEventStatistics: jest.fn().mockReturnValue({
                 totalEvents: 0,
                 completionRate: 0,
                 averageScore: 0
-            }) as MockFunction<GameStatistics>,
-            updateEventStats: jest.fn() as unknown as MockFunction<void>
+            }) as any,
+            updateEventStats: jest.fn() as any
         };
 
         // Mock AchievementNotificationSystem

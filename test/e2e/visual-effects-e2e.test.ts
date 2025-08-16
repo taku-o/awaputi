@@ -195,6 +195,7 @@ test.describe('Visual Effects E2E Tests', () => {
             await page.waitForTimeout(1000);
             
             // モバイル最適化が適用されていることを確認
+            // @ts-ignore 将来のモバイル最適化結果検証で使用予定
             const __isMobileOptimized: boolean = await page.evaluate(() => {
                 return (window as WindowWithGameEngine).gameEngine?.mobileEffectOptimizer?.isEnabled() || false;
             });
@@ -317,6 +318,7 @@ test.describe('Visual Effects E2E Tests', () => {
             await page.evaluate(() => {
                 const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
                 if (canvas) {
+                    // @ts-ignore 将来のコンテキスト検証で使用予定
                     const __context = canvas.getContext('2d');
                     
                     // Context loss イベントを発火

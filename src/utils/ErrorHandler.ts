@@ -252,7 +252,11 @@ class ErrorHandler {
     handleError(error: Error | any, context: string = 'UNKNOWN', metadata: Record<string, any> = {}): void {
         try {
             // Normalize error using analyzer
-            const errorInfo: ErrorInfo = this.analyzer.normalizeError(error, context, metadata);
+            const errorInfo: ErrorInfo = {
+                ...this.analyzer.normalizeError(error),
+                context: context,
+                metadata: metadata
+            };
             
             // Add to error log using logger
             this.logger.addToErrorLog(errorInfo);

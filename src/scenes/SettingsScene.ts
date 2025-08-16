@@ -1074,7 +1074,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * マウス入力処理
      */
-    handleMouseInput(event) {
+    handleMouseInput(event: any): void {
         const rect = event.target.getBoundingClientRect();
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
@@ -1176,7 +1176,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * 次のセレクト値を取得
      */
-    getNextSelectValue(item, currentValue) {
+    getNextSelectValue(item: any, currentValue: any): any {
         const currentIndex = item.options.findIndex(opt => opt.value === currentValue);
         const nextIndex = (currentIndex + 1) % item.options.length;
         return item.options[nextIndex].value;
@@ -1185,7 +1185,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * セレクト値のサイクル
      */
-    cycleSelectValue(item, currentValue) {
+    cycleSelectValue(item: any, currentValue: any): void {
         const newValue = this.getNextSelectValue(item, currentValue);
         this.gameEngine.settingsManager.set(item.key, newValue);
     }
@@ -1193,7 +1193,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * 次のスライダー値を取得
      */
-    getNextSliderValue(item, currentValue) {
+    getNextSliderValue(item: any, currentValue: any): any {
         const step = item.step || 0.1;
         const min = item.min || 0;
         const max = item.max || 1;
@@ -1210,7 +1210,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * スライダー値の調整
      */
-    adjustSliderValue(item, currentValue) {
+    adjustSliderValue(item: any, currentValue: any): void {
         const newValue = this.getNextSliderValue(item, currentValue);
         this.gameEngine.settingsManager.set(item.key, newValue);
     }
@@ -1218,7 +1218,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * テキスト編集開始
      */
-    startTextEditing(currentValue) {
+    startTextEditing(currentValue: any): void {
         this.isEditingValue = true;
         this.tempValue = currentValue || '';
     }
@@ -1226,7 +1226,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * 編集中の入力処理
      */
-    handleEditingInput(event) {
+    handleEditingInput(event: any): void {
         switch (event.key) {
             case 'Enter':
                 this.finishTextEditing();
@@ -1237,7 +1237,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
                 break;
                 
             case 'Backspace':
-                this.tempValue = this.tempValue.slice(0, -1);
+                this.tempValue = (this.tempValue || '').slice(0, -1);
                 break;
                 
             default:
@@ -1279,7 +1279,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * 確認ダイアログ入力処理
      */
-    handleConfirmDialogInput(event) {
+    handleConfirmDialogInput(event: any): void {
         switch (event.key) {
             case 'Enter':
                 this.confirmDialogData?.onConfirm?.();
@@ -1336,7 +1336,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * カスタムコンポーネント処理の統一ハンドラー
      */
-    handleCustomComponent(item) {
+    handleCustomComponent(item: any): void {
         switch (item.component) {
             case 'VolumeControlComponent':
                 this.handleVolumeControl();
@@ -1545,7 +1545,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
                         await this.accessibilitySettingsManager.importSettings(file);
                         
                         // 設定項目リストを更新
-                        this.settingItems.accessibility = this.accessibilitySettingsManager.getExtendedAccessibilitySettings();
+                        this.settingItems.accessibility = this.accessibilitySettingsManager.getExtendedAccessibilitySettings() as any;
                         
                         this.loggingSystem.info('SettingsScene', 'Accessibility settings imported successfully');
                     } catch (error) {

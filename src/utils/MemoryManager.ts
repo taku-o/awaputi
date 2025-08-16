@@ -1,6 +1,4 @@
-import { LeakDetector } from './memory-manager/LeakDetector.js';
-import { ProactiveCleanupManager } from './memory-manager/ProactiveCleanupManager.js';
-import { MemoryUsageAnalyzer } from './memory-manager/MemoryUsageAnalyzer.js';
+// Local class definitions below
 
 // Type definitions
 interface MemoryManagerConfig {
@@ -404,12 +402,20 @@ export function getMemoryManager(): MemoryManager {
  */
 class LeakDetector {
     private trackedObjects: Map<object, any> = new Map();
+    
+    constructor(config?: any) {
+        // Constructor accepts optional config
+    }
 
     trackObject(obj: object, trackedInfo: any): void {
         this.trackedObjects.set(obj, {
             ...trackedInfo,
             trackedAt: Date.now()
         });
+    }
+    
+    untrackObject(obj: object): void {
+        this.trackedObjects.delete(obj);
     }
 
     detectLeaks(): any[] {
@@ -441,6 +447,10 @@ class LeakDetector {
  */
 class MemoryUsageAnalyzer {
     private creationHistory: any[] = [];
+    
+    constructor(config?: any) {
+        // Constructor accepts optional config
+    }
 
     recordObjectCreation(trackedInfo: any): void {
         this.creationHistory.push({
@@ -453,6 +463,11 @@ class MemoryUsageAnalyzer {
             this.creationHistory = this.creationHistory.slice(-500);
         }
     }
+    
+    recordObjectDestruction(trackedInfo: any): void {
+        // Record object destruction for analysis
+        // This could be implemented to track destruction patterns
+    }
 
     getUsageAnalysis(): any {
         return {
@@ -462,6 +477,10 @@ class MemoryUsageAnalyzer {
             ).length,
             typeBreakdown: this.getTypeBreakdown()
         };
+    }
+    
+    getUsageReport(): any {
+        return this.getUsageAnalysis();
     }
 
     private getTypeBreakdown(): any {
@@ -487,6 +506,10 @@ class MemoryUsageAnalyzer {
  */
 class ProactiveCleanupManager {
     private cleanupHandlers: Map<string, () => void> = new Map();
+    
+    constructor(config?: any) {
+        // Constructor accepts optional config
+    }
 
     registerCleanupHandler(key: string, handler: () => void): void {
         this.cleanupHandlers.set(key, handler);

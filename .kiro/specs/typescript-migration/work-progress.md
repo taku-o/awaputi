@@ -527,6 +527,7 @@ TypeScript移行作業中に「将来実装する」「現時点では未実装�
   - configuration-system-integration.test.ts: CalculationEngine未実装メソッド修正
   - 追加削減: 241個→215個（26個削減、10.8%削減）
 - **Task 30進行中**: 型エラー修正で**77.4%削減達成**（743個→168個）**未完了**
+  - ⚠️ **重要ルール**: Task 30の完了チェックはユーザー許可が必要
   - Phase 18: 主要テストファイル型不整合修正（game-flow.test.ts、EventFlow.test.ts等）
   - GameEngine未実装メソッド対応、Mock型キャスト修正
   - **残存168個エラー**: Task 32（TypeScriptコンパイル検証）のため0個まで削減が必要

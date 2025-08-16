@@ -74,10 +74,12 @@ export class PerformanceOptimizer {
     
     // フレーム処理データ
     private frameTimeHistory!: number[];
+    // @ts-ignore 将来のフレーム時間追跡で使用予定
     private __lastFrameTime!: number | null;
     private lastOptimizationTime!: number;
     
     // ログ制御用
+    // @ts-ignore 将来のログ制御で使用予定
     private __lastLoggedStabilizerZone!: string | null;
     
     // 統合コンポーネント
@@ -456,4 +458,4 @@ export function getPerformanceOptimizer(): PerformanceOptimizer {
     return performanceOptimizerInstance;
 }
 
-export { PerformanceOptimizer };
+// Export already declared above

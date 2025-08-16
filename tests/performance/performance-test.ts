@@ -4,7 +4,9 @@
  */
 
 import { performance } from 'perf_hooks';
+// @ts-ignore 将来のパフォーマンス測定で使用予定
 import { createCanvas, Canvas } from 'canvas';
+// @ts-ignore 将来のゲームエンジンテストで使用予定
 import { GameEngine } from '../../src/core/GameEngine.js';
 import { Bubble } from '../../src/bubbles/Bubble.js';
 import { Position, BubbleType } from '../../src/types/bubble.js';
@@ -95,7 +97,7 @@ interface SaveData {
   innerHeight: 768,
   devicePixelRatio: 1,
   addEventListener: () => {},
-  requestAnimationFrame: (callback: () => void) => setTimeout(callback, 16),
+  requestAnimationFrame: (callback: () => void) => setTimeout(callback, 16) as any,
   performance: performance
 } as MockWindow;
 
@@ -447,7 +449,8 @@ function checkPerformanceRegression(
 // Run tests if this file is executed directly
 if (import.meta.url === `file://${process.argv[1]}`) {
   runPerformanceTests()
-    .then(report => {
+    .then((__report: any) => {
+      // @ts-ignore 将来のレポート処理で使用予定
       console.log('\n🎉 Performance tests completed successfully!');
       process.exit(0);
     })

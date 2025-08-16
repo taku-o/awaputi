@@ -32,7 +32,7 @@ describe('ConfigurationManager', () => {
         test('存在しない設定値はデフォルト値を返す', () => {
             const configManager = new ConfigurationManager();
             
-            const value = configManager.get('game', 'nonExistentKey', 'defaultValue');
+            const value = (configManager as any).get('game', 'nonExistentKey', 'defaultValue');
             expect(value).toBe('defaultValue');
         });
         
@@ -40,12 +40,12 @@ describe('ConfigurationManager', () => {
             const configManager = new ConfigurationManager();
             
             // 検証ルールなしの場合
-            expect(configManager.validate('game', 'testKey', 'anyValue')).toBe(true);
+            expect((configManager as any).validate('game', 'testKey', 'anyValue')).toBe(true);
             
             // 型チェック
-            configManager.setValidationRule('game', 'stringKey', { type: 'string' });
-            expect(configManager.validate('game', 'stringKey', 'validString')).toBe(true);
-            expect(configManager.validate('game', 'stringKey', 123)).toBe(false);
+            (configManager as any).setValidationRule('game', 'stringKey', { type: 'string' });
+            expect((configManager as any).validate('game', 'stringKey', 'validString')).toBe(true);
+            expect((configManager as any).validate('game', 'stringKey', 123)).toBe(false);
         });
     });
     

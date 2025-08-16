@@ -187,7 +187,7 @@
   - 初期化処理の妥当性を検証
   - _要件: 7.2_
 
-- [ ] 30. 型エラーの修正（Phase 13-18進行中、未完了）
+- [ ] 30. 型エラーの修正（Phase 13-18進行中、未完了）⚠️ **ユーザー許可必須**
   - ✅ HelpContentManager.ts: プロパティ型定義とメソッド型注釈完全追加
   - ✅ MemoryManager.ts: 不足クラス実装・重複エクスポート修正
   - ✅ Phase 13: HelpSearchManager型安全化、SettingItem exactOptionalPropertyTypes対応
