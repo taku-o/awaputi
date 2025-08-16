@@ -1,11 +1,95 @@
 import fs from 'fs/promises';
 import path from 'path';
 
+// Type definitions
+interface TargetFile {
+    filePath: string;
+    currentFilePath: string;
+    expectedWordCount: number;
+    description: string;
+}
+
+interface GitCommit {
+    commit: string;
+    message: string;
+}
+
+interface GitHistoryError {
+    error: string;
+    gitHistoryFailed: boolean;
+}
+
+interface SizeAnalysis {
+    bytes: number;
+    wordCount: number;
+    lineCount: number;
+    characters: number;
+    lastModified: string;
+}
+
+interface SizeAnalysisError {
+    error: string;
+    analyzeFailed: boolean;
+}
+
+interface FileComparison {
+    identical: boolean;
+    backupLines: number;
+    currentLines: number;
+    sizeDifference: number;
+    comparedAt: string;
+}
+
+interface ComparisonError {
+    error: string;
+    comparisonFailed: boolean;
+}
+
+interface InvestigationResult extends TargetFile {
+    exists: boolean;
+    sizeAnalysis?: SizeAnalysis | SizeAnalysisError;
+    gitHistory?: GitCommit[] | GitHistoryError[];
+    currentFileExists: boolean;
+    comparison?: FileComparison | ComparisonError;
+    investigatedAt: string;
+    error?: string;
+    investigationFailed?: boolean;
+}
+
+interface ReportSummary {
+    totalFiles: number;
+    existingFiles: number;
+    missingFiles: number;
+    currentFilesExist: number;
+    investigationErrors: number;
+}
+
+interface SizeEstimate {
+    bytes: number;
+    words: number;
+}
+
+interface Recommendation {
+    type: 'safe_deletion' | 'needs_attention';
+    message: string;
+    files: string[];
+}
+
+interface InvestigationReport {
+    summary: ReportSummary;
+    files: InvestigationResult[];
+    totalSizeEstimate: SizeEstimate;
+    recommendations: Recommendation[];
+    generatedAt: string;
+}
+
 /**
  * BackupFileInvestigator - バックアップファイルの詳細調査を行うクラス
  * Issue #104 の対象ファイルの安全な削除のための調査機能を提供
  */
 export class BackupFileInvestigator {
+    private targetFiles: TargetFile[];
+
     constructor() {
         this.targetFiles = [
             {
@@ -43,10 +127,9 @@ export class BackupFileInvestigator {
 
     /**
      * 全対象ファイルの調査を実行
-     * @returns {Promise<Array>} 調査結果の配列
      */
-    async investigateTargetFiles() {
-        const results = [];
+    async investigateTargetFiles(): Promise<InvestigationResult[]> {
+        const results: InvestigationResult[] = [];
         
         for (const targetFile of this.targetFiles) {
             try {
@@ -55,7 +138,10 @@ export class BackupFileInvestigator {
             } catch (error) {
                 results.push({
                     ...targetFile,
-                    error: error.message,
+                    exists: false,
+                    currentFileExists: false,
+                    investigatedAt: new Date().toISOString(),
+                    error: (error as Error).message,
                     investigationFailed: true
                 });
             }
@@ -66,11 +152,14 @@ export class BackupFileInvestigator {
 
     /**
      * 個別ファイルの調査を実行
-     * @param {Object} targetFile - 調査対象ファイル情報
-     * @returns {Promise<Object>} 調査結果
      */
-    async investigateFile(targetFile) {
-        const result = { ...targetFile };
+    async investigateFile(targetFile: TargetFile): Promise<InvestigationResult> {
+        const result: InvestigationResult = { 
+            ...targetFile,
+            exists: false,
+            currentFileExists: false,
+            investigatedAt: ''
+        };
         
         // ファイル存在確認
         result.exists = await this.checkFileExists(targetFile.filePath);
@@ -98,10 +187,8 @@ export class BackupFileInvestigator {
 
     /**
      * ファイルの存在確認
-     * @param {string} filePath - ファイルパス
-     * @returns {Promise<boolean>} 存在するかどうか
      */
-    async checkFileExists(filePath) {
+    async checkFileExists(filePath: string): Promise<boolean> {
         try {
             await fs.access(filePath);
             return true;
@@ -112,19 +199,15 @@ export class BackupFileInvestigator {
 
     /**
      * 対応する現在ファイルの存在確認
-     * @param {string} currentFilePath - 現在ファイルのパス
-     * @returns {Promise<boolean>} 存在するかどうか
      */
-    async checkCurrentFileExists(currentFilePath) {
+    async checkCurrentFileExists(currentFilePath: string): Promise<boolean> {
         return this.checkFileExists(currentFilePath);
     }
 
     /**
      * ファイルサイズの分析
-     * @param {string} filePath - ファイルパス
-     * @returns {Promise<Object>} サイズ分析結果
      */
-    async analyzeFileSize(filePath) {
+    async analyzeFileSize(filePath: string): Promise<SizeAnalysis | SizeAnalysisError> {
         try {
             const stats = await fs.stat(filePath);
             const content = await fs.readFile(filePath, 'utf8');
@@ -141,7 +224,7 @@ export class BackupFileInvestigator {
             };
         } catch (error) {
             return {
-                error: error.message,
+                error: (error as Error).message,
                 analyzeFailed: true
             };
         }
@@ -149,10 +232,8 @@ export class BackupFileInvestigator {
 
     /**
      * Git履歴の取得
-     * @param {string} filePath - ファイルパス
-     * @returns {Promise<Array>} Git履歴
      */
-    async getGitHistory(filePath) {
+    async getGitHistory(filePath: string): Promise<GitCommit[] | GitHistoryError[]> {
         try {
             const { exec } = await import('child_process');
             const { promisify } = await import('util');
@@ -177,7 +258,7 @@ export class BackupFileInvestigator {
             });
         } catch (error) {
             return [{
-                error: error.message,
+                error: (error as Error).message,
                 gitHistoryFailed: true
             }];
         }
@@ -185,10 +266,8 @@ export class BackupFileInvestigator {
 
     /**
      * 現在ファイルとの比較
-     * @param {Object} targetFile - 対象ファイル情報
-     * @returns {Promise<Object>} 比較結果
      */
-    async compareWithCurrentFile(targetFile) {
+    async compareWithCurrentFile(targetFile: TargetFile): Promise<FileComparison | ComparisonError> {
         try {
             const backupContent = await fs.readFile(targetFile.filePath, 'utf8');
             const currentContent = await fs.readFile(targetFile.currentFilePath, 'utf8');
@@ -205,7 +284,7 @@ export class BackupFileInvestigator {
             };
         } catch (error) {
             return {
-                error: error.message,
+                error: (error as Error).message,
                 comparisonFailed: true
             };
         }
@@ -213,11 +292,9 @@ export class BackupFileInvestigator {
 
     /**
      * 調査結果レポートの生成
-     * @param {Array} investigationResults - 調査結果配列
-     * @returns {Object} レポート
      */
-    async generateInvestigationReport(investigationResults) {
-        const report = {
+    async generateInvestigationReport(investigationResults: InvestigationResult[]): Promise<InvestigationReport> {
+        const report: InvestigationReport = {
             summary: {
                 totalFiles: investigationResults.length,
                 existingFiles: investigationResults.filter(r => r.exists).length,
@@ -228,11 +305,11 @@ export class BackupFileInvestigator {
             files: investigationResults,
             totalSizeEstimate: {
                 bytes: investigationResults
-                    .filter(r => r.sizeAnalysis && !r.sizeAnalysis.analyzeFailed)
-                    .reduce((sum, r) => sum + r.sizeAnalysis.bytes, 0),
+                    .filter(r => r.sizeAnalysis && !('analyzeFailed' in r.sizeAnalysis))
+                    .reduce((sum, r) => sum + (r.sizeAnalysis as SizeAnalysis).bytes, 0),
                 words: investigationResults
-                    .filter(r => r.sizeAnalysis && !r.sizeAnalysis.analyzeFailed)
-                    .reduce((sum, r) => sum + r.sizeAnalysis.wordCount, 0)
+                    .filter(r => r.sizeAnalysis && !('analyzeFailed' in r.sizeAnalysis))
+                    .reduce((sum, r) => sum + (r.sizeAnalysis as SizeAnalysis).wordCount, 0)
             },
             recommendations: this.generateRecommendations(investigationResults),
             generatedAt: new Date().toISOString()
@@ -243,11 +320,9 @@ export class BackupFileInvestigator {
 
     /**
      * 調査結果に基づく推奨事項の生成
-     * @param {Array} results - 調査結果
-     * @returns {Array} 推奨事項配列
      */
-    generateRecommendations(results) {
-        const recommendations = [];
+    generateRecommendations(results: InvestigationResult[]): Recommendation[] {
+        const recommendations: Recommendation[] = [];
         
         const safeToDelete = results.filter(r => 
             r.exists && r.currentFileExists && !r.investigationFailed

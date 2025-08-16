@@ -8,7 +8,57 @@
 import { CleanupOrchestrator } from './CleanupOrchestrator.js';
 import process from 'process';
 
-async function main() {
+// Type definitions
+interface CommandLineOptions {
+    dryRun: boolean;
+    verbose: boolean;
+    safetyMode: boolean;
+    confirmationRequired: boolean;
+    help: boolean;
+    reportOutputDir?: string;
+}
+
+interface SizeReduction {
+    reduction: {
+        filesRemoved: number;
+        wordsRemoved: number;
+    };
+    impact: {
+        repositorySizeReduction: string;
+    };
+}
+
+interface CleanupResults {
+    deletion?: {
+        sizeReduction?: SizeReduction;
+    };
+    reports?: {
+        reportFileName?: string;
+    };
+}
+
+interface ExecutionState {
+    phase: string;
+    results: CleanupResults;
+    errors: Array<Error | string>;
+}
+
+interface CleanupSummary {
+    filesProcessed: number;
+    filesDeleted: number;
+    errorsEncountered: number;
+    totalExecutionTime?: number;
+}
+
+interface CleanupResult {
+    status: 'success' | 'no_safe_files' | 'no_verified_safe_files' | 'user_cancelled' | 'error' | 'interrupted';
+    executionState: ExecutionState;
+    summary: CleanupSummary;
+    dryRun: boolean;
+    recommendations?: string[];
+}
+
+async function main(): Promise<void> {
     console.log('🧹 Backup File Cleanup Tool - Issue #104');
     console.log('========================================\n');
     
@@ -44,20 +94,18 @@ async function main() {
         
     } catch (error) {
         console.error('❌ Fatal error occurred:');
-        console.error(error.message);
+        console.error((error as Error).message);
         console.error('\nStack trace:');
-        console.error(error.stack);
+        console.error((error as Error).stack);
         process.exit(1);
     }
 }
 
 /**
  * コマンドライン引数の解析
- * @param {Array} args - 引数配列
- * @returns {Object} 解析されたオプション
  */
-function parseCommandLineArgs(args) {
-    const options = {
+function parseCommandLineArgs(args: string[]): CommandLineOptions {
+    const options: CommandLineOptions = {
         dryRun: false,
         verbose: false,
         safetyMode: true,
@@ -104,7 +152,7 @@ function parseCommandLineArgs(args) {
 /**
  * ヘルプの表示
  */
-function showHelp() {
+function showHelp(): void {
     console.log(`
 Backup File Cleanup Tool - Issue #104
 
@@ -142,9 +190,8 @@ For more information, see: https://github.com/taku-o/awaputi/issues/104
 
 /**
  * 結果の表示
- * @param {Object} result - 実行結果
  */
-function displayResults(result) {
+function displayResults(result: CleanupResult): void {
     console.log('\n📊 CLEANUP RESULTS');
     console.log('==================\n');
     
@@ -176,7 +223,8 @@ function displayResults(result) {
     if (result.executionState.errors.length > 0) {
         console.log('\n⚠️  ERRORS ENCOUNTERED:');
         result.executionState.errors.forEach((error, index) => {
-            console.log(`${index + 1}. ${error.message || error}`);
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            console.log(`${index + 1}. ${errorMessage}`);
         });
     }
     
@@ -198,11 +246,9 @@ function displayResults(result) {
 
 /**
  * ステータス絵文字の取得
- * @param {string} status - ステータス
- * @returns {string} 絵文字
  */
-function getStatusEmoji(status) {
-    const emojis = {
+function getStatusEmoji(status: CleanupResult['status']): string {
+    const emojis: Record<CleanupResult['status'], string> = {
         'success': '✅',
         'no_safe_files': '⚠️',
         'no_verified_safe_files': '⚠️',
