@@ -10,7 +10,68 @@ import { promisify } from 'util';
 
 const execAsync = promisify(exec);
 
+// 型定義インターフェース
+interface RenameOperation {
+    id: string;
+    type: 'file_rename';
+    oldPath: string;
+    newPath: string;
+    timestamp: Date;
+    status: 'pending' | 'backup_created' | 'completed' | 'failed' | 'rolled_back' | 'rollback_failed';
+    backupPath: string | null;
+    error: string | null;
+    backupId?: string;
+}
+
+interface RenameInfo {
+    oldPath: string;
+    newPath: string;
+    critical?: boolean;
+}
+
+interface RenameResult {
+    oldPath: string;
+    newPath: string;
+    result?: RenameOperation;
+    status: 'success' | 'failed';
+    error?: string;
+    critical?: boolean;
+}
+
+interface RollbackResult {
+    operation: string;
+    status: 'success' | 'failed';
+    error?: string;
+}
+
+interface OperationHistoryItem {
+    id: string;
+    type: string;
+    oldPath: string;
+    newPath: string;
+    status: string;
+    timestamp: Date;
+    error: string | null;
+}
+
+interface Stats {
+    total: number;
+    completed: number;
+    failed: number;
+    rolledBack: number;
+    successRate: string;
+}
+
+interface ExecResult {
+    stdout: string;
+    stderr: string;
+}
+
 export class FileRenamer {
+    private operations: RenameOperation[];
+    private backupMap: Map<string, string>;
+    private gitAvailable: boolean;
+
     constructor() {
         this.operations = [];
         this.backupMap = new Map();
@@ -20,7 +81,7 @@ export class FileRenamer {
     /**
      * Gitが利用可能かチェック
      */
-    checkGitAvailability() {
+    checkGitAvailability(): boolean {
         try {
             execSync('git --version', { stdio: 'ignore' });
             return true;
@@ -33,8 +94,8 @@ export class FileRenamer {
     /**
      * ファイルの安全なリネーム
      */
-    async renameFile(oldPath, newPath) {
-        const operation = {
+    async renameFile(oldPath: string, newPath: string): Promise<RenameOperation> {
+        const operation: RenameOperation = {
             id: this.generateOperationId(),
             type: 'file_rename',
             oldPath: oldPath,
@@ -71,7 +132,7 @@ export class FileRenamer {
 
         } catch (error) {
             operation.status = 'failed';
-            operation.error = error.message;
+            operation.error = (error as Error).message;
             this.operations.push(operation);
 
             // 失敗時のロールバック
@@ -86,7 +147,7 @@ export class FileRenamer {
     /**
      * リネーム操作の事前検証
      */
-    async validateRenameOperation(oldPath, newPath) {
+    async validateRenameOperation(oldPath: string, newPath: string): Promise<void> {
         // 元ファイルが存在するかチェック
         try {
             await fs.access(oldPath);
@@ -100,7 +161,7 @@ export class FileRenamer {
             throw new Error(`Destination file already exists: ${newPath}`);
         } catch (error) {
             // ファイルが存在しない = OK
-            if (error.code !== 'ENOENT') {
+            if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
                 throw error;
             }
         }
@@ -121,13 +182,13 @@ export class FileRenamer {
     /**
      * Git mvコマンドを使用したリネーム
      */
-    async gitMove(oldPath, newPath) {
+    async gitMove(oldPath: string, newPath: string): Promise<void> {
         try {
             const command = `git mv "${oldPath}" "${newPath}"`;
             await execAsync(command);
         } catch (error) {
             // Gitコマンドが失敗した場合は通常のmvにフォールバック
-            console.warn(`Git mv failed, falling back to regular move: ${error.message}`);
+            console.warn(`Git mv failed, falling back to regular move: ${(error as Error).message}`);
             await this.regularMove(oldPath, newPath);
         }
     }
@@ -135,14 +196,14 @@ export class FileRenamer {
     /**
      * 通常のファイル移動
      */
-    async regularMove(oldPath, newPath) {
+    async regularMove(oldPath: string, newPath: string): Promise<void> {
         await fs.rename(oldPath, newPath);
     }
 
     /**
      * バックアップ作成
      */
-    async createBackup(filePath) {
+    async createBackup(filePath: string): Promise<string> {
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
         const backupDir = path.join(process.cwd(), '.backup', 'file-rename');
         await fs.mkdir(backupDir, { recursive: true });
@@ -154,14 +215,14 @@ export class FileRenamer {
             this.backupMap.set(filePath, backupPath);
             return backupPath;
         } catch (error) {
-            throw new Error(`Failed to create backup: ${error.message}`);
+            throw new Error(`Failed to create backup: ${(error as Error).message}`);
         }
     }
 
     /**
      * Git履歴の更新（リネーム後の処理）
      */
-    async updateGitHistory(renames) {
+    async updateGitHistory(renames: RenameOperation[]): Promise<void> {
         if (!this.gitAvailable) {
             return;
         }
@@ -176,27 +237,27 @@ export class FileRenamer {
             }
 
             // コミット前の状態確認
-            const { stdout } = await execAsync('git status --porcelain');
+            const { stdout }: ExecResult = await execAsync('git status --porcelain');
             if (stdout.trim()) {
                 console.log('Staged changes for file renames:', stdout);
             }
 
         } catch (error) {
-            console.error('Failed to update git history:', error.message);
+            console.error('Failed to update git history:', (error as Error).message);
         }
     }
 
     /**
      * 単一操作のロールバック
      */
-    async rollbackSingle(operation) {
+    async rollbackSingle(operation: RenameOperation): Promise<void> {
         try {
             if (operation.status === 'completed' && operation.backupPath) {
                 // 新しいファイルを削除
                 try {
                     await fs.unlink(operation.newPath);
                 } catch (error) {
-                    console.warn(`Could not remove new file during rollback: ${error.message}`);
+                    console.warn(`Could not remove new file during rollback: ${(error as Error).message}`);
                 }
 
                 // バックアップから復元
@@ -204,7 +265,7 @@ export class FileRenamer {
                 operation.status = 'rolled_back';
             }
         } catch (error) {
-            console.error(`Rollback failed for operation ${operation.id}:`, error.message);
+            console.error(`Rollback failed for operation ${operation.id}:`, (error as Error).message);
             operation.status = 'rollback_failed';
         }
     }
@@ -212,12 +273,12 @@ export class FileRenamer {
     /**
      * 複数操作のロールバック
      */
-    async rollbackChanges(backupId = null) {
+    async rollbackChanges(backupId: string | null = null): Promise<RollbackResult[]> {
         const operationsToRollback = backupId 
             ? this.operations.filter(op => op.backupId === backupId)
             : this.operations.filter(op => op.status === 'completed');
 
-        const results = [];
+        const results: RollbackResult[] = [];
 
         for (const operation of operationsToRollback.reverse()) {
             try {
@@ -227,7 +288,7 @@ export class FileRenamer {
                 results.push({ 
                     operation: operation.id, 
                     status: 'failed', 
-                    error: error.message 
+                    error: (error as Error).message 
                 });
             }
         }
@@ -238,8 +299,8 @@ export class FileRenamer {
     /**
      * バッチファイルリネーム
      */
-    async batchRename(renameList) {
-        const results = [];
+    async batchRename(renameList: RenameInfo[]): Promise<RenameResult[]> {
+        const results: RenameResult[] = [];
         
         // 段階的実行のため、依存関係を考慮してソート
         const sortedRenames = this.sortByDependencies(renameList);
@@ -256,11 +317,11 @@ export class FileRenamer {
                 results.push({ 
                     ...renameInfo, 
                     status: 'failed', 
-                    error: error.message 
+                    error: (error as Error).message 
                 });
                 
                 console.error(`✗ Failed to rename: ${renameInfo.oldPath} → ${renameInfo.newPath}`);
-                console.error(`  Error: ${error.message}`);
+                console.error(`  Error: ${(error as Error).message}`);
                 
                 // エラー時の処理継続判定
                 if (renameInfo.critical) {
@@ -276,7 +337,7 @@ export class FileRenamer {
     /**
      * 依存関係に基づくソート
      */
-    sortByDependencies(renameList) {
+    sortByDependencies(renameList: RenameInfo[]): RenameInfo[] {
         // 現在は単純な順序でソート
         // 将来的にはファイル間の依存関係を解析して適切な順序を決定
         return renameList.sort((a, b) => {
@@ -290,7 +351,7 @@ export class FileRenamer {
     /**
      * 操作履歴の取得
      */
-    getOperationHistory() {
+    getOperationHistory(): OperationHistoryItem[] {
         return this.operations.map(op => ({
             id: op.id,
             type: op.type,
@@ -305,7 +366,7 @@ export class FileRenamer {
     /**
      * クリーンアップ - バックアップファイルの削除
      */
-    async cleanup(olderThanDays = 7) {
+    async cleanup(olderThanDays: number = 7): Promise<void> {
         const cutoffDate = new Date();
         cutoffDate.setDate(cutoffDate.getDate() - olderThanDays);
 
@@ -324,21 +385,21 @@ export class FileRenamer {
                 }
             }
         } catch (error) {
-            console.warn(`Cleanup failed: ${error.message}`);
+            console.warn(`Cleanup failed: ${(error as Error).message}`);
         }
     }
 
     /**
      * 操作IDの生成
      */
-    generateOperationId() {
+    generateOperationId(): string {
         return `rename_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     }
 
     /**
      * 統計情報の取得
      */
-    getStats() {
+    getStats(): Stats {
         const total = this.operations.length;
         const completed = this.operations.filter(op => op.status === 'completed').length;
         const failed = this.operations.filter(op => op.status === 'failed').length;
