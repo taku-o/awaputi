@@ -1,9 +1,226 @@
 /**
- * モバイル向けソーシャル機能パフォーマンス最適化
+ * モバイル向けソーシャル機能パフォーマンス最適化 (TypeScript版)
  * Issue #37 Task 22.4: モバイル向けパフォーマンス最適化
  */
 
+// Type definitions for Mobile Social Performance Optimizer
+interface DeviceThresholds {
+    lowEndDevice: {
+        memory: number; // GB
+        cpu: number;    // cores
+        fps: number;
+    };
+    mediumDevice: {
+        memory: number;
+        cpu: number;
+        fps: number;
+    };
+    highEndDevice: {
+        memory: number;
+        cpu: number;
+        fps: number;
+    };
+}
+
+interface OptimizationLevel {
+    imageQuality: number;
+    animationReduction: number;
+    updateThrottling: number;
+    cacheSize: number;
+    lazyLoadDelay: number;
+}
+
+interface OptimizationLevels {
+    aggressive: OptimizationLevel;
+    moderate: OptimizationLevel;
+    minimal: OptimizationLevel;
+}
+
+interface CacheEntry {
+    data: any;
+    timestamp: number;
+    lastAccess: number;
+    accessCount: number;
+}
+
+interface MemoryManager {
+    cache: Map<string, CacheEntry>;
+    maxCacheSize: number;
+    lastCleanup: number;
+    cleanupInterval: number;
+    hits?: number;
+    misses?: number;
+}
+
+interface PerformanceMonitoring {
+    enabled: boolean;
+    metricsBuffer: PerformanceMetrics[];
+    reportInterval: number;
+    lastReport: number;
+}
+
+interface ConnectionInfo {
+    effectiveType: string;
+    downlink: number;
+    rtt: number;
+    saveData: boolean;
+}
+
+interface BrowserPerformanceInfo {
+    cpuBenchmark: number;
+    memoryInfo: {
+        used: number;
+        total: number;
+        limit: number;
+    } | null;
+    timeOrigin: number;
+    _dummyResult: number;
+}
+
+interface RenderingPerformanceInfo {
+    renderBenchmark: number;
+    canvasSupport: boolean;
+    context2D: boolean;
+}
+
+interface DeviceInfo {
+    memory: number;
+    cores: number;
+    platform: string;
+    userAgent: string;
+    connection: ConnectionInfo;
+    browserPerformance: BrowserPerformanceInfo;
+    renderingPerformance: RenderingPerformanceInfo;
+    deviceClass: 'low' | 'medium' | 'high';
+}
+
+interface OptimizationSettings extends OptimizationLevel {
+    level: 'aggressive' | 'moderate' | 'minimal';
+    deviceClass: 'low' | 'medium' | 'high';
+    connectionType: string;
+}
+
+interface PerformanceMetrics {
+    timestamp: number;
+    memory: {
+        used: number;
+        total: number;
+    } | null;
+    timing: PageTimings | null;
+    cacheStats: CacheStats;
+    fps: number;
+}
+
+interface PageTimings {
+    domContentLoaded: number;
+    loadComplete: number;
+    firstPaint: number;
+    firstContentfulPaint: number;
+}
+
+interface CacheStats {
+    size: number;
+    maxSize: number;
+    hitRate: number;
+    lastCleanup: number;
+}
+
+interface FPSCounter {
+    frames: number;
+    lastTime: number;
+    fps: number;
+}
+
+interface MetricsAnalysis {
+    averageFPS: number;
+    memoryTrend: 'increasing' | 'decreasing' | 'stable';
+    cacheEfficiency: number;
+    performanceScore: {
+        overall: number;
+        fps: number;
+        memory: number;
+    };
+}
+
+interface PerformanceRecommendation {
+    type: 'fps' | 'memory' | 'cache';
+    severity: 'low' | 'medium' | 'high';
+    message: string;
+    action: 'increaseAnimationReduction' | 'triggerMemoryCleanup' | 'optimizeCacheStrategy';
+}
+
+interface PerformanceReport {
+    timestamp: number;
+    deviceInfo: DeviceInfo;
+    optimizationSettings: OptimizationSettings;
+    metrics: MetricsAnalysis;
+    recommendations: PerformanceRecommendation[];
+}
+
+interface OptimizationInfo {
+    deviceInfo: DeviceInfo;
+    optimizationSettings: OptimizationSettings;
+    performanceMetrics: MetricsAnalysis;
+    cacheStats: CacheStats;
+    isOptimized: boolean;
+}
+
+type ThrottledFunction = (...args: any[]) => void;
+
+// Global type extensions
+declare global {
+    interface Navigator {
+        deviceMemory?: number;
+        hardwareConcurrency?: number;
+        connection?: {
+            effectiveType?: string;
+            downlink?: number;
+            rtt?: number;
+            saveData?: boolean;
+        };
+        mozConnection?: {
+            effectiveType?: string;
+            downlink?: number;
+            rtt?: number;
+            saveData?: boolean;
+        };
+        webkitConnection?: {
+            effectiveType?: string;
+            downlink?: number;
+            rtt?: number;
+            saveData?: boolean;
+        };
+    }
+
+    interface Performance {
+        memory?: {
+            usedJSHeapSize: number;
+            totalJSHeapSize: number;
+            jsHeapSizeLimit: number;
+        };
+    }
+
+    interface PerformanceNavigationTiming {
+        navigationStart: number;
+        domContentLoadedEventEnd: number;
+        loadEventEnd: number;
+    }
+}
+
 export class MobileSocialPerformanceOptimizer {
+    private isInitialized: boolean;
+    private deviceInfo: DeviceInfo | null;
+    private performanceMetrics: Map<string, any>;
+    private optimizationSettings: OptimizationSettings | null;
+    private thresholds: DeviceThresholds;
+    private optimizationLevels: OptimizationLevels;
+    private memoryManager: MemoryManager;
+    private monitoring: PerformanceMonitoring;
+    private fpsCounter?: FPSCounter;
+    private supportsWebP?: boolean;
+    private optimizeImageQuality?: (imageData: string, targetQuality?: number) => Promise<string> | string;
+    private throttledUpdate?: ThrottledFunction;
+
     constructor() {
         this.isInitialized = false;
         this.deviceInfo = null;
@@ -56,7 +273,7 @@ export class MobileSocialPerformanceOptimizer {
         
         // メモリ管理
         this.memoryManager = {
-            cache: new Map(),
+            cache: new Map<string, CacheEntry>(),
             maxCacheSize: 50,
             lastCleanup: Date.now(),
             cleanupInterval: 300000 // 5分
@@ -74,7 +291,7 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * 初期化
      */
-    async initialize() {
+    async initialize(): Promise<void> {
         try {
             // デバイス性能を検出
             this.deviceInfo = await this.detectDevicePerformance();
@@ -109,8 +326,8 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * デバイス性能の検出
      */
-    async detectDevicePerformance() {
-        const info = {
+    async detectDevicePerformance(): Promise<DeviceInfo> {
+        const info: DeviceInfo = {
             // ハードウェア情報
             memory: navigator.deviceMemory || 4,
             cores: navigator.hardwareConcurrency || 4,
@@ -139,7 +356,7 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * 接続情報の取得
      */
-    getConnectionInfo() {
+    getConnectionInfo(): ConnectionInfo {
         const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
         
         if (!connection) {
@@ -162,7 +379,7 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * ブラウザ性能の測定
      */
-    async measureBrowserPerformance() {
+    async measureBrowserPerformance(): Promise<BrowserPerformanceInfo> {
         const startTime = performance.now();
         
         // CPU集約的なタスクを実行
@@ -192,12 +409,21 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * レンダリング性能の測定
      */
-    async measureRenderingPerformance() {
+    async measureRenderingPerformance(): Promise<RenderingPerformanceInfo> {
         return new Promise((resolve) => {
             const canvas = document.createElement('canvas');
             canvas.width = 200;
             canvas.height = 200;
             const ctx = canvas.getContext('2d');
+            
+            if (!ctx) {
+                resolve({
+                    renderBenchmark: 0,
+                    canvasSupport: false,
+                    context2D: false
+                });
+                return;
+            }
             
             const startTime = performance.now();
             
@@ -223,7 +449,7 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * デバイス分類
      */
-    classifyDevice(info) {
+    classifyDevice(info: DeviceInfo): 'low' | 'medium' | 'high' {
         const memoryScore = info.memory >= this.thresholds.highEndDevice.memory ? 3 :
                            info.memory >= this.thresholds.mediumDevice.memory ? 2 : 1;
         
@@ -243,11 +469,15 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * 最適化レベルの決定
      */
-    determineOptimizationLevel() {
+    determineOptimizationLevel(): OptimizationSettings {
+        if (!this.deviceInfo) {
+            throw new Error('Device info not available');
+        }
+
         const deviceClass = this.deviceInfo.deviceClass;
         const connection = this.deviceInfo.connection;
         
-        let level = 'moderate';
+        let level: 'aggressive' | 'moderate' | 'minimal' = 'moderate';
         
         // デバイス性能ベースの判定
         if (deviceClass === 'low') {
@@ -263,7 +493,7 @@ export class MobileSocialPerformanceOptimizer {
             level = 'aggressive';
         }
         
-        const settings = {
+        const settings: OptimizationSettings = {
             level,
             ...this.optimizationLevels[level],
             deviceClass,
@@ -276,7 +506,7 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * パフォーマンス監視の開始
      */
-    startPerformanceMonitoring() {
+    startPerformanceMonitoring(): void {
         this.monitoring.enabled = true;
         
         // 定期的な メトリクス収集
@@ -293,10 +523,10 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * パフォーマンスメトリクスの収集
      */
-    collectPerformanceMetrics() {
+    collectPerformanceMetrics(): void {
         if (!this.monitoring.enabled) return;
         
-        const metrics = {
+        const metrics: PerformanceMetrics = {
             timestamp: Date.now(),
             memory: performance.memory ? {
                 used: performance.memory.usedJSHeapSize,
@@ -321,7 +551,7 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * 現在のFPS取得
      */
-    getCurrentFPS() {
+    getCurrentFPS(): number {
         if (!this.fpsCounter) {
             this.fpsCounter = {
                 frames: 0,
@@ -329,14 +559,14 @@ export class MobileSocialPerformanceOptimizer {
                 fps: 60
             };
             
-            const countFrame = () => {
-                this.fpsCounter.frames++;
+            const countFrame = (): void => {
+                this.fpsCounter!.frames++;
                 const now = performance.now();
                 
-                if (now - this.fpsCounter.lastTime >= 1000) {
-                    this.fpsCounter.fps = this.fpsCounter.frames;
-                    this.fpsCounter.frames = 0;
-                    this.fpsCounter.lastTime = now;
+                if (now - this.fpsCounter!.lastTime >= 1000) {
+                    this.fpsCounter!.fps = this.fpsCounter!.frames;
+                    this.fpsCounter!.frames = 0;
+                    this.fpsCounter!.lastTime = now;
                 }
                 
                 requestAnimationFrame(countFrame);
@@ -351,8 +581,8 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * ページタイミング情報の取得
      */
-    getPageTimings() {
-        const navigation = performance.getEntriesByType('navigation')[0];
+    getPageTimings(): PageTimings | null {
+        const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
         if (!navigation) return null;
         
         return {
@@ -366,7 +596,7 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * First Paint時間の取得
      */
-    getFirstPaintTime() {
+    getFirstPaintTime(): number {
         const paintEntries = performance.getEntriesByType('paint');
         const firstPaint = paintEntries.find(entry => entry.name === 'first-paint');
         return firstPaint ? firstPaint.startTime : 0;
@@ -375,7 +605,7 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * First Contentful Paint時間の取得
      */
-    getFirstContentfulPaintTime() {
+    getFirstContentfulPaintTime(): number {
         const paintEntries = performance.getEntriesByType('paint');
         const fcp = paintEntries.find(entry => entry.name === 'first-contentful-paint');
         return fcp ? fcp.startTime : 0;
@@ -384,7 +614,7 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * キャッシュ統計の取得
      */
-    getCacheStats() {
+    getCacheStats(): CacheStats {
         return {
             size: this.memoryManager.cache.size,
             maxSize: this.memoryManager.maxCacheSize,
@@ -396,20 +626,25 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * キャッシュヒット率の計算
      */
-    calculateCacheHitRate() {
-        const total = this.memoryManager.hits + this.memoryManager.misses;
+    calculateCacheHitRate(): number {
+        const hits = this.memoryManager.hits || 0;
+        const misses = this.memoryManager.misses || 0;
+        const total = hits + misses;
         if (total === 0) return 0;
-        return (this.memoryManager.hits / total) * 100;
+        return (hits / total) * 100;
     }
 
     /**
      * パフォーマンス閾値チェック
      */
-    checkPerformanceThresholds(metrics) {
-        const warnings = [];
+    checkPerformanceThresholds(metrics: PerformanceMetrics): void {
+        if (!this.deviceInfo) return;
+
+        const warnings: string[] = [];
         
         // FPS チェック
-        if (metrics.fps < this.thresholds[this.deviceInfo.deviceClass].fps) {
+        const targetFPS = this.thresholds[this.deviceInfo.deviceClass + 'Device' as keyof DeviceThresholds];
+        if (metrics.fps < targetFPS.fps) {
             warnings.push(`Low FPS detected: ${metrics.fps}`);
             this.adjustForLowFPS();
         }
@@ -427,9 +662,19 @@ export class MobileSocialPerformanceOptimizer {
     }
 
     /**
+     * パフォーマンス警告の処理
+     */
+    handlePerformanceWarnings(warnings: string[]): void {
+        console.warn('Performance warnings:', warnings);
+        // 追加の警告処理ロジックをここに実装
+    }
+
+    /**
      * 低FPS時の調整
      */
-    adjustForLowFPS() {
+    adjustForLowFPS(): void {
+        if (!this.optimizationSettings) return;
+
         // アニメーション品質を下げる
         if (this.optimizationSettings.animationReduction < 0.9) {
             this.optimizationSettings.animationReduction += 0.1;
@@ -446,7 +691,7 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * メモリ管理の開始
      */
-    startMemoryManagement() {
+    startMemoryManagement(): void {
         // 定期的なクリーンアップ
         setInterval(() => {
             this.performMemoryCleanup();
@@ -459,7 +704,7 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * メモリクリーンアップの実行
      */
-    performMemoryCleanup() {
+    performMemoryCleanup(): void {
         const now = Date.now();
         
         // 古いキャッシュエントリの削除
@@ -486,11 +731,11 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * メモリ圧迫検出の設定
      */
-    setupMemoryPressureDetection() {
+    setupMemoryPressureDetection(): void {
         if (performance.memory) {
             setInterval(() => {
-                const used = performance.memory.usedJSHeapSize;
-                const total = performance.memory.totalJSHeapSize;
+                const used = performance.memory!.usedJSHeapSize;
+                const total = performance.memory!.totalJSHeapSize;
                 
                 if (used / total > 0.85) {
                     this.triggerMemoryCleanup();
@@ -502,7 +747,7 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * 強制メモリクリーンアップ
      */
-    triggerMemoryCleanup() {
+    triggerMemoryCleanup(): void {
         // 即座にクリーンアップを実行
         this.performMemoryCleanup();
         
@@ -518,7 +763,7 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * DOM要素のクリーンアップ
      */
-    cleanupDOMElements() {
+    cleanupDOMElements(): void {
         // 非表示の共有ダイアログを削除
         const hiddenDialogs = document.querySelectorAll('.share-dialog:not(.open)');
         hiddenDialogs.forEach(dialog => {
@@ -539,10 +784,10 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * 画像最適化の設定
      */
-    setupImageOptimization() {
+    setupImageOptimization(): void {
         // 画像品質の動的調整
-        this.optimizeImageQuality = (imageData, targetQuality = null) => {
-            const quality = targetQuality || this.optimizationSettings.imageQuality;
+        this.optimizeImageQuality = (imageData: string, targetQuality?: number): Promise<string> | string => {
+            const quality = targetQuality || (this.optimizationSettings?.imageQuality ?? 0.8);
             
             if (quality >= 0.9) return imageData; // 最適化不要
             
@@ -556,11 +801,16 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * 画像圧縮
      */
-    compressImage(imageData, quality) {
+    compressImage(imageData: string, quality: number): Promise<string> {
         return new Promise((resolve) => {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             const img = new Image();
+            
+            if (!ctx) {
+                resolve(imageData);
+                return;
+            }
             
             img.onload = () => {
                 // キャンバスサイズを調整（必要に応じて縮小）
@@ -583,7 +833,7 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * WebP サポートチェック
      */
-    checkWebPSupport() {
+    checkWebPSupport(): Promise<boolean> {
         return new Promise((resolve) => {
             const webP = new Image();
             webP.onload = webP.onerror = () => {
@@ -597,7 +847,9 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * アニメーション最適化の設定
      */
-    setupAnimationOptimization() {
+    setupAnimationOptimization(): void {
+        if (!this.optimizationSettings) return;
+
         const reduction = this.optimizationSettings.animationReduction;
         
         if (reduction > 0) {
@@ -608,7 +860,9 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * アニメーション最適化の適用
      */
-    applyAnimationOptimization() {
+    applyAnimationOptimization(): void {
+        if (!this.optimizationSettings) return;
+
         const reduction = this.optimizationSettings.animationReduction;
         
         // CSS アニメーション持続時間の短縮
@@ -634,7 +888,7 @@ export class MobileSocialPerformanceOptimizer {
         // 既存のスタイルを置換
         const existing = document.getElementById('mobile-animation-optimization');
         if (existing) {
-            existing.parentNode.removeChild(existing);
+            existing.parentNode?.removeChild(existing);
         }
         
         document.head.appendChild(style);
@@ -643,7 +897,9 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * 更新スロットリングの適用
      */
-    applyUpdateThrottling() {
+    applyUpdateThrottling(): void {
+        if (!this.optimizationSettings) return;
+
         const throttleTime = this.optimizationSettings.updateThrottling;
         
         // UI更新頻度の制限
@@ -654,20 +910,28 @@ export class MobileSocialPerformanceOptimizer {
     }
 
     /**
+     * UI更新処理（プレースホルダー）
+     */
+    updateUI(): void {
+        // UI更新の実装をここに追加
+        console.log('[MobileSocialPerformanceOptimizer] UI updated');
+    }
+
+    /**
      * スロットリング関数
      */
-    throttle(func, delay) {
-        let timeoutId;
+    throttle(func: (...args: any[]) => void, delay: number): ThrottledFunction {
+        let timeoutId: NodeJS.Timeout | undefined;
         let lastExecTime = 0;
         
-        return function (...args) {
+        return function (...args: any[]): void {
             const currentTime = Date.now();
             
             if (currentTime - lastExecTime > delay) {
                 func.apply(this, args);
                 lastExecTime = currentTime;
             } else {
-                clearTimeout(timeoutId);
+                if (timeoutId) clearTimeout(timeoutId);
                 timeoutId = setTimeout(() => {
                     func.apply(this, args);
                     lastExecTime = Date.now();
@@ -679,10 +943,12 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * パフォーマンスレポートの生成
      */
-    generatePerformanceReport() {
-        if (this.monitoring.metricsBuffer.length === 0) return;
+    generatePerformanceReport(): PerformanceReport | null {
+        if (this.monitoring.metricsBuffer.length === 0 || !this.deviceInfo || !this.optimizationSettings) {
+            return null;
+        }
         
-        const report = {
+        const report: PerformanceReport = {
             timestamp: Date.now(),
             deviceInfo: this.deviceInfo,
             optimizationSettings: this.optimizationSettings,
@@ -701,7 +967,7 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * メトリクス分析
      */
-    analyzeMetrics() {
+    analyzeMetrics(): MetricsAnalysis {
         const buffer = this.monitoring.metricsBuffer;
         const recentMetrics = buffer.slice(-30); // 直近30サンプル
         
@@ -716,7 +982,7 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * 平均値計算
      */
-    calculateAverage(values) {
+    calculateAverage(values: number[]): number {
         if (values.length === 0) return 0;
         return values.reduce((sum, val) => sum + val, 0) / values.length;
     }
@@ -724,10 +990,10 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * メモリトレンド計算
      */
-    calculateMemoryTrend(metrics) {
+    calculateMemoryTrend(metrics: PerformanceMetrics[]): 'increasing' | 'decreasing' | 'stable' {
         const memoryValues = metrics
             .filter(m => m.memory)
-            .map(m => m.memory.used);
+            .map(m => m.memory!.used);
             
         if (memoryValues.length < 2) return 'stable';
         
@@ -741,9 +1007,13 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * パフォーマンススコア計算
      */
-    calculatePerformanceScore(metrics) {
+    calculatePerformanceScore(metrics: PerformanceMetrics[]): { overall: number; fps: number; memory: number } {
+        if (!this.deviceInfo) {
+            return { overall: 0, fps: 0, memory: 0 };
+        }
+
         const avgFPS = this.calculateAverage(metrics.map(m => m.fps));
-        const targetFPS = this.thresholds[this.deviceInfo.deviceClass].fps;
+        const targetFPS = this.thresholds[this.deviceInfo.deviceClass + 'Device' as keyof DeviceThresholds].fps;
         
         const fpsScore = Math.min(100, (avgFPS / targetFPS) * 100);
         const memoryScore = this.calculateMemoryScore(metrics);
@@ -758,12 +1028,12 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * メモリスコア計算
      */
-    calculateMemoryScore(metrics) {
+    calculateMemoryScore(metrics: PerformanceMetrics[]): number {
         const memoryMetrics = metrics.filter(m => m.memory);
         if (memoryMetrics.length === 0) return 100;
         
         const avgUsage = this.calculateAverage(
-            memoryMetrics.map(m => m.memory.used / m.memory.total)
+            memoryMetrics.map(m => m.memory!.used / m.memory!.total)
         );
         
         return Math.max(0, 100 - (avgUsage * 100));
@@ -772,11 +1042,14 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * 推奨事項の生成
      */
-    generateRecommendations() {
+    generateRecommendations(): PerformanceRecommendation[] {
+        if (!this.deviceInfo) return [];
+
         const analysis = this.analyzeMetrics();
-        const recommendations = [];
+        const recommendations: PerformanceRecommendation[] = [];
         
-        if (analysis.averageFPS < this.thresholds[this.deviceInfo.deviceClass].fps) {
+        const targetFPS = this.thresholds[this.deviceInfo.deviceClass + 'Device' as keyof DeviceThresholds].fps;
+        if (analysis.averageFPS < targetFPS) {
             recommendations.push({
                 type: 'fps',
                 severity: 'high',
@@ -809,14 +1082,16 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * 最適化設定の調整
      */
-    adjustOptimizationSettings(report) {
+    adjustOptimizationSettings(report: PerformanceReport): void {
+        if (!this.optimizationSettings) return;
+
         const recommendations = report.recommendations;
         
         recommendations.forEach(rec => {
             switch (rec.action) {
                 case 'increaseAnimationReduction':
-                    this.optimizationSettings.animationReduction = Math.min(0.9, 
-                        this.optimizationSettings.animationReduction + 0.1);
+                    this.optimizationSettings!.animationReduction = Math.min(0.9, 
+                        this.optimizationSettings!.animationReduction + 0.1);
                     this.applyAnimationOptimization();
                     break;
                     
@@ -835,7 +1110,7 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * キャッシュアクセス
      */
-    getCachedData(key) {
+    getCachedData(key: string): any {
         const entry = this.memoryManager.cache.get(key);
         
         if (entry) {
@@ -852,8 +1127,8 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * キャッシュ保存
      */
-    setCachedData(key, data) {
-        const entry = {
+    setCachedData(key: string, data: any): void {
+        const entry: CacheEntry = {
             data,
             timestamp: Date.now(),
             lastAccess: Date.now(),
@@ -871,7 +1146,11 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * 最適化情報の取得
      */
-    getOptimizationInfo() {
+    getOptimizationInfo(): OptimizationInfo | null {
+        if (!this.deviceInfo || !this.optimizationSettings) {
+            return null;
+        }
+
         return {
             deviceInfo: this.deviceInfo,
             optimizationSettings: this.optimizationSettings,
@@ -884,7 +1163,7 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * クリーンアップ
      */
-    cleanup() {
+    cleanup(): void {
         this.monitoring.enabled = false;
         this.memoryManager.cache.clear();
         
@@ -896,3 +1175,31 @@ export class MobileSocialPerformanceOptimizer {
         this.isInitialized = false;
     }
 }
+
+// Singleton instance
+let mobileSocialPerformanceOptimizerInstance: MobileSocialPerformanceOptimizer | null = null;
+
+/**
+ * Get singleton MobileSocialPerformanceOptimizer instance
+ * @returns MobileSocialPerformanceOptimizer instance
+ */
+export function getMobileSocialPerformanceOptimizer(): MobileSocialPerformanceOptimizer {
+    if (!mobileSocialPerformanceOptimizerInstance) {
+        mobileSocialPerformanceOptimizerInstance = new MobileSocialPerformanceOptimizer();
+    }
+    return mobileSocialPerformanceOptimizerInstance;
+}
+
+/**
+ * Reinitialize mobile social performance optimizer
+ * @returns MobileSocialPerformanceOptimizer instance
+ */
+export function reinitializeMobileSocialPerformanceOptimizer(): MobileSocialPerformanceOptimizer {
+    if (mobileSocialPerformanceOptimizerInstance) {
+        mobileSocialPerformanceOptimizerInstance.cleanup();
+    }
+    mobileSocialPerformanceOptimizerInstance = new MobileSocialPerformanceOptimizer();
+    return mobileSocialPerformanceOptimizerInstance;
+}
+
+export const mobileSocialPerformanceOptimizer = getMobileSocialPerformanceOptimizer();
