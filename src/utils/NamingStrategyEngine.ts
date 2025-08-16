@@ -5,7 +5,93 @@
 
 import path from 'path';
 
+// Type definitions
+interface DuplicateFile {
+    fileName: string;
+    paths: string[];
+}
+
+interface DuplicateClass {
+    className: string;
+    locations: ClassLocation[];
+}
+
+interface ClassLocation {
+    file: string;
+    line: number;
+    column?: number;
+}
+
+interface FileNameResolution {
+    originalPath: string;
+    newPath: string;
+    newFileName: string;
+    reason: string;
+}
+
+interface ClassNameResolution {
+    location: ClassLocation;
+    newClassName: string;
+    reason: string;
+}
+
+interface FileNameStrategy {
+    originalName: string;
+    conflicts: string[];
+    resolutions: FileNameResolution[];
+}
+
+interface ClassNameStrategy {
+    originalClassName: string;
+    conflicts: ClassLocation[];
+    resolutions: ClassNameResolution[];
+}
+
+interface SpecialCaseMapping {
+    [directoryKey: string]: string;
+}
+
+interface NamingConventions {
+    class: string;
+    file: string;
+    prefix: string;
+}
+
+interface NameValidation {
+    originalName: string;
+    newName: string;
+    type: 'class' | 'file';
+    isValid: boolean;
+    issues: string[];
+}
+
+interface Conflict {
+    type: 'class' | 'file';
+    fileName?: string;
+    paths?: string[];
+    className?: string;
+    locations?: ClassLocation[];
+}
+
+interface NameInfo {
+    original: string;
+    new: string;
+    type: 'class' | 'file';
+}
+
+interface StrategyEvaluation {
+    strategy: FileNameStrategy | ClassNameStrategy;
+    score: number;
+    strengths: string[];
+    weaknesses: string[];
+    recommendations: string[];
+}
+
 export class NamingStrategyEngine {
+    private readonly domainPrefixes: Map<string, string>;
+    private readonly specialCases: Map<string, SpecialCaseMapping>;
+    private readonly namingConventions: NamingConventions;
+
     constructor() {
         // ドメイン固有のプレフィックスマッピング
         this.domainPrefixes = new Map([
@@ -23,7 +109,7 @@ export class NamingStrategyEngine {
         ]);
 
         // 特別な処理が必要なクラス名のマッピング
-        this.specialCases = new Map([
+        this.specialCases = new Map<string, SpecialCaseMapping>([
             ['DialogManager', {
                 'src/scenes/main-menu': 'MainMenuDialogManager',
                 'src/scenes/components': 'ComponentDialogManager', 
@@ -51,11 +137,11 @@ export class NamingStrategyEngine {
     /**
      * ファイル名の重複解決戦略を生成
      */
-    generateFileNameStrategy(duplicateFiles) {
-        const strategies = [];
+    generateFileNameStrategy(duplicateFiles: DuplicateFile[]): FileNameStrategy[] {
+        const strategies: FileNameStrategy[] = [];
 
         for (const duplicate of duplicateFiles) {
-            const strategy = {
+            const strategy: FileNameStrategy = {
                 originalName: duplicate.fileName,
                 conflicts: duplicate.paths,
                 resolutions: []
@@ -85,11 +171,11 @@ export class NamingStrategyEngine {
     /**
      * クラス名の重複解決戦略を生成
      */
-    generateClassNameStrategy(duplicateClasses) {
-        const strategies = [];
+    generateClassNameStrategy(duplicateClasses: DuplicateClass[]): ClassNameStrategy[] {
+        const strategies: ClassNameStrategy[] = [];
 
         for (const duplicate of duplicateClasses) {
-            const strategy = {
+            const strategy: ClassNameStrategy = {
                 originalClassName: duplicate.className,
                 conflicts: duplicate.locations,
                 resolutions: []
@@ -97,7 +183,7 @@ export class NamingStrategyEngine {
 
             // 特別なケースの処理
             if (this.specialCases.has(duplicate.className)) {
-                const specialMapping = this.specialCases.get(duplicate.className);
+                const specialMapping = this.specialCases.get(duplicate.className)!;
                 
                 for (const location of duplicate.locations) {
                     const dirKey = this.findMatchingDirectory(location.file, Object.keys(specialMapping));
@@ -131,15 +217,23 @@ export class NamingStrategyEngine {
     /**
      * ドメインベースのプレフィックス適用
      */
-    applyDomainPrefixes(conflicts) {
-        const results = [];
+    applyDomainPrefixes(conflicts: Conflict[]): (FileNameStrategy | ClassNameStrategy)[] {
+        const results: (FileNameStrategy | ClassNameStrategy)[] = [];
 
         for (const conflict of conflicts) {
-            if (conflict.type === 'class') {
-                const domainResults = this.generateClassNameStrategy([conflict]);
+            if (conflict.type === 'class' && conflict.className && conflict.locations) {
+                const duplicateClass: DuplicateClass = {
+                    className: conflict.className,
+                    locations: conflict.locations
+                };
+                const domainResults = this.generateClassNameStrategy([duplicateClass]);
                 results.push(...domainResults);
-            } else if (conflict.type === 'file') {
-                const fileResults = this.generateFileNameStrategy([conflict]);
+            } else if (conflict.type === 'file' && conflict.fileName && conflict.paths) {
+                const duplicateFile: DuplicateFile = {
+                    fileName: conflict.fileName,
+                    paths: conflict.paths
+                };
+                const fileResults = this.generateFileNameStrategy([duplicateFile]);
                 results.push(...fileResults);
             }
         }
@@ -150,11 +244,11 @@ export class NamingStrategyEngine {
     /**
      * 命名規則の検証
      */
-    validateNamingConventions(newNames) {
-        const validationResults = [];
+    validateNamingConventions(newNames: NameInfo[]): NameValidation[] {
+        const validationResults: NameValidation[] = [];
 
         for (const nameInfo of newNames) {
-            const result = {
+            const result: NameValidation = {
                 originalName: nameInfo.original,
                 newName: nameInfo.new,
                 type: nameInfo.type,
@@ -200,7 +294,7 @@ export class NamingStrategyEngine {
     /**
      * ディレクトリベースのプレフィックスを生成
      */
-    generateDirectoryPrefix(dirPath) {
+    generateDirectoryPrefix(dirPath: string): string {
         // 最も具体的なマッチングを探す
         let bestMatch = '';
         let bestPrefix = '';
@@ -224,7 +318,7 @@ export class NamingStrategyEngine {
     /**
      * デフォルトの名前生成
      */
-    generateDefaultName(originalName, filePath) {
+    generateDefaultName(originalName: string, filePath: string): string {
         const prefix = this.generateDirectoryPrefix(path.dirname(filePath));
         return prefix ? `${prefix}${originalName}` : originalName;
     }
@@ -232,7 +326,7 @@ export class NamingStrategyEngine {
     /**
      * マッチするディレクトリを検索
      */
-    findMatchingDirectory(filePath, directories) {
+    findMatchingDirectory(filePath: string, directories: string[]): string {
         for (const dir of directories) {
             if (filePath.includes(dir)) {
                 return dir;
@@ -244,35 +338,35 @@ export class NamingStrategyEngine {
     /**
      * PascalCase の検証
      */
-    isPascalCase(str) {
+    isPascalCase(str: string): boolean {
         return /^[A-Z][a-zA-Z0-9]*$/.test(str);
     }
 
     /**
      * camelCase の検証
      */
-    isCamelCase(str) {
+    isCamelCase(str: string): boolean {
         return /^[a-z][a-zA-Z0-9]*$/.test(str);
     }
 
     /**
      * 文字列をPascalCaseに変換
      */
-    toPascalCase(str) {
+    toPascalCase(str: string): string {
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
     /**
      * 文字列をcamelCaseに変換
      */
-    toCamelCase(str) {
+    toCamelCase(str: string): string {
         return str.charAt(0).toLowerCase() + str.slice(1);
     }
 
     /**
      * JavaScript予約語の検証
      */
-    isReservedWord(word) {
+    isReservedWord(word: string): boolean {
         const reservedWords = [
             'abstract', 'await', 'boolean', 'break', 'byte', 'case', 'catch', 'char',
             'class', 'const', 'continue', 'debugger', 'default', 'delete', 'do', 
@@ -290,8 +384,8 @@ export class NamingStrategyEngine {
     /**
      * 戦略の妥当性を評価
      */
-    evaluateStrategy(strategy) {
-        const evaluation = {
+    evaluateStrategy(strategy: FileNameStrategy | ClassNameStrategy): StrategyEvaluation {
+        const evaluation: StrategyEvaluation = {
             strategy: strategy,
             score: 0,
             strengths: [],
@@ -301,8 +395,9 @@ export class NamingStrategyEngine {
 
         // 命名の一貫性をチェック
         const prefixes = strategy.resolutions.map(r => {
-            const match = r.newClassName ? r.newClassName.match(/^([A-Z][a-z]*)/)[1] : '';
-            return match;
+            const name = 'newClassName' in r ? r.newClassName : r.newFileName;
+            const match = name?.match(/^([A-Z][a-z]*)/);
+            return match ? match[1] : '';
         }).filter(Boolean);
 
         const uniquePrefixes = [...new Set(prefixes)];
@@ -315,8 +410,8 @@ export class NamingStrategyEngine {
 
         // 名前の長さをチェック
         const averageLength = strategy.resolutions.reduce((sum, r) => {
-            const name = r.newClassName || r.newFileName || '';
-            return sum + name.length;
+            const name = 'newClassName' in r ? r.newClassName : r.newFileName;
+            return sum + (name?.length || 0);
         }, 0) / strategy.resolutions.length;
 
         if (averageLength <= 30) {
@@ -343,11 +438,13 @@ export class NamingStrategyEngine {
     /**
      * 可読性を評価
      */
-    evaluateReadability(resolutions) {
+    evaluateReadability(resolutions: (FileNameResolution | ClassNameResolution)[]): number {
         let score = 0;
         
         for (const resolution of resolutions) {
-            const name = resolution.newClassName || resolution.newFileName || '';
+            const name = 'newClassName' in resolution ? resolution.newClassName : resolution.newFileName;
+            
+            if (!name) continue;
             
             // CamelCase/PascalCase の適切な使用
             if (this.isPascalCase(name) || this.isCamelCase(name)) {
@@ -371,7 +468,7 @@ export class NamingStrategyEngine {
     /**
      * 過度な略語の使用をチェック
      */
-    hasExcessiveAbbreviations(name) {
+    hasExcessiveAbbreviations(name: string): boolean {
         const abbreviationPattern = /[A-Z]{3,}/;
         return abbreviationPattern.test(name);
     }
