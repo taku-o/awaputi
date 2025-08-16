@@ -11,8 +11,117 @@
 import { getErrorHandler } from '../ErrorHandler.js';
 import { getPerformanceConfig } from '../../config/PerformanceConfig.js';
 
+// 型定義
+interface ControllerConfig {
+    adaptiveMode?: boolean;
+    thresholds?: Partial<ThresholdSettings>;
+}
+
+interface ThresholdSettings {
+    memoryPressure: {
+        critical: number;
+        high: number;
+        moderate: number;
+        low: number;
+    };
+    performance: {
+        degradationRisk: number;
+        moderateRisk: number;
+        improvementThreshold: number;
+    };
+}
+
+interface OptimizationStats {
+    optimizationCount: number;
+    lastOptimization: OptimizationRecord | null;
+    adjustmentHistory: OptimizationRecord[];
+    memoryPressureLevel: number;
+}
+
+interface OptimizationRecord {
+    level: PerformanceLevel;
+    time: number;
+    reason: string;
+    type: OptimizationType;
+    timestamp?: number;
+}
+
+interface QualitySettings {
+    render: QualityLevel;
+    particle: QualityLevel;
+    effect: QualityLevel;
+    audio: QualityLevel;
+}
+
+interface AntiJitterSettings {
+    cooldownPeriod: number;
+    lastAdjustment: number;
+    minimumStabilityPeriod: number;
+}
+
+interface AdaptiveOptimizationResult {
+    optimized: boolean;
+    reason?: string;
+    level?: PerformanceLevel;
+    memoryPressure?: number;
+    stabilityScore?: number;
+    error?: boolean;
+}
+
+interface ProactiveOptimizationResult {
+    optimized: boolean;
+    actions?: string[];
+    level?: PerformanceLevel;
+    prediction?: number;
+    error?: boolean;
+}
+
+interface PerformanceMetrics {
+    stabilityScore?: number;
+    memoryPressure?: number;
+    frameTime?: number;
+    variance?: number;
+}
+
+interface PerformancePrediction {
+    memoryRisk: number;
+    degradationRisk: number;
+    nextFrameStability: number;
+    overallRisk: number;
+    recommendations?: string[];
+}
+
+interface ControllerSettings {
+    performanceLevel: PerformanceLevel;
+    adaptiveMode: boolean;
+    qualitySettings: QualitySettings;
+    optimizationStats: OptimizationStats;
+}
+
+interface ErrorHandler {
+    logError(message: string, error: any): void;
+}
+
+interface PerformanceConfig {
+    // 設定の型定義（必要に応じて追加）
+}
+
+type PerformanceLevel = 'high' | 'medium' | 'low';
+type QualityLevel = 'high' | 'medium' | 'low' | 'minimal' | 'off';
+type OptimizationType = 'adaptive' | 'proactive' | 'emergency' | 'stabilization';
+
 export class PerformanceAdaptiveController {
-    constructor(config = {}) {
+    private config: ControllerConfig;
+    private errorHandler: ErrorHandler;
+    private performanceConfig: PerformanceConfig;
+    private performanceLevel: PerformanceLevel;
+    private adaptiveMode: boolean;
+    private optimizationStats: OptimizationStats;
+    private qualitySettings: QualitySettings;
+    private thresholds: ThresholdSettings;
+    private antiJitter: AntiJitterSettings;
+
+    constructor(config: ControllerConfig = {}) {
         this.config = config;
         this.errorHandler = getErrorHandler();
         this.performanceConfig = getPerformanceConfig();
@@ -62,10 +171,10 @@ export class PerformanceAdaptiveController {
 
     /**
      * 標準適応最適化を実行
-     * @param {object} metrics - パフォーマンスメトリクス
-     * @returns {object} 最適化結果
+     * @param metrics - パフォーマンスメトリクス
+     * @returns 最適化結果
      */
-    performAdaptiveOptimization(metrics = {}) {
+    performAdaptiveOptimization(metrics: PerformanceMetrics = {}): AdaptiveOptimizationResult {
         try {
             if (!this.adaptiveMode) {
                 return { optimized: false, reason: 'Adaptive mode disabled' };
@@ -131,15 +240,15 @@ export class PerformanceAdaptiveController {
 
     /**
      * 予測ベース積極最適化を実行
-     * @param {object} prediction - パフォーマンス予測結果
-     * @returns {object} 最適化結果
+     * @param prediction - パフォーマンス予測結果
+     * @returns 最適化結果
      */
-    performProactiveOptimization(prediction) {
+    performProactiveOptimization(prediction: PerformancePrediction): ProactiveOptimizationResult {
         try {
             console.log('[AdaptiveController] Performing proactive optimization based on predictions');
             
             let optimizationApplied = false;
-            const actions = [];
+            const actions: string[] = [];
             
             // メモリ問題の予測対応
             if (prediction.memoryRisk > 0.7) {
@@ -185,12 +294,12 @@ export class PerformanceAdaptiveController {
 
     /**
      * パフォーマンスレベルを設定
-     * @param {string} level - パフォーマンスレベル ('high', 'medium', 'low')
-     * @returns {boolean} 設定成功フラグ
+     * @param level - パフォーマンスレベル ('high', 'medium', 'low')
+     * @returns 設定成功フラグ
      */
-    setPerformanceLevel(level) {
+    setPerformanceLevel(level: PerformanceLevel): boolean {
         try {
-            const validLevels = ['high', 'medium', 'low'];
+            const validLevels: PerformanceLevel[] = ['high', 'medium', 'low'];
             if (!validLevels.includes(level)) {
                 throw new Error(`Invalid performance level: ${level}`);
             }
@@ -214,7 +323,7 @@ export class PerformanceAdaptiveController {
     /**
      * パフォーマンスを低下させる（品質を下げる）
      */
-    degradePerformance() {
+    degradePerformance(): void {
         try {
             const currentLevel = this.performanceLevel;
             
@@ -235,7 +344,7 @@ export class PerformanceAdaptiveController {
     /**
      * パフォーマンスを向上させる（品質を上げる）
      */
-    improvePerformance() {
+    improvePerformance(): void {
         try {
             const currentLevel = this.performanceLevel;
             
@@ -255,9 +364,9 @@ export class PerformanceAdaptiveController {
 
     /**
      * アンチジッター対策を適用
-     * @param {number} jitterLevel - ジッターレベル（0-1）
+     * @param jitterLevel - ジッターレベル（0-1）
      */
-    applyAntiJitterMeasures(jitterLevel) {
+    applyAntiJitterMeasures(jitterLevel: number): void {
         try {
             if (jitterLevel < 0.3) return; // ジッターが軽微な場合は何もしない
             
@@ -291,7 +400,7 @@ export class PerformanceAdaptiveController {
     /**
      * 緊急最適化を適用
      */
-    applyEmergencyOptimization() {
+    applyEmergencyOptimization(): void {
         try {
             // 最低品質に設定
             this.setPerformanceLevel('low');
@@ -315,7 +424,7 @@ export class PerformanceAdaptiveController {
     /**
      * 中程度の最適化を適用
      */
-    applyModerateOptimization() {
+    applyModerateOptimization(): void {
         try {
             if (this.performanceLevel === 'high') {
                 this.setPerformanceLevel('medium');
@@ -336,7 +445,7 @@ export class PerformanceAdaptiveController {
     /**
      * 積極的メモリクリーンアップを実行
      */
-    applyProactiveMemoryCleanup() {
+    applyProactiveMemoryCleanup(): void {
         try {
             // ガベージコレクション（可能な場合）
             if (window.gc && typeof window.gc === 'function') {
@@ -358,7 +467,7 @@ export class PerformanceAdaptiveController {
     /**
      * フレーム安定化対策を適用
      */
-    applyFrameStabilizationMeasures() {
+    applyFrameStabilizationMeasures(): void {
         try {
             // レンダリング品質を下げる
             if (this.qualitySettings.render !== 'low') {
@@ -379,9 +488,9 @@ export class PerformanceAdaptiveController {
 
     /**
      * パフォーマンス向上を検討
-     * @returns {boolean} 向上が適用されたかどうか
+     * @returns 向上が適用されたかどうか
      */
-    considerPerformanceImprovement() {
+    considerPerformanceImprovement(): boolean {
         try {
             // 十分な安定期間があったかチェック
             const currentTime = Date.now();
@@ -405,9 +514,9 @@ export class PerformanceAdaptiveController {
 
     /**
      * メモリ圧迫を計算
-     * @returns {number} メモリ圧迫レベル（0-1）
+     * @returns メモリ圧迫レベル（0-1）
      */
-    calculateMemoryPressure() {
+    calculateMemoryPressure(): number {
         try {
             if (!performance.memory) {
                 return 0;
@@ -430,9 +539,9 @@ export class PerformanceAdaptiveController {
 
     /**
      * メモリ圧迫レベルを更新
-     * @param {number} pressure - メモリ圧迫率（0-1）
+     * @param pressure - メモリ圧迫率（0-1）
      */
-    updateMemoryPressureLevel(pressure) {
+    updateMemoryPressureLevel(pressure: number): void {
         try {
             const thresholds = this.thresholds.memoryPressure;
             
@@ -455,9 +564,9 @@ export class PerformanceAdaptiveController {
 
     /**
      * 品質設定を更新
-     * @param {string} level - パフォーマンスレベル
+     * @param level - パフォーマンスレベル
      */
-    updateQualitySettings(level) {
+    updateQualitySettings(level: PerformanceLevel): void {
         try {
             switch (level) {
                 case 'high':
@@ -493,20 +602,20 @@ export class PerformanceAdaptiveController {
 
     /**
      * クールダウン期間中かチェック
-     * @returns {boolean} クールダウン中かどうか
+     * @returns クールダウン中かどうか
      */
-    isInCooldownPeriod() {
+    isInCooldownPeriod(): boolean {
         const currentTime = Date.now();
         return currentTime - this.antiJitter.lastAdjustment < this.antiJitter.cooldownPeriod;
     }
 
     /**
      * 最適化記録を保存
-     * @param {string} reason - 最適化理由
-     * @param {string} type - 最適化タイプ
-     * @param {number} timestamp - タイムスタンプ
+     * @param reason - 最適化理由
+     * @param type - 最適化タイプ
+     * @param timestamp - タイムスタンプ
      */
-    recordOptimization(reason, type, timestamp) {
+    recordOptimization(reason: string, type: OptimizationType, timestamp: number): void {
         try {
             this.optimizationStats.optimizationCount++;
             this.optimizationStats.lastOptimization = {
@@ -537,7 +646,7 @@ export class PerformanceAdaptiveController {
     /**
      * 積極的安定化を適用
      */
-    applyAggressiveStabilization() {
+    applyAggressiveStabilization(): void {
         this.qualitySettings.render = 'low';
         this.qualitySettings.particle = 'minimal';
         this.qualitySettings.effect = 'minimal';
@@ -546,7 +655,7 @@ export class PerformanceAdaptiveController {
     /**
      * 中程度安定化を適用
      */
-    applyModerateStabilization() {
+    applyModerateStabilization(): void {
         if (this.qualitySettings.particle === 'high') {
             this.qualitySettings.particle = 'medium';
         }
@@ -558,25 +667,25 @@ export class PerformanceAdaptiveController {
     /**
      * 軽微安定化を適用
      */
-    applyLightStabilization() {
+    applyLightStabilization(): void {
         // 軽微な調整のみ実行
         // 実装は要件に応じて追加
     }
 
     /**
      * 適応モードを設定
-     * @param {boolean} enabled - 適応モード有効フラグ
+     * @param enabled - 適応モード有効フラグ
      */
-    setAdaptiveMode(enabled) {
+    setAdaptiveMode(enabled: boolean): void {
         this.adaptiveMode = enabled;
         console.log(`[AdaptiveController] Adaptive mode ${enabled ? 'enabled' : 'disabled'}`);
     }
 
     /**
      * 現在の設定を取得
-     * @returns {object} 現在の設定
+     * @returns 現在の設定
      */
-    getSettings() {
+    getSettings(): ControllerSettings {
         return {
             performanceLevel: this.performanceLevel,
             adaptiveMode: this.adaptiveMode,
@@ -588,7 +697,7 @@ export class PerformanceAdaptiveController {
     /**
      * 統計をリセット
      */
-    resetStats() {
+    resetStats(): void {
         this.optimizationStats = {
             optimizationCount: 0,
             lastOptimization: null,

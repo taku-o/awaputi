@@ -10,8 +10,100 @@
 
 import { getErrorHandler } from '../ErrorHandler.js';
 
+// 型定義
+interface AnalyzerConfig {
+    maxHistorySize?: number;
+}
+
+interface PredictionWeights {
+    variance: number;
+    trend: number;
+    memory: number;
+}
+
+interface PredictionModel {
+    weights: PredictionWeights;
+    confidence: number;
+}
+
+interface PerformanceSnapshot {
+    timestamp: number;
+    prediction: number;
+    actual: number | null;
+}
+
+interface StabilityAnalysis {
+    frameTimeBuffer: number[];
+    performanceSnapshots: PerformanceSnapshot[];
+    issueHistory: any[];
+    predictionModel: PredictionModel;
+}
+
+interface Stats {
+    frameTimeVariance: number;
+    stabilityScore: number;
+    avgFrameTime: number;
+    performanceTrend: string;
+}
+
+interface FrameStabilityResult {
+    stabilityScore: number;
+    variance: number;
+    trend: string;
+    confidence: number;
+    frameCount?: number;
+    recommendations?: string[];
+    error?: boolean;
+}
+
+interface MemoryMetrics {
+    pressure: number;
+    trend: string;
+    available: number;
+}
+
+interface RenderingMetrics {
+    load: number;
+}
+
+interface PredictionMetrics {
+    currentStability: FrameStabilityResult;
+    memoryPressure: number;
+    renderingLoad: number;
+}
+
+interface PerformancePrediction {
+    timestamp: number;
+    stability: FrameStabilityResult;
+    nextFrameStability: number;
+    memoryRisk: number;
+    degradationRisk: number;
+    overallRisk: number;
+    recommendations: string[];
+    error?: boolean;
+}
+
+interface DetailedAnalysis {
+    stats: Stats;
+    frameHistory: number[];
+    stabilityAnalysis: StabilityAnalysis;
+}
+
+interface ErrorHandler {
+    logError(message: string, error: any): void;
+}
+
+type PerformanceTrend = 'improving' | 'degrading' | 'stable' | 'insufficient_data' | 'unknown';
+
 export class PerformanceAnalyzer {
-    constructor(config = {}) {
+    private config: AnalyzerConfig;
+    private errorHandler: ErrorHandler;
+    private frameTimeHistory: number[];
+    private maxHistorySize: number;
+    private stabilityAnalysis: StabilityAnalysis;
+    private stats: Stats;
+
+    constructor(config: AnalyzerConfig = {}) {
         this.config = config;
         this.errorHandler = getErrorHandler();
         
@@ -39,9 +131,9 @@ export class PerformanceAnalyzer {
 
     /**
      * フレーム時間を記録し、履歴を管理
-     * @param {number} frameTime - フレーム時間（ミリ秒）
+     * @param frameTime - フレーム時間（ミリ秒）
      */
-    recordFrameTime(frameTime) {
+    recordFrameTime(frameTime: number): void {
         try {
             this.frameTimeHistory.push(frameTime);
             
@@ -60,9 +152,9 @@ export class PerformanceAnalyzer {
 
     /**
      * フレーム時間の分散を計算
-     * @returns {number} フレーム時間の分散値
+     * @returns フレーム時間の分散値
      */
-    calculateFrameTimeVariance() {
+    calculateFrameTimeVariance(): number {
         try {
             if (this.frameTimeHistory.length < 2) return 0;
             
@@ -80,9 +172,9 @@ export class PerformanceAnalyzer {
 
     /**
      * 拡張フレーム安定性分析
-     * @returns {object} 詳細な安定性分析結果
+     * @returns 詳細な安定性分析結果
      */
-    analyzeFrameStability() {
+    analyzeFrameStability(): FrameStabilityResult {
         try {
             const variance = this.calculateFrameTimeVariance();
             const frameCount = this.frameTimeHistory.length;
@@ -134,9 +226,9 @@ export class PerformanceAnalyzer {
 
     /**
      * 線形回帰を使用したパフォーマンストレンド計算
-     * @returns {string} トレンド方向 ('improving', 'degrading', 'stable')
+     * @returns トレンド方向 ('improving', 'degrading', 'stable')
      */
-    calculatePerformanceTrend() {
+    calculatePerformanceTrend(): PerformanceTrend {
         try {
             if (this.frameTimeHistory.length < 10) return 'insufficient_data';
             
@@ -167,9 +259,9 @@ export class PerformanceAnalyzer {
 
     /**
      * パフォーマンス予測とメトリクス収集
-     * @returns {object} 包括的パフォーマンスメトリクス
+     * @returns 包括的パフォーマンスメトリクス
      */
-    predictPerformanceIssues() {
+    predictPerformanceIssues(): PerformancePrediction {
         try {
             const stability = this.analyzeFrameStability();
             const memoryMetrics = this.gatherMemoryMetrics();
@@ -219,10 +311,10 @@ export class PerformanceAnalyzer {
 
     /**
      * 次フレームの安定性を予測
-     * @param {object} metrics - 現在のメトリクス
-     * @returns {number} 予測安定性スコア（0-1）
+     * @param metrics - 現在のメトリクス
+     * @returns 予測安定性スコア（0-1）
      */
-    predictNextFrameStability(metrics) {
+    predictNextFrameStability(metrics: PredictionMetrics): number {
         try {
             const { currentStability, memoryPressure, renderingLoad } = metrics;
             
@@ -253,10 +345,10 @@ export class PerformanceAnalyzer {
 
     /**
      * メモリ問題のリスクを予測
-     * @param {object} memoryMetrics - メモリメトリクス
-     * @returns {number} メモリリスクスコア（0-1）
+     * @param memoryMetrics - メモリメトリクス
+     * @returns メモリリスクスコア（0-1）
      */
-    predictMemoryIssueRisk(memoryMetrics) {
+    predictMemoryIssueRisk(memoryMetrics: MemoryMetrics): number {
         try {
             const { pressure, trend, available } = memoryMetrics;
             
@@ -280,10 +372,10 @@ export class PerformanceAnalyzer {
 
     /**
      * パフォーマンス低下リスクを予測
-     * @param {object} metrics - 総合メトリクス
-     * @returns {number} 低下リスクスコア（0-1）
+     * @param metrics - 総合メトリクス
+     * @returns 低下リスクスコア（0-1）
      */
-    predictPerformanceDegradationRisk(metrics) {
+    predictPerformanceDegradationRisk(metrics: { stability: FrameStabilityResult; memoryRisk: number; trend: string }): number {
         try {
             const { stability, memoryRisk, trend } = metrics;
             
@@ -307,7 +399,7 @@ export class PerformanceAnalyzer {
     /**
      * 基本統計を更新
      */
-    updateBasicStats() {
+    updateBasicStats(): void {
         try {
             if (this.frameTimeHistory.length === 0) return;
             
@@ -328,13 +420,13 @@ export class PerformanceAnalyzer {
 
     /**
      * 安定性推奨事項を生成
-     * @param {number} stabilityScore - 安定性スコア
-     * @param {number} variance - 分散値
-     * @param {string} trend - トレンド
-     * @returns {Array} 推奨事項配列
+     * @param stabilityScore - 安定性スコア
+     * @param variance - 分散値
+     * @param trend - トレンド
+     * @returns 推奨事項配列
      */
-    generateStabilityRecommendations(stabilityScore, variance, trend) {
-        const recommendations = [];
+    generateStabilityRecommendations(stabilityScore: number, variance: number, trend: string): string[] {
+        const recommendations: string[] = [];
         
         if (stabilityScore < 0.5) {
             recommendations.push('フレーム安定性が低下しています。品質設定を下げることを検討してください。');
@@ -353,13 +445,13 @@ export class PerformanceAnalyzer {
 
     /**
      * パフォーマンス推奨事項を生成
-     * @param {object} stability - 安定性データ
-     * @param {number} memoryRisk - メモリリスク
-     * @param {number} degradationRisk - 低下リスク
-     * @returns {Array} 推奨事項配列
+     * @param stability - 安定性データ
+     * @param memoryRisk - メモリリスク
+     * @param degradationRisk - 低下リスク
+     * @returns 推奨事項配列
      */
-    generatePerformanceRecommendations(stability, memoryRisk, degradationRisk) {
-        const recommendations = [];
+    generatePerformanceRecommendations(stability: FrameStabilityResult, memoryRisk: number, degradationRisk: number): string[] {
+        const recommendations: string[] = [];
         
         if (memoryRisk > 0.7) {
             recommendations.push('メモリ使用量が高レベルです。即座にリソースクリーンアップが必要です。');
@@ -378,9 +470,9 @@ export class PerformanceAnalyzer {
 
     /**
      * メモリメトリクスを収集（プレースホルダー）
-     * @returns {object} メモリメトリクス
+     * @returns メモリメトリクス
      */
-    gatherMemoryMetrics() {
+    gatherMemoryMetrics(): MemoryMetrics {
         // 実装は別途追加予定
         return {
             pressure: 0.3,
@@ -391,9 +483,9 @@ export class PerformanceAnalyzer {
 
     /**
      * レンダリングメトリクスを収集（プレースホルダー）
-     * @returns {object} レンダリングメトリクス
+     * @returns レンダリングメトリクス
      */
-    gatherRenderingMetrics() {
+    gatherRenderingMetrics(): RenderingMetrics {
         // 実装は別途追加予定
         return {
             load: 0.4
@@ -402,9 +494,9 @@ export class PerformanceAnalyzer {
 
     /**
      * 予測精度を更新
-     * @param {object} prediction - 予測データ
+     * @param prediction - 予測データ
      */
-    updatePredictionAccuracy(prediction) {
+    updatePredictionAccuracy(prediction: PerformancePrediction): void {
         try {
             // 予測スナップショットを保存
             this.stabilityAnalysis.performanceSnapshots.push({
@@ -425,17 +517,17 @@ export class PerformanceAnalyzer {
 
     /**
      * 現在の統計を取得
-     * @returns {object} 統計データ
+     * @returns 統計データ
      */
-    getStats() {
+    getStats(): Stats {
         return { ...this.stats };
     }
 
     /**
      * 詳細な分析データを取得
-     * @returns {object} 詳細分析データ
+     * @returns 詳細分析データ
      */
-    getDetailedAnalysis() {
+    getDetailedAnalysis(): DetailedAnalysis {
         return {
             stats: this.getStats(),
             frameHistory: [...this.frameTimeHistory],
@@ -446,7 +538,7 @@ export class PerformanceAnalyzer {
     /**
      * 分析データをリセット
      */
-    reset() {
+    reset(): void {
         try {
             this.frameTimeHistory = [];
             this.stabilityAnalysis = {

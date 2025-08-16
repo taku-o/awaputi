@@ -10,8 +10,221 @@
 
 import { getErrorHandler } from '../ErrorHandler.js';
 
+// 型定義
+interface IntegratorConfig {
+    stabilizerIntegration?: Partial<StabilizerIntegrationSettings>;
+    stabilizationControl?: Partial<StabilizationControl>;
+    performanceZones?: Partial<PerformanceZones>;
+}
+
+interface StabilizerIntegrationSettings {
+    enabled: boolean;
+    lastSync: number;
+    syncInterval: number;
+    confidenceThreshold: number;
+}
+
+interface IntegrationStats {
+    frameTimeVariance: number;
+    stabilityScore: number;
+    stabilizerInsights: StabilizerInsights | null;
+    performanceHistory: PerformanceHistoryEntry[];
+    issueHistory: PerformanceIssue[];
+}
+
+interface StabilizationControl {
+    targetFPS: number;
+    targetFrameTime: number;
+    forceStabilization: boolean;
+    stabilizationMode: StabilizationMode;
+}
+
+interface PerformanceZones {
+    optimal: PerformanceZone;
+    good: PerformanceZone;
+    poor: PerformanceZone;
+    critical: PerformanceZone;
+}
+
+interface PerformanceZone {
+    minStability: number;
+    maxJitter: number;
+}
+
+interface StabilizerStatus {
+    timing: TimingInfo;
+    adaptive: AdaptiveInfo;
+    recommendations: StabilizationRecommendation[];
+    pacing: PacingInfo;
+}
+
+interface TimingInfo {
+    variance: number;
+    stabilityScore: number;
+    jitterLevel: number;
+    smoothnessIndex: number;
+    consistencyRating: string;
+}
+
+interface AdaptiveInfo {
+    performanceZone: PerformanceZoneType;
+    confidenceLevel: number;
+    currentTargetFPS: number;
+}
+
+interface PacingInfo {
+    vsyncDetected?: boolean;
+    tearingRisk?: number;
+}
+
+interface StabilizationRecommendation {
+    type: RecommendationType;
+    description?: string;
+    priority?: number;
+}
+
+interface IntegrationResult {
+    integrated: boolean;
+    reason?: string;
+    timestamp?: number;
+    actions?: {
+        zone: string[];
+        jitter: string[];
+        fps: string[];
+        stabilization: string[];
+    };
+    currentZone?: PerformanceZoneType;
+    stabilityScore?: number;
+    jitterLevel?: number;
+    error?: boolean;
+}
+
+interface FrameStabilityAnalysis {
+    timestamp: number;
+    overall: {
+        stabilityScore: number;
+        confidence: number;
+        trend: TrendDirection;
+        trendStrength: number;
+    };
+    analysis: {
+        frameConsistency: number;
+        jitterAnalysis: number;
+        performanceVariability: number;
+    };
+    problems: ProblemArea[];
+    prediction: StabilityPrediction;
+    recommendations: StabilityRecommendationEntry[];
+    stabilizerStatus: StabilizerInsights | null;
+    error?: boolean;
+}
+
+interface ForceStabilizationResult {
+    forced: boolean;
+    targetFPS?: number;
+    mode?: StabilizationMode;
+    previousTarget?: number;
+    previousMode?: StabilizationMode;
+    actions?: string[];
+    settings?: ModeSettings;
+    timestamp?: number;
+    error?: boolean;
+}
+
+interface PerformanceHistoryEntry {
+    timestamp: number;
+    stabilityScore: number;
+    variance: number;
+    jitterLevel: number;
+    performanceZone: PerformanceZoneType;
+    confidenceLevel: number;
+}
+
+interface PerformanceIssue {
+    type: string;
+    data: any;
+    timestamp: number;
+}
+
+interface StabilizerInsights {
+    performanceZone: PerformanceZoneType;
+    confidenceLevel: number;
+    jitterLevel: number;
+    smoothnessIndex: number;
+    consistencyRating: string;
+    vsyncDetected: boolean;
+    tearingRisk: number;
+    timestamp: number;
+}
+
+interface OverallStability {
+    score: number;
+    confidence: number;
+    consistency: number;
+    jitter: number;
+    variability: number;
+}
+
+interface StabilityTrend {
+    direction: TrendDirection;
+    strength: number;
+}
+
+interface ProblemArea {
+    type: string;
+    description: string;
+    severity: SeverityLevel;
+    count?: number;
+    percentage?: number;
+}
+
+interface StabilityRecommendationEntry {
+    type: RecommendationSeverity;
+    action: string;
+    description: string;
+}
+
+interface StabilityPrediction {
+    confidence: number;
+    prediction: TrendDirection | 'insufficient_data' | 'unknown';
+    change?: number;
+}
+
+interface ModeSettings {
+    qualityReduction: QualityReductionLevel;
+    frameTargetAdjustment: FrameTargetAdjustment;
+    jitterTolerance: JitterTolerance;
+}
+
+interface IntegrationSettings {
+    stabilizerIntegration: StabilizerIntegrationSettings;
+    stabilizationControl: StabilizationControl;
+    performanceZones: PerformanceZones;
+}
+
+interface ErrorHandler {
+    logError(message: string, error: any): void;
+}
+
+type PerformanceZoneType = 'optimal' | 'good' | 'poor' | 'critical';
+type StabilizationMode = 'aggressive' | 'balanced' | 'conservative';
+type RecommendationType = 'reduce_quality' | 'target_fps_adjustment' | 'frame_pacing';
+type TrendDirection = 'improving' | 'degrading' | 'stable' | 'insufficient_data' | 'unknown';
+type SeverityLevel = 'high' | 'medium' | 'low';
+type RecommendationSeverity = 'critical' | 'warning' | 'maintenance' | 'info';
+type QualityReductionLevel = 'maximum' | 'moderate' | 'minimal';
+type FrameTargetAdjustment = 'dynamic' | 'adaptive' | 'static';
+type JitterTolerance = 'minimal' | 'normal' | 'relaxed';
+
 export class PerformanceStabilizerIntegrator {
-    constructor(config = {}) {
+    private config: IntegratorConfig;
+    private errorHandler: ErrorHandler;
+    private stabilizerIntegration: StabilizerIntegrationSettings;
+    private integrationStats: IntegrationStats;
+    private stabilizationControl: StabilizationControl;
+    private performanceZones: PerformanceZones;
+
+    constructor(config: IntegratorConfig = {}) {
         this.config = config;
         this.errorHandler = getErrorHandler();
         
@@ -37,7 +250,7 @@ export class PerformanceStabilizerIntegrator {
             targetFPS: 60,
             targetFrameTime: 16.67,
             forceStabilization: false,
-            stabilizationMode: 'adaptive'
+            stabilizationMode: 'balanced'
         };
         
         // パフォーマンスゾーンしきい値
@@ -51,10 +264,10 @@ export class PerformanceStabilizerIntegrator {
 
     /**
      * FrameStabilizerの推奨事項を統合
-     * @param {object} stabilizerStatus - FrameStabilizer のステータスと推奨事項
-     * @returns {object} 統合結果
+     * @param stabilizerStatus - FrameStabilizer のステータスと推奨事項
+     * @returns 統合結果
      */
-    integrateStabilizerRecommendations(stabilizerStatus) {
+    integrateStabilizerRecommendations(stabilizerStatus: StabilizerStatus): IntegrationResult {
         try {
             if (!this.stabilizerIntegration.enabled) {
                 return { integrated: false, reason: 'Integration disabled' };
@@ -110,9 +323,9 @@ export class PerformanceStabilizerIntegrator {
 
     /**
      * 統合フレーム安定性分析を取得
-     * @returns {object} 統合された安定性分析結果
+     * @returns 統合された安定性分析結果
      */
-    getFrameStabilityAnalysis() {
+    getFrameStabilityAnalysis(): FrameStabilityAnalysis {
         try {
             const currentTime = Date.now();
             const recentHistory = this.getRecentPerformanceHistory(5000); // 5秒間
@@ -167,11 +380,11 @@ export class PerformanceStabilizerIntegrator {
 
     /**
      * 強制フレーム安定化を実行
-     * @param {number} targetFPS - 目標FPS
-     * @param {string} mode - 安定化モード ('aggressive', 'balanced', 'conservative')
-     * @returns {object} 安定化結果
+     * @param targetFPS - 目標FPS
+     * @param mode - 安定化モード ('aggressive', 'balanced', 'conservative')
+     * @returns 安定化結果
      */
-    forceFrameStabilization(targetFPS, mode = 'balanced') {
+    forceFrameStabilization(targetFPS: number, mode: StabilizationMode = 'balanced'): ForceStabilizationResult {
         try {
             console.log(`[StabilizerIntegrator] Forcing frame stabilization: ${targetFPS}FPS, mode: ${mode}`);
             
@@ -216,10 +429,10 @@ export class PerformanceStabilizerIntegrator {
 
     /**
      * 統合統計を更新
-     * @param {object} timing - タイミング情報
-     * @param {object} adaptive - 適応情報
+     * @param timing - タイミング情報
+     * @param adaptive - 適応情報
      */
-    updateIntegratedStats(timing, adaptive) {
+    updateIntegratedStats(timing: TimingInfo, adaptive: AdaptiveInfo): void {
         try {
             this.integrationStats.frameTimeVariance = timing.variance;
             this.integrationStats.stabilityScore = timing.stabilityScore;
@@ -246,12 +459,12 @@ export class PerformanceStabilizerIntegrator {
 
     /**
      * パフォーマンスゾーンを処理
-     * @param {object} adaptive - 適応情報
-     * @param {object} timing - タイミング情報
-     * @returns {Array} 実行されたアクション
+     * @param adaptive - 適応情報
+     * @param timing - タイミング情報
+     * @returns 実行されたアクション
      */
-    handlePerformanceZone(adaptive, timing) {
-        const actions = [];
+    handlePerformanceZone(adaptive: AdaptiveInfo, timing: TimingInfo): string[] {
+        const actions: string[] = [];
         const zone = adaptive.performanceZone;
         
         try {
@@ -294,8 +507,8 @@ export class PerformanceStabilizerIntegrator {
      * @param {object} timing - タイミング情報
      * @returns {Array} 実行されたアクション
      */
-    handleJitterControl(timing) {
-        const actions = [];
+    handleJitterControl(timing: TimingInfo): string[] {
+        const actions: string[] = [];
         
         try {
             // 高ジッター検出
@@ -325,8 +538,8 @@ export class PerformanceStabilizerIntegrator {
      * @param {object} adaptive - 適応情報
      * @returns {Array} 実行されたアクション
      */
-    handleAdaptiveFPSSync(adaptive) {
-        const actions = [];
+    handleAdaptiveFPSSync(adaptive: AdaptiveInfo): string[] {
+        const actions: string[] = [];
         
         try {
             // FPS目標値同期
@@ -352,8 +565,8 @@ export class PerformanceStabilizerIntegrator {
      * @param {Array} recommendations - 推奨事項配列
      * @returns {Array} 実行されたアクション
      */
-    processStabilizationRecommendations(recommendations) {
-        const actions = [];
+    processStabilizationRecommendations(recommendations: StabilizationRecommendation[]): string[] {
+        const actions: string[] = [];
         
         try {
             if (!Array.isArray(recommendations)) return actions;
@@ -384,7 +597,7 @@ export class PerformanceStabilizerIntegrator {
      * @param {object} timing - タイミング情報
      * @param {object} pacing - ペーシング情報
      */
-    storeStabilizerInsights(adaptive, timing, pacing) {
+    storeStabilizerInsights(adaptive: AdaptiveInfo, timing: TimingInfo, pacing: PacingInfo): void {
         try {
             this.integrationStats.stabilizerInsights = {
                 performanceZone: adaptive.performanceZone,
@@ -407,7 +620,7 @@ export class PerformanceStabilizerIntegrator {
      * @param {string} issueType - 問題タイプ
      * @param {object} data - 問題データ
      */
-    recordPerformanceIssue(issueType, data) {
+    recordPerformanceIssue(issueType: string, data: any): void {
         try {
             this.integrationStats.issueHistory.push({
                 type: issueType,
@@ -430,7 +643,7 @@ export class PerformanceStabilizerIntegrator {
      * @param {Array} history - パフォーマンス履歴
      * @returns {object} 総合安定性データ
      */
-    calculateOverallStability(history) {
+    calculateOverallStability(history: PerformanceHistoryEntry[]): OverallStability {
         try {
             if (history.length === 0) {
                 return { score: 0.5, confidence: 0.0, consistency: 0.5, jitter: 0.5, variability: 0.5 };
@@ -467,7 +680,7 @@ export class PerformanceStabilizerIntegrator {
      * @param {Array} history - パフォーマンス履歴
      * @returns {object} トレンドデータ
      */
-    calculateStabilityTrend(history) {
+    calculateStabilityTrend(history: PerformanceHistoryEntry[]): StabilityTrend {
         try {
             if (history.length < 10) {
                 return { direction: 'insufficient_data', strength: 0.0 };
@@ -509,15 +722,15 @@ export class PerformanceStabilizerIntegrator {
      * @param {Array} history - パフォーマンス履歴
      * @returns {Array} 問題領域配列
      */
-    identifyProblemAreas(history) {
-        const problems = [];
+    identifyProblemAreas(history: PerformanceHistoryEntry[]): ProblemArea[] {
+        const problems: ProblemArea[] = [];
         
         try {
             const recentIssues = this.integrationStats.issueHistory
                 .filter(issue => Date.now() - issue.timestamp < 10000); // 10秒間
             
             // 繰り返し問題の検出
-            const issueTypes = {};
+            const issueTypes: Record<string, number> = {};
             recentIssues.forEach(issue => {
                 issueTypes[issue.type] = (issueTypes[issue.type] || 0) + 1;
             });
@@ -554,13 +767,13 @@ export class PerformanceStabilizerIntegrator {
 
     /**
      * 安定性推奨事項を生成
-     * @param {object} stability - 安定性データ
-     * @param {object} trend - トレンドデータ
-     * @param {Array} problems - 問題配列
-     * @returns {Array} 推奨事項配列
+     * @param stability - 安定性データ
+     * @param trend - トレンドデータ
+     * @param problems - 問題配列
+     * @returns 推奨事項配列
      */
-    generateStabilityRecommendations(stability, trend, problems) {
-        const recommendations = [];
+    generateStabilityRecommendations(stability: OverallStability, trend: StabilityTrend, problems: ProblemArea[]): StabilityRecommendationEntry[] {
+        const recommendations: StabilityRecommendationEntry[] = [];
         
         try {
             // 安定性スコアベースの推奨
@@ -611,10 +824,10 @@ export class PerformanceStabilizerIntegrator {
 
     /**
      * 安定性トレンドを予測
-     * @param {Array} history - パフォーマンス履歴
-     * @returns {object} 予測データ
+     * @param history - パフォーマンス履歴
+     * @returns 予測データ
      */
-    predictStabilityTrend(history) {
+    predictStabilityTrend(history: PerformanceHistoryEntry[]): StabilityPrediction {
         try {
             if (history.length < 20) {
                 return { confidence: 0.0, prediction: 'insufficient_data' };
@@ -648,21 +861,21 @@ export class PerformanceStabilizerIntegrator {
 
     /**
      * 最近のパフォーマンス履歴を取得
-     * @param {number} timeWindow - 時間窓（ミリ秒）
-     * @returns {Array} 履歴配列
+     * @param timeWindow - 時間窓（ミリ秒）
+     * @returns 履歴配列
      */
-    getRecentPerformanceHistory(timeWindow = 5000) {
+    getRecentPerformanceHistory(timeWindow: number = 5000): PerformanceHistoryEntry[] {
         const cutoff = Date.now() - timeWindow;
         return this.integrationStats.performanceHistory.filter(h => h.timestamp >= cutoff);
     }
 
     /**
      * 安定化モードを適用
-     * @param {string} mode - 安定化モード
-     * @returns {object} モード設定
+     * @param mode - 安定化モード
+     * @returns モード設定
      */
-    applyStabilizationMode(mode) {
-        const settings = {};
+    applyStabilizationMode(mode: StabilizationMode): ModeSettings {
+        const settings: any = {};
         
         switch (mode) {
             case 'aggressive':
@@ -687,12 +900,12 @@ export class PerformanceStabilizerIntegrator {
 
     /**
      * 強制安定化を実行
-     * @param {number} targetFPS - 目標FPS
-     * @param {string} mode - 安定化モード
-     * @returns {Array} 実行されたアクション
+     * @param targetFPS - 目標FPS
+     * @param mode - 安定化モード
+     * @returns 実行されたアクション
      */
-    executeForceStabilization(targetFPS, mode) {
-        const actions = [];
+    executeForceStabilization(targetFPS: number, mode: StabilizationMode): string[] {
+        const actions: string[] = [];
         
         // モード別アクション実行
         actions.push(`force_stabilization_${mode}`);
@@ -703,25 +916,25 @@ export class PerformanceStabilizerIntegrator {
 
     /**
      * 統合履歴を記録
-     * @param {object} result - 統合結果
+     * @param result - 統合結果
      */
-    recordIntegrationHistory(result) {
+    recordIntegrationHistory(result: IntegrationResult): void {
         // 統合履歴記録の実装
     }
 
     /**
      * 強制安定化履歴を記録
-     * @param {object} result - 強制安定化結果
+     * @param result - 強制安定化結果
      */
-    recordForcedStabilization(result) {
+    recordForcedStabilization(result: ForceStabilizationResult): void {
         // 強制安定化履歴記録の実装
     }
 
     /**
      * 統合設定を取得
-     * @returns {object} 現在の統合設定
+     * @returns 現在の統合設定
      */
-    getIntegrationSettings() {
+    getIntegrationSettings(): IntegrationSettings {
         return {
             stabilizerIntegration: { ...this.stabilizerIntegration },
             stabilizationControl: { ...this.stabilizationControl },
@@ -732,7 +945,7 @@ export class PerformanceStabilizerIntegrator {
     /**
      * 統計をリセット
      */
-    resetStats() {
+    resetStats(): void {
         this.integrationStats = {
             frameTimeVariance: 0,
             stabilityScore: 1.0,

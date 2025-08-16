@@ -2,8 +2,86 @@
  * PerformanceTestExecutor - パフォーマンステストの実行を担当するコンポーネント
  * テスト環境のセットアップ、各種テストの実行、測定を行う
  */
+
+// 型定義
+interface PerformanceTestSuite {
+    baselines: Map<string, any>;
+    processPerformanceEntries(entries: PerformanceEntry[]): void;
+    summarizeFrameRateResults(results: any): any;
+    summarizeMemoryResults(results: any): any;
+    summarizeRenderingResults(results: any): any;
+    summarizeNetworkResults(results: any): any;
+    summarizeBatteryResults(results: any): any;
+    calculateVariance(values: number[]): number;
+    calculatePercentile(values: number[], percentile: number): number;
+}
+
+interface TestEnvironment {
+    canvas: HTMLCanvasElement | null;
+    context: CanvasRenderingContext2D | null;
+    mockGameEngine: any;
+    performanceObserver: PerformanceObserver | null;
+}
+
+interface TestResult {
+    name: string;
+    result: number;
+    expected: number;
+    passed: boolean;
+    details?: any;
+}
+
+interface CategoryTestResult {
+    category: string;
+    tests: Record<string, TestResult>;
+    passed: boolean;
+    summary: any;
+}
+
+interface MemoryUsage {
+    usedJSHeapSize: number;
+    totalJSHeapSize: number;
+    jsHeapSizeLimit: number;
+}
+
+interface FrameRateTestResults {
+    steadyState: TestResult;
+    underLoad: TestResult;
+    stabilityAfterSpike: TestResult;
+    varianceAnalysis: TestResult;
+}
+
+interface MemoryTestResults {
+    baselineUsage: TestResult;
+    leakDetection: TestResult;
+    gcEfficiency: TestResult;
+    pressureHandling: TestResult;
+}
+
+interface RenderingTestResults {
+    dirtyRegionEfficiency: TestResult;
+    viewportCulling: TestResult;
+    layerComposition: TestResult;
+    renderTime: TestResult;
+}
+
+interface NetworkTestResults {
+    latency: TestResult;
+    throughput: TestResult;
+    reliability: TestResult;
+}
+
+interface BatteryTestResults {
+    powerConsumption: TestResult;
+    efficiency: TestResult;
+}
+
 export class PerformanceTestExecutor {
-    constructor(performanceTestSuite) {
+    private performanceTestSuite: PerformanceTestSuite;
+    private testEnvironment: TestEnvironment | null;
+    private lastFrameTime: number | null;
+
+    constructor(performanceTestSuite: PerformanceTestSuite) {
         this.performanceTestSuite = performanceTestSuite;
         this.testEnvironment = null;
         this.lastFrameTime = null;
@@ -12,7 +90,7 @@ export class PerformanceTestExecutor {
     /**
      * テスト環境のセットアップ
      */
-    async setupTestEnvironment() {
+    async setupTestEnvironment(): Promise<void> {
         this.testEnvironment = {
             canvas: null,
             context: null,
@@ -35,7 +113,7 @@ export class PerformanceTestExecutor {
     /**
      * フレームレートテストの実行
      */
-    async runFrameRateTests() {
+    async runFrameRateTests(): Promise<CategoryTestResult> {
         console.log('Running frame rate tests...');
         const frameRateTests = {
             steadyState: await this.testSteadyStateFrameRate(),
@@ -55,7 +133,7 @@ export class PerformanceTestExecutor {
     /**
      * 安定状態でのフレームレートテスト
      */
-    async testSteadyStateFrameRate() {
+    async testSteadyStateFrameRate(): Promise<TestResult> {
         const frameRates = [];
         const testDuration = 5000; // 5秒
         const startTime = performance.now();
@@ -97,7 +175,7 @@ export class PerformanceTestExecutor {
     /**
      * 負荷条件下でのフレームレートテスト
      */
-    async testFrameRateUnderLoad() {
+    async testFrameRateUnderLoad(): Promise<TestResult> {
         const { LoadSimulator } = await import('../../utils/PerformanceTestSuite.js');
         const loadSimulator = new LoadSimulator();
         await loadSimulator.applyHighLoad();
@@ -115,7 +193,7 @@ export class PerformanceTestExecutor {
     /**
      * スパイク後の安定性テスト
      */
-    async testFrameStabilityAfterSpike() {
+    async testFrameStabilityAfterSpike(): Promise<TestResult> {
         const { SpikeSimulator } = await import('../../utils/PerformanceTestSuite.js');
         const spikeSimulator = new SpikeSimulator();
         await spikeSimulator.createPerformanceSpike();
@@ -138,7 +216,7 @@ export class PerformanceTestExecutor {
     /**
      * フレームレート分散テスト
      */
-    async testFrameRateVariance() {
+    async testFrameRateVariance(): Promise<TestResult> {
         const frameRates = [];
         for (let i = 0; i < 300; i++) { // 5秒間のサンプル（60fps想定）
             await this.waitForNextFrame();
@@ -163,7 +241,7 @@ export class PerformanceTestExecutor {
     /**
      * メモリテストの実行
      */
-    async runMemoryTests() {
+    async runMemoryTests(): Promise<CategoryTestResult> {
         console.log('Running memory tests...');
         const memoryTests = {
             baselineUsage: await this.testBaselineMemoryUsage(),
@@ -183,7 +261,7 @@ export class PerformanceTestExecutor {
     /**
      * ベースラインメモリ使用量テスト
      */
-    async testBaselineMemoryUsage() {
+    async testBaselineMemoryUsage(): Promise<TestResult> {
         const initialMemory = this.getMemoryUsage();
         await this.simulateNormalGameplay(10000); // 10秒
         const finalMemory = this.getMemoryUsage();
@@ -208,7 +286,7 @@ export class PerformanceTestExecutor {
     /**
      * メモリリーク検出テスト
      */
-    async testMemoryLeakDetection() {
+    async testMemoryLeakDetection(): Promise<TestResult> {
         const { MemoryLeakDetector } = await import('../../utils/PerformanceTestSuite.js');
         const leakDetector = new MemoryLeakDetector();
         const testDuration = 30000; // 30秒
@@ -233,7 +311,7 @@ export class PerformanceTestExecutor {
     /**
      * ガベージコレクション効率テスト
      */
-    async testGarbageCollectionEfficiency() {
+    async testGarbageCollectionEfficiency(): Promise<TestResult> {
         const { GCMonitor } = await import('../../utils/PerformanceTestSuite.js');
         const gcMonitor = new GCMonitor();
         await gcMonitor.startMonitoring();
@@ -259,7 +337,7 @@ export class PerformanceTestExecutor {
     /**
      * メモリプレッシャー処理テスト
      */
-    async testMemoryPressureHandling() {
+    async testMemoryPressureHandling(): Promise<TestResult> {
         const { MemoryPressureSimulator } = await import('../../utils/PerformanceTestSuite.js');
         const pressureSimulator = new MemoryPressureSimulator();
         await pressureSimulator.applyPressure();
@@ -282,7 +360,7 @@ export class PerformanceTestExecutor {
     /**
      * レンダリングテストの実行
      */
-    async runRenderingTests() {
+    async runRenderingTests(): Promise<CategoryTestResult> {
         console.log('Running rendering tests...');
         const renderingTests = {
             dirtyRegionEfficiency: await this.testDirtyRegionEfficiency(),
@@ -302,7 +380,7 @@ export class PerformanceTestExecutor {
     /**
      * ダーティリージョン効率テスト
      */
-    async testDirtyRegionEfficiency() {
+    async testDirtyRegionEfficiency(): Promise<TestResult> {
         const { RenderOptimizer, DirtyRegionTestScenario } = await import('../../utils/PerformanceTestSuite.js');
         const renderOptimizer = new RenderOptimizer();
         const testScenario = new DirtyRegionTestScenario();
@@ -328,7 +406,7 @@ export class PerformanceTestExecutor {
     /**
      * ビューポートカリングテスト
      */
-    async testViewportCulling() {
+    async testViewportCulling(): Promise<TestResult> {
         const { ViewportCullingTester } = await import('../../utils/PerformanceTestSuite.js');
         const cullingTester = new ViewportCullingTester();
         const efficiency = await cullingTester.measureCullingEfficiency();
@@ -349,7 +427,7 @@ export class PerformanceTestExecutor {
     /**
      * レイヤー合成テスト
      */
-    async testLayerComposition() {
+    async testLayerComposition(): Promise<TestResult> {
         const { LayerCompositionTester } = await import('../../utils/PerformanceTestSuite.js');
         const layerTester = new LayerCompositionTester();
         const performance = await layerTester.measureCompositionPerformance();
@@ -370,7 +448,7 @@ export class PerformanceTestExecutor {
     /**
      * レンダー時間テスト
      */
-    async testRenderTime() {
+    async testRenderTime(): Promise<TestResult> {
         const { RenderTimer } = await import('../../utils/PerformanceTestSuite.js');
         const renderTimer = new RenderTimer();
         const times = [];
@@ -400,7 +478,7 @@ export class PerformanceTestExecutor {
     /**
      * ネットワークテストの実行
      */
-    async runNetworkTests() {
+    async runNetworkTests(): Promise<CategoryTestResult> {
         console.log('Running network tests...');
         const networkTests = {
             latency: await this.testNetworkLatency(),
@@ -419,7 +497,7 @@ export class PerformanceTestExecutor {
     /**
      * ネットワークレイテンシテスト
      */
-    async testNetworkLatency() {
+    async testNetworkLatency(): Promise<TestResult> {
         const latencies = [];
         for (let i = 0; i < 10; i++) {
             const start = performance.now();
@@ -447,7 +525,7 @@ export class PerformanceTestExecutor {
     /**
      * ネットワークスループットテスト
      */
-    async testNetworkThroughput() {
+    async testNetworkThroughput(): Promise<TestResult> {
         const { NetworkThroughputTester } = await import('../../utils/PerformanceTestSuite.js');
         const throughputTester = new NetworkThroughputTester();
         const throughput = await throughputTester.measureThroughput();
@@ -468,7 +546,7 @@ export class PerformanceTestExecutor {
     /**
      * ネットワーク信頼性テスト
      */
-    async testNetworkReliability() {
+    async testNetworkReliability(): Promise<TestResult> {
         const { NetworkReliabilityTester } = await import('../../utils/PerformanceTestSuite.js');
         const reliabilityTester = new NetworkReliabilityTester();
         const errorRate = await reliabilityTester.measureErrorRate();
@@ -489,7 +567,7 @@ export class PerformanceTestExecutor {
     /**
      * バッテリーテストの実行
      */
-    async runBatteryTests() {
+    async runBatteryTests(): Promise<CategoryTestResult> {
         console.log('Running battery tests...');
         if (!('getBattery' in navigator)) {
             return {
@@ -516,7 +594,7 @@ export class PerformanceTestExecutor {
     /**
      * 電力消費テスト
      */
-    async testPowerConsumption() {
+    async testPowerConsumption(): Promise<TestResult> {
         const { BatteryMonitor } = await import('../../utils/PerformanceTestSuite.js');
         const batteryMonitor = new BatteryMonitor();
         await batteryMonitor.startMonitoring();
@@ -541,7 +619,7 @@ export class PerformanceTestExecutor {
     /**
      * バッテリー効率テスト
      */
-    async testBatteryEfficiency() {
+    async testBatteryEfficiency(): Promise<TestResult> {
         const { BatteryEfficiencyTester } = await import('../../utils/PerformanceTestSuite.js');
         const efficiencyTester = new BatteryEfficiencyTester();
         const efficiency = await efficiencyTester.measureEfficiency();
@@ -563,14 +641,14 @@ export class PerformanceTestExecutor {
     /**
      * 次のフレームまで待機
      */
-    async waitForNextFrame() {
+    async waitForNextFrame(): Promise<void> {
         return new Promise(resolve => requestAnimationFrame(resolve));
     }
 
     /**
      * 通常のゲームプレイをシミュレート
      */
-    async simulateNormalGameplay(duration) {
+    async simulateNormalGameplay(duration: number): Promise<void> {
         const endTime = performance.now() + duration;
         while (performance.now() < endTime) {
             await this.waitForNextFrame();
@@ -584,14 +662,14 @@ export class PerformanceTestExecutor {
     /**
      * 長時間のゲームプレイをシミュレート
      */
-    async simulateExtendedGameplay(duration) {
+    async simulateExtendedGameplay(duration: number): Promise<void> {
         await this.simulateNormalGameplay(duration);
     }
 
     /**
      * メモリプレッシャーを作成
      */
-    async createMemoryPressure() {
+    async createMemoryPressure(): Promise<void> {
         const arrays = [];
         for (let i = 0; i < 100; i++) {
             arrays.push(new Array(10000).fill(Math.random()));
@@ -604,7 +682,7 @@ export class PerformanceTestExecutor {
     /**
      * システム応答時間測定
      */
-    async measureSystemResponse() {
+    async measureSystemResponse(): Promise<number> {
         const start = performance.now();
         await this.waitForNextFrame();
         return performance.now() - start;
@@ -613,7 +691,7 @@ export class PerformanceTestExecutor {
     /**
      * 安定化時間測定
      */
-    async measureStabilizationTime() {
+    async measureStabilizationTime(): Promise<number> {
         const start = performance.now();
         let stableFrames = 0;
         const targetStableFrames = 60; // 1秒間安定
@@ -634,7 +712,7 @@ export class PerformanceTestExecutor {
     /**
      * ネットワークリクエストをシミュレート
      */
-    async simulateNetworkRequest() {
+    async simulateNetworkRequest(): Promise<void> {
         return new Promise(resolve => {
             setTimeout(resolve, Math.random() * 100 + 50);
         });
@@ -643,7 +721,7 @@ export class PerformanceTestExecutor {
     /**
      * メモリ使用量取得
      */
-    getMemoryUsage() {
+    getMemoryUsage(): MemoryUsage {
         if (performance.memory) {
             return {
                 usedJSHeapSize: performance.memory.usedJSHeapSize,
@@ -657,7 +735,7 @@ export class PerformanceTestExecutor {
     /**
      * 現在のフレームレート取得
      */
-    getCurrentFrameRate() {
+    getCurrentFrameRate(): number {
         const now = performance.now();
         if (this.lastFrameTime) {
             return 1000 / (now - this.lastFrameTime);

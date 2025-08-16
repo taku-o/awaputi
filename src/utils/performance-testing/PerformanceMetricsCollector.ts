@@ -2,8 +2,164 @@
  * PerformanceMetricsCollector - パフォーマンスメトリクスの収集と分析を担当するコンポーネント
  * データ収集、統計計算、ベースライン比較、分析機能を提供
  */
+
+// 型定義
+interface PerformanceTestSuite {
+    baselines: Map<string, any>;
+    getPreviousTestResults(): PreviousTestResults | null;
+}
+
+interface PreviousTestResults {
+    results: Map<string, TestCategoryResults>;
+}
+
+interface TestCategoryResults {
+    passed: boolean;
+    tests: Record<string, TestResult>;
+}
+
+interface TestResult {
+    passed: boolean;
+    result: number;
+    expected: number;
+    detail?: any;
+}
+
+interface MetricEntry {
+    duration: number;
+    timestamp: number;
+    detail: any;
+}
+
+interface CollectedMetrics {
+    timestamp: number;
+    memory: MemoryUsage;
+    frameRate: number;
+    testResults: Map<string, TestCategoryResults>;
+    systemInfo: SystemInfo;
+}
+
+interface MemoryUsage {
+    usedJSHeapSize: number;
+    totalJSHeapSize: number;
+    jsHeapSizeLimit: number;
+    timestamp: number;
+}
+
+interface SystemInfo {
+    userAgent: string;
+    platform: string;
+    hardwareConcurrency: number | string;
+    language: string;
+    onLine: boolean;
+    cookieEnabled: boolean;
+    timestamp: number;
+}
+
+interface AnalysisResult {
+    overallPassed: boolean;
+    regressions: RegressionEntry[];
+    improvements: ImprovementEntry[];
+    comparison: Map<string, ComparisonResult>;
+    statistics: TestStatistics;
+}
+
+interface RegressionEntry {
+    category: string;
+    test: string;
+    result: number;
+    expected: number;
+    severity: SeverityLevel;
+}
+
+interface ImprovementEntry {
+    category: string;
+    test: string;
+    improvement: number;
+}
+
+interface ComparisonResult {
+    current: TestCategoryResults;
+    baseline: any;
+    deviation: Record<string, number>;
+}
+
+interface TestStatistics {
+    totalTests: number;
+    passedTests: number;
+    failedTests: number;
+    categories: Map<string, CategoryStatistics>;
+    performance: any;
+    passRate: number;
+}
+
+interface CategoryStatistics {
+    total: number;
+    passed: number;
+    failed: number;
+    averageResult: number;
+    metrics: number[];
+    variance?: number;
+    standardDeviation?: number;
+}
+
+interface TrendAnalysis {
+    direction: TrendDirection;
+    magnitude: number;
+    confidence: number;
+}
+
+interface AdvancedAnalysis {
+    trends: Map<string, TrendAnalysis>;
+    correlations: Map<string, number>;
+    outliers: OutlierEntry[];
+    performance_profile: PerformanceProfile;
+}
+
+interface OutlierEntry {
+    category: string;
+    test: string;
+    value: number;
+    zScore: number;
+    severity: OutlierSeverity;
+}
+
+interface PerformanceProfile {
+    overall_score: number;
+    category_scores: Map<string, number>;
+    strengths: string[];
+    weaknesses: string[];
+    recommendations: string[];
+}
+
+interface ExportData {
+    timestamp: number;
+    metrics: Record<string, MetricEntry[]>;
+    summary: Summary;
+}
+
+interface Summary {
+    total_metrics: number;
+    total_entries: number;
+    categories: CategorySummary[];
+}
+
+interface CategorySummary {
+    name: string;
+    count: number;
+    average: number;
+}
+
+type SeverityLevel = 'critical' | 'high' | 'medium' | 'low';
+type TrendDirection = 'improving' | 'degrading' | 'stable';
+type OutlierSeverity = 'extreme' | 'moderate';
+type ExportFormat = 'json' | 'csv';
 export class PerformanceMetricsCollector {
-    constructor(performanceTestSuite) {
+    private performanceTestSuite: PerformanceTestSuite;
+    private lastFrameTime: number | null;
+    private collectedMetrics: Map<string, MetricEntry[]>;
+
+    constructor(performanceTestSuite: PerformanceTestSuite) {
         this.performanceTestSuite = performanceTestSuite;
         this.lastFrameTime = null;
         this.collectedMetrics = new Map();
@@ -12,7 +168,7 @@ export class PerformanceMetricsCollector {
     /**
      * パフォーマンスエントリの処理
      */
-    processPerformanceEntries(entries) {
+    processPerformanceEntries(entries: PerformanceEntry[]): void {
         for (const entry of entries) {
             if (entry.entryType === 'measure') {
                 console.log(`Performance measure: ${entry.name} - ${entry.duration}ms`);
@@ -33,7 +189,7 @@ export class PerformanceMetricsCollector {
     /**
      * メトリクスデータを収集
      */
-    collectMetrics(testResults) {
+    collectMetrics(testResults: Map<string, TestCategoryResults>): CollectedMetrics {
         const metrics = {
             timestamp: performance.now(),
             memory: this.getMemoryUsage(),
@@ -48,7 +204,7 @@ export class PerformanceMetricsCollector {
     /**
      * ベースラインとの比較分析
      */
-    analyzeResults(testResults) {
+    analyzeResults(testResults: Map<string, TestCategoryResults>): AnalysisResult {
         const analysis = {
             overallPassed: this.isOverallTestsPassed(testResults),
             regressions: this.detectRegressions(testResults),
@@ -63,8 +219,8 @@ export class PerformanceMetricsCollector {
     /**
      * ベースラインとの比較
      */
-    compareWithBaseline(testResults) {
-        const comparison = new Map();
+    compareWithBaseline(testResults: Map<string, TestCategoryResults>): Map<string, ComparisonResult> {
+        const comparison = new Map<string, ComparisonResult>();
         
         for (const [category, results] of testResults) {
             const baseline = this.performanceTestSuite.baselines.get(category);
@@ -83,7 +239,7 @@ export class PerformanceMetricsCollector {
     /**
      * 全体テスト結果の判定
      */
-    isOverallTestsPassed(testResults) {
+    isOverallTestsPassed(testResults: Map<string, TestCategoryResults>): boolean {
         for (const [category, results] of testResults) {
             if (!results.passed) {
                 return false;
@@ -95,8 +251,8 @@ export class PerformanceMetricsCollector {
     /**
      * リグレッション検出
      */
-    detectRegressions(testResults) {
-        const regressions = [];
+    detectRegressions(testResults: Map<string, TestCategoryResults>): RegressionEntry[] {
+        const regressions: RegressionEntry[] = [];
         
         for (const [category, results] of testResults) {
             for (const [testName, testResult] of Object.entries(results.tests)) {
@@ -118,8 +274,8 @@ export class PerformanceMetricsCollector {
     /**
      * 改善検出
      */
-    detectImprovements(testResults) {
-        const improvements = [];
+    detectImprovements(testResults: Map<string, TestCategoryResults>): ImprovementEntry[] {
+        const improvements: ImprovementEntry[] = [];
         const previousResults = this.performanceTestSuite.getPreviousTestResults();
         
         if (previousResults) {
@@ -146,12 +302,12 @@ export class PerformanceMetricsCollector {
     /**
      * テスト統計の計算
      */
-    calculateTestStatistics(testResults) {
+    calculateTestStatistics(testResults: Map<string, TestCategoryResults>): TestStatistics {
         const stats = {
             totalTests: 0,
             passedTests: 0,
             failedTests: 0,
-            categories: new Map(),
+            categories: new Map<string, CategoryStatistics>(),
             performance: {}
         };
 
@@ -200,7 +356,7 @@ export class PerformanceMetricsCollector {
     /**
      * 分散計算
      */
-    calculateVariance(values) {
+    calculateVariance(values: number[]): number {
         if (values.length === 0) return 0;
         
         const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
@@ -211,7 +367,7 @@ export class PerformanceMetricsCollector {
     /**
      * パーセンタイル計算
      */
-    calculatePercentile(values, percentile) {
+    calculatePercentile(values: number[], percentile: number): number {
         if (values.length === 0) return 0;
         
         const sorted = values.slice().sort((a, b) => a - b);
@@ -222,8 +378,8 @@ export class PerformanceMetricsCollector {
     /**
      * ベースラインからの偏差計算
      */
-    calculateDeviation(results, baseline) {
-        const deviations = {};
+    calculateDeviation(results: TestCategoryResults, baseline: any): Record<string, number> {
+        const deviations: Record<string, number> = {};
         for (const [testName, testResult] of Object.entries(results.tests)) {
             if (baseline[testName]) {
                 deviations[testName] = (testResult.result - baseline[testName]) / baseline[testName];
@@ -235,7 +391,7 @@ export class PerformanceMetricsCollector {
     /**
      * リグレッション重要度計算
      */
-    calculateRegressionSeverity(testResult) {
+    calculateRegressionSeverity(testResult: TestResult): SeverityLevel {
         const deviation = Math.abs(testResult.result - testResult.expected) / testResult.expected;
         if (deviation > 0.5) return 'critical';
         if (deviation > 0.3) return 'high';
@@ -246,14 +402,14 @@ export class PerformanceMetricsCollector {
     /**
      * 改善判定
      */
-    isImprovement(current, previous) {
+    isImprovement(current: TestResult, previous: TestResult): boolean {
         return current.result < previous.result; // 小さい値が良い場合
     }
 
     /**
      * 改善率計算
      */
-    calculateImprovement(current, previous) {
+    calculateImprovement(current: TestResult, previous: TestResult): number {
         return ((previous.result - current.result) / previous.result) * 100;
     }
 
@@ -262,7 +418,7 @@ export class PerformanceMetricsCollector {
     /**
      * メモリ使用量取得
      */
-    getMemoryUsage() {
+    getMemoryUsage(): MemoryUsage {
         if (performance.memory) {
             return {
                 usedJSHeapSize: performance.memory.usedJSHeapSize,
@@ -282,7 +438,7 @@ export class PerformanceMetricsCollector {
     /**
      * 現在のフレームレート取得
      */
-    getCurrentFrameRate() {
+    getCurrentFrameRate(): number {
         const now = performance.now();
         if (this.lastFrameTime) {
             const fps = 1000 / (now - this.lastFrameTime);
@@ -296,7 +452,7 @@ export class PerformanceMetricsCollector {
     /**
      * システム情報取得
      */
-    getSystemInfo() {
+    getSystemInfo(): SystemInfo {
         return {
             userAgent: navigator.userAgent,
             platform: navigator.platform,
@@ -311,21 +467,21 @@ export class PerformanceMetricsCollector {
     /**
      * 収集されたメトリクスの取得
      */
-    getCollectedMetrics() {
+    getCollectedMetrics(): Map<string, MetricEntry[]> {
         return this.collectedMetrics;
     }
 
     /**
      * メトリクスのクリア
      */
-    clearMetrics() {
+    clearMetrics(): void {
         this.collectedMetrics.clear();
     }
 
     /**
      * 高度な統計分析
      */
-    performAdvancedAnalysis(testResults) {
+    performAdvancedAnalysis(testResults: Map<string, TestCategoryResults>): AdvancedAnalysis {
         const analysis = {
             trends: this.analyzeTrends(testResults),
             correlations: this.analyzeCorrelations(testResults),
@@ -339,8 +495,8 @@ export class PerformanceMetricsCollector {
     /**
      * トレンド分析
      */
-    analyzeTrends(testResults) {
-        const trends = new Map();
+    analyzeTrends(testResults: Map<string, TestCategoryResults>): Map<string, TrendAnalysis> {
+        const trends = new Map<string, TrendAnalysis>();
         const previousResults = this.performanceTestSuite.getPreviousTestResults();
         
         if (previousResults) {
@@ -375,8 +531,8 @@ export class PerformanceMetricsCollector {
     /**
      * 相関分析
      */
-    analyzeCorrelations(testResults) {
-        const correlations = new Map();
+    analyzeCorrelations(testResults: Map<string, TestCategoryResults>): Map<string, number> {
+        const correlations = new Map<string, number>();
         const categories = Array.from(testResults.keys());
 
         for (let i = 0; i < categories.length; i++) {
@@ -399,8 +555,8 @@ export class PerformanceMetricsCollector {
     /**
      * 外れ値検出
      */
-    detectOutliers(testResults) {
-        const outliers = [];
+    detectOutliers(testResults: Map<string, TestCategoryResults>): OutlierEntry[] {
+        const outliers: OutlierEntry[] = [];
 
         for (const [category, results] of testResults) {
             const values = Object.values(results.tests).map(test => test.result);
@@ -428,10 +584,10 @@ export class PerformanceMetricsCollector {
     /**
      * パフォーマンスプロファイル作成
      */
-    createPerformanceProfile(testResults) {
+    createPerformanceProfile(testResults: Map<string, TestCategoryResults>): PerformanceProfile {
         const profile = {
             overall_score: 0,
-            category_scores: new Map(),
+            category_scores: new Map<string, number>(),
             strengths: [],
             weaknesses: [],
             recommendations: []
@@ -466,7 +622,7 @@ export class PerformanceMetricsCollector {
     /**
      * カテゴリ平均計算
      */
-    calculateCategoryAverage(results) {
+    calculateCategoryAverage(results: TestCategoryResults): number {
         const values = Object.values(results.tests).map(test => test.result);
         return values.length > 0 ? values.reduce((sum, val) => sum + val, 0) / values.length : 0;
     }
@@ -474,7 +630,7 @@ export class PerformanceMetricsCollector {
     /**
      * 相関係数計算
      */
-    calculateCorrelation(results1, results2) {
+    calculateCorrelation(results1: TestCategoryResults, results2: TestCategoryResults): number {
         // 簡易的な相関計算（実際の実装では more sophisticated な手法を使用）
         const values1 = Object.values(results1.tests).map(test => test.result);
         const values2 = Object.values(results2.tests).map(test => test.result);
@@ -506,7 +662,7 @@ export class PerformanceMetricsCollector {
     /**
      * データエクスポート
      */
-    exportMetrics(format = 'json') {
+    exportMetrics(format: ExportFormat = 'json'): string | ExportData {
         const data = {
             timestamp: Date.now(),
             metrics: Object.fromEntries(this.collectedMetrics),
@@ -526,8 +682,8 @@ export class PerformanceMetricsCollector {
     /**
      * CSV変換
      */
-    convertToCSV(data) {
-        const rows = ['timestamp,metric,value,detail'];
+    convertToCSV(data: ExportData): string {
+        const rows: string[] = ['timestamp,metric,value,detail'];
         
         for (const [metricName, entries] of Object.entries(data.metrics)) {
             for (const entry of entries) {
@@ -541,11 +697,11 @@ export class PerformanceMetricsCollector {
     /**
      * サマリー取得
      */
-    getSummary() {
+    getSummary(): Summary {
         const summary = {
             total_metrics: this.collectedMetrics.size,
             total_entries: 0,
-            categories: []
+            categories: [] as CategorySummary[]
         };
 
         for (const [metricName, entries] of this.collectedMetrics) {

@@ -2,7 +2,104 @@
  * Quality Decision Analyzer
  * 品質決定分析 - 品質調整の必要性判定、パフォーマンススコア計算、トレンド分析を担当
  */
+
+// 型定義
+interface PerformanceMetrics {
+    fps?: number;
+    frameTime?: number;
+    memoryUsage?: number;
+    droppedFrames?: number;
+}
+
+interface CurrentQuality {
+    level: string;
+    index?: number;
+}
+
+interface PerformanceAverages {
+    fps: number[];
+    frameTime: number[];
+    memoryUsage: number[];
+    dropFrameCount: number;
+    performanceScore: number;
+}
+
+interface AnalysisConfig {
+    sampleSize: number;
+    performanceThresholds: {
+        excellent: number;
+        good: number;
+        fair: number;
+        poor: number;
+        critical: number;
+    };
+    trendAnalysis: {
+        windowSize: number;
+        significantChange: number;
+        trendStability: number;
+    };
+}
+
+interface TrendHistoryEntry {
+    trend: string;
+    stability: number;
+    timestamp: number;
+}
+
+interface TrendAnalysis {
+    trend: string;
+    strength: number;
+    stability: number;
+    direction: number;
+    correlation?: number;
+    variance?: number;
+}
+
+interface QualityDecision {
+    needsAdjustment: boolean;
+    recommendedLevel: string;
+    reason: string;
+    confidence: number;
+    currentLevel?: string;
+    currentIndex?: number;
+    performanceScore?: number;
+    trend?: string;
+}
+
+interface EvaluationResult {
+    needsAdjustment: boolean;
+    recommendedLevel: string;
+    reason: string;
+    confidence: number;
+    performanceScore: number;
+    trend: TrendAnalysis;
+    timestamp: number;
+}
+
+interface LinearTrend {
+    slope: number;
+    correlation: number;
+    variance: number;
+}
+
+interface PerformanceStats {
+    averageFPS: number;
+    averageFrameTime: number;
+    averageMemoryUsage: number;
+    dropFrameCount: number;
+    performanceScore: number;
+    trendHistory: TrendHistoryEntry[];
+    stabilityCounter: number;
+    lastDecision: QualityDecision | null;
+}
+
 export class QualityDecisionAnalyzer {
+    private performanceAverages: PerformanceAverages;
+    private analysisConfig: AnalysisConfig;
+    private trendHistory: TrendHistoryEntry[];
+    private stabilityCounter: number;
+    private lastDecision: QualityDecision | null;
+
     constructor() {
         // パフォーマンス統計
         this.performanceAverages = {
@@ -42,7 +139,7 @@ export class QualityDecisionAnalyzer {
      * @param {Object} currentQuality - 現在の品質設定
      * @returns {Object} 評価結果
      */
-    evaluateQualityAdjustment(performanceMetrics, currentQuality) {
+    evaluateQualityAdjustment(performanceMetrics: PerformanceMetrics, currentQuality: CurrentQuality): EvaluationResult {
         try {
             // パフォーマンス平均を更新
             this.updatePerformanceAverages(performanceMetrics);
@@ -91,7 +188,7 @@ export class QualityDecisionAnalyzer {
      * @param {Object} currentQuality - 現在の品質設定
      * @returns {Object} 決定結果
      */
-    analyzeQualityDecision(performanceScore, trendAnalysis, currentQuality) {
+    analyzeQualityDecision(performanceScore: number, trendAnalysis: TrendAnalysis, currentQuality: CurrentQuality): QualityDecision {
         const currentLevel = currentQuality.level;
         const currentIndex = currentQuality.index || 2;
         
@@ -162,7 +259,7 @@ export class QualityDecisionAnalyzer {
      * パフォーマンストレンドを分析
      * @returns {Object} トレンド分析結果
      */
-    analyzePerformanceTrend() {
+    analyzePerformanceTrend(): TrendAnalysis {
         const windowSize = this.analysisConfig.trendAnalysis.windowSize;
         const significantChange = this.analysisConfig.trendAnalysis.significantChange;
         
@@ -209,7 +306,7 @@ export class QualityDecisionAnalyzer {
      * パフォーマンス平均を更新
      * @param {Object} metrics - パフォーマンス指標
      */
-    updatePerformanceAverages(metrics) {
+    updatePerformanceAverages(metrics: PerformanceMetrics): void {
         const sampleSize = this.analysisConfig.sampleSize;
         
         // FPS平均を更新
@@ -243,7 +340,7 @@ export class QualityDecisionAnalyzer {
      * パフォーマンススコアを計算
      * @returns {number} パフォーマンススコア (0-1)
      */
-    calculatePerformanceScore() {
+    calculatePerformanceScore(): number {
         if (this.performanceAverages.fps.length === 0) {
             return 0.5; // デフォルトスコア
         }
@@ -279,7 +376,7 @@ export class QualityDecisionAnalyzer {
      * @param {number} fps - FPS値
      * @returns {number} スコア (0-1)
      */
-    calculatePerformanceScoreFromFPS(fps) {
+    calculatePerformanceScoreFromFPS(fps: number): number {
         // 60FPS = 1.0, 30FPS = 0.5, 0FPS = 0.0
         return Math.max(0, Math.min(1, fps / 60));
     }
@@ -289,7 +386,7 @@ export class QualityDecisionAnalyzer {
      * @param {Array} values - 値の配列
      * @returns {Object} トレンド情報
      */
-    calculateLinearTrend(values) {
+    calculateLinearTrend(values: number[]): LinearTrend {
         const n = values.length;
         if (n < 2) return { slope: 0, correlation: 0, variance: 0 };
         
@@ -317,7 +414,7 @@ export class QualityDecisionAnalyzer {
      * @param {Object} trend - トレンド情報
      * @returns {number} 安定性スコア
      */
-    evaluateTrendStability(trend) {
+    evaluateTrendStability(trend: LinearTrend): number {
         // 相関係数の絶対値が高いほど安定
         return Math.abs(trend.correlation || 0);
     }
@@ -327,7 +424,7 @@ export class QualityDecisionAnalyzer {
      * @param {string} trendCategory - トレンドカテゴリ
      * @param {number} stability - 安定性
      */
-    updateTrendHistory(trendCategory, stability) {
+    updateTrendHistory(trendCategory: string, stability: number): void {
         this.trendHistory.push({
             trend: trendCategory,
             stability: stability,
@@ -354,7 +451,7 @@ export class QualityDecisionAnalyzer {
      * 決定履歴を更新
      * @param {Object} decision - 決定結果
      */
-    updateDecisionHistory(decision) {
+    updateDecisionHistory(decision: QualityDecision): void {
         this.lastDecision = {
             ...decision,
             timestamp: Date.now()
@@ -366,7 +463,7 @@ export class QualityDecisionAnalyzer {
      * @param {number} index - 品質インデックス
      * @returns {string} 品質レベル名
      */
-    getQualityLevelByIndex(index) {
+    getQualityLevelByIndex(index: number): string {
         const levels = ['low', 'medium', 'high', 'ultra'];
         return levels[Math.max(0, Math.min(3, index))] || 'medium';
     }
@@ -376,7 +473,7 @@ export class QualityDecisionAnalyzer {
      * @param {Array} arr - 数値配列
      * @returns {number} 平均値
      */
-    calculateAverage(arr) {
+    calculateAverage(arr: number[]): number {
         return arr.length > 0 ? arr.reduce((a, b) => a + b, 0) / arr.length : 0;
     }
     
@@ -385,7 +482,7 @@ export class QualityDecisionAnalyzer {
      * @param {Array} arr - 数値配列
      * @returns {number} 分散
      */
-    calculateVariance(arr) {
+    calculateVariance(arr: number[]): number {
         if (arr.length === 0) return 0;
         const mean = this.calculateAverage(arr);
         const variance = arr.reduce((sum, value) => sum + Math.pow(value - mean, 2), 0) / arr.length;
@@ -396,7 +493,7 @@ export class QualityDecisionAnalyzer {
      * 現在のパフォーマンス統計を取得
      * @returns {Object} パフォーマンス統計
      */
-    getPerformanceStats() {
+    getPerformanceStats(): PerformanceStats {
         return {
             averageFPS: this.calculateAverage(this.performanceAverages.fps),
             averageFrameTime: this.calculateAverage(this.performanceAverages.frameTime),
@@ -412,7 +509,7 @@ export class QualityDecisionAnalyzer {
     /**
      * 統計をリセット
      */
-    resetStats() {
+    resetStats(): void {
         this.performanceAverages = {
             fps: [],
             frameTime: [],

@@ -2,7 +2,119 @@
  * Quality Validation Manager
  * 品質検証管理 - 品質調整後の検証、安定性監視、自動ロールバック機能を担当
  */
+
+// 型定義
+interface ValidationConfig {
+    stabilityPeriod: number;
+    maxPerformanceDrop: number;
+    minFrameRate: number;
+    maxMemoryIncrease: number;
+    validationSamples: number;
+    rollbackThreshold: number;
+}
+
+interface BaselineMetrics {
+    fps: number;
+    frameTime: number;
+    memoryUsage: number;
+    renderTime: number;
+    updateTime: number;
+    droppedFrames: number;
+}
+
+interface CurrentMetrics extends BaselineMetrics {
+    timestamp: number;
+}
+
+interface ValidationSample {
+    timestamp: number;
+    metrics: CurrentMetrics;
+    sampleIndex: number;
+}
+
+interface CurrentValidation {
+    startTime: number;
+    endTime?: number;
+    duration?: number;
+    adjustmentData: any;
+    samples: ValidationSample[];
+    phase: string;
+    passed: boolean;
+    result?: EvaluationResult;
+}
+
+interface MonitoringResult {
+    success: boolean;
+    reason?: string;
+    samples?: ValidationSample[];
+}
+
+interface AverageMetrics {
+    fps: number;
+    frameTime: number;
+    memoryUsage: number;
+    renderTime: number;
+    updateTime: number;
+    droppedFrames: number;
+}
+
+interface ComparisonResult {
+    fpsChange: number;
+    frameTimeChange: number;
+    memoryChange: number;
+    renderTimeChange: number;
+    updateTimeChange: number;
+    droppedFramesIncrease: number;
+}
+
+interface StabilityEvaluation {
+    fpsVariance: number;
+    frameTimeVariance: number;
+    fpsStability: number;
+    frameTimeStability: number;
+    overallStability: number;
+}
+
+interface EvaluationResult {
+    passed: boolean;
+    reason?: string;
+    metrics: {
+        average: AverageMetrics;
+        baseline: BaselineMetrics;
+        comparison: ComparisonResult;
+        stability: StabilityEvaluation;
+    };
+    recommendations: string[];
+    timestamp: number;
+}
+
+interface ValidationResult {
+    success: boolean;
+    passed?: boolean;
+    reason?: string;
+    metrics?: any;
+    recommendations?: string[];
+    duration?: number;
+    timestamp?: number;
+}
+
+interface ValidationStats {
+    totalValidations: number;
+    passedValidations: number;
+    successRate: number;
+    averageDuration: number;
+    lastValidation: CurrentValidation | null;
+}
+
 export class QualityValidationManager {
+    private validationConfig: ValidationConfig;
+    private isValidating: boolean;
+    private validationResults: CurrentValidation[];
+    private baselineMetrics: BaselineMetrics | null;
+    private currentValidation: CurrentValidation | null;
+    private validationTimer: NodeJS.Timeout | null;
+    private stabilityTimer: NodeJS.Timeout | null;
+
     constructor() {
         // 検証設定
         this.validationConfig = {
@@ -31,7 +143,7 @@ export class QualityValidationManager {
      * @param {Object} adjustmentData - 調整データ
      * @returns {Promise<Object>} 検証結果
      */
-    async startQualityValidation(baseline, adjustmentData) {
+    async startQualityValidation(baseline: BaselineMetrics, adjustmentData: any): Promise<ValidationResult> {
         if (this.isValidating) {
             console.warn('[QualityValidationManager] 既に検証中です');
             return { success: false, reason: 'already_validating' };
@@ -98,7 +210,7 @@ export class QualityValidationManager {
      * パフォーマンス安定性を監視
      * @returns {Promise<Object>} 監視結果
      */
-    async monitorPerformanceStability() {
+    async monitorPerformanceStability(): Promise<MonitoringResult> {
         return new Promise((resolve) => {
             const sampleInterval = this.validationConfig.stabilityPeriod / this.validationConfig.validationSamples;
             let sampleCount = 0;
@@ -135,7 +247,7 @@ export class QualityValidationManager {
      * 現在のパフォーマンス指標を収集
      * @returns {Object} パフォーマンス指標
      */
-    collectCurrentMetrics() {
+    collectCurrentMetrics(): CurrentMetrics {
         // 実際の指標収集（モック）
         return {
             fps: this.mockGetCurrentFPS(),
@@ -152,7 +264,7 @@ export class QualityValidationManager {
      * 検証結果を評価
      * @returns {Object} 評価結果
      */
-    evaluateValidationResults() {
+    evaluateValidationResults(): EvaluationResult {
         const samples = this.currentValidation.samples;
         if (samples.length === 0) {
             return {
@@ -196,7 +308,7 @@ export class QualityValidationManager {
      * @param {Array} samples - サンプル配列
      * @returns {Object} 平均指標
      */
-    calculateAverageMetrics(samples) {
+    calculateAverageMetrics(samples: ValidationSample[]): AverageMetrics {
         const metrics = samples.map(s => s.metrics);
         const count = metrics.length;
         
@@ -215,7 +327,7 @@ export class QualityValidationManager {
      * @param {Object} avgMetrics - 平均指標
      * @returns {Object} 比較結果
      */
-    compareWithBaseline(avgMetrics) {
+    compareWithBaseline(avgMetrics: AverageMetrics): ComparisonResult {
         const baseline = this.baselineMetrics;
         
         return {
@@ -233,7 +345,7 @@ export class QualityValidationManager {
      * @param {Array} samples - サンプル配列
      * @returns {Object} 安定性評価
      */
-    evaluateStability(samples) {
+    evaluateStability(samples: ValidationSample[]): StabilityEvaluation {
         const fpsValues = samples.map(s => s.metrics.fps);
         const frameTimeValues = samples.map(s => s.metrics.frameTime);
         
@@ -252,7 +364,7 @@ export class QualityValidationManager {
      * @param {Object} stability - 安定性評価
      * @returns {boolean} 判定結果
      */
-    makeOverallJudgment(comparison, stability) {
+    makeOverallJudgment(comparison: ComparisonResult, stability: StabilityEvaluation): boolean {
         // 重大な性能低下をチェック
         if (comparison.fpsChange < -this.validationConfig.maxPerformanceDrop) {
             return false;
@@ -282,7 +394,7 @@ export class QualityValidationManager {
      * @param {Object} stability - 安定性評価
      * @returns {Array} 推奨事項配列
      */
-    generateRecommendations(comparison, stability) {
+    generateRecommendations(comparison: ComparisonResult, stability: StabilityEvaluation): string[] {
         const recommendations = [];
         
         if (comparison.fpsChange < -0.1) {
@@ -313,7 +425,7 @@ export class QualityValidationManager {
      * @param {Array} values - 値の配列
      * @returns {number} 平均値
      */
-    calculateAverage(values) {
+    calculateAverage(values: number[]): number {
         return values.length > 0 ? values.reduce((a, b) => a + b, 0) / values.length : 0;
     }
     
@@ -322,7 +434,7 @@ export class QualityValidationManager {
      * @param {Array} values - 値の配列
      * @returns {number} 合計値
      */
-    calculateSum(values) {
+    calculateSum(values: number[]): number {
         return values.reduce((a, b) => a + b, 0);
     }
     
@@ -331,7 +443,7 @@ export class QualityValidationManager {
      * @param {Array} values - 値の配列
      * @returns {number} 分散
      */
-    calculateVariance(values) {
+    calculateVariance(values: number[]): number {
         if (values.length === 0) return 0;
         const mean = this.calculateAverage(values);
         const variance = values.reduce((sum, value) => sum + Math.pow(value - mean, 2), 0) / values.length;
@@ -343,7 +455,7 @@ export class QualityValidationManager {
      * @param {Array} values - 値の配列
      * @returns {number} 安定性スコア (0-1)
      */
-    calculateStabilityScore(values) {
+    calculateStabilityScore(values: number[]): number {
         if (values.length < 2) return 1;
         
         const variance = this.calculateVariance(values);
@@ -359,7 +471,7 @@ export class QualityValidationManager {
      * @param {Array} samples - サンプル配列
      * @returns {number} 全体安定性スコア (0-1)
      */
-    calculateOverallStability(samples) {
+    calculateOverallStability(samples: ValidationSample[]): number {
         const fpsValues = samples.map(s => s.metrics.fps);
         const frameTimeValues = samples.map(s => s.metrics.frameTime);
         
@@ -373,7 +485,7 @@ export class QualityValidationManager {
     /**
      * 検証タイマーをクリア
      */
-    clearValidationTimers() {
+    clearValidationTimers(): void {
         if (this.validationTimer) {
             clearTimeout(this.validationTimer);
             this.validationTimer = null;
@@ -389,7 +501,7 @@ export class QualityValidationManager {
      * 検証中かどうか
      * @returns {boolean} 検証中フラグ
      */
-    isValidationInProgress() {
+    isValidationInProgress(): boolean {
         return this.isValidating;
     }
     
@@ -397,7 +509,7 @@ export class QualityValidationManager {
      * 現在の検証情報を取得
      * @returns {Object|null} 現在の検証情報
      */
-    getCurrentValidation() {
+    getCurrentValidation(): CurrentValidation | null {
         return this.currentValidation;
     }
     
@@ -405,7 +517,7 @@ export class QualityValidationManager {
      * 検証履歴を取得
      * @returns {Array} 検証履歴
      */
-    getValidationHistory() {
+    getValidationHistory(): CurrentValidation[] {
         return this.validationResults.slice(); // コピーを返す
     }
     
@@ -413,7 +525,7 @@ export class QualityValidationManager {
      * 検証統計を取得
      * @returns {Object} 検証統計
      */
-    getValidationStats() {
+    getValidationStats(): ValidationStats {
         if (this.validationResults.length === 0) {
             return {
                 totalValidations: 0,
@@ -441,10 +553,10 @@ export class QualityValidationManager {
     }
     
     // モック関数群（実際の実装では適切なAPIを呼び出す）
-    mockGetCurrentFPS() { return 60 + (Math.random() - 0.5) * 10; }
-    mockGetCurrentFrameTime() { return 16.67 + (Math.random() - 0.5) * 5; }
-    mockGetCurrentMemoryUsage() { return 50 + Math.random() * 20; }
-    mockGetCurrentRenderTime() { return 8 + Math.random() * 4; }
-    mockGetCurrentUpdateTime() { return 4 + Math.random() * 2; }
-    mockGetDroppedFrames() { return Math.floor(Math.random() * 3); }
+    mockGetCurrentFPS(): number { return 60 + (Math.random() - 0.5) * 10; }
+    mockGetCurrentFrameTime(): number { return 16.67 + (Math.random() - 0.5) * 5; }
+    mockGetCurrentMemoryUsage(): number { return 50 + Math.random() * 20; }
+    mockGetCurrentRenderTime(): number { return 8 + Math.random() * 4; }
+    mockGetCurrentUpdateTime(): number { return 4 + Math.random() * 2; }
+    mockGetDroppedFrames(): number { return Math.floor(Math.random() * 3); }
 }

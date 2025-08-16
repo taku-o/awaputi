@@ -2,7 +2,81 @@
  * Quality Transition Controller
  * 品質遷移制御 - 品質レベルの遷移実行、検証、ロールバック機能を担当
  */
+
+// 型定義
+interface TransitionConfig {
+    fadeSpeed: number;
+    validationTimeout: number;
+    rollbackDelay: number;
+    maxRetries: number;
+}
+
+interface CurrentTransition {
+    fromLevel: string;
+    toLevel: string;
+    startTime: number;
+    endTime?: number;
+    duration?: number;
+    transitionData: any;
+    phase: string;
+    appliedSettings?: QualitySettings;
+    rollbackReason?: string;
+}
+
+interface TransitionResult {
+    success: boolean;
+    reason?: string;
+    fromLevel?: string;
+    toLevel?: string;
+    duration?: number;
+    timestamp: number;
+}
+
+interface FadeResult {
+    success: boolean;
+    reason?: string;
+}
+
+interface ApplyResult {
+    success: boolean;
+    reason?: string;
+    settings?: QualitySettings;
+}
+
+interface QualitySettings {
+    particleCount: number;
+    effectQuality: number;
+    renderScale: number;
+    animationFrameRate: number;
+    enableShadows: boolean;
+    enableReflections: boolean;
+    enablePostProcessing: boolean;
+}
+
+interface ApplyStep {
+    type: string;
+    value: number | boolean;
+    priority: number;
+}
+
+interface TransitionStats {
+    totalTransitions: number;
+    successfulTransitions?: number;
+    averageDuration: number;
+    successRate: number;
+    lastTransition: CurrentTransition | null;
+}
+
 export class QualityTransitionController {
+    private transitionConfig: TransitionConfig;
+    private isTransitioning: boolean;
+    private currentTransition: CurrentTransition | null;
+    private transitionHistory: CurrentTransition[];
+    private retryCount: number;
+    private transitionTimer: NodeJS.Timeout | null;
+    private validationTimer: NodeJS.Timeout | null;
+    private rollbackTimer: NodeJS.Timeout | null;
+
     constructor() {
         // 遷移設定
         this.transitionConfig = {
@@ -31,7 +105,7 @@ export class QualityTransitionController {
      * @param {Object} transitionData - 遷移データ
      * @returns {Promise<Object>} 遷移結果
      */
-    async executeQualityTransition(fromLevel, toLevel, transitionData = {}) {
+    async executeQualityTransition(fromLevel: string, toLevel: string, transitionData: any = {}): Promise<TransitionResult> {
         if (this.isTransitioning) {
             console.warn('[QualityTransitionController] 既に遷移中です');
             return { success: false, reason: 'already_transitioning' };
@@ -115,7 +189,7 @@ export class QualityTransitionController {
      * @param {string} toLevel - 目標品質レベル
      * @returns {Promise<Object>} フェード結果
      */
-    async startQualityFade(fromLevel, toLevel) {
+    async startQualityFade(fromLevel: string, toLevel: string): Promise<FadeResult> {
         return new Promise((resolve) => {
             this.currentTransition.phase = 'fade_out';
             
@@ -138,7 +212,7 @@ export class QualityTransitionController {
      * @param {Object} transitionData - 遷移データ
      * @returns {Promise<Object>} 適用結果
      */
-    async applyQualitySettings(toLevel, transitionData) {
+    async applyQualitySettings(toLevel: string, transitionData: any): Promise<ApplyResult> {
         try {
             this.currentTransition.phase = 'applying_settings';
             
@@ -170,7 +244,7 @@ export class QualityTransitionController {
      * @param {string} toLevel - 目標品質レベル
      * @returns {Promise<Object>} フェード完了結果
      */
-    async completeQualityFade(toLevel) {
+    async completeQualityFade(toLevel: string): Promise<FadeResult> {
         return new Promise((resolve) => {
             this.currentTransition.phase = 'fade_in';
             
@@ -192,7 +266,7 @@ export class QualityTransitionController {
      * @param {string} originalLevel - 元のレベル
      * @param {string} reason - ロールバック理由
      */
-    async executeRollback(originalLevel, reason) {
+    async executeRollback(originalLevel: string, reason: string): Promise<void> {
         try {
             console.log(`[QualityTransitionController] ロールバック実行: ${reason}`);
             
@@ -219,7 +293,7 @@ export class QualityTransitionController {
      * @param {string} qualityLevel - 品質レベル
      * @returns {Object} 品質設定
      */
-    calculateQualitySettings(qualityLevel) {
+    calculateQualitySettings(qualityLevel: string): QualitySettings {
         const qualityMap = {
             low: {
                 particleCount: 0.3,
@@ -268,7 +342,7 @@ export class QualityTransitionController {
      * @param {Object} transitionData - 遷移データ
      * @returns {Array} 適用ステップ配列
      */
-    createApplySteps(qualitySettings, transitionData) {
+    createApplySteps(qualitySettings: QualitySettings, transitionData: any): ApplyStep[] {
         const steps = [];
         
         // パーティクル数の調整
@@ -328,7 +402,7 @@ export class QualityTransitionController {
      * 設定ステップを適用
      * @param {Object} step - 適用ステップ
      */
-    async applySettingStep(step) {
+    async applySettingStep(step: ApplyStep): Promise<void> {
         switch (step.type) {
             case 'particle_count':
                 // パーティクル数の調整ロジック
@@ -366,7 +440,7 @@ export class QualityTransitionController {
     /**
      * 全タイマーをクリア
      */
-    clearAllTimers() {
+    clearAllTimers(): void {
         if (this.transitionTimer) {
             clearTimeout(this.transitionTimer);
             this.transitionTimer = null;
@@ -387,7 +461,7 @@ export class QualityTransitionController {
      * 遷移中かどうか
      * @returns {boolean} 遷移中フラグ
      */
-    isTransitionInProgress() {
+    isTransitionInProgress(): boolean {
         return this.isTransitioning;
     }
     
@@ -395,7 +469,7 @@ export class QualityTransitionController {
      * 現在の遷移情報を取得
      * @returns {Object|null} 現在の遷移情報
      */
-    getCurrentTransition() {
+    getCurrentTransition(): CurrentTransition | null {
         return this.currentTransition;
     }
     
@@ -403,7 +477,7 @@ export class QualityTransitionController {
      * 遷移履歴を取得
      * @returns {Array} 遷移履歴
      */
-    getTransitionHistory() {
+    getTransitionHistory(): CurrentTransition[] {
         return this.transitionHistory.slice(); // コピーを返す
     }
     
@@ -411,7 +485,7 @@ export class QualityTransitionController {
      * 遷移統計を取得
      * @returns {Object} 遷移統計
      */
-    getTransitionStats() {
+    getTransitionStats(): TransitionStats {
         if (this.transitionHistory.length === 0) {
             return {
                 totalTransitions: 0,
@@ -440,7 +514,7 @@ export class QualityTransitionController {
     /**
      * 遷移履歴をリセット
      */
-    resetTransitionHistory() {
+    resetTransitionHistory(): void {
         this.transitionHistory = [];
         this.retryCount = 0;
         console.log('[QualityTransitionController] 遷移履歴をリセットしました');
