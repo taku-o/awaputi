@@ -4,8 +4,29 @@
  * 
  * オブジェクトの効率的な空間管理とクエリ処理のための四分木実装
  */
+
+// Type definitions
+interface Bounds {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
+interface QuadTreeObject {
+    bounds: Bounds;
+    [key: string]: any;
+}
+
 export class QuadTree {
-    constructor(bounds, maxObjects = 10, maxLevels = 5, level = 0) {
+    private bounds: Bounds;
+    private maxObjects: number;
+    private maxLevels: number;
+    private level: number;
+    private objects: QuadTreeObject[];
+    private nodes: QuadTree[];
+    
+    constructor(bounds: Bounds, maxObjects: number = 10, maxLevels: number = 5, level: number = 0) {
         this.bounds = bounds;
         this.maxObjects = maxObjects;
         this.maxLevels = maxLevels;
@@ -14,12 +35,12 @@ export class QuadTree {
         this.nodes = [];
     }
     
-    clear() {
+    clear(): void {
         this.objects = [];
         this.nodes = [];
     }
     
-    split() {
+    split(): void {
         const subWidth = this.bounds.width / 2;
         const subHeight = this.bounds.height / 2;
         const x = this.bounds.x;
@@ -54,7 +75,7 @@ export class QuadTree {
         }, this.maxObjects, this.maxLevels, this.level + 1);
     }
     
-    getIndex(bounds) {
+    getIndex(bounds: Bounds): number {
         let index = -1;
         const verticalMidpoint = this.bounds.x + (this.bounds.width / 2);
         const horizontalMidpoint = this.bounds.y + (this.bounds.height / 2);
@@ -79,7 +100,7 @@ export class QuadTree {
         return index;
     }
     
-    insert(object) {
+    insert(object: QuadTreeObject): void {
         if (this.nodes.length > 0) {
             const index = this.getIndex(object.bounds);
             
@@ -108,7 +129,7 @@ export class QuadTree {
         }
     }
     
-    retrieve(bounds) {
+    retrieve(bounds: Bounds): QuadTreeObject[] {
         const returnObjects = this.objects.slice();
         
         if (this.nodes.length > 0) {

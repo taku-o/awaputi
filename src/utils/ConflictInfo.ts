@@ -3,8 +3,66 @@
  * Issue #131 対応
  */
 
+// Type definitions
+type ConflictType = 'class' | 'file';
+type SeverityLevel = 'high' | 'medium' | 'low';
+type ConflictStatus = 'pending' | 'in_progress' | 'completed' | 'failed';
+type OperationType = 'file' | 'class';
+
+interface ConflictSummary {
+    name: string;
+    type: ConflictType;
+    severity: SeverityLevel;
+    status: ConflictStatus;
+    filesCount: number;
+    progress: string;
+    canResolve: boolean;
+}
+
+interface ConflictJSON {
+    name: string;
+    type: ConflictType;
+    files: string[];
+    severity: SeverityLevel;
+    strategy: string | null;
+    newNames: string[];
+    status: ConflictStatus;
+    dependencies: Array<{
+        name: string;
+        type: ConflictType;
+        status: ConflictStatus;
+    }>;
+    progress: number;
+    createdAt: string;
+    updatedAt: string;
+}
+
+interface RenameOperationJSON {
+    type: OperationType;
+    oldName: string;
+    newName: string;
+    filePath: string;
+    status: ConflictStatus;
+    error: string | null;
+    canExecute: boolean;
+    dependenciesCount: number;
+    createdAt: string;
+    executedAt: string | null;
+}
+
 export class ConflictInfo {
-    constructor(name, type, files, severity) {
+    public name: string;
+    public type: ConflictType;
+    public files: string[];
+    public severity: SeverityLevel;
+    public strategy: string | null;
+    public newNames: string[];
+    public status: ConflictStatus;
+    public dependencies: ConflictInfo[];
+    public createdAt: Date;
+    public updatedAt: Date;
+
+    constructor(name: string, type: ConflictType, files: string[], severity: SeverityLevel) {
         this.name = name;           // 重複している名前
         this.type = type;           // 'class' | 'file'
         this.files = files;         // 関連ファイルのリスト
@@ -20,7 +78,7 @@ export class ConflictInfo {
     /**
      * 解決戦略を設定
      */
-    setStrategy(strategy) {
+    setStrategy(strategy: string): void {
         this.strategy = strategy;
         this.updatedAt = new Date();
     }
@@ -28,7 +86,7 @@ export class ConflictInfo {
     /**
      * 新しい名前を設定
      */
-    setNewNames(names) {
+    setNewNames(names: string | string[]): void {
         this.newNames = Array.isArray(names) ? names : [names];
         this.updatedAt = new Date();
     }
@@ -36,7 +94,7 @@ export class ConflictInfo {
     /**
      * ステータスを更新
      */
-    updateStatus(status) {
+    updateStatus(status: ConflictStatus): void {
         this.status = status;
         this.updatedAt = new Date();
     }
@@ -44,7 +102,7 @@ export class ConflictInfo {
     /**
      * 依存関係を追加
      */
-    addDependency(conflictInfo) {
+    addDependency(conflictInfo: ConflictInfo): void {
         if (!this.dependencies.find(dep => dep.name === conflictInfo.name)) {
             this.dependencies.push(conflictInfo);
             this.updatedAt = new Date();
@@ -54,14 +112,14 @@ export class ConflictInfo {
     /**
      * 解決可能かどうかチェック
      */
-    canResolve() {
+    canResolve(): boolean {
         return this.dependencies.every(dep => dep.status === 'completed');
     }
 
     /**
      * 進捗率を計算
      */
-    getProgress() {
+    getProgress(): number {
         switch (this.status) {
             case 'pending': return 0;
             case 'in_progress': return 50;
@@ -74,7 +132,7 @@ export class ConflictInfo {
     /**
      * 競合情報をJSON形式で出力
      */
-    toJSON() {
+    toJSON(): ConflictJSON {
         return {
             name: this.name,
             type: this.type,
@@ -97,7 +155,7 @@ export class ConflictInfo {
     /**
      * 競合情報のサマリーを生成
      */
-    getSummary() {
+    getSummary(): ConflictSummary {
         return {
             name: this.name,
             type: this.type,
@@ -114,7 +172,17 @@ export class ConflictInfo {
  * リネーム操作情報を管理するデータモデル
  */
 export class RenameOperation {
-    constructor(type, oldName, newName, filePath) {
+    public type: OperationType;
+    public oldName: string;
+    public newName: string;
+    public filePath: string;
+    public dependencies: RenameOperation[];
+    public status: ConflictStatus;
+    public error: string | null;
+    public executedAt: Date | null;
+    public createdAt: Date;
+
+    constructor(type: OperationType, oldName: string, newName: string, filePath: string) {
         this.type = type;           // 'file' | 'class'
         this.oldName = oldName;
         this.newName = newName;
@@ -129,7 +197,7 @@ export class RenameOperation {
     /**
      * 操作を実行済みとしてマーク
      */
-    markCompleted() {
+    markCompleted(): void {
         this.status = 'completed';
         this.executedAt = new Date();
     }
@@ -137,7 +205,7 @@ export class RenameOperation {
     /**
      * 操作を失敗としてマーク
      */
-    markFailed(error) {
+    markFailed(error: string): void {
         this.status = 'failed';
         this.error = error;
         this.executedAt = new Date();
@@ -146,7 +214,7 @@ export class RenameOperation {
     /**
      * 依存関係を追加
      */
-    addDependency(operation) {
+    addDependency(operation: RenameOperation): void {
         if (!this.dependencies.find(dep => dep.oldName === operation.oldName)) {
             this.dependencies.push(operation);
         }
@@ -155,14 +223,14 @@ export class RenameOperation {
     /**
      * 実行可能かどうかチェック
      */
-    canExecute() {
+    canExecute(): boolean {
         return this.dependencies.every(dep => dep.status === 'completed');
     }
 
     /**
      * 操作情報をJSON形式で出力
      */
-    toJSON() {
+    toJSON(): RenameOperationJSON {
         return {
             type: this.type,
             oldName: this.oldName,

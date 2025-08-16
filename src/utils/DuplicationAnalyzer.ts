@@ -6,8 +6,71 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
+// Type definitions
+interface ClassDefinition {
+    name: string;
+    file: string;
+    line: number;
+    type: 'export class' | 'class';
+    relativeFile: string;
+}
+
+interface DuplicateFile {
+    fileName: string;
+    count: number;
+    paths: string[];
+}
+
+interface DuplicateClass {
+    className: string;
+    count: number;
+    locations: ClassDefinition[];
+}
+
+interface ImpactAnalysis {
+    scope: string;
+    potential_conflicts: string;
+    maintenance_difficulty: 'low' | 'medium' | 'high';
+    testing_complexity?: 'low' | 'medium' | 'high';
+}
+
+interface Conflict {
+    type: 'class' | 'file';
+    name: string;
+    count: number;
+    locations?: ClassDefinition[];
+    paths?: string[];
+    priority: 'low' | 'medium' | 'high';
+    riskLevel: 'low' | 'medium' | 'high';
+    impactAnalysis: ImpactAnalysis;
+}
+
+interface ConflictReport {
+    analysis_date: string;
+    project: string;
+    total_files_analyzed: number;
+    total_classes_found: number;
+    duplications: {
+        class_name_duplications: number;
+        file_name_duplications: number;
+        high_priority_conflicts: number;
+        medium_priority_conflicts: number;
+    };
+    conflicts: Conflict[];
+    summary: {
+        most_critical: string[];
+        recommendations: string[];
+    };
+}
+
 export class DuplicationAnalyzer {
-    constructor(sourceDir = 'src') {
+    private sourceDir: string;
+    private files: string[];
+    private classes: ClassDefinition[];
+    private duplicateFiles: DuplicateFile[];
+    private duplicateClasses: DuplicateClass[];
+
+    constructor(sourceDir: string = 'src') {
         this.sourceDir = sourceDir;
         this.files = [];
         this.classes = [];
@@ -18,7 +81,7 @@ export class DuplicationAnalyzer {
     /**
      * ファイルシステムを走査して.jsファイルを収集
      */
-    async analyzeFiles() {
+    async analyzeFiles(): Promise<void> {
         this.files = await this.scanDirectory(this.sourceDir);
         
         for (const filePath of this.files) {
@@ -27,7 +90,7 @@ export class DuplicationAnalyzer {
                 const classes = this.extractClassDefinitions(filePath, content);
                 this.classes.push(...classes);
             } catch (error) {
-                console.warn(`ファイル読み込みエラー: ${filePath}`, error.message);
+                console.warn(`ファイル読み込みエラー: ${filePath}`, (error as Error).message);
             }
         }
     }
@@ -35,8 +98,8 @@ export class DuplicationAnalyzer {
     /**
      * ディレクトリを再帰的にスキャン
      */
-    async scanDirectory(dir) {
-        const files = [];
+    private async scanDirectory(dir: string): Promise<string[]> {
+        const files: string[] = [];
         const entries = await fs.readdir(dir, { withFileTypes: true });
 
         for (const entry of entries) {
@@ -55,10 +118,10 @@ export class DuplicationAnalyzer {
     /**
      * ファイル内容からクラス定義を抽出
      */
-    extractClassDefinitions(filePath, content) {
-        const classes = [];
+    private extractClassDefinitions(filePath: string, content: string): ClassDefinition[] {
+        const classes: ClassDefinition[] = [];
         const classRegex = /(?:export\s+)?class\s+(\w+)(?:\s+extends\s+\w+)?\s*\{/g;
-        let match;
+        let match: RegExpExecArray | null;
 
         while ((match = classRegex.exec(content)) !== null) {
             const className = match[1];
@@ -79,22 +142,22 @@ export class DuplicationAnalyzer {
     /**
      * 文字位置から行番号を計算
      */
-    getLineNumber(content, index) {
+    private getLineNumber(content: string, index: number): number {
         return content.substring(0, index).split('\n').length;
     }
 
     /**
      * 重複ファイル名を検出
      */
-    findDuplicateFileNames() {
-        const fileNames = new Map();
+    findDuplicateFileNames(): DuplicateFile[] {
+        const fileNames = new Map<string, string[]>();
         
         for (const filePath of this.files) {
             const fileName = path.basename(filePath);
             if (!fileNames.has(fileName)) {
                 fileNames.set(fileName, []);
             }
-            fileNames.get(fileName).push(filePath);
+            fileNames.get(fileName)!.push(filePath);
         }
 
         this.duplicateFiles = Array.from(fileNames.entries())
@@ -111,15 +174,15 @@ export class DuplicationAnalyzer {
     /**
      * 重複クラス名を検出
      */
-    findDuplicateClassNames() {
-        const classNames = new Map();
+    findDuplicateClassNames(): DuplicateClass[] {
+        const classNames = new Map<string, ClassDefinition[]>();
         
         for (const classInfo of this.classes) {
             const className = classInfo.name;
             if (!classNames.has(className)) {
                 classNames.set(className, []);
             }
-            classNames.get(className).push(classInfo);
+            classNames.get(className)!.push(classInfo);
         }
 
         this.duplicateClasses = Array.from(classNames.entries())
@@ -136,12 +199,12 @@ export class DuplicationAnalyzer {
     /**
      * 競合の優先度を決定
      */
-    identifyConflicts() {
-        const conflicts = [];
+    identifyConflicts(): Conflict[] {
+        const conflicts: Conflict[] = [];
 
         // クラス名重複の競合分析
         for (const duplicate of this.duplicateClasses) {
-            const conflict = {
+            const conflict: Conflict = {
                 type: 'class',
                 name: duplicate.className,
                 count: duplicate.count,
@@ -155,7 +218,7 @@ export class DuplicationAnalyzer {
 
         // ファイル名重複の競合分析
         for (const duplicate of this.duplicateFiles) {
-            const conflict = {
+            const conflict: Conflict = {
                 type: 'file',
                 name: duplicate.fileName,
                 count: duplicate.count,
@@ -177,7 +240,7 @@ export class DuplicationAnalyzer {
     /**
      * 優先度を計算
      */
-    calculatePriority(duplicate) {
+    private calculatePriority(duplicate: DuplicateClass): 'low' | 'medium' | 'high' {
         if (duplicate.count >= 3) return 'high';
         if (duplicate.count === 2) return 'medium';
         return 'low';
@@ -186,7 +249,7 @@ export class DuplicationAnalyzer {
     /**
      * リスクレベルを計算
      */
-    calculateRiskLevel(duplicate) {
+    private calculateRiskLevel(duplicate: DuplicateClass): 'low' | 'medium' | 'high' {
         // 重要なシステムクラスの判定
         const criticalClasses = ['DialogManager', 'PerformanceMonitor', 'ErrorReporter'];
         if (criticalClasses.includes(duplicate.className)) {
@@ -205,7 +268,7 @@ export class DuplicationAnalyzer {
     /**
      * 影響分析
      */
-    analyzeImpact(duplicate) {
+    private analyzeImpact(duplicate: DuplicateClass): ImpactAnalysis {
         const locations = duplicate.locations;
         const directories = locations.map(loc => path.dirname(loc.file));
         const uniqueDirs = [...new Set(directories)];
@@ -221,7 +284,7 @@ export class DuplicationAnalyzer {
     /**
      * スコープを決定
      */
-    determineScope(directories) {
+    private determineScope(directories: string[]): string {
         const hasCore = directories.some(dir => dir.includes('/core/'));
         const hasUI = directories.some(dir => dir.includes('/ui/') || dir.includes('/scenes/'));
         const hasDebug = directories.some(dir => dir.includes('/debug/'));
@@ -236,7 +299,7 @@ export class DuplicationAnalyzer {
     /**
      * 競合レポートを生成
      */
-    generateConflictReport() {
+    generateConflictReport(): ConflictReport {
         const conflicts = this.identifyConflicts();
         
         return {
@@ -263,42 +326,5 @@ export class DuplicationAnalyzer {
                 ]
             }
         };
-    }
-}
-
-/**
- * ConflictInfo データモデル
- */
-export class ConflictInfo {
-    constructor(name, type, files, severity) {
-        this.name = name;
-        this.type = type;
-        this.files = files;
-        this.severity = severity;
-        this.strategy = null;
-        this.newNames = [];
-        this.status = 'pending';
-        this.dependencies = [];
-    }
-
-    /**
-     * 解決戦略を設定
-     */
-    setStrategy(strategy) {
-        this.strategy = strategy;
-    }
-
-    /**
-     * 新しい名前を設定
-     */
-    setNewNames(names) {
-        this.newNames = names;
-    }
-
-    /**
-     * ステータスを更新
-     */
-    updateStatus(status) {
-        this.status = status;
     }
 }

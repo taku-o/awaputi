@@ -2,7 +2,46 @@
  * HTMLJavaScriptChecker
  * HTML内のJavaScriptコードの構文検証ユーティリティ
  */
+
+// Type definitions
+interface ValidationError {
+    type: string;
+    message: string;
+    line?: number;
+    column?: number;
+    blockIndex?: number;
+    originalError?: Error;
+    pattern?: string;
+    sequence?: string;
+    count?: number;
+}
+
+interface ValidationWarning {
+    type: string;
+    message: string;
+    blockIndex?: number;
+    pattern?: string;
+    count?: number;
+}
+
+interface ScriptBlock {
+    content: string;
+    fullMatch: string;
+    startIndex: number;
+    attributes: Record<string, string>;
+}
+
+interface ValidationResult {
+    isValid: boolean;
+    errors: ValidationError[];
+    warnings: ValidationWarning[];
+    scriptBlockCount: number;
+}
+
 export class HTMLJavaScriptChecker {
+    private errors: ValidationError[];
+    private warnings: ValidationWarning[];
+
     constructor() {
         this.errors = [];
         this.warnings = [];
@@ -10,10 +49,10 @@ export class HTMLJavaScriptChecker {
 
     /**
      * HTMLファイル内のJavaScript構文を検証
-     * @param {string} htmlContent - HTML文字列
-     * @returns {Object} 検証結果
+     * @param htmlContent - HTML文字列
+     * @returns 検証結果
      */
-    validateHTML(htmlContent) {
+    validateHTML(htmlContent: string): ValidationResult {
         this.errors = [];
         this.warnings = [];
 
@@ -38,7 +77,7 @@ export class HTMLJavaScriptChecker {
         } catch (error) {
             this.errors.push({
                 type: 'PARSE_ERROR',
-                message: `HTML解析エラー: ${error.message}`,
+                message: `HTML解析エラー: ${(error as Error).message}`,
                 line: 0,
                 column: 0
             });
@@ -54,13 +93,13 @@ export class HTMLJavaScriptChecker {
 
     /**
      * HTMLからscriptタグのコンテンツを抽出
-     * @param {string} htmlContent - HTML文字列
-     * @returns {Array} スクリプトブロックの配列
+     * @param htmlContent - HTML文字列
+     * @returns スクリプトブロックの配列
      */
-    extractScriptBlocks(htmlContent) {
+    extractScriptBlocks(htmlContent: string): ScriptBlock[] {
         const scriptRegex = /<script[^>]*>([\s\S]*?)<\/script>/gi;
-        const blocks = [];
-        let match;
+        const blocks: ScriptBlock[] = [];
+        let match: RegExpExecArray | null;
 
         while ((match = scriptRegex.exec(htmlContent)) !== null) {
             blocks.push({
@@ -76,13 +115,13 @@ export class HTMLJavaScriptChecker {
 
     /**
      * scriptタグの属性を解析
-     * @param {string} scriptTag - scriptタグ全体
-     * @returns {Object} 属性オブジェクト
+     * @param scriptTag - scriptタグ全体
+     * @returns 属性オブジェクト
      */
-    parseScriptAttributes(scriptTag) {
-        const attributes = {};
+    parseScriptAttributes(scriptTag: string): Record<string, string> {
+        const attributes: Record<string, string> = {};
         const attrRegex = /(\w+)=["']([^"']*)["']/g;
-        let match;
+        let match: RegExpExecArray | null;
 
         while ((match = attrRegex.exec(scriptTag)) !== null) {
             attributes[match[1]] = match[2];
@@ -93,10 +132,10 @@ export class HTMLJavaScriptChecker {
 
     /**
      * 個別のスクリプトブロックを検証
-     * @param {Object} block - スクリプトブロック
-     * @param {number} index - ブロックのインデックス
+     * @param block - スクリプトブロック
+     * @param index - ブロックのインデックス
      */
-    validateScriptBlock(block, index) {
+    validateScriptBlock(block: ScriptBlock, index: number): void {
         const { content, attributes } = block;
 
         // 空のスクリプトブロックをチェック
@@ -126,20 +165,20 @@ export class HTMLJavaScriptChecker {
         } catch (error) {
             this.errors.push({
                 type: 'SYNTAX_ERROR',
-                message: `構文エラー (ブロック ${index + 1}): ${error.message}`,
+                message: `構文エラー (ブロック ${index + 1}): ${(error as Error).message}`,
                 blockIndex: index,
-                originalError: error
+                originalError: error as Error
             });
         }
     }
 
     /**
      * 文字列リテラルの特別検証
-     * @param {string} htmlContent - HTML文字列
+     * @param htmlContent - HTML文字列
      */
-    validateStringLiterals(htmlContent) {
+    validateStringLiterals(htmlContent: string): void {
         // XSSパターンの検出
-        const xssPatterns = [
+        const xssPatterns: RegExp[] = [
             /<script[^>]*>.*alert.*<\/script>/gi,
             /javascript:.*alert/gi,
             /on\w+\s*=.*alert/gi
@@ -175,14 +214,14 @@ export class HTMLJavaScriptChecker {
 
     /**
      * エスケープシーケンスの検証
-     * @param {string} content - 検証対象の文字列
-     * @returns {Array} エスケープエラーの配列
+     * @param content - 検証対象の文字列
+     * @returns エスケープエラーの配列
      */
-    validateEscapeSequences(content) {
-        const escapeErrors = [];
+    validateEscapeSequences(content: string): ValidationError[] {
+        const escapeErrors: ValidationError[] = [];
         
         // 不適切なエスケープパターン
-        const badEscapePatterns = [
+        const badEscapePatterns: RegExp[] = [
             /\\x[^0-9a-fA-F]{2}/g,  // 不正な16進エスケープ
             /\\u[^0-9a-fA-F]{4}/g,  // 不正なUnicodeエスケープ
             /\\[^\\'"ntrbfv0xu]/g    // 不正なエスケープ文字
@@ -206,11 +245,11 @@ export class HTMLJavaScriptChecker {
 
     /**
      * 検証結果のサマリーを生成
-     * @param {Object} result - 検証結果
-     * @returns {string} サマリー文字列
+     * @param result - 検証結果
+     * @returns サマリー文字列
      */
-    generateSummary(result) {
-        const parts = [];
+    generateSummary(result: ValidationResult): string {
+        const parts: string[] = [];
         
         if (result.isValid) {
             parts.push('✅ 構文検証: 合格');
