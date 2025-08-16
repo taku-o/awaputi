@@ -1,3 +1,47 @@
+// Type definitions
+interface PerformanceDataAnalyzer {
+    errorHandler: any;
+    baselineCalibrated: boolean;
+    calibrationTarget: number;
+    performanceBaseline: Map<string, number>;
+    analysisConfig: {
+        adaptiveThresholds: boolean;
+    };
+}
+
+interface DataPoint {
+    timestamp: number;
+    metrics: Map<string, any>;
+    collectedAt?: number;
+    collector?: string;
+}
+
+interface CollectionStats {
+    historySize: number;
+    calibrationSamples: number;
+    calibrationComplete: boolean;
+    calibrationProgress: number;
+    oldestDataPoint: number | null;
+    newestDataPoint: number | null;
+}
+
+interface ExportData {
+    exportedAt: number;
+    timeWindow: number | null;
+    dataPoints: number;
+    data: Array<{
+        timestamp: number;
+        metrics: Record<string, any>;
+    }>;
+}
+
+interface ImportDataFormat {
+    data: Array<{
+        timestamp: number;
+        metrics: Record<string, any>;
+    }>;
+}
+
 /**
  * PerformanceMetricsCollector - Collects and manages performance metrics data
  * 
@@ -22,13 +66,18 @@
  * const history = collector.getAnalysisHistory();
  */
 export class PerformanceMetricsCollector {
+    private mainController: PerformanceDataAnalyzer;
+    private errorHandler: any;
+    private analysisHistory: DataPoint[];
+    private calibrationSamples: Map<string, any>[];
+
     /**
      * Creates a new PerformanceMetricsCollector instance
      * 
-     * @param {PerformanceDataAnalyzer} mainController - Reference to the main controller
+     * @param mainController - Reference to the main controller
      * @throws {Error} When mainController is not provided
      */
-    constructor(mainController) {
+    constructor(mainController: PerformanceDataAnalyzer) {
         this.mainController = mainController;
         this.errorHandler = mainController.errorHandler;
         
@@ -41,11 +90,9 @@ export class PerformanceMetricsCollector {
     
     /**
      * Add data to analysis history
-     * @param {number} timestamp - Data timestamp
-     * @param {Map} metrics - Performance metrics
      */
-    addToAnalysisHistory(timestamp, metrics) {
-        const dataPoint = {
+    addToAnalysisHistory(timestamp: number, metrics: Map<string, any>): void {
+        const dataPoint: DataPoint = {
             timestamp,
             metrics: new Map(metrics)
         };
@@ -61,10 +108,8 @@ export class PerformanceMetricsCollector {
     
     /**
      * Get recent analysis data
-     * @param {number} timeWindow - Time window in milliseconds
-     * @returns {Array} Recent data points
      */
-    getRecentAnalysisData(timeWindow) {
+    getRecentAnalysisData(timeWindow: number): DataPoint[] {
         const now = Date.now();
         return this.analysisHistory.filter(point => 
             now - point.timestamp < timeWindow
@@ -73,9 +118,8 @@ export class PerformanceMetricsCollector {
     
     /**
      * Update performance baseline collection
-     * @param {Map} metrics - Performance metrics
      */
-    updatePerformanceBaseline(metrics) {
+    updatePerformanceBaseline(metrics: Map<string, any>): void {
         if (!this.mainController.baselineCalibrated) {
             // Collect calibration samples
             this.calibrationSamples.push(new Map(metrics));
@@ -92,9 +136,9 @@ export class PerformanceMetricsCollector {
     /**
      * Calibrate performance baseline
      */
-    calibrateBaseline() {
-        const metricSums = new Map();
-        const metricCounts = new Map();
+    calibrateBaseline(): void {
+        const metricSums = new Map<string, number>();
+        const metricCounts = new Map<string, number>();
         
         // Calculate average values for each metric
         for (const sample of this.calibrationSamples) {
@@ -109,7 +153,9 @@ export class PerformanceMetricsCollector {
         // Set baseline values
         for (const [metricId, sum] of metricSums) {
             const count = metricCounts.get(metricId);
-            this.mainController.performanceBaseline.set(metricId, sum / count);
+            if (count) {
+                this.mainController.performanceBaseline.set(metricId, sum / count);
+            }
         }
         
         this.mainController.baselineCalibrated = true;
@@ -120,9 +166,8 @@ export class PerformanceMetricsCollector {
     
     /**
      * Update adaptive baseline
-     * @param {Map} metrics - Current metrics
      */
-    updateAdaptiveBaseline(metrics) {
+    updateAdaptiveBaseline(metrics: Map<string, any>): void {
         const alpha = 0.1; // Smoothing factor
         
         for (const [metricId, value] of metrics) {
@@ -136,10 +181,8 @@ export class PerformanceMetricsCollector {
     
     /**
      * Validate metrics data
-     * @param {Map} metrics - Metrics to validate
-     * @returns {boolean} True if valid
      */
-    validateMetrics(metrics) {
+    validateMetrics(metrics: Map<string, any>): boolean {
         if (!(metrics instanceof Map)) {
             console.warn('[PerformanceMetricsCollector] Invalid metrics format - expected Map');
             return false;
@@ -163,11 +206,9 @@ export class PerformanceMetricsCollector {
     
     /**
      * Normalize metrics data
-     * @param {Map} metrics - Raw metrics data
-     * @returns {Map} Normalized metrics
      */
-    normalizeMetrics(metrics) {
-        const normalized = new Map();
+    normalizeMetrics(metrics: Map<string, any>): Map<string, number> {
+        const normalized = new Map<string, number>();
         
         for (const [metricId, value] of metrics) {
             if (typeof value === 'number' && !isNaN(value)) {
@@ -205,11 +246,8 @@ export class PerformanceMetricsCollector {
     
     /**
      * Create data point for collection
-     * @param {number} timestamp - Timestamp
-     * @param {Map} metrics - Metrics data
-     * @returns {object} Data point object
      */
-    createDataPoint(timestamp, metrics) {
+    createDataPoint(timestamp: number, metrics: Map<string, any>): DataPoint {
         return {
             timestamp,
             metrics: new Map(metrics),
@@ -220,9 +258,8 @@ export class PerformanceMetricsCollector {
     
     /**
      * Get collection statistics
-     * @returns {object} Collection statistics
      */
-    getCollectionStats() {
+    getCollectionStats(): CollectionStats {
         return {
             historySize: this.analysisHistory.length,
             calibrationSamples: this.calibrationSamples.length,
@@ -236,7 +273,7 @@ export class PerformanceMetricsCollector {
     /**
      * Clear collection data
      */
-    clearData() {
+    clearData(): void {
         this.analysisHistory = [];
         this.calibrationSamples = [];
         console.log('[PerformanceMetricsCollector] Collection data cleared');
@@ -244,18 +281,15 @@ export class PerformanceMetricsCollector {
     
     /**
      * Get analysis history
-     * @returns {Array} Analysis history array
      */
-    getAnalysisHistory() {
+    getAnalysisHistory(): DataPoint[] {
         return [...this.analysisHistory];
     }
     
     /**
      * Export metrics data
-     * @param {number} timeWindow - Time window for export (optional)
-     * @returns {object} Exported data
      */
-    exportData(timeWindow = null) {
+    exportData(timeWindow: number | null = null): ExportData {
         let dataToExport = this.analysisHistory;
         
         if (timeWindow) {
@@ -276,17 +310,15 @@ export class PerformanceMetricsCollector {
     
     /**
      * Import metrics data
-     * @param {object} importData - Data to import
-     * @returns {boolean} Success status
      */
-    importData(importData) {
+    importData(importData: ImportDataFormat): boolean {
         try {
             if (!importData.data || !Array.isArray(importData.data)) {
                 console.warn('[PerformanceMetricsCollector] Invalid import data format');
                 return false;
             }
             
-            const importedPoints = importData.data.map(point => ({
+            const importedPoints: DataPoint[] = importData.data.map(point => ({
                 timestamp: point.timestamp,
                 metrics: new Map(Object.entries(point.metrics))
             }));
@@ -314,7 +346,7 @@ export class PerformanceMetricsCollector {
     /**
      * Cleanup collector resources
      */
-    destroy() {
+    destroy(): void {
         this.analysisHistory = [];
         this.calibrationSamples = [];
         console.log('[PerformanceMetricsCollector] Collector destroyed');

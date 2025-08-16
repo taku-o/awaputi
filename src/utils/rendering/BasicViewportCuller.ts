@@ -1,3 +1,64 @@
+// Type definitions
+interface Viewport {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
+interface Frustum {
+    left: number;
+    right: number;
+    top: number;
+    bottom: number;
+    near: number;
+    far: number;
+}
+
+interface ViewportCullingStats {
+    totalObjects: number;
+    culledObjects: number;
+    cullingEfficiency: number;
+    processingTime: number;
+}
+
+interface CullingConfig {
+    enabled: boolean;
+    viewport: Viewport;
+    cullingMargin: number;
+    spatialGrid: Map<string, Set<RenderableObject>>;
+    gridSize: number;
+    renderableObjects: Set<RenderableObject>;
+    culledObjects: Set<RenderableObject>;
+    visibilityCache: Map<string | number, boolean>;
+    frustum: Frustum;
+    stats: ViewportCullingStats;
+}
+
+interface ObjectBounds {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
+interface RenderableObject {
+    id?: string | number;
+    x?: number;
+    y?: number;
+    width?: number;
+    height?: number;
+    rotation?: number;
+    scale?: number;
+}
+
+interface ViewportCullerConfigOptions {
+    enabled?: boolean;
+    cullingMargin?: number;
+    gridSize?: number;
+    viewport?: Partial<Viewport>;
+}
+
 /**
  * ViewportCuller - Viewport culling optimization system
  * ビューポートカリングシステム - 画面外オブジェクトの効率的な除外処理
@@ -9,7 +70,10 @@
  * - 詳細なカリング統計収集
  */
 export class BasicViewportCuller {
-    constructor(canvas) {
+    private canvas: HTMLCanvasElement;
+    private config: CullingConfig;
+
+    constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
         
         // Viewport culling system
@@ -19,13 +83,13 @@ export class BasicViewportCuller {
             cullingMargin: 50, // Extra margin around viewport
             
             // Culling optimization
-            spatialGrid: new Map(), // Spatial partitioning grid
+            spatialGrid: new Map<string, Set<RenderableObject>>(), // Spatial partitioning grid
             gridSize: 128, // Grid cell size
             
             // Object tracking
-            renderableObjects: new Set(),
-            culledObjects: new Set(),
-            visibilityCache: new Map(),
+            renderableObjects: new Set<RenderableObject>(),
+            culledObjects: new Set<RenderableObject>(),
+            visibilityCache: new Map<string | number, boolean>(),
             
             // Frustum culling
             frustum: {
@@ -49,7 +113,7 @@ export class BasicViewportCuller {
     /**
      * Update viewport dimensions and culling frustum
      */
-    updateViewport() {
+    updateViewport(): void {
         const viewport = this.config.viewport;
         viewport.width = this.canvas.width;
         viewport.height = this.canvas.height;
@@ -67,7 +131,7 @@ export class BasicViewportCuller {
     /**
      * Rebuild spatial grid for viewport culling
      */
-    rebuildSpatialGrid() {
+    rebuildSpatialGrid(): void {
         this.config.spatialGrid.clear();
         
         const gridSize = this.config.gridSize;
@@ -83,17 +147,15 @@ export class BasicViewportCuller {
         for (let x = startX; x < endX; x += gridSize) {
             for (let y = startY; y < endY; y += gridSize) {
                 const key = `${x},${y}`;
-                this.config.spatialGrid.set(key, new Set());
+                this.config.spatialGrid.set(key, new Set<RenderableObject>());
             }
         }
     }
 
     /**
      * Perform viewport culling on objects
-     * @param {Array} objects - Objects to cull
-     * @returns {Array} Visible objects after culling
      */
-    performViewportCulling(objects) {
+    performViewportCulling(objects: RenderableObject[]): RenderableObject[] {
         const startTime = performance.now();
         
         if (!this.config.enabled) {
@@ -116,7 +178,7 @@ export class BasicViewportCuller {
             }
             
             // Update visibility cache
-            this.config.visibilityCache.set(obj.id, isVisible);
+            this.config.visibilityCache.set(obj.id || Math.random(), isVisible);
         }
 
         // Update statistics
@@ -131,11 +193,8 @@ export class BasicViewportCuller {
 
     /**
      * Check if object bounds intersect with frustum
-     * @param {object} bounds - Object bounds
-     * @param {object} frustum - Frustum bounds
-     * @returns {boolean} Whether object is visible
      */
-    isObjectInFrustum(bounds, frustum) {
+    isObjectInFrustum(bounds: ObjectBounds, frustum: Frustum): boolean {
         return !(
             bounds.x + bounds.width < frustum.left ||
             bounds.x > frustum.right ||
@@ -146,9 +205,8 @@ export class BasicViewportCuller {
 
     /**
      * Add object to spatial grid
-     * @param {object} obj - Object to add
      */
-    addObjectToSpatialGrid(obj) {
+    addObjectToSpatialGrid(obj: RenderableObject): void {
         const bounds = this.calculateObjectBounds(obj);
         const gridSize = this.config.gridSize;
         
@@ -170,11 +228,9 @@ export class BasicViewportCuller {
 
     /**
      * Calculate object bounds
-     * @param {object} obj - Object to calculate bounds for
-     * @returns {object} Object bounds
      */
-    calculateObjectBounds(obj) {
-        const bounds = {
+    calculateObjectBounds(obj: RenderableObject): ObjectBounds {
+        const bounds: ObjectBounds = {
             x: obj.x || 0,
             y: obj.y || 0,
             width: obj.width || 0,
@@ -202,11 +258,9 @@ export class BasicViewportCuller {
 
     /**
      * Query objects in spatial grid near given bounds
-     * @param {object} bounds - Query bounds
-     * @returns {Set} Objects near the bounds
      */
-    queryNearbyObjects(bounds) {
-        const result = new Set();
+    queryNearbyObjects(bounds: ObjectBounds): Set<RenderableObject> {
+        const result = new Set<RenderableObject>();
         const gridSize = this.config.gridSize;
         
         const startX = Math.floor(bounds.x / gridSize) * gridSize;
@@ -231,26 +285,22 @@ export class BasicViewportCuller {
 
     /**
      * Check if object is currently visible
-     * @param {object} obj - Object to check
-     * @returns {boolean} Whether object is visible
      */
-    isObjectVisible(obj) {
-        return this.config.visibilityCache.get(obj.id) || false;
+    isObjectVisible(obj: RenderableObject): boolean {
+        return this.config.visibilityCache.get(obj.id || Math.random()) || false;
     }
 
     /**
      * Get culling statistics
-     * @returns {object} Statistics object
      */
-    getStats() {
+    getStats(): ViewportCullingStats {
         return { ...this.config.stats };
     }
 
     /**
      * Configure viewport culler
-     * @param {object} config - Configuration object
      */
-    configure(config) {
+    configure(config: ViewportCullerConfigOptions): void {
         if (config.enabled !== undefined) this.config.enabled = config.enabled;
         if (config.cullingMargin !== undefined) this.config.cullingMargin = config.cullingMargin;
         if (config.gridSize !== undefined) {
@@ -267,7 +317,7 @@ export class BasicViewportCuller {
     /**
      * Reset viewport culler
      */
-    reset() {
+    reset(): void {
         this.config.renderableObjects.clear();
         this.config.culledObjects.clear();
         this.config.visibilityCache.clear();
@@ -283,7 +333,7 @@ export class BasicViewportCuller {
     /**
      * Handle canvas resize
      */
-    handleCanvasResize() {
+    handleCanvasResize(): void {
         this.updateViewport();
         this.rebuildSpatialGrid();
     }
