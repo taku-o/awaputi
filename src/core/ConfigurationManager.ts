@@ -20,7 +20,7 @@ interface ValidationRule {
 }
 
 interface WatcherCallback {
-    (newValue: ConfigurationValue, oldValue: ConfigurationValue, key: string): void;
+    (key: string, newValue: ConfigurationValue, oldValue: ConfigurationValue): void;
 }
 
 interface AccessStats {

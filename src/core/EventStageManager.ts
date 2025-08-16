@@ -4,7 +4,7 @@
  * 各種イベントコンポーネントを統合管理
  * Updated: 2024 with load() method for GameEngineInitializer compatibility
  */
-import { EventRankingManager } from './EventRankingManager.js';
+// import { EventRankingManager } from './EventRankingManager.js'; // 未使用インポート
 import { SeasonalEventManager } from './events/SeasonalEventManager.js';
 import { EventNotificationSystem } from './events/EventNotificationSystem.js';
 import { EventHistoryManager } from './events/EventHistoryManager.js';
@@ -20,7 +20,14 @@ interface EventStage {
     duration?: number;
     targetScore?: number;
     rewards?: {
-        ap: number;
+        ap?: number;
+        completion?: {
+            ap: number;
+        };
+        highScore?: {
+            threshold: number;
+            ap: number;
+        };
         items?: string[];
         badges?: string[];
     };
@@ -32,16 +39,24 @@ interface EventStage {
         spawnRate?: number;
         bonusMultiplier?: number;
         targetBubbles?: string[];
+        goldenSpawnRate?: number;
+        globalScoreMultiplier?: number;
+        maxBubbles?: number;
+        bubbleTypes?: string[];
+        phantomSpawnRate?: number;
+        reducedVisibility?: boolean;
+        nightMode?: boolean;
+        [key: string]: any;
     };
 }
 
-interface EventStats {
-    bubblesPopped?: number;
-    specialBubblesPopped?: number;
-    maxChain?: number;
-    timeRemaining?: number;
-    [key: string]: any;
-}
+// interface EventStats { // 未使用インターフェース
+//     bubblesPopped?: number;
+//     specialBubblesPopped?: number;
+//     maxChain?: number;
+//     timeRemaining?: number;
+//     [key: string]: any;
+// }
 
 export class EventStageManager {
     private gameEngine: GameEngine;
@@ -52,7 +67,7 @@ export class EventStageManager {
     private historyManager: EventHistoryManager;
     private rankingSystem: EventRankingSystem;
     public eventRankingManager: EventRankingSystem;
-    private eventHistory: any[];
+    private __eventHistory: any[]; // 将来使用予定
 
     constructor(gameEngine: GameEngine) {
         this.gameEngine = gameEngine;
@@ -67,7 +82,7 @@ export class EventStageManager {
         
         // レガシーサポート用（既存コードとの互換性）
         this.eventRankingManager = this.rankingSystem;
-        this.eventHistory = []; // 互換性のため保持
+        this.__eventHistory = []; // 互換性のため保持
         
         console.log('EventStageManager initialized with new component architecture');
         console.log('[DEBUG] EventStageManager VERSION: v2024-with-load-method');
@@ -187,7 +202,7 @@ export class EventStageManager {
     /**
      * イベントが利用可能かチェック
      */
-    isEventAvailable(event, currentTime) {
+    isEventAvailable(event: any, currentTime: number): boolean {
         if (!event.availability) return true;
         
         // 期間指定がある場合
@@ -207,7 +222,7 @@ export class EventStageManager {
     /**
      * 繰り返しイベントがアクティブかチェック
      */
-    isRecurringEventActive(event, currentTime) {
+    isRecurringEventActive(event: any, currentTime: number): boolean {
         const recurringType = event.availability.recurring;
         const now = new Date(currentTime);
         
