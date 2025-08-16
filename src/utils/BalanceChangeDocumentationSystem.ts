@@ -6,16 +6,148 @@
  */
 
 import { BalanceChange } from '../models/BalanceChange.js';
-import { getErrorHandler } from './ErrorHandler.js';
+import { getErrorHandler, ErrorHandler } from './ErrorHandler.js';
+
+// Type definitions
+interface DocumentationStatistics {
+    totalChanges: number;
+    appliedChanges: number;
+    rolledBackChanges: number;
+    lastUpdate: number | null;
+}
+
+interface QueryOptions {
+    propertyType?: string;
+    author?: string;
+    reviewStatus?: string;
+    applied?: boolean;
+    fromDate?: number;
+    toDate?: number;
+    sortBy?: 'timestamp' | 'bubbleType' | 'propertyType' | 'author' | 'severity';
+    sortOrder?: 'asc' | 'desc';
+    limit?: number;
+    bubbleType?: string;
+    changeType?: string;
+    severity?: string;
+    tags?: string[];
+}
+
+interface BubbleTypeStats {
+    total: number;
+    applied: number;
+    rolledBack: number;
+    pending?: number;
+}
+
+interface PropertyTypeStats {
+    total: number;
+    applied: number;
+    rolledBack: number;
+}
+
+interface AuthorStats {
+    total: number;
+    applied: number;
+    rolledBack: number;
+}
+
+interface TimelineEntry {
+    date: string;
+    count: number;
+}
+
+interface StatisticsReport {
+    overview: DocumentationStatistics;
+    byBubbleType: Record<string, BubbleTypeStats>;
+    byPropertyType: Record<string, PropertyTypeStats>;
+    byAuthor: Record<string, AuthorStats>;
+    byChangeType: Record<string, number>;
+    bySeverity: Record<string, number>;
+    byReviewStatus: Record<string, number>;
+    timeline: TimelineEntry[];
+    recentChanges: string[];
+    generatedAt: number;
+    error?: string;
+}
+
+interface RelatedChangeInfo {
+    id: string;
+    relationship: string;
+    summary: string;
+    impact: any;
+}
+
+interface RiskAssessment {
+    level: string;
+    factors: string[];
+}
+
+interface ImpactReport {
+    change?: string;
+    impact?: any;
+    relatedChanges: RelatedChangeInfo[];
+    affectedSystems?: string[];
+    riskAssessment: RiskAssessment;
+    recommendations: string[];
+    generatedAt: number;
+    error?: string;
+    changeId?: string;
+}
+
+interface SystemIndexSizes {
+    changes: number;
+    bubbleTypes: number;
+    propertyTypes: number;
+    authors: number;
+    timeline: number;
+}
+
+interface StorageInfo {
+    available: boolean;
+    autoSave: boolean;
+    maxHistorySize: number;
+}
+
+interface SystemStatistics extends DocumentationStatistics {
+    indexSizes: SystemIndexSizes;
+    storageInfo: StorageInfo;
+}
+
+interface SystemSettings {
+    maxHistorySize?: number;
+    autoSaveEnabled?: boolean;
+    storageKey?: string;
+}
+
+interface StorageData {
+    changes: any[];
+    statistics: DocumentationStatistics;
+    version: string;
+    savedAt: number;
+}
 
 export class BalanceChangeDocumentationSystem {
+    private errorHandler: ErrorHandler;
+    private changes: Map<string, BalanceChange>;
+    private changesByBubble: Map<string, string[]>;
+    private changesByProperty: Map<string, string[]>;
+    private changesByAuthor: Map<string, string[]>;
+    private changesByTimestamp: string[];
+    
+    private maxHistorySize: number;
+    private autoSaveEnabled: boolean;
+    private storageKey: string;
+    private storageAvailable: boolean = false;
+    
+    private statistics: DocumentationStatistics;
+
     constructor() {
         this.errorHandler = getErrorHandler();
-        this.changes = new Map(); // changeId -> BalanceChange
-        this.changesByBubble = new Map(); // bubbleType -> Array<changeId>
-        this.changesByProperty = new Map(); // propertyType -> Array<changeId>
-        this.changesByAuthor = new Map(); // author -> Array<changeId>
-        this.changesByTimestamp = []; // 時系列順のchangeId配列
+        this.changes = new Map();
+        this.changesByBubble = new Map();
+        this.changesByProperty = new Map();
+        this.changesByAuthor = new Map();
+        this.changesByTimestamp = [];
         
         // 設定
         this.maxHistorySize = 1000;
@@ -38,9 +170,8 @@ export class BalanceChangeDocumentationSystem {
     
     /**
      * ストレージシステムを初期化
-     * @private
      */
-    _initializeStorage() {
+    private _initializeStorage(): void {
         try {
             if (typeof localStorage !== 'undefined') {
                 this.storageAvailable = true;
@@ -56,16 +187,15 @@ export class BalanceChangeDocumentationSystem {
     
     /**
      * ストレージから変更履歴を読み込み
-     * @private
      */
-    _loadFromStorage() {
+    private _loadFromStorage(): void {
         try {
             if (!this.storageAvailable) return;
             
             const storedData = localStorage.getItem(this.storageKey);
             if (!storedData) return;
             
-            const data = JSON.parse(storedData);
+            const data: StorageData = JSON.parse(storedData);
             if (!data.changes || !Array.isArray(data.changes)) return;
             
             // 変更履歴を復元
@@ -90,13 +220,12 @@ export class BalanceChangeDocumentationSystem {
     
     /**
      * ストレージに変更履歴を保存
-     * @private
      */
-    _saveToStorage() {
+    private _saveToStorage(): void {
         try {
             if (!this.storageAvailable || !this.autoSaveEnabled) return;
             
-            const data = {
+            const data: StorageData = {
                 changes: Array.from(this.changes.values()).map(change => change.toJSON()),
                 statistics: this.statistics,
                 version: '1.0',
@@ -115,10 +244,8 @@ export class BalanceChangeDocumentationSystem {
     
     /**
      * 変更をインデックスに追加
-     * @param {BalanceChange} change - 変更オブジェクト
-     * @private
      */
-    _addChangeToIndexes(change) {
+    private _addChangeToIndexes(change: BalanceChange): void {
         // メインインデックス
         this.changes.set(change.id, change);
         
@@ -127,7 +254,7 @@ export class BalanceChangeDocumentationSystem {
             if (!this.changesByBubble.has(change.bubbleType)) {
                 this.changesByBubble.set(change.bubbleType, []);
             }
-            this.changesByBubble.get(change.bubbleType).push(change.id);
+            this.changesByBubble.get(change.bubbleType)!.push(change.id);
         }
         
         // プロパティタイプ別インデックス
@@ -135,7 +262,7 @@ export class BalanceChangeDocumentationSystem {
             if (!this.changesByProperty.has(change.propertyType)) {
                 this.changesByProperty.set(change.propertyType, []);
             }
-            this.changesByProperty.get(change.propertyType).push(change.id);
+            this.changesByProperty.get(change.propertyType)!.push(change.id);
         }
         
         // 作成者別インデックス
@@ -143,7 +270,7 @@ export class BalanceChangeDocumentationSystem {
             if (!this.changesByAuthor.has(change.author)) {
                 this.changesByAuthor.set(change.author, []);
             }
-            this.changesByAuthor.get(change.author).push(change.id);
+            this.changesByAuthor.get(change.author)!.push(change.id);
         }
         
         // 時系列インデックス（挿入ソート）
@@ -161,16 +288,14 @@ export class BalanceChangeDocumentationSystem {
     
     /**
      * 変更をインデックスから削除
-     * @param {BalanceChange} change - 変更オブジェクト
-     * @private
      */
-    _removeChangeFromIndexes(change) {
+    private _removeChangeFromIndexes(change: BalanceChange): void {
         // メインインデックス
         this.changes.delete(change.id);
         
         // バブルタイプ別インデックス
         if (change.bubbleType && this.changesByBubble.has(change.bubbleType)) {
-            const bubbleChanges = this.changesByBubble.get(change.bubbleType);
+            const bubbleChanges = this.changesByBubble.get(change.bubbleType)!;
             const index = bubbleChanges.indexOf(change.id);
             if (index !== -1) {
                 bubbleChanges.splice(index, 1);
@@ -182,7 +307,7 @@ export class BalanceChangeDocumentationSystem {
         
         // プロパティタイプ別インデックス
         if (change.propertyType && this.changesByProperty.has(change.propertyType)) {
-            const propertyChanges = this.changesByProperty.get(change.propertyType);
+            const propertyChanges = this.changesByProperty.get(change.propertyType)!;
             const index = propertyChanges.indexOf(change.id);
             if (index !== -1) {
                 propertyChanges.splice(index, 1);
@@ -194,7 +319,7 @@ export class BalanceChangeDocumentationSystem {
         
         // 作成者別インデックス
         if (change.author && this.changesByAuthor.has(change.author)) {
-            const authorChanges = this.changesByAuthor.get(change.author);
+            const authorChanges = this.changesByAuthor.get(change.author)!;
             const index = authorChanges.indexOf(change.id);
             if (index !== -1) {
                 authorChanges.splice(index, 1);
@@ -213,9 +338,8 @@ export class BalanceChangeDocumentationSystem {
     
     /**
      * 統計情報を更新
-     * @private
      */
-    _updateStatistics() {
+    private _updateStatistics(): void {
         this.statistics.totalChanges = this.changes.size;
         this.statistics.appliedChanges = Array.from(this.changes.values())
             .filter(change => change.applied).length;
@@ -226,10 +350,8 @@ export class BalanceChangeDocumentationSystem {
     
     /**
      * 新しい変更を記録
-     * @param {Object} changeData - 変更データ
-     * @returns {BalanceChange|null} 作成された変更オブジェクト
      */
-    recordChange(changeData) {
+    public recordChange(changeData: any): BalanceChange | null {
         try {
             const change = new BalanceChange(changeData);
             
@@ -269,9 +391,8 @@ export class BalanceChangeDocumentationSystem {
     
     /**
      * 古い変更履歴をクリーンアップ
-     * @private
      */
-    _cleanupOldChanges() {
+    private _cleanupOldChanges(): void {
         try {
             // 最古の変更から削除（時系列順の最初の10%を削除）
             const cleanupCount = Math.floor(this.maxHistorySize * 0.1);
@@ -293,23 +414,18 @@ export class BalanceChangeDocumentationSystem {
     
     /**
      * 変更を取得
-     * @param {string} changeId - 変更ID
-     * @returns {BalanceChange|null} 変更オブジェクト
      */
-    getChange(changeId) {
+    public getChange(changeId: string): BalanceChange | null {
         return this.changes.get(changeId) || null;
     }
     
     /**
      * バブルタイプ別の変更履歴を取得
-     * @param {string} bubbleType - バブルタイプ
-     * @param {Object} options - オプション
-     * @returns {Array<BalanceChange>} 変更配列
      */
-    getChangesByBubbleType(bubbleType, options = {}) {
+    public getChangesByBubbleType(bubbleType: string, options: QueryOptions = {}): BalanceChange[] {
         try {
             const changeIds = this.changesByBubble.get(bubbleType) || [];
-            let changes = changeIds.map(id => this.changes.get(id)).filter(Boolean);
+            let changes = changeIds.map(id => this.changes.get(id)).filter((change): change is BalanceChange => !!change);
             
             // フィルタリング
             if (options.propertyType) {
@@ -330,11 +446,11 @@ export class BalanceChangeDocumentationSystem {
             
             // 期間フィルタ
             if (options.fromDate) {
-                changes = changes.filter(change => change.timestamp >= options.fromDate);
+                changes = changes.filter(change => change.timestamp >= options.fromDate!);
             }
             
             if (options.toDate) {
-                changes = changes.filter(change => change.timestamp <= options.toDate);
+                changes = changes.filter(change => change.timestamp <= options.toDate!);
             }
             
             // ソート
@@ -363,14 +479,11 @@ export class BalanceChangeDocumentationSystem {
     
     /**
      * プロパティタイプ別の変更履歴を取得
-     * @param {string} propertyType - プロパティタイプ
-     * @param {Object} options - オプション
-     * @returns {Array<BalanceChange>} 変更配列
      */
-    getChangesByPropertyType(propertyType, options = {}) {
+    public getChangesByPropertyType(propertyType: string, options: QueryOptions = {}): BalanceChange[] {
         try {
             const changeIds = this.changesByProperty.get(propertyType) || [];
-            let changes = changeIds.map(id => this.changes.get(id)).filter(Boolean);
+            let changes = changeIds.map(id => this.changes.get(id)).filter((change): change is BalanceChange => !!change);
             
             // 同様のフィルタリングとソート処理
             return this._applyFiltersAndSort(changes, options);
@@ -386,14 +499,11 @@ export class BalanceChangeDocumentationSystem {
     
     /**
      * 作成者別の変更履歴を取得
-     * @param {string} author - 作成者
-     * @param {Object} options - オプション
-     * @returns {Array<BalanceChange>} 変更配列
      */
-    getChangesByAuthor(author, options = {}) {
+    public getChangesByAuthor(author: string, options: QueryOptions = {}): BalanceChange[] {
         try {
             const changeIds = this.changesByAuthor.get(author) || [];
-            let changes = changeIds.map(id => this.changes.get(id)).filter(Boolean);
+            let changes = changeIds.map(id => this.changes.get(id)).filter((change): change is BalanceChange => !!change);
             
             return this._applyFiltersAndSort(changes, options);
             
@@ -408,16 +518,12 @@ export class BalanceChangeDocumentationSystem {
     
     /**
      * 期間別の変更履歴を取得
-     * @param {number} fromDate - 開始日時（タイムスタンプ）
-     * @param {number} toDate - 終了日時（タイムスタンプ）
-     * @param {Object} options - オプション
-     * @returns {Array<BalanceChange>} 変更配列
      */
-    getChangesByDateRange(fromDate, toDate, options = {}) {
+    public getChangesByDateRange(fromDate: number, toDate: number, options: QueryOptions = {}): BalanceChange[] {
         try {
             const changes = this.changesByTimestamp
                 .map(id => this.changes.get(id))
-                .filter(change => change && 
+                .filter((change): change is BalanceChange => change !== undefined && 
                     change.timestamp >= fromDate && 
                     change.timestamp <= toDate);
             
@@ -435,12 +541,8 @@ export class BalanceChangeDocumentationSystem {
     
     /**
      * フィルタとソートを適用
-     * @param {Array<BalanceChange>} changes - 変更配列
-     * @param {Object} options - オプション
-     * @returns {Array<BalanceChange>} フィルタ後の変更配列
-     * @private
      */
-    _applyFiltersAndSort(changes, options) {
+    private _applyFiltersAndSort(changes: BalanceChange[], options: QueryOptions): BalanceChange[] {
         let filtered = [...changes];
         
         // フィルタリング
@@ -474,7 +576,7 @@ export class BalanceChangeDocumentationSystem {
         
         if (options.tags && options.tags.length > 0) {
             filtered = filtered.filter(change => 
-                options.tags.some(tag => change.tags.includes(tag))
+                options.tags!.some(tag => change.tags.includes(tag))
             );
         }
         
@@ -498,7 +600,7 @@ export class BalanceChangeDocumentationSystem {
                         comparison = (a.author || '').localeCompare(b.author || '');
                         break;
                     case 'severity':
-                        const severityOrder = { 'low': 1, 'medium': 2, 'high': 3, 'critical': 4 };
+                        const severityOrder: Record<string, number> = { 'low': 1, 'medium': 2, 'high': 3, 'critical': 4 };
                         comparison = (severityOrder[a.severity] || 0) - (severityOrder[b.severity] || 0);
                         break;
                     default:
@@ -519,12 +621,10 @@ export class BalanceChangeDocumentationSystem {
     
     /**
      * 変更統計レポートを生成
-     * @param {Object} options - オプション
-     * @returns {Object} 統計レポート
      */
-    generateStatisticsReport(options = {}) {
+    public generateStatisticsReport(options: QueryOptions = {}): StatisticsReport {
         try {
-            const report = {
+            const report: StatisticsReport = {
                 overview: { ...this.statistics },
                 byBubbleType: {},
                 byPropertyType: {},
@@ -541,7 +641,7 @@ export class BalanceChangeDocumentationSystem {
             
             // バブルタイプ別統計
             for (const [bubbleType, changeIds] of this.changesByBubble) {
-                const bubbleChanges = changeIds.map(id => this.changes.get(id)).filter(Boolean);
+                const bubbleChanges = changeIds.map(id => this.changes.get(id)).filter((change): change is BalanceChange => !!change);
                 report.byBubbleType[bubbleType] = {
                     total: bubbleChanges.length,
                     applied: bubbleChanges.filter(c => c.applied).length,
@@ -552,7 +652,7 @@ export class BalanceChangeDocumentationSystem {
             
             // プロパティタイプ別統計
             for (const [propertyType, changeIds] of this.changesByProperty) {
-                const propertyChanges = changeIds.map(id => this.changes.get(id)).filter(Boolean);
+                const propertyChanges = changeIds.map(id => this.changes.get(id)).filter((change): change is BalanceChange => !!change);
                 report.byPropertyType[propertyType] = {
                     total: propertyChanges.length,
                     applied: propertyChanges.filter(c => c.applied).length,
@@ -562,7 +662,7 @@ export class BalanceChangeDocumentationSystem {
             
             // 作成者別統計
             for (const [author, changeIds] of this.changesByAuthor) {
-                const authorChanges = changeIds.map(id => this.changes.get(id)).filter(Boolean);
+                const authorChanges = changeIds.map(id => this.changes.get(id)).filter((change): change is BalanceChange => !!change);
                 report.byAuthor[author] = {
                     total: authorChanges.length,
                     applied: authorChanges.filter(c => c.applied).length,
@@ -571,28 +671,28 @@ export class BalanceChangeDocumentationSystem {
             }
             
             // 変更タイプ別統計
-            const changeTypeCounts = {};
+            const changeTypeCounts: Record<string, number> = {};
             changes.forEach(change => {
                 changeTypeCounts[change.changeType] = (changeTypeCounts[change.changeType] || 0) + 1;
             });
             report.byChangeType = changeTypeCounts;
             
             // 重要度別統計
-            const severityCounts = {};
+            const severityCounts: Record<string, number> = {};
             changes.forEach(change => {
                 severityCounts[change.severity] = (severityCounts[change.severity] || 0) + 1;
             });
             report.bySeverity = severityCounts;
             
             // レビューステータス別統計
-            const reviewStatusCounts = {};
+            const reviewStatusCounts: Record<string, number> = {};
             changes.forEach(change => {
                 reviewStatusCounts[change.reviewStatus] = (reviewStatusCounts[change.reviewStatus] || 0) + 1;
             });
             report.byReviewStatus = reviewStatusCounts;
             
             // タイムライン（日別変更数）
-            const timelineData = {};
+            const timelineData: Record<string, number> = {};
             changes.forEach(change => {
                 const date = new Date(change.timestamp).toISOString().split('T')[0];
                 timelineData[date] = (timelineData[date] || 0) + 1;
@@ -610,7 +710,7 @@ export class BalanceChangeDocumentationSystem {
                     const change = this.changes.get(id);
                     return change ? change.getSummary() : null;
                 })
-                .filter(Boolean);
+                .filter((summary): summary is string => summary !== null);
             
             return report;
             
@@ -619,6 +719,14 @@ export class BalanceChangeDocumentationSystem {
             return {
                 error: 'Failed to generate statistics report',
                 overview: this.statistics,
+                byBubbleType: {},
+                byPropertyType: {},
+                byAuthor: {},
+                byChangeType: {},
+                bySeverity: {},
+                byReviewStatus: {},
+                timeline: [],
+                recentChanges: [],
                 generatedAt: Date.now()
             };
         }
@@ -626,17 +734,21 @@ export class BalanceChangeDocumentationSystem {
     
     /**
      * 変更影響レポートを生成
-     * @param {string} changeId - 変更ID
-     * @returns {Object} 影響レポート
      */
-    generateImpactReport(changeId) {
+    public generateImpactReport(changeId: string): ImpactReport {
         try {
             const change = this.getChange(changeId);
             if (!change) {
-                return { error: 'Change not found' };
+                return { 
+                    error: 'Change not found',
+                    relatedChanges: [],
+                    riskAssessment: { level: 'unknown', factors: [] },
+                    recommendations: [],
+                    generatedAt: Date.now()
+                };
             }
             
-            const report = {
+            const report: ImpactReport = {
                 change: change.getSummary(),
                 impact: change.calculateImpact(),
                 relatedChanges: [],
@@ -700,6 +812,9 @@ export class BalanceChangeDocumentationSystem {
             return {
                 error: 'Failed to generate impact report',
                 changeId,
+                relatedChanges: [],
+                riskAssessment: { level: 'unknown', factors: [] },
+                recommendations: [],
                 generatedAt: Date.now()
             };
         }
@@ -707,11 +822,8 @@ export class BalanceChangeDocumentationSystem {
     
     /**
      * マークダウン形式のレポートを生成
-     * @param {string} reportType - レポートタイプ ('statistics' | 'impact')
-     * @param {Object} options - オプション
-     * @returns {string} マークダウンレポート
      */
-    generateMarkdownReport(reportType, options = {}) {
+    public generateMarkdownReport(reportType: 'statistics' | 'impact', options: QueryOptions & { changeId?: string } = {}): string {
         try {
             let markdown = '';
             
@@ -732,17 +844,14 @@ export class BalanceChangeDocumentationSystem {
                 reportType,
                 options
             });
-            return `# Error\n\nFailed to generate ${reportType} report: ${error.message}`;
+            return `# Error\n\nFailed to generate ${reportType} report: ${error instanceof Error ? error.message : String(error)}`;
         }
     }
     
     /**
      * 統計レポートのマークダウンを生成
-     * @param {Object} report - 統計レポート
-     * @returns {string} マークダウン
-     * @private
      */
-    _generateStatisticsMarkdown(report) {
+    private _generateStatisticsMarkdown(report: StatisticsReport): string {
         const date = new Date(report.generatedAt).toLocaleString('ja-JP');
         
         let markdown = `# ゲームバランス変更統計レポート\n\n`;
@@ -753,7 +862,7 @@ export class BalanceChangeDocumentationSystem {
         markdown += `- **総変更数**: ${report.overview.totalChanges}\n`;
         markdown += `- **適用済み**: ${report.overview.appliedChanges}\n`;
         markdown += `- **ロールバック済み**: ${report.overview.rolledBackChanges}\n`;
-        markdown += `- **最終更新**: ${new Date(report.overview.lastUpdate).toLocaleString('ja-JP')}\n\n`;
+        markdown += `- **最終更新**: ${report.overview.lastUpdate ? new Date(report.overview.lastUpdate).toLocaleString('ja-JP') : 'N/A'}\n\n`;
         
         // バブルタイプ別
         if (Object.keys(report.byBubbleType).length > 0) {
@@ -793,11 +902,8 @@ export class BalanceChangeDocumentationSystem {
     
     /**
      * 影響レポートのマークダウンを生成
-     * @param {Object} report - 影響レポート
-     * @returns {string} マークダウン
-     * @private
      */
-    _generateImpactMarkdown(report) {
+    private _generateImpactMarkdown(report: ImpactReport): string {
         if (report.error) {
             return `# エラー\n\n${report.error}`;
         }
@@ -812,10 +918,12 @@ export class BalanceChangeDocumentationSystem {
         markdown += `${report.change}\n\n`;
         
         // 影響分析
-        markdown += `## 影響分析\n\n`;
-        markdown += `- **影響の方向**: ${report.impact.direction}\n`;
-        markdown += `- **影響の大きさ**: ${report.impact.magnitude}\n`;
-        markdown += `- **説明**: ${report.impact.description}\n\n`;
+        if (report.impact) {
+            markdown += `## 影響分析\n\n`;
+            markdown += `- **影響の方向**: ${report.impact.direction}\n`;
+            markdown += `- **影響の大きさ**: ${report.impact.magnitude}\n`;
+            markdown += `- **説明**: ${report.impact.description}\n\n`;
+        }
         
         // リスク評価
         markdown += `## リスク評価\n\n`;
@@ -853,9 +961,8 @@ export class BalanceChangeDocumentationSystem {
     
     /**
      * システム統計を取得
-     * @returns {Object} システム統計
      */
-    getSystemStatistics() {
+    public getSystemStatistics(): SystemStatistics {
         return {
             ...this.statistics,
             indexSizes: {
@@ -875,9 +982,8 @@ export class BalanceChangeDocumentationSystem {
     
     /**
      * 設定を更新
-     * @param {Object} newSettings - 新しい設定
      */
-    updateSettings(newSettings) {
+    public updateSettings(newSettings: SystemSettings): void {
         try {
             if (newSettings.maxHistorySize && newSettings.maxHistorySize > 0) {
                 this.maxHistorySize = newSettings.maxHistorySize;
@@ -900,9 +1006,8 @@ export class BalanceChangeDocumentationSystem {
     
     /**
      * 手動保存
-     * @returns {boolean} 成功フラグ
      */
-    save() {
+    public save(): boolean {
         try {
             this._saveToStorage();
             console.log('[BalanceChangeDocumentationSystem] 手動保存完了');
@@ -915,9 +1020,8 @@ export class BalanceChangeDocumentationSystem {
     
     /**
      * データをクリア
-     * @returns {boolean} 成功フラグ
      */
-    clear() {
+    public clear(): boolean {
         try {
             this.changes.clear();
             this.changesByBubble.clear();
@@ -947,13 +1051,12 @@ export class BalanceChangeDocumentationSystem {
 }
 
 // シングルトンインスタンス
-let documentationSystemInstance = null;
+let documentationSystemInstance: BalanceChangeDocumentationSystem | null = null;
 
 /**
  * BalanceChangeDocumentationSystemのシングルトンインスタンスを取得
- * @returns {BalanceChangeDocumentationSystem} システムインスタンス
  */
-export function getBalanceChangeDocumentationSystem() {
+export function getBalanceChangeDocumentationSystem(): BalanceChangeDocumentationSystem {
     if (!documentationSystemInstance) {
         documentationSystemInstance = new BalanceChangeDocumentationSystem();
     }

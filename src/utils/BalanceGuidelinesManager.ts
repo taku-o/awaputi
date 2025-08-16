@@ -7,9 +7,139 @@
 
 import { getConfigurationManager } from '../core/ConfigurationManager.js';
 import { getBalanceConfigurationValidator } from './BalanceConfigurationValidator.js';
-import { getErrorHandler } from './ErrorHandler.js';
+import { getErrorHandler, ErrorHandler } from './ErrorHandler.js';
+
+// Type definitions
+interface RecommendedRange {
+    min: number;
+    max: number;
+    recommended: number | string;
+}
+
+interface Guideline {
+    category: string;
+    property: string;
+    description: string;
+    principles: string[];
+    recommendedRanges: Record<string, RecommendedRange>;
+    adjustmentSteps: number;
+    testingRequirements: string[];
+    retrievedAt?: number;
+}
+
+interface ChangeRecord {
+    id: string;
+    timestamp: number;
+    change: any;
+    rationale: string;
+    author: string;
+    reviewStatus: string;
+}
+
+interface ValidationResult {
+    validationId: string;
+    isValid: boolean;
+    issues: string[];
+    recommendations: string[];
+    impactAnalysis?: ImpactReport;
+    guideline?: string;
+    timestamp: number;
+    error?: string;
+}
+
+interface ValidationSubResult {
+    isValid: boolean;
+    issues: string[];
+    recommendations: string[];
+}
+
+interface ImpactCalculation {
+    (oldValue: any, newValue: any): number | string;
+}
+
+interface ImpactRule {
+    affectedSystems: string[];
+    calculations: Record<string, ImpactCalculation>;
+    thresholds: {
+        minor: number;
+        moderate: number;
+        major: number;
+    };
+}
+
+interface SystemImpact {
+    system: string;
+    magnitude: number;
+    direction: 'increase' | 'decrease' | 'neutral';
+    description: string;
+    confidence: 'low' | 'medium' | 'high';
+}
+
+interface ImpactReport {
+    changeId: string;
+    configType: string;
+    bubbleType: string;
+    propertyType: string;
+    oldValue: any;
+    newValue: any;
+    impacts: SystemImpact[];
+    recommendations: string[];
+    riskLevel: 'low' | 'minor' | 'moderate' | 'major';
+    timestamp: number;
+    error?: string;
+}
+
+interface AdjustmentContext {
+    bubbleType: string;
+    propertyType: string;
+    configType: string;
+}
+
+interface ChangeContext {
+    oldValue: any;
+    newValue: any;
+    configType: string;
+    bubbleType: string;
+    propertyType: string;
+}
+
+interface HistoryFilters {
+    bubbleType?: string;
+    propertyType?: string;
+    dateFrom?: number;
+    dateTo?: number;
+}
+
+interface GuidelineInfo {
+    key: string;
+    category: string;
+    property: string;
+    description: string;
+}
+
+interface Statistics {
+    totalChanges: number;
+    recentChanges: number;
+    changesByType: Record<string, number>;
+    availableGuidelines: number;
+    impactRules: number;
+}
+
+interface DocumentChangeResult {
+    success: boolean;
+    changeId?: string;
+    timestamp?: number;
+    error?: string;
+}
 
 export class BalanceGuidelinesManager {
+    private configManager: any;
+    private validator: any;
+    private errorHandler: ErrorHandler;
+    private guidelines: Map<string, Guideline>;
+    private changeHistory: ChangeRecord[];
+    private impactRules: Map<string, ImpactRule>;
+    
     constructor() {
         this.configManager = getConfigurationManager();
         this.validator = getBalanceConfigurationValidator();
@@ -33,9 +163,8 @@ export class BalanceGuidelinesManager {
     
     /**
      * バランス調整ガイドラインを初期化
-     * @private
      */
-    _initializeGuidelines() {
+    private _initializeGuidelines(): void {
         // 泡バランス調整のガイドライン
         this.guidelines.set('bubble.health', {
             category: 'bubble',
@@ -207,16 +336,15 @@ export class BalanceGuidelinesManager {
     
     /**
      * 影響分析ルールを初期化
-     * @private
      */
-    _initializeImpactRules() {
+    private _initializeImpactRules(): void {
         // 耐久値変更の影響
         this.impactRules.set('bubble.health', {
             affectedSystems: ['gameplay.difficulty', 'player.stress', 'game.duration'],
             calculations: {
-                difficultyImpact: (oldValue, newValue) => (newValue - oldValue) / oldValue * 100,
-                timeImpact: (oldValue, newValue) => newValue / oldValue,
-                stressImpact: (oldValue, newValue) => Math.log(newValue / oldValue)
+                difficultyImpact: (oldValue: number, newValue: number) => (newValue - oldValue) / oldValue * 100,
+                timeImpact: (oldValue: number, newValue: number) => newValue / oldValue,
+                stressImpact: (oldValue: number, newValue: number) => Math.log(newValue / oldValue)
             },
             thresholds: {
                 minor: 0.2,
@@ -229,9 +357,9 @@ export class BalanceGuidelinesManager {
         this.impactRules.set('bubble.score', {
             affectedSystems: ['economy.balance', 'player.motivation', 'progression.speed'],
             calculations: {
-                economyImpact: (oldValue, newValue) => (newValue - oldValue) / oldValue * 100,
-                motivationImpact: (oldValue, newValue) => newValue > oldValue ? 'positive' : 'negative',
-                progressionImpact: (oldValue, newValue) => newValue / oldValue
+                economyImpact: (oldValue: number, newValue: number) => (newValue - oldValue) / oldValue * 100,
+                motivationImpact: (oldValue: number, newValue: number) => newValue > oldValue ? 'positive' : 'negative',
+                progressionImpact: (oldValue: number, newValue: number) => newValue / oldValue
             },
             thresholds: {
                 minor: 0.15,
@@ -244,9 +372,9 @@ export class BalanceGuidelinesManager {
         this.impactRules.set('bubble.size', {
             affectedSystems: ['usability.targeting', 'visual.clarity', 'accessibility.compliance'],
             calculations: {
-                targetingImpact: (oldValue, newValue) => (oldValue - newValue) / oldValue,
-                clarityImpact: (oldValue, newValue) => newValue / oldValue,
-                accessibilityImpact: (oldValue, newValue) => newValue >= 45 ? 'compliant' : 'non-compliant'
+                targetingImpact: (oldValue: number, newValue: number) => (oldValue - newValue) / oldValue,
+                clarityImpact: (oldValue: number, newValue: number) => newValue / oldValue,
+                accessibilityImpact: (oldValue: number, newValue: number) => newValue >= 45 ? 'compliant' : 'non-compliant'
             },
             thresholds: {
                 minor: 0.1,
@@ -258,10 +386,8 @@ export class BalanceGuidelinesManager {
     
     /**
      * 特定タイプの調整ガイドラインを取得
-     * @param {string} configType - 設定タイプ
-     * @returns {Object|null} ガイドライン
      */
-    getAdjustmentGuidelines(configType) {
+    public getAdjustmentGuidelines(configType: string): Guideline | null {
         try {
             const guideline = this.guidelines.get(configType);
             if (!guideline) {
@@ -285,12 +411,8 @@ export class BalanceGuidelinesManager {
     
     /**
      * 調整の妥当性を検証
-     * @param {*} oldValue - 古い値
-     * @param {*} newValue - 新しい値
-     * @param {Object} context - 調整コンテキスト
-     * @returns {Object} 検証結果
      */
-    validateAdjustment(oldValue, newValue, context) {
+    public validateAdjustment(oldValue: any, newValue: any, context: AdjustmentContext): ValidationResult {
         const validationId = `adjustment_${Date.now()}`;
         
         try {
@@ -307,8 +429,8 @@ export class BalanceGuidelinesManager {
                 };
             }
             
-            const issues = [];
-            const recommendations = [];
+            const issues: string[] = [];
+            const recommendations: string[] = [];
             
             // 範囲チェック
             const rangeCheck = this._validateRange(newValue, bubbleType, guideline);
@@ -355,7 +477,9 @@ export class BalanceGuidelinesManager {
             return {
                 validationId,
                 isValid: false,
-                error: error.message,
+                issues: [],
+                recommendations: [],
+                error: error instanceof Error ? error.message : String(error),
                 timestamp: Date.now()
             };
         }
@@ -363,15 +487,10 @@ export class BalanceGuidelinesManager {
     
     /**
      * 範囲の妥当性を検証
-     * @param {*} value - 検証する値
-     * @param {string} bubbleType - 泡タイプ
-     * @param {Object} guideline - ガイドライン
-     * @returns {Object} 検証結果
-     * @private
      */
-    _validateRange(value, bubbleType, guideline) {
-        const issues = [];
-        const recommendations = [];
+    private _validateRange(value: any, bubbleType: string, guideline: Guideline): ValidationSubResult {
+        const issues: string[] = [];
+        const recommendations: string[] = [];
         
         if (!guideline.recommendedRanges) {
             return { isValid: true, issues, recommendations };
@@ -412,15 +531,10 @@ export class BalanceGuidelinesManager {
     
     /**
      * 調整ステップの妥当性を検証
-     * @param {*} oldValue - 古い値
-     * @param {*} newValue - 新しい値
-     * @param {Object} guideline - ガイドライン
-     * @returns {Object} 検証結果
-     * @private
      */
-    _validateAdjustmentStep(oldValue, newValue, guideline) {
-        const issues = [];
-        const recommendations = [];
+    private _validateAdjustmentStep(oldValue: any, newValue: any, guideline: Guideline): ValidationSubResult {
+        const issues: string[] = [];
+        const recommendations: string[] = [];
         
         if (typeof oldValue !== 'number' || typeof newValue !== 'number') {
             return { isValid: true, issues, recommendations };
@@ -452,34 +566,29 @@ export class BalanceGuidelinesManager {
     
     /**
      * 論理的整合性を検証
-     * @param {*} value - 検証する値
-     * @param {string} bubbleType - 泡タイプ
-     * @param {string} propertyType - プロパティタイプ
-     * @returns {Object} 検証結果
-     * @private
      */
-    _validateLogicalConsistency(value, bubbleType, propertyType) {
-        const issues = [];
-        const recommendations = [];
+    private _validateLogicalConsistency(value: any, bubbleType: string, propertyType: string): ValidationSubResult {
+        const issues: string[] = [];
+        const recommendations: string[] = [];
         
         // ボス泡の特別チェック
         if (bubbleType === 'boss') {
-            if (propertyType === 'health' && value <= 4) {
+            if (propertyType === 'health' && typeof value === 'number' && value <= 4) {
                 issues.push('ボス泡の耐久値は通常泡より大幅に高くするべきです');
                 recommendations.push('耐久値を8以上に設定することを推奨します');
             }
             
-            if (propertyType === 'score' && value <= 200) {
+            if (propertyType === 'score' && typeof value === 'number' && value <= 200) {
                 issues.push('ボス泡のスコアは通常泡より大幅に高くするべきです');
                 recommendations.push('スコアを500以上に設定することを推奨します');
             }
         }
         
         // 硬い泡の段階性チェック
-        const hardBubbleOrder = { stone: 2, iron: 3, diamond: 4 };
+        const hardBubbleOrder: Record<string, number> = { stone: 2, iron: 3, diamond: 4 };
         if (bubbleType in hardBubbleOrder && propertyType === 'health') {
             const expectedMin = hardBubbleOrder[bubbleType];
-            if (value < expectedMin) {
+            if (typeof value === 'number' && value < expectedMin) {
                 issues.push(`${bubbleType}泡の耐久値は${expectedMin}以上であるべきです`);
                 recommendations.push('硬い泡の段階的な強化を維持してください');
             }
@@ -494,13 +603,10 @@ export class BalanceGuidelinesManager {
     
     /**
      * 変更を記録
-     * @param {Object} change - 変更情報
-     * @param {string} rationale - 変更理由
-     * @returns {Object} 記録結果
      */
-    documentChange(change, rationale) {
+    public documentChange(change: any, rationale: string): DocumentChangeResult {
         try {
-            const changeRecord = {
+            const changeRecord: ChangeRecord = {
                 id: `change_${Date.now()}`,
                 timestamp: Date.now(),
                 change,
@@ -533,21 +639,19 @@ export class BalanceGuidelinesManager {
             
             return {
                 success: false,
-                error: error.message
+                error: error instanceof Error ? error.message : String(error)
             };
         }
     }
     
     /**
      * 影響レポートを生成
-     * @param {Object} changes - 変更内容
-     * @returns {Object} 影響レポート
      */
-    generateImpactReport(changes) {
+    public generateImpactReport(changes: ChangeContext): ImpactReport {
         try {
             const { oldValue, newValue, configType, bubbleType, propertyType } = changes;
             
-            const report = {
+            const report: ImpactReport = {
                 changeId: `impact_${Date.now()}`,
                 configType,
                 bubbleType,
@@ -590,7 +694,16 @@ export class BalanceGuidelinesManager {
             });
             
             return {
-                error: error.message,
+                changeId: `impact_${Date.now()}`,
+                configType: changes.configType,
+                bubbleType: changes.bubbleType,
+                propertyType: changes.propertyType,
+                oldValue: changes.oldValue,
+                newValue: changes.newValue,
+                impacts: [],
+                recommendations: [],
+                riskLevel: 'low',
+                error: error instanceof Error ? error.message : String(error),
                 timestamp: Date.now()
             };
         }
@@ -598,15 +711,9 @@ export class BalanceGuidelinesManager {
     
     /**
      * システムへの影響を計算
-     * @param {string} system - システム名
-     * @param {*} oldValue - 古い値
-     * @param {*} newValue - 新しい値
-     * @param {Object} impactRule - 影響ルール
-     * @returns {Object} 影響情報
-     * @private
      */
-    _calculateSystemImpact(system, oldValue, newValue, impactRule) {
-        const impact = {
+    private _calculateSystemImpact(system: string, oldValue: any, newValue: any, impactRule: ImpactRule): SystemImpact {
+        const impact: SystemImpact = {
             system,
             magnitude: 0,
             direction: 'neutral',
@@ -643,12 +750,8 @@ export class BalanceGuidelinesManager {
     
     /**
      * リスクレベルを決定
-     * @param {Array} impacts - 影響配列
-     * @param {Object} thresholds - 閾値
-     * @returns {string} リスクレベル
-     * @private
      */
-    _determineRiskLevel(impacts, thresholds) {
+    private _determineRiskLevel(impacts: SystemImpact[], thresholds: ImpactRule['thresholds']): 'low' | 'minor' | 'moderate' | 'major' {
         let maxMagnitude = 0;
         
         for (const impact of impacts) {
@@ -670,10 +773,8 @@ export class BalanceGuidelinesManager {
     
     /**
      * 変更履歴を取得
-     * @param {Object} filters - フィルター
-     * @returns {Array} 変更履歴
      */
-    getChangeHistory(filters = {}) {
+    public getChangeHistory(filters: HistoryFilters = {}): ChangeRecord[] {
         let history = [...this.changeHistory];
         
         // フィルター適用
@@ -686,11 +787,11 @@ export class BalanceGuidelinesManager {
         }
         
         if (filters.dateFrom) {
-            history = history.filter(h => h.timestamp >= filters.dateFrom);
+            history = history.filter(h => h.timestamp >= filters.dateFrom!);
         }
         
         if (filters.dateTo) {
-            history = history.filter(h => h.timestamp <= filters.dateTo);
+            history = history.filter(h => h.timestamp <= filters.dateTo!);
         }
         
         // 新しい順でソート
@@ -699,9 +800,8 @@ export class BalanceGuidelinesManager {
     
     /**
      * 利用可能なガイドライン一覧を取得
-     * @returns {Array} ガイドライン一覧
      */
-    getAvailableGuidelines() {
+    public getAvailableGuidelines(): GuidelineInfo[] {
         return Array.from(this.guidelines.entries()).map(([key, guideline]) => ({
             key,
             category: guideline.category,
@@ -712,15 +812,14 @@ export class BalanceGuidelinesManager {
     
     /**
      * 統計情報を取得
-     * @returns {Object} 統計情報
      */
-    getStatistics() {
+    public getStatistics(): Statistics {
         const totalChanges = this.changeHistory.length;
         const recentChanges = this.changeHistory.filter(
             h => Date.now() - h.timestamp < 24 * 60 * 60 * 1000 // 24時間以内
         ).length;
         
-        const changesByType = {};
+        const changesByType: Record<string, number> = {};
         this.changeHistory.forEach(h => {
             const type = h.change.propertyType || 'unknown';
             changesByType[type] = (changesByType[type] || 0) + 1;
@@ -737,15 +836,16 @@ export class BalanceGuidelinesManager {
 }
 
 // シングルトンインスタンス
-let instance = null;
+let instance: BalanceGuidelinesManager | null = null;
 
 /**
  * BalanceGuidelinesManagerのシングルトンインスタンスを取得
- * @returns {BalanceGuidelinesManager} インスタンス
  */
-export function getBalanceGuidelinesManager() {
+export function getBalanceGuidelinesManager(): BalanceGuidelinesManager {
     if (!instance) {
         instance = new BalanceGuidelinesManager();
     }
     return instance;
 }
+
+export default BalanceGuidelinesManager;

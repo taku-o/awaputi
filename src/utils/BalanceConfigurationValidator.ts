@@ -5,9 +5,106 @@
  * 論理的整合性とゲームプレイの品質を保証します。
  */
 
-import { getErrorHandler } from './ErrorHandler.js';
+import { getErrorHandler, ErrorHandler } from './ErrorHandler.js';
+
+// Type definitions
+interface ValidationRule {
+    type: string;
+    min?: number;
+    max?: number;
+    description: string;
+    category: string;
+}
+
+interface ValidationError {
+    property: string;
+    value: any;
+    error: string;
+    rule: string;
+    details?: string;
+}
+
+interface ValidationWarning {
+    property: string;
+    message: string;
+}
+
+interface ValidationResult {
+    validationId: string;
+    bubbleType?: string;
+    isValid: boolean;
+    errors: ValidationError[];
+    warnings: ValidationWarning[];
+    executionTime: number;
+    timestamp: number;
+}
+
+interface PropertyValidationResult {
+    isValid: boolean;
+    error: string | null;
+}
+
+interface LogicalValidationResult {
+    errors: ValidationError[];
+    warnings: ValidationWarning[];
+}
+
+interface ErrorStatistics {
+    totalValidations: number;
+    failedValidations: number;
+    errorsByType: Map<string, number>;
+    errorsByBubbleType: Map<string, number>;
+}
+
+interface ValidationStatistics {
+    totalValidations: number;
+    failedValidations: number;
+    successRate: string;
+    errorsByType: Record<string, number>;
+    errorsByBubbleType: Record<string, number>;
+    recentValidations: ValidationResult[];
+}
+
+interface BubbleConfig {
+    health?: number;
+    size?: number;
+    maxAge?: number;
+    score?: number;
+    healAmount?: number;
+    damageAmount?: number;
+    shakeIntensity?: number;
+    disableDuration?: number;
+    bonusTimeMs?: number;
+}
+
+interface ComboConfig {
+    maxMultiplier?: number;
+}
+
+interface ScoreConfig {
+    baseScores?: Record<string, number>;
+    combo?: ComboConfig;
+    ageBonus?: Record<string, number>;
+}
+
+interface StageConfig {
+    spawnRate?: number;
+    maxBubbles?: number;
+    unlockRequirement?: number;
+}
+
+interface ItemConfig {
+    baseCost?: number;
+    costMultiplier?: number;
+    maxLevel?: number;
+}
 
 export class BalanceConfigurationValidator {
+    private errorHandler: ErrorHandler;
+    private validationRules: Map<string, ValidationRule>;
+    private validationHistory: ValidationResult[];
+    private errorStats: ErrorStatistics;
+    
     constructor() {
         this.errorHandler = getErrorHandler();
         
@@ -33,9 +130,8 @@ export class BalanceConfigurationValidator {
     
     /**
      * 検証ルールを初期化
-     * @private
      */
-    _initializeValidationRules() {
+    private _initializeValidationRules(): void {
         // 泡設定の検証ルール
         this._initializeBubbleValidationRules();
         
@@ -51,9 +147,8 @@ export class BalanceConfigurationValidator {
     
     /**
      * 泡設定の検証ルールを初期化
-     * @private
      */
-    _initializeBubbleValidationRules() {
+    private _initializeBubbleValidationRules(): void {
         // 基本的な数値範囲
         this.validationRules.set('bubble.health', {
             type: 'number',
@@ -131,9 +226,8 @@ export class BalanceConfigurationValidator {
     
     /**
      * スコア設定の検証ルールを初期化
-     * @private
      */
-    _initializeScoreValidationRules() {
+    private _initializeScoreValidationRules(): void {
         this.validationRules.set('score.baseScore', {
             type: 'number',
             min: 1,
@@ -161,9 +255,8 @@ export class BalanceConfigurationValidator {
     
     /**
      * ステージ設定の検証ルールを初期化
-     * @private
      */
-    _initializeStageValidationRules() {
+    private _initializeStageValidationRules(): void {
         this.validationRules.set('stage.spawnRate', {
             type: 'number',
             min: 0.1,
@@ -191,9 +284,8 @@ export class BalanceConfigurationValidator {
     
     /**
      * アイテム設定の検証ルールを初期化
-     * @private
      */
-    _initializeItemValidationRules() {
+    private _initializeItemValidationRules(): void {
         this.validationRules.set('item.baseCost', {
             type: 'number',
             min: 10,
@@ -221,19 +313,16 @@ export class BalanceConfigurationValidator {
     
     /**
      * 泡設定を検証
-     * @param {string} bubbleType - 泡タイプ
-     * @param {Object} config - 泡設定
-     * @returns {Object} 検証結果
      */
-    validateBubbleConfig(bubbleType, config) {
+    public validateBubbleConfig(bubbleType: string, config: BubbleConfig): ValidationResult {
         const validationId = `bubble_${bubbleType}_${Date.now()}`;
         const startTime = Date.now();
         
         try {
             this.errorStats.totalValidations++;
             
-            const errors = [];
-            const warnings = [];
+            const errors: ValidationError[] = [];
+            const warnings: ValidationWarning[] = [];
             
             // 基本プロパティの検証
             if (config.health !== undefined) {
@@ -242,7 +331,7 @@ export class BalanceConfigurationValidator {
                     errors.push({
                         property: 'health',
                         value: config.health,
-                        error: healthValidation.error,
+                        error: healthValidation.error!,
                         rule: 'bubble.health'
                     });
                 }
@@ -254,7 +343,7 @@ export class BalanceConfigurationValidator {
                     errors.push({
                         property: 'size',
                         value: config.size,
-                        error: sizeValidation.error,
+                        error: sizeValidation.error!,
                         rule: 'bubble.size'
                     });
                 }
@@ -266,7 +355,7 @@ export class BalanceConfigurationValidator {
                     errors.push({
                         property: 'maxAge',
                         value: config.maxAge,
-                        error: maxAgeValidation.error,
+                        error: maxAgeValidation.error!,
                         rule: 'bubble.maxAge'
                     });
                 }
@@ -278,7 +367,7 @@ export class BalanceConfigurationValidator {
                     errors.push({
                         property: 'score',
                         value: config.score,
-                        error: scoreValidation.error,
+                        error: scoreValidation.error!,
                         rule: 'bubble.score'
                     });
                 }
@@ -294,7 +383,7 @@ export class BalanceConfigurationValidator {
             warnings.push(...logicalValidation.warnings);
             
             // 結果を記録
-            const result = {
+            const result: ValidationResult = {
                 validationId,
                 bubbleType,
                 isValid: errors.length === 0,
@@ -327,7 +416,13 @@ export class BalanceConfigurationValidator {
                 validationId,
                 bubbleType,
                 isValid: false,
-                errors: [{ error: 'Validation failed due to internal error', details: error.message }],
+                errors: [{ 
+                    property: 'system',
+                    value: null,
+                    error: 'Validation failed due to internal error', 
+                    rule: 'system',
+                    details: error instanceof Error ? error.message : String(error)
+                }],
                 warnings: [],
                 executionTime: Date.now() - startTime,
                 timestamp: Date.now()
@@ -337,18 +432,16 @@ export class BalanceConfigurationValidator {
     
     /**
      * スコア設定を検証
-     * @param {Object} scoreConfig - スコア設定
-     * @returns {Object} 検証結果
      */
-    validateScoreConfig(scoreConfig) {
+    public validateScoreConfig(scoreConfig: ScoreConfig): ValidationResult {
         const validationId = `score_${Date.now()}`;
         const startTime = Date.now();
         
         try {
             this.errorStats.totalValidations++;
             
-            const errors = [];
-            const warnings = [];
+            const errors: ValidationError[] = [];
+            const warnings: ValidationWarning[] = [];
             
             // 基本スコアの検証
             if (scoreConfig.baseScores) {
@@ -358,7 +451,7 @@ export class BalanceConfigurationValidator {
                         errors.push({
                             property: `baseScores.${bubbleType}`,
                             value: baseScore,
-                            error: validation.error,
+                            error: validation.error!,
                             rule: 'score.baseScore'
                         });
                     }
@@ -373,7 +466,7 @@ export class BalanceConfigurationValidator {
                         errors.push({
                             property: 'combo.maxMultiplier',
                             value: scoreConfig.combo.maxMultiplier,
-                            error: validation.error,
+                            error: validation.error!,
                             rule: 'score.comboMultiplier'
                         });
                     }
@@ -388,7 +481,7 @@ export class BalanceConfigurationValidator {
                         errors.push({
                             property: `ageBonus.${bonusType}`,
                             value: bonusValue,
-                            error: validation.error,
+                            error: validation.error!,
                             rule: 'score.ageBonus'
                         });
                     }
@@ -400,7 +493,7 @@ export class BalanceConfigurationValidator {
             errors.push(...logicalValidation.errors);
             warnings.push(...logicalValidation.warnings);
             
-            const result = {
+            const result: ValidationResult = {
                 validationId,
                 isValid: errors.length === 0,
                 errors,
@@ -427,7 +520,12 @@ export class BalanceConfigurationValidator {
             return {
                 validationId,
                 isValid: false,
-                errors: [{ error: 'Validation failed due to internal error' }],
+                errors: [{ 
+                    property: 'system',
+                    value: null,
+                    error: 'Validation failed due to internal error',
+                    rule: 'system'
+                }],
                 warnings: [],
                 executionTime: Date.now() - startTime,
                 timestamp: Date.now()
@@ -437,18 +535,16 @@ export class BalanceConfigurationValidator {
     
     /**
      * ステージ設定を検証
-     * @param {Object} stageConfig - ステージ設定
-     * @returns {Object} 検証結果
      */
-    validateStageConfig(stageConfig) {
+    public validateStageConfig(stageConfig: StageConfig): ValidationResult {
         const validationId = `stage_${Date.now()}`;
         const startTime = Date.now();
         
         try {
             this.errorStats.totalValidations++;
             
-            const errors = [];
-            const warnings = [];
+            const errors: ValidationError[] = [];
+            const warnings: ValidationWarning[] = [];
             
             // スポーン率の検証
             if (stageConfig.spawnRate !== undefined) {
@@ -457,7 +553,7 @@ export class BalanceConfigurationValidator {
                     errors.push({
                         property: 'spawnRate',
                         value: stageConfig.spawnRate,
-                        error: validation.error,
+                        error: validation.error!,
                         rule: 'stage.spawnRate'
                     });
                 }
@@ -470,7 +566,7 @@ export class BalanceConfigurationValidator {
                     errors.push({
                         property: 'maxBubbles',
                         value: stageConfig.maxBubbles,
-                        error: validation.error,
+                        error: validation.error!,
                         rule: 'stage.maxBubbles'
                     });
                 }
@@ -483,13 +579,13 @@ export class BalanceConfigurationValidator {
                     errors.push({
                         property: 'unlockRequirement',
                         value: stageConfig.unlockRequirement,
-                        error: validation.error,
+                        error: validation.error!,
                         rule: 'stage.unlockRequirement'
                     });
                 }
             }
             
-            const result = {
+            const result: ValidationResult = {
                 validationId,
                 isValid: errors.length === 0,
                 errors,
@@ -516,7 +612,12 @@ export class BalanceConfigurationValidator {
             return {
                 validationId,
                 isValid: false,
-                errors: [{ error: 'Validation failed due to internal error' }],
+                errors: [{ 
+                    property: 'system',
+                    value: null,
+                    error: 'Validation failed due to internal error',
+                    rule: 'system'
+                }],
                 warnings: [],
                 executionTime: Date.now() - startTime,
                 timestamp: Date.now()
@@ -526,18 +627,16 @@ export class BalanceConfigurationValidator {
     
     /**
      * アイテム設定を検証
-     * @param {Object} itemConfig - アイテム設定
-     * @returns {Object} 検証結果
      */
-    validateItemConfig(itemConfig) {
+    public validateItemConfig(itemConfig: ItemConfig): ValidationResult {
         const validationId = `item_${Date.now()}`;
         const startTime = Date.now();
         
         try {
             this.errorStats.totalValidations++;
             
-            const errors = [];
-            const warnings = [];
+            const errors: ValidationError[] = [];
+            const warnings: ValidationWarning[] = [];
             
             // 基本コストの検証
             if (itemConfig.baseCost !== undefined) {
@@ -546,7 +645,7 @@ export class BalanceConfigurationValidator {
                     errors.push({
                         property: 'baseCost',
                         value: itemConfig.baseCost,
-                        error: validation.error,
+                        error: validation.error!,
                         rule: 'item.baseCost'
                     });
                 }
@@ -559,7 +658,7 @@ export class BalanceConfigurationValidator {
                     errors.push({
                         property: 'costMultiplier',
                         value: itemConfig.costMultiplier,
-                        error: validation.error,
+                        error: validation.error!,
                         rule: 'item.costMultiplier'
                     });
                 }
@@ -572,13 +671,13 @@ export class BalanceConfigurationValidator {
                     errors.push({
                         property: 'maxLevel',
                         value: itemConfig.maxLevel,
-                        error: validation.error,
+                        error: validation.error!,
                         rule: 'item.maxLevel'
                     });
                 }
             }
             
-            const result = {
+            const result: ValidationResult = {
                 validationId,
                 isValid: errors.length === 0,
                 errors,
@@ -605,7 +704,12 @@ export class BalanceConfigurationValidator {
             return {
                 validationId,
                 isValid: false,
-                errors: [{ error: 'Validation failed due to internal error' }],
+                errors: [{ 
+                    property: 'system',
+                    value: null,
+                    error: 'Validation failed due to internal error',
+                    rule: 'system'
+                }],
                 warnings: [],
                 executionTime: Date.now() - startTime,
                 timestamp: Date.now()
@@ -615,12 +719,8 @@ export class BalanceConfigurationValidator {
     
     /**
      * プロパティを検証
-     * @param {string} ruleKey - ルールキー
-     * @param {*} value - 検証する値
-     * @returns {Object} 検証結果
-     * @private
      */
-    _validateProperty(ruleKey, value) {
+    private _validateProperty(ruleKey: string, value: any): PropertyValidationResult {
         const rule = this.validationRules.get(ruleKey);
         if (!rule) {
             return { isValid: true, error: null };
@@ -655,13 +755,9 @@ export class BalanceConfigurationValidator {
     
     /**
      * 特殊効果を検証
-     * @param {string} bubbleType - 泡タイプ
-     * @param {Object} config - 設定
-     * @returns {Array} エラーリスト
-     * @private
      */
-    _validateSpecialEffects(bubbleType, config) {
-        const errors = [];
+    private _validateSpecialEffects(bubbleType: string, config: BubbleConfig): ValidationError[] {
+        const errors: ValidationError[] = [];
         
         switch (bubbleType) {
             case 'pink':
@@ -671,7 +767,7 @@ export class BalanceConfigurationValidator {
                         errors.push({
                             property: 'healAmount',
                             value: config.healAmount,
-                            error: validation.error,
+                            error: validation.error!,
                             rule: 'bubble.healAmount'
                         });
                     }
@@ -685,7 +781,7 @@ export class BalanceConfigurationValidator {
                         errors.push({
                             property: 'damageAmount',
                             value: config.damageAmount,
-                            error: validation.error,
+                            error: validation.error!,
                             rule: 'bubble.damageAmount'
                         });
                     }
@@ -699,7 +795,7 @@ export class BalanceConfigurationValidator {
                         errors.push({
                             property: 'shakeIntensity',
                             value: config.shakeIntensity,
-                            error: validation.error,
+                            error: validation.error!,
                             rule: 'bubble.shakeIntensity'
                         });
                     }
@@ -710,7 +806,7 @@ export class BalanceConfigurationValidator {
                         errors.push({
                             property: 'disableDuration',
                             value: config.disableDuration,
-                            error: validation.error,
+                            error: validation.error!,
                             rule: 'bubble.disableDuration'
                         });
                     }
@@ -724,7 +820,7 @@ export class BalanceConfigurationValidator {
                         errors.push({
                             property: 'bonusTimeMs',
                             value: config.bonusTimeMs,
-                            error: validation.error,
+                            error: validation.error!,
                             rule: 'bubble.bonusTimeMs'
                         });
                     }
@@ -737,14 +833,10 @@ export class BalanceConfigurationValidator {
     
     /**
      * 泡の論理的整合性を検証
-     * @param {string} bubbleType - 泡タイプ
-     * @param {Object} config - 設定
-     * @returns {Object} 検証結果
-     * @private
      */
-    _validateBubbleLogicalConsistency(bubbleType, config) {
-        const errors = [];
-        const warnings = [];
+    private _validateBubbleLogicalConsistency(bubbleType: string, config: BubbleConfig): LogicalValidationResult {
+        const errors: ValidationError[] = [];
+        const warnings: ValidationWarning[] = [];
         
         // ボス泡は通常の泡より強くあるべき
         if (bubbleType === 'boss') {
@@ -763,7 +855,7 @@ export class BalanceConfigurationValidator {
         }
         
         // 硬い泡（stone, iron, diamond）は健康値が段階的に増加すべき
-        const hardBubbleHealthOrder = { stone: 2, iron: 3, diamond: 4 };
+        const hardBubbleHealthOrder: Record<string, number> = { stone: 2, iron: 3, diamond: 4 };
         if (bubbleType in hardBubbleHealthOrder) {
             const expectedMinHealth = hardBubbleHealthOrder[bubbleType];
             if (config.health !== undefined && config.health < expectedMinHealth) {
@@ -798,13 +890,10 @@ export class BalanceConfigurationValidator {
     
     /**
      * スコアの論理的整合性を検証
-     * @param {Object} scoreConfig - スコア設定
-     * @returns {Object} 検証結果
-     * @private
      */
-    _validateScoreLogicalConsistency(scoreConfig) {
-        const errors = [];
-        const warnings = [];
+    private _validateScoreLogicalConsistency(scoreConfig: ScoreConfig): LogicalValidationResult {
+        const errors: ValidationError[] = [];
+        const warnings: ValidationWarning[] = [];
         
         // 基本スコアの順序性チェック
         if (scoreConfig.baseScores) {
@@ -854,11 +943,8 @@ export class BalanceConfigurationValidator {
     
     /**
      * エラー統計を更新
-     * @param {string} bubbleType - 泡タイプ
-     * @param {Array} errors - エラーリスト
-     * @private
      */
-    _updateErrorStats(bubbleType, errors) {
+    private _updateErrorStats(bubbleType: string, errors: ValidationError[]): void {
         // 泡タイプ別エラー統計
         const currentCount = this.errorStats.errorsByBubbleType.get(bubbleType) || 0;
         this.errorStats.errorsByBubbleType.set(bubbleType, currentCount + 1);
@@ -873,9 +959,8 @@ export class BalanceConfigurationValidator {
     
     /**
      * 履歴をクリーンアップ（古いエントリを削除）
-     * @private
      */
-    _cleanupHistory() {
+    private _cleanupHistory(): void {
         if (this.validationHistory.length > 1000) {
             this.validationHistory.splice(0, 500); // 古い500エントリを削除
         }
@@ -883,9 +968,8 @@ export class BalanceConfigurationValidator {
     
     /**
      * 検証統計を取得
-     * @returns {Object} 統計情報
      */
-    getValidationStats() {
+    public getValidationStats(): ValidationStatistics {
         const successRate = this.errorStats.totalValidations > 0 
             ? ((this.errorStats.totalValidations - this.errorStats.failedValidations) / this.errorStats.totalValidations) * 100 
             : 0;
@@ -902,50 +986,45 @@ export class BalanceConfigurationValidator {
     
     /**
      * 検証履歴を取得
-     * @returns {Array} 検証履歴
      */
-    getValidationHistory() {
+    public getValidationHistory(): ValidationResult[] {
         return [...this.validationHistory];
     }
     
     /**
      * カスタム検証ルールを追加
-     * @param {string} ruleKey - ルールキー
-     * @param {Object} rule - ルール定義
      */
-    addValidationRule(ruleKey, rule) {
+    public addValidationRule(ruleKey: string, rule: ValidationRule): void {
         this.validationRules.set(ruleKey, rule);
         console.log(`[BalanceConfigurationValidator] カスタムルール追加: ${ruleKey}`);
     }
     
     /**
      * 検証ルールを取得
-     * @param {string} ruleKey - ルールキー
-     * @returns {Object|null} ルール定義
      */
-    getValidationRule(ruleKey) {
+    public getValidationRule(ruleKey: string): ValidationRule | null {
         return this.validationRules.get(ruleKey) || null;
     }
     
     /**
      * 全検証ルールを取得
-     * @returns {Object} 全ルール定義
      */
-    getAllValidationRules() {
+    public getAllValidationRules(): Record<string, ValidationRule> {
         return Object.fromEntries(this.validationRules);
     }
 }
 
 // シングルトンインスタンス
-let instance = null;
+let instance: BalanceConfigurationValidator | null = null;
 
 /**
  * BalanceConfigurationValidatorのシングルトンインスタンスを取得
- * @returns {BalanceConfigurationValidator} インスタンス
  */
-export function getBalanceConfigurationValidator() {
+export function getBalanceConfigurationValidator(): BalanceConfigurationValidator {
     if (!instance) {
         instance = new BalanceConfigurationValidator();
     }
     return instance;
 }
+
+export default BalanceConfigurationValidator;
