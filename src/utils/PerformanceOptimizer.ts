@@ -65,32 +65,32 @@ export class PerformanceOptimizer {
     private errorHandler: any;
     
     // 基本設定
-    public targetFPS: number;
-    public targetFrameTime: number;
-    public maxHistorySize: number;
-    public performanceLevel: PerformanceLevel;
-    public adaptiveMode: boolean;
-    public optimizationInterval: number;
+    public targetFPS!: number;
+    public targetFrameTime!: number;
+    public maxHistorySize!: number;
+    public performanceLevel!: PerformanceLevel;
+    public adaptiveMode!: boolean;
+    public optimizationInterval!: number;
     
     // フレーム処理データ
-    private frameTimeHistory: number[];
-    private __lastFrameTime: number | null;
-    private lastOptimizationTime: number;
+    private frameTimeHistory!: number[];
+    private __lastFrameTime!: number | null;
+    private lastOptimizationTime!: number;
     
     // ログ制御用
-    private __lastLoggedStabilizerZone: string | null;
+    private __lastLoggedStabilizerZone!: string | null;
     
     // 統合コンポーネント
     private frameStabilizer: any;
     
     // サブコンポーネント
-    private analyzer: PerformanceAnalyzer;
-    private adaptiveController: PerformanceAdaptiveController;
-    private stabilizerIntegrator: PerformanceStabilizerIntegrator;
+    private analyzer!: PerformanceAnalyzer;
+    private adaptiveController!: PerformanceAdaptiveController;
+    private stabilizerIntegrator!: PerformanceStabilizerIntegrator;
     
     // 統計とアップデート設定
-    public stats: PerformanceStats;
-    public settings: PerformanceSettings;
+    public stats!: PerformanceStats;
+    public settings!: PerformanceSettings;
     
     constructor() {
         try {

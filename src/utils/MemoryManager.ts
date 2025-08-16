@@ -61,13 +61,9 @@ export class MemoryManager {
     // Statistics
     public stats: MemoryStats;
     
-    // Configuration
-    private config: MemoryManagerConfig;
-    
     constructor(config: MemoryManagerConfig = {}) {
         // Basic tracking
         this.trackedObjects = new WeakMap<object, TrackedObject>();
-        this.config = config;
         
         // Initialize sub-components
         this._initializeSubComponents(config);
