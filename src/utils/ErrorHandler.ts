@@ -252,8 +252,12 @@ class ErrorHandler {
     handleError(error: Error | any, context: string = 'UNKNOWN', metadata: Record<string, any> = {}): void {
         try {
             // Normalize error using analyzer
+            const normalizedError = this.analyzer.normalizeError(error);
             const errorInfo: ErrorInfo = {
-                ...this.analyzer.normalizeError(error),
+                id: normalizedError.id || crypto.randomUUID(),
+                message: normalizedError.message || 'Unknown error',
+                timestamp: normalizedError.timestamp || Date.now(),
+                ...normalizedError,
                 context: context,
                 metadata: metadata
             };

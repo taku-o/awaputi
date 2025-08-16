@@ -1177,7 +1177,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
      * 次のセレクト値を取得
      */
     getNextSelectValue(item: any, currentValue: any): any {
-        const currentIndex = item.options.findIndex(opt => opt.value === currentValue);
+        const currentIndex = item.options.findIndex((opt: any) => opt.value === currentValue);
         const nextIndex = (currentIndex + 1) % item.options.length;
         return item.options[nextIndex].value;
     }

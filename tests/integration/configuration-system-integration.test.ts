@@ -64,15 +64,15 @@ describe('Configuration System Integration Tests', () => {
         calculationEngine = new CalculationEngine();
         
         // 設定カテゴリクラスの初期化
-        __gameConfig = new GameConfig(configManager);
-        __audioConfig = new AudioConfig(configManager);
-        __effectsConfig = new EffectsConfig(configManager);
-        __performanceConfig = new PerformanceConfig(configManager);
+        __gameConfig = new GameConfig();
+        __audioConfig = new AudioConfig();
+        __effectsConfig = new EffectsConfig();
+        __performanceConfig = new PerformanceConfig();
         
         // 計算処理クラスの初期化
-        scoreCalculator = new ScoreCalculator(calculationEngine);
-        balanceCalculator = new BalanceCalculator(calculationEngine);
-        effectsCalculator = new EffectsCalculator(calculationEngine);
+        scoreCalculator = new ScoreCalculator(null);
+        balanceCalculator = new BalanceCalculator(null);
+        effectsCalculator = new EffectsCalculator(null);
         
         // サポートシステムの初期化
         __validationSystem = new ValidationSystem();
@@ -154,14 +154,13 @@ describe('Configuration System Integration Tests', () => {
 
         test('検証システムとの連携', () => {
             // 検証ルールを設定
-            configManager.setValidationRule('game', 'scoring.baseScores.normal', {
-                type: 'number',
-                min: 1,
-                max: 100
+            configManager.setValidationRule('game.scoring.baseScores.normal', {
+                validate: (value: any) => typeof value === 'number' && value >= 1 && value <= 100,
+                errorMessage: 'Value must be a number between 1 and 100'
             });
             
             // 有効な値を設定
-            const validResult = configManager.set('game', 'scoring.baseScores.normal', 20);
+            const validResult = configManager.set('game.scoring.baseScores.normal', 20);
             expect(validResult).toBe(true);
             expect(configManager.get('game', 'scoring.baseScores.normal')).toBe(20);
             

@@ -81,7 +81,7 @@ interface GameStatistics {
 
 interface StatisticsManager {
     recordEventParticipation: MockFunction<void>;
-    getDetailedEventStatistics: MockFunction<GameStatistics>;
+    getEventStatistics: MockFunction<GameStatistics>;
     updateEventStats: MockFunction<void>;
 }
 
@@ -191,7 +191,7 @@ describe('Event Flow Integration Tests', () => {
         // Mock StatisticsManager
         mockStatisticsManager = {
             recordEventParticipation: jest.fn() as any,
-            getDetailedEventStatistics: jest.fn().mockReturnValue({
+            getEventStatistics: jest.fn().mockReturnValue({
                 totalEvents: 0,
                 completionRate: 0,
                 averageScore: 0
@@ -203,13 +203,13 @@ describe('Event Flow Integration Tests', () => {
         mockAchievementNotificationSystem = {
             queueNotification: jest.fn() as unknown as MockFunction<void>,
             createEventNotification: jest.fn() as unknown as MockFunction<void>,
-            hasNotifications: jest.fn().mockReturnValue(false) as MockFunction<boolean>
+            hasNotifications: jest.fn().mockReturnValue(false) as unknown as MockFunction<boolean>
         };
 
         // Mock SceneManager
         mockSceneManager = {
             switchScene: jest.fn() as unknown as MockFunction<void>,
-            getCurrentScene: jest.fn().mockReturnValue('StageSelectScene') as MockFunction<string>
+            getCurrentScene: jest.fn().mockReturnValue('StageSelectScene') as unknown as MockFunction<string>
         };
 
         // Mock Canvas and Context
@@ -229,23 +229,23 @@ describe('Event Flow Integration Tests', () => {
             arc: jest.fn() as unknown as MockFunction<void>,
             fill: jest.fn() as unknown as MockFunction<void>,
             stroke: jest.fn() as unknown as MockFunction<void>,
-            measureText: jest.fn().mockReturnValue({ width: 100 }) as MockFunction<{ width: number }>,
+            measureText: jest.fn().mockReturnValue({ width: 100 }) as unknown as MockFunction<{ width: number }>,
             clearRect: jest.fn() as unknown as MockFunction<void>,
             createLinearGradient: jest.fn().mockReturnValue({
                 addColorStop: jest.fn() as unknown as MockFunction<void>
-            }) as MockFunction<MockGradient>
+            }) as unknown as MockFunction<MockGradient>
         };
 
         const mockCanvas: MockCanvas = {
             width: 1024,
             height: 768,
-            getContext: jest.fn().mockReturnValue(mockContext)
+            getContext: jest.fn().mockReturnValue(mockContext) as unknown as (type: string) => MockCanvasContext
         };
 
         const mockInputManager: MockInputManager = {
-            getMousePosition: jest.fn().mockReturnValue({ x: 500, y: 400 }) as MockFunction<MousePosition>,
-            isPressed: jest.fn().mockReturnValue(false) as MockFunction<boolean>,
-            wasClicked: jest.fn().mockReturnValue(false) as MockFunction<boolean>
+            getMousePosition: jest.fn().mockReturnValue({ x: 500, y: 400 }) as unknown as MockFunction<MousePosition>,
+            isPressed: jest.fn().mockReturnValue(false) as unknown as MockFunction<boolean>,
+            wasClicked: jest.fn().mockReturnValue(false) as unknown as MockFunction<boolean>
         };
 
         // Create GameEngine mock
@@ -327,7 +327,7 @@ describe('Event Flow Integration Tests', () => {
                 timeRemaining: 45000
             };
 
-            const completeResult: boolean = eventStageManager.completeEventStage('spring-cherry-blossom', playerId, score, stats);
+            const completeResult: boolean = eventStageManager.completeEvent('spring-cherry-blossom', playerId);
             expect(completeResult).toBe(true);
 
             // 9. Verify rewards were granted
@@ -361,8 +361,9 @@ describe('Event Flow Integration Tests', () => {
             const eventId = 'golden-rush';
             const duration = 3600000; // 1 hour
             const options: EventNotificationOptions = {
-                notifications: true,
-                rewards: { ap: 500 }
+                onStart: true,
+                onEnd: true,
+                reminderInterval: 300000 // 5 minutes
             };
 
             const activationResult: boolean = (eventStageManager as any).adminActivateEvent(eventId, duration, options);
@@ -400,7 +401,7 @@ describe('Event Flow Integration Tests', () => {
                 goldenBubblesPopped: 15
             };
 
-            const completeResult: boolean = eventStageManager.completeEventStage(eventId, playerId, score, stats);
+            const completeResult: boolean = eventStageManager.completeEvent(eventId, playerId);
             expect(completeResult).toBe(true);
 
             // 7. Verify bonus rewards for special event
@@ -496,7 +497,7 @@ describe('Event Flow Integration Tests', () => {
                     const initialAP = mockPlayerData.ap;
                     
                     eventStageManager.startEventStage(event.id);
-                    eventStageManager.completeEventStage(event.id, playerId, 15000, {
+                    eventStageManager.completeEvent(event.id, playerId, 15000, {
                         bubblesPopped: 150,
                         maxChain: 10
                     });
@@ -606,7 +607,7 @@ describe('Event Flow Integration Tests', () => {
             // 1. Activate event and participate
             (eventStageManager as any).adminActivateEvent(eventId, 3600000);
             eventStageManager.startEventStage(eventId);
-            eventStageManager.completeEventStage(eventId, playerId, 18000, {
+            eventStageManager.completeEvent(eventId, playerId, 18000, {
                 bubblesPopped: 180,
                 maxChain: 12
             });
@@ -673,22 +674,19 @@ describe('Event Flow Integration Tests', () => {
             expect(startResult).toBe(true);
 
             // 2. Mock error during completion
-            const originalCompleteMethod = eventStageManager.completeEventStage;
-            eventStageManager.completeEventStage = jest.fn().mockImplementation(() => {
+            const originalCompleteMethod = eventStageManager.completeEvent;
+            eventStageManager.completeEvent = jest.fn().mockImplementation(() => {
                 throw new Error('Completion error');
             }) as any;
 
             // 3. Attempt completion (should handle error gracefully)
             expect(() => {
-                eventStageManager.completeEventStage(eventId, 'test-player', 10000, {
-                    bubblesPopped: 100,
-                    maxChain: 8
-                });
+                eventStageManager.completeEvent(eventId, 'test-player');
             }).not.toThrow();
 
             // 4. Restore original method and try again
-            eventStageManager.completeEventStage = originalCompleteMethod;
-            const recoveryResult: boolean = eventStageManager.completeEventStage(eventId, 'test-player', 10000, {
+            eventStageManager.completeEvent = originalCompleteMethod;
+            const recoveryResult: boolean = eventStageManager.completeEvent(eventId, 'test-player', 10000, {
                 bubblesPopped: 100,
                 maxChain: 8
             });
@@ -710,7 +708,7 @@ describe('Event Flow Integration Tests', () => {
             eventStageManager.startEventStage(eventId);
             
             expect(() => {
-                eventStageManager.completeEventStage(eventId, 'test-player', 15000, {
+                eventStageManager.completeEvent(eventId, 'test-player', 15000, {
                     bubblesPopped: 150,
                     maxChain: 10
                 });
@@ -756,7 +754,7 @@ describe('Event Flow Integration Tests', () => {
             for (let i = 0; i < 100; i++) {
                 const eventId = `history-event-${i}`;
                 (eventStageManager as any).adminActivateEvent(eventId, 3600000);
-                eventStageManager.completeEventStage(eventId, playerId, 10000 + i * 100, {
+                eventStageManager.completeEvent(eventId, playerId, 10000 + i * 100, {
                     bubblesPopped: 100 + i,
                     maxChain: 5 + (i % 10)
                 });
@@ -765,7 +763,7 @@ describe('Event Flow Integration Tests', () => {
             // 2. Test data access performance
             const startTime = performance.now();
             
-            const statistics = eventStageManager.getDetailedEventStatistics();
+            const statistics = eventStageManager.getEventStatistics();
             const exportData = (eventStageManager as any).exportEventData();
             
             const endTime = performance.now();

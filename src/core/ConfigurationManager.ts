@@ -609,6 +609,65 @@ class ConfigurationManager {
     setValidationRule(key: string, rule: ValidationRule): void {
         this.validationRules.set(key, rule);
     }
+
+    /**
+     * カテゴリ別の設定値を取得
+     * @param {string} category - カテゴリ名
+     * @returns {Record<string, ConfigurationValue>} カテゴリの設定値
+     */
+    getCategory(category: string): Record<string, ConfigurationValue> {
+        const result: Record<string, ConfigurationValue> = {};
+        const prefix = category + '.';
+        
+        for (const [key, value] of this.configurations.entries()) {
+            if (key.startsWith(prefix)) {
+                const subKey = key.substring(prefix.length);
+                result[subKey] = value;
+            }
+        }
+        
+        return result;
+    }
+
+    /**
+     * 設定変更履歴を取得
+     * @returns {Array} 変更履歴
+     */
+    getChangeHistory(): Array<{
+        key: string;
+        timestamp: number;
+        oldValue: ConfigurationValue;
+        newValue: ConfigurationValue;
+    }> {
+        return [...this.changeHistory];
+    }
+
+    /**
+     * 設定値の変更を監視（エイリアス）
+     * @param {string} pattern - 監視パターン
+     * @param {function} callback - コールバック関数
+     * @returns {function} 登録したコールバック関数
+     */
+    watch(pattern: string, callback: (key: string, newValue: ConfigurationValue, oldValue: ConfigurationValue) => void): WatcherCallback {
+        this.addWatcher(pattern, callback);
+        return callback;
+    }
+
+    /**
+     * 監視を解除（エイリアス）
+     * @param {string} key - 監視キー
+     * @param {function} callback - コールバック関数
+     */
+    unwatch(key: string, callback: WatcherCallback): void {
+        this.removeWatcher(key, callback);
+    }
+
+    /**
+     * 設定をリセット（テスト用）
+     */
+    reset(): void {
+        this.clear();
+    }
 }
 
 // Singleton instance

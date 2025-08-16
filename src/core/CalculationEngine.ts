@@ -9,9 +9,19 @@
  */
 export class CalculationEngine {
     private __initialized: boolean;
+    private cacheStats: {
+        hits: number;
+        misses: number;
+        size: number;
+    };
     
     constructor() {
         this.__initialized = false;
+        this.cacheStats = {
+            hits: 0,
+            misses: 0,
+            size: 0
+        };
         this.initialize();
     }
     
@@ -128,6 +138,14 @@ export class CalculationEngine {
     destroy(): void {
         this.__initialized = false;
         console.log('[CalculationEngine] Destroyed');
+    }
+
+    /**
+     * キャッシュ統計を取得
+     * @returns キャッシュ統計情報
+     */
+    getCacheStats(): { hits: number; misses: number; size: number } {
+        return { ...this.cacheStats };
     }
 }
 

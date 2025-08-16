@@ -479,9 +479,6 @@ class MemoryUsageAnalyzer {
         };
     }
     
-    getUsageReport(): any {
-        return this.getUsageAnalysis();
-    }
 
     private getTypeBreakdown(): any {
         const breakdown: { [key: string]: number } = {};

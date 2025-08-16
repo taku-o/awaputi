@@ -133,7 +133,7 @@ describe('AudioManager統合テスト', () => {
             expect(audioManager.configManager).toBeDefined();
             
             // 初期設定値が正しく取得されていること
-            const status: AudioManagerStatus = audioManager.getStatus() as AudioManagerStatus;
+            const status: AudioManagerStatus = audioManager.getStatus() as unknown as AudioManagerStatus;
             expect(typeof status.masterVolume).toBe('number');
             expect(typeof status.sfxVolume).toBe('number');
             expect(typeof status.bgmVolume).toBe('number');
@@ -141,7 +141,7 @@ describe('AudioManager統合テスト', () => {
         });
 
         test('設定監視が正しく設定されていること', () => {
-            const status: AudioManagerStatus = audioManager.getStatus() as AudioManagerStatus;
+            const status: AudioManagerStatus = audioManager.getStatus() as unknown as AudioManagerStatus;
             expect(status.configSync).toBeDefined();
             expect(status.configSync.audioConfig).toBe(true);
             expect(status.configSync.configManager).toBe(true);
@@ -225,7 +225,7 @@ describe('AudioManager統合テスト', () => {
             
             (audioManager as any).syncWithConfig();
             
-            const status: AudioManagerStatus = audioManager.getStatus() as AudioManagerStatus;
+            const status: AudioManagerStatus = audioManager.getStatus() as unknown as AudioManagerStatus;
             expect(status.masterVolume).toBe(0.3);
             expect(status.sfxVolume).toBe(0.4);
             expect(status.bgmVolume).toBe(0.6);

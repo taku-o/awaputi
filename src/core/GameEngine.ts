@@ -134,6 +134,13 @@ export class GameEngine {
     // Game state
     private gameState!: GameState;
     
+    // Special effects state
+    public bonusTimeRemaining: number = 0;
+    public timeStopRemaining: number = 0;
+    public isTimeStopActive: boolean = false;
+    public isScreenShakeActive: boolean = false;
+    public inputDisabled: boolean = false;
+    
     constructor(canvas: HTMLCanvasElement) {
         console.log('[DEBUG] GameEngine: コンストラクター開始');
         
@@ -664,5 +671,36 @@ export class GameEngine {
                 operation: 'destroy'
             });
         }
+    }
+
+    /**
+     * 時間停止効果を開始
+     * @param {number} duration - 効果持続時間（ミリ秒）
+     */
+    startTimeStop(duration: number): void {
+        this.isTimeStopActive = true;
+        this.timeStopRemaining = duration;
+        this.emit('timeStopStarted', { duration });
+    }
+
+    /**
+     * 画面揺れ効果を開始
+     * @param {number} duration - 効果持続時間（ミリ秒）
+     * @param {number} intensity - 揺れの強度
+     */
+    startScreenShake(duration: number, intensity: number = 10): void {
+        this.isScreenShakeActive = true;
+        this.inputDisabled = true;
+        
+        if (this.renderer) {
+            this.renderer.startScreenShake(duration, intensity);
+        }
+        
+        setTimeout(() => {
+            this.isScreenShakeActive = false;
+            this.inputDisabled = false;
+        }, duration);
+        
+        this.emit('screenShakeStarted', { duration, intensity });
     }
 }
