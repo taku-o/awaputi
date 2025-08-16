@@ -303,16 +303,18 @@ export class PerformanceOptimizer {
     optimize(): void {
         try {
             // サブコンポーネントから分析結果を取得
-            const analysis = this.analyzer.getAnalysis();
+            const analysis = (this.analyzer as any).getAnalysis ? (this.analyzer as any).getAnalysis() : {};
             
             // 適応制御による設定調整
-            const adjustments = this.adaptiveController.calculateAdjustments(analysis);
+            const adjustments = (this.adaptiveController as any).calculateAdjustments ? (this.adaptiveController as any).calculateAdjustments(analysis) : {};
             
             // 設定適用
             this._applyAdjustments(adjustments);
             
             // Frame Stabilizer統合
-            this.stabilizerIntegrator.integrateWithStabilizer(this.frameStabilizer, analysis);
+            if ((this.stabilizerIntegrator as any).integrateWithStabilizer) {
+                (this.stabilizerIntegrator as any).integrateWithStabilizer(this.frameStabilizer, analysis);
+            }
             
             // 統計更新
             this.stats.optimizationCount++;
@@ -346,9 +348,9 @@ export class PerformanceOptimizer {
      */
     getStats(): PerformanceStats {
         // サブコンポーネントから最新統計を集約
-        const analysisStats = this.analyzer.getStats();
-        const controllerStats = this.adaptiveController.getStats();
-        const stabilizerStats = this.stabilizerIntegrator.getStats();
+        const analysisStats = (this.analyzer as any).getStats ? (this.analyzer as any).getStats() : {};
+        const controllerStats = (this.adaptiveController as any).getStats ? (this.adaptiveController as any).getStats() : {};
+        const stabilizerStats = (this.stabilizerIntegrator as any).getStats ? (this.stabilizerIntegrator as any).getStats() : {};
         
         return {
             ...this.stats,

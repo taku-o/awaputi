@@ -887,7 +887,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * テキスト入力描画
      */
-    renderTextInput(context, value, x, y, width, isSelected) {
+    renderTextInput(context: CanvasRenderingContext2D, value: any, x: number, y: number, width: number, isSelected: boolean) {
         const height = 30;
         const inputY = y - height / 2;
         
@@ -931,7 +931,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * 確認ダイアログ描画
      */
-    renderConfirmDialog(context, width, height) {
+    renderConfirmDialog(context: CanvasRenderingContext2D, width: number, height: number) {
         // オーバーレイ
         context.fillStyle = 'rgba(0, 0, 0, 0.5)';
         context.fillRect(0, 0, width, height);
@@ -980,7 +980,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * 操作説明描画
      */
-    renderHelp(context, width, height) {
+    renderHelp(context: CanvasRenderingContext2D, width: number, height: number) {
         const helpY = height - 40;
         
         context.fillStyle = '#7f8c8d';

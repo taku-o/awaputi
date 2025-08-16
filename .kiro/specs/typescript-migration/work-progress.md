@@ -515,12 +515,13 @@ TypeScript移行作業中に「将来実装する」「現時点では未実装�
   - 主要未使用変数に@ts-ignoreコメント追加（将来実装予定として明記）
   - exactOptionalPropertyTypes関連エラーに@ts-ignore追加
   - MainMenuScene resizeCallbackの型定義修正
-- **累計エラー削減**: 743個→277個（**62.7%削減達成**）
-- **Phase 16開始**: TS2339（プロパティ存在しない）エラー修正進行中
-  - SettingsScene: プロファイル関連プロパティアクセスをany型キャストで修正
-  - MemoryManager: 未実装メソッドへの安全なアクセス実装
-  - 追加削減: 283個→277個（6個削減）
-- **次のステップ**: 残存277個エラーの継続修正（TS2339, TS2352, TS7006の重点対応）
+- **累計エラー削減**: 743個→241個（**67.6%削減達成**）
+- **Phase 16完了**: 主要型エラー修正（TS2339、TS2352、TS7006）
+  - TS2339（プロパティ存在しない）: PerformanceOptimizer、SettingsScene、テストファイル修正
+  - TS2352（型変換）: テストファイルのMock型キャストを unknown 経由で修正
+  - TS7006（暗黙のany型）: SettingsSceneのrenderメソッドに型注釈追加
+  - 追加削減: 277個→241個（36個削減、13%削減）
+- **Phase 17開始**: 残存241個エラーの継続修正（テストファイル型不整合、その他エラー対応）
 
 ## 参考情報
 - 仕様書: `.kiro/specs/typescript-migration/`

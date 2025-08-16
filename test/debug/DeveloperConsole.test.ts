@@ -150,21 +150,21 @@ const mockGameEngine: MockGameEngine = {
     sceneManager: { mock: 'sceneManager' },
     inputManager: { mock: 'inputManager' },
     performanceOptimizer: {
-        getCurrentFPS: jest.fn(() => 60) as MockFunction<number>
+        getCurrentFPS: jest.fn(() => 60) as unknown as MockFunction<number>
     },
     configurationManager: {
-        get: jest.fn() as MockFunction<any>,
-        set: jest.fn() as MockFunction<boolean>,
-        getDefault: jest.fn() as MockFunction<any>,
-        getAll: jest.fn() as MockFunction<any>,
-        getAllDefaults: jest.fn() as MockFunction<any>,
-        validate: jest.fn() as MockFunction<boolean>,
-        validateAll: jest.fn() as MockFunction<boolean>
+        get: jest.fn() as unknown as MockFunction<any>,
+        set: jest.fn() as unknown as MockFunction<boolean>,
+        getDefault: jest.fn() as unknown as MockFunction<any>,
+        getAll: jest.fn() as unknown as MockFunction<any>,
+        getAllDefaults: jest.fn() as unknown as MockFunction<any>,
+        validate: jest.fn() as unknown as MockFunction<boolean>,
+        validateAll: jest.fn() as unknown as MockFunction<boolean>
     }
 };
 
 // Import after mocking
-const { DeveloperConsole, CommandRegistry } = await import('../../src/debug/DeveloperConsole.js') as {
+const { DeveloperConsole, CommandRegistry } = await import('../../src/debug/DeveloperConsole.js') as unknown as {
     DeveloperConsole: new (gameEngine: MockGameEngine) => DeveloperConsole;
     CommandRegistry: new (console: ConsoleLike) => CommandRegistry;
 };
@@ -177,9 +177,9 @@ describe('DeveloperConsole', () => {
 
     beforeEach(() => {
         // Console spies
-        consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {}) as MockFunction<void>;
-        consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {}) as MockFunction<void>;
-        consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {}) as MockFunction<void>;
+        consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {}) as unknown as MockFunction<void>;
+        consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {}) as unknown as MockFunction<void>;
+        consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {}) as unknown as MockFunction<void>;
 
         // Reset DOM
         document.body.innerHTML = '';
@@ -647,8 +647,8 @@ describe('CommandRegistry', () => {
 
     beforeEach(() => {
         mockConsole = {
-            print: jest.fn() as MockFunction<void>,
-            printError: jest.fn() as MockFunction<void>
+            print: jest.fn() as unknown as MockFunction<void>,
+            printError: jest.fn() as unknown as MockFunction<void>
         };
         registry = new CommandRegistry(mockConsole);
     });
@@ -891,7 +891,9 @@ describe('CommandRegistry', () => {
             expect(names).toContain('test1');
             expect(names).toContain('test2');
             expect(names).toContain('help');
-            expect(names).toBeSorted();
+            // Check if array is sorted
+            const sortedNames = [...names].sort();
+            expect(names).toEqual(sortedNames);
         });
     });
 
