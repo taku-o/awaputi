@@ -10,8 +10,133 @@ import { getErrorHandler } from './ErrorHandler.js';
  * - スムーズな品質調整アルゴリズム
  * - フレームペーシング最適化
  */
+
+// 型定義
+interface PreciseFrameTime {
+    time: number;
+    timestamp: number;
+}
+
+interface FrameTimingAnalysis {
+    preciseFrameTimes: PreciseFrameTime[];
+    frameTimeBuffer: number[];
+    bufferIndex: number;
+    bufferFull: boolean;
+    variance: number;
+    standardDeviation: number;
+    mean: number;
+    median: number;
+    percentile95: number;
+    percentile99: number;
+    stabilityScore: number;
+    consistencyRating: 'excellent' | 'good' | 'fair' | 'poor' | 'critical';
+    jitterLevel: number;
+    smoothnessIndex: number;
+}
+
+interface TargetAdjustment {
+    from: number;
+    to: number;
+    timestamp: number;
+    reason: string;
+    stabilityScore: number;
+}
+
+interface AdaptiveTargeting {
+    baseTargetFPS: number;
+    currentTargetFPS: number;
+    adaptiveTargetFPS: number;
+    confidenceLevel: number;
+    adjustmentHistory: TargetAdjustment[];
+    lastAdjustmentTime: number;
+    adjustmentCooldown: number;
+    performanceZone: 'optimal' | 'good' | 'acceptable' | 'poor' | 'critical';
+    zoneTransitionThreshold: number;
+    conservativeMode: boolean;
+    aggressiveOptimization: boolean;
+    gradualAdjustment: boolean;
+}
+
+interface PredictionData {
+    prediction: number;
+    timestamp: number;
+}
+
+interface FramePacing {
+    enabled: boolean;
+    targetInterval: number;
+    actualInterval: number;
+    pacingError: number;
+    correctionFactor: number;
+    nextFramePrediction: number;
+    predictionAccuracy: number;
+    predictionHistory: PredictionData[];
+    vsyncDetected: boolean;
+    refreshRate: number;
+    tearingRisk: number;
+}
+
+interface QualityLevel {
+    multiplier: number;
+    threshold: number;
+}
+
+interface QualityAdjustment {
+    currentLevel: string;
+    targetLevel: string;
+    transitionProgress: number;
+    transitionDuration: number;
+    transitionStartTime: number;
+    adjustmentCurve: 'smooth' | 'linear' | 'exponential';
+    hysteresisThreshold: number;
+    qualityLevels: Record<string, QualityLevel>;
+}
+
+interface StabilizationThresholds {
+    excellentStability: number;
+    goodStability: number;
+    acceptableStability: number;
+    poorStability: number;
+    frameDropTolerance: number;
+    consistencyRequirement: number;
+    criticalVariance: number;
+    emergencyFPS: number;
+    panicModeThreshold: number;
+}
+
+interface Recommendations {
+    immediate: string[];
+    shortTerm: string[];
+    longTerm: string[];
+    technical: string[];
+}
+
+interface StabilizationStatus {
+    timing: FrameTimingAnalysis;
+    adaptive: AdaptiveTargeting;
+    pacing: FramePacing;
+    quality: QualityAdjustment;
+    thresholds: StabilizationThresholds;
+    recommendations: Recommendations;
+}
+
+interface ErrorHandler {
+    handleError(error: Error, context: any): void;
+}
+
+type StabilizationMode = 'conservative' | 'balanced' | 'aggressive';
+
 export class FrameStabilizer {
-    constructor(targetFPS = 60) {
+    private errorHandler: ErrorHandler;
+    private targetFPS: number;
+    private targetFrameTime: number;
+    private frameTimingAnalysis: FrameTimingAnalysis;
+    private adaptiveTargeting: AdaptiveTargeting;
+    private framePacing: FramePacing;
+    private qualityAdjustment: QualityAdjustment;
+    private stabilizationThresholds: StabilizationThresholds;
+
+    constructor(targetFPS: number = 60) {
         this.errorHandler = getErrorHandler();
         this.targetFPS = targetFPS;
         this.targetFrameTime = 1000 / targetFPS;
@@ -121,10 +246,10 @@ export class FrameStabilizer {
     
     /**
      * Process new frame timing data
-     * @param {number} frameTime - Frame time in milliseconds
-     * @param {number} timestamp - Current timestamp
+     * @param frameTime - Frame time in milliseconds
+     * @param timestamp - Current timestamp
      */
-    processFrameTiming(frameTime, timestamp) {
+    processFrameTiming(frameTime: number, timestamp: number): void {
         try {
             // Store precise frame time
             this.frameTimingAnalysis.preciseFrameTimes.push({
@@ -164,9 +289,9 @@ export class FrameStabilizer {
     
     /**
      * Update circular frame time buffer
-     * @param {number} frameTime - Frame time to add
+     * @param frameTime - Frame time to add
      */
-    updateFrameTimeBuffer(frameTime) {
+    private updateFrameTimeBuffer(frameTime: number): void {
         this.frameTimingAnalysis.frameTimeBuffer[this.frameTimingAnalysis.bufferIndex] = frameTime;
         this.frameTimingAnalysis.bufferIndex = 
             (this.frameTimingAnalysis.bufferIndex + 1) % this.frameTimingAnalysis.frameTimeBuffer.length;
@@ -179,7 +304,7 @@ export class FrameStabilizer {
     /**
      * Update statistical analysis of frame times
      */
-    updateStatisticalAnalysis() {
+    private updateStatisticalAnalysis(): void {
         const buffer = this.frameTimingAnalysis.frameTimeBuffer;
         const dataSize = this.frameTimingAnalysis.bufferFull ? buffer.length : this.frameTimingAnalysis.bufferIndex;
         
@@ -209,11 +334,11 @@ export class FrameStabilizer {
     
     /**
      * Calculate percentile value
-     * @param {number[]} sortedData - Sorted array of values
-     * @param {number} percentile - Percentile (0-1)
-     * @returns {number} Percentile value
+     * @param sortedData - Sorted array of values
+     * @param percentile - Percentile (0-1)
+     * @returns Percentile value
      */
-    calculatePercentile(sortedData, percentile) {
+    private calculatePercentile(sortedData: number[], percentile: number): number {
         const index = percentile * (sortedData.length - 1);
         const lower = Math.floor(index);
         const upper = Math.ceil(index);
@@ -226,7 +351,7 @@ export class FrameStabilizer {
     /**
      * Update stability metrics
      */
-    updateStabilityMetrics() {
+    private updateStabilityMetrics(): void {
         const variance = this.frameTimingAnalysis.variance;
         const standardDeviation = this.frameTimingAnalysis.standardDeviation;
         
@@ -259,10 +384,10 @@ export class FrameStabilizer {
     
     /**
      * Update frame pacing optimization
-     * @param {number} frameTime - Current frame time
-     * @param {number} timestamp - Current timestamp
+     * @param frameTime - Current frame time
+     * @param timestamp - Current timestamp
      */
-    updateFramePacing(frameTime, timestamp) {
+    private updateFramePacing(frameTime: number, timestamp: number): void {
         if (!this.framePacing.enabled) return;
         
         // Update actual interval
@@ -288,7 +413,7 @@ export class FrameStabilizer {
     /**
      * Predict next frame time using historical data
      */
-    predictNextFrameTime() {
+    private predictNextFrameTime(): void {
         const recentFrames = this.frameTimingAnalysis.preciseFrameTimes.slice(-10);
         if (recentFrames.length < 5) {
             this.framePacing.nextFramePrediction = this.frameTimingAnalysis.mean;
@@ -552,10 +677,10 @@ export class FrameStabilizer {
     
     /**
      * Get stabilization recommendations
-     * @returns {object} Recommendations for improving frame rate stability
+     * @returns Recommendations for improving frame rate stability
      */
-    getStabilizationRecommendations() {
-        const recommendations = {
+    getStabilizationRecommendations(): Recommendations {
+        const recommendations: Recommendations = {
             immediate: [],
             shortTerm: [],
             longTerm: [],
@@ -607,9 +732,9 @@ export class FrameStabilizer {
     
     /**
      * Get comprehensive stabilization status
-     * @returns {object} Complete status information
+     * @returns Complete status information
      */
-    getStabilizationStatus() {
+    getStabilizationStatus(): StabilizationStatus {
         return {
             timing: this.frameTimingAnalysis,
             adaptive: this.adaptiveTargeting,
@@ -622,10 +747,10 @@ export class FrameStabilizer {
     
     /**
      * Force stabilization to a specific target
-     * @param {number} targetFPS - Target FPS to stabilize to
-     * @param {string} mode - Stabilization mode ('conservative', 'balanced', 'aggressive')
+     * @param targetFPS - Target FPS to stabilize to
+     * @param mode - Stabilization mode ('conservative', 'balanced', 'aggressive')
      */
-    forceStabilization(targetFPS, mode = 'balanced') {
+    forceStabilization(targetFPS: number, mode: StabilizationMode = 'balanced'): void {
         console.log(`[FrameStabilizer] Force stabilization to ${targetFPS} FPS (${mode} mode)`);
         
         this.adaptiveTargeting.baseTargetFPS = targetFPS;
@@ -659,7 +784,7 @@ export class FrameStabilizer {
     /**
      * Reset analysis data for fresh start
      */
-    resetAnalysisData() {
+    resetAnalysisData(): void {
         this.frameTimingAnalysis.frameTimeBuffer.fill(this.targetFrameTime);
         this.frameTimingAnalysis.bufferIndex = 0;
         this.frameTimingAnalysis.bufferFull = false;
@@ -672,9 +797,9 @@ export class FrameStabilizer {
 }
 
 // グローバルインスタンス（遅延初期化）
-let _frameStabilizer = null;
+let _frameStabilizer: FrameStabilizer | null = null;
 
-export function getFrameStabilizer(targetFPS = 60) {
+export function getFrameStabilizer(targetFPS: number = 60): FrameStabilizer {
     if (!_frameStabilizer) {
         try {
             _frameStabilizer = new FrameStabilizer(targetFPS);
@@ -690,9 +815,9 @@ export function getFrameStabilizer(targetFPS = 60) {
 
 /**
  * FrameStabilizerインスタンスを再初期化
- * @param {number} targetFPS - 新しい目標FPS
+ * @param targetFPS - 新しい目標FPS
  */
-export function reinitializeFrameStabilizer(targetFPS = 60) {
+export function reinitializeFrameStabilizer(targetFPS: number = 60): void {
     try {
         _frameStabilizer = new FrameStabilizer(targetFPS);
         console.log('[FrameStabilizer] 再初期化完了');

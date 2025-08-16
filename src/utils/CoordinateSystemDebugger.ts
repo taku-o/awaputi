@@ -3,8 +3,66 @@
  * Issue #177 Canvas Scale UI Positioning デバッグツール
  */
 
+// 型定義
+interface DebugInfo {
+    canvasInfo: any;
+    scaleFactor: number;
+}
+
+interface TrackedElement {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    color: string;
+    timestamp: number;
+}
+
+interface CoordinateEntry {
+    baseX: number;
+    baseY: number;
+    scaledX: number;
+    scaledY: number;
+    context: string;
+    timestamp: Date;
+}
+
+interface ScaledCoordinateManager {
+    getDebugInfo(): DebugInfo;
+    getCanvasInfo(): any;
+    getScaleFactor(): number;
+}
+
+interface UIPositionCalculator {
+    getDeviceType(): string;
+}
+
+interface InputCoordinateConverter {
+    // 必要に応じて型定義を追加
+}
+
+type LogLevel = 'debug' | 'info' | 'warn' | 'error';
+
 export class CoordinateSystemDebugger {
-    constructor(scaledCoordinateManager, uiPositionCalculator, inputCoordinateConverter) {
+    private scaledCoordinateManager: ScaledCoordinateManager;
+    private uiPositionCalculator: UIPositionCalculator | null;
+    private inputCoordinateConverter: InputCoordinateConverter | null;
+    private debugPanel: HTMLElement | null;
+    private overlayCanvas: HTMLCanvasElement | null;
+    private overlayContext: CanvasRenderingContext2D | null;
+    private isEnabled: boolean;
+    private showOverlays: boolean;
+    private logLevel: LogLevel;
+    private trackedElements: Map<string, TrackedElement>;
+    private coordinateHistory: CoordinateEntry[];
+    private maxHistorySize: number;
+    private debugUpdateInterval: NodeJS.Timeout | null;
+
+    constructor(
+        scaledCoordinateManager: ScaledCoordinateManager, 
+        uiPositionCalculator: UIPositionCalculator | null = null, 
+        inputCoordinateConverter: InputCoordinateConverter | null = null
+    ) {
         this.scaledCoordinateManager = scaledCoordinateManager;
         this.uiPositionCalculator = uiPositionCalculator;
         this.inputCoordinateConverter = inputCoordinateConverter;
@@ -14,11 +72,12 @@ export class CoordinateSystemDebugger {
         this.overlayContext = null;
         this.isEnabled = false;
         this.showOverlays = false;
-        this.logLevel = 'info'; // 'debug', 'info', 'warn', 'error'
+        this.logLevel = 'info';
         
-        this.trackedElements = new Map();
+        this.trackedElements = new Map<string, TrackedElement>();
         this.coordinateHistory = [];
         this.maxHistorySize = 100;
+        this.debugUpdateInterval = null;
         
         this.setupEventListeners();
     }
@@ -26,7 +85,7 @@ export class CoordinateSystemDebugger {
     /**
      * デバッグ機能を有効化
      */
-    enable() {
+    enable(): void {
         this.isEnabled = true;
         this.createDebugPanel();
         this.createOverlayCanvas();
@@ -36,7 +95,7 @@ export class CoordinateSystemDebugger {
     /**
      * デバッグ機能を無効化
      */
-    disable() {
+    disable(): void {
         this.isEnabled = false;
         this.removeDebugPanel();
         this.removeOverlayCanvas();
@@ -381,7 +440,7 @@ export class CoordinateSystemDebugger {
     /**
      * UI要素をトラッキング
      */
-    trackElement(id, x, y, width, height, color = '#FF5722') {
+    trackElement(id: string, x: number, y: number, width: number, height: number, color: string = '#FF5722'): void {
         this.trackedElements.set(id, {
             x: x,
             y: y,
@@ -412,8 +471,8 @@ export class CoordinateSystemDebugger {
     /**
      * 座標変換をログ
      */
-    logCoordinateConversion(baseX, baseY, scaledX, scaledY, context = '') {
-        const entry = {
+    logCoordinateConversion(baseX: number, baseY: number, scaledX: number, scaledY: number, context: string = ''): void {
+        const entry: CoordinateEntry = {
             baseX: baseX,
             baseY: baseY,
             scaledX: scaledX,
@@ -487,8 +546,8 @@ export class CoordinateSystemDebugger {
     /**
      * ログ出力
      */
-    log(level, message, ...args) {
-        const levels = { debug: 0, info: 1, warn: 2, error: 3 };
+    private log(level: LogLevel, message: string, ...args: any[]): void {
+        const levels: Record<LogLevel, number> = { debug: 0, info: 1, warn: 2, error: 3 };
         const currentLevel = levels[this.logLevel] || 1;
         const messageLevel = levels[level] || 1;
         
@@ -516,8 +575,8 @@ export class CoordinateSystemDebugger {
     /**
      * ログレベルを設定
      */
-    setLogLevel(level) {
-        const validLevels = ['debug', 'info', 'warn', 'error'];
+    setLogLevel(level: LogLevel): void {
+        const validLevels: LogLevel[] = ['debug', 'info', 'warn', 'error'];
         if (validLevels.includes(level)) {
             this.logLevel = level;
             this.log('info', `Log level set to: ${level}`);
