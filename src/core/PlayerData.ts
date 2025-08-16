@@ -68,13 +68,18 @@ function validateInput(value: any, type: string, constraints: any = {}): Validat
  */
 
 // Type definitions
+interface OwnedItem {
+    id: string;
+    level?: number;
+}
+
 interface PlayerDataSave {
     username: string;
     ap: number;
     tap: number;
     highScores: Record<string, number>;
     unlockedStages: string[];
-    ownedItems: string[];
+    ownedItems: (string | OwnedItem)[];
 }
 
 interface ValidationResult {
@@ -102,7 +107,7 @@ export class PlayerData {
     public combo: number;
     public highScores: Record<string, number>;
     public unlockedStages: string[];
-    public ownedItems: string[];
+    public ownedItems: (string | OwnedItem)[];
     
     constructor(gameEngine: GameEngine | null = null) {
         this.gameEngine = gameEngine;
@@ -548,11 +553,11 @@ export class PlayerData {
     upgradeItem(itemId: string): boolean {
         // アイテムがowneditems内にあるかチェック
         const itemIndex = this.ownedItems.findIndex(item => 
-            typeof item === 'object' && item.id === itemId
+            typeof item === 'object' && item !== null && 'id' in item && item.id === itemId
         );
         
         if (itemIndex !== -1) {
-            const item = this.ownedItems[itemIndex] as any;
+            const item = this.ownedItems[itemIndex] as OwnedItem;
             item.level = (item.level || 1) + 1;
             this.save();
             return true;
@@ -565,7 +570,7 @@ export class PlayerData {
      */
     hasItem(itemId: string): boolean {
         return this.ownedItems.some(item => 
-            typeof item === 'object' && (item as any).id === itemId
+            typeof item === 'object' && item !== null && 'id' in item && item.id === itemId
         );
     }
     
@@ -574,8 +579,8 @@ export class PlayerData {
      */
     getItemLevel(itemId: string): number {
         const item = this.ownedItems.find(item => 
-            typeof item === 'object' && (item as any).id === itemId
-        ) as any;
+            typeof item === 'object' && item !== null && 'id' in item && item.id === itemId
+        ) as OwnedItem | undefined;
         
         return item ? (item.level || 1) : 0;
     }

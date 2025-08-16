@@ -355,6 +355,16 @@ class ErrorHandler {
             console.log('[ErrorHandler] Error handling test completed');
         }
     }
+    
+    /**
+     * Static convenience method for handling errors
+     * @param error - Error to handle
+     * @param context - Context information
+     * @param metadata - Additional metadata
+     */
+    static handle(error: Error | any, context: string = 'UNKNOWN', metadata: Record<string, any> = {}): void {
+        getErrorHandler().handleError(error, context, metadata);
+    }
 }
 
 // Singleton instance
