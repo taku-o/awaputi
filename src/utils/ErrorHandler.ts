@@ -261,7 +261,7 @@ class ErrorHandler {
             this.logger.updateErrorStats(errorInfo);
             
             // Determine severity using analyzer
-            const severity: ErrorSeverity = this.analyzer.determineSeverity(errorInfo);
+            const severity: ErrorSeverity = this.analyzer.determineSeverity(errorInfo) as ErrorSeverity;
             
             // Log error using logger
             this.logger.logStructuredError(errorInfo, severity);

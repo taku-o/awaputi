@@ -57,10 +57,10 @@ export class AudioSettingsUI implements AudioSettingsUIState {
     
     // Components
     public audioTestPanel: AudioTestPanel;
-    public tabManager: AudioSettingsTabManager;
-    public uiComponentFactory: AudioSettingsUIComponentFactory;
-    public tabRenderers: AudioSettingsTabRenderers;
-    public dataManager: AudioSettingsDataManager;
+    public tabManager!: AudioSettingsTabManager;
+    public uiComponentFactory!: AudioSettingsUIComponentFactory;
+    public tabRenderers!: AudioSettingsTabRenderers;
+    public dataManager!: AudioSettingsDataManager;
     
     // イベントリスナー
     private eventListeners: Map<string, EventListener>;

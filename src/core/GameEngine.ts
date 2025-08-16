@@ -223,7 +223,7 @@ export class GameEngine {
             this.renderer = new GameEngineRenderer(this as any);
             
             // ユーティリティコンポーネント
-            this.utilities = new GameEngineUtilities(this);
+            this.utilities = new GameEngineUtilities(this as any);
             
             console.log('[GameEngine] All sub-components initialized successfully');
             

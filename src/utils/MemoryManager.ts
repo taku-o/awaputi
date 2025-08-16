@@ -54,9 +54,9 @@ export class MemoryManager {
     private cleanupInterval: number;
     
     // Sub-components
-    private leakDetector: LeakDetector;
-    private proactiveCleanup: ProactiveCleanupManager;
-    private usageAnalyzer: MemoryUsageAnalyzer;
+    private leakDetector!: LeakDetector;
+    private proactiveCleanup!: ProactiveCleanupManager;
+    private usageAnalyzer!: MemoryUsageAnalyzer;
     
     // Statistics
     public stats: MemoryStats;

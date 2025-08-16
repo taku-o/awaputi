@@ -23,6 +23,7 @@ export interface SettingItem {
     max?: number;
     step?: number;
     default?: any;
+    validator?: string;
 }
 
 export interface SettingsLayout {
