@@ -411,15 +411,15 @@
 ### Phase 7継続中 - 未実装機能の実装と型エラー修正
 🔄 **2/3タスク完了** - Task 28-29完了、Task 30進行中（第12段階開始）
 
-- **第12段階進行中**: 重要な型エラー修正（426個→継続中）
-  - ConfigurationManager: スコープエラー修正（finalKey, finalValue使用）
-  - GameScene: Object型の型キャスト修正（TimeWarnings as）
-  - HelpScene: 暗黙のany型パラメータ修正（data, report, sourceScene, helpContent, category, action, query）
-  - HelpScene: undefined可能性修正（null安全性オペレータ）、存在しないプロパティ修正（setCategory→selectCategory）
-  - MainMenuScene: exactOptionalPropertyTypes修正（resizeCallback型定義）
-  - SettingsScene: SettingItem型整合性修正（validator追加、型キャスト）
-  - 引数数エラー修正（showFeedbackDialogオブジェクト形式）
-  - **継続作業**: 残存する型エラーの最終修正（95%削減を目指す）
+- **第12段階進行中**: 重要な型エラー修正（426個→継続中、型安全性重視アプローチ）
+  - **型安全性アプローチ変更**: any型キャストを削除し、適切な型定義を追加
+  - ConfigurationManager: スコープエラー修正（エラーハンドリングでkeyForError計算）
+  - HelpTopic: 新しいインターフェース定義（id, title, content, category）
+  - HelpScene: getCurrentTopic型定義追加、showFeedbackDialog引数形式修正
+  - MainMenuScene: resizeCallbackをnull初期値型に変更（exactOptionalPropertyTypes対応）
+  - SettingsScene: 暗黙のany型修正（renderTitle）、配列型キャスト（validItems）
+  - **重要な方針**: TypeScript移行の目的（型安全性確保）に沿った修正を優先
+  - **継続作業**: 残存する型エラーの最終修正（90%削減を目指す）
 
 **Phase 7の主な成果:**
 - TypeScriptコンパイルエラーを725個から222個に大幅削減（69%削減）

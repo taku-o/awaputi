@@ -27,7 +27,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene {
     public showingUserInfo: boolean = false;
     public showingDataClearConfirmation: boolean = false;
     public showingControlsHelp: boolean = false;
-    public resizeCallback?: (() => void) | null;
+    public resizeCallback: (() => void) | null = null;
     
     // Sub-components
     public mainMenuRenderer: any;

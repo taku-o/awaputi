@@ -13,6 +13,13 @@ import { HelpEventManager } from './help-scene/HelpEventManager.js';
 import { ContextualHelpManager } from './help-scene/ContextualHelpManager.js';
 
 // Help Scene specific types
+export interface HelpTopic {
+    id: string;
+    title: string;
+    content?: string;
+    category?: string;
+}
+
 export interface HelpContextData {
     contextual?: boolean;
     documentation?: boolean;
@@ -492,9 +499,9 @@ export class HelpScene extends Scene implements HelpSceneState {
         const feedbackSystem = this.helpContentManager.getHelpFeedbackSystem();
         const state = this.helpContentManager.getState();
         if (feedbackSystem && state.currentContent) {
-            const currentTopic = this.helpContentManager.getCurrentTopic();
+            const currentTopic = this.helpContentManager.getCurrentTopic() as HelpTopic | null;
             if (currentTopic) {
-                feedbackSystem.endContentView((currentTopic as any).id);
+                feedbackSystem.endContentView(currentTopic.id);
             }
         }
         
@@ -534,12 +541,7 @@ export class HelpScene extends Scene implements HelpSceneState {
                 feedbackSystem.showQuickFeedback(data.topic.id, data.content, data.position);
             } else {
                 // 詳細フィードバックダイアログ
-                feedbackSystem.showFeedbackDialog({
-                    topicId: data.topic.id,
-                    content: data.content,
-                    category: data.category,
-                    topicTitle: data.topic && data.topic.title ? data.topic.title : 'Unknown Topic'
-                });
+                feedbackSystem.showFeedbackDialog(data.topic.id);
             }
             
         } catch (error) {

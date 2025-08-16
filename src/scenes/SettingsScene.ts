@@ -270,7 +270,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
             return true;
         });
         
-        return validItems;
+        return validItems as SettingItem[];
     }
     
     /**
@@ -449,7 +449,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * タイトル描画
      */
-    renderTitle(context, width) {
+    renderTitle(context: any, width: number) {
         // Transform行列のスケールを考慮した中央位置
         const transform = context.getTransform();
         const centerX = (width / 2) / transform.a;

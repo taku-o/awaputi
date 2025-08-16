@@ -304,7 +304,8 @@ class ConfigurationManager {
             return value as T;
             
         } catch (error) {
-            this._handleError(error, 'get', { key: finalKey });
+            const keyForError = key ? `${keyOrNamespace}.${key}` : keyOrNamespace;
+            this._handleError(error, 'get', { key: keyForError });
             return null;
         }
     }
@@ -355,7 +356,9 @@ class ConfigurationManager {
             return true;
             
         } catch (error) {
-            this._handleError(error, 'set', { key: finalKey, value: finalValue });
+            const keyForError = value !== undefined ? `${keyOrNamespace}.${keyOrValue}` : keyOrNamespace;
+            const valueForError = value !== undefined ? value : keyOrValue;
+            this._handleError(error, 'set', { key: keyForError, value: valueForError });
             return false;
         }
     }
