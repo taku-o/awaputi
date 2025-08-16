@@ -1,5 +1,5 @@
 /**
- * EventStageManager.js (リファクタリング版 + loadメソッド追加版)
+ * EventStageManager.ts (TypeScript版)
  * イベントステージ管理クラス - メインコントローラー
  * 各種イベントコンポーネントを統合管理
  * Updated: 2024 with load() method for GameEngineInitializer compatibility
@@ -9,9 +9,52 @@ import { SeasonalEventManager } from './events/SeasonalEventManager.js';
 import { EventNotificationSystem } from './events/EventNotificationSystem.js';
 import { EventHistoryManager } from './events/EventHistoryManager.js';
 import { EventRankingSystem } from './events/EventRankingSystem.js';
+import { GameEngine } from './GameEngine';
+
+interface EventStage {
+    id: string;
+    name: string;
+    description: string;
+    icon: string;
+    type: string;
+    duration?: number;
+    targetScore?: number;
+    rewards?: {
+        ap: number;
+        items?: string[];
+        badges?: string[];
+    };
+    requirements?: {
+        level?: number;
+        ap?: number;
+    };
+    specialRules?: {
+        spawnRate?: number;
+        bonusMultiplier?: number;
+        targetBubbles?: string[];
+    };
+}
+
+interface EventStats {
+    bubblesPopped?: number;
+    specialBubblesPopped?: number;
+    maxChain?: number;
+    timeRemaining?: number;
+    [key: string]: any;
+}
 
 export class EventStageManager {
-    constructor(gameEngine) {
+    private gameEngine: GameEngine;
+    private eventStages: Record<string, EventStage>;
+    private activeEvents: Map<string, any>;
+    private seasonalEventManager: SeasonalEventManager;
+    private notificationSystem: EventNotificationSystem;
+    private historyManager: EventHistoryManager;
+    private rankingSystem: EventRankingSystem;
+    public eventRankingManager: EventRankingSystem;
+    private eventHistory: any[];
+
+    constructor(gameEngine: GameEngine) {
         this.gameEngine = gameEngine;
         this.eventStages = this.initializeEventStages();
         this.activeEvents = new Map();
@@ -291,7 +334,8 @@ export class EventStageManager {
     /**
      * イベント完了処理
      */
-    completeEvent(eventId, results) {
+    completeEvent(eventId: string, playerId?: string): boolean {
+        const results = playerId ? { playerId } : {};
         const event = this.activeEvents.get(eventId);
         if (!event) {
             console.error(`Active event not found: ${eventId}`);
