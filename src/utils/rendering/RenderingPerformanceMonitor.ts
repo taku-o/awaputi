@@ -1,3 +1,62 @@
+// Type definitions
+interface PerformanceMetrics {
+    frameTime: number;
+    renderTime: number;
+    cullTime: number;
+    compositionTime: number;
+    dirtyRegionTime: number;
+    renderEfficiency: number;
+    cullingEfficiency: number;
+    cacheEfficiency: number;
+    overallEfficiency: number;
+    performanceGain?: number;
+}
+
+interface PerformanceBaseline {
+    renderTime: number;
+    drawCalls: number;
+    pixelsRendered: number;
+}
+
+interface PerformanceFrameData {
+    timestamp: number;
+    renderTime: number;
+    totalObjects: number;
+    efficiency: number;
+}
+
+interface PerformanceConfig {
+    enabled: boolean;
+    metrics: PerformanceMetrics;
+    history: PerformanceFrameData[];
+    historySize: number;
+    adaptiveMode: boolean;
+    performanceTarget: number;
+    optimizationTrigger: number;
+    baseline: PerformanceBaseline;
+}
+
+interface PerformanceStats extends PerformanceMetrics {
+    uptime: number;
+    totalFrames: number;
+    avgFPS: number;
+    baseline: PerformanceBaseline;
+    optimizationLevel: string;
+}
+
+type OptimizationLevel = 'conservative' | 'balanced' | 'aggressive';
+type PerformanceTrend = 'improving' | 'stable' | 'degrading';
+type OperationType = 'cull' | 'composition' | 'dirtyRegion';
+
+interface PerformanceConfigUpdate {
+    enabled?: boolean;
+    historySize?: number;
+    adaptiveMode?: boolean;
+    performanceTarget?: number;
+    optimizationTrigger?: number;
+    baseline?: Partial<PerformanceBaseline>;
+}
+
 /**
  * RenderingPerformanceMonitor - Rendering performance monitoring and optimization
  * レンダリングパフォーマンス監視システム - 描画性能の計測と自動最適化
@@ -9,6 +68,11 @@
  * - 自動最適化トリガー
  */
 export class RenderingPerformanceMonitor {
+    private config: PerformanceConfig;
+    private performanceInterval: NodeJS.Timeout | null;
+    private monitoringStartTime: number;
+    private optimizationLevel?: OptimizationLevel;
+
     constructor() {
         // Performance monitoring
         this.config = {
@@ -54,7 +118,7 @@ export class RenderingPerformanceMonitor {
     /**
      * Start performance monitoring
      */
-    startPerformanceMonitoring() {
+    startPerformanceMonitoring(): void {
         if (!this.config.enabled || this.performanceInterval) return;
         
         // Monitor rendering performance every frame
@@ -69,7 +133,7 @@ export class RenderingPerformanceMonitor {
     /**
      * Stop performance monitoring
      */
-    stopPerformanceMonitoring() {
+    stopPerformanceMonitoring(): void {
         if (this.performanceInterval) {
             clearInterval(this.performanceInterval);
             this.performanceInterval = null;
@@ -79,7 +143,7 @@ export class RenderingPerformanceMonitor {
     /**
      * Establish performance baseline
      */
-    establishPerformanceBaseline() {
+    establishPerformanceBaseline(): void {
         // This would normally run a series of benchmark tests
         // For now, we'll use reasonable defaults
         
@@ -91,10 +155,8 @@ export class RenderingPerformanceMonitor {
 
     /**
      * Update rendering performance metrics
-     * @param {number} renderTime - Time taken for rendering
-     * @param {number} totalObjects - Total objects processed
      */
-    updateRenderingPerformance(renderTime, totalObjects) {
+    updateRenderingPerformance(renderTime: number, totalObjects: number): void {
         const metrics = this.config.metrics;
         
         // Update basic metrics
@@ -124,7 +186,7 @@ export class RenderingPerformanceMonitor {
     /**
      * Update comprehensive performance metrics
      */
-    updatePerformanceMetrics() {
+    updatePerformanceMetrics(): void {
         const metrics = this.config.metrics;
         const history = this.config.history;
         
@@ -157,9 +219,8 @@ export class RenderingPerformanceMonitor {
 
     /**
      * Calculate cache efficiency
-     * @returns {number} Cache efficiency (0-1)
      */
-    calculateCacheEfficiency() {
+    calculateCacheEfficiency(): number {
         // This would normally check actual cache hit rates
         // For now, return a reasonable estimate based on render time
         const renderTime = this.config.metrics.renderTime;
@@ -176,9 +237,8 @@ export class RenderingPerformanceMonitor {
 
     /**
      * Calculate culling efficiency
-     * @returns {number} Culling efficiency (0-1)
      */
-    calculateCullingEfficiency() {
+    calculateCullingEfficiency(): number {
         // This would normally check actual culling statistics
         // For now, return a reasonable estimate
         return 0.7; // Assume 70% culling efficiency
@@ -186,9 +246,8 @@ export class RenderingPerformanceMonitor {
 
     /**
      * Calculate performance gain percentage
-     * @returns {number} Performance gain percentage
      */
-    calculatePerformanceGain() {
+    calculatePerformanceGain(): number {
         const currentRenderTime = this.config.metrics.renderTime;
         const baselineRenderTime = this.config.baseline.renderTime;
         
@@ -201,7 +260,7 @@ export class RenderingPerformanceMonitor {
     /**
      * Optimize based on current performance
      */
-    optimizeBasedOnPerformance() {
+    optimizeBasedOnPerformance(): void {
         if (!this.config.adaptiveMode) return;
         
         const metrics = this.config.metrics;
@@ -218,7 +277,7 @@ export class RenderingPerformanceMonitor {
     /**
      * Trigger performance optimizations
      */
-    triggerPerformanceOptimizations() {
+    triggerPerformanceOptimizations(): void {
         // This would normally trigger various optimizations
         // Based on the current optimization level
         
@@ -236,7 +295,7 @@ export class RenderingPerformanceMonitor {
     /**
      * Relax optimizations when performance is good
      */
-    relaxOptimizations() {
+    relaxOptimizations(): void {
         const renderTime = this.config.metrics.renderTime;
         
         if (renderTime < 12.0) { // > 80fps - can relax optimizations
@@ -246,9 +305,8 @@ export class RenderingPerformanceMonitor {
 
     /**
      * Set optimization level
-     * @param {string} level - Optimization level ('conservative', 'balanced', 'aggressive')
      */
-    setOptimizationLevel(level) {
+    setOptimizationLevel(level: OptimizationLevel): void {
         // This would normally adjust various optimization parameters
         // For now, just track the level
         this.optimizationLevel = level;
@@ -256,9 +314,8 @@ export class RenderingPerformanceMonitor {
 
     /**
      * Get performance statistics
-     * @returns {object} Performance statistics
      */
-    getStats() {
+    getStats(): PerformanceStats {
         const uptime = (performance.now() - this.monitoringStartTime) / 1000;
         const totalFrames = this.config.history.length;
         const avgFPS = totalFrames > 0 ? totalFrames / (uptime || 1) : 0;
@@ -275,10 +332,8 @@ export class RenderingPerformanceMonitor {
 
     /**
      * Record timing for specific operation
-     * @param {string} operation - Operation name
-     * @param {number} time - Time taken in milliseconds
      */
-    recordTiming(operation, time) {
+    recordTiming(operation: OperationType, time: number): void {
         switch (operation) {
             case 'cull':
                 this.config.metrics.cullTime = time;
@@ -294,9 +349,8 @@ export class RenderingPerformanceMonitor {
 
     /**
      * Get performance trend
-     * @returns {string} Performance trend ('improving', 'stable', 'degrading')
      */
-    getPerformanceTrend() {
+    getPerformanceTrend(): PerformanceTrend {
         const history = this.config.history;
         if (history.length < 10) return 'stable';
         
@@ -315,9 +369,8 @@ export class RenderingPerformanceMonitor {
 
     /**
      * Configure performance monitor
-     * @param {object} config - Configuration object
      */
-    configure(config) {
+    configure(config: PerformanceConfigUpdate): void {
         if (config.enabled !== undefined) this.config.enabled = config.enabled;
         if (config.historySize !== undefined) this.config.historySize = config.historySize;
         if (config.adaptiveMode !== undefined) this.config.adaptiveMode = config.adaptiveMode;
@@ -332,7 +385,7 @@ export class RenderingPerformanceMonitor {
     /**
      * Reset performance monitor
      */
-    reset() {
+    reset(): void {
         this.config.history = [];
         this.config.metrics = {
             frameTime: 0,
@@ -351,7 +404,7 @@ export class RenderingPerformanceMonitor {
     /**
      * Destroy performance monitor
      */
-    destroy() {
+    destroy(): void {
         this.stopPerformanceMonitoring();
         this.reset();
     }
