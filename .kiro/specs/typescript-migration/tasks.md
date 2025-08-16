@@ -187,11 +187,13 @@
   - 初期化処理の妥当性を検証
   - _要件: 7.2_
 
-- [ ] 30. 型エラーの修正（Phase 13部分完了、継続作業）
+- [ ] 30. 型エラーの修正（Phase 13-14完了、継続作業）
   - ✅ HelpContentManager.ts: プロパティ型定義とメソッド型注釈完全追加
   - ✅ MemoryManager.ts: 不足クラス実装・重複エクスポート修正
-  - ✅ エラー削減: 619個→394個（36%削減）
-  - 🔄 継続: SettingsScene.ts等の残存エラー修正（394個残存）
+  - ✅ Phase 13: HelpSearchManager型安全化、SettingItem exactOptionalPropertyTypes対応
+  - ✅ Phase 14: SettingsScene renderメソッド型注釈、テストファイル型キャスト修正
+  - ✅ エラー削減: 743個→295個（448個削減、60.3%削減達成）
+  - 🔄 継続: 残存295個エラーの修正（TS2379, TS6133, TS7006重点対応）
   - _要件: 7.3_
 
 - [ ] 31. anyの使用を最小化
