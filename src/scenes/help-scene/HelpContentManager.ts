@@ -609,7 +609,7 @@ export class HelpContentManager {
      * 検索クエリを設定
      * @param {string} query - 検索クエリ
      */
-    setSearchQuery(query) {
+    setSearchQuery(query: string): void {
         this.currentSearchQuery = query.trim();
         
         // 検索クエリを更新

@@ -689,7 +689,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
         context.fillStyle = '#2c3e50';
         context.font = '14px Arial, sans-serif';
         context.textAlign = 'right';
-        context.fillText(Math.round(value * 100) / 100, x + width, y + 5);
+        context.fillText((Math.round(value * 100) / 100).toString(), x + width, y + 5);
     }
     
     /**
@@ -722,7 +722,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * ボリュームコントロール描画
      */
-    renderVolumeControl(context, value, x, y, width, isSelected) {
+    renderVolumeControl(context: CanvasRenderingContext2D, value: number, x: number, y: number, width: number, isSelected: boolean): void {
         const controlWidth = width - 20;
         const controlHeight = 30;
         const controlY = y - controlHeight / 2;
@@ -786,7 +786,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * アクセシビリティプロファイルコントロール描画
      */
-    renderAccessibilityProfileControl(context, __value, x, y, width, isSelected) {
+    renderAccessibilityProfileControl(context: CanvasRenderingContext2D, __value: any, x: number, y: number, width: number, isSelected: boolean): void {
         const controlWidth = width - 20;
         const controlHeight = 30;
         const controlY = y - controlHeight / 2;
@@ -803,7 +803,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
         // プロファイル情報
         const currentProfile = this.accessibilitySettingsManager ? 
             this.accessibilitySettingsManager.getCurrentProfile() : null;
-        const profileName = currentProfile ? currentProfile.name : '標準';
+        const profileName = currentProfile ? (currentProfile as any).name : '標準';
         
         // プロファイル名表示
         context.fillStyle = '#2c3e50';
@@ -836,7 +836,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * 設定インポート・エクスポートコントロール描画
      */
-    renderSettingsImportExportControl(context, __value, x, y, width, isSelected) {
+    renderSettingsImportExportControl(context: CanvasRenderingContext2D, __value: any, x: number, y: number, width: number, isSelected: boolean): void {
         const controlWidth = width - 20;
         const controlHeight = 30;
         const controlY = y - controlHeight / 2;
