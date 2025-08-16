@@ -1,5 +1,5 @@
 /**
- * MobileBatteryOptimizer.js
+ * MobileBatteryOptimizer.ts
  * モバイルバッテリー最適化システム
  * MobilePerformanceOptimizerから分離されたバッテリー最適化機能
  */
@@ -7,7 +7,137 @@
 import { getErrorHandler } from '../ErrorHandler.js';
 import { getConfigurationManager } from '../../core/ConfigurationManager.js';
 
+// Type definitions
+type PowerMode = 'normal' | 'powersaver' | 'extreme';
+type RenderQuality = 'low' | 'medium' | 'high';
+type BatteryState = 'normal' | 'low' | 'critical';
+
+interface PowerModeSettings {
+    name: PowerMode;
+    frameRateLimit: number;
+    renderQuality: RenderQuality;
+    backgroundThrottling: boolean;
+    networkOptimization: boolean;
+    screenBrightness: number;
+}
+
+interface BatteryMonitoringConfig {
+    enabled: boolean;
+    updateInterval: number;
+    lowBatteryThreshold: number;
+    criticalBatteryThreshold: number;
+    chargingDetection: boolean;
+}
+
+interface BatteryOptimizations {
+    reducedFrameRate: boolean;
+    backgroundThrottling: boolean;
+    cpuThrottling: boolean;
+    screenDimming: boolean;
+    networkOptimization: boolean;
+    cacheAggressive: boolean;
+    suspendInactive: boolean;
+    minimizeWakeups: boolean;
+}
+
+interface ThermalManagement {
+    enabled: boolean;
+    temperatureThreshold: number;
+    cooldownRequired: boolean;
+    throttleOnHeat: boolean;
+}
+
+interface BatteryConfig {
+    enabled: boolean;
+    monitoring: BatteryMonitoringConfig;
+    powerModes: Record<PowerMode, PowerModeSettings>;
+    currentMode: PowerMode;
+    autoModeSwitch: boolean;
+    optimizations: BatteryOptimizations;
+    thermalManagement: ThermalManagement;
+}
+
+interface BatteryData {
+    level: number;
+    charging: boolean;
+    chargingTime: number;
+    dischargingTime: number;
+    lastUpdate: number;
+}
+
+interface BatteryUsage {
+    currentDrain: number;
+    averageDrain: number;
+    estimatedRemaining: number;
+    drainHistory: DrainHistoryEntry[];
+    maxHistorySize: number;
+}
+
+interface DrainHistoryEntry {
+    timestamp: number;
+    drain: number;
+}
+
+interface PowerConsumption {
+    cpu: number;
+    gpu: number;
+    screen: number;
+    network: number;
+    total: number;
+    baselinePower: number;
+}
+
+interface BatteryHealth {
+    capacity: number;
+    cycleCount: number;
+    temperature: number;
+    voltage: number;
+}
+
+interface BatteryMonitoring {
+    enabled: boolean;
+    battery: BatteryData;
+    usage: BatteryUsage;
+    powerConsumption: PowerConsumption;
+    health: BatteryHealth;
+}
+
+interface PerformanceMetric {
+    time: number;
+    value: number;
+}
+
+interface PerformanceTracking {
+    frameRateHistory: PerformanceMetric[];
+    cpuUsageHistory: PerformanceMetric[];
+    gpuUsageHistory: PerformanceMetric[];
+    networkUsageHistory: PerformanceMetric[];
+    lastMeasurement: number;
+}
+
+interface BatteryStatistics {
+    battery: BatteryData;
+    usage: BatteryUsage;
+    powerConsumption: PowerConsumption;
+    health: BatteryHealth;
+    currentMode: PowerMode;
+    optimizations: BatteryOptimizations;
+}
+
+interface BatteryCallbacks {
+    onBatteryStateChange?: (state: BatteryState, level: number) => void;
+    onPowerModeChange?: (oldMode: PowerMode, newMode: PowerMode) => void;
+    onOptimizationApplied?: (optimization: string) => void;
+}
+
 export class MobileBatteryOptimizer {
+    private errorHandler: any;
+    private configManager: any;
+    private batteryConfig: BatteryConfig;
+    private batteryMonitoring: BatteryMonitoring;
+    private performanceTracking: PerformanceTracking;
+    private batteryCallbacks?: BatteryCallbacks;
+
     constructor() {
         this.errorHandler = getErrorHandler();
         this.configManager = getConfigurationManager();
@@ -134,7 +264,7 @@ export class MobileBatteryOptimizer {
     /**
      * Initialize battery optimization system
      */
-    async initializeBatteryOptimizer() {
+    async initializeBatteryOptimizer(): Promise<void> {
         console.log('[MobileBatteryOptimizer] Initializing battery optimization...');
         
         try {
@@ -152,7 +282,7 @@ export class MobileBatteryOptimizer {
     /**
      * Setup Battery API if available
      */
-    async setupBatteryAPI() {
+    async setupBatteryAPI(): Promise<void> {
         try {
             if ('getBattery' in navigator) {
                 const battery = await navigator.getBattery();
@@ -174,7 +304,7 @@ export class MobileBatteryOptimizer {
     /**
      * Setup battery event listeners
      */
-    setupBatteryEventListeners(battery) {
+    private setupBatteryEventListeners(battery: any): void {
         battery.addEventListener('chargingchange', () => {
             this.updateBatteryInfo(battery);
             this.handleChargingStateChange(battery.charging);
@@ -197,7 +327,7 @@ export class MobileBatteryOptimizer {
     /**
      * Update battery information
      */
-    updateBatteryInfo(battery) {
+    private updateBatteryInfo(battery: any): void {
         const batteryData = this.batteryMonitoring.battery;
         
         batteryData.level = battery.level;
@@ -213,7 +343,7 @@ export class MobileBatteryOptimizer {
     /**
      * Setup battery estimation for devices without Battery API
      */
-    setupBatteryEstimation() {
+    private setupBatteryEstimation(): void {
         // Use performance and usage patterns to estimate battery drain
         this.batteryMonitoring.battery.level = 0.8; // Assume 80% initially
         this.batteryMonitoring.battery.charging = false;
@@ -224,7 +354,7 @@ export class MobileBatteryOptimizer {
     /**
      * Handle charging state change
      */
-    handleChargingStateChange(charging) {
+    private handleChargingStateChange(charging: boolean): void {
         console.log(`[MobileBatteryOptimizer] Charging state changed: ${charging}`);
         
         if (charging) {
@@ -239,7 +369,7 @@ export class MobileBatteryOptimizer {
     /**
      * Handle battery level change
      */
-    handleBatteryLevelChange(level) {
+    private handleBatteryLevelChange(level: number): void {
         console.log(`[MobileBatteryOptimizer] Battery level changed: ${(level * 100).toFixed(1)}%`);
         
         const config = this.batteryConfig.monitoring;
@@ -259,7 +389,7 @@ export class MobileBatteryOptimizer {
     /**
      * Handle critical battery level
      */
-    handleCriticalBattery() {
+    private handleCriticalBattery(): void {
         console.warn('[MobileBatteryOptimizer] Critical battery level detected');
         
         // Force extreme power saving mode
@@ -275,7 +405,7 @@ export class MobileBatteryOptimizer {
     /**
      * Handle low battery level
      */
-    handleLowBattery() {
+    private handleLowBattery(): void {
         console.warn('[MobileBatteryOptimizer] Low battery level detected');
         
         // Switch to power saver mode
@@ -288,7 +418,7 @@ export class MobileBatteryOptimizer {
     /**
      * Setup performance tracking for battery optimization
      */
-    setupPerformanceTracking() {
+    private setupPerformanceTracking(): void {
         setInterval(() => {
             this.updatePerformanceMetrics();
         }, 5000); // Update every 5 seconds
@@ -299,7 +429,7 @@ export class MobileBatteryOptimizer {
     /**
      * Start battery monitoring
      */
-    startBatteryMonitoring() {
+    private startBatteryMonitoring(): void {
         if (!this.batteryConfig.monitoring.enabled) return;
         
         setInterval(() => {
@@ -314,7 +444,7 @@ export class MobileBatteryOptimizer {
     /**
      * Apply initial battery optimizations
      */
-    applyInitialOptimizations() {
+    private applyInitialOptimizations(): void {
         // Start with normal mode
         this.setPowerMode('normal');
         
@@ -327,7 +457,7 @@ export class MobileBatteryOptimizer {
     /**
      * Set power management mode
      */
-    setPowerMode(mode) {
+    setPowerMode(mode: PowerMode): void {
         if (!this.batteryConfig.powerModes[mode]) {
             console.warn(`[MobileBatteryOptimizer] Invalid power mode: ${mode}`);
             return;
@@ -345,7 +475,7 @@ export class MobileBatteryOptimizer {
     /**
      * Apply power mode settings
      */
-    applyPowerModeSettings(settings) {
+    private applyPowerModeSettings(settings: PowerModeSettings): void {
         const opts = this.batteryConfig.optimizations;
         
         // Apply frame rate limit
@@ -366,7 +496,7 @@ export class MobileBatteryOptimizer {
     /**
      * Adjust screen brightness (if supported)
      */
-    adjustScreenBrightness(brightness) {
+    private adjustScreenBrightness(brightness: number): void {
         // This would typically require native integration
         // For web, we can suggest to the user or adjust CSS filters
         
@@ -378,7 +508,7 @@ export class MobileBatteryOptimizer {
     /**
      * Evaluate optimal power mode based on current conditions
      */
-    evaluateOptimalPowerMode() {
+    private evaluateOptimalPowerMode(): void {
         const battery = this.batteryMonitoring.battery;
         const config = this.batteryConfig.monitoring;
         
@@ -399,7 +529,7 @@ export class MobileBatteryOptimizer {
     /**
      * Update performance metrics for battery optimization
      */
-    updatePerformanceMetrics() {
+    private updatePerformanceMetrics(): void {
         const tracking = this.performanceTracking;
         const now = Date.now();
         
@@ -433,7 +563,7 @@ export class MobileBatteryOptimizer {
     /**
      * Update power consumption estimation
      */
-    updatePowerConsumption() {
+    private updatePowerConsumption(): void {
         const consumption = this.batteryMonitoring.powerConsumption;
         const tracking = this.performanceTracking;
         
@@ -460,7 +590,7 @@ export class MobileBatteryOptimizer {
     /**
      * Update battery usage statistics
      */
-    updateBatteryUsage() {
+    private updateBatteryUsage(): void {
         const usage = this.batteryMonitoring.usage;
         const consumption = this.batteryMonitoring.powerConsumption;
         
@@ -495,7 +625,7 @@ export class MobileBatteryOptimizer {
     /**
      * Evaluate battery health
      */
-    evaluateBatteryHealth() {
+    private evaluateBatteryHealth(): void {
         const health = this.batteryMonitoring.health;
         
         // Simple health estimation based on usage patterns
@@ -513,7 +643,7 @@ export class MobileBatteryOptimizer {
     /**
      * Optimize power consumption
      */
-    optimizePowerConsumption() {
+    private optimizePowerConsumption(): void {
         const consumption = this.batteryMonitoring.powerConsumption;
         const threshold = 1000; // mAh/hour threshold
         
@@ -526,7 +656,7 @@ export class MobileBatteryOptimizer {
     /**
      * Apply basic battery optimizations
      */
-    applyBasicOptimizations() {
+    private applyBasicOptimizations(): void {
         const opts = this.batteryConfig.optimizations;
         
         opts.backgroundThrottling = true;
@@ -539,7 +669,7 @@ export class MobileBatteryOptimizer {
     /**
      * Apply aggressive battery optimizations
      */
-    applyAggressiveOptimizations() {
+    private applyAggressiveOptimizations(): void {
         const opts = this.batteryConfig.optimizations;
         
         opts.reducedFrameRate = true;
@@ -553,7 +683,7 @@ export class MobileBatteryOptimizer {
     /**
      * Enable all battery optimizations
      */
-    enableAllOptimizations() {
+    private enableAllOptimizations(): void {
         const opts = this.batteryConfig.optimizations;
         
         Object.keys(opts).forEach(key => {
@@ -566,7 +696,7 @@ export class MobileBatteryOptimizer {
     /**
      * Notify application of battery state
      */
-    notifyBatteryState(state) {
+    private notifyBatteryState(state: BatteryState): void {
         // This would typically dispatch events or call callbacks
         console.log(`[MobileBatteryOptimizer] Battery state notification: ${state}`);
         
@@ -582,7 +712,7 @@ export class MobileBatteryOptimizer {
     /**
      * Get battery optimization statistics
      */
-    getBatteryStatistics() {
+    getBatteryStatistics(): BatteryStatistics {
         return {
             battery: this.batteryMonitoring.battery,
             usage: this.batteryMonitoring.usage,
@@ -596,21 +726,21 @@ export class MobileBatteryOptimizer {
     /**
      * Set battery optimization callbacks
      */
-    setBatteryCallbacks(callbacks) {
+    setBatteryCallbacks(callbacks: BatteryCallbacks): void {
         this.batteryCallbacks = callbacks;
     }
     
     /**
      * Get power mode settings
      */
-    getPowerModeSettings(mode) {
+    getPowerModeSettings(mode: PowerMode): PowerModeSettings | null {
         return this.batteryConfig.powerModes[mode] || null;
     }
     
     /**
      * Dispose battery optimizer
      */
-    dispose() {
+    dispose(): void {
         try {
             // Clean up monitoring intervals
             // Clear history arrays
