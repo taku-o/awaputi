@@ -219,19 +219,19 @@ export class SettingsScene extends Scene implements SettingsSceneState {
         } else {
             // フォールバック設定項目
             accessibilityItems = [
-                { key: 'accessibility.highContrast', label: 'ハイコントラスト', type: 'toggle', description: 'より見やすい高コントラスト表示にします' },
-                { key: 'accessibility.reducedMotion', label: 'アニメーション削減', type: 'toggle', description: 'アニメーションや動きを削減します' },
-                { key: 'accessibility.largeText', label: '大きな文字', type: 'toggle', description: 'UI の文字サイズを大きくします' },
-                { key: 'accessibility.screenReader', label: 'スクリーンリーダー対応', type: 'toggle', description: 'スクリーンリーダーでの読み上げに対応します' },
-                { key: 'accessibility.colorBlindSupport', label: '色覚サポート', type: 'toggle', description: '色覚に配慮した表示にします' }
-            ];
+                { key: 'accessibility.highContrast', label: 'ハイコントラスト', type: 'toggle', description: 'より見やすい高コントラスト表示にします', validator: 'toggle' },
+                { key: 'accessibility.reducedMotion', label: 'アニメーション削減', type: 'toggle', description: 'アニメーションや動きを削減します', validator: 'toggle' },
+                { key: 'accessibility.largeText', label: '大きな文字', type: 'toggle', description: 'UI の文字サイズを大きくします', validator: 'toggle' },
+                { key: 'accessibility.screenReader', label: 'スクリーンリーダー対応', type: 'toggle', description: 'スクリーンリーダーでの読み上げに対応します', validator: 'toggle' },
+                { key: 'accessibility.colorBlindSupport', label: '色覚サポート', type: 'toggle', description: '色覚に配慮した表示にします', validator: 'toggle' }
+            ] as SettingItem[];
         }
         
         // 不足している基本アクセシビリティ設定の確認・追加
-        const requiredBasicSettings = [
-            { key: 'accessibility.highContrast', label: 'ハイコントラスト', type: 'toggle', description: 'より見やすい高コントラスト表示にします' },
-            { key: 'accessibility.largeText', label: '大きな文字', type: 'toggle', description: 'UI の文字サイズを大きくします' },
-            { key: 'accessibility.reducedMotion', label: 'アニメーション削減', type: 'toggle', description: 'アニメーションや動きを削減します' }
+        const requiredBasicSettings: SettingItem[] = [
+            { key: 'accessibility.highContrast', label: 'ハイコントラスト', type: 'toggle', description: 'より見やすい高コントラスト表示にします', validator: 'toggle' },
+            { key: 'accessibility.largeText', label: '大きな文字', type: 'toggle', description: 'UI の文字サイズを大きくします', validator: 'toggle' },
+            { key: 'accessibility.reducedMotion', label: 'アニメーション削減', type: 'toggle', description: 'アニメーションや動きを削減します', validator: 'toggle' }
         ];
         
         for (const requiredSetting of requiredBasicSettings) {
@@ -247,8 +247,9 @@ export class SettingsScene extends Scene implements SettingsSceneState {
             label: 'アクセシビリティプロファイル',
             type: 'custom',
             component: 'AccessibilityProfileComponent',
-            description: 'プリセットされたアクセシビリティ設定プロファイルを適用します'
-        });
+            description: 'プリセットされたアクセシビリティ設定プロファイルを適用します',
+            validator: 'profile'
+        } as SettingItem);
         
         // SettingsImportExportComponentの追加
         accessibilityItems.push({
@@ -256,8 +257,9 @@ export class SettingsScene extends Scene implements SettingsSceneState {
             label: '設定のインポート・エクスポート',
             type: 'custom',
             component: 'SettingsImportExportComponent',
-            description: 'アクセシビリティ設定をファイルとして保存・読み込みします'
-        });
+            description: 'アクセシビリティ設定をファイルとして保存・読み込みします',
+            validator: 'importExport'
+        } as SettingItem);
         
         // 項目の有効性を検証
         const validItems = accessibilityItems.filter(item => {
@@ -350,7 +352,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
      * クイックアクセスモードの設定
      * @param {string} targetSetting - 対象設定項目
      */
-    setQuickAccessMode(targetSetting) {
+    setQuickAccessMode(targetSetting: any) {
         if (targetSetting) {
             // 特定の設定項目に直接移動
             this.navigateToSetting(targetSetting);
@@ -362,7 +364,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
      * ソースシーンに基づくカテゴリ調整
      * @param {string} sourceScene - ソースシーン
      */
-    adjustCategoryForSourceScene(sourceScene) {
+    adjustCategoryForSourceScene(sourceScene: any) {
         switch (sourceScene) {
             case 'game':
                 this.currentCategory = 'general';
@@ -382,7 +384,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
      * 特定設定項目への直接ナビゲーション
      * @param {string} settingKey - 設定キー
      */
-    navigateToSetting(settingKey) {
+    navigateToSetting(settingKey: any) {
         // 設定キーからカテゴリを特定
         for (const [categoryName, items] of Object.entries(this.settingItems)) {
             const itemIndex = items.findIndex(item => item.key === settingKey);

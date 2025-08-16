@@ -243,11 +243,11 @@ export class HelpScene extends Scene implements HelpSceneState {
             }
         });
         
-        this.helpEventManager.setCallback('onFeedbackRequest', (data) => {
+        this.helpEventManager.setCallback('onFeedbackRequest', (data: any) => {
             this.showFeedbackDialog(data);
         });
         
-        this.helpEventManager.setCallback('onEffectivenessReport', (report) => {
+        this.helpEventManager.setCallback('onEffectivenessReport', (report: any) => {
             this.showEffectivenessReport(report);
         });
         
@@ -358,7 +358,7 @@ export class HelpScene extends Scene implements HelpSceneState {
      * コンテキスト依存ヘルプモードの設定
      * @param {string} sourceScene - 呼び出し元シーン
      */
-    setContextualHelpMode(sourceScene) {
+    setContextualHelpMode(sourceScene: any) {
         // ContextualHelpManagerを使用してコンテキスト依存ヘルプを分析
         const contextualHelp = this.contextualHelpManager.analyzeContextAndGetHelp({
             sourceScene,
@@ -427,7 +427,7 @@ export class HelpScene extends Scene implements HelpSceneState {
      * コンテキスト依存ヘルプの適用
      * @param {Object} helpContent - ヘルプ内容
      */
-    applyContextualHelp(helpContent) {
+    applyContextualHelp(helpContent: any) {
         try {
             // ヘルプ内容の設定
             if (this.helpContentManager && helpContent.category) {
@@ -446,7 +446,7 @@ export class HelpScene extends Scene implements HelpSceneState {
             this.loggingSystem.debug('HelpScene', 'Contextual help applied', {
                 title: helpContent.title,
                 category: helpContent.category,
-                actionsCount: this.contextualHelpActions.length
+                actionsCount: this.contextualHelpActions?.length || 0
             });
         } catch (error) {
             this.loggingSystem.error('HelpScene', 'Error applying contextual help', error);
@@ -457,10 +457,10 @@ export class HelpScene extends Scene implements HelpSceneState {
      * ヘルプカテゴリの設定
      * @param {string} category - カテゴリ名
      */
-    setHelpCategory(category) {
+    setHelpCategory(category: any) {
         try {
-            if (this.helpContentManager && this.helpContentManager.setCategory) {
-                this.helpContentManager.setCategory(category);
+            if (this.helpContentManager && this.helpContentManager.selectCategory) {
+                this.helpContentManager.selectCategory(category);
             }
         } catch (error) {
             this.loggingSystem.error('HelpScene', `Error setting help category: ${category}`, error);
@@ -471,7 +471,7 @@ export class HelpScene extends Scene implements HelpSceneState {
      * ヘルプアクションの実行
      * @param {string} action - アクション名
      */
-    executeHelpAction(action) {
+    executeHelpAction(action: any) {
         try {
             if (this.contextualHelpManager) {
                 this.contextualHelpManager.executeHelpAction(action, {
@@ -494,7 +494,7 @@ export class HelpScene extends Scene implements HelpSceneState {
         if (feedbackSystem && state.currentContent) {
             const currentTopic = this.helpContentManager.getCurrentTopic();
             if (currentTopic) {
-                feedbackSystem.endContentView(currentTopic.id);
+                feedbackSystem.endContentView((currentTopic as any).id);
             }
         }
         
@@ -521,7 +521,7 @@ export class HelpScene extends Scene implements HelpSceneState {
     /**
      * フィードバックダイアログ表示
      */
-    showFeedbackDialog(data) {
+    showFeedbackDialog(data: any) {
         try {
             const feedbackSystem = this.helpContentManager.getHelpFeedbackSystem();
             if (!feedbackSystem || !data.content) {
@@ -534,7 +534,9 @@ export class HelpScene extends Scene implements HelpSceneState {
                 feedbackSystem.showQuickFeedback(data.topic.id, data.content, data.position);
             } else {
                 // 詳細フィードバックダイアログ
-                feedbackSystem.showFeedbackDialog(data.topic.id, data.content, {
+                feedbackSystem.showFeedbackDialog({
+                    topicId: data.topic.id,
+                    content: data.content,
                     category: data.category,
                     topicTitle: data.topic && data.topic.title ? data.topic.title : 'Unknown Topic'
                 });
@@ -548,7 +550,7 @@ export class HelpScene extends Scene implements HelpSceneState {
     /**
      * 効果測定レポート表示
      */
-    showEffectivenessReport(report) {
+    showEffectivenessReport(report: any) {
         try {
             if (!report) {
                 console.warn('No effectiveness report provided');
@@ -572,7 +574,7 @@ export class HelpScene extends Scene implements HelpSceneState {
     /**
      * 検索入力処理
      */
-    async handleSearchInput(query) {
+    async handleSearchInput(query: any) {
         try {
             await this.helpEventManager.handleSearchInput(query);
         } catch (error) {

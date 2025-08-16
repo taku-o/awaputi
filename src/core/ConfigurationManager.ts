@@ -304,7 +304,7 @@ class ConfigurationManager {
             return value as T;
             
         } catch (error) {
-            this._handleError(error, 'get', { key });
+            this._handleError(error, 'get', { key: finalKey });
             return null;
         }
     }
@@ -355,7 +355,7 @@ class ConfigurationManager {
             return true;
             
         } catch (error) {
-            this._handleError(error, 'set', { key, value });
+            this._handleError(error, 'set', { key: finalKey, value: finalValue });
             return false;
         }
     }

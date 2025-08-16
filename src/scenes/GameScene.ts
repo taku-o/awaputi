@@ -368,7 +368,7 @@ export class GameScene extends Scene implements GameSceneState {
      * 時間警告の処理
      */
     private handleTimeWarnings(): void {
-        const warnings: TimeWarnings = this.stateManager.checkTimeWarning();
+        const warnings: TimeWarnings = this.stateManager.checkTimeWarning() as TimeWarnings;
         if (warnings.timeWarning || warnings.urgentWarning) {
             this.uiManager.showTimeWarnings(warnings);
         }

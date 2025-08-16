@@ -27,7 +27,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene {
     public showingUserInfo: boolean = false;
     public showingDataClearConfirmation: boolean = false;
     public showingControlsHelp: boolean = false;
-    public resizeCallback?: () => void;
+    public resizeCallback?: (() => void) | null;
     
     // Sub-components
     public mainMenuRenderer: any;
@@ -159,7 +159,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene {
                 if (index > -1) {
                     this.gameEngine.responsiveCanvas.onResizeCallbacks.splice(index, 1);
                 }
-                this.resizeCallback = undefined;
+                this.resizeCallback = null;
             }
         } catch (error) {
             this.errorHandler.handleError(error, {
