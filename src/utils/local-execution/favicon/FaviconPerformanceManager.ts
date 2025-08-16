@@ -6,11 +6,75 @@
  * @version 1.0.0
  */
 
+// Type definitions
+interface PerformanceConfig {
+    lazyLoadingEnabled: boolean;
+    batchProcessing: boolean;
+    memoryCleanupEnabled: boolean;
+    maxConcurrentGeneration: number;
+    cacheCompressionEnabled: boolean;
+    debounceDelay: number;
+}
+
+interface CanvasPoolItem {
+    canvas: HTMLCanvasElement;
+    context: CanvasRenderingContext2D;
+    size: number;
+    inUse: boolean;
+    createdAt: number;
+}
+
+interface ResourcePool {
+    canvasElements: CanvasPoolItem[];
+    contexts: CanvasRenderingContext2D[];
+    generationQueue: any[];
+    activeGenerations: number;
+}
+
+interface CanvasInfo {
+    canvas: HTMLCanvasElement;
+    ctx: CanvasRenderingContext2D;
+    fromPool: boolean;
+    poolIndex: number;
+}
+
+interface GenerationRequest {
+    size: number;
+    [key: string]: any;
+}
+
+interface BatchResult {
+    status: 'fulfilled' | 'rejected';
+    value?: any;
+    reason?: any;
+}
+
+interface PerformanceStats {
+    resourcePool: {
+        totalCanvasElements: number;
+        activeCanvasElements: number;
+        queuedGenerations: number;
+        activeGenerations: number;
+    };
+    config: PerformanceConfig;
+    debounceTimers: number;
+    memoryUsage: MemoryUsage;
+}
+
+interface MemoryUsage {
+    canvasMemoryBytes: number;
+    canvasMemoryKB: number;
+    canvasMemoryMB: number;
+}
+
+type RenderCallback = (canvasInfo: CanvasInfo, request: GenerationRequest) => Promise<any>;
+type GenerationFunction = () => Promise<any>;
+
 export default class FaviconPerformanceManager {
     /**
      * パフォーマンス設定
      */
-    static PERFORMANCE_CONFIG = {
+    static PERFORMANCE_CONFIG: PerformanceConfig = {
         lazyLoadingEnabled: true,
         batchProcessing: true,
         memoryCleanupEnabled: true,
@@ -22,7 +86,7 @@ export default class FaviconPerformanceManager {
     /**
      * リソースプール
      */
-    static _resourcePool = {
+    private static _resourcePool: ResourcePool = {
         canvasElements: [],
         contexts: [],
         generationQueue: [],
@@ -32,14 +96,14 @@ export default class FaviconPerformanceManager {
     /**
      * デバウンス用タイマー
      */
-    static _debounceTimers = new Map();
+    private static _debounceTimers = new Map<string, NodeJS.Timeout | number>();
     
     /**
      * Canvas要素プールから取得
-     * @param {number} size - サイズ
-     * @returns {Object} Canvas要素とコンテキスト
+     * @param size - サイズ
+     * @returns Canvas要素とコンテキスト
      */
-    static getCanvasFromPool(size) {
+    static getCanvasFromPool(size: number): CanvasInfo {
         // プールから再利用可能なCanvasを探す
         const poolIndex = this._resourcePool.canvasElements.findIndex(
             (item) => item.size === size && !item.inUse
@@ -67,8 +131,12 @@ export default class FaviconPerformanceManager {
         canvas.height = size;
         const ctx = canvas.getContext('2d');
         
+        if (!ctx) {
+            throw new Error('Could not get 2D context from canvas');
+        }
+        
         // プールに追加
-        const poolItem = {
+        const poolItem: CanvasPoolItem = {
             canvas,
             context: ctx,
             size,
@@ -88,9 +156,9 @@ export default class FaviconPerformanceManager {
     
     /**
      * Canvas要素をプールに返却
-     * @param {number} poolIndex - プールインデックス
+     * @param poolIndex - プールインデックス
      */
-    static returnCanvasToPool(poolIndex) {
+    static returnCanvasToPool(poolIndex: number): void {
         if (poolIndex >= 0 && poolIndex < this._resourcePool.canvasElements.length) {
             this._resourcePool.canvasElements[poolIndex].inUse = false;
         }
@@ -98,12 +166,12 @@ export default class FaviconPerformanceManager {
     
     /**
      * バッチ処理でファビコン生成
-     * @param {Array<Object>} requests - 生成リクエスト配列
-     * @param {Function} renderCallback - レンダリングコールバック
-     * @returns {Promise<Array>} 生成結果配列
+     * @param requests - 生成リクエスト配列
+     * @param renderCallback - レンダリングコールバック
+     * @returns 生成結果配列
      */
-    static async processBatch(requests, renderCallback) {
-        const results = [];
+    static async processBatch(requests: GenerationRequest[], renderCallback: RenderCallback): Promise<BatchResult[]> {
+        const results: BatchResult[] = [];
         const batches = this._createBatches(requests, this.PERFORMANCE_CONFIG.maxConcurrentGeneration);
         
         for (const batch of batches) {
@@ -112,7 +180,11 @@ export default class FaviconPerformanceManager {
             );
             
             const batchResults = await Promise.allSettled(batchPromises);
-            results.push(...batchResults);
+            results.push(...batchResults.map(result => ({
+                status: result.status,
+                value: result.status === 'fulfilled' ? result.value : undefined,
+                reason: result.status === 'rejected' ? result.reason : undefined
+            })));
         }
         
         return results;
@@ -120,17 +192,20 @@ export default class FaviconPerformanceManager {
     
     /**
      * 遅延読み込み処理
-     * @param {Function} generationFunction - 生成関数
-     * @param {string} identifier - 識別子
-     * @param {number} delay - 遅延時間
-     * @returns {Promise} 生成プロミス
+     * @param generationFunction - 生成関数
+     * @param identifier - 識別子
+     * @param delay - 遅延時間
+     * @returns 生成プロミス
      */
-    static lazyLoad(generationFunction, identifier, delay = null) {
+    static lazyLoad(generationFunction: GenerationFunction, identifier: string, delay: number | null = null): Promise<any> {
         const debounceDelay = delay || this.PERFORMANCE_CONFIG.debounceDelay;
         
         // 既存のタイマーをクリア
         if (this._debounceTimers.has(identifier)) {
-            clearTimeout(this._debounceTimers.get(identifier));
+            const timer = this._debounceTimers.get(identifier);
+            if (timer !== undefined) {
+                clearTimeout(timer as number);
+            }
         }
         
         return new Promise((resolve, reject) => {
@@ -152,7 +227,7 @@ export default class FaviconPerformanceManager {
     /**
      * メモリクリーンアップ
      */
-    static cleanupMemory() {
+    static cleanupMemory(): void {
         if (!this.PERFORMANCE_CONFIG.memoryCleanupEnabled) {
             return;
         }
@@ -174,21 +249,21 @@ export default class FaviconPerformanceManager {
         
         // デバウンスタイマーをクリーンアップ
         this._debounceTimers.forEach((timer, identifier) => {
-            clearTimeout(timer);
+            clearTimeout(timer as number);
         });
         this._debounceTimers.clear();
         
         // 強制ガベージコレクション（利用可能な場合）
-        if (typeof window !== 'undefined' && window.gc) {
-            window.gc();
+        if (typeof window !== 'undefined' && (window as any).gc) {
+            (window as any).gc();
         }
     }
     
     /**
      * パフォーマンス統計取得
-     * @returns {Object} パフォーマンス統計
+     * @returns パフォーマンス統計
      */
-    static getPerformanceStats() {
+    static getPerformanceStats(): PerformanceStats {
         return {
             resourcePool: {
                 totalCanvasElements: this._resourcePool.canvasElements.length,
@@ -204,20 +279,20 @@ export default class FaviconPerformanceManager {
     
     /**
      * パフォーマンス設定更新
-     * @param {Object} newConfig - 新しい設定
+     * @param newConfig - 新しい設定
      */
-    static updateConfig(newConfig) {
+    static updateConfig(newConfig: Partial<PerformanceConfig>): void {
         Object.assign(this.PERFORMANCE_CONFIG, newConfig);
     }
     
     /**
      * リクエストを処理
      * @private
-     * @param {Object} request - リクエスト
-     * @param {Function} renderCallback - レンダリングコールバック
-     * @returns {Promise} 処理結果
+     * @param request - リクエスト
+     * @param renderCallback - レンダリングコールバック
+     * @returns 処理結果
      */
-    static async _processSingleRequest(request, renderCallback) {
+    private static async _processSingleRequest(request: GenerationRequest, renderCallback: RenderCallback): Promise<BatchResult> {
         this._resourcePool.activeGenerations++;
         
         try {
@@ -236,12 +311,12 @@ export default class FaviconPerformanceManager {
     /**
      * バッチ作成
      * @private
-     * @param {Array} items - アイテム配列
-     * @param {number} batchSize - バッチサイズ
-     * @returns {Array<Array>} バッチ配列
+     * @param items - アイテム配列
+     * @param batchSize - バッチサイズ
+     * @returns バッチ配列
      */
-    static _createBatches(items, batchSize) {
-        const batches = [];
+    private static _createBatches<T>(items: T[], batchSize: number): T[][] {
+        const batches: T[][] = [];
         for (let i = 0; i < items.length; i += batchSize) {
             batches.push(items.slice(i, i + batchSize));
         }
@@ -251,9 +326,9 @@ export default class FaviconPerformanceManager {
     /**
      * メモリ使用量推定
      * @private
-     * @returns {Object} メモリ使用量情報
+     * @returns メモリ使用量情報
      */
-    static _estimateMemoryUsage() {
+    private static _estimateMemoryUsage(): MemoryUsage {
         let estimatedSize = 0;
         
         this._resourcePool.canvasElements.forEach(item => {

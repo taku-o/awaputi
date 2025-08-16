@@ -6,20 +6,49 @@
  * @version 1.0.0
  */
 
+// Type definitions
+interface FaviconData {
+    size: number | 'ico';
+    dataURL: string;
+    type: string;
+}
+
+interface BrowserCompatibility {
+    browser: {
+        name: string;
+        version?: string;
+    };
+}
+
+interface ValidationResult {
+    hasIcoFavicon: boolean;
+    hasPngFavicons: boolean;
+    hasAppleTouchIcon: boolean;
+    totalLinks: number;
+    sizes: string[];
+    issues: string[];
+}
+
+interface FaviconMetadata {
+    manifestURL?: string;
+    themeColor?: string;
+    msTileColor?: string;
+}
+
 export default class FaviconDOMManager {
     /**
      * 既存のfavicon link要素を削除
      */
-    static removeExistingFavicons() {
+    static removeExistingFavicons(): void {
         const existingLinks = document.querySelectorAll('link[rel*="icon"]');
         existingLinks.forEach(link => link.remove());
     }
     
     /**
      * favicon link要素をDOMに追加
-     * @param {Array<Object>} faviconData - ファビコンデータ配列
+     * @param faviconData - ファビコンデータ配列
      */
-    static addFaviconsToDOM(faviconData) {
+    static addFaviconsToDOM(faviconData: FaviconData[]): void {
         const head = document.head;
         
         faviconData.forEach(({ size, dataURL, type }) => {
@@ -44,7 +73,7 @@ export default class FaviconDOMManager {
         // Apple Touch Icon（最大サイズを使用）
         const largestFavicon = faviconData
             .filter(favicon => typeof favicon.size === 'number')
-            .sort((a, b) => b.size - a.size)[0];
+            .sort((a, b) => (b.size as number) - (a.size as number))[0];
             
         if (largestFavicon) {
             const appleLink = document.createElement('link');
@@ -56,10 +85,10 @@ export default class FaviconDOMManager {
     
     /**
      * ブラウザ互換性に応じたfavicon追加
-     * @param {Map<number, string>} faviconMap - サイズごとのfavicon Map
-     * @param {Object} browserCompatibility - ブラウザ互換性情報
+     * @param faviconMap - サイズごとのfavicon Map
+     * @param browserCompatibility - ブラウザ互換性情報
      */
-    static addBrowserSpecificFavicons(faviconMap, browserCompatibility) {
+    static addBrowserSpecificFavicons(faviconMap: Map<number, string>, browserCompatibility: BrowserCompatibility): void {
         const head = document.head;
         
         // 標準的なfavicon.ico
@@ -67,7 +96,7 @@ export default class FaviconDOMManager {
             const icoLink = document.createElement('link');
             icoLink.rel = 'shortcut icon';
             icoLink.type = 'image/x-icon';
-            icoLink.href = faviconMap.get(32);
+            icoLink.href = faviconMap.get(32)!;
             head.appendChild(icoLink);
         }
         
@@ -86,11 +115,11 @@ export default class FaviconDOMManager {
     
     /**
      * 既存のfaviconリンクを検証
-     * @returns {Object} 検証結果
+     * @returns 検証結果
      */
-    static validateExistingFavicons() {
+    static validateExistingFavicons(): ValidationResult {
         const existingLinks = document.querySelectorAll('link[rel*="icon"]');
-        const validation = {
+        const validation: ValidationResult = {
             hasIcoFavicon: false,
             hasPngFavicons: false,
             hasAppleTouchIcon: false,
@@ -100,10 +129,11 @@ export default class FaviconDOMManager {
         };
         
         existingLinks.forEach(link => {
-            const rel = link.rel;
-            const href = link.href;
-            const type = link.type;
-            const sizes = link.sizes;
+            const linkElement = link as HTMLLinkElement;
+            const rel = linkElement.rel;
+            const href = linkElement.href;
+            const type = linkElement.type;
+            const sizes = linkElement.sizes;
             
             if (rel === 'icon' || rel === 'shortcut icon') {
                 if (type === 'image/x-icon' || href.endsWith('.ico')) {
@@ -133,11 +163,11 @@ export default class FaviconDOMManager {
     
     /**
      * favicon要素のメタデータを更新
-     * @param {Object} metadata - メタデータ
+     * @param metadata - メタデータ
      */
-    static updateFaviconMetadata(metadata) {
+    static updateFaviconMetadata(metadata: FaviconMetadata): void {
         // マニフェストファイルへの参照を追加/更新
-        let manifestLink = document.querySelector('link[rel="manifest"]');
+        let manifestLink = document.querySelector('link[rel="manifest"]') as HTMLLinkElement;
         if (!manifestLink && metadata.manifestURL) {
             manifestLink = document.createElement('link');
             manifestLink.rel = 'manifest';
@@ -147,7 +177,7 @@ export default class FaviconDOMManager {
         
         // theme-colorメタタグの追加
         if (metadata.themeColor) {
-            let themeColorMeta = document.querySelector('meta[name="theme-color"]');
+            let themeColorMeta = document.querySelector('meta[name="theme-color"]') as HTMLMetaElement;
             if (!themeColorMeta) {
                 themeColorMeta = document.createElement('meta');
                 themeColorMeta.name = 'theme-color';
@@ -158,7 +188,7 @@ export default class FaviconDOMManager {
         
         // MSタイル設定
         if (metadata.msTileColor) {
-            let msTileMeta = document.querySelector('meta[name="msapplication-TileColor"]');
+            let msTileMeta = document.querySelector('meta[name="msapplication-TileColor"]') as HTMLMetaElement;
             if (!msTileMeta) {
                 msTileMeta = document.createElement('meta');
                 msTileMeta.name = 'msapplication-TileColor';
@@ -171,19 +201,19 @@ export default class FaviconDOMManager {
     /**
      * Safari固有のfavicon追加
      * @private
-     * @param {Map} faviconMap - favicon Map
-     * @param {HTMLElement} head - head要素
+     * @param faviconMap - favicon Map
+     * @param head - head要素
      */
-    static _addSafariFavicons(faviconMap, head) {
+    private static _addSafariFavicons(faviconMap: Map<number, string>, head: HTMLHeadElement): void {
         // Safari用のapple-touch-iconを複数サイズで追加
-        const safariSizes = [57, 60, 72, 76, 114, 120, 144, 152, 180];
+        const safariSizes: number[] = [57, 60, 72, 76, 114, 120, 144, 152, 180];
         
         safariSizes.forEach(size => {
             if (faviconMap.has(size)) {
                 const link = document.createElement('link');
                 link.rel = 'apple-touch-icon';
                 link.sizes = `${size}x${size}`;
-                link.href = faviconMap.get(size);
+                link.href = faviconMap.get(size)!;
                 head.appendChild(link);
             }
         });
@@ -192,18 +222,20 @@ export default class FaviconDOMManager {
     /**
      * Chrome固有のfavicon追加
      * @private
-     * @param {Map} faviconMap - favicon Map
-     * @param {HTMLElement} head - head要素
+     * @param faviconMap - favicon Map
+     * @param head - head要素
      */
-    static _addChromeFavicons(faviconMap, head) {
+    private static _addChromeFavicons(faviconMap: Map<number, string>, head: HTMLHeadElement): void {
         // Chrome用のicon追加
-        [16, 32, 48, 96, 192].forEach(size => {
+        const chromeSizes: number[] = [16, 32, 48, 96, 192];
+        
+        chromeSizes.forEach(size => {
             if (faviconMap.has(size)) {
                 const link = document.createElement('link');
                 link.rel = 'icon';
                 link.type = 'image/png';
                 link.sizes = `${size}x${size}`;
-                link.href = faviconMap.get(size);
+                link.href = faviconMap.get(size)!;
                 head.appendChild(link);
             }
         });
@@ -212,18 +244,20 @@ export default class FaviconDOMManager {
     /**
      * Firefox固有のfavicon追加
      * @private
-     * @param {Map} faviconMap - favicon Map
-     * @param {HTMLElement} head - head要素
+     * @param faviconMap - favicon Map
+     * @param head - head要素
      */
-    static _addFirefoxFavicons(faviconMap, head) {
+    private static _addFirefoxFavicons(faviconMap: Map<number, string>, head: HTMLHeadElement): void {
         // Firefox用のicon追加
-        [16, 32, 48].forEach(size => {
+        const firefoxSizes: number[] = [16, 32, 48];
+        
+        firefoxSizes.forEach(size => {
             if (faviconMap.has(size)) {
                 const link = document.createElement('link');
                 link.rel = 'icon';
                 link.type = 'image/png';
                 link.sizes = `${size}x${size}`;
-                link.href = faviconMap.get(size);
+                link.href = faviconMap.get(size)!;
                 head.appendChild(link);
             }
         });
@@ -232,18 +266,20 @@ export default class FaviconDOMManager {
     /**
      * PWA対応のfavicon追加
      * @private
-     * @param {Map} faviconMap - favicon Map
-     * @param {HTMLElement} head - head要素
+     * @param faviconMap - favicon Map
+     * @param head - head要素
      */
-    static _addPWAFavicons(faviconMap, head) {
+    private static _addPWAFavicons(faviconMap: Map<number, string>, head: HTMLHeadElement): void {
         // PWA用の大きなアイコン
-        [192, 512].forEach(size => {
+        const pwaLargeSizes: number[] = [192, 512];
+        
+        pwaLargeSizes.forEach(size => {
             if (faviconMap.has(size)) {
                 const link = document.createElement('link');
                 link.rel = 'icon';
                 link.type = 'image/png';
                 link.sizes = `${size}x${size}`;
-                link.href = faviconMap.get(size);
+                link.href = faviconMap.get(size)!;
                 head.appendChild(link);
             }
         });
@@ -254,7 +290,7 @@ export default class FaviconDOMManager {
             link.rel = 'icon';
             link.type = 'image/png';
             link.sizes = '192x192';
-            link.href = faviconMap.get(192);
+            link.href = faviconMap.get(192)!;
             head.appendChild(link);
         }
     }

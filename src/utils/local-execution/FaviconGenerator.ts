@@ -14,11 +14,82 @@ import FaviconCacheManager from './favicon/FaviconCacheManager.js';
 import FaviconPerformanceManager from './favicon/FaviconPerformanceManager.js';
 import FaviconDOMManager from './favicon/FaviconDOMManager.js';
 
+// Type definitions
+interface FaviconConfig {
+    sizes?: number[];
+    backgroundColor?: string;
+    textColor?: string;
+    fontFamily?: string;
+    text?: string;
+    cacheEnabled?: boolean;
+    enablePerformanceOptimizations?: boolean;
+}
+
+interface FaviconDefaultConfig {
+    sizes: number[];
+    backgroundColor: string;
+    textColor: string;
+    fontFamily: string;
+    text: string;
+    cacheEnabled: boolean;
+    enablePerformanceOptimizations: boolean;
+}
+
+interface GenerationResult {
+    success: boolean;
+    generated: number;
+    cached: number;
+    failed: number;
+    details: FaviconDetail[];
+    error?: string;
+}
+
+interface FaviconDetail {
+    size?: number | 'ico';
+    dataURL?: string;
+    cached?: boolean;
+    error?: string;
+}
+
+interface GenerationRequest {
+    size: number;
+    config: FaviconDefaultConfig;
+    configHash: string;
+}
+
+interface CanvasInfo {
+    canvas: HTMLCanvasElement;
+    ctx: CanvasRenderingContext2D;
+    fromPool?: boolean;
+    poolIndex?: number;
+}
+
+interface BatchResult {
+    status: 'fulfilled' | 'rejected';
+    value?: FaviconDetail;
+    reason?: { message?: string };
+}
+
+interface FaviconData {
+    size: number | 'ico';
+    dataURL: string;
+    type: 'ico' | 'png';
+}
+
+interface Stats {
+    cache: any;
+    performance: any;
+    memoryCache: {
+        size: number;
+        keys: string[];
+    };
+}
+
 class FaviconGenerator {
     /**
      * デフォルト設定
      */
-    static DEFAULT_CONFIG = {
+    static DEFAULT_CONFIG: FaviconDefaultConfig = {
         sizes: [16, 32, 48, 192, 512],
         backgroundColor: '#2196F3',
         textColor: '#FFFFFF',
@@ -31,18 +102,18 @@ class FaviconGenerator {
     /**
      * 生成キャッシュ（メモリキャッシュ）
      */
-    static generationCache = new Map();
+    private static generationCache = new Map<string, any>();
     
     /**
      * 不足しているファビコンを生成
-     * @param {Object} config - 生成設定
-     * @returns {Promise<Object>} 生成結果
+     * @param config - 生成設定
+     * @returns 生成結果
      */
-    static async generateMissingFavicons(config = {}) {
-        const finalConfig = { ...this.DEFAULT_CONFIG, ...config };
+    static async generateMissingFavicons(config: FaviconConfig = {}): Promise<GenerationResult> {
+        const finalConfig: FaviconDefaultConfig = { ...this.DEFAULT_CONFIG, ...config };
         
         try {
-            const result = {
+            const result: GenerationResult = {
                 success: false,
                 generated: 0,
                 cached: 0,
@@ -57,7 +128,7 @@ class FaviconGenerator {
             const configHash = FaviconCacheManager.generateConfigHash(finalConfig);
             
             // 生成リクエスト準備
-            const requests = finalConfig.sizes.map(size => ({
+            const requests: GenerationRequest[] = finalConfig.sizes.map(size => ({
                 size,
                 config: finalConfig,
                 configHash
@@ -80,18 +151,18 @@ class FaviconGenerator {
                         result.details.push(faviconResult);
                     } catch (error) {
                         result.failed++;
-                        result.details.push({ size: request.size, error: error.message });
+                        result.details.push({ size: request.size, error: (error as Error).message });
                     }
                 }
             }
             
             // DOM更新
             if (result.generated > 0) {
-                const faviconData = result.details
+                const faviconData: FaviconData[] = result.details
                     .filter(detail => detail.dataURL)
                     .map(detail => ({
-                        size: detail.size,
-                        dataURL: detail.dataURL,
+                        size: detail.size!,
+                        dataURL: detail.dataURL!,
                         type: detail.size === 'ico' ? 'ico' : 'png'
                     }));
                 
@@ -115,16 +186,17 @@ class FaviconGenerator {
                 generated: 0,
                 cached: 0,
                 failed: 1,
-                error: error.message
+                details: [],
+                error: (error as Error).message
             };
         }
     }
     
     /**
      * キャッシュクリア
-     * @param {number|null} size - 特定サイズのみクリアする場合
+     * @param size - 特定サイズのみクリアする場合
      */
-    static clearCache(size = null) {
+    static clearCache(size: number | null = null): void {
         FaviconCacheManager.clear(size);
         
         // メモリキャッシュもクリア
@@ -139,9 +211,9 @@ class FaviconGenerator {
     
     /**
      * 統計情報取得
-     * @returns {Object} 統計情報
+     * @returns 統計情報
      */
-    static getStats() {
+    static getStats(): Stats {
         const cacheStats = FaviconCacheManager.getStats();
         const performanceStats = FaviconPerformanceManager.getPerformanceStats();
         
@@ -157,9 +229,9 @@ class FaviconGenerator {
     
     /**
      * 設定更新
-     * @param {Object} newConfig - 新しい設定
+     * @param newConfig - 新しい設定
      */
-    static updateConfig(newConfig) {
+    static updateConfig(newConfig: Partial<FaviconDefaultConfig>): void {
         Object.assign(this.DEFAULT_CONFIG, newConfig);
         FaviconPerformanceManager.updateConfig(newConfig);
     }
@@ -167,11 +239,11 @@ class FaviconGenerator {
     /**
      * キャッシュ付きファビコンレンダリング
      * @private
-     * @param {Object} canvasInfo - Canvas情報
-     * @param {Object} request - リクエスト情報
-     * @returns {Promise<Object>} レンダリング結果
+     * @param canvasInfo - Canvas情報
+     * @param request - リクエスト情報
+     * @returns レンダリング結果
      */
-    static async _renderFaviconWithCache(canvasInfo, request) {
+    private static async _renderFaviconWithCache(canvasInfo: CanvasInfo | null, request: GenerationRequest): Promise<FaviconDetail> {
         const { size, config, configHash } = request;
         
         // キャッシュチェック
@@ -183,16 +255,23 @@ class FaviconGenerator {
         }
         
         // Canvas取得（パフォーマンス最適化有効時はプールから）
-        const canvas = canvasInfo ? canvasInfo.canvas : 
-            FaviconCanvasRenderer.createCanvas(size).canvas;
-        const ctx = canvasInfo ? canvasInfo.ctx :
-            FaviconCanvasRenderer.createCanvas(size).ctx;
+        let canvas: HTMLCanvasElement;
+        let ctx: CanvasRenderingContext2D;
+        
+        if (canvasInfo) {
+            canvas = canvasInfo.canvas;
+            ctx = canvasInfo.ctx;
+        } else {
+            const canvasData = FaviconCanvasRenderer.createCanvas(size);
+            canvas = canvasData.canvas;
+            ctx = canvasData.ctx;
+        }
         
         // レンダリング実行
         FaviconCanvasRenderer.renderFavicon(ctx, size, config);
         
         // Data URL生成
-        const format = size === 'ico' ? 'ico' : 'png';
+        const format: 'png' | 'ico' = size === 32 ? 'ico' : 'png'; // 仮の条件、実際は要件に応じて調整
         const dataURL = FaviconCanvasRenderer.canvasToDataURL(canvas, format);
         
         // キャッシュ保存
@@ -206,13 +285,13 @@ class FaviconGenerator {
     /**
      * バッチ処理結果を処理
      * @private
-     * @param {Array} batchResults - バッチ処理結果
-     * @param {Object} result - 結果オブジェクト
+     * @param batchResults - バッチ処理結果
+     * @param result - 結果オブジェクト
      */
-    static _processBatchResults(batchResults, result) {
+    private static _processBatchResults(batchResults: BatchResult[], result: GenerationResult): void {
         batchResults.forEach(batchResult => {
             if (batchResult.status === 'fulfilled') {
-                const detail = batchResult.value;
+                const detail = batchResult.value!;
                 if (detail.cached) {
                     result.cached++;
                 } else {

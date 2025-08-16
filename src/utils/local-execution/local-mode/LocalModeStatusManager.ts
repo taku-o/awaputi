@@ -6,13 +6,125 @@
  * @version 1.0.0
  */
 
+// Type definitions
+interface LocalModeManager {
+    isInitialized: boolean;
+    config: LocalModeConfig;
+    executionContext?: ExecutionContext;
+    _initializationMetrics?: InitializationMetrics;
+    _resourcePreloadPromises?: Map<string, Promise<any>>;
+    _componentCache?: Map<string, any>;
+    initializationPromise?: Promise<any>;
+}
+
+interface LocalModeConfig {
+    debugMode?: boolean;
+    enableErrorHandling?: boolean;
+    enableMetaTagOptimization?: boolean;
+    enableFaviconGeneration?: boolean;
+    enableDeveloperGuidance?: boolean;
+    enablePerformanceOptimizations?: boolean;
+    maxConcurrentTasks?: number;
+    [key: string]: any;
+}
+
+interface ExecutionContext {
+    isLocal: boolean;
+    protocol: string;
+    url: string;
+    domain: string;
+    path: string;
+    canUseCanvas?: boolean;
+    canUseLocalStorage?: boolean;
+    canUseModules?: boolean;
+}
+
+interface InitializationMetrics {
+    startTime: number | null;
+    endTime: number | null;
+    componentTimes: Record<string, number>;
+    totalExecutionTime: number;
+    optimizationsApplied: string[];
+}
+
+interface StatusInfo {
+    isInitialized: boolean;
+    isLocalMode: boolean;
+    config: LocalModeConfig;
+    executionContext: {
+        protocol: string;
+        isLocal: boolean;
+        canUseCanvas?: boolean;
+        canUseLocalStorage?: boolean;
+        canUseModules?: boolean;
+    } | null;
+    timestamp: string;
+}
+
+interface HealthCheck {
+    overall: 'healthy' | 'degraded' | 'unhealthy';
+    checks: Record<string, {
+        status: 'pass' | 'warning' | 'fail';
+        message: string;
+        value?: any;
+    }>;
+    warnings: string[];
+    errors: string[];
+    score: number;
+}
+
+interface ComponentDebugInfo {
+    available: boolean;
+    error?: string;
+    context?: any;
+    stats?: any;
+    initialized?: boolean;
+    support?: any;
+}
+
+interface DebugInfo {
+    status: StatusInfo;
+    components: Record<string, ComponentDebugInfo>;
+    performance: {
+        initializationMetrics: InitializationMetrics | null;
+        resourcePreloads: {
+            count: number;
+            promises: string[];
+        };
+        componentCache: {
+            size: number;
+            keys: string[];
+        };
+    };
+    cache: {
+        componentCache?: {
+            size: number;
+            entries: [string, any][];
+        };
+        resourcePreloads?: {
+            size: number;
+            keys: string[];
+        };
+        error?: string;
+    };
+    errors: any;
+    browser: any;
+    resources: any;
+}
+
+interface ConfigChange {
+    key: string;
+    old: any;
+    new: any;
+}
+
 export default class LocalModeStatusManager {
     /**
      * 状態情報取得
-     * @param {Object} manager - LocalModeManagerインスタンス
-     * @returns {Object} 状態情報
+     * @param manager - LocalModeManagerインスタンス
+     * @returns 状態情報
      */
-    static getStatus(manager) {
+    static getStatus(manager: LocalModeManager): StatusInfo {
         return {
             isInitialized: manager.isInitialized,
             isLocalMode: manager.executionContext?.isLocal || false,
@@ -30,10 +142,10 @@ export default class LocalModeStatusManager {
     
     /**
      * デバッグ情報取得
-     * @param {Object} manager - LocalModeManagerインスタンス
-     * @returns {Object} デバッグ情報
+     * @param manager - LocalModeManagerインスタンス
+     * @returns デバッグ情報
      */
-    static getDebugInfo(manager) {
+    static getDebugInfo(manager: LocalModeManager): DebugInfo {
         return {
             status: this.getStatus(manager),
             components: this._getComponentsDebugInfo(manager),
@@ -47,10 +159,10 @@ export default class LocalModeStatusManager {
     
     /**
      * 設定更新
-     * @param {Object} manager - LocalModeManagerインスタンス
-     * @param {Object} newConfig - 新しい設定
+     * @param manager - LocalModeManagerインスタンス
+     * @param newConfig - 新しい設定
      */
-    static updateConfig(manager, newConfig) {
+    static updateConfig(manager: LocalModeManager, newConfig: Partial<LocalModeConfig>): LocalModeConfig {
         const oldConfig = { ...manager.config };
         manager.config = { ...manager.config, ...newConfig };
         
@@ -68,11 +180,11 @@ export default class LocalModeStatusManager {
     
     /**
      * ヘルスチェック
-     * @param {Object} manager - LocalModeManagerインスタンス
-     * @returns {Object} ヘルスチェック結果
+     * @param manager - LocalModeManagerインスタンス
+     * @returns ヘルスチェック結果
      */
-    static getHealthCheck(manager) {
-        const health = {
+    static getHealthCheck(manager: LocalModeManager): HealthCheck {
+        const health: HealthCheck = {
             overall: 'healthy',
             checks: {},
             warnings: [],
@@ -94,9 +206,9 @@ export default class LocalModeStatusManager {
             };
             
             // ブラウザ機能チェック
-            const capabilities = ['canUseCanvas', 'canUseLocalStorage', 'canUseModules'];
+            const capabilities = ['canUseCanvas', 'canUseLocalStorage', 'canUseModules'] as const;
             capabilities.forEach(cap => {
-                const supported = manager.executionContext[cap];
+                const supported = manager.executionContext![cap];
                 health.checks[cap] = {
                     status: supported ? 'pass' : 'warning',
                     message: `${cap}: ${supported ? 'supported' : 'not supported'}`
@@ -142,56 +254,56 @@ export default class LocalModeStatusManager {
      * コンポーネントデバッグ情報取得
      * @private
      */
-    static _getComponentsDebugInfo(manager) {
-        const components = {};
+    private static _getComponentsDebugInfo(manager: LocalModeManager): Record<string, ComponentDebugInfo> {
+        const components: Record<string, ComponentDebugInfo> = {};
         
         // LocalExecutionDetector
         try {
             const LocalExecutionDetector = 
                 (typeof require !== 'undefined' && require('../LocalExecutionDetector.js')) ||
-                (typeof window !== 'undefined' && window.LocalExecutionDetector);
+                (typeof window !== 'undefined' && (window as any).LocalExecutionDetector);
                 
             components.localExecutionDetector = {
                 available: !!LocalExecutionDetector,
                 context: manager.executionContext || null
             };
         } catch (error) {
-            components.localExecutionDetector = { available: false, error: error.message };
+            components.localExecutionDetector = { available: false, error: (error as Error).message };
         }
         
         // FaviconGenerator
         try {
             const FaviconGenerator =
                 (typeof require !== 'undefined' && require('../FaviconGenerator.js')) ||
-                (typeof window !== 'undefined' && window.FaviconGenerator);
+                (typeof window !== 'undefined' && (window as any).FaviconGenerator);
                 
             components.faviconGenerator = {
                 available: !!FaviconGenerator,
                 stats: FaviconGenerator?.getStats?.() || null
             };
         } catch (error) {
-            components.faviconGenerator = { available: false, error: error.message };
+            components.faviconGenerator = { available: false, error: (error as Error).message };
         }
         
         // DeveloperGuidanceSystem
         try {
             const DeveloperGuidanceSystem =
                 (typeof require !== 'undefined' && require('../DeveloperGuidanceSystem.js')) ||
-                (typeof window !== 'undefined' && window.DeveloperGuidanceSystem);
+                (typeof window !== 'undefined' && (window as any).DeveloperGuidanceSystem);
                 
             components.developerGuidanceSystem = {
                 available: !!DeveloperGuidanceSystem,
                 initialized: DeveloperGuidanceSystem?.isInitialized || false
             };
         } catch (error) {
-            components.developerGuidanceSystem = { available: false, error: error.message };
+            components.developerGuidanceSystem = { available: false, error: (error as Error).message };
         }
         
         // LocalExecutionErrorHandler
         try {
             const LocalExecutionErrorHandler =
                 (typeof require !== 'undefined' && require('../LocalExecutionErrorHandler.js')) ||
-                (typeof window !== 'undefined' && window.LocalExecutionErrorHandler);
+                (typeof window !== 'undefined' && (window as any).LocalExecutionErrorHandler);
                 
             components.localExecutionErrorHandler = {
                 available: !!LocalExecutionErrorHandler,
@@ -199,21 +311,21 @@ export default class LocalModeStatusManager {
                 stats: LocalExecutionErrorHandler?.getDebugInfo?.() || null
             };
         } catch (error) {
-            components.localExecutionErrorHandler = { available: false, error: error.message };
+            components.localExecutionErrorHandler = { available: false, error: (error as Error).message };
         }
         
         // BrowserCompatibilityManager
         try {
             const BrowserCompatibilityManager =
                 (typeof require !== 'undefined' && require('../BrowserCompatibilityManager.js')) ||
-                (typeof window !== 'undefined' && window.BrowserCompatibilityManager);
+                (typeof window !== 'undefined' && (window as any).BrowserCompatibilityManager);
                 
             components.browserCompatibilityManager = {
                 available: !!BrowserCompatibilityManager,
                 support: BrowserCompatibilityManager?.getComprehensiveSupport?.() || null
             };
         } catch (error) {
-            components.browserCompatibilityManager = { available: false, error: error.message };
+            components.browserCompatibilityManager = { available: false, error: (error as Error).message };
         }
         
         return components;
@@ -223,7 +335,7 @@ export default class LocalModeStatusManager {
      * パフォーマンスデバッグ情報取得
      * @private
      */
-    static _getPerformanceDebugInfo(manager) {
+    private static _getPerformanceDebugInfo(manager: LocalModeManager) {
         return {
             initializationMetrics: manager._initializationMetrics || null,
             resourcePreloads: {
@@ -241,7 +353,7 @@ export default class LocalModeStatusManager {
      * キャッシュデバッグ情報取得
      * @private
      */
-    static _getCacheDebugInfo(manager) {
+    private static _getCacheDebugInfo(manager: LocalModeManager) {
         try {
             return {
                 componentCache: {
@@ -254,7 +366,7 @@ export default class LocalModeStatusManager {
                 }
             };
         } catch (error) {
-            return { error: error.message };
+            return { error: (error as Error).message };
         }
     }
     
@@ -262,15 +374,15 @@ export default class LocalModeStatusManager {
      * エラーデバッグ情報取得
      * @private
      */
-    static _getErrorDebugInfo() {
+    private static _getErrorDebugInfo() {
         try {
             const LocalModeErrorHandler = 
                 (typeof require !== 'undefined' && require('./LocalModeErrorHandler.js')) ||
-                (typeof window !== 'undefined' && window.LocalModeErrorHandler);
+                (typeof window !== 'undefined' && (window as any).LocalModeErrorHandler);
                 
             return LocalModeErrorHandler?.getErrorStats?.() || { available: false };
         } catch (error) {
-            return { available: false, error: error.message };
+            return { available: false, error: (error as Error).message };
         }
     }
     
@@ -278,7 +390,7 @@ export default class LocalModeStatusManager {
      * ブラウザデバッグ情報取得
      * @private
      */
-    static _getBrowserDebugInfo() {
+    private static _getBrowserDebugInfo() {
         if (typeof window === 'undefined') {
             return { environment: 'non-browser' };
         }
@@ -298,7 +410,7 @@ export default class LocalModeStatusManager {
      * リソースデバッグ情報取得
      * @private
      */
-    static _getResourceDebugInfo(manager) {
+    private static _getResourceDebugInfo(manager: LocalModeManager) {
         return {
             config: manager.config,
             executionContext: manager.executionContext,
@@ -311,8 +423,8 @@ export default class LocalModeStatusManager {
      * 変更されたキー取得
      * @private
      */
-    static _getChangedKeys(oldConfig, newConfig) {
-        const changed = [];
+    private static _getChangedKeys(oldConfig: LocalModeConfig, newConfig: LocalModeConfig): ConfigChange[] {
+        const changed: ConfigChange[] = [];
         
         Object.keys(newConfig).forEach(key => {
             if (oldConfig[key] !== newConfig[key]) {
