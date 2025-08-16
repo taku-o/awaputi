@@ -583,6 +583,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
      * 設定値の描画
      */
     renderSettingValue(context: CanvasRenderingContext2D, item: SettingItem, value: any, x: number, y: number, width: number, isSelected: boolean): void {
+        // @ts-ignore 将来のレイアウト計算で使用予定
         const _height = 30;
         const centerY = y + 20;
         
@@ -1405,6 +1406,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
         console.log('[SettingsScene] Current Profile:', currentProfile);
         
         // 簡易プロファイル選択（実際の実装では専用UIを作成）
+        // @ts-ignore 将来のプロファイル表示で使用予定
         const _profileNames = profiles.map(p => p.name);
         const currentIndex = profiles.findIndex(p => (p as any).id === (currentProfile ? (currentProfile as any).id : null));
         const nextIndex = (currentIndex + 1) % profiles.length;

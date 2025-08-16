@@ -182,33 +182,33 @@ describe('Event Flow Integration Tests', () => {
             level: 10,
             clearedStages: ['tutorial', 'stage1', 'stage2', 'stage3'],
             eventParticipationHistory: {},
-            addItem: jest.fn() as MockFunction<void>,
-            addSpecialReward: jest.fn() as MockFunction<void>,
-            getPlayerName: jest.fn().mockReturnValue('TestPlayer') as MockFunction<string>,
-            save: jest.fn() as MockFunction<void>
+            addItem: jest.fn() as unknown as MockFunction<void>,
+            addSpecialReward: jest.fn() as unknown as MockFunction<void>,
+            getPlayerName: jest.fn().mockReturnValue('TestPlayer') as unknown as MockFunction<string>,
+            save: jest.fn() as unknown as MockFunction<void>
         };
 
         // Mock StatisticsManager
         mockStatisticsManager = {
-            recordEventParticipation: jest.fn() as MockFunction<void>,
+            recordEventParticipation: jest.fn() as unknown as MockFunction<void>,
             getDetailedEventStatistics: jest.fn().mockReturnValue({
                 totalEvents: 0,
                 completionRate: 0,
                 averageScore: 0
             }) as MockFunction<GameStatistics>,
-            updateEventStats: jest.fn() as MockFunction<void>
+            updateEventStats: jest.fn() as unknown as MockFunction<void>
         };
 
         // Mock AchievementNotificationSystem
         mockAchievementNotificationSystem = {
-            queueNotification: jest.fn() as MockFunction<void>,
-            createEventNotification: jest.fn() as MockFunction<void>,
+            queueNotification: jest.fn() as unknown as MockFunction<void>,
+            createEventNotification: jest.fn() as unknown as MockFunction<void>,
             hasNotifications: jest.fn().mockReturnValue(false) as MockFunction<boolean>
         };
 
         // Mock SceneManager
         mockSceneManager = {
-            switchScene: jest.fn() as MockFunction<void>,
+            switchScene: jest.fn() as unknown as MockFunction<void>,
             getCurrentScene: jest.fn().mockReturnValue('StageSelectScene') as MockFunction<string>
         };
 
@@ -220,19 +220,19 @@ describe('Event Flow Integration Tests', () => {
             textAlign: '',
             textBaseline: '',
             globalAlpha: 1,
-            save: jest.fn() as MockFunction<void>,
-            restore: jest.fn() as MockFunction<void>,
-            fillText: jest.fn() as MockFunction<void>,
-            fillRect: jest.fn() as MockFunction<void>,
-            strokeRect: jest.fn() as MockFunction<void>,
-            beginPath: jest.fn() as MockFunction<void>,
-            arc: jest.fn() as MockFunction<void>,
-            fill: jest.fn() as MockFunction<void>,
-            stroke: jest.fn() as MockFunction<void>,
+            save: jest.fn() as unknown as MockFunction<void>,
+            restore: jest.fn() as unknown as MockFunction<void>,
+            fillText: jest.fn() as unknown as MockFunction<void>,
+            fillRect: jest.fn() as unknown as MockFunction<void>,
+            strokeRect: jest.fn() as unknown as MockFunction<void>,
+            beginPath: jest.fn() as unknown as MockFunction<void>,
+            arc: jest.fn() as unknown as MockFunction<void>,
+            fill: jest.fn() as unknown as MockFunction<void>,
+            stroke: jest.fn() as unknown as MockFunction<void>,
             measureText: jest.fn().mockReturnValue({ width: 100 }) as MockFunction<{ width: number }>,
-            clearRect: jest.fn() as MockFunction<void>,
+            clearRect: jest.fn() as unknown as MockFunction<void>,
             createLinearGradient: jest.fn().mockReturnValue({
-                addColorStop: jest.fn() as MockFunction<void>
+                addColorStop: jest.fn() as unknown as MockFunction<void>
             }) as MockFunction<MockGradient>
         };
 
@@ -473,7 +473,7 @@ describe('Event Flow Integration Tests', () => {
                 if (event.type === 'seasonal') {
                     const springDate = new Date('2024-04-15');
                     jest.spyOn(Date, 'now').mockReturnValue(springDate.getTime());
-                    eventStageManager.scheduleSeasonalEvents();
+                    (eventStageManager as any).scheduleSeasonalEvents();
                 } else {
                     (eventStageManager as any).adminActivateEvent(event.id, 3600000);
                 }
@@ -623,7 +623,7 @@ describe('Event Flow Integration Tests', () => {
             const newEventRankingManager = new EventRankingManager(mockGameEngine);
 
             // 4. Load data
-            const eventLoadResult: boolean = newEventStageManager.loadEventData();
+            const eventLoadResult: boolean = (newEventStageManager as any).loadEventData();
             expect(eventLoadResult).toBe(true);
 
             // 5. Verify data was restored
@@ -649,7 +649,7 @@ describe('Event Flow Integration Tests', () => {
 
             // 2. Load with new manager (should trigger migration)
             const newEventStageManager = new EventStageManager(mockGameEngine);
-            const loadResult: boolean = newEventStageManager.loadEventData();
+            const loadResult: boolean = (newEventStageManager as any).loadEventData();
 
             expect(loadResult).toBe(true);
 
@@ -766,7 +766,7 @@ describe('Event Flow Integration Tests', () => {
             const startTime = performance.now();
             
             const statistics = eventStageManager.getDetailedEventStatistics();
-            const exportData = eventStageManager.exportEventData();
+            const exportData = (eventStageManager as any).exportEventData();
             
             const endTime = performance.now();
             const duration = endTime - startTime;

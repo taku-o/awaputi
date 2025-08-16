@@ -55,6 +55,7 @@ export class AchievementHelpSystem {
     // UI設定
     private padding: number;
     private lineHeight: number;
+    // @ts-ignore 将来のセクション間隔調整で使用予定
     private __sectionSpacing: number;
     
     // 色設定
