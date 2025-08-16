@@ -11,18 +11,67 @@
  */
 
 import BrowserCompatibilityManager from './BrowserCompatibilityManager.js';
+import type { BrowserInfo, CanvasSupport, LocalStorageSupport, ModulesSupport, ComprehensiveSupportInfo } from './BrowserCompatibilityManager.js';
+
+// インターフェース定義
+interface GuidanceCommand {
+    devServer: string;
+    simpleServers: string[];
+}
+
+interface GuidanceConfig {
+    showWarning: boolean;
+    autoHide: boolean;
+    hideDelay: number;
+    persistDismissal: boolean;
+    position: 'top' | 'bottom' | 'center';
+    theme: 'blue' | 'red' | 'yellow' | 'green';
+    commands: GuidanceCommand;
+    enableBrowserCompatibility: boolean;
+    title?: string;
+    message?: string;
+    showCommands?: boolean;
+    showTroubleshooting?: boolean;
+    showBrowserSpecificInfo?: boolean;
+    compatibilityInfo?: ComprehensiveSupportInfo;
+}
+
+interface FaviconInfo {
+    rel: string;
+    type?: string;
+    href: string;
+    sizes?: string;
+}
+
+interface DismissalInfo {
+    dismissed: boolean;
+    dismissedAt: Date | null;
+}
+
+interface DebugInfo {
+    isPermanentlyDismissed: boolean;
+    hasExistingGuidance: boolean;
+    config: GuidanceConfig;
+    dismissalInfo: DismissalInfo;
+    browserCompatibility: ComprehensiveSupportInfo | { error: string; available: false };
+}
+
+interface Recommendation {
+    message: string;
+    priority: 'high' | 'medium' | 'low';
+}
 
 class DeveloperGuidanceSystem {
     /**
      * ガイダンスのデフォルト設定
      */
-    static DEFAULT_CONFIG = {
+    static readonly DEFAULT_CONFIG: GuidanceConfig = {
         showWarning: true,
         autoHide: false,
         hideDelay: 10000, // 10秒
         persistDismissal: true,
-        position: 'top',
-        theme: 'blue',
+        position: 'top' as const,
+        theme: 'blue' as const,
         commands: {
             devServer: 'npm run dev',
             simpleServers: [
@@ -37,10 +86,10 @@ class DeveloperGuidanceSystem {
 
     /**
      * ローカル実行警告を表示
-     * @param {Object} config - 設定オプション
+     * @param config - 設定オプション
      */
-    static showLocalExecutionWarning(config = {}) {
-        const mergedConfig = { ...this.DEFAULT_CONFIG, ...config };
+    static showLocalExecutionWarning(config: Partial<GuidanceConfig> = {}): void {
+        const mergedConfig: GuidanceConfig = { ...this.DEFAULT_CONFIG, ...config };
         
         // 既存の警告を削除
         this._removeExistingWarning();
@@ -68,13 +117,13 @@ class DeveloperGuidanceSystem {
 
     /**
      * 開発サーバーガイダンスを表示
-     * @param {Object} config - 設定オプション
+     * @param config - 設定オプション
      */
-    static showDeveloperServerGuidance(config = {}) {
-        const mergedConfig = { ...this.DEFAULT_CONFIG, ...config };
+    static showDeveloperServerGuidance(config: Partial<GuidanceConfig> = {}): void {
+        const mergedConfig: GuidanceConfig = { ...this.DEFAULT_CONFIG, ...config };
         
         // より詳細なガイダンス表示
-        const guidanceConfig = {
+        const guidanceConfig: GuidanceConfig = {
             ...mergedConfig,
             title: 'Development Server Recommended',
             message: 'For the best development experience, please use a development server.',
@@ -88,12 +137,12 @@ class DeveloperGuidanceSystem {
 
     /**
      * ブラウザ互換性チェック付きガイダンスを表示
-     * @param {Object} config - 設定オプション
+     * @param config - 設定オプション
      */
-    static showCompatibilityGuidance(config = {}) {
+    static showCompatibilityGuidance(config: Partial<GuidanceConfig> = {}): void {
         try {
-            const compatibility = BrowserCompatibilityManager.getComprehensiveSupport();
-            const mergedConfig = { 
+            const compatibility: ComprehensiveSupportInfo = BrowserCompatibilityManager.getComprehensiveSupport();
+            const mergedConfig: GuidanceConfig = { 
                 ...this.DEFAULT_CONFIG, 
                 ...config,
                 compatibilityInfo: compatibility,
@@ -101,9 +150,9 @@ class DeveloperGuidanceSystem {
             };
             
             // ブラウザ固有のメッセージ生成
-            const customMessage = this._generateBrowserSpecificMessage(compatibility);
+            const customMessage: string = this._generateBrowserSpecificMessage(compatibility);
             
-            const guidanceConfig = {
+            const guidanceConfig: GuidanceConfig = {
                 ...mergedConfig,
                 title: `Browser Compatibility: ${compatibility.browser.name} ${compatibility.browser.version}`,
                 message: customMessage,
@@ -122,11 +171,11 @@ class DeveloperGuidanceSystem {
 
     /**
      * ガイダンスUI要素を作成
-     * @param {Object} config - 設定オプション
-     * @returns {HTMLElement} ガイダンス要素
+     * @param config - 設定オプション
+     * @returns ガイダンス要素
      */
-    static createGuidanceUI(config = {}) {
-        const mergedConfig = { ...this.DEFAULT_CONFIG, ...config };
+    static createGuidanceUI(config: Partial<GuidanceConfig> = {}): HTMLElement {
+        const mergedConfig: GuidanceConfig = { ...this.DEFAULT_CONFIG, ...config };
         
         // メインコンテナ
         const guidance = document.createElement('div');
@@ -174,7 +223,7 @@ class DeveloperGuidanceSystem {
     /**
      * ガイダンスを非表示にする
      */
-    static dismissGuidance() {
+    static dismissGuidance(): void {
         const guidance = document.getElementById('awaputi-local-execution-guidance');
         if (guidance) {
             guidance.classList.add('awaputi-guidance-hide');
@@ -187,7 +236,7 @@ class DeveloperGuidanceSystem {
     /**
      * 警告の永続的な非表示設定
      */
-    static permanentlyDismissWarning() {
+    static permanentlyDismissWarning(): void {
         try {
             localStorage.setItem('awaputi-guidance-dismissed', 'true');
             localStorage.setItem('awaputi-guidance-dismissed-at', new Date().toISOString());
@@ -201,9 +250,9 @@ class DeveloperGuidanceSystem {
 
     /**
      * 警告が永続的に非表示設定されているかチェック
-     * @returns {boolean} 非表示設定されている場合 true
+     * @returns 非表示設定されている場合 true
      */
-    static isPermanentlyDismissed() {
+    static isPermanentlyDismissed(): boolean {
         try {
             return localStorage.getItem('awaputi-guidance-dismissed') === 'true';
         } catch (error) {
@@ -214,7 +263,7 @@ class DeveloperGuidanceSystem {
     /**
      * 非表示設定をリセット
      */
-    static resetDismissal() {
+    static resetDismissal(): void {
         try {
             localStorage.removeItem('awaputi-guidance-dismissed');
             localStorage.removeItem('awaputi-guidance-dismissed-at');
@@ -226,11 +275,11 @@ class DeveloperGuidanceSystem {
 
     /**
      * コマンドセクションを作成
-     * @param {Object} config - 設定
-     * @returns {string} HTMLコンテンツ
+     * @param config - 設定
+     * @returns HTMLコンテンツ
      * @private
      */
-    static _createCommandsSection(config) {
+    private static _createCommandsSection(config: GuidanceConfig): string {
         if (!config.showCommands && !config.commands) {
             return '';
         }
@@ -260,10 +309,10 @@ class DeveloperGuidanceSystem {
 
     /**
      * 制限事項セクションを作成
-     * @returns {string} HTMLコンテンツ
+     * @returns HTMLコンテンツ
      * @private
      */
-    static _createLimitationsSection() {
+    private static _createLimitationsSection(): string {
         return `
             <div class="awaputi-guidance-section">
                 <h4>⚠️ Current Limitations:</h4>
@@ -279,11 +328,11 @@ class DeveloperGuidanceSystem {
 
     /**
      * ブラウザ互換性セクションを作成
-     * @param {Object} config - 設定
-     * @returns {string} HTMLコンテンツ
+     * @param config - 設定
+     * @returns HTMLコンテンツ
      * @private
      */
-    static _createCompatibilitySection(config) {
+    private static _createCompatibilitySection(config: GuidanceConfig): string {
         if (!config.showBrowserSpecificInfo || !config.compatibilityInfo) {
             return '';
         }
@@ -292,7 +341,7 @@ class DeveloperGuidanceSystem {
         const browserInfo = compatibility.browser;
         const recommendations = compatibility.recommendations;
 
-        let content = `
+        let content: string = `
             <div class="awaputi-guidance-section awaputi-guidance-compatibility">
                 <h4>📊 Browser Compatibility:</h4>
                 <div class="awaputi-compatibility-info">
@@ -323,13 +372,13 @@ class DeveloperGuidanceSystem {
 
         // 推奨事項
         if (recommendations && recommendations.length > 0) {
-            const highPriorityRecs = recommendations.filter(r => r.priority === 'high');
+            const highPriorityRecs = recommendations.filter((r: Recommendation) => r.priority === 'high');
             if (highPriorityRecs.length > 0) {
                 content += `
                     <div class="awaputi-recommendations">
                         <strong>Recommendations:</strong>
                         <ul>
-                            ${highPriorityRecs.map(rec => `<li>${rec.message}</li>`).join('')}
+                            ${highPriorityRecs.map((rec: Recommendation) => `<li>${rec.message}</li>`).join('')}
                         </ul>
                     </div>
                 `;
@@ -342,11 +391,11 @@ class DeveloperGuidanceSystem {
 
     /**
      * トラブルシューティングセクションを作成
-     * @param {Object} config - 設定
-     * @returns {string} HTMLコンテンツ
+     * @param config - 設定
+     * @returns HTMLコンテンツ
      * @private
      */
-    static _createTroubleshootingSection(config) {
+    private static _createTroubleshootingSection(config: GuidanceConfig): string {
         if (!config.showTroubleshooting) {
             return '';
         }
@@ -365,11 +414,11 @@ class DeveloperGuidanceSystem {
 
     /**
      * イベントリスナーを設定
-     * @param {HTMLElement} guidance - ガイダンス要素
-     * @param {Object} config - 設定
+     * @param guidance - ガイダンス要素
+     * @param config - 設定
      * @private
      */
-    static _setupEventListeners(guidance, config) {
+    private static _setupEventListeners(guidance: HTMLElement, config: GuidanceConfig): void {
         // 閉じるボタン
         const closeBtn = guidance.querySelector('.awaputi-guidance-close');
         closeBtn?.addEventListener('click', () => {
@@ -392,13 +441,16 @@ class DeveloperGuidanceSystem {
         const copyBtns = guidance.querySelectorAll('.awaputi-guidance-copy');
         copyBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const command = e.target.getAttribute('data-command');
-                this._copyToClipboard(command, e.target);
+                const target = e.target as HTMLElement;
+                const command = target.getAttribute('data-command');
+                if (command) {
+                    this._copyToClipboard(command, target);
+                }
             });
         });
 
         // ESCキーで閉じる
-        const handleEscape = (e) => {
+        const handleEscape = (e: KeyboardEvent) => {
             if (e.key === 'Escape') {
                 this.dismissGuidance();
                 document.removeEventListener('keydown', handleEscape);
@@ -409,11 +461,11 @@ class DeveloperGuidanceSystem {
 
     /**
      * クリップボードにコピー
-     * @param {string} text - コピーするテキスト
-     * @param {HTMLElement} button - ボタン要素
+     * @param text - コピーするテキスト
+     * @param button - ボタン要素
      * @private
      */
-    static async _copyToClipboard(text, button) {
+    private static async _copyToClipboard(text: string, button: HTMLElement): Promise<void> {
         try {
             await navigator.clipboard.writeText(text);
             
@@ -437,11 +489,11 @@ class DeveloperGuidanceSystem {
 
     /**
      * クリップボードコピーのフォールバック
-     * @param {string} text - コピーするテキスト
-     * @param {HTMLElement} button - ボタン要素
+     * @param text - コピーするテキスト
+     * @param button - ボタン要素
      * @private
      */
-    static _fallbackCopy(text, button) {
+    private static _fallbackCopy(text: string, button: HTMLElement): void {
         const textarea = document.createElement('textarea');
         textarea.value = text;
         textarea.style.position = 'fixed';
@@ -469,7 +521,7 @@ class DeveloperGuidanceSystem {
      * 既存の警告を削除
      * @private
      */
-    static _removeExistingWarning() {
+    private static _removeExistingWarning(): void {
         const existing = document.getElementById('awaputi-local-execution-guidance');
         if (existing) {
             existing.remove();
@@ -480,7 +532,7 @@ class DeveloperGuidanceSystem {
      * CSSスタイルを注入
      * @private
      */
-    static _injectStyles() {
+    private static _injectStyles(): void {
         // 既存のスタイルタグをチェック
         if (document.getElementById('awaputi-guidance-styles')) {
             return;
@@ -787,11 +839,11 @@ class DeveloperGuidanceSystem {
 
     /**
      * ブラウザ固有メッセージ生成
-     * @param {Object} compatibility - 互換性情報
-     * @returns {string} ブラウザ固有メッセージ
+     * @param compatibility - 互換性情報
+     * @returns ブラウザ固有メッセージ
      * @private
      */
-    static _generateBrowserSpecificMessage(compatibility) {
+    private static _generateBrowserSpecificMessage(compatibility: ComprehensiveSupportInfo): string {
         const browserInfo = compatibility.browser;
         const canvasSupport = compatibility.canvas;
         const storageSupport = compatibility.localStorage;
@@ -830,9 +882,9 @@ class DeveloperGuidanceSystem {
 
     /**
      * デバッグ情報を取得
-     * @returns {Object} デバッグ情報
+     * @returns デバッグ情報
      */
-    static getDebugInfo() {
+    static getDebugInfo(): DebugInfo {
         return {
             isPermanentlyDismissed: this.isPermanentlyDismissed(),
             hasExistingGuidance: !!document.getElementById('awaputi-local-execution-guidance'),
@@ -844,10 +896,10 @@ class DeveloperGuidanceSystem {
 
     /**
      * ブラウザ互換性情報を取得
-     * @returns {Object} 互換性情報
+     * @returns 互換性情報
      * @private
      */
-    static _getBrowserCompatibilityInfo() {
+    private static _getBrowserCompatibilityInfo(): ComprehensiveSupportInfo | { error: string; available: false } {
         try {
             return BrowserCompatibilityManager.getComprehensiveSupport();
         } catch (error) {
@@ -860,10 +912,10 @@ class DeveloperGuidanceSystem {
 
     /**
      * 非表示設定情報を取得
-     * @returns {Object} 非表示設定情報
+     * @returns 非表示設定情報
      * @private
      */
-    static _getDismissalInfo() {
+    private static _getDismissalInfo(): DismissalInfo {
         try {
             const dismissed = localStorage.getItem('awaputi-guidance-dismissed');
             const dismissedAt = localStorage.getItem('awaputi-guidance-dismissed-at');
