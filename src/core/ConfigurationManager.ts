@@ -15,6 +15,8 @@ interface ValidationRule {
     validate: (value: ConfigurationValue) => boolean;
     errorMessage?: string;
     transform?: (value: ConfigurationValue) => ConfigurationValue;
+    type?: string;
+    pattern?: RegExp;
 }
 
 interface WatcherCallback {
@@ -58,7 +60,9 @@ class ConfigurationManager {
     private cache: any; // CacheSystem type would be defined elsewhere
     private accessStats: AccessStats;
     // 将来の拡張機能用 - 現在は未使用
+    // @ts-ignore - 将来の実装で使用予定
     private __lazyLoaders!: Map<string, () => ConfigurationValue>;
+    // @ts-ignore - 将来の実装で使用予定
     private __preloadKeys!: Set<string>;
     private errorHandler: any;
     

@@ -115,6 +115,14 @@ export class CalculationEngine {
     }
     
     /**
+     * 初期化状態を確認
+     * @returns 初期化されているかどうか
+     */
+    isInitialized(): boolean {
+        return this.__initialized;
+    }
+    
+    /**
      * リソースのクリーンアップ
      */
     destroy(): void {

@@ -92,13 +92,13 @@ export class HelpScene extends Scene implements HelpSceneState {
     public navigationContext: NavigationContextManager;
 
     // Sub-component properties
-    public helpAccessibilityManager: HelpAccessibilityManager;
-    public helpContentManager: HelpContentManager;
-    public helpAnimationManager: HelpAnimationManager;
-    public helpTransitionRenderer: HelpTransitionRenderer;
-    public helpRenderer: HelpRenderer;
-    public helpEventManager: HelpEventManager;
-    public contextualHelpManager: ContextualHelpManager;
+    public helpAccessibilityManager!: HelpAccessibilityManager;
+    public helpContentManager!: HelpContentManager;
+    public helpAnimationManager!: HelpAnimationManager;
+    public helpTransitionRenderer!: HelpTransitionRenderer;
+    public helpRenderer!: HelpRenderer;
+    public helpEventManager!: HelpEventManager;
+    public contextualHelpManager!: ContextualHelpManager;
 
     // State properties
     public initialized: boolean;
