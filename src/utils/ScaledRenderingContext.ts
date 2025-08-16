@@ -3,8 +3,25 @@
  * ScaledCoordinateManagerと統合して一貫したスケーリング描画を提供
  */
 
+// 型定義
+interface StateInfo {
+    timestamp: number;
+    scaleFactor: number;
+}
+
+interface ScaledCoordinateManager {
+    getScaledPosition(baseX: number, baseY: number): { x: number; y: number };
+    getScaledSize(baseWidth: number, baseHeight: number): { width: number; height: number };
+    getScaleFactor(): number;
+    getDebugInfo(): any;
+}
+
 export class ScaledRenderingContext {
-    constructor(context, scaledCoordinateManager) {
+    private context: CanvasRenderingContext2D;
+    private scaledCoordinateManager: ScaledCoordinateManager;
+    private stateStack: StateInfo[];
+
+    constructor(context: CanvasRenderingContext2D, scaledCoordinateManager: ScaledCoordinateManager) {
         this.context = context;
         this.scaledCoordinateManager = scaledCoordinateManager;
         
@@ -14,11 +31,11 @@ export class ScaledRenderingContext {
     
     /**
      * スケーリング済みテキストを描画
-     * @param {string} text - 描画するテキスト
-     * @param {number} baseX - ベースX座標
-     * @param {number} baseY - ベースY座標
+     * @param text - 描画するテキスト
+     * @param baseX - ベースX座標
+     * @param baseY - ベースY座標
      */
-    fillText(text, baseX, baseY) {
+    fillText(text: string, baseX: number, baseY: number): void {
         try {
             const scaledPosition = this.scaledCoordinateManager.getScaledPosition(baseX, baseY);
             this.context.fillText(text, scaledPosition.x, scaledPosition.y);
@@ -30,12 +47,12 @@ export class ScaledRenderingContext {
     
     /**
      * スケーリング済み矩形を塗りつぶし
-     * @param {number} baseX - ベースX座標
-     * @param {number} baseY - ベースY座標
-     * @param {number} baseWidth - ベース幅
-     * @param {number} baseHeight - ベース高さ
+     * @param baseX - ベースX座標
+     * @param baseY - ベースY座標
+     * @param baseWidth - ベース幅
+     * @param baseHeight - ベース高さ
      */
-    fillRect(baseX, baseY, baseWidth, baseHeight) {
+    fillRect(baseX: number, baseY: number, baseWidth: number, baseHeight: number): void {
         try {
             const scaledPosition = this.scaledCoordinateManager.getScaledPosition(baseX, baseY);
             const scaledSize = this.scaledCoordinateManager.getScaledSize(baseWidth, baseHeight);
@@ -48,12 +65,12 @@ export class ScaledRenderingContext {
     
     /**
      * スケーリング済み矩形の輪郭を描画
-     * @param {number} baseX - ベースX座標
-     * @param {number} baseY - ベースY座標
-     * @param {number} baseWidth - ベース幅
-     * @param {number} baseHeight - ベース高さ
+     * @param baseX - ベースX座標
+     * @param baseY - ベースY座標
+     * @param baseWidth - ベース幅
+     * @param baseHeight - ベース高さ
      */
-    strokeRect(baseX, baseY, baseWidth, baseHeight) {
+    strokeRect(baseX: number, baseY: number, baseWidth: number, baseHeight: number): void {
         try {
             const scaledPosition = this.scaledCoordinateManager.getScaledPosition(baseX, baseY);
             const scaledSize = this.scaledCoordinateManager.getScaledSize(baseWidth, baseHeight);
@@ -66,13 +83,13 @@ export class ScaledRenderingContext {
     
     /**
      * スケーリング済み画像を描画
-     * @param {HTMLImageElement} image - 描画する画像
-     * @param {number} baseX - ベースX座標
-     * @param {number} baseY - ベースY座標
-     * @param {number} baseWidth - ベース幅（省略可能）
-     * @param {number} baseHeight - ベース高さ（省略可能）
+     * @param image - 描画する画像
+     * @param baseX - ベースX座標
+     * @param baseY - ベースY座標
+     * @param baseWidth - ベース幅（省略可能）
+     * @param baseHeight - ベース高さ（省略可能）
      */
-    drawImage(image, baseX, baseY, baseWidth = null, baseHeight = null) {
+    drawImage(image: HTMLImageElement, baseX: number, baseY: number, baseWidth: number | null = null, baseHeight: number | null = null): void {
         try {
             const scaledPosition = this.scaledCoordinateManager.getScaledPosition(baseX, baseY);
             
@@ -94,10 +111,10 @@ export class ScaledRenderingContext {
     
     /**
      * スケーリング済みフォントを設定
-     * @param {number} baseFontSize - ベースフォントサイズ
-     * @param {string} fontFamily - フォントファミリー
+     * @param baseFontSize - ベースフォントサイズ
+     * @param fontFamily - フォントファミリー
      */
-    setScaledFont(baseFontSize, fontFamily = 'Arial') {
+    setScaledFont(baseFontSize: number, fontFamily: string = 'Arial'): void {
         try {
             const scaleFactor = this.scaledCoordinateManager.getScaleFactor();
             const scaledFontSize = baseFontSize * scaleFactor;
@@ -116,9 +133,9 @@ export class ScaledRenderingContext {
     
     /**
      * スケーリング済み線幅を設定
-     * @param {number} baseWidth - ベース線幅
+     * @param baseWidth - ベース線幅
      */
-    setScaledLineWidth(baseWidth) {
+    setScaledLineWidth(baseWidth: number): void {
         try {
             const scaleFactor = this.scaledCoordinateManager.getScaleFactor();
             const scaledWidth = baseWidth * scaleFactor;
@@ -138,7 +155,7 @@ export class ScaledRenderingContext {
     /**
      * コンテキスト状態を保存
      */
-    save() {
+    save(): void {
         try {
             this.context.save();
             
@@ -155,7 +172,7 @@ export class ScaledRenderingContext {
     /**
      * コンテキスト状態を復元
      */
-    restore() {
+    restore(): void {
         try {
             this.context.restore();
             
@@ -170,20 +187,20 @@ export class ScaledRenderingContext {
     
     /**
      * 元のコンテキストを取得
-     * @returns {CanvasRenderingContext2D} 元のコンテキスト
+     * @returns 元のコンテキスト
      */
-    getOriginalContext() {
+    getOriginalContext(): CanvasRenderingContext2D {
         return this.context;
     }
     
     /**
      * コンテキストのプロパティを直接設定
-     * @param {string} property - プロパティ名
-     * @param {any} value - 設定値
+     * @param property - プロパティ名
+     * @param value - 設定値
      */
-    setProperty(property, value) {
+    setProperty(property: string, value: any): void {
         try {
-            this.context[property] = value;
+            (this.context as any)[property] = value;
         } catch (error) {
             console.warn(`ScaledRenderingContext: Setting property '${property}' failed`, error);
         }
@@ -191,12 +208,12 @@ export class ScaledRenderingContext {
     
     /**
      * コンテキストのプロパティを取得
-     * @param {string} property - プロパティ名
-     * @returns {any} プロパティ値
+     * @param property - プロパティ名
+     * @returns プロパティ値
      */
-    getProperty(property) {
+    getProperty(property: string): any {
         try {
-            return this.context[property];
+            return (this.context as any)[property];
         } catch (error) {
             console.warn(`ScaledRenderingContext: Getting property '${property}' failed`, error);
             return undefined;
@@ -209,10 +226,10 @@ export class ScaledRenderingContext {
     
     /**
      * スケーリング済みパス開始点に移動
-     * @param {number} baseX - ベースX座標
-     * @param {number} baseY - ベースY座標
+     * @param baseX - ベースX座標
+     * @param baseY - ベースY座標
      */
-    moveTo(baseX, baseY) {
+    moveTo(baseX: number, baseY: number): void {
         try {
             const scaledPosition = this.scaledCoordinateManager.getScaledPosition(baseX, baseY);
             this.context.moveTo(scaledPosition.x, scaledPosition.y);
@@ -224,10 +241,10 @@ export class ScaledRenderingContext {
     
     /**
      * スケーリング済み線を描画
-     * @param {number} baseX - ベースX座標
-     * @param {number} baseY - ベースY座標
+     * @param baseX - ベースX座標
+     * @param baseY - ベースY座標
      */
-    lineTo(baseX, baseY) {
+    lineTo(baseX: number, baseY: number): void {
         try {
             const scaledPosition = this.scaledCoordinateManager.getScaledPosition(baseX, baseY);
             this.context.lineTo(scaledPosition.x, scaledPosition.y);
@@ -239,14 +256,14 @@ export class ScaledRenderingContext {
     
     /**
      * スケーリング済み円弧を描画
-     * @param {number} baseX - ベース中心X座標
-     * @param {number} baseY - ベース中心Y座標
-     * @param {number} baseRadius - ベース半径
-     * @param {number} startAngle - 開始角度
-     * @param {number} endAngle - 終了角度
-     * @param {boolean} counterclockwise - 反時計回り
+     * @param baseX - ベース中心X座標
+     * @param baseY - ベース中心Y座標
+     * @param baseRadius - ベース半径
+     * @param startAngle - 開始角度
+     * @param endAngle - 終了角度
+     * @param counterclockwise - 反時計回り
      */
-    arc(baseX, baseY, baseRadius, startAngle, endAngle, counterclockwise = false) {
+    arc(baseX: number, baseY: number, baseRadius: number, startAngle: number, endAngle: number, counterclockwise: boolean = false): void {
         try {
             const scaledPosition = this.scaledCoordinateManager.getScaledPosition(baseX, baseY);
             const scaledSize = this.scaledCoordinateManager.getScaledSize(baseRadius, baseRadius);
@@ -258,16 +275,16 @@ export class ScaledRenderingContext {
     }
     
     // パスメソッドの代理
-    beginPath() { this.context.beginPath(); }
-    closePath() { this.context.closePath(); }
-    fill() { this.context.fill(); }
-    stroke() { this.context.stroke(); }
+    beginPath(): void { this.context.beginPath(); }
+    closePath(): void { this.context.closePath(); }
+    fill(): void { this.context.fill(); }
+    stroke(): void { this.context.stroke(); }
     
     /**
      * 現在のスケール情報を取得（デバッグ用）
-     * @returns {Object} スケール情報
+     * @returns スケール情報
      */
-    getScaleInfo() {
+    getScaleInfo(): any {
         return this.scaledCoordinateManager.getDebugInfo();
     }
 }

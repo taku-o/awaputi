@@ -3,8 +3,56 @@
  * ResponsiveCanvasManagerと統合して一貫した座標変換を提供
  */
 
+// 型定義
+interface ScaledPosition {
+    x: number;
+    y: number;
+}
+
+interface ScaledSize {
+    width: number;
+    height: number;
+}
+
+interface CanvasInfo {
+    scaleFactor?: number;
+    scale?: number;
+    displayWidth: number;
+    displayHeight: number;
+    actualWidth: number;
+    actualHeight: number;
+    pixelRatio: number;
+    baseWidth: number;
+    baseHeight: number;
+}
+
+interface ResponsiveCanvasManager {
+    getScaledCoordinates?(baseX: number, baseY: number): ScaledPosition;
+    getScaledSize?(baseWidth: number, baseHeight: number): ScaledSize;
+    getCanvasInfo?(): CanvasInfo;
+}
+
+interface DebugInfo {
+    canvasInfo: CanvasInfo;
+    scaleFactor: number;
+    baseSize: { width: number; height: number };
+    scaleChangeCallbacksCount: number;
+    timestamp: number;
+}
+
+type ScaleChangeCallback = () => void;
+
 export class ScaledCoordinateManager {
-    constructor(responsiveCanvasManager) {
+    private responsiveCanvasManager: ResponsiveCanvasManager | null;
+    private scaleChangeCallbacks: ScaleChangeCallback[];
+    private baseWidth: number;
+    private baseHeight: number;
+    private coordinateCache: Map<string, ScaledPosition>;
+    private sizeCache: Map<string, ScaledSize>;
+    private cacheMaxSize: number;
+    private lastScaleFactor: number | null;
+
+    constructor(responsiveCanvasManager: ResponsiveCanvasManager | null) {
         this.responsiveCanvasManager = responsiveCanvasManager;
         this.scaleChangeCallbacks = [];
         
@@ -13,8 +61,8 @@ export class ScaledCoordinateManager {
         this.baseHeight = 600;
         
         // パフォーマンス最適化: 座標変換キャッシュ
-        this.coordinateCache = new Map();
-        this.sizeCache = new Map();
+        this.coordinateCache = new Map<string, ScaledPosition>();
+        this.sizeCache = new Map<string, ScaledSize>();
         this.cacheMaxSize = 1000;
         this.lastScaleFactor = null;
         
@@ -23,11 +71,11 @@ export class ScaledCoordinateManager {
     
     /**
      * ベース座標をスケーリング済み座標に変換
-     * @param {number} baseX - ベースX座標
-     * @param {number} baseY - ベースY座標
-     * @returns {Object} {x, y} - スケーリング済み座標
+     * @param baseX - ベースX座標
+     * @param baseY - ベースY座標
+     * @returns スケーリング済み座標
      */
-    getScaledPosition(baseX, baseY) {
+    getScaledPosition(baseX: number, baseY: number): ScaledPosition {
         try {
             // キャッシュキーを生成
             const cacheKey = `${baseX},${baseY}`;
@@ -44,7 +92,7 @@ export class ScaledCoordinateManager {
                 return this.coordinateCache.get(cacheKey);
             }
             
-            let result;
+            let result: ScaledPosition;
             if (this.responsiveCanvasManager && this.responsiveCanvasManager.getScaledCoordinates) {
                 result = this.responsiveCanvasManager.getScaledCoordinates(baseX, baseY);
             } else {
@@ -69,11 +117,11 @@ export class ScaledCoordinateManager {
     
     /**
      * ベースサイズをスケーリング済みサイズに変換
-     * @param {number} baseWidth - ベース幅
-     * @param {number} baseHeight - ベース高さ
-     * @returns {Object} {width, height} - スケーリング済みサイズ
+     * @param baseWidth - ベース幅
+     * @param baseHeight - ベース高さ
+     * @returns スケーリング済みサイズ
      */
-    getScaledSize(baseWidth, baseHeight) {
+    getScaledSize(baseWidth: number, baseHeight: number): ScaledSize {
         try {
             // キャッシュキーを生成
             const cacheKey = `${baseWidth}x${baseHeight}`;
@@ -89,7 +137,7 @@ export class ScaledCoordinateManager {
                 return this.sizeCache.get(cacheKey);
             }
             
-            let result;
+            let result: ScaledSize;
             if (this.responsiveCanvasManager && this.responsiveCanvasManager.getScaledSize) {
                 result = this.responsiveCanvasManager.getScaledSize(baseWidth, baseHeight);
             } else {
@@ -114,9 +162,9 @@ export class ScaledCoordinateManager {
     
     /**
      * キャンバス情報を取得
-     * @returns {Object} キャンバス情報
+     * @returns キャンバス情報
      */
-    getCanvasInfo() {
+    getCanvasInfo(): CanvasInfo {
         try {
             if (this.responsiveCanvasManager && this.responsiveCanvasManager.getCanvasInfo) {
                 return this.responsiveCanvasManager.getCanvasInfo();
@@ -150,11 +198,11 @@ export class ScaledCoordinateManager {
     
     /**
      * スケーリング済み座標をベース座標に逆変換
-     * @param {number} scaledX - スケーリング済みX座標
-     * @param {number} scaledY - スケーリング済みY座標
-     * @returns {Object} {x, y} - ベース座標
+     * @param scaledX - スケーリング済みX座標
+     * @param scaledY - スケーリング済みY座標
+     * @returns ベース座標
      */
-    getBasePosition(scaledX, scaledY) {
+    getBasePosition(scaledX: number, scaledY: number): ScaledPosition {
         try {
             const scaleFactor = this.getScaleFactor();
             if (scaleFactor === 0) {
@@ -174,11 +222,11 @@ export class ScaledCoordinateManager {
     
     /**
      * 座標の妥当性を検証
-     * @param {number} x - X座標
-     * @param {number} y - Y座標
-     * @returns {boolean} 妥当な座標かどうか
+     * @param x - X座標
+     * @param y - Y座標
+     * @returns 妥当な座標かどうか
      */
-    validateCoordinates(x, y) {
+    validateCoordinates(x: number, y: number): boolean {
         if (typeof x !== 'number' || typeof y !== 'number') {
             return false;
         }
@@ -196,9 +244,9 @@ export class ScaledCoordinateManager {
     
     /**
      * デバッグ情報を取得
-     * @returns {Object} デバッグ用の座標システム情報
+     * @returns デバッグ用の座標システム情報
      */
-    getDebugInfo() {
+    getDebugInfo(): DebugInfo {
         const canvasInfo = this.getCanvasInfo();
         const scaleFactor = this.getScaleFactor();
         
@@ -213,9 +261,9 @@ export class ScaledCoordinateManager {
     
     /**
      * 現在のスケール係数を取得
-     * @returns {number} スケール係数
+     * @returns スケール係数
      */
-    getScaleFactor() {
+    getScaleFactor(): number {
         try {
             const canvasInfo = this.getCanvasInfo();
             // ResponsiveCanvasManagerは'scale'プロパティを使用するので、それを優先
@@ -228,9 +276,9 @@ export class ScaledCoordinateManager {
     
     /**
      * スケール変更イベントのリスナーを登録
-     * @param {Function} callback - コールバック関数
+     * @param callback - コールバック関数
      */
-    onScaleChange(callback) {
+    onScaleChange(callback: ScaleChangeCallback): void {
         if (typeof callback === 'function') {
             this.scaleChangeCallbacks.push(callback);
         }
@@ -239,7 +287,7 @@ export class ScaledCoordinateManager {
     /**
      * スケール更新を実行
      */
-    updateScale() {
+    updateScale(): void {
         try {
             // ResponsiveCanvasManagerの直接呼び出しを避けて無限ループを防ぐ
             // ResponsiveCanvasManager自体がupdateCanvasSizeでこのメソッドを呼んでいるため
@@ -260,7 +308,7 @@ export class ScaledCoordinateManager {
     /**
      * イベントリスナーをセットアップ
      */
-    setupEventListeners() {
+    private setupEventListeners(): void {
         // ResponsiveCanvasManagerのイベントにフック
         if (this.responsiveCanvasManager) {
             // ResponsiveCanvasManagerが既にリサイズイベントを処理しているので
@@ -274,7 +322,7 @@ export class ScaledCoordinateManager {
     /**
      * クリーンアップ
      */
-    cleanup() {
+    cleanup(): void {
         this.scaleChangeCallbacks = [];
     }
 }

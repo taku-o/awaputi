@@ -3,8 +3,59 @@
  * マウスとタッチ入力をキャンバススケーリングに対応した座標に変換
  */
 
+// 型定義
+interface Point {
+    x: number;
+    y: number;
+}
+
+interface BaseRect {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
+interface ConvertedCoordinates {
+    x: number;
+    y: number;
+    canvasX?: number;
+    canvasY?: number;
+    scaledX?: number;
+    scaledY?: number;
+    touchIndex?: number;
+    originalEvent: Event;
+}
+
+interface ScaledEvent {
+    type: string;
+    x: number;
+    y: number;
+    canvasX?: number;
+    canvasY?: number;
+    scaledX?: number;
+    scaledY?: number;
+    originalEvent: Event;
+    timestamp: number;
+    preventDefault: () => void;
+    stopPropagation: () => void;
+}
+
+interface ValidationResult {
+    valid: boolean;
+    clampedPoint: Point;
+}
+
+interface ScaledCoordinateManager {
+    getCanvasInfo(): any;
+    getScaleFactor(): number;
+    validateCoordinates(x: number, y: number): boolean;
+}
+
 export class InputCoordinateConverter {
-    constructor(scaledCoordinateManager) {
+    private scaledCoordinateManager: ScaledCoordinateManager;
+
+    constructor(scaledCoordinateManager: ScaledCoordinateManager) {
         this.scaledCoordinateManager = scaledCoordinateManager;
     }
     

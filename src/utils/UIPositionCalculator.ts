@@ -3,8 +3,65 @@
  * ScaledCoordinateManagerと統合してデバイス適応的なUI配置を提供
  */
 
+// 型定義
+interface Position {
+    x: number;
+    y: number;
+}
+
+interface Margins {
+    top: number;
+    right: number;
+    bottom: number;
+    left: number;
+}
+
+interface Breakpoints {
+    mobile: number;
+    tablet: number;
+    desktop: number;
+}
+
+interface CanvasInfo {
+    baseWidth: number;
+    baseHeight: number;
+    displayWidth: number;
+    displayHeight: number;
+}
+
+interface ScaledCoordinateManager {
+    getCanvasInfo(): CanvasInfo;
+}
+
+interface UIElement {
+    type: string;
+    name: string;
+    offset?: Position;
+}
+
+interface Container {
+    x?: number;
+    y?: number;
+    width?: number;
+    height?: number;
+}
+
+interface LayoutResult {
+    element: UIElement;
+    position: Position;
+}
+
+type DeviceType = 'mobile' | 'tablet' | 'desktop';
+type StatusElement = 'score' | 'time' | 'hp';
+type Edge = 'top' | 'right' | 'bottom' | 'left';
+
 export class UIPositionCalculator {
-    constructor(scaledCoordinateManager) {
+    private scaledCoordinateManager: ScaledCoordinateManager;
+    private defaultMargins: Margins;
+    private breakpoints: Breakpoints;
+    private statusVerticalSpacing: number;
+
+    constructor(scaledCoordinateManager: ScaledCoordinateManager) {
         this.scaledCoordinateManager = scaledCoordinateManager;
         
         // デフォルトマージン（ベース座標系）
@@ -28,10 +85,10 @@ export class UIPositionCalculator {
     
     /**
      * ステータス要素の位置を取得
-     * @param {string} element - 要素名 ('score', 'time', 'hp')
-     * @returns {Object} {x, y} - ベース座標系の位置
+     * @param element - 要素名 ('score', 'time', 'hp')
+     * @returns ベース座標系の位置
      */
-    getStatusPosition(element) {
+    getStatusPosition(element: StatusElement): Position {
         try {
             const margins = this.getResponsiveMargins();
             let baseY = margins.top;
@@ -62,11 +119,11 @@ export class UIPositionCalculator {
     
     /**
      * ボタンの位置を取得
-     * @param {string} buttonType - ボタンタイプ ('giveup', 'restart', etc.)
-     * @param {number} index - ボタンのインデックス
-     * @returns {Object} {x, y} - ベース座標系の位置
+     * @param buttonType - ボタンタイプ ('giveup', 'restart', etc.)
+     * @param index - ボタンのインデックス
+     * @returns ベース座標系の位置
      */
-    getButtonPosition(buttonType, index = 0) {
+    getButtonPosition(buttonType: string, index: number = 0): Position {
         try {
             const canvasInfo = this.scaledCoordinateManager.getCanvasInfo();
             const margins = this.getResponsiveMargins();
@@ -86,10 +143,10 @@ export class UIPositionCalculator {
     
     /**
      * ダイアログの位置を取得
-     * @param {string} dialogType - ダイアログタイプ
-     * @returns {Object} {x, y} - ベース座標系の位置（中央配置）
+     * @param dialogType - ダイアログタイプ
+     * @returns ベース座標系の位置（中央配置）
      */
-    getDialogPosition(dialogType) {
+    getDialogPosition(dialogType: string): Position {
         try {
             const canvasInfo = this.scaledCoordinateManager.getCanvasInfo();
             
@@ -107,9 +164,9 @@ export class UIPositionCalculator {
     
     /**
      * レスポンシブマージンを取得
-     * @returns {Object} デバイスに適応したマージン値
+     * @returns デバイスに適応したマージン値
      */
-    getResponsiveMargins() {
+    getResponsiveMargins(): Margins {
         try {
             const canvasInfo = this.scaledCoordinateManager.getCanvasInfo();
             const deviceType = this.getDeviceType(canvasInfo.displayWidth);
@@ -141,20 +198,20 @@ export class UIPositionCalculator {
     
     /**
      * 複数要素のレイアウトを計算
-     * @param {Array} elements - 要素配列
-     * @param {Object} containerBounds - コンテナの境界
-     * @returns {Array} 計算された位置の配列
+     * @param elements - 要素配列
+     * @param containerBounds - コンテナの境界
+     * @returns 計算された位置の配列
      */
-    calculateLayout(elements, containerBounds) {
+    calculateLayout(elements: UIElement[], containerBounds: Container): LayoutResult[] {
         try {
-            const positions = [];
+            const positions: LayoutResult[] = [];
             const margins = this.getResponsiveMargins();
             
             elements.forEach((element, index) => {
-                let position;
+                let position: Position;
                 
                 if (element.type === 'status') {
-                    position = this.getStatusPosition(element.name);
+                    position = this.getStatusPosition(element.name as StatusElement);
                 } else if (element.type === 'button') {
                     position = this.getButtonPosition(element.name, index);
                 } else if (element.type === 'dialog') {
@@ -181,15 +238,15 @@ export class UIPositionCalculator {
     
     /**
      * 要素を端に配置
-     * @param {Object} element - 要素情報
-     * @param {string} edge - 端の位置 ('top', 'right', 'bottom', 'left')
-     * @param {number} margin - マージン値
-     * @returns {Object} {x, y} - ベース座標系の位置
+     * @param element - 要素情報
+     * @param edge - 端の位置 ('top', 'right', 'bottom', 'left')
+     * @param margin - マージン値
+     * @returns ベース座標系の位置
      */
-    alignToEdge(element, edge, margin = 20) {
+    alignToEdge(element: UIElement, edge: Edge, margin: number = 20): Position {
         try {
             const canvasInfo = this.scaledCoordinateManager.getCanvasInfo();
-            let baseX, baseY;
+            let baseX: number, baseY: number;
             
             switch (edge) {
                 case 'top':
@@ -225,11 +282,11 @@ export class UIPositionCalculator {
     
     /**
      * 要素を中央に配置
-     * @param {Object} element - 要素情報
-     * @param {Object} container - コンテナ情報
-     * @returns {Object} {x, y} - ベース座標系の位置
+     * @param element - 要素情報
+     * @param container - コンテナ情報
+     * @returns ベース座標系の位置
      */
-    centerElement(element, container = null) {
+    centerElement(element: UIElement, container: Container | null = null): Position {
         try {
             const canvasInfo = this.scaledCoordinateManager.getCanvasInfo();
             
@@ -253,10 +310,10 @@ export class UIPositionCalculator {
     
     /**
      * デバイスタイプを判定
-     * @param {number} width - 表示幅
-     * @returns {string} デバイスタイプ ('mobile', 'tablet', 'desktop')
+     * @param width - 表示幅
+     * @returns デバイスタイプ ('mobile', 'tablet', 'desktop')
      */
-    getDeviceType(width) {
+    getDeviceType(width: number): DeviceType {
         if (width < this.breakpoints.mobile) {
             return 'mobile';
         } else if (width < this.breakpoints.tablet) {
