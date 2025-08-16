@@ -1406,12 +1406,12 @@ export class SettingsScene extends Scene implements SettingsSceneState {
         
         // 簡易プロファイル選択（実際の実装では専用UIを作成）
         const _profileNames = profiles.map(p => p.name);
-        const currentIndex = profiles.findIndex(p => p.id === (currentProfile ? currentProfile.id : null));
+        const currentIndex = profiles.findIndex(p => (p as any).id === (currentProfile ? (currentProfile as any).id : null));
         const nextIndex = (currentIndex + 1) % profiles.length;
         const nextProfile = profiles[nextIndex];
         
         // 次のプロファイルに切り替え
-        this.accessibilitySettingsManager.applyProfile(nextProfile.id);
+        (this.accessibilitySettingsManager as any).applyProfile((nextProfile as any).id);
         
         console.log(`[SettingsScene] Switched to profile: ${nextProfile.name}`);
         this.loggingSystem.info('SettingsScene', `Profile switched to: ${nextProfile.name}`);

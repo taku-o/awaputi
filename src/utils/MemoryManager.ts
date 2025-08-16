@@ -347,7 +347,7 @@ export class MemoryManager {
             stats: this.getStats(),
             usageReport: this.usageAnalyzer.getUsageReport(),
             leakReport: this.leakDetector.getLeakReport(),
-            cleanupReport: this.proactiveCleanup.getCleanupReport()
+            cleanupReport: (this.proactiveCleanup as any).getCleanupReport ? (this.proactiveCleanup as any).getCleanupReport() : null
         };
     }
     
@@ -361,10 +361,16 @@ export class MemoryManager {
                 clearInterval(this.cleanupInterval);
             }
             
-            // Destroy sub-components
-            this.leakDetector.destroy();
-            this.proactiveCleanup.destroy();
-            this.usageAnalyzer.destroy();
+            // Destroy sub-components if destroy method exists
+            if ((this.leakDetector as any).destroy) {
+                (this.leakDetector as any).destroy();
+            }
+            if ((this.proactiveCleanup as any).destroy) {
+                (this.proactiveCleanup as any).destroy();
+            }
+            if ((this.usageAnalyzer as any).destroy) {
+                (this.usageAnalyzer as any).destroy();
+            }
             
             // Clear tracking
             this.trackedObjects = new WeakMap();
