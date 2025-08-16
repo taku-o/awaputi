@@ -74,11 +74,11 @@ export class PerformanceOptimizer {
     
     // フレーム処理データ
     private frameTimeHistory!: number[];
-    private __lastFrameTime!: number | null;
+    private _lastFrameTime!: number | null;
     private lastOptimizationTime!: number;
     
     // ログ制御用
-    private __lastLoggedStabilizerZone!: string | null;
+    private _lastLoggedStabilizerZone!: string | null;
     
     // 統合コンポーネント
     private frameStabilizer: any;
@@ -103,11 +103,11 @@ export class PerformanceOptimizer {
             
             // 基本フレーム処理データ
             this.frameTimeHistory = [];
-            this.__lastFrameTime = null;
+            this._lastFrameTime = null;
             this.lastOptimizationTime = 0;
             
             // ログ制御用
-            this.__lastLoggedStabilizerZone = null;
+            this._lastLoggedStabilizerZone = null;
             
             // Frame Stabilizer統合
             this.frameStabilizer = getFrameStabilizer(this.targetFPS);
@@ -287,7 +287,7 @@ export class PerformanceOptimizer {
                 this.lastOptimizationTime = currentTime;
             }
             
-            this.__lastFrameTime = frameTime;
+            this._lastFrameTime = frameTime;
         } catch (error) {
             this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', {
                 component: 'PerformanceOptimizer',

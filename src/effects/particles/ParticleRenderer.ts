@@ -53,12 +53,12 @@ export type DrawFunction = (context: CanvasRenderingContext2D, particle: Particl
  * パーティクルの描画・レンダリング・視覚効果の表現を担当
  */
 export class ParticleRenderer {
-    private __particleManager: any;
+    private _particleManager: any;
     private quality?: number;
     private customDrawFunctions?: Map<string, DrawFunction>;
 
     constructor(particleManager: any) {
-        this.__particleManager = particleManager;
+        this._particleManager = particleManager;
         
         console.log('[ParticleRenderer] Renderer initialized');
     }

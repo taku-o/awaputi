@@ -471,7 +471,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * カテゴリ一覧描画
      */
-    renderCategories(context: CanvasRenderingContext2D, __height: number): void {
+    renderCategories(context: CanvasRenderingContext2D, _height: number): void {
         const startY = 80;
         const categoryHeight = 50;
         
@@ -499,7 +499,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * 設定項目描画
      */
-    renderSettings(context: CanvasRenderingContext2D, width: number, __height: number): void {
+    renderSettings(context: CanvasRenderingContext2D, width: number, _height: number): void {
         const startX = this.layout.categoryWidth + 30;
         const startY = 80;
         const settingsWidth = width - startX - 20;
@@ -580,7 +580,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
      * 設定値の描画
      */
     renderSettingValue(context: CanvasRenderingContext2D, item: SettingItem, value: any, x: number, y: number, width: number, isSelected: boolean): void {
-        const __height = 30;
+        const _height = 30;
         const centerY = y + 20;
         
         switch (item.type) {
@@ -786,7 +786,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * アクセシビリティプロファイルコントロール描画
      */
-    renderAccessibilityProfileControl(context: CanvasRenderingContext2D, __value: any, x: number, y: number, width: number, isSelected: boolean): void {
+    renderAccessibilityProfileControl(context: CanvasRenderingContext2D, _value: any, x: number, y: number, width: number, isSelected: boolean): void {
         const controlWidth = width - 20;
         const controlHeight = 30;
         const controlY = y - controlHeight / 2;
@@ -836,7 +836,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * 設定インポート・エクスポートコントロール描画
      */
-    renderSettingsImportExportControl(context: CanvasRenderingContext2D, __value: any, x: number, y: number, width: number, isSelected: boolean): void {
+    renderSettingsImportExportControl(context: CanvasRenderingContext2D, _value: any, x: number, y: number, width: number, isSelected: boolean): void {
         const controlWidth = width - 20;
         const controlHeight = 30;
         const controlY = y - controlHeight / 2;
@@ -1402,7 +1402,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
         console.log('[SettingsScene] Current Profile:', currentProfile);
         
         // 簡易プロファイル選択（実際の実装では専用UIを作成）
-        const __profileNames = profiles.map(p => p.name);
+        const _profileNames = profiles.map(p => p.name);
         const currentIndex = profiles.findIndex(p => p.id === (currentProfile ? currentProfile.id : null));
         const nextIndex = (currentIndex + 1) % profiles.length;
         const nextProfile = profiles[nextIndex];
