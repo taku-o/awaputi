@@ -260,13 +260,18 @@ class ConfigurationManager {
     /**
      * 設定値を取得
      */
-    get<T = ConfigurationValue>(key: string): T | null {
+    get<T = ConfigurationValue>(key: string): T | null;
+    get<T = ConfigurationValue>(namespace: string, key: string): T | null;
+    get<T = ConfigurationValue>(keyOrNamespace: string, key?: string): T | null {
         try {
+            // 引数の処理
+            const finalKey = key ? `${keyOrNamespace}.${key}` : keyOrNamespace;
+            
             this.accessStats.totalAccesses++;
-            this._trackKeyAccess(key);
+            this._trackKeyAccess(finalKey);
             
             // キャッシュから確認
-            const cacheKey = `config:${key}`;
+            const cacheKey = `config:${finalKey}`;
             const cachedValue = this.cache.get(cacheKey);
             if (cachedValue !== undefined) {
                 this.accessStats.cacheHits++;
@@ -276,7 +281,7 @@ class ConfigurationManager {
             this.accessStats.cacheMisses++;
             
             // キーを解析
-            const [category, ...pathParts] = key.split('.');
+            const [category, ...pathParts] = finalKey.split('.');
             const path = pathParts.join('.');
             
             const categoryMap = this.configurations.get(category);
@@ -303,15 +308,21 @@ class ConfigurationManager {
     /**
      * 設定値を設定
      */
-    set<T extends ConfigurationValue = ConfigurationValue>(key: string, value: T): boolean {
+    set<T extends ConfigurationValue = ConfigurationValue>(key: string, value: T): boolean;
+    set<T extends ConfigurationValue = ConfigurationValue>(namespace: string, key: string, value: T): boolean;
+    set<T extends ConfigurationValue = ConfigurationValue>(keyOrNamespace: string, keyOrValue: string | T, value?: T): boolean {
         try {
+            // 引数の処理
+            const finalKey = value !== undefined ? `${keyOrNamespace}.${keyOrValue}` : keyOrNamespace;
+            const finalValue = value !== undefined ? value : keyOrValue as T;
+            
             // 検証
-            if (!this._validateValue(key, value)) {
+            if (!this._validateValue(finalKey, finalValue)) {
                 return false;
             }
             
             // キーを解析
-            const [category, ...pathParts] = key.split('.');
+            const [category, ...pathParts] = finalKey.split('.');
             const path = pathParts.join('.');
             
             // カテゴリマップを取得または作成
@@ -325,17 +336,17 @@ class ConfigurationManager {
             const oldValue = categoryMap.get(path);
             
             // 値を設定
-            categoryMap.set(path, value as ConfigurationValue);
+            categoryMap.set(path, finalValue as ConfigurationValue);
             
             // キャッシュを無効化
-            const cacheKey = `config:${key}`;
+            const cacheKey = `config:${finalKey}`;
             this.cache.delete(cacheKey);
             
             // 変更履歴を記録
-            this._recordChange(key, oldValue, value as ConfigurationValue);
+            this._recordChange(finalKey, oldValue, finalValue as ConfigurationValue);
             
             // ウォッチャーに通知
-            this._notifyWatchers(key, value as ConfigurationValue, oldValue);
+            this._notifyWatchers(finalKey, finalValue as ConfigurationValue, oldValue);
             
             return true;
             
@@ -555,6 +566,41 @@ class ConfigurationManager {
         } else {
             console.error(`[ConfigurationManager] Error in ${operation}:`, error, context);
         }
+    }
+    
+    /**
+     * テスト用: configurationsプロパティへのアクセス
+     */
+    get _configurations(): Map<string, Map<string, ConfigurationValue>> {
+        return this.configurations;
+    }
+    
+    /**
+     * バリデーション機能（テスト用）
+     */
+    validate(namespace: string, key: string, value: ConfigurationValue): boolean {
+        const ruleKey = `${namespace}.${key}`;
+        const rule = this.validationRules.get(ruleKey);
+        
+        if (!rule) return true;
+        
+        // 基本的なバリデーション
+        if (rule.type && typeof value !== rule.type) {
+            return false;
+        }
+        
+        if (rule.pattern && typeof value === 'string' && !rule.pattern.test(value)) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * バリデーションルールを設定（テスト用）
+     */
+    setValidationRule(key: string, rule: ValidationRule): void {
+        this.validationRules.set(key, rule);
     }
 }
 

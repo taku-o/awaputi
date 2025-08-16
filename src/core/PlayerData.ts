@@ -149,7 +149,7 @@ export class PlayerData {
     /**
      * ダメージを受ける
      */
-    takeDamage(amount: number): { died: boolean } {
+    takeDamage(amount: number): { died: boolean; revived?: boolean } {
         try {
             // 入力値を検証
             const validation = validateInput(amount, 'number', {
@@ -174,12 +174,12 @@ export class PlayerData {
                 try {
                     if (this.gameEngine && this.gameEngine.itemManager && this.gameEngine.itemManager.useRevival()) {
                         console.log('Revival item activated!');
-                        return { died: false }; // 復活したのでゲームオーバーではない
+                        return { died: false, revived: true }; // 復活したのでゲームオーバーではない
                     }
                 } catch (error) {
                     getErrorHandler().handleError(error, 'ITEM_SYSTEM_ERROR', { operation: 'useRevival' });
                 }
-                return { died: true }; // ゲームオーバー
+                return { died: true, revived: false }; // ゲームオーバー
             }
             return { died: false };
             
@@ -513,5 +513,70 @@ export class PlayerData {
         this.unlockedStages = [];
         this.ownedItems = [];
         this.save();
+    }
+    
+    /**
+     * コンボを増加
+     */
+    increaseCombo(): void {
+        this.combo++;
+    }
+    
+    /**
+     * コンボをリセット
+     */
+    resetCombo(): void {
+        this.combo = 0;
+    }
+    
+    /**
+     * コンボ倍率を取得
+     */
+    getComboMultiplier(): number {
+        // コンボに応じて倍率を計算
+        if (this.combo >= 50) return 3.0;
+        if (this.combo >= 30) return 2.5;
+        if (this.combo >= 20) return 2.0;
+        if (this.combo >= 10) return 1.5;
+        if (this.combo >= 5) return 1.2;
+        return 1.0;
+    }
+    
+    /**
+     * アイテムをアップグレード
+     */
+    upgradeItem(itemId: string): boolean {
+        // アイテムがowneditems内にあるかチェック
+        const itemIndex = this.ownedItems.findIndex(item => 
+            typeof item === 'object' && item.id === itemId
+        );
+        
+        if (itemIndex !== -1) {
+            const item = this.ownedItems[itemIndex] as any;
+            item.level = (item.level || 1) + 1;
+            this.save();
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * アイテムを所有しているかチェック
+     */
+    hasItem(itemId: string): boolean {
+        return this.ownedItems.some(item => 
+            typeof item === 'object' && (item as any).id === itemId
+        );
+    }
+    
+    /**
+     * アイテムのレベルを取得
+     */
+    getItemLevel(itemId: string): number {
+        const item = this.ownedItems.find(item => 
+            typeof item === 'object' && (item as any).id === itemId
+        ) as any;
+        
+        return item ? (item.level || 1) : 0;
     }
 }

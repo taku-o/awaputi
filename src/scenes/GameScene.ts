@@ -160,6 +160,11 @@ export class GameScene extends Scene implements GameSceneState {
     setupEventListeners(): void {
         this.canvas = this.gameEngine.canvas;
         
+        if (!this.canvas) {
+            console.error('Canvas not available in GameEngine');
+            return;
+        }
+        
         // イベントリスナーを追加（バインドされたメソッドを使用）
         this.canvas.addEventListener('click', this.boundHandleMouseClick);
         this.canvas.addEventListener('mousemove', this.boundHandleMouseMove);
