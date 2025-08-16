@@ -10,7 +10,8 @@ import { jest } from '@jest/globals';
 import { AudioManager } from '../../src/audio/AudioManager.js';
 import { getAudioConfig } from '../../src/config/AudioConfig.js';
 import { getConfigurationManager } from '../../src/core/ConfigurationManager.js';
-import { MockAudioContext, MockAudioNode } from '../../src/types/test.js';
+// TODO: Mock types need to be properly exported from test types
+// import { MockAudioContext, MockAudioNode } from '../../src/types/test.js';
 
 interface MockFunction<T = any> extends Function {
     mockReturnValue: (value: T) => MockFunction<T>;
@@ -31,7 +32,7 @@ interface AudioManagerStatus {
 // 簡単なモック関数
 const mockFn = <T = any>(returnValue?: T): MockFunction<T> => {
     let currentReturnValue = returnValue;
-    const fn = (...args: any[]) => currentReturnValue;
+    const fn = (..._args: any[]) => currentReturnValue;
     (fn as any).mockReturnValue = (value: T) => { 
         currentReturnValue = value; 
         return fn as MockFunction<T>; 
@@ -46,11 +47,11 @@ const mockFn = <T = any>(returnValue?: T): MockFunction<T> => {
 describe('AudioManager統合テスト', () => {
     let audioManager: AudioManager;
     let audioConfig: any;
-    let configManager: any;
+    let _configManager: any;
 
     beforeAll(() => {
         // Web Audio API の基本的なモック
-        (global as any).AudioContext = function(this: MockAudioContext) {
+        (global as any).AudioContext = function(this: any) {
             this.createGain = () => ({
                 gain: { value: 0 },
                 connect: mockFn(),
@@ -115,8 +116,8 @@ describe('AudioManager統合テスト', () => {
     beforeEach(() => {
         // 新しいインスタンスを作成
         audioConfig = getAudioConfig();
-        configManager = getConfigurationManager();
-        audioManager = new AudioManager();
+        _configManager = getConfigurationManager();
+        audioManager = new AudioManager(_configManager, audioConfig);
     });
 
     afterEach(() => {
