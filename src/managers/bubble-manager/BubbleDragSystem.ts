@@ -20,8 +20,8 @@ interface DragHistoryEntry {
 export class BubbleDragSystem implements IBubbleDragSystem {
     private draggedBubble: Bubble | null = null;
     private isDragging: boolean = false;
-    private _dragStartPosition: Position = { x: 0, y: 0 };
-    private _dragCurrentPosition: Position = { x: 0, y: 0 };
+    private dragStartPosition: Position = { x: 0, y: 0 };
+    private dragCurrentPosition: Position = { x: 0, y: 0 };
     private dragHistory: DragHistoryEntry[] = []; // ドラッグ軌跡の履歴（速度計算用）
 
     constructor() {

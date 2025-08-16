@@ -156,7 +156,14 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine {
     /**
      * 泡に力を適用
      */
-    applyForceToBubble(bubble: Bubble, direction: Vector2, strength: number): void {
+    applyForceToBubble(bubble: Bubble | any, direction: Vector2, strength: number): void {
+        if (!bubble || !bubble.isAlive) return;
+        
+        // 速度ベクトルを初期化
+        if (!bubble.velocity) {
+            bubble.velocity = { x: 0, y: 0 };
+        }
+        
         bubble.velocity.x = direction.x * strength;
         bubble.velocity.y = direction.y * strength;
         
@@ -185,6 +192,15 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine {
                 bubble.velocity.x *= 0.2;
                 bubble.velocity.y *= 0.2;
                 break;
+        }
+        
+        // 最大速度制限
+        const maxSpeed = 15;
+        const currentSpeed = Math.sqrt(bubble.velocity.x ** 2 + bubble.velocity.y ** 2);
+        if (currentSpeed > maxSpeed) {
+            const scale = maxSpeed / currentSpeed;
+            bubble.velocity.x *= scale;
+            bubble.velocity.y *= scale;
         }
     }
     
@@ -347,40 +363,5 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine {
         const dy = point.y - yy;
         
         return Math.sqrt(dx * dx + dy * dy);
-    }
-    
-    /**
-     * バブルに物理的な力を適用
-     * @param bubble - 対象のバブル
-     * @param forceDirection - 力の方向
-     * @param strength - 力の強さ
-     */
-    applyForceToBubble(bubble: any, forceDirection: Vector2, strength: number): void {
-        if (!bubble || !bubble.isAlive) return;
-        
-        // 速度ベクトルを計算
-        const velocity = {
-            x: forceDirection.x * strength * 0.1, // スケール調整
-            y: forceDirection.y * strength * 0.1
-        };
-        
-        // バブルの速度を更新
-        if (bubble.velocity) {
-            bubble.velocity.x += velocity.x;
-            bubble.velocity.y += velocity.y;
-        } else {
-            bubble.velocity = velocity;
-        }
-        
-        // 最大速度制限
-        const maxSpeed = 15;
-        const currentSpeed = Math.sqrt(bubble.velocity.x ** 2 + bubble.velocity.y ** 2);
-        if (currentSpeed > maxSpeed) {
-            const scale = maxSpeed / currentSpeed;
-            bubble.velocity.x *= scale;
-            bubble.velocity.y *= scale;
-        }
-        
-        console.log(`Applied force to bubble: velocity=(${bubble.velocity.x.toFixed(2)}, ${bubble.velocity.y.toFixed(2)})`);
     }
 }

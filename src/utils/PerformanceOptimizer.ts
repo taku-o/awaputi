@@ -384,6 +384,60 @@ export class PerformanceOptimizer {
             this.adaptiveController.setAdaptiveMode(enabled);
         }
     }
+    
+    /**
+     * エフェクトの実行可否を判定
+     */
+    shouldRunEffect(effectType: string): boolean {
+        // パフォーマンスが低い場合はエフェクトをスキップ
+        if (this.stats.currentFPS < this.targetFPS * 0.8) {
+            return false;
+        }
+        
+        // エフェクトタイプ別の制限
+        switch (effectType) {
+            case 'bubble_effect':
+                return this.settings.particleQuality > 0.5;
+            case 'particle_system':
+                return this.settings.particleQuality > 0.3;
+            case 'background_effect':
+                return this.settings.backgroundEffects;
+            default:
+                return true;
+        }
+    }
+    
+    /**
+     * エフェクトの品質レベルを取得
+     */
+    getEffectQuality(): number {
+        return this.settings.particleQuality;
+    }
+    
+    /**
+     * 最大バブル数を取得
+     */
+    getMaxBubbles(): number {
+        return this.settings.maxBubbles;
+    }
+    
+    /**
+     * 更新頻度を調整
+     */
+    adjustUpdateFrequency(deltaTime: number): number {
+        // パフォーマンス状況に応じて更新頻度を調整
+        const performanceRatio = this.stats.currentFPS / this.targetFPS;
+        
+        if (performanceRatio < 0.8) {
+            // パフォーマンスが低い場合は更新頻度を下げる
+            return deltaTime * 1.2;
+        } else if (performanceRatio > 1.2) {
+            // パフォーマンスが高い場合は更新頻度を上げる
+            return deltaTime * 0.9;
+        }
+        
+        return deltaTime;
+    }
 }
 
 // Singleton instance

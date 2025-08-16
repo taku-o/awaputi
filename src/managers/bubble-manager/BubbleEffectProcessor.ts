@@ -1,8 +1,7 @@
 import { getPerformanceOptimizer } from '../../utils/PerformanceOptimizer';
 import type { 
     BubbleEffectProcessor as IBubbleEffectProcessor, 
-    Bubble, 
-    Position 
+    Bubble
 } from '../../types/game';
 
 /**
@@ -26,7 +25,7 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor {
             return;
         }
         
-        const gameScene = this.gameEngine.sceneManager.getCurrentScene();
+        const _gameScene = this.gameEngine.sceneManager.getCurrentScene();
         
         switch (bubble.type) {
             case 'rainbow':
@@ -293,7 +292,7 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor {
         });
         
         // 距離に応じて遅延爆発
-        affectedBubbles.forEach(({ bubble, distance }, index) => {
+        affectedBubbles.forEach(({ bubble, distance }, _index) => {
             const delay = (distance / radius) * 500; // 最大0.5秒の遅延
             setTimeout(() => {
                 if (bubble.isAlive) {

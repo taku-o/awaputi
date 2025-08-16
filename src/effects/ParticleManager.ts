@@ -444,8 +444,8 @@ export class ParticleManager {
                 errorRate: this.errorHandler.getErrorRate?.() || 0,
                 memoryUsage: performance.memory ? {
                     used: Math.round(performance.memory.usedJSHeapSize / 1024 / 1024),
-                    total: Math.round(performance.memory.totalJSHeapSize / 1024 / 1024),
-                    limit: Math.round((performance.memory as any).jsHeapSizeLimit / 1024 / 1024)
+                    total: Math.round((performance.memory.totalJSHeapSize || 0) / 1024 / 1024),
+                    limit: Math.round(((performance.memory as any).jsHeapSizeLimit || 0) / 1024 / 1024)
                 } : null
             }
         };

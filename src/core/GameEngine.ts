@@ -217,10 +217,10 @@ export class GameEngine {
             this.initializer = new GameEngineInitializer(this);
             
             // イベント管理コンポーネント
-            this.eventManager = new GameEngineEventManager(this);
+            this.eventManager = new GameEngineEventManager(this as any);
             
             // レンダリングコンポーネント
-            this.renderer = new GameEngineRenderer(this);
+            this.renderer = new GameEngineRenderer(this as any);
             
             // ユーティリティコンポーネント
             this.utilities = new GameEngineUtilities(this);

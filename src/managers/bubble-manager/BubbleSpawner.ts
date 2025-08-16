@@ -83,17 +83,6 @@ export class BubbleSpawner implements IBubbleSpawner {
                 const typeValidation = this.validateBubbleInput(position?.x || 0, position?.y || 0, type);
                 if (!typeValidation) {
                     console.warn('Invalid bubble type:', type);
-                }
-                // const typeValidation = getErrorHandler().validateInput(type, 'string', {
-                    maxLength: 20,
-                    pattern: /^[a-zA-Z_]+$/
-                });
-                
-                if (!typeValidation.isValid) {
-                    getErrorHandler().handleError(new Error(`Invalid bubble type: ${typeValidation.errors.join(', ')}`), 'VALIDATION_ERROR', {
-                        input: type,
-                        errors: typeValidation.errors
-                    });
                     type = 'normal'; // フォールバック
                 }
             }
@@ -102,19 +91,6 @@ export class BubbleSpawner implements IBubbleSpawner {
                 const positionValidation = this.validateSpawnParams({ x: position?.x, y: position?.y, type });
                 if (!positionValidation) {
                     console.warn('Invalid position:', position);
-                }
-                // const positionValidation = getErrorHandler().validateInput(position, 'object', {
-                    properties: {
-                        x: { type: 'number', min: -100, max: 1000 },
-                        y: { type: 'number', min: -100, max: 800 }
-                    }
-                });
-                
-                if (!positionValidation.isValid) {
-                    getErrorHandler().handleError(new Error(`Invalid bubble position: ${positionValidation.errors.join(', ')}`), 'VALIDATION_ERROR', {
-                        input: position,
-                        errors: positionValidation.errors
-                    });
                     position = null; // ランダム位置にフォールバック
                 }
             }
@@ -265,7 +241,7 @@ export class BubbleSpawner implements IBubbleSpawner {
             return bubble;
 
         } catch (error) {
-            getErrorHandler().handleError(error, {
+            getErrorHandler().handleError(error, 'BUBBLE_CREATION_ERROR', {
                 context: 'BubbleSpawner.addTestBubble',
                 bubbleData
             });

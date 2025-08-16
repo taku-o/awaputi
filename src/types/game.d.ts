@@ -5,6 +5,9 @@
 
 import { Position, Size, Color, EventListener, Animation, Vector2 } from './global';
 
+// Re-export commonly used types for convenience
+export { Position, Vector2 } from './global';
+
 // Core game engine types
 export interface GameEngine {
   canvas: HTMLCanvasElement;
@@ -207,6 +210,7 @@ export interface BubblePhysicsEngine {
   isBubbleVisible(bubble: Bubble): boolean;
   getBubblesAlongPath(bubbles: Bubble[], startPos: Position, endPos: Position): Bubble[];
   getBubblesInRadius(bubbles: Bubble[], x: number, y: number, radius: number): Bubble[];
+  applyForceToBubble(bubble: Bubble | any, direction: Vector2, strength: number): void;
 }
 
 export interface BubbleDragSystem {

@@ -222,7 +222,7 @@ export class AnimationManager {
                 createBubbleDestroyAnimation: (bubble: any, destroyType: string, options: AnimationOptions): Animation => {
                     return this._createBasicAnimation('bubbleDestroy', bubble, destroyType, options);
                 },
-                createBubbleMovementAnimation: (bubble: any, targetPosition: Position, duration: number, options: AnimationOptions): Animation => {
+                createBubbleMovementAnimation: (bubble: any, _targetPosition: Position, duration: number, options: AnimationOptions): Animation => {
                     return this._createBasicAnimation('bubbleMovement', bubble, 'move', { ...options, duration });
                 },
                 updateBubbleAnimation: (animation: Animation, progress: number) => {
@@ -234,7 +234,7 @@ export class AnimationManager {
                 createUIElementAnimation: (element: any, animationType: string, duration: number, options: AnimationOptions): Animation => {
                     return this._createBasicAnimation('uiElement', element, animationType, { ...options, duration });
                 },
-                createScoreChangeAnimation: (oldScore: number, newScore: number, element: any, duration: number, options: AnimationOptions): Animation => {
+                createScoreChangeAnimation: (_oldScore: number, _newScore: number, element: any, duration: number, options: AnimationOptions): Animation => {
                     return this._createBasicAnimation('scoreChange', element, 'scoreChange', { ...options, duration });
                 },
                 updateUIAnimation: (animation: Animation, progress: number) => {
@@ -479,12 +479,12 @@ export class AnimationManager {
     /**
      * バブル移動アニメーション
      */
-    public animateBubbleMovement(bubble: any, targetPosition: Position, duration: number = 1000, options: AnimationOptions = {}): number {
+    public animateBubbleMovement(bubble: any, _targetPosition: Position, duration: number = 1000, options: AnimationOptions = {}): number {
         if (!this.engineCore.settings.enabled || !this.typeSettings.bubble.enabled) {
             return -1;
         }
         
-        const animation = this.bubbleHandler.createBubbleMovementAnimation(bubble, targetPosition, duration, options);
+        const animation = this.bubbleHandler.createBubbleMovementAnimation(bubble, _targetPosition, duration, options);
         if (animation) {
             animation.id = this.animationId++;
             this.animations.push(animation);
