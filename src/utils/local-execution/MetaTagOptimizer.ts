@@ -12,11 +12,35 @@
 
 import BrowserCompatibilityManager from './BrowserCompatibilityManager.js';
 
+// 型定義インターフェース
+interface FaviconInfo {
+    rel: string;
+    type?: string;
+    href: string;
+    sizes?: string;
+}
+
+interface MetaTagInfo {
+    total: number;
+    byType: Record<string, number>;
+    problematicTags: Array<{ name: string; content: string }>;
+    localExecutionTags: Array<{ name: string; content: string }>;
+}
+
+interface BrowserInfo {
+    name: string;
+    version: number;
+    isSupported: boolean;
+    supportedFeatures: string[];
+    restrictions: string[];
+    fallbacksRequired: string[];
+}
+
 class MetaTagOptimizer {
     /**
      * ローカル実行用にメタタグを最適化
      */
-    static optimizeForLocalExecution() {
+    static optimizeForLocalExecution(): void {
         console.log('MetaTagOptimizer: Optimizing meta tags for local execution');
         
         this.removeProblematicMetaTags();
@@ -30,9 +54,9 @@ class MetaTagOptimizer {
     /**
      * ブラウザ固有の最適化を追加
      */
-    static addBrowserSpecificOptimizations() {
+    static addBrowserSpecificOptimizations(): void {
         try {
-            const browserInfo = BrowserCompatibilityManager.getBrowserInfo();
+            const browserInfo: BrowserInfo = BrowserCompatibilityManager.getBrowserInfo();
             
             // Safari固有の最適化
             if (browserInfo.name === 'safari') {
@@ -60,8 +84,8 @@ class MetaTagOptimizer {
     /**
      * 問題を引き起こすメタタグを削除
      */
-    static removeProblematicMetaTags() {
-        const problematicTags = [
+    static removeProblematicMetaTags(): void {
+        const problematicTags: string[] = [
             'http-equiv="X-Frame-Options"',
             'http-equiv="Content-Security-Policy"',
             'http-equiv="Strict-Transport-Security"',
@@ -79,7 +103,7 @@ class MetaTagOptimizer {
     /**
      * ローカル実行用のメタタグを追加
      */
-    static addLocalExecutionMetaTags() {
+    static addLocalExecutionMetaTags(): void {
         // ローカル実行モード識別用メタタグ
         this._addOrUpdateMetaTag('name', 'local-execution-mode', 'active');
         
@@ -97,12 +121,12 @@ class MetaTagOptimizer {
     /**
      * Content-Security-Policy を緩和
      */
-    static optimizeContentSecurityPolicy() {
+    static optimizeContentSecurityPolicy(): void {
         // 既存のCSPを削除
         this._removeMetaTagByHttpEquiv('Content-Security-Policy');
         
         // ローカル実行用の緩和されたCSP
-        const localCSP = [
+        const localCSP: string = [
             "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:",
             "script-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:",
             "style-src 'self' 'unsafe-inline' data: blob:",
@@ -121,7 +145,7 @@ class MetaTagOptimizer {
      * X-Frame-Options タグを削除
      * @private
      */
-    static _removeXFrameOptionsTag() {
+    static _removeXFrameOptionsTag(): void {
         const xFrameOptionsTags = document.querySelectorAll('meta[http-equiv="X-Frame-Options"]');
         xFrameOptionsTags.forEach(tag => {
             console.log('MetaTagOptimizer: Removing X-Frame-Options meta tag');
@@ -134,7 +158,7 @@ class MetaTagOptimizer {
      * @param {string} httpEquiv - http-equiv属性の値
      * @private
      */
-    static _removeMetaTagByHttpEquiv(httpEquiv) {
+    static _removeMetaTagByHttpEquiv(httpEquiv: string): void {
         const tags = document.querySelectorAll(`meta[http-equiv="${httpEquiv}"]`);
         tags.forEach(tag => {
             console.log(`MetaTagOptimizer: Removing meta tag with http-equiv="${httpEquiv}"`);
@@ -147,7 +171,7 @@ class MetaTagOptimizer {
      * @param {string} selector - セレクター文字列
      * @private
      */
-    static _removeMetaTagByAttribute(selector) {
+    static _removeMetaTagByAttribute(selector: string): void {
         const tags = document.querySelectorAll(`meta[${selector}]`);
         tags.forEach(tag => {
             console.log(`MetaTagOptimizer: Removing meta tag matching ${selector}`);
@@ -162,7 +186,7 @@ class MetaTagOptimizer {
      * @param {string} content - content属性の値
      * @private
      */
-    static _addOrUpdateMetaTag(attributeName, attributeValue, content) {
+    static _addOrUpdateMetaTag(attributeName: string, attributeValue: string, content: string): void {
         // 既存のタグを検索
         let existingTag = document.querySelector(`meta[${attributeName}="${attributeValue}"]`);
         
@@ -184,9 +208,9 @@ class MetaTagOptimizer {
      * ファビコンタグを最適化
      * @private
      */
-    static _optimizeFaviconTags() {
+    static _optimizeFaviconTags(): void {
         // 不足しているファビコンタグのフォールバック
-        const requiredFavicons = [
+        const requiredFavicons: FaviconInfo[] = [
             { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico', sizes: '16x16 32x32 48x48' },
             { rel: 'icon', type: 'image/png', href: '/favicon-16x16.png', sizes: '16x16' },
             { rel: 'icon', type: 'image/png', href: '/favicon-32x32.png', sizes: '32x32' },
@@ -201,10 +225,10 @@ class MetaTagOptimizer {
 
     /**
      * 不足しているファビコンタグを追加
-     * @param {Object} faviconInfo - ファビコン情報
+     * @param {FaviconInfo} faviconInfo - ファビコン情報
      * @private
      */
-    static _addFaviconTagIfMissing(faviconInfo) {
+    static _addFaviconTagIfMissing(faviconInfo: FaviconInfo): void {
         const existingTag = document.querySelector(`link[rel="${faviconInfo.rel}"][href="${faviconInfo.href}"]`);
         
         if (!existingTag) {
@@ -235,7 +259,7 @@ class MetaTagOptimizer {
      * viewport タグを最適化
      * @private
      */
-    static _optimizeViewportTag() {
+    static _optimizeViewportTag(): void {
         const viewportTag = document.querySelector('meta[name="viewport"]');
         
         if (!viewportTag) {
@@ -247,11 +271,11 @@ class MetaTagOptimizer {
 
     /**
      * 現在のメタタグ状況を取得（デバッグ用）
-     * @returns {Object} メタタグ情報
+     * @returns {MetaTagInfo} メタタグ情報
      */
-    static getMetaTagInfo() {
+    static getMetaTagInfo(): MetaTagInfo {
         const allMetaTags = Array.from(document.querySelectorAll('meta'));
-        const metaTagInfo = {
+        const metaTagInfo: MetaTagInfo = {
             total: allMetaTags.length,
             byType: {},
             problematicTags: [],
@@ -287,7 +311,7 @@ class MetaTagOptimizer {
      * Safari固有のメタタグ最適化
      * @private
      */
-    static _addSafariSpecificMetas() {
+    static _addSafariSpecificMetas(): void {
         // Safari のプライベートブラウジング対応
         this._addOrUpdateMetaTag('name', 'local-execution-safari-private-browsing', 
             'local-storage-fallback-enabled');
@@ -301,7 +325,7 @@ class MetaTagOptimizer {
      * Firefox固有のメタタグ最適化
      * @private
      */
-    static _addFirefoxSpecificMetas() {
+    static _addFirefoxSpecificMetas(): void {
         // Firefox の file:// プロトコル localStorage 制限対応
         if (window.location && window.location.protocol === 'file:') {
             this._addOrUpdateMetaTag('name', 'local-execution-firefox-storage', 
@@ -313,7 +337,7 @@ class MetaTagOptimizer {
      * Internet Explorer固有のメタタグ最適化
      * @private
      */
-    static _addIESpecificMetas() {
+    static _addIESpecificMetas(): void {
         // IE のレガシーブラウザ互換性
         this._addOrUpdateMetaTag('name', 'local-execution-ie-compatibility', 
             'legacy-fallbacks-enabled');
@@ -324,10 +348,10 @@ class MetaTagOptimizer {
 
     /**
      * 互換性情報をメタタグとして記録
-     * @param {Object} browserInfo - ブラウザ情報
+     * @param {BrowserInfo} browserInfo - ブラウザ情報
      * @private
      */
-    static _addCompatibilityInfoMeta(browserInfo) {
+    static _addCompatibilityInfoMeta(browserInfo: BrowserInfo): void {
         this._addOrUpdateMetaTag('name', 'local-execution-browser', 
             `${browserInfo.name}-${browserInfo.version}`);
             
@@ -343,7 +367,7 @@ class MetaTagOptimizer {
     /**
      * 最適化状況をリセット（テスト用）
      */
-    static reset() {
+    static reset(): void {
         // ローカル実行用タグを削除
         const localTags = document.querySelectorAll('meta[name^="local-execution"]');
         localTags.forEach(tag => tag.remove());
