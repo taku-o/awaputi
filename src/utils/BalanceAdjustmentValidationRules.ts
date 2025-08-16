@@ -4,12 +4,171 @@
  * ゲームバランス調整時の検証ルールを定義し、変更の妥当性と影響を評価するルールエンジン。
  */
 
-import { getErrorHandler } from './ErrorHandler.js';
+import { getErrorHandler, ErrorHandler } from './ErrorHandler.js';
 import { ValidationRuleEngine } from './balance-validation/ValidationRuleEngine.js';
 import { ValidationRuleDefinitions } from './balance-validation/ValidationRuleDefinitions.js';
 import { ValidationResultProcessor } from './balance-validation/ValidationResultProcessor.js';
 
+// Type definitions
+interface ValidationContext {
+    configKey?: string;
+    bubbleType?: string;
+    propertyType?: string;
+    gameMode?: string;
+    difficultyLevel?: string;
+    player?: any;
+    stage?: any;
+    [key: string]: any;
+}
+
+interface ValidationError {
+    rule: string;
+    message: string;
+    severity: 'low' | 'medium' | 'high' | 'critical';
+    category: string;
+    context?: any;
+}
+
+interface ValidationWarning {
+    rule: string;
+    message: string;
+    severity: 'low' | 'medium' | 'high';
+    category: string;
+    context?: any;
+}
+
+interface ValidationSuggestion {
+    rule: string;
+    message: string;
+    recommendedValue?: any;
+    action?: string;
+    category: string;
+}
+
+interface ValidationResult {
+    valid: boolean;
+    errors: ValidationError[];
+    warnings: ValidationWarning[];
+    suggestions: ValidationSuggestion[];
+    autoFixAvailable: boolean;
+    autoFixedValue: any;
+    rulesApplied: string[];
+    timestamp: number;
+    engineSummary?: any;
+}
+
+interface ValidationRule {
+    name: string;
+    category: string;
+    enabled: boolean;
+    priority: number;
+    validator: (oldValue: any, newValue: any, context: ValidationContext) => ValidationResult;
+    description?: string;
+    applicableContexts?: string[];
+}
+
+interface RuleFilters {
+    category?: string;
+    enabled?: boolean;
+    priority?: number;
+    [key: string]: any;
+}
+
+interface BubbleHealthLimits {
+    min: number;
+    max: number;
+    default: number;
+}
+
+interface ScoreLimits {
+    min: number;
+    max: number;
+    default: number;
+}
+
+interface ValidationAnalytics {
+    totalValidations: number;
+    successRate: number;
+    errorRate: number;
+    warningRate: number;
+    mostCommonErrors: string[];
+    averageExecutionTime: number;
+}
+
+interface EngineMetrics {
+    totalExecutions: number;
+    averageExecutionTime: number;
+    rulesExecuted: number;
+    errorsEncountered: number;
+}
+
+interface EngineStatistics {
+    rulesCount: number;
+    activeRules: number;
+    disabledRules: number;
+    categoryCounts: Record<string, number>;
+}
+
+interface ExecutionHistoryEntry {
+    timestamp: number;
+    ruleCount: number;
+    executionTime: number;
+    result: ValidationResult;
+    context: ValidationContext;
+}
+
+interface EngineConfig {
+    maxExecutionTime?: number;
+    enableProfiling?: boolean;
+    [key: string]: any;
+}
+
+interface ProcessorConfig {
+    enableAnalytics?: boolean;
+    maxHistorySize?: number;
+    [key: string]: any;
+}
+
+interface SystemConfig {
+    engine?: EngineConfig;
+    processor?: ProcessorConfig;
+}
+
+interface ComponentHealth {
+    status: string;
+    metrics?: any;
+    ruleCount?: number;
+    statistics?: any;
+    analytics?: any;
+}
+
+interface SystemHealth {
+    engine: ComponentHealth;
+    definitions: ComponentHealth;
+    processor: ComponentHealth;
+    overall: {
+        initialized: boolean;
+        totalRules: number;
+        lastSyncTime: number;
+    };
+}
+
+interface ComponentReferences {
+    engine: ValidationRuleEngine;
+    definitions: ValidationRuleDefinitions;
+    processor: ValidationResultProcessor;
+}
+
 export class BalanceAdjustmentValidationRules {
+    private errorHandler: ErrorHandler;
+    private ruleEngine: ValidationRuleEngine;
+    private ruleDefinitions: ValidationRuleDefinitions;
+    private resultProcessor: ValidationResultProcessor;
+    
+    // Legacy compatibility properties
+    public ruleCategories: Record<string, any>;
+    public rules: Map<string, ValidationRule>;
+
     constructor() {
         this.errorHandler = getErrorHandler();
         
@@ -31,7 +190,7 @@ export class BalanceAdjustmentValidationRules {
     /**
      * Initialize the validation system
      */
-    initialize() {
+    private initialize(): void {
         try {
             // Initialize rule definitions
             this.ruleDefinitions.initializeRules();
@@ -49,7 +208,7 @@ export class BalanceAdjustmentValidationRules {
     /**
      * Sync legacy properties for backward compatibility
      */
-    syncLegacyProperties() {
+    private syncLegacyProperties(): void {
         // Sync rules from definitions
         this.rules = this.ruleDefinitions.rules;
         
@@ -59,12 +218,8 @@ export class BalanceAdjustmentValidationRules {
     
     /**
      * Validate configuration value change - Main orchestration method
-     * @param {*} oldValue - Old value
-     * @param {*} newValue - New value
-     * @param {Object} context - Validation context
-     * @returns {Object} Validation result
      */
-    validate(oldValue, newValue, context = {}) {
+    public validate(oldValue: any, newValue: any, context: ValidationContext = {}): ValidationResult {
         try {
             // Get applicable rules using the engine
             const allRules = this.ruleDefinitions.getRules();
@@ -97,7 +252,7 @@ export class BalanceAdjustmentValidationRules {
                 valid: false,
                 errors: [{ 
                     rule: 'system', 
-                    message: `Validation process failed: ${error.message}`, 
+                    message: `Validation process failed: ${error instanceof Error ? error.message : String(error)}`, 
                     severity: 'high',
                     category: 'system'
                 }],
@@ -115,10 +270,8 @@ export class BalanceAdjustmentValidationRules {
     
     /**
      * Add validation rule - delegated to rule definitions
-     * @param {string} name - Rule name
-     * @param {Object} rule - Rule definition
      */
-    addRule(name, rule) {
+    public addRule(name: string, rule: ValidationRule): void {
         try {
             this.ruleDefinitions.addRule(name, rule);
             this.syncLegacyProperties();
@@ -129,10 +282,8 @@ export class BalanceAdjustmentValidationRules {
     
     /**
      * Remove validation rule - delegated to rule definitions
-     * @param {string} name - Rule name
-     * @returns {boolean} Success flag
      */
-    removeRule(name) {
+    public removeRule(name: string): boolean {
         try {
             const result = this.ruleDefinitions.removeRule(name);
             this.syncLegacyProperties();
@@ -145,19 +296,15 @@ export class BalanceAdjustmentValidationRules {
     
     /**
      * Get rule statistics - delegated to rule definitions
-     * @returns {Object} Rule statistics
      */
-    getRuleStatistics() {
+    public getRuleStatistics(): any {
         return this.ruleDefinitions.getStatistics();
     }
     
     /**
      * Enable/disable rule - delegated to rule definitions
-     * @param {string} ruleName - Rule name
-     * @param {boolean} enabled - Enable flag
-     * @returns {boolean} Success flag
      */
-    setRuleEnabled(ruleName, enabled) {
+    public setRuleEnabled(ruleName: string, enabled: boolean): boolean {
         try {
             const result = this.ruleDefinitions.setRuleEnabled(ruleName, enabled);
             this.syncLegacyProperties();
@@ -170,11 +317,8 @@ export class BalanceAdjustmentValidationRules {
     
     /**
      * Enable/disable rules by category - delegated to rule definitions
-     * @param {string} category - Category
-     * @param {boolean} enabled - Enable flag
-     * @returns {number} Number of changed rules
      */
-    setCategoryEnabled(category, enabled) {
+    public setCategoryEnabled(category: string, enabled: boolean): number {
         try {
             const result = this.ruleDefinitions.setCategoryEnabled(category, enabled);
             this.syncLegacyProperties();
@@ -187,10 +331,8 @@ export class BalanceAdjustmentValidationRules {
     
     /**
      * Get validation rules - delegated to rule definitions
-     * @param {Object} filters - Filter conditions
-     * @returns {Array} Rule list
      */
-    getRules(filters = {}) {
+    public getRules(filters: RuleFilters = {}): ValidationRule[] {
         try {
             return this.ruleDefinitions.getRules(filters);
         } catch (error) {
@@ -203,39 +345,30 @@ export class BalanceAdjustmentValidationRules {
     
     /**
      * Get applicable rules based on context - delegated to engine
-     * @param {Object} context - Validation context
-     * @returns {Array} Applicable rules
      */
-    _getApplicableRules(context) {
+    public _getApplicableRules(context: ValidationContext): ValidationRule[] {
         const allRules = this.ruleDefinitions.getRules();
         return this.ruleEngine.getApplicableRules(allRules, context);
     }
     
     /**
      * Get bubble health limits - delegated to rule definitions
-     * @param {string} bubbleType - Bubble type
-     * @returns {Object} Limits
      */
-    _getBubbleHealthLimits(bubbleType) {
+    public _getBubbleHealthLimits(bubbleType: string): BubbleHealthLimits {
         return this.ruleDefinitions.getBubbleHealthLimits(bubbleType);
     }
     
     /**
      * Get score limits - delegated to rule definitions
-     * @param {string} bubbleType - Bubble type
-     * @returns {Object} Limits
      */
-    _getScoreLimits(bubbleType) {
+    public _getScoreLimits(bubbleType: string): ScoreLimits {
         return this.ruleDefinitions.getScoreLimits(bubbleType);
     }
     
     /**
      * Get change threshold - delegated to rule definitions
-     * @param {string} bubbleType - Bubble type
-     * @param {string} propertyType - Property type
-     * @returns {number} Threshold ratio
      */
-    _getChangeThreshold(bubbleType, propertyType) {
+    public _getChangeThreshold(bubbleType: string, propertyType: string): number {
         return this.ruleDefinitions.getChangeThreshold(bubbleType, propertyType);
     }
     
@@ -244,7 +377,7 @@ export class BalanceAdjustmentValidationRules {
     /**
      * Initialize rules - delegated to rule definitions
      */
-    _initializeRules() {
+    public _initializeRules(): void {
         this.ruleDefinitions.initializeRules();
         this.syncLegacyProperties();
     }
@@ -252,7 +385,7 @@ export class BalanceAdjustmentValidationRules {
     /**
      * Add bubble health rules - delegated to rule definitions
      */
-    _addBubbleHealthRules() {
+    public _addBubbleHealthRules(): void {
         this.ruleDefinitions.addBubbleHealthRules();
         this.syncLegacyProperties();
     }
@@ -260,7 +393,7 @@ export class BalanceAdjustmentValidationRules {
     /**
      * Add score rules - delegated to rule definitions
      */
-    _addScoreRules() {
+    public _addScoreRules(): void {
         this.ruleDefinitions.addScoreRules();
         this.syncLegacyProperties();
     }
@@ -268,7 +401,7 @@ export class BalanceAdjustmentValidationRules {
     /**
      * Add size rules - delegated to rule definitions
      */
-    _addSizeRules() {
+    public _addSizeRules(): void {
         this.ruleDefinitions.addSizeRules();
         this.syncLegacyProperties();
     }
@@ -276,7 +409,7 @@ export class BalanceAdjustmentValidationRules {
     /**
      * Add time rules - delegated to rule definitions
      */
-    _addTimeRules() {
+    public _addTimeRules(): void {
         this.ruleDefinitions.addTimeRules();
         this.syncLegacyProperties();
     }
@@ -284,7 +417,7 @@ export class BalanceAdjustmentValidationRules {
     /**
      * Add special effect rules - delegated to rule definitions
      */
-    _addSpecialEffectRules() {
+    public _addSpecialEffectRules(): void {
         this.ruleDefinitions.addSpecialEffectRules();
         this.syncLegacyProperties();
     }
@@ -292,7 +425,7 @@ export class BalanceAdjustmentValidationRules {
     /**
      * Add system rules - delegated to rule definitions
      */
-    _addSystemRules() {
+    public _addSystemRules(): void {
         this.ruleDefinitions.addSystemRules();
         this.syncLegacyProperties();
     }
@@ -301,51 +434,43 @@ export class BalanceAdjustmentValidationRules {
     
     /**
      * Generate detailed validation report
-     * @param {Object} validationResult - Validation result
-     * @returns {string} Detailed report
      */
-    generateDetailedReport(validationResult) {
+    public generateDetailedReport(validationResult: ValidationResult): string {
         return this.resultProcessor.generateDetailedReport(validationResult);
     }
     
     /**
      * Get validation analytics
-     * @returns {Object} Analytics data
      */
-    getValidationAnalytics() {
+    public getValidationAnalytics(): ValidationAnalytics {
         return this.resultProcessor.getAnalytics();
     }
     
     /**
      * Get engine performance metrics
-     * @returns {Object} Performance metrics
      */
-    getEngineMetrics() {
+    public getEngineMetrics(): EngineMetrics {
         return this.ruleEngine.getPerformanceMetrics();
     }
     
     /**
      * Get engine statistics
-     * @returns {Object} Engine statistics
      */
-    getEngineStatistics() {
+    public getEngineStatistics(): EngineStatistics {
         return this.ruleEngine.getStatistics();
     }
     
     /**
      * Get execution history
-     * @param {Object} filters - Optional filters
-     * @returns {Array} Execution history
      */
-    getExecutionHistory(filters = {}) {
+    public getExecutionHistory(filters: Record<string, any> = {}): ExecutionHistoryEntry[] {
         return this.ruleEngine.getExecutionHistory(filters);
     }
     
     /**
      * Configure validation components
-     * @param {Object} config - Configuration options
      */
-    configure(config) {
+    public configure(config: SystemConfig): void {
         if (config.engine) {
             this.ruleEngine.configure(config.engine);
         }
@@ -360,7 +485,7 @@ export class BalanceAdjustmentValidationRules {
     /**
      * Clear all history and metrics
      */
-    clearHistory() {
+    public clearHistory(): void {
         this.ruleEngine.clearHistory();
         this.resultProcessor.clearHistory();
         console.log('[BalanceAdjustmentValidationRules] All history cleared');
@@ -369,7 +494,7 @@ export class BalanceAdjustmentValidationRules {
     /**
      * Reset all metrics
      */
-    resetMetrics() {
+    public resetMetrics(): void {
         this.ruleEngine.resetMetrics();
         console.log('[BalanceAdjustmentValidationRules] All metrics reset');
     }
@@ -377,7 +502,7 @@ export class BalanceAdjustmentValidationRules {
     /**
      * Get component references for advanced usage
      */
-    getComponents() {
+    public getComponents(): ComponentReferences {
         return {
             engine: this.ruleEngine,
             definitions: this.ruleDefinitions,
@@ -387,9 +512,8 @@ export class BalanceAdjustmentValidationRules {
     
     /**
      * Get system health status
-     * @returns {Object} Health status
      */
-    getSystemHealth() {
+    public getSystemHealth(): SystemHealth {
         return {
             engine: {
                 status: 'active',
@@ -415,7 +539,7 @@ export class BalanceAdjustmentValidationRules {
     /**
      * Destroy validation system
      */
-    destroy() {
+    public destroy(): void {
         try {
             // Destroy sub-components
             this.ruleEngine.destroy();
@@ -433,13 +557,12 @@ export class BalanceAdjustmentValidationRules {
 }
 
 // Singleton instance
-let validationRulesInstance = null;
+let validationRulesInstance: BalanceAdjustmentValidationRules | null = null;
 
 /**
  * Get BalanceAdjustmentValidationRules singleton instance
- * @returns {BalanceAdjustmentValidationRules} Rule engine instance
  */
-export function getBalanceAdjustmentValidationRules() {
+export function getBalanceAdjustmentValidationRules(): BalanceAdjustmentValidationRules {
     if (!validationRulesInstance) {
         validationRulesInstance = new BalanceAdjustmentValidationRules();
     }

@@ -10,29 +10,47 @@
  * @version 1.0.0
  */
 
-/**
- * 実行コンテキスト情報を表すインターフェース
- * @typedef {Object} ExecutionContext
- * @property {'file:' | 'http:' | 'https:'} protocol - プロトコル種別
- * @property {boolean} isLocal - ローカル実行かどうか
- * @property {boolean} canUseModules - ES6モジュールが使用可能かどうか
- * @property {Object} supportedFeatures - サポートされている機能
- * @property {boolean} supportedFeatures.canvas - Canvas API対応
- * @property {boolean} supportedFeatures.indexedDB - IndexedDB対応
- * @property {boolean} supportedFeatures.localStorage - localStorage対応
- * @property {boolean} supportedFeatures.serviceWorker - ServiceWorker対応
- * @property {Object} browserInfo - ブラウザ情報
- * @property {string} browserInfo.name - ブラウザ名
- * @property {string} browserInfo.version - ブラウザバージョン
- * @property {string} browserInfo.engine - レンダリングエンジン
- */
+// Type definitions
+interface SupportedFeatures {
+    canvas: boolean;
+    indexedDB: boolean;
+    localStorage: boolean;
+    serviceWorker: boolean;
+}
+
+interface BrowserInfo {
+    name: string;
+    version: string;
+    engine: string;
+}
+
+interface ExecutionContext {
+    protocol: 'file:' | 'http:' | 'https:' | string;
+    isLocal: boolean;
+    canUseModules: boolean;
+    supportedFeatures: SupportedFeatures;
+    browserInfo: BrowserInfo;
+}
+
+interface DebugInfo {
+    executionContext: ExecutionContext;
+    isLocalExecution: boolean;
+    shouldShowWarning: boolean;
+    userAgent: string;
+    location: {
+        href: string;
+        protocol: string;
+        host: string;
+        pathname: string;
+    };
+    timestamp: string;
+}
 
 class LocalExecutionDetector {
     /**
      * ローカルファイル実行かどうかを判定
-     * @returns {boolean} ローカル実行の場合 true
      */
-    static isLocalExecution() {
+    static isLocalExecution(): boolean {
         try {
             return window.location.protocol === 'file:';
         } catch (error) {
@@ -43,9 +61,8 @@ class LocalExecutionDetector {
 
     /**
      * 実行コンテキスト情報を取得
-     * @returns {ExecutionContext} 実行コンテキスト情報
      */
-    static getExecutionContext() {
+    static getExecutionContext(): ExecutionContext {
         const protocol = this._getProtocol();
         const isLocal = protocol === 'file:';
         
@@ -60,9 +77,8 @@ class LocalExecutionDetector {
 
     /**
      * 警告を表示すべきかどうかを判定
-     * @returns {boolean} 警告表示が必要な場合 true
      */
-    static shouldShowWarning() {
+    static shouldShowWarning(): boolean {
         if (!this.isLocalExecution()) {
             return false;
         }
@@ -80,7 +96,7 @@ class LocalExecutionDetector {
     /**
      * 警告を非表示にする設定を保存
      */
-    static dismissWarning() {
+    static dismissWarning(): void {
         try {
             localStorage.setItem('local-execution-warning-dismissed', 'true');
             localStorage.setItem('local-execution-warning-dismissed-at', new Date().toISOString());
@@ -92,7 +108,7 @@ class LocalExecutionDetector {
     /**
      * 警告非表示設定をリセット
      */
-    static resetWarningDismissal() {
+    static resetWarningDismissal(): void {
         try {
             localStorage.removeItem('local-execution-warning-dismissed');
             localStorage.removeItem('local-execution-warning-dismissed-at');
@@ -103,10 +119,8 @@ class LocalExecutionDetector {
 
     /**
      * プロトコルを安全に取得
-     * @returns {string} プロトコル文字列
-     * @private
      */
-    static _getProtocol() {
+    private static _getProtocol(): string {
         try {
             return window.location.protocol;
         } catch (error) {
@@ -117,10 +131,8 @@ class LocalExecutionDetector {
 
     /**
      * ES6モジュールが使用可能かどうかを判定
-     * @returns {boolean} ES6モジュールが使用可能な場合 true
-     * @private
      */
-    static _canUseESModules() {
+    private static _canUseESModules(): boolean {
         // file: プロトコルではES6モジュールは通常使用できない
         if (this.isLocalExecution()) {
             return false;
@@ -137,10 +149,8 @@ class LocalExecutionDetector {
 
     /**
      * サポートされている機能を検出
-     * @returns {Object} サポート機能のオブジェクト
-     * @private
      */
-    static _detectSupportedFeatures() {
+    private static _detectSupportedFeatures(): SupportedFeatures {
         return {
             canvas: this._supportsCanvas(),
             indexedDB: this._supportsIndexedDB(),
@@ -151,10 +161,8 @@ class LocalExecutionDetector {
 
     /**
      * Canvas API のサポートを確認
-     * @returns {boolean} サポートされている場合 true
-     * @private
      */
-    static _supportsCanvas() {
+    private static _supportsCanvas(): boolean {
         try {
             const canvas = document.createElement('canvas');
             return !!(canvas.getContext && canvas.getContext('2d'));
@@ -165,10 +173,8 @@ class LocalExecutionDetector {
 
     /**
      * IndexedDB のサポートを確認
-     * @returns {boolean} サポートされている場合 true
-     * @private
      */
-    static _supportsIndexedDB() {
+    private static _supportsIndexedDB(): boolean {
         try {
             return 'indexedDB' in window && window.indexedDB !== null;
         } catch (error) {
@@ -178,10 +184,8 @@ class LocalExecutionDetector {
 
     /**
      * localStorage のサポートを確認
-     * @returns {boolean} サポートされている場合 true
-     * @private
      */
-    static _supportsLocalStorage() {
+    private static _supportsLocalStorage(): boolean {
         try {
             const test = '__localStorage_test__';
             localStorage.setItem(test, test);
@@ -194,10 +198,8 @@ class LocalExecutionDetector {
 
     /**
      * ServiceWorker のサポートを確認
-     * @returns {boolean} サポートされている場合 true
-     * @private
      */
-    static _supportsServiceWorker() {
+    private static _supportsServiceWorker(): boolean {
         try {
             return 'serviceWorker' in navigator && !this.isLocalExecution();
         } catch (error) {
@@ -207,10 +209,8 @@ class LocalExecutionDetector {
 
     /**
      * ブラウザ情報を取得
-     * @returns {Object} ブラウザ情報
-     * @private
      */
-    static _getBrowserInfo() {
+    private static _getBrowserInfo(): BrowserInfo {
         try {
             const userAgent = navigator.userAgent;
             const browserInfo = this._parseBrowserInfo(userAgent);
@@ -226,11 +226,8 @@ class LocalExecutionDetector {
 
     /**
      * User Agent からブラウザ情報を解析
-     * @param {string} userAgent - User Agent 文字列
-     * @returns {Object} ブラウザ情報
-     * @private
      */
-    static _parseBrowserInfo(userAgent) {
+    private static _parseBrowserInfo(userAgent: string): BrowserInfo {
         let name = 'unknown';
         let version = 'unknown';
         let engine = 'unknown';
@@ -269,9 +266,8 @@ class LocalExecutionDetector {
 
     /**
      * デバッグ情報を取得
-     * @returns {Object} デバッグ情報
      */
-    static getDebugInfo() {
+    static getDebugInfo(): DebugInfo {
         const context = this.getExecutionContext();
         return {
             executionContext: context,

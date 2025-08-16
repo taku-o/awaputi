@@ -7,7 +7,81 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
 
+// Type definitions
+interface BackupMetadata {
+    gitBranch: string;
+    gitCommit: string;
+    nodeVersion: string;
+    platform: NodeJS.Platform;
+}
+
+interface BackupFileInfo {
+    originalPath: string;
+    relativePath: string;
+    backupPath: string;
+    size: number;
+    modifiedTime: Date;
+    backupTime: Date;
+    checksum: string;
+}
+
+interface BackupOperation {
+    timestamp: Date;
+    [key: string]: any;
+}
+
+interface BackupSession {
+    id: string;
+    name: string;
+    startTime: Date;
+    backupDir: string;
+    files: BackupFileInfo[];
+    operations: BackupOperation[];
+    metadata: BackupMetadata;
+}
+
+interface BackupResult {
+    file: string;
+    status: 'success' | 'failed';
+    backup?: BackupFileInfo;
+    error?: string;
+}
+
+interface RollbackOptions {
+    selective?: boolean;
+    filePatterns?: string[];
+    dryRun?: boolean;
+}
+
+interface RollbackResult {
+    file: string;
+    status: 'restored' | 'failed';
+    dryRun?: boolean;
+    error?: string;
+}
+
+interface BackupSessionInfo {
+    id: string;
+    name: string;
+    startTime: Date | string;
+    endTime?: Date | string;
+    fileCount: number;
+    operationCount: number;
+}
+
+interface VerificationResult {
+    file: string;
+    status: 'valid' | 'corrupted' | 'missing';
+    checksum?: string;
+    expectedChecksum?: string;
+    error?: string;
+}
+
 export class BackupManager {
+    private backupRoot: string;
+    private currentBackupId: string | null;
+    private backups: Map<string, BackupSession>;
+
     constructor() {
         this.backupRoot = path.join(process.cwd(), '.backup');
         this.currentBackupId = null;
@@ -17,14 +91,14 @@ export class BackupManager {
     /**
      * 新しいバックアップセッションを開始
      */
-    async startBackupSession(sessionName = 'deduplication') {
+    public async startBackupSession(sessionName: string = 'deduplication'): Promise<string> {
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
         this.currentBackupId = `${sessionName}_${timestamp}`;
         
         const backupDir = path.join(this.backupRoot, this.currentBackupId);
         await fs.mkdir(backupDir, { recursive: true });
         
-        const session = {
+        const session: BackupSession = {
             id: this.currentBackupId,
             name: sessionName,
             startTime: new Date(),
@@ -51,13 +125,17 @@ export class BackupManager {
     /**
      * ファイルの完全バックアップを作成
      */
-    async createFullBackup(filePaths) {
+    public async createFullBackup(filePaths: string[]): Promise<BackupResult[]> {
         if (!this.currentBackupId) {
             throw new Error('No active backup session. Call startBackupSession first.');
         }
 
         const session = this.backups.get(this.currentBackupId);
-        const results = [];
+        if (!session) {
+            throw new Error('Active backup session not found.');
+        }
+
+        const results: BackupResult[] = [];
 
         for (const filePath of filePaths) {
             try {
@@ -68,7 +146,7 @@ export class BackupManager {
                 results.push({ 
                     file: filePath, 
                     status: 'failed', 
-                    error: error.message 
+                    error: error instanceof Error ? error.message : String(error)
                 });
             }
         }
@@ -82,7 +160,7 @@ export class BackupManager {
     /**
      * 単一ファイルのバックアップ
      */
-    async backupSingleFile(filePath, session) {
+    private async backupSingleFile(filePath: string, session: BackupSession): Promise<BackupFileInfo> {
         const relativePath = path.relative(process.cwd(), filePath);
         const backupPath = path.join(session.backupDir, relativePath);
         
@@ -96,7 +174,7 @@ export class BackupManager {
         // ファイルコピー
         await fs.copyFile(filePath, backupPath);
         
-        const backupInfo = {
+        const backupInfo: BackupFileInfo = {
             originalPath: filePath,
             relativePath: relativePath,
             backupPath: backupPath,
@@ -112,7 +190,7 @@ export class BackupManager {
     /**
      * 段階的ロールバック
      */
-    async rollbackChanges(backupId, options = {}) {
+    public async rollbackChanges(backupId: string, options: RollbackOptions = {}): Promise<RollbackResult[]> {
         const session = this.backups.get(backupId);
         if (!session) {
             throw new Error(`Backup session not found: ${backupId}`);
@@ -124,7 +202,7 @@ export class BackupManager {
             dryRun = false
         } = options;
 
-        const results = [];
+        const results: RollbackResult[] = [];
         let filesToRestore = session.files;
 
         // 選択的ロールバックの場合
@@ -157,11 +235,11 @@ export class BackupManager {
                 results.push({ 
                     file: fileInfo.originalPath, 
                     status: 'failed', 
-                    error: error.message 
+                    error: error instanceof Error ? error.message : String(error)
                 });
                 
                 console.error(`✗ Failed to restore: ${fileInfo.relativePath}`);
-                console.error(`  Error: ${error.message}`);
+                console.error(`  Error: ${error instanceof Error ? error.message : String(error)}`);
             }
         }
 
@@ -174,7 +252,7 @@ export class BackupManager {
     /**
      * 単一ファイルの復元
      */
-    async restoreSingleFile(fileInfo) {
+    private async restoreSingleFile(fileInfo: BackupFileInfo): Promise<void> {
         // バックアップファイルが存在するかチェック
         await fs.access(fileInfo.backupPath);
         
@@ -198,13 +276,18 @@ export class BackupManager {
     /**
      * 操作ログの記録
      */
-    logOperation(operation) {
+    public logOperation(operation: Omit<BackupOperation, 'timestamp'>): void {
         if (!this.currentBackupId) {
             console.warn('No active backup session for logging operation');
             return;
         }
 
         const session = this.backups.get(this.currentBackupId);
+        if (!session) {
+            console.warn('Active backup session not found');
+            return;
+        }
+
         session.operations.push({
             ...operation,
             timestamp: new Date()
@@ -214,7 +297,7 @@ export class BackupManager {
     /**
      * セッションメタデータの保存
      */
-    async saveSessionMetadata(session) {
+    private async saveSessionMetadata(session: BackupSession): Promise<void> {
         const metadataPath = path.join(session.backupDir, 'session-metadata.json');
         const metadata = {
             ...session,
@@ -232,10 +315,10 @@ export class BackupManager {
     /**
      * バックアップセッションのリストを取得
      */
-    async listBackupSessions() {
+    public async listBackupSessions(): Promise<BackupSessionInfo[]> {
         try {
             const backupDirs = await fs.readdir(this.backupRoot, { withFileTypes: true });
-            const sessions = [];
+            const sessions: BackupSessionInfo[] = [];
 
             for (const dir of backupDirs) {
                 if (dir.isDirectory()) {
@@ -256,7 +339,7 @@ export class BackupManager {
                 }
             }
 
-            return sessions.sort((a, b) => new Date(b.startTime) - new Date(a.startTime));
+            return sessions.sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime());
         } catch (error) {
             return [];
         }
@@ -265,7 +348,7 @@ export class BackupManager {
     /**
      * 古いバックアップの削除
      */
-    async cleanupOldBackups(retainDays = 30) {
+    public async cleanupOldBackups(retainDays: number = 30): Promise<number> {
         const cutoffDate = new Date();
         cutoffDate.setDate(cutoffDate.getDate() - retainDays);
 
@@ -283,7 +366,7 @@ export class BackupManager {
                 deletedCount++;
                 console.log(`Deleted old backup: ${session.id}`);
             } catch (error) {
-                console.error(`Failed to delete backup ${session.id}: ${error.message}`);
+                console.error(`Failed to delete backup ${session.id}: ${error instanceof Error ? error.message : String(error)}`);
             }
         }
 
@@ -294,7 +377,7 @@ export class BackupManager {
     /**
      * チェックサム計算
      */
-    async calculateChecksum(filePath) {
+    private async calculateChecksum(filePath: string): Promise<string> {
         const crypto = await import('crypto');
         const data = await fs.readFile(filePath);
         return crypto.createHash('sha256').update(data).digest('hex');
@@ -303,7 +386,7 @@ export class BackupManager {
     /**
      * 現在のGitブランチを取得
      */
-    getCurrentGitBranch() {
+    private getCurrentGitBranch(): string {
         try {
             return execSync('git branch --show-current', { encoding: 'utf8' }).trim();
         } catch (error) {
@@ -314,7 +397,7 @@ export class BackupManager {
     /**
      * 現在のGitコミットハッシュを取得
      */
-    getCurrentGitCommit() {
+    private getCurrentGitCommit(): string {
         try {
             return execSync('git rev-parse HEAD', { encoding: 'utf8' }).trim();
         } catch (error) {
@@ -325,13 +408,13 @@ export class BackupManager {
     /**
      * バックアップの検証
      */
-    async verifyBackup(backupId) {
+    public async verifyBackup(backupId: string): Promise<VerificationResult[]> {
         const session = this.backups.get(backupId);
         if (!session) {
             throw new Error(`Backup session not found: ${backupId}`);
         }
 
-        const results = [];
+        const results: VerificationResult[] = [];
 
         for (const fileInfo of session.files) {
             try {
@@ -353,7 +436,7 @@ export class BackupManager {
                 results.push({
                     file: fileInfo.relativePath,
                     status: 'missing',
-                    error: error.message
+                    error: error instanceof Error ? error.message : String(error)
                 });
             }
         }

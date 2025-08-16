@@ -14,22 +14,116 @@ import DeveloperGuidanceSystem from './DeveloperGuidanceSystem.js';
 import BrowserCompatibilityManager from './BrowserCompatibilityManager.js';
 import { ErrorHandler } from '../ErrorHandler.js';
 
+// Type definitions
+interface ErrorHandlerConfig {
+    enableGlobalHandling?: boolean;
+    enableUserNotifications?: boolean;
+    enableDebugLogging?: boolean;
+    enableFallbacks?: boolean;
+    enableMainErrorHandlerIntegration?: boolean;
+}
+
+interface ErrorPattern {
+    [key: string]: RegExp[];
+}
+
+interface ErrorAnalysis {
+    category: string;
+    message: string;
+    severity: 'low' | 'medium' | 'high';
+    recoverable: boolean;
+}
+
+interface BrowserInfo {
+    name: string;
+    version: number;
+    isSupported: boolean;
+}
+
+interface CompatibilityInfo {
+    browser: BrowserInfo;
+    canvas?: { available: boolean; fallbackMethod?: string };
+    localStorage?: { available: boolean; fallbackMethod?: string };
+    modules?: { available: boolean; fallbackMethod?: string };
+    [key: string]: any;
+}
+
+interface CompatibilityErrorInfo {
+    category: string;
+    feature: string;
+    browserInfo: BrowserInfo;
+    supportInfo: Record<string, any>;
+    userMessage: string;
+    fallbackAvailable: boolean;
+}
+
+interface SecurityErrorInfo {
+    category: string;
+    policy: string;
+    userMessage: string;
+    canOptimize: boolean;
+}
+
+interface FallbackContent {
+    title: string;
+    message: string;
+    action: string;
+}
+
+interface DebugInfo {
+    isInitialized: boolean;
+    config: ErrorHandlerConfig;
+    errorCategories: Record<string, string>;
+    handledGuidanceTypes: string[];
+}
+
+interface ErrorCategory {
+    name: string;
+    severity: 'LOW' | 'MEDIUM' | 'HIGH';
+    recoverable: boolean;
+    userNotification: boolean;
+}
+
+interface UserMessage {
+    title: string;
+    message: string;
+    action: string;
+    showTechnicalDetails: boolean;
+}
+
+interface LocalExecutionConfig {
+    errorCategories: Record<string, ErrorCategory>;
+}
+
+interface MessageConfig {
+    userMessages: Record<string, UserMessage>;
+}
+
+// Window extensions for fallback functionality
+declare global {
+    interface Window {
+        FaviconGenerator?: {
+            generateMissingFavicons(): void;
+        };
+    }
+}
+
 class LocalExecutionErrorHandler {
     /**
      * エラーカテゴリ定数
      */
-    static ERROR_CATEGORIES = {
+    static readonly ERROR_CATEGORIES = {
         CORS: 'cors',
         MODULE_LOADING: 'module_loading',
         RESOURCE_LOADING: 'resource_loading',
         BROWSER_COMPATIBILITY: 'browser_compatibility',
         SECURITY_POLICY: 'security_policy'
-    };
+    } as const;
 
     /**
      * エラーパターン定義
      */
-    static ERROR_PATTERNS = {
+    static readonly ERROR_PATTERNS: ErrorPattern = {
         [this.ERROR_CATEGORIES.CORS]: [
             /cross.origin/i,
             /cors/i,
@@ -66,24 +160,27 @@ class LocalExecutionErrorHandler {
     /**
      * 初期化フラグ
      */
-    static isInitialized = false;
+    private static isInitialized: boolean = false;
 
     /**
      * ErrorHandlerインスタンス参照
      */
-    static errorHandlerInstance = null;
+    private static errorHandlerInstance: ErrorHandler | null = null;
+
+    /**
+     * 設定オプション
+     */
+    private static config: ErrorHandlerConfig = {};
 
     /**
      * エラーハンドラーを初期化
-     * @param {Object} config - 設定オプション
-     * @param {ErrorHandler} errorHandler - 既存のErrorHandlerインスタンス
      */
-    static initialize(config = {}, errorHandler = null) {
+    static initialize(config: ErrorHandlerConfig = {}, errorHandler: ErrorHandler | null = null): void {
         if (this.isInitialized) {
             return;
         }
 
-        const defaultConfig = {
+        const defaultConfig: ErrorHandlerConfig = {
             enableGlobalHandling: true,
             enableUserNotifications: true,
             enableDebugLogging: false,
@@ -113,10 +210,8 @@ class LocalExecutionErrorHandler {
 
     /**
      * リソース読み込みエラーを処理
-     * @param {Error} error - エラーオブジェクト
-     * @param {string} resource - リソース名
      */
-    static handleResourceError(error, resource) {
+    static handleResourceError(error: Error | string, resource: string): void {
         this._log('Handling resource error:', error, resource);
 
         const errorInfo = this._analyzeError(error);
@@ -149,21 +244,19 @@ class LocalExecutionErrorHandler {
 
     /**
      * ブラウザ互換性エラーを処理
-     * @param {Error} error - エラーオブジェクト
-     * @param {string} feature - 機能名
      */
-    static handleCompatibilityError(error, feature) {
+    static handleCompatibilityError(error: Error | string, feature: string): CompatibilityErrorInfo {
         this._log('Handling compatibility error:', error, feature);
 
         // ブラウザ互換性情報を取得
         const compatibility = this._getBrowserCompatibilityInfo();
         
-        const errorInfo = {
+        const errorInfo: CompatibilityErrorInfo = {
             category: this.ERROR_CATEGORIES.BROWSER_COMPATIBILITY,
             feature,
             browserInfo: compatibility.browser,
             supportInfo: compatibility[feature] || {},
-            userMessage: this._generateCompatibilityMessage(feature, compatibility),
+            userMessage: this._generateCompatibilityMessage(feature),
             fallbackAvailable: this._checkFallbackAvailability(feature, compatibility)
         };
 
@@ -190,10 +283,8 @@ class LocalExecutionErrorHandler {
 
     /**
      * ブラウザ互換性情報を取得
-     * @returns {Object} 互換性情報
-     * @private
      */
-    static _getBrowserCompatibilityInfo() {
+    private static _getBrowserCompatibilityInfo(): CompatibilityInfo {
         try {
             return BrowserCompatibilityManager.getComprehensiveSupport();
         } catch (error) {
@@ -209,13 +300,11 @@ class LocalExecutionErrorHandler {
 
     /**
      * セキュリティポリシーエラーを処理
-     * @param {Error} error - エラーオブジェクト
-     * @param {string} policy - ポリシー名
      */
-    static handleSecurityError(error, policy) {
+    static handleSecurityError(error: Error | string, policy: string): void {
         this._log('Handling security error:', error, policy);
 
-        const errorInfo = {
+        const errorInfo: SecurityErrorInfo = {
             category: this.ERROR_CATEGORIES.SECURITY_POLICY,
             policy,
             userMessage: this._generateSecurityMessage(policy),
@@ -242,9 +331,8 @@ class LocalExecutionErrorHandler {
 
     /**
      * フォールバックコンテンツを表示
-     * @param {string} errorType - エラータイプ
      */
-    static showFallbackContent(errorType) {
+    static showFallbackContent(errorType: string): void {
         this._log('Showing fallback content for error type:', errorType);
 
         const fallbackContent = this._generateFallbackContent(errorType);
@@ -256,11 +344,8 @@ class LocalExecutionErrorHandler {
 
     /**
      * エラーを分析してカテゴリを判定
-     * @param {Error|string} error - エラー
-     * @returns {Object} エラー情報
-     * @private
      */
-    static _analyzeError(error) {
+    private static _analyzeError(error: Error | string | any): ErrorAnalysis {
         const errorMessage = error?.message || error?.toString() || String(error);
         
         for (const [category, patterns] of Object.entries(this.ERROR_PATTERNS)) {
@@ -286,21 +371,20 @@ class LocalExecutionErrorHandler {
 
     /**
      * グローバルエラーハンドラーを設定
-     * @private
      */
-    static _setupGlobalErrorHandlers() {
+    private static _setupGlobalErrorHandlers(): void {
         // JavaScript エラー
-        window.addEventListener('error', (event) => {
+        window.addEventListener('error', (event: ErrorEvent) => {
             this._handleGlobalError(event);
         });
 
         // Promise 拒否
-        window.addEventListener('unhandledrejection', (event) => {
+        window.addEventListener('unhandledrejection', (event: PromiseRejectionEvent) => {
             this._handleUnhandledRejection(event);
         });
 
         // リソース読み込みエラー
-        document.addEventListener('error', (event) => {
+        document.addEventListener('error', (event: Event) => {
             if (event.target !== window) {
                 this._handleResourceLoadError(event);
             }
@@ -311,11 +395,8 @@ class LocalExecutionErrorHandler {
 
     /**
      * CORSエラーを処理
-     * @param {Error} error - エラー
-     * @param {string} resource - リソース
-     * @private
      */
-    static _handleCORSError(error, resource) {
+    private static _handleCORSError(error: Error | string, resource: string): void {
         this._log('CORS error detected:', error, resource);
 
         if (this.config.enableUserNotifications && !this._isGuidanceShown('cors')) {
@@ -332,11 +413,8 @@ class LocalExecutionErrorHandler {
 
     /**
      * リソース読み込みエラーを処理
-     * @param {Error} error - エラー
-     * @param {string} resource - リソース
-     * @private
      */
-    static _handleResourceLoadingError(error, resource) {
+    private static _handleResourceLoadingError(error: Error | string, resource: string): void {
         this._log('Resource loading error:', error, resource);
 
         // ファビコンエラーは静かに処理
@@ -353,11 +431,8 @@ class LocalExecutionErrorHandler {
 
     /**
      * 汎用リソースエラーを処理
-     * @param {Error} error - エラー
-     * @param {string} resource - リソース
-     * @private
      */
-    static _handleGenericResourceError(error, resource) {
+    private static _handleGenericResourceError(error: Error | string, resource: string): void {
         this._log('Generic resource error:', error, resource);
         
         // 詳細なログ記録
@@ -374,10 +449,8 @@ class LocalExecutionErrorHandler {
 
     /**
      * グローバルエラーを処理
-     * @param {ErrorEvent} event - エラーイベント
-     * @private
      */
-    static _handleGlobalError(event) {
+    private static _handleGlobalError(event: ErrorEvent): void {
         const error = event.error || event.message;
         const errorInfo = this._analyzeError(error);
 
@@ -388,10 +461,8 @@ class LocalExecutionErrorHandler {
 
     /**
      * 未処理Promise拒否を処理
-     * @param {PromiseRejectionEvent} event - Promise拒否イベント
-     * @private
      */
-    static _handleUnhandledRejection(event) {
+    private static _handleUnhandledRejection(event: PromiseRejectionEvent): void {
         const reason = event.reason;
         const errorInfo = this._analyzeError(reason);
 
@@ -402,11 +473,9 @@ class LocalExecutionErrorHandler {
 
     /**
      * リソース読み込みエラーイベントを処理
-     * @param {Event} event - エラーイベント
-     * @private
      */
-    static _handleResourceLoadError(event) {
-        const target = event.target;
+    private static _handleResourceLoadError(event: Event): void {
+        const target = event.target as HTMLElement & { src?: string; href?: string };
         const resource = target.src || target.href || 'unknown';
         
         this.handleResourceError(new Error(`Failed to load: ${resource}`), resource);
@@ -414,10 +483,8 @@ class LocalExecutionErrorHandler {
 
     /**
      * モジュール読み込みエラーを処理
-     * @param {any} reason - エラー理由
-     * @private
      */
-    static _handleModuleLoadingError(reason) {
+    private static _handleModuleLoadingError(reason: any): void {
         this._log('Module loading error:', reason);
 
         if (this.config.enableUserNotifications && !this._isGuidanceShown('module')) {
@@ -434,10 +501,8 @@ class LocalExecutionErrorHandler {
 
     /**
      * ファビコンエラーを処理
-     * @param {string} resource - ファビコンリソース
-     * @private
      */
-    static _handleFaviconError(resource) {
+    private static _handleFaviconError(resource: string): void {
         this._log('Favicon error (silently handled):', resource);
         
         // ファビコンエラーは静かに処理し、
@@ -455,11 +520,8 @@ class LocalExecutionErrorHandler {
 
     /**
      * リソースのフォールバックを試行
-     * @param {string} resource - リソース
-     * @param {Object} errorInfo - エラー情報
-     * @private
      */
-    static _attemptResourceFallback(resource, errorInfo) {
+    private static _attemptResourceFallback(resource: string, errorInfo: ErrorAnalysis): void {
         if (!errorInfo.recoverable) {
             return;
         }
@@ -482,12 +544,9 @@ class LocalExecutionErrorHandler {
 
     /**
      * 互換性メッセージを生成
-     * @param {string} feature - 機能名
-     * @returns {string} メッセージ
-     * @private
      */
-    static _generateCompatibilityMessage(feature) {
-        const messages = {
+    private static _generateCompatibilityMessage(feature: string): string {
+        const messages: Record<string, string> = {
             canvas: 'Canvas API is not supported. Some visual features may not work.',
             localStorage: 'Local storage is not available. Settings cannot be saved.',
             serviceWorker: 'Service Worker is not supported. Offline functionality is disabled.',
@@ -499,12 +558,9 @@ class LocalExecutionErrorHandler {
 
     /**
      * セキュリティメッセージを生成
-     * @param {string} policy - ポリシー名
-     * @returns {string} メッセージ
-     * @private
      */
-    static _generateSecurityMessage(policy) {
-        const messages = {
+    private static _generateSecurityMessage(policy: string): string {
+        const messages: Record<string, string> = {
             'X-Frame-Options': 'X-Frame-Options policy is blocking content. This has been optimized for local execution.',
             'Content-Security-Policy': 'Content Security Policy restrictions detected. Local execution policy applied.',
             'CORS': 'Cross-origin restrictions are preventing resource loading. Please use a development server.'
@@ -515,12 +571,9 @@ class LocalExecutionErrorHandler {
 
     /**
      * エラーの重要度を判定
-     * @param {string} category - エラーカテゴリ
-     * @returns {string} 重要度
-     * @private
      */
-    static _determineSeverity(category) {
-        const severityMap = {
+    private static _determineSeverity(category: string): 'low' | 'medium' | 'high' {
+        const severityMap: Record<string, 'low' | 'medium' | 'high'> = {
             [this.ERROR_CATEGORIES.CORS]: 'high',
             [this.ERROR_CATEGORIES.MODULE_LOADING]: 'high',
             [this.ERROR_CATEGORIES.RESOURCE_LOADING]: 'medium',
@@ -533,11 +586,8 @@ class LocalExecutionErrorHandler {
 
     /**
      * エラーが復旧可能かチェック
-     * @param {string} category - エラーカテゴリ
-     * @returns {boolean} 復旧可能な場合 true
-     * @private
      */
-    static _isRecoverable(category) {
+    private static _isRecoverable(category: string): boolean {
         const recoverableCategories = [
             this.ERROR_CATEGORIES.RESOURCE_LOADING,
             this.ERROR_CATEGORIES.SECURITY_POLICY,
@@ -549,11 +599,8 @@ class LocalExecutionErrorHandler {
 
     /**
      * 重要なリソースかチェック
-     * @param {string} resource - リソース
-     * @returns {boolean} 重要なリソースの場合 true
-     * @private
      */
-    static _isCriticalResource(resource) {
+    private static _isCriticalResource(resource: string): boolean {
         const criticalPatterns = [
             /main\.(js|css)$/,
             /game\.(js|css)$/,
@@ -566,21 +613,15 @@ class LocalExecutionErrorHandler {
 
     /**
      * 画像リソースかチェック
-     * @param {string} resource - リソース
-     * @returns {boolean} 画像リソースの場合 true
-     * @private
      */
-    static _isImageResource(resource) {
+    private static _isImageResource(resource: string): boolean {
         return /\.(png|jpg|jpeg|gif|svg|webp|ico)$/i.test(resource);
     }
 
     /**
      * ガイダンスが既に表示されたかチェック
-     * @param {string} type - ガイダンスタイプ
-     * @returns {boolean} 表示済みの場合 true
-     * @private
      */
-    static _isGuidanceShown(type) {
+    private static _isGuidanceShown(type: string): boolean {
         try {
             return sessionStorage.getItem(`guidance_shown_${type}`) === 'true';
         } catch {
@@ -590,10 +631,8 @@ class LocalExecutionErrorHandler {
 
     /**
      * ガイダンス表示状態をマーク
-     * @param {string} type - ガイダンスタイプ
-     * @private
      */
-    static _markGuidanceShown(type) {
+    private static _markGuidanceShown(type: string): void {
         try {
             sessionStorage.setItem(`guidance_shown_${type}`, 'true');
         } catch {
@@ -603,12 +642,9 @@ class LocalExecutionErrorHandler {
 
     /**
      * フォールバックコンテンツを生成
-     * @param {string} errorType - エラータイプ
-     * @returns {Object|null} フォールバックコンテンツ
-     * @private
      */
-    static _generateFallbackContent(errorType) {
-        const fallbacks = {
+    private static _generateFallbackContent(errorType: string): FallbackContent | null {
+        const fallbacks: Record<string, FallbackContent> = {
             module_loading: {
                 title: 'Module Loading Error',
                 message: 'Some features may not work properly in local file mode.',
@@ -626,10 +662,8 @@ class LocalExecutionErrorHandler {
 
     /**
      * ログ出力
-     * @param {...any} args - 引数
-     * @private
      */
-    static _log(...args) {
+    private static _log(...args: any[]): void {
         if (this.config?.enableDebugLogging) {
             console.log('LocalExecutionErrorHandler:', ...args);
         }
@@ -637,9 +671,8 @@ class LocalExecutionErrorHandler {
 
     /**
      * デバッグ情報を取得
-     * @returns {Object} デバッグ情報
      */
-    static getDebugInfo() {
+    static getDebugInfo(): DebugInfo {
         return {
             isInitialized: this.isInitialized,
             config: this.config,
@@ -650,11 +683,9 @@ class LocalExecutionErrorHandler {
 
     /**
      * 処理済みガイダンスタイプを取得
-     * @returns {string[]} ガイダンスタイプ配列
-     * @private
      */
-    static _getHandledGuidanceTypes() {
-        const types = [];
+    private static _getHandledGuidanceTypes(): string[] {
+        const types: string[] = [];
         try {
             for (const type of ['cors', 'module', 'resource', 'security']) {
                 if (sessionStorage.getItem(`guidance_shown_${type}`) === 'true') {
@@ -671,9 +702,8 @@ class LocalExecutionErrorHandler {
 
     /**
      * メインのErrorHandlerシステムと統合
-     * @private
      */
-    static _integrateWithMainErrorHandler() {
+    private static _integrateWithMainErrorHandler(): void {
         try {
             // ErrorHandlerインスタンスを取得
             if (!this.errorHandlerInstance) {
@@ -696,12 +726,12 @@ class LocalExecutionErrorHandler {
 
     /**
      * メインのErrorHandlerにエラーを報告
-     * @param {Error} error - エラーオブジェクト
-     * @param {string} context - エラーコンテキスト
-     * @param {Object} metadata - メタデータ
-     * @private
      */
-    static _reportToMainErrorHandler(error, context, metadata = {}) {
+    private static _reportToMainErrorHandler(
+        error: Error | string, 
+        context: string, 
+        metadata: Record<string, any> = {}
+    ): void {
         if (!this.config.enableMainErrorHandlerIntegration) {
             return;
         }
@@ -733,14 +763,13 @@ class LocalExecutionErrorHandler {
 
     /**
      * ローカル実行特有のエラーカテゴリを登録
-     * @private
      */
-    static _registerLocalExecutionErrorCategories() {
+    private static _registerLocalExecutionErrorCategories(): void {
         if (!this.errorHandlerInstance) return;
 
         try {
             // ErrorHandlerの設定を拡張
-            const localExecutionConfig = {
+            const localExecutionConfig: LocalExecutionConfig = {
                 errorCategories: {
                     LOCAL_EXECUTION_CORS: {
                         name: 'Local Execution CORS Error',
@@ -779,14 +808,13 @@ class LocalExecutionErrorHandler {
 
     /**
      * ローカル実行特有のユーザーフレンドリーメッセージを登録
-     * @private
      */
-    static _registerLocalExecutionUserMessages() {
+    private static _registerLocalExecutionUserMessages(): void {
         if (!this.errorHandlerInstance) return;
 
         try {
             // ErrorHandlerのユーザーメッセージを拡張
-            const messageConfig = {
+            const messageConfig: MessageConfig = {
                 userMessages: {
                     LOCAL_EXECUTION_CORS: {
                         title: 'Local File Restriction',
@@ -825,13 +853,9 @@ class LocalExecutionErrorHandler {
 
     /**
      * フォールバック可能性をチェック
-     * @param {string} feature - 機能名
-     * @param {Object} compatibility - 互換性情報
-     * @returns {boolean} フォールバック可能な場合 true
-     * @private
      */
-    static _checkFallbackAvailability(feature, compatibility) {
-        const fallbackMap = {
+    private static _checkFallbackAvailability(feature: string, compatibility: CompatibilityInfo): boolean {
+        const fallbackMap: Record<string, any> = {
             canvas: compatibility.canvas ? compatibility.canvas.fallbackMethod : null,
             localStorage: compatibility.localStorage ? compatibility.localStorage.fallbackMethod : null,
             modules: compatibility.modules ? compatibility.modules.fallbackMethod : null,
@@ -843,11 +867,8 @@ class LocalExecutionErrorHandler {
 
     /**
      * ポリシー最適化が可能かチェック
-     * @param {string} policy - ポリシー名
-     * @returns {boolean} 最適化可能な場合 true
-     * @private
      */
-    static _canOptimizePolicy(policy) {
+    private static _canOptimizePolicy(policy: string): boolean {
         const optimizablePolices = [
             'X-Frame-Options',
             'Content-Security-Policy'
@@ -858,10 +879,8 @@ class LocalExecutionErrorHandler {
 
     /**
      * セキュリティポリシーを最適化
-     * @param {string} policy - ポリシー名
-     * @private
      */
-    static _optimizeSecurityPolicy(policy) {
+    private static _optimizeSecurityPolicy(policy: string): void {
         this._log('Optimizing security policy:', policy);
         
         try {
@@ -880,11 +899,8 @@ class LocalExecutionErrorHandler {
 
     /**
      * 機能フォールバックを有効化
-     * @param {string} feature - 機能名
-     * @param {Object} compatibility - 互換性情報
-     * @private
      */
-    static _enableFeatureFallback(feature, compatibility) {
+    private static _enableFeatureFallback(feature: string, compatibility: CompatibilityInfo): void {
         this._log('Enabling feature fallback for:', feature);
 
         try {
@@ -903,10 +919,8 @@ class LocalExecutionErrorHandler {
 
     /**
      * 互換性エラー表示
-     * @param {Object} errorInfo - エラー情報
-     * @private
      */
-    static _showCompatibilityError(errorInfo) {
+    private static _showCompatibilityError(errorInfo: CompatibilityErrorInfo): void {
         DeveloperGuidanceSystem.showBrowserCompatibilityGuidance({
             feature: errorInfo.feature,
             browserInfo: errorInfo.browserInfo,
@@ -917,10 +931,8 @@ class LocalExecutionErrorHandler {
 
     /**
      * セキュリティエラーガイダンス表示
-     * @param {Object} errorInfo - エラー情報
-     * @private
      */
-    static _showSecurityErrorGuidance(errorInfo) {
+    private static _showSecurityErrorGuidance(errorInfo: SecurityErrorInfo): void {
         DeveloperGuidanceSystem.showDeveloperServerGuidance({
             title: 'Security Policy Adjustment',
             message: errorInfo.userMessage,
@@ -931,10 +943,8 @@ class LocalExecutionErrorHandler {
 
     /**
      * リソースエラー表示
-     * @param {string} resource - リソース
-     * @private
      */
-    static _showResourceError(resource) {
+    private static _showResourceError(resource: string): void {
         if (!this._isGuidanceShown('resource')) {
             DeveloperGuidanceSystem.showDeveloperServerGuidance({
                 title: 'Critical Resource Loading Error',
@@ -950,10 +960,8 @@ class LocalExecutionErrorHandler {
 
     /**
      * フォールバックコンテンツを表示
-     * @param {Object} content - フォールバックコンテンツ
-     * @private
      */
-    static _displayFallbackContent(content) {
+    private static _displayFallbackContent(content: FallbackContent): void {
         // 簡易的なフォールバック表示
         const fallbackDiv = document.createElement('div');
         fallbackDiv.id = 'local-execution-fallback';
@@ -1008,30 +1016,24 @@ class LocalExecutionErrorHandler {
 
     /**
      * インラインCSSフォールバック
-     * @param {string} resource - CSSリソース
-     * @private
      */
-    static _fallbackToInlineCSS(resource) {
+    private static _fallbackToInlineCSS(resource: string): void {
         this._log('CSS fallback not implemented:', resource);
         // 実装は必要に応じて追加
     }
 
     /**
      * 代替JSフォールバック
-     * @param {string} resource - JSリソース
-     * @private
      */
-    static _fallbackToAlternativeJS(resource) {
+    private static _fallbackToAlternativeJS(resource: string): void {
         this._log('JS fallback not implemented:', resource);
         // 実装は必要に応じて追加
     }
 
     /**
      * プレースホルダー画像フォールバック
-     * @param {string} resource - 画像リソース
-     * @private
      */
-    static _fallbackToPlaceholderImage(resource) {
+    private static _fallbackToPlaceholderImage(resource: string): void {
         this._log('Image fallback not implemented:', resource);
         // 実装は必要に応じて追加
     }
