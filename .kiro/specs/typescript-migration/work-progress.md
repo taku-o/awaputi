@@ -526,11 +526,11 @@ TypeScript移行作業中に「将来実装する」「現時点では未実装�
   - audio-manager-integration.test.ts: syncWithConfigメソッド修正
   - configuration-system-integration.test.ts: CalculationEngine未実装メソッド修正
   - 追加削減: 241個→215個（26個削減、10.8%削減）
-- **Task 30実質完了**: 型エラー修正で**77.4%削減達成**（743個→168個）
+- **Task 30進行中**: 型エラー修正で**77.4%削減達成**（743個→168個）**未完了**
   - Phase 18: 主要テストファイル型不整合修正（game-flow.test.ts、EventFlow.test.ts等）
   - GameEngine未実装メソッド対応、Mock型キャスト修正
-  - **TypeScript移行の主目的達成**: 型安全性大幅向上、実用レベルの型チェック実現
-  - 残存168個: 主にテストファイルの軽微な型不整合（本体機能に影響なし）
+  - **残存168個エラー**: Task 32（TypeScriptコンパイル検証）のため0個まで削減が必要
+  - 大幅進捗も完了ではない: Task 30は0エラーが完了条件
 
 ## 参考情報
 - 仕様書: `.kiro/specs/typescript-migration/`

@@ -187,7 +187,7 @@
   - 初期化処理の妥当性を検証
   - _要件: 7.2_
 
-- [x] 30. 型エラーの修正（Phase 13-18完了、実質完了）
+- [ ] 30. 型エラーの修正（Phase 13-18進行中、未完了）
   - ✅ HelpContentManager.ts: プロパティ型定義とメソッド型注釈完全追加
   - ✅ MemoryManager.ts: 不足クラス実装・重複エクスポート修正
   - ✅ Phase 13: HelpSearchManager型安全化、SettingItem exactOptionalPropertyTypes対応
@@ -197,7 +197,7 @@
   - ✅ Phase 17: テストファイル型不整合修正、未実装メソッド対応
   - ✅ Phase 18: 主要テストファイル型不整合修正（game-flow.test.ts、EventFlow.test.ts等）
   - ✅ エラー削減: 743個→168個（575個削減、**77.4%削減達成**）
-  - ✅ **TypeScript移行主目的達成**: 型安全性大幅向上、実用レベル型チェック実現
+  - 🔄 **残存168個エラー**: 引き続き修正が必要（0個まで削減が目標）
   - _要件: 7.3_
 
 - [ ] 31. anyの使用を最小化
