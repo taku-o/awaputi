@@ -304,7 +304,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine {
             Math.pow(endPos.y - startPos.y, 2)
         );
         
-        const _direction = {
+        const __direction = {
             x: (endPos.x - startPos.x) / pathLength,
             y: (endPos.y - startPos.y) / pathLength
         };

@@ -25,7 +25,7 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor {
             return;
         }
         
-        const _gameScene = this.gameEngine.sceneManager.getCurrentScene();
+        const __gameScene = this.gameEngine.sceneManager.getCurrentScene();
         
         switch (bubble.type) {
             case 'rainbow':

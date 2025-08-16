@@ -171,7 +171,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene {
     /**
      * 更新処理
      */
-    update(deltaTime: number): void {
+    update(__deltaTime: number): void {
         // 特に更新処理は不要
     }
     

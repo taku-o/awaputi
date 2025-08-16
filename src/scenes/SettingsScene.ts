@@ -3,8 +3,8 @@ import { NavigationContextManager } from '../core/navigation/NavigationContextMa
 import { getLoggingSystem } from '../core/LoggingSystem.js';
 import { AccessibilitySettingsManager } from './settings-scene/AccessibilitySettingsManager.js';
 import { VolumeControlComponent } from '../components/VolumeControlComponent.js';
-import { AccessibilityProfileComponent } from '../components/AccessibilityProfileComponent.js';
-import { SettingsImportExportComponent } from '../components/SettingsImportExportComponent.js';
+// import { AccessibilityProfileComponent } from '../components/AccessibilityProfileComponent.js';
+// import { SettingsImportExportComponent } from '../components/SettingsImportExportComponent.js';
 
 // Settings Scene specific types
 export interface SettingOption {
@@ -410,7 +410,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * 更新処理
      */
-    update(deltaTime: number): void {
+    update(__deltaTime: number): void {
         // 必要に応じて動的な処理を追加
     }
     
@@ -469,7 +469,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * カテゴリ一覧描画
      */
-    renderCategories(context, height) {
+    renderCategories(context, __height) {
         const startY = 80;
         const categoryHeight = 50;
         
@@ -497,7 +497,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * 設定項目描画
      */
-    renderSettings(context, width, height) {
+    renderSettings(context, width, __height) {
         const startX = this.layout.categoryWidth + 30;
         const startY = 80;
         const settingsWidth = width - startX - 20;
@@ -578,7 +578,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
      * 設定値の描画
      */
     renderSettingValue(context, item, value, x, y, width, isSelected) {
-        const height = 30;
+        const __height = 30;
         const centerY = y + 20;
         
         switch (item.type) {
@@ -784,7 +784,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * アクセシビリティプロファイルコントロール描画
      */
-    renderAccessibilityProfileControl(context, value, x, y, width, isSelected) {
+    renderAccessibilityProfileControl(context, __value, x, y, width, isSelected) {
         const controlWidth = width - 20;
         const controlHeight = 30;
         const controlY = y - controlHeight / 2;
@@ -834,7 +834,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * 設定インポート・エクスポートコントロール描画
      */
-    renderSettingsImportExportControl(context, value, x, y, width, isSelected) {
+    renderSettingsImportExportControl(context, __value, x, y, width, isSelected) {
         const controlWidth = width - 20;
         const controlHeight = 30;
         const controlY = y - controlHeight / 2;
@@ -1400,7 +1400,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
         console.log('[SettingsScene] Current Profile:', currentProfile);
         
         // 簡易プロファイル選択（実際の実装では専用UIを作成）
-        const profileNames = profiles.map(p => p.name);
+        const __profileNames = profiles.map(p => p.name);
         const currentIndex = profiles.findIndex(p => p.id === (currentProfile ? currentProfile.id : null));
         const nextIndex = (currentIndex + 1) % profiles.length;
         const nextProfile = profiles[nextIndex];

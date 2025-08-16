@@ -14,9 +14,11 @@ interface SceneContextData {
 }
 
 export class SceneManager {
+    // @ts-ignore - unused but kept for future implementation
     private __gameEngine: any; // GameEngine type would be defined elsewhere - prefixed with __ as unused
     private scenes: Map<string, ExtendedScene>;
     private currentScene: ExtendedScene | null;
+    // @ts-ignore - unused but kept for future implementation
     private __nextScene: ExtendedScene | null; // prefixed with __ as unused
     private lastUpdateDebugTime?: number;
     private lastSceneWarnTime?: number;

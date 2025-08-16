@@ -167,6 +167,7 @@ interface GameEngine {
 }
 
 export class StatisticsManager {
+    // @ts-ignore - unused but kept for future implementation
     private __gameEngine: GameEngine; // prefixed with __ as unused
     private dataManager: StatisticsDataManager;
     private calculator: StatisticsCalculator;

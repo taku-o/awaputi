@@ -615,7 +615,7 @@ export class HelpScene extends Scene implements HelpSceneState {
     /**
      * フレーム更新処理
      */
-    update(deltaTime: number): void {
+    update(__deltaTime: number): void {
         if (!this.initialized) return;
 
         try {

@@ -20,8 +20,8 @@ interface DragHistoryEntry {
 export class BubbleDragSystem implements IBubbleDragSystem {
     private draggedBubble: Bubble | null = null;
     private isDragging: boolean = false;
-    private _dragStartPosition: Position = { x: 0, y: 0 };
-    private _dragCurrentPosition: Position = { x: 0, y: 0 };
+    private __dragStartPosition: Position = { x: 0, y: 0 };
+    private __dragCurrentPosition: Position = { x: 0, y: 0 };
     private dragHistory: DragHistoryEntry[] = []; // ドラッグ軌跡の履歴（速度計算用）
 
     constructor() {
@@ -39,8 +39,8 @@ export class BubbleDragSystem implements IBubbleDragSystem {
             if (bubble.containsPoint(x, y)) {
                 this.draggedBubble = bubble;
                 this.isDragging = true;
-                this._dragStartPosition = { x, y };
-                this._dragCurrentPosition = { x, y };
+                this.__dragStartPosition = { x, y };
+                this.__dragCurrentPosition = { x, y };
                 this.dragHistory = [{ x, y, time: Date.now() }];
                 
                 console.log(`Drag started on ${bubble.type} bubble`);
@@ -59,7 +59,7 @@ export class BubbleDragSystem implements IBubbleDragSystem {
             return false;
         }
         
-        this._dragCurrentPosition = { x, y };
+        this.__dragCurrentPosition = { x, y };
         
         // 履歴を記録（最新の10個まで保持）
         this.dragHistory.push({ x, y, time: Date.now() });
@@ -170,8 +170,8 @@ export class BubbleDragSystem implements IBubbleDragSystem {
     resetDrag(): void {
         this.isDragging = false;
         this.draggedBubble = null;
-        this._dragStartPosition = { x: 0, y: 0 };
-        this._dragCurrentPosition = { x: 0, y: 0 };
+        this.__dragStartPosition = { x: 0, y: 0 };
+        this.__dragCurrentPosition = { x: 0, y: 0 };
         this.dragHistory = [];
     }
     

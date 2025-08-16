@@ -55,7 +55,7 @@ export class AchievementHelpSystem {
     // UI設定
     private padding: number;
     private lineHeight: number;
-    private sectionSpacing: number;
+    private __sectionSpacing: number;
     
     // 色設定
     private colors: HelpColors;
@@ -77,7 +77,7 @@ export class AchievementHelpSystem {
         // UI設定
         this.padding = 20;
         this.lineHeight = 25;
-        this.sectionSpacing = 40;
+        this.__sectionSpacing = 40;
         
         // 色設定
         this.colors = {
