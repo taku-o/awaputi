@@ -79,9 +79,9 @@ describe('Configuration System Integration Tests', () => {
         loggingSystem = new LoggingSystem();
         
         // 計算エンジンに計算クラスを登録
-        calculationEngine.registerCalculator('score', scoreCalculator);
-        calculationEngine.registerCalculator('balance', balanceCalculator);
-        calculationEngine.registerCalculator('effects', effectsCalculator);
+        (calculationEngine as any).registerCalculator('score', scoreCalculator);
+        (calculationEngine as any).registerCalculator('balance', balanceCalculator);
+        (calculationEngine as any).registerCalculator('effects', effectsCalculator);
         
         // 基本的な設定値を設定
         configManager.setDefaultValue('game', 'scoring.baseScores.normal', 10);
@@ -97,8 +97,8 @@ describe('Configuration System Integration Tests', () => {
         if (configManager && typeof configManager.reset === 'function') {
             configManager.reset();
         }
-        if (calculationEngine && typeof calculationEngine.clearCache === 'function') {
-            calculationEngine.clearCache();
+        if (calculationEngine && typeof (calculationEngine as any).clearCache === 'function') {
+            (calculationEngine as any).clearCache();
         }
         if (loggingSystem && typeof loggingSystem.clearLogs === 'function') {
             loggingSystem.clearLogs();

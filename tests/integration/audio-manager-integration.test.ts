@@ -223,7 +223,7 @@ describe('AudioManager統合テスト', () => {
             audioConfig.setSfxVolume(0.4);
             audioConfig.setBgmVolume(0.6);
             
-            audioManager.syncWithConfig();
+            (audioManager as any).syncWithConfig();
             
             const status: AudioManagerStatus = audioManager.getStatus() as AudioManagerStatus;
             expect(status.masterVolume).toBe(0.3);
