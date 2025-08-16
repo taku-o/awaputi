@@ -403,7 +403,7 @@ export function getMemoryManager(): MemoryManager {
 class LeakDetector {
     private trackedObjects: Map<object, any> = new Map();
     
-    constructor(config?: any) {
+    constructor(_config?: any) {
         // Constructor accepts optional config
     }
 
@@ -448,7 +448,7 @@ class LeakDetector {
 class MemoryUsageAnalyzer {
     private creationHistory: any[] = [];
     
-    constructor(config?: any) {
+    constructor(_config?: any) {
         // Constructor accepts optional config
     }
 
@@ -464,7 +464,7 @@ class MemoryUsageAnalyzer {
         }
     }
     
-    recordObjectDestruction(trackedInfo: any): void {
+    recordObjectDestruction(_trackedInfo: any): void {
         // Record object destruction for analysis
         // This could be implemented to track destruction patterns
     }
@@ -507,7 +507,7 @@ class MemoryUsageAnalyzer {
 class ProactiveCleanupManager {
     private cleanupHandlers: Map<string, () => void> = new Map();
     
-    constructor(config?: any) {
+    constructor(_config?: any) {
         // Constructor accepts optional config
     }
 
@@ -525,7 +525,7 @@ class ProactiveCleanupManager {
         });
     }
 
-    performIntelligentCleanup(usageReport: any, leakReport: any): any {
+    performIntelligentCleanup(_usageReport: any, leakReport: any): any {
         const result = {
             performedActions: [] as string[],
             freedMemory: 0,
