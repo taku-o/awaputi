@@ -3,8 +3,50 @@
  * Part of the ErrorHandler split implementation
  */
 
+// Type definitions for error reporter system
+interface ErrorInfo {
+    id: string;
+    context: string;
+    message: string;
+    timestamp: string;
+    name?: string;
+    stack?: string;
+    metadata?: Record<string, any>;
+    recovered?: boolean;
+}
+
+interface NotificationConfig {
+    autoHide: boolean;
+    hideDelay: number;
+    maxConcurrentNotifications: number;
+    position: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center';
+    showReloadButton: boolean;
+    showCloseButton: boolean;
+}
+
+interface MainController {
+    determineSeverity?: (errorInfo: ErrorInfo) => string;
+}
+
+type NotificationAction = 'dismiss' | 'reload' | 'report';
+type SeverityLevel = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
+
+interface SeverityConfig {
+    [key: string]: string;
+}
+
+interface PositionStyles {
+    [key: string]: string;
+}
+
 export class UtilsErrorReporter {
-    constructor(mainController) {
+    private mainController: MainController;
+    private notificationConfig: NotificationConfig;
+    private activeNotifications: Set<HTMLElement>;
+    private notificationQueue: ErrorInfo[];
+    private notificationId: number;
+
+    constructor(mainController: MainController) {
         this.mainController = mainController;
         
         // Notification configuration
@@ -27,9 +69,9 @@ export class UtilsErrorReporter {
     
     /**
      * Notify user about error
-     * @param {object} errorInfo - Error information
+     * @param errorInfo - Error information
      */
-    notifyUser(errorInfo) {
+    notifyUser(errorInfo: ErrorInfo): void {
         // Only notify for important errors
         if (this.shouldNotifyUser(errorInfo)) {
             this.showErrorNotification(errorInfo);
@@ -38,10 +80,10 @@ export class UtilsErrorReporter {
     
     /**
      * Determine if user should be notified
-     * @param {object} errorInfo - Error information
-     * @returns {boolean} Whether to notify user
+     * @param errorInfo - Error information
+     * @returns Whether to notify user
      */
-    shouldNotifyUser(errorInfo) {
+    private shouldNotifyUser(errorInfo: ErrorInfo): boolean {
         const { context, message } = errorInfo;
         
         // Canvas-related critical errors
@@ -74,9 +116,9 @@ export class UtilsErrorReporter {
     
     /**
      * Show error notification to user
-     * @param {object} errorInfo - Error information
+     * @param errorInfo - Error information
      */
-    showErrorNotification(errorInfo) {
+    private showErrorNotification(errorInfo: ErrorInfo): void {
         // Check notification limits
         if (this.activeNotifications.size >= this.notificationConfig.maxConcurrentNotifications) {
             this.queueNotification(errorInfo);
@@ -89,9 +131,9 @@ export class UtilsErrorReporter {
     
     /**
      * Queue notification for later display
-     * @param {object} errorInfo - Error information
+     * @param errorInfo - Error information
      */
-    queueNotification(errorInfo) {
+    private queueNotification(errorInfo: ErrorInfo): void {
         this.notificationQueue.push(errorInfo);
         
         // Keep queue reasonable size
@@ -102,10 +144,10 @@ export class UtilsErrorReporter {
     
     /**
      * Create notification DOM element
-     * @param {object} errorInfo - Error information
-     * @returns {HTMLElement} Notification element
+     * @param errorInfo - Error information
+     * @returns Notification element
      */
-    createNotificationElement(errorInfo) {
+    private createNotificationElement(errorInfo: ErrorInfo): HTMLElement {
         const notificationId = ++this.notificationId;
         const notification = document.createElement('div');
         notification.id = `error-notification-${notificationId}`;
@@ -148,11 +190,11 @@ export class UtilsErrorReporter {
     
     /**
      * Get severity icon
-     * @param {string} severity - Error severity
-     * @returns {string} Icon character or HTML
+     * @param severity - Error severity
+     * @returns Icon character or HTML
      */
-    getSeverityIcon(severity) {
-        const icons = {
+    private getSeverityIcon(severity: string): string {
+        const icons: SeverityConfig = {
             CRITICAL: '🚨',
             HIGH: '⚠️',
             MEDIUM: 'ℹ️',
@@ -163,11 +205,11 @@ export class UtilsErrorReporter {
     
     /**
      * Get severity title
-     * @param {string} severity - Error severity
-     * @returns {string} User-friendly title
+     * @param severity - Error severity
+     * @returns User-friendly title
      */
-    getSeverityTitle(severity) {
-        const titles = {
+    private getSeverityTitle(severity: string): string {
+        const titles: SeverityConfig = {
             CRITICAL: 'システムエラー',
             HIGH: '重要なエラー',
             MEDIUM: '警告',
@@ -178,10 +220,10 @@ export class UtilsErrorReporter {
     
     /**
      * Generate user-friendly error message
-     * @param {object} errorInfo - Error information
-     * @returns {string} User-friendly message
+     * @param errorInfo - Error information
+     * @returns User-friendly message
      */
-    getUserFriendlyMessage(errorInfo) {
+    private getUserFriendlyMessage(errorInfo: ErrorInfo): string {
         const { context, message } = errorInfo;
         
         if (context === 'CANVAS_ERROR') {
@@ -217,10 +259,10 @@ export class UtilsErrorReporter {
     
     /**
      * Apply notification styles
-     * @param {HTMLElement} notification - Notification element
-     * @param {string} severity - Error severity
+     * @param notification - Notification element
+     * @param severity - Error severity
      */
-    applyNotificationStyles(notification, severity) {
+    private applyNotificationStyles(notification: HTMLElement, severity: string): void {
         const baseStyles = `
             position: fixed;
             ${this.getPositionStyles()}
@@ -240,25 +282,25 @@ export class UtilsErrorReporter {
         notification.style.cssText = baseStyles;
         
         // Content styles
-        const content = notification.querySelector('.error-notification-content');
+        const content = notification.querySelector('.error-notification-content') as HTMLElement;
         if (content) {
             content.style.cssText = 'padding: 16px;';
         }
         
         // Header styles
-        const header = notification.querySelector('.error-notification-header');
+        const header = notification.querySelector('.error-notification-header') as HTMLElement;
         if (header) {
             header.style.cssText = 'display: flex; align-items: center; gap: 8px; margin-bottom: 12px;';
         }
         
         // Title styles
-        const title = notification.querySelector('.error-notification-title');
+        const title = notification.querySelector('.error-notification-title') as HTMLElement;
         if (title) {
             title.style.cssText = 'margin: 0; font-size: 16px; font-weight: 600; color: #333; flex: 1;';
         }
         
         // Close button styles
-        const closeBtn = notification.querySelector('.error-notification-close');
+        const closeBtn = notification.querySelector('.error-notification-close') as HTMLElement;
         if (closeBtn) {
             closeBtn.style.cssText = `
                 background: none;
@@ -276,21 +318,22 @@ export class UtilsErrorReporter {
         }
         
         // Message styles
-        const messageEl = notification.querySelector('.error-notification-message');
+        const messageEl = notification.querySelector('.error-notification-message') as HTMLElement;
         if (messageEl) {
             messageEl.style.cssText = 'margin: 0 0 16px 0; color: #555; line-height: 1.4;';
         }
         
         // Actions styles
-        const actions = notification.querySelector('.error-notification-actions');
+        const actions = notification.querySelector('.error-notification-actions') as HTMLElement;
         if (actions) {
             actions.style.cssText = 'display: flex; gap: 8px; justify-content: flex-end;';
         }
         
         // Button styles
         notification.querySelectorAll('.error-btn').forEach(btn => {
-            const isPrimary = btn.classList.contains('error-btn-primary');
-            btn.style.cssText = `
+            const button = btn as HTMLElement;
+            const isPrimary = button.classList.contains('error-btn-primary');
+            button.style.cssText = `
                 padding: 8px 16px;
                 border: none;
                 border-radius: 4px;
@@ -308,10 +351,10 @@ export class UtilsErrorReporter {
     
     /**
      * Get position styles based on configuration
-     * @returns {string} CSS position styles
+     * @returns CSS position styles
      */
-    getPositionStyles() {
-        const positions = {
+    private getPositionStyles(): string {
+        const positions: PositionStyles = {
             'top-right': 'top: 20px; right: 20px;',
             'top-left': 'top: 20px; left: 20px;',
             'bottom-right': 'bottom: 20px; right: 20px;',
@@ -325,11 +368,11 @@ export class UtilsErrorReporter {
     
     /**
      * Get severity color
-     * @param {string} severity - Error severity
-     * @returns {string} Color code
+     * @param severity - Error severity
+     * @returns Color code
      */
-    getSeverityColor(severity) {
-        const colors = {
+    private getSeverityColor(severity: string): string {
+        const colors: SeverityConfig = {
             CRITICAL: '#dc3545',
             HIGH: '#fd7e14',
             MEDIUM: '#ffc107',
@@ -340,11 +383,11 @@ export class UtilsErrorReporter {
     
     /**
      * Attach event listeners to notification
-     * @param {HTMLElement} notification - Notification element
+     * @param notification - Notification element
      */
-    attachNotificationEventListeners(notification) {
+    private attachNotificationEventListeners(notification: HTMLElement): void {
         // Close button
-        const closeBtn = notification.querySelector('.error-notification-close');
+        const closeBtn = notification.querySelector('.error-notification-close') as HTMLElement;
         if (closeBtn) {
             closeBtn.addEventListener('click', () => this.dismissNotification(notification));
         }
@@ -352,7 +395,8 @@ export class UtilsErrorReporter {
         // Action buttons
         notification.querySelectorAll('[data-action]').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const action = e.target.dataset.action;
+                const target = e.target as HTMLElement;
+                const action = target.dataset.action as NotificationAction;
                 this.handleNotificationAction(action, notification);
             });
         });
@@ -369,10 +413,10 @@ export class UtilsErrorReporter {
     
     /**
      * Display notification with animation
-     * @param {HTMLElement} notification - Notification element
-     * @param {object} errorInfo - Error information
+     * @param notification - Notification element
+     * @param errorInfo - Error information
      */
-    displayNotification(notification, errorInfo) {
+    private displayNotification(notification: HTMLElement, errorInfo: ErrorInfo): void {
         document.body.appendChild(notification);
         this.activeNotifications.add(notification);
         
@@ -395,10 +439,10 @@ export class UtilsErrorReporter {
     
     /**
      * Handle notification action
-     * @param {string} action - Action type
-     * @param {HTMLElement} notification - Notification element
+     * @param action - Action type
+     * @param notification - Notification element
      */
-    handleNotificationAction(action, notification) {
+    private handleNotificationAction(action: NotificationAction, notification: HTMLElement): void {
         switch (action) {
             case 'dismiss':
                 this.dismissNotification(notification);
@@ -409,7 +453,7 @@ export class UtilsErrorReporter {
                 }
                 break;
             case 'report':
-                this.showReportDialog(notification.dataset.errorId);
+                this.showReportDialog(notification.dataset.errorId || '');
                 break;
             default:
                 console.warn(`[ErrorReporter] Unknown action: ${action}`);
@@ -417,10 +461,19 @@ export class UtilsErrorReporter {
     }
     
     /**
-     * Dismiss notification with animation
-     * @param {HTMLElement} notification - Notification element
+     * Show report dialog
+     * @param errorId - Error ID
      */
-    dismissNotification(notification) {
+    private showReportDialog(errorId: string): void {
+        // Implementation for error reporting dialog
+        console.log(`[ErrorReporter] Report dialog for error: ${errorId}`);
+    }
+    
+    /**
+     * Dismiss notification with animation
+     * @param notification - Notification element
+     */
+    private dismissNotification(notification: HTMLElement): void {
         if (!notification || !notification.parentNode) return;
         
         notification.style.opacity = '0';
@@ -439,7 +492,7 @@ export class UtilsErrorReporter {
     /**
      * Adjust positions of multiple notifications
      */
-    adjustNotificationPositions() {
+    private adjustNotificationPositions(): void {
         const notifications = Array.from(this.activeNotifications);
         notifications.forEach((notification, index) => {
             const offset = index * 90; // 90px gap between notifications
@@ -454,18 +507,20 @@ export class UtilsErrorReporter {
     /**
      * Process queued notifications
      */
-    processNotificationQueue() {
+    private processNotificationQueue(): void {
         if (this.notificationQueue.length > 0 && 
             this.activeNotifications.size < this.notificationConfig.maxConcurrentNotifications) {
             const errorInfo = this.notificationQueue.shift();
-            this.showErrorNotification(errorInfo);
+            if (errorInfo) {
+                this.showErrorNotification(errorInfo);
+            }
         }
     }
     
     /**
      * Show fallback UI for compatibility issues
      */
-    showFallbackUI() {
+    showFallbackUI(): void {
         const fallbackDiv = document.createElement('div');
         fallbackDiv.id = 'fallbackUI';
         fallbackDiv.innerHTML = `
@@ -531,9 +586,9 @@ export class UtilsErrorReporter {
     
     /**
      * Configure reporter settings
-     * @param {object} config - Configuration options
+     * @param config - Configuration options
      */
-    configure(config) {
+    configure(config: Partial<NotificationConfig>): void {
         Object.assign(this.notificationConfig, config);
         console.log('[ErrorReporter] Configuration updated');
     }
@@ -541,7 +596,7 @@ export class UtilsErrorReporter {
     /**
      * Clear all active notifications
      */
-    clearAllNotifications() {
+    clearAllNotifications(): void {
         this.activeNotifications.forEach(notification => {
             this.dismissNotification(notification);
         });
@@ -550,24 +605,24 @@ export class UtilsErrorReporter {
     
     /**
      * Get active notifications count
-     * @returns {number} Number of active notifications
+     * @returns Number of active notifications
      */
-    getActiveNotificationsCount() {
+    getActiveNotificationsCount(): number {
         return this.activeNotifications.size;
     }
     
     /**
      * Get queued notifications count
-     * @returns {number} Number of queued notifications
+     * @returns Number of queued notifications
      */
-    getQueuedNotificationsCount() {
+    getQueuedNotificationsCount(): number {
         return this.notificationQueue.length;
     }
     
     /**
      * Cleanup reporter resources
      */
-    destroy() {
+    destroy(): void {
         this.clearAllNotifications();
         console.log('[ErrorReporter] Reporter destroyed');
     }

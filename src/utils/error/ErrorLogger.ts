@@ -3,8 +3,97 @@
  * Part of the ErrorHandler split implementation
  */
 
+// Type definitions for error logging system
+interface ErrorInfo {
+    id: string;
+    timestamp: string;
+    context: string;
+    message: string;
+    name: string;
+    stack?: string;
+    metadata?: Record<string, any>;
+    recovered?: boolean;
+}
+
+interface ErrorStats {
+    total: number;
+    byType: Map<string, number>;
+    byContext: Map<string, number>;
+    critical: number;
+    recovered: number;
+}
+
+interface MainController {
+    isBrowser?: boolean;
+    isNode?: boolean;
+    determineSeverity?: (error: ErrorInfo) => string;
+}
+
+interface LogEntry {
+    level: string;
+    timestamp: string;
+    id: string;
+    context: string;
+    message: string;
+    stack?: string;
+    metadata?: Record<string, any>;
+    [key: string]: any;
+}
+
+interface ExportOptions {
+    format?: 'json' | 'csv';
+    includeStack?: boolean;
+    timeRange?: {
+        start: number;
+        end: number;
+    } | null;
+    severityFilter?: string | null;
+    contextFilter?: string | null;
+}
+
+interface HealthMetrics {
+    totalErrors: number;
+    recentErrorsCount: number;
+    criticalErrorsCount: number;
+    logSizeUsage: number;
+    recoveryRate: number;
+    lastErrorTime: string | null;
+}
+
+interface ArchivedLogData {
+    rotatedAt: string;
+    errorCount: number;
+    statistics: ErrorStats;
+    errors: ErrorInfo[];
+}
+
+interface ExportData {
+    exportedAt: string;
+    errorCount: number;
+    statistics: ErrorStats;
+    errors: Array<{
+        id: string;
+        timestamp: string;
+        context: string;
+        message: string;
+        name: string;
+        metadata?: Record<string, any>;
+        recovered?: boolean;
+        stack?: string;
+    }>;
+}
+
+interface LoggerConfig {
+    maxLogSize?: number;
+}
+
 export class ErrorLogger {
-    constructor(mainController) {
+    private mainController: MainController;
+    private errorLog: ErrorInfo[];
+    private maxLogSize: number;
+    private errorStats: ErrorStats;
+
+    constructor(mainController: MainController) {
         this.mainController = mainController;
         
         // Error logging configuration
@@ -25,9 +114,9 @@ export class ErrorLogger {
     
     /**
      * Add error to log
-     * @param {object} errorInfo - Normalized error information
+     * @param errorInfo - Normalized error information
      */
-    addToErrorLog(errorInfo) {
+    addToErrorLog(errorInfo: ErrorInfo): void {
         this.errorLog.push(errorInfo);
         
         // Maintain log size limit
@@ -38,9 +127,9 @@ export class ErrorLogger {
     
     /**
      * Update error statistics
-     * @param {object} errorInfo - Error information
+     * @param errorInfo - Error information
      */
-    updateErrorStats(errorInfo) {
+    updateErrorStats(errorInfo: ErrorInfo): void {
         this.errorStats.total++;
         
         // Statistics by type
@@ -54,14 +143,14 @@ export class ErrorLogger {
     
     /**
      * Log error to console with appropriate severity
-     * @param {object} errorInfo - Error information
-     * @param {string} severity - Error severity level
+     * @param errorInfo - Error information
+     * @param severity - Error severity level
      */
-    logError(errorInfo, severity) {
+    logError(errorInfo: ErrorInfo, severity: string): void {
         const logMethod = severity === 'CRITICAL' ? 'error' : 
                          severity === 'HIGH' ? 'warn' : 'log';
         
-        console[logMethod](`[${severity}] ${errorInfo.context}: ${errorInfo.message}`, {
+        console[logMethod as keyof Console](`[${severity}] ${errorInfo.context}: ${errorInfo.message}`, {
             id: errorInfo.id,
             timestamp: errorInfo.timestamp,
             metadata: errorInfo.metadata,
@@ -71,12 +160,12 @@ export class ErrorLogger {
     
     /**
      * Log error with structured format
-     * @param {object} errorInfo - Error information
-     * @param {string} severity - Error severity
-     * @param {object} additionalData - Additional logging data
+     * @param errorInfo - Error information
+     * @param severity - Error severity
+     * @param additionalData - Additional logging data
      */
-    logStructuredError(errorInfo, severity, additionalData = {}) {
-        const logEntry = {
+    logStructuredError(errorInfo: ErrorInfo, severity: string, additionalData: Record<string, any> = {}): void {
+        const logEntry: LogEntry = {
             level: severity,
             timestamp: errorInfo.timestamp,
             id: errorInfo.id,
@@ -99,11 +188,11 @@ export class ErrorLogger {
     
     /**
      * Log error in browser environment
-     * @param {object} logEntry - Structured log entry
-     * @param {string} severity - Error severity
+     * @param logEntry - Structured log entry
+     * @param severity - Error severity
      */
-    logBrowserError(logEntry, severity) {
-        const styles = {
+    private logBrowserError(logEntry: LogEntry, severity: string): void {
+        const styles: Record<string, string> = {
             CRITICAL: 'color: white; background-color: red; font-weight: bold; padding: 2px 6px;',
             HIGH: 'color: white; background-color: orange; font-weight: bold; padding: 2px 6px;',
             MEDIUM: 'color: white; background-color: #ff9900; padding: 2px 6px;',
@@ -120,11 +209,11 @@ export class ErrorLogger {
     
     /**
      * Log error in Node.js environment
-     * @param {object} logEntry - Structured log entry
-     * @param {string} severity - Error severity
+     * @param logEntry - Structured log entry
+     * @param severity - Error severity
      */
-    logNodeError(logEntry, severity) {
-        const colors = {
+    private logNodeError(logEntry: LogEntry, severity: string): void {
+        const colors: Record<string, string> = {
             CRITICAL: '\x1b[41m\x1b[37m', // White text on red background
             HIGH: '\x1b[43m\x1b[30m',    // Black text on yellow background
             MEDIUM: '\x1b[33m',          // Yellow text
@@ -141,26 +230,26 @@ export class ErrorLogger {
     
     /**
      * Log error in generic environment
-     * @param {object} logEntry - Structured log entry
-     * @param {string} severity - Error severity
+     * @param logEntry - Structured log entry
+     * @param severity - Error severity
      */
-    logGenericError(logEntry, severity) {
+    private logGenericError(logEntry: LogEntry, severity: string): void {
         console.log(`[${severity}] ${logEntry.context}: ${logEntry.message}`, logEntry);
     }
     
     /**
      * Generate error ID
-     * @returns {string} Unique error ID
+     * @returns Unique error ID
      */
-    generateErrorId() {
+    generateErrorId(): string {
         return `err_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     }
     
     /**
      * Get error statistics
-     * @returns {object} Error statistics
+     * @returns Error statistics
      */
-    getErrorStats() {
+    getErrorStats(): { total: number; byType: Record<string, number>; byContext: Record<string, number>; critical: number; recovered: number; } {
         return {
             ...this.errorStats,
             byType: Object.fromEntries(this.errorStats.byType),
@@ -170,27 +259,27 @@ export class ErrorLogger {
     
     /**
      * Get error log
-     * @returns {Array} Copy of error log
+     * @returns Copy of error log
      */
-    getErrorLog() {
+    getErrorLog(): ErrorInfo[] {
         return [...this.errorLog];
     }
     
     /**
      * Get recent errors
-     * @param {number} count - Number of recent errors to return
-     * @returns {Array} Recent errors
+     * @param count - Number of recent errors to return
+     * @returns Recent errors
      */
-    getRecentErrors(count = 10) {
+    getRecentErrors(count: number = 10): ErrorInfo[] {
         return this.errorLog.slice(-count);
     }
     
     /**
      * Get errors by severity level
-     * @param {string} severity - Severity level
-     * @returns {Array} Filtered errors
+     * @param severity - Severity level
+     * @returns Filtered errors
      */
-    getErrorsBySeverity(severity) {
+    getErrorsBySeverity(severity: string): ErrorInfo[] {
         return this.errorLog.filter(error => {
             const errorSeverity = this.mainController.determineSeverity?.(error);
             return errorSeverity === severity;
@@ -199,20 +288,20 @@ export class ErrorLogger {
     
     /**
      * Get errors by context
-     * @param {string} context - Error context
-     * @returns {Array} Filtered errors
+     * @param context - Error context
+     * @returns Filtered errors
      */
-    getErrorsByContext(context) {
+    getErrorsByContext(context: string): ErrorInfo[] {
         return this.errorLog.filter(error => error.context === context);
     }
     
     /**
      * Get errors within time range
-     * @param {number} startTime - Start timestamp
-     * @param {number} endTime - End timestamp
-     * @returns {Array} Filtered errors
+     * @param startTime - Start timestamp
+     * @param endTime - End timestamp
+     * @returns Filtered errors
      */
-    getErrorsByTimeRange(startTime, endTime) {
+    getErrorsByTimeRange(startTime: number, endTime: number): ErrorInfo[] {
         return this.errorLog.filter(error => {
             const errorTime = new Date(error.timestamp).getTime();
             return errorTime >= startTime && errorTime <= endTime;
@@ -221,10 +310,10 @@ export class ErrorLogger {
     
     /**
      * Export error log data
-     * @param {object} options - Export options
-     * @returns {object} Exported data
+     * @param options - Export options
+     * @returns Exported data
      */
-    exportErrorLog(options = {}) {
+    exportErrorLog(options: ExportOptions = {}): ExportData | string {
         const {
             format = 'json',
             includeStack = false,
@@ -252,7 +341,7 @@ export class ErrorLogger {
         }
         
         // Format data
-        const exportData = {
+        const exportData: ExportData = {
             exportedAt: new Date().toISOString(),
             errorCount: filteredErrors.length,
             statistics: this.getErrorStats(),
@@ -277,10 +366,10 @@ export class ErrorLogger {
     
     /**
      * Convert error data to CSV format
-     * @param {Array} errors - Error data
-     * @returns {string} CSV formatted data
+     * @param errors - Error data
+     * @returns CSV formatted data
      */
-    convertToCSV(errors) {
+    private convertToCSV(errors: Array<Record<string, any>>): string {
         if (errors.length === 0) return '';
         
         const headers = Object.keys(errors[0]).filter(key => key !== 'metadata');
@@ -305,7 +394,7 @@ export class ErrorLogger {
     /**
      * Clear error log
      */
-    clearErrorLog() {
+    clearErrorLog(): void {
         this.errorLog = [];
         console.log('[ErrorLogger] Error log cleared');
     }
@@ -313,7 +402,7 @@ export class ErrorLogger {
     /**
      * Clear error statistics
      */
-    clearErrorStats() {
+    clearErrorStats(): void {
         this.errorStats = {
             total: 0,
             byType: new Map(),
@@ -326,9 +415,9 @@ export class ErrorLogger {
     
     /**
      * Configure logger settings
-     * @param {object} config - Configuration options
+     * @param config - Configuration options
      */
-    configure(config) {
+    configure(config: LoggerConfig): void {
         if (config.maxLogSize !== undefined) {
             this.maxLogSize = Math.max(10, Math.min(1000, config.maxLogSize));
         }
@@ -338,10 +427,10 @@ export class ErrorLogger {
     
     /**
      * Log rotation - archive old logs and start fresh
-     * @returns {object} Archived log data
+     * @returns Archived log data
      */
-    rotateLog() {
-        const archived = {
+    rotateLog(): ArchivedLogData {
+        const archived: ArchivedLogData = {
             rotatedAt: new Date().toISOString(),
             errorCount: this.errorLog.length,
             statistics: { ...this.getErrorStats() },
@@ -356,9 +445,9 @@ export class ErrorLogger {
     
     /**
      * Get log health metrics
-     * @returns {object} Health metrics
+     * @returns Health metrics
      */
-    getHealthMetrics() {
+    getHealthMetrics(): HealthMetrics {
         const recentErrors = this.getRecentErrors(10);
         const criticalErrors = this.getErrorsBySeverity('CRITICAL');
         
@@ -377,7 +466,7 @@ export class ErrorLogger {
     /**
      * Cleanup logger resources
      */
-    destroy() {
+    destroy(): void {
         this.errorLog = [];
         this.errorStats.byType.clear();
         this.errorStats.byContext.clear();

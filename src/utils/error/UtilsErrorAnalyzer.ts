@@ -3,8 +3,162 @@
  * Part of the ErrorHandler split implementation
  */
 
+// Type definitions for error analyzer system
+interface ErrorInfo {
+    id: string;
+    name: string;
+    message: string;
+    stack?: string;
+    timestamp: string;
+    context: string;
+    metadata: Record<string, any>;
+    recovered?: boolean;
+}
+
+interface MainController {
+    logger?: {
+        generateErrorId: () => string;
+        getErrorLog: () => ErrorInfo[];
+    };
+    isBrowser?: boolean;
+    isNode?: boolean;
+}
+
+interface ErrorMetadata {
+    userAgent?: string;
+    url?: string;
+    viewport?: {
+        width: number;
+        height: number;
+    };
+    performanceNow?: number;
+    memory?: {
+        used?: number;
+        total?: number;
+        limit?: number;
+        rss?: number;
+        heapUsed?: number;
+        heapTotal?: number;
+        external?: number;
+        arrayBuffers?: number;
+    };
+    nodeVersion?: string;
+    platform?: string;
+    arch?: string;
+    pid?: number;
+    gameState?: {
+        scene?: string;
+        fps?: number;
+        memoryUsage?: any;
+    };
+    performance?: {
+        level?: string;
+        quality?: string;
+        optimizationsActive?: string[];
+    };
+    [key: string]: any;
+}
+
+interface PatternAnalysis {
+    recurring: Record<string, number>;
+    byContext: Record<string, number>;
+    bySeverity: Record<string, number>;
+    timeline: Array<{
+        timestamp: string;
+        context: string;
+        severity: string;
+    }>;
+    correlations: Array<{
+        type: string;
+        description: string;
+        contexts: string[];
+    }>;
+}
+
+interface AnalysisReport {
+    errorId: string;
+    severity: string;
+    context: string;
+    analysis: {
+        isRecurring: boolean;
+        similarCount: number;
+        riskLevel: string;
+        impactAssessment: ImpactAssessment;
+        recommendedActions: string[];
+    };
+    technical: {
+        classification: ErrorClassification;
+        rootCause: string;
+        affectedSystems: string[];
+    };
+    timestamp: string;
+}
+
+interface ImpactAssessment {
+    userExperience: 'minimal' | 'moderate' | 'severe';
+    systemStability: 'stable' | 'unstable';
+    dataIntegrity: 'secure' | 'at_risk' | 'compromised';
+}
+
+interface ErrorClassification {
+    category: string;
+    type: string;
+    source: string;
+    recoverable: boolean;
+}
+
+interface AnalyzerConfig {
+    severityRules?: Record<string, string>;
+    contextPatterns?: Record<string, string>;
+}
+
+interface AnalyzerStats {
+    severityRulesCount: number;
+    contextPatternsCount: number;
+    criticalPatternsCount: number;
+    highSeverityPatternsCount: number;
+}
+
+type SeverityLevel = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
+
+// Global type extensions
+declare global {
+    interface Window {
+        gameEngine?: {
+            currentScene?: {
+                constructor: {
+                    name: string;
+                };
+            };
+            performanceOptimizer?: {
+                getCurrentFPS: () => number;
+                currentLevel: string;
+                currentQuality: string;
+                activeOptimizations: string[];
+            };
+            memoryManager?: {
+                getUsage: () => any;
+            };
+        };
+    }
+
+    interface Performance {
+        memory?: {
+            usedJSHeapSize: number;
+            totalJSHeapSize: number;
+            jsHeapSizeLimit: number;
+        };
+    }
+}
+
 export class UtilsErrorAnalyzer {
-    constructor(mainController) {
+    private mainController: MainController;
+    private contextPatterns: Map<string, RegExp>;
+    private severityRules: Map<string, string>;
+    private criticalPatterns: RegExp[];
+    private highSeverityPatterns: RegExp[];
+
+    constructor(mainController: MainController) {
         this.mainController = mainController;
         
         // Context mapping for error classification
@@ -54,10 +208,10 @@ export class UtilsErrorAnalyzer {
     
     /**
      * Normalize error object into consistent format
-     * @param {Error|object|string} error - Raw error
-     * @returns {object} Normalized error information
+     * @param error - Raw error
+     * @returns Normalized error information
      */
-    normalizeError(error) {
+    normalizeError(error: Error | Record<string, any> | string): ErrorInfo {
         const timestamp = new Date().toISOString();
         const errorId = this.mainController.logger?.generateErrorId() || `err_${Date.now()}`;
         
@@ -112,10 +266,10 @@ export class UtilsErrorAnalyzer {
     
     /**
      * Determine error context from error information
-     * @param {object} error - Error object
-     * @returns {string} Error context
+     * @param error - Error object
+     * @returns Error context
      */
-    determineContext(error) {
+    private determineContext(error: any): string {
         const message = error.message || '';
         const name = error.name || '';
         const stack = error.stack || '';
@@ -150,10 +304,10 @@ export class UtilsErrorAnalyzer {
     
     /**
      * Determine error severity level
-     * @param {object} errorInfo - Normalized error information
-     * @returns {string} Severity level (CRITICAL, HIGH, MEDIUM, LOW)
+     * @param errorInfo - Normalized error information
+     * @returns Severity level (CRITICAL, HIGH, MEDIUM, LOW)
      */
-    determineSeverity(errorInfo) {
+    determineSeverity(errorInfo: ErrorInfo): SeverityLevel {
         const { name, message, context } = errorInfo;
         
         // Check critical patterns first
@@ -165,7 +319,7 @@ export class UtilsErrorAnalyzer {
         
         // Check severity rules by error name
         if (this.severityRules.has(name)) {
-            return this.severityRules.get(name);
+            return this.severityRules.get(name) as SeverityLevel;
         }
         
         // Check high severity patterns
@@ -199,11 +353,11 @@ export class UtilsErrorAnalyzer {
     
     /**
      * Extract metadata from error
-     * @param {object} error - Error object
-     * @returns {object} Error metadata
+     * @param error - Error object
+     * @returns Error metadata
      */
-    extractErrorMetadata(error) {
-        const metadata = {};
+    private extractErrorMetadata(error: any): ErrorMetadata {
+        const metadata: ErrorMetadata = {};
         
         // Browser environment metadata
         if (this.mainController.isBrowser && typeof window !== 'undefined') {
@@ -273,16 +427,16 @@ export class UtilsErrorAnalyzer {
     
     /**
      * Analyze error patterns to identify recurring issues
-     * @param {Array} errors - Array of error objects
-     * @returns {object} Pattern analysis results
+     * @param errors - Array of error objects
+     * @returns Pattern analysis results
      */
-    analyzeErrorPatterns(errors) {
+    analyzeErrorPatterns(errors: ErrorInfo[]): PatternAnalysis {
         const patterns = {
-            recurring: new Map(),
-            byContext: new Map(),
-            bySeverity: new Map(),
-            timeline: [],
-            correlations: []
+            recurring: new Map<string, number>(),
+            byContext: new Map<string, number>(),
+            bySeverity: new Map<string, number>(),
+            timeline: [] as Array<{ timestamp: string; context: string; severity: string; }>,
+            correlations: [] as Array<{ type: string; description: string; contexts: string[]; }>
         };
         
         // Analyze recurring patterns
@@ -317,19 +471,20 @@ export class UtilsErrorAnalyzer {
         }
         
         return {
-            ...patterns,
             recurring: Object.fromEntries(patterns.recurring),
             byContext: Object.fromEntries(patterns.byContext),
-            bySeverity: Object.fromEntries(patterns.bySeverity)
+            bySeverity: Object.fromEntries(patterns.bySeverity),
+            timeline: patterns.timeline,
+            correlations: patterns.correlations
         };
     }
     
     /**
      * Generate error analysis report
-     * @param {object} errorInfo - Error information
-     * @returns {object} Analysis report
+     * @param errorInfo - Error information
+     * @returns Analysis report
      */
-    generateAnalysisReport(errorInfo) {
+    generateAnalysisReport(errorInfo: ErrorInfo): AnalysisReport {
         const severity = this.determineSeverity(errorInfo);
         const similar = this.findSimilarErrors(errorInfo);
         
@@ -355,10 +510,10 @@ export class UtilsErrorAnalyzer {
     
     /**
      * Find similar errors in the log
-     * @param {object} errorInfo - Error to find similarities for
-     * @returns {Array} Similar errors
+     * @param errorInfo - Error to find similarities for
+     * @returns Similar errors
      */
-    findSimilarErrors(errorInfo) {
+    private findSimilarErrors(errorInfo: ErrorInfo): ErrorInfo[] {
         const errorLog = this.mainController.logger?.getErrorLog() || [];
         
         return errorLog.filter(logError => 
@@ -371,11 +526,11 @@ export class UtilsErrorAnalyzer {
     
     /**
      * Calculate similarity between two error messages
-     * @param {string} message1 - First message
-     * @param {string} message2 - Second message
-     * @returns {number} Similarity score (0-1)
+     * @param message1 - First message
+     * @param message2 - Second message
+     * @returns Similarity score (0-1)
      */
-    calculateSimilarity(message1, message2) {
+    private calculateSimilarity(message1: string, message2: string): number {
         const words1 = message1.toLowerCase().split(/\s+/);
         const words2 = message2.toLowerCase().split(/\s+/);
         const intersection = words1.filter(word => words2.includes(word));
@@ -386,12 +541,12 @@ export class UtilsErrorAnalyzer {
     
     /**
      * Calculate risk level for error
-     * @param {object} errorInfo - Error information  
-     * @param {string} severity - Error severity
-     * @returns {string} Risk level
+     * @param errorInfo - Error information  
+     * @param severity - Error severity
+     * @returns Risk level
      */
-    calculateRiskLevel(errorInfo, severity) {
-        const factors = [];
+    private calculateRiskLevel(errorInfo: ErrorInfo, severity: string): string {
+        const factors: string[] = [];
         
         if (severity === 'CRITICAL') factors.push('critical_severity');
         if (errorInfo.context === 'CANVAS_ERROR') factors.push('rendering_failure');
@@ -407,12 +562,12 @@ export class UtilsErrorAnalyzer {
     
     /**
      * Assess error impact
-     * @param {object} errorInfo - Error information
-     * @param {string} severity - Error severity  
-     * @returns {object} Impact assessment
+     * @param errorInfo - Error information
+     * @param severity - Error severity  
+     * @returns Impact assessment
      */
-    assessImpact(errorInfo, severity) {
-        const impact = {
+    private assessImpact(errorInfo: ErrorInfo, severity: string): ImpactAssessment {
+        const impact: ImpactAssessment = {
             userExperience: 'minimal',
             systemStability: 'stable',
             dataIntegrity: 'secure'
@@ -442,12 +597,12 @@ export class UtilsErrorAnalyzer {
     
     /**
      * Generate recommendations based on error analysis
-     * @param {object} errorInfo - Error information
-     * @param {string} severity - Error severity
-     * @returns {Array} Recommended actions
+     * @param errorInfo - Error information
+     * @param severity - Error severity
+     * @returns Recommended actions
      */
-    generateRecommendations(errorInfo, severity) {
-        const recommendations = [];
+    private generateRecommendations(errorInfo: ErrorInfo, severity: string): string[] {
+        const recommendations: string[] = [];
         
         if (severity === 'CRITICAL') {
             recommendations.push('immediate_attention_required');
@@ -486,10 +641,10 @@ export class UtilsErrorAnalyzer {
     
     /**
      * Classify error type
-     * @param {object} errorInfo - Error information
-     * @returns {object} Error classification
+     * @param errorInfo - Error information
+     * @returns Error classification
      */
-    classifyError(errorInfo) {
+    private classifyError(errorInfo: ErrorInfo): ErrorClassification {
         return {
             category: this.getCategoryFromContext(errorInfo.context),
             type: errorInfo.name,
@@ -500,11 +655,11 @@ export class UtilsErrorAnalyzer {
     
     /**
      * Get category from context
-     * @param {string} context - Error context
-     * @returns {string} Error category
+     * @param context - Error context
+     * @returns Error category
      */
-    getCategoryFromContext(context) {
-        const categoryMap = {
+    private getCategoryFromContext(context: string): string {
+        const categoryMap: Record<string, string> = {
             'CANVAS_ERROR': 'rendering',
             'WEBGL_ERROR': 'rendering',
             'AUDIO_ERROR': 'media',
@@ -521,10 +676,10 @@ export class UtilsErrorAnalyzer {
     
     /**
      * Identify error source
-     * @param {object} errorInfo - Error information
-     * @returns {string} Error source
+     * @param errorInfo - Error information
+     * @returns Error source
      */
-    identifyErrorSource(errorInfo) {
+    private identifyErrorSource(errorInfo: ErrorInfo): string {
         const stack = errorInfo.stack || '';
         
         if (stack.includes('gameEngine')) return 'game_engine';
@@ -538,10 +693,10 @@ export class UtilsErrorAnalyzer {
     
     /**
      * Determine if error is recoverable
-     * @param {object} errorInfo - Error information
-     * @returns {boolean} Whether error is recoverable
+     * @param errorInfo - Error information
+     * @returns Whether error is recoverable
      */
-    isRecoverable(errorInfo) {
+    private isRecoverable(errorInfo: ErrorInfo): boolean {
         const nonRecoverableContexts = ['SECURITY_ERROR', 'SYNTAX_ERROR'];
         const recoverableContexts = ['AUDIO_ERROR', 'NETWORK_ERROR', 'PERFORMANCE_WARNING'];
         
@@ -557,10 +712,10 @@ export class UtilsErrorAnalyzer {
     
     /**
      * Identify root cause
-     * @param {object} errorInfo - Error information
-     * @returns {string} Potential root cause
+     * @param errorInfo - Error information
+     * @returns Potential root cause
      */
-    identifyRootCause(errorInfo) {
+    private identifyRootCause(errorInfo: ErrorInfo): string {
         const message = errorInfo.message.toLowerCase();
         
         if (message.includes('undefined') || message.includes('null')) {
@@ -588,11 +743,11 @@ export class UtilsErrorAnalyzer {
     
     /**
      * Identify affected systems
-     * @param {object} errorInfo - Error information
-     * @returns {Array} List of affected systems
+     * @param errorInfo - Error information
+     * @returns List of affected systems
      */
-    identifyAffectedSystems(errorInfo) {
-        const systems = [];
+    private identifyAffectedSystems(errorInfo: ErrorInfo): string[] {
+        const systems: string[] = [];
         const context = errorInfo.context;
         const message = errorInfo.message.toLowerCase();
         
@@ -621,9 +776,9 @@ export class UtilsErrorAnalyzer {
     
     /**
      * Configure analyzer settings
-     * @param {object} config - Configuration options
+     * @param config - Configuration options
      */
-    configure(config) {
+    configure(config: AnalyzerConfig): void {
         if (config.severityRules) {
             for (const [errorName, severity] of Object.entries(config.severityRules)) {
                 this.severityRules.set(errorName, severity);
@@ -641,29 +796,29 @@ export class UtilsErrorAnalyzer {
     
     /**
      * Add custom analysis rule
-     * @param {string} errorName - Error name to match
-     * @param {string} severity - Severity level
+     * @param errorName - Error name to match
+     * @param severity - Severity level
      */
-    addSeverityRule(errorName, severity) {
+    addSeverityRule(errorName: string, severity: string): void {
         this.severityRules.set(errorName, severity);
         console.log(`[ErrorAnalyzer] Added severity rule: ${errorName} -> ${severity}`);
     }
     
     /**
      * Add custom context pattern
-     * @param {string} context - Context name
-     * @param {RegExp} pattern - Pattern to match
+     * @param context - Context name
+     * @param pattern - Pattern to match
      */
-    addContextPattern(context, pattern) {
+    addContextPattern(context: string, pattern: RegExp): void {
         this.contextPatterns.set(context, pattern);
         console.log(`[ErrorAnalyzer] Added context pattern: ${context}`);
     }
     
     /**
      * Get analyzer statistics
-     * @returns {object} Analyzer statistics
+     * @returns Analyzer statistics
      */
-    getAnalyzerStats() {
+    getAnalyzerStats(): AnalyzerStats {
         return {
             severityRulesCount: this.severityRules.size,
             contextPatternsCount: this.contextPatterns.size,
@@ -675,7 +830,7 @@ export class UtilsErrorAnalyzer {
     /**
      * Cleanup analyzer resources
      */
-    destroy() {
+    destroy(): void {
         this.contextPatterns.clear();
         this.severityRules.clear();
         console.log('[ErrorAnalyzer] Analyzer destroyed');
