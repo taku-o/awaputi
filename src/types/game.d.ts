@@ -465,7 +465,7 @@ export interface MainMenuScene {
   showingUserInfo: boolean;
   showingDataClearConfirmation: boolean;
   showingControlsHelp: boolean;
-  resizeCallback?: () => void;
+  resizeCallback: (() => void) | undefined;
   
   // Sub-components
   mainMenuRenderer: any;

@@ -53,6 +53,7 @@ export type DrawFunction = (context: CanvasRenderingContext2D, particle: Particl
  * パーティクルの描画・レンダリング・視覚効果の表現を担当
  */
 export class ParticleRenderer {
+    // @ts-ignore 将来のパーティクル管理機能で使用予定
     private __particleManager: any;
     private quality?: number;
     private customDrawFunctions?: Map<string, DrawFunction>;

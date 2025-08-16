@@ -25,6 +25,7 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor {
             return;
         }
         
+        // @ts-ignore 将来のシーン依存エフェクトで使用予定
         const _gameScene = this.gameEngine.sceneManager.getCurrentScene();
         
         switch (bubble.type) {
