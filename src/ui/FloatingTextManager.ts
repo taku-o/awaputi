@@ -317,7 +317,7 @@ export class FloatingTextManager {
     /**
      * アニメーション更新
      */
-    private updateAnimations(text: FloatingText, deltaTime: number): void {
+    private updateAnimations(text: FloatingText, __deltaTime: number): void {
         const progress = 1 - (text.life / text.maxLife);
         const time = Date.now() * 0.001;
         

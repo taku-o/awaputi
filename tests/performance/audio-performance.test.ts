@@ -6,13 +6,13 @@
  * 同時効果音再生、BGM生成時間、メモリ使用量などを検証します。
  */
 
-import { jest } from '@jest/globals';
+// import { jest } from '@jest/globals';
 import { AudioManager } from '../../src/audio/AudioManager.js';
 import { AudioDataOptimizer } from '../../src/audio/AudioDataOptimizer.js';
 import { AudioCacheManager } from '../../src/audio/AudioCacheManager.js';
 import { AudioPerformanceMonitor } from '../../src/audio/AudioPerformanceMonitor.js';
 
-interface MockFunction<T = any> extends Function {
+interface MockFunction<__T = any> extends Function {
     calls: any[][];
     executionTimes: number[];
     getAverageExecutionTime(): number;

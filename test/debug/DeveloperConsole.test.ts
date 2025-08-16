@@ -814,7 +814,7 @@ describe('CommandRegistry', () => {
             registry.register('test', { 
                 aliases: ['t'],
                 execute: () => {},
-                getCompletions: (args: string[]) => ['option1', 'option2']
+                getCompletions: (__args: string[]) => ['option1', 'option2']
             });
         });
 
@@ -897,7 +897,7 @@ describe('CommandRegistry', () => {
 
     describe('Middleware', () => {
         test('should add and execute middleware', () => {
-            const middleware = jest.fn((command: string, args: string[]) => {
+            const middleware = jest.fn((command: string, __args: string[]) => {
                 return command !== 'blocked';
             });
             

@@ -7,7 +7,7 @@ import { jest } from '@jest/globals';
 import { GameEngine } from '../../src/core/GameEngine.js';
 import { Bubble } from '../../src/bubbles/Bubble.js';
 import { Position } from '../../src/types/bubble.js';
-import { MockCanvasRenderingContext2D } from '../../src/types/test.js';
+// import { MockCanvasRenderingContext2D } from '../../src/types/test.js';
 
 interface MockCanvas extends HTMLCanvasElement {
   width: number;

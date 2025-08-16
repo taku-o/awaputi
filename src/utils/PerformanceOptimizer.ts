@@ -1,7 +1,7 @@
 import { getPerformanceConfig } from '../config/PerformanceConfig.js';
 import { getErrorHandler } from './ErrorHandler.js';
 import { getFrameStabilizer } from './FrameStabilizer.js';
-import { getConfigurationManager } from '../core/ConfigurationManager.js';
+// import { getConfigurationManager } from '../core/ConfigurationManager.js';
 
 // 新しいサブコンポーネントのインポート
 import { PerformanceAnalyzer } from './performance-optimizer/PerformanceAnalyzer.js';
@@ -74,11 +74,11 @@ export class PerformanceOptimizer {
     
     // フレーム処理データ
     private frameTimeHistory: number[];
-    private lastFrameTime: number | null;
+    private __lastFrameTime: number | null;
     private lastOptimizationTime: number;
     
     // ログ制御用
-    private lastLoggedStabilizerZone: string | null;
+    private __lastLoggedStabilizerZone: string | null;
     
     // 統合コンポーネント
     private frameStabilizer: any;
@@ -103,11 +103,11 @@ export class PerformanceOptimizer {
             
             // 基本フレーム処理データ
             this.frameTimeHistory = [];
-            this.lastFrameTime = null;
+            this.__lastFrameTime = null;
             this.lastOptimizationTime = 0;
             
             // ログ制御用
-            this.lastLoggedStabilizerZone = null;
+            this.__lastLoggedStabilizerZone = null;
             
             // Frame Stabilizer統合
             this.frameStabilizer = getFrameStabilizer(this.targetFPS);
@@ -287,7 +287,7 @@ export class PerformanceOptimizer {
                 this.lastOptimizationTime = currentTime;
             }
             
-            this.lastFrameTime = frameTime;
+            this.__lastFrameTime = frameTime;
         } catch (error) {
             this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', {
                 component: 'PerformanceOptimizer',

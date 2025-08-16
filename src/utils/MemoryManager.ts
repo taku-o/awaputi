@@ -160,7 +160,7 @@ export class MemoryManager {
     /**
      * Track an object for memory management
      */
-    track(obj: object, type: string = 'unknown', metadata: any = {}): void {
+    track(obj: object, type: string = 'unknown', __metadata: any = {}): void {
         if (!obj || typeof obj !== 'object') return;
         
         try {
@@ -279,7 +279,7 @@ export class MemoryManager {
     /**
      * Update aggregated statistics from sub-components
      */
-    private updateAggregatedStats(usageReport: any, leakReport: any, cleanupResult: any): void {
+    private updateAggregatedStats(__usageReport: any, leakReport: any, cleanupResult: any): void {
         // Update leak statistics
         if (leakReport) {
             this.stats.memoryLeaksDetected += leakReport.definiteLeaks || 0;

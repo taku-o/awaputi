@@ -199,9 +199,9 @@ describe('Configuration System Integration Tests', () => {
         test('設定変更の即座反映', () => {
             // 監視コールバックを設定
             let gameConfigCalled = false;
-            let audioConfigCalled = false;
+            let __audioConfigCalled = false;
             const gameConfigCallback = () => { gameConfigCalled = true; };
-            const audioConfigCallback = () => { audioConfigCalled = true; };
+            const audioConfigCallback = () => { __audioConfigCalled = true; };
             
             configManager.watch('game', 'scoring.baseScores.normal', gameConfigCallback);
             configManager.watch('audio', 'volumes.master', audioConfigCallback);
