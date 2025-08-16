@@ -13,15 +13,114 @@ import { ExpectationGenerator } from './test-configuration/ExpectationGenerator.
 import { TestFileOperations } from './test-configuration/TestFileOperations.js';
 import { ConfigurationValidator } from './test-configuration/ConfigurationValidator.js';
 
+// Type definitions
+interface TestConfigurationOptions {
+    projectRoot?: string;
+    testsDir?: string;
+    configSourceDir?: string;
+    backupEnabled?: boolean;
+    dryRun?: boolean;
+}
+
+interface ErrorHandler {
+    handleError: (error: Error, context: string, details?: any) => void;
+}
+
+interface ConfigurationManager {
+    get: (namespace: string, path: string) => any;
+}
+
+interface TestFilePatterns {
+    bubble: string;
+    gameBalance: string;
+    bubbleManager: string;
+}
+
+interface Component {
+    initialized: boolean;
+    parseAllConfigurations?: () => any;
+    generateTestCode?: (expectations: any, testType: string) => string | null;
+    updateTestFile?: (testType: string, testCode: string, options: any) => UpdateResult;
+    validateConfigurationSync?: (canonical: any) => ValidationResult;
+    clearCache?: () => void;
+    cleanup?: () => void;
+    initialize?: () => Promise<void>;
+}
+
+interface ComponentDefinition {
+    name: string;
+    class: new (controller: TestConfigurationGenerator) => Component;
+}
+
+interface ExpectationMetadata {
+    extractedAt: number;
+    sourceFiles: string[];
+    generatorVersion: string;
+}
+
+interface CanonicalExpectations {
+    bubbleTypes: Record<string, any>;
+    gameBalance: Record<string, any>;
+    metadata: ExpectationMetadata;
+}
+
+interface UpdateResult {
+    success: boolean;
+    error?: string;
+    testType?: string;
+    [key: string]: any;
+}
+
+interface UpdateOptions {
+    testTypes?: string[];
+    [key: string]: any;
+}
+
+interface UpdateResults {
+    updated: UpdateResult[];
+    failed: Array<{ testType?: string; error: string }>;
+    skipped: UpdateResult[];
+    backups: UpdateResult[];
+}
+
+interface ValidationResult {
+    valid: boolean;
+    issues: string[];
+    warnings: string[];
+    bubbleTypesCount: number;
+    sourceFiles: string[];
+}
+
+interface GenerationStatistics {
+    totalExpectations: number;
+    lastGenerated: number | null;
+    bubbleTypesProcessed: number;
+    sourceFilesProcessed: number;
+    cacheSize: number;
+    componentsInitialized: number;
+}
+
 export class TestConfigurationGenerator {
-    constructor(options = {}) {
+    private components: Map<string, Component>;
+    private initialized: boolean;
+    private errorHandler: ErrorHandler;
+    private configurationManager: ConfigurationManager;
+    private projectRoot: string;
+    private testsDir: string;
+    private configSourceDir: string;
+    private backupEnabled: boolean;
+    private dryRun: boolean;
+    private testFilePatterns: TestFilePatterns;
+    private generatedExpectations: Map<string, any>;
+
+    constructor(options: TestConfigurationOptions = {}) {
         // Main Controller Pattern用の設定
-        this.components = new Map();
+        this.components = new Map<string, Component>();
         this.initialized = false;
         
         // 軽量エラーハンドラー（Node.js環境用）
         this.errorHandler = {
-            handleError: (error, context, details) => {
+            handleError: (error: Error, context: string, details?: any) => {
                 console.error(`[ERROR] ${context}: ${error.message}`);
                 if (details) {
                     console.error('Details:', details);
@@ -31,7 +130,7 @@ export class TestConfigurationGenerator {
         
         // 軽量ConfigurationManager（Node.js環境用）
         this.configurationManager = {
-            get: (namespace, path) => {
+            get: (namespace: string, path: string) => {
                 // Node.js環境では実際の設定ファイルから直接読み取る
                 console.warn('[TestConfigurationGenerator] ConfigurationManager.get() is not available in Node.js environment');
                 return undefined;
@@ -53,7 +152,7 @@ export class TestConfigurationGenerator {
         };
         
         // 生成された期待値のキャッシュ（後方互換性のため保持）
-        this.generatedExpectations = new Map();
+        this.generatedExpectations = new Map<string, any>();
         
         this.initializeComponents();
         
@@ -63,10 +162,10 @@ export class TestConfigurationGenerator {
     /**
      * コンポーネントを初期化
      */
-    async initializeComponents() {
+    async initializeComponents(): Promise<void> {
         try {
             // コンポーネントの作成と初期化
-            const components = [
+            const components: ComponentDefinition[] = [
                 { name: 'parser', class: ConfigurationParser },
                 { name: 'generator', class: ExpectationGenerator },
                 { name: 'fileOperations', class: TestFileOperations },
@@ -76,7 +175,9 @@ export class TestConfigurationGenerator {
             for (const { name, class: ComponentClass } of components) {
                 try {
                     const component = new ComponentClass(this);
-                    await component.initialize();
+                    if (component.initialize) {
+                        await component.initialize();
+                    }
                     this.components.set(name, component);
                 } catch (error) {
                     console.error(`Failed to initialize ${name}:`, error);
@@ -87,32 +188,28 @@ export class TestConfigurationGenerator {
 
             this.initialized = true;
         } catch (error) {
-            this.errorHandler.handleError(error, 'TestConfigurationGenerator', 'initialization');
+            this.errorHandler.handleError(error as Error, 'TestConfigurationGenerator', 'initialization');
         }
     }
 
     /**
      * フォールバック用のコンポーネントを作成
-     * @param {string} name - コンポーネント名
-     * @returns {Object} フォールバック機能
      */
-    createFallbackComponent(name) {
+    createFallbackComponent(name: string): Component {
         return {
             initialized: false,
             // 基本的なフォールバック実装
             parseAllConfigurations: () => null,
             generateTestCode: () => null,
             updateTestFile: () => ({ success: false, error: 'Component not available' }),
-            validateConfigurationSync: () => ({ valid: false, issues: ['Component not available'] })
+            validateConfigurationSync: () => ({ valid: false, issues: ['Component not available'], warnings: [], bubbleTypesCount: 0, sourceFiles: [] })
         };
     }
 
     /**
      * コンポーネントを取得
-     * @param {string} name - コンポーネント名
-     * @returns {Object} コンポーネント
      */
-    getComponent(name) {
+    getComponent(name: string): Component | undefined {
         return this.components.get(name);
     }
     
@@ -120,11 +217,10 @@ export class TestConfigurationGenerator {
 
     /**
      * 正規設定から期待値を抽出（後方互換性維持）
-     * @returns {Object} 正規設定から抽出された期待値
      */
-    extractCanonicalExpectations() {
+    extractCanonicalExpectations(): CanonicalExpectations {
         const parser = this.getComponent('parser');
-        if (parser) {
+        if (parser && parser.parseAllConfigurations) {
             const expectations = parser.parseAllConfigurations();
             if (expectations) {
                 // 後方互換性のためキャッシュに保存
@@ -134,7 +230,7 @@ export class TestConfigurationGenerator {
         }
         
         // フォールバック：最小限の期待値を返す
-        const fallbackExpectations = {
+        const fallbackExpectations: CanonicalExpectations = {
             bubbleTypes: {},
             gameBalance: {},
             metadata: {
@@ -149,13 +245,10 @@ export class TestConfigurationGenerator {
 
     /**
      * テストファイルを生成（後方互換性維持）
-     * @param {Object} expectations - 期待値オブジェクト
-     * @param {string} testType - テストタイプ ('bubble', 'gameBalance', 'bubbleManager')
-     * @returns {string|null} 生成されたテストコード
      */
-    generateTestFile(expectations, testType) {
+    generateTestFile(expectations: any, testType: string): string | null {
         const generator = this.getComponent('generator');
-        if (generator) {
+        if (generator && generator.generateTestCode) {
             return generator.generateTestCode(expectations, testType);
         }
         
@@ -170,17 +263,14 @@ describe('${testType} Tests', () => {
 
     /**
      * テストファイルを更新（後方互換性維持）
-     * @param {Object} expectations - 期待値
-     * @param {Object} options - 更新オプション
-     * @returns {Object} 更新結果
      */
-    updateTestFiles(expectations, options = {}) {
+    updateTestFiles(expectations: any, options: UpdateOptions = {}): UpdateResults {
         const fileOperations = this.getComponent('fileOperations');
         const generator = this.getComponent('generator');
         
-        if (fileOperations && generator) {
+        if (fileOperations && generator && fileOperations.updateTestFile && generator.generateTestCode) {
             try {
-                const results = {
+                const results: UpdateResults = {
                     updated: [],
                     failed: [],
                     skipped: [],
@@ -204,13 +294,13 @@ describe('${testType} Tests', () => {
                         if (result.success) {
                             results.updated.push(result);
                         } else {
-                            results.failed.push({ testType, error: result.error });
+                            results.failed.push({ testType, error: result.error || 'Unknown error' });
                         }
                         
                     } catch (updateError) {
                         results.failed.push({ 
                             testType, 
-                            error: updateError.message 
+                            error: (updateError as Error).message 
                         });
                     }
                 }
@@ -219,13 +309,13 @@ describe('${testType} Tests', () => {
                 return results;
                 
             } catch (error) {
-                this.errorHandler.handleError(error, 'TEST_GENERATOR_UPDATE_FILES', {
+                this.errorHandler.handleError(error as Error, 'TEST_GENERATOR_UPDATE_FILES', {
                     expectationsKeys: Object.keys(expectations || {}),
                     options
                 });
                 return {
                     updated: [],
-                    failed: [{ error: error.message }],
+                    failed: [{ error: (error as Error).message }],
                     skipped: [],
                     backups: []
                 };
@@ -243,11 +333,10 @@ describe('${testType} Tests', () => {
 
     /**
      * 設定同期の検証（後方互換性維持）
-     * @returns {Object} 検証結果
      */
-    validateConfigurationSync() {
+    validateConfigurationSync(): ValidationResult {
         const validator = this.getComponent('validator');
-        if (validator) {
+        if (validator && validator.validateConfigurationSync) {
             const canonical = this.extractCanonicalExpectations();
             if (canonical) {
                 return validator.validateConfigurationSync(canonical);
@@ -266,10 +355,9 @@ describe('${testType} Tests', () => {
 
     /**
      * 生成統計を取得
-     * @returns {Object} 生成統計
      */
-    getGenerationStatistics() {
-        const stats = {
+    getGenerationStatistics(): GenerationStatistics {
+        const stats: GenerationStatistics = {
             totalExpectations: this.generatedExpectations.size,
             lastGenerated: null,
             bubbleTypesProcessed: 0,
@@ -291,7 +379,7 @@ describe('${testType} Tests', () => {
     /**
      * キャッシュをクリア（後方互換性維持）
      */
-    clearCache() {
+    clearCache(): void {
         // コンポーネントのキャッシュをクリア
         for (const component of this.components.values()) {
             if (component.clearCache) {
@@ -307,7 +395,7 @@ describe('${testType} Tests', () => {
     /**
      * クリーンアップ
      */
-    cleanup() {
+    cleanup(): void {
         // コンポーネントのクリーンアップ
         for (const component of this.components.values()) {
             if (component.cleanup) {
@@ -325,14 +413,12 @@ describe('${testType} Tests', () => {
 }
 
 // シングルトンインスタンス
-let testGeneratorInstance = null;
+let testGeneratorInstance: TestConfigurationGenerator | null = null;
 
 /**
  * TestConfigurationGeneratorのシングルトンインスタンスを取得
- * @param {Object} options - 初期化オプション
- * @returns {TestConfigurationGenerator} テスト生成器インスタンス
  */
-export function getTestConfigurationGenerator(options = {}) {
+export function getTestConfigurationGenerator(options: TestConfigurationOptions = {}): TestConfigurationGenerator {
     if (!testGeneratorInstance) {
         testGeneratorInstance = new TestConfigurationGenerator(options);
     }
