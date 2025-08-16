@@ -6,9 +6,59 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
+// Type definitions
+interface ImportPatterns {
+    namedImport: RegExp;
+    defaultImport: RegExp;
+    namespaceImport: RegExp;
+    sideEffectImport: RegExp;
+    dynamicImport: RegExp;
+    requireCall: RegExp;
+}
+
+interface ImportInfo {
+    type: 'named' | 'default' | 'namespace' | 'sideEffect' | 'dynamic';
+    importedName: string | null;
+    sourcePath: string;
+    fullMatch: string;
+    lineNumber: number;
+    startIndex: number;
+    endIndex: number;
+    containingFile?: string;
+}
+
+interface ImportSearchResults {
+    byClassName: Map<string, ImportInfo[]>;
+    byFileName: Map<string, ImportInfo[]>;
+    total: number;
+}
+
+interface UpdateResult {
+    file: string;
+    status: 'updated' | 'failed';
+    changes?: number;
+    error?: string;
+}
+
+interface ValidationIssue {
+    type: string;
+    line: number;
+    content: string;
+    message: string;
+}
+
+interface ImportPathInfo {
+    path: string;
+    line: number;
+    type: string;
+}
+
 export class ImportUpdater {
+    private cache: Map<string, any>;
+    private importPatterns: ImportPatterns;
+
     constructor() {
-        this.cache = new Map();
+        this.cache = new Map<string, any>();
         this.importPatterns = {
             // 各種インポートパターンの正規表現
             namedImport: /import\s*\{\s*([^}]+)\s*\}\s*from\s*['"`]([^'"`]+)['"`]/g,
@@ -23,10 +73,10 @@ export class ImportUpdater {
     /**
      * 指定されたクラス名・ファイル名のすべてのインポートを検出
      */
-    async findAllImports(className = null, fileName = null) {
-        const results = {
-            byClassName: new Map(),
-            byFileName: new Map(),
+    async findAllImports(className: string | null = null, fileName: string | null = null): Promise<ImportSearchResults> {
+        const results: ImportSearchResults = {
+            byClassName: new Map<string, ImportInfo[]>(),
+            byFileName: new Map<string, ImportInfo[]>(),
             total: 0
         };
 
@@ -74,8 +124,8 @@ export class ImportUpdater {
     /**
      * ファイル内容からインポート文を抽出
      */
-    extractImportsFromContent(content, filePath) {
-        const imports = [];
+    extractImportsFromContent(content: string, filePath: string): ImportInfo[] {
+        const imports: ImportInfo[] = [];
         const lines = content.split('\n');
 
         // 名前付きインポート
@@ -159,8 +209,8 @@ export class ImportUpdater {
     /**
      * インポートパスを更新
      */
-    async updateImportPaths(oldPath, newPath, targetFiles = null) {
-        const results = [];
+    async updateImportPaths(oldPath: string, newPath: string, targetFiles: string[] | null = null): Promise<UpdateResult[]> {
+        const results: UpdateResult[] = [];
         const filesToUpdate = targetFiles || await this.getAllJavaScriptFiles();
         
         for (const filePath of filesToUpdate) {
@@ -197,7 +247,7 @@ export class ImportUpdater {
     /**
      * ファイル内容のインポートパスを更新
      */
-    updateImportPathsInContent(content, oldPath, newPath, currentFilePath) {
+    updateImportPathsInContent(content: string, oldPath: string, newPath: string, currentFilePath: string): string {
         let updatedContent = content;
         const currentDir = path.dirname(currentFilePath);
         
@@ -230,8 +280,8 @@ export class ImportUpdater {
     /**
      * 名前付きインポートを更新
      */
-    async updateNamedImports(oldName, newName, targetFiles = null) {
-        const results = [];
+    async updateNamedImports(oldName: string, newName: string, targetFiles: string[] | null = null): Promise<UpdateResult[]> {
+        const results: UpdateResult[] = [];
         const filesToUpdate = targetFiles || await this.getAllJavaScriptFiles();
         
         for (const filePath of filesToUpdate) {
@@ -263,7 +313,7 @@ export class ImportUpdater {
     /**
      * ファイル内容の名前付きインポートを更新
      */
-    updateNamedImportsInContent(content, oldName, newName) {
+    updateNamedImportsInContent(content: string, oldName: string, newName: string): string {
         // 名前付きインポートのパターンをより厳密に
         const namedImportPattern = new RegExp(
             `import\\s*\\{([^}]*\\b${oldName}\\b[^}]*)\\}\\s*from\\s*(['"\`][^'"\`]+['"\`])`,
@@ -282,8 +332,8 @@ export class ImportUpdater {
     /**
      * インポート構文の検証
      */
-    validateImportSyntax(content) {
-        const issues = [];
+    validateImportSyntax(content: string): ValidationIssue[] {
+        const issues: ValidationIssue[] = [];
         const lines = content.split('\n');
         
         // 基本的な構文チェック
@@ -341,14 +391,14 @@ export class ImportUpdater {
     /**
      * すべてのJavaScriptファイルを取得
      */
-    async getAllJavaScriptFiles(rootDir = 'src') {
+    async getAllJavaScriptFiles(rootDir: string = 'src'): Promise<string[]> {
         if (this.cache.has('allJsFiles')) {
-            return this.cache.get('allJsFiles');
+            return this.cache.get('allJsFiles') as string[];
         }
         
-        const files = [];
+        const files: string[] = [];
         
-        async function scanDirectory(dir) {
+        async function scanDirectory(dir: string): Promise<void> {
             try {
                 const entries = await fs.readdir(dir, { withFileTypes: true });
                 
@@ -374,7 +424,7 @@ export class ImportUpdater {
     /**
      * インポートパスを解決
      */
-    resolveImportPath(importPath, currentDir) {
+    resolveImportPath(importPath: string, currentDir: string): string {
         if (importPath.startsWith('./') || importPath.startsWith('../')) {
             // 相対パス
             return path.resolve(currentDir, importPath);
@@ -390,7 +440,7 @@ export class ImportUpdater {
     /**
      * 相対パスを計算
      */
-    calculateRelativePath(fromDir, toPath) {
+    calculateRelativePath(fromDir: string, toPath: string): string {
         let relativePath = path.relative(fromDir, toPath);
         
         // 拡張子を除去（.jsファイルの場合）
@@ -409,7 +459,7 @@ export class ImportUpdater {
     /**
      * マッチからソースパスを抽出
      */
-    extractSourcePathFromMatch(patternName, groups) {
+    extractSourcePathFromMatch(patternName: string, groups: string[]): string | null {
         switch (patternName) {
             case 'namedImport':
             case 'defaultImport':
@@ -427,14 +477,14 @@ export class ImportUpdater {
     /**
      * クラス名マッチング
      */
-    matchesClassName(importInfo, className) {
+    matchesClassName(importInfo: ImportInfo, className: string): boolean {
         return importInfo.importedName === className;
     }
 
     /**
      * ファイル名マッチング
      */
-    matchesFileName(importInfo, fileName) {
+    matchesFileName(importInfo: ImportInfo, fileName: string): boolean {
         const sourcePath = importInfo.sourcePath;
         return sourcePath.includes(fileName) || 
                path.basename(sourcePath) === fileName ||
@@ -444,14 +494,14 @@ export class ImportUpdater {
     /**
      * 行番号を検索
      */
-    findLineNumber(content, index) {
+    findLineNumber(content: string, index: number): number {
         return content.substring(0, index).split('\n').length;
     }
 
     /**
      * 変更数をカウント
      */
-    countChanges(oldContent, newContent) {
+    countChanges(oldContent: string, newContent: string): number {
         const oldLines = oldContent.split('\n');
         const newLines = newContent.split('\n');
         let changes = 0;
@@ -469,8 +519,8 @@ export class ImportUpdater {
     /**
      * すべてのインポートパスを抽出
      */
-    extractAllImportPaths(content) {
-        const paths = [];
+    extractAllImportPaths(content: string): ImportPathInfo[] {
+        const paths: ImportPathInfo[] = [];
         
         for (const [patternName, pattern] of Object.entries(this.importPatterns)) {
             for (const match of content.matchAll(pattern)) {
@@ -491,7 +541,7 @@ export class ImportUpdater {
     /**
      * 循環依存の検出（簡易版）
      */
-    detectCircularDependencies(importPaths) {
+    detectCircularDependencies(importPaths: ImportPathInfo[]): ImportPathInfo[] {
         // 現在は基本的な検出のみ実装
         // 将来的にはより詳細な依存関係グラフ分析を追加
         const suspiciousPaths = importPaths.filter(imp => 
@@ -505,7 +555,7 @@ export class ImportUpdater {
     /**
      * キャッシュをクリア
      */
-    clearCache() {
+    clearCache(): void {
         this.cache.clear();
     }
 }

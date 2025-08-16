@@ -6,9 +6,116 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
+// Type definitions
+interface ValidationRules {
+    requireFromClause: boolean;
+    preventCircularDependencies: boolean;
+    enforceConsistentQuotes: boolean;
+    validateFileExtensions: boolean;
+    checkMissingFiles: boolean;
+    maxLineLength: number;
+}
+
+interface ValidationError {
+    type: string;
+    line: number;
+    message: string;
+    code: string;
+}
+
+interface ValidationWarning {
+    type: string;
+    line: number;
+    message: string;
+    code: string;
+}
+
+interface ValidationSuggestion {
+    type: string;
+    line: number;
+    message: string;
+    code: string;
+}
+
+interface ValidationResult {
+    filePath: string | null;
+    isValid: boolean;
+    errors: ValidationError[];
+    warnings: ValidationWarning[];
+    suggestions: ValidationSuggestion[];
+}
+
+interface LineValidationResult {
+    errors: ValidationError[];
+    warnings: ValidationWarning[];
+    suggestions: ValidationSuggestion[];
+}
+
+interface PathValidationResult {
+    errors: ValidationError[];
+    warnings: ValidationWarning[];
+    suggestions: ValidationSuggestion[];
+}
+
+interface GlobalValidationResult {
+    errors: ValidationError[];
+    warnings: ValidationWarning[];
+    suggestions: ValidationSuggestion[];
+}
+
+interface BraceIssue {
+    type: string;
+    message: string;
+    code: string;
+}
+
+interface QuoteIssue {
+    type: string;
+    message: string;
+    code: string;
+}
+
+interface ImportInfo {
+    line: number;
+    path: string;
+    isNodeModule: boolean;
+    isRelative: boolean;
+}
+
+interface ImportOrderAnalysis {
+    imports: ImportInfo[];
+    hasIssues: boolean;
+}
+
+interface DuplicateImport {
+    line: number;
+    path: string;
+    previousLine: number;
+}
+
+interface UnusedImport {
+    line: number;
+    name: string;
+}
+
+interface ValidationSummary {
+    totalFiles: number;
+    validFiles: number;
+    filesWithErrors: number;
+    filesWithWarnings: number;
+    totalErrors: number;
+    totalWarnings: number;
+    totalSuggestions: number;
+    errorTypes: Record<string, number>;
+    warningTypes: Record<string, number>;
+}
+
 export class ImportValidator {
+    private cache: Map<string, any>;
+    private validationRules: ValidationRules;
+
     constructor() {
-        this.cache = new Map();
+        this.cache = new Map<string, any>();
         this.validationRules = {
             requireFromClause: true,
             preventCircularDependencies: true,
@@ -22,7 +129,7 @@ export class ImportValidator {
     /**
      * ファイルのインポート構文を包括的に検証
      */
-    async validateFile(filePath) {
+    async validateFile(filePath: string): Promise<ValidationResult> {
         try {
             const content = await fs.readFile(filePath, 'utf8');
             return this.validateContent(content, filePath);
@@ -32,8 +139,9 @@ export class ImportValidator {
                 isValid: false,
                 errors: [{
                     type: 'file_read_error',
-                    message: `Could not read file: ${error.message}`,
-                    line: 0
+                    message: `Could not read file: ${(error as Error).message}`,
+                    line: 0,
+                    code: 'FILE_READ_ERROR'
                 }],
                 warnings: [],
                 suggestions: []
@@ -44,8 +152,8 @@ export class ImportValidator {
     /**
      * ファイル内容のインポート構文を検証
      */
-    validateContent(content, filePath = null) {
-        const result = {
+    validateContent(content: string, filePath: string | null = null): ValidationResult {
+        const result: ValidationResult = {
             filePath,
             isValid: true,
             errors: [],
@@ -82,8 +190,8 @@ export class ImportValidator {
     /**
      * 単一のインポート行を検証
      */
-    validateImportLine(line, lineNumber, filePath) {
-        const result = {
+    validateImportLine(line: string, lineNumber: number, filePath: string | null): LineValidationResult {
+        const result: LineValidationResult = {
             errors: [],
             warnings: [],
             suggestions: []
@@ -147,8 +255,8 @@ export class ImportValidator {
     /**
      * インポートパスの妥当性を検証
      */
-    validateImportPath(line, lineNumber, currentFilePath) {
-        const result = {
+    validateImportPath(line: string, lineNumber: number, currentFilePath: string | null): PathValidationResult {
+        const result: PathValidationResult = {
             errors: [],
             warnings: [],
             suggestions: []
@@ -213,8 +321,8 @@ export class ImportValidator {
     /**
      * グローバルなインポート構造を検証
      */
-    validateGlobalImportStructure(content, filePath) {
-        const result = {
+    validateGlobalImportStructure(content: string, filePath: string | null): GlobalValidationResult {
+        const result: GlobalValidationResult = {
             errors: [],
             warnings: [],
             suggestions: []
@@ -259,7 +367,7 @@ export class ImportValidator {
     /**
      * インポート行かどうかを判定
      */
-    isImportLine(line) {
+    isImportLine(line: string): boolean {
         const trimmedLine = line.trim();
         return trimmedLine.startsWith('import ') || 
                trimmedLine.includes(' import(') ||
@@ -269,15 +377,15 @@ export class ImportValidator {
     /**
      * サイドエフェクトインポートかどうかを判定
      */
-    isSideEffectImport(line) {
+    isSideEffectImport(line: string): boolean {
         return /^import\s*['"`][^'"`]+['"`]\s*;?\s*$/.test(line.trim());
     }
 
     /**
      * 括弧の整合性をチェック
      */
-    checkBraces(line) {
-        const issues = [];
+    checkBraces(line: string): BraceIssue[] {
+        const issues: BraceIssue[] = [];
         
         let braceCount = 0;
         for (let i = 0; i < line.length; i++) {
@@ -305,8 +413,8 @@ export class ImportValidator {
     /**
      * 引用符の一貫性をチェック
      */
-    checkQuoteConsistency(line) {
-        const issues = [];
+    checkQuoteConsistency(line: string): QuoteIssue[] {
+        const issues: QuoteIssue[] = [];
         
         const singleQuotes = (line.match(/'/g) || []).length;
         const doubleQuotes = (line.match(/"/g) || []).length;
@@ -326,8 +434,8 @@ export class ImportValidator {
     /**
      * インポートの順序を分析
      */
-    analyzeImportOrder(content) {
-        const imports = [];
+    analyzeImportOrder(content: string): ImportOrderAnalysis {
+        const imports: ImportInfo[] = [];
         const lines = content.split('\n');
         
         for (let i = 0; i < lines.length; i++) {
@@ -368,9 +476,9 @@ export class ImportValidator {
     /**
      * 重複インポートを検出
      */
-    findDuplicateImports(content) {
-        const imports = new Map();
-        const duplicates = [];
+    findDuplicateImports(content: string): DuplicateImport[] {
+        const imports = new Map<string, number>();
+        const duplicates: DuplicateImport[] = [];
         const lines = content.split('\n');
         
         for (let i = 0; i < lines.length; i++) {
@@ -399,8 +507,8 @@ export class ImportValidator {
     /**
      * 未使用インポートを検出（簡易版）
      */
-    findUnusedImports(content) {
-        const unused = [];
+    findUnusedImports(content: string): UnusedImport[] {
+        const unused: UnusedImport[] = [];
         const lines = content.split('\n');
         
         for (let i = 0; i < lines.length; i++) {
@@ -441,7 +549,7 @@ export class ImportValidator {
     /**
      * 名前がコンテンツ内で使用されているかチェック
      */
-    isNameUsedInContent(name, content, importLineIndex) {
+    isNameUsedInContent(name: string, content: string, importLineIndex: number): boolean {
         const lines = content.split('\n');
         
         // インポート行以外の行で名前が使用されているかチェック
@@ -464,7 +572,7 @@ export class ImportValidator {
     /**
      * 相対パスを解決
      */
-    resolveRelativePath(relativePath, currentFilePath) {
+    resolveRelativePath(relativePath: string, currentFilePath: string): string {
         const currentDir = path.dirname(currentFilePath);
         let resolved = path.resolve(currentDir, relativePath);
         
@@ -479,14 +587,14 @@ export class ImportValidator {
     /**
      * パスの正規化
      */
-    normalizePath(importPath) {
+    normalizePath(importPath: string): string {
         return path.normalize(importPath).replace(/\\/g, '/');
     }
 
     /**
      * ファイルの存在確認
      */
-    async checkFileExists(filePath) {
+    async checkFileExists(filePath: string): Promise<boolean> {
         try {
             await fs.access(filePath);
             return true;
@@ -498,14 +606,14 @@ export class ImportValidator {
     /**
      * 検証ルールを設定
      */
-    setValidationRules(rules) {
+    setValidationRules(rules: Partial<ValidationRules>): void {
         this.validationRules = { ...this.validationRules, ...rules };
     }
 
     /**
      * 検証結果のサマリーを生成
      */
-    generateValidationSummary(results) {
+    generateValidationSummary(results: ValidationResult[]): ValidationSummary {
         const summary = {
             totalFiles: results.length,
             validFiles: 0,
