@@ -479,7 +479,7 @@ export class HelpContentManager {
     /**
      * フィードバック関連
      */
-    recordTopicFeedback(topicId: string, feedback: any) {
+    recordTopicFeedback(__topicId: string, feedback: any) {
         if (this.helpFeedbackSystem && this.currentContent) {
             const category = this.categories.find(c => c.id === this.selectedCategory);
             if (category && category.topics[this.selectedTopicIndex]) {
@@ -508,15 +508,19 @@ export class HelpContentManager {
     setContentCache(key: string, content: any) {
         if (this.contentCache.size >= this.maxCacheSize) {
             const firstKey = this.contentCache.keys().next().value;
-            this.contentCache.delete(firstKey);
+            if (firstKey !== undefined) {
+                this.contentCache.delete(firstKey);
+            }
         }
         this.contentCache.set(key, content);
     }
 
-    setSearchCache(query, results) {
+    setSearchCache(query: string, results: any): void {
         if (this.searchCache.size >= this.maxCacheSize) {
             const firstKey = this.searchCache.keys().next().value;
-            this.searchCache.delete(firstKey);
+            if (firstKey !== undefined) {
+                this.searchCache.delete(firstKey);
+            }
         }
         this.searchCache.set(query, results);
     }
@@ -661,14 +665,19 @@ export class HelpContentManager {
  * ヘルプ検索管理器 - 検索機能の特化管理
  */
 export class HelpSearchManager {
-    constructor(contentManager) {
+    public contentManager: any;
+    public searchHistory: string[];
+    public maxHistorySize: number;
+    public searchSuggestions: Array<{text: string, category: string, topicId: string}>;
+
+    constructor(contentManager: any) {
         this.contentManager = contentManager;
         this.searchHistory = [];
         this.maxHistorySize = 20;
         this.searchSuggestions = [];
     }
 
-    async performSearch(query) {
+    async performSearch(query: string): Promise<void> {
         // 検索履歴に追加
         this.addToSearchHistory(query);
         
@@ -679,12 +688,12 @@ export class HelpSearchManager {
         this.updateSearchSuggestions(query);
     }
 
-    addToSearchHistory(query) {
+    addToSearchHistory(query: string): void {
         const trimmedQuery = query.trim();
         if (trimmedQuery.length === 0) return;
         
         // 重複を削除
-        this.searchHistory = this.searchHistory.filter(h => h !== trimmedQuery);
+        this.searchHistory = this.searchHistory.filter((h: string) => h !== trimmedQuery);
         
         // 先頭に追加
         this.searchHistory.unshift(trimmedQuery);
@@ -695,13 +704,13 @@ export class HelpSearchManager {
         }
     }
 
-    updateSearchSuggestions(query) {
+    updateSearchSuggestions(query: string): void {
         // 簡単な検索提案の実装
         const categories = this.contentManager.categories;
-        this.searchSuggestions = categories.flatMap(cat => 
-            cat.topics.filter(topic => 
+        this.searchSuggestions = categories.flatMap((cat: any) => 
+            cat.topics.filter((topic: any) => 
                 topic.title.toLowerCase().includes(query.toLowerCase())
-            ).map(topic => ({
+            ).map((topic: any) => ({
                 text: topic.title,
                 category: cat.id,
                 topicId: topic.id
@@ -709,15 +718,15 @@ export class HelpSearchManager {
         ).slice(0, 5); // 最大5個の提案
     }
 
-    getSearchHistory() {
+    getSearchHistory(): string[] {
         return [...this.searchHistory];
     }
 
-    getSearchSuggestions() {
+    getSearchSuggestions(): Array<{text: string, category: string, topicId: string}> {
         return [...this.searchSuggestions];
     }
 
-    clearSearchHistory() {
+    clearSearchHistory(): void {
         this.searchHistory.length = 0;
     }
 }

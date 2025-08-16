@@ -16,14 +16,14 @@ export interface SettingItem {
     key: string;
     label: string;
     type: 'toggle' | 'select' | 'slider' | 'text' | 'custom';
-    description?: string;
-    options?: SettingOption[];
-    component?: string;
-    min?: number;
-    max?: number;
-    step?: number;
+    description?: string | undefined;
+    options?: SettingOption[] | undefined;
+    component?: string | undefined;
+    min?: number | undefined;
+    max?: number | undefined;
+    step?: number | undefined;
     default?: any;
-    validator?: string;
+    validator?: string | undefined;
 }
 
 export interface SettingsLayout {
@@ -471,7 +471,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * カテゴリ一覧描画
      */
-    renderCategories(context, __height) {
+    renderCategories(context: CanvasRenderingContext2D, __height: number): void {
         const startY = 80;
         const categoryHeight = 50;
         
@@ -499,7 +499,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * 設定項目描画
      */
-    renderSettings(context, width, __height) {
+    renderSettings(context: CanvasRenderingContext2D, width: number, __height: number): void {
         const startX = this.layout.categoryWidth + 30;
         const startY = 80;
         const settingsWidth = width - startX - 20;
@@ -532,7 +532,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * 個別設定項目描画
      */
-    renderSettingItem(context, item, x, y, width, isSelected) {
+    renderSettingItem(context: CanvasRenderingContext2D, item: SettingItem, x: number, y: number, width: number, isSelected: boolean): void {
         const itemHeight = this.layout.itemHeight - 10;
         
         // 背景
@@ -579,7 +579,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * 設定値の描画
      */
-    renderSettingValue(context, item, value, x, y, width, isSelected) {
+    renderSettingValue(context: CanvasRenderingContext2D, item: SettingItem, value: any, x: number, y: number, width: number, isSelected: boolean): void {
         const __height = 30;
         const centerY = y + 20;
         
@@ -609,7 +609,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * トグルスイッチ描画
      */
-    renderToggle(context, value, x, y, isSelected) {
+    renderToggle(context: CanvasRenderingContext2D, value: boolean, x: number, y: number, isSelected: boolean): void {
         const width = 50;
         const height = 24;
         const toggleX = x - width / 2;
@@ -635,7 +635,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * セレクトボックス描画
      */
-    renderSelect(context, item, value, x, y, width, isSelected) {
+    renderSelect(context: CanvasRenderingContext2D, item: SettingItem, value: string, x: number, y: number, width: number, isSelected: boolean): void {
         const height = 30;
         const selectY = y - height / 2;
         
@@ -649,7 +649,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
         context.strokeRect(x, selectY, width, height);
         
         // 現在の値のラベル
-        const selectedOption = item.options.find(opt => opt.value === value);
+        const selectedOption = item.options?.find((opt: SettingOption) => opt.value === value);
         const displayText = selectedOption ? selectedOption.label : value;
         
         context.fillStyle = '#2c3e50';
@@ -665,7 +665,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * スライダー描画
      */
-    renderSlider(context, item, value, x, y, width, isSelected) {
+    renderSlider(context: CanvasRenderingContext2D, item: SettingItem, value: number, x: number, y: number, width: number, isSelected: boolean): void {
         const sliderWidth = width - 60;
         const sliderHeight = 6;
         const sliderY = y - sliderHeight / 2;
@@ -695,7 +695,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * カスタムコントロール描画
      */
-    renderCustomControl(context, item, value, x, y, width, isSelected) {
+    renderCustomControl(context: CanvasRenderingContext2D, item: SettingItem, value: any, x: number, y: number, width: number, isSelected: boolean): void {
         switch (item.component) {
             case 'VolumeControlComponent':
                 this.renderVolumeControl(context, value, x, y, width, isSelected);
