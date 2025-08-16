@@ -1,7 +1,87 @@
 /**
  * ブラウザ互換性とデバイス対応ユーティリティ
  */
+
+// 型定義
+interface BrowserInfo {
+    name: string;
+    version: string;
+    engine: string;
+}
+
+interface ScreenInfo {
+    width: number;
+    height: number;
+    availWidth: number;
+    availHeight: number;
+    pixelRatio: number;
+}
+
+interface DeviceInfo {
+    isMobile: boolean;
+    isTablet: boolean;
+    isDesktop: boolean;
+    isTouchDevice: boolean;
+    screenInfo: ScreenInfo;
+    orientation: string;
+}
+
+interface Features {
+    canvas: boolean;
+    webAudio: boolean;
+    localStorage: boolean;
+    requestAnimationFrame: boolean;
+    touchEvents: boolean;
+    pointerEvents: boolean;
+    webGL: boolean;
+    offscreenCanvas: boolean;
+    intersectionObserver: boolean;
+    performanceObserver: boolean;
+}
+
+interface CanvasSize {
+    displayWidth: number;
+    displayHeight: number;
+    actualWidth: number;
+    actualHeight: number;
+    pixelRatio: number;
+}
+
+interface CompatibilityReport {
+    browser: BrowserInfo;
+    device: DeviceInfo;
+    features: Features;
+    recommendations: string[];
+    warnings: string[];
+}
+
+// グローバルオブジェクトの型拡張
+declare global {
+    interface Window {
+        webkitAudioContext?: typeof AudioContext;
+        webkitRequestAnimationFrame?: (callback: FrameRequestCallback) => number;
+        mozRequestAnimationFrame?: (callback: FrameRequestCallback) => number;
+        msRequestAnimationFrame?: (callback: FrameRequestCallback) => number;
+        webkitCancelAnimationFrame?: (handle: number) => void;
+        mozCancelAnimationFrame?: (handle: number) => void;
+        msCancelAnimationFrame?: (handle: number) => void;
+        orientation?: number;
+        msMaxTouchPoints?: number;
+    }
+
+    interface Screen {
+        orientation?: {
+            type: string;
+        };
+    }
+}
+
 export class BrowserCompatibility {
+    private userAgent: string;
+    private browserInfo: BrowserInfo;
+    private deviceInfo: DeviceInfo;
+    private features: Features;
+
     constructor() {
         this.userAgent = navigator.userAgent;
         this.browserInfo = this.detectBrowser();
@@ -14,7 +94,7 @@ export class BrowserCompatibility {
     /**
      * ブラウザを検出
      */
-    detectBrowser() {
+    private detectBrowser(): BrowserInfo {
         const ua = this.userAgent;
         
         // Edge (Chromium-based)
@@ -74,7 +154,7 @@ export class BrowserCompatibility {
     /**
      * デバイスタイプを検出
      */
-    detectDevice() {
+    private detectDevice(): DeviceInfo {
         const ua = this.userAgent;
         
         // モバイルデバイス検出
@@ -87,10 +167,10 @@ export class BrowserCompatibility {
         // タッチデバイス検出
         const isTouchDevice = 'ontouchstart' in window || 
                              navigator.maxTouchPoints > 0 || 
-                             navigator.msMaxTouchPoints > 0;
+                             (window.msMaxTouchPoints || 0) > 0;
         
         // 画面サイズ情報
-        const screenInfo = {
+        const screenInfo: ScreenInfo = {
             width: window.screen.width,
             height: window.screen.height,
             availWidth: window.screen.availWidth,
@@ -111,7 +191,7 @@ export class BrowserCompatibility {
     /**
      * 画面の向きを取得
      */
-    getOrientation() {
+    private getOrientation(): string {
         if (screen.orientation) {
             return screen.orientation.type;
         } else if (window.orientation !== undefined) {
@@ -124,7 +204,7 @@ export class BrowserCompatibility {
     /**
      * ブラウザ機能を検出
      */
-    detectFeatures() {
+    private detectFeatures(): Features {
         return {
             canvas: this.supportsCanvas(),
             webAudio: this.supportsWebAudio(),
@@ -142,7 +222,7 @@ export class BrowserCompatibility {
     /**
      * Canvas サポート確認
      */
-    supportsCanvas() {
+    private supportsCanvas(): boolean {
         try {
             const canvas = document.createElement('canvas');
             return !!(canvas.getContext && canvas.getContext('2d'));
@@ -154,14 +234,14 @@ export class BrowserCompatibility {
     /**
      * Web Audio API サポート確認
      */
-    supportsWebAudio() {
+    private supportsWebAudio(): boolean {
         return !!(window.AudioContext || window.webkitAudioContext);
     }
     
     /**
      * LocalStorage サポート確認
      */
-    supportsLocalStorage() {
+    private supportsLocalStorage(): boolean {
         try {
             const test = 'test';
             localStorage.setItem(test, test);
@@ -175,7 +255,7 @@ export class BrowserCompatibility {
     /**
      * requestAnimationFrame サポート確認
      */
-    supportsRequestAnimationFrame() {
+    private supportsRequestAnimationFrame(): boolean {
         return !!(window.requestAnimationFrame || 
                  window.webkitRequestAnimationFrame || 
                  window.mozRequestAnimationFrame || 
@@ -185,21 +265,21 @@ export class BrowserCompatibility {
     /**
      * タッチイベント サポート確認
      */
-    supportsTouchEvents() {
+    private supportsTouchEvents(): boolean {
         return 'ontouchstart' in window;
     }
     
     /**
      * ポインターイベント サポート確認
      */
-    supportsPointerEvents() {
+    private supportsPointerEvents(): boolean {
         return 'onpointerdown' in window;
     }
     
     /**
      * WebGL サポート確認
      */
-    supportsWebGL() {
+    private supportsWebGL(): boolean {
         try {
             const canvas = document.createElement('canvas');
             return !!(canvas.getContext('webgl') || canvas.getContext('experimental-webgl'));
@@ -211,28 +291,28 @@ export class BrowserCompatibility {
     /**
      * OffscreenCanvas サポート確認
      */
-    supportsOffscreenCanvas() {
+    private supportsOffscreenCanvas(): boolean {
         return typeof OffscreenCanvas !== 'undefined';
     }
     
     /**
      * IntersectionObserver サポート確認
      */
-    supportsIntersectionObserver() {
+    private supportsIntersectionObserver(): boolean {
         return 'IntersectionObserver' in window;
     }
     
     /**
      * PerformanceObserver サポート確認
      */
-    supportsPerformanceObserver() {
+    private supportsPerformanceObserver(): boolean {
         return 'PerformanceObserver' in window;
     }
     
     /**
      * バージョン番号を抽出
      */
-    extractVersion(ua, prefix) {
+    private extractVersion(ua: string, prefix: string): string {
         const index = ua.indexOf(prefix);
         if (index === -1) return '0';
         
@@ -244,7 +324,7 @@ export class BrowserCompatibility {
     /**
      * 互換性修正を初期化
      */
-    initializeCompatibilityFixes() {
+    private initializeCompatibilityFixes(): void {
         this.setupRequestAnimationFramePolyfill();
         this.setupConsolePolyfill();
         this.setupPerformancePolyfill();
@@ -254,13 +334,13 @@ export class BrowserCompatibility {
     /**
      * requestAnimationFrame ポリフィル
      */
-    setupRequestAnimationFramePolyfill() {
+    private setupRequestAnimationFramePolyfill(): void {
         if (!window.requestAnimationFrame) {
             window.requestAnimationFrame = 
                 window.webkitRequestAnimationFrame ||
                 window.mozRequestAnimationFrame ||
                 window.msRequestAnimationFrame ||
-                function(callback) {
+                function(callback: FrameRequestCallback): number {
                     return window.setTimeout(callback, 1000 / 60);
                 };
         }
@@ -270,7 +350,7 @@ export class BrowserCompatibility {
                 window.webkitCancelAnimationFrame ||
                 window.mozCancelAnimationFrame ||
                 window.msCancelAnimationFrame ||
-                function(id) {
+                function(id: number): void {
                     window.clearTimeout(id);
                 };
         }
@@ -279,9 +359,9 @@ export class BrowserCompatibility {
     /**
      * Console ポリフィル
      */
-    setupConsolePolyfill() {
+    private setupConsolePolyfill(): void {
         if (!window.console) {
-            window.console = {
+            (window as any).console = {
                 log: function() {},
                 error: function() {},
                 warn: function() {},
@@ -293,13 +373,13 @@ export class BrowserCompatibility {
     /**
      * Performance ポリフィル
      */
-    setupPerformancePolyfill() {
+    private setupPerformancePolyfill(): void {
         if (!window.performance) {
-            window.performance = {};
+            (window as any).performance = {};
         }
         
         if (!window.performance.now) {
-            window.performance.now = function() {
+            window.performance.now = function(): number {
                 return Date.now();
             };
         }
@@ -308,7 +388,7 @@ export class BrowserCompatibility {
     /**
      * タッチイベント修正
      */
-    setupTouchEventFixes() {
+    private setupTouchEventFixes(): void {
         // iOS Safari でのタッチイベント修正
         if (this.browserInfo.name === 'safari' && this.deviceInfo.isMobile) {
             // パッシブリスナーの設定
@@ -324,17 +404,17 @@ export class BrowserCompatibility {
     /**
      * パッシブイベントリスナーの設定
      */
-    setupPassiveEventListeners() {
+    private setupPassiveEventListeners(): void {
         // タッチイベントのデフォルト動作を防ぐ
-        document.addEventListener('touchstart', function(e) {
+        document.addEventListener('touchstart', function(e: TouchEvent) {
             // ゲームエリア内でのみデフォルト動作を防ぐ
-            if (e.target.tagName === 'CANVAS') {
+            if ((e.target as HTMLElement).tagName === 'CANVAS') {
                 e.preventDefault();
             }
         }, { passive: false });
         
-        document.addEventListener('touchmove', function(e) {
-            if (e.target.tagName === 'CANVAS') {
+        document.addEventListener('touchmove', function(e: TouchEvent) {
+            if ((e.target as HTMLElement).tagName === 'CANVAS') {
                 e.preventDefault();
             }
         }, { passive: false });
@@ -343,14 +423,14 @@ export class BrowserCompatibility {
     /**
      * タッチ遅延修正
      */
-    setupTouchDelayFix() {
+    private setupTouchDelayFix(): void {
         // 300ms タッチ遅延を回避
         const meta = document.createElement('meta');
         meta.name = 'viewport';
         meta.content = 'width=device-width, initial-scale=1.0, user-scalable=no';
         
         const existingMeta = document.querySelector('meta[name="viewport"]');
-        if (existingMeta) {
+        if (existingMeta && existingMeta.parentNode) {
             existingMeta.parentNode.replaceChild(meta, existingMeta);
         } else {
             document.head.appendChild(meta);
@@ -360,7 +440,7 @@ export class BrowserCompatibility {
     /**
      * 最適なCanvas サイズを計算
      */
-    calculateOptimalCanvasSize() {
+    calculateOptimalCanvasSize(): CanvasSize {
         const viewport = {
             width: window.innerWidth,
             height: window.innerHeight
@@ -369,7 +449,7 @@ export class BrowserCompatibility {
         const devicePixelRatio = this.deviceInfo.screenInfo.pixelRatio;
         
         // デバイスタイプに応じたサイズ調整
-        let canvasSize;
+        let canvasSize: { width: number; height: number };
         
         if (this.deviceInfo.isMobile) {
             // モバイル: 画面の90%を使用
@@ -411,7 +491,7 @@ export class BrowserCompatibility {
     /**
      * フォールバック UI を表示
      */
-    showFallbackUI() {
+    showFallbackUI(): void {
         const fallbackDiv = document.createElement('div');
         fallbackDiv.id = 'fallback-ui';
         fallbackDiv.innerHTML = `
@@ -450,7 +530,7 @@ export class BrowserCompatibility {
     /**
      * 互換性レポートを生成
      */
-    generateCompatibilityReport() {
+    generateCompatibilityReport(): CompatibilityReport {
         return {
             browser: this.browserInfo,
             device: this.deviceInfo,
@@ -463,8 +543,8 @@ export class BrowserCompatibility {
     /**
      * 推奨事項を取得
      */
-    getRecommendations() {
-        const recommendations = [];
+    private getRecommendations(): string[] {
+        const recommendations: string[] = [];
         
         if (!this.features.canvas) {
             recommendations.push('Canvas API が利用できません。ブラウザを更新してください。');
@@ -492,8 +572,8 @@ export class BrowserCompatibility {
     /**
      * 警告を取得
      */
-    getWarnings() {
-        const warnings = [];
+    private getWarnings(): string[] {
+        const warnings: string[] = [];
         
         if (this.deviceInfo.screenInfo.pixelRatio > 2) {
             warnings.push('高解像度ディスプレイが検出されました。パフォーマンスに影響する可能性があります。');
@@ -513,7 +593,7 @@ export class BrowserCompatibility {
     /**
      * デバッグ情報を出力
      */
-    logDebugInfo() {
+    logDebugInfo(): void {
         const report = this.generateCompatibilityReport();
         console.group('Browser Compatibility Report');
         console.log('Browser:', report.browser);
@@ -523,12 +603,25 @@ export class BrowserCompatibility {
         console.log('Warnings:', report.warnings);
         console.groupEnd();
     }
+
+    // Getters for external access
+    getBrowserInfo(): BrowserInfo {
+        return this.browserInfo;
+    }
+
+    getDeviceInfo(): DeviceInfo {
+        return this.deviceInfo;
+    }
+
+    getFeatures(): Features {
+        return this.features;
+    }
 }
 
 // シングルトンインスタンス（遅延初期化）
-let _browserCompatibility = null;
+let _browserCompatibility: BrowserCompatibility | null = null;
 
-export function getBrowserCompatibility() {
+export function getBrowserCompatibility(): BrowserCompatibility {
     if (!_browserCompatibility) {
         _browserCompatibility = new BrowserCompatibility();
     }
