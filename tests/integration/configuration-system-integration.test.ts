@@ -6,7 +6,7 @@
  * パフォーマンス統合テストを実施します。
  */
 
-import { jest } from '@jest/globals';
+// import { jest } from '@jest/globals';
 import { ConfigurationManager } from '../../src/core/ConfigurationManager.js';
 import { CalculationEngine } from '../../src/core/CalculationEngine.js';
 import { GameConfig } from '../../src/config/GameConfig.js';
@@ -47,16 +47,16 @@ interface PerformanceStats {
 describe('Configuration System Integration Tests', () => {
     let configManager: ConfigurationManager;
     let calculationEngine: CalculationEngine;
-    let gameConfig: GameConfig;
-    let audioConfig: AudioConfig;
-    let effectsConfig: EffectsConfig;
-    let performanceConfig: PerformanceConfig;
+    let __gameConfig: GameConfig;
+    let __audioConfig: AudioConfig;
+    let __effectsConfig: EffectsConfig;
+    let __performanceConfig: PerformanceConfig;
     let scoreCalculator: ScoreCalculator;
     let balanceCalculator: BalanceCalculator;
     let effectsCalculator: EffectsCalculator;
-    let validationSystem: ValidationSystem;
+    let __validationSystem: ValidationSystem;
     let loggingSystem: LoggingSystem;
-    let mockCanvas: HTMLCanvasElement;
+    let __mockCanvas: HTMLCanvasElement;
 
     beforeEach(() => {
         // 設定管理システムの初期化
@@ -64,10 +64,10 @@ describe('Configuration System Integration Tests', () => {
         calculationEngine = new CalculationEngine();
         
         // 設定カテゴリクラスの初期化
-        gameConfig = new GameConfig(configManager);
-        audioConfig = new AudioConfig(configManager);
-        effectsConfig = new EffectsConfig(configManager);
-        performanceConfig = new PerformanceConfig(configManager);
+        __gameConfig = new GameConfig(configManager);
+        __audioConfig = new AudioConfig(configManager);
+        __effectsConfig = new EffectsConfig(configManager);
+        __performanceConfig = new PerformanceConfig(configManager);
         
         // 計算処理クラスの初期化
         scoreCalculator = new ScoreCalculator(calculationEngine);
@@ -75,7 +75,7 @@ describe('Configuration System Integration Tests', () => {
         effectsCalculator = new EffectsCalculator(calculationEngine);
         
         // サポートシステムの初期化
-        validationSystem = new ValidationSystem();
+        __validationSystem = new ValidationSystem();
         loggingSystem = new LoggingSystem();
         
         // 計算エンジンに計算クラスを登録

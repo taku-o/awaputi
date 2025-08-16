@@ -181,7 +181,7 @@ test.describe('Visual Effects E2E Tests', () => {
     });
 
     test.describe('Mobile Performance', () => {
-        test('should optimize effects for mobile viewport', async ({ page, browserName }: { page: Page; browserName: string }) => {
+        test('should optimize effects for mobile viewport', async ({ page, browserName: __browserName }: { page: Page; browserName: string }) => {
             // モバイルビューポートに設定
             await page.setViewportSize({ width: 375, height: 812 });
             
@@ -195,7 +195,7 @@ test.describe('Visual Effects E2E Tests', () => {
             await page.waitForTimeout(1000);
             
             // モバイル最適化が適用されていることを確認
-            const isMobileOptimized: boolean = await page.evaluate(() => {
+            const __isMobileOptimized: boolean = await page.evaluate(() => {
                 return (window as WindowWithGameEngine).gameEngine?.mobileEffectOptimizer?.isEnabled() || false;
             });
             
@@ -317,7 +317,7 @@ test.describe('Visual Effects E2E Tests', () => {
             await page.evaluate(() => {
                 const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
                 if (canvas) {
-                    const context = canvas.getContext('2d');
+                    const __context = canvas.getContext('2d');
                     
                     // Context loss イベントを発火
                     const event = new Event('contextlost');

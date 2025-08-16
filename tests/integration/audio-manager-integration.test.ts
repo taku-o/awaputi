@@ -6,7 +6,7 @@
  * 音量設定の動的変更機能と設定システムとの連携を検証します。
  */
 
-import { jest } from '@jest/globals';
+// import { jest } from '@jest/globals';
 import { AudioManager } from '../../src/audio/AudioManager.js';
 import { getAudioConfig } from '../../src/config/AudioConfig.js';
 import { getConfigurationManager } from '../../src/core/ConfigurationManager.js';
