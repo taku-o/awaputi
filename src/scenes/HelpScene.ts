@@ -499,7 +499,7 @@ export class HelpScene extends Scene implements HelpSceneState {
         const feedbackSystem = this.helpContentManager.getHelpFeedbackSystem();
         const state = this.helpContentManager.getState();
         if (feedbackSystem && state.currentContent) {
-            const currentTopic = this.helpContentManager.getCurrentTopic() as HelpTopic | null;
+            const currentTopic = this.helpContentManager.getCurrentTopic();
             if (currentTopic) {
                 feedbackSystem.endContentView(currentTopic.id);
             }

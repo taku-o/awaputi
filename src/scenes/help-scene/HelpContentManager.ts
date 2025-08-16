@@ -3,6 +3,8 @@
  * ヘルプコンテンツ管理 - コンテンツ読み込み、検索、状態管理
  */
 
+import { HelpTopic } from '../HelpScene.js';
+
 /**
  * Help Content Manager
  * ヘルプコンテンツ管理器 - コンテンツの読み込み、検索、カテゴリ管理
@@ -560,7 +562,11 @@ export class HelpContentManager {
         return this.categories.find(c => c.id === this.selectedCategory);
     }
 
-    getCurrentTopic() {
+    /**
+     * 現在のトピックを取得
+     * @returns {HelpTopic|null} 現在のトピック
+     */
+    getCurrentTopic(): HelpTopic | null {
         const category = this.getCurrentCategory();
         return category?.topics[this.selectedTopicIndex] || null;
     }
