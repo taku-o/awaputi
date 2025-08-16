@@ -10,7 +10,33 @@ import { HelpTopic } from '../HelpScene.js';
  * ヘルプコンテンツ管理器 - コンテンツの読み込み、検索、カテゴリ管理
  */
 export class HelpContentManager {
-    constructor(gameEngine) {
+    private gameEngine: any;
+    private helpManager: any;
+    private searchEngine: any;
+    
+    // コンテンツ状態
+    private selectedCategory: string;
+    private selectedTopicIndex: number;
+    private currentContent: any;
+    private searchQuery: string;
+    private currentSearchQuery: string;
+    private searchResults: any[];
+    private isSearching: boolean;
+    
+    // ヘルプカテゴリ
+    private categories: any[];
+    
+    // コンテンツキャッシュ
+    private contentCache: Map<string, any>;
+    private searchCache: Map<string, any>;
+    private maxCacheSize: number;
+    
+    // アナリティクス
+    private helpAnalytics: any;
+    private helpFeedbackSystem: any;
+    private helpEffectivenessAnalyzer: any;
+
+    constructor(gameEngine: any) {
         this.gameEngine = gameEngine;
         this.helpManager = null;
         this.searchEngine = null;
@@ -214,7 +240,7 @@ export class HelpContentManager {
     /**
      * カテゴリコンテンツの読み込み
      */
-    async loadCategoryContent(categoryId) {
+    async loadCategoryContent(categoryId: string) {
         try {
             const category = this.categories.find(c => c.id === categoryId);
             if (!category || !category.topics.length) {
@@ -249,7 +275,7 @@ export class HelpContentManager {
     /**
      * 検索実行
      */
-    async performSearch(query) {
+    async performSearch(query: string) {
         try {
             if (!this.searchEngine) {
                 console.warn('Search engine not available');
@@ -304,7 +330,7 @@ export class HelpContentManager {
     /**
      * カテゴリ選択
      */
-    async selectCategory(categoryId) {
+    async selectCategory(categoryId: string) {
         if (this.selectedCategory === categoryId) {
             return; // 既に選択済み
         }
@@ -340,7 +366,7 @@ export class HelpContentManager {
      * @param {number} index - トピックインデックス
      * @param {boolean} fromSearchResult - 検索結果からの選択かどうか
      */
-    async selectTopic(index, fromSearchResult = false) {
+    async selectTopic(index: number, fromSearchResult: boolean = false) {
         // 検索状態をクリア（メニューからの直接選択時のみ）
         if (!fromSearchResult) {
             this.isSearching = false;
@@ -399,7 +425,7 @@ export class HelpContentManager {
     /**
      * 検索結果から選択
      */
-    async selectSearchResult(index) {
+    async selectSearchResult(index: number) {
         if (!this.isSearching || index < 0 || index >= this.searchResults.length) {
             return null;
         }
@@ -442,7 +468,7 @@ export class HelpContentManager {
             await this.selectCategory(categoryId);
             const topicIndex = this.categories
                 .find(c => c.id === categoryId)?.topics
-                .findIndex(t => t.id === topicId) || 0;
+                .findIndex((t: any) => t.id === topicId) || 0;
             
             return await this.selectTopic(topicIndex, true); // fromSearchResult = true
         }
@@ -453,7 +479,7 @@ export class HelpContentManager {
     /**
      * フィードバック関連
      */
-    recordTopicFeedback(topicId, feedback) {
+    recordTopicFeedback(topicId: string, feedback: any) {
         if (this.helpFeedbackSystem && this.currentContent) {
             const category = this.categories.find(c => c.id === this.selectedCategory);
             if (category && category.topics[this.selectedTopicIndex]) {
@@ -479,7 +505,7 @@ export class HelpContentManager {
     /**
      * キャッシュ管理
      */
-    setContentCache(key, content) {
+    setContentCache(key: string, content: any) {
         if (this.contentCache.size >= this.maxCacheSize) {
             const firstKey = this.contentCache.keys().next().value;
             this.contentCache.delete(firstKey);

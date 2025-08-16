@@ -391,4 +391,91 @@ export function getMemoryManager(): MemoryManager {
     return memoryManagerInstance;
 }
 
-export { MemoryManager };
+// Already exported above
+
+/**
+ * Leak Detector - メモリリーク検出
+ */
+class LeakDetector {
+    private trackedObjects: Map<object, any> = new Map();
+
+    trackObject(obj: object, trackedInfo: any): void {
+        this.trackedObjects.set(obj, {
+            ...trackedInfo,
+            trackedAt: Date.now()
+        });
+    }
+
+    detectLeaks(): any[] {
+        // 基本的なリーク検出ロジック
+        const now = Date.now();
+        const leaks: any[] = [];
+        
+        this.trackedObjects.forEach((info, obj) => {
+            if (now - info.trackedAt > 300000) { // 5分以上古いオブジェクト
+                leaks.push({ object: obj, info });
+            }
+        });
+        
+        return leaks;
+    }
+}
+
+/**
+ * Memory Usage Analyzer - メモリ使用パターン解析
+ */
+class MemoryUsageAnalyzer {
+    private creationHistory: any[] = [];
+
+    recordObjectCreation(trackedInfo: any): void {
+        this.creationHistory.push({
+            ...trackedInfo,
+            timestamp: Date.now()
+        });
+        
+        // 履歴の上限管理
+        if (this.creationHistory.length > 1000) {
+            this.creationHistory = this.creationHistory.slice(-500);
+        }
+    }
+
+    getUsageAnalysis(): any {
+        return {
+            totalCreations: this.creationHistory.length,
+            recentCreations: this.creationHistory.filter(
+                item => Date.now() - item.timestamp < 60000
+            ).length,
+            typeBreakdown: this.getTypeBreakdown()
+        };
+    }
+
+    private getTypeBreakdown(): any {
+        const breakdown: { [key: string]: number } = {};
+        this.creationHistory.forEach(item => {
+            const type = item.type || 'unknown';
+            breakdown[type] = (breakdown[type] || 0) + 1;
+        });
+        return breakdown;
+    }
+}
+
+/**
+ * Proactive Cleanup Manager - プロアクティブクリーンアップ管理
+ */
+class ProactiveCleanupManager {
+    private cleanupHandlers: Map<string, () => void> = new Map();
+
+    registerCleanupHandler(key: string, handler: () => void): void {
+        this.cleanupHandlers.set(key, handler);
+    }
+
+    performCleanup(): void {
+        this.cleanupHandlers.forEach((handler, key) => {
+            try {
+                handler();
+            } catch (error) {
+                console.error(`[ProactiveCleanupManager] Error in cleanup handler ${key}:`, error);
+            }
+        });
+    }
+}
