@@ -89,6 +89,7 @@ export class FontLoadingManager {
             this._setupErrorIntegration();
         }
     }
+    
     private async _setupErrorIntegration(): Promise<void> {
         try {
             const { FontErrorIntegration } = await import('./FontErrorIntegration.js');
@@ -200,7 +201,7 @@ export class FontLoadingManager {
         }
     }
 
-    async _performFontLoad(fontFamily, language, options) {
+    private async _performFontLoad(fontFamily: string, language: string, options: FontLoadOptions): Promise<FontLoadResult> {
         const startTime = Date.now();
         const availableSources = this.sourceManager.getAvailableSources();
         
@@ -223,16 +224,15 @@ export class FontLoadingManager {
 
             } catch (error) {
                 const context = {
-                    source: sourceName,
+                    source: sourceName as any,
                     fontFamily: fontFamily,
-                    language: language
                 };
 
-                this.errorHandler.handleFontError(error, context);
+                this.errorHandler.handleFontError(error as Error, context);
                 this.failedSources.add(`${sourceName}:${fontFamily}`);
                 
                 if (this.config.development?.verboseLogging) {
-                    console.warn(`[FontLoadingManager] Failed to load ${fontFamily} from ${sourceName}:`, error.message);
+                    console.warn(`[FontLoadingManager] Failed to load ${fontFamily} from ${sourceName}:`, (error as Error).message);
                 }
             }
         }
@@ -241,7 +241,7 @@ export class FontLoadingManager {
         return this._applyFallbackStrategy(fontFamily, language, startTime);
     }
 
-    _applyFallbackStrategy(fontFamily, language, startTime) {
+    private _applyFallbackStrategy(fontFamily: string, language: string, startTime: number): FontLoadResult {
         if (!this.config.fallbackBehavior.useSystemFonts) {
             return {
                 success: false,
@@ -267,10 +267,9 @@ export class FontLoadingManager {
             };
 
         } catch (error) {
-            this.errorHandler.handleFontError(error, {
-                source: 'fallback',
+            this.errorHandler.handleFontError(error as Error, {
+                source: 'fallback' as any,
                 fontFamily: fontFamily,
-                language: language
             });
 
             return {
@@ -279,20 +278,20 @@ export class FontLoadingManager {
                 source: 'fallback',
                 fallbackUsed: false,
                 loadTime: Date.now() - startTime,
-                error: error
+                error: error as Error
             };
         }
     }
 
-    getFallbackFont(fontFamily, language) {
+    getFallbackFont(fontFamily: string, language: string): string {
         return this.fallbackHandler.getSystemFontForLanguage(language);
     }
 
-    isSourceAvailable(sourceName) {
+    isSourceAvailable(sourceName: string): boolean {
         return this.sourceManager.isSourceAvailable(sourceName);
     }
 
-    async applyFontToElement(element, fontFamily, language, options = {}) {
+    async applyFontToElement(element: HTMLElement, fontFamily: string, language: string, options: FontLoadOptions = {}): Promise<boolean> {
         try {
             const result = await this.loadFont(fontFamily, language, options);
             
@@ -311,10 +310,9 @@ export class FontLoadingManager {
             }
 
         } catch (error) {
-            this.errorHandler.handleFontError(error, {
-                source: 'element',
+            this.errorHandler.handleFontError(error as Error, {
+                source: 'element' as any,
                 fontFamily: fontFamily,
-                language: language
             });
 
             this.fallbackHandler.applyFallback(element, language, fontFamily);
@@ -322,10 +320,10 @@ export class FontLoadingManager {
         }
     }
 
-    async applyFontToElements(selector, fontFamily, language, options = {}) {
+    async applyFontToElements(selector: string, fontFamily: string, language: string, options: FontLoadOptions = {}): Promise<ApplyElementResults> {
         const elements = document.querySelectorAll(selector);
         const promises = Array.from(elements).map(element => 
-            this.applyFontToElement(element, fontFamily, language, options)
+            this.applyFontToElement(element as HTMLElement, fontFamily, language, options)
         );
 
         const results = await Promise.allSettled(promises);
@@ -338,16 +336,16 @@ export class FontLoadingManager {
         };
     }
 
-    enableSource(sourceName) {
+    enableSource(sourceName: string): void {
         this.sourceManager.enableSource(sourceName);
         this.failedSources.clear();
     }
 
-    disableSource(sourceName) {
+    disableSource(sourceName: string): void {
         this.sourceManager.disableSource(sourceName);
     }
 
-    clearCaches() {
+    clearCaches(): void {
         this.loadAttempts.clear();
         this.failedSources.clear();
         this.successfulLoads.clear();
@@ -356,7 +354,7 @@ export class FontLoadingManager {
         this.errorHandler.clearErrorHistory();
     }
 
-    getStats() {
+    getStats(): any {
         return {
             manager: {
                 initialized: this.initialized,
@@ -375,7 +373,7 @@ export class FontLoadingManager {
         };
     }
 
-    updateConfig(newConfig) {
+    updateConfig(newConfig: Partial<FontLoadingConfig>): void {
         this.config = this._mergeWithDefaults({ ...this.config, ...newConfig });
         
         // Update child components
@@ -387,7 +385,7 @@ export class FontLoadingManager {
         }
     }
 
-    async preloadFonts(fontList, language = 'default') {
+    async preloadFonts(fontList: string[], language: string = 'default'): Promise<FontLoadResult[]> {
         const results = [];
         
         for (const fontFamily of fontList) {
@@ -402,7 +400,10 @@ export class FontLoadingManager {
                 results.push({
                     success: false,
                     fontFamily: fontFamily,
-                    error: error
+                    source: 'error',
+                    fallbackUsed: false,
+                    loadTime: 0,
+                    error: error as Error
                 });
             }
         }
@@ -410,7 +411,7 @@ export class FontLoadingManager {
         return results;
     }
 
-    dispose() {
+    dispose(): void {
         this.clearCaches();
         this.initialized = false;
         

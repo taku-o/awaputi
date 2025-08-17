@@ -1,13 +1,55 @@
+// 型定義
+export interface FontErrorConfig {
+    suppressRepeated?: boolean;
+    suppressionTimeWindow?: number;
+    maxErrorsPerSource?: number;
+    logLevel?: 'debug' | 'info' | 'warn' | 'error';
+    development?: {
+        verboseLogging?: boolean;
+    };
+}
+
+export interface FontErrorContext {
+    source: 'local' | 'google' | 'system';
+    fontFamily?: string;
+    url?: string;
+    timeout?: number;
+}
+
+export interface ErrorInfo {
+    type: string;
+    severity: 'info' | 'warn' | 'error';
+}
+
+export interface SuppressionRules {
+    repeatSuppression: {
+        enabled: boolean;
+        timeWindow: number;
+        maxOccurrences: number;
+    };
+    sourceBasedSuppression: {
+        [source: string]: {
+            [errorType: string]: 'suppress' | 'warn_once' | 'error';
+        };
+    };
+}
+
 export class FontErrorHandler {
-    constructor(config = {}) {
+    private config: FontErrorConfig;
+    private errorCounts: Map<string, number>;
+    private suppressedErrors: Set<string>;
+    private errorHistory: Map<string, number[]>;
+    private suppressionRules: SuppressionRules;
+
+    constructor(config: FontErrorConfig = {}) {
         this.config = config;
-        this.errorCounts = new Map();
-        this.suppressedErrors = new Set();
-        this.errorHistory = new Map();
+        this.errorCounts = new Map<string, number>();
+        this.suppressedErrors = new Set<string>();
+        this.errorHistory = new Map<string, number[]>();
         this.suppressionRules = this._initializeSuppressionRules();
     }
 
-    _initializeSuppressionRules() {
+    private _initializeSuppressionRules(): SuppressionRules {
         return {
             repeatSuppression: {
                 enabled: this.config.suppressRepeated !== false,
@@ -31,7 +73,7 @@ export class FontErrorHandler {
         };
     }
 
-    handleFontError(error, context) {
+    handleFontError(error: Error, context: FontErrorContext): boolean {
         const errorInfo = this._categorizeError(error, context);
         const errorKey = `${context.source}:${errorInfo.type}:${context.fontFamily || 'unknown'}`;
         
@@ -54,7 +96,7 @@ export class FontErrorHandler {
         return true;
     }
 
-    _categorizeError(error, context) {
+    private _categorizeError(error: Error, context: FontErrorContext): ErrorInfo {
         const errorMessage = error.message || error.toString().toLowerCase();
         
         if (errorMessage.includes('network') || 
@@ -84,7 +126,7 @@ export class FontErrorHandler {
         return { type: 'UnknownError', severity: 'warn' };
     }
 
-    shouldSuppressError(errorType, source) {
+    shouldSuppressError(errorType: string, source: string): 'suppress' | 'warn_once' | 'error' | false {
         const sourceRules = this.suppressionRules.sourceBasedSuppression[source];
         if (sourceRules && sourceRules[errorType]) {
             return sourceRules[errorType];
@@ -96,7 +138,7 @@ export class FontErrorHandler {
             
             if (history) {
                 const now = Date.now();
-                const recentErrors = history.filter(timestamp => 
+                const recentErrors = history.filter((timestamp: number) => 
                     now - timestamp < this.suppressionRules.repeatSuppression.timeWindow
                 );
 
@@ -109,7 +151,7 @@ export class FontErrorHandler {
         return false;
     }
 
-    _getLogLevel(suppressionType, errorType, context = {}) {
+    private _getLogLevel(suppressionType: 'suppress' | 'warn_once' | 'error' | false, errorType: string, context: FontErrorContext = {} as FontErrorContext): 'debug' | 'info' | 'warn' | 'error' {
         if (suppressionType === 'warn_once') {
             return 'warn';
         }
@@ -126,7 +168,7 @@ export class FontErrorHandler {
         return this.config.logLevel || 'warn';
     }
 
-    logFontError(error, level = 'warn', context = {}) {
+    logFontError(error: Error, level: 'debug' | 'info' | 'warn' | 'error' = 'warn', context: FontErrorContext = {} as FontErrorContext): void {
         const message = this._formatErrorMessage(error, context);
 
         if (this.config.development?.verboseLogging) {
@@ -136,7 +178,7 @@ export class FontErrorHandler {
         }
     }
 
-    _formatErrorMessage(error, context) {
+    private _formatErrorMessage(error: Error, context: FontErrorContext): string {
         const fontFamily = context.fontFamily || 'unknown';
         const source = context.source || 'unknown';
         const suggestion = this._getSuggestion(error, context);
@@ -144,7 +186,7 @@ export class FontErrorHandler {
         return `Font loading failed: ${fontFamily} from ${source}. ${suggestion}`;
     }
 
-    _getSuggestion(error, context) {
+    private _getSuggestion(error: Error, context: FontErrorContext): string {
         const errorMessage = error.message || error.toString().toLowerCase();
         
         if (context.source === 'google' && errorMessage.includes('network')) {
@@ -167,7 +209,7 @@ export class FontErrorHandler {
         return 'Using fallback fonts. Check font configuration.';
     }
 
-    _logDetailedError(error, context, level) {
+    private _logDetailedError(error: Error, context: FontErrorContext, level: 'debug' | 'info' | 'warn' | 'error'): void {
         const details = {
             fontFamily: context.fontFamily,
             source: context.source,
@@ -177,21 +219,21 @@ export class FontErrorHandler {
             suggestion: this._getSuggestion(error, context)
         };
 
-        console[level]('[FontErrorHandler] Detailed font loading error:', details);
+        (console as any)[level]('[FontErrorHandler] Detailed font loading error:', details);
     }
 
-    _logSimpleError(message, level) {
+    private _logSimpleError(message: string, level: 'debug' | 'info' | 'warn' | 'error'): void {
         // debugレベルは本番環境では表示しない
         if (level === 'debug' && !this.config.development?.verboseLogging) {
             return;
         }
         
         // consoleにdebugメソッドがない場合はlogを使用
-        const logMethod = console[level] || console.log;
+        const logMethod = (console as any)[level] || console.log;
         logMethod(`[FontErrorHandler] ${message}`);
     }
 
-    _updateErrorHistory(errorInfo, context) {
+    private _updateErrorHistory(errorInfo: ErrorInfo, context: FontErrorContext): void {
         const errorKey = `${context.source}:${errorInfo.type}`;
         const history = this.errorHistory.get(errorKey) || [];
         
@@ -205,14 +247,14 @@ export class FontErrorHandler {
         this.errorHistory.set(errorKey, history);
     }
 
-    clearErrorHistory() {
+    clearErrorHistory(): void {
         this.errorHistory.clear();
         this.suppressedErrors.clear();
         this.errorCounts.clear();
     }
 
-    getErrorStats() {
-        const stats = {};
+    getErrorStats(): Record<string, Record<string, number>> {
+        const stats: Record<string, Record<string, number>> = {};
         
         for (const [errorKey, history] of this.errorHistory.entries()) {
             const [source, type] = errorKey.split(':');
