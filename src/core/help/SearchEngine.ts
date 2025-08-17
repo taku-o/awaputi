@@ -1,5 +1,5 @@
 /**
- * SearchEngine.js
+ * SearchEngine.ts
  * ヘルプシステム用の検索エンジン
  * 全文検索、フィルタリング、インデックス管理機能を提供
  */
@@ -7,10 +7,156 @@
 import { LoggingSystem } from '../LoggingSystem.js';
 import { ErrorHandler } from '../../utils/ErrorHandler.js';
 
+// 型定義
+export interface SearchConfig {
+    minQueryLength: number;
+    maxResults: number;
+    searchTimeout: number;
+    fuzzyThreshold: number;
+    stopWords: string[];
+}
+
+export interface SearchStats {
+    totalSearches: number;
+    popularQueries: Map<string, number>;
+    averageResponseTime: number;
+    lastUpdated: number;
+}
+
+export interface IndexData {
+    id: string;
+    type: string;
+    title: string;
+    content: string;
+    category: string;
+    tags: string[];
+    language: string;
+    difficulty: 'beginner' | 'intermediate' | 'advanced';
+    popularity: number;
+    lastUpdated: number;
+    searchKeywords: string[];
+}
+
+export interface SearchOptions {
+    language?: string;
+    category?: string | null;
+    tags?: string[];
+    difficulty?: 'beginner' | 'intermediate' | 'advanced' | null;
+    contentType?: string;
+    fuzzySearch?: boolean;
+    maxResults?: number;
+    sortBy?: 'relevance' | 'date' | 'popularity';
+}
+
+export interface SearchResultItem {
+    content: IndexData;
+    score: number;
+    matches: SearchMatch[];
+}
+
+export interface SearchMatch {
+    field: string;
+    term: string;
+    preview: string;
+}
+
+export interface SearchResult {
+    results: SearchResultItem[];
+    totalCount: number;
+    suggestions: string[];
+    hasMore?: boolean;
+    filters?: SearchFilters;
+    error?: string;
+    metadata?: SearchMetadata;
+}
+
+export interface SearchFilters {
+    availableCategories: CategoryInfo[];
+    availableTags: TagInfo[];
+    availableDifficulties: string[];
+}
+
+export interface CategoryInfo {
+    name: string;
+    count: number;
+}
+
+export interface TagInfo {
+    name: string;
+    count: number;
+}
+
+export interface SearchMetadata {
+    query?: string;
+    options?: SearchOptions;
+    responseTime?: number;
+    timestamp: number;
+}
+
+export interface Suggestion {
+    text: string;
+    type: 'popular' | 'term' | 'category';
+    score: number;
+    source: string;
+}
+
+export interface SuggestionOptions {
+    maxSuggestions?: number;
+    includePopular?: boolean;
+    language?: string;
+}
+
+export interface IndexStatistics {
+    totalContentItems: number;
+    totalTerms: number;
+    totalCategories: number;
+    totalTags: number;
+    totalLanguages: number;
+}
+
+export interface SearchStatistics {
+    totalSearches: number;
+    popularQueries: Map<string, number>;
+    averageResponseTime: number;
+    lastUpdated: number;
+    indexStats: IndexStatistics;
+    topQueries: Array<{ query: string; count: number }>;
+}
+
+export interface SearchHistoryEntry {
+    query: string;
+    timestamp: number;
+}
+
+export interface ContentBase {
+    id: string;
+    title?: string;
+    content?: string;
+    category?: string;
+    tags?: string[];
+    language?: string;
+    difficulty?: 'beginner' | 'intermediate' | 'advanced';
+    popularity?: number;
+    lastUpdated?: number;
+    searchKeywords?: string[];
+    question?: string;
+    answer?: string;
+}
+
 /**
  * 検索エンジンクラス
  */
 export class SearchEngine {
+    private loggingSystem: LoggingSystem;
+    private config: SearchConfig;
+    private contentIndex: Map<string, IndexData>;
+    private termIndex: Map<string, string[]>;
+    private categoryIndex: Map<string, string[]>;
+    private tagIndex: Map<string, string[]>;
+    private languageIndex: Map<string, string[]>;
+    private searchStats: SearchStats;
+    private searchHistory: SearchHistoryEntry[];
+
     constructor() {
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
         
@@ -29,16 +175,16 @@ export class SearchEngine {
         };
         
         // インデックス管理
-        this.contentIndex = new Map(); // コンテンツID -> インデックスデータ
-        this.termIndex = new Map();    // 検索語 -> コンテンツID配列
-        this.categoryIndex = new Map(); // カテゴリ -> コンテンツID配列
-        this.tagIndex = new Map();     // タグ -> コンテンツID配列
-        this.languageIndex = new Map(); // 言語 -> コンテンツID配列
+        this.contentIndex = new Map<string, IndexData>(); // コンテンツID -> インデックスデータ
+        this.termIndex = new Map<string, string[]>();    // 検索語 -> コンテンツID配列
+        this.categoryIndex = new Map<string, string[]>(); // カテゴリ -> コンテンツID配列
+        this.tagIndex = new Map<string, string[]>();     // タグ -> コンテンツID配列
+        this.languageIndex = new Map<string, string[]>(); // 言語 -> コンテンツID配列
         
         // 検索統計
         this.searchStats = {
             totalSearches: 0,
-            popularQueries: new Map(),
+            popularQueries: new Map<string, number>(),
             averageResponseTime: 0,
             lastUpdated: Date.now()
         };
@@ -52,7 +198,7 @@ export class SearchEngine {
     /**
      * SearchEngineの初期化
      */
-    async initialize() {
+    async initialize(): Promise<void> {
         try {
             this.loggingSystem.info('SearchEngine', 'Initializing search engine...');
             
@@ -68,9 +214,9 @@ export class SearchEngine {
 
     /**
      * 検索インデックスの構築
-     * @param {string} language - 対象言語（オプショナル）
+     * @param language - 対象言語（オプショナル）
      */
-    async buildIndex(language = 'ja') {
+    async buildIndex(language: string = 'ja'): Promise<void> {
         try {
             this.loggingSystem.info('SearchEngine', `Building search index for language: ${language}`);
             
@@ -88,10 +234,10 @@ export class SearchEngine {
 
     /**
      * コンテンツのインデックス作成
-     * @param {Array} contents - コンテンツ配列
-     * @param {string} contentType - コンテンツタイプ
+     * @param contents - コンテンツ配列
+     * @param contentType - コンテンツタイプ
      */
-    indexContent(contents, contentType = 'help') {
+    indexContent(contents: ContentBase[], contentType: string = 'help'): void {
         try {
             if (!Array.isArray(contents)) {
                 throw new Error('Contents must be an array');
@@ -120,11 +266,11 @@ export class SearchEngine {
 
     /**
      * 検索実行
-     * @param {string} query - 検索クエリ
-     * @param {Object} options - 検索オプション
-     * @returns {Promise<Object>} 検索結果
+     * @param query - 検索クエリ
+     * @param options - 検索オプション
+     * @returns 検索結果
      */
-    async search(query, options = {}) {
+    async search(query: string, options: SearchOptions = {}): Promise<SearchResult> {
         const startTime = Date.now();
         
         try {
@@ -141,7 +287,7 @@ export class SearchEngine {
             }
 
             // 検索オプションの設定
-            const searchOptions = {
+            const searchOptions: Required<SearchOptions> = {
                 language: 'ja',
                 category: null,
                 tags: [],
@@ -184,7 +330,7 @@ export class SearchEngine {
                 results: [],
                 totalCount: 0,
                 suggestions: [],
-                error: error.message,
+                error: error instanceof Error ? error.message : String(error),
                 metadata: {
                     query,
                     responseTime,
@@ -196,24 +342,24 @@ export class SearchEngine {
 
     /**
      * サジェスト取得
-     * @param {string} partialQuery - 部分クエリ
-     * @param {Object} options - オプション
-     * @returns {Array} サジェスト候補
+     * @param partialQuery - 部分クエリ
+     * @param options - オプション
+     * @returns サジェスト候補
      */
-    getSuggestions(partialQuery, options = {}) {
+    getSuggestions(partialQuery: string, options: SuggestionOptions = {}): Suggestion[] {
         try {
             if (!partialQuery || partialQuery.length < 1) {
                 return [];
             }
 
-            const suggestionOptions = {
+            const suggestionOptions: Required<SuggestionOptions> = {
                 maxSuggestions: 10,
                 includePopular: true,
                 language: 'ja',
                 ...options
             };
 
-            const suggestions = [];
+            const suggestions: Suggestion[] = [];
             const queryLower = partialQuery.toLowerCase();
 
             // 人気クエリからのサジェスト
@@ -231,14 +377,14 @@ export class SearchEngine {
             }
 
             // インデックスからのサジェスト
-            for (const [term] of this.termIndex.entries()) {
+            for (const [term, contentIds] of this.termIndex.entries()) {
                 if (term.toLowerCase().includes(queryLower) && suggestions.length < suggestionOptions.maxSuggestions) {
                     const existingSuggestion = suggestions.find(s => s.text === term);
                     if (!existingSuggestion) {
                         suggestions.push({
                             text: term,
                             type: 'term',
-                            score: this.termIndex.get(term).length,
+                            score: contentIds.length,
                             source: 'index'
                         });
                     }
@@ -246,12 +392,12 @@ export class SearchEngine {
             }
 
             // カテゴリからのサジェスト
-            for (const [category] of this.categoryIndex.entries()) {
+            for (const [category, contentIds] of this.categoryIndex.entries()) {
                 if (category.toLowerCase().includes(queryLower) && suggestions.length < suggestionOptions.maxSuggestions) {
                     suggestions.push({
                         text: category,
                         type: 'category',
-                        score: this.categoryIndex.get(category).length * 5,
+                        score: contentIds.length * 5,
                         source: 'category'
                     });
                 }
@@ -270,9 +416,9 @@ export class SearchEngine {
 
     /**
      * 検索統計の取得
-     * @returns {Object} 検索統計
+     * @returns 検索統計
      */
-    getSearchStatistics() {
+    getSearchStatistics(): SearchStatistics {
         return {
             ...this.searchStats,
             indexStats: {
@@ -291,9 +437,9 @@ export class SearchEngine {
 
     /**
      * インデックスの再構築
-     * @param {Map} contentMap - コンテンツマップ
+     * @param contentMap - コンテンツマップ
      */
-    rebuildIndex(contentMap) {
+    rebuildIndex(contentMap: Map<string, ContentBase[]>): void {
         try {
             this.loggingSystem.info('SearchEngine', 'Rebuilding search index...');
             
@@ -317,16 +463,16 @@ export class SearchEngine {
 
     /**
      * 単一コンテンツのインデックス作成
-     * @param {Object} content - コンテンツ
-     * @param {string} contentType - コンテンツタイプ
+     * @param content - コンテンツ
+     * @param contentType - コンテンツタイプ
      */
-    indexSingleContent(content, contentType) {
+    private indexSingleContent(content: ContentBase, contentType: string): void {
         if (!content.id) {
             throw new Error('Content must have an ID');
         }
 
         // コンテンツインデックスに追加
-        const indexData = {
+        const indexData: IndexData = {
             id: content.id,
             type: contentType,
             title: content.title || content.question || '',
@@ -368,14 +514,14 @@ export class SearchEngine {
 
     /**
      * 検索の実行
-     * @param {string} query - 検索クエリ
-     * @param {Object} options - 検索オプション
-     * @returns {Array} 検索結果
+     * @param query - 検索クエリ
+     * @param options - 検索オプション
+     * @returns 検索結果
      */
-    async performSearch(query, options) {
-        const results = [];
+    private async performSearch(query: string, options: Required<SearchOptions>): Promise<SearchResultItem[]> {
+        const results: SearchResultItem[] = [];
         const queryTerms = this.extractTerms(query);
-        const contentScores = new Map();
+        const contentScores = new Map<string, number>();
 
         // 各検索語に対してスコアを計算
         for (const term of queryTerms) {
@@ -489,11 +635,15 @@ export class SearchEngine {
 
     /**
      * ファジー検索の実行
-     * @param {Array} queryTerms - クエリ語配列
-     * @param {Object} options - オプション
-     * @param {Map} contentScores - コンテンツスコアマップ
+     * @param queryTerms - クエリ語配列
+     * @param options - オプション
+     * @param contentScores - コンテンツスコアマップ
      */
-    async performFuzzySearch(queryTerms, options, contentScores) {
+    private async performFuzzySearch(
+        queryTerms: string[], 
+        options: Required<SearchOptions>, 
+        contentScores: Map<string, number>
+    ): Promise<void> {
         for (const queryTerm of queryTerms) {
             for (const [indexTerm, contentIds] of this.termIndex.entries()) {
                 const similarity = this.calculateStringSimilarity(queryTerm, indexTerm);
@@ -516,12 +666,16 @@ export class SearchEngine {
 
     /**
      * 検索結果の処理
-     * @param {Array} results - 生の検索結果
-     * @param {string} query - 検索クエリ
-     * @param {Object} options - 検索オプション
-     * @returns {Object} 処理済み検索結果
+     * @param results - 生の検索結果
+     * @param query - 検索クエリ
+     * @param options - 検索オプション
+     * @returns 処理済み検索結果
      */
-    processSearchResults(results, query, options) {
+    private processSearchResults(
+        results: SearchResultItem[], 
+        query: string, 
+        options: Required<SearchOptions>
+    ): SearchResult {
         const totalCount = results.length;
         
         // サジェストの生成
@@ -542,11 +696,11 @@ export class SearchEngine {
 
     /**
      * フィルタリング判定
-     * @param {Object} content - コンテンツ
-     * @param {Object} options - 検索オプション
-     * @returns {boolean} フィルタ通過フラグ
+     * @param content - コンテンツ
+     * @param options - 検索オプション
+     * @returns フィルタ通過フラグ
      */
-    passesFilters(content, options) {
+    private passesFilters(content: IndexData, options: Required<SearchOptions>): boolean {
         // 言語フィルタ
         if (options.language && content.language !== options.language) {
             return false;
@@ -580,12 +734,12 @@ export class SearchEngine {
 
     /**
      * 関連性スコアの計算
-     * @param {Object} content - コンテンツ
-     * @param {string} term - 検索語
-     * @param {string} originalQuery - 元のクエリ
-     * @returns {number} スコア
+     * @param content - コンテンツ
+     * @param term - 検索語
+     * @param originalQuery - 元のクエリ
+     * @returns スコア
      */
-    calculateRelevanceScore(content, term, originalQuery) {
+    private calculateRelevanceScore(content: IndexData, term: string, originalQuery: string): number {
         let score = 0;
         const termLower = term.toLowerCase();
 
@@ -625,15 +779,15 @@ export class SearchEngine {
 
     /**
      * 文字列類似度の計算（レーベンシュタイン距離ベース）
-     * @param {string} str1 - 文字列1
-     * @param {string} str2 - 文字列2
-     * @returns {number} 類似度（0-1）
+     * @param str1 - 文字列1
+     * @param str2 - 文字列2
+     * @returns 類似度（0-1）
      */
-    calculateStringSimilarity(str1, str2) {
+    private calculateStringSimilarity(str1: string, str2: string): number {
         if (str1 === str2) return 1;
         if (str1.length === 0 || str2.length === 0) return 0;
 
-        const matrix = [];
+        const matrix: number[][] = [];
         for (let i = 0; i <= str2.length; i++) {
             matrix[i] = [i];
         }
@@ -661,10 +815,10 @@ export class SearchEngine {
 
     /**
      * テキストから検索語を抽出
-     * @param {string} text - テキスト
-     * @returns {Array} 検索語配列
+     * @param text - テキスト
+     * @returns 検索語配列
      */
-    extractTerms(text) {
+    private extractTerms(text: string): string[] {
         if (!text) return [];
 
         // 基本的なクリーニング
@@ -684,25 +838,26 @@ export class SearchEngine {
 
     /**
      * インデックスへのアイテム追加
-     * @param {Map} index - インデックス
-     * @param {string} key - キー
-     * @param {string} contentId - コンテンツID
+     * @param index - インデックス
+     * @param key - キー
+     * @param contentId - コンテンツID
      */
-    addToIndex(index, key, contentId) {
+    private addToIndex(index: Map<string, string[]>, key: string, contentId: string): void {
         if (!index.has(key)) {
             index.set(key, []);
         }
-        if (!index.get(key).includes(contentId)) {
-            index.get(key).push(contentId);
+        const contentIds = index.get(key)!;
+        if (!contentIds.includes(contentId)) {
+            contentIds.push(contentId);
         }
     }
 
     /**
      * 結果のソート
-     * @param {Array} results - 結果配列
-     * @param {string} sortBy - ソート基準
+     * @param results - 結果配列
+     * @param sortBy - ソート基準
      */
-    sortResults(results, sortBy) {
+    private sortResults(results: SearchResultItem[], sortBy: 'relevance' | 'date' | 'popularity'): void {
         switch (sortBy) {
             case 'date':
                 results.sort((a, b) => b.content.lastUpdated - a.content.lastUpdated);
@@ -719,12 +874,12 @@ export class SearchEngine {
 
     /**
      * マッチ箇所の検出
-     * @param {Object} content - コンテンツ
-     * @param {string} query - クエリ
-     * @returns {Array} マッチ情報
+     * @param content - コンテンツ
+     * @param query - クエリ
+     * @returns マッチ情報
      */
-    findMatches(content, query) {
-        const matches = [];
+    private findMatches(content: IndexData, query: string): SearchMatch[] {
+        const matches: SearchMatch[] = [];
         const queryTerms = this.extractTerms(query);
 
         for (const term of queryTerms) {
@@ -754,11 +909,11 @@ export class SearchEngine {
 
     /**
      * プレビュー作成
-     * @param {string} text - テキスト
-     * @param {string} term - 検索語
-     * @returns {string} プレビュー
+     * @param text - テキスト
+     * @param term - 検索語
+     * @returns プレビュー
      */
-    createPreview(text, term) {
+    private createPreview(text: string, term: string): string {
         const termIndex = text.toLowerCase().indexOf(term.toLowerCase());
         if (termIndex === -1) return text.substring(0, 100);
 
@@ -774,12 +929,12 @@ export class SearchEngine {
 
     /**
      * 検索サジェストの生成
-     * @param {string} query - クエリ
-     * @param {Object} options - オプション
-     * @returns {Array} サジェスト
+     * @param query - クエリ
+     * @param options - オプション
+     * @returns サジェスト
      */
-    generateSearchSuggestions(query, options) {
-        const suggestions = [];
+    private generateSearchSuggestions(query: string, options: Required<SearchOptions>): string[] {
+        const suggestions: string[] = [];
         
         // 似たような語を探す
         const queryTerms = this.extractTerms(query);
@@ -810,11 +965,11 @@ export class SearchEngine {
 
     /**
      * 利用可能カテゴリの取得
-     * @param {string} language - 言語
-     * @returns {Array} カテゴリ配列
+     * @param language - 言語
+     * @returns カテゴリ配列
      */
-    getAvailableCategories(language) {
-        const categories = [];
+    private getAvailableCategories(language: string): CategoryInfo[] {
+        const categories: CategoryInfo[] = [];
         for (const [category, contentIds] of this.categoryIndex.entries()) {
             const hasLanguageContent = contentIds.some(id => {
                 const content = this.contentIndex.get(id);
@@ -832,11 +987,11 @@ export class SearchEngine {
 
     /**
      * 利用可能タグの取得
-     * @param {string} language - 言語
-     * @returns {Array} タグ配列
+     * @param language - 言語
+     * @returns タグ配列
      */
-    getAvailableTags(language) {
-        const tags = [];
+    private getAvailableTags(language: string): TagInfo[] {
+        const tags: TagInfo[] = [];
         for (const [tag, contentIds] of this.tagIndex.entries()) {
             const hasLanguageContent = contentIds.some(id => {
                 const content = this.contentIndex.get(id);
@@ -854,10 +1009,10 @@ export class SearchEngine {
 
     /**
      * 空の検索結果を取得
-     * @param {string} reason - 理由
-     * @returns {Object} 空の検索結果
+     * @param reason - 理由
+     * @returns 空の検索結果
      */
-    getEmptySearchResult(reason) {
+    private getEmptySearchResult(reason: string): SearchResult {
         return {
             results: [],
             totalCount: 0,
@@ -871,9 +1026,9 @@ export class SearchEngine {
 
     /**
      * 検索統計の更新
-     * @param {string} query - クエリ
+     * @param query - クエリ
      */
-    updateSearchStats(query) {
+    private updateSearchStats(query: string): void {
         this.searchStats.totalSearches++;
         
         const currentCount = this.searchStats.popularQueries.get(query) || 0;
@@ -895,9 +1050,9 @@ export class SearchEngine {
 
     /**
      * 平均応答時間の更新
-     * @param {number} responseTime - 応答時間
+     * @param responseTime - 応答時間
      */
-    updateAverageResponseTime(responseTime) {
+    private updateAverageResponseTime(responseTime: number): void {
         const totalTime = this.searchStats.averageResponseTime * (this.searchStats.totalSearches - 1);
         this.searchStats.averageResponseTime = (totalTime + responseTime) / this.searchStats.totalSearches;
     }
@@ -905,7 +1060,7 @@ export class SearchEngine {
     /**
      * 全インデックスのクリア
      */
-    clearAllIndexes() {
+    private clearAllIndexes(): void {
         this.contentIndex.clear();
         this.termIndex.clear();
         this.categoryIndex.clear();
@@ -916,13 +1071,13 @@ export class SearchEngine {
     /**
      * リソースのクリーンアップ
      */
-    destroy() {
+    destroy(): void {
         try {
             this.clearAllIndexes();
             this.searchHistory = [];
             this.searchStats = {
                 totalSearches: 0,
-                popularQueries: new Map(),
+                popularQueries: new Map<string, number>(),
                 averageResponseTime: 0,
                 lastUpdated: Date.now()
             };
@@ -934,14 +1089,14 @@ export class SearchEngine {
     }
 }
 
-// シングルトンインسタンス管理
-let searchEngineInstance = null;
+// シングルトンインスタンス管理
+let searchEngineInstance: SearchEngine | null = null;
 
 /**
  * SearchEngineのシングルトンインスタンスを取得
- * @returns {SearchEngine} SearchEngineインスタンス
+ * @returns SearchEngineインスタンス
  */
-export function getSearchEngine() {
+export function getSearchEngine(): SearchEngine {
     if (!searchEngineInstance) {
         searchEngineInstance = new SearchEngine();
     }
@@ -950,9 +1105,9 @@ export function getSearchEngine() {
 
 /**
  * SearchEngineインスタンスを再初期化
- * @returns {SearchEngine} 新しいSearchEngineインスタンス
+ * @returns 新しいSearchEngineインスタンス
  */
-export function reinitializeSearchEngine() {
+export function reinitializeSearchEngine(): SearchEngine {
     if (searchEngineInstance) {
         searchEngineInstance.destroy();
     }

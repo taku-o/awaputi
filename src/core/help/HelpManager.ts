@@ -1,5 +1,5 @@
 /**
- * HelpManager.js
+ * HelpManager.ts
  * ヘルプシステムの中央管理クラス
  * コンテンツ読み込み、検索、コンテキスト対応ヘルプを統合管理
  */
@@ -10,19 +10,122 @@ import { CacheSystem } from '../CacheSystem.js';
 import { LoggingSystem } from '../LoggingSystem.js';
 import { SearchEngine } from './SearchEngine.js';
 
+// 型定義
+export interface HelpContent {
+    category: string;
+    title: string;
+    description: string;
+    language: string;
+    version: string;
+    lastUpdated?: string;
+    isPlaceholder?: boolean;
+    topics: HelpTopic[];
+}
+
+export interface HelpTopic {
+    id: string;
+    title: string;
+    description: string;
+    content: TopicContent;
+    difficulty: 'beginner' | 'intermediate' | 'advanced';
+    estimatedReadTime: number;
+    tags: string[];
+    searchKeywords?: string[];
+}
+
+export interface TopicContent {
+    message?: string;
+    note?: string;
+    troubleshooting?: string;
+    title?: string;
+    content?: string;
+    isEmpty?: boolean;
+}
+
+export interface UserProgress {
+    viewedSections: Set<string>;
+    searchHistory: SearchHistoryEntry[];
+    lastAccessed: number | null;
+}
+
+export interface SearchHistoryEntry {
+    query: string;
+    timestamp: number;
+    language: string;
+}
+
+export interface SearchResult {
+    section: HelpTopic;
+    score: number;
+    category: string;
+    language: string;
+}
+
+export interface SearchFilters {
+    language?: string;
+    category?: string;
+    difficulty?: 'beginner' | 'intermediate' | 'advanced';
+    limit?: number;
+}
+
+export interface ContextualHelpResult {
+    section: HelpTopic;
+    context: string;
+    suggestions: HelpTopic[];
+}
+
+export interface TopicDetails {
+    id: string;
+    title: string;
+    description: string;
+    category: string;
+    language: string;
+    content: TopicContent;
+}
+
+export interface UserHelpProgress {
+    viewedSections: string[];
+    searchCount: number;
+    lastAccessed: number | null;
+    totalSections: number;
+}
+
+export interface PlaceholderMessages {
+    title: string;
+    description: string;
+    content: string;
+    fallbackNote: string;
+}
+
+export interface LocalizationManager {
+    getCurrentLanguage(): string;
+}
+
+export interface GameEngine {
+    localizationManager: LocalizationManager;
+}
+
 /**
  * ヘルプシステムの中央管理クラス
  */
 export class HelpManager {
-    constructor(gameEngine) {
+    private gameEngine: GameEngine;
+    private localizationManager: LocalizationManager;
+    private cacheSystem: CacheSystem;
+    private loggingSystem: LoggingSystem;
+    private searchEngine: SearchEngine;
+    private helpContent: Map<string, HelpContent>;
+    private userProgress: UserProgress;
+
+    constructor(gameEngine: GameEngine) {
         this.gameEngine = gameEngine;
         this.localizationManager = getLocalizationManager();
         this.cacheSystem = CacheSystem.getInstance ? CacheSystem.getInstance() : new CacheSystem();
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
         this.searchEngine = new SearchEngine();
-        this.helpContent = new Map();
+        this.helpContent = new Map<string, HelpContent>();
         this.userProgress = {
-            viewedSections: new Set(),
+            viewedSections: new Set<string>(),
             searchHistory: [],
             lastAccessed: null
         };
@@ -33,7 +136,7 @@ export class HelpManager {
     /**
      * ヘルプマネージャーの初期化
      */
-    async initialize() {
+    async initialize(): Promise<void> {
         try {
             this.loggingSystem.info('HelpManager', 'Initializing help system...');
             
@@ -53,16 +156,16 @@ export class HelpManager {
 
     /**
      * ヘルプコンテンツの読み込み
-     * @param {string} category - コンテンツカテゴリ
-     * @param {string} language - 言語コード
-     * @returns {Promise<Object>} ヘルプコンテンツ
+     * @param category - コンテンツカテゴリ
+     * @param language - 言語コード
+     * @returns ヘルプコンテンツ
      */
-    async loadHelpContent(category, language = 'ja') {
+    async loadHelpContent(category: string, language: string = 'ja'): Promise<HelpContent> {
         try {
             const cacheKey = `help_content_${category}_${language}`;
             
             // キャッシュから確認
-            let content = this.cacheSystem.get(cacheKey);
+            let content = this.cacheSystem.get(cacheKey) as HelpContent;
             if (content) {
                 this.loggingSystem.debug('HelpManager', `Loaded help content from cache: ${cacheKey}`);
                 return content;
@@ -97,11 +200,11 @@ export class HelpManager {
 
     /**
      * 静かにコンテンツの読み込みを試行（404エラーを生成しない）
-     * @param {string} category - カテゴリ
-     * @param {string} language - 言語コード
-     * @returns {Object|null} コンテンツまたはnull
+     * @param category - カテゴリ
+     * @param language - 言語コード
+     * @returns コンテンツまたはnull
      */
-    async tryLoadContent(category, language) {
+    async tryLoadContent(category: string, language: string): Promise<HelpContent | null> {
         try {
             const contentPath = `./src/core/help/content/help/${language}/${category}.json`;
             
@@ -117,7 +220,7 @@ export class HelpManager {
                 return null;
             }
             
-            const content = await response.json();
+            const content = await response.json() as HelpContent;
             this.loggingSystem.debug('HelpManager', `Successfully loaded content: ${contentPath}`);
             return content;
             
@@ -129,11 +232,11 @@ export class HelpManager {
 
     /**
      * フォールバック機能付きの安全なコンテンツ読み込み
-     * @param {string} category - カテゴリ
-     * @param {string} language - 言語コード
-     * @returns {Object} コンテンツ
+     * @param category - カテゴリ
+     * @param language - 言語コード
+     * @returns コンテンツ
      */
-    async loadWithFallback(category, language) {
+    async loadWithFallback(category: string, language: string): Promise<HelpContent> {
         // フォールバックチェーン: 指定言語 → 日本語 → 英語 → プレースホルダー
         const fallbackChain = [
             language,
@@ -168,10 +271,10 @@ export class HelpManager {
 
     /**
      * レガシーパスからのコンテンツ読み込み試行
-     * @param {string} category - カテゴリ
-     * @returns {Object|null} コンテンツまたはnull
+     * @param category - カテゴリ
+     * @returns コンテンツまたはnull
      */
-    async tryLoadLegacyContent(category) {
+    async tryLoadLegacyContent(category: string): Promise<HelpContent | null> {
         try {
             const legacyPath = `./src/core/help/content/help/${category}.json`;
             const headResponse = await fetch(legacyPath, { method: 'HEAD' });
@@ -184,7 +287,7 @@ export class HelpManager {
                 return null;
             }
             
-            return await response.json();
+            return await response.json() as HelpContent;
         } catch (error) {
             return null;
         }
@@ -192,12 +295,12 @@ export class HelpManager {
 
     /**
      * プレースホルダーコンテンツの生成
-     * @param {string} category - カテゴリ
-     * @param {string} language - 言語コード
-     * @returns {Object} プレースホルダーコンテンツ
+     * @param category - カテゴリ
+     * @param language - 言語コード
+     * @returns プレースホルダーコンテンツ
      */
-    async generatePlaceholderContent(category, language) {
-        const placeholderMessages = {
+    async generatePlaceholderContent(category: string, language: string): Promise<HelpContent> {
+        const placeholderMessages: Record<string, PlaceholderMessages> = {
             ja: {
                 title: `${category}ヘルプ（準備中）`,
                 description: `${category}に関するヘルプコンテンツは現在準備中です。`,
@@ -242,11 +345,11 @@ export class HelpManager {
 
     /**
      * ヘルプセクションの取得
-     * @param {string} sectionId - セクションID
-     * @param {string} language - 言語コード
-     * @returns {Object|null} ヘルプセクション
+     * @param sectionId - セクションID
+     * @param language - 言語コード
+     * @returns ヘルプセクション
      */
-    getHelpSection(sectionId, language = 'ja') {
+    getHelpSection(sectionId: string, language: string = 'ja'): HelpTopic | null {
         try {
             const parts = sectionId.split('.');
             const category = parts[0];
@@ -276,13 +379,13 @@ export class HelpManager {
 
     /**
      * コンテンツ検索
-     * @param {string} query - 検索クエリ
-     * @param {Object} filters - フィルター条件
-     * @returns {Array} 検索結果
+     * @param query - 検索クエリ
+     * @param filters - フィルター条件
+     * @returns 検索結果
      */
-    searchContent(query, filters = {}) {
+    searchContent(query: string, filters: SearchFilters = {}): SearchResult[] {
         try {
-            const results = [];
+            const results: SearchResult[] = [];
             const language = filters.language || this.localizationManager.getCurrentLanguage();
             
             // 検索履歴に追加
@@ -339,17 +442,17 @@ export class HelpManager {
 
     /**
      * コンテキストに応じたヘルプの取得
-     * @param {string} currentScene - 現在のシーン
-     * @param {string} userAction - ユーザーアクション
-     * @returns {Object|null} コンテキストヘルプ
+     * @param currentScene - 現在のシーン
+     * @param userAction - ユーザーアクション
+     * @returns コンテキストヘルプ
      */
-    getContextualHelp(currentScene, userAction = null) {
+    getContextualHelp(currentScene: string, userAction: string | null = null): ContextualHelpResult | null {
         try {
             const contextKey = userAction ? `${currentScene}.${userAction}` : currentScene;
             const language = this.localizationManager.getCurrentLanguage();
             
             // コンテキストマッピングの定義
-            const contextMap = {
+            const contextMap: Record<string, string> = {
                 'MainMenuScene': 'menu.navigation',
                 'GameScene': 'gameplay.basics',
                 'GameScene.bubble_click': 'gameplay.bubble_interaction',
@@ -381,11 +484,11 @@ export class HelpManager {
 
     /**
      * カテゴリ別トピック一覧を取得
-     * @param {string} category - カテゴリ名
-     * @param {string} language - 言語コード
-     * @returns {Array} トピック一覧
+     * @param category - カテゴリ名
+     * @param language - 言語コード
+     * @returns トピック一覧
      */
-    async getCategoryTopics(category, language = null) {
+    async getCategoryTopics(category: string, language: string | null = null): Promise<TopicDetails[]> {
         try {
             const lang = language || this.localizationManager.getCurrentLanguage();
             
@@ -428,11 +531,11 @@ export class HelpManager {
 
     /**
      * ツールチップの表示
-     * @param {HTMLElement} element - 対象要素
-     * @param {string} content - ツールチップ内容
-     * @param {Object} options - 表示オプション
+     * @param element - 対象要素
+     * @param content - ツールチップ内容
+     * @param options - 表示オプション
      */
-    showTooltip(element, content, options = {}) {
+    showTooltip(element: HTMLElement, content: string, options: Record<string, any> = {}): void {
         try {
             // TooltipSystemとの連携は後続のタスクで実装
             this.loggingSystem.debug('HelpManager', `Tooltip requested for element: ${element.id || element.className}`);
@@ -449,7 +552,7 @@ export class HelpManager {
     /**
      * ツールチップの非表示
      */
-    hideTooltip() {
+    hideTooltip(): void {
         try {
             // TooltipSystemとの連携は後続のタスクで実装
             this.loggingSystem.debug('HelpManager', 'Tooltip hide requested');
@@ -460,10 +563,10 @@ export class HelpManager {
 
     /**
      * ヘルプ使用履歴の追跡
-     * @param {string} sectionId - セクションID
-     * @param {number} duration - 閲覧時間（ミリ秒）
+     * @param sectionId - セクションID
+     * @param duration - 閲覧時間（ミリ秒）
      */
-    trackHelpUsage(sectionId, duration = 0) {
+    trackHelpUsage(sectionId: string, duration: number = 0): void {
         try {
             this.userProgress.viewedSections.add(sectionId);
             this.userProgress.lastAccessed = Date.now();
@@ -479,17 +582,17 @@ export class HelpManager {
 
     /**
      * セクションを既読としてマーク
-     * @param {string} sectionId - セクションID
+     * @param sectionId - セクションID
      */
-    markAsRead(sectionId) {
+    markAsRead(sectionId: string): void {
         this.trackHelpUsage(sectionId);
     }
 
     /**
      * ユーザーのヘルプ進捗取得
-     * @returns {Object} ユーザー進捗
+     * @returns ユーザー進捗
      */
-    getUserHelpProgress() {
+    getUserHelpProgress(): UserHelpProgress {
         return {
             viewedSections: Array.from(this.userProgress.viewedSections),
             searchCount: this.userProgress.searchHistory.length,
@@ -502,10 +605,10 @@ export class HelpManager {
 
     /**
      * ヘルプコンテンツのバリデーション
-     * @param {Object} content - コンテンツ
-     * @returns {boolean} バリデーション結果
+     * @param content - コンテンツ
+     * @returns バリデーション結果
      */
-    validateHelpContent(content) {
+    private validateHelpContent(content: any): content is HelpContent {
         try {
             // 基本構造チェック
             if (!content || typeof content !== 'object') {
@@ -557,11 +660,11 @@ export class HelpManager {
 
     /**
      * トピックのバリデーション
-     * @param {Object} topic - トピック
-     * @param {number} index - インデックス
-     * @returns {boolean} バリデーション結果
+     * @param topic - トピック
+     * @param index - インデックス
+     * @returns バリデーション結果
      */
-    validateTopic(topic, index) {
+    private validateTopic(topic: any, index: number): topic is HelpTopic {
         // トピックの必須フィールド
         const requiredTopicFields = ['id', 'title', 'description', 'content', 'difficulty', 'estimatedReadTime', 'tags'];
         
@@ -608,20 +711,20 @@ export class HelpManager {
 
     /**
      * 言語コードの検証
-     * @param {string} languageCode - 言語コード
-     * @returns {boolean} 検証結果
+     * @param languageCode - 言語コード
+     * @returns 検証結果
      */
-    validateLanguageCode(languageCode) {
+    private validateLanguageCode(languageCode: string): boolean {
         const validLanguages = ['ja', 'en', 'ko', 'zh-CN', 'zh-TW'];
         return validLanguages.includes(languageCode);
     }
 
     /**
      * バージョン形式の検証
-     * @param {string} version - バージョン文字列
-     * @returns {boolean} 検証結果
+     * @param version - バージョン文字列
+     * @returns 検証結果
      */
-    validateVersion(version) {
+    private validateVersion(version: string): boolean {
         // セマンティックバージョニング形式またはプレースホルダー形式をサポート
         const semverPattern = /^\d+\.\d+\.\d+(-[a-zA-Z0-9.-]+)?$/;
         const placeholderPattern = /^\d+\.\d+\.\d+-placeholder$/;
@@ -629,15 +732,20 @@ export class HelpManager {
         return semverPattern.test(version) || placeholderPattern.test(version);
     }
 
-    getDefaultHelpContent(category) {
+    getDefaultHelpContent(category: string): HelpContent {
         return {
             version: '1.0.0',
             category,
+            title: 'ヘルプが利用できません',
+            description: 'このセクションのヘルプコンテンツを読み込めませんでした。',
+            language: 'ja',
             topics: [{
                 id: 'default',
                 title: 'ヘルプが利用できません',
-                content: 'このセクションのヘルプコンテンツを読み込めませんでした。',
+                description: 'このセクションのヘルプコンテンツを読み込めませんでした。',
+                content: { content: 'このセクションのヘルプコンテンツを読み込めませんでした。' },
                 difficulty: 'beginner',
+                estimatedReadTime: 30,
                 tags: ['error']
             }]
         };
@@ -645,11 +753,11 @@ export class HelpManager {
 
     /**
      * 検索スコアの計算
-     * @param {Object} section - ヘルプセクション
-     * @param {string} query - 検索クエリ
-     * @returns {number} スコア
+     * @param section - ヘルプセクション
+     * @param query - 検索クエリ
+     * @returns スコア
      */
-    calculateSearchScore(section, query) {
+    private calculateSearchScore(section: HelpTopic, query: string): number {
         let score = 0;
         const queryLower = query.toLowerCase();
         
@@ -658,8 +766,10 @@ export class HelpManager {
             score += 10;
         }
         
-        // コンテンツでの一致
-        if (section.content.toLowerCase().includes(queryLower)) {
+        // コンテンツでの一致（文字列として検索）
+        const contentString = typeof section.content === 'string' ? section.content : 
+                             (section.content.content || section.content.message || '');
+        if (contentString.toLowerCase().includes(queryLower)) {
             score += 5;
         }
         
@@ -678,16 +788,16 @@ export class HelpManager {
 
     /**
      * 関連提案の取得
-     * @param {string} sectionId - セクションID
-     * @returns {Array} 関連セクション
+     * @param sectionId - セクションID
+     * @returns 関連セクション
      */
-    getRelatedSuggestions(sectionId) {
+    private getRelatedSuggestions(sectionId: string): HelpTopic[] {
         try {
-            const suggestions = [];
+            const suggestions: HelpTopic[] = [];
             const language = this.localizationManager.getCurrentLanguage();
             
             // 簡単な関連性ルール
-            const relatedMap = {
+            const relatedMap: Record<string, string[]> = {
                 'gameplay.basics': ['gameplay.bubble_interaction', 'gameplay.combo_system'],
                 'gameplay.bubble_interaction': ['gameplay.special_bubbles', 'gameplay.scoring'],
                 'menu.navigation': ['stages.selection', 'shop.items']
@@ -710,9 +820,9 @@ export class HelpManager {
 
     /**
      * 総セクション数の取得
-     * @returns {number} 総セクション数
+     * @returns 総セクション数
      */
-    getTotalSectionCount() {
+    private getTotalSectionCount(): number {
         let total = 0;
         for (const content of this.helpContent.values()) {
             if (content.topics) {
@@ -725,7 +835,7 @@ export class HelpManager {
     /**
      * ユーザー進捗の読み込み
      */
-    loadUserProgress() {
+    private loadUserProgress(): void {
         try {
             const saved = localStorage.getItem('awaputi_help_progress');
             if (saved) {
@@ -742,7 +852,7 @@ export class HelpManager {
     /**
      * ユーザー進捗の保存
      */
-    saveUserProgress() {
+    private saveUserProgress(): void {
         try {
             const progress = {
                 viewedSections: Array.from(this.userProgress.viewedSections),
@@ -756,15 +866,12 @@ export class HelpManager {
     }
 
     /**
-     * リソースのクリーンアップ
-     */
-    /**
      * カテゴリのヘルプトピック一覧を取得
-     * @param {string} categoryId - カテゴリID
-     * @param {string} language - 言語コード
-     * @returns {Promise<Array>} トピック一覧
+     * @param categoryId - カテゴリID
+     * @param language - 言語コード
+     * @returns トピック一覧
      */
-    async getHelpTopics(categoryId, language = null) {
+    async getHelpTopics(categoryId: string, language: string | null = null): Promise<TopicDetails[]> {
         try {
             // 現在の言語を取得
             const currentLanguage = language || this.gameEngine.localizationManager.getCurrentLanguage();
@@ -777,9 +884,9 @@ export class HelpManager {
                     id: topic.id,
                     title: topic.title,
                     description: topic.description,
-                    difficulty: topic.difficulty,
-                    estimatedReadTime: topic.estimatedReadTime,
-                    tags: topic.tags
+                    category: categoryId,
+                    language: currentLanguage,
+                    content: topic.content
                 }));
             }
             
@@ -792,12 +899,12 @@ export class HelpManager {
     
     /**
      * 特定のヘルプコンテンツを取得
-     * @param {string} topicId - トピックID
-     * @param {string} categoryId - カテゴリID（オプション）
-     * @param {string} language - 言語コード
-     * @returns {Promise<Object>} ヘルプコンテンツ
+     * @param topicId - トピックID
+     * @param categoryId - カテゴリID（オプション）
+     * @param language - 言語コード
+     * @returns ヘルプコンテンツ
      */
-    async getHelpContent(topicId, categoryId = null, language = null) {
+    async getHelpContent(topicId: string, categoryId: string | null = null, language: string | null = null): Promise<TopicDetails | null> {
         try {
             // 現在の言語を取得
             const currentLanguage = language || this.gameEngine.localizationManager.getCurrentLanguage();
@@ -821,12 +928,12 @@ export class HelpManager {
     
     /**
      * 特定のトピックコンテンツを取得（getHelpContentのエイリアス）
-     * @param {string} topicId - トピックID
-     * @param {string} categoryId - カテゴリID（オプション）
-     * @param {string} language - 言語コード
-     * @returns {Promise<Object>} トピックコンテンツ
+     * @param topicId - トピックID
+     * @param categoryId - カテゴリID（オプション）
+     * @param language - 言語コード
+     * @returns トピックコンテンツ
      */
-    async getTopicContent(topicId, categoryId = null, language = null) {
+    async getTopicContent(topicId: string, categoryId: string | null = null, language: string | null = null): Promise<TopicDetails> {
         try {
             const content = await this.getHelpContent(topicId, categoryId, language);
             
@@ -843,13 +950,12 @@ export class HelpManager {
                 id: topicId,
                 title: 'コンテンツが見つかりません',
                 description: '申し訳ございませんが、このトピックのコンテンツが見つかりませんでした。',
-                content: 'このヘルプトピックは現在利用できません。後でもう一度お試しください。',
-                difficulty: 'beginner',
-                estimatedReadTime: '1分',
-                tags: ['error', 'not-found'],
                 category: categoryId || 'general',
                 language: language || 'ja',
-                isEmpty: true
+                content: {
+                    content: 'このヘルプトピックは現在利用できません。後でもう一度お試しください。',
+                    isEmpty: true
+                }
             };
             
         } catch (error) {
@@ -860,26 +966,24 @@ export class HelpManager {
                 id: topicId,
                 title: 'エラーが発生しました',
                 description: 'コンテンツの読み込み中にエラーが発生しました。',
-                content: 'ヘルプコンテンツの読み込みに失敗しました。ページを更新してもう一度お試しください。',
-                difficulty: 'beginner',
-                estimatedReadTime: '1分',
-                tags: ['error'],
                 category: categoryId || 'general',
                 language: language || 'ja',
-                isEmpty: true,
-                error: true
+                content: {
+                    content: 'ヘルプコンテンツの読み込みに失敗しました。ページを更新してもう一度お試しください。',
+                    isEmpty: true
+                }
             };
         }
     }
     
     /**
      * カテゴリ内でコンテンツを検索
-     * @param {string} topicId - トピックID
-     * @param {string} categoryId - カテゴリID
-     * @param {string} language - 言語コード
-     * @returns {Promise<Object>} 見つかったコンテンツ
+     * @param topicId - トピックID
+     * @param categoryId - カテゴリID
+     * @param language - 言語コード
+     * @returns 見つかったコンテンツ
      */
-    async findContentInCategory(topicId, categoryId, language) {
+    async findContentInCategory(topicId: string, categoryId: string, language: string): Promise<TopicDetails | null> {
         try {
             const categoryContent = await this.loadHelpContent(categoryId, language);
             if (!categoryContent || !categoryContent.topics) return null;
@@ -891,12 +995,9 @@ export class HelpManager {
                 id: topic.id,
                 title: topic.title,
                 description: topic.description,
-                content: topic.content,
-                difficulty: topic.difficulty,
-                estimatedReadTime: topic.estimatedReadTime,
-                tags: topic.tags,
                 category: categoryId,
-                language: language
+                language: language,
+                content: topic.content
             };
         } catch (error) {
             this.loggingSystem.error('HelpManager', `Error finding content in category ${categoryId}`, error);
@@ -906,9 +1007,9 @@ export class HelpManager {
     
     /**
      * 言語変更時の処理
-     * @param {string} newLanguage - 新しい言語コード
+     * @param newLanguage - 新しい言語コード
      */
-    async onLanguageChange(newLanguage) {
+    async onLanguageChange(newLanguage: string): Promise<void> {
         try {
             // キャッシュをクリア
             this.helpContent.clear();
@@ -924,7 +1025,7 @@ export class HelpManager {
         }
     }
 
-    destroy() {
+    destroy(): void {
         try {
             this.saveUserProgress();
             this.helpContent.clear();
@@ -936,14 +1037,14 @@ export class HelpManager {
 }
 
 // シングルトンインスタンス管理
-let helpManagerInstance = null;
+let helpManagerInstance: HelpManager | null = null;
 
 /**
  * HelpManagerのシングルトンインスタンスを取得
- * @param {Object} gameEngine - ゲームエンジン
- * @returns {HelpManager} HelpManagerインスタンス
+ * @param gameEngine - ゲームエンジン
+ * @returns HelpManagerインスタンス
  */
-export function getHelpManager(gameEngine) {
+export function getHelpManager(gameEngine: GameEngine): HelpManager {
     if (!helpManagerInstance) {
         helpManagerInstance = new HelpManager(gameEngine);
     }
@@ -952,10 +1053,10 @@ export function getHelpManager(gameEngine) {
 
 /**
  * HelpManagerインスタンスを再初期化
- * @param {Object} gameEngine - ゲームエンジン
- * @returns {HelpManager} 新しいHelpManagerインスタンス
+ * @param gameEngine - ゲームエンジン
+ * @returns 新しいHelpManagerインスタンス
  */
-export function reinitializeHelpManager(gameEngine) {
+export function reinitializeHelpManager(gameEngine: GameEngine): HelpManager {
     if (helpManagerInstance) {
         helpManagerInstance.destroy();
     }
