@@ -3,8 +3,89 @@
  * Part of the PerformanceDataAnalyzer split implementation
  */
 
+// Type definitions
+interface ThresholdValues {
+    min?: number;
+    target: number;
+    max?: number;
+    critical: number;
+    warning: number;
+}
+
+interface ThresholdConfig {
+    adaptiveThresholds: boolean;
+    staticThresholds: Map<string, ThresholdValues>;
+    dynamicThresholds: Map<string, ThresholdValues>;
+    violationSensitivity: number;
+    adaptationRate: number;
+}
+
+interface BaselinePoint {
+    timestamp: number;
+    value: number;
+}
+
+interface BaselineStats {
+    count: number;
+    mean: number;
+    median: number;
+    std: number;
+    min: number;
+    max: number;
+    p25: number;
+    p75: number;
+    p95: number;
+    p90?: number;
+    updated: number;
+}
+
+interface ThresholdViolation {
+    timestamp: number;
+    metricId: string;
+    value: number;
+    thresholds: ThresholdValues;
+    type: 'critical_low' | 'warning_low' | 'critical_high' | 'warning_high';
+    severity: 'critical' | 'warning' | 'high' | 'medium' | 'low';
+    deviation: number;
+}
+
+interface ViolationStats {
+    total: number;
+    recent: number;
+    by_severity: Record<string, number>;
+    by_metric: Record<string, number>;
+    rate_per_minute: number;
+}
+
+interface ExportedData {
+    timestamp: number;
+    config: ThresholdConfig;
+    baselineStats: Record<string, BaselineStats>;
+    violations: ThresholdViolation[];
+    violationCounters: Record<string, number>;
+}
+
+interface ImportData {
+    config?: Partial<ThresholdConfig>;
+    baselineStats?: Record<string, BaselineStats>;
+    violations?: ThresholdViolation[];
+    violationCounters?: Record<string, number>;
+}
+
+interface MainController {
+    errorHandler: any;
+}
+
 export class PerformanceThresholdManager {
-    constructor(mainController) {
+    private mainController: MainController;
+    private errorHandler: any;
+    private thresholdConfig: ThresholdConfig;
+    private violations: ThresholdViolation[];
+    private violationCounters: Map<string, number>;
+    private baselineHistory: Map<string, BaselinePoint[]>;
+    private baselineStats: Map<string, BaselineStats>;
+
+    constructor(mainController: MainController) {
         this.mainController = mainController;
         this.errorHandler = mainController.errorHandler;
         
@@ -33,7 +114,7 @@ export class PerformanceThresholdManager {
     /**
      * Initialize default thresholds
      */
-    initializeDefaultThresholds() {
+    private initializeDefaultThresholds(): void {
         // Static performance thresholds
         this.thresholdConfig.staticThresholds.set('fps', {
             min: 30,
@@ -75,10 +156,10 @@ export class PerformanceThresholdManager {
     
     /**
      * Update baseline and thresholds
-     * @param {string} metricId - Metric identifier
-     * @param {number} value - Current metric value
+     * @param metricId - Metric identifier
+     * @param value - Current metric value
      */
-    updateBaseline(metricId, value) {
+    updateBaseline(metricId: string, value: number): void {
         if (typeof value !== 'number' || !isFinite(value)) return;
         
         // Track baseline history
@@ -86,7 +167,7 @@ export class PerformanceThresholdManager {
             this.baselineHistory.set(metricId, []);
         }
         
-        const history = this.baselineHistory.get(metricId);
+        const history = this.baselineHistory.get(metricId)!;
         history.push({ timestamp: Date.now(), value });
         
         // Keep reasonable history size
@@ -105,14 +186,14 @@ export class PerformanceThresholdManager {
     
     /**
      * Update baseline statistics
-     * @param {string} metricId - Metric identifier
-     * @param {Array} history - Baseline history
+     * @param metricId - Metric identifier
+     * @param history - Baseline history
      */
-    updateBaselineStats(metricId, history) {
+    private updateBaselineStats(metricId: string, history: BaselinePoint[]): void {
         if (history.length === 0) return;
         
         const values = history.map(h => h.value);
-        const stats = {
+        const stats: BaselineStats = {
             count: values.length,
             mean: this.calculateMean(values),
             median: this.calculateMedian(values),
@@ -121,6 +202,7 @@ export class PerformanceThresholdManager {
             max: Math.max(...values),
             p25: this.calculatePercentile(values, 25),
             p75: this.calculatePercentile(values, 75),
+            p90: this.calculatePercentile(values, 90),
             p95: this.calculatePercentile(values, 95),
             updated: Date.now()
         };
@@ -130,10 +212,10 @@ export class PerformanceThresholdManager {
     
     /**
      * Update dynamic thresholds based on baseline
-     * @param {string} metricId - Metric identifier
-     * @param {number} currentValue - Current value
+     * @param metricId - Metric identifier
+     * @param currentValue - Current value
      */
-    updateDynamicThresholds(metricId, currentValue) {
+    private updateDynamicThresholds(metricId: string, currentValue: number): void {
         const stats = this.baselineStats.get(metricId);
         if (!stats) return;
         
@@ -145,7 +227,7 @@ export class PerformanceThresholdManager {
         const adaptationRate = this.thresholdConfig.adaptationRate;
         
         // Calculate adaptive thresholds based on metric type
-        let newThresholds;
+        let newThresholds: Partial<ThresholdValues>;
         
         switch (metricId) {
             case 'fps':
@@ -166,22 +248,22 @@ export class PerformanceThresholdManager {
         
         // Apply exponential smoothing to threshold updates
         for (const [key, newValue] of Object.entries(newThresholds)) {
-            if (dynamicThresholds[key] !== undefined) {
-                dynamicThresholds[key] = adaptationRate * newValue + (1 - adaptationRate) * dynamicThresholds[key];
+            if (dynamicThresholds[key as keyof ThresholdValues] !== undefined && typeof newValue === 'number') {
+                (dynamicThresholds as any)[key] = adaptationRate * newValue + (1 - adaptationRate) * (dynamicThresholds as any)[key];
             }
         }
     }
     
     /**
      * Calculate FPS-specific thresholds
-     * @param {object} stats - Baseline statistics
-     * @param {object} staticThresholds - Static thresholds
-     * @returns {object} New thresholds
+     * @param stats - Baseline statistics
+     * @param staticThresholds - Static thresholds
+     * @returns New thresholds
      */
-    calculateFPSThresholds(stats, staticThresholds) {
+    private calculateFPSThresholds(stats: BaselineStats, staticThresholds: ThresholdValues): Partial<ThresholdValues> {
         // For FPS, use percentiles to set thresholds
         return {
-            target: Math.max(staticThresholds.min, stats.p75),
+            target: Math.max(staticThresholds.min || 0, stats.p75),
             warning: Math.max(staticThresholds.critical, stats.p25),
             critical: Math.max(staticThresholds.critical, stats.p25 * 0.5)
         };
@@ -189,14 +271,14 @@ export class PerformanceThresholdManager {
     
     /**
      * Calculate frame time specific thresholds
-     * @param {object} stats - Baseline statistics
-     * @param {object} staticThresholds - Static thresholds
-     * @returns {object} New thresholds
+     * @param stats - Baseline statistics
+     * @param staticThresholds - Static thresholds
+     * @returns New thresholds
      */
-    calculateFrameTimeThresholds(stats, staticThresholds) {
+    private calculateFrameTimeThresholds(stats: BaselineStats, staticThresholds: ThresholdValues): Partial<ThresholdValues> {
         // For frame time, lower is better
         return {
-            target: Math.min(staticThresholds.max, stats.p25),
+            target: Math.min(staticThresholds.max || Infinity, stats.p25),
             warning: Math.min(staticThresholds.warning, stats.p75),
             critical: Math.min(staticThresholds.critical, stats.p95)
         };
@@ -204,42 +286,41 @@ export class PerformanceThresholdManager {
     
     /**
      * Calculate memory specific thresholds
-     * @param {object} stats - Baseline statistics
-     * @param {object} staticThresholds - Static thresholds
-     * @returns {object} New thresholds
+     * @param stats - Baseline statistics
+     * @param staticThresholds - Static thresholds
+     * @returns New thresholds
      */
-    calculateMemoryThresholds(stats, staticThresholds) {
+    private calculateMemoryThresholds(stats: BaselineStats, staticThresholds: ThresholdValues): Partial<ThresholdValues> {
         // For memory, allow for some growth but set reasonable limits
         return {
-            target: Math.min(staticThresholds.max, stats.p75 * 1.2),
-            warning: Math.min(staticThresholds.warning, stats.p90 * 1.5),
+            target: Math.min(staticThresholds.max || Infinity, stats.p75 * 1.2),
+            warning: Math.min(staticThresholds.warning, (stats.p90 || stats.p95) * 1.5),
             critical: Math.min(staticThresholds.critical, stats.max * 2)
         };
     }
     
     /**
      * Calculate network specific thresholds
-     * @param {object} stats - Baseline statistics
-     * @param {object} staticThresholds - Static thresholds
-     * @returns {object} New thresholds
+     * @param stats - Baseline statistics
+     * @param staticThresholds - Static thresholds
+     * @returns New thresholds
      */
-    calculateNetworkThresholds(stats, staticThresholds) {
+    private calculateNetworkThresholds(stats: BaselineStats, staticThresholds: ThresholdValues): Partial<ThresholdValues> {
         // For network latency, account for variance
-        const variance = stats.std * stats.std;
         return {
-            target: Math.min(staticThresholds.max, stats.p75 + stats.std),
-            warning: Math.min(staticThresholds.warning, stats.p90 + stats.std * 2),
+            target: Math.min(staticThresholds.max || Infinity, stats.p75 + stats.std),
+            warning: Math.min(staticThresholds.warning, (stats.p90 || stats.p95) + stats.std * 2),
             critical: Math.min(staticThresholds.critical, stats.p95 + stats.std * 3)
         };
     }
     
     /**
      * Calculate generic thresholds
-     * @param {object} stats - Baseline statistics
-     * @param {object} staticThresholds - Static thresholds
-     * @returns {object} New thresholds
+     * @param stats - Baseline statistics
+     * @param staticThresholds - Static thresholds
+     * @returns New thresholds
      */
-    calculateGenericThresholds(stats, staticThresholds) {
+    private calculateGenericThresholds(stats: BaselineStats, staticThresholds: ThresholdValues): Partial<ThresholdValues> {
         return {
             target: stats.median,
             warning: stats.p75 + stats.std,
@@ -249,16 +330,16 @@ export class PerformanceThresholdManager {
     
     /**
      * Check for threshold violations
-     * @param {string} metricId - Metric identifier
-     * @param {number} value - Current value
-     * @returns {object|null} Violation info or null
+     * @param metricId - Metric identifier
+     * @param value - Current value
+     * @returns Violation info or null
      */
-    checkThresholdViolation(metricId, value) {
+    checkThresholdViolation(metricId: string, value: number): ThresholdViolation | null {
         const thresholds = this.thresholdConfig.dynamicThresholds.get(metricId);
         if (!thresholds || typeof value !== 'number') return null;
         
-        let violationType = null;
-        let violationSeverity = 'none';
+        let violationType: ThresholdViolation['type'] | null = null;
+        let violationSeverity: ThresholdViolation['severity'] = 'low';
         
         // Check for violations based on metric type
         switch (metricId) {
@@ -286,7 +367,7 @@ export class PerformanceThresholdManager {
         }
         
         if (violationType) {
-            const violation = {
+            const violation: ThresholdViolation = {
                 timestamp: Date.now(),
                 metricId,
                 value,
@@ -305,13 +386,13 @@ export class PerformanceThresholdManager {
     
     /**
      * Calculate deviation from threshold
-     * @param {number} value - Current value
-     * @param {object} thresholds - Threshold values
-     * @param {string} metricId - Metric identifier
-     * @returns {number} Deviation percentage
+     * @param value - Current value
+     * @param thresholds - Threshold values
+     * @param metricId - Metric identifier
+     * @returns Deviation percentage
      */
-    calculateDeviation(value, thresholds, metricId) {
-        let referenceValue;
+    private calculateDeviation(value: number, thresholds: ThresholdValues, metricId: string): number {
+        let referenceValue: number;
         
         switch (metricId) {
             case 'fps':
@@ -331,9 +412,9 @@ export class PerformanceThresholdManager {
     
     /**
      * Record threshold violation
-     * @param {object} violation - Violation details
+     * @param violation - Violation details
      */
-    recordViolation(violation) {
+    private recordViolation(violation: ThresholdViolation): void {
         this.violations.push(violation);
         
         // Keep violations history manageable
@@ -350,39 +431,39 @@ export class PerformanceThresholdManager {
     
     /**
      * Get current thresholds for metric
-     * @param {string} metricId - Metric identifier
-     * @returns {object|null} Current thresholds
+     * @param metricId - Metric identifier
+     * @returns Current thresholds
      */
-    getThresholds(metricId) {
+    getThresholds(metricId: string): ThresholdValues | null {
         return this.thresholdConfig.dynamicThresholds.get(metricId) || null;
     }
     
     /**
      * Get baseline statistics for metric
-     * @param {string} metricId - Metric identifier
-     * @returns {object|null} Baseline statistics
+     * @param metricId - Metric identifier
+     * @returns Baseline statistics
      */
-    getBaselineStats(metricId) {
+    getBaselineStats(metricId: string): BaselineStats | null {
         return this.baselineStats.get(metricId) || null;
     }
     
     /**
      * Get recent violations
-     * @param {number} timeWindow - Time window in milliseconds
-     * @returns {Array} Recent violations
+     * @param timeWindow - Time window in milliseconds
+     * @returns Recent violations
      */
-    getRecentViolations(timeWindow = 300000) { // 5 minutes default
+    getRecentViolations(timeWindow: number = 300000): ThresholdViolation[] { // 5 minutes default
         const cutoff = Date.now() - timeWindow;
         return this.violations.filter(v => v.timestamp >= cutoff);
     }
     
     /**
      * Get violation statistics
-     * @returns {object} Violation statistics
+     * @returns Violation statistics
      */
-    getViolationStats() {
+    getViolationStats(): ViolationStats {
         const recentViolations = this.getRecentViolations();
-        const stats = {
+        const stats: ViolationStats = {
             total: this.violations.length,
             recent: recentViolations.length,
             by_severity: {},
@@ -402,7 +483,7 @@ export class PerformanceThresholdManager {
     /**
      * Reset violation history
      */
-    resetViolations() {
+    resetViolations(): void {
         this.violations = [];
         this.violationCounters.clear();
         console.log('[PerformanceThresholdManager] Violation history reset');
@@ -410,18 +491,18 @@ export class PerformanceThresholdManager {
     
     /**
      * Configure threshold settings
-     * @param {object} config - Configuration options
+     * @param config - Configuration options
      */
-    configure(config) {
+    configure(config: Partial<ThresholdConfig>): void {
         Object.assign(this.thresholdConfig, config);
         console.log('[PerformanceThresholdManager] Configuration updated');
     }
     
     /**
      * Export threshold data
-     * @returns {object} Exported data
+     * @returns Exported data
      */
-    exportData() {
+    exportData(): ExportedData {
         return {
             timestamp: Date.now(),
             config: this.thresholdConfig,
@@ -433,10 +514,10 @@ export class PerformanceThresholdManager {
     
     /**
      * Import threshold data
-     * @param {object} data - Data to import
-     * @returns {boolean} Success status
+     * @param data - Data to import
+     * @returns Success status
      */
-    importData(data) {
+    importData(data: ImportData): boolean {
         try {
             if (data.config) {
                 Object.assign(this.thresholdConfig, data.config);
@@ -464,22 +545,22 @@ export class PerformanceThresholdManager {
     }
     
     // Mathematical utility functions
-    calculateMean(values) {
+    private calculateMean(values: number[]): number {
         return values.reduce((sum, val) => sum + val, 0) / values.length;
     }
     
-    calculateMedian(values) {
+    private calculateMedian(values: number[]): number {
         const sorted = [...values].sort((a, b) => a - b);
         const mid = Math.floor(sorted.length / 2);
         return sorted.length % 2 === 0 ? (sorted[mid - 1] + sorted[mid]) / 2 : sorted[mid];
     }
     
-    calculateVariance(values) {
+    private calculateVariance(values: number[]): number {
         const mean = this.calculateMean(values);
         return values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / values.length;
     }
     
-    calculatePercentile(values, percentile) {
+    private calculatePercentile(values: number[], percentile: number): number {
         const sorted = [...values].sort((a, b) => a - b);
         const index = (percentile / 100) * (sorted.length - 1);
         const lower = Math.floor(index);
@@ -491,7 +572,7 @@ export class PerformanceThresholdManager {
     /**
      * Cleanup threshold manager resources
      */
-    destroy() {
+    destroy(): void {
         this.violations = [];
         this.violationCounters.clear();
         this.baselineHistory.clear();

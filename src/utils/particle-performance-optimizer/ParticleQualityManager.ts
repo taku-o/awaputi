@@ -2,8 +2,170 @@
  * Particle Quality Manager
  * パーティクル品質管理システム - 動的品質調整とパフォーマンス制御
  */
+
+// Quality level interfaces
+interface QualityLevel {
+    particleMultiplier: number;
+    maxParticles: number;
+    enablePhysics: boolean;
+    enableCollisions: boolean;
+    enableTrails: boolean;
+    enableGlow: boolean;
+    textureQuality: number;
+    updateFrequency: number;
+}
+
+interface QualityLevels {
+    minimal: QualityLevel;
+    low: QualityLevel;
+    medium: QualityLevel;
+    high: QualityLevel;
+    ultra: QualityLevel;
+}
+
+type QualityLevelName = keyof QualityLevels;
+
+interface QualityConfig {
+    enabled: boolean;
+    adaptiveQuality: boolean;
+    currentLevel: QualityLevelName;
+    levels: QualityLevels;
+}
+
+// Performance monitoring interfaces
+interface PerformanceThresholds {
+    downgrade: number;
+    upgrade: number;
+    critical: number;
+}
+
+interface PerformanceMonitor {
+    enabled: boolean;
+    targetFPS: number;
+    minFPS: number;
+    maxFPS: number;
+    thresholds: PerformanceThresholds;
+    fpsHistory: number[];
+    historySize: number;
+    averageFPS: number;
+    lastAdaptation: number;
+    adaptationCooldown: number;
+    stabilityFrames: number;
+    requiredStability: number;
+}
+
+// Scaling system interfaces
+interface ScalingFactors {
+    particleCount: number;
+    particleSize: number;
+    updateRate: number;
+    effectIntensity: number;
+    textureDetail: number;
+    physicsAccuracy: number;
+}
+
+interface ScalingPresets {
+    battery_saving: ScalingFactors;
+    performance: ScalingFactors;
+    balanced: ScalingFactors;
+    quality: ScalingFactors;
+}
+
+type ScalingPresetName = keyof ScalingPresets;
+
+interface ScalingSystem {
+    enabled: boolean;
+    factors: ScalingFactors;
+    scalingSpeed: number;
+    targetFactors: ScalingFactors;
+    presets: ScalingPresets;
+}
+
+// Statistics interface
+interface QualityStats {
+    qualityAdjustments: number;
+    automaticDowngrades: number;
+    automaticUpgrades: number;
+    emergencyReductions: number;
+    particlesReduced: number;
+    effectsDisabled: number;
+    performanceGain: number;
+    currentQualityScore: number;
+    adaptationActive: boolean;
+    lastAdaptationReason: string;
+}
+
+// Particle interfaces for quality management
+interface ParticlePhysics {
+    enabled: boolean;
+    gravity?: number;
+    friction?: number;
+    bounce?: number;
+}
+
+interface ParticleCollision {
+    enabled: boolean;
+    radius?: number;
+    response?: string;
+}
+
+interface ParticleTrail {
+    enabled: boolean;
+    length?: number;
+    opacity?: number;
+    color?: string;
+}
+
+interface ParticleGlow {
+    enabled: boolean;
+    radius?: number;
+    intensity?: number;
+    color?: string;
+}
+
+interface ParticleVelocity {
+    x: number;
+    y: number;
+}
+
+interface QualityManagedParticle {
+    x: number;
+    y: number;
+    size?: number;
+    opacity?: number;
+    textureDetail?: number;
+    physics?: ParticlePhysics;
+    collision?: ParticleCollision;
+    trail?: ParticleTrail;
+    glow?: ParticleGlow;
+    velocity?: ParticleVelocity;
+}
+
+// Configuration interface
+interface ParticleQualityManagerConfig {
+    enabled?: boolean;
+    adaptiveQuality?: boolean;
+    initialLevel?: QualityLevelName;
+    performanceMonitoring?: boolean;
+    targetFPS?: number;
+    minFPS?: number;
+    maxFPS?: number;
+    downgradeThreshold?: number;
+    upgradeThreshold?: number;
+    criticalThreshold?: number;
+    historySize?: number;
+    adaptationCooldown?: number;
+    requiredStability?: number;
+    scalingSpeed?: number;
+}
+
 export class ParticleQualityManager {
-    constructor(config = {}) {
+    private qualityConfig: QualityConfig;
+    private performanceMonitor: PerformanceMonitor;
+    private scalingSystem: ScalingSystem;
+    private stats: QualityStats;
+
+    constructor(config: ParticleQualityManagerConfig = {}) {
         // Quality configuration
         this.qualityConfig = {
             enabled: config.enabled !== undefined ? config.enabled : true,
@@ -109,7 +271,14 @@ export class ParticleQualityManager {
             
             // Gradual scaling
             scalingSpeed: config.scalingSpeed || 0.1,
-            targetFactors: { ...this.scalingSystem?.factors || {} },
+            targetFactors: {
+                particleCount: 1.0,
+                particleSize: 1.0,
+                updateRate: 1.0,
+                effectIntensity: 1.0,
+                textureDetail: 1.0,
+                physicsAccuracy: 1.0
+            },
             
             // Quality presets for different scenarios
             presets: {
@@ -172,16 +341,16 @@ export class ParticleQualityManager {
     
     /**
      * Apply quality scaling to particles
-     * @param {Array} particles - Particles to scale
-     * @returns {Array} Quality-scaled particles
+     * @param particles - Particles to scale
+     * @returns Quality-scaled particles
      */
-    applyQualityScaling(particles) {
+    applyQualityScaling(particles: QualityManagedParticle[]): QualityManagedParticle[] {
         if (!this.qualityConfig.enabled) {
             return particles;
         }
         
         const currentLevel = this.getCurrentQualityLevel();
-        const scaledParticles = [];
+        const scaledParticles: QualityManagedParticle[] = [];
         
         // Apply particle count reduction
         const maxParticles = Math.floor(currentLevel.maxParticles * this.scalingSystem.factors.particleCount);
@@ -204,10 +373,10 @@ export class ParticleQualityManager {
     
     /**
      * Apply quality modifications to individual particle
-     * @param {object} particle - Particle to modify
-     * @param {object} qualityLevel - Current quality level
+     * @param particle - Particle to modify
+     * @param qualityLevel - Current quality level
      */
-    applyQualityModifications(particle, qualityLevel) {
+    private applyQualityModifications(particle: QualityManagedParticle, qualityLevel: QualityLevel): void {
         const factors = this.scalingSystem.factors;
         
         // Scale particle size
@@ -246,10 +415,10 @@ export class ParticleQualityManager {
     
     /**
      * Update performance metrics and adapt quality
-     * @param {number} currentFPS - Current frame rate
-     * @param {number} frameTime - Frame processing time
+     * @param currentFPS - Current frame rate
+     * @param frameTime - Frame processing time
      */
-    updatePerformanceMetrics(currentFPS, frameTime = 0) {
+    updatePerformanceMetrics(currentFPS: number, frameTime: number = 0): void {
         if (!this.performanceMonitor.enabled) return;
         
         // Update FPS history
@@ -271,7 +440,7 @@ export class ParticleQualityManager {
     /**
      * Check if quality adaptation is needed
      */
-    checkQualityAdaptation() {
+    private checkQualityAdaptation(): void {
         const now = Date.now();
         const timeSinceLastAdaptation = now - this.performanceMonitor.lastAdaptation;
         
@@ -317,10 +486,10 @@ export class ParticleQualityManager {
     
     /**
      * Check performance stability
-     * @param {Array} recentFPS - Recent FPS measurements
-     * @returns {boolean} True if performance is stable
+     * @param recentFPS - Recent FPS measurements
+     * @returns True if performance is stable
      */
-    checkPerformanceStability(recentFPS) {
+    private checkPerformanceStability(recentFPS: number[]): boolean {
         if (recentFPS.length < 5) return false;
         
         const average = recentFPS.reduce((sum, fps) => sum + fps, 0) / recentFPS.length;
@@ -334,7 +503,7 @@ export class ParticleQualityManager {
     /**
      * Emergency quality reduction for critical performance
      */
-    emergencyQualityReduction() {
+    private emergencyQualityReduction(): void {
         console.warn('[ParticleQualityManager] Emergency quality reduction triggered');
         
         this.setQualityLevel('minimal');
@@ -348,9 +517,9 @@ export class ParticleQualityManager {
     /**
      * Downgrade quality level
      */
-    downgradeQuality() {
+    private downgradeQuality(): void {
         const currentLevel = this.qualityConfig.currentLevel;
-        const levels = Object.keys(this.qualityConfig.levels);
+        const levels = Object.keys(this.qualityConfig.levels) as QualityLevelName[];
         const currentIndex = levels.indexOf(currentLevel);
         
         if (currentIndex > 0) {
@@ -373,9 +542,9 @@ export class ParticleQualityManager {
     /**
      * Upgrade quality level
      */
-    upgradeQuality() {
+    private upgradeQuality(): void {
         const currentLevel = this.qualityConfig.currentLevel;
-        const levels = Object.keys(this.qualityConfig.levels);
+        const levels = Object.keys(this.qualityConfig.levels) as QualityLevelName[];
         const currentIndex = levels.indexOf(currentLevel);
         
         if (currentIndex < levels.length - 1) {
@@ -397,9 +566,9 @@ export class ParticleQualityManager {
     
     /**
      * Set quality level
-     * @param {string} level - Quality level name
+     * @param level - Quality level name
      */
-    setQualityLevel(level) {
+    setQualityLevel(level: QualityLevelName): void {
         if (!this.qualityConfig.levels[level]) {
             console.warn(`[ParticleQualityManager] Unknown quality level: ${level}`);
             return;
@@ -414,9 +583,9 @@ export class ParticleQualityManager {
     
     /**
      * Apply scaling preset
-     * @param {string} preset - Preset name
+     * @param preset - Preset name
      */
-    applyScalingPreset(preset) {
+    applyScalingPreset(preset: ScalingPresetName): void {
         if (!this.scalingSystem.presets[preset]) {
             console.warn(`[ParticleQualityManager] Unknown preset: ${preset}`);
             return;
@@ -430,16 +599,16 @@ export class ParticleQualityManager {
     
     /**
      * Get current quality level configuration
-     * @returns {object} Quality level configuration
+     * @returns Quality level configuration
      */
-    getCurrentQualityLevel() {
+    getCurrentQualityLevel(): QualityLevel {
         return this.qualityConfig.levels[this.qualityConfig.currentLevel];
     }
     
     /**
      * Update scaling factors from current quality level
      */
-    updateScalingFactorsFromLevel() {
+    private updateScalingFactorsFromLevel(): void {
         const level = this.getCurrentQualityLevel();
         
         // Update scaling factors based on level
@@ -451,7 +620,7 @@ export class ParticleQualityManager {
     /**
      * Reduce scaling factors for additional performance
      */
-    reduceScalingFactors() {
+    private reduceScalingFactors(): void {
         const factors = this.scalingSystem.factors;
         const reduction = 0.9; // 10% reduction
         
@@ -472,7 +641,7 @@ export class ParticleQualityManager {
     /**
      * Increase scaling factors when performance allows
      */
-    increaseScalingFactors() {
+    private increaseScalingFactors(): void {
         const factors = this.scalingSystem.factors;
         const increase = 1.1; // 10% increase
         
@@ -486,9 +655,9 @@ export class ParticleQualityManager {
     
     /**
      * Calculate current quality score
-     * @returns {number} Quality score (0-1)
+     * @returns Quality score (0-1)
      */
-    calculateQualityScore() {
+    calculateQualityScore(): number {
         const factors = this.scalingSystem.factors;
         const weights = {
             particleCount: 0.3,
@@ -501,8 +670,8 @@ export class ParticleQualityManager {
         
         let score = 0;
         for (const [factor, value] of Object.entries(factors)) {
-            if (weights[factor]) {
-                score += value * weights[factor];
+            if (weights[factor as keyof ScalingFactors]) {
+                score += value * weights[factor as keyof ScalingFactors];
             }
         }
         
@@ -512,9 +681,9 @@ export class ParticleQualityManager {
     
     /**
      * Get quality management statistics
-     * @returns {object} Statistics
+     * @returns Statistics
      */
-    getStats() {
+    getStats(): object {
         return {
             ...this.stats,
             currentLevel: this.qualityConfig.currentLevel,
@@ -527,7 +696,7 @@ export class ParticleQualityManager {
     /**
      * Reset statistics
      */
-    resetStats() {
+    resetStats(): void {
         this.stats.qualityAdjustments = 0;
         this.stats.automaticDowngrades = 0;
         this.stats.automaticUpgrades = 0;

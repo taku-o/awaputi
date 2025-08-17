@@ -5,8 +5,116 @@
 
 import { getErrorHandler } from '../../core/ErrorHandler.js';
 
+// Configuration interfaces
+interface MonitoringConfig {
+    interval: number;
+    enableDashboard: boolean;
+    enableHistory: boolean;
+    enableAlerts: boolean;
+    enableRealtimeStream: boolean;
+    metricsFilter: string[];
+    retention: number;
+    bufferSize: number;
+    samplingRate: number;
+}
+
+// Event detection interfaces
+interface EventDetector {
+    threshold: number;
+    duration?: number;
+    samples?: number;
+    condition: ((value: number, threshold: number) => boolean) | ((values: HistoryEntry[]) => boolean);
+    active: boolean;
+    startTime?: number | null;
+    history?: HistoryEntry[];
+}
+
+interface HistoryEntry {
+    value: number;
+    timestamp: number;
+}
+
+// Performance event interfaces
+interface PerformanceEvent {
+    type: string;
+    detected: number;
+    resolved?: number;
+    duration?: number;
+    metrics: Map<string, any>;
+    severity?: string;
+}
+
+// Stream interfaces
+interface RealtimeStream {
+    active: boolean;
+    buffer: StreamDataPoint[];
+    bufferSize: number;
+    lastFlush: number;
+}
+
+interface StreamDataPoint {
+    timestamp: number;
+    metrics: Record<string, any>;
+    events: string[];
+}
+
+// Data collector interfaces
+interface IDataCollector {
+    initialize(): Promise<void>;
+    collect(): Promise<Map<string, any>>;
+}
+
+// Error handler type
+interface ErrorHandler {
+    handleError(error: any, context?: { context: string }): void;
+}
+
+// Performance monitoring system interface
+interface PerformanceMonitoringSystem {
+    onRealTimeData?(timestamp: number, metrics: Map<string, any>): void;
+    onPerformanceEvent?(type: 'detected' | 'resolved', event: PerformanceEvent): void;
+}
+
+// Navigator extensions
+declare global {
+    interface Navigator {
+        connection?: {
+            downlink?: number;
+        };
+        battery?: any;
+        getBattery?(): any;
+    }
+}
+
+type StreamCallback = (dataPoint: StreamDataPoint) => void;
+type UnsubscribeFunction = () => void;
+
 export class RealTimePerformanceMonitor {
-    constructor(performanceMonitoringSystem) {
+    private performanceMonitoringSystem: PerformanceMonitoringSystem;
+    private errorHandler: ErrorHandler;
+    private monitoringConfig: MonitoringConfig;
+    private monitoring: boolean;
+    private monitoringInterval: NodeJS.Timeout | null;
+    
+    // Data collectors
+    private frameDataCollector: FrameDataCollector;
+    private memoryDataCollector: MemoryDataCollector;
+    private renderDataCollector: RenderDataCollector;
+    private networkDataCollector: NetworkDataCollector;
+    private interactionDataCollector: InteractionDataCollector;
+    private batteryDataCollector: BatteryDataCollector;
+    
+    // Data streaming
+    private realtimeStream: RealtimeStream | null;
+    private streamBuffer: StreamDataPoint[];
+    private streamSubscribers: Set<StreamCallback>;
+    
+    // Performance event detection
+    private eventDetectors: Map<string, EventDetector>;
+    private detectedEvents: PerformanceEvent[];
+    private eventThresholds: Map<string, any>;
+
+    constructor(performanceMonitoringSystem: PerformanceMonitoringSystem) {
         this.performanceMonitoringSystem = performanceMonitoringSystem;
         this.errorHandler = getErrorHandler();
         
@@ -38,12 +146,12 @@ export class RealTimePerformanceMonitor {
         // Data streaming
         this.realtimeStream = null;
         this.streamBuffer = [];
-        this.streamSubscribers = new Set();
+        this.streamSubscribers = new Set<StreamCallback>();
         
         // Performance event detection
-        this.eventDetectors = new Map();
+        this.eventDetectors = new Map<string, EventDetector>();
         this.detectedEvents = [];
-        this.eventThresholds = new Map();
+        this.eventThresholds = new Map<string, any>();
         
         this.initializeCollectors();
         this.setupEventDetectors();
@@ -54,7 +162,7 @@ export class RealTimePerformanceMonitor {
     /**
      * Initialize data collectors
      */
-    async initializeCollectors() {
+    async initializeCollectors(): Promise<void> {
         try {
             await this.frameDataCollector.initialize();
             await this.memoryDataCollector.initialize();
@@ -74,12 +182,12 @@ export class RealTimePerformanceMonitor {
     /**
      * Setup performance event detectors
      */
-    setupEventDetectors() {
+    private setupEventDetectors(): void {
         // Frame rate drop detector
         this.eventDetectors.set('fps_drop', {
             threshold: 45,
             duration: 3000, // 3秒間
-            condition: (value, threshold) => value < threshold,
+            condition: (value: number, threshold: number) => value < threshold,
             active: false,
             startTime: null
         });
@@ -88,7 +196,7 @@ export class RealTimePerformanceMonitor {
         this.eventDetectors.set('memory_leak', {
             threshold: 10, // 10MB/min growth
             samples: 10,
-            condition: (values) => this.detectMemoryLeak(values),
+            condition: (values: HistoryEntry[]) => this.detectMemoryLeak(values),
             active: false,
             history: []
         });
@@ -96,30 +204,30 @@ export class RealTimePerformanceMonitor {
         // Frame time spike detector
         this.eventDetectors.set('frame_spike', {
             threshold: 50, // 50ms
-            condition: (value, threshold) => value > threshold,
+            condition: (value: number, threshold: number) => value > threshold,
             active: false
         });
         
         // Network latency spike detector
         this.eventDetectors.set('network_spike', {
             threshold: 500, // 500ms
-            condition: (value, threshold) => value > threshold,
+            condition: (value: number, threshold: number) => value > threshold,
             active: false
         });
         
         // Input lag detector
         this.eventDetectors.set('input_lag', {
             threshold: 100, // 100ms
-            condition: (value, threshold) => value > threshold,
+            condition: (value: number, threshold: number) => value > threshold,
             active: false
         });
     }
     
     /**
      * Start real-time monitoring
-     * @param {object} config - Monitoring configuration
+     * @param config - Monitoring configuration
      */
-    async startMonitoring(config = {}) {
+    async startMonitoring(config: Partial<MonitoringConfig> = {}): Promise<void> {
         if (this.monitoring) {
             console.warn('[RealTimePerformanceMonitor] Monitoring is already active');
             return;
@@ -154,7 +262,7 @@ export class RealTimePerformanceMonitor {
     /**
      * Stop real-time monitoring
      */
-    async stopMonitoring() {
+    async stopMonitoring(): Promise<void> {
         if (!this.monitoring) {
             console.warn('[RealTimePerformanceMonitor] Monitoring is not active');
             return;
@@ -184,7 +292,7 @@ export class RealTimePerformanceMonitor {
     /**
      * Collect real-time performance data
      */
-    async collectRealTimeData() {
+    async collectRealTimeData(): Promise<void> {
         if (!this.monitoring) return;
         
         try {
@@ -199,7 +307,7 @@ export class RealTimePerformanceMonitor {
             const batteryData = await this.batteryDataCollector.collect();
             
             // Combine all metrics
-            const metrics = new Map([
+            const metrics = new Map<string, any>([
                 ...frameData,
                 ...memoryData,
                 ...renderData,
@@ -238,15 +346,15 @@ export class RealTimePerformanceMonitor {
     
     /**
      * Filter metrics based on configuration
-     * @param {Map} metrics - Raw metrics
-     * @returns {Map} Filtered metrics
+     * @param metrics - Raw metrics
+     * @returns Filtered metrics
      */
-    filterMetrics(metrics) {
+    private filterMetrics(metrics: Map<string, any>): Map<string, any> {
         if (!this.monitoringConfig.metricsFilter || this.monitoringConfig.metricsFilter.length === 0) {
             return metrics;
         }
         
-        const filtered = new Map();
+        const filtered = new Map<string, any>();
         for (const metricId of this.monitoringConfig.metricsFilter) {
             if (metrics.has(metricId)) {
                 filtered.set(metricId, metrics.get(metricId));
@@ -257,10 +365,10 @@ export class RealTimePerformanceMonitor {
     
     /**
      * Detect performance events
-     * @param {Map} metrics - Current metrics
-     * @param {number} timestamp - Current timestamp
+     * @param metrics - Current metrics
+     * @param timestamp - Current timestamp
      */
-    detectEvents(metrics, timestamp) {
+    private detectEvents(metrics: Map<string, any>, timestamp: number): void {
         for (const [eventType, detector] of this.eventDetectors) {
             try {
                 const detected = this.checkEventCondition(eventType, detector, metrics, timestamp);
@@ -274,7 +382,7 @@ export class RealTimePerformanceMonitor {
                 } else if (!detected && detector.active) {
                     // Event ended
                     detector.active = false;
-                    this.onEventResolved(eventType, metrics, timestamp, detector.startTime);
+                    this.onEventResolved(eventType, metrics, timestamp, detector.startTime || timestamp);
                 }
                 
             } catch (error) {
@@ -285,13 +393,13 @@ export class RealTimePerformanceMonitor {
     
     /**
      * Check event condition
-     * @param {string} eventType - Event type
-     * @param {object} detector - Event detector configuration
-     * @param {Map} metrics - Current metrics
-     * @param {number} timestamp - Current timestamp
-     * @returns {boolean} True if event condition is met
+     * @param eventType - Event type
+     * @param detector - Event detector configuration
+     * @param metrics - Current metrics
+     * @param timestamp - Current timestamp
+     * @returns True if event condition is met
      */
-    checkEventCondition(eventType, detector, metrics, timestamp) {
+    private checkEventCondition(eventType: string, detector: EventDetector, metrics: Map<string, any>, timestamp: number): boolean {
         switch (eventType) {
             case 'fps_drop':
                 return this.checkFPSDropEvent(detector, metrics, timestamp);
@@ -310,16 +418,17 @@ export class RealTimePerformanceMonitor {
     
     /**
      * Check FPS drop event
-     * @param {object} detector - FPS drop detector
-     * @param {Map} metrics - Current metrics
-     * @param {number} timestamp - Current timestamp
-     * @returns {boolean} True if FPS drop detected
+     * @param detector - FPS drop detector
+     * @param metrics - Current metrics
+     * @param timestamp - Current timestamp
+     * @returns True if FPS drop detected
      */
-    checkFPSDropEvent(detector, metrics, timestamp) {
+    private checkFPSDropEvent(detector: EventDetector, metrics: Map<string, any>, timestamp: number): boolean {
         const fps = metrics.get('fps');
         if (fps === undefined) return false;
         
-        const isBelow = detector.condition(fps, detector.threshold);
+        const condition = detector.condition as (value: number, threshold: number) => boolean;
+        const isBelow = condition(fps, detector.threshold);
         
         if (isBelow && !detector.active) {
             detector.startTime = timestamp;
@@ -328,82 +437,91 @@ export class RealTimePerformanceMonitor {
         }
         
         // Check if condition persists for required duration
-        return isBelow && detector.startTime && 
+        return isBelow && detector.startTime && detector.duration && 
                (timestamp - detector.startTime) >= detector.duration;
     }
     
     /**
      * Check memory leak event
-     * @param {object} detector - Memory leak detector
-     * @param {Map} metrics - Current metrics
-     * @param {number} timestamp - Current timestamp
-     * @returns {boolean} True if memory leak detected
+     * @param detector - Memory leak detector
+     * @param metrics - Current metrics
+     * @param timestamp - Current timestamp
+     * @returns True if memory leak detected
      */
-    checkMemoryLeakEvent(detector, metrics, timestamp) {
+    private checkMemoryLeakEvent(detector: EventDetector, metrics: Map<string, any>, timestamp: number): boolean {
         const memoryUsed = metrics.get('memory_used');
         if (memoryUsed === undefined) return false;
+        
+        // Initialize history if not exists
+        if (!detector.history) {
+            detector.history = [];
+        }
         
         // Add to history
         detector.history.push({ value: memoryUsed, timestamp });
         
         // Keep only required samples
-        if (detector.history.length > detector.samples) {
+        if (detector.samples && detector.history.length > detector.samples) {
             detector.history.shift();
         }
         
         // Need enough samples to detect trend
-        if (detector.history.length < detector.samples) {
+        if (detector.samples && detector.history.length < detector.samples) {
             return false;
         }
         
-        return detector.condition(detector.history);
+        const condition = detector.condition as (values: HistoryEntry[]) => boolean;
+        return condition(detector.history);
     }
     
     /**
      * Check frame spike event
-     * @param {object} detector - Frame spike detector
-     * @param {Map} metrics - Current metrics
-     * @returns {boolean} True if frame spike detected
+     * @param detector - Frame spike detector
+     * @param metrics - Current metrics
+     * @returns True if frame spike detected
      */
-    checkFrameSpikeEvent(detector, metrics) {
+    private checkFrameSpikeEvent(detector: EventDetector, metrics: Map<string, any>): boolean {
         const frameTime = metrics.get('frame_time');
         if (frameTime === undefined) return false;
         
-        return detector.condition(frameTime, detector.threshold);
+        const condition = detector.condition as (value: number, threshold: number) => boolean;
+        return condition(frameTime, detector.threshold);
     }
     
     /**
      * Check network spike event
-     * @param {object} detector - Network spike detector
-     * @param {Map} metrics - Current metrics
-     * @returns {boolean} True if network spike detected
+     * @param detector - Network spike detector
+     * @param metrics - Current metrics
+     * @returns True if network spike detected
      */
-    checkNetworkSpikeEvent(detector, metrics) {
+    private checkNetworkSpikeEvent(detector: EventDetector, metrics: Map<string, any>): boolean {
         const networkLatency = metrics.get('network_latency');
         if (networkLatency === undefined) return false;
         
-        return detector.condition(networkLatency, detector.threshold);
+        const condition = detector.condition as (value: number, threshold: number) => boolean;
+        return condition(networkLatency, detector.threshold);
     }
     
     /**
      * Check input lag event
-     * @param {object} detector - Input lag detector
-     * @param {Map} metrics - Current metrics
-     * @returns {boolean} True if input lag detected
+     * @param detector - Input lag detector
+     * @param metrics - Current metrics
+     * @returns True if input lag detected
      */
-    checkInputLagEvent(detector, metrics) {
+    private checkInputLagEvent(detector: EventDetector, metrics: Map<string, any>): boolean {
         const inputLag = metrics.get('input_lag');
         if (inputLag === undefined) return false;
         
-        return detector.condition(inputLag, detector.threshold);
+        const condition = detector.condition as (value: number, threshold: number) => boolean;
+        return condition(inputLag, detector.threshold);
     }
     
     /**
      * Detect memory leak from history
-     * @param {Array} history - Memory usage history
-     * @returns {boolean} True if memory leak detected
+     * @param history - Memory usage history
+     * @returns True if memory leak detected
      */
-    detectMemoryLeak(history) {
+    private detectMemoryLeak(history: HistoryEntry[]): boolean {
         if (history.length < 3) return false;
         
         // Calculate memory growth rate
@@ -418,12 +536,12 @@ export class RealTimePerformanceMonitor {
     
     /**
      * Handle event detected
-     * @param {string} eventType - Event type
-     * @param {Map} metrics - Current metrics
-     * @param {number} timestamp - Event timestamp
+     * @param eventType - Event type
+     * @param metrics - Current metrics
+     * @param timestamp - Event timestamp
      */
-    onEventDetected(eventType, metrics, timestamp) {
-        const event = {
+    private onEventDetected(eventType: string, metrics: Map<string, any>, timestamp: number): void {
+        const event: PerformanceEvent = {
             type: eventType,
             detected: timestamp,
             metrics: new Map(metrics),
@@ -447,17 +565,18 @@ export class RealTimePerformanceMonitor {
     
     /**
      * Handle event resolved
-     * @param {string} eventType - Event type
-     * @param {Map} metrics - Current metrics
-     * @param {number} timestamp - Resolution timestamp
-     * @param {number} startTime - Event start time
+     * @param eventType - Event type
+     * @param metrics - Current metrics
+     * @param timestamp - Resolution timestamp
+     * @param startTime - Event start time
      */
-    onEventResolved(eventType, metrics, timestamp, startTime) {
-        const event = {
+    private onEventResolved(eventType: string, metrics: Map<string, any>, timestamp: number, startTime: number): void {
+        const event: PerformanceEvent = {
             type: eventType,
             resolved: timestamp,
             duration: timestamp - startTime,
-            metrics: new Map(metrics)
+            metrics: new Map(metrics),
+            detected: startTime
         };
         
         // Update the corresponding detected event
@@ -480,11 +599,11 @@ export class RealTimePerformanceMonitor {
     
     /**
      * Calculate event severity
-     * @param {string} eventType - Event type
-     * @param {Map} metrics - Current metrics
-     * @returns {string} Severity level
+     * @param eventType - Event type
+     * @param metrics - Current metrics
+     * @returns Severity level
      */
-    calculateEventSeverity(eventType, metrics) {
+    private calculateEventSeverity(eventType: string, metrics: Map<string, any>): string {
         switch (eventType) {
             case 'fps_drop':
                 const fps = metrics.get('fps');
@@ -524,7 +643,7 @@ export class RealTimePerformanceMonitor {
     /**
      * Initialize real-time data stream
      */
-    initializeStream() {
+    private initializeStream(): void {
         this.realtimeStream = {
             active: true,
             buffer: [],
@@ -537,13 +656,13 @@ export class RealTimePerformanceMonitor {
     
     /**
      * Stream performance data
-     * @param {number} timestamp - Data timestamp
-     * @param {Map} metrics - Performance metrics
+     * @param timestamp - Data timestamp
+     * @param metrics - Performance metrics
      */
-    streamData(timestamp, metrics) {
+    private streamData(timestamp: number, metrics: Map<string, any>): void {
         if (!this.realtimeStream || !this.realtimeStream.active) return;
         
-        const dataPoint = {
+        const dataPoint: StreamDataPoint = {
             timestamp,
             metrics: Object.fromEntries(metrics),
             events: this.getActiveEvents()
@@ -564,7 +683,7 @@ export class RealTimePerformanceMonitor {
     /**
      * Stop real-time data stream
      */
-    stopStream() {
+    private stopStream(): void {
         if (this.realtimeStream) {
             this.realtimeStream.active = false;
             this.realtimeStream.buffer = [];
@@ -575,10 +694,10 @@ export class RealTimePerformanceMonitor {
     
     /**
      * Subscribe to real-time data stream
-     * @param {Function} callback - Callback function
-     * @returns {Function} Unsubscribe function
+     * @param callback - Callback function
+     * @returns Unsubscribe function
      */
-    subscribeToStream(callback) {
+    subscribeToStream(callback: StreamCallback): UnsubscribeFunction {
         this.streamSubscribers.add(callback);
         
         return () => {
@@ -588,9 +707,9 @@ export class RealTimePerformanceMonitor {
     
     /**
      * Notify stream subscribers
-     * @param {object} dataPoint - Stream data point
+     * @param dataPoint - Stream data point
      */
-    notifyStreamSubscribers(dataPoint) {
+    private notifyStreamSubscribers(dataPoint: StreamDataPoint): void {
         for (const callback of this.streamSubscribers) {
             try {
                 callback(dataPoint);
@@ -602,9 +721,9 @@ export class RealTimePerformanceMonitor {
     
     /**
      * Get currently active events
-     * @returns {Array} Active events
+     * @returns Active events
      */
-    getActiveEvents() {
+    private getActiveEvents(): string[] {
         return Array.from(this.eventDetectors.entries())
             .filter(([, detector]) => detector.active)
             .map(([type]) => type);
@@ -612,10 +731,10 @@ export class RealTimePerformanceMonitor {
     
     /**
      * Get detected events history
-     * @param {number} timeRange - Time range in milliseconds
-     * @returns {Array} Events history
+     * @param timeRange - Time range in milliseconds
+     * @returns Events history
      */
-    getEventsHistory(timeRange = 3600000) {
+    getEventsHistory(timeRange: number = 3600000): PerformanceEvent[] {
         const now = Date.now();
         return this.detectedEvents.filter(event => 
             now - event.detected < timeRange
@@ -624,18 +743,18 @@ export class RealTimePerformanceMonitor {
     
     /**
      * Get real-time stream buffer
-     * @returns {Array} Stream buffer
+     * @returns Stream buffer
      */
-    getStreamBuffer() {
+    getStreamBuffer(): StreamDataPoint[] {
         return this.realtimeStream ? [...this.realtimeStream.buffer] : [];
     }
     
     /**
      * Configure event detector
-     * @param {string} eventType - Event type
-     * @param {object} config - Detector configuration
+     * @param eventType - Event type
+     * @param config - Detector configuration
      */
-    configureEventDetector(eventType, config) {
+    configureEventDetector(eventType: string, config: Partial<EventDetector>): void {
         const detector = this.eventDetectors.get(eventType);
         if (detector) {
             Object.assign(detector, config);
@@ -645,9 +764,9 @@ export class RealTimePerformanceMonitor {
     
     /**
      * Get monitoring statistics
-     * @returns {object} Monitoring statistics
+     * @returns Monitoring statistics
      */
-    getMonitoringStats() {
+    getMonitoringStats(): object {
         return {
             monitoring: this.monitoring,
             config: this.monitoringConfig,
@@ -671,7 +790,7 @@ export class RealTimePerformanceMonitor {
     /**
      * Cleanup monitoring resources
      */
-    destroy() {
+    destroy(): void {
         this.stopMonitoring();
         this.stopStream();
         this.streamSubscribers.clear();
@@ -683,14 +802,18 @@ export class RealTimePerformanceMonitor {
 }
 
 // Data collector classes (simplified implementations)
-class FrameDataCollector {
-    async initialize() {
+class FrameDataCollector implements IDataCollector {
+    private lastFrameTime: number = 0;
+    private frameCount: number = 0;
+    private frameTimes: number[] = [];
+    
+    async initialize(): Promise<void> {
         this.lastFrameTime = performance.now();
         this.frameCount = 0;
         this.frameTimes = [];
     }
     
-    async collect() {
+    async collect(): Promise<Map<string, any>> {
         const now = performance.now();
         const frameTime = now - this.lastFrameTime;
         this.lastFrameTime = now;
@@ -711,21 +834,24 @@ class FrameDataCollector {
         ]);
     }
     
-    calculateVariance(values) {
+    private calculateVariance(values: number[]): number {
         if (values.length < 2) return 0;
         const mean = values.reduce((a, b) => a + b) / values.length;
         return values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / values.length;
     }
 }
 
-class MemoryDataCollector {
-    async initialize() {
-        this.baselineMemory = performance.memory?.usedJSHeapSize || 0;
+class MemoryDataCollector implements IDataCollector {
+    private baselineMemory: number = 0;
+    private lastMemoryCheck: number = 0;
+    
+    async initialize(): Promise<void> {
+        this.baselineMemory = (performance as any).memory?.usedJSHeapSize || 0;
         this.lastMemoryCheck = Date.now();
     }
     
-    async collect() {
-        const memory = performance.memory;
+    async collect(): Promise<Map<string, any>> {
+        const memory = (performance as any).memory;
         if (!memory) return new Map();
         
         const now = Date.now();
@@ -743,12 +869,14 @@ class MemoryDataCollector {
     }
 }
 
-class RenderDataCollector {
-    async initialize() {
+class RenderDataCollector implements IDataCollector {
+    private lastRenderTime: number = 0;
+    
+    async initialize(): Promise<void> {
         this.lastRenderTime = performance.now();
     }
     
-    async collect() {
+    async collect(): Promise<Map<string, any>> {
         const now = performance.now();
         const renderTime = Math.random() * 15 + 5; // Simulated render time
         
@@ -760,12 +888,14 @@ class RenderDataCollector {
     }
 }
 
-class NetworkDataCollector {
-    async initialize() {
+class NetworkDataCollector implements IDataCollector {
+    private connection: any;
+    
+    async initialize(): Promise<void> {
         this.connection = navigator.connection;
     }
     
-    async collect() {
+    async collect(): Promise<Map<string, any>> {
         const latency = Math.random() * 100 + 20; // Simulated latency
         const bandwidth = this.connection?.downlink || 10; // Mbps
         
@@ -777,12 +907,14 @@ class NetworkDataCollector {
     }
 }
 
-class InteractionDataCollector {
-    async initialize() {
+class InteractionDataCollector implements IDataCollector {
+    private lastInputTime: number = 0;
+    
+    async initialize(): Promise<void> {
         this.lastInputTime = Date.now();
     }
     
-    async collect() {
+    async collect(): Promise<Map<string, any>> {
         const inputLag = Math.random() * 30 + 5; // Simulated input lag
         const responseTime = Math.random() * 200 + 50; // Simulated response time
         
@@ -793,12 +925,14 @@ class InteractionDataCollector {
     }
 }
 
-class BatteryDataCollector {
-    async initialize() {
+class BatteryDataCollector implements IDataCollector {
+    private battery: any;
+    
+    async initialize(): Promise<void> {
         this.battery = navigator.battery || navigator.getBattery?.();
     }
     
-    async collect() {
+    async collect(): Promise<Map<string, any>> {
         const powerConsumption = Math.random() * 400 + 200; // Simulated power consumption
         const thermalState = Math.floor(Math.random() * 3); // 0-2 thermal levels
         

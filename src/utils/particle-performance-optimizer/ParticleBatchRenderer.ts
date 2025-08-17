@@ -2,8 +2,128 @@
  * Particle Batch Renderer
  * パーティクルバッチレンダラー - 効率的なパーティクル描画システム
  */
+
+// Types for particle batch rendering
+interface BatchConfig {
+    enabled: boolean;
+    maxBatchSize: number;
+    maxInstances: number;
+    sortByTexture: boolean;
+    sortByBlendMode: boolean;
+    bufferReuse: boolean;
+    dynamicBuffering: boolean;
+    frustumCulling: boolean;
+    instancing: boolean;
+    atlasOptimization: boolean;
+}
+
+interface Batch {
+    material: string;
+    particles: Particle[];
+    vertexBuffer: Float32Array | null;
+    indexBuffer: Uint16Array | null;
+    boundingBox: BoundingBox | null;
+    texture: any;
+    blendMode: string;
+    shader: any;
+    drawCalls: number;
+    vertexCount: number;
+    triangleCount: number;
+}
+
+interface BatchManager {
+    batches: Map<string, Batch>;
+    activeBatches: Batch[];
+    batchPool: Batch[];
+    maxBatches: number;
+    vertexBuffers: Map<string, any>;
+    indexBuffers: Map<string, any>;
+    currentBuffer: any;
+    bufferPool: any[];
+}
+
+interface TextureAtlas {
+    enabled: boolean;
+    atlas: any;
+    atlasSize: number;
+    atlasSlots: Map<string, number>;
+    freeSlots: number[];
+    slotSize: number;
+    utilization: number;
+    fragmentation: number;
+    totalSlots: number;
+    usedSlots: number;
+}
+
+interface InstanceBuffer {
+    transforms: Float32Array | null;
+    colors: Float32Array | null;
+    uvs: Float32Array | null;
+    count: number;
+    maxInstances: number;
+}
+
+interface RenderingStats {
+    batchesCreated: number;
+    batchesReused: number;
+    particlesRendered: number;
+    drawCalls: number;
+    verticesRendered: number;
+    trianglesRendered: number;
+    batchingTime: number;
+    renderingTime: number;
+    bufferTime: number;
+    sortingTime: number;
+    batchEfficiency: number;
+    averageBatchSize: number;
+    fillRate: number;
+}
+
+interface Particle {
+    x: number;
+    y: number;
+    z?: number;
+    size?: number;
+    color?: string;
+    opacity?: number;
+    texture?: string;
+    type?: string;
+    blendMode?: string;
+    shader?: string;
+    depth?: number;
+}
+
+interface BoundingBox {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
+interface ParticleBatchRendererConfig {
+    enabled?: boolean;
+    maxBatchSize?: number;
+    maxInstances?: number;
+    sortByTexture?: boolean;
+    sortByBlendMode?: boolean;
+    bufferReuse?: boolean;
+    dynamicBuffering?: boolean;
+    frustumCulling?: boolean;
+    instancing?: boolean;
+    atlasOptimization?: boolean;
+    maxBatches?: number;
+    atlasSize?: number;
+    slotSize?: number;
+}
+
 export class ParticleBatchRenderer {
-    constructor(config = {}) {
+    private batchConfig: BatchConfig;
+    private batchManager: BatchManager;
+    private textureAtlas: TextureAtlas;
+    private instanceBuffer: InstanceBuffer;
+    private stats: RenderingStats;
+
+    constructor(config: ParticleBatchRendererConfig = {}) {
         // Batch rendering configuration
         this.batchConfig = {
             enabled: config.enabled !== undefined ? config.enabled : true,
@@ -88,7 +208,7 @@ export class ParticleBatchRenderer {
     /**
      * Initialize batch renderer components
      */
-    initializeBatchRenderer() {
+    private initializeBatchRenderer(): void {
         this.initializeBuffers();
         this.initializeTextureAtlas();
         
@@ -98,7 +218,7 @@ export class ParticleBatchRenderer {
     /**
      * Initialize rendering buffers
      */
-    initializeBuffers() {
+    private initializeBuffers(): void {
         // Initialize instance buffer arrays
         this.instanceBuffer.transforms = new Float32Array(this.instanceBuffer.maxInstances * 16); // 4x4 matrices
         this.instanceBuffer.colors = new Float32Array(this.instanceBuffer.maxInstances * 4); // RGBA
@@ -111,7 +231,7 @@ export class ParticleBatchRenderer {
     /**
      * Initialize texture atlas
      */
-    initializeTextureAtlas() {
+    private initializeTextureAtlas(): void {
         if (!this.textureAtlas.enabled) return;
         
         const slotsPerRow = Math.floor(this.textureAtlas.atlasSize / this.textureAtlas.slotSize);
@@ -129,10 +249,8 @@ export class ParticleBatchRenderer {
     
     /**
      * Create optimized render batches from particles
-     * @param {Array} particles - Particles to batch
-     * @returns {Array} Render batches
      */
-    createRenderBatches(particles) {
+    createRenderBatches(particles: Particle[]): Batch[] {
         const batchingStart = performance.now();
         
         // Reset batch statistics
@@ -161,10 +279,8 @@ export class ParticleBatchRenderer {
     
     /**
      * Sort particles for optimal batching
-     * @param {Array} particles - Particles to sort
-     * @returns {Array} Sorted particles
      */
-    sortParticlesForBatching(particles) {
+    private sortParticlesForBatching(particles: Particle[]): Particle[] {
         const sortingStart = performance.now();
         
         const sorted = [...particles].sort((a, b) => {
@@ -198,13 +314,11 @@ export class ParticleBatchRenderer {
     
     /**
      * Group particles into batches
-     * @param {Array} particles - Sorted particles
-     * @returns {Array} Particle batches
      */
-    groupParticlesIntoBatches(particles) {
-        const batches = [];
-        let currentBatch = null;
-        let currentMaterial = null;
+    private groupParticlesIntoBatches(particles: Particle[]): Batch[] {
+        const batches: Batch[] = [];
+        let currentBatch: Batch | null = null;
+        let currentMaterial: string | null = null;
         
         for (const particle of particles) {
             const material = this.getParticleMaterial(particle);
@@ -236,10 +350,8 @@ export class ParticleBatchRenderer {
     
     /**
      * Create a new render batch
-     * @param {string} material - Material identifier
-     * @returns {object} New batch
      */
-    createBatch(material) {
+    private createBatch(material: string): Batch {
         // Try to reuse batch from pool
         let batch = this.batchManager.batchPool.pop();
         if (batch) {
@@ -271,10 +383,8 @@ export class ParticleBatchRenderer {
     
     /**
      * Get material identifier for particle
-     * @param {object} particle - Particle object
-     * @returns {string} Material identifier
      */
-    getParticleMaterial(particle) {
+    private getParticleMaterial(particle: Particle): string {
         const texture = particle.texture || particle.type || 'default';
         const blendMode = particle.blendMode || 'normal';
         const shader = particle.shader || 'default';
@@ -284,11 +394,9 @@ export class ParticleBatchRenderer {
     
     /**
      * Optimize render batches
-     * @param {Array} batches - Raw batches
-     * @returns {Array} Optimized batches
      */
-    optimizeBatches(batches) {
-        const optimized = [];
+    private optimizeBatches(batches: Batch[]): Batch[] {
+        const optimized: Batch[] = [];
         
         for (const batch of batches) {
             // Skip empty batches
@@ -313,10 +421,8 @@ export class ParticleBatchRenderer {
     
     /**
      * Calculate bounding box for batch particles
-     * @param {Array} particles - Batch particles
-     * @returns {object} Bounding box
      */
-    calculateBatchBoundingBox(particles) {
+    private calculateBatchBoundingBox(particles: Particle[]): BoundingBox {
         let minX = Infinity, minY = Infinity;
         let maxX = -Infinity, maxY = -Infinity;
         
@@ -340,15 +446,11 @@ export class ParticleBatchRenderer {
     
     /**
      * Prepare vertex data for batch
-     * @param {object} batch - Batch to prepare
      */
-    prepareBatchVertexData(batch) {
+    private prepareBatchVertexData(batch: Batch): void {
         const particles = batch.particles;
         const vertexData = new Float32Array(particles.length * 16); // 4 vertices * 4 components
         const indexData = new Uint16Array(particles.length * 6); // 2 triangles * 3 indices
-        
-        let vertexOffset = 0;
-        let indexOffset = 0;
         
         for (let i = 0; i < particles.length; i++) {
             const particle = particles[i];
@@ -401,9 +503,8 @@ export class ParticleBatchRenderer {
     
     /**
      * Optimize batch texture usage
-     * @param {object} batch - Batch to optimize
      */
-    optimizeBatchTextureUsage(batch) {
+    private optimizeBatchTextureUsage(batch: Batch): void {
         // Texture atlas optimization would be implemented here
         // For now, this is a placeholder
         const textureKey = batch.material.split('_')[0];
@@ -411,7 +512,7 @@ export class ParticleBatchRenderer {
         if (!this.textureAtlas.atlasSlots.has(textureKey)) {
             // Allocate atlas slot if available
             if (this.textureAtlas.freeSlots.length > 0) {
-                const slot = this.textureAtlas.freeSlots.pop();
+                const slot = this.textureAtlas.freeSlots.pop()!;
                 this.textureAtlas.atlasSlots.set(textureKey, slot);
                 this.textureAtlas.usedSlots++;
                 this.textureAtlas.utilization = this.textureAtlas.usedSlots / this.textureAtlas.totalSlots;
@@ -421,10 +522,8 @@ export class ParticleBatchRenderer {
     
     /**
      * Calculate batch efficiency
-     * @param {Array} batches - Render batches
-     * @returns {number} Efficiency score (0-1)
      */
-    calculateBatchEfficiency(batches) {
+    private calculateBatchEfficiency(batches: Batch[]): number {
         if (batches.length === 0) return 1;
         
         const totalParticles = batches.reduce((sum, batch) => sum + batch.particles.length, 0);
@@ -436,10 +535,8 @@ export class ParticleBatchRenderer {
     
     /**
      * Render batches using Canvas 2D context
-     * @param {CanvasRenderingContext2D} ctx - Canvas context
-     * @param {Array} batches - Render batches
      */
-    renderBatches(ctx, batches) {
+    renderBatches(ctx: CanvasRenderingContext2D, batches: Batch[]): void {
         const renderStart = performance.now();
         
         this.stats.drawCalls = 0;
@@ -456,10 +553,8 @@ export class ParticleBatchRenderer {
     
     /**
      * Render individual batch
-     * @param {CanvasRenderingContext2D} ctx - Canvas context
-     * @param {object} batch - Batch to render
      */
-    renderBatch(ctx, batch) {
+    private renderBatch(ctx: CanvasRenderingContext2D, batch: Batch): void {
         // Set batch-specific rendering state
         const previousGlobalCompositeOperation = ctx.globalCompositeOperation;
         ctx.globalCompositeOperation = batch.blendMode || 'normal';
@@ -481,10 +576,8 @@ export class ParticleBatchRenderer {
     
     /**
      * Render individual particle
-     * @param {CanvasRenderingContext2D} ctx - Canvas context
-     * @param {object} particle - Particle to render
      */
-    renderParticle(ctx, particle) {
+    private renderParticle(ctx: CanvasRenderingContext2D, particle: Particle): void {
         const size = particle.size || 10;
         const color = particle.color || '#ffffff';
         const opacity = particle.opacity !== undefined ? particle.opacity : 1;
@@ -503,9 +596,8 @@ export class ParticleBatchRenderer {
     
     /**
      * Get rendering statistics
-     * @returns {object} Statistics
      */
-    getStats() {
+    getStats(): object {
         return { 
             ...this.stats,
             textureAtlas: {
@@ -519,7 +611,7 @@ export class ParticleBatchRenderer {
     /**
      * Reset statistics
      */
-    resetStats() {
+    resetStats(): void {
         this.stats.batchesCreated = 0;
         this.stats.batchesReused = 0;
         this.stats.particlesRendered = 0;
@@ -535,7 +627,7 @@ export class ParticleBatchRenderer {
     /**
      * Cleanup renderer resources
      */
-    cleanup() {
+    cleanup(): void {
         // Return batches to pool
         for (const batch of this.batchManager.activeBatches) {
             if (this.batchManager.batchPool.length < this.batchManager.maxBatches) {

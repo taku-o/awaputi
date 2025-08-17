@@ -3,20 +3,150 @@
  * 回復実行システム - エラー回復戦略の実行と劣化管理
  */
 
+// Recovery strategy interfaces
+interface RecoveryStrategy {
+    name: string;
+    priority: number;
+    execute: (error: ClassifiedError) => Promise<RecoveryResult>;
+    conditions: {
+        severity: SeverityLevel[];
+    };
+}
+
+interface RecoveryResult {
+    action: string;
+    [key: string]: any;
+}
+
+interface RecoveryStrategyMap extends Map<string, RecoveryStrategy[]> {}
+
+interface ExecutionResult {
+    success: boolean;
+    strategy?: string;
+    result?: RecoveryResult;
+    error?: string;
+    executionTime: number;
+    executedAt: number;
+}
+
+interface RecoveryStrategyDecision {
+    strategy: RecoveryStrategy | null;
+    alternatives?: RecoveryStrategy[];
+    error: ClassifiedError;
+    reason?: string;
+    determinedAt?: number;
+}
+
+// Error classification from ErrorDetectionSystem
+interface ClassifiedError {
+    detector: string;
+    timestamp: number;
+    baseline: any;
+    classification?: {
+        severity?: {
+            level: SeverityLevel;
+        };
+    };
+    [key: string]: any;
+}
+
+type SeverityLevel = 'low' | 'medium' | 'high' | 'critical';
+
+type RecoveryCallback = (result: ExecutionResult) => void;
+
+// Degradation interfaces
+interface DegradationLevel {
+    name: string;
+    description: string;
+    actions: DegradationAction[];
+}
+
+interface DegradationAction {
+    type: 'reduce_quality' | 'disable' | 'enable' | 'reduce' | 'optimize';
+    target: string;
+    amount?: number;
+    level?: string;
+}
+
+interface FeatureState {
+    enabled: boolean;
+    quality: number;
+    lastModified: number;
+}
+
+interface DegradationResult {
+    success: boolean;
+    previousLevel?: number;
+    currentLevel: number;
+    actionsExecuted?: Array<{
+        level: number;
+        action: DegradationAction;
+        result: ActionExecutionResult;
+    }>;
+    executionTime: number;
+    timestamp?: number;
+    action?: string;
+    error?: string;
+}
+
+interface ActionExecutionResult {
+    success: boolean;
+    reason?: string;
+    newQuality?: number;
+    disabled?: string;
+    enabled?: string;
+    reduced?: string;
+    optimized?: string;
+    amount?: number;
+    level?: string;
+}
+
+interface RecoveryStatistics {
+    total: number;
+    successful: number;
+    successRate: number;
+    byStrategy: Record<string, {
+        total: number;
+        successful: number;
+    }>;
+}
+
+interface DegradationStatistics {
+    currentLevel: number;
+    maxLevel: number;
+    totalDegradations: number;
+    averageDegradationLevel: number;
+    featureStatesCount: number;
+    disabledFeatures: string[];
+}
+
+// Global window extensions for recovery
+declare global {
+    interface Window {
+        gc?: () => void;
+    }
+}
+
 /**
  * Performance Recovery Engine
  * パフォーマンス回復エンジン - 回復戦略の決定と実行
  */
 export class PerformanceRecoveryEngine {
+    private recoveryStrategies: RecoveryStrategyMap;
+    private executionHistory: ExecutionResult[];
+    private recoveryCallbacks: RecoveryCallback[];
+    private maxHistorySize: number;
+    private initialized: boolean;
+
     constructor() {
-        this.recoveryStrategies = new Map();
+        this.recoveryStrategies = new Map<string, RecoveryStrategy[]>();
         this.executionHistory = [];
         this.recoveryCallbacks = [];
         this.maxHistorySize = 50;
         this.initialized = false;
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         console.log('Initializing Performance Recovery Engine...');
         
         this.setupRecoveryStrategies();
@@ -25,7 +155,7 @@ export class PerformanceRecoveryEngine {
         console.log('Performance Recovery Engine initialized successfully');
     }
 
-    setupRecoveryStrategies() {
+    private setupRecoveryStrategies(): void {
         // Frame rate recovery strategies
         this.recoveryStrategies.set('frameRate', [
             {
@@ -135,7 +265,7 @@ export class PerformanceRecoveryEngine {
         ]);
     }
 
-    async determineStrategy(classifiedError) {
+    async determineStrategy(classifiedError: ClassifiedError): Promise<RecoveryStrategyDecision> {
         if (!this.initialized) {
             throw new Error('Recovery engine not initialized');
         }
@@ -169,11 +299,12 @@ export class PerformanceRecoveryEngine {
         };
     }
 
-    async executeRecovery(recoveryStrategy) {
+    async executeRecovery(recoveryStrategy: RecoveryStrategyDecision): Promise<ExecutionResult> {
         if (!recoveryStrategy.strategy) {
             return {
                 success: false,
                 reason: 'no_strategy',
+                executionTime: 0,
                 executedAt: Date.now()
             };
         }
@@ -186,7 +317,7 @@ export class PerformanceRecoveryEngine {
             const result = await recoveryStrategy.strategy.execute(recoveryStrategy.error);
             const endTime = Date.now();
             
-            const executionResult = {
+            const executionResult: ExecutionResult = {
                 success: true,
                 strategy: recoveryStrategy.strategy.name,
                 result,
@@ -202,10 +333,10 @@ export class PerformanceRecoveryEngine {
         } catch (error) {
             console.error(`Recovery strategy ${recoveryStrategy.strategy.name} failed:`, error);
             
-            const failureResult = {
+            const failureResult: ExecutionResult = {
                 success: false,
                 strategy: recoveryStrategy.strategy.name,
-                error: error.message,
+                error: error instanceof Error ? error.message : String(error),
                 executionTime: Date.now() - startTime,
                 executedAt: startTime
             };
@@ -215,7 +346,7 @@ export class PerformanceRecoveryEngine {
         }
     }
 
-    recordExecution(result) {
+    private recordExecution(result: ExecutionResult): void {
         this.executionHistory.push(result);
         
         if (this.executionHistory.length > this.maxHistorySize) {
@@ -223,7 +354,7 @@ export class PerformanceRecoveryEngine {
         }
     }
 
-    notifyRecoveryCallbacks(result) {
+    private notifyRecoveryCallbacks(result: ExecutionResult): void {
         this.recoveryCallbacks.forEach(callback => {
             try {
                 callback(result);
@@ -233,31 +364,31 @@ export class PerformanceRecoveryEngine {
         });
     }
 
-    onRecoveryFailed(callback) {
+    onRecoveryFailed(callback: (error: string, result: ExecutionResult) => void): void {
         this.recoveryCallbacks.push((result) => {
             if (!result.success) {
-                callback(result.error, result);
+                callback(result.error || 'Unknown error', result);
             }
         });
     }
 
     // Recovery strategy implementations
-    async reduceRenderQuality(error) {
+    private async reduceRenderQuality(error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Reducing render quality to improve frame rate');
         return { action: 'quality_reduced', level: 'medium' };
     }
 
-    async disableVisualEffects(error) {
+    private async disableVisualEffects(error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Disabling visual effects to improve performance');
         return { action: 'effects_disabled', affected: ['particles', 'shadows', 'bloom'] };
     }
 
-    async emergencyOptimization(error) {
+    private async emergencyOptimization(error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Activating emergency optimization');
         return { action: 'emergency_mode', optimizations: ['minimal_quality', 'no_effects', 'reduced_resolution'] };
     }
 
-    async forceGarbageCollection(error) {
+    private async forceGarbageCollection(error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Forcing garbage collection');
         if (window.gc) {
             window.gc();
@@ -265,73 +396,75 @@ export class PerformanceRecoveryEngine {
         return { action: 'gc_forced', available: !!window.gc };
     }
 
-    async cleanupCaches(error) {
+    private async cleanupCaches(error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Cleaning up caches to free memory');
         return { action: 'caches_cleaned', freed: 'estimated_10mb' };
     }
 
-    async relieveMemoryPressure(error) {
+    private async relieveMemoryPressure(error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Relieving memory pressure');
         return { action: 'memory_pressure_relieved', techniques: ['object_pooling', 'lazy_loading'] };
     }
 
-    async optimizeRendering(error) {
+    private async optimizeRendering(error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Optimizing rendering pipeline');
         return { action: 'rendering_optimized', optimizations: ['batching', 'culling'] };
     }
 
-    async activateFallbackRenderer(error) {
+    private async activateFallbackRenderer(error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Activating fallback renderer');
         return { action: 'fallback_renderer', renderer: 'canvas_2d' };
     }
 
-    async retryNetworkRequest(error) {
+    private async retryNetworkRequest(error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Retrying network request');
         return { action: 'request_retried', attempts: 1 };
     }
 
-    async activateOfflineMode(error) {
+    private async activateOfflineMode(error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Activating offline mode');
         return { action: 'offline_mode', cached_data: true };
     }
 
-    async activateSafeMode(error) {
+    private async activateSafeMode(error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Activating safe mode');
         return { action: 'safe_mode', disabled_features: ['advanced_features'] };
     }
 
-    async disableProblematicFeatures(error) {
+    private async disableProblematicFeatures(error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Disabling problematic features');
         return { action: 'features_disabled', features: ['dynamic_loading'] };
     }
 
-    async reloadFailedResource(error) {
+    private async reloadFailedResource(error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Reloading failed resource');
         return { action: 'resource_reloaded', success: true };
     }
 
-    async useFallbackResource(error) {
+    private async useFallbackResource(error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Using fallback resource');
         return { action: 'fallback_resource', resource: 'default_asset' };
     }
 
-    getExecutionHistory() {
+    getExecutionHistory(): ExecutionResult[] {
         return [...this.executionHistory];
     }
 
-    getRecoveryStatistics() {
+    getRecoveryStatistics(): RecoveryStatistics {
         const total = this.executionHistory.length;
         const successful = this.executionHistory.filter(r => r.success).length;
-        const byStrategy = {};
+        const byStrategy: Record<string, { total: number; successful: number }> = {};
         
         this.executionHistory.forEach(result => {
             const strategy = result.strategy;
-            if (!byStrategy[strategy]) {
-                byStrategy[strategy] = { total: 0, successful: 0 };
-            }
-            byStrategy[strategy].total++;
-            if (result.success) {
-                byStrategy[strategy].successful++;
+            if (strategy) {
+                if (!byStrategy[strategy]) {
+                    byStrategy[strategy] = { total: 0, successful: 0 };
+                }
+                byStrategy[strategy].total++;
+                if (result.success) {
+                    byStrategy[strategy].successful++;
+                }
             }
         });
 
@@ -349,16 +482,23 @@ export class PerformanceRecoveryEngine {
  * 優雅な劣化管理システム - 段階的な機能制限とユーザー体験保護
  */
 export class GracefulDegradationManager {
+    private degradationLevels: Map<number, DegradationLevel>;
+    private currentDegradationLevel: number;
+    private maxDegradationLevel: number;
+    private degradationHistory: DegradationResult[];
+    private featureStates: Map<string, FeatureState>;
+    private initialized: boolean;
+
     constructor() {
-        this.degradationLevels = new Map();
+        this.degradationLevels = new Map<number, DegradationLevel>();
         this.currentDegradationLevel = 0;
         this.maxDegradationLevel = 5;
         this.degradationHistory = [];
-        this.featureStates = new Map();
+        this.featureStates = new Map<string, FeatureState>();
         this.initialized = false;
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         console.log('Initializing Graceful Degradation Manager...');
         
         this.setupDegradationLevels();
@@ -368,7 +508,7 @@ export class GracefulDegradationManager {
         console.log('Graceful Degradation Manager initialized successfully');
     }
 
-    setupDegradationLevels() {
+    private setupDegradationLevels(): void {
         // Level 0: Normal operation
         this.degradationLevels.set(0, {
             name: 'normal',
@@ -434,7 +574,7 @@ export class GracefulDegradationManager {
         });
     }
 
-    initializeFeatureStates() {
+    private initializeFeatureStates(): void {
         const features = [
             'graphics_quality', 'visual_effects', 'particle_effects',
             'advanced_shaders', 'post_processing', 'dynamic_lighting',
@@ -451,7 +591,7 @@ export class GracefulDegradationManager {
         });
     }
 
-    async initiateDegradation(error, failedRecovery) {
+    async initiateDegradation(error: ClassifiedError, failedRecovery?: ExecutionResult): Promise<DegradationResult> {
         if (!this.initialized) {
             throw new Error('Degradation manager not initialized');
         }
@@ -462,7 +602,7 @@ export class GracefulDegradationManager {
         return await this.degradeToLevel(targetLevel);
     }
 
-    calculateTargetDegradationLevel(error, failedRecovery) {
+    private calculateTargetDegradationLevel(error: ClassifiedError, failedRecovery?: ExecutionResult): number {
         let targetLevel = this.currentDegradationLevel + 1;
 
         // Adjust based on error severity
@@ -487,26 +627,31 @@ export class GracefulDegradationManager {
         }
 
         // Consider failed recovery attempts
-        if (failedRecovery && failedRecovery.attempts > 1) {
+        if (failedRecovery && (failedRecovery as any).attempts > 1) {
             targetLevel += 1;
         }
 
         return Math.min(targetLevel, this.maxDegradationLevel);
     }
 
-    async degradeToLevel(targetLevel) {
+    private async degradeToLevel(targetLevel: number): Promise<DegradationResult> {
         if (targetLevel <= this.currentDegradationLevel) {
             return {
                 success: true,
                 action: 'no_change',
-                currentLevel: this.currentDegradationLevel
+                currentLevel: this.currentDegradationLevel,
+                executionTime: 0
             };
         }
 
         console.log(`Degrading from level ${this.currentDegradationLevel} to level ${targetLevel}`);
         
         const degradationStart = Date.now();
-        const actionsExecuted = [];
+        const actionsExecuted: Array<{
+            level: number;
+            action: DegradationAction;
+            result: ActionExecutionResult;
+        }> = [];
 
         try {
             // Execute degradation actions for each level
@@ -520,11 +665,12 @@ export class GracefulDegradationManager {
                 }
             }
 
+            const previousLevel = this.currentDegradationLevel;
             this.currentDegradationLevel = targetLevel;
             
-            const degradationResult = {
+            const degradationResult: DegradationResult = {
                 success: true,
-                previousLevel: this.currentDegradationLevel,
+                previousLevel,
                 currentLevel: targetLevel,
                 actionsExecuted,
                 executionTime: Date.now() - degradationStart,
@@ -539,19 +685,20 @@ export class GracefulDegradationManager {
             
             return {
                 success: false,
-                error: error.message,
+                error: error instanceof Error ? error.message : String(error),
+                currentLevel: this.currentDegradationLevel,
                 actionsExecuted,
                 executionTime: Date.now() - degradationStart
             };
         }
     }
 
-    async executeAction(action) {
+    private async executeAction(action: DegradationAction): Promise<ActionExecutionResult> {
         console.log(`Executing degradation action: ${action.type} on ${action.target}`);
         
         switch (action.type) {
             case 'reduce_quality':
-                return this.reduceQuality(action.target, action.amount);
+                return this.reduceQuality(action.target, action.amount || 0);
             
             case 'disable':
                 return this.disableFeature(action.target);
@@ -560,10 +707,10 @@ export class GracefulDegradationManager {
                 return this.enableFeature(action.target);
             
             case 'reduce':
-                return this.reduceParameter(action.target, action.amount);
+                return this.reduceParameter(action.target, action.amount || 0);
             
             case 'optimize':
-                return this.optimizeFeature(action.target, action.level);
+                return this.optimizeFeature(action.target, action.level || 'basic');
             
             default:
                 console.warn(`Unknown action type: ${action.type}`);
@@ -571,7 +718,7 @@ export class GracefulDegradationManager {
         }
     }
 
-    reduceQuality(target, amount) {
+    private reduceQuality(target: string, amount: number): ActionExecutionResult {
         const feature = this.featureStates.get(target);
         if (feature) {
             feature.quality = Math.max(0.1, feature.quality - amount);
@@ -581,7 +728,7 @@ export class GracefulDegradationManager {
         return { success: false, reason: 'feature_not_found' };
     }
 
-    disableFeature(target) {
+    private disableFeature(target: string): ActionExecutionResult {
         const feature = this.featureStates.get(target);
         if (feature) {
             feature.enabled = false;
@@ -591,23 +738,23 @@ export class GracefulDegradationManager {
         return { success: false, reason: 'feature_not_found' };
     }
 
-    enableFeature(target) {
+    private enableFeature(target: string): ActionExecutionResult {
         // For enabling special modes like safe_mode
         console.log(`Enabling special mode: ${target}`);
         return { success: true, enabled: target };
     }
 
-    reduceParameter(target, amount) {
+    private reduceParameter(target: string, amount: number): ActionExecutionResult {
         console.log(`Reducing ${target} by ${amount * 100}%`);
         return { success: true, reduced: target, amount };
     }
 
-    optimizeFeature(target, level) {
+    private optimizeFeature(target: string, level: string): ActionExecutionResult {
         console.log(`Optimizing ${target} to ${level} level`);
         return { success: true, optimized: target, level };
     }
 
-    recordDegradation(result) {
+    private recordDegradation(result: DegradationResult): void {
         this.degradationHistory.push(result);
         
         // Keep only last 20 degradation events
@@ -616,25 +763,30 @@ export class GracefulDegradationManager {
         }
     }
 
-    async executeDegradation(error, failedRecovery) {
+    async executeDegradation(error: ClassifiedError, failedRecovery?: ExecutionResult): Promise<DegradationResult> {
         return await this.initiateDegradation(error, failedRecovery);
     }
 
-    getCurrentDegradationLevel() {
+    getCurrentDegradationLevel(): number {
         return this.currentDegradationLevel;
     }
 
-    getFeatureStates() {
+    getFeatureStates(): Map<string, FeatureState> {
         return new Map(this.featureStates);
     }
 
-    getDegradationHistory() {
+    getDegradationHistory(): DegradationResult[] {
         return [...this.degradationHistory];
     }
 
-    async restoreToLevel(targetLevel) {
+    async restoreToLevel(targetLevel: number): Promise<DegradationResult> {
         if (targetLevel >= this.currentDegradationLevel) {
-            return { success: true, action: 'no_change' };
+            return { 
+                success: true, 
+                action: 'no_change',
+                currentLevel: this.currentDegradationLevel,
+                executionTime: 0
+            };
         }
 
         console.log(`Restoring from level ${this.currentDegradationLevel} to level ${targetLevel}`);
@@ -650,12 +802,13 @@ export class GracefulDegradationManager {
 
         return {
             success: true,
-            restoredToLevel: targetLevel,
+            currentLevel: targetLevel,
+            executionTime: 0,
             timestamp: Date.now()
         };
     }
 
-    getDegradationStatistics() {
+    getDegradationStatistics(): DegradationStatistics {
         return {
             currentLevel: this.currentDegradationLevel,
             maxLevel: this.maxDegradationLevel,

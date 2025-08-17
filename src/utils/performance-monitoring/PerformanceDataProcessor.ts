@@ -3,8 +3,95 @@
  * Part of the PerformanceDataAnalyzer split implementation
  */
 
+// Type definitions
+interface DataPoint {
+    x: number;
+    y: number;
+}
+
+interface AnalysisDataPoint {
+    timestamp: number;
+    metrics: Map<string, any>;
+}
+
+interface StatisticalProcessor {
+    metrics?: string[];
+    metricPairs?: [string, string][];
+    method?: string;
+    calculate: (data: AnalysisDataPoint[]) => any;
+}
+
+interface TrendData {
+    trend: 'stable' | 'increasing' | 'decreasing';
+    confidence: number;
+    timestamp: number;
+    analyzer: string;
+}
+
+interface DescriptiveStats {
+    count: number;
+    mean: number;
+    median: number;
+    std: number;
+    min: number;
+    max: number;
+    p25: number;
+    p75: number;
+    p95: number;
+}
+
+interface HistogramData {
+    bins: number[];
+    binWidth: number;
+    min: number;
+    max: number;
+}
+
+interface OutlierData {
+    outliers: number[];
+    bounds: { lower: number; upper: number };
+    iqr: number;
+}
+
+interface StatisticalData {
+    timestamp: number;
+    stats: any;
+    dataPoints: number;
+}
+
+interface HistoryPoint {
+    timestamp: number;
+    value: number;
+}
+
+interface TrendAnalyzer {
+    type: 'moving_average' | 'linear_regression' | 'exponential_smoothing';
+    window: number;
+    sensitivity?: number;
+    alpha?: number;
+    history: HistoryPoint[];
+    trend: 'stable' | 'increasing' | 'decreasing';
+}
+
+interface MainController {
+    trendAnalyzers: Map<string, TrendAnalyzer>;
+    metricsCollector: {
+        getRecentAnalysisData(window: number): AnalysisDataPoint[];
+    };
+    analysisConfig: {
+        statisticalWindow: number;
+    };
+    errorHandler: any;
+}
+
 export class PerformanceDataProcessor {
-    constructor(mainController) {
+    private mainController: MainController;
+    private errorHandler: any;
+    private trends: Map<string, TrendData>;
+    private statisticalData: Map<string, StatisticalData>;
+    private statisticalProcessors: Map<string, StatisticalProcessor>;
+
+    constructor(mainController: MainController) {
         this.mainController = mainController;
         this.errorHandler = mainController.errorHandler;
         
@@ -15,6 +102,7 @@ export class PerformanceDataProcessor {
         this.statisticalData = new Map();
         
         // Initialize processors
+        this.statisticalProcessors = new Map();
         this.initializeStatisticalProcessors();
         
         console.log('[PerformanceDataProcessor] Data processing component initialized');
@@ -23,13 +111,11 @@ export class PerformanceDataProcessor {
     /**
      * Initialize statistical processors
      */
-    initializeStatisticalProcessors() {
+    private initializeStatisticalProcessors(): void {
         // Descriptive statistics processor
-        this.statisticalProcessors = new Map();
-        
         this.statisticalProcessors.set('descriptive', {
             metrics: ['fps', 'memory_used', 'frame_time', 'network_latency'],
-            calculate: (data) => this.calculateDescriptiveStats(data)
+            calculate: (data: AnalysisDataPoint[]) => this.calculateDescriptiveStats(data)
         });
         
         // Correlation analysis processor
@@ -39,29 +125,29 @@ export class PerformanceDataProcessor {
                 ['memory_used', 'frame_variance'],
                 ['network_latency', 'response_time']
             ],
-            calculate: (data) => this.calculateCorrelations(data)
+            calculate: (data: AnalysisDataPoint[]) => this.calculateCorrelations(data)
         });
         
         // Performance distribution processor
         this.statisticalProcessors.set('distribution', {
             metrics: ['fps', 'frame_time'],
-            calculate: (data) => this.calculateDistributions(data)
+            calculate: (data: AnalysisDataPoint[]) => this.calculateDistributions(data)
         });
         
         // Outlier detection processor
         this.statisticalProcessors.set('outliers', {
             metrics: ['fps', 'memory_used', 'frame_time'],
             method: 'iqr', // interquartile range
-            calculate: (data) => this.detectOutliers(data)
+            calculate: (data: AnalysisDataPoint[]) => this.detectOutliers(data)
         });
     }
     
     /**
      * Perform trend analysis
-     * @param {number} timestamp - Data timestamp
-     * @param {Map} metrics - Performance metrics
+     * @param timestamp - Data timestamp
+     * @param metrics - Performance metrics
      */
-    performTrendAnalysis(timestamp, metrics) {
+    performTrendAnalysis(timestamp: number, metrics: Map<string, any>): void {
         for (const [metricId, analyzer] of this.mainController.trendAnalyzers) {
             const value = metrics.get(metricId);
             if (value === undefined) continue;
@@ -94,10 +180,10 @@ export class PerformanceDataProcessor {
     
     /**
      * Calculate trend for analyzer
-     * @param {object} analyzer - Trend analyzer
-     * @returns {string} Trend direction
+     * @param analyzer - Trend analyzer
+     * @returns Trend direction
      */
-    calculateTrend(analyzer) {
+    private calculateTrend(analyzer: TrendAnalyzer): 'stable' | 'increasing' | 'decreasing' {
         if (analyzer.history.length < 3) return 'stable';
         
         switch (analyzer.type) {
@@ -114,10 +200,10 @@ export class PerformanceDataProcessor {
     
     /**
      * Calculate moving average trend
-     * @param {object} analyzer - Trend analyzer
-     * @returns {string} Trend direction
+     * @param analyzer - Trend analyzer
+     * @returns Trend direction
      */
-    calculateMovingAverageTrend(analyzer) {
+    private calculateMovingAverageTrend(analyzer: TrendAnalyzer): 'stable' | 'increasing' | 'decreasing' {
         const halfWindow = Math.floor(analyzer.window / 2);
         const recent = analyzer.history.slice(-halfWindow);
         const older = analyzer.history.slice(-analyzer.window, -halfWindow);
@@ -128,29 +214,29 @@ export class PerformanceDataProcessor {
         const olderAvg = older.reduce((sum, h) => sum + h.value, 0) / older.length;
         const change = (recentAvg - olderAvg) / olderAvg;
         
-        if (Math.abs(change) < analyzer.sensitivity) return 'stable';
+        if (Math.abs(change) < (analyzer.sensitivity || 0.1)) return 'stable';
         return change > 0 ? 'increasing' : 'decreasing';
     }
     
     /**
      * Calculate linear regression trend
-     * @param {object} analyzer - Trend analyzer
-     * @returns {string} Trend direction
+     * @param analyzer - Trend analyzer
+     * @returns Trend direction
      */
-    calculateLinearRegressionTrend(analyzer) {
+    private calculateLinearRegressionTrend(analyzer: TrendAnalyzer): 'stable' | 'increasing' | 'decreasing' {
         const data = analyzer.history.map((h, i) => ({ x: i, y: h.value }));
         const slope = this.calculateLinearRegressionSlope(data);
         
-        if (Math.abs(slope) < analyzer.sensitivity) return 'stable';
+        if (Math.abs(slope) < (analyzer.sensitivity || 0.1)) return 'stable';
         return slope > 0 ? 'increasing' : 'decreasing';
     }
     
     /**
      * Calculate linear regression slope
-     * @param {Array} data - Data points with x, y values
-     * @returns {number} Slope value
+     * @param data - Data points with x, y values
+     * @returns Slope value
      */
-    calculateLinearRegressionSlope(data) {
+    private calculateLinearRegressionSlope(data: DataPoint[]): number {
         const n = data.length;
         const sumX = data.reduce((sum, d) => sum + d.x, 0);
         const sumY = data.reduce((sum, d) => sum + d.y, 0);
@@ -162,30 +248,30 @@ export class PerformanceDataProcessor {
     
     /**
      * Calculate exponential smoothing trend
-     * @param {object} analyzer - Trend analyzer
-     * @returns {string} Trend direction
+     * @param analyzer - Trend analyzer
+     * @returns Trend direction
      */
-    calculateExponentialSmoothingTrend(analyzer) {
+    private calculateExponentialSmoothingTrend(analyzer: TrendAnalyzer): 'stable' | 'increasing' | 'decreasing' {
         if (analyzer.history.length < 2) return 'stable';
         
         let smoothed = analyzer.history[0].value;
         for (let i = 1; i < analyzer.history.length; i++) {
-            smoothed = analyzer.alpha * analyzer.history[i].value + (1 - analyzer.alpha) * smoothed;
+            smoothed = (analyzer.alpha || 0.3) * analyzer.history[i].value + (1 - (analyzer.alpha || 0.3)) * smoothed;
         }
         
         const current = analyzer.history[analyzer.history.length - 1].value;
         const change = (current - smoothed) / smoothed;
         
-        if (Math.abs(change) < analyzer.sensitivity) return 'stable';
+        if (Math.abs(change) < (analyzer.sensitivity || 0.1)) return 'stable';
         return change > 0 ? 'increasing' : 'decreasing';
     }
     
     /**
      * Calculate trend confidence
-     * @param {object} analyzer - Trend analyzer
-     * @returns {number} Confidence score (0-1)
+     * @param analyzer - Trend analyzer
+     * @returns Confidence score (0-1)
      */
-    calculateTrendConfidence(analyzer) {
+    private calculateTrendConfidence(analyzer: TrendAnalyzer): number {
         if (analyzer.history.length < 3) return 0;
         
         // Calculate variance in trend direction
@@ -200,10 +286,10 @@ export class PerformanceDataProcessor {
     
     /**
      * Process statistical data
-     * @param {number} timestamp - Data timestamp
-     * @param {Map} metrics - Performance metrics
+     * @param timestamp - Data timestamp
+     * @param metrics - Performance metrics
      */
-    processStatisticalData(timestamp, metrics) {
+    processStatisticalData(timestamp: number, metrics: Map<string, any>): void {
         // Get recent data for statistical analysis
         const recentData = this.mainController.metricsCollector.getRecentAnalysisData(
             this.mainController.analysisConfig.statisticalWindow
@@ -226,15 +312,18 @@ export class PerformanceDataProcessor {
     
     /**
      * Calculate descriptive statistics
-     * @param {Array} data - Data points
-     * @returns {object} Descriptive statistics
+     * @param data - Data points
+     * @returns Descriptive statistics
      */
-    calculateDescriptiveStats(data) {
-        const stats = {};
+    private calculateDescriptiveStats(data: AnalysisDataPoint[]): Record<string, DescriptiveStats> {
+        const stats: Record<string, DescriptiveStats> = {};
         
-        for (const processor of this.statisticalProcessors.get('descriptive').metrics) {
+        const descriptiveProcessor = this.statisticalProcessors.get('descriptive');
+        if (!descriptiveProcessor?.metrics) return stats;
+        
+        for (const processor of descriptiveProcessor.metrics) {
             const values = data.map(point => point.metrics.get(processor))
-                              .filter(val => typeof val === 'number');
+                              .filter(val => typeof val === 'number') as number[];
             
             if (values.length === 0) continue;
             
@@ -256,17 +345,20 @@ export class PerformanceDataProcessor {
     
     /**
      * Calculate correlations between metrics
-     * @param {Array} data - Data points
-     * @returns {object} Correlation matrix
+     * @param data - Data points
+     * @returns Correlation matrix
      */
-    calculateCorrelations(data) {
-        const correlations = {};
+    private calculateCorrelations(data: AnalysisDataPoint[]): Record<string, number> {
+        const correlations: Record<string, number> = {};
         
-        for (const [metric1, metric2] of this.statisticalProcessors.get('correlation').metricPairs) {
+        const correlationProcessor = this.statisticalProcessors.get('correlation');
+        if (!correlationProcessor?.metricPairs) return correlations;
+        
+        for (const [metric1, metric2] of correlationProcessor.metricPairs) {
             const values1 = data.map(point => point.metrics.get(metric1))
-                               .filter(val => typeof val === 'number');
+                               .filter(val => typeof val === 'number') as number[];
             const values2 = data.map(point => point.metrics.get(metric2))
-                               .filter(val => typeof val === 'number');
+                               .filter(val => typeof val === 'number') as number[];
             
             if (values1.length === values2.length && values1.length > 1) {
                 correlations[`${metric1}_${metric2}`] = this.calculateCorrelation(values1, values2);
@@ -278,15 +370,18 @@ export class PerformanceDataProcessor {
     
     /**
      * Calculate distributions for metrics
-     * @param {Array} data - Data points
-     * @returns {object} Distribution data
+     * @param data - Data points
+     * @returns Distribution data
      */
-    calculateDistributions(data) {
-        const distributions = {};
+    private calculateDistributions(data: AnalysisDataPoint[]): Record<string, HistogramData> {
+        const distributions: Record<string, HistogramData> = {};
         
-        for (const metricId of this.statisticalProcessors.get('distribution').metrics) {
+        const distributionProcessor = this.statisticalProcessors.get('distribution');
+        if (!distributionProcessor?.metrics) return distributions;
+        
+        for (const metricId of distributionProcessor.metrics) {
             const values = data.map(point => point.metrics.get(metricId))
-                              .filter(val => typeof val === 'number');
+                              .filter(val => typeof val === 'number') as number[];
             
             if (values.length > 10) {
                 distributions[metricId] = this.calculateHistogram(values, 10);
@@ -298,15 +393,18 @@ export class PerformanceDataProcessor {
     
     /**
      * Detect outliers in metrics
-     * @param {Array} data - Data points
-     * @returns {object} Outlier data
+     * @param data - Data points
+     * @returns Outlier data
      */
-    detectOutliers(data) {
-        const outliers = {};
+    private detectOutliers(data: AnalysisDataPoint[]): Record<string, OutlierData> {
+        const outliers: Record<string, OutlierData> = {};
         
-        for (const metricId of this.statisticalProcessors.get('outliers').metrics) {
+        const outliersProcessor = this.statisticalProcessors.get('outliers');
+        if (!outliersProcessor?.metrics) return outliers;
+        
+        for (const metricId of outliersProcessor.metrics) {
             const values = data.map(point => point.metrics.get(metricId))
-                              .filter(val => typeof val === 'number');
+                              .filter(val => typeof val === 'number') as number[];
             
             if (values.length > 4) {
                 outliers[metricId] = this.detectIQROutliers(values);
@@ -317,22 +415,22 @@ export class PerformanceDataProcessor {
     }
     
     // Mathematical utility functions
-    calculateMean(values) {
+    private calculateMean(values: number[]): number {
         return values.reduce((sum, val) => sum + val, 0) / values.length;
     }
     
-    calculateMedian(values) {
+    private calculateMedian(values: number[]): number {
         const sorted = [...values].sort((a, b) => a - b);
         const mid = Math.floor(sorted.length / 2);
         return sorted.length % 2 === 0 ? (sorted[mid - 1] + sorted[mid]) / 2 : sorted[mid];
     }
     
-    calculateVariance(values) {
+    private calculateVariance(values: number[]): number {
         const mean = this.calculateMean(values);
         return values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / values.length;
     }
     
-    calculatePercentile(values, percentile) {
+    private calculatePercentile(values: number[], percentile: number): number {
         const sorted = [...values].sort((a, b) => a - b);
         const index = (percentile / 100) * (sorted.length - 1);
         const lower = Math.floor(index);
@@ -341,7 +439,7 @@ export class PerformanceDataProcessor {
         return sorted[lower] * (1 - weight) + sorted[upper] * weight;
     }
     
-    calculateCorrelation(x, y) {
+    private calculateCorrelation(x: number[], y: number[]): number {
         const n = Math.min(x.length, y.length);
         const meanX = this.calculateMean(x.slice(0, n));
         const meanY = this.calculateMean(y.slice(0, n));
@@ -362,7 +460,7 @@ export class PerformanceDataProcessor {
         return denominator === 0 ? 0 : numerator / denominator;
     }
     
-    calculateHistogram(values, bins) {
+    private calculateHistogram(values: number[], bins: number): HistogramData {
         const min = Math.min(...values);
         const max = Math.max(...values);
         const binWidth = (max - min) / bins;
@@ -381,7 +479,7 @@ export class PerformanceDataProcessor {
         };
     }
     
-    detectIQROutliers(values) {
+    private detectIQROutliers(values: number[]): OutlierData {
         const q1 = this.calculatePercentile(values, 25);
         const q3 = this.calculatePercentile(values, 75);
         const iqr = q3 - q1;
@@ -397,42 +495,42 @@ export class PerformanceDataProcessor {
     
     /**
      * Get trend analysis data
-     * @param {string} metricId - Metric ID
-     * @returns {object} Trend data
+     * @param metricId - Metric ID
+     * @returns Trend data
      */
-    getTrendData(metricId) {
+    getTrendData(metricId: string): TrendData | null {
         return this.trends.get(metricId) || null;
     }
     
     /**
      * Get all trends
-     * @returns {Map} All trend data
+     * @returns All trend data
      */
-    getAllTrends() {
+    getAllTrends(): Map<string, TrendData> {
         return new Map(this.trends);
     }
     
     /**
      * Get statistical data
-     * @param {string} processorId - Processor ID
-     * @returns {object} Statistical data
+     * @param processorId - Processor ID
+     * @returns Statistical data
      */
-    getStatisticalData(processorId) {
+    getStatisticalData(processorId: string): StatisticalData | null {
         return this.statisticalData.get(processorId) || null;
     }
     
     /**
      * Get all statistical data
-     * @returns {Map} All statistical data
+     * @returns All statistical data
      */
-    getAllStatisticalData() {
+    getAllStatisticalData(): Map<string, StatisticalData> {
         return new Map(this.statisticalData);
     }
     
     /**
      * Clear processing data
      */
-    clearData() {
+    clearData(): void {
         this.trends.clear();
         this.statisticalData.clear();
         console.log('[PerformanceDataProcessor] Processing data cleared');
@@ -441,7 +539,7 @@ export class PerformanceDataProcessor {
     /**
      * Cleanup processor resources
      */
-    destroy() {
+    destroy(): void {
         this.trends.clear();
         this.statisticalData.clear();
         this.statisticalProcessors.clear();

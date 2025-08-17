@@ -3,13 +3,148 @@
  * エラー検出システム - パフォーマンスエラーの検出、分類、監視
  */
 
+// Error detection interfaces
+interface DetectionThresholds {
+    frameRate: { critical: number; warning: number; target: number };
+    memory: { critical: number; warning: number; target: number };
+    rendering: { critical: number; warning: number; target: number };
+    network: { critical: number; warning: number; target: number };
+    javascript: { critical: number; warning: number; target: number };
+    resource: { critical: number; warning: number; target: number };
+}
+
+interface ThresholdConfig {
+    critical: number;
+    warning: number;
+    target: number;
+}
+
+interface PerformanceBaseline {
+    averageTaskTime: number;
+    minTaskTime: number;
+    maxTaskTime: number;
+    standardDeviation: number;
+    timestamp: number;
+}
+
+interface DetectedError {
+    type: string;
+    level: 'critical' | 'warning' | 'info';
+    metrics: Record<string, any>;
+    timestamp: number;
+    detector?: string;
+    baseline?: PerformanceBaseline;
+    lastOccurrence?: number;
+    classification?: ErrorClassification;
+}
+
+interface EnrichedError extends DetectedError {
+    detector: string;
+    baseline: PerformanceBaseline;
+}
+
+type ErrorCallback = (error: DetectedError) => void;
+
+// Error detector interface
+interface IErrorDetector {
+    initialize(): Promise<void>;
+    detect(): Promise<void>;
+    onError(callback: ErrorCallback): void;
+    updateThresholds(thresholds: ThresholdConfig): void;
+    getStatus(): DetectorStatus;
+}
+
+interface DetectorStatus {
+    enabled: boolean;
+    thresholds: ThresholdConfig;
+    [key: string]: any;
+}
+
+// Classification interfaces
+interface ClassificationRule {
+    category: string;
+    subcategory: string;
+    priority: 'critical' | 'high' | 'medium' | 'low';
+    recoverable: boolean;
+    degradationOptions: string[];
+}
+
+interface ErrorSeverity {
+    score: number;
+    level: 'critical' | 'high' | 'medium' | 'low';
+    components: {
+        impact: number;
+        frequency: number;
+        userExperience: number;
+        recoverability: number;
+    };
+}
+
+interface ErrorPatterns {
+    recognized: boolean;
+    type: string;
+    confidence: number;
+    trend: 'increasing' | 'decreasing' | 'stable' | 'insufficient_data';
+    clustering: {
+        clustered: boolean;
+        dominantDetector?: string;
+    };
+    correlation: {
+        hasCorrelation: boolean;
+        correlatedWith: string[];
+    };
+}
+
+interface ErrorClassification {
+    category: string;
+    subcategory: string;
+    priority: 'critical' | 'high' | 'medium' | 'low';
+    recoverable: boolean;
+    degradationOptions: string[];
+    severity: ErrorSeverity;
+    patterns: ErrorPatterns;
+    classifiedAt: number;
+    confidence: number;
+}
+
+interface ClassifiedError extends EnrichedError {
+    classification: ErrorClassification;
+}
+
+// Frame rate specific interfaces
+interface FrameData {
+    fps: number;
+    timestamp: number;
+}
+
+// Memory specific interfaces
+interface MemoryMetrics {
+    usage: number;
+    used: number;
+    total: number;
+}
+
+// Error history interface
+interface ErrorHistoryEntry {
+    detector: string;
+    timestamp: number;
+    severity: string;
+}
+
 /**
  * Performance Error Detector
  * パフォーマンスエラー検出器 - 各種パフォーマンス問題の検出
  */
 export class PerformanceErrorDetector {
+    private detectors: Map<string, IErrorDetector>;
+    private monitoringEnabled: boolean;
+    private detectionThresholds: DetectionThresholds;
+    private errorCallbacks: ErrorCallback[];
+    private monitoringInterval: NodeJS.Timeout | null;
+    private performanceBaseline: PerformanceBaseline | null;
+
     constructor() {
-        this.detectors = new Map();
+        this.detectors = new Map<string, IErrorDetector>();
         this.monitoringEnabled = true;
         this.detectionThresholds = {
             frameRate: { critical: 15, warning: 30, target: 60 },
@@ -24,7 +159,7 @@ export class PerformanceErrorDetector {
         this.performanceBaseline = null;
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         console.log('Initializing Performance Error Detector...');
         
         this.detectors.set('frameRate', new FrameRateErrorDetector(this.detectionThresholds.frameRate));
@@ -45,10 +180,10 @@ export class PerformanceErrorDetector {
         console.log('Performance Error Detector initialized successfully');
     }
 
-    async establishPerformanceBaseline() {
+    private async establishPerformanceBaseline(): Promise<void> {
         console.log('Establishing performance baseline...');
         
-        const measurements = [];
+        const measurements: number[] = [];
         for (let i = 0; i < 10; i++) {
             const start = performance.now();
             await this.performBenchmarkTask();
@@ -68,7 +203,7 @@ export class PerformanceErrorDetector {
         console.log('Performance baseline established:', this.performanceBaseline);
     }
 
-    async performBenchmarkTask() {
+    private async performBenchmarkTask(): Promise<number> {
         // Simple benchmark task for baseline measurement
         const iterations = 1000;
         let sum = 0;
@@ -78,14 +213,14 @@ export class PerformanceErrorDetector {
         return sum;
     }
 
-    calculateStandardDeviation(values) {
+    private calculateStandardDeviation(values: number[]): number {
         const mean = values.reduce((a, b) => a + b, 0) / values.length;
         const squaredDifferences = values.map(value => Math.pow(value - mean, 2));
         const variance = squaredDifferences.reduce((a, b) => a + b, 0) / values.length;
         return Math.sqrt(variance);
     }
 
-    startMonitoring() {
+    private startMonitoring(): void {
         if (!this.monitoringEnabled || this.monitoringInterval) return;
 
         this.monitoringInterval = setInterval(() => {
@@ -95,7 +230,7 @@ export class PerformanceErrorDetector {
         console.log('Performance monitoring started');
     }
 
-    stopMonitoring() {
+    stopMonitoring(): void {
         if (this.monitoringInterval) {
             clearInterval(this.monitoringInterval);
             this.monitoringInterval = null;
@@ -103,7 +238,7 @@ export class PerformanceErrorDetector {
         console.log('Performance monitoring stopped');
     }
 
-    async performDetectionCycle() {
+    private async performDetectionCycle(): Promise<void> {
         for (const [name, detector] of this.detectors) {
             try {
                 await detector.detect();
@@ -113,12 +248,12 @@ export class PerformanceErrorDetector {
         }
     }
 
-    handleDetectedError(detectorName, error) {
-        const enrichedError = {
+    private handleDetectedError(detectorName: string, error: DetectedError): void {
+        const enrichedError: EnrichedError = {
             ...error,
             detector: detectorName,
             timestamp: Date.now(),
-            baseline: this.performanceBaseline
+            baseline: this.performanceBaseline!
         };
 
         console.warn(`Performance error detected by ${detectorName}:`, enrichedError);
@@ -132,25 +267,25 @@ export class PerformanceErrorDetector {
         });
     }
 
-    onErrorDetected(callback) {
+    onErrorDetected(callback: ErrorCallback): void {
         this.errorCallbacks.push(callback);
     }
 
-    updateThresholds(newThresholds) {
+    updateThresholds(newThresholds: Partial<DetectionThresholds>): void {
         Object.assign(this.detectionThresholds, newThresholds);
         
         for (const [name, detector] of this.detectors) {
-            if (this.detectionThresholds[name]) {
-                detector.updateThresholds(this.detectionThresholds[name]);
+            if (this.detectionThresholds[name as keyof DetectionThresholds]) {
+                detector.updateThresholds(this.detectionThresholds[name as keyof DetectionThresholds]);
             }
         }
     }
 
-    getDetectionStatus() {
+    getDetectionStatus(): object {
         const status = {
             monitoring: this.monitoringEnabled,
             baseline: this.performanceBaseline,
-            detectors: {}
+            detectors: {} as Record<string, DetectorStatus>
         };
 
         for (const [name, detector] of this.detectors) {
@@ -166,14 +301,19 @@ export class PerformanceErrorDetector {
  * パフォーマンスエラー分類器 - エラーの分類と優先度設定
  */
 export class PerformanceErrorClassifier {
+    private classificationRules: Map<string, ClassificationRule>;
+    private severityCalculator: ErrorSeverityCalculator;
+    private patternAnalyzer: ErrorPatternAnalyzer;
+    private initialized: boolean;
+
     constructor() {
-        this.classificationRules = new Map();
+        this.classificationRules = new Map<string, ClassificationRule>();
         this.severityCalculator = new ErrorSeverityCalculator();
         this.patternAnalyzer = new ErrorPatternAnalyzer();
         this.initialized = false;
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         console.log('Initializing Performance Error Classifier...');
         
         this.setupClassificationRules();
@@ -184,7 +324,7 @@ export class PerformanceErrorClassifier {
         console.log('Performance Error Classifier initialized successfully');
     }
 
-    setupClassificationRules() {
+    private setupClassificationRules(): void {
         // Frame rate related errors
         this.classificationRules.set('frameRate', {
             category: 'performance',
@@ -240,7 +380,7 @@ export class PerformanceErrorClassifier {
         });
     }
 
-    async classify(detectedError) {
+    async classify(detectedError: EnrichedError): Promise<ClassifiedError> {
         if (!this.initialized) {
             throw new Error('Classifier not initialized');
         }
@@ -248,7 +388,7 @@ export class PerformanceErrorClassifier {
         const baseClassification = this.classificationRules.get(detectedError.detector) || {
             category: 'unknown',
             subcategory: 'unclassified',
-            priority: 'low',
+            priority: 'low' as const,
             recoverable: false,
             degradationOptions: []
         };
@@ -260,7 +400,7 @@ export class PerformanceErrorClassifier {
         const patterns = await this.patternAnalyzer.analyze(detectedError);
         
         // Create classified error
-        const classifiedError = {
+        const classifiedError: ClassifiedError = {
             ...detectedError,
             classification: {
                 ...baseClassification,
@@ -275,7 +415,7 @@ export class PerformanceErrorClassifier {
         return classifiedError;
     }
 
-    calculateClassificationConfidence(error, patterns) {
+    private calculateClassificationConfidence(error: EnrichedError, patterns: ErrorPatterns): number {
         let confidence = 0.5; // Base confidence
 
         // Increase confidence based on clear error indicators
@@ -296,11 +436,11 @@ export class PerformanceErrorClassifier {
         return Math.min(1.0, confidence);
     }
 
-    getClassificationRules() {
+    getClassificationRules(): Map<string, ClassificationRule> {
         return new Map(this.classificationRules);
     }
 
-    updateClassificationRule(detector, rule) {
+    updateClassificationRule(detector: string, rule: ClassificationRule): void {
         this.classificationRules.set(detector, rule);
     }
 }
@@ -310,6 +450,13 @@ export class PerformanceErrorClassifier {
  * エラー重要度計算器 - エラーの重要度を数値化
  */
 class ErrorSeverityCalculator {
+    private severityWeights: {
+        impact: number;
+        frequency: number;
+        userExperience: number;
+        recoverability: number;
+    };
+
     constructor() {
         this.severityWeights = {
             impact: 0.4,
@@ -319,11 +466,11 @@ class ErrorSeverityCalculator {
         };
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         console.log('Error Severity Calculator initialized');
     }
 
-    async calculate(error) {
+    async calculate(error: EnrichedError): Promise<ErrorSeverity> {
         const impact = this.calculateImpact(error);
         const frequency = this.calculateFrequency(error);
         const userExperience = this.calculateUserExperienceImpact(error);
@@ -342,7 +489,7 @@ class ErrorSeverityCalculator {
         };
     }
 
-    calculateImpact(error) {
+    private calculateImpact(error: EnrichedError): number {
         // Calculate impact based on error type and metrics
         if (error.detector === 'memory' && error.metrics?.usage > 0.9) return 1.0;
         if (error.detector === 'frameRate' && error.metrics?.fps < 15) return 0.9;
@@ -351,7 +498,7 @@ class ErrorSeverityCalculator {
         return 0.5;
     }
 
-    calculateFrequency(error) {
+    private calculateFrequency(error: EnrichedError): number {
         // Simplified frequency calculation
         const now = Date.now();
         const timeSinceLastError = now - (error.lastOccurrence || 0);
@@ -362,7 +509,7 @@ class ErrorSeverityCalculator {
         return 0.2; // Rare
     }
 
-    calculateUserExperienceImpact(error) {
+    private calculateUserExperienceImpact(error: EnrichedError): number {
         // Calculate user experience impact
         switch (error.detector) {
             case 'frameRate': return 0.9; // Direct visual impact
@@ -375,7 +522,7 @@ class ErrorSeverityCalculator {
         }
     }
 
-    calculateRecoverability(error) {
+    private calculateRecoverability(error: EnrichedError): number {
         // Higher score means harder to recover (worse)
         switch (error.detector) {
             case 'javascript': return 0.9; // Hard to recover
@@ -388,7 +535,7 @@ class ErrorSeverityCalculator {
         }
     }
 
-    scoresToLevel(score) {
+    private scoresToLevel(score: number): 'critical' | 'high' | 'medium' | 'low' {
         if (score >= 0.8) return 'critical';
         if (score >= 0.6) return 'high';
         if (score >= 0.4) return 'medium';
@@ -401,20 +548,24 @@ class ErrorSeverityCalculator {
  * エラーパターン分析器 - エラーのパターンと傾向を分析
  */
 class ErrorPatternAnalyzer {
+    private errorHistory: ErrorHistoryEntry[];
+    private patterns: Map<string, any>;
+    private maxHistorySize: number;
+
     constructor() {
         this.errorHistory = [];
         this.patterns = new Map();
         this.maxHistorySize = 100;
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         console.log('Error Pattern Analyzer initialized');
     }
 
-    async analyze(error) {
+    async analyze(error: EnrichedError): Promise<ErrorPatterns> {
         this.addToHistory(error);
         
-        const patterns = {
+        const patterns: ErrorPatterns = {
             recognized: false,
             type: 'unknown',
             confidence: 0,
@@ -438,7 +589,7 @@ class ErrorPatternAnalyzer {
         return patterns;
     }
 
-    addToHistory(error) {
+    private addToHistory(error: EnrichedError): void {
         this.errorHistory.push({
             detector: error.detector,
             timestamp: error.timestamp,
@@ -450,12 +601,12 @@ class ErrorPatternAnalyzer {
         }
     }
 
-    analyzeTrend() {
+    private analyzeTrend(): 'increasing' | 'decreasing' | 'stable' | 'insufficient_data' {
         if (this.errorHistory.length < 5) return 'insufficient_data';
         
         const recent = this.errorHistory.slice(-5);
         const timestamps = recent.map(e => e.timestamp);
-        const intervals = [];
+        const intervals: number[] = [];
         
         for (let i = 1; i < timestamps.length; i++) {
             intervals.push(timestamps[i] - timestamps[i-1]);
@@ -468,10 +619,10 @@ class ErrorPatternAnalyzer {
         return 'stable';
     }
 
-    analyzeClustering() {
+    private analyzeClustering(): { clustered: boolean; dominantDetector?: string } {
         if (this.errorHistory.length < 5) return { clustered: false };
         
-        const detectorCounts = {};
+        const detectorCounts: Record<string, number> = {};
         this.errorHistory.forEach(error => {
             detectorCounts[error.detector] = (detectorCounts[error.detector] || 0) + 1;
         });
@@ -485,7 +636,7 @@ class ErrorPatternAnalyzer {
         };
     }
 
-    analyzeCorrelation(error) {
+    private analyzeCorrelation(error: EnrichedError): { hasCorrelation: boolean; correlatedWith: string[] } {
         const timeWindow = 10000; // 10 seconds
         const recentErrors = this.errorHistory.filter(
             e => error.timestamp - e.timestamp < timeWindow
@@ -503,19 +654,24 @@ class ErrorPatternAnalyzer {
 }
 
 // Specific Error Detectors
-export class FrameRateErrorDetector {
-    constructor(thresholds) {
+export class FrameRateErrorDetector implements IErrorDetector {
+    private thresholds: ThresholdConfig;
+    private frameHistory: FrameData[];
+    private errorCallbacks: ErrorCallback[];
+    private lastFrameTime: number;
+
+    constructor(thresholds: ThresholdConfig) {
         this.thresholds = thresholds;
         this.frameHistory = [];
         this.errorCallbacks = [];
         this.lastFrameTime = performance.now();
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         console.log('Frame Rate Error Detector initialized');
     }
 
-    async detect() {
+    async detect(): Promise<void> {
         const currentTime = performance.now();
         const frameTime = currentTime - this.lastFrameTime;
         const fps = 1000 / frameTime;
@@ -534,8 +690,8 @@ export class FrameRateErrorDetector {
         }
     }
 
-    triggerError(level, fps, frameTime) {
-        const error = {
+    private triggerError(level: 'critical' | 'warning', fps: number, frameTime: number): void {
+        const error: DetectedError = {
             type: 'frame_rate',
             level,
             metrics: { fps, frameTime },
@@ -545,15 +701,15 @@ export class FrameRateErrorDetector {
         this.errorCallbacks.forEach(callback => callback(error));
     }
 
-    onError(callback) {
+    onError(callback: ErrorCallback): void {
         this.errorCallbacks.push(callback);
     }
 
-    updateThresholds(newThresholds) {
+    updateThresholds(newThresholds: ThresholdConfig): void {
         this.thresholds = newThresholds;
     }
 
-    getStatus() {
+    getStatus(): DetectorStatus {
         const recentFrames = this.frameHistory.slice(-10);
         const avgFps = recentFrames.length > 0 ? 
             recentFrames.reduce((sum, frame) => sum + frame.fps, 0) / recentFrames.length : 0;
@@ -567,21 +723,26 @@ export class FrameRateErrorDetector {
     }
 }
 
-export class MemoryErrorDetector {
-    constructor(thresholds) {
+export class MemoryErrorDetector implements IErrorDetector {
+    private thresholds: ThresholdConfig;
+    private errorCallbacks: ErrorCallback[];
+    private lastCheck: number;
+
+    constructor(thresholds: ThresholdConfig) {
         this.thresholds = thresholds;
         this.errorCallbacks = [];
         this.lastCheck = Date.now();
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         console.log('Memory Error Detector initialized');
     }
 
-    async detect() {
-        if (!performance.memory) return;
+    async detect(): Promise<void> {
+        if (!(performance as any).memory) return;
         
-        const usage = performance.memory.usedJSHeapSize / performance.memory.jsHeapSizeLimit;
+        const memory = (performance as any).memory;
+        const usage = memory.usedJSHeapSize / memory.jsHeapSizeLimit;
         
         if (usage > this.thresholds.critical) {
             this.triggerError('critical', usage);
@@ -592,14 +753,15 @@ export class MemoryErrorDetector {
         this.lastCheck = Date.now();
     }
 
-    triggerError(level, usage) {
-        const error = {
+    private triggerError(level: 'critical' | 'warning', usage: number): void {
+        const memory = (performance as any).memory;
+        const error: DetectedError = {
             type: 'memory',
             level,
             metrics: { 
                 usage,
-                used: performance.memory.usedJSHeapSize,
-                total: performance.memory.jsHeapSizeLimit
+                used: memory.usedJSHeapSize,
+                total: memory.jsHeapSizeLimit
             },
             timestamp: Date.now()
         };
@@ -607,17 +769,18 @@ export class MemoryErrorDetector {
         this.errorCallbacks.forEach(callback => callback(error));
     }
 
-    onError(callback) {
+    onError(callback: ErrorCallback): void {
         this.errorCallbacks.push(callback);
     }
 
-    updateThresholds(newThresholds) {
+    updateThresholds(newThresholds: ThresholdConfig): void {
         this.thresholds = newThresholds;
     }
 
-    getStatus() {
-        const currentUsage = performance.memory ? 
-            performance.memory.usedJSHeapSize / performance.memory.jsHeapSizeLimit : 0;
+    getStatus(): DetectorStatus {
+        const memory = (performance as any).memory;
+        const currentUsage = memory ? 
+            memory.usedJSHeapSize / memory.jsHeapSizeLimit : 0;
             
         return {
             enabled: true,
@@ -629,111 +792,123 @@ export class MemoryErrorDetector {
 }
 
 // Additional simplified detector classes
-export class RenderingErrorDetector {
-    constructor(thresholds) {
+export class RenderingErrorDetector implements IErrorDetector {
+    private thresholds: ThresholdConfig;
+    private errorCallbacks: ErrorCallback[];
+
+    constructor(thresholds: ThresholdConfig) {
         this.thresholds = thresholds;
         this.errorCallbacks = [];
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         console.log('Rendering Error Detector initialized');
     }
 
-    async detect() {
+    async detect(): Promise<void> {
         // Simplified rendering error detection
         // In real implementation, this would measure actual render times
     }
 
-    onError(callback) {
+    onError(callback: ErrorCallback): void {
         this.errorCallbacks.push(callback);
     }
 
-    updateThresholds(newThresholds) {
+    updateThresholds(newThresholds: ThresholdConfig): void {
         this.thresholds = newThresholds;
     }
 
-    getStatus() {
+    getStatus(): DetectorStatus {
         return { enabled: true, thresholds: this.thresholds };
     }
 }
 
-export class NetworkErrorDetector {
-    constructor(thresholds) {
+export class NetworkErrorDetector implements IErrorDetector {
+    private thresholds: ThresholdConfig;
+    private errorCallbacks: ErrorCallback[];
+
+    constructor(thresholds: ThresholdConfig) {
         this.thresholds = thresholds;
         this.errorCallbacks = [];
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         console.log('Network Error Detector initialized');
     }
 
-    async detect() {
+    async detect(): Promise<void> {
         // Simplified network error detection
     }
 
-    onError(callback) {
+    onError(callback: ErrorCallback): void {
         this.errorCallbacks.push(callback);
     }
 
-    updateThresholds(newThresholds) {
+    updateThresholds(newThresholds: ThresholdConfig): void {
         this.thresholds = newThresholds;
     }
 
-    getStatus() {
+    getStatus(): DetectorStatus {
         return { enabled: true, thresholds: this.thresholds };
     }
 }
 
-export class JavaScriptErrorDetector {
-    constructor(thresholds) {
+export class JavaScriptErrorDetector implements IErrorDetector {
+    private thresholds: ThresholdConfig;
+    private errorCallbacks: ErrorCallback[];
+
+    constructor(thresholds: ThresholdConfig) {
         this.thresholds = thresholds;
         this.errorCallbacks = [];
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         console.log('JavaScript Error Detector initialized');
     }
 
-    async detect() {
+    async detect(): Promise<void> {
         // Simplified JavaScript error detection
     }
 
-    onError(callback) {
+    onError(callback: ErrorCallback): void {
         this.errorCallbacks.push(callback);
     }
 
-    updateThresholds(newThresholds) {
+    updateThresholds(newThresholds: ThresholdConfig): void {
         this.thresholds = newThresholds;
     }
 
-    getStatus() {
+    getStatus(): DetectorStatus {
         return { enabled: true, thresholds: this.thresholds };
     }
 }
 
-export class ResourceErrorDetector {
-    constructor(thresholds) {
+export class ResourceErrorDetector implements IErrorDetector {
+    private thresholds: ThresholdConfig;
+    private errorCallbacks: ErrorCallback[];
+
+    constructor(thresholds: ThresholdConfig) {
         this.thresholds = thresholds;
         this.errorCallbacks = [];
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         console.log('Resource Error Detector initialized');
     }
 
-    async detect() {
+    async detect(): Promise<void> {
         // Simplified resource error detection
     }
 
-    onError(callback) {
+    onError(callback: ErrorCallback): void {
         this.errorCallbacks.push(callback);
     }
 
-    updateThresholds(newThresholds) {
+    updateThresholds(newThresholds: ThresholdConfig): void {
         this.thresholds = newThresholds;
     }
 
-    getStatus() {
+    getStatus(): DetectorStatus {
         return { enabled: true, thresholds: this.thresholds };
     }
 }

@@ -3,8 +3,120 @@
  * Part of the PerformanceDataAnalyzer split implementation
  */
 
+// Type definitions
+interface InsightGenerator {
+    priority: 'low' | 'medium' | 'high' | 'critical';
+    frequency: number;
+    lastGenerated: number;
+    generate: (data: AnalysisData) => Promise<Insight[]> | Insight[];
+}
+
+interface AnalysisData {
+    timestamp: number;
+    metrics: Map<string, any>;
+    history: AnalysisHistoryPoint[];
+    trends: Map<string, TrendData>;
+    anomalies: Anomaly[];
+    baseline: Map<string, number>;
+    stats: Map<string, StatisticalData>;
+}
+
+interface AnalysisHistoryPoint {
+    timestamp: number;
+    metrics: Map<string, any>;
+}
+
+interface TrendData {
+    trend: 'stable' | 'increasing' | 'decreasing';
+    confidence: number;
+    timestamp: number;
+    analyzer: string;
+}
+
+interface Anomaly {
+    timestamp: number;
+    metricId: string;
+    value: number;
+    severity: 'low' | 'medium' | 'high' | 'critical';
+    score: number;
+    type: string;
+}
+
+interface StatisticalData {
+    timestamp: number;
+    stats: any;
+    dataPoints: number;
+}
+
+interface Insight {
+    type: 'bottleneck' | 'optimization' | 'degradation' | 'resource';
+    category: string;
+    title: string;
+    description: string;
+    impact: 'low' | 'medium' | 'high' | 'critical';
+    suggestions: string[];
+    severity: 'low' | 'medium' | 'high' | 'critical';
+    metrics: Record<string, any>;
+    timestamp?: number;
+    generator?: string;
+    priority?: string;
+}
+
+interface ReportSummary {
+    total_insights: number;
+    recent_insights: number;
+    critical_issues: number;
+    high_priority_issues: number;
+    categories: Record<string, number>;
+}
+
+interface ReportInsights {
+    recent: Insight[];
+    critical: Insight[];
+    high_priority: Insight[];
+    by_category: Record<string, Insight[]>;
+}
+
+interface Recommendation {
+    action: string;
+    frequency: number;
+    priority: 'low' | 'medium' | 'high';
+    description: string;
+}
+
+interface PerformanceReport {
+    timestamp: number;
+    summary: ReportSummary;
+    insights: ReportInsights;
+    recommendations: Recommendation[];
+}
+
+interface ExportedInsights {
+    timestamp: number;
+    insights: Insight[];
+    generators: Record<string, InsightGenerator>;
+}
+
+interface MainController {
+    errorHandler: any;
+    anomalies?: Anomaly[];
+    performanceBaseline: Map<string, number>;
+    metricsCollector: {
+        getAnalysisHistory(): AnalysisHistoryPoint[];
+    };
+    dataProcessor: {
+        getAllTrends(): Map<string, TrendData>;
+        getAllStatisticalData(): Map<string, StatisticalData>;
+    };
+}
+
 export class PerformanceReportGenerator {
-    constructor(mainController) {
+    private mainController: MainController;
+    private errorHandler: any;
+    private insights: Insight[];
+    private insightGenerators: Map<string, InsightGenerator>;
+
+    constructor(mainController: MainController) {
         this.mainController = mainController;
         this.errorHandler = mainController.errorHandler;
         
@@ -12,6 +124,7 @@ export class PerformanceReportGenerator {
         this.insights = [];
         
         // Initialize insight generators
+        this.insightGenerators = new Map();
         this.initializeInsightGenerators();
         
         console.log('[PerformanceReportGenerator] Report generation component initialized');
@@ -20,15 +133,13 @@ export class PerformanceReportGenerator {
     /**
      * Initialize insight generators
      */
-    initializeInsightGenerators() {
-        this.insightGenerators = new Map();
-        
+    private initializeInsightGenerators(): void {
         // Performance bottleneck detector
         this.insightGenerators.set('bottlenecks', {
             priority: 'high',
             frequency: 30000, // 30 seconds
             lastGenerated: 0,
-            generate: (data) => this.generateBottleneckInsights(data)
+            generate: (data: AnalysisData) => this.generateBottleneckInsights(data)
         });
         
         // Optimization opportunities detector
@@ -36,7 +147,7 @@ export class PerformanceReportGenerator {
             priority: 'medium',
             frequency: 60000, // 1 minute
             lastGenerated: 0,
-            generate: (data) => this.generateOptimizationInsights(data)
+            generate: (data: AnalysisData) => this.generateOptimizationInsights(data)
         });
         
         // Performance degradation detector
@@ -44,7 +155,7 @@ export class PerformanceReportGenerator {
             priority: 'high',
             frequency: 15000, // 15 seconds
             lastGenerated: 0,
-            generate: (data) => this.generateDegradationInsights(data)
+            generate: (data: AnalysisData) => this.generateDegradationInsights(data)
         });
         
         // Resource utilization analyzer
@@ -52,26 +163,29 @@ export class PerformanceReportGenerator {
             priority: 'medium',
             frequency: 45000, // 45 seconds
             lastGenerated: 0,
-            generate: (data) => this.generateResourceInsights(data)
+            generate: (data: AnalysisData) => this.generateResourceInsights(data)
         });
     }
     
     /**
      * Generate performance insights
-     * @param {number} timestamp - Current timestamp
-     * @param {Map} metrics - Current metrics
+     * @param timestamp - Current timestamp
+     * @param metrics - Current metrics
      */
-    async generateInsights(timestamp, metrics) {
+    async generateInsights(timestamp?: number, metrics?: Map<string, any>): Promise<void> {
+        const currentTimestamp = timestamp || Date.now();
+        const currentMetrics = metrics || new Map();
+        
         for (const [generatorId, generator] of this.insightGenerators) {
             try {
                 // Check if it's time to generate insights
-                if (timestamp - generator.lastGenerated < generator.frequency) {
+                if (currentTimestamp - generator.lastGenerated < generator.frequency) {
                     continue;
                 }
                 
                 const insights = await generator.generate({
-                    timestamp,
-                    metrics,
+                    timestamp: currentTimestamp,
+                    metrics: currentMetrics,
                     history: this.mainController.metricsCollector.getAnalysisHistory(),
                     trends: this.mainController.dataProcessor.getAllTrends(),
                     anomalies: this.mainController.anomalies || [],
@@ -82,12 +196,12 @@ export class PerformanceReportGenerator {
                 if (insights && insights.length > 0) {
                     this.insights.push(...insights.map(insight => ({
                         ...insight,
-                        timestamp,
+                        timestamp: currentTimestamp,
                         generator: generatorId,
                         priority: generator.priority
                     })));
                     
-                    generator.lastGenerated = timestamp;
+                    generator.lastGenerated = currentTimestamp;
                 }
                 
             } catch (error) {
@@ -103,11 +217,11 @@ export class PerformanceReportGenerator {
     
     /**
      * Generate bottleneck insights
-     * @param {object} analysisData - Analysis data
-     * @returns {Array} Bottleneck insights
+     * @param analysisData - Analysis data
+     * @returns Bottleneck insights
      */
-    generateBottleneckInsights(analysisData) {
-        const insights = [];
+    private generateBottleneckInsights(analysisData: AnalysisData): Insight[] {
+        const insights: Insight[] = [];
         const { metrics, trends, baseline } = analysisData;
         
         // Check for FPS bottlenecks
@@ -170,11 +284,11 @@ export class PerformanceReportGenerator {
     
     /**
      * Generate optimization insights
-     * @param {object} analysisData - Analysis data
-     * @returns {Array} Optimization insights
+     * @param analysisData - Analysis data
+     * @returns Optimization insights
      */
-    generateOptimizationInsights(analysisData) {
-        const insights = [];
+    private generateOptimizationInsights(analysisData: AnalysisData): Insight[] {
+        const insights: Insight[] = [];
         const { stats, metrics, baseline } = analysisData;
         
         const descriptiveStats = stats.get('descriptive')?.stats;
@@ -232,11 +346,11 @@ export class PerformanceReportGenerator {
     
     /**
      * Generate degradation insights
-     * @param {object} analysisData - Analysis data
-     * @returns {Array} Degradation insights
+     * @param analysisData - Analysis data
+     * @returns Degradation insights
      */
-    generateDegradationInsights(analysisData) {
-        const insights = [];
+    private generateDegradationInsights(analysisData: AnalysisData): Insight[] {
+        const insights: Insight[] = [];
         const { trends, anomalies } = analysisData;
         
         // Check for performance degradation trends
@@ -291,11 +405,11 @@ export class PerformanceReportGenerator {
     
     /**
      * Generate resource utilization insights
-     * @param {object} analysisData - Analysis data
-     * @returns {Array} Resource insights
+     * @param analysisData - Analysis data
+     * @returns Resource insights
      */
-    generateResourceInsights(analysisData) {
-        const insights = [];
+    private generateResourceInsights(analysisData: AnalysisData): Insight[] {
+        const insights: Insight[] = [];
         const { metrics, baseline } = analysisData;
         
         // Check memory utilization
@@ -350,12 +464,12 @@ export class PerformanceReportGenerator {
     
     /**
      * Calculate severity based on metric deviation
-     * @param {number} current - Current value
-     * @param {number} baseline - Baseline value
-     * @param {string} metricType - Type of metric
-     * @returns {string} Severity level
+     * @param current - Current value
+     * @param baseline - Baseline value
+     * @param metricType - Type of metric
+     * @returns Severity level
      */
-    calculateSeverity(current, baseline, metricType) {
+    private calculateSeverity(current: number, baseline: number, metricType: string): 'low' | 'medium' | 'high' | 'critical' {
         if (!baseline || baseline === 0) return 'medium';
         
         const ratio = current / baseline;
@@ -382,37 +496,37 @@ export class PerformanceReportGenerator {
     
     /**
      * Get recent insights
-     * @param {string} category - Insight category filter
-     * @returns {Array} Recent insights
+     * @param category - Insight category filter
+     * @returns Recent insights
      */
-    getRecentInsights(category = null) {
+    getRecentInsights(category: string | null = null): Insight[] {
         const recent = this.insights.slice(-20);
         return category ? recent.filter(i => i.category === category) : recent;
     }
     
     /**
      * Get insights by type
-     * @param {string} type - Insight type
-     * @returns {Array} Filtered insights
+     * @param type - Insight type
+     * @returns Filtered insights
      */
-    getInsightsByType(type) {
+    getInsightsByType(type: string): Insight[] {
         return this.insights.filter(insight => insight.type === type);
     }
     
     /**
      * Get insights by severity
-     * @param {string} severity - Severity level
-     * @returns {Array} Filtered insights
+     * @param severity - Severity level
+     * @returns Filtered insights
      */
-    getInsightsBySeverity(severity) {
+    getInsightsBySeverity(severity: string): Insight[] {
         return this.insights.filter(insight => insight.severity === severity);
     }
     
     /**
      * Generate comprehensive report
-     * @returns {object} Comprehensive performance report
+     * @returns Comprehensive performance report
      */
-    generateReport() {
+    generateReport(): PerformanceReport {
         const recentInsights = this.getRecentInsights();
         const criticalInsights = this.getInsightsBySeverity('critical');
         const highInsights = this.getInsightsBySeverity('high');
@@ -438,10 +552,10 @@ export class PerformanceReportGenerator {
     
     /**
      * Get insight category summary
-     * @returns {object} Category summary
+     * @returns Category summary
      */
-    getInsightCategorySummary() {
-        const summary = {};
+    private getInsightCategorySummary(): Record<string, number> {
+        const summary: Record<string, number> = {};
         for (const insight of this.insights) {
             summary[insight.category] = (summary[insight.category] || 0) + 1;
         }
@@ -450,11 +564,11 @@ export class PerformanceReportGenerator {
     
     /**
      * Group insights by category
-     * @param {Array} insights - Insights to group
-     * @returns {object} Grouped insights
+     * @param insights - Insights to group
+     * @returns Grouped insights
      */
-    groupInsightsByCategory(insights) {
-        const grouped = {};
+    private groupInsightsByCategory(insights: Insight[]): Record<string, Insight[]> {
+        const grouped: Record<string, Insight[]> = {};
         for (const insight of insights) {
             if (!grouped[insight.category]) {
                 grouped[insight.category] = [];
@@ -466,12 +580,12 @@ export class PerformanceReportGenerator {
     
     /**
      * Generate recommendations based on insights
-     * @param {Array} insights - Recent insights
-     * @returns {Array} Recommendations
+     * @param insights - Recent insights
+     * @returns Recommendations
      */
-    generateRecommendations(insights) {
-        const recommendations = [];
-        const suggestionCounts = {};
+    private generateRecommendations(insights: Insight[]): Recommendation[] {
+        const recommendations: Recommendation[] = [];
+        const suggestionCounts: Record<string, number> = {};
         
         // Count suggestion frequencies
         for (const insight of insights) {
@@ -499,11 +613,11 @@ export class PerformanceReportGenerator {
     
     /**
      * Get recommendation description
-     * @param {string} suggestion - Suggestion key
-     * @returns {string} Human-readable description
+     * @param suggestion - Suggestion key
+     * @returns Human-readable description
      */
-    getRecommendationDescription(suggestion) {
-        const descriptions = {
+    private getRecommendationDescription(suggestion: string): string {
+        const descriptions: Record<string, string> = {
             'reduce_graphics_quality': 'Consider reducing graphics quality settings to improve performance',
             'optimize_rendering': 'Review rendering pipeline for optimization opportunities',
             'memory_cleanup': 'Perform memory cleanup and garbage collection',
@@ -522,16 +636,16 @@ export class PerformanceReportGenerator {
     /**
      * Clear insights data
      */
-    clearInsights() {
+    clearInsights(): void {
         this.insights = [];
         console.log('[PerformanceReportGenerator] Insights data cleared');
     }
     
     /**
      * Export insights data
-     * @returns {object} Exported insights
+     * @returns Exported insights
      */
-    exportInsights() {
+    exportInsights(): ExportedInsights {
         return {
             timestamp: Date.now(),
             insights: this.insights,
@@ -542,7 +656,7 @@ export class PerformanceReportGenerator {
     /**
      * Cleanup generator resources
      */
-    destroy() {
+    destroy(): void {
         this.insights = [];
         this.insightGenerators.clear();
         console.log('[PerformanceReportGenerator] Generator destroyed');
