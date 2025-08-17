@@ -2,11 +2,95 @@ import { BaseComponent } from '../../debug/BaseComponent.js';
 import fs from 'fs';
 import path from 'path';
 
+// Type definitions
+interface MainController {
+    testsDir: string;
+    projectRoot: string;
+    backupEnabled: boolean;
+    dryRun: boolean;
+    testFilePatterns: Record<string, string>;
+    [key: string]: any;
+}
+
+interface FileOperationOptions {
+    silent?: boolean;
+    encoding?: BufferEncoding;
+    force?: boolean;
+    recursive?: boolean;
+    filter?: (file: FileInfo) => boolean;
+}
+
+interface FileInfo {
+    name: string;
+    path: string;
+    size: number;
+    modified: Date;
+    extension: string;
+}
+
+interface BackupInfo extends FileInfo {
+    originalFile: string;
+    backupDate: Date | null;
+}
+
+interface OperationDetails {
+    filePath?: string;
+    size?: number;
+    timestamp: number;
+    backupPath?: string | null;
+    originalPath?: string;
+    targetPath?: string;
+}
+
+interface OperationRecord {
+    operation: string;
+    details: OperationDetails;
+    timestamp: number;
+}
+
+interface FileOperations {
+    read: (filePath: string, options?: FileOperationOptions) => string | null;
+    write: (filePath: string, content: string, options?: FileOperationOptions) => boolean;
+    backup: (filePath: string) => string | null;
+    restore: (backupPath: string, targetPath: string) => boolean;
+    delete: (filePath: string, options?: FileOperationOptions) => boolean;
+}
+
+interface TestFileUpdateResult {
+    success: boolean;
+    testType: string;
+    testFilePath?: string;
+    linesGenerated?: number;
+    dryRun?: boolean;
+    error?: string;
+}
+
+interface OperationStatistics {
+    totalOperations: number;
+    operationCounts: Record<string, number>;
+    recentOperations: OperationRecord[];
+}
+
+interface DirectorySizeInfo {
+    totalFiles: number;
+    totalSize: number;
+    formattedSize: string;
+    files: FileInfo[];
+}
+
 /**
  * TestFileOperations - ファイルシステム操作・バックアップ・復元コンポーネント
  */
 export class TestFileOperations extends BaseComponent {
-    constructor(mainController) {
+    private testsDir: string;
+    private projectRoot: string;
+    private backupEnabled: boolean;
+    private dryRun: boolean;
+    private testFilePatterns: Record<string, string>;
+    private operationHistory: OperationRecord[];
+    private fileOperations!: FileOperations;
+
+    constructor(mainController: MainController) {
         super(mainController, 'TestFileOperations');
         this.testsDir = mainController.testsDir;
         this.projectRoot = mainController.projectRoot;
@@ -16,7 +100,7 @@ export class TestFileOperations extends BaseComponent {
         this.operationHistory = [];
     }
 
-    async _doInitialize() {
+    async _doInitialize(): Promise<void> {
         this.setupFileOperations();
         this.ensureDirectoryStructure();
     }
@@ -24,7 +108,7 @@ export class TestFileOperations extends BaseComponent {
     /**
      * ファイル操作設定を初期化
      */
-    setupFileOperations() {
+    private setupFileOperations(): void {
         this.fileOperations = {
             read: this.readFile.bind(this),
             write: this.writeFile.bind(this),
@@ -37,7 +121,7 @@ export class TestFileOperations extends BaseComponent {
     /**
      * ディレクトリ構造を確保
      */
-    ensureDirectoryStructure() {
+    private ensureDirectoryStructure(): void {
         try {
             const requiredDirs = [
                 this.testsDir,
@@ -64,11 +148,11 @@ export class TestFileOperations extends BaseComponent {
 
     /**
      * ファイルを読み込み
-     * @param {string} filePath - ファイルパス
-     * @param {Object} options - オプション
-     * @returns {string|null} ファイル内容
+     * @param filePath - ファイルパス
+     * @param options - オプション
+     * @returns ファイル内容
      */
-    readFile(filePath, options = {}) {
+    readFile(filePath: string, options: FileOperationOptions = {}): string | null {
         try {
             if (!fs.existsSync(filePath)) {
                 if (!options.silent) {
@@ -95,12 +179,12 @@ export class TestFileOperations extends BaseComponent {
 
     /**
      * ファイルを書き込み
-     * @param {string} filePath - ファイルパス
-     * @param {string} content - ファイル内容
-     * @param {Object} options - オプション
-     * @returns {boolean} 成功フラグ
+     * @param filePath - ファイルパス
+     * @param content - ファイル内容
+     * @param options - オプション
+     * @returns 成功フラグ
      */
-    writeFile(filePath, content, options = {}) {
+    writeFile(filePath: string, content: string, options: FileOperationOptions = {}): boolean {
         try {
             // ドライランモードの場合
             if (this.dryRun) {
@@ -115,7 +199,7 @@ export class TestFileOperations extends BaseComponent {
             }
 
             // バックアップ作成（既存ファイルがある場合）
-            let backupPath = null;
+            let backupPath: string | null = null;
             if (this.backupEnabled && fs.existsSync(filePath)) {
                 backupPath = this.createBackup(filePath);
             }
@@ -141,10 +225,10 @@ export class TestFileOperations extends BaseComponent {
 
     /**
      * バックアップを作成
-     * @param {string} filePath - 元ファイルパス
-     * @returns {string|null} バックアップファイルパス
+     * @param filePath - 元ファイルパス
+     * @returns バックアップファイルパス
      */
-    createBackup(filePath) {
+    createBackup(filePath: string): string | null {
         try {
             if (!fs.existsSync(filePath)) {
                 console.warn(`[TestFileOperations] Cannot backup non-existent file: ${filePath}`);
@@ -178,11 +262,11 @@ export class TestFileOperations extends BaseComponent {
 
     /**
      * バックアップから復元
-     * @param {string} backupPath - バックアップファイルパス
-     * @param {string} targetPath - 復元先パス
-     * @returns {boolean} 成功フラグ
+     * @param backupPath - バックアップファイルパス
+     * @param targetPath - 復元先パス
+     * @returns 成功フラグ
      */
-    restoreBackup(backupPath, targetPath) {
+    restoreBackup(backupPath: string, targetPath: string): boolean {
         try {
             if (!fs.existsSync(backupPath)) {
                 console.warn(`[TestFileOperations] Backup file not found: ${backupPath}`);
@@ -213,11 +297,11 @@ export class TestFileOperations extends BaseComponent {
 
     /**
      * ファイルを削除
-     * @param {string} filePath - ファイルパス
-     * @param {Object} options - オプション
-     * @returns {boolean} 成功フラグ
+     * @param filePath - ファイルパス
+     * @param options - オプション
+     * @returns 成功フラグ
      */
-    deleteFile(filePath, options = {}) {
+    deleteFile(filePath: string, options: FileOperationOptions = {}): boolean {
         try {
             if (!fs.existsSync(filePath)) {
                 if (!options.silent) {
@@ -232,7 +316,7 @@ export class TestFileOperations extends BaseComponent {
             }
 
             // バックアップ作成（強制削除でない場合）
-            let backupPath = null;
+            let backupPath: string | null = null;
             if (!options.force && this.backupEnabled) {
                 backupPath = this.createBackup(filePath);
             }
@@ -256,12 +340,12 @@ export class TestFileOperations extends BaseComponent {
 
     /**
      * テストファイルを更新
-     * @param {string} testType - テストタイプ
-     * @param {string} content - テストコード
-     * @param {Object} options - オプション
-     * @returns {Object} 更新結果
+     * @param testType - テストタイプ
+     * @param content - テストコード
+     * @param options - オプション
+     * @returns 更新結果
      */
-    updateTestFile(testType, content, options = {}) {
+    updateTestFile(testType: string, content: string, options: FileOperationOptions = {}): TestFileUpdateResult {
         try {
             const testFilename = this.testFilePatterns[testType];
             if (!testFilename) {
@@ -283,25 +367,25 @@ export class TestFileOperations extends BaseComponent {
             return {
                 success: false,
                 testType,
-                error: error.message
+                error: (error as Error).message
             };
         }
     }
 
     /**
      * ディレクトリ内のファイル一覧を取得
-     * @param {string} dirPath - ディレクトリパス
-     * @param {Object} options - オプション
-     * @returns {Array} ファイル一覧
+     * @param dirPath - ディレクトリパス
+     * @param options - オプション
+     * @returns ファイル一覧
      */
-    listFiles(dirPath, options = {}) {
+    listFiles(dirPath: string, options: FileOperationOptions = {}): FileInfo[] {
         try {
             if (!fs.existsSync(dirPath)) {
                 return [];
             }
 
             const files = fs.readdirSync(dirPath);
-            const fileList = [];
+            const fileList: FileInfo[] = [];
 
             for (const file of files) {
                 const filePath = path.join(dirPath, file);
@@ -311,7 +395,7 @@ export class TestFileOperations extends BaseComponent {
                     const subFiles = this.listFiles(filePath, options);
                     fileList.push(...subFiles);
                 } else if (stat.isFile()) {
-                    const fileInfo = {
+                    const fileInfo: FileInfo = {
                         name: file,
                         path: filePath,
                         size: stat.size,
@@ -340,9 +424,9 @@ export class TestFileOperations extends BaseComponent {
 
     /**
      * バックアップファイル一覧を取得
-     * @returns {Array} バックアップファイル一覧
+     * @returns バックアップファイル一覧
      */
-    listBackups() {
+    listBackups(): BackupInfo[] {
         const backupDir = path.join(this.testsDir, 'backups');
         const backupFiles = this.listFiles(backupDir, {
             filter: (file) => file.name.includes('.backup.')
@@ -357,10 +441,10 @@ export class TestFileOperations extends BaseComponent {
 
     /**
      * バックアップ日時を解析
-     * @param {string} filename - ファイル名
-     * @returns {Date|null} バックアップ日時
+     * @param filename - ファイル名
+     * @returns バックアップ日時
      */
-    parseBackupDate(filename) {
+    private parseBackupDate(filename: string): Date | null {
         const match = filename.match(/\.backup\.(\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}-\d{3}Z)$/);
         if (match) {
             try {
@@ -374,10 +458,10 @@ export class TestFileOperations extends BaseComponent {
 
     /**
      * 古いバックアップを削除
-     * @param {number} maxAge - 最大保持期間（ミリ秒）
-     * @returns {number} 削除されたファイル数
+     * @param maxAge - 最大保持期間（ミリ秒）
+     * @returns 削除されたファイル数
      */
-    cleanupOldBackups(maxAge = 7 * 24 * 60 * 60 * 1000) { // デフォルト7日
+    cleanupOldBackups(maxAge: number = 7 * 24 * 60 * 60 * 1000): number { // デフォルト7日
         try {
             const backups = this.listBackups();
             const cutoffDate = new Date(Date.now() - maxAge);
@@ -402,10 +486,10 @@ export class TestFileOperations extends BaseComponent {
 
     /**
      * 操作を記録
-     * @param {string} operation - 操作種別
-     * @param {Object} details - 詳細情報
+     * @param operation - 操作種別
+     * @param details - 詳細情報
      */
-    recordOperation(operation, details) {
+    private recordOperation(operation: string, details: OperationDetails): void {
         this.operationHistory.push({
             operation,
             details,
@@ -420,10 +504,10 @@ export class TestFileOperations extends BaseComponent {
 
     /**
      * ファイル操作統計を取得
-     * @returns {Object} 操作統計
+     * @returns 操作統計
      */
-    getOperationStatistics() {
-        const stats = {
+    getOperationStatistics(): OperationStatistics {
+        const stats: OperationStatistics = {
             totalOperations: this.operationHistory.length,
             operationCounts: {},
             recentOperations: this.operationHistory.slice(-10)
@@ -439,10 +523,10 @@ export class TestFileOperations extends BaseComponent {
 
     /**
      * ファイルサイズを人間可読形式に変換
-     * @param {number} bytes - バイト数
-     * @returns {string} 人間可読なサイズ
+     * @param bytes - バイト数
+     * @returns 人間可読なサイズ
      */
-    formatFileSize(bytes) {
+    formatFileSize(bytes: number): string {
         if (bytes === 0) return '0 Bytes';
         
         const k = 1024;
@@ -454,10 +538,10 @@ export class TestFileOperations extends BaseComponent {
 
     /**
      * ディレクトリサイズを計算
-     * @param {string} dirPath - ディレクトリパス
-     * @returns {Object} サイズ情報
+     * @param dirPath - ディレクトリパス
+     * @returns サイズ情報
      */
-    calculateDirectorySize(dirPath) {
+    calculateDirectorySize(dirPath: string): DirectorySizeInfo {
         try {
             const files = this.listFiles(dirPath, { recursive: true });
             const totalSize = files.reduce((sum, file) => sum + file.size, 0);
@@ -483,7 +567,7 @@ export class TestFileOperations extends BaseComponent {
     /**
      * クリーンアップ
      */
-    cleanup() {
+    cleanup(): void {
         this.operationHistory = [];
         super.cleanup();
     }

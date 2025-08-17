@@ -1,23 +1,87 @@
 import { BaseComponent } from '../../debug/BaseComponent.js';
 
+// Type definitions
+interface MainController {
+    [key: string]: any;
+}
+
+interface BubbleTypeConfig {
+    health?: number;
+    score?: number;
+    size?: number;
+    maxAge?: number;
+    effects?: Record<string, any>;
+    [key: string]: any;
+}
+
+interface GameBalanceConfig {
+    baseScores?: Record<string, number>;
+    bubbles?: Record<string, BubbleTypeConfig>;
+}
+
+interface ExpectationMetadata {
+    extractedAt?: number;
+    sourceFiles?: string[];
+    generatorVersion?: string;
+}
+
+interface TestExpectations {
+    bubbleTypes?: Record<string, BubbleTypeConfig>;
+    gameBalance?: GameBalanceConfig;
+    metadata?: ExpectationMetadata;
+}
+
+interface TemplateFunction {
+    (expectations: TestExpectations): string;
+}
+
+interface TestTemplates {
+    [testType: string]: TemplateFunction;
+}
+
+interface CacheEntry {
+    testType: string;
+    expectations: TestExpectations;
+    testCode: string;
+    generatedAt: number;
+}
+
+interface ValidationResult {
+    valid: boolean;
+    issues: string[];
+    warnings: string[];
+}
+
+interface GenerationStatistics {
+    totalGenerated: number;
+    templates: string[];
+    cacheSize: number;
+    lastOptimized: number | null;
+}
+
 /**
  * ExpectationGenerator - テスト期待値生成・テンプレート処理コンポーネント
  */
 export class ExpectationGenerator extends BaseComponent {
-    constructor(mainController) {
+    private expectationCache: Map<string, CacheEntry>;
+    private templateCache: Map<string, any>;
+    private testTemplates!: TestTemplates;
+    private lastOptimized?: number;
+
+    constructor(mainController: MainController) {
         super(mainController, 'ExpectationGenerator');
         this.expectationCache = new Map();
         this.templateCache = new Map();
     }
 
-    async _doInitialize() {
+    async _doInitialize(): Promise<void> {
         this.setupTestTemplates();
     }
 
     /**
      * テストテンプレートを設定
      */
-    setupTestTemplates() {
+    private setupTestTemplates(): void {
         this.testTemplates = {
             bubble: this.getBubbleTestTemplate(),
             gameBalance: this.getGameBalanceTestTemplate(),
@@ -27,10 +91,10 @@ export class ExpectationGenerator extends BaseComponent {
 
     /**
      * Bubbleテストテンプレートを取得
-     * @returns {Function} テンプレート関数
+     * @returns テンプレート関数
      */
-    getBubbleTestTemplate() {
-        return (expectations) => {
+    private getBubbleTestTemplate(): TemplateFunction {
+        return (expectations: TestExpectations): string => {
             return `/**
  * Bubble Class Test Suite
  * 
@@ -163,10 +227,10 @@ ${Object.entries(expectations.bubbleTypes || {}).map(([bubbleType, config]) => `
 
     /**
      * GameBalanceテストテンプレートを取得
-     * @returns {Function} テンプレート関数
+     * @returns テンプレート関数
      */
-    getGameBalanceTestTemplate() {
-        return (expectations) => {
+    private getGameBalanceTestTemplate(): TemplateFunction {
+        return (expectations: TestExpectations): string => {
             return `/**
  * GameBalance Configuration Test Suite
  * 
@@ -253,10 +317,10 @@ describe('GameBalance Configuration Tests', () => {
 
     /**
      * BubbleManagerテストテンプレートを取得
-     * @returns {Function} テンプレート関数
+     * @returns テンプレート関数
      */
-    getBubbleManagerTestTemplate() {
-        return (expectations) => {
+    private getBubbleManagerTestTemplate(): TemplateFunction {
+        return (expectations: TestExpectations): string => {
             return `/**
  * BubbleManager Configuration Test Suite
  * 
@@ -398,11 +462,11 @@ ${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('s
 
     /**
      * テストコードを生成
-     * @param {Object} expectations - 期待値
-     * @param {string} testType - テストタイプ
-     * @returns {string|null} 生成されたテストコード
+     * @param expectations - 期待値
+     * @param testType - テストタイプ
+     * @returns 生成されたテストコード
      */
-    generateTestCode(expectations, testType) {
+    generateTestCode(expectations: TestExpectations, testType: string): string | null {
         try {
             const template = this.testTemplates[testType];
             if (!template) {
@@ -430,10 +494,10 @@ ${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('s
 
     /**
      * カスタムテンプレートを登録
-     * @param {string} testType - テストタイプ
-     * @param {Function} template - テンプレート関数
+     * @param testType - テストタイプ
+     * @param template - テンプレート関数
      */
-    registerTemplate(testType, template) {
+    registerTemplate(testType: string, template: TemplateFunction): void {
         this.testTemplates[testType] = template;
         console.log(`[ExpectationGenerator] カスタムテンプレート登録: ${testType}`);
     }
@@ -441,7 +505,7 @@ ${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('s
     /**
      * テンプレートキャッシュを最適化
      */
-    optimizeTemplateCache() {
+    optimizeTemplateCache(): void {
         // 古いキャッシュエントリを削除（1時間以上前）
         const oneHourAgo = Date.now() - (60 * 60 * 1000);
         
@@ -451,16 +515,17 @@ ${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('s
             }
         }
         
+        this.lastOptimized = Date.now();
         console.log(`[ExpectationGenerator] テンプレートキャッシュ最適化完了: ${this.expectationCache.size}件保持`);
     }
 
     /**
      * 期待値の妥当性を検証
-     * @param {Object} expectations - 期待値
-     * @returns {Object} 検証結果
+     * @param expectations - 期待値
+     * @returns 検証結果
      */
-    validateExpectations(expectations) {
-        const validation = {
+    validateExpectations(expectations: TestExpectations): ValidationResult {
+        const validation: ValidationResult = {
             valid: true,
             issues: [],
             warnings: []
@@ -511,9 +576,9 @@ ${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('s
 
     /**
      * 生成統計を取得
-     * @returns {Object} 生成統計
+     * @returns 生成統計
      */
-    getGenerationStatistics() {
+    getGenerationStatistics(): GenerationStatistics {
         return {
             totalGenerated: this.expectationCache.size,
             templates: Object.keys(this.testTemplates),
@@ -525,7 +590,7 @@ ${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('s
     /**
      * キャッシュをクリア
      */
-    clearCache() {
+    clearCache(): void {
         this.expectationCache.clear();
         this.templateCache.clear();
         console.log('[ExpectationGenerator] キャッシュをクリアしました');
@@ -534,7 +599,7 @@ ${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('s
     /**
      * クリーンアップ
      */
-    cleanup() {
+    cleanup(): void {
         this.clearCache();
         super.cleanup();
     }

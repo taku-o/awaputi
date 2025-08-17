@@ -2,15 +2,254 @@ import { getErrorHandler } from '../ErrorHandler.js';
 import fs from 'fs';
 import path from 'path';
 
+// Type definitions
+interface ErrorHandler {
+    handleError: (error: Error, context?: any) => void;
+}
+
+interface ReportConfig {
+    projectRoot?: string;
+    includeStatistics?: boolean;
+    includeChangeLog?: boolean;
+    includeImpactAnalysis?: boolean;
+    includeRecommendations?: boolean;
+    outputFormat?: 'json' | 'markdown' | 'both';
+}
+
+interface ResolvedItem {
+    name: string;
+    resolution: string;
+    files: string[];
+    impact: 'Low' | 'Medium' | 'High';
+}
+
+interface ResolvedDuplication {
+    taskId: string;
+    category: string;
+    items: ResolvedItem[];
+}
+
+interface ReportMetadata {
+    title: string;
+    subtitle: string;
+    generatedAt: string;
+    generatedBy: string;
+    projectRoot: string;
+    branch: string;
+    version: string;
+}
+
+interface ProjectSummary {
+    objective: string;
+    scope: string;
+    approach: string;
+    completionStatus: string;
+    tasksCompleted: number;
+    totalTasks: number;
+    completionPercentage: number;
+    keyAchievements: string[];
+}
+
+interface DuplicationCategory {
+    [categoryName: string]: number;
+}
+
+interface NamingStrategies {
+    'Domain-based': number;
+    'Function-level': number;
+    'Context-specific': number;
+}
+
+interface FilesModified {
+    renamed: number;
+    updated: number;
+    created: number;
+}
+
+interface DuplicationsResolved {
+    totalClasses: number;
+    totalFiles: number;
+    byCategory: DuplicationCategory;
+}
+
+interface Statistics {
+    duplicationsResolved: DuplicationsResolved;
+    filesModified: FilesModified;
+    namingStrategies: NamingStrategies;
+    gitCommits: number;
+    testsPassing: boolean;
+    buildSuccessful: boolean;
+}
+
+interface ChangeItem {
+    name: string;
+    action: string;
+    files: string[];
+    impact: string;
+    reasoning: string;
+}
+
+interface ChangePhase {
+    taskId: string;
+    phase: string;
+    category: string;
+    description: string;
+    items: ChangeItem[];
+}
+
+interface ChangeLog {
+    overview: string;
+    phases: ChangePhase[];
+}
+
+interface SystemImpactArea {
+    maintainability: string;
+    readability: string;
+    debuggability: string;
+    onboardingExperience: string;
+}
+
+interface DevelopmentImpactArea {
+    namingConfusion: string;
+    importErrors: string;
+    codeNavigation: string;
+    toolSupport: string;
+}
+
+interface PerformanceImpactArea {
+    runtime: string;
+    buildTime: string;
+    bundleSize: string;
+}
+
+interface SystemImpacts {
+    codebase: SystemImpactArea;
+    development: DevelopmentImpactArea;
+    performance: PerformanceImpactArea;
+}
+
+interface RiskAssessment {
+    breakingChanges: string;
+    backwardCompatibility: string;
+    regressionRisk: string;
+    rollbackComplexity: string;
+}
+
+interface Beneficiaries {
+    developers: string;
+    codeReviewers: string;
+    newTeamMembers: string;
+}
+
+interface ImpactAnalysis {
+    systemImpacts: SystemImpacts;
+    riskAssessment: RiskAssessment;
+    beneficiaries: Beneficiaries;
+}
+
+interface ValidationArea {
+    status: string;
+    filesChecked?: string;
+    errors?: number;
+    warnings?: string;
+    missingImports?: number;
+    unreferencedImports?: string;
+    circularDependencies?: number;
+    unitTests?: string;
+    integrationTests?: string;
+    e2eTests?: string;
+    linting?: string;
+    typeChecking?: string;
+    bundling?: string;
+}
+
+interface ValidationResults {
+    syntaxValidation: ValidationArea;
+    importValidation: ValidationArea;
+    testSuite: ValidationArea;
+    buildValidation: ValidationArea;
+}
+
+interface Recommendation {
+    category: string;
+    priority: string;
+    recommendation: string;
+    rationale: string;
+    implementation: string;
+}
+
+interface AutomaticValidation {
+    description: string;
+    implementation: string;
+    integration: string;
+    coverage: string;
+}
+
+interface DevelopmentGuidelines {
+    description: string;
+    domainBased: string;
+    functionalLevel: string;
+    contextSpecific: string;
+}
+
+interface ToolingSupport {
+    description: string;
+    cliTools: string;
+    validation: string;
+    integration: string;
+}
+
+interface ProcessImprovements {
+    description: string;
+    codeReview: string;
+    onboarding: string;
+    refactoring: string;
+}
+
+interface PreventionMeasures {
+    automaticValidation: AutomaticValidation;
+    developmentGuidelines: DevelopmentGuidelines;
+    toolingSupport: ToolingSupport;
+    processImprovements: ProcessImprovements;
+}
+
+interface FileAnalysisResult {
+    renamedFiles: number;
+    updatedFiles: number;
+    createdFiles: number;
+}
+
+interface OutputFiles {
+    json?: string;
+    markdown?: string;
+}
+
+interface ComprehensiveReport {
+    metadata: ReportMetadata;
+    summary: ProjectSummary;
+    statistics: Statistics;
+    changeLog: ChangeLog;
+    impactAnalysis: ImpactAnalysis;
+    validationResults: ValidationResults;
+    recommendations: Recommendation[];
+    futurePreventionMeasures: PreventionMeasures;
+}
+
 /**
  * ReportGenerator - JavaScript クラス名重複解決プロジェクトの包括レポート生成
  * Issue #131の全変更内容とその影響範囲を文書化
  */
 export class ReportGenerator {
-    constructor(config = {}) {
+    private errorHandler: ErrorHandler;
+    private projectRoot: string;
+    private reportConfig: Required<ReportConfig>;
+    private resolvedDuplications: ResolvedDuplication[];
+
+    constructor(config: ReportConfig = {}) {
         this.errorHandler = getErrorHandler();
         this.projectRoot = config.projectRoot || process.cwd();
         this.reportConfig = {
+            projectRoot: this.projectRoot,
             includeStatistics: config.includeStatistics !== false,
             includeChangeLog: config.includeChangeLog !== false,
             includeImpactAnalysis: config.includeImpactAnalysis !== false,
@@ -249,13 +488,12 @@ export class ReportGenerator {
     
     /**
      * 包括的なプロジェクトレポートを生成
-     * @returns {Promise<Object>} 生成されたレポート
      */
-    async generateComprehensiveReport() {
+    async generateComprehensiveReport(): Promise<ComprehensiveReport> {
         console.log('[ReportGenerator] Generating comprehensive project report...');
         
         try {
-            const report = {
+            const report: ComprehensiveReport = {
                 metadata: this.generateMetadata(),
                 summary: await this.generateProjectSummary(),
                 statistics: await this.generateStatistics(),
@@ -268,7 +506,7 @@ export class ReportGenerator {
             
             return report;
         } catch (error) {
-            this.errorHandler.handleError(error, {
+            this.errorHandler.handleError(error as Error, {
                 context: 'ReportGenerator.generateComprehensiveReport'
             });
             throw error;
@@ -277,9 +515,8 @@ export class ReportGenerator {
     
     /**
      * レポートメタデータを生成
-     * @returns {Object} メタデータ
      */
-    generateMetadata() {
+    generateMetadata(): ReportMetadata {
         return {
             title: 'JavaScript Class Name Deduplication Project Report',
             subtitle: 'Issue #131 - Complete Resolution Report',
@@ -293,9 +530,8 @@ export class ReportGenerator {
     
     /**
      * プロジェクト概要を生成
-     * @returns {Promise<Object>} プロジェクト概要
      */
-    async generateProjectSummary() {
+    async generateProjectSummary(): Promise<ProjectSummary> {
         return {
             objective: 'Resolve JavaScript class name duplications to improve codebase maintainability and prevent developer confusion',
             scope: 'Entire src/ directory with focus on core, debug, analytics, audio, ui, and rendering systems',
@@ -316,9 +552,8 @@ export class ReportGenerator {
     
     /**
      * 統計情報を生成
-     * @returns {Promise<Object>} 統計情報
      */
-    async generateStatistics() {
+    async generateStatistics(): Promise<Statistics> {
         // 実際のファイル数を調査
         const stats = await this.analyzeProjectFiles();
         
@@ -355,17 +590,16 @@ export class ReportGenerator {
     
     /**
      * 変更ログを生成
-     * @returns {Promise<Object>} 変更ログ
      */
-    async generateChangeLog() {
-        const changeLog = {
+    async generateChangeLog(): Promise<ChangeLog> {
+        const changeLog: ChangeLog = {
             overview: 'Systematic resolution of JavaScript class name duplications',
             phases: []
         };
         
         // 各タスクの詳細を変更ログに追加
         for (const duplication of this.resolvedDuplications) {
-            const phase = {
+            const phase: ChangePhase = {
                 taskId: duplication.taskId,
                 phase: `Task ${duplication.taskId}`,
                 category: duplication.category,
@@ -391,9 +625,8 @@ export class ReportGenerator {
     
     /**
      * 影響分析を生成
-     * @returns {Promise<Object>} 影響分析
      */
-    async generateImpactAnalysis() {
+    async generateImpactAnalysis(): Promise<ImpactAnalysis> {
         return {
             systemImpacts: {
                 codebase: {
@@ -430,9 +663,8 @@ export class ReportGenerator {
     
     /**
      * 検証結果を生成
-     * @returns {Promise<Object>} 検証結果
      */
-    async generateValidationResults() {
+    async generateValidationResults(): Promise<ValidationResults> {
         return {
             syntaxValidation: {
                 status: 'Passed',
@@ -463,9 +695,8 @@ export class ReportGenerator {
     
     /**
      * 推奨事項を生成
-     * @returns {Array} 推奨事項配列
      */
-    generateRecommendations() {
+    generateRecommendations(): Recommendation[] {
         return [
             {
                 category: 'Code Quality',
@@ -507,9 +738,8 @@ export class ReportGenerator {
     
     /**
      * 将来の防止措置を生成
-     * @returns {Object} 防止措置
      */
-    generatePreventionMeasures() {
+    generatePreventionMeasures(): PreventionMeasures {
         return {
             automaticValidation: {
                 description: 'Automated naming conflict detection',
@@ -540,9 +770,8 @@ export class ReportGenerator {
     
     /**
      * プロジェクトファイルを分析
-     * @returns {Promise<Object>} ファイル分析結果
      */
-    async analyzeProjectFiles() {
+    async analyzeProjectFiles(): Promise<FileAnalysisResult> {
         // このメソッドは実際のファイルシステムを調査して統計を生成
         // 簡略化した実装
         return {
@@ -554,11 +783,9 @@ export class ReportGenerator {
     
     /**
      * アイテムの理由を生成
-     * @param {Object} item - 項目オブジェクト
-     * @returns {string} 理由の説明
      */
-    generateReasoningForItem(item) {
-        const reasonings = {
+    generateReasoningForItem(item: ResolvedItem): string {
+        const reasonings: Record<string, string> = {
             'PerformanceConfig': 'Merged backup configuration with main file to eliminate redundancy',
             'AccessibilityManager': 'Separated core functionality from debug-specific features',
             'KeyboardShortcutManager': 'Distinguished between core shortcuts and debug shortcuts',
@@ -586,12 +813,9 @@ export class ReportGenerator {
     
     /**
      * レポートをファイルに出力
-     * @param {Object} report - レポートオブジェクト
-     * @param {string} outputDir - 出力ディレクトリ
-     * @returns {Promise<Object>} 出力ファイル情報
      */
-    async saveReport(report, outputDir = '.') {
-        const outputs = {};
+    async saveReport(report: ComprehensiveReport, outputDir: string = '.'): Promise<OutputFiles> {
+        const outputs: OutputFiles = {};
         
         try {
             const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -616,7 +840,7 @@ export class ReportGenerator {
             
             return outputs;
         } catch (error) {
-            this.errorHandler.handleError(error, {
+            this.errorHandler.handleError(error as Error, {
                 context: 'ReportGenerator.saveReport'
             });
             throw error;
@@ -625,11 +849,9 @@ export class ReportGenerator {
     
     /**
      * Markdownレポートを生成
-     * @param {Object} report - レポートオブジェクト
-     * @returns {string} Markdown形式のレポート
      */
-    generateMarkdownReport(report) {
-        const md = [];
+    generateMarkdownReport(report: ComprehensiveReport): string {
+        const md: string[] = [];
         
         // ヘッダー
         md.push(`# ${report.metadata.title}`);
