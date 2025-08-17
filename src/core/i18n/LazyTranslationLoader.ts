@@ -1,9 +1,81 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
-
 /**
+ * LazyTranslationLoader.ts
  * 遅延翻訳ローダー - 高度な遅延読み込みと最適化機能を持つ翻訳システム
  */
+
+import { getErrorHandler } from '../../utils/ErrorHandler.js';
+
+// 型定義
+export interface LoadingStats {
+    totalRequests: number;
+    cacheHits: number;
+    cacheMisses: number;
+    bytesLoaded: number;
+    bytesCompressed: number;
+    loadTimes: number[];
+    memoryUsage: number;
+}
+
+export interface CacheItem {
+    data: any;
+    timestamp: number;
+    size: number;
+    compressed?: boolean;
+    lastAccess: number;
+}
+
+export interface LoadOptions {
+    forceReload?: boolean;
+    priority?: 'high' | 'normal' | 'low';
+    compress?: boolean;
+    timeout?: number;
+}
+
+export interface TranslationNamespace {
+    [key: string]: any;
+}
+
+export interface PerformanceMonitor {
+    slowLoadThreshold: number;
+    maxConcurrentLoads: number;
+    currentLoads: number;
+    loadQueue: Array<() => Promise<any>>;
+}
+
+/**
+ * 遅延翻訳ローダークラス
+ */
 export class LazyTranslationLoader {
+    // 基本設定
+    private baseURL: string;
+    private translationFiles: string[];
+    
+    // 読み込み管理
+    private loadedTranslations: Map<string, TranslationNamespace>;
+    private loadingPromises: Map<string, Promise<any>>;
+    private loadedNamespaces: Set<string>;
+    private pendingRequests: Map<string, Promise<any>>;
+    
+    // 遅延読み込み設定
+    private lazyLoadingEnabled: boolean;
+    private preloadCriticalFiles: string[];
+    private loadOnDemandFiles: string[];
+    
+    // キャッシュシステム
+    private memoryCache: Map<string, CacheItem>;
+    private compressionEnabled: boolean;
+    private maxCacheSize: number;
+    private cacheTimeout: number;
+    
+    // メモリ最適化
+    private memoryThreshold: number;
+    private compressionThreshold: number;
+    private unusedDataCleanupInterval: number;
+    
+    // 統計とモニタリング
+    private stats: LoadingStats;
+    private performanceMonitor: PerformanceMonitor;
+
     constructor() {
         // 基本設定
         this.baseURL = '/src/locales/';
@@ -18,10 +90,10 @@ export class LazyTranslationLoader {
         ];
         
         // 読み込み管理
-        this.loadedTranslations = new Map();
-        this.loadingPromises = new Map();
-        this.loadedNamespaces = new Set();
-        this.pendingRequests = new Map();
+        this.loadedTranslations = new Map<string, TranslationNamespace>();
+        this.loadingPromises = new Map<string, Promise<any>>();
+        this.loadedNamespaces = new Set<string>();
+        this.pendingRequests = new Map<string, Promise<any>>();
         
         // 遅延読み込み設定
         this.lazyLoadingEnabled = true;
@@ -29,7 +101,7 @@ export class LazyTranslationLoader {
         this.loadOnDemandFiles = ['achievements', 'help']; // 必要時読み込み
         
         // キャッシュシステム
-        this.memoryCache = new Map();
+        this.memoryCache = new Map<string, CacheItem>();
         this.compressionEnabled = true;
         this.maxCacheSize = 50; // キャッシュする最大ファイル数
         this.cacheTimeout = 600000; // 10分間キャッシュ
@@ -65,12 +137,12 @@ export class LazyTranslationLoader {
     /**
      * 言語データの遅延読み込み
      */
-    async loadLanguage(language, options = {}) {
+    async loadLanguage(language: string, options: LoadOptions = {}): Promise<TranslationNamespace> {
         const {
             priority = 'normal',
-            preload = false,
-            namespace = null,
-            useCache = true
+            forceReload = false,
+            compress = this.compressionEnabled,
+            timeout = 5000
         } = options;
         
         try {
@@ -82,9 +154,9 @@ export class LazyTranslationLoader {
             }
             
             // キャッシュチェック
-            if (useCache && this.loadedTranslations.has(language)) {
+            if (!forceReload && this.loadedTranslations.has(language)) {
                 this.stats.cacheHits++;
-                return this.loadedTranslations.get(language);
+                return this.loadedTranslations.get(language)!;
             }
             
             this.stats.cacheMisses++;
@@ -92,8 +164,8 @@ export class LazyTranslationLoader {
             // 読み込み処理
             const loadPromise = this._performLazyLoad(language, {
                 priority,
-                preload,
-                namespace
+                compress,
+                timeout
             });
             
             this.loadingPromises.set(language, loadPromise);
@@ -119,7 +191,7 @@ export class LazyTranslationLoader {
     /**
      * 遅延読み込みの実行
      */
-    async _performLazyLoad(language, options) {
+    private async _performLazyLoad(language: string, options: any): Promise<TranslationNamespace> {
         const { priority, preload, namespace } = options;
         
         // 同時読み込み数の制御

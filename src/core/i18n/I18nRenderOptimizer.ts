@@ -1,4 +1,5 @@
 /**
+ * I18nRenderOptimizer.ts
  * 国際化レンダリング最適化システム
  * 
  * 言語切り替え時のUIレンダリング最適化、
@@ -7,7 +8,151 @@
 
 import { getErrorHandler } from '../../utils/ErrorHandler.js';
 
+// 型定義
+export interface OptimizationConfig {
+    batchUpdates: boolean;
+    delayedRendering: boolean;
+    virtualScrolling: boolean;
+    asyncFontLoading: boolean;
+    layoutCaching: boolean;
+    debounceDelay: number;
+    renderQueueSize: number;
+}
+
+export interface RenderMetrics {
+    frameCount: number;
+    dropCount: number;
+    averageFrameTime: number;
+    lastFrameTime: number;
+    renderingTime: number;
+}
+
+export interface DOMOptimization {
+    reuseElements: boolean;
+    poolElements: boolean;
+    minimalUpdates: boolean;
+    batchDOMOperations: boolean;
+}
+
+export interface FontLoadingManager {
+    getInstance(config: any): FontLoadingManager;
+    initialize(): Promise<void>;
+    loadFont(fontFamily: string, language?: string): Promise<{success: boolean}>;
+    preloadFonts(fonts: string[], context: string): Promise<{success: boolean}[]>;
+    initialized: boolean;
+}
+
+export interface LayoutInfo {
+    textDirection: string;
+    fontMetrics: FontMetrics;
+    estimatedTextLengths: number;
+    layoutAdjustments: LayoutAdjustments;
+}
+
+export interface FontMetrics {
+    [char: string]: {
+        width: number;
+        height: number;
+    };
+    words: {
+        [word: string]: {
+            width: number;
+            height: number;
+        };
+    };
+}
+
+export interface LayoutAdjustments {
+    padding: {
+        top: number;
+        right: number;
+        bottom: number;
+        left: number;
+    };
+    margin: {
+        top: number;
+        right: number;
+        bottom: number;
+        left: number;
+    };
+    lineHeight: number;
+    letterSpacing: string;
+    textAlign?: string;
+    direction?: string;
+}
+
+export interface LanguageSwitchResult {
+    success: boolean;
+    renderTime: number;
+    layoutInfo: LayoutInfo;
+    updateResult: VirtualUpdate[];
+}
+
+export interface VirtualUpdate {
+    element: Element;
+    currentText: string;
+    newText: string;
+    currentAttrs: Record<string, string>;
+    newAttrs: Record<string, string>;
+    layoutInfo: ElementLayoutInfo;
+}
+
+export interface ElementLayoutInfo {
+    adjustments: LayoutAdjustments;
+    textMetrics: {
+        estimatedWidth: number;
+        estimatedHeight: number;
+    };
+}
+
+export interface RenderUpdate {
+    element: Element;
+    operation: string;
+    value?: string;
+    attr?: string;
+    property?: string;
+}
+
+/**
+ * 国際化レンダリング最適化クラス
+ */
 export class I18nRenderOptimizer {
+    // レンダリング最適化設定
+    private optimization: OptimizationConfig;
+    
+    // レンダリングキュー
+    private renderQueue: RenderUpdate[];
+    private isRendering: boolean;
+    private renderRequestId: number | null;
+    
+    // フォント管理
+    private fontCache: Map<string, any>;
+    private fontLoadPromises: Map<string, Promise<any>>;
+    private preloadedFonts: Set<string>;
+    
+    // レイアウトキャッシュ
+    private layoutCache: Map<string, LayoutInfo>;
+    private measurementCache: Map<string, FontMetrics>;
+    
+    // パフォーマンス監視
+    private renderMetrics: RenderMetrics;
+    
+    // DOM 最適化
+    private domOptimization: DOMOptimization;
+    
+    // 要素プール
+    private elementPools: Map<string, Element[]>;
+    
+    // フォント読み込みマネージャー
+    private fontLoadingManager: FontLoadingManager | null;
+    
+    // バッチ更新状態
+    private deferLayoutMeasurements: boolean;
+    private batchStartTime: number;
+    private animationDisabled: boolean;
+    private renderingPaused: boolean;
+    private scheduleRender: () => void;
+
     constructor() {
         // レンダリング最適化設定
         this.optimization = {
@@ -26,13 +171,13 @@ export class I18nRenderOptimizer {
         this.renderRequestId = null;
         
         // フォント管理 - FontLoadingManagerに置き換え予定
-        this.fontCache = new Map();
-        this.fontLoadPromises = new Map();
-        this.preloadedFonts = new Set();
+        this.fontCache = new Map<string, any>();
+        this.fontLoadPromises = new Map<string, Promise<any>>();
+        this.preloadedFonts = new Set<string>();
         
         // レイアウトキャッシュ
-        this.layoutCache = new Map();
-        this.measurementCache = new Map();
+        this.layoutCache = new Map<string, LayoutInfo>();
+        this.measurementCache = new Map<string, FontMetrics>();
         
         // パフォーマンス監視
         this.renderMetrics = {
@@ -52,15 +197,26 @@ export class I18nRenderOptimizer {
         };
         
         // 要素プール
-        this.elementPools = new Map();
+        this.elementPools = new Map<string, Element[]>();
         
         // フォント読み込みマネージャー（非同期初期化）
         this.fontLoadingManager = null;
         
+        // バッチ更新状態
+        this.deferLayoutMeasurements = false;
+        this.batchStartTime = 0;
+        this.animationDisabled = false;
+        this.renderingPaused = false;
+        
+        // デバウンス関数を初期化
+        this.scheduleRender = this.debounce(() => {
+            this.executeRenderQueue();
+        }, this.optimization.debounceDelay);
+        
         // 初期化
         this.initialize();
     }
-    async _loadFontLoadingManager() {
+    private async _loadFontLoadingManager(): Promise<void> {
         // 既に初期化済みの場合はスキップ
         if (this.fontLoadingManager) {
             return;
@@ -108,7 +264,7 @@ export class I18nRenderOptimizer {
     /**
      * 初期化
      */
-    async initialize() {
+    async initialize(): Promise<void> {
         // フォント読み込みマネージャーの初期化
         await this._loadFontLoadingManager();
         
@@ -127,7 +283,7 @@ export class I18nRenderOptimizer {
     /**
      * レンダリング最適化の設定
      */
-    setupRenderingOptimization() {
+    private setupRenderingOptimization(): void {
         // requestAnimationFrame による最適化
         this.scheduleRender = this.debounce(() => {
             this.executeRenderQueue();
@@ -156,7 +312,7 @@ export class I18nRenderOptimizer {
     /**
      * 言語切り替え時の最適化されたレンダリング
      */
-    async optimizeLanguageSwitch(fromLanguage, toLanguage, updateCallback) {
+    async optimizeLanguageSwitch(fromLanguage: string, toLanguage: string, updateCallback: (element: Element) => Promise<string>): Promise<LanguageSwitchResult> {
         const startTime = performance.now();
         
         try {
@@ -204,7 +360,7 @@ export class I18nRenderOptimizer {
     /**
      * フォントの事前読み込み
      */
-    async preloadLanguageFonts(language) {
+    async preloadLanguageFonts(language: string): Promise<boolean> {
         const fontFamily = this.getLanguageFontFamily(language);
         
         if (this.preloadedFonts.has(fontFamily)) {
@@ -247,7 +403,7 @@ export class I18nRenderOptimizer {
     /**
      * フォントファミリーの読み込み
      */
-    async _loadFontFamily(fontFamily) {
+    private async _loadFontFamily(fontFamily: string): Promise<boolean> {
         if (!document.fonts) {
             return Promise.resolve();
         }
@@ -268,7 +424,7 @@ export class I18nRenderOptimizer {
         return this._loadFontFamilyFallback(fontFamily);
     }
 
-    async _loadFontFamilyFallback(fontFamily) {
+    private async _loadFontFamilyFallback(fontFamily: string): Promise<boolean> {
         // 従来のフォント読み込み処理（フォールバック用）
         const fontFace = new FontFace(fontFamily, `url('/fonts/${fontFamily}.woff2')`);
         
@@ -285,7 +441,7 @@ export class I18nRenderOptimizer {
     /**
      * CSS によるフォント読み込み
      */
-    _loadFontCSS(fontFamily) {
+    private _loadFontCSS(fontFamily: string): Promise<boolean> {
         return new Promise((resolve, reject) => {
             // Check if font is already loaded
             const existingLink = document.querySelector(`link[href*="${encodeURIComponent(fontFamily)}"]`);
@@ -335,11 +491,11 @@ export class I18nRenderOptimizer {
     /**
      * レイアウトの事前計算
      */
-    async precalculateLayout(language) {
+    private async precalculateLayout(language: string): Promise<LayoutInfo> {
         const cacheKey = `layout_${language}`;
         
         if (this.layoutCache.has(cacheKey)) {
-            return this.layoutCache.get(cacheKey);
+            return this.layoutCache.get(cacheKey)!;
         }
         
         // 言語固有のレイアウト特性を計算
@@ -359,12 +515,12 @@ export class I18nRenderOptimizer {
     /**
      * フォントメトリクスの計算
      */
-    async calculateFontMetrics(language) {
+    private async calculateFontMetrics(language: string): Promise<FontMetrics> {
         const fontFamily = this.getLanguageFontFamily(language);
         const cacheKey = `metrics_${fontFamily}`;
         
         if (this.measurementCache.has(cacheKey)) {
-            return this.measurementCache.get(cacheKey);
+            return this.measurementCache.get(cacheKey)!;
         }
         
         // 測定用の隠し要素を作成
@@ -384,7 +540,7 @@ export class I18nRenderOptimizer {
         
         try {
             // 各文字の測定
-            const metrics = {};
+            const metrics: FontMetrics = {} as FontMetrics;
             const testChars = ['A', 'あ', '中', '한', 'Ä', 'ş'];
             
             for (const char of testChars) {
@@ -420,9 +576,9 @@ export class I18nRenderOptimizer {
     /**
      * テキスト長の推定
      */
-    estimateTextLengths(language) {
+    private estimateTextLengths(language: string): number {
         // 言語固有のテキスト長推定
-        const lengthFactors = {
+        const lengthFactors: Record<string, number> = {
             'ja': 0.8,   // 日本語は比較的短い
             'en': 1.0,   // 英語を基準
             'de': 1.3,   // ドイツ語は長い
@@ -437,7 +593,7 @@ export class I18nRenderOptimizer {
     /**
      * レイアウト調整の計算
      */
-    calculateLayoutAdjustments(language) {
+    private calculateLayoutAdjustments(language: string): LayoutAdjustments {
         const adjustments = {
             padding: { top: 0, right: 0, bottom: 0, left: 0 },
             margin: { top: 0, right: 0, bottom: 0, left: 0 },
@@ -844,8 +1000,8 @@ export class I18nRenderOptimizer {
      * ユーティリティメソッド
      */
     
-    getLanguageFontFamily(language) {
-        const fontMap = {
+    private getLanguageFontFamily(language: string): string {
+        const fontMap: Record<string, string> = {
             'ja': 'Noto Sans JP',
             'zh-CN': 'Noto Sans SC',
             'zh-TW': 'Noto Sans TC',
@@ -858,8 +1014,8 @@ export class I18nRenderOptimizer {
         return fontMap[language] || fontMap.default;
     }
     
-    getLanguageByFont(fontFamily) {
-        const reverseMap = {
+    private getLanguageByFont(fontFamily: string): string {
+        const reverseMap: Record<string, string> = {
             'Noto Sans JP': 'ja',
             'Noto Sans SC': 'zh-CN',
             'Noto Sans TC': 'zh-TW',
@@ -871,13 +1027,13 @@ export class I18nRenderOptimizer {
         return reverseMap[fontFamily] || 'en';
     }
     
-    getTextDirection(language) {
+    private getTextDirection(language: string): string {
         const rtlLanguages = ['ar', 'he', 'fa', 'ur'];
         return rtlLanguages.includes(language) ? 'rtl' : 'ltr';
     }
     
-    debounce(func, delay) {
-        let timeoutId;
+    private debounce(func: Function, delay: number): (...args: any[]) => void {
+        let timeoutId: number;
         return (...args) => {
             clearTimeout(timeoutId);
             timeoutId = setTimeout(() => func.apply(this, args), delay);
@@ -887,7 +1043,7 @@ export class I18nRenderOptimizer {
     /**
      * メトリクス更新
      */
-    updateFrameMetrics(frameTime) {
+    private updateFrameMetrics(frameTime: number): void {
         this.renderMetrics.frameCount++;
         this.renderMetrics.lastFrameTime = frameTime;
         
@@ -902,14 +1058,14 @@ export class I18nRenderOptimizer {
             alpha * frameTime + (1 - alpha) * this.renderMetrics.averageFrameTime;
     }
     
-    updateRenderMetrics(renderTime) {
+    private updateRenderMetrics(renderTime: number): void {
         this.renderMetrics.renderingTime = renderTime;
     }
     
     /**
      * パフォーマンス統計の取得
      */
-    getPerformanceStats() {
+    getPerformanceStats(): any {
         return {
             frameMetrics: { ...this.renderMetrics },
             optimization: { ...this.optimization },
