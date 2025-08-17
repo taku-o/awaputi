@@ -2,10 +2,130 @@
  * 翻訳検証ルール集 - 各種翻訳品質検証ルールの実装
  */
 
+// 型定義
+export interface ValidationContext {
+    targetLanguage?: string;
+    sourceLanguage?: string;
+    key?: string;
+    category?: string;
+    [key: string]: any;
+}
+
+export interface ValidationResult {
+    passed: boolean;
+    message: string;
+    details?: any;
+    suggestion?: string;
+    severity: 'error' | 'warning';
+}
+
+export interface ParameterDetails {
+    expected: string[];
+    actual: string[];
+    missing?: string[];
+    extra?: string[];
+}
+
+export interface LengthDetails {
+    sourceLength: number;
+    translationLength: number;
+    minLength: number;
+    maxLength: number;
+    language: string;
+}
+
+export interface LengthTolerance {
+    min: number;
+    max: number;
+    name: string;
+}
+
+export interface FormatIssue {
+    type: 'html_tags' | 'markdown' | 'special_characters';
+    message: string;
+    expected?: any;
+    actual?: any;
+    missing?: any;
+    extra?: any;
+}
+
+export interface MarkdownElement {
+    type: string;
+    content: string;
+}
+
+export interface CulturalRule {
+    term: string;
+    reason: string;
+    suggestion: string;
+}
+
+export interface CulturalRules {
+    inappropriate: CulturalRule[];
+    sensitive: CulturalRule[];
+}
+
+export interface CulturalIssue {
+    type: 'inappropriate' | 'sensitive';
+    term: string;
+    reason: string;
+    suggestion: string;
+    severity: 'error' | 'warning';
+}
+
+export interface CompletenessIssue {
+    type: 'untranslated_markers' | 'potential_untranslated' | 'too_short';
+    message: string;
+    markers?: string[];
+    commonWords?: string[];
+}
+
+export interface ConsistencyIssue {
+    type: string;
+    message: string;
+    examples?: string[];
+    suggestion?: string;
+}
+
+export interface CapitalizationResult {
+    passed: boolean;
+    type?: string;
+    message?: string;
+    examples?: string[];
+    suggestion?: string;
+}
+
+export interface PunctuationResult {
+    passed: boolean;
+    issues?: ConsistencyIssue[];
+}
+
+export interface PolitenessResult {
+    passed: boolean;
+    type?: string;
+    message?: string;
+    suggestion?: string;
+}
+
+export interface ValidationRuleConstructor {
+    new (): IValidationRule;
+}
+
+export interface IValidationRule {
+    name: string;
+    description: string;
+    severity: 'error' | 'warning';
+    validate(sourceText: string, translationText: string, context?: ValidationContext): ValidationResult;
+}
+
 /**
  * パラメータ整合性検証ルール
  */
-export class ParameterConsistencyRule {
+export class ParameterConsistencyRule implements IValidationRule {
+    public name: string;
+    public description: string;
+    public severity: 'error' | 'warning';
+
     constructor() {
         this.name = 'パラメータ整合性ルール';
         this.description = '翻訳文中のパラメータ（{param}）が原文と一致するかチェック';
@@ -15,7 +135,7 @@ export class ParameterConsistencyRule {
     /**
      * パラメータを抽出
      */
-    extractParameters(text) {
+    extractParameters(text: string): string[] {
         const patterns = [
             /\{([^}]+)\}/g,     // {param}
             /\{\{([^}]+)\}\}/g, // {{param}}
@@ -25,7 +145,7 @@ export class ParameterConsistencyRule {
             /%\(\w+\)s/g        // %(name)s
         ];
         
-        const params = new Set();
+        const params = new Set<string>();
         
         patterns.forEach(pattern => {
             let match;
@@ -41,7 +161,7 @@ export class ParameterConsistencyRule {
     /**
      * 検証実行
      */
-    validate(sourceText, translationText, context = {}) {
+    validate(sourceText: string, translationText: string, context: ValidationContext = {}): ValidationResult {
         if (!sourceText || !translationText) {
             return {
                 passed: false,
@@ -61,7 +181,7 @@ export class ParameterConsistencyRule {
                 details: {
                     expected: sourceParams,
                     actual: translationParams
-                },
+                } as ParameterDetails,
                 suggestion: `必要なパラメータ: ${sourceParams.join(', ')}`,
                 severity: this.severity
             };
@@ -72,7 +192,7 @@ export class ParameterConsistencyRule {
         const extraParams = translationParams.filter(param => !sourceParams.includes(param));
         
         if (missingParams.length > 0 || extraParams.length > 0) {
-            const issues = [];
+            const issues: string[] = [];
             if (missingParams.length > 0) {
                 issues.push(`不足: ${missingParams.join(', ')}`);
             }
@@ -88,7 +208,7 @@ export class ParameterConsistencyRule {
                     extra: extraParams,
                     expected: sourceParams,
                     actual: translationParams
-                },
+                } as ParameterDetails,
                 suggestion: `正しいパラメータ: ${sourceParams.join(', ')}`,
                 severity: this.severity
             };
@@ -105,7 +225,12 @@ export class ParameterConsistencyRule {
 /**
  * 翻訳長制限検証ルール
  */
-export class LengthValidationRule {
+export class LengthValidationRule implements IValidationRule {
+    public name: string;
+    public description: string;
+    public severity: 'error' | 'warning';
+    private lengthTolerances: Record<string, LengthTolerance>;
+
     constructor() {
         this.name = '翻訳長制限ルール';
         this.description = '翻訳文の長さが適切な範囲内かチェック';
@@ -124,7 +249,7 @@ export class LengthValidationRule {
     /**
      * 実際の文字数を計算（絵文字や特殊文字を考慮）
      */
-    calculateTextLength(text) {
+    calculateTextLength(text: string): number {
         // Unicode正規化
         const normalized = text.normalize('NFC');
         
@@ -138,7 +263,7 @@ export class LengthValidationRule {
     /**
      * 検証実行
      */
-    validate(sourceText, translationText, context = {}) {
+    validate(sourceText: string, translationText: string, context: ValidationContext = {}): ValidationResult {
         if (!sourceText || !translationText) {
             return {
                 passed: false,
@@ -167,7 +292,7 @@ export class LengthValidationRule {
                     minLength: minLength,
                     maxLength: maxLength,
                     language: tolerance.name
-                },
+                } as LengthDetails,
                 suggestion: '翻訳が完全で、重要な情報が欠けていないか確認してください',
                 severity: this.severity
             };
@@ -184,7 +309,7 @@ export class LengthValidationRule {
                     minLength: minLength,
                     maxLength: maxLength,
                     language: tolerance.name
-                },
+                } as LengthDetails,
                 suggestion: 'より簡潔で自然な表現を検討してください',
                 severity: this.severity
             };
@@ -206,7 +331,11 @@ export class LengthValidationRule {
 /**
  * フォーマット検証ルール
  */
-export class FormatValidationRule {
+export class FormatValidationRule implements IValidationRule {
+    public name: string;
+    public description: string;
+    public severity: 'error' | 'warning';
+
     constructor() {
         this.name = 'フォーマット検証ルール';
         this.description = 'HTML要素、マークダウン記法等のフォーマットが保持されているかチェック';
@@ -216,7 +345,7 @@ export class FormatValidationRule {
     /**
      * HTMLタグを抽出・正規化
      */
-    extractHtmlTags(text) {
+    extractHtmlTags(text: string): string[] {
         const htmlTagPattern = /<\/?[a-zA-Z][^>]*>/g;
         const matches = text.match(htmlTagPattern) || [];
         
@@ -230,7 +359,7 @@ export class FormatValidationRule {
     /**
      * マークダウン要素を抽出
      */
-    extractMarkdownElements(text) {
+    extractMarkdownElements(text: string): MarkdownElement[] {
         const patterns = [
             { type: 'bold', pattern: /\*\*[^*\n]+\*\*/g },
             { type: 'italic', pattern: /\*[^*\n]+\*/g },
@@ -242,7 +371,7 @@ export class FormatValidationRule {
             { type: 'ordered_list', pattern: /^\d+\.\s+.+$/gm }
         ];
         
-        const elements = [];
+        const elements: MarkdownElement[] = [];
         patterns.forEach(({ type, pattern }) => {
             const matches = text.match(pattern) || [];
             matches.forEach(match => {
@@ -256,7 +385,7 @@ export class FormatValidationRule {
     /**
      * 特殊記号・句読点を抽出
      */
-    extractSpecialCharacters(text) {
+    extractSpecialCharacters(text: string): string[] {
         const specialChars = text.match(/[()[\]{}<>「」『』【】〈〉《》]/g) || [];
         return specialChars.sort();
     }
@@ -264,7 +393,7 @@ export class FormatValidationRule {
     /**
      * 検証実行
      */
-    validate(sourceText, translationText, context = {}) {
+    validate(sourceText: string, translationText: string, context: ValidationContext = {}): ValidationResult {
         if (!sourceText || !translationText) {
             return {
                 passed: false,
@@ -273,7 +402,7 @@ export class FormatValidationRule {
             };
         }
         
-        const issues = [];
+        const issues: FormatIssue[] = [];
         
         // HTMLタグの検証
         const sourceHtmlTags = this.extractHtmlTags(sourceText);
@@ -350,7 +479,12 @@ export class FormatValidationRule {
 /**
  * 文化的適切性検証ルール
  */
-export class CulturalAppropriatenessRule {
+export class CulturalAppropriatenessRule implements IValidationRule {
+    public name: string;
+    public description: string;
+    public severity: 'error' | 'warning';
+    private culturalRules: Record<string, CulturalRules>;
+
     constructor() {
         this.name = '文化的適切性ルール';
         this.description = '文化的に不適切な表現や誤解を招く表現がないかチェック';
@@ -362,7 +496,7 @@ export class CulturalAppropriatenessRule {
     /**
      * 文化的配慮ルールを初期化
      */
-    initializeCulturalRules() {
+    private initializeCulturalRules(): Record<string, CulturalRules> {
         return {
             'en': {
                 inappropriate: [
@@ -409,7 +543,7 @@ export class CulturalAppropriatenessRule {
     /**
      * 検証実行
      */
-    validate(sourceText, translationText, context = {}) {
+    validate(sourceText: string, translationText: string, context: ValidationContext = {}): ValidationResult {
         if (!translationText) {
             return {
                 passed: false,
@@ -419,7 +553,7 @@ export class CulturalAppropriatenessRule {
         }
         
         const targetLanguage = context.targetLanguage;
-        const rules = this.culturalRules[targetLanguage];
+        const rules = targetLanguage ? this.culturalRules[targetLanguage] : undefined;
         
         if (!rules) {
             return {
@@ -429,7 +563,7 @@ export class CulturalAppropriatenessRule {
             };
         }
         
-        const issues = [];
+        const issues: CulturalIssue[] = [];
         const lowerTranslation = translationText.toLowerCase();
         
         // 不適切な表現のチェック
@@ -490,7 +624,7 @@ export class CulturalAppropriatenessRule {
     /**
      * 新しい文化的ルールを追加
      */
-    addCulturalRule(language, type, rule) {
+    addCulturalRule(language: string, type: 'inappropriate' | 'sensitive', rule: CulturalRule): void {
         if (!this.culturalRules[language]) {
             this.culturalRules[language] = { inappropriate: [], sensitive: [] };
         }
@@ -506,7 +640,12 @@ export class CulturalAppropriatenessRule {
 /**
  * 翻訳完成度検証ルール
  */
-export class CompletenessValidationRule {
+export class CompletenessValidationRule implements IValidationRule {
+    public name: string;
+    public description: string;
+    public severity: 'error' | 'warning';
+    private untranslatedMarkers: string[];
+
     constructor() {
         this.name = '翻訳完成度ルール';
         this.description = '空文字や未翻訳の項目がないかチェック';
@@ -523,8 +662,8 @@ export class CompletenessValidationRule {
     /**
      * 検証実行
      */
-    validate(sourceText, translationText, context = {}) {
-        const issues = [];
+    validate(sourceText: string, translationText: string, context: ValidationContext = {}): ValidationResult {
+        const issues: CompletenessIssue[] = [];
         
         // 空文字チェック
         if (!translationText || translationText.trim() === '') {
@@ -598,7 +737,7 @@ export class CompletenessValidationRule {
     /**
      * 未翻訳マーカーを追加
      */
-    addUntranslatedMarker(marker) {
+    addUntranslatedMarker(marker: string): void {
         if (!this.untranslatedMarkers.includes(marker)) {
             this.untranslatedMarkers.push(marker);
         }
@@ -608,7 +747,11 @@ export class CompletenessValidationRule {
 /**
  * 翻訳一貫性検証ルール
  */
-export class ConsistencyValidationRule {
+export class ConsistencyValidationRule implements IValidationRule {
+    public name: string;
+    public description: string;
+    public severity: 'error' | 'warning';
+
     constructor() {
         this.name = '翻訳一貫性ルール';
         this.description = '翻訳の一貫性をチェック';
@@ -618,7 +761,7 @@ export class ConsistencyValidationRule {
     /**
      * 大文字化パターンをチェック（英語）
      */
-    checkCapitalizationConsistency(text, language) {
+    private checkCapitalizationConsistency(text: string, language?: string): CapitalizationResult {
         if (language !== 'en') return { passed: true };
         
         const sentences = text.split(/[.!?]+/).map(s => s.trim()).filter(s => s.length > 0);
@@ -642,10 +785,10 @@ export class ConsistencyValidationRule {
     /**
      * 句読点の一貫性をチェック
      */
-    checkPunctuationConsistency(sourceText, translationText, language) {
+    private checkPunctuationConsistency(sourceText: string | undefined, translationText: string, language?: string): PunctuationResult {
         if (!sourceText) return { passed: true };
         
-        const issues = [];
+        const issues: ConsistencyIssue[] = [];
         
         // 文末句読点のチェック
         const sourceEndsWithPeriod = /[.。！？!?]$/.test(sourceText.trim());
@@ -688,8 +831,8 @@ export class ConsistencyValidationRule {
     /**
      * 敬語レベルの一貫性をチェック（日本語・韓国語）
      */
-    checkPolitenessConsistency(text, language) {
-        if (!['ja', 'ko'].includes(language)) return { passed: true };
+    private checkPolitenessConsistency(text: string, language?: string): PolitenessResult {
+        if (!language || !['ja', 'ko'].includes(language)) return { passed: true };
         
         if (language === 'ja') {
             const politeEndings = text.match(/[です、ます、でした、ました]/g) || [];
@@ -711,7 +854,7 @@ export class ConsistencyValidationRule {
     /**
      * 検証実行
      */
-    validate(sourceText, translationText, context = {}) {
+    validate(sourceText: string, translationText: string, context: ValidationContext = {}): ValidationResult {
         if (!translationText) {
             return {
                 passed: false,
@@ -721,7 +864,7 @@ export class ConsistencyValidationRule {
         }
         
         const targetLanguage = context.targetLanguage || 'unknown';
-        const issues = [];
+        const issues: (CapitalizationResult | ConsistencyIssue | PolitenessResult)[] = [];
         
         // 大文字化の一貫性チェック
         const capitalizationResult = this.checkCapitalizationConsistency(translationText, targetLanguage);
@@ -731,7 +874,7 @@ export class ConsistencyValidationRule {
         
         // 句読点の一貫性チェック
         const punctuationResult = this.checkPunctuationConsistency(sourceText, translationText, targetLanguage);
-        if (!punctuationResult.passed) {
+        if (!punctuationResult.passed && punctuationResult.issues) {
             issues.push(...punctuationResult.issues);
         }
         
@@ -763,8 +906,10 @@ export class ConsistencyValidationRule {
  * 検証ルールファクトリー
  */
 export class ValidationRuleFactory {
+    private ruleClasses: Map<string, ValidationRuleConstructor>;
+
     constructor() {
-        this.ruleClasses = new Map([
+        this.ruleClasses = new Map<string, ValidationRuleConstructor>([
             ['parameterConsistency', ParameterConsistencyRule],
             ['lengthValidation', LengthValidationRule],
             ['formatValidation', FormatValidationRule],
@@ -777,7 +922,7 @@ export class ValidationRuleFactory {
     /**
      * 検証ルールを作成
      */
-    createRule(ruleType) {
+    createRule(ruleType: string): IValidationRule {
         const RuleClass = this.ruleClasses.get(ruleType);
         if (!RuleClass) {
             throw new Error(`Unknown validation rule type: ${ruleType}`);
@@ -789,14 +934,14 @@ export class ValidationRuleFactory {
     /**
      * すべての利用可能なルールタイプを取得
      */
-    getAvailableRuleTypes() {
+    getAvailableRuleTypes(): string[] {
         return Array.from(this.ruleClasses.keys());
     }
     
     /**
      * 新しいルールクラスを登録
      */
-    registerRule(ruleType, RuleClass) {
+    registerRule(ruleType: string, RuleClass: ValidationRuleConstructor): void {
         this.ruleClasses.set(ruleType, RuleClass);
     }
 }

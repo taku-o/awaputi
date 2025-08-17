@@ -1,11 +1,119 @@
 import { getErrorHandler } from '../../../utils/ErrorHandler.js';
 
+// 型定義
+export interface ValidationRule {
+    id: string;
+    name: string;
+    description: string;
+    severity: 'error' | 'warning';
+    enabled: boolean;
+    check: (key: string, translation: string, sourceLanguage: string, targetLanguage: string) => Promise<ValidationResult> | ValidationResult;
+}
+
+export interface ValidationResult {
+    passed: boolean;
+    message: string;
+    suggestion?: string;
+}
+
+export interface QualityThresholds {
+    excellent: number;
+    good: number;
+    acceptable: number;
+    poor: number;
+}
+
+export interface QualityStats {
+    totalChecks: number;
+    passedChecks: number;
+    failedChecks: number;
+    warnings: number;
+}
+
+export interface ValidationIssue {
+    rule: string;
+    name: string;
+    message: string;
+    suggestion?: string;
+    severity: 'error' | 'warning';
+}
+
+export interface ItemValidationResult {
+    key: string;
+    translation: string;
+    errors: ValidationIssue[];
+    warnings: ValidationIssue[];
+    passed: ValidationIssue[];
+}
+
+export interface TranslationValidationResults {
+    language: string;
+    sourceLanguage: string;
+    timestamp: string;
+    totalItems: number;
+    checkedItems: number;
+    errors: ValidationIssue[];
+    warnings: ValidationIssue[];
+    passed: ValidationIssue[];
+    qualityScore: number;
+    qualityGrade: string;
+}
+
+export interface QualityReport {
+    summary: {
+        language: string;
+        totalItems: number;
+        checkedItems: number;
+        qualityScore: number;
+        qualityGrade: string;
+        errorCount: number;
+        warningCount: number;
+    };
+    details: {
+        errors: ValidationIssue[];
+        warnings: ValidationIssue[];
+        passed: ValidationIssue[];
+    };
+    recommendations: Recommendation[];
+    timestamp: string;
+}
+
+export interface Recommendation {
+    priority: 'high' | 'medium' | 'low';
+    type: string;
+    message: string;
+    action: string;
+}
+
+export interface QualitySettings {
+    qualityThresholds?: Partial<QualityThresholds>;
+    rules?: Array<{
+        id: string;
+        enabled?: boolean;
+        severity?: 'error' | 'warning';
+    }>;
+}
+
+export interface CulturalRules {
+    inappropriate: string[];
+    suggestions: string[];
+}
+
+export interface LengthTolerance {
+    min: number;
+    max: number;
+}
+
 /**
  * 翻訳品質管理クラス - 翻訳データの品質検証とレポート生成
  */
 export class QualityChecker {
+    private validationRules: Map<string, ValidationRule>;
+    private qualityThresholds: QualityThresholds;
+    private qualityStats: QualityStats;
+
     constructor() {
-        this.validationRules = new Map();
+        this.validationRules = new Map<string, ValidationRule>();
         this.qualityThresholds = {
             excellent: 90,
             good: 75,
@@ -30,7 +138,7 @@ export class QualityChecker {
     /**
      * デフォルト検証ルールを初期化
      */
-    initializeDefaultRules() {
+    private initializeDefaultRules(): void {
         // パラメータ整合性チェック
         this.addValidationRule('parameterConsistency', {
             name: 'パラメータ整合性チェック',
@@ -83,7 +191,7 @@ export class QualityChecker {
     /**
      * 検証ルールを追加
      */
-    addValidationRule(id, rule) {
+    addValidationRule(id: string, rule: Omit<ValidationRule, 'id' | 'enabled'>): void {
         if (!rule.name || !rule.check || typeof rule.check !== 'function') {
             throw new Error('Invalid validation rule format');
         }
@@ -93,7 +201,7 @@ export class QualityChecker {
             name: rule.name,
             description: rule.description || '',
             severity: rule.severity || 'warning',
-            enabled: rule.enabled !== false,
+            enabled: true,
             check: rule.check
         });
         
@@ -103,7 +211,7 @@ export class QualityChecker {
     /**
      * 検証ルールを削除
      */
-    removeValidationRule(id) {
+    removeValidationRule(id: string): boolean {
         const removed = this.validationRules.delete(id);
         if (removed) {
             console.log(`Validation rule removed: ${id}`);
@@ -114,9 +222,9 @@ export class QualityChecker {
     /**
      * 翻訳データを検証
      */
-    async validateTranslations(translations, sourceLanguage = 'ja', targetLanguage) {
+    async validateTranslations(translations: Record<string, any>, sourceLanguage: string = 'ja', targetLanguage: string): Promise<TranslationValidationResults> {
         try {
-            const validationResults = {
+            const validationResults: TranslationValidationResults = {
                 language: targetLanguage,
                 sourceLanguage: sourceLanguage,
                 timestamp: new Date().toISOString(),
@@ -158,7 +266,7 @@ export class QualityChecker {
             return validationResults;
             
         } catch (error) {
-            getErrorHandler().handleError(error, 'QUALITY_CHECKER_ERROR', {
+            getErrorHandler().handleError(error as Error, 'QUALITY_CHECKER_ERROR', {
                 operation: 'validateTranslations',
                 targetLanguage: targetLanguage
             });
@@ -169,8 +277,8 @@ export class QualityChecker {
     /**
      * 個別翻訳項目を検証
      */
-    async validateTranslationItem(key, translation, sourceLanguage, targetLanguage) {
-        const result = {
+    async validateTranslationItem(key: string, translation: string, sourceLanguage: string, targetLanguage: string): Promise<ItemValidationResult> {
+        const result: ItemValidationResult = {
             key: key,
             translation: translation,
             errors: [],
@@ -190,10 +298,11 @@ export class QualityChecker {
                         result.passed.push({
                             rule: ruleId,
                             name: rule.name,
-                            message: ruleResult.message || `✓ ${rule.name}に合格`
+                            message: ruleResult.message || `✓ ${rule.name}に合格`,
+                            severity: rule.severity
                         });
                     } else {
-                        const issue = {
+                        const issue: ValidationIssue = {
                             rule: ruleId,
                             name: rule.name,
                             message: ruleResult.message || `${rule.name}に問題があります`,
@@ -212,7 +321,7 @@ export class QualityChecker {
                     result.warnings.push({
                         rule: ruleId,
                         name: rule.name,
-                        message: `検証ルール実行エラー: ${ruleError.message}`,
+                        message: `検証ルール実行エラー: ${(ruleError as Error).message}`,
                         severity: 'warning'
                     });
                 }
@@ -221,7 +330,7 @@ export class QualityChecker {
             result.errors.push({
                 rule: 'system',
                 name: 'システムエラー',
-                message: `検証中にエラーが発生しました: ${error.message}`,
+                message: `検証中にエラーが発生しました: ${(error as Error).message}`,
                 severity: 'error'
             });
         }
@@ -232,7 +341,7 @@ export class QualityChecker {
     /**
      * パラメータ整合性チェック
      */
-    checkParameterConsistency(key, translation, sourceLanguage, targetLanguage) {
+    private checkParameterConsistency(key: string, translation: string, sourceLanguage: string, targetLanguage: string): ValidationResult {
         // 基準となる日本語翻訳を取得（実際の実装では翻訳データベースから取得）
         const sourceText = this.getSourceText(key, sourceLanguage);
         
@@ -276,7 +385,7 @@ export class QualityChecker {
     /**
      * 翻訳長制限チェック
      */
-    checkLengthValidation(key, translation, sourceLanguage, targetLanguage) {
+    private checkLengthValidation(key: string, translation: string, sourceLanguage: string, targetLanguage: string): ValidationResult {
         const sourceText = this.getSourceText(key, sourceLanguage);
         
         if (!sourceText) {
@@ -287,7 +396,7 @@ export class QualityChecker {
         const translationLength = translation.length;
         
         // 言語別の長さ許容率
-        const lengthTolerances = {
+        const lengthTolerances: Record<string, LengthTolerance> = {
             'en': { min: 0.7, max: 1.5 },    // 英語: 70%-150%
             'zh-CN': { min: 0.5, max: 1.2 }, // 中国語簡体字: 50%-120%
             'zh-TW': { min: 0.5, max: 1.2 }, // 中国語繁体字: 50%-120%
@@ -323,7 +432,7 @@ export class QualityChecker {
     /**
      * フォーマット検証
      */
-    checkFormatValidation(key, translation, sourceLanguage, targetLanguage) {
+    private checkFormatValidation(key: string, translation: string, sourceLanguage: string, targetLanguage: string): ValidationResult {
         const sourceText = this.getSourceText(key, sourceLanguage);
         
         if (!sourceText) {
@@ -364,9 +473,9 @@ export class QualityChecker {
     /**
      * 文化的適切性チェック
      */
-    checkCulturalAppropriateness(key, translation, sourceLanguage, targetLanguage) {
+    private checkCulturalAppropriateness(key: string, translation: string, sourceLanguage: string, targetLanguage: string): ValidationResult {
         // 言語別の文化的配慮事項
-        const culturalRules = {
+        const culturalRules: Record<string, CulturalRules> = {
             'en': {
                 inappropriate: ['jap', 'oriental'],
                 suggestions: ['Use respectful terms', 'Avoid dated terminology']
@@ -412,7 +521,7 @@ export class QualityChecker {
     /**
      * 翻訳完成度チェック
      */
-    checkCompleteness(key, translation, sourceLanguage, targetLanguage) {
+    private checkCompleteness(key: string, translation: string, sourceLanguage: string, targetLanguage: string): ValidationResult {
         if (!translation || translation.trim() === '') {
             return {
                 passed: false,
@@ -454,7 +563,7 @@ export class QualityChecker {
     /**
      * 翻訳一貫性チェック
      */
-    checkConsistency(key, translation, sourceLanguage, targetLanguage) {
+    private checkConsistency(key: string, translation: string, sourceLanguage: string, targetLanguage: string): ValidationResult {
         // 実際の実装では翻訳メモリやデータベースを使用して一貫性をチェック
         // ここでは基本的な一貫性チェックのみ実装
         
@@ -504,8 +613,8 @@ export class QualityChecker {
     /**
      * 翻訳データを平坦化
      */
-    flattenTranslations(translations, prefix = '') {
-        const flattened = {};
+    private flattenTranslations(translations: Record<string, any>, prefix: string = ''): Record<string, string> {
+        const flattened: Record<string, string> = {};
         
         for (const [key, value] of Object.entries(translations)) {
             const fullKey = prefix ? `${prefix}.${key}` : key;
@@ -523,7 +632,7 @@ export class QualityChecker {
     /**
      * パラメータを抽出
      */
-    extractParameters(text) {
+    private extractParameters(text: string): string[] {
         const patterns = [
             /\{([^}]+)\}/g,     // {param}
             /\{\{([^}]+)\}\}/g, // {{param}}
@@ -531,7 +640,7 @@ export class QualityChecker {
             /%\d+/g             // %1, %2, etc.
         ];
         
-        const params = new Set();
+        const params = new Set<string>();
         
         patterns.forEach(pattern => {
             let match;
@@ -546,7 +655,7 @@ export class QualityChecker {
     /**
      * HTMLタグを抽出
      */
-    extractHtmlTags(text) {
+    private extractHtmlTags(text: string): string[] {
         const htmlTagPattern = /<\/?[^>]+>/g;
         const matches = text.match(htmlTagPattern);
         return matches || [];
@@ -555,7 +664,7 @@ export class QualityChecker {
     /**
      * マークダウン要素を抽出
      */
-    extractMarkdownElements(text) {
+    private extractMarkdownElements(text: string): string[] {
         const patterns = [
             /\*\*[^*]+\*\*/g,    // **bold**
             /\*[^*]+\*/g,        // *italic*
@@ -564,7 +673,7 @@ export class QualityChecker {
             /#{1,6}\s/g          // # headers
         ];
         
-        const elements = [];
+        const elements: string[] = [];
         patterns.forEach(pattern => {
             const matches = text.match(pattern);
             if (matches) {
@@ -578,17 +687,17 @@ export class QualityChecker {
     /**
      * 句読点を抽出
      */
-    extractPunctuation(text) {
+    private extractPunctuation(text: string): string {
         return text.replace(/[^.!?。！？]/g, '');
     }
     
     /**
      * 元の翻訳文を取得（モック実装）
      */
-    getSourceText(key, sourceLanguage) {
+    private getSourceText(key: string, sourceLanguage: string): string | null {
         // 実際の実装では翻訳データベースやファイルから取得
         // ここではモック実装
-        const mockTranslations = {
+        const mockTranslations: Record<string, string> = {
             'common.ok': 'OK',
             'common.cancel': 'キャンセル',
             'menu.play': 'プレイ',
@@ -602,7 +711,7 @@ export class QualityChecker {
     /**
      * 品質スコアを計算
      */
-    calculateQualityScore(results) {
+    private calculateQualityScore(results: TranslationValidationResults): number {
         const totalItems = results.checkedItems;
         const errorCount = results.errors.length;
         const warningCount = results.warnings.length;
@@ -622,7 +731,7 @@ export class QualityChecker {
     /**
      * 品質グレードを取得
      */
-    getQualityGrade(score) {
+    private getQualityGrade(score: number): string {
         if (score >= this.qualityThresholds.excellent) return 'excellent';
         if (score >= this.qualityThresholds.good) return 'good';
         if (score >= this.qualityThresholds.acceptable) return 'acceptable';
@@ -633,7 +742,7 @@ export class QualityChecker {
     /**
      * 品質統計を更新
      */
-    updateQualityStats(results) {
+    private updateQualityStats(results: TranslationValidationResults): void {
         this.qualityStats.totalChecks++;
         
         if (results.errors.length === 0) {
@@ -648,8 +757,8 @@ export class QualityChecker {
     /**
      * 品質レポートを生成
      */
-    generateQualityReport(results) {
-        const report = {
+    generateQualityReport(results: TranslationValidationResults): QualityReport {
+        const report: QualityReport = {
             summary: {
                 language: results.language,
                 totalItems: results.totalItems,
@@ -674,8 +783,8 @@ export class QualityChecker {
     /**
      * 改善提案を生成
      */
-    generateRecommendations(results) {
-        const recommendations = [];
+    private generateRecommendations(results: TranslationValidationResults): Recommendation[] {
+        const recommendations: Recommendation[] = [];
         
         if (results.errors.length > 0) {
             recommendations.push({
@@ -710,7 +819,7 @@ export class QualityChecker {
     /**
      * 統計情報を取得
      */
-    getStats() {
+    getStats(): QualityStats & { activeRules: ValidationRule[]; qualityThresholds: QualityThresholds } {
         return {
             ...this.qualityStats,
             activeRules: Array.from(this.validationRules.values()).filter(rule => rule.enabled),
@@ -721,7 +830,7 @@ export class QualityChecker {
     /**
      * 設定を更新
      */
-    updateSettings(settings) {
+    updateSettings(settings: QualitySettings): void {
         if (settings.qualityThresholds) {
             Object.assign(this.qualityThresholds, settings.qualityThresholds);
         }
@@ -730,7 +839,12 @@ export class QualityChecker {
             settings.rules.forEach(ruleSettings => {
                 const rule = this.validationRules.get(ruleSettings.id);
                 if (rule) {
-                    Object.assign(rule, ruleSettings);
+                    if (ruleSettings.enabled !== undefined) {
+                        rule.enabled = ruleSettings.enabled;
+                    }
+                    if (ruleSettings.severity !== undefined) {
+                        rule.severity = ruleSettings.severity;
+                    }
                 }
             });
         }
@@ -740,12 +854,12 @@ export class QualityChecker {
 }
 
 // シングルトンインスタンス
-let qualityCheckerInstance = null;
+let qualityCheckerInstance: QualityChecker | null = null;
 
 /**
  * QualityCheckerのシングルトンインスタンスを取得
  */
-export function getQualityChecker() {
+export function getQualityChecker(): QualityChecker {
     if (!qualityCheckerInstance) {
         qualityCheckerInstance = new QualityChecker();
     }

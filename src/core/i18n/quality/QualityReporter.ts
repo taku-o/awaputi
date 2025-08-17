@@ -1,13 +1,158 @@
 import { getErrorHandler } from '../../../utils/ErrorHandler.js';
 
+// 型定義
+export interface ReportTemplate {
+    name: string;
+    sections: string[];
+    format: 'html' | 'csv' | 'json';
+}
+
+export interface ReportOptions {
+    template?: string;
+    includeRawData?: boolean;
+    customSections?: string[];
+    filterSeverity?: string[];
+    maxIssues?: number;
+}
+
+export interface ValidationResults {
+    language: string;
+    sourceLanguage: string;
+    timestamp: string;
+    totalItems: number;
+    checkedItems: number;
+    errors: ValidationIssue[];
+    warnings: ValidationIssue[];
+    passed: ValidationIssue[];
+    qualityScore: number;
+    qualityGrade: string;
+}
+
+export interface ValidationIssue {
+    rule: string;
+    name: string;
+    message: string;
+    suggestion?: string;
+    severity: 'error' | 'warning';
+    key?: string;
+}
+
+export interface ReportSummary {
+    language: string;
+    sourceLanguage: string;
+    totalItems: number;
+    checkedItems: number;
+    qualityScore: number;
+    qualityGrade: string;
+    errorCount: number;
+    warningCount: number;
+    passedCount: number;
+    completionRate: number;
+    successRate: number;
+}
+
+export interface RuleStatistics {
+    total: number;
+    errors: number;
+    warnings: number;
+    passed: number;
+}
+
+export interface ReportStatistics {
+    byRule: Record<string, RuleStatistics>;
+    bySeverity: Record<string, number>;
+    byCategory: Record<string, RuleStatistics>;
+}
+
+export interface CategorizedIssues {
+    critical: ValidationIssue[];
+    major: ValidationIssue[];
+    minor: ValidationIssue[];
+    info: ValidationIssue[];
+}
+
+export interface Recommendation {
+    priority: 'critical' | 'high' | 'medium' | 'low';
+    type: string;
+    title: string;
+    description: string;
+    actions: string[];
+}
+
+export interface TrendChange {
+    value: number;
+    direction: 'improvement' | 'decline' | 'stable';
+    percentage?: number;
+}
+
+export interface TrendAnalysis {
+    scoreChange: TrendChange;
+    errorChange: TrendChange;
+    warningChange: TrendChange;
+    overallTrend: 'improving' | 'declining' | 'stable' | 'insufficient_data';
+}
+
+export interface TrendData {
+    message?: string;
+    data: TrendAnalysis | null;
+}
+
+export interface QualityTrend {
+    timestamp: string;
+    qualityScore: number;
+    errorCount: number;
+    warningCount: number;
+    successRate: number;
+}
+
+export interface ReportData {
+    id: string;
+    timestamp: string;
+    template: string;
+    language: string;
+    sourceLanguage: string;
+    summary: ReportSummary;
+    statistics: ReportStatistics;
+    issues: CategorizedIssues;
+    recommendations: Recommendation[];
+    trends: TrendData;
+}
+
+export interface ReportHistoryEntry {
+    id: string;
+    timestamp: string;
+    language: string;
+    qualityScore: number;
+    errorCount: number;
+    warningCount: number;
+}
+
+export interface GeneratedReport {
+    id: string;
+    data: ReportData;
+    report: string;
+    format: string;
+}
+
+export interface ReporterStats {
+    totalReports: number;
+    languagesTracked: number;
+    availableTemplates: string[];
+    averageQualityScore: number;
+}
+
 /**
  * 翻訳品質レポート生成クラス - 品質検証結果のレポート生成と分析
  */
 export class QualityReporter {
+    private reportTemplates: Map<string, ReportTemplate>;
+    private reportHistory: ReportHistoryEntry[];
+    private qualityTrends: Map<string, QualityTrend[]>;
+
     constructor() {
-        this.reportTemplates = new Map();
+        this.reportTemplates = new Map<string, ReportTemplate>();
         this.reportHistory = [];
-        this.qualityTrends = new Map();
+        this.qualityTrends = new Map<string, QualityTrend[]>();
         
         // デフォルトレポートテンプレートを初期化
         this.initializeReportTemplates();
@@ -18,7 +163,7 @@ export class QualityReporter {
     /**
      * レポートテンプレートを初期化
      */
-    initializeReportTemplates() {
+    private initializeReportTemplates(): void {
         // 詳細レポートテンプレート
         this.reportTemplates.set('detailed', {
             name: '詳細品質レポート',
@@ -51,7 +196,7 @@ export class QualityReporter {
     /**
      * 包括的品質レポートを生成
      */
-    generateComprehensiveReport(validationResults, options = {}) {
+    generateComprehensiveReport(validationResults: ValidationResults, options: ReportOptions = {}): GeneratedReport {
         try {
             const reportId = this.generateReportId();
             const templateType = options.template || 'detailed';
@@ -61,7 +206,7 @@ export class QualityReporter {
                 throw new Error(`Unknown report template: ${templateType}`);
             }
             
-            const reportData = {
+            const reportData: ReportData = {
                 id: reportId,
                 timestamp: new Date().toISOString(),
                 template: templateType,
@@ -94,7 +239,7 @@ export class QualityReporter {
             };
             
         } catch (error) {
-            getErrorHandler().handleError(error, 'QUALITY_REPORTER_ERROR', {
+            getErrorHandler().handleError(error as Error, 'QUALITY_REPORTER_ERROR', {
                 operation: 'generateComprehensiveReport'
             });
             throw error;
@@ -104,7 +249,7 @@ export class QualityReporter {
     /**
      * 検証結果を分析
      */
-    analyzeValidationResults(results) {
+    private analyzeValidationResults(results: ValidationResults): Omit<ReportData, 'id' | 'timestamp' | 'template' | 'language' | 'sourceLanguage'> {
         const analysis = {
             summary: this.generateSummary(results),
             statistics: this.generateStatistics(results),
@@ -119,7 +264,7 @@ export class QualityReporter {
     /**
      * サマリーを生成
      */
-    generateSummary(results) {
+    private generateSummary(results: ValidationResults): ReportSummary {
         return {
             language: results.language,
             sourceLanguage: results.sourceLanguage,
@@ -140,11 +285,11 @@ export class QualityReporter {
     /**
      * 統計データを生成
      */
-    generateStatistics(results) {
+    private generateStatistics(results: ValidationResults): ReportStatistics {
         const statistics = {
-            byRule: new Map(),
-            bySeverity: new Map(),
-            byCategory: new Map()
+            byRule: new Map<string, RuleStatistics>(),
+            bySeverity: new Map<string, number>(),
+            byCategory: new Map<string, RuleStatistics>()
         };
         
         // ルール別統計
@@ -159,7 +304,7 @@ export class QualityReporter {
                 });
             }
             
-            const ruleStats = statistics.byRule.get(rule);
+            const ruleStats = statistics.byRule.get(rule)!;
             ruleStats.total++;
             
             if (results.errors.includes(item)) {
@@ -189,7 +334,7 @@ export class QualityReporter {
                     });
                 }
                 
-                const categoryStats = statistics.byCategory.get(category);
+                const categoryStats = statistics.byCategory.get(category)!;
                 categoryStats.total++;
                 
                 if (results.errors.includes(item)) {
@@ -212,8 +357,8 @@ export class QualityReporter {
     /**
      * 問題を分類
      */
-    categorizeIssues(results) {
-        const categories = {
+    private categorizeIssues(results: ValidationResults): CategorizedIssues {
+        const categories: CategorizedIssues = {
             critical: [],
             major: [],
             minor: [],
@@ -248,8 +393,8 @@ export class QualityReporter {
     /**
      * 改善推奨事項を生成
      */
-    generateRecommendations(results) {
-        const recommendations = [];
+    private generateRecommendations(results: ValidationResults): Recommendation[] {
+        const recommendations: Recommendation[] = [];
         const summary = this.generateSummary(results);
         
         // 品質スコアベースの推奨事項
@@ -329,7 +474,7 @@ export class QualityReporter {
     /**
      * トレンド分析
      */
-    analyzeTrends(results) {
+    private analyzeTrends(results: ValidationResults): TrendData {
         const language = results.language;
         const trends = this.qualityTrends.get(language) || [];
         
@@ -348,28 +493,30 @@ export class QualityReporter {
         const warningChange = latest.warningCount - previous.warningCount;
         
         return {
-            scoreChange: {
-                value: scoreChange,
-                direction: scoreChange > 0 ? 'improvement' : scoreChange < 0 ? 'decline' : 'stable',
-                percentage: previous.qualityScore > 0 ? 
-                    Math.round((scoreChange / previous.qualityScore) * 100) : 0
-            },
-            errorChange: {
-                value: errorChange,
-                direction: errorChange < 0 ? 'improvement' : errorChange > 0 ? 'decline' : 'stable'
-            },
-            warningChange: {
-                value: warningChange,
-                direction: warningChange < 0 ? 'improvement' : warningChange > 0 ? 'decline' : 'stable'
-            },
-            overallTrend: this.calculateOverallTrend(trends)
+            data: {
+                scoreChange: {
+                    value: scoreChange,
+                    direction: scoreChange > 0 ? 'improvement' : scoreChange < 0 ? 'decline' : 'stable',
+                    percentage: previous.qualityScore > 0 ? 
+                        Math.round((scoreChange / previous.qualityScore) * 100) : 0
+                },
+                errorChange: {
+                    value: errorChange,
+                    direction: errorChange < 0 ? 'improvement' : errorChange > 0 ? 'decline' : 'stable'
+                },
+                warningChange: {
+                    value: warningChange,
+                    direction: warningChange < 0 ? 'improvement' : warningChange > 0 ? 'decline' : 'stable'
+                },
+                overallTrend: this.calculateOverallTrend(trends)
+            }
         };
     }
     
     /**
      * 全体的なトレンドを計算
      */
-    calculateOverallTrend(trends) {
+    private calculateOverallTrend(trends: QualityTrend[]): 'improving' | 'declining' | 'stable' | 'insufficient_data' {
         if (trends.length < 3) return 'insufficient_data';
         
         const recent = trends.slice(-3);
@@ -391,13 +538,13 @@ export class QualityReporter {
     /**
      * 品質トレンドを更新
      */
-    updateQualityTrends(reportData) {
+    private updateQualityTrends(reportData: ReportData): void {
         const language = reportData.language;
         if (!this.qualityTrends.has(language)) {
             this.qualityTrends.set(language, []);
         }
         
-        const trends = this.qualityTrends.get(language);
+        const trends = this.qualityTrends.get(language)!;
         trends.push({
             timestamp: reportData.timestamp,
             qualityScore: reportData.summary.qualityScore,
@@ -415,7 +562,7 @@ export class QualityReporter {
     /**
      * レポートをレンダリング
      */
-    renderReport(reportData, template) {
+    private renderReport(reportData: ReportData, template: ReportTemplate): string {
         switch (template.format) {
             case 'html':
                 return this.renderHtmlReport(reportData, template);
@@ -431,8 +578,8 @@ export class QualityReporter {
     /**
      * HTMLレポートをレンダリング
      */
-    renderHtmlReport(reportData, template) {
-        const sections = [];
+    private renderHtmlReport(reportData: ReportData, template: ReportTemplate): string {
+        const sections: string[] = [];
         
         // ヘッダー
         sections.push(`
@@ -492,7 +639,7 @@ export class QualityReporter {
     /**
      * サマリーセクションをレンダリング
      */
-    renderSummarySection(summary) {
+    private renderSummarySection(summary: ReportSummary): string {
         const qualityColor = this.getQualityColor(summary.qualityScore);
         
         return `
@@ -538,7 +685,7 @@ export class QualityReporter {
     /**
      * 統計セクションをレンダリング
      */
-    renderStatisticsSection(statistics) {
+    private renderStatisticsSection(statistics: ReportStatistics): string {
         return `
             <section class="statistics-section">
                 <h2>📈 詳細統計</h2>
@@ -594,7 +741,7 @@ export class QualityReporter {
     /**
      * 問題セクションをレンダリング
      */
-    renderIssuesSection(issues) {
+    private renderIssuesSection(issues: CategorizedIssues): string {
         return `
             <section class="issues-section">
                 <h2>⚠️ 検出された問題</h2>
@@ -633,7 +780,7 @@ export class QualityReporter {
     /**
      * 個別問題項目をレンダリング
      */
-    renderIssueItem(issue, severity) {
+    private renderIssueItem(issue: ValidationIssue, severity: string): string {
         return `
             <div class="issue-item ${severity}">
                 <div class="issue-header">
@@ -649,7 +796,7 @@ export class QualityReporter {
     /**
      * 推奨事項セクションをレンダリング
      */
-    renderRecommendationsSection(recommendations) {
+    private renderRecommendationsSection(recommendations: Recommendation[]): string {
         if (recommendations.length === 0) {
             return `
                 <section class="recommendations-section">
@@ -686,7 +833,7 @@ export class QualityReporter {
     /**
      * トレンドセクションをレンダリング
      */
-    renderTrendsSection(trends) {
+    private renderTrendsSection(trends: TrendData): string {
         if (!trends.data) {
             return `
                 <section class="trends-section">
@@ -704,7 +851,7 @@ export class QualityReporter {
                         <div class="trend-label">品質スコア変化</div>
                         <div class="trend-value ${trends.data.scoreChange.direction}">
                             ${trends.data.scoreChange.value > 0 ? '+' : ''}${trends.data.scoreChange.value}
-                            (${trends.data.scoreChange.percentage > 0 ? '+' : ''}${trends.data.scoreChange.percentage}%)
+                            (${trends.data.scoreChange.percentage && trends.data.scoreChange.percentage > 0 ? '+' : ''}${trends.data.scoreChange.percentage}%)
                         </div>
                         <div class="trend-direction">${this.getTrendDirectionText(trends.data.scoreChange.direction)}</div>
                     </div>
@@ -733,8 +880,8 @@ export class QualityReporter {
     /**
      * CSVレポートをレンダリング
      */
-    renderCsvReport(reportData) {
-        const rows = [];
+    private renderCsvReport(reportData: ReportData): string {
+        const rows: string[] = [];
         
         // ヘッダー
         rows.push(['Key', 'Rule', 'Severity', 'Message', 'Suggestion'].join(','));
@@ -757,14 +904,14 @@ export class QualityReporter {
     /**
      * JSONレポートをレンダリング
      */
-    renderJsonReport(reportData) {
+    private renderJsonReport(reportData: ReportData): string {
         return JSON.stringify(reportData, null, 2);
     }
     
     /**
      * レポート用CSSを取得
      */
-    getReportCSS() {
+    private getReportCSS(): string {
         return `
             body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; margin: 0; padding: 20px; background: #f5f5f5; }
             .report-container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
@@ -827,19 +974,19 @@ export class QualityReporter {
      * ヘルパー関数群
      */
     
-    generateReportId() {
+    private generateReportId(): string {
         return `report_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     }
     
-    getQualityColor(score) {
+    private getQualityColor(score: number): string {
         if (score >= 90) return '#27ae60';
         if (score >= 75) return '#f39c12';
         if (score >= 60) return '#e67e22';
         return '#e74c3c';
     }
     
-    getQualityGradeText(grade) {
-        const grades = {
+    private getQualityGradeText(grade: string): string {
+        const grades: Record<string, string> = {
             excellent: '優秀',
             good: '良好',
             acceptable: '可',
@@ -849,8 +996,8 @@ export class QualityReporter {
         return grades[grade] || grade;
     }
     
-    getRuleDisplayName(rule) {
-        const names = {
+    private getRuleDisplayName(rule: string): string {
+        const names: Record<string, string> = {
             parameterConsistency: 'パラメータ整合性',
             lengthValidation: '長さ検証',
             formatValidation: 'フォーマット検証',
@@ -861,8 +1008,8 @@ export class QualityReporter {
         return names[rule] || rule;
     }
     
-    getPriorityText(priority) {
-        const priorities = {
+    private getPriorityText(priority: string): string {
+        const priorities: Record<string, string> = {
             critical: '重要',
             high: '高',
             medium: '中',
@@ -871,8 +1018,8 @@ export class QualityReporter {
         return priorities[priority] || priority;
     }
     
-    getTrendDirectionText(direction) {
-        const directions = {
+    private getTrendDirectionText(direction: string): string {
+        const directions: Record<string, string> = {
             improvement: '改善',
             decline: '悪化',
             stable: '安定'
@@ -880,8 +1027,8 @@ export class QualityReporter {
         return directions[direction] || direction;
     }
     
-    getOverallTrendText(trend) {
-        const trends = {
+    private getOverallTrendText(trend: string): string {
+        const trends: Record<string, string> = {
             improving: '改善傾向',
             declining: '悪化傾向',
             stable: '安定',
@@ -893,7 +1040,7 @@ export class QualityReporter {
     /**
      * レポート履歴を取得
      */
-    getReportHistory(language = null, limit = 10) {
+    getReportHistory(language: string | null = null, limit: number = 10): ReportHistoryEntry[] {
         let history = [...this.reportHistory];
         
         if (language) {
@@ -901,21 +1048,21 @@ export class QualityReporter {
         }
         
         return history
-            .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+            .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
             .slice(0, limit);
     }
     
     /**
      * 品質トレンドデータを取得
      */
-    getQualityTrends(language) {
+    getQualityTrends(language: string): QualityTrend[] {
         return this.qualityTrends.get(language) || [];
     }
     
     /**
      * 統計情報を取得
      */
-    getStats() {
+    getStats(): ReporterStats {
         return {
             totalReports: this.reportHistory.length,
             languagesTracked: this.qualityTrends.size,
@@ -927,12 +1074,12 @@ export class QualityReporter {
 }
 
 // シングルトンインスタンス
-let qualityReporterInstance = null;
+let qualityReporterInstance: QualityReporter | null = null;
 
 /**
  * QualityReporterのシングルトンインスタンスを取得
  */
-export function getQualityReporter() {
+export function getQualityReporter(): QualityReporter {
     if (!qualityReporterInstance) {
         qualityReporterInstance = new QualityReporter();
     }
