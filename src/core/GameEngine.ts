@@ -96,12 +96,12 @@ export class GameEngine {
     private utilities!: GameEngineUtilities;
     
     // Core managers
-    public configManager: any; // ConfigurationManager type
-    public calculationEngine: any; // CalculationEngine type
+    public configManager: ReturnType<typeof getConfigurationManager>;
+    public calculationEngine: ReturnType<typeof getCalculationEngine>;
     public responsiveCanvasManager: ResponsiveCanvasManager;
-    public errorHandler: any; // ErrorHandler type
-    public memoryManager: any; // MemoryManager type
-    public performanceOptimizer: any; // PerformanceOptimizer type
+    public errorHandler: ReturnType<typeof getErrorHandler>;
+    public memoryManager: ReturnType<typeof getMemoryManager>;
+    public performanceOptimizer: ReturnType<typeof getPerformanceOptimizer>;
     
     // Game systems
     public playerData!: PlayerData;
@@ -505,7 +505,9 @@ export class GameEngine {
             if (this.sceneManager) this.sceneManager.update(deltaTime);
             
             // Update performance systems
-            if (this.memoryManager) this.memoryManager.update?.(deltaTime);
+            if (this.memoryManager && 'update' in this.memoryManager && typeof this.memoryManager.update === 'function') {
+                this.memoryManager.update(deltaTime);
+            }
             
             // Emit update event
             this.emit('update', deltaTime);
@@ -585,7 +587,7 @@ export class GameEngine {
             frameTime: this.lastTime,
             entities: (this.bubbleManager?.bubbles?.length || 0),
             particles: (this.particleManager?.getParticles?.()?.length || 0),
-            memoryUsage: this.memoryManager?.getStats?.()?.currentMemoryUsage || 0
+            memoryUsage: this.memoryManager?.getStats?.()?.currentMemoryPressure || 0
         };
     }
     
@@ -655,7 +657,9 @@ export class GameEngine {
             
             // Cleanup systems
             this.memoryManager?.destroy?.();
-            this.performanceOptimizer?.destroy?.();
+            if (this.performanceOptimizer && 'cleanup' in this.performanceOptimizer && typeof this.performanceOptimizer.cleanup === 'function') {
+                this.performanceOptimizer.cleanup();
+            }
             this.audioManager?.destroy?.();
             if (this.particleManager?.destroy) this.particleManager.destroy();
             if (this.effectManager?.destroy) this.effectManager.destroy();
