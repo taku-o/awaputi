@@ -1,11 +1,14 @@
 import { getErrorHandler } from '../ErrorHandler.js';
 
 // Type definitions
-interface LayerBounds {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
+interface LayerConfig {
+    cachingEnabled?: boolean;
+    globalAlpha?: number;
+    globalCompositeOperation?: string;
+    maxLayers?: number;
+    cacheThreshold?: number;
+    invalidationThreshold?: number;
+    enableBlending?: boolean;
 }
 
 interface LayerProperties {
@@ -15,11 +18,11 @@ interface LayerProperties {
     cacheable?: boolean;
 }
 
-interface LayerStats {
-    renderTime: number;
-    complexity: number;
-    cacheHits: number;
-    cacheMisses: number;
+interface BoundingBox {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
 }
 
 interface Layer {
@@ -36,14 +39,14 @@ interface Layer {
     dirty: boolean;
     lastModified: number;
     objects: Set<string>;
-    boundingBox: LayerBounds;
+    boundingBox: BoundingBox;
     renderTime: number;
     complexity: number;
     cacheHits: number;
     cacheMisses: number;
 }
 
-interface ManagerStats {
+interface LayerStats {
     totalLayers: number;
     activeLayers: number;
     cachedLayers: number;
@@ -52,22 +55,16 @@ interface ManagerStats {
     cacheHitRatio: number;
 }
 
-interface ManagerConfig {
-    maxLayers?: number;
-    cacheThreshold?: number;
-    invalidationThreshold?: number;
-    enableBlending?: boolean;
-    cachingEnabled?: boolean;
-    globalAlpha?: number;
-    globalCompositeOperation?: string;
+interface Viewport {
+    x?: number;
+    y?: number;
+    width?: number;
+    height?: number;
+    scale?: number;
 }
 
-interface Viewport {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-    scale?: number;
+interface ErrorHandler {
+    logError(message: string, error: Error): void;
 }
 
 /**
@@ -75,7 +72,7 @@ interface Viewport {
  * レイヤー管理システム - 効率的なレイヤー合成とキャッシング
  */
 export class AdvancedLayerManager {
-    private errorHandler: any;
+    private errorHandler: ErrorHandler;
     private mainCanvas: HTMLCanvasElement;
     private layers: Map<string, Layer>;
     private layerOrder: string[];
@@ -86,10 +83,10 @@ export class AdvancedLayerManager {
     private cacheInvalidation: Set<string>;
     private globalAlpha: number;
     private globalCompositeOperation: string;
-    private stats: ManagerStats;
-    private config: Required<Pick<ManagerConfig, 'maxLayers' | 'cacheThreshold' | 'invalidationThreshold' | 'enableBlending'>>;
+    private stats: LayerStats;
+    private config: Required<Omit<LayerConfig, 'cachingEnabled' | 'globalAlpha' | 'globalCompositeOperation'>>;
 
-    constructor(mainCanvas: HTMLCanvasElement, config: ManagerConfig = {}) {
+    constructor(mainCanvas: HTMLCanvasElement, config: LayerConfig = {}) {
         this.errorHandler = getErrorHandler();
         this.mainCanvas = mainCanvas;
         
@@ -129,6 +126,9 @@ export class AdvancedLayerManager {
     
     /**
      * Create a new rendering layer
+     * @param name - Layer name
+     * @param order - Rendering order (lower = rendered first)
+     * @param properties - Layer properties
      */
     createLayer(name: string, order: number, properties: LayerProperties = {}): Layer | null {
         try {
@@ -193,13 +193,14 @@ export class AdvancedLayerManager {
             return layer;
             
         } catch (error) {
-            this.errorHandler.logError('Failed to create layer', error);
+            this.errorHandler.logError('Failed to create layer', error as Error);
             return null;
         }
     }
     
     /**
      * Remove a layer
+     * @param name - Layer name
      */
     removeLayer(name: string): boolean {
         try {
@@ -228,13 +229,15 @@ export class AdvancedLayerManager {
             return true;
             
         } catch (error) {
-            this.errorHandler.logError('Failed to remove layer', error);
+            this.errorHandler.logError('Failed to remove layer', error as Error);
             return false;
         }
     }
     
     /**
      * Get layer by name
+     * @param name - Layer name
+     * @returns Layer object
      */
     getLayer(name: string): Layer | null {
         return this.layers.get(name) || null;
@@ -242,6 +245,8 @@ export class AdvancedLayerManager {
     
     /**
      * Set layer visibility
+     * @param name - Layer name
+     * @param visible - Visibility state
      */
     setLayerVisibility(name: string, visible: boolean): void {
         const layer = this.layers.get(name);
@@ -253,6 +258,8 @@ export class AdvancedLayerManager {
     
     /**
      * Set layer opacity
+     * @param name - Layer name
+     * @param opacity - Opacity value (0-1)
      */
     setLayerOpacity(name: string, opacity: number): void {
         const layer = this.layers.get(name);
@@ -264,6 +271,8 @@ export class AdvancedLayerManager {
     
     /**
      * Set layer blend mode
+     * @param name - Layer name
+     * @param blendMode - Blend mode
      */
     setLayerBlendMode(name: string, blendMode: string): void {
         const layer = this.layers.get(name);
@@ -275,6 +284,7 @@ export class AdvancedLayerManager {
     
     /**
      * Mark layer as dirty for re-rendering
+     * @param name - Layer name
      */
     markLayerDirty(name: string): void {
         this._markLayerDirty(name);
@@ -282,8 +292,11 @@ export class AdvancedLayerManager {
     
     /**
      * Add object to layer
+     * @param layerName - Layer name
+     * @param objectId - Object ID
+     * @param bounds - Object bounds
      */
-    addObjectToLayer(layerName: string, objectId: string, bounds: LayerBounds | null = null): void {
+    addObjectToLayer(layerName: string, objectId: string, bounds: BoundingBox | null = null): void {
         const layer = this.layers.get(layerName);
         if (layer) {
             layer.objects.add(objectId);
@@ -298,6 +311,8 @@ export class AdvancedLayerManager {
     
     /**
      * Remove object from layer
+     * @param layerName - Layer name
+     * @param objectId - Object ID
      */
     removeObjectFromLayer(layerName: string, objectId: string): void {
         const layer = this.layers.get(layerName);
@@ -309,6 +324,8 @@ export class AdvancedLayerManager {
     
     /**
      * Render all layers to main canvas
+     * @param mainContext - Main canvas context
+     * @param viewport - Viewport information
      */
     renderLayers(mainContext: CanvasRenderingContext2D, viewport: Viewport | null = null): void {
         const startTime = performance.now();
@@ -332,7 +349,7 @@ export class AdvancedLayerManager {
                 
                 mainContext.globalAlpha = originalAlpha * layer.opacity;
                 if (this.config.enableBlending) {
-                    mainContext.globalCompositeOperation = layer.blendMode;
+                    mainContext.globalCompositeOperation = layer.blendMode as GlobalCompositeOperation;
                 }
                 
                 // Render layer
@@ -351,14 +368,15 @@ export class AdvancedLayerManager {
             this.stats.renderTime = performance.now() - startTime;
             
         } catch (error) {
-            this.errorHandler.logError('Failed to render layers', error);
+            this.errorHandler.logError('Failed to render layers', error as Error);
         }
     }
     
     /**
      * Get rendering statistics
+     * @returns Performance statistics
      */
-    getStats(): ManagerStats {
+    getStats(): LayerStats {
         this.stats.cachedLayers = this.cachedLayers.size;
         return { ...this.stats };
     }
@@ -380,6 +398,7 @@ export class AdvancedLayerManager {
     
     /**
      * Update layer order array
+     * @private
      */
     private _updateLayerOrder(layerName: string): void {
         const layer = this.layers.get(layerName);
@@ -406,6 +425,7 @@ export class AdvancedLayerManager {
     
     /**
      * Mark layer as dirty
+     * @private
      */
     private _markLayerDirty(name: string): void {
         const layer = this.layers.get(name);
@@ -418,8 +438,9 @@ export class AdvancedLayerManager {
     
     /**
      * Update layer bounding box
+     * @private
      */
-    private _updateLayerBounds(layer: Layer, objectBounds: LayerBounds): void {
+    private _updateLayerBounds(layer: Layer, objectBounds: BoundingBox): void {
         if (layer.objects.size === 1) {
             layer.boundingBox = { ...objectBounds };
         } else {
@@ -436,6 +457,7 @@ export class AdvancedLayerManager {
     
     /**
      * Check if layer should use cache
+     * @private
      */
     private _shouldUseCache(layer: Layer): boolean {
         if (!layer.cacheable || !this.cachingEnabled) return false;
@@ -447,6 +469,7 @@ export class AdvancedLayerManager {
     
     /**
      * Render cached layer
+     * @private
      */
     private _renderCachedLayer(mainContext: CanvasRenderingContext2D, layer: Layer, viewport: Viewport | null): void {
         if (layer.canvas) {
@@ -457,6 +480,7 @@ export class AdvancedLayerManager {
     
     /**
      * Render layer directly
+     * @private
      */
     private _renderLayerDirect(mainContext: CanvasRenderingContext2D, layer: Layer, viewport: Viewport | null): void {
         const startTime = performance.now();

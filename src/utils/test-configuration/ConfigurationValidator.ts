@@ -1,17 +1,105 @@
 import { BaseComponent } from '../../debug/BaseComponent.js';
 
+// Type definitions
+interface ValidationRule {
+    required: string[];
+    optional?: string[];
+    validators: Record<string, (value: any) => ValidationResult>;
+}
+
+interface ValidationResult {
+    valid: boolean;
+    message?: string;
+}
+
+interface CategoryStats {
+    passed: number;
+    failed: number;
+    issues: string[];
+}
+
+interface ValidationCategories {
+    critical: CategoryStats;
+    important: CategoryStats;
+    optional: CategoryStats;
+}
+
+interface BaseValidation {
+    valid: boolean;
+    issues: string[];
+    warnings: string[];
+    categories: ValidationCategories;
+}
+
+interface ConfigurationValidation extends BaseValidation {
+    bubbleTypesCount: number;
+    sourceFiles: string[];
+    validatedAt: number;
+}
+
+interface BubbleType {
+    health?: number;
+    score?: number;
+    size?: number;
+    maxAge?: number;
+    effects?: Record<string, number>;
+}
+
+interface GameBalance {
+    baseScores?: Record<string, number>;
+    bubbles?: Record<string, any>;
+}
+
+interface Metadata {
+    extractedAt?: number;
+    sourceFiles?: string[];
+    generatorVersion?: string;
+}
+
+interface Expectations {
+    metadata?: Metadata;
+    bubbleTypes?: Record<string, BubbleType>;
+    gameBalance?: GameBalance;
+}
+
+interface ValidationHistoryEntry {
+    timestamp: number;
+    validation: ConfigurationValidation;
+}
+
+interface ValidationStatistics {
+    totalValidations: number;
+    successfulValidations: number;
+    successRate: number;
+    recentValidations: number;
+    averageIssuesPerValidation: number;
+}
+
+interface MainController {
+    [key: string]: any;
+}
+
 /**
  * ConfigurationValidator - 設定検証・整合性チェックコンポーネント
  */
 export class ConfigurationValidator extends BaseComponent {
-    constructor(mainController) {
+    private validationRules: Map<string, ValidationRule>;
+    private validationHistory: ValidationHistoryEntry[];
+    private validationCache: Map<string, any>;
+    private validationCategories: {
+        critical: string[];
+        important: string[];
+        optional: string[];
+    };
+
+    constructor(mainController: MainController) {
         super(mainController, 'ConfigurationValidator');
         this.validationRules = new Map();
         this.validationHistory = [];
         this.validationCache = new Map();
     }
 
-    async _doInitialize() {
+    async _doInitialize(): Promise<void> {
         this.setupValidationRules();
         this.setupValidationCategories();
     }
@@ -19,7 +107,7 @@ export class ConfigurationValidator extends BaseComponent {
     /**
      * 検証ルールを設定
      */
-    setupValidationRules() {
+    private setupValidationRules(): void {
         // バブルタイプ検証ルール
         this.validationRules.set('bubbleType', {
             required: ['health', 'score', 'size', 'maxAge'],
@@ -56,7 +144,7 @@ export class ConfigurationValidator extends BaseComponent {
     /**
      * 検証カテゴリを設定
      */
-    setupValidationCategories() {
+    private setupValidationCategories(): void {
         this.validationCategories = {
             critical: ['health', 'size', 'baseScores'],
             important: ['score', 'maxAge', 'sourceFiles'],
@@ -66,12 +154,12 @@ export class ConfigurationValidator extends BaseComponent {
 
     /**
      * 設定同期を検証
-     * @param {Object} expectations - 期待値
-     * @returns {Object} 検証結果
+     * @param expectations - 期待値
+     * @returns 検証結果
      */
-    validateConfigurationSync(expectations) {
+    validateConfigurationSync(expectations: Expectations): ConfigurationValidation {
         try {
-            const validation = {
+            const validation: ConfigurationValidation = {
                 valid: true,
                 issues: [],
                 warnings: [],
@@ -130,22 +218,27 @@ export class ConfigurationValidator extends BaseComponent {
             this._handleError('configuration sync validation', error);
             return {
                 valid: false,
-                issues: [`Validation error: ${error.message}`],
+                issues: [`Validation error: ${(error as Error).message}`],
                 warnings: [],
                 bubbleTypesCount: 0,
                 sourceFiles: [],
-                validatedAt: Date.now()
+                validatedAt: Date.now(),
+                categories: {
+                    critical: { passed: 0, failed: 0, issues: [] },
+                    important: { passed: 0, failed: 0, issues: [] },
+                    optional: { passed: 0, failed: 0, issues: [] }
+                }
             };
         }
     }
 
     /**
      * バブルタイプを検証
-     * @param {Object} bubbleTypes - バブルタイプ設定
-     * @returns {Object} 検証結果
+     * @param bubbleTypes - バブルタイプ設定
+     * @returns 検証結果
      */
-    validateBubbleTypes(bubbleTypes) {
-        const validation = {
+    private validateBubbleTypes(bubbleTypes: Record<string, BubbleType>): BaseValidation {
+        const validation: BaseValidation = {
             valid: true,
             issues: [],
             warnings: [],
@@ -166,12 +259,12 @@ export class ConfigurationValidator extends BaseComponent {
 
     /**
      * 単一バブルタイプを検証
-     * @param {string} bubbleType - バブルタイプ名
-     * @param {Object} config - バブル設定
-     * @returns {Object} 検証結果
+     * @param bubbleType - バブルタイプ名
+     * @param config - バブル設定
+     * @returns 検証結果
      */
-    validateSingleBubbleType(bubbleType, config) {
-        const validation = {
+    private validateSingleBubbleType(bubbleType: string, config: BubbleType): BaseValidation {
+        const validation: BaseValidation = {
             valid: true,
             issues: [],
             warnings: [],
@@ -191,10 +284,11 @@ export class ConfigurationValidator extends BaseComponent {
         }
 
         const rules = this.validationRules.get('bubbleType');
+        if (!rules) return validation;
         
         // 必須プロパティの検証
         for (const prop of rules.required) {
-            if (config[prop] === undefined || config[prop] === null) {
+            if ((config as any)[prop] === undefined || (config as any)[prop] === null) {
                 const category = this.getCategoryForProperty(prop);
                 const message = `${bubbleType}: Missing required property '${prop}'`;
                 
@@ -205,14 +299,14 @@ export class ConfigurationValidator extends BaseComponent {
                     validation.categories.critical.issues.push(message);
                 } else {
                     validation.warnings.push(message);
-                    validation.categories[category].failed++;
-                    validation.categories[category].issues.push(message);
+                    validation.categories[category as keyof ValidationCategories].failed++;
+                    validation.categories[category as keyof ValidationCategories].issues.push(message);
                 }
             } else {
                 // プロパティ値の検証
                 const validator = rules.validators[prop];
                 if (validator) {
-                    const propValidation = validator(config[prop]);
+                    const propValidation = validator((config as any)[prop]);
                     if (!propValidation.valid) {
                         const category = this.getCategoryForProperty(prop);
                         const message = `${bubbleType}: ${propValidation.message}`;
@@ -224,12 +318,12 @@ export class ConfigurationValidator extends BaseComponent {
                             validation.categories.critical.issues.push(message);
                         } else {
                             validation.warnings.push(message);
-                            validation.categories[category].failed++;
-                            validation.categories[category].issues.push(message);
+                            validation.categories[category as keyof ValidationCategories].failed++;
+                            validation.categories[category as keyof ValidationCategories].issues.push(message);
                         }
                     } else {
                         const category = this.getCategoryForProperty(prop);
-                        validation.categories[category].passed++;
+                        validation.categories[category as keyof ValidationCategories].passed++;
                     }
                 }
             }
@@ -237,10 +331,10 @@ export class ConfigurationValidator extends BaseComponent {
 
         // オプションプロパティの検証
         for (const prop of rules.optional || []) {
-            if (config[prop] !== undefined && config[prop] !== null) {
+            if ((config as any)[prop] !== undefined && (config as any)[prop] !== null) {
                 const validator = rules.validators[prop];
                 if (validator) {
-                    const propValidation = validator(config[prop]);
+                    const propValidation = validator((config as any)[prop]);
                     if (!propValidation.valid) {
                         validation.warnings.push(`${bubbleType}: ${propValidation.message}`);
                         validation.categories.optional.failed++;
@@ -257,11 +351,11 @@ export class ConfigurationValidator extends BaseComponent {
 
     /**
      * GameBalance設定を検証
-     * @param {Object} gameBalance - GameBalance設定
-     * @returns {Object} 検証結果
+     * @param gameBalance - GameBalance設定
+     * @returns 検証結果
      */
-    validateGameBalance(gameBalance) {
-        const validation = {
+    private validateGameBalance(gameBalance: GameBalance): BaseValidation {
+        const validation: BaseValidation = {
             valid: true,
             issues: [],
             warnings: [],
@@ -273,16 +367,17 @@ export class ConfigurationValidator extends BaseComponent {
         };
 
         const rules = this.validationRules.get('gameBalance');
+        if (!rules) return validation;
 
         for (const prop of rules.required) {
-            if (!gameBalance[prop]) {
+            if (!(gameBalance as any)[prop]) {
                 validation.valid = false;
                 validation.issues.push(`GameBalance: Missing required property '${prop}'`);
                 validation.categories.critical.failed++;
             } else {
                 const validator = rules.validators[prop];
                 if (validator) {
-                    const propValidation = validator(gameBalance[prop]);
+                    const propValidation = validator((gameBalance as any)[prop]);
                     if (!propValidation.valid) {
                         validation.valid = false;
                         validation.issues.push(`GameBalance: ${propValidation.message}`);
@@ -299,11 +394,11 @@ export class ConfigurationValidator extends BaseComponent {
 
     /**
      * メタデータを検証
-     * @param {Object} metadata - メタデータ
-     * @returns {Object} 検証結果
+     * @param metadata - メタデータ
+     * @returns 検証結果
      */
-    validateMetadata(metadata) {
-        const validation = {
+    private validateMetadata(metadata: Metadata): BaseValidation {
+        const validation: BaseValidation = {
             valid: true,
             issues: [],
             warnings: [],
@@ -315,15 +410,16 @@ export class ConfigurationValidator extends BaseComponent {
         };
 
         const rules = this.validationRules.get('metadata');
+        if (!rules) return validation;
 
         for (const prop of rules.required) {
-            if (!metadata[prop]) {
+            if (!(metadata as any)[prop]) {
                 validation.warnings.push(`Metadata: Missing property '${prop}'`);
                 validation.categories.important.failed++;
             } else {
                 const validator = rules.validators[prop];
                 if (validator) {
-                    const propValidation = validator(metadata[prop]);
+                    const propValidation = validator((metadata as any)[prop]);
                     if (!propValidation.valid) {
                         validation.warnings.push(`Metadata: ${propValidation.message}`);
                         validation.categories.important.failed++;
@@ -339,11 +435,11 @@ export class ConfigurationValidator extends BaseComponent {
 
     /**
      * 整合性を検証
-     * @param {Object} expectations - 期待値
-     * @returns {Object} 検証結果
+     * @param expectations - 期待値
+     * @returns 検証結果
      */
-    validateConsistency(expectations) {
-        const validation = {
+    private validateConsistency(expectations: Expectations): BaseValidation {
+        const validation: BaseValidation = {
             valid: true,
             issues: [],
             warnings: [],
@@ -386,11 +482,11 @@ export class ConfigurationValidator extends BaseComponent {
 
     /**
      * 正の数値を検証
-     * @param {*} value - 値
-     * @param {string} propName - プロパティ名
-     * @returns {Object} 検証結果
+     * @param value - 値
+     * @param propName - プロパティ名
+     * @returns 検証結果
      */
-    validatePositiveNumber(value, propName) {
+    private validatePositiveNumber(value: any, propName: string): ValidationResult {
         if (typeof value !== 'number') {
             return { valid: false, message: `${propName} must be a number, got ${typeof value}` };
         }
@@ -402,11 +498,11 @@ export class ConfigurationValidator extends BaseComponent {
 
     /**
      * 非負の数値を検証
-     * @param {*} value - 値
-     * @param {string} propName - プロパティ名
-     * @returns {Object} 検証結果
+     * @param value - 値
+     * @param propName - プロパティ名
+     * @returns 検証結果
      */
-    validateNonNegativeNumber(value, propName) {
+    private validateNonNegativeNumber(value: any, propName: string): ValidationResult {
         if (typeof value !== 'number') {
             return { valid: false, message: `${propName} must be a number, got ${typeof value}` };
         }
@@ -418,10 +514,10 @@ export class ConfigurationValidator extends BaseComponent {
 
     /**
      * エフェクトを検証
-     * @param {*} value - エフェクト値
-     * @returns {Object} 検証結果
+     * @param value - エフェクト値
+     * @returns 検証結果
      */
-    validateEffects(value) {
+    private validateEffects(value: any): ValidationResult {
         if (typeof value !== 'object' || value === null) {
             return { valid: false, message: 'effects must be an object' };
         }
@@ -438,10 +534,10 @@ export class ConfigurationValidator extends BaseComponent {
 
     /**
      * ベーススコアを検証
-     * @param {*} value - ベーススコア値
-     * @returns {Object} 検証結果
+     * @param value - ベーススコア値
+     * @returns 検証結果
      */
-    validateBaseScores(value) {
+    private validateBaseScores(value: any): ValidationResult {
         if (typeof value !== 'object' || value === null) {
             return { valid: false, message: 'baseScores must be an object' };
         }
@@ -458,10 +554,10 @@ export class ConfigurationValidator extends BaseComponent {
 
     /**
      * バブル設定を検証
-     * @param {*} value - バブル設定値
-     * @returns {Object} 検証結果
+     * @param value - バブル設定値
+     * @returns 検証結果
      */
-    validateBubblesConfig(value) {
+    private validateBubblesConfig(value: any): ValidationResult {
         if (typeof value !== 'object' || value === null) {
             return { valid: false, message: 'bubbles must be an object' };
         }
@@ -477,10 +573,10 @@ export class ConfigurationValidator extends BaseComponent {
 
     /**
      * タイムスタンプを検証
-     * @param {*} value - タイムスタンプ値
-     * @returns {Object} 検証結果
+     * @param value - タイムスタンプ値
+     * @returns 検証結果
      */
-    validateTimestamp(value) {
+    private validateTimestamp(value: any): ValidationResult {
         if (typeof value !== 'number') {
             return { valid: false, message: 'timestamp must be a number' };
         }
@@ -497,10 +593,10 @@ export class ConfigurationValidator extends BaseComponent {
 
     /**
      * ソースファイルを検証
-     * @param {*} value - ソースファイル値
-     * @returns {Object} 検証結果
+     * @param value - ソースファイル値
+     * @returns 検証結果
      */
-    validateSourceFiles(value) {
+    private validateSourceFiles(value: any): ValidationResult {
         if (!Array.isArray(value)) {
             return { valid: false, message: 'sourceFiles must be an array' };
         }
@@ -520,10 +616,10 @@ export class ConfigurationValidator extends BaseComponent {
 
     /**
      * バージョンを検証
-     * @param {*} value - バージョン値
-     * @returns {Object} 検証結果
+     * @param value - バージョン値
+     * @returns 検証結果
      */
-    validateVersion(value) {
+    private validateVersion(value: any): ValidationResult {
         if (typeof value !== 'string') {
             return { valid: false, message: 'version must be a string' };
         }
@@ -541,10 +637,10 @@ export class ConfigurationValidator extends BaseComponent {
 
     /**
      * プロパティのカテゴリを取得
-     * @param {string} property - プロパティ名
-     * @returns {string} カテゴリ名
+     * @param property - プロパティ名
+     * @returns カテゴリ名
      */
-    getCategoryForProperty(property) {
+    private getCategoryForProperty(property: string): string {
         for (const [category, properties] of Object.entries(this.validationCategories)) {
             if (properties.includes(property)) {
                 return category;
@@ -555,10 +651,10 @@ export class ConfigurationValidator extends BaseComponent {
 
     /**
      * 検証結果をマージ
-     * @param {Object} target - マージ先
-     * @param {Object} source - マージ元
+     * @param target - マージ先
+     * @param source - マージ元
      */
-    mergeValidationResults(target, source) {
+    private mergeValidationResults(target: BaseValidation, source: BaseValidation): void {
         if (!source.valid) {
             target.valid = false;
         }
@@ -568,10 +664,10 @@ export class ConfigurationValidator extends BaseComponent {
         
         if (source.categories) {
             for (const [category, stats] of Object.entries(source.categories)) {
-                if (target.categories[category]) {
-                    target.categories[category].passed += stats.passed;
-                    target.categories[category].failed += stats.failed;
-                    target.categories[category].issues.push(...stats.issues);
+                if (target.categories[category as keyof ValidationCategories]) {
+                    target.categories[category as keyof ValidationCategories].passed += stats.passed;
+                    target.categories[category as keyof ValidationCategories].failed += stats.failed;
+                    target.categories[category as keyof ValidationCategories].issues.push(...stats.issues);
                 }
             }
         }
@@ -579,9 +675,9 @@ export class ConfigurationValidator extends BaseComponent {
 
     /**
      * 検証履歴に追加
-     * @param {Object} validation - 検証結果
+     * @param validation - 検証結果
      */
-    addValidationHistory(validation) {
+    private addValidationHistory(validation: ConfigurationValidation): void {
         this.validationHistory.push({
             timestamp: Date.now(),
             validation: { ...validation }
@@ -595,9 +691,9 @@ export class ConfigurationValidator extends BaseComponent {
 
     /**
      * 検証統計を取得
-     * @returns {Object} 検証統計
+     * @returns 検証統計
      */
-    getValidationStatistics() {
+    getValidationStatistics(): ValidationStatistics {
         const recent = this.validationHistory.slice(-10);
         const totalValidations = this.validationHistory.length;
         const successfulValidations = this.validationHistory.filter(v => v.validation.valid).length;
@@ -615,7 +711,7 @@ export class ConfigurationValidator extends BaseComponent {
     /**
      * クリーンアップ
      */
-    cleanup() {
+    cleanup(): void {
         this.validationHistory = [];
         this.validationCache.clear();
         super.cleanup();
