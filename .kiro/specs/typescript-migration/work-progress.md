@@ -775,7 +775,23 @@ TypeScript移行作業中に「将来実装する」「現時点では未実装�
 - **残存JavaScriptファイル**: 77個（前回78個から1個減少）
 - **変換率**: 約40.3%（52/129ファイル）
 
-### 2025-08-17 Task 6継続: 第2バッチ パフォーマンス関連ファイル変換開始
+### 2025-08-17 Task 6完了 & Phase 2完了記録
+
+#### Task 6完了: ユーティリティシステムの移行100%完了
+- **完了**: src/utils/内の全128個のファイルがTypeScript変換済み
+- **変換率**: 100%（0個のJSファイルが残存）
+- **技術的成果**: UI座標システム、パフォーマンス最適化、エラーハンドリングの完全型安全化
+
+#### Phase 2完了: コアシステムのTypeScript移行100%完了
+- ✅ Task 7: ConfigurationManager.ts - エラー修正完了、実質的に完了済み
+- ✅ Task 8: GameEngine.ts - 既に変換済み
+- ✅ Task 9: SceneManager.ts - 既に変換済み  
+- ✅ Task 10: PlayerData.ts, StatisticsManager.ts - 既に変換済み
+
+#### 重要ファイル継続移行: CalculationEngine.ts完了
+- **変換完了**: CalculationEngine.js → CalculationEngine.ts（826行）
+- **型定義追加**: 10個のインターフェース定義（Calculator, CacheStats, PerformanceStats等）
+- **機能**: 計算処理統一管理、インテリジェントキャッシュ、バッチ処理、メモ化システム
 
 #### Task 6継続 - 第1バッチ基盤ユーティリティ完了、第2バッチ開始
 - **第1バッチ完了**: memory-manager、mobile関連ファイル（4個）変換完了
@@ -799,6 +815,31 @@ TypeScript移行作業中に「将来実装する」「現時点では未実装�
 #### 残存作業
 - **第2バッチ継続**: particle-performance-optimizer（3個）、performance-*（11個）
 - **第3バッチ予定**: rendering、validation、その他（残り約28ファイル）
+
+### 2025-08-17 Phase 2完了・現在の全体状況
+
+#### 完了事項
+- ✅ **Phase 1完了**: TypeScript環境構築（5/5タスク）
+- ✅ **Phase 2完了**: コアシステムのTypeScript移行（5/5タスク）
+  - Task 6: ユーティリティシステム（128ファイル）100%完了
+  - Task 7: 設定管理システム完了
+  - Task 8: ゲームエンジンコア完了  
+  - Task 9: シーン管理システム完了
+  - Task 10: データ管理システム完了
+- ✅ **重要ファイル追加変換**: CalculationEngine.ts（826行）完了
+
+#### 現在の全体進捗
+- **総ファイル数**: 786個（src/**/*.js + src/**/*.ts）
+- **変換済み**: 175個のTypeScriptファイル  
+- **未変換**: 611個のJavaScriptファイル
+- **変換率**: 22.2%
+- **次のフェーズ**: Phase 3（管理システム）のTask 11開始予定
+
+#### 残存主要ディレクトリ
+- **src/core**: 254個のJSファイル（統計、設定、VibrationManager等）
+- **src/scenes**: 54個のJSファイル（各種シーン）
+- **src/ui**: 16個のJSファイル（UI コンポーネント）
+- **その他**: effects、audio、bubbles等
 
 ## 参考情報
 - 仕様書: `.kiro/specs/typescript-migration/`
