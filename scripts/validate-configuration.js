@@ -26,7 +26,7 @@ const SRC_DIR = path.join(PROJECT_ROOT, 'src');
 const CONFIG_FILES = {
     gameBalance: path.join(SRC_DIR, 'config', 'GameBalance.js'),
     gameConfig: path.join(SRC_DIR, 'config', 'GameConfig.js'),
-    bubbleClass: path.join(SRC_DIR, 'bubbles', 'Bubble.js'),
+    bubbleClass: path.join(SRC_DIR, 'bubbles', 'Bubble.ts'),
     testFiles: [
         path.join(PROJECT_ROOT, 'tests', 'unit', 'Bubble.test.js'),
         path.join(PROJECT_ROOT, 'tests', 'unit', 'GameBalance.test.js'),
