@@ -3,11 +3,348 @@
  * パフォーマンス分析システム - 分析とレポート生成
  */
 
+// Type definitions for analysis system
+interface AnalysisThresholds {
+    fps: ThresholdLevels;
+    frameTime: ThresholdLevels;
+    memory: ThresholdLevels;
+    responseTime: ThresholdLevels;
+}
+
+interface ThresholdLevels {
+    excellent: number;
+    good: number;
+    warning: number;
+    critical: number;
+}
+
+interface AllMetrics {
+    frame?: FrameMetricsData;
+    memory?: MemoryMetricsData;
+    render?: RenderMetricsData;
+    network?: NetworkMetricsData;
+    interaction?: InteractionMetricsData;
+    resource?: ResourceMetricsData;
+    custom?: CustomMetricsData;
+}
+
+interface FrameMetricsData {
+    current?: { fps: number; frameTime: number };
+    average?: { fps: number; frameTime: number };
+    performance?: { jankPercentage: number; jankFrames: number; smoothFrames: number };
+    history?: FrameMetric[];
+}
+
+interface FrameMetric {
+    frameNumber: number;
+    timestamp: number;
+    frameTime: number;
+    fps: number;
+    jank: number;
+}
+
+interface MemoryMetricsData {
+    current?: { used: number; total: number; pressure: number; available: number };
+    trends?: { growthRate: number; peakUsage: number; averageUsage: number };
+    gc?: { frequency: number; totalReclaimed: number; averageReclaimed: number };
+    history?: MemoryMetric[];
+}
+
+interface MemoryMetric {
+    timestamp: number;
+    used: number;
+    total: number;
+    limit: number;
+    pressure: number;
+    available: number;
+    gc: { detected: boolean; reclaimed: number };
+}
+
+interface RenderMetricsData {
+    statistics?: {
+        totalRenders: number;
+        paintEvents: number;
+        customMeasures: number;
+        averageDuration: number;
+        maxDuration: number;
+        minDuration: number;
+    };
+    recent?: RenderMetric[];
+}
+
+interface RenderMetric {
+    timestamp: number;
+    type: string;
+    name: string;
+    startTime: number;
+    endTime?: number;
+    duration: number;
+}
+
+interface NetworkMetricsData {
+    summary?: {
+        totalRequests: number;
+        totalTransfer: number;
+        averageDuration: number;
+        byType: Record<string, NetworkResourceType>;
+    };
+    timing?: {
+        averageDNS: number;
+        averageTCP: number;
+        averageRequest: number;
+        averageResponse: number;
+    };
+    recent?: NetworkMetric[];
+}
+
+interface NetworkResourceType {
+    count: number;
+    totalSize: number;
+    totalTime: number;
+}
+
+interface NetworkMetric {
+    timestamp: number;
+    name: string;
+    type: string;
+    startTime: number;
+    duration: number;
+    transferSize: number;
+    encodedBodySize: number;
+    decodedBodySize: number;
+    timing: NetworkTiming;
+}
+
+interface NetworkTiming {
+    dns: number;
+    tcp: number;
+    ssl: number;
+    request: number;
+    response: number;
+    total: number;
+}
+
+interface InteractionMetricsData {
+    summary?: {
+        totalInteractions: number;
+        averageResponseTime: number;
+        maxResponseTime: number;
+        minResponseTime: number;
+        byType: Record<string, InteractionTypeStats>;
+    };
+    recent?: InteractionMetric[];
+}
+
+interface InteractionTypeStats {
+    count: number;
+    totalResponseTime: number;
+    averageResponseTime: number;
+}
+
+interface InteractionMetric {
+    timestamp: number;
+    type: string;
+    target: string;
+    responseTime: number;
+    coordinates: { x: number; y: number } | null;
+}
+
+interface ResourceMetricsData {
+    current?: {
+        dom?: { nodes: number; images: number; scripts: number; stylesheets: number };
+        storage?: {
+            localStorage?: { used?: number; available?: string; error?: string };
+            sessionStorage?: { used?: number; available?: string; error?: string };
+        };
+        cache?: { estimated: string };
+    };
+    trends?: {
+        domGrowth: number;
+        storageGrowth: number;
+    };
+    history?: ResourceMetric[];
+}
+
+interface ResourceMetric {
+    timestamp: number;
+    dom: { nodes: number; images: number; scripts: number; stylesheets: number };
+    storage: {
+        localStorage: { used?: number; available?: string; error?: string };
+        sessionStorage: { used?: number; available?: string; error?: string };
+    };
+    cache: { estimated: string };
+}
+
+interface CustomMetricsData {
+    [metricName: string]: {
+        current: number;
+        count: number;
+        recent: CustomMetric[];
+        statistics: { min: number; max: number; average: number; sum: number };
+    };
+}
+
+interface CustomMetric {
+    timestamp: number;
+    name: string;
+    value: number;
+    metadata: Record<string, any>;
+}
+
+// Analysis result types
+interface PerformanceAnalysis {
+    timestamp: number;
+    overall: OverallAnalysis;
+    frame: FrameAnalysis;
+    memory: MemoryAnalysis;
+    render: RenderAnalysis;
+    network: NetworkAnalysis;
+    interaction: InteractionAnalysis;
+    resource: ResourceAnalysis;
+    custom: CustomAnalysis;
+    bottlenecks: PerformanceBottleneck[];
+    recommendations: PerformanceRecommendation[];
+}
+
+interface OverallAnalysis {
+    score: number;
+    grade: string;
+    breakdown: {
+        frame: number;
+        memory: number;
+        render: number;
+        network: number;
+        interaction: number;
+    };
+    healthStatus: string;
+}
+
+interface FrameAnalysis {
+    status?: string;
+    currentFPS: number;
+    averageFPS: number;
+    stability: number;
+    jankLevel: number;
+    assessment: string;
+    trends: string;
+}
+
+interface MemoryAnalysis {
+    status?: string;
+    currentUsage: number;
+    pressureLevel: number;
+    growthRate: number;
+    gcEfficiency: number;
+    leakRisk: string;
+    recommendations: string[];
+}
+
+interface RenderAnalysis {
+    status?: string;
+    averageRenderTime: number;
+    renderEfficiency: number;
+    bottlenecks: string[];
+    paintFrequency: number;
+    customMeasures: number;
+}
+
+interface NetworkAnalysis {
+    status?: string;
+    totalRequests: number;
+    totalTransfer: number;
+    averageLatency: number;
+    networkEfficiency: number;
+    resourceBreakdown: Record<string, NetworkResourceType>;
+    bottlenecks: string[];
+}
+
+interface InteractionAnalysis {
+    status?: string;
+    totalInteractions: number;
+    averageResponseTime: number;
+    responsiveness: string;
+    interactionTypes: Record<string, InteractionTypeStats>;
+    slowInteractions: boolean;
+}
+
+interface ResourceAnalysis {
+    status?: string;
+    domComplexity: number;
+    domGrowth: number;
+    storageUsage: number;
+    storageGrowth: number;
+    resourceHealth: ResourceHealthAssessment;
+}
+
+interface ResourceHealthAssessment {
+    status: string;
+    issues: string[];
+}
+
+interface CustomAnalysis {
+    status?: string;
+    [metricName: string]: any;
+}
+
+interface PerformanceBottleneck {
+    type: string;
+    severity: string;
+    description: string;
+    impact: string;
+    metrics: Record<string, any>;
+}
+
+interface PerformanceRecommendation {
+    category: string;
+    priority: string;
+    title: string;
+    description: string;
+    actions: string[];
+}
+
+// Report types
+interface ReportTemplate {
+    name: string;
+    sections: string[];
+    format: string;
+}
+
+interface ReportData {
+    metadata: ReportMetadata;
+    overall?: OverallAnalysis;
+    frame?: FrameAnalysis;
+    memory?: MemoryAnalysis;
+    render?: RenderAnalysis;
+    network?: NetworkAnalysis;
+    interaction?: InteractionAnalysis;
+    resource?: ResourceAnalysis;
+    custom?: CustomAnalysis;
+    bottlenecks?: PerformanceBottleneck[];
+    recommendations?: PerformanceRecommendation[];
+    [key: string]: any;
+}
+
+interface ReportMetadata {
+    generatedAt: string;
+    template: string;
+    version: string;
+}
+
+interface ExportResult {
+    filename: string;
+    size: number;
+    format: string;
+}
+
 /**
  * Performance Analyzer
  * パフォーマンス分析器 - 収集されたメトリクスの分析
  */
 export class PerformanceAnalyzer {
+    private analysisHistory: PerformanceAnalysis[];
+    private maxHistorySize: number;
+    private analysisThresholds: AnalysisThresholds;
+
     constructor() {
         this.analysisHistory = [];
         this.maxHistorySize = 50;
@@ -19,13 +356,13 @@ export class PerformanceAnalyzer {
         };
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         console.log('Performance Analyzer initialized');
     }
 
-    analyzeMetrics(allMetrics) {
+    analyzeMetrics(allMetrics: AllMetrics): PerformanceAnalysis {
         const timestamp = Date.now();
-        const analysis = {
+        const analysis: PerformanceAnalysis = {
             timestamp,
             overall: this.analyzeOverallPerformance(allMetrics),
             frame: this.analyzeFrameMetrics(allMetrics.frame),
@@ -43,7 +380,7 @@ export class PerformanceAnalyzer {
         return analysis;
     }
 
-    analyzeOverallPerformance(allMetrics) {
+    private analyzeOverallPerformance(allMetrics: AllMetrics): OverallAnalysis {
         const scores = {
             frame: this.calculateFrameScore(allMetrics.frame),
             memory: this.calculateMemoryScore(allMetrics.memory),
@@ -68,8 +405,8 @@ export class PerformanceAnalyzer {
         };
     }
 
-    analyzeFrameMetrics(frameMetrics) {
-        if (!frameMetrics) return { status: 'no_data' };
+    private analyzeFrameMetrics(frameMetrics?: FrameMetricsData): FrameAnalysis {
+        if (!frameMetrics) return { status: 'no_data', currentFPS: 0, averageFPS: 0, stability: 0, jankLevel: 0, assessment: 'unknown', trends: 'unknown' };
 
         const current = frameMetrics.current || {};
         const average = frameMetrics.average || {};
@@ -85,8 +422,8 @@ export class PerformanceAnalyzer {
         };
     }
 
-    analyzeMemoryMetrics(memoryMetrics) {
-        if (!memoryMetrics) return { status: 'no_data' };
+    private analyzeMemoryMetrics(memoryMetrics?: MemoryMetricsData): MemoryAnalysis {
+        if (!memoryMetrics) return { status: 'no_data', currentUsage: 0, pressureLevel: 0, growthRate: 0, gcEfficiency: 0, leakRisk: 'unknown', recommendations: [] };
 
         const current = memoryMetrics.current || {};
         const trends = memoryMetrics.trends || {};
@@ -102,8 +439,8 @@ export class PerformanceAnalyzer {
         };
     }
 
-    analyzeRenderMetrics(renderMetrics) {
-        if (!renderMetrics) return { status: 'no_data' };
+    private analyzeRenderMetrics(renderMetrics?: RenderMetricsData): RenderAnalysis {
+        if (!renderMetrics) return { status: 'no_data', averageRenderTime: 0, renderEfficiency: 0, bottlenecks: [], paintFrequency: 0, customMeasures: 0 };
 
         const stats = renderMetrics.statistics || {};
 
@@ -116,8 +453,8 @@ export class PerformanceAnalyzer {
         };
     }
 
-    analyzeNetworkMetrics(networkMetrics) {
-        if (!networkMetrics) return { status: 'no_data' };
+    private analyzeNetworkMetrics(networkMetrics?: NetworkMetricsData): NetworkAnalysis {
+        if (!networkMetrics) return { status: 'no_data', totalRequests: 0, totalTransfer: 0, averageLatency: 0, networkEfficiency: 0, resourceBreakdown: {}, bottlenecks: [] };
 
         const summary = networkMetrics.summary || {};
         const timing = networkMetrics.timing || {};
@@ -132,8 +469,8 @@ export class PerformanceAnalyzer {
         };
     }
 
-    analyzeInteractionMetrics(interactionMetrics) {
-        if (!interactionMetrics) return { status: 'no_data' };
+    private analyzeInteractionMetrics(interactionMetrics?: InteractionMetricsData): InteractionAnalysis {
+        if (!interactionMetrics) return { status: 'no_data', totalInteractions: 0, averageResponseTime: 0, responsiveness: 'unknown', interactionTypes: {}, slowInteractions: false };
 
         const summary = interactionMetrics.summary || {};
 
@@ -146,8 +483,8 @@ export class PerformanceAnalyzer {
         };
     }
 
-    analyzeResourceMetrics(resourceMetrics) {
-        if (!resourceMetrics) return { status: 'no_data' };
+    private analyzeResourceMetrics(resourceMetrics?: ResourceMetricsData): ResourceAnalysis {
+        if (!resourceMetrics) return { status: 'no_data', domComplexity: 0, domGrowth: 0, storageUsage: 0, storageGrowth: 0, resourceHealth: { status: 'unknown', issues: [] } };
 
         const current = resourceMetrics.current || {};
         const trends = resourceMetrics.trends || {};
@@ -161,12 +498,12 @@ export class PerformanceAnalyzer {
         };
     }
 
-    analyzeCustomMetrics(customMetrics) {
+    private analyzeCustomMetrics(customMetrics?: CustomMetricsData): CustomAnalysis {
         if (!customMetrics || Object.keys(customMetrics).length === 0) {
             return { status: 'no_data' };
         }
 
-        const analysis = {};
+        const analysis: CustomAnalysis = {};
         for (const [name, metric] of Object.entries(customMetrics)) {
             analysis[name] = {
                 current: metric.current,
@@ -179,8 +516,8 @@ export class PerformanceAnalyzer {
         return analysis;
     }
 
-    identifyBottlenecks(allMetrics) {
-        const bottlenecks = [];
+    private identifyBottlenecks(allMetrics: AllMetrics): PerformanceBottleneck[] {
+        const bottlenecks: PerformanceBottleneck[] = [];
 
         // Frame rate bottlenecks
         if (allMetrics.frame?.performance?.jankPercentage > 10) {
@@ -229,8 +566,8 @@ export class PerformanceAnalyzer {
         return bottlenecks;
     }
 
-    generateRecommendations(allMetrics) {
-        const recommendations = [];
+    private generateRecommendations(allMetrics: AllMetrics): PerformanceRecommendation[] {
+        const recommendations: PerformanceRecommendation[] = [];
 
         // Frame performance recommendations
         const frameAnalysis = this.analyzeFrameMetrics(allMetrics.frame);
@@ -272,7 +609,7 @@ export class PerformanceAnalyzer {
     }
 
     // Helper methods
-    calculateFrameScore(frameMetrics) {
+    private calculateFrameScore(frameMetrics?: FrameMetricsData): number {
         if (!frameMetrics?.average?.fps) return 0;
         const fps = frameMetrics.average.fps;
         if (fps >= this.analysisThresholds.fps.excellent) return 1.0;
@@ -282,13 +619,13 @@ export class PerformanceAnalyzer {
         return 0.2;
     }
 
-    calculateMemoryScore(memoryMetrics) {
+    private calculateMemoryScore(memoryMetrics?: MemoryMetricsData): number {
         if (!memoryMetrics?.current?.pressure) return 1.0;
         const pressure = memoryMetrics.current.pressure;
         return Math.max(0, 1 - pressure);
     }
 
-    calculateRenderScore(renderMetrics) {
+    private calculateRenderScore(renderMetrics?: RenderMetricsData): number {
         if (!renderMetrics?.statistics?.averageDuration) return 1.0;
         const renderTime = renderMetrics.statistics.averageDuration;
         if (renderTime <= this.analysisThresholds.frameTime.excellent) return 1.0;
@@ -297,13 +634,13 @@ export class PerformanceAnalyzer {
         return 0.4;
     }
 
-    calculateNetworkScore(networkMetrics) {
+    private calculateNetworkScore(networkMetrics?: NetworkMetricsData): number {
         if (!networkMetrics?.summary?.averageDuration) return 1.0;
         const avgDuration = networkMetrics.summary.averageDuration;
         return Math.max(0, 1 - (avgDuration / 2000)); // Normalize to 2s max
     }
 
-    calculateInteractionScore(interactionMetrics) {
+    private calculateInteractionScore(interactionMetrics?: InteractionMetricsData): number {
         if (!interactionMetrics?.summary?.averageResponseTime) return 1.0;
         const responseTime = interactionMetrics.summary.averageResponseTime;
         if (responseTime <= this.analysisThresholds.responseTime.excellent) return 1.0;
@@ -312,7 +649,7 @@ export class PerformanceAnalyzer {
         return 0.4;
     }
 
-    scoreToGrade(score) {
+    private scoreToGrade(score: number): string {
         if (score >= 0.9) return 'A+';
         if (score >= 0.8) return 'A';
         if (score >= 0.7) return 'B+';
@@ -324,14 +661,14 @@ export class PerformanceAnalyzer {
         return 'F';
     }
 
-    determineHealthStatus(score) {
+    private determineHealthStatus(score: number): string {
         if (score >= 0.8) return 'excellent';
         if (score >= 0.6) return 'good';
         if (score >= 0.4) return 'warning';
         return 'critical';
     }
 
-    calculateFrameStability(frameMetrics) {
+    private calculateFrameStability(frameMetrics: FrameMetricsData): number {
         const history = frameMetrics.history || [];
         if (history.length < 2) return 1.0;
 
@@ -343,14 +680,14 @@ export class PerformanceAnalyzer {
         return Math.max(0, 1 - (standardDeviation / average));
     }
 
-    assessFramePerformance(avgFPS, jankPercentage) {
+    private assessFramePerformance(avgFPS: number, jankPercentage: number): string {
         if (avgFPS >= 55 && jankPercentage < 5) return 'excellent';
         if (avgFPS >= 45 && jankPercentage < 10) return 'good';
         if (avgFPS >= 30 && jankPercentage < 20) return 'acceptable';
         return 'poor';
     }
 
-    analyzeFrameTrends(history) {
+    private analyzeFrameTrends(history?: FrameMetric[]): string {
         if (!history || history.length < 3) return 'insufficient_data';
 
         const recentFPS = history.slice(-3).map(f => f.fps);
@@ -361,14 +698,14 @@ export class PerformanceAnalyzer {
         return 'stable';
     }
 
-    assessMemoryLeakRisk(growthRate, gcFrequency) {
+    private assessMemoryLeakRisk(growthRate: number, gcFrequency: number): string {
         if (growthRate > 1000 && gcFrequency < 2) return 'high';
         if (growthRate > 500) return 'medium';
         return 'low';
     }
 
-    generateMemoryRecommendations(current, trends, gc) {
-        const recommendations = [];
+    private generateMemoryRecommendations(current: any, trends: any, gc: any): string[] {
+        const recommendations: string[] = [];
 
         if (current.pressure > 0.8) {
             recommendations.push('Immediate cleanup required');
@@ -383,7 +720,7 @@ export class PerformanceAnalyzer {
         return recommendations;
     }
 
-    calculateRenderEfficiency(stats) {
+    private calculateRenderEfficiency(stats: any): number {
         const { averageDuration, maxDuration, minDuration } = stats;
         if (!averageDuration) return 1.0;
 
@@ -393,8 +730,8 @@ export class PerformanceAnalyzer {
         return (consistency + performance) / 2;
     }
 
-    identifyRenderBottlenecks(renderMetrics) {
-        const bottlenecks = [];
+    private identifyRenderBottlenecks(renderMetrics: RenderMetricsData): string[] {
+        const bottlenecks: string[] = [];
         const stats = renderMetrics.statistics || {};
 
         if (stats.averageDuration > 30) {
@@ -407,7 +744,7 @@ export class PerformanceAnalyzer {
         return bottlenecks;
     }
 
-    calculateNetworkEfficiency(timing) {
+    private calculateNetworkEfficiency(timing: any): number {
         const { averageDNS, averageTCP, averageRequest, averageResponse } = timing;
         const total = averageDNS + averageTCP + averageRequest + averageResponse;
         
@@ -417,8 +754,8 @@ export class PerformanceAnalyzer {
         return averageResponse / total;
     }
 
-    identifyNetworkBottlenecks(timing) {
-        const bottlenecks = [];
+    private identifyNetworkBottlenecks(timing: any): string[] {
+        const bottlenecks: string[] = [];
 
         if (timing.averageDNS > 100) bottlenecks.push('Slow DNS resolution');
         if (timing.averageTCP > 200) bottlenecks.push('Slow connection establishment');
@@ -428,15 +765,15 @@ export class PerformanceAnalyzer {
         return bottlenecks;
     }
 
-    assessResponsiveness(averageResponseTime) {
+    private assessResponsiveness(averageResponseTime: number): string {
         if (averageResponseTime <= 16) return 'excellent';
         if (averageResponseTime <= 50) return 'good';
         if (averageResponseTime <= 100) return 'acceptable';
         return 'poor';
     }
 
-    assessResourceHealth(current, trends) {
-        const issues = [];
+    private assessResourceHealth(current: any, trends: any): ResourceHealthAssessment {
+        const issues: string[] = [];
 
         if (current.dom?.nodes > 5000) issues.push('High DOM complexity');
         if (trends.domGrowth > 100) issues.push('DOM growing rapidly');
@@ -448,7 +785,7 @@ export class PerformanceAnalyzer {
         };
     }
 
-    calculateTrend(recentData) {
+    private calculateTrend(recentData: CustomMetric[]): string {
         if (!recentData || recentData.length < 2) return 'stable';
 
         const values = recentData.map(d => d.value);
@@ -461,7 +798,7 @@ export class PerformanceAnalyzer {
         return 'stable';
     }
 
-    calculateVariability(recentData) {
+    private calculateVariability(recentData: CustomMetric[]): number {
         if (!recentData || recentData.length < 2) return 0;
 
         const values = recentData.map(d => d.value);
@@ -471,7 +808,7 @@ export class PerformanceAnalyzer {
         return Math.sqrt(variance) / average; // Coefficient of variation
     }
 
-    assessCustomMetric(metric) {
+    private assessCustomMetric(metric: any): string {
         const variability = this.calculateVariability(metric.recent);
         
         if (variability > 0.5) return 'high_variability';
@@ -479,7 +816,7 @@ export class PerformanceAnalyzer {
         return 'stable';
     }
 
-    recordAnalysis(analysis) {
+    private recordAnalysis(analysis: PerformanceAnalysis): void {
         this.analysisHistory.push(analysis);
 
         if (this.analysisHistory.length > this.maxHistorySize) {
@@ -487,11 +824,11 @@ export class PerformanceAnalyzer {
         }
     }
 
-    getAnalysisHistory() {
+    getAnalysisHistory(): PerformanceAnalysis[] {
         return [...this.analysisHistory];
     }
 
-    getLatestAnalysis() {
+    getLatestAnalysis(): PerformanceAnalysis | null {
         return this.analysisHistory[this.analysisHistory.length - 1] || null;
     }
 }
@@ -501,16 +838,18 @@ export class PerformanceAnalyzer {
  * パフォーマンスレポーター - レポート生成とエクスポート
  */
 export class PerformanceReporter {
+    private reportTemplates: Map<string, ReportTemplate>;
+
     constructor() {
         this.reportTemplates = new Map();
         this.setupDefaultTemplates();
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         console.log('Performance Reporter initialized');
     }
 
-    setupDefaultTemplates() {
+    private setupDefaultTemplates(): void {
         this.reportTemplates.set('summary', {
             name: 'Performance Summary',
             sections: ['overall', 'bottlenecks', 'recommendations'],
@@ -530,13 +869,13 @@ export class PerformanceReporter {
         });
     }
 
-    generateReport(analysisData, templateName = 'summary', options = {}) {
+    generateReport(analysisData: PerformanceAnalysis, templateName: string = 'summary', options: Record<string, any> = {}): string {
         const template = this.reportTemplates.get(templateName);
         if (!template) {
             throw new Error(`Unknown report template: ${templateName}`);
         }
 
-        const reportData = {
+        const reportData: ReportData = {
             metadata: {
                 generatedAt: new Date().toISOString(),
                 template: template.name,
@@ -557,7 +896,7 @@ export class PerformanceReporter {
         }
     }
 
-    generateTextReport(data, sections) {
+    private generateTextReport(data: ReportData, sections: string[]): string {
         let report = `Performance Analysis Report\n`;
         report += `Generated: ${data.metadata.generatedAt}\n`;
         report += `Template: ${data.metadata.template}\n\n`;
@@ -585,8 +924,8 @@ export class PerformanceReporter {
         return report;
     }
 
-    generateJSONReport(data, sections) {
-        const filteredData = { metadata: data.metadata };
+    private generateJSONReport(data: ReportData, sections: string[]): string {
+        const filteredData: Record<string, any> = { metadata: data.metadata };
         
         sections.forEach(section => {
             if (data[section]) {
@@ -597,7 +936,7 @@ export class PerformanceReporter {
         return JSON.stringify(filteredData, null, 2);
     }
 
-    generateHTMLReport(data, sections) {
+    private generateHTMLReport(data: ReportData, sections: string[]): string {
         let html = `<!DOCTYPE html>
 <html>
 <head>
@@ -624,7 +963,7 @@ export class PerformanceReporter {
         return html;
     }
 
-    generateOverallSection(overall) {
+    private generateOverallSection(overall?: OverallAnalysis): string {
         if (!overall) return '';
 
         return `=== OVERALL PERFORMANCE ===
@@ -641,7 +980,7 @@ Breakdown:
 `;
     }
 
-    generateBottlenecksSection(bottlenecks) {
+    private generateBottlenecksSection(bottlenecks?: PerformanceBottleneck[]): string {
         if (!bottlenecks || bottlenecks.length === 0) {
             return `=== BOTTLENECKS ===
 No significant bottlenecks detected.
@@ -662,7 +1001,7 @@ No significant bottlenecks detected.
         return section;
     }
 
-    generateRecommendationsSection(recommendations) {
+    private generateRecommendationsSection(recommendations?: PerformanceRecommendation[]): string {
         if (!recommendations || recommendations.length === 0) {
             return `=== RECOMMENDATIONS ===
 No specific recommendations at this time.
@@ -683,7 +1022,7 @@ No specific recommendations at this time.
         return section;
     }
 
-    generateFrameSection(frame) {
+    private generateFrameSection(frame?: FrameAnalysis): string {
         if (!frame || frame.status === 'no_data') {
             return `=== FRAME PERFORMANCE ===
 No frame data available.
@@ -702,7 +1041,7 @@ Trend: ${frame.trends}
 `;
     }
 
-    generateMemorySection(memory) {
+    private generateMemorySection(memory?: MemoryAnalysis): string {
         if (!memory || memory.status === 'no_data') {
             return `=== MEMORY PERFORMANCE ===
 No memory data available.
@@ -720,7 +1059,7 @@ Leak Risk: ${memory.leakRisk.toUpperCase()}
 `;
     }
 
-    generateOverallSectionHTML(overall) {
+    private generateOverallSectionHTML(overall?: OverallAnalysis): string {
         if (!overall) return '';
 
         const statusClass = overall.healthStatus === 'excellent' ? 'good' : 
@@ -733,7 +1072,7 @@ Leak Risk: ${memory.leakRisk.toUpperCase()}
 </div>`;
     }
 
-    exportReport(reportContent, format, filename) {
+    exportReport(reportContent: string, format: string, filename?: string): ExportResult {
         const timestamp = new Date().toISOString().split('T')[0];
         const exportFilename = filename || `performance-report-${timestamp}`;
 
@@ -760,11 +1099,11 @@ Leak Risk: ${memory.leakRisk.toUpperCase()}
         };
     }
 
-    getAvailableTemplates() {
+    getAvailableTemplates(): string[] {
         return Array.from(this.reportTemplates.keys());
     }
 
-    addCustomTemplate(name, template) {
+    addCustomTemplate(name: string, template: ReportTemplate): void {
         this.reportTemplates.set(name, template);
     }
 }
@@ -774,18 +1113,22 @@ Leak Risk: ${memory.leakRisk.toUpperCase()}
  * パフォーマンスダッシュボード - リアルタイム表示
  */
 export class PerformanceDashboard {
+    private dashboardElement: HTMLElement | null;
+    private updateInterval: NodeJS.Timeout | null;
+    private isVisible: boolean;
+
     constructor() {
         this.dashboardElement = null;
         this.updateInterval = null;
         this.isVisible = false;
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         this.createDashboardElement();
         console.log('Performance Dashboard initialized');
     }
 
-    createDashboardElement() {
+    private createDashboardElement(): void {
         if (typeof document === 'undefined') return;
 
         this.dashboardElement = document.createElement('div');
@@ -808,21 +1151,21 @@ export class PerformanceDashboard {
         document.body.appendChild(this.dashboardElement);
     }
 
-    show() {
+    show(): void {
         if (this.dashboardElement) {
             this.dashboardElement.style.display = 'block';
             this.isVisible = true;
         }
     }
 
-    hide() {
+    hide(): void {
         if (this.dashboardElement) {
             this.dashboardElement.style.display = 'none';
             this.isVisible = false;
         }
     }
 
-    toggle() {
+    toggle(): void {
         if (this.isVisible) {
             this.hide();
         } else {
@@ -830,12 +1173,12 @@ export class PerformanceDashboard {
         }
     }
 
-    updateDisplay(analysisData) {
+    updateDisplay(analysisData: PerformanceAnalysis): void {
         if (!this.dashboardElement || !this.isVisible) return;
 
-        const overall = analysisData.overall || {};
-        const frame = analysisData.frame || {};
-        const memory = analysisData.memory || {};
+        const overall = analysisData.overall || {} as OverallAnalysis;
+        const frame = analysisData.frame || {} as FrameAnalysis;
+        const memory = analysisData.memory || {} as MemoryAnalysis;
 
         const html = `
             <div><strong>Performance Dashboard</strong></div>
@@ -849,7 +1192,7 @@ export class PerformanceDashboard {
         this.dashboardElement.innerHTML = html;
     }
 
-    getStatusColor(status) {
+    private getStatusColor(status: string): string {
         switch (status) {
             case 'excellent': return '#00ff00';
             case 'good': return '#88ff88';
@@ -859,7 +1202,7 @@ export class PerformanceDashboard {
         }
     }
 
-    startAutoUpdate(analysisCallback, interval = 1000) {
+    startAutoUpdate(analysisCallback: () => PerformanceAnalysis | null, interval: number = 1000): void {
         this.updateInterval = setInterval(() => {
             if (this.isVisible && analysisCallback) {
                 const analysisData = analysisCallback();
@@ -870,14 +1213,14 @@ export class PerformanceDashboard {
         }, interval);
     }
 
-    stopAutoUpdate() {
+    stopAutoUpdate(): void {
         if (this.updateInterval) {
             clearInterval(this.updateInterval);
             this.updateInterval = null;
         }
     }
 
-    destroy() {
+    destroy(): void {
         this.stopAutoUpdate();
         if (this.dashboardElement && this.dashboardElement.parentNode) {
             this.dashboardElement.parentNode.removeChild(this.dashboardElement);
