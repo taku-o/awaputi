@@ -401,6 +401,54 @@ export class EventNotificationSystem {
         
         console.log('All notifications cleared');
     }
+
+    /**
+     * 通知をチェック（EventStageManager対応）
+     * アクティブな通知と期限切れ通知を確認・管理
+     */
+    checkNotifications() {
+        try {
+            const currentTime = Date.now();
+            const expiredNotifications = [];
+            
+            // 期限切れ通知を特定
+            this.activeNotifications.forEach((notification, id) => {
+                if (notification.expiresAt && currentTime > notification.expiresAt) {
+                    expiredNotifications.push(id);
+                }
+            });
+            
+            // 期限切れ通知を削除
+            expiredNotifications.forEach(id => {
+                this.removeNotification(id);
+            });
+            
+            // 通知キューから新しい通知を処理
+            if (this.notificationQueue.length > 0 && this.activeNotifications.size < this.settings.maxDisplayCount) {
+                const nextNotification = this.notificationQueue.shift();
+                this.displayNotification(nextNotification);
+            }
+            
+            // 統計情報を更新
+            if (expiredNotifications.length > 0) {
+                console.log(`[EventNotificationSystem] ${expiredNotifications.length}個の期限切れ通知を削除`);
+            }
+            
+            return {
+                activeCount: this.activeNotifications.size,
+                queueCount: this.notificationQueue.length,
+                expiredCount: expiredNotifications.length
+            };
+            
+        } catch (error) {
+            console.error('[EventNotificationSystem] checkNotifications error:', error);
+            return {
+                activeCount: 0,
+                queueCount: 0,
+                expiredCount: 0
+            };
+        }
+    }
     
     /**
      * リソースクリーンアップ

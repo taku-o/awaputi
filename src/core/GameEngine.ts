@@ -334,7 +334,7 @@ export class GameEngine {
     private _initializePerformanceAndDebug(): void {
         try {
             // Performance systems
-            this.renderOptimizer = new RenderOptimizer();
+            this.renderOptimizer = new RenderOptimizer(this.canvas);
             this.performanceMonitor = new PerformanceMonitor();
             
             // Debug interface (only in development)

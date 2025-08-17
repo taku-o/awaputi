@@ -64,6 +64,7 @@ interface QualityDecision {
     currentIndex?: number;
     performanceScore?: number;
     trend?: string;
+    timestamp?: number;
 }
 
 interface EvaluationResult {
@@ -176,7 +177,10 @@ export class QualityDecisionAnalyzer {
                 needsAdjustment: false,
                 reason: 'evaluation_error',
                 confidence: 0,
-                performanceScore: 0.5
+                performanceScore: 0.5,
+                recommendedLevel: 'medium',
+                trend: 'stable',
+                timestamp: Date.now()
             };
         }
     }
@@ -275,7 +279,7 @@ export class QualityDecisionAnalyzer {
         // 最近のパフォーマンス傾向を計算
         const recentScores = this.performanceAverages.fps
             .slice(-windowSize)
-            .map((fps, index) => this.calculatePerformanceScoreFromFPS(fps));
+            .map((fps) => this.calculatePerformanceScoreFromFPS(fps));
         
         // 線形回帰による傾向分析
         const trend = this.calculateLinearTrend(recentScores);

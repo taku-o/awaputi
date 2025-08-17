@@ -584,4 +584,39 @@ export class PlayerData {
         
         return item ? (item.level || 1) : 0;
     }
+
+    // =======================
+    // EventStageManager対応メソッド（要件7: 未実装メソッド実装）
+    // =======================
+
+    /**
+     * APを追加
+     * イベントステージのリワードでAPを獲得する際に使用
+     */
+    addAP(amount: number): void {
+        try {
+            // 入力値を検証
+            const validation = validateInput(amount, 'number', {
+                min: 0,
+                max: 100000,
+                integer: true
+            });
+            
+            if (!validation.isValid) {
+                getErrorHandler().handleError(new Error(`Invalid AP amount: ${validation.errors.join(', ')}`), 'VALIDATION_ERROR', {
+                    input: amount,
+                    errors: validation.errors
+                });
+                return;
+            }
+            
+            this.ap += validation.sanitizedValue;
+            this.save(); // APが更新されたら保存
+            
+            console.log(`[PlayerData] AP追加: +${validation.sanitizedValue} (総計: ${this.ap})`);
+            
+        } catch (error) {
+            getErrorHandler().handleError(error, 'PLAYER_DATA_ERROR', { operation: 'addAP', amount });
+        }
+    }
 }

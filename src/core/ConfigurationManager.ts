@@ -541,7 +541,7 @@ class ConfigurationManager {
         
         watchers.forEach(callback => {
             try {
-                callback(newValue, oldValue, key);
+                callback(newValue, oldValue, typeof key === 'string' ? key : String(key));
             } catch (error) {
                 this._handleError(error, 'watcher', { key, callback });
             }

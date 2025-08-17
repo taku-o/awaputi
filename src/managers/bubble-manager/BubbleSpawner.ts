@@ -287,4 +287,91 @@ export class BubbleSpawner implements IBubbleSpawner {
         if (!type || typeof type !== 'string') return false;
         return true;
     }
+
+    // =======================
+    // EventStageManager対応メソッド（要件7: 未実装メソッド実装）
+    // =======================
+
+    /**
+     * イベント用バブルタイプを設定
+     */
+    setEventBubbleTypes(types: string[]): void {
+        try {
+            if (!Array.isArray(types)) {
+                console.warn('[BubbleSpawner] setEventBubbleTypes: typesは配列である必要があります');
+                return;
+            }
+            
+            // イベント用バブルタイプを保存（将来の実装で使用）
+            this.eventBubbleTypes = types;
+            console.log(`[BubbleSpawner] イベント用バブルタイプ設定: ${types.join(', ')}`);
+        } catch (error) {
+            console.error('[BubbleSpawner] setEventBubbleTypes error:', error);
+        }
+    }
+
+    /**
+     * スポーン率倍率を設定
+     */
+    setSpawnRateMultiplier(multiplier: number): void {
+        try {
+            if (typeof multiplier !== 'number' || multiplier <= 0) {
+                console.warn('[BubbleSpawner] setSpawnRateMultiplier: 倍率は正の数値である必要があります');
+                return;
+            }
+            
+            this.spawnRateMultiplier = multiplier;
+            console.log(`[BubbleSpawner] スポーン率倍率設定: ${multiplier}x`);
+        } catch (error) {
+            console.error('[BubbleSpawner] setSpawnRateMultiplier error:', error);
+        }
+    }
+
+    /**
+     * 最大バブル数を設定
+     */
+    setMaxBubbles(maxBubbles: number): void {
+        try {
+            if (typeof maxBubbles !== 'number' || maxBubbles <= 0) {
+                console.warn('[BubbleSpawner] setMaxBubbles: 最大数は正の数値である必要があります');
+                return;
+            }
+            
+            this.maxBubbles = maxBubbles;
+            console.log(`[BubbleSpawner] 最大バブル数設定: ${maxBubbles}`);
+        } catch (error) {
+            console.error('[BubbleSpawner] setMaxBubbles error:', error);
+        }
+    }
+
+    /**
+     * 特殊バブルスポーン率を設定
+     */
+    setSpecialBubbleSpawnRate(type: string, rate: number): void {
+        try {
+            if (!type || typeof type !== 'string') {
+                console.warn('[BubbleSpawner] setSpecialBubbleSpawnRate: typeは文字列である必要があります');
+                return;
+            }
+            
+            if (typeof rate !== 'number' || rate < 0 || rate > 1) {
+                console.warn('[BubbleSpawner] setSpecialBubbleSpawnRate: rateは0-1の数値である必要があります');
+                return;
+            }
+            
+            // 特殊バブルのスポーン率を保存
+            if (!this.specialSpawnRates) {
+                this.specialSpawnRates = {};
+            }
+            this.specialSpawnRates[type] = rate;
+            
+            console.log(`[BubbleSpawner] 特殊バブル ${type} のスポーン率設定: ${rate * 100}%`);
+        } catch (error) {
+            console.error('[BubbleSpawner] setSpecialBubbleSpawnRate error:', error);
+        }
+    }
+
+    // イベント用プロパティ
+    private eventBubbleTypes?: string[];
+    private spawnRateMultiplier?: number;
 }

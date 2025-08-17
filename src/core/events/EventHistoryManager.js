@@ -553,6 +553,50 @@ export class EventHistoryManager {
     }
     
     /**
+     * 履歴データを読み込み（EventStageManager対応）
+     */
+    load() {
+        try {
+            const savedHistoryData = localStorage.getItem('eventHistoryData');
+            if (savedHistoryData) {
+                const data = JSON.parse(savedHistoryData);
+                
+                if (data.eventHistory) {
+                    this.eventHistory = data.eventHistory;
+                }
+                
+                if (data.participationHistory) {
+                    this.participationHistory = new Map(data.participationHistory);
+                }
+                
+                if (data.achievementHistory) {
+                    this.achievementHistory = data.achievementHistory;
+                }
+                
+                if (data.rankingHistory) {
+                    this.rankingHistory = data.rankingHistory;
+                }
+                
+                if (data.statistics) {
+                    this.statistics = { ...this.statistics, ...data.statistics };
+                }
+                
+                console.log('[EventHistoryManager] 履歴データを読み込みました');
+            } else {
+                console.log('[EventHistoryManager] 保存されたデータがありません、デフォルト設定を使用');
+            }
+            
+        } catch (error) {
+            console.error('[EventHistoryManager] データ読み込みエラー:', error);
+            // エラーの場合は初期状態にリセット
+            this.eventHistory = [];
+            this.participationHistory = new Map();
+            this.achievementHistory = [];
+            this.rankingHistory = [];
+        }
+    }
+
+    /**
      * リソースクリーンアップ
      */
     dispose() {

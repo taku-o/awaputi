@@ -280,4 +280,19 @@ export class ScoreManager implements IScoreManager {
             comboTimer: this.comboTimer
         };
     }
+
+    // =======================
+    // EventStageManager対応メソッド（要件7: 未実装メソッド実装）
+    // =======================
+
+    /**
+     * グローバルスコア倍率を設定
+     */
+    setGlobalScoreMultiplier(multiplier: number): void {
+        if (this.gameEngine && this.gameEngine.setScoreMultiplier) {
+            this.gameEngine.setScoreMultiplier(multiplier);
+        } else {
+            console.warn('[ScoreManager] setGlobalScoreMultiplier: gameEngineまたはメソッドが存在しません');
+        }
+    }
 }

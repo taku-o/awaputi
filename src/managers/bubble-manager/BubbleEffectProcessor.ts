@@ -307,4 +307,38 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor {
         
         console.log(`Big explosion affected ${affectedBubbles.length} bubbles`);
     }
+
+    // =======================
+    // EventStageManager対応メソッド（要件7: 未実装メソッド実装）
+    // =======================
+
+    /**
+     * チェーンボーナスを設定
+     */
+    setChainBonus(type: string, bonus: number): void {
+        try {
+            if (!type || typeof type !== 'string') {
+                console.warn('[BubbleEffectProcessor] setChainBonus: typeは文字列である必要があります');
+                return;
+            }
+            
+            if (typeof bonus !== 'number' || bonus < 0) {
+                console.warn('[BubbleEffectProcessor] setChainBonus: bonusは非負の数値である必要があります');
+                return;
+            }
+            
+            // チェーンボーナスを保存
+            if (!this.chainBonuses) {
+                this.chainBonuses = {};
+            }
+            this.chainBonuses[type] = bonus;
+            
+            console.log(`[BubbleEffectProcessor] ${type} のチェーンボーナス設定: ${bonus}`);
+        } catch (error) {
+            console.error('[BubbleEffectProcessor] setChainBonus error:', error);
+        }
+    }
+
+    // チェーンボーナス用プロパティ
+    private chainBonuses: Record<string, number> = {};
 }

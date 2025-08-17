@@ -473,4 +473,64 @@ export class BubbleManager implements IBubbleManager {
             }))
         };
     }
+
+    // =======================
+    // EventStageManager対応メソッド（要件7: 未実装メソッド実装）
+    // =======================
+
+    /**
+     * イベント用バブルタイプを設定
+     */
+    setEventBubbleTypes(types: string[]): void {
+        if (this.spawner && this.spawner.setEventBubbleTypes) {
+            this.spawner.setEventBubbleTypes(types);
+        } else {
+            console.warn('[BubbleManager] setEventBubbleTypes: spawnerまたはメソッドが存在しません');
+        }
+    }
+
+    /**
+     * スポーン率倍率を設定
+     */
+    setSpawnRateMultiplier(multiplier: number): void {
+        if (this.spawner && this.spawner.setSpawnRateMultiplier) {
+            this.spawner.setSpawnRateMultiplier(multiplier);
+        } else {
+            console.warn('[BubbleManager] setSpawnRateMultiplier: spawnerまたはメソッドが存在しません');
+        }
+    }
+
+    /**
+     * 最大バブル数を設定
+     */
+    setMaxBubbles(maxBubbles: number): void {
+        if (this.spawner && this.spawner.setMaxBubbles) {
+            this.spawner.setMaxBubbles(maxBubbles);
+        } else {
+            console.warn('[BubbleManager] setMaxBubbles: spawnerまたはメソッドが存在しません');
+        }
+    }
+
+    /**
+     * 特殊バブルスポーン率を設定
+     */
+    setSpecialBubbleSpawnRate(type: string, rate: number): void {
+        if (this.spawner && this.spawner.setSpecialBubbleSpawnRate) {
+            this.spawner.setSpecialBubbleSpawnRate(type, rate);
+        } else {
+            console.warn('[BubbleManager] setSpecialBubbleSpawnRate: spawnerまたはメソッドが存在しません');
+        }
+    }
+
+    /**
+     * チェーンボーナスを設定
+     */
+    setChainBonus(type: string, bonus: number): void {
+        if (this.effectProcessor && this.effectProcessor.setChainBonus) {
+            this.effectProcessor.setChainBonus(type, bonus);
+        } else {
+            console.warn('[BubbleManager] setChainBonus: effectProcessorまたはメソッドが存在しません');
+        }
+    }
+
 }

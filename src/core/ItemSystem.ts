@@ -349,4 +349,42 @@ export class ItemManager implements IItemManager {
             isMaxLevel: currentLevel >= itemDef.maxLevel
         };
     }
+
+    // =======================
+    // EventStageManager対応メソッド（要件7: 未実装メソッド実装）
+    // =======================
+
+    /**
+     * アイテムを無償で付与
+     * イベントリワードでアイテムを獲得する際に使用
+     */
+    grantItem(itemId: string, level: number = 1): boolean {
+        try {
+            const itemDef = ITEM_DEFINITIONS[itemId];
+            if (!itemDef) {
+                console.warn(`[ItemManager] 未知のアイテムID: ${itemId}`);
+                return false;
+            }
+
+            const currentLevel = this.getItemLevel(itemId);
+            const newLevel = Math.min(currentLevel + level, itemDef.maxLevel);
+            
+            if (newLevel === currentLevel) {
+                console.warn(`[ItemManager] アイテム ${itemId} は既に最大レベルです`);
+                return false;
+            }
+
+            // アイテムレベルを更新
+            this.ownedItems.set(itemId, newLevel);
+            
+            // 効果を即座に適用
+            this.applyItemEffect(itemId);
+            
+            console.log(`[ItemManager] アイテム付与: ${itemId} (レベル ${currentLevel} -> ${newLevel})`);
+            return true;
+        } catch (error) {
+            console.error('[ItemManager] grantItem error:', error);
+            return false;
+        }
+    }
 }

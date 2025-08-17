@@ -532,6 +532,49 @@ export class EventRankingSystem extends EventRankingManager {
     }
     
     /**
+     * プレイヤースコアを更新（EventStageManager対応）
+     */
+    updatePlayerScore(playerId, score) {
+        try {
+            // 現在のランキングを更新
+            const currentRanking = this.getRanking('global');
+            if (currentRanking && currentRanking.rankings) {
+                const playerEntry = currentRanking.rankings.find(entry => entry.playerId === playerId);
+                if (playerEntry) {
+                    playerEntry.totalScore = Math.max(playerEntry.totalScore, score);
+                    playerEntry.bestScore = Math.max(playerEntry.bestScore, score);
+                } else {
+                    // 新しいプレイヤーエントリを追加
+                    currentRanking.rankings.push({
+                        playerId: playerId,
+                        playerName: 'プレイヤー',
+                        totalScore: score,
+                        bestScore: score,
+                        eventCount: 1,
+                        averageScore: score,
+                        globalPoints: this.calculateGlobalPoints({
+                            totalScore: score,
+                            eventCount: 1,
+                            achievements: 0,
+                            averageScore: score
+                        })
+                    });
+                }
+                
+                // ランキングを再ソート
+                currentRanking.rankings.sort((a, b) => b.totalScore - a.totalScore);
+                currentRanking.rankings.forEach((player, index) => {
+                    player.rank = index + 1;
+                });
+            }
+            
+            console.log(`[EventRankingSystem] プレイヤースコア更新: ${playerId} = ${score}`);
+        } catch (error) {
+            console.error('[EventRankingSystem] updatePlayerScore error:', error);
+        }
+    }
+
+    /**
      * リソースクリーンアップ
      */
     dispose() {

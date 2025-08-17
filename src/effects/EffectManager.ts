@@ -1329,4 +1329,81 @@ export class EffectManager {
     public destroy(): void {
         this.dispose();
     }
+
+    // =======================
+    // EventStageManager対応メソッド（要件7: 未実装メソッド実装）
+    // =======================
+
+    /**
+     * ナイトモードを有効化
+     * 夜間イベントステージで画面全体を暗くし、視界を制限する
+     */
+    public enableNightMode(intensity: number = 0.8, duration?: number): number {
+        try {
+            // 暗いティント効果を適用して夜間の雰囲気を演出
+            const nightDuration = duration || 5000; // デフォルト5秒間
+            const nightEffect = this.addTint('#000033', intensity, nightDuration, 'easeInOut');
+            
+            // コントラストを少し下げて暗い雰囲気を強化
+            this.addFilter('contrast', 0.8, nightDuration, 'easeInOut');
+            
+            // 明度を下げて全体的に暗くする
+            this.addFilter('brightness', 0.6, nightDuration, 'easeInOut');
+            
+            console.log(`[EffectManager] ナイトモードを有効化: intensity=${intensity}, duration=${nightDuration}ms`);
+            
+            // 主要なエフェクトID（ティント）を返す
+            return nightEffect;
+        } catch (error) {
+            getErrorHandler().handleError(error, 'EFFECT_ERROR', {
+                context: 'EffectManager.enableNightMode'
+            });
+            return -1;
+        }
+    }
+
+    /**
+     * 視界制限を設定
+     * 霧や煙などの効果で視界を制限する
+     */
+    public setVisibilityReduction(reduction: number, duration?: number, effectType: 'fog' | 'smoke' | 'darkness' = 'fog'): number {
+        try {
+            const effectDuration = duration || 3000; // デフォルト3秒間
+            let effectId = -1;
+            
+            switch (effectType) {
+                case 'fog':
+                    // 白っぽい霧効果（彩度を下げ、軽いぼかし）
+                    effectId = this.addTint('#CCCCCC', reduction * 0.4, effectDuration, 'easeInOut');
+                    this.addFilter('saturation', 1 - reduction * 0.3, effectDuration, 'easeInOut');
+                    this.addBlur(reduction * 2, effectDuration, 'easeInOut');
+                    break;
+                    
+                case 'smoke':
+                    // 暗い煙効果（暗いティントとぼかし）
+                    effectId = this.addTint('#444444', reduction * 0.6, effectDuration, 'easeInOut');
+                    this.addBlur(reduction * 3, effectDuration, 'easeInOut');
+                    this.addFilter('contrast', 1 + reduction * 0.2, effectDuration, 'easeInOut');
+                    break;
+                    
+                case 'darkness':
+                    // 暗闇効果（暗いティントと明度低下）
+                    effectId = this.addTint('#000000', reduction * 0.7, effectDuration, 'easeInOut');
+                    this.addFilter('brightness', 1 - reduction * 0.4, effectDuration, 'easeInOut');
+                    break;
+                    
+                default:
+                    console.warn(`[EffectManager] 未知の視界制限タイプ: ${effectType}`);
+                    effectId = this.addTint('#CCCCCC', reduction * 0.5, effectDuration, 'easeInOut');
+            }
+            
+            console.log(`[EffectManager] 視界制限を設定: type=${effectType}, reduction=${reduction}, duration=${effectDuration}ms`);
+            return effectId;
+        } catch (error) {
+            getErrorHandler().handleError(error, 'EFFECT_ERROR', {
+                context: 'EffectManager.setVisibilityReduction'
+            });
+            return -1;
+        }
+    }
 }

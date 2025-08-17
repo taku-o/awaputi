@@ -72,7 +72,7 @@ export class QualityTransitionController {
     private isTransitioning: boolean;
     private currentTransition: CurrentTransition | null;
     private transitionHistory: CurrentTransition[];
-    private retryCount: number;
+    private retryCount: number = 0;
     private transitionTimer: NodeJS.Timeout | null;
     private validationTimer: NodeJS.Timeout | null;
     private rollbackTimer: NodeJS.Timeout | null;
@@ -108,7 +108,7 @@ export class QualityTransitionController {
     async executeQualityTransition(fromLevel: string, toLevel: string, transitionData: any = {}): Promise<TransitionResult> {
         if (this.isTransitioning) {
             console.warn('[QualityTransitionController] 既に遷移中です');
-            return { success: false, reason: 'already_transitioning' };
+            return { success: false, reason: 'already_transitioning', timestamp: Date.now() };
         }
         
         try {
@@ -171,11 +171,12 @@ export class QualityTransitionController {
             console.error('[QualityTransitionController] 品質遷移エラー:', error);
             
             // ロールバック実行
-            await this.executeRollback(fromLevel, error.message);
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            await this.executeRollback(fromLevel, errorMessage);
             
             return {
                 success: false,
-                reason: error.message,
+                reason: errorMessage,
                 fromLevel,
                 toLevel,
                 timestamp: Date.now()
@@ -189,9 +190,11 @@ export class QualityTransitionController {
      * @param {string} toLevel - 目標品質レベル
      * @returns {Promise<Object>} フェード結果
      */
-    async startQualityFade(fromLevel: string, toLevel: string): Promise<FadeResult> {
+    async startQualityFade(_fromLevel: string, _toLevel: string): Promise<FadeResult> {
         return new Promise((resolve) => {
-            this.currentTransition.phase = 'fade_out';
+            if (this.currentTransition) {
+                this.currentTransition.phase = 'fade_out';
+            }
             
             let fadeProgress = 0;
             const fadeInterval = setInterval(() => {
@@ -199,7 +202,9 @@ export class QualityTransitionController {
                 
                 if (fadeProgress >= 1) {
                     clearInterval(fadeInterval);
-                    this.currentTransition.phase = 'fade_ready';
+                    if (this.currentTransition) {
+                        this.currentTransition.phase = 'fade_ready';
+                    }
                     resolve({ success: true });
                 }
             }, 16); // 60FPS
@@ -214,7 +219,9 @@ export class QualityTransitionController {
      */
     async applyQualitySettings(toLevel: string, transitionData: any): Promise<ApplyResult> {
         try {
-            this.currentTransition.phase = 'applying_settings';
+            if (this.currentTransition) {
+                this.currentTransition.phase = 'applying_settings';
+            }
             
             // 品質レベルに応じた設定を計算
             const qualitySettings = this.calculateQualitySettings(toLevel);
@@ -229,13 +236,16 @@ export class QualityTransitionController {
                 await new Promise(resolve => setTimeout(resolve, 50));
             }
             
-            this.currentTransition.appliedSettings = qualitySettings;
+            if (this.currentTransition) {
+                this.currentTransition.appliedSettings = qualitySettings;
+            }
             
             return { success: true, settings: qualitySettings };
             
         } catch (error) {
             console.error('[QualityTransitionController] 設定適用エラー:', error);
-            return { success: false, reason: error.message };
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            return { success: false, reason: errorMessage };
         }
     }
     
@@ -244,9 +254,11 @@ export class QualityTransitionController {
      * @param {string} toLevel - 目標品質レベル
      * @returns {Promise<Object>} フェード完了結果
      */
-    async completeQualityFade(toLevel: string): Promise<FadeResult> {
+    async completeQualityFade(_toLevel: string): Promise<FadeResult> {
         return new Promise((resolve) => {
-            this.currentTransition.phase = 'fade_in';
+            if (this.currentTransition) {
+                this.currentTransition.phase = 'fade_in';
+            }
             
             let fadeProgress = 1;
             const fadeInterval = setInterval(() => {
@@ -254,7 +266,9 @@ export class QualityTransitionController {
                 
                 if (fadeProgress <= 0) {
                     clearInterval(fadeInterval);
-                    this.currentTransition.phase = 'fade_complete';
+                    if (this.currentTransition) {
+                        this.currentTransition.phase = 'fade_complete';
+                    }
                     resolve({ success: true });
                 }
             }, 16); // 60FPS
@@ -270,18 +284,24 @@ export class QualityTransitionController {
         try {
             console.log(`[QualityTransitionController] ロールバック実行: ${reason}`);
             
-            this.currentTransition.phase = 'rolling_back';
+            if (this.currentTransition) {
+                this.currentTransition.phase = 'rolling_back';
+            }
             
             // 元の設定に戻す
-            const originalSettings = this.calculateQualitySettings(originalLevel);
+            const _originalSettings = this.calculateQualitySettings(originalLevel);
             await this.applyQualitySettings(originalLevel, { isRollback: true });
             
-            this.currentTransition.phase = 'rolled_back';
-            this.currentTransition.rollbackReason = reason;
+            if (this.currentTransition) {
+                this.currentTransition.phase = 'rolled_back';
+                this.currentTransition.rollbackReason = reason;
+            }
             
         } catch (rollbackError) {
             console.error('[QualityTransitionController] ロールバックエラー:', rollbackError);
-            this.currentTransition.phase = 'rollback_failed';
+            if (this.currentTransition) {
+                this.currentTransition.phase = 'rollback_failed';
+            }
         } finally {
             this.isTransitioning = false;
             this.clearAllTimers();
@@ -333,7 +353,10 @@ export class QualityTransitionController {
             }
         };
         
-        return qualityMap[qualityLevel] || qualityMap.medium;
+        const validLevels = ['low', 'medium', 'high', 'ultra'] as const;
+        type ValidLevel = typeof validLevels[number];
+        
+        return qualityMap[qualityLevel as ValidLevel] || qualityMap.medium;
     }
     
     /**
@@ -342,7 +365,7 @@ export class QualityTransitionController {
      * @param {Object} transitionData - 遷移データ
      * @returns {Array} 適用ステップ配列
      */
-    createApplySteps(qualitySettings: QualitySettings, transitionData: any): ApplyStep[] {
+    createApplySteps(qualitySettings: QualitySettings, _transitionData: any): ApplyStep[] {
         const steps = [];
         
         // パーティクル数の調整
@@ -499,7 +522,7 @@ export class QualityTransitionController {
         const successfulTransitions = this.transitionHistory.filter(t => t.phase === 'completed').length;
         const totalDuration = this.transitionHistory
             .filter(t => t.duration)
-            .reduce((sum, t) => sum + t.duration, 0);
+            .reduce((sum, t) => sum + (t.duration || 0), 0);
         const averageDuration = totalDuration / Math.max(1, successfulTransitions);
         
         return {

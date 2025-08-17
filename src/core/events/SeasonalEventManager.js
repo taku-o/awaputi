@@ -361,6 +361,59 @@ export class SeasonalEventManager {
     }
     
     /**
+     * 季節イベントデータを読み込み（EventStageManager対応）
+     */
+    load() {
+        try {
+            // ローカルストレージから季節イベントデータを読み込み
+            const savedSeasonalData = localStorage.getItem('seasonalEventData');
+            if (savedSeasonalData) {
+                const data = JSON.parse(savedSeasonalData);
+                
+                // アクティブイベントを復元
+                if (data.activeSeasonalEvents) {
+                    this.activeSeasonalEvents = new Map(data.activeSeasonalEvents);
+                }
+                
+                // 現在の季節を復元
+                if (data.currentSeason) {
+                    this.currentSeason = data.currentSeason;
+                }
+                
+                console.log('[SeasonalEventManager] 季節イベントデータを読み込みました');
+            } else {
+                console.log('[SeasonalEventManager] 保存されたデータがありません、デフォルト設定を使用');
+            }
+            
+            // 現在の季節をチェック
+            this.checkSeasonalEvents();
+            
+        } catch (error) {
+            console.error('[SeasonalEventManager] データ読み込みエラー:', error);
+            // エラーの場合は現在の季節を再設定
+            this.currentSeason = this.getCurrentSeason();
+        }
+    }
+
+    /**
+     * 季節イベントデータを保存
+     */
+    save() {
+        try {
+            const dataToSave = {
+                activeSeasonalEvents: Array.from(this.activeSeasonalEvents.entries()),
+                currentSeason: this.currentSeason,
+                lastUpdated: Date.now()
+            };
+            
+            localStorage.setItem('seasonalEventData', JSON.stringify(dataToSave));
+            console.log('[SeasonalEventManager] 季節イベントデータを保存しました');
+        } catch (error) {
+            console.error('[SeasonalEventManager] データ保存エラー:', error);
+        }
+    }
+
+    /**
      * リソースクリーンアップ
      */
     dispose() {
@@ -368,6 +421,9 @@ export class SeasonalEventManager {
             clearInterval(this.seasonalCheckInterval);
             this.seasonalCheckInterval = null;
         }
+        
+        // データを保存してからクリーンアップ
+        this.save();
         
         // パーティクルエフェクトをクリア
         if (this.gameEngine.particleManager) {

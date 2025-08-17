@@ -67,7 +67,7 @@ export class EventStageManager {
     private historyManager: EventHistoryManager;
     private rankingSystem: EventRankingSystem;
     public eventRankingManager: EventRankingSystem;
-    private __eventHistory: any[]; // 将来使用予定
+    // private _eventHistory: any[]; // 将来使用予定（現在未使用）
 
     constructor(gameEngine: GameEngine) {
         this.gameEngine = gameEngine;
@@ -82,7 +82,9 @@ export class EventStageManager {
         
         // レガシーサポート用（既存コードとの互換性）
         this.eventRankingManager = this.rankingSystem;
-        this.__eventHistory = []; // 互換性のため保持
+        
+        // 将来使用予定の履歴データ（現在は未使用）
+        // this._eventHistory = [];
         
         console.log('EventStageManager initialized with new component architecture');
         console.log('[DEBUG] EventStageManager VERSION: v2024-with-load-method');
@@ -250,7 +252,7 @@ export class EventStageManager {
     /**
      * イベントステージを開始
      */
-    startEventStage(eventId) {
+    startEventStage(eventId: string): boolean {
         const event = this.eventStages[eventId];
         if (!event) {
             console.error(`Event not found: ${eventId}`);
@@ -271,7 +273,7 @@ export class EventStageManager {
             this.activeEvents.set(eventId, {
                 ...event,
                 startTime: Date.now(),
-                endTime: Date.now() + event.duration
+                endTime: Date.now() + (event.duration || 300000) // デフォルト5分
             });
             
             console.log(`Event started: ${event.name}`);
@@ -286,7 +288,7 @@ export class EventStageManager {
     /**
      * イベント設定を適用
      */
-    applyEventSettings(event) {
+    applyEventSettings(event: any): void {
         try {
             // バブル設定
             if (event.bubbleTypes && this.gameEngine.bubbleManager) {
@@ -315,7 +317,7 @@ export class EventStageManager {
     /**
      * 特別ルールを適用
      */
-    applySpecialRules(event, specialRules) {
+    applySpecialRules(_event: any, specialRules: any): void {
         // スコア倍率
         if (specialRules.globalScoreMultiplier && this.gameEngine.scoreManager) {
             this.gameEngine.scoreManager.setGlobalScoreMultiplier(specialRules.globalScoreMultiplier);
@@ -362,7 +364,9 @@ export class EventStageManager {
             this.historyManager.recordEventCompletion(event, results);
             
             // ランキングを更新
-            this.rankingSystem.updatePlayerScore(eventId, results.score);
+            if (this.rankingSystem && this.rankingSystem.updatePlayerScore && 'score' in results) {
+                this.rankingSystem.updatePlayerScore(eventId, (results as any).score);
+            }
             
             // イベント終了通知
             this.notificationSystem.notifyEventEnd(event, results);
@@ -385,7 +389,7 @@ export class EventStageManager {
     /**
      * イベント報酬を付与
      */
-    grantEventRewards(event, results) {
+    grantEventRewards(event: any, results: any): void {
         if (!event.rewards) return;
         
         // 完了報酬
@@ -407,13 +411,13 @@ export class EventStageManager {
     /**
      * 報酬を付与
      */
-    grantReward(reward) {
+    grantReward(reward: any): void {
         if (reward.ap && this.gameEngine.playerData) {
             this.gameEngine.playerData.addAP(reward.ap);
         }
         
-        if (reward.items && this.gameEngine.itemManager) {
-            reward.items.forEach(item => {
+        if (reward.items && this.gameEngine.itemManager && this.gameEngine.itemManager.grantItem) {
+            reward.items.forEach((item: any) => {
                 this.gameEngine.itemManager.grantItem(item.id, item.quantity || 1);
             });
         }
@@ -429,14 +433,14 @@ export class EventStageManager {
     /**
      * イベント情報を取得
      */
-    getEventInfo(eventId) {
+    getEventInfo(eventId: string): any {
         return this.eventStages[eventId] || null;
     }
     
     /**
      * イベント残り時間を取得
      */
-    getEventTimeRemaining(eventId) {
+    getEventTimeRemaining(eventId: string): number {
         const activeEvent = this.activeEvents.get(eventId);
         if (!activeEvent) return 0;
         
@@ -474,7 +478,7 @@ export class EventStageManager {
     /**
      * 通知設定を更新
      */
-    updateNotificationSettings(settings) {
+    updateNotificationSettings(settings: any): void {
         this.notificationSystem.updateSettings(settings);
     }
     
@@ -492,7 +496,7 @@ export class EventStageManager {
         try {
             // 期限切れイベントをチェック
             const currentTime = Date.now();
-            const expiredEvents = [];
+            const expiredEvents: string[] = [];
             
             this.activeEvents.forEach((event, eventId) => {
                 if (currentTime > event.endTime) {
@@ -502,8 +506,8 @@ export class EventStageManager {
             
             // 期限切れイベントを終了
             expiredEvents.forEach(eventId => {
-                const event = this.activeEvents.get(eventId);
-                this.completeEvent(eventId, { score: 0, completed: false });
+                // const event = this.activeEvents.get(eventId); // 現在は未使用
+                this.completeEvent(eventId, { score: 0, completed: false } as any);
             });
             
         } catch (error) {
