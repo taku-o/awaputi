@@ -291,7 +291,7 @@ describe('Configuration System Integration Tests', () => {
             expect(duration).toBeLessThan(500);
             
             // アクセス統計が記録されていることを確認
-            const accessStats: AccessStats = configManager.accessStats;
+            const accessStats: AccessStats = configManager.getAccessStats();
             expect(accessStats.totalAccesses).toBeGreaterThan(0);
         });
 
@@ -332,7 +332,7 @@ describe('Configuration System Integration Tests', () => {
             }
             
             // キャッシュヒットが発生していることを確認
-            const accessStats: AccessStats = configManager.accessStats;
+            const accessStats: AccessStats = configManager.getAccessStats();
             expect(accessStats.cacheHits).toBeGreaterThan(0);
         });
 
@@ -464,7 +464,7 @@ describe('Configuration System Integration Tests', () => {
             }
             
             // アクセス統計が記録されることを確認
-            const accessStats: AccessStats = configManager.accessStats;
+            const accessStats: AccessStats = configManager.getAccessStats();
             expect(accessStats.totalAccesses).toBeGreaterThan(0);
             expect(accessStats.frequentKeys.size).toBeGreaterThan(0);
         });
@@ -538,7 +538,7 @@ describe('Configuration System Integration Tests', () => {
             }
             
             // システムが安定していることを確認
-            const accessStats: AccessStats = configManager.accessStats;
+            const accessStats: AccessStats = configManager.getAccessStats();
             expect(accessStats.totalAccesses).toBeGreaterThan(0);
             
             const cacheStats: CacheStats = calculationEngine.getCacheStats();

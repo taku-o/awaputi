@@ -469,12 +469,6 @@ class ConfigurationManager {
         this.validationRules.set(key, rule);
     }
     
-    /**
-     * アクセス統計を取得
-     */
-    getAccessStats(): AccessStats {
-        return { ...this.accessStats };
-    }
     
     // Private helper methods
     
@@ -541,7 +535,7 @@ class ConfigurationManager {
         
         watchers.forEach(callback => {
             try {
-                callback(newValue, oldValue, typeof key === 'string' ? key : String(key));
+                callback(typeof key === 'string' ? key : String(key), newValue, oldValue);
             } catch (error) {
                 this._handleError(error, 'watcher', { key, callback });
             }
@@ -667,6 +661,20 @@ class ConfigurationManager {
      */
     reset(): void {
         this.clear();
+    }
+
+    /**
+     * アクセス統計を取得（テスト用）
+     */
+    getAccessStats(): AccessStats {
+        return this.accessStats;
+    }
+
+    /**
+     * 設定データを取得（テスト用）
+     */
+    getConfigurations(): Map<string, Map<string, ConfigurationValue>> {
+        return this.configurations;
     }
 }
 

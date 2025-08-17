@@ -11,10 +11,10 @@ describe('ConfigurationManager', () => {
             const configManager = new ConfigurationManager();
             
             // 基本カテゴリの存在確認
-            expect(configManager.configurations.has('game')).toBe(true);
-            expect(configManager.configurations.has('audio')).toBe(true);
-            expect(configManager.configurations.has('effects')).toBe(true);
-            expect(configManager.configurations.has('performance')).toBe(true);
+            expect(configManager.getConfigurations().has('game')).toBe(true);
+            expect(configManager.getConfigurations().has('audio')).toBe(true);
+            expect(configManager.getConfigurations().has('effects')).toBe(true);
+            expect(configManager.getConfigurations().has('performance')).toBe(true);
         });
         
         test('設定値の設定と取得が正しく動作する', () => {
