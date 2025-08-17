@@ -3,11 +3,71 @@ import { getErrorHandler } from '../../utils/ErrorHandler.js';
 /**
  * 翻訳ローダー - 非同期翻訳ファイル読み込みシステム
  */
+
+// 型定義
+export interface TranslationMetadata {
+    language: string;
+    version?: string;
+    completeness?: number;
+    author?: string;
+    lastUpdated?: string;
+    description?: string;
+}
+
+export interface TranslationFileData {
+    meta?: TranslationMetadata;
+    translations?: Record<string, any>;
+    [key: string]: any;
+}
+
+export interface CachedTranslation {
+    data: TranslationFileData;
+    timestamp: number;
+}
+
+export interface PreloadResult {
+    loaded: string[];
+    failed: FailedLoad[];
+}
+
+export interface FailedLoad {
+    language: string;
+    error: Error;
+}
+
+export interface LoaderStats {
+    loadedLanguages: string[];
+    translationFiles: string[];
+    cache: CacheStats;
+    baseURL: string;
+    pendingLoads: string[];
+}
+
+export interface CacheStats {
+    entries: number;
+    byLanguage: Record<string, number>;
+}
+
+export interface FlattenedTranslations {
+    [key: string]: any;
+}
+
+export type TranslationValue = string | number | boolean | string[] | Record<string, any>;
+
 export class TranslationLoader {
+    // データストレージ
+    private loadedTranslations: Map<string, FlattenedTranslations>;
+    private loadingPromises: Map<string, Promise<FlattenedTranslations>>;
+    private cache: Map<string, CachedTranslation>;
+    
+    // 設定
+    private baseURL: string;
+    private translationFiles: string[];
+
     constructor() {
-        this.loadedTranslations = new Map();
-        this.loadingPromises = new Map();
-        this.cache = new Map();
+        this.loadedTranslations = new Map<string, FlattenedTranslations>();
+        this.loadingPromises = new Map<string, Promise<FlattenedTranslations>>();
+        this.cache = new Map<string, CachedTranslation>();
         this.baseURL = '/assets/i18n/';
         
         // ロード対象ファイル
@@ -25,10 +85,10 @@ export class TranslationLoader {
     /**
      * 言語の翻訳データを読み込み
      */
-    async loadLanguage(language) {
+    async loadLanguage(language: string): Promise<FlattenedTranslations> {
         try {
             if (this.loadingPromises.has(language)) {
-                return this.loadingPromises.get(language);
+                return this.loadingPromises.get(language)!;
             }
             
             const promise = this._loadLanguageFiles(language);
@@ -43,7 +103,7 @@ export class TranslationLoader {
                 this.loadingPromises.delete(language);
             }
         } catch (error) {
-            getErrorHandler().handleError(error, 'TRANSLATION_LOADER_ERROR', {
+            getErrorHandler().handleError(error as Error, 'TRANSLATION_LOADER_ERROR', {
                 operation: 'loadLanguage',
                 language: language
             });
@@ -51,18 +111,16 @@ export class TranslationLoader {
         }
     }
 
-
-    
     /**
      * 複数言語を並列でプリロード
      */
-    async preloadLanguages(languages) {
+    async preloadLanguages(languages: string[]): Promise<PreloadResult> {
         try {
             const promises = languages.map(lang => this.loadLanguage(lang));
             const results = await Promise.allSettled(promises);
             
-            const loaded = [];
-            const failed = [];
+            const loaded: string[] = [];
+            const failed: FailedLoad[] = [];
             
             results.forEach((result, index) => {
                 if (result.status === 'fulfilled') {
@@ -70,7 +128,7 @@ export class TranslationLoader {
                 } else {
                     failed.push({
                         language: languages[index],
-                        error: result.reason
+                        error: result.reason as Error
                     });
                 }
             });
@@ -78,20 +136,26 @@ export class TranslationLoader {
             console.log(`Preloaded languages - Success: ${loaded.length}, Failed: ${failed.length}`);
             return { loaded, failed };
         } catch (error) {
-            getErrorHandler().handleError(error, 'TRANSLATION_LOADER_ERROR', {
+            getErrorHandler().handleError(error as Error, 'TRANSLATION_LOADER_ERROR', {
                 operation: 'preloadLanguages',
                 languages: languages
             });
-            return { loaded: [], failed: languages.map(lang => ({ language: lang, error })) };
+            return { 
+                loaded: [], 
+                failed: languages.map(lang => ({ 
+                    language: lang, 
+                    error: error as Error 
+                })) 
+            };
         }
     }
     
     /**
      * 言語ファイルを実際に読み込み
      */
-    async _loadLanguageFiles(language) {
-        const translations = {};
-        const loadPromises = [];
+    private async _loadLanguageFiles(language: string): Promise<FlattenedTranslations> {
+        const translations: Record<string, any> = {};
+        const loadPromises: Promise<void>[] = [];
         
         for (const file of this.translationFiles) {
             const promise = this._loadTranslationFile(language, file)
@@ -105,7 +169,6 @@ export class TranslationLoader {
                         for (const [key, value] of Object.entries(translationData)) {
                             translations[key] = value;
                         }
-                        
                     }
                 })
                 .catch(error => {
@@ -128,14 +191,14 @@ export class TranslationLoader {
     /**
      * 単一の翻訳ファイルを読み込み
      */
-    async _loadTranslationFile(language, filename) {
+    private async _loadTranslationFile(language: string, filename: string): Promise<TranslationFileData | null> {
         try {
             const url = `${this.baseURL}${language}/${filename}.json`;
             
             // キャッシュチェック
             const cacheKey = `${language}:${filename}`;
             if (this.cache.has(cacheKey)) {
-                const cached = this.cache.get(cacheKey);
+                const cached = this.cache.get(cacheKey)!;
                 if (Date.now() - cached.timestamp < 300000) { // 5分間キャッシュ
                     return cached.data;
                 }
@@ -151,7 +214,7 @@ export class TranslationLoader {
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
             
-            const data = await response.json();
+            const data: TranslationFileData = await response.json();
             
             // メタデータの検証
             if (data.meta) {
@@ -174,7 +237,7 @@ export class TranslationLoader {
     /**
      * 翻訳データのメタデータを検証
      */
-    _validateMetadata(meta, language, filename) {
+    private _validateMetadata(meta: TranslationMetadata, language: string, filename: string): void {
         if (meta.language !== language) {
             console.warn(`Language mismatch in ${filename}: expected ${language}, got ${meta.language}`);
         }
@@ -191,8 +254,8 @@ export class TranslationLoader {
     /**
      * 翻訳データをフラット化
      */
-    _flattenTranslations(categorizedTranslations) {
-        const flattened = {};
+    private _flattenTranslations(categorizedTranslations: Record<string, any>): FlattenedTranslations {
+        const flattened: FlattenedTranslations = {};
         
         for (const [category, translations] of Object.entries(categorizedTranslations)) {
             if (translations && typeof translations === 'object') {
@@ -207,7 +270,7 @@ export class TranslationLoader {
     /**
      * ネストされたオブジェクトを再帰的にフラット化
      */
-    _flattenNestedObject(obj, prefix, result) {
+    private _flattenNestedObject(obj: Record<string, any>, prefix: string, result: FlattenedTranslations): void {
         for (const [key, value] of Object.entries(obj)) {
             const newKey = prefix ? `${prefix}.${key}` : key;
             
@@ -216,7 +279,7 @@ export class TranslationLoader {
                 this._flattenNestedObject(value, newKey, result);
             } else {
                 // プリミティブ値または配列の場合はそのまま設定
-                result[newKey] = value;
+                result[newKey] = value as TranslationValue;
             }
         }
     }
@@ -224,7 +287,7 @@ export class TranslationLoader {
     /**
      * 特定のカテゴリの翻訳を読み込み
      */
-    async loadCategory(language, category) {
+    async loadCategory(language: string, category: string): Promise<Record<string, any>> {
         try {
             if (!this.translationFiles.includes(category)) {
                 throw new Error(`Unknown category: ${category}`);
@@ -233,7 +296,7 @@ export class TranslationLoader {
             const data = await this._loadTranslationFile(language, category);
             return data ? (data.translations || data) : {};
         } catch (error) {
-            getErrorHandler().handleError(error, 'TRANSLATION_LOADER_ERROR', {
+            getErrorHandler().handleError(error as Error, 'TRANSLATION_LOADER_ERROR', {
                 operation: 'loadCategory',
                 language: language,
                 category: category
@@ -245,28 +308,28 @@ export class TranslationLoader {
     /**
      * 読み込み済み言語を取得
      */
-    getLoadedLanguages() {
+    getLoadedLanguages(): string[] {
         return Array.from(this.loadedTranslations.keys());
     }
     
     /**
      * 特定言語の翻訳データを取得
      */
-    getTranslations(language) {
+    getTranslations(language: string): FlattenedTranslations {
         return this.loadedTranslations.get(language) || {};
     }
     
     /**
      * 翻訳データが読み込み済みかチェック
      */
-    isLanguageLoaded(language) {
+    isLanguageLoaded(language: string): boolean {
         return this.loadedTranslations.has(language);
     }
     
     /**
      * キャッシュをクリア
      */
-    clearCache() {
+    clearCache(): void {
         this.cache.clear();
         console.log('Translation loader cache cleared');
     }
@@ -274,11 +337,11 @@ export class TranslationLoader {
     /**
      * 特定言語の翻訳データを削除
      */
-    unloadLanguage(language) {
+    unloadLanguage(language: string): boolean {
         const removed = this.loadedTranslations.delete(language);
         
         // キャッシュからも削除
-        const cacheKeysToDelete = [];
+        const cacheKeysToDelete: string[] = [];
         for (const key of this.cache.keys()) {
             if (key.startsWith(`${language}:`)) {
                 cacheKeysToDelete.push(key);
@@ -297,7 +360,7 @@ export class TranslationLoader {
     /**
      * ベース URLを設定
      */
-    setBaseURL(url) {
+    setBaseURL(url: string): void {
         this.baseURL = url.endsWith('/') ? url : url + '/';
         console.log(`Translation base URL set to: ${this.baseURL}`);
     }
@@ -305,7 +368,7 @@ export class TranslationLoader {
     /**
      * 翻訳ファイルリストを設定
      */
-    setTranslationFiles(files) {
+    setTranslationFiles(files: string[]): void {
         if (Array.isArray(files)) {
             this.translationFiles = [...files];
             console.log(`Translation files set to: ${this.translationFiles.join(', ')}`);
@@ -315,7 +378,7 @@ export class TranslationLoader {
     /**
      * 翻訳ファイルを追加
      */
-    addTranslationFile(filename) {
+    addTranslationFile(filename: string): void {
         if (!this.translationFiles.includes(filename)) {
             this.translationFiles.push(filename);
             console.log(`Added translation file: ${filename}`);
@@ -325,7 +388,7 @@ export class TranslationLoader {
     /**
      * 翻訳ファイルを削除
      */
-    removeTranslationFile(filename) {
+    removeTranslationFile(filename: string): boolean {
         const index = this.translationFiles.indexOf(filename);
         if (index !== -1) {
             this.translationFiles.splice(index, 1);
@@ -338,8 +401,8 @@ export class TranslationLoader {
     /**
      * ローダーの統計情報を取得
      */
-    getStats() {
-        const cacheStats = {
+    getStats(): LoaderStats {
+        const cacheStats: CacheStats = {
             entries: this.cache.size,
             byLanguage: {}
         };
@@ -361,7 +424,7 @@ export class TranslationLoader {
     /**
      * リモート翻訳ファイルの存在確認
      */
-    async checkFileExists(language, filename) {
+    async checkFileExists(language: string, filename: string): Promise<boolean> {
         try {
             const url = `${this.baseURL}${language}/${filename}.json`;
             const response = await fetch(url, { method: 'HEAD' });
@@ -374,8 +437,8 @@ export class TranslationLoader {
     /**
      * 言語の利用可能ファイルを取得
      */
-    async getAvailableFiles(language) {
-        const available = [];
+    async getAvailableFiles(language: string): Promise<string[]> {
+        const available: string[] = [];
         const checkPromises = this.translationFiles.map(async (file) => {
             const exists = await this.checkFileExists(language, file);
             if (exists) {
@@ -388,9 +451,66 @@ export class TranslationLoader {
     }
     
     /**
+     * 特定の翻訳キーが存在するかチェック
+     */
+    hasTranslationKey(language: string, key: string): boolean {
+        const translations = this.getTranslations(language);
+        return key in translations;
+    }
+    
+    /**
+     * 特定の翻訳値を取得
+     */
+    getTranslationValue(language: string, key: string): TranslationValue | undefined {
+        const translations = this.getTranslations(language);
+        return translations[key];
+    }
+    
+    /**
+     * 翻訳ファイルのリストを取得
+     */
+    getTranslationFiles(): string[] {
+        return [...this.translationFiles];
+    }
+    
+    /**
+     * ベースURLを取得
+     */
+    getBaseURL(): string {
+        return this.baseURL;
+    }
+    
+    /**
+     * 現在読み込み中の言語を取得
+     */
+    getPendingLoads(): string[] {
+        return Array.from(this.loadingPromises.keys());
+    }
+    
+    /**
+     * キャッシュサイズを取得
+     */
+    getCacheSize(): number {
+        return this.cache.size;
+    }
+    
+    /**
+     * 特定言語のキャッシュエントリ数を取得
+     */
+    getLanguageCacheSize(language: string): number {
+        let count = 0;
+        for (const key of this.cache.keys()) {
+            if (key.startsWith(`${language}:`)) {
+                count++;
+            }
+        }
+        return count;
+    }
+    
+    /**
      * クリーンアップ
      */
-    cleanup() {
+    cleanup(): void {
         this.loadedTranslations.clear();
         this.loadingPromises.clear();
         this.clearCache();
