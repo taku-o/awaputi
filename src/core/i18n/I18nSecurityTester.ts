@@ -7,8 +7,125 @@
 
 import { getErrorHandler } from '../../utils/ErrorHandler.js';
 
+// 型定義
+export interface SecurityTestConfig {
+    enabled: boolean;
+    strictMode: boolean;
+    timeoutMs: number;
+    maxTestCases: number;
+    reportDetails: boolean;
+}
+
+export interface TestCases {
+    xssPayloads: string[];
+    injectionPayloads: string[];
+    parameterInjection: string[];
+    longStrings: string[];
+    unicodePayloads: string[];
+}
+
+export interface TestResults {
+    totalTests: number;
+    passedTests: number;
+    failedTests: number;
+    vulnerabilities: SecurityVulnerability[];
+    startTime: number | null;
+    endTime: number | null;
+    duration: number;
+}
+
+export interface SecurityVulnerability {
+    type: string;
+    timestamp: number;
+    severity: VulnerabilitySeverity;
+    details: VulnerabilityDetails;
+}
+
+export interface VulnerabilityDetails {
+    input?: any;
+    reason?: string;
+    severity?: VulnerabilitySeverity;
+    error?: string;
+    suite?: string;
+}
+
+export interface TestValidationResult {
+    passed: boolean;
+    reason: string;
+    severity?: VulnerabilitySeverity;
+}
+
+export interface SecurityTestReport {
+    summary: TestSummary;
+    vulnerabilities: VulnerabilityReport;
+    recommendations: SecurityRecommendation[];
+    timestamp: number;
+}
+
+export interface TestSummary {
+    totalTests: number;
+    passedTests: number;
+    failedTests: number;
+    successRate: number;
+    duration: number;
+}
+
+export interface VulnerabilityReport {
+    total: number;
+    high: number;
+    medium: number;
+    low: number;
+    details: SecurityVulnerability[];
+}
+
+export interface SecurityRecommendation {
+    priority: RecommendationPriority;
+    message: string;
+    action: string;
+}
+
+export interface I18nSecurityManager {
+    sanitizeString(input: string): string;
+    validateTranslationData(translations: Record<string, any>, source: string): ValidationResult;
+    generateSafeTranslation(template: string, parameters: Record<string, any>): string;
+    sanitizeTranslationParameters(parameters: Record<string, any>): Record<string, any>;
+    sanitizeParameterValue(value: any): string;
+}
+
+export interface ValidationResult {
+    isValid: boolean;
+    violations: ValidationViolation[];
+}
+
+export interface ValidationViolation {
+    severity: VulnerabilitySeverity;
+    type: string;
+    message: string;
+}
+
+export interface CSPMetaElement {
+    getAttribute(name: string): string | null;
+}
+
+export type VulnerabilitySeverity = 'low' | 'medium' | 'high' | 'critical';
+export type RecommendationPriority = 'info' | 'low' | 'medium' | 'high' | 'critical';
+export type TestType = 'xss_test' | 'injection_test' | 'parameter_key_validation' | 'parameter_injection' | 'content_validation' | 'long_string_test' | 'unicode_test' | 'csp_presence' | 'csp_configuration' | 'sanitization_test' | 'test_execution_error';
+export type TestValidator = (input: any) => TestValidationResult;
+
 export class I18nSecurityTester {
-    constructor(securityManager) {
+    // セキュリティマネージャー
+    private securityManager: I18nSecurityManager;
+    
+    // テスト設定
+    private testConfig: SecurityTestConfig;
+    
+    // テストケース
+    private testCases: TestCases;
+    
+    // テスト結果
+    private testResults: TestResults;
+
+    constructor(securityManager: I18nSecurityManager) {
         this.securityManager = securityManager;
         
         // テスト設定
@@ -137,7 +254,7 @@ export class I18nSecurityTester {
     /**
      * 包括的セキュリティテストの実行
      */
-    async runComprehensiveSecurityTest() {
+    async runComprehensiveSecurityTest(): Promise<SecurityTestReport> {
         console.log('Starting comprehensive security test...');
         
         this.testResults = {
@@ -150,7 +267,7 @@ export class I18nSecurityTester {
             duration: 0
         };
         
-        const testSuites = [
+        const testSuites: (() => Promise<void>)[] = [
             () => this.testXSSVulnerabilities(),
             () => this.testInjectionVulnerabilities(),
             () => this.testParameterValidation(),
@@ -167,14 +284,14 @@ export class I18nSecurityTester {
             } catch (error) {
                 console.error('Test suite failed:', error);
                 this.recordVulnerability('test_execution_error', {
-                    error: error.message,
+                    error: (error as Error).message,
                     suite: testSuite.name
                 });
             }
         }
         
         this.testResults.endTime = Date.now();
-        this.testResults.duration = this.testResults.endTime - this.testResults.startTime;
+        this.testResults.duration = this.testResults.endTime - this.testResults.startTime!;
         
         console.log('Comprehensive security test completed');
         return this.generateTestReport();
@@ -183,7 +300,7 @@ export class I18nSecurityTester {
     /**
      * XSS脆弱性テスト
      */
-    async testXSSVulnerabilities() {
+    private async testXSSVulnerabilities(): Promise<void> {
         console.log('Testing XSS vulnerabilities...');
         
         for (const payload of this.testCases.xssPayloads) {
@@ -198,7 +315,7 @@ export class I18nSecurityTester {
     /**
      * インジェクション脆弱性テスト
      */
-    async testInjectionVulnerabilities() {
+    private async testInjectionVulnerabilities(): Promise<void> {
         console.log('Testing injection vulnerabilities...');
         
         for (const payload of this.testCases.injectionPayloads) {
@@ -213,7 +330,7 @@ export class I18nSecurityTester {
     /**
      * パラメータ検証テスト
      */
-    async testParameterValidation() {
+    private async testParameterValidation(): Promise<void> {
         console.log('Testing parameter validation...');
         
         // 無効なパラメータキーのテスト
@@ -245,10 +362,10 @@ export class I18nSecurityTester {
     /**
      * コンテンツ検証テスト
      */
-    async testContentValidation() {
+    private async testContentValidation(): Promise<void> {
         console.log('Testing content validation...');
         
-        const maliciousTranslations = {
+        const maliciousTranslations: Record<string, any> = {
             'test.xss': '<script>alert("XSS")</script>',
             'test.injection': '{{constructor.constructor("alert(1)")()}}',
             'test.html': '<iframe src="javascript:alert(1)"></iframe>',
@@ -270,7 +387,7 @@ export class I18nSecurityTester {
     /**
      * 長い文字列処理テスト
      */
-    async testLongStringHandling() {
+    private async testLongStringHandling(): Promise<void> {
         console.log('Testing long string handling...');
         
         for (const longString of this.testCases.longStrings) {
@@ -285,7 +402,7 @@ export class I18nSecurityTester {
     /**
      * Unicode処理テスト
      */
-    async testUnicodeHandling() {
+    private async testUnicodeHandling(): Promise<void> {
         console.log('Testing Unicode handling...');
         
         for (const unicodePayload of this.testCases.unicodePayloads) {
@@ -300,11 +417,11 @@ export class I18nSecurityTester {
     /**
      * CSP効果テスト
      */
-    async testCSPEffectiveness() {
+    private async testCSPEffectiveness(): Promise<void> {
         console.log('Testing CSP effectiveness...');
         
         // CSP設定の確認
-        const cspMeta = typeof document !== 'undefined' ? 
+        const cspMeta: CSPMetaElement | null = typeof document !== 'undefined' ? 
             document.querySelector('meta[http-equiv="Content-Security-Policy"]') : null;
         
         await this.runSingleTest(
@@ -318,7 +435,7 @@ export class I18nSecurityTester {
             await this.runSingleTest(
                 'csp_configuration',
                 cspContent,
-                () => this.validateCSPConfiguration(cspContent)
+                () => this.validateCSPConfiguration(cspContent!)
             );
         }
     }
@@ -326,7 +443,7 @@ export class I18nSecurityTester {
     /**
      * サニタイゼーション堅牢性テスト
      */
-    async testSanitizationRobustness() {
+    private async testSanitizationRobustness(): Promise<void> {
         console.log('Testing sanitization robustness...');
         
         const testCases = [
@@ -349,7 +466,7 @@ export class I18nSecurityTester {
     /**
      * 単一テストの実行
      */
-    async runSingleTest(testType, input, validator) {
+    private async runSingleTest(testType: TestType, input: any, validator: TestValidator): Promise<void> {
         this.testResults.totalTests++;
         
         try {
@@ -370,7 +487,7 @@ export class I18nSecurityTester {
             this.testResults.failedTests++;
             this.recordVulnerability(testType, {
                 input: input,
-                error: error.message,
+                error: (error as Error).message,
                 severity: 'high'
             });
         }
@@ -379,7 +496,7 @@ export class I18nSecurityTester {
     /**
      * XSS保護の検証
      */
-    validateXSSProtection(result, payload) {
+    private validateXSSProtection(result: any, payload: string): TestValidationResult {
         const sanitized = this.securityManager.sanitizeString(payload);
         
         // 危険なタグや属性が残っていないか確認
@@ -407,7 +524,7 @@ export class I18nSecurityTester {
     /**
      * インジェクション保護の検証
      */
-    validateInjectionProtection(result, payload) {
+    private validateInjectionProtection(result: any, payload: string): TestValidationResult {
         const safeTranslation = this.securityManager.generateSafeTranslation(
             'Test: {{value}}', 
             { value: payload }
@@ -437,7 +554,7 @@ export class I18nSecurityTester {
     /**
      * パラメータキー拒否の検証
      */
-    validateParameterKeyRejection(result, key) {
+    private validateParameterKeyRejection(result: any, key: string): TestValidationResult {
         const sanitized = this.securityManager.sanitizeTranslationParameters({
             [key]: 'test_value'
         });
@@ -455,7 +572,7 @@ export class I18nSecurityTester {
     /**
      * パラメータインジェクション保護の検証
      */
-    validateParameterInjectionProtection(result, payload) {
+    private validateParameterInjectionProtection(result: any, payload: string): TestValidationResult {
         const sanitized = this.securityManager.sanitizeParameterValue(payload);
         
         // パストラバーサルやシステムコマンドの確認
@@ -485,7 +602,7 @@ export class I18nSecurityTester {
     /**
      * コンテンツ検証結果の検証
      */
-    validateContentValidationResult(validationResult) {
+    private validateContentValidationResult(validationResult: ValidationResult): TestValidationResult {
         const hasHighSeverityViolations = validationResult.violations.some(
             v => v.severity === 'high'
         );
@@ -502,7 +619,7 @@ export class I18nSecurityTester {
     /**
      * 長い文字列処理の検証
      */
-    validateLongStringHandling(result, longString) {
+    private validateLongStringHandling(result: any, longString: string): TestValidationResult {
         const sanitized = this.securityManager.sanitizeParameterValue(longString);
         
         // 適切に切り詰められているか確認
@@ -525,7 +642,7 @@ export class I18nSecurityTester {
     /**
      * Unicode処理の検証
      */
-    validateUnicodeHandling(result, unicodePayload) {
+    private validateUnicodeHandling(result: any, unicodePayload: string): TestValidationResult {
         const sanitized = this.securityManager.sanitizeString(unicodePayload);
         
         // Unicode文字がHTMLエンティティに変換されているか確認
@@ -544,7 +661,7 @@ export class I18nSecurityTester {
     /**
      * CSP存在の検証
      */
-    validateCSPPresence(cspMeta) {
+    private validateCSPPresence(cspMeta: CSPMetaElement | null): TestValidationResult {
         return {
             passed: cspMeta !== null,
             reason: !cspMeta ? 
@@ -556,7 +673,7 @@ export class I18nSecurityTester {
     /**
      * CSP設定の検証
      */
-    validateCSPConfiguration(cspContent) {
+    private validateCSPConfiguration(cspContent: string): TestValidationResult {
         const requiredDirectives = [
             'default-src',
             'script-src',
@@ -584,7 +701,7 @@ export class I18nSecurityTester {
     /**
      * サニタイゼーションの検証
      */
-    validateSanitization(sanitized, original) {
+    private validateSanitization(sanitized: string, original: string): TestValidationResult {
         // 危険な文字が適切にエスケープされているか確認
         const dangerousChars = ['<', '>', '"', "'", '&', '/', '`', '='];
         const properlyEscaped = dangerousChars.every(char => {
@@ -607,7 +724,7 @@ export class I18nSecurityTester {
     /**
      * 脆弱性の記録
      */
-    recordVulnerability(type, details) {
+    private recordVulnerability(type: TestType, details: VulnerabilityDetails): void {
         this.testResults.vulnerabilities.push({
             type: type,
             timestamp: Date.now(),
@@ -621,8 +738,8 @@ export class I18nSecurityTester {
     /**
      * テストレポートの生成
      */
-    generateTestReport() {
-        const report = {
+    private generateTestReport(): SecurityTestReport {
+        const report: SecurityTestReport = {
             summary: {
                 totalTests: this.testResults.totalTests,
                 passedTests: this.testResults.passedTests,
@@ -649,8 +766,8 @@ export class I18nSecurityTester {
     /**
      * セキュリティ推奨事項の生成
      */
-    generateSecurityRecommendations() {
-        const recommendations = [];
+    private generateSecurityRecommendations(): SecurityRecommendation[] {
+        const recommendations: SecurityRecommendation[] = [];
         const vulnerabilities = this.testResults.vulnerabilities;
         
         if (vulnerabilities.some(v => v.type === 'xss_test' && v.severity === 'high')) {
@@ -691,7 +808,7 @@ export class I18nSecurityTester {
     /**
      * テストレポートのログ出力
      */
-    logTestReport(report) {
+    private logTestReport(report: SecurityTestReport): void {
         console.log('='.repeat(60));
         console.log('SECURITY TEST REPORT');
         console.log('='.repeat(60));
@@ -722,14 +839,28 @@ export class I18nSecurityTester {
     /**
      * テスト設定の更新
      */
-    updateTestConfig(newConfig) {
+    updateTestConfig(newConfig: Partial<SecurityTestConfig>): void {
         Object.assign(this.testConfig, newConfig);
+    }
+    
+    /**
+     * 現在のテスト結果を取得
+     */
+    getTestResults(): TestResults {
+        return { ...this.testResults };
+    }
+    
+    /**
+     * テスト設定を取得
+     */
+    getTestConfig(): SecurityTestConfig {
+        return { ...this.testConfig };
     }
     
     /**
      * クリーンアップ
      */
-    cleanup() {
+    cleanup(): void {
         this.testResults = {
             totalTests: 0,
             passedTests: 0,
