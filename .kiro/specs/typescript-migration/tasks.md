@@ -73,12 +73,10 @@
   - シーン遷移メソッドの型安全性を確保
   - _要件: 2.1, 2.2, 4.3_
 
-- [x] 10. データ管理システムの移行
-  - src/core/内の全113個のファイルを.tsに変換完了
-  - SecurityManager, SettingsManager, SocialI18nManager等コアシステム完全型安全化
-  - データモデルの型定義インターフェースを作成完了
-  - データアクセスメソッドの型安全性を確保完了
-  - **完了**: src/core以下の全JSファイル（0個残存）
+- [ ] 10. データ管理システムの移行
+  - src/core/直下の113個のファイルを.tsに変換済み
+  - SecurityManager, SettingsManager, SocialI18nManager等コアシステム型安全化
+  - **進捗**: src/core直下（0個残存）、**残存**: サブディレクトリに150個のJSファイル
   - _要件: 2.1, 2.2, 4.1, 4.2_
 
 ## Phase 3: 管理システムのTypeScript移行
