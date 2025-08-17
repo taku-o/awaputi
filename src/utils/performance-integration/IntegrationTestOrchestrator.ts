@@ -5,8 +5,164 @@
 
 import { getErrorHandler } from '../../core/ErrorHandler.js';
 
+// Type definitions
+interface OrchestrationConfig {
+    defaultTimeout: number;
+    maxParallelTests: number;
+    retryAttempts: number;
+    errorThreshold: number;
+    testPhaseOrdering: string[];
+}
+
+interface OrchestrationMetrics {
+    totalSessions: number;
+    successfulSessions: number;
+    failedSessions: number;
+    averageTestDuration: number;
+}
+
+interface TestSession {
+    id: string;
+    options: TestSessionOptions;
+    duration?: number;
+}
+
+interface TestSessionOptions {
+    includeComponentTests?: boolean;
+    includeSystemTests?: boolean;
+    includeE2ETests?: boolean;
+    includeMobileTests?: boolean;
+    includePerformanceTargetValidation?: boolean;
+}
+
+interface TestComponents {
+    testSuiteManager: TestSuiteManager;
+    systemIntegrationTester: SystemIntegrationTester;
+    e2eValidator: E2EValidator;
+    mobileCompatibilityTester: MobileCompatibilityTester;
+    targetValidation: TargetValidation;
+}
+
+interface TestSuiteManager {
+    runComponentIntegrationTests(): Promise<TestResult>;
+}
+
+interface SystemIntegrationTester {
+    runSystemTests(): Promise<TestResult>;
+}
+
+interface E2EValidator {
+    runE2EValidation(): Promise<E2ETestResult>;
+}
+
+interface MobileCompatibilityTester {
+    runCompatibilityTests(): Promise<TestResult>;
+}
+
+interface TargetValidation {
+    validateTargets(): Promise<TestResult>;
+}
+
+interface TestResult {
+    passed: boolean;
+    tests?: Test[];
+    error?: string;
+    issues?: TestIssue[];
+}
+
+interface E2ETestResult extends TestResult {
+    performanceMetrics?: PerformanceMetrics;
+}
+
+interface Test {
+    passed: boolean;
+    [key: string]: any;
+}
+
+interface TestIssue {
+    severity: 'low' | 'medium' | 'high' | 'critical';
+    message: string;
+}
+
+interface PerformanceMetrics {
+    startup_time: number;
+    average_frame_rate: number;
+    [key: string]: any;
+}
+
+interface PhaseCoordinator {
+    name: string;
+    priority: number;
+    dependencies: string[];
+    execute: (session: TestSession, component: any) => Promise<TestResult | null>;
+    validate: (result: TestResult) => ValidationResult;
+}
+
+interface ExecutionPhase extends PhaseCoordinator {
+    id: string;
+}
+
+interface ValidationResult {
+    isValid: boolean;
+    issues: ValidationIssue[];
+    recommendations: ValidationRecommendation[];
+}
+
+interface ValidationIssue {
+    severity: 'low' | 'medium' | 'high' | 'critical';
+    message: string;
+}
+
+interface ValidationRecommendation {
+    type: string;
+    message: string;
+    suggestion?: string;
+}
+
+interface PhaseResult extends TestResult {
+    phaseDuration: number;
+    validation: ValidationResult;
+}
+
+interface TestResults {
+    [phaseId: string]: PhaseResult;
+}
+
+interface OrchestrationStats {
+    totalSessions: number;
+    successfulSessions: number;
+    failedSessions: number;
+    averageTestDuration: number;
+    successRate: string;
+    activeSessions: number;
+    availablePhases: string[];
+    orchestrationConfig: OrchestrationConfig;
+}
+
+interface ExecutionRecommendation {
+    type: string;
+    priority?: 'low' | 'medium' | 'high' | 'critical';
+    message: string;
+    actions?: string[];
+    phase?: string;
+    suggestion?: string;
+}
+
+interface ErrorHandler {
+    handleError(error: Error, context: any): void;
+}
+
 export class IntegrationTestOrchestrator {
-    constructor(performanceIntegrationTesting) {
+    private performanceIntegrationTesting: any;
+    private errorHandler: ErrorHandler;
+    private orchestrationConfig: OrchestrationConfig;
+    private testSessions: Map<string, TestSession>;
+    private activeTests: Set<string>;
+    private testQueue: any[];
+    private orchestrationMetrics: OrchestrationMetrics;
+    private phaseCoordinators: Map<string, PhaseCoordinator>;
+
+    constructor(performanceIntegrationTesting: any) {
         this.performanceIntegrationTesting = performanceIntegrationTesting;
         this.errorHandler = getErrorHandler();
         
@@ -46,18 +202,18 @@ export class IntegrationTestOrchestrator {
     /**
      * Initialize test phase coordinators
      */
-    initializePhaseCoordinators() {
+    private initializePhaseCoordinators(): void {
         // Component integration test coordinator
         this.phaseCoordinators.set('componentTests', {
             name: 'Component Integration Tests',
             priority: 1,
             dependencies: [],
-            execute: async (session, testSuiteManager) => {
+            execute: async (session: TestSession, testSuiteManager: TestSuiteManager): Promise<TestResult | null> => {
                 if (!session.options.includeComponentTests) return null;
                 console.log('Phase 1: Running component integration tests...');
                 return await testSuiteManager.runComponentIntegrationTests();
             },
-            validate: (result) => this.validateComponentTestResults(result)
+            validate: (result: TestResult): ValidationResult => this.validateComponentTestResults(result)
         });
         
         // System integration test coordinator
@@ -65,12 +221,12 @@ export class IntegrationTestOrchestrator {
             name: 'System Integration Tests',
             priority: 2,
             dependencies: ['componentTests'],
-            execute: async (session, systemIntegrationTester) => {
+            execute: async (session: TestSession, systemIntegrationTester: SystemIntegrationTester): Promise<TestResult | null> => {
                 if (!session.options.includeSystemTests) return null;
                 console.log('Phase 2: Running system integration tests...');
                 return await systemIntegrationTester.runSystemTests();
             },
-            validate: (result) => this.validateSystemTestResults(result)
+            validate: (result: TestResult): ValidationResult => this.validateSystemTestResults(result)
         });
         
         // E2E performance test coordinator
@@ -78,12 +234,12 @@ export class IntegrationTestOrchestrator {
             name: 'E2E Performance Tests',
             priority: 3,
             dependencies: ['systemTests'],
-            execute: async (session, e2eValidator) => {
+            execute: async (session: TestSession, e2eValidator: E2EValidator): Promise<TestResult | null> => {
                 if (!session.options.includeE2ETests) return null;
                 console.log('Phase 3: Running E2E performance tests...');
                 return await e2eValidator.runE2EValidation();
             },
-            validate: (result) => this.validateE2ETestResults(result)
+            validate: (result: TestResult): ValidationResult => this.validateE2ETestResults(result)
         });
         
         // Mobile compatibility test coordinator
@@ -91,12 +247,12 @@ export class IntegrationTestOrchestrator {
             name: 'Mobile Compatibility Tests',
             priority: 4,
             dependencies: [],
-            execute: async (session, mobileCompatibilityTester) => {
+            execute: async (session: TestSession, mobileCompatibilityTester: MobileCompatibilityTester): Promise<TestResult | null> => {
                 if (!session.options.includeMobileTests) return null;
                 console.log('Phase 4: Running mobile compatibility tests...');
                 return await mobileCompatibilityTester.runCompatibilityTests();
             },
-            validate: (result) => this.validateMobileTestResults(result)
+            validate: (result: TestResult): ValidationResult => this.validateMobileTestResults(result)
         });
         
         // Performance target validation coordinator
@@ -104,22 +260,19 @@ export class IntegrationTestOrchestrator {
             name: 'Performance Target Validation',
             priority: 5,
             dependencies: ['e2eTests'],
-            execute: async (session, targetValidation) => {
+            execute: async (session: TestSession, targetValidation: TargetValidation): Promise<TestResult | null> => {
                 if (!session.options.includePerformanceTargetValidation) return null;
                 console.log('Phase 5: Running performance target validation...');
                 return await targetValidation.validateTargets();
             },
-            validate: (result) => this.validateTargetValidationResults(result)
+            validate: (result: TestResult): ValidationResult => this.validateTargetValidationResults(result)
         });
     }
     
     /**
      * Execute comprehensive integration test phases
-     * @param {object} testSession - Test session configuration
-     * @param {object} testComponents - Test component instances
-     * @returns {object} Test execution results
      */
-    async executeTestPhases(testSession, testComponents) {
+    async executeTestPhases(testSession: TestSession, testComponents: TestComponents): Promise<TestResults> {
         const {
             testSuiteManager,
             systemIntegrationTester,
@@ -128,7 +281,7 @@ export class IntegrationTestOrchestrator {
             targetValidation
         } = testComponents;
         
-        const results = {};
+        const results: TestResults = {};
         const executionPlan = this.createExecutionPlan(testSession.options);
         
         try {
@@ -153,7 +306,7 @@ export class IntegrationTestOrchestrator {
                     }
                     
                     // Execute phase
-                    let phaseResult = null;
+                    let phaseResult: TestResult | null = null;
                     switch (phase.id) {
                         case 'componentTests':
                             phaseResult = await phase.execute(testSession, testSuiteManager);
@@ -200,12 +353,20 @@ export class IntegrationTestOrchestrator {
                     
                     results[phase.id] = {
                         passed: false,
-                        error: error.message,
+                        error: (error as Error).message,
                         phaseDuration: performance.now() - phaseStart,
                         issues: [{
                             severity: 'critical',
-                            message: `Phase execution failed: ${error.message}`
-                        }]
+                            message: `Phase execution failed: ${(error as Error).message}`
+                        }],
+                        validation: {
+                            isValid: false,
+                            issues: [{
+                                severity: 'critical',
+                                message: `Phase execution failed: ${(error as Error).message}`
+                            }],
+                            recommendations: []
+                        }
                     };
                     
                     // Check if we should continue after this failure
@@ -220,7 +381,7 @@ export class IntegrationTestOrchestrator {
             this.updateOrchestrationMetrics(testSession, results);
             
         } catch (error) {
-            this.errorHandler.handleError(error, {
+            this.errorHandler.handleError(error as Error, {
                 context: 'IntegrationTestOrchestrator.executeTestPhases',
                 sessionId: testSession.id
             });
@@ -235,11 +396,9 @@ export class IntegrationTestOrchestrator {
     
     /**
      * Create execution plan based on options
-     * @param {object} options - Test execution options
-     * @returns {Array} Ordered execution plan
      */
-    createExecutionPlan(options) {
-        const enabledPhases = [];
+    private createExecutionPlan(options: TestSessionOptions): ExecutionPhase[] {
+        const enabledPhases: ExecutionPhase[] = [];
         
         for (const [phaseId, coordinator] of this.phaseCoordinators) {
             // Check if phase is enabled in options
@@ -261,12 +420,9 @@ export class IntegrationTestOrchestrator {
     
     /**
      * Check if a phase is enabled in options
-     * @param {string} phaseId - Phase identifier
-     * @param {object} options - Test options
-     * @returns {boolean} True if phase is enabled
      */
-    isPhaseEnabled(phaseId, options) {
-        const phaseOptionMap = {
+    private isPhaseEnabled(phaseId: string, options: TestSessionOptions): boolean {
+        const phaseOptionMap: Record<string, keyof TestSessionOptions> = {
             'componentTests': 'includeComponentTests',
             'systemTests': 'includeSystemTests',
             'e2eTests': 'includeE2ETests',
@@ -280,11 +436,8 @@ export class IntegrationTestOrchestrator {
     
     /**
      * Check if phase dependencies are satisfied
-     * @param {object} phase - Phase configuration
-     * @param {object} results - Current test results
-     * @returns {boolean} True if dependencies are satisfied
      */
-    checkPhaseDependencies(phase, results) {
+    private checkPhaseDependencies(phase: ExecutionPhase, results: TestResults): boolean {
         if (!phase.dependencies || phase.dependencies.length === 0) {
             return true;
         }
@@ -304,21 +457,17 @@ export class IntegrationTestOrchestrator {
     
     /**
      * Check if a phase is critical for overall test success
-     * @param {string} phaseId - Phase identifier
-     * @returns {boolean} True if phase is critical
      */
-    isCriticalPhase(phaseId) {
+    private isCriticalPhase(phaseId: string): boolean {
         const criticalPhases = ['componentTests', 'systemTests'];
         return criticalPhases.includes(phaseId);
     }
     
     /**
      * Validate component test results
-     * @param {object} result - Test results
-     * @returns {object} Validation result
      */
-    validateComponentTestResults(result) {
-        const validation = {
+    private validateComponentTestResults(result: TestResult): ValidationResult {
+        const validation: ValidationResult = {
             isValid: true,
             issues: [],
             recommendations: []
@@ -350,11 +499,9 @@ export class IntegrationTestOrchestrator {
     
     /**
      * Validate system test results
-     * @param {object} result - Test results
-     * @returns {object} Validation result
      */
-    validateSystemTestResults(result) {
-        const validation = {
+    private validateSystemTestResults(result: TestResult): ValidationResult {
+        const validation: ValidationResult = {
             isValid: true,
             issues: [],
             recommendations: []
@@ -381,11 +528,9 @@ export class IntegrationTestOrchestrator {
     
     /**
      * Validate E2E test results
-     * @param {object} result - Test results
-     * @returns {object} Validation result
      */
-    validateE2ETestResults(result) {
-        const validation = {
+    private validateE2ETestResults(result: TestResult): ValidationResult {
+        const validation: ValidationResult = {
             isValid: true,
             issues: [],
             recommendations: []
@@ -399,9 +544,10 @@ export class IntegrationTestOrchestrator {
             });
         }
         
-        if (result && result.performanceMetrics) {
+        const e2eResult = result as E2ETestResult;
+        if (e2eResult && e2eResult.performanceMetrics) {
             // Check for performance regression indicators
-            if (result.performanceMetrics.startup_time > 5000) {
+            if (e2eResult.performanceMetrics.startup_time > 5000) {
                 validation.recommendations.push({
                     type: 'startup_performance',
                     message: 'Startup time exceeds recommended threshold',
@@ -409,7 +555,7 @@ export class IntegrationTestOrchestrator {
                 });
             }
             
-            if (result.performanceMetrics.average_frame_rate < 45) {
+            if (e2eResult.performanceMetrics.average_frame_rate < 45) {
                 validation.recommendations.push({
                     type: 'runtime_performance',
                     message: 'Average frame rate below optimal threshold',
@@ -423,11 +569,9 @@ export class IntegrationTestOrchestrator {
     
     /**
      * Validate mobile test results
-     * @param {object} result - Test results
-     * @returns {object} Validation result
      */
-    validateMobileTestResults(result) {
-        const validation = {
+    private validateMobileTestResults(result: TestResult): ValidationResult {
+        const validation: ValidationResult = {
             isValid: true,
             issues: [],
             recommendations: []
@@ -454,11 +598,9 @@ export class IntegrationTestOrchestrator {
     
     /**
      * Validate target validation results
-     * @param {object} result - Test results
-     * @returns {object} Validation result
      */
-    validateTargetValidationResults(result) {
-        const validation = {
+    private validateTargetValidationResults(result: TestResult): ValidationResult {
+        const validation: ValidationResult = {
             isValid: true,
             issues: [],
             recommendations: []
@@ -485,10 +627,8 @@ export class IntegrationTestOrchestrator {
     
     /**
      * Update orchestration metrics
-     * @param {object} testSession - Test session
-     * @param {object} results - Test results
      */
-    updateOrchestrationMetrics(testSession, results) {
+    private updateOrchestrationMetrics(testSession: TestSession, results: TestResults): void {
         const sessionSuccess = Object.values(results).every(result => 
             result && (result.passed !== false)
         );
@@ -510,12 +650,11 @@ export class IntegrationTestOrchestrator {
     
     /**
      * Get orchestration statistics
-     * @returns {object} Orchestration statistics
      */
-    getOrchestrationStats() {
+    getOrchestrationStats(): OrchestrationStats {
         const totalSessions = this.orchestrationMetrics.totalSessions;
         const successRate = totalSessions > 0 ? 
-            (this.orchestrationMetrics.successfulSessions / totalSessions * 100).toFixed(1) : 0;
+            (this.orchestrationMetrics.successfulSessions / totalSessions * 100).toFixed(1) : '0';
         
         return {
             ...this.orchestrationMetrics,
@@ -528,11 +667,9 @@ export class IntegrationTestOrchestrator {
     
     /**
      * Get test execution recommendations
-     * @param {object} testResults - Test results to analyze
-     * @returns {Array} Execution recommendations
      */
-    generateExecutionRecommendations(testResults) {
-        const recommendations = [];
+    generateExecutionRecommendations(testResults: TestResults): ExecutionRecommendation[] {
+        const recommendations: ExecutionRecommendation[] = [];
         
         // Analyze overall test patterns
         const phases = Object.keys(testResults);
@@ -568,9 +705,8 @@ export class IntegrationTestOrchestrator {
     
     /**
      * Configure orchestration settings
-     * @param {object} config - Configuration options
      */
-    configure(config) {
+    configure(config: Partial<OrchestrationConfig>): void {
         Object.assign(this.orchestrationConfig, config);
         console.log('[IntegrationTestOrchestrator] Configuration updated');
     }
@@ -578,7 +714,7 @@ export class IntegrationTestOrchestrator {
     /**
      * Cleanup orchestrator resources
      */
-    destroy() {
+    destroy(): void {
         this.testSessions.clear();
         this.activeTests.clear();
         this.testQueue = [];

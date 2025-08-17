@@ -1,21 +1,190 @@
 import fs from 'fs/promises';
 import path from 'path';
 
+// Type definitions
+interface BuildIntegrityValidation {
+    packageJsonValid: boolean;
+    mainFilesExist: boolean;
+    configFilesValid: boolean;
+    srcStructureIntact: boolean;
+    passed: boolean;
+    errors: string[];
+    warnings: string[];
+    validatedAt?: string;
+}
+
+interface SyntaxTestResult {
+    passed: boolean;
+    filesChecked: number;
+    errors: SyntaxError[];
+    error?: string;
+}
+
+interface SyntaxError {
+    file: string;
+    issue: string;
+}
+
+interface ImportTestResult {
+    passed: boolean;
+    importsChecked: number;
+    brokenImports: number;
+    error?: string;
+}
+
+interface ModuleValidationResult {
+    path: string;
+    accessible: boolean;
+    hasContent: boolean;
+    hasExports: boolean;
+    error?: string;
+}
+
+interface CoreModuleTestResult {
+    passed: boolean;
+    modulesChecked: ModuleValidationResult[];
+}
+
+interface ConfigurationTestResult {
+    passed: boolean;
+    configurations: ModuleValidationResult[];
+    error?: string;
+}
+
+interface TestDetails {
+    syntax: SyntaxTestResult;
+    import: ImportTestResult;
+    coreModule: CoreModuleTestResult;
+    configuration: ConfigurationTestResult;
+}
+
+interface BasicTestResults {
+    syntaxTests: boolean;
+    importTests: boolean;
+    coreModuleTests: boolean;
+    configurationTests: boolean;
+    passed: boolean;
+    testDetails: TestDetails;
+    error?: string;
+    executedAt?: string;
+}
+
+interface ImportInfo {
+    line: number;
+    statement: string;
+    path: string;
+    type?: string;
+}
+
+interface BrokenImport {
+    file: string;
+    import: ImportInfo;
+    resolvedPath?: string;
+    reason: string;
+}
+
+interface SuspiciousImport {
+    file: string;
+    import: ImportInfo;
+    reason: string;
+}
+
+interface ImportResolutionResult {
+    brokenImports: BrokenImport[];
+    suspiciousImports: SuspiciousImport[];
+    totalImportsChecked: number;
+    passed: boolean;
+    error?: string;
+    checkedAt?: string;
+}
+
+interface ConfigurationAccess {
+    accessible: boolean;
+    configs: ModuleValidationResult[];
+}
+
+interface UtilsAccess {
+    accessible: boolean;
+    utils: ModuleValidationResult[];
+    error?: string;
+}
+
+interface CoreFeatureDetails {
+    gameEngine: ModuleValidationResult;
+    sceneManager: ModuleValidationResult;
+    configuration: ConfigurationAccess;
+    utils: UtilsAccess;
+}
+
+interface CoreFeatureValidation {
+    gameEngineAccessible: boolean;
+    sceneManagerAccessible: boolean;
+    configurationAccessible: boolean;
+    utilsAccessible: boolean;
+    passed: boolean;
+    featureDetails: CoreFeatureDetails;
+    error?: string;
+    validatedAt?: string;
+}
+
+interface ValidationResults {
+    buildIntegrity?: BuildIntegrityValidation;
+    basicTests?: BasicTestResults;
+    importResolution?: ImportResolutionResult;
+    coreFeatures?: CoreFeatureValidation;
+}
+
+interface IntegritySummary {
+    buildIntegrity: boolean;
+    basicTests: boolean;
+    importResolution: boolean;
+    coreFeatures: boolean;
+    overallIntegrity: boolean;
+}
+
+interface IntegrityIssue {
+    category: string;
+    severity: string;
+    message: string;
+    details: any;
+}
+
+interface IntegrityRecommendation {
+    type: string;
+    message: string;
+    priority: string;
+    issues?: IntegrityIssue[];
+}
+
+interface IntegrityReport {
+    summary: IntegritySummary;
+    details: ValidationResults;
+    issues: IntegrityIssue[];
+    recommendations: IntegrityRecommendation[];
+    generatedAt: string;
+}
+
+interface ConfigFile {
+    path: string;
+    required: boolean;
+}
+
 /**
  * IntegrityValidator - ファイル削除後のシステム整合性を検証するクラス
  * Issue #104 のバックアップファイル削除後の包括的整合性確認機能を提供
  */
 export class IntegrityValidator {
+    private validationResults: any[];
+
     constructor() {
         this.validationResults = [];
     }
 
     /**
      * ビルド整合性の確認
-     * @returns {Promise<Object>} ビルド整合性確認結果
      */
-    async validateBuildIntegrity() {
-        const validation = {
+    async validateBuildIntegrity(): Promise<BuildIntegrityValidation> {
+        const validation: BuildIntegrityValidation = {
             packageJsonValid: false,
             mainFilesExist: false,
             configFilesValid: false,
@@ -45,7 +214,7 @@ export class IntegrityValidator {
                                validation.srcStructureIntact;
 
         } catch (error) {
-            validation.errors.push(`Build integrity validation error: ${error.message}`);
+            validation.errors.push(`Build integrity validation error: ${(error as Error).message}`);
             validation.passed = false;
         }
 
@@ -55,16 +224,15 @@ export class IntegrityValidator {
 
     /**
      * 基本テストの実行
-     * @returns {Promise<Object>} 基本テスト結果
      */
-    async runBasicTests() {
-        const testResults = {
+    async runBasicTests(): Promise<BasicTestResults> {
+        const testResults: BasicTestResults = {
             syntaxTests: false,
             importTests: false,
             coreModuleTests: false,
             configurationTests: false,
             passed: false,
-            testDetails: {}
+            testDetails: {} as TestDetails
         };
 
         try {
@@ -91,7 +259,7 @@ export class IntegrityValidator {
                                  testResults.configurationTests;
 
         } catch (error) {
-            testResults.error = error.message;
+            testResults.error = (error as Error).message;
             testResults.passed = false;
         }
 
@@ -101,10 +269,9 @@ export class IntegrityValidator {
 
     /**
      * インポート解決の確認
-     * @returns {Promise<Object>} インポート解決確認結果
      */
-    async checkImportResolution() {
-        const resolution = {
+    async checkImportResolution(): Promise<ImportResolutionResult> {
+        const resolution: ImportResolutionResult = {
             brokenImports: [],
             suspiciousImports: [],
             totalImportsChecked: 0,
@@ -145,7 +312,7 @@ export class IntegrityValidator {
                                resolution.suspiciousImports.length === 0;
 
         } catch (error) {
-            resolution.error = error.message;
+            resolution.error = (error as Error).message;
             resolution.passed = false;
         }
 
@@ -155,16 +322,15 @@ export class IntegrityValidator {
 
     /**
      * コア機能の検証
-     * @returns {Promise<Object>} コア機能検証結果
      */
-    async validateCoreFeatures() {
-        const validation = {
+    async validateCoreFeatures(): Promise<CoreFeatureValidation> {
+        const validation: CoreFeatureValidation = {
             gameEngineAccessible: false,
             sceneManagerAccessible: false,
             configurationAccessible: false,
             utilsAccessible: false,
             passed: false,
-            featureDetails: {}
+            featureDetails: {} as CoreFeatureDetails
         };
 
         try {
@@ -190,7 +356,7 @@ export class IntegrityValidator {
                                validation.utilsAccessible;
 
         } catch (error) {
-            validation.error = error.message;
+            validation.error = (error as Error).message;
             validation.passed = false;
         }
 
@@ -200,11 +366,9 @@ export class IntegrityValidator {
 
     /**
      * 整合性レポートの生成
-     * @param {Object} validationResults - 検証結果
-     * @returns {Object} 整合性レポート
      */
-    async generateIntegrityReport(validationResults) {
-        const report = {
+    async generateIntegrityReport(validationResults: ValidationResults): Promise<IntegrityReport> {
+        const report: IntegrityReport = {
             summary: {
                 buildIntegrity: validationResults.buildIntegrity?.passed || false,
                 basicTests: validationResults.basicTests?.passed || false,
@@ -236,9 +400,8 @@ export class IntegrityValidator {
 
     /**
      * package.jsonの確認
-     * @returns {Promise<boolean>} 有効かどうか
      */
-    async validatePackageJson() {
+    private async validatePackageJson(): Promise<boolean> {
         try {
             const content = await fs.readFile('./package.json', 'utf8');
             const packageJson = JSON.parse(content);
@@ -250,9 +413,8 @@ export class IntegrityValidator {
 
     /**
      * メインファイルの確認
-     * @returns {Promise<boolean>} 存在するかどうか
      */
-    async validateMainFiles() {
+    private async validateMainFiles(): Promise<boolean> {
         const mainFiles = [
             './index.html',
             './src/main.js',
@@ -269,10 +431,9 @@ export class IntegrityValidator {
 
     /**
      * 設定ファイルの確認
-     * @returns {Promise<boolean>} 有効かどうか
      */
-    async validateConfigFiles() {
-        const configFiles = [
+    private async validateConfigFiles(): Promise<boolean> {
+        const configFiles: ConfigFile[] = [
             { path: './package.json', required: true },
             { path: './jest.config.js', required: false },
             { path: './.gitignore', required: false }
@@ -288,9 +449,8 @@ export class IntegrityValidator {
 
     /**
      * ソース構造の確認
-     * @returns {Promise<boolean>} 構造が正しいかどうか
      */
-    async validateSourceStructure() {
+    private async validateSourceStructure(): Promise<boolean> {
         const requiredDirs = [
             './src',
             './src/core',
@@ -313,10 +473,9 @@ export class IntegrityValidator {
 
     /**
      * 構文テストの実行
-     * @returns {Promise<Object>} 構文テスト結果
      */
-    async runSyntaxTests() {
-        const result = {
+    private async runSyntaxTests(): Promise<SyntaxTestResult> {
+        const result: SyntaxTestResult = {
             passed: true,
             filesChecked: 0,
             errors: []
@@ -341,7 +500,7 @@ export class IntegrityValidator {
                 }
             }
         } catch (error) {
-            result.error = error.message;
+            result.error = (error as Error).message;
             result.passed = false;
         }
 
@@ -350,10 +509,9 @@ export class IntegrityValidator {
 
     /**
      * インポートテストの実行
-     * @returns {Promise<Object>} インポートテスト結果
      */
-    async runImportTests() {
-        const result = {
+    private async runImportTests(): Promise<ImportTestResult> {
+        const result: ImportTestResult = {
             passed: true,
             importsChecked: 0,
             brokenImports: 0
@@ -365,7 +523,7 @@ export class IntegrityValidator {
             result.brokenImports = importResolution.brokenImports.length;
             result.passed = importResolution.passed;
         } catch (error) {
-            result.error = error.message;
+            result.error = (error as Error).message;
             result.passed = false;
         }
 
@@ -374,10 +532,9 @@ export class IntegrityValidator {
 
     /**
      * コアモジュールテストの実行
-     * @returns {Promise<Object>} コアモジュールテスト結果
      */
-    async runCoreModuleTests() {
-        const result = {
+    private async runCoreModuleTests(): Promise<CoreModuleTestResult> {
+        const result: CoreModuleTestResult = {
             passed: true,
             modulesChecked: []
         };
@@ -401,10 +558,9 @@ export class IntegrityValidator {
 
     /**
      * 設定テストの実行
-     * @returns {Promise<Object>} 設定テスト結果
      */
-    async runConfigurationTests() {
-        const result = {
+    private async runConfigurationTests(): Promise<ConfigurationTestResult> {
+        const result: ConfigurationTestResult = {
             passed: true,
             configurations: []
         };
@@ -418,7 +574,7 @@ export class IntegrityValidator {
                 result.passed = false;
             }
         } catch (error) {
-            result.error = error.message;
+            result.error = (error as Error).message;
             result.passed = false;
         }
 
@@ -427,12 +583,11 @@ export class IntegrityValidator {
 
     /**
      * JavaScriptファイルの検索
-     * @returns {Promise<Array>} JSファイル配列
      */
-    async findJavaScriptFiles() {
-        const jsFiles = [];
+    private async findJavaScriptFiles(): Promise<string[]> {
+        const jsFiles: string[] = [];
         
-        async function scanDir(dir) {
+        const scanDir = async (dir: string): Promise<void> => {
             try {
                 const entries = await fs.readdir(dir, { withFileTypes: true });
                 
@@ -455,7 +610,7 @@ export class IntegrityValidator {
             } catch (error) {
                 // ディレクトリアクセスエラーは無視
             }
-        }
+        };
         
         await scanDir('./src');
         return jsFiles;
@@ -463,11 +618,9 @@ export class IntegrityValidator {
 
     /**
      * ファイルからimport文を抽出
-     * @param {string} filePath - ファイルパス
-     * @returns {Promise<Array>} import情報配列
      */
-    async extractImports(filePath) {
-        const imports = [];
+    private async extractImports(filePath: string): Promise<ImportInfo[]> {
+        const imports: ImportInfo[] = [];
         
         try {
             const content = await fs.readFile(filePath, 'utf8');
@@ -506,20 +659,15 @@ export class IntegrityValidator {
 
     /**
      * 疑わしいインポートの判定
-     * @param {string} importPath - インポートパス
-     * @returns {boolean} 疑わしいかどうか
      */
-    isSuspiciousImport(importPath) {
+    private isSuspiciousImport(importPath: string): boolean {
         return /_old\.js$|_original\.js$|_backup\.js$/.test(importPath);
     }
 
     /**
      * インポートパスの解決
-     * @param {string} importPath - インポートパス
-     * @param {string} fromFile - インポート元ファイル
-     * @returns {Promise<string|null>} 解決されたパス
      */
-    async resolveImportPath(importPath, fromFile) {
+    private async resolveImportPath(importPath: string, fromFile: string): Promise<string | null> {
         try {
             if (importPath.startsWith('./') || importPath.startsWith('../')) {
                 // 相対パス
@@ -549,10 +697,8 @@ export class IntegrityValidator {
 
     /**
      * ファイルの存在確認
-     * @param {string} filePath - ファイルパス
-     * @returns {Promise<boolean>} 存在するかどうか
      */
-    async fileExists(filePath) {
+    private async fileExists(filePath: string): Promise<boolean> {
         try {
             await fs.access(filePath);
             return true;
@@ -563,11 +709,9 @@ export class IntegrityValidator {
 
     /**
      * コアモジュールの確認
-     * @param {string} modulePath - モジュールパス
-     * @returns {Promise<Object>} モジュール確認結果
      */
-    async validateCoreModule(modulePath) {
-        const result = {
+    private async validateCoreModule(modulePath: string): Promise<ModuleValidationResult> {
+        const result: ModuleValidationResult = {
             path: modulePath,
             accessible: false,
             hasContent: false,
@@ -583,7 +727,7 @@ export class IntegrityValidator {
                 result.hasExports = content.includes('export') || content.includes('module.exports');
             }
         } catch (error) {
-            result.error = error.message;
+            result.error = (error as Error).message;
         }
 
         return result;
@@ -591,10 +735,9 @@ export class IntegrityValidator {
 
     /**
      * 設定アクセスの確認
-     * @returns {Promise<Object>} 設定アクセス結果
      */
-    async validateConfigurationAccess() {
-        const result = {
+    private async validateConfigurationAccess(): Promise<ConfigurationAccess> {
+        const result: ConfigurationAccess = {
             accessible: false,
             configs: []
         };
@@ -615,10 +758,9 @@ export class IntegrityValidator {
 
     /**
      * Utilsアクセスの確認
-     * @returns {Promise<Object>} Utilsアクセス結果
      */
-    async validateUtilsAccess() {
-        const result = {
+    private async validateUtilsAccess(): Promise<UtilsAccess> {
+        const result: UtilsAccess = {
             accessible: false,
             utils: []
         };
@@ -641,7 +783,7 @@ export class IntegrityValidator {
             
             result.accessible = accessibleUtils > 0;
         } catch (error) {
-            result.error = error.message;
+            result.error = (error as Error).message;
         }
 
         return result;
@@ -649,11 +791,9 @@ export class IntegrityValidator {
 
     /**
      * 問題の収集
-     * @param {Object} validationResults - 検証結果
-     * @returns {Array} 問題配列
      */
-    collectIssues(validationResults) {
-        const issues = [];
+    private collectIssues(validationResults: ValidationResults): IntegrityIssue[] {
+        const issues: IntegrityIssue[] = [];
 
         if (validationResults.buildIntegrity && !validationResults.buildIntegrity.passed) {
             issues.push({
@@ -687,12 +827,9 @@ export class IntegrityValidator {
 
     /**
      * 整合性推奨事項の生成
-     * @param {Object} validationResults - 検証結果
-     * @param {Array} issues - 問題配列
-     * @returns {Array} 推奨事項配列
      */
-    generateIntegrityRecommendations(validationResults, issues) {
-        const recommendations = [];
+    private generateIntegrityRecommendations(validationResults: ValidationResults, issues: IntegrityIssue[]): IntegrityRecommendation[] {
+        const recommendations: IntegrityRecommendation[] = [];
 
         if (issues.length === 0) {
             recommendations.push({

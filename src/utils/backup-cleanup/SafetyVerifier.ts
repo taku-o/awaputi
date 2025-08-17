@@ -20,33 +20,13 @@ interface CurrentFileIntegrity {
     error?: string;
 }
 
-interface ImportAnalysis {
-    importReferences: any[];
-    [key: string]: any;
-}
-
-interface StringAnalysis {
-    activeReferences: any[];
-    reportFileReferences: any[];
-    stringReferences: any[];
-    [key: string]: any;
-}
-
-interface ReferenceReport {
-    safetyAssessment: {
-        warnings: Warning[];
-        recommendations: Recommendation[];
-    };
-    [key: string]: any;
-}
-
 interface ReferenceValidation {
     importReferences: number;
     activeStringReferences: number;
     reportFileReferences: number;
     totalReferences: number;
     passed: boolean;
-    referenceReport?: ReferenceReport;
+    referenceReport?: any;
     error?: string;
 }
 
@@ -60,7 +40,7 @@ interface BuildDependencies {
     error?: string;
 }
 
-interface GitCommitInfo {
+interface LastCommitInfo {
     hash: string;
     message: string;
 }
@@ -68,7 +48,7 @@ interface GitCommitInfo {
 interface GitStatus {
     isTracked: boolean;
     hasUncommittedChanges: boolean;
-    lastCommitInfo: GitCommitInfo | null;
+    lastCommitInfo: LastCommitInfo | null;
     passed: boolean;
     error?: string;
 }
@@ -81,15 +61,15 @@ interface SafetyChecks {
     gitStatus?: GitStatus;
 }
 
-interface Warning {
-    level: 'critical' | 'high' | 'medium' | 'low';
+interface SafetyWarning {
+    level: string;
     message: string;
 }
 
-interface Recommendation {
+interface SafetyRecommendation {
     type: string;
     message: string;
-    priority: 'high' | 'medium' | 'low';
+    priority?: string;
 }
 
 interface SafetyVerification {
@@ -97,12 +77,12 @@ interface SafetyVerification {
     timestamp: string;
     checks: SafetyChecks;
     overallSafety: boolean;
-    warnings: Warning[];
-    recommendations: Recommendation[];
+    warnings: SafetyWarning[];
+    recommendations: SafetyRecommendation[];
     error?: string;
 }
 
-interface SafetyReportSummary {
+interface SafetySummary {
     totalFiles: number;
     safeFiles: number;
     unsafeFiles: number;
@@ -120,11 +100,11 @@ interface SafetyBreakdown {
 interface OverallRecommendation {
     action: string;
     message: string;
-    priority: 'high' | 'medium' | 'low';
+    priority: string;
 }
 
 interface SafetyReport {
-    summary: SafetyReportSummary;
+    summary: SafetySummary;
     safetyBreakdown: SafetyBreakdown;
     files: SafetyVerification[];
     overallRecommendation: OverallRecommendation;
@@ -193,7 +173,7 @@ export class SafetyVerifier {
     /**
      * 基本ファイル検証
      */
-    async performBasicValidation(filePath: string): Promise<BasicValidation> {
+    private async performBasicValidation(filePath: string): Promise<BasicValidation> {
         const validation: BasicValidation = {
             fileExists: false,
             currentFileExists: false,
@@ -231,7 +211,7 @@ export class SafetyVerifier {
     /**
      * 現在ファイルの整合性確認
      */
-    async checkCurrentFileIntegrity(filePath: string): Promise<CurrentFileIntegrity> {
+    private async checkCurrentFileIntegrity(filePath: string): Promise<CurrentFileIntegrity> {
         const integrity: CurrentFileIntegrity = {
             currentFileValid: false,
             syntaxValid: false,
@@ -278,7 +258,7 @@ export class SafetyVerifier {
     /**
      * アクティブな参照がないことの確認
      */
-    async validateNoActiveReferences(filePath: string): Promise<ReferenceValidation> {
+    private async validateNoActiveReferences(filePath: string): Promise<ReferenceValidation> {
         const validation: ReferenceValidation = {
             importReferences: 0,
             activeStringReferences: 0,
@@ -319,7 +299,7 @@ export class SafetyVerifier {
     /**
      * ビルド依存関係の確認
      */
-    async checkBuildDependencies(filePath: string): Promise<BuildDependencies> {
+    private async checkBuildDependencies(filePath: string): Promise<BuildDependencies> {
         const dependencies: BuildDependencies = {
             inPackageJson: false,
             inTsConfig: false,
@@ -376,7 +356,7 @@ export class SafetyVerifier {
     /**
      * Git状態の確認
      */
-    async checkGitStatus(filePath: string): Promise<GitStatus> {
+    private async checkGitStatus(filePath: string): Promise<GitStatus> {
         const gitStatus: GitStatus = {
             isTracked: false,
             hasUncommittedChanges: false,
@@ -437,7 +417,7 @@ export class SafetyVerifier {
     /**
      * 総合安全性の計算
      */
-    calculateOverallSafety(checks: SafetyChecks): boolean {
+    private calculateOverallSafety(checks: SafetyChecks): boolean {
         const requiredChecks = [
             'basicValidation',
             'currentFileIntegrity',
@@ -452,8 +432,8 @@ export class SafetyVerifier {
     /**
      * 警告の収集
      */
-    collectWarnings(checks: SafetyChecks): Warning[] {
-        const warnings: Warning[] = [];
+    private collectWarnings(checks: SafetyChecks): SafetyWarning[] {
+        const warnings: SafetyWarning[] = [];
 
         // 参照検証警告
         if (checks.referenceValidation && checks.referenceValidation.referenceReport) {
@@ -483,8 +463,8 @@ export class SafetyVerifier {
     /**
      * 推奨事項の生成
      */
-    generateRecommendations(checks: SafetyChecks): Recommendation[] {
-        const recommendations: Recommendation[] = [];
+    private generateRecommendations(checks: SafetyChecks): SafetyRecommendation[] {
+        const recommendations: SafetyRecommendation[] = [];
 
         if (this.calculateOverallSafety(checks)) {
             recommendations.push({
@@ -512,7 +492,7 @@ export class SafetyVerifier {
     /**
      * バックアップファイルかどうかの判定
      */
-    isBackupFile(filePath: string): boolean {
+    private isBackupFile(filePath: string): boolean {
         const backupPatterns = [
             /_old\./,
             /_backup\./,
@@ -528,7 +508,7 @@ export class SafetyVerifier {
     /**
      * 対応する現在ファイルのパスを取得
      */
-    getCurrentFilePath(backupFilePath: string): string | null {
+    private getCurrentFilePath(backupFilePath: string): string | null {
         const mapping: Record<string, string> = {
             'src/utils/TestConfigurationGenerator_old.js': 'src/utils/TestConfigurationGenerator.js',
             'src/utils/performance-monitoring/PerformanceDataAnalyzer_Original.js': 'src/utils/performance-monitoring/PerformanceDataAnalyzer.js',
@@ -543,7 +523,7 @@ export class SafetyVerifier {
     /**
      * JavaScript構文の検証
      */
-    async validateJavaScriptSyntax(content: string): Promise<boolean> {
+    private async validateJavaScriptSyntax(content: string): Promise<boolean> {
         try {
             new Function(content);
             return true;
@@ -557,7 +537,7 @@ export class SafetyVerifier {
     /**
      * 機能的同等性の確認
      */
-    async checkFunctionalEquivalence(backupFilePath: string, currentFilePath: string): Promise<boolean> {
+    private async checkFunctionalEquivalence(backupFilePath: string, currentFilePath: string): Promise<boolean> {
         try {
             const backupContent = await fs.readFile(backupFilePath, 'utf8');
             const currentContent = await fs.readFile(currentFilePath, 'utf8');
@@ -599,7 +579,7 @@ export class SafetyVerifier {
     /**
      * 全体的な推奨事項の生成
      */
-    generateOverallRecommendation(verificationResults: SafetyVerification[]): OverallRecommendation {
+    private generateOverallRecommendation(verificationResults: SafetyVerification[]): OverallRecommendation {
         const safeFiles = verificationResults.filter(r => r.overallSafety);
         const unsafeFiles = verificationResults.filter(r => !r.overallSafety);
 

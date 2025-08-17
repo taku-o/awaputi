@@ -9,7 +9,212 @@
 
 import { IntegrationTestOrchestrator } from './performance-integration/IntegrationTestOrchestrator.js';
 
+// Type definitions
+interface TestOptions {
+    includeComponentTests?: boolean;
+    includeSystemTests?: boolean;
+    includeE2ETests?: boolean;
+    includeMobileTests?: boolean;
+    includePerformanceTargetValidation?: boolean;
+    testEnvironment?: string;
+    parallelExecution?: boolean;
+    timeout?: number;
+    [key: string]: any;
+}
+
+interface TestSession {
+    id: number;
+    startTime: number;
+    endTime?: number;
+    duration?: number;
+    options: TestOptions;
+    results: any;
+    error?: string;
+}
+
+interface TestComponents {
+    testSuiteManager: IntegrationTestSuiteManager;
+    systemIntegrationTester: SystemIntegrationTester;
+    e2eValidator: E2EPerformanceValidator;
+    mobileCompatibilityTester: MobileCompatibilityTester;
+    targetValidation: PerformanceTargetValidation;
+}
+
+interface TestResult {
+    passed: boolean;
+    tests?: Test[];
+    duration: number;
+    issues?: Issue[];
+    details?: any;
+    error?: string;
+    metrics?: Record<string, any>;
+    performanceMetrics?: Record<string, any>;
+}
+
+interface Test {
+    id: string;
+    name: string;
+    description?: string;
+    passed: boolean;
+    duration?: number;
+    details?: any;
+    issues?: Issue[];
+    error?: string;
+    metrics?: Record<string, any>;
+}
+
+interface Issue {
+    severity: 'info' | 'warning' | 'critical';
+    message: string;
+    test?: string;
+    phase?: string;
+}
+
+interface TestAnalysis {
+    overallPassed: boolean;
+    phasesCompleted: number;
+    totalTests: number;
+    passedTests: number;
+    failedTests: number;
+    phaseResults: Record<string, PhaseResult>;
+    criticalIssues: Issue[];
+    warnings: Issue[];
+    recommendations: Recommendation[];
+    summary?: TestSummary;
+}
+
+interface PhaseResult {
+    passed: boolean;
+    tests: Test[];
+    duration: number;
+    issues: Issue[];
+}
+
+interface Recommendation {
+    type: string;
+    priority: 'low' | 'medium' | 'high' | 'critical';
+    description?: string;
+    message?: string;
+    actions?: string[];
+    phase?: string;
+    suggestion?: string;
+}
+
+interface TestSummary {
+    overallStatus: 'PASSED' | 'FAILED';
+    passRate: string;
+    testsExecuted: number;
+    phasesCompleted: number;
+    criticalIssues: number;
+    warnings: number;
+    recommendation: string;
+}
+
+interface TestStatus {
+    initialized: boolean;
+    availableTests: AvailableTests;
+    testEnvironment: string;
+    lastRun: LastRunInfo | null;
+    orchestrationStats: any;
+}
+
+interface AvailableTests {
+    componentIntegration: string[];
+    systemIntegration: string[];
+    e2ePerformance: string[];
+    mobileCompatibility: string[];
+    performanceTargets: string[];
+}
+
+interface LastRunInfo {
+    sessionId: number;
+    timestamp: number;
+    passed: boolean;
+}
+
+interface TestReport {
+    sessionId: number;
+    timestamp: number;
+    summary: TestSummary;
+    passed: boolean;
+    recommendations: Recommendation[];
+}
+
+interface TestConfig {
+    name: string;
+    description: string;
+    test: () => Promise<TestResult>;
+}
+
+interface PerformanceMetric {
+    target: number;
+    minimum?: number;
+    maximum?: number;
+    critical?: number;
+}
+
+interface OptimizerTestResult {
+    passed: boolean;
+    details: {
+        integrationPoints: string[];
+    };
+    issues: Issue[];
+}
+
+interface MonitoringTestResult {
+    passed: boolean;
+    details: {
+        integrationPoints: string[];
+    };
+    issues: Issue[];
+}
+
+interface ConfigurationTestResult {
+    passed: boolean;
+    details: {
+        integrationPoints: string[];
+    };
+    issues: Issue[];
+}
+
+interface ErrorHandlingTestResult {
+    passed: boolean;
+    details: {
+        integrationPoints: string[];
+    };
+    issues: Issue[];
+}
+
+interface StartupTestResult {
+    passed: boolean;
+    metrics: Record<string, number>;
+    issues: Issue[];
+}
+
+interface RuntimeTestResult {
+    passed: boolean;
+    metrics: Record<string, number>;
+    issues: Issue[];
+}
+
+interface ComprehensiveTestResult {
+    session: TestSession;
+    report: TestReport;
+    passed: boolean;
+    summary: TestSummary;
+}
+
 export class PerformanceIntegrationTesting {
+    private testOrchestrator: IntegrationTestOrchestrator;
+    private testSuiteManager: IntegrationTestSuiteManager;
+    private e2eValidator: E2EPerformanceValidator;
+    private systemIntegrationTester: SystemIntegrationTester;
+    private mobileCompatibilityTester: MobileCompatibilityTester;
+    private targetValidation: PerformanceTargetValidation;
+    private testReporter: IntegrationTestReporter;
+    private testEnvironment: TestEnvironmentManager;
+    private initialized: boolean;
+
     constructor() {
         // Initialize sub-components using dependency injection
         this.testOrchestrator = new IntegrationTestOrchestrator(this);
@@ -29,7 +234,7 @@ export class PerformanceIntegrationTesting {
         console.log('[PerformanceIntegrationTesting] Initialized with Main Controller Pattern');
     }
 
-    async initializeIntegrationTesting() {
+    async initializeIntegrationTesting(): Promise<void> {
         try {
             await this.testSuiteManager.initialize();
             await this.e2eValidator.initialize();
@@ -47,12 +252,12 @@ export class PerformanceIntegrationTesting {
         }
     }
 
-    async runComprehensiveIntegrationTests(options = {}) {
+    async runComprehensiveIntegrationTests(options: TestOptions = {}): Promise<ComprehensiveTestResult> {
         if (!this.initialized) {
             throw new Error('PerformanceIntegrationTesting not initialized');
         }
 
-        const testSession = {
+        const testSession: TestSession = {
             id: Date.now(),
             startTime: performance.now(),
             options: {
@@ -73,7 +278,7 @@ export class PerformanceIntegrationTesting {
             console.log('Starting comprehensive integration tests...');
             
             // テスト環境の準備
-            await this.testEnvironment.prepareEnvironment(testSession.options.testEnvironment);
+            await this.testEnvironment.prepareEnvironment(testSession.options.testEnvironment!);
             
             // テストの実行 (delegate to test orchestrator)
             const testResults = await this.testOrchestrator.executeTestPhases(testSession, {
@@ -101,7 +306,7 @@ export class PerformanceIntegrationTesting {
 
         } catch (error) {
             console.error('Integration testing failed:', error);
-            testSession.error = error.message;
+            testSession.error = (error as Error).message;
             testSession.endTime = performance.now();
             
             throw error;
@@ -111,7 +316,7 @@ export class PerformanceIntegrationTesting {
         }
     }
 
-    async executeTestPhases(testSession) {
+    async executeTestPhases(testSession: TestSession): Promise<any> {
         // Delegate to test orchestrator
         return await this.testOrchestrator.executeTestPhases(testSession, {
             testSuiteManager: this.testSuiteManager,
@@ -122,8 +327,8 @@ export class PerformanceIntegrationTesting {
         });
     }
 
-    async analyzeTestResults(testResults) {
-        const analysis = {
+    async analyzeTestResults(testResults: Record<string, any>): Promise<TestAnalysis> {
+        const analysis: TestAnalysis = {
             overallPassed: true,
             phasesCompleted: 0,
             totalTests: 0,
@@ -148,8 +353,8 @@ export class PerformanceIntegrationTesting {
                 // 統計更新
                 const phaseTests = phaseResult.tests || [];
                 analysis.totalTests += phaseTests.length;
-                analysis.passedTests += phaseTests.filter(t => t.passed).length;
-                analysis.failedTests += phaseTests.filter(t => !t.passed).length;
+                analysis.passedTests += phaseTests.filter((t: Test) => t.passed).length;
+                analysis.failedTests += phaseTests.filter((t: Test) => !t.passed).length;
 
                 // 全体合格判定
                 if (!phaseResult.passed) {
@@ -185,8 +390,8 @@ export class PerformanceIntegrationTesting {
         return analysis;
     }
 
-    async generateRecommendations(analysis) {
-        const recommendations = [];
+    async generateRecommendations(analysis: TestAnalysis): Promise<Recommendation[]> {
+        const recommendations: Recommendation[] = [];
 
         // 失敗率が高い場合
         const failureRate = analysis.totalTests > 0 ? analysis.failedTests / analysis.totalTests : 0;
@@ -234,9 +439,9 @@ export class PerformanceIntegrationTesting {
         return recommendations;
     }
 
-    generateSummary(analysis) {
+    generateSummary(analysis: TestAnalysis): TestSummary {
         const passRate = analysis.totalTests > 0 ? 
-            (analysis.passedTests / analysis.totalTests * 100).toFixed(1) : 0;
+            (analysis.passedTests / analysis.totalTests * 100).toFixed(1) : '0';
 
         return {
             overallStatus: analysis.overallPassed ? 'PASSED' : 'FAILED',
@@ -252,28 +457,28 @@ export class PerformanceIntegrationTesting {
     }
 
     // 個別テスト実行API (maintained for backward compatibility)
-    async runComponentIntegrationTests() {
+    async runComponentIntegrationTests(): Promise<TestResult> {
         return await this.testSuiteManager.runComponentIntegrationTests();
     }
 
-    async runSystemIntegrationTests() {
+    async runSystemIntegrationTests(): Promise<TestResult> {
         return await this.systemIntegrationTester.runSystemTests();
     }
 
-    async runE2EPerformanceTests() {
+    async runE2EPerformanceTests(): Promise<TestResult> {
         return await this.e2eValidator.runE2EValidation();
     }
 
-    async runMobileCompatibilityTests() {
+    async runMobileCompatibilityTests(): Promise<TestResult> {
         return await this.mobileCompatibilityTester.runCompatibilityTests();
     }
 
-    async validatePerformanceTargets() {
+    async validatePerformanceTargets(): Promise<TestResult> {
         return await this.targetValidation.validateTargets();
     }
 
     // テスト設定とステータス
-    getTestStatus() {
+    getTestStatus(): TestStatus {
         return {
             initialized: this.initialized,
             availableTests: this.getAvailableTests(),
@@ -283,7 +488,7 @@ export class PerformanceIntegrationTesting {
         };
     }
 
-    getAvailableTests() {
+    getAvailableTests(): AvailableTests {
         return {
             componentIntegration: this.testSuiteManager.getAvailableTests(),
             systemIntegration: this.systemIntegrationTester.getAvailableTests(),
@@ -295,9 +500,8 @@ export class PerformanceIntegrationTesting {
 
     /**
      * Configure integration testing system
-     * @param {object} config - Configuration options
      */
-    configure(config) {
+    configure(config: any): void {
         if (config.orchestration) {
             this.testOrchestrator.configure(config.orchestration);
         }
@@ -308,7 +512,7 @@ export class PerformanceIntegrationTesting {
     /**
      * Cleanup integration testing resources
      */
-    destroy() {
+    destroy(): void {
         if (this.testOrchestrator) {
             this.testOrchestrator.destroy();
         }
@@ -319,16 +523,19 @@ export class PerformanceIntegrationTesting {
 
 // 統合テストスイート管理器
 class IntegrationTestSuiteManager {
+    private componentTests: Map<string, TestConfig>;
+    private testResults: any[];
+
     constructor() {
         this.componentTests = new Map();
         this.testResults = [];
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         this.setupComponentTests();
     }
 
-    setupComponentTests() {
+    setupComponentTests(): void {
         // パフォーマンス最適化システム間の統合テスト
         this.componentTests.set('optimizer_integration', {
             name: 'Performance Optimizer Integration',
@@ -358,10 +565,10 @@ class IntegrationTestSuiteManager {
         });
     }
 
-    async runComponentIntegrationTests() {
+    async runComponentIntegrationTests(): Promise<TestResult> {
         console.log('Running component integration tests...');
         
-        const results = {
+        const results: TestResult = {
             passed: true,
             tests: [],
             duration: 0,
@@ -378,7 +585,7 @@ class IntegrationTestSuiteManager {
                 const testResult = await testConfig.test();
                 const testDuration = performance.now() - testStart;
 
-                const result = {
+                const result: Test = {
                     id: testId,
                     name: testConfig.name,
                     description: testConfig.description,
@@ -388,28 +595,28 @@ class IntegrationTestSuiteManager {
                     issues: testResult.issues || []
                 };
 
-                results.tests.push(result);
+                results.tests!.push(result);
 
                 if (!testResult.passed) {
                     results.passed = false;
-                    results.issues.push(...(testResult.issues || []));
+                    results.issues!.push(...(testResult.issues || []));
                 }
 
             } catch (error) {
                 console.error(`Test ${testConfig.name} failed with error:`, error);
                 
-                results.tests.push({
+                results.tests!.push({
                     id: testId,
                     name: testConfig.name,
                     passed: false,
-                    error: error.message,
-                    issues: [{ severity: 'critical', message: error.message }]
+                    error: (error as Error).message,
+                    issues: [{ severity: 'critical', message: (error as Error).message }]
                 });
 
                 results.passed = false;
-                results.issues.push({
+                results.issues!.push({
                     severity: 'critical',
-                    message: `Test execution failed: ${error.message}`,
+                    message: `Test execution failed: ${(error as Error).message}`,
                     test: testConfig.name
                 });
             }
@@ -419,23 +626,23 @@ class IntegrationTestSuiteManager {
         return results;
     }
 
-    async testOptimizerIntegration() {
-        const issues = [];
+    async testOptimizerIntegration(): Promise<OptimizerTestResult> {
+        const issues: Issue[] = [];
         let passed = true;
 
         try {
             // FrameStabilizer と AdaptiveQualityController の統合テスト
-            if (window.FrameStabilizer && window.AdaptiveQualityController) {
+            if ((window as any).FrameStabilizer && (window as any).AdaptiveQualityController) {
                 // フレーム低下シミュレーション
-                const initialQuality = await window.AdaptiveQualityController.getCurrentQuality();
+                const initialQuality = await (window as any).AdaptiveQualityController.getCurrentQuality();
                 
                 // フレーム低下を報告
-                await window.FrameStabilizer.reportFrameDrop(25); // 25fps
+                await (window as any).FrameStabilizer.reportFrameDrop(25); // 25fps
                 
                 // 品質調整が動作するかテスト
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 
-                const adjustedQuality = await window.AdaptiveQualityController.getCurrentQuality();
+                const adjustedQuality = await (window as any).AdaptiveQualityController.getCurrentQuality();
                 
                 if (adjustedQuality >= initialQuality) {
                     issues.push({
@@ -451,11 +658,11 @@ class IntegrationTestSuiteManager {
             }
 
             // MemoryManager と PerformanceOptimizer の統合テスト
-            if (window.MemoryManager && window.PerformanceOptimizer) {
+            if ((window as any).MemoryManager && (window as any).PerformanceOptimizer) {
                 const memoryBefore = this.getCurrentMemoryUsage();
                 
                 // メモリクリーンアップの実行
-                await window.MemoryManager.performCleanup();
+                await (window as any).MemoryManager.performCleanup();
                 
                 await new Promise(resolve => setTimeout(resolve, 500));
                 
@@ -473,7 +680,7 @@ class IntegrationTestSuiteManager {
             passed = false;
             issues.push({
                 severity: 'critical',
-                message: `Optimizer integration test failed: ${error.message}`
+                message: `Optimizer integration test failed: ${(error as Error).message}`
             });
         }
 
@@ -484,21 +691,21 @@ class IntegrationTestSuiteManager {
         };
     }
 
-    async testMonitoringIntegration() {
-        const issues = [];
+    async testMonitoringIntegration(): Promise<MonitoringTestResult> {
+        const issues: Issue[] = [];
         let passed = true;
 
         try {
             // PerformanceMonitoringSystem と PerformanceDiagnostics の統合
-            if (window.PerformanceMonitoringSystem && window.PerformanceDiagnostics) {
+            if ((window as any).PerformanceMonitoringSystem && (window as any).PerformanceDiagnostics) {
                 // 監視開始
-                await window.PerformanceMonitoringSystem.startMonitoring();
+                await (window as any).PerformanceMonitoringSystem.startMonitoring();
                 
                 // 短時間監視
                 await new Promise(resolve => setTimeout(resolve, 2000));
                 
                 // 診断実行
-                const diagnosticResult = await window.PerformanceDiagnostics.quickDiagnosis();
+                const diagnosticResult = await (window as any).PerformanceDiagnostics.quickDiagnosis();
                 
                 if (!diagnosticResult || !diagnosticResult.session) {
                     issues.push({
@@ -509,7 +716,7 @@ class IntegrationTestSuiteManager {
                 }
                 
                 // 監視停止
-                await window.PerformanceMonitoringSystem.stopMonitoring();
+                await (window as any).PerformanceMonitoringSystem.stopMonitoring();
             } else {
                 issues.push({
                     severity: 'warning',
@@ -521,7 +728,7 @@ class IntegrationTestSuiteManager {
             passed = false;
             issues.push({
                 severity: 'critical',
-                message: `Monitoring integration test failed: ${error.message}`
+                message: `Monitoring integration test failed: ${(error as Error).message}`
             });
         }
 
@@ -532,14 +739,14 @@ class IntegrationTestSuiteManager {
         };
     }
 
-    async testConfigurationIntegration() {
-        const issues = [];
+    async testConfigurationIntegration(): Promise<ConfigurationTestResult> {
+        const issues: Issue[] = [];
         let passed = true;
 
         try {
             // PerformanceConfigurationIntegration の統合テスト
-            if (window.PerformanceConfigurationIntegration) {
-                const configSystem = window.PerformanceConfigurationIntegration;
+            if ((window as any).PerformanceConfigurationIntegration) {
+                const configSystem = (window as any).PerformanceConfigurationIntegration;
                 
                 // 設定変更テスト
                 const testConfig = {
@@ -578,7 +785,7 @@ class IntegrationTestSuiteManager {
             passed = false;
             issues.push({
                 severity: 'critical',
-                message: `Configuration integration test failed: ${error.message}`
+                message: `Configuration integration test failed: ${(error as Error).message}`
             });
         }
 
@@ -589,14 +796,14 @@ class IntegrationTestSuiteManager {
         };
     }
 
-    async testErrorHandlingIntegration() {
-        const issues = [];
+    async testErrorHandlingIntegration(): Promise<ErrorHandlingTestResult> {
+        const issues: Issue[] = [];
         let passed = true;
 
         try {
             // PerformanceErrorRecoverySystem の統合テスト
-            if (window.PerformanceErrorRecoverySystem) {
-                const errorSystem = window.PerformanceErrorRecoverySystem;
+            if ((window as any).PerformanceErrorRecoverySystem) {
+                const errorSystem = (window as any).PerformanceErrorRecoverySystem;
                 
                 // システムテスト実行
                 const testResult = await errorSystem.testRecoverySystem();
@@ -630,7 +837,7 @@ class IntegrationTestSuiteManager {
             passed = false;
             issues.push({
                 severity: 'critical',
-                message: `Error handling integration test failed: ${error.message}`
+                message: `Error handling integration test failed: ${(error as Error).message}`
             });
         }
 
@@ -641,28 +848,31 @@ class IntegrationTestSuiteManager {
         };
     }
 
-    getCurrentMemoryUsage() {
-        return performance.memory ? performance.memory.usedJSHeapSize : 0;
+    getCurrentMemoryUsage(): number {
+        return (performance as any).memory ? (performance as any).memory.usedJSHeapSize : 0;
     }
 
-    getAvailableTests() {
+    getAvailableTests(): string[] {
         return Array.from(this.componentTests.keys());
     }
 }
 
 // E2Eパフォーマンス検証器（簡略化）
 class E2EPerformanceValidator {
+    private e2eTests: Map<string, TestConfig>;
+    private performanceMetrics: Map<string, PerformanceMetric>;
+
     constructor() {
         this.e2eTests = new Map();
         this.performanceMetrics = new Map();
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         this.setupE2ETests();
         this.setupPerformanceMetrics();
     }
 
-    setupE2ETests() {
+    setupE2ETests(): void {
         this.e2eTests.set('startup_performance', {
             name: 'System Startup Performance',
             description: 'Tests complete system startup and initialization performance',
@@ -676,17 +886,17 @@ class E2EPerformanceValidator {
         });
     }
 
-    setupPerformanceMetrics() {
+    setupPerformanceMetrics(): void {
         this.performanceMetrics.set('startup_time', { target: 3000, critical: 5000 }); // 3秒目標、5秒限界
         this.performanceMetrics.set('frame_rate', { target: 60, minimum: 30 });
         this.performanceMetrics.set('memory_usage', { target: 100 * 1024 * 1024, maximum: 200 * 1024 * 1024 });
         this.performanceMetrics.set('response_time', { target: 100, maximum: 500 });
     }
 
-    async runE2EValidation() {
+    async runE2EValidation(): Promise<TestResult> {
         console.log('Running E2E performance validation...');
         
-        const results = {
+        const results: TestResult = {
             passed: true,
             tests: [],
             duration: 0,
@@ -704,7 +914,7 @@ class E2EPerformanceValidator {
                 const testResult = await testConfig.test();
                 const testDuration = performance.now() - testStart;
 
-                const result = {
+                const result: Test = {
                     id: testId,
                     name: testConfig.name,
                     description: testConfig.description,
@@ -714,30 +924,30 @@ class E2EPerformanceValidator {
                     issues: testResult.issues || []
                 };
 
-                results.tests.push(result);
+                results.tests!.push(result);
 
                 if (!testResult.passed) {
                     results.passed = false;
-                    results.issues.push(...(testResult.issues || []));
+                    results.issues!.push(...(testResult.issues || []));
                 }
 
                 // メトリクスの集約
-                Object.assign(results.performanceMetrics, testResult.metrics || {});
+                Object.assign(results.performanceMetrics!, testResult.metrics || {});
 
             } catch (error) {
                 console.error(`E2E test ${testConfig.name} failed:`, error);
                 
-                results.tests.push({
+                results.tests!.push({
                     id: testId,
                     name: testConfig.name,
                     passed: false,
-                    error: error.message
+                    error: (error as Error).message
                 });
 
                 results.passed = false;
-                results.issues.push({
+                results.issues!.push({
                     severity: 'critical',
-                    message: `E2E test execution failed: ${error.message}`,
+                    message: `E2E test execution failed: ${(error as Error).message}`,
                     test: testConfig.name
                 });
             }
@@ -747,9 +957,9 @@ class E2EPerformanceValidator {
         return results;
     }
 
-    async testStartupPerformance() {
-        const issues = [];
-        const metrics = {};
+    async testStartupPerformance(): Promise<StartupTestResult> {
+        const issues: Issue[] = [];
+        const metrics: Record<string, number> = {};
         let passed = true;
 
         try {
@@ -761,8 +971,8 @@ class E2EPerformanceValidator {
             const startupTime = performance.now() - startupStart;
             metrics.startup_time = startupTime;
 
-            const target = this.performanceMetrics.get('startup_time');
-            if (startupTime > target.critical) {
+            const target = this.performanceMetrics.get('startup_time')!;
+            if (startupTime > target.critical!) {
                 issues.push({
                     severity: 'critical',
                     message: `Startup time ${startupTime.toFixed(0)}ms exceeds critical threshold ${target.critical}ms`
@@ -779,21 +989,21 @@ class E2EPerformanceValidator {
             passed = false;
             issues.push({
                 severity: 'critical',
-                message: `Startup performance test failed: ${error.message}`
+                message: `Startup performance test failed: ${(error as Error).message}`
             });
         }
 
         return { passed, metrics, issues };
     }
 
-    async testRuntimeStability() {
-        const issues = [];
-        const metrics = {};
+    async testRuntimeStability(): Promise<RuntimeTestResult> {
+        const issues: Issue[] = [];
+        const metrics: Record<string, number> = {};
         let passed = true;
 
         try {
             const testDuration = 5000; // 5秒（簡略化）
-            const frameRates = [];
+            const frameRates: number[] = [];
             
             const startTime = performance.now();
             let lastFrameTime = startTime;
@@ -815,8 +1025,8 @@ class E2EPerformanceValidator {
             const avgFrameRate = frameRates.reduce((sum, fps) => sum + fps, 0) / frameRates.length;
             metrics.average_frame_rate = avgFrameRate;
 
-            const frameRateTarget = this.performanceMetrics.get('frame_rate');
-            if (avgFrameRate < frameRateTarget.minimum) {
+            const frameRateTarget = this.performanceMetrics.get('frame_rate')!;
+            if (avgFrameRate < frameRateTarget.minimum!) {
                 issues.push({
                     severity: 'critical',
                     message: `Average frame rate ${avgFrameRate.toFixed(1)} below minimum ${frameRateTarget.minimum}`
@@ -828,20 +1038,20 @@ class E2EPerformanceValidator {
             passed = false;
             issues.push({
                 severity: 'critical',
-                message: `Runtime stability test failed: ${error.message}`
+                message: `Runtime stability test failed: ${(error as Error).message}`
             });
         }
 
         return { passed, metrics, issues };
     }
 
-    async simulateSystemStartup() {
+    async simulateSystemStartup(): Promise<void> {
         // システム起動のシミュレーション
         const tasks = [
-            () => new Promise(resolve => setTimeout(resolve, 100)),  // 設定読み込み
-            () => new Promise(resolve => setTimeout(resolve, 200)),  // リソース初期化
-            () => new Promise(resolve => setTimeout(resolve, 150)),  // コンポーネント起動
-            () => new Promise(resolve => setTimeout(resolve, 100)),  // 最終初期化
+            () => new Promise<void>(resolve => setTimeout(resolve, 100)),  // 設定読み込み
+            () => new Promise<void>(resolve => setTimeout(resolve, 200)),  // リソース初期化
+            () => new Promise<void>(resolve => setTimeout(resolve, 150)),  // コンポーネント起動
+            () => new Promise<void>(resolve => setTimeout(resolve, 100)),  // 最終初期化
         ];
 
         for (const task of tasks) {
@@ -849,16 +1059,16 @@ class E2EPerformanceValidator {
         }
     }
 
-    getAvailableTests() {
+    getAvailableTests(): string[] {
         return Array.from(this.e2eTests.keys());
     }
 }
 
 // システム統合テスター（基本実装）
 class SystemIntegrationTester {
-    async initialize() {}
+    async initialize(): Promise<void> {}
     
-    async runSystemTests() {
+    async runSystemTests(): Promise<TestResult> {
         return {
             passed: true,
             tests: [
@@ -869,16 +1079,16 @@ class SystemIntegrationTester {
         };
     }
     
-    getAvailableTests() {
+    getAvailableTests(): string[] {
         return ['system_integration'];
     }
 }
 
 // モバイル互換性テスター（基本実装）
 class MobileCompatibilityTester {
-    async initialize() {}
+    async initialize(): Promise<void> {}
     
-    async runCompatibilityTests() {
+    async runCompatibilityTests(): Promise<TestResult> {
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         
         return {
@@ -892,16 +1102,16 @@ class MobileCompatibilityTester {
         };
     }
     
-    getAvailableTests() {
+    getAvailableTests(): string[] {
         return ['mobile_detection', 'touch_support'];
     }
 }
 
 // パフォーマンス目標検証（基本実装）
 class PerformanceTargetValidation {
-    async initialize() {}
+    async initialize(): Promise<void> {}
     
-    async validateTargets() {
+    async validateTargets(): Promise<TestResult> {
         return {
             passed: true,
             tests: [
@@ -912,20 +1122,22 @@ class PerformanceTargetValidation {
         };
     }
     
-    getAvailableTargets() {
+    getAvailableTargets(): string[] {
         return ['fps_target', 'memory_target', 'startup_target'];
     }
 }
 
 // テストレポーター（基本実装）
 class IntegrationTestReporter {
+    private lastRun: LastRunInfo | null;
+
     constructor() {
         this.lastRun = null;
     }
     
-    async initialize() {}
+    async initialize(): Promise<void> {}
     
-    async generateReport(testSession) {
+    async generateReport(testSession: TestSession): Promise<TestReport> {
         this.lastRun = {
             sessionId: testSession.id,
             timestamp: Date.now(),
@@ -941,29 +1153,31 @@ class IntegrationTestReporter {
         };
     }
     
-    getLastRunInfo() {
+    getLastRunInfo(): LastRunInfo | null {
         return this.lastRun;
     }
 }
 
 // テスト環境管理器（基本実装）
 class TestEnvironmentManager {
+    private currentEnvironment: string;
+
     constructor() {
         this.currentEnvironment = 'default';
     }
     
-    async initialize() {}
+    async initialize(): Promise<void> {}
     
-    async prepareEnvironment(environment) {
+    async prepareEnvironment(environment: string): Promise<void> {
         this.currentEnvironment = environment;
         console.log(`Test environment prepared: ${environment}`);
     }
     
-    async cleanup() {
+    async cleanup(): Promise<void> {
         console.log('Test environment cleaned up');
     }
     
-    getCurrentEnvironment() {
+    getCurrentEnvironment(): string {
         return this.currentEnvironment;
     }
 }

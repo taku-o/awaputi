@@ -3,11 +3,243 @@
  * パフォーマンスメトリクス収集システム - 各種パフォーマンス指標の収集
  */
 
+// Frame metrics types
+interface FrameMetrics {
+    frameNumber: number;
+    timestamp: number;
+    frameTime: number;
+    fps: number;
+    jank: number;
+}
+
+interface FrameMetricsData {
+    current: {
+        fps: number;
+        frameTime: number;
+    };
+    average: {
+        fps: number;
+        frameTime: number;
+    };
+    performance: {
+        jankPercentage: number;
+        jankFrames: number;
+        smoothFrames: number;
+    };
+    history: FrameMetrics[];
+}
+
+// Memory metrics types
+interface MemoryMetrics {
+    timestamp: number;
+    used: number;
+    total: number;
+    limit: number;
+    pressure: number;
+    available: number;
+    gc: {
+        detected: boolean;
+        reclaimed: number;
+    };
+}
+
+interface MemoryMetricsData {
+    current: {
+        used: number;
+        total: number;
+        pressure: number;
+        available: number;
+    };
+    trends: {
+        growthRate: number;
+        peakUsage: number;
+        averageUsage: number;
+    };
+    gc: {
+        frequency: number;
+        totalReclaimed: number;
+        averageReclaimed: number;
+    };
+    history: MemoryMetrics[];
+}
+
+// Render metrics types
+interface RenderMetrics {
+    timestamp: number;
+    type: string;
+    name: string;
+    startTime: number;
+    endTime?: number;
+    duration: number;
+}
+
+interface RenderMetricsData {
+    recent: RenderMetrics[];
+    statistics: {
+        totalRenders: number;
+        paintEvents: number;
+        customMeasures: number;
+        averageDuration: number;
+        maxDuration: number;
+        minDuration: number;
+    };
+}
+
+// Network metrics types
+interface NetworkTiming {
+    dns: number;
+    tcp: number;
+    ssl: number;
+    request: number;
+    response: number;
+    total: number;
+}
+
+interface NetworkMetrics {
+    timestamp: number;
+    name: string;
+    type: string;
+    startTime: number;
+    duration: number;
+    transferSize: number;
+    encodedBodySize: number;
+    decodedBodySize: number;
+    timing: NetworkTiming;
+}
+
+interface NetworkResourceType {
+    count: number;
+    totalSize: number;
+    totalTime: number;
+}
+
+interface NetworkMetricsData {
+    recent: NetworkMetrics[];
+    summary: {
+        totalRequests: number;
+        totalTransfer: number;
+        averageDuration: number;
+        byType: Record<string, NetworkResourceType>;
+    };
+    timing: {
+        averageDNS: number;
+        averageTCP: number;
+        averageRequest: number;
+        averageResponse: number;
+    };
+}
+
+// User interaction types
+interface Coordinates {
+    x: number;
+    y: number;
+}
+
+interface InteractionMetrics {
+    timestamp: number;
+    type: string;
+    target: string;
+    responseTime: number;
+    coordinates: Coordinates | null;
+}
+
+interface InteractionTypeStats {
+    count: number;
+    totalResponseTime: number;
+    averageResponseTime: number;
+}
+
+interface InteractionMetricsData {
+    recent: InteractionMetrics[];
+    summary: {
+        totalInteractions: number;
+        averageResponseTime: number;
+        maxResponseTime: number;
+        minResponseTime: number;
+        byType: Record<string, InteractionTypeStats>;
+    };
+}
+
+// Resource metrics types
+interface DOMMetrics {
+    nodes: number;
+    images: number;
+    scripts: number;
+    stylesheets: number;
+}
+
+interface StorageMetric {
+    used?: number;
+    available?: string;
+    error?: string;
+}
+
+interface StorageMetrics {
+    localStorage: StorageMetric;
+    sessionStorage: StorageMetric;
+}
+
+interface CacheMetrics {
+    estimated: string;
+}
+
+interface ResourceMetrics {
+    timestamp: number;
+    dom: DOMMetrics;
+    storage: StorageMetrics;
+    cache: CacheMetrics;
+}
+
+interface ResourceMetricsData {
+    current: ResourceMetrics;
+    trends: {
+        domGrowth: number;
+        storageGrowth: number;
+    };
+    history: ResourceMetrics[];
+}
+
+// Custom metrics types
+interface CustomMetric {
+    timestamp: number;
+    name: string;
+    value: number;
+    metadata: Record<string, any>;
+}
+
+interface CustomMetricStats {
+    min: number;
+    max: number;
+    average: number;
+    sum: number;
+}
+
+interface CustomMetricSummary {
+    current: number;
+    count: number;
+    recent: CustomMetric[];
+    statistics: CustomMetricStats;
+}
+
+interface CustomMetricsData {
+    [metricName: string]: CustomMetricSummary;
+}
+
+// Callback types
+type MetricsCallback = (type: string, data: any) => void;
+
 /**
  * Frame Metrics Collector
  * フレームメトリクス収集器 - フレームレートとレンダリング性能の収集
  */
 export class FrameMetricsCollector {
+    private frameHistory: FrameMetrics[];
+    private maxHistorySize: number;
+    private lastFrameTime: number;
+    private frameCount: number;
+    private collecting: boolean;
+    private callbacks: MetricsCallback[];
+
     constructor() {
         this.frameHistory = [];
         this.maxHistorySize = 1000;
@@ -17,21 +249,21 @@ export class FrameMetricsCollector {
         this.callbacks = [];
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         console.log('Frame Metrics Collector initialized');
         this.collecting = true;
         this.startCollection();
     }
 
-    startCollection() {
-        const collectFrame = () => {
+    private startCollection(): void {
+        const collectFrame = (): void => {
             if (!this.collecting) return;
 
             const currentTime = performance.now();
             const frameTime = currentTime - this.lastFrameTime;
             const fps = 1000 / frameTime;
 
-            const frameMetrics = {
+            const frameMetrics: FrameMetrics = {
                 frameNumber: this.frameCount++,
                 timestamp: currentTime,
                 frameTime,
@@ -53,7 +285,7 @@ export class FrameMetricsCollector {
         requestAnimationFrame(collectFrame);
     }
 
-    getMetrics() {
+    getMetrics(): FrameMetricsData | null {
         if (this.frameHistory.length === 0) return null;
 
         const recent = this.frameHistory.slice(-60); // Last second at 60fps
@@ -82,11 +314,11 @@ export class FrameMetricsCollector {
         };
     }
 
-    onMetrics(callback) {
+    onMetrics(callback: MetricsCallback): void {
         this.callbacks.push(callback);
     }
 
-    notifyCallbacks(type, data) {
+    private notifyCallbacks(type: string, data: any): void {
         this.callbacks.forEach(callback => {
             try {
                 callback(type, data);
@@ -96,7 +328,7 @@ export class FrameMetricsCollector {
         });
     }
 
-    stop() {
+    stop(): void {
         this.collecting = false;
     }
 }
@@ -106,6 +338,12 @@ export class FrameMetricsCollector {
  * メモリメトリクス収集器 - メモリ使用量とガベージコレクションの追跡
  */
 export class MemoryMetricsCollector {
+    private memoryHistory: MemoryMetrics[];
+    private maxHistorySize: number;
+    private collecting: boolean;
+    private collectionInterval: NodeJS.Timeout | null;
+    private callbacks: MetricsCallback[];
+
     constructor() {
         this.memoryHistory = [];
         this.maxHistorySize = 200;
@@ -114,13 +352,13 @@ export class MemoryMetricsCollector {
         this.callbacks = [];
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         console.log('Memory Metrics Collector initialized');
         this.collecting = true;
         this.startCollection();
     }
 
-    startCollection() {
+    private startCollection(): void {
         this.collectionInterval = setInterval(() => {
             if (!this.collecting) return;
 
@@ -135,15 +373,16 @@ export class MemoryMetricsCollector {
         }, 1000); // Collect every second
     }
 
-    collectMemoryMetrics() {
-        if (!performance.memory) {
+    private collectMemoryMetrics(): MemoryMetrics | null {
+        if (!('memory' in performance) || !(performance as any).memory) {
             return null;
         }
 
+        const memory = (performance as any).memory;
         const timestamp = Date.now();
-        const used = performance.memory.usedJSHeapSize;
-        const total = performance.memory.totalJSHeapSize;
-        const limit = performance.memory.jsHeapSizeLimit;
+        const used = memory.usedJSHeapSize;
+        const total = memory.totalJSHeapSize;
+        const limit = memory.jsHeapSizeLimit;
 
         // Detect potential GC events
         const previousMetrics = this.memoryHistory[this.memoryHistory.length - 1];
@@ -169,7 +408,7 @@ export class MemoryMetricsCollector {
         };
     }
 
-    getMetrics() {
+    getMetrics(): MemoryMetricsData | null {
         if (this.memoryHistory.length === 0) return null;
 
         const current = this.memoryHistory[this.memoryHistory.length - 1];
@@ -208,11 +447,11 @@ export class MemoryMetricsCollector {
         };
     }
 
-    onMetrics(callback) {
+    onMetrics(callback: MetricsCallback): void {
         this.callbacks.push(callback);
     }
 
-    notifyCallbacks(type, data) {
+    private notifyCallbacks(type: string, data: any): void {
         this.callbacks.forEach(callback => {
             try {
                 callback(type, data);
@@ -222,7 +461,7 @@ export class MemoryMetricsCollector {
         });
     }
 
-    stop() {
+    stop(): void {
         this.collecting = false;
         if (this.collectionInterval) {
             clearInterval(this.collectionInterval);
@@ -236,6 +475,12 @@ export class MemoryMetricsCollector {
  * レンダーメトリクス収集器 - レンダリングパフォーマンスの詳細収集
  */
 export class RenderMetricsCollector {
+    private renderHistory: RenderMetrics[];
+    private maxHistorySize: number;
+    private renderStartTime: number | null;
+    private callbacks: MetricsCallback[];
+    private paintObserver: PerformanceObserver | null;
+
     constructor() {
         this.renderHistory = [];
         this.maxHistorySize = 500;
@@ -244,12 +489,12 @@ export class RenderMetricsCollector {
         this.paintObserver = null;
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         console.log('Render Metrics Collector initialized');
         this.setupPaintObserver();
     }
 
-    setupPaintObserver() {
+    private setupPaintObserver(): void {
         if ('PerformanceObserver' in window) {
             this.paintObserver = new PerformanceObserver((list) => {
                 list.getEntries().forEach(entry => {
@@ -265,13 +510,13 @@ export class RenderMetricsCollector {
         }
     }
 
-    handlePaintEntry(entry) {
-        const renderMetrics = {
+    private handlePaintEntry(entry: PerformanceEntry): void {
+        const renderMetrics: RenderMetrics = {
             timestamp: Date.now(),
             type: entry.entryType,
             name: entry.name,
             startTime: entry.startTime,
-            duration: entry.duration
+            duration: entry.duration || 0
         };
 
         this.renderHistory.push(renderMetrics);
@@ -282,12 +527,12 @@ export class RenderMetricsCollector {
         this.notifyCallbacks('render', renderMetrics);
     }
 
-    markRenderStart(label = 'render') {
+    markRenderStart(label: string = 'render'): void {
         this.renderStartTime = performance.now();
         performance.mark(`${label}-start`);
     }
 
-    markRenderEnd(label = 'render') {
+    markRenderEnd(label: string = 'render'): void {
         if (this.renderStartTime) {
             const endTime = performance.now();
             const duration = endTime - this.renderStartTime;
@@ -295,7 +540,7 @@ export class RenderMetricsCollector {
             performance.mark(`${label}-end`);
             performance.measure(label, `${label}-start`, `${label}-end`);
             
-            const renderMetrics = {
+            const renderMetrics: RenderMetrics = {
                 timestamp: Date.now(),
                 type: 'custom',
                 name: label,
@@ -314,7 +559,7 @@ export class RenderMetricsCollector {
         }
     }
 
-    getMetrics() {
+    getMetrics(): RenderMetricsData | null {
         if (this.renderHistory.length === 0) return null;
 
         const recent = this.renderHistory.slice(-50);
@@ -337,11 +582,11 @@ export class RenderMetricsCollector {
         };
     }
 
-    onMetrics(callback) {
+    onMetrics(callback: MetricsCallback): void {
         this.callbacks.push(callback);
     }
 
-    notifyCallbacks(type, data) {
+    private notifyCallbacks(type: string, data: any): void {
         this.callbacks.forEach(callback => {
             try {
                 callback(type, data);
@@ -351,7 +596,7 @@ export class RenderMetricsCollector {
         });
     }
 
-    stop() {
+    stop(): void {
         if (this.paintObserver) {
             this.paintObserver.disconnect();
             this.paintObserver = null;
@@ -364,6 +609,11 @@ export class RenderMetricsCollector {
  * ネットワークメトリクス収集器 - ネットワークパフォーマンスの監視
  */
 export class NetworkMetricsCollector {
+    private networkHistory: NetworkMetrics[];
+    private maxHistorySize: number;
+    private callbacks: MetricsCallback[];
+    private resourceObserver: PerformanceObserver | null;
+
     constructor() {
         this.networkHistory = [];
         this.maxHistorySize = 100;
@@ -371,12 +621,12 @@ export class NetworkMetricsCollector {
         this.resourceObserver = null;
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         console.log('Network Metrics Collector initialized');
         this.setupResourceObserver();
     }
 
-    setupResourceObserver() {
+    private setupResourceObserver(): void {
         if ('PerformanceObserver' in window) {
             this.resourceObserver = new PerformanceObserver((list) => {
                 list.getEntries().forEach(entry => {
@@ -392,24 +642,26 @@ export class NetworkMetricsCollector {
         }
     }
 
-    handleResourceEntry(entry) {
-        const networkMetrics = {
+    private handleResourceEntry(entry: PerformanceEntry): void {
+        const resourceEntry = entry as PerformanceResourceTiming;
+        
+        const networkMetrics: NetworkMetrics = {
             timestamp: Date.now(),
             name: entry.name,
             type: this.getResourceType(entry.name),
             startTime: entry.startTime,
-            duration: entry.duration,
-            transferSize: entry.transferSize || 0,
-            encodedBodySize: entry.encodedBodySize || 0,
-            decodedBodySize: entry.decodedBodySize || 0,
+            duration: entry.duration || 0,
+            transferSize: resourceEntry.transferSize || 0,
+            encodedBodySize: resourceEntry.encodedBodySize || 0,
+            decodedBodySize: resourceEntry.decodedBodySize || 0,
             timing: {
-                dns: entry.domainLookupEnd - entry.domainLookupStart,
-                tcp: entry.connectEnd - entry.connectStart,
-                ssl: entry.secureConnectionStart > 0 ? 
-                    entry.connectEnd - entry.secureConnectionStart : 0,
-                request: entry.responseStart - entry.requestStart,
-                response: entry.responseEnd - entry.responseStart,
-                total: entry.responseEnd - entry.startTime
+                dns: (resourceEntry.domainLookupEnd || 0) - (resourceEntry.domainLookupStart || 0),
+                tcp: (resourceEntry.connectEnd || 0) - (resourceEntry.connectStart || 0),
+                ssl: (resourceEntry.secureConnectionStart || 0) > 0 ? 
+                    (resourceEntry.connectEnd || 0) - (resourceEntry.secureConnectionStart || 0) : 0,
+                request: (resourceEntry.responseStart || 0) - (resourceEntry.requestStart || 0),
+                response: (resourceEntry.responseEnd || 0) - (resourceEntry.responseStart || 0),
+                total: (resourceEntry.responseEnd || 0) - entry.startTime
             }
         };
 
@@ -421,9 +673,9 @@ export class NetworkMetricsCollector {
         this.notifyCallbacks('network', networkMetrics);
     }
 
-    getResourceType(url) {
-        const extension = url.split('.').pop().toLowerCase();
-        const typeMap = {
+    private getResourceType(url: string): string {
+        const extension = url.split('.').pop()?.toLowerCase() || '';
+        const typeMap: Record<string, string> = {
             'js': 'script',
             'css': 'stylesheet',
             'png': 'image',
@@ -441,7 +693,7 @@ export class NetworkMetricsCollector {
         return typeMap[extension] || 'other';
     }
 
-    getMetrics() {
+    getMetrics(): NetworkMetricsData | null {
         if (this.networkHistory.length === 0) return null;
 
         const recent = this.networkHistory.slice(-20);
@@ -449,7 +701,7 @@ export class NetworkMetricsCollector {
         const averageDuration = recent.reduce((sum, n) => sum + n.duration, 0) / recent.length;
 
         // Group by resource type
-        const byType = {};
+        const byType: Record<string, NetworkResourceType> = {};
         recent.forEach(entry => {
             if (!byType[entry.type]) {
                 byType[entry.type] = { count: 0, totalSize: 0, totalTime: 0 };
@@ -476,11 +728,11 @@ export class NetworkMetricsCollector {
         };
     }
 
-    onMetrics(callback) {
+    onMetrics(callback: MetricsCallback): void {
         this.callbacks.push(callback);
     }
 
-    notifyCallbacks(type, data) {
+    private notifyCallbacks(type: string, data: any): void {
         this.callbacks.forEach(callback => {
             try {
                 callback(type, data);
@@ -490,7 +742,7 @@ export class NetworkMetricsCollector {
         });
     }
 
-    stop() {
+    stop(): void {
         if (this.resourceObserver) {
             this.resourceObserver.disconnect();
             this.resourceObserver = null;
@@ -503,6 +755,11 @@ export class NetworkMetricsCollector {
  * ユーザーインタラクション収集器 - ユーザー操作の応答性測定
  */
 export class UserInteractionCollector {
+    private interactionHistory: InteractionMetrics[];
+    private maxHistorySize: number;
+    private callbacks: MetricsCallback[];
+    private eventListeners: Map<string, EventListener>;
+
     constructor() {
         this.interactionHistory = [];
         this.maxHistorySize = 200;
@@ -510,22 +767,22 @@ export class UserInteractionCollector {
         this.eventListeners = new Map();
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         console.log('User Interaction Collector initialized');
         this.setupEventListeners();
     }
 
-    setupEventListeners() {
+    private setupEventListeners(): void {
         const events = ['click', 'keydown', 'scroll', 'touchstart'];
         
         events.forEach(eventType => {
-            const listener = (event) => this.handleInteraction(eventType, event);
+            const listener = (event: Event) => this.handleInteraction(eventType, event);
             document.addEventListener(eventType, listener, { passive: true });
             this.eventListeners.set(eventType, listener);
         });
     }
 
-    handleInteraction(type, event) {
+    private handleInteraction(type: string, event: Event): void {
         const timestamp = Date.now();
         const startTime = performance.now();
         
@@ -533,10 +790,10 @@ export class UserInteractionCollector {
         requestAnimationFrame(() => {
             const responseTime = performance.now() - startTime;
             
-            const interactionMetrics = {
+            const interactionMetrics: InteractionMetrics = {
                 timestamp,
                 type,
-                target: event.target.tagName.toLowerCase(),
+                target: (event.target as Element)?.tagName?.toLowerCase() || 'unknown',
                 responseTime,
                 coordinates: this.getCoordinates(event)
             };
@@ -550,20 +807,25 @@ export class UserInteractionCollector {
         });
     }
 
-    getCoordinates(event) {
+    private getCoordinates(event: Event): Coordinates | null {
         if (event.type === 'scroll') {
             return { x: window.scrollX, y: window.scrollY };
         }
-        if (event.clientX !== undefined) {
-            return { x: event.clientX, y: event.clientY };
+        
+        const mouseEvent = event as MouseEvent;
+        if (mouseEvent.clientX !== undefined) {
+            return { x: mouseEvent.clientX, y: mouseEvent.clientY };
         }
-        if (event.touches && event.touches[0]) {
-            return { x: event.touches[0].clientX, y: event.touches[0].clientY };
+        
+        const touchEvent = event as TouchEvent;
+        if (touchEvent.touches && touchEvent.touches[0]) {
+            return { x: touchEvent.touches[0].clientX, y: touchEvent.touches[0].clientY };
         }
+        
         return null;
     }
 
-    getMetrics() {
+    getMetrics(): InteractionMetricsData | null {
         if (this.interactionHistory.length === 0) return null;
 
         const recent = this.interactionHistory.slice(-50);
@@ -571,10 +833,10 @@ export class UserInteractionCollector {
         const averageResponseTime = totalResponseTime / recent.length;
 
         // Group by interaction type
-        const byType = {};
+        const byType: Record<string, InteractionTypeStats> = {};
         recent.forEach(interaction => {
             if (!byType[interaction.type]) {
-                byType[interaction.type] = { count: 0, totalResponseTime: 0 };
+                byType[interaction.type] = { count: 0, totalResponseTime: 0, averageResponseTime: 0 };
             }
             byType[interaction.type].count++;
             byType[interaction.type].totalResponseTime += interaction.responseTime;
@@ -598,11 +860,11 @@ export class UserInteractionCollector {
         };
     }
 
-    onMetrics(callback) {
+    onMetrics(callback: MetricsCallback): void {
         this.callbacks.push(callback);
     }
 
-    notifyCallbacks(type, data) {
+    private notifyCallbacks(type: string, data: any): void {
         this.callbacks.forEach(callback => {
             try {
                 callback(type, data);
@@ -612,7 +874,7 @@ export class UserInteractionCollector {
         });
     }
 
-    stop() {
+    stop(): void {
         this.eventListeners.forEach((listener, eventType) => {
             document.removeEventListener(eventType, listener);
         });
@@ -625,6 +887,11 @@ export class UserInteractionCollector {
  * リソースメトリクス収集器 - リソース使用量の監視
  */
 export class ResourceMetricsCollector {
+    private resourceHistory: ResourceMetrics[];
+    private maxHistorySize: number;
+    private callbacks: MetricsCallback[];
+    private collectionInterval: NodeJS.Timeout | null;
+
     constructor() {
         this.resourceHistory = [];
         this.maxHistorySize = 100;
@@ -632,12 +899,12 @@ export class ResourceMetricsCollector {
         this.collectionInterval = null;
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         console.log('Resource Metrics Collector initialized');
         this.startCollection();
     }
 
-    startCollection() {
+    private startCollection(): void {
         this.collectionInterval = setInterval(() => {
             const resourceMetrics = this.collectResourceMetrics();
             if (resourceMetrics) {
@@ -650,11 +917,11 @@ export class ResourceMetricsCollector {
         }, 5000); // Collect every 5 seconds
     }
 
-    collectResourceMetrics() {
+    private collectResourceMetrics(): ResourceMetrics {
         const timestamp = Date.now();
         
         // Basic resource metrics
-        const resources = {
+        const resources: ResourceMetrics = {
             timestamp,
             dom: {
                 nodes: document.querySelectorAll('*').length,
@@ -669,8 +936,11 @@ export class ResourceMetricsCollector {
         return resources;
     }
 
-    getStorageMetrics() {
-        const storage = {};
+    private getStorageMetrics(): StorageMetrics {
+        const storage: StorageMetrics = {
+            localStorage: {},
+            sessionStorage: {}
+        };
         
         try {
             storage.localStorage = {
@@ -693,7 +963,7 @@ export class ResourceMetricsCollector {
         return storage;
     }
 
-    getCacheMetrics() {
+    private getCacheMetrics(): CacheMetrics {
         // Simplified cache metrics (would need more specific implementation)
         return {
             estimated: 'unknown',
@@ -701,7 +971,7 @@ export class ResourceMetricsCollector {
         };
     }
 
-    getMetrics() {
+    getMetrics(): ResourceMetricsData | null {
         if (this.resourceHistory.length === 0) return null;
 
         const current = this.resourceHistory[this.resourceHistory.length - 1];
@@ -712,18 +982,20 @@ export class ResourceMetricsCollector {
             trends: {
                 domGrowth: recent.length > 1 ? 
                     current.dom.nodes - recent[0].dom.nodes : 0,
-                storageGrowth: recent.length > 1 ? 
+                storageGrowth: recent.length > 1 && 
+                    typeof current.storage.localStorage.used === 'number' &&
+                    typeof recent[0].storage.localStorage.used === 'number' ? 
                     current.storage.localStorage.used - recent[0].storage.localStorage.used : 0
             },
             history: recent
         };
     }
 
-    onMetrics(callback) {
+    onMetrics(callback: MetricsCallback): void {
         this.callbacks.push(callback);
     }
 
-    notifyCallbacks(type, data) {
+    private notifyCallbacks(type: string, data: any): void {
         this.callbacks.forEach(callback => {
             try {
                 callback(type, data);
@@ -733,7 +1005,7 @@ export class ResourceMetricsCollector {
         });
     }
 
-    stop() {
+    stop(): void {
         if (this.collectionInterval) {
             clearInterval(this.collectionInterval);
             this.collectionInterval = null;
@@ -746,18 +1018,21 @@ export class ResourceMetricsCollector {
  * カスタムメトリクス収集器 - アプリケーション固有のメトリクス収集
  */
 export class CustomMetricsCollector {
+    private customMetrics: Map<string, CustomMetric[]>;
+    private callbacks: MetricsCallback[];
+
     constructor() {
         this.customMetrics = new Map();
         this.callbacks = [];
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         console.log('Custom Metrics Collector initialized');
     }
 
-    recordMetric(name, value, metadata = {}) {
+    recordMetric(name: string, value: number, metadata: Record<string, any> = {}): void {
         const timestamp = Date.now();
-        const metric = {
+        const metric: CustomMetric = {
             timestamp,
             name,
             value,
@@ -768,7 +1043,7 @@ export class CustomMetricsCollector {
             this.customMetrics.set(name, []);
         }
 
-        const history = this.customMetrics.get(name);
+        const history = this.customMetrics.get(name)!;
         history.push(metric);
 
         // Keep only last 100 entries per metric
@@ -779,7 +1054,7 @@ export class CustomMetricsCollector {
         this.notifyCallbacks('custom', metric);
     }
 
-    incrementCounter(name, amount = 1, metadata = {}) {
+    incrementCounter(name: string, amount: number = 1, metadata: Record<string, any> = {}): void {
         const current = this.getLatestValue(name) || 0;
         this.recordMetric(name, current + amount, { 
             type: 'counter', 
@@ -788,7 +1063,7 @@ export class CustomMetricsCollector {
         });
     }
 
-    recordTiming(name, startTime, endTime = performance.now(), metadata = {}) {
+    recordTiming(name: string, startTime: number, endTime: number = performance.now(), metadata: Record<string, any> = {}): void {
         const duration = endTime - startTime;
         this.recordMetric(name, duration, { 
             type: 'timing', 
@@ -798,14 +1073,14 @@ export class CustomMetricsCollector {
         });
     }
 
-    getLatestValue(name) {
+    getLatestValue(name: string): number | null {
         const history = this.customMetrics.get(name);
         return history && history.length > 0 ? 
             history[history.length - 1].value : null;
     }
 
-    getMetrics() {
-        const summary = {};
+    getMetrics(): CustomMetricsData {
+        const summary: CustomMetricsData = {};
         
         for (const [name, history] of this.customMetrics) {
             const recent = history.slice(-10);
@@ -827,11 +1102,11 @@ export class CustomMetricsCollector {
         return summary;
     }
 
-    onMetrics(callback) {
+    onMetrics(callback: MetricsCallback): void {
         this.callbacks.push(callback);
     }
 
-    notifyCallbacks(type, data) {
+    private notifyCallbacks(type: string, data: any): void {
         this.callbacks.forEach(callback => {
             try {
                 callback(type, data);
@@ -841,15 +1116,15 @@ export class CustomMetricsCollector {
         });
     }
 
-    clearMetric(name) {
+    clearMetric(name: string): void {
         this.customMetrics.delete(name);
     }
 
-    clearAllMetrics() {
+    clearAllMetrics(): void {
         this.customMetrics.clear();
     }
 
-    stop() {
+    stop(): void {
         // Custom metrics don't need active stopping
         console.log('Custom Metrics Collector stopped');
     }

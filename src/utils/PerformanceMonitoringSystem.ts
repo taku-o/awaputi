@@ -17,7 +17,199 @@ import {
     RealtimeMetricsStream 
 } from './performance-monitoring/PerformanceLegacyComponents.js';
 
+// Type definitions
+interface ErrorHandler {
+    handleError(error: Error, context: any): void;
+}
+
+interface MetricConfig {
+    id: string;
+    name: string;
+    category: string;
+    unit: string;
+    target: number;
+    min?: number;
+    max?: number;
+    warning_min?: number;
+    warning_max?: number;
+}
+
+interface MonitoringConfig {
+    interval?: number;
+    enableDashboard?: boolean;
+    enableHistory?: boolean;
+    enableAlerts?: boolean;
+    enableRealtimeStream?: boolean;
+    metricsFilter?: string[];
+    retention?: number;
+    [key: string]: any;
+}
+
+interface PerformanceMetrics extends Map<string, any> {}
+
+interface DataPoint {
+    timestamp: number;
+    value: number;
+}
+
+interface MetricStats {
+    current: number;
+    average: number;
+    min: number;
+    max: number;
+    trend: 'stable' | 'increasing' | 'decreasing';
+    variance: number;
+    samplesCount: number;
+}
+
+interface TimeRange {
+    startTime: number;
+    endTime: number;
+    duration: number;
+}
+
+interface Alert {
+    metricId: string;
+    threshold: number;
+    condition: string;
+    timestamp: number;
+    [key: string]: any;
+}
+
+interface PerformanceEvent {
+    type: string;
+    timestamp: number;
+    [key: string]: any;
+}
+
+interface AnalysisResults {
+    [key: string]: any;
+}
+
+interface MonitoringStats {
+    [key: string]: any;
+}
+
+interface ReportSummary {
+    totalMetrics: number;
+    healthyMetrics: number;
+    warningMetrics: number;
+    criticalMetrics: number;
+    overallHealth: 'healthy' | 'warning' | 'critical' | 'unknown';
+}
+
+interface PerformanceReport {
+    timeRange: TimeRange;
+    metrics: Map<string, MetricStats>;
+    summary: ReportSummary;
+    alerts: Alert[];
+    analysisResults: AnalysisResults;
+    performanceEvents: PerformanceEvent[];
+    timestamp: number;
+}
+
+interface MonitoringStatus {
+    active: boolean;
+    config: MonitoringConfig | null;
+    metricsCount: number;
+    dataPoints: number;
+    activeAlerts: number;
+    realTimeStats: MonitoringStats;
+    analysisResults: AnalysisResults;
+}
+
+interface TrendData {
+    [key: string]: any;
+}
+
+interface PerformanceInsight {
+    [key: string]: any;
+}
+
+// Legacy component interfaces
+interface PerformanceDashboard {
+    initialize(): Promise<void>;
+    show(): Promise<void>;
+    hide(): Promise<void>;
+    toggle(): Promise<void>;
+    updateMetrics(metrics: PerformanceMetrics): void;
+}
+
+interface PerformanceDataGatherer {
+    initialize(): Promise<void>;
+    start(config: MonitoringConfig): Promise<void>;
+    stop(): Promise<void>;
+    collectAllMetrics(): Promise<PerformanceMetrics>;
+}
+
+interface PerformanceHistoryTracker {
+    initialize(): Promise<void>;
+    start(config: MonitoringConfig): Promise<void>;
+    stop(): Promise<void>;
+    addDataPoint(timestamp: number, metrics: PerformanceMetrics): void;
+    getHistory(metricId: string, timeRange: number): DataPoint[];
+    getAggregated(metricId: string, timeRange: number, aggregation: string): any;
+    getDataPointCount(): number;
+}
+
+interface PerformanceAlertManager {
+    initialize(): Promise<void>;
+    start(config: MonitoringConfig): Promise<void>;
+    stop(): Promise<void>;
+    checkThresholds(metrics: PerformanceMetrics): void;
+    handlePerformanceEvent(eventType: string, event: PerformanceEvent): void;
+    addAlert(metricId: string, threshold: number, condition: string, callback?: Function): any;
+    getActiveAlerts(): Alert[];
+    getAlertsInRange(startTime: number, endTime: number): Alert[];
+}
+
+interface MetricsRegistry {
+    register(metric: MetricConfig): any;
+    get(metricId: string): MetricConfig | undefined;
+    getCount(): number;
+    getAllIds(): string[];
+}
+
+interface RealtimeMetricsStream {
+    initialize(): Promise<void>;
+    start(config: MonitoringConfig): Promise<void>;
+    stop(): Promise<void>;
+    send(timestamp: number, metrics: PerformanceMetrics): void;
+}
+
+interface RealTimePerformanceMonitor {
+    startMonitoring(config: MonitoringConfig): Promise<void>;
+    stopMonitoring(): Promise<void>;
+    getMonitoringStats(): MonitoringStats;
+    getEventsHistory(timeRange: number): PerformanceEvent[];
+    subscribeToStream(callback: Function): Function;
+    configure(config: any): void;
+    destroy(): void;
+}
+
+interface PerformanceDataAnalyzer {
+    analyzePerformanceData(timestamp: number, metrics: PerformanceMetrics): Promise<void>;
+    getAnalysisResults(): AnalysisResults;
+    getTrendData(metricId: string): TrendData;
+    getRecentInsights(category?: string | null): PerformanceInsight[];
+    configure(config: any): void;
+    destroy(): void;
+}
+
 export class PerformanceMonitoringSystem {
+    private errorHandler: ErrorHandler;
+    private realTimeMonitor: RealTimePerformanceMonitor;
+    private dataAnalyzer: PerformanceDataAnalyzer;
+    private dashboard: PerformanceDashboard;
+    private dataGatherer: PerformanceDataGatherer;
+    private historyTracker: PerformanceHistoryTracker;
+    private alertManager: PerformanceAlertManager;
+    private metricsRegistry: MetricsRegistry;
+    private realtimeStream: RealtimeMetricsStream;
+    private monitoring: boolean;
+    private monitoringConfig: MonitoringConfig | null;
+    private monitoringInterval?: NodeJS.Timeout;
+
     constructor() {
         this.errorHandler = getErrorHandler();
         
@@ -42,7 +234,7 @@ export class PerformanceMonitoringSystem {
         console.log('[PerformanceMonitoringSystem] Initialized with Main Controller Pattern');
     }
 
-    async initializeMonitoring() {
+    async initializeMonitoring(): Promise<void> {
         try {
             await this.setupMetricsRegistry();
             await this.dashboard.initialize();
@@ -53,16 +245,16 @@ export class PerformanceMonitoringSystem {
             
             console.log('[PerformanceMonitoringSystem] Monitoring system initialized successfully');
         } catch (error) {
-            this.errorHandler.handleError(error, {
+            this.errorHandler.handleError(error as Error, {
                 context: 'PerformanceMonitoringSystem.initializeMonitoring'
             });
             throw error;
         }
     }
 
-    async setupMetricsRegistry() {
+    async setupMetricsRegistry(): Promise<void> {
         // 標準メトリクスの登録
-        const standardMetrics = [
+        const standardMetrics: MetricConfig[] = [
             // フレームレートメトリクス
             { id: 'fps', name: 'Frame Rate', category: 'rendering', unit: 'fps', target: 60, min: 30 },
             { id: 'frame_time', name: 'Frame Time', category: 'rendering', unit: 'ms', target: 16.67, max: 33.33 },
@@ -97,7 +289,7 @@ export class PerformanceMonitoringSystem {
         }
     }
 
-    async startMonitoring(config = {}) {
+    async startMonitoring(config: MonitoringConfig = {}): Promise<void> {
         if (this.monitoring) {
             console.warn('[PerformanceMonitoringSystem] Monitoring is already active');
             return;
@@ -152,14 +344,14 @@ export class PerformanceMonitoringSystem {
 
         } catch (error) {
             this.monitoring = false;
-            this.errorHandler.handleError(error, {
+            this.errorHandler.handleError(error as Error, {
                 context: 'PerformanceMonitoringSystem.startMonitoring'
             });
             throw error;
         }
     }
 
-    async stopMonitoring() {
+    async stopMonitoring(): Promise<void> {
         if (!this.monitoring) {
             console.warn('[PerformanceMonitoringSystem] Monitoring is not active');
             return;
@@ -183,20 +375,20 @@ export class PerformanceMonitoringSystem {
             await this.realtimeStream.stop();
 
             // ダッシュボード非表示
-            if (this.monitoringConfig.enableDashboard) {
+            if (this.monitoringConfig?.enableDashboard) {
                 await this.dashboard.hide();
             }
 
             console.log('[PerformanceMonitoringSystem] Performance monitoring stopped');
 
         } catch (error) {
-            this.errorHandler.handleError(error, {
+            this.errorHandler.handleError(error as Error, {
                 context: 'PerformanceMonitoringSystem.stopMonitoring'
             });
         }
     }
 
-    async collectAndProcessMetrics() {
+    async collectAndProcessMetrics(): Promise<void> {
         try {
             // 全メトリクスを収集
             const metrics = await this.dataGatherer.collectAllMetrics();
@@ -206,22 +398,22 @@ export class PerformanceMonitoringSystem {
             const filteredMetrics = this.filterMetrics(metrics);
 
             // 履歴に追加
-            if (this.monitoringConfig.enableHistory) {
+            if (this.monitoringConfig?.enableHistory) {
                 this.historyTracker.addDataPoint(timestamp, filteredMetrics);
             }
 
             // ダッシュボード更新
-            if (this.monitoringConfig.enableDashboard) {
+            if (this.monitoringConfig?.enableDashboard) {
                 this.dashboard.updateMetrics(filteredMetrics);
             }
 
             // アラートチェック
-            if (this.monitoringConfig.enableAlerts) {
+            if (this.monitoringConfig?.enableAlerts) {
                 this.alertManager.checkThresholds(filteredMetrics);
             }
 
             // リアルタイムストリーム送信
-            if (this.monitoringConfig.enableRealtimeStream) {
+            if (this.monitoringConfig?.enableRealtimeStream) {
                 this.realtimeStream.send(timestamp, filteredMetrics);
             }
 
@@ -229,14 +421,14 @@ export class PerformanceMonitoringSystem {
             await this.dataAnalyzer.analyzePerformanceData(timestamp, filteredMetrics);
 
         } catch (error) {
-            this.errorHandler.handleError(error, {
+            this.errorHandler.handleError(error as Error, {
                 context: 'PerformanceMonitoringSystem.collectAndProcessMetrics'
             });
         }
     }
 
-    filterMetrics(metrics) {
-        if (!this.monitoringConfig.metricsFilter || this.monitoringConfig.metricsFilter.length === 0) {
+    private filterMetrics(metrics: PerformanceMetrics): PerformanceMetrics {
+        if (!this.monitoringConfig?.metricsFilter || this.monitoringConfig.metricsFilter.length === 0) {
             return metrics;
         }
 
@@ -251,20 +443,16 @@ export class PerformanceMonitoringSystem {
 
     /**
      * Handle real-time data from monitor
-     * @param {number} timestamp - Data timestamp
-     * @param {Map} metrics - Performance metrics
      */
-    onRealTimeData(timestamp, metrics) {
+    onRealTimeData(timestamp: number, metrics: PerformanceMetrics): void {
         // Process real-time data if needed
         console.log(`[PerformanceMonitoringSystem] Real-time data received: ${metrics.size} metrics`);
     }
 
     /**
      * Handle performance events from monitor
-     * @param {string} eventType - Event type ('detected' or 'resolved')
-     * @param {object} event - Event data
      */
-    onPerformanceEvent(eventType, event) {
+    onPerformanceEvent(eventType: string, event: PerformanceEvent): void {
         console.log(`[PerformanceMonitoringSystem] Performance event ${eventType}: ${event.type}`);
         
         // Forward to alert manager if needed
@@ -274,31 +462,31 @@ export class PerformanceMonitoringSystem {
     }
 
     // 履歴データへのアクセス
-    getMetricsHistory(metricId, timeRange = 3600000) { // デフォルト1時間
+    getMetricsHistory(metricId: string, timeRange: number = 3600000): DataPoint[] { // デフォルト1時間
         return this.historyTracker.getHistory(metricId, timeRange);
     }
 
-    getAggregatedMetrics(metricId, timeRange = 3600000, aggregation = 'average') {
+    getAggregatedMetrics(metricId: string, timeRange: number = 3600000, aggregation: string = 'average'): any {
         return this.historyTracker.getAggregated(metricId, timeRange, aggregation);
     }
 
     // カスタムメトリクス追加
-    addCustomMetric(metricConfig) {
+    addCustomMetric(metricConfig: MetricConfig): any {
         return this.metricsRegistry.register(metricConfig);
     }
 
     // アラート設定
-    setAlert(metricId, threshold, condition = 'above', callback = null) {
+    setAlert(metricId: string, threshold: number, condition: string = 'above', callback: Function | null = null): any {
         return this.alertManager.addAlert(metricId, threshold, condition, callback);
     }
 
     // ダッシュボード表示切り替え
-    toggleDashboard() {
+    toggleDashboard(): Promise<void> {
         return this.dashboard.toggle();
     }
 
     // 現在の監視状態
-    getMonitoringStatus() {
+    getMonitoringStatus(): MonitoringStatus {
         return {
             active: this.monitoring,
             config: this.monitoringConfig,
@@ -311,14 +499,14 @@ export class PerformanceMonitoringSystem {
     }
 
     // パフォーマンスレポート生成
-    async generateReport(timeRange = 3600000) {
+    async generateReport(timeRange: number = 3600000): Promise<PerformanceReport> {
         const endTime = Date.now();
         const startTime = endTime - timeRange;
 
-        const report = {
+        const report: PerformanceReport = {
             timeRange: { startTime, endTime, duration: timeRange },
             metrics: new Map(),
-            summary: {},
+            summary: {} as ReportSummary,
             alerts: this.alertManager.getAlertsInRange(startTime, endTime),
             analysisResults: this.dataAnalyzer.getAnalysisResults(),
             performanceEvents: this.realTimeMonitor.getEventsHistory(timeRange),
@@ -347,11 +535,11 @@ export class PerformanceMonitoringSystem {
         return report;
     }
 
-    calculateAverage(history) {
+    private calculateAverage(history: DataPoint[]): number {
         return history.reduce((sum, h) => sum + h.value, 0) / history.length;
     }
 
-    calculateTrend(history) {
+    private calculateTrend(history: DataPoint[]): 'stable' | 'increasing' | 'decreasing' {
         if (history.length < 2) return 'stable';
         
         const first = history[0].value;
@@ -362,12 +550,12 @@ export class PerformanceMonitoringSystem {
         return change > 0 ? 'increasing' : 'decreasing';
     }
 
-    calculateVariance(values) {
+    private calculateVariance(values: number[]): number {
         const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
         return values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / values.length;
     }
 
-    generateReportSummary(metrics) {
+    private generateReportSummary(metrics: Map<string, MetricStats>): ReportSummary {
         let healthy = 0;
         let warning = 0;
         let critical = 0;
@@ -391,7 +579,7 @@ export class PerformanceMonitoringSystem {
         };
     }
 
-    evaluateMetricHealth(value, config) {
+    private evaluateMetricHealth(value: number, config: MetricConfig): 'healthy' | 'warning' | 'critical' {
         if (config.max && value > config.max) return 'critical';
         if (config.min && value < config.min) return 'critical';
         if (config.warning_max && value > config.warning_max) return 'warning';
@@ -399,7 +587,7 @@ export class PerformanceMonitoringSystem {
         return 'healthy';
     }
 
-    calculateOverallHealth(healthy, warning, critical) {
+    private calculateOverallHealth(healthy: number, warning: number, critical: number): 'healthy' | 'warning' | 'critical' | 'unknown' {
         const total = healthy + warning + critical;
         if (total === 0) return 'unknown';
         
@@ -413,36 +601,29 @@ export class PerformanceMonitoringSystem {
 
     /**
      * Get trend analysis data
-     * @param {string} metricId - Metric ID
-     * @returns {object} Trend data
      */
-    getTrendData(metricId) {
+    getTrendData(metricId: string): TrendData {
         return this.dataAnalyzer.getTrendData(metricId);
     }
 
     /**
      * Get performance insights
-     * @param {string} category - Insight category filter
-     * @returns {Array} Performance insights
      */
-    getPerformanceInsights(category = null) {
+    getPerformanceInsights(category: string | null = null): PerformanceInsight[] {
         return this.dataAnalyzer.getRecentInsights(category);
     }
 
     /**
      * Subscribe to real-time data stream
-     * @param {Function} callback - Callback function
-     * @returns {Function} Unsubscribe function
      */
-    subscribeToRealTimeData(callback) {
+    subscribeToRealTimeData(callback: Function): Function {
         return this.realTimeMonitor.subscribeToStream(callback);
     }
 
     /**
      * Configure monitoring system
-     * @param {object} config - Configuration options
      */
-    configure(config) {
+    configure(config: any): void {
         // Update real-time monitor configuration
         if (config.realTimeMonitor) {
             this.realTimeMonitor.configure(config.realTimeMonitor);
@@ -459,7 +640,7 @@ export class PerformanceMonitoringSystem {
     /**
      * Cleanup monitoring system
      */
-    destroy() {
+    destroy(): void {
         this.stopMonitoring();
         
         // Destroy sub-components

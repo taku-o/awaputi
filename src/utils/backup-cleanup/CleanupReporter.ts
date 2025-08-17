@@ -1,22 +1,305 @@
 import fs from 'fs/promises';
 import path from 'path';
 
+// Type definitions
+interface SizeAnalysisData {
+    bytes: number;
+    wordCount: number;
+    analyzeFailed?: boolean;
+}
+
+interface GitHistoryData {
+    hash: string;
+    message: string;
+    author: string;
+    date: string;
+}
+
+interface InvestigationResult {
+    filePath: string;
+    exists: boolean;
+    currentFileExists: boolean;
+    investigationFailed: boolean;
+    sizeAnalysis?: SizeAnalysisData;
+    gitHistory?: GitHistoryData[];
+}
+
+interface InvestigationOverview {
+    totalFilesInvestigated: number;
+    filesFound: number;
+    filesMissing: number;
+    currentFilesExist: number;
+    investigationErrors: number;
+}
+
+interface SizeAnalysisSummary {
+    totalBytes: number;
+    totalWords: number;
+    averageFileSize: number;
+    largestFile: FileSize | null;
+    smallestFile: FileSize | null;
+}
+
+interface FileSize {
+    file: string;
+    size: number;
+    words: number;
+}
+
+interface GitHistorySummary {
+    filesWithHistory: number;
+    filesWithoutHistory: number;
+    commonCommitPatterns: CommitPattern[];
+}
+
+interface CommitPattern {
+    pattern: string;
+    count: number;
+}
+
+interface Recommendation {
+    type: string;
+    priority: string;
+    message: string;
+    files?: string[];
+}
+
+interface InvestigationSummary {
+    overview: InvestigationOverview;
+    sizeAnalysis: SizeAnalysisSummary;
+    fileDetails: InvestigationResult[];
+    gitHistory: GitHistorySummary;
+    recommendations: Recommendation[];
+    generatedAt: string;
+}
+
+interface DeletionSummaryData {
+    totalFiles: number;
+    attempted: number;
+    succeeded: number;
+    failed: number;
+    skipped: number;
+}
+
+interface DeletionTiming {
+    startTime: string;
+    endTime: string;
+    duration: number;
+    averageTimePerFile: number;
+}
+
+interface BackupRecord {
+    backupCreated: boolean;
+    fileInfo: {
+        size: number;
+        wordCount: number;
+    };
+    gitInfo: {
+        hasHistory: boolean;
+        lastCommit: GitHistoryData;
+    };
+}
+
+interface TestResult {
+    passed: boolean;
+    details?: string;
+}
+
+interface DeletionDetail {
+    status: string;
+    filePath: string;
+    backupRecord?: BackupRecord;
+    testResult?: TestResult;
+}
+
+interface DeletionResults {
+    summary: DeletionSummaryData;
+    startTime: string;
+    endTime: string;
+    duration: number;
+    deletions: DeletionDetail[];
+    errors: Error[];
+}
+
+interface DeletionOverview {
+    totalFilesProcessed: number;
+    filesAttempted: number;
+    filesSucceeded: number;
+    filesFailed: number;
+    filesSkipped: number;
+    successRate: number;
+}
+
+interface SizeReductionData {
+    bytesFreed: number;
+    wordsRemoved: number;
+    estimatedDiskSavings: string;
+}
+
+interface BackupInfo {
+    backupsCreated: number;
+    recoveryPossible: number;
+}
+
+interface TestResults {
+    postDeletionTestsPassed: number;
+    postDeletionTestsFailed: number;
+}
+
+interface DeletionSummary {
+    overview: DeletionOverview;
+    timing: DeletionTiming;
+    deletionDetails: DeletionDetail[];
+    errors: Error[];
+    sizeReduction: SizeReductionData;
+    backupInfo: BackupInfo;
+    testResults: TestResults;
+    generatedAt: string;
+}
+
+interface FileSizeData {
+    bytes: number;
+    words: number;
+}
+
+interface BeforeAfterSizes {
+    files: FileSizeData[];
+}
+
+interface SizeReductionStats {
+    totalBytes: number;
+    totalWords: number;
+    fileCount: number;
+}
+
+interface ReductionMetrics {
+    bytesFreed: number;
+    wordsRemoved: number;
+    filesRemoved: number;
+    percentageReduction: number;
+}
+
+interface ImpactAssessment {
+    repositorySizeReduction: string;
+    searchPerformanceImprovement: string;
+    maintenanceBenefits: string[];
+}
+
+interface SizeReduction {
+    beforeDeletion: SizeReductionStats;
+    afterDeletion: SizeReductionStats;
+    reduction: ReductionMetrics;
+    impact: ImpactAssessment;
+    calculatedAt?: string;
+}
+
+interface RecoveryOverview {
+    totalDeletedFiles: number;
+    recoverableFiles: number;
+    manualRecoveryRequired: number;
+}
+
+interface RecoveryMethod {
+    filePath: string;
+    type: string;
+    instructions: string[];
+    confidence: string;
+}
+
+interface RecoveryMethods {
+    gitHistory: RecoveryMethod[];
+    backup: RecoveryMethod[];
+    manual: RecoveryMethod[];
+}
+
+interface RecoveryStep {
+    step: number;
+    title: string;
+    description: string;
+    commands: string[];
+}
+
+interface EmergencyProcedure {
+    scenario: string;
+    procedure: string[];
+}
+
+interface RecoveryInstructions {
+    overview: RecoveryOverview;
+    recoveryMethods: RecoveryMethods;
+    stepByStepInstructions: RecoveryStep[];
+    emergencyProcedures: EmergencyProcedure[];
+    generatedAt: string;
+}
+
+interface ExecutiveSummary {
+    projectName: string;
+    issueNumber: string;
+    operationType: string;
+    operationDate: string;
+    overallStatus: string;
+    keyMetrics: Record<string, any>;
+}
+
+interface FinalRecommendations {
+    immediate: string[];
+    future: string[];
+    bestPractices: string[];
+}
+
+interface Conclusion {
+    operationSuccessful: boolean;
+    risksIdentified: string[];
+    benefitsAchieved: string[];
+    nextSteps: string[];
+}
+
+interface Appendices {
+    detailedLogs: any[];
+    technicalDetails: Record<string, any>;
+    references: string[];
+}
+
+interface AllResults {
+    investigationSummary?: InvestigationSummary;
+    deletionSummary?: DeletionSummary;
+    integrityValidation?: any;
+    sizeReduction?: SizeReduction;
+    recoveryInstructions?: RecoveryInstructions;
+    detailedLogs?: any[];
+    technicalDetails?: Record<string, any>;
+}
+
+interface FinalReport {
+    executiveSummary: ExecutiveSummary;
+    investigationSummary?: InvestigationSummary;
+    deletionSummary?: DeletionSummary;
+    integrityValidation?: any;
+    sizeReductionAnalysis?: SizeReduction;
+    recoveryInformation?: RecoveryInstructions;
+    recommendations: FinalRecommendations;
+    conclusion: Conclusion;
+    appendices: Appendices;
+    generatedAt: string;
+    reportVersion: string;
+}
+
 /**
  * CleanupReporter - バックアップファイルクリーンアップの包括的レポート生成クラス
  * Issue #104 のクリーンアップ作業の結果を詳細にレポートする機能を提供
  */
 export class CleanupReporter {
+    private reports: any[];
+
     constructor() {
         this.reports = [];
     }
 
     /**
      * 調査結果サマリーの生成
-     * @param {Array} investigationResults - 調査結果配列
-     * @returns {Object} 調査サマリー
      */
-    async generateInvestigationSummary(investigationResults) {
-        const summary = {
+    async generateInvestigationSummary(investigationResults: InvestigationResult[]): Promise<InvestigationSummary> {
+        const summary: InvestigationSummary = {
             overview: {
                 totalFilesInvestigated: investigationResults.length,
                 filesFound: investigationResults.filter(r => r.exists).length,
@@ -48,20 +331,20 @@ export class CleanupReporter {
 
         if (validSizeResults.length > 0) {
             summary.sizeAnalysis.totalBytes = validSizeResults.reduce(
-                (sum, r) => sum + r.sizeAnalysis.bytes, 0
+                (sum, r) => sum + (r.sizeAnalysis?.bytes || 0), 0
             );
             summary.sizeAnalysis.totalWords = validSizeResults.reduce(
-                (sum, r) => sum + r.sizeAnalysis.wordCount, 0
+                (sum, r) => sum + (r.sizeAnalysis?.wordCount || 0), 0
             );
             summary.sizeAnalysis.averageFileSize = Math.round(
                 summary.sizeAnalysis.totalBytes / validSizeResults.length
             );
 
             // 最大・最小ファイル
-            const sizes = validSizeResults.map(r => ({
+            const sizes: FileSize[] = validSizeResults.map(r => ({
                 file: r.filePath,
-                size: r.sizeAnalysis.bytes,
-                words: r.sizeAnalysis.wordCount
+                size: r.sizeAnalysis?.bytes || 0,
+                words: r.sizeAnalysis?.wordCount || 0
             }));
             
             summary.sizeAnalysis.largestFile = sizes.reduce(
@@ -90,11 +373,9 @@ export class CleanupReporter {
 
     /**
      * 削除作業サマリーの生成
-     * @param {Object} deletionResults - 削除結果
-     * @returns {Object} 削除サマリー
      */
-    async generateDeletionSummary(deletionResults) {
-        const summary = {
+    async generateDeletionSummary(deletionResults: DeletionResults): Promise<DeletionSummary> {
+        const summary: DeletionSummary = {
             overview: {
                 totalFilesProcessed: deletionResults.summary.totalFiles,
                 filesAttempted: deletionResults.summary.attempted,
@@ -173,12 +454,9 @@ export class CleanupReporter {
 
     /**
      * サイズ削減効果の計算
-     * @param {Object} beforeSizes - 削除前サイズ情報
-     * @param {Object} afterSizes - 削除後サイズ情報
-     * @returns {Object} サイズ削減効果
      */
-    async calculateSizeReduction(beforeSizes, afterSizes) {
-        const reduction = {
+    async calculateSizeReduction(beforeSizes: BeforeAfterSizes, afterSizes: BeforeAfterSizes): Promise<SizeReduction> {
+        const reduction: SizeReduction = {
             beforeDeletion: {
                 totalBytes: 0,
                 totalWords: 0,
@@ -256,11 +534,9 @@ export class CleanupReporter {
 
     /**
      * 復旧手順の作成
-     * @param {Array} deletedFiles - 削除されたファイル情報
-     * @returns {Object} 復旧手順
      */
-    async createRecoveryInstructions(deletedFiles) {
-        const instructions = {
+    async createRecoveryInstructions(deletedFiles: DeletionDetail[]): Promise<RecoveryInstructions> {
+        const instructions: RecoveryInstructions = {
             overview: {
                 totalDeletedFiles: deletedFiles.length,
                 recoverableFiles: 0,
@@ -306,11 +582,9 @@ export class CleanupReporter {
 
     /**
      * 最終レポートの生成
-     * @param {Object} allResults - 全結果データ
-     * @returns {Object} 最終レポート
      */
-    async generateFinalReport(allResults) {
-        const report = {
+    async generateFinalReport(allResults: AllResults): Promise<FinalReport> {
+        const report: FinalReport = {
             executiveSummary: {
                 projectName: 'BubblePop (awaputi)',
                 issueNumber: 'Issue #104',
@@ -367,11 +641,9 @@ export class CleanupReporter {
 
     /**
      * コミットパターンの分析
-     * @param {Array} filesWithHistory - Git履歴があるファイル配列
-     * @returns {Array} コミットパターン
      */
-    analyzeCommitPatterns(filesWithHistory) {
-        const patterns = {};
+    analyzeCommitPatterns(filesWithHistory: InvestigationResult[]): CommitPattern[] {
+        const patterns: Record<string, number> = {};
         
         for (const file of filesWithHistory) {
             if (file.gitHistory && Array.isArray(file.gitHistory)) {
@@ -392,10 +664,8 @@ export class CleanupReporter {
 
     /**
      * コミットメッセージからパターンを抽出
-     * @param {string} message - コミットメッセージ
-     * @returns {string} パターン
      */
-    extractCommitPattern(message) {
+    extractCommitPattern(message: string): string {
         // Task番号やフェーズ情報を抽出
         if (message.includes('Task')) {
             return 'Task-related';
@@ -412,11 +682,9 @@ export class CleanupReporter {
 
     /**
      * 調査推奨事項の生成
-     * @param {Array} investigationResults - 調査結果
-     * @returns {Array} 推奨事項
      */
-    generateInvestigationRecommendations(investigationResults) {
-        const recommendations = [];
+    generateInvestigationRecommendations(investigationResults: InvestigationResult[]): Recommendation[] {
+        const recommendations: Recommendation[] = [];
         
         const safeFiles = investigationResults.filter(r => 
             r.exists && r.currentFileExists && !r.investigationFailed
@@ -449,10 +717,8 @@ export class CleanupReporter {
 
     /**
      * バイト数のフォーマット
-     * @param {number} bytes - バイト数
-     * @returns {string} フォーマット済み文字列
      */
-    formatBytes(bytes) {
+    formatBytes(bytes: number): string {
         if (bytes === 0) return '0 Bytes';
 
         const k = 1024;
@@ -464,11 +730,9 @@ export class CleanupReporter {
 
     /**
      * 復旧方法の決定
-     * @param {Object} deletedFile - 削除されたファイル情報
-     * @returns {Object} 復旧方法
      */
-    determineRecoveryMethod(deletedFile) {
-        const method = {
+    determineRecoveryMethod(deletedFile: DeletionDetail): RecoveryMethod {
+        const method: RecoveryMethod = {
             filePath: deletedFile.filePath,
             type: 'manual',
             instructions: [],
@@ -502,11 +766,9 @@ export class CleanupReporter {
 
     /**
      * ステップバイステップ復旧手順の生成
-     * @param {Object} recoveryMethods - 復旧方法オブジェクト
-     * @returns {Array} 手順配列
      */
-    generateStepByStepRecovery(recoveryMethods) {
-        const steps = [];
+    generateStepByStepRecovery(recoveryMethods: RecoveryMethods): RecoveryStep[] {
+        const steps: RecoveryStep[] = [];
 
         if (recoveryMethods.gitHistory.length > 0) {
             steps.push({
@@ -540,10 +802,8 @@ export class CleanupReporter {
 
     /**
      * 緊急時手順の生成
-     * @param {Array} deletedFiles - 削除されたファイル配列
-     * @returns {Array} 緊急時手順
      */
-    generateEmergencyProcedures(deletedFiles) {
+    generateEmergencyProcedures(deletedFiles: DeletionDetail[]): EmergencyProcedure[] {
         return [
             {
                 scenario: 'システム全体が動作しなくなった場合',
@@ -577,10 +837,8 @@ export class CleanupReporter {
 
     /**
      * 全体ステータスの決定
-     * @param {Object} allResults - 全結果
-     * @returns {string} ステータス
      */
-    determineOverallStatus(allResults) {
+    determineOverallStatus(allResults: AllResults): string {
         if (allResults.deletionSummary && allResults.deletionSummary.overview.successRate === 100) {
             return 'Success';
         } else if (allResults.deletionSummary && allResults.deletionSummary.overview.successRate >= 80) {
@@ -594,11 +852,9 @@ export class CleanupReporter {
 
     /**
      * 主要メトリクスの抽出
-     * @param {Object} allResults - 全結果
-     * @returns {Object} 主要メトリクス
      */
-    extractKeyMetrics(allResults) {
-        const metrics = {};
+    extractKeyMetrics(allResults: AllResults): Record<string, any> {
+        const metrics: Record<string, any> = {};
 
         if (allResults.deletionSummary) {
             metrics.filesProcessed = allResults.deletionSummary.overview.totalFilesProcessed;
@@ -620,11 +876,9 @@ export class CleanupReporter {
 
     /**
      * 最終推奨事項の生成
-     * @param {Object} allResults - 全結果
-     * @returns {Object} 推奨事項
      */
-    generateFinalRecommendations(allResults) {
-        const recommendations = {
+    generateFinalRecommendations(allResults: AllResults): FinalRecommendations {
+        const recommendations: FinalRecommendations = {
             immediate: [],
             future: [],
             bestPractices: []
@@ -656,12 +910,9 @@ export class CleanupReporter {
 
     /**
      * 結論の生成
-     * @param {Object} allResults - 全結果
-     * @param {string} overallStatus - 全体ステータス
-     * @returns {Object} 結論
      */
-    generateConclusion(allResults, overallStatus) {
-        const conclusion = {
+    generateConclusion(allResults: AllResults, overallStatus: string): Conclusion {
+        const conclusion: Conclusion = {
             operationSuccessful: overallStatus === 'Success',
             risksIdentified: [],
             benefitsAchieved: [],
@@ -706,11 +957,8 @@ export class CleanupReporter {
 
     /**
      * レポートをファイルに保存
-     * @param {Object} report - レポートオブジェクト
-     * @param {string} filename - ファイル名
-     * @returns {Promise<void>}
      */
-    async saveReportToFile(report, filename) {
+    async saveReportToFile(report: FinalReport, filename: string): Promise<void> {
         try {
             const reportsDir = '.kiro/reports';
             
@@ -726,7 +974,7 @@ export class CleanupReporter {
             
             console.log(`Report saved to: ${filePath}`);
         } catch (error) {
-            console.error(`Failed to save report: ${error.message}`);
+            console.error(`Failed to save report: ${(error as Error).message}`);
         }
     }
 }
