@@ -1,9 +1,78 @@
 /**
+ * MemoryOptimizer.ts
  * メモリ最適化システム
  * 翻訳データのメモリ効率的な管理と最適化を行う
  */
+
+// 型定義
+export interface MemoryOptimizerOptions {
+    maxMemoryUsage?: number;
+    warningThreshold?: number;
+    criticalThreshold?: number;
+    gcInterval?: number;
+}
+
+export interface MemoryUsage {
+    translations: number;
+    cache: number;
+    metadata: number;
+    other: number;
+    total: number;
+}
+
+export interface OptimizationStrategies {
+    stringDeduplication: boolean;
+    objectPooling: boolean;
+    lazyLoading: boolean;
+    compressionThreshold: number;
+    weakReferences: boolean;
+}
+
+export interface OptimizationStats {
+    totalOptimizations: number;
+    memoryFreed: number;
+    stringsDeduped: number;
+    objectsPooled: number;
+    gcRuns: number;
+    lastGcTime: number;
+    averageGcTime: number;
+    memoryPressureEvents: number;
+}
+
+export type MemoryPressureHandler = () => void;
+
+/**
+ * メモリ最適化システムクラス
+ */
 export class MemoryOptimizer {
-    constructor(options = {}) {
+    // 基本設定
+    private maxMemoryUsage: number;
+    private warningThreshold: number;
+    private criticalThreshold: number;
+    private gcInterval: number;
+    
+    // メモリ追跡
+    private memoryUsage: MemoryUsage;
+    
+    // オブジェクト参照管理
+    private objectReferences: WeakMap<object, any>;
+    private stringPool: Map<string, string>;
+    private translationPool: Map<string, any>;
+    
+    // 最適化戦略
+    private optimizationStrategies: OptimizationStrategies;
+    
+    // 統計情報
+    private stats: OptimizationStats;
+    
+    // メモリ圧迫対応
+    private memoryPressureHandlers: Set<MemoryPressureHandler>;
+    private isUnderMemoryPressure: boolean;
+    
+    // パフォーマンス監視
+    private performanceObserver: PerformanceObserver | null;
+
+    constructor(options: MemoryOptimizerOptions = {}) {
         // 基本設定
         this.maxMemoryUsage = options.maxMemoryUsage || 50 * 1024 * 1024; // 50MB
         this.warningThreshold = options.warningThreshold || 0.8; // 80%で警告
@@ -20,9 +89,9 @@ export class MemoryOptimizer {
         };
         
         // オブジェクト参照管理
-        this.objectReferences = new WeakMap();
-        this.stringPool = new Map(); // 文字列プール
-        this.translationPool = new Map(); // 翻訳オブジェクトプール
+        this.objectReferences = new WeakMap<object, any>();
+        this.stringPool = new Map<string, string>(); // 文字列プール
+        this.translationPool = new Map<string, any>(); // 翻訳オブジェクトプール
         
         // 最適化戦略
         this.optimizationStrategies = {
@@ -46,7 +115,7 @@ export class MemoryOptimizer {
         };
         
         // メモリ圧迫対応
-        this.memoryPressureHandlers = new Set();
+        this.memoryPressureHandlers = new Set<MemoryPressureHandler>();
         this.isUnderMemoryPressure = false;
         
         // パフォーマンス監視
@@ -62,7 +131,7 @@ export class MemoryOptimizer {
     /**
      * 翻訳データを最適化
      */
-    optimizeTranslationData(data, language) {
+    optimizeTranslationData(data: any, language: string): any {
         const startTime = performance.now();
         let optimized = data;
         
@@ -101,7 +170,7 @@ export class MemoryOptimizer {
     /**
      * 文字列重複排除
      */
-    _deduplicateStrings(data, language) {
+    private _deduplicateStrings(data: any, language: string): any {
         const deduped = {};
         const processedStrings = new Set();
         
@@ -143,7 +212,7 @@ export class MemoryOptimizer {
     /**
      * オブジェクトプーリングを適用
      */
-    _applyObjectPooling(data, language) {
+    private _applyObjectPooling(data: any, language: string): any {
         const poolKey = `translations_${language}`;
         
         // 既存のプールをチェック
@@ -234,7 +303,7 @@ export class MemoryOptimizer {
     /**
      * 弱参照を登録
      */
-    _registerWeakReferences(data, language) {
+    private _registerWeakReferences(data: any, language: string): void {
         if (typeof WeakRef !== 'undefined') {
             const weakRef = new WeakRef(data);
             this.objectReferences.set(data, {

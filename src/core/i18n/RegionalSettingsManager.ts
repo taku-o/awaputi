@@ -1,9 +1,54 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
-
 /**
+ * RegionalSettingsManager.ts
  * 地域設定管理クラス - 言語・地域に応じたフォーマット設定を管理
  */
+
+import { getErrorHandler } from '../../utils/ErrorHandler.js';
+
+// 型定義
+export interface FormatSettings {
+    dateTime: {
+        dateFormat: string;
+        timeFormat: string;
+        timestampFormat: string;
+    };
+    numbers: {
+        decimalSeparator: string;
+        thousandsSeparator: string;
+        currencyFormat: string;
+    };
+    currency: {
+        symbol: string;
+        position: 'before' | 'after';
+        code: string;
+    };
+}
+
+export interface RegionSettings {
+    timezone: string;
+    locale: string;
+    country: string;
+    region: string;
+    rtl: boolean;
+}
+
+export interface LanguageSettings {
+    code: string;
+    name: string;
+    nativeName: string;
+    direction: 'ltr' | 'rtl';
+    pluralRules: string;
+}
+
+/**
+ * 地域設定管理クラス
+ */
 export class RegionalSettingsManager {
+    private formatSettings: FormatSettings | null;
+    private regionSettings: RegionSettings | null;
+    private languageSettings: LanguageSettings | null;
+    private initialized: boolean;
+
     constructor() {
         this.formatSettings = null;
         this.regionSettings = null;
@@ -18,7 +63,7 @@ export class RegionalSettingsManager {
     /**
      * 設定を初期化
      */
-    async initialize() {
+    async initialize(): Promise<void> {
         try {
             // 設定ファイルを並列読み込み
             const [formatSettings, regionSettings, languageSettings] = await Promise.all([
@@ -43,7 +88,7 @@ export class RegionalSettingsManager {
     /**
      * フォーマット設定を読み込み
      */
-    async loadFormatSettings() {
+    async loadFormatSettings(): Promise<FormatSettings> {
         try {
             const response = await fetch('/src/locales/config/formats.json');
             if (!response.ok) {
@@ -59,7 +104,7 @@ export class RegionalSettingsManager {
     /**
      * 地域設定を読み込み
      */
-    async loadRegionSettings() {
+    async loadRegionSettings(): Promise<RegionSettings> {
         try {
             const response = await fetch('/src/locales/config/regions.json');
             if (!response.ok) {
@@ -75,7 +120,7 @@ export class RegionalSettingsManager {
     /**
      * 言語設定を読み込み
      */
-    async loadLanguageSettings() {
+    async loadLanguageSettings(): Promise<LanguageSettings> {
         try {
             const response = await fetch('/src/locales/config/languages.json');
             if (!response.ok) {

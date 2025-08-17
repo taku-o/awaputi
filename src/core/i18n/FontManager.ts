@@ -1,13 +1,45 @@
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
-
 /**
+ * FontManager.ts
  * フォント管理クラス - 多言語対応のフォント読み込みと管理
  */
+
+import { getErrorHandler } from '../../utils/ErrorHandler.js';
+
+// 型定義
+export interface FontConfig {
+    primary: FontSpec;
+    fallback?: FontSpec[];
+    localFallback?: string[];
+}
+
+export interface FontSpec {
+    family: string;
+    weight: string;
+    style: string;
+    url?: string;
+    display?: string;
+}
+
+export interface LoadedFont {
+    family: string;
+    status: 'loading' | 'loaded' | 'error';
+    timestamp: number;
+    config: FontConfig;
+}
+
+/**
+ * フォント管理クラス
+ */
 export class FontManager {
+    private loadedFonts: Map<string, LoadedFont>;
+    private fontConfigs: Map<string, FontConfig>;
+    private loadingPromises: Map<string, Promise<FontFace>>;
+    private fontLoadObserver: FontFaceSetLoadEvent | null;
+
     constructor() {
-        this.loadedFonts = new Map();
-        this.fontConfigs = new Map();
-        this.loadingPromises = new Map();
+        this.loadedFonts = new Map<string, LoadedFont>();
+        this.fontConfigs = new Map<string, FontConfig>();
+        this.loadingPromises = new Map<string, Promise<FontFace>>();
         
         // デフォルトフォント設定
         this.initializeFontConfigs();
@@ -22,7 +54,7 @@ export class FontManager {
     /**
      * 初期化
      */
-    initialize() {
+    initialize(): void {
         try {
             // Font Loading APIが利用可能か確認
             if ('fonts' in document) {
@@ -40,7 +72,7 @@ export class FontManager {
     /**
      * フォント設定を初期化
      */
-    initializeFontConfigs() {
+    private initializeFontConfigs(): void {
         // 日本語フォント
         this.fontConfigs.set('ja', {
             primary: {
