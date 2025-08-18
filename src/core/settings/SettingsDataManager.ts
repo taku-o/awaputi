@@ -2,8 +2,163 @@
  * SettingsDataManager
  * デフォルト設定生成、データ構造管理、設定カテゴリ管理、レガシー値処理を担当
  */
+
+// 型定義
+export interface SettingsManager {
+    configManager: ConfigManager;
+}
+
+export interface ConfigManager {
+    setDefaultValue(key: string, value: any): void;
+    set(category: string, key: string, value: any): void;
+    setValidationRule(key: string, rule: ValidationRule): void;
+    get(key: string): any;
+    getDefault(key: string): any;
+}
+
+export interface ValidationRule {
+    type: string;
+    min?: number;
+    max?: number;
+    values?: any[];
+    required?: boolean;
+}
+
+export interface ValidationRules {
+    [key: string]: ValidationRule;
+}
+
+export interface AccessibilitySettings {
+    highContrast: boolean;
+    reducedMotion: boolean;
+    largeText: boolean;
+    screenReader: boolean;
+    colorBlindSupport: boolean;
+    fontSize: FontSize;
+    contrastLevel: ContrastLevel;
+    keyboardNavigation: boolean;
+    voiceGuidance: boolean;
+    subtitles: boolean;
+    profiles: AccessibilityProfile;
+    importExport: boolean;
+}
+
+export interface ControlsSettings {
+    keyboardEnabled: boolean;
+    mouseEnabled: boolean;
+    touchEnabled: boolean;
+}
+
+export interface KeyboardShortcuts {
+    pause: string[];
+    menu: string[];
+    settings: string[];
+    help: string[];
+}
+
+export interface UISettings {
+    showFPS: boolean;
+    showDebugInfo: boolean;
+    animationSpeed: number;
+    uiScale: number;
+}
+
+export interface SocialSettings {
+    enableSharing: boolean;
+    autoPromptHighScore: boolean;
+    autoPromptAchievements: boolean;
+    defaultPlatform: SocialPlatform;
+    includeScreenshot: boolean;
+    screenshotQuality: ScreenshotQuality;
+    privacyLevel: PrivacyLevel;
+    customMessage: string;
+    showWatermark: boolean;
+}
+
+export interface NotificationSettings {
+    'challenges.enabled': boolean;
+    'challenges.newChallenge': boolean;
+    'challenges.challengeComplete': boolean;
+    'challenges.dailyReminder': boolean;
+    'challenges.weeklyReminder': boolean;
+    'achievements.enabled': boolean;
+    'achievements.unlocked': boolean;
+    'achievements.progress': boolean;
+    'achievements.rare': boolean;
+    'leaderboard.enabled': boolean;
+    'leaderboard.newRecord': boolean;
+    'leaderboard.rankChange': boolean;
+    'system.enabled': boolean;
+    'system.updates': boolean;
+    'system.maintenance': boolean;
+}
+
+export interface PrivacySettings {
+    dataCollection: boolean;
+    analytics: boolean;
+    crashReports: boolean;
+}
+
+export interface DefaultSettings {
+    masterVolume: number;
+    sfxVolume: number;
+    bgmVolume: number;
+    isMuted: boolean;
+    language: string;
+    quality: QualitySetting;
+    accessibility: AccessibilitySettings;
+    controls: ControlsSettings;
+    keyboardShortcuts: KeyboardShortcuts;
+    ui: UISettings;
+    social: SocialSettings;
+    notifications: NotificationSettings;
+    privacy: PrivacySettings;
+}
+
+export interface ParsedSettingKey {
+    category: string;
+    settingName: string;
+    fullKey: string;
+    isLegacy: boolean;
+}
+
+export interface ValidationResult {
+    isValid: boolean;
+    errors: string[];
+}
+
+export interface SettingsCount {
+    total: number;
+    categories: number;
+}
+
+export interface DataManagerStats {
+    totalSettings: number;
+    categoriesCount: number;
+    systemLanguage: string;
+    defaultsGenerated: boolean;
+    structureValid: boolean;
+}
+
+export interface LegacyKeyMap {
+    [key: string]: string;
+}
+
+// 列挙型
+export type FontSize = 'small' | 'medium' | 'large' | 'xlarge';
+export type ContrastLevel = 'normal' | 'high' | 'maximum';
+export type AccessibilityProfile = 'default' | 'visual' | 'motor' | 'cognitive' | 'hearing';
+export type QualitySetting = 'auto' | 'low' | 'medium' | 'high' | 'ultra';
+export type SocialPlatform = 'auto' | 'twitter' | 'facebook' | 'native';
+export type ScreenshotQuality = 'low' | 'medium' | 'high';
+export type PrivacyLevel = 'public' | 'friends' | 'private';
+
 export class SettingsDataManager {
-    constructor(settingsManager) {
+    private settingsManager: SettingsManager;
+    private configManager: ConfigManager;
+    private validationRules: ValidationRules;
+
+    constructor(settingsManager: SettingsManager) {
         this.settingsManager = settingsManager;
         this.configManager = settingsManager.configManager;
         
@@ -19,9 +174,9 @@ export class SettingsDataManager {
     
     /**
      * デフォルト設定を生成
-     * @returns {Object} デフォルト設定オブジェクト
+     * @returns デフォルト設定オブジェクト
      */
-    getDefaultSettings() {
+    getDefaultSettings(): DefaultSettings {
         return {
             // 音響設定
             masterVolume: 0.7,
@@ -119,10 +274,10 @@ export class SettingsDataManager {
     
     /**
      * システム言語を検出
-     * @returns {string} 検出された言語コード
+     * @returns 検出された言語コード
      */
-    detectSystemLanguage() {
-        const browserLang = navigator.language || navigator.userLanguage || 'en';
+    detectSystemLanguage(): string {
+        const browserLang = navigator.language || (navigator as any).userLanguage || 'en';
         
         // 日本語の場合
         if (browserLang.startsWith('ja')) {
@@ -135,11 +290,11 @@ export class SettingsDataManager {
     
     /**
      * 設定カテゴリをセットアップ
-     * @param {string} category カテゴリ名
-     * @param {Object} defaultValues デフォルト値
-     * @param {Object} validationRules 検証ルール
+     * @param category カテゴリ名
+     * @param defaultValues デフォルト値
+     * @param validationRules 検証ルール
      */
-    setupSettingsCategory(category, defaultValues, validationRules) {
+    setupSettingsCategory(category: string, defaultValues: Record<string, any>, validationRules: ValidationRules): void {
         try {
             // ConfigurationManagerにカテゴリを設定
             for (const [key, value] of Object.entries(defaultValues)) {
@@ -166,10 +321,10 @@ export class SettingsDataManager {
     
     /**
      * 設定キーを解析
-     * @param {string} key 設定キー
-     * @returns {Object} 解析結果 {category, settingName, fullKey}
+     * @param key 設定キー
+     * @returns 解析結果 {category, settingName, fullKey}
      */
-    parseSettingKey(key) {
+    parseSettingKey(key: string): ParsedSettingKey {
         const parts = key.split('.');
         
         if (parts.length === 1) {
@@ -201,12 +356,12 @@ export class SettingsDataManager {
     
     /**
      * レガシー値を取得（後方互換性のため）
-     * @param {string} key レガシーキー
-     * @returns {*} 設定値
+     * @param key レガシーキー
+     * @returns 設定値
      */
-    getLegacyValue(key) {
+    getLegacyValue(key: string): any {
         // レガシーキーを新しい形式にマッピング
-        const legacyKeyMap = {
+        const legacyKeyMap: LegacyKeyMap = {
             masterVolume: 'audio.masterVolume',
             sfxVolume: 'audio.sfxVolume',
             bgmVolume: 'audio.bgmVolume',
@@ -230,10 +385,10 @@ export class SettingsDataManager {
     
     /**
      * 設定のデフォルト値を取得
-     * @param {string} key 設定キー
-     * @returns {*} デフォルト値
+     * @param key 設定キー
+     * @returns デフォルト値
      */
-    getDefaultValue(key) {
+    getDefaultValue(key: string): any {
         const parsed = this.parseSettingKey(key);
         
         if (parsed.isLegacy) {
@@ -250,11 +405,11 @@ export class SettingsDataManager {
     
     /**
      * 設定をマージ
-     * @param {Object} defaultSettings デフォルト設定
-     * @param {Object} loadedSettings 読み込まれた設定
-     * @returns {Object} マージされた設定
+     * @param defaultSettings デフォルト設定
+     * @param loadedSettings 読み込まれた設定
+     * @returns マージされた設定
      */
-    mergeSettings(defaultSettings, loadedSettings) {
+    mergeSettings(defaultSettings: Record<string, any>, loadedSettings: Record<string, any>): Record<string, any> {
         if (!loadedSettings || typeof loadedSettings !== 'object') {
             return { ...defaultSettings };
         }
@@ -281,11 +436,11 @@ export class SettingsDataManager {
     
     /**
      * 設定データの整合性を検証
-     * @param {Object} settings 設定オブジェクト
-     * @returns {Object} 検証結果 {isValid, errors}
+     * @param settings 設定オブジェクト
+     * @returns 検証結果 {isValid, errors}
      */
-    validateSettingsStructure(settings) {
-        const errors = [];
+    validateSettingsStructure(settings: any): ValidationResult {
+        const errors: string[] = [];
         const requiredCategories = ['accessibility', 'controls', 'ui', 'social', 'notifications'];
         
         if (!settings || typeof settings !== 'object') {
@@ -310,9 +465,9 @@ export class SettingsDataManager {
     
     /**
      * 統計情報を取得
-     * @returns {Object} データ管理統計
+     * @returns データ管理統計
      */
-    getStats() {
+    getStats(): DataManagerStats {
         const defaultSettings = this.getDefaultSettings();
         const settingsCount = this._countSettings(defaultSettings);
         
@@ -327,11 +482,12 @@ export class SettingsDataManager {
     
     /**
      * 設定数を再帰的にカウント
-     * @param {Object} obj 設定オブジェクト
-     * @returns {Object} カウント結果
+     * @param obj 設定オブジェクト
+     * @param categories カテゴリセット
+     * @returns カウント結果
      * @private
      */
-    _countSettings(obj, categories = new Set()) {
+    private _countSettings(obj: Record<string, any>, categories: Set<string> = new Set()): SettingsCount {
         let total = 0;
         
         for (const [key, value] of Object.entries(obj)) {

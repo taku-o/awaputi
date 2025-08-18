@@ -2,8 +2,118 @@
  * SettingsUIController
  * UI関連設定管理、言語検出・管理、品質設定・UIスケール管理、アニメーション・表示設定を担当
  */
+
+// 型定義
+export interface SettingsManager {
+    configManager: ConfigManager;
+    gameEngine: GameEngine;
+    errorHandler: ErrorHandler;
+    addListener(setting: string, callback: SettingChangeCallback, options?: ListenerOptions): void;
+    removeListenerById(id: string): void;
+}
+
+export interface ConfigManager {
+    get(key: string): any;
+}
+
+export interface GameEngine {
+    performanceOptimizer?: PerformanceOptimizer;
+    configurationManager?: ConfigurationManager;
+    localizationManager?: LocalizationManager;
+    sceneManager?: SceneManager;
+    accessibilityManager?: AccessibilityManager;
+    animationManager?: AnimationManager;
+    particleManager?: ParticleManager;
+    version?: string;
+    refreshAllScenes?(): void;
+}
+
+export interface ErrorHandler {
+    handleError(error: Error, errorType: string, context?: any): void;
+}
+
+export interface PerformanceOptimizer {
+    setQualityLevel(quality: QualityLevel): void;
+}
+
+export interface ConfigurationManager {
+    notifyUpdate(key: string, value: any): void;
+}
+
+export interface LocalizationManager {
+    setLanguage(language: string): Promise<void>;
+}
+
+export interface SceneManager {
+    [key: string]: any;
+}
+
+export interface AccessibilityManager {
+    setHighContrast(enabled: boolean): void;
+}
+
+export interface AnimationManager {
+    updateSettings(settings: AnimationSettings): void;
+}
+
+export interface ParticleManager {
+    updateConfiguration(config: ParticleConfiguration): void;
+}
+
+export interface AnimationSettings {
+    enabled: boolean;
+    globalSpeed: number;
+}
+
+export interface ParticleConfiguration {
+    quality: number;
+}
+
+export interface UpdateStats {
+    qualityChanges: number;
+    languageChanges: number;
+    scaleChanges: number;
+    lastUpdateTime: number;
+}
+
+export interface UICurrentSettings {
+    quality: QualityLevel;
+    language: string;
+    uiScale: number;
+    highContrast: boolean;
+    reducedMotion: boolean;
+    largeText: boolean;
+}
+
+export interface UIStatsResult {
+    updateStats: UpdateStats;
+    currentSettings: UICurrentSettings;
+}
+
+export interface UIComponent {
+    onSettingChange?(setting: string, newValue: any, oldValue: any): void;
+}
+
+export interface ListenerOptions {
+    id?: string;
+    priority?: ListenerPriority;
+}
+
+// コールバック型
+export type SettingChangeCallback = (newValue: any, oldValue: any) => void;
+
+// 列挙型
+export type QualityLevel = 'low' | 'medium' | 'high' | 'auto';
+export type ListenerPriority = 'low' | 'medium' | 'high';
+
 export class SettingsUIController {
-    constructor(settingsManager) {
+    private settingsManager: SettingsManager;
+    private configManager: ConfigManager;
+    private gameEngine: GameEngine;
+    private errorHandler: ErrorHandler;
+    private updateStats: UpdateStats;
+
+    constructor(settingsManager: SettingsManager) {
         this.settingsManager = settingsManager;
         this.configManager = settingsManager.configManager;
         this.gameEngine = settingsManager.gameEngine;
@@ -22,9 +132,9 @@ export class SettingsUIController {
     
     /**
      * 品質設定を適用
-     * @param {string} quality 品質レベル ('low', 'medium', 'high', 'auto')
+     * @param quality 品質レベル ('low', 'medium', 'high', 'auto')
      */
-    applyQualityChange(quality) {
+    applyQualityChange(quality: QualityLevel): void {
         try {
             console.log(`[SettingsUIController] Applying quality change: ${quality}`);
             
@@ -44,7 +154,7 @@ export class SettingsUIController {
             
             console.log(`[SettingsUIController] Quality change applied successfully: ${quality}`);
         } catch (error) {
-            this.errorHandler.handleError(error, 'SETTINGS_QUALITY_CHANGE_ERROR', {
+            this.errorHandler.handleError(error as Error, 'SETTINGS_QUALITY_CHANGE_ERROR', {
                 quality,
                 component: 'SettingsUIController'
             });
@@ -54,9 +164,9 @@ export class SettingsUIController {
     
     /**
      * 言語変更を処理
-     * @param {string} language 言語コード ('ja', 'en')
+     * @param language 言語コード ('ja', 'en')
      */
-    async handleLanguageChange(language) {
+    async handleLanguageChange(language: string): Promise<void> {
         try {
             console.log(`[SettingsUIController] Handling language change: ${language}`);
             
@@ -66,7 +176,7 @@ export class SettingsUIController {
             }
             
             // UIの再描画をトリガー
-            if (this.gameEngine && this.gameEngine.sceneManager) {
+            if (this.gameEngine && this.gameEngine.refreshAllScenes) {
                 this.gameEngine.refreshAllScenes();
             }
             
@@ -76,7 +186,7 @@ export class SettingsUIController {
             
             console.log(`[SettingsUIController] Language change handled successfully: ${language}`);
         } catch (error) {
-            this.errorHandler.handleError(error, 'SETTINGS_LANGUAGE_CHANGE_ERROR', {
+            this.errorHandler.handleError(error as Error, 'SETTINGS_LANGUAGE_CHANGE_ERROR', {
                 language,
                 component: 'SettingsUIController'
             });
@@ -86,9 +196,9 @@ export class SettingsUIController {
     
     /**
      * ハイコントラストモードを適用
-     * @param {boolean} enabled ハイコントラストモード有効/無効
+     * @param enabled ハイコントラストモード有効/無効
      */
-    applyHighContrastMode(enabled) {
+    applyHighContrastMode(enabled: boolean): void {
         try {
             console.log(`[SettingsUIController] Applying high contrast mode: ${enabled}`);
             
@@ -106,7 +216,7 @@ export class SettingsUIController {
             
             console.log(`[SettingsUIController] High contrast mode applied: ${enabled}`);
         } catch (error) {
-            this.errorHandler.handleError(error, 'SETTINGS_HIGH_CONTRAST_ERROR', {
+            this.errorHandler.handleError(error as Error, 'SETTINGS_HIGH_CONTRAST_ERROR', {
                 enabled,
                 component: 'SettingsUIController'
             });
@@ -115,9 +225,9 @@ export class SettingsUIController {
     
     /**
      * モーション軽減モードを適用
-     * @param {boolean} enabled モーション軽減モード有効/無効
+     * @param enabled モーション軽減モード有効/無効
      */
-    applyReducedMotionMode(enabled) {
+    applyReducedMotionMode(enabled: boolean): void {
         try {
             console.log(`[SettingsUIController] Applying reduced motion mode: ${enabled}`);
             
@@ -144,7 +254,7 @@ export class SettingsUIController {
             
             console.log(`[SettingsUIController] Reduced motion mode applied: ${enabled}`);
         } catch (error) {
-            this.errorHandler.handleError(error, 'SETTINGS_REDUCED_MOTION_ERROR', {
+            this.errorHandler.handleError(error as Error, 'SETTINGS_REDUCED_MOTION_ERROR', {
                 enabled,
                 component: 'SettingsUIController'
             });
@@ -153,9 +263,9 @@ export class SettingsUIController {
     
     /**
      * 大文字モードを適用
-     * @param {boolean} enabled 大文字モード有効/無効
+     * @param enabled 大文字モード有効/無効
      */
-    applyLargeTextMode(enabled) {
+    applyLargeTextMode(enabled: boolean): void {
         try {
             console.log(`[SettingsUIController] Applying large text mode: ${enabled}`);
             
@@ -168,7 +278,7 @@ export class SettingsUIController {
             
             console.log(`[SettingsUIController] Large text mode applied: ${enabled}`);
         } catch (error) {
-            this.errorHandler.handleError(error, 'SETTINGS_LARGE_TEXT_ERROR', {
+            this.errorHandler.handleError(error as Error, 'SETTINGS_LARGE_TEXT_ERROR', {
                 enabled,
                 component: 'SettingsUIController'
             });
@@ -177,9 +287,9 @@ export class SettingsUIController {
     
     /**
      * UIスケールを適用
-     * @param {number} scale UIスケール値 (0.5-2.0)
+     * @param scale UIスケール値 (0.5-2.0)
      */
-    applyUIScale(scale) {
+    applyUIScale(scale: number): void {
         try {
             console.log(`[SettingsUIController] Applying UI scale: ${scale}`);
             
@@ -192,7 +302,7 @@ export class SettingsUIController {
             
             console.log(`[SettingsUIController] UI scale applied: ${scale}`);
         } catch (error) {
-            this.errorHandler.handleError(error, 'SETTINGS_UI_SCALE_ERROR', {
+            this.errorHandler.handleError(error as Error, 'SETTINGS_UI_SCALE_ERROR', {
                 scale,
                 component: 'SettingsUIController'
             });
@@ -201,40 +311,40 @@ export class SettingsUIController {
     
     /**
      * 設定変更を適用（設定タイプに応じて適切なメソッドを呼び出し）
-     * @param {string} key 設定キー
-     * @param {*} newValue 新しい値
-     * @param {*} oldValue 古い値
+     * @param key 設定キー
+     * @param newValue 新しい値
+     * @param oldValue 古い値
      */
-    applySettingChange(key, newValue, oldValue) {
+    applySettingChange(key: string, newValue: any, oldValue: any): void {
         try {
             console.log(`[SettingsUIController] Applying setting change: ${key} = ${newValue}`);
             
             switch (key) {
                 case 'quality':
                 case 'ui.quality':
-                    this.applyQualityChange(newValue);
+                    this.applyQualityChange(newValue as QualityLevel);
                     break;
                     
                 case 'language':
                 case 'ui.language':
-                    this.handleLanguageChange(newValue);
+                    this.handleLanguageChange(newValue as string);
                     break;
                     
                 case 'accessibility.highContrast':
-                    this.applyHighContrastMode(newValue);
+                    this.applyHighContrastMode(newValue as boolean);
                     break;
                     
                 case 'accessibility.reducedMotion':
-                    this.applyReducedMotionMode(newValue);
+                    this.applyReducedMotionMode(newValue as boolean);
                     break;
                     
                 case 'accessibility.largeText':
-                    this.applyLargeTextMode(newValue);
+                    this.applyLargeTextMode(newValue as boolean);
                     break;
                     
                 case 'ui.uiScale':
                 case 'uiScale':
-                    this.applyUIScale(newValue);
+                    this.applyUIScale(newValue as number);
                     break;
                     
                 default:
@@ -242,7 +352,7 @@ export class SettingsUIController {
                     break;
             }
         } catch (error) {
-            this.errorHandler.handleError(error, 'SETTINGS_APPLY_CHANGE_ERROR', {
+            this.errorHandler.handleError(error as Error, 'SETTINGS_APPLY_CHANGE_ERROR', {
                 key,
                 newValue,
                 oldValue,
@@ -254,7 +364,7 @@ export class SettingsUIController {
     /**
      * 全てのUI設定を適用
      */
-    applyAllUISettings() {
+    applyAllUISettings(): void {
         try {
             console.log('[SettingsUIController] Applying all UI settings');
             
@@ -291,7 +401,7 @@ export class SettingsUIController {
             
             console.log('[SettingsUIController] All UI settings applied successfully');
         } catch (error) {
-            this.errorHandler.handleError(error, 'SETTINGS_APPLY_ALL_UI_ERROR', {
+            this.errorHandler.handleError(error as Error, 'SETTINGS_APPLY_ALL_UI_ERROR', {
                 component: 'SettingsUIController'
             });
         }
@@ -299,12 +409,12 @@ export class SettingsUIController {
     
     /**
      * UIコンポーネントウォッチャーを追加
-     * @param {string} componentName コンポーネント名
-     * @param {Object} component コンポーネントオブジェクト
-     * @param {Array} watchedSettings 監視する設定のリスト
-     * @returns {string} ウォッチャーID
+     * @param componentName コンポーネント名
+     * @param component コンポーネントオブジェクト
+     * @param watchedSettings 監視する設定のリスト
+     * @returns ウォッチャーID
      */
-    addComponentWatcher(componentName, component, watchedSettings) {
+    addComponentWatcher(componentName: string, component: UIComponent, watchedSettings: string[]): string {
         const watcherId = `ui_${componentName}_${Date.now()}`;
         
         // 設定変更リスナーを追加
@@ -325,9 +435,9 @@ export class SettingsUIController {
     
     /**
      * UIコンポーネントウォッチャーを削除
-     * @param {string} watcherId ウォッチャーID
+     * @param watcherId ウォッチャーID
      */
-    removeComponentWatcher(watcherId) {
+    removeComponentWatcher(watcherId: string): void {
         try {
             // ウォッチャーIDに関連するリスナーを削除
             this.settingsManager.removeListenerById(watcherId);
@@ -339,9 +449,9 @@ export class SettingsUIController {
     
     /**
      * UI統計情報を取得
-     * @returns {Object} UI設定統計
+     * @returns UI設定統計
      */
-    getUIStats() {
+    getUIStats(): UIStatsResult {
         return {
             updateStats: { ...this.updateStats },
             currentSettings: {
@@ -358,7 +468,7 @@ export class SettingsUIController {
     /**
      * リセット（統計情報をクリア）
      */
-    reset() {
+    reset(): void {
         this.updateStats = {
             qualityChanges: 0,
             languageChanges: 0,

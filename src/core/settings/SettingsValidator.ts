@@ -2,8 +2,94 @@
  * SettingsValidator
  * 設定値の検証、制約チェック、データ型チェック、範囲検証を担当
  */
+
+// 型定義
+export interface SettingsManager {
+    getDefaultSettings(): any;
+    getDefaultValue(key: string): any;
+}
+
+export interface ValidationRule {
+    type?: string;
+    min?: number;
+    max?: number;
+    maxLength?: number;
+    enum?: any[];
+    validator?: (value: any) => boolean;
+    properties?: Record<string, ValidationRule>;
+}
+
+export interface ValidationRules {
+    [key: string]: ValidationRule;
+}
+
+export interface ValidationResult {
+    isValid: boolean;
+    errors?: string[];
+    sanitizedValue: any;
+    warning?: string | null;
+}
+
+export interface MultipleValidationResult {
+    isValid: boolean;
+    errors: string[];
+    results: Record<string, ValidationResult>;
+    sanitizedSettings: Record<string, any>;
+}
+
+export interface SettingsObjectValidationResult {
+    isValid: boolean;
+    errors: string[];
+    sanitizedSettings: Record<string, any>;
+}
+
+export interface KeyParseResult {
+    isValid: boolean;
+    error?: string;
+    key?: string;
+    parts?: string[];
+    topLevel?: string;
+    hasValidationRule?: boolean;
+    isNested?: boolean;
+}
+
+export interface AccessibilityValidationResult {
+    isValid: boolean;
+    sanitizedValue: AccessibilitySettings;
+    error?: string;
+    errors?: string[];
+}
+
+export interface AccessibilitySettings {
+    highContrast: boolean;
+    reducedMotion: boolean;
+    largeText: boolean;
+    screenReader: boolean;
+    colorBlindSupport: boolean;
+}
+
+export interface ValidationStats {
+    totalRules: number;
+    nestedRules: number;
+    supportedTypes: string[];
+    supportedLanguages: string[];
+    supportedQualities: string[];
+    validationFeatures: string[];
+}
+
+// 列挙型
+export type ExpectedType = 'string' | 'number' | 'boolean' | 'object' | 'array';
+export type QualityLevel = 'low' | 'medium' | 'high' | 'auto';
+export type SupportedLanguage = 'ja' | 'en';
+export type SocialPlatform = 'auto' | 'twitter' | 'facebook' | 'native';
+export type ScreenshotQuality = 'low' | 'medium' | 'high';
+export type PrivacyLevel = 'public' | 'friends' | 'private';
+
 export class SettingsValidator {
-    constructor(settingsManager) {
+    private settingsManager: SettingsManager;
+    private validationRules: ValidationRules;
+
+    constructor(settingsManager: SettingsManager) {
         this.settingsManager = settingsManager;
         
         // 検証ルール
@@ -59,11 +145,11 @@ export class SettingsValidator {
 
     /**
      * 設定値の検証
-     * @param {string} key 設定キー
-     * @param {*} value 設定値
-     * @returns {Object} 検証結果
+     * @param key 設定キー
+     * @param value 設定値
+     * @returns 検証結果
      */
-    validateSetting(key, value) {
+    validateSetting(key: string, value: any): ValidationResult {
         try {
             const topLevelKey = key.split('.')[0];
             const rule = this.validationRules[topLevelKey];
@@ -76,7 +162,7 @@ export class SettingsValidator {
         } catch (error) {
             return {
                 isValid: false,
-                errors: [`Validation error: ${error.message}`],
+                errors: [`Validation error: ${(error as Error).message}`],
                 sanitizedValue: null
             };
         }
@@ -85,19 +171,19 @@ export class SettingsValidator {
     /**
      * ルールに基づく検証
      * @private
-     * @param {*} value 値
-     * @param {Object} rule ルール
-     * @param {string} key キー
-     * @returns {Object} 検証結果
+     * @param value 値
+     * @param rule ルール
+     * @param key キー
+     * @returns 検証結果
      */
-    _validateByRule(value, rule, key) {
-        const errors = [];
+    private _validateByRule(value: any, rule: ValidationRule, key: string): ValidationResult {
+        const errors: string[] = [];
         let sanitizedValue = value;
 
         // 型チェック
-        if (rule.type && !this._checkType(value, rule.type)) {
+        if (rule.type && !this._checkType(value, rule.type as ExpectedType)) {
             errors.push(`Expected ${rule.type}, got ${typeof value}`);
-            sanitizedValue = this._getDefaultForType(rule.type);
+            sanitizedValue = this._getDefaultForType(rule.type as ExpectedType);
         }
 
         // 数値の範囲チェック
@@ -131,11 +217,11 @@ export class SettingsValidator {
             try {
                 if (!rule.validator(value)) {
                     errors.push(`Custom validation failed for value: ${value}`);
-                    sanitizedValue = this._getDefaultForType(rule.type);
+                    sanitizedValue = this._getDefaultForType(rule.type as ExpectedType);
                 }
             } catch (error) {
-                errors.push(`Custom validator error: ${error.message}`);
-                sanitizedValue = this._getDefaultForType(rule.type);
+                errors.push(`Custom validator error: ${(error as Error).message}`);
+                sanitizedValue = this._getDefaultForType(rule.type as ExpectedType);
             }
         }
 
@@ -146,7 +232,7 @@ export class SettingsValidator {
                 if (propKey in value) {
                     const propResult = this._validateByRule(value[propKey], propRule, `${key}.${propKey}`);
                     if (!propResult.isValid) {
-                        errors.push(...propResult.errors.map(e => `${propKey}: ${e}`));
+                        errors.push(...(propResult.errors || []).map(e => `${propKey}: ${e}`));
                     }
                     sanitizedObject[propKey] = propResult.sanitizedValue;
                 }
@@ -164,11 +250,11 @@ export class SettingsValidator {
     /**
      * 型チェック
      * @private
-     * @param {*} value 値
-     * @param {string} expectedType 期待する型
-     * @returns {boolean} 型が正しいか
+     * @param value 値
+     * @param expectedType 期待する型
+     * @returns 型が正しいか
      */
-    _checkType(value, expectedType) {
+    private _checkType(value: any, expectedType: ExpectedType): boolean {
         switch (expectedType) {
             case 'string':
                 return typeof value === 'string';
@@ -188,10 +274,10 @@ export class SettingsValidator {
     /**
      * 型のデフォルト値を取得
      * @private
-     * @param {string} type 型
-     * @returns {*} デフォルト値
+     * @param type 型
+     * @returns デフォルト値
      */
-    _getDefaultForType(type) {
+    private _getDefaultForType(type: ExpectedType): any {
         switch (type) {
             case 'string':
                 return '';
@@ -210,19 +296,19 @@ export class SettingsValidator {
 
     /**
      * 複数設定の一括検証
-     * @param {Object} settings 設定オブジェクト
-     * @returns {Object} 検証結果
+     * @param settings 設定オブジェクト
+     * @returns 検証結果
      */
-    validateMultiple(settings) {
-        const results = {};
-        const errors = [];
-        const sanitized = {};
+    validateMultiple(settings: Record<string, any>): MultipleValidationResult {
+        const results: Record<string, ValidationResult> = {};
+        const errors: string[] = [];
+        const sanitized: Record<string, any> = {};
 
         for (const [key, value] of Object.entries(settings)) {
             const result = this.validateSetting(key, value);
             results[key] = result;
             if (!result.isValid) {
-                errors.push(...result.errors.map(e => `${key}: ${e}`));
+                errors.push(...(result.errors || []).map(e => `${key}: ${e}`));
             }
             sanitized[key] = result.sanitizedValue;
         }
@@ -237,10 +323,10 @@ export class SettingsValidator {
 
     /**
      * 設定オブジェクト全体の検証
-     * @param {Object} settingsObject 設定オブジェクト
-     * @returns {Object} 検証結果
+     * @param settingsObject 設定オブジェクト
+     * @returns 検証結果
      */
-    validateSettingsObject(settingsObject) {
+    validateSettingsObject(settingsObject: any): SettingsObjectValidationResult {
         if (!settingsObject || typeof settingsObject !== 'object') {
             return {
                 isValid: false,
@@ -249,8 +335,8 @@ export class SettingsValidator {
             };
         }
 
-        const sanitized = {};
-        const errors = [];
+        const sanitized: Record<string, any> = {};
+        const errors: string[] = [];
         
         // 必須フィールドのチェック
         const requiredFields = ['masterVolume', 'sfxVolume', 'bgmVolume', 'language'];
@@ -265,7 +351,7 @@ export class SettingsValidator {
         for (const [key, value] of Object.entries(settingsObject)) {
             const result = this.validateSetting(key, value);
             if (!result.isValid) {
-                errors.push(...result.errors.map(e => `${key}: ${e}`));
+                errors.push(...(result.errors || []).map(e => `${key}: ${e}`));
             }
             sanitized[key] = result.sanitizedValue;
         }
@@ -279,11 +365,11 @@ export class SettingsValidator {
 
     /**
      * ConfigurationManager用の検証ルールを取得
-     * @param {string} category カテゴリ
-     * @returns {Object} 検証ルール
+     * @param category カテゴリ
+     * @returns 検証ルール
      */
-    getValidationRulesForCategory(category) {
-        const categoryMappings = {
+    getValidationRulesForCategory(category: string): Record<string, ValidationRule> {
+        const categoryMappings: Record<string, Record<string, ValidationRule>> = {
             audio: {
                 masterVolume: this.validationRules.masterVolume,
                 sfxVolume: this.validationRules.sfxVolume,
@@ -293,20 +379,20 @@ export class SettingsValidator {
             ui: {
                 language: { 
                     type: 'string', 
-                    validator: (value) => ['ja', 'en'].includes(value)
+                    validator: (value: any) => ['ja', 'en'].includes(value)
                 },
                 quality: { 
                     type: 'string', 
-                    validator: (value) => ['low', 'medium', 'high', 'auto'].includes(value)
+                    validator: (value: any) => ['low', 'medium', 'high', 'auto'].includes(value)
                 },
                 showFPS: { type: 'boolean' },
                 showDebugInfo: { type: 'boolean' },
                 animationSpeed: { type: 'number', min: 0.1, max: 3.0 },
                 uiScale: { type: 'number', min: 0.5, max: 2.0 }
             },
-            accessibility: this.validationRules.accessibility.properties,
-            controls: this.validationRules.controls.properties,
-            social: this.validationRules.social.properties
+            accessibility: this.validationRules.accessibility.properties || {},
+            controls: this.validationRules.controls.properties || {},
+            social: this.validationRules.social.properties || {}
         };
 
         return categoryMappings[category] || {};
@@ -314,10 +400,10 @@ export class SettingsValidator {
 
     /**
      * 設定キーのパースと検証
-     * @param {string} key 設定キー
-     * @returns {Object} パース結果
+     * @param key 設定キー
+     * @returns パース結果
      */
-    parseAndValidateKey(key) {
+    parseAndValidateKey(key: string): KeyParseResult {
         if (typeof key !== 'string' || !key.trim()) {
             return {
                 isValid: false,
@@ -350,22 +436,22 @@ export class SettingsValidator {
 
     /**
      * システム言語の検証
-     * @param {string} language 言語コード
-     * @returns {Object} 検証結果
+     * @param language 言語コード
+     * @returns 検証結果
      */
-    validateSystemLanguage(language) {
-        const supportedLanguages = ['ja', 'en'];
-        const defaultLanguage = 'en';
+    validateSystemLanguage(language: string): ValidationResult {
+        const supportedLanguages: SupportedLanguage[] = ['ja', 'en'];
+        const defaultLanguage: SupportedLanguage = 'en';
 
         if (!language || typeof language !== 'string') {
             return {
                 isValid: false,
                 sanitizedValue: defaultLanguage,
-                error: 'Language must be a string'
+                errors: ['Language must be a string']
             };
         }
 
-        const normalizedLang = language.toLowerCase().substring(0, 2);
+        const normalizedLang = language.toLowerCase().substring(0, 2) as SupportedLanguage;
         
         if (supportedLanguages.includes(normalizedLang)) {
             return {
@@ -377,28 +463,28 @@ export class SettingsValidator {
         return {
             isValid: false,
             sanitizedValue: defaultLanguage,
-            error: `Unsupported language: ${language}. Supported: ${supportedLanguages.join(', ')}`
+            errors: [`Unsupported language: ${language}. Supported: ${supportedLanguages.join(', ')}`]
         };
     }
 
     /**
      * 品質設定の検証
-     * @param {string} quality 品質設定
-     * @returns {Object} 検証結果
+     * @param quality 品質設定
+     * @returns 検証結果
      */
-    validateQuality(quality) {
-        const supportedQualities = ['low', 'medium', 'high', 'auto'];
-        const defaultQuality = 'auto';
+    validateQuality(quality: string): ValidationResult {
+        const supportedQualities: QualityLevel[] = ['low', 'medium', 'high', 'auto'];
+        const defaultQuality: QualityLevel = 'auto';
 
         if (!quality || typeof quality !== 'string') {
             return {
                 isValid: false,
                 sanitizedValue: defaultQuality,
-                error: 'Quality must be a string'
+                errors: ['Quality must be a string']
             };
         }
 
-        const normalizedQuality = quality.toLowerCase();
+        const normalizedQuality = quality.toLowerCase() as QualityLevel;
         
         if (supportedQualities.includes(normalizedQuality)) {
             return {
@@ -410,16 +496,16 @@ export class SettingsValidator {
         return {
             isValid: false,
             sanitizedValue: defaultQuality,
-            error: `Invalid quality: ${quality}. Supported: ${supportedQualities.join(', ')}`
+            errors: [`Invalid quality: ${quality}. Supported: ${supportedQualities.join(', ')}`]
         };
     }
 
     /**
      * アクセシビリティ設定の検証
-     * @param {Object} accessibility アクセシビリティ設定
-     * @returns {Object} 検証結果
+     * @param accessibility アクセシビリティ設定
+     * @returns 検証結果
      */
-    validateAccessibility(accessibility) {
+    validateAccessibility(accessibility: any): AccessibilityValidationResult {
         if (!accessibility || typeof accessibility !== 'object') {
             return {
                 isValid: false,
@@ -434,9 +520,15 @@ export class SettingsValidator {
             };
         }
 
-        const sanitized = {};
-        const errors = [];
-        const booleanFields = ['highContrast', 'reducedMotion', 'largeText', 'screenReader', 'colorBlindSupport'];
+        const sanitized: AccessibilitySettings = {
+            highContrast: false,
+            reducedMotion: false,
+            largeText: false,
+            screenReader: false,
+            colorBlindSupport: false
+        };
+        const errors: string[] = [];
+        const booleanFields: (keyof AccessibilitySettings)[] = ['highContrast', 'reducedMotion', 'largeText', 'screenReader', 'colorBlindSupport'];
 
         for (const field of booleanFields) {
             if (field in accessibility) {
@@ -460,16 +552,16 @@ export class SettingsValidator {
 
     /**
      * ボリューム値の検証
-     * @param {number} volume ボリューム値
-     * @param {string} type ボリュームタイプ
-     * @returns {Object} 検証結果
+     * @param volume ボリューム値
+     * @param type ボリュームタイプ
+     * @returns 検証結果
      */
-    validateVolume(volume, type = 'volume') {
+    validateVolume(volume: number, type: string = 'volume'): ValidationResult {
         if (typeof volume !== 'number' || isNaN(volume)) {
             return {
                 isValid: false,
                 sanitizedValue: 0.7,
-                error: `${type} must be a number`
+                errors: [`${type} must be a number`]
             };
         }
 
@@ -484,14 +576,14 @@ export class SettingsValidator {
 
     /**
      * 検証統計情報の取得
-     * @returns {Object} 検証統計
+     * @returns 検証統計
      */
-    getValidationStats() {
+    getValidationStats(): ValidationStats {
         return {
             totalRules: Object.keys(this.validationRules).length,
             nestedRules: Object.values(this.validationRules)
                 .filter(rule => rule.type === 'object' && rule.properties)
-                .reduce((sum, rule) => sum + Object.keys(rule.properties).length, 0),
+                .reduce((sum, rule) => sum + Object.keys(rule.properties || {}).length, 0),
             supportedTypes: ['string', 'number', 'boolean', 'object', 'array'],
             supportedLanguages: ['ja', 'en'],
             supportedQualities: ['low', 'medium', 'high', 'auto'],

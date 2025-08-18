@@ -2,8 +2,131 @@
  * SettingsExportImport
  * 設定エクスポート、インポート・検証、バックアップ・復元操作、データフォーマット変換を担当
  */
+
+// 型定義
+export interface SettingsManager {
+    configManager: ConfigManager;
+    errorHandler: ErrorHandler;
+    storageManager: StorageManager;
+    validator: SettingsValidator;
+    dataManager: DataManager;
+    set(key: string, value: any): Promise<void>;
+    save(): Promise<void>;
+    load(): Promise<void>;
+}
+
+export interface ConfigManager {
+    exportConfig(): Record<string, any>;
+}
+
+export interface ErrorHandler {
+    handleError(error: Error, errorType: string, context?: any): void;
+}
+
+export interface StorageManager {
+    getBackupHistory(): BackupHistoryItem[];
+    createBackup(backupData: BackupData): Promise<string>;
+    restoreFromBackup(backupIndex: number): Promise<RestoreResult>;
+}
+
+export interface SettingsValidator {
+    validateSetting(key: string, value: any): boolean;
+}
+
+export interface DataManager {
+    getDefaultSettings(): Record<string, any>;
+    mergeSettings(defaultSettings: Record<string, any>, loadedSettings: Record<string, any>): Record<string, any>;
+}
+
+export interface ExportOptions {
+    includeMetadata?: boolean;
+    includeBackups?: boolean;
+    format?: ExportFormat;
+    compression?: boolean;
+}
+
+export interface ImportOptions {
+    validateFirst?: boolean;
+    createBackup?: boolean;
+    mergeMode?: MergeMode;
+    allowPartialImport?: boolean;
+}
+
+export interface ExportMetadata {
+    exportTime: string;
+    version: string;
+    gameVersion?: string;
+    platform: string;
+    userAgent: string;
+}
+
+export interface ExportData {
+    settings: Record<string, any>;
+    metadata?: ExportMetadata;
+    backups?: BackupHistoryItem[];
+}
+
+export interface ValidationResult {
+    isValid: boolean;
+    errors: string[];
+    warnings: string[];
+    settingsCount?: number;
+}
+
+export interface BackupData {
+    settings: Record<string, any>;
+    timestamp: string;
+    version: string;
+}
+
+export interface BackupInfo {
+    id: string;
+    timestamp: string;
+    settingsCount: number;
+}
+
+export interface BackupHistoryItem {
+    id: string;
+    timestamp: string;
+    version: string;
+    settingsCount: number;
+}
+
+export interface RestoreResult {
+    success: boolean;
+    timestamp: string;
+    settingsRestored: number;
+}
+
+export interface ImportResult {
+    imported: number;
+    skipped: number;
+    errors: number;
+    details: string[];
+}
+
+export interface ExportImportStats {
+    exportCount: number;
+    importCount: number;
+    validationErrors: number;
+    lastExportTime: number;
+    lastImportTime: number;
+    backupCount: number;
+}
+
+// 列挙型
+export type ExportFormat = 'json' | 'compact';
+export type MergeMode = 'replace' | 'merge' | 'selective';
+
 export class SettingsExportImport {
-    constructor(settingsManager) {
+    private settingsManager: SettingsManager;
+    private configManager: ConfigManager;
+    private errorHandler: ErrorHandler;
+    private storageManager: StorageManager;
+    private stats: Omit<ExportImportStats, 'backupCount'>;
+    private gameEngine?: any;
+
+    constructor(settingsManager: SettingsManager) {
         this.settingsManager = settingsManager;
         this.configManager = settingsManager.configManager;
         this.errorHandler = settingsManager.errorHandler;
@@ -23,10 +146,10 @@ export class SettingsExportImport {
     
     /**
      * 設定をエクスポート
-     * @param {Object} options エクスポートオプション
-     * @returns {string} JSON形式の設定データ
+     * @param options エクスポートオプション
+     * @returns JSON形式の設定データ
      */
-    export(options = {}) {
+    export(options: ExportOptions = {}): string {
         try {
             console.log('[SettingsExportImport] Starting settings export');
             
@@ -41,7 +164,7 @@ export class SettingsExportImport {
             const settings = this._getCurrentSettings();
             
             // エクスポートデータを構築
-            const exportData = {
+            const exportData: ExportData = {
                 settings,
                 ...(includeMetadata && {
                     metadata: {
@@ -58,7 +181,7 @@ export class SettingsExportImport {
             };
             
             // フォーマット変換
-            let result;
+            let result: string;
             switch (format) {
                 case 'json':
                     result = JSON.stringify(exportData, null, compression ? 0 : 2);
@@ -78,7 +201,7 @@ export class SettingsExportImport {
             return result;
             
         } catch (error) {
-            this.errorHandler.handleError(error, 'SETTINGS_EXPORT_ERROR', {
+            this.errorHandler.handleError(error as Error, 'SETTINGS_EXPORT_ERROR', {
                 options,
                 component: 'SettingsExportImport'
             });
@@ -88,18 +211,18 @@ export class SettingsExportImport {
     
     /**
      * 設定をインポート
-     * @param {string} settingsJson JSON形式の設定データ
-     * @param {Object} options インポートオプション
-     * @returns {Object} インポート結果
+     * @param settingsJson JSON形式の設定データ
+     * @param options インポートオプション
+     * @returns インポート結果
      */
-    async import(settingsJson, options = {}) {
+    async import(settingsJson: string, options: ImportOptions = {}): Promise<ImportResult> {
         try {
             console.log('[SettingsExportImport] Starting settings import');
             
             const {
                 validateFirst = true,
                 createBackup = true,
-                mergeMode = 'replace', // 'replace', 'merge', 'selective'
+                mergeMode = 'replace',
                 allowPartialImport = true
             } = options;
             
@@ -109,11 +232,11 @@ export class SettingsExportImport {
             }
             
             // JSONデータを解析
-            let importData;
+            let importData: any;
             try {
                 importData = JSON.parse(settingsJson);
             } catch (parseError) {
-                throw new Error(`Invalid JSON format: ${parseError.message}`);
+                throw new Error(`Invalid JSON format: ${(parseError as Error).message}`);
             }
             
             // データ検証
@@ -138,7 +261,7 @@ export class SettingsExportImport {
             return importResult;
             
         } catch (error) {
-            this.errorHandler.handleError(error, 'SETTINGS_IMPORT_ERROR', {
+            this.errorHandler.handleError(error as Error, 'SETTINGS_IMPORT_ERROR', {
                 options,
                 component: 'SettingsExportImport'
             });
@@ -148,12 +271,12 @@ export class SettingsExportImport {
     
     /**
      * インポートデータを検証
-     * @param {Object} importData インポートデータ
-     * @returns {Object} 検証結果
+     * @param importData インポートデータ
+     * @returns 検証結果
      */
-    validateImportData(importData) {
-        const errors = [];
-        const warnings = [];
+    validateImportData(importData: any): ValidationResult {
+        const errors: string[] = [];
+        const warnings: string[] = [];
         
         try {
             // 基本構造の検証
@@ -178,7 +301,7 @@ export class SettingsExportImport {
                         warnings.push(`Invalid value for setting '${key}': ${value}`);
                     }
                 } catch (validationError) {
-                    warnings.push(`Validation error for '${key}': ${validationError.message}`);
+                    warnings.push(`Validation error for '${key}': ${(validationError as Error).message}`);
                 }
             }
             
@@ -205,18 +328,18 @@ export class SettingsExportImport {
             };
             
         } catch (error) {
-            errors.push(`Validation error: ${error.message}`);
+            errors.push(`Validation error: ${(error as Error).message}`);
             return { isValid: false, errors, warnings };
         }
     }
     
     /**
      * バックアップを作成
-     * @returns {Object} バックアップ情報
+     * @returns バックアップ情報
      */
-    async createBackup() {
+    async createBackup(): Promise<BackupInfo> {
         try {
-            const backupData = {
+            const backupData: BackupData = {
                 settings: this._getCurrentSettings(),
                 timestamp: new Date().toISOString(),
                 version: '1.0.0'
@@ -233,7 +356,7 @@ export class SettingsExportImport {
             };
             
         } catch (error) {
-            this.errorHandler.handleError(error, 'SETTINGS_BACKUP_ERROR', {
+            this.errorHandler.handleError(error as Error, 'SETTINGS_BACKUP_ERROR', {
                 component: 'SettingsExportImport'
             });
             throw error;
@@ -242,10 +365,10 @@ export class SettingsExportImport {
     
     /**
      * バックアップから復元
-     * @param {number} backupIndex バックアップインデックス（-1で最新）
-     * @returns {Object} 復元結果
+     * @param backupIndex バックアップインデックス（-1で最新）
+     * @returns 復元結果
      */
-    async restoreFromBackup(backupIndex = -1) {
+    async restoreFromBackup(backupIndex: number = -1): Promise<RestoreResult> {
         try {
             console.log(`[SettingsExportImport] Restoring from backup: ${backupIndex}`);
             
@@ -259,7 +382,7 @@ export class SettingsExportImport {
             return restoreResult;
             
         } catch (error) {
-            this.errorHandler.handleError(error, 'SETTINGS_RESTORE_ERROR', {
+            this.errorHandler.handleError(error as Error, 'SETTINGS_RESTORE_ERROR', {
                 backupIndex,
                 component: 'SettingsExportImport'
             });
@@ -269,9 +392,9 @@ export class SettingsExportImport {
     
     /**
      * バックアップ履歴を取得
-     * @returns {Array} バックアップ履歴
+     * @returns バックアップ履歴
      */
-    getBackupHistory() {
+    getBackupHistory(): BackupHistoryItem[] {
         try {
             return this.storageManager.getBackupHistory();
         } catch (error) {
@@ -282,10 +405,10 @@ export class SettingsExportImport {
     
     /**
      * 現在の設定を取得
-     * @returns {Object} 現在の設定
+     * @returns 現在の設定
      * @private
      */
-    _getCurrentSettings() {
+    private _getCurrentSettings(): Record<string, any> {
         // ConfigurationManagerから全設定を取得
         const configData = this.configManager.exportConfig();
         
@@ -299,13 +422,13 @@ export class SettingsExportImport {
     
     /**
      * インポートを実行
-     * @param {Object} settingsData 設定データ
-     * @param {string} mergeMode マージモード
-     * @returns {Object} インポート結果
+     * @param settingsData 設定データ
+     * @param mergeMode マージモード
+     * @returns インポート結果
      * @private
      */
-    async _performImport(settingsData, mergeMode) {
-        const results = {
+    private async _performImport(settingsData: Record<string, any>, mergeMode: MergeMode): Promise<ImportResult> {
+        const results: ImportResult = {
             imported: 0,
             skipped: 0,
             errors: 0,
@@ -323,7 +446,7 @@ export class SettingsExportImport {
                             results.details.push(`Imported: ${key}`);
                         } catch (error) {
                             results.errors++;
-                            results.details.push(`Error importing ${key}: ${error.message}`);
+                            results.details.push(`Error importing ${key}: ${(error as Error).message}`);
                         }
                     }
                     break;
@@ -342,7 +465,7 @@ export class SettingsExportImport {
                                 results.details.push(`Merged: ${key}`);
                             } catch (error) {
                                 results.errors++;
-                                results.details.push(`Error merging ${key}: ${error.message}`);
+                                results.details.push(`Error merging ${key}: ${(error as Error).message}`);
                             }
                         }
                     }
@@ -359,7 +482,7 @@ export class SettingsExportImport {
                                 results.details.push(`Updated: ${key}`);
                             } catch (error) {
                                 results.errors++;
-                                results.details.push(`Error updating ${key}: ${error.message}`);
+                                results.details.push(`Error updating ${key}: ${(error as Error).message}`);
                             }
                         } else {
                             results.skipped++;
@@ -379,16 +502,16 @@ export class SettingsExportImport {
             
         } catch (error) {
             results.errors++;
-            results.details.push(`Import error: ${error.message}`);
+            results.details.push(`Import error: ${(error as Error).message}`);
             throw error;
         }
     }
     
     /**
      * 統計情報を取得
-     * @returns {Object} エクスポート/インポート統計
+     * @returns エクスポート/インポート統計
      */
-    getStats() {
+    getStats(): ExportImportStats {
         return {
             ...this.stats,
             backupCount: this.getBackupHistory().length
@@ -398,7 +521,7 @@ export class SettingsExportImport {
     /**
      * 統計をリセット
      */
-    resetStats() {
+    resetStats(): void {
         this.stats = {
             exportCount: 0,
             importCount: 0,
