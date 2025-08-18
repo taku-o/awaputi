@@ -2,10 +2,183 @@ import { getErrorHandler } from '../../../utils/ErrorHandler.js';
 import { getRTLLanguageDetector } from './RTLLanguageDetector.js';
 import { getRTLLayoutManager } from './RTLLayoutManager.js';
 
+// インターフェース定義
+interface ComponentFactory {
+    (options: any): HTMLElement | null;
+}
+
+interface RTLStyles {
+    direction: string;
+    textAlign: string;
+    paddingRight?: string;
+    paddingLeft?: string;
+}
+
+interface DefaultRTLStyles {
+    input: RTLStyles;
+    button: RTLStyles;
+    menu: RTLStyles;
+    dialog: RTLStyles;
+}
+
+interface RegisteredComponent {
+    id: string;
+    type: string;
+    element: HTMLElement;
+    options: any;
+    createdAt: string;
+}
+
+interface CreateComponentResult {
+    component: HTMLElement;
+    componentId: string;
+}
+
+interface InputOptions {
+    type?: string;
+    placeholder?: string;
+    value?: string;
+    language?: string;
+    autoDirection?: boolean;
+    validateRTL?: boolean;
+    className?: string;
+    id?: string;
+}
+
+interface TextAreaOptions {
+    rows?: number;
+    cols?: number;
+    placeholder?: string;
+    value?: string;
+    language?: string;
+    autoResize?: boolean;
+    className?: string;
+    id?: string;
+}
+
+interface SelectOption {
+    value?: string;
+    text?: string;
+}
+
+interface SelectOptions {
+    options?: (string | SelectOption)[];
+    value?: string;
+    language?: string;
+    className?: string;
+    id?: string;
+}
+
+interface MenuItem {
+    html?: string;
+    text?: string;
+    onClick?: () => void;
+    submenu?: MenuItem[];
+}
+
+interface MenuOptions {
+    items?: (string | MenuItem)[];
+    orientation?: 'vertical' | 'horizontal';
+    language?: string;
+    className?: string;
+    id?: string;
+}
+
+interface NavLink {
+    href?: string;
+    text?: string;
+    icon?: string;
+}
+
+interface NavigationOptions {
+    links?: (string | NavLink)[];
+    language?: string;
+    showIcons?: boolean;
+    className?: string;
+    id?: string;
+}
+
+interface BreadcrumbItem {
+    href?: string;
+    text?: string;
+}
+
+interface BreadcrumbOptions {
+    items?: (string | BreadcrumbItem)[];
+    separator?: string;
+    language?: string;
+    className?: string;
+    id?: string;
+}
+
+interface PaginationOptions {
+    currentPage?: number;
+    totalPages?: number;
+    showFirstLast?: boolean;
+    showPrevNext?: boolean;
+    language?: string;
+    className?: string;
+    id?: string;
+}
+
+interface DialogButton {
+    text?: string;
+    type?: string;
+    onClick?: () => void;
+}
+
+interface DialogOptions {
+    title?: string;
+    content?: string;
+    buttons?: (string | DialogButton)[];
+    modal?: boolean;
+    language?: string;
+    className?: string;
+    id?: string;
+}
+
+interface TooltipOptions {
+    text?: string;
+    position?: 'top' | 'bottom' | 'left' | 'right';
+    language?: string;
+    className?: string;
+    id?: string;
+}
+
+interface DropdownItem {
+    href?: string;
+    text?: string;
+    onClick?: (event: Event) => void;
+}
+
+interface DropdownOptions {
+    trigger?: string;
+    items?: (string | DropdownItem)[];
+    language?: string;
+    className?: string;
+    id?: string;
+}
+
+interface ComponentStats {
+    availableComponentTypes: string[];
+    registeredComponentsCount: number;
+    registeredComponents: {
+        id: string;
+        type: string;
+        createdAt: string;
+    }[];
+}
+
 /**
  * RTL対応UIコンポーネントクラス - RTL言語用の特殊UIコンポーネント
  */
 export class RTLUIComponents {
+    private rtlDetector: any;
+    private layoutManager: any;
+    private componentFactories: Map<string, ComponentFactory>;
+    private defaultRTLStyles: DefaultRTLStyles;
+    private registeredComponents: Map<string, RegisteredComponent>;
+
     constructor() {
         this.rtlDetector = getRTLLanguageDetector();
         this.layoutManager = getRTLLayoutManager();
@@ -55,7 +228,7 @@ export class RTLUIComponents {
     /**
      * RTL対応コンポーネントを作成
      */
-    createRTLComponent(type, options = {}) {
+    createRTLComponent(type: string, options: any = {}): CreateComponentResult | null {
         try {
             const factory = this.componentFactories.get(type);
             if (!factory) {
@@ -63,6 +236,9 @@ export class RTLUIComponents {
             }
             
             const component = factory(options);
+            if (!component) {
+                throw new Error(`Failed to create component: ${type}`);
+            }
             
             // コンポーネントを登録
             const componentId = this.generateComponentId(type);
@@ -94,7 +270,7 @@ export class RTLUIComponents {
     /**
      * RTL対応入力フィールド
      */
-    createRTLInput(options = {}) {
+    createRTLInput(options: InputOptions = {}): HTMLInputElement {
         const {
             type = 'text',
             placeholder = '',
@@ -121,10 +297,11 @@ export class RTLUIComponents {
         // 自動方向検出
         if (autoDirection) {
             input.addEventListener('input', (e) => {
-                const direction = this.rtlDetector.detectTextDirection(e.target.value);
+                const target = e.target as HTMLInputElement;
+                const direction = this.rtlDetector.detectTextDirection(target.value);
                 if (direction.confidence > 0.7) {
-                    e.target.style.direction = direction.direction;
-                    e.target.style.textAlign = direction.direction === 'rtl' ? 'right' : 'left';
+                    target.style.direction = direction.direction;
+                    target.style.textAlign = direction.direction === 'rtl' ? 'right' : 'left';
                 }
             });
         }
@@ -132,7 +309,8 @@ export class RTLUIComponents {
         // RTL文字検証
         if (validateRTL) {
             input.addEventListener('blur', (e) => {
-                const hasRTL = this.rtlDetector.containsRTLCharacters(e.target.value);
+                const target = e.target as HTMLInputElement;
+                const hasRTL = this.rtlDetector.containsRTLCharacters(target.value);
                 input.classList.toggle('contains-rtl', hasRTL);
             });
         }
@@ -143,7 +321,7 @@ export class RTLUIComponents {
     /**
      * RTL対応テキストエリア
      */
-    createRTLTextArea(options = {}) {
+    createRTLTextArea(options: TextAreaOptions = {}): HTMLTextAreaElement {
         const {
             rows = 4,
             cols = 50,
@@ -171,8 +349,9 @@ export class RTLUIComponents {
         // 自動リサイズ
         if (autoResize) {
             textarea.addEventListener('input', (e) => {
-                e.target.style.height = 'auto';
-                e.target.style.height = e.target.scrollHeight + 'px';
+                const target = e.target as HTMLTextAreaElement;
+                target.style.height = 'auto';
+                target.style.height = target.scrollHeight + 'px';
             });
         }
         
@@ -182,7 +361,7 @@ export class RTLUIComponents {
     /**
      * RTL対応セレクトボックス
      */
-    createRTLSelect(options = {}) {
+    createRTLSelect(options: SelectOptions = {}): HTMLSelectElement {
         const {
             options: selectOptions = [],
             value = '',
@@ -198,9 +377,14 @@ export class RTLUIComponents {
         // オプション追加
         selectOptions.forEach(option => {
             const opt = document.createElement('option');
-            opt.value = option.value || option;
-            opt.textContent = option.text || option;
-            if (option.value === value) {
+            if (typeof option === 'string') {
+                opt.value = option;
+                opt.textContent = option;
+            } else {
+                opt.value = option.value || '';
+                opt.textContent = option.text || '';
+            }
+            if (opt.value === value) {
                 opt.selected = true;
             }
             select.appendChild(opt);
@@ -217,7 +401,7 @@ export class RTLUIComponents {
     /**
      * RTL対応メニュー
      */
-    createRTLMenu(options = {}) {
+    createRTLMenu(options: MenuOptions = {}): HTMLUListElement {
         const {
             items = [],
             orientation = 'vertical',
@@ -243,13 +427,15 @@ export class RTLUIComponents {
                     li.addEventListener('click', item.onClick);
                 }
                 if (item.submenu) {
-                    const submenu = this.createRTLMenu({
+                    const submenuResult = this.createRTLComponent('menu', {
                         items: item.submenu,
                         orientation: orientation,
                         language: language,
                         className: 'rtl-submenu'
                     });
-                    li.appendChild(submenu.component);
+                    if (submenuResult) {
+                        li.appendChild(submenuResult.component);
+                    }
                 }
             }
             
@@ -267,7 +453,7 @@ export class RTLUIComponents {
     /**
      * RTL対応ナビゲーション
      */
-    createRTLNavigation(options = {}) {
+    createRTLNavigation(options: NavigationOptions = {}): HTMLElement {
         const {
             links = [],
             language = 'ar',
@@ -288,19 +474,25 @@ export class RTLUIComponents {
             li.className = 'rtl-nav-item';
             
             const a = document.createElement('a');
-            a.href = link.href || '#';
-            a.className = 'rtl-nav-link';
             
-            if (showIcons && link.icon) {
-                const icon = document.createElement('span');
-                icon.className = `rtl-nav-icon ${link.icon}`;
-                a.appendChild(icon);
+            if (typeof link === 'string') {
+                a.href = '#';
+                a.textContent = link;
+            } else {
+                a.href = link.href || '#';
+                a.className = 'rtl-nav-link';
+                
+                if (showIcons && link.icon) {
+                    const icon = document.createElement('span');
+                    icon.className = `rtl-nav-icon ${link.icon}`;
+                    a.appendChild(icon);
+                }
+                
+                const text = document.createElement('span');
+                text.className = 'rtl-nav-text';
+                text.textContent = link.text || '';
+                a.appendChild(text);
             }
-            
-            const text = document.createElement('span');
-            text.className = 'rtl-nav-text';
-            text.textContent = link.text || link;
-            a.appendChild(text);
             
             li.appendChild(a);
             ul.appendChild(li);
@@ -320,7 +512,7 @@ export class RTLUIComponents {
     /**
      * RTL対応パンくずリスト
      */
-    createRTLBreadcrumb(options = {}) {
+    createRTLBreadcrumb(options: BreadcrumbOptions = {}): HTMLElement {
         const {
             items = [],
             separator = '/',
@@ -346,12 +538,17 @@ export class RTLUIComponents {
             
             if (index === reversedItems.length - 1) {
                 // 最後の項目（現在のページ）
-                li.textContent = item.text || item;
+                li.textContent = typeof item === 'string' ? item : (item.text || '');
                 li.setAttribute('aria-current', 'page');
             } else {
                 const a = document.createElement('a');
-                a.href = item.href || '#';
-                a.textContent = item.text || item;
+                if (typeof item === 'string') {
+                    a.href = '#';
+                    a.textContent = item;
+                } else {
+                    a.href = item.href || '#';
+                    a.textContent = item.text || '';
+                }
                 li.appendChild(a);
                 
                 // セパレータ追加
@@ -378,7 +575,7 @@ export class RTLUIComponents {
     /**
      * RTL対応ページネーション
      */
-    createRTLPagination(options = {}) {
+    createRTLPagination(options: PaginationOptions = {}): HTMLElement {
         const {
             currentPage = 1,
             totalPages = 10,
@@ -444,7 +641,7 @@ export class RTLUIComponents {
     /**
      * RTL対応ダイアログ
      */
-    createRTLDialog(options = {}) {
+    createRTLDialog(options: DialogOptions = {}): HTMLDivElement {
         const {
             title = '',
             content = '',
@@ -499,10 +696,14 @@ export class RTLUIComponents {
             // RTLでは逆順でボタンを配置
             [...buttons].reverse().forEach(button => {
                 const btn = document.createElement('button');
-                btn.className = `rtl-dialog-button ${button.type || ''}`;
-                btn.textContent = button.text || button;
-                if (button.onClick) {
-                    btn.addEventListener('click', button.onClick);
+                if (typeof button === 'string') {
+                    btn.textContent = button;
+                } else {
+                    btn.className = `rtl-dialog-button ${button.type || ''}`;
+                    btn.textContent = button.text || '';
+                    if (button.onClick) {
+                        btn.addEventListener('click', button.onClick);
+                    }
                 }
                 footer.appendChild(btn);
             });
@@ -521,7 +722,7 @@ export class RTLUIComponents {
     /**
      * RTL対応ツールチップ
      */
-    createRTLTooltip(options = {}) {
+    createRTLTooltip(options: TooltipOptions = {}): HTMLDivElement {
         const {
             text = '',
             position = 'top',
@@ -549,7 +750,7 @@ export class RTLUIComponents {
     /**
      * RTL対応ドロップダウン
      */
-    createRTLDropdown(options = {}) {
+    createRTLDropdown(options: DropdownOptions = {}): HTMLDivElement {
         const {
             trigger = '',
             items = [],
@@ -575,10 +776,16 @@ export class RTLUIComponents {
         items.forEach(item => {
             const itemEl = document.createElement('a');
             itemEl.className = 'rtl-dropdown-item';
-            itemEl.href = item.href || '#';
-            itemEl.textContent = item.text || item;
-            if (item.onClick) {
-                itemEl.addEventListener('click', item.onClick);
+            
+            if (typeof item === 'string') {
+                itemEl.href = '#';
+                itemEl.textContent = item;
+            } else {
+                itemEl.href = item.href || '#';
+                itemEl.textContent = item.text || '';
+                if (item.onClick) {
+                    itemEl.addEventListener('click', item.onClick);
+                }
             }
             menu.appendChild(itemEl);
         });
@@ -605,7 +812,7 @@ export class RTLUIComponents {
      * ヘルパー関数群
      */
     
-    createPaginationItem(text, page, type) {
+    private createPaginationItem(text: string, page: number, type: string): HTMLLIElement {
         const li = document.createElement('li');
         li.className = `rtl-pagination-item rtl-pagination-${type}`;
         
@@ -630,7 +837,7 @@ export class RTLUIComponents {
         return li;
     }
     
-    generateComponentId(type) {
+    private generateComponentId(type: string): string {
         return `rtl-${type}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     }
     
@@ -641,14 +848,14 @@ export class RTLUIComponents {
     /**
      * 登録済みコンポーネントを取得
      */
-    getRegisteredComponent(componentId) {
+    getRegisteredComponent(componentId: string): RegisteredComponent | null {
         return this.registeredComponents.get(componentId) || null;
     }
     
     /**
      * コンポーネントを破棄
      */
-    destroyComponent(componentId) {
+    destroyComponent(componentId: string): boolean {
         const component = this.registeredComponents.get(componentId);
         if (component) {
             // RTLレイアウトを除去
@@ -669,14 +876,14 @@ export class RTLUIComponents {
     /**
      * 全コンポーネントを取得
      */
-    getAllComponents() {
+    getAllComponents(): RegisteredComponent[] {
         return Array.from(this.registeredComponents.values());
     }
     
     /**
      * コンポーネントファクトリを追加
      */
-    addComponentFactory(type, factory) {
+    addComponentFactory(type: string, factory: ComponentFactory): void {
         this.componentFactories.set(type, factory);
         console.log(`Component factory added: ${type}`);
     }
@@ -684,7 +891,7 @@ export class RTLUIComponents {
     /**
      * 統計情報を取得
      */
-    getStats() {
+    getStats(): ComponentStats {
         return {
             availableComponentTypes: Array.from(this.componentFactories.keys()),
             registeredComponentsCount: this.registeredComponents.size,
@@ -698,12 +905,12 @@ export class RTLUIComponents {
 }
 
 // シングルトンインスタンス
-let rtlUIComponentsInstance = null;
+let rtlUIComponentsInstance: RTLUIComponents | null = null;
 
 /**
  * RTLUIComponentsのシングルトンインスタンスを取得
  */
-export function getRTLUIComponents() {
+export function getRTLUIComponents(): RTLUIComponents {
     if (!rtlUIComponentsInstance) {
         rtlUIComponentsInstance = new RTLUIComponents();
     }

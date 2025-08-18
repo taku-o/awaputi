@@ -916,6 +916,32 @@ TypeScript移行作業中に「将来実装する」「現時点では未実装�
   - 7種類の組み込みコマンド（未翻訳検出、整合性チェック、品質検証等）
   - CI/CD統合・レポート生成・コマンドチェーン・エラーハンドリング
 
+#### src/core/i18n/rtlディレクトリ変換完了
+- ✅ **RTLLanguageDetector.ts**: RTL言語検出システム完全型安全化（532行）
+  - 12個のインターフェース定義（RTLLanguageInfo、BidiControlCharacters、TextDirectionResult等）
+  - アラビア語・ヘブライ語・ペルシャ語・ウルドゥー語サポート
+  - Unicode範囲検出・双方向テキスト制御・CSS生成・入力処理機能
+- ✅ **RTLUIComponents.ts**: RTL対応UIコンポーネントシステム完全型安全化（724行）
+  - 24個のインターフェース定義（InputOptions、MenuOptions、DialogOptions等）
+  - 10種類のコンポーネントファクトリ（input、textarea、select、menu、navigation等）
+  - 自動方向検出・RTL文字検証・レスポンシブ対応・破棄管理
+- ✅ **RTLLayoutManager.ts**: RTLレイアウト管理システム完全型安全化（613行）
+  - 12個のインターフェース定義（LayoutSettings、ComponentSettings、CurrentLayout等）
+  - CSSプロパティ反転・アニメーション調整・レスポンシブRTL・DOM要素適用
+  - 40+のプロパティマッピング・コンポーネント別設定・動的スタイルシート生成
+
+#### src/core/i18n/testディレクトリ変換完了
+- ✅ **RegionalFormattingTest.ts**: 地域化機能統合テストシステム完全型安全化（415行）
+  - 10個のインターフェース定義（TestResult、NumberTestCase、DateTestCase等）
+  - 数値・日付・時刻・通貨フォーマットテスト
+  - 複数言語同時テスト・地域設定統合テスト・レポート生成機能
+
+#### src/core/i18n/testingディレクトリ変換完了
+- ✅ **SystemIntegrationTester.ts**: 多言語システム統合テストシステム完全型安全化（820行）
+  - 18個のインターフェース定義（TestResult、TestStats、TestReport等）
+  - 10種類のテストスイート（localization、translation、formatting、cultural、RTL等）
+  - 並行処理テスト・メモリ管理テスト・パフォーマンステスト・レポート生成
+
 #### 現在の全体進捗（2025-08-18）
 - ✅ **Phase 1完了**: TypeScript環境構築（5/5タスク）
 - ✅ **Phase 2完了**: コアシステムのTypeScript移行（5/5タスク）
@@ -923,17 +949,23 @@ TypeScript移行作業中に「将来実装する」「現時点では未実装�
   - Task 7: 設定管理システム完了
   - Task 8: ゲームエンジンコア完了  
   - Task 9: シーン管理システム完了
-  - 🔄 **Task 10: src/core進行中 - pwa/events/i18n(一部)完了**
+  - Task 10: データ管理システム - src/core進行中
+    - ✅ pwaディレクトリ: 2ファイル変換完了
+    - ✅ eventsディレクトリ: 4ファイル変換完了
+    - ✅ i18nディレクトリ: 18ファイル変換完了（全サブディレクトリ完了）
 
 #### 現在の変換状況
 - **src/core直下**: ✅ 0個のJSファイル（変換済み）
 - **src/coreサブディレクトリ**: 
   - ✅ src/core/pwa: 0個のJSファイル（変換済み）
   - ✅ src/core/events: 0個のJSファイル（変換済み）
-  - 🔄 src/core/i18n: 
+  - ✅ src/core/i18n: 0個のJSファイル（変換済み）
     - ✅ automation: 0個のJSファイル（変換済み）
     - ✅ cultural: 0個のJSファイル（変換済み）
-    - 🔄 management、rtl、test、testing: 変換継続中
+    - ✅ management: 0個のJSファイル（変換済み）
+    - ✅ rtl: 0個のJSファイル（変換済み）
+    - ✅ test: 0個のJSファイル（変換済み）
+    - ✅ testing: 0個のJSファイル（変換済み）
 - **src/scenes**: ✅ 0個のJSファイル（完全変換済み）
 - **src/utils**: ✅ 0個のJSファイル（変換済み）
 

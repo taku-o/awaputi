@@ -1,9 +1,187 @@
 import { getErrorHandler } from '../../../utils/ErrorHandler.js';
 
+// インターフェース定義
+interface KeyMetadata {
+    key: string;
+    category: string;
+    description: string;
+    context: string;
+    maxLength: number | null;
+    parameters: string[];
+    deprecated: boolean;
+    priority: string;
+    registeredAt: string;
+    lastModified: string;
+    version: string;
+    tags: string[];
+    [key: string]: any;
+}
+
+interface KeyUsageData {
+    count: number;
+    firstUsed: string | null;
+    lastUsed: string | null;
+    contexts: Set<string>;
+    locations: Set<string>;
+}
+
+interface UsageRecord {
+    key: string;
+    context?: string;
+    location?: string;
+}
+
+interface UsageStats {
+    totalKeys: number;
+    usedKeys: number;
+    unusedKeys: number;
+    recentlyUsed: number;
+    lastUpdateTime: string | null;
+}
+
+interface UnusedKey {
+    key: string;
+    metadata: KeyMetadata;
+    registeredAt: string;
+    category: string;
+}
+
+interface FrequentlyUsedKey {
+    key: string;
+    count: number;
+    metadata: KeyMetadata | undefined;
+    lastUsed: string | null;
+    contexts: string[];
+    locations: string[];
+}
+
+interface RecentlyUsedKey {
+    key: string;
+    count: number;
+    metadata: KeyMetadata | undefined;
+    lastUsed: string | null;
+    lastUsedDate: Date | null;
+}
+
+interface SearchResult {
+    key: string;
+    metadata: KeyMetadata;
+    usage: {
+        count: number;
+        lastUsed: string | null;
+        contexts: string[];
+        locations: string[];
+    } | null;
+}
+
+interface CategoryStatistics {
+    [key: string]: {
+        total: number;
+        used: number;
+        unused: number;
+        deprecated: number;
+        totalUsage: number;
+    };
+}
+
+interface KeyInfo {
+    key: string;
+    category: string;
+    description: string;
+    deprecated: boolean;
+    registeredAt: string;
+    usage: {
+        count: number;
+        firstUsed: string | null;
+        lastUsed: string | null;
+        contexts: string[];
+        isUsed: boolean;
+    };
+}
+
+interface UsageReport {
+    generatedAt: string;
+    totalKeys: number;
+    usageStats: UsageStats;
+    categoryStats: CategoryStatistics;
+    keys: KeyInfo[];
+}
+
+interface SummaryReport {
+    summary: {
+        totalKeys: number;
+        usedKeys: number;
+        unusedKeys: number;
+        usageRate: number;
+    };
+    categories: CategoryStatistics;
+    topUsedKeys: Array<{ key: string; count: number }>;
+}
+
+interface DuplicateKey {
+    key: string;
+    occurrences: string[];
+    count: number;
+}
+
+interface MissingKeysResult {
+    missingInTarget: string[];
+    extraInTarget: string[];
+    totalReference: number;
+    totalTarget: number;
+    completeness: number;
+}
+
+interface UnusedKeysOptions {
+    excludeCategories?: string[];
+    excludeDeprecated?: boolean;
+    minAge?: number;
+}
+
+interface SearchOptions {
+    searchIn?: string[];
+    category?: string | null;
+    includeDeprecated?: boolean;
+    caseSensitive?: boolean;
+}
+
+interface ReportOptions {
+    includeUnused?: boolean;
+    includeDeprecated?: boolean;
+    sortBy?: string;
+    format?: string;
+}
+
+interface ExtractResult {
+    extracted: number;
+    keys: string[];
+}
+
+interface RegisterResult {
+    successful: string[];
+    failed: string[];
+}
+
+interface KeyManagerStats {
+    totalRegisteredKeys: number;
+    totalUsageRecords: number;
+    usageTracking: boolean;
+    categories: string[];
+    usageStats: UsageStats;
+}
+
 /**
  * 翻訳キー管理クラス - 翻訳キーの登録・管理・使用状況追跡
  */
 export class TranslationKeyManager {
+    private registeredKeys: Map<string, KeyMetadata>;
+    private keyUsage: Map<string, KeyUsageData>;
+    private keyCategories: Map<string, string>;
+    private keyMetadata: Map<string, KeyMetadata>;
+    private usageTracking: boolean;
+    private categoryPatterns: Map<string, RegExp>;
+    private usageStats: UsageStats;
+
     constructor() {
         this.registeredKeys = new Map();
         this.keyUsage = new Map();
@@ -40,7 +218,7 @@ export class TranslationKeyManager {
     /**
      * 翻訳キーを登録
      */
-    registerKey(key, metadata = {}) {
+    registerKey(key: string, metadata: any = {}): boolean {
         try {
             if (!key || typeof key !== 'string') {
                 throw new Error('Invalid translation key');
@@ -50,7 +228,7 @@ export class TranslationKeyManager {
             this.validateKeyFormat(key);
             
             // メタデータの設定
-            const keyMetadata = {
+            const keyMetadata: KeyMetadata = {
                 key: key,
                 category: this.categorizeKey(key),
                 description: metadata.description || '',
@@ -99,8 +277,8 @@ export class TranslationKeyManager {
     /**
      * 複数のキーを一括登録
      */
-    registerKeys(keys) {
-        const results = {
+    registerKeys(keys: { [key: string]: any }): RegisterResult {
+        const results: RegisterResult = {
             successful: [],
             failed: []
         };
@@ -119,10 +297,10 @@ export class TranslationKeyManager {
     /**
      * 翻訳データから自動的にキーを抽出・登録
      */
-    extractAndRegisterKeys(translationData, language = 'ja', basePath = '') {
-        const extractedKeys = [];
+    extractAndRegisterKeys(translationData: any, language: string = 'ja', basePath: string = ''): ExtractResult {
+        const extractedKeys: string[] = [];
         
-        const extractRecursive = (obj, path = '') => {
+        const extractRecursive = (obj: any, path: string = ''): void => {
             for (const [key, value] of Object.entries(obj)) {
                 const fullKey = path ? `${path}.${key}` : key;
                 const fullPath = basePath ? `${basePath}.${fullKey}` : fullKey;
@@ -157,7 +335,7 @@ export class TranslationKeyManager {
     /**
      * キーの使用を記録
      */
-    recordKeyUsage(key, context = '', location = '') {
+    recordKeyUsage(key: string, context: string = '', location: string = ''): void {
         try {
             if (!this.usageTracking) return;
             
@@ -199,23 +377,23 @@ export class TranslationKeyManager {
     /**
      * キー使用状況のバッチ記録
      */
-    recordBatchUsage(usageRecords) {
+    recordBatchUsage(usageRecords: UsageRecord[]): void {
         usageRecords.forEach(record => {
-            this.recordKeyUsage(record.key, record.context, record.location);
+            this.recordKeyUsage(record.key, record.context || '', record.location || '');
         });
     }
     
     /**
      * 未使用キーを検出
      */
-    getUnusedKeys(options = {}) {
+    getUnusedKeys(options: UnusedKeysOptions = {}): UnusedKey[] {
         const {
             excludeCategories = [],
             excludeDeprecated = true,
             minAge = 0 // 日数
         } = options;
         
-        const unusedKeys = [];
+        const unusedKeys: UnusedKey[] = [];
         const cutoffDate = minAge > 0 ? 
             new Date(Date.now() - (minAge * 24 * 60 * 60 * 1000)) : null;
         
@@ -252,7 +430,7 @@ export class TranslationKeyManager {
     /**
      * 使用頻度の高いキーを取得
      */
-    getFrequentlyUsedKeys(limit = 50) {
+    getFrequentlyUsedKeys(limit: number = 50): FrequentlyUsedKey[] {
         const keyUsageArray = Array.from(this.keyUsage.entries())
             .map(([key, usage]) => ({
                 key: key,
@@ -272,7 +450,7 @@ export class TranslationKeyManager {
     /**
      * 最近使用されたキーを取得
      */
-    getRecentlyUsedKeys(days = 7, limit = 100) {
+    getRecentlyUsedKeys(days: number = 7, limit: number = 100): RecentlyUsedKey[] {
         const cutoffDate = new Date(Date.now() - (days * 24 * 60 * 60 * 1000));
         
         const recentKeys = Array.from(this.keyUsage.entries())
@@ -284,7 +462,7 @@ export class TranslationKeyManager {
                 lastUsedDate: usage.lastUsed ? new Date(usage.lastUsed) : null
             }))
             .filter(item => item.lastUsedDate && item.lastUsedDate > cutoffDate)
-            .sort((a, b) => b.lastUsedDate - a.lastUsedDate)
+            .sort((a, b) => (b.lastUsedDate?.getTime() || 0) - (a.lastUsedDate?.getTime() || 0))
             .slice(0, limit);
         
         return recentKeys;
@@ -293,7 +471,7 @@ export class TranslationKeyManager {
     /**
      * キーを検索
      */
-    searchKeys(query, options = {}) {
+    searchKeys(query: string, options: SearchOptions = {}): SearchResult[] {
         const {
             searchIn = ['key', 'description', 'context'],
             category = null,
@@ -302,7 +480,7 @@ export class TranslationKeyManager {
         } = options;
         
         const searchQuery = caseSensitive ? query : query.toLowerCase();
-        const results = [];
+        const results: SearchResult[] = [];
         
         for (const [key, metadata] of this.registeredKeys) {
             // 非推奨キー除外
@@ -367,8 +545,14 @@ export class TranslationKeyManager {
     /**
      * カテゴリ別統計を取得
      */
-    getCategoryStatistics() {
-        const categoryStats = new Map();
+    getCategoryStatistics(): CategoryStatistics {
+        const categoryStats = new Map<string, {
+            total: number;
+            used: number;
+            unused: number;
+            deprecated: number;
+            totalUsage: number;
+        }>();
         
         // カテゴリを初期化
         for (const category of this.categoryPatterns.keys()) {
@@ -416,7 +600,7 @@ export class TranslationKeyManager {
     /**
      * キー使用レポートを生成
      */
-    generateUsageReport(options = {}) {
+    generateUsageReport(options: ReportOptions = {}): any {
         const {
             includeUnused = true,
             includeDeprecated = false,
@@ -424,7 +608,7 @@ export class TranslationKeyManager {
             format = 'detailed' // 'detailed', 'summary', 'csv'
         } = options;
         
-        const reportData = {
+        const reportData: UsageReport = {
             generatedAt: new Date().toISOString(),
             totalKeys: this.registeredKeys.size,
             usageStats: this.getUsageStatistics(),
@@ -439,7 +623,7 @@ export class TranslationKeyManager {
             }
             
             const usage = this.keyUsage.get(key);
-            const keyInfo = {
+            const keyInfo: KeyInfo = {
                 key: key,
                 category: metadata.category,
                 description: metadata.description,
@@ -477,9 +661,9 @@ export class TranslationKeyManager {
     /**
      * 重複キーを検出
      */
-    detectDuplicateKeys(translationSets) {
-        const keyOccurrences = new Map();
-        const duplicates = [];
+    detectDuplicateKeys(translationSets: { [key: string]: any }): DuplicateKey[] {
+        const keyOccurrences = new Map<string, string[]>();
+        const duplicates: DuplicateKey[] = [];
         
         // 各翻訳セットからキーを収集
         for (const [setName, translations] of Object.entries(translationSets)) {
@@ -489,7 +673,7 @@ export class TranslationKeyManager {
                 if (!keyOccurrences.has(key)) {
                     keyOccurrences.set(key, []);
                 }
-                keyOccurrences.get(key).push(setName);
+                keyOccurrences.get(key)!.push(setName);
             }
         }
         
@@ -510,7 +694,7 @@ export class TranslationKeyManager {
     /**
      * 欠損翻訳キーを検出
      */
-    detectMissingKeys(referenceTranslations, targetTranslations) {
+    detectMissingKeys(referenceTranslations: any, targetTranslations: any): MissingKeysResult {
         const referenceKeys = new Set(this.flattenTranslationKeys(referenceTranslations));
         const targetKeys = new Set(this.flattenTranslationKeys(targetTranslations));
         
@@ -529,7 +713,7 @@ export class TranslationKeyManager {
     /**
      * キーのバリデーション
      */
-    validateKeyFormat(key) {
+    validateKeyFormat(key: string): boolean {
         // 基本フォーマットチェック
         if (!/^[a-zA-Z][a-zA-Z0-9_.]*[a-zA-Z0-9]$/.test(key)) {
             throw new Error(`Invalid key format: ${key}. Keys must start with letter and contain only letters, numbers, dots, and underscores.`);
@@ -552,7 +736,7 @@ export class TranslationKeyManager {
     /**
      * キーの分類
      */
-    categorizeKey(key) {
+    categorizeKey(key: string): string {
         for (const [category, pattern] of this.categoryPatterns) {
             if (pattern.test(key)) {
                 return category;
@@ -564,8 +748,8 @@ export class TranslationKeyManager {
     /**
      * パラメータ抽出
      */
-    extractParameters(text) {
-        const parameters = new Set();
+    extractParameters(text: string): string[] {
+        const parameters = new Set<string>();
         const patterns = [
             /\{([^}]+)\}/g,     // {param}  
             /\{\{([^}]+)\}\}/g, // {{param}}
@@ -587,8 +771,8 @@ export class TranslationKeyManager {
     /**
      * 翻訳オブジェクトを平坦化してキー一覧を取得
      */
-    flattenTranslationKeys(translations, prefix = '') {
-        const keys = [];
+    flattenTranslationKeys(translations: any, prefix: string = ''): string[] {
+        const keys: string[] = [];
         
         for (const [key, value] of Object.entries(translations)) {
             const fullKey = prefix ? `${prefix}.${key}` : key;
@@ -606,7 +790,7 @@ export class TranslationKeyManager {
     /**
      * 使用統計を更新
      */
-    updateUsageStats() {
+    updateUsageStats(): void {
         const now = new Date().toISOString();
         const recentThreshold = new Date(Date.now() - (7 * 24 * 60 * 60 * 1000));
         
@@ -633,7 +817,7 @@ export class TranslationKeyManager {
     /**
      * レポートキーをソート
      */
-    sortReportKeys(keys, sortBy) {
+    sortReportKeys(keys: KeyInfo[], sortBy: string): void {
         switch (sortBy) {
             case 'usage':
                 keys.sort((a, b) => b.usage.count - a.usage.count);
@@ -653,7 +837,7 @@ export class TranslationKeyManager {
     /**
      * レポートフォーマット
      */
-    formatUsageReport(reportData, format) {
+    formatUsageReport(reportData: UsageReport, format: string): any {
         switch (format) {
             case 'summary':
                 return this.formatSummaryReport(reportData);
@@ -668,7 +852,7 @@ export class TranslationKeyManager {
     /**
      * サマリーレポートフォーマット
      */
-    formatSummaryReport(reportData) {
+    formatSummaryReport(reportData: UsageReport): SummaryReport {
         return {
             summary: {
                 totalKeys: reportData.totalKeys,
@@ -688,7 +872,7 @@ export class TranslationKeyManager {
     /**
      * CSVレポートフォーマット
      */
-    formatCSVReport(reportData) {
+    formatCSVReport(reportData: UsageReport): string {
         const headers = ['Key', 'Category', 'Usage Count', 'Last Used', 'Description', 'Deprecated'];
         const rows = [headers.join(',')];
         
@@ -696,7 +880,7 @@ export class TranslationKeyManager {
             const row = [
                 `"${keyInfo.key}"`,
                 `"${keyInfo.category}"`,
-                keyInfo.usage.count,
+                keyInfo.usage.count.toString(),
                 `"${keyInfo.usage.lastUsed || ''}"`,
                 `"${keyInfo.description || ''}"`,
                 keyInfo.deprecated ? 'Yes' : 'No'
@@ -710,14 +894,14 @@ export class TranslationKeyManager {
     /**
      * 使用統計を取得
      */
-    getUsageStatistics() {
+    getUsageStatistics(): UsageStats {
         return { ...this.usageStats };
     }
     
     /**
      * キー情報を取得
      */
-    getKeyInfo(key) {
+    getKeyInfo(key: string): any | null {
         const metadata = this.registeredKeys.get(key);
         const usage = this.keyUsage.get(key);
         
@@ -740,7 +924,7 @@ export class TranslationKeyManager {
     /**
      * 使用追跡の有効/無効切り替え
      */
-    setUsageTracking(enabled) {
+    setUsageTracking(enabled: boolean): void {
         this.usageTracking = enabled;
         console.log(`Usage tracking ${enabled ? 'enabled' : 'disabled'}`);
     }
@@ -748,7 +932,7 @@ export class TranslationKeyManager {
     /**
      * すべてのデータをクリア
      */
-    clearAll() {
+    clearAll(): void {
         this.registeredKeys.clear();
         this.keyUsage.clear();
         this.keyCategories.clear();
@@ -760,7 +944,7 @@ export class TranslationKeyManager {
     /**
      * 統計情報を取得
      */
-    getStats() {
+    getStats(): KeyManagerStats {
         return {
             totalRegisteredKeys: this.registeredKeys.size,
             totalUsageRecords: this.keyUsage.size,
@@ -772,12 +956,12 @@ export class TranslationKeyManager {
 }
 
 // シングルトンインスタンス
-let translationKeyManagerInstance = null;
+let translationKeyManagerInstance: TranslationKeyManager | null = null;
 
 /**
  * TranslationKeyManagerのシングルトンインスタンスを取得
  */
-export function getTranslationKeyManager() {
+export function getTranslationKeyManager(): TranslationKeyManager {
     if (!translationKeyManagerInstance) {
         translationKeyManagerInstance = new TranslationKeyManager();
     }

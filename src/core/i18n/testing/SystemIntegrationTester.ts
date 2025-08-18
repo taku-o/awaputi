@@ -4,10 +4,85 @@ import { getAdvancedFormatterEngine } from '../advanced/AdvancedFormatterEngine.
 import { getCulturalAdaptationSystem } from '../cultural/CulturalAdaptationSystem.js';
 import { getRTLLanguageDetector } from '../rtl/RTLLanguageDetector.js';
 
+// インターフェース定義
+interface TestResult {
+    name: string;
+    status: 'passed' | 'failed' | 'skipped';
+    error?: string;
+    duration: number;
+}
+
+interface TestStats {
+    totalTests: number;
+    passedTests: number;
+    failedTests: number;
+    skippedTests: number;
+    startTime: Date | null;
+    endTime: Date | null;
+}
+
+interface TestOptions {
+    suites?: string[];
+    failFast?: boolean;
+    generateReport?: boolean;
+    cleanup?: boolean;
+}
+
+interface TestSummary {
+    totalTests: number;
+    passedTests: number;
+    failedTests: number;
+    successRate: string;
+}
+
+interface SuiteResult {
+    passed: number;
+    failed: number;
+    totalTests: number;
+    averageDuration: number;
+    tests: TestResult[];
+}
+
+interface TestReport {
+    summary: {
+        totalTests: number;
+        passedTests: number;
+        failedTests: number;
+        successRate: string;
+        duration: string;
+        startTime: string;
+        endTime: string;
+    };
+    suiteResults: { [suiteName: string]: SuiteResult };
+    recommendations: string[];
+}
+
+interface MockFactory {
+    gameEngine: () => any;
+    settingsManager: () => any;
+    domElement: () => HTMLDivElement;
+}
+
+interface ValidationResult {
+    valid: boolean;
+    [key: string]: any;
+}
+
+type TestFunction = () => Promise<TestResult[]>;
+
 /**
  * システム統合テスト - 多言語システムの全体統合テスト
  */
 export class SystemIntegrationTester {
+    private localizationManager: any;
+    private formatterEngine: any;
+    private culturalSystem: any;
+    private rtlDetector: any;
+    private testResults: Map<string, TestResult[]>;
+    private testStats: TestStats;
+    private testSuites: Map<string, TestFunction>;
+    private mockFactory: MockFactory;
+
     constructor() {
         this.localizationManager = getEnhancedLocalizationManager();
         this.formatterEngine = getAdvancedFormatterEngine();
@@ -52,7 +127,7 @@ export class SystemIntegrationTester {
     /**
      * 全統合テストを実行
      */
-    async runAllTests(options = {}) {
+    async runAllTests(options: TestOptions = {}): Promise<TestReport | TestSummary> {
         const {
             suites = Array.from(this.testSuites.keys()),
             failFast = false,
@@ -104,7 +179,7 @@ export class SystemIntegrationTester {
                     this.testResults.set(suiteName, [{
                         name: `${suiteName}-suite-error`,
                         status: 'failed',
-                        error: error.message,
+                        error: (error as Error).message,
                         duration: 0
                     }]);
                     this.testStats.failedTests++;
@@ -141,14 +216,14 @@ export class SystemIntegrationTester {
     /**
      * 個別のテストスイートを実行
      */
-    async runTestSuite(suiteName) {
+    async runTestSuite(suiteName: string): Promise<TestResult[]> {
         const testFunction = this.testSuites.get(suiteName);
         if (!testFunction) {
             throw new Error(`Test suite not found: ${suiteName}`);
         }
         
         const startTime = Date.now();
-        const results = [];
+        const results: TestResult[] = [];
         
         try {
             const suiteResults = await testFunction();
@@ -157,7 +232,7 @@ export class SystemIntegrationTester {
             results.push({
                 name: `${suiteName}-execution`,
                 status: 'failed',
-                error: error.message,
+                error: (error as Error).message,
                 duration: Date.now() - startTime
             });
         }
@@ -168,8 +243,8 @@ export class SystemIntegrationTester {
     /**
      * LocalizationManagerのコア機能テスト
      */
-    async testLocalizationCore() {
-        const results = [];
+    async testLocalizationCore(): Promise<TestResult[]> {
+        const results: TestResult[] = [];
         
         // 基本翻訳機能テスト
         results.push(await this.runSingleTest('basic-translation', async () => {
@@ -205,8 +280,8 @@ export class SystemIntegrationTester {
     /**
      * 翻訳読み込み機能テスト
      */
-    async testTranslationLoading() {
-        const results = [];
+    async testTranslationLoading(): Promise<TestResult[]> {
+        const results: TestResult[] = [];
         
         // 非同期読み込みテスト
         results.push(await this.runSingleTest('async-loading', async () => {
@@ -241,8 +316,8 @@ export class SystemIntegrationTester {
     /**
      * フォーマット機能統合テスト
      */
-    async testFormattingIntegration() {
-        const results = [];
+    async testFormattingIntegration(): Promise<TestResult[]> {
+        const results: TestResult[] = [];
         
         // 複数形フォーマットテスト
         results.push(await this.runSingleTest('plural-formatting', async () => {
@@ -280,8 +355,8 @@ export class SystemIntegrationTester {
     /**
      * 文化的適応機能テスト
      */
-    async testCulturalAdaptation() {
-        const results = [];
+    async testCulturalAdaptation(): Promise<TestResult[]> {
+        const results: TestResult[] = [];
         
         // 文化設定適用テスト
         results.push(await this.runSingleTest('cultural-setting-application', async () => {
@@ -310,7 +385,7 @@ export class SystemIntegrationTester {
         // タブー検証テスト
         results.push(await this.runSingleTest('taboo-validation', async () => {
             this.culturalSystem.setCulturalAdaptation('ja');
-            const validation = this.culturalSystem.validateAgainstTaboos('content with 4', 'content');
+            const validation = this.culturalSystem.validateAgainstTaboos('content with 4', 'content') as ValidationResult;
             this.assert(validation.hasOwnProperty('valid'), 'Taboo validation should return validation object');
         }));
         
@@ -320,8 +395,8 @@ export class SystemIntegrationTester {
     /**
      * RTL統合機能テスト
      */
-    async testRTLIntegration() {
-        const results = [];
+    async testRTLIntegration(): Promise<TestResult[]> {
+        const results: TestResult[] = [];
         
         // RTL言語検出テスト
         results.push(await this.runSingleTest('rtl-detection', async () => {
@@ -360,8 +435,8 @@ export class SystemIntegrationTester {
     /**
      * 言語切り替え統合テスト
      */
-    async testLanguageSwitching() {
-        const results = [];
+    async testLanguageSwitching(): Promise<TestResult[]> {
+        const results: TestResult[] = [];
         
         // 連続言語切り替えテスト
         results.push(await this.runSingleTest('consecutive-language-switching', async () => {
@@ -377,7 +452,7 @@ export class SystemIntegrationTester {
         
         // 高速切り替えテスト
         results.push(await this.runSingleTest('rapid-language-switching', async () => {
-            const switches = [];
+            const switches: Promise<boolean>[] = [];
             for (let i = 0; i < 10; i++) {
                 const lang = i % 2 === 0 ? 'ja' : 'en';
                 switches.push(this.localizationManager.setLanguage(lang));
@@ -406,8 +481,8 @@ export class SystemIntegrationTester {
     /**
      * パフォーマンス統合テスト
      */
-    async testPerformanceIntegration() {
-        const results = [];
+    async testPerformanceIntegration(): Promise<TestResult[]> {
+        const results: TestResult[] = [];
         
         // 翻訳パフォーマンステスト
         results.push(await this.runSingleTest('translation-performance', async () => {
@@ -457,8 +532,8 @@ export class SystemIntegrationTester {
     /**
      * エラーハンドリングテスト
      */
-    async testErrorHandling() {
-        const results = [];
+    async testErrorHandling(): Promise<TestResult[]> {
+        const results: TestResult[] = [];
         
         // 不正言語コードテスト
         results.push(await this.runSingleTest('invalid-language-code', async () => {
@@ -494,8 +569,8 @@ export class SystemIntegrationTester {
     /**
      * メモリ管理テスト
      */
-    async testMemoryManagement() {
-        const results = [];
+    async testMemoryManagement(): Promise<TestResult[]> {
+        const results: TestResult[] = [];
         
         // キャッシュクリーンアップテスト
         results.push(await this.runSingleTest('cache-cleanup', async () => {
@@ -529,18 +604,18 @@ export class SystemIntegrationTester {
     /**
      * 並行処理テスト
      */
-    async testConcurrentOperations() {
-        const results = [];
+    async testConcurrentOperations(): Promise<TestResult[]> {
+        const results: TestResult[] = [];
         
         // 並行翻訳テスト
         results.push(await this.runSingleTest('concurrent-translations', async () => {
-            const promises = [];
+            const promises: Promise<string>[] = [];
             for (let i = 0; i < 50; i++) {
                 promises.push(Promise.resolve(this.localizationManager.t('common.ok')));
             }
             
-            const results = await Promise.all(promises);
-            const allSame = results.every(r => r === results[0]);
+            const translationResults = await Promise.all(promises);
+            const allSame = translationResults.every(r => r === translationResults[0]);
             this.assert(allSame, 'Concurrent translations should be consistent');
         }));
         
@@ -551,8 +626,8 @@ export class SystemIntegrationTester {
                 this.localizationManager.setLanguage(lang)
             );
             
-            const results = await Promise.all(promises);
-            const successCount = results.filter(r => r === true).length;
+            const switchResults = await Promise.all(promises);
+            const successCount = switchResults.filter(r => r === true).length;
             this.assert(successCount >= 2, 'Most concurrent switches should succeed');
         }));
         
@@ -563,7 +638,7 @@ export class SystemIntegrationTester {
      * ヘルパー関数群
      */
     
-    async setupTestEnvironment() {
+    private async setupTestEnvironment(): Promise<void> {
         // テスト用のDOM要素を作成
         if (!document.getElementById('test-container')) {
             const container = document.createElement('div');
@@ -578,7 +653,7 @@ export class SystemIntegrationTester {
         console.log('✅ Test environment setup complete');
     }
     
-    async cleanupTestEnvironment() {
+    private async cleanupTestEnvironment(): Promise<void> {
         // テスト用DOM要素をクリーンアップ
         const container = document.getElementById('test-container');
         if (container) {
@@ -595,7 +670,7 @@ export class SystemIntegrationTester {
         console.log('✅ Test environment cleanup complete');
     }
     
-    async runSingleTest(name, testFunction) {
+    private async runSingleTest(name: string, testFunction: () => Promise<void>): Promise<TestResult> {
         const startTime = Date.now();
         
         try {
@@ -609,39 +684,39 @@ export class SystemIntegrationTester {
             return {
                 name: name,
                 status: 'failed',
-                error: error.message,
+                error: (error as Error).message,
                 duration: Date.now() - startTime
             };
         }
     }
     
-    assert(condition, message) {
+    private assert(condition: boolean, message?: string): void {
         if (!condition) {
             throw new Error(message || 'Assertion failed');
         }
     }
     
-    getMemoryUsage() {
+    private getMemoryUsage(): number {
         if (performance.memory) {
             return Math.round(performance.memory.usedJSHeapSize / 1024 / 1024 * 100) / 100;
         }
         return 0;
     }
     
-    generateTestReport() {
-        const duration = this.testStats.endTime - this.testStats.startTime;
+    private generateTestReport(): TestReport {
+        const duration = this.testStats.endTime!.getTime() - this.testStats.startTime!.getTime();
         const successRate = this.testStats.totalTests > 0 ? 
-            (this.testStats.passedTests / this.testStats.totalTests * 100).toFixed(2) : 0;
+            (this.testStats.passedTests / this.testStats.totalTests * 100).toFixed(2) : '0';
         
-        const report = {
+        const report: TestReport = {
             summary: {
                 totalTests: this.testStats.totalTests,
                 passedTests: this.testStats.passedTests,
                 failedTests: this.testStats.failedTests,
                 successRate: `${successRate}%`,
                 duration: `${duration}ms`,
-                startTime: this.testStats.startTime.toISOString(),
-                endTime: this.testStats.endTime.toISOString()
+                startTime: this.testStats.startTime!.toISOString(),
+                endTime: this.testStats.endTime!.toISOString()
             },
             suiteResults: {},
             recommendations: []
@@ -674,7 +749,7 @@ export class SystemIntegrationTester {
         return report;
     }
     
-    getTestSummary() {
+    private getTestSummary(): TestSummary {
         return {
             totalTests: this.testStats.totalTests,
             passedTests: this.testStats.passedTests,
@@ -685,7 +760,7 @@ export class SystemIntegrationTester {
     }
     
     // モック作成ヘルパー
-    createGameEngineMock() {
+    private createGameEngineMock(): any {
         return {
             getCurrentScene: () => ({ name: 'TestScene' }),
             getAllScenes: () => ['MainMenuScene', 'GameScene', 'SettingsScene'],
@@ -693,15 +768,15 @@ export class SystemIntegrationTester {
         };
     }
     
-    createSettingsManagerMock() {
+    private createSettingsManagerMock(): any {
         return {
-            getSetting: (key) => key === 'language' ? 'ja' : null,
-            setSetting: (key, value) => true,
+            getSetting: (key: string) => key === 'language' ? 'ja' : null,
+            setSetting: (key: string, value: any) => true,
             getAllSettings: () => ({ language: 'ja', theme: 'default' })
         };
     }
     
-    createDOMElementMock() {
+    private createDOMElementMock(): HTMLDivElement {
         const element = document.createElement('div');
         element.textContent = 'Test Element';
         return element;
@@ -714,7 +789,7 @@ export class SystemIntegrationTester {
     /**
      * 特定のテストスイートのみ実行
      */
-    async runSpecificSuite(suiteName, options = {}) {
+    async runSpecificSuite(suiteName: string, options: TestOptions = {}): Promise<TestReport | TestSummary> {
         return await this.runAllTests({
             suites: [suiteName],
             ...options
@@ -724,7 +799,7 @@ export class SystemIntegrationTester {
     /**
      * テスト結果を取得
      */
-    getTestResults() {
+    getTestResults(): { results: { [suiteName: string]: TestResult[] }; stats: TestStats } {
         return {
             results: Object.fromEntries(this.testResults),
             stats: this.testStats
@@ -734,7 +809,7 @@ export class SystemIntegrationTester {
     /**
      * 統計情報を取得
      */
-    getStats() {
+    getStats(): { availableTestSuites: string[]; testStats: TestStats; lastRunResults: { [suiteName: string]: TestResult[] } | null } {
         return {
             availableTestSuites: Array.from(this.testSuites.keys()),
             testStats: this.testStats,
@@ -745,12 +820,12 @@ export class SystemIntegrationTester {
 }
 
 // シングルトンインスタンス
-let systemIntegrationTesterInstance = null;
+let systemIntegrationTesterInstance: SystemIntegrationTester | null = null;
 
 /**
  * SystemIntegrationTesterのシングルトンインスタンスを取得
  */
-export function getSystemIntegrationTester() {
+export function getSystemIntegrationTester(): SystemIntegrationTester {
     if (!systemIntegrationTesterInstance) {
         systemIntegrationTesterInstance = new SystemIntegrationTester();
     }

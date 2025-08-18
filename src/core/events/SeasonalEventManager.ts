@@ -1,11 +1,77 @@
 /**
- * SeasonalEventManager.js
+ * SeasonalEventManager.ts
  * 季節イベント管理システム
  * EventStageManagerから分離された季節イベント特化機能
  */
 
+type Season = 'spring' | 'summer' | 'autumn' | 'winter';
+
+interface SeasonalPeriod {
+    months: number[];
+    events: string[];
+}
+
+interface SeasonalEventData {
+    id: string;
+    season: Season;
+    startTime: number;
+    endTime: number;
+}
+
+interface SeasonalEffects {
+    [key: string]: any;
+}
+
+interface SpecialRules {
+    bloomEffect?: boolean;
+    pastelColors?: boolean;
+    cherryBlossomParticles?: boolean;
+    gentleWind?: number;
+    heatWave?: boolean;
+    vibrantColors?: boolean;
+    sunRays?: boolean;
+    heatShimmer?: number;
+    fallingLeaves?: boolean;
+    warmColors?: boolean;
+    goldenHour?: boolean;
+    autumnWind?: number;
+    snowfall?: boolean;
+    coolColors?: boolean;
+    iceEffect?: boolean;
+    frostedGlass?: number;
+    bubbleColorFilters?: {
+        hueShift: number;
+        saturation: number;
+        brightness: number;
+    };
+    backgroundMusic?: string;
+}
+
+interface Event {
+    seasonalEffects?: SeasonalEffects;
+}
+
+interface SeasonInfo {
+    season: Season;
+    seasonData: SeasonalPeriod;
+    activeEvents: SeasonalEventData[];
+    timeUntilNextSeason: number;
+}
+
+interface SavedSeasonalData {
+    activeSeasonalEvents?: [string, SeasonalEventData][];
+    currentSeason?: Season;
+    lastUpdated?: number;
+}
+
 export class SeasonalEventManager {
-    constructor(gameEngine) {
+    private gameEngine: any;
+    private SEASONAL_PERIODS: { [key in Season]: SeasonalPeriod };
+    private seasonalCheckInterval: number | null = null;
+    private currentSeason: Season;
+    private activeSeasonalEvents: Map<string, SeasonalEventData> = new Map();
+
+    constructor(gameEngine: any) {
         this.gameEngine = gameEngine;
         
         // 季節イベント用定数
@@ -39,12 +105,12 @@ export class SeasonalEventManager {
     /**
      * 現在の季節を取得
      */
-    getCurrentSeason() {
+    getCurrentSeason(): Season {
         const currentMonth = new Date().getMonth() + 1; // 0-based to 1-based
         
         for (const [season, data] of Object.entries(this.SEASONAL_PERIODS)) {
             if (data.months.includes(currentMonth)) {
-                return season;
+                return season as Season;
             }
         }
         
@@ -54,7 +120,7 @@ export class SeasonalEventManager {
     /**
      * 季節イベントのチェックを開始
      */
-    startSeasonalEventChecking() {
+    private startSeasonalEventChecking(): void {
         // 既存のインターバルをクリア
         if (this.seasonalCheckInterval) {
             clearInterval(this.seasonalCheckInterval);
@@ -63,7 +129,7 @@ export class SeasonalEventManager {
         // 1時間ごとに季節イベントをチェック
         this.seasonalCheckInterval = setInterval(() => {
             this.checkSeasonalEvents();
-        }, 60 * 60 * 1000);
+        }, 60 * 60 * 1000) as unknown as number;
         
         // 初回チェック
         this.checkSeasonalEvents();
@@ -72,7 +138,7 @@ export class SeasonalEventManager {
     /**
      * 季節イベントをチェック
      */
-    checkSeasonalEvents() {
+    private checkSeasonalEvents(): void {
         const newSeason = this.getCurrentSeason();
         
         if (newSeason !== this.currentSeason) {
@@ -88,7 +154,7 @@ export class SeasonalEventManager {
     /**
      * 季節イベントを有効化
      */
-    activateSeasonalEvents(season) {
+    private activateSeasonalEvents(season: Season): void {
         const seasonData = this.SEASONAL_PERIODS[season];
         if (!seasonData) return;
         
@@ -117,9 +183,9 @@ export class SeasonalEventManager {
     /**
      * 期限切れの季節イベントを無効化
      */
-    deactivateExpiredSeasonalEvents() {
+    private deactivateExpiredSeasonalEvents(): void {
         const currentTime = Date.now();
-        const expiredEvents = [];
+        const expiredEvents: string[] = [];
         
         this.activeSeasonalEvents.forEach((eventData, eventId) => {
             if (currentTime > eventData.endTime) {
@@ -143,7 +209,7 @@ export class SeasonalEventManager {
     /**
      * 季節の終了時刻を取得
      */
-    getSeasonEndTime(season) {
+    private getSeasonEndTime(season: Season): number {
         const now = new Date();
         const currentYear = now.getFullYear();
         const seasonData = this.SEASONAL_PERIODS[season];
@@ -166,7 +232,7 @@ export class SeasonalEventManager {
     /**
      * 春のエフェクトを適用
      */
-    applySpringEffects(specialRules) {
+    private applySpringEffects(specialRules: SpecialRules): void {
         specialRules.bloomEffect = true;
         specialRules.pastelColors = true;
         specialRules.cherryBlossomParticles = true;
@@ -198,7 +264,7 @@ export class SeasonalEventManager {
     /**
      * 夏のエフェクトを適用
      */
-    applySummerEffects(specialRules) {
+    private applySummerEffects(specialRules: SpecialRules): void {
         specialRules.heatWave = true;
         specialRules.vibrantColors = true;
         specialRules.sunRays = true;
@@ -229,7 +295,7 @@ export class SeasonalEventManager {
     /**
      * 秋のエフェクトを適用
      */
-    applyAutumnEffects(specialRules) {
+    private applyAutumnEffects(specialRules: SpecialRules): void {
         specialRules.fallingLeaves = true;
         specialRules.warmColors = true;
         specialRules.goldenHour = true;
@@ -261,7 +327,7 @@ export class SeasonalEventManager {
     /**
      * 冬のエフェクトを適用
      */
-    applyWinterEffects(specialRules) {
+    private applyWinterEffects(specialRules: SpecialRules): void {
         specialRules.snowfall = true;
         specialRules.coolColors = true;
         specialRules.iceEffect = true;
@@ -294,7 +360,7 @@ export class SeasonalEventManager {
     /**
      * 季節エフェクトを適用
      */
-    applySeasonalEffects(event, specialRules) {
+    applySeasonalEffects(event: Event | null, specialRules: SpecialRules): void {
         const season = this.currentSeason;
         
         switch (season) {
@@ -321,28 +387,28 @@ export class SeasonalEventManager {
     /**
      * アクティブな季節イベントを取得
      */
-    getActiveSeasonalEvents() {
+    getActiveSeasonalEvents(): SeasonalEventData[] {
         return Array.from(this.activeSeasonalEvents.values());
     }
     
     /**
      * 季節イベントがアクティブかチェック
      */
-    isSeasonalEventActive(eventId) {
+    isSeasonalEventActive(eventId: string): boolean {
         return this.activeSeasonalEvents.has(eventId);
     }
     
     /**
      * 季節イベント情報を取得
      */
-    getSeasonalEventInfo(eventId) {
+    getSeasonalEventInfo(eventId: string): SeasonalEventData | null {
         return this.activeSeasonalEvents.get(eventId) || null;
     }
     
     /**
      * 現在の季節情報を取得
      */
-    getCurrentSeasonInfo() {
+    getCurrentSeasonInfo(): SeasonInfo {
         return {
             season: this.currentSeason,
             seasonData: this.SEASONAL_PERIODS[this.currentSeason],
@@ -354,7 +420,7 @@ export class SeasonalEventManager {
     /**
      * 次の季節までの時間を取得
      */
-    getTimeUntilNextSeason() {
+    private getTimeUntilNextSeason(): number {
         const currentTime = Date.now();
         const seasonEndTime = this.getSeasonEndTime(this.currentSeason);
         return Math.max(0, seasonEndTime - currentTime);
@@ -363,12 +429,12 @@ export class SeasonalEventManager {
     /**
      * 季節イベントデータを読み込み（EventStageManager対応）
      */
-    load() {
+    load(): void {
         try {
             // ローカルストレージから季節イベントデータを読み込み
             const savedSeasonalData = localStorage.getItem('seasonalEventData');
             if (savedSeasonalData) {
-                const data = JSON.parse(savedSeasonalData);
+                const data: SavedSeasonalData = JSON.parse(savedSeasonalData);
                 
                 // アクティブイベントを復元
                 if (data.activeSeasonalEvents) {
@@ -398,9 +464,9 @@ export class SeasonalEventManager {
     /**
      * 季節イベントデータを保存
      */
-    save() {
+    save(): void {
         try {
-            const dataToSave = {
+            const dataToSave: SavedSeasonalData = {
                 activeSeasonalEvents: Array.from(this.activeSeasonalEvents.entries()),
                 currentSeason: this.currentSeason,
                 lastUpdated: Date.now()
@@ -416,7 +482,7 @@ export class SeasonalEventManager {
     /**
      * リソースクリーンアップ
      */
-    dispose() {
+    dispose(): void {
         if (this.seasonalCheckInterval) {
             clearInterval(this.seasonalCheckInterval);
             this.seasonalCheckInterval = null;

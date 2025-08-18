@@ -1,10 +1,84 @@
 import { getErrorHandler } from '../../../utils/ErrorHandler.js';
 import { getRTLLanguageDetector } from './RTLLanguageDetector.js';
 
+// インターフェース定義
+interface LayoutSettings {
+    autoFlipEnabled: boolean;
+    preserveImageOrientation: boolean;
+    handleScrollbars: boolean;
+    adaptAnimations: boolean;
+    responsiveBreakpoints: ResponsiveBreakpoints;
+}
+
+interface ResponsiveBreakpoints {
+    mobile: number;
+    tablet: number;
+    desktop: number;
+}
+
+interface ComponentSettings {
+    flipHorizontal: boolean;
+    preserveIcons: boolean;
+    adaptAnimations: boolean;
+    customRules: { [selector: string]: string };
+}
+
+interface CurrentLayout {
+    direction: 'ltr' | 'rtl';
+    language: string | null;
+    appliedElements: WeakSet<HTMLElement>;
+    styleSheet: HTMLStyleElement | null;
+}
+
+interface ApplyRTLOptions {
+    componentType?: string;
+    preserveContent?: boolean;
+    adaptAnimations?: boolean;
+    customRules?: { [selector: string]: string };
+}
+
+interface OriginalStyles {
+    [property: string]: string;
+}
+
+interface ExtendedHTMLElement extends HTMLElement {
+    _rtlOriginalStyles?: OriginalStyles;
+    _rtlApplied?: boolean;
+}
+
+interface AnimationKeyframes {
+    [percentage: string]: {
+        [property: string]: string | number;
+    };
+}
+
+interface LayoutChangeEventDetail {
+    newDirection: 'ltr' | 'rtl';
+    oldDirection: 'ltr' | 'rtl';
+    language: string | null;
+    timestamp: string;
+}
+
+interface LayoutStats {
+    currentDirection: 'ltr' | 'rtl';
+    currentLanguage: string | null;
+    appliedElementsCount: string | number;
+    supportedComponents: number;
+    flipProperties: number;
+    preserveProperties: number;
+}
+
 /**
  * RTL対応レイアウト管理システム - RTL言語のUI配置とレイアウト制御
  */
 export class RTLLayoutManager {
+    private rtlDetector: any;
+    private layoutSettings: LayoutSettings;
+    private flipProperties: Map<string, string>;
+    private preserveProperties: Set<string>;
+    private componentSettings: Map<string, ComponentSettings>;
+    private currentLayout: CurrentLayout;
+
     constructor() {
         this.rtlDetector = getRTLLanguageDetector();
         
@@ -117,7 +191,7 @@ export class RTLLayoutManager {
     /**
      * レイアウト方向を設定
      */
-    setLayoutDirection(direction, language = null) {
+    setLayoutDirection(direction: 'ltr' | 'rtl', language: string | null = null): boolean {
         try {
             if (direction !== 'ltr' && direction !== 'rtl') {
                 throw new Error(`Invalid layout direction: ${direction}`);
@@ -151,7 +225,7 @@ export class RTLLayoutManager {
     /**
      * 要素にRTLレイアウトを適用
      */
-    applyRTLLayout(element, options = {}) {
+    applyRTLLayout(element: HTMLElement, options: ApplyRTLOptions = {}): boolean {
         if (!element || this.currentLayout.appliedElements.has(element)) {
             return false;
         }
@@ -164,6 +238,8 @@ export class RTLLayoutManager {
         } = options;
         
         try {
+            const extElement = element as ExtendedHTMLElement;
+            
             // 要素の現在のスタイルを保存
             const originalStyles = this.saveElementStyles(element);
             
@@ -184,8 +260,8 @@ export class RTLLayoutManager {
             }
             
             // 元のスタイル情報を保存
-            element._rtlOriginalStyles = originalStyles;
-            element._rtlApplied = true;
+            extElement._rtlOriginalStyles = originalStyles;
+            extElement._rtlApplied = true;
             
             // 適用済み要素として記録
             this.currentLayout.appliedElements.add(element);
@@ -204,15 +280,17 @@ export class RTLLayoutManager {
     /**
      * RTLレイアウトを除去
      */
-    removeRTLLayout(element) {
-        if (!element || !element._rtlApplied) {
+    removeRTLLayout(element: HTMLElement): boolean {
+        const extElement = element as ExtendedHTMLElement;
+        
+        if (!element || !extElement._rtlApplied) {
             return false;
         }
         
         try {
             // 保存されたスタイルを復元
-            if (element._rtlOriginalStyles) {
-                this.restoreElementStyles(element, element._rtlOriginalStyles);
+            if (extElement._rtlOriginalStyles) {
+                this.restoreElementStyles(element, extElement._rtlOriginalStyles);
             }
             
             // RTL固有のクラスを削除
@@ -222,14 +300,15 @@ export class RTLLayoutManager {
             // 子要素の処理
             const children = element.querySelectorAll('[dir="rtl"]');
             children.forEach(child => {
-                if (child._rtlApplied) {
-                    this.removeRTLLayout(child);
+                const childExt = child as ExtendedHTMLElement;
+                if (childExt._rtlApplied) {
+                    this.removeRTLLayout(child as HTMLElement);
                 }
             });
             
             // メタデータクリーンアップ
-            delete element._rtlOriginalStyles;
-            delete element._rtlApplied;
+            delete extElement._rtlOriginalStyles;
+            delete extElement._rtlApplied;
             
             // 適用済みセットから削除
             this.currentLayout.appliedElements.delete(element);
@@ -247,11 +326,11 @@ export class RTLLayoutManager {
     /**
      * レスポンシブRTLレイアウト
      */
-    applyResponsiveRTL(element, breakpoints = null) {
+    applyResponsiveRTL(element: HTMLElement, breakpoints: ResponsiveBreakpoints | null = null): string {
         const responsive = breakpoints || this.layoutSettings.responsiveBreakpoints;
         const currentWidth = window.innerWidth;
         
-        let deviceClass = 'desktop';
+        let deviceClass: 'mobile' | 'tablet' | 'desktop' = 'desktop';
         if (currentWidth <= responsive.mobile) {
             deviceClass = 'mobile';
         } else if (currentWidth <= responsive.tablet) {
@@ -280,7 +359,7 @@ export class RTLLayoutManager {
     /**
      * CSS文字列をRTL用に変換
      */
-    convertCSSToRTL(cssText) {
+    convertCSSToRTL(cssText: string): string {
         let rtlCSS = cssText;
         
         // プロパティを反転
@@ -309,15 +388,16 @@ export class RTLLayoutManager {
     /**
      * アニメーションをRTL用に調整
      */
-    adaptAnimationForRTL(animationName, keyframes) {
-        const rtlKeyframes = {};
+    adaptAnimationForRTL(animationName: string, keyframes: AnimationKeyframes): AnimationKeyframes {
+        const rtlKeyframes: AnimationKeyframes = {};
         
         Object.entries(keyframes).forEach(([percentage, rules]) => {
-            const rtlRules = {};
+            const rtlRules: { [property: string]: string | number } = {};
             
             Object.entries(rules).forEach(([property, value]) => {
                 if (this.flipProperties.has(property)) {
-                    rtlRules[this.flipProperties.get(property)] = value;
+                    const flippedProperty = this.flipProperties.get(property)!;
+                    rtlRules[flippedProperty] = value;
                 } else if (property === 'transform' && typeof value === 'string') {
                     // transform プロパティの調整
                     rtlRules[property] = value.replace(/translateX\((-?\d+[^)]*)\)/g, (match, val) => {
@@ -340,7 +420,7 @@ export class RTLLayoutManager {
      * 内部メソッド群
      */
     
-    applyDocumentDirection(direction) {
+    private applyDocumentDirection(direction: 'ltr' | 'rtl'): void {
         document.documentElement.style.direction = direction;
         document.documentElement.setAttribute('dir', direction);
         document.body.style.direction = direction;
@@ -351,7 +431,7 @@ export class RTLLayoutManager {
         document.body.classList.toggle('rtl-body', direction === 'rtl');
     }
     
-    updateDynamicStyleSheet(direction, language) {
+    private updateDynamicStyleSheet(direction: 'ltr' | 'rtl', language: string | null): void {
         // 既存の動的スタイルシートを削除
         if (this.currentLayout.styleSheet) {
             this.currentLayout.styleSheet.remove();
@@ -375,7 +455,7 @@ export class RTLLayoutManager {
         this.currentLayout.styleSheet = style;
     }
     
-    generateRTLBaseCSS() {
+    private generateRTLBaseCSS(): string {
         return `
             .rtl-layout {
                 direction: rtl;
@@ -403,7 +483,7 @@ export class RTLLayoutManager {
         `;
     }
     
-    generateLanguageSpecificCSS(language) {
+    private generateLanguageSpecificCSS(language: string): string {
         const settings = this.rtlDetector.getRTLSettings(language);
         if (!settings) return '';
         
@@ -418,13 +498,13 @@ export class RTLLayoutManager {
         `;
     }
     
-    applyBasicRTLStyles(element) {
+    private applyBasicRTLStyles(element: HTMLElement): void {
         element.style.direction = 'rtl';
         element.setAttribute('dir', 'rtl');
         element.classList.add('rtl-layout', 'rtl-component');
     }
     
-    applyComponentSpecificRTL(element, componentType, customRules) {
+    private applyComponentSpecificRTL(element: HTMLElement, componentType: string, customRules: { [selector: string]: string }): void {
         const settings = this.componentSettings.get(componentType);
         if (!settings) return;
         
@@ -458,10 +538,10 @@ export class RTLLayoutManager {
         });
     }
     
-    processChildElements(element, componentType) {
+    private processChildElements(element: HTMLElement, componentType: string): void {
         const children = element.children;
         for (let i = 0; i < children.length; i++) {
-            const child = children[i];
+            const child = children[i] as HTMLElement;
             this.applyRTLLayout(child, {
                 componentType: componentType,
                 preserveContent: false
@@ -469,7 +549,7 @@ export class RTLLayoutManager {
         }
     }
     
-    adaptElementAnimations(element) {
+    private adaptElementAnimations(element: HTMLElement): void {
         const computedStyle = window.getComputedStyle(element);
         const animationName = computedStyle.animationName;
         
@@ -479,24 +559,24 @@ export class RTLLayoutManager {
         }
     }
     
-    applyMobileRTL(element) {
+    private applyMobileRTL(element: HTMLElement): void {
         element.style.padding = '10px';
         element.style.fontSize = '14px';
     }
     
-    applyTabletRTL(element) {
+    private applyTabletRTL(element: HTMLElement): void {
         element.style.padding = '15px';
         element.style.fontSize = '16px';
     }
     
-    applyDesktopRTL(element) {
+    private applyDesktopRTL(element: HTMLElement): void {
         element.style.padding = '20px';
         element.style.fontSize = '18px';
     }
     
-    saveElementStyles(element) {
+    private saveElementStyles(element: HTMLElement): OriginalStyles {
         const computedStyle = window.getComputedStyle(element);
-        const styles = {};
+        const styles: OriginalStyles = {};
         
         // 主要なスタイルプロパティを保存
         const properties = [
@@ -506,20 +586,20 @@ export class RTLLayoutManager {
         ];
         
         properties.forEach(prop => {
-            styles[prop] = computedStyle[prop];
+            styles[prop] = computedStyle.getPropertyValue(prop);
         });
         
         return styles;
     }
     
-    restoreElementStyles(element, originalStyles) {
+    private restoreElementStyles(element: HTMLElement, originalStyles: OriginalStyles): void {
         Object.entries(originalStyles).forEach(([property, value]) => {
-            element.style[property] = value;
+            (element.style as any)[property] = value;
         });
     }
     
-    dispatchLayoutChangeEvent(newDirection, oldDirection, language) {
-        const event = new CustomEvent('rtlLayoutChange', {
+    private dispatchLayoutChangeEvent(newDirection: 'ltr' | 'rtl', oldDirection: 'ltr' | 'rtl', language: string | null): void {
+        const event = new CustomEvent<LayoutChangeEventDetail>('rtlLayoutChange', {
             detail: {
                 newDirection: newDirection,
                 oldDirection: oldDirection,
@@ -538,21 +618,21 @@ export class RTLLayoutManager {
     /**
      * 現在のレイアウト方向を取得
      */
-    getCurrentDirection() {
+    getCurrentDirection(): 'ltr' | 'rtl' {
         return this.currentLayout.direction;
     }
     
     /**
      * 現在のレイアウト言語を取得
      */
-    getCurrentLanguage() {
+    getCurrentLanguage(): string | null {
         return this.currentLayout.language;
     }
     
     /**
      * レイアウト設定を更新
      */
-    updateSettings(newSettings) {
+    updateSettings(newSettings: Partial<LayoutSettings>): void {
         Object.assign(this.layoutSettings, newSettings);
         console.log('RTL layout settings updated:', newSettings);
     }
@@ -560,7 +640,7 @@ export class RTLLayoutManager {
     /**
      * コンポーネント設定を追加
      */
-    addComponentSettings(componentType, settings) {
+    addComponentSettings(componentType: string, settings: ComponentSettings): void {
         this.componentSettings.set(componentType, settings);
         console.log(`Component settings added for: ${componentType}`);
     }
@@ -568,7 +648,7 @@ export class RTLLayoutManager {
     /**
      * 統計情報を取得
      */
-    getStats() {
+    getStats(): LayoutStats {
         return {
             currentDirection: this.currentLayout.direction,
             currentLanguage: this.currentLayout.language,
@@ -581,12 +661,12 @@ export class RTLLayoutManager {
 }
 
 // シングルトンインスタンス
-let rtlLayoutManagerInstance = null;
+let rtlLayoutManagerInstance: RTLLayoutManager | null = null;
 
 /**
  * RTLLayoutManagerのシングルトンインスタンスを取得
  */
-export function getRTLLayoutManager() {
+export function getRTLLayoutManager(): RTLLayoutManager {
     if (!rtlLayoutManagerInstance) {
         rtlLayoutManagerInstance = new RTLLayoutManager();
     }
