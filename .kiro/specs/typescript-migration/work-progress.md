@@ -254,6 +254,24 @@
 - **初期化エラー**: 100%修正（15→0個）
 - **クリーンアップ**: コード品質向上、一貫性確保
 
+### 2025-08-19 Task 16完了: メインメニューシーンとサブコンポーネントの移行
+- ✅ **MainMenuScene.ts**: すでに変換済み（src/scenes/MainMenuScene.ts）
+- ✅ **サブコンポーネント変換**: main-menu/ディレクトリ内の4ファイル
+  - MainMenuDialogManager.js → MainMenuDialogManager.ts
+    - PlayerData、StageConfig、DialogManagerConfigインターフェース追加
+    - 全メソッドに型注釈追加、エラーコード対応
+  - MainMenuRenderer.js → MainMenuRenderer.ts
+    - MenuItemWithLabel、PlayerDataインターフェース追加
+    - CoordinateCalculatorとの統合維持
+  - MenuInputHandler.js → MenuInputHandler.ts
+    - Coordinates、ClickableElements、SettingsCallbacksインターフェース追加
+    - 全クリックハンドラーメソッドに型注釈追加
+  - UsernameInputManager.js → UsernameInputManager.ts
+    - CanvasInfo、Layout、CacheStatsインターフェース追加
+    - ResponsiveCanvasManager統合の型安全化
+- **成果**: サブコンポーネント4ファイル完全TypeScript化
+- **現在進捗**: 16/40タスク完了（40%）
+
 ### 2025-01-16 Task 30開始: 型エラーの修正
 - **現状**: 743個のTypeScriptエラーが残存
 - **戦略**: エラーの種類別に段階的修正

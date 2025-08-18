@@ -1,11 +1,32 @@
 import { getErrorHandler } from '../../utils/ErrorHandler.js';
 
+// インターフェース定義
+interface DialogManagerConfig {
+    gameEngine: any;
+}
+
+interface PlayerData {
+    username: string;
+    ap: number;
+    tap: number;
+    unlockedStages: string[];
+    ownedItems: any[];
+    highScores: Record<string, number>;
+}
+
+interface StageConfig {
+    name: string;
+}
+
 /**
  * Main Menu Dialog Manager
  * メインメニュー用ダイアログとヘルプ画面の管理を担当
  */
 export class MainMenuDialogManager {
-    constructor(gameEngine) {
+    public gameEngine: any;
+    public errorHandler: any;
+
+    constructor(gameEngine: any) {
         this.gameEngine = gameEngine;
         this.errorHandler = getErrorHandler();
     }
@@ -13,10 +34,10 @@ export class MainMenuDialogManager {
     /**
      * ユーザー情報画面を描画
      */
-    renderUserInfo(context) {
+    renderUserInfo(context: CanvasRenderingContext2D): void {
         try {
-            const canvas = this.gameEngine.canvas;
-            const playerData = this.gameEngine.playerData;
+            const canvas = this.gameEngine.canvas as HTMLCanvasElement;
+            const playerData = this.gameEngine.playerData as PlayerData;
             
             // 半透明オーバーレイ
             context.save();
@@ -47,7 +68,7 @@ export class MainMenuDialogManager {
             
             context.restore();
         } catch (error) {
-            this.errorHandler.handleError(error, {
+            this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {
                 context: 'DialogManager.renderUserInfo'
             });
         }
@@ -56,9 +77,9 @@ export class MainMenuDialogManager {
     /**
      * ユーザー情報コンテンツを描画
      */
-    renderUserInfoContent(context, playerData) {
+    renderUserInfoContent(context: CanvasRenderingContext2D, playerData: PlayerData): void {
         try {
-            const canvas = this.gameEngine.canvas;
+            const canvas = this.gameEngine.canvas as HTMLCanvasElement;
             
             context.font = '20px Arial';
             context.textAlign = 'left';
@@ -92,7 +113,8 @@ export class MainMenuDialogManager {
             
             if (Object.keys(playerData.highScores).length > 0) {
                 Object.entries(playerData.highScores).forEach(([stage, score]) => {
-                    const stageName = this.gameEngine.stageManager.getStageConfig(stage)?.name || stage;
+                    const stageConfig = this.gameEngine.stageManager?.getStageConfig?.(stage) as StageConfig | null;
+                    const stageName = stageConfig?.name || stage;
                     context.fillText(`  ${stageName}: ${score}`, infoX + 20, infoY);
                     infoY += 25;
                 });
@@ -100,7 +122,7 @@ export class MainMenuDialogManager {
                 context.fillText('  まだ記録がありません', infoX + 20, infoY);
             }
         } catch (error) {
-            this.errorHandler.handleError(error, {
+            this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {
                 context: 'DialogManager.renderUserInfoContent'
             });
         }
@@ -109,9 +131,9 @@ export class MainMenuDialogManager {
     /**
      * データクリア確認画面を描画
      */
-    renderDataClearConfirmation(context) {
+    renderDataClearConfirmation(context: CanvasRenderingContext2D): void {
         try {
-            const canvas = this.gameEngine.canvas;
+            const canvas = this.gameEngine.canvas as HTMLCanvasElement;
             
             // 半透明オーバーレイ
             context.save();
@@ -154,7 +176,7 @@ export class MainMenuDialogManager {
             
             context.restore();
         } catch (error) {
-            this.errorHandler.handleError(error, {
+            this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {
                 context: 'DialogManager.renderDataClearConfirmation'
             });
         }
@@ -163,7 +185,7 @@ export class MainMenuDialogManager {
     /**
      * データクリア詳細を描画
      */
-    renderDataClearDetails(context) {
+    renderDataClearDetails(context: CanvasRenderingContext2D): void {
         try {
             context.font = '16px Arial';
             context.fillStyle = '#CCCCCC';
@@ -182,7 +204,7 @@ export class MainMenuDialogManager {
             detailY += lineHeight;
             context.fillText('• 所持アイテム', detailX, detailY);
         } catch (error) {
-            this.errorHandler.handleError(error, {
+            this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {
                 context: 'DialogManager.renderDataClearDetails'
             });
         }
@@ -191,9 +213,9 @@ export class MainMenuDialogManager {
     /**
      * データクリアボタンを描画
      */
-    renderDataClearButtons(context) {
+    renderDataClearButtons(context: CanvasRenderingContext2D): void {
         try {
-            const canvas = this.gameEngine.canvas;
+            const canvas = this.gameEngine.canvas as HTMLCanvasElement;
             const buttonWidth = 120;
             const buttonHeight = 45;
             const buttonY = 450;
@@ -225,7 +247,7 @@ export class MainMenuDialogManager {
             context.fillStyle = '#FFFFFF';
             context.fillText('キャンセル', cancelButtonX + buttonWidth / 2, buttonY + buttonHeight / 2);
         } catch (error) {
-            this.errorHandler.handleError(error, {
+            this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {
                 context: 'DialogManager.renderDataClearButtons'
             });
         }
@@ -234,9 +256,9 @@ export class MainMenuDialogManager {
     /**
      * 操作説明画面を描画
      */
-    renderControlsHelp(context) {
+    renderControlsHelp(context: CanvasRenderingContext2D): void {
         try {
-            const canvas = this.gameEngine.canvas;
+            const canvas = this.gameEngine.canvas as HTMLCanvasElement;
             
             // 半透明オーバーレイ
             context.save();
@@ -262,7 +284,7 @@ export class MainMenuDialogManager {
             
             context.restore();
         } catch (error) {
-            this.errorHandler.handleError(error, {
+            this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {
                 context: 'DialogManager.renderControlsHelp'
             });
         }
@@ -271,9 +293,9 @@ export class MainMenuDialogManager {
     /**
      * 操作説明コンテンツを描画
      */
-    renderControlsHelpContent(context) {
+    renderControlsHelpContent(context: CanvasRenderingContext2D): void {
         try {
-            const canvas = this.gameEngine.canvas;
+            const canvas = this.gameEngine.canvas as HTMLCanvasElement;
             
             context.font = '18px Arial';
             context.textAlign = 'left';
@@ -293,7 +315,7 @@ export class MainMenuDialogManager {
             
             context.fillStyle = '#CCCCCC';
             context.font = '16px Arial';
-            const basicControls = [
+            const basicControls: string[] = [
                 '• クリック/タップ: 泡を割る',
                 '• ドラッグ: 泡を吹き飛ばす',
                 '• ↑↓キー: メニュー選択',
@@ -315,7 +337,7 @@ export class MainMenuDialogManager {
             
             context.fillStyle = '#CCCCCC';
             context.font = '16px Arial';
-            const gameTips = [
+            const gameTips: string[] = [
                 '• 泡は時間が経つと危険になる',
                 '• 連続で割るとコンボボーナス',
                 '• ピンクの泡でHP回復',
@@ -340,7 +362,7 @@ export class MainMenuDialogManager {
             context.fillStyle = '#CCCCCC';
             context.fillText('普通(青) 石(灰) 鉄(茶) ダイヤ(白) ピンク(回復) 毒(緑) とげとげ(連鎖) 虹色(ボーナス) 時計(時停) S字(得点) ビリビリ(妨害) 逃げる(移動)', leftX, 410);
         } catch (error) {
-            this.errorHandler.handleError(error, {
+            this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {
                 context: 'DialogManager.renderControlsHelpContent'
             });
         }
@@ -349,9 +371,9 @@ export class MainMenuDialogManager {
     /**
      * 戻るボタンを描画
      */
-    renderBackButton(context, buttonY = null) {
+    renderBackButton(context: CanvasRenderingContext2D, buttonY: number | null = null): void {
         try {
-            const canvas = this.gameEngine.canvas;
+            const canvas = this.gameEngine.canvas as HTMLCanvasElement;
             const buttonWidth = 150;
             const buttonHeight = 40;
             const buttonX = (canvas.width - buttonWidth) / 2;
@@ -370,7 +392,7 @@ export class MainMenuDialogManager {
             context.textBaseline = 'middle';
             context.fillText('戻る', buttonX + buttonWidth / 2, y + buttonHeight / 2);
         } catch (error) {
-            this.errorHandler.handleError(error, {
+            this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {
                 context: 'DialogManager.renderBackButton'
             });
         }
@@ -379,15 +401,17 @@ export class MainMenuDialogManager {
     /**
      * データクリアを実行
      */
-    executeDataClear() {
+    executeDataClear(): boolean {
         try {
+            const playerData = this.gameEngine.playerData as PlayerData;
+            
             // プレイヤーデータをリセット
-            this.gameEngine.playerData.username = '';
-            this.gameEngine.playerData.ap = 0;
-            this.gameEngine.playerData.tap = 0;
-            this.gameEngine.playerData.highScores = {};
-            this.gameEngine.playerData.unlockedStages = ['tutorial', 'normal'];
-            this.gameEngine.playerData.ownedItems = [];
+            playerData.username = '';
+            playerData.ap = 0;
+            playerData.tap = 0;
+            playerData.highScores = {};
+            playerData.unlockedStages = ['tutorial', 'normal'];
+            playerData.ownedItems = [];
             
             // ローカルストレージからも削除
             localStorage.removeItem('bubblePop_playerData');
@@ -395,7 +419,7 @@ export class MainMenuDialogManager {
             console.log('All player data has been cleared');
             return true;
         } catch (error) {
-            this.errorHandler.handleError(error, {
+            this.errorHandler.handleError(error, 'DATA_CLEAR_ERROR', {
                 context: 'DialogManager.executeDataClear'
             });
             return false;

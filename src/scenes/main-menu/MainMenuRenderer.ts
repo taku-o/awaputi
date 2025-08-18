@@ -1,12 +1,26 @@
 import { getErrorHandler } from '../../utils/ErrorHandler.js';
 import { CoordinateCalculator } from '../../utils/CoordinateCalculator.js';
+import type { MenuItem } from '../../types/game';
+
+// インターフェース定義
+interface MenuItemWithLabel extends MenuItem {
+    label: string;
+}
+
+interface PlayerData {
+    username: string;
+}
 
 /**
  * Main Menu Renderer
  * メインメニューの描画処理を担当
  */
 export class MainMenuRenderer {
-    constructor(gameEngine) {
+    public gameEngine: any;
+    public errorHandler: any;
+    public coordinateCalculator: CoordinateCalculator | null;
+
+    constructor(gameEngine: any) {
         this.gameEngine = gameEngine;
         this.errorHandler = getErrorHandler();
         this.coordinateCalculator = null;
@@ -15,8 +29,8 @@ export class MainMenuRenderer {
     /**
      * 座標計算機を初期化または更新
      */
-    updateCoordinateCalculator() {
-        const canvas = this.gameEngine.canvas;
+    updateCoordinateCalculator(): void {
+        const canvas = this.gameEngine.canvas as HTMLCanvasElement;
         // Transform scaleの影響を考慮して実際の表示サイズを使用
         const displayWidth = canvas.clientWidth || canvas.width;
         const displayHeight = canvas.clientHeight || canvas.height;
@@ -31,23 +45,23 @@ export class MainMenuRenderer {
     /**
      * キャンバスリサイズ時の処理
      */
-    handleResize() {
+    handleResize(): void {
         this.updateCoordinateCalculator();
     }
     
     /**
      * メインメニューを描画
      */
-    renderMainMenu(context, selectedMenuIndex, menuItems) {
+    renderMainMenu(context: CanvasRenderingContext2D, selectedMenuIndex: number, menuItems: MenuItemWithLabel[]): void {
         try {
-            const canvas = this.gameEngine.canvas;
+            const canvas = this.gameEngine.canvas as HTMLCanvasElement;
             
             // Canvas状態の保存（エラー時の復旧用）
             context.save();
             
             // 座標計算機を更新
             this.updateCoordinateCalculator();
-            const calc = this.coordinateCalculator;
+            const calc = this.coordinateCalculator!;
             
             // タイトル
             context.save();
@@ -102,14 +116,15 @@ export class MainMenuRenderer {
             context.restore();
             
             // プレイヤー情報表示
-            if (this.gameEngine.playerData.username) {
+            const playerData = this.gameEngine.playerData as PlayerData;
+            if (playerData.username) {
                 context.save();
                 context.fillStyle = '#AAAAAA';
                 const playerFontSize = calc.scaleFontSize(16);
                 context.font = `${playerFontSize}px Arial`;
                 context.textAlign = 'center';
                 const playerY = calc.toCanvasCoordinates(0, 160).y;
-                const playerText = `プレイヤー: ${this.gameEngine.playerData.username}`;
+                const playerText = `プレイヤー: ${playerData.username}`;
                 const playerX = calc.getTextCenterX(context, playerText);
                 context.fillText(playerText, playerX, playerY);
                 context.restore();
@@ -131,7 +146,7 @@ export class MainMenuRenderer {
                 // 復元エラーは無視
             }
             
-            this.errorHandler.handleError(error, {
+            this.errorHandler.handleError(error, 'RENDER_ERROR', {
                 context: 'MainMenuRenderer.renderMainMenu',
                 canvasWidth: this.gameEngine.canvas?.width,
                 canvasHeight: this.gameEngine.canvas?.height
@@ -142,9 +157,9 @@ export class MainMenuRenderer {
     /**
      * メニュー項目を描画
      */
-    renderMenuItems(context, selectedMenuIndex, menuItems) {
+    renderMenuItems(context: CanvasRenderingContext2D, selectedMenuIndex: number, menuItems: MenuItemWithLabel[]): void {
         try {
-            const calc = this.coordinateCalculator;
+            const calc = this.coordinateCalculator!;
             
             // ベース座標系での寸法定義
             const baseItemWidth = 400;
@@ -187,7 +202,7 @@ export class MainMenuRenderer {
                 context.restore();
             });
         } catch (error) {
-            this.errorHandler.handleError(error, {
+            this.errorHandler.handleError(error, 'RENDER_ERROR', {
                 context: 'MainMenuRenderer.renderMenuItems'
             });
         }
@@ -196,10 +211,10 @@ export class MainMenuRenderer {
     /**
      * 操作説明を描画
      */
-    renderControls(context) {
+    renderControls(context: CanvasRenderingContext2D): void {
         try {
-            const canvas = this.gameEngine.canvas;
-            const calc = this.coordinateCalculator;
+            const canvas = this.gameEngine.canvas as HTMLCanvasElement;
+            const calc = this.coordinateCalculator!;
             
             context.save();
             context.fillStyle = '#AAAAAA';
@@ -222,7 +237,7 @@ export class MainMenuRenderer {
             
             context.restore();
         } catch (error) {
-            this.errorHandler.handleError(error, {
+            this.errorHandler.handleError(error, 'RENDER_ERROR', {
                 context: 'MainMenuRenderer.renderControls'
             });
         }
