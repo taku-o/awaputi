@@ -2,8 +2,209 @@
  * RecoveryUserGuidance
  * ユーザー通知・ガイダンス、復旧進捗報告、エラーメッセージ生成、復旧履歴管理を担当
  */
+
+// 型定義
+export interface DataRecovery {
+    statisticsManager: StatisticsManager;
+    errorHandler: ErrorHandler;
+}
+
+export interface StatisticsManager {
+    [key: string]: any;
+}
+
+export interface ErrorHandler {
+    handleError(error: Error, errorType: string, context?: any): void;
+}
+
+export interface NotificationConfig {
+    showRecoveryProgress: boolean;
+    showSuccessMessage: boolean;
+    showFailureMessage: boolean;
+    autoCloseDelay: number;
+    position: NotificationPosition;
+    maxNotifications: number;
+}
+
+export interface ProgressTracking {
+    currentStep: string | null;
+    totalSteps: number;
+    completedSteps: number;
+    progress: number;
+    startTime: number | null;
+    estimatedTimeRemaining: number | null;
+}
+
+export interface LocalizedMessages {
+    ja: MessageSet;
+    en: MessageSet;
+}
+
+export interface MessageSet {
+    recovery_started: string;
+    recovery_analyzing: string;
+    recovery_repairing: string;
+    recovery_validating: string;
+    recovery_success: string;
+    recovery_failed: string;
+    recovery_partial: string;
+    corruption_detected: string;
+    backup_restored: string;
+    default_initialized: string;
+}
+
+export interface RecoveryPlan {
+    totalSteps?: number;
+    strategy?: RecoveryStrategy;
+    estimatedTime?: number;
+    details?: Record<string, any>;
+}
+
+export interface RecoveryResult {
+    success: boolean;
+    recoveryMethod?: RecoveryMethod;
+    repairLog?: RepairLogEntry[];
+    data?: any;
+    errors?: string[];
+    warnings?: string[];
+}
+
+export interface RepairLogEntry {
+    timestamp: number;
+    action: string;
+    result: string;
+    details?: any;
+}
+
+export interface NotificationData {
+    type: NotificationType;
+    title: string;
+    message: string;
+    details?: any;
+    showProgress?: boolean;
+    autoClose?: boolean;
+    duration?: number;
+}
+
+export interface ProgressNotificationData {
+    type: 'progress';
+    step: string;
+    progress: number;
+    details: any;
+    tracking: ProgressTracking;
+}
+
+export interface ErrorMessageResult {
+    type: ErrorType;
+    title: string;
+    message: string;
+    suggestions: string[];
+    technicalDetails: TechnicalDetails;
+    severity: ErrorSeverity;
+    recoverable: boolean;
+}
+
+export interface TechnicalDetails {
+    error: string;
+    stack?: string;
+    context?: any;
+}
+
+export interface DataAnalysis {
+    corruption?: CorruptionAnalysis;
+    integrity?: IntegrityAnalysis;
+    size?: number;
+    lastModified?: number;
+}
+
+export interface CorruptionAnalysis {
+    corruptionLevel: CorruptionLevel;
+    repairability: RepairabilityLevel;
+    affectedFields?: string[];
+    checksumMismatch?: boolean;
+}
+
+export interface IntegrityAnalysis {
+    validFieldsRatio: number;
+    missingFields: string[];
+    invalidFields: string[];
+    structureValid: boolean;
+}
+
+export interface RecoveryGuidance {
+    recommended: GuidanceAction[];
+    optional: GuidanceAction[];
+    warnings: GuidanceWarning[];
+    estimatedTime: string;
+}
+
+export interface GuidanceAction {
+    action: ActionType;
+    title: string;
+    description: string;
+    estimatedTime?: string;
+    risk?: RiskLevel;
+}
+
+export interface GuidanceWarning {
+    type: WarningType;
+    message: string;
+    severity: WarningSeverity;
+    recoverable?: boolean;
+}
+
+export interface RecoveryHistoryEntry {
+    timestamp: string;
+    success: boolean;
+    method?: RecoveryMethod;
+    details: RepairLogEntry[];
+    duration: number | null;
+}
+
+export interface GuidanceStats {
+    historyCount: number;
+    callbackCount: number;
+    currentLanguage: SupportedLanguage;
+    config: NotificationConfig;
+    progress: ProgressTracking;
+}
+
+export interface UserFriendlyMessage {
+    title: string;
+    message: string;
+    suggestions: string[];
+}
+
+// コールバック型
+export type NotificationCallback = (notification: NotificationData | ProgressNotificationData) => void;
+
+// 列挙型
+export type NotificationPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'center';
+export type NotificationType = 'info' | 'success' | 'warning' | 'error' | 'progress';
+export type SupportedLanguage = 'ja' | 'en';
+export type RecoveryStrategy = 'automatic' | 'manual' | 'backup' | 'reset';
+export type RecoveryMethod = 'automatic_repair' | 'backup_restore' | 'default_initialization' | 'partial_recovery' | 'manual_intervention';
+export type ErrorType = 'data_corruption' | 'network_error' | 'storage_error' | 'permission_error' | 'unknown_error';
+export type ErrorSeverity = 'low' | 'medium' | 'high' | 'critical';
+export type CorruptionLevel = 'none' | 'low' | 'medium' | 'high' | 'severe';
+export type RepairabilityLevel = 'none' | 'low' | 'medium' | 'high' | 'full';
+export type ActionType = 'automatic_repair' | 'backup_restore' | 'reset_to_default' | 'manual_review' | 'contact_support';
+export type RiskLevel = 'none' | 'low' | 'medium' | 'high';
+export type WarningType = 'data_loss' | 'partial_recovery' | 'guidance_error' | 'time_estimate';
+export type WarningSeverity = 'low' | 'medium' | 'high';
+
 export class RecoveryUserGuidance {
-    constructor(dataRecovery) {
+    private dataRecovery: DataRecovery;
+    private statisticsManager: StatisticsManager;
+    private errorHandler: ErrorHandler;
+    private notificationConfig: NotificationConfig;
+    private notificationCallbacks: Set<NotificationCallback>;
+    private recoveryHistory: RecoveryHistoryEntry[];
+    private progressTracking: ProgressTracking;
+    private messages: LocalizedMessages;
+    private currentLanguage: SupportedLanguage;
+
+    constructor(dataRecovery: DataRecovery) {
         this.dataRecovery = dataRecovery;
         this.statisticsManager = dataRecovery.statisticsManager;
         this.errorHandler = dataRecovery.errorHandler;
@@ -19,7 +220,7 @@ export class RecoveryUserGuidance {
         };
         
         // 通知コールバック
-        this.notificationCallbacks = new Set();
+        this.notificationCallbacks = new Set<NotificationCallback>();
         
         // 復旧履歴
         this.recoveryHistory = [];
@@ -69,11 +270,11 @@ export class RecoveryUserGuidance {
     
     /**
      * 復旧進捗を更新
-     * @param {string} step 現在のステップ
-     * @param {number} progress 進捗（0-100）
-     * @param {Object} details 詳細情報
+     * @param step 現在のステップ
+     * @param progress 進捗（0-100）
+     * @param details 詳細情報
      */
-    updateProgress(step, progress, details = {}) {
+    updateProgress(step: string, progress: number, details: Record<string, any> = {}): void {
         try {
             const previousStep = this.progressTracking.currentStep;
             
@@ -106,9 +307,9 @@ export class RecoveryUserGuidance {
     
     /**
      * 復旧開始を通知
-     * @param {Object} recoveryPlan 復旧計画
+     * @param recoveryPlan 復旧計画
      */
-    notifyRecoveryStart(recoveryPlan) {
+    notifyRecoveryStart(recoveryPlan: RecoveryPlan): void {
         try {
             const message = this._getMessage('recovery_started');
             
@@ -133,20 +334,20 @@ export class RecoveryUserGuidance {
             console.log('[RecoveryUserGuidance] Recovery start notification sent');
             
         } catch (error) {
-            this.errorHandler.handleError(error, 'RECOVERY_START_NOTIFICATION_ERROR', { recoveryPlan });
+            this.errorHandler.handleError(error as Error, 'RECOVERY_START_NOTIFICATION_ERROR', { recoveryPlan });
         }
     }
     
     /**
      * 復旧完了を通知
-     * @param {Object} result 復旧結果
+     * @param result 復旧結果
      */
-    notifyRecoveryComplete(result) {
+    notifyRecoveryComplete(result: RecoveryResult): void {
         try {
             const { success, recoveryMethod, repairLog, data } = result;
             
-            let messageKey = success ? 'recovery_success' : 'recovery_failed';
-            let notificationType = success ? 'success' : 'error';
+            let messageKey: keyof MessageSet = success ? 'recovery_success' : 'recovery_failed';
+            let notificationType: NotificationType = success ? 'success' : 'error';
             
             // 復旧方法に応じてメッセージを調整
             if (success && recoveryMethod) {
@@ -188,17 +389,17 @@ export class RecoveryUserGuidance {
             console.log('[RecoveryUserGuidance] Recovery complete notification sent');
             
         } catch (error) {
-            this.errorHandler.handleError(error, 'RECOVERY_COMPLETE_NOTIFICATION_ERROR', { result });
+            this.errorHandler.handleError(error as Error, 'RECOVERY_COMPLETE_NOTIFICATION_ERROR', { result });
         }
     }
     
     /**
      * エラーメッセージを生成
-     * @param {Error} error エラーオブジェクト
-     * @param {Object} context エラーコンテキスト
-     * @returns {Object} ユーザーフレンドリーなエラーメッセージ
+     * @param error エラーオブジェクト
+     * @param context エラーコンテキスト
+     * @returns ユーザーフレンドリーなエラーメッセージ
      */
-    generateErrorMessage(error, context = {}) {
+    generateErrorMessage(error: Error, context: Record<string, any> = {}): ErrorMessageResult {
         try {
             const errorType = this._categorizeError(error, context);
             const userMessage = this._getUserFriendlyMessage(errorType, error, context);
@@ -221,7 +422,7 @@ export class RecoveryUserGuidance {
             console.error('[RecoveryUserGuidance] Error message generation failed:', generationError);
             
             return {
-                type: 'unknown',
+                type: 'unknown_error',
                 title: 'エラーが発生しました',
                 message: 'データ処理中に予期しないエラーが発生しました。',
                 suggestions: ['ページを再読み込みしてください', 'しばらく時間をおいて再試行してください'],
@@ -234,12 +435,12 @@ export class RecoveryUserGuidance {
     
     /**
      * 復旧ガイダンスを生成
-     * @param {Object} analysis データ分析結果
-     * @returns {Object} ユーザーガイダンス
+     * @param analysis データ分析結果
+     * @returns ユーザーガイダンス
      */
-    generateRecoveryGuidance(analysis) {
+    generateRecoveryGuidance(analysis: DataAnalysis): RecoveryGuidance {
         try {
-            const guidance = {
+            const guidance: RecoveryGuidance = {
                 recommended: [],
                 optional: [],
                 warnings: [],
@@ -297,7 +498,7 @@ export class RecoveryUserGuidance {
             return guidance;
             
         } catch (error) {
-            this.errorHandler.handleError(error, 'RECOVERY_GUIDANCE_GENERATION_ERROR', { analysis });
+            this.errorHandler.handleError(error as Error, 'RECOVERY_GUIDANCE_GENERATION_ERROR', { analysis });
             
             return {
                 recommended: [{
@@ -318,9 +519,9 @@ export class RecoveryUserGuidance {
     
     /**
      * 通知コールバックを登録
-     * @param {Function} callback 通知コールバック関数
+     * @param callback 通知コールバック関数
      */
-    registerNotificationCallback(callback) {
+    registerNotificationCallback(callback: NotificationCallback): void {
         if (typeof callback === 'function') {
             this.notificationCallbacks.add(callback);
             console.log('[RecoveryUserGuidance] Notification callback registered');
@@ -329,26 +530,26 @@ export class RecoveryUserGuidance {
     
     /**
      * 通知コールバックを解除
-     * @param {Function} callback 通知コールバック関数
+     * @param callback 通知コールバック関数
      */
-    unregisterNotificationCallback(callback) {
+    unregisterNotificationCallback(callback: NotificationCallback): void {
         this.notificationCallbacks.delete(callback);
         console.log('[RecoveryUserGuidance] Notification callback unregistered');
     }
     
     /**
      * 復旧履歴を取得
-     * @param {number} limit 取得件数制限
-     * @returns {Array} 復旧履歴
+     * @param limit 取得件数制限
+     * @returns 復旧履歴
      */
-    getRecoveryHistory(limit = 50) {
+    getRecoveryHistory(limit: number = 50): RecoveryHistoryEntry[] {
         return this.recoveryHistory.slice(-limit).reverse();
     }
     
     /**
      * 復旧履歴をクリア
      */
-    clearRecoveryHistory() {
+    clearRecoveryHistory(): void {
         this.recoveryHistory = [];
         this._saveRecoveryHistory();
         console.log('[RecoveryUserGuidance] Recovery history cleared');
@@ -356,31 +557,31 @@ export class RecoveryUserGuidance {
     
     /**
      * 言語を設定
-     * @param {string} language 言語コード
+     * @param language 言語コード
      */
-    setLanguage(language) {
-        if (this.messages[language]) {
-            this.currentLanguage = language;
+    setLanguage(language: string): void {
+        if (this.messages[language as SupportedLanguage]) {
+            this.currentLanguage = language as SupportedLanguage;
             console.log(`[RecoveryUserGuidance] Language set to: ${language}`);
         }
     }
     
     /**
      * 通知設定を更新
-     * @param {Object} config 新しい通知設定
+     * @param config 新しい通知設定
      */
-    updateNotificationConfig(config) {
+    updateNotificationConfig(config: Partial<NotificationConfig>): void {
         Object.assign(this.notificationConfig, config);
         console.log('[RecoveryUserGuidance] Notification config updated');
     }
     
     /**
      * メッセージを取得
-     * @param {string} key メッセージキー
-     * @returns {string} ローカライズされたメッセージ
+     * @param key メッセージキー
+     * @returns ローカライズされたメッセージ
      * @private
      */
-    _getMessage(key) {
+    private _getMessage(key: keyof MessageSet): string {
         return this.messages[this.currentLanguage]?.[key] || 
                this.messages.ja[key] || 
                `Message not found: ${key}`;
@@ -388,10 +589,10 @@ export class RecoveryUserGuidance {
     
     /**
      * 通知を送信
-     * @param {Object} notification 通知情報
+     * @param notification 通知情報
      * @private
      */
-    _sendNotification(notification) {
+    private _sendNotification(notification: NotificationData): void {
         for (const callback of this.notificationCallbacks) {
             try {
                 callback(notification);
@@ -403,14 +604,14 @@ export class RecoveryUserGuidance {
     
     /**
      * ステップ変更を通知
-     * @param {string} step 新しいステップ
-     * @param {Object} details 詳細情報
+     * @param step 新しいステップ
+     * @param details 詳細情報
      * @private
      */
-    _notifyStepChange(step, details) {
+    private _notifyStepChange(step: string, details: Record<string, any>): void {
         if (!this.notificationConfig.showRecoveryProgress) return;
         
-        const stepMessages = {
+        const stepMessages: Record<string, string> = {
             analyzing: this._getMessage('recovery_analyzing'),
             repairing: this._getMessage('recovery_repairing'),
             validating: this._getMessage('recovery_validating')
@@ -434,12 +635,12 @@ export class RecoveryUserGuidance {
     
     /**
      * 進捗更新を通知
-     * @param {string} step 現在のステップ
-     * @param {number} progress 進捗
-     * @param {Object} details 詳細情報
+     * @param step 現在のステップ
+     * @param progress 進捗
+     * @param details 詳細情報
      * @private
      */
-    _notifyProgressUpdate(step, progress, details) {
+    private _notifyProgressUpdate(step: string, progress: number, details: Record<string, any>): void {
         // 進捗更新は頻繁なのでコールバックのみ実行
         for (const callback of this.notificationCallbacks) {
             try {
@@ -460,7 +661,7 @@ export class RecoveryUserGuidance {
      * 時間推定を更新
      * @private
      */
-    _updateTimeEstimate() {
+    private _updateTimeEstimate(): void {
         if (this.progressTracking.startTime && this.progressTracking.completedSteps > 0) {
             const elapsed = Date.now() - this.progressTracking.startTime;
             const avgTimePerStep = elapsed / this.progressTracking.completedSteps;
@@ -471,12 +672,12 @@ export class RecoveryUserGuidance {
     
     /**
      * エラーを分類
-     * @param {Error} error エラーオブジェクト
-     * @param {Object} context コンテキスト
-     * @returns {string} エラータイプ
+     * @param error エラーオブジェクト
+     * @param context コンテキスト
+     * @returns エラータイプ
      * @private
      */
-    _categorizeError(error, context) {
+    private _categorizeError(error: Error, context: Record<string, any>): ErrorType {
         const message = error.message.toLowerCase();
         
         if (message.includes('corruption') || message.includes('checksum')) {
@@ -497,14 +698,14 @@ export class RecoveryUserGuidance {
     
     /**
      * ユーザーフレンドリーなメッセージを取得
-     * @param {string} errorType エラータイプ
-     * @param {Error} error エラーオブジェクト
-     * @param {Object} context コンテキスト
-     * @returns {Object} ユーザーメッセージ
+     * @param errorType エラータイプ
+     * @param error エラーオブジェクト
+     * @param context コンテキスト
+     * @returns ユーザーメッセージ
      * @private
      */
-    _getUserFriendlyMessage(errorType, error, context) {
-        const messages = {
+    private _getUserFriendlyMessage(errorType: ErrorType, error: Error, context: Record<string, any>): UserFriendlyMessage {
+        const messages: Record<ErrorType, UserFriendlyMessage> = {
             data_corruption: {
                 title: 'データ破損エラー',
                 message: '統計データが破損しています。自動修復を試行できます。',
@@ -537,12 +738,12 @@ export class RecoveryUserGuidance {
     
     /**
      * エラーの重要度を取得
-     * @param {string} errorType エラータイプ
-     * @returns {string} 重要度
+     * @param errorType エラータイプ
+     * @returns 重要度
      * @private
      */
-    _getErrorSeverity(errorType) {
-        const severities = {
+    private _getErrorSeverity(errorType: ErrorType): ErrorSeverity {
+        const severities: Record<ErrorType, ErrorSeverity> = {
             data_corruption: 'high',
             network_error: 'medium',
             storage_error: 'high',
@@ -555,22 +756,22 @@ export class RecoveryUserGuidance {
     
     /**
      * エラーが復旧可能かチェック
-     * @param {string} errorType エラータイプ
-     * @returns {boolean} 復旧可能性
+     * @param errorType エラータイプ
+     * @returns 復旧可能性
      * @private
      */
-    _isRecoverable(errorType) {
-        const recoverableTypes = ['data_corruption', 'network_error', 'storage_error'];
+    private _isRecoverable(errorType: ErrorType): boolean {
+        const recoverableTypes: ErrorType[] = ['data_corruption', 'network_error', 'storage_error'];
         return recoverableTypes.includes(errorType);
     }
     
     /**
      * 復旧履歴に記録
-     * @param {Object} result 復旧結果
+     * @param result 復旧結果
      * @private
      */
-    _recordRecoveryInHistory(result) {
-        const historyEntry = {
+    private _recordRecoveryInHistory(result: RecoveryResult): void {
+        const historyEntry: RecoveryHistoryEntry = {
             timestamp: new Date().toISOString(),
             success: result.success,
             method: result.recoveryMethod,
@@ -593,7 +794,7 @@ export class RecoveryUserGuidance {
      * 復旧履歴を保存
      * @private
      */
-    _saveRecoveryHistory() {
+    private _saveRecoveryHistory(): void {
         try {
             localStorage.setItem('bubblePop_recoveryHistory', JSON.stringify(this.recoveryHistory));
         } catch (error) {
@@ -605,7 +806,7 @@ export class RecoveryUserGuidance {
      * 復旧履歴を読み込み
      * @private
      */
-    _loadRecoveryHistory() {
+    private _loadRecoveryHistory(): void {
         try {
             const stored = localStorage.getItem('bubblePop_recoveryHistory');
             if (stored) {
@@ -620,7 +821,7 @@ export class RecoveryUserGuidance {
      * 進捗をリセット
      * @private
      */
-    _resetProgress() {
+    private _resetProgress(): void {
         this.progressTracking = {
             currentStep: null,
             totalSteps: 0,
@@ -633,9 +834,9 @@ export class RecoveryUserGuidance {
     
     /**
      * 統計情報を取得
-     * @returns {Object} ガイダンス統計
+     * @returns ガイダンス統計
      */
-    getStats() {
+    getStats(): GuidanceStats {
         return {
             historyCount: this.recoveryHistory.length,
             callbackCount: this.notificationCallbacks.size,
@@ -648,7 +849,7 @@ export class RecoveryUserGuidance {
     /**
      * 初期化時に履歴を読み込み
      */
-    initialize() {
+    initialize(): void {
         this._loadRecoveryHistory();
         console.log('[RecoveryUserGuidance] Initialization completed');
     }
