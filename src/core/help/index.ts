@@ -28,6 +28,11 @@ export { TutorialAnimationController } from './components/TutorialAnimationContr
 export { HelpPerformanceMonitor } from './components/HelpPerformanceMonitor.js';
 export { TutorialStepManager } from './components/TutorialStepManager.js';
 
+// Effectiveness Analysis Components
+export { HelpMetricsCollector } from './effectiveness/HelpMetricsCollector.js';
+export { HelpDataAnalyzer } from './effectiveness/HelpDataAnalyzer.js';
+export { HelpReportGenerator } from './effectiveness/HelpReportGenerator.js';
+
 // 型定義
 export interface GameEngine {
     eventBus?: any;
