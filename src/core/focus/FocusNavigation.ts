@@ -2,60 +2,256 @@
  * FocusNavigation
  * タブオーダー管理、フォーカス移動ロジック、キーボードナビゲーション、フォーカス履歴追跡を担当
  */
+
+// 型定義
+export interface FocusManager {
+    gameEngine: GameEngine;
+    emit: (event: string, data: any) => void;
+}
+
+export interface GameEngine {
+    // GameEngineインターフェースの基本定義
+    [key: string]: any;
+}
+
+export interface Navigation2DConfig {
+    enabled: boolean;
+    grid: NavigationGrid | null;
+    currentPosition: GridPosition;
+}
+
+export interface NavigationGrid {
+    rows: number;
+    columns: number;
+    elements: HTMLElement[][];
+}
+
+export interface GridPosition {
+    x: number;
+    y: number;
+}
+
+export interface KeyboardNavigationConfig {
+    enabled: boolean;
+    wrapAround: boolean;
+    arrowKeysEnabled: boolean;
+    homeEndEnabled: boolean;
+}
+
+export interface FocusableElementsUpdateEvent {
+    count: number;
+    previousCount: number;
+}
+
+export interface NavigationStats {
+    focusableElementsCount: number;
+    currentFocusIndex: number;
+    focusHistoryLength: number;
+    navigation2DEnabled: boolean;
+    keyboardNavigationEnabled: boolean;
+    wrapAroundEnabled: boolean;
+}
+
+export interface ElementRect {
+    left: number;
+    top: number;
+    right: number;
+    bottom: number;
+    width: number;
+    height: number;
+}
+
+export interface Point2D {
+    x: number;
+    y: number;
+}
+
+export interface NavigationScoreCalculation {
+    distance: number;
+    alignment: number;
+    totalScore: number;
+    isValidDirection: boolean;
+}
+
+export interface ViewportInfo {
+    height: number;
+    scrollTop: number;
+    visibleTop: number;
+    visibleBottom: number;
+}
+
+export interface FocusValidationResult {
+    isValid: boolean;
+    reason?: string;
+    element?: HTMLElement;
+}
+
+export interface NavigationContext {
+    currentElement: HTMLElement | null;
+    targetElement: HTMLElement | null;
+    direction: NavigationDirection;
+    method: NavigationMethod;
+}
+
+// 列挙型
+export type NavigationDirection = 'up' | 'down' | 'left' | 'right' | 'forward' | 'backward';
+export type NavigationMethod = 'tab' | 'arrow' | 'page' | 'home_end' | 'programmatic';
+export type FocusableElementType = 
+    | 'anchor' | 'button' | 'input' | 'select' | 'textarea' 
+    | 'contenteditable' | 'audio' | 'video' | 'summary' | 'iframe' | 'custom';
+
+// 定数
+export const FOCUSABLE_SELECTORS = [
+    'a[href]',
+    'button:not([disabled])',
+    'input:not([disabled]):not([type="hidden"])',
+    'select:not([disabled])',
+    'textarea:not([disabled])',
+    '[tabindex]:not([tabindex="-1"])',
+    '[contenteditable="true"]',
+    'audio[controls]',
+    'video[controls]',
+    'summary',
+    'iframe:not([tabindex="-1"])'
+] as const;
+
+export const DEFAULT_KEYBOARD_CONFIG: KeyboardNavigationConfig = {
+    enabled: true,
+    wrapAround: true,
+    arrowKeysEnabled: true,
+    homeEndEnabled: true
+};
+
+export const DEFAULT_2D_CONFIG: Navigation2DConfig = {
+    enabled: false,
+    grid: null,
+    currentPosition: { x: 0, y: 0 }
+};
+
+export const NAVIGATION_KEYS = {
+    TAB: 'Tab',
+    ARROW_UP: 'ArrowUp',
+    ARROW_DOWN: 'ArrowDown',
+    ARROW_LEFT: 'ArrowLeft',
+    ARROW_RIGHT: 'ArrowRight',
+    HOME: 'Home',
+    END: 'End',
+    PAGE_UP: 'PageUp',
+    PAGE_DOWN: 'PageDown'
+} as const;
+
+export const ALIGNMENT_WEIGHT = 100;
+export const DEFAULT_MAX_HISTORY_SIZE = 10;
+
+// ユーティリティ関数
+export function isValidHTMLElement(element: any): element is HTMLElement {
+    return element && 
+           element.nodeType === Node.ELEMENT_NODE && 
+           typeof element.focus === 'function';
+}
+
+export function hasTabIndex(element: HTMLElement): boolean {
+    const tabIndex = element.getAttribute('tabindex');
+    return tabIndex !== null && tabIndex !== '-1';
+}
+
+export function getTabIndexValue(element: HTMLElement): number {
+    const tabIndex = element.getAttribute('tabindex');
+    return tabIndex ? parseInt(tabIndex, 10) : 0;
+}
+
+export function isElementInViewport(element: HTMLElement, viewport?: ViewportInfo): boolean {
+    const rect = element.getBoundingClientRect();
+    const vp = viewport || {
+        height: window.innerHeight,
+        scrollTop: window.pageYOffset,
+        visibleTop: 0,
+        visibleBottom: window.innerHeight
+    };
+    
+    return rect.bottom >= vp.visibleTop && rect.top <= vp.visibleBottom;
+}
+
+export function calculateElementCenter(rect: DOMRect): Point2D {
+    return {
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2
+    };
+}
+
+export function calculateDistance(point1: Point2D, point2: Point2D): number {
+    const dx = point2.x - point1.x;
+    const dy = point2.y - point1.y;
+    return Math.sqrt(dx * dx + dy * dy);
+}
+
+export function isDirectionValid(from: Point2D, to: Point2D, direction: NavigationDirection): boolean {
+    const dx = to.x - from.x;
+    const dy = to.y - from.y;
+    
+    switch (direction) {
+        case 'up': return dy < 0;
+        case 'down': return dy > 0;
+        case 'left': return dx < 0;
+        case 'right': return dx > 0;
+        default: return true;
+    }
+}
+
+export function getFocusableElementType(element: HTMLElement): FocusableElementType {
+    const tagName = element.tagName.toLowerCase();
+    
+    if (tagName === 'a' && element.hasAttribute('href')) return 'anchor';
+    if (tagName === 'button') return 'button';
+    if (tagName === 'input') return 'input';
+    if (tagName === 'select') return 'select';
+    if (tagName === 'textarea') return 'textarea';
+    if (element.contentEditable === 'true') return 'contenteditable';
+    if (tagName === 'audio' && element.hasAttribute('controls')) return 'audio';
+    if (tagName === 'video' && element.hasAttribute('controls')) return 'video';
+    if (tagName === 'summary') return 'summary';
+    if (tagName === 'iframe') return 'iframe';
+    
+    return 'custom';
+}
+
 export class FocusNavigation {
-    constructor(focusManager) {
+    private focusManager: FocusManager;
+    private gameEngine: GameEngine;
+    
+    // フォーカス可能要素とナビゲーション状態
+    private focusableElements: HTMLElement[] = [];
+    private currentFocusIndex: number = -1;
+    private focusHistory: HTMLElement[] = [];
+    private readonly maxHistorySize: number = DEFAULT_MAX_HISTORY_SIZE;
+    
+    // 2Dナビゲーション設定
+    private navigation2D: Navigation2DConfig;
+    
+    // キーボードナビゲーション設定
+    private keyboardNavigation: KeyboardNavigationConfig;
+
+    constructor(focusManager: FocusManager) {
         this.focusManager = focusManager;
         this.gameEngine = focusManager.gameEngine;
         
-        // フォーカス可能要素とナビゲーション状態
-        this.focusableElements = [];
-        this.currentFocusIndex = -1;
-        this.focusHistory = [];
-        this.maxHistorySize = 10;
-        
-        // 2Dナビゲーション設定
-        this.navigation2D = {
-            enabled: false,
-            grid: null,
-            currentPosition: { x: 0, y: 0 }
-        };
-        
-        // キーボードナビゲーション設定
-        this.keyboardNavigation = {
-            enabled: true,
-            wrapAround: true,
-            arrowKeysEnabled: true,
-            homeEndEnabled: true
-        };
+        // 設定の初期化
+        this.navigation2D = { ...DEFAULT_2D_CONFIG };
+        this.keyboardNavigation = { ...DEFAULT_KEYBOARD_CONFIG };
         
         console.log('[FocusNavigation] Component initialized');
     }
     
     /**
      * フォーカス可能要素を更新
-     * @param {HTMLElement} container コンテナ要素
      */
-    updateFocusableElements(container = document) {
+    updateFocusableElements(container: Document | HTMLElement = document): void {
         try {
             const previousCount = this.focusableElements.length;
             
-            // フォーカス可能要素のセレクタ
-            const focusableSelectors = [
-                'a[href]',
-                'button:not([disabled])',
-                'input:not([disabled]):not([type="hidden"])',
-                'select:not([disabled])',
-                'textarea:not([disabled])',
-                '[tabindex]:not([tabindex="-1"])',
-                '[contenteditable="true"]',
-                'audio[controls]',
-                'video[controls]',
-                'summary',
-                'iframe:not([tabindex="-1"])'
-            ].join(', ');
-            
             // 要素を取得してフィルタリング
-            const elements = Array.from(container.querySelectorAll(focusableSelectors))
+            const elements = Array.from(container.querySelectorAll(FOCUSABLE_SELECTORS.join(', ')))
+                .filter((element): element is HTMLElement => isValidHTMLElement(element))
                 .filter(element => this.isElementFocusable(element))
                 .filter(element => this.isElementVisible(element));
             
@@ -71,7 +267,7 @@ export class FocusNavigation {
             this.focusManager.emit('focusableElementsUpdated', {
                 count: this.focusableElements.length,
                 previousCount
-            });
+            } as FocusableElementsUpdateEvent);
             
         } catch (error) {
             console.error('[FocusNavigation] Error updating focusable elements:', error);
@@ -80,14 +276,12 @@ export class FocusNavigation {
     
     /**
      * 要素がフォーカス可能かチェック
-     * @param {HTMLElement} element チェックする要素
-     * @returns {boolean} フォーカス可能かどうか
      */
-    isElementFocusable(element) {
-        if (!element || element.disabled) return false;
+    isElementFocusable(element: HTMLElement): boolean {
+        if (!element || (element as any).disabled) return false;
         
         // hidden属性のチェック
-        if (element.hidden) return false;
+        if ((element as any).hidden) return false;
         
         // aria-hiddenのチェック
         if (element.getAttribute('aria-hidden') === 'true') return false;
@@ -101,12 +295,14 @@ export class FocusNavigation {
         
         // フォーム要素のチェック
         if (element.matches('input, select, textarea, button')) {
-            return !element.disabled && element.type !== 'hidden';
+            const formElement = element as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | HTMLButtonElement;
+            return !formElement.disabled && (element as HTMLInputElement).type !== 'hidden';
         }
         
         // リンクのチェック
         if (element.matches('a')) {
-            return element.href && element.href.length > 0;
+            const linkElement = element as HTMLAnchorElement;
+            return !!(linkElement.href && linkElement.href.length > 0);
         }
         
         // その他のインタラクティブ要素
@@ -115,42 +311,43 @@ export class FocusNavigation {
         }
         
         // tabindex属性があるかチェック
-        return tabIndex !== null && tabIndex !== '-1';
+        return hasTabIndex(element);
     }
     
     /**
      * 要素が表示されているかチェック
-     * @param {HTMLElement} element チェックする要素
-     * @returns {boolean} 表示されているかどうか
      */
-    isElementVisible(element) {
+    isElementVisible(element: HTMLElement): boolean {
         if (!element) return false;
         
-        // display: noneやvisibility: hiddenのチェック
-        const style = window.getComputedStyle(element);
-        if (style.display === 'none' || style.visibility === 'hidden') {
+        try {
+            // display: noneやvisibility: hiddenのチェック
+            const style = window.getComputedStyle(element);
+            if (style.display === 'none' || style.visibility === 'hidden') {
+                return false;
+            }
+            
+            // 親要素も含めて透明度をチェック
+            if (style.opacity === '0') return false;
+            
+            // 要素のサイズをチェック
+            const rect = element.getBoundingClientRect();
+            if (rect.width === 0 && rect.height === 0) return false;
+            
+            return true;
+        } catch (error) {
+            console.warn('[FocusNavigation] Error checking element visibility:', error);
             return false;
         }
-        
-        // 親要素も含めて透明度をチェック
-        if (style.opacity === '0') return false;
-        
-        // 要素のサイズをチェック
-        const rect = element.getBoundingClientRect();
-        if (rect.width === 0 && rect.height === 0) return false;
-        
-        return true;
     }
     
     /**
      * 要素をタブオーダーでソート
-     * @param {HTMLElement[]} elements ソートする要素配列
-     * @returns {HTMLElement[]} ソートされた要素配列
      */
-    sortElementsByTabOrder(elements) {
+    private sortElementsByTabOrder(elements: HTMLElement[]): HTMLElement[] {
         return elements.sort((a, b) => {
-            const aTabIndex = parseInt(a.getAttribute('tabindex')) || 0;
-            const bTabIndex = parseInt(b.getAttribute('tabindex')) || 0;
+            const aTabIndex = getTabIndexValue(a);
+            const bTabIndex = getTabIndexValue(b);
             
             // tabindex > 0 の要素が最初
             if (aTabIndex > 0 && bTabIndex > 0) {
@@ -176,8 +373,8 @@ export class FocusNavigation {
     /**
      * 現在のフォーカスインデックスを更新
      */
-    updateCurrentFocusIndex() {
-        const activeElement = document.activeElement;
+    private updateCurrentFocusIndex(): void {
+        const activeElement = document.activeElement as HTMLElement;
         if (activeElement) {
             this.currentFocusIndex = this.focusableElements.indexOf(activeElement);
         } else {
@@ -187,14 +384,12 @@ export class FocusNavigation {
     
     /**
      * 次のフォーカス可能要素に移動
-     * @param {boolean} reverse 逆方向に移動するか
-     * @returns {HTMLElement|null} フォーカスした要素
      */
-    moveToNext(reverse = false) {
+    moveToNext(reverse: boolean = false): HTMLElement | null {
         if (this.focusableElements.length === 0) return null;
         
         try {
-            let newIndex;
+            let newIndex: number;
             
             if (this.currentFocusIndex === -1) {
                 // フォーカスがない場合は最初または最後の要素
@@ -231,17 +426,15 @@ export class FocusNavigation {
     
     /**
      * 前のフォーカス可能要素に移動
-     * @returns {HTMLElement|null} フォーカスした要素
      */
-    moveToPrevious() {
+    moveToPrevious(): HTMLElement | null {
         return this.moveToNext(true);
     }
     
     /**
      * 最初のフォーカス可能要素に移動
-     * @returns {HTMLElement|null} フォーカスした要素
      */
-    moveToFirst() {
+    moveToFirst(): HTMLElement | null {
         if (this.focusableElements.length === 0) return null;
         
         const firstElement = this.focusableElements[0];
@@ -251,9 +444,8 @@ export class FocusNavigation {
     
     /**
      * 最後のフォーカス可能要素に移動
-     * @returns {HTMLElement|null} フォーカスした要素
      */
-    moveToLast() {
+    moveToLast(): HTMLElement | null {
         if (this.focusableElements.length === 0) return null;
         
         const lastElement = this.focusableElements[this.focusableElements.length - 1];
@@ -263,9 +455,8 @@ export class FocusNavigation {
     
     /**
      * 指定された要素にフォーカスを設定
-     * @param {HTMLElement} element フォーカスする要素
      */
-    setFocus(element) {
+    setFocus(element: HTMLElement): void {
         if (!element || !this.isElementFocusable(element)) return;
         
         try {
@@ -287,9 +478,8 @@ export class FocusNavigation {
     
     /**
      * フォーカス履歴に要素を追加
-     * @param {HTMLElement} element 追加する要素
      */
-    addToFocusHistory(element) {
+    private addToFocusHistory(element: HTMLElement): void {
         if (!element) return;
         
         // 既存の履歴から削除
@@ -309,10 +499,8 @@ export class FocusNavigation {
     
     /**
      * キーボードナビゲーションを処理
-     * @param {KeyboardEvent} event キーボードイベント
-     * @returns {boolean} イベントが処理されたかどうか
      */
-    handleKeyboardNavigation(event) {
+    handleKeyboardNavigation(event: KeyboardEvent): boolean {
         if (!this.keyboardNavigation.enabled) return false;
         
         const { key, shiftKey, ctrlKey, altKey, metaKey } = event;
@@ -322,16 +510,16 @@ export class FocusNavigation {
         
         try {
             switch (key) {
-                case 'Tab':
+                case NAVIGATION_KEYS.TAB:
                     return this.handleTabNavigation(event);
                     
-                case 'ArrowUp':
-                case 'ArrowDown':
-                case 'ArrowLeft':
-                case 'ArrowRight':
+                case NAVIGATION_KEYS.ARROW_UP:
+                case NAVIGATION_KEYS.ARROW_DOWN:
+                case NAVIGATION_KEYS.ARROW_LEFT:
+                case NAVIGATION_KEYS.ARROW_RIGHT:
                     return this.handleArrowNavigation(event);
                     
-                case 'Home':
+                case NAVIGATION_KEYS.HOME:
                     if (this.keyboardNavigation.homeEndEnabled) {
                         event.preventDefault();
                         this.moveToFirst();
@@ -339,7 +527,7 @@ export class FocusNavigation {
                     }
                     break;
                     
-                case 'End':
+                case NAVIGATION_KEYS.END:
                     if (this.keyboardNavigation.homeEndEnabled) {
                         event.preventDefault();
                         this.moveToLast();
@@ -347,8 +535,8 @@ export class FocusNavigation {
                     }
                     break;
                     
-                case 'PageUp':
-                case 'PageDown':
+                case NAVIGATION_KEYS.PAGE_UP:
+                case NAVIGATION_KEYS.PAGE_DOWN:
                     return this.handlePageNavigation(event);
             }
             
@@ -361,10 +549,8 @@ export class FocusNavigation {
     
     /**
      * Tabナビゲーションを処理
-     * @param {KeyboardEvent} event キーボードイベント
-     * @returns {boolean} イベントが処理されたかどうか
      */
-    handleTabNavigation(event) {
+    private handleTabNavigation(event: KeyboardEvent): boolean {
         event.preventDefault();
         
         if (event.shiftKey) {
@@ -378,10 +564,8 @@ export class FocusNavigation {
     
     /**
      * 矢印キーナビゲーションを処理
-     * @param {KeyboardEvent} event キーボードイベント
-     * @returns {boolean} イベントが処理されたかどうか
      */
-    handleArrowNavigation(event) {
+    private handleArrowNavigation(event: KeyboardEvent): boolean {
         if (!this.keyboardNavigation.arrowKeysEnabled) return false;
         
         // 2Dナビゲーションが有効な場合
@@ -392,11 +576,11 @@ export class FocusNavigation {
         // 1Dナビゲーション（通常のTab順序）
         const { key } = event;
         
-        if (key === 'ArrowDown' || key === 'ArrowRight') {
+        if (key === NAVIGATION_KEYS.ARROW_DOWN || key === NAVIGATION_KEYS.ARROW_RIGHT) {
             event.preventDefault();
             this.moveToNext();
             return true;
-        } else if (key === 'ArrowUp' || key === 'ArrowLeft') {
+        } else if (key === NAVIGATION_KEYS.ARROW_UP || key === NAVIGATION_KEYS.ARROW_LEFT) {
             event.preventDefault();
             this.moveToPrevious();
             return true;
@@ -407,24 +591,22 @@ export class FocusNavigation {
     
     /**
      * 2Dナビゲーションを処理
-     * @param {KeyboardEvent} event キーボードイベント
-     * @returns {boolean} イベントが処理されたかどうか
      */
-    handle2DNavigation(event) {
+    private handle2DNavigation(event: KeyboardEvent): boolean {
         const { key } = event;
-        let direction = null;
+        let direction: NavigationDirection;
         
         switch (key) {
-            case 'ArrowUp':
+            case NAVIGATION_KEYS.ARROW_UP:
                 direction = 'up';
                 break;
-            case 'ArrowDown':
+            case NAVIGATION_KEYS.ARROW_DOWN:
                 direction = 'down';
                 break;
-            case 'ArrowLeft':
+            case NAVIGATION_KEYS.ARROW_LEFT:
                 direction = 'left';
                 break;
-            case 'ArrowRight':
+            case NAVIGATION_KEYS.ARROW_RIGHT:
                 direction = 'right';
                 break;
             default:
@@ -444,17 +626,15 @@ export class FocusNavigation {
     
     /**
      * 2Dナビゲーションのターゲットを検索
-     * @param {string} direction 方向 ('up', 'down', 'left', 'right')
-     * @returns {HTMLElement|null} ターゲット要素
      */
-    find2DNavigationTarget(direction) {
-        const currentElement = document.activeElement;
+    private find2DNavigationTarget(direction: NavigationDirection): HTMLElement | null {
+        const currentElement = document.activeElement as HTMLElement;
         if (!currentElement) return null;
         
         const currentRect = currentElement.getBoundingClientRect();
         const candidates = this.focusableElements.filter(el => el !== currentElement);
         
-        let bestCandidate = null;
+        let bestCandidate: HTMLElement | null = null;
         let bestScore = Infinity;
         
         for (const candidate of candidates) {
@@ -470,56 +650,27 @@ export class FocusNavigation {
     
     /**
      * 2Dナビゲーションスコアを計算
-     * @param {DOMRect} fromRect 現在の要素の位置
-     * @param {DOMRect} toRect 候補要素の位置
-     * @param {string} direction 方向
-     * @returns {number} スコア（小さいほど良い）
      */
-    calculate2DNavigationScore(fromRect, toRect, direction) {
-        const fromCenter = {
-            x: fromRect.left + fromRect.width / 2,
-            y: fromRect.top + fromRect.height / 2
-        };
+    private calculate2DNavigationScore(fromRect: DOMRect, toRect: DOMRect, direction: NavigationDirection): number {
+        const fromCenter = calculateElementCenter(fromRect);
+        const toCenter = calculateElementCenter(toRect);
         
-        const toCenter = {
-            x: toRect.left + toRect.width / 2,
-            y: toRect.top + toRect.height / 2
-        };
-        
-        const dx = toCenter.x - fromCenter.x;
-        const dy = toCenter.y - fromCenter.y;
-        
-        // 方向のチェック
-        switch (direction) {
-            case 'up':
-                if (dy >= 0) return Infinity; // 上方向でないため除外
-                break;
-            case 'down':
-                if (dy <= 0) return Infinity; // 下方向でないため除外
-                break;
-            case 'left':
-                if (dx >= 0) return Infinity; // 左方向でないため除外
-                break;
-            case 'right':
-                if (dx <= 0) return Infinity; // 右方向でないため除外
-                break;
+        // 方向の妥当性チェック
+        if (!isDirectionValid(fromCenter, toCenter, direction)) {
+            return Infinity;
         }
         
         // 距離とアライメントを考慮したスコア計算
-        const distance = Math.sqrt(dx * dx + dy * dy);
+        const distance = calculateDistance(fromCenter, toCenter);
         const alignment = this.calculateAlignment(fromRect, toRect, direction);
         
-        return distance + (alignment * 100); // アライメントを重視
+        return distance + (alignment * ALIGNMENT_WEIGHT); // アライメントを重視
     }
     
     /**
      * 要素間のアライメントを計算
-     * @param {DOMRect} fromRect 現在の要素の位置
-     * @param {DOMRect} toRect 候補要素の位置
-     * @param {string} direction 方向
-     * @returns {number} アライメントスコア
      */
-    calculateAlignment(fromRect, toRect, direction) {
+    private calculateAlignment(fromRect: DOMRect, toRect: DOMRect, direction: NavigationDirection): number {
         if (direction === 'up' || direction === 'down') {
             // 垂直方向の移動では水平方向のアライメントを重視
             const fromCenterX = fromRect.left + fromRect.width / 2;
@@ -535,10 +686,8 @@ export class FocusNavigation {
     
     /**
      * ページナビゲーションを処理
-     * @param {KeyboardEvent} event キーボードイベント
-     * @returns {boolean} イベントが処理されたかどうか
      */
-    handlePageNavigation(event) {
+    private handlePageNavigation(event: KeyboardEvent): boolean {
         const { key } = event;
         
         // 現在のビューポート内の要素を取得
@@ -547,11 +696,11 @@ export class FocusNavigation {
         
         event.preventDefault();
         
-        if (key === 'PageDown') {
+        if (key === NAVIGATION_KEYS.PAGE_DOWN) {
             // ビューポート内の最後の要素にフォーカス
             const lastElement = viewportElements[viewportElements.length - 1];
             this.setFocus(lastElement);
-        } else if (key === 'PageUp') {
+        } else if (key === NAVIGATION_KEYS.PAGE_UP) {
             // ビューポート内の最初の要素にフォーカス
             const firstElement = viewportElements[0];
             this.setFocus(firstElement);
@@ -562,52 +711,47 @@ export class FocusNavigation {
     
     /**
      * ビューポート内のフォーカス可能要素を取得
-     * @returns {HTMLElement[]} ビューポート内の要素配列
      */
-    getElementsInViewport() {
-        const viewportHeight = window.innerHeight;
-        const scrollTop = window.pageYOffset;
+    private getElementsInViewport(): HTMLElement[] {
+        const viewportInfo: ViewportInfo = {
+            height: window.innerHeight,
+            scrollTop: window.pageYOffset,
+            visibleTop: 0,
+            visibleBottom: window.innerHeight
+        };
         
-        return this.focusableElements.filter(element => {
-            const rect = element.getBoundingClientRect();
-            const elementTop = rect.top + scrollTop;
-            const elementBottom = elementTop + rect.height;
-            
-            return elementBottom >= scrollTop && elementTop <= scrollTop + viewportHeight;
-        });
+        return this.focusableElements.filter(element => 
+            isElementInViewport(element, viewportInfo)
+        );
     }
     
     /**
      * 2Dナビゲーションを有効/無効化
-     * @param {boolean} enabled 有効にするかどうか
      */
-    set2DNavigationEnabled(enabled) {
+    set2DNavigationEnabled(enabled: boolean): void {
         this.navigation2D.enabled = enabled;
         console.log(`[FocusNavigation] 2D navigation ${enabled ? 'enabled' : 'disabled'}`);
     }
     
     /**
      * キーボードナビゲーション設定を更新
-     * @param {Object} config 設定オブジェクト
      */
-    updateKeyboardConfig(config) {
+    updateKeyboardConfig(config: Partial<KeyboardNavigationConfig>): void {
         Object.assign(this.keyboardNavigation, config);
         console.log('[FocusNavigation] Keyboard navigation config updated');
     }
     
     /**
      * フォーカス可能要素のリストを取得
-     * @returns {HTMLElement[]} フォーカス可能要素配列
      */
-    getFocusableElements() {
+    getFocusableElements(): HTMLElement[] {
         return [...this.focusableElements];
     }
     
     /**
      * 現在のフォーカス要素を取得
-     * @returns {HTMLElement|null} 現在フォーカスされている要素
      */
-    getCurrentFocusedElement() {
+    getCurrentFocusedElement(): HTMLElement | null {
         if (this.currentFocusIndex >= 0 && this.currentFocusIndex < this.focusableElements.length) {
             return this.focusableElements[this.currentFocusIndex];
         }
@@ -616,26 +760,57 @@ export class FocusNavigation {
     
     /**
      * フォーカス履歴を取得
-     * @param {number} limit 取得する履歴の最大数
-     * @returns {HTMLElement[]} フォーカス履歴配列
      */
-    getFocusHistory(limit = this.maxHistorySize) {
+    getFocusHistory(limit: number = this.maxHistorySize): HTMLElement[] {
         return this.focusHistory.slice(0, limit);
     }
     
     /**
      * フォーカス履歴をクリア
      */
-    clearFocusHistory() {
+    clearFocusHistory(): void {
         this.focusHistory = [];
         console.log('[FocusNavigation] Focus history cleared');
     }
     
     /**
-     * ナビゲーション統計を取得
-     * @returns {Object} ナビゲーション統計
+     * フォーカス検証を実行
      */
-    getNavigationStats() {
+    validateFocus(element: HTMLElement): FocusValidationResult {
+        if (!isValidHTMLElement(element)) {
+            return {
+                isValid: false,
+                reason: 'Element is not a valid HTML element',
+                element
+            };
+        }
+        
+        if (!this.isElementFocusable(element)) {
+            return {
+                isValid: false,
+                reason: 'Element is not focusable',
+                element
+            };
+        }
+        
+        if (!this.isElementVisible(element)) {
+            return {
+                isValid: false,
+                reason: 'Element is not visible',
+                element
+            };
+        }
+        
+        return {
+            isValid: true,
+            element
+        };
+    }
+    
+    /**
+     * ナビゲーション統計を取得
+     */
+    getNavigationStats(): NavigationStats {
         return {
             focusableElementsCount: this.focusableElements.length,
             currentFocusIndex: this.currentFocusIndex,
@@ -647,9 +822,50 @@ export class FocusNavigation {
     }
     
     /**
+     * ナビゲーションコンテキストを取得
+     */
+    getNavigationContext(): NavigationContext {
+        return {
+            currentElement: this.getCurrentFocusedElement(),
+            targetElement: null,
+            direction: 'forward',
+            method: 'programmatic'
+        };
+    }
+    
+    /**
+     * フォーカス可能要素の型を判定
+     */
+    getElementType(element: HTMLElement): FocusableElementType {
+        return getFocusableElementType(element);
+    }
+    
+    /**
+     * ナビゲーションスコアの詳細計算
+     */
+    calculateNavigationScore(fromElement: HTMLElement, toElement: HTMLElement, direction: NavigationDirection): NavigationScoreCalculation {
+        const fromRect = fromElement.getBoundingClientRect();
+        const toRect = toElement.getBoundingClientRect();
+        const fromCenter = calculateElementCenter(fromRect);
+        const toCenter = calculateElementCenter(toRect);
+        
+        const isValidDirection = isDirectionValid(fromCenter, toCenter, direction);
+        const distance = calculateDistance(fromCenter, toCenter);
+        const alignment = this.calculateAlignment(fromRect, toRect, direction);
+        const totalScore = isValidDirection ? distance + (alignment * ALIGNMENT_WEIGHT) : Infinity;
+        
+        return {
+            distance,
+            alignment,
+            totalScore,
+            isValidDirection
+        };
+    }
+    
+    /**
      * コンポーネントクリーンアップ
      */
-    destroy() {
+    destroy(): void {
         this.focusableElements = [];
         this.focusHistory = [];
         this.currentFocusIndex = -1;
