@@ -81,9 +81,9 @@
 
 ## Phase 3: 管理システムのTypeScript移行
 
-- [ ] 11. バブル管理システムの移行
+- [x] 11. バブル管理システムの移行
   - src/managers/BubbleManager.jsとサブコンポーネントを.tsに変換
-  - **現状**: 一部ファイルのみ変換済み、多数の.jsファイルが残存
+  - **完了**: BubbleManager.ts、ScoreManager.ts、bubble-manager/内の全ファイル変換済み
   - Bubbleインターフェースとバブル型定義を作成
   - バブル生成・更新・描画メソッドの型注釈を追加
   - _要件: 2.1, 2.2, 4.1, 4.2_
