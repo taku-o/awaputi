@@ -8,6 +8,8 @@ export { HelpManager, getHelpManager, reinitializeHelpManager } from './HelpMana
 export { TutorialManager, getTutorialManager, reinitializeTutorialManager } from './TutorialManager.js';
 export { ContextManager, getContextManager, reinitializeContextManager } from './ContextManager.js';
 export { HelpErrorHandler, getHelpErrorHandler, reinitializeHelpErrorHandler } from './HelpErrorHandler.js';
+export { TutorialActions, getTutorialActions, reinitializeTutorialActions } from './TutorialActions.js';
+export { TutorialValidationEngine, getTutorialValidationEngine, reinitializeTutorialValidationEngine } from './TutorialValidationEngine.js';
 
 // UI Components
 export { TutorialOverlay, getTutorialOverlay, reinitializeTutorialOverlay } from './TutorialOverlay.js';

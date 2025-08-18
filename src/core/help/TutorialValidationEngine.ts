@@ -1,5 +1,5 @@
 /**
- * TutorialValidationEngine.js
+ * TutorialValidationEngine.ts
  * チュートリアルバリデーション・実行エンジンクラス
  * ステップ検証、インタラクション検出、タイムアウト処理を担当
  */
@@ -7,17 +7,107 @@
 import { ErrorHandler } from '../../utils/ErrorHandler.js';
 import { LoggingSystem } from '../LoggingSystem.js';
 
+// 型定義
+export interface GameEngine {
+    bubbleManager?: BubbleManager;
+    scoreManager?: ScoreManager;
+    sceneManager?: SceneManager;
+    settingsManager?: SettingsManager;
+    eventBus?: EventBus;
+}
+
+export interface BubbleManager {
+    getBubbleById(id: string): Bubble | null;
+}
+
+export interface Bubble {
+    id: string;
+    type: string;
+    isPopped: boolean;
+}
+
+export interface ScoreManager {
+    getCurrentCombo(): number;
+    getCurrentScore(): number;
+}
+
+export interface SceneManager {
+    currentScene?: Scene;
+}
+
+export interface Scene {
+    constructor: { name: string };
+}
+
+export interface SettingsManager {
+    getSetting(key: string): any;
+}
+
+export interface EventBus {
+    emit(event: string, data: any): void;
+}
+
+export interface StepAction {
+    type: string;
+}
+
+export interface TutorialStep {
+    id: string;
+    index?: number;
+    validationFunction?: string;
+    action?: StepAction;
+    minDragDistance?: number;
+    requiredCombo?: number;
+    targetScene?: string;
+    requiredScore?: number;
+    targetSetting?: string;
+    targetValue?: any;
+    timeoutMessage?: string;
+}
+
+export interface ActionResult {
+    bubbleId?: string;
+    bubbleType?: string;
+    dragDistance?: number;
+    [key: string]: any;
+}
+
+export interface ValidationResult {
+    success: boolean;
+    error?: string | null;
+    details?: any;
+}
+
+export interface TutorialData {
+    id: string;
+    steps: TutorialStep[];
+}
+
+export interface TutorialOverlay {
+    showError(error: string): Promise<void>;
+    showTimeout(message: string): Promise<void>;
+}
+
+export type ValidationFunction = (actionResult: ActionResult, step: TutorialStep, gameEngine: GameEngine) => Promise<ValidationResult>;
+export type InteractionHandler = (...args: any[]) => void;
+
 /**
  * チュートリアルバリデーション・実行エンジンクラス
  */
 export class TutorialValidationEngine {
-    constructor(gameEngine, loggingSystem) {
+    private gameEngine: GameEngine;
+    private loggingSystem: LoggingSystem;
+    private interactionHandlers: Map<string, InteractionHandler>;
+    private validationFunctions: Map<string, ValidationFunction>;
+    private stepTimer: number | null;
+
+    constructor(gameEngine: GameEngine, loggingSystem?: LoggingSystem) {
         this.gameEngine = gameEngine;
-        this.loggingSystem = loggingSystem || LoggingSystem.getInstance();
+        this.loggingSystem = loggingSystem || (LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem());
         
         // インタラクション検出
-        this.interactionHandlers = new Map();
-        this.validationFunctions = new Map();
+        this.interactionHandlers = new Map<string, InteractionHandler>();
+        this.validationFunctions = new Map<string, ValidationFunction>();
         this.stepTimer = null;
         
         this.initialize();
@@ -26,19 +116,19 @@ export class TutorialValidationEngine {
     /**
      * バリデーションエンジンを初期化
      */
-    initialize() {
+    initialize(): void {
         try {
             this.setupValidationFunctions();
             this.loggingSystem.log('TutorialValidationEngineが初期化されました', 'info', 'TutorialValidationEngine');
         } catch (error) {
-            this.loggingSystem.log(`バリデーションエンジン初期化エラー: ${error.message}`, 'error', 'TutorialValidationEngine');
+            this.loggingSystem.log(`バリデーションエンジン初期化エラー: ${(error as Error).message}`, 'error', 'TutorialValidationEngine');
         }
     }
     
     /**
      * バリデーション関数をセットアップ
      */
-    setupValidationFunctions() {
+    setupValidationFunctions(): void {
         // 泡を割るバリデーション
         this.validationFunctions.set('validateBubblePop', async (actionResult, step, gameEngine) => {
             const bubbleManager = gameEngine?.bubbleManager;
@@ -182,13 +272,13 @@ export class TutorialValidationEngine {
     
     /**
      * ステップの検証を実行
-     * @param {Object} step - ステップデータ
-     * @param {Object} actionResult - アクション結果
-     * @returns {Object} 検証結果
+     * @param step - ステップデータ
+     * @param actionResult - アクション結果
+     * @returns 検証結果
      */
-    async validateStep(step, actionResult) {
+    async validateStep(step: TutorialStep, actionResult: ActionResult): Promise<ValidationResult> {
         try {
-            const validationFunc = this.validationFunctions.get(step.validationFunction);
+            const validationFunc = this.validationFunctions.get(step.validationFunction || '');
             if (!validationFunc) {
                 return { success: true };
             }
@@ -208,20 +298,20 @@ export class TutorialValidationEngine {
             };
             
         } catch (error) {
-            this.loggingSystem.log(`ステップ検証エラー: ${step.id} - ${error.message}`, 'error', 'TutorialValidationEngine');
+            this.loggingSystem.log(`ステップ検証エラー: ${step.id} - ${(error as Error).message}`, 'error', 'TutorialValidationEngine');
             return {
                 success: false,
-                error: error.message || 'Validation error occurred'
+                error: (error as Error).message || 'Validation error occurred'
             };
         }
     }
     
     /**
      * バリデーション関数を動的に決定
-     * @param {Object} step - ステップデータ
-     * @returns {string} バリデーション関数名
+     * @param step - ステップデータ
+     * @returns バリデーション関数名
      */
-    determineValidationFunction(step) {
+    determineValidationFunction(step: TutorialStep): string | null {
         try {
             if (step.validationFunction) {
                 return step.validationFunction;
@@ -231,7 +321,7 @@ export class TutorialValidationEngine {
             const actionType = step.action?.type;
             if (!actionType) return null;
             
-            const actionToValidation = {
+            const actionToValidation: Record<string, string> = {
                 'click_bubble': 'validateBubblePop',
                 'drag_bubble': 'validateBubbleDrag',
                 'click_special_bubble': 'validateSpecialBubblePop',
@@ -243,26 +333,26 @@ export class TutorialValidationEngine {
             
             return actionToValidation[actionType] || null;
         } catch (error) {
-            this.loggingSystem.log(`バリデーション関数決定エラー: ${error.message}`, 'error', 'TutorialValidationEngine');
+            this.loggingSystem.log(`バリデーション関数決定エラー: ${(error as Error).message}`, 'error', 'TutorialValidationEngine');
             return null;
         }
     }
     
     /**
      * 待機アクションを決定
-     * @param {Object} step - ステップデータ
-     * @returns {string} 待機アクション
+     * @param step - ステップデータ
+     * @returns 待機アクション
      */
-    determineWaitAction(step) {
+    determineWaitAction(step: TutorialStep): string {
         try {
-            if (step.waitAction) {
-                return step.waitAction;
+            if ((step as any).waitAction) {
+                return (step as any).waitAction;
             }
             
             const actionType = step.action?.type;
             if (!actionType) return 'wait_click';
             
-            const actionToWait = {
+            const actionToWait: Record<string, string> = {
                 'click_bubble': 'wait_bubble_click',
                 'drag_bubble': 'wait_bubble_drag',
                 'click_special_bubble': 'wait_special_bubble_click',
@@ -274,54 +364,54 @@ export class TutorialValidationEngine {
             
             return actionToWait[actionType] || 'wait_click';
         } catch (error) {
-            this.loggingSystem.log(`待機アクション決定エラー: ${error.message}`, 'error', 'TutorialValidationEngine');
+            this.loggingSystem.log(`待機アクション決定エラー: ${(error as Error).message}`, 'error', 'TutorialValidationEngine');
             return 'wait_click';
         }
     }
     
     /**
      * インタラクションハンドラーを追加
-     * @param {string} eventType - イベントタイプ
-     * @param {Function} handler - ハンドラー関数
+     * @param eventType - イベントタイプ
+     * @param handler - ハンドラー関数
      */
-    addInteractionHandler(eventType, handler) {
+    addInteractionHandler(eventType: string, handler: InteractionHandler): void {
         this.interactionHandlers.set(eventType, handler);
     }
     
     /**
      * インタラクションハンドラーを削除
-     * @param {string} eventType - イベントタイプ
+     * @param eventType - イベントタイプ
      */
-    removeInteractionHandler(eventType) {
+    removeInteractionHandler(eventType: string): void {
         this.interactionHandlers.delete(eventType);
     }
     
     /**
      * すべてのインタラクションハンドラーをクリア
      */
-    clearInteractionHandlers() {
+    clearInteractionHandlers(): void {
         this.interactionHandlers.clear();
     }
     
     /**
      * ステップタイマーをセット
-     * @param {number} timeout - タイムアウト時間（ミリ秒）
-     * @param {Function} callback - タイムアウト時のコールバック
+     * @param timeout - タイムアウト時間（ミリ秒）
+     * @param callback - タイムアウト時のコールバック
      */
-    setStepTimer(timeout, callback) {
+    setStepTimer(timeout: number, callback: () => void): void {
         this.clearStepTimer();
         
         if (timeout && timeout > 0) {
             this.stepTimer = setTimeout(() => {
                 callback();
-            }, timeout);
+            }, timeout) as any;
         }
     }
     
     /**
      * ステップタイマーをクリア
      */
-    clearStepTimer() {
+    clearStepTimer(): void {
         if (this.stepTimer) {
             clearTimeout(this.stepTimer);
             this.stepTimer = null;
@@ -330,12 +420,12 @@ export class TutorialValidationEngine {
     
     /**
      * バリデーションエラーメッセージを表示
-     * @param {string} error - エラーメッセージ
-     * @param {Object} tutorialOverlay - チュートリアルオーバーレイ
-     * @param {Object} currentTutorial - 現在のチュートリアル
-     * @param {number} currentStep - 現在のステップ
+     * @param error - エラーメッセージ
+     * @param tutorialOverlay - チュートリアルオーバーレイ
+     * @param currentTutorial - 現在のチュートリアル
+     * @param currentStep - 現在のステップ
      */
-    async showValidationError(error, tutorialOverlay, currentTutorial, currentStep) {
+    async showValidationError(error: string, tutorialOverlay?: TutorialOverlay, currentTutorial?: TutorialData, currentStep?: number): Promise<void> {
         try {
             if (tutorialOverlay) {
                 await tutorialOverlay.showError(error);
@@ -345,22 +435,22 @@ export class TutorialValidationEngine {
             if (this.gameEngine && this.gameEngine.eventBus) {
                 this.gameEngine.eventBus.emit('tutorial_validation_error', {
                     tutorialId: currentTutorial?.id,
-                    stepId: currentTutorial?.steps[currentStep]?.id,
+                    stepId: currentTutorial?.steps[currentStep || 0]?.id,
                     error: error
                 });
             }
         } catch (err) {
-            this.loggingSystem.log(`バリデーションエラー表示失敗: ${err.message}`, 'error', 'TutorialValidationEngine');
+            this.loggingSystem.log(`バリデーションエラー表示失敗: ${(err as Error).message}`, 'error', 'TutorialValidationEngine');
         }
     }
     
     /**
      * タイムアウトメッセージを表示
-     * @param {Object} step - ステップデータ
-     * @param {Object} tutorialOverlay - チュートリアルオーバーレイ
-     * @param {Object} currentTutorial - 現在のチュートリアル
+     * @param step - ステップデータ
+     * @param tutorialOverlay - チュートリアルオーバーレイ
+     * @param currentTutorial - 現在のチュートリアル
      */
-    async showTimeoutMessage(step, tutorialOverlay, currentTutorial) {
+    async showTimeoutMessage(step: TutorialStep, tutorialOverlay?: TutorialOverlay, currentTutorial?: TutorialData): Promise<void> {
         try {
             const message = step.timeoutMessage || 'このステップの制限時間を超過しました。もう一度お試しください。';
             if (tutorialOverlay) {
@@ -376,49 +466,49 @@ export class TutorialValidationEngine {
                 });
             }
         } catch (error) {
-            this.loggingSystem.log(`タイムアウトメッセージ表示失敗: ${error.message}`, 'error', 'TutorialValidationEngine');
+            this.loggingSystem.log(`タイムアウトメッセージ表示失敗: ${(error as Error).message}`, 'error', 'TutorialValidationEngine');
         }
     }
     
     /**
      * カスタムバリデーション関数を登録
-     * @param {string} name - バリデーション関数名
-     * @param {Function} func - バリデーション関数
+     * @param name - バリデーション関数名
+     * @param func - バリデーション関数
      */
-    registerValidationFunction(name, func) {
+    registerValidationFunction(name: string, func: ValidationFunction): void {
         try {
             this.validationFunctions.set(name, func);
             this.loggingSystem.log(`カスタムバリデーション関数が登録されました: ${name}`, 'info', 'TutorialValidationEngine');
         } catch (error) {
-            this.loggingSystem.log(`バリデーション関数登録エラー: ${error.message}`, 'error', 'TutorialValidationEngine');
+            this.loggingSystem.log(`バリデーション関数登録エラー: ${(error as Error).message}`, 'error', 'TutorialValidationEngine');
         }
     }
     
     /**
      * バリデーション関数を削除
-     * @param {string} name - バリデーション関数名
+     * @param name - バリデーション関数名
      */
-    unregisterValidationFunction(name) {
+    unregisterValidationFunction(name: string): void {
         try {
             this.validationFunctions.delete(name);
             this.loggingSystem.log(`バリデーション関数が削除されました: ${name}`, 'info', 'TutorialValidationEngine');
         } catch (error) {
-            this.loggingSystem.log(`バリデーション関数削除エラー: ${error.message}`, 'error', 'TutorialValidationEngine');
+            this.loggingSystem.log(`バリデーション関数削除エラー: ${(error as Error).message}`, 'error', 'TutorialValidationEngine');
         }
     }
     
     /**
      * 登録されているバリデーション関数一覧を取得
-     * @returns {Array} バリデーション関数名の配列
+     * @returns バリデーション関数名の配列
      */
-    getRegisteredValidationFunctions() {
+    getRegisteredValidationFunctions(): string[] {
         return Array.from(this.validationFunctions.keys());
     }
     
     /**
      * リソースをクリーンアップ
      */
-    destroy() {
+    destroy(): void {
         try {
             this.clearStepTimer();
             this.clearInteractionHandlers();
@@ -426,21 +516,21 @@ export class TutorialValidationEngine {
             
             this.loggingSystem.log('TutorialValidationEngineがクリーンアップされました', 'info', 'TutorialValidationEngine');
         } catch (error) {
-            this.loggingSystem.log(`クリーンアップエラー: ${error.message}`, 'error', 'TutorialValidationEngine');
+            this.loggingSystem.log(`クリーンアップエラー: ${(error as Error).message}`, 'error', 'TutorialValidationEngine');
         }
     }
 }
 
 // シングルトンインスタンス管理
-let tutorialValidationEngineInstance = null;
+let tutorialValidationEngineInstance: TutorialValidationEngine | null = null;
 
 /**
  * TutorialValidationEngineのシングルトンインスタンスを取得
- * @param {Object} gameEngine - ゲームエンジン
- * @param {Object} loggingSystem - ロギングシステム
- * @returns {TutorialValidationEngine} シングルトンインスタンス
+ * @param gameEngine - ゲームエンジン
+ * @param loggingSystem - ロギングシステム
+ * @returns シングルトンインスタンス
  */
-export function getTutorialValidationEngine(gameEngine, loggingSystem) {
+export function getTutorialValidationEngine(gameEngine: GameEngine, loggingSystem?: LoggingSystem): TutorialValidationEngine {
     if (!tutorialValidationEngineInstance) {
         tutorialValidationEngineInstance = new TutorialValidationEngine(gameEngine, loggingSystem);
     }
@@ -449,11 +539,11 @@ export function getTutorialValidationEngine(gameEngine, loggingSystem) {
 
 /**
  * TutorialValidationEngineのシングルトンインスタンスを再初期化
- * @param {Object} gameEngine - ゲームエンジン
- * @param {Object} loggingSystem - ロギングシステム
- * @returns {TutorialValidationEngine} 新しいシングルトンインスタンス
+ * @param gameEngine - ゲームエンジン
+ * @param loggingSystem - ロギングシステム
+ * @returns 新しいシングルトンインスタンス
  */
-export function reinitializeTutorialValidationEngine(gameEngine, loggingSystem) {
+export function reinitializeTutorialValidationEngine(gameEngine: GameEngine, loggingSystem?: LoggingSystem): TutorialValidationEngine {
     if (tutorialValidationEngineInstance) {
         tutorialValidationEngineInstance.destroy();
     }

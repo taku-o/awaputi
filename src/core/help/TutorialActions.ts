@@ -1,5 +1,5 @@
 /**
- * TutorialActions.js
+ * TutorialActions.ts
  * チュートリアル用アクション検出・統合システム
  * ゲームエンジンとチュートリアルシステム間のブリッジ機能を提供
  */
@@ -7,27 +7,217 @@
 import { ErrorHandler } from '../../utils/ErrorHandler.js';
 import { LoggingSystem } from '../LoggingSystem.js';
 
+// 型定義
+export interface GameEngine {
+    eventBus?: EventBus;
+    bubbleManager?: BubbleManager;
+    inputManager?: InputManager;
+    scoreManager?: ScoreManager;
+    playerData?: PlayerData;
+    currentScene?: Scene;
+    gameTime?: number;
+}
+
+export interface EventBus {
+    on(event: string, callback: (data: any) => void): void;
+    off?(event: string, callback: (data: any) => void): void;
+}
+
+export interface BubbleManager {
+    popBubble(bubble: Bubble): boolean;
+    getActiveBubbleCount(): number;
+}
+
+export interface InputManager {
+    on(event: string, callback: (data: DragData) => void): void;
+}
+
+export interface ScoreManager {
+    getCurrentScore(): number;
+    getCurrentCombo(): number;
+    getComboScore(): number;
+    getComboMultiplier(): number;
+}
+
+export interface PlayerData {
+    getCurrentHP(): number;
+}
+
+export interface Scene {
+    constructor: { name: string };
+}
+
+export interface Bubble {
+    id: string;
+    type: string;
+    x: number;
+    y: number;
+    score?: number;
+}
+
+export interface Position {
+    x: number;
+    y: number;
+}
+
+export interface DragData {
+    targetType: string;
+    targetId: string;
+    startX: number;
+    startY: number;
+    endX: number;
+    endY: number;
+}
+
+export interface ActionData {
+    actionType: string;
+    timestamp: number;
+    gameState: GameState;
+    [key: string]: any;
+}
+
+export interface BubblePopData extends ActionData {
+    bubbleId: string;
+    bubbleType: string;
+    position: Position;
+    score: number;
+    comboMultiplier: number;
+}
+
+export interface BubbleDragData extends ActionData {
+    bubbleId: string;
+    startPosition: Position;
+    endPosition: Position;
+    dragDistance: number;
+    dragDirection: number;
+}
+
+export interface SpecialBubblePopData extends ActionData {
+    bubbleId: string;
+    bubbleType: string;
+    specialEffect: string;
+    affectedBubbles: string[];
+    effectDuration: number;
+}
+
+export interface ComboAchievedData extends ActionData {
+    comboCount: number;
+    comboScore: number;
+    comboMultiplier: number;
+    comboDuration: number;
+}
+
+export interface ScoreReachedData extends ActionData {
+    score: number;
+    milestone: number;
+    previousScore: number;
+    scoreIncrease: number;
+}
+
+export interface HPChangedData extends ActionData {
+    currentHP: number;
+    previousHP: number;
+    hpChange: number;
+    changeReason: string;
+}
+
+export interface KeyPressedData extends ActionData {
+    key: string;
+    code: string;
+    ctrlKey: boolean;
+    shiftKey: boolean;
+    altKey: boolean;
+}
+
+export interface ClickData extends ActionData {
+    position: Position;
+    target: string;
+    button: number;
+}
+
+export interface TouchStartData extends ActionData {
+    position: Position;
+    touchCount: number;
+}
+
+export interface GameState {
+    currentScene: string;
+    score: number;
+    combo: number;
+    hp: number;
+    activeBubbles: number;
+    gameTime: number;
+}
+
+export interface ActionListenerInfo {
+    callback: ActionCallback;
+    options: ActionOptions;
+    registeredAt: number;
+    triggerCount: number;
+}
+
+export interface ActionOptions {
+    requiredCombo?: number;
+    requiredScore?: number;
+    [key: string]: any;
+}
+
+export interface ActionStats {
+    totalActions: number;
+    actionsByType: Map<string, number>;
+    averageResponseTime: Map<string, number>;
+    lastActionTime: number;
+}
+
+export interface ActionStatistics {
+    totalActions: number;
+    actionsByType: Record<string, number>;
+    averageResponseTime: Record<string, number>;
+    activeListeners: number;
+    stateWatchers: number;
+}
+
+export type ActionCallback = (data: ActionData) => void;
+export type StateWatcher = () => void;
+export type ActionType = 'bubble_pop' | 'bubble_drag' | 'special_bubble_pop' | 'combo_achieved' | 'score_reached' | 'hp_changed' | 'key_pressed' | 'click' | 'touch_start';
+
 /**
  * チュートリアルアクション検出クラス
  */
 export class TutorialActions {
-    constructor(gameEngine) {
+    private gameEngine: GameEngine;
+    private loggingSystem: LoggingSystem;
+    private stateMonitoringInterval: number | null;
+    
+    // アクションリスナー管理
+    private activeListeners: Map<string, any[]>;
+    private actionCallbacks: Map<string, ActionListenerInfo>;
+    
+    // ゲーム状態監視
+    private gameStateWatchers: Map<string, StateWatcher>;
+    private lastKnownStates: Map<string, any>;
+    
+    // アクション統計
+    private actionStats: ActionStats;
+
+    constructor(gameEngine: GameEngine) {
         this.gameEngine = gameEngine;
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
+        this.stateMonitoringInterval = null;
         
         // アクションリスナー管理
-        this.activeListeners = new Map();
-        this.actionCallbacks = new Map();
+        this.activeListeners = new Map<string, any[]>();
+        this.actionCallbacks = new Map<string, ActionListenerInfo>();
         
         // ゲーム状態監視
-        this.gameStateWatchers = new Map();
-        this.lastKnownStates = new Map();
+        this.gameStateWatchers = new Map<string, StateWatcher>();
+        this.lastKnownStates = new Map<string, any>();
         
         // アクション統計
         this.actionStats = {
             totalActions: 0,
-            actionsByType: new Map(),
-            averageResponseTime: new Map(),
+            actionsByType: new Map<string, number>(),
+            averageResponseTime: new Map<string, number>(),
             lastActionTime: 0
         };
         
@@ -37,7 +227,7 @@ export class TutorialActions {
     /**
      * システムの初期化
      */
-    initialize() {
+    initialize(): void {
         try {
             // ゲームエンジンイベントの監視設定
             this.setupGameEngineIntegration();
@@ -51,19 +241,19 @@ export class TutorialActions {
             this.loggingSystem.info('TutorialActions', 'Tutorial action system initialized');
         } catch (error) {
             this.loggingSystem.error('TutorialActions', 'Failed to initialize tutorial actions', error);
-            ErrorHandler.handle(error, 'TutorialActions.initialize');
+            ErrorHandler.handle(error as Error, 'TutorialActions.initialize');
         }
     }
 
     /**
      * アクションリスナーの登録
-     * @param {string} actionType - アクションタイプ
-     * @param {Function} callback - コールバック関数
-     * @param {Object} options - オプション設定
+     * @param actionType - アクションタイプ
+     * @param callback - コールバック関数
+     * @param options - オプション設定
      */
-    registerActionListener(actionType, callback, options = {}) {
+    registerActionListener(actionType: string, callback: ActionCallback, options: ActionOptions = {}): void {
         try {
-            const listenerInfo = {
+            const listenerInfo: ActionListenerInfo = {
                 callback,
                 options,
                 registeredAt: Date.now(),
@@ -83,9 +273,9 @@ export class TutorialActions {
 
     /**
      * アクションリスナーの解除
-     * @param {string} actionType - アクションタイプ
+     * @param actionType - アクションタイプ
      */
-    unregisterActionListener(actionType) {
+    unregisterActionListener(actionType: string): void {
         try {
             if (this.actionCallbacks.has(actionType)) {
                 this.actionCallbacks.delete(actionType);
@@ -99,10 +289,10 @@ export class TutorialActions {
 
     /**
      * アクションの発火
-     * @param {string} actionType - アクションタイプ
-     * @param {Object} eventData - イベントデータ
+     * @param actionType - アクションタイプ
+     * @param eventData - イベントデータ
      */
-    triggerAction(actionType, eventData = {}) {
+    triggerAction(actionType: string, eventData: any = {}): void {
         try {
             const listenerInfo = this.actionCallbacks.get(actionType);
             if (!listenerInfo) {
@@ -126,11 +316,11 @@ export class TutorialActions {
 
     /**
      * アクションデータの構築
-     * @param {string} actionType - アクションタイプ
-     * @param {Object} eventData - イベントデータ
-     * @returns {Object} 構築されたアクションデータ
+     * @param actionType - アクションタイプ
+     * @param eventData - イベントデータ
+     * @returns 構築されたアクションデータ
      */
-    buildActionData(actionType, eventData) {
+    buildActionData(actionType: string, eventData: any): ActionData {
         const baseData = {
             actionType,
             timestamp: Date.now(),
@@ -205,7 +395,7 @@ export class TutorialActions {
     /**
      * ゲームエンジン統合の設定
      */
-    setupGameEngineIntegration() {
+    setupGameEngineIntegration(): void {
         if (!this.gameEngine || !this.gameEngine.eventBus) {
             return;
         }
@@ -254,9 +444,9 @@ export class TutorialActions {
     /**
      * DOM イベントリスナーの設定
      */
-    setupDOMEventListeners() {
+    setupDOMEventListeners(): void {
         // キーボードイベント
-        document.addEventListener('keydown', (event) => {
+        document.addEventListener('keydown', (event: KeyboardEvent) => {
             this.triggerAction('key_pressed', {
                 key: event.key,
                 code: event.code,
@@ -267,7 +457,7 @@ export class TutorialActions {
         });
 
         // マウス・タッチイベント
-        document.addEventListener('click', (event) => {
+        document.addEventListener('click', (event: MouseEvent) => {
             this.triggerAction('click', {
                 position: { x: event.clientX, y: event.clientY },
                 target: event.target.className,
@@ -275,7 +465,7 @@ export class TutorialActions {
             });
         });
 
-        document.addEventListener('touchstart', (event) => {
+        document.addEventListener('touchstart', (event: TouchEvent) => {
             const touch = event.touches[0];
             this.triggerAction('touch_start', {
                 position: { x: touch.clientX, y: touch.clientY },
@@ -286,10 +476,10 @@ export class TutorialActions {
 
     /**
      * アクション固有リスナーの設定
-     * @param {string} actionType - アクションタイプ
-     * @param {Object} options - オプション設定
+     * @param actionType - アクションタイプ
+     * @param options - オプション設定
      */
-    setupActionSpecificListeners(actionType, options) {
+    setupActionSpecificListeners(actionType: string, options: ActionOptions): void {
         switch (actionType) {
             case 'bubble_pop':
                 this.setupBubblePopListener(options);
@@ -311,13 +501,13 @@ export class TutorialActions {
 
     /**
      * バブルポップリスナーの設定
-     * @param {Object} options - オプション設定
+     * @param options - オプション設定
      */
-    setupBubblePopListener(options) {
+    setupBubblePopListener(options: ActionOptions): void {
         // バブルマネージャーとの統合
         if (this.gameEngine.bubbleManager) {
             const originalPop = this.gameEngine.bubbleManager.popBubble;
-            this.gameEngine.bubbleManager.popBubble = (bubble) => {
+            this.gameEngine.bubbleManager.popBubble = (bubble: Bubble) => {
                 const result = originalPop.call(this.gameEngine.bubbleManager, bubble);
                 
                 if (result) {
@@ -336,14 +526,14 @@ export class TutorialActions {
 
     /**
      * バブルドラッグリスナーの設定
-     * @param {Object} options - オプション設定
+     * @param options - オプション設定
      */
-    setupBubbleDragListener(options) {
+    setupBubbleDragListener(options: ActionOptions): void {
         // 入力マネージャーとの統合
         if (this.gameEngine.inputManager) {
             const inputManager = this.gameEngine.inputManager;
             
-            inputManager.on('drag_end', (data) => {
+            inputManager.on('drag_end', (data: DragData) => {
                 if (data.targetType === 'bubble') {
                     const dragDistance = Math.sqrt(
                         Math.pow(data.endX - data.startX, 2) + 
@@ -364,9 +554,9 @@ export class TutorialActions {
 
     /**
      * コンボリスナーの設定
-     * @param {Object} options - オプション設定
+     * @param options - オプション設定
      */
-    setupComboListener(options) {
+    setupComboListener(options: ActionOptions): void {
         if (this.gameEngine.scoreManager) {
             const scoreManager = this.gameEngine.scoreManager;
             let lastComboCount = 0;
@@ -388,9 +578,9 @@ export class TutorialActions {
 
     /**
      * スコアリスナーの設定
-     * @param {Object} options - オプション設定
+     * @param options - オプション設定
      */
-    setupScoreListener(options) {
+    setupScoreListener(options: ActionOptions): void {
         if (this.gameEngine.scoreManager) {
             const scoreManager = this.gameEngine.scoreManager;
             let lastScore = 0;
@@ -416,7 +606,7 @@ export class TutorialActions {
     /**
      * 状態監視の開始
      */
-    startStateMonitoring() {
+    startStateMonitoring(): void {
         // 定期的な状態チェック（100ms間隔）
         this.stateMonitoringInterval = setInterval(() => {
             for (const [name, watcher] of this.gameStateWatchers) {
@@ -426,14 +616,14 @@ export class TutorialActions {
                     this.loggingSystem.error('TutorialActions', `State watcher error: ${name}`, error);
                 }
             }
-        }, 100);
+        }, 100) as any;
     }
 
     /**
      * 現在のゲーム状態を取得
-     * @returns {Object} ゲーム状態
+     * @returns ゲーム状態
      */
-    getCurrentGameState() {
+    getCurrentGameState(): GameState {
         if (!this.gameEngine) {
             return {};
         }
@@ -450,18 +640,18 @@ export class TutorialActions {
 
     /**
      * 現在のコンボ倍率を取得
-     * @returns {number} コンボ倍率
+     * @returns コンボ倍率
      */
-    getCurrentComboMultiplier() {
+    getCurrentComboMultiplier(): number {
         return this.gameEngine.scoreManager?.getComboMultiplier() || 1;
     }
 
     /**
      * スコアマイルストーンのチェック
-     * @param {number} score - 現在のスコア
-     * @returns {number|null} マイルストーン値
+     * @param score - 現在のスコア
+     * @returns マイルストーン値
      */
-    checkScoreMilestone(score) {
+    checkScoreMilestone(score: number): number | null {
         const milestones = [50, 100, 200, 500, 1000, 2000, 5000];
         const lastScore = this.lastKnownStates.get('score') || 0;
         
@@ -476,10 +666,10 @@ export class TutorialActions {
 
     /**
      * アクション統計の更新
-     * @param {string} actionType - アクションタイプ
-     * @param {Object} actionData - アクションデータ
+     * @param actionType - アクションタイプ
+     * @param actionData - アクションデータ
      */
-    updateActionStats(actionType, actionData) {
+    updateActionStats(actionType: string, actionData: ActionData): void {
         this.actionStats.totalActions++;
         
         const typeCount = this.actionStats.actionsByType.get(actionType) || 0;
@@ -499,9 +689,9 @@ export class TutorialActions {
 
     /**
      * ゲーム状態の更新
-     * @param {Object} stateData - 状態データ
+     * @param stateData - 状態データ
      */
-    updateGameState(stateData) {
+    updateGameState(stateData: Record<string, any>): void {
         for (const [key, value] of Object.entries(stateData)) {
             this.lastKnownStates.set(key, value);
         }
@@ -509,13 +699,13 @@ export class TutorialActions {
 
     /**
      * アクションリスナーのクリーンアップ
-     * @param {string} actionType - アクションタイプ
+     * @param actionType - アクションタイプ
      */
-    cleanupActionListeners(actionType) {
+    cleanupActionListeners(actionType: string): void {
         // アクション固有のクリーンアップ
         if (this.activeListeners.has(actionType)) {
             const listeners = this.activeListeners.get(actionType);
-            listeners.forEach(listener => {
+            listeners?.forEach(listener => {
                 if (listener.remove) {
                     listener.remove();
                 }
@@ -526,9 +716,9 @@ export class TutorialActions {
 
     /**
      * 統計情報の取得
-     * @returns {Object} 統計情報
+     * @returns 統計情報
      */
-    getActionStats() {
+    getActionStats(): ActionStatistics {
         return {
             ...this.actionStats,
             actionsByType: Object.fromEntries(this.actionStats.actionsByType),
@@ -541,7 +731,7 @@ export class TutorialActions {
     /**
      * リソースのクリーンアップ
      */
-    cleanup() {
+    cleanup(): void {
         try {
             // 状態監視の停止
             if (this.stateMonitoringInterval) {
@@ -568,21 +758,21 @@ export class TutorialActions {
     /**
      * システムの破棄
      */
-    destroy() {
+    destroy(): void {
         this.cleanup();
         this.loggingSystem.info('TutorialActions', 'Tutorial action system destroyed');
     }
 }
 
 // シングルトンインスタンス管理
-let tutorialActionsInstance = null;
+let tutorialActionsInstance: TutorialActions | null = null;
 
 /**
  * TutorialActionsのシングルトンインスタンスを取得
- * @param {Object} gameEngine - ゲームエンジン
- * @returns {TutorialActions} TutorialActionsインスタンス
+ * @param gameEngine - ゲームエンジン
+ * @returns TutorialActionsインスタンス
  */
-export function getTutorialActions(gameEngine) {
+export function getTutorialActions(gameEngine: GameEngine): TutorialActions {
     if (!tutorialActionsInstance) {
         tutorialActionsInstance = new TutorialActions(gameEngine);
     }
@@ -591,10 +781,10 @@ export function getTutorialActions(gameEngine) {
 
 /**
  * TutorialActionsインスタンスを再初期化
- * @param {Object} gameEngine - ゲームエンジン
- * @returns {TutorialActions} 新しいTutorialActionsインスタンス
+ * @param gameEngine - ゲームエンジン
+ * @returns 新しいTutorialActionsインスタンス
  */
-export function reinitializeTutorialActions(gameEngine) {
+export function reinitializeTutorialActions(gameEngine: GameEngine): TutorialActions {
     if (tutorialActionsInstance) {
         tutorialActionsInstance.destroy();
     }

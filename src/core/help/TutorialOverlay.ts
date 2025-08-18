@@ -16,33 +16,39 @@ import { TutorialProgressTracker } from './components/TutorialProgressTracker.js
 export interface GameEngine {
     eventBus?: any;
     state?: any;
-}
-
-export interface TutorialStep {
-    id: string;
-    title: string;
-    instructions: string;
-    targetElement?: string;
-    position?: string;
-    highlight?: string | object;
-    action?: string;
     [key: string]: any;
 }
 
-export interface Tutorial {
+export interface TutorialData {
     id: string;
-    title: string;
+    title?: string;
     description?: string;
     steps: TutorialStep[];
     [key: string]: any;
 }
 
+export interface TutorialStep {
+    id: string;
+    title?: string;
+    content?: string;
+    target?: string | HTMLElement;
+    highlightOptions?: HighlightOptions;
+    animation?: string;
+    [key: string]: any;
+}
+
+export interface HighlightOptions {
+    style?: string;
+    padding?: number;
+    borderRadius?: number;
+    color?: string;
+    [key: string]: any;
+}
+
 export interface TutorialOptions {
     userId?: string;
+    autoProgress?: boolean;
     showProgress?: boolean;
-    allowSkip?: boolean;
-    autoAdvance?: boolean;
-    theme?: string;
     [key: string]: any;
 }
 
@@ -75,19 +81,8 @@ export interface TutorialStyles {
 export interface TutorialState {
     isActive: boolean;
     isPaused: boolean;
-    currentTutorial: Tutorial | null;
+    currentTutorial: TutorialData | null;
     highlightedElement: HTMLElement | null;
-}
-
-export interface InteractionData {
-    type: string;
-    target?: HTMLElement;
-    timestamp: number;
-    [key: string]: any;
-}
-
-export interface ErrorHandler {
-    handleError(error: any, context?: string): void;
 }
 
 /**
@@ -95,7 +90,7 @@ export interface ErrorHandler {
  */
 export class TutorialOverlay extends ScenesBaseDialog {
     private loggingSystem: LoggingSystem;
-    private errorHandler: ErrorHandler;
+    private errorHandler: any;
     
     // 専用コンポーネント
     private stepManager: TutorialStepManager | null;
@@ -182,7 +177,7 @@ export class TutorialOverlay extends ScenesBaseDialog {
     /**
      * TutorialOverlayの初期化
      */
-    async initialize(options: TutorialOptions = {}): Promise<void> {
+    async initialize(options: any = {}): Promise<void> {
         try {
             await super.initialize(options);
             
@@ -232,10 +227,6 @@ export class TutorialOverlay extends ScenesBaseDialog {
      */
     setupComponentIntegration(): void {
         try {
-            if (!this.interactionHandler || !this.progressTracker) {
-                throw new Error('Components not initialized');
-            }
-
             // インタラクションハンドラーのコールバック設定
             this.interactionHandler.setCallback('onNext', () => this.nextStep());
             this.interactionHandler.setCallback('onPrevious', () => this.previousStep());
@@ -244,8 +235,8 @@ export class TutorialOverlay extends ScenesBaseDialog {
             this.interactionHandler.setCallback('onClose', () => this.closeTutorial());
             this.interactionHandler.setCallback('onHelp', () => this.showHelp());
             this.interactionHandler.setCallback('onResize', () => this.handleResize());
-            this.interactionHandler.setCallback('onInteraction', (data: InteractionData) => {
-                this.progressTracker!.recordUserAction(data.type, data);
+            this.interactionHandler.setCallback('onInteraction', (data) => {
+                this.progressTracker.recordUserAction(data.type, data);
             });
             
             // ジェスチャーコールバック設定
@@ -265,7 +256,7 @@ export class TutorialOverlay extends ScenesBaseDialog {
      * @param tutorial - チュートリアル定義
      * @param options - オプション設定
      */
-    async startTutorial(tutorial: Tutorial, options: TutorialOptions = {}): Promise<boolean> {
+    async startTutorial(tutorial: TutorialData, options: TutorialOptions = {}): Promise<boolean> {
         try {
             if (this.tutorialState.isActive) {
                 this.loggingSystem.warn('TutorialOverlay', 'Tutorial is already active');
@@ -276,15 +267,15 @@ export class TutorialOverlay extends ScenesBaseDialog {
             this.tutorialState.isActive = true;
             
             // 進捗追跡を開始
-            this.progressTracker!.startTracking(tutorial, options.userId);
+            this.progressTracker?.startTracking(tutorial, options.userId);
             
             // ステップマネージャーでチュートリアルを開始
-            if (!this.stepManager!.startTutorial(tutorial)) {
+            if (!this.stepManager?.startTutorial(tutorial)) {
                 throw new Error('Failed to start tutorial in step manager');
             }
             
             // インタラクションリスナーを開始
-            this.interactionHandler!.startListening();
+            this.interactionHandler?.startListening();
             
             // オーバーレイUIを表示
             this.createOverlayElements();
@@ -306,475 +297,599 @@ export class TutorialOverlay extends ScenesBaseDialog {
     /**
      * 次のステップに進む
      */
-    nextStep(): void {
+    async nextStep(): Promise<void> {
         try {
-            if (!this.stepManager || !this.tutorialState.isActive) {
-                return;
-            }
-
-            const moved = this.stepManager.nextStep();
-            if (moved) {
+            if (!this.tutorialState.isActive) return;
+            
+            const success = await this.stepManager?.nextStep();
+            if (success) {
+                this.progressTracker?.recordStepComplete((this.stepManager as any).stepIndex - 1);
                 this.displayCurrentStep();
-                this.progressTracker?.recordStepNavigation('next');
             }
+            
         } catch (error) {
+            this.progressTracker?.recordError(error, 'nextStep');
             this.errorHandler.handleError(error, 'TutorialOverlay.nextStep');
         }
     }
-
+    
     /**
      * 前のステップに戻る
      */
     previousStep(): void {
         try {
-            if (!this.stepManager || !this.tutorialState.isActive) {
-                return;
-            }
-
-            const moved = this.stepManager.previousStep();
-            if (moved) {
+            if (!this.tutorialState.isActive) return;
+            
+            const success = this.stepManager?.previousStep();
+            if (success) {
                 this.displayCurrentStep();
-                this.progressTracker?.recordStepNavigation('previous');
             }
+            
         } catch (error) {
+            this.progressTracker?.recordError(error, 'previousStep');
             this.errorHandler.handleError(error, 'TutorialOverlay.previousStep');
         }
     }
-
+    
     /**
-     * ステップをスキップ
+     * 現在のステップをスキップ
      */
-    skipStep(): void {
+    skipStep() {
         try {
-            if (!this.stepManager || !this.tutorialState.isActive) {
-                return;
+            if (!this.tutorialState.isActive) return;
+            
+            this.progressTracker.recordStepSkip(this.stepManager.stepIndex, 'user_choice');
+            const success = this.stepManager.skipCurrentStep();
+            
+            if (success) {
+                this.displayCurrentStep();
             }
-
-            this.progressTracker?.recordStepNavigation('skip');
-            this.nextStep();
+            
         } catch (error) {
+            this.progressTracker.recordError(error, 'skipStep');
             this.errorHandler.handleError(error, 'TutorialOverlay.skipStep');
         }
     }
-
+    
+    /**
+     * 現在のステップを表示
+     */
+    displayCurrentStep() {
+        try {
+            const currentStep = this.stepManager.currentStep;
+            if (!currentStep) return;
+            
+            // 進捗追跡にステップ開始を記録
+            this.progressTracker.recordStepStart(this.stepManager.stepIndex, currentStep);
+            
+            // 前のハイライトをクリア
+            this.clearHighlight();
+            
+            // ステップ内容を更新
+            this.updateInstructionPanel(currentStep);
+            this.updateProgressBar();
+            this.updateNavigationPanel();
+            
+            // 要素ハイライトを設定
+            if (currentStep.target) {
+                this.highlightElement(currentStep.target, currentStep.highlightOptions);
+            }
+            
+            // アニメーションを開始
+            this.startStepAnimation(currentStep);
+            
+            this.loggingSystem.debug('TutorialOverlay', `Step displayed: ${this.stepManager.stepIndex + 1}`);
+            
+        } catch (error) {
+            this.progressTracker.recordError(error, 'displayCurrentStep');
+            this.errorHandler.handleError(error, 'TutorialOverlay.displayCurrentStep');
+        }
+    }
+    
+    /**
+     * 要素をハイライト
+     * @param {string|HTMLElement} target - ハイライト対象
+     * @param {Object} options - ハイライトオプション
+     */
+    highlightElement(target, options = {}) {
+        try {
+            let element;
+            
+            if (typeof target === 'string') {
+                element = document.querySelector(target);
+            } else if (target instanceof HTMLElement) {
+                element = target;
+            }
+            
+            if (!element) {
+                this.loggingSystem.warn('TutorialOverlay', `Target element not found: ${target}`);
+                return;
+            }
+            
+            this.tutorialState.highlightedElement = element;
+            
+            // ハイライト要素を作成
+            this.createHighlightElement(element, options);
+            
+            // アニメーションを開始
+            const animationType = options.animation || 'pulse';
+            const intensity = options.intensity || 1.0;
+            this.animationController.startHighlightAnimation(this.highlightElement, animationType, intensity);
+            
+            // スポットライトエフェクト
+            if (options.spotlight !== false) {
+                this.createSpotlightEffect(element, options.spotlightRadius);
+            }
+            
+        } catch (error) {
+            this.progressTracker.recordError(error, 'highlightElement');
+            this.errorHandler.handleError(error, 'TutorialOverlay.highlightElement');
+        }
+    }
+    
+    /**
+     * ハイライト要素を作成
+     * @param {HTMLElement} targetElement - 対象要素
+     * @param {Object} options - オプション
+     */
+    createHighlightElement(targetElement, options = {}) {
+        const rect = targetElement.getBoundingClientRect();
+        const padding = options.padding || this.layout.highlightPadding;
+        
+        this.highlightElement = document.createElement('div');
+        this.highlightElement.className = 'tutorial-highlight';
+        
+        Object.assign(this.highlightElement.style, {
+            position: 'fixed',
+            left: `${rect.left - padding}px`,
+            top: `${rect.top - padding}px`,
+            width: `${rect.width + padding * 2}px`,
+            height: `${rect.height + padding * 2}px`,
+            border: this.styles.highlightBorder,
+            backgroundColor: this.styles.highlightBackground,
+            borderRadius: options.borderRadius || '4px',
+            pointerEvents: 'none',
+            zIndex: this.layout.overlayZIndex + 2,
+            transition: 'all 0.3s ease'
+        });
+        
+        document.body.appendChild(this.highlightElement);
+    }
+    
+    /**
+     * スポットライトエフェクトを作成
+     * @param {HTMLElement} targetElement - 対象要素
+     * @param {number} radius - スポットライト半径
+     */
+    createSpotlightEffect(targetElement, radius) {
+        if (this.spotlight) {
+            this.spotlight.remove();
+        }
+        
+        const rect = targetElement.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const spotlightRadius = radius || this.layout.spotlightRadius;
+        
+        this.spotlight = document.createElement('div');
+        this.spotlight.className = 'tutorial-spotlight';
+        
+        Object.assign(this.spotlight.style, {
+            position: 'fixed',
+            left: '0',
+            top: '0',
+            width: '100vw',
+            height: '100vh',
+            background: `radial-gradient(circle at ${centerX}px ${centerY}px, 
+                transparent ${spotlightRadius}px, 
+                rgba(0, 0, 0, 0.7) ${spotlightRadius + 50}px)`,
+            pointerEvents: 'none',
+            zIndex: this.layout.overlayZIndex + 1
+        });
+        
+        this.overlay.appendChild(this.spotlight);
+        
+        // アニメーション開始
+        this.animationController.startSpotlightAnimation(this.spotlight, spotlightRadius, true);
+    }
+    
+    /**
+     * ハイライトをクリア
+     */
+    clearHighlight() {
+        if (this.highlightElement) {
+            this.highlightElement.remove();
+            this.highlightElement = null;
+        }
+        
+        if (this.spotlight) {
+            this.spotlight.remove();
+            this.spotlight = null;
+        }
+        
+        this.tutorialState.highlightedElement = null;
+        this.animationController.stopAnimation('highlight');
+        this.animationController.stopAnimation('spotlight');
+    }
+    
+    /**
+     * オーバーレイ要素を作成
+     */
+    createOverlayElements() {
+        // メインオーバーレイ
+        this.overlay = document.createElement('div');
+        this.overlay.className = 'tutorial-overlay';
+        
+        Object.assign(this.overlay.style, {
+            position: 'fixed',
+            left: '0',
+            top: '0',
+            width: '100vw',
+            height: '100vh',
+            backgroundColor: this.styles.overlayBackground,
+            zIndex: this.layout.overlayZIndex,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+        });
+        
+        // インストラクションパネル
+        this.createInstructionPanel();
+        
+        // ナビゲーションパネル
+        this.createNavigationPanel();
+        
+        // プログレスバー
+        this.createProgressBar();
+        
+        document.body.appendChild(this.overlay);
+    }
+    
+    /**
+     * インストラクションパネルを作成
+     */
+    createInstructionPanel() {
+        this.instructionPanel = document.createElement('div');
+        this.instructionPanel.className = 'tutorial-instruction-panel';
+        
+        Object.assign(this.instructionPanel.style, {
+            maxWidth: `${this.layout.instructionPanelWidth}px`,
+            maxHeight: `${this.layout.instructionPanelMaxHeight}px`,
+            backgroundColor: this.styles.panelBackground,
+            border: this.styles.panelBorder,
+            borderRadius: this.styles.panelBorderRadius,
+            boxShadow: this.styles.panelBoxShadow,
+            padding: '24px',
+            overflow: 'auto'
+        });
+        
+        this.overlay.appendChild(this.instructionPanel);
+    }
+    
+    /**
+     * インストラクションパネルを更新
+     * @param {Object} step - ステップデータ
+     */
+    updateInstructionPanel(step) {
+        if (!this.instructionPanel || !step) return;
+        
+        this.instructionPanel.innerHTML = `
+            <h3 style="margin: 0 0 16px 0; color: #333; font-size: 20px;">${step.title || 'チュートリアル'}</h3>
+            <p style="margin: 0 0 16px 0; color: #666; line-height: 1.5;">${step.description || ''}</p>
+            ${step.content ? `<div style="margin: 16px 0;">${step.content}</div>` : ''}
+        `;
+    }
+    
+    /**
+     * プログレスバーを作成
+     */
+    createProgressBar() {
+        this.progressBar = document.createElement('div');
+        this.progressBar.className = 'tutorial-progress-bar';
+        
+        Object.assign(this.progressBar.style, {
+            position: 'fixed',
+            top: '0',
+            left: '0',
+            width: '100%',
+            height: `${this.layout.progressBarHeight}px`,
+            backgroundColor: this.styles.progressBarBackground,
+            zIndex: this.layout.overlayZIndex + 3
+        });
+        
+        const progressFill = document.createElement('div');
+        progressFill.className = 'tutorial-progress-fill';
+        
+        Object.assign(progressFill.style, {
+            height: '100%',
+            backgroundColor: this.styles.progressBarColor,
+            width: '0%',
+            transition: 'width 0.3s ease'
+        });
+        
+        this.progressBar.appendChild(progressFill);
+        document.body.appendChild(this.progressBar);
+    }
+    
+    /**
+     * プログレスバーを更新
+     */
+    updateProgressBar() {
+        if (!this.progressBar) return;
+        
+        const progress = this.stepManager.getProgress();
+        const progressFill = this.progressBar.querySelector('.tutorial-progress-fill');
+        
+        if (progressFill) {
+            progressFill.style.width = `${progress.progress * 100}%`;
+        }
+    }
+    
+    /**
+     * ナビゲーションパネルを作成
+     */
+    createNavigationPanel() {
+        this.navigationPanel = document.createElement('div');
+        this.navigationPanel.className = 'tutorial-navigation-panel';
+        
+        Object.assign(this.navigationPanel.style, {
+            position: 'fixed',
+            bottom: '24px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex',
+            gap: '12px',
+            padding: '12px 24px',
+            backgroundColor: this.styles.panelBackground,
+            border: this.styles.panelBorder,
+            borderRadius: this.styles.panelBorderRadius,
+            boxShadow: this.styles.panelBoxShadow,
+            zIndex: this.layout.overlayZIndex + 2
+        });
+        
+        document.body.appendChild(this.navigationPanel);
+    }
+    
+    /**
+     * ナビゲーションパネルを更新
+     */
+    updateNavigationPanel() {
+        if (!this.navigationPanel) return;
+        
+        const progress = this.stepManager.getProgress();
+        
+        this.navigationPanel.innerHTML = `
+            <button class="tutorial-nav-btn tutorial-prev-btn" 
+                    ${!progress.canGoPrevious ? 'disabled' : ''}>前へ</button>
+            <span class="tutorial-step-counter">${progress.currentStep} / ${progress.totalSteps}</span>
+            <button class="tutorial-nav-btn tutorial-next-btn">次へ</button>
+            ${progress.canSkip ? '<button class="tutorial-nav-btn tutorial-skip-btn">スキップ</button>' : ''}
+            <button class="tutorial-nav-btn tutorial-close-btn">閉じる</button>
+        `;
+        
+        // イベントリスナーを設定
+        this.setupNavigationEvents();
+    }
+    
+    /**
+     * ナビゲーションイベントを設定
+     */
+    setupNavigationEvents() {
+        const prevBtn = this.navigationPanel.querySelector('.tutorial-prev-btn');
+        const nextBtn = this.navigationPanel.querySelector('.tutorial-next-btn');
+        const skipBtn = this.navigationPanel.querySelector('.tutorial-skip-btn');
+        const closeBtn = this.navigationPanel.querySelector('.tutorial-close-btn');
+        
+        if (prevBtn) prevBtn.addEventListener('click', () => this.previousStep());
+        if (nextBtn) nextBtn.addEventListener('click', () => this.nextStep());
+        if (skipBtn) skipBtn.addEventListener('click', () => this.skipStep());
+        if (closeBtn) closeBtn.addEventListener('click', () => this.closeTutorial());
+    }
+    
+    /**
+     * ステップアニメーションを開始
+     * @param {Object} step - ステップデータ
+     */
+    startStepAnimation(step) {
+        if (!step.animation) return;
+        
+        const animationType = step.animation.type || 'slideIn';
+        const direction = step.animation.direction || 'bottom';
+        
+        this.animationController.startPanelAnimation(this.instructionPanel, animationType, direction);
+    }
+    
     /**
      * チュートリアルを完了
      */
-    completeTutorial(): void {
+    completeTutorial() {
         try {
-            this.progressTracker?.recordTutorialCompletion('completed');
+            this.progressTracker.recordTutorialEnd('completed');
             this.closeTutorial();
+            
             this.loggingSystem.info('TutorialOverlay', 'Tutorial completed successfully');
         } catch (error) {
             this.errorHandler.handleError(error, 'TutorialOverlay.completeTutorial');
         }
     }
-
+    
     /**
      * チュートリアルを閉じる
      */
-    closeTutorial(): void {
+    closeTutorial() {
         try {
+            if (!this.tutorialState.isActive) return;
+            
+            // 進捗追跡を終了
+            if (this.progressTracker) {
+                this.progressTracker.recordTutorialEnd('abandoned');
+            }
+            
+            // インタラクションリスナーを停止
+            if (this.interactionHandler) {
+                this.interactionHandler.stopListening();
+            }
+            
+            // アニメーションを停止
+            if (this.animationController) {
+                this.animationController.stopAllAnimations();
+            }
+            
+            // UI要素を削除
+            this.hideOverlay();
+            this.clearHighlight();
+            
+            // 状態をリセット
             this.tutorialState.isActive = false;
             this.tutorialState.currentTutorial = null;
-            
-            // UIを非表示
-            this.hideOverlay();
-            
-            // リスナーを停止
-            this.interactionHandler?.stopListening();
-            
-            // ハイライトをクリア
-            this.clearHighlight();
             
             this.loggingSystem.info('TutorialOverlay', 'Tutorial closed');
         } catch (error) {
             this.errorHandler.handleError(error, 'TutorialOverlay.closeTutorial');
         }
     }
-
+    
     /**
      * ヘルプを表示
      */
-    showHelp(): void {
+    showHelp() {
         try {
-            // ヘルプ表示の実装
-            this.loggingSystem.info('TutorialOverlay', 'Help requested');
+            this.progressTracker.recordHelpRequest('general_help');
+            
+            // ヘルプモーダルやツールチップを表示
+            this.loggingSystem.debug('TutorialOverlay', 'Help requested');
         } catch (error) {
             this.errorHandler.handleError(error, 'TutorialOverlay.showHelp');
         }
     }
-
+    
     /**
-     * リサイズ処理
+     * リサイズを処理
      */
-    handleResize(): void {
+    handleResize() {
         try {
-            if (this.tutorialState.isActive) {
-                this.repositionElements();
+            // ハイライトやスポットライトの位置を更新
+            if (this.tutorialState.highlightedElement) {
+                const currentStep = this.stepManager.currentStep;
+                this.clearHighlight();
+                this.highlightElement(this.tutorialState.highlightedElement, currentStep.highlightOptions);
             }
         } catch (error) {
             this.errorHandler.handleError(error, 'TutorialOverlay.handleResize');
         }
     }
-
-    /**
-     * 現在のステップを表示
-     */
-    private displayCurrentStep(): void {
-        try {
-            if (!this.stepManager || !this.tutorialState.isActive) {
-                return;
-            }
-
-            const currentStep = this.stepManager.getCurrentStep();
-            if (!currentStep) {
-                this.completeTutorial();
-                return;
-            }
-
-            // ステップ情報を更新
-            this.updateInstructionPanel(currentStep);
-            this.updateProgressBar();
-            
-            // ハイライトを更新
-            if (currentStep.targetElement) {
-                this.highlightElement(currentStep.targetElement);
-            }
-            
-            // アニメーションを再生
-            this.animationController?.playStepAnimation(currentStep);
-
-        } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialOverlay.displayCurrentStep');
-        }
-    }
-
-    /**
-     * オーバーレイ要素を作成
-     */
-    private createOverlayElements(): void {
-        try {
-            // メインオーバーレイ
-            this.overlay = this.createElement('div', 'tutorial-overlay');
-            
-            // 指示パネル
-            this.instructionPanel = this.createElement('div', 'tutorial-instruction-panel');
-            
-            // ナビゲーションパネル
-            this.navigationPanel = this.createElement('div', 'tutorial-navigation-panel');
-            
-            // プログレスバー
-            this.progressBar = this.createElement('div', 'tutorial-progress-bar');
-            
-            // DOM に追加
-            this.overlay.appendChild(this.instructionPanel);
-            this.overlay.appendChild(this.navigationPanel);
-            this.overlay.appendChild(this.progressBar);
-            document.body.appendChild(this.overlay);
-
-        } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialOverlay.createOverlayElements');
-        }
-    }
-
-    /**
-     * 要素を作成
-     */
-    private createElement(tag: string, className: string): HTMLElement {
-        const element = document.createElement(tag);
-        element.className = className;
-        return element;
-    }
-
+    
     /**
      * オーバーレイを表示
      */
-    private showOverlay(): void {
-        try {
-            if (this.overlay) {
-                this.overlay.style.display = 'block';
-                this.animationController?.fadeIn(this.overlay);
-            }
-        } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialOverlay.showOverlay');
+    showOverlay() {
+        if (this.overlay) {
+            this.overlay.style.display = 'flex';
+            this.animationController.startPanelAnimation(this.overlay, 'fadeIn');
         }
     }
-
+    
     /**
      * オーバーレイを非表示
      */
-    private hideOverlay(): void {
-        try {
-            if (this.overlay) {
-                this.animationController?.fadeOut(this.overlay, () => {
-                    if (this.overlay && this.overlay.parentNode) {
-                        this.overlay.parentNode.removeChild(this.overlay);
-                    }
-                });
-            }
-        } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialOverlay.hideOverlay');
+    hideOverlay() {
+        if (this.overlay) {
+            this.overlay.remove();
+            this.overlay = null;
+        }
+        
+        if (this.progressBar) {
+            this.progressBar.remove();
+            this.progressBar = null;
+        }
+        
+        if (this.navigationPanel) {
+            this.navigationPanel.remove();
+            this.navigationPanel = null;
         }
     }
-
-    /**
-     * 指示パネルを更新
-     */
-    private updateInstructionPanel(step: TutorialStep): void {
-        try {
-            if (this.instructionPanel) {
-                this.instructionPanel.innerHTML = `
-                    <h3>${step.title}</h3>
-                    <p>${step.instructions}</p>
-                `;
-            }
-        } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialOverlay.updateInstructionPanel');
-        }
-    }
-
-    /**
-     * プログレスバーを更新
-     */
-    private updateProgressBar(): void {
-        try {
-            if (this.progressBar && this.stepManager) {
-                const progress = this.stepManager.getProgress();
-                this.progressBar.style.width = `${progress}%`;
-            }
-        } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialOverlay.updateProgressBar');
-        }
-    }
-
-    /**
-     * 要素をハイライト
-     */
-    highlightElement(selector: string | object): void {
-        try {
-            this.clearHighlight();
-            
-            let targetElement: HTMLElement | null = null;
-            
-            if (typeof selector === 'string') {
-                targetElement = document.querySelector(selector) as HTMLElement;
-            } else if (selector instanceof HTMLElement) {
-                targetElement = selector;
-            }
-            
-            if (targetElement) {
-                this.tutorialState.highlightedElement = targetElement;
-                this.createHighlightOverlay(targetElement);
-            }
-        } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialOverlay.highlightElement');
-        }
-    }
-
-    /**
-     * ハイライトオーバーレイを作成
-     */
-    private createHighlightOverlay(element: HTMLElement): void {
-        try {
-            const rect = element.getBoundingClientRect();
-            
-            this.highlightElement = this.createElement('div', 'tutorial-highlight');
-            this.highlightElement.style.cssText = `
-                position: fixed;
-                top: ${rect.top - this.layout.highlightPadding}px;
-                left: ${rect.left - this.layout.highlightPadding}px;
-                width: ${rect.width + this.layout.highlightPadding * 2}px;
-                height: ${rect.height + this.layout.highlightPadding * 2}px;
-                border: ${this.styles.highlightBorder};
-                background: ${this.styles.highlightBackground};
-                z-index: ${this.layout.overlayZIndex + 1};
-                pointer-events: none;
-                border-radius: 4px;
-            `;
-            
-            document.body.appendChild(this.highlightElement);
-            this.animationController?.pulseAnimation(this.highlightElement);
-        } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialOverlay.createHighlightOverlay');
-        }
-    }
-
-    /**
-     * ハイライトをクリア
-     */
-    clearHighlight(): void {
-        try {
-            if (this.highlightElement && this.highlightElement.parentNode) {
-                this.highlightElement.parentNode.removeChild(this.highlightElement);
-                this.highlightElement = null;
-            }
-            this.tutorialState.highlightedElement = null;
-        } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialOverlay.clearHighlight');
-        }
-    }
-
-    /**
-     * 要素を再配置
-     */
-    private repositionElements(): void {
-        try {
-            if (this.tutorialState.highlightedElement) {
-                this.highlightElement(this.tutorialState.highlightedElement);
-            }
-        } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialOverlay.repositionElements');
-        }
-    }
-
+    
     /**
      * CSSスタイルを挿入
      */
-    private injectStyles(): void {
-        try {
-            const style = document.createElement('style');
-            style.textContent = `
-                .tutorial-overlay {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: ${this.styles.overlayBackground};
-                    z-index: ${this.layout.overlayZIndex};
-                    display: none;
-                }
-                
-                .tutorial-instruction-panel {
-                    position: absolute;
-                    top: 20px;
-                    right: 20px;
-                    width: ${this.layout.instructionPanelWidth}px;
-                    max-height: ${this.layout.instructionPanelMaxHeight}px;
-                    background: ${this.styles.panelBackground};
-                    border: ${this.styles.panelBorder};
-                    border-radius: ${this.styles.panelBorderRadius};
-                    box-shadow: ${this.styles.panelBoxShadow};
-                    padding: 20px;
-                    overflow-y: auto;
-                }
-                
-                .tutorial-navigation-panel {
-                    position: absolute;
-                    bottom: 20px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    height: ${this.layout.navigationHeight}px;
-                    background: ${this.styles.panelBackground};
-                    border: ${this.styles.panelBorder};
-                    border-radius: ${this.styles.panelBorderRadius};
-                    box-shadow: ${this.styles.panelBoxShadow};
-                    padding: 10px 20px;
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                }
-                
-                .tutorial-progress-bar {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    height: ${this.layout.progressBarHeight}px;
-                    background: ${this.styles.progressBarColor};
-                    transition: width 0.3s ease;
-                    z-index: ${this.layout.overlayZIndex + 1};
-                }
-            `;
+    injectStyles() {
+        if (document.getElementById('tutorial-overlay-styles')) return;
+        
+        const style = document.createElement('style');
+        style.id = 'tutorial-overlay-styles';
+        style.textContent = `
+            .tutorial-nav-btn {
+                padding: 8px 16px;
+                border: none;
+                border-radius: 6px;
+                background: #007bff;
+                color: white;
+                cursor: pointer;
+                font-size: 14px;
+                transition: background 0.2s ease;
+            }
             
-            document.head.appendChild(style);
-        } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialOverlay.injectStyles');
-        }
-    }
-
-    /**
-     * チュートリアルを一時停止
-     */
-    pause(): void {
-        try {
-            this.tutorialState.isPaused = true;
-            if (this.overlay) {
-                this.overlay.style.display = 'none';
+            .tutorial-nav-btn:hover:not(:disabled) {
+                background: #0056b3;
             }
-            this.loggingSystem.info('TutorialOverlay', 'Tutorial paused');
-        } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialOverlay.pause');
-        }
-    }
-
-    /**
-     * チュートリアルを再開
-     */
-    resume(): void {
-        try {
-            this.tutorialState.isPaused = false;
-            if (this.overlay) {
-                this.overlay.style.display = 'block';
+            
+            .tutorial-nav-btn:disabled {
+                background: #ccc;
+                cursor: not-allowed;
             }
-            this.loggingSystem.info('TutorialOverlay', 'Tutorial resumed');
-        } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialOverlay.resume');
-        }
-    }
-
-    /**
-     * チュートリアルを表示
-     */
-    async show(tutorial: Tutorial): Promise<void> {
-        try {
-            await this.startTutorial(tutorial);
-        } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialOverlay.show');
-        }
-    }
-
-    /**
-     * チュートリアルを非表示
-     */
-    hide(): void {
-        try {
-            this.closeTutorial();
-        } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialOverlay.hide');
-        }
-    }
-
-    /**
-     * ステップを表示
-     */
-    showStep(step: TutorialStep): void {
-        try {
-            this.updateInstructionPanel(step);
-            if (step.targetElement) {
-                this.highlightElement(step.targetElement);
+            
+            .tutorial-step-counter {
+                display: flex;
+                align-items: center;
+                font-size: 14px;
+                color: #666;
+                margin: 0 8px;
             }
-        } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialOverlay.showStep');
-        }
+            
+            .tutorial-highlight {
+                animation: tutorialPulse 2s infinite;
+            }
+            
+            @keyframes tutorialPulse {
+                0%, 100% { opacity: 0.8; }
+                50% { opacity: 1; }
+            }
+        `;
+        
+        document.head.appendChild(style);
     }
-
+    
     /**
-     * リソースのクリーンアップ
+     * 現在の進捗情報を取得
      */
-    destroy(): void {
+    getProgress() {
+        return this.stepManager ? this.stepManager.getProgress() : null;
+    }
+    
+    /**
+     * チュートリアルオーバーレイを破棄
+     */
+    dispose() {
         try {
             this.closeTutorial();
             
-            // コンポーネントのクリーンアップ
-            this.stepManager?.destroy?.();
-            this.animationController?.destroy?.();
-            this.interactionHandler?.destroy?.();
-            this.progressTracker?.destroy?.();
+            // 専用コンポーネントを破棄
+            this.animationController?.dispose();
+            this.interactionHandler?.dispose();
+            this.progressTracker?.dispose();
+            this.stepManager?.reset();
             
-            this.loggingSystem.info('TutorialOverlay', 'Tutorial overlay destroyed');
+            // スタイルを削除
+            const style = document.getElementById('tutorial-overlay-styles');
+            if (style) {
+                style.remove();
+            }
+            
+            super.dispose();
+            
+            this.loggingSystem.info('TutorialOverlay', 'Tutorial overlay disposed');
         } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialOverlay.destroy');
+            this.errorHandler.handleError(error, 'TutorialOverlay.dispose');
         }
     }
 }
@@ -786,7 +901,7 @@ let tutorialOverlayInstance: TutorialOverlay | null = null;
  * TutorialOverlayのシングルトンインスタンスを取得
  * @param gameEngine - ゲームエンジン
  * @param eventBus - イベントバス
- * @param state - 状態
+ * @param state - 状態オブジェクト
  * @returns TutorialOverlayインスタンス
  */
 export function getTutorialOverlay(gameEngine: GameEngine, eventBus?: any, state?: any): TutorialOverlay {
@@ -800,12 +915,12 @@ export function getTutorialOverlay(gameEngine: GameEngine, eventBus?: any, state
  * TutorialOverlayインスタンスを再初期化
  * @param gameEngine - ゲームエンジン
  * @param eventBus - イベントバス
- * @param state - 状態
+ * @param state - 状態オブジェクト
  * @returns 新しいTutorialOverlayインスタンス
  */
 export function reinitializeTutorialOverlay(gameEngine: GameEngine, eventBus?: any, state?: any): TutorialOverlay {
     if (tutorialOverlayInstance) {
-        tutorialOverlayInstance.destroy();
+        tutorialOverlayInstance.dispose();
     }
     tutorialOverlayInstance = new TutorialOverlay(gameEngine, eventBus, state);
     return tutorialOverlayInstance;
