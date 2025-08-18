@@ -956,7 +956,7 @@ TypeScript移行作業中に「将来実装する」「現時点では未実装�
 
 #### 現在の変換状況
 - **src/core直下**: ✅ 0個のJSファイル（変換済み）
-- **src/coreサブディレクトリ**: 
+- **src/coreサブディレクトリ**: ✅ 全サブディレクトリ0個のJSファイル（完全変換済み）
   - ✅ src/core/pwa: 0個のJSファイル（変換済み）
   - ✅ src/core/events: 0個のJSファイル（変換済み）
   - ✅ src/core/i18n: 0個のJSファイル（変換済み）
@@ -968,6 +968,7 @@ TypeScript移行作業中に「将来実装する」「現時点では未実装�
     - ✅ testing: 0個のJSファイル（変換済み）
 - **src/scenes**: ✅ 0個のJSファイル（完全変換済み）
 - **src/utils**: ✅ 0個のJSファイル（変換済み）
+- **Task 10**: ✅ 完了（tasks.md更新済み）
 
 #### TypeScriptエラー状況
 - **開始時**: 216個のTypeScriptエラー
