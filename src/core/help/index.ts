@@ -21,6 +21,13 @@ export { ContentValidation, getContentValidation, reinitializeContentValidation 
 export { SearchEngine, getSearchEngine, reinitializeSearchEngine } from './components/SearchEngine.js';
 export { MultilingualContentManager, getMultilingualContentManager, reinitializeMultilingualContentManager } from './MultilingualContentManager.js';
 
+// Tutorial Components
+export { TutorialInteractionHandler } from './components/TutorialInteractionHandler.js';
+export { TutorialProgressTracker } from './components/TutorialProgressTracker.js';
+export { TutorialAnimationController } from './components/TutorialAnimationController.js';
+export { HelpPerformanceMonitor } from './components/HelpPerformanceMonitor.js';
+export { TutorialStepManager } from './components/TutorialStepManager.js';
+
 // 型定義
 export interface GameEngine {
     eventBus?: any;

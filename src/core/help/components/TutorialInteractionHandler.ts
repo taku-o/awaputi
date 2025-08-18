@@ -1,5 +1,5 @@
 /**
- * TutorialInteractionHandler.js
+ * TutorialInteractionHandler.ts
  * チュートリアルインタラクション処理システム
  * TutorialOverlayから分離されたユーザー操作処理機能
  */
@@ -7,7 +7,101 @@
 import { getErrorHandler } from '../../../utils/ErrorHandler.js';
 import { LoggingSystem } from '../../LoggingSystem.js';
 
+// 型定義
+export interface Position {
+    x: number;
+    y: number;
+}
+
+export interface InteractionState {
+    isListening: boolean;
+    isDragging: boolean;
+    isScrolling: boolean;
+    lastTouchPosition: Position;
+    touchStartTime: number;
+    gestureRecognition: {
+        enabled: boolean;
+        threshold: number;
+        timeWindow: number;
+    };
+}
+
+export interface KeyboardNavigation {
+    enabled: boolean;
+    currentFocusIndex: number;
+    focusableElements: HTMLElement[];
+    shortcuts: {
+        next: string[];
+        previous: string[];
+        skip: string[];
+        complete: string[];
+        help: string[];
+    };
+}
+
+export interface AccessibilityConfig {
+    enabled: boolean;
+    highContrast: boolean;
+    largeText: boolean;
+    screenReaderMode: boolean;
+    reducedMotion: boolean;
+    keyboardNavigation: boolean;
+    focusIndicators: boolean;
+    announcements: boolean;
+    textSizeMultiplier: number;
+}
+
+export interface GestureConfig {
+    callback: (() => void) | null;
+    enabled: boolean;
+    duration?: number;
+}
+
+export interface Gestures {
+    swipeLeft: GestureConfig;
+    swipeRight: GestureConfig;
+    swipeUp: GestureConfig;
+    swipeDown: GestureConfig;
+    tap: GestureConfig;
+    doubleTap: GestureConfig;
+    longPress: GestureConfig;
+}
+
+export interface PointerState {
+    isDown: boolean;
+    startPosition: Position;
+    currentPosition: Position;
+    startTime: number;
+    lastTapTime: number;
+    tapCount: number;
+}
+
+export interface InteractionCallbacks {
+    onNext: (() => void) | null;
+    onPrevious: (() => void) | null;
+    onSkip: (() => void) | null;
+    onComplete: (() => void) | null;
+    onClose: (() => void) | null;
+    onHelp: (() => void) | null;
+    onResize: (() => void) | null;
+    onInteraction: ((data: any) => void) | null;
+}
+
+export type BoundHandlers = {
+    [K in keyof DocumentEventMap]?: (event: DocumentEventMap[K]) => void;
+};
+
 export class TutorialInteractionHandler {
+    private errorHandler: any;
+    private loggingSystem: LoggingSystem;
+    private boundHandlers: BoundHandlers;
+    private interactionState: InteractionState;
+    private keyboardNavigation: KeyboardNavigation;
+    private accessibility: AccessibilityConfig;
+    private gestures: Gestures;
+    private pointerState: PointerState;
+    private callbacks: InteractionCallbacks;
+
     constructor() {
         this.errorHandler = getErrorHandler();
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
@@ -104,7 +198,7 @@ export class TutorialInteractionHandler {
     /**
      * インタラクションハンドラーを初期化
      */
-    initialize() {
+    initialize(): void {
         try {
             this.setupAccessibility();
             this.loggingSystem.debug('TutorialInteractionHandler', 'Interaction handler initialized');
@@ -116,18 +210,18 @@ export class TutorialInteractionHandler {
     /**
      * イベントリスナーを開始
      */
-    startListening() {
+    startListening(): void {
         try {
             if (this.interactionState.isListening) return;
             
-            document.addEventListener('keydown', this.boundHandlers.keydown);
-            window.addEventListener('resize', this.boundHandlers.resize);
-            document.addEventListener('click', this.boundHandlers.click);
-            document.addEventListener('touchstart', this.boundHandlers.touchstart, { passive: false });
-            document.addEventListener('touchmove', this.boundHandlers.touchmove, { passive: false });
-            document.addEventListener('touchend', this.boundHandlers.touchend);
-            document.addEventListener('wheel', this.boundHandlers.wheel, { passive: false });
-            document.addEventListener('contextmenu', this.boundHandlers.contextmenu);
+            document.addEventListener('keydown', this.boundHandlers.keydown!);
+            window.addEventListener('resize', this.boundHandlers.resize!);
+            document.addEventListener('click', this.boundHandlers.click!);
+            document.addEventListener('touchstart', this.boundHandlers.touchstart!, { passive: false });
+            document.addEventListener('touchmove', this.boundHandlers.touchmove!, { passive: false });
+            document.addEventListener('touchend', this.boundHandlers.touchend!);
+            document.addEventListener('wheel', this.boundHandlers.wheel!, { passive: false });
+            document.addEventListener('contextmenu', this.boundHandlers.contextmenu!);
             
             this.interactionState.isListening = true;
             this.loggingSystem.debug('TutorialInteractionHandler', 'Event listeners started');
@@ -139,7 +233,7 @@ export class TutorialInteractionHandler {
     /**
      * イベントリスナーを停止
      */
-    stopListening() {
+    stopListening(): void {
         try {
             if (!this.interactionState.isListening) return;
             
@@ -493,21 +587,21 @@ export class TutorialInteractionHandler {
     
     /**
      * コールバックを設定
-     * @param {string} callbackName - コールバック名
-     * @param {Function} callback - コールバック関数
+     * @param callbackName - コールバック名
+     * @param callback - コールバック関数
      */
-    setCallback(callbackName, callback) {
+    setCallback(callbackName: keyof InteractionCallbacks, callback: (() => void) | ((data: any) => void) | null): void {
         if (this.callbacks.hasOwnProperty(callbackName)) {
-            this.callbacks[callbackName] = callback;
+            this.callbacks[callbackName] = callback as any;
         }
     }
     
     /**
      * ジェスチャーコールバックを設定
-     * @param {string} gestureType - ジェスチャータイプ
-     * @param {Function} callback - コールバック関数
+     * @param gestureType - ジェスチャータイプ
+     * @param callback - コールバック関数
      */
-    setGestureCallback(gestureType, callback) {
+    setGestureCallback(gestureType: keyof Gestures, callback: (() => void) | null): void {
         if (this.gestures[gestureType]) {
             this.gestures[gestureType].callback = callback;
         }
@@ -515,11 +609,11 @@ export class TutorialInteractionHandler {
     
     /**
      * キーコンボを取得
-     * @param {KeyboardEvent} event - キーボードイベント
-     * @returns {string} キーコンボ文字列
+     * @param event - キーボードイベント
+     * @returns キーコンボ文字列
      */
-    getKeyCombo(event) {
-        const parts = [];
+    getKeyCombo(event: KeyboardEvent): string {
+        const parts: string[] = [];
         if (event.ctrlKey) parts.push('Ctrl');
         if (event.altKey) parts.push('Alt');
         if (event.shiftKey) parts.push('Shift');
@@ -530,12 +624,12 @@ export class TutorialInteractionHandler {
     
     /**
      * ショートカットマッチングを確認
-     * @param {string} keyCombo - キーコンボ
-     * @param {Array} shortcuts - ショートカット配列
-     * @returns {boolean} マッチするかどうか
+     * @param keyCombo - キーコンボ
+     * @param shortcuts - ショートカット配列
+     * @returns マッチするかどうか
      */
-    isShortcutMatch(keyCombo, shortcuts) {
-        return shortcuts.includes(keyCombo) || shortcuts.includes(keyCombo.split('+').pop());
+    isShortcutMatch(keyCombo: string, shortcuts: string[]): boolean {
+        return shortcuts.includes(keyCombo) || shortcuts.includes(keyCombo.split('+').pop() || '');
     }
     
     /**

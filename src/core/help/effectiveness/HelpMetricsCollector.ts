@@ -2,8 +2,225 @@
  * HelpMetricsCollector
  * 使用メトリクス収集、エンゲージメントデータ、セッション管理を担当
  */
+
+// 型定義
+export interface HelpEffectivenessAnalyzer {
+    gameEngine: GameEngine;
+    loggingSystem: LoggingSystem;
+    helpAnalytics?: HelpAnalytics;
+    helpFeedbackSystem?: HelpFeedbackSystem;
+}
+
+export interface GameEngine {
+    [key: string]: any;
+}
+
+export interface LoggingSystem {
+    debug(component: string, message: string, data?: any): void;
+    error(component: string, message: string, error?: any): void;
+    warn(component: string, message: string): void;
+}
+
+export interface HelpAnalytics {
+    sessions: Map<string, AnalyticsSession>;
+    generateReport(type: string, options?: any): AnalyticsReport;
+}
+
+export interface HelpFeedbackSystem {
+    feedbacks: Map<string, FeedbackData>;
+    getFeedbackStatistics(): FeedbackStatistics;
+}
+
+export interface AnalyticsSession {
+    pageViews?: PageView[];
+    searchQueries?: SearchQuery[];
+    startTime?: number;
+    duration?: number;
+    entryPoint?: string;
+    [key: string]: any;
+}
+
+export interface PageView {
+    timeSpent?: number;
+    [key: string]: any;
+}
+
+export interface SearchQuery {
+    resultCount: number;
+    [key: string]: any;
+}
+
+export interface AnalyticsReport {
+    data?: AnalyticsData;
+    error?: any;
+}
+
+export interface AnalyticsData {
+    overview?: AnalyticsOverview;
+    topContent?: TopContent;
+}
+
+export interface AnalyticsOverview {
+    totalHelpSessions?: number;
+    uniqueUsers?: number;
+    averageSessionDuration?: number;
+    totalPageViews?: number;
+}
+
+export interface TopContent {
+    categories?: any[];
+    topics?: any[];
+    searchQueries?: any[];
+}
+
+export interface FeedbackData {
+    helpful: boolean | null;
+    [key: string]: any;
+}
+
+export interface FeedbackStatistics {
+    averageRating?: number;
+    helpfulPercentage?: number;
+    totalFeedbacks?: number;
+    ratingDistribution?: Record<string, number>;
+    topRatedContent?: any[];
+    lowRatedContent?: any[];
+    commonCategories?: Map<string, number>;
+}
+
+export interface CollectorConfig {
+    minDataThreshold: number;
+    dataCollectionInterval: number;
+}
+
+export interface CollectionState {
+    isActive: boolean;
+    lastCollectionTime: number;
+    collectionQueue: any[];
+}
+
+export interface RawData {
+    analytics: AnalyticsReport | null;
+    feedback: FeedbackStatistics | null;
+    sessions: AnalyticsSession[];
+    interactions: [string, FeedbackData][];
+    timestamp: number;
+}
+
+export interface UsageAnalysis {
+    summary: UsageSummary;
+    details: UsageDetails;
+    insights: Insight[];
+}
+
+export interface UsageSummary {
+    totalSessions: number;
+    uniqueUsers: number;
+    averageSessionDuration: number;
+    pageViewsPerSession: number;
+    searchUsageRate: number;
+    returnUserRate: number;
+}
+
+export interface UsageDetails {
+    topCategories: any[];
+    topTopics: any[];
+    searchQueries: any[];
+    sessionDistribution: SessionDistribution;
+    usagePatterns: UsagePatterns;
+}
+
+export interface EngagementAnalysis {
+    summary: EngagementSummary;
+    details: EngagementDetails;
+    insights: Insight[];
+}
+
+export interface EngagementSummary {
+    averageTimePerTopic: number;
+    interactionRate: number;
+    searchSuccessRate: number;
+    navigationEfficiency: number;
+    contentCompletionRate: number;
+}
+
+export interface EngagementDetails {
+    topicEngagement: Record<string, any>;
+    searchBehavior: Record<string, any>;
+    navigationPatterns: Record<string, any>;
+    dropoffPoints: any[];
+    peakUsageTimes: Record<string, any>;
+}
+
+export interface SatisfactionAnalysis {
+    summary: SatisfactionSummary;
+    details: SatisfactionDetails;
+    insights: Insight[];
+}
+
+export interface SatisfactionSummary {
+    averageRating: number;
+    helpfulnessRate: number;
+    totalFeedbacks: number;
+    ratingDistribution: Record<string, number>;
+    sentimentScore: number;
+}
+
+export interface SatisfactionDetails {
+    topRatedContent: any[];
+    lowRatedContent: any[];
+    feedbackCategories: Map<string, number>;
+    improvementAreas: any[];
+    userSentiments: Record<string, any>;
+}
+
+export interface SessionDistribution {
+    byDuration: {
+        short: number;
+        medium: number;
+        long: number;
+    };
+    byPageViews: {
+        few: number;
+        moderate: number;
+        many: number;
+    };
+    byTime: Map<number, number>;
+}
+
+export interface UsagePatterns {
+    peakHours: Map<number, number>;
+    commonJourneys: Map<string, number>;
+    entryPoints: Map<string, number>;
+}
+
+export interface Insight {
+    type: string;
+    message: string;
+    severity: 'low' | 'medium' | 'high';
+}
+
+export interface DataVolume {
+    sessions: number;
+    feedback: number;
+    analytics_events: number;
+}
+
+export interface CollectionStats {
+    isActive: boolean;
+    lastCollectionTime: number;
+    queueSize: number;
+    config: CollectorConfig;
+}
+
 export class HelpMetricsCollector {
-    constructor(helpEffectivenessAnalyzer) {
+    private helpEffectivenessAnalyzer: HelpEffectivenessAnalyzer;
+    private gameEngine: GameEngine;
+    private loggingSystem: LoggingSystem;
+    private config: CollectorConfig;
+    private collectionState: CollectionState;
+
+    constructor(helpEffectivenessAnalyzer: HelpEffectivenessAnalyzer) {
         this.helpEffectivenessAnalyzer = helpEffectivenessAnalyzer;
         this.gameEngine = helpEffectivenessAnalyzer.gameEngine;
         this.loggingSystem = helpEffectivenessAnalyzer.loggingSystem;
@@ -26,11 +243,11 @@ export class HelpMetricsCollector {
     
     /**
      * 生データの収集
-     * @param {string} period - 分析期間
-     * @returns {Object} 収集されたデータ
+     * @param period - 分析期間
+     * @returns 収集されたデータ
      */
-    async collectRawData(period) {
-        const rawData = {
+    async collectRawData(period: string): Promise<RawData> {
+        const rawData: RawData = {
             analytics: null,
             feedback: null,
             sessions: [],
@@ -62,14 +279,14 @@ export class HelpMetricsCollector {
     
     /**
      * 使用率指標の分析
-     * @param {Object} rawData - 生データ
-     * @returns {Object} 使用率分析結果
+     * @param rawData - 生データ
+     * @returns 使用率分析結果
      */
-    analyzeUsageMetrics(rawData) {
+    analyzeUsageMetrics(rawData: RawData): UsageAnalysis {
         try {
-            const analysis = {
-                summary: {},
-                details: {},
+            const analysis: UsageAnalysis = {
+                summary: {} as UsageSummary,
+                details: {} as UsageDetails,
                 insights: []
             };
             
@@ -103,20 +320,20 @@ export class HelpMetricsCollector {
             
         } catch (error) {
             this.loggingSystem.error('HelpMetricsCollector', 'Failed to analyze usage metrics', error);
-            return { summary: {}, details: {}, insights: [] };
+            return { summary: {} as UsageSummary, details: {} as UsageDetails, insights: [] };
         }
     }
     
     /**
      * エンゲージメント指標の分析
-     * @param {Object} rawData - 生データ
-     * @returns {Object} エンゲージメント分析結果
+     * @param rawData - 生データ
+     * @returns エンゲージメント分析結果
      */
-    analyzeEngagementMetrics(rawData) {
+    analyzeEngagementMetrics(rawData: RawData): EngagementAnalysis {
         try {
-            const analysis = {
-                summary: {},
-                details: {},
+            const analysis: EngagementAnalysis = {
+                summary: {} as EngagementSummary,
+                details: {} as EngagementDetails,
                 insights: []
             };
             
@@ -145,20 +362,20 @@ export class HelpMetricsCollector {
             
         } catch (error) {
             this.loggingSystem.error('HelpMetricsCollector', 'Failed to analyze engagement metrics', error);
-            return { summary: {}, details: {}, insights: [] };
+            return { summary: {} as EngagementSummary, details: {} as EngagementDetails, insights: [] };
         }
     }
     
     /**
      * 満足度指標の分析
-     * @param {Object} rawData - 生データ
-     * @returns {Object} 満足度分析結果
+     * @param rawData - 生データ
+     * @returns 満足度分析結果
      */
-    analyzeSatisfactionMetrics(rawData) {
+    analyzeSatisfactionMetrics(rawData: RawData): SatisfactionAnalysis {
         try {
-            const analysis = {
-                summary: {},
-                details: {},
+            const analysis: SatisfactionAnalysis = {
+                summary: {} as SatisfactionSummary,
+                details: {} as SatisfactionDetails,
                 insights: []
             };
             
@@ -189,16 +406,16 @@ export class HelpMetricsCollector {
             
         } catch (error) {
             this.loggingSystem.error('HelpMetricsCollector', 'Failed to analyze satisfaction metrics', error);
-            return { summary: {}, details: {}, insights: [] };
+            return { summary: {} as SatisfactionSummary, details: {} as SatisfactionDetails, insights: [] };
         }
     }
     
     /**
      * データ品質の検証
-     * @param {Object} rawData - 生データ
-     * @returns {boolean} データ品質が十分かどうか
+     * @param rawData - 生データ
+     * @returns データ品質が十分かどうか
      */
-    validateDataQuality(rawData) {
+    validateDataQuality(rawData: RawData): boolean {
         try {
             // 最小データ数の確認
             const sessionCount = rawData.sessions ? rawData.sessions.length : 0;
@@ -226,10 +443,10 @@ export class HelpMetricsCollector {
     
     /**
      * データ品質の評価
-     * @param {Object} rawData - 生データ
-     * @returns {number} データ品質スコア (0-1)
+     * @param rawData - 生データ
+     * @returns データ品質スコア (0-1)
      */
-    assessDataQuality(rawData) {
+    assessDataQuality(rawData: RawData): number {
         const sessionCount = rawData.sessions ? rawData.sessions.length : 0;
         const feedbackCount = rawData.interactions ? rawData.interactions.length : 0;
         
@@ -249,10 +466,10 @@ export class HelpMetricsCollector {
     
     /**
      * データボリュームの計算
-     * @param {Object} rawData - 生データ
-     * @returns {Object} データボリューム情報
+     * @param rawData - 生データ
+     * @returns データボリューム情報
      */
-    calculateDataVolume(rawData) {
+    calculateDataVolume(rawData: RawData): DataVolume {
         return {
             sessions: rawData.sessions ? rawData.sessions.length : 0,
             feedback: rawData.interactions ? rawData.interactions.length : 0,
@@ -263,10 +480,10 @@ export class HelpMetricsCollector {
     
     /**
      * 信頼度レベルの計算
-     * @param {Object} rawData - 生データ
-     * @returns {number} 信頼度 (0-1)
+     * @param rawData - 生データ
+     * @returns 信頼度 (0-1)
      */
-    calculateConfidenceLevel(rawData) {
+    calculateConfidenceLevel(rawData: RawData): number {
         const dataQuality = this.assessDataQuality(rawData);
         const dataVolume = this.calculateDataVolume(rawData);
         
@@ -286,7 +503,7 @@ export class HelpMetricsCollector {
     
     // ========== 計算ヘルパーメソッド ==========
     
-    calculatePageViewsPerSession(sessions) {
+    private calculatePageViewsPerSession(sessions: AnalyticsSession[]): number {
         if (!sessions || sessions.length === 0) return 0;
         
         const totalPageViews = sessions.reduce((sum, session) => {
@@ -296,7 +513,7 @@ export class HelpMetricsCollector {
         return totalPageViews / sessions.length;
     }
     
-    calculateSearchUsageRate(sessions) {
+    private calculateSearchUsageRate(sessions: AnalyticsSession[]): number {
         if (!sessions || sessions.length === 0) return 0;
         
         const sessionsWithSearch = sessions.filter(session => 
@@ -306,21 +523,22 @@ export class HelpMetricsCollector {
         return sessionsWithSearch / sessions.length;
     }
     
-    calculateReturnUserRate(sessions) {
+    private calculateReturnUserRate(sessions: AnalyticsSession[]): number {
         if (!sessions || sessions.length === 0) return 0;
         
         // 簡単な実装: 同じentryPointを持つセッションの比率で推定
-        const entryPoints = new Map();
+        const entryPoints = new Map<string, number>();
         sessions.forEach(session => {
-            const count = entryPoints.get(session.entryPoint) || 0;
-            entryPoints.set(session.entryPoint, count + 1);
+            const entryPoint = session.entryPoint || 'unknown';
+            const count = entryPoints.get(entryPoint) || 0;
+            entryPoints.set(entryPoint, count + 1);
         });
         
         const returningSessions = Array.from(entryPoints.values()).filter(count => count > 1).length;
         return returningSessions / entryPoints.size;
     }
     
-    calculateAverageTimePerTopic(sessions) {
+    private calculateAverageTimePerTopic(sessions: AnalyticsSession[]): number {
         if (!sessions || sessions.length === 0) return 0;
         
         let totalTime = 0;
@@ -340,14 +558,14 @@ export class HelpMetricsCollector {
         return topicCount > 0 ? totalTime / topicCount / 1000 : 0; // 秒単位
     }
     
-    calculateInteractionRate(sessions, interactions) {
+    private calculateInteractionRate(sessions: AnalyticsSession[], interactions: [string, FeedbackData][]): number {
         if (!sessions || sessions.length === 0) return 0;
         
         const interactionCount = interactions ? interactions.length : 0;
         return interactionCount / sessions.length;
     }
     
-    calculateSearchSuccessRate(sessions) {
+    private calculateSearchSuccessRate(sessions: AnalyticsSession[]): number {
         if (!sessions || sessions.length === 0) return 0;
         
         let totalSearches = 0;
@@ -367,7 +585,7 @@ export class HelpMetricsCollector {
         return totalSearches > 0 ? successfulSearches / totalSearches : 0;
     }
     
-    calculateNavigationEfficiency(sessions) {
+    private calculateNavigationEfficiency(sessions: AnalyticsSession[]): number {
         // ナビゲーション効率の簡単な実装
         if (!sessions || sessions.length === 0) return 0;
         
@@ -387,7 +605,7 @@ export class HelpMetricsCollector {
         return totalNavigations > 0 ? efficientNavigations / totalNavigations : 0;
     }
     
-    calculateContentCompletionRate(sessions) {
+    private calculateContentCompletionRate(sessions: AnalyticsSession[]): number {
         // コンテンツ完了率の推定
         if (!sessions || sessions.length === 0) return 0;
         
@@ -402,7 +620,7 @@ export class HelpMetricsCollector {
         return completedSessions / sessions.length;
     }
     
-    calculateSentimentScore(interactions) {
+    private calculateSentimentScore(interactions: [string, FeedbackData][]): number {
         if (!interactions || interactions.length === 0) return 0.5;
         
         let positiveCount = 0;
@@ -422,11 +640,11 @@ export class HelpMetricsCollector {
     
     // ========== 分析メソッド ==========
     
-    analyzeSessionDistribution(sessions) {
-        const distribution = {
+    private analyzeSessionDistribution(sessions: AnalyticsSession[]): SessionDistribution {
+        const distribution: SessionDistribution = {
             byDuration: { short: 0, medium: 0, long: 0 },
             byPageViews: { few: 0, moderate: 0, many: 0 },
-            byTime: new Map()
+            byTime: new Map<number, number>()
         };
         
         sessions.forEach(session => {
@@ -447,11 +665,11 @@ export class HelpMetricsCollector {
         return distribution;
     }
     
-    analyzeUsagePatterns(sessions) {
-        const patterns = {
-            peakHours: new Map(),
-            commonJourneys: new Map(),
-            entryPoints: new Map()
+    private analyzeUsagePatterns(sessions: AnalyticsSession[]): UsagePatterns {
+        const patterns: UsagePatterns = {
+            peakHours: new Map<number, number>(),
+            commonJourneys: new Map<string, number>(),
+            entryPoints: new Map<string, number>()
         };
         
         sessions.forEach(session => {
@@ -469,8 +687,8 @@ export class HelpMetricsCollector {
         return patterns;
     }
     
-    generateUsageInsights(summary, details) {
-        const insights = [];
+    private generateUsageInsights(summary: UsageSummary, details: UsageDetails): Insight[] {
+        const insights: Insight[] = [];
         
         if (summary.averageSessionDuration < 60) {
             insights.push({
@@ -493,21 +711,47 @@ export class HelpMetricsCollector {
     
     // ========== スタブメソッド（詳細実装は必要に応じて） ==========
     
-    analyzeTopicEngagement(sessions) { return {}; }
-    analyzeSearchBehavior(sessions) { return {}; }
-    analyzeNavigationPatterns(sessions) { return {}; }
-    identifyDropoffPoints(sessions) { return []; }
-    analyzePeakUsageTimes(sessions) { return {}; }
-    generateEngagementInsights(summary, details) { return []; }
-    identifyImprovementAreas(interactions) { return []; }
-    analyzeUserSentiments(interactions) { return {}; }
-    generateSatisfactionInsights(summary, details) { return []; }
+    private analyzeTopicEngagement(sessions: AnalyticsSession[]): Record<string, any> { 
+        return {}; 
+    }
+    
+    private analyzeSearchBehavior(sessions: AnalyticsSession[]): Record<string, any> { 
+        return {}; 
+    }
+    
+    private analyzeNavigationPatterns(sessions: AnalyticsSession[]): Record<string, any> { 
+        return {}; 
+    }
+    
+    private identifyDropoffPoints(sessions: AnalyticsSession[]): any[] { 
+        return []; 
+    }
+    
+    private analyzePeakUsageTimes(sessions: AnalyticsSession[]): Record<string, any> { 
+        return {}; 
+    }
+    
+    private generateEngagementInsights(summary: EngagementSummary, details: EngagementDetails): Insight[] { 
+        return []; 
+    }
+    
+    private identifyImprovementAreas(interactions: [string, FeedbackData][]): any[] { 
+        return []; 
+    }
+    
+    private analyzeUserSentiments(interactions: [string, FeedbackData][]): Record<string, any> { 
+        return {}; 
+    }
+    
+    private generateSatisfactionInsights(summary: SatisfactionSummary, details: SatisfactionDetails): Insight[] { 
+        return []; 
+    }
     
     /**
      * メトリクス収集統計の取得
-     * @returns {Object} 収集統計
+     * @returns 収集統計
      */
-    getCollectionStats() {
+    getCollectionStats(): CollectionStats {
         return {
             isActive: this.collectionState.isActive,
             lastCollectionTime: this.collectionState.lastCollectionTime,
@@ -519,7 +763,7 @@ export class HelpMetricsCollector {
     /**
      * コンポーネントクリーンアップ
      */
-    destroy() {
+    destroy(): void {
         this.collectionState.isActive = false;
         this.collectionState.collectionQueue = [];
         

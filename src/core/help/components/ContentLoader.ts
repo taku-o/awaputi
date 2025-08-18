@@ -3,14 +3,45 @@
  * パフォーマンス最適化機能付き
  */
 
+// 型定義
+export interface LocalizationManager {
+    getCurrentLanguage(): string;
+}
+
+export interface HitRatio {
+    hits: number;
+    misses: number;
+}
+
+export interface LoadQueueItem {
+    category: string;
+    priority: number;
+    callback?: () => void;
+}
+
 export class ContentLoader {
-    constructor(localizationManager) {
+    private localizationManager: LocalizationManager;
+    private contentCache: Map<string, any>;
+    private imageCache: Map<string, any>;
+    private cacheExpiry: Map<string, number>;
+    private maxCacheSize: number;
+    private cacheTimeout: number;
+    private lazyLoadingEnabled: boolean;
+    private preloadPriority: string[];
+    private loadingQueue: LoadQueueItem[];
+    private isLoading: boolean;
+    private loadTimes: Map<string, number>;
+    private hitRatio: HitRatio;
+    private contentVersion: string;
+    private versionCheck: boolean;
+
+    constructor(localizationManager: LocalizationManager) {
         this.localizationManager = localizationManager;
         
         // キャッシュシステム
-        this.contentCache = new Map();
-        this.imageCache = new Map();
-        this.cacheExpiry = new Map();
+        this.contentCache = new Map<string, any>();
+        this.imageCache = new Map<string, any>();
+        this.cacheExpiry = new Map<string, number>();
         this.maxCacheSize = 50; // 最大キャッシュ項目数
         this.cacheTimeout = 30 * 60 * 1000; // 30分のキャッシュタイムアウト
         
@@ -21,7 +52,7 @@ export class ContentLoader {
         this.isLoading = false;
         
         // パフォーマンス監視
-        this.loadTimes = new Map();
+        this.loadTimes = new Map<string, number>();
         this.hitRatio = { hits: 0, misses: 0 };
         
         // バージョン管理
@@ -34,7 +65,7 @@ export class ContentLoader {
     /**
      * 初期化処理
      */
-    async initialize() {
+    async initialize(): Promise<void> {
         try {
             // 優先度の高いコンテンツをプリロード
             if (this.lazyLoadingEnabled) {
@@ -54,7 +85,7 @@ export class ContentLoader {
     /**
      * 必須コンテンツのプリロード
      */
-    async preloadEssentialContent() {
+    async preloadEssentialContent(): Promise<void> {
         const language = this.localizationManager.getCurrentLanguage();
         
         for (const category of this.preloadPriority) {

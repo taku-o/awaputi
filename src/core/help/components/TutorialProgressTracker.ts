@@ -1,5 +1,5 @@
 /**
- * TutorialProgressTracker.js
+ * TutorialProgressTracker.ts
  * チュートリアル進捗追跡システム
  * TutorialOverlayから分離された進捗管理・分析機能
  */
@@ -7,7 +7,104 @@
 import { getErrorHandler } from '../../../utils/ErrorHandler.js';
 import { LoggingSystem } from '../../LoggingSystem.js';
 
+// 型定義
+export interface ProgressData {
+    sessionId: string;
+    userId: string | null;
+    tutorialId: string | null;
+    startTime: number | null;
+    endTime: number | null;
+    totalDuration: number;
+    currentStep: number;
+    totalSteps: number;
+    completedSteps: Set<number>;
+    skippedSteps: Set<number>;
+    revisitedSteps: Set<number>;
+    stepTimings: Map<number, StepTiming>;
+    userActions: UserAction[];
+    errors: ErrorRecord[];
+    helpRequests: HelpRequest[];
+    completionStatus: 'not_started' | 'in_progress' | 'completed' | 'abandoned';
+}
+
+export interface StepTiming {
+    stepIndex: number;
+    startTime: number;
+    endTime?: number;
+    duration?: number;
+    interactions: number;
+}
+
+export interface UserAction {
+    type: string;
+    timestamp: number;
+    stepIndex: number;
+    data: any;
+}
+
+export interface ErrorRecord {
+    message: string;
+    timestamp: number;
+    stepIndex: number;
+    stack?: string;
+    context: string;
+}
+
+export interface HelpRequest {
+    type: string;
+    timestamp: number;
+    stepIndex: number;
+    query?: string;
+}
+
+export interface SessionStats {
+    totalInteractions: number;
+    averageStepTime: number;
+    completionRate: number;
+    helpRequestRate: number;
+    skipRate: number;
+    errorRate: number;
+    userEngagement: {
+        scrolls: number;
+        clicks: number;
+        keystrokes: number;
+        gestures: number;
+    };
+}
+
+export interface AnalyticsConfig {
+    trackDetailedActions: boolean;
+    trackTimings: boolean;
+    trackErrors: boolean;
+    trackEngagement: boolean;
+    sendToServer: boolean;
+    serverEndpoint: string | null;
+    batchSize: number;
+    batchInterval: number;
+}
+
+export interface StorageKeys {
+    progress: string;
+    analytics: string;
+    userPreferences: string;
+}
+
+export interface TutorialData {
+    id: string;
+    steps?: any[];
+}
+
 export class TutorialProgressTracker {
+    private errorHandler: any;
+    private loggingSystem: LoggingSystem;
+    private progressData: ProgressData;
+    private stepMetrics: Map<number, any>;
+    private sessionStats: SessionStats;
+    private analyticsConfig: AnalyticsConfig;
+    private storageKeys: StorageKeys;
+    private batchQueue: any[];
+    private batchTimer: number | null;
+
     constructor() {
         this.errorHandler = getErrorHandler();
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
@@ -22,14 +119,14 @@ export class TutorialProgressTracker {
             totalDuration: 0,
             currentStep: 0,
             totalSteps: 0,
-            completedSteps: new Set(),
-            skippedSteps: new Set(),
-            revisitedSteps: new Set(),
-            stepTimings: new Map(),
+            completedSteps: new Set<number>(),
+            skippedSteps: new Set<number>(),
+            revisitedSteps: new Set<number>(),
+            stepTimings: new Map<number, StepTiming>(),
             userActions: [],
             errors: [],
             helpRequests: [],
-            completionStatus: 'not_started' // 'not_started', 'in_progress', 'completed', 'abandoned'
+            completionStatus: 'not_started'
         };
         
         // ステップレベルの詳細データ
@@ -80,7 +177,7 @@ export class TutorialProgressTracker {
     /**
      * 進捗追跡システムを初期化
      */
-    initialize() {
+    initialize(): void {
         try {
             this.loadStoredProgress();
             this.setupBatchProcessing();
@@ -92,10 +189,10 @@ export class TutorialProgressTracker {
     
     /**
      * チュートリアル開始を記録
-     * @param {Object} tutorial - チュートリアル情報
-     * @param {string} userId - ユーザーID（オプション）
+     * @param tutorial - チュートリアル情報
+     * @param userId - ユーザーID（オプション）
      */
-    startTracking(tutorial, userId = null) {
+    startTracking(tutorial: TutorialData, userId: string | null = null): void {
         try {
             this.progressData = {
                 sessionId: this.generateSessionId(),

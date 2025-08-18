@@ -3,11 +3,83 @@
  * インデックス作成、全文検索、結果ランキング機能付き
  */
 
+// 型定義
+export interface SearchDocument {
+    id: string;
+    title?: string;
+    content?: string;
+    searchKeywords?: string[];
+    category?: string;
+    language?: string;
+    lastUpdated?: string;
+    viewCount?: number;
+    [key: string]: any;
+}
+
+export interface SearchOptions {
+    category?: string;
+    language?: string;
+    minScore?: number;
+    limit?: number;
+}
+
+export interface SearchResult extends SearchDocument {
+    relevanceScore: number;
+    highlights: Record<string, string>;
+}
+
+export interface FieldWeights {
+    title: number;
+    content: number;
+    searchKeywords: number;
+    category: number;
+}
+
+export interface SearchStats {
+    totalSearches: number;
+    cacheHits: number;
+    averageSearchTime: number;
+    popularQueries: Map<string, number>;
+}
+
+export interface CachedSearchResult {
+    result: SearchResult[];
+    timestamp: number;
+}
+
+export interface PerformanceStats {
+    totalSearches: number;
+    cacheHitRate: number;
+    averageSearchTime: number;
+    indexSize: number;
+    documentCount: number;
+    cacheSize: number;
+    popularQueries: [string, number][];
+}
+
+export interface SearchHistoryData {
+    popularQueries: [string, number][];
+}
+
+export interface RelatedContent extends SearchDocument {
+    similarity: number;
+}
+
 export class SearchEngine {
+    private textIndex: Map<string, string[]>;
+    private documentStore: Map<string, SearchDocument>;
+    private fieldWeights: FieldWeights;
+    private searchCache: Map<string, CachedSearchResult>;
+    private cacheTimeout: number;
+    private maxCacheSize: number;
+    private searchStats: SearchStats;
+    private stopWords: Set<string>;
+    private synonyms: Map<string, string[]>;
+
     constructor() {
         // 検索インデックス
-        this.textIndex = new Map(); // 単語 -> [documentId, ...]
-        this.documentStore = new Map(); // documentId -> document
+        this.textIndex = new Map<string, string[]>(); // 単語 -> [documentId, ...]
+        this.documentStore = new Map<string, SearchDocument>(); // documentId -> document
         this.fieldWeights = {
             title: 3.0,
             content: 1.0,
@@ -16,7 +88,7 @@ export class SearchEngine {
         };
         
         // パフォーマンス最適化
-        this.searchCache = new Map();
+        this.searchCache = new Map<string, CachedSearchResult>();
         this.cacheTimeout = 5 * 60 * 1000; // 5分
         this.maxCacheSize = 100;
         
@@ -25,11 +97,11 @@ export class SearchEngine {
             totalSearches: 0,
             cacheHits: 0,
             averageSearchTime: 0,
-            popularQueries: new Map()
+            popularQueries: new Map<string, number>()
         };
         
         // ストップワード（検索対象外の単語）
-        this.stopWords = new Set([
+        this.stopWords = new Set<string>([
             'の', 'に', 'は', 'を', 'が', 'で', 'と', 'て', 'も', 'から',
             'まで', 'より', 'で', 'ある', 'です', 'だ', 'である',
             'a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for',
@@ -38,7 +110,7 @@ export class SearchEngine {
         ]);
         
         // 類義語辞書
-        this.synonyms = new Map([
+        this.synonyms = new Map<string, string[]>([
             ['bubble', ['泡', 'バブル', 'ふうせん']],
             ['click', ['クリック', 'タップ', '選択']],
             ['score', ['スコア', '得点', 'ポイント']],
@@ -52,7 +124,7 @@ export class SearchEngine {
     /**
      * 初期化処理
      */
-    initialize() {
+    initialize(): void {
         // 検索履歴の復元（ローカルストレージから）
         this.loadSearchHistory();
         
@@ -62,9 +134,9 @@ export class SearchEngine {
     
     /**
      * コンテンツのインデックス作成
-     * @param {Array} contentArray - インデックス対象コンテンツ配列
+     * @param contentArray - インデックス対象コンテンツ配列
      */
-    indexContent(contentArray) {
+    indexContent(contentArray: SearchDocument[]): void {
         const startTime = performance.now();
         
         for (const content of contentArray) {
@@ -80,9 +152,9 @@ export class SearchEngine {
     
     /**
      * 単一ドキュメントのインデックス作成
-     * @param {Object} document - ドキュメント
+     * @param document - ドキュメント
      */
-    indexDocument(document) {
+    indexDocument(document: SearchDocument): void {
         if (!document.id) {
             console.warn('Document without ID cannot be indexed');
             return;
@@ -95,7 +167,7 @@ export class SearchEngine {
         for (const [field, weight] of Object.entries(this.fieldWeights)) {
             const text = document[field];
             if (text) {
-                const tokens = this.tokenize(text);
+                const tokens = this.tokenize(typeof text === 'string' ? text : JSON.stringify(text));
                 for (const token of tokens) {
                     this.addToIndex(token, document.id, field, weight);
                 }
@@ -105,11 +177,11 @@ export class SearchEngine {
     
     /**
      * 検索実行
-     * @param {string} query - 検索クエリ
-     * @param {Object} options - 検索オプション
-     * @returns {Promise<Array>} - 検索結果
+     * @param query - 検索クエリ
+     * @param options - 検索オプション
+     * @returns 検索結果
      */
-    async search(query, options = {}) {
+    async search(query: string, options: SearchOptions = {}): Promise<SearchResult[]> {
         const startTime = performance.now();
         
         if (!query || query.trim().length === 0) {
@@ -148,19 +220,19 @@ export class SearchEngine {
      * 実際の検索処理
      * @private
      */
-    async performSearch(query, options) {
+    private async performSearch(query: string, options: SearchOptions): Promise<SearchResult[]> {
         const tokens = this.tokenize(query);
         const expandedTokens = this.expandQuery(tokens);
         
         // 各トークンの検索結果を取得
-        const tokenResults = new Map();
+        const tokenResults = new Map<string, string[]>();
         for (const token of expandedTokens) {
             const docIds = this.textIndex.get(token) || [];
             tokenResults.set(token, docIds);
         }
         
         // ドキュメントスコアを計算
-        const documentScores = new Map();
+        const documentScores = new Map<string, number>();
         for (const [token, docIds] of tokenResults) {
             for (const docId of docIds) {
                 const score = this.calculateRelevanceScore(token, docId, query);
@@ -183,13 +255,13 @@ export class SearchEngine {
      * クエリ拡張（類義語・ステミング）
      * @private
      */
-    expandQuery(tokens) {
-        const expanded = new Set(tokens);
+    private expandQuery(tokens: string[]): string[] {
+        const expanded = new Set<string>(tokens);
         
         for (const token of tokens) {
             // 類義語を追加
             if (this.synonyms.has(token)) {
-                for (const synonym of this.synonyms.get(token)) {
+                for (const synonym of this.synonyms.get(token)!) {
                     expanded.add(synonym.toLowerCase());
                 }
             }
@@ -211,7 +283,7 @@ export class SearchEngine {
      * 関連度スコア計算
      * @private
      */
-    calculateRelevanceScore(token, docId, originalQuery) {
+    private calculateRelevanceScore(token: string, docId: string, originalQuery: string): number {
         const document = this.documentStore.get(docId);
         if (!document) return 0;
         
@@ -221,7 +293,7 @@ export class SearchEngine {
         for (const [field, weight] of Object.entries(this.fieldWeights)) {
             const text = document[field];
             if (text) {
-                const fieldScore = this.calculateFieldScore(token, text, weight);
+                const fieldScore = this.calculateFieldScore(token, typeof text === 'string' ? text : JSON.stringify(text), weight);
                 score += fieldScore;
             }
         }
@@ -236,7 +308,7 @@ export class SearchEngine {
      * フィールドスコア計算
      * @private
      */
-    calculateFieldScore(token, text, weight) {
+    private calculateFieldScore(token: string, text: string, weight: number): number {
         const lowerText = text.toLowerCase();
         const occurrences = (lowerText.match(new RegExp(token, 'g')) || []).length;
         
@@ -253,7 +325,7 @@ export class SearchEngine {
      * ボーナススコア計算
      * @private
      */
-    calculateBonusScore(token, document, originalQuery) {
+    private calculateBonusScore(token: string, document: SearchDocument, originalQuery: string): number {
         let bonus = 0;
         
         // 完全一致ボーナス
@@ -263,7 +335,7 @@ export class SearchEngine {
         
         // 最近更新されたコンテンツのボーナス
         if (document.lastUpdated) {
-            const daysSinceUpdate = (Date.now() - new Date(document.lastUpdated)) / (1000 * 60 * 60 * 24);
+            const daysSinceUpdate = (Date.now() - new Date(document.lastUpdated).getTime()) / (1000 * 60 * 60 * 24);
             if (daysSinceUpdate < 30) {
                 bonus += 0.5;
             }
@@ -281,8 +353,8 @@ export class SearchEngine {
      * フィルタリング適用
      * @private
      */
-    applyFilters(documentScores, options) {
-        const filtered = new Map();
+    private applyFilters(documentScores: Map<string, number>, options: SearchOptions): Map<string, number> {
+        const filtered = new Map<string, number>();
         
         for (const [docId, score] of documentScores) {
             const document = this.documentStore.get(docId);
@@ -314,8 +386,8 @@ export class SearchEngine {
      * 結果ランキング
      * @private
      */
-    rankResults(documentScores, query) {
-        const results = [];
+    private rankResults(documentScores: Map<string, number>, query: string): SearchResult[] {
+        const results: SearchResult[] = [];
         
         for (const [docId, score] of documentScores) {
             const document = this.documentStore.get(docId);
@@ -338,13 +410,13 @@ export class SearchEngine {
      * 検索語句のハイライト生成
      * @private
      */
-    generateHighlights(document, query) {
+    private generateHighlights(document: SearchDocument, query: string): Record<string, string> {
         const tokens = this.tokenize(query);
-        const highlights = {};
+        const highlights: Record<string, string> = {};
         
         for (const [field, weight] of Object.entries(this.fieldWeights)) {
             const text = document[field];
-            if (text) {
+            if (text && typeof text === 'string') {
                 let highlightedText = text;
                 for (const token of tokens) {
                     const regex = new RegExp(`(${token})`, 'gi');
@@ -361,15 +433,15 @@ export class SearchEngine {
     
     /**
      * 検索提案取得
-     * @param {string} partialQuery - 部分クエリ
-     * @returns {Promise<Array>} - 提案リスト
+     * @param partialQuery - 部分クエリ
+     * @returns 提案リスト
      */
-    async getSuggestions(partialQuery) {
+    async getSuggestions(partialQuery: string): Promise<string[]> {
         if (!partialQuery || partialQuery.length < 2) {
             return [];
         }
         
-        const suggestions = new Set();
+        const suggestions = new Set<string>();
         const lowerQuery = partialQuery.toLowerCase();
         
         // インデックスされた単語から提案を生成
@@ -403,15 +475,15 @@ export class SearchEngine {
     
     /**
      * 関連コンテンツ取得
-     * @param {string} contentId - コンテンツID
-     * @returns {Array} - 関連コンテンツ
+     * @param contentId - コンテンツID
+     * @returns 関連コンテンツ
      */
-    getRelatedContent(contentId) {
+    getRelatedContent(contentId: string): RelatedContent[] {
         const document = this.documentStore.get(contentId);
         if (!document) return [];
         
         // カテゴリが同じコンテンツを検索
-        const related = [];
+        const related: RelatedContent[] = [];
         for (const [id, doc] of this.documentStore) {
             if (id === contentId) continue;
             
@@ -433,7 +505,7 @@ export class SearchEngine {
      * テキストのトークン化
      * @private
      */
-    tokenize(text) {
+    private tokenize(text: string): string[] {
         if (!text) return [];
         
         return text
@@ -447,12 +519,12 @@ export class SearchEngine {
      * インデックスに追加
      * @private
      */
-    addToIndex(token, docId, field, weight) {
+    private addToIndex(token: string, docId: string, field: string, weight: number): void {
         if (!this.textIndex.has(token)) {
             this.textIndex.set(token, []);
         }
         
-        const docList = this.textIndex.get(token);
+        const docList = this.textIndex.get(token)!;
         if (!docList.includes(docId)) {
             docList.push(docId);
         }
@@ -462,7 +534,7 @@ export class SearchEngine {
      * ドキュメント頻度取得
      * @private
      */
-    getDocumentFrequency(token) {
+    private getDocumentFrequency(token: string): number {
         const docList = this.textIndex.get(token);
         return docList ? docList.length : 0;
     }
@@ -471,9 +543,12 @@ export class SearchEngine {
      * 類似度計算
      * @private
      */
-    calculateSimilarity(doc1, doc2) {
-        const tokens1 = new Set(this.tokenize(doc1.title + ' ' + doc1.content));
-        const tokens2 = new Set(this.tokenize(doc2.title + ' ' + doc2.content));
+    private calculateSimilarity(doc1: SearchDocument, doc2: SearchDocument): number {
+        const content1 = (doc1.title || '') + ' ' + (doc1.content || '');
+        const content2 = (doc2.title || '') + ' ' + (doc2.content || '');
+        
+        const tokens1 = new Set(this.tokenize(content1));
+        const tokens2 = new Set(this.tokenize(content2));
         
         const intersection = new Set([...tokens1].filter(x => tokens2.has(x)));
         const union = new Set([...tokens1, ...tokens2]);
@@ -485,7 +560,7 @@ export class SearchEngine {
      * キャッシュキー生成
      * @private
      */
-    getCacheKey(query, options) {
+    private getCacheKey(query: string, options: SearchOptions): string {
         return `${query}|${JSON.stringify(options)}`;
     }
     
@@ -493,7 +568,7 @@ export class SearchEngine {
      * キャッシュ結果取得
      * @private
      */
-    getCachedResult(key) {
+    private getCachedResult(key: string): SearchResult[] | null {
         const cached = this.searchCache.get(key);
         if (cached && Date.now() - cached.timestamp < this.cacheTimeout) {
             return cached.result;
@@ -510,7 +585,7 @@ export class SearchEngine {
      * キャッシュ結果保存
      * @private
      */
-    setCachedResult(key, result) {
+    private setCachedResult(key: string, result: SearchResult[]): void {
         if (this.searchCache.size >= this.maxCacheSize) {
             // 古いキャッシュを削除
             const oldestKey = this.searchCache.keys().next().value;
@@ -527,7 +602,7 @@ export class SearchEngine {
      * 検索統計更新
      * @private
      */
-    updateSearchStats(query, searchTime) {
+    private updateSearchStats(query: string, searchTime: number): void {
         this.searchStats.totalSearches++;
         
         // 平均検索時間更新
@@ -547,7 +622,7 @@ export class SearchEngine {
      * キャッシュクリーンアップ
      * @private
      */
-    cleanupCache() {
+    private cleanupCache(): void {
         const now = Date.now();
         for (const [key, cached] of this.searchCache) {
             if (now - cached.timestamp > this.cacheTimeout) {
@@ -560,12 +635,12 @@ export class SearchEngine {
      * 検索履歴読み込み
      * @private
      */
-    loadSearchHistory() {
+    private loadSearchHistory(): void {
         try {
             const stored = localStorage.getItem('search_history');
             if (stored) {
-                const data = JSON.parse(stored);
-                this.searchStats.popularQueries = new Map(data.popularQueries || []);
+                const data: SearchHistoryData = JSON.parse(stored);
+                this.searchStats.popularQueries = new Map<string, number>(data.popularQueries || []);
             }
         } catch (error) {
             console.warn('Failed to load search history:', error);
@@ -576,9 +651,9 @@ export class SearchEngine {
      * 検索履歴保存
      * @private
      */
-    saveSearchHistory() {
+    private saveSearchHistory(): void {
         try {
-            const data = {
+            const data: SearchHistoryData = {
                 popularQueries: Array.from(this.searchStats.popularQueries.entries())
             };
             localStorage.setItem('search_history', JSON.stringify(data));
@@ -588,10 +663,25 @@ export class SearchEngine {
     }
     
     /**
-     * パフォーマンス統計取得
-     * @returns {Object} - パフォーマンス統計
+     * インデックス最適化
      */
-    getPerformanceStats() {
+    optimizeIndex(): void {
+        // 使用頻度の低いトークンを削除
+        const minFrequency = 2;
+        for (const [token, docIds] of this.textIndex) {
+            if (docIds.length < minFrequency) {
+                this.textIndex.delete(token);
+            }
+        }
+        
+        console.log('Search index optimized');
+    }
+    
+    /**
+     * パフォーマンス統計取得
+     * @returns パフォーマンス統計
+     */
+    getPerformanceStats(): PerformanceStats {
         return {
             totalSearches: this.searchStats.totalSearches,
             cacheHitRate: this.searchStats.totalSearches > 0 
@@ -610,7 +700,7 @@ export class SearchEngine {
     /**
      * クリーンアップ
      */
-    cleanup() {
+    cleanup(): void {
         this.textIndex.clear();
         this.documentStore.clear();
         this.searchCache.clear();
@@ -618,7 +708,7 @@ export class SearchEngine {
             totalSearches: 0,
             cacheHits: 0,
             averageSearchTime: 0,
-            popularQueries: new Map()
+            popularQueries: new Map<string, number>()
         };
     }
 }

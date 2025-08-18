@@ -1,5 +1,5 @@
 /**
- * TutorialAnimationController.js
+ * TutorialAnimationController.ts
  * チュートリアルアニメーション制御システム
  * TutorialOverlayから分離されたアニメーション機能
  */
@@ -7,7 +7,89 @@
 import { getErrorHandler } from '../../../utils/ErrorHandler.js';
 import { LoggingSystem } from '../../LoggingSystem.js';
 
+// 型定義
+export interface AnimationConfig {
+    fadeInDuration: number;
+    fadeOutDuration: number;
+    pulseInterval: number;
+    highlightAnimationDuration: number;
+    panelSlideAnimationDuration: number;
+    breathingPulseDuration: number;
+    rippleAnimationDuration: number;
+    sparkleAnimationDuration: number;
+    glowIntensity: number;
+    bounceHeight: number;
+    bounceDuration: number;
+    easingFunction: string;
+}
+
+export interface HighlightAnimation {
+    isActive: boolean;
+    startTime: number;
+    type: HighlightAnimationType;
+    intensity: number;
+    currentFrame: number;
+    element: HTMLElement | null;
+}
+
+export interface PanelAnimation {
+    isActive: boolean;
+    startTime: number;
+    type: PanelAnimationType;
+    direction: AnimationDirection;
+    progress: number;
+    element: HTMLElement | null;
+}
+
+export interface SpotlightAnimation {
+    isActive: boolean;
+    startTime: number;
+    currentRadius: number;
+    targetRadius: number;
+    expansion: boolean;
+    element: HTMLElement | null;
+}
+
+export interface AnimationState {
+    highlight: HighlightAnimation;
+    panel: PanelAnimation;
+    spotlight: SpotlightAnimation;
+}
+
+export type HighlightAnimationType = 'pulse' | 'breathing' | 'ripple' | 'sparkle' | 'bounce';
+export type PanelAnimationType = 'slideIn' | 'slideOut' | 'bounceIn' | 'scaleIn';
+export type AnimationDirection = 'top' | 'bottom' | 'left' | 'right';
+
+export type EasingFunction = (t: number) => number;
+
+export interface EasingFunctions {
+    linear: EasingFunction;
+    easeInQuad: EasingFunction;
+    easeOutQuad: EasingFunction;
+    easeInOutQuad: EasingFunction;
+    easeInCubic: EasingFunction;
+    easeOutCubic: EasingFunction;
+    easeInOutCubic: EasingFunction;
+    easeInBounce: EasingFunction;
+    easeOutBounce: EasingFunction;
+}
+
+export type AnimationFunction = () => void;
+
+export interface ErrorHandler {
+    handleError(error: Error, context: string): void;
+}
+
 export class TutorialAnimationController {
+    private errorHandler: ErrorHandler;
+    private loggingSystem: LoggingSystem;
+    private animationConfig: AnimationConfig;
+    private animations: AnimationState;
+    private animationQueue: AnimationFunction[];
+    private isProcessingQueue: boolean;
+    private easingFunctions: EasingFunctions;
+    private animationFrameId: number | null;
+
     constructor() {
         this.errorHandler = getErrorHandler();
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
@@ -62,15 +144,15 @@ export class TutorialAnimationController {
         
         // イージング関数
         this.easingFunctions = {
-            linear: t => t,
-            easeInQuad: t => t * t,
-            easeOutQuad: t => t * (2 - t),
-            easeInOutQuad: t => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t,
-            easeInCubic: t => t * t * t,
-            easeOutCubic: t => (--t) * t * t + 1,
-            easeInOutCubic: t => t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1,
-            easeInBounce: t => 1 - this.easingFunctions.easeOutBounce(1 - t),
-            easeOutBounce: t => {
+            linear: (t: number) => t,
+            easeInQuad: (t: number) => t * t,
+            easeOutQuad: (t: number) => t * (2 - t),
+            easeInOutQuad: (t: number) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t,
+            easeInCubic: (t: number) => t * t * t,
+            easeOutCubic: (t: number) => (--t) * t * t + 1,
+            easeInOutCubic: (t: number) => t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1,
+            easeInBounce: (t: number) => 1 - this.easingFunctions.easeOutBounce(1 - t),
+            easeOutBounce: (t: number) => {
                 if (t < 1 / 2.75) return 7.5625 * t * t;
                 if (t < 2 / 2.75) return 7.5625 * (t -= 1.5 / 2.75) * t + 0.75;
                 if (t < 2.5 / 2.75) return 7.5625 * (t -= 2.25 / 2.75) * t + 0.9375;
@@ -87,20 +169,20 @@ export class TutorialAnimationController {
     /**
      * アニメーションコントローラーを初期化
      */
-    initialize() {
+    initialize(): void {
         try {
             this.startAnimationLoop();
             this.loggingSystem.debug('TutorialAnimationController', 'Animation controller initialized');
         } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialAnimationController.initialize');
+            this.errorHandler.handleError(error as Error, 'TutorialAnimationController.initialize');
         }
     }
     
     /**
      * アニメーションループを開始
      */
-    startAnimationLoop() {
-        const animate = (currentTime) => {
+    startAnimationLoop(): void {
+        const animate = (currentTime: number) => {
             this.updateAnimations(currentTime);
             this.processAnimationQueue();
             this.animationFrameId = requestAnimationFrame(animate);
@@ -111,11 +193,11 @@ export class TutorialAnimationController {
     
     /**
      * ハイライトアニメーションを開始
-     * @param {HTMLElement} element - アニメーション対象要素
-     * @param {string} type - アニメーションタイプ
-     * @param {number} intensity - アニメーション強度
+     * @param element - アニメーション対象要素
+     * @param type - アニメーションタイプ
+     * @param intensity - アニメーション強度
      */
-    startHighlightAnimation(element, type = 'pulse', intensity = 1.0) {
+    startHighlightAnimation(element: HTMLElement, type: HighlightAnimationType = 'pulse', intensity: number = 1.0): void {
         try {
             if (!element) {
                 throw new Error('Element is required for highlight animation');
@@ -134,17 +216,17 @@ export class TutorialAnimationController {
                 `Highlight animation started: ${type}, intensity: ${intensity}`);
                 
         } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialAnimationController.startHighlightAnimation');
+            this.errorHandler.handleError(error as Error, 'TutorialAnimationController.startHighlightAnimation');
         }
     }
     
     /**
      * パネルアニメーションを開始
-     * @param {HTMLElement} element - アニメーション対象要素
-     * @param {string} type - アニメーションタイプ
-     * @param {string} direction - 方向
+     * @param element - アニメーション対象要素
+     * @param type - アニメーションタイプ
+     * @param direction - 方向
      */
-    startPanelAnimation(element, type = 'slideIn', direction = 'bottom') {
+    startPanelAnimation(element: HTMLElement, type: PanelAnimationType = 'slideIn', direction: AnimationDirection = 'bottom'): void {
         try {
             if (!element) {
                 throw new Error('Element is required for panel animation');
@@ -163,17 +245,17 @@ export class TutorialAnimationController {
                 `Panel animation started: ${type} from ${direction}`);
                 
         } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialAnimationController.startPanelAnimation');
+            this.errorHandler.handleError(error as Error, 'TutorialAnimationController.startPanelAnimation');
         }
     }
     
     /**
      * スポットライトアニメーションを開始
-     * @param {HTMLElement} element - アニメーション対象要素
-     * @param {number} targetRadius - 目標半径
-     * @param {boolean} expansion - 拡張するかどうか
+     * @param element - アニメーション対象要素
+     * @param targetRadius - 目標半径
+     * @param expansion - 拡張するかどうか
      */
-    startSpotlightAnimation(element, targetRadius, expansion = true) {
+    startSpotlightAnimation(element: HTMLElement, targetRadius: number, expansion: boolean = true): void {
         try {
             if (!element) {
                 throw new Error('Element is required for spotlight animation');
@@ -192,15 +274,15 @@ export class TutorialAnimationController {
                 `Spotlight animation started: radius ${targetRadius}, expansion: ${expansion}`);
                 
         } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialAnimationController.startSpotlightAnimation');
+            this.errorHandler.handleError(error as Error, 'TutorialAnimationController.startSpotlightAnimation');
         }
     }
     
     /**
      * アニメーションを更新
-     * @param {number} currentTime - 現在時刻
+     * @param currentTime - 現在時刻
      */
-    updateAnimations(currentTime) {
+    private updateAnimations(currentTime: number): void {
         this.updateHighlightAnimation(currentTime);
         this.updatePanelAnimation(currentTime);
         this.updateSpotlightAnimation(currentTime);
@@ -208,13 +290,13 @@ export class TutorialAnimationController {
     
     /**
      * ハイライトアニメーションを更新
-     * @param {number} currentTime - 現在時刻
+     * @param currentTime - 現在時刻
      */
-    updateHighlightAnimation(currentTime) {
+    private updateHighlightAnimation(currentTime: number): void {
         if (!this.animations.highlight.isActive || !this.animations.highlight.element) return;
         
         const animation = this.animations.highlight;
-        let duration;
+        let duration: number;
         
         switch (animation.type) {
             case 'pulse':
@@ -246,9 +328,9 @@ export class TutorialAnimationController {
     
     /**
      * パネルアニメーションを更新
-     * @param {number} currentTime - 現在時刻
+     * @param currentTime - 現在時刻
      */
-    updatePanelAnimation(currentTime) {
+    private updatePanelAnimation(currentTime: number): void {
         if (!this.animations.panel.isActive || !this.animations.panel.element) return;
         
         const animation = this.animations.panel;
@@ -281,9 +363,9 @@ export class TutorialAnimationController {
     
     /**
      * スポットライトアニメーションを更新
-     * @param {number} currentTime - 現在時刻
+     * @param currentTime - 現在時刻
      */
-    updateSpotlightAnimation(currentTime) {
+    private updateSpotlightAnimation(currentTime: number): void {
         if (!this.animations.spotlight.isActive || !this.animations.spotlight.element) return;
         
         const animation = this.animations.spotlight;
@@ -309,10 +391,12 @@ export class TutorialAnimationController {
     
     /**
      * ハイライトアニメーションスタイルを適用
-     * @param {Object} animation - アニメーション情報
+     * @param animation - アニメーション情報
      */
-    applyHighlightAnimationStyles(animation) {
+    private applyHighlightAnimationStyles(animation: HighlightAnimation): void {
         const element = animation.element;
+        if (!element) return;
+        
         const progress = animation.currentFrame;
         const intensity = animation.intensity;
         
@@ -337,40 +421,40 @@ export class TutorialAnimationController {
     
     /**
      * パルスエフェクトを適用
-     * @param {HTMLElement} element - 対象要素
-     * @param {number} progress - 進捗
-     * @param {number} intensity - 強度
+     * @param element - 対象要素
+     * @param progress - 進捗
+     * @param intensity - 強度
      */
-    applyPulseEffect(element, progress, intensity) {
+    private applyPulseEffect(element: HTMLElement, progress: number, intensity: number): void {
         const scale = 1 + Math.sin(progress * Math.PI * 2) * 0.1 * intensity;
         const opacity = 0.7 + Math.sin(progress * Math.PI * 2) * 0.3 * intensity;
         
         element.style.transform = `scale(${scale})`;
-        element.style.opacity = opacity;
+        element.style.opacity = opacity.toString();
         element.style.boxShadow = `0 0 ${20 * intensity}px rgba(0, 123, 255, ${opacity * 0.5})`;
     }
     
     /**
      * 呼吸エフェクトを適用
-     * @param {HTMLElement} element - 対象要素
-     * @param {number} progress - 進捗
-     * @param {number} intensity - 強度
+     * @param element - 対象要素
+     * @param progress - 進捗
+     * @param intensity - 強度
      */
-    applyBreathingEffect(element, progress, intensity) {
+    private applyBreathingEffect(element: HTMLElement, progress: number, intensity: number): void {
         const scale = 1 + Math.sin(progress * Math.PI) * 0.05 * intensity;
         const opacity = 0.8 + Math.sin(progress * Math.PI) * 0.2 * intensity;
         
         element.style.transform = `scale(${scale})`;
-        element.style.opacity = opacity;
+        element.style.opacity = opacity.toString();
     }
     
     /**
      * リップルエフェクトを適用
-     * @param {HTMLElement} element - 対象要素
-     * @param {number} progress - 進捗
-     * @param {number} intensity - 強度
+     * @param element - 対象要素
+     * @param progress - 進捗
+     * @param intensity - 強度
      */
-    applyRippleEffect(element, progress, intensity) {
+    private applyRippleEffect(element: HTMLElement, progress: number, intensity: number): void {
         const rippleSize = progress * 50 * intensity;
         const opacity = (1 - progress) * intensity;
         
@@ -378,7 +462,7 @@ export class TutorialAnimationController {
         element.style.overflow = 'visible';
         
         // リップル要素を動的に作成・更新
-        let ripple = element.querySelector('.tutorial-ripple');
+        let ripple = element.querySelector('.tutorial-ripple') as HTMLElement;
         if (!ripple) {
             ripple = document.createElement('div');
             ripple.className = 'tutorial-ripple';
@@ -398,11 +482,11 @@ export class TutorialAnimationController {
     
     /**
      * スパークルエフェクトを適用
-     * @param {HTMLElement} element - 対象要素
-     * @param {number} progress - 進捗
-     * @param {number} intensity - 強度
+     * @param element - 対象要素
+     * @param progress - 進捗
+     * @param intensity - 強度
      */
-    applySparkleEffect(element, progress, intensity) {
+    private applySparkleEffect(element: HTMLElement, progress: number, intensity: number): void {
         const sparkleCount = Math.floor(5 * intensity);
         
         // 既存のスパークルを削除
@@ -425,7 +509,7 @@ export class TutorialAnimationController {
             
             sparkle.style.left = `calc(50% + ${x}px)`;
             sparkle.style.top = `calc(50% + ${y}px)`;
-            sparkle.style.opacity = Math.sin(progress * Math.PI) * intensity;
+            sparkle.style.opacity = (Math.sin(progress * Math.PI) * intensity).toString();
             
             element.appendChild(sparkle);
         }
@@ -433,11 +517,11 @@ export class TutorialAnimationController {
     
     /**
      * バウンスエフェクトを適用
-     * @param {HTMLElement} element - 対象要素
-     * @param {number} progress - 進捗
-     * @param {number} intensity - 強度
+     * @param element - 対象要素
+     * @param progress - 進捗
+     * @param intensity - 強度
      */
-    applyBounceEffect(element, progress, intensity) {
+    private applyBounceEffect(element: HTMLElement, progress: number, intensity: number): void {
         const bounceHeight = this.animationConfig.bounceHeight * intensity;
         const bounceValue = this.easingFunctions.easeOutBounce(progress);
         const translateY = -bounceHeight * bounceValue;
@@ -447,10 +531,12 @@ export class TutorialAnimationController {
     
     /**
      * パネルアニメーションスタイルを適用
-     * @param {Object} animation - アニメーション情報
+     * @param animation - アニメーション情報
      */
-    applyPanelAnimationStyles(animation) {
+    private applyPanelAnimationStyles(animation: PanelAnimation): void {
         const element = animation.element;
+        if (!element) return;
+        
         const progress = animation.progress;
         const type = animation.type;
         const direction = animation.direction;
@@ -473,11 +559,11 @@ export class TutorialAnimationController {
     
     /**
      * スライドインエフェクトを適用
-     * @param {HTMLElement} element - 対象要素
-     * @param {number} progress - 進捗
-     * @param {string} direction - 方向
+     * @param element - 対象要素
+     * @param progress - 進捗
+     * @param direction - 方向
      */
-    applySlideInEffect(element, progress, direction) {
+    private applySlideInEffect(element: HTMLElement, progress: number, direction: AnimationDirection): void {
         let transform = '';
         
         switch (direction) {
@@ -496,16 +582,16 @@ export class TutorialAnimationController {
         }
         
         element.style.transform = transform;
-        element.style.opacity = progress;
+        element.style.opacity = progress.toString();
     }
     
     /**
      * スライドアウトエフェクトを適用
-     * @param {HTMLElement} element - 対象要素
-     * @param {number} progress - 進捗
-     * @param {string} direction - 方向
+     * @param element - 対象要素
+     * @param progress - 進捗
+     * @param direction - 方向
      */
-    applySlideOutEffect(element, progress, direction) {
+    private applySlideOutEffect(element: HTMLElement, progress: number, direction: AnimationDirection): void {
         let transform = '';
         
         switch (direction) {
@@ -524,35 +610,37 @@ export class TutorialAnimationController {
         }
         
         element.style.transform = transform;
-        element.style.opacity = 1 - progress;
+        element.style.opacity = (1 - progress).toString();
     }
     
     /**
      * バウンスインエフェクトを適用
-     * @param {HTMLElement} element - 対象要素
-     * @param {number} progress - 進捗
+     * @param element - 対象要素
+     * @param progress - 進捗
      */
-    applyBounceInEffect(element, progress) {
+    private applyBounceInEffect(element: HTMLElement, progress: number): void {
         element.style.transform = `scale(${progress})`;
-        element.style.opacity = progress;
+        element.style.opacity = progress.toString();
     }
     
     /**
      * スケールインエフェクトを適用
-     * @param {HTMLElement} element - 対象要素
-     * @param {number} progress - 進捗
+     * @param element - 対象要素
+     * @param progress - 進捗
      */
-    applyScaleInEffect(element, progress) {
+    private applyScaleInEffect(element: HTMLElement, progress: number): void {
         element.style.transform = `scale(${progress})`;
-        element.style.opacity = progress;
+        element.style.opacity = progress.toString();
     }
     
     /**
      * スポットライトアニメーションスタイルを適用
-     * @param {Object} animation - アニメーション情報
+     * @param animation - アニメーション情報
      */
-    applySpotlightAnimationStyles(animation) {
+    private applySpotlightAnimationStyles(animation: SpotlightAnimation): void {
         const element = animation.element;
+        if (!element) return;
+        
         const radius = animation.currentRadius;
         
         element.style.clipPath = `circle(${radius}px at center)`;
@@ -561,7 +649,7 @@ export class TutorialAnimationController {
     /**
      * アニメーションキューを処理
      */
-    processAnimationQueue() {
+    private processAnimationQueue(): void {
         if (this.isProcessingQueue || this.animationQueue.length === 0) return;
         
         this.isProcessingQueue = true;
@@ -571,7 +659,7 @@ export class TutorialAnimationController {
             try {
                 nextAnimation();
             } catch (error) {
-                this.errorHandler.handleError(error, 'TutorialAnimationController.processAnimationQueue');
+                this.errorHandler.handleError(error as Error, 'TutorialAnimationController.processAnimationQueue');
             }
         }
         
@@ -580,18 +668,18 @@ export class TutorialAnimationController {
     
     /**
      * アニメーションをキューに追加
-     * @param {Function} animationFunction - アニメーション関数
+     * @param animationFunction - アニメーション関数
      */
-    queueAnimation(animationFunction) {
+    queueAnimation(animationFunction: AnimationFunction): void {
         this.animationQueue.push(animationFunction);
     }
     
     /**
      * すべてのアニメーションを停止
      */
-    stopAllAnimations() {
+    stopAllAnimations(): void {
         Object.keys(this.animations).forEach(key => {
-            this.animations[key].isActive = false;
+            (this.animations as any)[key].isActive = false;
         });
         
         this.animationQueue = [];
@@ -600,9 +688,9 @@ export class TutorialAnimationController {
     
     /**
      * 特定のアニメーションを停止
-     * @param {string} animationType - アニメーションタイプ
+     * @param animationType - アニメーションタイプ
      */
-    stopAnimation(animationType) {
+    stopAnimation(animationType: keyof AnimationState): void {
         if (this.animations[animationType]) {
             this.animations[animationType].isActive = false;
             this.loggingSystem.debug('TutorialAnimationController', `Animation stopped: ${animationType}`);
@@ -611,9 +699,9 @@ export class TutorialAnimationController {
     
     /**
      * アニメーション設定を更新
-     * @param {Object} newConfig - 新しい設定
+     * @param newConfig - 新しい設定
      */
-    updateConfig(newConfig) {
+    updateConfig(newConfig: Partial<AnimationConfig>): void {
         Object.assign(this.animationConfig, newConfig);
         this.loggingSystem.debug('TutorialAnimationController', 'Animation configuration updated', newConfig);
     }
@@ -621,7 +709,7 @@ export class TutorialAnimationController {
     /**
      * リソースをクリーンアップ
      */
-    dispose() {
+    dispose(): void {
         try {
             this.stopAllAnimations();
             
@@ -637,7 +725,7 @@ export class TutorialAnimationController {
             
             this.loggingSystem.debug('TutorialAnimationController', 'Animation controller disposed');
         } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialAnimationController.dispose');
+            this.errorHandler.handleError(error as Error, 'TutorialAnimationController.dispose');
         }
     }
 }

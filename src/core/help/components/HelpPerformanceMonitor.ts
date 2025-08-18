@@ -3,8 +3,170 @@
  * リアルタイム監視、パフォーマンス最適化、メトリクス収集
  */
 
+// 型定義
+export interface GameEngine {
+    helpManager?: HelpManager;
+    eventBus?: EventBus;
+}
+
+export interface HelpManager {
+    contentLoader?: ContentLoader;
+    searchEngine?: SearchEngine;
+}
+
+export interface ContentLoader {
+    getPerformanceStats(): PerformanceStats;
+    clearCache(pattern: string): void;
+    maxCacheSize: number;
+    cacheTimeout: number;
+    preloadEssentialContent(): Promise<void>;
+}
+
+export interface SearchEngine {
+    getPerformanceStats(): PerformanceStats;
+    cleanupCache(): void;
+    optimizeIndex(): void;
+    maxCacheSize: number;
+    cacheTimeout: number;
+}
+
+export interface EventBus {
+    emit(event: string, data: any): void;
+}
+
+export interface PerformanceStats {
+    cacheHitRate: number;
+}
+
+export interface MetricValue {
+    value: number;
+    timestamp: number;
+    context: Record<string, any>;
+}
+
+export interface PerformanceMetrics {
+    helpLoadTime: MetricValue[];
+    searchResponseTime: MetricValue[];
+    tutorialStepTime: MetricValue[];
+    tooltipDisplayTime: MetricValue[];
+    memoryUsage: MetricValue[];
+    cacheHitRates: CacheHitRates;
+    [key: string]: MetricValue[] | CacheHitRates;
+}
+
+export interface CacheHitRates {
+    content: number;
+    search: number;
+    images: number;
+}
+
+export interface PerformanceThresholds {
+    helpLoadTime: number;
+    searchResponseTime: number;
+    tutorialStepTime: number;
+    tooltipDisplayTime: number;
+    memoryUsage: number;
+    cacheHitRate: number;
+}
+
+export interface AlertConfig {
+    enabled: boolean;
+    consecutiveFailures: number;
+    maxConsecutiveFailures: number;
+    cooldownPeriod: number;
+    lastAlertTime: number;
+}
+
+export interface OptimizationFlags {
+    lazyLoading: boolean;
+    contentCaching: boolean;
+    imageLazyLoading: boolean;
+    searchCaching: boolean;
+    preloading: boolean;
+}
+
+export interface HistoryEntry {
+    timestamp: number;
+    metrics: PeriodMetrics;
+}
+
+export interface PerformanceHistory {
+    hourly: HistoryEntry[];
+    daily: HistoryEntry[];
+    currentHour: number;
+    currentDay: number;
+}
+
+export interface PerformanceIssue {
+    metric: string;
+    value: number;
+    threshold: number;
+    severity: SeverityLevel;
+}
+
+export type SeverityLevel = 'low' | 'medium' | 'high' | 'critical';
+
+export interface SystemInfo {
+    userAgent: string;
+    language: string;
+    hardwareConcurrency: number | string;
+    timestamp: string;
+    memory?: MemoryInfo;
+}
+
+export interface MemoryInfo {
+    used: number;
+    total: number;
+    limit: number;
+}
+
+export interface Recommendation {
+    action: string;
+    description: string;
+    impact: 'low' | 'medium' | 'high';
+}
+
+export interface AlertData {
+    timestamp: string;
+    issues: PerformanceIssue[];
+    systemInfo: SystemInfo;
+    recommendations: Recommendation[];
+}
+
+export interface PeriodMetrics {
+    [key: string]: {
+        average: number;
+        min: number;
+        max: number;
+        count: number;
+    } | CacheHitRates;
+    cacheHitRates: CacheHitRates;
+}
+
+export interface PerformanceReport {
+    timestamp: string;
+    metrics: PeriodMetrics;
+    thresholds: PerformanceThresholds;
+    optimizations: OptimizationFlags;
+    history: {
+        hourly: HistoryEntry[];
+        daily: HistoryEntry[];
+    };
+    systemInfo: SystemInfo;
+}
+
 export class HelpPerformanceMonitor {
-    constructor(gameEngine) {
+    private gameEngine: GameEngine;
+    private metrics: PerformanceMetrics;
+    private thresholds: PerformanceThresholds;
+    private alerts: AlertConfig;
+    private isMonitoring: boolean;
+    private monitoringInterval: number | null;
+    private performanceObserver: PerformanceObserver | null;
+    private optimizations: OptimizationFlags;
+    private history: PerformanceHistory;
+
+    constructor(gameEngine: GameEngine) {
         this.gameEngine = gameEngine;
         
         // パフォーマンスメトリクス
@@ -56,8 +218,8 @@ export class HelpPerformanceMonitor {
         
         // パフォーマンス履歴
         this.history = {
-            hourly: new Array(24).fill(null).map(() => ({ timestamp: 0, metrics: {} })),
-            daily: new Array(7).fill(null).map(() => ({ timestamp: 0, metrics: {} })),
+            hourly: new Array(24).fill(null).map(() => ({ timestamp: 0, metrics: {} as PeriodMetrics })),
+            daily: new Array(7).fill(null).map(() => ({ timestamp: 0, metrics: {} as PeriodMetrics })),
             currentHour: 0,
             currentDay: 0
         };
@@ -68,7 +230,7 @@ export class HelpPerformanceMonitor {
     /**
      * 初期化処理
      */
-    initialize() {
+    initialize(): void {
         this.setupPerformanceObserver();
         this.startMonitoring();
         
@@ -81,13 +243,13 @@ export class HelpPerformanceMonitor {
     /**
      * パフォーマンス監視開始
      */
-    startMonitoring() {
+    startMonitoring(): void {
         if (this.isMonitoring) return;
         
         this.isMonitoring = true;
         
         // 定期監視（5秒間隔）
-        this.monitoringInterval = setInterval(() => {
+        this.monitoringInterval = window.setInterval(() => {
             this.collectMetrics();
             this.analyzePerformance();
             this.updateHistory();
@@ -99,7 +261,7 @@ export class HelpPerformanceMonitor {
     /**
      * パフォーマンス監視停止
      */
-    stopMonitoring() {
+    stopMonitoring(): void {
         if (!this.isMonitoring) return;
         
         this.isMonitoring = false;
@@ -120,7 +282,7 @@ export class HelpPerformanceMonitor {
     /**
      * Performance Observer セットアップ
      */
-    setupPerformanceObserver() {
+    setupPerformanceObserver(): void {
         if (typeof PerformanceObserver === 'undefined') {
             console.warn('PerformanceObserver not supported');
             return;
@@ -145,11 +307,11 @@ export class HelpPerformanceMonitor {
     /**
      * パフォーマンスメトリクス収集
      */
-    collectMetrics() {
+    collectMetrics(): void {
         try {
             // メモリ使用量
-            if (performance.memory) {
-                const memoryUsage = performance.memory.usedJSHeapSize;
+            if ((performance as any).memory) {
+                const memoryUsage = (performance as any).memory.usedJSHeapSize;
                 this.recordMetric('memoryUsage', memoryUsage);
             }
             
@@ -176,14 +338,14 @@ export class HelpPerformanceMonitor {
     /**
      * パフォーマンス分析
      */
-    analyzePerformance() {
-        const issues = [];
+    analyzePerformance(): void {
+        const issues: PerformanceIssue[] = [];
         
         // 各メトリクスを閾値と比較
         for (const [metric, values] of Object.entries(this.metrics)) {
             if (Array.isArray(values) && values.length > 0) {
                 const avg = this.calculateAverage(values);
-                const threshold = this.thresholds[metric];
+                const threshold = this.thresholds[metric as keyof PerformanceThresholds];
                 
                 if (threshold && avg > threshold) {
                     issues.push({
@@ -219,7 +381,7 @@ export class HelpPerformanceMonitor {
     /**
      * パフォーマンス問題処理
      */
-    handlePerformanceIssues(issues) {
+    handlePerformanceIssues(issues: PerformanceIssue[]): void {
         this.alerts.consecutiveFailures++;
         
         // アラート送信条件チェック
@@ -235,7 +397,7 @@ export class HelpPerformanceMonitor {
     /**
      * アラート送信判定
      */
-    shouldSendAlert() {
+    shouldSendAlert(): boolean {
         if (!this.alerts.enabled) return false;
         if (this.alerts.consecutiveFailures < this.alerts.maxConsecutiveFailures) return false;
         
@@ -246,8 +408,8 @@ export class HelpPerformanceMonitor {
     /**
      * パフォーマンスアラート送信
      */
-    sendPerformanceAlert(issues) {
-        const alertData = {
+    sendPerformanceAlert(issues: PerformanceIssue[]): void {
+        const alertData: AlertData = {
             timestamp: new Date().toISOString(),
             issues: issues,
             systemInfo: this.getSystemInfo(),
@@ -265,7 +427,7 @@ export class HelpPerformanceMonitor {
     /**
      * 自動最適化適用
      */
-    applyAutoOptimizations(issues) {
+    applyAutoOptimizations(issues: PerformanceIssue[]): void {
         for (const issue of issues) {
             switch (issue.metric) {
                 case 'helpLoadTime':
@@ -294,7 +456,7 @@ export class HelpPerformanceMonitor {
     /**
      * コンテンツ読み込み最適化
      */
-    optimizeContentLoading() {
+    private optimizeContentLoading(): void {
         if (!this.optimizations.lazyLoading) {
             this.optimizations.lazyLoading = true;
             console.log('Enabled lazy loading for help content');
@@ -312,7 +474,7 @@ export class HelpPerformanceMonitor {
     /**
      * 検索パフォーマンス最適化
      */
-    optimizeSearchPerformance() {
+    private optimizeSearchPerformance(): void {
         if (this.gameEngine.helpManager && this.gameEngine.helpManager.searchEngine) {
             const searchEngine = this.gameEngine.helpManager.searchEngine;
             
@@ -332,7 +494,7 @@ export class HelpPerformanceMonitor {
     /**
      * メモリ使用量最適化
      */
-    optimizeMemoryUsage() {
+    private optimizeMemoryUsage(): void {
         // キャッシュクリーンアップ
         if (this.gameEngine.helpManager) {
             const helpManager = this.gameEngine.helpManager;
@@ -349,15 +511,15 @@ export class HelpPerformanceMonitor {
         }
         
         // ガベージコレクション（可能であれば）
-        if (typeof window !== 'undefined' && window.gc) {
-            window.gc();
+        if (typeof window !== 'undefined' && (window as any).gc) {
+            (window as any).gc();
         }
     }
     
     /**
      * コンテンツキャッシュ最適化
      */
-    optimizeContentCaching() {
+    private optimizeContentCaching(): void {
         if (this.gameEngine.helpManager && this.gameEngine.helpManager.contentLoader) {
             const contentLoader = this.gameEngine.helpManager.contentLoader;
             
@@ -378,7 +540,7 @@ export class HelpPerformanceMonitor {
     /**
      * 検索キャッシュ最適化
      */
-    optimizeSearchCaching() {
+    private optimizeSearchCaching(): void {
         if (this.gameEngine.helpManager && this.gameEngine.helpManager.searchEngine) {
             const searchEngine = this.gameEngine.helpManager.searchEngine;
             
@@ -393,29 +555,30 @@ export class HelpPerformanceMonitor {
     /**
      * メトリクス記録
      */
-    recordMetric(metricName, value, context = {}) {
+    recordMetric(metricName: string, value: number, context: Record<string, any> = {}): void {
         if (!this.metrics[metricName]) {
             this.metrics[metricName] = [];
         }
         
-        const metric = {
+        const metric: MetricValue = {
             value: value,
             timestamp: Date.now(),
             context: context
         };
         
-        this.metrics[metricName].push(metric);
+        (this.metrics[metricName] as MetricValue[]).push(metric);
         
         // 履歴サイズ制限（最新100件のみ保持）
-        if (this.metrics[metricName].length > 100) {
-            this.metrics[metricName] = this.metrics[metricName].slice(-100);
+        const metricArray = this.metrics[metricName] as MetricValue[];
+        if (metricArray.length > 100) {
+            this.metrics[metricName] = metricArray.slice(-100);
         }
     }
     
     /**
      * Performance Entry 処理
      */
-    processPerformanceEntry(entry) {
+    private processPerformanceEntry(entry: PerformanceEntry): void {
         if (entry.name.includes('help')) {
             switch (entry.entryType) {
                 case 'measure':
@@ -423,10 +586,11 @@ export class HelpPerformanceMonitor {
                     break;
                     
                 case 'resource':
+                    const resourceEntry = entry as PerformanceResourceTiming;
                     if (entry.name.includes('help') || entry.name.includes('tutorial')) {
                         this.recordMetric('resourceLoadTime', entry.duration, {
                             resource: entry.name,
-                            size: entry.transferSize
+                            size: resourceEntry.transferSize
                         });
                     }
                     break;
@@ -437,8 +601,8 @@ export class HelpPerformanceMonitor {
     /**
      * 推奨事項生成
      */
-    generateRecommendations(issues) {
-        const recommendations = [];
+    private generateRecommendations(issues: PerformanceIssue[]): Recommendation[] {
+        const recommendations: Recommendation[] = [];
         
         for (const issue of issues) {
             switch (issue.metric) {
@@ -482,19 +646,19 @@ export class HelpPerformanceMonitor {
     /**
      * システム情報取得
      */
-    getSystemInfo() {
-        const info = {
+    private getSystemInfo(): SystemInfo {
+        const info: SystemInfo = {
             userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'unknown',
             language: typeof navigator !== 'undefined' ? navigator.language : 'unknown',
-            hardwareConcurrency: typeof navigator !== 'undefined' ? navigator.hardwareConcurrency : 'unknown',
+            hardwareConcurrency: typeof navigator !== 'undefined' ? navigator.hardwareConcurrency || 'unknown' : 'unknown',
             timestamp: new Date().toISOString()
         };
         
-        if (performance.memory) {
+        if ((performance as any).memory) {
             info.memory = {
-                used: performance.memory.usedJSHeapSize,
-                total: performance.memory.totalJSHeapSize,
-                limit: performance.memory.jsHeapSizeLimit
+                used: (performance as any).memory.usedJSHeapSize,
+                total: (performance as any).memory.totalJSHeapSize,
+                limit: (performance as any).memory.jsHeapSizeLimit
             };
         }
         
@@ -504,7 +668,7 @@ export class HelpPerformanceMonitor {
     /**
      * 履歴更新
      */
-    updateHistory() {
+    private updateHistory(): void {
         const now = new Date();
         const currentHour = now.getHours();
         const currentDay = now.getDay();
@@ -531,21 +695,22 @@ export class HelpPerformanceMonitor {
     /**
      * 期間メトリクス計算
      */
-    calculatePeriodMetrics() {
-        const periodMetrics = {};
+    private calculatePeriodMetrics(): PeriodMetrics {
+        const periodMetrics: PeriodMetrics = {
+            cacheHitRates: { ...this.metrics.cacheHitRates }
+        };
         
         for (const [metric, values] of Object.entries(this.metrics)) {
             if (Array.isArray(values) && values.length > 0) {
+                const numericValues = values.map(v => v.value);
                 periodMetrics[metric] = {
                     average: this.calculateAverage(values),
-                    min: Math.min(...values.map(v => v.value)),
-                    max: Math.max(...values.map(v => v.value)),
+                    min: Math.min(...numericValues),
+                    max: Math.max(...numericValues),
                     count: values.length
                 };
             }
         }
-        
-        periodMetrics.cacheHitRates = { ...this.metrics.cacheHitRates };
         
         return periodMetrics;
     }
@@ -553,7 +718,7 @@ export class HelpPerformanceMonitor {
     /**
      * 平均値計算
      */
-    calculateAverage(values) {
+    private calculateAverage(values: MetricValue[] | number[]): number {
         if (!Array.isArray(values) || values.length === 0) return 0;
         
         const sum = values.reduce((acc, item) => {
@@ -566,7 +731,7 @@ export class HelpPerformanceMonitor {
     /**
      * 深刻度計算
      */
-    calculateSeverity(value, threshold) {
+    private calculateSeverity(value: number, threshold: number): SeverityLevel {
         const ratio = value / threshold;
         
         if (ratio > 3) return 'critical';
@@ -578,7 +743,7 @@ export class HelpPerformanceMonitor {
     /**
      * パフォーマンスレポート生成
      */
-    generatePerformanceReport() {
+    generatePerformanceReport(): PerformanceReport {
         return {
             timestamp: new Date().toISOString(),
             metrics: this.calculatePeriodMetrics(),
@@ -595,7 +760,7 @@ export class HelpPerformanceMonitor {
     /**
      * クリーンアップ
      */
-    cleanup() {
+    cleanup(): void {
         this.stopMonitoring();
         
         // メトリクスをローカルストレージに保存
@@ -609,7 +774,7 @@ export class HelpPerformanceMonitor {
         // リソースクリーンアップ
         for (const metric in this.metrics) {
             if (Array.isArray(this.metrics[metric])) {
-                this.metrics[metric].length = 0;
+                (this.metrics[metric] as MetricValue[]).length = 0;
             }
         }
     }
