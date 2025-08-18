@@ -1,11 +1,17 @@
-import { Scene } from '../core/Scene.js';
-import { ITEM_DEFINITIONS } from '../core/ItemSystem.js';
+import { Scene } from '../core/Scene';
+import { ITEM_DEFINITIONS } from '../core/ItemSystem';
+import type { ItemDefinition, ItemInfo } from '../types/game';
 
 /**
  * ショップシーン
  */
 export class ShopScene extends Scene {
-    constructor(gameEngine) {
+    private selectedItemIndex: number = 0;
+    private scrollOffset: number = 0;
+    private maxVisibleItems: number = 6;
+    private availableItems: ItemDefinition[] = [];
+    
+    constructor(gameEngine: any) {
         super(gameEngine);
         this.selectedItemIndex = 0;
         this.scrollOffset = 0;
@@ -16,7 +22,7 @@ export class ShopScene extends Scene {
     /**
      * シーン開始時の処理
      */
-    enter() {
+    enter(): void {
         this.updateItemList();
         this.selectedItemIndex = 0;
         this.scrollOffset = 0;
@@ -25,7 +31,7 @@ export class ShopScene extends Scene {
     /**
      * アイテムリストを更新
      */
-    updateItemList() {
+    updateItemList(): void {
         this.availableItems = this.gameEngine.itemManager.getAvailableItems();
         // リセットアイテムを最後に追加
         this.availableItems.push(ITEM_DEFINITIONS.reset);
@@ -34,14 +40,14 @@ export class ShopScene extends Scene {
     /**
      * 更新処理
      */
-    update(deltaTime) {
+    update(_deltaTime: number): void {
         // 特に更新処理は不要
     }
     
     /**
      * 描画処理
      */
-    render(context) {
+    render(context: CanvasRenderingContext2D): void {
         const canvas = this.gameEngine.canvas;
         
         // 背景
@@ -70,7 +76,7 @@ export class ShopScene extends Scene {
     /**
      * プレイヤー情報を描画
      */
-    renderPlayerInfo(context) {
+    private renderPlayerInfo(context: CanvasRenderingContext2D): void {
         const canvas = this.gameEngine.canvas;
         const playerData = this.gameEngine.playerData;
         
@@ -91,7 +97,7 @@ export class ShopScene extends Scene {
     /**
      * アイテムリストを描画
      */
-    renderItemList(context) {
+    private renderItemList(context: CanvasRenderingContext2D): void {
         const canvas = this.gameEngine.canvas;
         const startY = 150;
         const itemHeight = 80;
@@ -113,7 +119,7 @@ export class ShopScene extends Scene {
     /**
      * アイテムカードを描画
      */
-    renderItemCard(context, itemInfo, x, y, width, height, isSelected) {
+    private renderItemCard(context: CanvasRenderingContext2D, itemInfo: ItemInfo, x: number, y: number, width: number, height: number, isSelected: boolean): void {
         context.save();
         
         // 背景色の決定
@@ -216,7 +222,7 @@ export class ShopScene extends Scene {
     /**
      * 操作説明を描画
      */
-    renderControls(context) {
+    private renderControls(context: CanvasRenderingContext2D): void {
         const canvas = this.gameEngine.canvas;
         
         context.save();
@@ -235,9 +241,10 @@ export class ShopScene extends Scene {
     /**
      * 入力処理
      */
-    handleInput(event) {
+    handleInput(event: Event): void {
         if (event.type === 'keydown') {
-            switch (event.code) {
+            const keyEvent = event as KeyboardEvent;
+            switch (keyEvent.code) {
                 case 'ArrowUp':
                     this.moveSelection(-1);
                     break;
@@ -255,14 +262,14 @@ export class ShopScene extends Scene {
                     break;
             }
         } else if (event.type === 'click') {
-            this.handleClick(event);
+            this.handleClick(event as MouseEvent);
         }
     }
     
     /**
      * クリック処理
      */
-    handleClick(event) {
+    private handleClick(event: MouseEvent): void {
         const canvas = this.gameEngine.canvas;
         const rect = canvas.getBoundingClientRect();
         const x = event.clientX - rect.left;
@@ -287,7 +294,7 @@ export class ShopScene extends Scene {
     /**
      * 選択を移動
      */
-    moveSelection(direction) {
+    private moveSelection(direction: number): void {
         this.selectedItemIndex += direction;
         
         if (this.selectedItemIndex < 0) {
@@ -307,7 +314,7 @@ export class ShopScene extends Scene {
     /**
      * 選択されたアイテムを購入
      */
-    purchaseSelectedItem() {
+    private purchaseSelectedItem(): void {
         if (this.selectedItemIndex >= 0 && this.selectedItemIndex < this.availableItems.length) {
             const selectedItem = this.availableItems[this.selectedItemIndex];
             

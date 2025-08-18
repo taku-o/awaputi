@@ -2,32 +2,59 @@
  * ユーザー情報画面シーン (Main Controller Pattern)
  * 既存コンポーネントシステムを活用し、軽量なコントローラーとして機能
  */
-import { Scene } from '../core/Scene.js';
+import { Scene } from '../core/Scene';
 
 // コンポーネントシステム
-import { ScenesDialogManager } from './components/ScenesDialogManager.js';
-import { ComponentEventBus } from './components/ComponentEventBus.js';
-import { SceneState } from './components/SceneState.js';
-import { UsernameDialog } from './components/UsernameDialog.js';
-import { ScenesExportDialog } from './components/ScenesExportDialog.js';
-import { ScenesImportDialog } from './components/ScenesImportDialog.js';
+import { ScenesDialogManager } from './components/ScenesDialogManager';
+import { ComponentEventBus } from './components/ComponentEventBus';
+import { SceneState } from './components/SceneState';
+import { UsernameDialog } from './components/UsernameDialog';
+import { ScenesExportDialog } from './components/ScenesExportDialog';
+import { ScenesImportDialog } from './components/ScenesImportDialog';
 
 // 既存の分離コンポーネント
-import { UserProfileManager } from './components/user-info/UserProfileManager.js';
-import { UserStatisticsRenderer } from './components/user-info/UserStatisticsRenderer.js';
-import { UserAchievementDisplay } from './components/user-info/UserAchievementDisplay.js';
-import { UserDataExporter } from './components/user-info/UserDataExporter.js';
-import { UserHelpIntegration } from './components/user-info/UserHelpIntegration.js';
-import { UserInfoTabManager } from './components/user-info/UserInfoTabManager.js';
-import { UserInfoRenderer } from './components/user-info/UserInfoRenderer.js';
-import { UserInfoEventHandler } from './components/user-info/UserInfoEventHandler.js';
+import { UserProfileManager } from './components/user-info/UserProfileManager';
+import { UserStatisticsRenderer } from './components/user-info/UserStatisticsRenderer';
+import { UserAchievementDisplay } from './components/user-info/UserAchievementDisplay';
+import { UserDataExporter } from './components/user-info/UserDataExporter';
+import { UserHelpIntegration } from './components/user-info/UserHelpIntegration';
+import { UserInfoTabManager } from './components/user-info/UserInfoTabManager';
+import { UserInfoRenderer } from './components/user-info/UserInfoRenderer';
+import { UserInfoEventHandler } from './components/user-info/UserInfoEventHandler';
 
 // 新しいサブコンポーネント
-import { UserInterfaceController } from './user-info-scene/UserInterfaceController.js';
-import { UserDataManager } from './user-info-scene/UserDataManager.js';
+import { UserInterfaceController } from './user-info-scene/UserInterfaceController';
+import { UserDataManager } from './user-info-scene/UserDataManager';
 
 export class UserInfoScene extends Scene {
-    constructor(gameEngine) {
+    // コンポーネントシステム
+    private eventBus!: ComponentEventBus;
+    private sceneState!: SceneState;
+    private dialogManager!: ScenesDialogManager;
+    private tabManager!: UserInfoTabManager;
+    private renderer!: UserInfoRenderer;
+    private eventHandler!: UserInfoEventHandler;
+    
+    // サブコントローラー
+    private uiController!: UserInterfaceController;
+    private dataManager!: UserDataManager;
+    
+    // 既存の分離コンポーネント
+    private userProfileManager!: UserProfileManager;
+    private userStatisticsRenderer!: UserStatisticsRenderer;
+    private userAchievementDisplay!: UserAchievementDisplay;
+    private userDataExporter!: UserDataExporter;
+    private userHelpIntegration!: UserHelpIntegration;
+    
+    // レガシー互換性プロパティ
+    private lastCleanupTime: number = Date.now();
+    private CLEANUP_INTERVAL: number = 30000; // 30秒
+    private COMPONENT_TIMEOUT: number = 60000; // 60秒
+    public currentTab: string = 'profile';
+    public isDialogOpen: boolean = false;
+    public activeDialog: string | null = null;
+    
+    constructor(gameEngine: any) {
         super(gameEngine);
         
         // Main Controller Pattern - サブコンポーネント初期化
@@ -46,7 +73,7 @@ export class UserInfoScene extends Scene {
     /**
      * メインコントローラーの初期化
      */
-    initializeControllers() {
+    private initializeControllers(): void {
         // イベントバスの作成（他のコンポーネントより先に）
         this.eventBus = new ComponentEventBus();
         this.sceneState = new SceneState(this.gameEngine);
@@ -61,7 +88,7 @@ export class UserInfoScene extends Scene {
     /**
      * コンポーネントシステムの初期化
      */
-    initializeComponentSystem() {
+    private initializeComponentSystem(): void {
         // ダイアログマネージャー作成
         this.dialogManager = new ScenesDialogManager(this.gameEngine, this.eventBus, this.sceneState);
         
@@ -82,7 +109,7 @@ export class UserInfoScene extends Scene {
     /**
      * ユーザーコンポーネントの初期化
      */
-    initializeUserComponents() {
+    private initializeUserComponents(): void {
         // 既存の分離コンポーネント
         this.userProfileManager = new UserProfileManager(this.gameEngine, this.eventBus, this.sceneState);
         this.userStatisticsRenderer = new UserStatisticsRenderer(this.gameEngine, this.eventBus, this.sceneState);
@@ -94,18 +121,18 @@ export class UserInfoScene extends Scene {
     /**
      * レガシー互換性のセットアップ
      */
-    setupLegacyCompatibility() {
+    private setupLegacyCompatibility(): void {
         // 既存のテストが期待するプロパティを設定
         this.currentTab = 'profile';
         this.isDialogOpen = false;
         this.activeDialog = null;
         
         // UIコントローラーとの同期
-        this.eventBus.on('tabSwitched', (tabId) => {
+        this.eventBus.on('tabSwitched', (tabId: string) => {
             this.currentTab = tabId;
         });
         
-        this.eventBus.on('dialogOpened', (dialogType) => {
+        this.eventBus.on('dialogOpened', (dialogType: string) => {
             this.isDialogOpen = true;
             this.activeDialog = dialogType;
         });
@@ -120,7 +147,7 @@ export class UserInfoScene extends Scene {
     // Scene基底クラスのオーバーライド
     // ========================================
     
-    render(context) {
+    render(context: CanvasRenderingContext2D): void {
         try {
             // 基底クラスのレンダリング
             super.render(context);
@@ -138,7 +165,7 @@ export class UserInfoScene extends Scene {
         }
     }
     
-    update(deltaTime) {
+    update(deltaTime: number): void {
         try {
             // 基底クラスの更新
             super.update(deltaTime);
@@ -154,7 +181,7 @@ export class UserInfoScene extends Scene {
         }
     }
     
-    handleClick(x, y) {
+    handleClick(x: number, y: number): void {
         try {
             // UIコントローラーに処理を委譲
             const handled = this.uiController.handleClick(x, y);
@@ -169,7 +196,7 @@ export class UserInfoScene extends Scene {
         }
     }
     
-    handleKeyDown(key) {
+    handleKeyDown(key: string): void {
         try {
             // UIコントローラーに処理を委譲
             const handled = this.uiController.handleKeyDown(key);
@@ -188,39 +215,39 @@ export class UserInfoScene extends Scene {
     // 公開API（レガシー互換性）
     // ========================================
     
-    switchTab(tabId) {
+    switchTab(tabId: string): void {
         this.uiController.switchTab(tabId);
     }
     
-    openDialog(dialogType) {
+    openDialog(dialogType: string): void {
         this.eventBus.emit('openDialog', dialogType);
     }
     
-    closeDialog() {
+    closeDialog(): void {
         this.eventBus.emit('closeDialog');
     }
     
-    async getUserProfile() {
+    async getUserProfile(): Promise<any> {
         return await this.dataManager.getUserProfile();
     }
     
-    async getUserStatistics() {
+    async getUserStatistics(): Promise<any> {
         return await this.dataManager.getUserStatistics();
     }
     
-    async getUserAchievements() {
+    async getUserAchievements(): Promise<any> {
         return await this.dataManager.getUserAchievements();
     }
     
-    async updateUsername(newUsername) {
+    async updateUsername(newUsername: string): Promise<any> {
         return await this.dataManager.updateUsername(newUsername);
     }
     
-    async exportUserData() {
+    async exportUserData(): Promise<any> {
         return await this.dataManager.exportUserData();
     }
     
-    async importUserData(importData) {
+    async importUserData(importData: any): Promise<any> {
         return await this.dataManager.importUserData(importData);
     }
     
@@ -231,22 +258,22 @@ export class UserInfoScene extends Scene {
     /**
      * コンポーネントの更新
      */
-    updateComponents(deltaTime) {
+    private updateComponents(deltaTime: number): void {
         // タブマネージャーの更新
-        if (this.tabManager && this.tabManager.update) {
-            this.tabManager.update(deltaTime);
+        if (this.tabManager && (this.tabManager as any).update) {
+            (this.tabManager as any).update(deltaTime);
         }
         
         // ダイアログマネージャーの更新
-        if (this.dialogManager && this.dialogManager.update) {
-            this.dialogManager.update(deltaTime);
+        if (this.dialogManager && (this.dialogManager as any).update) {
+            (this.dialogManager as any).update(deltaTime);
         }
     }
     
     /**
      * 定期クリーンアップ処理
      */
-    performPeriodicCleanup() {
+    private performPeriodicCleanup(): void {
         const now = Date.now();
         if (now - this.lastCleanupTime > this.CLEANUP_INTERVAL) {
             this.cleanup();
@@ -257,20 +284,20 @@ export class UserInfoScene extends Scene {
     /**
      * クリーンアップ処理
      */
-    cleanup() {
+    private cleanup(): void {
         try {
             // ダイアログのクリーンアップ
             if (this.dialogManager) {
-                this.dialogManager.cleanup();
+                (this.dialogManager as any).cleanup();
             }
             
             // コントローラーのクリーンアップ
             if (this.uiController) {
-                this.uiController.cleanup();
+                (this.uiController as any).cleanup();
             }
             
             if (this.dataManager) {
-                this.dataManager.cleanup();
+                (this.dataManager as any).cleanup();
             }
             
             console.log('[UserInfoScene] 定期クリーンアップ完了');
@@ -283,7 +310,7 @@ export class UserInfoScene extends Scene {
     /**
      * シーン終了時のクリーンアップ
      */
-    destroy() {
+    destroy(): void {
         try {
             // 全コンポーネントのクリーンアップ
             this.cleanup();
