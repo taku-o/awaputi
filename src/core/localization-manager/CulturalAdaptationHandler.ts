@@ -3,7 +3,93 @@
  * 
  * RTL言語、地域設定、文化的コンテキスト、地域固有の表示設定を専門的に管理します
  */
+
+// 型定義
+export interface CulturalAdaptationConfig {
+    enabled: boolean;
+    rtlLanguages: string[];
+    numeralSystems: Record<string, NumeralSystem>;
+    dateFormats: Record<string, string>;
+    colorMeanings: Record<string, ColorMeanings>;
+    gestureConventions: Record<string, GestureConventions>;
+}
+
+export interface ColorMeanings {
+    [color: string]: string;
+}
+
+export interface GestureConventions {
+    [gesture: string]: GestureAppropriateness;
+}
+
+export interface RegionalUISettings {
+    textDirection: TextDirection;
+    fontFamily: string;
+    fontSize: string;
+    lineHeight: number;
+    spacing: SpacingMode;
+    preferredInputMethod: InputMethod;
+}
+
+export interface TimeFormatSettings {
+    time12: boolean;
+    dateFormat: string;
+    timeFormat: string;
+    weekStart: number;
+    era: CalendarEra;
+}
+
+export interface NumberFormatSettings {
+    decimal: string;
+    thousands: string;
+    currency: string;
+    currencyPosition: CurrencyPosition;
+}
+
+export interface CulturalAdaptationStats {
+    supportedRTLLanguages: number;
+    supportedNumeralSystems: number;
+    supportedDateFormats: number;
+    supportedColorMeanings: number;
+    supportedGestureConventions: number;
+    regionalUILanguages: number;
+    timeFormatLanguages: number;
+    numberFormatLanguages: number;
+}
+
+export interface CulturalDebugInfo {
+    language: string;
+    isRTL: boolean;
+    textDirection: TextDirection;
+    numeralSystem: NumeralSystem;
+    dateFormat: string;
+    uiSettings: RegionalUISettings;
+    timeFormat: TimeFormatSettings;
+    numberFormat: NumberFormatSettings;
+    stats: CulturalAdaptationStats;
+}
+
+export interface NumberFormatOptions {
+    style: NumberFormatType;
+    currency?: string;
+}
+
+// 列挙型
+export type NumeralSystem = 'latin' | 'arab' | 'persian' | 'thai' | 'devanagari';
+export type TextDirection = 'ltr' | 'rtl';
+export type SpacingMode = 'compact' | 'normal' | 'comfortable' | 'wide';
+export type InputMethod = 'mouse' | 'keyboard' | 'touch' | 'mixed';
+export type GestureAppropriateness = 'acceptable' | 'avoid' | 'ok' | 'approval';
+export type CalendarEra = 'ad' | 'hijri';
+export type CurrencyPosition = 'before' | 'after';
+export type NumberFormatType = 'decimal' | 'currency' | 'percent';
+
 export class CulturalAdaptationHandler {
+    private culturalAdaptation: CulturalAdaptationConfig;
+    private regionalUISettings: Record<string, RegionalUISettings>;
+    private timeFormats: Record<string, TimeFormatSettings>;
+    private numberFormats: Record<string, NumberFormatSettings>;
+
     constructor() {
         // 文化的適応設定
         this.culturalAdaptation = {
@@ -126,19 +212,19 @@ export class CulturalAdaptationHandler {
     
     /**
      * 言語がRTL（右から左）かどうかをチェック
-     * @param {string} language - 言語コード
-     * @returns {boolean} RTLかどうか
+     * @param language 言語コード
+     * @returns RTLかどうか
      */
-    isRTLLanguage(language) {
+    isRTLLanguage(language: string): boolean {
         return this.culturalAdaptation.rtlLanguages.includes(language);
     }
     
     /**
      * 言語に応じた文字方向を取得
-     * @param {string} language - 言語コード
-     * @returns {string} 文字方向（'ltr' または 'rtl'）
+     * @param language 言語コード
+     * @returns 文字方向（'ltr' または 'rtl'）
      */
-    getTextDirection(language) {
+    getTextDirection(language: string): TextDirection {
         if (this.regionalUISettings[language]) {
             return this.regionalUISettings[language].textDirection;
         }
@@ -147,78 +233,78 @@ export class CulturalAdaptationHandler {
     
     /**
      * 言語に応じた数値システムを取得
-     * @param {string} language - 言語コード
-     * @returns {string} 数値システム
+     * @param language 言語コード
+     * @returns 数値システム
      */
-    getNumeralSystem(language) {
+    getNumeralSystem(language: string): NumeralSystem {
         return this.culturalAdaptation.numeralSystems[language] || 'latin';
     }
     
     /**
      * 言語に応じた日付フォーマットを取得
-     * @param {string} language - 言語コード
-     * @returns {string} 日付フォーマット
+     * @param language 言語コード
+     * @returns 日付フォーマット
      */
-    getDateFormat(language) {
+    getDateFormat(language: string): string {
         return this.culturalAdaptation.dateFormats[language] || 'MM/DD/YYYY';
     }
     
     /**
      * 言語に応じた色の意味を取得
-     * @param {string} language - 言語コード
-     * @param {string} color - 色名
-     * @returns {string} 色の意味
+     * @param language 言語コード
+     * @param color 色名
+     * @returns 色の意味
      */
-    getColorMeaning(language, color) {
+    getColorMeaning(language: string, color: string): string | null {
         const colorMeanings = this.culturalAdaptation.colorMeanings[language];
         return colorMeanings ? colorMeanings[color] : null;
     }
     
     /**
      * 言語に応じたジェスチャー慣習を取得
-     * @param {string} language - 言語コード
-     * @param {string} gesture - ジェスチャー名
-     * @returns {string} ジェスチャーの適切性
+     * @param language 言語コード
+     * @param gesture ジェスチャー名
+     * @returns ジェスチャーの適切性
      */
-    getGestureConvention(language, gesture) {
+    getGestureConvention(language: string, gesture: string): GestureAppropriateness {
         const gestureConventions = this.culturalAdaptation.gestureConventions[language];
-        return gestureConventions ? gestureConventions[gesture] : 'acceptable';
+        return gestureConventions ? gestureConventions[gesture] as GestureAppropriateness : 'acceptable';
     }
     
     /**
      * 地域固有のUI設定を取得
-     * @param {string} language - 言語コード
-     * @returns {Object} UI設定
+     * @param language 言語コード
+     * @returns UI設定
      */
-    getRegionalUISettings(language) {
+    getRegionalUISettings(language: string): RegionalUISettings {
         return this.regionalUISettings[language] || this.regionalUISettings['en'];
     }
     
     /**
      * 時刻フォーマット設定を取得
-     * @param {string} language - 言語コード
-     * @returns {Object} 時刻フォーマット設定
+     * @param language 言語コード
+     * @returns 時刻フォーマット設定
      */
-    getTimeFormat(language) {
+    getTimeFormat(language: string): TimeFormatSettings {
         return this.timeFormats[language] || this.timeFormats['en'];
     }
     
     /**
      * 数値フォーマット設定を取得
-     * @param {string} language - 言語コード
-     * @returns {Object} 数値フォーマット設定
+     * @param language 言語コード
+     * @returns 数値フォーマット設定
      */
-    getNumberFormat(language) {
+    getNumberFormat(language: string): NumberFormatSettings {
         return this.numberFormats[language] || this.numberFormats['en'];
     }
     
     /**
      * 日付を言語に応じてフォーマット
-     * @param {Date} date - 日付オブジェクト
-     * @param {string} language - 言語コード
-     * @returns {string} フォーマットされた日付文字列
+     * @param date 日付オブジェクト
+     * @param language 言語コード
+     * @returns フォーマットされた日付文字列
      */
-    formatDate(date, language) {
+    formatDate(date: Date, language: string): string {
         const format = this.getDateFormat(language);
         const timeSettings = this.getTimeFormat(language);
         
@@ -236,7 +322,7 @@ export class CulturalAdaptationHandler {
             const day = String(date.getDate()).padStart(2, '0');
             
             return format
-                .replace('YYYY', year)
+                .replace('YYYY', year.toString())
                 .replace('MM', month)
                 .replace('DD', day);
         }
@@ -244,11 +330,11 @@ export class CulturalAdaptationHandler {
     
     /**
      * 時刻を言語に応じてフォーマット
-     * @param {Date} date - 日付オブジェクト
-     * @param {string} language - 言語コード
-     * @returns {string} フォーマットされた時刻文字列
+     * @param date 日付オブジェクト
+     * @param language 言語コード
+     * @returns フォーマットされた時刻文字列
      */
-    formatTime(date, language) {
+    formatTime(date: Date, language: string): string {
         const timeSettings = this.getTimeFormat(language);
         
         try {
@@ -273,16 +359,16 @@ export class CulturalAdaptationHandler {
     
     /**
      * 数値を言語に応じてフォーマット
-     * @param {number} number - 数値
-     * @param {string} language - 言語コード
-     * @param {string} type - フォーマットタイプ（'decimal', 'currency', 'percent'）
-     * @returns {string} フォーマットされた数値文字列
+     * @param number 数値
+     * @param language 言語コード
+     * @param type フォーマットタイプ（'decimal', 'currency', 'percent'）
+     * @returns フォーマットされた数値文字列
      */
-    formatNumber(number, language, type = 'decimal') {
+    formatNumber(number: number, language: string, type: NumberFormatType = 'decimal'): string {
         const numberSettings = this.getNumberFormat(language);
         
         try {
-            const options = { style: type };
+            const options: NumberFormatOptions = { style: type };
             if (type === 'currency') {
                 options.currency = this.getCurrencyCode(language);
             }
@@ -307,11 +393,11 @@ export class CulturalAdaptationHandler {
     
     /**
      * 言語に応じた通貨コードを取得
-     * @param {string} language - 言語コード
-     * @returns {string} 通貨コード
+     * @param language 言語コード
+     * @returns 通貨コード
      */
-    getCurrencyCode(language) {
-        const currencyMap = {
+    getCurrencyCode(language: string): string {
+        const currencyMap: Record<string, string> = {
             'ja': 'JPY',
             'en': 'USD',
             'en-GB': 'GBP',
@@ -325,10 +411,10 @@ export class CulturalAdaptationHandler {
     
     /**
      * CSS文字方向プロパティを適用
-     * @param {HTMLElement} element - 対象要素
-     * @param {string} language - 言語コード
+     * @param element 対象要素
+     * @param language 言語コード
      */
-    applyCSSDirection(element, language) {
+    applyCSSDirection(element: HTMLElement, language: string): void {
         if (element) {
             element.dir = this.getTextDirection(language);
             element.style.direction = this.getTextDirection(language);
@@ -337,32 +423,32 @@ export class CulturalAdaptationHandler {
     
     /**
      * 地域固有のフォント設定を適用
-     * @param {HTMLElement} element - 対象要素
-     * @param {string} language - 言語コード
+     * @param element 対象要素
+     * @param language 言語コード
      */
-    applyRegionalFont(element, language) {
+    applyRegionalFont(element: HTMLElement, language: string): void {
         if (element) {
             const settings = this.getRegionalUISettings(language);
             element.style.fontFamily = settings.fontFamily;
             element.style.fontSize = settings.fontSize;
-            element.style.lineHeight = settings.lineHeight;
+            element.style.lineHeight = settings.lineHeight.toString();
         }
     }
     
     /**
      * 文化的適応設定を更新
-     * @param {Object} newSettings - 新しい設定
+     * @param newSettings 新しい設定
      */
-    updateCulturalSettings(newSettings) {
+    updateCulturalSettings(newSettings: Partial<CulturalAdaptationConfig>): void {
         Object.assign(this.culturalAdaptation, newSettings);
     }
     
     /**
      * 地域UI設定を更新
-     * @param {string} language - 言語コード
-     * @param {Object} settings - UI設定
+     * @param language 言語コード
+     * @param settings UI設定
      */
-    updateRegionalUISettings(language, settings) {
+    updateRegionalUISettings(language: string, settings: Partial<RegionalUISettings>): void {
         this.regionalUISettings[language] = { 
             ...this.regionalUISettings[language], 
             ...settings 
@@ -370,10 +456,59 @@ export class CulturalAdaptationHandler {
     }
     
     /**
-     * 文化的適応の統計情報を取得
-     * @returns {Object} 統計情報
+     * 時刻フォーマット設定を更新
+     * @param language 言語コード
+     * @param settings 時刻フォーマット設定
      */
-    getCulturalAdaptationStats() {
+    updateTimeFormatSettings(language: string, settings: Partial<TimeFormatSettings>): void {
+        this.timeFormats[language] = {
+            ...this.timeFormats[language],
+            ...settings
+        };
+    }
+    
+    /**
+     * 数値フォーマット設定を更新
+     * @param language 言語コード
+     * @param settings 数値フォーマット設定
+     */
+    updateNumberFormatSettings(language: string, settings: Partial<NumberFormatSettings>): void {
+        this.numberFormats[language] = {
+            ...this.numberFormats[language],
+            ...settings
+        };
+    }
+    
+    /**
+     * サポートされている言語一覧を取得
+     * @returns 言語コード配列
+     */
+    getSupportedLanguages(): string[] {
+        const languageSet = new Set<string>();
+        
+        // 各設定から言語コードを収集
+        Object.keys(this.culturalAdaptation.dateFormats).forEach(lang => languageSet.add(lang));
+        Object.keys(this.regionalUISettings).forEach(lang => languageSet.add(lang));
+        Object.keys(this.timeFormats).forEach(lang => languageSet.add(lang));
+        Object.keys(this.numberFormats).forEach(lang => languageSet.add(lang));
+        
+        return Array.from(languageSet).sort();
+    }
+    
+    /**
+     * 言語がサポートされているかチェック
+     * @param language 言語コード
+     * @returns サポートされているかどうか
+     */
+    isLanguageSupported(language: string): boolean {
+        return this.getSupportedLanguages().includes(language);
+    }
+    
+    /**
+     * 文化的適応の統計情報を取得
+     * @returns 統計情報
+     */
+    getCulturalAdaptationStats(): CulturalAdaptationStats {
         return {
             supportedRTLLanguages: this.culturalAdaptation.rtlLanguages.length,
             supportedNumeralSystems: Object.keys(this.culturalAdaptation.numeralSystems).length,
@@ -388,10 +523,10 @@ export class CulturalAdaptationHandler {
     
     /**
      * デバッグ情報の取得
-     * @param {string} language - 言語コード
-     * @returns {Object} デバッグ情報
+     * @param language 言語コード
+     * @returns デバッグ情報
      */
-    getDebugInfo(language) {
+    getDebugInfo(language: string): CulturalDebugInfo {
         return {
             language,
             isRTL: this.isRTLLanguage(language),
@@ -406,13 +541,60 @@ export class CulturalAdaptationHandler {
     }
     
     /**
+     * 設定をJSONで取得
+     * @returns 全設定のJSON表現
+     */
+    exportSettings(): string {
+        return JSON.stringify({
+            culturalAdaptation: this.culturalAdaptation,
+            regionalUISettings: this.regionalUISettings,
+            timeFormats: this.timeFormats,
+            numberFormats: this.numberFormats
+        }, null, 2);
+    }
+    
+    /**
+     * 設定をJSONから読み込み
+     * @param jsonSettings JSON形式の設定
+     */
+    importSettings(jsonSettings: string): void {
+        try {
+            const settings = JSON.parse(jsonSettings);
+            
+            if (settings.culturalAdaptation) {
+                this.culturalAdaptation = { ...this.culturalAdaptation, ...settings.culturalAdaptation };
+            }
+            if (settings.regionalUISettings) {
+                this.regionalUISettings = { ...this.regionalUISettings, ...settings.regionalUISettings };
+            }
+            if (settings.timeFormats) {
+                this.timeFormats = { ...this.timeFormats, ...settings.timeFormats };
+            }
+            if (settings.numberFormats) {
+                this.numberFormats = { ...this.numberFormats, ...settings.numberFormats };
+            }
+        } catch (error) {
+            console.error('Failed to import cultural adaptation settings:', error);
+            throw new Error('Invalid JSON format for cultural adaptation settings');
+        }
+    }
+    
+    /**
      * リソースの解放
      */
-    destroy() {
-        this.culturalAdaptation = null;
-        this.regionalUISettings = null;
-        this.timeFormats = null;
-        this.numberFormats = null;
+    destroy(): void {
+        // TypeScriptでは null の代わりに初期化
+        this.culturalAdaptation = {
+            enabled: false,
+            rtlLanguages: [],
+            numeralSystems: {},
+            dateFormats: {},
+            colorMeanings: {},
+            gestureConventions: {}
+        };
+        this.regionalUISettings = {};
+        this.timeFormats = {};
+        this.numberFormats = {};
         
         console.log('Cultural Adaptation Handler destroyed');
     }
