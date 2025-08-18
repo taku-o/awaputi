@@ -8,11 +8,202 @@
  * - 進捗データの永続化
  * - 複雑条件の評価
  */
+
+// 型定義
+export interface ProgressData {
+    bubblesPopped?: number;
+    totalScore?: number;
+    highestSingleScore?: number;
+    maxCombo?: number;
+    bestAccuracy?: number;
+    longestSurvivalTime?: number;
+    stagesCleared?: number;
+    allStagesCleared?: boolean;
+    gamesPlayed?: number;
+    totalPlayTime?: number;
+    consecutiveDaysPlayed?: number;
+    highestNoItemScore?: number;
+    bubbleTypesCounts?: Record<string, number>;
+    perfectGames?: PerfectGameRecord[];
+    speedChallengeRecords?: SpeedChallengeRecord[];
+    lowHpSurvivalRecords?: LowHpSurvivalRecord[];
+    lowHpScoreRecords?: LowHpScoreRecord[];
+    timeSpecificScoreRecords?: TimeSpecificScoreRecord[];
+    stageClearCounts?: Record<string, number>;
+    availableStages?: string[];
+    [key: string]: any;
+}
+
+export interface PerfectGameRecord {
+    bubbles: number;
+    missedBubbles: number;
+    score: number;
+    timestamp: number;
+}
+
+export interface SpeedChallengeRecord {
+    bubbles: number;
+    time: number;
+    timestamp: number;
+}
+
+export interface LowHpSurvivalRecord {
+    hp: number;
+    time: number;
+    timestamp: number;
+}
+
+export interface LowHpScoreRecord {
+    hp: number;
+    score: number;
+    timestamp: number;
+}
+
+export interface TimeSpecificScoreRecord {
+    score: number;
+    timestamp: number;
+}
+
+export interface Achievement {
+    id: string;
+    name: string;
+    description: string;
+    condition: AchievementCondition;
+    rewards?: AchievementReward[];
+    category?: string;
+    difficulty?: DifficultyLevel;
+    hidden?: boolean;
+}
+
+export interface AchievementCondition {
+    type: ConditionType;
+    value?: number;
+    bubbleType?: string;
+    hp?: number;
+    time?: number;
+    score?: number;
+    minBubbles?: number;
+    bubbles?: number;
+    startHour?: number;
+    endHour?: number;
+    [key: string]: any;
+}
+
+export interface AchievementReward {
+    type: RewardType;
+    value: string | number;
+    description?: string;
+}
+
+export interface ConditionEvaluationResult {
+    current: number;
+    target: number;
+    progress: number;
+    isComplete: boolean;
+    error?: string;
+    bubbleType?: string;
+    hp?: number;
+    minBubbles?: number;
+    bubbles?: number;
+    timeRange?: string;
+    requiredCount?: number;
+    completedTypes?: string[];
+    requiredTypes?: string[];
+    completedStages?: string[];
+}
+
+export interface ProgressHistoryEntry {
+    eventType: EventType;
+    data: any;
+    timestamp: number;
+}
+
+export interface EventData {
+    bubbleType?: string;
+    score?: number;
+    accuracy?: number;
+    survivalTime?: number;
+    bubblesPopped?: number;
+    missedBubbles?: number;
+    gameTime?: number;
+    itemsUsed?: number;
+    lowestHp?: number;
+    combo?: number;
+    stageName?: string;
+    allStagesCompleted?: boolean;
+    sessionTime?: number;
+    consecutiveDays?: number;
+    [key: string]: any;
+}
+
+export interface TrackerConfig {
+    saveInterval: number;
+    maxHistoryEntries: number;
+    debugMode: boolean;
+}
+
+export interface SaveData {
+    progressData: ProgressData;
+    unlockedAchievements: string[];
+    lastSaved: number;
+}
+
+export interface AchievementUnlockedEvent {
+    achievementId: string;
+    achievement: Achievement;
+    timestamp: number;
+}
+
+// コールバック型
+export type ConditionEvaluator = (progress: ProgressData, condition: AchievementCondition) => ConditionEvaluationResult;
+export type EventHandler = (data: any) => void;
+
+// 列挙型
+export type ConditionType = 
+    | 'bubblesPopped'
+    | 'singleGameScore'
+    | 'cumulativeScore'
+    | 'maxCombo'
+    | 'bubbleTypePopped'
+    | 'survivalTime'
+    | 'lowHpSurvival'
+    | 'lowHpScore'
+    | 'stagesCleared'
+    | 'allStagesCleared'
+    | 'perfectGame'
+    | 'speedChallenge'
+    | 'accuracy'
+    | 'consecutiveDays'
+    | 'totalPlayTime'
+    | 'gamesPlayed'
+    | 'allBubbleTypes'
+    | 'allStagesMultiple'
+    | 'noItemScore'
+    | 'timeSpecificScore';
+
+export type EventType = 
+    | 'bubblePopped'
+    | 'gameCompleted'
+    | 'comboAchieved'
+    | 'stageCleared'
+    | 'playSession';
+
+export type RewardType = 'points' | 'item' | 'cosmetic' | 'title' | 'unlock';
+export type DifficultyLevel = 'easy' | 'medium' | 'hard' | 'expert' | 'legendary';
+
 export class AchievementProgressTracker {
+    private progressData: ProgressData;
+    private unlockedAchievements: Set<string>;
+    private conditionEvaluators: Record<ConditionType, ConditionEvaluator>;
+    private config: TrackerConfig;
+    private progressHistory: ProgressHistoryEntry[];
+    private eventHandlers: Record<string, EventHandler[]>;
+    private autoSaveInterval?: number;
+
     constructor() {
         // 進捗データ
         this.progressData = {};
-        this.unlockedAchievements = new Set();
+        this.unlockedAchievements = new Set<string>();
         
         // 条件評価エンジン
         this.conditionEvaluators = this.initializeConditionEvaluators();
@@ -39,87 +230,93 @@ export class AchievementProgressTracker {
 
     /**
      * 条件評価エンジンを初期化
-     * @returns {object} 条件評価関数群
+     * @returns 条件評価関数群
      */
-    initializeConditionEvaluators() {
+    private initializeConditionEvaluators(): Record<ConditionType, ConditionEvaluator> {
         return {
             // 基本的な数値条件
-            bubblesPopped: (progress, condition) => {
+            bubblesPopped: (progress: ProgressData, condition: AchievementCondition): ConditionEvaluationResult => {
                 const current = progress.bubblesPopped || 0;
+                const target = condition.value || 0;
                 return {
                     current,
-                    target: condition.value,
-                    progress: Math.min(current / condition.value, 1),
-                    isComplete: current >= condition.value
+                    target,
+                    progress: Math.min(current / target, 1),
+                    isComplete: current >= target
                 };
             },
 
             // 単発ゲームスコア
-            singleGameScore: (progress, condition) => {
+            singleGameScore: (progress: ProgressData, condition: AchievementCondition): ConditionEvaluationResult => {
                 const current = progress.highestSingleScore || 0;
+                const target = condition.value || 0;
                 return {
                     current,
-                    target: condition.value,
-                    progress: Math.min(current / condition.value, 1),
-                    isComplete: current >= condition.value
+                    target,
+                    progress: Math.min(current / target, 1),
+                    isComplete: current >= target
                 };
             },
 
             // 累計スコア
-            cumulativeScore: (progress, condition) => {
+            cumulativeScore: (progress: ProgressData, condition: AchievementCondition): ConditionEvaluationResult => {
                 const current = progress.totalScore || 0;
+                const target = condition.value || 0;
                 return {
                     current,
-                    target: condition.value,
-                    progress: Math.min(current / condition.value, 1),
-                    isComplete: current >= condition.value
+                    target,
+                    progress: Math.min(current / target, 1),
+                    isComplete: current >= target
                 };
             },
 
             // 最大コンボ
-            maxCombo: (progress, condition) => {
+            maxCombo: (progress: ProgressData, condition: AchievementCondition): ConditionEvaluationResult => {
                 const current = progress.maxCombo || 0;
+                const target = condition.value || 0;
                 return {
                     current,
-                    target: condition.value,
-                    progress: Math.min(current / condition.value, 1),
-                    isComplete: current >= condition.value
+                    target,
+                    progress: Math.min(current / target, 1),
+                    isComplete: current >= target
                 };
             },
 
             // 特殊泡タイプ
-            bubbleTypePopped: (progress, condition) => {
+            bubbleTypePopped: (progress: ProgressData, condition: AchievementCondition): ConditionEvaluationResult => {
                 const bubbleTypes = progress.bubbleTypesCounts || {};
-                const current = bubbleTypes[condition.bubbleType] || 0;
+                const current = bubbleTypes[condition.bubbleType || ''] || 0;
+                const target = condition.value || 0;
                 return {
                     current,
-                    target: condition.value,
+                    target,
                     bubbleType: condition.bubbleType,
-                    progress: Math.min(current / condition.value, 1),
-                    isComplete: current >= condition.value
+                    progress: Math.min(current / target, 1),
+                    isComplete: current >= target
                 };
             },
 
             // 生存時間
-            survivalTime: (progress, condition) => {
+            survivalTime: (progress: ProgressData, condition: AchievementCondition): ConditionEvaluationResult => {
                 const current = progress.longestSurvivalTime || 0;
+                const target = condition.value || 0;
                 return {
                     current,
-                    target: condition.value,
-                    progress: Math.min(current / condition.value, 1),
-                    isComplete: current >= condition.value
+                    target,
+                    progress: Math.min(current / target, 1),
+                    isComplete: current >= target
                 };
             },
 
             // 低HP生存
-            lowHpSurvival: (progress, condition) => {
+            lowHpSurvival: (progress: ProgressData, condition: AchievementCondition): ConditionEvaluationResult => {
                 const records = progress.lowHpSurvivalRecords || [];
                 const qualifying = records.filter(record => 
-                    record.hp <= condition.hp && record.time >= condition.time
+                    record.hp <= (condition.hp || 0) && record.time >= (condition.time || 0)
                 );
                 return {
                     current: qualifying.length > 0 ? Math.max(...qualifying.map(r => r.time)) : 0,
-                    target: condition.time,
+                    target: condition.time || 0,
                     hp: condition.hp,
                     progress: qualifying.length > 0 ? 1 : 0,
                     isComplete: qualifying.length > 0
@@ -127,14 +324,14 @@ export class AchievementProgressTracker {
             },
 
             // 低HPスコア
-            lowHpScore: (progress, condition) => {
+            lowHpScore: (progress: ProgressData, condition: AchievementCondition): ConditionEvaluationResult => {
                 const records = progress.lowHpScoreRecords || [];
                 const qualifying = records.filter(record => 
-                    record.hp <= condition.hp && record.score >= condition.score
+                    record.hp <= (condition.hp || 0) && record.score >= (condition.score || 0)
                 );
                 return {
                     current: qualifying.length > 0 ? Math.max(...qualifying.map(r => r.score)) : 0,
-                    target: condition.score,
+                    target: condition.score || 0,
                     hp: condition.hp,
                     progress: qualifying.length > 0 ? 1 : 0,
                     isComplete: qualifying.length > 0
@@ -142,18 +339,19 @@ export class AchievementProgressTracker {
             },
 
             // ステージクリア
-            stagesCleared: (progress, condition) => {
+            stagesCleared: (progress: ProgressData, condition: AchievementCondition): ConditionEvaluationResult => {
                 const current = progress.stagesCleared || 0;
+                const target = condition.value || 0;
                 return {
                     current,
-                    target: condition.value,
-                    progress: Math.min(current / condition.value, 1),
-                    isComplete: current >= condition.value
+                    target,
+                    progress: Math.min(current / target, 1),
+                    isComplete: current >= target
                 };
             },
 
             // 全ステージクリア
-            allStagesCleared: (progress, condition) => {
+            allStagesCleared: (progress: ProgressData, condition: AchievementCondition): ConditionEvaluationResult => {
                 const cleared = progress.allStagesCleared || false;
                 return {
                     current: cleared ? 1 : 0,
@@ -164,10 +362,10 @@ export class AchievementProgressTracker {
             },
 
             // 完璧ゲーム
-            perfectGame: (progress, condition) => {
+            perfectGame: (progress: ProgressData, condition: AchievementCondition): ConditionEvaluationResult => {
                 const records = progress.perfectGames || [];
                 const qualifying = records.filter(record => 
-                    record.bubbles >= condition.minBubbles && record.missedBubbles === 0
+                    record.bubbles >= (condition.minBubbles || 0) && record.missedBubbles === 0
                 );
                 return {
                     current: qualifying.length,
@@ -179,14 +377,14 @@ export class AchievementProgressTracker {
             },
 
             // スピードチャレンジ
-            speedChallenge: (progress, condition) => {
+            speedChallenge: (progress: ProgressData, condition: AchievementCondition): ConditionEvaluationResult => {
                 const records = progress.speedChallengeRecords || [];
                 const qualifying = records.filter(record => 
-                    record.bubbles >= condition.bubbles && record.time <= condition.time
+                    record.bubbles >= (condition.bubbles || 0) && record.time <= (condition.time || 0)
                 );
                 return {
                     current: qualifying.length > 0 ? Math.min(...qualifying.map(r => r.time)) : Infinity,
-                    target: condition.time,
+                    target: condition.time || 0,
                     bubbles: condition.bubbles,
                     progress: qualifying.length > 0 ? 1 : 0,
                     isComplete: qualifying.length > 0
@@ -194,58 +392,62 @@ export class AchievementProgressTracker {
             },
 
             // 精度
-            accuracy: (progress, condition) => {
+            accuracy: (progress: ProgressData, condition: AchievementCondition): ConditionEvaluationResult => {
                 const current = progress.bestAccuracy || 0;
+                const target = condition.value || 0;
                 return {
                     current,
-                    target: condition.value,
-                    progress: Math.min(current / condition.value, 1),
-                    isComplete: current >= condition.value
+                    target,
+                    progress: Math.min(current / target, 1),
+                    isComplete: current >= target
                 };
             },
 
             // 連続日数
-            consecutiveDays: (progress, condition) => {
+            consecutiveDays: (progress: ProgressData, condition: AchievementCondition): ConditionEvaluationResult => {
                 const current = progress.consecutiveDaysPlayed || 0;
+                const target = condition.value || 0;
                 return {
                     current,
-                    target: condition.value,
-                    progress: Math.min(current / condition.value, 1),
-                    isComplete: current >= condition.value
+                    target,
+                    progress: Math.min(current / target, 1),
+                    isComplete: current >= target
                 };
             },
 
             // 総プレイ時間
-            totalPlayTime: (progress, condition) => {
+            totalPlayTime: (progress: ProgressData, condition: AchievementCondition): ConditionEvaluationResult => {
                 const current = progress.totalPlayTime || 0;
+                const target = condition.value || 0;
                 return {
                     current,
-                    target: condition.value,
-                    progress: Math.min(current / condition.value, 1),
-                    isComplete: current >= condition.value
+                    target,
+                    progress: Math.min(current / target, 1),
+                    isComplete: current >= target
                 };
             },
 
             // ゲームプレイ数
-            gamesPlayed: (progress, condition) => {
+            gamesPlayed: (progress: ProgressData, condition: AchievementCondition): ConditionEvaluationResult => {
                 const current = progress.gamesPlayed || 0;
+                const target = condition.value || 0;
                 return {
                     current,
-                    target: condition.value,
-                    progress: Math.min(current / condition.value, 1),
-                    isComplete: current >= condition.value
+                    target,
+                    progress: Math.min(current / target, 1),
+                    isComplete: current >= target
                 };
             },
 
             // 全泡タイプ
-            allBubbleTypes: (progress, condition) => {
+            allBubbleTypes: (progress: ProgressData, condition: AchievementCondition): ConditionEvaluationResult => {
                 const bubbleTypes = progress.bubbleTypesCounts || {};
                 const requiredTypes = [
                     'normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink', 
                     'poison', 'spiky', 'electric', 'boss', 'golden', 'phantom',
                     'explosive', 'magnetic', 'frozen', 'multiplier'
                 ];
-                const completedTypes = requiredTypes.filter(type => bubbleTypes[type] > 0);
+                const completedTypes = requiredTypes.filter(type => (bubbleTypes[type] || 0) > 0);
                 return {
                     current: completedTypes.length,
                     target: requiredTypes.length,
@@ -257,11 +459,11 @@ export class AchievementProgressTracker {
             },
 
             // 全ステージ複数回
-            allStagesMultiple: (progress, condition) => {
+            allStagesMultiple: (progress: ProgressData, condition: AchievementCondition): ConditionEvaluationResult => {
                 const stageCounts = progress.stageClearCounts || {};
                 const requiredStages = progress.availableStages || [];
                 const completedStages = requiredStages.filter(stage => 
-                    (stageCounts[stage] || 0) >= condition.value
+                    (stageCounts[stage] || 0) >= (condition.value || 0)
                 );
                 return {
                     current: completedStages.length,
@@ -274,30 +476,33 @@ export class AchievementProgressTracker {
             },
 
             // アイテム使用なしスコア
-            noItemScore: (progress, condition) => {
+            noItemScore: (progress: ProgressData, condition: AchievementCondition): ConditionEvaluationResult => {
                 const current = progress.highestNoItemScore || 0;
+                const target = condition.value || 0;
                 return {
                     current,
-                    target: condition.value,
-                    progress: Math.min(current / condition.value, 1),
-                    isComplete: current >= condition.value
+                    target,
+                    progress: Math.min(current / target, 1),
+                    isComplete: current >= target
                 };
             },
 
             // 時間指定スコア
-            timeSpecificScore: (progress, condition) => {
+            timeSpecificScore: (progress: ProgressData, condition: AchievementCondition): ConditionEvaluationResult => {
                 const records = progress.timeSpecificScoreRecords || [];
                 const qualifying = records.filter(record => {
                     const hour = new Date(record.timestamp).getHours();
-                    const inTimeRange = condition.startHour <= condition.endHour ?
-                        (hour >= condition.startHour && hour < condition.endHour) :
-                        (hour >= condition.startHour || hour < condition.endHour);
-                    return inTimeRange && record.score >= condition.score;
+                    const startHour = condition.startHour || 0;
+                    const endHour = condition.endHour || 24;
+                    const inTimeRange = startHour <= endHour ?
+                        (hour >= startHour && hour < endHour) :
+                        (hour >= startHour || hour < endHour);
+                    return inTimeRange && record.score >= (condition.score || 0);
                 });
                 return {
                     current: qualifying.length > 0 ? Math.max(...qualifying.map(r => r.score)) : 0,
-                    target: condition.score,
-                    timeRange: `${condition.startHour}:00-${condition.endHour}:00`,
+                    target: condition.score || 0,
+                    timeRange: `${condition.startHour || 0}:00-${condition.endHour || 24}:00`,
                     progress: qualifying.length > 0 ? 1 : 0,
                     isComplete: qualifying.length > 0
                 };
@@ -307,10 +512,10 @@ export class AchievementProgressTracker {
 
     /**
      * 進捗データを更新
-     * @param {string} eventType - イベントタイプ
-     * @param {object} data - イベントデータ
+     * @param eventType イベントタイプ
+     * @param data イベントデータ
      */
-    updateProgress(eventType, data) {
+    updateProgress(eventType: EventType, data: EventData): void {
         // イベントタイプに基づいて進捗データを更新
         switch (eventType) {
             case 'bubblePopped':
@@ -340,9 +545,9 @@ export class AchievementProgressTracker {
 
     /**
      * 泡関連の進捗を更新
-     * @param {object} data - 泡データ
+     * @param data 泡データ
      */
-    updateBubbleProgress(data) {
+    private updateBubbleProgress(data: EventData): void {
         // 総泡数
         this.progressData.bubblesPopped = (this.progressData.bubblesPopped || 0) + 1;
         
@@ -357,18 +562,20 @@ export class AchievementProgressTracker {
 
     /**
      * ゲーム完了関連の進捗を更新
-     * @param {object} data - ゲームデータ
+     * @param data ゲームデータ
      */
-    updateGameCompletionProgress(data) {
+    private updateGameCompletionProgress(data: EventData): void {
         // ゲーム数
         this.progressData.gamesPlayed = (this.progressData.gamesPlayed || 0) + 1;
         
         // スコア関連
-        this.progressData.totalScore = (this.progressData.totalScore || 0) + data.score;
-        this.progressData.highestSingleScore = Math.max(
-            this.progressData.highestSingleScore || 0,
-            data.score
-        );
+        if (data.score !== undefined) {
+            this.progressData.totalScore = (this.progressData.totalScore || 0) + data.score;
+            this.progressData.highestSingleScore = Math.max(
+                this.progressData.highestSingleScore || 0,
+                data.score
+            );
+        }
         
         // 精度
         if (data.accuracy !== undefined) {
@@ -387,14 +594,14 @@ export class AchievementProgressTracker {
         }
         
         // 完璧ゲーム
-        if (data.missedBubbles === 0 && data.bubblesPopped > 0) {
+        if (data.missedBubbles === 0 && (data.bubblesPopped || 0) > 0) {
             if (!this.progressData.perfectGames) {
                 this.progressData.perfectGames = [];
             }
             this.progressData.perfectGames.push({
-                bubbles: data.bubblesPopped,
-                missedBubbles: data.missedBubbles,
-                score: data.score,
+                bubbles: data.bubblesPopped || 0,
+                missedBubbles: data.missedBubbles || 0,
+                score: data.score || 0,
                 timestamp: Date.now()
             });
         }
@@ -412,7 +619,7 @@ export class AchievementProgressTracker {
         }
         
         // アイテム未使用スコア
-        if (data.itemsUsed === 0) {
+        if ((data.itemsUsed || 0) === 0 && data.score) {
             this.progressData.highestNoItemScore = Math.max(
                 this.progressData.highestNoItemScore || 0,
                 data.score
@@ -420,13 +627,15 @@ export class AchievementProgressTracker {
         }
         
         // 時間指定スコア
-        if (!this.progressData.timeSpecificScoreRecords) {
-            this.progressData.timeSpecificScoreRecords = [];
+        if (data.score) {
+            if (!this.progressData.timeSpecificScoreRecords) {
+                this.progressData.timeSpecificScoreRecords = [];
+            }
+            this.progressData.timeSpecificScoreRecords.push({
+                score: data.score,
+                timestamp: Date.now()
+            });
         }
-        this.progressData.timeSpecificScoreRecords.push({
-            score: data.score,
-            timestamp: Date.now()
-        });
         
         // 低HP記録
         if (data.lowestHp !== undefined) {
@@ -436,15 +645,15 @@ export class AchievementProgressTracker {
 
     /**
      * 低HP記録を更新
-     * @param {object} data - ゲームデータ
+     * @param data ゲームデータ
      */
-    updateLowHpRecords(data) {
+    private updateLowHpRecords(data: EventData): void {
         // 低HP生存記録
         if (!this.progressData.lowHpSurvivalRecords) {
             this.progressData.lowHpSurvivalRecords = [];
         }
         this.progressData.lowHpSurvivalRecords.push({
-            hp: data.lowestHp,
+            hp: data.lowestHp || 0,
             time: data.survivalTime || 0,
             timestamp: Date.now()
         });
@@ -454,28 +663,30 @@ export class AchievementProgressTracker {
             this.progressData.lowHpScoreRecords = [];
         }
         this.progressData.lowHpScoreRecords.push({
-            hp: data.lowestHp,
-            score: data.score,
+            hp: data.lowestHp || 0,
+            score: data.score || 0,
             timestamp: Date.now()
         });
     }
 
     /**
      * コンボ関連の進捗を更新
-     * @param {object} data - コンボデータ
+     * @param data コンボデータ
      */
-    updateComboProgress(data) {
-        this.progressData.maxCombo = Math.max(
-            this.progressData.maxCombo || 0,
-            data.combo
-        );
+    private updateComboProgress(data: EventData): void {
+        if (data.combo !== undefined) {
+            this.progressData.maxCombo = Math.max(
+                this.progressData.maxCombo || 0,
+                data.combo
+            );
+        }
     }
 
     /**
      * ステージ関連の進捗を更新
-     * @param {object} data - ステージデータ
+     * @param data ステージデータ
      */
-    updateStageProgress(data) {
+    private updateStageProgress(data: EventData): void {
         // ステージクリア数
         this.progressData.stagesCleared = (this.progressData.stagesCleared || 0) + 1;
         
@@ -495,11 +706,13 @@ export class AchievementProgressTracker {
 
     /**
      * プレイセッション関連の進捗を更新
-     * @param {object} data - セッションデータ
+     * @param data セッションデータ
      */
-    updatePlaySessionProgress(data) {
+    private updatePlaySessionProgress(data: EventData): void {
         // 総プレイ時間
-        this.progressData.totalPlayTime = (this.progressData.totalPlayTime || 0) + data.sessionTime;
+        if (data.sessionTime !== undefined) {
+            this.progressData.totalPlayTime = (this.progressData.totalPlayTime || 0) + data.sessionTime;
+        }
         
         // 連続プレイ日数
         if (data.consecutiveDays !== undefined) {
@@ -509,10 +722,10 @@ export class AchievementProgressTracker {
 
     /**
      * 実績条件を評価
-     * @param {object} achievement - 実績オブジェクト
-     * @returns {object} 評価結果
+     * @param achievement 実績オブジェクト
+     * @returns 評価結果
      */
-    evaluateAchievementCondition(achievement) {
+    evaluateAchievementCondition(achievement: Achievement): ConditionEvaluationResult {
         const condition = achievement.condition;
         const evaluator = this.conditionEvaluators[condition.type];
         
@@ -536,26 +749,26 @@ export class AchievementProgressTracker {
                 target: 1,
                 progress: 0,
                 isComplete: false,
-                error: error.message
+                error: (error as Error).message
             };
         }
     }
 
     /**
      * 実績の解除状態を確認
-     * @param {string} achievementId - 実績ID
-     * @returns {boolean} 解除済みかどうか
+     * @param achievementId 実績ID
+     * @returns 解除済みかどうか
      */
-    isAchievementUnlocked(achievementId) {
+    isAchievementUnlocked(achievementId: string): boolean {
         return this.unlockedAchievements.has(achievementId);
     }
 
     /**
      * 実績を解除
-     * @param {string} achievementId - 実績ID
-     * @param {object} achievement - 実績オブジェクト
+     * @param achievementId 実績ID
+     * @param achievement 実績オブジェクト
      */
-    unlockAchievement(achievementId, achievement) {
+    unlockAchievement(achievementId: string, achievement: Achievement): void {
         if (this.unlockedAchievements.has(achievementId)) {
             return; // 既に解除済み
         }
@@ -572,10 +785,10 @@ export class AchievementProgressTracker {
 
     /**
      * 進捗履歴に追加
-     * @param {string} eventType - イベントタイプ
-     * @param {object} data - イベントデータ
+     * @param eventType イベントタイプ
+     * @param data イベントデータ
      */
-    addToProgressHistory(eventType, data) {
+    private addToProgressHistory(eventType: EventType, data: EventData): void {
         this.progressHistory.unshift({
             eventType,
             data,
@@ -590,10 +803,10 @@ export class AchievementProgressTracker {
 
     /**
      * イベントを発火
-     * @param {string} eventName - イベント名
-     * @param {object} data - イベントデータ
+     * @param eventName イベント名
+     * @param data イベントデータ
      */
-    triggerEvent(eventName, data) {
+    private triggerEvent(eventName: string, data: any): void {
         const handlers = this.eventHandlers[eventName] || [];
         handlers.forEach(handler => {
             try {
@@ -606,10 +819,10 @@ export class AchievementProgressTracker {
 
     /**
      * イベントリスナーを追加
-     * @param {string} eventName - イベント名
-     * @param {function} handler - ハンドラー関数
+     * @param eventName イベント名
+     * @param handler ハンドラー関数
      */
-    addEventListener(eventName, handler) {
+    addEventListener(eventName: string, handler: EventHandler): void {
         if (!this.eventHandlers[eventName]) {
             this.eventHandlers[eventName] = [];
         }
@@ -619,9 +832,9 @@ export class AchievementProgressTracker {
     /**
      * 進捗データを保存
      */
-    saveProgressData() {
+    saveProgressData(): void {
         try {
-            const saveData = {
+            const saveData: SaveData = {
                 progressData: this.progressData,
                 unlockedAchievements: Array.from(this.unlockedAchievements),
                 lastSaved: Date.now()
@@ -635,11 +848,11 @@ export class AchievementProgressTracker {
     /**
      * 進捗データを読み込み
      */
-    loadProgressData() {
+    private loadProgressData(): void {
         try {
             const savedData = localStorage.getItem('achievementProgress');
             if (savedData) {
-                const data = JSON.parse(savedData);
+                const data: SaveData = JSON.parse(savedData);
                 this.progressData = data.progressData || {};
                 this.unlockedAchievements = new Set(data.unlockedAchievements || []);
             }
@@ -653,44 +866,54 @@ export class AchievementProgressTracker {
     /**
      * 自動保存を開始
      */
-    startAutoSave() {
-        setInterval(() => {
+    private startAutoSave(): void {
+        this.autoSaveInterval = window.setInterval(() => {
             this.saveProgressData();
         }, this.config.saveInterval);
     }
 
     /**
      * 進捗データを取得
-     * @returns {object} 進捗データ
+     * @returns 進捗データ
      */
-    getProgressData() {
+    getProgressData(): ProgressData {
         return { ...this.progressData };
     }
 
     /**
      * 解除済み実績一覧を取得
-     * @returns {Array} 解除済み実績ID配列
+     * @returns 解除済み実績ID配列
      */
-    getUnlockedAchievements() {
+    getUnlockedAchievements(): string[] {
         return Array.from(this.unlockedAchievements);
     }
 
     /**
      * 進捗履歴を取得
-     * @param {number} limit - 取得件数制限
-     * @returns {Array} 進捗履歴
+     * @param limit 取得件数制限
+     * @returns 進捗履歴
      */
-    getProgressHistory(limit = 50) {
+    getProgressHistory(limit: number = 50): ProgressHistoryEntry[] {
         return this.progressHistory.slice(0, limit);
     }
 
     /**
      * 進捗データをリセット
      */
-    resetProgress() {
+    resetProgress(): void {
         this.progressData = {};
         this.unlockedAchievements.clear();
         this.progressHistory = [];
         this.saveProgressData();
+    }
+
+    /**
+     * クリーンアップ
+     */
+    cleanup(): void {
+        if (this.autoSaveInterval) {
+            clearInterval(this.autoSaveInterval);
+            this.autoSaveInterval = undefined;
+        }
     }
 }
