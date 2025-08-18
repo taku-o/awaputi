@@ -2,8 +2,60 @@
  * PWAServiceWorkerManager
  * Service Worker登録、更新、ライフサイクル管理、キャッシュ戦略を担当
  */
+
+interface ServiceWorkerMessage {
+    type: string;
+    action?: string;
+    options?: any;
+    resources?: string[];
+    error?: string;
+    [key: string]: any;
+}
+
+interface ServiceWorkerStats {
+    registration: boolean;
+    active: boolean;
+    updateAvailable: boolean;
+    scope?: string;
+    error?: string;
+    [key: string]: any;
+}
+
+interface ManifestInfo {
+    valid: boolean;
+    manifest?: any;
+    url?: string;
+    error?: string;
+}
+
+interface AppManifestConfig {
+    name?: string;
+    shortName?: string;
+    description?: string;
+    startUrl?: string;
+    display?: string;
+    themeColor?: string;
+    backgroundColor?: string;
+    orientation?: string;
+    scope?: string;
+    icons?: Array<{
+        src: string;
+        sizes: string;
+        type: string;
+    }>;
+    categories?: string[];
+    lang?: string;
+    dir?: string;
+}
+
 export class PWAServiceWorkerManager {
-    constructor(pwaManager) {
+    private pwaManager: any;
+    private registration: ServiceWorkerRegistration | null = null;
+    private isRegistering: boolean = false;
+    private updateAvailable: boolean = false;
+    private updateCheckInterval?: number;
+
+    constructor(pwaManager: any) {
         this.pwaManager = pwaManager;
         this.registration = null;
         this.isRegistering = false;
@@ -14,7 +66,7 @@ export class PWAServiceWorkerManager {
      * Service Workerの登録
      * @returns {Promise<boolean>} 登録成功可否
      */
-    async registerServiceWorker() {
+    async registerServiceWorker(): Promise<boolean> {
         if (!('serviceWorker' in navigator)) {
             console.warn('[PWAServiceWorkerManager] Service Worker not supported');
             return false;
@@ -51,14 +103,14 @@ export class PWAServiceWorkerManager {
     /**
      * Service Worker状態の監視
      */
-    monitorServiceWorkerState() {
+    private monitorServiceWorkerState(): void {
         if (!this.registration) {
             return;
         }
 
         // 更新チェック
         this.registration.addEventListener('updatefound', () => {
-            const newWorker = this.registration.installing;
+            const newWorker = this.registration!.installing;
             if (newWorker) {
                 console.log('[PWAServiceWorkerManager] New Service Worker found');
                 this.handleServiceWorkerUpdate();
@@ -88,7 +140,7 @@ export class PWAServiceWorkerManager {
     /**
      * Service Worker更新の処理
      */
-    handleServiceWorkerUpdate() {
+    private handleServiceWorkerUpdate(): void {
         console.log('[PWAServiceWorkerManager] Service Worker update detected');
         this.updateAvailable = true;
         this.pwaManager.showUpdateNotification();
@@ -97,7 +149,7 @@ export class PWAServiceWorkerManager {
     /**
      * Service Worker更新の適用
      */
-    applyServiceWorkerUpdate() {
+    applyServiceWorkerUpdate(): void {
         if (this.registration && this.registration.waiting) {
             this.registration.waiting.postMessage({ action: 'SKIP_WAITING' });
         }
@@ -107,7 +159,7 @@ export class PWAServiceWorkerManager {
      * アップデートチェック
      * @returns {Promise<boolean>} アップデート有無
      */
-    async checkForUpdates() {
+    async checkForUpdates(): Promise<boolean> {
         if (!this.registration) {
             return false;
         }
@@ -125,7 +177,7 @@ export class PWAServiceWorkerManager {
      * Service Workerメッセージの処理
      * @param {MessageEvent} event メッセージイベント
      */
-    handleServiceWorkerMessage(event) {
+    private handleServiceWorkerMessage(event: MessageEvent): void {
         const { data } = event;
         
         if (!data || !data.type) {
@@ -156,7 +208,7 @@ export class PWAServiceWorkerManager {
      * キャッシュ更新の処理
      * @param {Object} data メッセージデータ
      */
-    handleCacheUpdate(data) {
+    private handleCacheUpdate(data: any): void {
         console.log('[PWAServiceWorkerManager] Cache updated:', data);
         // キャッシュ更新通知をPWAManagerに送信
         this.pwaManager.handleCacheUpdate?.(data);
@@ -166,7 +218,7 @@ export class PWAServiceWorkerManager {
      * オフライン準備完了の処理
      * @param {Object} data メッセージデータ
      */
-    handleOfflineReady(data) {
+    private handleOfflineReady(data: any): void {
         console.log('[PWAServiceWorkerManager] Offline mode ready');
         this.pwaManager.offlineCapability = true;
     }
@@ -175,7 +227,7 @@ export class PWAServiceWorkerManager {
      * 同期利用可能の処理
      * @param {Object} data メッセージデータ
      */
-    handleSyncAvailable(data) {
+    private handleSyncAvailable(data: any): void {
         console.log('[PWAServiceWorkerManager] Background sync available');
         // バックグラウンド同期の設定
         this.setupBackgroundSync();
@@ -185,7 +237,7 @@ export class PWAServiceWorkerManager {
      * 更新メッセージの処理
      * @param {Object} data メッセージデータ
      */
-    handleUpdateMessage(data) {
+    private handleUpdateMessage(data: any): void {
         console.log('[PWAServiceWorkerManager] Update message received:', data);
         this.updateAvailable = true;
         this.pwaManager.showUpdateNotification();
@@ -194,16 +246,16 @@ export class PWAServiceWorkerManager {
     /**
      * バックグラウンド同期の設定
      */
-    setupBackgroundSync() {
-        if (!this.registration || !this.registration.sync) {
+    private setupBackgroundSync(): void {
+        if (!this.registration || !(this.registration as any).sync) {
             console.warn('[PWAServiceWorkerManager] Background sync not supported');
             return;
         }
 
         // データ同期の登録
-        this.registration.sync.register('sync-data').then(() => {
+        (this.registration as any).sync.register('sync-data').then(() => {
             console.log('[PWAServiceWorkerManager] Background sync registered');
-        }).catch((error) => {
+        }).catch((error: Error) => {
             console.error('[PWAServiceWorkerManager] Background sync registration failed:', error);
         });
     }
@@ -213,7 +265,7 @@ export class PWAServiceWorkerManager {
      * @param {Object} message 送信メッセージ
      * @returns {Promise<Object>} レスポンス
      */
-    async postMessage(message) {
+    async postMessage(message: ServiceWorkerMessage): Promise<any> {
         if (!this.registration || !this.registration.active) {
             throw new Error('Service Worker not available');
         }
@@ -229,7 +281,7 @@ export class PWAServiceWorkerManager {
                 }
             };
 
-            this.registration.active.postMessage(message, [messageChannel.port2]);
+            this.registration!.active!.postMessage(message, [messageChannel.port2]);
         });
     }
 
@@ -239,7 +291,7 @@ export class PWAServiceWorkerManager {
      * @param {Object} options オプション
      * @returns {Promise<Object>} 結果
      */
-    async manageCache(action, options = {}) {
+    async manageCache(action: string, options: any = {}): Promise<any> {
         try {
             const result = await this.postMessage({
                 type: 'CACHE_MANAGEMENT',
@@ -260,7 +312,7 @@ export class PWAServiceWorkerManager {
      * @param {Array} resources リソースURL配列
      * @returns {Promise<boolean>} キャッシュ成功可否
      */
-    async precacheResources(resources) {
+    async precacheResources(resources: string[]): Promise<boolean> {
         try {
             const result = await this.postMessage({
                 type: 'PRECACHE_RESOURCES',
@@ -279,7 +331,7 @@ export class PWAServiceWorkerManager {
      * Service Worker統計の取得
      * @returns {Promise<Object>} 統計データ
      */
-    async getServiceWorkerStats() {
+    async getServiceWorkerStats(): Promise<ServiceWorkerStats> {
         try {
             const result = await this.postMessage({
                 type: 'GET_STATS'
@@ -292,7 +344,7 @@ export class PWAServiceWorkerManager {
                 scope: this.registration?.scope,
                 ...result
             };
-        } catch (error) {
+        } catch (error: any) {
             console.error('[PWAServiceWorkerManager] Failed to get stats:', error);
             return {
                 registration: !!this.registration,
@@ -308,7 +360,7 @@ export class PWAServiceWorkerManager {
      * Service Workerの登録解除
      * @returns {Promise<boolean>} 解除成功可否
      */
-    async unregisterServiceWorker() {
+    async unregisterServiceWorker(): Promise<boolean> {
         if (!this.registration) {
             return true;
         }
@@ -331,9 +383,9 @@ export class PWAServiceWorkerManager {
      * アプリマニフェストのチェック
      * @returns {Promise<Object>} マニフェスト情報
      */
-    async checkAppManifest() {
+    async checkAppManifest(): Promise<ManifestInfo> {
         try {
-            const manifestLink = document.querySelector('link[rel="manifest"]');
+            const manifestLink = document.querySelector('link[rel="manifest"]') as HTMLLinkElement;
             if (!manifestLink) {
                 throw new Error('Manifest link not found');
             }
@@ -351,7 +403,7 @@ export class PWAServiceWorkerManager {
                 manifest: manifest,
                 url: manifestLink.href
             };
-        } catch (error) {
+        } catch (error: any) {
             console.error('[PWAServiceWorkerManager] Manifest check failed:', error);
             return {
                 valid: false,
@@ -365,7 +417,7 @@ export class PWAServiceWorkerManager {
      * @param {Object} config アプリ設定
      * @returns {Object} 作成されたマニフェスト
      */
-    createAppManifest(config) {
+    createAppManifest(config: AppManifestConfig): any {
         const manifest = {
             name: config.name || 'BubblePop Game',
             short_name: config.shortName || 'BubblePop',
@@ -401,7 +453,7 @@ export class PWAServiceWorkerManager {
      * 定期的な更新チェックの開始
      * @param {number} interval チェック間隔（ミリ秒）
      */
-    startUpdateCheck(interval = 3600000) { // デフォルト1時間
+    startUpdateCheck(interval: number = 3600000): void { // デフォルト1時間
         if (this.updateCheckInterval) {
             clearInterval(this.updateCheckInterval);
         }
@@ -409,7 +461,7 @@ export class PWAServiceWorkerManager {
         this.updateCheckInterval = setInterval(async () => {
             console.log('[PWAServiceWorkerManager] Performing periodic update check');
             await this.checkForUpdates();
-        }, interval);
+        }, interval) as unknown as number;
 
         console.log(`[PWAServiceWorkerManager] Periodic update check started (${interval}ms interval)`);
     }
@@ -417,10 +469,10 @@ export class PWAServiceWorkerManager {
     /**
      * クリーンアップ
      */
-    cleanup() {
+    cleanup(): void {
         if (this.updateCheckInterval) {
             clearInterval(this.updateCheckInterval);
-            this.updateCheckInterval = null;
+            this.updateCheckInterval = undefined;
         }
 
         // Service Workerイベントリスナーの削除
