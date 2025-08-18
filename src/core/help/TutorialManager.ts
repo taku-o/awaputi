@@ -7,7 +7,7 @@
 import { ErrorHandler } from '../../utils/ErrorHandler.js';
 import { LoggingSystem } from '../LoggingSystem.js';
 import { CacheSystem } from '../CacheSystem.js';
-import { ContentLoader, getContentLoader } from './ContentLoader.js';
+import { ContentLoader, getContentLoader } from './components/ContentLoader.js';
 import { TutorialModel } from './DataModels.js';
 import { TutorialOverlay, getTutorialOverlay } from './TutorialOverlay.js';
 

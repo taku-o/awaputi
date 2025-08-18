@@ -13,10 +13,10 @@ export { HelpErrorHandler, getHelpErrorHandler, reinitializeHelpErrorHandler } f
 export { TutorialOverlay, getTutorialOverlay, reinitializeTutorialOverlay } from './TutorialOverlay.js';
 
 // Content Management System Components
-export { ContentLoader, getContentLoader, reinitializeContentLoader } from './ContentLoader.js';
+export { ContentLoader, getContentLoader, reinitializeContentLoader } from './components/ContentLoader.js';
 export { HelpContentModel, TutorialModel, FAQModel, UserProgressModel, DataModelFactory } from './DataModels.js';
 export { ContentValidation, getContentValidation, reinitializeContentValidation } from './ContentValidation.js';
-export { SearchEngine, getSearchEngine, reinitializeSearchEngine } from './SearchEngine.js';
+export { SearchEngine, getSearchEngine, reinitializeSearchEngine } from './components/SearchEngine.js';
 export { MultilingualContentManager, getMultilingualContentManager, reinitializeMultilingualContentManager } from './MultilingualContentManager.js';
 
 // 型定義
@@ -112,11 +112,11 @@ export function destroyHelpSystem(): boolean {
 
         // 全コンポーネントの破棄
         const components = [
-            getHelpManager(),
-            getTutorialManager(),
-            getContextManager(),
-            getHelpErrorHandler(),
-            getTutorialOverlay(),
+            getHelpManager({}),
+            getTutorialManager({}),
+            getContextManager({}),
+            getHelpErrorHandler({}),
+            getTutorialOverlay({}, undefined, undefined),
             getContentLoader(),
             getContentValidation(),
             getSearchEngine(),

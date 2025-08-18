@@ -1,5 +1,5 @@
 /**
- * TooltipSystem.js
+ * TooltipSystem.ts
  * 動的ツールチップ表示システム
  * コンテキスト対応ヘルプの提供
  */
@@ -7,18 +7,145 @@
 import { ErrorHandler } from '../../utils/ErrorHandler.js';
 import { LoggingSystem } from '../LoggingSystem.js';
 
+// 型定義
+export interface GameEngine {
+    canvas?: HTMLCanvasElement;
+    currentScene?: any;
+    gameState?: string;
+    scoreManager?: {
+        getCurrentScore(): number;
+    };
+}
+
+export interface TooltipBounds {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
+export interface TooltipContent {
+    title?: string;
+    description?: string;
+    shortcut?: string;
+    [key: string]: any;
+}
+
+export interface TooltipConditions {
+    scene?: string;
+    gameState?: string;
+    minScore?: number;
+    [key: string]: any;
+}
+
+export interface TooltipConfig {
+    id: string;
+    bounds: TooltipBounds;
+    content: TooltipContent;
+    position?: TooltipPositionType;
+    showDelay?: number;
+    enabled?: boolean;
+    conditions?: TooltipConditions | null;
+    priority?: number;
+}
+
+export interface TooltipInfo {
+    id: string;
+    bounds: TooltipBounds;
+    content: TooltipContent;
+    position: TooltipPositionType;
+    showDelay: number;
+    enabled: boolean;
+    conditions: TooltipConditions | null;
+    priority: number;
+}
+
+export interface TooltipSystemConfig {
+    showDelay: number;
+    hideDelay: number;
+    maxWidth: number;
+    padding: number;
+    fontSize: number;
+    lineHeight: number;
+    fadeInDuration: number;
+    fadeOutDuration: number;
+    zIndex: number;
+}
+
+export interface TooltipStyles {
+    background: string;
+    color: string;
+    border: string;
+    borderRadius: string;
+    boxShadow: string;
+    font: string;
+}
+
+export interface TooltipSize {
+    width: number;
+    height: number;
+}
+
+export interface TooltipPosition {
+    x: number;
+    y: number;
+}
+
+export interface ViewportInfo {
+    width: number;
+    height: number;
+}
+
+export interface AnimationInfo {
+    tooltip: TooltipInfo;
+    showTimer?: number;
+    element: HTMLElement | null;
+    fadeAnimation: number | null;
+    animationType: AnimationType;
+}
+
+export type TooltipPositionType = 'top' | 'bottom' | 'left' | 'right';
+export type AnimationType = 'fadeUp' | 'fadeDown' | 'fadeLeft' | 'fadeRight' | 'scaleIn' | 'bounceIn' | 'rotateIn' | 'elastic' | 'scaleOut' | 'bounceOut' | 'rotateOut' | 'elasticOut';
+export type AnimationDirection = 'in' | 'out';
+
+export type PositionStrategy = (rect: DOMRect, tooltipSize: TooltipSize) => TooltipPosition;
+
 /**
  * ツールチップシステムクラス
  */
 export class TooltipSystem {
-    constructor(gameEngine) {
+    private gameEngine: GameEngine;
+    private loggingSystem: LoggingSystem;
+    private canvas: HTMLCanvasElement | null;
+    private ctx: CanvasRenderingContext2D | null;
+    
+    // ツールチップ管理
+    private activeTooltips: Map<string, TooltipInfo>;
+    private tooltipQueue: TooltipInfo[];
+    private hoveredElements: Set<string>;
+    
+    // ツールチップ設定
+    private config: TooltipSystemConfig;
+    
+    // ツールチップスタイル
+    private styles: TooltipStyles;
+    
+    // アニメーション状態
+    private animations: Map<string, AnimationInfo>;
+    
+    // ツールチップ位置計算
+    private positionStrategies: Record<TooltipPositionType, PositionStrategy>;
+
+    constructor(gameEngine: GameEngine) {
         this.gameEngine = gameEngine;
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
+        this.canvas = null;
+        this.ctx = null;
         
         // ツールチップ管理
-        this.activeTooltips = new Map();
+        this.activeTooltips = new Map<string, TooltipInfo>();
         this.tooltipQueue = [];
-        this.hoveredElements = new Set();
+        this.hoveredElements = new Set<string>();
         
         // ツールチップ設定
         this.config = {
@@ -44,23 +171,23 @@ export class TooltipSystem {
         };
         
         // アニメーション状態
-        this.animations = new Map();
+        this.animations = new Map<string, AnimationInfo>();
         
         // ツールチップ位置計算
         this.positionStrategies = {
-            'top': (rect, tooltipSize) => ({
+            'top': (rect: DOMRect, tooltipSize: TooltipSize): TooltipPosition => ({
                 x: rect.left + rect.width / 2 - tooltipSize.width / 2,
                 y: rect.top - tooltipSize.height - 8
             }),
-            'bottom': (rect, tooltipSize) => ({
+            'bottom': (rect: DOMRect, tooltipSize: TooltipSize): TooltipPosition => ({
                 x: rect.left + rect.width / 2 - tooltipSize.width / 2,
                 y: rect.bottom + 8
             }),
-            'left': (rect, tooltipSize) => ({
+            'left': (rect: DOMRect, tooltipSize: TooltipSize): TooltipPosition => ({
                 x: rect.left - tooltipSize.width - 8,
                 y: rect.top + rect.height / 2 - tooltipSize.height / 2
             }),
-            'right': (rect, tooltipSize) => ({
+            'right': (rect: DOMRect, tooltipSize: TooltipSize): TooltipPosition => ({
                 x: rect.right + 8,
                 y: rect.top + rect.height / 2 - tooltipSize.height / 2
             })
@@ -72,11 +199,13 @@ export class TooltipSystem {
     /**
      * システムの初期化
      */
-    initialize() {
+    initialize(): void {
         try {
             // Canvas要素の取得
-            this.canvas = this.gameEngine.canvas;
-            this.ctx = this.canvas.getContext('2d');
+            if (this.gameEngine.canvas) {
+                this.canvas = this.gameEngine.canvas;
+                this.ctx = this.canvas.getContext('2d');
+            }
             
             // イベントリスナーの設定
             this.setupEventListeners();
@@ -87,21 +216,23 @@ export class TooltipSystem {
             this.loggingSystem.info('TooltipSystem', 'Tooltip system initialized');
         } catch (error) {
             this.loggingSystem.error('TooltipSystem', 'Failed to initialize tooltip system', error);
-            ErrorHandler.handle(error, 'TooltipSystem.initialize');
+            ErrorHandler.handle(error as Error, 'TooltipSystem.initialize');
         }
     }
     
     /**
      * イベントリスナーの設定
      */
-    setupEventListeners() {
+    setupEventListeners(): void {
+        if (!this.canvas) return;
+        
         // マウスイベント
-        this.canvas.addEventListener('mousemove', (event) => this.handleMouseMove(event));
+        this.canvas.addEventListener('mousemove', (event: MouseEvent) => this.handleMouseMove(event));
         this.canvas.addEventListener('mouseleave', () => this.handleMouseLeave());
         this.canvas.addEventListener('click', () => this.hideAllTooltips());
         
         // キーボードイベント（ESCキーでツールチップを隠す）
-        document.addEventListener('keydown', (event) => {
+        document.addEventListener('keydown', (event: KeyboardEvent) => {
             if (event.key === 'Escape') {
                 this.hideAllTooltips();
             }
@@ -114,7 +245,7 @@ export class TooltipSystem {
     /**
      * デフォルトツールチップの設定
      */
-    setupDefaultTooltips() {
+    setupDefaultTooltips(): void {
         // ゲーム要素のツールチップ設定
         this.registerTooltipArea({
             id: 'score_display',
@@ -149,11 +280,11 @@ export class TooltipSystem {
     
     /**
      * ツールチップエリアの登録
-     * @param {Object} config - ツールチップ設定
+     * @param config - ツールチップ設定
      */
-    registerTooltipArea(config) {
+    registerTooltipArea(config: TooltipConfig): void {
         try {
-            const tooltipInfo = {
+            const tooltipInfo: TooltipInfo = {
                 id: config.id,
                 bounds: config.bounds,
                 content: config.content,
@@ -173,9 +304,9 @@ export class TooltipSystem {
     
     /**
      * ツールチップエリアの削除
-     * @param {string} id - ツールチップID
+     * @param id - ツールチップID
      */
-    unregisterTooltipArea(id) {
+    unregisterTooltipArea(id: string): void {
         try {
             if (this.activeTooltips.has(id)) {
                 this.activeTooltips.delete(id);
@@ -189,16 +320,18 @@ export class TooltipSystem {
     
     /**
      * マウス移動処理
-     * @param {MouseEvent} event - マウスイベント 
+     * @param event - マウスイベント 
      */
-    handleMouseMove(event) {
+    handleMouseMove(event: MouseEvent): void {
         try {
+            if (!this.canvas) return;
+            
             const rect = this.canvas.getBoundingClientRect();
             const x = event.clientX - rect.left;
             const y = event.clientY - rect.top;
             
             // 現在ホバー中の要素をチェック
-            const hoveredTooltips = [];
+            const hoveredTooltips: TooltipInfo[] = [];
             
             for (const [id, tooltip] of this.activeTooltips) {
                 if (!tooltip.enabled) continue;
@@ -242,7 +375,7 @@ export class TooltipSystem {
     /**
      * マウス退出処理
      */
-    handleMouseLeave() {
+    handleMouseLeave(): void {
         this.hideAllTooltips();
         this.hoveredElements.clear();
     }
@@ -250,7 +383,7 @@ export class TooltipSystem {
     /**
      * ウィンドウリサイズ処理
      */
-    handleResize() {
+    handleResize(): void {
         // ツールチップ位置の再計算
         for (const animation of this.animations.values()) {
             if (animation.element && animation.element.parentNode) {
@@ -261,11 +394,12 @@ export class TooltipSystem {
     
     /**
      * ツールチップ表示
-     * @param {Object} tooltip - ツールチップ情報
-     * @param {number} mouseX - マウスX座標
-     * @param {number} mouseY - マウスY座標
+     * @param tooltip - ツールチップ情報
+     * @param mouseX - マウスX座標
+     * @param mouseY - マウスY座標
+     * @param animationType - アニメーションタイプ
      */
-    showTooltip(tooltip, mouseX, mouseY, animationType = 'fadeUp') {
+    showTooltip(tooltip: TooltipInfo, mouseX: number, mouseY: number, animationType: AnimationType = 'fadeUp'): void {
         try {
             // 既存のツールチップが表示中の場合は処理をスキップ
             if (this.animations.has(tooltip.id)) {
@@ -280,7 +414,7 @@ export class TooltipSystem {
             // アニメーション情報を保存
             this.animations.set(tooltip.id, {
                 tooltip: tooltip,
-                showTimer: showTimer,
+                showTimer: showTimer as any,
                 element: null,
                 fadeAnimation: null,
                 animationType: animationType
@@ -293,11 +427,12 @@ export class TooltipSystem {
     
     /**
      * ツールチップ要素の作成
-     * @param {Object} tooltip - ツールチップ情報
-     * @param {number} mouseX - マウスX座標
-     * @param {number} mouseY - マウスY座標
+     * @param tooltip - ツールチップ情報
+     * @param mouseX - マウスX座標
+     * @param mouseY - マウスY座標
+     * @param animationType - アニメーションタイプ
      */
-    createTooltipElement(tooltip, mouseX, mouseY, animationType = 'fadeUp') {
+    createTooltipElement(tooltip: TooltipInfo, mouseX: number, mouseY: number, animationType: AnimationType = 'fadeUp'): void {
         try {
             // DOM要素の作成
             const element = document.createElement('div');
@@ -330,9 +465,9 @@ export class TooltipSystem {
     
     /**
      * ツールチップのCSS構築
-     * @returns {string} CSS文字列
+     * @returns CSS文字列
      */
-    buildTooltipCSS() {
+    buildTooltipCSS(): string {
         return `
             position: fixed;
             background: ${this.styles.background};
@@ -354,10 +489,10 @@ export class TooltipSystem {
     
     /**
      * ツールチップのHTML構築
-     * @param {Object} content - コンテンツ情報
-     * @returns {string} HTML文字列
+     * @param content - コンテンツ情報
+     * @returns HTML文字列
      */
-    buildTooltipHTML(content) {
+    buildTooltipHTML(content: TooltipContent): string {
         let html = '';
         
         if (content.title) {
@@ -377,11 +512,13 @@ export class TooltipSystem {
     
     /**
      * ツールチップ位置の更新
-     * @param {HTMLElement} element - ツールチップ要素
-     * @param {Object} tooltip - ツールチップ情報
+     * @param element - ツールチップ要素
+     * @param tooltip - ツールチップ情報
      */
-    updateTooltipPosition(element, tooltip) {
+    updateTooltipPosition(element: HTMLElement, tooltip: TooltipInfo): void {
         try {
+            if (!this.canvas) return;
+            
             const canvasRect = this.canvas.getBoundingClientRect();
             const elementRect = element.getBoundingClientRect();
             
@@ -417,11 +554,11 @@ export class TooltipSystem {
     
     /**
      * ビューポートに合わせた位置調整
-     * @param {Object} position - 位置情報
-     * @param {Object} tooltipSize - ツールチップサイズ
-     * @returns {Object} 調整された位置
+     * @param position - 位置情報
+     * @param tooltipSize - ツールチップサイズ
+     * @returns 調整された位置
      */
-    adjustPositionForViewport(position, tooltipSize) {
+    adjustPositionForViewport(position: TooltipPosition, tooltipSize: TooltipSize): TooltipPosition {
         const viewport = {
             width: window.innerWidth,
             height: window.innerHeight
@@ -448,10 +585,11 @@ export class TooltipSystem {
     
     /**
      * ツールチップフェードインアニメーション
-     * @param {HTMLElement} element - ツールチップ要素
-     * @param {string} tooltipId - ツールチップID
+     * @param element - ツールチップ要素
+     * @param tooltipId - ツールチップID
+     * @param animationType - アニメーションタイプ
      */
-    animateTooltipIn(element, tooltipId, animationType = 'fadeUp') {
+    animateTooltipIn(element: HTMLElement, tooltipId: string, animationType: AnimationType = 'fadeUp'): void {
         const startTime = performance.now();
         const duration = this.config.fadeInDuration;
         
@@ -485,10 +623,10 @@ export class TooltipSystem {
     
     /**
      * アニメーションの初期状態を設定
-     * @param {HTMLElement} element - ツールチップ要素
-     * @param {string} animationType - アニメーションタイプ
+     * @param element - ツールチップ要素
+     * @param animationType - アニメーションタイプ
      */
-    setupInitialAnimationState(element, animationType) {
+    setupInitialAnimationState(element: HTMLElement, animationType: AnimationType): void {
         switch (animationType) {
             case 'fadeUp':
                 element.style.opacity = '0';
@@ -530,12 +668,12 @@ export class TooltipSystem {
     
     /**
      * アニメーション効果の適用
-     * @param {HTMLElement} element - ツールチップ要素
-     * @param {string} animationType - アニメーションタイプ
-     * @param {number} progress - 進捗 (0-1)
-     * @param {string} direction - 方向 ('in' | 'out')
+     * @param element - ツールチップ要素
+     * @param animationType - アニメーションタイプ
+     * @param progress - 進捗 (0-1)
+     * @param direction - 方向 ('in' | 'out')
      */
-    applyAnimationEffect(element, animationType, progress, direction) {
+    applyAnimationEffect(element: HTMLElement, animationType: AnimationType, progress: number, direction: AnimationDirection): void {
         const isOut = direction === 'out';
         const effectiveProgress = isOut ? 1 - progress : progress;
         
@@ -597,11 +735,11 @@ export class TooltipSystem {
     
     /**
      * アニメーション完了時の最終処理
-     * @param {HTMLElement} element - ツールチップ要素
-     * @param {string} animationType - アニメーションタイプ
-     * @param {string} direction - 方向
+     * @param element - ツールチップ要素
+     * @param animationType - アニメーションタイプ
+     * @param direction - 方向
      */
-    finalizeAnimation(element, animationType, direction) {
+    finalizeAnimation(element: HTMLElement, animationType: AnimationType, direction: AnimationDirection): void {
         if (direction === 'in') {
             element.style.opacity = '1';
             element.style.transform = 'none';
@@ -611,10 +749,10 @@ export class TooltipSystem {
     
     /**
      * バウンス イージング関数
-     * @param {number} t - 進捗 (0-1)
-     * @returns {number} イージングされた値
+     * @param t - 進捗 (0-1)
+     * @returns イージングされた値
      */
-    easeOutBounce(t) {
+    easeOutBounce(t: number): number {
         if (t < 1 / 2.75) {
             return 7.5625 * t * t;
         } else if (t < 2 / 2.75) {
@@ -628,10 +766,10 @@ export class TooltipSystem {
     
     /**
      * エラスティック イージング関数
-     * @param {number} t - 進捗 (0-1)
-     * @returns {number} イージングされた値
+     * @param t - 進捗 (0-1)
+     * @returns イージングされた値
      */
-    easeOutElastic(t) {
+    easeOutElastic(t: number): number {
         const c4 = (2 * Math.PI) / 3;
         
         return t === 0 ? 0 : t === 1 ? 1 :
@@ -640,9 +778,10 @@ export class TooltipSystem {
     
     /**
      * ツールチップ非表示
-     * @param {string} tooltipId - ツールチップID
+     * @param tooltipId - ツールチップID
+     * @param animationType - アニメーションタイプ
      */
-    hideTooltip(tooltipId, animationType = null) {
+    hideTooltip(tooltipId: string, animationType: AnimationType | null = null): void {
         try {
             const animation = this.animations.get(tooltipId);
             if (!animation) return;
@@ -670,11 +809,11 @@ export class TooltipSystem {
     
     /**
      * 入場アニメーションに対応する退場アニメーションタイプを取得
-     * @param {string} enterAnimationType - 入場アニメーションタイプ
-     * @returns {string} 退場アニメーションタイプ
+     * @param enterAnimationType - 入場アニメーションタイプ
+     * @returns 退場アニメーションタイプ
      */
-    getExitAnimationType(enterAnimationType) {
-        const exitAnimationMap = {
+    getExitAnimationType(enterAnimationType: AnimationType): AnimationType {
+        const exitAnimationMap: Record<AnimationType, AnimationType> = {
             'fadeUp': 'fadeDown',
             'fadeDown': 'fadeUp',
             'fadeLeft': 'fadeRight',
@@ -682,7 +821,11 @@ export class TooltipSystem {
             'scaleIn': 'scaleOut',
             'bounceIn': 'bounceOut',
             'rotateIn': 'rotateOut',
-            'elastic': 'elasticOut'
+            'elastic': 'elasticOut',
+            'scaleOut': 'scaleIn',
+            'bounceOut': 'bounceIn',
+            'rotateOut': 'rotateIn',
+            'elasticOut': 'elastic'
         };
         
         return exitAnimationMap[enterAnimationType] || 'fadeDown';
@@ -690,10 +833,11 @@ export class TooltipSystem {
     
     /**
      * ツールチップフェードアウトアニメーション
-     * @param {HTMLElement} element - ツールチップ要素
-     * @param {string} tooltipId - ツールチップID
+     * @param element - ツールチップ要素
+     * @param tooltipId - ツールチップID
+     * @param animationType - アニメーションタイプ
      */
-    animateTooltipOut(element, tooltipId, animationType = 'fadeDown') {
+    animateTooltipOut(element: HTMLElement, tooltipId: string, animationType: AnimationType = 'fadeDown'): void {
         const startTime = performance.now();
         const duration = this.config.fadeOutDuration;
         const startOpacity = parseFloat(element.style.opacity) || 1;
@@ -726,7 +870,7 @@ export class TooltipSystem {
     /**
      * 全ツールチップ非表示
      */
-    hideAllTooltips() {
+    hideAllTooltips(): void {
         try {
             for (const tooltipId of this.animations.keys()) {
                 this.hideTooltip(tooltipId);
@@ -739,22 +883,22 @@ export class TooltipSystem {
     
     /**
      * 点が境界内にあるかチェック
-     * @param {number} x - X座標
-     * @param {number} y - Y座標
-     * @param {Object} bounds - 境界情報
-     * @returns {boolean} 境界内にある場合true
+     * @param x - X座標
+     * @param y - Y座標
+     * @param bounds - 境界情報
+     * @returns 境界内にある場合true
      */
-    isPointInBounds(x, y, bounds) {
+    isPointInBounds(x: number, y: number, bounds: TooltipBounds): boolean {
         return x >= bounds.x && x <= bounds.x + bounds.width &&
                y >= bounds.y && y <= bounds.y + bounds.height;
     }
     
     /**
      * 条件チェック
-     * @param {Object} conditions - 条件情報
-     * @returns {boolean} 条件を満たす場合true
+     * @param conditions - 条件情報
+     * @returns 条件を満たす場合true
      */
-    checkConditions(conditions) {
+    checkConditions(conditions: TooltipConditions): boolean {
         try {
             if (conditions.scene && this.gameEngine.currentScene) {
                 const currentSceneName = this.gameEngine.currentScene.constructor.name;
@@ -785,10 +929,10 @@ export class TooltipSystem {
     
     /**
      * HTMLエスケープ
-     * @param {string} text - エスケープするテキスト
-     * @returns {string} エスケープされたテキスト
+     * @param text - エスケープするテキスト
+     * @returns エスケープされたテキスト
      */
-    escapeHTML(text) {
+    escapeHTML(text: string): string {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
@@ -796,10 +940,10 @@ export class TooltipSystem {
     
     /**
      * ツールチップの有効/無効切り替え
-     * @param {string} tooltipId - ツールチップID
-     * @param {boolean} enabled - 有効状態
+     * @param tooltipId - ツールチップID
+     * @param enabled - 有効状態
      */
-    setTooltipEnabled(tooltipId, enabled) {
+    setTooltipEnabled(tooltipId: string, enabled: boolean): void {
         const tooltip = this.activeTooltips.get(tooltipId);
         if (tooltip) {
             tooltip.enabled = enabled;
@@ -811,10 +955,10 @@ export class TooltipSystem {
     
     /**
      * ツールチップ内容の更新
-     * @param {string} tooltipId - ツールチップID
-     * @param {Object} newContent - 新しいコンテンツ
+     * @param tooltipId - ツールチップID
+     * @param newContent - 新しいコンテンツ
      */
-    updateTooltipContent(tooltipId, newContent) {
+    updateTooltipContent(tooltipId: string, newContent: Partial<TooltipContent>): void {
         const tooltip = this.activeTooltips.get(tooltipId);
         if (tooltip) {
             tooltip.content = { ...tooltip.content, ...newContent };
@@ -831,7 +975,7 @@ export class TooltipSystem {
     /**
      * リソースのクリーンアップ
      */
-    cleanup() {
+    cleanup(): void {
         try {
             // 全ツールチップの非表示
             this.hideAllTooltips();
@@ -854,14 +998,14 @@ export class TooltipSystem {
 }
 
 // シングルトンインスタンス管理
-let tooltipSystemInstance = null;
+let tooltipSystemInstance: TooltipSystem | null = null;
 
 /**
  * TooltipSystemのシングルトンインスタンスを取得
- * @param {Object} gameEngine - ゲームエンジン
- * @returns {TooltipSystem} TooltipSystemインスタンス
+ * @param gameEngine - ゲームエンジン
+ * @returns TooltipSystemインスタンス
  */
-export function getTooltipSystem(gameEngine) {
+export function getTooltipSystem(gameEngine: GameEngine): TooltipSystem {
     if (!tooltipSystemInstance) {
         tooltipSystemInstance = new TooltipSystem(gameEngine);
     }
@@ -870,10 +1014,10 @@ export function getTooltipSystem(gameEngine) {
 
 /**
  * TooltipSystemインスタンスを再初期化
- * @param {Object} gameEngine - ゲームエンジン
- * @returns {TooltipSystem} 新しいTooltipSystemインスタンス
+ * @param gameEngine - ゲームエンジン
+ * @returns 新しいTooltipSystemインスタンス
  */
-export function reinitializeTooltipSystem(gameEngine) {
+export function reinitializeTooltipSystem(gameEngine: GameEngine): TooltipSystem {
     if (tooltipSystemInstance) {
         tooltipSystemInstance.cleanup();
     }
