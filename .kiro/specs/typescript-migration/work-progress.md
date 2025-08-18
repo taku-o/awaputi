@@ -848,7 +848,16 @@ TypeScript移行作業中に「将来実装する」「現時点では未実装�
   - Main Controller Patternを維持したまま型安全性確保
   - 多数のサブコンポーネント統合管理の型定義
   - レガシー互換性APIの維持
-- **残存**: StageSelectScene.js、GameInputManager.js（次の作業対象）
+- ✅ **StageSelectScene.ts**: ステージ選択シーン完全型安全化
+  - Main Controller Patternによるサブコンポーネント管理
+  - EventStageDataManager・StageSelectDataManager統合
+  - クリック処理・入力処理の型安全性確保
+- ✅ **GameInputManager.ts**: ゲーム専用入力管理完全型安全化
+  - Position・DragVector・TouchData・GestureData型定義追加
+  - 座標変換システム（InputCoordinateConverter）の型安全化
+  - タッチジェスチャー処理（スワイプ・ピンチ・ダブルタップ・長押し）の型定義
+  - EnhancedTouchManager統合の型安全性確保
+- **完了**: src/scenes/ディレクトリのすべてのJSファイルをTypeScriptに変換完了
 
 #### 現在の全体進捗（2025-08-17）
 - ✅ **Phase 1完了**: TypeScript環境構築（5/5タスク）
