@@ -13,7 +13,144 @@
  * - コレクション実績（全種類達成）
  * - チャレンジ実績（特殊条件）
  */
+
+// 型定義
+export interface Achievement {
+    id: string;
+    name: string;
+    description: string;
+    icon: string;
+    category: CategoryType;
+    type: AchievementType;
+    condition: AchievementCondition;
+    reward: AchievementReward;
+    difficulty?: DifficultyLevel;
+    hidden?: boolean;
+}
+
+export interface AchievementCondition {
+    type: ConditionType;
+    value?: number | boolean;
+    bubbleType?: BubbleType;
+    hp?: number;
+    time?: number;
+    score?: number;
+    minBubbles?: number;
+    bubbles?: number;
+    startHour?: number;
+    endHour?: number;
+    [key: string]: any;
+}
+
+export interface AchievementReward {
+    ap: number;
+    items?: RewardItem[];
+    unlocks?: string[];
+    titles?: string[];
+}
+
+export interface RewardItem {
+    type: ItemType;
+    id: string;
+    quantity: number;
+}
+
+export interface Category {
+    name: string;
+    description: string;
+    icon: string;
+    color: string;
+    priority?: number;
+    unlockRequirements?: string[];
+}
+
+export interface AchievementStatistics {
+    total: number;
+    byCategory: Record<CategoryType, number>;
+    byType: Record<AchievementType, number>;
+    totalAP: number;
+    averageAP: number;
+    difficultyDistribution?: Record<DifficultyLevel, number>;
+}
+
+export interface AchievementFilter {
+    category?: CategoryType;
+    type?: AchievementType;
+    conditionType?: ConditionType;
+    minAP?: number;
+    maxAP?: number;
+    difficulty?: DifficultyLevel;
+    unlocked?: boolean;
+}
+
+export interface AchievementSearchResult {
+    achievements: Achievement[];
+    totalCount: number;
+    categories: string[];
+}
+
+// 列挙型
+export type CategoryType = 
+    | 'basic'
+    | 'score'
+    | 'combo'
+    | 'bubbleType'
+    | 'survival'
+    | 'stage'
+    | 'technique'
+    | 'play'
+    | 'collection'
+    | 'challenge';
+
+export type AchievementType = 'single' | 'cumulative' | 'progressive';
+
+export type ConditionType = 
+    | 'bubblesPopped'
+    | 'singleGameScore'
+    | 'cumulativeScore'
+    | 'maxCombo'
+    | 'bubbleTypePopped'
+    | 'survivalTime'
+    | 'lowHpSurvival'
+    | 'lowHpScore'
+    | 'stagesCleared'
+    | 'allStagesCleared'
+    | 'perfectGame'
+    | 'speedChallenge'
+    | 'accuracy'
+    | 'consecutiveDays'
+    | 'totalPlayTime'
+    | 'gamesPlayed'
+    | 'allBubbleTypes'
+    | 'allStagesMultiple'
+    | 'noItemScore'
+    | 'timeSpecificScore';
+
+export type BubbleType = 
+    | 'normal'
+    | 'rainbow'
+    | 'diamond'
+    | 'boss'
+    | 'golden'
+    | 'phantom'
+    | 'explosive'
+    | 'magnetic'
+    | 'frozen'
+    | 'multiplier'
+    | 'stone'
+    | 'iron'
+    | 'electric'
+    | 'poison'
+    | 'spiky'
+    | 'pink';
+
+export type DifficultyLevel = 'easy' | 'medium' | 'hard' | 'expert' | 'legendary';
+export type ItemType = 'powerup' | 'skin' | 'currency' | 'unlock';
+
 export class AchievementDefinitions {
+    private achievements: Record<string, Achievement>;
+    private categories: Record<CategoryType, Category>;
+
     constructor() {
         this.achievements = this.initializeAchievements();
         this.categories = this.initializeCategories();
@@ -21,9 +158,9 @@ export class AchievementDefinitions {
 
     /**
      * 全実績を初期化
-     * @returns {object} 実績定義オブジェクト
+     * @returns 実績定義オブジェクト
      */
-    initializeAchievements() {
+    private initializeAchievements(): Record<string, Achievement> {
         return {
             // 基本プレイ実績
             firstBubble: {
@@ -489,9 +626,9 @@ export class AchievementDefinitions {
 
     /**
      * 実績カテゴリを初期化
-     * @returns {object} カテゴリ定義オブジェクト
+     * @returns カテゴリ定義オブジェクト
      */
-    initializeCategories() {
+    private initializeCategories(): Record<CategoryType, Category> {
         return {
             basic: {
                 name: '基本プレイ',
@@ -558,27 +695,27 @@ export class AchievementDefinitions {
 
     /**
      * 実績を取得
-     * @param {string} id - 実績ID
-     * @returns {object|null} 実績オブジェクト
+     * @param id 実績ID
+     * @returns 実績オブジェクト
      */
-    getAchievement(id) {
+    getAchievement(id: string): Achievement | null {
         return this.achievements[id] || null;
     }
 
     /**
      * 全実績を取得
-     * @returns {object} 全実績オブジェクト
+     * @returns 全実績オブジェクト
      */
-    getAllAchievements() {
+    getAllAchievements(): Record<string, Achievement> {
         return this.achievements;
     }
 
     /**
      * カテゴリ別実績を取得
-     * @param {string} category - カテゴリ名
-     * @returns {Array} カテゴリ内の実績配列
+     * @param category カテゴリ名
+     * @returns カテゴリ内の実績配列
      */
-    getAchievementsByCategory(category) {
+    getAchievementsByCategory(category: CategoryType): Achievement[] {
         return Object.values(this.achievements).filter(
             achievement => achievement.category === category
         );
@@ -586,27 +723,27 @@ export class AchievementDefinitions {
 
     /**
      * カテゴリ情報を取得
-     * @param {string} category - カテゴリ名
-     * @returns {object|null} カテゴリ情報
+     * @param category カテゴリ名
+     * @returns カテゴリ情報
      */
-    getCategory(category) {
+    getCategory(category: CategoryType): Category | null {
         return this.categories[category] || null;
     }
 
     /**
      * 全カテゴリを取得
-     * @returns {object} 全カテゴリオブジェクト
+     * @returns 全カテゴリオブジェクト
      */
-    getAllCategories() {
+    getAllCategories(): Record<CategoryType, Category> {
         return this.categories;
     }
 
     /**
      * 実績タイプ別で取得
-     * @param {string} type - 実績タイプ ('single' or 'cumulative')
-     * @returns {Array} 実績配列
+     * @param type 実績タイプ
+     * @returns 実績配列
      */
-    getAchievementsByType(type) {
+    getAchievementsByType(type: AchievementType): Achievement[] {
         return Object.values(this.achievements).filter(
             achievement => achievement.type === type
         );
@@ -614,10 +751,10 @@ export class AchievementDefinitions {
 
     /**
      * 条件タイプ別で実績を取得
-     * @param {string} conditionType - 条件タイプ
-     * @returns {Array} 実績配列
+     * @param conditionType 条件タイプ
+     * @returns 実績配列
      */
-    getAchievementsByConditionType(conditionType) {
+    getAchievementsByConditionType(conditionType: ConditionType): Achievement[] {
         return Object.values(this.achievements).filter(
             achievement => achievement.condition.type === conditionType
         );
@@ -625,30 +762,68 @@ export class AchievementDefinitions {
 
     /**
      * 報酬別で実績を取得
-     * @param {number} minAP - 最小AP
-     * @param {number} maxAP - 最大AP  
-     * @returns {Array} 実績配列
+     * @param minAP 最小AP
+     * @param maxAP 最大AP  
+     * @returns 実績配列
      */
-    getAchievementsByReward(minAP = 0, maxAP = Infinity) {
+    getAchievementsByReward(minAP: number = 0, maxAP: number = Infinity): Achievement[] {
         return Object.values(this.achievements).filter(
             achievement => achievement.reward.ap >= minAP && achievement.reward.ap <= maxAP
         );
     }
 
     /**
-     * 実績統計を取得
-     * @returns {object} 実績統計情報
+     * フィルターに基づく検索
+     * @param filter フィルター条件
+     * @returns 検索結果
      */
-    getStatistics() {
+    searchAchievements(filter: AchievementFilter): AchievementSearchResult {
+        let achievements = Object.values(this.achievements);
+
+        // フィルター適用
+        if (filter.category) {
+            achievements = achievements.filter(a => a.category === filter.category);
+        }
+        if (filter.type) {
+            achievements = achievements.filter(a => a.type === filter.type);
+        }
+        if (filter.conditionType) {
+            achievements = achievements.filter(a => a.condition.type === filter.conditionType);
+        }
+        if (filter.minAP !== undefined) {
+            achievements = achievements.filter(a => a.reward.ap >= filter.minAP!);
+        }
+        if (filter.maxAP !== undefined) {
+            achievements = achievements.filter(a => a.reward.ap <= filter.maxAP!);
+        }
+        if (filter.difficulty) {
+            achievements = achievements.filter(a => a.difficulty === filter.difficulty);
+        }
+
+        const categories = [...new Set(achievements.map(a => a.category))];
+
+        return {
+            achievements,
+            totalCount: achievements.length,
+            categories
+        };
+    }
+
+    /**
+     * 実績統計を取得
+     * @returns 実績統計情報
+     */
+    getStatistics(): AchievementStatistics {
         const achievements = Object.values(this.achievements);
-        const categories = Object.keys(this.categories);
+        const categories = Object.keys(this.categories) as CategoryType[];
         
-        const stats = {
+        const stats: AchievementStatistics = {
             total: achievements.length,
-            byCategory: {},
+            byCategory: {} as Record<CategoryType, number>,
             byType: {
                 single: 0,
-                cumulative: 0
+                cumulative: 0,
+                progressive: 0
             },
             totalAP: 0,
             averageAP: 0
@@ -668,5 +843,72 @@ export class AchievementDefinitions {
         stats.averageAP = Math.round(stats.totalAP / achievements.length);
 
         return stats;
+    }
+
+    /**
+     * 実績IDリストを取得
+     * @returns 実績IDの配列
+     */
+    getAchievementIds(): string[] {
+        return Object.keys(this.achievements);
+    }
+
+    /**
+     * カテゴリIDリストを取得
+     * @returns カテゴリIDの配列
+     */
+    getCategoryIds(): CategoryType[] {
+        return Object.keys(this.categories) as CategoryType[];
+    }
+
+    /**
+     * 実績の存在確認
+     * @param id 実績ID
+     * @returns 存在するかどうか
+     */
+    hasAchievement(id: string): boolean {
+        return id in this.achievements;
+    }
+
+    /**
+     * カテゴリの存在確認
+     * @param category カテゴリ名
+     * @returns 存在するかどうか
+     */
+    hasCategory(category: CategoryType): boolean {
+        return category in this.categories;
+    }
+
+    /**
+     * 実績の難易度を取得（推定）
+     * @param id 実績ID
+     * @returns 難易度
+     */
+    getAchievementDifficulty(id: string): DifficultyLevel {
+        const achievement = this.getAchievement(id);
+        if (!achievement) return 'medium';
+
+        // APによる難易度推定
+        const ap = achievement.reward.ap;
+        if (ap <= 50) return 'easy';
+        if (ap <= 150) return 'medium';
+        if (ap <= 300) return 'hard';
+        if (ap <= 400) return 'expert';
+        return 'legendary';
+    }
+
+    /**
+     * 関連実績を取得
+     * @param id 実績ID
+     * @returns 関連実績の配列
+     */
+    getRelatedAchievements(id: string): Achievement[] {
+        const achievement = this.getAchievement(id);
+        if (!achievement) return [];
+
+        // 同じカテゴリの実績を関連として返す
+        return this.getAchievementsByCategory(achievement.category)
+            .filter(a => a.id !== id)
+            .slice(0, 5); // 最大5個
     }
 }
