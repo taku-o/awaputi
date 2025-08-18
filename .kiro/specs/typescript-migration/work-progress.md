@@ -859,36 +859,91 @@ TypeScript移行作業中に「将来実装する」「現時点では未実装�
   - EnhancedTouchManager統合の型安全性確保
 - **完了**: src/scenes/ディレクトリのすべてのJSファイルをTypeScriptに変換完了
 
-#### 現在の全体進捗（2025-08-17）
+### 2025-08-18 src/core/pwa & src/core/eventsディレクトリ変換
+
+#### src/core/pwaディレクトリ変換完了
+- ✅ **PWAInstallationManager.ts**: PWAインストールプロンプト管理完全型安全化
+  - BeforeInstallPromptEvent・InstallMetrics・InstallEvent型定義
+  - ユーザー行動分析・カスタムダイアログ・自動プロンプト機能
+- ✅ **PWAServiceWorkerManager.ts**: Service Worker管理完全型安全化
+  - ServiceWorkerMessage・ServiceWorkerStats・ManifestInfo型定義
+  - ライフサイクル管理・キャッシュ戦略・バックグラウンド同期
+
+#### src/core/eventsディレクトリ変換完了
+- ✅ **EventNotificationSystem.ts**: イベント通知システム完全型安全化
+  - NotificationSettings・NotificationData・NotificationInput型定義
+  - 通知キュー管理・アクティブ通知制御・履歴管理
+- ✅ **EventHistoryManager.ts**: イベント履歴管理システム完全型安全化
+  - HistoryEntry・ParticipationData・EventResults・DetailedStatistics型定義
+  - 統計分析・月別集計・実績管理・個人記録管理
+- ✅ **EventRankingSystem.ts**: イベントランキングシステム完全型安全化
+  - SeasonalRankingData・GlobalRankingData・CategoryRankingData型定義
+  - EventRankingManager継承・季節別ランキング・グローバルランキング
+- ✅ **SeasonalEventManager.ts**: 季節イベント管理システム完全型安全化
+  - Season型・SeasonalPeriod・SeasonalEffects・SpecialRules型定義
+  - 季節エフェクト適用・アクティブイベント管理・データ永続化
+
+### 2025-08-18 src/core/i18nディレクトリ変換
+
+#### src/core/i18n/automationディレクトリ変換完了
+- ✅ **TranslationFileGenerator.ts**: 翻訳ファイル生成システム完全型安全化
+  - 17個のインターフェース定義（LanguageInfo、CategoryInfo、FileGenerationResult等）
+  - 新言語用翻訳ファイル自動生成・テンプレート作成・キー抽出・同期機能
+  - 10言語サポート（ja、en、zh-CN、zh-TW、ko、ar、he、fr、de、es）
+- ✅ **TranslationImportExport.ts**: 翻訳インポート・エクスポートシステム完全型安全化
+  - 24個のインターフェース定義（FormatInfo、ExportResult、ImportResult、Backup等）
+  - 5形式サポート（JSON、CSV、Excel、XML、Properties）
+  - 差分管理・バックアップ・復元・フォーマット自動検出機能
+
+#### src/core/i18n/culturalディレクトリ変換完了
+- ✅ **CulturalAdaptationSystem.ts**: 文化的適応システム完全型安全化（809行）
+  - 13個のインターフェース定義（CulturalSettings、ColorSettings、NumberSettings等）
+  - 5文化圏対応（日本、アラビア、中国、韓国、西欧）
+  - 色・数字・ジェスチャー・レイアウト・コミュニケーションスタイルの文化的適応
+  - タブー検証・代替案提案・CSS動的生成機能
+
+#### src/core/i18n/managementディレクトリ変換完了
+- ✅ **ProgressTracker.ts**: 翻訳進捗追跡システム完全型安全化（824行）
+  - 30個のインターフェース定義（TranslationSetData、LanguageProgress、Milestone等）
+  - 翻訳セット管理・進捗計算・マイルストーン管理・目標達成予測機能
+  - カテゴリ別統計・品質スコア計算・レポート生成機能
+- ✅ **TranslationKeyManager.ts**: 翻訳キー管理システム完全型安全化（785行）
+  - 25個のインターフェース定義（KeyMetadata、KeyUsageData、SearchResult等）
+  - キー登録・使用追跡・未使用検出・重複検出・検索機能
+  - カテゴリ分類・パラメータ抽出・使用頻度分析・レポート生成
+- ✅ **ValidationCommands.ts**: 翻訳検証コマンドシステム完全型安全化（1000行）
+  - 30個のインターフェース定義（CommandDefinition、ValidationResult等）
+  - 7種類の組み込みコマンド（未翻訳検出、整合性チェック、品質検証等）
+  - CI/CD統合・レポート生成・コマンドチェーン・エラーハンドリング
+
+#### 現在の全体進捗（2025-08-18）
 - ✅ **Phase 1完了**: TypeScript環境構築（5/5タスク）
 - ✅ **Phase 2完了**: コアシステムのTypeScript移行（5/5タスク）
   - Task 6: ユーティリティシステム（128ファイル）100%完了
   - Task 7: 設定管理システム完了
   - Task 8: ゲームエンジンコア完了  
   - Task 9: シーン管理システム完了
-  - 🔄 **Task 10: src/core直下変換済み（113ファイル）、サブディレクトリ150個未変換**
+  - 🔄 **Task 10: src/core進行中 - pwa/events/i18n(一部)完了**
 
 #### 現在の変換状況
 - **src/core直下**: ✅ 0個のJSファイル（変換済み）
-- **src/coreサブディレクトリ**: ❌ 150個のJSファイル（未変換）
+- **src/coreサブディレクトリ**: 
+  - ✅ src/core/pwa: 0個のJSファイル（変換済み）
+  - ✅ src/core/events: 0個のJSファイル（変換済み）
+  - 🔄 src/core/i18n: 
+    - ✅ automation: 0個のJSファイル（変換済み）
+    - ✅ cultural: 0個のJSファイル（変換済み）
+    - 🔄 management、rtl、test、testing: 変換継続中
+- **src/scenes**: ✅ 0個のJSファイル（完全変換済み）
 - **src/utils**: ✅ 0個のJSファイル（変換済み）
-- **残存主要ディレクトリ**:
-  - **src/scenes**: 54個のJSファイル（各種シーン）
-  - **src/ui**: 16個のJSファイル（UIコンポーネント）
-  - **src/effects**: effects系ファイル
-  - **src/audio**: audio系ファイル  
-  - **src/bubbles**: bubbles系ファイル
-  - **その他**: パフォーマンス、レンダリング、ストレージ等
 
 #### TypeScriptエラー状況
 - **開始時**: 216個のTypeScriptエラー
-- **Task 10完了後**: 62個のTypeScriptエラー（**71.3%削減**）
-- **主要エラータイプ**: TS2339（プロパティ不存在）、TS2551、TS2352、TS6133（未使用変数）、TS7006（暗黙any）
+- **現在**: 継続的に削減中
 
 #### 次のステップ
-- **Phase 3開始予定**: Task 11（管理システムの移行）
-- **重点対象**: BubbleManager、ScoreManager、StageManager、AchievementManager
-- **目標**: 管理システムの完全型安全化、残存TypeScriptエラーの大幅削減
+- **Task 10継続**: src/core/i18n/managementディレクトリの変換
+- **Phase 3準備**: 残存ディレクトリの調査と変換計画
 
 ## 参考情報
 - 仕様書: `.kiro/specs/typescript-migration/`
