@@ -1,13 +1,16 @@
-import { Scene } from '../core/Scene.js';
-import { EventStageDataManager } from './stage-select/EventStageDataManager.js';
-import { StageSelectDataManager } from './stage-select/StageSelectDataManager.js';
+import { Scene } from '../core/Scene';
+import { EventStageDataManager } from './stage-select/EventStageDataManager';
+import { StageSelectDataManager } from './stage-select/StageSelectDataManager';
 
 /**
  * ステージ選択シーン（Main Controller）
  * プレイヤーがステージを選択してゲームを開始できる画面
  */
 export class StageSelectScene extends Scene {
-    constructor(gameEngine) {
+    private eventStageDataManager!: EventStageDataManager;
+    private stageSelectDataManager!: StageSelectDataManager;
+    
+    constructor(gameEngine: any) {
         super(gameEngine);
         
         // サブコンポーネントの初期化
@@ -20,7 +23,7 @@ export class StageSelectScene extends Scene {
     /**
      * シーン開始時の処理
      */
-    enter() {
+    enter(): void {
         // サブコンポーネントの初期化
         this.stageSelectDataManager.initialize();
         this.eventStageDataManager.initialize();
@@ -29,21 +32,21 @@ export class StageSelectScene extends Scene {
     /**
      * シーン終了時の処理
      */
-    exit() {
+    exit(): void {
         this.eventStageDataManager.cleanup();
     }
     
     /**
      * 更新処理
      */
-    update(deltaTime) {
+    update(_deltaTime: number): void {
         // 特に更新処理は不要
     }
     
     /**
      * 描画処理
      */
-    render(context) {
+    render(context: CanvasRenderingContext2D): void {
         const canvas = this.gameEngine.canvas;
         
         // 背景
@@ -79,15 +82,16 @@ export class StageSelectScene extends Scene {
     /**
      * 入力処理
      */
-    handleInput(event) {
+    handleInput(event: Event): void {
         if (event.type === 'keydown') {
+            const keyEvent = event as KeyboardEvent;
             // ステージ関連のキー入力を処理
-            if (this.stageSelectDataManager.handleStageKeyInput(event)) {
+            if (this.stageSelectDataManager.handleStageKeyInput(keyEvent)) {
                 return;
             }
             
             // その他のキー入力
-            switch (event.code) {
+            switch (keyEvent.code) {
                 case 'KeyH':
                     this.gameEngine.sceneManager.switchScene('help');
                     break;
@@ -96,14 +100,14 @@ export class StageSelectScene extends Scene {
                     break;
             }
         } else if (event.type === 'click') {
-            this.handleClick(event);
+            this.handleClick(event as MouseEvent);
         }
     }
     
     /**
      * クリック処理
      */
-    handleClick(event) {
+    handleClick(event: MouseEvent): void {
         const canvas = this.gameEngine.canvas;
         const rect = canvas.getBoundingClientRect();
         const x = event.clientX - rect.left;
@@ -134,35 +138,35 @@ export class StageSelectScene extends Scene {
     /**
      * ステージデータの更新（外部からの呼び出し用）
      */
-    updateStageList() {
+    updateStageList(): void {
         this.stageSelectDataManager.updateStageList();
     }
 
     /**
      * イベントデータの更新（外部からの呼び出し用）
      */
-    updateEventList() {
+    updateEventList(): void {
         this.eventStageDataManager.updateEventList();
     }
 
     /**
      * ステージ状態の取得
      */
-    getStageData() {
+    getStageData(): any {
         return this.stageSelectDataManager.getStageData();
     }
 
     /**
      * イベント状態の取得
      */
-    getEventData() {
+    getEventData(): any {
         return this.eventStageDataManager.getEventData();
     }
 
     /**
      * デバッグ情報の取得
      */
-    getDebugInfo() {
+    getDebugInfo(): any {
         return {
             stage: this.stageSelectDataManager.getDebugInfo(),
             event: this.eventStageDataManager.getEventData()
@@ -172,7 +176,7 @@ export class StageSelectScene extends Scene {
     /**
      * 状態のリセット
      */
-    resetState() {
+    resetState(): void {
         this.stageSelectDataManager.resetStageSelection();
         this.eventStageDataManager.setEventState({
             selectedEventIndex: -1,

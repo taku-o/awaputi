@@ -833,6 +833,23 @@ TypeScript移行作業中に「将来実装する」「現時点では未実装�
   - SocialI18nManager.ts: ソーシャル機能専用国際化マネージャー、10言語対応
   - その他110個のコアシステムファイル
 
+### 2025-08-18 残存シーンファイルの変換
+
+#### 残存シーンファイル変換作業
+- **開始時**: src/scenes/内に4個のJSファイル残存
+  - ShopScene.js
+  - UserInfoScene.js
+  - StageSelectScene.js
+  - GameInputManager.js
+- ✅ **ShopScene.ts**: ショップシーン完全型安全化
+  - ItemDefinition・ItemInfo型を使用した型注釈追加
+  - アイテム購入・レンダリング・入力処理の型安全性確保
+- ✅ **UserInfoScene.ts**: ユーザー情報画面シーン完全型安全化
+  - Main Controller Patternを維持したまま型安全性確保
+  - 多数のサブコンポーネント統合管理の型定義
+  - レガシー互換性APIの維持
+- **残存**: StageSelectScene.js、GameInputManager.js（次の作業対象）
+
 #### 現在の全体進捗（2025-08-17）
 - ✅ **Phase 1完了**: TypeScript環境構築（5/5タスク）
 - ✅ **Phase 2完了**: コアシステムのTypeScript移行（5/5タスク）
