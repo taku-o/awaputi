@@ -2,7 +2,164 @@
  * DashboardWidgetRenderer
  * 統計ダッシュボードの全ウィジェット実装と描画を担当
  */
+
+// 型定義
+export interface StatisticsManager {
+    getDetailedStatistics(): Promise<DetailedStatistics>;
+    [key: string]: any;
+}
+
+export interface ChartRenderer {
+    render(context: CanvasRenderingContext2D, type: ChartType, data: ChartData[], options: ChartOptions): Promise<void>;
+}
+
+export interface DetailedStatistics {
+    scoreStats?: ScoreStats;
+    bubbleStats?: BubbleStats;
+    comboStats?: ComboStats;
+    gamePlayStats?: GamePlayStats;
+    achievementStats?: AchievementStats;
+    [key: string]: any;
+}
+
+export interface ScoreStats {
+    totalScore?: number;
+    highestScore?: number;
+    averageScore?: number;
+}
+
+export interface BubbleStats {
+    accuracy?: number;
+    totalBubbles?: number;
+    [key: string]: any;
+}
+
+export interface ComboStats {
+    averageCombo?: number;
+    maxCombo?: number;
+    totalCombos?: number;
+}
+
+export interface GamePlayStats {
+    totalPlayTime?: number;
+    totalGames?: number;
+    winRate?: number;
+}
+
+export interface AchievementStats {
+    total?: number;
+    unlocked?: number;
+    recent?: Achievement[];
+}
+
+export interface Achievement {
+    name: string;
+    date: string;
+    description?: string;
+    icon?: string;
+}
+
+export interface Widget {
+    render(context: CanvasRenderingContext2D, options?: RenderOptions): Promise<WidgetRenderResult>;
+}
+
+export interface WidgetClass {
+    new (statisticsManager: StatisticsManager, chartRenderer?: ChartRenderer): Widget;
+}
+
+export interface RenderOptions {
+    width?: number;
+    height?: number;
+    theme?: WidgetTheme;
+    showTitle?: boolean;
+    [key: string]: any;
+}
+
+export interface WidgetTheme {
+    backgroundColor: string;
+    borderColor: string;
+    textColor: string;
+    accentColor: string;
+    secondaryColor: string;
+}
+
+export interface WidgetRenderResult {
+    type: WidgetType;
+    data?: any;
+    metrics?: MetricData[];
+    achievements?: Achievement[];
+    items?: StatisticItem[];
+    [key: string]: any;
+}
+
+export interface MetricData {
+    key: string;
+    label: string;
+    format: MetricFormat;
+    value?: number;
+}
+
+export interface StatisticItem {
+    label: string;
+    value: string | number;
+}
+
+export interface ChartData {
+    x?: number;
+    value: number;
+    label: string;
+}
+
+export interface ChartOptions {
+    width: number;
+    height: number;
+    showAxes?: boolean;
+    showGrid?: boolean;
+    padding?: number;
+    lineColor?: string;
+    pointColor?: string;
+    backgroundColor?: string;
+    [key: string]: any;
+}
+
+export interface ChartArea {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
+export interface PlayStyleData {
+    label: string;
+    value: number;
+}
+
+export interface PerformanceData {
+    label: string;
+    value: number;
+}
+
+export interface TrendDataPoint {
+    x: number;
+    value: number;
+    label: string;
+}
+
+// 列挙型
+export type WidgetType = 
+    | 'keyMetrics' 
+    | 'recentAchievements' 
+    | 'growthTrends' 
+    | 'playStyle' 
+    | 'performanceChart' 
+    | 'statisticsBreakdown';
+
+export type MetricFormat = 'number' | 'percentage' | 'decimal' | 'time';
+export type ChartType = 'line' | 'bar' | 'pie' | 'area';
+
 export class DashboardWidgetRenderer {
+    private widgetClasses: Record<WidgetType, WidgetClass>;
+
     constructor() {
         this.widgetClasses = {
             keyMetrics: KeyMetricsWidget,
@@ -16,21 +173,24 @@ export class DashboardWidgetRenderer {
 
     /**
      * ウィジェットを作成
-     * @param {string} type ウィジェットタイプ
-     * @param {Object} statisticsManager 統計マネージャー
-     * @param {Object} chartRenderer チャートレンダラー
-     * @returns {Object} ウィジェットインスタンス
+     * @param type ウィジェットタイプ
+     * @param statisticsManager 統計マネージャー
+     * @param chartRenderer チャートレンダラー
+     * @returns ウィジェットインスタンス
      */
-    createWidget(type, statisticsManager, chartRenderer) {
+    createWidget(type: WidgetType, statisticsManager: StatisticsManager, chartRenderer?: ChartRenderer): Widget {
         const WidgetClass = this.widgetClasses[type];
         if (!WidgetClass) {
             throw new Error(`Unknown widget type: ${type}`);
         }
 
         // チャートレンダラーが必要なウィジェット
-        const needsChartRenderer = ['growthTrends', 'playStyle', 'performanceChart', 'statisticsBreakdown'];
+        const needsChartRenderer: WidgetType[] = ['growthTrends', 'playStyle', 'performanceChart', 'statisticsBreakdown'];
         
         if (needsChartRenderer.includes(type)) {
+            if (!chartRenderer) {
+                throw new Error(`Widget type ${type} requires a chart renderer`);
+            }
             return new WidgetClass(statisticsManager, chartRenderer);
         } else {
             return new WidgetClass(statisticsManager);
@@ -39,18 +199,21 @@ export class DashboardWidgetRenderer {
 
     /**
      * サポートされているウィジェットタイプを取得
-     * @returns {Array} ウィジェットタイプ配列
+     * @returns ウィジェットタイプ配列
      */
-    getSupportedWidgetTypes() {
-        return Object.keys(this.widgetClasses);
+    getSupportedWidgetTypes(): WidgetType[] {
+        return Object.keys(this.widgetClasses) as WidgetType[];
     }
 }
 
 /**
  * 主要指標ウィジェット
  */
-class KeyMetricsWidget {
-    constructor(statisticsManager) {
+class KeyMetricsWidget implements Widget {
+    private statisticsManager: StatisticsManager;
+    private metrics: MetricData[];
+
+    constructor(statisticsManager: StatisticsManager) {
         this.statisticsManager = statisticsManager;
         this.metrics = [
             { key: 'totalScore', label: 'トータルスコア', format: 'number' },
@@ -60,7 +223,7 @@ class KeyMetricsWidget {
         ];
     }
     
-    async render(context, options) {
+    async render(context: CanvasRenderingContext2D, options: RenderOptions = {}): Promise<WidgetRenderResult> {
         const stats = await this.statisticsManager.getDetailedStatistics();
         const canvas = context.canvas;
         
@@ -114,7 +277,7 @@ class KeyMetricsWidget {
         };
     }
     
-    getMetricValue(stats, key) {
+    private getMetricValue(stats: DetailedStatistics, key: string): number {
         switch (key) {
             case 'totalScore': return stats.scoreStats?.totalScore || 0;
             case 'accuracy': return stats.bubbleStats?.accuracy || 0;
@@ -124,7 +287,7 @@ class KeyMetricsWidget {
         }
     }
     
-    formatValue(value, format) {
+    private formatValue(value: number, format: MetricFormat): string {
         switch (format) {
             case 'number': return value.toLocaleString();
             case 'percentage': return `${(value * 100).toFixed(1)}%`;
@@ -134,7 +297,7 @@ class KeyMetricsWidget {
         }
     }
     
-    formatTime(seconds) {
+    private formatTime(seconds: number): string {
         const hours = Math.floor(seconds / 3600);
         const minutes = Math.floor((seconds % 3600) / 60);
         if (hours > 0) {
@@ -147,12 +310,14 @@ class KeyMetricsWidget {
 /**
  * 最近の実績ウィジェット
  */
-class RecentAchievementsWidget {
-    constructor(statisticsManager) {
+class RecentAchievementsWidget implements Widget {
+    private statisticsManager: StatisticsManager;
+
+    constructor(statisticsManager: StatisticsManager) {
         this.statisticsManager = statisticsManager;
     }
     
-    async render(context, options) {
+    async render(context: CanvasRenderingContext2D, options: RenderOptions = {}): Promise<WidgetRenderResult> {
         const stats = await this.statisticsManager.getDetailedStatistics();
         const canvas = context.canvas;
         
@@ -172,7 +337,7 @@ class RecentAchievementsWidget {
         context.fillText('最近の実績', 15, 25);
         
         // 実績データの取得（模擬データ）
-        const achievements = [
+        const achievements: Achievement[] = [
             { name: '初回プレイ', date: '今日' },
             { name: 'コンボマスター', date: '昨日' },
             { name: 'スピードスター', date: '2日前' }
@@ -209,13 +374,16 @@ class RecentAchievementsWidget {
 /**
  * 成長トレンドウィジェット
  */
-class GrowthTrendsWidget {
-    constructor(statisticsManager, chartRenderer) {
+class GrowthTrendsWidget implements Widget {
+    private statisticsManager: StatisticsManager;
+    private chartRenderer: ChartRenderer;
+
+    constructor(statisticsManager: StatisticsManager, chartRenderer: ChartRenderer) {
         this.statisticsManager = statisticsManager;
         this.chartRenderer = chartRenderer;
     }
     
-    async render(context, options) {
+    async render(context: CanvasRenderingContext2D, options: RenderOptions = {}): Promise<WidgetRenderResult> {
         const stats = await this.statisticsManager.getDetailedStatistics();
         const canvas = context.canvas;
         
@@ -235,7 +403,7 @@ class GrowthTrendsWidget {
         context.fillText('成長トレンド', 15, 25);
         
         // グラフエリア
-        const chartArea = {
+        const chartArea: ChartArea = {
             x: 15,
             y: 35,
             width: canvas.width - 30,
@@ -251,15 +419,17 @@ class GrowthTrendsWidget {
         chartCanvas.height = chartArea.height;
         const chartContext = chartCanvas.getContext('2d');
         
-        await this.chartRenderer.render(chartContext, 'line', trendData, {
-            width: chartArea.width,
-            height: chartArea.height,
-            showAxes: false,
-            showGrid: false,
-            padding: 5,
-            lineColor: '#3B82F6',
-            pointColor: '#3B82F6'
-        });
+        if (chartContext) {
+            await this.chartRenderer.render(chartContext, 'line', trendData, {
+                width: chartArea.width,
+                height: chartArea.height,
+                showAxes: false,
+                showGrid: false,
+                padding: 5,
+                lineColor: '#3B82F6',
+                pointColor: '#3B82F6'
+            });
+        }
         
         // メインキャンバスに描画
         context.drawImage(chartCanvas, chartArea.x, chartArea.y);
@@ -270,8 +440,8 @@ class GrowthTrendsWidget {
         };
     }
     
-    generateTrendData() {
-        const data = [];
+    private generateTrendData(): TrendDataPoint[] {
+        const data: TrendDataPoint[] = [];
         for (let i = 0; i < 7; i++) {
             data.push({
                 x: i,
@@ -286,13 +456,16 @@ class GrowthTrendsWidget {
 /**
  * プレイスタイルウィジェット
  */
-class PlayStyleWidget {
-    constructor(statisticsManager, chartRenderer) {
+class PlayStyleWidget implements Widget {
+    private statisticsManager: StatisticsManager;
+    private chartRenderer: ChartRenderer;
+
+    constructor(statisticsManager: StatisticsManager, chartRenderer: ChartRenderer) {
         this.statisticsManager = statisticsManager;
         this.chartRenderer = chartRenderer;
     }
     
-    async render(context, options) {
+    async render(context: CanvasRenderingContext2D, options: RenderOptions = {}): Promise<WidgetRenderResult> {
         const stats = await this.statisticsManager.getDetailedStatistics();
         const canvas = context.canvas;
         
@@ -312,7 +485,7 @@ class PlayStyleWidget {
         context.fillText('プレイスタイル', 15, 25);
         
         // プレイスタイル分析データ
-        const playStyleData = [
+        const playStyleData: PlayStyleData[] = [
             { label: '攻撃的', value: 65 },
             { label: '安定型', value: 85 },
             { label: '効率的', value: 70 }
@@ -352,13 +525,16 @@ class PlayStyleWidget {
 /**
  * パフォーマンスチャートウィジェット
  */
-class PerformanceChartWidget {
-    constructor(statisticsManager, chartRenderer) {
+class PerformanceChartWidget implements Widget {
+    private statisticsManager: StatisticsManager;
+    private chartRenderer: ChartRenderer;
+
+    constructor(statisticsManager: StatisticsManager, chartRenderer: ChartRenderer) {
         this.statisticsManager = statisticsManager;
         this.chartRenderer = chartRenderer;
     }
     
-    async render(context, options) {
+    async render(context: CanvasRenderingContext2D, options: RenderOptions = {}): Promise<WidgetRenderResult> {
         const stats = await this.statisticsManager.getDetailedStatistics();
         const canvas = context.canvas;
         
@@ -378,7 +554,7 @@ class PerformanceChartWidget {
         context.fillText('パフォーマンス', 15, 25);
         
         // チャートエリア
-        const chartArea = {
+        const chartArea: ChartArea = {
             x: 15,
             y: 35,
             width: canvas.width - 30,
@@ -386,7 +562,7 @@ class PerformanceChartWidget {
         };
         
         // パフォーマンスデータ
-        const performanceData = [
+        const performanceData: PerformanceData[] = [
             { label: 'スコア', value: 1250 },
             { label: '精度', value: 850 },
             { label: 'コンボ', value: 920 },
@@ -399,13 +575,15 @@ class PerformanceChartWidget {
         chartCanvas.height = chartArea.height;
         const chartContext = chartCanvas.getContext('2d');
         
-        await this.chartRenderer.render(chartContext, 'bar', performanceData, {
-            width: chartArea.width,
-            height: chartArea.height,
-            showAxes: true,
-            showGrid: true,
-            padding: 5
-        });
+        if (chartContext) {
+            await this.chartRenderer.render(chartContext, 'bar', performanceData, {
+                width: chartArea.width,
+                height: chartArea.height,
+                showAxes: true,
+                showGrid: true,
+                padding: 5
+            });
+        }
         
         // メインキャンバスに描画
         context.drawImage(chartCanvas, chartArea.x, chartArea.y);
@@ -420,13 +598,16 @@ class PerformanceChartWidget {
 /**
  * 統計詳細ウィジェット
  */
-class StatisticsBreakdownWidget {
-    constructor(statisticsManager, chartRenderer) {
+class StatisticsBreakdownWidget implements Widget {
+    private statisticsManager: StatisticsManager;
+    private chartRenderer: ChartRenderer;
+
+    constructor(statisticsManager: StatisticsManager, chartRenderer: ChartRenderer) {
         this.statisticsManager = statisticsManager;
         this.chartRenderer = chartRenderer;
     }
     
-    async render(context, options) {
+    async render(context: CanvasRenderingContext2D, options: RenderOptions = {}): Promise<WidgetRenderResult> {
         const stats = await this.statisticsManager.getDetailedStatistics();
         const canvas = context.canvas;
         
@@ -446,7 +627,7 @@ class StatisticsBreakdownWidget {
         context.fillText('統計詳細', 15, 25);
         
         // 統計項目の表示
-        const statisticsItems = [
+        const statisticsItems: StatisticItem[] = [
             { label: 'ゲーム数', value: stats.gamePlayStats?.totalGames || 0 },
             { label: '最高スコア', value: stats.scoreStats?.highestScore || 0 },
             { label: '最高コンボ', value: stats.comboStats?.maxCombo || 0 },
