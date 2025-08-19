@@ -1,128 +1,177 @@
 import { getErrorHandler } from '../utils/ErrorHandler.js';
 import { getLocalizationManager } from '../core/LocalizationManager.js';
+import type { AudioManager } from '../audio/AudioManager.js';
+import type { ErrorHandler } from '../utils/ErrorHandler.js';
+import type { LocalizationManager } from '../core/LocalizationManager.js';
+
+/**
+ * Test item interface
+ */
+interface TestItem {
+    id: string;
+    label: string;
+    value?: number;
+    progress?: number;
+    countdown?: number;
+}
+
+/**
+ * Test category interface
+ */
+interface TestCategory {
+    label: string;
+    icon: string;
+    items: TestItem[];
+}
+
+/**
+ * Test categories collection
+ */
+interface TestCategories {
+    bubbles: TestCategory;
+    combo: TestCategory;
+    ui: TestCategory;
+    achievement: TestCategory;
+    gameState: TestCategory;
+    bgm: TestCategory;
+}
+
+/**
+ * Batch test configuration
+ */
+interface BatchTest {
+    id: string;
+    label: string;
+    category: keyof TestCategories;
+    icon: string;
+}
 
 /**
  * 音響テストパネルクラス - 各音響要素の個別テスト再生機能
  */
 export class AudioTestPanel {
-    constructor(audioManager) {
+    private audioManager: AudioManager;
+    private localizationManager: LocalizationManager;
+    private errorHandler: ErrorHandler;
+    
+    // テストカテゴリ
+    private testCategories: TestCategories = {
+        bubbles: {
+            label: 'audio.test.bubbles',
+            icon: '🫧',
+            items: [
+                { id: 'normal', label: '通常泡' },
+                { id: 'stone', label: '石泡' },
+                { id: 'iron', label: '鉄泡' },
+                { id: 'diamond', label: 'ダイヤモンド泡' },
+                { id: 'rainbow', label: 'レインボー泡' },
+                { id: 'pink', label: 'ピンク泡' },
+                { id: 'clock', label: '時計泡' },
+                { id: 'electric', label: '電気泡' },
+                { id: 'poison', label: '毒泡' },
+                { id: 'spiky', label: 'トゲ泡' },
+                { id: 'boss', label: 'ボス泡' },
+                { id: 'golden', label: 'ゴールデン泡' },
+                { id: 'frozen', label: 'フローズン泡' },
+                { id: 'magnetic', label: 'マグネット泡' },
+                { id: 'explosive', label: '爆発泡' }
+            ]
+        },
+        combo: {
+            label: 'audio.test.combo',
+            icon: '🔥',
+            items: [
+                { id: 'combo_1', label: 'コンボ レベル1', value: 1 },
+                { id: 'combo_2', label: 'コンボ レベル2', value: 2 },
+                { id: 'combo_3', label: 'コンボ レベル3', value: 3 },
+                { id: 'combo_4', label: 'コンボ レベル4', value: 4 },
+                { id: 'combo_5', label: 'コンボ レベル5', value: 5 },
+                { id: 'combo_10', label: 'コンボ 10連鎖', value: 10 },
+                { id: 'combo_25', label: 'コンボ 25連鎖', value: 25 },
+                { id: 'combo_50', label: 'コンボ 50連鎖', value: 50 },
+                { id: 'combo_100', label: 'コンボ 100連鎖', value: 100 }
+            ]
+        },
+        ui: {
+            label: 'audio.test.ui',
+            icon: '🖱️',
+            items: [
+                { id: 'click', label: 'クリック' },
+                { id: 'hover', label: 'ホバー' },
+                { id: 'select', label: '選択' },
+                { id: 'toggle', label: 'トグル' },
+                { id: 'open', label: '開く' },
+                { id: 'close', label: '閉じる' },
+                { id: 'error', label: 'エラー' },
+                { id: 'success', label: '成功' },
+                { id: 'tab_switch', label: 'タブ切替' }
+            ]
+        },
+        achievement: {
+            label: 'audio.test.achievement',
+            icon: '🏆',
+            items: [
+                { id: 'common', label: 'Common 実績' },
+                { id: 'rare', label: 'Rare 実績' },
+                { id: 'epic', label: 'Epic 実績' },
+                { id: 'legendary', label: 'Legendary 実績' },
+                { id: 'progress_25', label: '進捗 25%', progress: 0.25 },
+                { id: 'progress_50', label: '進捗 50%', progress: 0.5 },
+                { id: 'progress_75', label: '進捗 75%', progress: 0.75 },
+                { id: 'progress_100', label: '進捗 100%', progress: 1.0 }
+            ]
+        },
+        gameState: {
+            label: 'audio.test.gameState',
+            icon: '🎮',
+            items: [
+                { id: 'game_start', label: 'ゲーム開始' },
+                { id: 'game_over', label: 'ゲームオーバー' },
+                { id: 'levelup', label: 'レベルアップ' },
+                { id: 'warning', label: '警告' },
+                { id: 'timeup', label: 'タイムアップ' },
+                { id: 'stageclear', label: 'ステージクリア' },
+                { id: 'bonus_start', label: 'ボーナス開始' },
+                { id: 'bonus_end', label: 'ボーナス終了' },
+                { id: 'health_low', label: 'HP低下' },
+                { id: 'health_critical', label: 'HP危機' },
+                { id: 'powerup', label: 'パワーアップ' },
+                { id: 'countdown_3', label: 'カウントダウン 3', countdown: 3 },
+                { id: 'countdown_2', label: 'カウントダウン 2', countdown: 2 },
+                { id: 'countdown_1', label: 'カウントダウン 1', countdown: 1 },
+                { id: 'countdown_0', label: 'カウントダウン GO!', countdown: 0 }
+            ]
+        },
+        bgm: {
+            label: 'audio.test.bgm',
+            icon: '🎵',
+            items: [
+                { id: 'menu', label: 'メニューBGM' },
+                { id: 'gameplay', label: 'ゲームプレイBGM' },
+                { id: 'bonus', label: 'ボーナスBGM' },
+                { id: 'gameover', label: 'ゲームオーバーBGM' }
+            ]
+        }
+    };
+    
+    // アクティブなBGMトラック
+    private activeBGMTrack: string | null = null;
+    
+    // UI要素
+    private panel: HTMLElement | null = null;
+    private isOpen: boolean = false;
+
+    constructor(audioManager: AudioManager) {
         this.audioManager = audioManager;
         this.localizationManager = getLocalizationManager();
         this.errorHandler = getErrorHandler();
-        
-        // テストカテゴリ
-        this.testCategories = {
-            bubbles: {
-                label: 'audio.test.bubbles',
-                icon: '🫧',
-                items: [
-                    { id: 'normal', label: '通常泡' },
-                    { id: 'stone', label: '石泡' },
-                    { id: 'iron', label: '鉄泡' },
-                    { id: 'diamond', label: 'ダイヤモンド泡' },
-                    { id: 'rainbow', label: 'レインボー泡' },
-                    { id: 'pink', label: 'ピンク泡' },
-                    { id: 'clock', label: '時計泡' },
-                    { id: 'electric', label: '電気泡' },
-                    { id: 'poison', label: '毒泡' },
-                    { id: 'spiky', label: 'トゲ泡' },
-                    { id: 'boss', label: 'ボス泡' },
-                    { id: 'golden', label: 'ゴールデン泡' },
-                    { id: 'frozen', label: 'フローズン泡' },
-                    { id: 'magnetic', label: 'マグネット泡' },
-                    { id: 'explosive', label: '爆発泡' }
-                ]
-            },
-            combo: {
-                label: 'audio.test.combo',
-                icon: '🔥',
-                items: [
-                    { id: 'combo_1', label: 'コンボ レベル1', value: 1 },
-                    { id: 'combo_2', label: 'コンボ レベル2', value: 2 },
-                    { id: 'combo_3', label: 'コンボ レベル3', value: 3 },
-                    { id: 'combo_4', label: 'コンボ レベル4', value: 4 },
-                    { id: 'combo_5', label: 'コンボ レベル5', value: 5 },
-                    { id: 'combo_10', label: 'コンボ 10連鎖', value: 10 },
-                    { id: 'combo_25', label: 'コンボ 25連鎖', value: 25 },
-                    { id: 'combo_50', label: 'コンボ 50連鎖', value: 50 },
-                    { id: 'combo_100', label: 'コンボ 100連鎖', value: 100 }
-                ]
-            },
-            ui: {
-                label: 'audio.test.ui',
-                icon: '🖱️',
-                items: [
-                    { id: 'click', label: 'クリック' },
-                    { id: 'hover', label: 'ホバー' },
-                    { id: 'select', label: '選択' },
-                    { id: 'toggle', label: 'トグル' },
-                    { id: 'open', label: '開く' },
-                    { id: 'close', label: '閉じる' },
-                    { id: 'error', label: 'エラー' },
-                    { id: 'success', label: '成功' },
-                    { id: 'tab_switch', label: 'タブ切替' }
-                ]
-            },
-            achievement: {
-                label: 'audio.test.achievement',
-                icon: '🏆',
-                items: [
-                    { id: 'common', label: 'Common 実績' },
-                    { id: 'rare', label: 'Rare 実績' },
-                    { id: 'epic', label: 'Epic 実績' },
-                    { id: 'legendary', label: 'Legendary 実績' },
-                    { id: 'progress_25', label: '進捗 25%', progress: 0.25 },
-                    { id: 'progress_50', label: '進捗 50%', progress: 0.5 },
-                    { id: 'progress_75', label: '進捗 75%', progress: 0.75 },
-                    { id: 'progress_100', label: '進捗 100%', progress: 1.0 }
-                ]
-            },
-            gameState: {
-                label: 'audio.test.gameState',
-                icon: '🎮',
-                items: [
-                    { id: 'game_start', label: 'ゲーム開始' },
-                    { id: 'game_over', label: 'ゲームオーバー' },
-                    { id: 'levelup', label: 'レベルアップ' },
-                    { id: 'warning', label: '警告' },
-                    { id: 'timeup', label: 'タイムアップ' },
-                    { id: 'stageclear', label: 'ステージクリア' },
-                    { id: 'bonus_start', label: 'ボーナス開始' },
-                    { id: 'bonus_end', label: 'ボーナス終了' },
-                    { id: 'health_low', label: 'HP低下' },
-                    { id: 'health_critical', label: 'HP危機' },
-                    { id: 'powerup', label: 'パワーアップ' },
-                    { id: 'countdown_3', label: 'カウントダウン 3', countdown: 3 },
-                    { id: 'countdown_2', label: 'カウントダウン 2', countdown: 2 },
-                    { id: 'countdown_1', label: 'カウントダウン 1', countdown: 1 },
-                    { id: 'countdown_0', label: 'カウントダウン GO!', countdown: 0 }
-                ]
-            },
-            bgm: {
-                label: 'audio.test.bgm',
-                icon: '🎵',
-                items: [
-                    { id: 'menu', label: 'メニューBGM' },
-                    { id: 'gameplay', label: 'ゲームプレイBGM' },
-                    { id: 'bonus', label: 'ボーナスBGM' },
-                    { id: 'gameover', label: 'ゲームオーバーBGM' }
-                ]
-            }
-        };
-        
-        // アクティブなBGMトラック
-        this.activeBGMTrack = null;
-        
-        // UI要素
-        this.panel = null;
-        this.isOpen = false;
     }
     
     /**
      * テストパネルを作成
      * @returns {HTMLElement} パネル要素
      */
-    createPanel() {
+    createPanel(): HTMLElement {
         const panel = document.createElement('div');
         panel.className = 'audio-test-panel';
         panel.style.cssText = `
@@ -148,7 +197,7 @@ export class AudioTestPanel {
         
         // カテゴリ別テストセクション
         Object.entries(this.testCategories).forEach(([categoryKey, category]) => {
-            const section = this.createCategorySection(categoryKey, category);
+            const section = this.createCategorySection(categoryKey as keyof TestCategories, category);
             panel.appendChild(section);
         });
         
@@ -167,7 +216,7 @@ export class AudioTestPanel {
      * @param {Object} category - カテゴリ情報
      * @returns {HTMLElement} セクション要素
      */
-    createCategorySection(categoryKey, category) {
+    private createCategorySection(categoryKey: keyof TestCategories, category: TestCategory): HTMLElement {
         const section = document.createElement('div');
         section.className = 'test-category-section';
         section.style.cssText = `
@@ -252,7 +301,7 @@ export class AudioTestPanel {
      * @param {Object} item - アイテム情報
      * @returns {HTMLElement} ボタン要素
      */
-    createTestButton(categoryKey, item) {
+    private createTestButton(categoryKey: keyof TestCategories, item: TestItem): HTMLElement {
         const button = document.createElement('button');
         button.className = 'test-button';
         button.textContent = item.label;
@@ -300,7 +349,7 @@ export class AudioTestPanel {
      * @private
      * @returns {HTMLElement} セクション要素
      */
-    createBatchTestSection() {
+    private createBatchTestSection(): HTMLElement {
         const section = document.createElement('div');
         section.className = 'batch-test-section';
         section.style.cssText = `
@@ -328,7 +377,7 @@ export class AudioTestPanel {
         `;
         
         // 各カテゴリの一括テストボタン
-        const batchTests = [
+        const batchTests: BatchTest[] = [
             { id: 'all_bubbles', label: '全泡音テスト', category: 'bubbles', icon: '🫧' },
             { id: 'all_combo', label: '全コンボ音テスト', category: 'combo', icon: '🔥' },
             { id: 'all_ui', label: '全UI音テスト', category: 'ui', icon: '🖱️' },
@@ -419,39 +468,39 @@ export class AudioTestPanel {
      * @param {string} categoryKey - カテゴリキー
      * @param {Object} item - アイテム情報
      */
-    playTestSound(categoryKey, item) {
+    private playTestSound(categoryKey: keyof TestCategories, item: TestItem): void {
         try {
             switch (categoryKey) {
                 case 'bubbles':
-                    this.audioManager.playBubbleSound(item.id, 0, { volume: 0.7 });
+                    (this.audioManager as any).playBubbleSound?.(item.id, 0, { volume: 0.7 });
                     break;
                     
                 case 'combo':
-                    if (item.value <= 5) {
-                        this.audioManager.playComboSound(item.value, { volume: 0.7 });
-                    } else {
+                    if (item.value !== undefined && item.value <= 5) {
+                        (this.audioManager as any).playComboSound?.(item.value, { volume: 0.7 });
+                    } else if (item.value !== undefined) {
                         // マイルストーン音
-                        this.audioManager.playComboMilestoneSound(item.value, { volume: 0.7 });
+                        (this.audioManager as any).playComboMilestoneSound?.(item.value, { volume: 0.7 });
                     }
                     break;
                     
                 case 'ui':
-                    this.audioManager.playUISound(item.id, { volume: 0.7 });
+                    (this.audioManager as any).playUISound?.(item.id, { volume: 0.7 });
                     break;
                     
                 case 'achievement':
                     if (item.progress !== undefined) {
-                        this.audioManager.playAchievementProgressSound(item.progress, 'score', { volume: 0.7 });
+                        (this.audioManager as any).playAchievementProgressSound?.(item.progress, 'score', { volume: 0.7 });
                     } else {
-                        this.audioManager.playAchievementSound(item.id, { volume: 0.7 });
+                        (this.audioManager as any).playAchievementSound?.(item.id, { volume: 0.7 });
                     }
                     break;
                     
                 case 'gameState':
                     if (item.countdown !== undefined) {
-                        this.audioManager.playCountdownSound(item.countdown, { volume: 0.7 });
+                        (this.audioManager as any).playCountdownSound?.(item.countdown, { volume: 0.7 });
                     } else {
-                        this.audioManager.playGameStateSound(item.id, { volume: 0.7 });
+                        (this.audioManager as any).playGameStateSound?.(item.id, { volume: 0.7 });
                     }
                     break;
                     
@@ -472,15 +521,15 @@ export class AudioTestPanel {
      * @private
      * @param {string} trackName - トラック名
      */
-    async playBGMTest(trackName) {
+    private async playBGMTest(trackName: string): Promise<void> {
         try {
             // 既存のBGMを停止
             if (this.activeBGMTrack && this.activeBGMTrack !== trackName) {
-                await this.audioManager.stopBGM({ fadeOutDuration: 0.5 });
+                await (this.audioManager as any).stopBGM?.({ fadeOutDuration: 0.5 });
             }
             
             // 新しいBGMを再生
-            await this.audioManager.playBGM(trackName, {
+            await (this.audioManager as any).playBGM?.(trackName, {
                 volume: 0.5,
                 fadeInDuration: 1.0
             });
@@ -502,9 +551,9 @@ export class AudioTestPanel {
      * BGMテストを停止
      * @private
      */
-    async stopBGMTest() {
+    private async stopBGMTest(): Promise<void> {
         try {
-            await this.audioManager.stopBGM({ fadeOutDuration: 0.5 });
+            await (this.audioManager as any).stopBGM?.({ fadeOutDuration: 0.5 });
             this.activeBGMTrack = null;
             this.updateBGMButtonStates(null);
         } catch (error) {
@@ -519,18 +568,19 @@ export class AudioTestPanel {
      * @private
      * @param {string|null} activeTrack - アクティブなトラック名
      */
-    updateBGMButtonStates(activeTrack) {
+    private updateBGMButtonStates(activeTrack: string | null): void {
         if (!this.panel) return;
         
         const bgmButtons = this.panel.querySelectorAll('.test-category-section:last-of-type .test-button');
-        bgmButtons.forEach((button, index) => {
+        bgmButtons.forEach((button: Element, index: number) => {
+            const htmlButton = button as HTMLButtonElement;
             const item = this.testCategories.bgm.items[index];
             if (item && item.id === activeTrack) {
-                button.style.backgroundColor = 'rgba(0, 255, 0, 0.3)';
-                button.style.borderColor = '#00ff00';
+                htmlButton.style.backgroundColor = 'rgba(0, 255, 0, 0.3)';
+                htmlButton.style.borderColor = '#00ff00';
             } else {
-                button.style.backgroundColor = 'rgba(0, 255, 255, 0.1)';
-                button.style.borderColor = '#00ffff';
+                htmlButton.style.backgroundColor = 'rgba(0, 255, 255, 0.1)';
+                htmlButton.style.borderColor = '#00ffff';
             }
         });
     }
@@ -540,7 +590,7 @@ export class AudioTestPanel {
      * @private
      * @param {string} categoryKey - カテゴリキー
      */
-    async runBatchTest(categoryKey) {
+    private async runBatchTest(categoryKey: keyof TestCategories): Promise<void> {
         const category = this.testCategories[categoryKey];
         if (!category) return;
         
@@ -595,7 +645,7 @@ export class AudioTestPanel {
      * パネルを開く
      * @param {HTMLElement} container - 表示先のコンテナ
      */
-    open(container) {
+    open(container: HTMLElement): void {
         if (!this.panel) {
             this.panel = this.createPanel();
         }
@@ -608,7 +658,7 @@ export class AudioTestPanel {
     /**
      * パネルを閉じる
      */
-    close() {
+    close(): void {
         if (this.panel && this.panel.parentNode) {
             this.panel.parentNode.removeChild(this.panel);
         }
@@ -623,7 +673,7 @@ export class AudioTestPanel {
     /**
      * リソースの解放
      */
-    dispose() {
+    dispose(): void {
         this.close();
         this.panel = null;
     }

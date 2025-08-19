@@ -1,27 +1,81 @@
 /**
- * ChallengeDetailModal.js
+ * ChallengeDetailModal.ts
  * チャレンジ詳細モーダル - 基本実装
  * チャレンジの詳細情報を表示するモーダルダイアログ
  */
 
+/**
+ * Challenge reward interface
+ */
+interface ChallengeReward {
+    type: string;
+    amount: number;
+    description: string;
+}
+
+/**
+ * Challenge data interface
+ */
+interface ChallengeData {
+    id: string;
+    title: string;
+    description: string;
+    type: 'daily' | 'weekly' | 'special' | 'event';
+    difficulty: 'easy' | 'medium' | 'hard' | 'expert';
+    progress: number;
+    target: number;
+    reward: ChallengeReward;
+    deadline?: Date;
+    priority?: number;
+}
+
+/**
+ * Challenge system interface
+ */
+interface ChallengeSystem {
+    getChallengeById?: (challengeId: string) => Promise<ChallengeData | null>;
+}
+
+/**
+ * Localization manager interface
+ */
+interface LocalizationManager {
+    translate(key: string): string | null;
+}
+
+/**
+ * Bound event handlers
+ */
+interface BoundHandlers {
+    close: () => void;
+    backdropClick: (event: Event) => void;
+    keyDown: (event: KeyboardEvent) => void;
+}
+
 export class ChallengeDetailModal {
-    constructor(challengeSystem, localizationManager) {
+    private challengeSystem: ChallengeSystem;
+    private localizationManager: LocalizationManager;
+    
+    // 状態管理
+    private isVisible: boolean = false;
+    private currentChallengeId: string | null = null;
+    private challengeData: ChallengeData | null = null;
+    private isLoading: boolean = false;
+    private error: string | null = null;
+    
+    // DOM要素
+    private container: HTMLDivElement | null = null;
+    private backdrop: HTMLDivElement | null = null;
+    private modal: HTMLDivElement | null = null;
+    private closeButton: HTMLButtonElement | null = null;
+    private contentArea: HTMLDivElement | null = null;
+    
+    // イベントハンドラー
+    private boundHandlers: BoundHandlers;
+
+    constructor(challengeSystem: ChallengeSystem, localizationManager: LocalizationManager) {
         this.challengeSystem = challengeSystem;
         this.localizationManager = localizationManager;
-        
-        // 状態管理
-        this.isVisible = false;
-        this.currentChallengeId = null;
-        this.challengeData = null;
-        this.isLoading = false;
-        this.error = null;
-        
-        // DOM要素
-        this.container = null;
-        this.backdrop = null;
-        this.modal = null;
-        this.closeButton = null;
-        this.contentArea = null;
         
         // イベントハンドラー
         this.boundHandlers = {
@@ -37,7 +91,7 @@ export class ChallengeDetailModal {
     /**
      * モーダル構造の作成
      */
-    createModalStructure() {
+    createModalStructure(): void {
         try {
             // コンテナ作成
             this.container = document.createElement('div');
@@ -129,12 +183,12 @@ export class ChallengeDetailModal {
             this.closeButton.setAttribute('aria-label', this.localizationManager.translate('common.close') || '閉じる');
             this.closeButton.addEventListener('click', this.boundHandlers.close);
             this.closeButton.addEventListener('mouseover', () => {
-                this.closeButton.style.backgroundColor = '#ecf0f1';
-                this.closeButton.style.color = '#2c3e50';
+                this.closeButton!.style.backgroundColor = '#ecf0f1';
+                this.closeButton!.style.color = '#2c3e50';
             });
             this.closeButton.addEventListener('mouseout', () => {
-                this.closeButton.style.backgroundColor = 'transparent';
-                this.closeButton.style.color = '#7f8c8d';
+                this.closeButton!.style.backgroundColor = 'transparent';
+                this.closeButton!.style.color = '#7f8c8d';
             });
             
             header.appendChild(title);
@@ -166,14 +220,14 @@ export class ChallengeDetailModal {
             
         } catch (error) {
             console.error('[ChallengeDetailModal] モーダル構造作成エラー:', error);
-            this.error = error.message;
+            this.error = (error as Error).message;
         }
     }
     
     /**
      * チャレンジ詳細表示
      */
-    async show(challengeId) {
+    async show(challengeId: string): Promise<void> {
         if (this.isVisible || !challengeId) return;
         
         try {
@@ -183,10 +237,12 @@ export class ChallengeDetailModal {
             
             // モーダルを表示
             this.isVisible = true;
-            this.container.style.display = 'flex';
+            if (this.container) {
+                this.container.style.display = 'flex';
+            }
             
             // ドキュメントに追加（まだ追加されていない場合）
-            if (!this.container.parentNode) {
+            if (this.container && !this.container.parentNode) {
                 document.body.appendChild(this.container);
             }
             
@@ -194,7 +250,7 @@ export class ChallengeDetailModal {
             document.addEventListener('keydown', this.boundHandlers.keyDown);
             
             // フォーカス管理
-            this.closeButton.focus();
+            this.closeButton?.focus();
             
             // チャレンジデータ読み込み
             await this.loadChallengeData(challengeId);
@@ -203,7 +259,7 @@ export class ChallengeDetailModal {
             
         } catch (error) {
             console.error('[ChallengeDetailModal] 表示エラー:', error);
-            this.error = error.message;
+            this.error = (error as Error).message;
             this.renderError();
         } finally {
             this.isLoading = false;
@@ -213,12 +269,14 @@ export class ChallengeDetailModal {
     /**
      * モーダルを閉じる
      */
-    close() {
+    close(): void {
         if (!this.isVisible) return;
         
         try {
             this.isVisible = false;
-            this.container.style.display = 'none';
+            if (this.container) {
+                this.container.style.display = 'none';
+            }
             
             // キーボードイベント削除
             document.removeEventListener('keydown', this.boundHandlers.keyDown);
@@ -239,7 +297,7 @@ export class ChallengeDetailModal {
     /**
      * チャレンジデータ読み込み
      */
-    async loadChallengeData(challengeId) {
+    private async loadChallengeData(challengeId: string): Promise<void> {
         try {
             this.renderLoading();
             
@@ -259,7 +317,7 @@ export class ChallengeDetailModal {
             
         } catch (error) {
             console.error('[ChallengeDetailModal] データ読み込みエラー:', error);
-            this.error = error.message;
+            this.error = (error as Error).message;
             this.renderError();
         }
     }
@@ -267,7 +325,7 @@ export class ChallengeDetailModal {
     /**
      * モックチャレンジデータ作成
      */
-    createMockChallengeData(challengeId) {
+    private createMockChallengeData(challengeId: string): ChallengeData {
         return {
             id: challengeId,
             title: `チャレンジ ${challengeId}`,
@@ -289,7 +347,9 @@ export class ChallengeDetailModal {
     /**
      * ローディング状態の描画
      */
-    renderLoading() {
+    private renderLoading(): void {
+        if (!this.contentArea) return;
+        
         this.contentArea.innerHTML = `
             <div style="text-align: center; padding: 40px; color: #7f8c8d;">
                 <div style="font-size: 18px; margin-bottom: 16px;">読み込み中...</div>
@@ -307,8 +367,8 @@ export class ChallengeDetailModal {
     /**
      * チャレンジ詳細の描画
      */
-    renderChallengeDetails() {
-        if (!this.challengeData) return;
+    private renderChallengeDetails(): void {
+        if (!this.challengeData || !this.contentArea) return;
         
         const challenge = this.challengeData;
         const progressPercentage = Math.round((challenge.progress / challenge.target) * 100);
@@ -372,7 +432,9 @@ export class ChallengeDetailModal {
     /**
      * エラー状態の描画
      */
-    renderError() {
+    private renderError(): void {
+        if (!this.contentArea) return;
+        
         this.contentArea.innerHTML = `
             <div style="text-align: center; padding: 40px; color: #e74c3c;">
                 <div style="font-size: 18px; margin-bottom: 16px;">エラーが発生しました</div>
@@ -388,7 +450,7 @@ export class ChallengeDetailModal {
     /**
      * バックドロップクリック処理
      */
-    onBackdropClick(event) {
+    private onBackdropClick(event: Event): void {
         if (event.target === this.backdrop) {
             this.close();
         }
@@ -397,7 +459,7 @@ export class ChallengeDetailModal {
     /**
      * キーボード処理
      */
-    onKeyDown(event) {
+    private onKeyDown(event: KeyboardEvent): void {
         if (event.key === 'Escape') {
             event.preventDefault();
             this.close();
@@ -407,8 +469,8 @@ export class ChallengeDetailModal {
     /**
      * ユーティリティメソッド
      */
-    getTypeDisplayName(type) {
-        const types = {
+    private getTypeDisplayName(type: string): string {
+        const types: Record<string, string> = {
             daily: 'デイリー',
             weekly: 'ウィークリー',
             special: 'スペシャル',
@@ -417,8 +479,8 @@ export class ChallengeDetailModal {
         return types[type] || type;
     }
     
-    getDifficultyDisplayName(difficulty) {
-        const difficulties = {
+    private getDifficultyDisplayName(difficulty: string): string {
+        const difficulties: Record<string, string> = {
             easy: '易しい',
             medium: '普通',
             hard: '難しい',
@@ -427,8 +489,8 @@ export class ChallengeDetailModal {
         return difficulties[difficulty] || difficulty;
     }
     
-    getDifficultyColor(difficulty) {
-        const colors = {
+    private getDifficultyColor(difficulty: string): string {
+        const colors: Record<string, string> = {
             easy: '#d5f4e6',
             medium: '#fff3cd',
             hard: '#f8d7da',
@@ -437,7 +499,7 @@ export class ChallengeDetailModal {
         return colors[difficulty] || '#f8f9fa';
     }
     
-    formatDeadline(deadline) {
+    private formatDeadline(deadline: Date): string {
         const now = new Date();
         const diff = deadline.getTime() - now.getTime();
         
@@ -461,7 +523,7 @@ export class ChallengeDetailModal {
     /**
      * クリーンアップ
      */
-    cleanup() {
+    cleanup(): void {
         try {
             // イベントリスナー削除
             document.removeEventListener('keydown', this.boundHandlers.keyDown);
