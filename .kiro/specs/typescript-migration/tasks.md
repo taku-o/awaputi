@@ -159,7 +159,7 @@
   - 包括的な型定義（AudioContext, AudioNode, BGM, SoundEffect, Accessibility interfaces）を追加
   - _要件: 2.1, 2.2, 4.1, 4.2_
 
-- [ ] 23. バブルシステムの移行
+- [x] 23. バブルシステムの移行
   - src/bubbles/内のバブル関連ファイルを.tsに変換
   - バブル種別とプロパティの型定義を作成
   - バブル動作ロジックの型安全性を確保
