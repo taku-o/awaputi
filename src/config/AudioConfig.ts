@@ -5,10 +5,127 @@
  * AudioManagerとの連携インターフェースを提供します。
  */
 
-import { getConfigurationManager } from '../core/ConfigurationManager.js';
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getConfigurationManager, ConfigurationManager } from '../core/ConfigurationManager.js';
+import { getErrorHandler, ErrorHandler } from '../utils/ErrorHandler.js';
 
-class AudioConfig {
+/**
+ * 音量設定の型定義
+ */
+export interface VolumeConfig {
+    master: number;
+    sfx: number;
+    bgm: number;
+    muted: boolean;
+}
+
+/**
+ * 音質設定の型定義
+ */
+export interface QualityConfig {
+    sampleRate: number;
+    bufferSize: number;
+    channels: number;
+    bitDepth: number;
+}
+
+/**
+ * コンプレッサー設定の型定義
+ */
+export interface CompressorConfig {
+    threshold: number;
+    knee: number;
+    ratio: number;
+    attack: number;
+    release: number;
+}
+
+/**
+ * リバーブ設定の型定義
+ */
+export interface ReverbConfig {
+    duration: number;
+    decay: number;
+    wet: number;
+}
+
+/**
+ * イコライザーバンド設定の型定義
+ */
+export interface EqualizerBands {
+    bass: number;
+    lowMid: number;
+    mid: number;
+    highMid: number;
+    treble: number;
+}
+
+/**
+ * イコライザー設定の型定義
+ */
+export interface EqualizerConfig {
+    enabled: boolean;
+    bands: EqualizerBands;
+}
+
+/**
+ * 音響効果設定の型定義
+ */
+export interface EffectConfig {
+    reverbEnabled: boolean;
+    compression: boolean;
+    compressor: CompressorConfig;
+    reverb: ReverbConfig;
+}
+
+/**
+ * 環境音設定の型定義
+ */
+export interface EnvironmentalConfig {
+    enabled: boolean;
+    volume: number;
+    currentBiome: string | null;
+    currentWeather: string | null;
+    currentTimeOfDay: string | null;
+}
+
+/**
+ * アクセシビリティ設定の型定義
+ */
+export interface AccessibilityConfig {
+    visualFeedback: boolean;
+    captioning: boolean;
+    colorIndication: boolean;
+    patternRecognition: boolean;
+    highContrast: boolean;
+    largeFonts: boolean;
+    reduceMotion: boolean;
+    hapticFeedback: boolean;
+    vibrationIntensity: number;
+}
+
+/**
+ * AudioManagerステータスの型定義
+ */
+export interface AudioManagerStatus {
+    masterVolume: number;
+    sfxVolume: number;
+    bgmVolume: number;
+    isMuted: boolean;
+}
+
+/**
+ * AudioManagerインターフェースの型定義
+ */
+export interface AudioManager {
+    setVolume(type: string, volume: number): void;
+    isMuted: boolean;
+    toggleMute(): void;
+    getStatus(): AudioManagerStatus;
+}
+
+export class AudioConfig {
+    private configManager: ConfigurationManager;
+
     constructor() {
         this.configManager = getConfigurationManager();
         this._initialize();
@@ -18,7 +135,7 @@ class AudioConfig {
      * 初期化処理 - デフォルト設定の登録
      * @private
      */
-    _initialize() {
+    private _initialize(): void {
         try {
             // 音量設定の初期化
             this._initializeVolumeConfig();
@@ -34,7 +151,7 @@ class AudioConfig {
             
             console.log('[AudioConfig] 初期化完了');
         } catch (error) {
-            getErrorHandler().handleError(error, {
+            getErrorHandler().handleError(error as Error, {
                 context: 'AudioConfig._initialize'
             });
         }
@@ -44,7 +161,7 @@ class AudioConfig {
      * 音量設定の初期化
      * @private
      */
-    _initializeVolumeConfig() {
+    private _initializeVolumeConfig(): void {
         // デフォルト音量設定
         this.configManager.set('audio', 'volumes.master', 0.7);
         this.configManager.set('audio', 'volumes.sfx', 0.8);
@@ -56,7 +173,7 @@ class AudioConfig {
      * 音質設定の初期化
      * @private
      */
-    _initializeQualityConfig() {
+    private _initializeQualityConfig(): void {
         // デフォルト音質設定
         this.configManager.set('audio', 'quality.sampleRate', 44100);
         this.configManager.set('audio', 'quality.bufferSize', 4096);
@@ -68,7 +185,7 @@ class AudioConfig {
      * 音響効果設定の初期化
      * @private
      */
-    _initializeEffectConfig() {
+    private _initializeEffectConfig(): void {
         // デフォルト音響効果設定
         this.configManager.set('audio', 'effects.reverb', true);
         this.configManager.set('audio', 'effects.compression', true);
@@ -120,7 +237,7 @@ class AudioConfig {
      * 検証ルールの設定
      * @private
      */
-    _setupValidationRules() {
+    private _setupValidationRules(): void {
         // 音量設定の検証ルール
         this.configManager.setValidationRule('audio', 'volumes.master', {
             type: 'number',
@@ -147,12 +264,12 @@ class AudioConfig {
         // 音質設定の検証ルール
         this.configManager.setValidationRule('audio', 'quality.sampleRate', {
             type: 'number',
-            validator: (value) => [8000, 11025, 22050, 44100, 48000, 96000].includes(value)
+            validator: (value: any) => [8000, 11025, 22050, 44100, 48000, 96000].includes(value)
         });
         
         this.configManager.setValidationRule('audio', 'quality.bufferSize', {
             type: 'number',
-            validator: (value) => [256, 512, 1024, 2048, 4096, 8192, 16384].includes(value)
+            validator: (value: any) => [256, 512, 1024, 2048, 4096, 8192, 16384].includes(value)
         });
         
         // 音響効果設定の検証ルール
@@ -181,7 +298,7 @@ class AudioConfig {
         
         // 各バンドのゲイン検証ルール（-20dB to +20dB）
         const bandValidation = {
-            type: 'number',
+            type: 'number' as const,
             min: -20,
             max: 20
         };
@@ -206,9 +323,9 @@ class AudioConfig {
 
     /**
      * 音量設定を取得
-     * @returns {Object} 音量設定
+     * @returns {VolumeConfig} 音量設定
      */
-    getVolumeConfig() {
+    getVolumeConfig(): VolumeConfig {
         return {
             master: this.configManager.get('audio', 'volumes.master', 0.7),
             sfx: this.configManager.get('audio', 'volumes.sfx', 0.8),
@@ -221,7 +338,7 @@ class AudioConfig {
      * マスター音量を取得
      * @returns {number} マスター音量 (0-1)
      */
-    getMasterVolume() {
+    getMasterVolume(): number {
         return this.configManager.get('audio', 'volumes.master', 0.7);
     }
 
@@ -229,7 +346,7 @@ class AudioConfig {
      * SFX音量を取得
      * @returns {number} SFX音量 (0-1)
      */
-    getSfxVolume() {
+    getSfxVolume(): number {
         return this.configManager.get('audio', 'volumes.sfx', 0.8);
     }
 
@@ -237,7 +354,7 @@ class AudioConfig {
      * BGM音量を取得
      * @returns {number} BGM音量 (0-1)
      */
-    getBgmVolume() {
+    getBgmVolume(): number {
         return this.configManager.get('audio', 'volumes.bgm', 0.5);
     }
 
@@ -245,7 +362,7 @@ class AudioConfig {
      * ミュート状態を取得
      * @returns {boolean} ミュート状態
      */
-    isMuted() {
+    isMuted(): boolean {
         return this.configManager.get('audio', 'volumes.muted', false);
     }
 
@@ -254,7 +371,7 @@ class AudioConfig {
      * @param {number} volume - マスター音量 (0-1)
      * @returns {boolean} 設定成功フラグ
      */
-    setMasterVolume(volume) {
+    setMasterVolume(volume: number): boolean {
         return this.configManager.set('audio', 'volumes.master', volume);
     }
 
@@ -263,7 +380,7 @@ class AudioConfig {
      * @param {number} volume - SFX音量 (0-1)
      * @returns {boolean} 設定成功フラグ
      */
-    setSfxVolume(volume) {
+    setSfxVolume(volume: number): boolean {
         return this.configManager.set('audio', 'volumes.sfx', volume);
     }
 
@@ -272,7 +389,7 @@ class AudioConfig {
      * @param {number} volume - BGM音量 (0-1)
      * @returns {boolean} 設定成功フラグ
      */
-    setBgmVolume(volume) {
+    setBgmVolume(volume: number): boolean {
         return this.configManager.set('audio', 'volumes.bgm', volume);
     }
 
@@ -281,7 +398,7 @@ class AudioConfig {
      * @param {boolean} muted - ミュート状態
      * @returns {boolean} 設定成功フラグ
      */
-    setMuted(muted) {
+    setMuted(muted: boolean): boolean {
         return this.configManager.set('audio', 'volumes.muted', muted);
     }
 
@@ -289,7 +406,7 @@ class AudioConfig {
      * ミュート状態を切り替え
      * @returns {boolean} 新しいミュート状態
      */
-    toggleMute() {
+    toggleMute(): boolean {
         const currentState = this.isMuted();
         this.setMuted(!currentState);
         return !currentState;
@@ -297,9 +414,9 @@ class AudioConfig {
 
     /**
      * 音質設定を取得
-     * @returns {Object} 音質設定
+     * @returns {QualityConfig} 音質設定
      */
-    getQualityConfig() {
+    getQualityConfig(): QualityConfig {
         return {
             sampleRate: this.configManager.get('audio', 'quality.sampleRate', 44100),
             bufferSize: this.configManager.get('audio', 'quality.bufferSize', 4096),
@@ -312,7 +429,7 @@ class AudioConfig {
      * サンプルレートを取得
      * @returns {number} サンプルレート (Hz)
      */
-    getSampleRate() {
+    getSampleRate(): number {
         return this.configManager.get('audio', 'quality.sampleRate', 44100);
     }
 
@@ -320,7 +437,7 @@ class AudioConfig {
      * バッファサイズを取得
      * @returns {number} バッファサイズ
      */
-    getBufferSize() {
+    getBufferSize(): number {
         return this.configManager.get('audio', 'quality.bufferSize', 4096);
     }
 
@@ -329,7 +446,7 @@ class AudioConfig {
      * @param {number} sampleRate - サンプルレート (Hz)
      * @returns {boolean} 設定成功フラグ
      */
-    setSampleRate(sampleRate) {
+    setSampleRate(sampleRate: number): boolean {
         return this.configManager.set('audio', 'quality.sampleRate', sampleRate);
     }
 
@@ -338,17 +455,17 @@ class AudioConfig {
      * @param {number} bufferSize - バッファサイズ
      * @returns {boolean} 設定成功フラグ
      */
-    setBufferSize(bufferSize) {
+    setBufferSize(bufferSize: number): boolean {
         return this.configManager.set('audio', 'quality.bufferSize', bufferSize);
     }
 
     /**
      * 音響効果設定を取得
-     * @returns {Object} 音響効果設定
+     * @returns {EffectConfig} 音響効果設定
      */
-    getEffectConfig() {
+    getEffectConfig(): EffectConfig {
         return {
-            reverb: this.configManager.get('audio', 'effects.reverb', true),
+            reverbEnabled: this.configManager.get('audio', 'effects.reverb', true),
             compression: this.configManager.get('audio', 'effects.compression', true),
             compressor: {
                 threshold: this.configManager.get('audio', 'effects.compressor.threshold', -20),
@@ -369,7 +486,7 @@ class AudioConfig {
      * リバーブ効果の有効状態を取得
      * @returns {boolean} リバーブ効果の有効状態
      */
-    isReverbEnabled() {
+    isReverbEnabled(): boolean {
         return this.configManager.get('audio', 'effects.reverb', true);
     }
 
@@ -377,7 +494,7 @@ class AudioConfig {
      * コンプレッション効果の有効状態を取得
      * @returns {boolean} コンプレッション効果の有効状態
      */
-    isCompressionEnabled() {
+    isCompressionEnabled(): boolean {
         return this.configManager.get('audio', 'effects.compression', true);
     }
 
@@ -386,7 +503,7 @@ class AudioConfig {
      * @param {boolean} enabled - 有効状態
      * @returns {boolean} 設定成功フラグ
      */
-    setReverbEnabled(enabled) {
+    setReverbEnabled(enabled: boolean): boolean {
         return this.configManager.set('audio', 'effects.reverb', enabled);
     }
 
@@ -395,15 +512,15 @@ class AudioConfig {
      * @param {boolean} enabled - 有効状態
      * @returns {boolean} 設定成功フラグ
      */
-    setCompressionEnabled(enabled) {
+    setCompressionEnabled(enabled: boolean): boolean {
         return this.configManager.set('audio', 'effects.compression', enabled);
     }
 
     /**
      * コンプレッサー設定を取得
-     * @returns {Object} コンプレッサー設定
+     * @returns {CompressorConfig} コンプレッサー設定
      */
-    getCompressorConfig() {
+    getCompressorConfig(): CompressorConfig {
         return {
             threshold: this.configManager.get('audio', 'effects.compressor.threshold', -20),
             knee: this.configManager.get('audio', 'effects.compressor.knee', 40),
@@ -415,9 +532,9 @@ class AudioConfig {
 
     /**
      * リバーブ設定を取得
-     * @returns {Object} リバーブ設定
+     * @returns {ReverbConfig} リバーブ設定
      */
-    getReverbConfig() {
+    getReverbConfig(): ReverbConfig {
         return {
             duration: this.configManager.get('audio', 'effects.reverb.duration', 2.0),
             decay: this.configManager.get('audio', 'effects.reverb.decay', 0.5),
@@ -430,7 +547,7 @@ class AudioConfig {
      * AudioManagerに現在の設定を適用する
      * @param {AudioManager} audioManager - AudioManagerインスタンス
      */
-    applyToAudioManager(audioManager) {
+    applyToAudioManager(audioManager: AudioManager): void {
         try {
             if (!audioManager) {
                 throw new Error('AudioManagerが指定されていません');
@@ -452,7 +569,7 @@ class AudioConfig {
             
             console.log('[AudioConfig] AudioManagerに設定を適用しました');
         } catch (error) {
-            getErrorHandler().handleError(error, {
+            getErrorHandler().handleError(error as Error, {
                 context: 'AudioConfig.applyToAudioManager'
             });
         }
@@ -462,7 +579,7 @@ class AudioConfig {
      * AudioManagerから設定を同期
      * @param {AudioManager} audioManager - AudioManagerインスタンス
      */
-    syncFromAudioManager(audioManager) {
+    syncFromAudioManager(audioManager: AudioManager): void {
         try {
             if (!audioManager) {
                 throw new Error('AudioManagerが指定されていません');
@@ -479,7 +596,7 @@ class AudioConfig {
             
             console.log('[AudioConfig] AudioManagerから設定を同期しました');
         } catch (error) {
-            getErrorHandler().handleError(error, {
+            getErrorHandler().handleError(error as Error, {
                 context: 'AudioConfig.syncFromAudioManager'
             });
         }
@@ -487,20 +604,15 @@ class AudioConfig {
 }
 
 // シングルトンインスタンス
-let instance = null;
+let instance: AudioConfig | null = null;
 
 /**
  * AudioConfigのシングルトンインスタンスを取得
  * @returns {AudioConfig} インスタンス
  */
-function getAudioConfig() {
+export function getAudioConfig(): AudioConfig {
     if (!instance) {
         instance = new AudioConfig();
     }
     return instance;
 }
-
-export {
-    AudioConfig,
-    getAudioConfig
-};

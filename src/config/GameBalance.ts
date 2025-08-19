@@ -11,10 +11,76 @@
  */
 
 /**
+ * スコア設定の型定義
+ */
+export interface ScoringConfig {
+    baseScores: Record<string, number>;
+    combo: {
+        multiplierIncrement: number;
+        maxMultiplier: number;
+    };
+    ageBonus: {
+        earlyBonus: number;
+        midBonus: number;
+        lateBonus: number;
+    };
+}
+
+/**
+ * ステージ設定の型定義
+ */
+export interface StagesConfig {
+    unlockRequirements: Record<string, number>;
+    difficulty: Record<string, {
+        spawnRate: number;
+        maxBubbles: number;
+    }>;
+}
+
+/**
+ * アイテム設定の型定義
+ */
+export interface ItemsConfig {
+    baseCosts: Record<string, number>;
+    costMultiplier: number;
+    effects: Record<string, number>;
+    maxLevels: Record<string, number>;
+}
+
+/**
+ * バブル設定の型定義
+ */
+export interface BubblesConfig {
+    maxAge: Record<string, number>;
+    health: Record<string, number>;
+    specialEffects: Record<string, Record<string, number>>;
+}
+
+/**
+ * 変更ログエントリーの型定義
+ */
+export interface ChangelogEntry {
+    version: string;
+    date: string;
+    changes: string[];
+}
+
+/**
+ * 元のゲームバランス設定の型定義
+ */
+export interface OriginalBalanceConfig {
+    scoring: ScoringConfig;
+    stages: StagesConfig;
+    items: ItemsConfig;
+    bubbles: BubblesConfig;
+    changelog: ChangelogEntry[];
+}
+
+/**
  * 元のゲームバランス設定
  * 互換性レイヤーが参照する基本設定
  */
-export const ORIGINAL_BALANCE_CONFIG = {
+export const ORIGINAL_BALANCE_CONFIG: OriginalBalanceConfig = {
     scoring: {
         baseScores: {
             normal: 15,
@@ -148,7 +214,7 @@ export class OriginalBalanceHelper {
      * @param {number} ageRatio - 年齢比率（0-1）
      * @returns {number} 計算されたスコア
      */
-    static calculateScore(bubbleType, ageRatio = 0) {
+    static calculateScore(bubbleType: string, ageRatio: number = 0): number {
         const baseScore = ORIGINAL_BALANCE_CONFIG.scoring.baseScores[bubbleType] || 15;
         let multiplier = 1;
         
@@ -169,7 +235,7 @@ export class OriginalBalanceHelper {
      * @param {number} comboCount - コンボ数
      * @returns {number} コンボ倍率
      */
-    static calculateComboMultiplier(comboCount) {
+    static calculateComboMultiplier(comboCount: number): number {
         if (comboCount <= 1) return 1;
         
         const config = ORIGINAL_BALANCE_CONFIG.scoring.combo;
@@ -185,7 +251,7 @@ export class OriginalBalanceHelper {
      * @param {number} currentLevel - 現在のレベル
      * @returns {number} 計算されたコスト
      */
-    static calculateItemCost(itemId, currentLevel) {
+    static calculateItemCost(itemId: string, currentLevel: number): number {
         const baseCost = ORIGINAL_BALANCE_CONFIG.items.baseCosts[itemId] || 100;
         const multiplier = ORIGINAL_BALANCE_CONFIG.items.costMultiplier;
         return Math.floor(baseCost * Math.pow(multiplier, currentLevel));
@@ -197,7 +263,7 @@ export class OriginalBalanceHelper {
      * @param {number} playerTAP - プレイヤーのTAP値
      * @returns {boolean} 開放状態
      */
-    static isStageUnlocked(stageId, playerTAP) {
+    static isStageUnlocked(stageId: string, playerTAP: number): boolean {
         const requirement = ORIGINAL_BALANCE_CONFIG.stages.unlockRequirements[stageId];
         return !requirement || playerTAP >= requirement;
     }
