@@ -1,12 +1,108 @@
 import { getLocalizationManager } from '../../core/LocalizationManager.js';
 import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import type { AudioManager } from '../../audio/AudioManager.js';
+import type { ConfigurationManager } from '../../core/ConfigurationManager.js';
+import type { LocalizationManager } from '../../core/LocalizationManager.js';
+import type { ErrorHandler } from '../../utils/ErrorHandler.js';
+
+/**
+ * UI Component Factory interface
+ */
+interface UIComponentFactory {
+    createVolumeSlider(container: HTMLElement, options: VolumeSliderOptions): void;
+    createToggleOption(container: HTMLElement, options: ToggleOptionOptions): void;
+    createRadioGroup(container: HTMLElement, options: RadioGroupOptions): void;
+    createDropdown(container: HTMLElement, options: DropdownOptions): void;
+    createVerticalSlider(container: HTMLElement, options: VerticalSliderOptions): void;
+    updateVolumeSliders(enabled: boolean): void;
+}
+
+/**
+ * Audio Test Panel interface
+ */
+interface AudioTestPanel {
+    open(container: HTMLElement): void;
+}
+
+/**
+ * Volume Slider Options
+ */
+interface VolumeSliderOptions {
+    id: string;
+    label: string;
+    icon: string;
+    category: 'master' | 'bgm' | 'sfx';
+    defaultValue: number;
+    previewSound: string | null;
+}
+
+/**
+ * Toggle Option Options
+ */
+interface ToggleOptionOptions {
+    id: string;
+    label: string;
+    icon: string;
+    defaultValue: boolean;
+    onChange: (value: boolean) => void;
+}
+
+/**
+ * Radio Group Options
+ */
+interface RadioGroupOptions {
+    id: string;
+    label: string;
+    icon: string;
+    options: Array<{ value: string; label: string }>;
+    defaultValue: string;
+    onChange: (value: string) => void;
+}
+
+/**
+ * Dropdown Options
+ */
+interface DropdownOptions {
+    id: string;
+    label: string;
+    icon: string;
+    options: Array<{ value: number | string; label: string }>;
+    defaultValue: number | string;
+    onChange: (value: string) => void;
+}
+
+/**
+ * Vertical Slider Options
+ */
+interface VerticalSliderOptions {
+    id: string;
+    label: string;
+    icon: string;
+    min: number;
+    max: number;
+    defaultValue: number;
+    unit: string;
+    onChange: (value: number) => void;
+}
+
+/**
+ * Quality preset type
+ */
+type QualityPreset = 'low' | 'medium' | 'high' | 'ultra';
 
 /**
  * Audio Settings Tab Renderers
  * オーディオ設定タブ描画器 - 各タブのコンテンツ描画処理
  */
 export class AudioSettingsTabRenderers {
-    constructor(audioManager, configManager, uiComponentFactory, audioTestPanel) {
+    private audioManager: AudioManager;
+    private configManager: ConfigurationManager;
+    private uiComponentFactory: UIComponentFactory;
+    private audioTestPanel: AudioTestPanel;
+    private localizationManager: LocalizationManager;
+    private errorHandler: ErrorHandler;
+
+    constructor(audioManager: AudioManager, configManager: ConfigurationManager, uiComponentFactory: UIComponentFactory, audioTestPanel: AudioTestPanel) {
         this.audioManager = audioManager;
         this.configManager = configManager;
         this.uiComponentFactory = uiComponentFactory;
@@ -18,7 +114,7 @@ export class AudioSettingsTabRenderers {
     /**
      * 音量タブを描画
      */
-    renderVolumeTab(container) {
+    renderVolumeTab(container: HTMLElement): void {
         // 音量設定セクション
         const volumeSection = document.createElement('div');
         volumeSection.className = 'settings-section';
@@ -65,9 +161,9 @@ export class AudioSettingsTabRenderers {
             id: 'mute-all',
             label: 'audio.settings.volume.muteAll',
             icon: '🔇',
-            defaultValue: this.audioManager.isMuted,
+            defaultValue: (this.audioManager as any).isMuted || false,
             onChange: (value) => {
-                this.audioManager.setMuted(value);
+                (this.audioManager as any).setMuted?.(value);
                 this.uiComponentFactory.updateVolumeSliders(!value);
             }
         });
@@ -78,7 +174,7 @@ export class AudioSettingsTabRenderers {
     /**
      * 品質タブを描画
      */
-    renderQualityTab(container) {
+    renderQualityTab(container: HTMLElement): void {
         const qualitySection = document.createElement('div');
         qualitySection.className = 'settings-section';
         
@@ -127,7 +223,7 @@ export class AudioSettingsTabRenderers {
             ],
             defaultValue: 44100,
             onChange: (value) => {
-                this.audioManager.updateQualitySettings({ sampleRate: parseInt(value) });
+                (this.audioManager as any).updateQualitySettings?.({ sampleRate: parseInt(value) });
             }
         });
         
@@ -144,7 +240,7 @@ export class AudioSettingsTabRenderers {
             ],
             defaultValue: 512,
             onChange: (value) => {
-                this.audioManager.updateQualitySettings({ bufferSize: parseInt(value) });
+                (this.audioManager as any).updateQualitySettings?.({ bufferSize: parseInt(value) });
             }
         });
         
@@ -155,7 +251,7 @@ export class AudioSettingsTabRenderers {
     /**
      * エフェクトタブを描画
      */
-    renderEffectsTab(container) {
+    renderEffectsTab(container: HTMLElement): void {
         const effectsSection = document.createElement('div');
         effectsSection.className = 'settings-section';
         
@@ -164,9 +260,9 @@ export class AudioSettingsTabRenderers {
             id: 'reverb-enabled',
             label: 'audio.settings.effects.reverb',
             icon: '🌊',
-            defaultValue: this.configManager.get('audio.effects.reverb'),
+            defaultValue: this.configManager.get('audio.effects.reverb') as boolean,
             onChange: (value) => {
-                this.audioManager.setAudioEffect('reverb', value);
+                (this.audioManager as any).setAudioEffect?.('reverb', value);
             }
         });
         
@@ -175,14 +271,14 @@ export class AudioSettingsTabRenderers {
             id: 'compression-enabled',
             label: 'audio.settings.effects.compression',
             icon: '🎛️',
-            defaultValue: this.configManager.get('audio.effects.compression'),
+            defaultValue: this.configManager.get('audio.effects.compression') as boolean,
             onChange: (value) => {
-                this.audioManager.setAudioEffect('compression', value);
+                (this.audioManager as any).setAudioEffect?.('compression', value);
             }
         });
         
         // イコライザー
-        if (this.audioManager.audioController && this.audioManager.audioController.equalizer) {
+        if ((this.audioManager as any).audioController?.equalizer) {
             const eqSection = this._createEqualizerSection();
             effectsSection.appendChild(eqSection);
         }
@@ -192,10 +288,10 @@ export class AudioSettingsTabRenderers {
             id: 'environmental-audio',
             label: 'audio.settings.effects.environmental',
             icon: '🌿',
-            defaultValue: this.configManager.get('audio.effects.environmentalAudio'),
+            defaultValue: this.configManager.get('audio.effects.environmentalAudio') as boolean,
             onChange: (value) => {
-                if (this.audioManager.audioController) {
-                    this.audioManager.audioController.enableEnvironmentalAudio(value);
+                if ((this.audioManager as any).audioController) {
+                    (this.audioManager as any).audioController.enableEnvironmentalAudio?.(value);
                 }
             }
         });
@@ -206,7 +302,7 @@ export class AudioSettingsTabRenderers {
     /**
      * アクセシビリティタブを描画
      */
-    renderAccessibilityTab(container) {
+    renderAccessibilityTab(container: HTMLElement): void {
         const accessibilitySection = document.createElement('div');
         accessibilitySection.className = 'settings-section';
         
@@ -215,7 +311,7 @@ export class AudioSettingsTabRenderers {
             id: 'visual-feedback',
             label: 'audio.settings.accessibility.visualFeedback',
             icon: '👁️',
-            defaultValue: this.configManager.get('audio.accessibility.visualFeedback'),
+            defaultValue: this.configManager.get('audio.accessibility.visualFeedback') as boolean,
             onChange: (value) => {
                 this.configManager.set('audio.accessibility.visualFeedback', value);
             }
@@ -226,7 +322,7 @@ export class AudioSettingsTabRenderers {
             id: 'haptic-feedback',
             label: 'audio.settings.accessibility.hapticFeedback',
             icon: '📳',
-            defaultValue: this.configManager.get('audio.accessibility.hapticFeedback'),
+            defaultValue: this.configManager.get('audio.accessibility.hapticFeedback') as boolean,
             onChange: (value) => {
                 this.configManager.set('audio.accessibility.hapticFeedback', value);
             }
@@ -237,7 +333,7 @@ export class AudioSettingsTabRenderers {
             id: 'captioning',
             label: 'audio.settings.accessibility.captioning',
             icon: '📝',
-            defaultValue: this.configManager.get('audio.accessibility.captioning'),
+            defaultValue: this.configManager.get('audio.accessibility.captioning') as boolean,
             onChange: (value) => {
                 this.configManager.set('audio.accessibility.captioning', value);
             }
@@ -248,7 +344,7 @@ export class AudioSettingsTabRenderers {
             id: 'audio-descriptions',
             label: 'audio.settings.accessibility.audioDescriptions',
             icon: '🗣️',
-            defaultValue: this.configManager.get('audio.accessibility.audioDescriptions'),
+            defaultValue: this.configManager.get('audio.accessibility.audioDescriptions') as boolean,
             onChange: (value) => {
                 this.configManager.set('audio.accessibility.audioDescriptions', value);
             }
@@ -260,7 +356,7 @@ export class AudioSettingsTabRenderers {
     /**
      * テストタブを描画
      */
-    renderTestTab(container) {
+    renderTestTab(container: HTMLElement): void {
         // テストパネルを表示
         this.audioTestPanel.open(container);
         
@@ -302,7 +398,7 @@ export class AudioSettingsTabRenderers {
      * イコライザーセクションを作成
      * @private
      */
-    _createEqualizerSection() {
+    private _createEqualizerSection(): HTMLElement {
         const eqSection = document.createElement('div');
         eqSection.className = 'settings-subsection';
         eqSection.style.marginTop = '30px';
@@ -335,8 +431,8 @@ export class AudioSettingsTabRenderers {
                 defaultValue: 0,
                 unit: 'dB',
                 onChange: (value) => {
-                    if (this.audioManager.audioController) {
-                        this.audioManager.audioController.setEqualizerBand(band.frequency, value);
+                    if ((this.audioManager as any).audioController) {
+                        (this.audioManager as any).audioController.setEqualizerBand?.(band.frequency, value);
                     }
                 }
             });
@@ -349,8 +445,8 @@ export class AudioSettingsTabRenderers {
      * 品質プリセットを適用
      * @private
      */
-    _applyQualityPreset(preset) {
-        const presets = {
+    private _applyQualityPreset(preset: QualityPreset): void {
+        const presets: Record<QualityPreset, { sampleRate: number; bufferSize: number }> = {
             low: { sampleRate: 22050, bufferSize: 1024 },
             medium: { sampleRate: 44100, bufferSize: 512 },
             high: { sampleRate: 44100, bufferSize: 256 },
@@ -359,13 +455,13 @@ export class AudioSettingsTabRenderers {
         
         const settings = presets[preset];
         if (settings) {
-            this.audioManager.updateQualitySettings(settings);
+            (this.audioManager as any).updateQualitySettings?.(settings);
             
             // UIを更新
-            const sampleRateSelect = document.getElementById('sample-rate');
-            const bufferSizeSelect = document.getElementById('buffer-size');
-            if (sampleRateSelect) sampleRateSelect.value = settings.sampleRate;
-            if (bufferSizeSelect) bufferSizeSelect.value = settings.bufferSize;
+            const sampleRateSelect = document.getElementById('sample-rate') as HTMLSelectElement | null;
+            const bufferSizeSelect = document.getElementById('buffer-size') as HTMLSelectElement | null;
+            if (sampleRateSelect) sampleRateSelect.value = settings.sampleRate.toString();
+            if (bufferSizeSelect) bufferSizeSelect.value = settings.bufferSize.toString();
         }
     }
 }

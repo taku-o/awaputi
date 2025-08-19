@@ -1,35 +1,86 @@
 import { getErrorHandler } from '../../utils/ErrorHandler.js';
 import { getLocalizationManager } from '../../core/LocalizationManager.js';
+import type { AudioManager } from '../../audio/AudioManager.js';
+import type { ConfigurationManager } from '../../core/ConfigurationManager.js';
+import type { ErrorHandler } from '../../utils/ErrorHandler.js';
+import type { LocalizationManager } from '../../core/LocalizationManager.js';
+
+/**
+ * Audio settings file format interface
+ */
+interface AudioSettingsFile {
+    version: string;
+    timestamp: string;
+    volumes: {
+        master: number;
+        bgm: number;
+        sfx: number;
+        muted: boolean;
+    };
+    quality?: {
+        sampleRate?: number;
+        bufferSize?: number;
+        compression?: boolean;
+    };
+    effects?: {
+        reverb?: boolean;
+        compression?: boolean;
+        environmentalAudio?: boolean;
+    };
+    equalizer?: any; // TODO: Define proper equalizer settings interface
+    accessibility?: {
+        visualFeedback?: boolean;
+        hapticFeedback?: boolean;
+        captioning?: boolean;
+        audioDescriptions?: boolean;
+    };
+}
+
+/**
+ * Notification callback type
+ */
+type NotificationCallback = (message: string, type: 'success' | 'error' | 'info') => void;
+
+/**
+ * Config change callback parameters
+ */
+type ConfigChangeCategory = 'volume' | 'mute';
+type ConfigChangeType = 'master' | 'bgm' | 'sfx' | 'all';
 
 /**
  * Audio Settings Data Manager
  * オーディオ設定データ管理 - インポート・エクスポート、設定検証処理
  */
 export class AudioSettingsDataManager {
-    constructor(audioManager, configManager) {
+    private audioManager: AudioManager;
+    private configManager: ConfigurationManager;
+    private localizationManager: LocalizationManager;
+    private errorHandler: ErrorHandler;
+    
+    // 通知コールバック
+    private onNotification: NotificationCallback | null = null;
+
+    constructor(audioManager: AudioManager, configManager: ConfigurationManager) {
         this.audioManager = audioManager;
         this.configManager = configManager;
         this.localizationManager = getLocalizationManager();
         this.errorHandler = getErrorHandler();
-        
-        // 通知コールバック
-        this.onNotification = null;
     }
     
     /**
      * 通知コールバックを設定
      */
-    setNotificationCallback(callback) {
+    setNotificationCallback(callback: NotificationCallback): void {
         this.onNotification = callback;
     }
     
     /**
      * 設定をエクスポート
      */
-    async exportSettings() {
+    async exportSettings(): Promise<void> {
         try {
             // 現在の音響設定を収集
-            const settings = {
+            const settings: AudioSettingsFile = {
                 version: '1.0',
                 timestamp: new Date().toISOString(),
                 volumes: {
@@ -48,8 +99,8 @@ export class AudioSettingsDataManager {
                     compression: this.configManager.get('audio.effects.compression'),
                     environmentalAudio: this.configManager.get('audio.effects.environmentalAudio')
                 },
-                equalizer: this.audioManager.audioController ? 
-                    this.audioManager.audioController.getEqualizerSettings() : null,
+                equalizer: (this.audioManager as any).audioController ? 
+                    (this.audioManager as any).audioController.getEqualizerSettings() : null,
                 accessibility: {
                     visualFeedback: this.configManager.get('audio.accessibility.visualFeedback'),
                     hapticFeedback: this.configManager.get('audio.accessibility.hapticFeedback'),
@@ -100,7 +151,7 @@ export class AudioSettingsDataManager {
     /**
      * 設定をインポート
      */
-    async importSettings() {
+    async importSettings(): Promise<AudioSettingsFile | null> {
         try {
             // ファイル選択ダイアログを作成
             const input = document.createElement('input');
@@ -109,8 +160,9 @@ export class AudioSettingsDataManager {
             input.style.display = 'none';
             
             return new Promise((resolve, reject) => {
-                input.addEventListener('change', async (e) => {
-                    const file = e.target.files[0];
+                input.addEventListener('change', async (e: Event) => {
+                    const target = e.target as HTMLInputElement;
+                    const file = target.files?.[0];
                     if (!file) {
                         resolve(null);
                         return;
@@ -118,7 +170,7 @@ export class AudioSettingsDataManager {
                     
                     try {
                         const text = await file.text();
-                        const settings = JSON.parse(text);
+                        const settings = JSON.parse(text) as AudioSettingsFile;
                         
                         // 設定ファイルを検証
                         if (!this.validateSettingsFile(settings)) {
@@ -184,7 +236,7 @@ export class AudioSettingsDataManager {
     /**
      * 設定をリセット
      */
-    async resetSettings() {
+    async resetSettings(): Promise<boolean> {
         try {
             const confirm = window.confirm(
                 this.localizationManager.getText('audio.settings.confirmReset')
@@ -220,7 +272,7 @@ export class AudioSettingsDataManager {
     /**
      * 設定ファイルを検証
      */
-    validateSettingsFile(settings) {
+    validateSettingsFile(settings: any): settings is AudioSettingsFile {
         try {
             // 基本構造をチェック
             if (!settings || typeof settings !== 'object') {
@@ -260,7 +312,7 @@ export class AudioSettingsDataManager {
     /**
      * インポートした設定を適用
      */
-    async applyImportedSettings(settings) {
+    async applyImportedSettings(settings: AudioSettingsFile): Promise<void> {
         try {
             // 音量設定を適用
             if (settings.volumes) {
@@ -296,15 +348,15 @@ export class AudioSettingsDataManager {
             }
             
             // イコライザー設定を適用
-            if (settings.equalizer && this.audioManager.audioController) {
-                this.audioManager.audioController.setEqualizerSettings(settings.equalizer);
+            if (settings.equalizer && (this.audioManager as any).audioController) {
+                (this.audioManager as any).audioController.setEqualizerSettings(settings.equalizer);
             }
             
             // アクセシビリティ設定を適用
             if (settings.accessibility) {
                 const accessibilitySettings = settings.accessibility;
                 Object.keys(accessibilitySettings).forEach(async (key) => {
-                    await this.configManager.set(`audio.accessibility.${key}`, accessibilitySettings[key]);
+                    await this.configManager.set(`audio.accessibility.${key}`, accessibilitySettings[key as keyof typeof accessibilitySettings]);
                 });
             }
             
@@ -323,20 +375,20 @@ export class AudioSettingsDataManager {
     /**
      * 設定変更の監視を設定
      */
-    setupConfigWatchers() {
-        const configWatchers = new Set();
+    setupConfigWatchers(): Set<any> {
+        const configWatchers = new Set<any>();
         
         // 音量変更の監視
         const volumeWatchers = ['master', 'bgm', 'sfx'].map(type => {
-            return this.configManager.watch('audio', `volumes.${type}`, (newValue) => {
+            return this.configManager.watch('audio', `volumes.${type}`, (newValue: number) => {
                 // 設定変更の通知
-                this._onConfigChange('volume', type, newValue);
+                this._onConfigChange('volume', type as ConfigChangeType, newValue);
             });
         });
         volumeWatchers.forEach(w => w && configWatchers.add(w));
         
         // ミュート状態の監視
-        const muteWatcher = this.configManager.watch('audio', 'volumes.muted', (newValue) => {
+        const muteWatcher = this.configManager.watch('audio', 'volumes.muted', (newValue: boolean) => {
             this._onConfigChange('mute', 'all', newValue);
         });
         if (muteWatcher) configWatchers.add(muteWatcher);
@@ -348,7 +400,7 @@ export class AudioSettingsDataManager {
      * 通知を表示
      * @private
      */
-    _showNotification(message, type = 'info') {
+    private _showNotification(message: string, type: 'success' | 'error' | 'info' = 'info'): void {
         if (this.onNotification) {
             this.onNotification(message, type);
         }
@@ -358,7 +410,7 @@ export class AudioSettingsDataManager {
      * 設定変更通知
      * @private
      */
-    _onConfigChange(category, type, value) {
+    private _onConfigChange(category: ConfigChangeCategory, type: ConfigChangeType, value: number | boolean): void {
         console.log(`Config changed: ${category}.${type} = ${value}`);
         // UIの更新が必要な場合の処理
     }

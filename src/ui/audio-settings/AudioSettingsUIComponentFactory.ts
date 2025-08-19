@@ -1,38 +1,113 @@
 import { getErrorHandler } from '../../utils/ErrorHandler.js';
 import { getLocalizationManager } from '../../core/LocalizationManager.js';
+import type { AudioManager } from '../../audio/AudioManager.js';
+import type { ConfigurationManager } from '../../core/ConfigurationManager.js';
+import type { LocalizationManager } from '../../core/LocalizationManager.js';
+import type { ErrorHandler } from '../../utils/ErrorHandler.js';
+
+/**
+ * Volume Slider Options
+ */
+interface VolumeSliderOptions {
+    id: string;
+    label: string;
+    icon: string;
+    category: 'master' | 'bgm' | 'sfx';
+    defaultValue: number;
+    previewSound: string | null;
+}
+
+/**
+ * Toggle Option Options
+ */
+interface ToggleOptionOptions {
+    id: string;
+    label: string;
+    icon: string;
+    defaultValue: boolean;
+    onChange: (value: boolean) => void;
+}
+
+/**
+ * Radio Group Options
+ */
+interface RadioGroupOptions {
+    id: string;
+    label: string;
+    icon: string;
+    options: Array<{ value: string; label: string }>;
+    defaultValue: string;
+    onChange: (value: string) => void;
+}
+
+/**
+ * Dropdown Options
+ */
+interface DropdownOptions {
+    id: string;
+    label: string;
+    icon: string;
+    options: Array<{ value: number | string; label: string }>;
+    defaultValue: number | string;
+    onChange: (value: string) => void;
+}
+
+/**
+ * Vertical Slider Options
+ */
+interface VerticalSliderOptions {
+    id: string;
+    label: string;
+    icon: string;
+    min: number;
+    max: number;
+    defaultValue: number;
+    unit: string;
+    onChange: (value: number) => void;
+}
+
+/**
+ * Settings change callback type
+ */
+type SettingsChangeCallback = () => void;
 
 /**
  * Audio Settings UI Component Factory
  * オーディオ設定UIコンポーネントファクトリー - UI要素作成、イベント処理
  */
 export class AudioSettingsUIComponentFactory {
-    constructor(audioManager, configManager) {
+    private audioManager: AudioManager;
+    private configManager: ConfigurationManager;
+    private localizationManager: LocalizationManager;
+    private errorHandler: ErrorHandler;
+    
+    // スライダー管理
+    private sliders: Map<string, HTMLInputElement> = new Map();
+    
+    // プレビュー音源
+    private previewTimeouts: Map<string, NodeJS.Timeout> = new Map();
+    
+    // 設定値保存コールバック
+    private onSettingsChange: SettingsChangeCallback | null = null;
+
+    constructor(audioManager: AudioManager, configManager: ConfigurationManager) {
         this.audioManager = audioManager;
         this.configManager = configManager;
         this.localizationManager = getLocalizationManager();
         this.errorHandler = getErrorHandler();
-        
-        // スライダー管理
-        this.sliders = new Map();
-        
-        // プレビュー音源
-        this.previewTimeouts = new Map();
-        
-        // 設定値保存コールバック
-        this.onSettingsChange = null;
     }
     
     /**
      * 設定変更コールバックを設定
      */
-    setSettingsChangeCallback(callback) {
+    setSettingsChangeCallback(callback: SettingsChangeCallback): void {
         this.onSettingsChange = callback;
     }
     
     /**
      * 音量スライダーを作成
      */
-    createVolumeSlider(container, options) {
+    createVolumeSlider(container: HTMLElement, options: VolumeSliderOptions): void {
         const sliderGroup = document.createElement('div');
         sliderGroup.className = 'slider-group';
         sliderGroup.style.cssText = `
@@ -87,7 +162,7 @@ export class AudioSettingsUIComponentFactory {
         slider.id = options.id;
         slider.min = '0';
         slider.max = '100';
-        slider.value = Math.round(options.defaultValue * 100);
+        slider.value = Math.round(options.defaultValue * 100).toString();
         slider.style.cssText = `
             flex: 1;
             height: 8px;
@@ -115,9 +190,10 @@ export class AudioSettingsUIComponentFactory {
         
         // イベントハンドラー
         slider.addEventListener('input', (e) => {
-            const value = parseInt(e.target.value) / 100;
-            valueDisplay.textContent = `${e.target.value}%`;
-            slider.style.background = `linear-gradient(to right, #00ffff 0%, #00ffff ${e.target.value}%, #333333 ${e.target.value}%, #333333 100%)`;
+            const target = e.target as HTMLInputElement;
+            const value = parseInt(target.value) / 100;
+            valueDisplay.textContent = `${target.value}%`;
+            slider.style.background = `linear-gradient(to right, #00ffff 0%, #00ffff ${target.value}%, #333333 ${target.value}%, #333333 100%)`;
             
             // 音量を設定
             this.audioManager.setVolume(options.category, value);
@@ -152,7 +228,7 @@ export class AudioSettingsUIComponentFactory {
     /**
      * トグルオプションを作成
      */
-    createToggleOption(container, options) {
+    createToggleOption(container: HTMLElement, options: ToggleOptionOptions): void {
         const toggleGroup = document.createElement('div');
         toggleGroup.className = 'toggle-group';
         toggleGroup.style.cssText = `
@@ -197,7 +273,7 @@ export class AudioSettingsUIComponentFactory {
     /**
      * ラジオグループを作成
      */
-    createRadioGroup(container, options) {
+    createRadioGroup(container: HTMLElement, options: RadioGroupOptions): void {
         const radioGroup = document.createElement('div');
         radioGroup.className = 'radio-group';
         radioGroup.style.cssText = `
@@ -237,7 +313,7 @@ export class AudioSettingsUIComponentFactory {
     /**
      * ドロップダウンを作成
      */
-    createDropdown(container, options) {
+    createDropdown(container: HTMLElement, options: DropdownOptions): void {
         const dropdownGroup = document.createElement('div');
         dropdownGroup.className = 'dropdown-group';
         dropdownGroup.style.cssText = `
@@ -269,7 +345,7 @@ export class AudioSettingsUIComponentFactory {
     /**
      * 垂直スライダーを作成（イコライザー用）
      */
-    createVerticalSlider(container, options) {
+    createVerticalSlider(container: HTMLElement, options: VerticalSliderOptions): void {
         const sliderGroup = document.createElement('div');
         sliderGroup.className = 'vertical-slider-group';
         sliderGroup.style.cssText = `
@@ -321,7 +397,7 @@ export class AudioSettingsUIComponentFactory {
     /**
      * 音量スライダーを更新
      */
-    updateVolumeSliders(enabled) {
+    updateVolumeSliders(enabled: boolean): void {
         this.sliders.forEach((slider, id) => {
             if (id !== 'mute-all') {
                 slider.disabled = !enabled;
@@ -334,7 +410,7 @@ export class AudioSettingsUIComponentFactory {
      * トグルスイッチを作成
      * @private
      */
-    _createToggleSwitch(options) {
+    private _createToggleSwitch(options: ToggleOptionOptions): HTMLElement {
         const switchContainer = document.createElement('div');
         switchContainer.style.cssText = `
             position: relative;
@@ -384,7 +460,8 @@ export class AudioSettingsUIComponentFactory {
         
         // イベントハンドラー
         checkbox.addEventListener('change', (e) => {
-            const isChecked = e.target.checked;
+            const target = e.target as HTMLInputElement;
+            const isChecked = target.checked;
             switchLabel.style.backgroundColor = isChecked ? '#00ffff' : '#333333';
             switchKnob.style.left = isChecked ? '34px' : '4px';
             
@@ -393,7 +470,7 @@ export class AudioSettingsUIComponentFactory {
             }
             
             // UIサウンド
-            this.audioManager.playUISound('toggle', { volume: 0.3 });
+            (this.audioManager as any).playUISound?.('toggle', { volume: 0.3 });
             
             // 保存状態を表示
             this._showSaveStatus();
@@ -409,7 +486,7 @@ export class AudioSettingsUIComponentFactory {
      * ラジオオプションを作成
      * @private
      */
-    _createRadioOption(option, parentOptions) {
+    private _createRadioOption(option: { value: string; label: string }, parentOptions: RadioGroupOptions): HTMLElement {
         const optionLabel = document.createElement('label');
         optionLabel.style.cssText = `
             display: flex;
@@ -439,9 +516,10 @@ export class AudioSettingsUIComponentFactory {
         `;
         
         radio.addEventListener('change', (e) => {
-            if (e.target.checked && parentOptions.onChange) {
-                parentOptions.onChange(e.target.value);
-                this.audioManager.playUISound('select', { volume: 0.3 });
+            const target = e.target as HTMLInputElement;
+            if (target.checked && parentOptions.onChange) {
+                parentOptions.onChange(target.value);
+                (this.audioManager as any).playUISound?.('select', { volume: 0.3 });
                 this._showSaveStatus();
             }
         });
@@ -464,7 +542,7 @@ export class AudioSettingsUIComponentFactory {
      * セレクト要素を作成
      * @private
      */
-    _createSelectElement(options) {
+    private _createSelectElement(options: DropdownOptions): HTMLSelectElement {
         const select = document.createElement('select');
         select.id = options.id;
         select.style.cssText = `
@@ -481,16 +559,17 @@ export class AudioSettingsUIComponentFactory {
         
         options.options.forEach(option => {
             const optionElement = document.createElement('option');
-            optionElement.value = option.value;
+            optionElement.value = option.value.toString();
             optionElement.textContent = option.label;
             optionElement.selected = option.value === options.defaultValue;
             select.appendChild(optionElement);
         });
         
         select.addEventListener('change', (e) => {
+            const target = e.target as HTMLSelectElement;
             if (options.onChange) {
-                options.onChange(e.target.value);
-                this.audioManager.playUISound('select', { volume: 0.3 });
+                options.onChange(target.value);
+                (this.audioManager as any).playUISound?.('select', { volume: 0.3 });
                 this._showSaveStatus();
             }
         });
@@ -510,13 +589,13 @@ export class AudioSettingsUIComponentFactory {
      * 垂直スライダー要素を作成
      * @private
      */
-    _createVerticalSliderElement(options, valueDisplay) {
+    private _createVerticalSliderElement(options: VerticalSliderOptions, valueDisplay: HTMLElement): HTMLInputElement {
         const slider = document.createElement('input');
         slider.type = 'range';
         slider.id = options.id;
-        slider.min = options.min;
-        slider.max = options.max;
-        slider.value = options.defaultValue;
+        slider.min = options.min.toString();
+        slider.max = options.max.toString();
+        slider.value = options.defaultValue.toString();
         slider.style.cssText = `
             position: absolute;
             width: 150px;
@@ -535,7 +614,8 @@ export class AudioSettingsUIComponentFactory {
         this._addVerticalSliderStyles(options.id);
         
         slider.addEventListener('input', (e) => {
-            const value = parseFloat(e.target.value);
+            const target = e.target as HTMLInputElement;
+            const value = parseFloat(target.value);
             valueDisplay.textContent = `${value >= 0 ? '+' : ''}${value}${options.unit}`;
             
             // グラデーションを更新
@@ -554,7 +634,7 @@ export class AudioSettingsUIComponentFactory {
      * 垂直スライダースタイルを追加
      * @private
      */
-    _addVerticalSliderStyles(sliderId) {
+    private _addVerticalSliderStyles(sliderId: string): void {
         const style = document.createElement('style');
         style.textContent = `
             #${sliderId}::-webkit-slider-thumb {
@@ -583,10 +663,10 @@ export class AudioSettingsUIComponentFactory {
      * プレビュー音を予約
      * @private
      */
-    _schedulePreview(options) {
+    private _schedulePreview(options: VolumeSliderOptions): void {
         // 既存のタイムアウトをクリア
         if (this.previewTimeouts.has(options.id)) {
-            clearTimeout(this.previewTimeouts.get(options.id));
+            clearTimeout(this.previewTimeouts.get(options.id)!);
         }
         
         // 新しいタイムアウトを設定
@@ -602,18 +682,18 @@ export class AudioSettingsUIComponentFactory {
      * プレビュー音を再生
      * @private
      */
-    _playPreviewSound(options) {
+    private _playPreviewSound(options: VolumeSliderOptions): void {
         if (!options.previewSound || !this.audioManager) return;
         
         if (options.category === 'bgm') {
             // BGMプレビュー（短いフレーズを再生）
-            const currentBGM = this.audioManager.getCurrentBGMInfo();
+            const currentBGM = (this.audioManager as any).getCurrentBGMInfo?.();
             if (currentBGM && currentBGM.isPlaying) {
                 // 一時的に音量を上げる
                 const originalVolume = this.audioManager.getVolume('bgm');
-                this.audioManager.setBGMVolume(1.0, 0.2);
+                (this.audioManager as any).setBGMVolume?.(1.0, 0.2);
                 setTimeout(() => {
-                    this.audioManager.setBGMVolume(originalVolume, 0.2);
+                    (this.audioManager as any).setBGMVolume?.(originalVolume, 0.2);
                 }, 1000);
             } else {
                 // BGMが再生されていない場合は短いメロディを生成
@@ -631,7 +711,7 @@ export class AudioSettingsUIComponentFactory {
      * 保存状態を表示
      * @private
      */
-    _showSaveStatus() {
+    private _showSaveStatus(): void {
         if (this.onSettingsChange) {
             this.onSettingsChange();
         }
@@ -640,7 +720,7 @@ export class AudioSettingsUIComponentFactory {
     /**
      * クリーンアップ
      */
-    dispose() {
+    dispose(): void {
         // タイムアウトをクリア
         this.previewTimeouts.forEach(timeout => clearTimeout(timeout));
         this.previewTimeouts.clear();
