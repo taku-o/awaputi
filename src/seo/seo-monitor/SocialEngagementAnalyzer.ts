@@ -3,8 +3,35 @@
  * 
  * ソーシャルシェア追跡、エンゲージメント分析、OG・Twitterタグ解析を専門的に管理します
  */
+
+interface SEOConfig {
+    [key: string]: any;
+}
+
+interface SocialEngagementData {
+    timestamp: number;
+    platforms: Record<string, number>;
+    totalShares: number;
+    engagementRate: number;
+    ogTags?: Record<string, string>;
+    twitterCard?: Record<string, string>;
+}
+
+interface MonitoringData {
+    socialEngagement: SocialEngagementData[];
+}
+
+interface SocialEngagementTrend {
+    timestamp: number;
+    totalShares: number;
+    engagementRate: number;
+}
+
 export class SocialEngagementAnalyzer {
-    constructor(config, monitoringData) {
+    private config: SEOConfig;
+    private monitoringData: MonitoringData;
+
+    constructor(config: SEOConfig, monitoringData: MonitoringData) {
         this.config = config;
         this.monitoringData = monitoringData;
     }
@@ -12,9 +39,9 @@ export class SocialEngagementAnalyzer {
     /**
      * ソーシャルメディア分析
      */
-    async analyzeSocialEngagement() {
+    async analyzeSocialEngagement(): Promise<SocialEngagementData | null> {
         try {
-            const socialData = {
+            const socialData: SocialEngagementData = {
                 timestamp: Date.now(),
                 platforms: {},
                 totalShares: 0,
@@ -48,7 +75,11 @@ export class SocialEngagementAnalyzer {
     /**
      * ソーシャルシェアトラッキング
      */
-    trackSocialSharing(socialData) {
+    private trackSocialSharing(socialData: SocialEngagementData): void {
+        if (typeof document === 'undefined') {
+            return;
+        }
+        
         const platforms = ['twitter', 'facebook', 'linkedin', 'pinterest'];
         
         platforms.forEach(platform => {
@@ -69,8 +100,8 @@ export class SocialEngagementAnalyzer {
     /**
      * Open Graphタグの分析
      */
-    analyzeOGTags() {
-        const ogTags = {};
+    private analyzeOGTags(): Record<string, string> {
+        const ogTags: Record<string, string> = {};
         
         if (typeof document !== 'undefined') {
             const ogMetas = document.querySelectorAll('meta[property^="og:"]');
@@ -93,8 +124,8 @@ export class SocialEngagementAnalyzer {
     /**
      * Twitter Cardの分析
      */
-    analyzeTwitterCard() {
-        const twitterTags = {};
+    private analyzeTwitterCard(): Record<string, string> {
+        const twitterTags: Record<string, string> = {};
         
         if (typeof document !== 'undefined') {
             const twitterMetas = document.querySelectorAll('meta[name^="twitter:"]');
@@ -117,15 +148,15 @@ export class SocialEngagementAnalyzer {
     /**
      * ソーシャルシェア総数の取得
      */
-    getTotalSocialShares() {
+    getTotalSocialShares(): number {
         return this.monitoringData.socialEngagement.reduce((total, data) => total + data.totalShares, 0);
     }
     
     /**
      * プラットフォーム別内訳の取得
      */
-    getSocialPlatformBreakdown() {
-        const breakdown = {};
+    getSocialPlatformBreakdown(): Record<string, number> {
+        const breakdown: Record<string, number> = {};
         
         this.monitoringData.socialEngagement.forEach(data => {
             Object.entries(data.platforms || {}).forEach(([platform, count]) => {
@@ -139,7 +170,7 @@ export class SocialEngagementAnalyzer {
     /**
      * エンゲージメントトレンドの取得
      */
-    getSocialEngagementTrend() {
+    getSocialEngagementTrend(): SocialEngagementTrend[] {
         return this.monitoringData.socialEngagement.map(data => ({
             timestamp: data.timestamp,
             totalShares: data.totalShares,

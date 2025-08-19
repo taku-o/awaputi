@@ -8,19 +8,60 @@
 import { seoLogger } from '../SEOLogger.js';
 import { seoErrorHandler } from '../SEOErrorHandler.js';
 
+interface MainController {
+    baseUrl: string;
+}
+
+interface TestResult {
+    name: string;
+    passed: boolean;
+    message: string;
+}
+
+interface ValidationResults {
+    category: string;
+    tests: TestResult[];
+    passed: number;
+    failed: number;
+    warnings: number;
+}
+
+interface CoreWebVitalsResults extends ValidationResults {
+    vitals: {
+        LCP: number;
+        FID: number;
+        CLS: number;
+        timestamp: string;
+    };
+}
+
+interface ImageInfo {
+    src: string;
+    alt: string;
+}
+
+interface HeadingStructure {
+    isValid: boolean;
+    levels: number[];
+    issues: string[];
+}
+
 export class PerformanceValidator {
-    constructor(mainController) {
+    private mainController: MainController;
+    private baseUrl: string;
+
+    constructor(mainController: MainController) {
         this.mainController = mainController;
         this.baseUrl = mainController.baseUrl;
     }
 
     /**
      * パフォーマンス最適化の検証
-     * @returns {Promise<Object>}
+     * @returns Promise<ValidationResults>
      */
-    async validatePerformanceOptimization() {
+    async validatePerformanceOptimization(): Promise<ValidationResults> {
         try {
-            const results = {
+            const results: ValidationResults = {
                 category: 'Performance Optimization',
                 tests: [],
                 passed: 0,
@@ -29,7 +70,7 @@ export class PerformanceValidator {
             };
             
             // WebP対応の確認
-            const webpTest = {
+            const webpTest: TestResult = {
                 name: 'WebP support detection',
                 passed: false,
                 message: ''
@@ -48,7 +89,7 @@ export class PerformanceValidator {
             results.tests.push(webpTest);
             
             // キャッシュヘッダーの確認
-            const cacheTest = {
+            const cacheTest: TestResult = {
                 name: 'Cache headers validation',
                 passed: false,
                 message: ''
@@ -93,11 +134,11 @@ export class PerformanceValidator {
 
     /**
      * アクセシビリティ準拠の検証
-     * @returns {Promise<Object>}
+     * @returns Promise<ValidationResults>
      */
-    async validateAccessibilityCompliance() {
+    async validateAccessibilityCompliance(): Promise<ValidationResults> {
         try {
-            const results = {
+            const results: ValidationResults = {
                 category: 'Accessibility Compliance',
                 tests: [],
                 passed: 0,
@@ -106,7 +147,7 @@ export class PerformanceValidator {
             };
             
             // alt属性の確認
-            const altTest = {
+            const altTest: TestResult = {
                 name: 'Image alt attributes',
                 passed: false,
                 message: ''
@@ -128,7 +169,7 @@ export class PerformanceValidator {
             results.tests.push(altTest);
             
             // 見出し構造の確認
-            const headingTest = {
+            const headingTest: TestResult = {
                 name: 'Heading structure',
                 passed: false,
                 message: ''
@@ -173,9 +214,9 @@ export class PerformanceValidator {
 
     /**
      * Core Web Vitalsの追跡
-     * @returns {Promise<Object>}
+     * @returns Promise<CoreWebVitalsResults>
      */
-    async trackCoreWebVitals() {
+    async trackCoreWebVitals(): Promise<CoreWebVitalsResults> {
         try {
             const vitals = {
                 LCP: 0, // Largest Contentful Paint
@@ -193,7 +234,7 @@ export class PerformanceValidator {
             }
             
             // 閾値チェック
-            const results = {
+            const results: CoreWebVitalsResults = {
                 category: 'Core Web Vitals',
                 tests: [],
                 passed: 0,
@@ -203,7 +244,7 @@ export class PerformanceValidator {
             };
             
             // LCP検証
-            const lcpTest = {
+            const lcpTest: TestResult = {
                 name: 'Largest Contentful Paint (LCP)',
                 passed: vitals.LCP <= 2500,
                 message: vitals.LCP <= 2500 
@@ -214,7 +255,7 @@ export class PerformanceValidator {
             lcpTest.passed ? results.passed++ : results.warnings++;
             
             // FID検証
-            const fidTest = {
+            const fidTest: TestResult = {
                 name: 'First Input Delay (FID)',
                 passed: vitals.FID <= 100,
                 message: vitals.FID <= 100 
@@ -225,7 +266,7 @@ export class PerformanceValidator {
             fidTest.passed ? results.passed++ : results.warnings++;
             
             // CLS検証
-            const clsTest = {
+            const clsTest: TestResult = {
                 name: 'Cumulative Layout Shift (CLS)',
                 passed: vitals.CLS <= 0.1,
                 message: vitals.CLS <= 0.1 
@@ -245,11 +286,11 @@ export class PerformanceValidator {
 
     /**
      * サイトマップの検証
-     * @returns {Promise<Object>}
+     * @returns Promise<ValidationResults>
      */
-    async validateSitemap() {
+    async validateSitemap(): Promise<ValidationResults> {
         try {
-            const results = {
+            const results: ValidationResults = {
                 category: 'Sitemap Validation',
                 tests: [],
                 passed: 0,
@@ -258,7 +299,7 @@ export class PerformanceValidator {
             };
             
             // サイトマップの存在確認
-            const sitemapTest = {
+            const sitemapTest: TestResult = {
                 name: 'Sitemap accessibility',
                 passed: false,
                 message: ''
@@ -285,11 +326,11 @@ export class PerformanceValidator {
 
     /**
      * robots.txtの検証
-     * @returns {Promise<Object>}
+     * @returns Promise<ValidationResults>
      */
-    async validateRobotsTxt() {
+    async validateRobotsTxt(): Promise<ValidationResults> {
         try {
-            const results = {
+            const results: ValidationResults = {
                 category: 'Robots.txt Validation',
                 tests: [],
                 passed: 0,
@@ -298,7 +339,7 @@ export class PerformanceValidator {
             };
             
             // robots.txtの存在確認
-            const robotsTest = {
+            const robotsTest: TestResult = {
                 name: 'Robots.txt accessibility',
                 passed: false,
                 message: ''
@@ -329,7 +370,7 @@ export class PerformanceValidator {
      * 画像の抽出
      * @private
      */
-    async _extractImages() {
+    private async _extractImages(): Promise<ImageInfo[]> {
         // 実際の実装では document.images から抽出
         return [
             { src: '/assets/images/game-screenshot.png', alt: 'ゲームスクリーンショット' },
@@ -341,7 +382,7 @@ export class PerformanceValidator {
      * WebP対応の確認
      * @private
      */
-    async _checkWebPSupport() {
+    private async _checkWebPSupport(): Promise<boolean> {
         if (typeof window === 'undefined') return false;
         
         return new Promise((resolve) => {
@@ -357,7 +398,7 @@ export class PerformanceValidator {
      * テスト用キャッシュヘッダーの生成
      * @private
      */
-    _generateTestCacheHeaders() {
+    private _generateTestCacheHeaders(): Record<string, string> {
         return {
             'Cache-Control': 'public, max-age=31536000',
             'Expires': new Date(Date.now() + 31536000000).toUTCString(),
@@ -369,7 +410,7 @@ export class PerformanceValidator {
      * 見出し構造の分析
      * @private
      */
-    async _analyzeHeadingStructure() {
+    private async _analyzeHeadingStructure(): Promise<HeadingStructure> {
         // 実際の実装では document から見出し要素を抽出して階層を分析
         return {
             isValid: true,
@@ -382,7 +423,7 @@ export class PerformanceValidator {
      * サイトマップの存在確認
      * @private
      */
-    async _checkSitemapExists() {
+    private async _checkSitemapExists(): Promise<boolean> {
         try {
             // 実際の実装では fetch でサイトマップの存在を確認
             return true;
@@ -395,7 +436,7 @@ export class PerformanceValidator {
      * robots.txtの存在確認
      * @private
      */
-    async _checkRobotsExists() {
+    private async _checkRobotsExists(): Promise<boolean> {
         try {
             // 実際の実装では fetch でrobots.txtの存在を確認
             return true;
@@ -408,7 +449,7 @@ export class PerformanceValidator {
      * Largest Contentful Paintの測定
      * @private
      */
-    _measureLCP() {
+    private _measureLCP(): number {
         // 実際の実装では PerformanceObserver を使用
         return Math.random() * 2500; // モックデータ
     }
@@ -417,7 +458,7 @@ export class PerformanceValidator {
      * First Input Delayの測定
      * @private
      */
-    _measureFID() {
+    private _measureFID(): number {
         // 実際の実装では PerformanceObserver を使用
         return Math.random() * 100; // モックデータ
     }
@@ -426,7 +467,7 @@ export class PerformanceValidator {
      * Cumulative Layout Shiftの測定
      * @private
      */
-    _measureCLS() {
+    private _measureCLS(): number {
         // 実際の実装では PerformanceObserver を使用
         return Math.random() * 0.1; // モックデータ
     }
@@ -435,8 +476,8 @@ export class PerformanceValidator {
      * 圧縮設定の検証
      * @private
      */
-    async _validateCompressionSettings() {
-        const test = {
+    private async _validateCompressionSettings(): Promise<TestResult> {
+        const test: TestResult = {
             name: 'Compression settings validation',
             passed: false,
             message: ''
@@ -452,7 +493,7 @@ export class PerformanceValidator {
                 test.message = '⚠️ Compression not detected';
             }
         } catch (error) {
-            test.message = `⚠️ Could not verify compression: ${error.message}`;
+            test.message = `⚠️ Could not verify compression: ${error instanceof Error ? error.message : 'Unknown error'}`;
         }
         
         return test;
@@ -462,8 +503,8 @@ export class PerformanceValidator {
      * リソース最適化の検証
      * @private
      */
-    async _validateResourceOptimization() {
-        const test = {
+    private async _validateResourceOptimization(): Promise<TestResult> {
+        const test: TestResult = {
             name: 'Resource optimization validation',
             passed: false,
             message: ''
@@ -479,7 +520,7 @@ export class PerformanceValidator {
                 test.message = `⚠️ Resources could be better optimized (${optimizationScore.toFixed(1)}%)`;
             }
         } catch (error) {
-            test.message = `⚠️ Resource optimization check failed: ${error.message}`;
+            test.message = `⚠️ Resource optimization check failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
         }
         
         return test;
@@ -489,8 +530,8 @@ export class PerformanceValidator {
      * キーボードナビゲーションの検証
      * @private
      */
-    async _validateKeyboardNavigation() {
-        const test = {
+    private async _validateKeyboardNavigation(): Promise<TestResult> {
+        const test: TestResult = {
             name: 'Keyboard navigation validation',
             passed: false,
             message: ''
@@ -506,7 +547,7 @@ export class PerformanceValidator {
                 test.message = '⚠️ Keyboard navigation could be improved';
             }
         } catch (error) {
-            test.message = `⚠️ Keyboard navigation check failed: ${error.message}`;
+            test.message = `⚠️ Keyboard navigation check failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
         }
         
         return test;
@@ -516,8 +557,8 @@ export class PerformanceValidator {
      * カラーコントラストの検証
      * @private
      */
-    async _validateColorContrast() {
-        const test = {
+    private async _validateColorContrast(): Promise<TestResult> {
+        const test: TestResult = {
             name: 'Color contrast validation',
             passed: false,
             message: ''
@@ -533,7 +574,7 @@ export class PerformanceValidator {
                 test.message = `⚠️ Color contrast below WCAG AA standards (${contrastRatio.toFixed(2)}:1)`;
             }
         } catch (error) {
-            test.message = `⚠️ Color contrast check failed: ${error.message}`;
+            test.message = `⚠️ Color contrast check failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
         }
         
         return test;

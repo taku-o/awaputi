@@ -3,17 +3,52 @@
  * 
  * メタタグチェック、アラート検証、抽出処理を専門的に管理します
  */
+
+interface MetaTagThresholds {
+    metaTags: {
+        titleLength: {
+            min: number;
+            max: number;
+        };
+        descriptionLength: {
+            min: number;
+            max: number;
+        };
+    };
+}
+
+interface MetaTagAlert {
+    type: string;
+    severity: 'info' | 'warning' | 'critical';
+    metric: string;
+    current?: number;
+    threshold?: string;
+    message: string;
+    timestamp: string;
+}
+
+interface MetaTags {
+    title: string | null;
+    description: string | null;
+    keywords: string | null;
+    ogTags: Record<string, string>;
+    twitterTags: Record<string, string>;
+    timestamp: string;
+}
+
 export class MetaTagAnalyzer {
-    constructor(thresholds) {
+    private thresholds: MetaTagThresholds;
+
+    constructor(thresholds: MetaTagThresholds) {
         this.thresholds = thresholds;
     }
     
     /**
      * メタタグのチェック
      */
-    async checkMetaTags() {
+    async checkMetaTags(): Promise<MetaTags | null> {
         try {
-            const metaTags = {
+            const metaTags: MetaTags = {
                 title: this.extractTitleTag(),
                 description: this.extractDescriptionTag(),
                 keywords: this.extractKeywordsTag(),
@@ -33,7 +68,7 @@ export class MetaTagAnalyzer {
     /**
      * メタタグアラートのチェック
      */
-    checkMetaTagAlerts(metaTags, alerts) {
+    checkMetaTagAlerts(metaTags: MetaTags | null, alerts: MetaTagAlert[]): void {
         if (!metaTags) return;
         
         // タイトル長のチェック
@@ -92,7 +127,7 @@ export class MetaTagAnalyzer {
     /**
      * タイトルタグの抽出
      */
-    extractTitleTag() {
+    private extractTitleTag(): string | null {
         if (typeof document !== 'undefined') {
             return document.title || null;
         }
@@ -102,7 +137,7 @@ export class MetaTagAnalyzer {
     /**
      * 説明メタタグの抽出
      */
-    extractDescriptionTag() {
+    private extractDescriptionTag(): string | null {
         if (typeof document !== 'undefined') {
             const meta = document.querySelector('meta[name="description"]');
             return meta ? meta.getAttribute('content') : null;
@@ -113,7 +148,7 @@ export class MetaTagAnalyzer {
     /**
      * キーワードメタタグの抽出
      */
-    extractKeywordsTag() {
+    private extractKeywordsTag(): string | null {
         if (typeof document !== 'undefined') {
             const meta = document.querySelector('meta[name="keywords"]');
             return meta ? meta.getAttribute('content') : null;
@@ -124,8 +159,8 @@ export class MetaTagAnalyzer {
     /**
      * Open Graphタグの抽出
      */
-    extractOGTags() {
-        const ogTags = {};
+    private extractOGTags(): Record<string, string> {
+        const ogTags: Record<string, string> = {};
         
         if (typeof document !== 'undefined') {
             const ogMetas = document.querySelectorAll('meta[property^="og:"]');
@@ -148,8 +183,8 @@ export class MetaTagAnalyzer {
     /**
      * Twitterタグの抽出
      */
-    extractTwitterTags() {
-        const twitterTags = {};
+    private extractTwitterTags(): Record<string, string> {
+        const twitterTags: Record<string, string> = {};
         
         if (typeof document !== 'undefined') {
             const twitterMetas = document.querySelectorAll('meta[name^="twitter:"]');

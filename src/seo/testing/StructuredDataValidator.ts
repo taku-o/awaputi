@@ -8,19 +8,68 @@
 import { seoLogger } from '../SEOLogger.js';
 import { seoErrorHandler } from '../SEOErrorHandler.js';
 
+interface MainController {
+    baseUrl: string;
+    validationRules: Map<string, ValidationRules>;
+}
+
+interface ValidationRules {
+    required: string[];
+    allowedContexts: string[];
+    videoGameProperties: string[];
+}
+
+interface TestResult {
+    name: string;
+    passed: boolean;
+    message: string;
+}
+
+interface ValidationResults {
+    category: string;
+    tests: TestResult[];
+    passed: number;
+    failed: number;
+    warnings: number;
+}
+
+interface StructuredDataObject {
+    '@context': string;
+    '@type': string;
+    name: string;
+    description: string;
+    genre?: string;
+    gamePlatform?: string[];
+    operatingSystem?: string[];
+    applicationCategory?: string;
+    url: string;
+    image: string;
+    author?: {
+        '@type': string;
+        name: string;
+    };
+    datePublished?: string;
+    inLanguage?: string[];
+    isAccessibleForFree?: boolean;
+    [key: string]: any;
+}
+
 export class StructuredDataValidator {
-    constructor(mainController) {
+    private mainController: MainController;
+    private baseUrl: string;
+
+    constructor(mainController: MainController) {
         this.mainController = mainController;
         this.baseUrl = mainController.baseUrl;
     }
 
     /**
      * 構造化データの検証
-     * @returns {Promise<Object>}
+     * @returns Promise<ValidationResults>
      */
-    async validateStructuredData() {
+    async validateStructuredData(): Promise<ValidationResults> {
         try {
-            const results = {
+            const results: ValidationResults = {
                 category: 'Structured Data',
                 tests: [],
                 passed: 0,
@@ -30,6 +79,10 @@ export class StructuredDataValidator {
             
             const structuredData = await this._extractStructuredData();
             const rules = this.mainController.validationRules.get('structuredData');
+            
+            if (!rules) {
+                throw new Error('Structured data validation rules not found');
+            }
             
             if (!structuredData || Object.keys(structuredData).length === 0) {
                 results.tests.push({
@@ -43,7 +96,7 @@ export class StructuredDataValidator {
             
             // 必須プロパティの存在確認
             for (const requiredProp of rules.required) {
-                const test = {
+                const test: TestResult = {
                     name: `Required property: ${requiredProp}`,
                     passed: false,
                     message: ''
@@ -63,7 +116,7 @@ export class StructuredDataValidator {
             
             // @contextの検証
             if (structuredData['@context']) {
-                const contextTest = {
+                const contextTest: TestResult = {
                     name: 'Schema.org context validation',
                     passed: false,
                     message: ''
@@ -85,7 +138,7 @@ export class StructuredDataValidator {
             // VideoGame特有のプロパティ検証
             if (structuredData['@type'] === 'VideoGame') {
                 for (const prop of rules.videoGameProperties) {
-                    const test = {
+                    const test: TestResult = {
                         name: `VideoGame property: ${prop}`,
                         passed: false,
                         message: ''
@@ -131,11 +184,11 @@ export class StructuredDataValidator {
 
     /**
      * JSON-LD検証とschema.org準拠チェック
-     * @returns {Promise<Object>}
+     * @returns Promise<ValidationResults>
      */
-    async validateJsonLdCompliance() {
+    async validateJsonLdCompliance(): Promise<ValidationResults> {
         try {
-            const results = {
+            const results: ValidationResults = {
                 category: 'JSON-LD Compliance',
                 tests: [],
                 passed: 0,
@@ -146,7 +199,7 @@ export class StructuredDataValidator {
             const structuredData = await this._extractStructuredData();
             
             // JSON-LD形式の基本検証
-            const formatTest = {
+            const formatTest: TestResult = {
                 name: 'JSON-LD format validation',
                 passed: false,
                 message: ''
@@ -164,7 +217,7 @@ export class StructuredDataValidator {
             results.tests.push(formatTest);
             
             // Schema.org vocabulary検証
-            const vocabTest = {
+            const vocabTest: TestResult = {
                 name: 'Schema.org vocabulary validation',
                 passed: false,
                 message: ''
@@ -191,11 +244,11 @@ export class StructuredDataValidator {
 
     /**
      * Rich Snippetテスト実行
-     * @returns {Promise<Object>}
+     * @returns Promise<ValidationResults>
      */
-    async testRichSnippets() {
+    async testRichSnippets(): Promise<ValidationResults> {
         try {
-            const results = {
+            const results: ValidationResults = {
                 category: 'Rich Snippet Testing',
                 tests: [],
                 passed: 0,
@@ -209,7 +262,7 @@ export class StructuredDataValidator {
             const snippetTypes = ['Game', 'SoftwareApplication', 'WebApplication'];
             
             for (const snippetType of snippetTypes) {
-                const test = {
+                const test: TestResult = {
                     name: `${snippetType} rich snippet compatibility`,
                     passed: false,
                     message: ''
@@ -229,7 +282,7 @@ export class StructuredDataValidator {
             }
             
             // Google構造化データテストツール互換性
-            const googleTest = {
+            const googleTest: TestResult = {
                 name: 'Google Structured Data Test compatibility',
                 passed: false,
                 message: ''
@@ -260,7 +313,7 @@ export class StructuredDataValidator {
      * 構造化データの抽出
      * @private
      */
-    async _extractStructuredData() {
+    private async _extractStructuredData(): Promise<StructuredDataObject> {
         // 実際の実装では document から JSON-LD スクリプトタグを抽出
         return {
             '@context': 'https://schema.org',
@@ -287,8 +340,8 @@ export class StructuredDataValidator {
      * JSON-LD形式の検証
      * @private
      */
-    async _validateJsonLdFormat(structuredData) {
-        const test = {
+    private async _validateJsonLdFormat(structuredData: StructuredDataObject): Promise<TestResult> {
+        const test: TestResult = {
             name: 'JSON-LD format validation',
             passed: false,
             message: ''
@@ -309,7 +362,7 @@ export class StructuredDataValidator {
                 test.message = '❌ Missing required @context or @type';
             }
         } catch (error) {
-            test.message = `❌ JSON-LD validation error: ${error.message}`;
+            test.message = `❌ JSON-LD validation error: ${error instanceof Error ? error.message : 'Unknown error'}`;
         }
         
         return test;
@@ -319,8 +372,8 @@ export class StructuredDataValidator {
      * Rich Snippetsのテスト
      * @private
      */
-    async _testRichSnippets(structuredData) {
-        const test = {
+    private async _testRichSnippets(structuredData: StructuredDataObject): Promise<TestResult> {
+        const test: TestResult = {
             name: 'Rich snippets compatibility',
             passed: false,
             message: ''
@@ -340,7 +393,7 @@ export class StructuredDataValidator {
                 test.message = '⚠️ Rich snippets may not display optimally';
             }
         } catch (error) {
-            test.message = `⚠️ Rich snippets test error: ${error.message}`;
+            test.message = `⚠️ Rich snippets test error: ${error instanceof Error ? error.message : 'Unknown error'}`;
         }
         
         return test;
@@ -350,7 +403,7 @@ export class StructuredDataValidator {
      * JSON-LD形式の有効性確認
      * @private
      */
-    _isValidJsonLd(data) {
+    private _isValidJsonLd(data: any): boolean {
         if (!data || typeof data !== 'object') return false;
         if (!data['@context'] || !data['@type']) return false;
         
@@ -367,7 +420,7 @@ export class StructuredDataValidator {
      * Schema.org vocabulary検証
      * @private
      */
-    async _validateSchemaVocabulary(structuredData) {
+    private async _validateSchemaVocabulary(structuredData: StructuredDataObject): Promise<boolean> {
         // 実際の実装では Schema.org の公式ボキャブラリーと比較
         const knownVideoGameProperties = [
             'name', 'description', 'genre', 'gamePlatform', 'operatingSystem',
@@ -386,8 +439,8 @@ export class StructuredDataValidator {
      * Rich Snippet互換性チェック
      * @private
      */
-    _checkRichSnippetCompatibility(structuredData, snippetType) {
-        const compatibilityMap = {
+    private _checkRichSnippetCompatibility(structuredData: StructuredDataObject, snippetType: string): boolean {
+        const compatibilityMap: Record<string, string[]> = {
             'Game': ['name', 'description', 'genre', 'gamePlatform'],
             'SoftwareApplication': ['name', 'description', 'applicationCategory', 'operatingSystem'],
             'WebApplication': ['name', 'description', 'url', 'applicationCategory']
@@ -401,9 +454,9 @@ export class StructuredDataValidator {
      * Google構造化データテストツール互換性チェック
      * @private
      */
-    async _checkGoogleStructuredDataTestCompatibility(structuredData) {
+    private async _checkGoogleStructuredDataTestCompatibility(structuredData: StructuredDataObject): Promise<boolean> {
         // Google構造化データテストツールで問題となりやすい項目をチェック
-        const issues = [];
+        const issues: string[] = [];
         
         // 画像URLの形式チェック
         if (structuredData.image && !structuredData.image.startsWith('http')) {
@@ -427,7 +480,7 @@ export class StructuredDataValidator {
      * ISO日付形式の検証
      * @private
      */
-    _isValidISODate(dateString) {
+    private _isValidISODate(dateString: string): boolean {
         const isoDateRegex = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?)?$/;
         return isoDateRegex.test(dateString);
     }

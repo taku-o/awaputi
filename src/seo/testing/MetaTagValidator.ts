@@ -8,19 +8,76 @@
 import { seoLogger } from '../SEOLogger.js';
 import { seoErrorHandler } from '../SEOErrorHandler.js';
 
+interface MainController {
+    baseUrl: string;
+    validationRules: Map<string, ValidationRules>;
+}
+
+interface ValidationRules {
+    required: string[];
+    titleLength?: {
+        min: number;
+        max: number;
+    };
+    descriptionLength?: {
+        min: number;
+        max: number;
+    };
+    cardTypes?: string[];
+}
+
+interface TestResult {
+    name: string;
+    passed: boolean;
+    message: string;
+}
+
+interface ValidationResults {
+    category: string;
+    tests: TestResult[];
+    passed: number;
+    failed: number;
+    warnings: number;
+}
+
+interface MetaTags {
+    title: string;
+    description: string;
+    charset: string;
+    keywords: string;
+}
+
+interface OpenGraphTags {
+    'og:title': string;
+    'og:description': string;
+    'og:image': string;
+    'og:url': string;
+    'og:type': string;
+}
+
+interface TwitterCardTags {
+    'twitter:card': string;
+    'twitter:title': string;
+    'twitter:description': string;
+    'twitter:image': string;
+}
+
 export class MetaTagValidator {
-    constructor(mainController) {
+    private mainController: MainController;
+    private baseUrl: string;
+
+    constructor(mainController: MainController) {
         this.mainController = mainController;
         this.baseUrl = mainController.baseUrl;
     }
 
     /**
      * メタタグの検証
-     * @returns {Promise<Object>}
+     * @returns Promise<ValidationResults>
      */
-    async validateMetaTags() {
+    async validateMetaTags(): Promise<ValidationResults> {
         try {
-            const results = {
+            const results: ValidationResults = {
                 category: 'Meta Tags',
                 tests: [],
                 passed: 0,
@@ -32,15 +89,19 @@ export class MetaTagValidator {
             const metaTags = await this._extractMetaTags();
             const rules = this.mainController.validationRules.get('metaTags');
             
+            if (!rules) {
+                throw new Error('Meta tags validation rules not found');
+            }
+            
             // 必須タグの存在確認
             for (const requiredTag of rules.required) {
-                const test = {
+                const test: TestResult = {
                     name: `Required meta tag: ${requiredTag}`,
                     passed: false,
                     message: ''
                 };
                 
-                if (metaTags[requiredTag]) {
+                if (metaTags[requiredTag as keyof MetaTags]) {
                     test.passed = true;
                     test.message = `✅ ${requiredTag} tag present`;
                     results.passed++;
@@ -53,8 +114,8 @@ export class MetaTagValidator {
             }
             
             // タイトル長の検証
-            if (metaTags.title) {
-                const titleTest = {
+            if (metaTags.title && rules.titleLength) {
+                const titleTest: TestResult = {
                     name: 'Title length validation',
                     passed: false,
                     message: ''
@@ -74,8 +135,8 @@ export class MetaTagValidator {
             }
             
             // 説明文長の検証
-            if (metaTags.description) {
-                const descTest = {
+            if (metaTags.description && rules.descriptionLength) {
+                const descTest: TestResult = {
                     name: 'Description length validation',
                     passed: false,
                     message: ''
@@ -104,11 +165,11 @@ export class MetaTagValidator {
 
     /**
      * Open Graphタグの検証
-     * @returns {Promise<Object>}
+     * @returns Promise<ValidationResults>
      */
-    async validateOpenGraphTags() {
+    async validateOpenGraphTags(): Promise<ValidationResults> {
         try {
-            const results = {
+            const results: ValidationResults = {
                 category: 'Open Graph',
                 tests: [],
                 passed: 0,
@@ -119,15 +180,19 @@ export class MetaTagValidator {
             const ogTags = await this._extractOpenGraphTags();
             const rules = this.mainController.validationRules.get('openGraph');
             
+            if (!rules) {
+                throw new Error('Open Graph validation rules not found');
+            }
+            
             // 必須OGタグの存在確認
             for (const requiredTag of rules.required) {
-                const test = {
+                const test: TestResult = {
                     name: `Required OG tag: ${requiredTag}`,
                     passed: false,
                     message: ''
                 };
                 
-                if (ogTags[requiredTag]) {
+                if (ogTags[requiredTag as keyof OpenGraphTags]) {
                     test.passed = true;
                     test.message = `✅ ${requiredTag} tag present`;
                     results.passed++;
@@ -141,7 +206,7 @@ export class MetaTagValidator {
             
             // OG画像の検証
             if (ogTags['og:image']) {
-                const imageTest = {
+                const imageTest: TestResult = {
                     name: 'OG image validation',
                     passed: false,
                     message: ''
@@ -169,11 +234,11 @@ export class MetaTagValidator {
 
     /**
      * Twitter Cardタグの検証
-     * @returns {Promise<Object>}
+     * @returns Promise<ValidationResults>
      */
-    async validateTwitterCardTags() {
+    async validateTwitterCardTags(): Promise<ValidationResults> {
         try {
-            const results = {
+            const results: ValidationResults = {
                 category: 'Twitter Card',
                 tests: [],
                 passed: 0,
@@ -184,15 +249,19 @@ export class MetaTagValidator {
             const twitterTags = await this._extractTwitterCardTags();
             const rules = this.mainController.validationRules.get('twitterCard');
             
+            if (!rules) {
+                throw new Error('Twitter Card validation rules not found');
+            }
+            
             // 必須Twitterタグの存在確認
             for (const requiredTag of rules.required) {
-                const test = {
+                const test: TestResult = {
                     name: `Required Twitter tag: ${requiredTag}`,
                     passed: false,
                     message: ''
                 };
                 
-                if (twitterTags[requiredTag]) {
+                if (twitterTags[requiredTag as keyof TwitterCardTags]) {
                     test.passed = true;
                     test.message = `✅ ${requiredTag} tag present`;
                     results.passed++;
@@ -205,8 +274,8 @@ export class MetaTagValidator {
             }
             
             // Cardタイプの検証
-            if (twitterTags['twitter:card']) {
-                const cardTest = {
+            if (twitterTags['twitter:card'] && rules.cardTypes) {
+                const cardTest: TestResult = {
                     name: 'Twitter card type validation',
                     passed: false,
                     message: ''
@@ -234,11 +303,11 @@ export class MetaTagValidator {
 
     /**
      * ソーシャルメディア最適化の検証
-     * @returns {Promise<Object>}
+     * @returns Promise<ValidationResults>
      */
-    async validateSocialMediaOptimization() {
+    async validateSocialMediaOptimization(): Promise<ValidationResults> {
         try {
-            const results = {
+            const results: ValidationResults = {
                 category: 'Social Media Optimization',
                 tests: [],
                 passed: 0,
@@ -251,7 +320,7 @@ export class MetaTagValidator {
             
             for (const [platform, imageUrl] of Object.entries(socialImages)) {
                 if (imageUrl) {
-                    const test = {
+                    const test: TestResult = {
                         name: `${platform} image optimization`,
                         passed: false,
                         message: ''
@@ -284,7 +353,7 @@ export class MetaTagValidator {
      * メタタグの抽出
      * @private
      */
-    async _extractMetaTags() {
+    private async _extractMetaTags(): Promise<MetaTags> {
         // 実際の実装では document.head から抽出
         return {
             title: 'BubblePop - 泡割りゲーム',
@@ -298,7 +367,7 @@ export class MetaTagValidator {
      * Open Graphタグの抽出
      * @private
      */
-    async _extractOpenGraphTags() {
+    private async _extractOpenGraphTags(): Promise<OpenGraphTags> {
         return {
             'og:title': 'BubblePop - 泡割りゲーム',
             'og:description': 'HTML5 Canvas を使用したバブルポップゲーム',
@@ -312,7 +381,7 @@ export class MetaTagValidator {
      * Twitter Cardタグの抽出
      * @private
      */
-    async _extractTwitterCardTags() {
+    private async _extractTwitterCardTags(): Promise<TwitterCardTags> {
         return {
             'twitter:card': 'summary_large_image',
             'twitter:title': 'BubblePop - 泡割りゲーム',
@@ -325,7 +394,7 @@ export class MetaTagValidator {
      * ソーシャルメディア画像の抽出
      * @private
      */
-    async _extractSocialMediaImages() {
+    private async _extractSocialMediaImages(): Promise<Record<string, string>> {
         return {
             'Open Graph': `${this.baseUrl}/assets/images/og-image.png`,
             'Twitter Card': `${this.baseUrl}/assets/images/twitter-card.png`,
@@ -337,7 +406,7 @@ export class MetaTagValidator {
      * 画像URLの有効性確認
      * @private
      */
-    _isValidImageUrl(url) {
+    private _isValidImageUrl(url: string): boolean {
         try {
             new URL(url);
             return url.match(/\.(jpg|jpeg|png|webp|gif|svg)$/i) !== null;
@@ -350,7 +419,7 @@ export class MetaTagValidator {
      * 画像最適化の確認
      * @private
      */
-    async _checkImageOptimization(imageUrl) {
+    private async _checkImageOptimization(imageUrl: string): Promise<boolean> {
         // 実際の実装では画像のサイズやフォーマットをチェック
         return imageUrl.includes('optimized') || imageUrl.includes('webp');
     }

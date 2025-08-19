@@ -6,10 +6,44 @@
 import { FaviconManager } from '../FaviconManager.js';
 import { seoLogger } from '../SEOLogger.js';
 
+interface FaviconResult {
+    filename: string;
+    size: string;
+    type: string;
+    category: string;
+    dataUrl: string;
+}
+
+interface FaviconError {
+    filename: string;
+    error: string;
+}
+
+interface GenerationResults {
+    generated: FaviconResult[];
+    errors: FaviconError[];
+}
+
+interface ValidationResult {
+    isValid: boolean;
+    generatedCount: number;
+    issues: string[];
+    warnings: string[];
+}
+
+// Window オブジェクト拡張の型定義
+declare global {
+    interface Window {
+        generateAllFavicons?: () => Promise<GenerationResults>;
+        generateFaviconCategory?: (category: string) => Promise<FaviconResult[]>;
+        generateFaviconPreview?: () => Promise<string>;
+    }
+}
+
 /**
  * ファビコン生成のメイン関数
  */
-async function generateAllFavicons() {
+async function generateAllFavicons(): Promise<GenerationResults> {
     try {
         console.log('Starting favicon generation...');
         
@@ -90,9 +124,9 @@ async function generateAllFavicons() {
 
 /**
  * 特定のファビコンカテゴリのみ生成
- * @param {string} category - standard, apple, android, microsoft, safari, iosLegacy
+ * @param category - standard, apple, android, microsoft, safari, iosLegacy
  */
-async function generateFaviconCategory(category) {
+async function generateFaviconCategory(category: string): Promise<FaviconResult[]> {
     try {
         console.log(`Generating ${category} favicons...`);
         
@@ -121,7 +155,7 @@ async function generateFaviconCategory(category) {
 /**
  * ファビコンプレビュー生成
  */
-async function generateFaviconPreview() {
+async function generateFaviconPreview(): Promise<string> {
     try {
         console.log('Generating favicon preview...');
         
@@ -200,8 +234,8 @@ async function generateFaviconPreview() {
 }
 
 // スクリプトが直接実行された場合
-if (typeof window !== 'undefined' || typeof module !== 'undefined') {
-    // ブラウザまたはNode.js環境での実行
+if (typeof window !== 'undefined') {
+    // ブラウザ環境での実行
     window.generateAllFavicons = generateAllFavicons;
     window.generateFaviconCategory = generateFaviconCategory;
     window.generateFaviconPreview = generateFaviconPreview;

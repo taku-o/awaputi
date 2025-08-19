@@ -3,13 +3,88 @@
  * 
  * 動的なsitemap.xml生成機能を提供
  */
-import { SEOConfig, getBaseUrl, getLocalizedUrl } from './SEOConfig.js';
-import { seoLogger } from './SEOLogger.js';
-import { seoErrorHandler } from './SEOErrorHandler.js';
-import { normalizeUrl, measurePerformance } from './SEOUtils.js';
+import { SEOConfig, getBaseUrl, getLocalizedUrl, LanguageCode } from './SEOConfig';
+import { seoLogger } from './SEOLogger';
+import { seoErrorHandler } from './SEOErrorHandler';
+import { normalizeUrl, measurePerformance } from './SEOUtils';
+
+// URL情報インターフェース
+interface UrlData {
+    loc: string;
+    priority: number;
+    changefreq: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
+    lastmod: string;
+    hreflang?: string;
+}
+
+// 動的URL生成関数型
+type DynamicUrlGenerator = (options?: any) => Promise<UrlData[]>;
+
+// サイトマップ生成オプションインターフェース
+interface SitemapGenerationOptions {
+    forceRegenerate?: boolean;
+    includeAssets?: boolean;
+    includeDynamic?: boolean;
+    [key: string]: any;
+}
+
+// サイトマップサマリーインターフェース
+interface SitemapSummary {
+    totalUrls: number;
+    lastGenerated: Date | null;
+    urlsByPriority: Record<string, number>;
+    urlsByChangeFreq: Record<string, number>;
+    supportedLanguages: number;
+    dynamicGenerators: number;
+}
+
+// サイトマップ検証結果インターフェース
+interface SitemapValidationResult {
+    isValid: boolean;
+    issues: string[];
+    warnings: string[];
+    urlCount: number;
+    duplicateCount: number;
+}
+
+// LocalizationManager インターフェース
+interface LocalizationManager {
+    getCurrentLanguage(): string;
+    t(key: string, defaultValue?: string): string;
+}
+
+// File System Access API拡張インターフェース
+interface ExtendedWindow extends Window {
+    showSaveFilePicker?: (options?: {
+        suggestedName?: string;
+        types?: Array<{
+            description: string;
+            accept: Record<string, string[]>;
+        }>;
+    }) => Promise<FileSystemFileHandle>;
+}
+
+// FileSystemFileHandle インターフェース
+interface FileSystemFileHandle {
+    createWritable(): Promise<FileSystemWritableFileStream>;
+}
+
+// FileSystemWritableFileStream インターフェース
+interface FileSystemWritableFileStream {
+    write(data: BufferSource | Blob | string): Promise<void>;
+    close(): Promise<void>;
+}
 
 export class SitemapGenerator {
-    constructor(localizationManager = null) {
+    private localizationManager: LocalizationManager | null;
+    private baseUrl: string;
+    private urls: Map<string, UrlData>;
+    private staticUrls: UrlData[];
+    private dynamicUrlGenerators: Map<string, DynamicUrlGenerator>;
+    private lastGenerated: Date | null;
+    private hasStatsPages: boolean = false;
+    
+    constructor(localizationManager: LocalizationManager | null = null) {
         this.localizationManager = localizationManager;
         this.baseUrl = getBaseUrl();
         this.urls = new Map();
@@ -22,9 +97,8 @@ export class SitemapGenerator {
     
     /**
      * 初期化処理
-     * @private
      */
-    _initialize() {
+    private _initialize(): void {
         try {
             // 静的URLの登録
             this._registerStaticUrls();
@@ -34,16 +108,14 @@ export class SitemapGenerator {
             
             seoLogger.info('SitemapGenerator initialized successfully');
         } catch (error) {
-            seoErrorHandler.handle(error, 'sitemapGeneratorInit');
+            seoErrorHandler.handle(error as Error, 'sitemapGeneratorInit');
         }
     }
     
     /**
      * サイトマップの生成
-     * @param {Object} options 
-     * @returns {Promise<string>}
      */
-    async generateSitemap(options = {}) {
+    async generateSitemap(options: SitemapGenerationOptions = {}): Promise<string> {
         try {
             const startTime = performance.now();
             
@@ -72,23 +144,23 @@ export class SitemapGenerator {
             
             return xml;
         } catch (error) {
-            return seoErrorHandler.handle(error, 'sitemapGeneration', options);
+            return seoErrorHandler.handle(error as Error, 'sitemapGeneration', options);
         }
     }
     
     /**
      * サイトマップファイルの書き込み
-     * @param {Object} options 
-     * @returns {Promise<void>}
      */
-    async writeSitemapFile(options = {}) {
+    async writeSitemapFile(options: SitemapGenerationOptions = {}): Promise<void> {
         try {
             const xml = await this.generateSitemap(options);
             
+            const extWindow = window as ExtendedWindow;
+            
             // ファイルシステムAPIが利用可能かチェック
-            if (typeof window !== 'undefined' && 'showSaveFilePicker' in window) {
+            if (typeof window !== 'undefined' && extWindow.showSaveFilePicker) {
                 // File System Access API (Chrome等)
-                const fileHandle = await window.showSaveFilePicker({
+                const fileHandle = await extWindow.showSaveFilePicker({
                     suggestedName: 'sitemap.xml',
                     types: [{
                         description: 'XML files',
@@ -117,15 +189,14 @@ export class SitemapGenerator {
                 seoLogger.info('Sitemap file downloaded');
             }
         } catch (error) {
-            seoErrorHandler.handle(error, 'sitemapFileWrite', options);
+            seoErrorHandler.handle(error as Error, 'sitemapFileWrite', options);
         }
     }
     
     /**
      * 静的URLの登録
-     * @private
      */
-    _registerStaticUrls() {
+    private _registerStaticUrls(): void {
         this.staticUrls = [
             {
                 loc: '/',
@@ -161,12 +232,11 @@ export class SitemapGenerator {
     
     /**
      * 動的URL生成関数の登録
-     * @private
      */
-    _registerDynamicGenerators() {
+    private _registerDynamicGenerators(): void {
         // ヘルプページの動的生成
         this.registerDynamicGenerator('helpPages', async () => {
-            const helpPages = [];
+            const helpPages: UrlData[] = [];
             
             // 基本ヘルプページ
             const basicHelp = [
@@ -192,7 +262,7 @@ export class SitemapGenerator {
         
         // ゲーム統計ページ（将来的な実装用）
         this.registerDynamicGenerator('statsPages', async () => {
-            const statsPages = [];
+            const statsPages: UrlData[] = [];
             
             // 統計ページがある場合
             if (this.hasStatsPages) {
@@ -210,18 +280,15 @@ export class SitemapGenerator {
     
     /**
      * 動的URL生成関数の登録
-     * @param {string} name 
-     * @param {Function} generator 
      */
-    registerDynamicGenerator(name, generator) {
+    registerDynamicGenerator(name: string, generator: DynamicUrlGenerator): void {
         this.dynamicUrlGenerators.set(name, generator);
     }
     
     /**
      * 静的URLの追加
-     * @private
      */
-    async _addStaticUrls() {
+    private async _addStaticUrls(): Promise<void> {
         this.staticUrls.forEach(urlData => {
             const fullUrl = normalizeUrl(`${this.baseUrl}${urlData.loc}`);
             this.urls.set(fullUrl, {
@@ -233,9 +300,8 @@ export class SitemapGenerator {
     
     /**
      * 動的URLの追加
-     * @private
      */
-    async _addDynamicUrls(options) {
+    private async _addDynamicUrls(options: SitemapGenerationOptions): Promise<void> {
         for (const [name, generator] of this.dynamicUrlGenerators) {
             try {
                 const urls = await generator(options);
@@ -250,16 +316,15 @@ export class SitemapGenerator {
                     });
                 }
             } catch (error) {
-                seoLogger.error(`Dynamic URL generation failed for ${name}`, error);
+                seoLogger.error(`Dynamic URL generation failed for ${name}`, error as Error);
             }
         }
     }
     
     /**
      * 多言語URLの追加
-     * @private
      */
-    async _addMultilingualUrls() {
+    private async _addMultilingualUrls(): Promise<void> {
         if (!this.localizationManager) {
             return;
         }
@@ -272,7 +337,7 @@ export class SitemapGenerator {
             }
             
             baseUrls.forEach(baseUrl => {
-                const urlData = this.urls.get(baseUrl);
+                const urlData = this.urls.get(baseUrl)!;
                 
                 // 言語固有のURLを生成
                 const path = urlData.loc.replace(this.baseUrl, '');
@@ -290,9 +355,8 @@ export class SitemapGenerator {
     
     /**
      * XMLの生成
-     * @private
      */
-    _generateXML() {
+    private _generateXML(): string {
         let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
         xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"';
         xml += ' xmlns:xhtml="http://www.w3.org/1999/xhtml">\n';
@@ -323,7 +387,7 @@ export class SitemapGenerator {
             
             // hreflang代替リンク
             if (urlData.hreflang) {
-                this._addHreflangLinks(xml, urlData);
+                xml = this._addHreflangLinks(xml, urlData);
             }
             
             xml += '  </url>\n';
@@ -336,9 +400,8 @@ export class SitemapGenerator {
     
     /**
      * hreflangリンクの追加
-     * @private
      */
-    _addHreflangLinks(xml, urlData) {
+    private _addHreflangLinks(xml: string, urlData: UrlData): string {
         const path = urlData.loc.replace(this.baseUrl, '').replace(/^\/[a-z-]+/, '');
         
         SEOConfig.supportedLanguages.forEach(lang => {
@@ -349,13 +412,14 @@ export class SitemapGenerator {
         // x-default
         const defaultUrl = getLocalizedUrl(SEOConfig.defaultLanguage, path);
         xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${this._escapeXml(defaultUrl)}" />\n`;
+        
+        return xml;
     }
     
     /**
      * XMLエスケープ
-     * @private
      */
-    _escapeXml(text) {
+    private _escapeXml(text: string): string {
         return text
             .replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
@@ -366,11 +430,10 @@ export class SitemapGenerator {
     
     /**
      * サイトマップのサマリー取得
-     * @returns {Object}
      */
-    getSummary() {
-        const urlsByPriority = {};
-        const urlsByChangeFreq = {};
+    getSummary(): SitemapSummary {
+        const urlsByPriority: Record<string, number> = {};
+        const urlsByChangeFreq: Record<string, number> = {};
         
         Array.from(this.urls.values()).forEach(urlData => {
             // 優先度別
@@ -394,11 +457,10 @@ export class SitemapGenerator {
     
     /**
      * サイトマップの検証
-     * @returns {Object}
      */
-    validateSitemap() {
-        const issues = [];
-        const warnings = [];
+    validateSitemap(): SitemapValidationResult {
+        const issues: string[] = [];
+        const warnings: string[] = [];
         
         // URL数の制限チェック（50,000URL制限）
         if (this.urls.size > 50000) {
@@ -406,7 +468,7 @@ export class SitemapGenerator {
         }
         
         // 重複URLのチェック
-        const urlCounts = new Map();
+        const urlCounts = new Map<string, number>();
         Array.from(this.urls.keys()).forEach(url => {
             urlCounts.set(url, (urlCounts.get(url) || 0) + 1);
         });
@@ -427,7 +489,7 @@ export class SitemapGenerator {
         });
         
         // 更新頻度の有効性チェック
-        const validChangeFreqs = ['always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'];
+        const validChangeFreqs: string[] = ['always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'];
         Array.from(this.urls.values()).forEach(urlData => {
             if (urlData.changefreq && !validChangeFreqs.includes(urlData.changefreq)) {
                 warnings.push(`Invalid changefreq ${urlData.changefreq} for ${urlData.loc}`);
@@ -450,7 +512,7 @@ export class SitemapGenerator {
     /**
      * リソースのクリーンアップ
      */
-    cleanup() {
+    cleanup(): void {
         this.urls.clear();
         this.dynamicUrlGenerators.clear();
         seoLogger.info('SitemapGenerator cleaned up');

@@ -6,15 +6,151 @@
  * SEOパフォーマンスダッシュボード、自動健全性チェックを提供
  */
 
-import { seoLogger } from './SEOLogger.js';
-import { seoErrorHandler } from './SEOErrorHandler.js';
-import { SEOMonitoringEngine } from './seo-monitor/SEOMonitoringEngine.js';
-import { SocialEngagementAnalyzer } from './seo-monitor/SocialEngagementAnalyzer.js';
-import { SearchConsoleIntegrator } from './seo-monitor/SearchConsoleIntegrator.js';
-import { HealthChecker } from './seo-monitor/HealthChecker.js';
-import { MetaTagAnalyzer } from './seo-monitor/MetaTagAnalyzer.js';
+import { seoLogger } from './SEOLogger';
+import { seoErrorHandler } from './SEOErrorHandler';
+import { SEOMonitoringEngine } from './seo-monitor/SEOMonitoringEngine';
+import { SocialEngagementAnalyzer } from './seo-monitor/SocialEngagementAnalyzer';
+import { SearchConsoleIntegrator } from './seo-monitor/SearchConsoleIntegrator';
+import { HealthChecker } from './seo-monitor/HealthChecker';
+import { MetaTagAnalyzer } from './seo-monitor/MetaTagAnalyzer';
+
+// 監視データインターフェース
+interface MonitoringData {
+    lighthouseScores: LighthouseScore[];
+    coreWebVitals: CoreWebVitalsData[];
+    socialEngagement: SocialEngagementData[];
+    searchConsoleMetrics: SearchConsoleMetrics[];
+    alerts: Alert[];
+    healthChecks: HealthCheckResult[];
+    lighthouse?: LighthouseScore[];
+    lastCheck?: string;
+}
+
+// Lighthouseスコアインターフェース
+interface LighthouseScore {
+    performance: number;
+    accessibility: number;
+    bestPractices: number;
+    seo: number;
+    timestamp: string;
+}
+
+// Core Web Vitalsデータインターフェース
+interface CoreWebVitalsData {
+    LCP: number; // Largest Contentful Paint
+    FID: number; // First Input Delay
+    CLS: number; // Cumulative Layout Shift
+    timestamp: string;
+}
+
+// ソーシャルエンゲージメントデータインターフェース
+interface SocialEngagementData {
+    platform: string;
+    metrics: Record<string, number>;
+    timestamp: string;
+}
+
+// Search Consoleメトリクスインターフェース
+interface SearchConsoleMetrics {
+    impressions: number;
+    clicks: number;
+    position: number;
+    ctr: number;
+    timestamp: string;
+}
+
+// アラートインターフェース
+interface Alert {
+    type: string;
+    severity: 'critical' | 'warning' | 'info';
+    metric?: string;
+    current?: number;
+    threshold?: number;
+    message: string;
+    timestamp: string;
+    metadata?: Record<string, any>;
+}
+
+// ヘルスチェック結果インターフェース
+interface HealthCheckResult {
+    status: 'healthy' | 'warning' | 'critical';
+    checks: Record<string, boolean>;
+    issues: string[];
+    timestamp: string;
+}
+
+// 監視設定インターフェース
+interface MonitoringConfig {
+    monitoringEnabled: boolean;
+    interval: number;
+    lighthouseThreshold: number;
+    performanceThreshold: number;
+    alertsEnabled: boolean;
+    healthCheckInterval: number;
+    includeLighthouse?: boolean;
+    includeCoreWebVitals?: boolean;
+    includeMetaTags?: boolean;
+    includeSocialMedia?: boolean;
+    includeSearchConsole?: boolean;
+    enableAlerts?: boolean;
+}
+
+// 閾値設定インターフェース
+interface Thresholds {
+    lighthouse: {
+        performance: number;
+        accessibility: number;
+        bestPractices: number;
+        seo: number;
+    };
+    coreWebVitals: {
+        LCP: number;
+        FID: number;
+        CLS: number;
+    };
+    metaTags: {
+        titleLength: { min: number; max: number };
+        descriptionLength: { min: number; max: number };
+    };
+}
+
+// 監視統計インターフェース
+interface MonitoringStats {
+    totalChecks: number;
+    totalAlerts: number;
+    alertsByType: Record<string, number>;
+    alertsBySeverity: Record<string, number>;
+    averageScores: Record<string, number>;
+    isMonitoring: boolean;
+    lastCheck?: string;
+}
+
+// レポートインターフェース
+interface MonitoringReport {
+    summary: MonitoringStats;
+    data: MonitoringData & { isMonitoring: boolean; thresholds: Thresholds };
+    generatedAt: string;
+}
+
+// アラートコールバック型
+type AlertCallback = (alert: Alert) => void;
 
 export class SEOMonitor {
+    private monitoringData: MonitoringData;
+    private monitoringInterval: ReturnType<typeof setInterval> | null;
+    private config: MonitoringConfig;
+    private alertCallbacks: AlertCallback[];
+    private isMonitoring: boolean;
+    private lastHealthCheck: HealthCheckResult | null;
+    private thresholds: Thresholds;
+    
+    // 専門化されたコンポーネント
+    private monitoringEngine: SEOMonitoringEngine;
+    private socialAnalyzer: SocialEngagementAnalyzer;
+    private searchConsoleIntegrator: SearchConsoleIntegrator;
+    private healthChecker: HealthChecker;
+    private metaTagAnalyzer: MetaTagAnalyzer;
+    
     constructor() {
         this.monitoringData = {
             lighthouseScores: [],
@@ -68,9 +204,8 @@ export class SEOMonitor {
     
     /**
      * 初期化処理
-     * @private
      */
-    _initialize() {
+    private _initialize(): void {
         try {
             // パフォーマンス監視の設定
             if (typeof window !== 'undefined' && 'PerformanceObserver' in window) {
@@ -90,14 +225,14 @@ export class SEOMonitor {
             
             seoLogger.info('SEOMonitor initialized successfully');
         } catch (error) {
-            seoErrorHandler.handle(error, 'seoMonitorInit');
+            seoErrorHandler.handle(error as Error, 'seoMonitorInit');
         }
     }
     
     /**
      * SEO monitoring システムを開始
      */
-    async startMonitoring(options = {}) {
+    async startMonitoring(options: Partial<MonitoringConfig> = {}): Promise<void> {
         try {
             this.config = { ...this.config, ...options };
             
@@ -127,7 +262,7 @@ export class SEOMonitor {
             seoLogger.info('SEO monitoring system started successfully');
 
         } catch (error) {
-            seoErrorHandler.handle(error, 'startMonitoring');
+            seoErrorHandler.handle(error as Error, 'startMonitoring');
             throw error;
         }
     }
@@ -135,10 +270,10 @@ export class SEOMonitor {
     /**
      * 監視の停止
      */
-    stopMonitoring() {
+    stopMonitoring(): void {
         try {
             if (!this.isMonitoring) {
-                seoLogger.warning('SEO monitoring is not running');
+                seoLogger.warn('SEO monitoring is not running');
                 return;
             }
             
@@ -151,14 +286,14 @@ export class SEOMonitor {
             seoLogger.info('SEO monitoring stopped');
             
         } catch (error) {
-            seoErrorHandler.handle(error, 'stopMonitoring');
+            seoErrorHandler.handle(error as Error, 'stopMonitoring');
         }
     }
     
     /**
      * 監視の一時停止
      */
-    pauseMonitoring() {
+    pauseMonitoring(): void {
         if (this.isMonitoring) {
             this.isMonitoring = false;
             seoLogger.info('SEO monitoring paused');
@@ -168,7 +303,7 @@ export class SEOMonitor {
     /**
      * 監視の再開
      */
-    resumeMonitoring() {
+    resumeMonitoring(): void {
         if (!this.isMonitoring && this.monitoringInterval) {
             this.isMonitoring = true;
             seoLogger.info('SEO monitoring resumed');
@@ -178,7 +313,7 @@ export class SEOMonitor {
     /**
      * 監視サイクルの実行
      */
-    async performMonitoringCycle() {
+    async performMonitoringCycle(): Promise<void> {
         try {
             seoLogger.debug('Starting monitoring cycle');
 
@@ -203,28 +338,28 @@ export class SEOMonitor {
             seoLogger.debug('Monitoring cycle completed');
 
         } catch (error) {
-            seoLogger.error('Error in monitoring cycle', error);
-            this.createAlert('monitoring_cycle_error', 'critical', error.message);
+            seoLogger.error('Error in monitoring cycle', error as Error);
+            this.createAlert('monitoring_cycle_error', 'critical', (error as Error).message);
         }
     }
     
     /**
      * 監視チェックの実行（レガシー互換性）
-     * @private
      */
-    async _performMonitoringCheck(options) {
+    private async _performMonitoringCheck(options: MonitoringConfig): Promise<void> {
         try {
             const checkResults = {
                 timestamp: new Date().toISOString(),
-                lighthouse: null,
-                coreWebVitals: null,
-                metaTags: null,
-                alerts: []
+                lighthouse: null as LighthouseScore | null,
+                coreWebVitals: null as CoreWebVitalsData | null,
+                metaTags: null as any,
+                alerts: [] as Alert[]
             };
             
             // Lighthouseスコア監視
             if (options.includeLighthouse) {
                 checkResults.lighthouse = await this.monitoringEngine.checkLighthouseScore();
+                this.monitoringData.lighthouse = this.monitoringData.lighthouse || [];
                 this.monitoringData.lighthouse.push(checkResults.lighthouse);
                 
                 if (options.enableAlerts) {
@@ -269,26 +404,26 @@ export class SEOMonitor {
             });
             
         } catch (error) {
-            seoErrorHandler.handle(error, '_performMonitoringCheck', options);
+            seoErrorHandler.handle(error as Error, '_performMonitoringCheck', options);
         }
     }
     
     /**
      * Lighthouseアラートのチェック
-     * @private
      */
-    _checkLighthouseAlerts(lighthouseScore, alerts) {
+    private _checkLighthouseAlerts(lighthouseScore: LighthouseScore, alerts: Alert[]): void {
         if (!lighthouseScore) return;
         
         Object.entries(this.thresholds.lighthouse).forEach(([metric, threshold]) => {
-            if (lighthouseScore[metric] < threshold) {
+            const score = lighthouseScore[metric as keyof LighthouseScore] as number;
+            if (score < threshold) {
                 alerts.push({
                     type: 'lighthouse',
                     severity: 'warning',
                     metric: metric,
-                    current: lighthouseScore[metric],
+                    current: score,
                     threshold: threshold,
-                    message: `Lighthouse ${metric} score (${lighthouseScore[metric]}) is below threshold (${threshold})`,
+                    message: `Lighthouse ${metric} score (${score}) is below threshold (${threshold})`,
                     timestamp: new Date().toISOString()
                 });
             }
@@ -297,21 +432,21 @@ export class SEOMonitor {
     
     /**
      * Core Web Vitalsアラートのチェック
-     * @private
      */
-    _checkCoreWebVitalsAlerts(coreWebVitals, alerts) {
+    private _checkCoreWebVitalsAlerts(coreWebVitals: CoreWebVitalsData, alerts: Alert[]): void {
         if (!coreWebVitals) return;
         
         Object.entries(this.thresholds.coreWebVitals).forEach(([metric, threshold]) => {
-            if (coreWebVitals[metric] > threshold) {
-                const severity = coreWebVitals[metric] > threshold * 1.5 ? 'critical' : 'warning';
+            const value = coreWebVitals[metric as keyof CoreWebVitalsData];
+            if (value > threshold) {
+                const severity: 'critical' | 'warning' = value > threshold * 1.5 ? 'critical' : 'warning';
                 alerts.push({
                     type: 'coreWebVitals',
                     severity: severity,
                     metric: metric,
-                    current: coreWebVitals[metric],
+                    current: value,
                     threshold: threshold,
-                    message: `Core Web Vital ${metric} (${coreWebVitals[metric]}) exceeds threshold (${threshold})`,
+                    message: `Core Web Vital ${metric} (${value}) exceeds threshold (${threshold})`,
                     timestamp: new Date().toISOString()
                 });
             }
@@ -320,9 +455,8 @@ export class SEOMonitor {
     
     /**
      * アラートの処理
-     * @private
      */
-    async _processAlerts(alerts) {
+    private async _processAlerts(alerts: Alert[]): Promise<void> {
         try {
             for (const alert of alerts) {
                 // アラートコールバックの実行
@@ -330,28 +464,27 @@ export class SEOMonitor {
                     try {
                         callback(alert);
                     } catch (error) {
-                        seoLogger.error('Alert callback error', error);
+                        seoLogger.error('Alert callback error', error as Error);
                     }
                 });
                 
                 // アラートのログ出力
-                const logLevel = alert.severity === 'critical' ? 'error' : 'warning';
-                seoLogger[logLevel](`SEO Alert: ${alert.message}`, alert);
+                const logLevel = alert.severity === 'critical' ? 'error' : 'warn';
+                (seoLogger as any)[logLevel](`SEO Alert: ${alert.message}`, alert);
             }
             
         } catch (error) {
-            seoErrorHandler.handle(error, '_processAlerts', alerts);
+            seoErrorHandler.handle(error as Error, '_processAlerts', alerts);
         }
     }
     
     /**
      * データ保持期間の制限
-     * @private
      */
-    _limitDataRetention() {
+    private _limitDataRetention(): void {
         const maxEntries = 100;
         
-        if (this.monitoringData.lighthouse.length > maxEntries) {
+        if (this.monitoringData.lighthouse && this.monitoringData.lighthouse.length > maxEntries) {
             this.monitoringData.lighthouse = this.monitoringData.lighthouse.slice(-maxEntries);
         }
         
@@ -369,35 +502,35 @@ export class SEOMonitor {
     /**
      * Lighthouse SEOスコア監視
      */
-    async monitorLighthouseScore() {
+    async monitorLighthouseScore(): Promise<any> {
         return await this.monitoringEngine.monitorLighthouseScore();
     }
     
     /**
      * Core Web Vitals追跡
      */
-    async trackCoreWebVitals() {
+    async trackCoreWebVitals(): Promise<any> {
         return await this.monitoringEngine.trackCoreWebVitals();
     }
     
     /**
      * ソーシャルメディア分析
      */
-    async analyzeSocialEngagement() {
+    async analyzeSocialEngagement(): Promise<any> {
         return await this.socialAnalyzer.analyzeSocialEngagement();
     }
     
     /**
      * Google Search Console統合準備
      */
-    async prepareSearchConsoleIntegration() {
+    async prepareSearchConsoleIntegration(): Promise<any> {
         return await this.searchConsoleIntegrator.prepareSearchConsoleIntegration();
     }
     
     /**
      * 健全性チェックの実行
      */
-    async runHealthCheck() {
+    async runHealthCheck(): Promise<HealthCheckResult> {
         const result = await this.healthChecker.runHealthCheck();
         this.lastHealthCheck = result;
         return result;
@@ -406,22 +539,21 @@ export class SEOMonitor {
     /**
      * SEOパフォーマンスダッシュボードデータの生成
      */
-    generateDashboardData() {
+    generateDashboardData(): any {
         return this.healthChecker.generateDashboardData();
     }
     
     /**
      * アラートの作成
      */
-    createAlert(type, severity, message, metadata = {}) {
+    createAlert(type: string, severity: 'critical' | 'warning' | 'info', message: string, metadata: Record<string, any> = {}): Alert {
         return this.healthChecker.createAlert(type, severity, message, metadata);
     }
     
     /**
      * アラートコールバックの追加
-     * @param {Function} callback - アラートコールバック関数
      */
-    addAlertCallback(callback) {
+    addAlertCallback(callback: AlertCallback): void {
         if (typeof callback === 'function') {
             this.alertCallbacks.push(callback);
             seoLogger.info('Alert callback added');
@@ -432,9 +564,8 @@ export class SEOMonitor {
     
     /**
      * アラートコールバックの削除
-     * @param {Function} callback - アラートコールバック関数
      */
-    removeAlertCallback(callback) {
+    removeAlertCallback(callback: AlertCallback): void {
         const index = this.alertCallbacks.indexOf(callback);
         if (index !== -1) {
             this.alertCallbacks.splice(index, 1);
@@ -444,22 +575,20 @@ export class SEOMonitor {
     
     /**
      * 閾値の設定
-     * @param {Object} newThresholds - 新しい閾値設定
      */
-    setThresholds(newThresholds) {
+    setThresholds(newThresholds: Partial<Thresholds>): void {
         try {
             this.thresholds = { ...this.thresholds, ...newThresholds };
             seoLogger.info('SEO monitoring thresholds updated', this.thresholds);
         } catch (error) {
-            seoErrorHandler.handle(error, 'setThresholds', newThresholds);
+            seoErrorHandler.handle(error as Error, 'setThresholds', newThresholds);
         }
     }
     
     /**
      * 監視データの取得
-     * @returns {Object}
      */
-    getMonitoringData() {
+    getMonitoringData(): MonitoringData & { isMonitoring: boolean; thresholds: Thresholds } {
         return {
             ...this.monitoringData,
             isMonitoring: this.isMonitoring,
@@ -469,11 +598,10 @@ export class SEOMonitor {
     
     /**
      * 監視統計の取得
-     * @returns {Object}
      */
-    getMonitoringStats() {
-        const stats = {
-            totalChecks: this.monitoringData.lighthouse.length,
+    getMonitoringStats(): MonitoringStats {
+        const stats: MonitoringStats = {
+            totalChecks: this.monitoringData.lighthouse?.length || 0,
             totalAlerts: this.monitoringData.alerts.length,
             alertsByType: {},
             alertsBySeverity: {},
@@ -489,17 +617,17 @@ export class SEOMonitor {
         });
         
         // 平均スコア計算
-        if (this.monitoringData.lighthouse.length > 0) {
+        if (this.monitoringData.lighthouse && this.monitoringData.lighthouse.length > 0) {
             const totals = { performance: 0, accessibility: 0, bestPractices: 0, seo: 0 };
             
             this.monitoringData.lighthouse.forEach(score => {
                 Object.keys(totals).forEach(key => {
-                    totals[key] += score[key] || 0;
+                    totals[key as keyof typeof totals] += score[key as keyof LighthouseScore] || 0;
                 });
             });
             
             Object.keys(totals).forEach(key => {
-                stats.averageScores[key] = Math.round(totals[key] / this.monitoringData.lighthouse.length);
+                stats.averageScores[key] = Math.round(totals[key as keyof typeof totals] / this.monitoringData.lighthouse!.length);
             });
         }
         
@@ -508,14 +636,12 @@ export class SEOMonitor {
     
     /**
      * 監視レポートの生成
-     * @param {string} format - レポート形式 ('json', 'html')
-     * @returns {string}
      */
-    generateReport(format = 'json') {
+    generateReport(format: 'json' | 'html' = 'json'): string {
         const data = this.getMonitoringData();
         const stats = this.getMonitoringStats();
         
-        const report = {
+        const report: MonitoringReport = {
             summary: stats,
             data: data,
             generatedAt: new Date().toISOString()
@@ -535,9 +661,8 @@ export class SEOMonitor {
     
     /**
      * HTMLレポートの生成
-     * @private
      */
-    _generateHTMLReport(report) {
+    private _generateHTMLReport(report: MonitoringReport): string {
         return `
 <!DOCTYPE html>
 <html>
@@ -591,13 +716,9 @@ export class SEOMonitor {
     /**
      * リソースのクリーンアップ
      */
-    cleanup() {
+    cleanup(): void {
         this.stopMonitoring();
-        if (this.alertCallbacks.clear) {
-            this.alertCallbacks.clear();
-        } else {
-            this.alertCallbacks.length = 0; // Array fallback
-        }
+        this.alertCallbacks.length = 0;
         this.monitoringData = {
             lighthouseScores: [],
             coreWebVitals: [],
@@ -617,9 +738,9 @@ export class SEOMonitor {
 }
 
 // シングルトンインスタンス
-let seoMonitorInstance = null;
+let seoMonitorInstance: SEOMonitor | null = null;
 
-export function getSEOMonitor() {
+export function getSEOMonitor(): SEOMonitor {
     if (!seoMonitorInstance) {
         seoMonitorInstance = new SEOMonitor();
     }

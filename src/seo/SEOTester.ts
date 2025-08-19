@@ -18,7 +18,7 @@
  * - Multi-format reporting (HTML, JSON, CSV)
  * 
  * **Usage Examples**:
- * ```javascript
+ * ```typescript
  * const seoTester = new SEOTester();
  * await seoTester.initialize();
  * 
@@ -26,7 +26,7 @@
  * const results = await seoTester.runComprehensiveTest();
  * 
  * // Generate HTML report  
- * await seoTester.exportResults('html', 'seo-report.html');
+ * await seoTester.exportResults(results, 'html');
  * 
  * // Validate specific meta tags
  * const metaResults = await seoTester.validateMetaTags();
@@ -45,18 +45,147 @@
  * Refactored: Phase F.4 - Main Controller Pattern
  */
 
-import { SEOConfig, getBaseUrl } from '../SEOConfig.js';
-import { seoLogger } from '../SEOLogger.js';
-import { seoErrorHandler } from '../SEOErrorHandler.js';
-import { measurePerformance } from '../SEOUtils.js';
+import { SEOConfig, getBaseUrl } from './SEOConfig';
+import { seoLogger } from './SEOLogger';
+import { seoErrorHandler } from './SEOErrorHandler';
+import { measurePerformance } from './SEOUtils';
 
 // Import sub-components
-import { MetaTagValidator } from './MetaTagValidator.js';
-import { StructuredDataValidator } from './StructuredDataValidator.js';
-import { PerformanceValidator } from './PerformanceValidator.js';
-import { SEOReportGenerator } from './SEOReportGenerator.js';
+import { MetaTagValidator } from './testing/MetaTagValidator';
+import { StructuredDataValidator } from './testing/StructuredDataValidator';
+import { PerformanceValidator } from './testing/PerformanceValidator';
+import { SEOReportGenerator } from './testing/SEOReportGenerator';
+
+// テストオプションインターフェース
+interface ComprehensiveTestOptions {
+    includeMetaTags?: boolean;
+    includeStructuredData?: boolean;
+    includeSocialMedia?: boolean;
+    includePerformance?: boolean;
+    includeAccessibility?: boolean;
+    includeSitemap?: boolean;
+    includeRobots?: boolean;
+}
+
+// 検証ルールインターフェース
+interface ValidationRule {
+    [key: string]: any;
+}
+
+interface MetaTagValidationRule extends ValidationRule {
+    required: string[];
+    titleLength: { min: number; max: number };
+    descriptionLength: { min: number; max: number };
+    keywordsCount: { max: number };
+}
+
+interface OpenGraphValidationRule extends ValidationRule {
+    required: string[];
+    imageMinSize: { width: number; height: number };
+    titleLength: { max: number };
+    descriptionLength: { max: number };
+}
+
+interface TwitterCardValidationRule extends ValidationRule {
+    required: string[];
+    cardTypes: string[];
+    titleLength: { max: number };
+    descriptionLength: { max: number };
+}
+
+interface StructuredDataValidationRule extends ValidationRule {
+    required: string[];
+    allowedContexts: string[];
+    videoGameProperties: string[];
+}
+
+interface HreflangValidationRule extends ValidationRule {
+    requiredLanguages: string[];
+    requiresXDefault: boolean;
+    validLanguageCodes: RegExp;
+}
+
+// パフォーマンスメトリクスインターフェース
+interface PerformanceMetrics {
+    testExecutionTime: number;
+    validationErrors: number;
+    validationWarnings: number;
+    totalTests: number;
+    passedTests: number;
+}
+
+// テスト結果インターフェース
+interface TestResult {
+    category: string;
+    tests?: TestCase[];
+    passed: number;
+    failed: number;
+    warnings: number;
+    score?: number;
+    details?: any;
+}
+
+interface TestCase {
+    name: string;
+    status: 'passed' | 'failed' | 'warning';
+    message: string;
+    details?: any;
+}
+
+// 集約結果インターフェース
+interface AggregatedTestResults {
+    summary: {
+        totalTests: number;
+        passedTests: number;
+        failedTests: number;
+        warnings: number;
+    };
+    categories: Record<string, TestResult>;
+    overallScore: number;
+    timestamp: string;
+    executionTime?: number;
+}
+
+// システム状態インターフェース
+interface SystemStatus {
+    initialized: boolean;
+    baseUrl: string;
+    components: {
+        metaValidator: 'active' | 'inactive';
+        structuredDataValidator: 'active' | 'inactive';
+        performanceValidator: 'active' | 'inactive';
+        reportGenerator: 'active' | 'inactive';
+    };
+    validationRulesCount: number;
+    performanceMetrics: PerformanceMetrics;
+    testResultsCount: number;
+}
+
+// システム統計インターフェース
+interface SystemStatistics {
+    totalTestsRun: number;
+    totalPassedTests: number;
+    averageExecutionTime: number;
+    validationRulesConfigured: number;
+    lastTestTimestamp: number | null;
+    componentsActive: number;
+}
+
+// レポート形式タイプ
+type ReportFormat = 'json' | 'html' | 'csv';
 
 export class SEOTester {
+    private baseUrl: string;
+    private testResults: Map<string, TestResult>;
+    private validationRules: Map<string, ValidationRule>;
+    private performanceMetrics: PerformanceMetrics;
+    
+    // Sub-components
+    private metaValidator: MetaTagValidator;
+    private structuredDataValidator: StructuredDataValidator;
+    private performanceValidator: PerformanceValidator;
+    private reportGenerator: SEOReportGenerator;
+    
     constructor() {
         this.baseUrl = getBaseUrl();
         this.testResults = new Map();
@@ -82,16 +211,15 @@ export class SEOTester {
     
     /**
      * 検証ルールの初期化
-     * @private
      */
-    _initializeValidationRules() {
+    private _initializeValidationRules(): void {
         // メタタグ検証ルール
         this.validationRules.set('metaTags', {
             required: ['title', 'description', 'charset'],
             titleLength: { min: 10, max: 60 },
             descriptionLength: { min: 50, max: 160 },
             keywordsCount: { max: 10 }
-        });
+        } as MetaTagValidationRule);
         
         // Open Graph検証ルール
         this.validationRules.set('openGraph', {
@@ -99,7 +227,7 @@ export class SEOTester {
             imageMinSize: { width: 1200, height: 630 },
             titleLength: { max: 95 },
             descriptionLength: { max: 297 }
-        });
+        } as OpenGraphValidationRule);
         
         // Twitter Card検証ルール
         this.validationRules.set('twitterCard', {
@@ -107,21 +235,21 @@ export class SEOTester {
             cardTypes: ['summary', 'summary_large_image', 'app', 'player'],
             titleLength: { max: 70 },
             descriptionLength: { max: 200 }
-        });
+        } as TwitterCardValidationRule);
         
         // 構造化データ検証ルール
         this.validationRules.set('structuredData', {
             required: ['@context', '@type', 'name', 'description'],
             allowedContexts: ['https://schema.org', 'http://schema.org'],
             videoGameProperties: ['genre', 'gamePlatform', 'operatingSystem', 'applicationCategory']
-        });
+        } as StructuredDataValidationRule);
         
         // hreflang検証ルール
         this.validationRules.set('hreflang', {
             requiredLanguages: SEOConfig.supportedLanguages,
             requiresXDefault: true,
             validLanguageCodes: /^[a-z]{2}(-[A-Z]{2})?$/
-        });
+        } as HreflangValidationRule);
         
         seoLogger.info('SEOTester validation rules initialized');
     }
@@ -132,10 +260,8 @@ export class SEOTester {
     
     /**
      * 包括的SEOテストの実行
-     * @param {Object} options - テストオプション
-     * @returns {Promise<Object>}
      */
-    async runComprehensiveTest(options = {}) {
+    async runComprehensiveTest(options: ComprehensiveTestOptions = {}): Promise<AggregatedTestResults> {
         try {
             const {
                 includeMetaTags = true,
@@ -148,7 +274,7 @@ export class SEOTester {
             } = options;
             
             const startTime = performance.now();
-            const testSuite = [];
+            const testSuite: Promise<TestResult>[] = [];
             
             seoLogger.info('Starting comprehensive SEO test suite');
             
@@ -198,15 +324,15 @@ export class SEOTester {
             aggregatedResults.executionTime = endTime - startTime;
             
             this.performanceMetrics.testExecutionTime = aggregatedResults.executionTime;
-            this.performanceMetrics.totalTests = aggregatedResults.totalTests;
-            this.performanceMetrics.passedTests = aggregatedResults.passedTests;
+            this.performanceMetrics.totalTests = aggregatedResults.summary.totalTests;
+            this.performanceMetrics.passedTests = aggregatedResults.summary.passedTests;
             
             seoLogger.info(`SEO test suite completed in ${aggregatedResults.executionTime.toFixed(2)}ms`);
             
             return aggregatedResults;
             
         } catch (error) {
-            return seoErrorHandler.handle(error, 'runComprehensiveTest', options);
+            return seoErrorHandler.handle(error as Error, 'runComprehensiveTest', options);
         }
     }
     
@@ -216,33 +342,29 @@ export class SEOTester {
     
     /**
      * メタタグの検証（MetaTagValidatorに委譲）
-     * @returns {Promise<Object>}
      */
-    async validateMetaTags() {
+    async validateMetaTags(): Promise<TestResult> {
         return this.metaValidator.validateMetaTags();
     }
     
     /**
      * Open Graphタグの検証（MetaTagValidatorに委譲）
-     * @returns {Promise<Object>}
      */
-    async validateOpenGraphTags() {
+    async validateOpenGraphTags(): Promise<TestResult> {
         return this.metaValidator.validateOpenGraphTags();
     }
     
     /**
      * Twitter Cardタグの検証（MetaTagValidatorに委譲）
-     * @returns {Promise<Object>}
      */
-    async validateTwitterCardTags() {
+    async validateTwitterCardTags(): Promise<TestResult> {
         return this.metaValidator.validateTwitterCardTags();
     }
     
     /**
      * ソーシャルメディア最適化の検証（MetaTagValidatorに委譲）
-     * @returns {Promise<Object>}
      */
-    async validateSocialMediaOptimization() {
+    async validateSocialMediaOptimization(): Promise<TestResult> {
         return this.metaValidator.validateSocialMediaOptimization();
     }
     
@@ -252,25 +374,22 @@ export class SEOTester {
     
     /**
      * 構造化データの検証（StructuredDataValidatorに委譲）
-     * @returns {Promise<Object>}
      */
-    async validateStructuredData() {
+    async validateStructuredData(): Promise<TestResult> {
         return this.structuredDataValidator.validateStructuredData();
     }
     
     /**
      * JSON-LD検証とschema.org準拠チェック（StructuredDataValidatorに委譲）
-     * @returns {Promise<Object>}
      */
-    async validateJsonLdCompliance() {
+    async validateJsonLdCompliance(): Promise<TestResult> {
         return this.structuredDataValidator.validateJsonLdCompliance();
     }
     
     /**
      * Rich Snippetテスト実行（StructuredDataValidatorに委譲）
-     * @returns {Promise<Object>}
      */
-    async testRichSnippets() {
+    async testRichSnippets(): Promise<TestResult> {
         return this.structuredDataValidator.testRichSnippets();
     }
     
@@ -280,41 +399,36 @@ export class SEOTester {
     
     /**
      * パフォーマンス最適化の検証（PerformanceValidatorに委譲）
-     * @returns {Promise<Object>}
      */
-    async validatePerformanceOptimization() {
+    async validatePerformanceOptimization(): Promise<TestResult> {
         return this.performanceValidator.validatePerformanceOptimization();
     }
     
     /**
      * アクセシビリティ準拠の検証（PerformanceValidatorに委譲）
-     * @returns {Promise<Object>}
      */
-    async validateAccessibilityCompliance() {
+    async validateAccessibilityCompliance(): Promise<TestResult> {
         return this.performanceValidator.validateAccessibilityCompliance();
     }
     
     /**
      * Core Web Vitalsの追跡（PerformanceValidatorに委譲）
-     * @returns {Promise<Object>}
      */
-    async trackCoreWebVitals() {
+    async trackCoreWebVitals(): Promise<TestResult> {
         return this.performanceValidator.trackCoreWebVitals();
     }
     
     /**
      * サイトマップの検証（PerformanceValidatorに委譲）
-     * @returns {Promise<Object>}
      */
-    async validateSitemap() {
+    async validateSitemap(): Promise<TestResult> {
         return this.performanceValidator.validateSitemap();
     }
     
     /**
      * robots.txtの検証（PerformanceValidatorに委譲）
-     * @returns {Promise<Object>}
      */
-    async validateRobotsTxt() {
+    async validateRobotsTxt(): Promise<TestResult> {
         return this.performanceValidator.validateRobotsTxt();
     }
     
@@ -324,38 +438,29 @@ export class SEOTester {
     
     /**
      * テスト結果のエクスポート（SEOReportGeneratorに委譲）
-     * @param {Object} results - テスト結果
-     * @param {string} format - エクスポート形式 ('json', 'html', 'csv')
-     * @returns {string}
      */
-    exportResults(results, format = 'json') {
+    exportResults(results: TestResult | AggregatedTestResults, format: ReportFormat = 'json'): string {
         return this.reportGenerator.exportResults(results, format);
     }
     
     /**
      * Lighthouseスコア監視（SEOReportGeneratorに委譲）
-     * @returns {Promise<Object>}
      */
-    async monitorLighthouseScore() {
+    async monitorLighthouseScore(): Promise<TestResult> {
         return this.reportGenerator.monitorLighthouseScore();
     }
     
     /**
      * 詳細レポートの生成（SEOReportGeneratorに委譲）
-     * @param {Object} results - テスト結果
-     * @param {Object} options - レポートオプション
-     * @returns {Object}
      */
-    generateDetailedReport(results, options = {}) {
+    generateDetailedReport(results: TestResult | AggregatedTestResults, options: Record<string, any> = {}): Record<string, any> {
         return this.reportGenerator.generateDetailedReport(results, options);
     }
     
     /**
      * レポートの可視化データ生成（SEOReportGeneratorに委譲）
-     * @param {Object} results - テスト結果
-     * @returns {Object}
      */
-    generateVisualizationData(results) {
+    generateVisualizationData(results: TestResult | AggregatedTestResults): Record<string, any> {
         return this.reportGenerator.generateVisualizationData(results);
     }
     
@@ -365,9 +470,8 @@ export class SEOTester {
     
     /**
      * システム状態の取得
-     * @returns {Object}
      */
-    getStatus() {
+    getStatus(): SystemStatus {
         return {
             initialized: true,
             baseUrl: this.baseUrl,
@@ -385,9 +489,8 @@ export class SEOTester {
     
     /**
      * システム統計の取得
-     * @returns {Object}
      */
-    getStatistics() {
+    getStatistics(): SystemStatistics {
         return {
             totalTestsRun: this.performanceMetrics.totalTests,
             totalPassedTests: this.performanceMetrics.passedTests,
@@ -404,10 +507,9 @@ export class SEOTester {
     
     /**
      * テスト結果の集約
-     * @private
      */
-    _aggregateTestResults(results) {
-        const aggregated = {
+    private _aggregateTestResults(results: PromiseSettledResult<TestResult>[]): AggregatedTestResults {
+        const aggregated: AggregatedTestResults = {
             summary: {
                 totalTests: 0,
                 passedTests: 0,
@@ -448,7 +550,7 @@ export class SEOTester {
     /**
      * リソースのクリーンアップ
      */
-    cleanup() {
+    cleanup(): void {
         this.testResults.clear();
         this.performanceMetrics = {
             testExecutionTime: 0,
@@ -464,11 +566,43 @@ export class SEOTester {
     /**
      * システムの再初期化
      */
-    reinitialize() {
+    reinitialize(): void {
         this.cleanup();
         this._initializeValidationRules();
         
         // Sub-components are already initialized in constructor
         console.log('SEOTester reinitialized');
+    }
+    
+    // ========================================
+    // Getter Methods for Validation Rules (for sub-components)
+    // ========================================
+    
+    /**
+     * 検証ルールの取得（サブコンポーネント用）
+     */
+    getValidationRule(ruleType: string): ValidationRule | undefined {
+        return this.validationRules.get(ruleType);
+    }
+    
+    /**
+     * 検証ルールの設定（サブコンポーネント用）
+     */
+    setValidationRule(ruleType: string, rule: ValidationRule): void {
+        this.validationRules.set(ruleType, rule);
+    }
+    
+    /**
+     * パフォーマンスメトリクスの更新（サブコンポーネント用）
+     */
+    updatePerformanceMetrics(updates: Partial<PerformanceMetrics>): void {
+        this.performanceMetrics = { ...this.performanceMetrics, ...updates };
+    }
+    
+    /**
+     * テスト結果の保存（サブコンポーネント用）
+     */
+    saveTestResult(key: string, result: TestResult): void {
+        this.testResults.set(key, result);
     }
 }

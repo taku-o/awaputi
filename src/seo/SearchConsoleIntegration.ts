@@ -4,10 +4,152 @@
  * Google Search Console統合準備、設定ガイド、認証準備機能を提供
  */
 
-import { seoLogger } from './SEOLogger.js';
-import { seoErrorHandler } from './SEOErrorHandler.js';
+import { seoLogger } from './SEOLogger';
+import { seoErrorHandler } from './SEOErrorHandler';
+
+// 認証方法インターフェース
+interface VerificationMethod {
+    name: string;
+    description: string;
+    difficulty: 'easy' | 'medium' | 'hard';
+    setup: (param?: string) => VerificationSetupInstructions;
+}
+
+// 認証設定手順インターフェース
+interface VerificationSetupInstructions {
+    method: string;
+    steps: Array<{
+        step: number;
+        action: string;
+        description?: string;
+        code?: string;
+        location?: string;
+        record?: {
+            type: string;
+            name: string;
+            value: string;
+        };
+    }>;
+    verificationUrl: string;
+    estimated_time: string;
+    note?: string;
+    advantage?: string;
+    requirements?: string;
+    currentStatus?: string;
+}
+
+// 統合ステータスインターフェース
+interface IntegrationStatus {
+    verified: boolean;
+    verificationMethod: string | null;
+    sitemapSubmitted: boolean;
+    dataCollection: boolean;
+    lastCheck: number | null;
+}
+
+// 準備状況チェック結果インターフェース
+interface ReadinessCheckResult {
+    timestamp: number;
+    ready: boolean;
+    issues: string[];
+    recommendations: string[];
+    checklist: {
+        sitemap?: {
+            exists: boolean;
+            status?: number;
+            lastModified?: string | null;
+            size?: string | null;
+            error?: string;
+        };
+        robotsTxt?: {
+            exists: boolean;
+            status?: number;
+            content?: string | null;
+            hasSitemapReference?: boolean;
+            error?: string;
+        };
+        metaTags?: {
+            found: string[];
+            missing: string[];
+            total: number;
+        };
+        structuredData?: {
+            hasValidData: boolean;
+            validCount: number;
+            errorCount: number;
+            types: string[];
+            errors: Array<{ index: number; error: string }>;
+        };
+        https?: boolean;
+        indexablePages?: Array<{
+            url: string;
+            title: string;
+            priority: number;
+            changefreq: string;
+        }>;
+    };
+    error?: string;
+}
+
+// 推奨認証方法インターフェース
+interface RecommendedVerificationMethod {
+    method: string;
+    reason: string;
+    priority: number;
+    setup: VerificationMethod;
+}
+
+// サイトマップ送信準備インターフェース
+interface SitemapSubmissionPreparation {
+    title: string;
+    steps: Array<{
+        step: number;
+        action: string;
+        description: string;
+        checkUrl?: string;
+        submitUrl?: string;
+    }>;
+    automaticSubmission: {
+        available: boolean;
+        description: string;
+        implementation: string;
+    };
+}
+
+// API統合準備インターフェース
+interface ApiIntegrationPreparation {
+    title: string;
+    overview: string;
+    steps: Array<{
+        step: number;
+        action: string;
+        description?: string;
+        url?: string;
+    }>;
+    scopes: string[];
+    documentation: string;
+}
+
+// 監視設定インターフェース
+interface MonitoringSetup {
+    title: string;
+    recommendations: Array<{
+        category: string;
+        items: string[];
+    }>;
+}
+
+// Window拡張インターフェース
+interface ExtendedWindow extends Window {
+    gtag?: any;
+    ga?: any;
+    dataLayer?: any[];
+}
 
 export class SearchConsoleIntegration {
+    private verificationMethods: Record<string, VerificationMethod>;
+    private integrationStatus: IntegrationStatus;
+    
     constructor() {
         this.verificationMethods = {
             htmlFile: {
@@ -48,9 +190,9 @@ export class SearchConsoleIntegration {
     /**
      * Search Console統合の準備状況チェック
      */
-    async checkIntegrationReadiness() {
+    async checkIntegrationReadiness(): Promise<ReadinessCheckResult> {
         try {
-            const readiness = {
+            const readiness: ReadinessCheckResult = {
                 timestamp: Date.now(),
                 ready: true,
                 issues: [],
@@ -109,11 +251,14 @@ export class SearchConsoleIntegration {
             return readiness;
 
         } catch (error) {
-            seoErrorHandler.handle(error, 'checkIntegrationReadiness');
+            seoErrorHandler.handle(error as Error, 'checkIntegrationReadiness');
             return {
                 timestamp: Date.now(),
                 ready: false,
-                error: error.message
+                issues: [],
+                recommendations: [],
+                checklist: {},
+                error: (error as Error).message
             };
         }
     }
@@ -121,8 +266,8 @@ export class SearchConsoleIntegration {
     /**
      * 認証方法の推奨を取得
      */
-    getRecommendedVerificationMethod() {
-        const recommendations = [];
+    getRecommendedVerificationMethod(): RecommendedVerificationMethod[] {
+        const recommendations: RecommendedVerificationMethod[] = [];
 
         // Google Analytics が既にある場合
         if (this.hasGoogleAnalytics()) {
@@ -166,8 +311,8 @@ export class SearchConsoleIntegration {
     /**
      * HTMLタグ認証の設定
      */
-    setupHtmlTagVerification(verificationCode) {
-        const instructions = {
+    setupHtmlTagVerification(verificationCode?: string): VerificationSetupInstructions {
+        const instructions: VerificationSetupInstructions = {
             method: 'HTML Tag Verification',
             steps: [
                 {
@@ -207,7 +352,7 @@ export class SearchConsoleIntegration {
     /**
      * HTMLファイル認証の設定
      */
-    setupHtmlFileVerification(fileName) {
+    setupHtmlFileVerification(fileName?: string): VerificationSetupInstructions {
         return {
             method: 'HTML File Verification',
             steps: [
@@ -242,7 +387,7 @@ export class SearchConsoleIntegration {
     /**
      * DNS認証の設定
      */
-    setupDnsVerification(txtRecord) {
+    setupDnsVerification(txtRecord?: string): VerificationSetupInstructions {
         return {
             method: 'DNS Record Verification',
             steps: [
@@ -281,7 +426,7 @@ export class SearchConsoleIntegration {
     /**
      * Google Analytics認証の設定
      */
-    setupAnalyticsVerification() {
+    setupAnalyticsVerification(): VerificationSetupInstructions {
         return {
             method: 'Google Analytics Verification',
             steps: [
@@ -311,7 +456,7 @@ export class SearchConsoleIntegration {
     /**
      * サイトマップ送信の準備
      */
-    prepareSitemapSubmission() {
+    prepareSitemapSubmission(): SitemapSubmissionPreparation {
         return {
             title: 'サイトマップ送信の準備',
             steps: [
@@ -344,7 +489,7 @@ export class SearchConsoleIntegration {
     /**
      * API統合の準備
      */
-    prepareApiIntegration() {
+    prepareApiIntegration(): ApiIntegrationPreparation {
         return {
             title: 'Search Console API統合の準備',
             overview: 'Search Console APIを使用してプログラムでデータを取得',
@@ -381,7 +526,7 @@ export class SearchConsoleIntegration {
     /**
      * 統合後の監視設定
      */
-    setupMonitoring() {
+    setupMonitoring(): MonitoringSetup {
         return {
             title: 'Search Console統合後の監視設定',
             recommendations: [
@@ -418,7 +563,7 @@ export class SearchConsoleIntegration {
 
     // ユーティリティメソッド
 
-    async checkSitemapStatus() {
+    private async checkSitemapStatus() {
         try {
             const response = await fetch('/sitemap.xml');
             return {
@@ -428,11 +573,11 @@ export class SearchConsoleIntegration {
                 size: response.headers.get('content-length')
             };
         } catch (error) {
-            return { exists: false, error: error.message };
+            return { exists: false, error: (error as Error).message };
         }
     }
 
-    async checkRobotsTxtStatus() {
+    private async checkRobotsTxtStatus() {
         try {
             const response = await fetch('/robots.txt');
             const content = response.ok ? await response.text() : null;
@@ -443,19 +588,19 @@ export class SearchConsoleIntegration {
                 hasSitemapReference: content ? content.includes('Sitemap:') : false
             };
         } catch (error) {
-            return { exists: false, error: error.message };
+            return { exists: false, error: (error as Error).message };
         }
     }
 
-    checkRequiredMetaTags() {
+    private checkRequiredMetaTags() {
         const required = ['title', 'description'];
         const optional = ['keywords', 'author', 'robots'];
-        const found = [];
-        const missing = [];
+        const found: string[] = [];
+        const missing: string[] = [];
 
         // Title tag
         const titleTag = document.querySelector('title');
-        if (titleTag && titleTag.textContent.trim()) {
+        if (titleTag && titleTag.textContent?.trim()) {
             found.push('title');
         } else {
             missing.push('title');
@@ -474,14 +619,14 @@ export class SearchConsoleIntegration {
         return { found, missing, total: found.length };
     }
 
-    checkStructuredDataStatus() {
+    private checkStructuredDataStatus() {
         const scripts = document.querySelectorAll('script[type="application/ld+json"]');
-        const validData = [];
-        const errors = [];
+        const validData: Array<{ type: string; context: string }> = [];
+        const errors: Array<{ index: number; error: string }> = [];
 
         scripts.forEach((script, index) => {
             try {
-                const data = JSON.parse(script.textContent);
+                const data = JSON.parse(script.textContent || '{}');
                 if (data['@context'] && data['@type']) {
                     validData.push({
                         type: data['@type'],
@@ -491,7 +636,7 @@ export class SearchConsoleIntegration {
             } catch (error) {
                 errors.push({
                     index: index,
-                    error: error.message
+                    error: (error as Error).message
                 });
             }
         });
@@ -505,11 +650,11 @@ export class SearchConsoleIntegration {
         };
     }
 
-    checkHttpsStatus() {
+    private checkHttpsStatus(): boolean {
         return location.protocol === 'https:';
     }
 
-    getIndexablePages() {
+    private getIndexablePages() {
         return [
             {
                 url: '/',
@@ -526,16 +671,17 @@ export class SearchConsoleIntegration {
         ];
     }
 
-    hasGoogleAnalytics() {
-        return !!(window.gtag || window.ga || window.dataLayer);
+    private hasGoogleAnalytics(): boolean {
+        const extWindow = window as ExtendedWindow;
+        return !!(extWindow.gtag || extWindow.ga || extWindow.dataLayer);
     }
 
-    hasDnsAccess() {
+    private hasDnsAccess(): boolean {
         // この判定は実際の実装では外部設定やユーザー入力に基づく
         return false; // デフォルトでは DNS アクセスなしと仮定
     }
 
-    addVerificationMetaTag(verificationCode) {
+    private addVerificationMetaTag(verificationCode: string): void {
         // 既存のタグを確認
         let existingTag = document.querySelector('meta[name="google-site-verification"]');
         
@@ -554,7 +700,7 @@ export class SearchConsoleIntegration {
     /**
      * 統合ステータスの更新
      */
-    updateIntegrationStatus(status) {
+    updateIntegrationStatus(status: Partial<IntegrationStatus>): void {
         this.integrationStatus = {
             ...this.integrationStatus,
             ...status,
@@ -567,15 +713,15 @@ export class SearchConsoleIntegration {
     /**
      * 統合ステータスの取得
      */
-    getIntegrationStatus() {
+    getIntegrationStatus(): IntegrationStatus {
         return { ...this.integrationStatus };
     }
 }
 
 // シングルトンインスタンス
-let searchConsoleIntegrationInstance = null;
+let searchConsoleIntegrationInstance: SearchConsoleIntegration | null = null;
 
-export function getSearchConsoleIntegration() {
+export function getSearchConsoleIntegration(): SearchConsoleIntegration {
     if (!searchConsoleIntegrationInstance) {
         searchConsoleIntegrationInstance = new SearchConsoleIntegration();
     }

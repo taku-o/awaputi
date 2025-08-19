@@ -3,10 +3,55 @@
  * 
  * SEO操作中のエラーを適切に処理し、フォールバック機能を提供
  */
-import { SEOConfig } from './SEOConfig.js';
-import { seoLogger } from './SEOLogger.js';
+import { SEOConfig } from './SEOConfig';
+import { seoLogger } from './SEOLogger';
+
+// エラーハンドラー型
+type ErrorHandler = (error: Error, context: string, data: ErrorHandlerData) => Promise<any> | any;
+
+// フォールバック戦略型
+type FallbackStrategy = (data: any) => any;
+
+// エラーハンドラーデータ型
+interface ErrorHandlerData {
+    cached?: any;
+    retriesExhausted?: boolean;
+    [key: string]: any;
+}
+
+// リトライ設定インターフェース
+interface RetryConfig {
+    maxRetries: number;
+    retryDelay: number;
+    backoffMultiplier: number;
+}
+
+// エラー統計インターフェース
+interface ErrorStatistics {
+    errorCount: number;
+    errorTypes: Record<string, number>;
+    recoveryRate: number;
+    commonErrors: Record<string, number>;
+    lastError?: {
+        timestamp: string;
+        message: string;
+        context: string;
+    };
+}
+
+// ネットワークエラークラス
+class NetworkError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = 'NetworkError';
+    }
+}
 
 export class SEOErrorHandler {
+    private errorHandlers: Map<string, ErrorHandler>;
+    private fallbackStrategies: Map<string, FallbackStrategy>;
+    private retryConfig: RetryConfig;
+    
     constructor() {
         this.errorHandlers = new Map();
         this.fallbackStrategies = new Map();
@@ -22,30 +67,22 @@ export class SEOErrorHandler {
     
     /**
      * エラーハンドラーの登録
-     * @param {string} errorType 
-     * @param {Function} handler 
      */
-    registerHandler(errorType, handler) {
+    registerHandler(errorType: string, handler: ErrorHandler): void {
         this.errorHandlers.set(errorType, handler);
     }
     
     /**
      * フォールバック戦略の登録
-     * @param {string} component 
-     * @param {Function} strategy 
      */
-    registerFallback(component, strategy) {
+    registerFallback(component: string, strategy: FallbackStrategy): void {
         this.fallbackStrategies.set(component, strategy);
     }
     
     /**
      * エラーの処理
-     * @param {Error} error 
-     * @param {string} context 
-     * @param {Object} data 
-     * @returns {any}
      */
-    async handle(error, context, data = {}) {
+    async handle(error: Error, context: string, data: ErrorHandlerData = {}): Promise<any> {
         seoLogger.error(`Error in ${context}`, error);
         
         // エラータイプ別のハンドラー実行
@@ -56,7 +93,7 @@ export class SEOErrorHandler {
             try {
                 return await handler(error, context, data);
             } catch (handlerError) {
-                seoLogger.error('Error handler failed', handlerError);
+                seoLogger.error('Error handler failed', handlerError as Error);
             }
         }
         
@@ -66,14 +103,14 @@ export class SEOErrorHandler {
     
     /**
      * リトライ付き操作の実行
-     * @param {Function} operation 
-     * @param {string} context 
-     * @param {Object} options 
-     * @returns {any}
      */
-    async executeWithRetry(operation, context, options = {}) {
+    async executeWithRetry<T>(
+        operation: () => Promise<T>, 
+        context: string, 
+        options: Partial<RetryConfig> = {}
+    ): Promise<T | null> {
         const config = { ...this.retryConfig, ...options };
-        let lastError;
+        let lastError: Error | null = null;
         
         for (let attempt = 0; attempt <= config.maxRetries; attempt++) {
             try {
@@ -85,13 +122,13 @@ export class SEOErrorHandler {
                 
                 return result;
             } catch (error) {
-                lastError = error;
+                lastError = error as Error;
                 
                 if (attempt < config.maxRetries) {
                     const delay = config.retryDelay * Math.pow(config.backoffMultiplier, attempt);
                     seoLogger.warn(`${context} failed, retrying in ${delay}ms`, {
                         attempt: attempt + 1,
-                        error: error.message
+                        error: (error as Error).message
                     });
                     
                     await this._delay(delay);
@@ -100,14 +137,13 @@ export class SEOErrorHandler {
         }
         
         // 全てのリトライが失敗
-        return this.handle(lastError, context, { retriesExhausted: true });
+        return this.handle(lastError!, context, { retriesExhausted: true });
     }
     
     /**
      * フォールバックの実行
-     * @private
      */
-    _executeFallback(context, data) {
+    private _executeFallback(context: string, data: any): any {
         const fallback = this.fallbackStrategies.get(context) || 
                         this.fallbackStrategies.get('default');
         
@@ -122,17 +158,16 @@ export class SEOErrorHandler {
     
     /**
      * デフォルトエラーハンドラーの登録
-     * @private
      */
-    _registerDefaultHandlers() {
+    private _registerDefaultHandlers(): void {
         // ネットワークエラー
-        this.registerHandler('NetworkError', async (error, context, data) => {
+        this.registerHandler('NetworkError', async (error: Error, context: string, data: ErrorHandlerData) => {
             seoLogger.warn('Network error detected, using cached data if available');
             return data.cached || null;
         });
         
         // 型エラー
-        this.registerHandler('TypeError', (error, context, data) => {
+        this.registerHandler('TypeError', (error: Error, context: string, data: ErrorHandlerData) => {
             seoLogger.error('Type error in SEO operation', {
                 context,
                 message: error.message,
@@ -142,7 +177,7 @@ export class SEOErrorHandler {
         });
         
         // 参照エラー
-        this.registerHandler('ReferenceError', (error, context, data) => {
+        this.registerHandler('ReferenceError', (error: Error, context: string, data: ErrorHandlerData) => {
             seoLogger.error('Reference error in SEO operation', {
                 context,
                 message: error.message
@@ -151,7 +186,7 @@ export class SEOErrorHandler {
         });
         
         // デフォルトハンドラー
-        this.registerHandler('default', (error, context, data) => {
+        this.registerHandler('default', (error: Error, context: string, data: ErrorHandlerData) => {
             seoLogger.error('Unhandled error in SEO operation', {
                 context,
                 errorType: error.constructor.name,
@@ -163,9 +198,8 @@ export class SEOErrorHandler {
     
     /**
      * デフォルトフォールバック戦略の登録
-     * @private
      */
-    _registerDefaultFallbacks() {
+    private _registerDefaultFallbacks(): void {
         // メタタグフォールバック
         this.registerFallback('metaTags', () => {
             return {
@@ -186,7 +220,7 @@ export class SEOErrorHandler {
         });
         
         // ソーシャル画像フォールバック
-        this.registerFallback('socialImage', (data) => {
+        this.registerFallback('socialImage', () => {
             const fallbackPath = SEOConfig.socialImages.fallback;
             return `${SEOConfig.baseUrl}${fallbackPath}`;
         });
@@ -213,9 +247,8 @@ export class SEOErrorHandler {
     
     /**
      * エラー統計の取得
-     * @returns {Object}
      */
-    getErrorStatistics() {
+    getErrorStatistics(): ErrorStatistics {
         const errorSummary = seoLogger.getErrorSummary();
         
         return {
@@ -227,15 +260,13 @@ export class SEOErrorHandler {
     
     /**
      * リカバリー率の計算
-     * @private
      */
-    _calculateRecoveryRate() {
+    private _calculateRecoveryRate(): number {
         const logs = seoLogger.export();
         const errors = logs.filter(log => log.level === 'error');
         const recoveries = logs.filter(log => 
             log.level === 'info' && 
-            log.message.includes('fallback') || 
-            log.message.includes('succeeded after')
+            (log.message.includes('fallback') || log.message.includes('succeeded after'))
         );
         
         if (errors.length === 0) return 100;
@@ -245,9 +276,8 @@ export class SEOErrorHandler {
     
     /**
      * 頻出エラーの取得
-     * @private
      */
-    _getCommonErrors() {
+    private _getCommonErrors(): Record<string, number> {
         const errorSummary = seoLogger.getErrorSummary();
         const sorted = Object.entries(errorSummary.errorTypes)
             .sort((a, b) => b[1] - a[1])
@@ -258,9 +288,8 @@ export class SEOErrorHandler {
     
     /**
      * 遅延処理
-     * @private
      */
-    _delay(ms) {
+    private _delay(ms: number): Promise<void> {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 }

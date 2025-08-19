@@ -3,15 +3,41 @@
  * 
  * SEO関連の共通処理とヘルパー関数
  */
-import { SEOConfig } from './SEOConfig.js';
-import { seoLogger } from './SEOLogger.js';
+import { SEOConfig, LanguageCode } from './SEOConfig';
+import { seoLogger } from './SEOLogger';
+
+// 画像最適化オプションインターフェース
+interface ImageOptimizationOptions {
+    width?: number;
+    height?: number;
+    format?: 'webp' | 'png' | 'jpg' | 'jpeg';
+    quality?: number;
+}
+
+// スキーマプロパティインターフェース
+interface SchemaProperty {
+    type?: string;
+    default?: any;
+    required?: boolean;
+}
+
+// スキーマインターフェース
+interface Schema {
+    required?: string[];
+    properties?: Record<string, SchemaProperty>;
+}
+
+// スキーマ検証結果インターフェース
+interface ValidationResult<T = any> {
+    isValid: boolean;
+    errors: string[];
+    data: T;
+}
 
 /**
  * URLの正規化
- * @param {string} url 
- * @returns {string}
  */
-export function normalizeUrl(url) {
+export function normalizeUrl(url: string): string {
     try {
         const urlObj = new URL(url);
         
@@ -39,11 +65,8 @@ export function normalizeUrl(url) {
 
 /**
  * メタタグの安全な作成
- * @param {string} property 
- * @param {string} content 
- * @returns {HTMLMetaElement|null}
  */
-export function createMetaTag(property, content) {
+export function createMetaTag(property: string, content: string): HTMLMetaElement | null {
     if (!property || !content) {
         seoLogger.warn('Invalid meta tag parameters', { property, content });
         return null;
@@ -64,10 +87,8 @@ export function createMetaTag(property, content) {
 
 /**
  * メタコンテンツのサニタイズ
- * @param {string} content 
- * @returns {string}
  */
-export function sanitizeMetaContent(content) {
+export function sanitizeMetaContent(content: string | number | boolean): string {
     if (typeof content !== 'string') {
         return String(content);
     }
@@ -82,18 +103,16 @@ export function sanitizeMetaContent(content) {
 
 /**
  * 言語コードの検証と正規化
- * @param {string} lang 
- * @returns {string}
  */
-export function normalizeLanguageCode(lang) {
+export function normalizeLanguageCode(lang: string): LanguageCode {
     if (!lang) return SEOConfig.defaultLanguage;
     
     // 言語コードの正規化
     const normalized = lang.toLowerCase().replace('_', '-');
     
     // サポート言語の確認
-    if (SEOConfig.supportedLanguages.includes(normalized)) {
-        return normalized;
+    if (SEOConfig.supportedLanguages.includes(normalized as LanguageCode)) {
+        return normalized as LanguageCode;
     }
     
     // 部分一致の確認（例: zh → zh-CN）
@@ -111,10 +130,8 @@ export function normalizeLanguageCode(lang) {
 
 /**
  * 構造化データのJSON-LD生成
- * @param {Object} data 
- * @returns {string}
  */
-export function generateJsonLd(data) {
+export function generateJsonLd(data: any): string {
     try {
         // 循環参照のチェック
         JSON.stringify(data);
@@ -135,11 +152,8 @@ export function generateJsonLd(data) {
 
 /**
  * 画像URLの最適化
- * @param {string} imagePath 
- * @param {Object} options 
- * @returns {string}
  */
-export function optimizeImageUrl(imagePath, options = {}) {
+export function optimizeImageUrl(imagePath: string, options: ImageOptimizationOptions = {}): string {
     const { width, height, format = 'webp', quality = 85 } = options;
     
     // 絶対URLの場合はそのまま返す
@@ -148,15 +162,15 @@ export function optimizeImageUrl(imagePath, options = {}) {
     }
     
     // 相対パスを絶対URLに変換
-    const baseUrl = SEOConfig.baseUrl || window.location.origin;
+    const baseUrl = SEOConfig.baseUrl || (typeof window !== 'undefined' ? window.location.origin : '');
     const fullUrl = `${baseUrl}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
     
     // 画像最適化サービスのURLパラメータ追加（将来的な実装用）
     const params = new URLSearchParams();
-    if (width) params.append('w', width);
-    if (height) params.append('h', height);
+    if (width) params.append('w', String(width));
+    if (height) params.append('h', String(height));
     if (format !== 'webp') params.append('f', format);
-    if (quality !== 85) params.append('q', quality);
+    if (quality !== 85) params.append('q', String(quality));
     
     const queryString = params.toString();
     return queryString ? `${fullUrl}?${queryString}` : fullUrl;
@@ -164,12 +178,8 @@ export function optimizeImageUrl(imagePath, options = {}) {
 
 /**
  * テキストの切り詰め
- * @param {string} text 
- * @param {number} maxLength 
- * @param {string} suffix 
- * @returns {string}
  */
-export function truncateText(text, maxLength, suffix = '...') {
+export function truncateText(text: string, maxLength: number, suffix: string = '...'): string {
     if (!text || text.length <= maxLength) {
         return text;
     }
@@ -187,9 +197,8 @@ export function truncateText(text, maxLength, suffix = '...') {
 
 /**
  * robots.txtの内容生成
- * @returns {string}
  */
-export function generateRobotsTxt() {
+export function generateRobotsTxt(): string {
     const { robots } = SEOConfig;
     let content = `User-agent: ${robots.userAgent}\n`;
     
@@ -219,11 +228,8 @@ export function generateRobotsTxt() {
 
 /**
  * キャッシュキーの生成
- * @param {string} prefix 
- * @param {Object} params 
- * @returns {string}
  */
-export function generateCacheKey(prefix, params = {}) {
+export function generateCacheKey(prefix: string, params: Record<string, any> = {}): string {
     const sortedParams = Object.keys(params)
         .sort()
         .map(key => `${key}:${params[key]}`)
@@ -234,34 +240,40 @@ export function generateCacheKey(prefix, params = {}) {
 
 /**
  * デバウンス関数
- * @param {Function} func 
- * @param {number} wait 
- * @returns {Function}
  */
-export function debounce(func, wait) {
-    let timeout;
+export function debounce<T extends (...args: any[]) => any>(
+    func: T,
+    wait: number
+): (...args: Parameters<T>) => void {
+    let timeout: ReturnType<typeof setTimeout> | null = null;
     
-    return function executedFunction(...args) {
+    return function executedFunction(...args: Parameters<T>): void {
         const later = () => {
-            clearTimeout(timeout);
+            if (timeout) {
+                clearTimeout(timeout);
+            }
             func(...args);
         };
         
-        clearTimeout(timeout);
+        if (timeout) {
+            clearTimeout(timeout);
+        }
         timeout = setTimeout(later, wait);
     };
 }
 
 /**
  * パフォーマンス計測デコレータ
- * @param {string} operation 
- * @returns {Function}
  */
-export function measurePerformance(operation) {
-    return function(target, propertyKey, descriptor) {
+export function measurePerformance(operation: string) {
+    return function(
+        target: any,
+        propertyKey: string,
+        descriptor: PropertyDescriptor
+    ): PropertyDescriptor {
         const originalMethod = descriptor.value;
         
-        descriptor.value = async function(...args) {
+        descriptor.value = async function(...args: any[]) {
             const start = performance.now();
             
             try {
@@ -281,7 +293,7 @@ export function measurePerformance(operation) {
                 seoLogger.performance(
                     `${operation}.${propertyKey} (failed)`,
                     duration,
-                    { error: error.message }
+                    { error: (error as Error).message }
                 );
                 
                 throw error;
@@ -294,13 +306,10 @@ export function measurePerformance(operation) {
 
 /**
  * スキーマ検証
- * @param {Object} data 
- * @param {Object} schema 
- * @returns {Object}
  */
-export function validateSchema(data, schema) {
-    const errors = [];
-    const validated = {};
+export function validateSchema<T = any>(data: any, schema: Schema): ValidationResult<T> {
+    const errors: string[] = [];
+    const validated: any = {};
     
     // 必須フィールドのチェック
     if (schema.required) {
@@ -313,7 +322,7 @@ export function validateSchema(data, schema) {
     
     // フィールドの検証とコピー
     Object.keys(schema.properties || {}).forEach(field => {
-        const fieldSchema = schema.properties[field];
+        const fieldSchema = schema.properties![field];
         const value = data[field];
         
         if (value !== undefined) {
@@ -331,6 +340,6 @@ export function validateSchema(data, schema) {
     return {
         isValid: errors.length === 0,
         errors,
-        data: validated
+        data: validated as T
     };
 }

@@ -3,8 +3,77 @@
  * 
  * Lighthouse SEOスコア監視、Core Web Vitals追跡、監視サイクル実行を専門的に管理します
  */
+
+interface SEOConfig {
+    [key: string]: any;
+}
+
+interface CoreWebVitals {
+    timestamp: number;
+    lcp: number | null;
+    fid: number | null;
+    cls: number | null;
+    fcp: number | null;
+    ttfb: number | null;
+    LCP?: number;
+    FID?: number;
+    CLS?: number;
+}
+
+interface LighthouseScore {
+    timestamp: number;
+    score: number;
+    details: SEOScoreDetails;
+}
+
+interface MonitoringData {
+    coreWebVitals: CoreWebVitals[];
+    lighthouseScores: LighthouseScore[];
+    searchConsoleMetrics: any[];
+}
+
+interface SEOScoreDetails {
+    metaTags: Record<string, string>;
+    structuredData: StructuredDataResult[];
+    images: ImageAnalysis;
+    performance: PerformanceMetrics;
+    timestamp: number;
+}
+
+interface StructuredDataResult {
+    valid: boolean;
+    type?: string;
+    data?: any;
+    error?: string;
+}
+
+interface ImageAnalysis {
+    total: number;
+    withAlt: number;
+    withoutAlt: number;
+}
+
+interface PerformanceMetrics {
+    domContentLoaded?: number;
+    loadComplete?: number;
+    ttfb?: number;
+}
+
+interface NavigationEntry extends PerformanceEntry {
+    domContentLoadedEventStart: number;
+    domContentLoadedEventEnd: number;
+    loadEventStart: number;
+    loadEventEnd: number;
+    requestStart: number;
+    responseStart: number;
+}
+
 export class SEOMonitoringEngine {
-    constructor(config, monitoringData) {
+    private config: SEOConfig;
+    private monitoringData: MonitoringData;
+    private observerInstances: PerformanceObserver[];
+
+    constructor(config: SEOConfig, monitoringData: MonitoringData) {
         this.config = config;
         this.monitoringData = monitoringData;
         this.observerInstances = [];
@@ -14,7 +83,11 @@ export class SEOMonitoringEngine {
      * Performance Observerの設定
      * @private
      */
-    setupPerformanceObserver() {
+    setupPerformanceObserver(): void {
+        if (typeof window === 'undefined' || !('PerformanceObserver' in window)) {
+            return;
+        }
+        
         try {
             // Largest Contentful Paint
             const lcpObserver = new PerformanceObserver((list) => {
@@ -29,7 +102,7 @@ export class SEOMonitoringEngine {
             const fidObserver = new PerformanceObserver((list) => {
                 const entries = list.getEntries();
                 entries.forEach(entry => {
-                    this.recordFID(entry.processingStart - entry.startTime);
+                    this.recordFID((entry as any).processingStart - entry.startTime);
                 });
             });
             fidObserver.observe({ entryTypes: ['first-input'] });
@@ -39,8 +112,9 @@ export class SEOMonitoringEngine {
             const clsObserver = new PerformanceObserver((list) => {
                 const entries = list.getEntries();
                 entries.forEach(entry => {
-                    if (!entry.hadRecentInput) {
-                        this.recordCLS(entry.value);
+                    const layoutShiftEntry = entry as any;
+                    if (!layoutShiftEntry.hadRecentInput) {
+                        this.recordCLS(layoutShiftEntry.value);
                     }
                 });
             });
@@ -55,7 +129,7 @@ export class SEOMonitoringEngine {
     /**
      * LCPの測定
      */
-    async measureLCP() {
+    async measureLCP(): Promise<number> {
         return new Promise((resolve) => {
             setTimeout(() => resolve(Math.random() * 2500), 100);
         });
@@ -64,7 +138,7 @@ export class SEOMonitoringEngine {
     /**
      * FIDの測定
      */
-    async measureFID() {
+    async measureFID(): Promise<number> {
         return new Promise((resolve) => {
             setTimeout(() => resolve(Math.random() * 100), 100);
         });
@@ -73,7 +147,7 @@ export class SEOMonitoringEngine {
     /**
      * CLSの測定
      */
-    async measureCLS() {
+    async measureCLS(): Promise<number> {
         return new Promise((resolve) => {
             setTimeout(() => resolve(Math.random() * 0.1), 100);
         });
@@ -82,28 +156,28 @@ export class SEOMonitoringEngine {
     /**
      * LCPの記録
      */
-    recordLCP(value) {
+    private recordLCP(value: number): void {
         console.log('LCP recorded', value);
     }
     
     /**
      * FIDの記録
      */
-    recordFID(value) {
+    private recordFID(value: number): void {
         console.log('FID recorded', value);
     }
     
     /**
      * CLSの記録
      */
-    recordCLS(value) {
+    private recordCLS(value: number): void {
         console.log('CLS recorded', value);
     }
     
     /**
      * Lighthouseスコアのチェック
      */
-    async checkLighthouseScore() {
+    async checkLighthouseScore(): Promise<{ performance: number; accessibility: number; bestPractices: number; seo: number; timestamp: string } | null> {
         try {
             const score = {
                 performance: this.generateRealisticScore(85, 100),
@@ -124,7 +198,7 @@ export class SEOMonitoringEngine {
     /**
      * Core Web Vitalsのチェック
      */
-    async checkCoreWebVitals() {
+    async checkCoreWebVitals(): Promise<{ LCP: number; FID: number; CLS: number; timestamp: string } | null> {
         try {
             const vitals = {
                 LCP: this.generateRealisticMetric(1000, 3000),
@@ -154,14 +228,14 @@ export class SEOMonitoringEngine {
     /**
      * Lighthouse SEOスコア監視
      */
-    async monitorLighthouseScore() {
+    async monitorLighthouseScore(): Promise<{ seo: number; error?: string }> {
         try {
-            if ('PerformanceObserver' in window) {
+            if (typeof window !== 'undefined' && 'PerformanceObserver' in window) {
                 const observer = new PerformanceObserver((list) => {
                     const entries = list.getEntries();
                     entries.forEach(entry => {
                         if (entry.entryType === 'navigation') {
-                            this.recordNavigationMetrics(entry);
+                            this.recordNavigationMetrics(entry as NavigationEntry);
                         }
                     });
                 });
@@ -186,16 +260,23 @@ export class SEOMonitoringEngine {
 
         } catch (error) {
             console.error('Failed to monitor Lighthouse score', error);
-            return { seo: 0, error: error.message };
+            return { 
+                seo: 0, 
+                error: error instanceof Error ? error.message : 'Unknown error' 
+            };
         }
     }
     
     /**
      * SEOスコアの簡易計算
      */
-    async calculateSEOScore() {
+    private async calculateSEOScore(): Promise<number> {
+        if (typeof document === 'undefined') {
+            return 85; // Default score for server-side
+        }
+        
         let score = 100;
-        const penalties = [];
+        const penalties: string[] = [];
 
         try {
             // メタタグチェック
@@ -204,7 +285,7 @@ export class SEOMonitoringEngine {
                 const tag = document.querySelector(`meta[${tagName.includes(':') ? 'property' : 'name'}="${tagName}"]`) 
                     || (tagName === 'title' ? document.querySelector('title') : null);
                 
-                if (!tag || !tag.content) {
+                if (!tag || !(tag as HTMLMetaElement).content) {
                     score -= 10;
                     penalties.push(`Missing ${tagName}`);
                 }
@@ -250,9 +331,9 @@ export class SEOMonitoringEngine {
     /**
      * Core Web Vitals追跡
      */
-    async trackCoreWebVitals() {
+    async trackCoreWebVitals(): Promise<CoreWebVitals | null> {
         try {
-            const vitals = {
+            const vitals: CoreWebVitals = {
                 timestamp: Date.now(),
                 lcp: null,
                 fid: null,
@@ -288,7 +369,7 @@ export class SEOMonitoringEngine {
     /**
      * ナビゲーションメトリクスの記録
      */
-    recordNavigationMetrics(entry) {
+    private recordNavigationMetrics(entry: NavigationEntry): void {
         console.log('Navigation metrics recorded', {
             domContentLoaded: entry.domContentLoadedEventEnd - entry.domContentLoadedEventStart,
             loadComplete: entry.loadEventEnd - entry.loadEventStart
@@ -298,7 +379,7 @@ export class SEOMonitoringEngine {
     /**
      * SEOスコア詳細の取得
      */
-    async getSEOScoreDetails() {
+    private async getSEOScoreDetails(): Promise<SEOScoreDetails> {
         return {
             metaTags: this.analyzeMetaTags(),
             structuredData: this.validateStructuredData(),
@@ -311,13 +392,17 @@ export class SEOMonitoringEngine {
     /**
      * メタタグの分析
      */
-    analyzeMetaTags() {
-        const tags = {};
+    private analyzeMetaTags(): Record<string, string> {
+        if (typeof document === 'undefined') {
+            return {};
+        }
+        
+        const tags: Record<string, string> = {};
         const metaTags = document.querySelectorAll('meta');
         metaTags.forEach(tag => {
             const name = tag.getAttribute('name') || tag.getAttribute('property');
             if (name) {
-                tags[name] = tag.getAttribute('content');
+                tags[name] = tag.getAttribute('content') || '';
             }
         });
         return tags;
@@ -326,16 +411,23 @@ export class SEOMonitoringEngine {
     /**
      * 構造化データの検証
      */
-    validateStructuredData() {
+    private validateStructuredData(): StructuredDataResult[] {
+        if (typeof document === 'undefined') {
+            return [];
+        }
+        
         const scripts = document.querySelectorAll('script[type="application/ld+json"]');
-        const results = [];
+        const results: StructuredDataResult[] = [];
         
         scripts.forEach(script => {
             try {
-                const data = JSON.parse(script.textContent);
+                const data = JSON.parse(script.textContent || '');
                 results.push({ valid: true, type: data['@type'], data });
             } catch (error) {
-                results.push({ valid: false, error: error.message });
+                results.push({ 
+                    valid: false, 
+                    error: error instanceof Error ? error.message : 'Unknown error' 
+                });
             }
         });
         
@@ -345,7 +437,11 @@ export class SEOMonitoringEngine {
     /**
      * 画像の分析
      */
-    analyzeImages() {
+    private analyzeImages(): ImageAnalysis {
+        if (typeof document === 'undefined') {
+            return { total: 0, withAlt: 0, withoutAlt: 0 };
+        }
+        
         const images = document.querySelectorAll('img');
         return {
             total: images.length,
@@ -357,22 +453,27 @@ export class SEOMonitoringEngine {
     /**
      * パフォーマンスメトリクスの取得
      */
-    async getPerformanceMetrics() {
-        if (performance.getEntriesByType) {
-            const navigation = performance.getEntriesByType('navigation')[0];
-            return {
-                domContentLoaded: navigation?.domContentLoadedEventEnd - navigation?.domContentLoadedEventStart,
-                loadComplete: navigation?.loadEventEnd - navigation?.loadEventStart,
-                ttfb: navigation?.responseStart - navigation?.requestStart
-            };
+    private async getPerformanceMetrics(): Promise<PerformanceMetrics> {
+        if (typeof performance === 'undefined' || !performance.getEntriesByType) {
+            return {};
         }
-        return {};
+        
+        const navigation = performance.getEntriesByType('navigation')[0] as NavigationEntry;
+        if (!navigation) {
+            return {};
+        }
+        
+        return {
+            domContentLoaded: navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart,
+            loadComplete: navigation.loadEventEnd - navigation.loadEventStart,
+            ttfb: navigation.responseStart - navigation.requestStart
+        };
     }
     
     /**
      * 現実的なスコアの生成
      */
-    generateRealisticScore(min, max) {
+    private generateRealisticScore(min: number, max: number): number {
         const base = min + Math.random() * (max - min);
         const variation = (Math.random() - 0.5) * 10;
         return Math.max(min, Math.min(max, Math.round(base + variation)));
@@ -381,14 +482,14 @@ export class SEOMonitoringEngine {
     /**
      * 現実的なメトリクスの生成
      */
-    generateRealisticMetric(min, max) {
+    private generateRealisticMetric(min: number, max: number): number {
         return min + Math.random() * (max - min);
     }
     
     /**
      * リソースの解放
      */
-    destroy() {
+    destroy(): void {
         this.observerInstances.forEach(observer => {
             try {
                 observer.disconnect();
