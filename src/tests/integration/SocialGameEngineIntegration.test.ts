@@ -3,50 +3,185 @@
  * Issue #37 Task 21.1: ゲームエンジン連携テスト
  */
 
-import { jest } from '@jest/globals';
+import { jest, describe, test, beforeAll, beforeEach, afterEach, expect } from '@jest/globals';
+
+// Type definitions
+interface MockGameEngine {
+    canvas: HTMLCanvasElement;
+    context: CanvasRenderingContext2D;
+    isRunning: boolean;
+    currentScene: any;
+    systems: Map<string, any>;
+    start(): void;
+    stop(): void;
+    getCanvas(): HTMLCanvasElement;
+    getCurrentScene(): any;
+    setCurrentScene(scene: any): void;
+    getSystem(systemName: string): any;
+    addSystem(systemName: string, system: any): void;
+}
+
+interface GameEngineStatisticsManager {
+    gameStats: {
+        totalScore: number;
+        highScore: number;
+        gamesPlayed: number;
+        totalPlayTime: number;
+        averageScore: number;
+    };
+    getTotalScore(): number;
+    getHighScore(): number;
+    getGamesPlayed(): number;
+    getDetailedStatistics(): {
+        totalScore: number;
+        highScore: number;
+        gamesPlayed: number;
+        totalPlayTime: number;
+        averageScore: number;
+    };
+}
+
+interface Achievement {
+    id: string;
+    name: string;
+    description: string;
+    unlocked: boolean;
+    rare: boolean;
+}
+
+interface GameEngineAchievementManager {
+    achievements: Achievement[];
+    getAchievements(): Achievement[];
+    getUnlockedAchievements(): Achievement[];
+    getRareAchievements(): Achievement[];
+}
+
+interface SocialSharingManager {
+    gameEngine: MockGameEngine;
+    statisticsManager: GameEngineStatisticsManager;
+    achievementManager: GameEngineAchievementManager;
+    isInitialized: boolean;
+    shareContentGenerator: any;
+    screenshotCapture: any;
+    leaderboardManager: any;
+    challengeSystem: any;
+    initialize(): Promise<void>;
+    checkShareSuggestion(gameEndData: GameEndData): Promise<ShareSuggestion>;
+    captureGameScreen(options?: CaptureOptions): Promise<string | null>;
+    generateAchievementShareData(achievement: Achievement): Promise<AchievementShareData>;
+    getAchievementProgress(): Promise<AchievementProgress>;
+}
+
+interface GameEndData {
+    score: number;
+    isHighScore: boolean;
+    stage: string;
+    playTime: number;
+    combo: number;
+}
+
+interface ShareSuggestion {
+    shouldSuggestShare: boolean;
+    reason: string;
+    shareData: {
+        type: string;
+        score: number;
+        isHighScore: boolean;
+    };
+}
+
+interface CaptureOptions {
+    includeOverlay?: boolean;
+    overlayData?: {
+        score: number;
+        stage: string;
+    };
+}
+
+interface AchievementShareData {
+    type: string;
+    achievement: {
+        name: string;
+    };
+    shouldHighlight: boolean;
+}
+
+interface AchievementProgress {
+    total: number;
+    unlocked: number;
+    percentage: number;
+    rare: number;
+}
+
+interface MockNavigator {
+    share: jest.Mock<() => Promise<void>>;
+    userAgent: string;
+    canShare: jest.Mock<() => boolean>;
+}
+
+interface MockLocalStorage {
+    getItem: jest.Mock<(key: string) => string | null>;
+    setItem: jest.Mock<(key: string, value: string) => void>;
+    removeItem: jest.Mock<(key: string) => void>;
+    clear: jest.Mock<() => void>;
+}
 
 // テスト用のモッククラス
-class MockGameEngine {
+class MockGameEngine implements MockGameEngine {
+    canvas: HTMLCanvasElement;
+    context: CanvasRenderingContext2D;
+    isRunning: boolean;
+    currentScene: any;
+    systems: Map<string, any>;
+
     constructor() {
         this.canvas = document.createElement('canvas');
         this.canvas.width = 800;
         this.canvas.height = 600;
-        this.context = this.canvas.getContext('2d');
+        this.context = this.canvas.getContext('2d')!;
         this.isRunning = false;
         this.currentScene = null;
         this.systems = new Map();
     }
 
-    start() {
+    start(): void {
         this.isRunning = true;
     }
 
-    stop() {
+    stop(): void {
         this.isRunning = false;
     }
 
-    getCanvas() {
+    getCanvas(): HTMLCanvasElement {
         return this.canvas;
     }
 
-    getCurrentScene() {
+    getCurrentScene(): any {
         return this.currentScene;
     }
 
-    setCurrentScene(scene) {
+    setCurrentScene(scene: any): void {
         this.currentScene = scene;
     }
 
-    getSystem(systemName) {
+    getSystem(systemName: string): any {
         return this.systems.get(systemName);
     }
 
-    addSystem(systemName, system) {
+    addSystem(systemName: string, system: any): void {
         this.systems.set(systemName, system);
     }
 }
 
-class GameEngineMockStatisticsManager {
+class GameEngineMockStatisticsManager implements GameEngineStatisticsManager {
+    gameStats: {
+        totalScore: number;
+        highScore: number;
+        gamesPlayed: number;
+        totalPlayTime: number;
+        averageScore: number;
+    };
+
     constructor() {
         this.gameStats = {
             totalScore: 50000,
@@ -57,24 +192,32 @@ class GameEngineMockStatisticsManager {
         };
     }
 
-    getTotalScore() {
+    getTotalScore(): number {
         return this.gameStats.totalScore;
     }
 
-    getHighScore() {
+    getHighScore(): number {
         return this.gameStats.highScore;
     }
 
-    getGamesPlayed() {
+    getGamesPlayed(): number {
         return this.gameStats.gamesPlayed;
     }
 
-    getDetailedStatistics() {
+    getDetailedStatistics(): {
+        totalScore: number;
+        highScore: number;
+        gamesPlayed: number;
+        totalPlayTime: number;
+        averageScore: number;
+    } {
         return { ...this.gameStats };
     }
 }
 
-class GameEngineMockAchievementManager {
+class GameEngineMockAchievementManager implements GameEngineAchievementManager {
+    achievements: Achievement[];
+
     constructor() {
         this.achievements = [
             { id: 'first_win', name: '初勝利', description: '初めてゲームをクリア', unlocked: true, rare: false },
@@ -83,36 +226,36 @@ class GameEngineMockAchievementManager {
         ];
     }
 
-    getAchievements() {
+    getAchievements(): Achievement[] {
         return this.achievements;
     }
 
-    getUnlockedAchievements() {
+    getUnlockedAchievements(): Achievement[] {
         return this.achievements.filter(a => a.unlocked);
     }
 
-    getRareAchievements() {
+    getRareAchievements(): Achievement[] {
         return this.achievements.filter(a => a.rare);
     }
 }
 
 describe('SocialGameEngineIntegration', () => {
-    let mockGameEngine;
-    let mockStatisticsManager;
-    let mockAchievementManager;
-    let SocialSharingManager;
+    let mockGameEngine: MockGameEngine;
+    let mockStatisticsManager: GameEngineMockStatisticsManager;
+    let mockAchievementManager: GameEngineMockAchievementManager;
+    let SocialSharingManagerClass: any;
 
     beforeAll(async () => {
         // DOM環境をセットアップ
-        global.document = document;
-        global.window = window;
-        global.navigator = {
+        (global as any).document = document;
+        (global as any).window = window;
+        (global as any).navigator = {
             share: jest.fn(),
             userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-        };
+        } as MockNavigator;
 
         // Web Share API モック
-        global.navigator.canShare = jest.fn().mockReturnValue(true);
+        (global.navigator as MockNavigator).canShare = jest.fn().mockReturnValue(true);
     });
 
     beforeEach(async () => {
@@ -123,15 +266,15 @@ describe('SocialGameEngineIntegration', () => {
 
         // SocialSharingManagerを動的にインポート
         const module = await import('../../core/SocialSharingManager.js');
-        SocialSharingManager = module.SocialSharingManager;
+        SocialSharingManagerClass = module.SocialSharingManager;
 
         // LocalStorageモック
-        global.localStorage = {
+        (global as any).localStorage = {
             getItem: jest.fn(),
             setItem: jest.fn(),
             removeItem: jest.fn(),
             clear: jest.fn()
-        };
+        } as MockLocalStorage;
     });
 
     afterEach(() => {
@@ -140,7 +283,7 @@ describe('SocialGameEngineIntegration', () => {
 
     describe('GameEngine統合初期化', () => {
         test('SocialSharingManagerがGameEngineと正しく統合される', async () => {
-            const socialManager = new SocialSharingManager(
+            const socialManager: SocialSharingManager = new SocialSharingManagerClass(
                 mockGameEngine,
                 mockStatisticsManager,
                 mockAchievementManager
@@ -155,7 +298,7 @@ describe('SocialGameEngineIntegration', () => {
         });
 
         test('必要なシステムコンポーネントが正しくリンクされる', async () => {
-            const socialManager = new SocialSharingManager(
+            const socialManager: SocialSharingManager = new SocialSharingManagerClass(
                 mockGameEngine,
                 mockStatisticsManager,
                 mockAchievementManager
@@ -173,7 +316,7 @@ describe('SocialGameEngineIntegration', () => {
 
     describe('ゲーム状態との連携', () => {
         test('ゲーム終了時にスコア共有が提案される', async () => {
-            const socialManager = new SocialSharingManager(
+            const socialManager: SocialSharingManager = new SocialSharingManagerClass(
                 mockGameEngine,
                 mockStatisticsManager,
                 mockAchievementManager
@@ -181,7 +324,7 @@ describe('SocialGameEngineIntegration', () => {
 
             await socialManager.initialize();
 
-            const gameEndData = {
+            const gameEndData: GameEndData = {
                 score: 75000,
                 isHighScore: true,
                 stage: 'normal',
@@ -201,7 +344,7 @@ describe('SocialGameEngineIntegration', () => {
         });
 
         test('Canvas状態からスクリーンショットが生成できる', async () => {
-            const socialManager = new SocialSharingManager(
+            const socialManager: SocialSharingManager = new SocialSharingManagerClass(
                 mockGameEngine,
                 mockStatisticsManager,
                 mockAchievementManager
@@ -226,13 +369,13 @@ describe('SocialGameEngineIntegration', () => {
             });
 
             expect(screenshot).toBeDefined();
-            expect(screenshot.startsWith('data:image/')).toBe(true);
+            expect((screenshot || '').startsWith('data:image/')).toBe(true);
         });
     });
 
     describe('統計システム連携', () => {
         test('統計データがリーダーボードに正しく反映される', async () => {
-            const socialManager = new SocialSharingManager(
+            const socialManager: SocialSharingManager = new SocialSharingManagerClass(
                 mockGameEngine,
                 mockStatisticsManager,
                 mockAchievementManager
@@ -260,7 +403,7 @@ describe('SocialGameEngineIntegration', () => {
         });
 
         test('統計データが共有メッセージに適切に統合される', async () => {
-            const socialManager = new SocialSharingManager(
+            const socialManager: SocialSharingManager = new SocialSharingManagerClass(
                 mockGameEngine,
                 mockStatisticsManager,
                 mockAchievementManager
@@ -283,7 +426,7 @@ describe('SocialGameEngineIntegration', () => {
 
     describe('実績システム連携', () => {
         test('実績解除時に共有オプションが提示される', async () => {
-            const socialManager = new SocialSharingManager(
+            const socialManager: SocialSharingManager = new SocialSharingManagerClass(
                 mockGameEngine,
                 mockStatisticsManager,
                 mockAchievementManager
@@ -308,7 +451,7 @@ describe('SocialGameEngineIntegration', () => {
         });
 
         test('実績進捗が視覚的に表示される', async () => {
-            const socialManager = new SocialSharingManager(
+            const socialManager: SocialSharingManager = new SocialSharingManagerClass(
                 mockGameEngine,
                 mockStatisticsManager,
                 mockAchievementManager
@@ -330,7 +473,7 @@ describe('SocialGameEngineIntegration', () => {
             const invalidGameEngine = null;
 
             expect(() => {
-                new SocialSharingManager(
+                new SocialSharingManagerClass(
                     invalidGameEngine,
                     mockStatisticsManager,
                     mockAchievementManager
@@ -344,7 +487,7 @@ describe('SocialGameEngineIntegration', () => {
                 getCurrentScene: () => null
             };
 
-            const socialManager = new SocialSharingManager(
+            const socialManager: SocialSharingManager = new SocialSharingManagerClass(
                 gameEngineWithoutCanvas,
                 mockStatisticsManager,
                 mockAchievementManager
@@ -359,7 +502,7 @@ describe('SocialGameEngineIntegration', () => {
 
     describe('パフォーマンス統合', () => {
         test('大量のデータ処理時のパフォーマンス', async () => {
-            const socialManager = new SocialSharingManager(
+            const socialManager: SocialSharingManager = new SocialSharingManagerClass(
                 mockGameEngine,
                 mockStatisticsManager,
                 mockAchievementManager
@@ -389,7 +532,7 @@ describe('SocialGameEngineIntegration', () => {
         });
 
         test('メモリ使用量の監視', async () => {
-            const socialManager = new SocialSharingManager(
+            const socialManager: SocialSharingManager = new SocialSharingManagerClass(
                 mockGameEngine,
                 mockStatisticsManager,
                 mockAchievementManager
@@ -397,14 +540,14 @@ describe('SocialGameEngineIntegration', () => {
 
             await socialManager.initialize();
 
-            const initialMemory = performance.memory ? performance.memory.usedJSHeapSize : 0;
+            const initialMemory = (performance as any).memory ? (performance as any).memory.usedJSHeapSize : 0;
 
             // 複数回のスクリーンショット生成
             for (let i = 0; i < 10; i++) {
                 await socialManager.captureGameScreen();
             }
 
-            const finalMemory = performance.memory ? performance.memory.usedJSHeapSize : 0;
+            const finalMemory = (performance as any).memory ? (performance as any).memory.usedJSHeapSize : 0;
             const memoryIncrease = finalMemory - initialMemory;
 
             // メモリ増加量が10MB以下であることを確認（要件8.5）

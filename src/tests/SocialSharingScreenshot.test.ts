@@ -2,22 +2,174 @@
  * ソーシャル共有とスクリーンショット統合テスト (Task 5)
  */
 
+import { jest } from '@jest/globals';
+
+// Mock interfaces
+interface MockCanvasContext {
+    drawImage: jest.Mock;
+    imageSmoothingEnabled: boolean;
+}
+
+interface MockCanvas {
+    width: number;
+    height: number;
+    getContext: jest.Mock<MockCanvasContext>;
+    toBlob: jest.Mock;
+    remove: jest.Mock;
+}
+
+interface ScreenshotResult {
+    data: ArrayBuffer;
+    blob: Blob;
+    url: string;
+    format: string;
+    size: number;
+    width: number;
+    height: number;
+    filename: string;
+    optimized: boolean;
+}
+
+interface CaptureOptions {
+    format: string;
+    quality: string;
+    optimize?: boolean;
+    maxWidth?: number;
+    maxHeight?: number;
+}
+
+interface ScreenshotStats {
+    captures: number;
+    successes: number;
+    errors: number;
+    successRate: number;
+}
+
+interface MockScreenshotCapture {
+    captureGameCanvas: jest.Mock<Promise<ScreenshotResult>>;
+    captureRegion: jest.Mock<Promise<ScreenshotResult>>;
+    generateFilename: jest.Mock<string>;
+    getStats: jest.Mock<ScreenshotStats>;
+    isWebPSupported: jest.Mock<boolean>;
+    config: {
+        maxWidth: number;
+        maxHeight: number;
+    };
+}
+
+interface MockStatisticsManager {
+    recordSocialEvent: jest.Mock;
+}
+
+interface MockLocalizationManager {
+    getCurrentLanguage: jest.Mock<string>;
+    translate: jest.Mock<string>;
+}
+
+interface MockSeoMetaManager {
+    updateOpenGraphTags: jest.Mock;
+}
+
+interface MockGameEngine {
+    canvas: MockCanvas;
+    statisticsManager: MockStatisticsManager;
+    localizationManager: MockLocalizationManager;
+    seoMetaManager: MockSeoMetaManager;
+    on: jest.Mock;
+    off: jest.Mock;
+    emit: jest.Mock;
+    isDebugMode: jest.Mock<boolean>;
+}
+
+interface ShareData {
+    type: string;
+    score?: number;
+    text?: string;
+    name?: string;
+    screenshot?: {
+        format?: string;
+        size?: number;
+        blob?: Blob;
+    };
+}
+
+interface ShareOptions {
+    imageFormat?: string;
+    imageQuality?: string;
+    maxWidth?: number;
+    maxHeight?: number;
+    platform?: string;
+    fallback?: boolean;
+}
+
+interface ShareResult {
+    success: boolean;
+    screenshot?: ScreenshotResult;
+    platform?: string;
+    method?: string;
+    hasScreenshot?: boolean;
+    error?: string;
+}
+
+interface ScreenshotCapabilities {
+    available: boolean;
+    formats: string[];
+    optimization: boolean;
+    maxDimensions: {
+        width: number;
+        height: number;
+    };
+    webShareFiles: boolean;
+}
+
+interface PerformanceStats {
+    screenshotShare?: number;
+    [key: string]: number | undefined;
+}
+
+interface MockNavigator {
+    share?: jest.Mock<Promise<void>>;
+    canShare?: jest.Mock<boolean>;
+    onLine: boolean;
+    userAgent: string;
+    language: string;
+}
+
+interface SocialSharingManagerInstance {
+    screenshotCapture: MockScreenshotCapture | null;
+    share?: jest.Mock<Promise<ShareResult>>;
+    shareWithScreenshot(data: ShareData, options?: ShareOptions): Promise<ShareResult>;
+    shareRegionScreenshot(x: number, y: number, width: number, height: number, data: ShareData): Promise<ShareResult>;
+    shareScreenshotViaTwitter(data: ShareData): Promise<ShareResult>;
+    shareScreenshotViaFacebook(data: ShareData): Promise<ShareResult>;
+    shareScreenshotViaWebAPI(data: ShareData): Promise<ShareResult>;
+    getScreenshotCapabilities(): ScreenshotCapabilities;
+    getScreenshotStats(): ScreenshotStats;
+    getPerformanceStats(): PerformanceStats;
+    initialize(): Promise<void>;
+    cleanup(): void;
+}
+
+interface SocialSharingManagerConstructor {
+    new (gameEngine: MockGameEngine): SocialSharingManagerInstance;
+}
+
 describe('SocialSharing Screenshot Integration', () => {
-    let socialSharingManager;
-    let mockGameEngine;
-    let mockCanvas;
-    let mockScreenshotCapture;
+    let socialSharingManager: SocialSharingManagerInstance;
+    let mockGameEngine: MockGameEngine;
+    let mockCanvas: MockCanvas;
+    let mockScreenshotCapture: MockScreenshotCapture;
     
     beforeEach(async () => {
         // Canvas APIのモック
         mockCanvas = {
             width: 800,
             height: 600,
-            getContext: jest.fn().mockReturnValue({
+            getContext: jest.fn<MockCanvasContext>().mockReturnValue({
                 drawImage: jest.fn(),
                 imageSmoothingEnabled: true
             }),
-            toBlob: jest.fn().mockImplementation((callback, type) => {
+            toBlob: jest.fn().mockImplementation((callback: (blob: Blob | null) => void, type?: string) => {
                 const mockBlob = new Blob(['mock-image'], { type: type || 'image/png' });
                 Object.defineProperty(mockBlob, 'size', { value: 1024 * 100 }); // 100KB
                 callback(mockBlob);
@@ -27,7 +179,7 @@ describe('SocialSharing Screenshot Integration', () => {
         
         // ScreenshotCaptureのモック
         mockScreenshotCapture = {
-            captureGameCanvas: jest.fn().mockResolvedValue({
+            captureGameCanvas: jest.fn<Promise<ScreenshotResult>>().mockResolvedValue({
                 data: new ArrayBuffer(1024),
                 blob: new Blob(['mock-screenshot'], { type: 'image/png' }),
                 url: 'blob:mock-screenshot-url',
@@ -38,7 +190,7 @@ describe('SocialSharing Screenshot Integration', () => {
                 filename: 'test-screenshot.png',
                 optimized: false
             }),
-            captureRegion: jest.fn().mockResolvedValue({
+            captureRegion: jest.fn<Promise<ScreenshotResult>>().mockResolvedValue({
                 data: new ArrayBuffer(512),
                 blob: new Blob(['mock-region'], { type: 'image/png' }),
                 url: 'blob:mock-region-url',
@@ -49,14 +201,14 @@ describe('SocialSharing Screenshot Integration', () => {
                 filename: 'test-region.png',
                 optimized: false
             }),
-            generateFilename: jest.fn().mockReturnValue('mock-filename.png'),
-            getStats: jest.fn().mockReturnValue({
+            generateFilename: jest.fn<string>().mockReturnValue('mock-filename.png'),
+            getStats: jest.fn<ScreenshotStats>().mockReturnValue({
                 captures: 5,
                 successes: 4,
                 errors: 1,
                 successRate: 80
             }),
-            isWebPSupported: jest.fn().mockReturnValue(true),
+            isWebPSupported: jest.fn<boolean>().mockReturnValue(true),
             config: {
                 maxWidth: 1200,
                 maxHeight: 630
@@ -70,8 +222,8 @@ describe('SocialSharing Screenshot Integration', () => {
                 recordSocialEvent: jest.fn()
             },
             localizationManager: {
-                getCurrentLanguage: jest.fn().mockReturnValue('ja'),
-                translate: jest.fn().mockImplementation((key) => key)
+                getCurrentLanguage: jest.fn<string>().mockReturnValue('ja'),
+                translate: jest.fn<string>().mockImplementation((key: string) => key)
             },
             seoMetaManager: {
                 updateOpenGraphTags: jest.fn()
@@ -79,22 +231,22 @@ describe('SocialSharing Screenshot Integration', () => {
             on: jest.fn(),
             off: jest.fn(),
             emit: jest.fn(),
-            isDebugMode: jest.fn().mockReturnValue(false)
+            isDebugMode: jest.fn<boolean>().mockReturnValue(false)
         };
         
         // グローバルAPIのモック
-        global.URL = {
+        (global as any).URL = {
             createObjectURL: jest.fn().mockReturnValue('blob:mock-url'),
             revokeObjectURL: jest.fn()
         };
         
-        global.navigator = {
+        (global as any).navigator = {
             share: jest.fn().mockResolvedValue(true),
             canShare: jest.fn().mockReturnValue(true),
             onLine: true,
             userAgent: 'Mozilla/5.0 (Chrome/90.0)',
             language: 'ja-JP'
-        };
+        } as MockNavigator;
         
         Object.defineProperty(window, 'location', {
             value: {
@@ -108,10 +260,10 @@ describe('SocialSharing Screenshot Integration', () => {
         window.open = jest.fn().mockReturnValue({
             closed: false,
             close: jest.fn()
-        });
+        }) as any;
         
         // SocialSharingManagerの作成
-        const { SocialSharingManager } = await import('../core/SocialSharingManager.js');
+        const { SocialSharingManager } = await import('../core/SocialSharingManager.js') as { SocialSharingManager: SocialSharingManagerConstructor };
         socialSharingManager = new SocialSharingManager(mockGameEngine);
         
         // ScreenshotCaptureのモック注入
@@ -127,7 +279,7 @@ describe('SocialSharing Screenshot Integration', () => {
     
     describe('スクリーンショット付き共有機能', () => {
         test('基本的なスクリーンショット共有が動作する', async () => {
-            const shareData = {
+            const shareData: ShareData = {
                 type: 'score',
                 score: 1500,
                 text: 'テストスコア共有'
@@ -149,8 +301,8 @@ describe('SocialSharing Screenshot Integration', () => {
         });
         
         test('カスタム画像設定でのスクリーンショット共有', async () => {
-            const shareData = { type: 'achievement', name: 'テスト実績' };
-            const options = {
+            const shareData: ShareData = { type: 'achievement', name: 'テスト実績' };
+            const options: ShareOptions = {
                 imageFormat: 'jpeg',
                 imageQuality: 'medium',
                 maxWidth: 800,
@@ -170,8 +322,8 @@ describe('SocialSharing Screenshot Integration', () => {
         });
         
         test('プラットフォーム別スクリーンショット共有（Twitter）', async () => {
-            const shareData = { type: 'score', score: 2000 };
-            const options = { platform: 'twitter' };
+            const shareData: ShareData = { type: 'score', score: 2000 };
+            const options: ShareOptions = { platform: 'twitter' };
             
             const result = await socialSharingManager.shareWithScreenshot(shareData, options);
             
@@ -186,8 +338,8 @@ describe('SocialSharing Screenshot Integration', () => {
         });
         
         test('プラットフォーム別スクリーンショット共有（Facebook）', async () => {
-            const shareData = { type: 'score', score: 3000 };
-            const options = { platform: 'facebook' };
+            const shareData: ShareData = { type: 'score', score: 3000 };
+            const options: ShareOptions = { platform: 'facebook' };
             
             const result = await socialSharingManager.shareWithScreenshot(shareData, options);
             
@@ -198,8 +350,8 @@ describe('SocialSharing Screenshot Integration', () => {
         });
         
         test('Web Share API でのスクリーンショット共有', async () => {
-            const shareData = { type: 'achievement', name: 'マスター' };
-            const options = { platform: 'web-share' };
+            const shareData: ShareData = { type: 'achievement', name: 'マスター' };
+            const options: ShareOptions = { platform: 'web-share' };
             
             const result = await socialSharingManager.shareWithScreenshot(shareData, options);
             
@@ -218,7 +370,7 @@ describe('SocialSharing Screenshot Integration', () => {
     
     describe('領域指定スクリーンショット共有', () => {
         test('カスタム領域のスクリーンショット共有', async () => {
-            const shareData = { type: 'score', score: 1200 };
+            const shareData: ShareData = { type: 'score', score: 1200 };
             const result = await socialSharingManager.shareRegionScreenshot(
                 100, 100, 200, 150, shareData
             );
@@ -238,7 +390,7 @@ describe('SocialSharing Screenshot Integration', () => {
         test('領域指定エラー時のフォールバック', async () => {
             mockScreenshotCapture.captureRegion.mockRejectedValue(new Error('Region capture failed'));
             
-            const shareData = { type: 'score', score: 1000 };
+            const shareData: ShareData = { type: 'score', score: 1000 };
             
             await expect(socialSharingManager.shareRegionScreenshot(
                 -10, -10, 0, 0, shareData
@@ -287,13 +439,13 @@ describe('SocialSharing Screenshot Integration', () => {
             mockScreenshotCapture.captureGameCanvas.mockRejectedValue(new Error('Capture failed'));
             
             // share メソッドのモック
-            socialSharingManager.share = jest.fn().mockResolvedValue({
+            socialSharingManager.share = jest.fn<Promise<ShareResult>>().mockResolvedValue({
                 success: true,
                 method: 'fallback',
                 platform: 'web-share'
             });
             
-            const shareData = { type: 'score', score: 1000 };
+            const shareData: ShareData = { type: 'score', score: 1000 };
             const result = await socialSharingManager.shareWithScreenshot(shareData);
             
             expect(socialSharingManager.share).toHaveBeenCalledWith(
@@ -307,25 +459,25 @@ describe('SocialSharing Screenshot Integration', () => {
         test('ScreenshotCapture未初期化時のエラー', async () => {
             socialSharingManager.screenshotCapture = null;
             
-            const shareData = { type: 'score', score: 1000 };
+            const shareData: ShareData = { type: 'score', score: 1000 };
             
             await expect(socialSharingManager.shareWithScreenshot(shareData))
                 .rejects.toThrow('ScreenshotCaptureが初期化されていません');
         });
         
         test('ポップアップブロック時のエラー処理', async () => {
-            window.open = jest.fn().mockReturnValue(null);
+            window.open = jest.fn().mockReturnValue(null) as any;
             
-            const shareData = { type: 'score', score: 1500 };
+            const shareData: ShareData = { type: 'score', score: 1500 };
             
             await expect(socialSharingManager.shareWithScreenshot(shareData, { platform: 'twitter' }))
                 .rejects.toThrow('ポップアップがブロックされました');
         });
         
         test('Web Share API 使用不可時のフォールバック', async () => {
-            navigator.share = undefined;
+            (navigator as MockNavigator).share = undefined;
             
-            const shareData = { type: 'score', score: 1200 };
+            const shareData: ShareData = { type: 'score', score: 1200 };
             
             await expect(socialSharingManager.shareScreenshotViaWebAPI(shareData))
                 .rejects.toThrow('Web Share APIがサポートされていません');
@@ -334,9 +486,9 @@ describe('SocialSharing Screenshot Integration', () => {
         test('ユーザーキャンセル時の適切な処理', async () => {
             const abortError = new Error('User cancelled');
             abortError.name = 'AbortError';
-            navigator.share = jest.fn().mockRejectedValue(abortError);
+            (navigator as MockNavigator).share = jest.fn().mockRejectedValue(abortError);
             
-            const shareData = { type: 'score', score: 1000, screenshot: { blob: new Blob() } };
+            const shareData: ShareData = { type: 'score', score: 1000, screenshot: { blob: new Blob() } };
             const result = await socialSharingManager.shareScreenshotViaWebAPI(shareData);
             
             expect(result.success).toBe(false);
@@ -346,7 +498,7 @@ describe('SocialSharing Screenshot Integration', () => {
     
     describe('統計記録機能', () => {
         test('スクリーンショット作成の統計記録', async () => {
-            const shareData = { type: 'score', score: 1500 };
+            const shareData: ShareData = { type: 'score', score: 1500 };
             
             await socialSharingManager.shareWithScreenshot(shareData);
             
@@ -362,7 +514,7 @@ describe('SocialSharing Screenshot Integration', () => {
         });
         
         test('Twitter スクリーンショット共有統計', async () => {
-            const shareData = { type: 'score', score: 2000 };
+            const shareData: ShareData = { type: 'score', score: 2000 };
             
             await socialSharingManager.shareScreenshotViaTwitter({
                 ...shareData,
@@ -380,7 +532,7 @@ describe('SocialSharing Screenshot Integration', () => {
         });
         
         test('Facebook スクリーンショット共有統計', async () => {
-            const shareData = { type: 'achievement', name: 'マスター' };
+            const shareData: ShareData = { type: 'achievement', name: 'マスター' };
             
             await socialSharingManager.shareScreenshotViaFacebook({
                 ...shareData,
@@ -398,7 +550,7 @@ describe('SocialSharing Screenshot Integration', () => {
         });
         
         test('Web API スクリーンショット共有統計', async () => {
-            const shareData = { 
+            const shareData: ShareData = { 
                 type: 'challenge', 
                 name: 'デイリー',
                 screenshot: { format: 'webp', size: 1024 * 60, blob: new Blob() }
@@ -419,7 +571,7 @@ describe('SocialSharing Screenshot Integration', () => {
     
     describe('パフォーマンス監視', () => {
         test('スクリーンショット共有のパフォーマンス統計', async () => {
-            const shareData = { type: 'score', score: 1800 };
+            const shareData: ShareData = { type: 'score', score: 1800 };
             
             await socialSharingManager.shareWithScreenshot(shareData);
             
@@ -428,7 +580,7 @@ describe('SocialSharing Screenshot Integration', () => {
         });
         
         test('複数回のスクリーンショット共有統計', async () => {
-            const shareData = { type: 'score', score: 1500 };
+            const shareData: ShareData = { type: 'score', score: 1500 };
             
             await socialSharingManager.shareWithScreenshot(shareData);
             await socialSharingManager.shareWithScreenshot(shareData);

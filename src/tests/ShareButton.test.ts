@@ -2,11 +2,37 @@
  * 共有ボタンコンポーネントテスト (Task 7)
  */
 
+import { describe, test, expect, jest, beforeEach, afterEach } from '@jest/globals';
+import type { ShareButton } from '../core/ShareButton';
+import type { SocialSharingManager } from '../core/SocialSharingManager';
+import type { GameEngine } from '../core/GameEngine';
+
+// Mock interfaces
+interface MockGameEngine extends Partial<GameEngine> {
+    on: jest.Mock;
+    off: jest.Mock;
+    emit: jest.Mock;
+}
+
+interface MockSocialSharingManager extends Partial<SocialSharingManager> {
+    gameEngine: MockGameEngine;
+    share: jest.Mock;
+    shareViaTwitterUrl: jest.Mock;
+    shareViaFacebookUrl: jest.Mock;
+}
+
+interface ShareData {
+    type: string;
+    score?: number;
+    text?: string;
+    url?: string;
+}
+
 describe('ShareButton', () => {
-    let shareButton;
-    let mockSocialSharingManager;
-    let mockContainer;
-    let mockGameEngine;
+    let shareButton: ShareButton;
+    let mockSocialSharingManager: MockSocialSharingManager;
+    let mockContainer: HTMLDivElement;
+    let mockGameEngine: MockGameEngine;
     
     beforeEach(async () => {
         // DOM環境のセットアップ
@@ -37,12 +63,12 @@ describe('ShareButton', () => {
             observe: jest.fn(),
             unobserve: jest.fn(),
             disconnect: jest.fn()
-        }));
+        })) as any;
         
         // matchMediaのモック
         Object.defineProperty(window, 'matchMedia', {
             writable: true,
-            value: jest.fn().mockImplementation(query => ({
+            value: jest.fn().mockImplementation((query: string) => ({
                 matches: query.includes('max-width: 768px') ? false : true,
                 media: query,
                 onchange: null,
@@ -57,13 +83,13 @@ describe('ShareButton', () => {
         // Clipboard APIのモック
         Object.defineProperty(navigator, 'clipboard', {
             value: {
-                writeText: jest.fn().mockResolvedValue()
+                writeText: jest.fn().mockResolvedValue(undefined)
             },
             writable: true
         });
         
         const { ShareButton } = await import('../core/ShareButton.js');
-        shareButton = new ShareButton(mockContainer, mockSocialSharingManager);
+        shareButton = new ShareButton(mockContainer, mockSocialSharingManager as any);
     });
     
     afterEach(() => {
@@ -108,7 +134,7 @@ describe('ShareButton', () => {
             };
             
             const { ShareButton } = await import('../core/ShareButton.js');
-            shareButton = new ShareButton(mockContainer, mockSocialSharingManager, customOptions);
+            shareButton = new ShareButton(mockContainer, mockSocialSharingManager as any, customOptions);
             
             expect(shareButton.config.position).toBe('top-left');
             expect(shareButton.config.theme).toBe('gaming');
@@ -135,7 +161,7 @@ describe('ShareButton', () => {
         });
         
         test('データ付きで表示される', () => {
-            const shareData = { type: 'score', score: 1500 };
+            const shareData: ShareData = { type: 'score', score: 1500 };
             shareButton.showWithData(shareData, 'score');
             
             expect(shareButton.state.visible).toBe(true);
@@ -246,7 +272,7 @@ describe('ShareButton', () => {
             shareButton.destroy();
             
             const { ShareButton } = await import('../core/ShareButton.js');
-            shareButton = new ShareButton(mockContainer, mockSocialSharingManager, {
+            shareButton = new ShareButton(mockContainer, mockSocialSharingManager as any, {
                 platforms: ['copy']
             });
             
@@ -266,7 +292,7 @@ describe('ShareButton', () => {
         });
         
         test('共有データが正しく使用される', async () => {
-            const shareData = { 
+            const shareData: ShareData = { 
                 type: 'score', 
                 score: 2500, 
                 text: 'テストメッセージ',
@@ -341,7 +367,7 @@ describe('ShareButton', () => {
             expect(shareButton.elements.mainButton.getAttribute('aria-expanded')).toBe('false');
             
             const platformContainer = shareButton.elements.container.querySelector('.share-button-platforms');
-            expect(platformContainer.getAttribute('role')).toBe('menu');
+            expect(platformContainer?.getAttribute('role')).toBe('menu');
         });
         
         test('プラットフォームボタンのARIA属性が設定される', () => {
@@ -361,11 +387,11 @@ describe('ShareButton', () => {
             }
         });
         
-        test('高コントラストモードが適用される', () => {
+        test('高コントラストモードが適用される', async () => {
             shareButton.destroy();
             
             const { ShareButton } = await import('../core/ShareButton.js');
-            shareButton = new ShareButton(mockContainer, mockSocialSharingManager, {
+            shareButton = new ShareButton(mockContainer, mockSocialSharingManager as any, {
                 accessibility: { highContrast: true }
             });
             
@@ -386,7 +412,7 @@ describe('ShareButton', () => {
             shareButton.destroy();
             
             const { ShareButton } = await import('../core/ShareButton.js');
-            shareButton = new ShareButton(mockContainer, mockSocialSharingManager, {
+            shareButton = new ShareButton(mockContainer, mockSocialSharingManager as any, {
                 theme: 'minimal'
             });
             
@@ -398,7 +424,7 @@ describe('ShareButton', () => {
             shareButton.destroy();
             
             const { ShareButton } = await import('../core/ShareButton.js');
-            shareButton = new ShareButton(mockContainer, mockSocialSharingManager, {
+            shareButton = new ShareButton(mockContainer, mockSocialSharingManager as any, {
                 theme: 'gaming'
             });
             
@@ -410,7 +436,7 @@ describe('ShareButton', () => {
             shareButton.destroy();
             
             const { ShareButton } = await import('../core/ShareButton.js');
-            shareButton = new ShareButton(mockContainer, mockSocialSharingManager, {
+            shareButton = new ShareButton(mockContainer, mockSocialSharingManager as any, {
                 theme: 'elegant'
             });
             
@@ -428,7 +454,7 @@ describe('ShareButton', () => {
             };
             
             const { ShareButton } = await import('../core/ShareButton.js');
-            shareButton = new ShareButton(mockContainer, mockSocialSharingManager, customStyles);
+            shareButton = new ShareButton(mockContainer, mockSocialSharingManager as any, customStyles);
             
             const container = shareButton.elements.container;
             expect(container.style.backgroundColor).toBe('rgba(255, 0, 0, 0.8)');
@@ -442,7 +468,7 @@ describe('ShareButton', () => {
             // モバイル環境をシミュレート
             Object.defineProperty(window, 'matchMedia', {
                 writable: true,
-                value: jest.fn().mockImplementation(query => ({
+                value: jest.fn().mockImplementation((query: string) => ({
                     matches: query.includes('max-width: 768px') ? true : false,
                     media: query,
                     onchange: null,
@@ -517,7 +543,7 @@ describe('ShareButton', () => {
     
     describe('エラーハンドリング', () => {
         test('SocialSharingManager未設定時のエラー', async () => {
-            shareButton.socialSharingManager = null;
+            shareButton.socialSharingManager = null as any;
             shareButton.show();
             shareButton.expand();
             

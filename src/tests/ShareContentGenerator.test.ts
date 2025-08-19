@@ -2,15 +2,64 @@
  * ShareContentGenerator テスト
  */
 
+import { describe, test, expect, jest, beforeEach, afterEach } from '@jest/globals';
+import type { ShareContentGenerator } from '../core/ShareContentGenerator';
+import type { LocalizationManager } from '../core/LocalizationManager';
+
+// Mock interfaces
+interface MockLocalizationManager extends Partial<LocalizationManager> {
+    getCurrentLanguage: jest.Mock;
+    translate: jest.Mock;
+}
+
+interface ShareData {
+    type?: string;
+    score?: number;
+    stage?: string;
+    name?: string;
+    description?: string;
+    id?: string;
+    rarity?: string;
+}
+
+interface AchievementData {
+    name: string;
+    description?: string;
+    id?: string;
+    rarity?: string;
+}
+
+interface ChallengeData {
+    name: string;
+    description?: string;
+    type?: string;
+    id?: string;
+}
+
+interface GeneratedMessage {
+    message: string;
+    platform: string;
+    language: string;
+    metadata: {
+        originalScore?: number;
+        achievementId?: string;
+        challengeType?: string;
+        isFallback?: boolean;
+        isCustom?: boolean;
+        isRare?: boolean;
+        optimized?: boolean;
+    };
+}
+
 describe('ShareContentGenerator', () => {
-    let shareContentGenerator;
-    let mockLocalizationManager;
+    let shareContentGenerator: ShareContentGenerator;
+    let mockLocalizationManager: MockLocalizationManager;
     
     beforeEach(async () => {
         // LocalizationManagerのモック
         mockLocalizationManager = {
             getCurrentLanguage: jest.fn().mockReturnValue('ja'),
-            translate: jest.fn().mockImplementation((key) => key)
+            translate: jest.fn().mockImplementation((key: string) => key)
         };
         
         // Navigatorのモック
@@ -24,11 +73,12 @@ describe('ShareContentGenerator', () => {
             value: {
                 origin: 'https://test.example.com',
                 pathname: '/game'
-            }
+            },
+            writable: true
         });
         
         const { ShareContentGenerator } = await import('../core/ShareContentGenerator.js');
-        shareContentGenerator = new ShareContentGenerator(mockLocalizationManager);
+        shareContentGenerator = new ShareContentGenerator(mockLocalizationManager as any);
     });
     
     afterEach(() => {
@@ -62,7 +112,7 @@ describe('ShareContentGenerator', () => {
     
     describe('スコア共有メッセージ生成', () => {
         test('基本的なスコアメッセージが生成される', () => {
-            const scoreData = { score: 1500, stage: 'normal' };
+            const scoreData: ShareData = { score: 1500, stage: 'normal' };
             const result = shareContentGenerator.generateScoreMessage(scoreData);
             
             expect(result.message).toContain('1,500');
@@ -72,7 +122,7 @@ describe('ShareContentGenerator', () => {
         });
         
         test('Twitter向けメッセージが生成される', () => {
-            const scoreData = { score: 2000, stage: 'hard' };
+            const scoreData: ShareData = { score: 2000, stage: 'hard' };
             const result = shareContentGenerator.generateScoreMessage(scoreData, 'twitter');
             
             expect(result.message).toContain('2,000');
@@ -81,7 +131,7 @@ describe('ShareContentGenerator', () => {
         });
         
         test('Facebook向けメッセージが生成される', () => {
-            const scoreData = { score: 3000, stage: 'expert' };
+            const scoreData: ShareData = { score: 3000, stage: 'expert' };
             const result = shareContentGenerator.generateScoreMessage(scoreData, 'facebook');
             
             expect(result.message).toContain('3,000');
@@ -90,7 +140,7 @@ describe('ShareContentGenerator', () => {
         
         test('英語メッセージが生成される', () => {
             mockLocalizationManager.getCurrentLanguage.mockReturnValue('en');
-            const scoreData = { score: 1200 };
+            const scoreData: ShareData = { score: 1200 };
             const result = shareContentGenerator.generateScoreMessage(scoreData, 'twitter');
             
             expect(result.message).toContain('scored');
@@ -99,7 +149,7 @@ describe('ShareContentGenerator', () => {
         });
         
         test('不正なスコアデータでエラーハンドリングされる', () => {
-            const result = shareContentGenerator.generateScoreMessage(null);
+            const result = shareContentGenerator.generateScoreMessage(null as any);
             
             expect(result.metadata.isFallback).toBe(true);
             expect(shareContentGenerator.stats.errors).toBe(1);
@@ -107,7 +157,7 @@ describe('ShareContentGenerator', () => {
         
         test('Twitter文字数制限が適用される', () => {
             const longScore = 999999999;
-            const scoreData = { score: longScore, stage: 'super-ultra-long-stage-name-that-exceeds-limits' };
+            const scoreData: ShareData = { score: longScore, stage: 'super-ultra-long-stage-name-that-exceeds-limits' };
             const result = shareContentGenerator.generateScoreMessage(scoreData, 'twitter');
             
             expect(result.message.length).toBeLessThanOrEqual(280);
@@ -116,7 +166,7 @@ describe('ShareContentGenerator', () => {
     
     describe('実績共有メッセージ生成', () => {
         test('基本的な実績メッセージが生成される', () => {
-            const achievementData = { 
+            const achievementData: AchievementData = { 
                 name: 'スコアマスター', 
                 description: '累計スコア10万点達成',
                 id: 'score_master'
@@ -129,7 +179,7 @@ describe('ShareContentGenerator', () => {
         });
         
         test('レジェンダリー実績に絵文字が追加される', () => {
-            const achievementData = { 
+            const achievementData: AchievementData = { 
                 name: 'レジェンド', 
                 rarity: 'legendary',
                 id: 'legend'
@@ -142,7 +192,7 @@ describe('ShareContentGenerator', () => {
         
         test('中国語実績メッセージが生成される', () => {
             mockLocalizationManager.getCurrentLanguage.mockReturnValue('zh-CN');
-            const achievementData = { name: '成就大师', id: 'master' };
+            const achievementData: AchievementData = { name: '成就大师', id: 'master' };
             const result = shareContentGenerator.generateAchievementMessage(achievementData, 'twitter');
             
             expect(result.message).toContain('成就大师');
@@ -150,7 +200,7 @@ describe('ShareContentGenerator', () => {
         });
         
         test('不正な実績データでフォールバックされる', () => {
-            const result = shareContentGenerator.generateAchievementMessage({});
+            const result = shareContentGenerator.generateAchievementMessage({} as any);
             
             expect(result.metadata.isFallback).toBe(true);
             expect(shareContentGenerator.stats.errors).toBe(1);
@@ -159,7 +209,7 @@ describe('ShareContentGenerator', () => {
     
     describe('チャレンジ共有メッセージ生成', () => {
         test('基本的なチャレンジメッセージが生成される', () => {
-            const challengeData = { 
+            const challengeData: ChallengeData = { 
                 name: 'デイリーマスター', 
                 description: '連続5日プレイ',
                 type: 'daily',
@@ -173,7 +223,7 @@ describe('ShareContentGenerator', () => {
         
         test('韓国語チャレンジメッセージが生成される', () => {
             mockLocalizationManager.getCurrentLanguage.mockReturnValue('ko');
-            const challengeData = { name: '챌린지 마스터', type: 'weekly' };
+            const challengeData: ChallengeData = { name: '챌린지 마스터', type: 'weekly' };
             const result = shareContentGenerator.generateChallengeMessage(challengeData, 'twitter');
             
             expect(result.message).toContain('챌린지 마스터');
@@ -273,7 +323,7 @@ describe('ShareContentGenerator', () => {
             expect(language).toBe('ja');
             
             // LocalizationManagerが無い場合のフォールバック
-            shareContentGenerator.localizationManager = null;
+            shareContentGenerator.localizationManager = null as any;
             const fallbackLanguage = shareContentGenerator.getCurrentLanguage();
             expect(fallbackLanguage).toBe('ja'); // navigator.languageからの抽出
         });
@@ -301,9 +351,9 @@ describe('ShareContentGenerator', () => {
     
     describe('統計機能', () => {
         test('統計情報が正確に記録される', () => {
-            const scoreData = { score: 1000 };
+            const scoreData: ShareData = { score: 1000 };
             shareContentGenerator.generateScoreMessage(scoreData);
-            shareContentGenerator.generateScoreMessage(null); // エラーを発生させる
+            shareContentGenerator.generateScoreMessage(null as any); // エラーを発生させる
             
             const stats = shareContentGenerator.getStats();
             expect(stats.generated).toBe(2);
@@ -325,7 +375,7 @@ describe('ShareContentGenerator', () => {
     describe('多言語対応', () => {
         test('すべてのサポート言語でメッセージが生成される', () => {
             const languages = ['ja', 'en', 'zh-CN', 'zh-TW', 'ko'];
-            const scoreData = { score: 1000 };
+            const scoreData: ShareData = { score: 1000 };
             
             languages.forEach(lang => {
                 mockLocalizationManager.getCurrentLanguage.mockReturnValue(lang);
@@ -337,7 +387,7 @@ describe('ShareContentGenerator', () => {
         });
         
         test('実績レア度が言語別に表示される', () => {
-            const achievementData = { name: 'Test', rarity: 'legendary' };
+            const achievementData: AchievementData = { name: 'Test', rarity: 'legendary' };
             
             mockLocalizationManager.getCurrentLanguage.mockReturnValue('en');
             const enRarity = shareContentGenerator.getAchievementRarity(achievementData);

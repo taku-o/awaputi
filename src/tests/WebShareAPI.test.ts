@@ -2,10 +2,100 @@
  * Web Share API統合機能テスト
  */
 
+import { jest } from '@jest/globals';
+
+// Mock interfaces
+interface MockStatisticsManager {
+    recordSocialEvent: jest.Mock;
+}
+
+interface MockAchievementManager {
+    getAchievements: jest.Mock;
+}
+
+interface MockLocalizationManager {
+    getCurrentLanguage: jest.Mock<string>;
+    translate: jest.Mock<string>;
+}
+
+interface MockGameEngine {
+    statisticsManager: MockStatisticsManager;
+    achievementManager: MockAchievementManager;
+    localizationManager: MockLocalizationManager;
+    on: jest.Mock;
+    off: jest.Mock;
+    emit: jest.Mock;
+    isDebugMode: jest.Mock<boolean>;
+}
+
+interface MockLocalStorage {
+    getItem: jest.Mock;
+    setItem: jest.Mock;
+    removeItem: jest.Mock;
+}
+
+interface MockClipboard {
+    writeText: jest.Mock<Promise<void>>;
+}
+
+interface MockNavigator {
+    onLine: boolean;
+    userAgent: string;
+    language: string;
+    share?: jest.Mock<Promise<void>>;
+    canShare?: jest.Mock<boolean>;
+    clipboard: MockClipboard;
+}
+
+interface ShareData {
+    title?: string;
+    text?: string;
+    url?: string;
+    type?: string;
+    files?: any[];
+}
+
+interface ShareValidation {
+    valid: boolean;
+    errors: string[];
+}
+
+interface ShareResult {
+    success: boolean;
+    method: string;
+    error?: string;
+    message?: string;
+}
+
+interface PerformanceStats {
+    shareRequests: number;
+    successfulShares: number;
+    [key: string]: number;
+}
+
+interface SocialSharingManagerInstance {
+    isWebShareSupported(): boolean;
+    detectPlatform(): string;
+    validateShareData(data: ShareData): ShareValidation;
+    sanitizeShareData(data: ShareData): ShareData;
+    shareViaWebAPI(data: ShareData): Promise<ShareResult>;
+    generateShareDialogHTML(data: ShareData): string;
+    generateTwitterShareUrl(data: ShareData): string;
+    generateFacebookShareUrl(data: ShareData): string;
+    share(data: ShareData): Promise<ShareResult>;
+    getPerformanceStats(): PerformanceStats;
+    initialize(): Promise<void>;
+    cleanup(): void;
+}
+
+interface SocialSharingManagerConstructor {
+    new (gameEngine: MockGameEngine): SocialSharingManagerInstance;
+}
+
 describe('Web Share API Integration', () => {
-    let socialSharingManager;
-    let mockGameEngine;
-    let mockNavigator;
+    let socialSharingManager: SocialSharingManagerInstance;
+    let mockGameEngine: MockGameEngine;
+    let mockNavigator: MockNavigator;
     
     beforeEach(async () => {
         // GameEngineのモック
@@ -17,13 +107,13 @@ describe('Web Share API Integration', () => {
                 getAchievements: jest.fn()
             },
             localizationManager: {
-                getCurrentLanguage: jest.fn().mockReturnValue('ja'),
-                translate: jest.fn().mockImplementation((key) => key)
+                getCurrentLanguage: jest.fn<string>().mockReturnValue('ja'),
+                translate: jest.fn<string>().mockImplementation((key: string) => key)
             },
             on: jest.fn(),
             off: jest.fn(),
             emit: jest.fn(),
-            isDebugMode: jest.fn().mockReturnValue(false)
+            isDebugMode: jest.fn<boolean>().mockReturnValue(false)
         };
         
         // LocalStorageのモック
@@ -32,7 +122,7 @@ describe('Web Share API Integration', () => {
                 getItem: jest.fn(),
                 setItem: jest.fn(),
                 removeItem: jest.fn()
-            }
+            } as MockLocalStorage
         });
         
         // NavigatorのモックSetup
@@ -40,10 +130,10 @@ describe('Web Share API Integration', () => {
             onLine: true,
             userAgent: 'Mozilla/5.0 (Chrome/90.0)',
             language: 'ja-JP',
-            share: jest.fn(),
-            canShare: jest.fn(),
+            share: jest.fn<Promise<void>>(),
+            canShare: jest.fn<boolean>(),
             clipboard: {
-                writeText: jest.fn()
+                writeText: jest.fn<Promise<void>>()
             }
         };
         
@@ -59,7 +149,7 @@ describe('Web Share API Integration', () => {
             }
         });
         
-        const { SocialSharingManager } = await import('../core/SocialSharingManager.js');
+        const { SocialSharingManager } = await import('../core/SocialSharingManager.js') as { SocialSharingManager: SocialSharingManagerConstructor };
         socialSharingManager = new SocialSharingManager(mockGameEngine);
         await socialSharingManager.initialize();
     });
@@ -73,8 +163,8 @@ describe('Web Share API Integration', () => {
     
     describe('Web Share API対応状況検出', () => {
         test('Web Share APIがサポートされている場合', () => {
-            mockNavigator.share = jest.fn();
-            mockNavigator.canShare = jest.fn();
+            mockNavigator.share = jest.fn<Promise<void>>();
+            mockNavigator.canShare = jest.fn<boolean>();
             
             const isSupported = socialSharingManager.isWebShareSupported();
             expect(isSupported).toBe(true);
@@ -89,8 +179,8 @@ describe('Web Share API Integration', () => {
         });
         
         test('プラットフォーム検出でWeb Share API優先', () => {
-            mockNavigator.share = jest.fn();
-            mockNavigator.canShare = jest.fn();
+            mockNavigator.share = jest.fn<Promise<void>>();
+            mockNavigator.canShare = jest.fn<boolean>();
             
             const platform = socialSharingManager.detectPlatform();
             expect(platform).toBe('web-share');
@@ -99,7 +189,7 @@ describe('Web Share API Integration', () => {
     
     describe('共有データ検証', () => {
         test('有効な共有データの検証', () => {
-            const shareData = {
+            const shareData: ShareData = {
                 title: 'テストタイトル',
                 text: 'テストメッセージ',
                 url: 'https://example.com'
@@ -117,7 +207,7 @@ describe('Web Share API Integration', () => {
         });
         
         test('無効なURLでエラー', () => {
-            const shareData = {
+            const shareData: ShareData = {
                 url: 'invalid-url'
             };
             
@@ -127,7 +217,7 @@ describe('Web Share API Integration', () => {
         });
         
         test('文字数制限チェック', () => {
-            const shareData = {
+            const shareData: ShareData = {
                 title: 'a'.repeat(201), // 200文字制限を超過
                 text: 'テスト'
             };
@@ -140,7 +230,7 @@ describe('Web Share API Integration', () => {
     
     describe('共有データサニタイゼーション', () => {
         test('HTMLタグの除去', () => {
-            const shareData = {
+            const shareData: ShareData = {
                 title: '<script>alert("xss")</script>テスト',
                 text: '<b>太字</b>テキスト'
             };
@@ -151,7 +241,7 @@ describe('Web Share API Integration', () => {
         });
         
         test('危険なスクリプトの除去', () => {
-            const shareData = {
+            const shareData: ShareData = {
                 text: 'javascript:alert("xss") onclick="evil()" テスト'
             };
             
@@ -161,7 +251,7 @@ describe('Web Share API Integration', () => {
         });
         
         test('URLサニタイゼーション', () => {
-            const shareData = {
+            const shareData: ShareData = {
                 url: 'https://example.com/page?param=value'
             };
             
@@ -170,7 +260,7 @@ describe('Web Share API Integration', () => {
         });
         
         test('無効なプロトコルURLの除去', () => {
-            const shareData = {
+            const shareData: ShareData = {
                 url: 'javascript:alert("xss")'
             };
             
@@ -181,14 +271,14 @@ describe('Web Share API Integration', () => {
     
     describe('Web Share API実行', () => {
         beforeEach(() => {
-            mockNavigator.share = jest.fn();
-            mockNavigator.canShare = jest.fn().mockReturnValue(true);
+            mockNavigator.share = jest.fn<Promise<void>>();
+            mockNavigator.canShare = jest.fn<boolean>().mockReturnValue(true);
         });
         
         test('正常な共有実行', async () => {
-            mockNavigator.share.mockResolvedValue();
+            mockNavigator.share!.mockResolvedValue();
             
-            const shareData = {
+            const shareData: ShareData = {
                 title: 'テストタイトル',
                 text: 'テストメッセージ',
                 url: 'https://example.com'
@@ -218,9 +308,9 @@ describe('Web Share API Integration', () => {
         test('ユーザーキャンセル処理', async () => {
             const abortError = new Error('User cancelled');
             abortError.name = 'AbortError';
-            mockNavigator.share.mockRejectedValue(abortError);
+            mockNavigator.share!.mockRejectedValue(abortError);
             
-            const shareData = {
+            const shareData: ShareData = {
                 title: 'テストタイトル',
                 text: 'テストメッセージ'
             };
@@ -243,7 +333,7 @@ describe('Web Share API Integration', () => {
         test('Web Share API未サポート時のエラー', async () => {
             delete mockNavigator.share;
             
-            const shareData = {
+            const shareData: ShareData = {
                 title: 'テストタイトル'
             };
             
@@ -254,9 +344,9 @@ describe('Web Share API Integration', () => {
         });
         
         test('canShareによる事前チェック', async () => {
-            mockNavigator.canShare.mockReturnValue(false);
+            mockNavigator.canShare!.mockReturnValue(false);
             
-            const shareData = {
+            const shareData: ShareData = {
                 title: 'テストタイトル',
                 files: ['invalid-file'] // サポートされていないデータ
             };
@@ -270,7 +360,7 @@ describe('Web Share API Integration', () => {
     
     describe('フォールバック共有ダイアログ', () => {
         test('ダイアログHTML生成', () => {
-            const shareData = {
+            const shareData: ShareData = {
                 title: 'テストタイトル',
                 text: 'テストメッセージ',
                 url: 'https://example.com'
@@ -289,7 +379,7 @@ describe('Web Share API Integration', () => {
         test('多言語対応ダイアログ', () => {
             mockGameEngine.localizationManager.getCurrentLanguage.mockReturnValue('en');
             
-            const shareData = { title: 'Test Title' };
+            const shareData: ShareData = { title: 'Test Title' };
             const html = socialSharingManager.generateShareDialogHTML(shareData);
             
             expect(html).toContain('Share');
@@ -298,7 +388,7 @@ describe('Web Share API Integration', () => {
         });
         
         test('HTMLエスケープ処理', () => {
-            const shareData = {
+            const shareData: ShareData = {
                 title: '<script>alert("xss")</script>',
                 text: '&lt;dangerous&gt;'
             };
@@ -312,7 +402,7 @@ describe('Web Share API Integration', () => {
     
     describe('URL生成', () => {
         test('TwitterシェアURL生成', () => {
-            const shareData = {
+            const shareData: ShareData = {
                 text: 'テストメッセージ',
                 url: 'https://example.com'
             };
@@ -325,7 +415,7 @@ describe('Web Share API Integration', () => {
         });
         
         test('FacebookシェアURL生成', () => {
-            const shareData = {
+            const shareData: ShareData = {
                 title: 'テストタイトル',
                 url: 'https://example.com'
             };
@@ -340,10 +430,10 @@ describe('Web Share API Integration', () => {
     
     describe('統合共有メソッド', () => {
         test('Web Share API優先実行', async () => {
-            mockNavigator.share = jest.fn().mockResolvedValue();
-            mockNavigator.canShare = jest.fn().mockReturnValue(true);
+            mockNavigator.share = jest.fn<Promise<void>>().mockResolvedValue();
+            mockNavigator.canShare = jest.fn<boolean>().mockReturnValue(true);
             
-            const shareData = {
+            const shareData: ShareData = {
                 title: 'テストタイトル',
                 text: 'テストメッセージ'
             };
@@ -368,7 +458,7 @@ describe('Web Share API Integration', () => {
             jest.spyOn(document.body, 'removeChild').mockImplementation(() => {});
             jest.spyOn(document, 'getElementById').mockReturnValue(mockDialog);
             
-            const shareData = {
+            const shareData: ShareData = {
                 title: 'テストタイトル',
                 text: 'テストメッセージ'
             };
@@ -393,10 +483,10 @@ describe('Web Share API Integration', () => {
     
     describe('統計記録', () => {
         test('Web Share API成功時の統計記録', async () => {
-            mockNavigator.share = jest.fn().mockResolvedValue();
-            mockNavigator.canShare = jest.fn().mockReturnValue(true);
+            mockNavigator.share = jest.fn<Promise<void>>().mockResolvedValue();
+            mockNavigator.canShare = jest.fn<boolean>().mockReturnValue(true);
             
-            const shareData = {
+            const shareData: ShareData = {
                 title: 'テストタイトル',
                 type: 'score'
             };
@@ -414,12 +504,12 @@ describe('Web Share API Integration', () => {
         });
         
         test('パフォーマンス統計の更新', async () => {
-            mockNavigator.share = jest.fn().mockResolvedValue();
-            mockNavigator.canShare = jest.fn().mockReturnValue(true);
+            mockNavigator.share = jest.fn<Promise<void>>().mockResolvedValue();
+            mockNavigator.canShare = jest.fn<boolean>().mockReturnValue(true);
             
             const initialStats = socialSharingManager.getPerformanceStats();
             
-            const shareData = { title: 'テスト' };
+            const shareData: ShareData = { title: 'テスト' };
             await socialSharingManager.shareViaWebAPI(shareData);
             
             const updatedStats = socialSharingManager.getPerformanceStats();

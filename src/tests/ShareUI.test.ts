@@ -3,12 +3,99 @@
  * ShareButtonとShareDialogの統合動作をテスト
  */
 
+import { jest } from '@jest/globals';
+
+// Mock interfaces
+interface MockElement extends HTMLElement {
+    click(): Promise<void>;
+}
+
+interface MockGameEngine {
+    on: jest.Mock;
+    off: jest.Mock;
+    emit: jest.Mock;
+}
+
+interface MockSocialSharingManager {
+    gameEngine: MockGameEngine;
+    share: jest.Mock<Promise<ShareResult>>;
+    shareViaTwitterUrl: jest.Mock<Promise<ShareResult>>;
+    shareViaFacebookUrl: jest.Mock<Promise<ShareResult>>;
+}
+
+interface ShareResult {
+    success: boolean;
+    method: string;
+}
+
+interface ShareData {
+    type: string;
+    score?: number;
+    text?: string;
+    name?: string;
+}
+
+interface ShareButtonElements {
+    container: HTMLElement;
+    mainButton: HTMLElement;
+    platformButtons: MockElement[];
+}
+
+interface ShareDialogElements {
+    dialog: HTMLElement;
+    backdrop: HTMLElement;
+    platforms: MockElement[];
+}
+
+interface ShareButtonInstance {
+    socialSharingManager: MockSocialSharingManager | null;
+    state: { visible: boolean };
+    stats: { shares: number; shows: number; platforms: { twitter: number; facebook: number } };
+    elements: ShareButtonElements;
+    handlers: { keydown?: Function; resize?: Function };
+    config: { theme: string; position?: string; platforms?: string[] };
+    show(): void;
+    hide(): void;
+    showWithData(data: ShareData): void;
+    expand(): void;
+    getStats(): { shares: number; shows: number; platforms: { twitter: number; facebook: number } };
+    destroy(): void;
+    updateConfig(config: any): void;
+    applyResponsiveStyles(): void;
+    handleError?: Function;
+    handlePlatformShare(platform: string): Promise<void>;
+}
+
+interface ShareDialogInstance {
+    socialSharingManager: MockSocialSharingManager | null;
+    state: { visible: boolean };
+    stats: { shares: number; shows: number; platforms: { twitter: number; facebook: number } };
+    elements: ShareDialogElements;
+    handlers: { keydown?: Function; resize?: Function };
+    config: { theme: string; width?: number; platforms?: string[] };
+    show(data: ShareData): Promise<void>;
+    hide(): Promise<void>;
+    getStats(): { shares: number; shows: number; platforms: { twitter: number; facebook: number } };
+    destroy(): void;
+    updateConfig(config: any): void;
+    applyResponsiveStyles(): void;
+    handleError?: Function;
+}
+
+interface ShareButtonConstructor {
+    new (container: HTMLElement, manager: MockSocialSharingManager, options?: any): ShareButtonInstance;
+}
+
+interface ShareDialogConstructor {
+    new (manager: MockSocialSharingManager, options?: any): ShareDialogInstance;
+}
+
 describe('ShareUI Integration', () => {
-    let shareButton;
-    let shareDialog;
-    let mockSocialSharingManager;
-    let mockContainer;
-    let mockGameEngine;
+    let shareButton: ShareButtonInstance;
+    let shareDialog: ShareDialogInstance;
+    let mockSocialSharingManager: MockSocialSharingManager;
+    let mockContainer: HTMLElement;
+    let mockGameEngine: MockGameEngine;
     
     beforeEach(async () => {
         // DOM環境のセットアップ
@@ -29,9 +116,9 @@ describe('ShareUI Integration', () => {
         // SocialSharingManagerのモック
         mockSocialSharingManager = {
             gameEngine: mockGameEngine,
-            share: jest.fn().mockResolvedValue({ success: true, method: 'web-share' }),
-            shareViaTwitterUrl: jest.fn().mockResolvedValue({ success: true, method: 'twitter' }),
-            shareViaFacebookUrl: jest.fn().mockResolvedValue({ success: true, method: 'facebook' })
+            share: jest.fn<Promise<ShareResult>>().mockResolvedValue({ success: true, method: 'web-share' }),
+            shareViaTwitterUrl: jest.fn<Promise<ShareResult>>().mockResolvedValue({ success: true, method: 'twitter' }),
+            shareViaFacebookUrl: jest.fn<Promise<ShareResult>>().mockResolvedValue({ success: true, method: 'facebook' })
         };
         
         // DOM APIのモック
@@ -39,11 +126,11 @@ describe('ShareUI Integration', () => {
             observe: jest.fn(),
             unobserve: jest.fn(),
             disconnect: jest.fn()
-        }));
+        })) as any;
         
         Object.defineProperty(window, 'matchMedia', {
             writable: true,
-            value: jest.fn().mockImplementation(query => ({
+            value: jest.fn().mockImplementation((query: string) => ({
                 matches: false,
                 media: query,
                 onchange: null,
@@ -57,19 +144,19 @@ describe('ShareUI Integration', () => {
         
         Object.defineProperty(navigator, 'clipboard', {
             value: {
-                writeText: jest.fn().mockResolvedValue()
+                writeText: jest.fn<Promise<void>>().mockResolvedValue()
             },
             writable: true
         });
         
-        global.requestAnimationFrame = jest.fn(callback => {
-            setTimeout(callback, 0);
+        global.requestAnimationFrame = jest.fn((callback: FrameRequestCallback) => {
+            setTimeout(() => callback(0), 0);
             return 1;
-        });
+        }) as any;
         
         // ShareButtonとShareDialogの作成
-        const { ShareButton } = await import('../core/ShareButton.js');
-        const { ShareDialog } = await import('../core/ShareDialog.js');
+        const { ShareButton } = await import('../core/ShareButton.js') as { ShareButton: ShareButtonConstructor };
+        const { ShareDialog } = await import('../core/ShareDialog.js') as { ShareDialog: ShareDialogConstructor };
         
         shareButton = new ShareButton(mockContainer, mockSocialSharingManager);
         shareDialog = new ShareDialog(mockSocialSharingManager);
@@ -115,7 +202,7 @@ describe('ShareUI Integration', () => {
     
     describe('共有フロー統合', () => {
         test('ShareButtonからの共有フローが動作する', async () => {
-            const shareData = { type: 'score', score: 1500, text: 'テスト共有' };
+            const shareData: ShareData = { type: 'score', score: 1500, text: 'テスト共有' };
             
             // ShareButton表示・展開
             shareButton.showWithData(shareData);
@@ -132,7 +219,7 @@ describe('ShareUI Integration', () => {
         });
         
         test('ShareDialogからの共有フローが動作する', async () => {
-            const shareData = { type: 'achievement', name: 'テスト実績' };
+            const shareData: ShareData = { type: 'achievement', name: 'テスト実績' };
             
             // ShareDialog表示
             await shareDialog.show(shareData);
@@ -148,8 +235,8 @@ describe('ShareUI Integration', () => {
         });
         
         test('同じプラットフォームで両方から共有できる', async () => {
-            const shareData1 = { type: 'score', score: 1000 };
-            const shareData2 = { type: 'achievement', name: 'テスト' };
+            const shareData1: ShareData = { type: 'score', score: 1000 };
+            const shareData2: ShareData = { type: 'achievement', name: 'テスト' };
             
             // ShareButtonから共有
             shareButton.showWithData(shareData1);
@@ -176,7 +263,7 @@ describe('ShareUI Integration', () => {
     
     describe('統計統合', () => {
         test('各コンポーネントが独立した統計を持つ', async () => {
-            const shareData = { type: 'score', score: 1200 };
+            const shareData: ShareData = { type: 'score', score: 1200 };
             
             // ShareButtonでの共有
             shareButton.showWithData(shareData);
@@ -197,7 +284,7 @@ describe('ShareUI Integration', () => {
         });
         
         test('プラットフォーム別統計が正しく記録される', async () => {
-            const shareData = { type: 'score', score: 1500 };
+            const shareData: ShareData = { type: 'score', score: 1500 };
             
             // ShareButtonでTwitter共有
             shareButton.showWithData(shareData);
@@ -264,8 +351,8 @@ describe('ShareUI Integration', () => {
                 accessibility: { highContrast: true }
             };
             
-            const { ShareButton } = await import('../core/ShareButton.js');
-            const { ShareDialog } = await import('../core/ShareDialog.js');
+            const { ShareButton } = await import('../core/ShareButton.js') as { ShareButton: ShareButtonConstructor };
+            const { ShareDialog } = await import('../core/ShareDialog.js') as { ShareDialog: ShareDialogConstructor };
             
             shareButton = new ShareButton(mockContainer, mockSocialSharingManager, accessibilityOptions);
             shareDialog = new ShareDialog(mockSocialSharingManager, accessibilityOptions);
@@ -283,8 +370,8 @@ describe('ShareUI Integration', () => {
             
             const themeOptions = { theme: 'gaming' };
             
-            const { ShareButton } = await import('../core/ShareButton.js');
-            const { ShareDialog } = await import('../core/ShareDialog.js');
+            const { ShareButton } = await import('../core/ShareButton.js') as { ShareButton: ShareButtonConstructor };
+            const { ShareDialog } = await import('../core/ShareDialog.js') as { ShareDialog: ShareDialogConstructor };
             
             shareButton = new ShareButton(mockContainer, mockSocialSharingManager, themeOptions);
             shareDialog = new ShareDialog(mockSocialSharingManager, themeOptions);
@@ -298,8 +385,8 @@ describe('ShareUI Integration', () => {
             shareButton.destroy();
             shareDialog.destroy();
             
-            const { ShareButton } = await import('../core/ShareButton.js');
-            const { ShareDialog } = await import('../core/ShareDialog.js');
+            const { ShareButton } = await import('../core/ShareButton.js') as { ShareButton: ShareButtonConstructor };
+            const { ShareDialog } = await import('../core/ShareDialog.js') as { ShareDialog: ShareDialogConstructor };
             
             shareButton = new ShareButton(mockContainer, mockSocialSharingManager, { theme: 'minimal' });
             shareDialog = new ShareDialog(mockSocialSharingManager, { theme: 'elegant' });
@@ -315,7 +402,7 @@ describe('ShareUI Integration', () => {
             // モバイル環境をシミュレート
             Object.defineProperty(window, 'matchMedia', {
                 writable: true,
-                value: jest.fn().mockImplementation(query => ({
+                value: jest.fn().mockImplementation((query: string) => ({
                     matches: query.includes('max-width: 768px') ? true : false,
                     media: query
                 }))
@@ -343,7 +430,7 @@ describe('ShareUI Integration', () => {
         test('共有エラーが両コンポーネントで適切に処理される', async () => {
             mockSocialSharingManager.share.mockRejectedValue(new Error('共有失敗'));
             
-            const shareData = { type: 'score', score: 1000 };
+            const shareData: ShareData = { type: 'score', score: 1000 };
             
             // ShareButtonでのエラーハンドリング
             shareButton.showWithData(shareData);
@@ -399,7 +486,7 @@ describe('ShareUI Integration', () => {
         });
         
         test('大量の共有操作でのメモリリーク防止', async () => {
-            const shareData = { type: 'score', score: 1000 };
+            const shareData: ShareData = { type: 'score', score: 1000 };
             
             // 大量の共有操作を実行
             for (let i = 0; i < 50; i++) {
@@ -439,8 +526,8 @@ describe('ShareUI Integration', () => {
             
             const platforms = ['twitter', 'facebook', 'copy'];
             
-            const { ShareButton } = await import('../core/ShareButton.js');
-            const { ShareDialog } = await import('../core/ShareDialog.js');
+            const { ShareButton } = await import('../core/ShareButton.js') as { ShareButton: ShareButtonConstructor };
+            const { ShareDialog } = await import('../core/ShareDialog.js') as { ShareDialog: ShareDialogConstructor };
             
             shareButton = new ShareButton(mockContainer, mockSocialSharingManager, { platforms });
             shareDialog = new ShareDialog(mockSocialSharingManager, { platforms });

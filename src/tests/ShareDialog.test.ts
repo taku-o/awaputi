@@ -2,10 +2,43 @@
  * 共有ダイアログベースクラステスト (Task 7)
  */
 
+import { describe, test, expect, jest, beforeEach, afterEach } from '@jest/globals';
+import type { ShareDialog } from '../core/ShareDialog';
+import type { SocialSharingManager } from '../core/SocialSharingManager';
+import type { GameEngine } from '../core/GameEngine';
+
+// Mock interfaces
+interface MockGameEngine extends Partial<GameEngine> {
+    on: jest.Mock;
+    off: jest.Mock;
+    emit: jest.Mock;
+}
+
+interface MockSocialSharingManager extends Partial<SocialSharingManager> {
+    gameEngine: MockGameEngine;
+    share: jest.Mock;
+    shareViaTwitterUrl: jest.Mock;
+    shareViaFacebookUrl: jest.Mock;
+}
+
+interface ShareData {
+    type: string;
+    score?: number;
+    text?: string;
+    url?: string;
+    name?: string;
+}
+
+interface Screenshot {
+    url: string;
+    width: number;
+    height: number;
+}
+
 describe('ShareDialog', () => {
-    let shareDialog;
-    let mockSocialSharingManager;
-    let mockGameEngine;
+    let shareDialog: ShareDialog;
+    let mockSocialSharingManager: MockSocialSharingManager;
+    let mockGameEngine: MockGameEngine;
     
     beforeEach(async () => {
         // DOM環境のセットアップ
@@ -29,7 +62,7 @@ describe('ShareDialog', () => {
         // matchMediaのモック
         Object.defineProperty(window, 'matchMedia', {
             writable: true,
-            value: jest.fn().mockImplementation(query => ({
+            value: jest.fn().mockImplementation((query: string) => ({
                 matches: query.includes('max-width: 768px') ? false : true,
                 media: query,
                 onchange: null,
@@ -44,19 +77,19 @@ describe('ShareDialog', () => {
         // Clipboard APIのモック
         Object.defineProperty(navigator, 'clipboard', {
             value: {
-                writeText: jest.fn().mockResolvedValue()
+                writeText: jest.fn().mockResolvedValue(undefined)
             },
             writable: true
         });
         
         // requestAnimationFrameのモック
-        global.requestAnimationFrame = jest.fn(callback => {
-            setTimeout(callback, 0);
+        global.requestAnimationFrame = jest.fn((callback: FrameRequestCallback) => {
+            setTimeout(() => callback(0), 0);
             return 1;
-        });
+        }) as any;
         
         const { ShareDialog } = await import('../core/ShareDialog.js');
-        shareDialog = new ShareDialog(mockSocialSharingManager);
+        shareDialog = new ShareDialog(mockSocialSharingManager as any);
     });
     
     afterEach(() => {
@@ -107,7 +140,7 @@ describe('ShareDialog', () => {
             };
             
             const { ShareDialog } = await import('../core/ShareDialog.js');
-            shareDialog = new ShareDialog(mockSocialSharingManager, customOptions);
+            shareDialog = new ShareDialog(mockSocialSharingManager as any, customOptions);
             
             expect(shareDialog.config.title).toBe('カスタム共有');
             expect(shareDialog.config.width).toBe(600);
@@ -125,9 +158,9 @@ describe('ShareDialog', () => {
             const closeButton = header.querySelector('.share-dialog-close');
             
             expect(title).toBeDefined();
-            expect(title.textContent).toBe('共有');
+            expect(title?.textContent).toBe('共有');
             expect(closeButton).toBeDefined();
-            expect(closeButton.getAttribute('aria-label')).toBe('閉じる');
+            expect(closeButton?.getAttribute('aria-label')).toBe('閉じる');
         });
         
         test('ボディが正しく作成される', () => {
@@ -136,7 +169,7 @@ describe('ShareDialog', () => {
             
             expect(body.id).toBe('share-dialog-content');
             expect(platformsContainer).toBeDefined();
-            expect(platformsContainer.getAttribute('role')).toBe('group');
+            expect(platformsContainer?.getAttribute('role')).toBe('group');
         });
         
         test('プラットフォームボタンが作成される', () => {
@@ -153,24 +186,24 @@ describe('ShareDialog', () => {
             shareDialog.destroy();
             
             const { ShareDialog } = await import('../core/ShareDialog.js');
-            shareDialog = new ShareDialog(mockSocialSharingManager, {
+            shareDialog = new ShareDialog(mockSocialSharingManager as any, {
                 allowMessageEdit: true
             });
             
             expect(shareDialog.elements.messageEditor).toBeDefined();
-            expect(shareDialog.elements.messageEditor.getAttribute('placeholder')).toBe('共有メッセージを入力...');
+            expect(shareDialog.elements.messageEditor?.getAttribute('placeholder')).toBe('共有メッセージを入力...');
         });
         
         test('スクリーンショットプレビューが条件付きで作成される', async () => {
             shareDialog.destroy();
             
             const { ShareDialog } = await import('../core/ShareDialog.js');
-            shareDialog = new ShareDialog(mockSocialSharingManager, {
+            shareDialog = new ShareDialog(mockSocialSharingManager as any, {
                 showScreenshotPreview: true
             });
             
             expect(shareDialog.elements.screenshotPreview).toBeDefined();
-            expect(shareDialog.elements.screenshotPreview.style.display).toBe('none');
+            expect(shareDialog.elements.screenshotPreview?.style.display).toBe('none');
         });
         
         test('フッターが正しく作成される', () => {
@@ -179,13 +212,13 @@ describe('ShareDialog', () => {
             
             expect(footer).toBeDefined();
             expect(cancelButton).toBeDefined();
-            expect(cancelButton.textContent).toBe('キャンセル');
+            expect(cancelButton?.textContent).toBe('キャンセル');
         });
     });
     
     describe('表示・非表示機能', () => {
         test('ダイアログが表示される', async () => {
-            const shareData = { type: 'score', score: 1500, text: 'テスト共有' };
+            const shareData: ShareData = { type: 'score', score: 1500, text: 'テスト共有' };
             
             await shareDialog.show(shareData);
             
@@ -207,17 +240,17 @@ describe('ShareDialog', () => {
             shareDialog.destroy();
             
             const { ShareDialog } = await import('../core/ShareDialog.js');
-            shareDialog = new ShareDialog(mockSocialSharingManager, {
+            shareDialog = new ShareDialog(mockSocialSharingManager as any, {
                 showScreenshotPreview: true
             });
             
-            const shareData = { type: 'score', score: 2000 };
-            const screenshot = { url: 'blob:mock-url', width: 800, height: 600 };
+            const shareData: ShareData = { type: 'score', score: 2000 };
+            const screenshot: Screenshot = { url: 'blob:mock-url', width: 800, height: 600 };
             
             await shareDialog.show(shareData, screenshot);
             
             expect(shareDialog.state.screenshot).toEqual(screenshot);
-            expect(shareDialog.elements.screenshotPreview.style.display).toBe('block');
+            expect(shareDialog.elements.screenshotPreview?.style.display).toBe('block');
         });
         
         test('重複表示が防がれる', async () => {
@@ -231,7 +264,7 @@ describe('ShareDialog', () => {
             shareDialog.destroy();
             
             const { ShareDialog } = await import('../core/ShareDialog.js');
-            shareDialog = new ShareDialog(mockSocialSharingManager, {
+            shareDialog = new ShareDialog(mockSocialSharingManager as any, {
                 animation: false
             });
             
@@ -296,7 +329,7 @@ describe('ShareDialog', () => {
             shareDialog.destroy();
             
             const { ShareDialog } = await import('../core/ShareDialog.js');
-            shareDialog = new ShareDialog(mockSocialSharingManager, {
+            shareDialog = new ShareDialog(mockSocialSharingManager as any, {
                 platforms: ['copy']
             });
             
@@ -335,7 +368,7 @@ describe('ShareDialog', () => {
             shareDialog.destroy();
             
             const { ShareDialog } = await import('../core/ShareDialog.js');
-            shareDialog = new ShareDialog(mockSocialSharingManager, {
+            shareDialog = new ShareDialog(mockSocialSharingManager as any, {
                 allowMessageEdit: true
             });
             
@@ -347,15 +380,17 @@ describe('ShareDialog', () => {
         });
         
         test('初期メッセージが設定される', () => {
-            expect(shareDialog.elements.messageEditor.value).toBe('初期メッセージ');
+            expect(shareDialog.elements.messageEditor?.value).toBe('初期メッセージ');
             expect(shareDialog.state.editedMessage).toBe('初期メッセージ');
         });
         
         test('メッセージ編集が記録される', () => {
             const newMessage = '編集されたメッセージ';
             
-            shareDialog.elements.messageEditor.value = newMessage;
-            shareDialog.elements.messageEditor.dispatchEvent(new Event('input'));
+            if (shareDialog.elements.messageEditor) {
+                shareDialog.elements.messageEditor.value = newMessage;
+                shareDialog.elements.messageEditor.dispatchEvent(new Event('input'));
+            }
             
             expect(shareDialog.state.editedMessage).toBe(newMessage);
             expect(shareDialog.stats.messageEdits).toBe(1);
@@ -364,8 +399,10 @@ describe('ShareDialog', () => {
         test('編集されたメッセージが共有に使用される', async () => {
             const editedMessage = '編集後メッセージ';
             
-            shareDialog.elements.messageEditor.value = editedMessage;
-            shareDialog.elements.messageEditor.dispatchEvent(new Event('input'));
+            if (shareDialog.elements.messageEditor) {
+                shareDialog.elements.messageEditor.value = editedMessage;
+                shareDialog.elements.messageEditor.dispatchEvent(new Event('input'));
+            }
             
             const webShareButton = shareDialog.elements.platforms[0];
             await webShareButton.click();
@@ -394,7 +431,7 @@ describe('ShareDialog', () => {
         });
         
         test('キャンセルボタンでダイアログが閉じる', async () => {
-            const cancelButton = shareDialog.elements.footer.querySelector('.share-dialog-cancel');
+            const cancelButton = shareDialog.elements.footer.querySelector('.share-dialog-cancel') as HTMLButtonElement;
             cancelButton.click();
             
             await new Promise(resolve => setTimeout(resolve, 50));
@@ -414,7 +451,7 @@ describe('ShareDialog', () => {
         });
         
         test('バックドロップクリックでダイアログが閉じる', async () => {
-            const backdropEvent = new MouseEvent('click', { target: shareDialog.elements.backdrop });
+            const backdropEvent = new MouseEvent('click', { target: shareDialog.elements.backdrop } as any);
             shareDialog.elements.backdrop.dispatchEvent(backdropEvent);
             
             await new Promise(resolve => setTimeout(resolve, 50));
@@ -424,7 +461,7 @@ describe('ShareDialog', () => {
         });
         
         test('ダイアログ内クリックでは閉じない', async () => {
-            const dialogEvent = new MouseEvent('click', { target: shareDialog.elements.dialog });
+            const dialogEvent = new MouseEvent('click', { target: shareDialog.elements.dialog } as any);
             shareDialog.elements.backdrop.dispatchEvent(dialogEvent);
             
             expect(shareDialog.state.visible).toBe(true);
@@ -434,13 +471,13 @@ describe('ShareDialog', () => {
             shareDialog.destroy();
             
             const { ShareDialog } = await import('../core/ShareDialog.js');
-            shareDialog = new ShareDialog(mockSocialSharingManager, {
+            shareDialog = new ShareDialog(mockSocialSharingManager as any, {
                 closeOnBackdrop: false
             });
             
             await shareDialog.show({ type: 'score', score: 1000 });
             
-            const backdropEvent = new MouseEvent('click', { target: shareDialog.elements.backdrop });
+            const backdropEvent = new MouseEvent('click', { target: shareDialog.elements.backdrop } as any);
             shareDialog.elements.backdrop.dispatchEvent(backdropEvent);
             
             expect(shareDialog.state.visible).toBe(true);
@@ -534,7 +571,7 @@ describe('ShareDialog', () => {
             shareDialog.destroy();
             
             const { ShareDialog } = await import('../core/ShareDialog.js');
-            shareDialog = new ShareDialog(mockSocialSharingManager, {
+            shareDialog = new ShareDialog(mockSocialSharingManager as any, {
                 accessibility: { highContrast: true }
             });
             
@@ -555,7 +592,7 @@ describe('ShareDialog', () => {
             shareDialog.destroy();
             
             const { ShareDialog } = await import('../core/ShareDialog.js');
-            shareDialog = new ShareDialog(mockSocialSharingManager, {
+            shareDialog = new ShareDialog(mockSocialSharingManager as any, {
                 theme: 'minimal'
             });
             
@@ -567,7 +604,7 @@ describe('ShareDialog', () => {
             shareDialog.destroy();
             
             const { ShareDialog } = await import('../core/ShareDialog.js');
-            shareDialog = new ShareDialog(mockSocialSharingManager, {
+            shareDialog = new ShareDialog(mockSocialSharingManager as any, {
                 theme: 'elegant'
             });
             
@@ -579,7 +616,7 @@ describe('ShareDialog', () => {
             shareDialog.destroy();
             
             const { ShareDialog } = await import('../core/ShareDialog.js');
-            shareDialog = new ShareDialog(mockSocialSharingManager, {
+            shareDialog = new ShareDialog(mockSocialSharingManager as any, {
                 theme: 'gaming'
             });
             
@@ -592,7 +629,7 @@ describe('ShareDialog', () => {
             // モバイル環境をシミュレート
             Object.defineProperty(window, 'matchMedia', {
                 writable: true,
-                value: jest.fn().mockImplementation(query => ({
+                value: jest.fn().mockImplementation((query: string) => ({
                     matches: query.includes('max-width: 768px') ? true : false,
                     media: query
                 }))
@@ -637,14 +674,16 @@ describe('ShareDialog', () => {
             shareDialog.destroy();
             
             const { ShareDialog } = await import('../core/ShareDialog.js');
-            shareDialog = new ShareDialog(mockSocialSharingManager, {
+            shareDialog = new ShareDialog(mockSocialSharingManager as any, {
                 allowMessageEdit: true
             });
             
             await shareDialog.show({ type: 'score', score: 1000, text: '初期' });
             
-            shareDialog.elements.messageEditor.value = '編集後';
-            shareDialog.elements.messageEditor.dispatchEvent(new Event('input'));
+            if (shareDialog.elements.messageEditor) {
+                shareDialog.elements.messageEditor.value = '編集後';
+                shareDialog.elements.messageEditor.dispatchEvent(new Event('input'));
+            }
             
             const stats = shareDialog.getStats();
             expect(stats.messageEdits).toBe(1);

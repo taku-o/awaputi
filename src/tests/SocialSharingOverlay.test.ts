@@ -2,48 +2,207 @@
  * ソーシャル共有とオーバーレイ統合テスト (Task 6)
  */
 
+import { jest } from '@jest/globals';
+
+// Mock interfaces
+interface MockCanvas {
+    width: number;
+    height: number;
+    getContext: jest.Mock<MockCanvasContext>;
+    remove: jest.Mock;
+}
+
+interface MockCanvasContext {
+    drawImage: jest.Mock;
+}
+
+interface MockScreenshotOverlay {
+    createScoreOverlay: jest.Mock<Promise<MockCanvas>>;
+    createAchievementOverlay: jest.Mock<Promise<MockCanvas>>;
+    createCustomOverlay: jest.Mock<Promise<MockCanvas>>;
+    getPresetConfig: jest.Mock<OverlayConfig>;
+    getResponsiveConfig: jest.Mock<OverlayConfig>;
+    getStats: jest.Mock<OverlayStats>;
+}
+
+interface OverlayConfig {
+    score?: { fontSize: number };
+    logo?: { textColor: string; enabled?: boolean };
+    layout?: { scorePosition: string };
+}
+
+interface OverlayStats {
+    overlaysCreated: number;
+    averageTimeMs: number;
+    successRate: number;
+}
+
+interface ScreenshotResult {
+    data: ArrayBuffer;
+    blob: Blob;
+    url: string;
+    format: string;
+    size: number;
+    width: number;
+    height: number;
+    filename: string;
+    overlayType?: string;
+    hasOverlay: boolean;
+    optimized?: boolean;
+}
+
+interface MockScreenshotCapture {
+    overlayEnabled: boolean;
+    screenshotOverlay: MockScreenshotOverlay;
+    captureWithOverlay: jest.Mock<Promise<ScreenshotResult>>;
+    captureWithScore: jest.Mock<Promise<ScreenshotResult>>;
+    captureWithAchievement: jest.Mock<Promise<ScreenshotResult>>;
+    captureWithCustomOverlay: jest.Mock<Promise<ScreenshotResult>>;
+    generateFilename: jest.Mock<string>;
+    getGameCanvas: jest.Mock<{ width: number; height: number } | null>;
+    captureGameCanvas?: jest.Mock<Promise<ScreenshotResult>>;
+}
+
+interface MockStatisticsManager {
+    recordSocialEvent: jest.Mock;
+}
+
+interface MockLocalizationManager {
+    getCurrentLanguage: jest.Mock<string>;
+    translate: jest.Mock<string>;
+}
+
+interface MockSeoMetaManager {
+    updateOpenGraphTags: jest.Mock;
+}
+
+interface MockGameEngine {
+    statisticsManager: MockStatisticsManager;
+    localizationManager: MockLocalizationManager;
+    seoMetaManager: MockSeoMetaManager;
+    on: jest.Mock;
+    off: jest.Mock;
+    emit: jest.Mock;
+    isDebugMode: jest.Mock<boolean>;
+}
+
+interface ShareData {
+    type: string;
+    score?: number;
+    name?: string;
+}
+
+interface ScoreOverlayData {
+    score: number;
+    combo?: number;
+    accuracy?: number;
+}
+
+interface AchievementOverlayData {
+    name: string;
+    description?: string;
+    rarity?: string;
+}
+
+interface CustomOverlayData {
+    elements: Array<{
+        type: string;
+        text: string;
+        position: { x: number; y: number };
+    }>;
+}
+
+interface ShareOptions {
+    imageFormat?: string;
+    imageQuality?: string;
+    overlayConfig?: OverlayConfig;
+    format?: string;
+    quality?: string;
+    optimize?: boolean;
+    overlay?: OverlayConfig;
+}
+
+interface ShareResult {
+    success: boolean;
+    overlayType?: string;
+    screenshot?: ScreenshotResult;
+    method?: string;
+}
+
+interface OverlayCapabilities {
+    available: boolean;
+    types?: string[];
+    presets?: string[];
+    responsive?: boolean;
+    customizable?: boolean;
+    stats?: OverlayStats;
+}
+
+interface PresetOverlayData {
+    type: string;
+    data: any;
+}
+
+interface SocialSharingManagerInstance {
+    screenshotCapture: MockScreenshotCapture | null;
+    shareWithOverlayScreenshot(data: ShareData, type: string, overlayData: any, options?: ShareOptions): Promise<ShareResult>;
+    shareScoreWithOverlay(scoreData: ScoreOverlayData, shareData?: ShareData): Promise<ShareResult>;
+    shareAchievementWithOverlay(achievementData: AchievementOverlayData, shareData?: ShareData): Promise<ShareResult>;
+    shareCustomOverlay(customData: CustomOverlayData, shareData?: ShareData): Promise<ShareResult>;
+    shareWithPresetOverlay(preset: string, shareData: ShareData, overlayData: PresetOverlayData, options?: ShareOptions): Promise<ShareResult>;
+    shareWithResponsiveOverlay(shareData: ShareData, type: string, overlayData: any): Promise<ShareResult>;
+    getOverlayCapabilities(): OverlayCapabilities;
+    shareWithScreenshot?: jest.Mock<Promise<ShareResult>>;
+    initialize(): Promise<void>;
+    cleanup(): void;
+}
+
+interface SocialSharingManagerConstructor {
+    new (gameEngine: MockGameEngine): SocialSharingManagerInstance;
+}
+
 describe('SocialSharing Overlay Integration', () => {
-    let socialSharingManager;
-    let mockGameEngine;
-    let mockScreenshotCapture;
-    let mockScreenshotOverlay;
+    let socialSharingManager: SocialSharingManagerInstance;
+    let mockGameEngine: MockGameEngine;
+    let mockScreenshotCapture: MockScreenshotCapture;
+    let mockScreenshotOverlay: MockScreenshotOverlay;
     
     beforeEach(async () => {
         // ScreenshotOverlayのモック
         mockScreenshotOverlay = {
-            createScoreOverlay: jest.fn().mockResolvedValue({
+            createScoreOverlay: jest.fn<Promise<MockCanvas>>().mockResolvedValue({
                 width: 800,
                 height: 600,
-                getContext: jest.fn().mockReturnValue({
+                getContext: jest.fn<MockCanvasContext>().mockReturnValue({
                     drawImage: jest.fn()
                 }),
                 remove: jest.fn()
             }),
-            createAchievementOverlay: jest.fn().mockResolvedValue({
+            createAchievementOverlay: jest.fn<Promise<MockCanvas>>().mockResolvedValue({
                 width: 800,
                 height: 600,
-                getContext: jest.fn().mockReturnValue({
+                getContext: jest.fn<MockCanvasContext>().mockReturnValue({
                     drawImage: jest.fn()
                 }),
                 remove: jest.fn()
             }),
-            createCustomOverlay: jest.fn().mockResolvedValue({
+            createCustomOverlay: jest.fn<Promise<MockCanvas>>().mockResolvedValue({
                 width: 800,
                 height: 600,
-                getContext: jest.fn().mockReturnValue({
+                getContext: jest.fn<MockCanvasContext>().mockReturnValue({
                     drawImage: jest.fn()
                 }),
                 remove: jest.fn()
             }),
-            getPresetConfig: jest.fn().mockReturnValue({
+            getPresetConfig: jest.fn<OverlayConfig>().mockReturnValue({
                 score: { fontSize: 28 },
                 logo: { textColor: '#FF0000' }
             }),
-            getResponsiveConfig: jest.fn().mockReturnValue({
+            getResponsiveConfig: jest.fn<OverlayConfig>().mockReturnValue({
                 score: { fontSize: 20 },
                 layout: { scorePosition: 'top-center' }
             }),
-            getStats: jest.fn().mockReturnValue({
+            getStats: jest.fn<OverlayStats>().mockReturnValue({
                 overlaysCreated: 3,
                 averageTimeMs: 150,
                 successRate: 100
@@ -55,7 +214,7 @@ describe('SocialSharing Overlay Integration', () => {
             overlayEnabled: true,
             screenshotOverlay: mockScreenshotOverlay,
             
-            captureWithOverlay: jest.fn().mockResolvedValue({
+            captureWithOverlay: jest.fn<Promise<ScreenshotResult>>().mockResolvedValue({
                 data: new ArrayBuffer(1024),
                 blob: new Blob(['mock-overlay-screenshot'], { type: 'image/png' }),
                 url: 'blob:mock-overlay-url',
@@ -69,7 +228,7 @@ describe('SocialSharing Overlay Integration', () => {
                 optimized: false
             }),
             
-            captureWithScore: jest.fn().mockResolvedValue({
+            captureWithScore: jest.fn<Promise<ScreenshotResult>>().mockResolvedValue({
                 data: new ArrayBuffer(1024),
                 blob: new Blob(['mock-score-overlay'], { type: 'image/png' }),
                 url: 'blob:mock-score-overlay-url',
@@ -82,7 +241,7 @@ describe('SocialSharing Overlay Integration', () => {
                 hasOverlay: true
             }),
             
-            captureWithAchievement: jest.fn().mockResolvedValue({
+            captureWithAchievement: jest.fn<Promise<ScreenshotResult>>().mockResolvedValue({
                 data: new ArrayBuffer(1024),
                 blob: new Blob(['mock-achievement-overlay'], { type: 'image/png' }),
                 url: 'blob:mock-achievement-overlay-url',
@@ -95,7 +254,7 @@ describe('SocialSharing Overlay Integration', () => {
                 hasOverlay: true
             }),
             
-            captureWithCustomOverlay: jest.fn().mockResolvedValue({
+            captureWithCustomOverlay: jest.fn<Promise<ScreenshotResult>>().mockResolvedValue({
                 data: new ArrayBuffer(1024),
                 blob: new Blob(['mock-custom-overlay'], { type: 'image/png' }),
                 url: 'blob:mock-custom-overlay-url',
@@ -108,8 +267,8 @@ describe('SocialSharing Overlay Integration', () => {
                 hasOverlay: true
             }),
             
-            generateFilename: jest.fn().mockReturnValue('mock-overlay-filename.png'),
-            getGameCanvas: jest.fn().mockReturnValue({
+            generateFilename: jest.fn<string>().mockReturnValue('mock-overlay-filename.png'),
+            getGameCanvas: jest.fn<{ width: number; height: number } | null>().mockReturnValue({
                 width: 800,
                 height: 600
             })
@@ -121,8 +280,8 @@ describe('SocialSharing Overlay Integration', () => {
                 recordSocialEvent: jest.fn()
             },
             localizationManager: {
-                getCurrentLanguage: jest.fn().mockReturnValue('ja'),
-                translate: jest.fn().mockImplementation((key) => key)
+                getCurrentLanguage: jest.fn<string>().mockReturnValue('ja'),
+                translate: jest.fn<string>().mockImplementation((key: string) => key)
             },
             seoMetaManager: {
                 updateOpenGraphTags: jest.fn()
@@ -130,11 +289,11 @@ describe('SocialSharing Overlay Integration', () => {
             on: jest.fn(),
             off: jest.fn(),
             emit: jest.fn(),
-            isDebugMode: jest.fn().mockReturnValue(false)
+            isDebugMode: jest.fn<boolean>().mockReturnValue(false)
         };
         
         // グローバルAPIのモック
-        global.navigator = {
+        (global as any).navigator = {
             share: jest.fn().mockResolvedValue(true),
             canShare: jest.fn().mockReturnValue(true),
             onLine: true,
@@ -154,10 +313,10 @@ describe('SocialSharing Overlay Integration', () => {
         window.open = jest.fn().mockReturnValue({
             closed: false,
             close: jest.fn()
-        });
+        }) as any;
         
         // SocialSharingManagerの作成
-        const { SocialSharingManager } = await import('../core/SocialSharingManager.js');
+        const { SocialSharingManager } = await import('../core/SocialSharingManager.js') as { SocialSharingManager: SocialSharingManagerConstructor };
         socialSharingManager = new SocialSharingManager(mockGameEngine);
         
         // ScreenshotCaptureのモック注入
@@ -173,8 +332,8 @@ describe('SocialSharing Overlay Integration', () => {
     
     describe('オーバーレイ付きスクリーンショット共有', () => {
         test('スコアオーバーレイ付き共有が動作する', async () => {
-            const shareData = { type: 'score', score: 2500 };
-            const overlayData = { score: 2500, combo: 15, accuracy: 0.92 };
+            const shareData: ShareData = { type: 'score', score: 2500 };
+            const overlayData: ScoreOverlayData = { score: 2500, combo: 15, accuracy: 0.92 };
             
             const result = await socialSharingManager.shareWithOverlayScreenshot(
                 shareData, 'score', overlayData
@@ -191,12 +350,12 @@ describe('SocialSharing Overlay Integration', () => {
             
             expect(result.success).toBe(true);
             expect(result.overlayType).toBe('score');
-            expect(result.screenshot.hasOverlay).toBe(true);
+            expect(result.screenshot?.hasOverlay).toBe(true);
         });
         
         test('実績オーバーレイ付き共有が動作する', async () => {
-            const shareData = { type: 'achievement', name: 'マスター実績' };
-            const overlayData = { 
+            const shareData: ShareData = { type: 'achievement', name: 'マスター実績' };
+            const overlayData: AchievementOverlayData = { 
                 name: 'マスター実績', 
                 description: '全ステージクリア',
                 rarity: 'legendary'
@@ -214,12 +373,12 @@ describe('SocialSharing Overlay Integration', () => {
             );
             
             expect(result.overlayType).toBe('achievement');
-            expect(result.screenshot.hasOverlay).toBe(true);
+            expect(result.screenshot?.hasOverlay).toBe(true);
         });
         
         test('カスタムオーバーレイ付き共有が動作する', async () => {
-            const shareData = { type: 'custom' };
-            const overlayData = {
+            const shareData: ShareData = { type: 'custom' };
+            const overlayData: CustomOverlayData = {
                 elements: [
                     { type: 'text', text: 'カスタムテキスト', position: { x: 100, y: 100 } }
                 ]
@@ -235,13 +394,13 @@ describe('SocialSharing Overlay Integration', () => {
             );
             
             expect(result.overlayType).toBe('custom');
-            expect(result.screenshot.hasOverlay).toBe(true);
+            expect(result.screenshot?.hasOverlay).toBe(true);
         });
         
         test('カスタム画像設定でのオーバーレイ共有', async () => {
-            const shareData = { type: 'score', score: 1800 };
-            const overlayData = { score: 1800 };
-            const options = {
+            const shareData: ShareData = { type: 'score', score: 1800 };
+            const overlayData: ScoreOverlayData = { score: 1800 };
+            const options: ShareOptions = {
                 imageFormat: 'jpeg',
                 imageQuality: 'medium',
                 overlayConfig: {
@@ -266,8 +425,8 @@ describe('SocialSharing Overlay Integration', () => {
     
     describe('便利メソッド', () => {
         test('スコアオーバーレイ専用メソッドが動作する', async () => {
-            const scoreData = { score: 3000, combo: 20 };
-            const shareData = { type: 'score', score: 3000 };
+            const scoreData: ScoreOverlayData = { score: 3000, combo: 20 };
+            const shareData: ShareData = { type: 'score', score: 3000 };
             
             const result = await socialSharingManager.shareScoreWithOverlay(scoreData, shareData);
             
@@ -279,8 +438,8 @@ describe('SocialSharing Overlay Integration', () => {
         });
         
         test('実績オーバーレイ専用メソッドが動作する', async () => {
-            const achievementData = { name: 'エキスパート', description: 'すべての実績を解除' };
-            const shareData = { type: 'achievement', name: 'エキスパート' };
+            const achievementData: AchievementOverlayData = { name: 'エキスパート', description: 'すべての実績を解除' };
+            const shareData: ShareData = { type: 'achievement', name: 'エキスパート' };
             
             const result = await socialSharingManager.shareAchievementWithOverlay(achievementData, shareData);
             
@@ -292,8 +451,8 @@ describe('SocialSharing Overlay Integration', () => {
         });
         
         test('カスタムオーバーレイ専用メソッドが動作する', async () => {
-            const customData = { elements: [{ type: 'text', text: 'テスト' }] };
-            const shareData = { type: 'custom' };
+            const customData: CustomOverlayData = { elements: [{ type: 'text', text: 'テスト', position: { x: 0, y: 0 } }] };
+            const shareData: ShareData = { type: 'custom' };
             
             const result = await socialSharingManager.shareCustomOverlay(customData, shareData);
             
@@ -305,7 +464,7 @@ describe('SocialSharing Overlay Integration', () => {
         });
         
         test('shareDataが省略された場合のデフォルト値', async () => {
-            const scoreData = { score: 1500 };
+            const scoreData: ScoreOverlayData = { score: 1500 };
             
             const result = await socialSharingManager.shareScoreWithOverlay(scoreData);
             
@@ -317,8 +476,8 @@ describe('SocialSharing Overlay Integration', () => {
     
     describe('プリセット機能', () => {
         test('プリセットオーバーレイ共有が動作する', async () => {
-            const shareData = { type: 'score', score: 2200 };
-            const overlayData = { type: 'score', data: { score: 2200 } };
+            const shareData: ShareData = { type: 'score', score: 2200 };
+            const overlayData: PresetOverlayData = { type: 'score', data: { score: 2200 } };
             
             const result = await socialSharingManager.shareWithPresetOverlay(
                 'gaming', shareData, overlayData
@@ -329,9 +488,9 @@ describe('SocialSharing Overlay Integration', () => {
         });
         
         test('プリセット設定がオプションにマージされる', async () => {
-            const shareData = { type: 'score', score: 1000 };
-            const overlayData = { type: 'score', data: { score: 1000 } };
-            const options = {
+            const shareData: ShareData = { type: 'score', score: 1000 };
+            const overlayData: PresetOverlayData = { type: 'score', data: { score: 1000 } };
+            const options: ShareOptions = {
                 overlayConfig: { logo: { enabled: false } }
             };
             
@@ -346,8 +505,8 @@ describe('SocialSharing Overlay Integration', () => {
     
     describe('レスポンシブ機能', () => {
         test('レスポンシブオーバーレイ共有が動作する', async () => {
-            const shareData = { type: 'score', score: 1600 };
-            const overlayData = { score: 1600 };
+            const shareData: ShareData = { type: 'score', score: 1600 };
+            const overlayData: ScoreOverlayData = { score: 1600 };
             
             const result = await socialSharingManager.shareWithResponsiveOverlay(
                 shareData, 'score', overlayData
@@ -361,8 +520,8 @@ describe('SocialSharing Overlay Integration', () => {
         test('Canvas取得失敗時もレスポンシブ共有が動作する', async () => {
             mockScreenshotCapture.getGameCanvas.mockReturnValue(null);
             
-            const shareData = { type: 'score', score: 1400 };
-            const overlayData = { score: 1400 };
+            const shareData: ShareData = { type: 'score', score: 1400 };
+            const overlayData: ScoreOverlayData = { score: 1400 };
             
             const result = await socialSharingManager.shareWithResponsiveOverlay(
                 shareData, 'score', overlayData
@@ -376,8 +535,8 @@ describe('SocialSharing Overlay Integration', () => {
     
     describe('統計記録', () => {
         test('オーバーレイスクリーンショット作成統計が記録される', async () => {
-            const shareData = { type: 'score', score: 2800 };
-            const overlayData = { score: 2800 };
+            const shareData: ShareData = { type: 'score', score: 2800 };
+            const overlayData: ScoreOverlayData = { score: 2800 };
             
             await socialSharingManager.shareWithOverlayScreenshot(shareData, 'score', overlayData);
             
@@ -459,7 +618,7 @@ describe('SocialSharing Overlay Integration', () => {
     
     describe('エラーハンドリング', () => {
         test('未対応オーバーレイタイプでエラーが処理される', async () => {
-            const shareData = { type: 'score', score: 1200 };
+            const shareData: ShareData = { type: 'score', score: 1200 };
             
             await expect(socialSharingManager.shareWithOverlayScreenshot(
                 shareData, 'unsupported', {}
@@ -470,12 +629,12 @@ describe('SocialSharing Overlay Integration', () => {
             mockScreenshotCapture.captureWithScore.mockRejectedValue(new Error('Overlay failed'));
             
             // shareWithScreenshot メソッドのモック
-            socialSharingManager.shareWithScreenshot = jest.fn().mockResolvedValue({
+            socialSharingManager.shareWithScreenshot = jest.fn<Promise<ShareResult>>().mockResolvedValue({
                 success: true,
                 method: 'fallback'
             });
             
-            const shareData = { type: 'score', score: 1500 };
+            const shareData: ShareData = { type: 'score', score: 1500 };
             const result = await socialSharingManager.shareScoreWithOverlay({ score: 1500 }, shareData);
             
             expect(socialSharingManager.shareWithScreenshot).toHaveBeenCalled();
@@ -485,7 +644,7 @@ describe('SocialSharing Overlay Integration', () => {
         test('ScreenshotCapture未初期化時のエラー', async () => {
             socialSharingManager.screenshotCapture = null;
             
-            const shareData = { type: 'score', score: 1000 };
+            const shareData: ShareData = { type: 'score', score: 1000 };
             
             await expect(socialSharingManager.shareWithOverlayScreenshot(
                 shareData, 'score', { score: 1000 }
@@ -494,16 +653,19 @@ describe('SocialSharing Overlay Integration', () => {
         
         test('オーバーレイ無効時は通常のキャプチャが実行される', async () => {
             mockScreenshotCapture.overlayEnabled = false;
-            mockScreenshotCapture.captureGameCanvas = jest.fn().mockResolvedValue({
+            mockScreenshotCapture.captureGameCanvas = jest.fn<Promise<ScreenshotResult>>().mockResolvedValue({
                 data: new ArrayBuffer(1024),
                 blob: new Blob(['normal-screenshot'], { type: 'image/png' }),
                 url: 'blob:normal-url',
                 format: 'png',
                 size: 1024 * 100,
+                width: 800,
+                height: 600,
+                filename: 'normal.png',
                 hasOverlay: false
             });
             
-            const shareData = { type: 'score', score: 1300 };
+            const shareData: ShareData = { type: 'score', score: 1300 };
             const result = await socialSharingManager.shareScoreWithOverlay({ score: 1300 }, shareData);
             
             expect(mockScreenshotCapture.captureGameCanvas).toHaveBeenCalled();
@@ -513,7 +675,7 @@ describe('SocialSharing Overlay Integration', () => {
     
     describe('パフォーマンス', () => {
         test('複数回のオーバーレイ共有のパフォーマンス', async () => {
-            const shareData = { type: 'score', score: 1000 };
+            const shareData: ShareData = { type: 'score', score: 1000 };
             
             // 複数回実行
             await socialSharingManager.shareScoreWithOverlay({ score: 1000 }, shareData);
@@ -525,7 +687,7 @@ describe('SocialSharing Overlay Integration', () => {
         });
         
         test('大きなオーバーレイデータの処理', async () => {
-            const largeCustomData = {
+            const largeCustomData: CustomOverlayData = {
                 elements: Array.from({ length: 50 }, (_, i) => ({
                     type: 'text',
                     text: `要素${i}`,
@@ -533,7 +695,7 @@ describe('SocialSharing Overlay Integration', () => {
                 }))
             };
             
-            const shareData = { type: 'custom' };
+            const shareData: ShareData = { type: 'custom' };
             const result = await socialSharingManager.shareCustomOverlay(largeCustomData, shareData);
             
             expect(result.overlayType).toBe('custom');

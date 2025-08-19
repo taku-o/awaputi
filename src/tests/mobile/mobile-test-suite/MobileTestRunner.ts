@@ -3,8 +3,79 @@
  * モバイルテスト実行専用クラス
  */
 
+// Type definitions
+interface ExecutionConfig {
+    timeout: number;
+    retries: number;
+    concurrent: boolean;
+    parallelLimit: number;
+}
+
+interface ExecutionState {
+    isRunning: boolean;
+    currentSuite: string | null;
+    currentTest: string | null;
+    startTime: number | null;
+    abortController: AbortController | null;
+}
+
+interface ExecutionStats {
+    totalTestsRun: number;
+    averageTestTime: number;
+    suitesExecuted: number;
+    timeouts: number;
+    retries: number;
+}
+
+interface TestFunction {
+    name: string;
+    run: (context?: TestContext) => Promise<TestResult>;
+    setup?: (context: TestContext) => Promise<void>;
+    cleanup?: (context: TestContext) => Promise<void>;
+    errorCleanup?: (context: TestContext, error: Error) => Promise<void>;
+}
+
+interface TestResult {
+    passed: boolean;
+    performance?: Record<string, any>;
+    error?: Error;
+}
+
+interface TestContext {
+    testSuite: any;
+    deviceSimulator: any;
+    utils: any;
+    startTime: number;
+}
+
+interface TestSuiteInterface {
+    getTests(): TestFunction[];
+}
+
+interface ExecutionStateWithStats {
+    isRunning: boolean;
+    currentSuite: string | null;
+    currentTest: string | null;
+    startTime: number | null;
+    abortController: AbortController | null;
+    stats: ExecutionStats;
+    duration: number;
+}
+
+interface DebugInfo {
+    config: ExecutionConfig;
+    state: ExecutionState;
+    stats: ExecutionStats;
+    isRunning: boolean;
+}
+
 export class MobileTestRunner {
-    constructor(mobileTestSuite) {
+    private mobileTestSuite: any; // MobileTestSuite type would create circular dependency
+    private executionConfig: ExecutionConfig;
+    private executionState: ExecutionState;
+    private executionStats: ExecutionStats;
+
+    constructor(mobileTestSuite: any) {
         this.mobileTestSuite = mobileTestSuite;
         
         // 実行設定
@@ -37,7 +108,7 @@ export class MobileTestRunner {
     /**
      * 全テスト実行
      */
-    async runAllTests() {
+    async runAllTests(): Promise<any> {
         console.log('[MobileTestRunner] 全テスト実行開始');
         
         if (this.executionState.isRunning) {
@@ -69,7 +140,7 @@ export class MobileTestRunner {
     /**
      * 個別テストスイート実行
      */
-    async runTestSuite(suiteName, suite) {
+    async runTestSuite(suiteName: string, suite: TestSuiteInterface): Promise<void> {
         console.log(`[MobileTestRunner] ${suiteName} テスト実行開始`);
         
         this.executionState.currentSuite = suiteName;
@@ -97,7 +168,7 @@ export class MobileTestRunner {
     /**
      * 順次テスト実行
      */
-    async runTestsSequentially(suiteName, tests) {
+    private async runTestsSequentially(suiteName: string, tests: TestFunction[]): Promise<void> {
         for (const test of tests) {
             if (this.isExecutionAborted()) {
                 throw new Error('Test execution aborted');
@@ -110,7 +181,7 @@ export class MobileTestRunner {
     /**
      * 並行テスト実行
      */
-    async runTestsConcurrently(suiteName, tests) {
+    private async runTestsConcurrently(suiteName: string, tests: TestFunction[]): Promise<void> {
         const chunks = this.chunkArray(tests, this.executionConfig.parallelLimit);
         
         for (const chunk of chunks) {
@@ -126,7 +197,7 @@ export class MobileTestRunner {
     /**
      * 単一テスト実行
      */
-    async runSingleTest(suiteName, test) {
+    private async runSingleTest(suiteName: string, test: TestFunction): Promise<TestResult> {
         this.executionState.currentTest = test.name;
         
         let retries = this.executionConfig.retries;
@@ -164,7 +235,7 @@ export class MobileTestRunner {
                 retries--;
                 this.executionStats.retries++;
                 
-                if (error.message === 'Test timeout') {
+                if ((error as Error).message === 'Test timeout') {
                     this.executionStats.timeouts++;
                 }
                 
@@ -180,13 +251,16 @@ export class MobileTestRunner {
         }
         
         this.executionState.currentTest = null;
+        
+        // This should never be reached, but TypeScript requires a return
+        throw new Error('Unexpected execution path');
     }
     
     /**
      * コンテキスト付きテスト実行
      */
-    async executeTestWithContext(test) {
-        const context = {
+    private async executeTestWithContext(test: TestFunction): Promise<TestResult> {
+        const context: TestContext = {
             testSuite: this.mobileTestSuite,
             deviceSimulator: this.mobileTestSuite.deviceSimulator,
             utils: this.mobileTestSuite.utils,
@@ -207,7 +281,7 @@ export class MobileTestRunner {
             
         } catch (error) {
             // エラー時のクリーンアップ
-            await this.errorTestCleanup(test, context, error);
+            await this.errorTestCleanup(test, context, error as Error);
             throw error;
         }
     }
@@ -215,7 +289,7 @@ export class MobileTestRunner {
     /**
      * テスト前セットアップ
      */
-    async preTestSetup(test, context) {
+    private async preTestSetup(test: TestFunction, context: TestContext): Promise<void> {
         // テスト固有の環境セットアップ
         if (test.setup && typeof test.setup === 'function') {
             await test.setup(context);
@@ -230,7 +304,7 @@ export class MobileTestRunner {
     /**
      * テスト後クリーンアップ
      */
-    async postTestCleanup(test, context) {
+    private async postTestCleanup(test: TestFunction, context: TestContext): Promise<void> {
         // テスト固有のクリーンアップ
         if (test.cleanup && typeof test.cleanup === 'function') {
             await test.cleanup(context);
@@ -240,7 +314,7 @@ export class MobileTestRunner {
     /**
      * エラー時クリーンアップ
      */
-    async errorTestCleanup(test, context, error) {
+    private async errorTestCleanup(test: TestFunction, context: TestContext, error: Error): Promise<void> {
         try {
             // エラー時の緊急クリーンアップ
             if (test.errorCleanup && typeof test.errorCleanup === 'function') {
@@ -260,7 +334,7 @@ export class MobileTestRunner {
     /**
      * タイムアウトPromise作成
      */
-    createTimeoutPromise() {
+    private createTimeoutPromise(): Promise<never> {
         return new Promise((_, reject) => {
             setTimeout(() => {
                 reject(new Error('Test timeout'));
@@ -271,7 +345,7 @@ export class MobileTestRunner {
     /**
      * 特定テストスイート実行
      */
-    async runSpecificSuite(suiteName) {
+    async runSpecificSuite(suiteName: string): Promise<any> {
         const suite = this.mobileTestSuite.testSuites.get(suiteName);
         if (!suite) {
             throw new Error(`Test suite '${suiteName}' not found`);
@@ -298,7 +372,7 @@ export class MobileTestRunner {
     /**
      * 特定テスト実行
      */
-    async runSpecificTest(suiteName, testName) {
+    async runSpecificTest(suiteName: string, testName: string): Promise<any> {
         const suite = this.mobileTestSuite.testSuites.get(suiteName);
         if (!suite) {
             throw new Error(`Test suite '${suiteName}' not found`);
@@ -331,7 +405,7 @@ export class MobileTestRunner {
     /**
      * テスト実行中断
      */
-    abortTests() {
+    abortTests(): boolean {
         if (!this.executionState.isRunning) {
             return false;
         }
@@ -349,7 +423,7 @@ export class MobileTestRunner {
     /**
      * 実行開始処理
      */
-    startExecution() {
+    private startExecution(): void {
         this.executionState.isRunning = true;
         this.executionState.startTime = Date.now();
         this.executionState.abortController = new AbortController();
@@ -367,20 +441,20 @@ export class MobileTestRunner {
     /**
      * 実行完了処理
      */
-    completeExecution() {
+    private completeExecution(): void {
         this.executionState.isRunning = false;
         this.executionState.currentSuite = null;
         this.executionState.currentTest = null;
         this.executionState.abortController = null;
         
-        const duration = Date.now() - this.executionState.startTime;
+        const duration = this.executionState.startTime ? Date.now() - this.executionState.startTime : 0;
         console.log(`[MobileTestRunner] 実行完了 (${duration}ms)`);
     }
     
     /**
      * 実行中断処理
      */
-    abortExecution() {
+    private abortExecution(): void {
         this.executionState.isRunning = false;
         this.executionState.currentSuite = null;
         this.executionState.currentTest = null;
@@ -390,14 +464,14 @@ export class MobileTestRunner {
     /**
      * 実行中断チェック
      */
-    isExecutionAborted() {
+    private isExecutionAborted(): boolean {
         return this.executionState.abortController?.signal.aborted || false;
     }
     
     /**
      * 実行統計更新
      */
-    updateExecutionStats(testDuration) {
+    private updateExecutionStats(testDuration: number): void {
         this.executionStats.totalTestsRun++;
         
         // 平均テスト時間の更新
@@ -408,7 +482,7 @@ export class MobileTestRunner {
     /**
      * 実行状態取得
      */
-    getExecutionState() {
+    getExecutionState(): ExecutionStateWithStats {
         return {
             ...this.executionState,
             stats: { ...this.executionStats },
@@ -420,15 +494,15 @@ export class MobileTestRunner {
     /**
      * 設定更新
      */
-    updateConfig(newConfig) {
+    updateConfig(newConfig: Partial<ExecutionConfig>): void {
         Object.assign(this.executionConfig, newConfig);
     }
     
     /**
      * 配列チャンク化
      */
-    chunkArray(array, chunkSize) {
-        const chunks = [];
+    private chunkArray<T>(array: T[], chunkSize: number): T[][] {
+        const chunks: T[][] = [];
         for (let i = 0; i < array.length; i += chunkSize) {
             chunks.push(array.slice(i, i + chunkSize));
         }
@@ -438,14 +512,14 @@ export class MobileTestRunner {
     /**
      * 待機ユーティリティ
      */
-    wait(ms) {
+    private wait(ms: number): Promise<void> {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
     
     /**
      * デバッグ情報取得
      */
-    getDebugInfo() {
+    getDebugInfo(): DebugInfo {
         return {
             config: this.executionConfig,
             state: this.executionState,

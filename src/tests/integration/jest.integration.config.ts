@@ -3,13 +3,15 @@
  * Issue #37 Task 21: 統合テスト実装
  */
 
-export default {
+import type { Config } from 'jest';
+
+const config: Config = {
     // テスト環境
     testEnvironment: 'jsdom',
     
     // テストファイルのパターン
     testMatch: [
-        '**/src/tests/integration/**/*.test.js'
+        '**/src/tests/integration/**/*.test.ts'
     ],
     
     // モジュール解決
@@ -19,36 +21,36 @@ export default {
     },
     
     // ES6モジュールサポート
-    extensionsToTreatAsEsm: ['.js'],
+    extensionsToTreatAsEsm: ['.ts'],
     
     // トランスフォーム設定
     transform: {
-        '^.+\\.js$': ['babel-jest', {
-            presets: [
-                ['@babel/preset-env', {
-                    targets: { node: 'current' },
-                    modules: false
-                }]
-            ]
+        '^.+\\.ts$': ['ts-jest', {
+            useESM: true,
+            tsconfig: {
+                target: 'esnext',
+                module: 'esnext',
+                moduleResolution: 'node'
+            }
         }]
     },
     
     // セットアップファイル
     setupFilesAfterEnv: [
-        '<rootDir>/src/tests/integration/setup.js'
+        '<rootDir>/src/tests/integration/setup.ts'
     ],
     
     // カバレッジ設定
     collectCoverage: true,
     collectCoverageFrom: [
-        'src/core/SocialSharingManager.js',
-        'src/core/ShareContentGenerator.js',
-        'src/core/ShareButton.js',
-        'src/core/ShareDialog.js',
-        'src/core/LeaderboardManager.js',
-        'src/core/ChallengeSystem.js',
-        'src/ui/components/LeaderboardUI.js',
-        'src/scenes/components/ChallengesTab.js',
+        'src/core/SocialSharingManager.ts',
+        'src/core/ShareContentGenerator.ts',
+        'src/core/ShareButton.ts',
+        'src/core/ShareDialog.ts',
+        'src/core/LeaderboardManager.ts',
+        'src/core/ChallengeSystem.ts',
+        'src/ui/components/LeaderboardUI.ts',
+        'src/scenes/components/ChallengesTab.ts',
         '!src/tests/**'
     ],
     
@@ -125,3 +127,5 @@ export default {
         }]
     ]
 };
+
+export default config;

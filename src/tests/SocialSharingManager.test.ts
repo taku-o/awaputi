@@ -2,9 +2,130 @@
  * SocialSharingManager 基盤テスト
  */
 
+import { jest } from '@jest/globals';
+
+// Mock interfaces
+interface MockStatisticsManager {
+    recordSocialEvent: jest.Mock;
+}
+
+interface MockAchievementManager {
+    getAchievements: jest.Mock;
+}
+
+interface MockLocalizationManager {
+    translate: jest.Mock<string>;
+}
+
+interface MockGameEngine {
+    statisticsManager: MockStatisticsManager;
+    achievementManager: MockAchievementManager;
+    localizationManager: MockLocalizationManager;
+    on: jest.Mock;
+    off: jest.Mock;
+    emit: jest.Mock;
+    isDebugMode: jest.Mock<boolean>;
+}
+
+interface MockLocalStorage {
+    getItem: jest.Mock<string | null>;
+    setItem: jest.Mock;
+    removeItem: jest.Mock;
+}
+
+interface ShareSettings {
+    enabled: boolean;
+    autoPrompt: boolean;
+    shareOnHighScore: boolean;
+}
+
+interface PerformanceStats {
+    shareRequests: number;
+    successfulShares: number;
+    failedShares: number;
+}
+
+interface GameData {
+    score: number;
+    isHighScore: boolean;
+    stage: string;
+}
+
+interface ScoreData {
+    score: number;
+    stage: string;
+}
+
+interface AchievementData {
+    id: string;
+    name: string;
+    description?: string;
+}
+
+interface ShareResult {
+    type: string;
+    content: {
+        score?: number;
+        message: string;
+        achievement?: AchievementData;
+    };
+    metadata: {
+        platform?: string;
+        language?: string;
+        isFallback?: boolean;
+    };
+}
+
+interface DebugInfo {
+    settings: ShareSettings;
+    performanceStats: PerformanceStats & { successRate?: number };
+    systemIntegration: {
+        gameEngine: boolean;
+        statisticsManager: boolean;
+        achievementManager: boolean;
+        localizationManager: boolean;
+    };
+    platform: string;
+    onlineStatus: boolean;
+}
+
+interface MockShareContentGenerator {
+    generateScoreMessage?: jest.Mock;
+    generateAchievementMessage?: jest.Mock;
+}
+
+interface SocialSharingManagerInstance {
+    gameEngine: MockGameEngine;
+    settings: ShareSettings;
+    performanceStats: PerformanceStats;
+    statisticsManager?: MockStatisticsManager;
+    achievementManager?: MockAchievementManager;
+    localizationManager?: MockLocalizationManager;
+    shareContentGenerator: MockShareContentGenerator | null;
+    initialize(): Promise<void>;
+    loadSettings(): Promise<void>;
+    saveSettings(): Promise<void>;
+    updateSettings(settings: Partial<ShareSettings>): void;
+    onGameEnd(data: GameData): Promise<void>;
+    onHighScore(data: ScoreData): Promise<ShareResult>;
+    onAchievementUnlocked(data: AchievementData): Promise<ShareResult>;
+    promptShareScore(data: ScoreData): Promise<ShareResult>;
+    promptShareAchievement(data: AchievementData): Promise<ShareResult>;
+    getShareUrl(data: ScoreData): string;
+    detectPlatform(): string;
+    handleError(code: string, error: Error): void;
+    getPerformanceStats(): PerformanceStats & { successRate: number };
+    getDebugInfo(): DebugInfo;
+    cleanup(): void;
+}
+
+interface SocialSharingManagerConstructor {
+    new (gameEngine: MockGameEngine): SocialSharingManagerInstance;
+}
+
 describe('SocialSharingManager', () => {
-    let gameEngine;
-    let socialSharingManager;
+    let gameEngine: MockGameEngine;
+    let socialSharingManager: SocialSharingManagerInstance;
     
     beforeEach(() => {
         // モックGameEngineの作成
@@ -16,21 +137,21 @@ describe('SocialSharingManager', () => {
                 getAchievements: jest.fn()
             },
             localizationManager: {
-                translate: jest.fn().mockReturnValue('test message')
+                translate: jest.fn<string>().mockReturnValue('test message')
             },
             on: jest.fn(),
             off: jest.fn(),
             emit: jest.fn(),
-            isDebugMode: jest.fn().mockReturnValue(false)
+            isDebugMode: jest.fn<boolean>().mockReturnValue(false)
         };
         
         // LocalStorageのモック
         Object.defineProperty(window, 'localStorage', {
             value: {
-                getItem: jest.fn(),
+                getItem: jest.fn<string | null>(),
                 setItem: jest.fn(),
                 removeItem: jest.fn()
-            }
+            } as MockLocalStorage
         });
         
         // Navigatorのモック
@@ -54,7 +175,7 @@ describe('SocialSharingManager', () => {
     
     describe('初期化', () => {
         test('正常に初期化される', async () => {
-            const { SocialSharingManager } = await import('../core/SocialSharingManager.js');
+            const { SocialSharingManager } = await import('../core/SocialSharingManager.js') as { SocialSharingManager: SocialSharingManagerConstructor };
             socialSharingManager = new SocialSharingManager(gameEngine);
             
             expect(socialSharingManager.gameEngine).toBe(gameEngine);
@@ -63,7 +184,7 @@ describe('SocialSharingManager', () => {
         });
         
         test('既存システムとの連携が設定される', async () => {
-            const { SocialSharingManager } = await import('../core/SocialSharingManager.js');
+            const { SocialSharingManager } = await import('../core/SocialSharingManager.js') as { SocialSharingManager: SocialSharingManagerConstructor };
             socialSharingManager = new SocialSharingManager(gameEngine);
             await socialSharingManager.initialize();
             
@@ -74,7 +195,7 @@ describe('SocialSharingManager', () => {
         });
         
         test('GameEngineイベントリスナーが設定される', async () => {
-            const { SocialSharingManager } = await import('../core/SocialSharingManager.js');
+            const { SocialSharingManager } = await import('../core/SocialSharingManager.js') as { SocialSharingManager: SocialSharingManagerConstructor };
             socialSharingManager = new SocialSharingManager(gameEngine);
             await socialSharingManager.initialize();
             
@@ -86,13 +207,13 @@ describe('SocialSharingManager', () => {
     
     describe('設定管理', () => {
         beforeEach(async () => {
-            const { SocialSharingManager } = await import('../core/SocialSharingManager.js');
+            const { SocialSharingManager } = await import('../core/SocialSharingManager.js') as { SocialSharingManager: SocialSharingManagerConstructor };
             socialSharingManager = new SocialSharingManager(gameEngine);
         });
         
         test('設定の読み込み', async () => {
             const savedSettings = JSON.stringify({ autoPrompt: false });
-            window.localStorage.getItem.mockReturnValue(savedSettings);
+            (window.localStorage as unknown as MockLocalStorage).getItem.mockReturnValue(savedSettings);
             
             await socialSharingManager.loadSettings();
             
@@ -110,7 +231,7 @@ describe('SocialSharingManager', () => {
         });
         
         test('設定の更新', () => {
-            const newSettings = { shareOnHighScore: false };
+            const newSettings: Partial<ShareSettings> = { shareOnHighScore: false };
             socialSharingManager.updateSettings(newSettings);
             
             expect(socialSharingManager.settings.shareOnHighScore).toBe(false);
@@ -119,12 +240,12 @@ describe('SocialSharingManager', () => {
     
     describe('イベント処理', () => {
         beforeEach(async () => {
-            const { SocialSharingManager } = await import('../core/SocialSharingManager.js');
+            const { SocialSharingManager } = await import('../core/SocialSharingManager.js') as { SocialSharingManager: SocialSharingManagerConstructor };
             socialSharingManager = new SocialSharingManager(gameEngine);
         });
         
         test('ゲーム終了時の処理', async () => {
-            const gameData = { 
+            const gameData: GameData = { 
                 score: 1000, 
                 isHighScore: true,
                 stage: 'normal'
@@ -145,7 +266,7 @@ describe('SocialSharingManager', () => {
         test('ハイスコア達成時の処理', async () => {
             await socialSharingManager.initialize();
             
-            const scoreData = { 
+            const scoreData: ScoreData = { 
                 score: 2000, 
                 stage: 'hard' 
             };
@@ -161,7 +282,7 @@ describe('SocialSharingManager', () => {
         test('実績解除時の処理', async () => {
             await socialSharingManager.initialize();
             
-            const achievementData = { 
+            const achievementData: AchievementData = { 
                 id: 'first_100', 
                 name: '初回100点達成' 
             };
@@ -177,13 +298,13 @@ describe('SocialSharingManager', () => {
     
     describe('ShareContentGenerator統合', () => {
         beforeEach(async () => {
-            const { SocialSharingManager } = await import('../core/SocialSharingManager.js');
+            const { SocialSharingManager } = await import('../core/SocialSharingManager.js') as { SocialSharingManager: SocialSharingManagerConstructor };
             socialSharingManager = new SocialSharingManager(gameEngine);
             await socialSharingManager.initialize();
         });
         
         test('スコアメッセージが正しく生成される', async () => {
-            const scoreData = { score: 1500, stage: 'normal' };
+            const scoreData: ScoreData = { score: 1500, stage: 'normal' };
             const result = await socialSharingManager.promptShareScore(scoreData);
             
             expect(result.content.message).toContain('1,500');
@@ -192,7 +313,7 @@ describe('SocialSharingManager', () => {
         });
         
         test('実績メッセージが正しく生成される', async () => {
-            const achievementData = { 
+            const achievementData: AchievementData = { 
                 id: 'combo_master', 
                 name: 'コンボマスター',
                 description: '10連続コンボ達成'
@@ -204,7 +325,7 @@ describe('SocialSharingManager', () => {
         });
         
         test('共有URLが正しく生成される', () => {
-            const scoreData = { score: 1000, stage: 'normal' };
+            const scoreData: ScoreData = { score: 1000, stage: 'normal' };
             const url = socialSharingManager.getShareUrl(scoreData);
             
             expect(url).toContain('score=1000');
@@ -216,7 +337,7 @@ describe('SocialSharingManager', () => {
             // ShareContentGeneratorを無効化
             socialSharingManager.shareContentGenerator = null;
             
-            const scoreData = { score: 1000 };
+            const scoreData: ScoreData = { score: 1000, stage: 'normal' };
             const result = await socialSharingManager.promptShareScore(scoreData);
             
             expect(result.metadata.isFallback).toBe(true);
@@ -226,7 +347,7 @@ describe('SocialSharingManager', () => {
     
     describe('プラットフォーム検出', () => {
         beforeEach(async () => {
-            const { SocialSharingManager } = await import('../core/SocialSharingManager.js');
+            const { SocialSharingManager } = await import('../core/SocialSharingManager.js') as { SocialSharingManager: SocialSharingManagerConstructor };
             socialSharingManager = new SocialSharingManager(gameEngine);
         });
         
@@ -258,7 +379,7 @@ describe('SocialSharingManager', () => {
     
     describe('エラーハンドリング', () => {
         beforeEach(async () => {
-            const { SocialSharingManager } = await import('../core/SocialSharingManager.js');
+            const { SocialSharingManager } = await import('../core/SocialSharingManager.js') as { SocialSharingManager: SocialSharingManagerConstructor };
             socialSharingManager = new SocialSharingManager(gameEngine);
         });
         
@@ -270,7 +391,7 @@ describe('SocialSharingManager', () => {
         });
         
         test('設定読み込みエラーの処理', async () => {
-            window.localStorage.getItem.mockImplementation(() => {
+            (window.localStorage as unknown as MockLocalStorage).getItem.mockImplementation(() => {
                 throw new Error('Storage error');
             });
             
@@ -281,7 +402,7 @@ describe('SocialSharingManager', () => {
     
     describe('パフォーマンス統計', () => {
         beforeEach(async () => {
-            const { SocialSharingManager } = await import('../core/SocialSharingManager.js');
+            const { SocialSharingManager } = await import('../core/SocialSharingManager.js') as { SocialSharingManager: SocialSharingManagerConstructor };
             socialSharingManager = new SocialSharingManager(gameEngine);
         });
         
@@ -299,7 +420,7 @@ describe('SocialSharingManager', () => {
     
     describe('デバッグ機能', () => {
         beforeEach(async () => {
-            const { SocialSharingManager } = await import('../core/SocialSharingManager.js');
+            const { SocialSharingManager } = await import('../core/SocialSharingManager.js') as { SocialSharingManager: SocialSharingManagerConstructor };
             socialSharingManager = new SocialSharingManager(gameEngine);
         });
         
@@ -325,7 +446,7 @@ describe('SocialSharingManager', () => {
     
     describe('クリーンアップ', () => {
         beforeEach(async () => {
-            const { SocialSharingManager } = await import('../core/SocialSharingManager.js');
+            const { SocialSharingManager } = await import('../core/SocialSharingManager.js') as { SocialSharingManager: SocialSharingManagerConstructor };
             socialSharingManager = new SocialSharingManager(gameEngine);
         });
         
