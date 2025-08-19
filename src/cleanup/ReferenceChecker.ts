@@ -2,12 +2,29 @@ import fs from 'fs';
 import path from 'path';
 import { glob } from 'glob';
 
+interface Reference {
+    file: string;
+    line: number;
+    context: string;
+    type: 'import' | 'string';
+}
+
+export interface ReferenceResult {
+    filePath: string;
+    references: Reference[];
+    hasReferences: boolean;
+    importCount: number;
+    stringCount: number;
+}
+
 export class ReferenceChecker {
+    private searchExtensions: string[];
+
     constructor() {
         this.searchExtensions = ['.js', '.ts', '.tsx', '.jsx', '.json', '.md'];
     }
 
-    async checkImportReferences(filePath, rootPath = process.cwd()) {
+    async checkImportReferences(filePath: string, rootPath: string = process.cwd()): Promise<Reference[]> {
         const fileName = path.basename(filePath);
         const fileNameWithoutExt = path.basename(filePath, path.extname(filePath));
         const relativeFromRoot = path.relative(rootPath, filePath);
@@ -22,7 +39,7 @@ export class ReferenceChecker {
         return await this.searchPatterns(patterns, filePath, rootPath);
     }
 
-    async checkStringReferences(filePath, rootPath = process.cwd()) {
+    async checkStringReferences(filePath: string, rootPath: string = process.cwd()): Promise<Reference[]> {
         const fileName = path.basename(filePath);
         const relativeFromRoot = path.relative(rootPath, filePath);
         
@@ -34,7 +51,7 @@ export class ReferenceChecker {
         return await this.searchPatterns(patterns, filePath, rootPath);
     }
 
-    async searchPatterns(patterns, targetFile, rootPath = process.cwd()) {
+    async searchPatterns(patterns: string[], targetFile: string, rootPath: string = process.cwd()): Promise<Reference[]> {
         const allFiles = await glob('**/*', {
             cwd: rootPath,
             ignore: ['node_modules/**', '.git/**', 'dist/**', 'build/**', '*.log'],
@@ -46,7 +63,7 @@ export class ReferenceChecker {
             return this.searchExtensions.includes(ext) && file !== targetFile;
         });
 
-        const references = [];
+        const references: Reference[] = [];
 
         for (const file of searchableFiles) {
             try {
@@ -75,18 +92,18 @@ export class ReferenceChecker {
         return references;
     }
 
-    detectReferenceType(line) {
+    private detectReferenceType(line: string): 'import' | 'string' {
         if (/import.*from|require\(|import\(/.test(line)) {
             return 'import';
         }
         return 'string';
     }
 
-    excludeTargetFile(searchResults, targetFile) {
+    excludeTargetFile(searchResults: Reference[], targetFile: string): Reference[] {
         return searchResults.filter(result => result.file !== targetFile);
     }
 
-    async generateReferenceReport(filePath, rootPath = process.cwd()) {
+    async generateReferenceReport(filePath: string, rootPath: string = process.cwd()): Promise<ReferenceResult> {
         const importReferences = await this.checkImportReferences(filePath, rootPath);
         const stringReferences = await this.checkStringReferences(filePath, rootPath);
         
@@ -102,8 +119,8 @@ export class ReferenceChecker {
         };
     }
 
-    removeDuplicateReferences(references) {
-        const seen = new Set();
+    private removeDuplicateReferences(references: Reference[]): Reference[] {
+        const seen = new Set<string>();
         return references.filter(ref => {
             const key = `${ref.file}:${ref.line}:${ref.context}`;
             if (seen.has(key)) {

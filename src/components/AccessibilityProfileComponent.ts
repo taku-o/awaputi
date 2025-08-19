@@ -1,6 +1,57 @@
 import { getErrorHandler } from '../utils/ErrorHandler.js';
 import { getLocalizationManager } from '../core/LocalizationManager.js';
 
+interface AccessibilityProfile {
+    id: string;
+    name: string;
+    nameEn: string;
+    description: string;
+    descriptionEn: string;
+    icon: string;
+    settings: {
+        [key: string]: boolean;
+    };
+}
+
+interface GameEngine {
+    sceneManager?: {
+        currentScene?: {
+            accessibilitySettingsManager?: AccessibilitySettingsManager;
+        };
+    };
+    settingsManager?: SettingsManager;
+    emit?: (event: string, data: any) => void;
+}
+
+interface AccessibilitySettingsManager {
+    currentProfile?: string;
+    applyProfile?: (profileId: string, settings: any) => Promise<void>;
+    notifySettingsChanged?: () => void;
+}
+
+interface SettingsManager {
+    get: (key: string) => any;
+    set: (key: string, value: any) => void;
+    save: () => void;
+}
+
+interface ErrorHandler {
+    handleError: (error: Error, code: string, context?: any) => void;
+}
+
+interface LocalizationManager {
+    // Define methods as needed
+}
+
+type StatusType = 'info' | 'success' | 'error';
+
+interface ProfileInfo {
+    id: string;
+    name: string;
+    description: string;
+    icon: string;
+}
+
 /**
  * AccessibilityProfileComponent
  * 
@@ -17,7 +68,28 @@ import { getLocalizationManager } from '../core/LocalizationManager.js';
  * @since Issue #170 - Task 1.2: Create AccessibilityProfileComponent
  */
 export class AccessibilityProfileComponent {
-    constructor(gameEngine) {
+    private gameEngine: GameEngine;
+    private errorHandler: ErrorHandler;
+    private localizationManager: LocalizationManager;
+    private profiles: AccessibilityProfile[];
+    private currentProfile: string;
+    
+    // DOM要素
+    private container: HTMLElement | null;
+    private profileDropdown: HTMLButtonElement | null;
+    private profileDescription: HTMLElement | null;
+    private applyButton: HTMLButtonElement | null;
+    private statusIndicator: HTMLElement | null;
+    
+    // 状態管理
+    private isInitialized: boolean;
+    private isApplying: boolean;
+    private isDropdownOpen: boolean;
+    
+    // AccessibilitySettingsManagerの参照
+    private accessibilityManager: AccessibilitySettingsManager | undefined;
+
+    constructor(gameEngine: GameEngine) {
         this.gameEngine = gameEngine;
         this.errorHandler = getErrorHandler();
         this.localizationManager = getLocalizationManager();
@@ -86,13 +158,6 @@ export class AccessibilityProfileComponent {
         this.isApplying = false;
         this.isDropdownOpen = false;
         
-        // イベントハンドラーのバインド
-        this.handleProfileSelect = this.handleProfileSelect.bind(this);
-        this.handleApplyProfile = this.handleApplyProfile.bind(this);
-        this.handleKeydown = this.handleKeydown.bind(this);
-        this.handleDropdownToggle = this.handleDropdownToggle.bind(this);
-        this.handleDropdownClose = this.handleDropdownClose.bind(this);
-        
         // AccessibilitySettingsManagerの参照を取得
         this.accessibilityManager = this.gameEngine.sceneManager?.currentScene?.accessibilitySettingsManager;
         
@@ -103,7 +168,7 @@ export class AccessibilityProfileComponent {
     /**
      * 現在のプロファイルを初期化
      */
-    initializeCurrentProfile() {
+    private initializeCurrentProfile(): void {
         try {
             if (this.accessibilityManager) {
                 // AccessibilitySettingsManagerから現在のプロファイルを取得
@@ -115,7 +180,7 @@ export class AccessibilityProfileComponent {
             
             console.log('[AccessibilityProfileComponent] Initialized with profile:', this.currentProfile);
         } catch (error) {
-            this.errorHandler.handleError(error, 'ACCESSIBILITY_PROFILE_INIT_ERROR', {
+            this.errorHandler.handleError(error as Error, 'ACCESSIBILITY_PROFILE_INIT_ERROR', {
                 operation: 'initializeCurrentProfile'
             });
             this.currentProfile = 'default';
@@ -124,10 +189,10 @@ export class AccessibilityProfileComponent {
     
     /**
      * コンポーネントを初期化
-     * @param {HTMLElement} parentElement - 親要素
-     * @returns {HTMLElement} 作成されたコンテナ要素
+     * @param parentElement - 親要素
+     * @returns 作成されたコンテナ要素
      */
-    initialize(parentElement) {
+    initialize(parentElement?: HTMLElement): HTMLElement | null {
         try {
             if (this.isInitialized) {
                 console.warn('[AccessibilityProfileComponent] Already initialized');
@@ -138,7 +203,7 @@ export class AccessibilityProfileComponent {
             this.setupEventListeners();
             this.updateUI();
             
-            if (parentElement) {
+            if (parentElement && this.container) {
                 parentElement.appendChild(this.container);
             }
             
@@ -147,7 +212,7 @@ export class AccessibilityProfileComponent {
             
             return this.container;
         } catch (error) {
-            this.errorHandler.handleError(error, 'ACCESSIBILITY_PROFILE_INIT_ERROR', {
+            this.errorHandler.handleError(error as Error, 'ACCESSIBILITY_PROFILE_INIT_ERROR', {
                 operation: 'initialize'
             });
             return null;
@@ -157,7 +222,7 @@ export class AccessibilityProfileComponent {
     /**
      * DOM要素を作成
      */
-    createElements() {
+    private createElements(): void {
         // メインコンテナ
         this.container = document.createElement('div');
         this.container.className = 'accessibility-profile-component';
@@ -272,7 +337,7 @@ export class AccessibilityProfileComponent {
     /**
      * CSSスタイルを追加
      */
-    addStyles() {
+    private addStyles(): void {
         if (document.getElementById('accessibility-profile-component-styles')) {
             return; // 既に追加済み
         }
@@ -510,41 +575,47 @@ export class AccessibilityProfileComponent {
     /**
      * イベントリスナーを設定
      */
-    setupEventListeners() {
+    private setupEventListeners(): void {
+        if (!this.container || !this.profileDropdown || !this.applyButton) return;
+
         // ドロップダウンボタンのクリック
-        this.profileDropdown.addEventListener('click', this.handleDropdownToggle);
+        this.profileDropdown.addEventListener('click', this.handleDropdownToggle.bind(this));
         
         // ドロップダウンオプションのクリック
         const dropdownOptions = this.container.querySelector('.dropdown-options');
-        dropdownOptions.addEventListener('click', this.handleProfileSelect);
+        if (dropdownOptions) {
+            dropdownOptions.addEventListener('click', this.handleProfileSelect.bind(this));
+        }
         
         // 適用ボタンのクリック
-        this.applyButton.addEventListener('click', this.handleApplyProfile);
+        this.applyButton.addEventListener('click', this.handleApplyProfile.bind(this));
         
         // キーボードナビゲーション
-        this.container.addEventListener('keydown', this.handleKeydown);
+        this.container.addEventListener('keydown', this.handleKeydown.bind(this));
         
         // ドロップダウン外クリックで閉じる
-        document.addEventListener('click', this.handleDropdownClose);
+        document.addEventListener('click', this.handleDropdownClose.bind(this));
     }
     
     /**
      * ドロップダウンの開閉を処理
      */
-    handleDropdownToggle() {
+    private handleDropdownToggle(): void {
+        if (!this.container || !this.profileDropdown) return;
+
         this.isDropdownOpen = !this.isDropdownOpen;
-        const dropdownOptions = this.container.querySelector('.dropdown-options');
+        const dropdownOptions = this.container.querySelector('.dropdown-options') as HTMLElement;
         
-        if (this.isDropdownOpen) {
+        if (this.isDropdownOpen && dropdownOptions) {
             dropdownOptions.style.display = 'block';
             this.profileDropdown.setAttribute('aria-expanded', 'true');
             
             // 現在のプロファイルにフォーカス
-            const currentOption = dropdownOptions.querySelector(`[data-profile-id="${this.currentProfile}"]`);
+            const currentOption = dropdownOptions.querySelector(`[data-profile-id="${this.currentProfile}"]`) as HTMLElement;
             if (currentOption) {
                 currentOption.focus();
             }
-        } else {
+        } else if (dropdownOptions) {
             dropdownOptions.style.display = 'none';
             this.profileDropdown.setAttribute('aria-expanded', 'false');
         }
@@ -553,8 +624,9 @@ export class AccessibilityProfileComponent {
     /**
      * ドロップダウン外クリックで閉じる
      */
-    handleDropdownClose(event) {
-        if (!this.container.contains(event.target) && this.isDropdownOpen) {
+    private handleDropdownClose(event: Event): void {
+        const target = event.target as Node;
+        if (this.container && !this.container.contains(target) && this.isDropdownOpen) {
             this.handleDropdownToggle();
         }
     }
@@ -562,8 +634,9 @@ export class AccessibilityProfileComponent {
     /**
      * プロファイル選択を処理
      */
-    handleProfileSelect(event) {
-        const option = event.target.closest('.dropdown-option');
+    private handleProfileSelect(event: Event): void {
+        const target = event.target as HTMLElement;
+        const option = target.closest('.dropdown-option') as HTMLElement;
         if (!option) return;
         
         const profileId = option.getAttribute('data-profile-id');
@@ -577,7 +650,7 @@ export class AccessibilityProfileComponent {
     /**
      * プロファイルを選択
      */
-    selectProfile(profileId) {
+    private selectProfile(profileId: string): void {
         const profile = this.profiles.find(p => p.id === profileId);
         if (!profile) {
             this.showStatus('プロファイルが見つかりません', 'error');
@@ -586,7 +659,9 @@ export class AccessibilityProfileComponent {
         
         this.currentProfile = profileId;
         this.updateUI();
-        this.applyButton.disabled = false;
+        if (this.applyButton) {
+            this.applyButton.disabled = false;
+        }
         
         // ステータス表示
         this.showStatus(`${profile.name}を選択しました。適用ボタンを押してください。`, 'info');
@@ -597,8 +672,8 @@ export class AccessibilityProfileComponent {
     /**
      * プロファイルを適用
      */
-    async handleApplyProfile() {
-        if (this.isApplying) return;
+    private async handleApplyProfile(): Promise<void> {
+        if (this.isApplying || !this.applyButton) return;
         
         try {
             this.isApplying = true;
@@ -619,17 +694,19 @@ export class AccessibilityProfileComponent {
             console.log('[AccessibilityProfileComponent] Profile applied successfully:', this.currentProfile);
             
         } catch (error) {
-            this.errorHandler.handleError(error, 'ACCESSIBILITY_PROFILE_APPLY_ERROR', {
+            this.errorHandler.handleError(error as Error, 'ACCESSIBILITY_PROFILE_APPLY_ERROR', {
                 profileId: this.currentProfile
             });
             this.showStatus('プロファイルの適用に失敗しました', 'error');
-            this.applyButton.disabled = false;
+            if (this.applyButton) {
+                this.applyButton.disabled = false;
+            }
         } finally {
             this.isApplying = false;
             
             // 3秒後に適用ボタンを再度有効化
             setTimeout(() => {
-                if (!this.isApplying) {
+                if (!this.isApplying && this.applyButton) {
                     this.applyButton.disabled = false;
                 }
             }, 3000);
@@ -639,10 +716,10 @@ export class AccessibilityProfileComponent {
     /**
      * プロファイル設定を適用
      */
-    async applyProfileSettings(profile) {
+    private async applyProfileSettings(profile: AccessibilityProfile): Promise<void> {
         try {
             // AccessibilitySettingsManagerを通じて設定を適用
-            if (this.accessibilityManager) {
+            if (this.accessibilityManager && this.accessibilityManager.applyProfile) {
                 await this.accessibilityManager.applyProfile(profile.id, profile.settings);
             }
             
@@ -670,15 +747,15 @@ export class AccessibilityProfileComponent {
     /**
      * 設定更新をトリガー
      */
-    triggerSettingsUpdate() {
+    private triggerSettingsUpdate(): void {
         try {
             // AccessibilityManagerがある場合は更新を通知
-            if (this.accessibilityManager && typeof this.accessibilityManager.notifySettingsChanged === 'function') {
+            if (this.accessibilityManager && this.accessibilityManager.notifySettingsChanged) {
                 this.accessibilityManager.notifySettingsChanged();
             }
             
             // ゲームエンジンにカスタムイベントを送信
-            if (this.gameEngine && typeof this.gameEngine.emit === 'function') {
+            if (this.gameEngine.emit) {
                 this.gameEngine.emit('accessibilitySettingsChanged', {
                     profile: this.currentProfile,
                     source: 'AccessibilityProfileComponent'
@@ -686,14 +763,16 @@ export class AccessibilityProfileComponent {
             }
             
             // DOMカスタムイベントを発火
-            const event = new CustomEvent('accessibilityProfileChanged', {
-                detail: {
-                    profileId: this.currentProfile,
-                    timestamp: Date.now()
-                },
-                bubbles: true
-            });
-            this.container.dispatchEvent(event);
+            if (this.container) {
+                const event = new CustomEvent('accessibilityProfileChanged', {
+                    detail: {
+                        profileId: this.currentProfile,
+                        timestamp: Date.now()
+                    },
+                    bubbles: true
+                });
+                this.container.dispatchEvent(event);
+            }
             
         } catch (error) {
             console.warn('[AccessibilityProfileComponent] Error triggering settings update:', error);
@@ -703,10 +782,10 @@ export class AccessibilityProfileComponent {
     /**
      * UIを更新
      */
-    updateUI() {
+    private updateUI(): void {
         try {
             const profile = this.profiles.find(p => p.id === this.currentProfile);
-            if (!profile) return;
+            if (!profile || !this.container || !this.profileDropdown) return;
             
             // ドロップダウンボタンの更新
             const profileIcon = this.profileDropdown.querySelector('.profile-icon');
@@ -739,7 +818,7 @@ export class AccessibilityProfileComponent {
     /**
      * ステータスメッセージを表示
      */
-    showStatus(message, type = 'info') {
+    private showStatus(message: string, type: StatusType = 'info'): void {
         if (!this.statusIndicator) return;
         
         this.statusIndicator.textContent = message;
@@ -757,7 +836,9 @@ export class AccessibilityProfileComponent {
     /**
      * キーボードナビゲーションを処理
      */
-    handleKeydown(event) {
+    private handleKeydown(event: KeyboardEvent): void {
+        if (!this.container) return;
+
         if (!this.isDropdownOpen) {
             // ドロップダウンが閉じている場合
             if (event.key === 'Enter' || event.key === ' ') {
@@ -773,7 +854,7 @@ export class AccessibilityProfileComponent {
         }
         
         // ドロップダウンが開いている場合
-        const options = Array.from(this.container.querySelectorAll('.dropdown-option'));
+        const options = Array.from(this.container.querySelectorAll('.dropdown-option')) as HTMLElement[];
         const currentIndex = options.findIndex(option => option === document.activeElement);
         
         switch (event.key) {
@@ -794,15 +875,17 @@ export class AccessibilityProfileComponent {
                 event.preventDefault();
                 if (currentIndex >= 0) {
                     const profileId = options[currentIndex].getAttribute('data-profile-id');
-                    this.selectProfile(profileId);
-                    this.handleDropdownToggle();
+                    if (profileId) {
+                        this.selectProfile(profileId);
+                        this.handleDropdownToggle();
+                    }
                 }
                 break;
                 
             case 'Escape':
                 event.preventDefault();
                 this.handleDropdownToggle();
-                this.profileDropdown.focus();
+                this.profileDropdown?.focus();
                 break;
         }
     }
@@ -810,14 +893,14 @@ export class AccessibilityProfileComponent {
     /**
      * 現在のプロファイルを取得
      */
-    getCurrentProfile() {
+    getCurrentProfile(): string {
         return this.currentProfile;
     }
     
     /**
      * プロファイルをプログラムで設定
      */
-    setProfile(profileId) {
+    setProfile(profileId: string): boolean {
         const profile = this.profiles.find(p => p.id === profileId);
         if (profile) {
             this.selectProfile(profileId);
@@ -829,7 +912,7 @@ export class AccessibilityProfileComponent {
     /**
      * 利用可能なプロファイル一覧を取得
      */
-    getAvailableProfiles() {
+    getAvailableProfiles(): ProfileInfo[] {
         return this.profiles.map(profile => ({
             id: profile.id,
             name: profile.name,
@@ -841,10 +924,10 @@ export class AccessibilityProfileComponent {
     /**
      * コンポーネントを破棄
      */
-    destroy() {
+    destroy(): void {
         try {
             // イベントリスナーの削除
-            document.removeEventListener('click', this.handleDropdownClose);
+            document.removeEventListener('click', this.handleDropdownClose.bind(this));
             
             // DOM要素の削除
             if (this.container && this.container.parentNode) {
@@ -862,7 +945,7 @@ export class AccessibilityProfileComponent {
             
             console.log('[AccessibilityProfileComponent] Component destroyed');
         } catch (error) {
-            this.errorHandler.handleError(error, 'ACCESSIBILITY_PROFILE_DESTROY_ERROR', {
+            this.errorHandler.handleError(error as Error, 'ACCESSIBILITY_PROFILE_DESTROY_ERROR', {
                 operation: 'destroy'
             });
         }

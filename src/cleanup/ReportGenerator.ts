@@ -1,13 +1,150 @@
 import fs from 'fs';
 import path from 'path';
+import { FileInfo } from './FileScanner.js';
+import { ReferenceResult } from './ReferenceChecker.js';
+
+interface ScanSummary {
+    totalFiles: number;
+    totalSize: string;
+    fileTypes: number;
+    timestamp: string;
+}
+
+interface FilesByType {
+    [fileType: string]: FileInfo[];
+}
+
+interface FormattedFileInfo extends Omit<FileInfo, 'fileSize'> {
+    fileSize: string;
+    relativePath: string;
+}
+
+export interface ScanReport {
+    summary: ScanSummary;
+    filesByType: FilesByType;
+    files: FormattedFileInfo[];
+}
+
+interface ReferenceSummary {
+    totalFiles: number;
+    filesWithReferences: number;
+    filesWithoutReferences: number;
+    totalReferences: number;
+    totalImportReferences: number;
+    totalStringReferences: number;
+    timestamp: string;
+}
+
+export interface ReferenceReport {
+    summary: ReferenceSummary;
+    results: ReferenceResult[];
+}
+
+interface SafetySummary {
+    totalFiles: number;
+    safeToDelete: number;
+    unsafeToDelete: number;
+    totalWarnings: number;
+    totalErrors: number;
+    timestamp: string;
+}
+
+interface SafetyFileResult {
+    isSafeToDelete: boolean;
+    [key: string]: any;
+}
+
+export interface SafetyReport {
+    summary: SafetySummary;
+    safeFiles: SafetyFileResult[];
+    unsafeFiles: SafetyFileResult[];
+    allResults: SafetyFileResult[];
+}
+
+interface DeletionSummary {
+    totalFiles: number;
+    successfulDeletions: number;
+    failedDeletions: number;
+    totalSizeDeleted: string;
+    timestamp: string;
+}
+
+interface DeletionResult {
+    deleted: boolean;
+    verified: boolean;
+    backupRecord?: {
+        fileSize?: number;
+    };
+}
+
+export interface DeletionReport {
+    summary: DeletionSummary;
+    successful: DeletionResult[];
+    failed: DeletionResult[];
+    allResults: DeletionResult[];
+}
+
+interface SummaryDetails {
+    operation: string;
+    timestamp: string;
+    scanning: {
+        filesFound: number;
+        totalSize: string;
+    };
+    references: {
+        filesChecked: number;
+        filesWithReferences: number;
+        totalReferences: number;
+    };
+    safety: {
+        filesValidated: number;
+        safeToDelete: number;
+        unsafeToDelete: number;
+        warnings: number;
+        errors: number;
+    };
+    deletion: {
+        attemptedDeletions: number;
+        successfulDeletions: number;
+        failedDeletions: number;
+        totalSizeDeleted: string;
+    } | null;
+}
+
+interface Recommendation {
+    type: 'warning' | 'error' | 'success' | 'info';
+    message: string;
+}
+
+export interface SummaryReport {
+    summary: SummaryDetails;
+    recommendations: Recommendation[];
+    nextSteps: string[];
+}
+
+interface SaveResult {
+    saved: boolean;
+    filePath: string | null;
+    fileName: string;
+    error: string | null;
+}
+
+interface AllResults {
+    scanReport: ScanReport;
+    referenceReport: ReferenceReport;
+    safetyReport: SafetyReport;
+    deletionReport: DeletionReport | null;
+}
 
 export class ReportGenerator {
+    private reportsDirectory: string;
+
     constructor() {
         this.reportsDirectory = path.join(process.cwd(), '.cleanup-reports');
         this.ensureReportsDirectory();
     }
 
-    async ensureReportsDirectory() {
+    private async ensureReportsDirectory(): Promise<void> {
         try {
             await fs.promises.mkdir(this.reportsDirectory, { recursive: true });
         } catch (error) {
@@ -15,7 +152,7 @@ export class ReportGenerator {
         }
     }
 
-    formatBytes(bytes) {
+    formatBytes(bytes: number): string {
         if (bytes === 0) return '0 Bytes';
         const k = 1024;
         const sizes = ['Bytes', 'KB', 'MB', 'GB'];
@@ -23,10 +160,10 @@ export class ReportGenerator {
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     }
 
-    generateScanReport(scannedFiles) {
+    generateScanReport(scannedFiles: FileInfo[]): ScanReport {
         const totalFiles = scannedFiles.length;
         const totalSize = scannedFiles.reduce((sum, file) => sum + file.fileSize, 0);
-        const filesByType = scannedFiles.reduce((acc, file) => {
+        const filesByType = scannedFiles.reduce((acc: FilesByType, file) => {
             const type = file.fileType;
             if (!acc[type]) acc[type] = [];
             acc[type].push(file);
@@ -49,7 +186,7 @@ export class ReportGenerator {
         };
     }
 
-    generateReferenceReport(referenceResults) {
+    generateReferenceReport(referenceResults: ReferenceResult[]): ReferenceReport {
         const totalFiles = referenceResults.length;
         const filesWithReferences = referenceResults.filter(r => r.hasReferences).length;
         const totalReferences = referenceResults.reduce((sum, r) => sum + r.references.length, 0);
@@ -70,7 +207,7 @@ export class ReportGenerator {
         };
     }
 
-    generateSafetyReport(safetyResults) {
+    generateSafetyReport(safetyResults: any): SafetyReport {
         const summary = {
             totalFiles: safetyResults.totalFiles,
             safeToDelete: safetyResults.safeToDelete,
@@ -80,8 +217,8 @@ export class ReportGenerator {
             timestamp: new Date().toISOString()
         };
 
-        const safeFiles = safetyResults.results.filter(r => r.isSafeToDelete);
-        const unsafeFiles = safetyResults.results.filter(r => !r.isSafeToDelete);
+        const safeFiles = safetyResults.results.filter((r: SafetyFileResult) => r.isSafeToDelete);
+        const unsafeFiles = safetyResults.results.filter((r: SafetyFileResult) => !r.isSafeToDelete);
 
         return {
             summary,
@@ -91,7 +228,7 @@ export class ReportGenerator {
         };
     }
 
-    generateDeletionReport(deletionResults) {
+    generateDeletionReport(deletionResults: any): DeletionReport {
         const summary = {
             totalFiles: deletionResults.totalFiles,
             successfulDeletions: deletionResults.successCount,
@@ -99,10 +236,10 @@ export class ReportGenerator {
             timestamp: deletionResults.timestamp
         };
 
-        const successful = deletionResults.results.filter(r => r.deleted && r.verified);
-        const failed = deletionResults.results.filter(r => !r.deleted || !r.verified);
+        const successful = deletionResults.results.filter((r: DeletionResult) => r.deleted && r.verified);
+        const failed = deletionResults.results.filter((r: DeletionResult) => !r.deleted || !r.verified);
 
-        const totalSizeDeleted = successful.reduce((sum, result) => {
+        const totalSizeDeleted = successful.reduce((sum: number, result: DeletionResult) => {
             return sum + (result.backupRecord?.fileSize || 0);
         }, 0);
 
@@ -117,10 +254,10 @@ export class ReportGenerator {
         };
     }
 
-    generateSummaryReport(allResults) {
+    generateSummaryReport(allResults: AllResults): SummaryReport {
         const { scanReport, referenceReport, safetyReport, deletionReport } = allResults;
         
-        const summary = {
+        const summary: SummaryDetails = {
             operation: 'File Cleanup',
             timestamp: new Date().toISOString(),
             scanning: {
@@ -154,8 +291,8 @@ export class ReportGenerator {
         };
     }
 
-    generateRecommendations(allResults) {
-        const recommendations = [];
+    private generateRecommendations(allResults: AllResults): Recommendation[] {
+        const recommendations: Recommendation[] = [];
         const { safetyReport, deletionReport } = allResults;
 
         if (safetyReport.summary.unsafeToDelete > 0) {
@@ -189,8 +326,8 @@ export class ReportGenerator {
         return recommendations;
     }
 
-    generateNextSteps(allResults) {
-        const nextSteps = [];
+    private generateNextSteps(allResults: AllResults): string[] {
+        const nextSteps: string[] = [];
         const { safetyReport, deletionReport } = allResults;
 
         if (safetyReport.summary.unsafeToDelete > 0) {
@@ -207,7 +344,7 @@ export class ReportGenerator {
         return nextSteps;
     }
 
-    async saveReport(report, fileName) {
+    async saveReport(report: any, fileName: string): Promise<SaveResult> {
         try {
             await this.ensureReportsDirectory();
             const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -223,17 +360,18 @@ export class ReportGenerator {
                 error: null
             };
         } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
             return {
                 saved: false,
                 filePath: null,
                 fileName,
-                error: `Failed to save report: ${error.message}`
+                error: `Failed to save report: ${errorMessage}`
             };
         }
     }
 
-    async generateTextSummary(summaryReport) {
-        const lines = [];
+    async generateTextSummary(summaryReport: SummaryReport): Promise<string> {
+        const lines: string[] = [];
         const { summary, recommendations, nextSteps } = summaryReport;
 
         lines.push('# File Cleanup Summary Report');
@@ -274,7 +412,7 @@ export class ReportGenerator {
         return lines.join('\n');
     }
 
-    async saveTextReport(textReport, fileName) {
+    async saveTextReport(textReport: string, fileName: string): Promise<SaveResult> {
         try {
             await this.ensureReportsDirectory();
             const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -290,19 +428,21 @@ export class ReportGenerator {
                 error: null
             };
         } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
             return {
                 saved: false,
                 filePath: null,
                 fileName,
-                error: `Failed to save text report: ${error.message}`
+                error: `Failed to save text report: ${errorMessage}`
             };
         }
     }
 
-    logToConsole(summaryReport) {
-        const textSummary = this.generateTextSummary(summaryReport);
-        console.log('\n' + '='.repeat(60));
-        console.log(textSummary);
-        console.log('='.repeat(60) + '\n');
+    logToConsole(summaryReport: SummaryReport): void {
+        this.generateTextSummary(summaryReport).then(textSummary => {
+            console.log('\n' + '='.repeat(60));
+            console.log(textSummary);
+            console.log('='.repeat(60) + '\n');
+        });
     }
 }

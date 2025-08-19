@@ -7,8 +7,120 @@
 
 import { getErrorHandler } from '../utils/ErrorHandler.js';
 
+interface ErrorHandler {
+    handleError: (error: Error, code: string, context?: any) => void;
+}
+
+interface BalanceChangeData {
+    id?: string;
+    timestamp?: number;
+    configType?: string | null;
+    bubbleType?: string | null;
+    propertyType?: string | null;
+    oldValue?: any;
+    newValue?: any;
+    author?: string;
+    rationale?: string;
+    impactAssessment?: any;
+    reviewStatus?: ReviewStatus;
+    tags?: string[];
+    validationResults?: ValidationResult | null;
+    reviewedBy?: string | null;
+    reviewedAt?: number | null;
+    reviewComments?: string;
+    canRollback?: boolean;
+    rolledBack?: boolean;
+    rollbackTimestamp?: number | null;
+    rollbackReason?: string;
+    relatedChanges?: RelatedChange[];
+    parentChangeId?: string | null;
+    childChanges?: string[];
+    applied?: boolean;
+    appliedAt?: number | null;
+    appliedBy?: string | null;
+    severity?: Severity;
+    riskLevel?: RiskLevel;
+    affectedSystems?: string[];
+}
+
+interface RelatedChange {
+    changeId: string;
+    relationshipType: string;
+    addedAt: number;
+}
+
+interface ValidationResult {
+    isValid: boolean;
+    errors: string[];
+    warnings: string[];
+    timestamp: number;
+    error?: string;
+}
+
+interface ImpactCalculation {
+    numerical: number;
+    percentage: number;
+    direction: 'increase' | 'decrease' | 'neutral' | 'unknown';
+    magnitude: 'low' | 'medium' | 'high' | 'critical' | 'unknown';
+    description: string;
+    error?: string;
+}
+
+type ChangeType = 'create' | 'delete' | 'increase' | 'decrease' | 'modify' | 'no_change';
+type ReviewStatus = 'pending' | 'approved' | 'rejected' | 'needs_revision';
+type Severity = 'low' | 'medium' | 'high' | 'critical';
+type RiskLevel = 'low' | 'medium' | 'high' | 'critical';
+
 export class BalanceChange {
-    constructor(changeData = {}) {
+    private errorHandler: ErrorHandler;
+    
+    // 必須フィールド
+    public readonly id: string;
+    public readonly timestamp: number;
+    public configType: string | null;
+    public bubbleType: string | null;
+    public propertyType: string | null;
+    
+    // 変更値
+    public oldValue: any;
+    public newValue: any;
+    public readonly changeType: ChangeType;
+    
+    // メタデータ
+    public author: string;
+    public rationale: string;
+    public impactAssessment: any;
+    public reviewStatus: ReviewStatus;
+    public tags: string[];
+    
+    // 検証・承認情報
+    public validationResults: ValidationResult | null;
+    public reviewedBy: string | null;
+    public reviewedAt: number | null;
+    public reviewComments: string;
+    
+    // ロールバック情報
+    public canRollback: boolean;
+    public rolledBack: boolean;
+    public rollbackTimestamp: number | null;
+    public rollbackReason: string;
+    
+    // 関連する変更
+    public relatedChanges: RelatedChange[];
+    public parentChangeId: string | null;
+    public childChanges: string[];
+    
+    // 実行状況
+    public applied: boolean;
+    public appliedAt: number | null;
+    public appliedBy: string | null;
+    
+    // 変更の影響度
+    public severity: Severity;
+    public riskLevel: RiskLevel;
+    public affectedSystems: string[];
+
+    constructor(changeData: BalanceChangeData = {}) {
         this.errorHandler = getErrorHandler();
         
         // 必須フィールド
@@ -62,10 +174,10 @@ export class BalanceChange {
     
     /**
      * 変更IDを生成
-     * @returns {string} 一意の変更ID
+     * @returns 一意の変更ID
      * @private
      */
-    _generateChangeId() {
+    private _generateChangeId(): string {
         const timestamp = Date.now();
         const random = Math.random().toString(36).substr(2, 9);
         return `change_${timestamp}_${random}`;
@@ -73,12 +185,12 @@ export class BalanceChange {
     
     /**
      * 変更タイプを決定
-     * @param {*} oldValue - 古い値
-     * @param {*} newValue - 新しい値
-     * @returns {string} 変更タイプ
+     * @param oldValue - 古い値
+     * @param newValue - 新しい値
+     * @returns 変更タイプ
      * @private
      */
-    _determineChangeType(oldValue, newValue) {
+    private _determineChangeType(oldValue: any, newValue: any): ChangeType {
         if (oldValue === undefined || oldValue === null) {
             return 'create';
         }
@@ -106,11 +218,11 @@ export class BalanceChange {
     
     /**
      * 変更を検証
-     * @returns {Object} 検証結果
+     * @returns 検証結果
      */
-    validate() {
-        const errors = [];
-        const warnings = [];
+    validate(): ValidationResult {
+        const errors: string[] = [];
+        const warnings: string[] = [];
         
         try {
             // 必須フィールドの検証
@@ -169,7 +281,7 @@ export class BalanceChange {
             };
             
         } catch (error) {
-            this.errorHandler.handleError(error, 'BALANCE_CHANGE_VALIDATION', {
+            this.errorHandler.handleError(error as Error, 'BALANCE_CHANGE_VALIDATION', {
                 changeId: this.id,
                 configType: this.configType,
                 bubbleType: this.bubbleType
@@ -179,7 +291,7 @@ export class BalanceChange {
                 isValid: false,
                 errors: ['Validation failed due to error'],
                 warnings: [],
-                error: error.message,
+                error: (error as Error).message,
                 timestamp: Date.now()
             };
         }
@@ -187,10 +299,10 @@ export class BalanceChange {
     
     /**
      * 変更を適用状態にマーク
-     * @param {string} appliedBy - 適用者
-     * @returns {boolean} 成功フラグ
+     * @param appliedBy - 適用者
+     * @returns 成功フラグ
      */
-    markAsApplied(appliedBy = 'system') {
+    markAsApplied(appliedBy: string = 'system'): boolean {
         try {
             if (this.applied) {
                 console.warn(`[BalanceChange] 変更 ${this.id} は既に適用済みです`);
@@ -205,7 +317,7 @@ export class BalanceChange {
             return true;
             
         } catch (error) {
-            this.errorHandler.handleError(error, 'BALANCE_CHANGE_APPLY', {
+            this.errorHandler.handleError(error as Error, 'BALANCE_CHANGE_APPLY', {
                 changeId: this.id,
                 appliedBy
             });
@@ -215,11 +327,11 @@ export class BalanceChange {
     
     /**
      * 変更をロールバック
-     * @param {string} reason - ロールバック理由
-     * @param {string} rolledBackBy - ロールバック実行者
-     * @returns {boolean} 成功フラグ
+     * @param reason - ロールバック理由
+     * @param rolledBackBy - ロールバック実行者
+     * @returns 成功フラグ
      */
-    rollback(reason = '', rolledBackBy = 'system') {
+    rollback(reason: string = '', rolledBackBy: string = 'system'): boolean {
         try {
             if (!this.canRollback) {
                 console.warn(`[BalanceChange] 変更 ${this.id} はロールバック不可です`);
@@ -240,7 +352,7 @@ export class BalanceChange {
             return true;
             
         } catch (error) {
-            this.errorHandler.handleError(error, 'BALANCE_CHANGE_ROLLBACK', {
+            this.errorHandler.handleError(error as Error, 'BALANCE_CHANGE_ROLLBACK', {
                 changeId: this.id,
                 reason,
                 rolledBackBy
@@ -251,14 +363,14 @@ export class BalanceChange {
     
     /**
      * レビューステータスを更新
-     * @param {string} status - レビューステータス (pending, approved, rejected)
-     * @param {string} reviewer - レビュー者
-     * @param {string} comments - レビューコメント
-     * @returns {boolean} 成功フラグ
+     * @param status - レビューステータス (pending, approved, rejected)
+     * @param reviewer - レビュー者
+     * @param comments - レビューコメント
+     * @returns 成功フラグ
      */
-    updateReviewStatus(status, reviewer = '', comments = '') {
+    updateReviewStatus(status: ReviewStatus, reviewer: string = '', comments: string = ''): boolean {
         try {
-            const validStatuses = ['pending', 'approved', 'rejected', 'needs_revision'];
+            const validStatuses: ReviewStatus[] = ['pending', 'approved', 'rejected', 'needs_revision'];
             
             if (!validStatuses.includes(status)) {
                 throw new Error(`Invalid review status: ${status}`);
@@ -273,7 +385,7 @@ export class BalanceChange {
             return true;
             
         } catch (error) {
-            this.errorHandler.handleError(error, 'BALANCE_CHANGE_REVIEW', {
+            this.errorHandler.handleError(error as Error, 'BALANCE_CHANGE_REVIEW', {
                 changeId: this.id,
                 status,
                 reviewer
@@ -284,10 +396,10 @@ export class BalanceChange {
     
     /**
      * 関連する変更を追加
-     * @param {string} relatedChangeId - 関連変更ID
-     * @param {string} relationshipType - 関係タイプ
+     * @param relatedChangeId - 関連変更ID
+     * @param relationshipType - 関係タイプ
      */
-    addRelatedChange(relatedChangeId, relationshipType = 'related') {
+    addRelatedChange(relatedChangeId: string, relationshipType: string = 'related'): void {
         try {
             if (!this.relatedChanges.find(r => r.changeId === relatedChangeId)) {
                 this.relatedChanges.push({
@@ -299,7 +411,7 @@ export class BalanceChange {
                 console.log(`[BalanceChange] 関連変更を追加: ${relatedChangeId} (${relationshipType})`);
             }
         } catch (error) {
-            this.errorHandler.handleError(error, 'BALANCE_CHANGE_RELATION', {
+            this.errorHandler.handleError(error as Error, 'BALANCE_CHANGE_RELATION', {
                 changeId: this.id,
                 relatedChangeId,
                 relationshipType
@@ -309,9 +421,9 @@ export class BalanceChange {
     
     /**
      * タグを追加
-     * @param {string|Array<string>} tags - 追加するタグ
+     * @param tags - 追加するタグ
      */
-    addTags(tags) {
+    addTags(tags: string | string[]): void {
         try {
             const tagsToAdd = Array.isArray(tags) ? tags : [tags];
             
@@ -324,7 +436,7 @@ export class BalanceChange {
             console.log(`[BalanceChange] タグを追加: ${tagsToAdd.join(', ')}`);
             
         } catch (error) {
-            this.errorHandler.handleError(error, 'BALANCE_CHANGE_TAGS', {
+            this.errorHandler.handleError(error as Error, 'BALANCE_CHANGE_TAGS', {
                 changeId: this.id,
                 tags
             });
@@ -333,11 +445,11 @@ export class BalanceChange {
     
     /**
      * 変更の影響度を計算
-     * @returns {Object} 影響度情報
+     * @returns 影響度情報
      */
-    calculateImpact() {
+    calculateImpact(): ImpactCalculation {
         try {
-            const impact = {
+            const impact: ImpactCalculation = {
                 numerical: 0,
                 percentage: 0,
                 direction: 'neutral',
@@ -377,7 +489,7 @@ export class BalanceChange {
             return impact;
             
         } catch (error) {
-            this.errorHandler.handleError(error, 'BALANCE_CHANGE_IMPACT', {
+            this.errorHandler.handleError(error as Error, 'BALANCE_CHANGE_IMPACT', {
                 changeId: this.id,
                 oldValue: this.oldValue,
                 newValue: this.newValue
@@ -389,16 +501,16 @@ export class BalanceChange {
                 direction: 'unknown',
                 magnitude: 'unknown',
                 description: 'Impact calculation failed',
-                error: error.message
+                error: (error as Error).message
             };
         }
     }
     
     /**
      * 変更情報をJSON形式で取得
-     * @returns {Object} JSON形式の変更情報
+     * @returns JSON形式の変更情報
      */
-    toJSON() {
+    toJSON(): BalanceChangeData {
         return {
             id: this.id,
             timestamp: this.timestamp,
@@ -407,7 +519,6 @@ export class BalanceChange {
             propertyType: this.propertyType,
             oldValue: this.oldValue,
             newValue: this.newValue,
-            changeType: this.changeType,
             author: this.author,
             rationale: this.rationale,
             impactAssessment: this.impactAssessment,
@@ -435,25 +546,25 @@ export class BalanceChange {
     
     /**
      * JSON文字列から変更オブジェクトを復元
-     * @param {string} jsonString - JSON文字列
-     * @returns {BalanceChange} 復元された変更オブジェクト
+     * @param jsonString - JSON文字列
+     * @returns 復元された変更オブジェクト
      * @static
      */
-    static fromJSON(jsonString) {
+    static fromJSON(jsonString: string): BalanceChange {
         try {
             const data = JSON.parse(jsonString);
             return new BalanceChange(data);
         } catch (error) {
             console.error('[BalanceChange] JSON復元エラー:', error);
-            throw new Error(`Failed to restore BalanceChange from JSON: ${error.message}`);
+            throw new Error(`Failed to restore BalanceChange from JSON: ${(error as Error).message}`);
         }
     }
     
     /**
      * 変更の要約を取得
-     * @returns {string} 変更要約
+     * @returns 変更要約
      */
-    getSummary() {
+    getSummary(): string {
         try {
             const impact = this.calculateImpact();
             const timestamp = new Date(this.timestamp).toLocaleString('ja-JP');
@@ -477,7 +588,7 @@ export class BalanceChange {
             return summary;
             
         } catch (error) {
-            this.errorHandler.handleError(error, 'BALANCE_CHANGE_SUMMARY', {
+            this.errorHandler.handleError(error as Error, 'BALANCE_CHANGE_SUMMARY', {
                 changeId: this.id
             });
             return `Change ${this.id} (summary generation failed)`;
@@ -486,18 +597,18 @@ export class BalanceChange {
     
     /**
      * 変更が有効かどうかチェック
-     * @returns {boolean} 有効フラグ
+     * @returns 有効フラグ
      */
-    isValid() {
+    isValid(): boolean {
         const validation = this.validate();
         return validation.isValid;
     }
     
     /**
      * 変更が適用可能かどうかチェック
-     * @returns {boolean} 適用可能フラグ
+     * @returns 適用可能フラグ
      */
-    canApply() {
+    canApply(): boolean {
         return this.isValid() && 
                !this.applied && 
                !this.rolledBack && 
@@ -507,7 +618,7 @@ export class BalanceChange {
     /**
      * デバッグ用の詳細情報を出力
      */
-    debug() {
+    debug(): void {
         console.log(`[BalanceChange Debug] ID: ${this.id}`);
         console.log(`  Config: ${this.configType}`);
         console.log(`  Bubble: ${this.bubbleType}`);

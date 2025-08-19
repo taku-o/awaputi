@@ -1,6 +1,94 @@
 import { getErrorHandler } from '../utils/ErrorHandler.js';
 import { getLocalizationManager } from '../core/LocalizationManager.js';
 
+interface GameEngine {
+    version?: string;
+    settingsManager?: SettingsManager;
+    sceneManager?: {
+        currentScene?: {
+            accessibilitySettingsManager?: AccessibilitySettingsManager;
+        };
+    };
+}
+
+interface SettingsManager {
+    get: (key: string) => any;
+    set: (key: string, value: any) => void;
+    save: () => void;
+}
+
+interface AccessibilitySettingsManager {
+    currentProfile?: string;
+    getExtendedAccessibilitySettings: () => AccessibilitySetting[];
+    getStats: () => any;
+    importSettings: (file: File) => Promise<void>;
+}
+
+interface AccessibilitySetting {
+    key: string;
+    [key: string]: any;
+}
+
+interface ErrorHandler {
+    handleError: (error: Error, code: string, context?: any) => void;
+}
+
+interface LocalizationManager {
+    // Define methods as needed
+}
+
+interface ExportData {
+    timestamp: string;
+    version: string;
+    gameVersion: string;
+    source: string;
+    settings: Record<string, any>;
+    accessibility: Record<string, any>;
+    metadata: {
+        userAgent: string;
+        language: string;
+        exportedBy: string;
+    };
+}
+
+interface ValidationResult {
+    valid: boolean;
+    error?: string;
+}
+
+interface ApplyResult {
+    appliedCount: number;
+    warnings: string[];
+}
+
+interface OperationRecord {
+    type: 'export' | 'import';
+    timestamp: number;
+    filename: string;
+    settingsCount?: number;
+}
+
+interface Statistics {
+    exportCount: number;
+    importCount: number;
+    errorsCount: number;
+    lastExport: string | null;
+    lastImport: string | null;
+    sessionStart: number;
+}
+
+interface ExtendedStatistics extends Statistics {
+    lastOperation: OperationRecord | null;
+    operationHistory: OperationRecord[];
+    sessionDuration: number;
+}
+
+type StatusType = 'ready' | 'processing' | 'success' | 'error';
+
+interface StyleObject {
+    [key: string]: string;
+}
+
 /**
  * SettingsImportExportComponent
  * 
@@ -18,7 +106,37 @@ import { getLocalizationManager } from '../core/LocalizationManager.js';
  * @since Issue #170 - Task 1.3: Create SettingsImportExportComponent
  */
 export class SettingsImportExportComponent {
-    constructor(gameEngine) {
+    private gameEngine: GameEngine;
+    private errorHandler: ErrorHandler;
+    private localizationManager: LocalizationManager;
+    
+    // ファイル操作設定
+    private readonly SUPPORTED_FORMATS: string[];
+    private readonly MAX_FILE_SIZE: number;
+    private readonly EXPORT_FILENAME_PREFIX: string;
+    
+    // DOM要素
+    private container: HTMLElement | null;
+    private exportButton: HTMLButtonElement | null;
+    private importButton: HTMLButtonElement | null;
+    private fileInput: HTMLInputElement | null;
+    private statusIndicator: HTMLElement | null;
+    private progressBar: HTMLElement | null;
+    private infoPanel: HTMLElement | null;
+    
+    // 状態管理
+    private isInitialized: boolean;
+    private isProcessing: boolean;
+    private lastOperation: OperationRecord | null;
+    private operationHistory: OperationRecord[];
+    
+    // AccessibilitySettingsManagerの参照
+    private accessibilityManager: AccessibilitySettingsManager | undefined;
+    
+    // 統計情報
+    private stats: Statistics;
+
+    constructor(gameEngine: GameEngine) {
         this.gameEngine = gameEngine;
         this.errorHandler = getErrorHandler();
         this.localizationManager = getLocalizationManager();
@@ -43,12 +161,6 @@ export class SettingsImportExportComponent {
         this.lastOperation = null;
         this.operationHistory = [];
         
-        // イベントハンドラーのバインド
-        this.handleExportSettings = this.handleExportSettings.bind(this);
-        this.handleImportSettings = this.handleImportSettings.bind(this);
-        this.handleFileSelect = this.handleFileSelect.bind(this);
-        this.handleKeydown = this.handleKeydown.bind(this);
-        
         // AccessibilitySettingsManagerの参照を取得
         this.accessibilityManager = this.gameEngine.sceneManager?.currentScene?.accessibilitySettingsManager;
         
@@ -65,10 +177,10 @@ export class SettingsImportExportComponent {
     
     /**
      * コンポーネントを初期化してDOMに追加
-     * @param {HTMLElement} parentElement - 親コンテナ要素
-     * @returns {HTMLElement} 作成されたコンテナ要素
+     * @param parentElement - 親コンテナ要素
+     * @returns 作成されたコンテナ要素
      */
-    initialize(parentElement) {
+    initialize(parentElement: HTMLElement): HTMLElement | null {
         try {
             if (this.isInitialized) {
                 console.warn('[SettingsImportExportComponent] Already initialized');
@@ -87,7 +199,7 @@ export class SettingsImportExportComponent {
             return this.container;
             
         } catch (error) {
-            this.errorHandler.handleError(error, 'SETTINGS_IMPORT_EXPORT_ERROR', {
+            this.errorHandler.handleError(error as Error, 'SETTINGS_IMPORT_EXPORT_ERROR', {
                 operation: 'initialize'
             });
             return null;
@@ -96,9 +208,9 @@ export class SettingsImportExportComponent {
     
     /**
      * インポート・エクスポートUIを作成
-     * @param {HTMLElement} parentElement - 親コンテナ
+     * @param parentElement - 親コンテナ
      */
-    createImportExportUI(parentElement) {
+    private createImportExportUI(parentElement: HTMLElement): void {
         // メインコンテナ
         this.container = document.createElement('div');
         this.container.className = 'settings-import-export-component';
@@ -163,8 +275,8 @@ export class SettingsImportExportComponent {
         `;
         this.exportButton.setAttribute('role', 'button');
         this.exportButton.setAttribute('aria-label', '現在の設定をJSONファイルとしてダウンロード');
-        this.exportButton.addEventListener('click', this.handleExportSettings);
-        this.exportButton.addEventListener('keydown', this.handleKeydown);
+        this.exportButton.addEventListener('click', this.handleExportSettings.bind(this));
+        this.exportButton.addEventListener('keydown', this.handleKeydown.bind(this));
         buttonContainer.appendChild(this.exportButton);
         
         // インポートボタン
@@ -185,8 +297,8 @@ export class SettingsImportExportComponent {
         `;
         this.importButton.setAttribute('role', 'button');
         this.importButton.setAttribute('aria-label', 'JSONファイルから設定をインポート');
-        this.importButton.addEventListener('click', this.handleImportSettings);
-        this.importButton.addEventListener('keydown', this.handleKeydown);
+        this.importButton.addEventListener('click', this.handleImportSettings.bind(this));
+        this.importButton.addEventListener('keydown', this.handleKeydown.bind(this));
         buttonContainer.appendChild(this.importButton);
         
         this.container.appendChild(buttonContainer);
@@ -196,7 +308,7 @@ export class SettingsImportExportComponent {
         this.fileInput.type = 'file';
         this.fileInput.accept = '.json';
         this.fileInput.style.display = 'none';
-        this.fileInput.addEventListener('change', this.handleFileSelect);
+        this.fileInput.addEventListener('change', this.handleFileSelect.bind(this));
         this.container.appendChild(this.fileInput);
         
         // プログレスバー
@@ -262,8 +374,8 @@ export class SettingsImportExportComponent {
     /**
      * ボタンのホバー効果を追加
      */
-    addHoverEffects() {
-        const addHoverEffect = (button, normalStyle, hoverStyle) => {
+    private addHoverEffects(): void {
+        const addHoverEffect = (button: HTMLElement, normalStyle: StyleObject, hoverStyle: StyleObject) => {
             button.addEventListener('mouseenter', () => {
                 if (!this.isProcessing) {
                     Object.assign(button.style, hoverStyle);
@@ -275,31 +387,35 @@ export class SettingsImportExportComponent {
             });
         };
         
-        addHoverEffect(this.exportButton, {
-            background: 'linear-gradient(135deg, #4CAF50, #45a049)',
-            transform: 'scale(1)',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-        }, {
-            background: 'linear-gradient(135deg, #45a049, #4CAF50)',
-            transform: 'scale(1.05)',
-            boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
-        });
+        if (this.exportButton) {
+            addHoverEffect(this.exportButton, {
+                background: 'linear-gradient(135deg, #4CAF50, #45a049)',
+                transform: 'scale(1)',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+            }, {
+                background: 'linear-gradient(135deg, #45a049, #4CAF50)',
+                transform: 'scale(1.05)',
+                boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
+            });
+        }
         
-        addHoverEffect(this.importButton, {
-            background: 'linear-gradient(135deg, #2196F3, #1976D2)',
-            transform: 'scale(1)',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-        }, {
-            background: 'linear-gradient(135deg, #1976D2, #2196F3)',
-            transform: 'scale(1.05)',
-            boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
-        });
+        if (this.importButton) {
+            addHoverEffect(this.importButton, {
+                background: 'linear-gradient(135deg, #2196F3, #1976D2)',
+                transform: 'scale(1)',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+            }, {
+                background: 'linear-gradient(135deg, #1976D2, #2196F3)',
+                transform: 'scale(1.05)',
+                boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
+            });
+        }
     }
     
     /**
      * 設定エクスポート処理
      */
-    async handleExportSettings() {
+    private async handleExportSettings(): Promise<void> {
         if (this.isProcessing) return;
         
         try {
@@ -336,7 +452,7 @@ export class SettingsImportExportComponent {
             
         } catch (error) {
             this.stats.errorsCount++;
-            this.errorHandler.handleError(error, 'SETTINGS_EXPORT_ERROR', {
+            this.errorHandler.handleError(error as Error, 'SETTINGS_EXPORT_ERROR', {
                 operation: 'export'
             });
             this.updateStatusIndicator('error', 'エクスポートに失敗しました');
@@ -357,16 +473,16 @@ export class SettingsImportExportComponent {
     /**
      * 設定インポート処理
      */
-    handleImportSettings() {
+    private handleImportSettings(): void {
         if (this.isProcessing) return;
         
         try {
             this.updateStatusIndicator('processing', 'ファイルを選択してください...');
-            this.fileInput.click();
+            this.fileInput?.click();
             
         } catch (error) {
             this.stats.errorsCount++;
-            this.errorHandler.handleError(error, 'SETTINGS_IMPORT_ERROR', {
+            this.errorHandler.handleError(error as Error, 'SETTINGS_IMPORT_ERROR', {
                 operation: 'import_trigger'
             });
             this.updateStatusIndicator('error', 'インポートの開始に失敗しました');
@@ -376,8 +492,9 @@ export class SettingsImportExportComponent {
     /**
      * ファイル選択処理
      */
-    async handleFileSelect(event) {
-        const file = event.target.files[0];
+    private async handleFileSelect(event: Event): Promise<void> {
+        const target = event.target as HTMLInputElement;
+        const file = target.files?.[0];
         if (!file) {
             this.updateStatusIndicator('ready', '設定のインポート・エクスポートが利用可能です');
             return;
@@ -435,18 +552,21 @@ export class SettingsImportExportComponent {
             
         } catch (error) {
             this.stats.errorsCount++;
-            this.errorHandler.handleError(error, 'SETTINGS_IMPORT_ERROR', {
+            this.errorHandler.handleError(error as Error, 'SETTINGS_IMPORT_ERROR', {
                 operation: 'import_process',
                 filename: file.name
             });
-            this.updateStatusIndicator('error', `インポートに失敗しました: ${error.message}`);
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+            this.updateStatusIndicator('error', `インポートに失敗しました: ${errorMessage}`);
         } finally {
             this.isProcessing = false;
             this.showProgress(false);
             this.setButtonsEnabled(true);
             
             // ファイル入力をリセット
-            this.fileInput.value = '';
+            if (this.fileInput) {
+                this.fileInput.value = '';
+            }
             
             // 5秒後にステータスをリセット
             setTimeout(() => {
@@ -459,10 +579,10 @@ export class SettingsImportExportComponent {
     
     /**
      * エクスポートデータの準備
-     * @returns {Object} エクスポートデータ
+     * @returns エクスポートデータ
      */
-    async prepareExportData() {
-        const exportData = {
+    private async prepareExportData(): Promise<ExportData> {
+        const exportData: ExportData = {
             timestamp: new Date().toISOString(),
             version: '1.0.0',
             gameVersion: this.gameEngine.version || '1.0.0',
@@ -487,7 +607,7 @@ export class SettingsImportExportComponent {
             ];
             
             generalSettings.forEach(key => {
-                const value = this.gameEngine.settingsManager.get(key);
+                const value = this.gameEngine.settingsManager!.get(key);
                 if (value !== undefined) {
                     exportData.settings[key] = value;
                 }
@@ -520,9 +640,9 @@ export class SettingsImportExportComponent {
     
     /**
      * エクスポートファイル名の生成
-     * @returns {string} ファイル名
+     * @returns ファイル名
      */
-    generateExportFilename() {
+    private generateExportFilename(): string {
         const now = new Date();
         const dateStr = now.toISOString().split('T')[0]; // YYYY-MM-DD
         const timeStr = now.toTimeString().split(' ')[0].replace(/:/g, ''); // HHMMSS
@@ -531,10 +651,10 @@ export class SettingsImportExportComponent {
     
     /**
      * ファイルとしてダウンロード
-     * @param {Object} data - ダウンロードするデータ
-     * @param {string} filename - ファイル名
+     * @param data - ダウンロードするデータ
+     * @param filename - ファイル名
      */
-    downloadAsFile(data, filename) {
+    private downloadAsFile(data: ExportData, filename: string): void {
         const jsonString = JSON.stringify(data, null, 2);
         const blob = new Blob([jsonString], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
@@ -553,10 +673,10 @@ export class SettingsImportExportComponent {
     
     /**
      * インポートファイルの検証
-     * @param {File} file - 検証するファイル
-     * @returns {Object} 検証結果
+     * @param file - 検証するファイル
+     * @returns 検証結果
      */
-    async validateImportFile(file) {
+    private async validateImportFile(file: File): Promise<ValidationResult> {
         // ファイルサイズチェック
         if (file.size > this.MAX_FILE_SIZE) {
             return {
@@ -566,7 +686,7 @@ export class SettingsImportExportComponent {
         }
         
         // ファイル形式チェック
-        const fileExtension = file.name.split('.').pop().toLowerCase();
+        const fileExtension = file.name.split('.').pop()?.toLowerCase() || '';
         if (!this.SUPPORTED_FORMATS.includes(fileExtension)) {
             return {
                 valid: false,
@@ -587,16 +707,17 @@ export class SettingsImportExportComponent {
     
     /**
      * インポートファイルの読み込み
-     * @param {File} file - 読み込むファイル
-     * @returns {Promise<Object>} パースされたデータ
+     * @param file - 読み込むファイル
+     * @returns パースされたデータ
      */
-    readImportFile(file) {
+    private readImportFile(file: File): Promise<any> {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
             
             reader.onload = (event) => {
                 try {
-                    const data = JSON.parse(event.target.result);
+                    const result = event.target?.result as string;
+                    const data = JSON.parse(result);
                     resolve(data);
                 } catch (error) {
                     reject(new Error('JSONファイルの解析に失敗しました'));
@@ -613,10 +734,10 @@ export class SettingsImportExportComponent {
     
     /**
      * インポートデータの検証
-     * @param {Object} data - 検証するデータ
-     * @returns {Object} 検証結果
+     * @param data - 検証するデータ
+     * @returns 検証結果
      */
-    async validateImportData(data) {
+    private async validateImportData(data: any): Promise<ValidationResult> {
         // 基本構造チェック
         if (!data || typeof data !== 'object') {
             return { valid: false, error: '無効なデータ形式です' };
@@ -647,18 +768,18 @@ export class SettingsImportExportComponent {
     
     /**
      * インポートした設定の適用
-     * @param {Object} data - インポートデータ
-     * @returns {Object} 適用結果
+     * @param data - インポートデータ
+     * @returns 適用結果
      */
-    async applyImportedSettings(data) {
+    private async applyImportedSettings(data: any): Promise<ApplyResult> {
         let appliedCount = 0;
-        const warnings = [];
+        const warnings: string[] = [];
         
         // 一般設定の適用
         if (data.settings && this.gameEngine.settingsManager) {
             Object.entries(data.settings).forEach(([key, value]) => {
                 try {
-                    this.gameEngine.settingsManager.set(key, value);
+                    this.gameEngine.settingsManager!.set(key, value);
                     appliedCount++;
                 } catch (error) {
                     console.warn(`[SettingsImportExportComponent] Failed to apply setting ${key}:`, error);
@@ -695,26 +816,26 @@ export class SettingsImportExportComponent {
     
     /**
      * キーボードイベントハンドラ
-     * @param {KeyboardEvent} event - キーボードイベント
+     * @param event - キーボードイベント
      */
-    handleKeydown(event) {
+    private handleKeydown(event: KeyboardEvent): void {
         if (event.key === 'Enter' || event.key === ' ') {
             event.preventDefault();
-            event.target.click();
+            (event.target as HTMLElement).click();
         }
     }
     
     /**
      * ステータスインジケーターの更新
-     * @param {string} type - ステータスタイプ (ready/processing/success/error)
-     * @param {string} message - 表示メッセージ
+     * @param type - ステータスタイプ (ready/processing/success/error)
+     * @param message - 表示メッセージ
      */
-    updateStatusIndicator(type, message) {
+    private updateStatusIndicator(type: StatusType, message: string): void {
         if (!this.statusIndicator) return;
         
         this.statusIndicator.textContent = message;
         
-        const styles = {
+        const styles: Record<StatusType, StyleObject> = {
             ready: { backgroundColor: '#e3f2fd', color: '#1976d2', border: '1px solid #bbdefb' },
             processing: { backgroundColor: '#fff3e0', color: '#f57c00', border: '1px solid #ffcc02' },
             success: { backgroundColor: '#e8f5e8', color: '#2e7d32', border: '1px solid #a5d6a7' },
@@ -726,15 +847,15 @@ export class SettingsImportExportComponent {
     
     /**
      * プログレスバーの表示/非表示
-     * @param {boolean} show - 表示するかどうか
+     * @param show - 表示するかどうか
      */
-    showProgress(show) {
+    private showProgress(show: boolean): void {
         if (!this.progressBar) return;
         
         this.progressBar.style.display = show ? 'block' : 'none';
         
         if (show) {
-            const fill = this.progressBar.querySelector('.progress-fill');
+            const fill = this.progressBar.querySelector('.progress-fill') as HTMLElement;
             if (fill) {
                 // アニメーション効果
                 fill.style.width = '0%';
@@ -745,9 +866,9 @@ export class SettingsImportExportComponent {
     
     /**
      * ボタンの有効/無効設定
-     * @param {boolean} enabled - 有効にするかどうか
+     * @param enabled - 有効にするかどうか
      */
-    setButtonsEnabled(enabled) {
+    private setButtonsEnabled(enabled: boolean): void {
         [this.exportButton, this.importButton].forEach(button => {
             if (button) {
                 button.disabled = !enabled;
@@ -759,10 +880,10 @@ export class SettingsImportExportComponent {
     
     /**
      * カスタムイベントの発火
-     * @param {string} eventName - イベント名
-     * @param {Object} detail - イベントの詳細データ
+     * @param eventName - イベント名
+     * @param detail - イベントの詳細データ
      */
-    dispatchCustomEvent(eventName, detail) {
+    private dispatchCustomEvent(eventName: string, detail: any): void {
         if (this.container) {
             const event = new CustomEvent(eventName, { detail });
             this.container.dispatchEvent(event);
@@ -771,18 +892,18 @@ export class SettingsImportExportComponent {
     
     /**
      * 遅延処理
-     * @param {number} ms - 遅延時間（ミリ秒）
-     * @returns {Promise}
+     * @param ms - 遅延時間（ミリ秒）
+     * @returns Promise
      */
-    delay(ms) {
+    private delay(ms: number): Promise<void> {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
     
     /**
      * 統計情報の取得
-     * @returns {Object} 統計情報
+     * @returns 統計情報
      */
-    getStats() {
+    getStats(): ExtendedStatistics {
         return {
             ...this.stats,
             lastOperation: this.lastOperation,
@@ -793,25 +914,25 @@ export class SettingsImportExportComponent {
     
     /**
      * 操作履歴の取得
-     * @returns {Array} 操作履歴
+     * @returns 操作履歴
      */
-    getOperationHistory() {
+    getOperationHistory(): OperationRecord[] {
         return [...this.operationHistory];
     }
     
     /**
      * コンポーネントが有効かどうかチェック
-     * @returns {boolean} 有効性
+     * @returns 有効性
      */
-    isEnabled() {
+    isEnabled(): boolean {
         return this.isInitialized && !this.isProcessing;
     }
     
     /**
      * 表示/非表示の切り替え
-     * @param {boolean} visible - 表示するかどうか
+     * @param visible - 表示するかどうか
      */
-    setVisible(visible) {
+    setVisible(visible: boolean): void {
         if (this.container) {
             this.container.style.display = visible ? 'flex' : 'none';
         }
@@ -820,21 +941,21 @@ export class SettingsImportExportComponent {
     /**
      * コンポーネントのクリーンアップ
      */
-    destroy() {
+    destroy(): void {
         try {
             // イベントリスナーの削除
             if (this.exportButton) {
-                this.exportButton.removeEventListener('click', this.handleExportSettings);
-                this.exportButton.removeEventListener('keydown', this.handleKeydown);
+                this.exportButton.removeEventListener('click', this.handleExportSettings.bind(this));
+                this.exportButton.removeEventListener('keydown', this.handleKeydown.bind(this));
             }
             
             if (this.importButton) {
-                this.importButton.removeEventListener('click', this.handleImportSettings);
-                this.importButton.removeEventListener('keydown', this.handleKeydown);
+                this.importButton.removeEventListener('click', this.handleImportSettings.bind(this));
+                this.importButton.removeEventListener('keydown', this.handleKeydown.bind(this));
             }
             
             if (this.fileInput) {
-                this.fileInput.removeEventListener('change', this.handleFileSelect);
+                this.fileInput.removeEventListener('change', this.handleFileSelect.bind(this));
             }
             
             // DOM要素の削除
@@ -856,7 +977,7 @@ export class SettingsImportExportComponent {
             console.log('[SettingsImportExportComponent] Destroyed successfully');
             
         } catch (error) {
-            this.errorHandler.handleError(error, 'SETTINGS_IMPORT_EXPORT_ERROR', {
+            this.errorHandler.handleError(error as Error, 'SETTINGS_IMPORT_EXPORT_ERROR', {
                 operation: 'destroy'
             });
         }

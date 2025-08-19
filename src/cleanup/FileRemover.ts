@@ -1,21 +1,80 @@
 import fs from 'fs';
 import path from 'path';
 
+interface BackupRecord {
+    originalPath: string;
+    backupPath: string | null;
+    fileName: string;
+    fileSize: number;
+    lastModified: Date | null;
+    backupTimestamp: string;
+    backupCreated: boolean;
+    error: string | null;
+}
+
+interface RemovalResult {
+    deleted: boolean;
+    error: string | null;
+    timestamp: string;
+}
+
+interface VerificationResult {
+    verified: boolean;
+    error: string | null;
+}
+
+interface RollbackResult {
+    rolledBack: boolean;
+    error: string | null;
+    restoredPath?: string;
+}
+
+interface SafeRemovalResult {
+    filePath: string;
+    deleted: boolean;
+    backupCreated: boolean;
+    verified: boolean;
+    error: string | null;
+    timestamp: string;
+    backupRecord: BackupRecord | null;
+    removalResult: RemovalResult | null;
+    verificationResult: VerificationResult | null;
+    rollbackResult?: RollbackResult;
+}
+
+export interface DeletionResults {
+    results: SafeRemovalResult[];
+    totalFiles: number;
+    successCount: number;
+    failureCount: number;
+    timestamp: string;
+}
+
+interface BackupCleanupResult {
+    cleanedCount: number;
+    totalOld: number;
+    cutoffDate?: string;
+    error?: string;
+}
+
 export class FileRemover {
+    private backupDirectory: string;
+
     constructor() {
         this.backupDirectory = path.join(process.cwd(), '.cleanup-backups');
         this.ensureBackupDirectory();
     }
 
-    async ensureBackupDirectory() {
+    private async ensureBackupDirectory(): Promise<void> {
         try {
             await fs.promises.mkdir(this.backupDirectory, { recursive: true });
         } catch (error) {
-            console.error('Error creating backup directory:', error);
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+            console.error('Error creating backup directory:', errorMessage);
         }
     }
 
-    async createBackupRecord(filePath) {
+    async createBackupRecord(filePath: string): Promise<BackupRecord> {
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
         const fileName = path.basename(filePath);
         const backupFileName = `${timestamp}_${fileName}.backup`;
@@ -26,7 +85,7 @@ export class FileRemover {
             await fs.promises.copyFile(filePath, backupPath);
 
             const stats = await fs.promises.stat(filePath);
-            const backupRecord = {
+            const backupRecord: BackupRecord = {
                 originalPath: filePath,
                 backupPath,
                 fileName,
@@ -43,6 +102,7 @@ export class FileRemover {
 
             return backupRecord;
         } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
             return {
                 originalPath: filePath,
                 backupPath: null,
@@ -51,12 +111,12 @@ export class FileRemover {
                 lastModified: null,
                 backupTimestamp: new Date().toISOString(),
                 backupCreated: false,
-                error: `Failed to create backup: ${error.message}`
+                error: `Failed to create backup: ${errorMessage}`
             };
         }
     }
 
-    async removeFile(filePath) {
+    async removeFile(filePath: string): Promise<RemovalResult> {
         try {
             await fs.promises.unlink(filePath);
             return {
@@ -65,36 +125,38 @@ export class FileRemover {
                 timestamp: new Date().toISOString()
             };
         } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
             return {
                 deleted: false,
-                error: `Failed to delete file: ${error.message}`,
+                error: `Failed to delete file: ${errorMessage}`,
                 timestamp: new Date().toISOString()
             };
         }
     }
 
-    async verifyRemoval(filePath) {
+    async verifyRemoval(filePath: string): Promise<VerificationResult> {
         try {
             await fs.promises.access(filePath, fs.constants.F_OK);
             return {
                 verified: false,
                 error: 'File still exists after deletion attempt'
             };
-        } catch (error) {
-            if (error.code === 'ENOENT') {
+        } catch (error: any) {
+            if (error?.code === 'ENOENT') {
                 return {
                     verified: true,
                     error: null
                 };
             }
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
             return {
                 verified: false,
-                error: `Error verifying removal: ${error.message}`
+                error: `Error verifying removal: ${errorMessage}`
             };
         }
     }
 
-    async rollbackIfNeeded(backupRecord) {
+    async rollbackIfNeeded(backupRecord: BackupRecord): Promise<RollbackResult> {
         if (!backupRecord.backupCreated || !backupRecord.backupPath) {
             return {
                 rolledBack: false,
@@ -110,15 +172,16 @@ export class FileRemover {
                 restoredPath: backupRecord.originalPath
             };
         } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
             return {
                 rolledBack: false,
-                error: `Failed to rollback: ${error.message}`
+                error: `Failed to rollback: ${errorMessage}`
             };
         }
     }
 
-    async safeRemoveFile(filePath) {
-        const result = {
+    async safeRemoveFile(filePath: string): Promise<SafeRemovalResult> {
+        const result: SafeRemovalResult = {
             filePath: path.relative(process.cwd(), filePath),
             deleted: false,
             backupCreated: false,
@@ -164,14 +227,15 @@ export class FileRemover {
             }
 
         } catch (error) {
-            result.error = `Unexpected error during removal: ${error.message}`;
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+            result.error = `Unexpected error during removal: ${errorMessage}`;
         }
 
         return result;
     }
 
-    async removeBatch(filePaths) {
-        const results = [];
+    async removeBatch(filePaths: string[]): Promise<DeletionResults> {
+        const results: SafeRemovalResult[] = [];
         let successCount = 0;
         let failureCount = 0;
 
@@ -195,31 +259,33 @@ export class FileRemover {
         };
     }
 
-    async listBackups() {
+    async listBackups(): Promise<BackupRecord[]> {
         try {
             const files = await fs.promises.readdir(this.backupDirectory);
             const metaFiles = files.filter(file => file.endsWith('.meta.json'));
             
-            const backups = [];
+            const backups: BackupRecord[] = [];
             for (const metaFile of metaFiles) {
                 try {
                     const metaPath = path.join(this.backupDirectory, metaFile);
                     const content = await fs.promises.readFile(metaPath, 'utf8');
-                    const metadata = JSON.parse(content);
+                    const metadata = JSON.parse(content) as BackupRecord;
                     backups.push(metadata);
                 } catch (error) {
                     console.error(`Error reading backup metadata ${metaFile}:`, error);
                 }
             }
 
-            return backups.sort((a, b) => new Date(b.backupTimestamp) - new Date(a.backupTimestamp));
+            return backups.sort((a, b) => 
+                new Date(b.backupTimestamp).getTime() - new Date(a.backupTimestamp).getTime()
+            );
         } catch (error) {
             console.error('Error listing backups:', error);
             return [];
         }
     }
 
-    async cleanupOldBackups(maxAge = 30) {
+    async cleanupOldBackups(maxAge: number = 30): Promise<BackupCleanupResult> {
         const cutoffDate = new Date();
         cutoffDate.setDate(cutoffDate.getDate() - maxAge);
 
@@ -253,12 +319,13 @@ export class FileRemover {
                 cutoffDate: cutoffDate.toISOString()
             };
         } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
             console.error('Error cleaning old backups:', error);
-            return { cleanedCount: 0, totalOld: 0, error: error.message };
+            return { cleanedCount: 0, totalOld: 0, error: errorMessage };
         }
     }
 
-    async fileExists(filePath) {
+    async fileExists(filePath: string): Promise<boolean> {
         try {
             await fs.promises.access(filePath, fs.constants.F_OK);
             return true;

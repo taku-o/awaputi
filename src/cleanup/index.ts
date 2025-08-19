@@ -2,9 +2,35 @@
 
 import { CleanupOrchestrator } from './CleanupOrchestrator.js';
 
-async function main() {
+interface CommandLineOptions {
+    dryRun: boolean;
+    verbose: boolean;
+    validateOnly: boolean;
+    listOnly: boolean;
+}
+
+interface TargetFileInfo {
+    fileName: string;
+    size: string;
+}
+
+interface ValidationResult {
+    safeToDelete: any[];
+    unsafeToDelete: any[];
+}
+
+interface CleanupResult {
+    summary: {
+        deletion?: {
+            successfulDeletions: number;
+            totalSizeDeleted: string;
+        };
+    };
+}
+
+async function main(): Promise<void> {
     const args = process.argv.slice(2);
-    const options = {
+    const options: CommandLineOptions = {
         dryRun: args.includes('--dry-run'),
         verbose: args.includes('--verbose') || args.includes('-v'),
         validateOnly: args.includes('--validate-only'),
@@ -27,7 +53,7 @@ async function main() {
 
         if (options.listOnly) {
             console.log('\n📂 Listing target files:');
-            const files = await orchestrator.listTargetFiles();
+            const files: TargetFileInfo[] = await orchestrator.listTargetFiles();
             if (files.length === 0) {
                 console.log('   No files found matching cleanup criteria');
             } else {
@@ -40,13 +66,13 @@ async function main() {
 
         if (options.validateOnly) {
             console.log('\n🔍 Validation only mode:');
-            const result = await orchestrator.validateOnly();
+            const result: ValidationResult = await orchestrator.validateOnly();
             console.log(`   Safe to delete: ${result.safeToDelete.length} files`);
             console.log(`   Unsafe to delete: ${result.unsafeToDelete.length} files`);
             return;
         }
 
-        const result = await orchestrator.executeCleanup();
+        const result: CleanupResult = await orchestrator.executeCleanup();
         
         console.log('\n✅ Cleanup completed successfully');
         if (result.summary.deletion) {
@@ -56,8 +82,9 @@ async function main() {
 
     } catch (error) {
         console.error('\n❌ Error during cleanup:');
-        console.error(error.message);
-        if (options.verbose) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        console.error(errorMessage);
+        if (options.verbose && error instanceof Error) {
             console.error(error.stack);
         }
         process.exit(1);

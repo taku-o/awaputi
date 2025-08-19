@@ -1,13 +1,54 @@
-import { FileScanner } from './FileScanner.js';
-import { ReferenceChecker } from './ReferenceChecker.js';
-import { SafetyValidator } from './SafetyValidator.js';
-import { FileRemover } from './FileRemover.js';
-import { ReportGenerator } from './ReportGenerator.js';
+import { FileScanner, FileInfo } from './FileScanner.js';
+import { ReferenceChecker, ReferenceResult } from './ReferenceChecker.js';
+import { SafetyValidator, SafetyResults } from './SafetyValidator.js';
+import { FileRemover, DeletionResults } from './FileRemover.js';
+import { ReportGenerator, ScanReport, ReferenceReport, SafetyReport, DeletionReport, SummaryReport } from './ReportGenerator.js';
 import fs from 'fs';
 import path from 'path';
 
+interface CleanupOptions {
+    dryRun?: boolean;
+    verbose?: boolean;
+    patterns?: string[];
+    extensions?: string[];
+    rootPath?: string;
+    autoSaveReports?: boolean;
+    [key: string]: any;
+}
+
+interface CleanupResults {
+    scanReport: ScanReport | null;
+    referenceReport: ReferenceReport | null;
+    safetyReport: SafetyReport | null;
+    deletionReport: DeletionReport | null;
+    summaryReport: SummaryReport | null;
+}
+
+type LogLevel = 'info' | 'warn' | 'error';
+
+interface ValidationOnlyResult {
+    safeToDelete: any[];
+    unsafeToDelete: any[];
+    summary: any;
+}
+
+interface TargetFileInfo {
+    fileName: string;
+    filePath: string;
+    size: string;
+    lastModified: string;
+}
+
 export class CleanupOrchestrator {
-    constructor(options = {}) {
+    private options: Required<CleanupOptions>;
+    private fileScanner: FileScanner;
+    private referenceChecker: ReferenceChecker;
+    private safetyValidator: SafetyValidator;
+    private fileRemover: FileRemover;
+    private reportGenerator: ReportGenerator;
+    private results: CleanupResults;
+
+    constructor(options: CleanupOptions = {}) {
         this.options = {
             dryRun: options.dryRun || false,
             verbose: options.verbose || false,
@@ -33,7 +74,7 @@ export class CleanupOrchestrator {
         };
     }
 
-    log(message, level = 'info') {
+    private log(message: string, level: LogLevel = 'info'): void {
         if (this.options.verbose || level === 'error') {
             const timestamp = new Date().toISOString();
             const prefix = level === 'error' ? '❌' : level === 'warn' ? '⚠️' : 'ℹ️';
@@ -41,7 +82,7 @@ export class CleanupOrchestrator {
         }
     }
 
-    async executeCleanup() {
+    async executeCleanup(): Promise<SummaryReport> {
         this.log('Starting file cleanup process...', 'info');
         
         try {
@@ -65,15 +106,21 @@ export class CleanupOrchestrator {
             await this.generateReports();
             
             this.log('File cleanup process completed successfully', 'info');
+            
+            if (!this.results.summaryReport) {
+                throw new Error('Summary report was not generated');
+            }
+            
             return this.results.summaryReport;
             
         } catch (error) {
-            this.log(`Error during cleanup process: ${error.message}`, 'error');
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+            this.log(`Error during cleanup process: ${errorMessage}`, 'error');
             throw error;
         }
     }
 
-    async scanFiles() {
+    async scanFiles(): Promise<FileInfo[]> {
         this.log(`Scanning for files with patterns: ${this.options.patterns.join(', ')}`, 'info');
         
         const scannedFiles = await this.fileScanner.scanWithInfo(
@@ -96,11 +143,15 @@ export class CleanupOrchestrator {
         return scannedFiles;
     }
 
-    async checkReferences() {
+    async checkReferences(): Promise<ReferenceResult[]> {
         this.log('Checking file references...', 'info');
         
+        if (!this.results.scanReport) {
+            throw new Error('Scan report is not available');
+        }
+        
         const scannedFiles = this.results.scanReport.files;
-        const referenceResults = [];
+        const referenceResults: ReferenceResult[] = [];
 
         for (const fileInfo of scannedFiles) {
             const originalPath = fileInfo.filePath.includes('/') ? 
@@ -128,8 +179,12 @@ export class CleanupOrchestrator {
         return referenceResults;
     }
 
-    async validateSafety() {
+    async validateSafety(): Promise<SafetyResults> {
         this.log('Validating file safety for deletion...', 'info');
+        
+        if (!this.results.scanReport || !this.results.referenceReport) {
+            throw new Error('Scan or reference report is not available');
+        }
         
         const scannedFiles = this.results.scanReport.files;
         const referenceResults = this.results.referenceReport.results;
@@ -153,8 +208,12 @@ export class CleanupOrchestrator {
         return safetyResults;
     }
 
-    async executeDelection() {
+    async executeDelection(): Promise<DeletionResults | void> {
         this.log('Executing file deletion...', 'info');
+        
+        if (!this.results.safetyReport) {
+            throw new Error('Safety report is not available');
+        }
         
         const safeFiles = this.results.safetyReport.safeFiles;
         
@@ -194,7 +253,7 @@ export class CleanupOrchestrator {
         return deletionResults;
     }
 
-    async generateReports() {
+    async generateReports(): Promise<SummaryReport> {
         this.log('Generating cleanup reports...', 'info');
         
         this.results.summaryReport = this.reportGenerator.generateSummaryReport(this.results);
@@ -234,7 +293,7 @@ export class CleanupOrchestrator {
         return this.results.summaryReport;
     }
 
-    findActualFilePath(fileName) {
+    private findActualFilePath(fileName: string): string {
         // Helper method to find actual file path from filename
         // This might need to be improved based on actual file structure
         const possiblePaths = [
@@ -262,7 +321,7 @@ export class CleanupOrchestrator {
         return fileName; // fallback
     }
 
-    async listTargetFiles() {
+    async listTargetFiles(): Promise<TargetFileInfo[]> {
         const scannedFiles = await this.scanFiles();
         return scannedFiles.map(file => ({
             fileName: file.fileName,
@@ -272,11 +331,15 @@ export class CleanupOrchestrator {
         }));
     }
 
-    async validateOnly() {
+    async validateOnly(): Promise<ValidationOnlyResult> {
         await this.scanFiles();
         await this.checkReferences();
         await this.validateSafety();
         await this.generateReports();
+        
+        if (!this.results.safetyReport || !this.results.summaryReport) {
+            throw new Error('Safety or summary report is not available');
+        }
         
         return {
             safeToDelete: this.results.safetyReport.safeFiles,
@@ -285,11 +348,11 @@ export class CleanupOrchestrator {
         };
     }
 
-    getResults() {
+    getResults(): CleanupResults {
         return this.results;
     }
 
-    setOptions(newOptions) {
+    setOptions(newOptions: Partial<CleanupOptions>): void {
         this.options = { ...this.options, ...newOptions };
     }
 }
