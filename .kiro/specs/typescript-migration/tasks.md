@@ -133,7 +133,7 @@
   - **完了**: src/scenes/内の全46ファイル（components/, dialogs/, user-info/, game-scene/, help-scene/, settings-scene/, stage-select/, user-info-scene/）を変換済み
   - _要件: 2.1, 2.2, 4.1, 4.2_
 
-- [ ] 19. UIコンポーネントの移行
+- [x] 19. UIコンポーネントの移行
   - src/ui/内のUIコンポーネントファイルを.tsに変換
   - UIコンポーネントの共通インターフェースを定義
   - イベントハンドラーの型注釈を追加

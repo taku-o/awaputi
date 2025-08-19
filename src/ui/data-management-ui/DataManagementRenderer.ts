@@ -4,10 +4,130 @@
  */
 
 /**
+ * Layout configuration interface
+ */
+interface LayoutConfig {
+    padding: number;
+    itemHeight: number;
+    headerHeight: number;
+    dialogPadding: number;
+    buttonHeight: number;
+    buttonWidth: number;
+    sectionSpacing: number;
+}
+
+/**
+ * Color theme interface
+ */
+interface ColorTheme {
+    background: string;
+    cardBackground: string;
+    primary: string;
+    secondary: string;
+    success: string;
+    warning: string;
+    danger: string;
+    text: string;
+    textSecondary: string;
+    border: string;
+    overlay: string;
+}
+
+/**
+ * Bounds interface
+ */
+interface Bounds {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
+/**
+ * Button position interface
+ */
+interface ButtonPosition {
+    x: number;
+    width: number;
+}
+
+/**
+ * Text metrics interface
+ */
+interface TextMetrics {
+    width: number;
+    height: number;
+}
+
+/**
+ * Text options interface
+ */
+interface TextOptions {
+    fontSize?: number;
+    color?: string;
+    align?: CanvasTextAlign;
+    baseline?: CanvasTextBaseline;
+    maxWidth?: number | null;
+    bold?: boolean;
+}
+
+/**
+ * Button options interface
+ */
+interface ButtonOptions {
+    selected?: boolean;
+    enabled?: boolean;
+    variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
+    fontSize?: number;
+}
+
+/**
+ * Progress bar options interface
+ */
+interface ProgressBarOptions {
+    backgroundColor?: string;
+    progressColor?: string;
+    borderColor?: string;
+    showText?: boolean;
+    text?: string;
+}
+
+/**
+ * Backup status interface
+ */
+interface BackupStatus {
+    lastBackup?: string | number | Date;
+    backupCount: number;
+    totalSize: number;
+    autoBackupEnabled: boolean;
+}
+
+/**
+ * Export options interface
+ */
+interface ExportOptions {
+    format?: 'JSON' | 'CSV' | 'XML';
+    [key: string]: any;
+}
+
+/**
+ * Action definition interface
+ */
+interface ActionDef {
+    text: string;
+    variant: 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
+}
+
+/**
  * UI Layout Manager
  * UIレイアウト管理器 - レイアウト設定と計算
  */
 export class UILayoutManager {
+    private layoutConfig: LayoutConfig;
+    private colors: ColorTheme;
+    private canvas: HTMLCanvasElement | null = null;
+    private ctx: CanvasRenderingContext2D | null = null;
+
     constructor() {
         // レイアウト設定
         this.layoutConfig = {
@@ -34,33 +154,30 @@ export class UILayoutManager {
             border: '#333',
             overlay: 'rgba(0, 0, 0, 0.8)'
         };
-        
-        this.canvas = null;
-        this.ctx = null;
     }
 
-    setCanvas(canvas) {
+    setCanvas(canvas: HTMLCanvasElement): void {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
     }
 
-    getLayoutConfig() {
+    getLayoutConfig(): LayoutConfig {
         return { ...this.layoutConfig };
     }
 
-    getColors() {
+    getColors(): ColorTheme {
         return { ...this.colors };
     }
 
-    updateLayoutConfig(updates) {
+    updateLayoutConfig(updates: Partial<LayoutConfig>): void {
         Object.assign(this.layoutConfig, updates);
     }
 
-    updateColors(updates) {
+    updateColors(updates: Partial<ColorTheme>): void {
         Object.assign(this.colors, updates);
     }
 
-    calculateMenuBounds() {
+    calculateMenuBounds(): Bounds {
         if (!this.canvas) return { x: 0, y: 0, width: 0, height: 0 };
 
         const width = this.canvas.width * 0.8;
@@ -71,7 +188,7 @@ export class UILayoutManager {
         return { x, y, width, height };
     }
 
-    calculateDialogBounds(dialogWidth = 400, dialogHeight = 300) {
+    calculateDialogBounds(dialogWidth: number = 400, dialogHeight: number = 300): Bounds {
         if (!this.canvas) return { x: 0, y: 0, width: dialogWidth, height: dialogHeight };
 
         const x = (this.canvas.width - dialogWidth) / 2;
@@ -80,25 +197,25 @@ export class UILayoutManager {
         return { x, y, width: dialogWidth, height: dialogHeight };
     }
 
-    calculateItemPosition(index, scrollOffset = 0) {
+    calculateItemPosition(index: number, scrollOffset: number = 0): { y: number } {
         const { padding, itemHeight, headerHeight } = this.layoutConfig;
         const y = headerHeight + padding + (index - scrollOffset) * itemHeight;
         
         return { y };
     }
 
-    isItemVisible(index, scrollOffset, visibleItems) {
+    isItemVisible(index: number, scrollOffset: number, visibleItems: number): boolean {
         const adjustedIndex = index - scrollOffset;
         return adjustedIndex >= 0 && adjustedIndex < visibleItems;
     }
 
-    calculateVisibleItems(containerHeight) {
+    calculateVisibleItems(containerHeight: number): number {
         const { headerHeight, itemHeight, padding } = this.layoutConfig;
         const availableHeight = containerHeight - headerHeight - (padding * 2);
         return Math.floor(availableHeight / itemHeight);
     }
 
-    calculateButtonPosition(buttonIndex, totalButtons, containerWidth) {
+    calculateButtonPosition(buttonIndex: number, totalButtons: number, containerWidth: number): ButtonPosition {
         const { buttonWidth, padding } = this.layoutConfig;
         const totalWidth = totalButtons * buttonWidth + (totalButtons - 1) * padding;
         const startX = (containerWidth - totalWidth) / 2;
@@ -115,33 +232,35 @@ export class UILayoutManager {
  * UIレンダラー - 実際の描画処理
  */
 export class UIRenderer {
-    constructor(layoutManager) {
+    private layoutManager: UILayoutManager;
+    private canvas: HTMLCanvasElement | null = null;
+    ctx: CanvasRenderingContext2D | null = null;
+
+    constructor(layoutManager: UILayoutManager) {
         this.layoutManager = layoutManager;
-        this.canvas = null;
-        this.ctx = null;
     }
 
-    setCanvas(canvas) {
+    setCanvas(canvas: HTMLCanvasElement): void {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.layoutManager.setCanvas(canvas);
     }
 
-    clear() {
-        if (!this.ctx) return;
+    clear(): void {
+        if (!this.ctx || !this.canvas) return;
         
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
-    drawBackground() {
-        if (!this.ctx) return;
+    drawBackground(): void {
+        if (!this.ctx || !this.canvas) return;
 
         const colors = this.layoutManager.getColors();
         this.ctx.fillStyle = colors.background;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
-    drawCard(x, y, width, height, selected = false) {
+    drawCard(x: number, y: number, width: number, height: number, selected: boolean = false): void {
         if (!this.ctx) return;
 
         const colors = this.layoutManager.getColors();
@@ -156,7 +275,7 @@ export class UIRenderer {
         this.roundRect(x, y, width, height, 8, false);
     }
 
-    drawText(text, x, y, options = {}) {
+    drawText(text: string, x: number, y: number, options: TextOptions = {}): void {
         if (!this.ctx) return;
 
         const colors = this.layoutManager.getColors();
@@ -181,18 +300,18 @@ export class UIRenderer {
         }
     }
 
-    drawButton(x, y, width, height, text, options = {}) {
+    drawButton(x: number, y: number, width: number, height: number, text: string, options: ButtonOptions = {}): void {
         if (!this.ctx) return;
 
         const colors = this.layoutManager.getColors();
         const {
             selected = false,
             enabled = true,
-            variant = 'primary', // 'primary', 'secondary', 'success', 'warning', 'danger'
+            variant = 'primary',
             fontSize = 14
         } = options;
 
-        let backgroundColor, textColor, borderColor;
+        let backgroundColor: string, textColor: string, borderColor: string;
 
         if (!enabled) {
             backgroundColor = colors.border;
@@ -227,7 +346,7 @@ export class UIRenderer {
         });
     }
 
-    drawProgressBar(x, y, width, height, progress, options = {}) {
+    drawProgressBar(x: number, y: number, width: number, height: number, progress: number, options: ProgressBarOptions = {}): void {
         if (!this.ctx) return;
 
         const colors = this.layoutManager.getColors();
@@ -267,7 +386,7 @@ export class UIRenderer {
         }
     }
 
-    drawIcon(icon, x, y, size = 24, color = null) {
+    drawIcon(icon: string, x: number, y: number, size: number = 24, color: string | null = null): void {
         if (!this.ctx) return;
 
         const colors = this.layoutManager.getColors();
@@ -280,14 +399,14 @@ export class UIRenderer {
         this.ctx.fillText(icon, x + size / 2, y + size / 2);
     }
 
-    drawOverlay(alpha = 0.8) {
-        if (!this.ctx) return;
+    drawOverlay(alpha: number = 0.8): void {
+        if (!this.ctx || !this.canvas) return;
 
         this.ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
-    drawScrollbar(x, y, width, height, scrollPosition, totalItems, visibleItems) {
+    drawScrollbar(x: number, y: number, width: number, height: number, scrollPosition: number, totalItems: number, visibleItems: number): void {
         if (!this.ctx || totalItems <= visibleItems) return;
 
         const colors = this.layoutManager.getColors();
@@ -304,7 +423,7 @@ export class UIRenderer {
         this.roundRect(x + 2, thumbY, width - 4, thumbHeight, 3, true);
     }
 
-    drawMenuHeader(bounds, title) {
+    drawMenuHeader(bounds: Bounds, title: string): void {
         if (!this.ctx) return;
 
         const colors = this.layoutManager.getColors();
@@ -338,11 +457,11 @@ export class UIRenderer {
         });
     }
 
-    drawStatusIndicator(x, y, status, text = '') {
+    drawStatusIndicator(x: number, y: number, status: 'success' | 'warning' | 'error' | string, text: string = ''): void {
         if (!this.ctx) return;
 
         const colors = this.layoutManager.getColors();
-        let indicatorColor;
+        let indicatorColor: string;
 
         switch (status) {
             case 'success':
@@ -376,7 +495,7 @@ export class UIRenderer {
     }
 
     // Helper method for rounded rectangles
-    roundRect(x, y, width, height, radius, fill = true) {
+    private roundRect(x: number, y: number, width: number, height: number, radius: number, fill: boolean = true): void {
         if (!this.ctx) return;
 
         this.ctx.beginPath();
@@ -399,7 +518,7 @@ export class UIRenderer {
     }
 
     // Text measurement utilities
-    measureText(text, fontSize = 16, bold = false) {
+    measureText(text: string, fontSize: number = 16, bold: boolean = false): TextMetrics {
         if (!this.ctx) return { width: 0, height: fontSize };
 
         this.ctx.font = `${bold ? 'bold ' : ''}${fontSize}px Arial, sans-serif`;
@@ -411,12 +530,12 @@ export class UIRenderer {
         };
     }
 
-    wrapText(text, maxWidth, fontSize = 16) {
+    wrapText(text: string, maxWidth: number, fontSize: number = 16): string[] {
         if (!this.ctx) return [text];
 
         this.ctx.font = `${fontSize}px Arial, sans-serif`;
         const words = text.split(' ');
-        const lines = [];
+        const lines: string[] = [];
         let currentLine = '';
 
         for (const word of words) {
@@ -444,12 +563,15 @@ export class UIRenderer {
  * ビューレンダラー - 特定ビューの描画ロジック
  */
 export class ViewRenderer {
-    constructor(uiRenderer, layoutManager) {
+    private uiRenderer: UIRenderer;
+    private layoutManager: UILayoutManager;
+
+    constructor(uiRenderer: UIRenderer, layoutManager: UILayoutManager) {
         this.uiRenderer = uiRenderer;
         this.layoutManager = layoutManager;
     }
 
-    renderOverviewView(bounds, backupStatus, selectedItem) {
+    renderOverviewView(bounds: Bounds, backupStatus: BackupStatus, selectedItem: number): void {
         const colors = this.layoutManager.getColors();
         const { padding, itemHeight } = this.layoutManager.getLayoutConfig();
 
@@ -463,7 +585,7 @@ export class ViewRenderer {
         this.renderQuickActionsCard(bounds.x + padding, currentY, bounds.width - padding * 2, selectedItem);
     }
 
-    renderBackupStatusCard(x, y, width, backupStatus, selected = false) {
+    renderBackupStatusCard(x: number, y: number, width: number, backupStatus: BackupStatus, selected: boolean = false): void {
         const colors = this.layoutManager.getColors();
         const { padding } = this.layoutManager.getLayoutConfig();
 
@@ -502,7 +624,7 @@ export class ViewRenderer {
             `Auto: ${autoStatus}`);
     }
 
-    renderQuickActionsCard(x, y, width, selectedItem) {
+    renderQuickActionsCard(x: number, y: number, width: number, selectedItem: number): void {
         const colors = this.layoutManager.getColors();
         const { padding, buttonHeight, buttonWidth } = this.layoutManager.getLayoutConfig();
 
@@ -516,7 +638,7 @@ export class ViewRenderer {
         });
 
         // Action buttons
-        const actions = [
+        const actions: ActionDef[] = [
             { text: 'Create Backup', variant: 'primary' },
             { text: 'Export Data', variant: 'secondary' },
             { text: 'Import Data', variant: 'secondary' },
@@ -543,7 +665,7 @@ export class ViewRenderer {
         });
     }
 
-    renderExportView(bounds, selectedItem, exportOptions = {}) {
+    renderExportView(bounds: Bounds, selectedItem: number, exportOptions: ExportOptions = {}): void {
         const colors = this.layoutManager.getColors();
         const { padding } = this.layoutManager.getLayoutConfig();
 
@@ -553,7 +675,7 @@ export class ViewRenderer {
         this.renderExportOptionsCard(bounds.x + padding, currentY, bounds.width - padding * 2, exportOptions, selectedItem);
     }
 
-    renderExportOptionsCard(x, y, width, options, selectedItem) {
+    renderExportOptionsCard(x: number, y: number, width: number, options: ExportOptions, selectedItem: number): void {
         const { padding, itemHeight } = this.layoutManager.getLayoutConfig();
 
         // Card background
@@ -566,7 +688,7 @@ export class ViewRenderer {
         });
 
         // Format options
-        const formats = ['JSON', 'CSV', 'XML'];
+        const formats: string[] = ['JSON', 'CSV', 'XML'];
         formats.forEach((format, index) => {
             const itemY = y + padding + 40 + index * 30;
             const isSelected = selectedItem === index;
@@ -581,7 +703,7 @@ export class ViewRenderer {
         });
     }
 
-    formatFileSize(bytes) {
+    formatFileSize(bytes: number): string {
         if (bytes === 0) return '0 B';
         
         const k = 1024;

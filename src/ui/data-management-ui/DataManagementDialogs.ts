@@ -4,28 +4,138 @@
  */
 
 /**
+ * Renderer interface
+ */
+interface Renderer {
+    ctx: CanvasRenderingContext2D;
+    drawOverlay(opacity: number): void;
+    drawCard(x: number, y: number, width: number, height: number, selected: boolean): void;
+    drawText(text: string, x: number, y: number, options?: TextOptions): void;
+    drawButton(x: number, y: number, width: number, height: number, text: string, options?: ButtonOptions): void;
+    drawProgressBar(x: number, y: number, width: number, height: number, progress: number): void;
+    wrapText(text: string, maxWidth: number, fontSize: number): string[];
+}
+
+/**
+ * Text rendering options
+ */
+interface TextOptions {
+    fontSize?: number;
+    color?: string;
+    bold?: boolean;
+    align?: CanvasTextAlign;
+}
+
+/**
+ * Button rendering options
+ */
+interface ButtonOptions {
+    selected?: boolean;
+    variant?: 'primary' | 'secondary' | 'danger';
+    enabled?: boolean;
+}
+
+/**
+ * Layout manager interface
+ */
+interface LayoutManager {
+    calculateDialogBounds(width: number, height: number): DialogBounds;
+    getColors(): ColorTheme;
+    getLayoutConfig(): LayoutConfig;
+}
+
+/**
+ * Dialog bounds interface
+ */
+interface DialogBounds {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
+/**
+ * Color theme interface
+ */
+interface ColorTheme {
+    text: string;
+    textSecondary: string;
+    border: string;
+    success: string;
+    warning: string;
+    danger: string;
+}
+
+/**
+ * Layout configuration interface
+ */
+interface LayoutConfig {
+    padding: number;
+    buttonHeight: number;
+    buttonWidth: number;
+}
+
+/**
+ * Content bounds interface
+ */
+interface ContentBounds {
+    contentX: number;
+    contentY: number;
+    contentWidth: number;
+    contentHeight: number;
+}
+
+/**
+ * Button definition interface
+ */
+interface ButtonDef {
+    text: string;
+    variant?: 'primary' | 'secondary' | 'danger';
+    enabled?: boolean;
+}
+
+/**
+ * Base dialog data interface
+ */
+interface BaseDialogData {
+    width?: number;
+    height?: number;
+}
+
+/**
+ * Dialog interface
+ */
+interface Dialog {
+    render(data?: any): void;
+}
+
+/**
  * Dialog Manager
  * ダイアログ管理器 - ダイアログのライフサイクル管理
  */
 export class DialogManager {
-    constructor(renderer, layoutManager) {
+    private renderer: Renderer;
+    private layoutManager: LayoutManager;
+    private dialogs: Map<string, Dialog>;
+
+    constructor(renderer: Renderer, layoutManager: LayoutManager) {
         this.renderer = renderer;
         this.layoutManager = layoutManager;
         this.dialogs = new Map();
         this.registerDefaultDialogs();
     }
 
-    registerDefaultDialogs() {
+    registerDefaultDialogs(): void {
         this.dialogs.set('backup', new BackupDialog(this.renderer, this.layoutManager));
-        this.dialogs.set('export', new ExportDialog(this.renderer, this.layoutManager));
-        this.dialogs.set('import', new ImportDialog(this.renderer, this.layoutManager));
+        this.dialogs.set('export', new DataManagementExportDialog(this.renderer, this.layoutManager));
+        this.dialogs.set('import', new DataManagementImportDialog(this.renderer, this.layoutManager));
         this.dialogs.set('clear', new ClearDataDialog(this.renderer, this.layoutManager));
         this.dialogs.set('progress', new ProgressDialog(this.renderer, this.layoutManager));
         this.dialogs.set('confirm', new ConfirmDialog(this.renderer, this.layoutManager));
         this.dialogs.set('alert', new AlertDialog(this.renderer, this.layoutManager));
     }
 
-    renderDialog(type, data = {}) {
+    renderDialog(type: string, data: any = {}): void {
         const dialog = this.dialogs.get(type);
         if (dialog) {
             // Draw overlay
@@ -38,11 +148,11 @@ export class DialogManager {
         }
     }
 
-    getDialog(type) {
+    getDialog(type: string): Dialog | undefined {
         return this.dialogs.get(type);
     }
 
-    registerDialog(type, dialog) {
+    registerDialog(type: string, dialog: Dialog): void {
         this.dialogs.set(type, dialog);
     }
 }
@@ -51,29 +161,32 @@ export class DialogManager {
  * Base Dialog
  * ベースダイアログクラス - 共通ダイアログ機能
  */
-export class DataManagementBaseDialog {
-    constructor(renderer, layoutManager) {
+export class DataManagementBaseDialog implements Dialog {
+    protected renderer: Renderer;
+    protected layoutManager: LayoutManager;
+    protected selectedButton: number = 0;
+
+    constructor(renderer: Renderer, layoutManager: LayoutManager) {
         this.renderer = renderer;
         this.layoutManager = layoutManager;
-        this.selectedButton = 0;
     }
 
-    render(data = {}) {
+    render(data: BaseDialogData = {}): void {
         const bounds = this.calculateBounds(data);
         this.renderDialog(bounds, data);
     }
 
-    calculateBounds(data = {}) {
+    calculateBounds(data: BaseDialogData = {}): DialogBounds {
         const defaultWidth = data.width || 400;
         const defaultHeight = data.height || 300;
         return this.layoutManager.calculateDialogBounds(defaultWidth, defaultHeight);
     }
 
-    renderDialog(bounds, data) {
+    renderDialog(bounds: DialogBounds, data: any): void {
         // Override in subclasses
     }
 
-    renderDialogFrame(bounds, title = '') {
+    renderDialogFrame(bounds: DialogBounds, title: string = ''): ContentBounds {
         const colors = this.layoutManager.getColors();
         const { padding } = this.layoutManager.getLayoutConfig();
 
@@ -104,7 +217,7 @@ export class DataManagementBaseDialog {
         };
     }
 
-    renderButtons(contentBounds, buttons, selectedIndex = 0) {
+    renderButtons(contentBounds: ContentBounds, buttons: ButtonDef[], selectedIndex: number = 0): void {
         const { buttonHeight, buttonWidth } = this.layoutManager.getLayoutConfig();
         const buttonSpacing = 10;
         const totalButtonWidth = buttons.length * buttonWidth + (buttons.length - 1) * buttonSpacing;
@@ -123,13 +236,21 @@ export class DataManagementBaseDialog {
         });
     }
 
-    setSelectedButton(index) {
+    setSelectedButton(index: number): void {
         this.selectedButton = index;
     }
 
-    getSelectedButton() {
+    getSelectedButton(): number {
         return this.selectedButton;
     }
+}
+
+/**
+ * Backup dialog data interface
+ */
+interface BackupDialogData extends BaseDialogData {
+    estimatedSize?: string;
+    autoBackupEnabled?: boolean;
 }
 
 /**
@@ -137,7 +258,7 @@ export class DataManagementBaseDialog {
  * バックアップダイアログ - バックアップ作成の確認と設定
  */
 export class BackupDialog extends DataManagementBaseDialog {
-    renderDialog(bounds, data) {
+    renderDialog(bounds: DialogBounds, data: BackupDialogData): void {
         const contentBounds = this.renderDialogFrame(bounds, 'Create Backup');
         const colors = this.layoutManager.getColors();
 
@@ -165,7 +286,7 @@ export class BackupDialog extends DataManagementBaseDialog {
             });
 
         // Buttons
-        const buttons = [
+        const buttons: ButtonDef[] = [
             { text: 'Cancel', variant: 'secondary' },
             { text: 'Create Backup', variant: 'primary' }
         ];
@@ -175,11 +296,20 @@ export class BackupDialog extends DataManagementBaseDialog {
 }
 
 /**
+ * Export dialog data interface
+ */
+interface ExportDialogData extends BaseDialogData {
+    formats?: string[];
+    selectedFormat?: number;
+    includeOptions?: { name: string; checked: boolean }[];
+}
+
+/**
  * Export Dialog
  * エクスポートダイアログ - データエクスポートの設定
  */
 export class DataManagementExportDialog extends DataManagementBaseDialog {
-    renderDialog(bounds, data) {
+    renderDialog(bounds: DialogBounds, data: ExportDialogData): void {
         const contentBounds = this.renderDialogFrame(bounds, 'Export Data');
         const colors = this.layoutManager.getColors();
 
@@ -234,7 +364,7 @@ export class DataManagementExportDialog extends DataManagementBaseDialog {
         });
 
         // Buttons
-        const buttons = [
+        const buttons: ButtonDef[] = [
             { text: 'Cancel', variant: 'secondary' },
             { text: 'Export', variant: 'primary' }
         ];
@@ -242,9 +372,17 @@ export class DataManagementExportDialog extends DataManagementBaseDialog {
         this.renderButtons(contentBounds, buttons, this.selectedButton);
     }
 
-    calculateBounds(data) {
+    calculateBounds(data: BaseDialogData): DialogBounds {
         return this.layoutManager.calculateDialogBounds(450, 400);
     }
+}
+
+/**
+ * Import dialog data interface
+ */
+interface ImportDialogData extends BaseDialogData {
+    selectedFile?: { name: string; size: number };
+    importOptions?: { name: string; checked: boolean }[];
 }
 
 /**
@@ -252,7 +390,7 @@ export class DataManagementExportDialog extends DataManagementBaseDialog {
  * インポートダイアログ - データインポートの設定
  */
 export class DataManagementImportDialog extends DataManagementBaseDialog {
-    renderDialog(bounds, data) {
+    renderDialog(bounds: DialogBounds, data: ImportDialogData): void {
         const contentBounds = this.renderDialogFrame(bounds, 'Import Data');
         const colors = this.layoutManager.getColors();
 
@@ -308,7 +446,7 @@ export class DataManagementImportDialog extends DataManagementBaseDialog {
         });
 
         // Buttons
-        const buttons = [
+        const buttons: ButtonDef[] = [
             { text: 'Cancel', variant: 'secondary' },
             { text: 'Import', variant: 'primary', enabled: !!data.selectedFile }
         ];
@@ -316,11 +454,11 @@ export class DataManagementImportDialog extends DataManagementBaseDialog {
         this.renderButtons(contentBounds, buttons, this.selectedButton);
     }
 
-    calculateBounds(data) {
+    calculateBounds(data: BaseDialogData): DialogBounds {
         return this.layoutManager.calculateDialogBounds(450, 350);
     }
 
-    formatFileSize(bytes) {
+    formatFileSize(bytes: number): string {
         if (bytes === 0) return '0 B';
         
         const k = 1024;
@@ -332,11 +470,18 @@ export class DataManagementImportDialog extends DataManagementBaseDialog {
 }
 
 /**
+ * Clear data dialog data interface
+ */
+interface ClearDataDialogData extends BaseDialogData {
+    confirmText?: string;
+}
+
+/**
  * Clear Data Dialog
  * データクリアダイアログ - データ削除の確認
  */
 export class ClearDataDialog extends DataManagementBaseDialog {
-    renderDialog(bounds, data) {
+    renderDialog(bounds: DialogBounds, data: ClearDataDialogData): void {
         const contentBounds = this.renderDialogFrame(bounds, 'Clear Data');
         const colors = this.layoutManager.getColors();
 
@@ -405,7 +550,7 @@ export class ClearDataDialog extends DataManagementBaseDialog {
 
         // Buttons
         const isConfirmed = confirmText === requiredText;
-        const buttons = [
+        const buttons: ButtonDef[] = [
             { text: 'Cancel', variant: 'secondary' },
             { text: 'Delete All Data', variant: 'danger', enabled: isConfirmed }
         ];
@@ -413,9 +558,20 @@ export class ClearDataDialog extends DataManagementBaseDialog {
         this.renderButtons(contentBounds, buttons, this.selectedButton);
     }
 
-    calculateBounds(data) {
+    calculateBounds(data: BaseDialogData): DialogBounds {
         return this.layoutManager.calculateDialogBounds(500, 400);
     }
+}
+
+/**
+ * Progress dialog data interface
+ */
+interface ProgressDialogData extends BaseDialogData {
+    title?: string;
+    message?: string;
+    progress?: number;
+    startTime?: number;
+    cancellable?: boolean;
 }
 
 /**
@@ -423,7 +579,7 @@ export class ClearDataDialog extends DataManagementBaseDialog {
  * プログレスダイアログ - 操作進行状況の表示
  */
 export class ProgressDialog extends DataManagementBaseDialog {
-    renderDialog(bounds, data) {
+    renderDialog(bounds: DialogBounds, data: ProgressDialogData): void {
         const contentBounds = this.renderDialogFrame(bounds, data.title || 'Processing');
         const colors = this.layoutManager.getColors();
 
@@ -459,15 +615,27 @@ export class ProgressDialog extends DataManagementBaseDialog {
 
         // Cancel button (if allowed)
         if (data.cancellable) {
-            const buttons = [{ text: 'Cancel', variant: 'secondary' }];
+            const buttons: ButtonDef[] = [{ text: 'Cancel', variant: 'secondary' }];
             this.renderButtons(contentBounds, buttons, this.selectedButton);
         }
     }
 
-    calculateBounds(data) {
+    calculateBounds(data: ProgressDialogData): DialogBounds {
         const height = data.cancellable ? 250 : 180;
         return this.layoutManager.calculateDialogBounds(400, height);
     }
+}
+
+/**
+ * Confirm dialog data interface
+ */
+interface ConfirmDialogData extends BaseDialogData {
+    title?: string;
+    message?: string;
+    details?: string;
+    cancelText?: string;
+    confirmText?: string;
+    variant?: 'primary' | 'secondary' | 'danger';
 }
 
 /**
@@ -475,7 +643,7 @@ export class ProgressDialog extends DataManagementBaseDialog {
  * 確認ダイアログ - 一般的な確認操作
  */
 export class ConfirmDialog extends DataManagementBaseDialog {
-    renderDialog(bounds, data) {
+    renderDialog(bounds: DialogBounds, data: ConfirmDialogData): void {
         const title = data.title || 'Confirm';
         const contentBounds = this.renderDialogFrame(bounds, title);
         const colors = this.layoutManager.getColors();
@@ -507,7 +675,7 @@ export class ConfirmDialog extends DataManagementBaseDialog {
         }
 
         // Buttons
-        const buttons = [
+        const buttons: ButtonDef[] = [
             { text: data.cancelText || 'Cancel', variant: 'secondary' },
             { text: data.confirmText || 'Confirm', variant: data.variant || 'primary' }
         ];
@@ -515,7 +683,7 @@ export class ConfirmDialog extends DataManagementBaseDialog {
         this.renderButtons(contentBounds, buttons, this.selectedButton);
     }
 
-    calculateBounds(data) {
+    calculateBounds(data: ConfirmDialogData): DialogBounds {
         const baseHeight = 200;
         const additionalHeight = data.details ? 60 : 0;
         return this.layoutManager.calculateDialogBounds(400, baseHeight + additionalHeight);
@@ -523,11 +691,21 @@ export class ConfirmDialog extends DataManagementBaseDialog {
 }
 
 /**
+ * Alert dialog data interface
+ */
+interface AlertDialogData extends BaseDialogData {
+    title?: string;
+    type?: 'error' | 'warning' | 'success' | 'info';
+    message?: string;
+    buttonText?: string;
+}
+
+/**
  * Alert Dialog
  * アラートダイアログ - 情報表示とエラー通知
  */
 export class AlertDialog extends DataManagementBaseDialog {
-    renderDialog(bounds, data) {
+    renderDialog(bounds: DialogBounds, data: AlertDialogData): void {
         const title = data.title || 'Notice';
         const contentBounds = this.renderDialogFrame(bounds, title);
         const colors = this.layoutManager.getColors();
@@ -566,14 +744,14 @@ export class AlertDialog extends DataManagementBaseDialog {
         });
 
         // Buttons
-        const buttons = [
+        const buttons: ButtonDef[] = [
             { text: data.buttonText || 'OK', variant: 'primary' }
         ];
 
         this.renderButtons(contentBounds, buttons, this.selectedButton);
     }
 
-    calculateBounds(data) {
+    calculateBounds(data: BaseDialogData): DialogBounds {
         return this.layoutManager.calculateDialogBounds(400, 180);
     }
 }

@@ -1,4 +1,5 @@
 import { getErrorHandler } from '../utils/ErrorHandler.js';
+import type { ErrorHandler } from '../utils/ErrorHandler.js';
 import { 
     UIStateManager, 
     DialogStateManager, 
@@ -11,6 +12,48 @@ import {
     ViewRenderer 
 } from './data-management-ui/DataManagementRenderer.js';
 import { DialogManager } from './data-management-ui/DataManagementDialogs.js';
+
+/**
+ * Data manager interface
+ */
+interface DataManager {
+    on?(event: string, callback: (data: any) => void): void;
+    backup?: any;
+    export?: any;
+    import?: any;
+}
+
+/**
+ * Configuration interface
+ */
+interface Config {
+    autoRefresh: boolean;
+    refreshInterval: number;
+    enableAnimations: boolean;
+    showAdvancedOptions: boolean;
+}
+
+/**
+ * Status interface
+ */
+interface Status {
+    visible: boolean;
+    currentView: string;
+    selectedItem: number;
+    dialogVisible: boolean;
+    operationInProgress: boolean;
+    backupStatus: any;
+}
+
+/**
+ * Bounds interface
+ */
+interface Bounds {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
 
 /**
  * データ管理UI (Refactored)
@@ -28,24 +71,37 @@ import { DialogManager } from './data-management-ui/DataManagementDialogs.js';
  * - ユーザーフレンドリーなデータ管理体験の実現
  */
 export class DataManagementUI {
-    constructor(dataManager) {
+    private dataManager: DataManager;
+    
+    // Sub-components
+    private uiState!: UIStateManager;
+    private dialogState!: DialogStateManager;
+    private operationState!: OperationStateManager;
+    private backupStatus!: BackupStatusManager;
+    private layoutManager!: UILayoutManager;
+    private uiRenderer!: UIRenderer;
+    private viewRenderer!: ViewRenderer;
+    private dialogManager!: DialogManager;
+    
+    // Main configuration
+    private config: Config = {
+        autoRefresh: true,
+        refreshInterval: 30000, // 30 seconds
+        enableAnimations: true,
+        showAdvancedOptions: false
+    };
+    
+    // Canvas and input
+    private canvas: HTMLCanvasElement | null = null;
+    private lastInputTime: number = 0;
+    private inputCooldown: number = 150;
+    private refreshInterval?: NodeJS.Timer;
+
+    constructor(dataManager: DataManager) {
         this.dataManager = dataManager;
         
         // Initialize sub-components
         this._initializeSubComponents();
-        
-        // Main configuration
-        this.config = {
-            autoRefresh: true,
-            refreshInterval: 30000, // 30 seconds
-            enableAnimations: true,
-            showAdvancedOptions: false
-        };
-        
-        // Canvas and input
-        this.canvas = null;
-        this.lastInputTime = 0;
-        this.inputCooldown = 150;
         
         this.initialize();
     }
@@ -54,7 +110,7 @@ export class DataManagementUI {
      * Initialize sub-component systems
      * @private
      */
-    _initializeSubComponents() {
+    private _initializeSubComponents(): void {
         try {
             // Initialize state managers
             this.uiState = new UIStateManager();
@@ -80,7 +136,7 @@ export class DataManagementUI {
     /**
      * UIコンポーネントの初期化
      */
-    async initialize() {
+    async initialize(): Promise<void> {
         try {
             // Initialize backup status
             await this.backupStatus.initialize(this.dataManager);
@@ -101,26 +157,26 @@ export class DataManagementUI {
     /**
      * イベントリスナーの設定
      */
-    setupEventListeners() {
+    setupEventListeners(): void {
         if (this.dataManager) {
             // DataManagerのイベントを監視
-            this.dataManager.on?.('backupCreated', (data) => {
+            this.dataManager.on?.('backupCreated', (data: any) => {
                 this.onBackupCreated(data);
             });
             
-            this.dataManager.on?.('dataExported', (data) => {
+            this.dataManager.on?.('dataExported', (data: any) => {
                 this.onDataExported(data);
             });
             
-            this.dataManager.on?.('dataImported', (data) => {
+            this.dataManager.on?.('dataImported', (data: any) => {
                 this.onDataImported(data);
             });
             
-            this.dataManager.on?.('operationProgress', (data) => {
+            this.dataManager.on?.('operationProgress', (data: any) => {
                 this.onOperationProgress(data);
             });
             
-            this.dataManager.on?.('error', (data) => {
+            this.dataManager.on?.('error', (data: any) => {
                 this.onError(data);
             });
         }
@@ -129,23 +185,23 @@ export class DataManagementUI {
     /**
      * 状態変更リスナーの設定
      */
-    setupStateChangeListeners() {
+    setupStateChangeListeners(): void {
         // UI state changes
-        this.uiState.onStateChange((type, data) => {
+        this.uiState.onStateChange((type: string, data: any) => {
             if (type === 'view') {
                 console.log(`View changed to: ${data.view}`);
             }
         });
         
         // Dialog state changes
-        this.dialogState.onDialogChange((action, data) => {
+        this.dialogState.onDialogChange((action: string, data: any) => {
             if (action === 'show') {
                 console.log(`Dialog opened: ${data.type}`);
             }
         });
         
         // Operation state changes
-        this.operationState.onOperationChange((action, data) => {
+        this.operationState.onOperationChange((action: string, data: any) => {
             if (action === 'start') {
                 this.dialogState.showDialog('progress', {
                     title: `${data.type} in progress`,
@@ -175,7 +231,7 @@ export class DataManagementUI {
      * UIの表示
      * @param {HTMLCanvasElement} canvas - 描画キャンバス
      */
-    show(canvas) {
+    show(canvas: HTMLCanvasElement): void {
         this.canvas = canvas;
         this.uiRenderer.setCanvas(canvas);
         this.uiState.setVisible(true);
@@ -188,7 +244,7 @@ export class DataManagementUI {
     /**
      * UIの非表示
      */
-    hide() {
+    hide(): void {
         this.uiState.setVisible(false);
         this.stopAutoRefresh();
     }
@@ -197,7 +253,7 @@ export class DataManagementUI {
      * UIの可視性を切り替え
      * @param {HTMLCanvasElement} canvas - 描画キャンバス
      */
-    toggle(canvas) {
+    toggle(canvas: HTMLCanvasElement): void {
         if (this.uiState.isUIVisible()) {
             this.hide();
         } else {
@@ -209,14 +265,14 @@ export class DataManagementUI {
      * UIが表示されているかチェック
      * @returns {boolean} 表示状態
      */
-    isVisible() {
+    isVisible(): boolean {
         return this.uiState.isUIVisible();
     }
     
     /**
      * 自動リフレッシュの開始
      */
-    startAutoRefresh() {
+    startAutoRefresh(): void {
         this.stopAutoRefresh();
         
         this.refreshInterval = setInterval(() => {
@@ -229,17 +285,17 @@ export class DataManagementUI {
     /**
      * 自動リフレッシュの停止
      */
-    stopAutoRefresh() {
+    stopAutoRefresh(): void {
         if (this.refreshInterval) {
             clearInterval(this.refreshInterval);
-            this.refreshInterval = null;
+            this.refreshInterval = undefined;
         }
     }
     
     /**
      * UIの描画
      */
-    render() {
+    render(): void {
         if (!this.uiState.isUIVisible() || !this.canvas) return;
         
         try {
@@ -260,7 +316,9 @@ export class DataManagementUI {
             if (this.dialogState.isDialogVisible()) {
                 const dialogType = this.dialogState.getDialogType();
                 const dialogData = this.dialogState.getDialogData();
-                this.dialogManager.renderDialog(dialogType, dialogData);
+                if (dialogType) {
+                    this.dialogManager.renderDialog(dialogType, dialogData);
+                }
             }
             
             // Render error message if present
@@ -274,7 +332,7 @@ export class DataManagementUI {
     /**
      * 現在のビューをレンダリング
      */
-    renderCurrentView(bounds) {
+    renderCurrentView(bounds: Bounds): void {
         const currentView = this.uiState.getCurrentView();
         const selectedItem = this.uiState.getSelectedItem();
         
@@ -304,7 +362,7 @@ export class DataManagementUI {
     /**
      * エラーメッセージの描画
      */
-    renderErrorMessage() {
+    renderErrorMessage(): void {
         const errorMessage = this.uiState.getError();
         if (!errorMessage) return;
         
@@ -330,7 +388,7 @@ export class DataManagementUI {
      * 入力処理
      * @param {string} key - 押されたキー
      */
-    handleInput(key) {
+    handleInput(key: string): boolean {
         if (!this.uiState.isUIVisible()) return false;
         
         // Input cooldown
@@ -350,9 +408,9 @@ export class DataManagementUI {
     /**
      * ダイアログ入力処理
      */
-    handleDialogInput(key) {
+    handleDialogInput(key: string): boolean {
         const dialogType = this.dialogState.getDialogType();
-        const dialog = this.dialogManager.getDialog(dialogType);
+        const dialog = dialogType ? this.dialogManager.getDialog(dialogType) : undefined;
         
         switch (key) {
             case 'Escape':
@@ -375,7 +433,9 @@ export class DataManagementUI {
                 return true;
                 
             case 'Enter':
-                this.executeDialogAction(dialogType, dialog?.getSelectedButton() || 0);
+                if (dialogType) {
+                    this.executeDialogAction(dialogType, dialog?.getSelectedButton() || 0);
+                }
                 return true;
         }
         
@@ -385,7 +445,7 @@ export class DataManagementUI {
     /**
      * メインUI入力処理
      */
-    handleMainUIInput(key) {
+    handleMainUIInput(key: string): boolean {
         switch (key) {
             case 'Escape':
                 this.hide();
@@ -414,7 +474,7 @@ export class DataManagementUI {
     /**
      * メインアクション実行
      */
-    executeMainAction() {
+    executeMainAction(): void {
         const selectedItem = this.uiState.getSelectedItem();
         const currentView = this.uiState.getCurrentView();
         
@@ -439,7 +499,7 @@ export class DataManagementUI {
     /**
      * ダイアログアクション実行
      */
-    async executeDialogAction(dialogType, buttonIndex) {
+    async executeDialogAction(dialogType: string, buttonIndex: number): Promise<void> {
         try {
             switch (dialogType) {
                 case 'backup':
@@ -470,7 +530,7 @@ export class DataManagementUI {
             this.dialogState.hideDialog();
             
         } catch (error) {
-            this.uiState.showError(error.message);
+            this.uiState.showError((error as Error).message);
             console.error('Dialog action failed:', error);
         }
     }
@@ -478,7 +538,7 @@ export class DataManagementUI {
     /**
      * ビューサイクル
      */
-    cycleView() {
+    cycleView(): void {
         const views = ['overview', 'export', 'import'];
         const currentIndex = views.indexOf(this.uiState.getCurrentView());
         const nextIndex = (currentIndex + 1) % views.length;
@@ -486,14 +546,14 @@ export class DataManagementUI {
     }
     
     // Dialog show methods
-    showBackupDialog() {
+    showBackupDialog(): void {
         this.dialogState.showDialog('backup', {
             estimatedSize: this.formatFileSize(1024 * 1024), // 1MB estimate
             autoBackupEnabled: this.backupStatus.isAutoBackupEnabled()
         });
     }
     
-    showExportDialog() {
+    showExportDialog(): void {
         this.dialogState.showDialog('export', {
             formats: ['JSON', 'CSV', 'XML'],
             selectedFormat: 0,
@@ -505,7 +565,7 @@ export class DataManagementUI {
         });
     }
     
-    showImportDialog() {
+    showImportDialog(): void {
         this.dialogState.showDialog('import', {
             importOptions: [
                 { name: 'Merge with existing data', checked: true },
@@ -515,14 +575,14 @@ export class DataManagementUI {
         });
     }
     
-    showClearDataDialog() {
+    showClearDataDialog(): void {
         this.dialogState.showDialog('clear', {
             confirmText: ''
         });
     }
     
     // Operation methods (simplified implementations)
-    async createBackup() {
+    async createBackup(): Promise<void> {
         this.operationState.startOperation('backup', 'Creating backup...');
         
         try {
@@ -541,11 +601,11 @@ export class DataManagementUI {
             this.operationState.endOperation('success', 'Backup created successfully');
             
         } catch (error) {
-            this.operationState.endOperation('error', error.message);
+            this.operationState.endOperation('error', (error as Error).message);
         }
     }
     
-    async exportData() {
+    async exportData(): Promise<void> {
         this.operationState.startOperation('export', 'Exporting data...');
         
         try {
@@ -558,11 +618,11 @@ export class DataManagementUI {
             this.operationState.endOperation('success', 'Data exported successfully');
             
         } catch (error) {
-            this.operationState.endOperation('error', error.message);
+            this.operationState.endOperation('error', (error as Error).message);
         }
     }
     
-    async importData() {
+    async importData(): Promise<void> {
         this.operationState.startOperation('import', 'Importing data...');
         
         try {
@@ -575,11 +635,11 @@ export class DataManagementUI {
             this.operationState.endOperation('success', 'Data imported successfully');
             
         } catch (error) {
-            this.operationState.endOperation('error', error.message);
+            this.operationState.endOperation('error', (error as Error).message);
         }
     }
     
-    async clearData() {
+    async clearData(): Promise<void> {
         this.operationState.startOperation('clear', 'Clearing data...');
         
         try {
@@ -589,34 +649,34 @@ export class DataManagementUI {
             this.operationState.endOperation('success', 'All data cleared successfully');
             
         } catch (error) {
-            this.operationState.endOperation('error', error.message);
+            this.operationState.endOperation('error', (error as Error).message);
         }
     }
     
     // Event handlers
-    onBackupCreated(data) {
+    onBackupCreated(data: any): void {
         this.backupStatus.addBackupToHistory(data);
         this.uiState.showError('Backup created successfully', 3000);
     }
     
-    onDataExported(data) {
+    onDataExported(data: any): void {
         this.uiState.showError('Data exported successfully', 3000);
     }
     
-    onDataImported(data) {
+    onDataImported(data: any): void {
         this.uiState.showError('Data imported successfully', 3000);
     }
     
-    onOperationProgress(data) {
-        this.operationState.updateOperation(data.progress, data.message);
+    onOperationProgress(data: { progress: number; message?: string }): void {
+        this.operationState.updateOperation(data.progress, data.message || '');
     }
     
-    onError(data) {
+    onError(data: { message?: string }): void {
         this.uiState.showError(data.message || 'An error occurred');
     }
     
     // Utility methods
-    formatFileSize(bytes) {
+    formatFileSize(bytes: number): string {
         if (bytes === 0) return '0 B';
         
         const k = 1024;
@@ -627,16 +687,16 @@ export class DataManagementUI {
     }
     
     // Configuration
-    configure(newConfig) {
+    configure(newConfig: Partial<Config>): void {
         Object.assign(this.config, newConfig);
     }
     
-    getConfiguration() {
+    getConfiguration(): Config {
         return { ...this.config };
     }
     
     // Status and diagnostics
-    getStatus() {
+    getStatus(): Status {
         return {
             visible: this.uiState.isUIVisible(),
             currentView: this.uiState.getCurrentView(),
@@ -648,7 +708,7 @@ export class DataManagementUI {
     }
     
     // Cleanup
-    destroy() {
+    destroy(): void {
         this.stopAutoRefresh();
         this.backupStatus.destroy();
         this.uiState.reset();
