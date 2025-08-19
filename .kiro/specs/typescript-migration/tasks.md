@@ -153,10 +153,10 @@
   - 包括的な型定義（Particle, Effect, Quality, Physics, Rendering interfaces）を追加
   - _要件: 2.1, 2.2, 4.1, 4.2_
 
-- [ ] 22. オーディオシステムの移行
-  - src/audio/AudioManager.jsとサブコンポーネントを.tsに変換
-  - オーディオリソースの型定義を作成
-  - 音声再生・制御メソッドの型注釈を追加
+- [x] 22. オーディオシステムの移行
+  - src/audio/内の全46個のファイルを.tsに変換完了
+  - **完了**: オーディオマネージャー、BGMシステム、エフェクトシステム、アクセシビリティ機能の完全型安全化
+  - 包括的な型定義（AudioContext, AudioNode, BGM, SoundEffect, Accessibility interfaces）を追加
   - _要件: 2.1, 2.2, 4.1, 4.2_
 
 - [ ] 23. バブルシステムの移行
