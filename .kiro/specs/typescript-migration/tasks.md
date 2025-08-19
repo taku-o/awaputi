@@ -126,10 +126,11 @@
   - ゲームループ処理の型注釈を追加
   - _要件: 2.1, 2.2, 4.1, 4.2_
 
-- [ ] 18. 設定・ヘルプシーンの移行
+- [x] 18. 設定・ヘルプシーンの移行
   - src/scenes/SettingsScene.js, src/scenes/HelpScene.js等を.tsに変換
   - 設定項目とヘルプコンテンツの型定義を作成
   - UI更新処理の型安全性を確保
+  - **完了**: src/scenes/内の全46ファイル（components/, dialogs/, user-info/, game-scene/, help-scene/, settings-scene/, stage-select/, user-info-scene/）を変換済み
   - _要件: 2.1, 2.2, 4.1, 4.2_
 
 - [ ] 19. UIコンポーネントの移行
