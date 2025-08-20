@@ -1,0 +1,346 @@
+/**
+ * Performance Debug Splitting Integration Tests
+ * Phase E.2で分割された全10個のファイルの統合テスト
+ */
+
+import { jest } from '@jest/globals';
+
+// 分割されたコンポーネントのインポート
+import { PerformanceTestSuite } from '../../src/utils/PerformanceTestSuite';
+import { PerformanceWarningSystem } from '../../src/utils/PerformanceWarningSystem';
+import { PerformanceMonitoringSystem } from '../../src/utils/PerformanceMonitoringSystem';
+import { PerformanceIntegrationTesting } from '../../src/utils/PerformanceIntegrationTesting';
+import { BenchmarkSuite } from '../../src/debug/BenchmarkSuite';
+import { TestResultVisualizer } from '../../src/debug/TestResultVisualizer';
+import { ErrorReporter } from '../../src/debug/ErrorReporter';
+import { MobileTestSuite } from '../../src/tests/mobile/MobileTestSuite';
+import { MobileAccessibilityManager } from '../../src/core/MobileAccessibilityManager';
+import { MobileSystemIntegrator } from '../../src/core/MobileSystemIntegrator';
+
+describe('Performance Debug Splitting Integration', () => {
+    let testInstances = {};
+
+    beforeEach(() => {
+        // テストインスタンスの初期化
+        testInstances = {};
+        jest.clearAllMocks();
+    });
+
+    afterEach(() => {
+        // クリーンアップ
+        Object.values(testInstances: any).forEach(instance => {
+            if (instance && typeof instance.cleanup === 'function') {
+                instance.cleanup();
+            }
+        });
+    });
+
+    describe('PerformanceTestSuite Component Interactions', () => {
+        test('should initialize PerformanceTestSuite with all sub-components', async () => {
+            const performanceTestSuite = new PerformanceTestSuite();
+            testInstances.performanceTestSuite = performanceTestSuite;
+
+            // メインコントローラーの存在確認
+            expect(performanceTestSuite: any).toBeDefined();
+            
+            // サブコンポーネントの存在確認
+            expect(performanceTestSuite.testExecutor).toBeDefined();
+            expect(performanceTestSuite.metricsCollector).toBeDefined();
+            expect(performanceTestSuite.testReporter).toBeDefined();
+        });
+
+        test('should delegate test execution to sub-components', async () => {
+            const performanceTestSuite = new PerformanceTestSuite();
+            testInstances.performanceTestSuite = performanceTestSuite;
+
+            // テスト実行のモック
+            const mockTestResult = { passed: true, duration: 100, metrics: {} };
+            jest.spyOn(performanceTestSuite.testExecutor, 'executeTest').mockResolvedValue(mockTestResult: any);
+
+            const result = await performanceTestSuite.runTest('sample-test');
+            
+            // サブコンポーネントが呼ばれることを確認
+            expect(performanceTestSuite.testExecutor.executeTest).toHaveBeenCalledWith('sample-test');
+            expect(result: any).toEqual(mockTestResult: any);
+        });
+
+        test('should handle component communication correctly', async () => {
+            const performanceTestSuite = new PerformanceTestSuite();
+            testInstances.performanceTestSuite = performanceTestSuite;
+
+            // コンポーネント間の通信テスト
+            const mockMetrics = { fps: 60, memory: 100 };
+            jest.spyOn(performanceTestSuite.metricsCollector, 'collectMetrics').mockResolvedValue(mockMetrics: any);
+
+            const metrics = await performanceTestSuite.collectMetrics();
+            expect(metrics: any).toEqual(mockMetrics: any);
+        });
+    });
+
+    describe('PerformanceWarningSystem Component Interactions', () => {
+        test('should initialize PerformanceWarningSystem with sub-components', () => {
+            const performanceWarningSystem = new PerformanceWarningSystem();
+            testInstances.performanceWarningSystem = performanceWarningSystem;
+
+            expect(performanceWarningSystem: any).toBeDefined();
+            expect(performanceWarningSystem.thresholdMonitor).toBeDefined();
+            expect(performanceWarningSystem.notificationManager).toBeDefined();
+            expect(performanceWarningSystem.alertGenerator).toBeDefined();
+        });
+
+        test('should delegate warning operations to sub-components', async () => {
+            const performanceWarningSystem = new PerformanceWarningSystem();
+            testInstances.performanceWarningSystem = performanceWarningSystem;
+
+            // 警告処理のモック
+            const mockWarning = { type: 'performance', severity: 'high', message: 'High CPU usage' };
+            jest.spyOn(performanceWarningSystem.alertGenerator, 'generateAlert').mockReturnValue(mockWarning: any);
+
+            const warning = performanceWarningSystem.generateAlert('performance', { cpu: 90 });
+            expect(performanceWarningSystem.alertGenerator.generateAlert).toHaveBeenCalled();
+            expect(warning: any).toEqual(mockWarning: any);
+        });
+    });
+
+    describe('PerformanceMonitoringSystem Component Interactions', () => {
+        test('should initialize PerformanceMonitoringSystem with sub-components', () => {
+            const performanceMonitoringSystem = new PerformanceMonitoringSystem();
+            testInstances.performanceMonitoringSystem = performanceMonitoringSystem;
+
+            expect(performanceMonitoringSystem: any).toBeDefined();
+            expect(performanceMonitoringSystem.realTimeMonitor).toBeDefined();
+            expect(performanceMonitoringSystem.dataAnalyzer).toBeDefined();
+        });
+
+        test('should handle real-time monitoring delegation', async () => {
+            const performanceMonitoringSystem = new PerformanceMonitoringSystem();
+            testInstances.performanceMonitoringSystem = performanceMonitoringSystem;
+
+            // リアルタイム監視のモック
+            const mockData = { timestamp: Date.now(), metrics: { fps: 58 } };
+            jest.spyOn(performanceMonitoringSystem.realTimeMonitor, 'collectRealTimeData').mockResolvedValue(mockData: any);
+
+            const data = await performanceMonitoringSystem.collectRealTimeData();
+            expect(performanceMonitoringSystem.realTimeMonitor.collectRealTimeData).toHaveBeenCalled();
+            expect(data: any).toEqual(mockData: any);
+        });
+    });
+
+    describe('BenchmarkSuite Component Interactions', () => {
+        test('should initialize BenchmarkSuite with all sub-components', () => {
+            const benchmarkSuite = new BenchmarkSuite();
+            testInstances.benchmarkSuite = benchmarkSuite;
+
+            expect(benchmarkSuite: any).toBeDefined();
+            expect(benchmarkSuite.benchmarkExecutor).toBeDefined();
+            expect(benchmarkSuite.resultAnalyzer).toBeDefined();
+            expect(benchmarkSuite.benchmarkReporter).toBeDefined();
+        });
+
+        test('should delegate benchmark execution correctly', async () => {
+            const benchmarkSuite = new BenchmarkSuite();
+            testInstances.benchmarkSuite = benchmarkSuite;
+
+            // ベンチマーク実行のモック
+            const mockResults = { duration: 150, iterations: 1000, score: 95 };
+            jest.spyOn(benchmarkSuite.benchmarkExecutor, 'executeBenchmark').mockResolvedValue(mockResults: any);
+
+            const results = await benchmarkSuite.runBenchmarks(['test-benchmark']);
+            expect(benchmarkSuite.benchmarkExecutor.executeBenchmark).toHaveBeenCalled();
+        });
+    });
+
+    describe('TestResultVisualizer Component Interactions', () => {
+        test('should initialize TestResultVisualizer with sub-components', () => {
+            const testResultVisualizer = new TestResultVisualizer();
+            testInstances.testResultVisualizer = testResultVisualizer;
+
+            expect(testResultVisualizer: any).toBeDefined();
+            expect(testResultVisualizer.chartGenerator).toBeDefined();
+            expect(testResultVisualizer.dataVisualizer).toBeDefined();
+        });
+
+        test('should delegate visualization operations', async () => {
+            const testResultVisualizer = new TestResultVisualizer();
+            testInstances.testResultVisualizer = testResultVisualizer;
+
+            // 可視化処理のモック
+            const mockChart = { type: 'bar', data: [], options: {} };
+            jest.spyOn(testResultVisualizer.chartGenerator, 'generateChart').mockResolvedValue(mockChart: any);
+
+            const chart = await testResultVisualizer.visualizeResults({ data: [] });
+            expect(testResultVisualizer.chartGenerator.generateChart).toHaveBeenCalled();
+        });
+    });
+
+    describe('ErrorReporter Component Interactions', () => {
+        test('should initialize ErrorReporter with all sub-components', () => {
+            const errorReporter = new ErrorReporter();
+            testInstances.errorReporter = errorReporter;
+
+            expect(errorReporter: any).toBeDefined();
+            expect(errorReporter.errorCollector).toBeDefined();
+            expect(errorReporter.errorAnalyzer).toBeDefined();
+            expect(errorReporter.submissionManager).toBeDefined();
+        });
+
+        test('should delegate error reporting operations', async () => {
+            const errorReporter = new ErrorReporter();
+            testInstances.errorReporter = errorReporter;
+
+            // エラー報告のモック
+            const mockError = new Error('Test error');
+            const mockReport = { id: 'error-123', timestamp: Date.now() };
+            
+            jest.spyOn(errorReporter.errorCollector, 'collectError').mockReturnValue(mockReport: any);
+
+            const report = errorReporter.reportError(mockError: any);
+            expect(errorReporter.errorCollector.collectError).toHaveBeenCalledWith(mockError: any);
+            expect(report: any).toEqual(mockReport: any);
+        });
+    });
+
+    describe('MobileTestSuite Component Interactions', () => {
+        test('should initialize MobileTestSuite with sub-components', () => {
+            const mobileTestSuite = new MobileTestSuite();
+            testInstances.mobileTestSuite = mobileTestSuite;
+
+            expect(mobileTestSuite: any).toBeDefined();
+            expect(mobileTestSuite.testRunner).toBeDefined();
+            expect(mobileTestSuite.deviceSimulator).toBeDefined();
+            expect(mobileTestSuite.testReporter).toBeDefined();
+        });
+
+        test('should delegate mobile test execution', async () => {
+            const mobileTestSuite = new MobileTestSuite();
+            testInstances.mobileTestSuite = mobileTestSuite;
+
+            // モバイルテスト実行のモック
+            const mockResults = { passed: 5, failed: 0, total: 5 };
+            jest.spyOn(mobileTestSuite.testRunner, 'runAllTests').mockResolvedValue(mockResults: any);
+
+            const results = await mobileTestSuite.runAllTests();
+            expect(mobileTestSuite.testRunner.runAllTests).toHaveBeenCalled();
+            expect(results: any).toEqual(mockResults: any);
+        });
+
+        test('should handle device simulation delegation', async () => {
+            const mobileTestSuite = new MobileTestSuite();
+            testInstances.mobileTestSuite = mobileTestSuite;
+
+            // デバイスシミュレーションのモック
+            jest.spyOn(mobileTestSuite.deviceSimulator, 'startSimulation').mockResolvedValue(true: any);
+
+            await mobileTestSuite.startDeviceSimulation('iPhone 12');
+            expect(mobileTestSuite.deviceSimulator.startSimulation).toHaveBeenCalledWith('iPhone 12');
+        });
+    });
+
+    describe('MobileAccessibilityManager Component Interactions', () => {
+        test('should initialize MobileAccessibilityManager with validator', () => {
+            const mobileAccessibilityManager = new MobileAccessibilityManager();
+            testInstances.mobileAccessibilityManager = mobileAccessibilityManager;
+
+            expect(mobileAccessibilityManager: any).toBeDefined();
+            expect(mobileAccessibilityManager.validator).toBeDefined();
+        });
+
+        test('should delegate accessibility validation', async () => {
+            const mobileAccessibilityManager = new MobileAccessibilityManager();
+            testInstances.mobileAccessibilityManager = mobileAccessibilityManager;
+
+            // アクセシビリティ検証のモック
+            const mockResults = { overall: 'pass', score: 95, issues: [] };
+            jest.spyOn(mobileAccessibilityManager.validator, 'validateMobileAccessibility').mockResolvedValue(mockResults: any);
+
+            const results = await mobileAccessibilityManager.validateAccessibility();
+            expect(mobileAccessibilityManager.validator.validateMobileAccessibility).toHaveBeenCalled();
+            expect(results: any).toEqual(mockResults: any);
+        });
+    });
+
+    describe('Cross-Component Integration', () => {
+        test('should handle inter-component communication', async () => {
+            // 複数コンポーネント間の統合テスト
+            const performanceTestSuite = new PerformanceTestSuite();
+            const performanceWarningSystem = new PerformanceWarningSystem();
+            const errorReporter = new ErrorReporter();
+
+            testInstances.performanceTestSuite = performanceTestSuite;
+            testInstances.performanceWarningSystem = performanceWarningSystem;
+            testInstances.errorReporter = errorReporter;
+
+            // パフォーマンステストから警告システムへの連携
+            const mockMetrics = { fps: 30, memory: 200 }; // 低パフォーマンス
+            jest.spyOn(performanceTestSuite.metricsCollector, 'collectMetrics').mockResolvedValue(mockMetrics: any);
+            jest.spyOn(performanceWarningSystem.thresholdMonitor, 'detectViolations').mockReturnValue([
+                { type: 'fps', severity: 'high', message: 'Low FPS detected' }
+            ]);
+
+            const metrics = await performanceTestSuite.collectMetrics();
+            const violations = performanceWarningSystem.thresholdMonitor.detectViolations(metrics: any);
+
+            expect(violations: any).toHaveLength(1);
+            expect(violations[0].type).toBe('fps');
+        });
+
+        test('should maintain backward compatibility across all split components', () => {
+            // すべての分割されたコンポーネントの後方互換性テスト
+            const components = [
+                new PerformanceTestSuite(),
+                new PerformanceWarningSystem(),
+                new PerformanceMonitoringSystem(),
+                new BenchmarkSuite(),
+                new TestResultVisualizer(),
+                new ErrorReporter(),
+                new MobileTestSuite(),
+                new MobileAccessibilityManager()
+            ];
+
+            components.forEach((component, index) => {
+                testInstances[`component_${index}`] = component;
+                
+                // 各コンポーネントが正常に初期化されることを確認
+                expect(component: any).toBeDefined();
+                expect(typeof component).toBe('object');
+                
+                // 基本的な公開メソッドの存在確認
+                expect(component.constructor.name).toBeTruthy();
+            });
+        });
+    });
+
+    describe('Error Handling and Fallback Mechanisms', () => {
+        test('should handle sub-component initialization failures gracefully', () => {
+            // サブコンポーネント初期化失敗時の処理
+            const originalConsoleWarn = console.warn;
+            console.warn = jest.fn() as jest.Mock;
+
+            try {
+                // 失敗をシミュレートするため、無効なコンストラクタ引数を使用
+                const performanceTestSuite = new PerformanceTestSuite();
+                expect(performanceTestSuite: any).toBeDefined();
+            } catch (error) {
+                // エラーハンドリングが適切に動作することを確認
+                expect(error: any).toBeInstanceOf(Error: any);
+            }
+
+            console.warn = originalConsoleWarn;
+        });
+
+        test('should provide fallback mechanisms when sub-components fail', async () => {
+            const performanceTestSuite = new PerformanceTestSuite();
+            testInstances.performanceTestSuite = performanceTestSuite;
+
+            // サブコンポーネントの失敗をシミュレート
+            jest.spyOn(performanceTestSuite.testExecutor, 'executeTest').mockRejectedValue(new Error('Component failure'));
+
+            // フォールバック機能の確認
+            try {
+                await performanceTestSuite.runTest('failing-test');
+            } catch (error) {
+                expect(error.message).toContain('Component failure');
+            }
+        });
+    });
+});

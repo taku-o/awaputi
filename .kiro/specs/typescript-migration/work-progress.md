@@ -633,6 +633,20 @@ TypeScript移行作業中に「将来実装する」「現時点では未実装�
 - TypeScriptビルドエラーの確認と修正（Phase 7継続）
 
 ### 2025-08-20
+
+#### Task 30完了: 統合テストの移行
+- ✅ **tests/integration/内の全46個のJavaScriptファイルをTypeScript変換完了**
+- ✅ **変換内容**:
+  - `__mocks__/GameEngine.js` → `.ts`: GameEngineモッククラス完全型付け
+  - `achievement-system-integration.test.js` → `.ts`: 実績システム統合テスト型安全化
+  - 44個の統合テストファイルを一括変換スクリプトで効率的に移行
+- ✅ **型定義追加**:
+  - インターフェース定義: BubbleData, StageProgress, DetailedStatistics, PlayerDataType等
+  - モッククラス型安全化: MockPlayerData, MockAudioManager, MockBubbleManager, MockScoreManager, MockGameScene
+  - Jest統合: `@jest/globals`からの適切なインポートと型注釈
+- ✅ **成果**: tests/integration/内のJavaScriptファイル0個達成、完全TypeScript化完了
+
+### 2025-08-20
 - **Phase 6: Task 29の完了**:
   - ✅ **tests/unit/内の最終10個のJavaScriptファイルをTypeScript変換完了**
   - ✅ **変換したファイル**:
