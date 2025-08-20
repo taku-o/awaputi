@@ -5,6 +5,8 @@ import type {
     AchievementProgressResult,
     AchievementStatistics
 } from '../types/game';
+import { ProgressTracker } from './achievement/ProgressTracker.js';
+import { PerformanceOptimizer } from './achievement/PerformanceOptimizer.js';
 
 /**
  * AchievementManager - 実績管理システム
@@ -66,11 +68,11 @@ export class AchievementManager implements IAchievementManager {
             // this.progressTracker = new AchievementProgressTracker();
             // this.performanceOptimizer = new AchievementPerformanceOptimizer();
             
-            // 暫定的に空のオブジェクトを設定
-            this.definitions = this.createMockDefinitions();
-            this.notificationSystem = this.createMockNotificationSystem();
-            this.progressTracker = this.createMockProgressTracker();
-            this.performanceOptimizer = this.createMockPerformanceOptimizer();
+            // 実際のクラスを使用
+            this.definitions = this.createMockDefinitions(); // AchievementDefinitionsは未実装のため、モックを継続使用
+            this.notificationSystem = this.createMockNotificationSystem(); // AchievementNotificationSystemは未実装のため、モックを継続使用
+            this.progressTracker = new ProgressTracker(); // 実装済みのProgressTrackerクラスを使用
+            this.performanceOptimizer = new PerformanceOptimizer(); // 実装済みのPerformanceOptimizerクラスを使用
             
             // パフォーマンス最適化を初期化
             if (this.performanceOptimizer && typeof this.performanceOptimizer.initialize === 'function') {
@@ -129,40 +131,23 @@ export class AchievementManager implements IAchievementManager {
     }
     
     /**
+     * @deprecated ProgressTrackerクラスが実装されたため、このメソッドは使用されません
      * モックProgressTrackerオブジェクトを作成
      */
     private createMockProgressTracker(): any {
-        return {
-            addEventListener: (_event: string, _callback: (data: any) => void) => {},
-            updateProgress: (_eventType: string, _data: any) => {},
-            evaluateAchievementCondition: (_achievement: Achievement) => null,
-            isAchievementUnlocked: (_achievementId: string) => false,
-            unlockAchievement: (_achievementId: string, _achievement: Achievement) => {},
-            getUnlockedAchievements: () => [],
-            getProgressData: () => ({}),
-            loadProgress: () => {},
-            resetProgress: () => {},
-            getProgressHistory: (_limit: number) => []
-        };
+        // このメソッドは非推奨です。実際のProgressTrackerクラスを使用してください。
+        console.warn('[AchievementManager] createMockProgressTracker is deprecated. Use ProgressTracker class instead.');
+        return new ProgressTracker();
     }
     
     /**
+     * @deprecated PerformanceOptimizerクラスが実装されたため、このメソッドは使用されません
      * モックPerformanceOptimizerオブジェクトを作成
      */
     private createMockPerformanceOptimizer(): any {
-        return {
-            initialize: () => {},
-            processUpdate: (eventType: string, data: any, callback: (type: string, data: any) => any) => {
-                return callback(eventType, data);
-            },
-            getFromCache: (_key: string) => null,
-            setCache: (_key: string, _value: any) => {},
-            getPerformanceStats: () => ({}),
-            updateConfig: (_config: any) => {},
-            resetPerformanceStats: () => {},
-            loadStats: () => {},
-            destroy: () => {}
-        };
+        // このメソッドは非推奨です。実際のPerformanceOptimizerクラスを使用してください。
+        console.warn('[AchievementManager] createMockPerformanceOptimizer is deprecated. Use PerformanceOptimizer class instead.');
+        return new PerformanceOptimizer();
     }
     
     /**

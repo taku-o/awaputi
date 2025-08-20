@@ -3,7 +3,7 @@ import { BubbleManager } from '../managers/BubbleManager.js';
 import { ScoreManager } from '../managers/ScoreManager.js';
 import { StageManager } from './StageManager.js';
 import { SceneManager } from './SceneManager.js';
-import { ItemManager } from './ItemSystem.js';
+import { ItemManager } from './ItemManager.js';
 import { SettingsManager } from './SettingsManager.js';
 // import { getLocalizationManager } from './LocalizationManager.js';
 import { CoreKeyboardShortcutManager } from './KeyboardShortcutManager.js';
@@ -263,6 +263,9 @@ export class GameEngine {
             this.sceneManager = new SceneManager(this);
             this.settingsManager = new SettingsManager();
             this.statisticsManager = new StatisticsManager(this);
+            
+            // Item system
+            this.itemManager = new ItemManager(this);
             
             // Achievement system
             this.achievementManager = new AchievementManager(this);

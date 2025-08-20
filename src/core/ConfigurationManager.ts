@@ -284,6 +284,20 @@ class ConfigurationManager {
             
             this.accessStats.cacheMisses++;
             
+            // 遅延読み込みローダーをチェック
+            const lazyLoader = this.__lazyLoaders.get(finalKey);
+            if (lazyLoader) {
+                const lazyValue = lazyLoader();
+                // 遅延読み込みした値をキャッシュと設定に保存
+                const [category, ...pathParts] = finalKey.split('.');
+                const path = pathParts.join('.');
+                this._setValueInternal(category, path, lazyValue);
+                this.cache.set(cacheKey, lazyValue);
+                // ローダーを削除（一度だけ実行）
+                this.__lazyLoaders.delete(finalKey);
+                return lazyValue as T;
+            }
+            
             // キーを解析
             const [category, ...pathParts] = finalKey.split('.');
             const path = pathParts.join('.');
@@ -511,6 +525,20 @@ class ConfigurationManager {
         return regex.test(key);
     }
     
+    /**
+     * 内部的に値を設定（遅延読み込み用）
+     */
+    private _setValueInternal(category: string, path: string, value: ConfigurationValue): void {
+        const categoryMap = this.configurations.get(category);
+        if (!categoryMap) {
+            const newMap = new Map<string, ConfigurationValue>();
+            newMap.set(path, value);
+            this.configurations.set(category, newMap);
+        } else {
+            categoryMap.set(path, value);
+        }
+    }
+    
     private _recordChange(key: string, oldValue: ConfigurationValue, newValue: ConfigurationValue): void {
         const change: ChangeHistoryEntry = {
             key,
@@ -675,6 +703,45 @@ class ConfigurationManager {
      */
     getConfigurations(): Map<string, Map<string, ConfigurationValue>> {
         return this.configurations;
+    }
+    
+    /**
+     * 遅延読み込みローダーを登録
+     * @param {string} key - 設定キー
+     * @param {function} loader - 値を返すローダー関数
+     */
+    registerLazyLoader(key: string, loader: () => ConfigurationValue): void {
+        this.__lazyLoaders.set(key, loader);
+    }
+    
+    /**
+     * プリロードキーを追加
+     * @param {string} key - プリロードする設定キー
+     */
+    addPreloadKey(key: string): void {
+        this.__preloadKeys.add(key);
+    }
+    
+    /**
+     * プリロード設定を実行
+     */
+    async preloadConfigurations(): Promise<void> {
+        const preloadPromises: Promise<void>[] = [];
+        
+        for (const key of this.__preloadKeys) {
+            preloadPromises.push(
+                new Promise<void>((resolve) => {
+                    // 非同期で値を取得してキャッシュに保存
+                    setTimeout(() => {
+                        this.get(key);
+                        resolve();
+                    }, 0);
+                })
+            );
+        }
+        
+        await Promise.all(preloadPromises);
+        console.log(`[ConfigurationManager] Preloaded ${this.__preloadKeys.size} configuration keys`);
     }
 }
 

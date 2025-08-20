@@ -1406,4 +1406,41 @@ export class EffectManager {
             return -1;
         }
     }
+
+    /**
+     * 復活エフェクトを作成
+     * プレイヤーが復活アイテムを使用した時の特別なエフェクト
+     */
+    public createRevivalEffect(): void {
+        try {
+            // 画面全体に白いフラッシュ
+            this.addFlash('#FFFFFF', 0.8, 300, 'easeOut');
+            
+            // 一時的にズームイン
+            this.addZoom(1.2, 200, 'easeOut');
+            setTimeout(() => {
+                this.addZoom(1.0, 300, 'easeIn');
+            }, 200);
+            
+            // 画面を軽く振動させる
+            this.addShake(15, 500, 0.95);
+            
+            // 金色のティントを追加
+            setTimeout(() => {
+                this.addTint('#FFD700', 0.3, 1000, 'easeInOut');
+            }, 300);
+            
+            // 明度を一時的に上げる
+            this.addFilter('brightness', 1.5, 400, 'easeOut');
+            setTimeout(() => {
+                this.addFilter('brightness', 1.0, 600, 'easeIn');
+            }, 400);
+            
+            console.log('[EffectManager] Revival effect created');
+        } catch (error) {
+            getErrorHandler().handleError(error, 'EFFECT_ERROR', {
+                context: 'EffectManager.createRevivalEffect'
+            });
+        }
+    }
 }

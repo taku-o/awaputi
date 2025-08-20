@@ -260,6 +260,27 @@ export class ScoreManager implements IScoreManager {
     }
     
     /**
+     * スコア倍率を設定（アイテム効果など）
+     */
+    setMultiplier(multiplier: number, duration: number): void {
+        const endTime = Date.now() + duration;
+        this.scoreMultipliers.push({
+            value: multiplier,
+            endTime: endTime,
+            source: 'item'
+        });
+        console.log(`Score multiplier x${multiplier} active for ${duration}ms`);
+    }
+    
+    /**
+     * スコア倍率をリセット（特定のもののみ）
+     */
+    resetMultiplier(): void {
+        // アイテム由来の倍率のみリセット
+        this.scoreMultipliers = this.scoreMultipliers.filter(m => m.source !== 'item');
+    }
+    
+    /**
      * スコア倍率をリセット（ゲーム開始時）
      */
     resetMultipliers(): void {
