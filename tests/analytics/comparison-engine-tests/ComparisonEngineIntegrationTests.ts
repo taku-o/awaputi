@@ -8,46 +8,45 @@ class MockStorageManager {
     }
 
     async getData(storeName, query) {
-        const storeData = this.data.get(storeName || [];
-        if (!query) return storeData;
+        const storeData = this.data.get(storeName || []);
+        if (!query') return storeData;
 
         if (query.range && query.index === 'startTime') {
             return storeData.filter(item => {
                 const timestamp = item.startTime;
-                return timestamp >= query.range.lower && timestamp <= query.range.upper;
-            });
+                return timestamp >= query.range.lower && timestamp <= query.range.upper;);
         }
 
         return storeData;
     }
 
     setTestData(storeName, data) {
-        this.data.set(storeName, data);
+        this.data.set(storeName, data');
     }
 }
 
 describe('ComparisonEngine - Integration and System Tests', () => {
-    let comparisonEngine: any;
-    let mockStorageManager: any;
+    let comparisonEngine: any,
+    let mockStorageManager: any,
 
     beforeEach(() => {
         mockStorageManager = new MockStorageManager();
         comparisonEngine = new ComparisonEngine(mockStorageManager as any);
-    });
+    }');
 
-    describe('ステージ別比較機能 (Enhanced ComparisonEngine)', () => {
-        test('ステージ別データが不足している場合', async () => {
+    describe('ステージ別比較機能 (Enhanced ComparisonEngine')', (') => {
+        test('ステージ別データが不足している場合', async (') => {
             mockStorageManager.setTestData('sessions', []);
 
             const result = await comparisonEngine.compareByStage();
 
-            expect(result.success).toBe(false;
-            expect(result.error).toBe('Current stage performance data is insufficient');
-            expect(result.message).toBe('現在のステージ別パフォーマンスデータが不足しています');
-        });
+            expect(result.success).toBe(false);
+            expect(result.error').toBe('Current stage performance data is insufficient');
+            expect(result.message').toBe('現在のステージ別パフォーマンスデータが不足しています');
+        }');
 
         test('ステージ別比較が正常に実行される場合', async () => {
-            const currentDate = Date.now();
+            const currentDate = Date.now(');
             const monthAgo = currentDate - 30 * 24 * 60 * 60 * 1000;
             const twoMonthsAgo = currentDate - 60 * 24 * 60 * 60 * 1000;
 
@@ -113,65 +112,65 @@ describe('ComparisonEngine - Integration and System Tests', () => {
 
             const result = await comparisonEngine.compareByStage();
 
-            expect(result.success).toBe(true;
+            expect(result.success).toBe(true);
             expect(result.stageComparisons).toBeDefined();
             expect(result.summary).toBeDefined();
             expect(result.totalStages).toBe(2);
 
             // stage1の比較データを確認
             expect(result.stageComparisons.stage1).toBeDefined();
-            expect(result.stageComparisons.stage1.stageInfo.name).toBe('ステージ1 - 基本');
+            expect(result.stageComparisons.stage1.stageInfo.name').toBe('ステージ1 - 基本');
             expect(result.stageComparisons.stage1.current).toBeDefined();
-            expect(result.stageComparisons.stage1.comparison.available).toBe(true;
+            expect(result.stageComparisons.stage1.comparison.available).toBe(true);
             expect(result.stageComparisons.stage1.difficulty).toBeDefined();
             expect(result.stageComparisons.stage1.performance).toBeDefined();
 
             // stage2の比較データを確認（過去データなし）
             expect(result.stageComparisons.stage2).toBeDefined();
-            expect(result.stageComparisons.stage2.stageInfo.name).toBe('ステージ2 - 発展');
-            expect(result.stageComparisons.stage2.comparison.available).toBe(false;
-        });
+            expect(result.stageComparisons.stage2.stageInfo.name').toBe('ステージ2 - 発展');
+            expect(result.stageComparisons.stage2.comparison.available).toBe(false);
+        }');
 
-        test('ステージ情報とカテゴリ分けが正しく動作する', () => {
+        test('ステージ情報とカテゴリ分けが正しく動作する', (') => {
             // ステージ情報テスト
             const tutorialInfo = comparisonEngine.getStageInfo('tutorial');
-            expect(tutorialInfo.name).toBe('チュートリアル');
-            expect(tutorialInfo.category).toBe('tutorial');
+            expect(tutorialInfo.name').toBe('チュートリアル');
+            expect(tutorialInfo.category').toBe('tutorial'');
 
             const stage1Info = comparisonEngine.getStageInfo('stage1');
-            expect(stage1Info.name).toBe('ステージ1 - 基本');
-            expect(stage1Info.category).toBe('normal');
+            expect(stage1Info.name').toBe('ステージ1 - 基本');
+            expect(stage1Info.category').toBe('normal'');
 
             const endlessInfo = comparisonEngine.getStageInfo('endless');
-            expect(endlessInfo.name).toBe('エンドレスモード');
-            expect(endlessInfo.category).toBe('special');
+            expect(endlessInfo.name').toBe('エンドレスモード');
+            expect(endlessInfo.category').toBe('special'');
 
             const unknownInfo = comparisonEngine.getStageInfo('unknown_stage');
-            expect(unknownInfo.name).toBe('ステージ unknown_stage');
-            expect(unknownInfo.category).toBe('other');
-        });
+            expect(unknownInfo.name').toBe('ステージ unknown_stage');
+            expect(unknownInfo.category').toBe('other');
+        }');
 
         test('ステージ難易度計算が正しく動作する', () => {
             // 簡単なステージ（高完了率、高スコア、短時間）
             const easyStageData = { difficultyRating: 2 };
-            const easyDifficulty = comparisonEngine.calculateStageDifficulty(easyStageData;
-            expect(easyDifficulty.level).toBe('easy');
-            expect(easyDifficulty.description).toBe('簡単');
+            const easyDifficulty = comparisonEngine.calculateStageDifficulty(easyStageData);
+            expect(easyDifficulty.level').toBe('easy');
+            expect(easyDifficulty.description').toBe('簡単');
 
             // 難しいステージ（低完了率、低スコア、長時間）
             const hardStageData = { difficultyRating: 8.5 };
-            const hardDifficulty = comparisonEngine.calculateStageDifficulty(hardStageData;
-            expect(hardDifficulty.level).toBe('very_hard');
-            expect(hardDifficulty.description).toBe('とても難しい');
+            const hardDifficulty = comparisonEngine.calculateStageDifficulty(hardStageData);
+            expect(hardDifficulty.level').toBe('very_hard');
+            expect(hardDifficulty.description').toBe('とても難しい');
 
             // とても難しいステージ
             const veryHardStageData = { difficultyRating: 9.5 };
-            const veryHardDifficulty = comparisonEngine.calculateStageDifficulty(veryHardStageData;
-            expect(veryHardDifficulty.level).toBe('very_hard');
-            expect(veryHardDifficulty.description).toBe('とても難しい');
-        });
+            const veryHardDifficulty = comparisonEngine.calculateStageDifficulty(veryHardStageData);
+            expect(veryHardDifficulty.level').toBe('very_hard');
+            expect(veryHardDifficulty.description').toBe('とても難しい');
+        }');
 
-        test('ステージパフォーマンス評価が正しく動作する', () => {
+        test('ステージパフォーマンス評価が正しく動作する', (') => {
             // 優秀なパフォーマンス
             const excellentStageData = {
                 completionRate: 0.95,
@@ -179,9 +178,9 @@ describe('ComparisonEngine - Integration and System Tests', () => {
                 consistencyScore: 0.85
             };
             const excellentPerformance = comparisonEngine.assessStagePerformance(excellentStageData, ['score', 'accuracy']);
-            expect(excellentPerformance.grade).toBe('S');
-            expect(excellentPerformance.description).toBe('優秀');
-            expect(excellentPerformance.score).toBeGreaterThan(85);
+            expect(excellentPerformance.grade').toBe('S');
+            expect(excellentPerformance.description').toBe('優秀');
+            expect(excellentPerformance.score).toBeGreaterThan(85');
 
             // 要改善なパフォーマンス
             const poorStageData = {
@@ -190,10 +189,10 @@ describe('ComparisonEngine - Integration and System Tests', () => {
                 consistencyScore: 0.30
             };
             const poorPerformance = comparisonEngine.assessStagePerformance(poorStageData, ['score', 'accuracy']);
-            expect(poorPerformance.grade).toBe('D');
-            expect(poorPerformance.description).toBe('練習が必要');
+            expect(poorPerformance.grade').toBe('D');
+            expect(poorPerformance.description').toBe('練習が必要');
             expect(poorPerformance.score).toBeLessThan(70);
-        });
+        }');
 
         test('ステージ強み・弱み特定が正しく動作する', () => {
             // 強みのあるステージ
@@ -203,11 +202,11 @@ describe('ComparisonEngine - Integration and System Tests', () => {
                 consistencyScore: 0.75,
                 averageAttemptsToComplete: 2
             };
-            const strengths = comparisonEngine.identifyStageStrengths(strongStageData;
-            expect(strengths).toContain('高いクリア率');
-            expect(strengths).toContain('高い精度');
-            expect(strengths).toContain('安定したパフォーマンス');
-            expect(strengths).toContain('素早いクリア');
+            const strengths = comparisonEngine.identifyStageStrengths(strongStageData);
+            expect(strengths').toContain('高いクリア率');
+            expect(strengths').toContain('高い精度');
+            expect(strengths').toContain('安定したパフォーマンス');
+            expect(strengths').toContain('素早いクリア');
 
             // 弱みのあるステージ
             const weakStageData = {
@@ -216,12 +215,12 @@ describe('ComparisonEngine - Integration and System Tests', () => {
                 consistencyScore: 0.30,
                 averageAttemptsToComplete: 15
             };
-            const weaknesses = comparisonEngine.identifyStageWeaknesses(weakStageData;
-            expect(weaknesses).toContain('低いクリア率');
-            expect(weaknesses).toContain('精度の低さ');
-            expect(weaknesses).toContain('不安定なパフォーマンス');
-            expect(weaknesses).toContain('クリアまでの試行回数が多い');
-        });
+            const weaknesses = comparisonEngine.identifyStageWeaknesses(weakStageData);
+            expect(weaknesses').toContain('低いクリア率');
+            expect(weaknesses').toContain('精度の低さ');
+            expect(weaknesses').toContain('不安定なパフォーマンス');
+            expect(weaknesses').toContain('クリアまでの試行回数が多い');
+        }');
 
         test('一貫性スコア計算が正しく動作する', () => {
             // 一貫したスコア（標準偏差が小さい）
@@ -232,7 +231,7 @@ describe('ComparisonEngine - Integration and System Tests', () => {
                 { finalScore: 101 },
                 { finalScore: 99 }
             ];
-            const consistentScore = comparisonEngine.calculateConsistencyScore(consistentSessions;
+            const consistentScore = comparisonEngine.calculateConsistencyScore(consistentSessions);
             expect(consistentScore).toBeGreaterThan(0.8);
 
             // 不安定なスコア（標準偏差が大きい）
@@ -243,18 +242,18 @@ describe('ComparisonEngine - Integration and System Tests', () => {
                 { finalScore: 150 },
                 { finalScore: 100 }
             ];
-            const inconsistentScore = comparisonEngine.calculateConsistencyScore(inconsistentSessions;
+            const inconsistentScore = comparisonEngine.calculateConsistencyScore(inconsistentSessions);
             expect(inconsistentScore).toBeLessThan(0.7);
 
             // データが少ない場合
             const fewSessions = [{ finalScore: 100 }];
-            const fewScore = comparisonEngine.calculateConsistencyScore(fewSessions;
+            const fewScore = comparisonEngine.calculateConsistencyScore(fewSessions);
             expect(fewScore).toBe(0);
         });
-    });
+    }');
 
     describe('改善提案システム', () => {
-        beforeEach(() => {
+        beforeEach((') => {
             // テスト用の比較結果データを設定
             const testComparisonResult = {
                 success: true,
@@ -336,167 +335,159 @@ describe('ComparisonEngine - Integration and System Tests', () => {
             };
 
             comparisonEngine.lastComparisonResult = testComparisonResult;
-        });
+        }');
 
         test('基本的な改善提案が生成される', () => {
             const suggestions = comparisonEngine.generateImprovementSuggestions(
-                comparisonEngine.lastComparisonResult
-            );
+                comparisonEngine.lastComparisonResult);
 
-            expect(suggestions).toHaveProperty('targetAreas');
-            expect(suggestions).toHaveProperty('actionPlan');
-            expect(suggestions).toHaveProperty('expectedOutcomes');
-            expect(suggestions).toHaveProperty('followUpActions');
-            expect(suggestions).toHaveProperty('motivation');
-            expect(suggestions).toHaveProperty('planId');
-            expect(suggestions).toHaveProperty('timestamp');
-            expect(suggestions).toHaveProperty('timeline');
+            expect(suggestions').toHaveProperty('targetAreas');
+            expect(suggestions').toHaveProperty('actionPlan');
+            expect(suggestions').toHaveProperty('expectedOutcomes');
+            expect(suggestions').toHaveProperty('followUpActions');
+            expect(suggestions').toHaveProperty('motivation');
+            expect(suggestions').toHaveProperty('planId');
+            expect(suggestions').toHaveProperty('timestamp');
+            expect(suggestions').toHaveProperty('timeline');
 
             expect(suggestions.targetAreas).toBeInstanceOf(Array as any);
             expect(suggestions.actionPlan).toBeInstanceOf(Array as any);
             expect(suggestions.followUpActions).toBeInstanceOf(Array as any);
-        });
+        }');
 
         test('弱点エリアが正しく特定される', () => {
             const suggestions = comparisonEngine.generateImprovementSuggestions(
-                comparisonEngine.lastComparisonResult
-            );
+                comparisonEngine.lastComparisonResult);
 
             // targetAreasに弱点エリアが含まれているはず
             expect(suggestions.targetAreas).toBeInstanceOf(Array as any);
             expect(suggestions.targetAreas.length).toBeGreaterThan(0);
 
             // 各ターゲットエリアには必要なプロパティが含まれるべき
-            suggestions.targetAreas.forEach(area => {
-                expect(area).toHaveProperty('metric');
-                expect(area).toHaveProperty('priority');
+            suggestions.targetAreas.forEach(area => {);
+                expect(area').toHaveProperty('metric');
+                expect(area').toHaveProperty('priority'');
                 expect(['high', 'medium', 'low']).toContain(area.priority);
             });
-        });
+        }');
 
-        test('アクションプランが生成される', () => {
+        test('アクションプランが生成される', (') => {
             const suggestions = comparisonEngine.generateImprovementSuggestions(
                 comparisonEngine.lastComparisonResult,
-                { difficultyPreference: 'balanced', timeHorizon: 7 }
-            );
+                { difficultyPreference: 'balanced', timeHorizon: 7 });
 
             expect(suggestions.actionPlan).toBeInstanceOf(Array as any);
             
             if (suggestions.actionPlan.length > 0) {
-                suggestions.actionPlan.forEach(action => {
-                    expect(action).toHaveProperty('metric');
-                    expect(action).toHaveProperty('focus');
-                    expect(action).toHaveProperty('priority');
-                    expect(action).toHaveProperty('actions');
+                suggestions.actionPlan.forEach(action => {);
+                    expect(action').toHaveProperty('metric');
+                    expect(action').toHaveProperty('focus');
+                    expect(action').toHaveProperty('priority');
+                    expect(action').toHaveProperty('actions');
                     expect(action.actions).toBeInstanceOf(Array as any);
                     if (action.actions.length > 0) {
-                        action.actions.forEach(subAction => {
+                        action.actions.forEach(subAction => {');
                             expect(['easy', 'medium', 'hard']).toContain(subAction.difficulty);
                         });
                     }
                 });
             }
-        });
+        }');
 
-        test('難易度設定に応じたアクションプランが生成される', () => {
+        test('難易度設定に応じたアクションプランが生成される', (') => {
             // 簡単な難易度設定
             const easySuggestions = comparisonEngine.generateImprovementSuggestions(
                 comparisonEngine.lastComparisonResult,
-                { difficultyPreference: 'easy' }
-            );
+                { difficultyPreference: 'easy' });
 
             // 挑戦的な難易度設定
             const challengingSuggestions = comparisonEngine.generateImprovementSuggestions(
-                comparisonEngine.lastComparisonResult,
-                { difficultyPreference: 'challenging' }
+                comparisonEngine.lastComparisonResult')
+                { difficultyPreference: 'challenging' )
             );
 
             // 両方の提案が生成されることを確認
-            expect(easySuggestions).toHaveProperty('actionPlan');
-            expect(challengingSuggestions).toHaveProperty('actionPlan');
+            expect(easySuggestions').toHaveProperty('actionPlan');
+            expect(challengingSuggestions').toHaveProperty('actionPlan');
             expect(easySuggestions.actionPlan).toBeInstanceOf(Array as any);
             expect(challengingSuggestions.actionPlan).toBeInstanceOf(Array as any);
-        });
+        }');
 
         test('期待される成果が計算される', () => {
             const suggestions = comparisonEngine.generateImprovementSuggestions(
                 comparisonEngine.lastComparisonResult,
-                { timeHorizon: 14 }
-            );
+                { timeHorizon: 14 });
 
             expect(suggestions.expectedOutcomes).toBeInstanceOf(Array as any);
             expect(suggestions.timeline).toBe(14);
 
             // expectedOutcomesがあれば、各アウトカムをチェック
             if (suggestions.expectedOutcomes.length > 0) {
-                suggestions.expectedOutcomes.forEach(outcome => {
-                    expect(outcome).toHaveProperty('metric');
-                    expect(outcome).toHaveProperty('currentValue');
-                    expect(outcome).toHaveProperty('expectedValue');
-                    expect(outcome).toHaveProperty('confidence');
+                suggestions.expectedOutcomes.forEach(outcome => {);
+                    expect(outcome').toHaveProperty('metric');
+                    expect(outcome').toHaveProperty('currentValue');
+                    expect(outcome').toHaveProperty('expectedValue');
+                    expect(outcome').toHaveProperty('confidence');
                     expect(outcome.confidence).toBeGreaterThanOrEqual(0);
                     expect(outcome.confidence).toBeLessThanOrEqual(1);
                 });
             }
-        });
+        }');
 
         test('フォローアップアクションが生成される', () => {
             const suggestions = comparisonEngine.generateImprovementSuggestions(
-                comparisonEngine.lastComparisonResult
-            );
+                comparisonEngine.lastComparisonResult);
 
             expect(suggestions.followUpActions).toBeInstanceOf(Array as any);
             expect(suggestions.followUpActions.length).toBeGreaterThan(0);
 
-            suggestions.followUpActions.forEach(action => {
-                expect(action).toHaveProperty('day');
-                expect(action).toHaveProperty('action');
-                expect(action).toHaveProperty('title');
-                expect(action).toHaveProperty('description');
-                expect(action).toHaveProperty('tasks');
+            suggestions.followUpActions.forEach(action => {);
+                expect(action').toHaveProperty('day');
+                expect(action').toHaveProperty('action');
+                expect(action').toHaveProperty('title');
+                expect(action').toHaveProperty('description');
+                expect(action').toHaveProperty('tasks');
                 expect(action.tasks).toBeInstanceOf(Array as any);
             });
-        });
+        }');
 
         test('モチベーション要素が含まれる', () => {
             const suggestions = comparisonEngine.generateImprovementSuggestions(
                 comparisonEngine.lastComparisonResult,
-                { includeMotivationalElements: true }
-            );
+                { includeMotivationalElements: true });
 
-            expect(suggestions.motivation).toHaveProperty('encouragement');
-            expect(suggestions.motivation).toHaveProperty('achievements');
-            expect(suggestions.motivation).toHaveProperty('milestones');
-            expect(suggestions.motivation).toHaveProperty('rewards');
+            expect(suggestions.motivation').toHaveProperty('encouragement');
+            expect(suggestions.motivation').toHaveProperty('achievements');
+            expect(suggestions.motivation').toHaveProperty('milestones');
+            expect(suggestions.motivation').toHaveProperty('rewards');
             
             expect(suggestions.motivation.encouragement).toBeInstanceOf(Array as any);
             expect(suggestions.motivation.achievements).toBeInstanceOf(Array as any);
             expect(suggestions.motivation.milestones).toBeInstanceOf(Array as any);
             expect(suggestions.motivation.rewards).toBeInstanceOf(Array as any);
-        });
+        }');
 
         test('モチベーション要素を無効にできる', () => {
             const suggestions = comparisonEngine.generateImprovementSuggestions(
                 comparisonEngine.lastComparisonResult,
-                { includeMotivationalElements: false }
-            );
+                { includeMotivationalElements: false });
 
-            expect(suggestions.motivation).toEqual({});
-        });
+            expect(suggestions.motivation).toEqual({);
+        }');
 
-        test('データ不足時の処理', () => {
+        test('データ不足時の処理', (') => {
             const insufficientDataResult = {
                 success: false,
-                pastComparison: { available: false },
-                benchmarkComparison: { available: false },
+                pastComparison: { available: false };
+                benchmarkComparison: { available: false };
                 summary: { overall: 'insufficient_data' }
             };
 
-            const suggestions = comparisonEngine.generateImprovementSuggestions(insufficientDataResult;
+            const suggestions = comparisonEngine.generateImprovementSuggestions(insufficientDataResult);
 
             expect(suggestions.targetAreas).toEqual([]);
             expect(suggestions.actionPlan).toBeInstanceOf(Array as any);
             expect(suggestions.followUpActions).toBeInstanceOf(Array as any);
         });
     });
-});
+}');

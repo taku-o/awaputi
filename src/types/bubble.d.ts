@@ -4,31 +4,28 @@
  */
 
 // 基本データ構造
-export interface Position {
-    x: number;
-    y: number;
+export interface Position { x: number,
+    y: number; }
 }
 
-export interface Velocity {
-    x: number;
-    y: number;
+export interface Velocity { x: number,
+    y: number; }
 }
 
 // バブルタイプ定義
-export type BubbleType = 
-    | 'normal' | 'stone' | 'iron' | 'diamond'
-    | 'pink' | 'poison' | 'spiky' | 'rainbow'
-    | 'clock' | 'score' | 'electric' | 'escaping'
-    | 'cracked' | 'boss' | 'golden' | 'frozen'
+export type BubbleType = ;
+    | 'normal' | 'stone' | 'iron' | 'diamond''';
+    | 'pink' | 'poison' | 'spiky' | 'rainbow''';
+    | 'clock' | 'score' | 'electric' | 'escaping''';
+    | 'cracked' | 'boss' | 'golden' | 'frozen''';
     | 'magnetic' | 'explosive' | 'phantom' | 'multiplier';
 
 // バブル設定インターフェース
-export interface BubbleConfig {
-    health: number;
-    size: number;
-    maxAge: number;
-    color: string;
-    score: number;
+export interface BubbleConfig { health: number,
+    size: number,
+    maxAge: number,
+    color: string,
+    score: number,
     // 特殊効果プロパティ（オプション）
     healAmount?: number;
     damageAmount?: number;
@@ -45,12 +42,11 @@ export interface BubbleConfig {
     magnetRadius?: number;
     explosionRadius?: number;
     phaseChance?: number;
-    scoreMultiplier?: number;
+    scoreMultiplier?: number; }
 }
 
 // バブル効果定義
-export interface BubbleEffect {
-    type: BubbleEffectType;
+export interface BubbleEffect { type: BubbleEffectType,
     amount?: number;
     position?: Position;
     radius?: number;
@@ -59,99 +55,46 @@ export interface BubbleEffect {
     multiplier?: number;
     slowFactor?: number;
     strength?: number;
-    damage?: number;
+    damage?: number; }
 }
-
-export type BubbleEffectType = 
-    | 'heal' | 'damage' | 'chain_destroy' | 'bonus_time'
-    | 'time_stop' | 'bonus_score' | 'screen_shake'
-    | 'score_multiplier' | 'slow_area' | 'magnetic_pull'
+';
+export type BubbleEffectType = '';
+    | 'heal' | 'damage' | 'chain_destroy' | 'bonus_time''';
+    | 'time_stop' | 'bonus_score' | 'screen_shake''';
+    | 'score_multiplier' | 'slow_area' | 'magnetic_pull''';
     | 'big_explosion' | 'next_score_multiplier';
 
 // バブルクラス型定義
-export interface BubbleInterface {
-    // 基本プロパティ
-    id: string;
-    type: BubbleType;
-    position: Position;
-    velocity: Velocity;
-    size: number;
-    health: number;
-    maxHealth: number;
-    age: number;
-    maxAge: number;
-    isAlive: boolean;
-    effects: BubbleEffect[];
-    clickCount: number;
+export interface BubbleInterface { // 基本プロパティ
+    id: string,
+    type: BubbleType,
+    position: Position,
+    velocity: Velocity,
+    size: number,
+    health: number,
+    maxHealth: number,
+    age: number,
+    maxAge: number,
+    isAlive: boolean,
+    effects: BubbleEffect[],
+    clickCount: number,
 
     // メソッド定義
     applyTypeConfig(): void;
     getTypeConfig(): BubbleConfig;
     update(deltaTime: number, mousePosition?: Position | null): void;
-    handleEscapingBehavior(mousePosition: Position, deltaTime: number): void;
+    handleEscapingBehavior(mousePosition: Position, deltaTime: number): void,
     handleBoundaryCollision(): void;
-    render(context: CanvasRenderingContext2D): void;
-    renderSpecialIcon(context: CanvasRenderingContext2D, centerX: number, centerY: number): void;
-    blendColors(color1: string, color2: string, ratio: number): string;
+    render(context: CanvasRenderingContext2D): void,
+    renderSpecialIcon(context: CanvasRenderingContext2D, centerX: number, centerY: number): void,
+    blendColors(color1: string, color2: string, ratio: number): string,
     takeDamage(amount?: number): boolean;
     destroy(): void;
     burst(): void;
     triggerSpecialEffect(): void;
-    containsPoint(x: number, y: number): boolean;
-    getScore(): number;
-    updateSpecialBehavior(deltaTime: number, mousePosition?: Position): void;
-    getAndClearEffects(): BubbleEffect[];
-}
-
-// バブル生成オプション
-export interface BubbleSpawnOptions {
-    type?: BubbleType;
-    position?: Position;
-    velocity?: Velocity;
-    customConfig?: Partial<BubbleConfig>;
-}
-
-// バブル管理統計
-export interface BubbleStats {
-    totalBubbles: number;
-    activeBubbles: number;
-    bubblesDestroyed: number;
-    bubblesBurst: number;
-    scoreFromBubbles: number;
-    averageBubbleAge: number;
-}
-
-// バブルコレクション管理
-export interface BubbleCollection {
-    bubbles: BubbleInterface[];
-    maxBubbles: number;
-    spawnRate: number;
-    typeDistribution: { [key in BubbleType]?: number };
-}
-
-// 境界設定
-export interface BoundarySettings {
-    canvasWidth: number;
-    canvasHeight: number;
-    margin: number;
-    dampening: number;
-    minVelocity: number;
-    friction: number;
-}
-
-// レンダリング設定
-export interface BubbleRenderSettings {
-    showHealth: boolean;
-    showAge: boolean;
-    enableShadows: boolean;
-    enableGradients: boolean;
-    iconScale: number;
-}
-
-// パフォーマンス設定
-export interface BubblePerformanceSettings {
-    maxRenderDistance: number;
-    cullingEnabled: boolean;
-    lowDetailThreshold: number;
-    animationQuality: 'high' | 'medium' | 'low';
-}
+    containsPoint(x: number, y: number): boolean,
+    getScore(): number;'
+    updateSpecialBehavior(deltaTime: number, mousePosition?: Position): void;''
+    getAndClearEffects(''';
+    animationQuality: 'high' | 'medium' | 'low',' }'
+})

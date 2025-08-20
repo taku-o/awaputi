@@ -9,27 +9,27 @@ export class PerformanceMeasurement {
         this.name = name;
         this.measurements = [];
         this.memoryBaseline = null;
-    }
-
+    )
+;
     startMeasurement() {
         this.startTime = performance.now();
-        this.memoryBaseline = performance.memory ? performance.memory.usedJSHeapSize : 0;
+        this.memoryBaseline = performance.memory ? performance.memory.usedJSHeapSize: 0,
         return this;
     }
 
     endMeasurement() {
         const endTime = performance.now();
         const duration = endTime - this.startTime;
-        const memoryUsed = performance.memory ? 
-            performance.memory.usedJSHeapSize - this.memoryBaseline : 0;
+        const memoryUsed = performance.memory ?   : undefined
+            performance.memory.usedJSHeapSize - this.memoryBaseline: 0,
 
         const measurement = {
             duration,
             memoryUsed,
-            timestamp: Date.now()
+            timestamp: Date.now(),
         };
 
-        this.measurements.push(measurement;
+        this.measurements.push(measurement);
         return measurement;
     }
 
@@ -45,15 +45,15 @@ export class PerformanceMeasurement {
                 min: Math.min(...durations),
                 max: Math.max(...durations),
                 average: durations.reduce((a, b) => a + b, 0) / durations.length,
-                median: this.calculateMedian(durations,
+                median: this.calculateMedian(durations;);
                 p95: this.calculatePercentile(durations, 95),
-                p99: this.calculatePercentile(durations, 99)
+                p99: this.calculatePercentile(durations, 99);
             },
             memory: {
                 min: Math.min(...memoryUsages),
                 max: Math.max(...memoryUsages),
                 average: memoryUsages.reduce((a, b) => a + b, 0) / memoryUsages.length,
-                total: memoryUsages.reduce((a, b) => a + b, 0)
+                total: memoryUsages.reduce((a, b) => a + b, 0);
             }
         };
     }
@@ -77,11 +77,11 @@ export class PerformanceMeasurement {
 export class DataGenerator {
     static generateGameplayEvents(count: number): any[] {
         const bubbleTypes = ['normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink', 'clock', 'electric', 'boss'];
-        const events: any[] = [];
+        const events: any[] = [],
 
-        for (let i = 0; i < count; i++) {
+        for (let i = 0; i < count; i++') {
             events.push({
-                type: 'bubble_popped',
+                type: 'bubble_popped';);
                 timestamp: Date.now() + i,
                 data: {
                     bubbleType: bubbleTypes[Math.floor(Math.random() * bubbleTypes.length)],
@@ -89,9 +89,9 @@ export class DataGenerator {
                     combo: Math.floor(Math.random() * 20) + 1,
                     position: {
                         x: Math.floor(Math.random() * 800),
-                        y: Math.floor(Math.random() * 600)
+                        y: Math.floor(Math.random() * 600),
                     },
-                    sessionId: `session-${Math.floor(i / 100)}`
+                    sessionId: `session-${Math.floor(i / 100})}`
                 }
             });
         }
@@ -107,9 +107,9 @@ export class DataGenerator {
         for (let i = 0; i < days; i++) {
             const date = new Date(startDate as any);
             date.setDate(date.getDate() + i);
-            const dateStr = date.toISOString().split('T')[0];
+            const dateStr = date.toISOString(').split('T')[0];
 
-            data.set(dateStr, {
+            data.set(dateStr, {);
                 games: Math.floor(Math.random() * 10) + 1,
                 score: Math.floor(Math.random() * 50000) + 5000,
                 playtime: Math.floor(Math.random() * 3600000) + 600000, // 10分-60分
@@ -122,11 +122,11 @@ export class DataGenerator {
     }
 
     static generateLargeStatisticsData() {
-        const bubbleTypeStats = new Map();
+        const bubbleTypeStats = new Map(');
         const bubbleTypes = ['normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink', 'clock', 'electric', 'boss'];
         
         bubbleTypes.forEach(type => {
-            bubbleTypeStats.set(type, {
+            bubbleTypeStats.set(type, {);
                 count: Math.floor(Math.random() * 10000),
                 score: Math.floor(Math.random() * 500000),
                 accuracy: Math.random() * 0.3 + 0.7,
@@ -139,13 +139,13 @@ export class DataGenerator {
                 totalGames: 10000,
                 totalPlayTime: 36000000, // 10時間
                 averageSessionTime: 3600000, // 1時間
-                lastPlayTime: Date.now()
+                lastPlayTime: Date.now(),
             },
             scoreStats: {
                 totalScore: 5000000,
                 highestScore: 50000,
                 averageScore: 500,
-                scoreHistory: Array.from({ length: 1000 }, () => Math.floor(Math.random() * 10000))
+                scoreHistory: Array.from({ length: 1000 ), () => Math.floor(Math.random() * 10000));
             },
             bubbleStats: {
                 totalPopped: 100000,
@@ -155,12 +155,12 @@ export class DataGenerator {
             comboStats: {
                 maxCombo: 100,
                 averageCombo: 15,
-                comboHistory: Array.from({ length: 500 }, () => Math.floor(Math.random() * 100))
+                comboHistory: Array.from({ length: 500 ), () => Math.floor(Math.random() * 100));
             },
             timeSeries: {
                 daily: this.generateTimeSeriesData(365),
                 weekly: this.generateTimeSeriesData(52),
-                monthly: this.generateTimeSeriesData(12)
+                monthly: this.generateTimeSeriesData(12),
             }
         };
     }
@@ -184,14 +184,14 @@ export const PerformanceTestHelper = {
     simulateMemoryIntensiveTask(sizeInMB {
         const arraySize = sizeInMB * 1024 * 1024 / 8; // 8 bytes per number
         const largeArray = new Array(arraySize.fill(0);
-        return largeArray.map(() => Math.random());
+        return largeArray.map(() => Math.random();
     },
 
     /**
      * ネットワーク遅延をシミュレーション
      */
     async simulateNetworkDelay(delayMs {
-        return new Promise(resolve => setTimeout(resolve, delayMs));
+        return new Promise(resolve => setTimeout(resolve, delayMs);
     },
 
     /**
@@ -209,16 +209,15 @@ export const PerformanceTestHelper = {
             p95: sorted[Math.floor(sorted.length * 0.95)],
             p99: sorted[Math.floor(sorted.length * 0.99)],
             standardDeviation: this.calculateStandardDeviation(measurements
-        };
-    },
+        };),
 
     /**
      * 標準偏差の計算
      */
     calculateStandardDeviation(values {
         const mean = values.reduce((a, b) => a + b, 0) / values.length;
-        const squareDiffs = values.map(value => Math.pow(value - mean, 2));
+        const squareDiffs = values.map(value => Math.pow(value - mean, 2);
         const avgSquareDiff = squareDiffs.reduce((a, b) => a + b, 0) / squareDiffs.length;
-        return Math.sqrt(avgSquareDiff;
+        return Math.sqrt(avgSquareDiff');
     }
 };

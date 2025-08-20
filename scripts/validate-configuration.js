@@ -24,13 +24,13 @@ const SRC_DIR = path.join(PROJECT_ROOT, 'src');
 
 // 設定ファイルパス
 const CONFIG_FILES = {
-    gameBalance: path.join(SRC_DIR, 'config', 'GameBalance.js'),
-    gameConfig: path.join(SRC_DIR, 'config', 'GameConfig.js'),
+    gameBalance: path.join(SRC_DIR, 'config', 'GameBalance.ts'),
+    gameConfig: path.join(SRC_DIR, 'config', 'GameConfig.ts'),
     bubbleClass: path.join(SRC_DIR, 'bubbles', 'Bubble.ts'),
     testFiles: [
-        path.join(PROJECT_ROOT, 'tests', 'unit', 'Bubble.test.js'),
-        path.join(PROJECT_ROOT, 'tests', 'unit', 'GameBalance.test.js'),
-        path.join(PROJECT_ROOT, 'tests', 'unit', 'BubbleManager.test.js')
+        path.join(PROJECT_ROOT, 'tests', 'unit', 'Bubble.test.ts'),
+        path.join(PROJECT_ROOT, 'tests', 'unit', 'GameBalance.test.ts'),
+        path.join(PROJECT_ROOT, 'tests', 'unit', 'BubbleManager.test.ts')
     ]
 };
 

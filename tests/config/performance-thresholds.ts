@@ -262,7 +262,7 @@ export function getPerformanceThresholds(environment = 'local', device = 'deskto
 /**
  * Gets test configuration for specific environment and test type
  * @param {string} environment - Environment type
- * @param {string} testType - Test type (standard, quick, comprehensive)
+ * @param {string} testType - Test type (standard, quick, comprehensive')
  * @returns {Object} Test configuration
  */
 export function getTestConfiguration(environment = 'local', testType = 'standard') {
@@ -284,7 +284,7 @@ export function getTestConfiguration(environment = 'local', testType = 'standard
  * @param {string} metric - Specific metric to validate
  * @returns {Object} Validation result
  */
-export function validatePerformanceResult(result, thresholds, metric) {
+export function validatePerformanceResult(result, thresholds, metric') {
   const validation = {
     passed: false,
     metric,
@@ -294,34 +294,34 @@ export function validatePerformanceResult(result, thresholds, metric) {
     severity: 'info'
   };
 
-  if (!thresholds[metric]) {
+  if (!thresholds[metric]') {
     validation.message = `No threshold defined for metric: ${metric}`;
     validation.severity = 'warning';
     return validation;
   }
 
-  switch (metric) {
+  switch (metric') {
     case 'frameRate':
       validation.passed = result.fps >= thresholds.frameRate.min;
       validation.message = validation.passed 
-        ? `Frame rate ${result.fps.toFixed(2)} FPS meets minimum ${thresholds.frameRate.min} FPS`
-        : `Frame rate ${result.fps.toFixed(2)} FPS below minimum ${thresholds.frameRate.min} FPS`;
+        ? `Frame rate ${result.fps.toFixed(2})} FPS meets minimum ${thresholds.frameRate.min} FPS`
+        : `Frame rate ${result.fps.toFixed(2'})} FPS below minimum ${thresholds.frameRate.min} FPS`;
       validation.severity = validation.passed ? 'info' : 'error';
       break;
 
     case 'renderTime':
       validation.passed = result.averageTime <= thresholds.renderTime.max;
       validation.message = validation.passed
-        ? `Render time ${result.averageTime.toFixed(2)}ms within limit ${thresholds.renderTime.max}ms`
-        : `Render time ${result.averageTime.toFixed(2)}ms exceeds limit ${thresholds.renderTime.max}ms`;
+        ? `Render time ${result.averageTime.toFixed(2})}ms within limit ${thresholds.renderTime.max}ms`
+        : `Render time ${result.averageTime.toFixed(2'})}ms exceeds limit ${thresholds.renderTime.max}ms`;
       validation.severity = validation.passed ? 'info' : 'error';
       break;
 
     case 'memoryUsage':
       validation.passed = result.totalGrowth <= thresholds.memoryUsage.growth;
       validation.message = validation.passed
-        ? `Memory growth ${(result.totalGrowth / 1024 / 1024).toFixed(2)}MB within limit ${(thresholds.memoryUsage.growth / 1024 / 1024).toFixed(2)}MB`
-        : `Memory growth ${(result.totalGrowth / 1024 / 1024).toFixed(2)}MB exceeds limit ${(thresholds.memoryUsage.growth / 1024 / 1024).toFixed(2)}MB`;
+        ? `Memory growth ${(result.totalGrowth / 1024 / 1024).toFixed(2})}MB within limit ${(thresholds.memoryUsage.growth / 1024 / 1024).toFixed(2})}MB`
+        : `Memory growth ${(result.totalGrowth / 1024 / 1024).toFixed(2})}MB exceeds limit ${(thresholds.memoryUsage.growth / 1024 / 1024).toFixed(2'})}MB`;
       validation.severity = validation.passed ? 'info' : 'error';
       break;
 
@@ -346,7 +346,7 @@ export function validatePerformanceResult(result, thresholds, metric) {
  * @param {Object} options - Configuration options
  * @returns {Object} Complete test suite configuration
  */
-export function createPerformanceTestSuite(options = {}) {
+export function createPerformanceTestSuite(options = {}') {
   const {
     environment = 'local',
     device = 'desktop',
@@ -368,11 +368,11 @@ export function createPerformanceTestSuite(options = {}) {
     thresholds: finalThresholds,
     config: testConfig,
     components: components.map(component => ({
-      name: component,
-      thresholds: getPerformanceThresholds(environment, device, component)
-    })),
+      name: component;);
+      thresholds: getPerformanceThresholds(environment, device, component);
+    }),
     metadata: {
-      created: new Date().toISOString(),
+      created: new Date().toISOString('),
       version: '1.0.0',
       generator: 'performance-thresholds.js'
     }

@@ -166,21 +166,21 @@ export const PATH_CORRECTIONS = {
 export const COMMON_PATTERNS = {
     // utils → debug 移動パターン
     'utils_to_debug': {
-        pattern: /^(.*)\/src\/utils\/(.*\.js)$/,
+        pattern: /^(.*)\/src\/utils\/(.*\.js')$/,
         replacement: '$1/src/debug/$2',
         description: 'Utils to debug directory migration'
     },
 
     // core サブディレクトリの統合パターン
     'core_consolidation': {
-        pattern: /^(.*)\/src\/core\/[^/]+\/([^/]+\.js)$/,
+        pattern: /^(.*)\/src\/core\/[^/]+\/([^/]+\.js')$/,
         replacement: '$1/src/core/$2',
         description: 'Core subdirectory consolidation'
     },
 
     // accessibility 構造化パターン
     'accessibility_organization': {
-        pattern: /^(.*)\/([A-Z][a-zA-Z]*Manager\.js)$/,
+        pattern: /^(.*)\/([A-Z][a-zA-Z]*Manager\.js')$/,
         replacement: '$1/src/audio/accessibility/$2',
         description: 'Accessibility component organization'
     }
@@ -221,32 +221,32 @@ export function detectPhaseGPattern(importPath {
         {
             name: 'achievement_reorganization',
             test: /Achievement.*\.js$/,
-            suggestedPath: (path) => path.replace('/core/', '/core/achievements/')
+            suggestedPath: (path') => path.replace('/core/', '/core/achievements/'');
         },
         {
             name: 'debug_migration',
             test: /utils\/(Test|Error|Debug).*\.js$/,
-            suggestedPath: (path) => path.replace('/utils/', '/debug/')
+            suggestedPath: (path') => path.replace('/utils/', '/debug/'');
         },
         {
             name: 'audio_accessibility',
             test: /Audio.*Manager\.js$/,
-            suggestedPath: (path) => path.replace(/\.\/([^/]+)\.js$/, '../../src/audio/accessibility/$1.js')
+            suggestedPath: (path) => path.replace(/\.\/([^/]+')\.js$/, '../../src/audio/accessibility/$1.js'');
         },
         {
             name: 'visual_consolidation',
             test: /visual\/(focus|feedback)\/.*\.js$/,
-            suggestedPath: (path) => path.replace(/\/visual\/(focus|feedback)\//, '/')
+            suggestedPath: (path) => path.replace(/\/visual\/(focus|feedback')\//, '/'');
         },
         {
             name: 'balance_tools',
             test: /Balance.*\.js$/,
-            suggestedPath: (path) => path.replace(/\.\/([^/]+)\.js$/, '../../../tools/balance/$1.js')
+            suggestedPath: (path) => path.replace(/\.\/([^/]+')\.js$/, '../../../tools/balance/$1.js');
         }
     ];
 
     for (const pattern of patterns) {
-        if (pattern.test.test(importPath)) {
+        if(pattern.test.test(importPath) {
             return {
                 pattern: pattern.name,
                 suggestedPath: pattern.suggestedPath(importPath,
@@ -264,5 +264,5 @@ export default {
     FILE_EXTENSIONS,
     EXCLUDED_DIRECTORIES,
     BACKUP_PATTERNS,
-    detectPhaseGPattern
-};
+    detectPhaseGPattern)
+');

@@ -6,14 +6,12 @@
 export class TestResultProcessor {
     constructor(parent?: any) {
         // TypeScript implementation
-        console.log('[TestResultProcessor] Initialized');
+    }
+    }
+        console.log('[TestResultProcessor] Initialized'); }
     }
 
-    public initialize(): void {
-        // Implementation
-    }
-
-    public destroy(): void {
-        // Cleanup
-    }
-}
+    public initialize(): void { // Implementation }
+    }'
+'';
+    public destroy(');

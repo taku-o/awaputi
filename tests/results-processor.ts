@@ -19,30 +19,29 @@ export default async function processResults(results {
       passed: results.numPassedTests,
       failed: results.numFailedTests,
       skipped: results.numPendingTests,
-      duration: results.testResults.reduce((acc, test) => acc + test.perfStats.end - test.perfStats.start, 0)
+      duration: results.testResults.reduce((acc, test) => acc + test.perfStats.end - test.perfStats.start, 0);
     },
-    coverage: results.coverageMap ? {
+    coverage: results.coverageMap ? { : undefined
       statements: results.coverageMap.getCoverageSummary().statements.pct,
       branches: results.coverageMap.getCoverageSummary().branches.pct,
-      functions: results.coverageMap.getCoverageSummary().functions.pct,
+      functions: results.coverageMap.getCoverageSummary().functions.pct;
       lines: results.coverageMap.getCoverageSummary().lines.pct
     } : null,
-    testFiles: results.testResults.map(test => ({
-      name: path.basename(test.testFilePath),
+    testFiles: results.testResults.map(test => ({);
+      name: path.basename(test.testFilePath'),
       path: test.testFilePath,
       duration: test.perfStats.end - test.perfStats.start,
       tests: test.numPassingTests + test.numFailingTests,
       passed: test.numPassingTests,
       failed: test.numFailingTests,
       status: test.numFailingTests > 0 ? 'failed' : 'passed'
-    }))
+    })');
   };
   
   // Write enhanced results
   await fs.writeFile(
-    'test-results/processed-results.json',
-    JSON.stringify(processedResults, null, 2)
-  );
+    'test-results/processed-results.json');
+    JSON.stringify(processedResults, null, 2);
   
   // Generate simple text summary
   const summary = `
@@ -53,9 +52,9 @@ Total Tests: ${processedResults.summary.total}
 Passed: ${processedResults.summary.passed}
 Failed: ${processedResults.summary.failed}
 Skipped: ${processedResults.summary.skipped}
-Duration: ${Math.round(processedResults.summary.duration / 1000)}s
+Duration: ${Math.round(processedResults.summary.duration / 1000'})}s
 
-${processedResults.coverage ? `
+${processedResults.coverage ? ` : undefined
 Coverage:
 - Statements: ${processedResults.coverage.statements}%
 - Branches: ${processedResults.coverage.branches}%
@@ -64,26 +63,26 @@ Coverage:
 ` : ''}
 
 Test Files:
-${processedResults.testFiles.map(file => 
-  `- ${file.name}: ${file.passed}/${file.tests} passed (${Math.round(file.duration)}ms)`
-).join('\n')}
+${processedResults.testFiles.map(file => })
+  `- ${file.name}: ${file.passed}/${file.tests} passed (${Math.round(file.duration})}ms)`
+').join('\n'')}
 `;
   
-  await fs.writeFile('test-results/summary.txt', summary);
+  await fs.writeFile('test-results/summary.txt', summary');
   
   // Log summary to console
-  console.log('\n📊 Test Results Summary:');
-  console.log(`   Total: ${processedResults.summary.total}`);
-  console.log(`   Passed: ${processedResults.summary.passed}`);
-  console.log(`   Failed: ${processedResults.summary.failed}`);
-  console.log(`   Duration: ${Math.round(processedResults.summary.duration / 1000)}s`);
+  console.log('\n📊 Test Results Summary: '),
+  console.log(`   Total: ${processedResults.summary.total)`),
+  console.log(`   Passed: ${processedResults.summary.passed)`),
+  console.log(`   Failed: ${processedResults.summary.failed)`),
+  console.log(`   Duration: ${Math.round(processedResults.summary.duration / 1000})}s`);
   
-  if (processedResults.coverage) {
-    console.log('\n📈 Coverage:');
-    console.log(`   Statements: ${processedResults.coverage.statements}%`);
-    console.log(`   Branches: ${processedResults.coverage.branches}%`);
-    console.log(`   Functions: ${processedResults.coverage.functions}%`);
-    console.log(`   Lines: ${processedResults.coverage.lines}%`);
+  if (processedResults.coverage') {
+    console.log('\n📈 Coverage: '),
+    console.log(`   Statements: ${processedResults.coverage.statements)%`),
+    console.log(`   Branches: ${processedResults.coverage.branches)%`),
+    console.log(`   Functions: ${processedResults.coverage.functions)%`});
+    console.log(`   Lines: ${processedResults.coverage.lines}%`');
   }
   
   return results;

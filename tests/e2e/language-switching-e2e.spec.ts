@@ -9,7 +9,7 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
 import { test, expect } from '@playwright/test';
 
 // テスト設定
-const TEST_URL = 'http://localhost:8000';
+const TEST_URL = 'http: //localhost:8000',
 const SUPPORTED_LANGUAGES = ['ja', 'en', 'zh-CN', 'zh-TW', 'ko'];
 const DEFAULT_TIMEOUT = 30000;
 
@@ -22,96 +22,91 @@ async function waitForLocalizationReady(page {
     }, { timeout: DEFAULT_TIMEOUT });
 }
 
-async function changeLanguage(page, language) {
+async function changeLanguage(page, language') {
     // 設定画面を開く
     await page.keyboard.press('s');
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(500');
     
     // 言語選択ドロップダウンを見つける
     const languageSelector = await page.$('#language-selector');
     if (languageSelector) {
-        await languageSelector.selectOption(language;
+        await languageSelector.selectOption(language);
     } else {
         // フォールバック: キーボードナビゲーション
         const currentLang = await page.evaluate(() => 
-            window.gameEngine.localizationManager.getCurrentLanguage()
-        );
-        const currentIndex = SUPPORTED_LANGUAGES.indexOf(currentLang;
-        const targetIndex = SUPPORTED_LANGUAGES.indexOf(language;
+            window.gameEngine.localizationManager.getCurrentLanguage();
+        const currentIndex = SUPPORTED_LANGUAGES.indexOf(currentLang);
+        const targetIndex = SUPPORTED_LANGUAGES.indexOf(language);
         const diff = targetIndex - currentIndex;
         
         if (diff > 0) {
-            for (let i = 0; i < diff; i++) {
+            for (let i = 0; i < diff; i++') {
                 await page.keyboard.press('ArrowDown');
                 await page.waitForTimeout(100);
             }
         } else {
-            for (let i = 0; i < Math.abs(diff; i++) {
+            for (let i = 0; i < Math.abs(diff; i++') {
                 await page.keyboard.press('ArrowUp');
-                await page.waitForTimeout(100);
+                await page.waitForTimeout(100');
             }
         }
         await page.keyboard.press('Enter');
     }
     
     // 言語変更の完了を待つ
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(1000');
 }
 
 // テストスイート
 test.describe('言語切り替えE2Eテスト', () => {
     test.beforeEach(async ({ page }) => {
-        await page.goto(TEST_URL;
-        await waitForLocalizationReady(page;
-    });
+        await page.goto(TEST_URL);
+        await waitForLocalizationReady(page);
+    }');
 
     test('基本的な言語切り替えが正しく動作する', async ({ page }) => {
         // 初期言語の確認
         const initialLanguage = await page.evaluate(() => 
-            window.gameEngine.localizationManager.getCurrentLanguage()
-        );
-        expect(initialLanguage).toBe('ja');
+            window.gameEngine.localizationManager.getCurrentLanguage();
+        expect(initialLanguage').toBe('ja'');
         
         // 英語に切り替え
         await changeLanguage(page, 'en');
         
         // 言語が変更されたことを確認
         const currentLanguage = await page.evaluate(() => 
-            window.gameEngine.localizationManager.getCurrentLanguage()
-        );
-        expect(currentLanguage).toBe('en');
+            window.gameEngine.localizationManager.getCurrentLanguage();
+        expect(currentLanguage').toBe('en');
         
         // UIテキストが英語になっていることを確認
-        const startButtonText = await page.evaluate(() => {
+        const startButtonText = await page.evaluate((') => {
             const button = document.querySelector('[data-action="start-game"]');
-            return button ? button.textContent : null;
+            return button ? button.textContent: null,
         });
-        expect(startButtonText).toContain('Start Game');
-    });
+        expect(startButtonText').toContain('Start Game');
+    }');
 
-    test('すべての対応言語で切り替えが可能', async ({ page }) => {
+    test('すべての対応言語で切り替えが可能', async ({ page ) => {
         for (const language of SUPPORTED_LANGUAGES) {
             await changeLanguage(page, language);
             
             const currentLanguage = await page.evaluate(() => 
-                window.gameEngine.localizationManager.getCurrentLanguage()
-            );
-            expect(currentLanguage).toBe(language;
+                window.gameEngine.localizationManager.getCurrentLanguage();
+            expect(currentLanguage).toBe(language);
             
             // 言語情報の取得
             const languageInfo = await page.evaluate((lang) => 
                 window.gameEngine.localizationManager.getLanguageInfo(lang,
-                language
-            );
+                language);
             expect(languageInfo).toBeTruthy();
             expect(languageInfo.native).toBeTruthy();
         }
-    });
+    }');
 
-    test('言語切り替え後もゲーム状態が保持される', async ({ page }) => {
+    test('言語切り替え後もゲーム状態が保持される', async ({ page )') => {
         // ゲームを開始
         await page.keyboard.press('Enter');
-        await page.waitForTimeout(1000);
+        await page.waitForTimeout(1000');
         
         // スコアを獲得（泡をクリック）
         await page.click('canvas', { position: { x: 400, y: 300 } });
@@ -119,9 +114,9 @@ test.describe('言語切り替えE2Eテスト', () => {
         
         // 現在のスコアを記録
         const scoreBefore = await page.evaluate(() => 
-            window.gameEngine.sceneManager.currentScene?.scoreManager?.getScore() || 0
+            window.gameEngine.sceneManager.currentScene? .scoreManager?.getScore() || 0
         );
-        expect(scoreBefore).toBeGreaterThan(0);
+        expect(scoreBefore).toBeGreaterThan(0');
         
         // 言語を切り替え
         await changeLanguage(page, 'en');
@@ -130,136 +125,132 @@ test.describe('言語切り替えE2Eテスト', () => {
         const scoreAfter = await page.evaluate(() => 
             window.gameEngine.sceneManager.currentScene?.scoreManager?.getScore() || 0
         );
-        expect(scoreAfter).toBe(scoreBefore;
-    });
+        expect(scoreAfter).toBe(scoreBefore);
+    }');
 
-    test('ブラウザリロード後も言語設定が保持される', async ({ page }) => {
+    test('ブラウザリロード後も言語設定が保持される', async ({ page )') => {
         // 英語に切り替え
         await changeLanguage(page, 'en');
         
         // ページをリロード
         await page.reload();
-        await waitForLocalizationReady(page;
+        await waitForLocalizationReady(page);
         
         // 言語設定が保持されていることを確認
         const currentLanguage = await page.evaluate(() => 
-            window.gameEngine.localizationManager.getCurrentLanguage()
-        );
-        expect(currentLanguage).toBe('en');
-    });
+            window.gameEngine.localizationManager.getCurrentLanguage();
+        expect(currentLanguage').toBe('en');
+    }');
 
-    test('URLパラメータでの言語指定が機能する', async ({ page }) => {
+    test('URLパラメータでの言語指定が機能する', async ({ page ) => {
         // URLパラメータで言語を指定してアクセス
         await page.goto(`${TEST_URL}?lang=en`);
-        await waitForLocalizationReady(page;
+        await waitForLocalizationReady(page);
         
         // 指定した言語が適用されていることを確認
         const currentLanguage = await page.evaluate(() => 
-            window.gameEngine.localizationManager.getCurrentLanguage()
-        );
-        expect(currentLanguage).toBe('en');
-    });
+            window.gameEngine.localizationManager.getCurrentLanguage();
+        expect(currentLanguage').toBe('en');
+    }');
 
-    test('存在しない言語コードの場合はフォールバックが機能する', async ({ page }) => {
+    test('存在しない言語コードの場合はフォールバックが機能する', async ({ page ) => {
         // 存在しない言語コードを指定
         await page.goto(`${TEST_URL}?lang=invalid`);
-        await waitForLocalizationReady(page;
+        await waitForLocalizationReady(page);
         
         // デフォルト言語にフォールバックすることを確認
         const currentLanguage = await page.evaluate(() => 
             window.gameEngine.localizationManager.getCurrentLanguage()
-        );
-        expect(['ja', 'en']).toContain(currentLanguage;
-    });
+        ');
+        expect(['ja', 'en']).toContain(currentLanguage);
+    }');
 
-    test('言語切り替え時のアニメーションが適切に動作する', async ({ page }) => {
-        // 初期状態のスクリーンショット
-        await page.screenshot({ path: 'screenshots/language-switch-before.png' });
+    test('言語切り替え時のアニメーションが適切に動作する', async ({ page )') => {
+        // 初期状態のスクリーンショット : undefined
+        await page.screenshot({ path: 'screenshots/language-switch-before.png' }');
         
         // 言語を切り替え
-        await changeLanguage(page, 'en');
+        await changeLanguage(page, 'en'');
         
         // アニメーション中のスクリーンショット
-        await page.screenshot({ path: 'screenshots/language-switch-during.png' });
+        await page.screenshot({ path: 'screenshots/language-switch-during.png' ),
         
         // アニメーション完了後のスクリーンショット
-        await page.waitForTimeout(1000);
-        await page.screenshot({ path: 'screenshots/language-switch-after.png' });
+        await page.waitForTimeout(1000');
+        await page.screenshot({ path: 'screenshots/language-switch-after.png' ),
         
         // UI要素が正しく更新されていることを確認
-        const isUIUpdated = await page.evaluate(() => {
+        const isUIUpdated = await page.evaluate((') => {
             const elements = document.querySelectorAll('[data-i18n]');
-            return Array.from(elements.every(el => 
-                !el.textContent.includes('{{') && 
-                !el.textContent.includes('}}')
-            );
+            return Array.from(elements.every(el => ')
+                !el.textContent.includes('{{'') && 
+                !el.textContent.includes('}}');
         });
-        expect(isUIUpdated).toBe(true;
-    });
+        expect(isUIUpdated).toBe(true);
+    }');
 
-    test('キーボードナビゲーションでの言語切り替え', async ({ page }) => {
+    test('キーボードナビゲーションでの言語切り替え', async ({ page )') => {
         // 設定画面を開く
         await page.keyboard.press('s');
         await page.waitForTimeout(500);
         
         // Tabキーで言語選択まで移動
         let focusedElement = null;
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++') {
             await page.keyboard.press('Tab');
             focusedElement = await page.evaluate(() => 
-                document.activeElement?.id || document.activeElement?.className
-            );
-            if (focusedElement && focusedElement.includes('language')) break;
+                document.activeElement? .id || document.activeElement?.className
+            ');
+            if (focusedElement && focusedElement.includes('language')') break;
         }
         
         // 矢印キーで言語を選択
-        await page.keyboard.press('ArrowDown');
-        await page.keyboard.press('ArrowDown');
+        await page.keyboard.press('ArrowDown'');
+        await page.keyboard.press('ArrowDown'');
         await page.keyboard.press('Enter');
         
         // 言語が変更されたことを確認
         const currentLanguage = await page.evaluate(() => 
-            window.gameEngine.localizationManager.getCurrentLanguage()
-        );
-        expect(currentLanguage).not.toBe('ja');
-    });
+            window.gameEngine.localizationManager.getCurrentLanguage();
+        expect(currentLanguage').not.toBe('ja');
+    }');
 
-    test('スクリーンリーダー対応の確認', async ({ page }) => {
+    test('スクリーンリーダー対応の確認', async ({ page )') => {
         // ARIAラベルが適切に更新されることを確認
         await changeLanguage(page, 'en');
         
-        const ariaLabels = await page.evaluate(() => {
-            const elements = document.querySelectorAll('[aria-label]');
-            return Array.from(elements.map(el => ({
+        const ariaLabels = await page.evaluate((') => {
+            const elements = document.querySelectorAll('[aria-label]'');
+            return Array.from(elements.map(el => ({ : undefined
                 element: el.tagName,
-                label: el.getAttribute('aria-label')
-            }));
+                label: el.getAttribute('aria-label'});
+            });
         });
         
         // 英語のARIAラベルが設定されていることを確認
         expect(ariaLabels.length).toBeGreaterThan(0);
-        ariaLabels.forEach(item => {
-            expect(item.label).not.toContain('{{');
-            expect(item.label).not.toContain('}}');
+        ariaLabels.forEach(item => {);
+            expect(item.label').not.toContain('{{');
+            expect(item.label').not.toContain('}}');
             // 日本語が含まれていないことを確認（基本的なチェック）
             expect(item.label).not.toMatch(/[\u3040-\u309F\u30A0-\u30FF]/);
         });
-    });
+    }');
 
-    test('言語切り替え時のエラーハンドリング', async ({ page }) => {
+    test('言語切り替え時のエラーハンドリング', async ({ page ) => {
         // エラーをシミュレート（翻訳ファイルの読み込み失敗）
-        await page.evaluate(() => {
+        await page.evaluate((') => {
             const originalFetch = window.fetch;
             window.fetch = function(url {
-                if (url.includes('/locales/')) {
-                    return Promise.reject(new Error('Network error'));
+                if (url.includes('/locales/')') {
+                    return Promise.reject(new Error('Network error');
                 }
                 return originalFetch.apply(this, arguments);
             };
         });
         
         // 言語切り替えを試行
-        const errorOccurred = await page.evaluate(async () => {
+        const errorOccurred = await page.evaluate(async (') => {
             try {
                 await window.gameEngine.localizationManager.setLanguage('zh-CN');
                 return false;
@@ -274,12 +265,12 @@ test.describe('言語切り替えE2Eテスト', () => {
         // フォールバック言語が使用されることを確認
         const currentLanguage = await page.evaluate(() => 
             window.gameEngine.localizationManager.getCurrentLanguage()
-        );
-        expect(['ja', 'en']).toContain(currentLanguage;
-    });
+        ');
+        expect(['ja', 'en']).toContain(currentLanguage);
+    }');
 
-    test('複数の言語切り替えのパフォーマンステスト', async ({ page }) => {
-        const switchTimes: any[] = [];
+    test('複数の言語切り替えのパフォーマンステスト', async ({ page ) => {
+        const switchTimes: any[] = [],
         
         for (let i = 0; i < 5; i++) {
             const language = SUPPORTED_LANGUAGES[i % SUPPORTED_LANGUAGES.length];
@@ -312,22 +303,22 @@ test.describe('言語切り替えE2Eテスト', () => {
             const heapUsageRatio = memoryUsage.usedJSHeapSize / memoryUsage.totalJSHeapSize;
             expect(heapUsageRatio).toBeLessThan(0.9); // 90%未満
         }
-    });
+    }');
 
-    test('モバイルデバイスでの言語切り替え', async ({ page, browserName }) => {
+    test('モバイルデバイスでの言語切り替え', async ({ page, browserName ) => {
         // モバイルビューポートを設定
-        await page.setViewportSize({ width: 375, height: 667 });
+        await page.setViewportSize({ width: 375, height: 667 }');
         
         // タッチ操作で設定を開く
         const settingsButton = await page.$('[data-action="open-settings"]');
         if (settingsButton) {
-            await settingsButton.tap();
+            await settingsButton.tap(');
         } else {
             // フォールバック: キーボードショートカット
             await page.keyboard.press('s');
         }
         
-        await page.waitForTimeout(500);
+        await page.waitForTimeout(500');
         
         // 言語選択をタップ
         const languageOptions = await page.$$('[data-language-option]');
@@ -337,34 +328,33 @@ test.describe('言語切り替えE2Eテスト', () => {
         
         // 言語が変更されたことを確認
         const currentLanguage = await page.evaluate(() => 
-            window.gameEngine.localizationManager.getCurrentLanguage()
-        );
-        expect(currentLanguage).not.toBe('ja');
-    });
+            window.gameEngine.localizationManager.getCurrentLanguage();
+        expect(currentLanguage').not.toBe('ja');
+    }');
 
-    test('言語切り替え時の翻訳完全性チェック', async ({ page }) => {
+    test('言語切り替え時の翻訳完全性チェック', async ({ page ) => {
         const incompleteness: Record<string, any> = {};
         
         for (const language of SUPPORTED_LANGUAGES) {
             await changeLanguage(page, language);
             
             // 未翻訳のテキストを検出
-            const untranslated = await page.evaluate(() => {
+            const untranslated = await page.evaluate((') => {
                 const elements = document.querySelectorAll('*');
-                const untranslatedTexts: any[] = [];
+                const untranslatedTexts: any[] = [],
                 
                 elements.forEach(el => {
-                    const text = el.textContent;
-                    if (text && (text.includes('{{') || text.includes('}}'))) {
+                    const text = el.textContent;');
+                    if (text && (text.includes('{{'') || text.includes('}}')) {
                         untranslatedTexts.push({
-                            element: el.tagName,
-                            text: text.substring(0, 100)
+                            element: el.tagName;);
+                            text: text.substring(0, 100);
                         });
                     }
                 });
                 
                 return untranslatedTexts;
-            });
+            }');
             
             incompleteness[language] = untranslated;
         }
@@ -377,24 +367,24 @@ test.describe('言語切り替えE2Eテスト', () => {
             expect(untranslated.length).toBe(0);
         });
     });
-});
+}');
 
 // アクセシビリティテスト
 test.describe('言語切り替えのアクセシビリティテスト', () => {
     test.beforeEach(async ({ page }) => {
-        await page.goto(TEST_URL;
-        await waitForLocalizationReady(page;
-    });
+        await page.goto(TEST_URL);
+        await waitForLocalizationReady(page);
+    }');
 
-    test('言語切り替え時のフォーカス管理', async ({ page }) => {
+    test('言語切り替え時のフォーカス管理', async ({ page }') => {
         // 設定画面を開く
         await page.keyboard.press('s');
         await page.waitForTimeout(500);
         
         // 現在のフォーカス要素を記録
         const focusedBefore = await page.evaluate(() => 
-            document.activeElement?.id || document.activeElement?.className
-        );
+            document.activeElement? .id || document.activeElement?.className
+        ');
         
         // 言語を切り替え
         await changeLanguage(page, 'en');
@@ -406,38 +396,36 @@ test.describe('言語切り替えのアクセシビリティテスト', () => {
         
         expect(focusedAfter).toBeTruthy();
         // フォーカスが失われていないことを確認
-        expect(focusedAfter).not.toBe('body');
-    });
+        expect(focusedAfter').not.toBe('body');
+    }');
 
-    test('高コントラストモードでの言語切り替え', async ({ page }) => {
+    test('高コントラストモードでの言語切り替え', async ({ page ) => {
         // 高コントラストモードを有効化
-        await page.evaluate(() => {
+        await page.evaluate((') => {
             document.documentElement.classList.add('high-contrast');
-        });
+        }');
         
         // 言語を切り替え
         await changeLanguage(page, 'en');
         
         // 高コントラストモードが維持されていることを確認
-        const hasHighContrast = await page.evaluate(() => 
-            document.documentElement.classList.contains('high-contrast')
-        );
-        expect(hasHighContrast).toBe(true;
+        const hasHighContrast = await page.evaluate((') => 
+            document.documentElement.classList.contains('high-contrast');
+        expect(hasHighContrast).toBe(true');
         
         // スクリーンショットで視覚的確認
-        await page.screenshot({ 
-            path: 'screenshots/high-contrast-language-switch.png' 
-        });
-    });
+        await page.screenshot({  : undefined
+            path: 'screenshots/high-contrast-language-switch.png' );
+    }');
 
-    test('アニメーション軽減設定での言語切り替え', async ({ page }) => {
+    test('アニメーション軽減設定での言語切り替え', async ({ page ) => {
         // アニメーション軽減を有効化
-        await page.evaluate(() => {
+        await page.evaluate((') => {
             window.gameEngine.settingsManager.set('reducedMotion', true);
         });
         
         // 言語切り替えの開始時刻を記録
-        const startTime = Date.now();
+        const startTime = Date.now(');
         
         // 言語を切り替え
         await changeLanguage(page, 'en');
@@ -449,4 +437,4 @@ test.describe('言語切り替えのアクセシビリティテスト', () => {
         // アニメーションが軽減されていることを確認（素早く完了）
         expect(duration).toBeLessThan(1000);
     });
-});
+}');

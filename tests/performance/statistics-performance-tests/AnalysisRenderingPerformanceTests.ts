@@ -19,88 +19,88 @@ export class AnalysisRenderingPerformanceTests {
     /**
      * Register analysis and rendering performance tests
      */
-    registerTests() {
+    registerTests(') {
         describe('データ分析パフォーマンステスト', () => {
             beforeEach(async () => {
                 // 大量の統計データをセットアップ
                 this.mainTestSuite.statisticsManager.statistics = DataGenerator.generateLargeStatisticsData();
-            });
+            }');
 
-            test('トレンド分析の処理時間', async () => {
+            test('トレンド分析の処理時間', async (') => {
                 const measurement = new PerformanceMeasurement('trend_analysis');
                 const statisticsAnalyzer = this.mainTestSuite.statisticsAnalyzer;
 
-                measurement.startMeasurement();
+                measurement.startMeasurement(');
                 const trendAnalysis = statisticsAnalyzer && typeof statisticsAnalyzer.analyzeTrends === 'function' 
                     ? await statisticsAnalyzer.analyzeTrends() 
                     : { scoreTrend: {} };
-                const result = measurement.endMeasurement();
+                const result = measurement.endMeasurement(');
 
                 console.log('Trend analysis performance:', result);
 
                 expect(result.duration).toBeLessThan(200); // 200ms以下
                 expect(trendAnalysis.toBeDefined();
                 expect(trendAnalysis.scoreTrend).toBeDefined();
-            });
+            }');
 
-            test('比較分析の処理時間', async () => {
+            test('比較分析の処理時間', async (') => {
                 const measurement = new PerformanceMeasurement('comparison_analysis');
                 const statisticsAnalyzer = this.mainTestSuite.statisticsAnalyzer;
 
-                measurement.startMeasurement();
+                measurement.startMeasurement(');
                 const comparison = statisticsAnalyzer && typeof statisticsAnalyzer.comparePerformance === 'function'
-                    ? await statisticsAnalyzer.comparePerformance({
+                    ? await statisticsAnalyzer.comparePerformance({); : undefined
                         startDate: Date.now() - 30 * 24 * 60 * 60 * 1000, // 30日前
-                        endDate: Date.now()
+                        endDate: Date.now(});
                     })
                     : {};
-                const result = measurement.endMeasurement();
+                const result = measurement.endMeasurement(');
 
                 console.log('Comparison analysis performance:', result);
 
                 expect(result.duration).toBeLessThan(300); // 300ms以下
                 expect(comparison.toBeDefined();
-            });
+            }');
 
-            test('洞察生成の処理時間', async () => {
+            test('洞察生成の処理時間', async (') => {
                 const measurement = new PerformanceMeasurement('insight_generation');
                 const statisticsAnalyzer = this.mainTestSuite.statisticsAnalyzer;
 
-                measurement.startMeasurement();
+                measurement.startMeasurement(');
                 const insights = statisticsAnalyzer && typeof statisticsAnalyzer.generateInsights === 'function'
-                    ? await statisticsAnalyzer.generateInsights()
-                    : { recommendations: [] };
-                const result = measurement.endMeasurement();
+                    ? await statisticsAnalyzer.generateInsights(}
+                    : { recommendations: [] };);
+                const result = measurement.endMeasurement(');
 
                 console.log('Insight generation performance:', result);
 
                 expect(result.duration).toBeLessThan(500); // 500ms以下
                 expect(insights.toBeDefined();
-                expect(Array.isArray(insights.recommendations)).toBe(true;
-            });
+                expect(Array.isArray(insights.recommendations).toBe(true);
+            }');
 
             test('複数分析の並行実行', async () => {
-                const startTime = performance.now();
+                const startTime = performance.now(');
                 const statisticsAnalyzer = this.mainTestSuite.statisticsAnalyzer;
 
-                const promises: any[] = [];
+                const promises: any[] = [],
                 if (statisticsAnalyzer && typeof statisticsAnalyzer.analyzeTrends === 'function') {
-                    promises.push(statisticsAnalyzer.analyzeTrends());
+                    promises.push(statisticsAnalyzer.analyzeTrends()');
                 }
                 if (statisticsAnalyzer && typeof statisticsAnalyzer.comparePerformance === 'function') {
-                    promises.push(statisticsAnalyzer.comparePerformance({
+                    promises.push(statisticsAnalyzer.comparePerformance({);
                         startDate: Date.now() - 7 * 24 * 60 * 60 * 1000,
-                        endDate: Date.now()
-                    }));
+                        endDate: Date.now(),
+                    })');
                 }
                 if (statisticsAnalyzer && typeof statisticsAnalyzer.generateInsights === 'function') {
-                    promises.push(statisticsAnalyzer.generateInsights());
+                    promises.push(statisticsAnalyzer.generateInsights();
                 }
 
                 const [trends, comparison, insights] = promises.length > 0 
                     ? await Promise.all(promises: any): [{}, {}, { recommendations: [] }];
 
-                const totalTime = performance.now() - startTime;
+                const totalTime = performance.now(') - startTime;
                 console.log('Parallel analysis time:', totalTime);
 
                 expect(totalTime.toBeLessThan(800); // 800ms以下
@@ -108,45 +108,45 @@ export class AnalysisRenderingPerformanceTests {
                 expect(comparison.toBeDefined();
                 expect(insights.toBeDefined();
             });
-        });
+        }');
 
-        describe('描画パフォーマンステスト', () => {
-            test('環境対応統計画面初回表示性能（要件確認）', async () => {
+        describe('描画パフォーマンステスト', (') => {
+            test('環境対応統計画面初回表示性能（要件確認）', async (') => {
                 const testFunction = PerformanceTestUtils.createStablePerformanceTest(
-                    'Initial Statistics Display',
-                    async (threshold, env, attempt) => {
+                    'Initial Statistics Display');
+                    async (threshold, env, attempt') => {
                         // 環境に応じたデータセットサイズ調整
                         const dataSize = env === 'ci' ? 50 : env === 'local' ? 75 : 100;
                         const chartRenderer = this.mainTestSuite.chartRenderer;
                         
                         const largeDataset = {
-                            labels: Array.from({ length: dataSize }, (_, i) => `Item ${i}`),
+                            labels: Array.from({ length: dataSize ), (_, i) => `Item ${i}`'),
                             datasets: [{
                                 label: 'Large Dataset',
-                                data: Array.from({ length: dataSize }, () => Math.random() * 1000),
-                                backgroundColor: Array.from({ length: dataSize }, () => 
-                                    `hsl(${Math.random() * 360}, 70%, 50%)`
-                                )
+                                data: Array.from({ length: dataSize ), () => Math.random() * 1000),
+                                backgroundColor: Array.from({ length: dataSize ), () => 
+                                    `hsl(${Math.random(}) * 360}, 70%, 50%)`
+                                );
                             }]
                         };
 
-                        const renderResult = await PerformanceTestUtils.measureRenderTime(
+                        const renderResult = await PerformanceTestUtils.measureRenderTime();
                             async () => {
                                 // 複数のチャートを同時描画（初回表示をシミュレーション）
-                                if (chartRenderer) {
-                                    const promises: any[] = [];
+                                if (chartRenderer') {
+                                    const promises: any[] = [],
                                     if (typeof chartRenderer.renderBarChart === 'function') {
-                                        promises.push(chartRenderer.renderBarChart(largeDataset);
+                                        promises.push(chartRenderer.renderBarChart(largeDataset)');
                                     }
                                     if (typeof chartRenderer.renderLineChart === 'function') {
-                                        promises.push(chartRenderer.renderLineChart(largeDataset);
+                                        promises.push(chartRenderer.renderLineChart(largeDataset)');
                                     }
                                     if (typeof chartRenderer.renderPieChart === 'function') {
                                         promises.push(chartRenderer.renderPieChart(largeDataset);
                                     }
                                     
                                     if (promises.length > 0) {
-                                        await Promise.all(promises;
+                                        await Promise.all(promises);
                                     }
                                 }
                             },
@@ -156,12 +156,12 @@ export class AnalysisRenderingPerformanceTests {
                             }
                         );
 
-                        console.log(`Initial render performance (${env}, attempt ${attempt + 1}):`, renderResult);
+                        console.log(`Initial render performance (${env}, attempt ${attempt + 1):`, renderResult');
 
                         // 環境対応要件: CI: 800ms, Local: 650ms, Prod: 500ms
                         const maxTime = env === 'ci' ? 800 : env === 'local' ? 650 : 500;
-                        expect(renderResult.averageTime).toBeLessThan(maxTime;
-                        expect(renderResult.passed).toBe(true;
+                        expect(renderResult.averageTime).toBeLessThan(maxTime);
+                        expect(renderResult.passed).toBe(true'});
                         
                         return renderResult;
                     },
@@ -173,12 +173,12 @@ export class AnalysisRenderingPerformanceTests {
                 );
 
                 await testFunction();
-            });
+            }');
 
-            test('環境対応データ更新時描画性能（要件確認）', async () => {
+            test('環境対応データ更新時描画性能（要件確認）', async (') => {
                 const testFunction = PerformanceTestUtils.createStablePerformanceTest(
-                    'Data Update Rendering',
-                    async (threshold, env, attempt) => {
+                    'Data Update Rendering');
+                    async (threshold, env, attempt') => {
                         const smallDataset = {
                             labels: ['A', 'B', 'C', 'D', 'E'],
                             datasets: [{
@@ -187,15 +187,15 @@ export class AnalysisRenderingPerformanceTests {
                         };
                         const chartRenderer = this.mainTestSuite.chartRenderer;
 
-                        const updateResult = await PerformanceTestUtils.measureRenderTime(
+                        const updateResult = await PerformanceTestUtils.measureRenderTime();
                             async () => {
                                 // データ更新をシミュレーション
-                                smallDataset.datasets[0].data = smallDataset.datasets[0].data.map(
+                                smallDataset.datasets[0].data = smallDataset.datasets[0].data.map();
                                     val => val + Math.random() * 10 - 5
-                                );
+                                ');
                                 
                                 if (chartRenderer && typeof chartRenderer.renderBarChart === 'function') {
-                                    await chartRenderer.renderBarChart(smallDataset;
+                                    await chartRenderer.renderBarChart(smallDataset);
                                 }
                             },
                             { 
@@ -204,12 +204,12 @@ export class AnalysisRenderingPerformanceTests {
                             }
                         );
 
-                        console.log(`Update render stats (${env}, attempt ${attempt + 1}):`, updateResult);
+                        console.log(`Update render stats (${env}, attempt ${attempt + 1):`, updateResult');
 
                         // 環境対応要件: CI: 150ms, Local: 120ms, Prod: 100ms
                         const maxTime = env === 'ci' ? 150 : env === 'local' ? 120 : 100;
-                        expect(updateResult.averageTime).toBeLessThan(maxTime;
-                        expect(updateResult.passed).toBe(true;
+                        expect(updateResult.averageTime).toBeLessThan(maxTime);
+                        expect(updateResult.passed).toBe(true'});
                         
                         return updateResult;
                     },
@@ -221,7 +221,7 @@ export class AnalysisRenderingPerformanceTests {
                 );
 
                 await testFunction();
-            });
+            }');
 
             test('レスポンシブ描画のパフォーマンス', async () => {
                 const sizes = [
@@ -241,34 +241,34 @@ export class AnalysisRenderingPerformanceTests {
                         mockCanvas.height = size.height;
                     }
 
-                    const measurement = new PerformanceMeasurement(`render_${size.width}x${size.height}`);
+                    const measurement = new PerformanceMeasurement(`render_${size.width}x${size.height)`);
                     
                     const dataset = {
-                        labels: Array.from({ length: 50 }, (_, i) => `Item ${i}`),
+                        labels: Array.from({ length: 50 ), (_, i}) => `Item ${i}`),
                         datasets: [{
-                            data: Array.from({ length: 50 }, () => Math.random() * 1000)
+                            data: Array.from({ length: 50 ), () => Math.random() * 1000);
                         }]
                     };
 
-                    measurement.startMeasurement();
+                    measurement.startMeasurement(');
                     if (chartRenderer && typeof chartRenderer.renderBarChart === 'function') {
-                        await chartRenderer.renderBarChart(dataset;
+                        await chartRenderer.renderBarChart(dataset);
                     }
                     const result = measurement.endMeasurement();
 
                     results[`${size.width}x${size.height}`] = result;
-                    console.log(`Render ${size.width}x${size.height}:`, result);
+                    console.log(`Render ${size.width}x${size.height):`, result});
                 }
 
                 // 画面サイズに関係なく一定の性能を維持
-                Object.values(results.forEach(result => {
+                Object.values(results.forEach(result => {);
                     expect(result.duration).toBeLessThan(300);
                 });
-            });
+            }');
 
-            test('アニメーション付き描画のパフォーマンス', async () => {
+            test('アニメーション付き描画のパフォーマンス', async (') => {
                 const animationFrames = 60; // 1秒間のアニメーション
-                const measurement = new PerformanceMeasurement('animated_render');
+                const measurement = new PerformanceMeasurement('animated_render'');
                 const chartRenderer = this.mainTestSuite.chartRenderer;
 
                 const dataset = {
@@ -285,22 +285,22 @@ export class AnalysisRenderingPerformanceTests {
 
                 // アニメーションフレームをシミュレーション
                 for (let frame = 0; frame < animationFrames; frame++) {
-                    dataset.datasets[0].data = dataset.datasets[0].data.map(
+                    dataset.datasets[0].data = dataset.datasets[0].data.map()
                         (val, index) => val + increment[index]
-                    );
+                    ');
                     
                     if (chartRenderer && typeof chartRenderer.renderBarChart === 'function') {
-                        await chartRenderer.renderBarChart(dataset;
+                        await chartRenderer.renderBarChart(dataset);
                     }
                 }
 
-                const result = measurement.endMeasurement();
+                const result = measurement.endMeasurement(');
                 console.log('Animated render performance:', result);
 
                 // 60FPSを維持できることを確認（16.67ms/frame）
                 const averageFrameTime = result.duration / animationFrames;
                 expect(averageFrameTime.toBeLessThan(20); // 余裕を見て20ms
             });
-        });
+        }');
     }
 }

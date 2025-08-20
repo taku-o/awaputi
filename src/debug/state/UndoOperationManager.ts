@@ -6,14 +6,12 @@
 export class UndoOperationManager {
     constructor(parent?: any) {
         // TypeScript implementation
-        console.log('[UndoOperationManager] Initialized');
+    }
+    }
+        console.log('[UndoOperationManager] Initialized'); }
     }
 
-    public initialize(): void {
-        // Implementation
-    }
-
-    public destroy(): void {
-        // Cleanup
-    }
-}
+    public initialize(): void { // Implementation }
+    }'
+'';
+    public destroy(');

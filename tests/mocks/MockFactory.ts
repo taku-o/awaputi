@@ -37,7 +37,7 @@ export class MockFactory {
         translate: jest.fn(),
         transform: jest.fn(),
         setTransform: jest.fn(),
-        resetTransform: jest.fn(),
+        resetTransform: jest.fn('),
         
         // Styles
         fillStyle: '#000000',
@@ -53,7 +53,7 @@ export class MockFactory {
         // Text methods
         fillText: jest.fn(),
         strokeText: jest.fn(),
-        measureText: jest.fn(() => ({ width: 100 })),
+        measureText: jest.fn(() => ({ width: 100 ))),
         
         // Image methods
         drawImage: jest.fn(),
@@ -68,17 +68,16 @@ export class MockFactory {
         // Gradient methods
         createLinearGradient: jest.fn(() => ({
           addColorStop: jest.fn()
-        })),
+        ))),
         createRadialGradient: jest.fn(() => ({
-          addColorStop: jest.fn()
-        })),
+          addColorStop: jest.fn())),
         
         // Pattern methods
-        createPattern: jest.fn(),
+        createPattern: jest.fn('),
         
         // Compositing
         globalCompositeOperation: 'source-over'
-      })),
+      ))),
       
       // Canvas element properties
       style: {},
@@ -91,8 +90,8 @@ export class MockFactory {
         bottom: 600,
         width: 800,
         height: 600
-      }))
-    };
+      )))
+    );
     
     return mockCanvas;
   }
@@ -125,15 +124,15 @@ export class MockFactory {
         backgroundMusicVolume: 0.6,
         activeSounds: 0,
         isLoading: false
-      })),
+      ))),
       
       isEnabled: jest.fn(() => true),
       enable: jest.fn(),
       disable: jest.fn(),
       
       // Audio loading and management
-      loadAudio: jest.fn(() => Promise.resolve()),
-      preloadSounds: jest.fn(() => Promise.resolve()),
+      loadAudio: jest.fn(() => Promise.resolve(),
+      preloadSounds: jest.fn(() => Promise.resolve(),
       unloadSounds: jest.fn(),
       
       // Configuration
@@ -148,8 +147,8 @@ export class MockFactory {
       audioContext: null,
       sounds: new Map(),
       isInitialized: true
-    };
-  }
+    );
+  )
 
   /**
    * Creates a complete AnalyticsAPI mock with all expected methods
@@ -169,11 +168,11 @@ export class MockFactory {
       
       // Configuration and management
       configure: jest.fn(),
-      initialize: jest.fn(() => Promise.resolve()),
+      initialize: jest.fn(() => Promise.resolve(),
       reset: jest.fn(),
       
       // Missing method that tests expect
-      evaluateCondition: jest.fn(() => true),
+      evaluateCondition: jest.fn(() => true'),
       
       // Rate limiting and endpoints
       endpoints: new Map([
@@ -187,7 +186,7 @@ export class MockFactory {
         maxRequests: 100,
         timeWindow: 60000,
         currentRequests: 0
-      },
+      ),
       
       // Status and state
       isEnabled: jest.fn(() => true),
@@ -196,7 +195,7 @@ export class MockFactory {
         enabled: true,
         pendingEvents: 0,
         errors: []
-      })),
+      ))),
       
       // Privacy and consent
       setConsent: jest.fn(),
@@ -204,14 +203,14 @@ export class MockFactory {
       
       // Event queuing
       queue: [],
-      flush: jest.fn(() => Promise.resolve()),
+      flush: jest.fn(() => Promise.resolve()'),
       
       // Properties
       apiKey: 'test-api-key',
       userId: 'test-user-id',
       sessionId: 'test-session-id'
-    };
-  }
+    );
+  )
 
   /**
    * Creates an environment-aware performance mock
@@ -222,7 +221,7 @@ export class MockFactory {
     
     return {
       // Performance timing
-      now: jest.fn(() => Date.now()),
+      now: jest.fn(() => Date.now();
       mark: jest.fn(),
       measure: jest.fn(),
       getEntriesByType: jest.fn(() => []),
@@ -230,34 +229,32 @@ export class MockFactory {
       clearMarks: jest.fn(),
       clearMeasures: jest.fn(),
       
-      // Memory information (if available)
+      // Memory information (if available);
       memory: {
         usedJSHeapSize: Math.floor(10 * 1024 * 1024 * performanceFactor), // 10MB baseline
         totalJSHeapSize: Math.floor(50 * 1024 * 1024 * performanceFactor), // 50MB baseline
         jsHeapSizeLimit: Math.floor(2 * 1024 * 1024 * 1024 * performanceFactor) // 2GB baseline
-      },
+      ),
       
       // Navigation timing
       timing: {
         navigationStart: Date.now() - 5000,
         loadEventEnd: Date.now() - 1000,
         domContentLoadedEventEnd: Date.now() - 2000
-      },
+      ),
       
       // Performance observers
       PerformanceObserver: jest.fn(() => ({
         observe: jest.fn(),
-        disconnect: jest.fn()
-      })),
+        disconnect: jest.fn())),
       
       // Custom performance methods for testing
       getFrameRate: jest.fn(() => isCI ? 45 : 60),
       getRenderTime: jest.fn(() => isCI ? 25 : 16),
       getMemoryUsage: jest.fn(() => ({
         used: Math.floor(10 * 1024 * 1024 * performanceFactor),
-        total: Math.floor(50 * 1024 * 1024 * performanceFactor)
-      }))
-    };
+        total: Math.floor(50 * 1024 * 1024 * performanceFactor)))
+    );
   }
 
   /**
@@ -267,15 +264,15 @@ export class MockFactory {
     const store = new Map();
     
     return {
-      getItem: jest.fn((key) => store.get(key || null),
-      setItem: jest.fn((key, value) => store.set(key, String(value)),
-      removeItem: jest.fn((key) => store.delete(key),
-      clear: jest.fn(() => store.clear()),
-      key: jest.fn((index) => Array.from(store.keys())[index] || null),
+      getItem: jest.fn((key) => store.get(key || null);
+      setItem: jest.fn((key, value) => store.set(key, String(value),
+      removeItem: jest.fn((key) => store.delete(key);
+      clear: jest.fn(() => store.clear();
+      key: jest.fn((index) => Array.from(store.keys()[index] || null),
       get length() {
         return store.size;
-      }
-    };
+      )
+    );
   }
 
   /**
@@ -285,13 +282,12 @@ export class MockFactory {
     return {
       createElement: jest.fn((tagName) => ({
         tagName: tagName.toUpperCase(),
-        style: {},
+        style: {),
         classList: {
           add: jest.fn(),
           remove: jest.fn(),
-          contains: jest.fn(() => false),
-          toggle: jest.fn()
-        },
+          contains: jest.fn(() => false);
+          toggle: jest.fn(),
         addEventListener: jest.fn(),
         removeEventListener: jest.fn(),
         appendChild: jest.fn(),
@@ -301,8 +297,8 @@ export class MockFactory {
         removeAttribute: jest.fn(),
         getBoundingClientRect: jest.fn(() => ({
           left: 0, top: 0, right: 100, bottom: 50, width: 100, height: 50
-        }))
-      })),
+        )))
+      ))),
       
       getElementById: jest.fn(),
       querySelector: jest.fn(),
@@ -311,8 +307,8 @@ export class MockFactory {
       body: {
         appendChild: jest.fn(),
         removeChild: jest.fn(),
-        style: {}
-      }
+        style: {)
+      );
     };
   }
 
@@ -321,7 +317,7 @@ export class MockFactory {
    */
   static setupGlobalMocks() {
     // Canvas API mock
-    (global as any).HTMLCanvasElement = jest.fn(() => MockFactory.createCanvasMock());
+    (global as any).HTMLCanvasElement = jest.fn(() => MockFactory.createCanvasMock();
     (global as any).CanvasRenderingContext2D = jest.fn() as jest.Mock;
     
     // Performance API mock
@@ -332,23 +328,23 @@ export class MockFactory {
     (global as any).sessionStorage = MockFactory.createLocalStorageMock();
     
     // Request Animation Frame mock
-    (global as any).requestAnimationFrame = jest.fn((cb) => setTimeout(cb, 16));
+    (global as any).requestAnimationFrame = jest.fn((cb) => setTimeout(cb, 16);
     (global as any).cancelAnimationFrame = jest.fn((id) => clearTimeout(id);
     
     // Image mock
     (global as any).Image = jest.fn(() => ({
       addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
+      removeEventListener: jest.fn('),
       width: 100,
       height: 100,
       onload: null,
       onerror: null,
       src: ''
-    }));
+    )));
     
     // Audio mock
     (global as any).Audio = jest.fn(() => ({
-      play: jest.fn(() => Promise.resolve()),
+      play: jest.fn(() => Promise.resolve();
       pause: jest.fn(),
       addEventListener: jest.fn(),
       removeEventListener: jest.fn(),
@@ -357,20 +353,19 @@ export class MockFactory {
       duration: 0,
       paused: true,
       ended: false
-    }));
+    )));
     
     // URL mock
     (global as any).URL = {
-      createObjectURL: jest.fn(() => 'blob:mock-url'),
-      revokeObjectURL: jest.fn()
-    };
+      createObjectURL: jest.fn((') => 'blob:mock-url');
+      revokeObjectURL: jest.fn();
     
-    // Console methods (preserve existing, add missing)
+    // Console methods (preserve existing, add missing);
     if (!global.console.warn) global.console.warn = jest.fn() as jest.Mock;
     if (!global.console.error) global.console.error = jest.fn() as jest.Mock;
     if (!global.console.debug) global.console.debug = jest.fn() as jest.Mock;
-  }
+  );
 }
 
 // Auto-setup global mocks when this module is imported
-MockFactory.setupGlobalMocks();
+MockFactory.setupGlobalMocks(');
