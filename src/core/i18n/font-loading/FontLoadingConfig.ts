@@ -51,7 +51,7 @@ export type ConfigChangeListener = (config: FontLoadingConfigData) => void;
 export class FontLoadingConfig {
     private config: FontLoadingConfigData;
     private listeners: Set<ConfigChangeListener>;
-    private validationRules: Map<string, (value as any) => boolean>;
+    private validationRules: Map<string, (value: any) => boolean>;
 
     constructor(customConfig: Partial<FontLoadingConfigData> = {}) {
         this.config = this._mergeWithDefaults(customConfig);

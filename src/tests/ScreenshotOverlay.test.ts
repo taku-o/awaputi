@@ -139,7 +139,7 @@ interface ScreenshotOverlay {
     formatNumber: (num: number) => string;
     getResponsiveConfig: (width: number, height: number) => ResponsiveConfig;
     getPresetConfig: (preset: string) => PresetConfig;
-    updateConfig: (newConfig as any) => void;
+    updateConfig: (newConfig: any) => void;
     clearCache: () => void;
     getStats: () => OverlayStats;
 }

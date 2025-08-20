@@ -123,7 +123,7 @@ describe('BubbleManager', () => {
         
         // Import BubbleManager dynamically to avoid path issues
         const { BubbleManager } = await import('../../src/managers/BubbleManager.js');
-        bubbleManager = new BubbleManager(mockGameEngine: any3924 as BubbleManager;
+        bubbleManager = new BubbleManager(mockGameEngine as BubbleManager;
         
         jest.clearAllMocks();
     });

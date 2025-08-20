@@ -97,14 +97,14 @@ interface StorageInterface {
 }
 
 interface CloudStorageInterface {
-    authenticate: (credentials as any) => Promise<boolean>;
+    authenticate: (credentials: any) => Promise<boolean>;
     logout: () => Promise<void>;
     isAuthenticated: () => boolean;
     destroy?: () => void;
 }
 
 interface SyncManagerInterface {
-    sync: (options? as any) => Promise<any>;
+    sync: (options?: any) => Promise<any>;
     getSyncStatus: () => any;
     startAutoSync: () => void;
     stopAutoSync: () => void;

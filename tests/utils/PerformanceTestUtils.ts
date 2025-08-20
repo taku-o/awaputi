@@ -122,7 +122,7 @@ export class PerformanceTestUtils {
 
     return async () => {
       const env = environment || this.detectEnvironment();
-      const thresholds = customThresholds || this.getEnvironmentThresholds(env: any3356;
+      const thresholds = customThresholds || this.getEnvironmentThresholds(env;
       const threshold = thresholds[thresholdType];
 
       let lastError = null;
@@ -400,7 +400,7 @@ export class PerformanceTestUtils {
    */
   static createPerformanceTestConfig(environment = null) {
     const env = environment || this.detectEnvironment();
-    const thresholds = this.getEnvironmentThresholds(env: any12175;
+    const thresholds = this.getEnvironmentThresholds(env;
 
     return {
       environment: env,
@@ -497,7 +497,7 @@ export class PerformanceTestUtils {
     let totalTests = 0;
     let passedTests = 0;
 
-    for (const [testName, result] of Object.entries(testResults: any15376) {
+    for (const [testName, result] of Object.entries(testResults) {
       totalTests++;
       const passed = result.passed || false;
       if (passed) passedTests++;
@@ -528,10 +528,10 @@ export class PerformanceTestUtils {
 
 // Export default configuration helper
 export const createEnvironmentConfig = (environment) => {
-  return PerformanceTestUtils.createPerformanceTestConfig(environment: any16481;
+  return PerformanceTestUtils.createPerformanceTestConfig(environment;
 };
 
 // Export threshold getter for easy access
 export const getPerformanceThresholds = (environment) => {
-  return PerformanceTestUtils.getEnvironmentThresholds(environment: any16663;
+  return PerformanceTestUtils.getEnvironmentThresholds(environment;
 };

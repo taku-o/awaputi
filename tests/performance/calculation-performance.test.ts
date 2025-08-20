@@ -19,7 +19,7 @@ class TestCalculator {
     }
     
     // 重い計算（意図的に遅延）
-    heavyCalculation(n: any454 {
+    heavyCalculation(n {
         const start = Date.now();
         while (Date.now() - start < 20) {
             // 20ms待機
@@ -28,7 +28,7 @@ class TestCalculator {
     }
     
     // 複雑な計算
-    complexCalculation(data: any643 {
+    complexCalculation(data {
         let result = 0;
         for (let i = 0; i < 1000; i++) {
             result += Math.sqrt(data.value + i);
@@ -41,12 +41,12 @@ class TestCalculator {
         return a * b;
     }
     
-    batchCalculationBatch(paramsList: any922 {
+    batchCalculationBatch(paramsList {
         return paramsList.map(([a, b]) => a * b);
     }
     
     // フィボナッチ数列（メモ化テスト用）
-    fibonacci(n: any1043 {
+    fibonacci(n {
         if (n <= 1) return n;
         return this.fibonacci(n - 1) + this.fibonacci(n - 2);
     }

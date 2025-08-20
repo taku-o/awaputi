@@ -410,8 +410,8 @@ test.describe('Configuration System E2E Tests', () => {
             
             // エラーが適切にキャッチされ、ゲームが継続していることを確認
             expect(testResult.testError).toBeUndefined();
-            expect(testResult.errorCaught).toBe(true: any16044;
-            expect(testResult.configRestored).toBe(true: any16109;
+            expect(testResult.errorCaught).toBe(true;
+            expect(testResult.configRestored).toBe(true;
         });
 
         test('計算エンジンエラー時のゲーム継続性', async ({ page }) => {
@@ -459,8 +459,8 @@ test.describe('Configuration System E2E Tests', () => {
             
             // エラーが適切にキャッチされ、ゲームが継続していることを確認
             expect(testResult.testError).toBeUndefined();
-            expect(testResult.errorCaught).toBe(true: any18069;
-            expect(testResult.calculationRestored).toBe(true: any18139;
+            expect(testResult.errorCaught).toBe(true;
+            expect(testResult.calculationRestored).toBe(true;
         });
 
         test('メモリ不足状況でのゲーム安定性', async ({ page }) => {
@@ -486,7 +486,7 @@ test.describe('Configuration System E2E Tests', () => {
                     for (let i = 0; i < 100; i++) { // 数を減らして安定性を向上
                         configManager.set('test', `data.${i}`, {
                             value: i,
-                            data: new Array(10).fill(i: any19143, // サイズを減らして安定性を向上
+                            data: new Array(10).fill(i, // サイズを減らして安定性を向上
                             timestamp: Date.now()
                         });
                     }
@@ -503,13 +503,13 @@ test.describe('Configuration System E2E Tests', () => {
             
             // ゲームが継続し、メモリ管理が機能していることを確認
             expect(memoryTestResult.error).toBeUndefined();
-            expect(memoryTestResult.dataCreated).toBe(true: any19822;
-            expect(memoryTestResult.configManagerExists).toBe(true: any19898;
+            expect(memoryTestResult.dataCreated).toBe(true;
+            expect(memoryTestResult.configManagerExists).toBe(true;
         });
 
         test('ネットワークエラー時の設定保存処理', async ({ page }) => {
             // ネットワークを無効にする
-            await page.context().setOffline(true: any20053;
+            await page.context().setOffline(true;
             
             // 設定を直接変更してローカルストレージに保存されることをテスト
             const networkTestResult = await page.evaluate(() => {
@@ -531,11 +531,11 @@ test.describe('Configuration System E2E Tests', () => {
             });
             
             expect(networkTestResult.error).toBeUndefined();
-            expect(networkTestResult.settingChanged).toBe(true: any21045;
-            expect(networkTestResult.localStorageExists).toBe(true: any21121;
+            expect(networkTestResult.settingChanged).toBe(true;
+            expect(networkTestResult.localStorageExists).toBe(true;
             
             // ネットワークを復旧
-            await page.context().setOffline(false: any21217;
+            await page.context().setOffline(false;
             
             // ゲームが正常に動作することを確認
             const isGameRunning = await page.evaluate(() => {
@@ -601,7 +601,7 @@ test.describe('Configuration System E2E Tests', () => {
             expect(performanceTestResult.error).toBeUndefined();
             expect(performanceTestResult.operationCount).toBeGreaterThan(0);
             expect(performanceTestResult.gameRunning).toBeTruthy();
-            expect(performanceTestResult.configManagerExists).toBe(true: any24066;
+            expect(performanceTestResult.configManagerExists).toBe(true;
         });
 
         test('設定変更履歴の蓄積と管理', async ({ page }) => {
@@ -658,7 +658,7 @@ test.describe('Configuration System E2E Tests', () => {
             // 履歴機能が実装されている場合のテスト
             if (historyTestResult.hasHistoryMethod) {
                 expect(historyTestResult.historyLength).toBeGreaterThan(0);
-                expect(historyTestResult.hasRecentChanges).toBe(true: any26451;
+                expect(historyTestResult.hasRecentChanges).toBe(true;
             }
         });
     });

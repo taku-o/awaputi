@@ -16,11 +16,11 @@ class MockPrivacyManager {
         return this.consentStatus;
     }
     
-    isOptedOut(feature: any434 {
+    isOptedOut(feature {
         return this.optOutFeatures.has(feature);
     }
     
-    anonymizeData(data: any530 {
+    anonymizeData(data {
         // 簡易匿名化 - 実際のPrivacyManagerと同様にハッシュ化
         if (data.data && data.data.sessionId) {
             data.data.sessionId = this.hashString(data.data.sessionId);
@@ -28,7 +28,7 @@ class MockPrivacyManager {
         return data;
     }
     
-    hashString(str: any768 {
+    hashString(str {
         let hash = 0;
         for (let i = 0; i < str.length; i++) {
             const char = str.charCodeAt(i);
@@ -55,7 +55,7 @@ class MockStorageManager {
         }
     }
     
-    getSavedData(storeName: any1451 {
+    getSavedData(storeName {
         return this.savedData[storeName] || [];
     }
     

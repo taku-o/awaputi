@@ -405,7 +405,7 @@ describe('ConfigurationErrorHandler', () => {
             }
             
             // エラー率監視を実行
-            (errorHandler: any12834._monitorErrorRate();
+            (errorHandler._monitorErrorRate();
             
             // セーフモードが有効化されるはず
             expect(errorHandler.fallbackState.safeMode).toBe(true);

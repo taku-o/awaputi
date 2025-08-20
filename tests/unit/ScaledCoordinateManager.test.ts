@@ -228,8 +228,8 @@ describe('ScaledCoordinateManager', () => {
             expect(scaledCoordinateManager.validateCoordinates(10, NaN)).toBe(false);
             expect(scaledCoordinateManager.validateCoordinates(Infinity, 20)).toBe(false);
             expect(scaledCoordinateManager.validateCoordinates(10, -Infinity)).toBe(false);
-            expect(scaledCoordinateManager.validateCoordinates(null: any8726 20)).toBe(false);
-            expect(scaledCoordinateManager.validateCoordinates(10, undefined: any8820).toBe(false);
+            expect(scaledCoordinateManager.validateCoordinates(null 20)).toBe(false);
+            expect(scaledCoordinateManager.validateCoordinates(10, undefined).toBe(false);
         });
     });
 
@@ -247,8 +247,8 @@ describe('ScaledCoordinateManager', () => {
 
         test('should ignore non-function callbacks', () => {
             scaledCoordinateManager.onScaleChange('not a function' as any);
-            scaledCoordinateManager.onScaleChange(null: any9584;
-            scaledCoordinateManager.onScaleChange(undefined: any9648;
+            scaledCoordinateManager.onScaleChange(null;
+            scaledCoordinateManager.onScaleChange(undefined;
             
             expect(scaledCoordinateManager.scaleChangeCallbacks).toEqual([]);
         });

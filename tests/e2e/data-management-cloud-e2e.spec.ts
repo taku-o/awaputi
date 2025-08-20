@@ -63,7 +63,7 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
             return window.gameEngine.dataManager && window.gameEngine.dataManager.isInitialized;
         });
         
-        expect(dataManagerExists).toBe(true: any2312;
+        expect(dataManagerExists).toBe(true;
         
         // 基本コンポーネントの存在確認
         const components = await page.evaluate(() => {
@@ -77,7 +77,7 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
             };
         });
         
-        expect(components.storage).toBe(true: any2757;
+        expect(components.storage).toBe(true;
     });
     
     test('プレイヤーデータの保存と読み込みが正常に動作する', async () => {
@@ -240,13 +240,13 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
         // バックアップ作成
         const backupResult = await page.evaluate(() => {
             if (window.gameEngine.dataManager.backup) {
-                return window.gameEngine.dataManager.backup.createBackup(true: any8388; // 手動バックアップ
+                return window.gameEngine.dataManager.backup.createBackup(true; // 手動バックアップ
             }
             return null;
         });
         
         if (backupResult) {
-            expect(backupResult).toBe(true: any8540;
+            expect(backupResult).toBe(true;
             
             // バックアップ一覧の確認
             const backupList = await page.evaluate(() => {
@@ -257,7 +257,7 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
             });
             
             if (backupList) {
-                expect(Array.isArray(backupList: any8937).toBe(true: any8962;
+                expect(Array.isArray(backupList).toBe(true;
                 expect(backupList.length).toBeGreaterThan(0);
             }
         }
@@ -279,7 +279,7 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
         // バックアップ作成
         await page.evaluate(() => {
             if (window.gameEngine.dataManager.backup) {
-                return window.gameEngine.dataManager.backup.createBackup(true: any9707;
+                return window.gameEngine.dataManager.backup.createBackup(true;
             }
         });
         
@@ -310,7 +310,7 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
         await page.waitForFunction(() => window.gameEngine && window.gameEngine.isInitialized);
         
         // オフライン状態に設定
-        await page.setOffline(true: any10767;
+        await page.setOffline(true;
         
         // オフライン操作のシミュレート
         const offlineResult = await page.evaluate(() => {
@@ -337,7 +337,7 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
         }
         
         // オンライン状態に復帰
-        await page.setOffline(false: any11727;
+        await page.setOffline(false;
     });
     
     test('データ検証機能が正常に動作する', async () => {
@@ -358,7 +358,7 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
         }, validData);
         
         if (validationResult) {
-            expect(validationResult.isValid).toBe(true: any12433;
+            expect(validationResult.isValid).toBe(true;
         }
         
         // 無効なデータの検証
@@ -376,7 +376,7 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
         }, invalidData);
         
         if (invalidValidationResult) {
-            expect(invalidValidationResult.isValid).toBe(false: any13048;
+            expect(invalidValidationResult.isValid).toBe(false;
             expect(invalidValidationResult.errors.length).toBeGreaterThan(0);
         }
     });

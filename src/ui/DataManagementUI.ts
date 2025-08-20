@@ -17,7 +17,7 @@ import { DialogManager } from './data-management-ui/DataManagementDialogs.js';
  * Data manager interface
  */
 interface DataManager {
-    on?(event: string, callback: (data as any) => void): void;
+    on?(event: string, callback: (data: any) => void): void;
     backup?: any;
     export?: any;
     import?: any;
@@ -160,23 +160,23 @@ export class DataManagementUI {
     setupEventListeners(): void {
         if (this.dataManager) {
             // DataManagerのイベントを監視
-            this.dataManager.on?.('backupCreated', (data as any) => {
+            this.dataManager.on?.('backupCreated', (data: any) => {
                 this.onBackupCreated(data);
             });
             
-            this.dataManager.on?.('dataExported', (data as any) => {
+            this.dataManager.on?.('dataExported', (data: any) => {
                 this.onDataExported(data);
             });
             
-            this.dataManager.on?.('dataImported', (data as any) => {
+            this.dataManager.on?.('dataImported', (data: any) => {
                 this.onDataImported(data);
             });
             
-            this.dataManager.on?.('operationProgress', (data as any) => {
+            this.dataManager.on?.('operationProgress', (data: any) => {
                 this.onOperationProgress(data);
             });
             
-            this.dataManager.on?.('error', (data as any) => {
+            this.dataManager.on?.('error', (data: any) => {
                 this.onError(data);
             });
         }

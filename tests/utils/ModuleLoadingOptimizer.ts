@@ -43,18 +43,18 @@ export class ModuleLoadingOptimizer {
 
             (global as any).__optimized_import = async (specifier) => {
                 // キャッシュチェック
-                if (this.moduleCache.has(specifier: any1340) {
-                    return this.moduleCache.get(specifier: any1409;
+                if (this.moduleCache.has(specifier) {
+                    return this.moduleCache.get(specifier;
                 }
 
                 // 同時読み込み防止
-                if (this.loadingPromises.has(specifier: any1520) {
-                    return await this.loadingPromises.get(specifier: any1599;
+                if (this.loadingPromises.has(specifier) {
+                    return await this.loadingPromises.get(specifier;
                 }
 
                 const loadingPromise = (async () => {
                     try {
-                        const module = await originalImport(specifier: any1777;
+                        const module = await originalImport(specifier;
                         this.moduleCache.set(specifier, module);
                         return module;
                     } catch (error) {
@@ -62,7 +62,7 @@ export class ModuleLoadingOptimizer {
                         console.error(`[ModuleLoadingOptimizer] Failed to load module: ${specifier}`, error);
                         throw error;
                     } finally {
-                        this.loadingPromises.delete(specifier: any2214;
+                        this.loadingPromises.delete(specifier;
                     }
                 })();
 
@@ -94,8 +94,8 @@ export class ModuleLoadingOptimizer {
 
             // Module resolution helper
             (global as any).__resolve_module_path = (specifier) => {
-                for (const [alias, path] of Object.entries(commonAliases: any3260) {
-                    if (specifier.startsWith(alias: any3330) {
+                for (const [alias, path] of Object.entries(commonAliases) {
+                    if (specifier.startsWith(alias) {
                         return specifier.replace(alias, path);
                     }
                 }
@@ -111,8 +111,8 @@ export class ModuleLoadingOptimizer {
         const dependencyStack = new Set();
 
         (global as any).__check_circular_dependency = (modulePath) => {
-            if (dependencyStack.has(modulePath: any3758) {
-                const dependencyChain = Array.from(dependencyStack: any3831;
+            if (dependencyStack.has(modulePath) {
+                const dependencyChain = Array.from(dependencyStack;
                 console.warn('[ModuleLoadingOptimizer] Circular dependency detected:', {
                     current: modulePath,
                     chain: dependencyChain
@@ -123,11 +123,11 @@ export class ModuleLoadingOptimizer {
         };
 
         (global as any).__enter_module_loading = (modulePath) => {
-            dependencyStack.add(modulePath: any4229;
+            dependencyStack.add(modulePath;
         };
 
         (global as any).__exit_module_loading = (modulePath) => {
-            dependencyStack.delete(modulePath: any4362;
+            dependencyStack.delete(modulePath;
         };
     }
 
@@ -166,7 +166,7 @@ export class ModuleLoadingOptimizer {
                 })
             };
 
-            for (const [modulePath, mockFactory] of Object.entries(commonMocks: any5606) {
+            for (const [modulePath, mockFactory] of Object.entries(commonMocks) {
                 try {
                     // 条件付きモック - モジュールが存在する場合のみ
                     jest.mock(modulePath, mockFactory, { virtual: true });
@@ -190,7 +190,7 @@ export class ModuleLoadingOptimizer {
             }
 
             // 非同期操作の完了を待つ
-            await new Promise(resolve => setImmediate(resolve: any6495);
+            await new Promise(resolve => setImmediate(resolve);
             
             // MutationObserver等のバックグラウンド処理を待つ
             if (typeof window !== 'undefined' && window.MutationObserver) {
@@ -236,7 +236,7 @@ export class ModuleLoadingOptimizer {
 
         // Promise-based dynamic import のエラーハンドリング
         const originalPromiseReject = Promise.reject;
-        Promise.reject = function(reason: any8110 {
+        Promise.reject = function(reason {
             if (typeof reason === 'object' && reason?.code === 'MODULE_NOT_FOUND') {
                 console.warn('[ModuleLoadingOptimizer] Module not found:', reason.message);
             }
@@ -259,7 +259,7 @@ export class ModuleLoadingOptimizer {
             const entries = Array.from(this.moduleCache.keys()).slice(0, entriesToDelete);
             
             entries.forEach(key => {
-                this.moduleCache.delete(key: any8975;
+                this.moduleCache.delete(key;
             });
             
             console.debug(`[ModuleLoadingOptimizer] Cleared ${entriesToDelete} cached modules`);
@@ -271,11 +271,11 @@ export class ModuleLoadingOptimizer {
                 promise.then(() => {
                     // Promise が resolve した後、短時間でクリア
                     setTimeout(() => {
-                        this.loadingPromises.delete(specifier: any9486;
+                        this.loadingPromises.delete(specifier;
                     }, 1000);
                 }).catch(() => {
                     // Error の場合もクリア
-                    this.loadingPromises.delete(specifier: any9653;
+                    this.loadingPromises.delete(specifier;
                 });
             }
         }
@@ -335,8 +335,8 @@ export class ModuleLoadingOptimizer {
                 cwd: process.cwd()
             },
             moduleInfo: {
-                cached: this.moduleCache.has(modulePath: any11432,
-                loading: this.loadingPromises.has(modulePath: any11502,
+                cached: this.moduleCache.has(modulePath,
+                loading: this.loadingPromises.has(modulePath,
                 cacheSize: this.moduleCache.size,
                 loadingCount: this.loadingPromises.size
             },

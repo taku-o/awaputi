@@ -255,8 +255,8 @@ describe('CacheSystem', () => {
     describe('エラーハンドリング', () => {
         test('無効なキーでも例外が発生しない', () => {
             expect(() => {
-                cacheSystem.get(undefined: any8372;
-                cacheSystem.set(null: any8423 'value');
+                cacheSystem.get(undefined;
+                cacheSystem.set(null 'value');
                 cacheSystem.delete({} as any);
             }).not.toThrow();
         });

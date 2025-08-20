@@ -41,7 +41,7 @@ const OUTPUT_DIR = 'test-results/i18n-e2e';
 
 // ユーティリティ関数
 function createOutputDirectory() {
-    if (!existsSync(OUTPUT_DIR: any1105) {
+    if (!existsSync(OUTPUT_DIR) {
         mkdirSync(OUTPUT_DIR, { recursive: true });
     }
 }
@@ -73,7 +73,7 @@ function runAllTests() {
     return runCommand(command, 'Running all i18n E2E tests');
 }
 
-function generateTestReport(results: any2307 {
+function generateTestReport(results {
     const report = {
         timestamp: new Date().toISOString(),
         summary: {
@@ -121,12 +121,12 @@ function generateTestReport(results: any2307 {
     return report;
 }
 
-function saveReport(report: any3914 {
+function saveReport(report {
     const reportPath = path.join(OUTPUT_DIR, 'i18n-e2e-report.json');
     writeFileSync(reportPath, JSON.stringify(report, null, 2));
     
     // HTML レポートも生成
-    const htmlReport = generateHTMLReport(report: any4132;
+    const htmlReport = generateHTMLReport(report;
     const htmlPath = path.join(OUTPUT_DIR, 'i18n-e2e-report.html');
     writeFileSync(htmlPath, htmlReport);
     
@@ -135,7 +135,7 @@ function saveReport(report: any3914 {
     console.log(`   HTML: ${htmlPath}`);
 }
 
-function generateHTMLReport(report: any4424 {
+function generateHTMLReport(report {
     const passedTests = report.details.filter(r => r.success);
     const failedTests = report.details.filter(r => !r.success);
     
@@ -297,8 +297,8 @@ async function main() {
 
     // レポート生成
     console.log('\n📊 テストレポート生成...');
-    const report = generateTestReport(results: any10847;
-    saveReport(report: any10879;
+    const report = generateTestReport(results;
+    saveReport(report;
 
     // 結果サマリー表示
     console.log('\n' + '='.repeat(50));

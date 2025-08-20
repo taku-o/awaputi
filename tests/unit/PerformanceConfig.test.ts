@@ -24,7 +24,7 @@ interface ValidationRule {
     type?: string;
     min?: number;
     max?: number;
-    validator?: (value as any) => boolean | string;
+    validator?: (value: any) => boolean | string;
 }
 
 interface MockConfigManager {

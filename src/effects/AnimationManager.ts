@@ -174,7 +174,7 @@ export class AnimationManager {
             // Stub implementations - サブコンポーネントが存在しない場合のフォールバック
             this.engineCore = {
                 settings: { enabled: true, globalSpeed: 1.0, quality: 'high' },
-                updateSettings: (settings as any) => {
+                updateSettings: (settings: any) => {
                     Object.assign(this.engineCore.settings, settings);
                 },
                 updateAnimations: (animations: Animation[], deltaTime: number) => {
@@ -201,7 +201,7 @@ export class AnimationManager {
                     averageFrameTime: 16.67,
                     maxFrameTime: 33.33
                 }),
-                setEasingFunctions: (_functions as any) => {},
+                setEasingFunctions: (_functions: any) => {},
                 dispose: () => {}
             };
             

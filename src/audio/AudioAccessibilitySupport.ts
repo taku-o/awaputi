@@ -147,7 +147,7 @@ export class MainAudioAccessibilitySupport {
     public settings: AccessibilitySettings;
     
     // オーディオイベントリスナー
-    private audioEventListeners: Map<string, ((event as any) => void)[]> = new Map();
+    private audioEventListeners: Map<string, ((event: any) => void)[]> = new Map();
     
     // カラーインジケーター
     private colorIndicator: HTMLElement | null = null;
@@ -287,7 +287,7 @@ export class MainAudioAccessibilitySupport {
      * @param eventType - イベントタイプ
      * @param callback - コールバック関数
      */
-    addAudioEventListener(eventType: string, callback: (event as any) => void): void {
+    addAudioEventListener(eventType: string, callback: (event: any) => void): void {
         if (!this.audioEventListeners.has(eventType)) {
             this.audioEventListeners.set(eventType, []);
         }

@@ -117,7 +117,7 @@ describe('LocalExecutionDetector', () => {
         });
 
         test('should handle missing location gracefully', () => {
-            delete (mockWindow: any3435.location;
+            delete (mockWindow.location;
             expect(LocalExecutionDetector.isLocalExecution()).toBe(false);
         });
 
@@ -201,7 +201,7 @@ describe('LocalExecutionDetector', () => {
         });
 
         test('should handle missing location gracefully', () => {
-            delete (mockWindow: any6750.location;
+            delete (mockWindow.location;
             expect(LocalExecutionDetector.canUseModules()).toBe(false);
         });
     });

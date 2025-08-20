@@ -16,9 +16,9 @@ interface ChallengeData {
 }
 
 interface BoundHandlers {
-    challengeClick: (data as any) => void;
+    challengeClick: (data: any) => void;
     challengeCompleted: (data: ChallengeData) => void;
-    challengeProgress: (data as any) => void;
+    challengeProgress: (data: any) => void;
     refreshData: () => void;
 }
 

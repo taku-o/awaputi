@@ -5,7 +5,7 @@
 
 // パフォーマンス測定ユーティリティ
 export class PerformanceMeasurement {
-    constructor(name: any211 {
+    constructor(name {
         this.name = name;
         this.measurements = [];
         this.memoryBaseline = null;
@@ -29,7 +29,7 @@ export class PerformanceMeasurement {
             timestamp: Date.now()
         };
 
-        this.measurements.push(measurement: any907;
+        this.measurements.push(measurement;
         return measurement;
     }
 
@@ -45,7 +45,7 @@ export class PerformanceMeasurement {
                 min: Math.min(...durations),
                 max: Math.max(...durations),
                 average: durations.reduce((a, b) => a + b, 0) / durations.length,
-                median: this.calculateMedian(durations: any1479,
+                median: this.calculateMedian(durations,
                 p95: this.calculatePercentile(durations, 95),
                 p99: this.calculatePercentile(durations, 99)
             },
@@ -58,7 +58,7 @@ export class PerformanceMeasurement {
         };
     }
 
-    calculateMedian(arr: any1957 {
+    calculateMedian(arr {
         const sorted = [...arr].sort((a, b) => a - b);
         const mid = Math.floor(sorted.length / 2);
         return sorted.length % 2 === 0 
@@ -75,7 +75,7 @@ export class PerformanceMeasurement {
 
 // 大量データ生成ユーティリティ
 export class DataGenerator {
-    static generateGameplayEvents(count: any2506 {
+    static generateGameplayEvents(count: number): any[] {
         const bubbleTypes = ['normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink', 'clock', 'electric', 'boss'];
         const events: any[] = [];
 
@@ -99,7 +99,7 @@ export class DataGenerator {
         return events;
     }
 
-    static generateTimeSeriesData(days: any3416 {
+    static generateTimeSeriesData(days: number): Map<string, any> {
         const data = new Map();
         const startDate = new Date();
         startDate.setDate(startDate.getDate() - days);
@@ -171,7 +171,7 @@ export const PerformanceTestHelper = {
     /**
      * CPU集約的な処理をシミュレーション
      */
-    simulateCpuIntensiveTask(durationMs: any5920 {
+    simulateCpuIntensiveTask(durationMs {
         const start = Date.now();
         while (Date.now() - start < durationMs) {
             Math.random() * Math.random();
@@ -181,23 +181,23 @@ export const PerformanceTestHelper = {
     /**
      * メモリ集約的な処理をシミュレーション
      */
-    simulateMemoryIntensiveTask(sizeInMB: any6160 {
+    simulateMemoryIntensiveTask(sizeInMB {
         const arraySize = sizeInMB * 1024 * 1024 / 8; // 8 bytes per number
-        const largeArray = new Array(arraySize: any6292.fill(0);
+        const largeArray = new Array(arraySize.fill(0);
         return largeArray.map(() => Math.random());
     },
 
     /**
      * ネットワーク遅延をシミュレーション
      */
-    async simulateNetworkDelay(delayMs: any6451 {
+    async simulateNetworkDelay(delayMs {
         return new Promise(resolve => setTimeout(resolve, delayMs));
     },
 
     /**
      * パフォーマンス統計の計算
      */
-    calculatePerformanceStats(measurements: any6612 {
+    calculatePerformanceStats(measurements {
         if (measurements.length === 0) return null;
 
         const sorted = [...measurements].sort((a, b) => a - b);
@@ -208,17 +208,17 @@ export const PerformanceTestHelper = {
             median: sorted[Math.floor(sorted.length / 2)],
             p95: sorted[Math.floor(sorted.length * 0.95)],
             p99: sorted[Math.floor(sorted.length * 0.99)],
-            standardDeviation: this.calculateStandardDeviation(measurements: any7178
+            standardDeviation: this.calculateStandardDeviation(measurements
         };
     },
 
     /**
      * 標準偏差の計算
      */
-    calculateStandardDeviation(values: any7280 {
+    calculateStandardDeviation(values {
         const mean = values.reduce((a, b) => a + b, 0) / values.length;
         const squareDiffs = values.map(value => Math.pow(value - mean, 2));
         const avgSquareDiff = squareDiffs.reduce((a, b) => a + b, 0) / squareDiffs.length;
-        return Math.sqrt(avgSquareDiff: any7561;
+        return Math.sqrt(avgSquareDiff;
     }
 };

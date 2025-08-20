@@ -11,7 +11,7 @@ class MockDataCollector {
         this.collectedData = [];
     }
     
-    collectGameBalanceData(data: any356 {
+    collectGameBalanceData(data {
         this.collectedData.push({
             type: 'gameBalance',
             timestamp: Date.now(),

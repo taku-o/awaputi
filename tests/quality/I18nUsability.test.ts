@@ -335,19 +335,19 @@ export class UsabilityMetricsCollector {
     };
   }
 
-  recordLanguageSwitchTime(time: any10040 {
+  recordLanguageSwitchTime(time {
     this.metrics.languageSwitchTimes.push(time);
   }
 
-  recordTranslationLoadTime(time: any10137 {
+  recordTranslationLoadTime(time {
     this.metrics.translationLoadTimes.push(time);
   }
 
-  recordMemoryUsage(usage: any10227 {
+  recordMemoryUsage(usage {
     this.metrics.memoryUsage.push(usage);
   }
 
-  recordError(type: any10304 {
+  recordError(type {
     if (this.metrics.errorCounts[type] !== undefined) {
       this.metrics.errorCounts[type]++;
     }

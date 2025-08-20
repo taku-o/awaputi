@@ -3,7 +3,7 @@
  */
 
 interface EventListener {
-    (event: any80: void;
+    (event: void;
 }
 
 export class GameEngine {

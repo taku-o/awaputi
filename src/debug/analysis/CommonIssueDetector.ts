@@ -17,7 +17,7 @@ interface Issue {
 interface DetectionRule {
     id: string;
     name: string;
-    pattern: RegExp | ((data as any) => boolean);
+    pattern: RegExp | ((data: any) => boolean);
     type: Issue['type'];
     severity: Issue['severity'];
     description: string;
@@ -37,7 +37,7 @@ export class CommonIssueDetector {
             {
                 id: 'high_memory_usage',
                 name: 'High Memory Usage',
-                pattern: (data as any) => data.memoryUsage > 100 * 1024 * 1024, // 100MB
+                pattern: (data: any) => data.memoryUsage > 100 * 1024 * 1024, // 100MB
                 type: 'memory',
                 severity: 'high',
                 description: 'Memory usage is higher than expected',
@@ -46,7 +46,7 @@ export class CommonIssueDetector {
             {
                 id: 'low_fps',
                 name: 'Low FPS',
-                pattern: (data as any) => data.fps < 30,
+                pattern: (data: any) => data.fps < 30,
                 type: 'performance',
                 severity: 'medium',
                 description: 'Frame rate is below optimal threshold',

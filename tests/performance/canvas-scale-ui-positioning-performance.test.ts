@@ -41,7 +41,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
             marks: new Map(),
             measures: [],
             
-            mark(name: any1404 {
+            mark(name {
                 this.marks.set(name, performance.now());
             },
             
@@ -53,7 +53,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
                 return duration;
             },
             
-            getAverageTime(measureName: any1930 {
+            getAverageTime(measureName {
                 const measures = this.measures.filter(m => m.name === measureName);
                 if (measures.length === 0) return 0;
                 return measures.reduce((sum, m) => sum + m.duration, 0) / measures.length;

@@ -80,14 +80,14 @@ class PerformanceProfiler {
         this.measurements = {};
     }
     
-    start(label: any3287 {
+    start(label {
         this.measurements[label] = {
             startTime: performance.now(),
             startMemory: performance.memory ? performance.memory.usedJSHeapSize : 0
         };
     }
     
-    end(label: any3496 {
+    end(label {
         if (!this.measurements[label]) {
             throw new Error(`No measurement started for label: ${label}`);
         }

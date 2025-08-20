@@ -76,7 +76,7 @@ class MockSceneManager {
         this.scenes.set(name, scene);
     }
 
-    switchScene(name: any1836 {
+    switchScene(name {
         const scene = this.scenes.get(name);
         if (!scene) {
             console.error(`Scene ${name} not found`);
@@ -131,7 +131,7 @@ class MockMainMenuScene {
 }
 
 class MockHelpScene {
-    constructor(gameEngine: any2929 {
+    constructor(gameEngine {
         this.gameEngine = gameEngine;
         this.isActive = false;
         this.helpEventManager = new MockHelpEventManager();
@@ -188,11 +188,11 @@ class MockHelpScene {
         // Mock update
     }
 
-    showFeedbackDialog(data: any4595 {
+    showFeedbackDialog(data {
         console.log('Showing feedback dialog:', data);
     }
 
-    showEffectivenessReport(report: any4700 {
+    showEffectivenessReport(report {
         console.log('Showing effectiveness report:', report);
     }
 

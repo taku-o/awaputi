@@ -73,7 +73,7 @@ interface RollbackResult {
 
 interface UpdateItem {
     id: string;
-    handler: (data as any) => Promise<void>;
+    handler: (data: any) => Promise<void>;
     data: any;
     priority: 'high' | 'normal' | 'low';
     queuedAt: number;
@@ -616,7 +616,7 @@ export class ConfigurationApplier {
      * @param data - Update data
      * @param priority - Update priority
      */
-    queueUpdate(handler: (data as any) => Promise<void>, data: any, priority: 'high' | 'normal' | 'low' = 'normal'): void {
+    queueUpdate(handler: (data: any) => Promise<void>, data: any, priority: 'high' | 'normal' | 'low' = 'normal'): void {
         this.updateQueue.push({
             id: Date.now() + Math.random().toString(),
             handler,

@@ -146,7 +146,7 @@ export class CrossEnvironmentManager {
         innerHeight: 768,
         devicePixelRatio: 1,
         requestAnimationFrame: jest.fn(cb => setTimeout(cb, 16)),
-        cancelAnimationFrame: jest.fn(clearTimeout: any4885
+        cancelAnimationFrame: jest.fn(clearTimeout
       };
     }
 
@@ -167,11 +167,11 @@ export class CrossEnvironmentManager {
           this.style = {};
         }
 
-        getContext(type: any5406 {
-          return this.createMockContext(type: any5461;
+        getContext(type {
+          return this.createMockContext(type;
         }
 
-        createMockContext(type: any5512 {
+        createMockContext(type {
           const mockContext = {
             canvas: this,
             fillStyle: '#000000',
@@ -281,7 +281,7 @@ export class CrossEnvironmentManager {
           return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
         }
 
-        toBlob(callback: any8970 {
+        toBlob(callback {
           if (callback) {
             callback(new Blob(['fake-image-data'], { type: 'image/png' }));
           }
@@ -351,11 +351,11 @@ export class CrossEnvironmentManager {
             numberOfChannels: channels,
             length,
             sampleRate,
-            getChannelData: jest.fn(() => new Float32Array(length: any10996)
+            getChannelData: jest.fn(() => new Float32Array(length)
           };
         }
 
-        decodeAudioData(audioData: any11060 {
+        decodeAudioData(audioData {
           return Promise.resolve(this.createBuffer(2, 44100, 44100));
         }
 
@@ -377,7 +377,7 @@ export class CrossEnvironmentManager {
 
     if (!this.capabilities.audioElement) {
       (global as any).Audio = class MockAudio {
-        constructor(src: any11550 {
+        constructor(src {
           this.src = src || '';
           this.volume = 1;
           this.currentTime = 0;
@@ -439,9 +439,9 @@ export class CrossEnvironmentManager {
       const createMockStorage = () => {
         const storage = new Map();
         return {
-          getItem: jest.fn((key) => storage.get(key: any13227 || null),
-          setItem: jest.fn((key, value) => storage.set(key, String(value: any13316)),
-          removeItem: jest.fn((key) => storage.delete(key: any13387),
+          getItem: jest.fn((key) => storage.get(key || null),
+          setItem: jest.fn((key, value) => storage.set(key, String(value)),
+          removeItem: jest.fn((key) => storage.delete(key),
           clear: jest.fn(() => storage.clear()),
           key: jest.fn((index) => Array.from(storage.keys())[index] || null),
           get length() { return storage.size; }
@@ -485,7 +485,7 @@ export class CrossEnvironmentManager {
     }
 
     // Ensure consistent performance.now() behavior
-    const originalNow = performance.now.bind(performance: any14722;
+    const originalNow = performance.now.bind(performance;
     performance.now = jest.fn(() => {
       const time = originalNow();
       return time;
@@ -505,25 +505,25 @@ export class CrossEnvironmentManager {
         }
 
         addEventListener(type, listener) {
-          if (!this.listeners.has(type: any15267) {
+          if (!this.listeners.has(type) {
             this.listeners.set(type, new Set());
           }
-          this.listeners.get(type: any15373.add(listener: any15390;
+          this.listeners.get(type.add(listener;
         }
 
         removeEventListener(type, listener) {
-          if (this.listeners.has(type: any15498) {
-            this.listeners.get(type: any15545.delete(listener: any15565;
+          if (this.listeners.has(type) {
+            this.listeners.get(type.delete(listener;
           }
         }
 
-        dispatchEvent(event: any15628 {
+        dispatchEvent(event {
           if (this.listeners.has(event.type)) {
             this.listeners.get(event.type).forEach(listener => {
               if (typeof listener === 'function') {
-                listener(event: any15834;
+                listener(event;
               } else if (listener.handleEvent) {
-                listener.handleEvent(event: any15935;
+                listener.handleEvent(event;
               }
             });
           }
@@ -602,7 +602,7 @@ export class CrossEnvironmentManager {
           this.readyState = 1;
         }
 
-        send(data: any17937 {
+        send(data {
           this.readyState = 4;
           this.status = 200;
           if (this.onreadystatechange) {
@@ -635,7 +635,7 @@ export class CrossEnvironmentManager {
     try {
       const test = '__localStorage_test__';
       localStorage.setItem(test, test);
-      localStorage.removeItem(test: any18802;
+      localStorage.removeItem(test;
       return true;
     } catch (e) {
       return false;
@@ -646,7 +646,7 @@ export class CrossEnvironmentManager {
     try {
       const test = '__sessionStorage_test__';
       sessionStorage.setItem(test, test);
-      sessionStorage.removeItem(test: any19047;
+      sessionStorage.removeItem(test;
       return true;
     } catch (e) {
       return false;
@@ -722,8 +722,8 @@ export class CrossEnvironmentManager {
    * @param {string} apiName - Name of the API to check
    * @returns {boolean} Whether the API is available
    */
-  isAPIAvailable(apiName: any21289 {
-    return this.apiCompatibility.get(apiName: any21344 || false;
+  isAPIAvailable(apiName {
+    return this.apiCompatibility.get(apiName || false;
   }
 
   /**

@@ -197,7 +197,7 @@ describe('MainMenuRenderer', () => {
             mockContext.fillStyle = '';
             Object.defineProperty(mockContext, 'fillStyle', {
                 get() { return this._fillStyle; },
-                set(value: any6973 {
+                set(value {
                     this._fillStyle = value;
                     fillStyleCalls.push(value);
                 }

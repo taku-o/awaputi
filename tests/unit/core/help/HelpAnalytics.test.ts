@@ -335,7 +335,7 @@ describe('HelpAnalytics', () => {
         test('should continue operation after validation failures', () => {
             // Should not throw error even with invalid input
             expect(() => {
-                helpAnalytics.recordCategorySelection(null: any12294;
+                helpAnalytics.recordCategorySelection(null;
             }).not.toThrow();
         });
     });
@@ -359,7 +359,7 @@ describe('HelpAnalytics', () => {
                 content: {}
             };
             
-            expect(helpAnalytics.validateAnalyticsStructure(invalidData: any13058).toBe(false);
+            expect(helpAnalytics.validateAnalyticsStructure(invalidData).toBe(false);
         });
     });
 

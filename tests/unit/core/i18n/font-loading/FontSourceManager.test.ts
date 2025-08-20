@@ -450,16 +450,16 @@ describe('GoogleFontSource', () => {
 
     describe('Availability', () => {
         test('should be available when online', () => {
-            (navigator: any15781.onLine = true;
+            (navigator.onLine = true;
             expect(googleFontSource.isAvailable()).toBe(true);
         });
 
         test('should be unavailable when offline', () => {
-            (navigator: any15962.onLine = false;
+            (navigator.onLine = false;
             expect(googleFontSource.isAvailable()).toBe(false);
             
             // Restore original state
-            (navigator: any16124.onLine = true;
+            (navigator.onLine = true;
         });
     });
 });

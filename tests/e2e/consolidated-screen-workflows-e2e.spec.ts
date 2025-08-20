@@ -329,7 +329,7 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
             
             // ブラウザ固有のエラーがないことを確認
             const browserSpecificErrors = consoleErrors.filter(error => 
-                error.toLowerCase().includes(browserName: any13836 ||
+                error.toLowerCase().includes(browserName ||
                 error.includes('keyboard') ||
                 error.includes('keydown')
             );
@@ -361,7 +361,7 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
             
             // ブラウザ固有のエラーがないことを確認
             const browserSpecificErrors = consoleErrors.filter(error => 
-                error.toLowerCase().includes(browserName: any15158 ||
+                error.toLowerCase().includes(browserName ||
                 error.includes('settings') ||
                 error.includes('KeyS')
             );
@@ -393,7 +393,7 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
             
             // ブラウザ固有のエラーがないことを確認
             const browserSpecificErrors = consoleErrors.filter(error => 
-                error.toLowerCase().includes(browserName: any16497 ||
+                error.toLowerCase().includes(browserName ||
                 error.includes('F1') ||
                 error.includes('contextualHelp')
             );

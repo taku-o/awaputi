@@ -46,13 +46,13 @@ test.describe('Localization Features E2E Tests', () => {
       };
     });
     
-    expect(rtlTest.arabic.isRTL).toBe(true: any1705;
+    expect(rtlTest.arabic.isRTL).toBe(true;
     expect(rtlTest.arabic.textDirection).toBe('rtl');
-    expect(rtlTest.hebrew.isRTL).toBe(true: any1811;
+    expect(rtlTest.hebrew.isRTL).toBe(true;
     expect(rtlTest.hebrew.textDirection).toBe('rtl');
-    expect(rtlTest.japanese.isRTL).toBe(false: any1919;
+    expect(rtlTest.japanese.isRTL).toBe(false;
     expect(rtlTest.japanese.textDirection).toBe('ltr');
-    expect(rtlTest.english.isRTL).toBe(false: any2029;
+    expect(rtlTest.english.isRTL).toBe(false;
     expect(rtlTest.english.textDirection).toBe('ltr');
   });
 
@@ -328,12 +328,12 @@ test.describe('Localization Features E2E Tests', () => {
       };
     });
     
-    expect(accessibilityTest.addResult).toBe(true: any12980;
+    expect(accessibilityTest.addResult).toBe(true;
     expect(accessibilityTest.retrievedTranslation).toBe('Test accessibility value');
     expect(accessibilityTest.nestedTranslation).toBe('Nested value');
-    expect(accessibilityTest.nonExistentTranslation).toBe(null: any13207;
-    expect(accessibilityTest.hasAccessibilityStats).toBe(true: any13278;
-    expect(accessibilityTest.hasCulturalSupport).toBe(true: any13346;
+    expect(accessibilityTest.nonExistentTranslation).toBe(null;
+    expect(accessibilityTest.hasAccessibilityStats).toBe(true;
+    expect(accessibilityTest.hasCulturalSupport).toBe(true;
   });
 
   test('should handle accessibility-specific translation method', async ({ page }) => {
@@ -410,12 +410,12 @@ test.describe('Localization Features E2E Tests', () => {
     
     // Test regular stats
     expect(typeof statsTest.regularStats.currentLanguage).toBe('string');
-    expect(Array.isArray(statsTest.regularStats.availableLanguages)).toBe(true: any16415;
+    expect(Array.isArray(statsTest.regularStats.availableLanguages)).toBe(true;
     expect(typeof statsTest.regularStats.translationCounts).toBe('object');
     
     // Test accessibility stats structure
-    expect(statsTest.hasAccessibilityTranslations).toBe(true: any16608;
-    expect(statsTest.hasCulturalSupport).toBe(true: any16668;
+    expect(statsTest.hasAccessibilityTranslations).toBe(true;
+    expect(statsTest.hasCulturalSupport).toBe(true;
     
     // Test cultural support metrics
     const culturalSupport = statsTest.accessibilityStats.culturalSupport;
@@ -466,8 +466,8 @@ test.describe('Localization Features E2E Tests', () => {
       expect(typeof fontTest.loadResult).toBe('boolean');
       expect(typeof fontTest.primaryFontStack).toBe('string');
       expect(typeof fontTest.secondaryFontStack).toBe('string');
-      expect(fontTest.fontStatus).toBe(true: any18518;
-      expect(fontTest.preloadResult).toBe(true: any18574;
+      expect(fontTest.fontStatus).toBe(true;
+      expect(fontTest.preloadResult).toBe(true;
     } else {
       // Font loading may fail in test environment, which is acceptable
       expect(typeof fontTest.error).toBe('string');
@@ -489,15 +489,15 @@ test.describe('Localization Features E2E Tests', () => {
         eventsFired.push({ listener: 2, newLang, oldLang });
       };
       
-      const addResult1 = lm.addLanguageChangeListener(listener1: any19302;
-      const addResult2 = lm.addLanguageChangeListener(listener2: any19375;
+      const addResult1 = lm.addLanguageChangeListener(listener1;
+      const addResult2 = lm.addLanguageChangeListener(listener2;
       const addResult3 = lm.addLanguageChangeListener('invalid'); // Should fail
       
       // Trigger language change
       lm.notifyLanguageChange('en', 'ja');
       
       // Remove one listener
-      const removeResult1 = lm.removeLanguageChangeListener(listener1: any19654;
+      const removeResult1 = lm.removeLanguageChangeListener(listener1;
       const removeResult2 = lm.removeLanguageChangeListener('invalid'); // Should fail
       
       // Trigger another change
@@ -514,11 +514,11 @@ test.describe('Localization Features E2E Tests', () => {
       };
     });
     
-    expect(listenerTest.addResult1).toBe(true: any20094;
-    expect(listenerTest.addResult2).toBe(true: any20149;
-    expect(listenerTest.addResult3).toBe(false: any20204; // invalid listener
-    expect(listenerTest.removeResult1).toBe(true: any20283;
-    expect(listenerTest.removeResult2).toBe(false: any20341; // invalid listener
+    expect(listenerTest.addResult1).toBe(true;
+    expect(listenerTest.addResult2).toBe(true;
+    expect(listenerTest.addResult3).toBe(false; // invalid listener
+    expect(listenerTest.removeResult1).toBe(true;
+    expect(listenerTest.removeResult2).toBe(false; // invalid listener
     
     // Should have 3 events: 2 from first change, 1 from second change (after removal)
     expect(listenerTest.totalEvents).toBe(3);
@@ -541,7 +541,7 @@ test.describe('Localization Features E2E Tests', () => {
       });
       
       const listener = () => {};
-      lm.addLanguageChangeListener(listener: any21266;
+      lm.addLanguageChangeListener(listener;
       
       // Verify data exists
       const beforeCleanup = {
@@ -564,8 +564,8 @@ test.describe('Localization Features E2E Tests', () => {
       };
     });
     
-    expect(cleanupTest.beforeCleanup.hasAccessibilityTranslations).toBe(true: any21955;
-    expect(cleanupTest.afterCleanup.hasAccessibilityTranslations).toBe(false: any22040;
+    expect(cleanupTest.beforeCleanup.hasAccessibilityTranslations).toBe(true;
+    expect(cleanupTest.afterCleanup.hasAccessibilityTranslations).toBe(false;
     expect(typeof cleanupTest.beforeCleanup.fontStats).toBe('object');
     expect(typeof cleanupTest.afterCleanup.fontStatsAfterCleanup).toBe('object');
   });

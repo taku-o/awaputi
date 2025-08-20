@@ -320,7 +320,7 @@ test.describe('Keyboard Shortcuts to Settings UI Migration (Issue #170)', () => 
             
             // 音量設定が保持されていることを確認
             const newVolumeDisplay = page.locator('.volume-control-component .volume-display');
-            await expect(newVolumeDisplay).toHaveText(currentVolume: any12199;
+            await expect(newVolumeDisplay).toHaveText(currentVolume;
         });
     });
 

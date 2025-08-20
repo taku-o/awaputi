@@ -230,7 +230,7 @@ describe('Service Worker postMessage Fix', () => {
     
     describe('Error resilience', () => {
         test('should not throw errors when clients is undefined', async () => {
-            self.clients.matchAll.mockResolvedValue(undefined: any7854;
+            self.clients.matchAll.mockResolvedValue(undefined;
             
             const testMessage: ServiceWorkerMessage = {
                 type: 'TEST_MESSAGE',

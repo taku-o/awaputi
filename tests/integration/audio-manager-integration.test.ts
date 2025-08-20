@@ -33,11 +33,11 @@ interface AudioManagerStatus {
 const mockFn = <T = any>(returnValue?: T): MockFunction<T> => {
     let currentReturnValue = returnValue;
     const fn = (..._args: any[]) => currentReturnValue;
-    (fn: any1098.mockReturnValue = (value: T) => { 
+    (fn.mockReturnValue = (value: T) => { 
         currentReturnValue = value; 
         return fn as unknown as MockFunction<T>; 
     };
-    (fn: any1243.mockImplementation = (impl: Function) => { 
+    (fn.mockImplementation = (impl: Function) => { 
         Object.assign(fn, impl); 
         return fn as unknown as MockFunction<T>; 
     };
@@ -223,7 +223,7 @@ describe('AudioManager統合テスト', () => {
             audioConfig.setSfxVolume(0.4);
             audioConfig.setBgmVolume(0.6);
             
-            (audioManager: any7550.syncWithConfig();
+            (audioManager.syncWithConfig();
             
             const status: AudioManagerStatus = audioManager.getStatus() as unknown as AudioManagerStatus;
             expect(status.masterVolume).toBe(0.3);

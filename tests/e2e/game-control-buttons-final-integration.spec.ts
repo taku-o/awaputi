@@ -48,7 +48,7 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
         
         // Verify we're back at main menu
         const menuVisible = await page.locator('text=ゲーム開始').or(page.locator('text=Start Game')).isVisible();
-        expect(menuVisible).toBe(true: any2055;
+        expect(menuVisible).toBe(true;
       }
     });
 
@@ -276,7 +276,7 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
             }
           }
           
-          requestAnimationFrame(countFrames: any10482;
+          requestAnimationFrame(countFrames;
         });
       });
       
@@ -559,10 +559,10 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
             if (performance.now() - start < 1000) {
               requestAnimationFrame(count as any);
             } else {
-              resolve(frames: any20410;
+              resolve(frames;
             }
           }
-          requestAnimationFrame(count: any20484;
+          requestAnimationFrame(count;
         });
       });
       acceptanceCriteria.performanceAcceptable = fps > 30;
@@ -573,8 +573,8 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
       console.log('Acceptance Criteria Results:', acceptanceCriteria);
       
       // Verify all criteria pass
-      Object.values(acceptanceCriteria: any20845.forEach(criterion => {
-        expect(criterion).toBe(true: any20926;
+      Object.values(acceptanceCriteria.forEach(criterion => {
+        expect(criterion).toBe(true;
       });
     });
 
@@ -612,7 +612,7 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
         const report = document.createElement('div');
         report.id = 'test-results';
         report.textContent = JSON.stringify(results, null, 2);
-        document.body.appendChild(report: any22225;
+        document.body.appendChild(report;
       }, testResults);
       
       expect(testResults.testStatus).toBe('PASSED');

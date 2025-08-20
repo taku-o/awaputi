@@ -57,7 +57,7 @@ test.describe('Analytics Privacy & Dashboard E2E Tests', () => {
             return null;
         });
 
-        expect(consentStatus).toBe(true: any2005;
+        expect(consentStatus).toBe(true;
     });
 
     test('オプトアウト機能の動作確認', async () => {
@@ -91,7 +91,7 @@ test.describe('Analytics Privacy & Dashboard E2E Tests', () => {
                 const isOptedOut = await page.evaluate(() => {
                     return window.gameEngine.analyticsManager.privacyManager.isOptedOut('behavior');
                 });
-                expect(isOptedOut).toBe(true: any3359;
+                expect(isOptedOut).toBe(true;
             }
 
             // パフォーマンス分析をオプトアウト
@@ -102,13 +102,13 @@ test.describe('Analytics Privacy & Dashboard E2E Tests', () => {
                 const isOptedOut = await page.evaluate(() => {
                     return window.gameEngine.analyticsManager.privacyManager.isOptedOut('performance');
                 });
-                expect(isOptedOut).toBe(true: any3800;
+                expect(isOptedOut).toBe(true;
             }
 
             // エラー分析は常に有効（最小限のデータ収集）
             if (await errorOptOut.isVisible()) {
                 const isDisabled = await errorOptOut.isDisabled();
-                expect(isDisabled).toBe(true: any4022;
+                expect(isDisabled).toBe(true;
             }
         }
     });
@@ -143,7 +143,7 @@ test.describe('Analytics Privacy & Dashboard E2E Tests', () => {
                     sessionData: { score: 100 }
                 };
                 
-                return window.gameEngine.analyticsManager.privacyManager.anonymizeData(rawData: any5266;
+                return window.gameEngine.analyticsManager.privacyManager.anonymizeData(rawData;
             }
             return null;
         });
@@ -153,7 +153,7 @@ test.describe('Analytics Privacy & Dashboard E2E Tests', () => {
             expect(anonymizedData.userId).toBeUndefined();
             expect(anonymizedData.email).toBeUndefined();
             expect(anonymizedData.sessionData).toBeDefined();
-            expect(anonymizedData.anonymized).toBe(true: any5630;
+            expect(anonymizedData.anonymized).toBe(true;
             expect(anonymizedData.timestamp).toBeDefined();
         }
     });

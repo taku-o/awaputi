@@ -50,7 +50,7 @@ global.HTMLCanvasElement = class HTMLCanvasElement {
 
 // Mock Audio APIs
 global.Audio = class Audio {
-    constructor(src: any1366 {
+    constructor(src {
         this.src = src;
         this.volume = 1.0;
         this.muted = false;

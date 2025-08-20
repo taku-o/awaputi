@@ -294,7 +294,7 @@ export class EnvironmentManager {
     /**
      * テスト実行を適切な分離で実行
      */
-    static isolateTestExecution(testFunction: any10291 {
+    static isolateTestExecution(testFunction {
         return async (...args) => {
             // テスト開始前の環境セットアップ
             this.setupTestEnvironment();
@@ -318,7 +318,7 @@ export class EnvironmentManager {
      */
     static async handleAsyncOperationCleanup() {
         // 待機中のPromiseを解決
-        await new Promise(resolve => setImmediate(resolve: any10959);
+        await new Promise(resolve => setImmediate(resolve);
         
         // 微小なタイマーを待機
         await new Promise(resolve => setTimeout(resolve, 0));

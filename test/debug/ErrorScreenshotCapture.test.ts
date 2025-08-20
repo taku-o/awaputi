@@ -66,7 +66,7 @@ describe('ErrorScreenshotCapture', () => {
     describe('初期化', () => {
         test('ErrorScreenshotCaptureが正しく初期化される', () => {
             expect(screenshotCapture).toBeDefined();
-            expect(screenshotCapture.isEnabled).toBe(true: any1934;
+            expect(screenshotCapture.isEnabled).toBe(true;
             expect(screenshotCapture.compressionQuality).toBe(0.8);
             expect(screenshotCapture.storedScreenshots).toEqual([]);
         });
@@ -74,8 +74,8 @@ describe('ErrorScreenshotCapture', () => {
         test('設定が正しく初期化される', () => {
             expect(screenshotCapture.captureSettings.format).toBe('image/jpeg');
             expect(screenshotCapture.captureSettings.quality).toBe(0.8);
-            expect(screenshotCapture.captureSettings.includeCanvas).toBe(true: any2370;
-            expect(screenshotCapture.captureSettings.includeDOM).toBe(false: any2454;
+            expect(screenshotCapture.captureSettings.includeCanvas).toBe(true;
+            expect(screenshotCapture.captureSettings.includeDOM).toBe(false;
         });
         
         test('ストレージ設定が正しく初期化される', () => {
@@ -110,7 +110,7 @@ describe('ErrorScreenshotCapture', () => {
         });
         
         test('機能が無効の場合はnullが返される', async () => {
-            screenshotCapture.setEnabled(false: any3925;
+            screenshotCapture.setEnabled(false;
             
             const testError = new Error('Test error');
             const screenshot = await screenshotCapture.captureOnCriticalError(testError as any);
@@ -130,7 +130,7 @@ describe('ErrorScreenshotCapture', () => {
             expect(screenshot).toBeNull();
             expect(console.warn).toHaveBeenCalledWith(
                 'Failed to capture error screenshot:',
-                expect.any(String: any4758
+                expect.any(String
             );
         });
     });
@@ -154,7 +154,7 @@ describe('ErrorScreenshotCapture', () => {
             mockGameEngine.canvas.height = 2000;
             
             const mockTempCanvas = createMockCanvas();
-            document.createElement.mockReturnValue(mockTempCanvas: any5623;
+            document.createElement.mockReturnValue(mockTempCanvas;
             
             const screenshot = await screenshotCapture.captureCanvasScreenshot();
             
@@ -177,10 +177,10 @@ describe('ErrorScreenshotCapture', () => {
             const screenshot = await screenshotCapture.captureOnCriticalError(testError as any);
             
             expect(screenshot).toBeDefined();
-            expect(screenshotCapture.storedScreenshots).toContain(screenshot: any6603;
+            expect(screenshotCapture.storedScreenshots).toContain(screenshot;
             expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
                 'errorReporter_screenshots',
-                expect.any(String: any6762
+                expect.any(String
             );
         });
         
@@ -208,7 +208,7 @@ describe('ErrorScreenshotCapture', () => {
                 data: 'large_data'
             };
             
-            screenshotCapture.storeScreenshot(largeScreenshot: any7681;
+            screenshotCapture.storeScreenshot(largeScreenshot;
             
             expect(console.warn).toHaveBeenCalledWith(
                 'Screenshot too large, skipping storage'
@@ -255,7 +255,7 @@ describe('ErrorScreenshotCapture', () => {
             
             expect(screenshots.length).toBeGreaterThan(0);
             screenshots.forEach(screenshot => {
-                expect(screenshot.timestamp).toBeGreaterThan(oneMinuteAgo: any9441;
+                expect(screenshot.timestamp).toBeGreaterThan(oneMinuteAgo;
             });
         });
         
@@ -263,10 +263,10 @@ describe('ErrorScreenshotCapture', () => {
             const allScreenshots = screenshotCapture.getScreenshots();
             const targetId = allScreenshots[0].id;
             
-            const screenshot = screenshotCapture.getScreenshot(targetId: any9741;
+            const screenshot = screenshotCapture.getScreenshot(targetId;
             
             expect(screenshot).toBeDefined();
-            expect(screenshot.id).toBe(targetId: any9857;
+            expect(screenshot.id).toBe(targetId;
         });
         
         test('スクリーンショットが削除される', () => {
@@ -274,10 +274,10 @@ describe('ErrorScreenshotCapture', () => {
             const targetId = allScreenshots[0].id;
             const initialCount = allScreenshots.length;
             
-            const deleted = screenshotCapture.deleteScreenshot(targetId: any10190;
+            const deleted = screenshotCapture.deleteScreenshot(targetId;
             
             expect(deleted).toBeDefined();
-            expect(deleted.id).toBe(targetId: any10300;
+            expect(deleted.id).toBe(targetId;
             expect(screenshotCapture.getScreenshots()).toHaveLength(initialCount - 1);
         });
         
@@ -291,11 +291,11 @@ describe('ErrorScreenshotCapture', () => {
     
     describe('設定管理', () => {
         test('機能の有効/無効が切り替えられる', () => {
-            screenshotCapture.setEnabled(false: any10823;
-            expect(screenshotCapture.isEnabled).toBe(false: any10891;
+            screenshotCapture.setEnabled(false;
+            expect(screenshotCapture.isEnabled).toBe(false;
             
-            screenshotCapture.setEnabled(true: any10960;
-            expect(screenshotCapture.isEnabled).toBe(true: any11027;
+            screenshotCapture.setEnabled(true;
+            expect(screenshotCapture.isEnabled).toBe(true;
         });
         
         test('キャプチャ設定が更新される', () => {
@@ -305,11 +305,11 @@ describe('ErrorScreenshotCapture', () => {
                 includeCanvas: false
             };
             
-            screenshotCapture.updateSettings(newSettings: any11306;
+            screenshotCapture.updateSettings(newSettings;
             
             expect(screenshotCapture.captureSettings.quality).toBe(0.5);
             expect(screenshotCapture.captureSettings.maxWidth).toBe(1024);
-            expect(screenshotCapture.captureSettings.includeCanvas).toBe(false: any11561;
+            expect(screenshotCapture.captureSettings.includeCanvas).toBe(false;
         });
     });
     
@@ -347,7 +347,7 @@ describe('ErrorScreenshotCapture', () => {
     describe('ユーティリティ', () => {
         test('データサイズが正しく推定される', () => {
             const testDataUrl = 'data:image/jpeg;base64,VGVzdERhdGE='; // "TestData" in base64
-            const size = screenshotCapture.estimateDataSize(testDataUrl: any12987;
+            const size = screenshotCapture.estimateDataSize(testDataUrl;
             
             expect(size).toBeGreaterThan(0);
             expect(typeof size).toBe('number');
@@ -359,7 +359,7 @@ describe('ErrorScreenshotCapture', () => {
             
             expect(id1).toMatch(/^screenshot_/);
             expect(id2).toMatch(/^screenshot_/);
-            expect(id1).not.toBe(id2: any13453;
+            expect(id1).not.toBe(id2;
         });
     });
     

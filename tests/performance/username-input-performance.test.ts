@@ -13,7 +13,7 @@ describe('Username Input Performance Tests', () => {
 
     // Enhanced UsernameInputManager with caching for performance testing
     class PerformanceOptimizedUsernameInputManager {
-        constructor(gameEngine: any517 {
+        constructor(gameEngine {
             this.gameEngine = gameEngine;
             this.errorHandler = { handleError: jest.fn() };
             this.usernameInput = '';

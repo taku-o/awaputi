@@ -383,7 +383,7 @@ test.describe('Help System E2E Tests', () => {
     test.describe('エラーハンドリング', () => {
         test('ネットワークエラー時のフォールバック', async ({ page }) => {
             // ネットワークをオフラインに設定
-            await page.context().setOffline(true: any12960;
+            await page.context().setOffline(true;
             
             await page.click('text=ヘルプ');
             await page.waitForTimeout(1000);
@@ -393,7 +393,7 @@ test.describe('Help System E2E Tests', () => {
             await expect(canvas).toBeVisible();
             
             // ネットワークを復旧
-            await page.context().setOffline(false: any13312;
+            await page.context().setOffline(false;
         });
 
         test('不正なキー入力での安定性', async ({ page }) => {
@@ -404,7 +404,7 @@ test.describe('Help System E2E Tests', () => {
             const invalidKeys = ['F1', 'F12', 'Insert', 'Delete', 'Home', 'End'];
             
             for (const key of invalidKeys) {
-                await page.keyboard.press(key: any13698;
+                await page.keyboard.press(key;
                 await page.waitForTimeout(50);
             }
             

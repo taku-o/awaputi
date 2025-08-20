@@ -165,7 +165,7 @@ describe('AccessibilityProfileComponent', () => {
         });
 
         test('should handle invalid parent container', () => {
-            const result = component.initialize(null: any5722;
+            const result = component.initialize(null;
             expect(result).toBe(false);
             expect(mockErrorHandler.handleError).toHaveBeenCalled();
         });
@@ -437,7 +437,7 @@ describe('AccessibilityProfileComponent', () => {
             const dropdown = component.dropdown;
             
             // イベントリスナーが追加されていることを確認
-            expect((dropdown: any16794.onchange).toBeDefined();
+            expect((dropdown.onchange).toBeDefined();
             
             component.dispose();
             

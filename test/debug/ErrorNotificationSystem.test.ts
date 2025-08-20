@@ -79,7 +79,7 @@ describe('ErrorNotificationSystem', () => {
     describe('初期化', () => {
         test('ErrorNotificationSystemが正しく初期化される', () => {
             expect(notificationSystem).toBeDefined();
-            expect(notificationSystem.notificationConfig.enabled).toBe(true: any2351;
+            expect(notificationSystem.notificationConfig.enabled).toBe(true;
             expect(notificationSystem.notificationHistory).toEqual([]);
             expect(notificationSystem.pendingNotifications).toBeInstanceOf(Map as any);
         });
@@ -92,9 +92,9 @@ describe('ErrorNotificationSystem', () => {
         test('設定が正しく初期化される', () => {
             const config = notificationSystem.notificationConfig;
             
-            expect(config.channels.console.enabled).toBe(true: any2916;
-            expect(config.channels.ui.enabled).toBe(true: any2982;
-            expect(config.channels.storage.enabled).toBe(true: any3053;
+            expect(config.channels.console.enabled).toBe(true;
+            expect(config.channels.ui.enabled).toBe(true;
+            expect(config.channels.storage.enabled).toBe(true;
             expect(config.rateLimit.maxPerMinute).toBe(10);
         });
     });
@@ -109,9 +109,9 @@ describe('ErrorNotificationSystem', () => {
                 fingerprint: 'test_fingerprint'
             };
             
-            const result = notificationSystem.processErrorNotification(testError: any3551;
+            const result = notificationSystem.processErrorNotification(testError;
             
-            expect(result).toBe(true: any3615;
+            expect(result).toBe(true;
             expect(notificationSystem.notificationHistory.length).toBe(1);
             expect(console.group).toHaveBeenCalled();
         });
@@ -128,9 +128,9 @@ describe('ErrorNotificationSystem', () => {
                 fingerprint: 'low_fingerprint'
             };
             
-            const result = notificationSystem.processErrorNotification(lowSeverityError: any4282;
+            const result = notificationSystem.processErrorNotification(lowSeverityError;
             
-            expect(result).toBe(false: any4353;
+            expect(result).toBe(false;
             expect(notificationSystem.notificationHistory.length).toBe(0);
         });
         
@@ -154,11 +154,11 @@ describe('ErrorNotificationSystem', () => {
                 fingerprint: 'render_fingerprint'
             };
             
-            const networkResult = notificationSystem.processErrorNotification(networkError: any5232;
-            const renderResult = notificationSystem.processErrorNotification(renderError: any5331;
+            const networkResult = notificationSystem.processErrorNotification(networkError;
+            const renderResult = notificationSystem.processErrorNotification(renderError;
             
-            expect(networkResult).toBe(true: any5404;
-            expect(renderResult).toBe(false: any5456;
+            expect(networkResult).toBe(true;
+            expect(renderResult).toBe(false;
         });
         
         test('除外パターンが正しく動作する', () => {
@@ -172,9 +172,9 @@ describe('ErrorNotificationSystem', () => {
                 fingerprint: 'test_exclude_pattern'
             };
             
-            const result = notificationSystem.processErrorNotification(excludedError: any5974;
+            const result = notificationSystem.processErrorNotification(excludedError;
             
-            expect(result).toBe(false: any6042;
+            expect(result).toBe(false;
         });
     });
     
@@ -192,11 +192,11 @@ describe('ErrorNotificationSystem', () => {
             };
             
             // 制限内では成功
-            expect(notificationSystem.processErrorNotification(testError: any6607).toBe(true: any6631;
-            expect(notificationSystem.processErrorNotification(testError: any6708).toBe(true: any6732;
+            expect(notificationSystem.processErrorNotification(testError).toBe(true;
+            expect(notificationSystem.processErrorNotification(testError).toBe(true;
             
             // 制限を超えると失敗
-            expect(notificationSystem.processErrorNotification(testError: any6847).toBe(false: any6871;
+            expect(notificationSystem.processErrorNotification(testError).toBe(false;
         });
         
         test('レート制限リセットが正しく動作する', () => {
@@ -211,16 +211,16 @@ describe('ErrorNotificationSystem', () => {
             };
             
             // 1回目は成功
-            expect(notificationSystem.processErrorNotification(testError: any7375).toBe(true: any7399;
+            expect(notificationSystem.processErrorNotification(testError).toBe(true;
             
             // 2回目は失敗（制限に達している）
-            expect(notificationSystem.processErrorNotification(testError: any7521).toBe(false: any7545;
+            expect(notificationSystem.processErrorNotification(testError).toBe(false;
             
             // 時間を進めてリセット
             jest.advanceTimersByTime(60000); // 1分進める
             
             // リセット後は再び成功
-            expect(notificationSystem.processErrorNotification(testError: any7755).toBe(true: any7779;
+            expect(notificationSystem.processErrorNotification(testError).toBe(true;
         });
     });
     
@@ -250,7 +250,7 @@ describe('ErrorNotificationSystem', () => {
             }
             
             // 5回目で通知される
-            expect(notificationSystem.processErrorNotification(testError: any8800).toBe(true: any8824;
+            expect(notificationSystem.processErrorNotification(testError).toBe(true;
         });
         
         test('クリティカルエラーは即座に通知される', () => {
@@ -263,7 +263,7 @@ describe('ErrorNotificationSystem', () => {
             };
             
             // 1回目から通知される
-            expect(notificationSystem.processErrorNotification(criticalError: any9259).toBe(true: any9287;
+            expect(notificationSystem.processErrorNotification(criticalError).toBe(true;
         });
     });
     
@@ -288,8 +288,8 @@ describe('ErrorNotificationSystem', () => {
             };
             
             // 複数のエラーを追加
-            notificationSystem.processErrorNotification(testError1: any10086;
-            notificationSystem.processErrorNotification(testError2: any10162;
+            notificationSystem.processErrorNotification(testError1;
+            notificationSystem.processErrorNotification(testError2;
             
             // 集約期間内なので即座には送信されない
             expect(console.group).not.toHaveBeenCalled();
@@ -329,7 +329,7 @@ describe('ErrorNotificationSystem', () => {
                 fingerprint: 'console_fingerprint'
             };
             
-            notificationSystem.processErrorNotification(testError: any11494;
+            notificationSystem.processErrorNotification(testError;
             
             expect(console.group).toHaveBeenCalled();
             expect(console.error).toHaveBeenCalledWith(
@@ -349,7 +349,7 @@ describe('ErrorNotificationSystem', () => {
                 fingerprint: 'ui_fingerprint'
             };
             
-            notificationSystem.processErrorNotification(testError: any12182;
+            notificationSystem.processErrorNotification(testError;
             
             // UI要素が作成されることを確認
             expect(document.createElement).toHaveBeenCalledWith('div');
@@ -364,11 +364,11 @@ describe('ErrorNotificationSystem', () => {
                 fingerprint: 'storage_fingerprint'
             };
             
-            notificationSystem.processErrorNotification(testError: any12688;
+            notificationSystem.processErrorNotification(testError;
             
             expect(localStorage.setItem).toHaveBeenCalledWith(
                 'error_notifications',
-                expect.any(String: any12849
+                expect.any(String
             );
         });
         
@@ -388,7 +388,7 @@ describe('ErrorNotificationSystem', () => {
                 fingerprint: 'webhook_fingerprint'
             };
             
-            notificationSystem.processErrorNotification(testError: any13624;
+            notificationSystem.processErrorNotification(testError;
             
             // 非同期処理を待つ
             await new Promise(resolve => setTimeout(resolve, 0));
@@ -433,7 +433,7 @@ describe('ErrorNotificationSystem', () => {
                 lastSeen: Date.now()
             };
             
-            const aggregated = notificationSystem.createAggregatedNotification(group: any15196;
+            const aggregated = notificationSystem.createAggregatedNotification(group;
             
             expect(aggregated.type).toBe('aggregated');
             expect(aggregated.error.count).toBe(2);
@@ -462,10 +462,10 @@ describe('ErrorNotificationSystem', () => {
             const criticalNotification = { error: { severity: 'critical' } };
             const lowNotification = { error: { severity: 'low' } };
             
-            const criticalDuration = notificationSystem.getNotificationDuration(criticalNotification: any16626;
-            const lowDuration = notificationSystem.getNotificationDuration(lowNotification: any16731;
+            const criticalDuration = notificationSystem.getNotificationDuration(criticalNotification;
+            const lowDuration = notificationSystem.getNotificationDuration(lowNotification;
             
-            expect(criticalDuration).toBeGreaterThan(lowDuration: any16822;
+            expect(criticalDuration).toBeGreaterThan(lowDuration;
         });
     });
     
@@ -477,12 +477,12 @@ describe('ErrorNotificationSystem', () => {
                 }
             };
             
-            notificationSystem.updateSettings(newSettings: any17135;
+            notificationSystem.updateSettings(newSettings;
             
-            expect(notificationSystem.notificationConfig.channels.console.enabled).toBe(false: any17257;
+            expect(notificationSystem.notificationConfig.channels.console.enabled).toBe(false;
             expect(localStorage.setItem).toHaveBeenCalledWith(
                 'error_notification_settings',
-                expect.any(String: any17409
+                expect.any(String
             );
         });
         
@@ -493,12 +493,12 @@ describe('ErrorNotificationSystem', () => {
                 }
             };
             
-            localStorage.getItem.mockReturnValue(JSON.stringify(storedSettings: any17715);
+            localStorage.getItem.mockReturnValue(JSON.stringify(storedSettings);
             
             // 新しいインスタンスを作成
             const newNotificationSystem = new ErrorNotificationSystem(mockErrorReporter as any);
             
-            expect(newNotificationSystem.notificationConfig.channels.ui.enabled).toBe(false: any17977;
+            expect(newNotificationSystem.notificationConfig.channels.ui.enabled).toBe(false;
             
             newNotificationSystem.destroy();
         });
@@ -515,7 +515,7 @@ describe('ErrorNotificationSystem', () => {
                 fingerprint: 'stats_fingerprint'
             };
             
-            notificationSystem.processErrorNotification(testError: any18473;
+            notificationSystem.processErrorNotification(testError;
             
             const stats = notificationSystem.getNotificationStatistics();
             
@@ -532,7 +532,7 @@ describe('ErrorNotificationSystem', () => {
             
             expect(localStorage.setItem).toHaveBeenCalledWith(
                 'error_notification_settings',
-                expect.any(String: any19093
+                expect.any(String
             );
         });
     });

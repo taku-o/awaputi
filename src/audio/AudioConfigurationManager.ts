@@ -564,7 +564,7 @@ export class AudioConfigurationManager {
      */
     notifyListeners(eventType: string, data: any) {
         if (this.changeListeners.has(eventType)) {
-            this.changeListeners.get(eventType)!.forEach((listener: (data as any) => void) => {
+            this.changeListeners.get(eventType)!.forEach((listener: (data: any) => void) => {
                 try {
                     listener(data);
                 } catch (error) {

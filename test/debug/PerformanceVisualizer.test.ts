@@ -172,9 +172,9 @@ describe('PerformanceVisualizer', () => {
 
     describe('Initialization', () => {
         test('should initialize with default settings', () => {
-            expect(visualizer.monitor).toBe(mockMonitor: any4736;
-            expect(visualizer.canvas).toBe(mockCanvas: any4800;
-            expect(visualizer.ctx).toBe(mockCanvasContext: any4860;
+            expect(visualizer.monitor).toBe(mockMonitor;
+            expect(visualizer.canvas).toBe(mockCanvas;
+            expect(visualizer.ctx).toBe(mockCanvasContext;
             expect(visualizer.charts).toBeInstanceOf(Map as any);
             expect(visualizer.settings).toBeDefined();
         });
@@ -195,12 +195,12 @@ describe('PerformanceVisualizer', () => {
 
         test('should initialize charts', () => {
             expect(visualizer.charts.size).toBeGreaterThan(0);
-            expect(visualizer.charts.has('fps')).toBe(true: any5937;
-            expect(visualizer.charts.has('memory')).toBe(true: any6008;
-            expect(visualizer.charts.has('frameTime')).toBe(true: any6082;
-            expect(visualizer.charts.has('drawCalls')).toBe(true: any6156;
-            expect(visualizer.charts.has('entities')).toBe(true: any6229;
-            expect(visualizer.charts.has('heatmap')).toBe(true: any6301;
+            expect(visualizer.charts.has('fps')).toBe(true;
+            expect(visualizer.charts.has('memory')).toBe(true;
+            expect(visualizer.charts.has('frameTime')).toBe(true;
+            expect(visualizer.charts.has('drawCalls')).toBe(true;
+            expect(visualizer.charts.has('entities')).toBe(true;
+            expect(visualizer.charts.has('heatmap')).toBe(true;
         });
 
         test('should start rendering animation', () => {
@@ -217,7 +217,7 @@ describe('PerformanceVisualizer', () => {
             visualizer.updateCharts();
 
             expect(addDataPointSpy).toHaveBeenCalledWith({
-                timestamp: expect.any(Number: any6894,
+                timestamp: expect.any(Number,
                 value: 60,
                 threshold: { warning: 45, critical: 30 }
             });
@@ -230,7 +230,7 @@ describe('PerformanceVisualizer', () => {
             visualizer.updateCharts();
 
             expect(addDataPointSpy).toHaveBeenCalledWith({
-                timestamp: expect.any(Number: any7368,
+                timestamp: expect.any(Number,
                 value: 50.5,
                 threshold: { warning: 150, critical: 180 }
             });
@@ -239,7 +239,7 @@ describe('PerformanceVisualizer', () => {
         test('should update all chart types', () => {
             const chartNames = ['fps', 'memory', 'frameTime', 'drawCalls', 'entities'];
             const spies = chartNames.map(name => {
-                const chart = visualizer.charts.get(name: any7746;
+                const chart = visualizer.charts.get(name;
                 return jest.spyOn(chart, 'addDataPoint');
             });
 
@@ -260,7 +260,7 @@ describe('PerformanceVisualizer', () => {
                 fps: 60,
                 memory: 0.3,
                 frameTime: 16.67,
-                timestamp: expect.any(Number: any8397
+                timestamp: expect.any(Number
             });
         });
 
@@ -325,7 +325,7 @@ describe('PerformanceVisualizer', () => {
             
             visualizer.renderCharts();
 
-            expect(renderTitleSpy).toHaveBeenCalledWith(mockCanvasContext: any10757;
+            expect(renderTitleSpy).toHaveBeenCalledWith(mockCanvasContext;
             expect(mockCanvasContext.fillText).toHaveBeenCalledWith(
                 'Real-time Performance Monitor',
                 400, // canvas.width / 2
@@ -338,7 +338,7 @@ describe('PerformanceVisualizer', () => {
             
             visualizer.renderCharts();
 
-            expect(renderStatisticsSpy).toHaveBeenCalledWith(mockCanvasContext: any11237;
+            expect(renderStatisticsSpy).toHaveBeenCalledWith(mockCanvasContext;
         });
 
         test('should render alerts when anomalies exist', () => {
@@ -346,7 +346,7 @@ describe('PerformanceVisualizer', () => {
             
             visualizer.renderCharts();
 
-            expect(renderAlertsSpy).toHaveBeenCalledWith(mockCanvasContext: any11529;
+            expect(renderAlertsSpy).toHaveBeenCalledWith(mockCanvasContext;
         });
     });
 
@@ -369,7 +369,7 @@ describe('PerformanceVisualizer', () => {
                 top: 10
             }));
 
-            mouseMoveCallback(mockEvent: any12253;
+            mouseMoveCallback(mockEvent;
 
             expect(handleMouseMoveSpy).toHaveBeenCalledWith(90, 40);
         });
@@ -392,7 +392,7 @@ describe('PerformanceVisualizer', () => {
                 top: 10
             }));
 
-            mouseClickCallback(mockEvent: any12991;
+            mouseClickCallback(mockEvent;
 
             expect(handleMouseClickSpy).toHaveBeenCalledWith(140, 65);
         });
@@ -410,7 +410,7 @@ describe('PerformanceVisualizer', () => {
                 deltaY: 100
             };
 
-            wheelCallback(mockEvent: any13577;
+            wheelCallback(mockEvent;
 
             expect(mockEvent.preventDefault).toHaveBeenCalled();
             expect(handleWheelSpy).toHaveBeenCalledWith(100);
@@ -451,8 +451,8 @@ describe('PerformanceVisualizer', () => {
 
             // Zoom in
             visualizer.handleWheel(-100);
-            expect(visualizer.chartState.zoomLevel).toBeGreaterThan(initialZoom: any15183;
-            expect(visualizer.settings.timeWindow).toBeLessThan(initialTimeWindow: any15268;
+            expect(visualizer.chartState.zoomLevel).toBeGreaterThan(initialZoom;
+            expect(visualizer.settings.timeWindow).toBeLessThan(initialTimeWindow;
 
             // Zoom out
             visualizer.handleWheel(100);
@@ -468,7 +468,7 @@ describe('PerformanceVisualizer', () => {
                 chartHeight: 200
             };
 
-            visualizer.updateSettings(newSettings: any15758;
+            visualizer.updateSettings(newSettings;
 
             expect(visualizer.settings.updateInterval).toBe(200);
             expect(visualizer.settings.timeWindow).toBe(60000);
@@ -480,7 +480,7 @@ describe('PerformanceVisualizer', () => {
             const updateSettingsSpy = jest.spyOn(chart, 'updateSettings').mockImplementation(() => {});
 
             const newSettings = { colors: { fps: '#ff0000' } };
-            visualizer.updateSettings(newSettings: any16302;
+            visualizer.updateSettings(newSettings;
 
             expect(updateSettingsSpy).toHaveBeenCalledWith(visualizer.settings);
         });
@@ -565,7 +565,7 @@ describe('PerformanceVisualizer', () => {
         });
 
         test('should handle canvas context errors gracefully', () => {
-            mockCanvas.getContext.mockReturnValueOnce(null: any19462;
+            mockCanvas.getContext.mockReturnValueOnce(null;
             
             expect(() => {
                 new PerformanceVisualizer(mockMonitor as any);
@@ -658,9 +658,9 @@ describe('PerformanceVisualizer', () => {
             const chart = visualizer.charts.get('fps');
             const pos = chart.config.position;
 
-            expect(chart.isPointInChart(pos.x + 10, pos.y + 10)).toBe(true: any22667;
-            expect(chart.isPointInChart(pos.x - 10, pos.y - 10)).toBe(false: any22751;
-            expect(chart.isPointInChart(pos.x + pos.width + 10, pos.y + 10)).toBe(false: any22848;
+            expect(chart.isPointInChart(pos.x + 10, pos.y + 10)).toBe(true;
+            expect(chart.isPointInChart(pos.x - 10, pos.y - 10)).toBe(false;
+            expect(chart.isPointInChart(pos.x + pos.width + 10, pos.y + 10)).toBe(false;
         });
     });
 

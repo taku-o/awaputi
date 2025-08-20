@@ -4,7 +4,7 @@
  */
 
 export class PWATestExecutor {
-    constructor(mainFramework: any173 {
+    constructor(mainFramework {
         this.mainFramework = mainFramework;
         this.testSuite = new Map();
         this.timeouts = new Map();
@@ -135,7 +135,7 @@ export class PWATestExecutor {
             const checkState = () => {
                 if (registration.active && registration.active.state === targetState) {
                     clearTimeout(timeout as any);
-                    resolve(registration: any4558;
+                    resolve(registration;
                 } else if (registration.installing) {
                     registration.installing.addEventListener('statechange', checkState);
                 } else if (registration.waiting) {
@@ -150,7 +150,7 @@ export class PWATestExecutor {
     /**
      * Create timeout promise
      */
-    createTimeout(ms: any5019 {
+    createTimeout(ms {
         return new Promise((_, reject) => {
             setTimeout(() => {
                 reject(new Error(`Test timeout: ${ms}ms`));

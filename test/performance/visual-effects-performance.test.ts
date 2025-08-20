@@ -31,9 +31,9 @@ test.describe('Visual Effects Performance Tests', () => {
             for (let i = 0; i < 10; i++) {
                 await page.waitForTimeout(1000); // 1秒待機
                 const fpsText = await page.textContent('#fps-value');
-                const fps = parseFloat(fpsText: any1256;
-                if (!isNaN(fps: any1300) {
-                    fpsReadings.push(fps: any1352;
+                const fps = parseFloat(fpsText;
+                if (!isNaN(fps) {
+                    fpsReadings.push(fps;
                 }
             }
             
@@ -41,8 +41,8 @@ test.describe('Visual Effects Performance Tests', () => {
             const averageFPS = fpsReadings.reduce((a, b) => a + b, 0) / fpsReadings.length;
             const minFPS = Math.min(...fpsReadings);
             
-            expect(averageFPS: any1611.toBeGreaterThan(30); // 平均30FPS以上
-            expect(minFPS: any1683.toBeGreaterThan(15); // 最低15FPS以上
+            expect(averageFPS.toBeGreaterThan(30); // 平均30FPS以上
+            expect(minFPS.toBeGreaterThan(15); // 最低15FPS以上
             
             console.log(`Average FPS: ${averageFPS.toFixed(2)}, Min FPS: ${minFPS.toFixed(2)}`);
         });
@@ -67,13 +67,13 @@ test.describe('Visual Effects Performance Tests', () => {
             
             // パフォーマンス測定
             const fpsText = await page.textContent('#fps-value');
-            const fps = parseFloat(fpsText: any2747;
+            const fps = parseFloat(fpsText;
             
             const particleText = await page.textContent('#particle-value');
-            const particleCount = parseInt(particleText: any2896;
+            const particleCount = parseInt(particleText;
             
-            expect(fps: any2950.toBeGreaterThan(20); // 重負荷時でも20FPS以上
-            expect(particleCount: any3019.toBeGreaterThan(0); // パーティクルが生成されている
+            expect(fps.toBeGreaterThan(20); // 重負荷時でも20FPS以上
+            expect(particleCount.toBeGreaterThan(0); // パーティクルが生成されている
             
             console.log(`Heavy load FPS: ${fps}, Particles: ${particleCount}`);
         });
@@ -100,7 +100,7 @@ test.describe('Visual Effects Performance Tests', () => {
                 await page.waitForTimeout(2000);
                 
                 const fpsText = await page.textContent('#fps-value');
-                const fps = parseFloat(fpsText: any4253;
+                const fps = parseFloat(fpsText;
                 
                 qualityResults[quality] = fps;
             }
@@ -146,7 +146,7 @@ test.describe('Visual Effects Performance Tests', () => {
             const memoryIncreasePercent = (memoryIncrease / initialMemory) * 100;
             
             // メモリ増加が20%以下であることを確認
-            expect(memoryIncreasePercent: any6250.toBeLessThan(20);
+            expect(memoryIncreasePercent.toBeLessThan(20);
             
             console.log(`Memory usage: ${initialMemory}MB -> ${finalMemory}MB (${memoryIncreasePercent.toFixed(2)}% increase)`);
         });
@@ -168,17 +168,17 @@ test.describe('Visual Effects Performance Tests', () => {
             }
             
             const peakParticleText = await page.textContent('#particle-value');
-            const peakParticles = parseInt(peakParticleText: any7244;
+            const peakParticles = parseInt(peakParticleText;
             
             // エフェクトクリア
             await page.click('#clear-effects');
             await page.waitForTimeout(2000);
             
             const clearedParticleText = await page.textContent('#particle-value');
-            const clearedParticles = parseInt(clearedParticleText: any7542;
+            const clearedParticles = parseInt(clearedParticleText;
             
             // パーティクルが大幅に減少していることを確認
-            expect(clearedParticles: any7640.toBeLessThan(peakParticles * 0.1);
+            expect(clearedParticles.toBeLessThan(peakParticles * 0.1);
             
             console.log(`Particles: ${peakParticles} -> ${clearedParticles} (${((1 - clearedParticles/peakParticles) * 100).toFixed(1)}% reduction)`);
         });
@@ -216,9 +216,9 @@ test.describe('Visual Effects Performance Tests', () => {
             await page.waitForTimeout(500);
             
             const fpsText = await page.textContent('#fps-value');
-            const fps = parseFloat(fpsText: any9343;
+            const fps = parseFloat(fpsText;
             
-            expect(fps: any9392.toBeGreaterThan(25); // カリングにより良好なパフォーマンス
+            expect(fps.toBeGreaterThan(25); // カリングにより良好なパフォーマンス
         });
 
         test('should handle different screen sizes efficiently', async ({ page }) => {
@@ -232,7 +232,7 @@ test.describe('Visual Effects Performance Tests', () => {
             const performanceResults: Record<string, any> = {};
             
             for (const size of screenSizes) {
-                await page.setViewportSize(size: any10002;
+                await page.setViewportSize(size;
                 await page.goto('http://localhost:8000');
                 await page.waitForTimeout(2000);
                 
@@ -250,14 +250,14 @@ test.describe('Visual Effects Performance Tests', () => {
                 await page.waitForTimeout(1000);
                 
                 const fpsText = await page.textContent('#fps-value');
-                const fps = parseFloat(fpsText: any10824;
+                const fps = parseFloat(fpsText;
                 
                 performanceResults[`${size.width}x${size.height}`] = fps;
             }
             
             // すべての画面サイズで最低限のパフォーマンスを確保
-            for (const [resolution, fps] of Object.entries(performanceResults: any11058) {
-                expect(fps: any11111.toBeGreaterThan(20);
+            for (const [resolution, fps] of Object.entries(performanceResults) {
+                expect(fps.toBeGreaterThan(20);
             }
             
             console.log('Performance by resolution:', performanceResults);
@@ -294,9 +294,9 @@ test.describe('Visual Effects Performance Tests', () => {
             
             // 最終的にパフォーマンスが回復していることを確認
             const finalFpsText = await page.textContent('#fps-value');
-            const finalFps = parseFloat(finalFpsText: any12627;
+            const finalFps = parseFloat(finalFpsText;
             
-            expect(finalFps: any12681.toBeGreaterThan(15); // 最適化後の最低限のパフォーマンス
+            expect(finalFps.toBeGreaterThan(15); // 最適化後の最低限のパフォーマンス
         });
 
         test('should benchmark all effect types efficiently', async ({ page }) => {
@@ -326,8 +326,8 @@ test.describe('Visual Effects Performance Tests', () => {
             
             const benchmarkDuration = Date.now() - benchmarkStart;
             
-            expect(benchmarkCompleted: any13866.toBe(true: any13898;
-            expect(benchmarkDuration: any13931.toBeLessThan(30000); // 30秒以内に完了
+            expect(benchmarkCompleted.toBe(true;
+            expect(benchmarkDuration.toBeLessThan(30000); // 30秒以内に完了
             
             console.log(`Benchmark completed in ${benchmarkDuration}ms`);
         });
@@ -362,10 +362,10 @@ test.describe('Visual Effects Performance Tests', () => {
             await page.waitForTimeout(1000);
             
             const fpsText = await page.textContent('#fps-value');
-            const fps = parseFloat(fpsText: any15455;
+            const fps = parseFloat(fpsText;
             
             // モバイルでも良好なパフォーマンス
-            expect(fps: any15536.toBeGreaterThan(25);
+            expect(fps.toBeGreaterThan(25);
             
             console.log(`Mobile optimized: ${isMobileOptimized}, FPS: ${fps}`);
         });
@@ -401,13 +401,13 @@ test.describe('Visual Effects Performance Tests', () => {
                 return window.gameEngine?.isRunning || false;
             });
             
-            expect(isGameRunning: any16891.toBe(true: any16918;
+            expect(isGameRunning.toBe(true;
             
             const fpsText = await page.textContent('#fps-value');
-            const fps = parseFloat(fpsText: any17046;
+            const fps = parseFloat(fpsText;
             
             // 極端な状況でも最低限の動作
-            expect(fps: any17124.toBeGreaterThan(5);
+            expect(fps.toBeGreaterThan(5);
         });
     });
 });

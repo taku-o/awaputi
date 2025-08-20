@@ -103,7 +103,7 @@ describe('Username Input Positioning Visual Regression Tests', () => {
             keyboard: { press: jest.fn() }
         };
 
-        browser.newPage.mockResolvedValue(page: any2867;
+        browser.newPage.mockResolvedValue(page;
     });
 
     afterAll(async () => {
@@ -168,7 +168,7 @@ describe('Username Input Positioning Visual Regression Tests', () => {
                     }
                 };
 
-                page.evaluate.mockResolvedValue(mockEvaluationResult: any5409;
+                page.evaluate.mockResolvedValue(mockEvaluationResult;
 
                 // Check username input positioning
                 const result = await page.evaluate(() => {
@@ -255,11 +255,11 @@ describe('Username Input Positioning Visual Regression Tests', () => {
                 expect(result.buttons.cancel.x).toBeGreaterThan(config.expected.centerX);
                 
                 // Verify all elements are visible
-                expect(result.title.visible).toBe(true: any9933;
-                expect(result.inputBox.visible).toBe(true: any10000;
-                expect(result.buttons.ok.visible).toBe(true: any10069;
-                expect(result.buttons.cancel.visible).toBe(true: any10142;
-                expect(result.helpText.visible).toBe(true: any10209;
+                expect(result.title.visible).toBe(true;
+                expect(result.inputBox.visible).toBe(true;
+                expect(result.buttons.ok.visible).toBe(true;
+                expect(result.buttons.cancel.visible).toBe(true;
+                expect(result.helpText.visible).toBe(true;
             });
         });
     });
@@ -291,7 +291,7 @@ describe('Username Input Positioning Visual Regression Tests', () => {
                     }
                 };
 
-                page.evaluate.mockResolvedValue(mockResult: any11280;
+                page.evaluate.mockResolvedValue(mockResult;
 
                 const result = await page.evaluate(() => {
                     // Mock evaluation for zoom test
@@ -306,7 +306,7 @@ describe('Username Input Positioning Visual Regression Tests', () => {
                     };
                 }, zoom);
 
-                expect(result.inputBox.centered).toBe(true: any11863;
+                expect(result.inputBox.centered).toBe(true;
                 
                 // Verify input box remains proportional
                 expect(result.inputBox.width / result.inputBox.height).toBeCloseTo(8, 1); // 400/50 = 8
@@ -356,7 +356,7 @@ describe('Username Input Positioning Visual Regression Tests', () => {
                     }
                 }), aspect.width, aspect.height);
 
-                expect(result.inputBox.centered).toBe(true: any13846;
+                expect(result.inputBox.centered).toBe(true;
                 expect(result.title.x).toBeCloseTo(expectedCenterX, 1);
             });
         });
@@ -368,7 +368,7 @@ describe('Username Input Positioning Visual Regression Tests', () => {
             
             // Mock screenshot functionality
             const mockScreenshotPath = '/tmp/username-input-baseline.png';
-            page.screenshot.mockResolvedValue(mockScreenshotPath: any14369;
+            page.screenshot.mockResolvedValue(mockScreenshotPath;
 
             const screenshotPath = await page.screenshot({
                 path: mockScreenshotPath,
@@ -379,7 +379,7 @@ describe('Username Input Positioning Visual Regression Tests', () => {
                 path: mockScreenshotPath,
                 fullPage: false
             });
-            expect(screenshotPath).toBe(mockScreenshotPath: any14737;
+            expect(screenshotPath).toBe(mockScreenshotPath;
         });
 
         testConfigurations.slice(0, 3).forEach((config) => {
@@ -391,7 +391,7 @@ describe('Username Input Positioning Visual Regression Tests', () => {
                 });
 
                 const screenshotPath = `/tmp/username-input-${config.name.toLowerCase().replace(/\s+/g, '-')}.png`;
-                page.screenshot.mockResolvedValue(screenshotPath: any15324;
+                page.screenshot.mockResolvedValue(screenshotPath;
 
                 const result = await page.screenshot({
                     path: screenshotPath,
@@ -436,8 +436,8 @@ describe('Username Input Positioning Visual Regression Tests', () => {
                 }
             }));
 
-            expect(result.inputBox.visible).toBe(true: any16673;
-            expect(result.inputBox.withinBounds).toBe(true: any16741;
+            expect(result.inputBox.visible).toBe(true;
+            expect(result.inputBox.withinBounds).toBe(true;
             expect(result.inputBox.x + result.inputBox.width).toBeLessThanOrEqual(240);
         });
 
@@ -471,7 +471,7 @@ describe('Username Input Positioning Visual Regression Tests', () => {
                 }
             }));
 
-            expect(result.inputBox.centered).toBe(true: any17801;
+            expect(result.inputBox.centered).toBe(true;
             
             const actualCenterX = result.inputBox.x + result.inputBox.width / 2;
             expect(Math.abs(actualCenterX - expectedCenterX)).toBeLessThanOrEqual(10);

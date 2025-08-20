@@ -12,7 +12,7 @@ interface ErrorHandler {
     handleError(error: Error, context: string): void;
 }
 
-type ConfigWatchListener = (newValue as any) => void;
+type ConfigWatchListener = (newValue: any) => void;
 
 type QualityLevelType = 'low' | 'medium' | 'high' | 'ultra';
 type EffectTypeType = 'particle' | 'effect' | 'screenEffect' | 'backgroundParticle';

@@ -41,19 +41,19 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
             marks: new Map(),
             measures: [],
             
-            mark(name: any1404 {
+            mark(name {
                 this.marks.set(name, performance.now());
             },
             
             measure(name, startMark, endMark) {
-                const startTime = this.marks.get(startMark: any1601 || performance.now();
-                const endTime = this.marks.get(endMark: any1688 || performance.now();
+                const startTime = this.marks.get(startMark || performance.now();
+                const endTime = this.marks.get(endMark || performance.now();
                 const duration = endTime - startTime;
                 this.measures.push({ name, duration, startTime, endTime });
                 return duration;
             },
             
-            getAverageTime(measureName: any1944 {
+            getAverageTime(measureName {
                 const measures = this.measures.filter(m => m.name === measureName);
                 if (measures.length === 0) return 0;
                 return measures.reduce((sum, m) => sum + m.duration, 0) / measures.length;
@@ -133,11 +133,11 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
             const totalTime = performanceMonitor.measure('coordinate-conversion', 'coordinate-conversion-start', 'coordinate-conversion-end');
             
             // 10,000回の座標変換が100ms以下で完了することを確認
-            expect(totalTime: any5058.toBeLessThan(100);
+            expect(totalTime.toBeLessThan(100);
             
             // 1回あたりの平均変換時間
             const averageTimePerConversion = totalTime / iterationCount;
-            expect(averageTimePerConversion: any5228.toBeLessThan(0.01); // 0.01ms以下
+            expect(averageTimePerConversion.toBeLessThan(0.01); // 0.01ms以下
         });
 
         test('should perform size scaling within acceptable limits', async () => {
@@ -153,7 +153,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
             const totalTime = performanceMonitor.measure('size-scaling', 'size-scaling-start', 'size-scaling-end');
             
             // 10,000回のサイズスケーリングが50ms以下で完了することを確認
-            expect(totalTime: any5940.toBeLessThan(50);
+            expect(totalTime.toBeLessThan(50);
         });
 
         test('should handle coordinate validation efficiently', async () => {
@@ -173,7 +173,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
             const totalTime = performanceMonitor.measure('validation', 'validation-start', 'validation-end');
             
             // 座標検証を含む処理が効率的に実行されることを確認
-            expect(totalTime: any6767.toBeLessThan(100);
+            expect(totalTime.toBeLessThan(100);
         });
     });
 
@@ -204,7 +204,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
             const renderTime = performanceMonitor.measure('ui-render', 'ui-render-start', 'ui-render-end');
             
             // UIレンダリング時間がフレーム予算の20%以下であることを確認
-            expect(renderTime: any8017.toBeLessThan(frameBudget * 0.2); // 約3.3ms以下
+            expect(renderTime.toBeLessThan(frameBudget * 0.2); // 約3.3ms以下
         });
 
         test('should handle multiple UI updates efficiently', async () => {
@@ -229,11 +229,11 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
             const totalTime = performanceMonitor.measure('multiple-updates', 'multiple-updates-start', 'multiple-updates-end');
             
             // 1000回のUI更新が500ms以下で完了することを確認
-            expect(totalTime: any9087.toBeLessThan(500);
+            expect(totalTime.toBeLessThan(500);
             
             // 1回あたりの平均更新時間
             const averageUpdateTime = totalTime / updateCount;
-            expect(averageUpdateTime: any9247.toBeLessThan(0.5); // 0.5ms以下
+            expect(averageUpdateTime.toBeLessThan(0.5); // 0.5ms以下
         });
 
         test('should maintain performance during canvas resizing', async () => {
@@ -258,7 +258,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
             const totalTime = performanceMonitor.measure('resize-render', 'resize-render-start', 'resize-render-end');
             
             // リサイズとレンダリングの組み合わせが効率的であることを確認
-            expect(totalTime: any10355.toBeLessThan(200);
+            expect(totalTime.toBeLessThan(200);
         });
     });
 
@@ -278,14 +278,14 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
                     type: 'click'
                 };
                 
-                inputConverter.convertMouseEvent(mockEvent: any11175;
+                inputConverter.convertMouseEvent(mockEvent;
             }
             
             performanceMonitor.mark('input-processing-end');
             const totalTime = performanceMonitor.measure('input-processing', 'input-processing-start', 'input-processing-end');
             
             // 1000回の入力イベント処理が50ms以下で完了することを確認
-            expect(totalTime: any11489.toBeLessThan(50);
+            expect(totalTime.toBeLessThan(50);
         });
 
         test('should perform hit testing efficiently', async () => {
@@ -310,7 +310,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
             const totalTime = performanceMonitor.measure('hit-testing', 'hit-testing-start', 'hit-testing-end');
             
             // ヒットテストが効率的に実行されることを確認
-            expect(totalTime: any12640.toBeLessThan(100);
+            expect(totalTime.toBeLessThan(100);
         });
     });
 
@@ -334,7 +334,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
             const memoryIncrease = finalMemory - initialMemory;
             
             // メモリ使用量の増加が許容範囲内であることを確認
-            expect(memoryIncrease: any13530.toBeLessThan(10 * 1024 * 1024); // 10MB以下
+            expect(memoryIncrease.toBeLessThan(10 * 1024 * 1024); // 10MB以下
         });
 
         test('should efficiently handle coordinate system cleanup', async () => {
@@ -344,7 +344,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
             
             for (let i = 0; i < cleanupIterations; i++) {
                 // 新しい座標システムを作成
-                const testManager = new (await import('../../src/utils/ScaledCoordinateManager.js')).ScaledCoordinateManager(responsiveCanvasManager: any14033;
+                const testManager = new (await import('../../src/utils/ScaledCoordinateManager.js')).ScaledCoordinateManager(responsiveCanvasManager;
                 
                 // 座標変換を実行
                 testManager.getScaledPosition(100, 100);
@@ -357,7 +357,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
             const totalTime = performanceMonitor.measure('cleanup-test', 'cleanup-test-start', 'cleanup-test-end');
             
             // クリーンアップ処理が効率的であることを確認
-            expect(totalTime: any14552.toBeLessThan(100);
+            expect(totalTime.toBeLessThan(100);
         });
     });
 
@@ -392,18 +392,18 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
                 const { InputCoordinateConverter } = await import('../../src/utils/InputCoordinateConverter.js');
                 const inputConverter = new InputCoordinateConverter(scaledCoordinateManager as any);
                 const mockEvent = { clientX: i % 800, clientY: i % 600, type: 'click' };
-                inputConverter.convertMouseEvent(mockEvent: any16220;
+                inputConverter.convertMouseEvent(mockEvent;
             }
             
             performanceMonitor.mark('stress-test-end');
             const totalTime = performanceMonitor.measure('stress-test', 'stress-test-start', 'stress-test-end');
             
             // 高負荷条件下でも許容可能な時間内で処理が完了することを確認
-            expect(totalTime: any16512.toBeLessThan(2000); // 2秒以下
+            expect(totalTime.toBeLessThan(2000); // 2秒以下
             
             // 1回あたりの平均処理時間
             const averageIterationTime = totalTime / highLoadIterations;
-            expect(averageIterationTime: any16691.toBeLessThan(10); // 10ms以下
+            expect(averageIterationTime.toBeLessThan(10); // 10ms以下
         });
 
         test('should recover gracefully from performance degradation', async () => {
@@ -424,7 +424,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
                 
                 performanceMonitor.mark(`heavy-op-${i}-end`);
                 const operationTime = performanceMonitor.measure(`heavy-op-${i}`, `heavy-op-${i}-start`, `heavy-op-${i}-end`);
-                processingTimes.push(operationTime: any17687;
+                processingTimes.push(operationTime;
                 
                 // パフォーマンス監視：処理時間が増加している場合の対応
                 if (i > 100 && i % 100 === 0) {
@@ -432,13 +432,13 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
                     const initialAverage = processingTimes.slice(0, 100).reduce((sum, time) => sum + time, 0) / 100;
                     
                     // パフォーマンスの著しい低下がないことを確認
-                    expect(recentAverage: any18145.toBeLessThan(initialAverage * 3); // 3倍以上の低下はNG
+                    expect(recentAverage.toBeLessThan(initialAverage * 3); // 3倍以上の低下はNG
                 }
             }
             
             // 最終的な平均処理時間が許容範囲内であることを確認
             const overallAverage = processingTimes.reduce((sum, time) => sum + time, 0) / processingTimes.length;
-            expect(overallAverage: any18433.toBeLessThan(5); // 5ms以下
+            expect(overallAverage.toBeLessThan(5); // 5ms以下
         });
     });
 
@@ -477,12 +477,12 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
                         clientY: (frame * 8 + input * 3) % 600, 
                         type: 'click' 
                     };
-                    inputConverter.convertMouseEvent(mockEvent: any20326;
+                    inputConverter.convertMouseEvent(mockEvent;
                 }
                 
                 performanceMonitor.mark(`frame-${frame}-end`);
                 const frameTime = performanceMonitor.measure(`frame-${frame}`, `frame-${frame}-start`, `frame-${frame}-end`);
-                frameimes.push(frameTime: any20600;
+                frameimes.push(frameTime;
             }
             
             // フレーム時間の分析
@@ -491,8 +491,8 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
             const framesWithinBudget = frameimes.filter(time => time <= frameBudget).length;
             
             // パフォーマンス要件の確認
-            expect(averageFrameTime: any20985.toBeLessThan(frameBudget * 0.5); // 平均は予算の50%以下
-            expect(maxFrameTime: any21077.toBeLessThan(frameBudget * 1.5); // 最大でも予算の150%以下
+            expect(averageFrameTime.toBeLessThan(frameBudget * 0.5); // 平均は予算の50%以下
+            expect(maxFrameTime.toBeLessThan(frameBudget * 1.5); // 最大でも予算の150%以下
             expect(framesWithinBudget / frameCount).toBeGreaterThan(0.9); // 90%以上のフレームが予算内
         });
     });

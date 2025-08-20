@@ -17,7 +17,7 @@ console.log('-'.repeat(50));
 try {
     // Constructor parameters check
     console.log('Constructor signature:');
-    console.log('  AudioAccessibilitySupport(audioManager: any494 ✓');
+    console.log('  AudioAccessibilitySupport(audioManager ✓');
     
     // Expected public methods
     const audioAccessibilityMethods = [
@@ -140,7 +140,7 @@ console.log('-'.repeat(50));
 try {
     // Constructor parameters check
     console.log('Constructor signature:');
-    console.log('  VisualFeedbackManager(audioAccessibilityManager: any3724 ✓');
+    console.log('  VisualFeedbackManager(audioAccessibilityManager ✓');
     
     // Expected public methods
     const visualFeedbackMethods = [
@@ -205,23 +205,23 @@ console.log('-'.repeat(50));
 
 // AudioAccessibilitySupport key methods
 console.log('\nAudioAccessibilitySupport method signatures:');
-console.log('  ✓ constructor(audioManager: any5492');
+console.log('  ✓ constructor(audioManager');
 console.log('  ✓ initialize() -> Promise<boolean>');
 console.log('  ✓ showVisualNotification(message, type, options)');
 console.log('  ✓ showCaption(text, options)');
 console.log('  ✓ addAudioDescription(category, type, params, priority)');
 console.log('  ✓ processAudioEvent(eventType, eventData, audioData)');
 console.log('  ✓ updateColorIndicator(level, options)');
-console.log('  ✓ triggerHapticFeedback(type: any5924');
+console.log('  ✓ triggerHapticFeedback(type');
 console.log('  ✓ getSettings() -> Object');
-console.log('  ✓ updateSettings(newSettings: any6016 -> Promise');
+console.log('  ✓ updateSettings(newSettings -> Promise');
 console.log('  ✓ updateSetting(key, value) -> Promise');
-console.log('  ✓ resetSettings(keys: any6138 -> Promise');
-console.log('  ✓ vibrate(pattern: any6190');
-console.log('  ✓ setAudioIntensity(intensity: any6244');
-console.log('  ✓ enablePatternRecognition(enabled: any6307');
-console.log('  ✓ enableAccessibilityFeatures(enabled: any6371 -> Promise');
-console.log('  ✓ getEventHistory(limit: any6434 -> Array');
+console.log('  ✓ resetSettings(keys -> Promise');
+console.log('  ✓ vibrate(pattern');
+console.log('  ✓ setAudioIntensity(intensity');
+console.log('  ✓ enablePatternRecognition(enabled');
+console.log('  ✓ enableAccessibilityFeatures(enabled -> Promise');
+console.log('  ✓ getEventHistory(limit -> Array');
 console.log('  ✓ clearEventHistory()');
 console.log('  ✓ getStatus() -> Object');
 console.log('  ✓ getCapabilities() -> Object');
@@ -234,32 +234,32 @@ console.log('\nVisualFocusManager method signatures:');
 console.log('  ✓ constructor(accessibilityManager, focusManager)');
 console.log('  ✓ initialize()');
 console.log('  ✓ handleFocusChange(element, index, keyboardMode)');
-console.log('  ✓ handleFocusLost(element: any7005');
-console.log('  ✓ setHighContrastMode(enabled: any7061');
-console.log('  ✓ applyConfig(config: any7109');
+console.log('  ✓ handleFocusLost(element');
+console.log('  ✓ setHighContrastMode(enabled');
+console.log('  ✓ applyConfig(config');
 console.log('  ✓ generateReport() -> Object');
-console.log('  ✓ setEnabled(enabled: any7202');
+console.log('  ✓ setEnabled(enabled');
 console.log('  ✓ destroy()');
 
 // VisualFeedbackManager key methods
 console.log('\nVisualFeedbackManager method signatures:');
-console.log('  ✓ constructor(audioAccessibilityManager: any7377');
+console.log('  ✓ constructor(audioAccessibilityManager');
 console.log('  ✓ initialize()');
 console.log('  ✓ triggerGameEventFeedback(eventType, eventData)');
 console.log('  ✓ selectFeedbackTarget(eventType, eventData)');
-console.log('  ✓ triggerVisualFeedback(options: any7616');
+console.log('  ✓ triggerVisualFeedback(options');
 console.log('  ✓ startAudioVisualization()');
-console.log('  ✓ getFrequencyColor(frequency: any7716');
-console.log('  ✓ triggerVolumeBasedFeedback(volume: any7781');
+console.log('  ✓ getFrequencyColor(frequency');
+console.log('  ✓ triggerVolumeBasedFeedback(volume');
 console.log('  ✓ triggerEdgeFeedback(color, intensity)');
 console.log('  ✓ enable()');
 console.log('  ✓ disable()');
-console.log('  ✓ setGlobalIntensity(intensity: any7952');
+console.log('  ✓ setGlobalIntensity(intensity');
 console.log('  ✓ addCustomEventMapping(eventType, mapping)');
 console.log('  ✓ triggerManualFeedback(type, options)');
-console.log('  ✓ applyConfig(config: any8121');
+console.log('  ✓ applyConfig(config');
 console.log('  ✓ generateReport() -> Object');
-console.log('  ✓ setEnabled(enabled: any8214');
+console.log('  ✓ setEnabled(enabled');
 console.log('  ✓ destroy()');
 
 /**

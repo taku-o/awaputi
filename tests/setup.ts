@@ -34,7 +34,7 @@ try {
 };
 
 (global as any).cancelAnimationFrame = (id) => {
-  clearTimeout(id: any1199;
+  clearTimeout(id;
 };
 
 // Use MockFactory for enhanced performance and storage mocking
@@ -130,12 +130,12 @@ Object.defineProperty(global.window, 'devicePixelRatio', {
 const mockIDBDatabase = {
   createObjectStore: jest.fn(() => ({
     add: jest.fn(() => Promise.resolve()),
-    get: jest.fn(() => Promise.resolve(undefined: any3697),
+    get: jest.fn(() => Promise.resolve(undefined),
     put: jest.fn(() => Promise.resolve()),
     delete: jest.fn(() => Promise.resolve()),
     clear: jest.fn(() => Promise.resolve()),
     count: jest.fn(() => Promise.resolve(0)),
-    openCursor: jest.fn(() => Promise.resolve(null: any3943)
+    openCursor: jest.fn(() => Promise.resolve(null)
   })),
   transaction: jest.fn(() => ({
     objectStore: jest.fn(() => mockIDBDatabase.createObjectStore()),

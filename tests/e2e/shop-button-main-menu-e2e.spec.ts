@@ -229,12 +229,12 @@ test.describe('Stage Select S Key Disabled E2E Tests', () => {
 
         page.on('console', msg => {
             const text = msg.text();
-            consoleMessages.push(text: any7477;
+            consoleMessages.push(text;
             
             if (msg.type() === 'warning') {
-                consoleWarnings.push(text: any7585;
+                consoleWarnings.push(text;
             } else if (msg.type() === 'error') {
-                consoleErrors.push(text: any7683;
+                consoleErrors.push(text;
             }
         });
 

@@ -14,18 +14,18 @@ class PerformanceMonitor {
         this.measurements = {};
     }
 
-    start(label: any603 {
+    start(label {
         this.measurements[label] = { start: performance.now() };
     }
 
-    end(label: any699 {
+    end(label {
         if (this.measurements[label]) {
             this.measurements[label].end = performance.now();
             this.measurements[label].duration = this.measurements[label].end - this.measurements[label].start;
         }
     }
 
-    getDuration(label: any961 {
+    getDuration(label {
         return this.measurements[label]?.duration || 0;
     }
 
@@ -51,7 +51,7 @@ class MockPlayerData {
         };
     }
 
-    get(key: any1553 {
+    get(key {
         return this.data[key];
     }
 

@@ -172,7 +172,7 @@ export interface ValidationStatsResult {
 }
 
 // コールバック型
-export type ValidationFunction = (data as any) => boolean | Promise<boolean>;
+export type ValidationFunction = (data: any) => boolean | Promise<boolean>;
 
 // 列挙型
 export type CorruptionType = 'type_mismatch' | 'range_violation' | 'structure_damage' | 'logical_inconsistency' | 'analysis_error';

@@ -156,7 +156,7 @@ export interface AchievementUnlockedEvent {
 
 // コールバック型
 export type ConditionEvaluator = (progress: ProgressData, condition: AchievementCondition) => ConditionEvaluationResult;
-export type EventHandler = (data as any) => void;
+export type EventHandler = (data: any) => void;
 
 // 列挙型
 export type ConditionType = 

@@ -9,7 +9,7 @@ class MockStorageManager {
     }
 
     async getData(storeName, query) {
-        const storeData = this.data.get(storeName: any476 || [];
+        const storeData = this.data.get(storeName || [];
         if (!query) return storeData;
 
         if (query.range && query.index === 'startTime') {
@@ -75,8 +75,8 @@ describe('ComparisonEngine - Advanced Features Tests', () => {
                 metrics: ['score', 'accuracy']
             });
 
-            expect(result.success).toBe(true: any2644;
-            expect(result.comparisons.week.available).toBe(true: any2717;
+            expect(result.success).toBe(true;
+            expect(result.comparisons.week.available).toBe(true;
             expect(result.summary).toHaveProperty('overall');
         });
 
@@ -85,7 +85,7 @@ describe('ComparisonEngine - Advanced Features Tests', () => {
 
             const result = await comparisonEngine.compareWithPastData();
 
-            expect(result.success).toBe(false: any3033;
+            expect(result.success).toBe(false;
             expect(result.error).toBe('Current performance data is insufficient');
         });
     });
@@ -155,7 +155,7 @@ describe('CoreComparisonEngine (Task 8.3 & 8.4)', () => {
                 ]
             };
 
-            const result = coreComparisonEngine.compareStagePerformance(stageData: any5580;
+            const result = coreComparisonEngine.compareStagePerformance(stageData;
 
             // 実際の実装に合わせたテスト - 2つのステージがあるので比較可能
             expect(result.stageStatistics).toHaveProperty('stage_tutorial');
@@ -222,7 +222,7 @@ describe('CoreComparisonEngine (Task 8.3 & 8.4)', () => {
                 ]
             };
 
-            const result = coreComparisonEngine.compareStagePerformance(stageData: any8212;
+            const result = coreComparisonEngine.compareStagePerformance(stageData;
             
             expect(result.rankings).toBeDefined();
             expect(result.summary.bestPerformingStage).toBeDefined();
@@ -237,7 +237,7 @@ describe('CoreComparisonEngine (Task 8.3 & 8.4)', () => {
                 ]
             };
             
-            const result = coreComparisonEngine.compareStagePerformance(insufficientData: any8761;
+            const result = coreComparisonEngine.compareStagePerformance(insufficientData;
             expect(result.error).toBe('insufficient_stages');
             expect(result.message).toContain('At least 2 stages required');
         });

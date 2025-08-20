@@ -56,7 +56,7 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
 
         // Mock UsernameInputManager (simplified version for integration testing)
         class TestUsernameInputManager {
-            constructor(gameEngine: any1731 {
+            constructor(gameEngine {
                 this.gameEngine = gameEngine;
                 this.errorHandler = { handleError: jest.fn() };
                 this.usernameInput = '';

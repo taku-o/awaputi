@@ -91,14 +91,14 @@ describe('Build Process Integration', () => {
                         return this.currentLanguage;
                     }
                     
-                    setLanguage(language: any4022 {
+                    setLanguage(language {
                         if (this.currentLanguage !== language) {
                             this.currentLanguage = language;
                             this.notifyLanguageChange(language);
                         }
                     }
                     
-                    notifyLanguageChange(language: any4342 {
+                    notifyLanguageChange(language {
                         this.languageChangeListeners.forEach(listener => {
                             try {
                                 listener(language);
@@ -138,14 +138,14 @@ describe('Build Process Integration', () => {
         test('should handle 404 errors gracefully', () => {
             // 404エラーの適切な処理テスト
             const mockResourceLoader = {
-                loadResource(path: any5819 {
+                loadResource(path {
                     if (path === 'favicon.ico') {
                         return { status: 200, data: 'mock-favicon-data' };
                     }
                     return { status: 404, error: 'Not Found' };
                 },
                 
-                handleResourceError(error: any6117 {
+                handleResourceError(error {
                     // 404エラーを適切に処理
                     if (error.status === 404) {
                         console.warn('Resource not found, continuing without it');

@@ -264,12 +264,12 @@ export class AudioConfig {
         // 音質設定の検証ルール
         this.configManager.setValidationRule('audio', 'quality.sampleRate', {
             type: 'number',
-            validator: (value as any) => [8000, 11025, 22050, 44100, 48000, 96000].includes(value)
+            validator: (value: any) => [8000, 11025, 22050, 44100, 48000, 96000].includes(value)
         });
         
         this.configManager.setValidationRule('audio', 'quality.bufferSize', {
             type: 'number',
-            validator: (value as any) => [256, 512, 1024, 2048, 4096, 8192, 16384].includes(value)
+            validator: (value: any) => [256, 512, 1024, 2048, 4096, 8192, 16384].includes(value)
         });
         
         // 音響効果設定の検証ルール

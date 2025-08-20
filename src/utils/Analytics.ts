@@ -52,7 +52,7 @@ declare global {
     interface Window {
         gtag?: (command: string, targetId: string, parameters?: any) => void;
         Sentry?: {
-            init: (config as any) => void;
+            init: (config: any) => void;
             setTag: (key: string, value: string) => void;
             captureException: (error: Error, options?: any) => void;
         };

@@ -153,7 +153,7 @@ interface PerformanceReport {
  */
 interface ConfigurationManager {
     get(category: string): any;
-    watch(category: string, path: string, callback: (value as any) => void): void;
+    watch(category: string, path: string, callback: (value: any) => void): void;
 }
 
 /**

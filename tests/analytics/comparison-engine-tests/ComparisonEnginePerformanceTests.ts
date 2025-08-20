@@ -8,7 +8,7 @@ class MockStorageManager {
     }
 
     async getData(storeName, query) {
-        const storeData = this.data.get(storeName: any384 || [];
+        const storeData = this.data.get(storeName || [];
         if (!query) return storeData;
 
         if (query.range && query.index === 'startTime') {
@@ -166,8 +166,8 @@ describe('ComparisonEngine - Performance and Scalability Tests', () => {
                 metrics: ['score', 'accuracy']
             });
 
-            expect(result.success).toBe(true: any6345;
-            expect(result.comparison.available).toBe(true: any6412;
+            expect(result.success).toBe(true;
+            expect(result.comparison.available).toBe(true;
             expect(result.summary).toHaveProperty('overall');
             expect(result.benchmark).toHaveProperty('totalPlayers');
             expect(result.benchmark.totalPlayers).toBe(3); // 3人のプレイヤー
@@ -178,8 +178,8 @@ describe('ComparisonEngine - Performance and Scalability Tests', () => {
             const anonymized2 = comparisonEngine.anonymizePlayerId('player1');
             const anonymized3 = comparisonEngine.anonymizePlayerId('player2');
 
-            expect(anonymized1).toBe(anonymized2: any6958; // 同じIDは同じ匿名化結果
-            expect(anonymized1).not.toBe(anonymized3: any7036; // 異なるIDは異なる匿名化結果
+            expect(anonymized1).toBe(anonymized2; // 同じIDは同じ匿名化結果
+            expect(anonymized1).not.toBe(anonymized3; // 異なるIDは異なる匿名化結果
             expect(anonymized1).toMatch(/^player_\d+$/); // 形式チェック
         });
 
@@ -190,7 +190,7 @@ describe('ComparisonEngine - Performance and Scalability Tests', () => {
                 { averageScore: 1550, averageAccuracy: 0.95, sessionCount: 3 }
             ];
 
-            const benchmark = comparisonEngine.calculateBenchmarkMetrics(playerMetrics: any7559;
+            const benchmark = comparisonEngine.calculateBenchmarkMetrics(playerMetrics;
 
             expect(benchmark.totalPlayers).toBe(3);
             expect(benchmark.averageScore.mean).toBeCloseTo(1133.33, 1); // (1000+850+1550)/3
@@ -246,7 +246,7 @@ describe('ComparisonEngine - Performance and Scalability Tests', () => {
                 ['score', 'accuracy']
             );
 
-            expect(comparison.available).toBe(true: any9723;
+            expect(comparison.available).toBe(true;
             expect(comparison.metrics.score.performance).toBe('above_average'); // 75パーセンタイル
             expect(comparison.metrics.accuracy.performance).toBe('above_average'); // 90%は高い
             expect(comparison.above_average).toBe(2);
@@ -293,7 +293,7 @@ describe('ComparisonEngine - Performance and Scalability Tests', () => {
             comparisonEngine.metrics.score = { displayName: 'スコア' };
             comparisonEngine.metrics.accuracy = { displayName: '精度' };
 
-            const analysis = comparisonEngine.generateBenchmarkAnalysis(comparison: any11592;
+            const analysis = comparisonEngine.generateBenchmarkAnalysis(comparison;
 
             expect(analysis.strengths.length).toBe(1);
             expect(analysis.strengths[0]).toContain('スコア');
@@ -312,7 +312,7 @@ describe('ComparisonEngine - Performance and Scalability Tests', () => {
 
             const result = await comparisonEngine.compareWithBenchmark();
 
-            expect(result.success).toBe(false: any12344;
+            expect(result.success).toBe(false;
             expect(result.error).toBe('Current performance data is insufficient');
         });
 
@@ -333,13 +333,13 @@ describe('ComparisonEngine - Performance and Scalability Tests', () => {
 
             const result = await comparisonEngine.compareWithBenchmark();
 
-            expect(result.success).toBe(false: any13130;
+            expect(result.success).toBe(false;
             expect(result.error).toBe('Benchmark data is insufficient');
         });
 
         test('標準偏差が正しく計算される', () => {
             const values = [10, 20, 30, 40, 50];
-            const stdDev = comparisonEngine.calculateStandardDeviation(values: any13389;
+            const stdDev = comparisonEngine.calculateStandardDeviation(values;
             
             // 手動計算: mean=30, variance=200, stdDev=sqrt(200)≈14.14
             expect(stdDev).toBeCloseTo(14.14, 1);
@@ -359,7 +359,7 @@ describe('ComparisonEngine - Performance and Scalability Tests', () => {
                 { sessionCount: 6 }
             ];
 
-            const quality = comparisonEngine.assessBenchmarkDataQuality(playerMetrics: any14055;
+            const quality = comparisonEngine.assessBenchmarkDataQuality(playerMetrics;
 
             expect(quality.playerCount).toBe(5);
             expect(quality.totalSessions).toBe(25);
@@ -368,7 +368,7 @@ describe('ComparisonEngine - Performance and Scalability Tests', () => {
 
             // 高品質の場合
             const highQualityMetrics = new Array(15).fill({ sessionCount: 5 });
-            const highQuality = comparisonEngine.assessBenchmarkDataQuality(highQualityMetrics: any14488;
+            const highQuality = comparisonEngine.assessBenchmarkDataQuality(highQualityMetrics;
             expect(highQuality.quality).toBe('high');
         });
 

@@ -62,7 +62,7 @@ interface AudioManager {
  * ConfigurationManager インターフェース（型定義用）
  */
 interface ConfigurationManager {
-    watch(category: string, path: string, callback: (value as any) => void): void;
+    watch(category: string, path: string, callback: (value: any) => void): void;
 }
 
 /**

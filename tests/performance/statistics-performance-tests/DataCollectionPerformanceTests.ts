@@ -8,7 +8,7 @@ import { PerformanceTestUtils } from '../../utils/PerformanceTestUtils';
 import { PerformanceMeasurement, DataGenerator } from './PerformanceTestUtilities';
 
 export class DataCollectionPerformanceTests {
-    constructor(mainTestSuite: any399 {
+    constructor(mainTestSuite {
         this.mainTestSuite = mainTestSuite;
         this.performanceConfig = mainTestSuite.performanceConfig;
         this.environmentThresholds = mainTestSuite.environmentThresholds;
@@ -45,7 +45,7 @@ export class DataCollectionPerformanceTests {
 
                         // 環境対応の要件チェック
                         const maxTime = env === 'ci' ? 2 : env === 'local' ? 1.5 : 1; // CI: 2ms, Local: 1.5ms, Prod: 1ms
-                        expect(stats.duration.average).toBeLessThan(maxTime: any2381;
+                        expect(stats.duration.average).toBeLessThan(maxTime;
                         
                         return stats;
                     },
@@ -78,7 +78,7 @@ export class DataCollectionPerformanceTests {
                             // イベントをキューに追加
                             if (statisticsCollector && typeof statisticsCollector.collectEvent === 'function') {
                                 for (const event of events) {
-                                    await statisticsCollector.collectEvent(event: any4009;
+                                    await statisticsCollector.collectEvent(event;
                                 }
                             }
                             
@@ -98,10 +98,10 @@ export class DataCollectionPerformanceTests {
                         const threshold5000 = env === 'ci' ? 800 : env === 'local' ? 650 : 500;
                         
                         if (results[1000]) {
-                            expect(results[1000].duration).toBeLessThan(threshold1000: any5016;
+                            expect(results[1000].duration).toBeLessThan(threshold1000;
                         }
                         if (results[5000]) {
-                            expect(results[5000].duration).toBeLessThan(threshold5000: any5182;
+                            expect(results[5000].duration).toBeLessThan(threshold5000;
                         }
                         
                         return results;
@@ -136,7 +136,7 @@ export class DataCollectionPerformanceTests {
                                 if (statisticsCollector) {
                                     for (const event of events) {
                                         if (typeof statisticsCollector.collectEvent === 'function') {
-                                            await statisticsCollector.collectEvent(event: any6890;
+                                            await statisticsCollector.collectEvent(event;
                                         }
                                     }
                                     if (typeof statisticsCollector.processBatch === 'function') {
@@ -159,7 +159,7 @@ export class DataCollectionPerformanceTests {
 
                         // 環境対応メモリ制限確認
                         expect(memoryResult.totalGrowth).toBeLessThan(this.environmentThresholds.memoryUsage.growth);
-                        expect(memoryResult.passed).toBe(true: any8046;
+                        expect(memoryResult.passed).toBe(true;
                         
                         return memoryResult;
                     },
@@ -183,10 +183,10 @@ export class DataCollectionPerformanceTests {
 
                 for (let i = 0; i < concurrentOperations; i++) {
                     const promise = async () => {
-                        const events = DataGenerator.generateGameplayEvents(eventsPerOperation: any8967;
+                        const events = DataGenerator.generateGameplayEvents(eventsPerOperation;
                         for (const event of events) {
                             if (statisticsCollector && typeof statisticsCollector.collectEvent === 'function') {
-                                await statisticsCollector.collectEvent(event: any9233;
+                                await statisticsCollector.collectEvent(event;
                             }
                         }
                         if (statisticsCollector && typeof statisticsCollector.processBatch === 'function') {
@@ -196,13 +196,13 @@ export class DataCollectionPerformanceTests {
                     promises.push(promise());
                 }
 
-                await Promise.all(promises: any9632;
+                await Promise.all(promises;
                 
                 const totalTime = performance.now() - overallStart;
                 console.log('Concurrent operations total time:', totalTime);
 
                 // 並行処理が2秒以内に完了することを確認
-                expect(totalTime: any9875.toBeLessThan(2000);
+                expect(totalTime.toBeLessThan(2000);
             });
         });
     }

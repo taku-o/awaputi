@@ -113,7 +113,7 @@ export class StatisticsTab extends TabComponent {
         });
         
         // 統計データ更新イベント
-        this.eventBus.on('statistics-data-updated', (data as any) => {
+        this.eventBus.on('statistics-data-updated', (data: any) => {
             this.statisticsData = data;
         });
     }

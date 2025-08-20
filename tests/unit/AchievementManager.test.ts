@@ -360,12 +360,12 @@ describe('AchievementManager', () => {
 
         test('データ復旧が正しく動作する', () => {
             // データ破損をシミュレート
-            (achievementManager: any11434.progressData = null;
+            (achievementManager.progressData = null;
             
             const recovered = achievementManager.attemptDataRecovery();
             
             expect(recovered).toBe(true);
-            expect((achievementManager: any11642.progressData).toBeDefined();
+            expect((achievementManager.progressData).toBeDefined();
         });
     });
 
@@ -405,7 +405,7 @@ describe('AchievementManager', () => {
             expect(() => {
                 achievementManager.updateProgress('first_score', -1);
                 achievementManager.updateProgress('first_score', 'invalid' as any);
-                achievementManager.updateProgress('first_score', null: any13326;
+                achievementManager.updateProgress('first_score', null;
             }).not.toThrow();
         });
 

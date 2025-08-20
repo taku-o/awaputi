@@ -200,7 +200,7 @@ describe('GameBalanceCompatibility', () => {
         
         test('should prevent direct modification of BALANCE_CONFIG', () => {
             // 直接設定を試みる
-            (BALANCE_CONFIG: any6935.scoring = { test: 'value' };
+            (BALANCE_CONFIG.scoring = { test: 'value' };
             
             // エラーが表示されること
             expect(console.error).toHaveBeenCalled();

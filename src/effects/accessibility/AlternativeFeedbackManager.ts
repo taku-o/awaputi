@@ -3,7 +3,7 @@ import { getErrorHandler } from '../../utils/ErrorHandler.js';
 // Type definitions for alternative feedback systems
 interface AccessibilityManager {
     getConfiguration(): AccessibilityConfiguration;
-    addEventListener?(event: string, handler: (event as any) => void): void;
+    addEventListener?(event: string, handler: (event: any) => void): void;
     removeEventListener?(event: string): void;
 }
 
@@ -699,7 +699,7 @@ export class AlternativeFeedbackManager {
      */
     private setupEventListeners(): void {
         if (this.accessibilityManager) {
-            this.accessibilityManager.addEventListener?.('configurationApplied', (event as any) => {
+            this.accessibilityManager.addEventListener?.('configurationApplied', (event: any) => {
                 this.config = event.config;
                 this.applyConfiguration();
             });

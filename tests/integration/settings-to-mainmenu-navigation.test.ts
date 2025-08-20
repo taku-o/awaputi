@@ -58,7 +58,7 @@ class MockSceneManager {
         this.scenes.set(name, scene);
     }
 
-    switchScene(name: any1469 {
+    switchScene(name {
         const scene = this.scenes.get(name);
         if (!scene) {
             console.error(`Scene ${name} not found`);
@@ -113,7 +113,7 @@ class MockMainMenuScene {
 }
 
 class MockSettingsScene {
-    constructor(gameEngine: any2566 {
+    constructor(gameEngine {
         this.gameEngine = gameEngine;
         this.isActive = false;
         this.isEditingValue = false;

@@ -50,7 +50,7 @@ const GameplaySimulator = {
     /**
      * 高スコアゲームプレイをシミュレーション
      */
-    async simulateHighScoreGameplay(page: any1530 {
+    async simulateHighScoreGameplay(page {
         await page.click('[data-testid="start-game-button"]');
         await page.waitForSelector('[data-testid="game-canvas"]');
 
@@ -100,7 +100,7 @@ const AccessibilityHelper = {
     /**
      * キーボードナビゲーションをテスト
      */
-    async testKeyboardNavigation(page: any3083 {
+    async testKeyboardNavigation(page {
         // Tabキーでのナビゲーション
         await page.keyboard.press('Tab');
         const firstFocusable = await page.locator(':focus');
@@ -117,7 +117,7 @@ const AccessibilityHelper = {
     /**
      * スクリーンリーダー対応をテスト
      */
-    async testScreenReaderSupport(page: any3559 {
+    async testScreenReaderSupport(page {
         // ARIA属性の確認
         const statisticsSection = page.locator('[role="main"]');
         await expect(statisticsSection).toHaveAttribute('aria-label');
@@ -135,7 +135,7 @@ const AccessibilityHelper = {
     /**
      * 高コントラストモードをテスト
      */
-    async testHighContrastMode(page: any4133 {
+    async testHighContrastMode(page {
         // 高コントラストモードを有効化
         await page.keyboard.press('Control+Shift+H');
         
@@ -865,7 +865,7 @@ const E2ETestHelper = {
     /**
      * アクセシビリティ監査（簡易版）
      */
-    async auditAccessibility(page: any33802 {
+    async auditAccessibility(page {
         // WCAG基本チェック
         const issues: any[] = [];
         

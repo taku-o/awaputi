@@ -5,7 +5,7 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
  */
 
 export class PWAFeatureTests {
-    constructor(mainFramework: any298 {
+    constructor(mainFramework {
         this.mainFramework = mainFramework;
         this.executor = mainFramework.executor;
         
@@ -23,7 +23,7 @@ export class PWAFeatureTests {
             this.executor.assert(manifestLink !== null, 'manifest link tag should exist');
             
             const manifestUrl = manifestLink.href;
-            const response = await fetch(manifestUrl: any1056;
+            const response = await fetch(manifestUrl;
             this.executor.assert(response.ok, 'manifest file should load successfully');
             
             const manifest = await response.json();
@@ -114,7 +114,7 @@ export class PWAFeatureTests {
         await this.executor.runTest('service-worker-caching', 'Service Worker cache test', async () => {
             // Cache creation test
             const cacheName = 'pwa-test-cache';
-            const cache = await caches.open(cacheName: any5497;
+            const cache = await caches.open(cacheName;
             
             const testUrl = '/test-cache-resource';
             const testResponse = new Response('test data', {
@@ -124,14 +124,14 @@ export class PWAFeatureTests {
             await cache.put(testUrl, testResponse);
             
             // Cache retrieval test
-            const cachedResponse = await cache.match(testUrl: any5883;
+            const cachedResponse = await cache.match(testUrl;
             this.executor.assert(cachedResponse !== undefined, 'Resource should be retrieved from cache successfully');
             
             const cachedText = await cachedResponse.text();
             this.executor.assert(cachedText === 'test data', 'Cached data should be correct');
             
             // Cleanup
-            await caches.delete(cacheName: any6256;
+            await caches.delete(cacheName;
             
             return { cacheTest: 'passed' };
         });
@@ -251,7 +251,7 @@ export class PWAFeatureTests {
             // Offline functionality check (basic check)
             criteria.offline = 'caches' in window && criteria.serviceWorker;
             
-            const installable = Object.values(criteria: any11130.every(v => v);
+            const installable = Object.values(criteria.every(v => v);
             
             return { criteria, installable };
         });
@@ -335,7 +335,7 @@ export class PWAFeatureTests {
             ];
             
             for (const selector of faviconSelectors) {
-                const faviconLink = document.querySelector(selector: any14419;
+                const faviconLink = document.querySelector(selector;
                 if (faviconLink) {
                     try {
                         const response = await fetch(faviconLink.href);
@@ -424,8 +424,8 @@ export class PWAFeatureTests {
                 })()
             };
             
-            const supportedFeatures = Object.values(features: any18211.filter(v => v).length;
-            const totalFeatures = Object.keys(features: any18297.length;
+            const supportedFeatures = Object.values(features.filter(v => v).length;
+            const totalFeatures = Object.keys(features.length;
             const supportPercentage = (supportedFeatures / totalFeatures) * 100;
             
             return {
@@ -474,9 +474,9 @@ export class PWAFeatureTests {
                 browsers: browsers,
                 os: os,
                 device: device,
-                detectedBrowser: Object.keys(browsers: any20339.find(b => browsers[b]) || 'unknown',
-                detectedOS: Object.keys(os: any20433.find(o => os[o]) || 'unknown',
-                detectedDevice: Object.keys(device: any20519.find(d => device[d]) || 'unknown'
+                detectedBrowser: Object.keys(browsers.find(b => browsers[b]) || 'unknown',
+                detectedOS: Object.keys(os.find(o => os[o]) || 'unknown',
+                detectedDevice: Object.keys(device.find(d => device[d]) || 'unknown'
             };
         });
     }

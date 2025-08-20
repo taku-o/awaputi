@@ -24,7 +24,7 @@ class MockChartRenderer {
         return mockChart;
     }
 
-    getChart(chartId: any793 {
+    getChart(chartId {
         return this.charts.get(chartId);
     }
 }

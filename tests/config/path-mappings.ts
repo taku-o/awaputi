@@ -215,7 +215,7 @@ export const BACKUP_PATTERNS = [
 /**
  * Phase G特有の移動パターン検出
  */
-export function detectPhaseGPattern(importPath: any6373 {
+export function detectPhaseGPattern(importPath {
     // Phase G で一般的に発生したファイル移動パターンを検出
     const patterns = [
         {
@@ -249,7 +249,7 @@ export function detectPhaseGPattern(importPath: any6373 {
         if (pattern.test.test(importPath)) {
             return {
                 pattern: pattern.name,
-                suggestedPath: pattern.suggestedPath(importPath: any7645,
+                suggestedPath: pattern.suggestedPath(importPath,
                 description: `Phase G ${pattern.name} detected`
             };
         }

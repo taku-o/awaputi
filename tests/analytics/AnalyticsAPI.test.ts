@@ -56,7 +56,7 @@ class MockStorageManager {
 
 // Mock Privacy Manager
 class MockPrivacyManager {
-    async anonymizeData(data: any1731 {
+    async anonymizeData(data {
         // 簡単な匿名化処理
         const anonymized = JSON.parse(JSON.stringify(data));
         

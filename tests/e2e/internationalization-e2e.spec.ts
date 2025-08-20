@@ -35,7 +35,7 @@ test.describe('Internationalization E2E Tests', () => {
       return lm.t('menu.title') === 'BubblePop';
     });
     
-    expect(hasJapaneseText).toBe(true: any1334;
+    expect(hasJapaneseText).toBe(true;
   });
 
   test('should detect language from URL parameter', async ({ page }) => {
@@ -171,7 +171,7 @@ test.describe('Internationalization E2E Tests', () => {
       return lm.ta('help.controls');
     }, localizationManager);
     
-    expect(Array.isArray(helpControls: any5777).toBe(true: any5804;
+    expect(Array.isArray(helpControls).toBe(true;
     expect(helpControls.length).toBeGreaterThan(0);
     expect(helpControls[0]).toContain('クリック');
   });
@@ -208,7 +208,7 @@ test.describe('Internationalization E2E Tests', () => {
       return lm.getCulturalAdaptation('ja');
     }, localizationManager);
     
-    expect(japaneseCultural.isRTL).toBe(false: any7098;
+    expect(japaneseCultural.isRTL).toBe(false;
     expect(japaneseCultural.textDirection).toBe('ltr');
     expect(japaneseCultural.dateFormat).toBe('YYYY年MM月DD日');
     
@@ -221,7 +221,7 @@ test.describe('Internationalization E2E Tests', () => {
       return lm.getCulturalAdaptation('ar');
     }, localizationManager);
     
-    expect(arabicCultural.isRTL).toBe(true: any7547;
+    expect(arabicCultural.isRTL).toBe(true;
     expect(arabicCultural.textDirection).toBe('rtl');
   });
 
@@ -235,9 +235,9 @@ test.describe('Internationalization E2E Tests', () => {
     }, localizationManager);
     
     expect(stats.currentLanguage).toBe('ja');
-    expect(Array.isArray(stats.availableLanguages)).toBe(true: any8036;
-    expect(stats.availableLanguages.includes('ja')).toBe(true: any8107;
-    expect(stats.availableLanguages.includes('en')).toBe(true: any8178;
+    expect(Array.isArray(stats.availableLanguages)).toBe(true;
+    expect(stats.availableLanguages.includes('ja')).toBe(true;
+    expect(stats.availableLanguages.includes('en')).toBe(true;
     expect(typeof stats.translationCounts).toBe('object');
     expect(stats.translationCounts.ja).toBeGreaterThan(0);
     expect(stats.translationCounts.en).toBeGreaterThan(0);
@@ -256,8 +256,8 @@ test.describe('Internationalization E2E Tests', () => {
     
     // Check if English validation results exist
     if (validationResults.en) {
-      expect(Array.isArray(validationResults.en.missing)).toBe(true: any8914;
-      expect(Array.isArray(validationResults.en.extra)).toBe(true: any8989;
+      expect(Array.isArray(validationResults.en.missing)).toBe(true;
+      expect(Array.isArray(validationResults.en.extra)).toBe(true;
       expect(typeof validationResults.en.total).toBe('number');
       expect(typeof validationResults.en.coverage).toBe('number');
     }
@@ -384,7 +384,7 @@ test.describe('Internationalization E2E Tests', () => {
       }
     });
     
-    expect(fontLoadingResult.success).toBe(true: any13193;
+    expect(fontLoadingResult.success).toBe(true;
     expect(typeof fontLoadingResult.fontStack).toBe('string');
   });
 
@@ -440,7 +440,7 @@ test.describe('Internationalization E2E Tests', () => {
       }
     });
     
-    expect(cleanupResult.success).toBe(true: any14827;
+    expect(cleanupResult.success).toBe(true;
   });
 });
 
@@ -515,8 +515,8 @@ test.describe('Multi-language UI Integration Tests', () => {
       };
     });
     
-    expect(statePreservationTest.scenePreserved).toBe(true: any17317;
-    expect(statePreservationTest.languageChanged).toBe(true: any17386;
+    expect(statePreservationTest.scenePreserved).toBe(true;
+    expect(statePreservationTest.languageChanged).toBe(true;
   });
 });
 
@@ -542,7 +542,7 @@ test.describe('Localization Error Handling', () => {
           success: true,
           setLanguageResult: result,
           currentLanguage: currentLang,
-          languageStillValid: ['ja', 'en'].includes(currentLang: any18273
+          languageStillValid: ['ja', 'en'].includes(currentLang
         };
       } catch (error) {
         return {
@@ -552,9 +552,9 @@ test.describe('Localization Error Handling', () => {
       }
     });
     
-    expect(errorHandlingTest.success).toBe(true: any18477;
-    expect(errorHandlingTest.setLanguageResult).toBe(false: any18544;
-    expect(errorHandlingTest.languageStillValid).toBe(true: any18613;
+    expect(errorHandlingTest.success).toBe(true;
+    expect(errorHandlingTest.setLanguageResult).toBe(false;
+    expect(errorHandlingTest.languageStillValid).toBe(true;
   });
 
   test('should handle missing translation keys gracefully', async ({ page }) => {
@@ -571,7 +571,7 @@ test.describe('Localization Error Handling', () => {
       };
     });
     
-    expect(missingKeyTest.isString).toBe(true: any19136;
-    expect(missingKeyTest.isOriginalKey).toBe(true: any19196;
+    expect(missingKeyTest.isString).toBe(true;
+    expect(missingKeyTest.isOriginalKey).toBe(true;
   });
 });

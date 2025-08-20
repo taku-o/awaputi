@@ -4,7 +4,7 @@
  */
 
 export class PWAReportGenerator {
-    constructor(mainFramework: any188 {
+    constructor(mainFramework {
         this.mainFramework = mainFramework;
         
         console.log('[PWAReportGenerator] Report generator component initialized');
@@ -273,7 +273,7 @@ export class PWAReportGenerator {
     /**
      * Group tests by category for HTML report
      */
-    groupTestsByCategory(testDetails: any12379 {
+    groupTestsByCategory(testDetails {
         const categories = {
             'Basic PWA': testDetails.filter(t => t.id.includes('manifest') || t.id.includes('meta') || t.id.includes('display')),
             'Service Worker': testDetails.filter(t => t.id.includes('service-worker')),
@@ -286,7 +286,7 @@ export class PWAReportGenerator {
         
         let html = '';
         
-        for (const [category, tests] of Object.entries(categories: any13318) {
+        for (const [category, tests] of Object.entries(categories) {
             if (tests.length === 0) continue;
             
             html += `
@@ -317,7 +317,7 @@ export class PWAReportGenerator {
     /**
      * Format test result for display
      */
-    formatTestResult(result: any14555 {
+    formatTestResult(result {
         if (typeof result === 'object') {
             // Format specific result types
             if (result.performance) {
@@ -334,7 +334,7 @@ export class PWAReportGenerator {
             return `<pre>${JSON.stringify(result, null, 2)}</pre>`;
         }
         
-        return String(result: any15231;
+        return String(result;
     }
     
     /**

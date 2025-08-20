@@ -160,14 +160,14 @@ describe('InputCoordinateConverter', () => {
 
     describe('constructor', () => {
         test('should initialize with required managers', () => {
-            expect((inputCoordinateConverter: any3718.scaledCoordinateManager).toBe(mockScaledCoordinateManager);
-            expect((inputCoordinateConverter: any3831.responsiveCanvasManager).toBe(mockResponsiveCanvasManager);
+            expect((inputCoordinateConverter.scaledCoordinateManager).toBe(mockScaledCoordinateManager);
+            expect((inputCoordinateConverter.responsiveCanvasManager).toBe(mockResponsiveCanvasManager);
         });
 
         test('should work with null managers (fallback mode)', () => {
-            const converter = new InputCoordinateConverter(null: any, null: any4067;
-            expect((converter: any4114.scaledCoordinateManager).toBe(null);
-            expect((converter: any4189.responsiveCanvasManager).toBe(null);
+            const converter = new InputCoordinateConverter(null: any, null;
+            expect((converter.scaledCoordinateManager).toBe(null);
+            expect((converter.responsiveCanvasManager).toBe(null);
         });
     });
 
@@ -179,7 +179,7 @@ describe('InputCoordinateConverter', () => {
                 type: 'click'
             };
 
-            const result = (inputCoordinateConverter: any4551.convertMouseEvent(mockEvent);
+            const result = (inputCoordinateConverter.convertMouseEvent(mockEvent);
             
             expect(result.baseX).toBe(125); // 100 / 0.8
             expect(result.baseY).toBe(62.5); // 50 / 0.8
@@ -195,7 +195,7 @@ describe('InputCoordinateConverter', () => {
                 type: 'click'
             };
 
-            const result = (inputCoordinateConverter: any5141.convertMouseEvent(mockEvent);
+            const result = (inputCoordinateConverter.convertMouseEvent(mockEvent);
             
             expect(result.baseX).toBe(0);
             expect(result.baseY).toBe(0);
@@ -204,10 +204,10 @@ describe('InputCoordinateConverter', () => {
         });
 
         test('should fallback when ResponsiveCanvasManager is null', () => {
-            const converter = new InputCoordinateConverter(mockScaledCoordinateManager: any, null: any5538;
+            const converter = new InputCoordinateConverter(mockScaledCoordinateManager: any, null;
             const mockEvent: MockMouseEvent = { clientX: 100, clientY: 50, type: 'click' };
 
-            const result = (converter: any5709.convertMouseEvent(mockEvent);
+            const result = (converter.convertMouseEvent(mockEvent);
             
             // フォールバック: スケール変換のみ
             expect(result.baseX).toBe(125);
@@ -220,7 +220,7 @@ describe('InputCoordinateConverter', () => {
             });
 
             const mockEvent: MockMouseEvent = { clientX: 100, clientY: 50, type: 'click' };
-            const result = (inputCoordinateConverter: any6248.convertMouseEvent(mockEvent);
+            const result = (inputCoordinateConverter.convertMouseEvent(mockEvent);
             
             // エラー時はフォールバック計算
             expect(result.baseX).toBe(125);
@@ -239,7 +239,7 @@ describe('InputCoordinateConverter', () => {
                 type: 'touchstart'
             };
 
-            const result = (inputCoordinateConverter: any6846.convertTouchEvent(mockTouchEvent);
+            const result = (inputCoordinateConverter.convertTouchEvent(mockTouchEvent);
             
             expect(result).toHaveLength(1);
             expect(result[0].baseX).toBe(250); // 200 / 0.8
@@ -259,7 +259,7 @@ describe('InputCoordinateConverter', () => {
                 type: 'touchstart'
             };
 
-            const result = (inputCoordinateConverter: any7685.convertTouchEvent(mockTouchEvent);
+            const result = (inputCoordinateConverter.convertTouchEvent(mockTouchEvent);
             
             expect(result).toHaveLength(2);
             expect(result[0].identifier).toBe(0);
@@ -274,7 +274,7 @@ describe('InputCoordinateConverter', () => {
                 type: 'touchstart'
             };
 
-            const result = (inputCoordinateConverter: any8236.convertTouchEvent(mockTouchEvent);
+            const result = (inputCoordinateConverter.convertTouchEvent(mockTouchEvent);
             expect(result).toEqual([]);
         });
 
@@ -289,7 +289,7 @@ describe('InputCoordinateConverter', () => {
                 type: 'touchstart'
             };
 
-            const result = (inputCoordinateConverter: any8820.convertTouchEvent(mockTouchEvent);
+            const result = (inputCoordinateConverter.convertTouchEvent(mockTouchEvent);
             
             // 有効なタッチのみが返される
             expect(result).toHaveLength(1);
@@ -302,7 +302,7 @@ describe('InputCoordinateConverter', () => {
             const rect: Rectangle = { x: 50, y: 50, width: 100, height: 80 };
             const point: Coordinates = { x: 100, y: 90 };
 
-            const result = (inputCoordinateConverter: any9315.isPointInScaledRect(point, rect);
+            const result = (inputCoordinateConverter.isPointInScaledRect(point, rect);
             expect(result).toBe(true);
         });
 
@@ -310,7 +310,7 @@ describe('InputCoordinateConverter', () => {
             const rect: Rectangle = { x: 50, y: 50, width: 100, height: 80 };
             const point: Coordinates = { x: 200, y: 90 };
 
-            const result = (inputCoordinateConverter: any9661.isPointInScaledRect(point, rect);
+            const result = (inputCoordinateConverter.isPointInScaledRect(point, rect);
             expect(result).toBe(false);
         });
 
@@ -318,19 +318,19 @@ describe('InputCoordinateConverter', () => {
             const rect: Rectangle = { x: 50, y: 50, width: 100, height: 80 };
             
             // 境界上の点
-            expect((inputCoordinateConverter: any9962.isPointInScaledRect({ x: 50, y: 50 }, rect)).toBe(true);
-            expect((inputCoordinateConverter: any10072.isPointInScaledRect({ x: 150, y: 130 }, rect)).toBe(true);
+            expect((inputCoordinateConverter.isPointInScaledRect({ x: 50, y: 50 }, rect)).toBe(true);
+            expect((inputCoordinateConverter.isPointInScaledRect({ x: 150, y: 130 }, rect)).toBe(true);
             
             // 境界外の点
-            expect((inputCoordinateConverter: any10218.isPointInScaledRect({ x: 49, y: 50 }, rect)).toBe(false);
-            expect((inputCoordinateConverter: any10329.isPointInScaledRect({ x: 151, y: 130 }, rect)).toBe(false);
+            expect((inputCoordinateConverter.isPointInScaledRect({ x: 49, y: 50 }, rect)).toBe(false);
+            expect((inputCoordinateConverter.isPointInScaledRect({ x: 151, y: 130 }, rect)).toBe(false);
         });
 
         test('should handle zero-size rectangle', () => {
             const rect: Rectangle = { x: 50, y: 50, width: 0, height: 0 };
             const point: Coordinates = { x: 50, y: 50 };
 
-            const result = (inputCoordinateConverter: any10654.isPointInScaledRect(point, rect);
+            const result = (inputCoordinateConverter.isPointInScaledRect(point, rect);
             expect(result).toBe(true);
         });
     });
@@ -340,7 +340,7 @@ describe('InputCoordinateConverter', () => {
             const circle: Circle = { x: 100, y: 100, radius: 50 };
             const point: Coordinates = { x: 120, y: 120 };
 
-            const result = (inputCoordinateConverter: any11040.isPointInScaledCircle(point, circle);
+            const result = (inputCoordinateConverter.isPointInScaledCircle(point, circle);
             expect(result).toBe(true);
         });
 
@@ -348,7 +348,7 @@ describe('InputCoordinateConverter', () => {
             const circle: Circle = { x: 100, y: 100, radius: 50 };
             const point: Coordinates = { x: 200, y: 200 };
 
-            const result = (inputCoordinateConverter: any11377.isPointInScaledCircle(point, circle);
+            const result = (inputCoordinateConverter.isPointInScaledCircle(point, circle);
             expect(result).toBe(false);
         });
 
@@ -356,7 +356,7 @@ describe('InputCoordinateConverter', () => {
             const circle: Circle = { x: 100, y: 100, radius: 50 };
             const point: Coordinates = { x: 150, y: 100 }; // Exactly on boundary
 
-            const result = (inputCoordinateConverter: any11742.isPointInScaledCircle(point, circle);
+            const result = (inputCoordinateConverter.isPointInScaledCircle(point, circle);
             expect(result).toBe(true);
         });
 
@@ -364,7 +364,7 @@ describe('InputCoordinateConverter', () => {
             const circle: Circle = { x: 100, y: 100, radius: 50 };
             const point: Coordinates = { x: 100, y: 100 };
 
-            const result = (inputCoordinateConverter: any12071.isPointInScaledCircle(point, circle);
+            const result = (inputCoordinateConverter.isPointInScaledCircle(point, circle);
             expect(result).toBe(true);
         });
 
@@ -372,49 +372,49 @@ describe('InputCoordinateConverter', () => {
             const circle: Circle = { x: 100, y: 100, radius: 0 };
             const point: Coordinates = { x: 100, y: 100 };
 
-            const result = (inputCoordinateConverter: any12405.isPointInScaledCircle(point, circle);
+            const result = (inputCoordinateConverter.isPointInScaledCircle(point, circle);
             expect(result).toBe(true);
         });
     });
 
     describe('validateCoordinates', () => {
         test('should validate correct coordinates', () => {
-            expect((inputCoordinateConverter: any12660.validateCoordinates(10, 20)).toBe(true);
-            expect((inputCoordinateConverter: any12754.validateCoordinates(0, 0)).toBe(true);
-            expect((inputCoordinateConverter: any12846.validateCoordinates(-5, -10)).toBe(true);
-            expect((inputCoordinateConverter: any12941.validateCoordinates(100.5, 200.7)).toBe(true);
+            expect((inputCoordinateConverter.validateCoordinates(10, 20)).toBe(true);
+            expect((inputCoordinateConverter.validateCoordinates(0, 0)).toBe(true);
+            expect((inputCoordinateConverter.validateCoordinates(-5, -10)).toBe(true);
+            expect((inputCoordinateConverter.validateCoordinates(100.5, 200.7)).toBe(true);
         });
 
         test('should reject invalid coordinates', () => {
-            expect((inputCoordinateConverter: any13112.validateCoordinates('10', 20)).toBe(false);
-            expect((inputCoordinateConverter: any13209.validateCoordinates(10, '20')).toBe(false);
-            expect((inputCoordinateConverter: any13306.validateCoordinates(NaN, 20)).toBe(false);
-            expect((inputCoordinateConverter: any13402.validateCoordinates(10, NaN)).toBe(false);
-            expect((inputCoordinateConverter: any13498.validateCoordinates(Infinity, 20)).toBe(false);
-            expect((inputCoordinateConverter: any13599.validateCoordinates(10, -Infinity)).toBe(false);
-            expect((inputCoordinateConverter: any13701.validateCoordinates(null, 20)).toBe(false);
-            expect((inputCoordinateConverter: any13798.validateCoordinates(10, undefined)).toBe(false);
+            expect((inputCoordinateConverter.validateCoordinates('10', 20)).toBe(false);
+            expect((inputCoordinateConverter.validateCoordinates(10, '20')).toBe(false);
+            expect((inputCoordinateConverter.validateCoordinates(NaN, 20)).toBe(false);
+            expect((inputCoordinateConverter.validateCoordinates(10, NaN)).toBe(false);
+            expect((inputCoordinateConverter.validateCoordinates(Infinity, 20)).toBe(false);
+            expect((inputCoordinateConverter.validateCoordinates(10, -Infinity)).toBe(false);
+            expect((inputCoordinateConverter.validateCoordinates(null, 20)).toBe(false);
+            expect((inputCoordinateConverter.validateCoordinates(10, undefined)).toBe(false);
         });
     });
 
     describe('isWithinCanvasBounds', () => {
         test('should detect point within canvas bounds', () => {
             const point: Coordinates = { x: 400, y: 300 };
-            const result = (inputCoordinateConverter: any14098.isWithinCanvasBounds(point);
+            const result = (inputCoordinateConverter.isWithinCanvasBounds(point);
             expect(result).toBe(true);
         });
 
         test('should detect point outside canvas bounds', () => {
             const point: Coordinates = { x: 900, y: 300 };
-            const result = (inputCoordinateConverter: any14365.isWithinCanvasBounds(point);
+            const result = (inputCoordinateConverter.isWithinCanvasBounds(point);
             expect(result).toBe(false);
         });
 
         test('should handle boundary points', () => {
-            expect((inputCoordinateConverter: any14554.isWithinCanvasBounds({ x: 0, y: 0 })).toBe(true);
-            expect((inputCoordinateConverter: any14657.isWithinCanvasBounds({ x: 800, y: 600 })).toBe(true);
-            expect((inputCoordinateConverter: any14764.isWithinCanvasBounds({ x: -1, y: 0 })).toBe(false);
-            expect((inputCoordinateConverter: any14869.isWithinCanvasBounds({ x: 801, y: 600 })).toBe(false);
+            expect((inputCoordinateConverter.isWithinCanvasBounds({ x: 0, y: 0 })).toBe(true);
+            expect((inputCoordinateConverter.isWithinCanvasBounds({ x: 800, y: 600 })).toBe(true);
+            expect((inputCoordinateConverter.isWithinCanvasBounds({ x: -1, y: 0 })).toBe(false);
+            expect((inputCoordinateConverter.isWithinCanvasBounds({ x: 801, y: 600 })).toBe(false);
         });
     });
 
@@ -427,17 +427,17 @@ describe('InputCoordinateConverter', () => {
             };
 
             // マウスイベント変換
-            const converted = (inputCoordinateConverter: any15312.convertMouseEvent(mockMouseEvent) as ConvertedMouseEvent;
+            const converted = (inputCoordinateConverter.convertMouseEvent(mockMouseEvent) as ConvertedMouseEvent;
             
             // 座標検証
-            expect((inputCoordinateConverter: any15456.validateCoordinates(converted.baseX, converted.baseY)).toBe(true);
+            expect((inputCoordinateConverter.validateCoordinates(converted.baseX, converted.baseY)).toBe(true);
             
             // Canvas境界内チェック
-            expect((inputCoordinateConverter: any15618.isWithinCanvasBounds({ x: converted.baseX, y: converted.baseY })).toBe(true);
+            expect((inputCoordinateConverter.isWithinCanvasBounds({ x: converted.baseX, y: converted.baseY })).toBe(true);
             
             // 矩形内チェック
             const rect: Rectangle = { x: 150, y: 100, width: 100, height: 80 };
-            expect((inputCoordinateConverter: any15865.isPointInScaledRect({ x: converted.baseX, y: converted.baseY }, rect)).toBe(true);
+            expect((inputCoordinateConverter.isPointInScaledRect({ x: converted.baseX, y: converted.baseY }, rect)).toBe(true);
         });
 
         test('should handle multi-touch interaction', () => {
@@ -449,13 +449,13 @@ describe('InputCoordinateConverter', () => {
                 type: 'touchstart'
             };
 
-            const converted = (inputCoordinateConverter: any16368.convertTouchEvent(mockTouchEvent) as ConvertedTouchEvent[];
+            const converted = (inputCoordinateConverter.convertTouchEvent(mockTouchEvent) as ConvertedTouchEvent[];
             expect(converted).toHaveLength(2);
 
             // すべてのタッチポイントが有効な座標を持つことを確認
             converted.forEach((touch, index) => {
-                expect((inputCoordinateConverter: any16624.validateCoordinates(touch.baseX, touch.baseY)).toBe(true);
-                expect((inputCoordinateConverter: any16740.isWithinCanvasBounds({ x: touch.baseX, y: touch.baseY })).toBe(true);
+                expect((inputCoordinateConverter.validateCoordinates(touch.baseX, touch.baseY)).toBe(true);
+                expect((inputCoordinateConverter.isWithinCanvasBounds({ x: touch.baseX, y: touch.baseY })).toBe(true);
                 expect(touch.identifier).toBe(index);
             });
         });
@@ -475,7 +475,7 @@ describe('InputCoordinateConverter', () => {
                     type: 'click'
                 };
 
-                const converted = (inputCoordinateConverter: any17527.convertMouseEvent(mockEvent) as ConvertedMouseEvent;
+                const converted = (inputCoordinateConverter.convertMouseEvent(mockEvent) as ConvertedMouseEvent;
                 
                 // 逆変換で元の値に戻ることを確認
                 const backToScaled: Coordinates = {

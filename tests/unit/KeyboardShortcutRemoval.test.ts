@@ -110,7 +110,7 @@ describe('Keyboard Shortcut Removal (Issue #170)', () => {
         });
 
         test('should not have handleFullscreen method', () => {
-            expect((keyboardManager: any3011.handleFullscreen).toBeUndefined();
+            expect((keyboardManager.handleFullscreen).toBeUndefined();
         });
     });
 
@@ -133,7 +133,7 @@ describe('Keyboard Shortcut Removal (Issue #170)', () => {
         });
 
         test('should not have handleMute method', () => {
-            expect((keyboardManager: any3811.handleMute).toBeUndefined();
+            expect((keyboardManager.handleMute).toBeUndefined();
         });
     });
 
@@ -177,8 +177,8 @@ describe('Keyboard Shortcut Removal (Issue #170)', () => {
         });
 
         test('should not have volume handler methods', () => {
-            expect((keyboardManager: any5331.handleVolumeUp).toBeUndefined();
-            expect((keyboardManager: any5408.handleVolumeDown).toBeUndefined();
+            expect((keyboardManager.handleVolumeUp).toBeUndefined();
+            expect((keyboardManager.handleVolumeDown).toBeUndefined();
         });
     });
 
@@ -242,9 +242,9 @@ describe('Keyboard Shortcut Removal (Issue #170)', () => {
         });
 
         test('should not have accessibility handler methods', () => {
-            expect((keyboardManager: any7655.handleHighContrast).toBeUndefined();
-            expect((keyboardManager: any7736.handleLargeText).toBeUndefined();
-            expect((keyboardManager: any7814.handleReducedMotion).toBeUndefined();
+            expect((keyboardManager.handleHighContrast).toBeUndefined();
+            expect((keyboardManager.handleLargeText).toBeUndefined();
+            expect((keyboardManager.handleReducedMotion).toBeUndefined();
         });
     });
 

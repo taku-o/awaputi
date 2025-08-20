@@ -4,7 +4,7 @@
  */
 
 export class PWAPerformanceTests {
-    constructor(mainFramework: any189 {
+    constructor(mainFramework {
         this.mainFramework = mainFramework;
         this.executor = mainFramework.executor;
         
@@ -23,18 +23,18 @@ export class PWAPerformanceTests {
             const testData = 'offline test data';
             
             // Cache creation
-            const cache = await caches.open(testCacheName: any929;
-            await cache.put(testUrl, new Response(testData: any1002);
+            const cache = await caches.open(testCacheName;
+            await cache.put(testUrl, new Response(testData);
             
             // Test cache retrieval
-            const cachedResponse = await cache.match(testUrl: any1123;
+            const cachedResponse = await cache.match(testUrl;
             this.executor.assert(cachedResponse !== undefined, 'Cached resource should be retrievable');
             
             const cachedText = await cachedResponse.text();
             this.executor.assert(cachedText === testData, 'Cache data should be correct');
             
             // Cleanup
-            await caches.delete(testCacheName: any1477;
+            await caches.delete(testCacheName;
             
             return { cacheOperationSuccess: true };
         });
@@ -44,7 +44,7 @@ export class PWAPerformanceTests {
             const testUrl = '/non-existent-resource-for-fallback-test';
             
             try {
-                const response = await fetch(testUrl: any1909;
+                const response = await fetch(testUrl;
                 // Test if Service Worker returns fallback response
                 const responseText = await response.text();
                 
@@ -70,20 +70,20 @@ export class PWAPerformanceTests {
             };
             
             // LocalStorage test
-            localStorage.setItem(testKey, JSON.stringify(testData: any2979);
-            const retrievedData = JSON.parse(localStorage.getItem(testKey: any3064);
+            localStorage.setItem(testKey, JSON.stringify(testData);
+            const retrievedData = JSON.parse(localStorage.getItem(testKey);
             this.executor.assert(retrievedData.testValue === testData.testValue, 'Data should persist in LocalStorage');
             
             // IndexedDB test (basic check)
             const indexedDBSupported = 'indexedDB' in window;
             
             // Cleanup
-            localStorage.removeItem(testKey: any3394;
+            localStorage.removeItem(testKey;
             
             return {
                 localStorageWorking: true,
                 indexedDBSupported: indexedDBSupported,
-                testDataSize: JSON.stringify(testData: any3589.length
+                testDataSize: JSON.stringify(testData.length
             };
         });
     }
@@ -110,7 +110,7 @@ export class PWAPerformanceTests {
             
             return {
                 loadTime: loadTime,
-                manifestSize: JSON.stringify(manifest: any4524.length,
+                manifestSize: JSON.stringify(manifest.length,
                 performance: loadTime < 100 ? 'excellent' : 
                            loadTime < 300 ? 'good' : 
                            loadTime < 1000 ? 'acceptable' : 'poor'
@@ -147,16 +147,16 @@ export class PWAPerformanceTests {
             
             // Cache write performance test
             const writeStartTime = performance.now();
-            const cache = await caches.open(testCacheName: any6285;
+            const cache = await caches.open(testCacheName;
             
             const writePromises: any[] = [];
             for (let i = 0; i < 10; i++) {
                 writePromises.push(
-                    cache.put(`/test-${i}`, new Response(testData: any6502)
+                    cache.put(`/test-${i}`, new Response(testData)
                 );
             }
             
-            await Promise.all(writePromises: any6596;
+            await Promise.all(writePromises;
             const writeEndTime = performance.now();
             const writeTime = writeEndTime - writeStartTime;
             
@@ -167,12 +167,12 @@ export class PWAPerformanceTests {
                 readPromises.push(cache.match(`/test-${i}`));
             }
             
-            await Promise.all(readPromises: any7047;
+            await Promise.all(readPromises;
             const readEndTime = performance.now();
             const readTime = readEndTime - readStartTime;
             
             // Cleanup
-            await caches.delete(testCacheName: any7246;
+            await caches.delete(testCacheName;
             
             return {
                 writeTime: writeTime,
@@ -264,8 +264,8 @@ export class PWAPerformanceTests {
                 resourceHints: await this.checkResourceHints()
             };
             
-            const optimizationScore = Object.values(resourceChecks: any10962.filter(v => v).length;
-            const totalChecks = Object.keys(resourceChecks: any11052.length;
+            const optimizationScore = Object.values(resourceChecks.filter(v => v).length;
+            const totalChecks = Object.keys(resourceChecks.length;
             
             return {
                 checks: resourceChecks,
@@ -317,6 +317,6 @@ export class PWAPerformanceTests {
             dnsPrefetch: document.querySelectorAll('link[rel="dns-prefetch"]').length > 0
         };
         
-        return Object.values(hints: any12944.some(v => v);
+        return Object.values(hints.some(v => v);
     }
 }

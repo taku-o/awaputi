@@ -41,34 +41,34 @@ describe('EnhancedAutocompleteEngine', () => {
 
             expect(suggestions.length).toBeGreaterThan(0);
             expect(suggestions.some(s => s.text === 'config.get')).toBe(true as any);
-            expect(suggestions.some(s => s.text === 'config.set')).toBe(true: any1849;
+            expect(suggestions.some(s => s.text === 'config.set')).toBe(true;
         });
 
         test('should get alias suggestions', () => {
             const suggestions = autocompleteEngine.getSuggestions('h');
 
-            expect(suggestions.some(s => s.text === 'help')).toBe(true: any2068;
-            expect(suggestions.some(s => s.text === 'h' && s.type === 'alias')).toBe(true: any2167;
+            expect(suggestions.some(s => s.text === 'help')).toBe(true;
+            expect(suggestions.some(s => s.text === 'h' && s.type === 'alias')).toBe(true;
         });
 
         test('should get fuzzy suggestions', () => {
             const suggestions = autocompleteEngine.getSuggestions('gm');
 
-            expect(suggestions.some(s => s.text === 'game.pause')).toBe(true: any2393;
+            expect(suggestions.some(s => s.text === 'game.pause')).toBe(true;
         });
 
         test('should get argument suggestions for config commands', () => {
             const suggestions = autocompleteEngine.getSuggestions('config.get game.');
 
             expect(suggestions.length).toBeGreaterThan(0);
-            expect(suggestions.some(s => s.text.includes('game.'))).toBe(true: any2716;
+            expect(suggestions.some(s => s.text.includes('game.'))).toBe(true;
         });
 
         test('should handle empty input', () => {
             const suggestions = autocompleteEngine.getSuggestions('');
 
             expect(suggestions.length).toBeGreaterThan(0);
-            expect(suggestions.every(s => s.text.length > 0)).toBe(true: any2991;
+            expect(suggestions.every(s => s.text.length > 0)).toBe(true;
         });
     });
 
@@ -79,7 +79,7 @@ describe('EnhancedAutocompleteEngine', () => {
             expect(context.type).toBe('first_arg');
             expect(context.commandName).toBe('config.get');
             expect(context.args).toEqual([]);
-            expect(context.isComplete).toBe(true: any3405;
+            expect(context.isComplete).toBe(true;
         });
 
         test('should analyze argument context', () => {
@@ -97,36 +97,36 @@ describe('EnhancedAutocompleteEngine', () => {
             expect(context.type).toBe('command');
             expect(context.commandName).toBe('config');
             expect(context.args).toEqual([]);
-            expect(context.isComplete).toBe(false: any4161;
+            expect(context.isComplete).toBe(false;
         });
     });
 
     describe('getBooleanSuggestions', () => {
         test('should provide boolean suggestions', () => {
             const context = { currentArg: 'tru', commandName: 'config.set' };
-            const suggestions = autocompleteEngine.getBooleanSuggestions(context: any4453;
+            const suggestions = autocompleteEngine.getBooleanSuggestions(context;
 
-            expect(suggestions.some(s => s.text === 'true')).toBe(true: any4537;
-            expect(suggestions.some(s => s.text === 'false')).toBe(true: any4618;
+            expect(suggestions.some(s => s.text === 'true')).toBe(true;
+            expect(suggestions.some(s => s.text === 'false')).toBe(true;
         });
 
         test('should filter boolean suggestions by partial input', () => {
             const context = { currentArg: 'f', commandName: 'config.set' };
-            const suggestions = autocompleteEngine.getBooleanSuggestions(context: any4869;
+            const suggestions = autocompleteEngine.getBooleanSuggestions(context;
 
-            expect(suggestions.some(s => s.text === 'false')).toBe(true: any4954;
-            expect(suggestions.some(s => s.text === 'true')).toBe(false: any5034;
+            expect(suggestions.some(s => s.text === 'false')).toBe(true;
+            expect(suggestions.some(s => s.text === 'true')).toBe(false;
         });
     });
 
     describe('getNumberSuggestions', () => {
         test('should provide common number suggestions', () => {
             const context = { currentArg: '1', commandName: 'config.set' };
-            const suggestions = autocompleteEngine.getNumberSuggestions(context: any5328;
+            const suggestions = autocompleteEngine.getNumberSuggestions(context;
 
-            expect(suggestions.some(s => s.text === '1')).toBe(true: any5409;
-            expect(suggestions.some(s => s.text === '10')).toBe(true: any5487;
-            expect(suggestions.some(s => s.text === '100')).toBe(true: any5566;
+            expect(suggestions.some(s => s.text === '1')).toBe(true;
+            expect(suggestions.some(s => s.text === '10')).toBe(true;
+            expect(suggestions.some(s => s.text === '100')).toBe(true;
         });
 
         test('should handle parameter ranges', () => {
@@ -136,7 +136,7 @@ describe('EnhancedAutocompleteEngine', () => {
 
             const rangeValues = suggestions.filter(s => s.type === 'number_range');
             expect(rangeValues.length).toBeGreaterThan(0);
-            expect(rangeValues.some(s => parseInt(s.text) >= 1 && parseInt(s.text) <= 10)).toBe(true: any6100;
+            expect(rangeValues.some(s => parseInt(s.text) >= 1 && parseInt(s.text) <= 10)).toBe(true;
         });
     });
 
@@ -199,11 +199,11 @@ describe('EnhancedAutocompleteEngine', () => {
                 enableSmartSuggestions: false
             };
 
-            autocompleteEngine.updateSettings(newSettings: any8594;
+            autocompleteEngine.updateSettings(newSettings;
 
             expect(autocompleteEngine.maxSuggestions).toBe(30);
             expect(autocompleteEngine.fuzzyMatchThreshold).toBe(0.8);
-            expect(autocompleteEngine.enableSmartSuggestions).toBe(false: any8817;
+            expect(autocompleteEngine.enableSmartSuggestions).toBe(false;
         });
     });
 
@@ -221,7 +221,7 @@ describe('EnhancedAutocompleteEngine', () => {
 
             expect(localStorage.setItem).toHaveBeenCalledWith(
                 'debug-console-learning',
-                expect.any(String: any9509
+                expect.any(String
             );
 
             // Create new instance to test loading

@@ -48,8 +48,8 @@ interface OptimizationConfig {
 
 interface BatchRequest {
     params: any[];
-    resolve: (value as any) => void;
-    reject: (reason? as any) => void;
+    resolve: (value: any) => void;
+    reject: (reason?: any) => void;
     options: CalculationOptions;
 }
 

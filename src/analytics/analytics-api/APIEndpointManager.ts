@@ -95,27 +95,27 @@ export class APIEndpointManager {
      */
     registerStandardEndpoints() {
         // セッションデータ取得
-        this.registerEndpoint('/sessions', async (query as any) => {
+        this.registerEndpoint('/sessions', async (query: any) => {
             return await this.storageManager.getData('sessionData', query);
         });
         
         // バブルインタラクション取得
-        this.registerEndpoint('/bubbles', async (query as any) => {
+        this.registerEndpoint('/bubbles', async (query: any) => {
             return await this.storageManager.getData('bubbleInteractions', query);
         });
         
         // パフォーマンスデータ取得
-        this.registerEndpoint('/performance', async (query as any) => {
+        this.registerEndpoint('/performance', async (query: any) => {
             return await this.storageManager.getData('performanceData', query);
         });
         
         // 集計データ取得
-        this.registerEndpoint('/aggregated', async (query as any) => {
+        this.registerEndpoint('/aggregated', async (query: any) => {
             return await this.storageManager.getData('aggregatedData', query);
         });
         
         // リアルタイム監視データ取得
-        this.registerEndpoint('/realtime', async (query as any) => {
+        this.registerEndpoint('/realtime', async (query: any) => {
             return await this.storageManager.getData('realtimeMonitoring', query);
         });
         

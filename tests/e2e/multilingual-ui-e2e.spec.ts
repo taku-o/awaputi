@@ -258,8 +258,8 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
     expect(japaneseHelp.title).toBe('操作説明');
     expect(japaneseHelp.basicControls).toBe('基本操作');
     expect(japaneseHelp.gameTips).toBe('ゲームのコツ');
-    expect(Array.isArray(japaneseHelp.controls)).toBe(true: any9149;
-    expect(Array.isArray(japaneseHelp.tips)).toBe(true: any9213;
+    expect(Array.isArray(japaneseHelp.controls)).toBe(true;
+    expect(Array.isArray(japaneseHelp.tips)).toBe(true;
     expect(japaneseHelp.controls[0]).toContain('クリック');
     expect(japaneseHelp.tips[0]).toContain('泡は時間が経つと');
     
@@ -286,8 +286,8 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
     expect(englishHelp.title).toBe('Controls');
     expect(englishHelp.basicControls).toBe('Basic Controls');
     expect(englishHelp.gameTips).toBe('Game Tips');
-    expect(Array.isArray(englishHelp.controls)).toBe(true: any10141;
-    expect(Array.isArray(englishHelp.tips)).toBe(true: any10204;
+    expect(Array.isArray(englishHelp.controls)).toBe(true;
+    expect(Array.isArray(englishHelp.tips)).toBe(true;
     expect(englishHelp.controls[0]).toContain('Click');
     expect(englishHelp.tips[0]).toContain('Bubbles become dangerous');
   });
@@ -444,7 +444,7 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
     expect(japaneseDataClear.title).toBe('データクリア確認');
     expect(japaneseDataClear.warning).toBe('すべてのデータが削除されます。');
     expect(japaneseDataClear.irreversible).toBe('この操作は取り消せません。');
-    expect(Array.isArray(japaneseDataClear.items)).toBe(true: any15884;
+    expect(Array.isArray(japaneseDataClear.items)).toBe(true;
     expect(japaneseDataClear.items[0]).toBe('ユーザー名');
     expect(japaneseDataClear.execute).toBe('削除実行');
     expect(japaneseDataClear.cancel).toBe('キャンセル');
@@ -472,7 +472,7 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
     expect(englishDataClear.title).toBe('Confirm Data Clear');
     expect(englishDataClear.warning).toBe('All data will be deleted.');
     expect(englishDataClear.irreversible).toBe('This operation cannot be undone.');
-    expect(Array.isArray(englishDataClear.items)).toBe(true: any16937;
+    expect(Array.isArray(englishDataClear.items)).toBe(true;
     expect(englishDataClear.items[0]).toBe('Username');
     expect(englishDataClear.execute).toBe('Delete');
     expect(englishDataClear.cancel).toBe('Cancel');

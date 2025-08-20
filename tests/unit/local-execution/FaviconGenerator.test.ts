@@ -509,8 +509,8 @@ describe('FaviconGenerator', () => {
     describe('Browser compatibility', () => {
         test('should work with basic Canvas support', async () => {
             // Remove advanced Canvas features
-            delete (mockContext: any18347.createRadialGradient;
-            delete (mockContext: any18409.createLinearGradient;
+            delete (mockContext.createRadialGradient;
+            delete (mockContext.createLinearGradient;
 
             const config: GenerateConfig = {
                 sizes: [16],

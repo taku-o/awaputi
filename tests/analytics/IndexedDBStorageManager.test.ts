@@ -43,7 +43,7 @@ class MockIDBObjectStore {
         return this.indexes.get(name);
     }
     
-    put(data: any1256 {
+    put(data {
         const key = typeof this.keyPath === 'string' ? data[this.keyPath] : 
                    Array.isArray(this.keyPath) ? this.keyPath.map(k => data[k]).join('|') :
                    this.autoIncrement ? Date.now() : data.id;
@@ -51,7 +51,7 @@ class MockIDBObjectStore {
         return { onsuccess: null, onerror: null };
     }
     
-    get(key: any1606 {
+    get(key {
         const request = { onsuccess: null, onerror: null };
         setTimeout(() => {
             request.result = this.data.get(key);
@@ -69,12 +69,12 @@ class MockIDBObjectStore {
         return request;
     }
     
-    delete(key: any2142 {
+    delete(key {
         this.data.delete(key);
         return { onsuccess: null, onerror: null };
     }
     
-    openCursor(range: any2264 {
+    openCursor(range {
         const request = { onsuccess: null, onerror: null };
         setTimeout(() => {
             const values = Array.from(this.data.values());
@@ -107,7 +107,7 @@ class MockIDBObjectStore {
         return request;
     }
     
-    index(name: any3463 {
+    index(name {
         return this.indexes.get(name || new MockIDBIndex(name, name, {}));
     }
 }
@@ -119,7 +119,7 @@ class MockIDBIndex {
         this.unique = options.unique || false;
     }
     
-    openCursor(range: any3756 {
+    openCursor(range {
         // 簡易実装
         const request = { onsuccess: null, onerror: null };
         setTimeout(() => {
@@ -144,7 +144,7 @@ class MockIDBTransaction {
         }, 0);
     }
     
-    objectStore(name: any4460 {
+    objectStore(name {
         return this.stores.get(name);
     }
 }

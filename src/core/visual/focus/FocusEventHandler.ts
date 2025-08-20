@@ -27,12 +27,12 @@ export interface MainController {
     accessibilityManager?: AccessibilityManager;
     handleFocusChange: (element: HTMLElement, index: number, keyboardMode: boolean) => void;
     handleFocusLost: (element: HTMLElement) => void;
-    applyConfig: (config as any) => void;
+    applyConfig: (config: any) => void;
 }
 
 export interface FocusManager {
-    addEventListener: (event: string, handler: (data as any) => void) => void;
-    removeEventListener: (event: string, handler: (data as any) => void) => void;
+    addEventListener: (event: string, handler: (data: any) => void) => void;
+    removeEventListener: (event: string, handler: (data: any) => void) => void;
 }
 
 export interface FocusConfig {
@@ -107,7 +107,7 @@ export interface FocusEffectRenderer {
 }
 
 export interface AccessibilityManager {
-    addEventListener: (event: string, handler: (data as any) => void) => void;
+    addEventListener: (event: string, handler: (data: any) => void) => void;
     isScreenReaderActive: () => boolean;
 }
 

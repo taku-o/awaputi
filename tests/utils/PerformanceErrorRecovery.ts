@@ -33,7 +33,7 @@ export class PerformanceErrorRecovery {
                         error.message?.includes('fps') ||
                         error.message?.includes('FPS'),
       analyze: (error, context) => this.analyzeFrameRateFailure(error, context),
-      recover: (analysis) => this.recoverFromFrameRateFailure(analysis: any1246,
+      recover: (analysis) => this.recoverFromFrameRateFailure(analysis),
       description: 'Frame rate performance test failures'
     });
 
@@ -43,7 +43,7 @@ export class PerformanceErrorRecovery {
                         error.message?.includes('heap') ||
                         error.message?.includes('Memory'),
       analyze: (error, context) => this.analyzeMemoryUsageFailure(error, context),
-      recover: (analysis) => this.recoverFromMemoryUsageFailure(analysis: any1753,
+      recover: (analysis) => this.recoverFromMemoryUsageFailure(analysis),
       description: 'Memory usage performance test failures'
     });
 
@@ -53,7 +53,7 @@ export class PerformanceErrorRecovery {
                         error.message?.includes('rendering') ||
                         error.message?.includes('draw'),
       analyze: (error, context) => this.analyzeRenderTimeFailure(error, context),
-      recover: (analysis) => this.recoverFromRenderTimeFailure(analysis: any2266,
+      recover: (analysis) => this.recoverFromRenderTimeFailure(analysis),
       description: 'Render time performance test failures'
     });
 
@@ -63,7 +63,7 @@ export class PerformanceErrorRecovery {
                         error.message?.includes('expected') ||
                         error.message?.includes('exceed'),
       analyze: (error, context) => this.analyzeThresholdFailure(error, context),
-      recover: (analysis) => this.recoverFromThresholdFailure(analysis: any2778,
+      recover: (analysis) => this.recoverFromThresholdFailure(analysis),
       description: 'Performance threshold exceeded failures'
     });
 
@@ -73,7 +73,7 @@ export class PerformanceErrorRecovery {
                         error.message?.includes('Timeout') ||
                         error.message?.includes('async'),
       analyze: (error, context) => this.analyzeTimeoutFailure(error, context),
-      recover: (analysis) => this.recoverFromTimeoutFailure(analysis: any3283,
+      recover: (analysis) => this.recoverFromTimeoutFailure(analysis),
       description: 'Performance test timeout failures'
     });
 
@@ -83,7 +83,7 @@ export class PerformanceErrorRecovery {
                         error.message?.includes('CI') ||
                         error.message?.includes('node'),
       analyze: (error, context) => this.analyzeEnvironmentFailure(error, context),
-      recover: (analysis) => this.recoverFromEnvironmentFailure(analysis: any3802,
+      recover: (analysis) => this.recoverFromEnvironmentFailure(analysis),
       description: 'Environment-specific performance failures'
     });
   }
@@ -406,7 +406,7 @@ export class PerformanceErrorRecovery {
   /**
    * Recovery strategy implementations
    */
-  recoverFromFrameRateFailure(analysis: any15465 {
+  recoverFromFrameRateFailure(analysis: any) {
     return {
       success: true,
       message: 'Frame rate failure recovery applied',
@@ -419,7 +419,7 @@ export class PerformanceErrorRecovery {
     };
   }
 
-  recoverFromMemoryUsageFailure(analysis: any15833 {
+  recoverFromMemoryUsageFailure(analysis: any) {
     return {
       success: true,
       message: 'Memory usage failure recovery applied',
@@ -432,7 +432,7 @@ export class PerformanceErrorRecovery {
     };
   }
 
-  recoverFromRenderTimeFailure(analysis: any16201 {
+  recoverFromRenderTimeFailure(analysis: any) {
     return {
       success: true,
       message: 'Render time failure recovery applied',
@@ -445,7 +445,7 @@ export class PerformanceErrorRecovery {
     };
   }
 
-  recoverFromThresholdFailure(analysis: any16575 {
+  recoverFromThresholdFailure(analysis: any) {
     return {
       success: true,
       message: 'Threshold failure recovery applied',
@@ -458,7 +458,7 @@ export class PerformanceErrorRecovery {
     };
   }
 
-  recoverFromTimeoutFailure(analysis: any16898 {
+  recoverFromTimeoutFailure(analysis: any) {
     return {
       success: true,
       message: 'Timeout failure recovery applied',
@@ -471,7 +471,7 @@ export class PerformanceErrorRecovery {
     };
   }
 
-  recoverFromEnvironmentFailure(analysis: any17215 {
+  recoverFromEnvironmentFailure(analysis: any) {
     return {
       success: true,
       message: 'Environment failure recovery applied',
@@ -501,15 +501,15 @@ export class PerformanceErrorRecovery {
       context: context,
       recoveryAttempted: false
     };
-    this.errorLog.push(errorEntry: any18099;
+    this.errorLog.push(errorEntry);
 
     // Find appropriate strategy
     for (const [strategyName, strategy] of this.performanceStrategies) {
-      if (strategy.detect(error: any18252) {
+      if (strategy.detect(error)) {
         console.log(`PerformanceErrorRecovery: Using strategy "${strategyName}"`);
         
         const analysis = strategy.analyze(error, context);
-        const recovery = strategy.recover(analysis: any18462;
+        const recovery = strategy.recover(analysis);
         
         // Update error log
         errorEntry.recoveryAttempted = true;
@@ -624,7 +624,7 @@ export class PerformanceErrorRecovery {
     const detectedPatterns: any[] = [];
     
     for (const [patternName, pattern] of this.failurePatterns) {
-      if (pattern.detect(errorHistory: any22003) {
+      if (pattern.detect(errorHistory) {
         detectedPatterns.push({
           name: patternName,
           description: pattern.description,
@@ -655,8 +655,8 @@ export class PerformanceErrorRecovery {
       detectedPatterns: patterns,
       analysisResults: Object.fromEntries(this.analysisResults),
       availableStrategies: Array.from(this.performanceStrategies.keys()),
-      recommendations: this.generateRecommendations(patterns: any23021
-    };
+      recommendations: this.generateRecommendations(patterns
+    });
   }
 
   /**

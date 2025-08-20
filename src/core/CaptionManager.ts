@@ -11,7 +11,7 @@ interface AccessibilityManager {
 
 interface GameEngine {
     audioManager?: AudioManager;
-    addEventListener?: (event: string, handler: (event as any) => void) => void;
+    addEventListener?: (event: string, handler: (event: any) => void) => void;
 }
 
 interface AudioManager {

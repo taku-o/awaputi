@@ -506,11 +506,11 @@ export class ColorBlindnessSupport {
         
         // ゲーム状態変更の監視
         if (this.gameEngine) {
-            this.gameEngine.addEventListener?.('bubbleSpawned', (event as any) => {
+            this.gameEngine.addEventListener?.('bubbleSpawned', (event: any) => {
                 this.enhanceGameElement(event.bubble);
             });
             
-            this.gameEngine.addEventListener?.('sceneChanged', (event as any) => {
+            this.gameEngine.addEventListener?.('sceneChanged', (event: any) => {
                 this.enhanceSceneElements(event.newScene);
             });
         }

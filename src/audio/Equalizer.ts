@@ -76,7 +76,7 @@ interface EqualizerStatus {
 interface ConfigurationManager {
     get(category: string, path: string): any;
     set(category: string, path: string, value: any): void;
-    watch(category: string, path: string, callback: (value as any) => void): string | null;
+    watch(category: string, path: string, callback: (value: any) => void): string | null;
     unwatch(watchId: string): void;
 }
 

@@ -41,7 +41,7 @@ interface Component {
     parseAllConfigurations?: () => any;
     generateTestCode?: (expectations: any, testType: string) => string | null;
     updateTestFile?: (testType: string, testCode: string, options: any) => UpdateResult;
-    validateConfigurationSync?: (canonical as any) => ValidationResult;
+    validateConfigurationSync?: (canonical: any) => ValidationResult;
     clearCache?: () => void;
     cleanup?: () => void;
     initialize?: () => Promise<void>;

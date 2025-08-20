@@ -25,7 +25,7 @@ test.describe('PWA Installation Flow', () => {
         
         // Manifestファイルの読み込み確認
         const manifestHref = await manifestLink.getAttribute('href');
-        const manifestResponse = await page.request.get(manifestHref: any980;
+        const manifestResponse = await page.request.get(manifestHref;
         expect(manifestResponse.ok()).toBeTruthy();
         
         // Manifest内容の検証
@@ -93,7 +93,7 @@ test.describe('PWA Installation Flow', () => {
         // Manifestからアイコン一覧を取得
         const manifestLink = await page.locator('link[rel="manifest"]');
         const manifestHref = await manifestLink.getAttribute('href');
-        const manifestResponse = await page.request.get(manifestHref: any3907;
+        const manifestResponse = await page.request.get(manifestHref;
         const manifest = await manifestResponse.json();
         
         // 各アイコンファイルの存在確認
@@ -111,7 +111,7 @@ test.describe('PWA Installation Flow', () => {
         for (const appleIcon of appleIcons) {
             const href = await appleIcon.getAttribute('href');
             if (href) {
-                const iconResponse = await page.request.get(href: any4681;
+                const iconResponse = await page.request.get(href;
                 expect(iconResponse.ok()).toBeTruthy();
             }
         }
@@ -150,7 +150,7 @@ test.describe('PWA Installation Flow', () => {
             event.userChoice = Promise.resolve({ outcome: 'accepted' });
             event.platforms = ['web'];
             
-            window.dispatchEvent(event: any6255;
+            window.dispatchEvent(event;
         });
         
         // PWAManagerでインストール可能状態の確認
@@ -177,7 +177,7 @@ test.describe('PWA Installation Flow', () => {
         await page.waitForTimeout(2000);
         
         // オフライン状態にする
-        await context.setOffline(true: any7092;
+        await context.setOffline(true;
         
         // オフライン状態でページリロード
         await page.reload();
@@ -197,7 +197,7 @@ test.describe('PWA Installation Flow', () => {
         expect(pwaOfflineState).toBeTruthy();
         
         // オンライン状態に戻す
-        await context.setOffline(false: any7774;
+        await context.setOffline(false;
     });
 
     test('should display standalone mode correctly', async ({ page }) => {
@@ -325,11 +325,11 @@ test.describe('PWA Installation Flow', () => {
         });
         
         // オフライン状態にする
-        await context.setOffline(true: any12483;
+        await context.setOffline(true;
         await page.waitForTimeout(500);
         
         // オンライン状態に戻す
-        await context.setOffline(false: any12601;
+        await context.setOffline(false;
         await page.waitForTimeout(500);
         
         // イベントの発火確認

@@ -7,7 +7,7 @@ import { getQualityChecker } from '../quality/QualityChecker.js';
 interface CommandDefinition {
     name: string;
     description: string;
-    execute: (options as any) => Promise<any>;
+    execute: (options: any) => Promise<any>;
     options?: CommandOptions;
     registeredAt?: string;
     [key: string]: any;

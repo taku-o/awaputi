@@ -109,7 +109,7 @@ interface ExtendedGameEngine extends GameEngine {
 type NotificationType = 'info' | 'success' | 'error' | 'warning';
 type SettingType = 'toggle' | 'slider' | 'select' | 'text';
 type ValidatorFunction = (value: any, ...args: any[]) => ValidationResult;
-type PreviewCallback = (value as any) => void;
+type PreviewCallback = (value: any) => void;
 
 export class AccessibilitySettingsManager {
     private gameEngine: ExtendedGameEngine;

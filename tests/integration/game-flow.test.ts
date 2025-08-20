@@ -186,16 +186,16 @@ describe('Game Flow Integration', () => {
 
   describe('Special Effects Integration', () => {
     test('should handle bonus time activation', () => {
-      (gameEngine: any5509.startBonusTime(5000, 2);
+      (gameEngine.startBonusTime(5000, 2);
       
-      expect((gameEngine: any5574.isBonusTimeActive()).toBe(true);
-      expect((gameEngine: any5640.getScoreMultiplier()).toBe(2);
+      expect((gameEngine.isBonusTimeActive()).toBe(true);
+      expect((gameEngine.getScoreMultiplier()).toBe(2);
       
       // Simulate time passing
-      (gameEngine: any5735.updateSpecialEffects(6000);
+      (gameEngine.updateSpecialEffects(6000);
       
-      expect((gameEngine: any5803.isBonusTimeActive()).toBe(false);
-      expect((gameEngine: any5870.getScoreMultiplier()).toBe(1);
+      expect((gameEngine.isBonusTimeActive()).toBe(false);
+      expect((gameEngine.getScoreMultiplier()).toBe(1);
     });
 
     test('should handle time stop effect', () => {
@@ -205,7 +205,7 @@ describe('Game Flow Integration', () => {
       
       // During time stop, other effects shouldn't update
       gameEngine.bonusTimeRemaining = 1000;
-      (gameEngine: any6197.updateSpecialEffects(500);
+      (gameEngine.updateSpecialEffects(500);
       
       expect(gameEngine.bonusTimeRemaining).toBe(1000); // Should not decrease
       expect(gameEngine.timeStopRemaining).toBe(2500); // Should decrease
@@ -217,7 +217,7 @@ describe('Game Flow Integration', () => {
       expect(gameEngine.isScreenShakeActive()).toBe(true);
       expect(gameEngine.inputDisabled).toBe(true);
       
-      (gameEngine: any6642.updateSpecialEffects(2500);
+      (gameEngine.updateSpecialEffects(2500);
       
       expect(gameEngine.isScreenShakeActive()).toBe(false);
       expect(gameEngine.inputDisabled).toBe(false);
@@ -230,8 +230,8 @@ describe('Game Flow Integration', () => {
       const bubble = new Bubble('normal', position);
       const baseScore = bubble.getScore();
       
-      (gameEngine: any7092.startBonusTime(5000, 3);
-      const multipliedScore = baseScore * (gameEngine: any7179.getScoreMultiplier();
+      (gameEngine.startBonusTime(5000, 3);
+      const multipliedScore = baseScore * (gameEngine.getScoreMultiplier();
       
       expect(multipliedScore).toBe(baseScore * 3);
     });
@@ -396,7 +396,7 @@ describe('Game Flow Integration', () => {
       jest.advanceTimersByTime(1000);
       
       // Activate special effects
-      (gameEngine: any12479.startBonusTime(2000, 2);
+      (gameEngine.startBonusTime(2000, 2);
       gameEngine.startTimeStop(1000);
       
       // Continue gameplay

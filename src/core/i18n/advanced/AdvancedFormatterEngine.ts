@@ -14,7 +14,7 @@ export interface ContextualPattern {
 }
 
 export interface GenerationPattern {
-    condition: (data as any) => boolean;
+    condition: (data: any) => boolean;
     generate: (data: any, lang: string) => string;
 }
 
@@ -273,11 +273,11 @@ export class AdvancedFormatterEngine {
             ['comparison-expression', {
                 patterns: [
                     {
-                        condition: (data as any) => data.type === 'comparative',
+                        condition: (data: any) => data.type === 'comparative',
                         generate: (data: any, lang: string) => this.generateComparativeExpression(data, lang)
                     },
                     {
-                        condition: (data as any) => data.type === 'superlative',
+                        condition: (data: any) => data.type === 'superlative',
                         generate: (data: any, lang: string) => this.generateSuperlativeExpression(data, lang)
                     }
                 ]

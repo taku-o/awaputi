@@ -183,7 +183,7 @@ export class AudioCueManager {
      * @param eventType - イベントタイプ
      * @param callback - コールバック関数
      */
-    public addAudioEventListener(eventType: string, callback: (event as any) => void): void {
+    public addAudioEventListener(eventType: string, callback: (event: any) => void): void {
         if (!this.audioEventListeners.has(eventType)) {
             this.audioEventListeners.set(eventType, []);
         }

@@ -138,8 +138,8 @@ export class PWATestFramework {
     /**
      * Create timeout - delegated to executor
      */
-    createTimeout(ms: any4084 {
-        return this.executor.createTimeout(ms: any4140;
+    createTimeout(ms {
+        return this.executor.createTimeout(ms;
     }
     
     /**
@@ -194,7 +194,7 @@ export class PWATestFramework {
      * Configure framework settings
      * @param {Object} config - Framework configuration
      */
-    configure(config: any5442 {
+    configure(config {
         if (config.defaultTimeout !== undefined) {
             this.config.defaultTimeout = config.defaultTimeout;
         }

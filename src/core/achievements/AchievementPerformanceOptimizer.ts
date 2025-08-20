@@ -29,8 +29,8 @@ export interface BatchEvent {
     eventType: string;
     data: any;
     processor: EventProcessor;
-    resolve: (value as any) => void;
-    reject: (reason as any) => void;
+    resolve: (value: any) => void;
+    reject: (reason: any) => void;
     timestamp: number;
 }
 
@@ -38,8 +38,8 @@ export interface ThrottledEvent {
     eventType: string;
     data: any;
     processor: EventProcessor;
-    resolve: (value as any) => void;
-    reject: (reason as any) => void;
+    resolve: (value: any) => void;
+    reject: (reason: any) => void;
     timestamp?: number;
 }
 

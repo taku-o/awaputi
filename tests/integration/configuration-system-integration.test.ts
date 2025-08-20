@@ -79,9 +79,9 @@ describe('Configuration System Integration Tests', () => {
         loggingSystem = new LoggingSystem();
         
         // 計算エンジンに計算クラスを登録
-        (calculationEngine: any2658.registerCalculator('score', scoreCalculator);
-        (calculationEngine: any2739.registerCalculator('balance', balanceCalculator);
-        (calculationEngine: any2824.registerCalculator('effects', effectsCalculator);
+        (calculationEngine.registerCalculator('score', scoreCalculator);
+        (calculationEngine.registerCalculator('balance', balanceCalculator);
+        (calculationEngine.registerCalculator('effects', effectsCalculator);
         
         // 基本的な設定値を設定
         configManager.setDefaultValue('game', 'scoring.baseScores.normal', 10);
@@ -97,8 +97,8 @@ describe('Configuration System Integration Tests', () => {
         if (configManager && typeof configManager.reset === 'function') {
             configManager.reset();
         }
-        if (calculationEngine && typeof (calculationEngine: any3602.clearCache === 'function') {
-            (calculationEngine: any3670.clearCache();
+        if (calculationEngine && typeof (calculationEngine.clearCache === 'function') {
+            (calculationEngine.clearCache();
         }
         if (loggingSystem && typeof loggingSystem.clearLogs === 'function') {
             loggingSystem.clearLogs();
@@ -116,7 +116,7 @@ describe('Configuration System Integration Tests', () => {
             expect(configManager.get('game', 'scoring.combo.multiplier')).toBe(1.5);
             
             // 計算エンジンを通じてスコア計算
-            const score = (calculationEngine: any4392.calculate('score', 'calculateBaseScore', {
+            const score = (calculationEngine.calculate('score', 'calculateBaseScore', {
                 bubbleType: 'normal',
                 ageRatio: 0.5
             });
@@ -125,7 +125,7 @@ describe('Configuration System Integration Tests', () => {
             expect(typeof score).toBe('number');
             
             // キャッシュが正しく動作することを確認
-            const cachedScore = (calculationEngine: any4730.calculate('score', 'calculateBaseScore', {
+            const cachedScore = (calculationEngine.calculate('score', 'calculateBaseScore', {
                 bubbleType: 'normal',
                 ageRatio: 0.5
             });
@@ -300,7 +300,7 @@ describe('Configuration System Integration Tests', () => {
             
             // 100回の計算処理（負荷を軽減）
             for (let i = 0; i < 100; i++) {
-                (calculationEngine: any12044.calculate('score', 'calculateBaseScore', {
+                (calculationEngine.calculate('score', 'calculateBaseScore', {
                     bubbleType: 'normal',
                     ageRatio: Math.random()
                 });
@@ -364,10 +364,10 @@ describe('Configuration System Integration Tests', () => {
             };
             
             // 初回計算
-            const result1 = (calculationEngine: any14210.calculate('score', 'calculateBaseScore', params);
+            const result1 = (calculationEngine.calculate('score', 'calculateBaseScore', params);
             
             // 同じパラメータで再計算
-            const result2 = (calculationEngine: any14355.calculate('score', 'calculateBaseScore', params);
+            const result2 = (calculationEngine.calculate('score', 'calculateBaseScore', params);
             
             // 結果が同じであることを確認
             expect(result2).toBe(result1);
@@ -405,13 +405,13 @@ describe('Configuration System Integration Tests', () => {
 
         test('計算エンジンエラーからのリカバリ', () => {
             // 存在しない計算タイプでの計算を試行
-            const result1 = (calculationEngine: any15835.calculate('invalid', 'calculateSomething', {});
+            const result1 = (calculationEngine.calculate('invalid', 'calculateSomething', {});
             
             // エラーが適切に処理されることを確認
             expect(result1).toBeNull();
             
             // システムが正常に動作し続けることを確認
-            const result2 = (calculationEngine: any16072.calculate('score', 'calculateBaseScore', {
+            const result2 = (calculationEngine.calculate('score', 'calculateBaseScore', {
                 bubbleType: 'normal',
                 ageRatio: 0.5
             });
@@ -472,7 +472,7 @@ describe('Configuration System Integration Tests', () => {
         test('計算パフォーマンス統計', () => {
             // 複数回計算を実行
             for (let i = 0; i < 10; i++) {
-                (calculationEngine: any18251.calculate('score', 'calculateBaseScore', {
+                (calculationEngine.calculate('score', 'calculateBaseScore', {
                     bubbleType: 'normal',
                     ageRatio: Math.random()
                 });
@@ -527,7 +527,7 @@ describe('Configuration System Integration Tests', () => {
                 configManager.set('game', 'scoring.baseScores.normal', 10 + round);
                 
                 // 計算の実行
-                const result = (calculationEngine: any20369.calculate('score', 'calculateBaseScore', {
+                const result = (calculationEngine.calculate('score', 'calculateBaseScore', {
                     bubbleType: 'normal',
                     ageRatio: 0.5
                 });

@@ -13,7 +13,7 @@ interface ConfigurationSource {
     name: string;
     priority: number;
     loader: () => Promise<any>;
-    validator: (config as any) => boolean;
+    validator: (config: any) => boolean;
 }
 
 interface SourceConfigData {

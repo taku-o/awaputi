@@ -29,14 +29,14 @@ export interface VisualFeedbackManager {
 }
 
 export interface GameEngine {
-    addEventListener?: (event: string, handler: (data as any) => void) => void;
-    removeEventListener?: (event: string, handler?: (data as any) => void) => void;
+    addEventListener?: (event: string, handler: (data: any) => void) => void;
+    removeEventListener?: (event: string, handler?: (data: any) => void) => void;
     eventSystem?: EventSystemInterface;
 }
 
 export interface EventSystemInterface {
-    on: (event: string, handler: (data as any) => void) => void;
-    off: (event: string, handler?: (data as any) => void) => void;
+    on: (event: string, handler: (data: any) => void) => void;
+    off: (event: string, handler?: (data: any) => void) => void;
     emit: (event: string, data?: any) => void;
 }
 
@@ -192,7 +192,7 @@ export interface TriggerPerformanceMetrics {
 
 export interface EventListenerState {
     registered: Set<GameEventType>;
-    handlers: Map<GameEventType, (data as any) => void>;
+    handlers: Map<GameEventType, (data: any) => void>;
     active: boolean;
 }
 

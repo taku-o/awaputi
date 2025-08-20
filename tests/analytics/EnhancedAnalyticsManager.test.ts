@@ -28,7 +28,7 @@ class MockPrivacyManager {
         return this.consentStatus;
     }
     
-    anonymizeData(data: any869 {
+    anonymizeData(data {
         return { ...data, anonymized: true };
     }
     
@@ -37,15 +37,15 @@ class MockPrivacyManager {
         this.optOutFeatures[feature] = status;
     }
     
-    isOptedOut(feature: any1104 {
+    isOptedOut(feature {
         return this.optOutFeatures && this.optOutFeatures[feature];
     }
     
-    async exportUserData(callback: any1226 {
+    async exportUserData(callback {
         return await callback();
     }
     
-    async deleteUserData(callback: any1314 {
+    async deleteUserData(callback {
         return await callback();
     }
 }
@@ -89,34 +89,34 @@ class MockDataCollector {
         };
     }
     
-    startSession(sessionInfo: any2198 {
+    startSession(sessionInfo {
         this.sessionInfo = sessionInfo;
         this.eventStats.sessionEvents++;
     }
     
-    endSession(endInfo: any2327 {
+    endSession(endInfo {
         this.endInfo = endInfo;
         this.eventStats.sessionEvents++;
     }
     
-    collectBubbleInteraction(bubbleData: any2458 {
+    collectBubbleInteraction(bubbleData {
         this.eventStats.bubbleEvents++;
         this.eventStats.totalEvents++;
     }
     
-    collectScoreData(scoreData: any2590 {
+    collectScoreData(scoreData {
         this.eventStats.totalEvents++;
     }
     
-    collectItemUsageData(itemData: any2685 {
+    collectItemUsageData(itemData {
         this.eventStats.totalEvents++;
     }
     
-    collectPerformanceData(performanceData: any2781 {
+    collectPerformanceData(performanceData {
         this.eventStats.totalEvents++;
     }
     
-    collectGameBalanceData(balanceData: any2884 {
+    collectGameBalanceData(balanceData {
         this.eventStats.totalEvents++;
     }
     
@@ -134,23 +134,23 @@ class MockGameBalanceCollector {
         this.collectedData = [];
     }
     
-    collectBubbleSpawn(bubbleInfo: any3197 {
+    collectBubbleSpawn(bubbleInfo {
         this.collectedData.push({ type: 'bubbleSpawn', data: bubbleInfo });
     }
     
-    collectScoreData(scoreInfo: any3326 {
+    collectScoreData(scoreInfo {
         this.collectedData.push({ type: 'scoreData', data: scoreInfo });
     }
     
-    collectItemEffectData(itemInfo: any3456 {
+    collectItemEffectData(itemInfo {
         this.collectedData.push({ type: 'itemEffect', data: itemInfo });
     }
     
-    collectStageDifficultyData(stageInfo: any3590 {
+    collectStageDifficultyData(stageInfo {
         this.collectedData.push({ type: 'stageDifficulty', data: stageInfo });
     }
     
-    collectGameBalanceData(balanceData: any3727 {
+    collectGameBalanceData(balanceData {
         this.collectedData.push({ type: 'gameBalance', data: balanceData });
     }
 }

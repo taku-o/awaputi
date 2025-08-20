@@ -43,7 +43,7 @@ interface ActiveFadeInfo {
     fadeId: number;
     timeoutId: NodeJS.Timeout;
     resolve: (value: number) => void;
-    reject: (reason as any) => void;
+    reject: (reason: any) => void;
 }
 
 /**

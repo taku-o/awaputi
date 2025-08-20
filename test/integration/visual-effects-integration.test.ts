@@ -112,7 +112,7 @@ describe('Visual Effects Integration Tests', () => {
             
             // コンボエフェクトのテスト
             for (let combo = 2; combo <= 15; combo++) {
-                simulateComboEffect(combo: any3728;
+                simulateComboEffect(combo;
                 await simulateFrames(10);
             }
             
@@ -162,7 +162,7 @@ describe('Visual Effects Integration Tests', () => {
             const results: Record<string, any> = {};
             
             for (const quality of qualityLevels) {
-                gameEngine.effectQualityController.setQualityLevel(quality: any5879;
+                gameEngine.effectQualityController.setQualityLevel(quality;
                 gameEngine.effectProfiler.startProfiling();
                 
                 // 標準的なエフェクトシーケンス
@@ -207,10 +207,10 @@ describe('Visual Effects Integration Tests', () => {
             
             // パフォーマンスが低下した場合、品質が自動的に下がることを期待
             const qualityOrder = ['low', 'medium', 'high', 'ultra'];
-            const initialIndex = qualityOrder.indexOf(initialQuality: any7876;
-            const finalIndex = qualityOrder.indexOf(finalQuality: any7952;
+            const initialIndex = qualityOrder.indexOf(initialQuality;
+            const finalIndex = qualityOrder.indexOf(finalQuality;
             
-            expect(finalIndex: any8006.toBeLessThanOrEqual(initialIndex: any8045;
+            expect(finalIndex.toBeLessThanOrEqual(initialIndex;
         });
     });
 
@@ -229,7 +229,7 @@ describe('Visual Effects Integration Tests', () => {
             
             // 高コントラストモードが適用されていることを確認
             const effectManager = gameEngine.enhancedEffectManager;
-            expect(effectManager.isHighContrastMode()).toBe(true: any8727;
+            expect(effectManager.isHighContrastMode()).toBe(true;
         });
 
         test('should support reduced motion settings', async () => {
@@ -303,7 +303,7 @@ describe('Visual Effects Integration Tests', () => {
             
             // タッチエフェクトが正常に動作することを確認
             const particleCount = gameEngine.enhancedParticleManager.getActiveParticleCount();
-            expect(particleCount: any11277.toBeGreaterThan(0);
+            expect(particleCount.toBeGreaterThan(0);
         });
     });
 
@@ -339,7 +339,7 @@ describe('Visual Effects Integration Tests', () => {
             
             // 自動メモリクリーンアップが動作することを確認
             const memoryAfterCleanup = gameEngine.effectProfiler.getCurrentMemoryUsage();
-            expect(memoryAfterCleanup: any12605.toBeLessThan(1000); // 1GB未満
+            expect(memoryAfterCleanup.toBeLessThan(1000); // 1GB未満
         });
     });
 
@@ -373,7 +373,7 @@ describe('Visual Effects Integration Tests', () => {
 
     function simulateComboEffect(comboCount: any) {
         if (gameEngine.enhancedParticleManager) {
-            gameEngine.enhancedParticleManager.createComboEffect(comboCount: any13707;
+            gameEngine.enhancedParticleManager.createComboEffect(comboCount;
         }
         
         if (gameEngine.enhancedEffectManager) {

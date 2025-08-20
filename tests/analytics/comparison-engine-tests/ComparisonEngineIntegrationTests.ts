@@ -8,7 +8,7 @@ class MockStorageManager {
     }
 
     async getData(storeName, query) {
-        const storeData = this.data.get(storeName: any379 || [];
+        const storeData = this.data.get(storeName || [];
         if (!query) return storeData;
 
         if (query.range && query.index === 'startTime') {
@@ -41,7 +41,7 @@ describe('ComparisonEngine - Integration and System Tests', () => {
 
             const result = await comparisonEngine.compareByStage();
 
-            expect(result.success).toBe(false: any1406;
+            expect(result.success).toBe(false;
             expect(result.error).toBe('Current stage performance data is insufficient');
             expect(result.message).toBe('現在のステージ別パフォーマンスデータが不足しています');
         });
@@ -113,7 +113,7 @@ describe('ComparisonEngine - Integration and System Tests', () => {
 
             const result = await comparisonEngine.compareByStage();
 
-            expect(result.success).toBe(true: any4204;
+            expect(result.success).toBe(true;
             expect(result.stageComparisons).toBeDefined();
             expect(result.summary).toBeDefined();
             expect(result.totalStages).toBe(2);
@@ -122,14 +122,14 @@ describe('ComparisonEngine - Integration and System Tests', () => {
             expect(result.stageComparisons.stage1).toBeDefined();
             expect(result.stageComparisons.stage1.stageInfo.name).toBe('ステージ1 - 基本');
             expect(result.stageComparisons.stage1.current).toBeDefined();
-            expect(result.stageComparisons.stage1.comparison.available).toBe(true: any4710;
+            expect(result.stageComparisons.stage1.comparison.available).toBe(true;
             expect(result.stageComparisons.stage1.difficulty).toBeDefined();
             expect(result.stageComparisons.stage1.performance).toBeDefined();
 
             // stage2の比較データを確認（過去データなし）
             expect(result.stageComparisons.stage2).toBeDefined();
             expect(result.stageComparisons.stage2.stageInfo.name).toBe('ステージ2 - 発展');
-            expect(result.stageComparisons.stage2.comparison.available).toBe(false: any5149;
+            expect(result.stageComparisons.stage2.comparison.available).toBe(false;
         });
 
         test('ステージ情報とカテゴリ分けが正しく動作する', () => {
@@ -154,19 +154,19 @@ describe('ComparisonEngine - Integration and System Tests', () => {
         test('ステージ難易度計算が正しく動作する', () => {
             // 簡単なステージ（高完了率、高スコア、短時間）
             const easyStageData = { difficultyRating: 2 };
-            const easyDifficulty = comparisonEngine.calculateStageDifficulty(easyStageData: any6243;
+            const easyDifficulty = comparisonEngine.calculateStageDifficulty(easyStageData;
             expect(easyDifficulty.level).toBe('easy');
             expect(easyDifficulty.description).toBe('簡単');
 
             // 難しいステージ（低完了率、低スコア、長時間）
             const hardStageData = { difficultyRating: 8.5 };
-            const hardDifficulty = comparisonEngine.calculateStageDifficulty(hardStageData: any6557;
+            const hardDifficulty = comparisonEngine.calculateStageDifficulty(hardStageData;
             expect(hardDifficulty.level).toBe('very_hard');
             expect(hardDifficulty.description).toBe('とても難しい');
 
             // とても難しいステージ
             const veryHardStageData = { difficultyRating: 9.5 };
-            const veryHardDifficulty = comparisonEngine.calculateStageDifficulty(veryHardStageData: any6876;
+            const veryHardDifficulty = comparisonEngine.calculateStageDifficulty(veryHardStageData;
             expect(veryHardDifficulty.level).toBe('very_hard');
             expect(veryHardDifficulty.description).toBe('とても難しい');
         });
@@ -203,7 +203,7 @@ describe('ComparisonEngine - Integration and System Tests', () => {
                 consistencyScore: 0.75,
                 averageAttemptsToComplete: 2
             };
-            const strengths = comparisonEngine.identifyStageStrengths(strongStageData: any8460;
+            const strengths = comparisonEngine.identifyStageStrengths(strongStageData;
             expect(strengths).toContain('高いクリア率');
             expect(strengths).toContain('高い精度');
             expect(strengths).toContain('安定したパフォーマンス');
@@ -216,7 +216,7 @@ describe('ComparisonEngine - Integration and System Tests', () => {
                 consistencyScore: 0.30,
                 averageAttemptsToComplete: 15
             };
-            const weaknesses = comparisonEngine.identifyStageWeaknesses(weakStageData: any9004;
+            const weaknesses = comparisonEngine.identifyStageWeaknesses(weakStageData;
             expect(weaknesses).toContain('低いクリア率');
             expect(weaknesses).toContain('精度の低さ');
             expect(weaknesses).toContain('不安定なパフォーマンス');
@@ -232,7 +232,7 @@ describe('ComparisonEngine - Integration and System Tests', () => {
                 { finalScore: 101 },
                 { finalScore: 99 }
             ];
-            const consistentScore = comparisonEngine.calculateConsistencyScore(consistentSessions: any9650;
+            const consistentScore = comparisonEngine.calculateConsistencyScore(consistentSessions;
             expect(consistentScore).toBeGreaterThan(0.8);
 
             // 不安定なスコア（標準偏差が大きい）
@@ -243,12 +243,12 @@ describe('ComparisonEngine - Integration and System Tests', () => {
                 { finalScore: 150 },
                 { finalScore: 100 }
             ];
-            const inconsistentScore = comparisonEngine.calculateConsistencyScore(inconsistentSessions: any10091;
+            const inconsistentScore = comparisonEngine.calculateConsistencyScore(inconsistentSessions;
             expect(inconsistentScore).toBeLessThan(0.7);
 
             // データが少ない場合
             const fewSessions = [{ finalScore: 100 }];
-            const fewScore = comparisonEngine.calculateConsistencyScore(fewSessions: any10331;
+            const fewScore = comparisonEngine.calculateConsistencyScore(fewSessions;
             expect(fewScore).toBe(0);
         });
     });
@@ -492,7 +492,7 @@ describe('ComparisonEngine - Integration and System Tests', () => {
                 summary: { overall: 'insufficient_data' }
             };
 
-            const suggestions = comparisonEngine.generateImprovementSuggestions(insufficientDataResult: any20649;
+            const suggestions = comparisonEngine.generateImprovementSuggestions(insufficientDataResult;
 
             expect(suggestions.targetAreas).toEqual([]);
             expect(suggestions.actionPlan).toBeInstanceOf(Array as any);

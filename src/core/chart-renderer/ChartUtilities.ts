@@ -114,7 +114,7 @@ export interface TooltipConfig {
     template?: string;
     position?: TooltipPosition;
     style?: TooltipStyle;
-    formatter?: (data as any) => string;
+    formatter?: (data: any) => string;
 }
 
 export interface TooltipStyle {

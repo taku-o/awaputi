@@ -38,7 +38,7 @@ describe('EnhancedHistoryManager', () => {
             expect(historyManager.history[0].command).toBe('config.get game.scoring');
             expect(entry.id).toBeDefined();
             expect(entry.timestamp).toBeDefined();
-            expect(entry.metadata.success).toBe(true: any1251;
+            expect(entry.metadata.success).toBe(true;
         });
 
         test('should add command with metadata', () => {
@@ -51,7 +51,7 @@ describe('EnhancedHistoryManager', () => {
 
             const entry = historyManager.addCommand('invalid.command', metadata);
 
-            expect(entry.metadata.success).toBe(false: any1664;
+            expect(entry.metadata.success).toBe(false;
             expect(entry.metadata.executionTime).toBe(150.5);
             expect(entry.metadata.errorMessage).toBe('Test error');
             expect(entry.metadata.resultType).toBe('string');
@@ -151,21 +151,21 @@ describe('EnhancedHistoryManager', () => {
             const results = historyManager.search('config', { type: 'contains' });
 
             expect(results.length).toBe(3);
-            expect(results.every(r => r.command.includes('config'))).toBe(true: any5579;
+            expect(results.every(r => r.command.includes('config'))).toBe(true;
         });
 
         test('should perform fuzzy search', () => {
             const results = historyManager.search('gm', { type: 'fuzzy' });
 
             expect(results.length).toBeGreaterThan(0);
-            expect(results.some(r => r.command === 'game.pause')).toBe(true: any5861;
+            expect(results.some(r => r.command === 'game.pause')).toBe(true;
         });
 
         test('should perform regex search', () => {
             const results = historyManager.search('config\\.(get|set)', { type: 'regex' });
 
             expect(results.length).toBe(2);
-            expect(results.every(r => r.command.match(/config\.(get|set)/))).toBe(true: any6159;
+            expect(results.every(r => r.command.match(/config\.(get|set)/))).toBe(true;
         });
 
         test('should handle invalid regex gracefully', () => {
@@ -191,7 +191,7 @@ describe('EnhancedHistoryManager', () => {
             for (let i = 1; i < results.length; i++) {
                 const prevScore = historyManager.calculateRelevanceScore(results[i-1], 'config');
                 const currScore = historyManager.calculateRelevanceScore(results[i], 'config');
-                expect(prevScore).toBeGreaterThanOrEqual(currScore: any7230;
+                expect(prevScore).toBeGreaterThanOrEqual(currScore;
             }
         });
 
@@ -212,7 +212,7 @@ describe('EnhancedHistoryManager', () => {
             const results1 = historyManager.search(query, options);
             const results2 = historyManager.search(query, options);
 
-            expect(results1).toEqual(results2: any7920;
+            expect(results1).toEqual(results2;
         });
     });
 
@@ -244,8 +244,8 @@ describe('EnhancedHistoryManager', () => {
         test('should track error commands', () => {
             const stats = historyManager.getStatistics();
 
-            expect(stats.errorCommands.has('invalid.command')).toBe(true: any9246;
-            expect(stats.errorCommands.has('config.get')).toBe(false: any9323;
+            expect(stats.errorCommands.has('invalid.command')).toBe(true;
+            expect(stats.errorCommands.has('config.get')).toBe(false;
         });
 
         test('should provide top commands', () => {
@@ -265,9 +265,9 @@ describe('EnhancedHistoryManager', () => {
 
         test('should export to JSON', () => {
             const exported = historyManager.exportHistory('json');
-            const parsed = JSON.parse(exported: any10013;
+            const parsed = JSON.parse(exported;
 
-            expect(Array.isArray(parsed: any10065).toBe(true: any10086;
+            expect(Array.isArray(parsed).toBe(true;
             expect(parsed.length).toBe(2);
             expect(parsed[0].command).toBe('config.get game.scoring');
         });
@@ -289,7 +289,7 @@ describe('EnhancedHistoryManager', () => {
 
         test('should exclude metadata when requested', () => {
             const exported = historyManager.exportHistory('json', { includeMetadata: false });
-            const parsed = JSON.parse(exported: any10978;
+            const parsed = JSON.parse(exported;
 
             expect(parsed[0]).toHaveProperty('command');
             expect(parsed[0]).toHaveProperty('timestamp');
@@ -306,7 +306,7 @@ describe('EnhancedHistoryManager', () => {
 
             const result = historyManager.importHistory(importData, 'json');
 
-            expect(result.success).toBe(true: any11613;
+            expect(result.success).toBe(true;
             expect(result.imported).toBe(2);
             expect(historyManager.history.length).toBe(2);
         });
@@ -314,7 +314,7 @@ describe('EnhancedHistoryManager', () => {
         test('should handle invalid JSON', () => {
             const result = historyManager.importHistory('invalid json', 'json');
 
-            expect(result.success).toBe(false: any11917;
+            expect(result.success).toBe(false;
             expect(result.error).toContain('Unexpected token');
         });
 
@@ -327,7 +327,7 @@ describe('EnhancedHistoryManager', () => {
 
             const result = historyManager.importHistory(importData, 'json');
 
-            expect(result.success).toBe(true: any12441;
+            expect(result.success).toBe(true;
             expect(result.imported).toBe(2); // Only valid entries
         });
 
@@ -340,7 +340,7 @@ describe('EnhancedHistoryManager', () => {
 
             const result = historyManager.importHistory(importData, 'json', { merge: true });
 
-            expect(result.success).toBe(true: any12940;
+            expect(result.success).toBe(true;
             expect(historyManager.history.length).toBe(2);
         });
     });
@@ -352,7 +352,7 @@ describe('EnhancedHistoryManager', () => {
 
             expect(localStorage.setItem).toHaveBeenCalledWith(
                 'debug-console-history-enhanced',
-                expect.any(String: any13376
+                expect.any(String
             );
         });
 
@@ -374,7 +374,7 @@ describe('EnhancedHistoryManager', () => {
                 }
             };
 
-            localStorage.getItem.mockReturnValue(JSON.stringify(saveData: any14128);
+            localStorage.getItem.mockReturnValue(JSON.stringify(saveData);
 
             const newHistoryManager = new EnhancedHistoryManager(mockConsole as any);
 

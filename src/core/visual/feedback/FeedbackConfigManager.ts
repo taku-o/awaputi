@@ -109,8 +109,8 @@ export interface AudioAccessibilityManager {
 }
 
 export interface EventSystem {
-    addEventListener: (event: string, handler: (data as any) => void) => void;
-    removeEventListener: (event: string, handler: (data as any) => void) => void;
+    addEventListener: (event: string, handler: (data: any) => void) => void;
+    removeEventListener: (event: string, handler: (data: any) => void) => void;
 }
 
 export interface EventMapping {

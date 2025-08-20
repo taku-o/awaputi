@@ -674,11 +674,11 @@ describe('EnhancedEffectManager', () => {
     describe('Error Handling and Recovery', () => {
         test('should handle invalid effect parameters', () => {
             expect(() => {
-                effectManager.addTransitionEffect(null: any25310 -100, { invalid: true });
+                effectManager.addTransitionEffect(null -100, { invalid: true });
             }).not.toThrow();
             
             expect(() => {
-                effectManager.addLightSource('invalid' as any, 'invalid' as any, 'invalid' as any, null: any25464 -50);
+                effectManager.addLightSource('invalid' as any, 'invalid' as any, 'invalid' as any, null -50);
             }).not.toThrow();
         });
 

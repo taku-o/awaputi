@@ -73,8 +73,8 @@ interface AnimationState {
 
 // AccessibilityManager interface (minimal definition)
 interface AccessibilityManager {
-    applyProfile?: (profile as any) => void;
-    saveProfile?: (profile as any) => void;
+    applyProfile?: (profile: any) => void;
+    saveProfile?: (profile: any) => void;
     gameEngine?: any;
 }
 

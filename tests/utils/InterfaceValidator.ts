@@ -23,9 +23,9 @@ export class InterfaceValidator {
     
     // Check instance methods
     if (implementation) {
-      Object.getOwnPropertyNames(implementation: any1002.forEach(name => {
+      Object.getOwnPropertyNames(implementation.forEach(name => {
         if (typeof implementation[name] === 'function') {
-          allMethods.add(name: any1126;
+          allMethods.add(name;
         }
       });
       
@@ -33,7 +33,7 @@ export class InterfaceValidator {
       if (implementation.constructor && implementation.constructor.prototype) {
         Object.getOwnPropertyNames(implementation.constructor.prototype).forEach(name => {
           if (name !== 'constructor' && typeof implementation.constructor.prototype[name] === 'function') {
-            allMethods.add(name: any1506;
+            allMethods.add(name;
           }
         });
       }
@@ -42,7 +42,7 @@ export class InterfaceValidator {
       if (typeof implementation === 'function') {
         Object.getOwnPropertyNames(implementation.prototype || {}).forEach(name => {
           if (name !== 'constructor' && typeof implementation.prototype[name] === 'function') {
-            allMethods.add(name: any1876;
+            allMethods.add(name;
           }
         });
       }
@@ -50,18 +50,18 @@ export class InterfaceValidator {
     
     // Check each expected method
     expectedMethods.forEach(methodName => {
-      if (allMethods.has(methodName: any2036 || 
+      if (allMethods.has(methodName || 
           (implementation && typeof implementation[methodName] === 'function')) {
-        implementedMethods.push(methodName: any2173;
+        implementedMethods.push(methodName;
       } else {
-        missingMethods.push(methodName: any2236;
+        missingMethods.push(methodName;
       }
     });
     
     // Find extra methods (implemented but not expected)
     allMethods.forEach(methodName => {
-      if (!expectedMethods.includes(methodName: any2409) {
-        extraMethods.push(methodName: any2457;
+      if (!expectedMethods.includes(methodName) {
+        extraMethods.push(methodName;
       }
     });
     
@@ -174,15 +174,15 @@ export class InterfaceValidator {
     const methodCallPattern = new RegExp(`${objectName}\\.([a-zA-Z][a-zA-Z0-9_]*?)\\s*\\(`, 'g'));
     
     let match as any);
-    while ((match = methodCallPattern.exec(testContent: any6259) !== null) {
+    while ((match = methodCallPattern.exec(testContent) !== null) {
       const methodName = match[1];
       // Filter out common non-method patterns
-      if (!['length', 'constructor', 'prototype', 'then', 'catch', 'finally'].includes(methodName: any6461) {
-        methods.add(methodName: any6503;
+      if (!['length', 'constructor', 'prototype', 'then', 'catch', 'finally'].includes(methodName) {
+        methods.add(methodName;
       }
     }
     
-    return Array.from(methods: any6564.sort();
+    return Array.from(methods.sort();
   }
 
   /**

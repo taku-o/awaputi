@@ -49,8 +49,8 @@ interface GameEngine {
 
 // イベントバスのインターフェース
 interface EventBus {
-    on(event: string, callback: (data? as any) => void): void;
-    off(event: string, callback?: (data? as any) => void): void;
+    on(event: string, callback: (data?: any) => void): void;
+    off(event: string, callback?: (data?: any) => void): void;
     emit(event: string, data?: any): void;
 }
 

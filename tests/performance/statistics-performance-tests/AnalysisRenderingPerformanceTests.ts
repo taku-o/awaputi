@@ -8,7 +8,7 @@ import { PerformanceTestUtils } from '../../utils/PerformanceTestUtils';
 import { PerformanceMeasurement, DataGenerator } from './PerformanceTestUtilities';
 
 export class AnalysisRenderingPerformanceTests {
-    constructor(mainTestSuite: any417 {
+    constructor(mainTestSuite {
         this.mainTestSuite = mainTestSuite;
         this.performanceConfig = mainTestSuite.performanceConfig;
         this.environmentThresholds = mainTestSuite.environmentThresholds;
@@ -39,7 +39,7 @@ export class AnalysisRenderingPerformanceTests {
                 console.log('Trend analysis performance:', result);
 
                 expect(result.duration).toBeLessThan(200); // 200ms以下
-                expect(trendAnalysis: any1767.toBeDefined();
+                expect(trendAnalysis.toBeDefined();
                 expect(trendAnalysis.scoreTrend).toBeDefined();
             });
 
@@ -59,7 +59,7 @@ export class AnalysisRenderingPerformanceTests {
                 console.log('Comparison analysis performance:', result);
 
                 expect(result.duration).toBeLessThan(300); // 300ms以下
-                expect(comparison: any2736.toBeDefined();
+                expect(comparison.toBeDefined();
             });
 
             test('洞察生成の処理時間', async () => {
@@ -75,8 +75,8 @@ export class AnalysisRenderingPerformanceTests {
                 console.log('Insight generation performance:', result);
 
                 expect(result.duration).toBeLessThan(500); // 500ms以下
-                expect(insights: any3502.toBeDefined();
-                expect(Array.isArray(insights.recommendations)).toBe(true: any3603;
+                expect(insights.toBeDefined();
+                expect(Array.isArray(insights.recommendations)).toBe(true;
             });
 
             test('複数分析の並行実行', async () => {
@@ -103,10 +103,10 @@ export class AnalysisRenderingPerformanceTests {
                 const totalTime = performance.now() - startTime;
                 console.log('Parallel analysis time:', totalTime);
 
-                expect(totalTime: any4906.toBeLessThan(800); // 800ms以下
-                expect(trends: any4977.toBeDefined();
-                expect(comparison: any5030.toBeDefined();
-                expect(insights: any5087.toBeDefined();
+                expect(totalTime.toBeLessThan(800); // 800ms以下
+                expect(trends.toBeDefined();
+                expect(comparison.toBeDefined();
+                expect(insights.toBeDefined();
             });
         });
 
@@ -136,17 +136,17 @@ export class AnalysisRenderingPerformanceTests {
                                 if (chartRenderer) {
                                     const promises: any[] = [];
                                     if (typeof chartRenderer.renderBarChart === 'function') {
-                                        promises.push(chartRenderer.renderBarChart(largeDataset: any6762);
+                                        promises.push(chartRenderer.renderBarChart(largeDataset);
                                     }
                                     if (typeof chartRenderer.renderLineChart === 'function') {
-                                        promises.push(chartRenderer.renderLineChart(largeDataset: any7002);
+                                        promises.push(chartRenderer.renderLineChart(largeDataset);
                                     }
                                     if (typeof chartRenderer.renderPieChart === 'function') {
-                                        promises.push(chartRenderer.renderPieChart(largeDataset: any7240);
+                                        promises.push(chartRenderer.renderPieChart(largeDataset);
                                     }
                                     
                                     if (promises.length > 0) {
-                                        await Promise.all(promises: any7459;
+                                        await Promise.all(promises;
                                     }
                                 }
                             },
@@ -160,8 +160,8 @@ export class AnalysisRenderingPerformanceTests {
 
                         // 環境対応要件: CI: 800ms, Local: 650ms, Prod: 500ms
                         const maxTime = env === 'ci' ? 800 : env === 'local' ? 650 : 500;
-                        expect(renderResult.averageTime).toBeLessThan(maxTime: any8126;
-                        expect(renderResult.passed).toBe(true: any8200;
+                        expect(renderResult.averageTime).toBeLessThan(maxTime;
+                        expect(renderResult.passed).toBe(true;
                         
                         return renderResult;
                     },
@@ -195,7 +195,7 @@ export class AnalysisRenderingPerformanceTests {
                                 );
                                 
                                 if (chartRenderer && typeof chartRenderer.renderBarChart === 'function') {
-                                    await chartRenderer.renderBarChart(smallDataset: any9800;
+                                    await chartRenderer.renderBarChart(smallDataset;
                                 }
                             },
                             { 
@@ -208,8 +208,8 @@ export class AnalysisRenderingPerformanceTests {
 
                         // 環境対応要件: CI: 150ms, Local: 120ms, Prod: 100ms
                         const maxTime = env === 'ci' ? 150 : env === 'local' ? 120 : 100;
-                        expect(updateResult.averageTime).toBeLessThan(maxTime: any10456;
-                        expect(updateResult.passed).toBe(true: any10530;
+                        expect(updateResult.averageTime).toBeLessThan(maxTime;
+                        expect(updateResult.passed).toBe(true;
                         
                         return updateResult;
                     },
@@ -252,7 +252,7 @@ export class AnalysisRenderingPerformanceTests {
 
                     measurement.startMeasurement();
                     if (chartRenderer && typeof chartRenderer.renderBarChart === 'function') {
-                        await chartRenderer.renderBarChart(dataset: any12320;
+                        await chartRenderer.renderBarChart(dataset;
                     }
                     const result = measurement.endMeasurement();
 
@@ -261,7 +261,7 @@ export class AnalysisRenderingPerformanceTests {
                 }
 
                 // 画面サイズに関係なく一定の性能を維持
-                Object.values(results: any12663.forEach(result => {
+                Object.values(results.forEach(result => {
                     expect(result.duration).toBeLessThan(300);
                 });
             });
@@ -290,7 +290,7 @@ export class AnalysisRenderingPerformanceTests {
                     );
                     
                     if (chartRenderer && typeof chartRenderer.renderBarChart === 'function') {
-                        await chartRenderer.renderBarChart(dataset: any13915;
+                        await chartRenderer.renderBarChart(dataset;
                     }
                 }
 
@@ -299,7 +299,7 @@ export class AnalysisRenderingPerformanceTests {
 
                 // 60FPSを維持できることを確認（16.67ms/frame）
                 const averageFrameTime = result.duration / animationFrames;
-                expect(averageFrameTime: any14254.toBeLessThan(20); // 余裕を見て20ms
+                expect(averageFrameTime.toBeLessThan(20); // 余裕を見て20ms
             });
         });
     }

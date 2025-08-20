@@ -6,7 +6,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
-export default async function processResults(results: any206 {
+export default async function processResults(results {
   // Ensure test-results directory exists
   await fs.mkdir('test-results', { recursive: true });
   

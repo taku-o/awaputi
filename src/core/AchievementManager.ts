@@ -114,7 +114,7 @@ export class AchievementManager implements IAchievementManager {
      */
     private createMockNotificationSystem(): any {
         return {
-            updateConfig: (config as any) => {
+            updateConfig: (config: any) => {
                 console.log('Mock updateConfig called with:', config);
             },
             createAchievementNotification: (achievement: Achievement) => {
@@ -157,12 +157,12 @@ export class AchievementManager implements IAchievementManager {
         if (!this.progressTracker) return;
         
         // 進捗追跡からの実績解除イベント
-        this.progressTracker.addEventListener('achievementUnlocked', (data as any) => {
+        this.progressTracker.addEventListener('achievementUnlocked', (data: any) => {
             this.handleAchievementUnlocked(data);
         });
         
         // 進捗更新イベント
-        this.progressTracker.addEventListener('progressUpdated', (data as any) => {
+        this.progressTracker.addEventListener('progressUpdated', (data: any) => {
             this.handleProgressUpdated(data);
         });
     }

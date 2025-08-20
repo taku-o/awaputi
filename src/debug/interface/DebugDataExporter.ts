@@ -5,7 +5,7 @@ interface ExportFormat {
     name: string;
     extension: string;
     mimeType: string;
-    exporter: (data as any) => string;
+    exporter: (data: any) => string;
 }
 
 interface ExportOptions {
@@ -135,7 +135,7 @@ export class DebugDataExporter extends BaseComponent {
             name: 'JSON',
             extension: '.json',
             mimeType: 'application/json',
-            exporter: (data as any) => JSON.stringify(data, null, 2)
+            exporter: (data: any) => JSON.stringify(data, null, 2)
         });
 
         // CSV形式
@@ -143,7 +143,7 @@ export class DebugDataExporter extends BaseComponent {
             name: 'CSV',
             extension: '.csv',
             mimeType: 'text/csv',
-            exporter: (data as any) => this.convertToCSV(data)
+            exporter: (data: any) => this.convertToCSV(data)
         });
 
         // TXT形式
@@ -151,7 +151,7 @@ export class DebugDataExporter extends BaseComponent {
             name: 'Text',
             extension: '.txt',
             mimeType: 'text/plain',
-            exporter: (data as any) => this.convertToText(data)
+            exporter: (data: any) => this.convertToText(data)
         });
 
         // XML形式
@@ -159,7 +159,7 @@ export class DebugDataExporter extends BaseComponent {
             name: 'XML',
             extension: '.xml',
             mimeType: 'application/xml',
-            exporter: (data as any) => this.convertToXML(data)
+            exporter: (data: any) => this.convertToXML(data)
         });
     }
 
