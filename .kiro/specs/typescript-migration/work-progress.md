@@ -634,6 +634,24 @@ TypeScript移行作業中に「将来実装する」「現時点では未実装�
 
 ### 2025-08-20
 
+#### Task 32完了: その他テストファイルの移行
+- ✅ **test/内の全18個のJavaScriptファイルをTypeScript変換完了**
+  - debug/: 15個（EnhancedDebugInterface, AdvancedPerformanceMonitor等）
+  - visual/: 3個（canvas-scale-ui-positioning-visual, username-input-positioning等）
+- ✅ **tests/内の全107個のJavaScriptファイルをTypeScript変換完了**
+  - e2e/: 31個（game-e2e.spec, help-system-e2e.spec, analytics-privacy-e2e.spec等）
+  - analytics/: 26個（AnalyticsManager, DataCollector, comparison-engine-tests/等）
+  - utils/: 11個（PerformanceTestUtils, MockErrorHandler, EnvironmentManager等）
+  - pwa/: 6個（PWATestFramework, pwa-test-framework/等）
+  - scenes/: 7個（MainMenuScene, HelpScene, SettingsScene関連テスト）
+  - core/: 7個（KeyboardShortcutManager, NavigationContextManager関連）
+  - その他: 19個（setup.js, jest-globals.js, backward-compatibility-test等）
+- ✅ **型定義追加**: 
+  - Jest型定義: `@jest/globals`からのインポート追加
+  - Playwright型定義: E2Eテストに`@playwright/test`インポート追加
+  - グローバル型: `(global as any)`でグローバル変数の型安全性確保
+- ✅ **成果**: 125個のテストファイル一括変換完了、test/とtests/内のJavaScriptファイル0個達成
+
 #### Task 31完了: パフォーマンステストの移行
 - ✅ **tests/performance/内の全15個のJavaScriptファイルをTypeScript変換完了**
 - ✅ **test/performance/内の全3個のJavaScriptファイルをTypeScript変換完了**
