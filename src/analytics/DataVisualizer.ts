@@ -312,12 +312,12 @@ export class DataVisualizer {
         const leaf = svg.selectAll('g')
             .data(root.leaves())
             .enter().append('g')
-            .attr('transform', (d: any) => `translate(${d.x0},${d.y0})`);
+            .attr('transform', (d as any) => `translate(${d.x0},${d.y0})`);
 
         leaf.append('rect')
-            .attr('width', (d: any) => d.x1 - d.x0)
-            .attr('height', (d: any) => d.y1 - d.y0)
-            .style('fill', (d: any) => colorScale(d.parent?.data.name || d.data.name))
+            .attr('width', (d as any) => d.x1 - d.x0)
+            .attr('height', (d as any) => d.y1 - d.y0)
+            .style('fill', (d as any) => colorScale(d.parent?.data.name || d.data.name))
             .style('stroke', '#fff')
             .style('stroke-width', 2);
 

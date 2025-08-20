@@ -121,9 +121,9 @@ const mockFn = <T = any>(returnValue?: T): MockFunction<T> => {
         executionTimes.push(endTime - startTime);
         return result;
     };
-    (fn as any).calls = calls;
-    (fn as any).executionTimes = executionTimes;
-    (fn as any).getAverageExecutionTime = () => executionTimes.reduce((a, b) => a + b, 0) / executionTimes.length;
+    (fn: any2612.calls = calls;
+    (fn: any2643.executionTimes = executionTimes;
+    (fn: any2692.getAverageExecutionTime = () => executionTimes.reduce((a, b) => a + b, 0) / executionTimes.length;
     return fn as MockFunction<T>;
 };
 
@@ -152,11 +152,11 @@ const measurePerformance = async (
 
 // メモリ使用量測定（概算）
 const measureMemoryUsage = (): MemoryUsage => {
-    if ((performance as any).memory) {
+    if ((performance: any3632.memory) {
         return {
-            used: (performance as any).memory.usedJSHeapSize,
-            total: (performance as any).memory.totalJSHeapSize,
-            limit: (performance as any).memory.jsHeapSizeLimit
+            used: (performance: any3698.memory.usedJSHeapSize,
+            total: (performance: any3761.memory.totalJSHeapSize,
+            limit: (performance: any3825.memory.jsHeapSizeLimit
         };
     }
     // フォールバック値
@@ -394,7 +394,7 @@ describe('音響システムパフォーマンステスト', () => {
             
             for (const config of bgmConfigs) {
                 const performanceData = await measurePerformance(async () => {
-                    return (audioManager as any).generateBGM?.(config) || Promise.resolve(true);
+                    return (audioManager: any12553.generateBGM?.(config) || Promise.resolve(true);
                 });
                 
                 expect(performanceData.average).toBeLessThan(2000); // 2秒未満
@@ -408,7 +408,7 @@ describe('音響システムパフォーマンステスト', () => {
             
             const performanceData = await measurePerformance(async () => {
                 // クロスフェードでBGM切り替え
-                return (audioManager as any).crossfadeBGM?.('upbeat-track', {
+                return (audioManager: any13174.crossfadeBGM?.('upbeat-track', {
                     fadeOutDuration: 1000,
                     fadeInDuration: 1000
                 } as CrossfadeOptions) || Promise.resolve(true);
@@ -433,7 +433,7 @@ describe('音響システムパフォーマンステスト', () => {
             // 複数回のループ処理をシミュレート
             for (let i = 0; i < 10; i++) {
                 await new Promise(resolve => setTimeout(resolve, 100));
-                (audioManager as any).updateBGMLoop?.();
+                (audioManager: any14169.updateBGMLoop?.();
             }
             
             const finalMemory = measureMemoryUsage();
@@ -499,7 +499,7 @@ describe('音響システムパフォーマンステスト', () => {
             
             // ガベージコレクションを実行
             audioCacheManager.cleanup();
-            (audioManager as any).garbageCollect?.();
+            (audioManager: any16797.garbageCollect?.();
             
             // 少し待ってメモリ解放を確認
             await new Promise(resolve => setTimeout(resolve, 100));
@@ -521,8 +521,8 @@ describe('音響システムパフォーマンステスト', () => {
             const performanceData = await measurePerformance(async () => {
                 for (let i = 0; i < analysisIterations; i++) {
                     // 音響解析をシミュレート
-                    (audioManager as any).analyzeAudioLevel?.();
-                    (audioManager as any).updateVisualization?.();
+                    (audioManager: any17700.analyzeAudioLevel?.();
+                    (audioManager: any17765.updateVisualization?.();
                     
                     await new Promise(resolve => setTimeout(resolve, analysisInterval));
                 }
@@ -551,7 +551,7 @@ describe('音響システムパフォーマンステスト', () => {
             
             const performanceData = await measurePerformance(async () => {
                 for (const change of effectChanges) {
-                    audioManager.setAudioEffect(change.effect as any, change.value);
+                    audioManager.setAudioEffect(change.effect: any, change.value);
                     await new Promise(resolve => setTimeout(resolve, 50));
                 }
             }, 5);
@@ -575,7 +575,7 @@ describe('音響システムパフォーマンステスト', () => {
             const performanceData = await measurePerformance(async () => {
                 for (const event of hapticEvents) {
                     // 触覚フィードバックトリガーをシミュレート
-                    (audioManager as any).triggerHapticFeedback?.(event.type, {
+                    (audioManager: any19956.triggerHapticFeedback?.(event.type, {
                         intensity: event.intensity
                     } as HapticOptions);
                 }
@@ -595,7 +595,7 @@ describe('音響システムパフォーマンステスト', () => {
                 userAgent: 'Mozilla/5.0 (Linux; Android 8.0; SM-G930F)'
             };
             
-            (audioManager as any).adaptToDevice?.(lowEndDevice);
+            (audioManager: any20630.adaptToDevice?.(lowEndDevice);
             
             // 品質調整後の性能測定
             const performanceData = await measurePerformance(async () => {
@@ -619,7 +619,7 @@ describe('音響システムパフォーマンステスト', () => {
                 userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)'
             };
             
-            (audioManager as any).adaptToDevice?.(highEndDevice);
+            (audioManager: any21543.adaptToDevice?.(highEndDevice);
             
             // 最大品質での性能測定
             const performanceData = await measurePerformance(async () => {

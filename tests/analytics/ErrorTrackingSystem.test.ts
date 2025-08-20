@@ -97,8 +97,8 @@ describe('ErrorTrackingSystem', () => {
         });
 
         test('イベントリスナーが設定される', () => {
-            expect(mockAddEventListener).toHaveBeenCalledWith('error', expect.any(Function);
-            expect(mockAddEventListener).toHaveBeenCalledWith('unhandledrejection', expect.any(Function);
+            expect(mockAddEventListener).toHaveBeenCalledWith('error', expect.any(Function));
+            expect(mockAddEventListener).toHaveBeenCalledWith('unhandledrejection', expect.any(Function));
         });
     });
 
@@ -114,7 +114,7 @@ describe('ErrorTrackingSystem', () => {
                 timestamp: Date.now()
             };
 
-            errorTracker.handleJavaScriptError(errorData;
+            errorTracker.handleJavaScriptError(errorData);
 
             expect(errorTracker.errors).toHaveLength(1);
             expect(errorTracker.errors[0].message).toBe('Test error');
@@ -139,7 +139,7 @@ describe('ErrorTrackingSystem', () => {
                 timestamp: Date.now()
             };
 
-            errorTracker.handlePromiseRejection(rejectionData;
+            errorTracker.handlePromiseRejection(rejectionData);
 
             expect(errorTracker.errors).toHaveLength(1);
             expect(errorTracker.errors[0].message).toBe('Promise rejected');
@@ -160,7 +160,7 @@ describe('ErrorTrackingSystem', () => {
                 timestamp: Date.now()
             };
 
-            errorTracker.handleNetworkError(errorData;
+            errorTracker.handleNetworkError(errorData);
 
             expect(errorTracker.errors).toHaveLength(1);
             expect(errorTracker.errors[0].category).toBe('network');
@@ -184,7 +184,7 @@ describe('ErrorTrackingSystem', () => {
                 context: { gameState: 'playing' }
             };
 
-            errorTracker.handleGameError(errorData;
+            errorTracker.handleGameError(errorData);
 
             expect(errorTracker.errors).toHaveLength(1);
             expect(errorTracker.errors[0].category).toBe('game_logic');
@@ -243,10 +243,10 @@ describe('ErrorTrackingSystem', () => {
                 }
             };
 
-            errorTracker.recordUserAction(action;
+            errorTracker.recordUserAction(action);
 
             expect(errorTracker.userActions).toHaveLength(1);
-            expect(errorTracker.userActions[0]).toMatchObject(action;
+            expect(errorTracker.userActions[0]).toMatchObject(action);
         });
 
         test('最新100アクションのみ保持する', () => {
@@ -290,7 +290,7 @@ describe('ErrorTrackingSystem', () => {
                 }
             };
 
-            errorTracker.attemptErrorRecovery(errorInfo;
+            errorTracker.attemptErrorRecovery(errorInfo);
 
             expect(errorInfo.recovery.attempted).toBe(true);
         });
@@ -322,7 +322,7 @@ describe('ErrorTrackingSystem', () => {
                 timestamp: Date.now()
             };
 
-            errorTracker.updateErrorStats(errorInfo;
+            errorTracker.updateErrorStats(errorInfo);
 
             expect(errorTracker.errorStats.totalErrors).toBe(1);
             expect(errorTracker.errorStats.errorsByCategory.javascript).toBe(1);
@@ -429,7 +429,7 @@ describe('ErrorTrackingSystem', () => {
             });
 
             const report = errorTracker.generateErrorReport();
-            const reportObj = JSON.parse(report;
+            const reportObj = JSON.parse(report);
 
             expect(reportObj.summary).toBeDefined();
             expect(reportObj.recentErrors).toHaveLength(1);
@@ -483,7 +483,7 @@ describe('ErrorTrackingSystem', () => {
                 timestamp: Date.now()
             };
 
-            localStorage.getItem.mockReturnValue(JSON.stringify(mockData);
+            localStorage.getItem.mockReturnValue(JSON.stringify(mockData));
 
             errorTracker.loadFromLocalStorage();
 
@@ -503,7 +503,7 @@ describe('ErrorTrackingSystem', () => {
                 recovery: { attempted: false, successful: false }
             };
 
-            errorTracker.recordError(errorInfo;
+            errorTracker.recordError(errorInfo);
 
             expect(mockDispatchEvent).toHaveBeenCalledWith(
                 expect.objectContaining({

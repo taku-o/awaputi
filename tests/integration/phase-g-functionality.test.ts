@@ -67,7 +67,7 @@ describe('Phase G機能統合テスト', () => {
             
             for (const comp of expectedComponents) {
                 if (balanceComponents[comp]) {
-                    loadedComponents.push(comp;
+                    loadedComponents.push(comp);
                     console.log(`✅ ${comp}: ${balanceComponents[comp].wordCount}語`);
                 }
             }
@@ -81,12 +81,12 @@ describe('Phase G機能統合テスト', () => {
                 const content = balanceComponents.main.content;
                 
                 // Main Controller Patternの特徴確認
-                expect(content.toContain('Main Controller Pattern');
-                expect(content.toContain('dependency injection');
-                expect(content.toContain('this.dataLoader = new BalanceDataLoader');
-                expect(content.toContain('this.calculator = new BalanceCalculator'); 
-                expect(content.toContain('this.validator = new BalanceValidator');
-                expect(content.toContain('this.exporter = new BalanceExporter');
+                expect(content.toContain('Main Controller Pattern'));
+                expect(content.toContain('dependency injection'));
+                expect(content.toContain('this.dataLoader = new BalanceDataLoader'));
+                expect(content.toContain('this.calculator = new BalanceCalculator')); 
+                expect(content.toContain('this.validator = new BalanceValidator'));
+                expect(content.toContain('this.exporter = new BalanceExporter'));
                 
                 console.log('✅ Main Controller Pattern実装確認完了');
             } else {
@@ -99,15 +99,15 @@ describe('Phase G機能統合テスト', () => {
                 const content = balanceComponents.main.content;
                 
                 // CLI機能の維持確認
-                expect(content.toContain('async run()');
-                expect(content.toContain('parseCommandLineArguments');
-                expect(content.toContain('showMainMenu');
-                expect(content.toContain('executeAction');
+                expect(content.toContain('async run()'));
+                expect(content.toContain('parseCommandLineArguments'));
+                expect(content.toContain('showMainMenu'));
+                expect(content.toContain('executeAction'));
                 
                 // コマンドラインオプション確認
-                expect(content.toContain('--batch');
-                expect(content.toContain('--analyze-current');
-                expect(content.toContain('--verbose');
+                expect(content.toContain('--batch'));
+                expect(content.toContain('--analyze-current'));
+                expect(content.toContain('--verbose'));
                 
                 console.log('✅ CLI機能維持確認完了');
             }
@@ -180,7 +180,7 @@ describe('Phase G機能統合テスト', () => {
             
             for (const comp of expectedComponents) {
                 if (audioComponents[comp]) {
-                    loadedComponents.push(comp;
+                    loadedComponents.push(comp);
                     console.log(`✅ ${comp}: ${audioComponents[comp].wordCount}語`);
                 }
             }
@@ -194,11 +194,11 @@ describe('Phase G機能統合テスト', () => {
                 const content = audioComponents.main.content;
                 
                 // WCAG準拠機能の確認
-                expect(content.toContain('showVisualNotification');
-                expect(content.toContain('showCaption');
-                expect(content.toContain('addAudioDescription');
-                expect(content.toContain('triggerHapticFeedback');
-                expect(content.toContain('updateColorIndicator');
+                expect(content.toContain('showVisualNotification'));
+                expect(content.toContain('showCaption'));
+                expect(content.toContain('addAudioDescription'));
+                expect(content.toContain('triggerHapticFeedback'));
+                expect(content.toContain('updateColorIndicator'));
                 
                 console.log('✅ WCAG準拠機能確認完了');
             }
@@ -209,10 +209,10 @@ describe('Phase G機能統合テスト', () => {
                 const content = audioComponents.main.content;
                 
                 // 設定管理機能の確認
-                expect(content.toContain('getSettings()');
-                expect(content.toContain('updateSettings(');
-                expect(content.toContain('updateSetting(');
-                expect(content.toContain('resetSettings(');
+                expect(content.toContain('getSettings()'));
+                expect(content.toContain('updateSettings(')));
+                expect(content.toContain('updateSetting(')));
+                expect(content.toContain('resetSettings(')));
                 
                 console.log('✅ アクセシビリティ設定管理確認完了');
             }
@@ -280,7 +280,7 @@ describe('Phase G機能統合テスト', () => {
             }
             
             // テストは継続（Phase G.3の実装状況に依存しない）
-            expect(true.toBe(true);
+            expect(true.toBe(true));
         });
         
         test('VisualFeedbackManager存在確認', () => {
@@ -292,7 +292,7 @@ describe('Phase G機能統合テスト', () => {
             }
             
             // テストは継続（Phase G.4の実装状況に依存しない）
-            expect(true.toBe(true);
+            expect(true.toBe(true));
         });
         
         test('ビジュアルシステム分割確認', () => {
@@ -312,7 +312,7 @@ describe('Phase G機能統合テスト', () => {
             console.log(`Visual Manager分割状況: ${splitImplemented}/${totalManagers}`);
             
             // 分割が部分的でも実装状況として記録
-            expect(splitImplemented.toBeGreaterThanOrEqual(0);
+            expect(splitImplemented.toBeGreaterThanOrEqual(0));
         });
     });
 
@@ -401,7 +401,7 @@ describe('Phase G機能統合テスト', () => {
             console.log('\n🎯 Phase G完了状況総合評価:');
             
             let implementedCount = 0;
-            let totalPhases = Object.keys(phaseStatus.length;
+            let totalPhases = Object.keys(phaseStatus.length);
             
             for (const [phase, info] of Object.entries(phaseStatus) {
                 const statusIcon = info.status === 'implemented' ? '✅' : 
@@ -418,7 +418,7 @@ describe('Phase G機能統合テスト', () => {
             console.log(`\n📈 Phase G完了率: ${completionRate}% (${implementedCount}/${totalPhases})`);
             
             // 最低50%以上の実装を期待
-            expect(completionRate.toBeGreaterThanOrEqual(50);
+            expect(completionRate.toBeGreaterThanOrEqual(50));
             
             console.log('\n🚀 Phase G統合テスト完了');
             console.log('✅ Main Controller Pattern適用済み');

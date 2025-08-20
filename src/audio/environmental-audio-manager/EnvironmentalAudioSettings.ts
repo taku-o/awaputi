@@ -46,7 +46,7 @@ export type VolumeCallback = (volume: number) => void;
 interface ConfigManager {
     get(category: string, key: string): any;
     set(category: string, key: string, value: any): void;
-    watch(category: string, key: string, callback: (value: any) => void): string | null;
+    watch(category: string, key: string, callback: (value as any) => void): string | null;
     unwatch(watchId: string): void;
 }
 

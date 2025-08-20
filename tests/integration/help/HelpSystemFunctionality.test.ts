@@ -98,15 +98,15 @@ describe('Help System Integration', () => {
         localStorage.clear();
 
         // Create instances
-        helpAnalytics = new HelpAnalytics(mockGameEngine;
-        helpFeedbackSystem = new HelpFeedbackSystem(mockGameEngine;
+        helpAnalytics = new HelpAnalytics(mockGameEngine);
+        helpFeedbackSystem = new HelpFeedbackSystem(mockGameEngine);
         
         // Add analytics and feedback to game engine
         mockGameEngine.helpAnalytics = helpAnalytics;
         mockGameEngine.helpFeedbackSystem = helpFeedbackSystem;
 
         // Create help scene
-        helpScene = new HelpScene(mockGameEngine;
+        helpScene = new HelpScene(mockGameEngine);
     });
 
     afterEach(() => {
@@ -121,7 +121,7 @@ describe('Help System Integration', () => {
 
     describe('Help Scene Initialization', () => {
         test('should initialize help scene with all components', () => {
-            expect(helpScene.toBeDefined();
+            expect(helpScene.toBeDefined());
             expect(helpScene.helpContentManager).toBeDefined();
             expect(helpScene.helpEventManager).toBeDefined();
             expect(helpScene.helpRenderer).toBeDefined();
@@ -140,7 +140,7 @@ describe('Help System Integration', () => {
             
             helpScene.enter('menu');
             
-            expect(analyticsSpy.toHaveBeenCalled();
+            expect(analyticsSpy.toHaveBeenCalled());
         });
 
         test('should end help session on scene exit', () => {
@@ -149,7 +149,7 @@ describe('Help System Integration', () => {
             helpScene.enter('menu');
             helpScene.exit();
             
-            expect(analyticsSpy.toHaveBeenCalled();
+            expect(analyticsSpy.toHaveBeenCalled());
         });
 
         test('should track contextual help correctly', () => {
@@ -157,7 +157,7 @@ describe('Help System Integration', () => {
             
             helpScene.enter('game', { contextual: true });
             
-            expect(analyticsSpy.toHaveBeenCalledWith('contextual_help', expect.any(Object);
+            expect(analyticsSpy.toHaveBeenCalledWith('contextual_help', expect.any(Object)));
         });
     });
 
@@ -170,7 +170,7 @@ describe('Help System Integration', () => {
             // Simulate category selection
             if (helpScene.helpContentManager && helpScene.helpContentManager.selectCategory) {
                 helpScene.helpContentManager.selectCategory('gameplay');
-                expect(analyticsSpy.toHaveBeenCalledWith('gameplay', expect.any(Object);
+                expect(analyticsSpy.toHaveBeenCalledWith('gameplay', expect.any(Object)));
             }
         });
 
@@ -183,8 +183,8 @@ describe('Help System Integration', () => {
             // Simulate topic selection
             if (helpScene.helpContentManager && helpScene.helpContentManager.selectTopic) {
                 helpScene.helpContentManager.selectTopic('basic-controls');
-                expect(analyticsSpy.toHaveBeenCalledWith('basic-controls', expect.any(Object);
-                expect(feedbackSpy.toHaveBeenCalledWith('basic-controls', expect.any(Object);
+                expect(analyticsSpy.toHaveBeenCalledWith('basic-controls', expect.any(Object)));
+                expect(feedbackSpy.toHaveBeenCalledWith('basic-controls', expect.any(Object)));
             }
         });
     });
@@ -198,7 +198,7 @@ describe('Help System Integration', () => {
             // Simulate search
             if (helpScene.helpContentManager && helpScene.helpContentManager.performSearch) {
                 helpScene.helpContentManager.performSearch('controls');
-                expect(analyticsSpy.toHaveBeenCalledWith('controls', 0);
+                expect(analyticsSpy.toHaveBeenCalledWith('controls', 0));
             }
         });
 
@@ -215,7 +215,7 @@ describe('Help System Integration', () => {
                 
                 // Manually trigger caching (as we're mocking the search)
                 helpAnalytics.cacheSearchResults('test', mockResults);
-                expect(cacheSpy.toHaveBeenCalledWith('test', mockResults);
+                expect(cacheSpy.toHaveBeenCalledWith('test', mockResults));
             }
         });
 
@@ -229,7 +229,7 @@ describe('Help System Integration', () => {
                 helpScene.helpContentManager.performSearch('<script>alert("xss")</script>');
                 
                 // Should have been sanitized
-                expect(analyticsSpy.toHaveBeenCalledWith('scriptalertxssscript', 0);
+                expect(analyticsSpy.toHaveBeenCalledWith('scriptalertxssscript', 0));
             }
         });
     });
@@ -242,7 +242,7 @@ describe('Help System Integration', () => {
             const event = new KeyboardEvent('keydown', { key: '/' });
             
             if (helpScene.helpEventManager && helpScene.helpEventManager.handleKeyDown) {
-                const result = helpScene.helpEventManager.handleKeyDown(event;
+                const result = helpScene.helpEventManager.handleKeyDown(event);
                 expect(result.toBe(true); // Should handle the key
             }
         });
@@ -256,8 +256,8 @@ describe('Help System Integration', () => {
             const event = new KeyboardEvent('keydown', { key: 'Escape' });
             
             if (helpScene.helpEventManager && helpScene.helpEventManager.handleKeyDown) {
-                helpScene.helpEventManager.handleKeyDown(event;
-                expect(sceneManagerSpy.toHaveBeenCalled();
+                helpScene.helpEventManager.handleKeyDown(event);
+                expect(sceneManagerSpy.toHaveBeenCalled());
             }
         });
     });
@@ -270,7 +270,7 @@ describe('Help System Integration', () => {
             
             // Simulate content viewing
             helpFeedbackSystem.startContentView('test-topic', { title: 'Test Topic' });
-            expect(feedbackSpy.toHaveBeenCalledWith('test-topic', { title: 'Test Topic' });
+            expect(feedbackSpy.toHaveBeenCalledWith('test-topic', { title: 'Test Topic' }));
         });
 
         test('should track feedback submission', () => {
@@ -285,15 +285,15 @@ describe('Help System Integration', () => {
             helpAnalytics.recordFeedback('test-topic', {}, mockFeedback);
             helpFeedbackSystem.recordFeedback('test-topic', {}, mockFeedback);
             
-            expect(analyticsSpy.toHaveBeenCalledWith('test-topic', {}, mockFeedback);
-            expect(feedbackSpy.toHaveBeenCalledWith('test-topic', {}, mockFeedback);
+            expect(analyticsSpy.toHaveBeenCalledWith('test-topic', {}, mockFeedback));
+            expect(feedbackSpy.toHaveBeenCalledWith('test-topic', {}, mockFeedback));
         });
     });
 
     describe('Error Handling and Recovery', () => {
         test('should handle analytics initialization failure', () => {
             // Create analytics with invalid game engine
-            const invalidAnalytics = new HelpAnalytics(null;
+            const invalidAnalytics = new HelpAnalytics(null);
             
             expect(() => {
                 invalidAnalytics.recordCategorySelection('test-category');
@@ -331,7 +331,7 @@ describe('Help System Integration', () => {
             const mockOperation = jest.fn(() => 'result');
             const result = helpAnalytics.measurePerformance('test-operation', mockOperation);
             
-            expect(result.toBe('result');
+            expect(result.toBe('result'));
             expect(helpAnalytics.performanceMetrics.operations.has('test-operation')).toBe(true);
         });
 
@@ -356,7 +356,7 @@ describe('Help System Integration', () => {
             helpAnalytics.saveAnalyticsData();
             
             // Create new instance and load data
-            const newAnalytics = new HelpAnalytics(mockGameEngine;
+            const newAnalytics = new HelpAnalytics(mockGameEngine);
             
             expect(newAnalytics.analytics.helpUsage.topHelpCategories.get('test-category')).toBe(1);
         });
@@ -372,7 +372,7 @@ describe('Help System Integration', () => {
             helpFeedbackSystem.saveFeedbackData();
             
             // Create new instance and load data
-            const newFeedback = new HelpFeedbackSystem(mockGameEngine;
+            const newFeedback = new HelpFeedbackSystem(mockGameEngine);
             
             expect(newFeedback.feedbacks.has('test-topic')).toBe(true);
         });

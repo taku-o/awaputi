@@ -80,7 +80,7 @@ describe('データ管理 - クラウド対応統合テスト', () => {
         // setInterval/clearIntervalのモック
         jest.useFakeTimers();
         
-        dataManager = new DataManager(mockGameEngine;
+        dataManager = new DataManager(mockGameEngine);
         await dataManager.initialize();
     });
     
@@ -95,7 +95,7 @@ describe('データ管理 - クラウド対応統合テスト', () => {
     describe('DataManager統合', () => {
         test('クラウド機能付きで正常に初期化される', () => {
             expect(dataManager.isInitialized).toBe(true);
-            expect(dataManager.storage).toBeInstanceOf(DataStorage;
+            expect(dataManager.storage).toBeInstanceOf(DataStorage);
         });
         
         test('クラウド設定が正しく読み込まれる', () => {
@@ -161,7 +161,7 @@ describe('データ管理 - クラウド対応統合テスト', () => {
             
             if (dataManager.syncManager && dataManager.cloudStorage) {
                 // CloudStorageのgetメソッドをモック
-                dataManager.cloudStorage.get = jest.fn().mockResolvedValue(cloudData as jest.Mock;
+                dataManager.cloudStorage.get = jest.fn().mockResolvedValue(cloudData as jest.Mock);
                 
                 // SyncManagerの同期をモック
                 dataManager.syncManager.sync = jest.fn() as jest.Mock.mockResolvedValue({
@@ -190,8 +190,8 @@ describe('データ管理 - クラウド対応統合テスト', () => {
             
             if (dataManager.syncManager) {
                 // 競合データをモック
-                dataManager.storage.load = jest.fn().mockResolvedValue(localData as jest.Mock;
-                dataManager.cloudStorage.get = jest.fn().mockResolvedValue(cloudData as jest.Mock;
+                dataManager.storage.load = jest.fn().mockResolvedValue(localData as jest.Mock);
+                dataManager.cloudStorage.get = jest.fn().mockResolvedValue(cloudData as jest.Mock);
                 
                 dataManager.syncManager.sync = jest.fn() as jest.Mock.mockResolvedValue({
                     synchronized: 1,
@@ -268,7 +268,7 @@ describe('データ管理 - クラウド対応統合テスト', () => {
                 
                 const quality = await dataManager.offlineManager.checkConnectionQuality();
                 
-                expect(quality.toBe('good');
+                expect(quality.toBe('good'));
                 expect(dataManager.offlineManager.state.connectionQuality).toBe('good');
             }
         });
@@ -297,7 +297,7 @@ describe('データ管理 - クラウド対応統合テスト', () => {
                 // フォールバック動作のテスト（実際の実装依存）
             } catch (error) {
                 // エラーハンドリングのテスト
-                expect(error.toBeDefined();
+                expect(error.toBeDefined());
             }
         });
         
@@ -401,7 +401,7 @@ describe('データ管理 - クラウド対応統合テスト', () => {
             const endTime = performance.now();
             
             const duration = endTime - startTime;
-            expect(duration.toBeLessThan(50);
+            expect(duration.toBeLessThan(50));
         });
         
         test('大量データのチャンク処理が効率的に実行される', async () => {
@@ -412,7 +412,7 @@ describe('データ管理 - クラウド対応統合テスト', () => {
             
             if (dataManager.cloudStorage) {
                 // チャンク処理のモック
-                dataManager.cloudStorage.setChunked = jest.fn().mockResolvedValue(true as jest.Mock;
+                dataManager.cloudStorage.setChunked = jest.fn().mockResolvedValue(true as jest.Mock);
                 
                 const startTime = performance.now();
                 
@@ -433,10 +433,10 @@ describe('データ管理 - クラウド対応統合テスト', () => {
             const offlineStatus = dataManager.getOfflineStatus();
             const syncStatus = dataManager.getSyncStatus();
             
-            expect(offlineStatus.toHaveProperty('isOnline');
-            expect(offlineStatus.toHaveProperty('connectionQuality');
-            expect(syncStatus.toHaveProperty('isInProgress');
-            expect(syncStatus.toHaveProperty('cloudAuthenticated');
+            expect(offlineStatus.toHaveProperty('isOnline'));
+            expect(offlineStatus.toHaveProperty('connectionQuality'));
+            expect(syncStatus.toHaveProperty('isInProgress'));
+            expect(syncStatus.toHaveProperty('cloudAuthenticated'));
         });
         
         test('設定変更が全コンポーネントに反映される', () => {
@@ -503,7 +503,7 @@ describe('データ管理 - クラウド対応統合テスト', () => {
             // バックアップが利用可能な場合のテスト
             if (dataManager.backup) {
                 // バックアップ作成をモック
-                dataManager.backup.createBackup = jest.fn().mockResolvedValue(true as jest.Mock;
+                dataManager.backup.createBackup = jest.fn().mockResolvedValue(true as jest.Mock);
                 
                 await dataManager.backup.createBackup();
                 expect(dataManager.backup.createBackup).toHaveBeenCalled();

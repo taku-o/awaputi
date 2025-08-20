@@ -10,7 +10,7 @@ import { seoLogger } from './SEOLogger';
 type ErrorHandler = (error: Error, context: string, data: ErrorHandlerData) => Promise<any> | any;
 
 // フォールバック戦略型
-type FallbackStrategy = (data: any) => any;
+type FallbackStrategy = (data as any) => any;
 
 // エラーハンドラーデータ型
 interface ErrorHandlerData {

@@ -127,7 +127,7 @@ export interface LabelOptions {
     font?: FontConfiguration;
     color?: string;
     rotation?: number;
-    format?: (value: any) => string;
+    format?: (value as any) => string;
 }
 
 export interface AxisTitleOptions {

@@ -97,10 +97,10 @@ describe('PerformanceDataCollector', () => {
                 sessionId: 'test-session'
             };
 
-            collector.recordFPSData(fpsData;
+            collector.recordFPSData(fpsData);
 
             expect(collector.performanceData.fps).toHaveLength(1);
-            expect(collector.performanceData.fps[0]).toMatchObject(fpsData;
+            expect(collector.performanceData.fps[0]).toMatchObject(fpsData);
         });
 
         test('メモリデータを記録できる', () => {
@@ -113,10 +113,10 @@ describe('PerformanceDataCollector', () => {
                 sessionId: 'test-session'
             };
 
-            collector.recordMemoryData(memoryData;
+            collector.recordMemoryData(memoryData);
 
             expect(collector.performanceData.memory).toHaveLength(1);
-            expect(collector.performanceData.memory[0]).toMatchObject(memoryData;
+            expect(collector.performanceData.memory[0]).toMatchObject(memoryData);
         });
 
         test('ロード時間データを記録できる', () => {
@@ -127,10 +127,10 @@ describe('PerformanceDataCollector', () => {
                 sessionId: 'test-session'
             };
 
-            collector.recordLoadTimeData(loadTimeData;
+            collector.recordLoadTimeData(loadTimeData);
 
             expect(collector.performanceData.loadTimes).toHaveLength(1);
-            expect(collector.performanceData.loadTimes[0]).toMatchObject(loadTimeData;
+            expect(collector.performanceData.loadTimes[0]).toMatchObject(loadTimeData);
         });
 
         test('エラーデータを記録できる', () => {
@@ -141,10 +141,10 @@ describe('PerformanceDataCollector', () => {
                 sessionId: 'test-session'
             };
 
-            collector.recordErrorData(errorData;
+            collector.recordErrorData(errorData);
 
             expect(collector.performanceData.errorEvents).toHaveLength(1);
-            expect(collector.performanceData.errorEvents[0]).toMatchObject(errorData;
+            expect(collector.performanceData.errorEvents[0]).toMatchObject(errorData);
         });
     });
 
@@ -159,7 +159,7 @@ describe('PerformanceDataCollector', () => {
                 sessionId: 'test-session'
             };
 
-            collector.recordFPSData(lowFpsData;
+            collector.recordFPSData(lowFpsData);
 
             expect(mockDispatchEvent).toHaveBeenCalledWith(
                 expect.objectContaining({
@@ -185,7 +185,7 @@ describe('PerformanceDataCollector', () => {
                 sessionId: 'test-session'
             };
 
-            collector.recordMemoryData(highMemoryData;
+            collector.recordMemoryData(highMemoryData);
 
             expect(mockDispatchEvent).toHaveBeenCalledWith(
                 expect.objectContaining({
@@ -272,7 +272,7 @@ describe('PerformanceDataCollector', () => {
                 'test-operation-start',
                 'test-operation-end'
             );
-            expect(result).toMatchObject(mockMeasure;
+            expect(result).toMatchObject(mockMeasure);
         });
     });
 
@@ -323,7 +323,7 @@ describe('PerformanceDataCollector', () => {
             });
 
             const exported = collector.exportData('json');
-            const data = JSON.parse(exported;
+            const data = JSON.parse(exported);
 
             expect(data.sessionId).toBeDefined();
             expect(data.statistics).toBeDefined();

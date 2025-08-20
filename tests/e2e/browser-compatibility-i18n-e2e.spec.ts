@@ -33,12 +33,12 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
       };
     });
     
-    expect(initTest.exists).toBe(true: any);
-    expect(['ja', 'en'].includes(initTest.currentLanguage)).toBe(true: any);
-    expect(Array.isArray(initTest.availableLanguages)).toBe(true: any);
+    expect(initTest.exists).toBe(true: any1405;
+    expect(['ja', 'en'].includes(initTest.currentLanguage)).toBe(true: any1484;
+    expect(Array.isArray(initTest.availableLanguages)).toBe(true: any1558;
     expect(initTest.translationCount).toBeGreaterThan(0);
-    expect(initTest.hasTranslationLoader).toBe(true: any);
-    expect(initTest.hasFontManager).toBe(true: any);
+    expect(initTest.hasTranslationLoader).toBe(true: any1677;
+    expect(initTest.hasFontManager).toBe(true: any1732;
     
     console.log(`Browser: ${browserName}, Language: ${initTest.currentLanguage}, Languages: ${initTest.availableLanguages.length}`);
   });
@@ -95,12 +95,12 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
       };
     });
     
-    expect(languageSwitchTest.switchResult).toBe(true: any);
+    expect(languageSwitchTest.switchResult).toBe(true: any3784;
     expect(languageSwitchTest.englishLang).toBe('en');
     expect(languageSwitchTest.englishTranslation).toBe('Start Game');
     expect(languageSwitchTest.backToJapaneseLang).toBe('ja');
     expect(languageSwitchTest.backToJapaneseTranslation).toBe('ゲーム開始');
-    expect(languageSwitchTest.switchWorked).toBe(true: any);
+    expect(languageSwitchTest.switchWorked).toBe(true: any4106;
     
     console.log(`Browser: ${browserName}, Language switching: ✓`);
   });
@@ -131,9 +131,9 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
       };
     });
     
-    expect(intlTest.intlSupported).toBe(true: any);
-    expect(intlTest.numberTests.hasIntlNumber).toBe(true: any);
-    expect(intlTest.dateTests.hasIntlDate).toBe(true: any);
+    expect(intlTest.intlSupported).toBe(true: any5157;
+    expect(intlTest.numberTests.hasIntlNumber).toBe(true: any5223;
+    expect(intlTest.dateTests.hasIntlDate).toBe(true: any5285;
     expect(typeof intlTest.numberTests.japaneseNumber).toBe('string');
     expect(typeof intlTest.numberTests.englishNumber).toBe('string');
     expect(typeof intlTest.dateTests.japaneseDate).toBe('string');
@@ -164,8 +164,8 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
     
     expect(persistenceTest.currentLanguage).toBe('en');
     expect(persistenceTest.savedLanguage).toBe('en');
-    expect(persistenceTest.hasLocalStorage).toBe(true: any);
-    expect(persistenceTest.hasSettingsManager).toBe(true: any);
+    expect(persistenceTest.hasLocalStorage).toBe(true: any6558;
+    expect(persistenceTest.hasSettingsManager).toBe(true: any6624;
     
     // Reload and check persistence
     await page.reload();
@@ -227,8 +227,8 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
     }
     
     // Font APIs should be available in modern browsers
-    expect(fontTest.hasFontFace).toBe(true: any);
-    expect(fontTest.hasFontLoad).toBe(true: any);
+    expect(fontTest.hasFontFace).toBe(true: any8841;
+    expect(fontTest.hasFontLoad).toBe(true: any8893;
     
     console.log(`Browser: ${browserName}, Font APIs: ✓`);
   });
@@ -252,7 +252,7 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
       };
     });
     
-    expect(urlDetectionTest.hasUrlSearchParams).toBe(true: any);
+    expect(urlDetectionTest.hasUrlSearchParams).toBe(true: any9728;
     expect(urlDetectionTest.currentLanguage).toBe('en');
     expect(urlDetectionTest.translation).toBe('Start Game');
     
@@ -274,7 +274,7 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
       };
     });
     
-    expect(navigatorTest.hasNavigatorLanguage).toBe(true: any);
+    expect(navigatorTest.hasNavigatorLanguage).toBe(true: any10610;
     expect(typeof navigatorTest.navigatorLanguage).toBe('string');
     
     if (navigatorTest.detectorExists) {
@@ -300,12 +300,12 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
       };
     });
     
-    expect(culturalTest.japaneseCultural.isRTL).toBe(false: any);
+    expect(culturalTest.japaneseCultural.isRTL).toBe(false: any11603;
     expect(culturalTest.japaneseCultural.textDirection).toBe('ltr');
-    expect(culturalTest.arabicCultural.isRTL).toBe(true: any);
+    expect(culturalTest.arabicCultural.isRTL).toBe(true: any11738;
     expect(culturalTest.arabicCultural.textDirection).toBe('rtl');
-    expect(culturalTest.hasIntl).toBe(true: any);
-    expect(culturalTest.hasGetBoundingClientRect).toBe(true: any);
+    expect(culturalTest.hasIntl).toBe(true: any11857;
+    expect(culturalTest.hasGetBoundingClientRect).toBe(true: any11926;
     
     console.log(`Browser: ${browserName}, Cultural adaptation: ✓`);
   });
@@ -326,9 +326,9 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
       return tests;
     });
     
-    expect(errorHandlingTest.invalidLanguage).toBe(false: any);
+    expect(errorHandlingTest.invalidLanguage).toBe(false: any12747;
     expect(errorHandlingTest.missingTranslation).toBe('non.existent.key');
-    expect(Array.isArray(errorHandlingTest.invalidTranslationArray)).toBe(true: any);
+    expect(Array.isArray(errorHandlingTest.invalidTranslationArray)).toBe(true: any12911;
     expect(errorHandlingTest.invalidTranslationArray.length).toBe(0);
     expect(errorHandlingTest.invalidAccessibilityTranslation).toBe('non.existent.a11y');
     expect(errorHandlingTest.malformedParameterTranslation).toBe('BubblePop');
@@ -348,7 +348,7 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
       
       for (let i = 0; i < iterations; i++) {
         for (const key of testKeys) {
-          lm.t(key: any);
+          lm.t(key: any13789;
         }
       }
       
@@ -371,7 +371,7 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
       };
     });
     
-    expect(performanceTest.hasPerformanceNow).toBe(true: any);
+    expect(performanceTest.hasPerformanceNow).toBe(true: any14508;
     expect(performanceTest.averageTime).toBeLessThan(1); // Each translation should take less than 1ms
     expect(performanceTest.switchTime).toBeLessThan(100); // Language switch should take less than 100ms
     
@@ -405,10 +405,10 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
     });
     
     expect(typeof accessibilityTest.a11yTranslation).toBe('string');
-    expect(accessibilityTest.addResult).toBe(true: any);
+    expect(accessibilityTest.addResult).toBe(true: any15994;
     expect(accessibilityTest.retrieveResult).toBe('Browser test value');
-    expect(accessibilityTest.hasA11yStats).toBe(true: any);
-    expect(accessibilityTest.hasCulturalSupport).toBe(true: any);
+    expect(accessibilityTest.hasA11yStats).toBe(true: any16129;
+    expect(accessibilityTest.hasCulturalSupport).toBe(true: any16197;
     
     console.log(`Browser: ${browserName}, Accessibility: ✓`);
   });
@@ -431,8 +431,8 @@ test.describe('Browser-Specific Edge Cases', () => {
         const testValue = 'test_value';
         
         localStorage.setItem(testKey, testValue);
-        const retrieved = localStorage.getItem(testKey: any);
-        localStorage.removeItem(testKey: any);
+        const retrieved = localStorage.getItem(testKey: any16992;
+        localStorage.removeItem(testKey: any17041;
         
         // Test large data storage (for translations)
         const largeData = JSON.stringify(Array(1000).fill('test_translation_data'));
@@ -455,9 +455,9 @@ test.describe('Browser-Specific Edge Cases', () => {
     });
     
     if (storageTest.success) {
-      expect(storageTest.basicStorage).toBe(true: any);
-      expect(storageTest.largeStorage).toBe(true: any);
-      expect(storageTest.hasSettingsManager).toBe(true: any);
+      expect(storageTest.basicStorage).toBe(true: any17840;
+      expect(storageTest.largeStorage).toBe(true: any17898;
+      expect(storageTest.hasSettingsManager).toBe(true: any17962;
     } else {
       console.log(`Browser: ${browserName}, Storage limitation: ${storageTest.error}`);
     }
@@ -480,11 +480,11 @@ test.describe('Browser-Specific Edge Cases', () => {
     });
     
     // Modern browsers should support these APIs
-    expect(fontApiTest.hasFontFace).toBe(true: any);
-    expect(fontApiTest.hasDocumentFonts).toBe(true: any);
-    expect(fontApiTest.hasFontLoad).toBe(true: any);
-    expect(fontApiTest.hasFontCheck).toBe(true: any);
-    expect(fontApiTest.hasFontReady).toBe(true: any);
+    expect(fontApiTest.hasFontFace).toBe(true: any18925;
+    expect(fontApiTest.hasDocumentFonts).toBe(true: any18985;
+    expect(fontApiTest.hasFontLoad).toBe(true: any19040;
+    expect(fontApiTest.hasFontCheck).toBe(true: any19096;
+    expect(fontApiTest.hasFontReady).toBe(true: any19152;
     
     console.log(`Browser: ${browserName}, Font APIs: ✓`);
   });
@@ -529,18 +529,18 @@ test.describe('Browser-Specific Edge Cases', () => {
       };
     });
     
-    expect(intlVariationsTest.intlFeatures.hasIntl).toBe(true: any);
-    expect(intlVariationsTest.intlFeatures.hasNumberFormat).toBe(true: any);
-    expect(intlVariationsTest.intlFeatures.hasDateTimeFormat).toBe(true: any);
+    expect(intlVariationsTest.intlFeatures.hasIntl).toBe(true as any);
+    expect(intlVariationsTest.intlFeatures.hasNumberFormat).toBe(true: any20816;
+    expect(intlVariationsTest.intlFeatures.hasDateTimeFormat).toBe(true: any20897;
     
     if (intlVariationsTest.functionalityTests.numberFormatWorks !== undefined) {
-      expect(intlVariationsTest.functionalityTests.numberFormatWorks).toBe(true: any);
+      expect(intlVariationsTest.functionalityTests.numberFormatWorks).toBe(true: any21072;
     }
     
     if (intlVariationsTest.functionalityTests.dateFormatWorks !== undefined) {
-      expect(intlVariationsTest.functionalityTests.dateFormatWorks).toBe(true: any);
+      expect(intlVariationsTest.functionalityTests.dateFormatWorks).toBe(true: any21249;
     }
     
-    console.log(`Browser: ${browserName}, Intl features: ${Object.values(intlVariationsTest.intlFeatures).filter(Boolean: any).length}/${Object.keys(intlVariationsTest.intlFeatures).length}`);
+    console.log(`Browser: ${browserName}, Intl features: ${Object.values(intlVariationsTest.intlFeatures).filter(Boolean: any21387.length}/${Object.keys(intlVariationsTest.intlFeatures).length}`);
   });
 });

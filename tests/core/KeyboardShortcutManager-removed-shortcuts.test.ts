@@ -65,7 +65,7 @@ describe('CoreKeyboardShortcutManager - Removed Shortcuts (Issue #169)', () => {
         jest.clearAllMocks();
 
         // Create instance
-        shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine;
+        shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine);
     });
 
     afterEach(() => {
@@ -96,10 +96,10 @@ describe('CoreKeyboardShortcutManager - Removed Shortcuts (Issue #169)', () => {
             });
 
             // Simulate key press
-            shortcutManager.handleKeyDown(event;
+            shortcutManager.handleKeyDown(event);
 
             // Verify no settings action was triggered
-            expect(mockGameEngine.sceneManager.switchScene).not.toHaveBeenCalledWith('settings', expect.any(Object);
+            expect(mockGameEngine.sceneManager.switchScene).not.toHaveBeenCalledWith('settings', expect.any(Object));
             expect(mockGameEngine.sceneManager.getCurrentScene().openSettings).not.toHaveBeenCalled();
         });
 
@@ -119,10 +119,10 @@ describe('CoreKeyboardShortcutManager - Removed Shortcuts (Issue #169)', () => {
             });
 
             // Simulate key press
-            shortcutManager.handleKeyDown(event;
+            shortcutManager.handleKeyDown(event);
 
             // Verify no help action was triggered
-            expect(mockGameEngine.sceneManager.switchScene).not.toHaveBeenCalledWith('help', expect.any(Object);
+            expect(mockGameEngine.sceneManager.switchScene).not.toHaveBeenCalledWith('help', expect.any(Object));
             expect(mockGameEngine.sceneManager.getCurrentScene().showControlsHelp).not.toHaveBeenCalled();
         });
 
@@ -142,7 +142,7 @@ describe('CoreKeyboardShortcutManager - Removed Shortcuts (Issue #169)', () => {
             });
 
             // Simulate key press
-            shortcutManager.handleKeyDown(event;
+            shortcutManager.handleKeyDown(event);
 
             // Verify no user info action was triggered
             expect(mockGameEngine.sceneManager.getCurrentScene().openUserInfo).not.toHaveBeenCalled();
@@ -180,10 +180,10 @@ describe('CoreKeyboardShortcutManager - Removed Shortcuts (Issue #169)', () => {
                 constructor: { name: 'GameScene' },
                 togglePause: jest.fn()
             };
-            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockScene;
+            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockScene);
 
             // Simulate key press
-            shortcutManager.handleKeyDown(event;
+            shortcutManager.handleKeyDown(event);
 
             // Verify pause was triggered
             expect(mockScene.togglePause).toHaveBeenCalled();
@@ -204,7 +204,7 @@ describe('CoreKeyboardShortcutManager - Removed Shortcuts (Issue #169)', () => {
             });
 
             // Simulate key press
-            shortcutManager.handleKeyDown(event;
+            shortcutManager.handleKeyDown(event);
 
             // Verify menu switch was triggered
             expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalledWith('menu');
@@ -220,7 +220,7 @@ describe('CoreKeyboardShortcutManager - Removed Shortcuts (Issue #169)', () => {
             });
 
             // Simulate key press
-            shortcutManager.handleKeyDown(event;
+            shortcutManager.handleKeyDown(event);
 
             // Verify fullscreen toggle was triggered
             expect(mockGameEngine.responsiveCanvasManager.toggleFullscreen).toHaveBeenCalled();
@@ -281,21 +281,21 @@ describe('CoreKeyboardShortcutManager - Removed Shortcuts (Issue #169)', () => {
                 code: 'KeyS',
                 key: 's'
             });
-            shortcutManager.handleKeyDown(sEvent;
+            shortcutManager.handleKeyDown(sEvent);
 
             // Test H key  
             const hEvent = new KeyboardEvent('keydown', {
                 code: 'KeyH',
                 key: 'h'
             });
-            shortcutManager.handleKeyDown(hEvent;
+            shortcutManager.handleKeyDown(hEvent);
 
             // Test I key
             const iEvent = new KeyboardEvent('keydown', {
                 code: 'KeyI',
                 key: 'i'
             });
-            shortcutManager.handleKeyDown(iEvent;
+            shortcutManager.handleKeyDown(iEvent);
 
             // Verify no console errors were generated
             expect(consoleErrorSpy).not.toHaveBeenCalled();
@@ -305,8 +305,8 @@ describe('CoreKeyboardShortcutManager - Removed Shortcuts (Issue #169)', () => {
     describe('KeyboardShortcutManager Initialization', () => {
         test('should initialize without errors after shortcut removal', () => {
             // This test verifies that removing shortcuts doesn't break initialization
-            expect(shortcutManager).toBeInstanceOf(CoreKeyboardShortcutManager;
-            expect(shortcutManager.shortcuts).toBeInstanceOf(Map;
+            expect(shortcutManager).toBeInstanceOf(CoreKeyboardShortcutManager);
+            expect(shortcutManager.shortcuts).toBeInstanceOf(Map);
             expect(shortcutManager.isEnabled).toBe(true);
         });
 
@@ -319,7 +319,7 @@ describe('CoreKeyboardShortcutManager - Removed Shortcuts (Issue #169)', () => {
             expect(stats.totalShortcuts).toBeLessThan(20); // Arbitrary reasonable upper bound
             
             // Specifically verify the count doesn't include removed shortcuts
-            const shortcutNames = Object.keys(shortcuts;
+            const shortcutNames = Object.keys(shortcuts);
             expect(shortcutNames).not.toContain('settings');
             expect(shortcutNames).not.toContain('help');
             expect(shortcutNames).not.toContain('userInfo');

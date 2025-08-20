@@ -8,7 +8,7 @@ import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globa
 global.jest = {
     fn: (impl) => {
         const mockFn = function(...args) {
-            mockFn.mock.calls.push(args;
+            mockFn.mock.calls.push(args);
             mockFn.mock.results.push({ type: 'return', value: impl ? impl(...args) : undefined });
             return impl ? impl(...args) : undefined;
         };
@@ -19,7 +19,7 @@ global.jest = {
             return newFn;
         };
         mockFn.mockResolvedValue = function(value {
-            const newFn = global.jest.fn(() => Promise.resolve(value);
+            const newFn = global.jest.fn(() => Promise.resolve(value));
             Object.setPrototypeOf(newFn, mockFn);
             return newFn;
         };
@@ -96,11 +96,11 @@ describe('UserInfoScene Components Integration', () => {
         
         gameEngine = new MockGameEngine();
         eventBus = new ComponentEventBus();
-        sceneState = new SceneState(gameEngine;
+        sceneState = new SceneState(gameEngine);
     });
     
     describe('StatisticsTab Component', () => {
-        let statisticsTab: any;
+        let statisticsTab as any);
         
         beforeEach(async () => {
             const { StatisticsTab } = await import('../../src/scenes/components/StatisticsTab.js');
@@ -169,7 +169,7 @@ describe('UserInfoScene Components Integration', () => {
     });
     
     describe('AchievementsTab Component', () => {
-        let achievementsTab: any;
+        let achievementsTab as any);
         
         beforeEach(async () => {
             const { AchievementsTab } = await import('../../src/scenes/components/AchievementsTab.js');
@@ -194,7 +194,7 @@ describe('UserInfoScene Components Integration', () => {
             await new Promise(resolve => setTimeout(resolve, 100));
             
             const stats = achievementsTab.getAchievementStats();
-            expect(stats.toBeDefined();
+            expect(stats.toBeDefined());
             expect(stats.totalAchievements).toBeGreaterThanOrEqual(0);
         });
         
@@ -210,7 +210,7 @@ describe('UserInfoScene Components Integration', () => {
     });
     
     describe('ManagementTab Component', () => {
-        let managementTab: any;
+        let managementTab as any);
         
         beforeEach(async () => {
             const { ManagementTab } = await import('../../src/scenes/components/ManagementTab.js');
@@ -259,7 +259,7 @@ describe('UserInfoScene Components Integration', () => {
     });
     
     describe('HelpTab Component', () => {
-        let helpTab: any;
+        let helpTab as any);
         
         beforeEach(async () => {
             const { HelpTab } = await import('../../src/scenes/components/HelpTab.js');
@@ -320,7 +320,7 @@ describe('UserInfoScene Components Integration', () => {
             
             // イベントバス経由でデータが共有される
             const statisticsData = sceneState.statisticsData;
-            expect(statisticsData.toBeDefined();
+            expect(statisticsData.toBeDefined());
             
             // 実績タブでも同じデータが利用可能
             achievementsTab.activate();

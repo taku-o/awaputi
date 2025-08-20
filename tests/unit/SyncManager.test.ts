@@ -400,7 +400,7 @@ describe('SyncManager', () => {
         });
         
         test('オフライン状態でエラーが発生する', async () => {
-            (navigator as any).onLine = false;
+            (navigator: any14439.onLine = false;
             
             await expect(syncManager.sync()).rejects.toThrow('Offline - cannot sync');
         });

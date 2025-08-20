@@ -125,7 +125,7 @@ describe('Local Execution Final Integration Test', () => {
     describe('Complete Local Execution Flow', () => {
         test('should detect local execution environment correctly', () => {
             const isLocal = LocalExecutionDetector.isLocalExecution();
-            expect(isLocal.toBe(true);
+            expect(isLocal.toBe(true));
 
             const context = LocalExecutionDetector.getExecutionContext();
             expect(context.toMatchObject({
@@ -140,7 +140,7 @@ describe('Local Execution Final Integration Test', () => {
         test('should initialize complete local mode system', async () => {
             const result = await localModeManager.initialize();
             
-            expect(result.toBe(true);
+            expect(result.toBe(true));
             expect(localModeManager.isInitialized).toBe(true);
             expect(localModeManager.executionContext.isLocal).toBe(true);
         });
@@ -170,7 +170,7 @@ describe('Local Execution Final Integration Test', () => {
                 debugMode: true
             };
 
-            const result = await FaviconGenerator.generateMissingFavicons(config;
+            const result = await FaviconGenerator.generateMissingFavicons(config);
             
             expect(result.toMatchObject({
                 success: expect.any(Boolean,
@@ -277,7 +277,7 @@ describe('Local Execution Final Integration Test', () => {
             
             // メモリリークのないことを確認（基本的なチェック）
             const debugInfo = localModeManager.getDebugInfo();
-            expect(debugInfo.toBeDefined();
+            expect(debugInfo.toBeDefined());
             expect(typeof debugInfo).toBe('object');
         });
 
@@ -289,7 +289,7 @@ describe('Local Execution Final Integration Test', () => {
                 FaviconGenerator.generateMissingFavicons({ sizes: [32] })
             ];
 
-            const results = await Promise.all(operations;
+            const results = await Promise.all(operations);
             
             // すべての操作が成功するか、適切にエラーハンドリングされることを確認
             results.forEach(result => {
@@ -352,10 +352,10 @@ describe('Local Execution Final Integration Test', () => {
                 debugMode: false
             };
 
-            const customManager = new LocalModeManager(customConfig;
+            const customManager = new LocalModeManager(customConfig);
             await customManager.initialize();
 
-            expect(customManager.config).toMatchObject(customConfig;
+            expect(customManager.config).toMatchObject(customConfig);
         });
 
         test('should provide backward compatibility', async () => {
@@ -363,7 +363,7 @@ describe('Local Execution Final Integration Test', () => {
             const defaultManager = new LocalModeManager();
             const result = await defaultManager.initialize();
 
-            expect(result.toBe(true);
+            expect(result.toBe(true));
             expect(defaultManager.isInitialized).toBe(true);
         });
     });
@@ -438,7 +438,7 @@ describe('Local Execution Final Integration Test', () => {
             // 完全な統合フローテスト
             const result = await localModeManager.initialize();
             
-            expect(result.toBe(true);
+            expect(result.toBe(true));
             
             // 各コンポーネントの動作確認
             expect(LocalExecutionDetector.isLocalExecution()).toBe(true);
@@ -447,7 +447,7 @@ describe('Local Execution Final Integration Test', () => {
             
             // デバッグ情報の取得確認
             const debugInfo = localModeManager.getDebugInfo();
-            expect(debugInfo.toBeDefined();
+            expect(debugInfo.toBeDefined());
             expect(debugInfo.status.isInitialized).toBe(true);
             
             // エラーハンドリングの動作確認

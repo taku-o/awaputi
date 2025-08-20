@@ -8,7 +8,7 @@ class MockStorageManager {
     }
     
     async getData(dataType, query = {}) {
-        const data = this.data.get(dataType || [];
+        const data = this.data.get(dataType || []);
         
         // 簡単なクエリ処理
         let filteredData = [...data];
@@ -43,9 +43,9 @@ class MockStorageManager {
 
 // Mock Privacy Manager
 class MockPrivacyManager {
-    async anonymizeData(data: any) {
+    async anonymizeData(data: any1397 {
         // 簡単な匿名化処理
-        const anonymized = JSON.parse(JSON.stringify(data);
+        const anonymized = JSON.parse(JSON.stringify(data));
         
         for (const [dataType, records] of Object.entries(anonymized) {
             if (Array.isArray(records) {
@@ -172,7 +172,7 @@ describe('ExportManager', () => {
         
         test('空のデータでもエラーにならない', async () => {
             const emptyStorageManager = new MockStorageManager();
-            const emptyExportManager = new ExportManager(emptyStorageManager;
+            const emptyExportManager = new ExportManager(emptyStorageManager);
             
             const result = await emptyExportManager.exportData({
                 dataTypes: ['sessionData'],
@@ -383,7 +383,7 @@ describe('ExportManager', () => {
                 getData: jest.fn().mockRejectedValue(new Error('Storage error'))
             };
             
-            const errorExportManager = new ExportManager(errorStorageManager;
+            const errorExportManager = new ExportManager(errorStorageManager);
             
             const result = await errorExportManager.exportData({
                 dataTypes: ['sessionData'],
@@ -469,7 +469,7 @@ describe('ExportManager', () => {
                 maxExportSize: 1024 * 1024
             };
             
-            exportManager.updateConfig(newConfig;
+            exportManager.updateConfig(newConfig);
             
             const config = exportManager.getConfig();
             expect(config.defaultFormat).toBe('csv');
@@ -505,7 +505,7 @@ describe('ExportManager', () => {
         
         test('データサイズが正しく計算される', () => {
             const testData = { test: 'data' };
-            const size = exportManager.calculateDataSize(testData;
+            const size = exportManager.calculateDataSize(testData);
             expect(typeof size).toBe('number');
             expect(size).toBeGreaterThan(0);
         });

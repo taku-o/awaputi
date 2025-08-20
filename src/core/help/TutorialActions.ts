@@ -19,8 +19,8 @@ export interface GameEngine {
 }
 
 export interface EventBus {
-    on(event: string, callback: (data: any) => void): void;
-    off?(event: string, callback: (data: any) => void): void;
+    on(event: string, callback: (data as any) => void): void;
+    off?(event: string, callback: (data as any) => void): void;
 }
 
 export interface BubbleManager {

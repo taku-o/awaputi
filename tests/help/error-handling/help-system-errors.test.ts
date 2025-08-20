@@ -15,7 +15,7 @@ import { fileURLToPath } from 'url';
 
 // ES module __dirname equivalent
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename;
+const __dirname = path.dirname(__filename);
 
 // Help content directory
 const HELP_CONTENT_DIR = path.join(__dirname, '../../../src/core/help/content/help');
@@ -66,7 +66,7 @@ class ErrorHandlingHelpManager {
     
     try {
       const content = fs.readFileSync(filePath, 'utf8');
-      const data = JSON.parse(content;
+      const data = JSON.parse(content);
       
       // Validate content structure
       this.validateContentStructure(data, language, category);
@@ -180,21 +180,21 @@ class ErrorHandlingHelpManager {
       timestamp: new Date().toISOString()
     };
     
-    this.errorLog.push(errorEntry;
+    this.errorLog.push(errorEntry);
     
     // Log to console based on severity
     switch (type) {
       case 'LOAD_ERROR':
-        this.console.error(message;
+        this.console.error(message);
         break;
       case 'FALLBACK_USED':
-        this.console.info(message;
+        this.console.info(message);
         break;
       case 'PLACEHOLDER_GENERATED':
-        this.console.warn(message;
+        this.console.warn(message);
         break;
       default:
-        this.console.log(message;
+        this.console.log(message);
     }
   }
 
@@ -419,7 +419,7 @@ describe('Help System Error Handling', () => {
   describe('Content Validation', () => {
     it('should validate content structure and report issues', async () => {
       // Mock invalid content
-      const originalTryLoad = helpManager.tryLoadContent.bind(helpManager;
+      const originalTryLoad = helpManager.tryLoadContent.bind(helpManager);
       helpManager.tryLoadContent = async (language, category) => {
         if (language === 'invalid' && category === 'structure') {
           const invalidData = {
@@ -440,7 +440,7 @@ describe('Help System Error Handling', () => {
     });
 
     it('should detect language mismatches', async () => {
-      const originalTryLoad = helpManager.tryLoadContent.bind(helpManager;
+      const originalTryLoad = helpManager.tryLoadContent.bind(helpManager);
       helpManager.tryLoadContent = async (language, category) => {
         if (language === 'mismatch' && category === 'test') {
           const invalidData = {
@@ -465,7 +465,7 @@ describe('Help System Error Handling', () => {
     });
 
     it('should handle JSON parsing errors', async () => {
-      const originalTryLoad = helpManager.tryLoadContent.bind(helpManager;
+      const originalTryLoad = helpManager.tryLoadContent.bind(helpManager);
       helpManager.tryLoadContent = async (language, category) => {
         if (language === 'json-error' && category === 'test') {
           const syntaxError = new SyntaxError('Unexpected token }');

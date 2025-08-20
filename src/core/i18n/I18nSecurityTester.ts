@@ -110,7 +110,7 @@ export interface CSPMetaElement {
 export type VulnerabilitySeverity = 'low' | 'medium' | 'high' | 'critical';
 export type RecommendationPriority = 'info' | 'low' | 'medium' | 'high' | 'critical';
 export type TestType = 'xss_test' | 'injection_test' | 'parameter_key_validation' | 'parameter_injection' | 'content_validation' | 'long_string_test' | 'unicode_test' | 'csp_presence' | 'csp_configuration' | 'sanitization_test' | 'test_execution_error';
-export type TestValidator = (input: any) => TestValidationResult;
+export type TestValidator = (input as any) => TestValidationResult;
 
 export class I18nSecurityTester {
     // セキュリティマネージャー

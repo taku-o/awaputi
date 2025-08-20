@@ -56,7 +56,7 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
 
         // Mock UsernameInputManager (simplified version for integration testing)
         class TestUsernameInputManager {
-            constructor(gameEngine: any) {
+            constructor(gameEngine: any1731 {
                 this.gameEngine = gameEngine;
                 this.errorHandler = { handleError: jest.fn() };
                 this.usernameInput = '';
@@ -127,14 +127,14 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
             }
         }
 
-        usernameInputManager = new TestUsernameInputManager(gameEngine;
+        usernameInputManager = new TestUsernameInputManager(gameEngine);
     });
 
     describe('coordinate system consistency', () => {
         it('should maintain coordinate consistency between ResponsiveCanvasManager and UsernameInputManager', () => {
             const canvasInfo = usernameInputManager.getCanvasInfo();
             
-            expect(canvasInfo.toBeDefined();
+            expect(canvasInfo.toBeDefined());
             expect(canvasInfo.scale).toBe(1.57);
             expect(canvasInfo.actualWidth).toBe(1256);
             expect(canvasInfo.actualHeight).toBe(942);
@@ -227,7 +227,7 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
             const canvasInfo = usernameInputManager.getCanvasInfo();
             const rendered = usernameInputManager.renderWithResponsiveCoordinates(context, canvasInfo);
             
-            expect(rendered.toBe(true);
+            expect(rendered.toBe(true));
             expect(context.save).toHaveBeenCalled();
             expect(context.restore).toHaveBeenCalled();
             expect(context.fillRect).toHaveBeenCalledWith(0, 0, 800, 600);
@@ -248,7 +248,7 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
             const canvasInfo = usernameInputManager.getCanvasInfo();
             const rendered = usernameInputManager.renderWithResponsiveCoordinates(context, canvasInfo);
             
-            expect(rendered.toBe(true);
+            expect(rendered.toBe(true));
             expect(context.fillRect).toHaveBeenCalledWith(0, 0, 1600, 1200);
         });
 
@@ -267,7 +267,7 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
             const canvasInfo = usernameInputManager.getCanvasInfo();
             const rendered = usernameInputManager.renderWithResponsiveCoordinates(context, canvasInfo);
             
-            expect(rendered.toBe(true);
+            expect(rendered.toBe(true));
             expect(context.fillRect).toHaveBeenCalledWith(0, 0, 2400, 1800);
         });
     });
@@ -277,18 +277,18 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
             gameEngine.responsiveCanvasManager = null;
             
             const canvasInfo = usernameInputManager.getCanvasInfo();
-            expect(canvasInfo.toBeNull();
+            expect(canvasInfo.toBeNull());
             
             // Should not throw error when trying to transform coordinates
             const result = usernameInputManager.transformCoordinates(400, 300, canvasInfo);
-            expect(result.toBeNull();
+            expect(result.toBeNull());
         });
 
         it('should handle ResponsiveCanvasManager method missing', () => {
             gameEngine.responsiveCanvasManager = {};
             
             const canvasInfo = usernameInputManager.getCanvasInfo();
-            expect(canvasInfo.toBeNull();
+            expect(canvasInfo.toBeNull());
         });
 
         it('should handle ResponsiveCanvasManager getCanvasInfo returning invalid data', () => {
@@ -299,7 +299,7 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
             });
             
             const canvasInfo = usernameInputManager.getCanvasInfo();
-            expect(canvasInfo.toBeNull();
+            expect(canvasInfo.toBeNull());
         });
 
         it('should handle ResponsiveCanvasManager throwing error', () => {
@@ -308,7 +308,7 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
             });
             
             const canvasInfo = usernameInputManager.getCanvasInfo();
-            expect(canvasInfo.toBeNull();
+            expect(canvasInfo.toBeNull());
         });
     });
 
@@ -328,7 +328,7 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
             const canvasInfo = usernameInputManager.getCanvasInfo();
             const rendered = usernameInputManager.renderWithResponsiveCoordinates(context, canvasInfo);
             
-            expect(rendered.toBe(true);
+            expect(rendered.toBe(true));
             expect(context.fillRect).toHaveBeenCalledWith(0, 0, 1920, 1080);
             expect(context.fillText).toHaveBeenCalledWith('ユーザー名登録', 960, 480);
         });
@@ -348,7 +348,7 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
             const canvasInfo = usernameInputManager.getCanvasInfo();
             const rendered = usernameInputManager.renderWithResponsiveCoordinates(context, canvasInfo);
             
-            expect(rendered.toBe(true);
+            expect(rendered.toBe(true));
             expect(context.fillRect).toHaveBeenCalledWith(0, 0, 750, 562);
             expect(context.fillText).toHaveBeenCalledWith('ユーザー名登録', 187.5, 93.75);
         });

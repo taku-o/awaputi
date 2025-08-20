@@ -556,7 +556,7 @@ describe('EnhancedParticleManager', () => {
     describe('Error Handling', () => {
         test('should handle invalid particle parameters gracefully', () => {
             expect(() => {
-                particleManager.createAdvancedBubbleEffect?.(null as any, undefined as any, 'invalid_type', -5);
+                particleManager.createAdvancedBubbleEffect?.(null: any, undefined: any21541 'invalid_type', -5);
             }).not.toThrow();
         });
 

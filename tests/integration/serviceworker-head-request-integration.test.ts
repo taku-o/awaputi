@@ -73,7 +73,7 @@ describe('ServiceWorker HEAD Request Integration', () => {
         test('should not attempt to cache HEAD requests', async () => {
             // HEADリクエストの成功レスポンスをモック
             const mockResponse = new Response(null, { status: 200, statusText: 'OK' });
-            global.fetch.mockResolvedValue(mockResponse;
+            global.fetch.mockResolvedValue(mockResponse);
             
             // HEADリクエストを作成
             const headRequest = new Request('https://example.com/test.json', { method: 'HEAD' });
@@ -82,7 +82,7 @@ describe('ServiceWorker HEAD Request Integration', () => {
             const handleHeadRequest = async function(request {
                 try {
                     console.log(`[ServiceWorker] HEADリクエスト処理: ${request.url}`);
-                    const response = await fetch(request;
+                    const response = await fetch(request);
                     return response;
                 } catch (error) {
                     console.log(`[ServiceWorker] HEADリクエストエラー: ${request.url}`, error);
@@ -97,10 +97,10 @@ describe('ServiceWorker HEAD Request Integration', () => {
                 }
             };
             
-            const result = await handleHeadRequest(headRequest;
+            const result = await handleHeadRequest(headRequest);
             
             // HEADリクエストが正常に処理されることを確認
-            expect(global.fetch).toHaveBeenCalledWith(headRequest;
+            expect(global.fetch).toHaveBeenCalledWith(headRequest);
             expect(result.status).toBe(200);
             
             // キャッシュへの保存が試行されないことを確認
@@ -113,14 +113,14 @@ describe('ServiceWorker HEAD Request Integration', () => {
         test('should handle HEAD request network errors gracefully', async () => {
             // ネットワークエラーをモック
             const networkError = new Error('Network unavailable');
-            global.fetch.mockRejectedValue(networkError;
+            global.fetch.mockRejectedValue(networkError);
             
             const headRequest = new Request('https://example.com/unavailable.json', { method: 'HEAD' });
             
             const handleHeadRequest = async function(request {
                 try {
                     console.log(`[ServiceWorker] HEADリクエスト処理: ${request.url}`);
-                    const response = await fetch(request;
+                    const response = await fetch(request);
                     return response;
                 } catch (error) {
                     console.log(`[ServiceWorker] HEADリクエストエラー: ${request.url}`, error);
@@ -135,7 +135,7 @@ describe('ServiceWorker HEAD Request Integration', () => {
                 }
             };
             
-            const result = await handleHeadRequest(headRequest;
+            const result = await handleHeadRequest(headRequest);
             
             // フォールバックレスポンスが正しく返されることを確認
             expect(result.status).toBe(503);
@@ -213,19 +213,19 @@ describe('ServiceWorker HEAD Request Integration', () => {
                 // HEADリクエストはキャッシュしない（安全チェック）
                 if (request.method === 'HEAD') {
                     console.log(`[ServiceWorker] HEADリクエスト処理: ${request.url}`);
-                    const response = await fetch(request;
+                    const response = await fetch(request);
                     return response;
                 }
                 
                 // 通常のキャッシュ戦略
                 const cache = await caches.open('test-cache');
-                const cachedResponse = await cache.match(request;
+                const cachedResponse = await cache.match(request);
                 
                 if (cachedResponse) {
                     return cachedResponse;
                 }
                 
-                const networkResponse = await fetch(request;
+                const networkResponse = await fetch(request);
                 if (networkResponse.ok) {
                     await cache.put(request, networkResponse.clone());
                 }
@@ -234,13 +234,13 @@ describe('ServiceWorker HEAD Request Integration', () => {
             
             const headRequest = new Request('https://example.com/test.json', { method: 'HEAD' });
             const mockResponse = new Response(null, { status: 200 });
-            global.fetch.mockResolvedValue(mockResponse;
+            global.fetch.mockResolvedValue(mockResponse);
             
-            const result = await staleWhileRevalidateStrategy(headRequest;
+            const result = await staleWhileRevalidateStrategy(headRequest);
             
             // HEADリクエストが直接fetchされることを確認
-            expect(global.fetch).toHaveBeenCalledWith(headRequest;
-            expect(result.toBe(mockResponse);
+            expect(global.fetch).toHaveBeenCalledWith(headRequest);
+            expect(result.toBe(mockResponse));
             
             // キャッシュ操作が実行されないことを確認
             expect(mockCache.match).not.toHaveBeenCalled();
@@ -264,7 +264,7 @@ describe('ServiceWorker HEAD Request Integration', () => {
             const handleHeadRequest = async function(request {
                 try {
                     console.log(`[ServiceWorker] HEADリクエスト処理: ${request.url}`);
-                    const response = await fetch(request;
+                    const response = await fetch(request);
                     return response;
                 } catch (error) {
                     console.log(`[ServiceWorker] HEADリクエストエラー: ${request.url}`, error);
@@ -279,7 +279,7 @@ describe('ServiceWorker HEAD Request Integration', () => {
             const results: any[] = [];
             for (const url of helpContentUrls) {
                 const request = new Request(url, { method: 'HEAD' });
-                const result = await handleHeadRequest(request;
+                const result = await handleHeadRequest(request);
                 results.push({ url, status: result.status });
             }
             

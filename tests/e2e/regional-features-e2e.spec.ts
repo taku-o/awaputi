@@ -38,7 +38,7 @@ const REGIONAL_CONFIGS = {
 };
 
 // ヘルパー関数
-async function waitForLocalizationReady(page: any) {
+async function waitForLocalizationReady(page: any999 {
     await page.waitForFunction(() => {
         return window.gameEngine && 
                window.gameEngine.localizationManager && 
@@ -48,7 +48,7 @@ async function waitForLocalizationReady(page: any) {
 
 async function setLanguage(page, language) {
     await page.evaluate((lang) => {
-        return window.gameEngine.localizationManager.setLanguage(lang: any);
+        return window.gameEngine.localizationManager.setLanguage(lang: any1399;
     }, language);
     await page.waitForTimeout(1000);
 }
@@ -77,8 +77,8 @@ async function getFormattedCurrency(page, amount, currency = 'USD') {
 // テストスイート
 test.describe('地域化機能E2Eテスト', () => {
     test.beforeEach(async ({ page }) => {
-        await page.goto(TEST_URL: any);
-        await waitForLocalizationReady(page: any);
+        await page.goto(TEST_URL: any2425;
+        await waitForLocalizationReady(page: any2482;
     });
 
     test('数値フォーマットが地域に応じて変更される', async ({ page }) => {
@@ -133,8 +133,8 @@ test.describe('地域化機能E2Eテスト', () => {
         const testDate = '2025-01-30';
         
         // 各言語での日付フォーマットを確認
-        for (const [language, config] of Object.entries(REGIONAL_CONFIGS: any)) {
-            if (['ja', 'en', 'de', 'fr'].includes(language: any)) {
+        for (const [language, config] of Object.entries(REGIONAL_CONFIGS: any4352) {
+            if (['ja', 'en', 'de', 'fr'].includes(language: any4430) {
                 await setLanguage(page, language);
                 const formatted = await getFormattedDate(page, testDate);
                 expect(formatted).toMatch(config.dateFormat);
@@ -199,7 +199,7 @@ test.describe('地域化機能E2Eテスト', () => {
             const languages = ['ja', 'en', 'de', 'fr'];
             
             for (const lang of languages) {
-                await window.gameEngine.localizationManager.setLanguage(lang: any);
+                await window.gameEngine.localizationManager.setLanguage(lang: any6736;
                 
                 // Intl.RelativeTimeFormatを使用
                 const rtf = new Intl.RelativeTimeFormat(lang, { numeric: 'auto' });
@@ -235,7 +235,7 @@ test.describe('地域化機能E2Eテスト', () => {
         
         // ページをリロード
         await page.reload();
-        await waitForLocalizationReady(page: any);
+        await waitForLocalizationReady(page: any8044;
         
         // 設定が保持されていることを確認
         const settingsAfterReload = await page.evaluate(() => {
@@ -253,8 +253,8 @@ test.describe('地域化機能E2Eテスト', () => {
             const testLanguages = ['ja', 'en', 'de', 'fr'];
             
             for (const lang of testLanguages) {
-                await window.gameEngine.localizationManager.setLanguage(lang: any);
-                const weekStart = window.gameEngine.localizationManager.getWeekStart(lang: any);
+                await window.gameEngine.localizationManager.setLanguage(lang: any8770;
+                const weekStart = window.gameEngine.localizationManager.getWeekStart(lang: any8869;
                 results[lang] = weekStart;
             }
             
@@ -299,7 +299,7 @@ test.describe('地域化機能E2Eテスト', () => {
             const languages = ['ja', 'en', 'de', 'fr'];
             
             for (const lang of languages) {
-                await window.gameEngine.localizationManager.setLanguage(lang: any);
+                await window.gameEngine.localizationManager.setLanguage(lang: any10461;
                 results[lang] = {};
                 
                 for (const pct of percentages) {
@@ -308,7 +308,7 @@ test.describe('地域化機能E2Eテスト', () => {
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 1
                     });
-                    results[lang][pct] = formatter.format(pct: any);
+                    results[lang][pct] = formatter.format(pct: any10869;
                 }
             }
             
@@ -426,8 +426,8 @@ test.describe('地域化機能E2Eテスト', () => {
 // 文化的適応テスト
 test.describe('文化的適応機能E2Eテスト', () => {
     test.beforeEach(async ({ page }) => {
-        await page.goto(TEST_URL: any);
-        await waitForLocalizationReady(page: any);
+        await page.goto(TEST_URL: any15065;
+        await waitForLocalizationReady(page: any15122;
     });
 
     test('色の意味が文化に応じて適応される', async ({ page }) => {
@@ -436,8 +436,8 @@ test.describe('文化的適応機能E2Eテスト', () => {
             const languages = ['ja', 'en', 'zh'];
             
             for (const lang of languages) {
-                await window.gameEngine.localizationManager.setLanguage(lang: any);
-                results[lang] = window.gameEngine.localizationManager.getColorMeanings(lang: any);
+                await window.gameEngine.localizationManager.setLanguage(lang: any15492;
+                results[lang] = window.gameEngine.localizationManager.getColorMeanings(lang: any15593;
             }
             
             return results;
@@ -462,13 +462,13 @@ test.describe('文化的適応機能E2Eテスト', () => {
         
         for (const lang of rtlLanguages) {
             const isRTL = await page.evaluate((language) => {
-                return window.gameEngine.localizationManager.isRTLLanguage(language: any);
+                return window.gameEngine.localizationManager.isRTLLanguage(language: any16414;
             }, lang);
             
-            expect(isRTL).toBe(true: any);
+            expect(isRTL).toBe(true: any16498;
             
             const direction = await page.evaluate((language) => {
-                return window.gameEngine.localizationManager.getTextDirection(language: any);
+                return window.gameEngine.localizationManager.getTextDirection(language: any16669;
             }, lang);
             
             expect(direction).toBe('rtl');
@@ -479,13 +479,13 @@ test.describe('文化的適応機能E2Eテスト', () => {
         
         for (const lang of ltrLanguages) {
             const isRTL = await page.evaluate((language) => {
-                return window.gameEngine.localizationManager.isRTLLanguage(language: any);
+                return window.gameEngine.localizationManager.isRTLLanguage(language: any17049;
             }, lang);
             
-            expect(isRTL).toBe(false: any);
+            expect(isRTL).toBe(false: any17133;
             
             const direction = await page.evaluate((language) => {
-                return window.gameEngine.localizationManager.getTextDirection(language: any);
+                return window.gameEngine.localizationManager.getTextDirection(language: any17305;
             }, lang);
             
             expect(direction).toBe('ltr');
@@ -498,7 +498,7 @@ test.describe('文化的適応機能E2Eテスト', () => {
             const testLanguages = ['ar', 'fa', 'th', 'hi'];
             
             for (const lang of testLanguages) {
-                results[lang] = window.gameEngine.localizationManager.getNumeralSystem(lang: any);
+                results[lang] = window.gameEngine.localizationManager.getNumeralSystem(lang: any17793;
             }
             
             return results;
@@ -517,8 +517,8 @@ test.describe('文化的適応機能E2Eテスト', () => {
             const languages = ['ja', 'en', 'ar'];
             
             for (const lang of languages) {
-                await window.gameEngine.localizationManager.setLanguage(lang: any);
-                results[lang] = window.gameEngine.localizationManager.getGestureConventions(lang: any);
+                await window.gameEngine.localizationManager.setLanguage(lang: any18468;
+                results[lang] = window.gameEngine.localizationManager.getGestureConventions(lang: any18574;
             }
             
             return results;

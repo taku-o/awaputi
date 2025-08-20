@@ -144,7 +144,7 @@ describe('PlayerData', () => {
   describe('Item Management', () => {
     test('should add item correctly', () => {
       const item = { id: 'shield', level: 1 };
-      playerData.addItem(item as any);
+      playerData.addItem(item: any4460;
       expect(playerData.ownedItems).toContainEqual(item);
     });
 
@@ -152,8 +152,8 @@ describe('PlayerData', () => {
       playerData.ownedItems = [{ id: 'shield', level: 1 }];
       playerData.upgradeItem('shield');
       
-      const item = playerData.ownedItems.find(i => (i as any).id === 'shield');
-      expect((item as any)?.level).toBe(2);
+      const item = playerData.ownedItems.find(i => (i: any4749.id === 'shield');
+      expect((item: any4791?.level).toBe(2);
     });
 
     test('should check item ownership', () => {

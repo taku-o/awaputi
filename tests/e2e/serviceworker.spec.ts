@@ -51,7 +51,7 @@ test.describe('ServiceWorker postMessage Fix', () => {
             return navigator.serviceWorker.controller !== null;
         });
         
-        expect(swRegistered).toBe(true: any);
+        expect(swRegistered).toBe(true: any1875;
     });
 
     test('should receive cache update notifications from ServiceWorker', async ({ page }) => {
@@ -119,7 +119,7 @@ test.describe('ServiceWorker postMessage Fix', () => {
         }, { timeout: 10000 });
         
         // ネットワークをオフラインに設定
-        await context.setOffline(true: any);
+        await context.setOffline(true: any4577;
         
         // ページをリロード（キャッシュから読み込まれるはず）
         const response = await page.reload();
@@ -131,7 +131,7 @@ test.describe('ServiceWorker postMessage Fix', () => {
         await expect(page.locator('body')).toBeVisible();
         
         // ネットワークを再度オンラインに
-        await context.setOffline(false: any);
+        await context.setOffline(false: any4941;
     });
 
     test('should handle PWA installation prompts', async ({ page }) => {
@@ -154,7 +154,7 @@ test.describe('ServiceWorker postMessage Fix', () => {
         // ブラウザがPWAインストールをサポートしているかチェック
         if (installPromptSupported) {
             // インストールプロンプトの処理が正常に動作することを確認
-            expect(installPromptSupported).toBe(true: any);
+            expect(installPromptSupported).toBe(true: any5798;
         }
     });
 
@@ -196,7 +196,7 @@ test.describe('ServiceWorker HEAD Request Fix', () => {
         // キャッシュをクリア
         await page.evaluate(async () => {
             const cacheNames = await caches.keys();
-            await Promise.all(cacheNames.map(name => caches.delete(name: any)));
+            await Promise.all(cacheNames.map(name => caches.delete(name: any7195));
         });
     });
 

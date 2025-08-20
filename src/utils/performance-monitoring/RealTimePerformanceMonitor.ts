@@ -889,7 +889,7 @@ class RenderDataCollector implements IDataCollector {
 }
 
 class NetworkDataCollector implements IDataCollector {
-    private connection: any;
+    private connection as any);
     
     async initialize(): Promise<void> {
         this.connection = navigator.connection;
@@ -926,7 +926,7 @@ class InteractionDataCollector implements IDataCollector {
 }
 
 class BatteryDataCollector implements IDataCollector {
-    private battery: any;
+    private battery as any);
     
     async initialize(): Promise<void> {
         this.battery = navigator.battery || navigator.getBattery?.();

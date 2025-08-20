@@ -21,9 +21,9 @@ interface TestResult {
 
 interface TestFunction {
     name: string;
-    run: (context?: any) => Promise<TestResult>;
-    setup?: (context: any) => Promise<void>;
-    cleanup?: (context: any) => Promise<void>;
+    run: (context? as any) => Promise<TestResult>;
+    setup?: (context as any) => Promise<void>;
+    cleanup?: (context as any) => Promise<void>;
     errorCleanup?: (context: any, error: Error) => Promise<void>;
 }
 

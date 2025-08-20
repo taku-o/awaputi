@@ -84,7 +84,7 @@ export interface InteractionCallbacks {
     onClose: (() => void) | null;
     onHelp: (() => void) | null;
     onResize: (() => void) | null;
-    onInteraction: ((data: any) => void) | null;
+    onInteraction: ((data as any) => void) | null;
 }
 
 export type BoundHandlers = {
@@ -590,7 +590,7 @@ export class TutorialInteractionHandler {
      * @param callbackName - コールバック名
      * @param callback - コールバック関数
      */
-    setCallback(callbackName: keyof InteractionCallbacks, callback: (() => void) | ((data: any) => void) | null): void {
+    setCallback(callbackName: keyof InteractionCallbacks, callback: (() => void) | ((data as any) => void) | null): void {
         if (this.callbacks.hasOwnProperty(callbackName)) {
             this.callbacks[callbackName] = callback as any;
         }

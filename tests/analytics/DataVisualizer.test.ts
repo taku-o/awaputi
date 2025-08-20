@@ -185,7 +185,7 @@ describe('DataVisualizer', () => {
             appendChild: jest.fn()
         };
 
-        document.getElementById.mockReturnValue(mockContainer;
+        document.getElementById.mockReturnValue(mockContainer);
 
         dataVisualizer = new DataVisualizer({
             animationDuration: 100, // テスト用に短縮
@@ -212,9 +212,9 @@ describe('DataVisualizer', () => {
     describe('初期化', () => {
         test('正しく初期化される', () => {
             expect(dataVisualizer).toBeDefined();
-            expect(dataVisualizer.visualizations).toBeInstanceOf(Map;
-            expect(dataVisualizer.svgElements).toBeInstanceOf(Map;
-            expect(dataVisualizer.scales).toBeInstanceOf(Map;
+            expect(dataVisualizer.visualizations).toBeInstanceOf(Map);
+            expect(dataVisualizer.svgElements).toBeInstanceOf(Map);
+            expect(dataVisualizer.scales).toBeInstanceOf(Map);
         });
 
         test('オプションが正しく設定される', () => {
@@ -280,7 +280,7 @@ describe('DataVisualizer', () => {
         });
 
         test('コンテナが存在しない場合はnullを返す', () => {
-            document.getElementById.mockReturnValue(null;
+            document.getElementById.mockReturnValue(null);
             const result = dataVisualizer.createScatterPlot('missing-container', [{ x: 1, y: 2 }]);
             expect(result).toBe(null);
         });
@@ -381,7 +381,7 @@ describe('DataVisualizer', () => {
             // 数値変換が行われることを確認
             testData.forEach(d => {
                 expect(typeof d.value).toBe('number');
-                expect(d.date).toBeInstanceOf(Date;
+                expect(d.date).toBeInstanceOf(Date);
             });
         });
     });
@@ -392,7 +392,7 @@ describe('DataVisualizer', () => {
 
             expect(svg).toBeDefined();
             expect(dataVisualizer.svgElements.has('test-svg')).toBe(true);
-            expect(mockD3.select).toHaveBeenCalledWith(mockContainer;
+            expect(mockD3.select).toHaveBeenCalledWith(mockContainer);
         });
 
         test('既存のSVGを削除してから作成する', () => {
@@ -411,7 +411,7 @@ describe('DataVisualizer', () => {
                 }))
             };
             
-            mockD3.select.mockReturnValue(mockSelectChain;
+            mockD3.select.mockReturnValue(mockSelectChain);
 
             dataVisualizer.createSVG('cleanup-test', {});
 
@@ -429,9 +429,9 @@ describe('DataVisualizer', () => {
 
             dataVisualizer.addInteractivity(mockSelection, {});
 
-            expect(mockSelection.on).toHaveBeenCalledWith('mouseover', expect.any(Function);
-            expect(mockSelection.on).toHaveBeenCalledWith('mouseout', expect.any(Function);
-            expect(mockSelection.on).toHaveBeenCalledWith('click', expect.any(Function);
+            expect(mockSelection.on).toHaveBeenCalledWith('mouseover', expect.any(Function));
+            expect(mockSelection.on).toHaveBeenCalledWith('mouseout', expect.any(Function));
+            expect(mockSelection.on).toHaveBeenCalledWith('click', expect.any(Function));
         });
 
         test('インタラクティブ機能が無効な場合、何も追加されない', () => {
@@ -486,7 +486,7 @@ describe('DataVisualizer', () => {
 
             dataVisualizer.addInteractivity(mockSelection, config);
 
-            expect(mockSelection.on).toHaveBeenCalledWith('mouseover', expect.any(Function);
+            expect(mockSelection.on).toHaveBeenCalledWith('mouseover', expect.any(Function));
         });
     });
 
@@ -643,7 +643,7 @@ describe('DataVisualizer', () => {
             const result = dataVisualizer.updateVisualization('error-test', []);
 
             expect(result).toBe(false);
-            expect(consoleSpy).toHaveBeenCalledWith('Visualization update failed:', expect.any(Error);
+            expect(consoleSpy).toHaveBeenCalledWith('Visualization update failed:', expect.any(Error));
 
             consoleSpy.mockRestore();
         });

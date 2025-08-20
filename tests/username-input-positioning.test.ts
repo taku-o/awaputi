@@ -103,7 +103,7 @@ describe('Username Input Positioning Visual Regression Tests', () => {
             keyboard: { press: jest.fn() }
         };
 
-        browser.newPage.mockResolvedValue(page;
+        browser.newPage.mockResolvedValue(page);
     });
 
     afterAll(async () => {
@@ -168,7 +168,7 @@ describe('Username Input Positioning Visual Regression Tests', () => {
                     }
                 };
 
-                page.evaluate.mockResolvedValue(mockEvaluationResult;
+                page.evaluate.mockResolvedValue(mockEvaluationResult);
 
                 // Check username input positioning
                 const result = await page.evaluate(() => {
@@ -291,7 +291,7 @@ describe('Username Input Positioning Visual Regression Tests', () => {
                     }
                 };
 
-                page.evaluate.mockResolvedValue(mockResult;
+                page.evaluate.mockResolvedValue(mockResult);
 
                 const result = await page.evaluate(() => {
                     // Mock evaluation for zoom test
@@ -368,7 +368,7 @@ describe('Username Input Positioning Visual Regression Tests', () => {
             
             // Mock screenshot functionality
             const mockScreenshotPath = '/tmp/username-input-baseline.png';
-            page.screenshot.mockResolvedValue(mockScreenshotPath;
+            page.screenshot.mockResolvedValue(mockScreenshotPath);
 
             const screenshotPath = await page.screenshot({
                 path: mockScreenshotPath,
@@ -391,7 +391,7 @@ describe('Username Input Positioning Visual Regression Tests', () => {
                 });
 
                 const screenshotPath = `/tmp/username-input-${config.name.toLowerCase().replace(/\s+/g, '-')}.png`;
-                page.screenshot.mockResolvedValue(screenshotPath;
+                page.screenshot.mockResolvedValue(screenshotPath);
 
                 const result = await page.screenshot({
                     path: screenshotPath,

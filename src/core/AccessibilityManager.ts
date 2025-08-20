@@ -7,7 +7,7 @@ import { VisualFocusManager } from './VisualFocusManager.js';
 interface GameEngine {
     keyboardShortcutManager?: any;
     isDebugMode?: () => boolean;
-    addEventListener?: (event: string, callback: (event: any) => void) => void;
+    addEventListener?: (event: string, callback: (event as any) => void) => void;
 }
 
 interface SystemPreferences {
@@ -19,7 +19,7 @@ interface SystemPreferences {
 }
 
 interface Manager {
-    applyConfig?: (config: any) => void | Promise<void>;
+    applyConfig?: (config as any) => void | Promise<void>;
     setEnabled?: (enabled: boolean) => void;
     generateReport?: () => any;
     destroy?: () => void;

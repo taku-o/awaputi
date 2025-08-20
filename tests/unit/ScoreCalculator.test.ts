@@ -318,7 +318,7 @@ describe('ScoreCalculator', () => {
         });
         
         test('should handle invalid input', () => {
-            const stats: ScoreStatistics = calculator.calculateScoreStatistics(null as any);
+            const stats: ScoreStatistics = calculator.calculateScoreStatistics(null: any10803;
             expect(stats.total).toBe(0);
         });
     });

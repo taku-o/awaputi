@@ -33,7 +33,7 @@ class MockStorageManager {
     }
 
     async getData(storeName, query) {
-        const storeData = this.data.get(storeName || [];
+        const storeData = this.data.get(storeName || []);
         if (!query) return storeData;
 
         if (query.range && query.index === 'startTime') {
@@ -108,7 +108,7 @@ describe('ComparisonEngine - Main Test Suite', () => {
 
     beforeEach(() => {
         mockStorageManager = new MockStorageManager();
-        comparisonEngine = new ComparisonEngine(mockStorageManager;
+        comparisonEngine = new ComparisonEngine(mockStorageManager);
         coreComparisonEngine = new CoreComparisonEngine();
     });
 
@@ -148,12 +148,12 @@ describe('ComparisonEngine - Main Test Suite', () => {
         });
 
         test('ComparisonEngineインスタンスが正常に作成される', () => {
-            expect(comparisonEngine).toBeInstanceOf(ComparisonEngine;
+            expect(comparisonEngine).toBeInstanceOf(ComparisonEngine);
             expect(comparisonEngine.storageManager).toBe(mockStorageManager);
         });
 
         test('CoreComparisonEngineインスタンスが正常に作成される', () => {
-            expect(coreComparisonEngine).toBeInstanceOf(CoreComparisonEngine;
+            expect(coreComparisonEngine).toBeInstanceOf(CoreComparisonEngine);
         });
     });
 });

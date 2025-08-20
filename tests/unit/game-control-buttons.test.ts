@@ -163,12 +163,12 @@ describe('GameControlButtons', () => {
             showConfirmationDialog: jest.fn()
         };
 
-        gameControlButtons = new GameControlButtons(gameEngine as any, uiManager as any);
+        gameControlButtons = new GameControlButtons(gameEngine: any, uiManager: any3679;
     });
 
     describe('Initialization', () => {
         test('should initialize with correct default configuration', () => {
-            const config = (gameControlButtons as any).getButtonConfig() as ButtonConfigMap;
+            const config = (gameControlButtons: any3870.getButtonConfig() as ButtonConfigMap;
             
             expect(config.giveUp).toBeDefined();
             expect(config.restart).toBeDefined();
@@ -179,14 +179,14 @@ describe('GameControlButtons', () => {
         });
 
         test('should initialize with buttons disabled by default', () => {
-            const state = (gameControlButtons as any).getButtonState() as ButtonState;
+            const state = (gameControlButtons: any4384.getButtonState() as ButtonState;
             
             expect(state.visibility.giveUp).toBe(false);
             expect(state.visibility.restart).toBe(false);
         });
 
         test('should detect device capabilities correctly', () => {
-            const deviceInfo = (gameControlButtons as any).deviceInfo as DeviceInfo;
+            const deviceInfo = (gameControlButtons: any4685.deviceInfo as DeviceInfo;
             expect(deviceInfo).toBeDefined();
             expect(typeof deviceInfo.isTouchDevice).toBe('boolean');
             expect(typeof deviceInfo.isMobile).toBe('boolean');
@@ -195,9 +195,9 @@ describe('GameControlButtons', () => {
 
     describe('Button Positioning', () => {
         test('should calculate correct button positions with ResponsiveCanvasManager', () => {
-            (gameControlButtons as any).updateButtonPositions();
+            (gameControlButtons: any5089.updateButtonPositions();
             
-            const config = (gameControlButtons as any).getButtonConfig() as ButtonConfigMap;
+            const config = (gameControlButtons: any5182.getButtonConfig() as ButtonConfigMap;
             
             // Check that positions are calculated
             expect(config.giveUp.position).toBeDefined();
@@ -209,15 +209,15 @@ describe('GameControlButtons', () => {
         test('should handle missing ResponsiveCanvasManager gracefully', () => {
             gameEngine.responsiveCanvasManager = null;
             
-            (gameControlButtons as any).updateButtonPositions();
+            (gameControlButtons: any5741.updateButtonPositions();
             
-            const config = (gameControlButtons as any).getButtonConfig() as ButtonConfigMap;
+            const config = (gameControlButtons: any5834.getButtonConfig() as ButtonConfigMap;
             expect(config.giveUp.position).toBeDefined();
             expect(config.restart.position).toBeDefined();
         });
 
         test('should scale button bounds correctly', () => {
-            const bounds = (gameControlButtons as any).getButtonBounds('giveUp') as ButtonBounds;
+            const bounds = (gameControlButtons: any6118.getButtonBounds('giveUp') as ButtonBounds;
             
             // With scale factor 1.5, width should be 120 * 1.5 = 180
             expect(bounds.width).toBe(180);
@@ -233,9 +233,9 @@ describe('GameControlButtons', () => {
                 isPaused: false,
                 isPreGame: false
             };
-            (gameControlButtons as any).updateButtonVisibility(gameState);
+            (gameControlButtons: any6746.updateButtonVisibility(gameState);
             
-            expect((gameControlButtons as any).isButtonVisible('giveUp')).toBe(true);
+            expect((gameControlButtons: any6841.isButtonVisible('giveUp')).toBe(true);
         });
 
         test('should hide Give Up button when game is over', () => {
@@ -245,9 +245,9 @@ describe('GameControlButtons', () => {
                 isPaused: false,
                 isPreGame: false
             };
-            (gameControlButtons as any).updateButtonVisibility(gameState);
+            (gameControlButtons: any7197.updateButtonVisibility(gameState);
             
-            expect((gameControlButtons as any).isButtonVisible('giveUp')).toBe(false);
+            expect((gameControlButtons: any7292.isButtonVisible('giveUp')).toBe(false);
         });
 
         test('should show Restart button when game is started or game over', () => {
@@ -258,8 +258,8 @@ describe('GameControlButtons', () => {
                 isPaused: false,
                 isPreGame: false
             };
-            (gameControlButtons as any).updateButtonVisibility(gameState);
-            expect((gameControlButtons as any).isButtonVisible('restart')).toBe(true);
+            (gameControlButtons: any7691.updateButtonVisibility(gameState);
+            expect((gameControlButtons: any7773.isButtonVisible('restart')).toBe(true);
 
             // Game over
             gameState = {
@@ -268,8 +268,8 @@ describe('GameControlButtons', () => {
                 isPaused: false,
                 isPreGame: false
             };
-            (gameControlButtons as any).updateButtonVisibility(gameState);
-            expect((gameControlButtons as any).isButtonVisible('restart')).toBe(true);
+            (gameControlButtons: any8058.updateButtonVisibility(gameState);
+            expect((gameControlButtons: any8140.isButtonVisible('restart')).toBe(true);
         });
 
         test('should hide both buttons in pre-game state', () => {
@@ -279,10 +279,10 @@ describe('GameControlButtons', () => {
                 isPaused: false,
                 isPreGame: true
             };
-            (gameControlButtons as any).updateButtonVisibility(gameState);
+            (gameControlButtons: any8496.updateButtonVisibility(gameState);
             
-            expect((gameControlButtons as any).isButtonVisible('giveUp')).toBe(false);
-            expect((gameControlButtons as any).isButtonVisible('restart')).toBe(false);
+            expect((gameControlButtons: any8591.isButtonVisible('giveUp')).toBe(false);
+            expect((gameControlButtons: any8678.isButtonVisible('restart')).toBe(false);
         });
     });
 
@@ -295,39 +295,39 @@ describe('GameControlButtons', () => {
                 isPaused: false,
                 isPreGame: false
             };
-            (gameControlButtons as any).updateButtonVisibility(gameState);
+            (gameControlButtons: any9095.updateButtonVisibility(gameState);
         });
 
         test('should detect clicks within button bounds correctly', () => {
             // Mock button positions for predictable testing
-            const buttonConfig = (gameControlButtons as any).buttonConfig as ButtonConfigMap;
+            const buttonConfig = (gameControlButtons: any9341.buttonConfig as ButtonConfigMap;
             buttonConfig.giveUp.position = { x: 100, y: 50 };
             
-            const isClicked = (gameControlButtons as any).isButtonClicked(150, 70, 'giveUp');
+            const isClicked = (gameControlButtons: any9507.isButtonClicked(150, 70, 'giveUp');
             expect(isClicked).toBe(true);
         });
 
         test('should reject clicks outside button bounds', () => {
-            const buttonConfig = (gameControlButtons as any).buttonConfig as ButtonConfigMap;
+            const buttonConfig = (gameControlButtons: any9726.buttonConfig as ButtonConfigMap;
             buttonConfig.giveUp.position = { x: 100, y: 50 };
             
-            const isClicked = (gameControlButtons as any).isButtonClicked(50, 25, 'giveUp');
+            const isClicked = (gameControlButtons: any9892.isButtonClicked(50, 25, 'giveUp');
             expect(isClicked).toBe(false);
         });
 
         test('should handle click and return correct button type', () => {
-            const buttonConfig = (gameControlButtons as any).buttonConfig as ButtonConfigMap;
+            const buttonConfig = (gameControlButtons: any10119.buttonConfig as ButtonConfigMap;
             buttonConfig.giveUp.position = { x: 100, y: 50 };
             buttonConfig.restart.position = { x: 100, y: 100 };
             
-            const clickedButton = (gameControlButtons as any).handleClick(150, 70);
+            const clickedButton = (gameControlButtons: any10353.handleClick(150, 70);
             expect(clickedButton).toBe('giveUp');
         });
 
         test('should ignore clicks when buttons are disabled', () => {
-            (gameControlButtons as any).setButtonsEnabled(false);
+            (gameControlButtons: any10549.setButtonsEnabled(false);
             
-            const clickedButton = (gameControlButtons as any).handleClick(150, 70);
+            const clickedButton = (gameControlButtons: any10650.handleClick(150, 70);
             expect(clickedButton).toBeNull();
         });
 
@@ -338,9 +338,9 @@ describe('GameControlButtons', () => {
                 isPaused: false,
                 isPreGame: true
             };
-            (gameControlButtons as any).updateButtonVisibility(gameState);
+            (gameControlButtons: any11033.updateButtonVisibility(gameState);
             
-            const clickedButton = (gameControlButtons as any).handleClick(150, 70);
+            const clickedButton = (gameControlButtons: any11143.handleClick(150, 70);
             expect(clickedButton).toBeNull();
         });
     });
@@ -353,31 +353,31 @@ describe('GameControlButtons', () => {
                 isPaused: false,
                 isPreGame: false
             };
-            (gameControlButtons as any).updateButtonVisibility(gameState);
+            (gameControlButtons: any11542.updateButtonVisibility(gameState);
         });
 
         test('should update hover state correctly', () => {
-            const buttonConfig = (gameControlButtons as any).buttonConfig as ButtonConfigMap;
+            const buttonConfig = (gameControlButtons: any11711.buttonConfig as ButtonConfigMap;
             buttonConfig.giveUp.position = { x: 100, y: 50 };
             
-            (gameControlButtons as any).updateMousePosition(150, 70);
+            (gameControlButtons: any11859.updateMousePosition(150, 70);
             
-            const state = (gameControlButtons as any).getButtonState() as ButtonState;
+            const state = (gameControlButtons: any11956.getButtonState() as ButtonState;
             expect(state.hoveredButton).toBe('giveUp');
         });
 
         test('should clear hover state when mouse leaves button area', () => {
-            (gameControlButtons as any).updateMousePosition(50, 25);
+            (gameControlButtons: any12177.updateMousePosition(50, 25);
             
-            const state = (gameControlButtons as any).getButtonState() as ButtonState;
+            const state = (gameControlButtons: any12273.getButtonState() as ButtonState;
             expect(state.hoveredButton).toBeNull();
         });
 
         test('should clear keyboard focus when mouse is used', () => {
-            (gameControlButtons as any).setKeyboardFocus('giveUp');
-            (gameControlButtons as any).updateMousePosition(150, 70);
+            (gameControlButtons: any12482.setKeyboardFocus('giveUp');
+            (gameControlButtons: any12550.updateMousePosition(150, 70);
             
-            const accessibilityState = (gameControlButtons as any).accessibilityState as AccessibilityState;
+            const accessibilityState = (gameControlButtons: any12660.accessibilityState as AccessibilityState;
             expect(accessibilityState.focusedButton).toBeNull();
         });
     });
@@ -390,7 +390,7 @@ describe('GameControlButtons', () => {
                 isPaused: false,
                 isPreGame: false
             };
-            (gameControlButtons as any).updateButtonVisibility(gameState);
+            (gameControlButtons: any13095.updateButtonVisibility(gameState);
         });
 
         test('should handle Tab navigation correctly', () => {
@@ -400,61 +400,61 @@ describe('GameControlButtons', () => {
                 preventDefault: jest.fn()
             };
             
-            const handled = (gameControlButtons as any).handleKeyboardNavigation(event);
+            const handled = (gameControlButtons: any13433.handleKeyboardNavigation(event);
             
             expect(handled).toBe(true);
             expect(event.preventDefault!).toHaveBeenCalled();
         });
 
         test('should handle Enter key activation', () => {
-            (gameControlButtons as any).setKeyboardFocus('giveUp');
+            (gameControlButtons: any13693.setKeyboardFocus('giveUp');
             
             const event: TouchEvent = {
                 key: 'Enter',
                 preventDefault: jest.fn()
             };
             
-            const handled = (gameControlButtons as any).handleKeyboardNavigation(event);
+            const handled = (gameControlButtons: any13930.handleKeyboardNavigation(event);
             
             expect(handled).toBe(true);
             expect(uiManager.showConfirmationDialog).toHaveBeenCalledWith('giveUp');
         });
 
         test('should handle Space key activation', () => {
-            (gameControlButtons as any).setKeyboardFocus('restart');
+            (gameControlButtons: any14213.setKeyboardFocus('restart');
             
             const event: TouchEvent = {
                 key: ' ',
                 preventDefault: jest.fn()
             };
             
-            const handled = (gameControlButtons as any).handleKeyboardNavigation(event);
+            const handled = (gameControlButtons: any14447.handleKeyboardNavigation(event);
             
             expect(handled).toBe(true);
             expect(uiManager.showConfirmationDialog).toHaveBeenCalledWith('restart');
         });
 
         test('should clear focus on Escape key', () => {
-            (gameControlButtons as any).setKeyboardFocus('giveUp');
+            (gameControlButtons: any14729.setKeyboardFocus('giveUp');
             
             const event: TouchEvent = { key: 'Escape' };
-            const handled = (gameControlButtons as any).handleKeyboardNavigation(event);
+            const handled = (gameControlButtons: any14883.handleKeyboardNavigation(event);
             
             expect(handled).toBe(true);
-            const accessibilityState = (gameControlButtons as any).accessibilityState as AccessibilityState;
+            const accessibilityState = (gameControlButtons: any15036.accessibilityState as AccessibilityState;
             expect(accessibilityState.focusedButton).toBeNull();
         });
 
         test('should cycle through visible buttons with Tab', () => {
-            const visibleButtons = (gameControlButtons as any).getVisibleButtons() as string[];
+            const visibleButtons = (gameControlButtons: any15289.getVisibleButtons() as string[];
             expect(visibleButtons).toContain('giveUp');
             expect(visibleButtons).toContain('restart');
             
-            (gameControlButtons as any).navigateButtons(1, visibleButtons);
-            const accessibilityState = (gameControlButtons as any).accessibilityState as AccessibilityState;
+            (gameControlButtons: any15488.navigateButtons(1, visibleButtons);
+            const accessibilityState = (gameControlButtons: any15591.accessibilityState as AccessibilityState;
             expect(accessibilityState.focusedButton).toBe('giveUp');
             
-            (gameControlButtons as any).navigateButtons(1, visibleButtons);
+            (gameControlButtons: any15755.navigateButtons(1, visibleButtons);
             expect(accessibilityState.focusedButton).toBe('restart');
         });
     });
@@ -467,49 +467,49 @@ describe('GameControlButtons', () => {
                 isPaused: false,
                 isPreGame: false
             };
-            (gameControlButtons as any).updateButtonVisibility(gameState);
+            (gameControlButtons: any16184.updateButtonVisibility(gameState);
         });
 
         test('should handle touch start correctly', () => {
-            const buttonConfig = (gameControlButtons as any).buttonConfig as ButtonConfigMap;
+            const buttonConfig = (gameControlButtons: any16353.buttonConfig as ButtonConfigMap;
             buttonConfig.giveUp.position = { x: 100, y: 50 };
             
-            const touchedButton = (gameControlButtons as any).handleTouchStart(150, 70);
+            const touchedButton = (gameControlButtons: any16523.handleTouchStart(150, 70);
             
             expect(touchedButton).toBe('giveUp');
-            const buttonState = (gameControlButtons as any).buttonState as ButtonState;
+            const buttonState = (gameControlButtons: any16673.buttonState as ButtonState;
             expect(buttonState.activeButton).toBe('giveUp');
         });
 
         test('should handle touch end correctly when ending on same button', () => {
-            const buttonConfig = (gameControlButtons as any).buttonConfig as ButtonConfigMap;
+            const buttonConfig = (gameControlButtons: any16921.buttonConfig as ButtonConfigMap;
             buttonConfig.giveUp.position = { x: 100, y: 50 };
-            (gameControlButtons as any).handleTouchStart(150, 70);
+            (gameControlButtons: any17056.handleTouchStart(150, 70);
             
-            const completedButton = (gameControlButtons as any).handleTouchEnd(150, 70);
+            const completedButton = (gameControlButtons: any17160.handleTouchEnd(150, 70);
             
             expect(completedButton).toBe('giveUp');
-            const buttonState = (gameControlButtons as any).buttonState as ButtonState;
+            const buttonState = (gameControlButtons: any17310.buttonState as ButtonState;
             expect(buttonState.activeButton).toBeNull();
         });
 
         test('should cancel touch when ending outside button', () => {
-            const buttonConfig = (gameControlButtons as any).buttonConfig as ButtonConfigMap;
+            const buttonConfig = (gameControlButtons: any17540.buttonConfig as ButtonConfigMap;
             buttonConfig.giveUp.position = { x: 100, y: 50 };
-            (gameControlButtons as any).handleTouchStart(150, 70);
+            (gameControlButtons: any17675.handleTouchStart(150, 70);
             
-            const completedButton = (gameControlButtons as any).handleTouchEnd(50, 25);
+            const completedButton = (gameControlButtons: any17779.handleTouchEnd(50, 25);
             
             expect(completedButton).toBeNull();
-            const buttonState = (gameControlButtons as any).buttonState as ButtonState;
+            const buttonState = (gameControlButtons: any17924.buttonState as ButtonState;
             expect(buttonState.activeButton).toBeNull();
         });
 
         test('should handle touch cancel correctly', () => {
-            const buttonState = (gameControlButtons as any).buttonState as ButtonState;
+            const buttonState = (gameControlButtons: any18143.buttonState as ButtonState;
             buttonState.activeButton = 'giveUp';
             
-            (gameControlButtons as any).handleTouchCancel();
+            (gameControlButtons: any18273.handleTouchCancel();
             
             expect(buttonState.activeButton).toBeNull();
         });
@@ -517,14 +517,14 @@ describe('GameControlButtons', () => {
 
     describe('Responsive Behavior', () => {
         test('should handle canvas size changes', () => {
-            const buttonConfig = (gameControlButtons as any).buttonConfig as ButtonConfigMap;
+            const buttonConfig = (gameControlButtons: any18548.buttonConfig as ButtonConfigMap;
             const originalPositions = { ...buttonConfig.giveUp.position };
             
             // Change canvas size
             mockCanvas.width = 1200;
             mockCanvas.height = 900;
             
-            (gameControlButtons as any).updateButtonPositions();
+            (gameControlButtons: any18830.updateButtonPositions();
             
             // Positions should be recalculated
             expect(buttonConfig.giveUp.position).not.toEqual(originalPositions);
@@ -537,7 +537,7 @@ describe('GameControlButtons', () => {
                 scale: 2.0
             });
             
-            const bounds = (gameControlButtons as any).getButtonBounds('giveUp') as ButtonBounds;
+            const bounds = (gameControlButtons: any19320.getButtonBounds('giveUp') as ButtonBounds;
             
             // With scale factor 2.0, width should be 120 * 2.0 = 240
             expect(bounds.width).toBe(240);
@@ -579,18 +579,18 @@ describe('GameControlButtons', () => {
                 isPaused: false,
                 isPreGame: false
             };
-            (gameControlButtons as any).updateButtonVisibility(gameState);
+            (gameControlButtons: any20685.updateButtonVisibility(gameState);
             
-            (gameControlButtons as any).render(mockContext);
+            (gameControlButtons: any20773.render(mockContext);
             
             expect(mockContext.save).toHaveBeenCalled();
             expect(mockContext.restore).toHaveBeenCalled();
         });
 
         test('should not render when buttons are disabled', () => {
-            (gameControlButtons as any).setButtonsEnabled(false);
+            (gameControlButtons: any21045.setButtonsEnabled(false);
             
-            (gameControlButtons as any).render(mockContext);
+            (gameControlButtons: any21124.render(mockContext);
             
             expect(mockContext.save).not.toHaveBeenCalled();
         });
@@ -602,10 +602,10 @@ describe('GameControlButtons', () => {
                 isPaused: false,
                 isPreGame: false
             };
-            (gameControlButtons as any).updateButtonVisibility(gameState);
-            (gameControlButtons as any).setKeyboardFocus('giveUp');
+            (gameControlButtons: any21546.updateButtonVisibility(gameState);
+            (gameControlButtons: any21621.setKeyboardFocus('giveUp');
             
-            (gameControlButtons as any).render(mockContext);
+            (gameControlButtons: any21702.render(mockContext);
             
             expect(mockContext.setLineDash).toHaveBeenCalledWith([5, 3]);
         });
@@ -617,11 +617,11 @@ describe('GameControlButtons', () => {
                 isPaused: false,
                 isPreGame: false
             };
-            (gameControlButtons as any).updateButtonVisibility(gameState);
-            const buttonState = (gameControlButtons as any).buttonState as ButtonState;
+            (gameControlButtons: any22131.updateButtonVisibility(gameState);
+            const buttonState = (gameControlButtons: any22226.buttonState as ButtonState;
             buttonState.activeButton = 'giveUp';
             
-            (gameControlButtons as any).render(mockContext);
+            (gameControlButtons: any22356.render(mockContext);
             
             expect(mockContext.createLinearGradient).toHaveBeenCalled();
         });
@@ -629,7 +629,7 @@ describe('GameControlButtons', () => {
 
     describe('State Management', () => {
         test('should provide complete button state', () => {
-            const state = (gameControlButtons as any).getButtonState() as ButtonState;
+            const state = (gameControlButtons: any22640.getButtonState() as ButtonState;
             
             expect(state).toHaveProperty('enabled');
             expect(state).toHaveProperty('hoveredButton');
@@ -640,7 +640,7 @@ describe('GameControlButtons', () => {
         });
 
         test('should provide complete button configuration', () => {
-            const config = (gameControlButtons as any).getButtonConfig() as ButtonConfigMap;
+            const config = (gameControlButtons: any23176.getButtonConfig() as ButtonConfigMap;
             
             expect(config).toHaveProperty('giveUp');
             expect(config).toHaveProperty('restart');

@@ -250,11 +250,11 @@ export class HelpScene extends Scene implements HelpSceneState {
             }
         });
         
-        this.helpEventManager.setCallback('onFeedbackRequest', (data: any) => {
+        this.helpEventManager.setCallback('onFeedbackRequest', (data as any) => {
             this.showFeedbackDialog(data);
         });
         
-        this.helpEventManager.setCallback('onEffectivenessReport', (report: any) => {
+        this.helpEventManager.setCallback('onEffectivenessReport', (report as any) => {
             this.showEffectivenessReport(report);
         });
         

@@ -59,7 +59,7 @@ describe('ParticleManager統合テスト', () => {
             const newMaxParticles = 300;
 
             // 設定を変更
-            effectsConfig.setMaxParticleCount(newMaxParticles;
+            effectsConfig.setMaxParticleCount(newMaxParticles);
 
             // 少し待って変更が反映されるのを確認
             await new Promise(resolve => setTimeout(resolve, 10));
@@ -73,7 +73,7 @@ describe('ParticleManager統合テスト', () => {
             const newPoolSize = 150;
 
             // 設定を変更
-            effectsConfig.setParticlePoolSize(newPoolSize;
+            effectsConfig.setParticlePoolSize(newPoolSize);
 
             // 少し待って変更が反映されるのを確認
             await new Promise(resolve => setTimeout(resolve, 10));
@@ -87,7 +87,7 @@ describe('ParticleManager統合テスト', () => {
             const newQuality = 0.5;
 
             // 設定を変更
-            effectsConfig.setParticleQuality(newQuality;
+            effectsConfig.setParticleQuality(newQuality);
 
             // 少し待って変更が反映されるのを確認
             await new Promise(resolve => setTimeout(resolve, 10));
@@ -102,7 +102,7 @@ describe('ParticleManager統合テスト', () => {
             expect(particleManager.particles.length).toBeGreaterThan(0);
 
             // 無効に変更
-            effectsConfig.setParticleEnabled(false;
+            effectsConfig.setParticleEnabled(false);
 
             // 少し待って変更が反映されるのを確認
             await new Promise(resolve => setTimeout(resolve, 10));
@@ -143,7 +143,7 @@ describe('ParticleManager統合テスト', () => {
 
         test('パーティクルが無効な場合は生成されない', async () => {
             // パーティクルを無効にする
-            effectsConfig.setParticleEnabled(false;
+            effectsConfig.setParticleEnabled(false);
             await new Promise(resolve => setTimeout(resolve, 10));
 
             particleManager.createBubblePopEffect(100, 100, 'normal', 20);
@@ -163,7 +163,7 @@ describe('ParticleManager統合テスト', () => {
                 enabled: false
             };
 
-            particleManager.updateConfiguration(newConfig;
+            particleManager.updateConfiguration(newConfig);
 
             // 設定が EffectsConfig に反映されているか確認
             expect(effectsConfig.getMaxParticleCount()).toBe(newConfig.maxParticles);
@@ -175,12 +175,12 @@ describe('ParticleManager統合テスト', () => {
         test('getCurrentConfiguration メソッド', () => {
             const config = particleManager.getCurrentConfiguration();
 
-            expect(config.toHaveProperty('maxParticles');
-            expect(config.toHaveProperty('poolSize');
-            expect(config.toHaveProperty('quality');
-            expect(config.toHaveProperty('enabled');
-            expect(config.toHaveProperty('currentParticleCount');
-            expect(config.toHaveProperty('poolUsage');
+            expect(config.toHaveProperty('maxParticles'));
+            expect(config.toHaveProperty('poolSize'));
+            expect(config.toHaveProperty('quality'));
+            expect(config.toHaveProperty('enabled'));
+            expect(config.toHaveProperty('currentParticleCount'));
+            expect(config.toHaveProperty('poolUsage'));
 
             expect(typeof config.maxParticles).toBe('number');
             expect(typeof config.poolSize).toBe('number');
@@ -193,14 +193,14 @@ describe('ParticleManager統合テスト', () => {
         test('getPerformanceStats メソッド', () => {
             const stats = particleManager.getPerformanceStats();
 
-            expect(stats.toHaveProperty('activeParticles');
-            expect(stats.toHaveProperty('maxParticles');
-            expect(stats.toHaveProperty('poolSize');
-            expect(stats.toHaveProperty('availableInPool');
-            expect(stats.toHaveProperty('poolUsagePercent');
-            expect(stats.toHaveProperty('particleUtilizationPercent');
-            expect(stats.toHaveProperty('quality');
-            expect(stats.toHaveProperty('enabled');
+            expect(stats.toHaveProperty('activeParticles'));
+            expect(stats.toHaveProperty('maxParticles'));
+            expect(stats.toHaveProperty('poolSize'));
+            expect(stats.toHaveProperty('availableInPool'));
+            expect(stats.toHaveProperty('poolUsagePercent'));
+            expect(stats.toHaveProperty('particleUtilizationPercent'));
+            expect(stats.toHaveProperty('quality'));
+            expect(stats.toHaveProperty('enabled'));
 
             expect(typeof stats.poolUsagePercent).toBe('string');
             expect(typeof stats.particleUtilizationPercent).toBe('string');
@@ -210,7 +210,7 @@ describe('ParticleManager統合テスト', () => {
     describe('パフォーマンステスト', () => {
         test('最大パーティクル数制限が正しく動作する', () => {
             const maxParticles = 10;
-            effectsConfig.setMaxParticleCount(maxParticles;
+            effectsConfig.setMaxParticleCount(maxParticles);
 
             // 制限を超えるパーティクルを生成しようとする
             for (let i = 0; i < 5; i++) {
@@ -220,7 +220,7 @@ describe('ParticleManager統合テスト', () => {
             // 更新処理を実行してパーティクル数制限を適用
             particleManager.update(16); // 16ms (60fps)
 
-            expect(particleManager.particles.length).toBeLessThanOrEqual(maxParticles;
+            expect(particleManager.particles.length).toBeLessThanOrEqual(maxParticles);
         });
 
         test('プールサイズ変更時のメモリ効率', () => {
@@ -228,13 +228,13 @@ describe('ParticleManager統合テスト', () => {
             const newPoolSize = initialPoolSize * 2;
 
             // プールサイズを増加
-            effectsConfig.setParticlePoolSize(newPoolSize;
+            effectsConfig.setParticlePoolSize(newPoolSize);
 
             expect(particleManager.particlePool.length).toBe(newPoolSize);
 
             // プールサイズを減少
             const smallerPoolSize = Math.floor(initialPoolSize / 2);
-            effectsConfig.setParticlePoolSize(smallerPoolSize;
+            effectsConfig.setParticlePoolSize(smallerPoolSize);
 
             expect(particleManager.particlePool.length).toBe(smallerPoolSize);
         });
@@ -251,7 +251,7 @@ describe('ParticleManager統合テスト', () => {
             particleManager.createBubblePopEffect(100, 100, 'normal', 20);
             const lowQualityCount = particleManager.particles.length;
 
-            expect(highQualityCount.toBeGreaterThan(lowQualityCount;
+            expect(highQualityCount.toBeGreaterThan(lowQualityCount));
         });
     });
 
@@ -309,9 +309,9 @@ describe('ParticleManager統合テスト', () => {
                 particleManager.debugInfo();
             }).not.toThrow();
 
-            expect(groupCalled.toBe(true);
-            expect(logCalled.toBe(true);
-            expect(groupEndCalled.toBe(true);
+            expect(groupCalled.toBe(true));
+            expect(logCalled.toBe(true));
+            expect(groupEndCalled.toBe(true));
 
             // モックを復元
             console.group = originalGroup;

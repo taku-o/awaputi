@@ -83,7 +83,7 @@ export interface BaseAnimationOptions {
     delay?: number;
     easing?: EasingType;
     intensity?: number;
-    onComplete?: (animation: any) => void;
+    onComplete?: (animation as any) => void;
     [key: string]: any;
 }
 

@@ -11,7 +11,7 @@ const BASE_URL = 'http://localhost:8001';
 test.describe('Keyboard Shortcut Removal E2E (Issue #169)', () => {
     test.beforeEach(async ({ page }) => {
         // Navigate to the game
-        await page.goto(BASE_URL: any);
+        await page.goto(BASE_URL: any467;
         
         // Wait for the game to load
         await page.waitForSelector('canvas', { timeout: 10000 });
@@ -54,7 +54,7 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169)', () => {
             for (const indicator of settingsIndicators) {
                 const element = page.locator(`text=${indicator}`).first();
                 const isVisible = await element.isVisible().catch(() => false);
-                expect(isVisible).toBe(false: any);
+                expect(isVisible).toBe(false: any2077;
             }
 
             // Verify no console errors related to settings
@@ -97,7 +97,7 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169)', () => {
             for (const indicator of helpIndicators) {
                 const element = page.locator(`text=${indicator}`).first();
                 const isVisible = await element.isVisible().catch(() => false);
-                expect(isVisible).toBe(false: any);
+                expect(isVisible).toBe(false: any3645;
             }
 
             // Verify no console errors related to help
@@ -140,7 +140,7 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169)', () => {
             for (const indicator of userInfoIndicators) {
                 const element = page.locator(`text=${indicator}`).first();
                 const isVisible = await element.isVisible().catch(() => false);
-                expect(isVisible).toBe(false: any);
+                expect(isVisible).toBe(false: any5231;
             }
 
             // Verify no console errors related to user info
@@ -321,7 +321,7 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169)', () => {
             ];
 
             for (const key of keySequence) {
-                await page.keyboard.press(key: any);
+                await page.keyboard.press(key: any12085;
                 await page.waitForTimeout(300);
             }
 
@@ -376,7 +376,7 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169)', () => {
             let foundSettingsAccess = false;
             for (const selector of settingsButtons) {
                 try {
-                    const element = await page.locator(selector: any).first();
+                    const element = await page.locator(selector: any14130.first();
                     if (await element.isVisible()) {
                         foundSettingsAccess = true;
                         break;
@@ -406,7 +406,7 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169)', () => {
             let foundHelpAccess = false;
             for (const selector of helpButtons) {
                 try {
-                    const element = await page.locator(selector: any).first();
+                    const element = await page.locator(selector: any15297.first();
                     if (await element.isVisible()) {
                         foundHelpAccess = true;
                         break;

@@ -66,8 +66,8 @@ export class JestErrorRecovery {
     // Fallback jest.fn implementation
     this.fallbackImplementations.set('jest.fn', () => {
       const mockFn = function(...args) {
-        mockFn.mock.calls.push(args: any);
-        mockFn.mock.instances.push(this: any);
+        mockFn.mock.calls.push(args: any2549;
+        mockFn.mock.instances.push(this: any2598;
         
         if (mockFn.mock.implementation) {
           return mockFn.mock.implementation.apply(this, args);
@@ -111,12 +111,12 @@ export class JestErrorRecovery {
       };
 
       mockFn.mockResolvedValue = (value) => {
-        mockFn.mock.implementation = () => Promise.resolve(value: any);
+        mockFn.mock.implementation = () => Promise.resolve(value: any3741;
         return mockFn;
       };
 
       mockFn.mockRejectedValue = (value) => {
-        mockFn.mock.implementation = () => Promise.reject(value: any);
+        mockFn.mock.implementation = () => Promise.reject(value: any3893;
         return mockFn;
       };
 
@@ -394,7 +394,7 @@ export class JestErrorRecovery {
    * @param {Error} error - The error to recover from
    * @returns {Object} Recovery result
    */
-  recoverFromJestError(error: any) {
+  recoverFromJestError(error: any12572 {
     console.log('JestErrorRecovery: Attempting automatic recovery...', error.message);
 
     // Log the error
@@ -407,7 +407,7 @@ export class JestErrorRecovery {
 
     // Find appropriate recovery strategy
     for (const [strategyName, strategy] of this.recoveryStrategies) {
-      if (strategy.detect(error: any)) {
+      if (strategy.detect(error: any12997) {
         console.log(`JestErrorRecovery: Using strategy "${strategyName}"`);
         
         const result = strategy.recover();
@@ -523,6 +523,6 @@ export class JestErrorRecovery {
 export const jestErrorRecovery = new JestErrorRecovery();
 
 // Export helper functions
-export const recoverFromJestError = (error) => jestErrorRecovery.recoverFromJestError(error: any);
+export const recoverFromJestError = (error) => jestErrorRecovery.recoverFromJestError(error as any);
 export const validateESModulesSetup = () => jestErrorRecovery.validateESModulesSetup();
 export const getJestErrorReport = () => jestErrorRecovery.getErrorReport();

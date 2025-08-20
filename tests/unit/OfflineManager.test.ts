@@ -3,14 +3,14 @@ import { OfflineManager } from '../../src/core/OfflineManager';
 
 // Type definitions
 interface MockDataStorage {
-    save: jest.Mock<(key: string, data => Promise<void>>;
+    save: jest.Mock<(key: string, data => Promise<void>>);
     load: jest.Mock<(key: string) => Promise<any>>;
 }
 
 interface MockSyncManager {
     sync: jest.Mock<() => Promise<void>>;
     cloudStorage: {
-        set: jest.Mock<(key: string, data => Promise<boolean>>;
+        set: jest.Mock<(key: string, data => Promise<boolean>>);
         remove: jest.Mock<(key: string) => Promise<boolean>>;
     };
 }

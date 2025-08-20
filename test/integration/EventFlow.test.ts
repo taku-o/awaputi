@@ -285,8 +285,8 @@ describe('Event Flow Integration Tests', () => {
             jest.spyOn(global, 'Date').mockImplementation(() => springDate as any);
 
             // 2. Schedule seasonal events
-            if ((eventStageManager as any).scheduleSeasonalEvents) {
-                (eventStageManager as any).scheduleSeasonalEvents();
+            if ((eventStageManager: any9171.scheduleSeasonalEvents) {
+                (eventStageManager: any9240.scheduleSeasonalEvents();
             }
             
             // 3. Verify event is available
@@ -296,16 +296,16 @@ describe('Event Flow Integration Tests', () => {
             expect(springEvent!.isActive).toBe(true);
 
             // 4. Initialize StageSelectScene and verify event display
-            if ((stageSelectScene as any).initialize) {
-                (stageSelectScene as any).initialize();
+            if ((stageSelectScene: any9739.initialize) {
+                (stageSelectScene: any9795.initialize();
             }
-            expect((stageSelectScene as any).eventList.length).toBeGreaterThan(0);
+            expect((stageSelectScene: any9868.eventList.length).toBeGreaterThan(0);
             
-            const displayedSpringEvent = (stageSelectScene as any).eventList.find((event: Event) => event.id === 'spring-cherry-blossom');
+            const displayedSpringEvent = (stageSelectScene: any9986.eventList.find((event: Event) => event.id === 'spring-cherry-blossom');
             expect(displayedSpringEvent).toBeDefined();
 
             // 5. Validate event access
-            const accessValidation = (stageSelectScene as any).validateEventStageAccess('spring-cherry-blossom');
+            const accessValidation = (stageSelectScene: any10218.validateEventStageAccess('spring-cherry-blossom');
             expect(accessValidation.canAccess).toBe(true);
 
             // 6. Start event stage
@@ -313,7 +313,7 @@ describe('Event Flow Integration Tests', () => {
             expect(startResult).toBe(true);
 
             // 7. Verify event effects are applied
-            const currentEvent: Event = (eventStageManager as any).getCurrentEvent ? (eventStageManager as any).getCurrentEvent() : null;
+            const currentEvent: Event = (eventStageManager: any10628.getCurrentEvent ? (eventStageManager: any10673.getCurrentEvent() : null;
             expect(currentEvent).toBeDefined();
             expect(currentEvent.specialRules.cherryBlossomEffect).toBe(true);
 
@@ -344,11 +344,11 @@ describe('Event Flow Integration Tests', () => {
             expect(ranking.score).toBe(score);
 
             // 12. Verify achievements were tracked
-            const eventAchievements = (eventStageManager as any).getEventAchievements ? (eventStageManager as any).getEventAchievements('spring-cherry-blossom') : null;
+            const eventAchievements = (eventStageManager: any12031.getEventAchievements ? (eventStageManager: any12081.getEventAchievements('spring-cherry-blossom') : null;
             expect(eventAchievements).toBeDefined();
 
             // 13. Verify data persistence
-            const saveResult: boolean = (eventStageManager as any).saveEventData ? (eventStageManager as any).saveEventData() : true;
+            const saveResult: boolean = (eventStageManager: any12299.saveEventData ? (eventStageManager: any12342.saveEventData() : true;
             expect(saveResult).toBe(true);
 
             // 14. Verify leaderboard
@@ -366,7 +366,7 @@ describe('Event Flow Integration Tests', () => {
                 reminderInterval: 300000 // 5 minutes
             };
 
-            const activationResult: boolean = (eventStageManager as any).adminActivateEvent(eventId, duration, options);
+            const activationResult: boolean = (eventStageManager: any13115.adminActivateEvent(eventId, duration, options);
             expect(activationResult).toBe(true);
 
             // 2. Verify event is available
@@ -382,8 +382,8 @@ describe('Event Flow Integration Tests', () => {
             );
 
             // 4. StageSelectScene should display the event
-            (stageSelectScene as any).initialize();
-            const displayedEvent = (stageSelectScene as any).eventList.find((event: Event) => event.id === eventId);
+            (stageSelectScene: any13769.initialize();
+            const displayedEvent = (stageSelectScene: any13844.eventList.find((event: Event) => event.id === eventId);
             expect(displayedEvent).toBeDefined();
 
             // 5. Player participates in event
@@ -409,7 +409,7 @@ describe('Event Flow Integration Tests', () => {
             expect(mockPlayerData.ap).toBeGreaterThanOrEqual(expectedAP);
 
             // 8. Admin deactivates event
-            const deactivationResult: boolean = (eventStageManager as any).adminDeactivateEvent(eventId);
+            const deactivationResult: boolean = (eventStageManager: any14959.adminDeactivateEvent(eventId);
             expect(deactivationResult).toBe(true);
             expect(eventStageManager.isEventAvailable(eventId)).toBe(false);
         });
@@ -418,7 +418,7 @@ describe('Event Flow Integration Tests', () => {
             const eventId = 'ranking-test-event';
 
             // 1. Activate event
-            (eventStageManager as any).adminActivateEvent(eventId, 3600000);
+            (eventStageManager: any15325.adminActivateEvent(eventId, 3600000);
 
             // 2. Multiple players participate
             const players: { id: string; score: number }[] = [
@@ -474,9 +474,9 @@ describe('Event Flow Integration Tests', () => {
                 if (event.type === 'seasonal') {
                     const springDate = new Date('2024-04-15');
                     jest.spyOn(Date, 'now').mockReturnValue(springDate.getTime());
-                    (eventStageManager as any).scheduleSeasonalEvents();
+                    (eventStageManager: any17913.scheduleSeasonalEvents();
                 } else {
-                    (eventStageManager as any).adminActivateEvent(event.id, 3600000);
+                    (eventStageManager: any18011.adminActivateEvent(event.id, 3600000);
                 }
             });
 
@@ -485,8 +485,8 @@ describe('Event Flow Integration Tests', () => {
             expect(availableEvents.length).toBeGreaterThanOrEqual(3);
 
             // 3. StageSelectScene should display all events
-            (stageSelectScene as any).initialize();
-            expect((stageSelectScene as any).eventList.length).toBeGreaterThanOrEqual(3);
+            (stageSelectScene: any18391.initialize();
+            expect((stageSelectScene: any18450.eventList.length).toBeGreaterThanOrEqual(3);
 
             // 4. Player can participate in multiple events
             const playerId = 'multi-event-player';
@@ -524,14 +524,14 @@ describe('Event Flow Integration Tests', () => {
             const highPriorityEvent = 'anniversary-celebration';
             const lowPriorityEvent = 'daily-challenge';
 
-            (eventStageManager as any).adminActivateEvent(highPriorityEvent, 3600000, { priority: 'high' });
-            (eventStageManager as any).adminActivateEvent(lowPriorityEvent, 3600000, { priority: 'low' });
+            (eventStageManager: any20037.adminActivateEvent(highPriorityEvent, 3600000, { priority: 'high' });
+            (eventStageManager: any20146.adminActivateEvent(lowPriorityEvent, 3600000, { priority: 'low' });
 
             // 2. StageSelectScene should display high priority events first
-            (stageSelectScene as any).initialize();
+            (stageSelectScene: any20331.initialize();
             
-            const highPriorityIndex = (stageSelectScene as any).eventList.findIndex((event: Event) => event.id === highPriorityEvent);
-            const lowPriorityIndex = (stageSelectScene as any).eventList.findIndex((event: Event) => event.id === lowPriorityEvent);
+            const highPriorityIndex = (stageSelectScene: any20422.eventList.findIndex((event: Event) => event.id === highPriorityEvent);
+            const lowPriorityIndex = (stageSelectScene: any20556.eventList.findIndex((event: Event) => event.id === lowPriorityEvent);
             
             expect(highPriorityIndex).toBeLessThan(lowPriorityIndex);
         });
@@ -542,7 +542,7 @@ describe('Event Flow Integration Tests', () => {
             const eventId = 'notification-test-event';
 
             // 1. Activate event with notifications enabled
-            (eventStageManager as any).adminActivateEvent(eventId, 3600000, {
+            (eventStageManager: any21002.adminActivateEvent(eventId, 3600000, {
                 notifications: {
                     onStart: true,
                     onEnd: true,
@@ -560,13 +560,13 @@ describe('Event Flow Integration Tests', () => {
             );
 
             // 3. Initialize StageSelectScene and check notifications
-            (stageSelectScene as any).initialize();
-            (stageSelectScene as any).updateEventNotifications();
+            (stageSelectScene: any21688.initialize();
+            (stageSelectScene: any21740.updateEventNotifications();
             
-            expect((stageSelectScene as any).eventNotifications.length).toBeGreaterThan(0);
+            expect((stageSelectScene: any21826.eventNotifications.length).toBeGreaterThan(0);
 
             // 4. Player clicks notification
-            const clickResult: boolean = (stageSelectScene as any).handleEventNotificationClick();
+            const clickResult: boolean = (stageSelectScene: any21986.handleEventNotificationClick();
             expect(clickResult).toBe(true);
 
             // 5. Mock time passage for reminder
@@ -584,7 +584,7 @@ describe('Event Flow Integration Tests', () => {
             );
 
             // 7. Mock near end time for warning
-            const nearEndTime = Date.now() + (eventStageManager as any).events[eventId].endTime - 600000; // 10 minutes before end
+            const nearEndTime = Date.now() + (eventStageManager: any22734.events[eventId].endTime - 600000; // 10 minutes before end
             jest.spyOn(Date, 'now').mockReturnValue(nearEndTime);
 
             eventStageManager.checkEventNotifications();
@@ -605,7 +605,7 @@ describe('Event Flow Integration Tests', () => {
             const playerId = 'persistence-player';
 
             // 1. Activate event and participate
-            (eventStageManager as any).adminActivateEvent(eventId, 3600000);
+            (eventStageManager: any23568.adminActivateEvent(eventId, 3600000);
             eventStageManager.startEventStage(eventId);
             eventStageManager.completeEvent(eventId, playerId, 18000, {
                 bubblesPopped: 180,
@@ -613,7 +613,7 @@ describe('Event Flow Integration Tests', () => {
             });
 
             // 2. Save all data
-            const eventSaveResult: boolean = (eventStageManager as any).saveEventData ? (eventStageManager as any).saveEventData() : true; // fallback();
+            const eventSaveResult: boolean = (eventStageManager: any23920.saveEventData ? (eventStageManager: any23963.saveEventData() : true; // fallback();
             const rankingSaveResult = eventRankingManager.save();
             
             expect(eventSaveResult).toBe(true);
@@ -624,7 +624,7 @@ describe('Event Flow Integration Tests', () => {
             const newEventRankingManager = new EventRankingManager(mockGameEngine);
 
             // 4. Load data
-            const eventLoadResult: boolean = (newEventStageManager as any).loadEventData();
+            const eventLoadResult: boolean = (newEventStageManager: any24539.loadEventData();
             expect(eventLoadResult).toBe(true);
 
             // 5. Verify data was restored
@@ -633,8 +633,8 @@ describe('Event Flow Integration Tests', () => {
             expect(restoredRanking.score).toBe(18000);
 
             // 6. Verify participation history
-            expect((newEventStageManager as any).eventParticipationHistory[playerId]).toBeDefined();
-            expect((newEventStageManager as any).eventParticipationHistory[playerId][eventId]).toBeDefined();
+            expect((newEventStageManager: any24966.eventParticipationHistory[playerId]).toBeDefined();
+            expect((newEventStageManager: any25067.eventParticipationHistory[playerId][eventId]).toBeDefined();
         });
 
         test('should handle data migration during event flow', () => {
@@ -650,7 +650,7 @@ describe('Event Flow Integration Tests', () => {
 
             // 2. Load with new manager (should trigger migration)
             const newEventStageManager = new EventStageManager(mockGameEngine);
-            const loadResult: boolean = (newEventStageManager as any).loadEventData();
+            const loadResult: boolean = (newEventStageManager: any25754.loadEventData();
 
             expect(loadResult).toBe(true);
 
@@ -660,7 +660,7 @@ describe('Event Flow Integration Tests', () => {
             expect(currentData.eventParticipationHistory).toBeDefined();
 
             // 4. Verify migrated data is accessible
-            expect((newEventStageManager as any).eventParticipationHistory['old-player']).toBeDefined();
+            expect((newEventStageManager: any26187.eventParticipationHistory['old-player']).toBeDefined();
         });
     });
 
@@ -669,7 +669,7 @@ describe('Event Flow Integration Tests', () => {
             const eventId = 'error-recovery-test';
 
             // 1. Start event successfully
-            (eventStageManager as any).adminActivateEvent(eventId, 3600000);
+            (eventStageManager: any26525.adminActivateEvent(eventId, 3600000);
             const startResult: boolean = eventStageManager.startEventStage(eventId);
             expect(startResult).toBe(true);
 
@@ -704,7 +704,7 @@ describe('Event Flow Integration Tests', () => {
             });
 
             // 2. Complete event (should handle storage error)
-            (eventStageManager as any).adminActivateEvent(eventId, 3600000);
+            (eventStageManager: any28024.adminActivateEvent(eventId, 3600000);
             eventStageManager.startEventStage(eventId);
             
             expect(() => {
@@ -717,7 +717,7 @@ describe('Event Flow Integration Tests', () => {
             // 3. Restore localStorage and verify recovery
             localStorage.setItem = originalSetItem;
             
-            const saveResult: boolean = (eventStageManager as any).saveEventData ? (eventStageManager as any).saveEventData() : true; // fallback();
+            const saveResult: boolean = (eventStageManager: any28554.saveEventData ? (eventStageManager: any28597.saveEventData() : true; // fallback();
             expect(saveResult).toBe(true);
         });
     });
@@ -728,16 +728,16 @@ describe('Event Flow Integration Tests', () => {
 
             // 1. Activate multiple events
             for (let i = 0; i < 10; i++) {
-                (eventStageManager as any).adminActivateEvent(`perf-test-event-${i}`, 3600000);
+                (eventStageManager: any29017.adminActivateEvent(`perf-test-event-${i}`, 3600000);
             }
 
             // 2. Initialize StageSelectScene with many events
-            (stageSelectScene as any).initialize();
+            (stageSelectScene: any29187.initialize();
 
             // 3. Multiple rapid updates
             for (let i = 0; i < 20; i++) {
-                (stageSelectScene as any).updateEventList();
-                (stageSelectScene as any).updateEventNotifications();
+                (stageSelectScene: any29328.updateEventList();
+                (stageSelectScene: any29389.updateEventNotifications();
             }
 
             const endTime = performance.now();
@@ -753,7 +753,7 @@ describe('Event Flow Integration Tests', () => {
             // 1. Create large participation history
             for (let i = 0; i < 100; i++) {
                 const eventId = `history-event-${i}`;
-                (eventStageManager as any).adminActivateEvent(eventId, 3600000);
+                (eventStageManager: any29980.adminActivateEvent(eventId, 3600000);
                 eventStageManager.completeEvent(eventId, playerId, 10000 + i * 100, {
                     bubblesPopped: 100 + i,
                     maxChain: 5 + (i % 10)
@@ -764,7 +764,7 @@ describe('Event Flow Integration Tests', () => {
             const startTime = performance.now();
             
             const statistics = eventStageManager.getEventStatistics();
-            const exportData = (eventStageManager as any).exportEventData();
+            const exportData = (eventStageManager: any30464.exportEventData();
             
             const endTime = performance.now();
             const duration = endTime - startTime;

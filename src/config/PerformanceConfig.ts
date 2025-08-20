@@ -247,7 +247,7 @@ export class PerformanceConfig {
         
         this.configManager.setValidationRule('performance', 'optimization.performanceLevel', {
             type: 'string',
-            validator: (value: any) => ['low', 'medium', 'high'].includes(value)
+            validator: (value as any) => ['low', 'medium', 'high'].includes(value)
         });
         
         this.configManager.setValidationRule('performance', 'optimization.maxBubbles', {

@@ -13,14 +13,14 @@ interface SettingsManager {
     getAll?(): Record<string, any>;
     set?(key: string, value: any): void;
     save?(): Promise<void>;
-    addEventListener?(event: string, handler: (event: any) => void): void;
+    addEventListener?(event: string, handler: (event as any) => void): void;
     removeEventListener?(event: string): void;
 }
 
 interface AccessibilityManager {
     getConfiguration(): AccessibilityConfiguration;
     applyConfiguration(config: AccessibilityConfiguration): Promise<void>;
-    addEventListener?(event: string, handler: (event: any) => void): void;
+    addEventListener?(event: string, handler: (event as any) => void): void;
     removeEventListener?(event: string): void;
 }
 
@@ -40,7 +40,7 @@ interface SettingConfig {
     min?: number;
     max?: number;
     step?: number;
-    onChange?: (value: any) => void;
+    onChange?: (value as any) => void;
 }
 
 // Comprehensive accessibility configuration types
@@ -435,7 +435,7 @@ export class AccessibilitySettingsIntegrator {
                 min: setting.min,
                 max: setting.max,
                 step: setting.step,
-                onChange: (value: any) => this.handleSettingChange(key, value)
+                onChange: (value as any) => this.handleSettingChange(key, value)
             });
         });
         

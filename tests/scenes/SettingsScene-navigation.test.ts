@@ -53,7 +53,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
             }
         };
         
-        settingsScene = new SettingsScene(mockGameEngine;
+        settingsScene = new SettingsScene(mockGameEngine);
     });
     
     afterEach(() => {
@@ -67,7 +67,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
         test('should handle standard settings mode', () => {
             const contextData: Record<string, any> = {};
             
-            settingsScene.enter(contextData;
+            settingsScene.enter(contextData);
             
             // デフォルトでソーシャルカテゴリが選択されることを確認
             expect(settingsScene.currentCategory).toBe('social');
@@ -81,7 +81,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
                 accessMethod: 'help_to_settings'
             };
             
-            settingsScene.enter(contextData;
+            settingsScene.enter(contextData);
             
             // ヘルプからのアクセスでは一般設定から開始
             expect(settingsScene.loggingSystem.info).toHaveBeenCalledWith(
@@ -98,7 +98,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
                 sourceScene: 'help'
             };
             
-            settingsScene.enter(contextData;
+            settingsScene.enter(contextData);
             
             // アクセシビリティカテゴリが選択されることを確認
             expect(settingsScene.loggingSystem.info).toHaveBeenCalledWith(
@@ -116,7 +116,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
                 accessMethod: 'quick_settings'
             };
             
-            settingsScene.enter(contextData;
+            settingsScene.enter(contextData);
             
             expect(settingsScene.loggingSystem.info).toHaveBeenCalledWith(
                 'SettingsScene',
@@ -130,7 +130,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
                 accessMethod: 'game_settings'
             };
             
-            settingsScene.enter(contextData;
+            settingsScene.enter(contextData);
             
             // ゲームシーンからは一般設定を開く
             expect(settingsScene.currentCategory).toBe('general');
@@ -153,7 +153,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
         
         test('should fallback to menu when no return destination', () => {
             // 戻り先がない場合のテスト
-            settingsScene.navigationContext.getReturnDestination = jest.fn().mockReturnValue(null as jest.Mock;
+            settingsScene.navigationContext.getReturnDestination = jest.fn().mockReturnValue(null as jest.Mock);
             settingsScene.navigationContext.popContext = jest.fn() as jest.Mock;
             
             settingsScene.goBack();
@@ -262,7 +262,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
         });
         
         test('should activate quick access mode with specific setting', () => {
-            settingsScene.navigateToSetting = jest.fn().mockReturnValue(true as jest.Mock;
+            settingsScene.navigateToSetting = jest.fn().mockReturnValue(true as jest.Mock);
             
             settingsScene.setQuickAccessMode('ui.quality');
             
@@ -272,7 +272,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
         test('should handle quick access mode without target setting', () => {
             settingsScene.navigateToSetting = jest.fn() as jest.Mock;
             
-            settingsScene.setQuickAccessMode(null;
+            settingsScene.setQuickAccessMode(null);
             
             expect(settingsScene.navigateToSetting).not.toHaveBeenCalled();
         });
@@ -314,7 +314,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
                 sourceScene: 'menu'
             };
             
-            settingsScene.enter(contextData;
+            settingsScene.enter(contextData);
             
             expect(settingsScene.loggingSystem.info).toHaveBeenCalledWith(
                 'SettingsScene',
@@ -341,7 +341,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
         test('should log context processing debug info', () => {
             const contextData = { sourceScene: 'game' };
             
-            settingsScene.enter(contextData;
+            settingsScene.enter(contextData);
             
             expect(settingsScene.loggingSystem.debug).toHaveBeenCalledWith(
                 'SettingsScene',

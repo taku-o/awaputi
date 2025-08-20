@@ -19,7 +19,7 @@ class TestCalculator {
     }
     
     // 重い計算（意図的に遅延）
-    heavyCalculation(n: any) {
+    heavyCalculation(n: any454 {
         const start = Date.now();
         while (Date.now() - start < 20) {
             // 20ms待機
@@ -28,7 +28,7 @@ class TestCalculator {
     }
     
     // 複雑な計算
-    complexCalculation(data: any) {
+    complexCalculation(data: any643 {
         let result = 0;
         for (let i = 0; i < 1000; i++) {
             result += Math.sqrt(data.value + i);
@@ -41,12 +41,12 @@ class TestCalculator {
         return a * b;
     }
     
-    batchCalculationBatch(paramsList: any) {
+    batchCalculationBatch(paramsList: any922 {
         return paramsList.map(([a, b]) => a * b);
     }
     
     // フィボナッチ数列（メモ化テスト用）
-    fibonacci(n: any) {
+    fibonacci(n: any1043 {
         if (n <= 1) return n;
         return this.fibonacci(n - 1) + this.fibonacci(n - 2);
     }
@@ -81,7 +81,7 @@ describe('Calculation Performance Tests', () => {
         console.log(`基本計算: ${iterations}回, 総時間: ${totalTime.toFixed(2)}ms, 平均: ${avgTime.toFixed(4)}ms`);
         
         // 平均計算時間が0.1ms以下であることを確認
-        expect(avgTime.toBeLessThan(0.1);
+        expect(avgTime.toBeLessThan(0.1));
     });
     
     test('キャッシュ効果の測定', () => {
@@ -121,7 +121,7 @@ describe('Calculation Performance Tests', () => {
         console.log(`改善率: ${improvement.toFixed(2)}%`);
         
         // キャッシュにより大幅な改善があることを確認
-        expect(improvement.toBeGreaterThan(80);
+        expect(improvement.toBeGreaterThan(80));
     });
     
     test('インテリジェントキャッシュの効果', () => {
@@ -140,12 +140,12 @@ describe('Calculation Performance Tests', () => {
         console.log('最適化された計算の回数:', stats.optimizedCalculations);
         
         // 結果が一致することを確認
-        expect(heavyResult1.toBe(heavyResult2);
-        expect(lightResult1.toBe(lightResult2);
+        expect(heavyResult1.toBe(heavyResult2));
+        expect(lightResult1.toBe(lightResult2));
         
         // キャッシュヒット率が高いことを確認
         const hitRate = parseFloat(stats.hitRate);
-        expect(hitRate.toBeGreaterThan(40);
+        expect(hitRate.toBeGreaterThan(40));
     });
     
     test('メモ化機能の効果', () => {
@@ -188,7 +188,7 @@ describe('Calculation Performance Tests', () => {
         const batchPromises = params.map(param => 
             engine.calculate('test', 'batchCalculation', param, { batchable: true })
         );
-        const batchResults = await Promise.all(batchPromises;
+        const batchResults = await Promise.all(batchPromises);
         const endTimeBatch = performance.now();
         const timeBatch = endTimeBatch - startTimeBatch;
         
@@ -199,7 +199,7 @@ describe('Calculation Performance Tests', () => {
         console.log(`改善率: ${improvement.toFixed(2)}%`);
         
         // 結果が一致することを確認
-        expect(batchResults.toEqual(individualResults);
+        expect(batchResults.toEqual(individualResults));
         
         // バッチ処理により改善があることを確認（必ずしも高速化されるとは限らないため、閾値は低め）
         expect(improvement.toBeGreaterThan(-5000); // 大幅に遅くならない（非同期処理のオーバーヘッドを考慮）
@@ -287,14 +287,14 @@ describe('Calculation Performance Tests', () => {
         console.log(`最終キャッシュサイズ: ${stats.size}`);
         
         // エラーが発生しないことを確認
-        expect(errorCount.toBe(0);
+        expect(errorCount.toBe(0));
         
         // 平均計算時間が合理的であることを確認
-        expect(avgTime.toBeLessThan(0.5);
+        expect(avgTime.toBeLessThan(0.5));
         
         // キャッシュが効果的に機能していることを確認（大量の異なる計算では低くなる可能性がある）
         const hitRate = parseFloat(stats.hitRate);
-        expect(hitRate.toBeGreaterThanOrEqual(0);
+        expect(hitRate.toBeGreaterThanOrEqual(0));
     });
     
     test('メモリ効率性', () => {
@@ -316,7 +316,7 @@ describe('Calculation Performance Tests', () => {
         
         // 適切なキャッシュ効率であることを確認（異なる計算が多い場合は低くなる）
         const hitRate = parseFloat(stats.hitRate);
-        expect(hitRate.toBeGreaterThanOrEqual(0);
+        expect(hitRate.toBeGreaterThanOrEqual(0));
     });
     
     test('キャッシュ最適化の動作', () => {

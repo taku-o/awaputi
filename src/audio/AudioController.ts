@@ -22,7 +22,7 @@ interface ErrorHandler {
 }
 
 interface ConfigurationManager {
-    watch(section: string, key: string, callback: (value: any) => void): (() => void) | null;
+    watch(section: string, key: string, callback: (value as any) => void): (() => void) | null;
 }
 
 interface FadeOptions {

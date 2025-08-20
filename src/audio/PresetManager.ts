@@ -10,7 +10,7 @@ interface ErrorHandler {
 interface ConfigurationManager {
     get(category: string, key: string, defaultValue?: any): any;
     set(category: string, key: string, value: any): void;
-    watch(category: string, key: string, callback: (value: any) => void): any;
+    watch(category: string, key: string, callback: (value as any) => void): any;
     unwatch(watchId: any): void;
 }
 
@@ -523,7 +523,7 @@ export class PresetManager {
     private _setupConfigWatchers(): void {
         try {
             // ユーザープリセットの変更監視
-            const userPresetsWatcher = this.configManager.watch('audio', 'presets.user', (newValue: any) => {
+            const userPresetsWatcher = this.configManager.watch('audio', 'presets.user', (newValue as any) => {
                 this._loadUserPresets();
             });
             if (userPresetsWatcher) this.configWatchers.add(userPresetsWatcher);

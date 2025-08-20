@@ -87,9 +87,9 @@ describe('Visual Effects Performance Tests', () => {
         context = canvas.getContext('2d');
 
         // Initialize managers
-        particleManager = new EnhancedParticleManager(canvas;
-        effectManager = new EnhancedEffectManager(canvas;
-        animationManager = new AnimationManager(canvas;
+        particleManager = new EnhancedParticleManager(canvas);
+        effectManager = new EnhancedEffectManager(canvas);
+        animationManager = new AnimationManager(canvas);
         qualityController = new EffectQualityController();
     });
 
@@ -169,7 +169,7 @@ describe('Visual Effects Performance Tests', () => {
 
             // Memory should not grow excessively (object pooling should help)
             const maxMemoryGrowth = 50 * 1024 * 1024; // 50MB tolerance
-            expect(memoryGrowth.toBeLessThan(maxMemoryGrowth;
+            expect(memoryGrowth.toBeLessThan(maxMemoryGrowth));
         }, PERFORMANCE_TIMEOUT);
 
         test('should scale particle count based on performance', async () => {
@@ -232,7 +232,7 @@ describe('Visual Effects Performance Tests', () => {
             const startTime = performance.now();
 
             for (let frame = 0; frame < frames; frame++) {
-                effectManager.update(frameTime;
+                effectManager.update(frameTime);
             }
 
             const endTime = performance.now();
@@ -280,7 +280,7 @@ describe('Visual Effects Performance Tests', () => {
             const renderTimes: Record<string, any> = {};
 
             for (const quality of qualityLevels) {
-                effectManager.setQualityLevel(quality;
+                effectManager.setQualityLevel(quality);
 
                 // Create standard set of effects
                 effectManager.addTransitionEffect('fade', 1000);
@@ -292,7 +292,7 @@ describe('Visual Effects Performance Tests', () => {
                 // Render multiple frames
                 for (let frame = 0; frame < 60; frame++) {
                     effectManager.update(16);
-                    effectManager.render(context;
+                    effectManager.render(context);
                 }
 
                 const endTime = performance.now();
@@ -320,7 +320,7 @@ describe('Visual Effects Performance Tests', () => {
                 element.style.position = 'absolute';
                 element.style.left = `${i * 20}px`;
                 element.style.top = `${i * 15}px`;
-                elements.push(element;
+                elements.push(element);
             }
 
             const startTime = performance.now();
@@ -417,7 +417,7 @@ describe('Visual Effects Performance Tests', () => {
                 const memoryGrowthRate = (secondAvg - firstAvg) / firstAvg;
                 
                 // Memory growth should be minimal (less than 50%)
-                expect(memoryGrowthRate.toBeLessThan(0.5);
+                expect(memoryGrowthRate.toBeLessThan(0.5));
             }
         }, PERFORMANCE_TIMEOUT);
 
@@ -492,7 +492,7 @@ describe('Visual Effects Performance Tests', () => {
             const frameCount = 60;
             for (let frame = 0; frame < frameCount; frame++) {
                 particleManager.render?.(context);
-                effectManager.render(context;
+                effectManager.render(context);
                 animationManager.render?.(context);
             }
 
@@ -580,7 +580,7 @@ describe('Visual Effects Performance Tests', () => {
             // Quality should have been reduced
             const newQuality = qualityController.getQualityLevel?.();
             if (newQuality) {
-                expect(['low', 'medium'].includes(newQuality).toBe(true);
+                expect(['low', 'medium'].includes(newQuality).toBe(true));
             }
         }, PERFORMANCE_TIMEOUT);
 
@@ -596,7 +596,7 @@ describe('Visual Effects Performance Tests', () => {
                 
                 // Apply to systems
                 particleManager.setParticleQuality?.(quality);
-                effectManager.setQualityLevel(quality;
+                effectManager.setQualityLevel(quality);
             }
 
             const endTime = performance.now();

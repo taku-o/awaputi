@@ -19,7 +19,7 @@ describe('RealtimeDashboard', () => {
     beforeEach(() => {
         // DOM要素を作成
         container = document.createElement('div');
-        document.body.appendChild(container;
+        document.body.appendChild(container);
 
         // 依存関係のモック
         dataCollector = {
@@ -46,7 +46,7 @@ describe('RealtimeDashboard', () => {
             dashboard.destroy();
         }
         if (container && container.parentNode) {
-            container.parentNode.removeChild(container;
+            container.parentNode.removeChild(container);
         }
         jest.clearAllMocks();
     });
@@ -185,7 +185,7 @@ describe('RealtimeDashboard', () => {
                 message: 'Low FPS detected: 25fps'
             };
 
-            dashboard.displayAlert(alert;
+            dashboard.displayAlert(alert);
 
             const alertsContainer = container.querySelector('#alerts-container');
             const alertItem = alertsContainer.querySelector('.alert-item');
@@ -240,7 +240,7 @@ describe('RealtimeDashboard', () => {
 
         test('平均値が正しく計算される', () => {
             const values = [10, 20, 30, 40, 50];
-            const average = dashboard.calculateAverage(values;
+            const average = dashboard.calculateAverage(values);
             expect(average).toBe(30);
         });
 

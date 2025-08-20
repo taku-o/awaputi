@@ -18,7 +18,7 @@ interface UrlData {
 }
 
 // 動的URL生成関数型
-type DynamicUrlGenerator = (options?: any) => Promise<UrlData[]>;
+type DynamicUrlGenerator = (options? as any) => Promise<UrlData[]>;
 
 // サイトマップ生成オプションインターフェース
 interface SitemapGenerationOptions {

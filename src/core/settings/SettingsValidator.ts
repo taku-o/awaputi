@@ -15,7 +15,7 @@ export interface ValidationRule {
     max?: number;
     maxLength?: number;
     enum?: any[];
-    validator?: (value: any) => boolean;
+    validator?: (value as any) => boolean;
     properties?: Record<string, ValidationRule>;
 }
 
@@ -379,11 +379,11 @@ export class SettingsValidator {
             ui: {
                 language: { 
                     type: 'string', 
-                    validator: (value: any) => ['ja', 'en'].includes(value)
+                    validator: (value as any) => ['ja', 'en'].includes(value)
                 },
                 quality: { 
                     type: 'string', 
-                    validator: (value: any) => ['low', 'medium', 'high', 'auto'].includes(value)
+                    validator: (value as any) => ['low', 'medium', 'high', 'auto'].includes(value)
                 },
                 showFPS: { type: 'boolean' },
                 showDebugInfo: { type: 'boolean' },

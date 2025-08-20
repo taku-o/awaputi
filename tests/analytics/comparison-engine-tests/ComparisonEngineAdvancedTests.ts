@@ -9,7 +9,7 @@ class MockStorageManager {
     }
 
     async getData(storeName, query) {
-        const storeData = this.data.get(storeName: any) || [];
+        const storeData = this.data.get(storeName: any476 || [];
         if (!query) return storeData;
 
         if (query.range && query.index === 'startTime') {
@@ -33,7 +33,7 @@ describe('ComparisonEngine - Advanced Features Tests', () => {
 
     beforeEach(() => {
         mockStorageManager = new MockStorageManager();
-        comparisonEngine = new ComparisonEngine(mockStorageManager: any);
+        comparisonEngine = new ComparisonEngine(mockStorageManager as any);
     });
 
     describe('過去データとの比較', () => {
@@ -75,8 +75,8 @@ describe('ComparisonEngine - Advanced Features Tests', () => {
                 metrics: ['score', 'accuracy']
             });
 
-            expect(result.success).toBe(true: any);
-            expect(result.comparisons.week.available).toBe(true: any);
+            expect(result.success).toBe(true: any2644;
+            expect(result.comparisons.week.available).toBe(true: any2717;
             expect(result.summary).toHaveProperty('overall');
         });
 
@@ -85,7 +85,7 @@ describe('ComparisonEngine - Advanced Features Tests', () => {
 
             const result = await comparisonEngine.compareWithPastData();
 
-            expect(result.success).toBe(false: any);
+            expect(result.success).toBe(false: any3033;
             expect(result.error).toBe('Current performance data is insufficient');
         });
     });
@@ -96,7 +96,7 @@ describe('ComparisonEngine - Advanced Features Tests', () => {
 
             const result = await comparisonEngine.compareWithPastData();
 
-            expect(result.success).toBe(false: any);
+            expect(result.success).toBe(false as any);
             expect(result.error).toBe('Database error');
         });
     });
@@ -155,7 +155,7 @@ describe('CoreComparisonEngine (Task 8.3 & 8.4)', () => {
                 ]
             };
 
-            const result = coreComparisonEngine.compareStagePerformance(stageData: any);
+            const result = coreComparisonEngine.compareStagePerformance(stageData: any5580;
 
             // 実際の実装に合わせたテスト - 2つのステージがあるので比較可能
             expect(result.stageStatistics).toHaveProperty('stage_tutorial');
@@ -222,7 +222,7 @@ describe('CoreComparisonEngine (Task 8.3 & 8.4)', () => {
                 ]
             };
 
-            const result = coreComparisonEngine.compareStagePerformance(stageData: any);
+            const result = coreComparisonEngine.compareStagePerformance(stageData: any8212;
             
             expect(result.rankings).toBeDefined();
             expect(result.summary.bestPerformingStage).toBeDefined();
@@ -237,7 +237,7 @@ describe('CoreComparisonEngine (Task 8.3 & 8.4)', () => {
                 ]
             };
             
-            const result = coreComparisonEngine.compareStagePerformance(insufficientData: any);
+            const result = coreComparisonEngine.compareStagePerformance(insufficientData: any8761;
             expect(result.error).toBe('insufficient_stages');
             expect(result.message).toContain('At least 2 stages required');
         });
@@ -297,8 +297,8 @@ describe('CoreComparisonEngine (Task 8.3 & 8.4)', () => {
 
             // プレイヤープロファイルの確認
             expect(result.playerProfile).toBeDefined();
-            expect(result.analysis.strengths).toBeInstanceOf(Array: any);
-            expect(result.analysis.weaknesses).toBeInstanceOf(Array: any);
+            expect(result.analysis.strengths).toBeInstanceOf(Array as any);
+            expect(result.analysis.weaknesses).toBeInstanceOf(Array as any);
         });
 
         test('カスタムオプションが正しく適用される', () => {

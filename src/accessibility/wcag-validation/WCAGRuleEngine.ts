@@ -52,7 +52,7 @@ interface RGB {
     b: number;
 }
 
-type TestMethod = (options?: any) => TestResult | Promise<TestResult>;
+type TestMethod = (options? as any) => TestResult | Promise<TestResult>;
 
 export class WCAGRuleEngine {
     private config: RuleEngineConfig;

@@ -46,7 +46,7 @@ interface ValidationResult {
 interface ConfigManager {
     get(key: string): any;
     set(key: string, value: any): void;
-    watch(namespace: string, key: string, callback: (newValue: any) => void): void;
+    watch(namespace: string, key: string, callback: (newValue as any) => void): void;
 }
 
 // Main controller interface
@@ -206,7 +206,7 @@ export class AudioSettingsManager {
      */
     public setupConfigWatchers(): void {
         Object.keys(this.settings).forEach(key => {
-            this.configManager.watch('audio', `accessibility.${key}`, (newValue: any) => {
+            this.configManager.watch('audio', `accessibility.${key}`, (newValue as any) => {
                 (this.settings as any)[key] = newValue;
                 this.applySettings();
             });

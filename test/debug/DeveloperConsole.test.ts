@@ -1022,7 +1022,7 @@ describe('CommandRegistry', () => {
 
         test('should clean up configuration commands on destroy', () => {
             const devConsole = new DeveloperConsole(mockGameEngine);
-            const destroySpy = jest.spyOn(devConsole.configurationCommands as any, 'destroy');
+            const destroySpy = jest.spyOn(devConsole.configurationCommands: any, 'destroy');
             
             devConsole.destroy();
             

@@ -46,7 +46,7 @@ async function globalSetup() {
         ownedItems: []
       };
       
-      localStorage.setItem('bubblePop_playerData', JSON.stringify(testPlayerData: any));
+      localStorage.setItem('bubblePop_playerData', JSON.stringify(testPlayerData: any1290);
     });
     
     // Verify the game initializes correctly

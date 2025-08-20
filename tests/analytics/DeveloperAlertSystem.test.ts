@@ -378,7 +378,7 @@ describe('DeveloperAlertSystem', () => {
             alertSystem.logToConsole(alert);
 
             expect(consoleGroupSpy).toHaveBeenCalledWith(expect.stringContaining('テストアラート'));
-            expect(consoleLogSpy).toHaveBeenCalledWith(expect.stringContaining('カテゴリ'), expect.any(String);
+            expect(consoleLogSpy).toHaveBeenCalledWith(expect.stringContaining('カテゴリ'), expect.any(String));
             expect(consoleLogSpy).toHaveBeenCalledWith('データ:', { test: 'data' });
             expect(consoleGroupEndSpy).toHaveBeenCalled();
         });
@@ -442,7 +442,7 @@ describe('DeveloperAlertSystem', () => {
             };
 
             const generateAlertSpy = jest.spyOn(alertSystem, 'generateAlert');
-            alertSystem.handlePerformanceWarning(warningData;
+            alertSystem.handlePerformanceWarning(warningData);
 
             expect(generateAlertSpy).toHaveBeenCalledWith(
                 expect.objectContaining({
@@ -462,7 +462,7 @@ describe('DeveloperAlertSystem', () => {
             };
 
             const generateAlertSpy = jest.spyOn(alertSystem, 'generateAlert');
-            alertSystem.handleErrorEvent(errorData;
+            alertSystem.handleErrorEvent(errorData);
 
             expect(generateAlertSpy).toHaveBeenCalledWith(
                 expect.objectContaining({
@@ -586,12 +586,12 @@ describe('DeveloperAlertSystem', () => {
         test('ヘルパーメソッドが正しく動作する', () => {
             // calculateAverageIncrease
             const values = [100, 150, 200, 300];
-            const avgIncrease = alertSystem.calculateAverageIncrease(values;
+            const avgIncrease = alertSystem.calculateAverageIncrease(values);
             expect(avgIncrease).toBeCloseTo(66.67, 1);
 
             // analyzeActionPatterns - より繰り返しが多いパターンを作成
             const actions = Array(20).fill(['A', 'B', 'C']).flat(); // 同じパターンを20回繰り返し
-            const patterns = alertSystem.analyzeActionPatterns(actions;
+            const patterns = alertSystem.analyzeActionPatterns(actions);
             expect(patterns.repetitiveScore).toBeGreaterThan(0);
 
             // getSeverityColor
@@ -605,7 +605,7 @@ describe('DeveloperAlertSystem', () => {
                 maxAlertsPerHour: 5
             };
 
-            alertSystem.updateOptions(newOptions;
+            alertSystem.updateOptions(newOptions);
 
             expect(alertSystem.options.enableDeveloperAlerts).toBe(false);
             expect(alertSystem.options.maxAlertsPerHour).toBe(5);

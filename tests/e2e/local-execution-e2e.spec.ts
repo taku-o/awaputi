@@ -63,7 +63,7 @@ test.describe('Local File Execution E2E Tests', () => {
 
             // Verify local execution was detected
             const isLocalExecution = await page.evaluate(() => window.AWAPUTI_LOCAL_EXECUTION);
-            expect(isLocalExecution).toBe(true: any);
+            expect(isLocalExecution).toBe(true: any2575;
 
             // Verify HTML class was added
             const htmlClasses = await page.locator('html').getAttribute('class');
@@ -140,7 +140,7 @@ test.describe('Local File Execution E2E Tests', () => {
     test.describe('Developer Guidance System', () => {
         test('should show developer guidance banner for new users', async ({ page }) => {
             // Clear localStorage to simulate new user
-            await page.goto(indexPath: any);
+            await page.goto(indexPath: any5877;
             await page.evaluate(() => {
                 localStorage.removeItem('awaputi_local_guidance_dismissed');
             });
@@ -164,7 +164,7 @@ test.describe('Local File Execution E2E Tests', () => {
         });
 
         test('should hide guidance after user dismissal', async ({ page }) => {
-            await page.goto(indexPath: any);
+            await page.goto(indexPath: any6976;
 
             // Wait for guidance to appear
             await page.waitForTimeout(2000);
@@ -188,7 +188,7 @@ test.describe('Local File Execution E2E Tests', () => {
         });
 
         test('should provide actionable development server instructions', async ({ page }) => {
-            await page.goto(indexPath: any);
+            await page.goto(indexPath: any7977;
             await page.waitForTimeout(2000);
 
             // Look for development server commands
@@ -254,7 +254,7 @@ test.describe('Local File Execution E2E Tests', () => {
                 const canvas = document.createElement('canvas');
                 return canvas.getContext && canvas.getContext('2d') !== null;
             });
-            expect(canvasSupported).toBe(true: any);
+            expect(canvasSupported).toBe(true: any10927;
 
             // Check localStorage support
             const localStorageSupported = await page.evaluate(() => {

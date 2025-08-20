@@ -69,7 +69,7 @@ describe('Analytics Component Integration Tests', () => {
             };
             
             // 2. データ収集の実行
-            dataCollector.collectSessionData(testData;
+            dataCollector.collectSessionData(testData);
             
             // 3. バッチ処理を手動でトリガー
             await dataCollector.processBatch();
@@ -110,7 +110,7 @@ describe('Analytics Component Integration Tests', () => {
             
             // 3. バッチ収集の実行
             for (const data of batchData) {
-                dataCollector.collectBubbleInteraction(data;
+                dataCollector.collectBubbleInteraction(data);
             }
             
             // 4. バッチ処理を手動でトリガー
@@ -147,7 +147,7 @@ describe('Analytics Component Integration Tests', () => {
                     bubbleType: 'stone'
                 }
             ];
-            mockStorageManager.getData.mockResolvedValue(mockData;
+            mockStorageManager.getData.mockResolvedValue(mockData);
             
             // 2. エクスポートの実行
             const exportResult = await exportManager.exportData({
@@ -167,7 +167,7 @@ describe('Analytics Component Integration Tests', () => {
             );
             
             // 5. プライバシーマネージャーで匿名化されることを確認
-            expect(mockPrivacyManager.anonymizeData).toHaveBeenCalledWith(mockData;
+            expect(mockPrivacyManager.anonymizeData).toHaveBeenCalledWith(mockData);
         });
         
         test('AnalyticsAPI + ExportManagerの統合', async () => {
@@ -175,7 +175,7 @@ describe('Analytics Component Integration Tests', () => {
             const mockSessionData = [
                 { sessionId: 'api-test', score: 1800, timestamp: Date.now() }
             ];
-            mockStorageManager.getData.mockResolvedValue(mockSessionData;
+            mockStorageManager.getData.mockResolvedValue(mockSessionData);
             
             // 2. API経由でのデータ取得
             const apiResponse = await analyticsAPI.getData('/sessionData');
@@ -205,7 +205,7 @@ describe('Analytics Component Integration Tests', () => {
                 { bubbleType: 'stone', score: 800, timestamp: Date.now() - 3600000 },
                 { bubbleType: 'stone', score: 900, timestamp: Date.now() - 1800000 }
             ];
-            mockStorageManager.getData.mockResolvedValue(mockAggregationData;
+            mockStorageManager.getData.mockResolvedValue(mockAggregationData);
             
             // 2. API経由での集計処理
             const aggregationResponse = await analyticsAPI.getData('/aggregate', {
@@ -231,7 +231,7 @@ describe('Analytics Component Integration Tests', () => {
         test('ストレージエラー時のカスケード処理', async () => {
             // 1. ストレージエラーを設定
             const storageError = new Error('Storage connection failed');
-            mockStorageManager.saveData.mockRejectedValue(storageError;
+            mockStorageManager.saveData.mockRejectedValue(storageError);
             
             // 2. データ収集時のエラーハンドリング
             const testData = {
@@ -241,7 +241,7 @@ describe('Analytics Component Integration Tests', () => {
             };
             
             // 3. データを収集してバッチ処理を実行
-            dataCollector.collectSessionData(testData;
+            dataCollector.collectSessionData(testData);
             
             // 4. バッチ処理でエラーが発生することを確認
             await dataCollector.processBatch();
@@ -257,7 +257,7 @@ describe('Analytics Component Integration Tests', () => {
         test('エクスポート時のエラーハンドリング', async () => {
             // 1. ストレージからのデータ取得エラーを設定
             const dataError = new Error('Data retrieval failed');
-            mockStorageManager.getData.mockRejectedValue(dataError;
+            mockStorageManager.getData.mockRejectedValue(dataError);
             
             // 2. エクスポート実行
             const exportResult = await exportManager.exportData({
@@ -278,7 +278,7 @@ describe('Analytics Component Integration Tests', () => {
             }
             
             // 2. 結果の確認
-            const results = await Promise.allSettled(requests;
+            const results = await Promise.allSettled(requests);
             
             // 3. 一部のリクエストがレート制限でエラーになることを確認
             const rateLimitedRequests = results.filter(result => 
@@ -304,7 +304,7 @@ describe('Analytics Component Integration Tests', () => {
                 score: 500
             };
             
-            await dataCollector.collectSessionData(originalData;
+            await dataCollector.collectSessionData(originalData);
             
             // 2. 収集されたデータをストレージから取得できるように設定
             const storedData = [{
@@ -315,7 +315,7 @@ describe('Analytics Component Integration Tests', () => {
                 success: originalData.success,
                 score: originalData.score
             }];
-            mockStorageManager.getData.mockResolvedValue(storedData;
+            mockStorageManager.getData.mockResolvedValue(storedData);
             
             // 3. エクスポート実行
             const exportResult = await exportManager.exportData({
@@ -355,7 +355,7 @@ describe('Analytics Component Integration Tests', () => {
                 }
             ];
             
-            mockStorageManager.getData.mockResolvedValue(sensitiveData;
+            mockStorageManager.getData.mockResolvedValue(sensitiveData);
             
             // 2. 匿名化ありでエクスポート
             const anonymizedExport = await exportManager.exportData({

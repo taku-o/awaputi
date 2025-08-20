@@ -51,7 +51,7 @@ describe('SettingsManager統合テスト', () => {
         configManager = getConfigurationManager();
         
         // SettingsManagerを作成
-        settingsManager = new SettingsManager(mockGameEngine;
+        settingsManager = new SettingsManager(mockGameEngine);
     });
 
     afterEach(() => {
@@ -87,10 +87,10 @@ describe('SettingsManager統合テスト', () => {
         test('検証ルールがConfigurationManagerに設定される', () => {
             // 無効な値を設定しようとした場合、ConfigurationManagerが拒否する
             const result = configManager.set('audio', 'masterVolume', 2.0); // 範囲外
-            expect(result.toBe(false);
+            expect(result.toBe(false));
 
             const result2 = configManager.set('ui', 'language', 'invalid'); // 無効な言語
-            expect(result2.toBe(false);
+            expect(result2.toBe(false));
         });
     });
 
@@ -106,7 +106,7 @@ describe('SettingsManager統合テスト', () => {
         test('SettingsManagerで設定した値がConfigurationManagerに反映される', () => {
             // SettingsManagerで設定
             const result = settingsManager.set('masterVolume', 0.6);
-            expect(result.toBe(true);
+            expect(result.toBe(true));
             
             // ConfigurationManagerから確認
             expect(configManager.get('audio', 'masterVolume')).toBe(0.6);
@@ -136,12 +136,12 @@ describe('SettingsManager統合テスト', () => {
             
             // localStorageに保存されていることを確認
             const savedSettings = localStorage.getItem('bubblePop_settings');
-            expect(savedSettings.toBeTruthy();
+            expect(savedSettings.toBeTruthy());
             
             const savedConfig = localStorage.getItem('bubblePop_configManager');
-            expect(savedConfig.toBeTruthy();
+            expect(savedConfig.toBeTruthy());
             
-            const parsedConfig = JSON.parse(savedConfig;
+            const parsedConfig = JSON.parse(savedConfig);
             expect(parsedConfig.audio.masterVolume).toBe(0.8);
             expect(parsedConfig.ui.language).toBe('ja');
         });
@@ -153,7 +153,7 @@ describe('SettingsManager統合テスト', () => {
             settingsManager.save();
             
             // 新しいインスタンスを作成
-            const newSettingsManager = new SettingsManager(mockGameEngine;
+            const newSettingsManager = new SettingsManager(mockGameEngine);
             
             // 設定が復元されることを確認
             expect(newSettingsManager.get('masterVolume')).toBe(0.9);
@@ -172,7 +172,7 @@ describe('SettingsManager統合テスト', () => {
             localStorage.setItem('bubblePop_configManager', 'invalid json');
             
             // 新しいインスタンスを作成
-            const newSettingsManager = new SettingsManager(mockGameEngine;
+            const newSettingsManager = new SettingsManager(mockGameEngine);
             
             // デフォルト値が使用されることを確認
             expect(newSettingsManager.get('masterVolume')).toBe(0.7);
@@ -193,7 +193,7 @@ describe('SettingsManager統合テスト', () => {
             settingsManager.set('masterVolume', 0.5);
             
             // コールバックが呼ばれることを確認
-            expect(callback.toHaveBeenCalled();
+            expect(callback.toHaveBeenCalled());
         });
 
         test('ConfigurationManagerの監視機能も使用される', () => {
@@ -206,7 +206,7 @@ describe('SettingsManager統合テスト', () => {
             configManager.set('audio', 'masterVolume', 0.3);
             
             // コールバックが呼ばれることを確認
-            expect(callback.toHaveBeenCalled();
+            expect(callback.toHaveBeenCalled());
         });
 
         test('リスナーが正しく削除される', () => {
@@ -222,7 +222,7 @@ describe('SettingsManager統合テスト', () => {
             settingsManager.set('masterVolume', 0.4);
             
             // コールバックが呼ばれないことを確認
-            expect(callback.not.toHaveBeenCalled();
+            expect(callback.not.toHaveBeenCalled());
         });
     });
 
@@ -283,7 +283,7 @@ describe('SettingsManager統合テスト', () => {
             
             // 強制同期
             const result = settingsManager.forceSynchronization();
-            expect(result.toBe(true);
+            expect(result.toBe(true));
             
             // 同期後は一致する
             const afterSync = settingsManager.checkSyncStatus();
@@ -305,7 +305,7 @@ describe('SettingsManager統合テスト', () => {
         test('無効な値を設定しようとした場合の処理', () => {
             // 範囲外の値
             const result = settingsManager.set('masterVolume', 2.0);
-            expect(result.toBe(false);
+            expect(result.toBe(false));
             
             // 元の値が保持される
             expect(settingsManager.get('masterVolume')).toBe(0.7);

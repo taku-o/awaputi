@@ -85,7 +85,7 @@ describe('ChartRenderer', () => {
         };
 
         global.Chart.mockImplementation(() => mockChart);
-        document.getElementById.mockReturnValue(mockCanvas;
+        document.getElementById.mockReturnValue(mockCanvas);
 
         chartRenderer = new ChartRenderer({
             animationDuration: 100, // テスト用に短縮
@@ -111,9 +111,9 @@ describe('ChartRenderer', () => {
     describe('初期化', () => {
         test('正しく初期化される', () => {
             expect(chartRenderer).toBeDefined();
-            expect(chartRenderer.charts).toBeInstanceOf(Map;
-            expect(chartRenderer.chartConfigs).toBeInstanceOf(Map;
-            expect(chartRenderer.updateTimers).toBeInstanceOf(Map;
+            expect(chartRenderer.charts).toBeInstanceOf(Map);
+            expect(chartRenderer.chartConfigs).toBeInstanceOf(Map);
+            expect(chartRenderer.updateTimers).toBeInstanceOf(Map);
         });
 
         test('オプションが正しく設定される', () => {
@@ -291,7 +291,7 @@ describe('ChartRenderer', () => {
                 update: jest.fn()
             };
 
-            limitedRenderer.limitDataPoints(mockChartWithData;
+            limitedRenderer.limitDataPoints(mockChartWithData);
 
             expect(mockChartWithData.data.labels).toHaveLength(3);
             expect(mockChartWithData.data.datasets[0].data).toHaveLength(3);
@@ -427,13 +427,13 @@ describe('ChartRenderer', () => {
         });
 
         test('存在しないキャンバスを作成する', () => {
-            document.getElementById.mockReturnValue(null;
+            document.getElementById.mockReturnValue(null);
             const mockCreatedCanvas = {
                 id: '',
                 width: 400,
                 height: 300
             };
-            document.createElement.mockReturnValue(mockCreatedCanvas;
+            document.createElement.mockReturnValue(mockCreatedCanvas);
 
             const canvas = chartRenderer.getCanvas('new-canvas');
 

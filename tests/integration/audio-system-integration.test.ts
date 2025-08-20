@@ -15,14 +15,14 @@ import { getConfigurationManager } from '../../src/core/ConfigurationManager';
 const mockFn = (returnValue) => {
     let calls = [];
     const fn = (...args) => {
-        calls.push(args;
+        calls.push(args);
         return returnValue;
     };
     fn.mockReturnValue = (value) => { returnValue = value; return fn; };
     fn.mockImplementation = (impl) => { 
         const originalFn = fn;
         const newFn = (...args) => {
-            calls.push(args;
+            calls.push(args);
             return impl(...args);
         };
         newFn.calls = calls;
@@ -285,11 +285,11 @@ describe('音響システム統合テスト', () => {
         test('BGMとSFXが同時に再生できること', async () => {
             // BGMの再生開始
             const bgmResult = audioManager.playBGM('test-bgm', { loop: true });
-            expect(bgmResult.toBeTruthy();
+            expect(bgmResult.toBeTruthy());
 
             // SFXの再生
             const sfxResult = audioManager.playSound('bubblePop', { volume: 0.5 });
-            expect(sfxResult.toBeTruthy();
+            expect(sfxResult.toBeTruthy());
 
             // 両方が再生状態であることを確認
             const status = audioManager.getStatus();
@@ -302,7 +302,7 @@ describe('音響システム統合テスト', () => {
             
             sounds.forEach(sound => {
                 const result = audioManager.playSound(sound, { volume: 0.3 });
-                expect(result.toBeTruthy();
+                expect(result.toBeTruthy());
             });
 
             const status = audioManager.getStatus();
@@ -318,7 +318,7 @@ describe('音響システム統合テスト', () => {
             }
 
             const status = audioManager.getStatus();
-            expect(status.activeSounds).toBeLessThanOrEqual(maxConcurrentSounds;
+            expect(status.activeSounds).toBeLessThanOrEqual(maxConcurrentSounds);
         });
     });
 
@@ -452,7 +452,7 @@ describe('音響システム統合テスト', () => {
             
             // 視覚的インジケーターが更新されることを確認
             const stats = audioAccessibilitySupport.getStatistics();
-            expect(stats.toBeDefined();
+            expect(stats.toBeDefined());
         });
 
         test('BGMリズムと触覚フィードバックが同期すること', () => {
@@ -465,7 +465,7 @@ describe('音響システム統合テスト', () => {
                 intensity: 0.7
             };
             
-            audioAccessibilitySupport.synchronizeWithBGMRhythm(rhythmData;
+            audioAccessibilitySupport.synchronizeWithBGMRhythm(rhythmData);
             
             // リズム同期が実行されたことを確認
             expect(audioAccessibilitySupport.synchronizeWithBGMRhythm.calls.length).toBeGreaterThan(0);
@@ -483,7 +483,7 @@ describe('音響システム統合テスト', () => {
             const fallbackAudioManager = new AudioManager();
             
             // フォールバックが動作することを確認
-            expect(fallbackAudioManager.toBeDefined();
+            expect(fallbackAudioManager.toBeDefined());
             expect(fallbackAudioManager.getStatus().webAudioSupported).toBe(false);
             
             // 元の設定を復元
@@ -496,7 +496,7 @@ describe('音響システム統合テスト', () => {
             const result = audioManager.playSound('nonexistent-sound');
             
             // エラーが適切に処理されること
-            expect(result.toBeFalsy();
+            expect(result.toBeFalsy());
             
             // AudioManager が正常な状態を維持していること  
             const status = audioManager.getStatus();
@@ -614,8 +614,8 @@ describe('音響システム統合テスト', () => {
             const audioStatus = audioManager.getStatus();
             const accessibilityStats = audioAccessibilitySupport.getStatistics();
             
-            expect(audioStatus.toBeDefined();
-            expect(accessibilityStats.toBeDefined();
+            expect(audioStatus.toBeDefined());
+            expect(accessibilityStats.toBeDefined());
             expect(audioAccessibilitySupport.triggerAudioEvent.calls.length).toBeGreaterThan(0);
         });
 
@@ -650,7 +650,7 @@ describe('音響システム統合テスト', () => {
             
             // システムが正常に動作を続けることを確認
             const validResult = audioManager.playSound('bubblePop');
-            expect(validResult.toBeTruthy();
+            expect(validResult.toBeTruthy());
             
             const status = audioManager.getStatus();
             expect(status.isActive).toBe(true);

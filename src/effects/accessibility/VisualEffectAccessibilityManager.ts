@@ -9,7 +9,7 @@ interface EffectManager {
 
 interface AccessibilityManager {
     getConfiguration(): AccessibilityConfiguration;
-    addEventListener?(event: string, handler: (event: any) => void): void;
+    addEventListener?(event: string, handler: (event as any) => void): void;
     removeEventListener?(event: string): void;
 }
 
@@ -766,7 +766,7 @@ export class VisualEffectAccessibilityManager {
     private setupEventListeners(): void {
         if (this.accessibilityManager) {
             // アクセシビリティ設定変更の監視
-            this.accessibilityManager.addEventListener?.('configurationApplied', (event: any) => {
+            this.accessibilityManager.addEventListener?.('configurationApplied', (event as any) => {
                 this.config = event.config;
                 this.applyAccessibilitySettings();
             });

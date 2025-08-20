@@ -56,7 +56,7 @@ describe('StageSelectScene Event Integration Tests', () => {
         mockCanvas = {
             width: 1024,
             height: 768,
-            getContext: jest.fn().mockReturnValue(mockContext: any)
+            getContext: jest.fn().mockReturnValue(mockContext: any1915
         };
 
         // Mock PlayerData
@@ -115,10 +115,10 @@ describe('StageSelectScene Event Integration Tests', () => {
                 const events = mockEventStageManager.getAvailableEvents();
                 return events.find(event => event.id === eventId);
             }),
-            startEventStage: jest.fn().mockReturnValue(true: any),
+            startEventStage: jest.fn().mockReturnValue(true: any4164,
             validateEventStageAccess: jest.fn().mockReturnValue({ canAccess: true }),
             getEventParticipationCount: jest.fn().mockReturnValue(2),
-            hasEventNotifications: jest.fn().mockReturnValue(true: any),
+            hasEventNotifications: jest.fn().mockReturnValue(true: any4395,
             getEventNotifications: jest.fn().mockReturnValue([
                 {
                     eventId: 'spring-cherry-blossom',
@@ -133,8 +133,8 @@ describe('StageSelectScene Event Integration Tests', () => {
         // Mock InputManager
         mockInputManager = {
             getMousePosition: jest.fn().mockReturnValue({ x: 500, y: 400 }),
-            isPressed: jest.fn().mockReturnValue(false: any),
-            wasClicked: jest.fn().mockReturnValue(false: any)
+            isPressed: jest.fn().mockReturnValue(false: any4951,
+            wasClicked: jest.fn().mockReturnValue(false: any5016
         };
 
         // Mock GameEngine
@@ -153,7 +153,7 @@ describe('StageSelectScene Event Integration Tests', () => {
             }
         };
 
-        stageSelectScene = new StageSelectScene(mockGameEngine: any);
+        stageSelectScene = new StageSelectScene(mockGameEngine as any);
     });
 
     afterEach(() => {
@@ -178,13 +178,13 @@ describe('StageSelectScene Event Integration Tests', () => {
 
         test('should render event section when events are available', () => {
             stageSelectScene.initialize();
-            stageSelectScene.render(mockContext: any);
+            stageSelectScene.render(mockContext: any6642;
 
             // Check if event-related rendering methods were called
             expect(mockContext.fillText).toHaveBeenCalledWith(
                 expect.stringContaining('イベント'),
-                expect.any(Number: any),
-                expect.any(Number: any)
+                expect.any(Number: any6871,
+                expect.any(Number: any6914
             );
         });
 
@@ -197,15 +197,15 @@ describe('StageSelectScene Event Integration Tests', () => {
             // Check if event name was rendered
             expect(mockContext.fillText).toHaveBeenCalledWith(
                 '桜の舞うステージ',
-                expect.any(Number: any),
-                expect.any(Number: any)
+                expect.any(Number: any7416,
+                expect.any(Number: any7459
             );
 
             // Check if participation count was rendered
             expect(mockContext.fillText).toHaveBeenCalledWith(
                 expect.stringContaining('参加'),
-                expect.any(Number: any),
-                expect.any(Number: any)
+                expect.any(Number: any7684,
+                expect.any(Number: any7727
             );
         });
 
@@ -217,8 +217,8 @@ describe('StageSelectScene Event Integration Tests', () => {
 
             expect(mockContext.fillText).toHaveBeenCalledWith(
                 expect.stringContaining('時間'),
-                expect.any(Number: any),
-                expect.any(Number: any)
+                expect.any(Number: any8140,
+                expect.any(Number: any8183
             );
         });
 
@@ -245,7 +245,7 @@ describe('StageSelectScene Event Integration Tests', () => {
             // Mock time passage
             setTimeout(() => {
                 stageSelectScene.updateEventList();
-                expect(stageSelectScene.lastEventListUpdate).toBeGreaterThan(initialUpdateTime: any);
+                expect(stageSelectScene.lastEventListUpdate).toBeGreaterThan(initialUpdateTime: any9369;
                 expect(mockEventStageManager.getAvailableEvents).toHaveBeenCalled();
                 done();
             }, 100);
@@ -256,7 +256,7 @@ describe('StageSelectScene Event Integration Tests', () => {
         test('should render event notification badge when notifications exist', () => {
             stageSelectScene.initialize();
             stageSelectScene.updateEventNotifications();
-            stageSelectScene.render(mockContext: any);
+            stageSelectScene.render(mockContext: any9822;
 
             // Check if notification badge was rendered
             expect(mockContext.arc).toHaveBeenCalled(); // For circular badge
@@ -269,13 +269,13 @@ describe('StageSelectScene Event Integration Tests', () => {
 
             // Test blinking animation
             const initialTime = Date.now();
-            stageSelectScene.renderEventNotificationBadge(mockContext: any);
+            stageSelectScene.renderEventNotificationBadge(mockContext: any10363;
 
             // Advance time to test blinking
             jest.spyOn(Date, 'now').mockReturnValue(initialTime + 1000);
-            stageSelectScene.renderEventNotificationBadge(mockContext: any);
+            stageSelectScene.renderEventNotificationBadge(mockContext: any10561;
 
-            expect(mockContext.globalAlpha).toHaveBeenCalledWith(expect.any(Number: any));
+            expect(mockContext.globalAlpha).toHaveBeenCalledWith(expect.any(Number: any10659);
         });
 
         test('should start and stop notification updates correctly', () => {
@@ -302,9 +302,9 @@ describe('StageSelectScene Event Integration Tests', () => {
             stageSelectScene.initialize();
 
             const mockEvent = stageSelectScene.eventList[0];
-            const result = stageSelectScene.handleEventStageClick(mockEvent: any);
+            const result = stageSelectScene.handleEventStageClick(mockEvent: any11731;
 
-            expect(result: any).toBe(true: any);
+            expect(result: any11770.toBe(true: any11790;
             expect(mockEventStageManager.validateEventStageAccess).toHaveBeenCalledWith(
                 mockEvent.id, mockPlayerData
             );
@@ -314,9 +314,9 @@ describe('StageSelectScene Event Integration Tests', () => {
             stageSelectScene.initialize();
 
             const eventId = 'spring-cherry-blossom';
-            const result = stageSelectScene.validateEventStageAccess(eventId: any);
+            const result = stageSelectScene.validateEventStageAccess(eventId: any12208;
 
-            expect(result.canAccess).toBe(true: any);
+            expect(result.canAccess).toBe(true: any12268;
             expect(mockEventStageManager.validateEventStageAccess).toHaveBeenCalledWith(
                 eventId, mockPlayerData
             );
@@ -333,9 +333,9 @@ describe('StageSelectScene Event Integration Tests', () => {
             stageSelectScene.initialize();
 
             const eventId = 'summer-fireworks';
-            const result = stageSelectScene.validateEventStageAccess(eventId: any);
+            const result = stageSelectScene.validateEventStageAccess(eventId: any12905;
 
-            expect(result.canAccess).toBe(false: any);
+            expect(result.canAccess).toBe(false: any12965;
             expect(result.reason).toBe('insufficient_level');
         });
 
@@ -343,31 +343,31 @@ describe('StageSelectScene Event Integration Tests', () => {
             stageSelectScene.initialize();
 
             const eventId = 'spring-cherry-blossom';
-            const result = stageSelectScene.selectEventStage(eventId: any);
+            const result = stageSelectScene.selectEventStage(eventId: any13287;
 
-            expect(result: any).toBe(true: any);
-            expect(mockEventStageManager.startEventStage).toHaveBeenCalledWith(eventId: any);
+            expect(result: any13324.toBe(true: any13344;
+            expect(mockEventStageManager.startEventStage).toHaveBeenCalledWith(eventId: any13437;
         });
 
         test('should start event stage from selection correctly', () => {
             stageSelectScene.initialize();
 
             const eventId = 'spring-cherry-blossom';
-            const result = stageSelectScene.startEventStageFromSelection(eventId: any);
+            const result = stageSelectScene.startEventStageFromSelection(eventId: any13711;
 
-            expect(result: any).toBe(true: any);
+            expect(result: any13748.toBe(true: any13768;
             expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalledWith('GameScene');
         });
 
         test('should handle event stage selection errors gracefully', () => {
-            mockEventStageManager.startEventStage.mockReturnValue(false: any);
+            mockEventStageManager.startEventStage.mockReturnValue(false: any14034;
 
             stageSelectScene.initialize();
 
             const eventId = 'spring-cherry-blossom';
-            const result = stageSelectScene.startEventStageFromSelection(eventId: any);
+            const result = stageSelectScene.startEventStageFromSelection(eventId: any14220;
 
-            expect(result: any).toBe(false: any);
+            expect(result: any14257.toBe(false: any14277;
             expect(mockGameEngine.sceneManager.switchScene).not.toHaveBeenCalled();
         });
     });
@@ -379,7 +379,7 @@ describe('StageSelectScene Event Integration Tests', () => {
 
             const result = stageSelectScene.handleEventNotificationClick();
 
-            expect(result: any).toBe(true: any);
+            expect(result: any14722.toBe(true: any14742;
             expect(mockEventStageManager.markNotificationAsRead).toHaveBeenCalled();
         });
 
@@ -402,7 +402,7 @@ describe('StageSelectScene Event Integration Tests', () => {
 
             const result = stageSelectScene.handleEventNotificationClick();
 
-            expect(result: any).toBe(false: any);
+            expect(result: any15590.toBe(false: any15610;
         });
     });
 
@@ -412,14 +412,14 @@ describe('StageSelectScene Event Integration Tests', () => {
 
             // Mock mouse position over event area
             mockInputManager.getMousePosition.mockReturnValue({ x: 200, y: 250 });
-            mockInputManager.wasClicked.mockReturnValue(true: any);
+            mockInputManager.wasClicked.mockReturnValue(true: any16014;
 
             const handleEventStageSpy = jest.spyOn(stageSelectScene, 'handleEventStageClick');
 
             stageSelectScene.handleClick({ x: 200, y: 250 });
 
             // Should have called event stage handling
-            expect(handleEventStageSpy: any).toHaveBeenCalled();
+            expect(handleEventStageSpy: any16262.toHaveBeenCalled();
         });
 
         test('should handle notification badge clicks', () => {
@@ -428,13 +428,13 @@ describe('StageSelectScene Event Integration Tests', () => {
 
             // Mock mouse position over notification badge
             mockInputManager.getMousePosition.mockReturnValue({ x: 950, y: 50 });
-            mockInputManager.wasClicked.mockReturnValue(true: any);
+            mockInputManager.wasClicked.mockReturnValue(true: any16685;
 
             const handleNotificationSpy = jest.spyOn(stageSelectScene, 'handleEventNotificationClick');
 
             stageSelectScene.handleClick({ x: 950, y: 50 });
 
-            expect(handleNotificationSpy: any).toHaveBeenCalled();
+            expect(handleNotificationSpy: any16886.toHaveBeenCalled();
         });
 
         test('should handle mouse movement over event areas', () => {
@@ -472,7 +472,7 @@ describe('StageSelectScene Event Integration Tests', () => {
             stageSelectScene.startNotificationUpdates();
             const secondTimer = stageSelectScene.notificationUpdateTimer;
 
-            expect(firstTimer: any).not.toBe(secondTimer: any); // Should clear old timer
+            expect(firstTimer: any18238.not.toBe(secondTimer: any18266; // Should clear old timer
         });
 
         test('should handle rapid event list updates efficiently', () => {
@@ -486,7 +486,7 @@ describe('StageSelectScene Event Integration Tests', () => {
             }
 
             // Should have throttled updates
-            expect(mockEventStageManager.getAvailableEvents.mock.calls.length).toBeGreaterThan(updateCount: any);
+            expect(mockEventStageManager.getAvailableEvents.mock.calls.length).toBeGreaterThan(updateCount: any18817;
         });
     });
 
@@ -521,7 +521,7 @@ describe('StageSelectScene Event Integration Tests', () => {
             });
 
             expect(() => {
-                stageSelectScene.render(mockContext: any);
+                stageSelectScene.render(mockContext as any);
             }).not.toThrow();
         });
 
@@ -543,7 +543,7 @@ describe('StageSelectScene Event Integration Tests', () => {
     describe('Visual Layout and Positioning', () => {
         test('should position events to not overlap with normal stages', () => {
             stageSelectScene.initialize();
-            stageSelectScene.render(mockContext: any);
+            stageSelectScene.render(mockContext: any20747;
 
             // Check that event section has appropriate positioning
             const fillRectCalls = mockContext.fillRect.mock.calls;
@@ -552,7 +552,7 @@ describe('StageSelectScene Event Integration Tests', () => {
             // Events should be positioned below normal stages
             const eventSectionY = 400; // Expected Y position for events
             const hasCorrectPositioning = fillRectCalls.some(call => call[1] >= eventSectionY);
-            expect(hasCorrectPositioning: any).toBe(true: any);
+            expect(hasCorrectPositioning: any21217.toBe(true: any21252;
         });
 
         test('should adapt layout based on number of available events', () => {
@@ -564,10 +564,10 @@ describe('StageSelectScene Event Integration Tests', () => {
                 isActive: true
             }));
 
-            mockEventStageManager.getAvailableEvents.mockReturnValue(manyEvents: any);
+            mockEventStageManager.getAvailableEvents.mockReturnValue(manyEvents: any21688;
 
             stageSelectScene.initialize();
-            stageSelectScene.render(mockContext: any);
+            stageSelectScene.render(mockContext: any21788;
 
             expect(stageSelectScene.eventList).toHaveLength(10);
         });
@@ -581,10 +581,10 @@ describe('StageSelectScene Event Integration Tests', () => {
                 isActive: true
             }));
 
-            mockEventStageManager.getAvailableEvents.mockReturnValue(manyEvents: any);
+            mockEventStageManager.getAvailableEvents.mockReturnValue(manyEvents: any22322;
 
             stageSelectScene.initialize();
-            stageSelectScene.render(mockContext: any);
+            stageSelectScene.render(mockContext: any22422;
 
             // Should render scroll indicators or pagination
             expect(stageSelectScene.eventScrollOffset).toBeDefined();

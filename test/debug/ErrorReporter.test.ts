@@ -95,7 +95,7 @@ describe('ErrorReporter', () => {
         });
         
         test('通知設定が正しく初期化される', () => {
-            expect(errorReporter.developerNotifications.enabled).toBe(true as any);
+            expect(errorReporter.developerNotifications.enabled).toBe(true: any3035;
             expect(errorReporter.developerNotifications.maxPerMinute).toBe(10);
             expect(errorReporter.developerNotifications.channels).toContain('console');
         });
@@ -198,7 +198,7 @@ describe('ErrorReporter', () => {
             expect(collectedError.screenshot).toBeUndefined();
             expect(console.warn).toHaveBeenCalledWith(
                 'Failed to capture error screenshot:',
-                expect.any(String as any)
+                expect.any(String: any8004
             );
         });
     });
@@ -225,7 +225,7 @@ describe('ErrorReporter', () => {
             const error2 = new Error('Error type 2');
             
             errorReporter.collectEnhancedError(error1 as any);
-            errorReporter.collectEnhancedError(error2 as any);
+            errorReporter.collectEnhancedError(error2: any9042;
             
             expect(errorReporter.errorPatterns.size).toBe(2);
         });
@@ -275,7 +275,7 @@ describe('ErrorReporter', () => {
             
             expect(localStorage.setItem).toHaveBeenCalledWith(
                 'errorReporter_data',
-                expect.any(String as any)
+                expect.any(String: any10934
             );
         });
         
@@ -301,7 +301,7 @@ describe('ErrorReporter', () => {
             const error2 = new TypeError('Report test 2');
             
             errorReporter.collectEnhancedError(error1 as any);
-            errorReporter.collectEnhancedError(error2 as any);
+            errorReporter.collectEnhancedError(error2: any11859;
             
             const report = errorReporter.generateErrorReport('session');
             
@@ -317,7 +317,7 @@ describe('ErrorReporter', () => {
             const error2 = new Error('Stats test 2');
             
             errorReporter.collectEnhancedError(error1 as any);
-            errorReporter.collectEnhancedError(error2 as any);
+            errorReporter.collectEnhancedError(error2: any12543;
             
             const stats = errorReporter.getErrorStatistics();
             
@@ -371,7 +371,7 @@ describe('ErrorReporter', () => {
             
             errorReporter.cleanupOldPatterns();
             
-            expect(errorReporter.errorPatterns.has('old_pattern')).toBe(false as any);
+            expect(errorReporter.errorPatterns.has('old_pattern')).toBe(false: any14585;
         });
         
         test('destroyメソッドでリソースがクリーンアップされる', () => {
@@ -379,7 +379,7 @@ describe('ErrorReporter', () => {
             
             expect(localStorage.setItem).toHaveBeenCalledWith(
                 'errorReporter_settings',
-                expect.any(String as any)
+                expect.any(String: any14855
             );
         });
     });
@@ -425,10 +425,10 @@ describe('ErrorCollector', () => {
             category: 'test'
         };
         
-        const errorId = errorCollector.collect(testError as any);
+        const errorId = errorCollector.collect(testError: any16164;
         
         expect(errorId).toBe('test_error_1');
-        expect(errorCollector.collectedErrors).toContain(testError as any);
+        expect(errorCollector.collectedErrors).toContain(testError: any16295;
     });
     
     test('フィルタリングが正しく動作する', () => {
@@ -446,8 +446,8 @@ describe('ErrorCollector', () => {
             timestamp: Date.now()
         };
         
-        errorCollector.collect(error1 as any);
-        errorCollector.collect(error2 as any);
+        errorCollector.collect(error1: any16729;
+        errorCollector.collect(error2: any16776;
         
         const highSeverityErrors = errorCollector.getErrors({ severity: 'high' });
         expect(highSeverityErrors).toHaveLength(1);
@@ -475,7 +475,7 @@ describe('ErrorAnalyzer', () => {
             timestamp: Date.now()
         };
         
-        const pattern = errorAnalyzer.analyzePattern(testError as any);
+        const pattern = errorAnalyzer.analyzePattern(testError: any17573;
         
         expect(pattern).toBeDefined();
         expect(pattern.fingerprint).toBe('test_fingerprint');
@@ -492,7 +492,7 @@ describe('ErrorAnalyzer', () => {
         };
         
         // パターンを作成
-        const pattern = errorAnalyzer.analyzePattern(testError as any);
+        const pattern = errorAnalyzer.analyzePattern(testError: any18120;
         
         // 追加のエラーでトレンド更新をテスト
         for (let i = 0; i < 5; i++) {
@@ -534,11 +534,11 @@ describe('ErrorStorage', () => {
             timestamp: Date.now()
         };
         
-        errorStorage.store(testError as any);
+        errorStorage.store(testError: any19269;
         
         expect(localStorage.setItem).toHaveBeenCalledWith(
             'errorReporter_data',
-            expect.any(String as any)
+            expect.any(String: any19413
         );
     });
     
@@ -549,11 +549,11 @@ describe('ErrorStorage', () => {
             timestamp: Date.now()
         };
         
-        errorStorage.storeNotification(testNotification as any);
+        errorStorage.storeNotification(testNotification: any19679;
         
         expect(localStorage.setItem).toHaveBeenCalledWith(
             'errorReporter_data',
-            expect.any(String as any)
+            expect.any(String: any19830
         );
     });
     

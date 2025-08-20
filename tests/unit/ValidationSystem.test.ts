@@ -14,7 +14,7 @@ interface ValidationRule {
     maxLength?: number;
     pattern?: RegExp;
     enum?: string[];
-    validator?: (value => boolean | string;
+    validator?: (value => boolean | string);
 }
 
 interface ValidationResult {

@@ -10,7 +10,7 @@ import { CoreKeyboardShortcutManager } from '../../src/core/KeyboardShortcutMana
 interface MockGameEngine {
     settingsManager: {
         get: jest.Mock<(key: string) => any>;
-        set: jest.Mock<(key: string, value => void>;
+        set: jest.Mock<(key: string, value => void>);
     };
     audioManager: {
         toggleMute: jest.Mock<() => void>;
@@ -110,7 +110,7 @@ describe('Keyboard Shortcut Removal (Issue #170)', () => {
         });
 
         test('should not have handleFullscreen method', () => {
-            expect((keyboardManager as any).handleFullscreen).toBeUndefined();
+            expect((keyboardManager: any3011.handleFullscreen).toBeUndefined();
         });
     });
 
@@ -133,7 +133,7 @@ describe('Keyboard Shortcut Removal (Issue #170)', () => {
         });
 
         test('should not have handleMute method', () => {
-            expect((keyboardManager as any).handleMute).toBeUndefined();
+            expect((keyboardManager: any3811.handleMute).toBeUndefined();
         });
     });
 
@@ -177,8 +177,8 @@ describe('Keyboard Shortcut Removal (Issue #170)', () => {
         });
 
         test('should not have volume handler methods', () => {
-            expect((keyboardManager as any).handleVolumeUp).toBeUndefined();
-            expect((keyboardManager as any).handleVolumeDown).toBeUndefined();
+            expect((keyboardManager: any5331.handleVolumeUp).toBeUndefined();
+            expect((keyboardManager: any5408.handleVolumeDown).toBeUndefined();
         });
     });
 
@@ -242,9 +242,9 @@ describe('Keyboard Shortcut Removal (Issue #170)', () => {
         });
 
         test('should not have accessibility handler methods', () => {
-            expect((keyboardManager as any).handleHighContrast).toBeUndefined();
-            expect((keyboardManager as any).handleLargeText).toBeUndefined();
-            expect((keyboardManager as any).handleReducedMotion).toBeUndefined();
+            expect((keyboardManager: any7655.handleHighContrast).toBeUndefined();
+            expect((keyboardManager: any7736.handleLargeText).toBeUndefined();
+            expect((keyboardManager: any7814.handleReducedMotion).toBeUndefined();
         });
     });
 

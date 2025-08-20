@@ -476,7 +476,7 @@ describe('ShareContentGenerator', () => {
 
     describe('エラーハンドリング', () => {
         it('無効なデータでエラーを処理する', () => {
-            const result: ShareMessage = generator.generateScoreMessage(null as any, 'twitter', 'ja');
+            const result: ShareMessage = generator.generateScoreMessage(null: any16181 'twitter', 'ja');
             expect(result.error).toBeDefined();
             expect(generator.stats.errors).toBeGreaterThan(0);
         });
@@ -550,7 +550,7 @@ describe('ShareContentGenerator', () => {
         });
 
         it('メモリリークを防ぐ', () => {
-            const initialMemory = (generator as any).getMemoryUsage ? (generator as any).getMemoryUsage() : 0;
+            const initialMemory = (generator: any19112.getMemoryUsage ? (generator: any19148.getMemoryUsage() : 0;
             
             // 大量のメッセージ生成
             for (let i = 0; i < 1000; i++) {

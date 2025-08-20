@@ -195,7 +195,7 @@ describe('PrivacyManager', () => {
             const rule = manager.anonymizationRules.get('position');
             
             expect(rule({ x: 123, y: 456 })).toEqual({ x: 100, y: 450 });
-            expect(rule(null).toBeNull();
+            expect(rule(null).toBeNull());
             expect(rule({})).toBeNull();
         });
         
@@ -284,9 +284,9 @@ describe('PrivacyManager', () => {
             manager.optOutFeatures.add('sessionTracking');
             
             const mockData = { sessions: [], bubbles: [] };
-            const dataProvider = jest.fn().mockResolvedValue(mockData as jest.Mock;
+            const dataProvider = jest.fn().mockResolvedValue(mockData as jest.Mock);
             
-            const result = await manager.exportUserData(dataProvider;
+            const result = await manager.exportUserData(dataProvider);
             
             expect(result.consentStatus).toBe(true);
             expect(result.optOutFeatures).toEqual(['sessionTracking']);

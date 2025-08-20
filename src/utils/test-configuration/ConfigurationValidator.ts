@@ -4,7 +4,7 @@ import { BaseComponent } from '../../debug/BaseComponent.js';
 interface ValidationRule {
     required: string[];
     optional?: string[];
-    validators: Record<string, (value: any) => ValidationResult>;
+    validators: Record<string, (value as any) => ValidationResult>;
 }
 
 interface ValidationResult {

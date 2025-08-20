@@ -57,9 +57,9 @@ class MockHelpEventManager {
     }
 
     trigger(eventName, data) {
-        const callback = this.callbacks.get(eventName;
+        const callback = this.callbacks.get(eventName);
         if (callback) {
-            callback(data;
+            callback(data);
         }
     }
 }
@@ -76,8 +76,8 @@ class MockSceneManager {
         this.scenes.set(name, scene);
     }
 
-    switchScene(name: any) {
-        const scene = this.scenes.get(name;
+    switchScene(name: any1836 {
+        const scene = this.scenes.get(name);
         if (!scene) {
             console.error(`Scene ${name} not found`);
             return false;
@@ -131,7 +131,7 @@ class MockMainMenuScene {
 }
 
 class MockHelpScene {
-    constructor(gameEngine: any) {
+    constructor(gameEngine: any2929 {
         this.gameEngine = gameEngine;
         this.isActive = false;
         this.helpEventManager = new MockHelpEventManager();
@@ -157,11 +157,11 @@ class MockHelpScene {
         });
         
         this.helpEventManager.setCallback('onFeedbackRequest', (data) => {
-            this.showFeedbackDialog(data;
+            this.showFeedbackDialog(data);
         });
         
         this.helpEventManager.setCallback('onEffectivenessReport', (report) => {
-            this.showEffectivenessReport(report;
+            this.showEffectivenessReport(report);
         });
         
         this.helpEventManager.setCallback('onSearchFocus', () => {
@@ -188,11 +188,11 @@ class MockHelpScene {
         // Mock update
     }
 
-    showFeedbackDialog(data: any) {
+    showFeedbackDialog(data: any4595 {
         console.log('Showing feedback dialog:', data);
     }
 
-    showEffectivenessReport(report: any) {
+    showEffectivenessReport(report: any4700 {
         console.log('Showing effectiveness report:', report);
     }
 
@@ -211,7 +211,7 @@ class MockGameEngine {
     initialize() {
         // Setup scenes
         const mainMenuScene = new MockMainMenuScene();
-        const helpScene = new MockHelpScene(this;
+        const helpScene = new MockHelpScene(this);
 
         this.sceneManager.addScene('menu', mainMenuScene);
         this.sceneManager.addScene('help', helpScene);
@@ -227,7 +227,7 @@ class MockGameEngine {
 }
 
 describe('Help to Main Menu Navigation Integration Test', () => {
-    let gameEngine: any;
+    let gameEngine as any);
     let consoleLogSpy: any;
     let consoleErrorSpy: any;
 
@@ -264,7 +264,7 @@ describe('Help to Main Menu Navigation Integration Test', () => {
 
             // Navigate to help
             const success = gameEngine.sceneManager.switchScene('help');
-            expect(success.toBe(true);
+            expect(success.toBe(true));
 
             // Verify help scene is active
             expect(gameEngine.sceneManager.getCurrentScene()).toBe('help');
@@ -278,14 +278,14 @@ describe('Help to Main Menu Navigation Integration Test', () => {
 
             // Get help scene instance
             const helpScene = gameEngine.sceneManager.currentSceneInstance;
-            expect(helpScene.toBeInstanceOf(MockHelpScene;
+            expect(helpScene.toBeInstanceOf(MockHelpScene));
 
             // Simulate ESC key press (triggers onGoBack callback)
             helpScene.simulateEscKey();
 
             // Verify we're back at main menu
             expect(gameEngine.sceneManager.getCurrentScene()).toBe('menu');
-            expect(gameEngine.sceneManager.currentSceneInstance).toBeInstanceOf(MockMainMenuScene;
+            expect(gameEngine.sceneManager.currentSceneInstance).toBeInstanceOf(MockMainMenuScene);
             expect(gameEngine.sceneManager.currentSceneInstance.isActive).toBe(true);
         });
 
@@ -310,7 +310,7 @@ describe('Help to Main Menu Navigation Integration Test', () => {
             // Verify proper cleanup and activation
             expect(helpScene.isActive).toBe(false);
             expect(finalMainMenuScene.isActive).toBe(true);
-            expect(finalMainMenuScene.toBeInstanceOf(MockMainMenuScene;
+            expect(finalMainMenuScene.toBeInstanceOf(MockMainMenuScene));
         });
     });
 
@@ -323,7 +323,7 @@ describe('Help to Main Menu Navigation Integration Test', () => {
             
             // Verify callback is properly set up
             const callback = helpScene.helpEventManager.callbacks.get('onGoBack');
-            expect(callback.toBeDefined();
+            expect(callback.toBeDefined());
             expect(typeof callback).toBe('function');
         });
 
@@ -334,7 +334,7 @@ describe('Help to Main Menu Navigation Integration Test', () => {
             const helpScene = gameEngine.sceneManager.currentSceneInstance;
             const initialScene = gameEngine.sceneManager.getCurrentScene();
             
-            expect(initialScene.toBe('help');
+            expect(initialScene.toBe('help'));
             
             // Trigger onGoBack through event system
             helpScene.helpEventManager.trigger('onGoBack');
@@ -374,7 +374,7 @@ describe('Help to Main Menu Navigation Integration Test', () => {
             helpScene.simulateEscKey();
 
             // Verify no error messages were logged
-            expect(consoleErrorSpy.not.toHaveBeenCalled();
+            expect(consoleErrorSpy.not.toHaveBeenCalled());
         });
 
         // NOTE: Error handling tests are covered in detail by unit tests.
@@ -428,7 +428,7 @@ describe('Help to Main Menu Navigation Integration Test', () => {
 
             // Verify main menu scene is properly set up
             const mainMenuScene = gameEngine.sceneManager.currentSceneInstance;
-            expect(mainMenuScene.toBeInstanceOf(MockMainMenuScene;
+            expect(mainMenuScene.toBeInstanceOf(MockMainMenuScene));
             expect(mainMenuScene.isActive).toBe(true);
             expect(gameEngine.sceneManager.getCurrentScene()).toBe('menu');
         });
@@ -449,7 +449,7 @@ describe('Help to Main Menu Navigation Integration Test', () => {
             }
 
             // Verify no errors occurred
-            expect(consoleErrorSpy.not.toHaveBeenCalled();
+            expect(consoleErrorSpy.not.toHaveBeenCalled());
         });
 
         test('should maintain event callback functionality across navigation cycles', () => {

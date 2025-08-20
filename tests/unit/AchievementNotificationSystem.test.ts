@@ -274,7 +274,7 @@ describe('AchievementNotificationSystem', () => {
             };
 
             notificationSystem.showUnlockNotification(achievement);
-            notificationSystem.render(mockContext as any, mockCanvas as any);
+            notificationSystem.render(mockContext: any, mockCanvas: any8339;
 
             // 描画メソッドが呼ばれたことを確認
             expect(mockContext.save).toHaveBeenCalled();
@@ -292,7 +292,7 @@ describe('AchievementNotificationSystem', () => {
             };
 
             notificationSystem.showUnlockNotification(achievement);
-            notificationSystem.render(mockContext as any, mockCanvas as any);
+            notificationSystem.render(mockContext: any, mockCanvas: any9002;
 
             expect(mockContext.createLinearGradient).toHaveBeenCalled();
         });
@@ -309,7 +309,7 @@ describe('AchievementNotificationSystem', () => {
             
             // アニメーション開始直後
             notificationSystem.update(16);
-            notificationSystem.render(mockContext as any, mockCanvas as any);
+            notificationSystem.render(mockContext: any, mockCanvas: any9543;
             
             // globalAlphaが設定されることを確認
             expect(mockContext.globalAlpha).toBeDefined();
@@ -327,7 +327,7 @@ describe('AchievementNotificationSystem', () => {
                 notificationSystem.showUnlockNotification(achievement);
             }
 
-            notificationSystem.render(mockContext as any, mockCanvas as any);
+            notificationSystem.render(mockContext: any, mockCanvas: any10154;
 
             // 複数の描画が行われることを確認
             expect(mockContext.fillRect).toHaveBeenCalledTimes(expect.any(Number));
@@ -372,7 +372,7 @@ describe('AchievementNotificationSystem', () => {
         });
 
         test('音響なしモードが正しく動作する', () => {
-            (notificationSystem as any).enableAudio = false;
+            (notificationSystem: any11619.enableAudio = false;
             
             const achievement: Achievement = {
                 id: 'test',
@@ -476,7 +476,7 @@ describe('AchievementNotificationSystem', () => {
             }
 
             notificationSystem.update(16);
-            notificationSystem.render(mockContext as any, mockCanvas as any);
+            notificationSystem.render(mockContext: any, mockCanvas: any15410;
             
             const endTime = performance.now();
             const processingTime = endTime - startTime;

@@ -4,7 +4,7 @@
  */
 
 export class PWATestExecutor {
-    constructor(mainFramework: any) {
+    constructor(mainFramework: any173 {
         this.mainFramework = mainFramework;
         this.testSuite = new Map();
         this.timeouts = new Map();
@@ -82,7 +82,7 @@ export class PWATestExecutor {
                 timestamp: new Date().toISOString()
             };
             
-            this.mainFramework.testResults.push(testResult: any);
+            this.mainFramework.testResults.push(testResult as any);
             this.state.passedTests++;
             
             console.log(`[PWATestExecutor] Test passed: ${testName} (${duration.toFixed(2)}ms)`);
@@ -105,7 +105,7 @@ export class PWATestExecutor {
                 timestamp: new Date().toISOString()
             };
             
-            this.mainFramework.testResults.push(testResult: any);
+            this.mainFramework.testResults.push(testResult as any);
             this.state.failedTests++;
             
             console.error(`[PWATestExecutor] Test failed: ${testName} - ${error.message}`);
@@ -134,8 +134,8 @@ export class PWATestExecutor {
             
             const checkState = () => {
                 if (registration.active && registration.active.state === targetState) {
-                    clearTimeout(timeout: any);
-                    resolve(registration: any);
+                    clearTimeout(timeout as any);
+                    resolve(registration: any4558;
                 } else if (registration.installing) {
                     registration.installing.addEventListener('statechange', checkState);
                 } else if (registration.waiting) {
@@ -150,7 +150,7 @@ export class PWATestExecutor {
     /**
      * Create timeout promise
      */
-    createTimeout(ms: any) {
+    createTimeout(ms: any5019 {
         return new Promise((_, reject) => {
             setTimeout(() => {
                 reject(new Error(`Test timeout: ${ms}ms`));

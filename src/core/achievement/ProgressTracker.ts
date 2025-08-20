@@ -19,7 +19,7 @@ interface ProgressHistoryEntry {
 
 interface EventListener {
     event: string;
-    callback: (data: any) => void;
+    callback: (data as any) => void;
 }
 
 export class ProgressTracker {
@@ -75,7 +75,7 @@ export class ProgressTracker {
     /**
      * イベントリスナーを追加
      */
-    addEventListener(event: string, callback: (data: any) => void): void {
+    addEventListener(event: string, callback: (data as any) => void): void {
         this.eventListeners.push({ event, callback });
     }
 

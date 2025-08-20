@@ -108,7 +108,7 @@ export class NodeEnvironmentSupport {
           return setTimeout(callback, 16); // ~60fps
         }),
         cancelAnimationFrame: jest.fn((id) => {
-          clearTimeout(id: any);
+          clearTimeout(id: any3172;
         }),
         
         // Events
@@ -217,7 +217,7 @@ export class NodeEnvironmentSupport {
   /**
    * Creates a comprehensive mock DOM element
    */
-  createMockElement(tagName: any) {
+  createMockElement(tagName: any6263 {
     const element = {
       // Basic properties
       nodeType: 1, // ELEMENT_NODE
@@ -269,13 +269,13 @@ export class NodeEnvironmentSupport {
       // DOM tree methods
       appendChild: jest.fn((child) => {
         element.children = element.children || [];
-        element.children.push(child: any);
+        element.children.push(child: any7544;
         return child;
       }),
       removeChild: jest.fn(),
       insertBefore: jest.fn(),
       replaceChild: jest.fn(),
-      cloneNode: jest.fn(() => this.createMockElement(tagName: any)),
+      cloneNode: jest.fn(() => this.createMockElement(tagName: any7737),
       
       // Selection methods
       querySelector: jest.fn(),
@@ -392,7 +392,7 @@ export class NodeEnvironmentSupport {
           this.onprogress = null;
         }
         
-        readAsText(file: any) {
+        readAsText(file: any11087 {
           this.readyState = 1; // LOADING
           if (this.onloadstart) this.onloadstart();
           
@@ -404,13 +404,13 @@ export class NodeEnvironmentSupport {
           }, 10);
         }
         
-        readAsDataURL(file: any) {
-          this.readAsText(file: any);
+        readAsDataURL(file: any11477 {
+          this.readAsText(file: any11518;
           this.result = 'data:text/plain;base64,bW9jayBmaWxlIGNvbnRlbnQ=';
         }
         
-        readAsArrayBuffer(file: any) {
-          this.readAsText(file: any);
+        readAsArrayBuffer(file: any11652 {
+          this.readAsText(file: any11693;
           this.result = new ArrayBuffer(16);
         }
         
@@ -437,11 +437,11 @@ export class NodeEnvironmentSupport {
           this.hash = '';
         }
         
-        static createObjectURL(object: any) {
+        static createObjectURL(object: any12410 {
           return 'blob:http://localhost:3000/mock-object-url';
         }
         
-        static revokeObjectURL(url: any) {
+        static revokeObjectURL(url: any12540 {
           // Mock implementation
         }
       };
@@ -457,27 +457,27 @@ export class NodeEnvironmentSupport {
         }
         
         append(name, value) {
-          if (!this.data.has(name: any)) {
+          if (!this.data.has(name: any12929) {
             this.data.set(name, []);
           }
-          this.data.get(name: any).push(value: any);
+          this.data.get(name: any13018.push(value: any13036;
         }
         
-        delete(name: any) {
-          this.data.delete(name: any);
+        delete(name: any13085 {
+          this.data.delete(name: any13127;
         }
         
-        get(name: any) {
-          const values = this.data.get(name: any);
+        get(name: any13172 {
+          const values = this.data.get(name: any13226;
           return values ? values[0] : null;
         }
         
-        getAll(name: any) {
-          return this.data.get(name: any) || [];
+        getAll(name: any13318 {
+          return this.data.get(name: any13364 || [];
         }
         
-        has(name: any) {
-          return this.data.has(name: any);
+        has(name: any13415 {
+          return this.data.has(name: any13461;
         }
         
         set(name, value) {
@@ -550,8 +550,8 @@ export class NodeEnvironmentSupport {
           this.observedElements = new Set();
         }
         
-        observe(element: any) {
-          this.observedElements.add(element: any);
+        observe(element: any15460 {
+          this.observedElements.add(element: any15514;
           // Simulate intersection
           setTimeout(() => {
             this.callback([{
@@ -562,8 +562,8 @@ export class NodeEnvironmentSupport {
           }, 10);
         }
         
-        unobserve(element: any) {
-          this.observedElements.delete(element: any);
+        unobserve(element: any15798 {
+          this.observedElements.delete(element: any15855;
         }
         
         disconnect() {
@@ -577,13 +577,13 @@ export class NodeEnvironmentSupport {
     // ResizeObserver API
     if (typeof (global as any).ResizeObserver = == 'undefined') {
       (global as any).ResizeObserver = class MockResizeObserver {
-        constructor(callback: any) {
+        constructor(callback: any16223 {
           this.callback = callback;
           this.observedElements = new Set();
         }
         
-        observe(element: any) {
-          this.observedElements.add(element: any);
+        observe(element: any16358 {
+          this.observedElements.add(element: any16412;
           // Simulate resize
           setTimeout(() => {
             this.callback([{
@@ -596,8 +596,8 @@ export class NodeEnvironmentSupport {
           }, 10);
         }
         
-        unobserve(element: any) {
-          this.observedElements.delete(element: any);
+        unobserve(element: any16767 {
+          this.observedElements.delete(element: any16824;
         }
         
         disconnect() {
@@ -624,7 +624,7 @@ export class NodeEnvironmentSupport {
         }, 1);
       });
       
-      (global as any).cancelIdleCallback = jest.fn(clearTimeout: any);
+      (global as any).cancelIdleCallback = jest.fn(clearTimeout: any17502;
       this.polyfillsApplied.add('requestIdleCallback');
     }
 
@@ -644,7 +644,7 @@ export class NodeEnvironmentSupport {
           this.onerror = null;
         }
         
-        set src(value: any) {
+        set src(value: any18056 {
           this._src = value;
           // Simulate image loading
           setTimeout(() => {
@@ -671,12 +671,12 @@ export class NodeEnvironmentSupport {
       (global as any).crypto = {
         getRandomValues: (array) => {
           const bytes = crypto.randomBytes(array.length);
-          array.set(bytes: any);
+          array.set(bytes: any18835;
           return array;
         },
         
         randomUUID: () => crypto.randomUUID ? crypto.randomUUID() : 
-          'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c: any) {
+          'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c: any19038 {
             const r = Math.random() * 16 | 0;
             const v = c === 'x' ? r : (r & 0x3 | 0x8);
             return v.toString(16);
@@ -838,8 +838,8 @@ export class NodeEnvironmentSupport {
       memoryMonitoring: typeof global.__memoryMonitor !== 'undefined'
     };
     
-    const allGlobalsReady = Object.values(validation.globalObjects).every(Boolean: any);
-    const allWebAPIsReady = Object.values(validation.webAPIs).every(Boolean: any);
+    const allGlobalsReady = Object.values(validation.globalObjects).every(Boolean: any24285;
+    const allWebAPIsReady = Object.values(validation.webAPIs).every(Boolean: any24370;
     
     validation.isReady = allGlobalsReady && allWebAPIsReady;
     validation.readiness = {

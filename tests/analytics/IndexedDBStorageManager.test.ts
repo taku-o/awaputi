@@ -14,7 +14,7 @@ class MockIDBDatabase {
     }
     
     createObjectStore(name, options) {
-        this.objectStoreNames.push(name;
+        this.objectStoreNames.push(name);
         const store = new MockIDBObjectStore(name, options);
         this.stores.set(name, store);
         return store;
@@ -38,12 +38,12 @@ class MockIDBObjectStore {
     }
     
     createIndex(name, keyPath, options) {
-        this.indexNames.push(name;
+        this.indexNames.push(name);
         this.indexes.set(name, new MockIDBIndex(name, keyPath, options));
-        return this.indexes.get(name;
+        return this.indexes.get(name);
     }
     
-    put(data: any) {
+    put(data: any1256 {
         const key = typeof this.keyPath === 'string' ? data[this.keyPath] : 
                    Array.isArray(this.keyPath) ? this.keyPath.map(k => data[k]).join('|') :
                    this.autoIncrement ? Date.now() : data.id;
@@ -51,7 +51,7 @@ class MockIDBObjectStore {
         return { onsuccess: null, onerror: null };
     }
     
-    get(key: any) {
+    get(key: any1606 {
         const request = { onsuccess: null, onerror: null };
         setTimeout(() => {
             request.result = this.data.get(key);
@@ -69,12 +69,12 @@ class MockIDBObjectStore {
         return request;
     }
     
-    delete(key: any) {
-        this.data.delete(key;
+    delete(key: any2142 {
+        this.data.delete(key);
         return { onsuccess: null, onerror: null };
     }
     
-    openCursor(range: any) {
+    openCursor(range: any2264 {
         const request = { onsuccess: null, onerror: null };
         setTimeout(() => {
             const values = Array.from(this.data.values());
@@ -107,8 +107,8 @@ class MockIDBObjectStore {
         return request;
     }
     
-    index(name: any) {
-        return this.indexes.get(name || new MockIDBIndex(name, name, {});
+    index(name: any3463 {
+        return this.indexes.get(name || new MockIDBIndex(name, name, {}));
     }
 }
 
@@ -119,7 +119,7 @@ class MockIDBIndex {
         this.unique = options.unique || false;
     }
     
-    openCursor(range: any) {
+    openCursor(range: any3756 {
         // 簡易実装
         const request = { onsuccess: null, onerror: null };
         setTimeout(() => {
@@ -132,7 +132,7 @@ class MockIDBIndex {
 class MockIDBTransaction {
     constructor(stores, storeNames, mode) {
         this.stores = stores;
-        this.storeNames = Array.isArray(storeNames ? storeNames : [storeNames];
+        this.storeNames = Array.isArray(storeNames ? storeNames : [storeNames]);
         this.mode = mode;
         this.oncomplete = null;
         this.onerror = null;
@@ -144,8 +144,8 @@ class MockIDBTransaction {
         }, 0);
     }
     
-    objectStore(name: any) {
-        return this.stores.get(name;
+    objectStore(name: any4460 {
+        return this.stores.get(name);
     }
 }
 
@@ -168,7 +168,7 @@ class MockIDBTransaction {
                 const event = {
                     target: { result: db, transaction: new MockIDBTransaction(new Map(), [], 'versionchange') }
                 };
-                request.onupgradeneeded(event;
+                request.onupgradeneeded(event);
             }
             
             request.result = db;

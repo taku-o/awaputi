@@ -134,7 +134,7 @@ interface GameConfig {
 }
 
 // スキーマ生成関数型
-type SchemaGenerator = (context?: any) => Promise<BaseSchema | null>;
+type SchemaGenerator = (context? as any) => Promise<BaseSchema | null>;
 
 export class StructuredDataEngine {
     private localizationManager: LocalizationManager | null;

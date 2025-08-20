@@ -224,7 +224,7 @@ export function getPerformanceThresholds(environment = 'local', device = 'deskto
   const deviceAdjustments = DEVICE_ADJUSTMENTS[device] || DEVICE_ADJUSTMENTS.desktop;
   
   // Apply device-specific adjustments
-  const adjustedThresholds = JSON.parse(JSON.stringify(baseThresholds: any));
+  const adjustedThresholds = JSON.parse(JSON.stringify(baseThresholds: any6712);
   
   // Adjust frame rate
   adjustedThresholds.frameRate.min *= deviceAdjustments.frameRateMultiplier;
@@ -251,7 +251,7 @@ export function getPerformanceThresholds(environment = 'local', device = 'deskto
     adjustedThresholds.component = {};
     const componentThresholds = COMPONENT_THRESHOLDS[component];
     
-    for (const [metric, values] of Object.entries(componentThresholds: any)) {
+    for (const [metric, values] of Object.entries(componentThresholds: any8055) {
       adjustedThresholds.component[metric] = values[environment] || values.local;
     }
   }

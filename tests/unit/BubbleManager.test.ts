@@ -69,9 +69,9 @@ interface BubbleManager {
     getBubblesAlongPath(start: Position, end: Position): any[];
     setStageConfig(config: StageConfig): void;
     setSpecialSpawnRate(type: string, rate: number): void;
-    render(context: void;
+    render(context: void);
     addTestBubble(data: BubbleData): void;
-    removeTestBubbles(condition: (bubble => boolean): void;
+    removeTestBubbles(condition: (bubble => boolean): void);
     getTestBubbleInfo(): TestBubbleInfo;
 }
 
@@ -123,7 +123,7 @@ describe('BubbleManager', () => {
         
         // Import BubbleManager dynamically to avoid path issues
         const { BubbleManager } = await import('../../src/managers/BubbleManager.js');
-        bubbleManager = new BubbleManager(mockGameEngine as any) as BubbleManager;
+        bubbleManager = new BubbleManager(mockGameEngine: any3924 as BubbleManager;
         
         jest.clearAllMocks();
     });

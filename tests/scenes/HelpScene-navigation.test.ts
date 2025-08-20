@@ -103,7 +103,7 @@ describe('HelpScene Context-Aware Navigation', () => {
             }))
         }));
         
-        helpScene = new HelpScene(mockGameEngine;
+        helpScene = new HelpScene(mockGameEngine);
     });
     
     afterEach(() => {
@@ -117,7 +117,7 @@ describe('HelpScene Context-Aware Navigation', () => {
         test('should handle standard help mode', () => {
             const contextData: Record<string, any> = {};
             
-            helpScene.enter(contextData;
+            helpScene.enter(contextData);
             
             // 標準モードが設定されることを確認
             expect(helpScene.loggingSystem.info).toHaveBeenCalledWith(
@@ -133,7 +133,7 @@ describe('HelpScene Context-Aware Navigation', () => {
                 accessMethod: 'keyboard_f1'
             };
             
-            helpScene.enter(contextData;
+            helpScene.enter(contextData);
             
             // コンテキスト依存モードが設定されることを確認
             expect(helpScene.loggingSystem.info).toHaveBeenCalledWith(
@@ -149,7 +149,7 @@ describe('HelpScene Context-Aware Navigation', () => {
                 accessMethod: 'keyboard_ctrl_h'
             };
             
-            helpScene.enter(contextData;
+            helpScene.enter(contextData);
             
             expect(helpScene.loggingSystem.info).toHaveBeenCalledWith(
                 'HelpScene',
@@ -164,7 +164,7 @@ describe('HelpScene Context-Aware Navigation', () => {
                 accessMethod: 'keyboard_ctrl_slash'
             };
             
-            helpScene.enter(contextData;
+            helpScene.enter(contextData);
             
             expect(helpScene.loggingSystem.info).toHaveBeenCalledWith(
                 'HelpScene',
@@ -192,7 +192,7 @@ describe('HelpScene Context-Aware Navigation', () => {
         
         test('should fallback to menu when no return destination', () => {
             // 戻り先がない場合のテスト
-            helpScene.navigationContext.getReturnDestination = jest.fn().mockReturnValue(null as jest.Mock;
+            helpScene.navigationContext.getReturnDestination = jest.fn().mockReturnValue(null as jest.Mock);
             helpScene.navigationContext.popContext = jest.fn() as jest.Mock;
             
             const callbacks = helpScene.helpEventManager.setCallback.mock.calls;
@@ -227,7 +227,7 @@ describe('HelpScene Context-Aware Navigation', () => {
                 endHelpSession: jest.fn()
             };
             
-            helpScene.helpContentManager.getHelpAnalytics = jest.fn().mockReturnValue(mockAnalytics as jest.Mock;
+            helpScene.helpContentManager.getHelpAnalytics = jest.fn().mockReturnValue(mockAnalytics as jest.Mock);
             
             const contextData = {
                 contextual: true,
@@ -235,7 +235,7 @@ describe('HelpScene Context-Aware Navigation', () => {
                 accessMethod: 'keyboard_f1'
             };
             
-            helpScene.enter(contextData;
+            helpScene.enter(contextData);
             
             expect(mockAnalytics.startHelpSession).toHaveBeenCalledWith('help_scene', {
                 initialCategory: 'contextual',
@@ -253,13 +253,13 @@ describe('HelpScene Context-Aware Navigation', () => {
                 endHelpSession: jest.fn()
             };
             
-            helpScene.helpContentManager.getHelpAnalytics = jest.fn().mockReturnValue(mockAnalytics as jest.Mock;
+            helpScene.helpContentManager.getHelpAnalytics = jest.fn().mockReturnValue(mockAnalytics as jest.Mock);
             
             const contextData = {
                 accessMethod: 'menu_click'
             };
             
-            helpScene.enter(contextData;
+            helpScene.enter(contextData);
             
             expect(mockAnalytics.startHelpSession).toHaveBeenCalledWith('help_scene', {
                 initialCategory: 'gameplay',
@@ -279,7 +279,7 @@ describe('HelpScene Context-Aware Navigation', () => {
                 sourceScene: 'game'
             };
             
-            helpScene.enter(contextData;
+            helpScene.enter(contextData);
             
             const announceCalls = helpScene.helpAccessibilityManager.announceToScreenReader.mock.calls;
             expect(announceCalls.length).toBeGreaterThan(0);
@@ -294,7 +294,7 @@ describe('HelpScene Context-Aware Navigation', () => {
                 sourceScene: 'settings'
             };
             
-            helpScene.enter(contextData;
+            helpScene.enter(contextData);
             
             const announceCalls = helpScene.helpAccessibilityManager.announceToScreenReader.mock.calls;
             const lastCall = announceCalls[announceCalls.length - 1];
@@ -307,7 +307,7 @@ describe('HelpScene Context-Aware Navigation', () => {
                 sourceScene: 'menu'
             };
             
-            helpScene.enter(contextData;
+            helpScene.enter(contextData);
             
             const announceCalls = helpScene.helpAccessibilityManager.announceToScreenReader.mock.calls;
             const lastCall = announceCalls[announceCalls.length - 1];

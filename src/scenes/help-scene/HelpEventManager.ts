@@ -13,7 +13,7 @@ import { HelpRenderer } from './HelpRenderer';
 interface HelpEventCallbacks {
     onGoBack: (() => void) | null;
     onFeedbackRequest: ((data: FeedbackRequestData) => void) | null;
-    onEffectivenessReport: ((report: any) => void) | null;
+    onEffectivenessReport: ((report as any) => void) | null;
     onSearchFocus: (() => void) | null;
 }
 

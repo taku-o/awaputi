@@ -10,7 +10,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename;
+const __dirname = path.dirname(__filename);
 const projectRoot = path.join(__dirname, '..', '..');
 
 // ErrorHandlerのモック
@@ -46,11 +46,11 @@ describe('TranslationLoader Compatibility Tests', () => {
           
           try {
             const content = await fs.readFile(filePath, 'utf-8');
-            const data = JSON.parse(content;
+            const data = JSON.parse(content);
             
             // ファイル構造の基本検証
-            expect(data.toHaveProperty('meta');
-            expect(data.toHaveProperty('translations');
+            expect(data.toHaveProperty('meta'));
+            expect(data.toHaveProperty('translations'));
             
             // 必須メタデータの存在確認
             expect(data.meta).toHaveProperty('language', lang);
@@ -84,10 +84,10 @@ describe('TranslationLoader Compatibility Tests', () => {
           
           try {
             const content = await fs.readFile(filePath, 'utf-8');
-            const data = JSON.parse(content;
+            const data = JSON.parse(content);
             
             if (data.meta) {
-              Object.keys(data.meta).forEach(field => metadataFields.add(field);
+              Object.keys(data.meta).forEach(field => metadataFields.add(field));
               languageMetadata[lang][category] = Object.keys(data.meta);
             }
           } catch (error) {
@@ -173,7 +173,7 @@ describe('TranslationLoader Compatibility Tests', () => {
       // 翻訳ファイルの読み込みテスト
       const result = await translationLoader._loadTranslationFile('ja', 'game');
       
-      expect(result.toBeDefined();
+      expect(result.toBeDefined());
       expect(result.meta).toBeDefined();
       expect(result.meta.optimizedAt).toBeUndefined();
       expect(result.meta.language).toBe('ja');
@@ -195,7 +195,7 @@ describe('TranslationLoader Compatibility Tests', () => {
         }
       };
 
-      const flattened = translationLoader._flattenTranslations(mockTranslations;
+      const flattened = translationLoader._flattenTranslations(mockTranslations);
       
       // フラット化されたキーの確認（カテゴリごとに処理される）
       expect(flattened['score']).toBe('スコア');
@@ -213,11 +213,11 @@ describe('TranslationLoader Compatibility Tests', () => {
       
       try {
         const content = await fs.readFile(sampleFilePath, 'utf-8');
-        const data = JSON.parse(content;
+        const data = JSON.parse(content);
         
         // 基本構造の確認
-        expect(data.toHaveProperty('meta');
-        expect(data.toHaveProperty('translations');
+        expect(data.toHaveProperty('meta'));
+        expect(data.toHaveProperty('translations'));
         
         // TranslationLoaderで処理できる形式であることを確認
         const processedTranslations = data.translations || data;
@@ -255,8 +255,8 @@ describe('TranslationLoader Compatibility Tests', () => {
       });
 
       // キャッシュからデータを取得
-      const cached = translationLoader.cache.get(cacheKey;
-      expect(cached.toBeDefined();
+      const cached = translationLoader.cache.get(cacheKey);
+      expect(cached.toBeDefined());
       expect(cached.data.meta.optimizedAt).toBeUndefined();
       expect(cached.data.meta.language).toBe('ja');
     });
@@ -275,7 +275,7 @@ describe('TranslationLoader Compatibility Tests', () => {
       const result = await translationLoader._loadTranslationFile('en', 'test');
       
       // エラーが発生せず、結果が返されることを確認
-      expect(result.toBeDefined();
+      expect(result.toBeDefined());
       expect(result.translations).toBeDefined();
     });
 
@@ -285,7 +285,7 @@ describe('TranslationLoader Compatibility Tests', () => {
         menu: { start: 'Start' }
       };
 
-      const flattened = translationLoader._flattenTranslations(translationsWithoutMeta;
+      const flattened = translationLoader._flattenTranslations(translationsWithoutMeta);
       
       // メタデータなしでもフラット化処理が正常に動作することを確認
       expect(flattened['score']).toBe('Score');

@@ -22,7 +22,7 @@ describe('Duplicate Settings Implementation Removal Verification', () => {
         ];
         
         deletedFiles.forEach(filePath => {
-            expect(fs.existsSync(filePath).toBe(false);
+            expect(fs.existsSync(filePath).toBe(false));
         });
     });
     
@@ -33,7 +33,7 @@ describe('Duplicate Settings Implementation Removal Verification', () => {
         ];
         
         unifiedFiles.forEach(filePath => {
-            expect(fs.existsSync(filePath).toBe(true);
+            expect(fs.existsSync(filePath).toBe(true));
         });
     });
     
@@ -42,11 +42,11 @@ describe('Duplicate Settings Implementation Removal Verification', () => {
         const content = fs.readFileSync(mainMenuPath, 'utf8');
         
         // 統一されたswitchScene('settings')を使用していることを確認
-        expect(content.toMatch(/switchScene\('settings'/);
+        expect(content.toMatch(/switchScene\('settings'/)));
         
         // NavigationContextManagerを使用していることを確認
-        expect(content.toMatch(/accessMethod:\s*'menu_click'/);
-        expect(content.toMatch(/sourceScene:\s*'MainMenuScene'/);
+        expect(content.toMatch(/accessMethod:\s*'menu_click'/));
+        expect(content.toMatch(/sourceScene:\s*'MainMenuScene'/));
     });
     
     test('should verify no settings-related duplicate rendering logic remains', () => {
@@ -65,7 +65,7 @@ describe('Duplicate Settings Implementation Removal Verification', () => {
         ];
         
         const scanDirectory = (dir) => {
-            if (!fs.existsSync(dir) return;
+            if (!fs.existsSync(dir) return);
             
             const files = fs.readdirSync(dir, { withFileTypes: true });
             
@@ -73,7 +73,7 @@ describe('Duplicate Settings Implementation Removal Verification', () => {
                 const fullPath = path.join(dir, file.name);
                 
                 if (file.isDirectory() && file.name !== 'node_modules' && file.name !== '.git') {
-                    scanDirectory(fullPath;
+                    scanDirectory(fullPath);
                 } else if (file.name.endsWith('.js')) {
                     const content = fs.readFileSync(fullPath, 'utf8');
                     
@@ -89,7 +89,7 @@ describe('Duplicate Settings Implementation Removal Verification', () => {
             });
         };
         
-        checkDirs.forEach(dir => scanDirectory(dir);
+        checkDirs.forEach(dir => scanDirectory(dir));
     });
     
     test('should verify no orphaned settings-related references', () => {
@@ -107,24 +107,24 @@ describe('Duplicate Settings Implementation Removal Verification', () => {
         ];
         
         orphanedReferences.forEach(ref => {
-            expect(content.not.toMatch(new RegExp(ref);
+            expect(content.not.toMatch(new RegExp(ref)));
         });
     });
     
     test('should verify settings access is centralized through SettingsScene', () => {
         // 設定アクセスのエントリーポイントを確認
         const settingsScenePath = path.join(srcDir, 'scenes', 'SettingsScene.js');
-        expect(fs.existsSync(settingsScenePath).toBe(true);
+        expect(fs.existsSync(settingsScenePath).toBe(true));
         
         const content = fs.readFileSync(settingsScenePath, 'utf8');
         
         // 主要な設定機能が統合されていることを確認
-        expect(content.toMatch(/class SettingsScene/);
-        expect(content.toMatch(/AccessibilitySettingsManager/);
-        expect(content.toMatch(/NavigationContextManager/);
+        expect(content.toMatch(/class SettingsScene/));
+        expect(content.toMatch(/AccessibilitySettingsManager/));
+        expect(content.toMatch(/NavigationContextManager/));
         
         // 設定カテゴリが適切に管理されていることを確認
-        expect(content.toMatch(/general.*social.*privacy.*notifications.*accessibility/);
+        expect(content.toMatch(/general.*social.*privacy.*notifications.*accessibility/));
     });
     
     test('should verify keyboard shortcuts route to unified settings', () => {
@@ -132,7 +132,7 @@ describe('Duplicate Settings Implementation Removal Verification', () => {
         const content = fs.readFileSync(keyboardManagerPath, 'utf8');
         
         // Sキーショートカットが統一されたSettingsSceneにルーティングされることを確認
-        expect(content.toMatch(/handleSettings[\s\S]*switchScene\('settings'/);
-        expect(content.toMatch(/accessMethod:\s*'keyboard_s'/);
+        expect(content.toMatch(/handleSettings[\s\S]*switchScene\('settings'/)));
+        expect(content.toMatch(/accessMethod:\s*'keyboard_s'/));
     });
 });

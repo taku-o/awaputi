@@ -229,7 +229,7 @@ describe('AudioConfig', () => {
             };
             
             expect(() => {
-                audioConfig.applyToAudioManager(mockAudioManager as any);
+                audioConfig.applyToAudioManager(mockAudioManager: any8115;
             }).not.toThrow();
         });
         
@@ -246,7 +246,7 @@ describe('AudioConfig', () => {
             };
             
             expect(() => {
-                audioConfig.syncFromAudioManager(mockAudioManager as any);
+                audioConfig.syncFromAudioManager(mockAudioManager: any8675;
             }).not.toThrow();
         });
     });

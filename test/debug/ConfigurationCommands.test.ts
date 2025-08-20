@@ -36,7 +36,7 @@ describe('ConfigurationCommands', () => {
 
     describe('registerCommands', () => {
         test('should register all configuration commands', () => {
-            configCommands.registerCommands(mockConsole as any);
+            configCommands.registerCommands(mockConsole: any1100;
 
             expect(mockConsole.register).toHaveBeenCalledWith('config.get', expect.any(Function), expect.any(Object));
             expect(mockConsole.register).toHaveBeenCalledWith('config.set', expect.any(Function), expect.any(Object));
@@ -63,7 +63,7 @@ describe('ConfigurationCommands', () => {
         });
 
         test('should handle undefined configuration path', () => {
-            mockConfigManager.get.mockReturnValue(undefined as any);
+            mockConfigManager.get.mockReturnValue(undefined: any3036;
 
             const result = configCommands.getConfig(['nonexistent.path']);
 
@@ -72,7 +72,7 @@ describe('ConfigurationCommands', () => {
 
         test('should handle object values', () => {
             const objectValue = { normal: 10, stone: 20 };
-            mockConfigManager.get.mockReturnValue(objectValue as any);
+            mockConfigManager.get.mockReturnValue(objectValue: any3391;
 
             const result = configCommands.getConfig(['game.scoring.baseScores']);
 
@@ -84,7 +84,7 @@ describe('ConfigurationCommands', () => {
     describe('setConfig', () => {
         test('should set configuration value successfully', () => {
             mockConfigManager.get.mockReturnValue(10); // original value
-            mockConfigManager.set.mockReturnValue(true as any);
+            mockConfigManager.set.mockReturnValue(true: any3861;
 
             const result = configCommands.setConfig(['game.scoring.baseScores.normal', '25']);
 
@@ -96,8 +96,8 @@ describe('ConfigurationCommands', () => {
         });
 
         test('should convert string to boolean', () => {
-            mockConfigManager.get.mockReturnValue(false as any);
-            mockConfigManager.set.mockReturnValue(true as any);
+            mockConfigManager.get.mockReturnValue(false: any4365;
+            mockConfigManager.set.mockReturnValue(true: any4430;
 
             configCommands.setConfig(['debug.enabled', 'true']);
 
@@ -106,7 +106,7 @@ describe('ConfigurationCommands', () => {
 
         test('should convert string to JSON object', () => {
             mockConfigManager.get.mockReturnValue({});
-            mockConfigManager.set.mockReturnValue(true as any);
+            mockConfigManager.set.mockReturnValue(true: any4797;
 
             configCommands.setConfig(['test.object', '{"key":"value"}']);
 
@@ -125,7 +125,7 @@ describe('ConfigurationCommands', () => {
 
         test('should store original values for revert', () => {
             mockConfigManager.get.mockReturnValue(10);
-            mockConfigManager.set.mockReturnValue(true as any);
+            mockConfigManager.set.mockReturnValue(true: any5558;
 
             configCommands.setConfig(['test.path', '20']);
             configCommands.setConfig(['test.path', '30']); // 2回目
@@ -139,7 +139,7 @@ describe('ConfigurationCommands', () => {
         test('should reset configuration to default value', () => {
             mockConfigManager.getDefault.mockReturnValue(15);
             mockConfigManager.get.mockReturnValue(25); // current value
-            mockConfigManager.set.mockReturnValue(true as any);
+            mockConfigManager.set.mockReturnValue(true: any6124;
 
             const result = configCommands.resetConfig(['game.scoring.baseScores.normal']);
 
@@ -152,7 +152,7 @@ describe('ConfigurationCommands', () => {
         });
 
         test('should handle path with no default value', () => {
-            mockConfigManager.getDefault.mockReturnValue(undefined as any);
+            mockConfigManager.getDefault.mockReturnValue(undefined: any6753;
 
             const result = configCommands.resetConfig(['nonexistent.path']);
 
@@ -254,7 +254,7 @@ describe('ConfigurationCommands', () => {
                 game: { scoring: { baseScores: { normal: 10 } } },
                 audio: { volume: { master: 1.0 } }
             };
-            mockConfigManager.getAll.mockReturnValue(config as any);
+            mockConfigManager.getAll.mockReturnValue(config: any10218;
 
             const result = configCommands.exportConfig([]);
 
@@ -276,7 +276,7 @@ describe('ConfigurationCommands', () => {
     describe('importConfig', () => {
         test('should import configuration successfully', () => {
             mockConfigManager.get.mockReturnValue(10); // original value
-            mockConfigManager.set.mockReturnValue(true as any);
+            mockConfigManager.set.mockReturnValue(true: any11087;
 
             const result = configCommands.importConfig(['{"game":{"scoring":{"baseScores":{"normal":25}}}}']);
 
@@ -316,7 +316,7 @@ describe('ConfigurationCommands', () => {
         test('should show change history', () => {
             // 履歴を追加するために設定変更を実行
             mockConfigManager.get.mockReturnValue(10);
-            mockConfigManager.set.mockReturnValue(true as any);
+            mockConfigManager.set.mockReturnValue(true: any12627;
             configCommands.setConfig(['test.path', '20']);
 
             const result = configCommands.showHistory(['1']);
@@ -337,7 +337,7 @@ describe('ConfigurationCommands', () => {
         test('should revert all changes', () => {
             // 変更を加える
             mockConfigManager.get.mockReturnValue(10);
-            mockConfigManager.set.mockReturnValue(true as any);
+            mockConfigManager.set.mockReturnValue(true: any13380;
             configCommands.setConfig(['test.path1', '20']);
             configCommands.setConfig(['test.path2', '30']);
 
@@ -360,7 +360,7 @@ describe('ConfigurationCommands', () => {
     describe('applyTemplate', () => {
         test('should apply development template', () => {
             mockConfigManager.get.mockReturnValue(60); // original value
-            mockConfigManager.set.mockReturnValue(true as any);
+            mockConfigManager.set.mockReturnValue(true: any14274;
 
             const result = configCommands.applyTemplate(['development']);
 
@@ -385,8 +385,8 @@ describe('ConfigurationCommands', () => {
 
     describe('convertValue', () => {
         test('should convert boolean strings', () => {
-            expect(configCommands.convertValue('true')).toBe(true as any);
-            expect(configCommands.convertValue('false')).toBe(false as any);
+            expect(configCommands.convertValue('true')).toBe(true: any15263;
+            expect(configCommands.convertValue('false')).toBe(false: any15339;
         });
 
         test('should convert number strings', () => {
@@ -400,8 +400,8 @@ describe('ConfigurationCommands', () => {
         });
 
         test('should handle null and undefined', () => {
-            expect(configCommands.convertValue('null')).toBe(null as any);
-            expect(configCommands.convertValue('undefined')).toBe(undefined as any);
+            expect(configCommands.convertValue('null')).toBe(null: any15926;
+            expect(configCommands.convertValue('undefined')).toBe(undefined: any16006;
         });
 
         test('should keep strings as strings', () => {
@@ -413,7 +413,7 @@ describe('ConfigurationCommands', () => {
         test('should clear all data', () => {
             // データを追加
             mockConfigManager.get.mockReturnValue(10);
-            mockConfigManager.set.mockReturnValue(true as any);
+            mockConfigManager.set.mockReturnValue(true: any16391;
             configCommands.setConfig(['test.path', '20']);
 
             configCommands.destroy();

@@ -76,7 +76,7 @@ describe('Analytics System Integration Performance Tests', () => {
             const endTime = performance.now();
             const initializationTime = endTime - startTime;
             
-            expect(initializationTime.toBeLessThan(INTEGRATION_THRESHOLDS.INITIALIZATION_TIME);
+            expect(initializationTime.toBeLessThan(INTEGRATION_THRESHOLDS.INITIALIZATION_TIME));
             expect(analyticsManager.isInitialized).toBe(true);
             expect(analyticsManager.isGameAnalyticsEnabled).toBe(true);
         });
@@ -111,7 +111,7 @@ describe('Analytics System Integration Performance Tests', () => {
                 previousBestScore: 5000
             };
             
-            analyticsManager.startSession(sessionData;
+            analyticsManager.startSession(sessionData);
             
             // 複数のプレイヤー行動を記録
             for (let i = 0; i < 50; i++) {
@@ -157,7 +157,7 @@ describe('Analytics System Integration Performance Tests', () => {
             const endTime = performance.now();
             const dataFlowTime = endTime - startTime;
             
-            expect(dataFlowTime.toBeLessThan(INTEGRATION_THRESHOLDS.DATA_FLOW_TIME);
+            expect(dataFlowTime.toBeLessThan(INTEGRATION_THRESHOLDS.DATA_FLOW_TIME));
             expect(stats.isInitialized).toBe(true);
             expect(stats.dataCollector).toBeTruthy();
         });
@@ -188,7 +188,7 @@ describe('Analytics System Integration Performance Tests', () => {
             const endTime = performance.now();
             const pipelineTime = endTime - startTime;
             
-            expect(pipelineTime.toBeLessThan(INTEGRATION_THRESHOLDS.DATA_FLOW_TIME + dataPoints * dataInterval);
+            expect(pipelineTime.toBeLessThan(INTEGRATION_THRESHOLDS.DATA_FLOW_TIME + dataPoints * dataInterval));
             
             // リアルタイム統計の確認
             const optimizationStats = analyticsManager.getPerformanceOptimizationStats();
@@ -205,7 +205,7 @@ describe('Analytics System Integration Performance Tests', () => {
             
             // ダッシュボードの初期化
             const container = document.createElement('div');
-            dashboard = new AnalyticsDashboard(container;
+            dashboard = new AnalyticsDashboard(container);
             
             const startTime = performance.now();
             
@@ -215,7 +215,7 @@ describe('Analytics System Integration Performance Tests', () => {
             const endTime = performance.now();
             const renderTime = endTime - startTime;
             
-            expect(renderTime.toBeLessThan(INTEGRATION_THRESHOLDS.DASHBOARD_RENDER_TIME);
+            expect(renderTime.toBeLessThan(INTEGRATION_THRESHOLDS.DASHBOARD_RENDER_TIME));
             
             // 描画されたコンテンツの確認
             const statsElements = container.querySelectorAll('[data-stat]');
@@ -227,7 +227,7 @@ describe('Analytics System Integration Performance Tests', () => {
             await generateTestData(analyticsManager, 500);
             
             const container = document.createElement('div');
-            dashboard = new AnalyticsDashboard(container;
+            dashboard = new AnalyticsDashboard(container);
             
             const startTime = performance.now();
             
@@ -241,7 +241,7 @@ describe('Analytics System Integration Performance Tests', () => {
             const endTime = performance.now();
             const renderTime = endTime - startTime;
             
-            expect(renderTime.toBeLessThan(INTEGRATION_THRESHOLDS.DASHBOARD_RENDER_TIME * 2);
+            expect(renderTime.toBeLessThan(INTEGRATION_THRESHOLDS.DASHBOARD_RENDER_TIME * 2));
         });
     });
 
@@ -263,8 +263,8 @@ describe('Analytics System Integration Performance Tests', () => {
             const endTime = performance.now();
             const analysisTime = endTime - startTime;
             
-            expect(analysisTime.toBeLessThan(INTEGRATION_THRESHOLDS.TREND_ANALYSIS_TIME);
-            expect(weeklyTrend.toBeTruthy();
+            expect(analysisTime.toBeLessThan(INTEGRATION_THRESHOLDS.TREND_ANALYSIS_TIME));
+            expect(weeklyTrend.toBeTruthy());
             expect(anomalies.length).toBeGreaterThan(0);
         });
 
@@ -291,9 +291,9 @@ describe('Analytics System Integration Performance Tests', () => {
             const endTime = performance.now();
             const comparisonTime = endTime - startTime;
             
-            expect(comparisonTime.toBeLessThan(INTEGRATION_THRESHOLDS.COMPARISON_TIME);
-            expect(comparison.toBeTruthy();
-            expect(benchmarkComparison.toBeTruthy();
+            expect(comparisonTime.toBeLessThan(INTEGRATION_THRESHOLDS.COMPARISON_TIME));
+            expect(comparison.toBeTruthy());
+            expect(benchmarkComparison.toBeTruthy());
         });
     });
 
@@ -307,15 +307,15 @@ describe('Analytics System Integration Performance Tests', () => {
             // 複数セッションの同時実行
             for (let sessionId = 0; sessionId < INTEGRATION_THRESHOLDS.CONCURRENT_SESSIONS; sessionId++) {
                 const sessionPromise = simulateGameSession(analyticsManager, `session_${sessionId}`, 50);
-                concurrentSessions.push(sessionPromise;
+                concurrentSessions.push(sessionPromise);
             }
             
-            await Promise.all(concurrentSessions;
+            await Promise.all(concurrentSessions);
             
             const endTime = performance.now();
             const concurrentTime = endTime - startTime;
             
-            expect(concurrentTime.toBeLessThan(INTEGRATION_THRESHOLDS.CONCURRENT_PROCESSING_TIME);
+            expect(concurrentTime.toBeLessThan(INTEGRATION_THRESHOLDS.CONCURRENT_PROCESSING_TIME));
             
             // すべてのセッションが正常に処理されたか確認
             const stats = analyticsManager.getAnalyticsStats();
@@ -334,7 +334,7 @@ describe('Analytics System Integration Performance Tests', () => {
             
             // ダッシュボードとアナライザーの初期化
             const container = document.createElement('div');
-            dashboard = new AnalyticsDashboard(container;
+            dashboard = new AnalyticsDashboard(container);
             trendAnalyzer = new TrendAnalyzer(analyticsManager.storageManager);
             comparisonEngine = new ComparisonEngine(analyticsManager.storageManager);
             
@@ -343,7 +343,7 @@ describe('Analytics System Integration Performance Tests', () => {
             const peakMemory = performance.memory ? performance.memory.usedJSHeapSize : 0;
             const memoryUsage = peakMemory - initialMemory;
             
-            expect(memoryUsage.toBeLessThan(INTEGRATION_THRESHOLDS.SYSTEM_MEMORY_LIMIT);
+            expect(memoryUsage.toBeLessThan(INTEGRATION_THRESHOLDS.SYSTEM_MEMORY_LIMIT));
         });
 
         test('長時間実行メモリリーク検出', async () => {
@@ -367,7 +367,7 @@ describe('Analytics System Integration Performance Tests', () => {
             const finalMemory = performance.memory ? performance.memory.usedJSHeapSize : 0;
             const memoryLeak = finalMemory - initialMemory;
             
-            expect(memoryLeak.toBeLessThan(INTEGRATION_THRESHOLDS.MEMORY_LEAK_THRESHOLD);
+            expect(memoryLeak.toBeLessThan(INTEGRATION_THRESHOLDS.MEMORY_LEAK_THRESHOLD));
         });
     });
 
@@ -383,7 +383,7 @@ describe('Analytics System Integration Performance Tests', () => {
             // 不正データの注入
             try {
                 analyticsManager.trackPlayerBehavior(null, null);
-                analyticsManager.trackGameBalance(undefined;
+                analyticsManager.trackGameBalance(undefined);
             } catch (error) {
                 // エラーは期待される
             }
@@ -394,7 +394,7 @@ describe('Analytics System Integration Performance Tests', () => {
             const endTime = performance.now();
             const recoveryTime = endTime - startTime;
             
-            expect(recoveryTime.toBeLessThan(INTEGRATION_THRESHOLDS.DATA_FLOW_TIME * 2);
+            expect(recoveryTime.toBeLessThan(INTEGRATION_THRESHOLDS.DATA_FLOW_TIME * 2));
             
             // システムが正常に動作し続けることを確認
             const stats = analyticsManager.getAnalyticsStats();

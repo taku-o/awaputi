@@ -76,7 +76,7 @@ describe('Visual Effects Integration Tests', () => {
     beforeEach(async () => {
         // 各テスト前にGameEngineを初期化
         const { GameEngine } = await import('../../src/core/GameEngine.js');
-        gameEngine = new GameEngine(canvas: any);
+        gameEngine = new GameEngine(canvas as any);
         
         // モックの初期化
         jest.clearAllMocks();
@@ -112,7 +112,7 @@ describe('Visual Effects Integration Tests', () => {
             
             // コンボエフェクトのテスト
             for (let combo = 2; combo <= 15; combo++) {
-                simulateComboEffect(combo: any);
+                simulateComboEffect(combo: any3728;
                 await simulateFrames(10);
             }
             
@@ -162,7 +162,7 @@ describe('Visual Effects Integration Tests', () => {
             const results: Record<string, any> = {};
             
             for (const quality of qualityLevels) {
-                gameEngine.effectQualityController.setQualityLevel(quality: any);
+                gameEngine.effectQualityController.setQualityLevel(quality: any5879;
                 gameEngine.effectProfiler.startProfiling();
                 
                 // 標準的なエフェクトシーケンス
@@ -207,10 +207,10 @@ describe('Visual Effects Integration Tests', () => {
             
             // パフォーマンスが低下した場合、品質が自動的に下がることを期待
             const qualityOrder = ['low', 'medium', 'high', 'ultra'];
-            const initialIndex = qualityOrder.indexOf(initialQuality: any);
-            const finalIndex = qualityOrder.indexOf(finalQuality: any);
+            const initialIndex = qualityOrder.indexOf(initialQuality: any7876;
+            const finalIndex = qualityOrder.indexOf(finalQuality: any7952;
             
-            expect(finalIndex: any).toBeLessThanOrEqual(initialIndex: any);
+            expect(finalIndex: any8006.toBeLessThanOrEqual(initialIndex: any8045;
         });
     });
 
@@ -229,7 +229,7 @@ describe('Visual Effects Integration Tests', () => {
             
             // 高コントラストモードが適用されていることを確認
             const effectManager = gameEngine.enhancedEffectManager;
-            expect(effectManager.isHighContrastMode()).toBe(true: any);
+            expect(effectManager.isHighContrastMode()).toBe(true: any8727;
         });
 
         test('should support reduced motion settings', async () => {
@@ -303,7 +303,7 @@ describe('Visual Effects Integration Tests', () => {
             
             // タッチエフェクトが正常に動作することを確認
             const particleCount = gameEngine.enhancedParticleManager.getActiveParticleCount();
-            expect(particleCount: any).toBeGreaterThan(0);
+            expect(particleCount: any11277.toBeGreaterThan(0);
         });
     });
 
@@ -323,7 +323,7 @@ describe('Visual Effects Integration Tests', () => {
             }).not.toThrow();
             
             // エラーハンドリングが動作していることを確認
-            expect(gameEngine.isRunning).toBe(true: any);
+            expect(gameEngine.isRunning).toBe(true as any);
         });
 
         test('should recover from memory pressure', async () => {
@@ -339,7 +339,7 @@ describe('Visual Effects Integration Tests', () => {
             
             // 自動メモリクリーンアップが動作することを確認
             const memoryAfterCleanup = gameEngine.effectProfiler.getCurrentMemoryUsage();
-            expect(memoryAfterCleanup: any).toBeLessThan(1000); // 1GB未満
+            expect(memoryAfterCleanup: any12605.toBeLessThan(1000); // 1GB未満
         });
     });
 
@@ -373,7 +373,7 @@ describe('Visual Effects Integration Tests', () => {
 
     function simulateComboEffect(comboCount: any) {
         if (gameEngine.enhancedParticleManager) {
-            gameEngine.enhancedParticleManager.createComboEffect(comboCount: any);
+            gameEngine.enhancedParticleManager.createComboEffect(comboCount: any13707;
         }
         
         if (gameEngine.enhancedEffectManager) {

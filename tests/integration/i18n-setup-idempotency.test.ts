@@ -10,7 +10,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename;
+const __dirname = path.dirname(__filename);
 const projectRoot = path.join(__dirname, '..', '..');
 
 describe('i18n:setup Script Idempotency Tests', () => {
@@ -154,9 +154,9 @@ describe('i18n:setup Script Idempotency Tests', () => {
       const gitStatus = await new Promise((resolve, reject) => {
         exec('git status --porcelain', { cwd: projectRoot }, (error, stdout) => {
           if (error) {
-            reject(error;
+            reject(error);
           } else {
-            resolve(stdout;
+            resolve(stdout);
           }
         });
       });
@@ -167,7 +167,7 @@ describe('i18n:setup Script Idempotency Tests', () => {
         line.includes('src/locales/') && line.includes('.json')
       );
       
-      expect(translationFileChanges.toHaveLength(0);
+      expect(translationFileChanges.toHaveLength(0));
     }, 15000);
   });
   
@@ -179,11 +179,11 @@ describe('i18n:setup Script Idempotency Tests', () => {
       // デプロイメントレポートが生成されることを確認
       const reportPath = path.join(projectRoot, 'reports', 'i18n-deployment-report.json');
       
-      expect(await fs.access(reportPath.then(() => true).catch(() => false)).toBe(true);
+      expect(await fs.access(reportPath.then(() => true).catch(() => false)).toBe(true));
       
       // レポート内容を確認
       const reportContent = await fs.readFile(reportPath, 'utf-8');
-      const report = JSON.parse(reportContent;
+      const report = JSON.parse(reportContent);
       
       // 最適化情報が含まれていることを確認
       expect(report.optimization).toBeDefined();
@@ -193,7 +193,7 @@ describe('i18n:setup Script Idempotency Tests', () => {
       expect(report.optimization.translationFiles.optimizedAt).toBeDefined();
       
       // タイムスタンプが有効なISO日時形式であることを確認
-      expect(new Date(report.optimization.translationFiles.optimizedAt)).toBeInstanceOf(Date;
+      expect(new Date(report.optimization.translationFiles.optimizedAt)).toBeInstanceOf(Date);
     }, 15000);
   });
   
@@ -211,7 +211,7 @@ describe('i18n:setup Script Idempotency Tests', () => {
         
       } catch (error) {
         // 予期しないエラーでない限り失敗
-        expect(error.toBeNull();
+        expect(error.toBeNull());
       }
     }, 15000);
   });

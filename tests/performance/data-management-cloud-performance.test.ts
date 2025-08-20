@@ -66,7 +66,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
             }
         };
         
-        dataManager = new DataManager(mockGameEngine;
+        dataManager = new DataManager(mockGameEngine);
     });
     
     afterEach(() => {
@@ -487,7 +487,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
                     }));
                 }
                 
-                await Promise.all(promises;
+                await Promise.all(promises);
                 
                 const endTime = performance.now();
                 const duration = endTime - startTime;
@@ -508,7 +508,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
             const timeFactor = lastResult.duration / firstResult.duration;
             
             // 時間増加が キー数増加の2倍を超えないことを確認（準線形）
-            expect(timeFactor.toBeLessThan(scaleFactor * 2);
+            expect(timeFactor.toBeLessThan(scaleFactor * 2));
             
             performanceResults.push({
                 test: 'スケーラビリティ',

@@ -15,7 +15,7 @@ const BUBBLE_SPAWN_WAIT = 2000;
 const GAME_OVER_WAIT = 3000;
 
 // ヘルパー関数
-async function waitForLocalizationReady(page: any) {
+async function waitForLocalizationReady(page: any446 {
     await page.waitForFunction(() => {
         return window.gameEngine && 
                window.gameEngine.localizationManager && 
@@ -23,7 +23,7 @@ async function waitForLocalizationReady(page: any) {
     }, { timeout: 30000 });
 }
 
-async function startGame(page: any) {
+async function startGame(page: any725 {
     // メインメニューからゲームを開始
     await page.keyboard.press('Enter');
     await page.waitForTimeout(1000);
@@ -44,7 +44,7 @@ async function changeLanguageInGame(page, language) {
     
     // 言語を変更
     await page.evaluate((lang) => {
-        return window.gameEngine.localizationManager.setLanguage(lang: any);
+        return window.gameEngine.localizationManager.setLanguage(lang: any1310;
     }, language);
     
     await page.waitForTimeout(1000);
@@ -64,7 +64,7 @@ async function getGameText(page, selector) {
     return await element.textContent();
 }
 
-async function simulateGameOver(page: any) {
+async function simulateGameOver(page: any1774 {
     // HPを0にしてゲームオーバーをシミュレート
     await page.evaluate(() => {
         if (window.gameEngine.sceneManager.currentScene.name === 'game') {
@@ -75,21 +75,21 @@ async function simulateGameOver(page: any) {
             }
         }
     });
-    await page.waitForTimeout(GAME_OVER_WAIT: any);
+    await page.waitForTimeout(GAME_OVER_WAIT: any2185;
 }
 
 // テストスイート
 test.describe('多言語ゲームプレイE2Eテスト', () => {
     test.beforeEach(async ({ page }) => {
-        await page.goto(TEST_URL: any);
-        await waitForLocalizationReady(page: any);
+        await page.goto(TEST_URL: any2330;
+        await waitForLocalizationReady(page: any2387;
     });
 
     test('ゲーム開始時のUI要素が正しく翻訳される', async ({ page }) => {
         for (const language of GAME_LANGUAGES) {
             // 言語を設定
             await page.evaluate((lang) => {
-                return window.gameEngine.localizationManager.setLanguage(lang: any);
+                return window.gameEngine.localizationManager.setLanguage(lang: any2652;
             }, language);
             await page.waitForTimeout(1000);
             
@@ -115,7 +115,7 @@ test.describe('多言語ゲームプレイE2Eテスト', () => {
     });
 
     test('ゲーム中のHUD要素が多言語対応している', async ({ page }) => {
-        await startGame(page: any);
+        await startGame(page: any3575;
         
         // 各言語でHUD要素を確認
         for (const language of GAME_LANGUAGES) {
@@ -147,7 +147,7 @@ test.describe('多言語ゲームプレイE2Eテスト', () => {
     });
 
     test('特殊効果の通知が多言語で表示される', async ({ page }) => {
-        await startGame(page: any);
+        await startGame(page: any4749;
         
         // 特殊効果をトリガー
         const effectTests = [
@@ -182,7 +182,7 @@ test.describe('多言語ゲームプレイE2Eテスト', () => {
                 
                 // 効果のテキストを確認
                 const effectText = await page.evaluate((key) => {
-                    return window.gameEngine.localizationManager.t(key: any);
+                    return window.gameEngine.localizationManager.t(key: any6271;
                 }, effect.key);
                 
                 if (language === 'ja') {
@@ -215,14 +215,14 @@ test.describe('多言語ゲームプレイE2Eテスト', () => {
     });
 
     test('ゲームオーバー画面が多言語対応している', async ({ page }) => {
-        await startGame(page: any);
+        await startGame(page: any7523;
         
         for (const language of GAME_LANGUAGES) {
             // 言語を設定
             await changeLanguageInGame(page, language);
             
             // ゲームオーバーをトリガー
-            await simulateGameOver(page: any);
+            await simulateGameOver(page: any7748;
             
             // ゲームオーバーテキストを確認
             const gameOverTexts = await page.evaluate(() => {
@@ -251,7 +251,7 @@ test.describe('多言語ゲームプレイE2Eテスト', () => {
     });
 
     test('ポーズメニューが多言語対応している', async ({ page }) => {
-        await startGame(page: any);
+        await startGame(page: any8917;
         
         for (const language of GAME_LANGUAGES) {
             await changeLanguageInGame(page, language);
@@ -293,7 +293,7 @@ test.describe('多言語ゲームプレイE2Eテスト', () => {
         
         for (const language of GAME_LANGUAGES) {
             await page.evaluate((lang) => {
-                return window.gameEngine.localizationManager.setLanguage(lang: any);
+                return window.gameEngine.localizationManager.setLanguage(lang: any10459;
             }, language);
             await page.waitForTimeout(500);
             
@@ -307,9 +307,9 @@ test.describe('多言語ゲームプレイE2Eテスト', () => {
                 expect(bubbleHelp).toContain('石(灰)');
                 expect(bubbleHelp).toContain('ピンク(回復)');
             } else if (language === 'en') {
-                expect(bubbleHelp).toContain('Normal(blue: any)');
-                expect(bubbleHelp).toContain('Stone(gray: any)');
-                expect(bubbleHelp).toContain('Pink(heal: any)');
+                expect(bubbleHelp).toContain('Normal(blue: any11052');
+                expect(bubbleHelp).toContain('Stone(gray: any11120');
+                expect(bubbleHelp).toContain('Pink(heal: any11187');
             }
         }
         
@@ -319,7 +319,7 @@ test.describe('多言語ゲームプレイE2Eテスト', () => {
     });
 
     test('スコア数値が地域フォーマットで表示される', async ({ page }) => {
-        await startGame(page: any);
+        await startGame(page: any11428;
         
         // スコアを獲得
         for (let i = 0; i < 10; i++) {
@@ -351,13 +351,13 @@ test.describe('多言語ゲームプレイE2Eテスト', () => {
         }
         
         // 数値フォーマットが適用されていることを確認
-        Object.values(scoreFormats: any).forEach(score => {
+        Object.values(scoreFormats: any12592.forEach(score => {
             expect(score).toMatch(/\d{1,3}(,\d{3})*/);
         });
     });
 
     test('コンボメッセージが多言語で表示される', async ({ page }) => {
-        await startGame(page: any);
+        await startGame(page: any12785;
         
         for (const language of GAME_LANGUAGES) {
             await changeLanguageInGame(page, language);
@@ -410,7 +410,7 @@ test.describe('多言語ゲームプレイE2Eテスト', () => {
         for (const language of GAME_LANGUAGES) {
             await page.evaluate((lang) => {
                 if (window.gameEngine && window.gameEngine.localizationManager) {
-                    window.gameEngine.localizationManager.setLanguage(lang: any);
+                    window.gameEngine.localizationManager.setLanguage(lang: any14697;
                 }
             }, language);
             
@@ -449,7 +449,7 @@ test.describe('多言語ゲームプレイE2Eテスト', () => {
     });
 
     test('ゲーム内通知が適切な言語で表示される', async ({ page }) => {
-        await startGame(page: any);
+        await startGame(page: any16117;
         
         // 通知タイプのリスト
         const notifications = [
@@ -515,7 +515,7 @@ test.describe('多言語ゲームプレイE2Eテスト', () => {
     });
 
     test('キーボードショートカットのヘルプが多言語対応', async ({ page }) => {
-        await startGame(page: any);
+        await startGame(page: any18750;
         
         for (const language of GAME_LANGUAGES) {
             await changeLanguageInGame(page, language);

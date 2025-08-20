@@ -28,7 +28,7 @@ class MockPrivacyManager {
         return this.consentStatus;
     }
     
-    anonymizeData(data: any) {
+    anonymizeData(data: any869 {
         return { ...data, anonymized: true };
     }
     
@@ -37,15 +37,15 @@ class MockPrivacyManager {
         this.optOutFeatures[feature] = status;
     }
     
-    isOptedOut(feature: any) {
+    isOptedOut(feature: any1104 {
         return this.optOutFeatures && this.optOutFeatures[feature];
     }
     
-    async exportUserData(callback: any) {
+    async exportUserData(callback: any1226 {
         return await callback();
     }
     
-    async deleteUserData(callback: any) {
+    async deleteUserData(callback: any1314 {
         return await callback();
     }
 }
@@ -61,7 +61,7 @@ class MockIndexedDBStorageManager {
     
     async saveData(storeName, data) {
         this.data[storeName] = this.data[storeName] || [];
-        this.data[storeName].push(data;
+        this.data[storeName].push(data);
         return true;
     }
     
@@ -89,34 +89,34 @@ class MockDataCollector {
         };
     }
     
-    startSession(sessionInfo: any) {
+    startSession(sessionInfo: any2198 {
         this.sessionInfo = sessionInfo;
         this.eventStats.sessionEvents++;
     }
     
-    endSession(endInfo: any) {
+    endSession(endInfo: any2327 {
         this.endInfo = endInfo;
         this.eventStats.sessionEvents++;
     }
     
-    collectBubbleInteraction(bubbleData: any) {
+    collectBubbleInteraction(bubbleData: any2458 {
         this.eventStats.bubbleEvents++;
         this.eventStats.totalEvents++;
     }
     
-    collectScoreData(scoreData: any) {
+    collectScoreData(scoreData: any2590 {
         this.eventStats.totalEvents++;
     }
     
-    collectItemUsageData(itemData: any) {
+    collectItemUsageData(itemData: any2685 {
         this.eventStats.totalEvents++;
     }
     
-    collectPerformanceData(performanceData: any) {
+    collectPerformanceData(performanceData: any2781 {
         this.eventStats.totalEvents++;
     }
     
-    collectGameBalanceData(balanceData: any) {
+    collectGameBalanceData(balanceData: any2884 {
         this.eventStats.totalEvents++;
     }
     
@@ -134,23 +134,23 @@ class MockGameBalanceCollector {
         this.collectedData = [];
     }
     
-    collectBubbleSpawn(bubbleInfo: any) {
+    collectBubbleSpawn(bubbleInfo: any3197 {
         this.collectedData.push({ type: 'bubbleSpawn', data: bubbleInfo });
     }
     
-    collectScoreData(scoreInfo: any) {
+    collectScoreData(scoreInfo: any3326 {
         this.collectedData.push({ type: 'scoreData', data: scoreInfo });
     }
     
-    collectItemEffectData(itemInfo: any) {
+    collectItemEffectData(itemInfo: any3456 {
         this.collectedData.push({ type: 'itemEffect', data: itemInfo });
     }
     
-    collectStageDifficultyData(stageInfo: any) {
+    collectStageDifficultyData(stageInfo: any3590 {
         this.collectedData.push({ type: 'stageDifficulty', data: stageInfo });
     }
     
-    collectGameBalanceData(balanceData: any) {
+    collectGameBalanceData(balanceData: any3727 {
         this.collectedData.push({ type: 'gameBalance', data: balanceData });
     }
 }
@@ -181,7 +181,7 @@ describe('EnhancedAnalyticsManager', () => {
         };
         
         // デフォルトエクスポートのモック設定
-        jest.mocked(Analytics.mockImplementation(() => mockAnalytics);
+        jest.mocked(Analytics.mockImplementation(() => mockAnalytics));
         
         // コンソールをモック
         jest.spyOn(console, 'info').mockImplementation(() => {});
@@ -235,10 +235,10 @@ describe('EnhancedAnalyticsManager', () => {
 
             expect(analyticsManager.isInitialized).toBe(true);
             expect(analyticsManager.isGameAnalyticsEnabled).toBe(true);
-            expect(analyticsManager.privacyManager).toBeInstanceOf(MockPrivacyManager;
-            expect(analyticsManager.storageManager).toBeInstanceOf(MockIndexedDBStorageManager;
-            expect(analyticsManager.dataCollector).toBeInstanceOf(MockDataCollector;
-            expect(analyticsManager.gameBalanceCollector).toBeInstanceOf(MockGameBalanceCollector;
+            expect(analyticsManager.privacyManager).toBeInstanceOf(MockPrivacyManager);
+            expect(analyticsManager.storageManager).toBeInstanceOf(MockIndexedDBStorageManager);
+            expect(analyticsManager.dataCollector).toBeInstanceOf(MockDataCollector);
+            expect(analyticsManager.gameBalanceCollector).toBeInstanceOf(MockGameBalanceCollector);
         });
 
         test('同意がない場合は初期化をスキップする', async () => {
@@ -270,7 +270,7 @@ describe('EnhancedAnalyticsManager', () => {
                 playerLevel: 5
             };
 
-            analyticsManager.startGameSession(sessionInfo;
+            analyticsManager.startGameSession(sessionInfo);
 
             expect(mockAnalytics.trackEvent).toHaveBeenCalledWith('game_session_start', {
                 stage_id: 'normal',
@@ -295,7 +295,7 @@ describe('EnhancedAnalyticsManager', () => {
                 exitReason: 'completed'
             };
 
-            analyticsManager.endGameSession(endInfo;
+            analyticsManager.endGameSession(endInfo);
 
             expect(mockAnalytics.trackEvent).toHaveBeenCalledWith('game_session_end', {
                 duration: 120000,
@@ -315,7 +315,7 @@ describe('EnhancedAnalyticsManager', () => {
                 comboCount: 3
             };
 
-            analyticsManager.trackBubbleInteraction(bubbleData;
+            analyticsManager.trackBubbleInteraction(bubbleData);
 
             expect(mockAnalytics.trackEvent).toHaveBeenCalledWith('bubble_interaction', {
                 bubble_type: 'normal',
@@ -336,7 +336,7 @@ describe('EnhancedAnalyticsManager', () => {
                 comboCount: 5
             };
 
-            analyticsManager.trackScore(scoreData;
+            analyticsManager.trackScore(scoreData);
 
             expect(mockAnalytics.trackEvent).toHaveBeenCalledWith('score_gained', {
                 score_type: 'bubble',
@@ -353,7 +353,7 @@ describe('EnhancedAnalyticsManager', () => {
                 duration: 5000
             };
 
-            analyticsManager.trackItemUsage(itemData;
+            analyticsManager.trackItemUsage(itemData);
 
             expect(mockAnalytics.trackEvent).toHaveBeenCalledWith('item_used', {
                 item_type: 'timeExtender',
@@ -386,7 +386,7 @@ describe('EnhancedAnalyticsManager', () => {
                 averagePlayTime: 180000
             };
 
-            analyticsManager.trackGameBalance(balanceData;
+            analyticsManager.trackGameBalance(balanceData);
 
             expect(mockAnalytics.trackEvent).toHaveBeenCalledWith('game_balance', {
                 balance_type: 'bubbleFrequency',
@@ -406,7 +406,7 @@ describe('EnhancedAnalyticsManager', () => {
                 completionRate: 0.05 // 異常に低い完了率
             };
 
-            analyticsManager.trackGameBalance(balanceData;
+            analyticsManager.trackGameBalance(balanceData);
 
             expect(console.warn).toHaveBeenCalledWith(
                 expect.stringContaining('[Game Balance Warning]'),
@@ -445,7 +445,7 @@ describe('EnhancedAnalyticsManager', () => {
                 timestamp: Date.now()
             };
 
-            analyticsManager.checkPerformanceWarnings(lowFpsMetrics;
+            analyticsManager.checkPerformanceWarnings(lowFpsMetrics);
 
             expect(console.warn).toHaveBeenCalledWith(
                 expect.stringContaining('[Performance Warning]'),
@@ -465,7 +465,7 @@ describe('EnhancedAnalyticsManager', () => {
                 timestamp: Date.now()
             };
 
-            analyticsManager.checkPerformanceWarnings(highMemoryMetrics;
+            analyticsManager.checkPerformanceWarnings(highMemoryMetrics);
 
             expect(console.warn).toHaveBeenCalledWith(
                 expect.stringContaining('[Performance Warning]'),
@@ -495,7 +495,7 @@ describe('EnhancedAnalyticsManager', () => {
                 currentScore: 150
             };
 
-            analyticsManager.trackPlayerBehavior(behaviorData;
+            analyticsManager.trackPlayerBehavior(behaviorData);
 
             expect(analyticsManager.dataCollector.eventStats.totalEvents).toBeGreaterThan(0);
         });
@@ -511,7 +511,7 @@ describe('EnhancedAnalyticsManager', () => {
                 bubbleType: 'normal'
             };
 
-            analyticsManager.trackPlayerBehavior(behaviorData;
+            analyticsManager.trackPlayerBehavior(behaviorData);
 
             expect(console.info).toHaveBeenCalledWith(
                 expect.stringContaining('[Analytics] Long session detected')
@@ -543,7 +543,7 @@ describe('EnhancedAnalyticsManager', () => {
                 accuracy: 1
             };
 
-            analyticsManager.analyzePlayStyle(aggressivePattern;
+            analyticsManager.analyzePlayStyle(aggressivePattern);
 
             expect(analyticsManager.playerBehavior.playStyle.aggressive).toBe(1);
         });
@@ -579,7 +579,7 @@ describe('EnhancedAnalyticsManager', () => {
         test('初期化エラーを処理する', () => {
             const error = new Error('Initialization failed');
             
-            analyticsManager.handleInitializationError(error;
+            analyticsManager.handleInitializationError(error);
 
             expect(analyticsManager.isGameAnalyticsEnabled).toBe(false);
             expect(console.warn).toHaveBeenCalledWith(
@@ -603,7 +603,7 @@ describe('EnhancedAnalyticsManager', () => {
                 }
             };
 
-            analyticsManager.updateSettings(newSettings;
+            analyticsManager.updateSettings(newSettings);
 
             expect(analyticsManager.options.enableGameAnalytics).toBe(false);
             expect(analyticsManager.options.enablePerformanceTracking).toBe(true);

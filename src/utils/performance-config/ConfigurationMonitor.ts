@@ -107,7 +107,7 @@ declare global {
 
 // Type definitions
 type ConfigCategory = 'frameStabilization' | 'memoryManagement' | 'qualityControl' | 'rendering' | 'mobile' | 'general';
-type ConfigChangeCallback = (config: any) => void;
+type ConfigChangeCallback = (config as any) => void;
 type NotificationCallback = (notification: ConfigNotification) => void;
 type ConfigFileChangeCallback = (changes: ConfigFileChange[]) => void;
 type UnsubscribeFunction = () => void;
@@ -239,7 +239,7 @@ export class ConfigurationMonitor {
     private setupFrameStabilizerIntegration(): void {
         // フレーム安定化設定の動的更新
         if (this.mainController.configManager) {
-            this.mainController.configManager.onConfigChange('frameStabilization', (config: any) => {
+            this.mainController.configManager.onConfigChange('frameStabilization', (config as any) => {
                 if (this.optimizationSystems.frameStabilizer) {
                     this.optimizationSystems.frameStabilizer.updateConfiguration(config);
                 }
@@ -253,7 +253,7 @@ export class ConfigurationMonitor {
     private setupMemoryManagerIntegration(): void {
         // メモリ管理設定の動的更新
         if (this.mainController.configManager) {
-            this.mainController.configManager.onConfigChange('memoryManagement', (config: any) => {
+            this.mainController.configManager.onConfigChange('memoryManagement', (config as any) => {
                 if (this.optimizationSystems.memoryManager) {
                     this.optimizationSystems.memoryManager.updateConfiguration(config);
                 }
@@ -267,7 +267,7 @@ export class ConfigurationMonitor {
     private setupQualityControllerIntegration(): void {
         // 品質制御設定の動的更新
         if (this.mainController.configManager) {
-            this.mainController.configManager.onConfigChange('qualityControl', (config: any) => {
+            this.mainController.configManager.onConfigChange('qualityControl', (config as any) => {
                 if (this.optimizationSystems.qualityController) {
                     this.optimizationSystems.qualityController.updateConfiguration(config);
                 }
@@ -281,7 +281,7 @@ export class ConfigurationMonitor {
     private setupRenderOptimizerIntegration(): void {
         // レンダリング最適化設定の動的更新
         if (this.mainController.configManager) {
-            this.mainController.configManager.onConfigChange('rendering', (config: any) => {
+            this.mainController.configManager.onConfigChange('rendering', (config as any) => {
                 if (this.optimizationSystems.renderOptimizer) {
                     this.optimizationSystems.renderOptimizer.updateConfiguration(config);
                 }
@@ -295,7 +295,7 @@ export class ConfigurationMonitor {
     private setupMobileOptimizerIntegration(): void {
         // モバイル最適化設定の動的更新
         if (this.mainController.configManager) {
-            this.mainController.configManager.onConfigChange('mobile', (config: any) => {
+            this.mainController.configManager.onConfigChange('mobile', (config as any) => {
                 if (this.optimizationSystems.mobileOptimizer) {
                     this.optimizationSystems.mobileOptimizer.updateConfiguration(config);
                 }

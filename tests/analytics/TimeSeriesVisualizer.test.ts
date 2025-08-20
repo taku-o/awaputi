@@ -24,8 +24,8 @@ class MockChartRenderer {
         return mockChart;
     }
 
-    getChart(chartId: any) {
-        return this.charts.get(chartId;
+    getChart(chartId: any793 {
+        return this.charts.get(chartId);
     }
 }
 
@@ -63,7 +63,7 @@ describe('TimeSeriesVisualizer', () => {
         test('正しく初期化される', () => {
             expect(visualizer.chartRenderer).toBe(mockChartRenderer);
             expect(visualizer.trendAnalyzer).toBe(mockTrendAnalyzer);
-            expect(visualizer.activeCharts).toBeInstanceOf(Map;
+            expect(visualizer.activeCharts).toBeInstanceOf(Map);
             expect(visualizer.colors).toHaveProperty('score');
             expect(visualizer.colors).toHaveProperty('accuracy');
         });
@@ -357,7 +357,7 @@ describe('TimeSeriesVisualizer', () => {
 
         test('トレンドラインが正しく計算される', () => {
             const values = [10, 20, 30, 40, 50];
-            const trendLine = visualizer.calculateTrendLine(values;
+            const trendLine = visualizer.calculateTrendLine(values);
 
             expect(trendLine).toHaveLength(5);
             // 線形増加データなので、トレンドラインも線形増加するはず
@@ -370,7 +370,7 @@ describe('TimeSeriesVisualizer', () => {
 
         test('信頼区間が正しく計算される', () => {
             const values = [100, 110, 120, 130, 140];
-            const confidenceInterval = visualizer.calculateConfidenceInterval(values;
+            const confidenceInterval = visualizer.calculateConfidenceInterval(values);
 
             expect(confidenceInterval).toHaveProperty('upper');
             expect(confidenceInterval).toHaveProperty('lower');
@@ -385,7 +385,7 @@ describe('TimeSeriesVisualizer', () => {
 
         test('値が正しく正規化される', () => {
             const values = [10, 20, 30, 40, 50];
-            const normalized = visualizer.normalizeValues(values;
+            const normalized = visualizer.normalizeValues(values);
 
             expect(normalized).toHaveLength(5);
             expect(Math.min(...normalized)).toBe(0);
@@ -395,7 +395,7 @@ describe('TimeSeriesVisualizer', () => {
 
         test('同じ値の場合、正規化で0.5が返される', () => {
             const values = [100, 100, 100];
-            const normalized = visualizer.normalizeValues(values;
+            const normalized = visualizer.normalizeValues(values);
 
             expect(normalized).toEqual([0.5, 0.5, 0.5]);
         });
@@ -484,7 +484,7 @@ describe('TimeSeriesVisualizer', () => {
         });
 
         test('CSV形式でデータがエクスポートされる', () => {
-            const csv = visualizer.exportToCSV(sampleData;
+            const csv = visualizer.exportToCSV(sampleData);
             
             expect(csv).toContain('期間,スコア,精度,プレイ時間');
             expect(csv).toContain('2024-01,100,0.8,300');

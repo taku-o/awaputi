@@ -104,7 +104,7 @@ describe('ErrorNotificationSystem', () => {
                 timestamp: Date.now()
             };
 
-            errorSystem.handleError(errorData;
+            errorSystem.handleError(errorData);
 
             expect(errorSystem.errorHistory.length).toBe(1);
             const recordedError = errorSystem.errorHistory[0];
@@ -120,7 +120,7 @@ describe('ErrorNotificationSystem', () => {
                 timestamp: Date.now()
             };
 
-            errorSystem.handleError(errorData;
+            errorSystem.handleError(errorData);
 
             expect(errorSystem.errorHistory.length).toBe(1);
             const recordedError = errorSystem.errorHistory[0];
@@ -139,7 +139,7 @@ describe('ErrorNotificationSystem', () => {
                 error: { name: 'TypeError' }
             };
 
-            const details = errorSystem.extractErrorDetails(errorData;
+            const details = errorSystem.extractErrorDetails(errorData);
             
             expect(details.filename).toBe('app.js');
             expect(details.line).toBe(25);
@@ -178,7 +178,7 @@ describe('ErrorNotificationSystem', () => {
                 actions: ['詳細表示', 'レポート送信']
             };
 
-            errorSystem.showErrorNotification(errorData;
+            errorSystem.showErrorNotification(errorData);
 
             const notification = document.querySelector('[data-error-id="test-error-1"]');
             expect(notification).toBeTruthy();
@@ -197,7 +197,7 @@ describe('ErrorNotificationSystem', () => {
                 actions: []
             };
 
-            errorSystem.showErrorNotification(errorData;
+            errorSystem.showErrorNotification(errorData);
             expect(document.querySelector('[data-error-id="dismiss-test"]')).toBeTruthy();
 
             errorSystem.dismissError('dismiss-test');
@@ -211,19 +211,19 @@ describe('ErrorNotificationSystem', () => {
             const recoverableError = { recoverable: true, type: 'network' };
             const nonRecoverableError = { recoverable: false, type: 'javascript' };
             
-            expect(errorSystem.canAttemptRecovery(recoverableError).toBe(true);
-            expect(errorSystem.canAttemptRecovery(nonRecoverableError).toBe(false);
+            expect(errorSystem.canAttemptRecovery(recoverableError).toBe(true));
+            expect(errorSystem.canAttemptRecovery(nonRecoverableError).toBe(false));
 
             // 復旧試行回数の上限テスト
             errorSystem.recoveryAttempts.set('network', 3);
-            expect(errorSystem.canAttemptRecovery(recoverableError).toBe(false);
+            expect(errorSystem.canAttemptRecovery(recoverableError).toBe(false));
         });
 
         test('ネットワークエラーからの復旧が試行される', async () => {
             fetch.mockResolvedValueOnce({ ok: true });
 
             const errorData = { type: 'network' };
-            const result = await errorSystem.recoverFromNetworkError(errorData;
+            const result = await errorSystem.recoverFromNetworkError(errorData);
             
             expect(result).toBe(true);
             expect(fetch).toHaveBeenCalledWith('/', { method: 'HEAD' });
@@ -236,7 +236,7 @@ describe('ErrorNotificationSystem', () => {
                 type: 'resource',
                 details: { source: 'test.jpg' }
             };
-            const result = await errorSystem.recoverFromResourceError(errorData;
+            const result = await errorSystem.recoverFromResourceError(errorData);
             
             expect(result).toBe(true);
             expect(fetch).toHaveBeenCalledWith('test.jpg', { method: 'HEAD' });
@@ -262,7 +262,7 @@ describe('ErrorNotificationSystem', () => {
                 message: 'Test error'
             };
 
-            await errorSystem.sendErrorReport(errorData;
+            await errorSystem.sendErrorReport(errorData);
 
             expect(fetch).toHaveBeenCalledWith(
                 'https://api.example.com/errors',
@@ -280,7 +280,7 @@ describe('ErrorNotificationSystem', () => {
                 type: 'javascript',
                 message: 'Test error'
             };
-            errorSystem.errorHistory.push(errorData;
+            errorSystem.errorHistory.push(errorData);
 
             // モック alert を設定
             const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
@@ -298,7 +298,7 @@ describe('ErrorNotificationSystem', () => {
                 column: 5
             };
 
-            const formatted = errorSystem.formatErrorDetails(details;
+            const formatted = errorSystem.formatErrorDetails(details);
             expect(formatted).toContain('filename: test.js');
             expect(formatted).toContain('line: 10');
             expect(formatted).toContain('column: 5');
@@ -308,7 +308,7 @@ describe('ErrorNotificationSystem', () => {
             // 復旧状況表示用のDOM要素を作成
             const statusElement = document.createElement('div');
             statusElement.id = 'recovery-status-test-id';
-            document.body.appendChild(statusElement;
+            document.body.appendChild(statusElement);
 
             errorSystem.showRecoveryStatus('test-id', 'attempting');
             expect(statusElement.innerHTML).toContain('復旧を試行中');
@@ -329,7 +329,7 @@ describe('ErrorNotificationSystem', () => {
             ];
 
             errors.forEach(error => {
-                errorSystem.recordError(error;
+                errorSystem.recordError(error);
             });
 
             const stats = errorSystem.getErrorStatistics();
@@ -363,7 +363,7 @@ describe('ErrorNotificationSystem', () => {
                 maxErrorHistory: 50
             };
 
-            errorSystem.updateOptions(newOptions;
+            errorSystem.updateOptions(newOptions);
             
             expect(errorSystem.options.enableErrorNotifications).toBe(false);
             expect(errorSystem.options.maxErrorHistory).toBe(50);
@@ -379,7 +379,7 @@ describe('ErrorNotificationSystem', () => {
                 message: 'カスタムイベントテスト'
             };
 
-            errorSystem.dispatchErrorEvent(errorData;
+            errorSystem.dispatchErrorEvent(errorData);
             
             // dispatchEventが呼ばれたことを確認
             expect(dispatchEventSpy).toHaveBeenCalledWith(
@@ -418,7 +418,7 @@ describe('ErrorNotificationSystem', () => {
                 message: 'Test error'
             };
 
-            errorSystem.handleError(errorData;
+            errorSystem.handleError(errorData);
             
             // エラー通知が無効の場合、履歴に記録されない
             expect(errorSystem.errorHistory.length).toBe(0);
@@ -457,8 +457,8 @@ describe('ErrorNotificationSystem', () => {
                 timestamp: Date.now()
             };
 
-            errorSystem.showErrorNotification(criticalError;
-            errorSystem.showErrorNotification(warningError;
+            errorSystem.showErrorNotification(criticalError);
+            errorSystem.showErrorNotification(warningError);
 
             // 両方の通知が表示されることを確認
             expect(document.querySelector('[data-error-id="warning-test"]')).toBeTruthy();

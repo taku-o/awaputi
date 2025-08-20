@@ -8,7 +8,7 @@ import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globa
 global.jest = {
     fn: (impl) => {
         const mockFn = function(...args) {
-            mockFn.mock.calls.push(args;
+            mockFn.mock.calls.push(args);
             mockFn.mock.results.push({ type: 'return', value: impl ? impl(...args) : undefined });
             return impl ? impl(...args) : undefined;
         };
@@ -99,7 +99,7 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
     beforeEach(async () => {
         const { UserInfoScene } = await import('../../src/scenes/UserInfoScene.js');
         gameEngine = new MockGameEngine();
-        userInfoScene = new UserInfoScene(gameEngine;
+        userInfoScene = new UserInfoScene(gameEngine);
     });
     
     afterEach(() => {
@@ -223,7 +223,7 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
                 clientY: userInfoScene.headerHeight - userInfoScene.tabHeight / 2
             };
             
-            userInfoScene.handleClick(event;
+            userInfoScene.handleClick(event);
             
             // タブが切り替わることを確認
             expect(['statistics', 'achievements', 'management', 'help']).toContain(userInfoScene.currentTab);
@@ -237,7 +237,7 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
                 clientY: gameEngine.canvas.height - 45
             };
             
-            userInfoScene.handleClick(event;
+            userInfoScene.handleClick(event);
             
             expect(gameEngine.sceneManager.switchScene).toHaveBeenCalledWith('menu');
         });
@@ -252,7 +252,7 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
             
             // エラーが発生しないことを確認
             expect(() => {
-                userInfoScene.handleClick(event;
+                userInfoScene.handleClick(event);
             }).not.toThrow();
         });
     });
@@ -267,7 +267,7 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
                 preventDefault: global.jest.fn()
             };
             
-            userInfoScene.handleKeyPress(event;
+            userInfoScene.handleKeyPress(event);
             
             expect(event.preventDefault).toHaveBeenCalled();
             expect(userInfoScene.focusedElement).toBeGreaterThanOrEqual(0);
@@ -282,7 +282,7 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
                 preventDefault: global.jest.fn()
             };
             
-            userInfoScene.handleKeyPress(event;
+            userInfoScene.handleKeyPress(event);
             
             expect(userInfoScene.currentTab).toBe('achievements');
         });
@@ -295,7 +295,7 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
                 preventDefault: global.jest.fn()
             };
             
-            userInfoScene.handleKeyPress(event;
+            userInfoScene.handleKeyPress(event);
             
             expect(gameEngine.sceneManager.switchScene).toHaveBeenCalledWith('menu');
         });
@@ -307,7 +307,7 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
             const context = createMockContext();
             
             expect(() => {
-                userInfoScene.render(context;
+                userInfoScene.render(context);
             }).not.toThrow();
             
             // 基本的な描画が行われることを確認
@@ -320,10 +320,10 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
             const context = createMockContext();
             
             ['statistics', 'achievements', 'management', 'help'].forEach(tab => {
-                userInfoScene.switchTab(tab;
+                userInfoScene.switchTab(tab);
                 
                 expect(() => {
-                    userInfoScene.render(context;
+                    userInfoScene.render(context);
                 }).not.toThrow();
             });
         });
@@ -333,7 +333,7 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
             userInfoScene.setErrorMessage('Test error');
             
             const context = createMockContext();
-            userInfoScene.render(context;
+            userInfoScene.render(context);
             
             // エラーメッセージが描画される
             expect(context.fillText).toHaveBeenCalledWith(
@@ -402,7 +402,7 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
             userInfoScene.lastDataUpdate = Date.now() - 6000;
             userInfoScene.update(16);
             
-            expect(gameEngine.playerData.getData.mock.calls.length).toBeGreaterThan(initialCallCount;
+            expect(gameEngine.playerData.getData.mock.calls.length).toBeGreaterThan(initialCallCount);
         });
         
         test('should update active components', () => {

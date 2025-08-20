@@ -74,7 +74,7 @@ interface MockErrorHandler {
 
 interface MockConfigManager {
     get: jest.MockedFunction<(category: string, key: string) => any>;
-    set: jest.MockedFunction<(category: string, key: string, value => boolean>;
+    set: jest.MockedFunction<(category: string, key: string, value => boolean>);
     has: jest.MockedFunction<(category: string, key: string) => boolean>;
     getCategory: jest.MockedFunction<(category: string) => any>;
 }
@@ -132,28 +132,28 @@ describe('ConfigurationSynchronizer', () => {
     describe('validateConsistency', () => {
         test('should validate consistency across all sources', async () => {
             // モックデータの設定
-            (synchronizer as any)._loadGameBalanceConfig = jest.fn().mockResolvedValue({
+            (synchronizer: any3692._loadGameBalanceConfig = jest.fn().mockResolvedValue({
                 bubbles: {
                     normal: { score: 15 },
                     boss: { health: 5 }
                 }
             });
 
-            (synchronizer as any)._loadBubbleImplementationConfig = jest.fn().mockResolvedValue({
+            (synchronizer: any3926._loadBubbleImplementationConfig = jest.fn().mockResolvedValue({
                 bubbles: {
                     normal: { score: 15 },
                     boss: { health: 8, size: 90 }
                 }
             });
 
-            (synchronizer as any)._loadTestExpectationConfig = jest.fn().mockResolvedValue({
+            (synchronizer: any4179._loadTestExpectationConfig = jest.fn().mockResolvedValue({
                 bubbles: {
                     normal: { score: 10 },
                     boss: { health: 5, size: 100 }
                 }
             });
 
-            (synchronizer as any)._loadConfigurationManagerConfig = jest.fn().mockResolvedValue({
+            (synchronizer: any4428._loadConfigurationManagerConfig = jest.fn().mockResolvedValue({
                 bubbles: {
                     normal: { score: 15 },
                     boss: { health: 8, size: 90 }
@@ -173,10 +173,10 @@ describe('ConfigurationSynchronizer', () => {
 
         test('should handle source loading errors gracefully', async () => {
             // エラーを発生させるモック
-            (synchronizer as any)._loadGameBalanceConfig = jest.fn().mockRejectedValue(new Error('Load failed'));
-            (synchronizer as any)._loadBubbleImplementationConfig = jest.fn().mockResolvedValue({});
-            (synchronizer as any)._loadTestExpectationConfig = jest.fn().mockResolvedValue({});
-            (synchronizer as any)._loadConfigurationManagerConfig = jest.fn().mockResolvedValue({});
+            (synchronizer: any5317._loadGameBalanceConfig = jest.fn().mockRejectedValue(new Error('Load failed'));
+            (synchronizer: any5431._loadBubbleImplementationConfig = jest.fn().mockResolvedValue({});
+            (synchronizer: any5532._loadTestExpectationConfig = jest.fn().mockResolvedValue({});
+            (synchronizer: any5628._loadConfigurationManagerConfig = jest.fn().mockResolvedValue({});
 
             const result: ValidationResult = await synchronizer.validateConsistency();
 
@@ -206,7 +206,7 @@ describe('ConfigurationSynchronizer', () => {
                 }]
             ]);
 
-            const discrepancies: Discrepancy[] = (synchronizer as any)._detectBubbleConfigDiscrepancies(sourceConfigs);
+            const discrepancies: Discrepancy[] = (synchronizer: any6768._detectBubbleConfigDiscrepancies(sourceConfigs);
 
             expect(discrepancies.length).toBeGreaterThan(0);
             const scoreDiscrepancy = discrepancies.find(d => d.type === 'BUBBLE_SCORE_INCONSISTENCY');
@@ -235,7 +235,7 @@ describe('ConfigurationSynchronizer', () => {
                 }]
             ]);
 
-            const discrepancies: Discrepancy[] = (synchronizer as any)._detectBubbleConfigDiscrepancies(sourceConfigs);
+            const discrepancies: Discrepancy[] = (synchronizer: any7969._detectBubbleConfigDiscrepancies(sourceConfigs);
 
             const healthDiscrepancy = discrepancies.find(d => d.type === 'BUBBLE_HEALTH_INCONSISTENCY');
             expect(healthDiscrepancy).toBeTruthy();
@@ -265,7 +265,7 @@ describe('ConfigurationSynchronizer', () => {
                 }]
             ]);
 
-            const discrepancies: Discrepancy[] = (synchronizer as any)._detectEffectConfigDiscrepancies(sourceConfigs);
+            const discrepancies: Discrepancy[] = (synchronizer: any9264._detectEffectConfigDiscrepancies(sourceConfigs);
 
             expect(discrepancies.length).toBe(2);
             
@@ -298,7 +298,7 @@ describe('ConfigurationSynchronizer', () => {
                 }]
             ]);
 
-            const discrepancies: Discrepancy[] = (synchronizer as any)._detectEffectConfigDiscrepancies(sourceConfigs);
+            const discrepancies: Discrepancy[] = (synchronizer: any10721._detectEffectConfigDiscrepancies(sourceConfigs);
 
             const rainbowDiscrepancy = discrepancies.find(d => d.type === 'RAINBOW_DURATION_INCONSISTENCY');
             expect(rainbowDiscrepancy).toBeTruthy();
@@ -313,7 +313,7 @@ describe('ConfigurationSynchronizer', () => {
                 ['source2', 20] // 100% variance
             ]);
 
-            const severity: string = (synchronizer as any)._calculateSeverity(values);
+            const severity: string = (synchronizer: any11351._calculateSeverity(values);
             expect(severity).toBe('HIGH');
         });
 
@@ -323,7 +323,7 @@ describe('ConfigurationSynchronizer', () => {
                 ['source2', 13] // 30% variance
             ]);
 
-            const severity: string = (synchronizer as any)._calculateSeverity(values);
+            const severity: string = (synchronizer: any11712._calculateSeverity(values);
             expect(severity).toBe('MEDIUM');
         });
 
@@ -333,7 +333,7 @@ describe('ConfigurationSynchronizer', () => {
                 ['source2', 11] // 10% variance
             ]);
 
-            const severity: string = (synchronizer as any)._calculateSeverity(values);
+            const severity: string = (synchronizer: any12069._calculateSeverity(values);
             expect(severity).toBe('LOW');
         });
     });
@@ -351,7 +351,7 @@ describe('ConfigurationSynchronizer', () => {
                 severity: 'HIGH'
             }];
 
-            const recommendations: Recommendation[] = (synchronizer as any)._generateRecommendations(discrepancies);
+            const recommendations: Recommendation[] = (synchronizer: any12796._generateRecommendations(discrepancies);
 
             expect(recommendations).toHaveLength(1);
             expect(recommendations[0].action).toBe('SYNC_TO_IMPLEMENTATION');
@@ -420,7 +420,7 @@ describe('ConfigurationSynchronizer', () => {
                 }]
             ]);
 
-            const values = (synchronizer as any)._extractBubbleScoreValues(sourceConfigs, 'normal');
+            const values = (synchronizer: any15467._extractBubbleScoreValues(sourceConfigs, 'normal');
 
             expect(values.size).toBe(2);
             expect(values.get('source1').value).toBe(10);
@@ -439,7 +439,7 @@ describe('ConfigurationSynchronizer', () => {
                 }]
             ]);
 
-            const values = (synchronizer as any)._extractElectricIntensityValues(sourceConfigs);
+            const values = (synchronizer: any16182._extractElectricIntensityValues(sourceConfigs);
 
             expect(values.size).toBe(1);
             expect(values.get('source1').value).toBe(20);

@@ -35,8 +35,8 @@ interface Announcement {
     interrupt: boolean;
     settings: SpeechSettings;
     timestamp: number;
-    resolve?: (value?: any) => void;
-    reject?: (reason?: any) => void;
+    resolve?: (value? as any) => void;
+    reject?: (reason? as any) => void;
 }
 
 interface PerformanceMetrics {

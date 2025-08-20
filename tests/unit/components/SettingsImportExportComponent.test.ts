@@ -15,7 +15,7 @@ interface MockGameEngine {
     version: string;
     settingsManager: {
         get: jest.Mock<(key: string) => any>;
-        set: jest.Mock<(key: string, value => void>;
+        set: jest.Mock<(key: string, value => void>);
     } | null;
     sceneManager: {
         currentScene: {

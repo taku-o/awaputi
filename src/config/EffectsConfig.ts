@@ -367,7 +367,7 @@ export class EffectsConfig {
         
         this.configManager.setValidationRule('effects', 'animations.easing', {
             type: 'string',
-            validator: (value: any) => ['linear', 'easeIn', 'easeOut', 'easeInOut', 'easeOutBounce'].includes(value)
+            validator: (value as any) => ['linear', 'easeIn', 'easeOut', 'easeInOut', 'easeOutBounce'].includes(value)
         });
         
         this.configManager.setValidationRule('effects', 'animations.enabled', {
@@ -377,7 +377,7 @@ export class EffectsConfig {
         // 品質設定の検証ルール
         this.configManager.setValidationRule('effects', 'quality.level', {
             type: 'string',
-            validator: (value: any) => ['low', 'medium', 'high', 'ultra'].includes(value)
+            validator: (value as any) => ['low', 'medium', 'high', 'ultra'].includes(value)
         });
         
         this.configManager.setValidationRule('effects', 'quality.autoAdjust', {

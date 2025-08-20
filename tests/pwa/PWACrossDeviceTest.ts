@@ -184,21 +184,21 @@ export class PWACrossDeviceTest {
             if (deviceType === currentDevice.type) {
                 const deviceResults = await this.runDeviceSpecificTests(deviceType, deviceProfile, currentDevice);
                 results.details.push(...deviceResults);
-                results.summary.deviceResults[deviceType] = this.summarizeResults(deviceResults: any);
+                results.summary.deviceResults[deviceType] = this.summarizeResults(deviceResults: any6319;
             }
         }
         
         // ブラウザ別テスト
         const browserResults = await this.runBrowserSpecificTests(currentBrowser.name, currentBrowser);
         results.details.push(...browserResults);
-        results.summary.browserResults[currentBrowser.name] = this.summarizeResults(browserResults: any);
+        results.summary.browserResults[currentBrowser.name] = this.summarizeResults(browserResults: any6632;
         
         // レスポンシブテスト
         const responsiveResults = await this.runResponsiveTests();
         results.details.push(...responsiveResults);
         
         // タッチ・キーボードテスト
-        const interactionResults = await this.runInteractionTests(currentDevice: any);
+        const interactionResults = await this.runInteractionTests(currentDevice: any6904;
         results.details.push(...interactionResults);
         
         // 結果集計
@@ -223,7 +223,7 @@ export class PWACrossDeviceTest {
         for (const viewport of deviceProfile.viewports) {
             if (this.isViewportMatching(viewport, currentDevice)) {
                 const viewportResult = await this.testViewport(viewport, deviceType);
-                results.push(viewportResult: any);
+                results.push(viewportResult: any7869;
             }
         }
         
@@ -249,16 +249,16 @@ export class PWACrossDeviceTest {
         // ブラウザ機能サポートテスト
         for (const [feature, expected] of Object.entries(browserProfile.features)) {
             const featureResult = await this.testBrowserFeature(feature, expected, browserName);
-            results.push(featureResult: any);
+            results.push(featureResult: any8766;
         }
         
         // インストールメカニズムテスト
         const installResult = await this.testInstallMechanism(browserProfile.installMechanism, browserName);
-        results.push(installResult: any);
+        results.push(installResult: any8964;
         
         // PWAサポートレベルテスト
         const supportResult = await this.testPWASupport(browserProfile.pwaSupport, browserName);
-        results.push(supportResult: any);
+        results.push(supportResult: any9139;
         
         return results;
     }
@@ -278,8 +278,8 @@ export class PWACrossDeviceTest {
         ];
         
         for (const viewport of testViewports) {
-            const result = await this.testViewportAdaptation(viewport: any);
-            results.push(result: any);
+            const result = await this.testViewportAdaptation(viewport: any9797;
+            results.push(result: any9840;
         }
         
         return results;
@@ -288,7 +288,7 @@ export class PWACrossDeviceTest {
     /**
      * インタラクションテスト
      */
-    async runInteractionTests(currentDevice: any) {
+    async runInteractionTests(currentDevice: any9975 {
         console.log('[PWACrossDeviceTest] インタラクションテスト開始');
         
         const results: any[] = [];
@@ -368,12 +368,12 @@ export class PWACrossDeviceTest {
         
         // タッチ機能テスト
         if (features.touch) {
-            results.push(await this.testTouchSupport(deviceType: any));
+            results.push(await this.testTouchSupport(deviceType: any12753);
         }
         
         // 画面向き変更テスト
         if (features.orientation) {
-            results.push(await this.testOrientationSupport(deviceType: any));
+            results.push(await this.testOrientationSupport(deviceType: any12909);
         }
         
         // デバイスピクセル比テスト
@@ -385,7 +385,7 @@ export class PWACrossDeviceTest {
     /**
      * タッチサポートテスト
      */
-    async testTouchSupport(deviceType: any) {
+    async testTouchSupport(deviceType: any13172 {
         const testName = 'Touch Support Test';
         
         try {
@@ -418,7 +418,7 @@ export class PWACrossDeviceTest {
     /**
      * 画面向き変更テスト
      */
-    async testOrientationSupport(deviceType: any) {
+    async testOrientationSupport(deviceType: any14195 {
         const testName = 'Orientation Support Test';
         
         try {
@@ -468,8 +468,8 @@ export class PWACrossDeviceTest {
         
         try {
             const currentRatio = window.devicePixelRatio || 1;
-            const ratioMatches = expectedRatios.includes(Math.floor(currentRatio: any)) || 
-                               expectedRatios.includes(Math.ceil(currentRatio: any));
+            const ratioMatches = expectedRatios.includes(Math.floor(currentRatio: any16083) || 
+                               expectedRatios.includes(Math.ceil(currentRatio: any16174);
             
             return {
                 id: 'device-pixel-ratio',
@@ -725,7 +725,7 @@ export class PWACrossDeviceTest {
         
         const pattern = patterns[browserName];
         if (pattern) {
-            const match = userAgent.match(pattern: any);
+            const match = userAgent.match(pattern: any23704;
             return match ? match[1] : 'unknown';
         }
         
@@ -745,7 +745,7 @@ export class PWACrossDeviceTest {
     /**
      * 結果要約
      */
-    summarizeResults(results: any) {
+    summarizeResults(results: any24183 {
         const total = results.length;
         const passed = results.filter(r => r.status === 'passed').length;
         const failed = results.filter(r => r.status === 'failed').length;
@@ -763,12 +763,12 @@ export class PWACrossDeviceTest {
     /**
      * テストレポート生成
      */
-    generateCrossDeviceReport(results: any) {
+    generateCrossDeviceReport(results: any24753 {
         return {
             summary: results.summary,
-            deviceCompatibility: this.analyzeDeviceCompatibility(results: any),
-            browserCompatibility: this.analyzeBrowserCompatibility(results: any),
-            recommendations: this.generateCrossDeviceRecommendations(results: any),
+            deviceCompatibility: this.analyzeDeviceCompatibility(results: any24891,
+            browserCompatibility: this.analyzeBrowserCompatibility(results: any24975,
+            recommendations: this.generateCrossDeviceRecommendations(results: any25061,
             details: results.details
         };
     }
@@ -776,7 +776,7 @@ export class PWACrossDeviceTest {
     /**
      * デバイス互換性分析
      */
-    analyzeDeviceCompatibility(results: any) {
+    analyzeDeviceCompatibility(results: any25201 {
         const deviceAnalysis: Record<string, any> = {};
         
         for (const [deviceType, deviceResult] of Object.entries(results.summary.deviceResults)) {
@@ -797,7 +797,7 @@ export class PWACrossDeviceTest {
     /**
      * ブラウザ互換性分析
      */
-    analyzeBrowserCompatibility(results: any) {
+    analyzeBrowserCompatibility(results: any26014 {
         const browserAnalysis: Record<string, any> = {};
         
         for (const [browserName, browserResult] of Object.entries(results.summary.browserResults)) {
@@ -823,11 +823,11 @@ export class PWACrossDeviceTest {
     /**
      * クロスデバイス推奨事項生成
      */
-    generateCrossDeviceRecommendations(results: any) {
+    generateCrossDeviceRecommendations(results: any27137 {
         const recommendations: any[] = [];
         
         // デバイス別推奨事項
-        for (const [deviceType, analysis] of Object.entries(this.analyzeDeviceCompatibility(results: any))) {
+        for (const [deviceType, analysis] of Object.entries(this.analyzeDeviceCompatibility(results: any27320)) {
             if (analysis.compatibility === 'poor') {
                 recommendations.push({
                     category: 'device-compatibility',
@@ -840,7 +840,7 @@ export class PWACrossDeviceTest {
         }
         
         // ブラウザ別推奨事項
-        for (const [browserName, analysis] of Object.entries(this.analyzeBrowserCompatibility(results: any))) {
+        for (const [browserName, analysis] of Object.entries(this.analyzeBrowserCompatibility(results: any27842)) {
             if (analysis.unsupportedFeatures.length > 0) {
                 recommendations.push({
                     category: 'browser-compatibility',

@@ -64,7 +64,7 @@ describe('Phase G End-to-End統合テスト', () => {
                 const adjuster = new BalanceAdjuster();
                 
                 // 基本プロパティの存在確認
-                expect(adjuster.toBeDefined();
+                expect(adjuster.toBeDefined());
                 expect(adjuster.dataLoader).toBeDefined();
                 expect(adjuster.calculator).toBeDefined();
                 expect(adjuster.validator).toBeDefined();
@@ -111,8 +111,8 @@ describe('Phase G End-to-End統合テスト', () => {
                 
                 for (const componentPath of components) {
                     try {
-                        const component = await import(componentPath;
-                        loadedComponents.push(component;
+                        const component = await import(componentPath);
+                        loadedComponents.push(component);
                         console.log(`✅ コンポーネント読み込み成功: ${componentPath}`);
                     } catch (error) {
                         console.warn(`⚠️ コンポーネント読み込み失敗: ${componentPath} - ${error.message}`);
@@ -133,7 +133,7 @@ describe('Phase G End-to-End統合テスト', () => {
                     exporter: { saveChanges: jest.fn() }
                 };
                 
-                expect(Object.keys(mockComponents).toHaveLength(4);
+                expect(Object.keys(mockComponents).toHaveLength(4));
             }
         });
     });
@@ -153,10 +153,10 @@ describe('Phase G End-to-End統合テスト', () => {
                 };
                 
                 // インスタンス作成
-                const support = new AudioAccessibilitySupport(mockAudioManager;
+                const support = new AudioAccessibilitySupport(mockAudioManager);
                 
                 // 基本プロパティの存在確認
-                expect(support.toBeDefined();
+                expect(support.toBeDefined());
                 expect(support.audioManager).toBe(mockAudioManager);
                 expect(support.descriptionManager).toBeDefined();
                 expect(support.cueManager).toBeDefined();
@@ -165,7 +165,7 @@ describe('Phase G End-to-End統合テスト', () => {
                 
                 // 初期化テスト
                 const initResult = await support.initialize();
-                expect(initResult.toBe(true);
+                expect(initResult.toBe(true));
                 
                 console.log('✅ AudioAccessibilitySupport基本動作確認完了');
                 
@@ -191,7 +191,7 @@ describe('Phase G End-to-End統合テスト', () => {
             try {
                 const { AudioAccessibilitySupport } = await import('../../src/audio/accessibility/AudioAccessibilitySupport.js');
                 const mockAudioManager = { volume: 1.0, muted: false };
-                const support = new AudioAccessibilitySupport(mockAudioManager;
+                const support = new AudioAccessibilitySupport(mockAudioManager);
                 
                 await support.initialize();
                 
@@ -202,14 +202,14 @@ describe('Phase G End-to-End統合テスト', () => {
                 
                 // 設定管理テスト
                 const settings = support.getSettings();
-                expect(settings.toBeDefined();
+                expect(settings.toBeDefined());
                 
                 await expect(support.updateSettings({})).resolves.not.toThrow();
                 
                 // ステータス確認
                 const status = support.getStatus();
-                expect(status.toHaveProperty('initialized');
-                expect(status.toHaveProperty('components');
+                expect(status.toHaveProperty('initialized'));
+                expect(status.toHaveProperty('components'));
                 
                 console.log('✅ アクセシビリティ機能統合テスト完了');
                 
@@ -252,10 +252,10 @@ describe('Phase G End-to-End統合テスト', () => {
                     let loadPath: any;
                     
                     try {
-                        system = await import(splitPath;
+                        system = await import(splitPath);
                         loadPath = splitPath;
                     } catch {
-                        system = await import(fallbackPath;
+                        system = await import(fallbackPath);
                         loadPath = fallbackPath;
                     }
                     
@@ -307,7 +307,7 @@ describe('Phase G End-to-End統合テスト', () => {
                 console.log(`✅ データフロー確認: ${flowName} (${flow.source} → ${flow.target})`);
             }
             
-            expect(Object.keys(dataFlow).toHaveLength(3);
+            expect(Object.keys(dataFlow).toHaveLength(3));
         });
         
         test('エラー伝播システムテスト', async () => {
@@ -346,7 +346,7 @@ describe('Phase G End-to-End統合テスト', () => {
                 console.log(`✅ エラーシナリオ確認: ${scenario.system} - ${scenario.expected}`);
             }
             
-            expect(errorScenarios.toHaveLength(3);
+            expect(errorScenarios.toHaveLength(3));
         });
         
         test('パフォーマンス指標統合確認', async () => {
@@ -415,7 +415,7 @@ describe('Phase G End-to-End統合テスト', () => {
                 console.log(`✅ 品質指標 ${metric}: ${data.achieved}`);
             }
             
-            expect(Object.keys(qualityMetrics).toHaveLength(4);
+            expect(Object.keys(qualityMetrics).toHaveLength(4));
             
             console.log('\n🎯 Phase G統合テスト総合評価:');
             console.log('- Main Controller Pattern導入完了');
@@ -457,7 +457,7 @@ describe('Phase G End-to-End統合テスト', () => {
             const completedPhases = Object.entries(phaseGCompletion
                 .filter(([phase, data]) => data.status === 'completed');
                 
-            expect(completedPhases.toHaveLength(4);
+            expect(completedPhases.toHaveLength(4));
             
             const totalComponents = Object.values(phaseGCompletion
                 .reduce((sum, phase) => sum + phase.components, 0);
@@ -471,7 +471,7 @@ describe('Phase G End-to-End統合テスト', () => {
             
             // Issue #103完了条件の確認
             expect(completedPhases.length).toBe(4);
-            expect(totalComponents.toBeGreaterThan(0);
+            expect(totalComponents.toBeGreaterThan(0));
         });
     });
 });

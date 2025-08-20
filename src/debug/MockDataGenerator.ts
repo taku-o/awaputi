@@ -21,15 +21,15 @@ interface ErrorHandler {
 interface MockComponent {
     initialized?: boolean;
     generate?: () => any;
-    generateBubble?: (options?: any) => MockBubble;
+    generateBubble?: (options? as any) => MockBubble;
     generateBubbles?: (count: number, options?: any) => MockBubble[];
-    generatePlayerData?: (options?: any) => MockPlayerData;
-    generateGameState?: (options?: any) => MockGameState;
+    generatePlayerData?: (options? as any) => MockPlayerData;
+    generateGameState?: (options? as any) => MockGameState;
     validateData?: (data: any, type: string) => ValidationResult;
     setErrorHandler?: (handler: ErrorHandler['handleComponentError']) => void;
     initialize?: () => Promise<void> | void;
     cleanup?: () => void;
-    generateBubbleProperties?: (template: any) => any;
+    generateBubbleProperties?: (template as any) => any;
     getBubbleColor?: (type?: string | null) => string;
     addBubbleVariations?: (bubble: MockBubble) => MockBubble;
     generateActiveEffects?: () => any[];
@@ -40,9 +40,9 @@ interface MockComponent {
     generatePlayerSettings?: () => any;
     generatePlayerInventory?: () => any;
     generateAchievements?: () => any[];
-    generatePerformanceMetrics?: (options?: any) => any;
+    generatePerformanceMetrics?: (options? as any) => any;
     generateMassGameStates?: (count: number, options?: any) => MockGameState[];
-    generateStressTestData?: (options?: any) => any;
+    generateStressTestData?: (options? as any) => any;
     generateErrorScenario?: () => any;
     generatePerformanceScenario?: () => any;
     generateEdgeCaseScenario?: () => any;

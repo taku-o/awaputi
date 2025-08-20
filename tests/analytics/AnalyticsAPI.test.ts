@@ -9,7 +9,7 @@ class MockStorageManager {
     }
     
     async getData(dataType, query = {}) {
-        const data = this.data.get(dataType || [];
+        const data = this.data.get(dataType || []);
         let filteredData = [...data];
         
         // フィルタリング処理
@@ -56,9 +56,9 @@ class MockStorageManager {
 
 // Mock Privacy Manager
 class MockPrivacyManager {
-    async anonymizeData(data: any) {
+    async anonymizeData(data: any1731 {
         // 簡単な匿名化処理
-        const anonymized = JSON.parse(JSON.stringify(data);
+        const anonymized = JSON.parse(JSON.stringify(data));
         
         if (anonymized.data && Array.isArray(anonymized.data)) {
             anonymized.data.forEach(record => {
@@ -183,7 +183,7 @@ describe('AnalyticsAPI', () => {
             // エンドポイント一覧取得機能を確認
             if (typeof analyticsAPI.getEndpoints === 'function') {
                 const endpoints = analyticsAPI.getEndpoints();
-                expect(Array.isArray(endpoints).toBe(true);
+                expect(Array.isArray(endpoints).toBe(true));
             } else {
                 // endpointManagerでエンドポイント管理が行われる場合
                 expect(analyticsAPI.endpointManager).toBeDefined();
@@ -322,7 +322,7 @@ describe('AnalyticsAPI', () => {
                 }
             };
             
-            const result = await analyticsAPI.getAggregatedData(aggregationRules;
+            const result = await analyticsAPI.getAggregatedData(aggregationRules);
             
             expect(result.success).toBe(true);
             expect(result.data).toBeDefined();
@@ -338,7 +338,7 @@ describe('AnalyticsAPI', () => {
                 }
             };
             
-            const result = await analyticsAPI.getAggregatedData(aggregationRules;
+            const result = await analyticsAPI.getAggregatedData(aggregationRules);
             
             expect(result.success).toBe(true);
             expect(result.data).toBeDefined();
@@ -353,7 +353,7 @@ describe('AnalyticsAPI', () => {
                 }
             };
             
-            const result = await analyticsAPI.getAggregatedData(aggregationRules;
+            const result = await analyticsAPI.getAggregatedData(aggregationRules);
             
             expect(result.success).toBe(true);
         });
@@ -368,7 +368,7 @@ describe('AnalyticsAPI', () => {
                 }
             };
             
-            const result = await analyticsAPI.getAggregatedData(aggregationRules;
+            const result = await analyticsAPI.getAggregatedData(aggregationRules);
             
             expect(result.success).toBe(true);
             expect(result.data).toEqual([]);
@@ -547,7 +547,7 @@ describe('AnalyticsAPI', () => {
                 getData: jest.fn().mockRejectedValue(new Error('Storage error'))
             };
             
-            const errorAPI = new AnalyticsAPI(errorStorageManager;
+            const errorAPI = new AnalyticsAPI(errorStorageManager);
             
             const result = await errorAPI.getData('/sessions');
             
@@ -561,7 +561,7 @@ describe('AnalyticsAPI', () => {
                 getData: jest.fn().mockRejectedValue(new Error('Aggregation error'))
             };
             
-            const errorAPI = new AnalyticsAPI(errorStorageManager;
+            const errorAPI = new AnalyticsAPI(errorStorageManager);
             
             const result = await errorAPI.getAggregatedData({
                 dataType: 'sessionData'
@@ -629,7 +629,7 @@ describe('AnalyticsAPI', () => {
                 }
             };
             
-            const result = await analyticsAPI.getAdvancedAggregatedData(aggregationRules;
+            const result = await analyticsAPI.getAdvancedAggregatedData(aggregationRules);
             
             expect(result.success).toBe(true);
             expect(result.data.summary).toBeDefined();
@@ -646,7 +646,7 @@ describe('AnalyticsAPI', () => {
                 }
             };
             
-            const result = await analyticsAPI.getAdvancedAggregatedData(aggregationRules;
+            const result = await analyticsAPI.getAdvancedAggregatedData(aggregationRules);
             
             expect(result.success).toBe(true);
             expect(result.data.details.bubbleInteractions.groups).toBeDefined();
@@ -662,7 +662,7 @@ describe('AnalyticsAPI', () => {
                 }
             };
             
-            const result = await analyticsAPI.getAdvancedAggregatedData(aggregationRules;
+            const result = await analyticsAPI.getAdvancedAggregatedData(aggregationRules);
             
             expect(result.success).toBe(true);
         });
@@ -674,12 +674,12 @@ describe('AnalyticsAPI', () => {
             };
             
             // 最初のリクエスト
-            const result1 = await analyticsAPI.getAdvancedAggregatedData(aggregationRules;
+            const result1 = await analyticsAPI.getAdvancedAggregatedData(aggregationRules);
             expect(result1.success).toBe(true);
             expect(result1.metadata.cached).toBe(false);
             
             // 2回目のリクエスト（キャッシュから取得）
-            const result2 = await analyticsAPI.getAdvancedAggregatedData(aggregationRules;
+            const result2 = await analyticsAPI.getAdvancedAggregatedData(aggregationRules);
             expect(result2.success).toBe(true);
             expect(result2.metadata.cached).toBe(true);
         });
@@ -700,7 +700,7 @@ describe('AnalyticsAPI', () => {
                 fillGaps: true
             };
             
-            const result = await analyticsAPI.getTimeSeriesAggregation(timeSeriesRules;
+            const result = await analyticsAPI.getTimeSeriesAggregation(timeSeriesRules);
             
             expect(result.success).toBe(true);
             expect(Array.isArray(result.data)).toBe(true);
@@ -716,7 +716,7 @@ describe('AnalyticsAPI', () => {
                 endDate: '2022-01-01T23:59:59Z'
             };
             
-            const result = await analyticsAPI.getTimeSeriesAggregation(timeSeriesRules;
+            const result = await analyticsAPI.getTimeSeriesAggregation(timeSeriesRules);
             
             expect(result.success).toBe(true);
             if (result.data.length > 0) {
@@ -734,7 +734,7 @@ describe('AnalyticsAPI', () => {
                 fillGaps: true
             };
             
-            const result = await analyticsAPI.getTimeSeriesAggregation(timeSeriesRules;
+            const result = await analyticsAPI.getTimeSeriesAggregation(timeSeriesRules);
             
             expect(result.success).toBe(true);
             // ギャップが埋められているかは実データに依存するためここでは基本動作のみテスト
@@ -750,7 +750,7 @@ describe('AnalyticsAPI', () => {
                 endDate: '2022-01-03T00:00:00Z'
             };
             
-            const result = await emptyAPI.getTimeSeriesAggregation(timeSeriesRules;
+            const result = await emptyAPI.getTimeSeriesAggregation(timeSeriesRules);
             
             expect(result.success).toBe(true);
             expect(result.data).toEqual([]);
@@ -770,7 +770,7 @@ describe('AnalyticsAPI', () => {
             // 条件評価メソッドの存在を確認（実装細定は実装コンポーネントに依存）
             if (typeof analyticsAPI.evaluateCondition === 'function') {
                 // 基本的な条件評価の動作確認
-                expect(typeof analyticsAPI.evaluateCondition(condition1).toBe('boolean');
+                expect(typeof analyticsAPI.evaluateCondition(condition1).toBe('boolean'));
             } else {
                 // aggregationProcessorを通じて条件評価が行われる場合
                 expect(analyticsAPI.aggregationProcessor).toBeDefined();
@@ -836,7 +836,7 @@ describe('AnalyticsAPI', () => {
             
             // グループ数カウントメソッドの存在と動作を確認
             if (typeof analyticsAPI.countTotalGroups === 'function') {
-                expect(analyticsAPI.countTotalGroups(result).toBe(5);
+                expect(analyticsAPI.countTotalGroups(result).toBe(5));
             } else {
                 // aggregationProcessorでグループ数カウントが行われる場合
                 expect(analyticsAPI.aggregationProcessor).toBeDefined();
@@ -919,7 +919,7 @@ describe('AnalyticsAPI', () => {
             // エクスポート形式情報をexportHandlerまたはAnalyticsAPIから取得
             if (typeof analyticsAPI.getSupportedExportFormats === 'function') {
                 const formats = analyticsAPI.getSupportedExportFormats();
-                expect(Array.isArray(formats).toBe(true);
+                expect(Array.isArray(formats).toBe(true));
                 expect(formats.length).toBeGreaterThan(0);
             } else {
                 // exportHandlerを通じてエクスポート形式が管理される場合
@@ -931,7 +931,7 @@ describe('AnalyticsAPI', () => {
             // エクスポート可能データタイプ情報を取得
             if (typeof analyticsAPI.getSupportedExportDataTypes === 'function') {
                 const dataTypes = analyticsAPI.getSupportedExportDataTypes();
-                expect(Array.isArray(dataTypes).toBe(true);
+                expect(Array.isArray(dataTypes).toBe(true));
                 expect(dataTypes.length).toBeGreaterThan(0);
             } else {
                 // exportHandlerがデータタイプを管理する場合

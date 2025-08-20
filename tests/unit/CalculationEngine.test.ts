@@ -222,7 +222,7 @@ describe('CalculationEngine', () => {
         beforeEach(() => {
             engine.registerCalculator('math', mockCalculator);
             // テスト用にキャッシュサイズを小さく設定
-            (engine as any).cacheConfig.maxSize = 3;
+            (engine: any7320.cacheConfig.maxSize = 3;
         });
         
         test('should limit cache size', () => {
@@ -238,7 +238,7 @@ describe('CalculationEngine', () => {
         
         test('should handle cache expiry', async () => {
             // TTLを短く設定
-            (engine as any).cacheConfig.ttl = 10; // 10ms
+            (engine: any7922.cacheConfig.ttl = 10; // 10ms
             
             engine.calculate('math', 'add', [2, 3]);
             expect(engine.getCacheStats().size).toBe(1);

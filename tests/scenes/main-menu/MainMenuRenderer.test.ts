@@ -39,7 +39,7 @@ describe('MainMenuRenderer', () => {
             }
         };
         
-        renderer = new MainMenuRenderer(mockGameEngine;
+        renderer = new MainMenuRenderer(mockGameEngine);
     });
     
     describe('コンストラクタ', () => {
@@ -53,7 +53,7 @@ describe('MainMenuRenderer', () => {
     describe('updateCoordinateCalculator', () => {
         test('初回呼び出しで新しいCoordinateCalculatorが作成される', () => {
             renderer.updateCoordinateCalculator();
-            expect(renderer.coordinateCalculator).toBeInstanceOf(CoordinateCalculator;
+            expect(renderer.coordinateCalculator).toBeInstanceOf(CoordinateCalculator);
             expect(renderer.coordinateCalculator.canvasWidth).toBe(1920);
             expect(renderer.coordinateCalculator.canvasHeight).toBe(1080);
         });
@@ -145,7 +145,7 @@ describe('MainMenuRenderer', () => {
             renderer.renderMainMenu(mockContext, 0, mockMenuItems);
             
             expect(renderer.renderMenuItems).toHaveBeenCalledWith(mockContext, 0, mockMenuItems);
-            expect(renderer.renderControls).toHaveBeenCalledWith(mockContext;
+            expect(renderer.renderControls).toHaveBeenCalledWith(mockContext);
         });
         
         test('エラー発生時もCanvas状態を復元する', () => {
@@ -197,9 +197,9 @@ describe('MainMenuRenderer', () => {
             mockContext.fillStyle = '';
             Object.defineProperty(mockContext, 'fillStyle', {
                 get() { return this._fillStyle; },
-                set(value: any) {
+                set(value: any6973 {
                     this._fillStyle = value;
-                    fillStyleCalls.push(value;
+                    fillStyleCalls.push(value);
                 }
             });
             
@@ -214,7 +214,7 @@ describe('MainMenuRenderer', () => {
     describe('renderControls', () => {
         test('操作説明を画面下部に描画する', () => {
             renderer.updateCoordinateCalculator();
-            renderer.renderControls(mockContext;
+            renderer.renderControls(mockContext);
             
             expect(mockContext.fillText).toHaveBeenCalledWith(
                 '↑↓: 選択  Enter: 決定  ESC: 終了',
@@ -234,7 +234,7 @@ describe('MainMenuRenderer', () => {
             const saveCallsBefore = mockContext.save.mock.calls.length;
             const restoreCallsBefore = mockContext.restore.mock.calls.length;
             
-            renderer.renderControls(mockContext;
+            renderer.renderControls(mockContext);
             
             expect(mockContext.save).toHaveBeenCalledTimes(saveCallsBefore + 1);
             expect(mockContext.restore).toHaveBeenCalledTimes(restoreCallsBefore + 1);

@@ -114,7 +114,7 @@ interface ScreenshotCapture {
     generateFilename: (prefix?: string) => string;
     getQualityValue: (quality: string, format: string) => number;
     getGameCanvas: () => MockCanvas | null;
-    updateConfig: (newConfig: any) => void;
+    updateConfig: (newConfig as any) => void;
     clearHistory: () => void;
 }
 

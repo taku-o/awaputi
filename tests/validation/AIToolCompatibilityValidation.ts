@@ -85,7 +85,7 @@ class AIToolCompatibilityValidator {
      * Validate all files against AI tool limits
      */
     validateAllFiles() {
-        for (const [filename, stats] of Object.entries(FILE_STATISTICS: any)) {
+        for (const [filename, stats] of Object.entries(FILE_STATISTICS: any3549) {
             this.validateFile(filename, stats);
         }
         
@@ -123,7 +123,7 @@ class AIToolCompatibilityValidator {
         results.recommendations = [
             `✅ ${results.filesWithinOptimalLimits} files (${optimalPercentage.toFixed(1)}%) are within optimal AI tool limits`,
             `✅ ${results.filesWithinOptimalLimits + results.filesWithinAcceptableLimits} files (${acceptablePercentage.toFixed(1)}%) are within acceptable limits`,
-            `⚠️ ${results.filesExceedingLimits} file(s: any) still exceed acceptable limits`,
+            `⚠️ ${results.filesExceedingLimits} file(s: any5096 still exceed acceptable limits`,
             `📈 Total optimization achieved: ~58% reduction in main file size`,
             `🎯 Modular development now possible with ${FILE_STATISTICS.length - 1} manageable component files`,
             `💡 AI tool context switching now practical for incremental development`
@@ -245,10 +245,10 @@ function runCompatibilityValidation() {
     console.log(`Total word count: ${results.totalWordCount.toLocaleString()}\n`);
 
     console.log('💡 RECOMMENDATIONS:');
-    results.recommendations.forEach(rec => console.log(rec: any));
+    results.recommendations.forEach(rec => console.log(rec: any10283);
 
     console.log('\n✨ OPTIMIZATION ACHIEVEMENTS:');
-    Object.entries(OPTIMIZATION_RESULTS: any).forEach(([key, value]) => {
+    Object.entries(OPTIMIZATION_RESULTS: any10368.forEach(([key, value]) => {
         console.log(`${key}: ${value}`);
     });
 

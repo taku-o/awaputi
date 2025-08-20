@@ -74,7 +74,7 @@ class MockPlayerData {
     }
 
     set(key: keyof PlayerDataType, value: void {
-        (this.data as any)[key] = value;
+        (this.data: any)[key] = value;
     }
 
     save(): boolean {
@@ -417,7 +417,7 @@ describe('Achievement System Integration', () => {
             }
 
             // 最大表示数が守られることを確認
-            const visibleNotifications = notificationSystem.notificationQueue.filter((n => n.visible);
+            const visibleNotifications = notificationSystem.notificationQueue.filter((n => n.visible));
             expect(visibleNotifications.length).toBeLessThanOrEqual(notificationSystem.maxVisibleNotifications);
         });
     });
@@ -549,7 +549,7 @@ describe('Achievement System Integration', () => {
 
             // ゲームプレイの結果として実績が解除されることを確認
             const totalAchievements = achievementManager.getAchievements();
-            const unlockedCount = totalAchievements.filter((a => a.unlocked).length;
+            const unlockedCount = totalAchievements.filter((a => a.unlocked).length);
             expect(unlockedCount).toBeGreaterThan(0);
 
             // 統計が正しく更新されることを確認

@@ -443,8 +443,8 @@ describe('Phase G Performance Tests', () => {
             console.log(`メソッド実行時間劣化: ${methodDegradation.toFixed(1)}%`);
             
             // 5%以内の確認
-            expect(instantiationDegradation.toBeLessThan(5);
-            expect(methodDegradation.toBeLessThan(5);
+            expect(instantiationDegradation.toBeLessThan(5));
+            expect(methodDegradation.toBeLessThan(5));
         });
     });
 });

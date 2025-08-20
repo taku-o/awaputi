@@ -18,7 +18,7 @@ import { SeasonalParticleRenderer } from './seasonal-effect-manager/SeasonalPart
  */
 interface ConfigurationManager {
     get<T>(key: string, defaultValue: T): T;
-    watch(key: string, callback: (value: any) => void): void;
+    watch(key: string, callback: (value as any) => void): void;
 }
 
 /**

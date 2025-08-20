@@ -42,16 +42,16 @@ describe('TestDataGenerationCommands', () => {
     let testDataCommands: any;
 
     beforeEach(() => {
-        testDataCommands = new TestDataGenerationCommands(mockGameEngine;
+        testDataCommands = new TestDataGenerationCommands(mockGameEngine);
         jest.clearAllMocks();
     });
 
     describe('Constructor', () => {
         test('should initialize with correct properties', () => {
             expect(testDataCommands.gameEngine).toBe(mockGameEngine);
-            expect(testDataCommands.mockDataGenerators).toBeInstanceOf(Map;
-            expect(testDataCommands.testScenarios).toBeInstanceOf(Map;
-            expect(testDataCommands.generatedData).toBeInstanceOf(Map;
+            expect(testDataCommands.mockDataGenerators).toBeInstanceOf(Map);
+            expect(testDataCommands.testScenarios).toBeInstanceOf(Map);
+            expect(testDataCommands.generatedData).toBeInstanceOf(Map);
         });
 
         test('should initialize generators and scenarios', () => {
@@ -67,7 +67,7 @@ describe('TestDataGenerationCommands', () => {
 
     describe('registerCommands', () => {
         test('should register all test commands', () => {
-            testDataCommands.registerCommands(mockConsole;
+            testDataCommands.registerCommands(mockConsole);
 
             expect(mockConsole.register).toHaveBeenCalledTimes(10);
             
@@ -361,7 +361,7 @@ describe('TestDataGenerationCommands', () => {
                 expect(props).toHaveProperty('intensity', 15);
 
                 const normalProps = testDataCommands.getBubbleProperties('normal');
-                expect(Object.keys(normalProps).toHaveLength(0);
+                expect(Object.keys(normalProps).toHaveLength(0));
             });
         });
     });
@@ -369,7 +369,7 @@ describe('TestDataGenerationCommands', () => {
     describe('Error Handling', () => {
         test('should handle missing bubble manager gracefully', async () => {
             const mockGameEngineNoManager = { currentScene: {} };
-            const commands = new TestDataGenerationCommands(mockGameEngineNoManager;
+            const commands = new TestDataGenerationCommands(mockGameEngineNoManager);
             
             const result = await commands.generateBubblesCommand(['5'], {}, mockConsole);
             
@@ -379,7 +379,7 @@ describe('TestDataGenerationCommands', () => {
 
         test('should handle missing statistics manager gracefully', async () => {
             const mockGameEngineNoStats: Record<string, any> = {};
-            const commands = new TestDataGenerationCommands(mockGameEngineNoStats;
+            const commands = new TestDataGenerationCommands(mockGameEngineNoStats);
             
             const result = await commands.generateStatisticsCommand(['daily'], {}, mockConsole);
             
@@ -395,8 +395,8 @@ describe('TestDataGenerationCommands', () => {
 
     describe('Integration', () => {
         test('should work with DeveloperConsole', () => {
-            const console = new DeveloperConsole(mockGameEngine;
-            testDataCommands.registerCommands(console;
+            const console = new DeveloperConsole(mockGameEngine);
+            testDataCommands.registerCommands(console);
 
             expect(console.commands.has('test.bubbles')).toBe(true);
             expect(console.commands.has('test.gamestate')).toBe(true);

@@ -53,7 +53,7 @@ describe('PerformanceWarningSystem', () => {
         };
 
         // PerformanceWarningSystemを作成
-        warningSystem = new PerformanceWarningSystem(realtimeMonitor;
+        warningSystem = new PerformanceWarningSystem(realtimeMonitor);
         
         // グローバル参照を設定
         window.performanceWarningSystem = warningSystem;
@@ -96,7 +96,7 @@ describe('PerformanceWarningSystem', () => {
                 timestamp: Date.now()
             };
 
-            warningSystem.processAlert(alertData;
+            warningSystem.processAlert(alertData);
 
             expect(warningSystem.activeWarnings.has('test-alert-1')).toBe(true);
             expect(warningSystem.warningHistory.length).toBe(1);
@@ -109,7 +109,7 @@ describe('PerformanceWarningSystem', () => {
                 details: { usagePercent: 85 }
             };
 
-            warningSystem.processPerformanceWarning(warningData;
+            warningSystem.processPerformanceWarning(warningData);
 
             expect(warningSystem.activeWarnings.size).toBe(1);
             const warning = Array.from(warningSystem.activeWarnings.values())[0];
@@ -160,7 +160,7 @@ describe('PerformanceWarningSystem', () => {
                 timestamp: Date.now()
             };
 
-            warningSystem.displayVisualWarning(warningData;
+            warningSystem.displayVisualWarning(warningData);
 
             const warningElement = document.querySelector('[data-warning-id="visual-test"]');
             expect(warningElement).toBeTruthy();
@@ -178,7 +178,7 @@ describe('PerformanceWarningSystem', () => {
                 timestamp: Date.now()
             };
 
-            warningSystem.showWarning(warningData;
+            warningSystem.showWarning(warningData);
             expect(warningSystem.activeWarnings.has('dismiss-test')).toBe(true);
 
             warningSystem.dismissWarning('dismiss-test');
@@ -196,7 +196,7 @@ describe('PerformanceWarningSystem', () => {
                 timestamp: Date.now()
             };
 
-            warningSystem.showWarning(warningData;
+            warningSystem.showWarning(warningData);
             warningSystem.acknowledgeWarning('ack-test');
 
             expect(warningSystem.acknowledgements.has('ack-test')).toBe(true);
@@ -218,10 +218,10 @@ describe('PerformanceWarningSystem', () => {
                 timestamp: Date.now() + 1000 // 1秒後
             };
 
-            warningSystem.processAlert(warningData1;
+            warningSystem.processAlert(warningData1);
             expect(warningSystem.activeWarnings.size).toBe(1);
 
-            warningSystem.processAlert(warningData2;
+            warningSystem.processAlert(warningData2);
             expect(warningSystem.activeWarnings.size).toBe(1); // 重複なので増えない
         });
 
@@ -231,7 +231,7 @@ describe('PerformanceWarningSystem', () => {
             
             // オブジェクトの場合
             const details = { fps: 25, memory: 80 };
-            const formatted = warningSystem.formatWarningDetails(details;
+            const formatted = warningSystem.formatWarningDetails(details);
             expect(formatted).toContain('fps: 25');
             expect(formatted).toContain('memory: 80');
         });
@@ -250,7 +250,7 @@ describe('PerformanceWarningSystem', () => {
                 severity: 'warning'
             };
 
-            await warningSystem.showBrowserNotification(warningData;
+            await warningSystem.showBrowserNotification(warningData);
             expect(global.Notification).toHaveBeenCalledWith(
                 'テスト通知',
                 expect.objectContaining({
@@ -284,14 +284,14 @@ describe('PerformanceWarningSystem', () => {
                 type: 'performance', 
                 category: 'fps' 
             };
-            const suggestions = warningSystem.generateOptimizationSuggestions(fpsWarning;
+            const suggestions = warningSystem.generateOptimizationSuggestions(fpsWarning);
             expect(suggestions.length).toBeGreaterThan(0);
             expect(suggestions[0]).toContain('エフェクトの品質');
 
             const memoryWarning = { 
                 category: 'memory' 
             };
-            const memorySuggestions = warningSystem.generateOptimizationSuggestions(memoryWarning;
+            const memorySuggestions = warningSystem.generateOptimizationSuggestions(memoryWarning);
             expect(memorySuggestions[0]).toContain('ブラウザを再起動');
         });
 
@@ -310,7 +310,7 @@ describe('PerformanceWarningSystem', () => {
                     category: 'performance',
                     timestamp: Date.now() + i
                 };
-                warningSystem.showWarning(warningData;
+                warningSystem.showWarning(warningData);
             }
 
             // showWarningメソッド内でlimitVisibleWarningsが自動的に呼ばれるので
@@ -366,7 +366,7 @@ describe('PerformanceWarningSystem', () => {
                 maxVisibleWarnings: 10
             };
 
-            warningSystem.updateOptions(newOptions;
+            warningSystem.updateOptions(newOptions);
             
             expect(warningSystem.options.enableVisualWarnings).toBe(false);
             expect(warningSystem.options.maxVisibleWarnings).toBe(10);
@@ -417,7 +417,7 @@ describe('PerformanceWarningSystem', () => {
                 category: 'performance'
             };
 
-            warningSystem.showWarning(warningData;
+            warningSystem.showWarning(warningData);
             
             expect(eventFired).toBe(true);
             

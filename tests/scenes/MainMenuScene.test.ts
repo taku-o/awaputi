@@ -90,7 +90,7 @@ describe('MainMenuScene Shop Button Tests', () => {
         };
         
         // MainMenuSceneの初期化
-        mainMenuScene = new MainMenuScene(mockGameEngine;
+        mainMenuScene = new MainMenuScene(mockGameEngine);
     });
     
     describe('ショップメニュー項目の存在確認', () => {
@@ -99,7 +99,7 @@ describe('MainMenuScene Shop Button Tests', () => {
             expect(shopMenuItem).toBeDefined();
             expect(shopMenuItem.id).toBe('shop');
             expect(shopMenuItem.key).toBe('menu.shop');
-            expect(shopMenuItem.action).toBeInstanceOf(Function;
+            expect(shopMenuItem.action).toBeInstanceOf(Function);
         });
         
         test('ショップ項目が正しい位置（インデックス1）にある', () => {
@@ -150,7 +150,7 @@ describe('MainMenuScene Shop Button Tests', () => {
         });
         
         test('openShopでシーン切り替えが失敗した場合のエラーハンドリング', () => {
-            mockGameEngine.sceneManager.switchScene.mockReturnValue(false;
+            mockGameEngine.sceneManager.switchScene.mockReturnValue(false);
             const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
             
             mainMenuScene.openShop();
@@ -192,7 +192,7 @@ describe('MainMenuScene Shop Button Tests', () => {
             // Enterでショップを選択
             mockEvent.code = 'Enter';
             const spy = jest.spyOn(mainMenuScene, 'openShop');
-            mainMenuScene.handleMainMenuInput(mockEvent;
+            mainMenuScene.handleMainMenuInput(mockEvent);
             expect(spy).toHaveBeenCalled();
             
             spy.mockRestore();

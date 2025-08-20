@@ -36,7 +36,7 @@ describe('KeyboardShortcutRouter Functional Tests', () => {
         (global as any).document = undefined;
         
         gameEngine = createFunctionalGameEngine();
-        shortcutRouter = new KeyboardShortcutRouter(gameEngine;
+        shortcutRouter = new KeyboardShortcutRouter(gameEngine);
     });
 
     afterEach(() => {
@@ -81,7 +81,7 @@ describe('KeyboardShortcutRouter Functional Tests', () => {
 
     describe('Navigation Context Integration', () => {
         test('should integrate with NavigationContextManager correctly', () => {
-            expect(shortcutRouter.navigationContext).toBeInstanceOf(NavigationContextManager;
+            expect(shortcutRouter.navigationContext).toBeInstanceOf(NavigationContextManager);
         });
 
         test('should handle navigation operations', () => {
@@ -135,7 +135,7 @@ describe('KeyboardShortcutRouter Functional Tests', () => {
             };
             
             expect(() => {
-                shortcutRouter.updateConfig(newConfig;
+                shortcutRouter.updateConfig(newConfig);
             }).not.toThrow();
             
             expect(shortcutRouter.config.enableLogging).toBe(false);
@@ -144,12 +144,12 @@ describe('KeyboardShortcutRouter Functional Tests', () => {
 
         test('should handle active state changes', () => {
             expect(() => {
-                shortcutRouter.setActive(false;
+                shortcutRouter.setActive(false);
             }).not.toThrow();
             
             expect(shortcutRouter.state.isActive).toBe(false);
             
-            shortcutRouter.setActive(true;
+            shortcutRouter.setActive(true);
             expect(shortcutRouter.state.isActive).toBe(true);
         });
     });
@@ -190,7 +190,7 @@ describe('KeyboardShortcutRouter Functional Tests', () => {
         });
 
         test('should handle scene switching failures', () => {
-            gameEngine.sceneManager.switchScene.mockReturnValue(false;
+            gameEngine.sceneManager.switchScene.mockReturnValue(false);
             
             const result = shortcutRouter.handleSettingsShortcut('MenuScene');
             
@@ -218,8 +218,8 @@ describe('KeyboardShortcutRouter Functional Tests', () => {
         test('should track state correctly', () => {
             expect(shortcutRouter.state).toBeDefined();
             expect(shortcutRouter.state.isActive).toBe(true);
-            expect(shortcutRouter.state.pressedKeys).toBeInstanceOf(Set;
-            expect(shortcutRouter.state.activeModifiers).toBeInstanceOf(Set;
+            expect(shortcutRouter.state.pressedKeys).toBeInstanceOf(Set);
+            expect(shortcutRouter.state.activeModifiers).toBeInstanceOf(Set);
         });
     });
 

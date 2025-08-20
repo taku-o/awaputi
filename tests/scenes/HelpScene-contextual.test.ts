@@ -106,7 +106,7 @@ describe('HelpScene Contextual Help Integration', () => {
             }))
         }));
         
-        helpScene = new HelpScene(mockGameEngine;
+        helpScene = new HelpScene(mockGameEngine);
     });
     
     afterEach(() => {
@@ -119,7 +119,7 @@ describe('HelpScene Contextual Help Integration', () => {
     describe('ContextualHelpManager Integration', () => {
         test('should initialize ContextualHelpManager', () => {
             expect(helpScene.contextualHelpManager).toBeDefined();
-            expect(helpScene.contextualHelpManager).toBeInstanceOf(ContextualHelpManager;
+            expect(helpScene.contextualHelpManager).toBeInstanceOf(ContextualHelpManager);
         });
         
         test('should cleanup ContextualHelpManager on destroy', () => {
@@ -157,7 +157,7 @@ describe('HelpScene Contextual Help Integration', () => {
             const analyzeContextSpy = jest.spyOn(helpScene.contextualHelpManager, 'analyzeContextAndGetHelp');
             const applyContextualHelpSpy = jest.spyOn(helpScene, 'applyContextualHelp');
             
-            analyzeContextSpy.mockReturnValue(null;
+            analyzeContextSpy.mockReturnValue(null);
             
             helpScene.setContextualHelpMode('unknown');
             
@@ -246,7 +246,7 @@ describe('HelpScene Contextual Help Integration', () => {
             
             const setCategorySpy = jest.spyOn(helpScene, 'setHelpCategory');
             
-            helpScene.applyContextualHelp(helpContent;
+            helpScene.applyContextualHelp(helpContent);
             
             expect(setCategorySpy).toHaveBeenCalledWith('troubleshooting');
             expect(helpScene.contextualHelpTitle).toBe('Test Help');
@@ -264,7 +264,7 @@ describe('HelpScene Contextual Help Integration', () => {
             
             const setCategorySpy = jest.spyOn(helpScene, 'setHelpCategory');
             
-            helpScene.applyContextualHelp(helpContent;
+            helpScene.applyContextualHelp(helpContent);
             
             expect(setCategorySpy).not.toHaveBeenCalled();
             expect(helpScene.contextualHelpTitle).toBe('No Category Help');
@@ -281,7 +281,7 @@ describe('HelpScene Contextual Help Integration', () => {
                 throw new Error('Test error');
             });
             
-            expect(() => helpScene.applyContextualHelp(helpContent).not.toThrow();
+            expect(() => helpScene.applyContextualHelp(helpContent).not.toThrow());
         });
     });
     
@@ -342,7 +342,7 @@ describe('HelpScene Contextual Help Integration', () => {
                 accessMethod: 'keyboard_f1'
             };
             
-            helpScene.enter(contextData;
+            helpScene.enter(contextData);
             
             expect(setContextualHelpModeSpy).toHaveBeenCalledWith('game');
         });
@@ -356,7 +356,7 @@ describe('HelpScene Contextual Help Integration', () => {
                 accessMethod: 'keyboard_ctrl_h'
             };
             
-            helpScene.enter(contextData;
+            helpScene.enter(contextData);
             
             expect(setDocumentationHelpModeSpy).toHaveBeenCalled();
         });
@@ -370,7 +370,7 @@ describe('HelpScene Contextual Help Integration', () => {
                 accessMethod: 'keyboard_ctrl_slash'
             };
             
-            helpScene.enter(contextData;
+            helpScene.enter(contextData);
             
             expect(setQuickHelpModeSpy).toHaveBeenCalled();
         });
@@ -382,7 +382,7 @@ describe('HelpScene Contextual Help Integration', () => {
                 accessMethod: 'menu_click'
             };
             
-            helpScene.enter(contextData;
+            helpScene.enter(contextData);
             
             expect(setStandardHelpModeSpy).toHaveBeenCalled();
         });

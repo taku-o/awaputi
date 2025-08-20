@@ -20,7 +20,7 @@ describe('PerformanceOptimizer統合テスト', () => {
         
         // 設定をリセット
         performanceConfig.setTargetFPS(60);
-        performanceConfig.setAdaptiveModeEnabled(true;
+        performanceConfig.setAdaptiveModeEnabled(true);
         performanceConfig.setPerformanceLevel('high');
         performanceConfig.setMaxBubbles(20);
         performanceConfig.setMaxParticles(500);
@@ -28,9 +28,9 @@ describe('PerformanceOptimizer統合テスト', () => {
         performanceConfig.setParticleQuality(1.0);
         performanceConfig.setEffectQuality(1.0);
         performanceConfig.setAudioQuality(1.0);
-        performanceConfig.setShadowsEnabled(true;
-        performanceConfig.setBlurEnabled(true;
-        performanceConfig.setAntiAliasingEnabled(true;
+        performanceConfig.setShadowsEnabled(true);
+        performanceConfig.setBlurEnabled(true);
+        performanceConfig.setAntiAliasingEnabled(true);
         
         performanceOptimizer = new PerformanceOptimizer();
     });
@@ -99,7 +99,7 @@ describe('PerformanceOptimizer統合テスト', () => {
         });
 
         test('適応モードの動的変更', () => {
-            performanceOptimizer.setAdaptiveMode(false;
+            performanceOptimizer.setAdaptiveMode(false);
             
             expect(performanceOptimizer.adaptiveMode).toBe(false);
             expect(performanceConfig.isAdaptiveModeEnabled()).toBe(false);
@@ -149,21 +149,21 @@ describe('PerformanceOptimizer統合テスト', () => {
         });
 
         test('影エフェクトの動的変更', () => {
-            performanceOptimizer.setShadowsEnabled(false;
+            performanceOptimizer.setShadowsEnabled(false);
             
             expect(performanceOptimizer.settings.enableShadows).toBe(false);
             expect(performanceConfig.areShadowsEnabled()).toBe(false);
         });
 
         test('ブラーエフェクトの動的変更', () => {
-            performanceOptimizer.setBlurEnabled(false;
+            performanceOptimizer.setBlurEnabled(false);
             
             expect(performanceOptimizer.settings.enableBlur).toBe(false);
             expect(performanceConfig.isBlurEnabled()).toBe(false);
         });
 
         test('アンチエイリアシングの動的変更', () => {
-            performanceOptimizer.setAntiAliasingEnabled(false;
+            performanceOptimizer.setAntiAliasingEnabled(false);
             
             expect(performanceOptimizer.settings.enableAntiAliasing).toBe(false);
             expect(performanceConfig.isAntiAliasingEnabled()).toBe(false);
@@ -280,7 +280,7 @@ describe('PerformanceOptimizer統合テスト', () => {
             
             const config = performanceOptimizer.getCurrentConfig();
             
-            expect(config.toBeDefined();
+            expect(config.toBeDefined());
             expect(config.optimization).toBeDefined();
             expect(config.quality).toBeDefined();
             expect(config.limits).toBeDefined();
@@ -295,8 +295,8 @@ describe('PerformanceOptimizer統合テスト', () => {
             const instance1 = getPerformanceOptimizer();
             const instance2 = getPerformanceOptimizer();
             
-            expect(instance1.toBe(instance2);
-            expect(instance1.toBeInstanceOf(PerformanceOptimizer;
+            expect(instance1.toBe(instance2));
+            expect(instance1.toBeInstanceOf(PerformanceOptimizer));
         });
 
         test('reinitializePerformanceOptimizerで再初期化', () => {
@@ -311,7 +311,7 @@ describe('PerformanceOptimizer統合テスト', () => {
             const newInstance = getPerformanceOptimizer();
             
             // 同じインスタンスだが設定が更新されている
-            expect(newInstance.toBe(originalInstance);
+            expect(newInstance.toBe(originalInstance));
             expect(newInstance.targetFPS).toBe(75);
         });
     });
@@ -337,7 +337,7 @@ describe('PerformanceOptimizer統合テスト', () => {
             const config = performanceOptimizer.getCurrentConfig();
             
             // エラーが発生した場合はnullを返す
-            expect(config.toBeNull();
+            expect(config.toBeNull());
             
             // 元のメソッドを復元
             performanceConfig.getOptimizationConfig = originalMethod;
@@ -347,7 +347,7 @@ describe('PerformanceOptimizer統合テスト', () => {
     describe('パフォーマンス最適化機能テスト', () => {
         test('適応的最適化が設定システムと連携', () => {
             // 適応モードを有効にして低FPSをシミュレート
-            performanceOptimizer.setAdaptiveMode(true;
+            performanceOptimizer.setAdaptiveMode(true);
             
             // 低FPSの履歴を作成
             for (let i = 0; i < 30; i++) {
@@ -370,7 +370,7 @@ describe('PerformanceOptimizer統合テスト', () => {
             };
             
             // 高解像度でのリサイズをシミュレート
-            performanceOptimizer.onCanvasResize(canvasInfo;
+            performanceOptimizer.onCanvasResize(canvasInfo);
             
             // 高解像度時はパフォーマンスが調整される可能性がある
             // (具体的な動作は実装に依存)

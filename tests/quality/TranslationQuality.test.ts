@@ -12,7 +12,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename;
+const __dirname = path.dirname(__filename);
 const projectRoot = path.resolve(__dirname, '..', '..');
 
 // テスト対象言語
@@ -26,7 +26,7 @@ async function loadTranslationFile(language, category) {
   const filePath = path.join(projectRoot, 'src', 'locales', language, `${category}.json`);
   try {
     const content = await fs.readFile(filePath, 'utf-8');
-    return JSON.parse(content;
+    return JSON.parse(content);
   } catch (error) {
     return null;
   }
@@ -63,7 +63,7 @@ function extractTranslationKeys(obj, prefix = '') {
       if (value && typeof value === 'object' && !Array.isArray(value) {
         keys.push(...extractTranslationKeys(value, fullKey));
       } else {
-        keys.push(fullKey;
+        keys.push(fullKey);
       }
     }
   }
@@ -108,11 +108,11 @@ describe('翻訳品質テスト', () => {
           
           // 基準言語にあるキーが対象言語にもあることを確認
           for (const key of baseKeys) {
-            expect(targetKeys).toContain(key;
+            expect(targetKeys).toContain(key);
           }
           
           // 余分なキーがないことを確認
-          const extraKeys = targetKeys.filter(key => !baseKeys.includes(key);
+          const extraKeys = targetKeys.filter(key => !baseKeys.includes(key));
           if (extraKeys.length > 0) {
             console.warn(`${language}/${category}.json に余分なキーがあります:`, extraKeys);
           }
@@ -160,13 +160,13 @@ describe('翻訳品質テスト', () => {
               politeCount++;
             }
           } else if (typeof value === 'object' && value !== null) {
-            checkPolite(value;
+            checkPolite(value);
           }
         }
       };
       
-      checkPolite(menuTranslations;
-      checkPolite(helpTranslations;
+      checkPolite(menuTranslations);
+      checkPolite(helpTranslations);
       
       if (totalCount > 0) {
         const politeRatio = politeCount / totalCount;
@@ -226,8 +226,8 @@ describe('翻訳品質テスト', () => {
           
           if (typeof cnValue === 'string' && typeof twValue === 'string') {
             // 簡体字に簡体字文字が含まれていることを確認
-            const hasSimplified = simplifiedChars.some(char => cnValue.includes(char);
-            const hasTraditional = traditionalChars.some(char => twValue.includes(char);
+            const hasSimplified = simplifiedChars.some(char => cnValue.includes(char));
+            const hasTraditional = traditionalChars.some(char => twValue.includes(char));
             
             if (cnValue === twValue && hasSimplified) {
               console.warn(`${category}.${key}: 簡体字と繁体字が同じです - "${cnValue}"`);
@@ -289,7 +289,7 @@ describe('翻訳品質テスト', () => {
             if (typeof value !== 'string') continue;
             
             for (const tag of dangerousTags) {
-              expect(value.toLowerCase()).not.toContain(tag;
+              expect(value.toLowerCase()).not.toContain(tag);
             }
           }
         }
@@ -310,7 +310,7 @@ describe('翻訳品質テスト', () => {
           const baseValue = getNestedValue(baseData.translations, key);
           if (typeof baseValue !== 'string') continue;
           
-          const baseParams = Array.from(baseValue.matchAll(parameterPattern, m => m[1]);
+          const baseParams = Array.from(baseValue.matchAll(parameterPattern, m => m[1]));
           
           if (baseParams.length === 0) continue;
           
@@ -320,7 +320,7 @@ describe('翻訳品質テスト', () => {
             const targetValue = getNestedValue(translations[language][category]?.translations || {}, key);
             if (typeof targetValue !== 'string') continue;
             
-            const targetParams = Array.from(targetValue.matchAll(parameterPattern, m => m[1]);
+            const targetParams = Array.from(targetValue.matchAll(parameterPattern, m => m[1]));
             
             // パラメータの数と名前が一致することを確認
             expect(targetParams.sort()).toEqual(baseParams.sort());
@@ -442,7 +442,7 @@ export async function generateTranslationQualityReport() {
   
   // レポートをファイルに保存
   const reportPath = path.join(projectRoot, 'reports', 'translation-quality-report.json');
-  await fs.mkdir(path.dirname(reportPath, { recursive: true });
+  await fs.mkdir(path.dirname(reportPath, { recursive: true }));
   await fs.writeFile(reportPath, JSON.stringify(report, null, 2));
   
   console.log('✅ 翻訳品質レポート生成完了');

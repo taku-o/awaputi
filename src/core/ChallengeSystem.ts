@@ -231,22 +231,22 @@ export class ChallengeSystem {
         });
         
         // 泡ポップイベント
-        this.gameEngine.on('bubblePopped', (bubbleData: any) => {
+        this.gameEngine.on('bubblePopped', (bubbleData as any) => {
             this.updateProgress(ProgressType.BUBBLE_POP, 1);
         });
         
         // アイテム使用イベント
-        this.gameEngine.on('itemUsed', (itemData: any) => {
+        this.gameEngine.on('itemUsed', (itemData as any) => {
             this.updateProgress(ProgressType.ITEM_USE, 1);
         });
         
         // 実績解除イベント
-        this.gameEngine.on('achievementUnlocked', (achievementData: any) => {
+        this.gameEngine.on('achievementUnlocked', (achievementData as any) => {
             this.updateProgress(ProgressType.ACHIEVEMENT, 1);
         });
         
         // ステージクリアイベント
-        this.gameEngine.on('stageClear', (stageData: any) => {
+        this.gameEngine.on('stageClear', (stageData as any) => {
             this.updateProgress(ProgressType.STAGE_CLEAR, 1);
         });
     }

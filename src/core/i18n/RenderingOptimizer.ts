@@ -830,11 +830,11 @@ export class RenderingOptimizer {
      */
     private setupFontLoadMonitoring(): void {
         if (document.fonts && document.fonts.addEventListener) {
-            document.fonts.addEventListener('loadingdone', (event: any) => {
+            document.fonts.addEventListener('loadingdone', (event as any) => {
                 console.log('Font loading completed:', event.fontfaces.length, 'fonts');
             });
             
-            document.fonts.addEventListener('loadingerror', (event: any) => {
+            document.fonts.addEventListener('loadingerror', (event as any) => {
                 console.warn('Font loading error:', event);
             });
         }

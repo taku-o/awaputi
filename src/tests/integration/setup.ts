@@ -84,7 +84,7 @@ interface MockImage {
 }
 
 interface MockFileReader {
-    onload: ((event: any) => void) | null;
+    onload: ((event as any) => void) | null;
     onerror: (() => void) | null;
     onprogress: (() => void) | null;
     result: string | null;
@@ -266,7 +266,7 @@ global.File = class MockFileClass {
 } as any;
 
 global.FileReader = class MockFileReaderClass implements MockFileReader {
-    onload: ((event: any) => void) | null = null;
+    onload: ((event as any) => void) | null = null;
     onerror: (() => void) | null = null;
     onprogress: (() => void) | null = null;
     result: string | null = null;

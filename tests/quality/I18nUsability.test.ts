@@ -37,7 +37,7 @@ describe('多言語対応ユーザビリティテスト', () => {
     const canvas = document.getElementById('gameCanvas');
     if (canvas) {
       const { GameEngine } = await import('../../src/core/GameEngine.js');
-      gameEngine = new GameEngine(canvas;
+      gameEngine = new GameEngine(canvas);
     }
     
     // ローカルストレージをクリア
@@ -87,7 +87,7 @@ describe('多言語対応ユーザビリティテスト', () => {
       
       // フォールバック言語（英語または日本語）になることを確認
       const currentLanguage = localizationManager.getCurrentLanguage();
-      expect(['ja', 'en']).toContain(currentLanguage;
+      expect(['ja', 'en']).toContain(currentLanguage);
     });
 
     test('連続した言語切り替えが正しく処理される', async () => {
@@ -98,7 +98,7 @@ describe('多言語対応ユーザビリティテスト', () => {
         localizationManager.setLanguage('ja')
       ];
       
-      await Promise.all(promises;
+      await Promise.all(promises);
       
       // 最終的に日本語になることを確認
       expect(localizationManager.getCurrentLanguage()).toBe('ja');
@@ -115,7 +115,7 @@ describe('多言語対応ユーザビリティテスト', () => {
       ];
       
       for (const key of testKeys) {
-        const translation = localizationManager.t(key;
+        const translation = localizationManager.t(key);
         
         expect(translation).toBeTruthy();
         expect(typeof translation).toBe('string');
@@ -164,7 +164,7 @@ describe('多言語対応ユーザビリティテスト', () => {
       ];
       
       for (const key of longTextKeys) {
-        const translation = localizationManager.t(key;
+        const translation = localizationManager.t(key);
         
         if (translation && translation.length > 100) {
           // 長いテキストでも適切に改行やフォーマットがされている
@@ -179,11 +179,11 @@ describe('多言語対応ユーザビリティテスト', () => {
       const key = 'common.buttons.ok';
       
       // 初回読み込み（キャッシュなし）
-      await localizationManager.t(key;
+      await localizationManager.t(key);
       
       // キャッシュされた翻訳の取得時間を測定
       const startTime = performance.now();
-      const translation = localizationManager.t(key;
+      const translation = localizationManager.t(key);
       const endTime = performance.now();
       
       const responseTime = endTime - startTime;
@@ -201,7 +201,7 @@ describe('多言語対応ユーザビリティテスト', () => {
       
       const startTime = performance.now();
       
-      const translations = keys.map(key => localizationManager.t(key);
+      const translations = keys.map(key => localizationManager.t(key));
       
       const endTime = performance.now();
       const totalTime = endTime - startTime;
@@ -282,7 +282,7 @@ describe('多言語対応ユーザビリティテスト', () => {
       // 現在サポートしている言語はすべてLTR
       const supportedLanguages = ['ja', 'en', 'zh-CN', 'zh-TW', 'ko'];
       for (const lang of supportedLanguages) {
-        expect(localizationManager.isRTLLanguage(lang).toBe(false);
+        expect(localizationManager.isRTLLanguage(lang).toBe(false));
       }
     });
   });
@@ -335,19 +335,19 @@ export class UsabilityMetricsCollector {
     };
   }
 
-  recordLanguageSwitchTime(time: any) {
-    this.metrics.languageSwitchTimes.push(time;
+  recordLanguageSwitchTime(time: any10040 {
+    this.metrics.languageSwitchTimes.push(time);
   }
 
-  recordTranslationLoadTime(time: any) {
-    this.metrics.translationLoadTimes.push(time;
+  recordTranslationLoadTime(time: any10137 {
+    this.metrics.translationLoadTimes.push(time);
   }
 
-  recordMemoryUsage(usage: any) {
-    this.metrics.memoryUsage.push(usage;
+  recordMemoryUsage(usage: any10227 {
+    this.metrics.memoryUsage.push(usage);
   }
 
-  recordError(type: any) {
+  recordError(type: any10304 {
     if (this.metrics.errorCounts[type] !== undefined) {
       this.metrics.errorCounts[type]++;
     }

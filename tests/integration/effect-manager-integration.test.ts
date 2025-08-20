@@ -53,7 +53,7 @@ describe('EffectManager統合テスト', () => {
         configManager = getConfigurationManager();
         
         // EffectManagerの作成
-        effectManager = new EffectManager(mockCanvas;
+        effectManager = new EffectManager(mockCanvas);
     });
 
     afterEach(() => {
@@ -115,7 +115,7 @@ describe('EffectManager統合テスト', () => {
             // 効果を追加
             const effectId = effectManager.addScreenShake(10, 500);
             
-            expect(effectId.toBeGreaterThanOrEqual(0);
+            expect(effectId.toBeGreaterThanOrEqual(0));
             expect(effectManager.effects.length).toBe(1);
             
             const effect = effectManager.effects[0];
@@ -126,16 +126,16 @@ describe('EffectManager統合テスト', () => {
         test('フラッシュ効果に設定が適用される', () => {
             // 設定値を変更
             const setResult = effectManager.setConfigValue('flashDuration', 400);
-            expect(setResult.toBe(true);
+            expect(setResult.toBe(true));
             
             // 設定が正しく更新されているか確認
             const currentDuration = effectManager.getConfigValue('flashDuration');
-            expect(currentDuration.toBe(400);
+            expect(currentDuration.toBe(400));
             
             // 効果を追加（durationを指定しない）
             const effectId = effectManager.addFlash('#FF0000', 0.5, undefined);
             
-            expect(effectId.toBeGreaterThanOrEqual(0);
+            expect(effectId.toBeGreaterThanOrEqual(0));
             expect(effectManager.effects.length).toBe(1);
             
             const effect = effectManager.effects[0];
@@ -149,7 +149,7 @@ describe('EffectManager統合テスト', () => {
             // 効果を追加
             const effectId = effectManager.addZoom(1.2, 300);
             
-            expect(effectId.toBeGreaterThanOrEqual(0);
+            expect(effectId.toBeGreaterThanOrEqual(0));
             expect(effectManager.effects.length).toBe(1);
             
             const effect = effectManager.effects[0];
@@ -161,7 +161,7 @@ describe('EffectManager統合テスト', () => {
             // 効果を追加（durationを指定しない）
             const effectId = effectManager.addTint('#00FF00', 0.4);
             
-            expect(effectId.toBeGreaterThanOrEqual(0);
+            expect(effectId.toBeGreaterThanOrEqual(0));
             expect(effectManager.effects.length).toBe(1);
             
             const effect = effectManager.effects[0];
@@ -181,10 +181,10 @@ describe('EffectManager統合テスト', () => {
             const tintId = effectManager.addTint('#00FF00', 0.4, 400);
             
             // 全て無効なIDが返される
-            expect(shakeId.toBe(-1);
-            expect(flashId.toBe(-1);
-            expect(zoomId.toBe(-1);
-            expect(tintId.toBe(-1);
+            expect(shakeId.toBe(-1));
+            expect(flashId.toBe(-1));
+            expect(zoomId.toBe(-1));
+            expect(tintId.toBe(-1));
             
             // 効果が追加されていない
             expect(effectManager.effects.length).toBe(0);
@@ -224,7 +224,7 @@ describe('EffectManager統合テスト', () => {
             expect(effectManager.effects.length).toBe(1);
             
             // 直接設定を変更（EffectManagerを通さない）
-            effectsConfig.setScreenEffectEnabled(false;
+            effectsConfig.setScreenEffectEnabled(false);
             
             // 設定を更新
             effectManager.updateConfiguration();
@@ -241,7 +241,7 @@ describe('EffectManager統合テスト', () => {
             effectsConfig.setFlashDuration(350);
             
             // EffectManagerに適用
-            effectsConfig.applyToEffectManager(effectManager;
+            effectsConfig.applyToEffectManager(effectManager);
             
             // 設定が反映されている
             expect(effectManager.getConfigValue('shakeIntensity')).toBe(1.8);
@@ -254,7 +254,7 @@ describe('EffectManager統合テスト', () => {
             effectManager.setConfigValue('zoomSensitivity', 0.7);
             
             // EffectsConfigに同期
-            effectsConfig.syncFromEffectManager(effectManager;
+            effectsConfig.syncFromEffectManager(effectManager);
             
             // 設定が同期されている
             expect(effectsConfig.getShakeIntensity()).toBe(1.3);
@@ -296,7 +296,7 @@ describe('EffectManager統合テスト', () => {
             
             // 画面揺れ効果が含まれ、設定が適用されている
             const shakeEffect = effectManager.effects.find(e => e.type === 'shake');
-            expect(shakeEffect.toBeDefined();
+            expect(shakeEffect.toBeDefined());
             expect(shakeEffect.intensity).toBeGreaterThan(15); // 15 * 1.5 * 2.0
         });
     });
@@ -308,7 +308,7 @@ describe('EffectManager統合テスト', () => {
             
             // 効果を追加してもエラーにならない
             const effectId = effectManager.addScreenShake(10, 500);
-            expect(effectId.toBe(-1);
+            expect(effectId.toBe(-1));
         });
 
         test('設定変更エラーに対して適切に処理する', () => {
@@ -317,7 +317,7 @@ describe('EffectManager統合テスト', () => {
             
             // 設定変更してもエラーにならない
             const result = effectManager.setConfigValue('shakeIntensity', 1.5);
-            expect(result.toBe(false);
+            expect(result.toBe(false));
         });
     });
 
@@ -349,9 +349,9 @@ describe('EffectManager統合テスト', () => {
             const tintId = effectManager.addScreenTint(0.3, 400);
             const vignetteId = effectManager.addVignette(0.4, 500);
             
-            expect(flashId.toBeGreaterThanOrEqual(0);
-            expect(tintId.toBeGreaterThanOrEqual(0);
-            expect(vignetteId.toBeGreaterThanOrEqual(0);
+            expect(flashId.toBeGreaterThanOrEqual(0));
+            expect(tintId.toBeGreaterThanOrEqual(0));
+            expect(vignetteId.toBeGreaterThanOrEqual(0));
             
             expect(effectManager.effects.length).toBe(3);
         });

@@ -15,7 +15,7 @@ import { fileURLToPath } from 'url';
 
 // ES module __dirname equivalent
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename;
+const __dirname = path.dirname(__filename);
 
 // Help content directory
 const HELP_CONTENT_DIR = path.join(__dirname, '../../../src/core/help/content/help/ja');
@@ -34,7 +34,7 @@ describe('Japanese Help Content', () => {
     it('should have all required category files', () => {
       for (const category of REQUIRED_CATEGORIES) {
         const filePath = path.join(HELP_CONTENT_DIR, `${category}.json`);
-        expect(fs.existsSync(filePath).toBe(true);
+        expect(fs.existsSync(filePath).toBe(true));
       }
     });
 
@@ -43,14 +43,14 @@ describe('Japanese Help Content', () => {
         const filePath = path.join(HELP_CONTENT_DIR, `${category}.json`);
         const content = fs.readFileSync(filePath, 'utf8');
         
-        expect(() => JSON.parse(content).not.toThrow();
+        expect(() => JSON.parse(content).not.toThrow());
       }
     });
 
     it('should have reasonable file sizes', () => {
       for (const category of REQUIRED_CATEGORIES) {
         const filePath = path.join(HELP_CONTENT_DIR, `${category}.json`);
-        const stats = fs.statSync(filePath;
+        const stats = fs.statSync(filePath);
         
         // Files should be between 1KB and 100KB
         expect(stats.size).toBeGreaterThan(1000);
@@ -67,7 +67,7 @@ describe('Japanese Help Content', () => {
       for (const category of REQUIRED_CATEGORIES) {
         const filePath = path.join(HELP_CONTENT_DIR, `${category}.json`);
         const content = fs.readFileSync(filePath, 'utf8');
-        contentData[category] = JSON.parse(content;
+        contentData[category] = JSON.parse(content);
       }
     });
 
@@ -95,7 +95,7 @@ describe('Japanese Help Content', () => {
       const versionRegex = /^\d+\.\d+\.\d+$/;
       
       for (const [category, data] of Object.entries(contentData) {
-        expect(data.version).toMatch(versionRegex;
+        expect(data.version).toMatch(versionRegex);
       }
     });
 
@@ -103,7 +103,7 @@ describe('Japanese Help Content', () => {
       const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
       
       for (const [category, data] of Object.entries(contentData) {
-        expect(data.lastUpdated).toMatch(dateRegex;
+        expect(data.lastUpdated).toMatch(dateRegex);
       }
     });
 
@@ -167,7 +167,7 @@ describe('Japanese Help Content', () => {
       for (const category of REQUIRED_CATEGORIES) {
         const filePath = path.join(HELP_CONTENT_DIR, `${category}.json`);
         const content = fs.readFileSync(filePath, 'utf8');
-        contentData[category] = JSON.parse(content;
+        contentData[category] = JSON.parse(content);
       }
     });
 
@@ -175,8 +175,8 @@ describe('Japanese Help Content', () => {
       const japaneseRegex = /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/;
       
       for (const [category, data] of Object.entries(contentData) {
-        const contentString = JSON.stringify(data;
-        expect(contentString).toMatch(japaneseRegex;
+        const contentString = JSON.stringify(data);
+        expect(contentString).toMatch(japaneseRegex);
       }
     });
 
@@ -184,8 +184,8 @@ describe('Japanese Help Content', () => {
       const japaneseRegex = /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/;
       
       for (const [category, data] of Object.entries(contentData) {
-        expect(data.title).toMatch(japaneseRegex;
-        expect(data.description).toMatch(japaneseRegex;
+        expect(data.title).toMatch(japaneseRegex);
+        expect(data.description).toMatch(japaneseRegex);
       }
     });
 
@@ -193,14 +193,14 @@ describe('Japanese Help Content', () => {
       const placeholderRegex = /TODO|PLACEHOLDER|Lorem ipsum/i;
       
       for (const [category, data] of Object.entries(contentData) {
-        const contentString = JSON.stringify(data;
-        expect(contentString).not.toMatch(placeholderRegex;
+        const contentString = JSON.stringify(data);
+        expect(contentString).not.toMatch(placeholderRegex);
       }
     });
 
     it('should use appropriate Japanese punctuation', () => {
       for (const [category, data] of Object.entries(contentData) {
-        const contentString = JSON.stringify(data;
+        const contentString = JSON.stringify(data);
         
         // Check for Japanese punctuation marks
         expect(contentString).toMatch(/[。、]/); // Japanese period and comma
@@ -216,7 +216,7 @@ describe('Japanese Help Content', () => {
       for (const category of REQUIRED_CATEGORIES) {
         const filePath = path.join(HELP_CONTENT_DIR, `${category}.json`);
         const content = fs.readFileSync(filePath, 'utf8');
-        contentData[category] = JSON.parse(content;
+        contentData[category] = JSON.parse(content);
       }
     });
 
@@ -274,7 +274,7 @@ describe('Japanese Help Content', () => {
       const malformedContent = '{ "title": "Test", "invalid": }';
       
       expect(() => {
-        JSON.parse(malformedContent;
+        JSON.parse(malformedContent);
       }).toThrow(SyntaxError;
     });
 
@@ -308,7 +308,7 @@ describe('Japanese Help Content', () => {
         
         if (fs.existsSync(filePath) {
           const content = fs.readFileSync(filePath, 'utf8');
-          return JSON.parse(content;
+          return JSON.parse(content);
         }
         
         throw new Error(`File not found: ${filePath}`);

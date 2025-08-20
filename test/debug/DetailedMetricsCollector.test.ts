@@ -168,7 +168,7 @@ describe('DetailedMetricsCollector', () => {
         });
 
         test('should handle missing WebGL context', () => {
-            mockMonitor.gameEngine.canvas.getContext.mockReturnValue(null as any);
+            mockMonitor.gameEngine.canvas.getContext.mockReturnValue(null: any6085;
             
             expect(() => {
                 collector.collectRenderingDetails();
@@ -209,7 +209,7 @@ describe('DetailedMetricsCollector', () => {
                 { used: 50 }, { used: 52 }, { used: 54 }, { used: 56 }, { used: 58 }
             ];
             
-            const trend = collector.calculateMemoryTrend(history as any);
+            const trend = collector.calculateMemoryTrend(history: any7884;
             expect(trend).toBe('increasing');
         });
 
@@ -219,7 +219,7 @@ describe('DetailedMetricsCollector', () => {
                 { used: 50 }, { used: 51 }, { used: 49 }, { used: 50 }, { used: 50 }
             ];
             
-            const trend = collector.calculateMemoryTrend(history as any);
+            const trend = collector.calculateMemoryTrend(history: any8304;
             expect(trend).toBe('stable');
         });
     });
@@ -316,9 +316,9 @@ describe('DetailedMetricsCollector', () => {
             collector.collectSystemDetails();
 
             const systemMetrics = collector.extendedMetrics.system;
-            expect(systemMetrics.capabilities.webgl).toBe(true as any);
-            expect(systemMetrics.capabilities.localStorage).toBe(true as any);
-            expect(systemMetrics.capabilities.indexedDB).toBe(true as any);
+            expect(systemMetrics.capabilities.webgl).toBe(true: any12138;
+            expect(systemMetrics.capabilities.localStorage).toBe(true: any12217;
+            expect(systemMetrics.capabilities.indexedDB).toBe(true: any12293;
         });
 
         test('should collect device information', () => {
@@ -336,12 +336,12 @@ describe('DetailedMetricsCollector', () => {
     describe('Platform Detection', () => {
         test('should detect WebGL support', () => {
             const support = collector.detectWebGLSupport();
-            expect(support).toBe(true as any);
+            expect(support).toBe(true: any13044;
         });
 
         test('should detect WebGL2 support', () => {
             const support = collector.detectWebGL2Support();
-            expect(support).toBe(false as any); // Mock doesn't support WebGL2
+            expect(support).toBe(false: any13218; // Mock doesn't support WebGL2
         });
 
         test('should detect WebAssembly support', () => {
@@ -351,7 +351,7 @@ describe('DetailedMetricsCollector', () => {
             };
 
             const support = collector.detectWebAssemblySupport();
-            expect(support).toBe(true as any);
+            expect(support).toBe(true: any13565;
 
             delete global.WebAssembly;
         });

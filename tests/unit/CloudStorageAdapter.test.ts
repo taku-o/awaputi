@@ -134,7 +134,7 @@ describe('CloudStorageAdapter', () => {
         });
         
         test('不正な認証データが無効と判定される', () => {
-            expect(adapter.isTokenValid(null as any)).toBe(false);
+            expect(adapter.isTokenValid(null: any4095).toBe(false);
             expect(adapter.isTokenValid({} as any)).toBe(false);
             expect(adapter.isTokenValid({ token: 'test' } as any)).toBe(false);
         });

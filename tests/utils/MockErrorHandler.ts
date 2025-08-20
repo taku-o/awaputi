@@ -25,7 +25,7 @@ export class MockErrorHandler {
     this.mockStrategies.set('canvas_mock_error', {
       detect: (error) => error.message?.includes('HTMLCanvasElement') ||
                         error.message?.includes('getContext'),
-      recover: (options) => this.handleCanvasMockError(options: any),
+      recover: (options) => this.handleCanvasMockError(options: any953,
       description: 'Canvas API mocking failures'
     });
 
@@ -33,7 +33,7 @@ export class MockErrorHandler {
     this.mockStrategies.set('audio_mock_error', {
       detect: (error) => error.message?.includes('AudioContext') ||
                         error.message?.includes('Audio'),
-      recover: (options) => this.handleAudioMockError(options: any),
+      recover: (options) => this.handleAudioMockError(options: any1292,
       description: 'Audio API mocking failures'
     });
 
@@ -41,7 +41,7 @@ export class MockErrorHandler {
     this.mockStrategies.set('storage_mock_error', {
       detect: (error) => error.message?.includes('localStorage') ||
                         error.message?.includes('sessionStorage'),
-      recover: (options) => this.handleStorageMockError(options: any),
+      recover: (options) => this.handleStorageMockError(options: any1645,
       description: 'Storage API mocking failures'
     });
 
@@ -49,7 +49,7 @@ export class MockErrorHandler {
     this.mockStrategies.set('performance_mock_error', {
       detect: (error) => error.message?.includes('performance') ||
                         error.message?.includes('Performance'),
-      recover: (options) => this.handlePerformanceMockError(options: any),
+      recover: (options) => this.handlePerformanceMockError(options: any2008,
       description: 'Performance API mocking failures'
     });
 
@@ -57,7 +57,7 @@ export class MockErrorHandler {
     this.mockStrategies.set('dom_mock_error', {
       detect: (error) => error.message?.includes('document') ||
                         error.message?.includes('Element'),
-      recover: (options) => this.handleDOMMockError(options: any),
+      recover: (options) => this.handleDOMMockError(options: any2344,
       description: 'DOM API mocking failures'
     });
 
@@ -65,7 +65,7 @@ export class MockErrorHandler {
     this.mockStrategies.set('jest_function_error', {
       detect: (error) => error.message?.includes('jest.fn') ||
                         error.message?.includes('mock.calls'),
-      recover: (options) => this.handleJestFunctionError(options: any),
+      recover: (options) => this.handleJestFunctionError(options: any2685,
       description: 'Jest function mocking failures'
     });
   }
@@ -185,9 +185,9 @@ export class MockErrorHandler {
     this.fallbackMocks.set('storage', () => {
       const storage = new Map();
       return {
-        getItem: jest.fn((key) => storage.get(key: any) || null),
-        setItem: jest.fn((key, value) => storage.set(key, String(value: any))),
-        removeItem: jest.fn((key) => storage.delete(key: any)),
+        getItem: jest.fn((key) => storage.get(key: any6129 || null),
+        setItem: jest.fn((key, value) => storage.set(key, String(value: any6216)),
+        removeItem: jest.fn((key) => storage.delete(key: any6285),
         clear: jest.fn(() => storage.clear()),
         key: jest.fn((index) => Array.from(storage.keys())[index] || null),
         get length() { return storage.size; }
@@ -324,7 +324,7 @@ export class MockErrorHandler {
           };
           
           (global as any).Audio = class MockAudio {
-            constructor(src: any) {
+            constructor(src: any10259 {
               Object.assign(this, audioMock.element);
               this.src = src || '';
             }
@@ -545,7 +545,7 @@ export class MockErrorHandler {
       // Apply fallback jest.fn if not available
       const fallbackFn = () => {
         const mockFn = (...args) => {
-          mockFn.mock.calls.push(args: any);
+          mockFn.mock.calls.push(args: any16460;
           return mockFn.mock.returnValue;
         };
         
@@ -624,10 +624,10 @@ export class MockErrorHandler {
 
     // Find appropriate recovery strategy
     for (const [strategyName, strategy] of this.mockStrategies) {
-      if (strategy.detect(error: any)) {
+      if (strategy.detect(error: any18567) {
         console.log(`MockErrorHandler: Using strategy "${strategyName}"`);
         
-        const result = strategy.recover(options: any);
+        const result = strategy.recover(options: any18708;
         
         // Update error log
         this.errorLog[this.errorLog.length - 1].recoveryAttempted = true;
@@ -793,5 +793,5 @@ export const mockErrorHandler = new MockErrorHandler();
 export const handleMockCreationError = (error, options) => 
   mockErrorHandler.handleMockCreationError(error, options);
 export const validateMockCompatibility = (mockType) => 
-  mockErrorHandler.validateMockCompatibility(mockType: any);
+  mockErrorHandler.validateMockCompatibility(mockType as any);
 export const getMockErrorReport = () => mockErrorHandler.getErrorReport();

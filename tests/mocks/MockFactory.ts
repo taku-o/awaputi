@@ -267,9 +267,9 @@ export class MockFactory {
     const store = new Map();
     
     return {
-      getItem: jest.fn((key) => store.get(key: any) || null),
-      setItem: jest.fn((key, value) => store.set(key, String(value: any))),
-      removeItem: jest.fn((key) => store.delete(key: any)),
+      getItem: jest.fn((key) => store.get(key: any7121 || null),
+      setItem: jest.fn((key, value) => store.set(key, String(value: any7204)),
+      removeItem: jest.fn((key) => store.delete(key: any7269),
       clear: jest.fn(() => store.clear()),
       key: jest.fn((index) => Array.from(store.keys())[index] || null),
       get length() {
@@ -333,7 +333,7 @@ export class MockFactory {
     
     // Request Animation Frame mock
     (global as any).requestAnimationFrame = jest.fn((cb) => setTimeout(cb, 16));
-    (global as any).cancelAnimationFrame = jest.fn((id) => clearTimeout(id: any));
+    (global as any).cancelAnimationFrame = jest.fn((id) => clearTimeout(id: any9224);
     
     // Image mock
     (global as any).Image = jest.fn(() => ({

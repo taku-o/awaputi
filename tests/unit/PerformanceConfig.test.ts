@@ -24,7 +24,7 @@ interface ValidationRule {
     type?: string;
     min?: number;
     max?: number;
-    validator?: (value: any) => boolean | string;
+    validator?: (value as any) => boolean | string;
 }
 
 interface MockConfigManager {
@@ -58,7 +58,7 @@ interface PerformanceOptimizer {
 
 // モックの設定
 let mockGetCalls: MockCall[] = [];
-const mockGet = jest.fn((category: string, key: string, defaultValue?: any) => {
+const mockGet = jest.fn((category: string, key: string, defaultValue? as any) => {
     mockGetCalls.push({ category, key, defaultValue });
     // 戻り値は各テストで設定
     return defaultValue;

@@ -6,9 +6,9 @@ import { jest } from '@jest/globals';
 
 // Types
 interface MockConfigManager {
-    get: jest.Mock<(category: string, key: string, defaultValue => any>;
-    set: jest.Mock<(category: string, key: string, value => boolean>;
-    setValidationRule: jest.Mock<(category: string, key: string, rule => void>;
+    get: jest.Mock<(category: string, key: string, defaultValue => any>);
+    set: jest.Mock<(category: string, key: string, value => boolean>);
+    setValidationRule: jest.Mock<(category: string, key: string, rule => void>);
     getCategory: jest.Mock<() => Record<string, any>>;
 }
 

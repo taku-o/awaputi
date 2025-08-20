@@ -170,7 +170,7 @@ interface AccessibilityManager {
     gameEngine?: any;
     eventSystem?: {
         emit: (event: string, data: any) => void;
-        on: (event: string, handler: (data?: any) => void) => void;
+        on: (event: string, handler: (data? as any) => void) => void;
     };
     getSettings?: () => any;
 }

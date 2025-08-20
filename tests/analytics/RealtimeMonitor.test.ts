@@ -249,7 +249,7 @@ describe('RealtimeMonitor', () => {
                 }
             };
 
-            monitor.handlePerformanceWarning(warningData;
+            monitor.handlePerformanceWarning(warningData);
 
             expect(monitor.alerts).toHaveLength(1);
             expect(monitor.alerts[0].alertType).toBe('low_fps');
@@ -267,7 +267,7 @@ describe('RealtimeMonitor', () => {
                 details: { currentFPS: 25 }
             };
 
-            const message = monitor.formatWarningMessage(warningData;
+            const message = monitor.formatWarningMessage(warningData);
             expect(message).toContain('Low FPS: 25fps');
         });
     });
@@ -280,7 +280,7 @@ describe('RealtimeMonitor', () => {
                 { timestamp: Date.now() - 90000 }  // 90秒前（1分超過）
             ];
 
-            mockDataCollector.getPerformanceData.mockReturnValue(mockErrorData;
+            mockDataCollector.getPerformanceData.mockReturnValue(mockErrorData);
 
             const errorRate = monitor.calculateErrorRate();
             expect(errorRate).toBe(2); // 過去1分間のエラーは2件

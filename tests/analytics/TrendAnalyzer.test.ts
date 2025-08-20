@@ -8,7 +8,7 @@ class MockStorageManager {
     }
 
     async getData(storeName, query) {
-        const storeData = this.data.get(storeName || [];
+        const storeData = this.data.get(storeName || []);
         if (!query) return storeData;
 
         return storeData.filter(item => {
@@ -26,18 +26,18 @@ class MockStorageManager {
 }
 
 describe('TrendAnalyzer', () => {
-    let trendAnalyzer: any;
+    let trendAnalyzer as any);
     let mockStorageManager: any;
 
     beforeEach(() => {
         mockStorageManager = new MockStorageManager();
-        trendAnalyzer = new TrendAnalyzer(mockStorageManager;
+        trendAnalyzer = new TrendAnalyzer(mockStorageManager);
     });
 
     describe('コンストラクタ', () => {
         test('正しく初期化される', () => {
             expect(trendAnalyzer.storageManager).toBe(mockStorageManager);
-            expect(trendAnalyzer.analysisCache).toBeInstanceOf(Map;
+            expect(trendAnalyzer.analysisCache).toBeInstanceOf(Map);
             expect(trendAnalyzer.cacheExpiration).toBe(5 * 60 * 1000);
             expect(trendAnalyzer.ANOMALY_THRESHOLD).toBe(2.0);
             expect(trendAnalyzer.MIN_DATA_POINTS).toBe(7);
@@ -80,7 +80,7 @@ describe('TrendAnalyzer', () => {
             expect(result.trend).toHaveProperty('direction');
             expect(result.trend).toHaveProperty('strength');
             expect(result.trend).toHaveProperty('confidence');
-            expect(result.timeSeriesData).toBeInstanceOf(Array;
+            expect(result.timeSeriesData).toBeInstanceOf(Array);
             expect(result.summary).toBeTruthy();
         });
 
@@ -277,7 +277,7 @@ describe('TrendAnalyzer', () => {
                 { score: 110 }
             ];
 
-            const anomalies = trendAnalyzer.detectAnomalies(testData;
+            const anomalies = trendAnalyzer.detectAnomalies(testData);
             expect(anomalies).toEqual([]);
         });
     });
@@ -340,7 +340,7 @@ describe('TrendAnalyzer', () => {
                 { averageScore: 155 }
             ];
 
-            const trendInfo = trendAnalyzer.calculateTrendDirection(timeSeriesData;
+            const trendInfo = trendAnalyzer.calculateTrendDirection(timeSeriesData);
 
             expect(trendInfo.direction).toBe('increasing');
             expect(trendInfo.strength).toBeGreaterThan(0);
@@ -356,7 +356,7 @@ describe('TrendAnalyzer', () => {
                 { averageScore: 125 }
             ];
 
-            const trendInfo = trendAnalyzer.calculateTrendDirection(timeSeriesData;
+            const trendInfo = trendAnalyzer.calculateTrendDirection(timeSeriesData);
 
             expect(trendInfo.direction).toBe('decreasing');
             expect(trendInfo.strength).toBeGreaterThan(0);
@@ -371,7 +371,7 @@ describe('TrendAnalyzer', () => {
                 { averageScore: 149 }
             ];
 
-            const trendInfo = trendAnalyzer.calculateTrendDirection(timeSeriesData;
+            const trendInfo = trendAnalyzer.calculateTrendDirection(timeSeriesData);
 
             expect(trendInfo.direction).toBe('stable');
         });
@@ -382,7 +382,7 @@ describe('TrendAnalyzer', () => {
                 { averageScore: 110 }
             ];
 
-            const trendInfo = trendAnalyzer.calculateTrendDirection(timeSeriesData;
+            const trendInfo = trendAnalyzer.calculateTrendDirection(timeSeriesData);
 
             expect(trendInfo.direction).toBe('stable');
             expect(trendInfo.strength).toBe(0);
@@ -406,7 +406,7 @@ describe('TrendAnalyzer', () => {
                 }
             };
 
-            const summary = trendAnalyzer.generateTrendSummary(trendAnalysis;
+            const summary = trendAnalyzer.generateTrendSummary(trendAnalysis);
 
             expect(summary).toContain('週次分析結果');
             expect(summary).toContain('向上傾向');
@@ -429,7 +429,7 @@ describe('TrendAnalyzer', () => {
                 }
             };
 
-            const summary = trendAnalyzer.generateTrendSummary(trendAnalysis;
+            const summary = trendAnalyzer.generateTrendSummary(trendAnalysis);
 
             expect(summary).toContain('月次分析結果');
             expect(summary).toContain('低下傾向');

@@ -54,7 +54,7 @@ export interface ArchiveState {
 export interface ArchiveOperation {
     operation: 'archive' | 'restore';
     params: any;
-    resolve: (value: any) => void;
+    resolve: (value as any) => void;
     reject: (error: Error) => void;
     timestamp: number;
 }

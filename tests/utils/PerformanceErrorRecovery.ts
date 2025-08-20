@@ -33,7 +33,7 @@ export class PerformanceErrorRecovery {
                         error.message?.includes('fps') ||
                         error.message?.includes('FPS'),
       analyze: (error, context) => this.analyzeFrameRateFailure(error, context),
-      recover: (analysis) => this.recoverFromFrameRateFailure(analysis: any),
+      recover: (analysis) => this.recoverFromFrameRateFailure(analysis: any1246,
       description: 'Frame rate performance test failures'
     });
 
@@ -43,7 +43,7 @@ export class PerformanceErrorRecovery {
                         error.message?.includes('heap') ||
                         error.message?.includes('Memory'),
       analyze: (error, context) => this.analyzeMemoryUsageFailure(error, context),
-      recover: (analysis) => this.recoverFromMemoryUsageFailure(analysis: any),
+      recover: (analysis) => this.recoverFromMemoryUsageFailure(analysis: any1753,
       description: 'Memory usage performance test failures'
     });
 
@@ -53,7 +53,7 @@ export class PerformanceErrorRecovery {
                         error.message?.includes('rendering') ||
                         error.message?.includes('draw'),
       analyze: (error, context) => this.analyzeRenderTimeFailure(error, context),
-      recover: (analysis) => this.recoverFromRenderTimeFailure(analysis: any),
+      recover: (analysis) => this.recoverFromRenderTimeFailure(analysis: any2266,
       description: 'Render time performance test failures'
     });
 
@@ -63,7 +63,7 @@ export class PerformanceErrorRecovery {
                         error.message?.includes('expected') ||
                         error.message?.includes('exceed'),
       analyze: (error, context) => this.analyzeThresholdFailure(error, context),
-      recover: (analysis) => this.recoverFromThresholdFailure(analysis: any),
+      recover: (analysis) => this.recoverFromThresholdFailure(analysis: any2778,
       description: 'Performance threshold exceeded failures'
     });
 
@@ -73,7 +73,7 @@ export class PerformanceErrorRecovery {
                         error.message?.includes('Timeout') ||
                         error.message?.includes('async'),
       analyze: (error, context) => this.analyzeTimeoutFailure(error, context),
-      recover: (analysis) => this.recoverFromTimeoutFailure(analysis: any),
+      recover: (analysis) => this.recoverFromTimeoutFailure(analysis: any3283,
       description: 'Performance test timeout failures'
     });
 
@@ -83,7 +83,7 @@ export class PerformanceErrorRecovery {
                         error.message?.includes('CI') ||
                         error.message?.includes('node'),
       analyze: (error, context) => this.analyzeEnvironmentFailure(error, context),
-      recover: (analysis) => this.recoverFromEnvironmentFailure(analysis: any),
+      recover: (analysis) => this.recoverFromEnvironmentFailure(analysis: any3802,
       description: 'Environment-specific performance failures'
     });
   }
@@ -406,7 +406,7 @@ export class PerformanceErrorRecovery {
   /**
    * Recovery strategy implementations
    */
-  recoverFromFrameRateFailure(analysis: any) {
+  recoverFromFrameRateFailure(analysis: any15465 {
     return {
       success: true,
       message: 'Frame rate failure recovery applied',
@@ -419,7 +419,7 @@ export class PerformanceErrorRecovery {
     };
   }
 
-  recoverFromMemoryUsageFailure(analysis: any) {
+  recoverFromMemoryUsageFailure(analysis: any15833 {
     return {
       success: true,
       message: 'Memory usage failure recovery applied',
@@ -432,7 +432,7 @@ export class PerformanceErrorRecovery {
     };
   }
 
-  recoverFromRenderTimeFailure(analysis: any) {
+  recoverFromRenderTimeFailure(analysis: any16201 {
     return {
       success: true,
       message: 'Render time failure recovery applied',
@@ -445,7 +445,7 @@ export class PerformanceErrorRecovery {
     };
   }
 
-  recoverFromThresholdFailure(analysis: any) {
+  recoverFromThresholdFailure(analysis: any16575 {
     return {
       success: true,
       message: 'Threshold failure recovery applied',
@@ -458,7 +458,7 @@ export class PerformanceErrorRecovery {
     };
   }
 
-  recoverFromTimeoutFailure(analysis: any) {
+  recoverFromTimeoutFailure(analysis: any16898 {
     return {
       success: true,
       message: 'Timeout failure recovery applied',
@@ -471,7 +471,7 @@ export class PerformanceErrorRecovery {
     };
   }
 
-  recoverFromEnvironmentFailure(analysis: any) {
+  recoverFromEnvironmentFailure(analysis: any17215 {
     return {
       success: true,
       message: 'Environment failure recovery applied',
@@ -501,15 +501,15 @@ export class PerformanceErrorRecovery {
       context: context,
       recoveryAttempted: false
     };
-    this.errorLog.push(errorEntry: any);
+    this.errorLog.push(errorEntry: any18099;
 
     // Find appropriate strategy
     for (const [strategyName, strategy] of this.performanceStrategies) {
-      if (strategy.detect(error: any)) {
+      if (strategy.detect(error: any18252) {
         console.log(`PerformanceErrorRecovery: Using strategy "${strategyName}"`);
         
         const analysis = strategy.analyze(error, context);
-        const recovery = strategy.recover(analysis: any);
+        const recovery = strategy.recover(analysis: any18462;
         
         // Update error log
         errorEntry.recoveryAttempted = true;
@@ -579,7 +579,7 @@ export class PerformanceErrorRecovery {
           timestamp: new Date().toISOString()
         };
         
-        results.push(success: any);
+        results.push(success as any);
         console.log(`PerformanceErrorRecovery: Test succeeded on attempt ${attempt + 1}`);
         return success;
         
@@ -591,7 +591,7 @@ export class PerformanceErrorRecovery {
           timestamp: new Date().toISOString()
         };
         
-        results.push(failure: any);
+        results.push(failure as any);
         
         if (attempt < config.maxRetries) {
           const delay = Math.min(
@@ -624,7 +624,7 @@ export class PerformanceErrorRecovery {
     const detectedPatterns: any[] = [];
     
     for (const [patternName, pattern] of this.failurePatterns) {
-      if (pattern.detect(errorHistory: any)) {
+      if (pattern.detect(errorHistory: any22003) {
         detectedPatterns.push({
           name: patternName,
           description: pattern.description,
@@ -655,7 +655,7 @@ export class PerformanceErrorRecovery {
       detectedPatterns: patterns,
       analysisResults: Object.fromEntries(this.analysisResults),
       availableStrategies: Array.from(this.performanceStrategies.keys()),
-      recommendations: this.generateRecommendations(patterns: any)
+      recommendations: this.generateRecommendations(patterns: any23021
     };
   }
 

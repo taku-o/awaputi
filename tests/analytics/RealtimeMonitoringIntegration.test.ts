@@ -47,7 +47,7 @@ describe('リアルタイム監視システム統合テスト (Task 9.5)', () =>
         
         container = document.createElement('div');
         container.id = 'dashboard-container';
-        document.body.appendChild(container;
+        document.body.appendChild(container);
 
         // モックオブジェクトを作成
         performanceDataCollector = {
@@ -79,7 +79,7 @@ describe('リアルタイム監視システム統合テスト (Task 9.5)', () =>
 
         // システムを初期化
         dashboard = new RealtimeDashboard(container, performanceDataCollector, realtimeMonitor);
-        warningSystem = new PerformanceWarningSystem(realtimeMonitor;
+        warningSystem = new PerformanceWarningSystem(realtimeMonitor);
         
         // ErrorNotificationSystemのモック作成
         errorSystem = {
@@ -91,14 +91,14 @@ describe('リアルタイム監視システム統合テスト (Task 9.5)', () =>
                 if (!errorData.errorType) {
                     errorData.errorType = 'unknown';
                 }
-                errorSystem.errorHistory.push(errorData;
+                errorSystem.errorHistory.push(errorData);
             }),
             recordError: jest.fn((errorData) => {
                 // errorTypeが未定義の場合は 'unknown' に設定  
                 if (!errorData.errorType) {
                     errorData.errorType = 'unknown';
                 }
-                errorSystem.errorHistory.push(errorData;
+                errorSystem.errorHistory.push(errorData);
             }),
             getErrorStatistics: jest.fn(() => ({
                 totalErrors: errorSystem.errorHistory.length,
@@ -246,7 +246,7 @@ describe('リアルタイム監視システム統合テスト (Task 9.5)', () =>
                 threshold: 30
             };
 
-            warningSystem.showWarning(warningData;
+            warningSystem.showWarning(warningData);
             expect(warningSystem.activeWarnings.has('test-warning')).toBe(true);
         });
 
@@ -262,7 +262,7 @@ describe('リアルタイム監視システム統合テスト (Task 9.5)', () =>
             };
 
             // 最初の警告は重複ではない
-            const isDuplicate1 = warningSystem.isDuplicateWarning(warningData;
+            const isDuplicate1 = warningSystem.isDuplicateWarning(warningData);
             expect(isDuplicate1).toBe(false);
             
             // 同じ警告を履歴に追加
@@ -272,7 +272,7 @@ describe('リアルタイム監視システム統合テスト (Task 9.5)', () =>
             });
             
             // 今度は重複として検出される
-            const isDuplicate2 = warningSystem.isDuplicateWarning(warningData;
+            const isDuplicate2 = warningSystem.isDuplicateWarning(warningData);
             expect(isDuplicate2).toBe(true);
         });
 
@@ -282,7 +282,7 @@ describe('リアルタイム監視システム統合テスト (Task 9.5)', () =>
                 warningDisplayDuration: 15000
             };
 
-            warningSystem.updateOptions(newOptions;
+            warningSystem.updateOptions(newOptions);
             
             expect(warningSystem.options.enableVisualWarnings).toBe(false);
             expect(warningSystem.options.warningDisplayDuration).toBe(15000);
@@ -297,7 +297,7 @@ describe('リアルタイム監視システム統合テスト (Task 9.5)', () =>
                 timestamp: Date.now()
             };
 
-            errorSystem.handleError(errorData;
+            errorSystem.handleError(errorData);
             expect(errorSystem.errorHistory.length).toBe(1);
         });
 
@@ -308,7 +308,7 @@ describe('リアルタイム監視システム統合テスト (Task 9.5)', () =>
                 { errorType: 'resource', severity: 'warning', timestamp: Date.now() - 2000 }
             ];
 
-            errors.forEach(error => errorSystem.recordError(error);
+            errors.forEach(error => errorSystem.recordError(error));
 
             const stats = errorSystem.getErrorStatistics();
             expect(stats.totalErrors).toBe(3);
@@ -320,8 +320,8 @@ describe('リアルタイム監視システム統合テスト (Task 9.5)', () =>
             const recoverableError = { recoverable: true, errorType: 'network' };
             const nonRecoverableError = { recoverable: false, errorType: 'javascript' };
             
-            expect(errorSystem.canAttemptRecovery(recoverableError).toBe(true);
-            expect(errorSystem.canAttemptRecovery(nonRecoverableError).toBe(false);
+            expect(errorSystem.canAttemptRecovery(recoverableError).toBe(true));
+            expect(errorSystem.canAttemptRecovery(nonRecoverableError).toBe(false));
         });
     });
 
@@ -350,7 +350,7 @@ describe('リアルタイム監視システム統合テスト (Task 9.5)', () =>
                 category: 'gameplay'
             });
 
-            developerAlertSystem.analyzeData(testData;
+            developerAlertSystem.analyzeData(testData);
             expect(generateAlertSpy).toHaveBeenCalled();
         });
 
@@ -362,8 +362,8 @@ describe('リアルタイム監視システム統合テスト (Task 9.5)', () =>
             
             developerAlertSystem.options.minSeverityLevel = 'warning';
             
-            expect(severityFilter(lowSeverityAlert).toBe(false);
-            expect(severityFilter(highSeverityAlert).toBe(true);
+            expect(severityFilter(lowSeverityAlert).toBe(false));
+            expect(severityFilter(highSeverityAlert).toBe(true));
         });
 
         test('アラート統計が計算される', () => {
@@ -393,7 +393,7 @@ describe('リアルタイム監視システム統合テスト (Task 9.5)', () =>
                 detail: warningData
             }));
 
-            expect(handlePerformanceWarningSpy).toHaveBeenCalledWith(warningData;
+            expect(handlePerformanceWarningSpy).toHaveBeenCalledWith(warningData);
         });
 
         test('エラー通知イベントが処理される', () => {
@@ -409,7 +409,7 @@ describe('リアルタイム監視システム統合テスト (Task 9.5)', () =>
                 detail: errorData
             }));
 
-            expect(handleErrorEventSpy).toHaveBeenCalledWith(errorData;
+            expect(handleErrorEventSpy).toHaveBeenCalledWith(errorData);
         });
 
         test('データ更新イベントが処理される', () => {
@@ -425,7 +425,7 @@ describe('リアルタイム監視システム統合テスト (Task 9.5)', () =>
                 detail: analyticsData
             }));
 
-            expect(analyzeDataSpy).toHaveBeenCalledWith(analyticsData;
+            expect(analyzeDataSpy).toHaveBeenCalledWith(analyticsData);
         });
     });
 
@@ -447,9 +447,9 @@ describe('リアルタイム監視システム統合テスト (Task 9.5)', () =>
 
             expect(() => {
                 dashboard.options = { ...dashboard.options, ...dashboardOptions };
-                warningSystem.updateOptions(warningOptions;
-                errorSystem.updateOptions(errorOptions;
-                developerAlertSystem.updateOptions(alertOptions;
+                warningSystem.updateOptions(warningOptions);
+                errorSystem.updateOptions(errorOptions);
+                developerAlertSystem.updateOptions(alertOptions);
             }).not.toThrow();
 
             expect(warningSystem.options.enableVisualWarnings).toBe(false);
@@ -510,10 +510,10 @@ describe('リアルタイム監視システム統合テスト (Task 9.5)', () =>
             // 複数回の作成・破棄でメモリリークをテスト
             for (let i = 0; i < 5; i++) {
                 const testContainer = document.createElement('div');
-                document.body.appendChild(testContainer;
+                document.body.appendChild(testContainer);
 
                 const testDashboard = new RealtimeDashboard(testContainer, performanceDataCollector, realtimeMonitor);
-                const testWarningSystem = new PerformanceWarningSystem(realtimeMonitor;
+                const testWarningSystem = new PerformanceWarningSystem(realtimeMonitor);
                 
                 // ErrorNotificationSystemのモック作成
                 const testErrorSystem = {

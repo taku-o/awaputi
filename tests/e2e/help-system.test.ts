@@ -227,7 +227,7 @@ test.describe('Help System E2E Tests', () => {
             const navigationKeys = ['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Enter', '/'];
             
             for (const key of navigationKeys) {
-                await page.keyboard.press(key;
+                await page.keyboard.press(key);
                 await page.waitForTimeout(200);
             }
             
@@ -269,7 +269,7 @@ test.describe('Help System E2E Tests', () => {
             await page.waitForTimeout(1000);
             
             // Simulate network issues by going offline
-            await page.context().setOffline(true;
+            await page.context().setOffline(true);
             
             // Try to perform search (might fail due to offline state)
             await page.keyboard.press('/');
@@ -277,7 +277,7 @@ test.describe('Help System E2E Tests', () => {
             await page.waitForTimeout(1000);
             
             // Go back online
-            await page.context().setOffline(false;
+            await page.context().setOffline(false);
             
             // Help system should still be functional
             await page.keyboard.press('Escape');

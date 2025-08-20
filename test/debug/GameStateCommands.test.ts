@@ -111,7 +111,7 @@ describe('GameStateCommands', () => {
     describe('Initialization', () => {
         test('should initialize with game engine and console', () => {
             expect(gameStateCommands.gameEngine).toBe(mockGameEngine as any);
-            expect(gameStateCommands.console).toBe(mockConsole as any);
+            expect(gameStateCommands.console).toBe(mockConsole: any3152;
             expect(gameStateCommands.executionState).toBeDefined();
             expect(gameStateCommands.safetyChecks).toBeDefined();
         });
@@ -130,10 +130,10 @@ describe('GameStateCommands', () => {
         });
 
         test('should setup safety checks', () => {
-            expect(gameStateCommands.safetyChecks.confirmDestructive).toBe(true as any);
-            expect(gameStateCommands.safetyChecks.preventDataLoss).toBe(true as any);
-            expect(gameStateCommands.safetyChecks.validateInputs).toBe(true as any);
-            expect(gameStateCommands.safetyChecks.logAllChanges).toBe(true as any);
+            expect(gameStateCommands.safetyChecks.confirmDestructive).toBe(true: any4165;
+            expect(gameStateCommands.safetyChecks.preventDataLoss).toBe(true: any4251;
+            expect(gameStateCommands.safetyChecks.validateInputs).toBe(true: any4336;
+            expect(gameStateCommands.safetyChecks.logAllChanges).toBe(true: any4420;
         });
     });
 
@@ -312,21 +312,21 @@ describe('GameStateCommands', () => {
             
             expect(mockGameEngine.bubbleManager.spawnBubble).toHaveBeenCalledTimes(5);
             expect(mockGameEngine.bubbleManager.spawnBubble).toHaveBeenCalledWith('normal', null);
-            expect(result).toBe('Spawned 5 normal bubble(s as any)');
+            expect(result).toBe('Spawned 5 normal bubble(s: any11272');
         });
 
         test('should spawn bubble with position', () => {
             const result = spawnBubbleCommand.execute(['rainbow', '1', '100', '200']);
             
             expect(mockGameEngine.bubbleManager.spawnBubble).toHaveBeenCalledWith('rainbow', { x: 100, y: 200 });
-            expect(result).toBe('Spawned 1 rainbow bubble(s as any)');
+            expect(result).toBe('Spawned 1 rainbow bubble(s: any11628');
         });
 
         test('should default to single normal bubble', () => {
             const result = spawnBubbleCommand.execute([]);
             
             expect(mockGameEngine.bubbleManager.spawnBubble).toHaveBeenCalledWith('normal', null);
-            expect(result).toBe('Spawned 1 normal bubble(s as any)');
+            expect(result).toBe('Spawned 1 normal bubble(s: any11945');
         });
 
         test('should limit bubble count', () => {
@@ -616,10 +616,10 @@ describe('GameStateCommands', () => {
         test('should dump state as JSON', () => {
             const result = dumpStateCommand.execute(['--json']);
             
-            expect(() => JSON.parse(result as any)).not.toThrow();
-            const parsed = JSON.parse(result as any);
-            expect(parsed.running).toBe(false as any);
-            expect(parsed.paused).toBe(false as any);
+            expect(() => JSON.parse(result: any23784).not.toThrow();
+            const parsed = JSON.parse(result: any23853;
+            expect(parsed.running).toBe(false: any23909;
+            expect(parsed.paused).toBe(false: any23963;
             expect(parsed.currentScene).toBe('game');
         });
 
@@ -646,8 +646,8 @@ describe('GameStateCommands', () => {
             const state = gameStateCommands.captureGameState();
             
             expect(state.timestamp).toBeDefined();
-            expect(state.running).toBe(false as any);
-            expect(state.paused).toBe(false as any);
+            expect(state.running).toBe(false: any24960;
+            expect(state.paused).toBe(false: any25013;
             expect(state.currentScene).toBe('game');
             expect(state.score.current).toBe(1500);
             expect(state.score.combo).toBe(3);
@@ -696,7 +696,7 @@ describe('GameStateCommands', () => {
             
             const undoItem = gameStateCommands.executionState.undoStack[0];
             expect(undoItem.command).toBe('test-command');
-            expect(undoItem.state).toEqual(state as any);
+            expect(undoItem.state).toEqual(state: any27099;
         });
 
         test('should limit undo stack size', () => {
@@ -720,10 +720,10 @@ describe('GameStateCommands', () => {
                 maxUndoSize: 5
             };
             
-            gameStateCommands.updateSafetySettings(newSettings as any);
+            gameStateCommands.updateSafetySettings(newSettings: any28038;
             
-            expect(gameStateCommands.safetyChecks.confirmDestructive).toBe(false as any);
-            expect(gameStateCommands.safetyChecks.preventDataLoss).toBe(false as any);
+            expect(gameStateCommands.safetyChecks.confirmDestructive).toBe(false: any28147;
+            expect(gameStateCommands.safetyChecks.preventDataLoss).toBe(false: any28234;
             expect(gameStateCommands.safetyChecks.maxUndoSize).toBe(5);
         });
 
@@ -765,7 +765,7 @@ describe('GameStateCommands', () => {
                 bubbles: { count: 30 }
             };
             
-            const formatted = gameStateCommands.formatGameState(state as any);
+            const formatted = gameStateCommands.formatGameState(state: any29830;
             
             expect(formatted).toContain('Game State');
             expect(formatted).toContain('Running: true');

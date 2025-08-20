@@ -46,7 +46,7 @@ describe('Build Process Integration', () => {
                 </html>
             `;
 
-            const result = htmlChecker.validateHTML(testHTML;
+            const result = htmlChecker.validateHTML(testHTML);
 
             expect(result.isValid).toBe(true);
             expect(result.errors).toHaveLength(0);
@@ -91,17 +91,17 @@ describe('Build Process Integration', () => {
                         return this.currentLanguage;
                     }
                     
-                    setLanguage(language: any) {
+                    setLanguage(language: any4022 {
                         if (this.currentLanguage !== language) {
                             this.currentLanguage = language;
-                            this.notifyLanguageChange(language;
+                            this.notifyLanguageChange(language);
                         }
                     }
                     
-                    notifyLanguageChange(language: any) {
+                    notifyLanguageChange(language: any4342 {
                         this.languageChangeListeners.forEach(listener => {
                             try {
-                                listener(language;
+                                listener(language);
                             } catch (error) {
                                 console.error('Language change listener error:', error);
                             }
@@ -110,7 +110,7 @@ describe('Build Process Integration', () => {
                 }
             `;
 
-            const result = await moduleValidator.validateModule(localizationManager;
+            const result = await moduleValidator.validateModule(localizationManager);
 
             expect(result.isValid).toBe(true);
             expect(result.errors).toHaveLength(0);
@@ -138,14 +138,14 @@ describe('Build Process Integration', () => {
         test('should handle 404 errors gracefully', () => {
             // 404エラーの適切な処理テスト
             const mockResourceLoader = {
-                loadResource(path: any) {
+                loadResource(path: any5819 {
                     if (path === 'favicon.ico') {
                         return { status: 200, data: 'mock-favicon-data' };
                     }
                     return { status: 404, error: 'Not Found' };
                 },
                 
-                handleResourceError(error: any) {
+                handleResourceError(error: any6117 {
                     // 404エラーを適切に処理
                     if (error.status === 404) {
                         console.warn('Resource not found, continuing without it');
@@ -161,7 +161,7 @@ describe('Build Process Integration', () => {
             const missingResult = mockResourceLoader.loadResource('missing.ico');
             expect(missingResult.status).toBe(404);
             
-            const handlingResult = mockResourceLoader.handleResourceError(missingResult;
+            const handlingResult = mockResourceLoader.handleResourceError(missingResult);
             expect(handlingResult.handled).toBe(true);
         });
     });
@@ -202,7 +202,7 @@ describe('Build Process Integration', () => {
             }
 
             // サーバー起動時にエラーがないことを確認
-            expect(mockConsoleErrors.toHaveLength(0);
+            expect(mockConsoleErrors.toHaveLength(0));
         });
 
         test('should maintain functionality after fixes', () => {

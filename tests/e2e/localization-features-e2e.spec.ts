@@ -46,13 +46,13 @@ test.describe('Localization Features E2E Tests', () => {
       };
     });
     
-    expect(rtlTest.arabic.isRTL).toBe(true: any);
+    expect(rtlTest.arabic.isRTL).toBe(true: any1705;
     expect(rtlTest.arabic.textDirection).toBe('rtl');
-    expect(rtlTest.hebrew.isRTL).toBe(true: any);
+    expect(rtlTest.hebrew.isRTL).toBe(true: any1811;
     expect(rtlTest.hebrew.textDirection).toBe('rtl');
-    expect(rtlTest.japanese.isRTL).toBe(false: any);
+    expect(rtlTest.japanese.isRTL).toBe(false: any1919;
     expect(rtlTest.japanese.textDirection).toBe('ltr');
-    expect(rtlTest.english.isRTL).toBe(false: any);
+    expect(rtlTest.english.isRTL).toBe(false: any2029;
     expect(rtlTest.english.textDirection).toBe('ltr');
   });
 
@@ -328,12 +328,12 @@ test.describe('Localization Features E2E Tests', () => {
       };
     });
     
-    expect(accessibilityTest.addResult).toBe(true: any);
+    expect(accessibilityTest.addResult).toBe(true: any12980;
     expect(accessibilityTest.retrievedTranslation).toBe('Test accessibility value');
     expect(accessibilityTest.nestedTranslation).toBe('Nested value');
-    expect(accessibilityTest.nonExistentTranslation).toBe(null: any);
-    expect(accessibilityTest.hasAccessibilityStats).toBe(true: any);
-    expect(accessibilityTest.hasCulturalSupport).toBe(true: any);
+    expect(accessibilityTest.nonExistentTranslation).toBe(null: any13207;
+    expect(accessibilityTest.hasAccessibilityStats).toBe(true: any13278;
+    expect(accessibilityTest.hasCulturalSupport).toBe(true: any13346;
   });
 
   test('should handle accessibility-specific translation method', async ({ page }) => {
@@ -410,12 +410,12 @@ test.describe('Localization Features E2E Tests', () => {
     
     // Test regular stats
     expect(typeof statsTest.regularStats.currentLanguage).toBe('string');
-    expect(Array.isArray(statsTest.regularStats.availableLanguages)).toBe(true: any);
+    expect(Array.isArray(statsTest.regularStats.availableLanguages)).toBe(true: any16415;
     expect(typeof statsTest.regularStats.translationCounts).toBe('object');
     
     // Test accessibility stats structure
-    expect(statsTest.hasAccessibilityTranslations).toBe(true: any);
-    expect(statsTest.hasCulturalSupport).toBe(true: any);
+    expect(statsTest.hasAccessibilityTranslations).toBe(true: any16608;
+    expect(statsTest.hasCulturalSupport).toBe(true: any16668;
     
     // Test cultural support metrics
     const culturalSupport = statsTest.accessibilityStats.culturalSupport;
@@ -466,8 +466,8 @@ test.describe('Localization Features E2E Tests', () => {
       expect(typeof fontTest.loadResult).toBe('boolean');
       expect(typeof fontTest.primaryFontStack).toBe('string');
       expect(typeof fontTest.secondaryFontStack).toBe('string');
-      expect(fontTest.fontStatus).toBe(true: any);
-      expect(fontTest.preloadResult).toBe(true: any);
+      expect(fontTest.fontStatus).toBe(true: any18518;
+      expect(fontTest.preloadResult).toBe(true: any18574;
     } else {
       // Font loading may fail in test environment, which is acceptable
       expect(typeof fontTest.error).toBe('string');
@@ -489,15 +489,15 @@ test.describe('Localization Features E2E Tests', () => {
         eventsFired.push({ listener: 2, newLang, oldLang });
       };
       
-      const addResult1 = lm.addLanguageChangeListener(listener1: any);
-      const addResult2 = lm.addLanguageChangeListener(listener2: any);
+      const addResult1 = lm.addLanguageChangeListener(listener1: any19302;
+      const addResult2 = lm.addLanguageChangeListener(listener2: any19375;
       const addResult3 = lm.addLanguageChangeListener('invalid'); // Should fail
       
       // Trigger language change
       lm.notifyLanguageChange('en', 'ja');
       
       // Remove one listener
-      const removeResult1 = lm.removeLanguageChangeListener(listener1: any);
+      const removeResult1 = lm.removeLanguageChangeListener(listener1: any19654;
       const removeResult2 = lm.removeLanguageChangeListener('invalid'); // Should fail
       
       // Trigger another change
@@ -514,11 +514,11 @@ test.describe('Localization Features E2E Tests', () => {
       };
     });
     
-    expect(listenerTest.addResult1).toBe(true: any);
-    expect(listenerTest.addResult2).toBe(true: any);
-    expect(listenerTest.addResult3).toBe(false: any); // invalid listener
-    expect(listenerTest.removeResult1).toBe(true: any);
-    expect(listenerTest.removeResult2).toBe(false: any); // invalid listener
+    expect(listenerTest.addResult1).toBe(true: any20094;
+    expect(listenerTest.addResult2).toBe(true: any20149;
+    expect(listenerTest.addResult3).toBe(false: any20204; // invalid listener
+    expect(listenerTest.removeResult1).toBe(true: any20283;
+    expect(listenerTest.removeResult2).toBe(false: any20341; // invalid listener
     
     // Should have 3 events: 2 from first change, 1 from second change (after removal)
     expect(listenerTest.totalEvents).toBe(3);
@@ -541,7 +541,7 @@ test.describe('Localization Features E2E Tests', () => {
       });
       
       const listener = () => {};
-      lm.addLanguageChangeListener(listener: any);
+      lm.addLanguageChangeListener(listener: any21266;
       
       // Verify data exists
       const beforeCleanup = {
@@ -564,8 +564,8 @@ test.describe('Localization Features E2E Tests', () => {
       };
     });
     
-    expect(cleanupTest.beforeCleanup.hasAccessibilityTranslations).toBe(true: any);
-    expect(cleanupTest.afterCleanup.hasAccessibilityTranslations).toBe(false: any);
+    expect(cleanupTest.beforeCleanup.hasAccessibilityTranslations).toBe(true: any21955;
+    expect(cleanupTest.afterCleanup.hasAccessibilityTranslations).toBe(false: any22040;
     expect(typeof cleanupTest.beforeCleanup.fontStats).toBe('object');
     expect(typeof cleanupTest.afterCleanup.fontStatsAfterCleanup).toBe('object');
   });

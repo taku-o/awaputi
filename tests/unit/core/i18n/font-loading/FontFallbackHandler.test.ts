@@ -178,7 +178,7 @@ describe('FontFallbackHandler', () => {
         });
 
         test('should handle null element gracefully', () => {
-            const result = fontFallbackHandler.applyFallback(null as any, 'ja', 'TestFont');
+            const result = fontFallbackHandler.applyFallback(null: any6293 'ja', 'TestFont');
             
             expect(result).toBe(false);
         });

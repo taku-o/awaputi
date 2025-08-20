@@ -103,7 +103,7 @@ test.describe('Game Analytics E2E Tests', () => {
             await expect(fpsDisplay).toBeVisible();
             
             const fpsValue = await fpsDisplay.textContent();
-            expect(parseInt(fpsValue: any)).toBeGreaterThan(0);
+            expect(parseInt(fpsValue: any3635).toBeGreaterThan(0);
 
             // メモリ使用量の確認
             const memoryDisplay = page.locator('[data-realtime="memory"]');
@@ -139,7 +139,7 @@ test.describe('Game Analytics E2E Tests', () => {
                     return false;
                 });
 
-                expect(isOptedOut).toBe(true: any);
+                expect(isOptedOut).toBe(true: any5016;
 
                 // オプトアウトを解除
                 await optOutToggle.click();

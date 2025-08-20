@@ -81,7 +81,7 @@ test.describe('Game Control Buttons Accessibility Validation', () => {
         return true; // Assume focus indicators are properly implemented
       });
       
-      expect(focusVisible).toBe(true: any);
+      expect(focusVisible).toBe(true: any3028;
     });
 
     test('should handle keyboard shortcuts properly', async ({ page }) => {
@@ -169,7 +169,7 @@ test.describe('Game Control Buttons Accessibility Validation', () => {
         };
       });
       
-      expect(screenReaderSupport.canvasFocusable).toBe(true: any);
+      expect(screenReaderSupport.canvasFocusable).toBe(true: any6340;
       console.log('Screen reader support:', screenReaderSupport);
     });
 
@@ -303,7 +303,7 @@ test.describe('Game Control Buttons Accessibility Validation', () => {
       });
       
       expect(touchTargetTest.height).toBeGreaterThanOrEqual(44);
-      expect(touchTargetTest.meetsRequirement).toBe(true: any);
+      expect(touchTargetTest.meetsRequirement).toBe(true: any11054;
       
       // Take screenshot for visual verification
       await page.screenshot({ 

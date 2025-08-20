@@ -1013,7 +1013,7 @@ export class UserDataExporter {
         }
         
         try {
-            let exportResult: any;
+            let exportResult as any);
             
             switch (options.selectedFormat) {
                 case 'json':

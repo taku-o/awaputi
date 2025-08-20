@@ -18,43 +18,43 @@ describe('Phase G ファイル構造統合テスト', () => {
         
         test('balance-adjuster.jsメインファイルが存在する', async () => {
             const mainFile = path.join(balanceToolPath, 'balance-adjuster.js');
-            await expect(fs.access(mainFile).resolves.not.toThrow();
+            await expect(fs.access(mainFile).resolves.not.toThrow());
             
             const content = await fs.readFile(mainFile, 'utf8');
-            expect(content.toContain('Main Controller Pattern');
-            expect(content.toContain('class BalanceAdjuster');
+            expect(content.toContain('Main Controller Pattern'));
+            expect(content.toContain('class BalanceAdjuster'));
         });
         
         test('BalanceDataLoaderコンポーネントが存在する', async () => {
             const componentFile = path.join(balanceToolPath, 'BalanceDataLoader.js');
-            await expect(fs.access(componentFile).resolves.not.toThrow();
+            await expect(fs.access(componentFile).resolves.not.toThrow());
             
             const content = await fs.readFile(componentFile, 'utf8');
-            expect(content.toContain('class BalanceDataLoader');
+            expect(content.toContain('class BalanceDataLoader'));
         });
         
         test('BalanceCalculatorコンポーネントが存在する', async () => {
             const componentFile = path.join(balanceToolPath, 'BalanceCalculator.js');
-            await expect(fs.access(componentFile).resolves.not.toThrow();
+            await expect(fs.access(componentFile).resolves.not.toThrow());
             
             const content = await fs.readFile(componentFile, 'utf8');
-            expect(content.toContain('class BalanceCalculator');
+            expect(content.toContain('class BalanceCalculator'));
         });
         
         test('BalanceValidatorコンポーネントが存在する', async () => {
             const componentFile = path.join(balanceToolPath, 'BalanceValidator.js');
-            await expect(fs.access(componentFile).resolves.not.toThrow();
+            await expect(fs.access(componentFile).resolves.not.toThrow());
             
             const content = await fs.readFile(componentFile, 'utf8');
-            expect(content.toContain('class BalanceValidator');
+            expect(content.toContain('class BalanceValidator'));
         });
         
         test('BalanceExporterコンポーネントが存在する', async () => {
             const componentFile = path.join(balanceToolPath, 'BalanceExporter.js');
-            await expect(fs.access(componentFile).resolves.not.toThrow();
+            await expect(fs.access(componentFile).resolves.not.toThrow());
             
             const content = await fs.readFile(componentFile, 'utf8');
-            expect(content.toContain('class BalanceExporter');
+            expect(content.toContain('class BalanceExporter'));
         });
     });
 
@@ -63,59 +63,59 @@ describe('Phase G ファイル構造統合テスト', () => {
         
         test('AudioAccessibilitySupport.jsメインファイルが存在する', async () => {
             const mainFile = path.join(audioAccessibilityPath, 'AudioAccessibilitySupport.js');
-            await expect(fs.access(mainFile).resolves.not.toThrow();
+            await expect(fs.access(mainFile).resolves.not.toThrow());
             
             const content = await fs.readFile(mainFile, 'utf8');
-            expect(content.toContain('Main Controller Pattern');
-            expect(content.toContain('class AudioAccessibilitySupport');
+            expect(content.toContain('Main Controller Pattern'));
+            expect(content.toContain('class AudioAccessibilitySupport'));
         });
         
         test('AudioDescriptionManagerコンポーネントが存在する', async () => {
             const componentFile = path.join(audioAccessibilityPath, 'AudioDescriptionManager.js');
-            await expect(fs.access(componentFile).resolves.not.toThrow();
+            await expect(fs.access(componentFile).resolves.not.toThrow());
             
             const content = await fs.readFile(componentFile, 'utf8');
-            expect(content.toContain('class AudioDescriptionManager');
+            expect(content.toContain('class AudioDescriptionManager'));
         });
         
         test('AudioCueManagerコンポーネントが存在する', async () => {
             const componentFile = path.join(audioAccessibilityPath, 'AudioCueManager.js');
-            await expect(fs.access(componentFile).resolves.not.toThrow();
+            await expect(fs.access(componentFile).resolves.not.toThrow());
             
             const content = await fs.readFile(componentFile, 'utf8');
-            expect(content.toContain('class AudioCueManager');
+            expect(content.toContain('class AudioCueManager'));
         });
         
         test('AudioFeedbackManagerコンポーネントが存在する', async () => {
             const componentFile = path.join(audioAccessibilityPath, 'AudioFeedbackManager.js');
-            await expect(fs.access(componentFile).resolves.not.toThrow();
+            await expect(fs.access(componentFile).resolves.not.toThrow());
             
             const content = await fs.readFile(componentFile, 'utf8');
-            expect(content.toContain('class AudioFeedbackManager');
+            expect(content.toContain('class AudioFeedbackManager'));
         });
         
         test('AudioSettingsManagerコンポーネントが存在する', async () => {
             const componentFile = path.join(audioAccessibilityPath, 'AudioSettingsManager.js');
-            await expect(fs.access(componentFile).resolves.not.toThrow();
+            await expect(fs.access(componentFile).resolves.not.toThrow());
             
             const content = await fs.readFile(componentFile, 'utf8');
-            expect(content.toContain('class AudioSettingsManager');
+            expect(content.toContain('class AudioSettingsManager'));
         });
         
         test('AudioEventManagerコンポーネントが存在する', async () => {
             const componentFile = path.join(audioAccessibilityPath, 'AudioEventManager.js');
-            await expect(fs.access(componentFile).resolves.not.toThrow();
+            await expect(fs.access(componentFile).resolves.not.toThrow());
             
             const content = await fs.readFile(componentFile, 'utf8');
-            expect(content.toContain('class AudioEventManager');
+            expect(content.toContain('class AudioEventManager'));
         });
         
         test('AudioLegacyAdapterコンポーネントが存在する', async () => {
             const componentFile = path.join(audioAccessibilityPath, 'AudioLegacyAdapter.js');
-            await expect(fs.access(componentFile).resolves.not.toThrow();
+            await expect(fs.access(componentFile).resolves.not.toThrow());
             
             const content = await fs.readFile(componentFile, 'utf8');
-            expect(content.toContain('class AudioLegacyAdapter');
+            expect(content.toContain('class AudioLegacyAdapter'));
         });
     });
 
@@ -126,16 +126,16 @@ describe('Phase G ファイル構造統合テスト', () => {
             const mainFile = path.join(visualFocusPath, 'VisualFocusManager.js');
             
             try {
-                await fs.access(mainFile;
+                await fs.access(mainFile);
                 const content = await fs.readFile(mainFile, 'utf8');
-                expect(content.toContain('class VisualFocusManager');
+                expect(content.toContain('class VisualFocusManager'));
             } catch (error) {
                 // ファイルが存在しない場合はフォールバック元ファイルを確認
                 const fallbackFile = path.join(PROJECT_ROOT, 'src/core/VisualFocusManager.js');
-                await expect(fs.access(fallbackFile).resolves.not.toThrow();
+                await expect(fs.access(fallbackFile).resolves.not.toThrow());
                 
                 const content = await fs.readFile(fallbackFile, 'utf8');
-                expect(content.toContain('VisualFocusManager');
+                expect(content.toContain('VisualFocusManager'));
             }
         });
     });
@@ -147,16 +147,16 @@ describe('Phase G ファイル構造統合テスト', () => {
             const mainFile = path.join(visualFeedbackPath, 'VisualFeedbackManager.js');
             
             try {
-                await fs.access(mainFile;
+                await fs.access(mainFile);
                 const content = await fs.readFile(mainFile, 'utf8');
-                expect(content.toContain('class VisualFeedbackManager');
+                expect(content.toContain('class VisualFeedbackManager'));
             } catch (error) {
                 // ファイルが存在しない場合はフォールバック元ファイルを確認
                 const fallbackFile = path.join(PROJECT_ROOT, 'src/core/VisualFeedbackManager.js');
-                await expect(fs.access(fallbackFile).resolves.not.toThrow();
+                await expect(fs.access(fallbackFile).resolves.not.toThrow());
                 
                 const content = await fs.readFile(fallbackFile, 'utf8');
-                expect(content.toContain('VisualFeedbackManager');
+                expect(content.toContain('VisualFeedbackManager'));
             }
         });
     });
@@ -176,7 +176,7 @@ describe('Phase G ファイル構造統合テスト', () => {
                     const wordCount = content.split(/\s+/).length;
                     
                     console.log(`${filePath}: ${wordCount}語`);
-                    expect(wordCount.toBeLessThanOrEqual(2500);
+                    expect(wordCount.toBeLessThanOrEqual(2500));
                 } catch (error) {
                     console.warn(`ファイルが存在しません: ${filePath}`);
                 }
@@ -193,7 +193,7 @@ describe('Phase G ファイル構造統合テスト', () => {
                 const fullDirPath = path.join(PROJECT_ROOT, dirPath);
                 
                 try {
-                    const files = await fs.readdir(fullDirPath;
+                    const files = await fs.readdir(fullDirPath);
                     const jsFiles = files.filter(file => file.endsWith('.js') && !file.includes('test'));
                     
                     for (const file of jsFiles) {
@@ -223,16 +223,16 @@ describe('Phase G ファイル構造統合テスト', () => {
                 const content = await fs.readFile(mainFile, 'utf8');
                 
                 // サブコンポーネントのインポートを確認
-                expect(content.toContain("import { BalanceDataLoader } from './BalanceDataLoader'");
-                expect(content.toContain("import { BalanceCalculator } from './BalanceCalculator'");
-                expect(content.toContain("import { BalanceValidator } from './BalanceValidator'");
-                expect(content.toContain("import { BalanceExporter } from './BalanceExporter'");
+                expect(content.toContain("import { BalanceDataLoader } from './BalanceDataLoader'"));
+                expect(content.toContain("import { BalanceCalculator } from './BalanceCalculator'"));
+                expect(content.toContain("import { BalanceValidator } from './BalanceValidator'"));
+                expect(content.toContain("import { BalanceExporter } from './BalanceExporter'"));
                 
                 // コンストラクターでのコンポーネント初期化を確認
-                expect(content.toContain('this.dataLoader = new BalanceDataLoader');
-                expect(content.toContain('this.calculator = new BalanceCalculator');
-                expect(content.toContain('this.validator = new BalanceValidator');
-                expect(content.toContain('this.exporter = new BalanceExporter');
+                expect(content.toContain('this.dataLoader = new BalanceDataLoader'));
+                expect(content.toContain('this.calculator = new BalanceCalculator'));
+                expect(content.toContain('this.validator = new BalanceValidator'));
+                expect(content.toContain('this.exporter = new BalanceExporter'));
             } catch (error) {
                 console.warn('balance-adjuster.js読み込みエラー:', error.message);
             }
@@ -245,16 +245,16 @@ describe('Phase G ファイル構造統合テスト', () => {
                 const content = await fs.readFile(mainFile, 'utf8');
                 
                 // サブコンポーネントのインポートを確認
-                expect(content.toContain("import { AudioDescriptionManager } from '../../src/audio/accessibility/AudioDescriptionManager'");
-                expect(content.toContain("import { AudioCueManager } from '../../src/audio/accessibility/AudioCueManager'");
-                expect(content.toContain("import { AudioFeedbackManager } from '../../src/audio/accessibility/AudioFeedbackManager'");
-                expect(content.toContain("import { AudioSettingsManager } from '../../src/audio/accessibility/AudioSettingsManager'");
+                expect(content.toContain("import { AudioDescriptionManager } from '../../src/audio/accessibility/AudioDescriptionManager'"));
+                expect(content.toContain("import { AudioCueManager } from '../../src/audio/accessibility/AudioCueManager'"));
+                expect(content.toContain("import { AudioFeedbackManager } from '../../src/audio/accessibility/AudioFeedbackManager'"));
+                expect(content.toContain("import { AudioSettingsManager } from '../../src/audio/accessibility/AudioSettingsManager'"));
                 
                 // コンストラクターでのコンポーネント初期化を確認
-                expect(content.toContain('this.descriptionManager = new AudioDescriptionManager');
-                expect(content.toContain('this.cueManager = new AudioCueManager');
-                expect(content.toContain('this.feedbackManager = new AudioFeedbackManager');
-                expect(content.toContain('this.settingsManager = new AudioSettingsManager');
+                expect(content.toContain('this.descriptionManager = new AudioDescriptionManager'));
+                expect(content.toContain('this.cueManager = new AudioCueManager'));
+                expect(content.toContain('this.feedbackManager = new AudioFeedbackManager'));
+                expect(content.toContain('this.settingsManager = new AudioSettingsManager'));
             } catch (error) {
                 console.warn('AudioAccessibilitySupport.js読み込みエラー:', error.message);
             }
@@ -269,16 +269,16 @@ describe('Phase G ファイル構造統合テスト', () => {
                 const content = await fs.readFile(mainFile, 'utf8');
                 
                 // 重要な公開メソッドの存在を確認
-                expect(content.toContain('async run()');
-                expect(content.toContain('async showMainMenu()');
-                expect(content.toContain('async executeAction(');
-                expect(content.toContain('async viewCurrentConfiguration()');
-                expect(content.toContain('async analyzeImpact()');
-                expect(content.toContain('async runTests()');
-                expect(content.toContain('async saveChanges()');
+                expect(content.toContain('async run()'));
+                expect(content.toContain('async showMainMenu()'));
+                expect(content.toContain('async executeAction(')));
+                expect(content.toContain('async viewCurrentConfiguration()'));
+                expect(content.toContain('async analyzeImpact()'));
+                expect(content.toContain('async runTests()'));
+                expect(content.toContain('async saveChanges()'));
                 
                 // エクスポートが正しく行われているかを確認
-                expect(content.toContain('export { BalanceAdjuster }');
+                expect(content.toContain('export { BalanceAdjuster }'));
             } catch (error) {
                 console.warn('balance-adjuster.js API検証エラー:', error.message);
             }
@@ -291,18 +291,18 @@ describe('Phase G ファイル構造統合テスト', () => {
                 const content = await fs.readFile(mainFile, 'utf8');
                 
                 // 重要な公開メソッドの存在を確認
-                expect(content.toContain('async initialize()');
-                expect(content.toContain('showVisualNotification(');
-                expect(content.toContain('showCaption(');
-                expect(content.toContain('addAudioDescription(');
-                expect(content.toContain('processAudioEvent(');
-                expect(content.toContain('getSettings()');
-                expect(content.toContain('async updateSettings(');
-                expect(content.toContain('getStatus()');
-                expect(content.toContain('destroy()');
+                expect(content.toContain('async initialize()'));
+                expect(content.toContain('showVisualNotification(')));
+                expect(content.toContain('showCaption(')));
+                expect(content.toContain('addAudioDescription(')));
+                expect(content.toContain('processAudioEvent(')));
+                expect(content.toContain('getSettings()'));
+                expect(content.toContain('async updateSettings(')));
+                expect(content.toContain('getStatus()'));
+                expect(content.toContain('destroy()'));
                 
                 // エクスポートが正しく行われているかを確認
-                expect(content.toContain('export class AudioAccessibilitySupport');
+                expect(content.toContain('export class AudioAccessibilitySupport'));
             } catch (error) {
                 console.warn('AudioAccessibilitySupport.js API検証エラー:', error.message);
             }

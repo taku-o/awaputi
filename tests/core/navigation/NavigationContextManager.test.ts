@@ -21,7 +21,7 @@ describe('NavigationContextManager', () => {
             }
         };
         
-        navigationManager = new NavigationContextManager(mockGameEngine;
+        navigationManager = new NavigationContextManager(mockGameEngine);
     });
     
     afterEach(() => {
@@ -153,7 +153,7 @@ describe('NavigationContextManager', () => {
         });
         
         test('should fallback to default when scene not found', () => {
-            mockGameEngine.sceneManager.hasScene.mockReturnValue(false;
+            mockGameEngine.sceneManager.hasScene.mockReturnValue(false);
             navigationManager.pushContext('nonexistent', 'keyboard_h');
             
             const destination = navigationManager.getReturnDestination();
@@ -242,7 +242,7 @@ describe('NavigationContextManager', () => {
                 enableLogging: false
             };
             
-            navigationManager.updateConfig(newConfig;
+            navigationManager.updateConfig(newConfig);
             
             const debugInfo = navigationManager.getDebugInfo();
             expect(debugInfo.config.maxStackSize).toBe(5);

@@ -107,11 +107,11 @@ class MockPlayerData {
     }
 
     get(key: string): any {
-        return (this.data as any)[key];
+        return (this.data: any)[key];
     }
 
     set(key: string, value: void {
-        (this.data as any)[key] = value;
+        (this.data: any)[key] = value;
     }
 
     save(): boolean {
@@ -360,12 +360,12 @@ describe('AchievementManager', () => {
 
         test('データ復旧が正しく動作する', () => {
             // データ破損をシミュレート
-            (achievementManager as any).progressData = null;
+            (achievementManager: any11434.progressData = null;
             
             const recovered = achievementManager.attemptDataRecovery();
             
             expect(recovered).toBe(true);
-            expect((achievementManager as any).progressData).toBeDefined();
+            expect((achievementManager: any11642.progressData).toBeDefined();
         });
     });
 
@@ -405,7 +405,7 @@ describe('AchievementManager', () => {
             expect(() => {
                 achievementManager.updateProgress('first_score', -1);
                 achievementManager.updateProgress('first_score', 'invalid' as any);
-                achievementManager.updateProgress('first_score', null as any);
+                achievementManager.updateProgress('first_score', null: any13326;
             }).not.toThrow();
         });
 

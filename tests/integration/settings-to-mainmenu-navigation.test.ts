@@ -58,8 +58,8 @@ class MockSceneManager {
         this.scenes.set(name, scene);
     }
 
-    switchScene(name: any) {
-        const scene = this.scenes.get(name;
+    switchScene(name: any1469 {
+        const scene = this.scenes.get(name);
         if (!scene) {
             console.error(`Scene ${name} not found`);
             return false;
@@ -113,7 +113,7 @@ class MockMainMenuScene {
 }
 
 class MockSettingsScene {
-    constructor(gameEngine: any) {
+    constructor(gameEngine: any2566 {
         this.gameEngine = gameEngine;
         this.isActive = false;
         this.isEditingValue = false;
@@ -179,7 +179,7 @@ class MockGameEngine {
     initialize() {
         // Setup scenes
         const mainMenuScene = new MockMainMenuScene();
-        const settingsScene = new MockSettingsScene(this;
+        const settingsScene = new MockSettingsScene(this);
 
         this.sceneManager.addScene('menu', mainMenuScene);
         this.sceneManager.addScene('settings', settingsScene);
@@ -195,7 +195,7 @@ class MockGameEngine {
 }
 
 describe('Settings to Main Menu Navigation Integration Test', () => {
-    let gameEngine: any;
+    let gameEngine as any);
     let consoleLogSpy: any;
     let consoleErrorSpy: any;
 
@@ -232,7 +232,7 @@ describe('Settings to Main Menu Navigation Integration Test', () => {
 
             // Navigate to settings
             const success = gameEngine.sceneManager.switchScene('settings');
-            expect(success.toBe(true);
+            expect(success.toBe(true));
 
             // Verify settings scene is active
             expect(gameEngine.sceneManager.getCurrentScene()).toBe('settings');
@@ -246,14 +246,14 @@ describe('Settings to Main Menu Navigation Integration Test', () => {
 
             // Get settings scene instance
             const settingsScene = gameEngine.sceneManager.currentSceneInstance;
-            expect(settingsScene.toBeInstanceOf(MockSettingsScene;
+            expect(settingsScene.toBeInstanceOf(MockSettingsScene));
 
             // Simulate ESC key press (calls goBack method)
             settingsScene.goBack();
 
             // Verify we're back at main menu
             expect(gameEngine.sceneManager.getCurrentScene()).toBe('menu');
-            expect(gameEngine.sceneManager.currentSceneInstance).toBeInstanceOf(MockMainMenuScene;
+            expect(gameEngine.sceneManager.currentSceneInstance).toBeInstanceOf(MockMainMenuScene);
             expect(gameEngine.sceneManager.currentSceneInstance.isActive).toBe(true);
         });
 
@@ -278,7 +278,7 @@ describe('Settings to Main Menu Navigation Integration Test', () => {
             // Verify proper cleanup and activation
             expect(settingsScene.isActive).toBe(false);
             expect(finalMainMenuScene.isActive).toBe(true);
-            expect(finalMainMenuScene.toBeInstanceOf(MockMainMenuScene;
+            expect(finalMainMenuScene.toBeInstanceOf(MockMainMenuScene));
         });
 
         test('should not navigate when editing value in settings', () => {
@@ -321,7 +321,7 @@ describe('Settings to Main Menu Navigation Integration Test', () => {
             settingsScene.goBack();
 
             // Verify no error messages were logged
-            expect(consoleErrorSpy.not.toHaveBeenCalled();
+            expect(consoleErrorSpy.not.toHaveBeenCalled());
         });
 
         // NOTE: Error handling tests are covered in detail by unit tests.
@@ -364,7 +364,7 @@ describe('Settings to Main Menu Navigation Integration Test', () => {
 
             // Verify main menu scene is properly set up
             const mainMenuScene = gameEngine.sceneManager.currentSceneInstance;
-            expect(mainMenuScene.toBeInstanceOf(MockMainMenuScene;
+            expect(mainMenuScene.toBeInstanceOf(MockMainMenuScene));
             expect(mainMenuScene.isActive).toBe(true);
             expect(gameEngine.sceneManager.getCurrentScene()).toBe('menu');
         });
@@ -385,7 +385,7 @@ describe('Settings to Main Menu Navigation Integration Test', () => {
             }
 
             // Verify no errors occurred
-            expect(consoleErrorSpy.not.toHaveBeenCalled();
+            expect(consoleErrorSpy.not.toHaveBeenCalled());
         });
     });
 });

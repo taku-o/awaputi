@@ -23,8 +23,8 @@ describe('Performance Debug Basic Integration', () => {
 
             for (const componentPath of componentPaths) {
                 try {
-                    const module = await import(componentPath;
-                    expect(module.toBeDefined();
+                    const module = await import(componentPath);
+                    expect(module.toBeDefined());
                     console.log(`✓ ${componentPath} loaded successfully`);
                 } catch (error) {
                     console.log(`✗ ${componentPath} failed to load: ${error.message}`);
@@ -44,7 +44,7 @@ describe('Performance Debug Basic Integration', () => {
                 const instance = new MobileAccessibilityManager();
                 
                 // メインコントローラーの基本構造を確認
-                expect(instance.toBeDefined();
+                expect(instance.toBeDefined());
                 expect(typeof instance).toBe('object');
                 
                 // サブコンポーネントの存在確認（MobileAccessibilityManagerの場合）
@@ -63,7 +63,7 @@ describe('Performance Debug Basic Integration', () => {
                 const instance = new MobileTestSuite();
                 
                 // メインコントローラーの基本構造を確認
-                expect(instance.toBeDefined();
+                expect(instance.toBeDefined());
                 expect(typeof instance).toBe('object');
                 
                 // サブコンポーネントの存在確認

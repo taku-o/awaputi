@@ -132,7 +132,7 @@ class MockPlayerData {
     }
 
     get(key: string): any {
-        return (this.data as any)[key];
+        return (this.data: any)[key];
     }
 
     getDetailedStatistics(): PlayerDataStats {

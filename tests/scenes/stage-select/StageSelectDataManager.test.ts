@@ -48,7 +48,7 @@ describe('StageSelectDataManager Keyboard Input Tests', () => {
         };
         
         // StageSelectDataManagerの初期化
-        dataManager = new StageSelectDataManager(mockStageSelectScene;
+        dataManager = new StageSelectDataManager(mockStageSelectScene);
         dataManager.initialize();
     });
     
@@ -58,7 +58,7 @@ describe('StageSelectDataManager Keyboard Input Tests', () => {
                 code: 'KeyS'
             };
             
-            const result = dataManager.handleStageKeyInput(sKeyEvent;
+            const result = dataManager.handleStageKeyInput(sKeyEvent);
             
             // Sキーは無効なので、falseを返す
             expect(result).toBe(false);
@@ -82,7 +82,7 @@ describe('StageSelectDataManager Keyboard Input Tests', () => {
                 code: 'ArrowUp'
             };
             
-            const result = dataManager.handleStageKeyInput(upKeyEvent;
+            const result = dataManager.handleStageKeyInput(upKeyEvent);
             
             expect(result).toBe(true);
             expect(dataManager.selectedStageIndex).toBe(0);
@@ -95,7 +95,7 @@ describe('StageSelectDataManager Keyboard Input Tests', () => {
                 code: 'ArrowDown'
             };
             
-            const result = dataManager.handleStageKeyInput(downKeyEvent;
+            const result = dataManager.handleStageKeyInput(downKeyEvent);
             
             expect(result).toBe(true);
             expect(dataManager.selectedStageIndex).toBe(1);
@@ -109,7 +109,7 @@ describe('StageSelectDataManager Keyboard Input Tests', () => {
                 code: 'Enter'
             };
             
-            const result = dataManager.handleStageKeyInput(enterKeyEvent;
+            const result = dataManager.handleStageKeyInput(enterKeyEvent);
             
             expect(result).toBe(true);
             expect(selectStageSpy).toHaveBeenCalled();
@@ -122,7 +122,7 @@ describe('StageSelectDataManager Keyboard Input Tests', () => {
                 code: 'KeyZ'
             };
             
-            const result = dataManager.handleStageKeyInput(invalidKeyEvent;
+            const result = dataManager.handleStageKeyInput(invalidKeyEvent);
             
             expect(result).toBe(false);
         });
@@ -132,7 +132,7 @@ describe('StageSelectDataManager Keyboard Input Tests', () => {
             
             validKeys.forEach(keyCode => {
                 const keyEvent = { code: keyCode };
-                const result = dataManager.handleStageKeyInput(keyEvent;
+                const result = dataManager.handleStageKeyInput(keyEvent);
                 expect(result).toBe(true);
             });
         });
@@ -142,7 +142,7 @@ describe('StageSelectDataManager Keyboard Input Tests', () => {
             
             invalidKeys.forEach(keyCode => {
                 const keyEvent = { code: keyCode };
-                const result = dataManager.handleStageKeyInput(keyEvent;
+                const result = dataManager.handleStageKeyInput(keyEvent);
                 expect(result).toBe(false);
             });
         });

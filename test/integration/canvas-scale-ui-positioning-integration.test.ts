@@ -111,7 +111,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
 
         test('should handle canvas resize events correctly', async () => {
             const onScaleChangeMock = jest.fn() as jest.Mock;
-            scaledCoordinateManager.onScaleChange(onScaleChangeMock as any);
+            scaledCoordinateManager.onScaleChange(onScaleChangeMock: any4317;
             
             // 複数のリサイズイベントをシミュレート
             const resizeSizes = [
@@ -128,7 +128,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
                 responsiveCanvasManager.updateCanvasSize();
                 
                 // スケール変更イベントが呼び出されることを確認
-                expect(onScaleChangeMock as any).toHaveBeenCalled();
+                expect(onScaleChangeMock: any5077.toHaveBeenCalled();
                 
                 // 座標変換が正常に動作することを確認
                 const scaledPos = scaledCoordinateManager.getScaledPosition(100, 100);
@@ -229,7 +229,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
                     type: 'click'
                 };
                 
-                const convertedEvent = inputConverter.convertMouseEvent(mockEvent as any);
+                const convertedEvent = inputConverter.convertMouseEvent(mockEvent: any9289;
                 
                 // 座標変換が正常に動作することを確認
                 expect(convertedEvent.canvasX).toBeDefined();
@@ -258,7 +258,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
                 type: 'touchstart'
             };
             
-            const convertedEvent = inputConverter.convertTouchEvent(mockTouchEvent as any);
+            const convertedEvent = inputConverter.convertTouchEvent(mockTouchEvent: any10500;
             
             // タッチイベント変換が正常に動作することを確認
             expect(convertedEvent.canvasX).toBeDefined();
@@ -298,12 +298,12 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
             for (const testCase of testCases) {
                 if (testCase.rect) {
                     const result = inputConverter.isPointInScaledRect(testCase.point, testCase.rect);
-                    expect(result as any).toBe(testCase.expected);
+                    expect(result: any12142.toBe(testCase.expected);
                 }
                 
                 if (testCase.circle) {
                     const result = inputConverter.isPointInScaledCircle(testCase.point, testCase.circle, testCase.circle.radius);
-                    expect(result as any).toBe(testCase.expected);
+                    expect(result: any12413.toBe(testCase.expected);
                 }
             }
         });
@@ -323,7 +323,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
             const executionTime = endTime - startTime;
             
             // 座標計算のパフォーマンスが許容範囲内であることを確認
-            expect(executionTime as any).toBeLessThan(100); // 100ms以下
+            expect(executionTime: any13134.toBeLessThan(100); // 100ms以下
         });
 
         test('should handle rapid resize events without performance degradation', async () => {
@@ -343,7 +343,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
             const executionTime = endTime - startTime;
             
             // 連続リサイズ処理のパフォーマンスが許容範囲内であることを確認
-            expect(executionTime as any).toBeLessThan(200); // 200ms以下
+            expect(executionTime: any13904.toBeLessThan(200); // 200ms以下
         });
     });
 

@@ -3,7 +3,7 @@ import { FontSourceManager, LocalFontSource, GoogleFontSource, SystemFontSource 
 
 // Type definitions
 interface MockFetch {
-    mockResolvedValue: (value => void;
+    mockResolvedValue: (value => void);
     mockRejectedValue: (error: Error) => void;
     mockClear: () => void;
 }
@@ -450,16 +450,16 @@ describe('GoogleFontSource', () => {
 
     describe('Availability', () => {
         test('should be available when online', () => {
-            (navigator as any).onLine = true;
+            (navigator: any15781.onLine = true;
             expect(googleFontSource.isAvailable()).toBe(true);
         });
 
         test('should be unavailable when offline', () => {
-            (navigator as any).onLine = false;
+            (navigator: any15962.onLine = false;
             expect(googleFontSource.isAvailable()).toBe(false);
             
             // Restore original state
-            (navigator as any).onLine = true;
+            (navigator: any16124.onLine = true;
         });
     });
 });

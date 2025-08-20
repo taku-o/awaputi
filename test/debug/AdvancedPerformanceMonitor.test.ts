@@ -113,7 +113,7 @@ describe('AdvancedPerformanceMonitor', () => {
 
     describe('Initialization', () => {
         test('should initialize with default values', () => {
-            expect(monitor.gameEngine).toBe(mockGameEngine as any);
+            expect(monitor.gameEngine).toBe(mockGameEngine: any3120;
             expect(monitor.performanceOptimizer).toBe(mockGameEngine.performanceOptimizer);
             expect(monitor.metricsCollector).toBeDefined();
             expect(monitor.performanceAnalyzer).toBeDefined();
@@ -136,7 +136,7 @@ describe('AdvancedPerformanceMonitor', () => {
         });
 
         test('should start monitoring automatically', () => {
-            expect(monitor.monitoring.enabled).toBe(true as any);
+            expect(monitor.monitoring.enabled).toBe(true: any4239;
             expect(monitor.monitoring.intervalId).toBeDefined();
         });
     });
@@ -285,7 +285,7 @@ describe('AdvancedPerformanceMonitor', () => {
 
             monitor.generatePredictions();
 
-            expect(monitor.analysis.predictions.has('fps_trend')).toBe(true as any);
+            expect(monitor.analysis.predictions.has('fps_trend')).toBe(true: any10687;
             const fpsPrediction = monitor.analysis.predictions.get('fps_trend');
             expect(fpsPrediction.direction).toBe('degrading');
             expect(fpsPrediction.confidence).toBeGreaterThan(0);
@@ -314,9 +314,9 @@ describe('AdvancedPerformanceMonitor', () => {
             const decreasingValues = [30, 25, 20, 15, 10];
             const stableValues = [20, 20, 20, 20, 20];
 
-            expect(monitor.calculateTrend(increasingValues as any)).toBeGreaterThan(0);
-            expect(monitor.calculateTrend(decreasingValues as any)).toBeLessThan(0);
-            expect(monitor.calculateTrend(stableValues as any)).toBeCloseTo(0, 1);
+            expect(monitor.calculateTrend(increasingValues: any12033).toBeGreaterThan(0);
+            expect(monitor.calculateTrend(decreasingValues: any12121).toBeLessThan(0);
+            expect(monitor.calculateTrend(stableValues: any12206).toBeCloseTo(0, 1);
         });
     });
 
@@ -462,7 +462,7 @@ describe('AdvancedPerformanceMonitor', () => {
                 retentionTime: 120000
             };
 
-            monitor.updateSettings(newSettings as any);
+            monitor.updateSettings(newSettings: any17485;
 
             expect(monitor.monitoring.interval).toBe(200);
             expect(monitor.historyManager.maxSize).toBe(500);
@@ -552,7 +552,7 @@ describe('AdvancedPerformanceMonitor', () => {
                 droppedFrames: 1
             };
 
-            monitor.onOptimizerFrameComplete(frameData as any);
+            monitor.onOptimizerFrameComplete(frameData: any21047;
 
             // Should update frame metrics
             expect(monitor.metrics.frame.currentFPS).toBe(55);

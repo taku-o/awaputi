@@ -294,7 +294,7 @@ export class EnvironmentManager {
     /**
      * テスト実行を適切な分離で実行
      */
-    static isolateTestExecution(testFunction: any) {
+    static isolateTestExecution(testFunction: any10291 {
         return async (...args) => {
             // テスト開始前の環境セットアップ
             this.setupTestEnvironment();
@@ -318,7 +318,7 @@ export class EnvironmentManager {
      */
     static async handleAsyncOperationCleanup() {
         // 待機中のPromiseを解決
-        await new Promise(resolve => setImmediate(resolve: any));
+        await new Promise(resolve => setImmediate(resolve: any10959);
         
         // 微小なタイマーを待機
         await new Promise(resolve => setTimeout(resolve, 0));
@@ -353,7 +353,7 @@ export class EnvironmentManager {
             const testElements = document.querySelectorAll('[data-test-element]');
             testElements.forEach(element => {
                 if (element.parentNode) {
-                    element.parentNode.removeChild(element: any);
+                    element.parentNode.removeChild(element as any);
                 }
             });
         }

@@ -516,8 +516,8 @@ export class AutoSaveSystem {
     // イベントハンドラーの参照保持
     private gameStartHandler: () => void;
     private gameEndHandler: () => void;
-    private gameErrorHandler: (error: any) => void;
-    private criticalActionHandler: (action: any) => void;
+    private gameErrorHandler: (error as any) => void;
+    private criticalActionHandler: (action as any) => void;
     private beforeUnloadHandler: (event: BeforeUnloadEvent) => void;
     private windowBlurHandler: () => void;
     private windowFocusHandler: () => void;

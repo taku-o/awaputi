@@ -287,7 +287,7 @@ test.describe('Achievement System E2E Tests', () => {
         await page.evaluate(() => {
             window.performanceMarks = [];
             const originalMarkMethod = performance.mark;
-            performance.mark = function(name: any) {
+            performance.mark = function(name: any10136 {
                 window.performanceMarks.push({ name, time: Date.now() });
                 return originalMarkMethod.call(this, name);
             };

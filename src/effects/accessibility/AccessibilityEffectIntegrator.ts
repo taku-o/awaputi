@@ -22,7 +22,7 @@ interface GameEngine {
     accessibilityManager?: AccessibilityManager;
     audioManager?: AudioManager;
     canvas?: HTMLCanvasElement;
-    addEventListener?(event: string, handler: (event: any) => void): void;
+    addEventListener?(event: string, handler: (event as any) => void): void;
 }
 
 interface EffectManager {
@@ -54,7 +54,7 @@ interface SeasonalEffectManager {
 interface AccessibilityManager {
     getConfiguration(): AccessibilityConfiguration;
     applyConfiguration(config: AccessibilityConfiguration): Promise<void>;
-    addEventListener(event: string, handler: (event: any) => void): void;
+    addEventListener(event: string, handler: (event as any) => void): void;
     removeEventListener?(event: string): void;
 }
 
@@ -732,7 +732,7 @@ export class AccessibilityEffectIntegrator {
     private setupEventListeners(): void {
         if (this.accessibilityManager) {
             // アクセシビリティ設定変更の監視
-            this.accessibilityManager.addEventListener('configurationApplied', (event: any) => {
+            this.accessibilityManager.addEventListener('configurationApplied', (event as any) => {
                 this.handleAccessibilityConfigChange(event.config);
             });
             

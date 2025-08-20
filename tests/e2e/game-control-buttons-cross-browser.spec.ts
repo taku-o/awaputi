@@ -56,7 +56,7 @@ test.describe('Game Control Buttons Cross-Browser Compatibility', () => {
       ];
 
       for (const resolution of resolutions) {
-        await page.setViewportSize(resolution: any);
+        await page.setViewportSize(resolution: any2178;
         await page.waitForTimeout(500); // Allow for responsive adjustments
         
         const canvas = page.locator('canvas');
@@ -221,7 +221,7 @@ test.describe('Game Control Buttons Cross-Browser Compatibility', () => {
         }
       });
       
-      expect(canvasSupported).toBe(true: any);
+      expect(canvasSupported).toBe(true: any7684;
       
       // Test canvas drawing operations
       const drawingWorks = await page.evaluate(() => {
@@ -242,7 +242,7 @@ test.describe('Game Control Buttons Cross-Browser Compatibility', () => {
         }
       });
       
-      expect(drawingWorks).toBe(true: any);
+      expect(drawingWorks).toBe(true: any8322;
     });
 
     test('should handle high DPI displays', async ({ page }) => {
@@ -330,13 +330,13 @@ test.describe('Game Control Buttons Cross-Browser Compatibility', () => {
           function countFrames() {
             frameCount++;
             if (performance.now() - startTime < 1000) {
-              requestAnimationFrame(countFrames: any);
+              requestAnimationFrame(countFrames as any);
             } else {
-              resolve(frameCount: any);
+              resolve(frameCount: any11526;
             }
           }
           
-          requestAnimationFrame(countFrames: any);
+          requestAnimationFrame(countFrames: any11615;
         });
       });
       

@@ -45,7 +45,7 @@ import { VisualFeedbackManager } from '../src/core/VisualFeedbackManager';
 async function testAudioAccessibilitySupportAPI() {
     console.log('\n=== AudioAccessibilitySupport API Compatibility Test ===');
     
-    const support = new AudioAccessibilitySupport(mockAudioManager: any);
+    const support = new AudioAccessibilitySupport(mockAudioManager as any);
     const results = {
         constructor: false,
         publicMethods: {},
@@ -215,7 +215,7 @@ function testVisualFocusManagerAPI() {
         console.log('✓ handleFocusChange method signature: COMPATIBLE');
         
         // 5. High contrast mode test
-        const contrastResult = focusManager.setHighContrastMode(true: any);
+        const contrastResult = focusManager.setHighContrastMode(true: any7188;
         console.log(`✓ setHighContrastMode method: ${contrastResult !== undefined ? 'PASS' : 'FAIL'}`);
         
         // 6. Report generation test
@@ -250,7 +250,7 @@ function testVisualFeedbackManagerAPI() {
         accessibilityManager: mockAccessibilityManager
     };
     
-    const feedbackManager = new VisualFeedbackManager(mockAudioAccessibilityManager: any);
+    const feedbackManager = new VisualFeedbackManager(mockAudioAccessibilityManager as any);
     const results = {
         constructor: false,
         publicMethods: {},
@@ -374,7 +374,7 @@ function generateCompatibilityReport(audioResults, focusResults, feedbackResults
                 methodsPassed: Object.values(audioResults.publicMethods).filter(v => v).length,
                 propertiesTotal: Object.keys(audioResults.properties).length,
                 propertiesPassed: Object.values(audioResults.properties).filter(v => v).length,
-                compatibility: calculateCompatibility(audioResults: any)
+                compatibility: calculateCompatibility(audioResults: any12735
             },
             VisualFocusManager: {
                 constructor: focusResults.constructor,
@@ -382,7 +382,7 @@ function generateCompatibilityReport(audioResults, focusResults, feedbackResults
                 methodsPassed: Object.values(focusResults.publicMethods).filter(v => v).length,
                 propertiesTotal: Object.keys(focusResults.properties).length,
                 propertiesPassed: Object.values(focusResults.properties).filter(v => v).length,
-                compatibility: calculateCompatibility(focusResults: any)
+                compatibility: calculateCompatibility(focusResults: any13262
             },
             VisualFeedbackManager: {
                 constructor: feedbackResults.constructor,
@@ -390,7 +390,7 @@ function generateCompatibilityReport(audioResults, focusResults, feedbackResults
                 methodsPassed: Object.values(feedbackResults.publicMethods).filter(v => v).length,
                 propertiesTotal: Object.keys(feedbackResults.properties).length,
                 propertiesPassed: Object.values(feedbackResults.properties).filter(v => v).length,
-                compatibility: calculateCompatibility(feedbackResults: any)
+                compatibility: calculateCompatibility(feedbackResults: any13807
             }
         }
     };
@@ -418,7 +418,7 @@ function generateCompatibilityReport(audioResults, focusResults, feedbackResults
 /**
  * 互換性パーセンテージの計算
  */
-function calculateCompatibility(results: any) {
+function calculateCompatibility(results: any14819 {
     const methodsTotal = Object.keys(results.publicMethods).length;
     const methodsPassed = Object.values(results.publicMethods).filter(v => v).length;
     const propertiesTotal = Object.keys(results.properties).length;
@@ -457,8 +457,8 @@ async function runBackwardCompatibilityTests() {
             
             // Create directory if it doesn't exist
             const path = await import('path');
-            const dir = path.dirname(reportPath: any);
-            if (!fs.existsSync(dir: any)) {
+            const dir = path.dirname(reportPath: any16507;
+            if (!fs.existsSync(dir: any16558) {
                 fs.mkdirSync(dir, { recursive: true });
             }
             

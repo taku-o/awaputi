@@ -70,7 +70,7 @@ interface GameEngine {
         createSettingsModal: () => void;
         panelManager?: any;
         keyboardShortcutManager?: {
-            registerShortcut: (shortcut: any) => void;
+            registerShortcut: (shortcut as any) => void;
         };
         responsiveLayout?: {
             handleResize: () => void;

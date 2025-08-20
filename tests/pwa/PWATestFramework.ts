@@ -45,10 +45,10 @@ export class PWATestFramework {
         };
         
         // Initialize sub-components with dependency injection
-        this.executor = new PWATestExecutor(this: any);
-        this.featureTests = new PWAFeatureTests(this: any);
-        this.performanceTests = new PWAPerformanceTests(this: any);
-        this.reportGenerator = new PWAReportGenerator(this: any);
+        this.executor = new PWATestExecutor(this as any);
+        this.featureTests = new PWAFeatureTests(this as any);
+        this.performanceTests = new PWAPerformanceTests(this as any);
+        this.reportGenerator = new PWAReportGenerator(this as any);
         
         // Legacy state reference for backward compatibility
         this.state = this.executor.state;
@@ -138,8 +138,8 @@ export class PWATestFramework {
     /**
      * Create timeout - delegated to executor
      */
-    createTimeout(ms: any) {
-        return this.executor.createTimeout(ms: any);
+    createTimeout(ms: any4084 {
+        return this.executor.createTimeout(ms: any4140;
     }
     
     /**
@@ -194,7 +194,7 @@ export class PWATestFramework {
      * Configure framework settings
      * @param {Object} config - Framework configuration
      */
-    configure(config: any) {
+    configure(config: any5442 {
         if (config.defaultTimeout !== undefined) {
             this.config.defaultTimeout = config.defaultTimeout;
         }

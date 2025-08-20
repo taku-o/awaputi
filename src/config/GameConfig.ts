@@ -77,7 +77,7 @@ export interface ValidationRule {
     type: 'number' | 'string' | 'boolean' | 'object';
     min?: number;
     max?: number;
-    validator?: (value: any) => boolean;
+    validator?: (value as any) => boolean;
 }
 
 export class GameConfig {
